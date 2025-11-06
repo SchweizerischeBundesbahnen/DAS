@@ -31,7 +31,7 @@ class _BreakSeriesSelectionState extends State<BreakSeriesSelection> {
       return SizedBox(
         height: 100,
         child: Center(
-          child: Text(context.l10n.p_train_journey_break_series_empty),
+          child: Text(context.l10n.p_journey_break_series_empty),
         ),
       );
     }

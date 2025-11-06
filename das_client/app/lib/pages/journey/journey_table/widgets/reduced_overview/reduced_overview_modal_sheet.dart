@@ -19,7 +19,7 @@ Future<void> showReducedOverviewModalSheet(BuildContext context) async {
 
   return showSBBModalSheet(
     context: context,
-    title: context.l10n.w_reduced_train_journey_title,
+    title: context.l10n.w_reduced_journey_table_title,
     constraints: BoxConstraints(),
     child: Provider(
       create: (_) => ReducedOverviewViewModel(

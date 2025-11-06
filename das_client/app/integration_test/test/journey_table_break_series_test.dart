@@ -73,7 +73,7 @@ void main() {
     // Open break series bottom sheet
     await tapElement(tester, find.byKey(JourneyTable.breakingSeriesHeaderKey));
 
-    expect(find.text(l10n.p_train_journey_break_series_empty), findsOneWidget);
+    expect(find.text(l10n.p_journey_break_series_empty), findsOneWidget);
 
     await disconnect(tester);
   });

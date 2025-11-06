@@ -92,7 +92,7 @@ class _JourneyPageState extends State<JourneyPage> {
 
     final locale = Localizations.localeOf(context);
     final date = Format.dateWithAbbreviatedDay(trainIdentification.date, locale);
-    return '${context.l10n.p_train_journey_appbar_text} - $date';
+    return '${context.l10n.p_journey_appbar_text} - $date';
   }
 }
 

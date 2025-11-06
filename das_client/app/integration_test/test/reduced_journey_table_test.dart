@@ -96,7 +96,7 @@ void main() {
 
       final reducedJourneyTable = _findTableOfReducedJourney();
 
-      final expectedPlannedHeaderLabel = l10n.p_train_journey_table_time_label_planned;
+      final expectedPlannedHeaderLabel = l10n.p_journey_table_time_label_planned;
 
       // GEN AEROPORT
       expect(find.text(expectedPlannedHeaderLabel), findsOneWidget);

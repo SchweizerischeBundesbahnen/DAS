@@ -14,8 +14,8 @@ class ThemeButton extends StatelessWidget {
     final isDarkMode = ThemeUtil.isDarkMode(context);
     return HeaderIconButton(
       label: isDarkMode
-          ? context.l10n.p_train_journey_header_button_light_theme
-          : context.l10n.p_train_journey_header_button_dark_theme,
+          ? context.l10n.p_journey_header_button_light_theme
+          : context.l10n.p_journey_header_button_dark_theme,
       icon: isDarkMode ? SBBIcons.sunshine_small : SBBIcons.moon_small,
       onPressed: () => context.read<ThemeViewModel>().toggleTheme(context),
     );

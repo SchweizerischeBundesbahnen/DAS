@@ -46,7 +46,7 @@ class LevelCrossingRow extends CellRowBuilder<LevelCrossing> {
   @override
   DASTableCell informationCell(BuildContext context) {
     return DASTableCell(
-      child: Text(context.l10n.p_train_journey_table_level_crossing),
+      child: Text(context.l10n.p_journey_table_level_crossing),
       alignment: Alignment.centerRight,
     );
   }

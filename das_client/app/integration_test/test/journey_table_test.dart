@@ -1,5 +1,6 @@
 import 'package:app/pages/journey/journey_table/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/journey_table/widgets/header/sim_identifier.dart';
+import 'package:app/pages/journey/journey_table/widgets/journey_table.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/additional_speed_restriction_row.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/balise_row.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/cells/bracket_station_cell_body.dart';
@@ -10,7 +11,6 @@ import 'package:app/pages/journey/journey_table/widgets/table/service_point_row.
 import 'package:app/pages/journey/journey_table/widgets/table/signal_row.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/tram_area_row.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/whistle_row.dart';
-import 'package:app/pages/journey/journey_table/widgets/journey_table.dart';
 import 'package:app/theme/themes.dart';
 import 'package:app/widgets/dot_indicator.dart';
 import 'package:app/widgets/labeled_badge.dart';
@@ -94,7 +94,7 @@ void main() {
       final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
-      final curveName = findDASTableRowByText(l10n.p_train_journey_table_curve_type_curve);
+      final curveName = findDASTableRowByText(l10n.p_journey_table_curve_type_curve);
       expect(curveName, findsOneWidget);
 
       final curveIcon = find.descendant(of: curveName, matching: find.byKey(CurvePointRow.curvePointIconKey));
@@ -115,7 +115,7 @@ void main() {
       expect(breakingSeriesHeaderCell, findsOneWidget);
       expect(find.descendant(of: breakingSeriesHeaderCell, matching: find.text('R115')), findsOneWidget);
 
-      final curveName = findDASTableRowByText(l10n.p_train_journey_table_curve_type_curve);
+      final curveName = findDASTableRowByText(l10n.p_journey_table_curve_type_curve);
       expect(curveName, findsExactly(2));
 
       final curveIcon = find.descendant(of: curveName, matching: find.byKey(CurvePointRow.curvePointIconKey));
@@ -131,7 +131,7 @@ void main() {
       final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
-      final baliseMultiLevelCrossing = findDASTableRowByText('(2 ${l10n.p_train_journey_table_level_crossing})');
+      final baliseMultiLevelCrossing = findDASTableRowByText('(2 ${l10n.p_journey_table_level_crossing})');
       expect(baliseMultiLevelCrossing, findsOneWidget);
 
       final baliseIcon = find.descendant(of: baliseMultiLevelCrossing, matching: find.byKey(BaliseRow.baliseIconKey));
@@ -177,7 +177,7 @@ void main() {
 
       final levelCrossingText = find.descendant(
         of: groupOf5BaliseRow,
-        matching: find.text(l10n.p_train_journey_table_level_crossing),
+        matching: find.text(l10n.p_journey_table_level_crossing),
       );
       expect(levelCrossingText, findsOneWidget);
 
@@ -198,7 +198,7 @@ void main() {
 
       expect(find.descendant(of: detailRowBalise, matching: find.byKey(BaliseRow.baliseIconKey)), findsOneWidget);
       expect(
-        find.descendant(of: detailRowLevelCrossing, matching: find.text(l10n.p_train_journey_table_level_crossing)),
+        find.descendant(of: detailRowLevelCrossing, matching: find.text(l10n.p_journey_table_level_crossing)),
         findsOneWidget,
       );
 
@@ -420,11 +420,11 @@ void main() {
 
       // List of expected column headers
       final List<String> expectedHeaders = [
-        l10n.p_train_journey_table_kilometre_label,
-        l10n.p_train_journey_table_journey_information_label,
-        l10n.p_train_journey_table_time_label_planned,
-        l10n.p_train_journey_table_advised_speed_label,
-        l10n.p_train_journey_table_graduated_speed_label,
+        l10n.p_journey_table_kilometre_label,
+        l10n.p_journey_table_journey_information_label,
+        l10n.p_journey_table_time_label_planned,
+        l10n.p_journey_table_advised_speed_label,
+        l10n.p_journey_table_graduated_speed_label,
       ];
 
       // Check if each header is present in the widget tree
@@ -660,7 +660,7 @@ void main() {
       final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
-      final curveLabel = l10n.p_train_journey_table_curve_type_curve;
+      final curveLabel = l10n.p_journey_table_curve_type_curve;
       await tester.dragUntilVisible(find.text(curveLabel).first, scrollableFinder, const Offset(0, -50));
 
       final curveRows = findDASTableRowByText(curveLabel);
@@ -669,7 +669,7 @@ void main() {
       final curveIcon = find.descendant(of: curveRows.first, matching: find.byKey(CurvePointRow.curvePointIconKey));
       expect(curveIcon, findsOneWidget);
 
-      final curveAfterHaltLabel = l10n.p_train_journey_table_curve_type_curve_after_halt;
+      final curveAfterHaltLabel = l10n.p_journey_table_curve_type_curve_after_halt;
       await tester.dragUntilVisible(find.text(curveAfterHaltLabel), scrollableFinder, const Offset(0, -50));
 
       final curveAfterHaltRow = findDASTableRowByText(curveAfterHaltLabel);

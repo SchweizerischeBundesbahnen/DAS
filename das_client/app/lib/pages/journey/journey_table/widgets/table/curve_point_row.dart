@@ -46,11 +46,11 @@ extension _CurveTypeExtension on CurveType {
   String localizedName(BuildContext context) {
     switch (this) {
       case CurveType.curve:
-        return context.l10n.p_train_journey_table_curve_type_curve;
+        return context.l10n.p_journey_table_curve_type_curve;
       case CurveType.curveAfterHalt:
-        return context.l10n.p_train_journey_table_curve_type_curve_after_halt;
+        return context.l10n.p_journey_table_curve_type_curve_after_halt;
       case CurveType.stationExitCurve:
-        return context.l10n.p_train_journey_table_curve_type_station_exit_curve;
+        return context.l10n.p_journey_table_curve_type_station_exit_curve;
       case CurveType.unknown:
         return context.l10n.c_unknown;
     }

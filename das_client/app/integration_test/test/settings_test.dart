@@ -61,15 +61,15 @@ void main() {
     await stopAutomaticAdvancement(tester);
 
     // check km is shown, up and down gradients are hidden
-    expect(find.text(l10n.p_train_journey_table_kilometre_label), findsOneWidget);
+    expect(find.text(l10n.p_journey_table_kilometre_label), findsOneWidget);
     expect(find.text('+'), findsNothing);
     expect(find.text('-'), findsNothing);
 
     // click on km header
-    await tapElement(tester, find.text(l10n.p_train_journey_table_kilometre_label));
+    await tapElement(tester, find.text(l10n.p_journey_table_kilometre_label));
 
     // check km is hidden, up and down gradients are shown
-    expect(find.text(l10n.p_train_journey_table_kilometre_label), findsNothing);
+    expect(find.text(l10n.p_journey_table_kilometre_label), findsNothing);
     expect(find.text('+'), findsOneWidget);
     expect(find.text('-'), findsOneWidget);
 
@@ -77,15 +77,15 @@ void main() {
     await tapElement(tester, find.text('+'));
 
     // check km is shown, up and down gradients are hidden
-    expect(find.text(l10n.p_train_journey_table_kilometre_label), findsOneWidget);
+    expect(find.text(l10n.p_journey_table_kilometre_label), findsOneWidget);
     expect(find.text('+'), findsNothing);
     expect(find.text('-'), findsNothing);
 
     // click on km header
-    await tapElement(tester, find.text(l10n.p_train_journey_table_kilometre_label));
+    await tapElement(tester, find.text(l10n.p_journey_table_kilometre_label));
 
     // check km is hidden, up and down gradients are shown
-    expect(find.text(l10n.p_train_journey_table_kilometre_label), findsNothing);
+    expect(find.text(l10n.p_journey_table_kilometre_label), findsNothing);
     expect(find.text('+'), findsOneWidget);
     expect(find.text('-'), findsOneWidget);
 
@@ -93,15 +93,15 @@ void main() {
     await tapElement(tester, find.text('-'));
 
     // check km is shown, up and down gradients are hidden
-    expect(find.text(l10n.p_train_journey_table_kilometre_label), findsOneWidget);
+    expect(find.text(l10n.p_journey_table_kilometre_label), findsOneWidget);
     expect(find.text('+'), findsNothing);
     expect(find.text('-'), findsNothing);
 
     // click on km header
-    await tapElement(tester, find.text(l10n.p_train_journey_table_kilometre_label));
+    await tapElement(tester, find.text(l10n.p_journey_table_kilometre_label));
 
     // check revert back to km after delay
-    await waitUntilExists(tester, find.text(l10n.p_train_journey_table_kilometre_label));
+    await waitUntilExists(tester, find.text(l10n.p_journey_table_kilometre_label));
 
     await disconnect(tester);
   });

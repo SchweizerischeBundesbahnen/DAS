@@ -33,14 +33,14 @@ class TramAreaRow extends CellRowBuilder<TramArea> {
 
   Widget tramSignalText(BuildContext context) {
     final amount = data.amountTramSignals > 1 ? data.amountTramSignals : '';
-    return Text('$amount ${context.l10n.p_train_journey_table_tram_area}');
+    return Text('$amount ${context.l10n.p_journey_table_tram_area}');
   }
 
   Widget _kilometreText(BuildContext context) {
     final startKilometre = data.kilometre[0].toStringAsFixed(1);
     final endKilometre = data.endKilometre.toStringAsFixed(1);
     return Text(
-      '${context.l10n.p_train_journey_table_kilometre_label} $startKilometre-$endKilometre',
+      '${context.l10n.p_journey_table_kilometre_label} $startKilometre-$endKilometre',
       overflow: TextOverflow.ellipsis,
     );
   }

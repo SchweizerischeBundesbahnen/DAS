@@ -124,7 +124,7 @@ Future<void> selectBreakSeries(WidgetTester tester, {required String breakSeries
   await tapElement(tester, find.byKey(JourneyTable.breakingSeriesHeaderKey));
 
   // Check if the bottom sheet is opened
-  expect(find.text(l10n.p_train_journey_break_series), findsOneWidget);
+  expect(find.text(l10n.p_journey_break_series), findsOneWidget);
   await tapElement(tester, find.text(breakSeries));
 }
 

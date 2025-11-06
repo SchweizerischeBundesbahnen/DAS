@@ -12,8 +12,8 @@ void main() {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T2');
 
-    final kilometreLabel = l10n.p_train_journey_table_kilometre_label;
-    final timeLabel = l10n.p_train_journey_table_time_label_planned;
+    final kilometreLabel = l10n.p_journey_table_kilometre_label;
+    final timeLabel = l10n.p_journey_table_time_label_planned;
 
     // columns should be visible when modal is closed
     expect(findDASTableColumnByText(kilometreLabel), findsOne);

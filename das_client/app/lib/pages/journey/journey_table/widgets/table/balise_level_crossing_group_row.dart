@@ -37,13 +37,13 @@ class BaliseLevelCrossingGroupRow extends CellRowBuilder<BaliseLevelCrossingGrou
 
     if (firstBalise == null) {
       return DASTableCell(
-        child: Text('$_levelCrossingCount ${context.l10n.p_train_journey_table_level_crossing}'),
+        child: Text('$_levelCrossingCount ${context.l10n.p_journey_table_level_crossing}'),
         alignment: Alignment.centerLeft,
       );
     } else if (shownLevelCrossingsCount > 1) {
       return DASTableCell(
         child: Text(
-          '($shownLevelCrossingsCount ${context.l10n.p_train_journey_table_level_crossing})',
+          '($shownLevelCrossingsCount ${context.l10n.p_journey_table_level_crossing})',
         ),
         alignment: Alignment.centerRight,
       );
@@ -51,7 +51,7 @@ class BaliseLevelCrossingGroupRow extends CellRowBuilder<BaliseLevelCrossingGrou
       return DASTableCell(
         child: Row(
           children: [
-            Text(_levelCrossingCount > 0 ? context.l10n.p_train_journey_table_level_crossing : ''),
+            Text(_levelCrossingCount > 0 ? context.l10n.p_journey_table_level_crossing : ''),
             Spacer(),
             Text(_baliseCount > 1 ? _baliseCount.toString() : ''),
           ],

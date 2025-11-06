@@ -383,7 +383,7 @@ class JourneyTable extends StatelessWidget {
             (!userSettings.showDecisiveGradient && !journeyViewModel.showDecisiveGradientValue))
           DASTableColumn(
             id: ColumnDefinition.kilometre.index,
-            child: Text(context.l10n.p_train_journey_table_kilometre_label),
+            child: Text(context.l10n.p_journey_table_kilometre_label),
             width: 64.0,
             onTap: !userSettings.showDecisiveGradient ? () => journeyViewModel.toggleKmDecisiveGradient() : null,
           ),
@@ -409,8 +409,8 @@ class JourneyTable extends StatelessWidget {
             stream: timeViewModel.showOperationalTime,
             builder: (context, showCalcTimeSnap) => Text(
               showCalcTimeSnap.data ?? false
-                  ? context.l10n.p_train_journey_table_time_label_new
-                  : context.l10n.p_train_journey_table_time_label_planned,
+                  ? context.l10n.p_journey_table_time_label_new
+                  : context.l10n.p_journey_table_time_label_planned,
             ),
           ),
           width: 100.0,
@@ -425,7 +425,7 @@ class JourneyTable extends StatelessWidget {
       DASTableColumn(id: ColumnDefinition.bracketStation.index, width: 0.0), // bracket station column
       DASTableColumn(
         id: ColumnDefinition.informationCell.index,
-        child: Text(context.l10n.p_train_journey_table_journey_information_label),
+        child: Text(context.l10n.p_journey_table_journey_information_label),
         expanded: true,
         alignment: Alignment.centerLeft,
       ),
@@ -433,7 +433,7 @@ class JourneyTable extends StatelessWidget {
       DASTableColumn(id: ColumnDefinition.icons3.index, width: 48.0), // icons column
       DASTableColumn(
         id: ColumnDefinition.localSpeed.index,
-        child: Text(context.l10n.p_train_journey_table_graduated_speed_label),
+        child: Text(context.l10n.p_journey_table_graduated_speed_label),
         width: 100.0,
         border: BorderDirectional(
           bottom: BorderSide(color: ThemeUtil.getDASTableBorderColor(context), width: 1.0),
@@ -449,7 +449,7 @@ class JourneyTable extends StatelessWidget {
       ),
       DASTableColumn(
         id: ColumnDefinition.advisedSpeed.index,
-        child: Text(context.l10n.p_train_journey_table_advised_speed_label),
+        child: Text(context.l10n.p_journey_table_advised_speed_label),
         width: 62.0,
       ),
     ];
@@ -475,7 +475,7 @@ class JourneyTable extends StatelessWidget {
 
     final selectedBreakSeries = await showSBBModalSheet<BreakSeries>(
       context: context,
-      title: context.l10n.p_train_journey_break_series,
+      title: context.l10n.p_journey_break_series,
       constraints: BoxConstraints(),
       child: BreakSeriesSelection(
         availableBreakSeries: metadata?.availableBreakSeries ?? {},

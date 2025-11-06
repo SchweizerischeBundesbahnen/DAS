@@ -14,7 +14,7 @@ void main() {
     await loadJourney(tester, trainNumber: 'T4');
 
     // test if planned time header label is in table (no operational times)
-    final expectedPlannedHeaderLabel = l10n.p_train_journey_table_time_label_planned;
+    final expectedPlannedHeaderLabel = l10n.p_journey_table_time_label_planned;
     final timeHeader = find.text(expectedPlannedHeaderLabel);
     expect(timeHeader, findsOneWidget);
     await tester.pumpAndSettle(const Duration(seconds: 1));
@@ -66,7 +66,7 @@ void main() {
     await loadJourney(tester, trainNumber: 'T16');
 
     // test if operational time header label is in table
-    final expectedCalculatedHeaderLabel = l10n.p_train_journey_table_time_label_new;
+    final expectedCalculatedHeaderLabel = l10n.p_journey_table_time_label_new;
     final timeHeader = find.text(expectedCalculatedHeaderLabel);
     expect(timeHeader, findsOneWidget);
 
@@ -101,7 +101,7 @@ void main() {
     await tapElement(tester, timeHeader);
 
     // test if planned time header label is in table
-    final expectedPlannedHeaderLabel = l10n.p_train_journey_table_time_label_planned;
+    final expectedPlannedHeaderLabel = l10n.p_journey_table_time_label_planned;
     expect(find.text(expectedPlannedHeaderLabel), findsOneWidget);
     // test if time switched (aeroport)
     final geneveAerPlanned = 'Genève-Aéroport';
@@ -165,7 +165,7 @@ void main() {
       await loadJourney(tester, trainNumber: 'T9999');
 
       // test if operational time header label is in table
-      final expectedCalculatedHeaderLabel = l10n.p_train_journey_table_time_label_new;
+      final expectedCalculatedHeaderLabel = l10n.p_journey_table_time_label_new;
       final timeHeader = find.text(expectedCalculatedHeaderLabel);
       expect(timeHeader, findsOneWidget);
 
@@ -173,7 +173,7 @@ void main() {
       await tapElement(tester, timeHeader);
 
       // test if planned time header label is in table
-      final expectedPlannedHeaderLabel = l10n.p_train_journey_table_time_label_planned;
+      final expectedPlannedHeaderLabel = l10n.p_journey_table_time_label_planned;
       expect(find.text(expectedPlannedHeaderLabel), findsOneWidget);
 
       final waitTime = DI.get<TimeConstants>().arrivalDepartureOperationalResetSeconds + 1;

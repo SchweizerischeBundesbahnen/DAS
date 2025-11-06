@@ -101,7 +101,7 @@ class ReducedJourneyTable extends StatelessWidget {
       DASTableColumn(
         id: ColumnDefinition.time.index,
         width: 100.0,
-        child: Text(context.l10n.p_train_journey_table_time_label_planned),
+        child: Text(context.l10n.p_journey_table_time_label_planned),
       ),
       DASTableColumn(id: ColumnDefinition.route.index, width: 48.0), // route column
       DASTableColumn(width: 10.0), // spacer column so bracketStation does not overlap
@@ -110,7 +110,7 @@ class ReducedJourneyTable extends StatelessWidget {
         id: ColumnDefinition.informationCell.index,
         expanded: true,
         alignment: Alignment.centerLeft,
-        child: Text(context.l10n.p_train_journey_table_journey_information_label),
+        child: Text(context.l10n.p_journey_table_journey_information_label),
       ),
       DASTableColumn(id: ColumnDefinition.icons2.index, width: 48.0), // icons column
       DASTableColumn(
@@ -124,7 +124,7 @@ class ReducedJourneyTable extends StatelessWidget {
       DASTableColumn(
         id: ColumnDefinition.communicationNetwork.index,
         width: 80.0,
-        child: Text(context.l10n.p_train_journey_table_communication_network),
+        child: Text(context.l10n.p_journey_table_communication_network),
       ),
     ];
   }

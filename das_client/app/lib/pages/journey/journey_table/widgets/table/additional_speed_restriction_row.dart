@@ -24,7 +24,7 @@ class AdditionalSpeedRestrictionRow extends CellRowBuilder<AdditionalSpeedRestri
 
   @override
   DASTableCell informationCell(BuildContext context) {
-    final kilometreLabel = context.l10n.p_train_journey_table_kilometre_label;
+    final kilometreLabel = context.l10n.p_journey_table_kilometre_label;
     final fromKilometre = data.kmFrom.toStringAsFixed(3);
     final endKilometre = data.kmTo.toStringAsFixed(3);
     return DASTableCell(

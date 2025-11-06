@@ -23,7 +23,7 @@ class ReducedCommunicationNetworkChangeRow extends CellRowBuilder<CommunicationN
     return DASTableCell(
       alignment: Alignment.centerLeft,
       child: Text(
-        '${context.l10n.p_train_journey_table_kilometre_label} ${data.kilometre[0].toStringAsFixed(1)}',
+        '${context.l10n.p_journey_table_kilometre_label} ${data.kilometre[0].toStringAsFixed(1)}',
         style: DASTextStyles.largeRoman,
       ),
     );

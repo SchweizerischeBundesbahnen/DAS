@@ -20,8 +20,8 @@ class StartPauseButton extends StatelessWidget {
       return HeaderIconButton(
         key: automaticAdvancementActive ? pauseButtonKey : startButtonKey,
         label: automaticAdvancementActive
-            ? context.l10n.p_train_journey_header_button_pause
-            : context.l10n.p_train_journey_header_button_start,
+            ? context.l10n.p_journey_header_button_pause
+            : context.l10n.p_journey_header_button_start,
         icon: automaticAdvancementActive ? SBBIcons.pause_small : SBBIcons.play_small,
         onPressed: () {
           final newValue = !automaticAdvancementActive;

@@ -173,7 +173,7 @@ Future<void> main() async {
       expect(currentDisplayTurnedOn, true);
 
       // find pause button and press it
-      final pauseButton = find.text(l10n.p_train_journey_header_button_pause);
+      final pauseButton = find.text(l10n.p_journey_header_button_pause);
       expect(pauseButton, findsOneWidget);
 
       await tapElement(tester, pauseButton);
@@ -194,11 +194,11 @@ Future<void> main() async {
       await loadJourney(tester, trainNumber: 'T9999');
 
       final date = Format.dateWithAbbreviatedDay(DateTime.now(), appLocale());
-      final appbarText = '${l10n.p_train_journey_appbar_text} - $date';
+      final appbarText = '${l10n.p_journey_appbar_text} - $date';
 
       expect(find.text(appbarText).hitTestable(), findsNothing);
 
-      final pauseButton = find.text(l10n.p_train_journey_header_button_pause);
+      final pauseButton = find.text(l10n.p_journey_header_button_pause);
       expect(pauseButton, findsOneWidget);
 
       await tapElement(tester, pauseButton);
@@ -220,8 +220,8 @@ Future<void> main() async {
       final brightness = SBBBaseStyle.of(context).brightness;
 
       final searchedButtonLabel = brightness != Brightness.dark
-          ? l10n.p_train_journey_header_button_dark_theme
-          : l10n.p_train_journey_header_button_light_theme;
+          ? l10n.p_journey_header_button_dark_theme
+          : l10n.p_journey_header_button_light_theme;
 
       final themeSwitchButton = find.descendant(
         of: header,
