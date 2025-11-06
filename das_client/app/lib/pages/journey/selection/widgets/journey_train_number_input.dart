@@ -33,7 +33,7 @@ class _JourneyTrainNumberInputState extends State<JourneyTrainNumberInput> {
           final Selecting _ || final Error _ => _buildTrainNumberInput(
             context,
             onChanged: (value) => viewModel.updateTrainNumber(value),
-            onSubmitted: (_) => viewModel.loadTrainJourney(),
+            onSubmitted: (_) => viewModel.loadJourney(),
           ),
           _ => _buildTrainNumberInput(context),
         };
