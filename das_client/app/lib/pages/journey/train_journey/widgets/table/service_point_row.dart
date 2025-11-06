@@ -10,6 +10,7 @@ import 'package:app/pages/journey/train_journey/widgets/table/cells/show_speed_b
 import 'package:app/pages/journey/train_journey/widgets/table/cells/time_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/track_equipment_cell_body.dart';
 import 'package:app/theme/theme_util.dart';
+import 'package:app/util/animation.dart';
 import 'package:app/util/text_util.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:app/widgets/das_text_styles.dart';
@@ -249,33 +250,40 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
   }
 
   Widget _informationCellTitle(BuildContext context) {
-    final isModalOpen = context.read<DetailModalViewModel>().isModalOpenValue;
-    final servicePointName = _buildServicePointName(context, isModalOpen);
-    final color = _isNextStop && highlightNextStop ? SBBColors.white : null;
-    return DefaultTextStyle.merge(
-      style: data.isStation
-          ? DASTextStyles.xLargeBold.copyWith(color: color)
-          : DASTextStyles.xLargeLight.copyWith(fontStyle: FontStyle.italic, color: color),
-      child: Row(
-        children: [
-          Expanded(
-            child: Text(
-              servicePointName,
-              textAlign: TextAlign.start,
-              overflow: TextOverflow.ellipsis,
+    final viewModel = context.read<DetailModalViewModel>();
+    return StreamBuilder<bool>(
+      stream: viewModel.isModalOpen,
+      initialData: viewModel.isModalOpenValue,
+      builder: (context, asyncSnapshot) {
+        final isModalOpen = asyncSnapshot.requireData;
+        final servicePointName = data.betweenBrackets ? '(${data.name})' : data.name;
+        final color = _isNextStop && highlightNextStop ? SBBColors.white : null;
+        return DefaultTextStyle.merge(
+          style: data.isStation
+              ? DASTextStyles.xLargeBold.copyWith(color: color)
+              : DASTextStyles.xLargeLight.copyWith(fontStyle: FontStyle.italic, color: color),
+          child: AnimatedSwitcher(
+            duration: DASAnimation.longDuration,
+            child: Row(
+              mainAxisAlignment: isModalOpen ? MainAxisAlignment.spaceBetween : MainAxisAlignment.start,
+              children: [
+                Flexible(
+                  child: Text(
+                    servicePointName,
+                    textAlign: TextAlign.start,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                if (data.trackGroup != null) ...[
+                  if (!isModalOpen) SizedBox(width: sbbDefaultSpacing),
+                  Text(data.trackGroup!),
+                ],
+              ],
             ),
           ),
-          if (isModalOpen && data.trackGroup != null) Text(data.trackGroup!),
-        ],
-      ),
+        );
+      },
     );
-  }
-
-  String _buildServicePointName(BuildContext context, bool isModalOpen) {
-    String result = data.name;
-    if (data.betweenBrackets) result = '($result)';
-    if (!isModalOpen && data.trackGroup != null) result = '$result ${data.trackGroup}';
-    return result;
   }
 
   List<Widget> _stationProperties(BuildContext context) {
