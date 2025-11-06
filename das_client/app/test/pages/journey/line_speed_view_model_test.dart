@@ -1,9 +1,9 @@
 import 'dart:collection';
 
+import 'package:app/pages/journey/journey_table/widgets/table/config/journey_settings.dart';
+import 'package:app/pages/journey/journey_table_view_model.dart';
 import 'package:app/pages/journey/line_speed_view_model.dart';
 import 'package:app/pages/journey/resolved_train_series_speed.dart';
-import 'package:app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
-import 'package:app/pages/journey/train_journey_view_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -13,13 +13,13 @@ import 'package:sfera/component.dart';
 import 'line_speed_view_model_test.mocks.dart';
 
 @GenerateNiceMocks([
-  MockSpec<TrainJourneyViewModel>(),
+  MockSpec<JourneyTableViewModel>(),
 ])
 void main() {
   late LineSpeedViewModel testee;
-  late MockTrainJourneyViewModel mockTrainJourneyViewModel;
+  late MockJourneyTableViewModel mockJourneyTableViewModel;
   late BehaviorSubject<Journey?> journeySubject;
-  TrainJourneySettings trainJourneySettings = TrainJourneySettings();
+  var journeySettings = JourneySettings();
 
   final journey = Journey(
     metadata: Metadata(
@@ -68,14 +68,14 @@ void main() {
   );
 
   setUp(() {
-    trainJourneySettings = TrainJourneySettings();
-    mockTrainJourneyViewModel = MockTrainJourneyViewModel();
+    journeySettings = JourneySettings();
+    mockJourneyTableViewModel = MockJourneyTableViewModel();
     journeySubject = BehaviorSubject<Journey?>();
     journeySubject.add(journey);
-    when(mockTrainJourneyViewModel.journey).thenAnswer((_) => journeySubject.stream);
-    when(mockTrainJourneyViewModel.settingsValue).thenAnswer((_) => trainJourneySettings);
+    when(mockJourneyTableViewModel.journey).thenAnswer((_) => journeySubject.stream);
+    when(mockJourneyTableViewModel.settingsValue).thenAnswer((_) => journeySettings);
 
-    testee = LineSpeedViewModel(trainJourneyViewModel: mockTrainJourneyViewModel);
+    testee = LineSpeedViewModel(journeyTableViewModel: mockJourneyTableViewModel);
   });
 
   tearDown(() {
@@ -117,7 +117,7 @@ void main() {
   });
 
   test('test uses breakSeries from settings', () async {
-    trainJourneySettings = TrainJourneySettings(
+    journeySettings = JourneySettings(
       selectedBreakSeries: BreakSeries(trainSeries: TrainSeries.A, breakSeries: 100),
     );
 
@@ -149,7 +149,7 @@ void main() {
   });
 
   test('test return previous over multiple last entries', () async {
-    trainJourneySettings = TrainJourneySettings(
+    journeySettings = JourneySettings(
       selectedBreakSeries: BreakSeries(trainSeries: TrainSeries.A, breakSeries: 100),
     );
 
@@ -167,7 +167,7 @@ void main() {
   });
 
   test('test return none if not found', () async {
-    trainJourneySettings = TrainJourneySettings(
+    journeySettings = JourneySettings(
       selectedBreakSeries: BreakSeries(trainSeries: TrainSeries.N, breakSeries: 100),
     );
 

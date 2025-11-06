@@ -1,8 +1,8 @@
-import 'package:app/pages/journey/train_journey/widgets/header/header.dart';
-import 'package:app/pages/journey/train_journey/widgets/header/journey_identifier.dart';
-import 'package:app/pages/journey/train_journey/widgets/header/journey_search_overlay.dart';
-import 'package:app/pages/journey/train_journey/widgets/header/start_pause_button.dart';
-import 'package:app/pages/journey/train_journey/widgets/journey_navigation_buttons.dart';
+import 'package:app/pages/journey/journey_table/widgets/header/header.dart';
+import 'package:app/pages/journey/journey_table/widgets/header/journey_identifier.dart';
+import 'package:app/pages/journey/journey_table/widgets/header/journey_search_overlay.dart';
+import 'package:app/pages/journey/journey_table/widgets/header/start_pause_button.dart';
+import 'package:app/pages/journey/journey_table/widgets/journey_navigation_buttons.dart';
 import 'package:app/util/format.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -15,7 +15,7 @@ void main() {
   group('Journey search overlay tests', () {
     testWidgets('overlay can be opened and dismissed', (tester) async {
       await prepareAndStartApp(tester);
-      await loadTrainJourney(tester, trainNumber: 'T1');
+      await loadJourney(tester, trainNumber: 'T1');
 
       // closed by default - should show journeySearch icon with key
       expect(find.byKey(JourneySearchOverlay.journeySearchWidgetKey), findsOneWidget);
@@ -39,7 +39,7 @@ void main() {
 
     testWidgets('input fields have defaults and validation works', (tester) async {
       await prepareAndStartApp(tester);
-      await loadTrainJourney(tester, trainNumber: 'T1');
+      await loadJourney(tester, trainNumber: 'T1');
       final journeySearchOverlay = find.byType(JourneySearchOverlay);
 
       // open
@@ -74,7 +74,7 @@ void main() {
 
     testWidgets('loading another train journey and displaying navigation buttons work', (tester) async {
       await prepareAndStartApp(tester);
-      await loadTrainJourney(tester, trainNumber: 'T1');
+      await loadJourney(tester, trainNumber: 'T1');
       final journeySearchOverlay = find.byType(JourneySearchOverlay);
 
       // open

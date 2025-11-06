@@ -32,7 +32,7 @@ class JourneySelectionViewModel {
 
   JourneySelectionModel get modelValue => _state.value;
 
-  Future<void> loadTrainJourney() async {
+  Future<void> loadJourney() async {
     final currentState = _state.value;
     switch (currentState) {
       case Loading() || Loaded() || Error():
