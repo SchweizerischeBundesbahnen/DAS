@@ -662,7 +662,7 @@ void main() {
 
     testWidgets('whenServicePointHasTrackGroup_isDisplayedCorrectlyDependingOnDetailModal', (tester) async {
       await prepareAndStartApp(tester);
-      await loadTrainJourney(tester, trainNumber: 'T6M');
+      await loadJourney(tester, trainNumber: 'T6M');
 
       final hardbrueckeRow = findDASTableRowByText('Hardbrücke');
       final trackGroupWidget = find.descendant(of: hardbrueckeRow, matching: find.text('3'));
