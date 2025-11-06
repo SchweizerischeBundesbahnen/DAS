@@ -61,7 +61,7 @@ class ReplacementSeriesNotification extends StatelessWidget {
         model.segment.end.name,
       ),
       text: context.l10n.w_replacement_series_notification_available_text(
-        model.segment.replacement.toString(),
+        model.segment.replacement?.name ?? '',
       ),
     );
   }
@@ -72,7 +72,7 @@ class ReplacementSeriesNotification extends StatelessWidget {
       style: NotificationBoxStyle.warning,
       title: context.l10n.w_replacement_series_notification_original_title(
         model.segment.end.name,
-        model.segment.original.toString(),
+        model.segment.original.name,
       ),
     );
   }

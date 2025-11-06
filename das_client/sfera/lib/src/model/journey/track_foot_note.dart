@@ -10,4 +10,9 @@ class TrackFootNote extends BaseFootNote {
 
   @override
   OrderPriority get orderPriority => OrderPriority.trackFootNote;
+
+  @override
+  String toString() {
+    return 'TrackFootNote{order: $order, footNote: $footNote}';
+  }
 }

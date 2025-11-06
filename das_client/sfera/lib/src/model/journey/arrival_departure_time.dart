@@ -46,12 +46,12 @@ class ArrivalDepartureTime {
 
   @override
   String toString() {
-    return 'ArrivalDepartureTime('
-        'operationalDepartureTime: $operationalDepartureTime'
-        ', plannedDepartureTime: $plannedDepartureTime'
-        ', operationalArrivalTime: $operationalArrivalTime'
-        ', plannedArrivalTime: $plannedArrivalTime'
-        ')';
+    return 'ArrivalDepartureTime{'
+        'operationalDepartureTime: $operationalDepartureTime, '
+        'plannedDepartureTime: $plannedDepartureTime, '
+        'operationalArrivalTime: $operationalArrivalTime, '
+        'plannedArrivalTime: $plannedArrivalTime'
+        '}';
   }
 
   @override

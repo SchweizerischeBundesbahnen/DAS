@@ -5,11 +5,9 @@ class Whistle extends JourneyPoint {
   const Whistle({required super.order, required super.kilometre}) : super(type: Datatype.whistle);
 
   @override
-  String toString() =>
-      'Whistle('
-      'order: $order'
-      ', kilometre: $kilometre'
-      ')';
+  String toString() {
+    return 'Whistle{order: $order, kilometre: $kilometre}';
+  }
 
   @override
   bool operator ==(Object other) =>

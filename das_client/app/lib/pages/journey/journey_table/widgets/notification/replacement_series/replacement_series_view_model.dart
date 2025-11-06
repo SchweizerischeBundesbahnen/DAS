@@ -64,7 +64,7 @@ class ReplacementSeriesViewModel {
         if (currentModelValue is ReplacementSeriesAvailable) {
           if (settings.selectedBreakSeries == currentModelValue.segment.replacement) {
             _rxModel.add(ReplacementSeriesModel.selected(segment: currentModelValue.segment));
-            _log.info('User selected replacement series ${currentModelValue.segment.replacement.toString()}');
+            _log.info('User selected replacement series ${currentModelValue.segment.replacement?.name}');
           } else if (settings.selectedBreakSeries != currentModelValue.segment.original) {
             _rxModel.add(null);
             _log.info('User selected a different break series, clearing replacement series notification');
@@ -91,7 +91,7 @@ class ReplacementSeriesViewModel {
     if (segmentWithoutReplacement != null) {
       _rxModel.add(ReplacementSeriesModel.none(segment: segmentWithoutReplacement));
       _log.info(
-        'Found illegal speed segment for ${segmentWithoutReplacement.original.toString()} without replacement series starting from ${segmentWithoutReplacement.start.name}',
+        'Found illegal speed segment for ${segmentWithoutReplacement.original.name} without replacement series starting from ${segmentWithoutReplacement.start.name}',
       );
       return;
     } else if (currentModelValue is NoReplacementSeries) {
@@ -107,14 +107,14 @@ class ReplacementSeriesViewModel {
       // Show notification for replacement series
       _rxModel.add(ReplacementSeriesModel.replacement(segment: activeSegment));
       _log.info(
-        'Suggesting replacement series ${activeSegment.replacement.toString()} from ${activeSegment.start.name} to ${activeSegment.end.name}',
+        'Suggesting replacement series ${activeSegment.replacement?.name} from ${activeSegment.start.name} to ${activeSegment.end.name}',
       );
     } else if (currentModelValue is ReplacementSeriesSelected &&
         currentPosition.order >= currentModelValue.segment.end.order) {
       // Show notification that user reached the end of the segment
       _rxModel.add(ReplacementSeriesModel.original(segment: currentModelValue.segment));
       _log.info(
-        'User reached end of replacement segment, suggesting original series ${currentModelValue.segment.original.toString()}',
+        'User reached end of replacement segment, suggesting original series ${currentModelValue.segment.original.name}',
       );
     } else if (currentModelValue is ReplacementSeriesAvailable &&
         currentPosition.order >= currentModelValue.segment.end.order) {

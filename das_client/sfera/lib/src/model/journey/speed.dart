@@ -55,7 +55,7 @@ class IncomingOutgoingSpeed extends Speed {
 
   @override
   String toString() {
-    return 'IncomingOutgoingSpeed(incoming: $incoming, outgoing: $outgoing)';
+    return 'IncomingOutgoingSpeed{incoming: $incoming, outgoing: $outgoing}';
   }
 
   @override
@@ -83,7 +83,7 @@ class GraduatedSpeed extends Speed {
 
   @override
   String toString() {
-    return 'GraduatedSpeed(speeds: $speeds)';
+    return 'GraduatedSpeed{speeds: $speeds}';
   }
 
   @override
@@ -132,7 +132,7 @@ class SingleSpeed extends Speed {
 
   @override
   String toString() {
-    return 'SingleSpeed(value: $value, isSquared: $isSquared, isCircled: $isCircled)';
+    return 'SingleSpeed{value: $value, isSquared: $isSquared, isCircled: $isCircled}';
   }
 
   @override

@@ -83,7 +83,7 @@ class _BreakSeriesSelectionState extends State<BreakSeriesSelection> {
             (index) {
               final breakSerie = breakSeries[index];
               return BreakSeriesSelectionButton(
-                label: breakSerie.toString(),
+                label: breakSerie.name,
                 currentlySelected: breakSerie == selectedBreakSeries,
                 onTap: () {
                   setState(() {

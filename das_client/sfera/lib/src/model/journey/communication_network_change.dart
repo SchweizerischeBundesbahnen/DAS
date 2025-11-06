@@ -26,8 +26,9 @@ class CommunicationNetworkChange extends JourneyPoint {
   int get hashCode => Object.hash(type, order, communicationNetworkType, Object.hashAll(kilometre));
 
   @override
-  String toString() =>
-      'CommunicationNetworkChange(communicationNetworkType: $communicationNetworkType, order: $order, kilometre: $kilometre)';
+  String toString() {
+    return 'CommunicationNetworkChange{order: $order, kilometre: $kilometre, communicationNetworkType: $communicationNetworkType}';
+  }
 }
 
 enum CommunicationNetworkType { gsmR, gsmP, sim }

@@ -27,13 +27,12 @@ class DetailTabGraduatedSpeeds extends StatelessWidget {
 
         if (breakSeries == null || relevantSpeeds.isEmpty) return _emptyInformation(context);
 
-        final breakSeriesLabel = '${breakSeries.trainSeries.name}${breakSeries.breakSeries}';
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
-              '${context.l10n.w_service_point_modal_graduated_speed_break_series_title}: $breakSeriesLabel',
+              '${context.l10n.w_service_point_modal_graduated_speed_break_series_title}: ${breakSeries.name}',
               style: DASTextStyles.smallBold,
             ),
             Expanded(child: _buildSpeedInfoList(context, relevantSpeeds)),

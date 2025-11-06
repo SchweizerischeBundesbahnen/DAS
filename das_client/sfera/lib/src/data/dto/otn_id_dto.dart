@@ -45,7 +45,7 @@ class OtnIdDto extends SferaXmlElementDto {
   }
 
   @override
-  toString() {
-    return 'OtnId(company: $company, operationalTrainNumber: $operationalTrainNumber, startDate: $startDate, additionalTrainNumber: $additionalTrainNumber)';
+  String toString() {
+    return 'OtnIdDto{company: $company, operationalTrainNumber: $operationalTrainNumber, startDate: $startDate, additionalTrainNumber: $additionalTrainNumber}';
   }
 }

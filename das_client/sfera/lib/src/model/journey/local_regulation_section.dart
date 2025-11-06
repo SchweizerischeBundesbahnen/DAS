@@ -11,4 +11,9 @@ class LocalRegulationSection {
 
   final LocalizedString title;
   final LocalizedString content;
+
+  @override
+  String toString() {
+    return 'LocalRegulationSection{title: $title, content: $content}';
+  }
 }

@@ -109,21 +109,24 @@ class ServicePoint extends JourneyPoint {
 
   @override
   String toString() {
-    return 'ServicePoint('
-        'order: $order'
-        ', kilometre: $kilometre'
-        ', name: $name'
-        ', mandatoryStop: $mandatoryStop'
-        ', isStop: $isStop'
-        ', isStation: $isStation'
-        ', isAdditional: $isAdditional'
-        ', betweenBrackets: $betweenBrackets'
-        ', bracketMainStation: $bracketMainStation'
-        ', localSpeeds: $localSpeeds'
-        ', arrivalDepartureTime: $arrivalDepartureTime'
-        ', stationSign1: $stationSign1'
-        ', stationSign2: $stationSign2'
-        ', properties: $properties'
-        ')';
+    return 'ServicePoint{'
+        'order: $order, '
+        'kilometre: $kilometre, '
+        'name: $name, '
+        'mandatoryStop: $mandatoryStop, '
+        'isStop: $isStop, '
+        'isStation: $isStation, '
+        'isAdditional: $isAdditional, '
+        'betweenBrackets: $betweenBrackets, '
+        'bracketMainStation: $bracketMainStation, '
+        'graduatedSpeedInfo: $graduatedSpeedInfo, '
+        'decisiveGradient: $decisiveGradient, '
+        'localSpeeds: $localSpeeds, '
+        'arrivalDepartureTime: $arrivalDepartureTime, '
+        'stationSign1: $stationSign1, '
+        'stationSign2: $stationSign2, '
+        'properties: $properties, '
+        'localRegulationSections: $localRegulationSections'
+        '}';
   }
 }
