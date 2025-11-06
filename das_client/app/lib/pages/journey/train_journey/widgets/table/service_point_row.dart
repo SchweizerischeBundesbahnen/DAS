@@ -1,5 +1,6 @@
 import 'package:app/extension/station_sign_extension.dart';
 import 'package:app/pages/journey/train_journey/journey_position/journey_position_model.dart';
+import 'package:app/pages/journey/train_journey/widgets/detail_modal/detail_modal_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_tab.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/arrival_departure_time/arrival_departure_time_view_model.dart';
@@ -67,8 +68,6 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
 
   @override
   DASTableCell informationCell(BuildContext context) {
-    final servicePointName = data.betweenBrackets ? '(${data.name})' : data.name;
-    final color = _isNextStop && highlightNextStop ? SBBColors.white : null;
     return DASTableCell(
       onTap: () {
         final viewModel = context.read<ServicePointModalViewModel>();
@@ -79,14 +78,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            servicePointName,
-            textAlign: TextAlign.start,
-            overflow: TextOverflow.ellipsis,
-            style: data.isStation
-                ? DASTextStyles.xLargeBold.copyWith(color: color)
-                : DASTextStyles.xLargeLight.copyWith(fontStyle: FontStyle.italic, color: color),
-          ),
+          _informationCellTitle(context),
           ..._stationProperties(context),
         ],
       ),
@@ -254,6 +246,36 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
   void _openGraduatedSpeedDetails(BuildContext context) {
     final viewModel = context.read<ServicePointModalViewModel>();
     viewModel.open(context, tab: ServicePointModalTab.graduatedSpeeds, servicePoint: data);
+  }
+
+  Widget _informationCellTitle(BuildContext context) {
+    final isModalOpen = context.read<DetailModalViewModel>().isModalOpenValue;
+    final servicePointName = _buildServicePointName(context, isModalOpen);
+    final color = _isNextStop && highlightNextStop ? SBBColors.white : null;
+    return DefaultTextStyle.merge(
+      style: data.isStation
+          ? DASTextStyles.xLargeBold.copyWith(color: color)
+          : DASTextStyles.xLargeLight.copyWith(fontStyle: FontStyle.italic, color: color),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              servicePointName,
+              textAlign: TextAlign.start,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          if (isModalOpen && data.trackGroup != null) Text(data.trackGroup!),
+        ],
+      ),
+    );
+  }
+
+  String _buildServicePointName(BuildContext context, bool isModalOpen) {
+    String result = data.name;
+    if (data.betweenBrackets) result = '($result)';
+    if (!isModalOpen && data.trackGroup != null) result = '$result ${data.trackGroup}';
+    return result;
   }
 
   List<Widget> _stationProperties(BuildContext context) {
