@@ -119,7 +119,7 @@ void main() {
 
     testWidgets('test if train journey stays loaded after navigation', (tester) async {
       await prepareAndStartApp(tester);
-      await loadTrainJourney(tester, trainNumber: 'T6');
+      await loadJourney(tester, trainNumber: 'T6');
 
       // check first train station
       expect(findDASTableRowByText('Zürich HB'), findsOneWidget);
@@ -141,7 +141,7 @@ void main() {
 
     testWidgets('test journey settings are not reset when navigating ', (tester) async {
       await prepareAndStartApp(tester);
-      await loadTrainJourney(tester, trainNumber: 'T5');
+      await loadJourney(tester, trainNumber: 'T5');
       await stopAutomaticAdvancement(tester);
 
       final selectedBreakSeries = 'D30';

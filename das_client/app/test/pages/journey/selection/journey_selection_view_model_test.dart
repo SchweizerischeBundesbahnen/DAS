@@ -142,15 +142,15 @@ void main() {
     expect(selecting.railwayUndertaking, newRU);
   });
 
-  test('loadTrainJourney_whenIncomplete_thenDoesNotCallOnJourneySelected', () {
+  test('loadJourney_whenIncomplete_thenDoesNotCallOnJourneySelected', () {
     // ACT
-    testee.loadTrainJourney();
+    testee.loadJourney();
 
     // EXPECT
     expect(callRegister.isEmpty, isTrue);
   });
 
-  test('loadTrainJourney_whenComplete_thenAddsTrainIdentificationToRegister', () {
+  test('loadJourney_whenComplete_thenAddsTrainIdentificationToRegister', () {
     // ARRANGE
     testee.updateTrainNumber('123');
     final aTrainId = TrainIdentification(
@@ -160,14 +160,14 @@ void main() {
     );
 
     // ACT
-    testee.loadTrainJourney();
+    testee.loadJourney();
 
     // EXPECT
     expect(callRegister, hasLength(1));
     expect(callRegister.first, equals(aTrainId));
   });
 
-  test('loadTrainJourney_whenCompleteAndWhitespace_thenAddsCleanedTrainIdentificationToRegister', () {
+  test('loadJourney_whenCompleteAndWhitespace_thenAddsCleanedTrainIdentificationToRegister', () {
     // ARRANGE
     testee.updateTrainNumber('  123  ');
     final aTrainId = TrainIdentification(
@@ -177,14 +177,14 @@ void main() {
     );
 
     // ACT
-    testee.loadTrainJourney();
+    testee.loadJourney();
 
     // EXPECT
     expect(callRegister, hasLength(1));
     expect(callRegister.first, equals(aTrainId));
   });
 
-  test('loadTrainJourney_whenLowercase_thenAddsTrainIdentificationWithUppercase', () {
+  test('loadJourney_whenLowercase_thenAddsTrainIdentificationWithUppercase', () {
     // ARRANGE
     testee.updateTrainNumber('lowercase123a');
     final aTrainId = TrainIdentification(
@@ -194,7 +194,7 @@ void main() {
     );
 
     // ACT
-    testee.loadTrainJourney();
+    testee.loadJourney();
 
     // EXPECT
     expect(callRegister, hasLength(1));

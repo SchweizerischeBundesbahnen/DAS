@@ -1,23 +1,23 @@
 import 'dart:async';
 
 import 'package:app/pages/journey/resolved_train_series_speed.dart';
-import 'package:app/pages/journey/train_journey_view_model.dart';
+import 'package:app/pages/journey/journey_table_view_model.dart';
 import 'package:sfera/component.dart';
 
 class LineSpeedViewModel {
   LineSpeedViewModel({
-    required TrainJourneyViewModel trainJourneyViewModel,
-  }) : _trainJourneyViewModel = trainJourneyViewModel {
+    required JourneyTableViewModel journeyTableViewModel,
+  }) : _journeyTableViewModel = journeyTableViewModel {
     _init();
   }
 
-  final TrainJourneyViewModel _trainJourneyViewModel;
+  final JourneyTableViewModel _journeyTableViewModel;
   Metadata? _lastMetadata;
 
   StreamSubscription? _journeySubscription;
 
   void _init() {
-    _journeySubscription = _trainJourneyViewModel.journey.listen((journey) {
+    _journeySubscription = _journeyTableViewModel.journey.listen((journey) {
       _lastMetadata = journey?.metadata;
     });
   }
@@ -26,7 +26,7 @@ class LineSpeedViewModel {
     final metadata = _lastMetadata;
     if (metadata == null) return ResolvedTrainSeriesSpeed.none();
 
-    final settings = _trainJourneyViewModel.settingsValue;
+    final settings = _journeyTableViewModel.settingsValue;
     final breakSeries = settings.resolvedBreakSeries(metadata);
 
     var trainSeriesSpeeds = metadata.lineSpeeds[order];

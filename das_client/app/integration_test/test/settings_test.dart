@@ -8,7 +8,7 @@ import '../util/test_utils.dart';
 void main() {
   testWidgets('test show decisive gradient setting', (tester) async {
     await prepareAndStartApp(tester);
-    await loadTrainJourney(tester, trainNumber: 'T9999M');
+    await loadJourney(tester, trainNumber: 'T9999M');
     await stopAutomaticAdvancement(tester);
 
     // check km, up and down gradients are shown
@@ -57,7 +57,7 @@ void main() {
     await openDrawer(tester);
     await tapElement(tester, find.text(l10n.w_navigation_drawer_fahrtinfo_title));
 
-    await loadTrainJourney(tester, trainNumber: 'T9999M');
+    await loadJourney(tester, trainNumber: 'T9999M');
     await stopAutomaticAdvancement(tester);
 
     // check km is shown, up and down gradients are hidden

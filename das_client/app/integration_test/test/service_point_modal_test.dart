@@ -1,14 +1,14 @@
 import 'package:app/di/di.dart';
-import 'package:app/pages/journey/train_journey/widgets/communication_network_icon.dart';
-import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/detail_tab_communication.dart';
-import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/detail_tab_graduated_speeds.dart';
-import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/detail_tab_local_regulations.dart';
-import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/local_regulation_html_view.dart';
-import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_builder.dart';
-import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_tab.dart';
-import 'package:app/pages/journey/train_journey/widgets/header/header.dart';
-import 'package:app/pages/journey/train_journey/widgets/header/header_icon_button.dart';
-import 'package:app/pages/journey/train_journey/widgets/header/start_pause_button.dart';
+import 'package:app/pages/journey/journey_table/widgets/communication_network_icon.dart';
+import 'package:app/pages/journey/journey_table/widgets/detail_modal/service_point_modal/detail_tab_communication.dart';
+import 'package:app/pages/journey/journey_table/widgets/detail_modal/service_point_modal/detail_tab_graduated_speeds.dart';
+import 'package:app/pages/journey/journey_table/widgets/detail_modal/service_point_modal/detail_tab_local_regulations.dart';
+import 'package:app/pages/journey/journey_table/widgets/detail_modal/service_point_modal/local_regulation_html_view.dart';
+import 'package:app/pages/journey/journey_table/widgets/detail_modal/service_point_modal/service_point_modal_builder.dart';
+import 'package:app/pages/journey/journey_table/widgets/detail_modal/service_point_modal/service_point_modal_tab.dart';
+import 'package:app/pages/journey/journey_table/widgets/header/header.dart';
+import 'package:app/pages/journey/journey_table/widgets/header/header_icon_button.dart';
+import 'package:app/pages/journey/journey_table/widgets/header/start_pause_button.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:app/widgets/dot_indicator.dart';
 import 'package:app/widgets/modal_sheet/das_modal_sheet.dart';
@@ -24,7 +24,7 @@ void main() {
   group('general service point modal sheet tests', () {
     testWidgets('test displayed columns on open service point modal', (tester) async {
       await prepareAndStartApp(tester);
-      await loadTrainJourney(tester, trainNumber: 'T8');
+      await loadJourney(tester, trainNumber: 'T8');
 
       final kilometreLabel = l10n.p_train_journey_table_kilometre_label;
       final timeLabel = l10n.p_train_journey_table_time_label_planned;
@@ -47,7 +47,7 @@ void main() {
       FlutterError.onError = ignoreOverflowErrors;
 
       await prepareAndStartApp(tester);
-      await loadTrainJourney(tester, trainNumber: 'T8');
+      await loadJourney(tester, trainNumber: 'T8');
 
       expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsOneWidget);
 
@@ -75,7 +75,7 @@ void main() {
     });
     testWidgets('test header button collapsed if detail model sheet open', (tester) async {
       await prepareAndStartApp(tester);
-      await loadTrainJourney(tester, trainNumber: 'T9999');
+      await loadJourney(tester, trainNumber: 'T9999');
 
       expect(find.byKey(HeaderIconButton.headerIconWithLabelButtonKey), findsExactly(2));
 
@@ -92,7 +92,7 @@ void main() {
     });
     testWidgets('test only tabs are displayed with data', (tester) async {
       await prepareAndStartApp(tester);
-      await loadTrainJourney(tester, trainNumber: 'T8');
+      await loadJourney(tester, trainNumber: 'T8');
 
       await _openByTapOnCellWithText(tester, 'Bern');
       await _checkModalSheetTabs(tester, [
@@ -109,7 +109,7 @@ void main() {
     });
     testWidgets('test change of service point modal page with segmented button', (tester) async {
       await prepareAndStartApp(tester);
-      await loadTrainJourney(tester, trainNumber: 'T8');
+      await loadJourney(tester, trainNumber: 'T8');
 
       // open modal with tap on service point name
       await _openByTapOnCellWithText(tester, 'Bern');
@@ -128,7 +128,7 @@ void main() {
     testWidgets('test modal closes after timeout without touch on screen', (tester) async {
       await prepareAndStartApp(tester);
 
-      await loadTrainJourney(tester, trainNumber: 'T8');
+      await loadJourney(tester, trainNumber: 'T8');
 
       // open modal sheet with tap on service point name
       await _openByTapOnCellWithText(tester, 'Bern');
@@ -148,7 +148,7 @@ void main() {
     testWidgets('test modal sheet does close after timeout with automatic advancement paused', (tester) async {
       await prepareAndStartApp(tester);
 
-      await loadTrainJourney(tester, trainNumber: 'T8');
+      await loadJourney(tester, trainNumber: 'T8');
 
       // open modal sheet with tap on service point name
       await _openByTapOnCellWithText(tester, 'Bern');
@@ -175,7 +175,7 @@ void main() {
   group('graduated speed tab tests', () {
     testWidgets('test graduated speed info details', (tester) async {
       await prepareAndStartApp(tester);
-      await loadTrainJourney(tester, trainNumber: 'T8');
+      await loadJourney(tester, trainNumber: 'T8');
 
       final tableRowBern = findDASTableRowByText('75-70-60');
       final indicator = find.descendant(of: tableRowBern, matching: find.byKey(DotIndicator.indicatorKey));
@@ -203,7 +203,7 @@ void main() {
   group('communication tab tests', () {
     testWidgets('test communication network and radio channels displayed correctly', (tester) async {
       await prepareAndStartApp(tester);
-      await loadTrainJourney(tester, trainNumber: 'T12');
+      await loadJourney(tester, trainNumber: 'T12');
       await stopAutomaticAdvancement(tester);
 
       // check communication information for Bern
@@ -262,7 +262,7 @@ void main() {
     });
     testWidgets('test communication information present when opening from other tab', (tester) async {
       await prepareAndStartApp(tester);
-      await loadTrainJourney(tester, trainNumber: '1513');
+      await loadJourney(tester, trainNumber: '1513');
       await stopAutomaticAdvancement(tester);
 
       final scrollableFinder = find.byType(AnimatedList);
@@ -292,7 +292,7 @@ void main() {
 
     testWidgets('test SIM corridor information', (tester) async {
       await prepareAndStartApp(tester);
-      await loadTrainJourney(tester, trainNumber: 'T20');
+      await loadJourney(tester, trainNumber: 'T20');
       await stopAutomaticAdvancement(tester);
 
       final scrollableFinder = find.byType(AnimatedList);
@@ -336,7 +336,7 @@ void main() {
   group('local regulation tab tests', () {
     testWidgets('test local regulation tab is shown', (tester) async {
       await prepareAndStartApp(tester);
-      await loadTrainJourney(tester, trainNumber: 'T25');
+      await loadJourney(tester, trainNumber: 'T25');
       final scrollableFinder = find.byType(AnimatedList);
 
       await _openByTapOnCellWithText(tester, 'Olten');
@@ -356,7 +356,7 @@ void main() {
 
     testWidgets('test tab change from local regulation', (tester) async {
       await prepareAndStartApp(tester);
-      await loadTrainJourney(tester, trainNumber: 'T25');
+      await loadJourney(tester, trainNumber: 'T25');
 
       await _openByTapOnCellWithText(tester, 'Olten');
 
@@ -373,7 +373,7 @@ void main() {
 
     testWidgets('test local regulation webview is shown', (tester) async {
       await prepareAndStartApp(tester);
-      await loadTrainJourney(tester, trainNumber: 'T25');
+      await loadJourney(tester, trainNumber: 'T25');
 
       await _openByTapOnCellWithText(tester, 'Olten');
 
@@ -388,7 +388,7 @@ void main() {
 
   testWidgets('test short signal names are displayed when modal is open', (tester) async {
     await prepareAndStartApp(tester);
-    await loadTrainJourney(tester, trainNumber: 'T9999');
+    await loadJourney(tester, trainNumber: 'T9999');
     await stopAutomaticAdvancement(tester);
 
     expect(find.text(l10n.c_main_signal_function_entry), findsAny);

@@ -161,7 +161,7 @@ class _ContentState extends State<_Content> {
             padding: const EdgeInsets.symmetric(vertical: sbbDefaultSpacing, horizontal: sbbDefaultSpacing / 2),
             child: SBBPrimaryButton(
               label: buttonLabel,
-              onPressed: s.isInputComplete ? () => viewModel.loadTrainJourney() : null,
+              onPressed: s.isInputComplete ? () => viewModel.loadJourney() : null,
             ),
           ),
           _ => wrapWithPadding(SBBPrimaryButton(label: buttonLabel, onPressed: null)),

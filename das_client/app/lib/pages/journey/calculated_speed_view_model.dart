@@ -2,26 +2,26 @@ import 'dart:async';
 
 import 'package:app/pages/journey/calculated_speed.dart';
 import 'package:app/pages/journey/line_speed_view_model.dart';
-import 'package:app/pages/journey/train_journey_view_model.dart';
+import 'package:app/pages/journey/journey_table_view_model.dart';
 import 'package:sfera/component.dart';
 
 class CalculatedSpeedViewModel {
   CalculatedSpeedViewModel({
-    required TrainJourneyViewModel trainJourneyViewModel,
+    required JourneyTableViewModel journeyTableViewModel,
     required LineSpeedViewModel lineSpeedViewModel,
-  }) : _trainJourneyViewModel = trainJourneyViewModel,
+  }) : _journeyTableViewModel = journeyTableViewModel,
        _lineSpeedViewModel = lineSpeedViewModel {
     _init();
   }
 
-  final TrainJourneyViewModel _trainJourneyViewModel;
+  final JourneyTableViewModel _journeyTableViewModel;
   final LineSpeedViewModel _lineSpeedViewModel;
   Metadata? _lastMetadata;
 
   StreamSubscription? _journeySubscription;
 
   void _init() {
-    _journeySubscription = _trainJourneyViewModel.journey.listen((journey) {
+    _journeySubscription = _journeyTableViewModel.journey.listen((journey) {
       _lastMetadata = journey?.metadata;
     });
   }

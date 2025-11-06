@@ -5,11 +5,11 @@ import 'package:app/di/scope_handler.dart';
 import 'package:app/di/scopes/journey_scope.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/app_router.dart';
+import 'package:app/pages/journey/journey_table/journey_overview.dart';
+import 'package:app/pages/journey/journey_table/widgets/table/config/journey_settings.dart';
+import 'package:app/pages/journey/journey_table_view_model.dart';
 import 'package:app/pages/journey/navigation/journey_navigation_model.dart';
 import 'package:app/pages/journey/navigation/journey_navigation_view_model.dart';
-import 'package:app/pages/journey/train_journey/train_journey_overview.dart';
-import 'package:app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
-import 'package:app/pages/journey/train_journey_view_model.dart';
 import 'package:app/pages/journey/warn_app_view_model.dart';
 import 'package:app/pages/journey/widgets/das_journey_scaffold.dart';
 import 'package:app/util/format.dart';
@@ -30,7 +30,7 @@ class JourneyPage extends StatefulWidget implements AutoRouteWrapper {
   @override
   Widget wrappedRoute(BuildContext context) => MultiProvider(
     providers: [
-      Provider<TrainJourneyViewModel>(create: (_) => DI.get()),
+      Provider<JourneyTableViewModel>(create: (_) => DI.get()),
       Provider<WarnAppViewModel>(create: (_) => DI.get()),
     ],
     child: this,
@@ -45,8 +45,8 @@ class _JourneyPageState extends State<JourneyPage> {
 
   @override
   void initState() {
-    final trainJourneyVM = DI.get<TrainJourneyViewModel>();
-    _errorCodeSubscription = trainJourneyVM.errorCode.listen((error) async {
+    final journeyTableVM = DI.get<JourneyTableViewModel>();
+    _errorCodeSubscription = journeyTableVM.errorCode.listen((error) async {
       if (error != null) {
         await DI.get<ScopeHandler>().pop<JourneyScope>();
         await DI.get<ScopeHandler>().push<JourneyScope>();
@@ -68,15 +68,15 @@ class _JourneyPageState extends State<JourneyPage> {
   Widget build(BuildContext context) {
     return StreamBuilder(
       stream: CombineLatestStream.list([
-        context.read<TrainJourneyViewModel>().settings,
+        context.read<JourneyTableViewModel>().settings,
         DI.get<JourneyNavigationViewModel>().model,
       ]),
       builder: (context, snapshot) {
-        final settings = snapshot.data?[0] as TrainJourneySettings?;
+        final settings = snapshot.data?[0] as JourneySettings?;
         final model = snapshot.data?[1] as JourneyNavigationModel?;
 
         return DASJourneyScaffold(
-          body: TrainJourneyOverview(),
+          body: JourneyOverview(),
           appBarTitle: _appBarTitle(context, model?.trainIdentification),
           hideAppBar: settings?.isAutoAdvancementEnabled == true,
           appBarTrailingAction: _DismissJourneyButton(),
