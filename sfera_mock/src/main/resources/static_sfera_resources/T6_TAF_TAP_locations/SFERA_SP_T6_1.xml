@@ -18,6 +18,12 @@
                 <teltsi_LocationPrimaryCode>3001</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="E409" location="1950"/>
+            <SignalFunction>exit</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="E409"/>
+        </Signal>
     </SP_Points>
     <SP_Areas>
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="ZUE" TAF_TAP_location_type="station">
@@ -40,7 +46,7 @@
                 <NSP_GroupName>routeTableData</NSP_GroupName>
                 <NetworkSpecificParameter name="trackGroup" value="3"/>
             </TAF_TAP_Location_NSP>
-            
+
 
         </TAF_TAP_Location>
     </SP_Areas>
@@ -51,6 +57,10 @@
 
         <KilometreReferencePoint location="1900">
             <KM_Reference kmRef="1.912"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="1950">
+            <KM_Reference kmRef="1.982"/>
         </KilometreReferencePoint>
 
         <KilometreReferencePoint location="1900">

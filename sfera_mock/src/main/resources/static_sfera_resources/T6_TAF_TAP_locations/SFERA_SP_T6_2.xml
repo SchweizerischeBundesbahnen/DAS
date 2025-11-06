@@ -102,6 +102,12 @@
                 <teltsi_LocationPrimaryCode>3015</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="E309" location="16150"/>
+            <SignalFunction>exit</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="E309"/>
+        </Signal>
     </SP_Points>
     <SP_Areas>
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="4100" endLocation="4100" TAF_TAP_location_abbreviation="ALT"
@@ -267,6 +273,10 @@
 
         <KilometreReferencePoint location="16100">
             <KM_Reference kmRef="16.1"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="16150">
+            <KM_Reference kmRef="16.2"/>
         </KilometreReferencePoint>
 
         <KilometreReferencePoint location="22200">
