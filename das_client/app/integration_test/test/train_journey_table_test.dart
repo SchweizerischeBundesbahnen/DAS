@@ -639,15 +639,39 @@ void main() {
       await prepareAndStartApp(tester);
       await loadTrainJourney(tester, trainNumber: 'T6');
 
-      final glanzenbergText = find.byWidgetPredicate(
-        (it) => it is Text && it.data == 'Glanzenberg' && it.style?.fontStyle == FontStyle.italic,
+      final glanzenbergRow = findDASTableRowByText('Glanzenberg');
+      final glanzenbergTextStyle = find.descendant(
+        of: glanzenbergRow,
+        matching: find.byWidgetPredicate(
+          (it) => it is DefaultTextStyle && it.style.fontStyle == FontStyle.italic,
+        ),
       );
-      expect(glanzenbergText, findsOneWidget);
+      expect(glanzenbergTextStyle, findsOneWidget);
 
-      final schlierenText = find.byWidgetPredicate(
-        (it) => it is Text && it.data == 'Schlieren' && it.style?.fontStyle != FontStyle.italic,
+      final schlierenRow = findDASTableRowByText('Schlieren');
+      final schlierenTextStyle = find.descendant(
+        of: schlierenRow,
+        matching: find.byWidgetPredicate(
+          (it) => it is DefaultTextStyle && it.style.fontStyle == FontStyle.italic,
+        ),
       );
-      expect(schlierenText, findsOneWidget);
+      expect(schlierenTextStyle, findsNothing);
+
+      await disconnect(tester);
+    });
+
+    testWidgets('whenServicePointHasTrackGroup_isDisplayedCorrectlyDependingOnDetailModal', (tester) async {
+      await prepareAndStartApp(tester);
+      await loadTrainJourney(tester, trainNumber: 'T6M');
+
+      final hardbrueckeRow = findDASTableRowByText('Hardbrücke');
+      final trackGroupWidget = find.descendant(of: hardbrueckeRow, matching: find.text('3'));
+      expect(trackGroupWidget, findsOneWidget);
+
+      // open modal sheet and test track group still displayed
+      await tapElement(tester, hardbrueckeRow);
+      await tester.pumpAndSettle();
+      expect(trackGroupWidget, findsOneWidget);
 
       await disconnect(tester);
     });
