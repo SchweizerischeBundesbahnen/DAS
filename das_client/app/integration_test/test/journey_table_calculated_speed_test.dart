@@ -160,14 +160,12 @@ void main() {
       findsNothing,
     );
 
+    // event to service point with VPro and delay 10 seconds
+    const fourtySecondsDelay = '+00:40';
     await waitUntilExists(
       tester,
-      find.descendant(of: chronograph, matching: find.byKey(DASChronograph.punctualityTextKey)),
+      find.descendant(of: chronograph, matching: find.text(fourtySecondsDelay)),
     );
-
-    // event to service point with VPro and delay 40 seconds
-    const fourtySecondsDelay = '+00:40';
-    expect(find.descendant(of: chronograph, matching: find.text(fourtySecondsDelay)), findsOneWidget);
 
     await disconnect(tester);
   });
