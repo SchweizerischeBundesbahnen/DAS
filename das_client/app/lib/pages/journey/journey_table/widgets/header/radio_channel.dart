@@ -28,24 +28,22 @@ class RadioChannel extends StatelessWidget {
             final viewModel = context.read<ServicePointModalViewModel>();
             viewModel.open(context, tab: ServicePointModalTab.communication, servicePoint: model.lastServicePoint);
           },
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(minWidth: 258.0),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: DotIndicator(
-                show: model.showDotIndicator,
-                offset: Offset(-6.0, -8.0),
-                child: Row(
-                  spacing: sbbDefaultSpacing * 0.5,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(SBBIcons.telephone_gsm_small),
-                    RadioContactChannels(mainContactIdentifiers: model.mainContactsIdentifier),
-                    if (model.networkType == CommunicationNetworkType.sim) SimIdentifier(),
-                    if (model.networkType != null && model.networkType != CommunicationNetworkType.sim)
-                      CommunicationNetworkIcon(networkType: model.networkType!),
-                  ],
-                ),
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: DotIndicator(
+              show: model.showDotIndicator,
+              offset: Offset(-6.0, -8.0),
+              child: Row(
+                spacing: sbbDefaultSpacing * 0.5,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(SBBIcons.telephone_gsm_small),
+                  RadioContactChannels(mainContactIdentifiers: model.mainContactsIdentifier),
+                  if (model.networkType == CommunicationNetworkType.sim) SimIdentifier(),
+                  if (model.networkType != null && model.networkType != CommunicationNetworkType.sim)
+                    CommunicationNetworkIcon(networkType: model.networkType!),
+                ],
               ),
             ),
           ),

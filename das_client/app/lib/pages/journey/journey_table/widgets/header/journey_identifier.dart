@@ -26,8 +26,8 @@ class JourneyIdentifier extends StatelessWidget {
         return JourneySearchOverlay(
           child: Padding(
             key: journeyIdentifierKey,
-            padding: const EdgeInsets.symmetric(vertical: sbbDefaultSpacing * 0.5, horizontal: sbbDefaultSpacing),
-            child: Text(formattedIdentifier, style: _resolvedTextStyle(context)),
+            padding: const EdgeInsets.symmetric(vertical: sbbDefaultSpacing * 0.5, horizontal: 0),
+            child: Text(formattedIdentifier, style: _resolvedTextStyle(context), overflow: TextOverflow.ellipsis,),
           ),
         );
       },
@@ -35,7 +35,7 @@ class JourneyIdentifier extends StatelessWidget {
   }
 
   TextStyle _resolvedTextStyle(BuildContext context) {
-    final resolvedColor = ThemeUtil.getColor(context, SBBColors.granite, SBBColors.graphite);
-    return DASTextStyles.largeRoman.copyWith(color: resolvedColor);
+    final resolvedColor = ThemeUtil.getColor(context, SBBColors.black, SBBColors.graphite);
+    return DASTextStyles.xLargeRoman.copyWith(color: resolvedColor);
   }
 }

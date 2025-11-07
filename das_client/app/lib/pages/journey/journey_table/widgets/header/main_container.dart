@@ -21,24 +21,16 @@ class MainContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final journeyViewModel = context.read<JourneyTableViewModel>();
-    final journeyPositionViewModel = context.read<JourneyPositionViewModel>();
 
-    return Provider(
-      create: (_) => RadioChannelViewModel(
-        journeyStream: journeyViewModel.journey,
-        journeyPositionStream: journeyPositionViewModel.model,
-      ),
-      dispose: (_, vm) => vm.dispose(),
-      child: StreamBuilder(
-        stream: journeyViewModel.journey,
-        builder: (context, snapshot) {
-          final isLoading = !snapshot.hasData;
-          return Skeletonizer(
-            enabled: isLoading,
-            child: _content(),
-          );
-        },
-      ),
+    return StreamBuilder(
+      stream: journeyViewModel.journey,
+      builder: (context, snapshot) {
+        final isLoading = !snapshot.hasData;
+        return Skeletonizer(
+          enabled: isLoading,
+          child: _content(),
+        );
+      },
     );
   }
 
@@ -62,13 +54,9 @@ class MainContainer extends StatelessWidget {
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        RadioChannel(),
-        SizedBox(width: sbbDefaultSpacing * 0.5),
-        DepartureAuthorization(),
+        NextStop(),
         Spacer(),
-        JourneyIdentifier(),
-        BatteryStatus(),
-        ConnectivityIcon(),
+        DepartureAuthorization(),
       ],
     ),
   );
@@ -82,7 +70,9 @@ class MainContainer extends StatelessWidget {
     height: 48.0,
     child: Row(
       children: [
-        Expanded(child: NextStop()),
+        BatteryStatus(),
+        ConnectivityIcon(),
+        Spacer(),
         _buttons(),
       ],
     ),

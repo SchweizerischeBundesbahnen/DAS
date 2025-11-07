@@ -16,13 +16,7 @@ class NextStop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        _tappableNextStopIdentifier(context),
-        Expanded(child: SizedBox(width: double.infinity)),
-      ],
-    );
+    return _tappableNextStopIdentifier(context);
   }
 
   Widget _tappableNextStopIdentifier(BuildContext context) {
