@@ -71,8 +71,10 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     final color = _isNextStop && highlightNextStop ? SBBColors.white : null;
     return DASTableCell(
       onTap: () {
-        final viewModel = context.read<ServicePointModalViewModel>();
-        viewModel.open(context, tab: ServicePointModalTab.communication, servicePoint: data);
+        if (shouldOpenDetailModalOnTap) {
+          final viewModel = context.read<ServicePointModalViewModel>();
+          viewModel.open(context, tab: ServicePointModalTab.communication, servicePoint: data);
+        }
       },
       alignment: Alignment.bottomLeft,
       child: Column(
@@ -92,6 +94,8 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
       ),
     );
   }
+
+  bool get shouldOpenDetailModalOnTap => true;
 
   @override
   DASTableCell timeCell(BuildContext context) {

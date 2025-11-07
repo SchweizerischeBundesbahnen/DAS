@@ -35,11 +35,11 @@ class RadioChannel extends StatelessWidget {
               offset: Offset(-6.0, -8.0),
               child: Row(
                 spacing: sbbDefaultSpacing * 0.5,
-                crossAxisAlignment: CrossAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const Icon(SBBIcons.telephone_gsm_small),
-                  RadioContactChannels(mainContactIdentifiers: model.mainContactsIdentifier),
+                  Flexible(child: RadioContactChannels(mainContactIdentifiers: model.mainContactsIdentifier)),
                   if (model.networkType == CommunicationNetworkType.sim) SimIdentifier(),
                   if (model.networkType != null && model.networkType != CommunicationNetworkType.sim)
                     CommunicationNetworkIcon(networkType: model.networkType!),

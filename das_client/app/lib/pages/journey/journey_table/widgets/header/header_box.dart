@@ -1,6 +1,6 @@
 import 'package:app/pages/journey/journey_table/header/radio_channel/radio_channel_view_model.dart';
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_view_model.dart';
-import 'package:app/pages/journey/journey_table/widgets/header/departure_authorization.dart';
+import 'package:app/pages/journey/journey_table/widgets/detail_modal/detail_modal_view_model.dart';
 import 'package:app/pages/journey/journey_table/widgets/header/journey_identifier.dart';
 import 'package:app/pages/journey/journey_table/widgets/header/radio_channel.dart';
 import 'package:app/pages/journey/journey_table_view_model.dart';
@@ -9,13 +9,11 @@ import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-const double _width = 230.0;
+const double _width = 215.0;
+const double _smallWidth = 150.0;
 const double _height = 112.0;
 
 class HeaderBox extends StatelessWidget {
-  static const Key punctualityTextKey = Key('punctualityTextKey');
-  static const Key currentTimeTextKey = Key('currentTimeTextKey');
-
   const HeaderBox({super.key});
 
   @override
@@ -43,13 +41,22 @@ class HeaderBox extends StatelessWidget {
   }
 
   Widget _content(BuildContext context) {
-    return SBBGroup(
-      padding: const EdgeInsets.all(sbbDefaultSpacing),
-      child: SizedBox(
-        width: _width,
-        height: _height,
-        child: _body(context),
-      ),
+    final viewModel = context.read<DetailModalViewModel>();
+    return StreamBuilder<bool>(
+      stream: viewModel.isModalOpen,
+      initialData: viewModel.isModalOpenValue,
+      builder: (context, asyncSnapshot) {
+        final isModalOpen = asyncSnapshot.requireData;
+
+        return SBBGroup(
+          padding: const EdgeInsets.all(sbbDefaultSpacing),
+          child: SizedBox(
+            width: isModalOpen ? _smallWidth : _width,
+            height: _height,
+            child: _body(context),
+          ),
+        );
+      },
     );
   }
 
