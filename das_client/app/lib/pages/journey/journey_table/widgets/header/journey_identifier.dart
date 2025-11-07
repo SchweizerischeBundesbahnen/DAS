@@ -27,7 +27,11 @@ class JourneyIdentifier extends StatelessWidget {
           child: Padding(
             key: journeyIdentifierKey,
             padding: const EdgeInsets.symmetric(vertical: sbbDefaultSpacing * 0.5, horizontal: 0),
-            child: Text(formattedIdentifier, style: _resolvedTextStyle(context), overflow: TextOverflow.ellipsis,),
+            child: Text(
+              formattedIdentifier,
+              style: _resolvedTextStyle(context),
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
         );
       },
