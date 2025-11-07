@@ -1,5 +1,6 @@
 import 'package:app/extension/station_sign_extension.dart';
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_model.dart';
+import 'package:app/pages/journey/journey_table/widgets/detail_modal/detail_modal_view_model.dart';
 import 'package:app/pages/journey/journey_table/widgets/detail_modal/service_point_modal/service_point_modal_tab.dart';
 import 'package:app/pages/journey/journey_table/widgets/detail_modal/service_point_modal/service_point_modal_view_model.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/arrival_departure_time/arrival_departure_time_view_model.dart';
@@ -9,6 +10,7 @@ import 'package:app/pages/journey/journey_table/widgets/table/cells/show_speed_b
 import 'package:app/pages/journey/journey_table/widgets/table/cells/time_cell_body.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/cells/track_equipment_cell_body.dart';
 import 'package:app/theme/theme_util.dart';
+import 'package:app/util/animation.dart';
 import 'package:app/util/text_util.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:app/widgets/das_text_styles.dart';
@@ -67,8 +69,6 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
 
   @override
   DASTableCell informationCell(BuildContext context) {
-    final servicePointName = data.betweenBrackets ? '(${data.name})' : data.name;
-    final color = _isNextStop && highlightNextStop ? SBBColors.white : null;
     return DASTableCell(
       onTap: () {
         final viewModel = context.read<ServicePointModalViewModel>();
@@ -79,14 +79,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            servicePointName,
-            textAlign: TextAlign.start,
-            overflow: TextOverflow.ellipsis,
-            style: data.isStation
-                ? DASTextStyles.xLargeBold.copyWith(color: color)
-                : DASTextStyles.xLargeLight.copyWith(fontStyle: FontStyle.italic, color: color),
-          ),
+          _informationCellTitle(context),
           ..._stationProperties(context),
         ],
       ),
@@ -254,6 +247,43 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
   void _openGraduatedSpeedDetails(BuildContext context) {
     final viewModel = context.read<ServicePointModalViewModel>();
     viewModel.open(context, tab: ServicePointModalTab.graduatedSpeeds, servicePoint: data);
+  }
+
+  Widget _informationCellTitle(BuildContext context) {
+    final viewModel = context.read<DetailModalViewModel>();
+    return StreamBuilder<bool>(
+      stream: viewModel.isModalOpen,
+      initialData: viewModel.isModalOpenValue,
+      builder: (context, asyncSnapshot) {
+        final isModalOpen = asyncSnapshot.requireData;
+        final servicePointName = data.betweenBrackets ? '(${data.name})' : data.name;
+        final color = _isNextStop && highlightNextStop ? SBBColors.white : null;
+        return DefaultTextStyle.merge(
+          style: data.isStation
+              ? DASTextStyles.xLargeBold.copyWith(color: color)
+              : DASTextStyles.xLargeLight.copyWith(fontStyle: FontStyle.italic, color: color),
+          child: AnimatedSwitcher(
+            duration: DASAnimation.longDuration,
+            child: Row(
+              mainAxisAlignment: isModalOpen ? MainAxisAlignment.spaceBetween : MainAxisAlignment.start,
+              children: [
+                Flexible(
+                  child: Text(
+                    servicePointName,
+                    textAlign: TextAlign.start,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                if (data.trackGroup != null) ...[
+                  if (!isModalOpen) SizedBox(width: sbbDefaultSpacing),
+                  Text(data.trackGroup!),
+                ],
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   List<Widget> _stationProperties(BuildContext context) {
