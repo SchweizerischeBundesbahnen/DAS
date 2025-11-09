@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>ch.sbb</groupId>
+    <artifactId>das_e2e_testsuite</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>DAS e2e TestSuite</name>
+    <description>Integration tests only</description>
+
+    <organization>
+        <name>SBB CFF FFS</name>
+        <url>http://www.sbb.ch</url>
+    </organization>
+
+    <properties>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <org-openapitools.version>0.2.7</org-openapitools.version>
+        <javax.annotation.version>1.3.2</javax.annotation.version>
+        <jsr305.version>3.0.2</jsr305.version>
+        <springdoc-openapi-ui.version>1.8.0</springdoc-openapi-ui.version>
+        <commons-lang.version>3.19.0</commons-lang.version>
+        <reactor-netty-http.version>1.2.7</reactor-netty-http.version>
+    </properties>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.5.7</version>
+        <relativePath/>
+    </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+            <version>${javax.annotation.version}</version>
+        </dependency>
+        <dependency>
+            <!-- provides @javax.annotation.Nullable -->
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <version>${jsr305.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>${springdoc-openapi-ui.version}</version>
+        </dependency>
+        <dependency>
+            <!-- https://github.com/OpenAPITools/openapi-generator/issues/2901 -->
+            <groupId>org.openapitools</groupId>
+            <artifactId>jackson-databind-nullable</artifactId>
+            <version>${org-openapitools.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>25.0.0</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>4.5.0</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!--plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <argLine>
+                        -javaagent:${settings.localRepository}/org/mockito/mockito-core/${mockito.version}/mockito-core-${mockito.version}.jar
+                        -Xshare:off
+                    </argLine>
+                </configuration>
+            </plugin-->
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <!-- see https://openapi-generator.tech/docs/generators/java/, https://github.com/OpenAPITools/openapi-generator/tree/master/modules/openapi-generator-maven-plugin-->
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>7.8.0</version>
+                <executions>
+                    <execution>
+                        <id>das_backend_rest-client</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>
+                                <!-- run das_backend das_backend ApiExtractionTest before -->
+                                ./../das_backend/src/main/resources/api/api-specification.yaml
+                            </inputSpec>
+                            <generatorName>java</generatorName>
+                            <skipValidateSpec>false</skipValidateSpec>
+                            <modelPackage>ch.sbb.backend.restclient.v1.model</modelPackage>
+                            <apiPackage>ch.sbb.backend.restclient.v1.api</apiPackage>
+                            <generateApis>true</generateApis>
+                            <apisToGenerate>
+                                Settings,Formations
+                            </apisToGenerate>
+                            <generateApiTests>false</generateApiTests>
+                            <generateApiDocumentation>false</generateApiDocumentation>
+                            <generateModels>true</generateModels>
+                            <!--modelsToGenerate>
+                                SettingsResponse,FormationsResponse, ..
+                            </modelsToGenerate-->
+                            <generateModelDocumentation>false</generateModelDocumentation>
+                            <generateModelTests>false</generateModelTests>
+                            <generateSupportingFiles>true</generateSupportingFiles>
+                            <!--Spring 5 WebClient + Jackson-->
+                            <library>webclient</library>
+                            <configOptions>
+                                <!-- see https://openapi-generator.tech/docs/generators/spring/ -->
+                                <useSpringBoot3>true</useSpringBoot3>
+                                <!-- see https://openapi-generator.tech/docs/generators/java/ Java 8+ native JSR310  -->
+                                <dateLibrary>java8</dateLibrary>
+                                <!-- generated client argument order will follow exactly Java contract: change of signature impacts generated client 1:1 -->
+                                <sortParamsByRequiredFlag>false</sortParamsByRequiredFlag>
+                                <booleanGetterPrefix>is</booleanGetterPrefix>
+                                <!-- Probably no impact with Jackson: Make API response's headers case-insensitive. Available on okhttp-gson, jersey2 libraries -->
+                                <caseInsensitiveResponseHeaders>true
+                                </caseInsensitiveResponseHeaders>
+                            </configOptions>
+                            <!-- TODO if LocalTime in service-contract: Impact on client's caller and the ApiClient(s)
+                            <typeMappings>
+                                <typeMapping>string+time-local=LocalTime</typeMapping>
+                                <typeMapping>string+time=LocalTime</typeMapping>
+                            </typeMappings>
+                            <importMappings>
+                                <importMapping>LocalTime=java.time.LocalTime</importMapping>
+                            </importMappings>
+                            -->
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
