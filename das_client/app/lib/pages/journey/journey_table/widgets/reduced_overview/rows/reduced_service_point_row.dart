@@ -57,4 +57,10 @@ class ReducedServicePointRow extends ServicePointRow {
       ),
     );
   }
+
+  @override
+  Stream<bool> isModalOpenStream(BuildContext context) => Stream.value(false);
+
+  @override
+  bool isModalOpenValue(BuildContext context) => false;
 }

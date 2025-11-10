@@ -253,11 +253,14 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     viewModel.open(context, tab: ServicePointModalTab.graduatedSpeeds, servicePoint: data);
   }
 
+  Stream<bool> isModalOpenStream(BuildContext context) => context.read<DetailModalViewModel>().isModalOpen;
+
+  bool isModalOpenValue(BuildContext context) => context.read<DetailModalViewModel>().isModalOpenValue;
+
   Widget _informationCellTitle(BuildContext context) {
-    final viewModel = context.read<DetailModalViewModel>();
     return StreamBuilder<bool>(
-      stream: viewModel.isModalOpen,
-      initialData: viewModel.isModalOpenValue,
+      stream: isModalOpenStream(context),
+      initialData: isModalOpenValue(context),
       builder: (context, asyncSnapshot) {
         final isModalOpen = asyncSnapshot.requireData;
         final servicePointName = data.betweenBrackets ? '(${data.name})' : data.name;
