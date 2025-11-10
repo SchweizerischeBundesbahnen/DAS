@@ -148,6 +148,7 @@ class SegmentProfileMapper {
           arrivalDepartureTime: _parseArrivalDepartureTime(tpConstraint),
           stationSign1: tafTapLocation.routeTableDataNsp?.stationSign1,
           stationSign2: tafTapLocation.routeTableDataNsp?.stationSign2,
+          trackGroup: tafTapLocation.routeTableDataNsp?.trackGroup,
           properties: _parseStationProperties(tafTapLocation.property?.xmlStationProperty.element.properties),
           localRegulationSections: _parseLocalRegulationSegments(tafTapLocation.localRegulations),
         ),

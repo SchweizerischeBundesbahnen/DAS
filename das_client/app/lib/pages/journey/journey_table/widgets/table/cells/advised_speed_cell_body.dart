@@ -1,6 +1,7 @@
 import 'package:app/pages/journey/journey_table/widgets/table/cells/show_speed_behaviour.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/config/journey_settings.dart';
 import 'package:app/pages/journey/line_speed_view_model.dart';
+import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:app/widgets/table/das_table_theme.dart';
@@ -50,17 +51,18 @@ class AdvisedSpeedCellBody extends StatelessWidget {
       speed = lineSpeedViewModel.getResolvedSpeedForOrder(order).speed?.speed as SingleSpeed?;
     }
 
-    final defaultTextStyle = DASTableTheme.of(context)?.data.dataTextStyle ?? DASTextStyles.largeRoman;
+    final resolvedTextColor = ThemeUtil.getColor(context, SBBColors.white, SBBColors.black);
     return Text(
       speed?.value ?? '',
       key: nonEmptyKey,
-      style: defaultTextStyle.copyWith(color: SBBColors.white),
+      style: DASTextStyles.largeBold.copyWith(color: resolvedTextColor),
     );
   }
 
   Widget _backgroundStack(BuildContext context, Widget child) {
     final horizontalBorderWidth =
         DASTableTheme.of(context)?.data.tableBorder?.horizontalInside.width ?? sbbDefaultSpacing;
+    final resolvedBackgroundColor = ThemeUtil.getColor(context, SBBColors.iron, SBBColors.platinum);
 
     return Stack(
       clipBehavior: Clip.none,
@@ -70,7 +72,7 @@ class AdvisedSpeedCellBody extends StatelessWidget {
           bottom: -horizontalBorderWidth * 2,
           left: 0,
           right: 0,
-          child: Container(color: SBBColors.iron),
+          child: Container(color: resolvedBackgroundColor),
         ),
         Center(child: child),
       ],
