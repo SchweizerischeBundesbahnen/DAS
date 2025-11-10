@@ -34,6 +34,11 @@ jobs:
       with:
         flutter-version: '3.35.x'
         cache: true
+        
+    - name: Extract branch name
+      shell: bash
+      run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+      id: extract_branch
 
     - name: Setup melos
       uses: bluefireteam/melos-action@v3
@@ -81,7 +86,7 @@ jobs:
         browserstackAccessKey: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
         project: das_client
         customId: das_client_android
-        buildTag: das_client_android
+        buildTag: ${{ steps.extract_branch.outputs.branch }}
         appFilePath: ${{ github.workspace }}/das_client/app/build/app/outputs/flutter-apk/app-dev-debug.apk
         testFilePath: ${{ github.workspace }}/das_client/app/build/app/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk
         devices: Samsung Galaxy Tab S9-13.0

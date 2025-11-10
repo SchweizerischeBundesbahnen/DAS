@@ -38,6 +38,9 @@ class ReducedServicePointRow extends ServicePointRow {
   }
 
   @override
+  bool get shouldOpenDetailModalOnTap => false;
+
+  @override
   DASTableCell routeCell(BuildContext context) {
     return DASTableCell(
       color: specialCellColor,
@@ -54,4 +57,10 @@ class ReducedServicePointRow extends ServicePointRow {
       ),
     );
   }
+
+  @override
+  Stream<bool> isModalOpenStream(BuildContext context) => Stream.value(false);
+
+  @override
+  bool isModalOpenValue(BuildContext context) => false;
 }

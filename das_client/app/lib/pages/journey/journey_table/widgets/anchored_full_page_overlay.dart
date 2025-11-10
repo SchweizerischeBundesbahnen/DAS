@@ -136,12 +136,16 @@ class _AnchoredFullPageOverlayState extends State<AnchoredFullPageOverlay> with 
         scale: _scaleAnimation,
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: widget.targetAnchor.x < 0.0 ? CrossAxisAlignment.start : CrossAxisAlignment.center,
           children: [
-            SvgPicture.asset(
-              AppAssets.shapeMenuArrow,
-              colorFilter: ColorFilter.mode(
-                ThemeUtil.getColor(context, SBBColors.milk, SBBColors.black),
-                BlendMode.srcIn,
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: widget.contentWidth / 4),
+              child: SvgPicture.asset(
+                AppAssets.shapeMenuArrow,
+                colorFilter: ColorFilter.mode(
+                  ThemeUtil.getColor(context, SBBColors.milk, SBBColors.black),
+                  BlendMode.srcIn,
+                ),
               ),
             ),
             Material(

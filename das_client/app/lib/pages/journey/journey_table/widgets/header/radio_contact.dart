@@ -13,6 +13,11 @@ class RadioContactChannels extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => mainContactIdentifiers != null
-      ? Text(key: radioContactChannelsKey, mainContactIdentifiers!, style: DASTextStyles.xLargeRoman)
+      ? Text(
+          key: radioContactChannelsKey,
+          mainContactIdentifiers!,
+          style: DASTextStyles.xLargeRoman,
+          overflow: TextOverflow.ellipsis,
+        )
       : SizedBox.shrink();
 }
