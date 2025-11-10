@@ -3,8 +3,8 @@ import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_page.dart';
 import 'package:app/pages/journey/journey_table/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/journey_table/widgets/header/battery_status.dart';
+import 'package:app/pages/journey/journey_table/widgets/header/chronograph_header_box.dart';
 import 'package:app/pages/journey/journey_table/widgets/header/connectivity_icon.dart';
-import 'package:app/pages/journey/journey_table/widgets/header/das_chronograph.dart';
 import 'package:app/pages/journey/journey_table/widgets/header/extended_menu.dart';
 import 'package:app/pages/journey/journey_table/widgets/header/header.dart';
 import 'package:app/pages/journey/journey_table/widgets/header/radio_channel.dart';
@@ -108,13 +108,13 @@ Future<void> main() async {
 
       await loadJourney(tester, trainNumber: 'T4');
 
-      final chronograph = find.byType(DASChronograph);
+      final chronograph = find.byType(ChronographHeaderBox);
       expect(chronograph, findsOneWidget);
 
       // wait until delay displayed
       await waitUntilExists(
         tester,
-        find.descendant(of: chronograph, matching: find.byKey(DASChronograph.punctualityTextKey)),
+        find.descendant(of: chronograph, matching: find.byKey(ChronographHeaderBox.punctualityTextKey)),
       );
 
       final waitTime = DI.get<TimeConstants>().punctualityDisappearSeconds + 1;
@@ -123,7 +123,10 @@ Future<void> main() async {
       await tester.pumpAndSettle(Duration(seconds: waitTime));
 
       // check that delay text has disappeared
-      expect(find.descendant(of: chronograph, matching: find.byKey(DASChronograph.punctualityTextKey)), findsNothing);
+      expect(
+        find.descendant(of: chronograph, matching: find.byKey(ChronographHeaderBox.punctualityTextKey)),
+        findsNothing,
+      );
     });
 
     testWidgets('test chronograph punctuality display becomes stale when no updates come', (tester) async {
@@ -131,7 +134,7 @@ Future<void> main() async {
 
       await loadJourney(tester, trainNumber: 'T4');
 
-      final chronograph = find.byType(DASChronograph);
+      final chronograph = find.byType(ChronographHeaderBox);
       expect(chronograph, findsOneWidget);
 
       final context = tester.element(chronograph);
@@ -400,7 +403,7 @@ Future<void> main() async {
       await tester.pumpAndSettle();
 
       // does not find delay text
-      expect(find.descendant(of: header, matching: find.byKey(DASChronograph.punctualityTextKey)), findsNothing);
+      expect(find.descendant(of: header, matching: find.byKey(ChronographHeaderBox.punctualityTextKey)), findsNothing);
 
       await disconnect(tester);
     });
@@ -416,7 +419,7 @@ Future<void> main() async {
       expect(header, findsOneWidget);
 
       final currentTimeText = tester.widget<Text>(
-        find.descendant(of: header, matching: find.byKey(DASChronograph.currentTimeTextKey)),
+        find.descendant(of: header, matching: find.byKey(ChronographHeaderBox.currentTimeTextKey)),
       );
 
       final displayedTime = currentTimeText.data;
@@ -543,7 +546,7 @@ Future<void> main() async {
       final header = find.byType(Header);
       expect(header, findsOneWidget);
 
-      final chronograph = find.byType(DASChronograph);
+      final chronograph = find.byType(ChronographHeaderBox);
       expect(chronograph, findsOneWidget);
 
       await tester.tap(chronograph);

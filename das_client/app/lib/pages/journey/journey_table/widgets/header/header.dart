@@ -2,9 +2,9 @@ import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/brightness/brightness_modal_sheet.dart';
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_table/journey_overview.dart';
-import 'package:app/pages/journey/journey_table/widgets/header/das_chronograph.dart';
-import 'package:app/pages/journey/journey_table/widgets/header/header_box.dart';
-import 'package:app/pages/journey/journey_table/widgets/header/main_container.dart';
+import 'package:app/pages/journey/journey_table/widgets/header/chronograph_header_box.dart';
+import 'package:app/pages/journey/journey_table/widgets/header/left_header_box.dart';
+import 'package:app/pages/journey/journey_table/widgets/header/main_header_box.dart';
 import 'package:app/widgets/extended_header_container.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -46,12 +46,12 @@ class _HeaderState extends State<Header> {
           child: Row(
             spacing: sbbDefaultSpacing * 0.5,
             children: [
-              HeaderBox(),
-              Expanded(child: MainContainer()),
+              LeftHeaderBox(),
+              Expanded(child: MainHeaderBox()),
               GestureDetector(
                 onDoubleTap: _doubleTap,
                 behavior: HitTestBehavior.translucent,
-                child: const DASChronograph(),
+                child: const ChronographHeaderBox(),
               ),
             ],
           ),

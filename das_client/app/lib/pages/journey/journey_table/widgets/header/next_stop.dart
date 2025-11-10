@@ -16,10 +16,6 @@ class NextStop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _tappableNextStopIdentifier(context);
-  }
-
-  Widget _tappableNextStopIdentifier(BuildContext context) {
     return GestureDetector(
       key: tappableAreaKey,
       onTap: () => showReducedOverviewModalSheet(context),

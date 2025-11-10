@@ -10,11 +10,11 @@ const double _width = 124.0;
 const double _height = 112.0;
 const Duration _animationDuration = Duration(milliseconds: 250);
 
-class DASChronograph extends StatelessWidget {
+class ChronographHeaderBox extends StatelessWidget {
   static const Key punctualityTextKey = Key('punctualityTextKey');
   static const Key currentTimeTextKey = Key('currentTimeTextKey');
 
-  const DASChronograph({super.key});
+  const ChronographHeaderBox({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +54,7 @@ class DASChronograph extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(sbbDefaultSpacing * 0.5),
             child: Text(
-              key: showPunctuality ? DASChronograph.punctualityTextKey : null,
+              key: showPunctuality ? ChronographHeaderBox.punctualityTextKey : null,
               model?.formattedDelay ?? '',
               style: resolvedStyle,
             ),

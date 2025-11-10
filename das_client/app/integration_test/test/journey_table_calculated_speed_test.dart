@@ -1,5 +1,5 @@
 import 'package:app/pages/journey/journey_table/header/chronograph/chronograph_view_model.dart';
-import 'package:app/pages/journey/journey_table/widgets/header/das_chronograph.dart';
+import 'package:app/pages/journey/journey_table/widgets/header/chronograph_header_box.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/cells/calculated_speed_cell_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -152,7 +152,7 @@ void main() {
 
     await loadJourney(tester, trainNumber: 'T23');
 
-    final chronograph = find.byType(DASChronograph);
+    final chronograph = find.byType(ChronographHeaderBox);
 
     // should not display chronograph string
     expect(

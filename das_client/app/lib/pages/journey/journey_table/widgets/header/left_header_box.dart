@@ -13,8 +13,8 @@ const double _width = 215.0;
 const double _smallWidth = 150.0;
 const double _height = 112.0;
 
-class HeaderBox extends StatelessWidget {
-  const HeaderBox({super.key});
+class LeftHeaderBox extends StatelessWidget {
+  const LeftHeaderBox({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -66,11 +66,11 @@ class HeaderBox extends StatelessWidget {
     children: [
       Flexible(child: JourneyIdentifier()),
       Divider(height: sbbDefaultSpacing, color: SBBColors.cloud),
-      Flexible(child: _bottomHeaderRow()),
+      Flexible(child: _radioChannel()),
     ],
   );
 
-  Widget _bottomHeaderRow() => SizedBox(
+  Widget _radioChannel() => SizedBox(
     height: 48.0,
     child: RadioChannel(),
   );
