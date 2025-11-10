@@ -49,6 +49,7 @@ void main() {
 
     group('tests when inputs are empty', () {
       test('whenNoProfileReferences_thenIsEmpty', () {
+        expect(true, false);
         // ARRANGE
         when(mockJourneyProfile.segmentProfileReferences).thenReturn(List.empty());
 
@@ -345,7 +346,7 @@ void main() {
           );
         });
 
-        test('whenEndMidwayAdjacentSP_thenIsBetweenFirstSignalAndSecondSP', () {
+        test('whenEndMidwayAdjacentSP_thenIsBetweenFirstSignalAndClosestSignal', () {
           // ARRANGE
           final firstSignalOrder = journey.first.order;
           when(mockTemporaryConstraint.startLocation).thenReturn(950.0);
@@ -357,14 +358,14 @@ void main() {
             orderedEquals([
               VelocityMaxAdvisedSpeedSegment(
                 startOrder: firstSignalOrder,
-                endOrder: servicePoints[1].order,
-                endData: servicePoints[1],
+                endOrder: journey[3].order,
+                endData: journey[3],
               ),
             ]),
           );
         });
 
-        test('whenEndMidwayNonAdjacentSPs_thenIsBetweenFirstSignalAndLastSP', () {
+        test('whenEndMidwayNonAdjacentSPs_thenIsBetweenFirstSignalAndClosestSignal', () {
           // ARRANGE
           final firstSignalOrder = journey.first.order;
           when(mockTemporaryConstraint.startLocation).thenReturn(950.0);
@@ -376,8 +377,8 @@ void main() {
             orderedEquals([
               VelocityMaxAdvisedSpeedSegment(
                 startOrder: firstSignalOrder,
-                endOrder: servicePoints.last.order,
-                endData: servicePoints.last,
+                endOrder: journey[6].order,
+                endData: journey[6],
               ),
             ]),
           );
@@ -420,7 +421,7 @@ void main() {
           );
         });
 
-        test('whenStartMidwayBetweenAdjacentSPs_thenIsBetweenSecondSPAndLastSP', () {
+        test('whenStartMidwayBetweenAdjacentSPs_thenIsBetweenClosestSignalAndLastSP', () {
           // ARRANGE
           when(mockTemporaryConstraint.startLocation).thenReturn(4000.0);
           when(mockTemporaryConstraint.endLocation).thenReturn(5000.0);
@@ -430,7 +431,7 @@ void main() {
             testee.call(mockJourneyProfile, [mockSegmentProfile], journey),
             orderedEquals([
               VelocityMaxAdvisedSpeedSegment(
-                startOrder: servicePoints[1].order,
+                startOrder: journey[5].order,
                 endOrder: servicePoints.last.order,
                 endData: servicePoints.last,
               ),
@@ -438,7 +439,7 @@ void main() {
           );
         });
 
-        test('whenStartMidwayBetweenNonAdjacentSPs_thenIsBetweenFirstSPAndLastSP', () {
+        test('whenStartMidwayBetweenNonAdjacentSPs_thenIsBetweenFirstClosestSignalAndLastSP', () {
           // ARRANGE
           when(mockTemporaryConstraint.startLocation).thenReturn(2000.0);
           when(mockTemporaryConstraint.endLocation).thenReturn(5000.0);
@@ -448,7 +449,7 @@ void main() {
             testee.call(mockJourneyProfile, [mockSegmentProfile], journey),
             orderedEquals([
               VelocityMaxAdvisedSpeedSegment(
-                startOrder: servicePoints.first.order,
+                startOrder: journey[2].order,
                 endOrder: servicePoints.last.order,
                 endData: servicePoints.last,
               ),
@@ -469,6 +470,25 @@ void main() {
             orderedEquals([
               VelocityMaxAdvisedSpeedSegment(
                 startOrder: servicePoints[1].order,
+                endOrder: lastSignalOrder,
+                endData: journey.last,
+              ),
+            ]),
+          );
+        });
+
+        test('whenEndOnLastSignalAndStartMidwayBetweenSignalAndSP_thenIsBetweenSignalAndLastSignal', () {
+          // ARRANGE
+          final lastSignalOrder = journey.last.order;
+          when(mockTemporaryConstraint.startLocation).thenReturn(2975.0);
+          when(mockTemporaryConstraint.endLocation).thenReturn(5050.0);
+
+          // ACT & EXPECT
+          expect(
+            testee.call(mockJourneyProfile, [mockSegmentProfile], journey),
+            orderedEquals([
+              VelocityMaxAdvisedSpeedSegment(
+                startOrder: journey[3].order,
                 endOrder: lastSignalOrder,
                 endData: journey.last,
               ),
@@ -597,7 +617,7 @@ void main() {
         });
 
         /// 3. Midway Service points
-        test('whenStartMidwayInBetweenFirstTwoAndEndMidwayInBetweenLatterTwo_thenIsBetweenFirstSPAndLastSP', () {
+        test('whenStartMidwayInBetweenFirstTwoAndEndMidwayInBetweenLatterTwo_thenIsBetweenCorrespondingSignals', () {
           // ARRANGE
           when(mockTemporaryConstraint.startLocation).thenReturn(2000);
           when(mockTemporaryConstraint.endLocation).thenReturn(4000);
@@ -607,9 +627,9 @@ void main() {
             testee.call(mockJourneyProfile, [mockSegmentProfile], journey),
             orderedEquals([
               VelocityMaxAdvisedSpeedSegment(
-                startOrder: servicePoints.first.order,
-                endOrder: servicePoints.last.order,
-                endData: servicePoints.last,
+                startOrder: journey[2].order,
+                endOrder: journey[6].order,
+                endData: journey[6],
               ),
             ]),
           );
