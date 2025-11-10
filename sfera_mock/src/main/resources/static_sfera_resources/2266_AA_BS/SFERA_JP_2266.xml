@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 
-<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="3" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
+<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="4" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
     <TrainIdentification>
         <OTN_ID>
             <teltsi_Company>1285</teltsi_Company>
