@@ -150,7 +150,7 @@
         </TimingPointConstraints>
 
         <!-- third ADL - trainFollowing -->
-        <!-- This ADL will be mapped from ROL to MOR -->
+        <!-- This ADL will be mapped from E912 to E185 and ending service point is MOR -->
         <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="AdvisedSpeed" startLocation="2000" endLocation="4000">
             <AdvisedSpeed optimalSpeed="120" reasonCode="trainFollowing" adviceType="ConstantspeedAdvice">
                 <ReasonText language="DE" text="ADL"/>
