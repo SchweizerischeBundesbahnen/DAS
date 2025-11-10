@@ -1,5 +1,5 @@
 import 'package:app/pages/journey/journey_table/header/chronograph/chronograph_view_model.dart';
-import 'package:app/pages/journey/journey_table/widgets/header/das_chronograph.dart';
+import 'package:app/pages/journey/journey_table/widgets/header/chronograph_header_box.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/cells/calculated_speed_cell_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -152,7 +152,7 @@ void main() {
 
     await loadJourney(tester, trainNumber: 'T23');
 
-    final chronograph = find.byType(DASChronograph);
+    final chronograph = find.byType(ChronographHeaderBox);
 
     // should not display chronograph string
     expect(
@@ -160,14 +160,12 @@ void main() {
       findsNothing,
     );
 
+    // event to service point with VPro and delay 10 seconds
+    const fourtySecondsDelay = '+00:40';
     await waitUntilExists(
       tester,
-      find.descendant(of: chronograph, matching: find.byKey(DASChronograph.punctualityTextKey)),
+      find.descendant(of: chronograph, matching: find.text(fourtySecondsDelay)),
     );
-
-    // event to service point with VPro and delay 40 seconds
-    const fourtySecondsDelay = '+00:40';
-    expect(find.descendant(of: chronograph, matching: find.text(fourtySecondsDelay)), findsOneWidget);
 
     await disconnect(tester);
   });

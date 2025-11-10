@@ -71,8 +71,10 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
   DASTableCell informationCell(BuildContext context) {
     return DASTableCell(
       onTap: () {
-        final viewModel = context.read<ServicePointModalViewModel>();
-        viewModel.open(context, tab: ServicePointModalTab.communication, servicePoint: data);
+        if (shouldOpenDetailModalOnTap) {
+          final viewModel = context.read<ServicePointModalViewModel>();
+          viewModel.open(context, tab: ServicePointModalTab.communication, servicePoint: data);
+        }
       },
       alignment: Alignment.bottomLeft,
       child: Column(
@@ -85,6 +87,8 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
       ),
     );
   }
+
+  bool get shouldOpenDetailModalOnTap => true;
 
   @override
   DASTableCell timeCell(BuildContext context) {
@@ -249,11 +253,14 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     viewModel.open(context, tab: ServicePointModalTab.graduatedSpeeds, servicePoint: data);
   }
 
+  Stream<bool> isModalOpenStream(BuildContext context) => context.read<DetailModalViewModel>().isModalOpen;
+
+  bool isModalOpenValue(BuildContext context) => context.read<DetailModalViewModel>().isModalOpenValue;
+
   Widget _informationCellTitle(BuildContext context) {
-    final viewModel = context.read<DetailModalViewModel>();
     return StreamBuilder<bool>(
-      stream: viewModel.isModalOpen,
-      initialData: viewModel.isModalOpenValue,
+      stream: isModalOpenStream(context),
+      initialData: isModalOpenValue(context),
       builder: (context, asyncSnapshot) {
         final isModalOpen = asyncSnapshot.requireData;
         final servicePointName = data.betweenBrackets ? '(${data.name})' : data.name;

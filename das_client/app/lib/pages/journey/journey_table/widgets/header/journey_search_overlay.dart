@@ -1,11 +1,11 @@
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
+import 'package:app/pages/journey/journey_table/widgets/anchored_full_page_overlay.dart';
 import 'package:app/pages/journey/selection/journey_selection_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
 import 'package:app/pages/journey/selection/railway_undertaking/widgets/select_railway_undertaking_input.dart';
 import 'package:app/pages/journey/selection/widgets/journey_date_input.dart';
 import 'package:app/pages/journey/selection/widgets/journey_train_number_input.dart';
-import 'package:app/pages/journey/journey_table/widgets/anchored_full_page_overlay.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -23,6 +23,8 @@ class JourneySearchOverlay extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel = DI.get<JourneySelectionViewModel>();
     return AnchoredFullPageOverlay(
+      targetAnchor: Alignment.bottomLeft,
+      followerAnchor: Alignment.topLeft,
       triggerBuilder: (_, showOverlay) {
         return InkWell(
           key: journeySearchWidgetKey,

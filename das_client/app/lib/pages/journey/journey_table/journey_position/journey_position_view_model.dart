@@ -29,9 +29,9 @@ class JourneyPositionViewModel {
 
   JourneyPositionModel get modelValue => _rxModel.value;
 
-  Stream<JourneyPositionModel> get model => _rxModel
-      .transform(ThrottleStreamTransformer((_) => TimerStream(null, const Duration(milliseconds: 1))))
-      .distinct();
+  Stream<JourneyPositionModel> get model => _rxModel.distinct();
+
+  TrainIdentification? lastTrainIdentification;
 
   void dispose() {
     _journeySubscription?.cancel();
@@ -56,7 +56,17 @@ class JourneyPositionViewModel {
           final journey = data.$1;
           final punctuality = data.$2;
 
-          if (journey == null) return _rxModel.add(JourneyPositionModel());
+          if (journey == null) {
+            _rxModel.add(JourneyPositionModel());
+            return;
+          }
+
+          if (lastTrainIdentification != journey.metadata.trainIdentification) {
+            // Reset timed service point when train identification changes
+            _rxTimedServicePointReached.add(null);
+            lastTrainIdentification = journey.metadata.trainIdentification;
+            return;
+          }
 
           final updatedPosition = _calculateCurrentPosition(
             journey.metadata.signaledPosition,
@@ -75,7 +85,7 @@ class JourneyPositionViewModel {
             nextStop: _calculateNextStop(updatedPosition, journey.journeyPoints),
           );
 
-          // makes sure the value is added to the stream before other events received
+          // delay position update, so journey is processed first (animation will jump otherwise)
           await Future.delayed(Duration(milliseconds: 2));
           _rxModel.add(model);
         });

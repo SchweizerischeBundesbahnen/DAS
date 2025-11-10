@@ -1,5 +1,5 @@
 import 'package:app/pages/journey/journey_table/advised_speed/advised_speed_notification.dart';
-import 'package:app/pages/journey/journey_table/widgets/header/das_chronograph.dart';
+import 'package:app/pages/journey/journey_table/widgets/header/chronograph_header_box.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/cells/advised_speed_cell_body.dart';
 import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -30,10 +30,10 @@ void main() {
     await waitUntilExists(tester, find.byKey(AdvisedSpeedNotification.advisedSpeedNotificationIconKey));
     await waitUntilExists(tester, _findAdvisedSpeedNotificationContainingText('Morges'));
     // Punctuality Hidden
-    expect(find.byKey(DASChronograph.punctualityTextKey), findsNothing);
+    expect(find.byKey(ChronographHeaderBox.punctualityTextKey), findsNothing);
     await waitUntilExists(tester, _findAdvisedSpeedNotificationContainingText(l10n.w_advised_speed_end));
     // Punctuality Visible
-    expect(find.byKey(DASChronograph.punctualityTextKey), findsOne);
+    expect(find.byKey(ChronographHeaderBox.punctualityTextKey), findsOne);
 
     // 4th advised speed Message (vmax, speed not in advised speed notification)
     // end is never displayed since goes directly to next segment
