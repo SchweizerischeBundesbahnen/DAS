@@ -50,6 +50,13 @@
       "endLocation": {}
     }
   },
+  "w_advised_speed_dist": "ADL DIST: rouler jusqu’à {endLocation}",
+  "@w_advised_speed_dist": {
+    "type": "text",
+    "placeholders": {
+      "endLocation": {}
+    }
+  },
   "w_extended_menu_title": "Autres fonctionnalités",
   "w_extended_menu_maneuver_mode": "Mode manœuvre",
   "w_extended_menu_breaking_slip_action": "Ouvrir le bulletin de freinage et de charge",

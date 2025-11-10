@@ -14,6 +14,11 @@ sealed class AdvisedSpeedSegment extends Segment {
     final VelocityMaxAdvisedSpeedSegment _ => null,
   };
 
+  /// TMS VAD delivers Advised Speed Notifications to signal keeping distance with a optimalSpeed of `0`
+  ///
+  /// Planned to be removed in Release 2 of DAS Client.
+  bool get isDIST => speed != null && speed!.value == '0';
+
   final BaseData endData;
 
   @override

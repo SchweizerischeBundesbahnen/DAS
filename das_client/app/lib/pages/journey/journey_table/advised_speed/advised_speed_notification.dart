@@ -42,21 +42,25 @@ class AdvisedSpeedNotification extends StatelessWidget {
     icon: segment.displayIcon(ThemeUtil.isDarkMode(context)),
   );
 
-  String _activeSegmentTitle(BuildContext context, AdvisedSpeedSegment adl) => switch (adl) {
-    FollowTrainAdvisedSpeedSegment() => context.l10n.w_advised_speed_vopt(
-      adl.speed.value,
-      _advisedSegmentEndPoint(adl) ?? '',
-    ),
-    TrainFollowingAdvisedSpeedSegment() => context.l10n.w_advised_speed_vopt(
-      adl.speed.value,
-      _advisedSegmentEndPoint(adl) ?? '',
-    ),
-    FixedTimeAdvisedSpeedSegment() => context.l10n.w_advised_speed_vopt(
-      adl.speed.value,
-      _advisedSegmentEndPoint(adl) ?? '',
-    ),
-    VelocityMaxAdvisedSpeedSegment() => context.l10n.w_advised_speed_vmax(_advisedSegmentEndPoint(adl) ?? ''),
-  };
+  String _activeSegmentTitle(BuildContext context, AdvisedSpeedSegment adl) {
+    if (adl.isDIST) return context.l10n.w_advised_speed_dist(_advisedSegmentEndPoint(adl) ?? '');
+
+    return switch (adl) {
+      FollowTrainAdvisedSpeedSegment() => context.l10n.w_advised_speed_vopt(
+        adl.speed.value,
+        _advisedSegmentEndPoint(adl) ?? '',
+      ),
+      TrainFollowingAdvisedSpeedSegment() => context.l10n.w_advised_speed_vopt(
+        adl.speed.value,
+        _advisedSegmentEndPoint(adl) ?? '',
+      ),
+      FixedTimeAdvisedSpeedSegment() => context.l10n.w_advised_speed_vopt(
+        adl.speed.value,
+        _advisedSegmentEndPoint(adl) ?? '',
+      ),
+      VelocityMaxAdvisedSpeedSegment() => context.l10n.w_advised_speed_vmax(_advisedSegmentEndPoint(adl) ?? ''),
+    };
+  }
 
   String? _advisedSegmentEndPoint(AdvisedSpeedSegment advisedSpeedSegment) {
     final end = advisedSpeedSegment.endData;

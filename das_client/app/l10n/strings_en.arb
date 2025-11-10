@@ -50,6 +50,13 @@
       "endLocation": {}
     }
   },
+  "w_advised_speed_dist": "ADL DIST: drive until {endLocation}",
+  "@w_advised_speed_dist": {
+    "type": "text",
+    "placeholders": {
+      "endLocation": {}
+    }
+  },
   "w_extended_menu_title": "Other functionalities",
   "w_extended_menu_maneuver_mode": "Manoeuvring mode",
   "w_extended_menu_breaking_slip_action": "Open brake and load slip",

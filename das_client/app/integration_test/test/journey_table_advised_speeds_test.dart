@@ -20,8 +20,10 @@ void main() {
     await waitUntilExists(tester, _findAdvisedSpeedNotificationContainingText('80'));
     await waitUntilExists(tester, _findAdvisedSpeedNotificationContainingText(l10n.w_advised_speed_end));
 
-    // 2nd advised speed Message (check signal)
+    // 2nd advised speed Message (check signal & DIST)
     await waitUntilExists(tester, _findAdvisedSpeedNotificationContainingText('A653'));
+    await waitUntilExists(tester, _findAdvisedSpeedNotificationContainingText('DIST'));
+    await waitUntilExists(tester, find.byKey(AdvisedSpeedCellBody.advisedSpeedDistKey));
     await tester.pumpAndSettle(const Duration(milliseconds: 100));
 
     // 3rd advised speed Message (check icon & service point)
@@ -68,6 +70,17 @@ void main() {
     // Check that advised speed end displayed calculated speed on signal row
     final advisedSpeedEndRow = findDASTableRowByText('A653');
     await waitUntilExists(tester, _findCalculatedSpeedCellOf(advisedSpeedEndRow, '80'));
+
+    final advisedSpeedDistStartRow = findDASTableRowByText('A136');
+    final distSpeedCell = find.descendant(
+      of: advisedSpeedDistStartRow,
+      matching: find.byKey(AdvisedSpeedCellBody.advisedSpeedDistKey),
+    );
+    expect(distSpeedCell, findsOne);
+
+    // Do not display zero speed
+    final advisedSpeedCellWithZeroSpeed = _findCalculatedSpeedCellOf(advisedSpeedDistStartRow, '0');
+    expect(advisedSpeedCellWithZeroSpeed, findsNothing);
 
     await waitUntilExists(
       tester,
