@@ -49,7 +49,6 @@ void main() {
 
     group('tests when inputs are empty', () {
       test('whenNoProfileReferences_thenIsEmpty', () {
-        expect(true, false);
         // ARRANGE
         when(mockJourneyProfile.segmentProfileReferences).thenReturn(List.empty());
 
@@ -312,7 +311,7 @@ void main() {
           // ARRANGE
           final firstSignalOrder = journey.first.order;
           when(mockTemporaryConstraint.startLocation).thenReturn(950.0);
-          when(mockTemporaryConstraint.endLocation).thenReturn(960.0);
+          when(mockTemporaryConstraint.endLocation).thenReturn(999.0);
 
           // ACT & EXPECT
           expect(

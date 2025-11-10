@@ -1213,7 +1213,7 @@ void main() {
     expect(advisedSpeeds[2].isDIST, isFalse);
     expect(advisedSpeeds[2].startOrder, 301050);
     expect(advisedSpeeds[2].endOrder, 304950);
-    expect(advisedSpeeds[2].endData, equals(journey.data[32]));
+    expect(advisedSpeeds[2].endData, equals(journey.data[31]));
 
     expect(advisedSpeeds[3], isA<VelocityMaxAdvisedSpeedSegment>());
     expect(advisedSpeeds[3].speed, isNull);
@@ -1714,11 +1714,11 @@ void main() {
     expect(additionalServicePoints[2].name, 'Olten Tunnel (Spw)');
     expect(additionalServicePoints[3].name, 'Dulliken (Depot)');
 
-    // ADL speed update should be on nearest non-additional service point
+    // ADL speed update should ignore additional service points and land on closest JourneyPoints
     final advisedSpeedSegments = journey.metadata.advisedSpeedSegments.toList();
     expect(advisedSpeedSegments, hasLength(1));
-    expect(advisedSpeedSegments[0].startOrder, 1000);
-    expect(advisedSpeedSegments[0].endOrder, 3500);
+    expect(advisedSpeedSegments[0].startOrder, 1600);
+    expect(advisedSpeedSegments[0].endOrder, 3100);
   });
 
   test('Test shunting movement markers are parsed correctly', () {

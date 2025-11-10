@@ -107,7 +107,7 @@ class SpeedMapper {
   ) {
     final drafts = _parseAllSegmentsToDrafts(journeyProfile, segmentProfiles);
     final List<DraftAdvisedSpeedSegment> mergedDrafts = _mergeAdvisedSegments(drafts);
-    final result = _mapUnknownLocationsToClosestServicePoints(mergedDrafts, journeyData);
+    final result = _mapUnknownLocationsToClosestJourneyPoints(mergedDrafts, journeyData);
 
     return result;
   }
@@ -226,12 +226,14 @@ class SpeedMapper {
     return groupedAdvisedSpeedSegments.values.flattened.toList(growable: false).sorted();
   }
 
-  static List<AdvisedSpeedSegment> _mapUnknownLocationsToClosestServicePoints(
+  static List<AdvisedSpeedSegment> _mapUnknownLocationsToClosestJourneyPoints(
     List<DraftAdvisedSpeedSegment> mergedDrafts,
     List<BaseData> journeyData,
   ) {
     final journeyOrders = journeyData.map((d) => d.order);
-    final servicePoints = journeyData.whereType<ServicePoint>().where((sP) => !sP.isAdditional);
+    final possiblePoints = journeyData.whereType<JourneyPoint>().whereNot(
+      (it) => it is ServicePoint && it.isAdditional,
+    );
 
     final result = <AdvisedSpeedSegment>[];
     for (int idx = 0; idx < mergedDrafts.length; idx++) {
@@ -241,10 +243,10 @@ class SpeedMapper {
       final endUnknown = (!journeyOrders.contains(draft.endOrder) || draft.endsWithSegment);
 
       if (startUnknown) {
-        draft.startOrder = _orderFromClosestServicePoint(draft.startOrder, servicePoints) ?? draft.endOrder;
+        draft.startOrder = _orderFromClosestJourneyPoint(draft.startOrder, possiblePoints) ?? draft.endOrder;
       }
       if (endUnknown) {
-        draft.endOrder = _orderFromClosestServicePoint(draft.endOrder, servicePoints.toList().reversed) ?? 0;
+        draft.endOrder = _orderFromClosestJourneyPoint(draft.endOrder, possiblePoints.toList().reversed) ?? 0;
       }
 
       if (draft.isValid) {
@@ -264,13 +266,13 @@ class SpeedMapper {
     return result;
   }
 
-  static int? _orderFromClosestServicePoint(int order, Iterable<ServicePoint> servicePoints) {
-    ServicePoint? champion;
+  static int? _orderFromClosestJourneyPoint(int order, Iterable<JourneyPoint> journeyPoints) {
+    JourneyPoint? champion;
     int minDistance = double.maxFinite.toInt();
-    for (final sP in servicePoints) {
-      final currentDistance = (sP.order - order).abs();
+    for (final jP in journeyPoints) {
+      final currentDistance = (jP.order - order).abs();
       if (currentDistance < minDistance) {
-        champion = sP;
+        champion = jP;
         minDistance = currentDistance;
       }
     }
