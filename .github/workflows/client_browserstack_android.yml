@@ -85,7 +85,7 @@ jobs:
         browserstackUsername: ${{ secrets.BROWSERSTACK_USERNAME }}
         browserstackAccessKey: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
         project: das_client
-        customId: ${{ steps.extract_branch.outputs.branch }}
+        customId: das_client_android
         buildTag: ${{ steps.extract_branch.outputs.branch }}
         appFilePath: ${{ github.workspace }}/das_client/app/build/app/outputs/flutter-apk/app-dev-debug.apk
         testFilePath: ${{ github.workspace }}/das_client/app/build/app/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk
