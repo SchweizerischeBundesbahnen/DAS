@@ -13,8 +13,8 @@ const double _width = 215.0;
 const double _smallWidth = 150.0;
 const double _height = 112.0;
 
-class LeftHeaderBox extends StatelessWidget {
-  const LeftHeaderBox({super.key});
+class JourneyIdentifierHeaderBox extends StatelessWidget {
+  const JourneyIdentifierHeaderBox({super.key});
 
   @override
   Widget build(BuildContext context) {

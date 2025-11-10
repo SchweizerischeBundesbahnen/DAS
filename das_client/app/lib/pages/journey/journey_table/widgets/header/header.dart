@@ -3,7 +3,7 @@ import 'package:app/brightness/brightness_modal_sheet.dart';
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_table/journey_overview.dart';
 import 'package:app/pages/journey/journey_table/widgets/header/chronograph_header_box.dart';
-import 'package:app/pages/journey/journey_table/widgets/header/left_header_box.dart';
+import 'package:app/pages/journey/journey_table/widgets/header/journey_identifier_header_box.dart';
 import 'package:app/pages/journey/journey_table/widgets/header/main_header_box.dart';
 import 'package:app/widgets/extended_header_container.dart';
 import 'package:flutter/material.dart';
@@ -46,7 +46,7 @@ class _HeaderState extends State<Header> {
           child: Row(
             spacing: sbbDefaultSpacing * 0.5,
             children: [
-              LeftHeaderBox(),
+              JourneyIdentifierHeaderBox(),
               Expanded(child: MainHeaderBox()),
               GestureDetector(
                 onDoubleTap: _doubleTap,
