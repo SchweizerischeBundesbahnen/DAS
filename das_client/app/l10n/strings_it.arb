@@ -41,6 +41,13 @@
       "endLocation": {}
     }
   },
+  "w_advised_speed_dist": "ADL DIST: viaggare fino a {endLocation}",
+  "@w_advised_speed_dist": {
+    "type": "text",
+    "placeholders": {
+      "endLocation": {}
+    }
+  },
   "w_reduced_journey_table_title": "Panoramica della corsa",
   "w_navigation_drawer_fahrtinfo_title": "Informazioni sulla corsa",
   "w_navigation_drawer_links_title": "Link",

@@ -13,6 +13,7 @@ import 'package:sfera/component.dart';
 class AdvisedSpeedCellBody extends StatelessWidget {
   static const String zeroSpeedContent = '\u{2013}'; // en dash '–'
   static const Key nonEmptyKey = Key('AdvisedSpeedCellBodyNonEmptyKey');
+  static const Key advisedSpeedDistKey = Key('AdvisedSpeedCellBodyNonEmptyDISTKey');
   static const Key generalKey = Key('AdvisedSpeedCellBodyGeneralKey');
 
   const AdvisedSpeedCellBody({
@@ -52,9 +53,10 @@ class AdvisedSpeedCellBody extends StatelessWidget {
     }
 
     final resolvedTextColor = ThemeUtil.getColor(context, SBBColors.white, SBBColors.black);
+    final resolvedSpeedDisplay = advisedSpeed.isDIST ? '' : speed?.value ?? '';
     return Text(
-      speed?.value ?? '',
-      key: nonEmptyKey,
+      resolvedSpeedDisplay,
+      key: advisedSpeed.isDIST ? advisedSpeedDistKey : nonEmptyKey,
       style: DASTextStyles.largeBold.copyWith(color: resolvedTextColor),
     );
   }

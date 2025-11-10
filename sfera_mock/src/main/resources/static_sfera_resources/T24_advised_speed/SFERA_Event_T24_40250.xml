@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <G2B_EventPayload xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
-    <JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="1"
+    <JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="2"
                     xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
         <TrainIdentification>
             <OTN_ID>
@@ -65,9 +65,9 @@
                 <StoppingPointDepartureDetails departureTime="9999-01-01T00:24:00Z" plannedDepartureTime="9999-01-01T00:24:00Z"/>
             </TimingPointConstraints>
 
-            <!-- second ADL - fixedTime BEGIN will be merged with the one from next Segment-->
+            <!-- second ADL - DIST BEGIN will be merged with the one from next Segment-->
             <TemporaryConstraints startEndQualifier="Starts" temporaryConstraintType="AdvisedSpeed" startLocation="1500">
-                <AdvisedSpeed speed="80" reasonCode="nationalUse1" adviceType="ConstantspeedAdvice">
+                <AdvisedSpeed speed="0" reasonCode="followTrain" adviceType="ConstantspeedAdvice">
                     <ReasonText language="DE" text="ADL"/>
                 </AdvisedSpeed>
             </TemporaryConstraints>
@@ -104,9 +104,9 @@
                 <StoppingPointDepartureDetails departureTime="9999-01-01T00:26:20Z" plannedDepartureTime="9999-01-01T00:26:00Z"/>
             </TimingPointConstraints>
 
-            <!-- second ADL - fixedTime END -->
+            <!-- second ADL - DIST END -->
             <TemporaryConstraints startEndQualifier="Ends" temporaryConstraintType="AdvisedSpeed" endLocation="1500">
-                <AdvisedSpeed speed="80" reasonCode="nationalUse1" adviceType="ConstantspeedAdvice">
+                <AdvisedSpeed speed="0" reasonCode="followTrain" adviceType="ConstantspeedAdvice">
                     <ReasonText language="DE" text="ADL"/>
                 </AdvisedSpeed>
             </TemporaryConstraints>
@@ -210,7 +210,7 @@
                 </AdvisedSpeed>
             </TemporaryConstraints>
 
-            <!-- fifth ADL - followTrain - start is directly after fourth ADL -->
+            <!-- fifth ADL - fixedTime - start is directly after fourth ADL -->
             <!-- CANCELLED -->
 
             <!-- sixth (invalid) ADL - Vmax - start is on last SP, end unknown on last segment profile - will not be displayed -->
