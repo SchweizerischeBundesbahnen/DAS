@@ -28,7 +28,7 @@ void main() {
 
     // 3rd advised speed Message (check icon & service point)
     await waitUntilExists(tester, find.byKey(AdvisedSpeedNotification.advisedSpeedNotificationIconKey));
-    await waitUntilExists(tester, _findAdvisedSpeedNotificationContainingText('Morges'));
+    await waitUntilExists(tester, _findAdvisedSpeedNotificationContainingText('E185'));
     // Punctuality Hidden
     expect(find.byKey(ChronographHeaderBox.punctualityTextKey), findsNothing);
     await waitUntilExists(tester, _findAdvisedSpeedNotificationContainingText(l10n.w_advised_speed_end));
@@ -84,12 +84,12 @@ void main() {
 
     await waitUntilExists(
       tester,
-      find.descendant(of: find.byKey(StickyHeader.headerKey), matching: find.text('Rolle')),
+      find.descendant(of: find.byKey(StickyHeader.headerKey), matching: find.text('Allaman')),
       maxWaitSeconds: 30,
     );
 
     // Check that advisedSpeed end displayed calculated speed on signal row
-    final advisedSpeedEndRowServicePoint = findDASTableRowByText('Morges');
+    final advisedSpeedEndRowServicePoint = findDASTableRowByText('E185');
     expect(_findCalculatedSpeedCellOf(advisedSpeedEndRowServicePoint, '80'), findsOne);
 
     await disconnect(tester);
