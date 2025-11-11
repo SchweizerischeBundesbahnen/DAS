@@ -99,7 +99,7 @@ class SpeedMapper {
   ///
   /// 1. iteration parses all as DraftAdvisedSpeedSegments
   /// 2. try to merge DraftAdvisedSpeedSegments and skip open segments
-  /// 3. segments with unknown locations are mapped to the closest service points
+  /// 3. segments with unknown locations are mapped to the closest journey points
   static Iterable<AdvisedSpeedSegment> advisedSpeeds(
     JourneyProfileDto journeyProfile,
     List<SegmentProfileDto> segmentProfiles,
@@ -300,13 +300,13 @@ class SpeedMapper {
     }
     if (!hasStartAndEnd) {
       _log.info(
-        'AdvisedSpeedTemporaryConstraint found without start and end location. Will map onto first and last service point of Segment Profile!',
+        'AdvisedSpeedTemporaryConstraint found without start and end location. Will map onto first and last journey point of Segment Profile!',
       );
       return false;
     }
     if (!hasStartOrEnd) {
       _log.info(
-        'AdvisedSpeedTemporaryConstraint found without start or end location. Will map to a service point!',
+        'AdvisedSpeedTemporaryConstraint found without start or end location. Will map to closest Journey point!',
       );
     }
 
