@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 
-<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="3" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
+<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="4" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
     <TrainIdentification>
         <OTN_ID>
             <teltsi_Company>1285</teltsi_Company>
@@ -81,14 +81,16 @@
             </TimingPointReference>
         </TimingPointConstraints>
 
-        <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="10117" endLocation="10311" startTime="2025-01-15T12:00:00Z" endTime="2025-08-20T20:00:00Z">
+        <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="10117" endLocation="10311"
+                              startTime="2025-01-15T12:00:00Z" endTime="2025-08-20T20:00:00Z">
             <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="50"/>
             <TemporaryConstraintReason text="Umbau" language="DE"/>
             <TemporaryConstraintReason text="Renouvellement" language="FR"/>
             <TemporaryConstraintReason text="Ristrutturazione" language="IT"/>
         </TemporaryConstraints>
 
-        <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="24050" endLocation="26140" startTime="2025-04-10T18:00:00Z" endTime="2025-12-10T06:00:00Z">
+        <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="24050" endLocation="26140"
+                              startTime="2025-04-10T18:00:00Z" endTime="2025-12-10T06:00:00Z">
             <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="50"/>
             <TemporaryConstraintReason text="Schutz Personal" language="DE"/>
             <TemporaryConstraintReason text="Protection du personnel" language="FR"/>
