@@ -17,7 +17,7 @@ import 'package:sfera/src/data/mapper/speed_mapper.dart';
   MockSpec<TemporaryConstraintsDto>(),
   MockSpec<AdvisedSpeedDto>(),
 ])
-import 'speed_mapper_test.advised_single_segment.mocks.dart';
+import 'speed_mapper.advised_single_segment_test.mocks.dart';
 import 'speed_mapper_test.fixtures.dart';
 
 const _veryLargeDouble = 1_000_000_000_000.0;
