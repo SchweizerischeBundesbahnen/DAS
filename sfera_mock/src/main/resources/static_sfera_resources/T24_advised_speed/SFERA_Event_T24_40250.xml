@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <G2B_EventPayload xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
-    <JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="2"
+    <JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="3"
                     xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
         <TrainIdentification>
             <OTN_ID>
@@ -41,6 +41,23 @@
             <TrainCharacteristicsRef TC_ID="T24_1" TC_VersionMajor="1" TC_VersionMinor="0" location="0">
                 <TC_RU_ID>1285</TC_RU_ID>
             </TrainCharacteristicsRef>
+
+            <!-- VPro for GEAP -->
+            <JP_ContextInformation>
+                <JP_ContextInformation_NSPs>
+                    <teltsi_Company>0085</teltsi_Company>
+                    <NSP_GroupName>VProSpeed</NSP_GroupName>
+                    <NetworkSpecificParameter name="newSpeed" value="110"/>
+                    <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+                </JP_ContextInformation_NSPs>
+
+                <JP_ContextInformation_NSPs>
+                    <teltsi_Company>0085</teltsi_Company>
+                    <NSP_GroupName>VProSpeed</NSP_GroupName>
+                    <NetworkSpecificParameter name="newSpeed" value="100"/>
+                    <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="2000" endLocation="2000"/>
+                </JP_ContextInformation_NSPs>
+            </JP_ContextInformation>
 
 
         </SegmentProfileReference>
@@ -166,6 +183,32 @@
                 </AdvisedSpeed>
             </TemporaryConstraints>
 
+            <JP_ContextInformation>
+                <!-- VPro for ROL -->
+                <JP_ContextInformation_NSPs>
+                    <teltsi_Company>0085</teltsi_Company>
+                    <NSP_GroupName>VProSpeed</NSP_GroupName>
+                    <NetworkSpecificParameter name="newSpeed" value="110"/>
+                    <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="1000" endLocation="1000"/>
+                </JP_ContextInformation_NSPs>
+
+                <!-- VPro for ALL -->
+                <JP_ContextInformation_NSPs>
+                    <teltsi_Company>0085</teltsi_Company>
+                    <NSP_GroupName>VProSpeed</NSP_GroupName>
+                    <NetworkSpecificParameter name="newSpeed" value="110"/>
+                    <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="3000" endLocation="3000"/>
+                </JP_ContextInformation_NSPs>
+
+                <!-- VPro for MOR -->
+                <JP_ContextInformation_NSPs>
+                    <teltsi_Company>0085</teltsi_Company>
+                    <NSP_GroupName>VProSpeed</NSP_GroupName>
+                    <NetworkSpecificParameter name="newSpeed" value="100"/>
+                    <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="5000" endLocation="5000"/>
+                </JP_ContextInformation_NSPs>
+            </JP_ContextInformation>
+
         </SegmentProfileReference>
 
         <SegmentProfileReference SP_ID="T24_5" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
@@ -186,6 +229,16 @@
                     <ReasonText language="DE" text="ADL"/>
                 </AdvisedSpeed>
             </TemporaryConstraints>
+
+            <JP_ContextInformation>
+                <!-- VPro for REN -->
+                <JP_ContextInformation_NSPs>
+                    <teltsi_Company>0085</teltsi_Company>
+                    <NSP_GroupName>VProSpeed</NSP_GroupName>
+                    <NetworkSpecificParameter name="newSpeed" value="80"/>
+                    <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="1000" endLocation="1000"/>
+                </JP_ContextInformation_NSPs>
+            </JP_ContextInformation>
 
         </SegmentProfileReference>
 
@@ -211,7 +264,7 @@
             </TemporaryConstraints>
 
             <!-- fifth ADL - fixedTime - start is directly after fourth ADL -->
-            <!-- CANCELLED -->
+            <!-- CANCELED -->
 
             <!-- sixth (invalid) ADL - Vmax - start is on last SP, end unknown on last segment profile - will not be displayed -->
             <TemporaryConstraints startEndQualifier="Starts" temporaryConstraintType="AdvisedSpeed" startLocation="1000">
@@ -220,7 +273,18 @@
                 </AdvisedSpeed>
             </TemporaryConstraints>
 
+            <JP_ContextInformation>
+                <!-- VPro for LS -->
+                <JP_ContextInformation_NSPs>
+                    <teltsi_Company>0085</teltsi_Company>
+                    <NSP_GroupName>VProSpeed</NSP_GroupName>
+                    <NetworkSpecificParameter name="newSpeed" value="100"/>
+                    <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="1000" endLocation="1000"/>
+                </JP_ContextInformation_NSPs>
+            </JP_ContextInformation>
+
 
         </SegmentProfileReference>
     </JourneyProfile>
+
 </G2B_EventPayload>
