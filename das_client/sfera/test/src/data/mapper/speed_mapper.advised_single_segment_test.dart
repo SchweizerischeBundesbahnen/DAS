@@ -185,6 +185,7 @@ void main() {
               startOrder: twoSignalJourney.first.order,
               endOrder: twoSignalJourney.last.order,
               endData: twoSignalJourney.last,
+              isEndDataCalculated: false,
             ),
           ]),
         );
@@ -204,6 +205,7 @@ void main() {
               endOrder: twoSignalJourney.last.order,
               endData: twoSignalJourney.last,
               speed: SingleSpeed(value: '90'),
+              isEndDataCalculated: false,
             ),
           ]),
         );
@@ -223,6 +225,7 @@ void main() {
               endOrder: twoSignalJourney.last.order,
               endData: twoSignalJourney.last,
               speed: SingleSpeed(value: '90'),
+              isEndDataCalculated: false,
             ),
           ]),
         );
@@ -242,6 +245,7 @@ void main() {
               endOrder: twoSignalJourney.last.order,
               endData: twoSignalJourney.last,
               speed: SingleSpeed(value: '90'),
+              isEndDataCalculated: false,
             ),
           ]),
         );
@@ -321,6 +325,7 @@ void main() {
                 startOrder: firstSignalOrder,
                 endOrder: servicePoints.first.order,
                 endData: servicePoints.first,
+                isEndDataCalculated: true,
               ),
             ]),
           );
@@ -340,6 +345,7 @@ void main() {
                 startOrder: firstSignalOrder,
                 endOrder: servicePoints[1].order,
                 endData: servicePoints[1],
+                isEndDataCalculated: true,
               ),
             ]),
           );
@@ -359,6 +365,7 @@ void main() {
                 startOrder: firstSignalOrder,
                 endOrder: journey[3].order,
                 endData: journey[3],
+                isEndDataCalculated: true,
               ),
             ]),
           );
@@ -378,6 +385,7 @@ void main() {
                 startOrder: firstSignalOrder,
                 endOrder: journey[6].order,
                 endData: journey[6],
+                isEndDataCalculated: true,
               ),
             ]),
           );
@@ -397,6 +405,7 @@ void main() {
                 startOrder: servicePoints[1].order,
                 endOrder: servicePoints.last.order,
                 endData: servicePoints.last,
+                isEndDataCalculated: false,
               ),
             ]),
           );
@@ -415,6 +424,7 @@ void main() {
                 startOrder: servicePoints.first.order,
                 endOrder: servicePoints.last.order,
                 endData: servicePoints.last,
+                isEndDataCalculated: false,
               ),
             ]),
           );
@@ -433,6 +443,7 @@ void main() {
                 startOrder: journey[5].order,
                 endOrder: servicePoints.last.order,
                 endData: servicePoints.last,
+                isEndDataCalculated: false,
               ),
             ]),
           );
@@ -451,6 +462,7 @@ void main() {
                 startOrder: journey[2].order,
                 endOrder: servicePoints.last.order,
                 endData: servicePoints.last,
+                isEndDataCalculated: false,
               ),
             ]),
           );
@@ -471,6 +483,7 @@ void main() {
                 startOrder: servicePoints[1].order,
                 endOrder: lastSignalOrder,
                 endData: journey.last,
+                isEndDataCalculated: false,
               ),
             ]),
           );
@@ -490,6 +503,7 @@ void main() {
                 startOrder: journey[3].order,
                 endOrder: lastSignalOrder,
                 endData: journey.last,
+                isEndDataCalculated: false,
               ),
             ]),
           );
@@ -573,6 +587,7 @@ void main() {
                 startOrder: servicePoints.first.order,
                 endOrder: servicePoints[1].order,
                 endData: servicePoints[1],
+                isEndDataCalculated: true,
               ),
             ]),
           );
@@ -591,6 +606,7 @@ void main() {
                 startOrder: servicePoints[1].order,
                 endOrder: servicePoints.last.order,
                 endData: servicePoints.last,
+                isEndDataCalculated: true,
               ),
             ]),
           );
@@ -610,6 +626,7 @@ void main() {
                 startOrder: servicePoints.first.order,
                 endOrder: servicePoints.last.order,
                 endData: servicePoints.last,
+                isEndDataCalculated: true,
               ),
             ]),
           );
@@ -629,6 +646,7 @@ void main() {
                 startOrder: journey[2].order,
                 endOrder: journey[6].order,
                 endData: journey[6],
+                isEndDataCalculated: true,
               ),
             ]),
           );

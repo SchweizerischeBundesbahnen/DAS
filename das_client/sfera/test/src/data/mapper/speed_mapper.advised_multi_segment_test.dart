@@ -117,11 +117,13 @@ void main() {
                 startOrder: 950,
                 endOrder: 1050,
                 endData: journey[2],
+                isEndDataCalculated: false,
               ),
               VelocityMaxAdvisedSpeedSegment(
                 startOrder: 2950,
                 endOrder: journey[5].order,
                 endData: journey[5],
+                isEndDataCalculated: false,
               ),
             ]),
           );
@@ -145,11 +147,13 @@ void main() {
                 endOrder: journey[5].order,
                 speed: SingleSpeed(value: '80'),
                 endData: journey[5],
+                isEndDataCalculated: false,
               ),
               VelocityMaxAdvisedSpeedSegment(
                 startOrder: journey[3].order,
                 endOrder: journey[5].order,
                 endData: journey[5],
+                isEndDataCalculated: false,
               ),
             ]),
           );
@@ -170,6 +174,7 @@ void main() {
                 startOrder: journey.first.order,
                 endOrder: journey[5].order,
                 endData: journey[5],
+                isEndDataCalculated: false,
               ),
             ]),
           );
@@ -190,6 +195,7 @@ void main() {
                 startOrder: journey.first.order,
                 endOrder: journey[5].order,
                 endData: journey[5],
+                isEndDataCalculated: false,
               ),
             ]),
           );
@@ -210,6 +216,7 @@ void main() {
                 startOrder: journey.first.order,
                 endOrder: journey[4].order,
                 endData: journey[4],
+                isEndDataCalculated: true,
               ),
             ]),
           );
@@ -262,6 +269,7 @@ void main() {
                 startOrder: journey.first.order,
                 endOrder: journey[4].order,
                 endData: journey[4],
+                isEndDataCalculated: false,
               ),
             ]),
           );
@@ -280,6 +288,7 @@ void main() {
                 startOrder: journey.first.order,
                 endOrder: journey[4].order,
                 endData: journey[4],
+                isEndDataCalculated: true,
               ),
             ]),
           );
@@ -315,11 +324,13 @@ void main() {
               startOrder: journey.first.order,
               endOrder: journey[3].order,
               endData: journey[3],
+              isEndDataCalculated: false,
             ),
             VelocityMaxAdvisedSpeedSegment(
               startOrder: journey[6].order,
               endOrder: journey[8].order,
               endData: journey[8],
+              isEndDataCalculated: false,
             ),
           ]),
         );
@@ -338,6 +349,7 @@ void main() {
               startOrder: journey.first.order,
               endOrder: journey[8].order,
               endData: journey[8],
+              isEndDataCalculated: false,
             ),
           ]),
         );
@@ -382,16 +394,19 @@ void main() {
               startOrder: journey.first.order,
               endOrder: journey[2].order,
               endData: journey[2],
+              isEndDataCalculated: false,
             ),
             VelocityMaxAdvisedSpeedSegment(
               startOrder: journey[3].order,
               endOrder: journey[5].order,
               endData: journey[5],
+              isEndDataCalculated: false,
             ),
             VelocityMaxAdvisedSpeedSegment(
               startOrder: journey[6].order,
               endOrder: journey[8].order,
               endData: journey[8],
+              isEndDataCalculated: false,
             ),
           ]),
         );
@@ -430,6 +445,7 @@ void main() {
               startOrder: journey.first.order,
               endOrder: journey.last.order,
               endData: journey.last,
+              isEndDataCalculated: false,
             ),
           ]),
         );

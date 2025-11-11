@@ -94,7 +94,7 @@ class _DevFlavor extends Flavor {
   const _DevFlavor({
     super.tokenExchangeUrl = '',
     super.mqttUrl = '',
-    super.mqttTopicPrefix = 'dev/',
+    super.mqttTopicPrefix = 'localnico/',
     super.authenticatorConfig = _emptyAuthenticatorConfig,
   }) : super(
          displayName: 'Dev',
