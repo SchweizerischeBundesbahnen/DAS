@@ -13,4 +13,9 @@ class OtnId {
   final String company;
   final String operationalTrainNumber;
   final DateTime startDate;
+
+  @override
+  String toString() {
+    return 'OtnId{company: $company, operationalTrainNumber: $operationalTrainNumber, startDate: $startDate}';
+  }
 }

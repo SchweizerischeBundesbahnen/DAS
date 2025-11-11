@@ -25,6 +25,11 @@ class UncodedOperationalIndication extends JourneyAnnotation {
 
   @override
   OrderPriority get orderPriority => OrderPriority.uncodedOperationalIndication;
+
+  @override
+  String toString() {
+    return 'UncodedOperationalIndication{order: $order, texts: $texts}';
+  }
 }
 
 // extensions

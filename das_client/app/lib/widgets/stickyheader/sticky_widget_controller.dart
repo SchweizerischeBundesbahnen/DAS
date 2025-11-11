@@ -38,6 +38,7 @@ class StickyWidgetController with ChangeNotifier {
   bool get isRecalculating => _recalculating;
 
   void _initialize() {
+    _recalculating = true;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       scrollListener();
     });
@@ -46,7 +47,6 @@ class StickyWidgetController with ChangeNotifier {
   void updateRowData(List<DASTableRow> rows) {
     _rows = rows;
     _initialize();
-    scrollListener();
   }
 
   void scrollListener() {

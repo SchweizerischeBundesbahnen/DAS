@@ -1,6 +1,6 @@
 package ch.sbb.sferamock.messages.sfera;
 
-import ch.sbb.sferamock.adapters.sfera.model.v0201.MessageHeader;
+import ch.sbb.sferamock.adapters.sfera.model.v0300.MessageHeader;
 import ch.sbb.sferamock.messages.common.SferaErrorCodes;
 import java.util.Optional;
 import org.slf4j.Logger;

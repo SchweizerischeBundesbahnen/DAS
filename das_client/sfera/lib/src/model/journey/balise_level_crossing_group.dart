@@ -10,7 +10,7 @@ class BaliseLevelCrossingGroup extends GroupedJourneyPoint {
 
   @override
   String toString() {
-    return 'BaliseLevelCrossingGroup(order: $order, kilometre: $kilometre, groupedElements: $groupedElements)';
+    return 'BaliseLevelCrossingGroup{order: $order, kilometre: $kilometre, groupedElements: $groupedElements}';
   }
 
   @override

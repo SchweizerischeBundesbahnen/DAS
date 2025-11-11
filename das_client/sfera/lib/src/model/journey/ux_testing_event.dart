@@ -19,4 +19,9 @@ class UxTestingEvent {
 
   @override
   int get hashCode => name.hashCode ^ value.hashCode;
+
+  @override
+  String toString() {
+    return 'UxTestingEvent{name: $name, value: $value}';
+  }
 }

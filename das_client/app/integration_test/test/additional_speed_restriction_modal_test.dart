@@ -1,4 +1,4 @@
-import 'package:app/pages/journey/train_journey/widgets/detail_modal/additional_speed_restriction_modal/details_table.dart';
+import 'package:app/pages/journey/journey_table/widgets/detail_modal/additional_speed_restriction_modal/details_table.dart';
 import 'package:app/widgets/modal_sheet/das_modal_sheet.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -10,10 +10,10 @@ import '../util/test_utils.dart';
 void main() {
   testWidgets('test displayed columns on open ASR modal', (tester) async {
     await prepareAndStartApp(tester);
-    await loadTrainJourney(tester, trainNumber: 'T2');
+    await loadJourney(tester, trainNumber: 'T2');
 
-    final kilometreLabel = l10n.p_train_journey_table_kilometre_label;
-    final timeLabel = l10n.p_train_journey_table_time_label_planned;
+    final kilometreLabel = l10n.p_journey_table_kilometre_label;
+    final timeLabel = l10n.p_journey_table_time_label_planned;
 
     // columns should be visible when modal is closed
     expect(findDASTableColumnByText(kilometreLabel), findsOne);
@@ -29,7 +29,7 @@ void main() {
   });
   testWidgets('test details for ASR in T2 with missing from, until and reason', (tester) async {
     await prepareAndStartApp(tester);
-    await loadTrainJourney(tester, trainNumber: 'T2');
+    await loadJourney(tester, trainNumber: 'T2');
 
     expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsOneWidget);
 
@@ -49,7 +49,7 @@ void main() {
   });
   testWidgets('test details for ASR in T3 with all details', (tester) async {
     await prepareAndStartApp(tester);
-    await loadTrainJourney(tester, trainNumber: 'T3');
+    await loadJourney(tester, trainNumber: 'T3');
 
     expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsOneWidget);
 
@@ -75,7 +75,7 @@ void main() {
   });
   testWidgets('test details for complex ASR in T18', (tester) async {
     await prepareAndStartApp(tester);
-    await loadTrainJourney(tester, trainNumber: 'T18');
+    await loadJourney(tester, trainNumber: 'T18');
 
     expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsOneWidget);
 

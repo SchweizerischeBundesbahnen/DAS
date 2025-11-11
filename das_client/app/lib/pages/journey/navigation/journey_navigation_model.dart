@@ -27,6 +27,7 @@ class JourneyNavigationModel {
   int get hashCode => Object.hash(trainIdentification, currentIndex, navigationStackLength, showNavigationButtons);
 
   @override
-  String toString() =>
-      'JourneyNavigationModel(trainIdentification: $trainIdentification, currentIndex: $currentIndex, navigationStackLength: $navigationStackLength, showNavigationButtons: $showNavigationButtons)';
+  String toString() {
+    return 'JourneyNavigationModel{trainIdentification: $trainIdentification, currentIndex: $currentIndex, navigationStackLength: $navigationStackLength, showNavigationButtons: $showNavigationButtons}';
+  }
 }

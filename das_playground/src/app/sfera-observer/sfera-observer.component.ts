@@ -1,17 +1,17 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from "@angular/forms";
-import { SbbFormFieldModule } from "@sbb-esta/angular/form-field";
-import { SbbInputModule } from "@sbb-esta/angular/input";
-import { MqService } from "../mq.service";
-import { SbbButtonModule } from "@sbb-esta/angular/button";
-import { firstValueFrom, map, Subscription } from "rxjs";
-import { CommonModule } from "@angular/common";
-import { MqttConnectionState } from "ngx-mqtt";
-import { OidcSecurityService } from "angular-auth-oidc-client";
-import { SbbCheckboxModule } from "@sbb-esta/angular/checkbox";
-import { environment } from "../../environments/environment";
-import { MessageTableComponent, TableData } from "./message-table/message-table.component";
-import { SbbTableDataSource } from "@sbb-esta/angular/table";
+import {Component, inject, OnDestroy, OnInit} from '@angular/core';
+import {FormControl, ReactiveFormsModule} from "@angular/forms";
+import {SbbFormFieldModule} from "@sbb-esta/angular/form-field";
+import {SbbInputModule} from "@sbb-esta/angular/input";
+import {MqService} from "../mq.service";
+import {SbbButtonModule} from "@sbb-esta/angular/button";
+import {firstValueFrom, map, Subscription} from "rxjs";
+import {CommonModule} from "@angular/common";
+import {MqttConnectionState} from "ngx-mqtt";
+import {OidcSecurityService} from "angular-auth-oidc-client";
+import {SbbCheckboxModule} from "@sbb-esta/angular/checkbox";
+import {environment} from "../../environments/environment";
+import {MessageTableComponent, TableData} from "./message-table/message-table.component";
+import {SbbTableDataSource} from "@sbb-esta/angular/table";
 import {
   G2BEventNSPOptions,
   READONLY_MODE,
@@ -19,9 +19,9 @@ import {
   SpRequestOptions,
   TcRequestOptions
 } from "./sfera-xml-creation";
-import { SbbAccordionModule } from "@sbb-esta/angular/accordion";
-import { SessionsService } from "../sfera-discover/sessions.service";
-import { ActivatedRoute } from "@angular/router";
+import {SbbAccordionModule} from "@sbb-esta/angular/accordion";
+import {SessionsService} from "../sfera-discover/sessions.service";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-sfera-observer',
@@ -80,9 +80,9 @@ export class SferaObserverComponent implements OnInit, OnDestroy {
   async observe() {
     const customTopicPrefix = this.environmentControl.value ? this.customPrefixControl.value : '';
     const trainOperation = this.trainControl.value + '_' + this.dateControl.value;
-    this.g2bTopic = customTopicPrefix + '90940/2/G2B/' + this.companyControl.value + '/' + trainOperation + '/' + this.clientIdControl.value;
-    this.b2gTopic = customTopicPrefix + '90940/2/B2G/' + this.companyControl.value + '/' + trainOperation + '/' + this.clientIdControl.value;
-    this.eventTopic = customTopicPrefix + '90940/2/event/' + this.companyControl.value + '/' + trainOperation + '/' + this.clientIdControl.value;
+    this.g2bTopic = customTopicPrefix + '90940/3/G2B/' + this.companyControl.value + '/' + trainOperation + '/' + this.clientIdControl.value;
+    this.b2gTopic = customTopicPrefix + '90940/3/B2G/' + this.companyControl.value + '/' + trainOperation + '/' + this.clientIdControl.value;
+    this.eventTopic = customTopicPrefix + '90940/3/event/' + this.companyControl.value + '/' + trainOperation + '/' + this.clientIdControl.value;
     const token = await firstValueFrom(this.oidcSecurityService.getAccessToken());
     const username = await firstValueFrom(this.oidcSecurityService.getUserData().pipe(map((data) => data?.preferred_username)));
     await this.mqService.connect(username, token);

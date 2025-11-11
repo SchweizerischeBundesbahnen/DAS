@@ -1,8 +1,6 @@
 /// The train position received from TMS VAD.
 class SignaledPosition {
-  SignaledPosition({
-    required this.order,
-  });
+  SignaledPosition({required this.order});
 
   final int order;
 
@@ -11,4 +9,9 @@ class SignaledPosition {
 
   @override
   int get hashCode => order.hashCode;
+
+  @override
+  String toString() {
+    return 'SignaledPosition{order: $order}';
+  }
 }

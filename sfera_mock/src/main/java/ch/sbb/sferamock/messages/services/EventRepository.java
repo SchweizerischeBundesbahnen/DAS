@@ -1,7 +1,7 @@
 package ch.sbb.sferamock.messages.services;
 
-import ch.sbb.sferamock.adapters.sfera.model.v0201.G2BEventPayload;
-import ch.sbb.sferamock.adapters.sfera.model.v0201.RelatedTrainInformation;
+import ch.sbb.sferamock.adapters.sfera.model.v0300.G2BEventPayload;
+import ch.sbb.sferamock.adapters.sfera.model.v0300.RelatedTrainInformation;
 import ch.sbb.sferamock.messages.common.XmlHelper;
 import ch.sbb.sferamock.messages.model.TrainIdentification;
 import java.io.File;

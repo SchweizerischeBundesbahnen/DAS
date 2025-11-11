@@ -32,7 +32,7 @@ public class TestMessageAdapter implements Resettable {
     private final XmlHelper xmlHelper;
 
     @Value("${spring.cloud.stream.bindings.processB2GMessage-in-0.destination}")
-    private String processB2GMessageDestination;
+    private String[] processB2GMessageDestination;
 
     private static <T> Message<T> createMessage(T payload, Topic solaceDestinationHeader) {
         return MessageBuilder
@@ -42,7 +42,7 @@ public class TestMessageAdapter implements Resettable {
     }
 
     public <T> void sendXml(T payload, Topic solaceDestinationHeader) {
-        input.send(createMessage(xmlHelper.toString(payload), solaceDestinationHeader), processB2GMessageDestination);
+        input.send(createMessage(xmlHelper.toString(payload), solaceDestinationHeader), processB2GMessageDestination[1]);
     }
 
     public <T> T receiveXml(Class<T> type) {

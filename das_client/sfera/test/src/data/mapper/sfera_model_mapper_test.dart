@@ -1196,25 +1196,29 @@ void main() {
 
     expect(advisedSpeeds[0], isA<FollowTrainAdvisedSpeedSegment>());
     expect(advisedSpeeds[0].speed, equals(SingleSpeed(value: '80')));
+    expect(advisedSpeeds[0].isDIST, isFalse);
     expect(advisedSpeeds[0].startOrder, 500);
     expect(advisedSpeeds[0].endOrder, 2500);
 
-    expect(advisedSpeeds[1], isA<FixedTimeAdvisedSpeedSegment>());
-    expect(advisedSpeeds[1].speed, equals(SingleSpeed(value: '80')));
+    expect(advisedSpeeds[1], isA<FollowTrainAdvisedSpeedSegment>());
+    expect(advisedSpeeds[1].speed, equals(SingleSpeed(value: '0')));
+    expect(advisedSpeeds[1].isDIST, isTrue);
     expect(advisedSpeeds[1].startOrder, 101500);
     expect(advisedSpeeds[1].endOrder, 201500);
 
     expect(advisedSpeeds[2], isA<TrainFollowingAdvisedSpeedSegment>());
     expect(advisedSpeeds[2].speed, equals(SingleSpeed(value: '120')));
+    expect(advisedSpeeds[2].isDIST, isFalse);
     expect(advisedSpeeds[2].startOrder, 301000);
     expect(advisedSpeeds[2].endOrder, 305000);
 
     expect(advisedSpeeds[3], isA<VelocityMaxAdvisedSpeedSegment>());
     expect(advisedSpeeds[3].speed, isNull);
+    expect(advisedSpeeds[3].isDIST, isFalse);
     expect(advisedSpeeds[3].startOrder, 305100);
     expect(advisedSpeeds[3].endOrder, 500500);
 
-    expect(advisedSpeeds[4], isA<FollowTrainAdvisedSpeedSegment>());
+    expect(advisedSpeeds[4], isA<FixedTimeAdvisedSpeedSegment>());
     expect(advisedSpeeds[4].speed, SingleSpeed(value: '80'));
     expect(advisedSpeeds[4].startOrder, 500500);
     expect(advisedSpeeds[4].endOrder, 501000);
@@ -1545,6 +1549,17 @@ void main() {
     expect(servicePoints[6].stationSign2, isNull);
     expect(servicePoints[7].stationSign1, isNull);
     expect(servicePoints[7].stationSign2, isNull);
+  });
+
+  test('whenTafTapLocationHasNSPWithTrackGroup_thenServicePointHasNonNullTrackGroup', () {
+    final journey = getJourney('T6', 2);
+    expect(journey.valid, true);
+
+    final servicePoints = journey.data.whereType<ServicePoint>().toList(growable: false);
+    expect(servicePoints[0].trackGroup, isNull);
+    expect(servicePoints[1].name, equals('Hardbrücke'));
+    expect(servicePoints[1].trackGroup, equals('3'));
+    expect(servicePoints[6].trackGroup, equals('N'));
   });
 
   test('Test stations properties are parsed correctly', () {

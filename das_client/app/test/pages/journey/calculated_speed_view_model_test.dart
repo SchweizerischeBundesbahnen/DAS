@@ -4,7 +4,7 @@ import 'package:app/pages/journey/calculated_speed.dart';
 import 'package:app/pages/journey/calculated_speed_view_model.dart';
 import 'package:app/pages/journey/line_speed_view_model.dart';
 import 'package:app/pages/journey/resolved_train_series_speed.dart';
-import 'package:app/pages/journey/train_journey_view_model.dart';
+import 'package:app/pages/journey/journey_table_view_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -14,12 +14,12 @@ import 'package:sfera/component.dart';
 import 'calculated_speed_view_model_test.mocks.dart';
 
 @GenerateNiceMocks([
-  MockSpec<TrainJourneyViewModel>(),
+  MockSpec<JourneyTableViewModel>(),
   MockSpec<LineSpeedViewModel>(),
 ])
 void main() {
   late CalculatedSpeedViewModel testee;
-  late MockTrainJourneyViewModel mockTrainJourneyViewModel;
+  late MockJourneyTableViewModel mockJourneyTableViewModel;
   late MockLineSpeedViewModel mockLineSpeedViewModel;
   late BehaviorSubject<Journey?> journeySubject;
   ResolvedTrainSeriesSpeed resolvedTrainSeriesSpeed = ResolvedTrainSeriesSpeed.none();
@@ -50,15 +50,15 @@ void main() {
   );
 
   setUp(() {
-    mockTrainJourneyViewModel = MockTrainJourneyViewModel();
+    mockJourneyTableViewModel = MockJourneyTableViewModel();
     mockLineSpeedViewModel = MockLineSpeedViewModel();
     journeySubject = BehaviorSubject<Journey?>();
     journeySubject.add(journey);
-    when(mockTrainJourneyViewModel.journey).thenAnswer((_) => journeySubject.stream);
+    when(mockJourneyTableViewModel.journey).thenAnswer((_) => journeySubject.stream);
     when(mockLineSpeedViewModel.getResolvedSpeedForOrder(any)).thenAnswer((_) => resolvedTrainSeriesSpeed);
 
     testee = CalculatedSpeedViewModel(
-      trainJourneyViewModel: mockTrainJourneyViewModel,
+      journeyTableViewModel: mockJourneyTableViewModel,
       lineSpeedViewModel: mockLineSpeedViewModel,
     );
   });

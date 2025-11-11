@@ -10,4 +10,9 @@ class OpFootNote extends BaseFootNote {
 
   @override
   OrderPriority get orderPriority => OrderPriority.opFootNote;
+
+  @override
+  String toString() {
+    return 'OpFootNote{order: $order, footNote: $footNote}';
+  }
 }

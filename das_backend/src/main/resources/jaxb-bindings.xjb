@@ -1,8 +1,12 @@
 <jxb:bindings xmlns:jxb="https://jakarta.ee/xml/ns/jaxb"
+              xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
               xmlns:xs="http://www.w3.org/2001/XMLSchema"
               xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-              version="3.0"
-              jxb:extensionBindingPrefixes="xjc">
+              version="3.0">
+
+    <jxb:globalBindings>
+        <xjc:simple/>
+    </jxb:globalBindings>
 
     <jxb:bindings schemaLocation="SFERA_v3.00.xsd" node="//xsd:schema">
         <jxb:schemaBindings>

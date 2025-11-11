@@ -196,7 +196,7 @@ void main() {
 
     expect(
       time.toString(),
-      'ArrivalDepartureTime(operationalDepartureTime: 2025-05-13 10:00:00.000, plannedDepartureTime: 2025-05-13 12:00:00.000, operationalArrivalTime: 2025-05-13 15:00:00.000, plannedArrivalTime: 2025-05-13 16:00:00.000)',
+      'ArrivalDepartureTime{operationalDepartureTime: 2025-05-13 10:00:00.000, plannedDepartureTime: 2025-05-13 12:00:00.000, operationalArrivalTime: 2025-05-13 15:00:00.000, plannedArrivalTime: 2025-05-13 16:00:00.000}',
     );
   });
 }

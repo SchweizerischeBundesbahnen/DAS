@@ -57,17 +57,19 @@ class DraftAdvisedSpeedSegment implements Comparable<DraftAdvisedSpeedSegment> {
   bool get isValid => endOrder > startOrder && endsWithSegment == false && startsWithSegment == false;
 
   @override
-  String toString() =>
-      'DraftAdvisedSpeedSegment: ('
-      'type: $type'
-      ', previousSegmentEndOrder: $_previousSegmentEndOrder'
-      ', nextSegmentStartOrder: $_nextSegmentStartOrder'
-      ', speed: $speed'
-      ', startOrder: $_startOrder'
-      ', endOrder: $_endOrder'
-      ', isStartAmended: $isStartAmended'
-      ', isEndAmended: $isEndAmended'
-      ')';
+  String toString() {
+    return 'DraftAdvisedSpeedSegment{'
+        'startOrder: $_startOrder, '
+        'endOrder: $_endOrder, '
+        'previousSegmentEndOrder: $_previousSegmentEndOrder, '
+        'nextSegmentStartOrder: $_nextSegmentStartOrder, '
+        'type: $type, '
+        'speed: $speed, '
+        'isStartAmended: $_isStartAmended, '
+        'isEndAmended: $_isEndAmended, '
+        'endData: $endData'
+        '}';
+  }
 
   @override
   int compareTo(DraftAdvisedSpeedSegment other) => startOrder.compareTo(other.startOrder);

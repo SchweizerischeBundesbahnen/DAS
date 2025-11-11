@@ -2,8 +2,8 @@ package ch.sbb.sferamock.messages.services;
 
 import static ch.sbb.sferamock.messages.common.XmlHelper.MAX_MESSAGE_SIZE;
 
-import ch.sbb.sferamock.adapters.sfera.model.v0201.NSPListComplexType;
-import ch.sbb.sferamock.adapters.sfera.model.v0201.SegmentProfile;
+import ch.sbb.sferamock.adapters.sfera.model.v0300.NSPListComplexType;
+import ch.sbb.sferamock.adapters.sfera.model.v0300.SegmentProfile;
 import ch.sbb.sferamock.messages.common.XmlHelper;
 import ch.sbb.sferamock.messages.model.SegmentIdentification;
 import java.io.File;

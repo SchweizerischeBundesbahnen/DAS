@@ -43,13 +43,9 @@ class RadioContactList implements Comparable {
       IterableEquality().hash(selectiveContacts);
 
   @override
-  String toString() =>
-      'RadioContactList('
-      'order: $order'
-      ', endOrder: $endOrder'
-      ', mainContacts: $mainContacts'
-      ', selectiveContacts: $selectiveContacts'
-      ')';
+  String toString() {
+    return 'RadioContactList{order: $order, endOrder: $endOrder, mainContacts: $mainContacts, selectiveContacts: $selectiveContacts}';
+  }
 }
 
 extension RadioContactListExtension on Iterable<RadioContactList> {
