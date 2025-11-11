@@ -43,31 +43,30 @@ class AdvisedSpeedNotification extends StatelessWidget {
   );
 
   String _activeSegmentTitle(BuildContext context, AdvisedSpeedSegment adl) {
-    if (adl.isDIST) return context.l10n.w_advised_speed_dist(_advisedSegmentEndPoint(adl) ?? '');
+    final segmentPrefix = _titlePrefix(context, adl);
 
-    return switch (adl) {
-      FollowTrainAdvisedSpeedSegment() => context.l10n.w_advised_speed_vopt(
-        adl.speed.value,
-        _advisedSegmentEndPoint(adl) ?? '',
-      ),
-      TrainFollowingAdvisedSpeedSegment() => context.l10n.w_advised_speed_vopt(
-        adl.speed.value,
-        _advisedSegmentEndPoint(adl) ?? '',
-      ),
-      FixedTimeAdvisedSpeedSegment() => context.l10n.w_advised_speed_vopt(
-        adl.speed.value,
-        _advisedSegmentEndPoint(adl) ?? '',
-      ),
-      VelocityMaxAdvisedSpeedSegment() => context.l10n.w_advised_speed_vmax(_advisedSegmentEndPoint(adl) ?? ''),
-    };
+    final segmentSuffix = _suffix(adl, context);
+    if (segmentSuffix == null) return segmentPrefix;
+
+    return segmentPrefix + _titleSeparator(adl) + segmentSuffix;
   }
 
-  String? _advisedSegmentEndPoint(AdvisedSpeedSegment advisedSpeedSegment) {
-    final end = advisedSpeedSegment.endData;
-    return switch (end) {
-      Signal() => end.visualIdentifier,
-      ServicePoint() => end.name,
-      _ => null,
+  String? _suffix(AdvisedSpeedSegment adl, BuildContext context) {
+    if (adl.isEndDataCalculated || adl.endData is! Signal) return null;
+    final signalName = (adl.endData as Signal).visualIdentifier;
+    if (signalName == null) return null;
+    return context.l10n.w_advised_speed_drive_until(signalName);
+  }
+
+  String _titleSeparator(AdvisedSpeedSegment adl) => (adl.isDIST || adl is VelocityMaxAdvisedSpeedSegment) ? ': ' : ' ';
+
+  String _titlePrefix(BuildContext context, AdvisedSpeedSegment adl) {
+    if (adl.isDIST) return context.l10n.w_advised_speed_dist;
+    return switch (adl) {
+      FollowTrainAdvisedSpeedSegment() => context.l10n.w_advised_speed_vopt(adl.speed.value),
+      TrainFollowingAdvisedSpeedSegment() => context.l10n.w_advised_speed_vopt(adl.speed.value),
+      FixedTimeAdvisedSpeedSegment() => context.l10n.w_advised_speed_vopt(adl.speed.value),
+      VelocityMaxAdvisedSpeedSegment() => context.l10n.w_advised_speed_vmax,
     };
   }
 

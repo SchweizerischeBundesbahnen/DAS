@@ -35,28 +35,26 @@
   "p_login_login_failed": "Échec de la connexion",
   "w_advised_speed_cancel": "ADL Cancel",
   "w_advised_speed_end": "ADL END",
-  "w_advised_speed_vopt": "ADL VOpt: rouler à {speed}km/h jusqu’à {endLocation}",
+  "w_advised_speed_drive_until": "jusqu’à {endLocation}",
+  "@w_advised_speed_drive_until": {
+    "type": "text",
+    "placeholders": {
+      "endLocation": {
+        "type": "String"
+      }
+    }
+  },
+  "w_advised_speed_vopt": "ADL VOpt: {speed}km/h",
   "@w_advised_speed_vopt": {
     "type": "text",
     "placeholders": {
-      "speed": {},
-      "endLocation": {}
+      "speed": {
+        "type": "String"
+      }
     }
   },
-  "w_advised_speed_vmax": "ADL Vmax: rouler jusqu’à {endLocation}",
-  "@w_advised_speed_vmax": {
-    "type": "text",
-    "placeholders": {
-      "endLocation": {}
-    }
-  },
-  "w_advised_speed_dist": "ADL DIST: rouler jusqu’à {endLocation}",
-  "@w_advised_speed_dist": {
-    "type": "text",
-    "placeholders": {
-      "endLocation": {}
-    }
-  },
+  "w_advised_speed_vmax": "ADL Vmax",
+  "w_advised_speed_dist": "ADL DIST",
   "w_extended_menu_title": "Autres fonctionnalités",
   "w_extended_menu_maneuver_mode": "Mode manœuvre",
   "w_extended_menu_breaking_slip_action": "Ouvrir le bulletin de freinage et de charge",

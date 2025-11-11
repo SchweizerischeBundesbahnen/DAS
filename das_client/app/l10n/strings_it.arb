@@ -26,28 +26,26 @@
   "p_journey_appbar_text": "Informazioni sulla corsa",
   "w_advised_speed_cancel": "ADL Cancel",
   "w_advised_speed_end": "ADL END",
-  "w_advised_speed_vopt": "ADL VOpt: viaggiare a {speed}km/h fino a {endLocation}",
+  "w_advised_speed_drive_until": "fino a {endLocation}",
+  "@w_advised_speed_drive_until": {
+    "type": "text",
+    "placeholders": {
+      "endLocation": {
+        "type": "String"
+      }
+    }
+  },
+  "w_advised_speed_vopt": "ADL VOpt: {speed}km/h",
   "@w_advised_speed_vopt": {
     "type": "text",
     "placeholders": {
-      "speed": {},
-      "endLocation": {}
+      "speed": {
+        "type": "String"
+      }
     }
   },
-  "w_advised_speed_vmax": "ADL Vmax: viaggare fino a {endLocation}",
-  "@w_advised_speed_vmax": {
-    "type": "text",
-    "placeholders": {
-      "endLocation": {}
-    }
-  },
-  "w_advised_speed_dist": "ADL DIST: viaggare fino a {endLocation}",
-  "@w_advised_speed_dist": {
-    "type": "text",
-    "placeholders": {
-      "endLocation": {}
-    }
-  },
+  "w_advised_speed_vmax": "ADL Vmax",
+  "w_advised_speed_dist": "ADL DIST",
   "w_reduced_journey_table_title": "Panoramica della corsa",
   "w_navigation_drawer_fahrtinfo_title": "Informazioni sulla corsa",
   "w_navigation_drawer_links_title": "Link",

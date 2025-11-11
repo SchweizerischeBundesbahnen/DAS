@@ -1199,29 +1199,39 @@ void main() {
     expect(advisedSpeeds[0].isDIST, isFalse);
     expect(advisedSpeeds[0].startOrder, 500);
     expect(advisedSpeeds[0].endOrder, 2500);
+    expect(advisedSpeeds[0].endData, equals(journey.data[7]));
+    expect(advisedSpeeds[0].isEndDataCalculated, isFalse);
 
     expect(advisedSpeeds[1], isA<FollowTrainAdvisedSpeedSegment>());
     expect(advisedSpeeds[1].speed, equals(SingleSpeed(value: '0')));
     expect(advisedSpeeds[1].isDIST, isTrue);
     expect(advisedSpeeds[1].startOrder, 101500);
     expect(advisedSpeeds[1].endOrder, 201500);
+    expect(advisedSpeeds[1].endData, equals(journey.data[22]));
+    expect(advisedSpeeds[1].isEndDataCalculated, isFalse);
 
     expect(advisedSpeeds[2], isA<TrainFollowingAdvisedSpeedSegment>());
     expect(advisedSpeeds[2].speed, equals(SingleSpeed(value: '120')));
     expect(advisedSpeeds[2].isDIST, isFalse);
-    expect(advisedSpeeds[2].startOrder, 301000);
-    expect(advisedSpeeds[2].endOrder, 305000);
+    expect(advisedSpeeds[2].startOrder, 301050);
+    expect(advisedSpeeds[2].endOrder, 304950);
+    expect(advisedSpeeds[2].endData, equals(journey.data[31]));
+    expect(advisedSpeeds[2].isEndDataCalculated, isTrue);
 
     expect(advisedSpeeds[3], isA<VelocityMaxAdvisedSpeedSegment>());
     expect(advisedSpeeds[3].speed, isNull);
     expect(advisedSpeeds[3].isDIST, isFalse);
     expect(advisedSpeeds[3].startOrder, 305100);
     expect(advisedSpeeds[3].endOrder, 500500);
+    expect(advisedSpeeds[3].endData, equals(journey.data[42]));
+    expect(advisedSpeeds[3].isEndDataCalculated, isFalse);
 
     expect(advisedSpeeds[4], isA<FixedTimeAdvisedSpeedSegment>());
     expect(advisedSpeeds[4].speed, SingleSpeed(value: '80'));
     expect(advisedSpeeds[4].startOrder, 500500);
-    expect(advisedSpeeds[4].endOrder, 501000);
+    expect(advisedSpeeds[4].endOrder, 500950);
+    expect(advisedSpeeds[4].endData, equals(journey.data[44]));
+    expect(advisedSpeeds[4].isEndDataCalculated, isFalse);
   });
 
   test('Test signaled position is null when nothing is given', () async {
@@ -1709,11 +1719,11 @@ void main() {
     expect(additionalServicePoints[2].name, 'Olten Tunnel (Spw)');
     expect(additionalServicePoints[3].name, 'Dulliken (Depot)');
 
-    // ADL speed update should be on nearest non-additional service point
+    // ADL speed update should ignore additional service points and land on closest JourneyPoints
     final advisedSpeedSegments = journey.metadata.advisedSpeedSegments.toList();
     expect(advisedSpeedSegments, hasLength(1));
-    expect(advisedSpeedSegments[0].startOrder, 1000);
-    expect(advisedSpeedSegments[0].endOrder, 3500);
+    expect(advisedSpeedSegments[0].startOrder, 1600);
+    expect(advisedSpeedSegments[0].endOrder, 3100);
   });
 
   test('Test shunting movement markers are parsed correctly', () {
