@@ -1229,8 +1229,8 @@ void main() {
     expect(advisedSpeeds[4], isA<FixedTimeAdvisedSpeedSegment>());
     expect(advisedSpeeds[4].speed, SingleSpeed(value: '80'));
     expect(advisedSpeeds[4].startOrder, 500500);
-    expect(advisedSpeeds[4].endOrder, 501000);
-    expect(advisedSpeeds[4].endData, equals(journey.data[45]));
+    expect(advisedSpeeds[4].endOrder, 500950);
+    expect(advisedSpeeds[4].endData, equals(journey.data[44]));
     expect(advisedSpeeds[4].isEndDataCalculated, isFalse);
   });
 
