@@ -63,7 +63,7 @@ class FollowTrainAdvisedSpeedSegment extends AdvisedSpeedSegment {
   final SingleSpeed speed;
 
   @override
-  bool operator ==(Object other) => super == other || other is FollowTrainAdvisedSpeedSegment && other.speed == speed;
+  bool operator ==(Object other) => super == other && other is FollowTrainAdvisedSpeedSegment && other.speed == speed;
 
   @override
   int get hashCode => Object.hash(super.hashCode, speed);
@@ -102,7 +102,7 @@ class FixedTimeAdvisedSpeedSegment extends AdvisedSpeedSegment {
   final SingleSpeed speed;
 
   @override
-  bool operator ==(Object other) => super == other || other is FixedTimeAdvisedSpeedSegment && other.speed == speed;
+  bool operator ==(Object other) => super == other && other is FixedTimeAdvisedSpeedSegment && other.speed == speed;
 
   @override
   int get hashCode => Object.hash(super.hashCode, speed);
