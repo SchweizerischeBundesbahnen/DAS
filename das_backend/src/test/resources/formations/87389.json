@@ -14,6 +14,8 @@
           "formationHoldingForceInHectoNewton": 0,
           "dangerousGoods": false,
           "vehiclesCount": 0,
+          "additionalTractions": [
+          ],
           "vehiclesWithBrakeDesignLlAndKCount": 0,
           "vehiclesWithBrakeDesignDCount": 0,
           "vehiclesWithDisabledBrakesCount": 0

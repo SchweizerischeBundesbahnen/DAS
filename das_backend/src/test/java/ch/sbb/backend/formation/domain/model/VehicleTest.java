@@ -3,7 +3,7 @@ package ch.sbb.backend.formation.domain.model;
 import static ch.sbb.backend.formation.domain.model.VehicleUnitTest.createVehicleUnitWithBrakeDesign;
 import static ch.sbb.backend.formation.domain.model.VehicleUnitTest.createVehicleUnitWithDisabledBrake;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.mock;
@@ -229,56 +229,41 @@ class VehicleTest {
     }
 
     @Test
-    void findAdditionalTractionVehicleMode_empty() {
-        TractionMode result = Vehicle.additionalTractionMode(Collections.emptyList());
+    void getAdditionalTractions_empty() {
+        List<String> result = Vehicle.getAdditionalTractions(Collections.emptyList());
 
-        assertThat(result).isNull();
+        assertThat(result).isEmpty();
     }
 
     @Test
-    void findAdditionalTractionVehiclesMode_withMultipleVehicle() {
-        Vehicle vehicle1 = new Vehicle(TractionMode.ZUGLOK, VehicleCategory.LOKOMOTIVE.name(), null, null);
-        Vehicle vehicle2 = new Vehicle(TractionMode.SCHIEBELOK, VehicleCategory.LOKOMOTIVE.name(), null, null);
-        Vehicle vehicle3 = new Vehicle(null, VehicleCategory.GUETERWAGEN.name(), null, null);
-
-        TractionMode result = Vehicle.additionalTractionMode(List.of(vehicle1, vehicle2, vehicle3));
-
-        assertThat(result).isEqualTo(TractionMode.SCHIEBELOK);
-    }
-
-    @Test
-    void findAdditionalTractionVehicleMode_withInconsistentData() {
-        Vehicle vehicle1 = new Vehicle(TractionMode.SCHIEBELOK, VehicleCategory.LOKOMOTIVE.name(), null, null);
-        Vehicle vehicle2 = new Vehicle(TractionMode.UEBERFUEHRUNG, VehicleCategory.LOKOMOTIVE.name(), null, null);
-
-        assertThatIllegalStateException().isThrownBy(() -> Vehicle.additionalTractionMode(List.of(vehicle1, vehicle2)));
-    }
-
-    @Test
-    void findAdditionalTractionVehicleSeries_empty() {
-        String result = Vehicle.additionalTractionSeries(Collections.emptyList());
-
-        assertThat(result).isNull();
-    }
-
-    @Test
-    void findAdditionalTractionVehiclesSeries_withMultipleVehicle() {
+    void getAdditionalTractions_withMultipleVehicles() {
         Vehicle vehicle1 = new Vehicle(TractionMode.ZUGLOK, VehicleCategory.LOKOMOTIVE.name(), null, null);
         Vehicle vehicle2 = new Vehicle(TractionMode.ZWISCHENLOK, VehicleCategory.TRIEBWAGEN.name(), List.of(new VehicleUnit(null, null, null, null, null, null, "Rm84")), null);
         Vehicle vehicle3 = new Vehicle(null, VehicleCategory.GUETERWAGEN.name(), null, null);
 
-        String result = Vehicle.additionalTractionSeries(List.of(vehicle1, vehicle2, vehicle3));
+        List<String> result = Vehicle.getAdditionalTractions(List.of(vehicle1, vehicle2, vehicle3));
 
-        assertThat(result).isEqualTo("Rm84");
+        assertThat(result).isEqualTo(List.of("Z (Rm84)"));
     }
 
     @Test
-    void findAdditionalTractionVehicleSeries_withMoreThanOneVehicleUnit() {
+    void getAdditionalTractions_withMultipleAdditionalVehicles() {
+
+        Vehicle vehicle1 = new Vehicle(TractionMode.SCHIEBELOK, VehicleCategory.LOKOMOTIVE.name(), List.of(new VehicleUnit(null, null, null, null, null, null, "B85")), null);
+        Vehicle vehicle2 = new Vehicle(TractionMode.UEBERFUEHRUNG, VehicleCategory.LOKOMOTIVE.name(), List.of(new VehicleUnit(null, null, null, null, null, null, "Rt19")), null);
+
+        List<String> result = Vehicle.getAdditionalTractions(List.of(vehicle1, vehicle2));
+
+        assertThat(result).isEqualTo(List.of("P (B85)", "Q (Rt19)"));
+    }
+
+    @Test
+    void getAdditionalTractions_withMoreThanOneVehicleUnit() {
         Vehicle vehicle1 = new Vehicle(TractionMode.ZUGLOK, VehicleCategory.LOKOMOTIVE.name(), null, null);
         Vehicle vehicle2 = new Vehicle(TractionMode.ZWISCHENLOK, VehicleCategory.TRIEBWAGEN.name(),
-            List.of(new VehicleUnit(null, null, null, null, null, null, "B900"), new VehicleUnit(null, null, null, null, null, null, "Rm84")), null);
+            List.of(new VehicleUnit(null, null, null, null, null, null, "Rm84"), new VehicleUnit(null, null, null, null, null, null, "Rm84")), null);
 
-        assertThatIllegalStateException().isThrownBy(() -> Vehicle.additionalTractionSeries(List.of(vehicle1, vehicle2)));
+        assertThatExceptionOfType(UnexpectedProviderData.class).isThrownBy(() -> Vehicle.getAdditionalTractions(List.of(vehicle1, vehicle2)));
     }
 
     private Vehicle createVehicle() {
