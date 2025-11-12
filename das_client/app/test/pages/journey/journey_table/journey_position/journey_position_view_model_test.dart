@@ -52,42 +52,61 @@ void main() {
 
     test('constructor_whenCalled_buildsSubscription', () => expect(rxMockJourney.hasListener, isTrue));
 
-    test('modelValue_whenNoJourney_thenIsEmpty', () {
-      // ACT & EXPECT
-      expect(testee.modelValue, equals(JourneyPositionModel()));
-      expect(emitRegister, hasLength(0));
-    });
-
-    test('currentPosition_whenEmptyJourneyAndNoSignaledPosition_thenIsEmpty', () {
-      // ARRANGE
-      testAsync.run((_) {
-        rxMockJourney.add(Journey(metadata: Metadata(), data: []));
+    group('expect empty journey position model', () {
+      test('modelValue_whenNoJourney_thenIsEmpty', () {
+        // ACT & EXPECT
+        expect(testee.modelValue, equals(JourneyPositionModel()));
+        expect(emitRegister, hasLength(0));
       });
-      _processStreamInFakeAsync(testAsync);
 
-      // ACT & EXPECT
-      expect(testee.modelValue, equals(JourneyPositionModel()));
-      expect(emitRegister, hasLength(0));
-    });
+      test('currentPosition_whenEmptyJourneyAndNoSignaledPosition_thenIsEmpty', () {
+        // ARRANGE
+        testAsync.run((_) {
+          rxMockJourney.add(Journey(metadata: Metadata(), data: []));
+        });
+        _processStreamInFakeAsync(testAsync);
 
-    test('currentPosition_whenEmptyJourneyAndSignaledPosition_thenIsEmpty', () {
-      // ARRANGE
-      testAsync.run((_) {
-        rxMockJourney.add(
-          Journey(
-            metadata: Metadata(signaledPosition: SignaledPosition(order: 0)),
-            data: [],
-          ),
-        );
+        // ACT & EXPECT
+        expect(testee.modelValue, equals(JourneyPositionModel()));
+        expect(emitRegister, hasLength(0));
       });
-      _processStreamInFakeAsync(testAsync);
 
-      // ACT & EXPECT
-      expect(testee.modelValue, equals(JourneyPositionModel()));
-      expect(emitRegister, hasLength(0));
+      test('currentPosition_whenEmptyJourneyAndSignaledPosition_thenIsEmpty', () {
+        // ARRANGE
+        testAsync.run((_) {
+          rxMockJourney.add(
+            Journey(
+              metadata: Metadata(signaledPosition: SignaledPosition(order: 0)),
+              data: [],
+            ),
+          );
+        });
+        _processStreamInFakeAsync(testAsync);
+
+        // ACT & EXPECT
+        expect(testee.modelValue, equals(JourneyPositionModel()));
+        expect(emitRegister, hasLength(0));
+      });
+
+      test('currentPosition_whenSignaledPositionBeforeFirstPoint_thenIsNull', () {
+        // ARRANGE
+        testAsync.run((_) {
+          rxMockJourney.add(
+            Journey(
+              metadata: Metadata(signaledPosition: SignaledPosition(order: 0)),
+              data: [tenSignal],
+            ),
+          );
+        });
+        _processStreamInFakeAsync(testAsync);
+
+        // ACT & EXPECT
+        expect(testee.modelValue, equals(JourneyPositionModel()));
+        expect(emitRegister, hasLength(0));
+      });
     });
 
-    test('currentPosition_whenJourneyAndNoSignaledPosition_thenIsFirst', () {
+    test('currentPosition_whenNoSignaledPositionAndNoManualPosition_thenIsFirst', () {
       // ARRANGE
       testAsync.run((_) {
         rxMockJourney.add(Journey(metadata: Metadata(), data: [zeroSignal]));
@@ -101,24 +120,25 @@ void main() {
       expect(emitRegister.first, equals(expectedModel));
     });
 
-    test('currentPosition_whenJourneyAndSignaledPositionBeforeFirstPoint_thenIsNull', () {
-      // ARRANGE
+    test('currentPosition_whenNoSignaledPositionButManualPosition_thenIsManualPosition', () {
       testAsync.run((_) {
-        rxMockJourney.add(
-          Journey(
-            metadata: Metadata(signaledPosition: SignaledPosition(order: 0)),
-            data: [tenSignal],
-          ),
-        );
+        rxMockJourney.add(Journey(metadata: Metadata(), data: [zeroSignal]));
+        _processStreamInFakeAsync(testAsync);
       });
-      _processStreamInFakeAsync(testAsync);
+      emitRegister.clear();
 
-      // ACT & EXPECT
-      expect(testee.modelValue, equals(JourneyPositionModel()));
-      expect(emitRegister, hasLength(0));
+      // ACT
+      testAsync.run((_) {
+        testee.setManualPosition(zeroSignal);
+        _processStreamInFakeAsync(testAsync);
+      });
+
+      // EXPECT
+      expect(testee.modelValue, equals(JourneyPositionModel(currentPosition: zeroSignal, lastPosition: zeroSignal)));
+      expect(emitRegister, hasLength(1));
     });
 
-    test('currentPosition_whenJourneyAndSignaledPositionOnPoint_thenReturnsPoint', () {
+    test('currentPosition_whenSignaledPositionOnPoint_thenReturnsPoint', () {
       // ARRANGE
       testAsync.run((_) {
         rxMockJourney.add(
@@ -162,7 +182,7 @@ void main() {
       );
     });
 
-    test('currentPosition_whenJourneyAndSignaledPositionAfterPoint_thenReturnsPointBefore', () {
+    test('currentPosition_whenSignaledPositionAfterPoint_thenReturnsPointBefore', () {
       // ARRANGE
       testAsync.run((_) {
         rxMockJourney.add(
@@ -179,118 +199,109 @@ void main() {
       expect(emitRegister, hasLength(1));
     });
 
-    test('currentPosition_whenPositionBeforeServicePointWithoutPunctuality_thenReturnsPointBeforeSP', () {
+    test('currentPosition_afterSetManualPositionThenJourneyUpdate_movesToJourneyUpdatePosition', () {
       // ARRANGE
-      final aServicePoint = ServicePoint(name: 'a', abbreviation: '', order: 16, kilometre: []);
+      final aServicePoint = ServicePoint(name: 'a', abbreviation: '', order: 20, kilometre: [], isStop: true);
+      final bServicePoint = ServicePoint(name: 'b', abbreviation: '', order: 25, kilometre: [], isStop: true);
       testAsync.run((_) {
-        rxMockJourney.add(
-          Journey(
-            metadata: Metadata(signaledPosition: SignaledPosition(order: 15)),
-            data: [zeroSignal, tenSignal, aServicePoint, twentySignal],
-          ),
-        );
-      });
-      _processStreamInFakeAsync(testAsync);
-
-      // ACT & EXPECT
-      expect(
-        testee.modelValue,
-        equals(JourneyPositionModel(currentPosition: tenSignal, nextServicePoint: aServicePoint)),
-      );
-      expect(emitRegister, hasLength(1));
-    });
-
-    test('currentPosition_whenPositionBeforeServicePointWithoutArrivalTime_thenReturnsPointBeforeSP', () {
-      // ARRANGE
-      final aServicePoint = ServicePoint(name: 'a', abbreviation: '', order: 16, kilometre: []);
-      testAsync.run((_) {
-        rxMockPunctuality.add(
-          PunctualityModel.visible(
-            delay: Delay(value: Duration.zero, location: ''),
-          ),
-        );
-        _processStreamInFakeAsync(testAsync);
-        rxMockJourney.add(
-          Journey(
-            metadata: Metadata(signaledPosition: SignaledPosition(order: 15)),
-            data: [zeroSignal, tenSignal, aServicePoint, twentySignal],
-          ),
-        );
-      });
-      _processStreamInFakeAsync(testAsync);
-
-      // ACT & EXPECT
-      expect(
-        testee.modelValue,
-        equals(JourneyPositionModel(currentPosition: tenSignal, nextServicePoint: aServicePoint)),
-      );
-      expect(emitRegister, hasLength(1));
-    });
-
-    test('currentPosition_whenSignalBeforeServicePointWithArrivalTimeAndPunctuality_thenReturnsSPAfterTimerSP', () {
-      final aServicePoint = ServicePoint(
-        name: 'a',
-        order: 16,
-        kilometre: [],
-        arrivalDepartureTime: ArrivalDepartureTime(
-          plannedArrivalTime: now.now().add(Duration(seconds: 30)),
-          ambiguousArrivalTime: now.now().add(Duration(seconds: 50)),
-        ),
-      );
-
-      testAsync.run((_) {
-        rxMockPunctuality.add(
-          PunctualityModel.visible(
-            delay: Delay(value: Duration.zero, location: ''),
-          ),
-        );
-        _processStreamInFakeAsync(testAsync);
         rxMockJourney.add(
           Journey(
             metadata: Metadata(signaledPosition: SignaledPosition(order: 10)),
-            data: [zeroSignal, tenSignal, aServicePoint, twentySignal],
+            data: [zeroSignal, tenSignal, aServicePoint, bServicePoint],
+          ),
+        );
+        _processStreamInFakeAsync(testAsync);
+        testee.setManualPosition(aServicePoint);
+      });
+      _processStreamInFakeAsync(testAsync);
+      expect(testee.modelValue.currentPosition, equals(aServicePoint));
+
+      // ACT
+      testAsync.run((_) {
+        rxMockJourney.add(
+          Journey(
+            metadata: Metadata(signaledPosition: SignaledPosition(order: 25)),
+            data: [zeroSignal, tenSignal, aServicePoint, bServicePoint],
           ),
         );
       });
       _processStreamInFakeAsync(testAsync);
 
-      testAsync.elapse(Duration(seconds: 51));
-
-      _processStreamInFakeAsync(testAsync);
-
-      expect(
-        emitRegister,
-        orderedEquals([
-          JourneyPositionModel(currentPosition: tenSignal, nextServicePoint: aServicePoint),
-          JourneyPositionModel(
-            currentPosition: aServicePoint,
-            previousServicePoint: aServicePoint,
-            lastPosition: tenSignal,
-          ),
-        ]),
-      );
-      expect(emitRegister, hasLength(2));
+      // EXPECT
+      expect(testee.modelValue.currentPosition, equals(bServicePoint));
     });
 
-    test('currentPosition_whenSignalBeforeServicePointWithArrivalTimeAndDelay_thenReturnsSPAfterTimer', () {
-      final now = DateTime(1970);
-      final clock = Clock(() => now);
+    /// TMS VAD cannot send updates for arriving at an actual service point, but only sends an event for the previous
+    /// signal (usually an entry signal).
+    ///
+    /// To be able to update the location to the service point nevertheless, we use the operational arrival time, the
+    /// current time and the reported delay to move the current position to the service point once the train has
+    /// theoretically reached the service point.
+    group('timed service point advancements', () {
+      test('currentPosition_whenHasNoPunctuality_thenReturnsPointBeforeSP', () {
+        // ARRANGE
+        final aServicePoint = ServicePoint(name: 'a', abbreviation: '', order: 16, kilometre: []);
+        testAsync.run((_) {
+          rxMockJourney.add(
+            Journey(
+              metadata: Metadata(signaledPosition: SignaledPosition(order: 15)),
+              data: [zeroSignal, tenSignal, aServicePoint, twentySignal],
+            ),
+          );
+        });
+        _processStreamInFakeAsync(testAsync);
 
-      final aServicePoint = ServicePoint(
-        name: 'a',
-        order: 16,
-        kilometre: [],
-        arrivalDepartureTime: ArrivalDepartureTime(
-          plannedArrivalTime: now.add(Duration(seconds: 30)),
-          ambiguousArrivalTime: now.add(Duration(seconds: 50)),
-        ),
-      );
+        // ACT & EXPECT
+        expect(
+          testee.modelValue,
+          equals(JourneyPositionModel(currentPosition: tenSignal, nextServicePoint: aServicePoint)),
+        );
+        expect(emitRegister, hasLength(1));
+      });
 
-      testAsync.run((_) {
-        withClock(clock, () {
+      test('currentPosition_whenSPWithoutOperationalArrivalTime_thenReturnsPointBeforeSP', () {
+        // ARRANGE
+        final aServicePoint = ServicePoint(name: 'a', abbreviation: '', order: 16, kilometre: []);
+        testAsync.run((_) {
           rxMockPunctuality.add(
             PunctualityModel.visible(
-              delay: Delay(value: Duration(minutes: 1), location: ''),
+              delay: Delay(value: Duration.zero, location: ''),
+            ),
+          );
+          _processStreamInFakeAsync(testAsync);
+          rxMockJourney.add(
+            Journey(
+              metadata: Metadata(signaledPosition: SignaledPosition(order: 15)),
+              data: [zeroSignal, tenSignal, aServicePoint, twentySignal],
+            ),
+          );
+        });
+        _processStreamInFakeAsync(testAsync);
+
+        // ACT & EXPECT
+        expect(
+          testee.modelValue,
+          equals(JourneyPositionModel(currentPosition: tenSignal, nextServicePoint: aServicePoint)),
+        );
+        expect(emitRegister, hasLength(1));
+      });
+
+      test('currentPosition_whenSPWithArrivalTimeAndNoDelay_thenSetsToSPAfterTimer', () {
+        final aServicePoint = ServicePoint(
+          name: 'a',
+          abbreviation: '',
+          order: 16,
+          kilometre: [],
+          arrivalDepartureTime: ArrivalDepartureTime(
+            plannedArrivalTime: now.now().add(Duration(seconds: 30)),
+            ambiguousArrivalTime: now.now().add(Duration(seconds: 50)),
+          ),
+        );
+
+        testAsync.run((_) {
+          rxMockPunctuality.add(
+            PunctualityModel.visible(
+              delay: Delay(value: Duration.zero, location: ''),
             ),
           );
           _processStreamInFakeAsync(testAsync);
@@ -301,35 +312,84 @@ void main() {
             ),
           );
         });
+        _processStreamInFakeAsync(testAsync);
+
+        testAsync.elapse(Duration(seconds: 51));
+
+        _processStreamInFakeAsync(testAsync);
+
+        expect(
+          emitRegister,
+          orderedEquals([
+            JourneyPositionModel(currentPosition: tenSignal, nextServicePoint: aServicePoint),
+            JourneyPositionModel(
+              currentPosition: aServicePoint,
+              previousServicePoint: aServicePoint,
+              lastPosition: tenSignal,
+            ),
+          ]),
+        );
+        expect(emitRegister, hasLength(2));
       });
-      _processStreamInFakeAsync(testAsync);
 
-      testAsync.elapse(Duration(seconds: 111));
-
-      _processStreamInFakeAsync(testAsync);
-
-      expect(
-        emitRegister,
-        orderedEquals([
-          JourneyPositionModel(currentPosition: tenSignal, nextServicePoint: aServicePoint),
-          JourneyPositionModel(
-            currentPosition: aServicePoint,
-            previousServicePoint: aServicePoint,
-            lastPosition: tenSignal,
-          ),
-        ]),
-      );
-      expect(emitRegister, hasLength(2));
-    });
-
-    test(
-      'currentPosition_whenSignalBeforeServicePointWithArrivalTimeAndNegativeDelay_thenCurrentPositionIsSPWithoutTimer',
-      () {
+      test('currentPosition_whenSPWithArrivalTimeAndPositiveDelay_thenReturnsSPAfterTimerWithDelay', () {
         final now = DateTime(1970);
         final clock = Clock(() => now);
 
         final aServicePoint = ServicePoint(
           name: 'a',
+          abbreviation: '',
+          order: 16,
+          kilometre: [],
+          arrivalDepartureTime: ArrivalDepartureTime(
+            plannedArrivalTime: now.add(Duration(seconds: 30)),
+            ambiguousArrivalTime: now.add(Duration(seconds: 50)),
+          ),
+        );
+
+        testAsync.run((_) {
+          withClock(clock, () {
+            rxMockPunctuality.add(
+              PunctualityModel.visible(
+                delay: Delay(value: Duration(minutes: 1), location: ''),
+              ),
+            );
+            _processStreamInFakeAsync(testAsync);
+            rxMockJourney.add(
+              Journey(
+                metadata: Metadata(signaledPosition: SignaledPosition(order: 10)),
+                data: [zeroSignal, tenSignal, aServicePoint, twentySignal],
+              ),
+            );
+          });
+        });
+        _processStreamInFakeAsync(testAsync);
+
+        testAsync.elapse(Duration(seconds: 111));
+
+        _processStreamInFakeAsync(testAsync);
+
+        expect(
+          emitRegister,
+          orderedEquals([
+            JourneyPositionModel(currentPosition: tenSignal, nextServicePoint: aServicePoint),
+            JourneyPositionModel(
+              currentPosition: aServicePoint,
+              previousServicePoint: aServicePoint,
+              lastPosition: tenSignal,
+            ),
+          ]),
+        );
+        expect(emitRegister, hasLength(2));
+      });
+
+      test('currentPosition_whenSPWithArrivalTimeAndNegativeDelay_thenCurrentPositionIsDirectlySP', () {
+        final now = DateTime(1970);
+        final clock = Clock(() => now);
+
+        final aServicePoint = ServicePoint(
+          name: 'a',
+          abbreviation: '',
           order: 16,
           kilometre: [],
           arrivalDepartureTime: ArrivalDepartureTime(
@@ -361,8 +421,8 @@ void main() {
           ]),
         );
         expect(emitRegister, hasLength(2));
-      },
-    );
+      });
+    });
 
     test('lastPosition_whenSingleJourney_thenReturnsNull', () {
       // ARRANGE
@@ -740,8 +800,8 @@ void main() {
 
     test('setManualPosition_whenHasNoSignaledPosition_thenMovesCurrentAndLastPosition', () {
       // ARRANGE
-      final aServicePoint = ServicePoint(name: 'a', order: 20, kilometre: [], isStop: true);
-      final bServicePoint = ServicePoint(name: 'b', order: 25, kilometre: [], isStop: true);
+      final aServicePoint = ServicePoint(name: 'a', abbreviation: '', order: 20, kilometre: [], isStop: true);
+      final bServicePoint = ServicePoint(name: 'b', abbreviation: '', order: 25, kilometre: [], isStop: true);
       testAsync.run((_) {
         rxMockJourney.add(
           Journey(
@@ -764,10 +824,10 @@ void main() {
       expect(testee.modelValue.lastPosition, equals(zeroSignal));
     });
 
-    test('setManualPosition_whenHasSignaledPosition_thenMovesCurrentPositionAndOthers', () {
+    test('setManualPosition_whenHasSignaledPosition_thenMovesToNewPosition', () {
       // ARRANGE
-      final aServicePoint = ServicePoint(name: 'a', order: 20, kilometre: [], isStop: true);
-      final bServicePoint = ServicePoint(name: 'b', order: 25, kilometre: [], isStop: true);
+      final aServicePoint = ServicePoint(name: 'a', abbreviation: '',order: 20, kilometre: [], isStop: true);
+      final bServicePoint = ServicePoint(name: 'b',abbreviation: '', order: 25, kilometre: [], isStop: true);
       testAsync.run((_) {
         rxMockJourney.add(
           Journey(
@@ -790,24 +850,10 @@ void main() {
       expect(testee.modelValue.lastPosition, equals(bServicePoint));
     });
 
-    test('currentPosition_afterSetManualPositionThenJourneyUpdate_movesToJourneyUpdatePosition', () {
+    test('setManualPosition_whenIsGivenNullPosition_thenMovesToSignaledPosition', () {
       // ARRANGE
-      final aServicePoint = ServicePoint(name: 'a', order: 20, kilometre: [], isStop: true);
-      final bServicePoint = ServicePoint(name: 'b', order: 25, kilometre: [], isStop: true);
-      testAsync.run((_) {
-        rxMockJourney.add(
-          Journey(
-            metadata: Metadata(signaledPosition: SignaledPosition(order: 10)),
-            data: [zeroSignal, tenSignal, aServicePoint, bServicePoint],
-          ),
-        );
-        _processStreamInFakeAsync(testAsync);
-        testee.setManualPosition(aServicePoint);
-      });
-      _processStreamInFakeAsync(testAsync);
-      expect(testee.modelValue.currentPosition, equals(aServicePoint));
-
-      // ACT
+      final aServicePoint = ServicePoint(name: 'a', abbreviation: '', order: 20, kilometre: [], isStop: true);
+      final bServicePoint = ServicePoint(name: 'b', abbreviation: '', order: 25, kilometre: [], isStop: true);
       testAsync.run((_) {
         rxMockJourney.add(
           Journey(
@@ -817,9 +863,24 @@ void main() {
         );
       });
       _processStreamInFakeAsync(testAsync);
-
-      // EXPECT
       expect(testee.modelValue.currentPosition, equals(bServicePoint));
+
+      testAsync.run((async) {
+        testee.setManualPosition(aServicePoint);
+        _processStreamInFakeAsync(async);
+      });
+
+      expect(testee.modelValue.currentPosition, equals(aServicePoint));
+      expect(testee.modelValue.lastPosition, equals(bServicePoint));
+
+      // ACT
+      testAsync.run((_) {
+        testee.setManualPosition(null);
+        _processStreamInFakeAsync(testAsync);
+      });
+
+      expect(testee.modelValue.currentPosition, equals(bServicePoint));
+      expect(testee.modelValue.lastPosition, equals(aServicePoint));
     });
   });
 }

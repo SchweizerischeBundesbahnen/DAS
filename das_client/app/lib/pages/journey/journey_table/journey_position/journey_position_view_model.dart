@@ -24,21 +24,20 @@ class JourneyPositionViewModel {
   final _rxModel = BehaviorSubject.seeded(JourneyPositionModel());
 
   final _rxTimedServicePointReached = BehaviorSubject<ServicePoint?>.seeded(null);
-
-  final _rxManualPosition = BehaviorSubject<JourneyPoint?>.seeded(null);
-
-  JourneyPoint? _lastManualPosition;
-
+  ServicePoint? _lastTimedServicePoint;
   Timer? _servicePointReachedTimer;
 
-  JourneyPositionModel get modelValue => _rxModel.value;
-
-  Stream<JourneyPositionModel> get model => _rxModel.distinct();
+  final _rxManualPosition = BehaviorSubject<JourneyPoint?>.seeded(null);
+  JourneyPoint? _lastManualPosition;
 
   TrainIdentification? _lastTrainIdentification;
 
-  void setManualPosition(JourneyPoint manualPosition) {
-    _log.info('Setting manual position to: $manualPosition');
+  Stream<JourneyPositionModel> get model => _rxModel.distinct();
+
+  JourneyPositionModel get modelValue => _rxModel.value;
+
+  void setManualPosition(JourneyPoint? manualPosition) {
+    _log.fine('Setting manual position to: $manualPosition');
     _rxManualPosition.add(manualPosition);
   }
 
@@ -132,30 +131,30 @@ class JourneyPositionViewModel {
     PunctualityModel punctuality,
   ) {
     if (journeyPoints.isEmpty) return null;
-    if (signaledPosition == null && _rxManualPosition.value == null) {
-      return _rxTimedServicePointReached.value ?? journeyPoints.first;
+    if (signaledPosition == null && _rxManualPosition.value == null && _rxTimedServicePointReached.value == null) {
+      return journeyPoints.first;
     }
 
-    JourneyPoint? result;
-    final currentPositionOrder = journeyPoints
-        .lastWhereOrNull((it) => it.order <= (signaledPosition?.order ?? -1))
-        ?.order;
+    JourneyPoint? currentPosition;
+    final signaledPositionOrder = signaledPosition?.order ?? -1;
+    final currentPositionOrder = journeyPoints.lastWhereOrNull((it) => it.order <= (signaledPositionOrder))?.order;
     if (currentPositionOrder != null) {
-      result = _calculatePositionByOrder(journeyPoints, currentPositionOrder);
+      currentPosition = _calculatePositionByOrder(journeyPoints, currentPositionOrder);
     }
 
-    final timeServicePointValue = _rxTimedServicePointReached.value;
-
-    if (timeServicePointValue != null && (result == null || timeServicePointValue.order > result.order)) {
-      result = timeServicePointValue;
+    final timedServicePoint = _rxTimedServicePointReached.value;
+    if (_lastTimedServicePoint != timedServicePoint && timedServicePoint != null) {
+      _lastTimedServicePoint = timedServicePoint;
+      currentPosition = _lastTimedServicePoint;
     }
 
-    if (_lastManualPosition != _rxManualPosition.value) {
+    final manualPosition = _rxManualPosition.value;
+    if (_lastManualPosition != manualPosition && manualPosition != null) {
       _lastManualPosition = _rxManualPosition.value;
-      result = _lastManualPosition;
+      currentPosition = _lastManualPosition;
     }
 
-    return result;
+    return currentPosition;
   }
 
   ServicePoint? _calculatePreviousServicePoint(
