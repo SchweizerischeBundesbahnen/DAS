@@ -30,6 +30,7 @@ public final class ObjectMapperFactory {
     public static ObjectMapper createMapper(boolean strict) {
         // see ch.sbb.journey.utils.DateTimeUtils
         final ObjectMapper mapper = new ObjectMapper();
+        //TODO SFERA like (UTC)
         mapper.configure(SerializationFeature.WRITE_DATES_WITH_ZONE_ID, false);
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         mapper.configure(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE, false);

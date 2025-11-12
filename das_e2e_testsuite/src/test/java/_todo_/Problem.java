@@ -20,7 +20,7 @@ import java.util.Objects;
 /**
  * Zalando like error-object if not HttpStatus 2xx (see [RFC-7807](https://tools.ietf.org/html/rfc7807)). Check for: Content-Type&#x3D;application/problem+json
  *
- * @deprecated TODO declare as model in das_backend to be auto-generated (correlates to das_backend/../ApiErrorResponses)
+ * @deprecated TODO https://github.com/SchweizerischeBundesbahnen/DAS/issues/1430 declare as model in das_backend to be auto-generated (correlates to das_backend/../ApiErrorResponses)
  */
 @Deprecated
 @JsonPropertyOrder({

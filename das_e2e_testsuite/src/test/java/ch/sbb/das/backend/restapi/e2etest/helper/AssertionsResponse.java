@@ -62,9 +62,9 @@ public final class AssertionsResponse {
      * @param ex
      */
     public static Problem assertClientException(WebClientResponseException ex, String requestId, String instance) {
+        log.error("block failed: status={}, message={}, body={}", ex.getStatusCode(), ex.getMessage(), ex.getResponseBodyAsString());
         assertThat(ex.getStatusCode()).as(ex.getResponseBodyAsString()).isNotEqualTo(HttpStatus.TOO_MANY_REQUESTS);
 
-        log.error("{}->{}", ex.getMessage(), ex.getResponseBodyAsString());
         assertCaseInsensitiveHeaders(ex.getHeaders());
         assertThat(ex.getStatusCode()).as("response might be too big: " + ex.getCause()).isNotEqualTo(HttpStatus.OK);
         if (StringUtils.isBlank(ex.getResponseBodyAsString())) {
