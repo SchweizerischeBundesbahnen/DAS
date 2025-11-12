@@ -4,7 +4,6 @@ import ch.sbb.das.backend.restapi.configuration.ApiClientConfiguration;
 import ch.sbb.das.backend.restapi.configuration.DasBackendApi;
 import ch.sbb.das.backend.restapi.configuration.DasBackendEndpointConfiguration;
 import ch.sbb.das.backend.restapi.configuration.SSOConfiguration;
-import ch.sbb.das.backend.restapi.configuration.SSOTokenServiceConfiguration;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -21,7 +20,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @Retention(RetentionPolicy.RUNTIME)
 @ActiveProfiles({"das"})
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {DasBackendEndpointConfiguration.class, DasBackendApi.class, SSOConfiguration.class, SSOTokenServiceConfiguration.class, ApiClientConfiguration.class})
+@ContextConfiguration(classes = {DasBackendEndpointConfiguration.class, DasBackendApi.class, SSOConfiguration.class, ApiClientConfiguration.class})
 public @interface ApiClientTestProfile {
 
 }
