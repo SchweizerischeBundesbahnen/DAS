@@ -5,6 +5,7 @@ import 'package:drift_flutter/drift_flutter.dart';
 import 'package:formation/src/api/dto/formation_dto.dart';
 import 'package:formation/src/data/local/formation_database_service.dart';
 import 'package:formation/src/data/local/tables/formation_table.dart';
+import 'package:formation/src/model/formation.dart';
 
 part 'formation_database_service_impl.g.dart';
 
@@ -36,7 +37,7 @@ class FormationDatabaseServiceImpl extends _$FormationDatabaseServiceImpl implem
   }
 
   @override
-  Future<FormationDto?> findFormation(String operationalTrainNumber, String company, DateTime operationalDay) async {
+  Future<Formation?> findFormation(String operationalTrainNumber, String company, DateTime operationalDay) async {
     final formationData =
         await (select(formationTable)
               ..where((tbl) => tbl.operationalTrainNumber.equals(operationalTrainNumber))
