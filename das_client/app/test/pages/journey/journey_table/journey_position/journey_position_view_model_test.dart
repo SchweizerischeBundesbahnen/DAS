@@ -738,7 +738,33 @@ void main() {
       expect(testee.modelValue.nextStop, equals(bServicePoint));
     });
 
-    test('setManualPosition_whenCalled_thenMovesCurrentPositionAndOthers', () {
+    test('setManualPosition_whenHasNoSignaledPosition_thenMovesCurrentAndLastPosition', () {
+      // ARRANGE
+      final aServicePoint = ServicePoint(name: 'a', order: 20, kilometre: [], isStop: true);
+      final bServicePoint = ServicePoint(name: 'b', order: 25, kilometre: [], isStop: true);
+      testAsync.run((_) {
+        rxMockJourney.add(
+          Journey(
+            metadata: Metadata(),
+            data: [zeroSignal, tenSignal, aServicePoint, bServicePoint],
+          ),
+        );
+      });
+      _processStreamInFakeAsync(testAsync);
+      expect(testee.modelValue.currentPosition, equals(zeroSignal));
+
+      // ACT
+      testAsync.run((async) {
+        testee.setManualPosition(aServicePoint);
+        _processStreamInFakeAsync(async);
+      });
+
+      // EXPECT
+      expect(testee.modelValue.currentPosition, equals(aServicePoint));
+      expect(testee.modelValue.lastPosition, equals(zeroSignal));
+    });
+
+    test('setManualPosition_whenHasSignaledPosition_thenMovesCurrentPositionAndOthers', () {
       // ARRANGE
       final aServicePoint = ServicePoint(name: 'a', order: 20, kilometre: [], isStop: true);
       final bServicePoint = ServicePoint(name: 'b', order: 25, kilometre: [], isStop: true);

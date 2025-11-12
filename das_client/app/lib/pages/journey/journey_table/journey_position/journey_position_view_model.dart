@@ -38,6 +38,7 @@ class JourneyPositionViewModel {
   TrainIdentification? _lastTrainIdentification;
 
   void setManualPosition(JourneyPoint manualPosition) {
+    _log.info('Setting manual position to: $manualPosition');
     _rxManualPosition.add(manualPosition);
   }
 
@@ -131,10 +132,14 @@ class JourneyPositionViewModel {
     PunctualityModel punctuality,
   ) {
     if (journeyPoints.isEmpty) return null;
-    if (signaledPosition == null) return _rxTimedServicePointReached.value ?? journeyPoints.first;
+    if (signaledPosition == null && _rxManualPosition.value == null) {
+      return _rxTimedServicePointReached.value ?? journeyPoints.first;
+    }
 
     JourneyPoint? result;
-    final currentPositionOrder = journeyPoints.lastWhereOrNull((it) => it.order <= signaledPosition.order)?.order;
+    final currentPositionOrder = journeyPoints
+        .lastWhereOrNull((it) => it.order <= (signaledPosition?.order ?? -1))
+        ?.order;
     if (currentPositionOrder != null) {
       result = _calculatePositionByOrder(journeyPoints, currentPositionOrder);
     }
