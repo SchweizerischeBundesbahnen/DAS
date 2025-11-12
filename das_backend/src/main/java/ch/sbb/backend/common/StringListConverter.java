@@ -10,15 +10,15 @@ import java.util.List;
 @Converter
 public class StringListConverter implements AttributeConverter<List<String>, String> {
 
-    private static final String SPLIT_CHAR = ";";
+    private static final String DELIMITER = ";";
 
     @Override
     public String convertToDatabaseColumn(List<String> stringList) {
-        return stringList != null && !stringList.isEmpty() ? String.join(SPLIT_CHAR, stringList) : null;
+        return stringList != null && !stringList.isEmpty() ? String.join(DELIMITER, stringList) : null;
     }
 
     @Override
     public List<String> convertToEntityAttribute(String string) {
-        return string != null ? Arrays.asList(string.split(SPLIT_CHAR)) : emptyList();
+        return string != null ? Arrays.asList(string.split(DELIMITER)) : emptyList();
     }
 }
