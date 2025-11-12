@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_model.dart';
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_view_model.dart';
 import 'package:app/pages/journey/journey_table/punctuality/punctuality_model.dart';
+import 'package:clock/clock.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/rxdart.dart';
@@ -22,16 +23,20 @@ void main() {
     late List<dynamic> emitRegister;
     late StreamSubscription currentPositionSub;
     late FakeAsync testAsync;
+    late Clock now;
 
     setUp(() {
-      fakeAsync((fakeAsync) {
-        rxMockJourney = BehaviorSubject<Journey?>.seeded(null);
-        rxMockPunctuality = BehaviorSubject<PunctualityModel>.seeded(PunctualityModel.hidden());
-        testAsync = fakeAsync;
-        testee = JourneyPositionViewModel(journeyStream: rxMockJourney, punctualityStream: rxMockPunctuality);
-        emitRegister = <dynamic>[];
-        currentPositionSub = testee.model.listen(emitRegister.add);
-        _processStreamInFakeAsync(fakeAsync);
+      now = Clock(() => DateTime(1970));
+      withClock(now, () {
+        fakeAsync((fakeAsync) {
+          rxMockJourney = BehaviorSubject<Journey?>.seeded(null);
+          rxMockPunctuality = BehaviorSubject<PunctualityModel>.seeded(PunctualityModel.hidden());
+          testAsync = fakeAsync;
+          testee = JourneyPositionViewModel(journeyStream: rxMockJourney, punctualityStream: rxMockPunctuality);
+          emitRegister = <dynamic>[];
+          currentPositionSub = testee.model.listen(emitRegister.add);
+          _processStreamInFakeAsync(fakeAsync);
+        });
       });
 
       _processStreamInFakeAsync(testAsync);
@@ -221,6 +226,143 @@ void main() {
       );
       expect(emitRegister, hasLength(1));
     });
+
+    test('currentPosition_whenSignalBeforeServicePointWithArrivalTimeAndPunctuality_thenReturnsSPAfterTimerSP', () {
+      final aServicePoint = ServicePoint(
+        name: 'a',
+        order: 16,
+        kilometre: [],
+        arrivalDepartureTime: ArrivalDepartureTime(
+          plannedArrivalTime: now.now().add(Duration(seconds: 30)),
+          ambiguousArrivalTime: now.now().add(Duration(seconds: 50)),
+        ),
+      );
+
+      testAsync.run((_) {
+        rxMockPunctuality.add(
+          PunctualityModel.visible(
+            delay: Delay(value: Duration.zero, location: ''),
+          ),
+        );
+        _processStreamInFakeAsync(testAsync);
+        rxMockJourney.add(
+          Journey(
+            metadata: Metadata(signaledPosition: SignaledPosition(order: 10)),
+            data: [zeroSignal, tenSignal, aServicePoint, twentySignal],
+          ),
+        );
+      });
+      _processStreamInFakeAsync(testAsync);
+
+      testAsync.elapse(Duration(seconds: 51));
+
+      _processStreamInFakeAsync(testAsync);
+
+      expect(
+        emitRegister,
+        orderedEquals([
+          JourneyPositionModel(currentPosition: tenSignal, nextServicePoint: aServicePoint),
+          JourneyPositionModel(
+            currentPosition: aServicePoint,
+            previousServicePoint: aServicePoint,
+            lastPosition: tenSignal,
+          ),
+        ]),
+      );
+      expect(emitRegister, hasLength(2));
+    });
+
+    test('currentPosition_whenSignalBeforeServicePointWithArrivalTimeAndDelay_thenReturnsSPAfterTimer', () {
+      final now = DateTime(1970);
+      final clock = Clock(() => now);
+
+      final aServicePoint = ServicePoint(
+        name: 'a',
+        order: 16,
+        kilometre: [],
+        arrivalDepartureTime: ArrivalDepartureTime(
+          plannedArrivalTime: now.add(Duration(seconds: 30)),
+          ambiguousArrivalTime: now.add(Duration(seconds: 50)),
+        ),
+      );
+
+      testAsync.run((_) {
+        withClock(clock, () {
+          rxMockPunctuality.add(
+            PunctualityModel.visible(
+              delay: Delay(value: Duration(minutes: 1), location: ''),
+            ),
+          );
+          _processStreamInFakeAsync(testAsync);
+          rxMockJourney.add(
+            Journey(
+              metadata: Metadata(signaledPosition: SignaledPosition(order: 10)),
+              data: [zeroSignal, tenSignal, aServicePoint, twentySignal],
+            ),
+          );
+        });
+      });
+      _processStreamInFakeAsync(testAsync);
+
+      testAsync.elapse(Duration(seconds: 111));
+
+      _processStreamInFakeAsync(testAsync);
+
+      expect(
+        emitRegister,
+        orderedEquals([
+          JourneyPositionModel(currentPosition: tenSignal, nextServicePoint: aServicePoint),
+          JourneyPositionModel(
+            currentPosition: aServicePoint,
+            previousServicePoint: aServicePoint,
+            lastPosition: tenSignal,
+          ),
+        ]),
+      );
+      expect(emitRegister, hasLength(2));
+    });
+
+    test(
+      'currentPosition_whenSignalBeforeServicePointWithArrivalTimeAndNegativeDelay_thenCurrentPositionIsSPWithoutTimer',
+      () {
+        final now = DateTime(1970);
+        final clock = Clock(() => now);
+
+        final aServicePoint = ServicePoint(
+          name: 'a',
+          order: 16,
+          kilometre: [],
+          arrivalDepartureTime: ArrivalDepartureTime(
+            plannedArrivalTime: now.add(Duration(seconds: 30)),
+            ambiguousArrivalTime: now.add(Duration(seconds: 50)),
+          ),
+        );
+        withClock(clock, () {
+          testAsync.run((_) {
+            rxMockPunctuality.add(
+              PunctualityModel.visible(
+                delay: Delay(value: Duration(minutes: -1), location: ''),
+              ),
+            );
+            rxMockJourney.add(
+              Journey(
+                metadata: Metadata(signaledPosition: SignaledPosition(order: 10)),
+                data: [zeroSignal, tenSignal, aServicePoint, twentySignal],
+              ),
+            );
+          });
+        });
+        _processStreamInFakeAsync(testAsync);
+        expect(
+          emitRegister,
+          orderedEquals([
+            JourneyPositionModel(currentPosition: tenSignal, nextServicePoint: aServicePoint),
+            JourneyPositionModel(currentPosition: aServicePoint, previousServicePoint: aServicePoint),
+          ]),
+        );
+        expect(emitRegister, hasLength(2));
+      },
+    );
 
     test('lastPosition_whenSingleJourney_thenReturnsNull', () {
       // ARRANGE
@@ -594,6 +736,64 @@ void main() {
 
       // ACT & EXPECT
       expect(testee.modelValue.nextStop, equals(bServicePoint));
+    });
+
+    test('setManualPosition_whenCalled_thenMovesCurrentPositionAndOthers', () {
+      // ARRANGE
+      final aServicePoint = ServicePoint(name: 'a', order: 20, kilometre: [], isStop: true);
+      final bServicePoint = ServicePoint(name: 'b', order: 25, kilometre: [], isStop: true);
+      testAsync.run((_) {
+        rxMockJourney.add(
+          Journey(
+            metadata: Metadata(signaledPosition: SignaledPosition(order: 25)),
+            data: [zeroSignal, tenSignal, aServicePoint, bServicePoint],
+          ),
+        );
+      });
+      _processStreamInFakeAsync(testAsync);
+      expect(testee.modelValue.currentPosition, equals(bServicePoint));
+
+      // ACT
+      testAsync.run((async) {
+        testee.setManualPosition(aServicePoint);
+        _processStreamInFakeAsync(async);
+      });
+
+      // EXPECT
+      expect(testee.modelValue.currentPosition, equals(aServicePoint));
+      expect(testee.modelValue.lastPosition, equals(bServicePoint));
+    });
+
+    test('currentPosition_afterSetManualPositionThenJourneyUpdate_movesToJourneyUpdatePosition', () {
+      // ARRANGE
+      final aServicePoint = ServicePoint(name: 'a', order: 20, kilometre: [], isStop: true);
+      final bServicePoint = ServicePoint(name: 'b', order: 25, kilometre: [], isStop: true);
+      testAsync.run((_) {
+        rxMockJourney.add(
+          Journey(
+            metadata: Metadata(signaledPosition: SignaledPosition(order: 10)),
+            data: [zeroSignal, tenSignal, aServicePoint, bServicePoint],
+          ),
+        );
+        _processStreamInFakeAsync(testAsync);
+        testee.setManualPosition(aServicePoint);
+      });
+      _processStreamInFakeAsync(testAsync);
+      expect(testee.modelValue.currentPosition, equals(aServicePoint));
+
+      // ACT
+      testAsync.run((_) {
+        rxMockJourney.add(
+          Journey(
+            metadata: Metadata(signaledPosition: SignaledPosition(order: 25)),
+            data: [zeroSignal, tenSignal, aServicePoint, bServicePoint],
+          ),
+        );
+      });
+      _processStreamInFakeAsync(testAsync);
+
+      // EXPECT
+      expect(testee.modelValue.currentPosition, equals(bServicePoint));
     });
   });
 }

@@ -20,10 +20,14 @@ class JourneyPositionViewModel {
   }
 
   StreamSubscription<PunctualityModel>? _punctualitySubscription;
-  StreamSubscription<(Journey?, PunctualityModel, ServicePoint?)>? _journeySubscription;
+  StreamSubscription<(Journey?, PunctualityModel, ServicePoint?, JourneyPoint?)>? _journeySubscription;
   final _rxModel = BehaviorSubject.seeded(JourneyPositionModel());
 
   final _rxTimedServicePointReached = BehaviorSubject<ServicePoint?>.seeded(null);
+
+  final _rxManualPosition = BehaviorSubject<JourneyPoint?>.seeded(null);
+
+  JourneyPoint? _lastManualPosition;
 
   Timer? _servicePointReachedTimer;
 
@@ -31,12 +35,17 @@ class JourneyPositionViewModel {
 
   Stream<JourneyPositionModel> get model => _rxModel.distinct();
 
-  TrainIdentification? lastTrainIdentification;
+  TrainIdentification? _lastTrainIdentification;
+
+  void setManualPosition(JourneyPoint manualPosition) {
+    _rxManualPosition.add(manualPosition);
+  }
 
   void dispose() {
     _journeySubscription?.cancel();
     _rxModel.close();
     _rxTimedServicePointReached.close();
+    _rxManualPosition.close();
     _servicePointReachedTimer?.cancel();
     _servicePointReachedTimer = null;
     _punctualitySubscription?.cancel();
@@ -45,11 +54,12 @@ class JourneyPositionViewModel {
 
   void _initSubscription(Stream<Journey?> journeyStream, Stream<PunctualityModel> punctualityStream) {
     _journeySubscription =
-        CombineLatestStream.combine3(
+        CombineLatestStream.combine4(
           journeyStream,
           punctualityStream,
           _rxTimedServicePointReached,
-          (a, b, c) => (a, b, c),
+          _rxManualPosition,
+          (a, b, c, d) => (a, b, c, d),
         ).listen((data) async {
           _servicePointReachedTimer?.cancel();
 
@@ -61,10 +71,10 @@ class JourneyPositionViewModel {
             return;
           }
 
-          if (lastTrainIdentification != journey.metadata.trainIdentification) {
+          if (_lastTrainIdentification != journey.metadata.trainIdentification) {
             // Reset timed service point when train identification changes
             _rxTimedServicePointReached.add(null);
-            lastTrainIdentification = journey.metadata.trainIdentification;
+            _lastTrainIdentification = journey.metadata.trainIdentification;
             return;
           }
 
@@ -123,20 +133,24 @@ class JourneyPositionViewModel {
     if (journeyPoints.isEmpty) return null;
     if (signaledPosition == null) return _rxTimedServicePointReached.value ?? journeyPoints.first;
 
-    JourneyPoint? currentPosition;
+    JourneyPoint? result;
     final currentPositionOrder = journeyPoints.lastWhereOrNull((it) => it.order <= signaledPosition.order)?.order;
     if (currentPositionOrder != null) {
-      currentPosition = _calculatePositionByOrder(journeyPoints, currentPositionOrder);
+      result = _calculatePositionByOrder(journeyPoints, currentPositionOrder);
     }
 
     final timeServicePointValue = _rxTimedServicePointReached.value;
 
-    if (timeServicePointValue != null &&
-        (currentPosition == null || timeServicePointValue.order > currentPosition.order)) {
-      currentPosition = timeServicePointValue;
+    if (timeServicePointValue != null && (result == null || timeServicePointValue.order > result.order)) {
+      result = timeServicePointValue;
     }
 
-    return currentPosition;
+    if (_lastManualPosition != _rxManualPosition.value) {
+      _lastManualPosition = _rxManualPosition.value;
+      result = _lastManualPosition;
+    }
+
+    return result;
   }
 
   ServicePoint? _calculatePreviousServicePoint(
@@ -183,6 +197,7 @@ class JourneyPositionViewModel {
     PunctualityModel punctuality,
   ) {
     if (punctuality is Stale || punctuality is Hidden) return;
+    if (updatedPosition is ServicePoint) return;
 
     final nextPointIndex = journeyPoints.indexOf(updatedPosition ?? journeyPoints.first) + 1;
 
@@ -208,6 +223,7 @@ class JourneyPositionViewModel {
     final arrivalTimeWithDelay = operationalArrivalTime.add((punctuality as Visible).delay.value);
 
     final now = clock.now();
+
     if (now.isAfter(arrivalTimeWithDelay)) {
       _log.info('Setting timed service point immediately to ${nextServicePoint.name}');
       _rxTimedServicePointReached.add(nextServicePoint);
