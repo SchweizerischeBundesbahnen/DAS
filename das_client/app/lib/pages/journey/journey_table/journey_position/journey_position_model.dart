@@ -41,13 +41,14 @@ class JourneyPositionModel {
           nextStop == other.nextStop);
 
   @override
-  int get hashCode =>
-      currentPosition.hashCode ^
-      lastPosition.hashCode ^
-      previousServicePoint.hashCode ^
-      nextServicePoint.hashCode ^
-      previousStop.hashCode ^
-      nextStop.hashCode;
+  int get hashCode => Object.hash(
+    currentPosition,
+    lastPosition,
+    previousServicePoint,
+    nextServicePoint,
+    previousStop,
+    nextStop,
+  );
 
   @override
   String toString() {
