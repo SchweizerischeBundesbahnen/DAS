@@ -106,6 +106,7 @@
   "w_service_point_modal_communication_label": "Netzart und Funkkanal",
   "w_service_point_modal_communication_radio_channel": "Funkkanal",
   "w_service_point_modal_communication_radio_channels_not_found": "Kein Funkkanal verfügbar",
+  "w_service_point_modal_departure_authorization": "Abfahrerlaubnis",
   "w_service_point_modal_communication_network": "Netzart",
   "w_service_point_modal_communication_sim": "SIM",
   "w_service_point_modal_graduated_speed_label": "Abgestufte Geschwindigkeiten",
