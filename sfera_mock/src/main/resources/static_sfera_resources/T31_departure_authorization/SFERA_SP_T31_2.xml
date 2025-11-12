@@ -35,7 +35,8 @@
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>departureAuth</NSP_GroupName>
                 <NetworkSpecificParameter name="departureAuth" value="true"/>
-                <NetworkSpecificParameter name="departureAuthText" value="sms&lt;br&gt;3-6"/>
+                <NetworkSpecificParameter name="departureAuthDispatcher" value="true"/>
+                <NetworkSpecificParameter name="departureAuthText" value="sms&lt;br&gt;2-4"/>
             </TAF_TAP_Location_NSP>
 
         </TAF_TAP_Location>

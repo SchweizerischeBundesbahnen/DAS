@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:collection/collection.dart';
 import 'package:logging/logging.dart';
 import 'package:sfera/component.dart';
+import 'package:sfera/src/data/dto/departure_auth_nsp_dto.dart';
 import 'package:sfera/src/data/dto/enums/gradient_direction_type_dto.dart';
 import 'package:sfera/src/data/dto/enums/length_type_dto.dart';
 import 'package:sfera/src/data/dto/enums/stop_skip_pass_dto.dart';
@@ -130,6 +131,7 @@ class SegmentProfileMapper {
       servicePoints.add(
         ServicePoint(
           name: tafTapLocation.locationIdent.primaryLocationName?.value ?? '',
+          abbreviation: tafTapLocation.abbreviation,
           order: calculateOrder(mapperData.segmentIndex, timingPoint.location),
           mandatoryStop: tpConstraint.stoppingPointInformation?.stopType?.mandatoryStop ?? true,
           isStop: tpConstraint.stopSkipPass == StopSkipPassDto.stoppingPoint,
@@ -149,6 +151,7 @@ class SegmentProfileMapper {
           stationSign1: tafTapLocation.routeTableDataNsp?.stationSign1,
           stationSign2: tafTapLocation.routeTableDataNsp?.stationSign2,
           trackGroup: tafTapLocation.routeTableDataNsp?.trackGroup,
+          departureAuthorization: _parseDepartureAuthorization(tafTapLocation.departureAuthNsp),
           properties: _parseStationProperties(tafTapLocation.property?.xmlStationProperty.element.properties),
           localRegulationSections: _parseLocalRegulationSegments(tafTapLocation.localRegulations),
         ),
@@ -438,5 +441,18 @@ class SegmentProfileMapper {
         content: dto.contents.toLocalizedString,
       );
     }).toList();
+  }
+
+  static DepartureAuthorization? _parseDepartureAuthorization(DepartureAuthNspDto? departureAuthNsp) {
+    if (departureAuthNsp == null || !departureAuthNsp.departureAuth) return null;
+
+    // authorization type can either be sms, dispatcher or both. If text does not contain sms and [departureAuthDispatcher] is false, it has to be type sms
+    final hasSmsAuth = departureAuthNsp.departureAuthText?.toLowerCase().contains('sms') ?? false;
+    final authTypes = <DepartureAuthorizationType>[
+      if (departureAuthNsp.departureAuthDispatcher) DepartureAuthorizationType.dispatcher,
+      if (hasSmsAuth || !departureAuthNsp.departureAuthDispatcher) DepartureAuthorizationType.sms,
+    ];
+
+    return DepartureAuthorization(types: authTypes, originalText: departureAuthNsp.departureAuthText);
   }
 }

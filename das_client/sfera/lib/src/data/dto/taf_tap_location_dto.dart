@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:sfera/src/data/dto/departure_auth_nsp_dto.dart';
 import 'package:sfera/src/data/dto/enums/taf_tap_location_type_dto.dart';
 import 'package:sfera/src/data/dto/enums/xml_enum.dart';
 import 'package:sfera/src/data/dto/line_foot_notes_nsp_dto.dart';
@@ -37,6 +38,8 @@ class TafTapLocationDto extends SferaSegmentXmlElementDto {
   LineFootNotesNspDto? get lineFootNotes => children.whereType<LineFootNotesNspDto>().firstOrNull;
 
   TafTapRouteTableDataNspDto? get routeTableDataNsp => children.whereType<TafTapRouteTableDataNspDto>().firstOrNull;
+
+  DepartureAuthNspDto? get departureAuthNsp => children.whereType<DepartureAuthNspDto>().firstOrNull;
 
   StationPropertyNspDto? get property => children.whereType<StationPropertyNspDto>().firstOrNull;
 

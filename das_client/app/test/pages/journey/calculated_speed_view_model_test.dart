@@ -2,9 +2,9 @@ import 'dart:collection';
 
 import 'package:app/pages/journey/calculated_speed.dart';
 import 'package:app/pages/journey/calculated_speed_view_model.dart';
+import 'package:app/pages/journey/journey_table_view_model.dart';
 import 'package:app/pages/journey/line_speed_view_model.dart';
 import 'package:app/pages/journey/resolved_train_series_speed.dart';
-import 'package:app/pages/journey/journey_table_view_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -40,12 +40,12 @@ void main() {
       }),
     ),
     data: [
-      ServicePoint(name: 'A', order: 0, kilometre: []),
-      ServicePoint(name: 'B', order: 5, kilometre: []),
-      ServicePoint(name: 'C', order: 10, kilometre: []),
-      ServicePoint(name: 'D', order: 15, kilometre: []),
-      ServicePoint(name: 'E', order: 20, kilometre: []),
-      ServicePoint(name: 'F', order: 25, kilometre: []),
+      ServicePoint(name: 'A', abbreviation: '', order: 0, kilometre: []),
+      ServicePoint(name: 'B', abbreviation: '', order: 5, kilometre: []),
+      ServicePoint(name: 'C', abbreviation: '', order: 10, kilometre: []),
+      ServicePoint(name: 'D', abbreviation: '', order: 15, kilometre: []),
+      ServicePoint(name: 'E', abbreviation: '', order: 20, kilometre: []),
+      ServicePoint(name: 'F', abbreviation: '', order: 25, kilometre: []),
     ],
   );
 
