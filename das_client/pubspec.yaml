@@ -16,6 +16,7 @@ workspace:
   - settings
   - connectivity_x
   - local_regulations
+  - formation
 
 dev_dependencies:
   melos: ^7.2.0
