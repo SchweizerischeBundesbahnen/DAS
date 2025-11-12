@@ -1,7 +1,7 @@
 package ch.sbb.backend.formation.domain.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -103,7 +103,7 @@ class FormationRunTest {
     void isInspected_withUnknownCompany() {
         List<FormationRun> formationRuns = List.of(createFormationRun(true, "0000"), createFormationRun(true, null));
 
-        assertThatIllegalStateException().isThrownBy(() -> FormationRun.filterValid(formationRuns));
+        assertThatExceptionOfType(UnexpectedProviderData.class).isThrownBy(() -> FormationRun.filterValid(formationRuns));
     }
 
     @Test
@@ -198,46 +198,35 @@ class FormationRunTest {
     }
 
     @Test
-    void getAdditionalTractionMode_empty() {
+    void getAdditionalTractions_empty() {
         FormationRun formationRun = createFormationRunWithVehicles(null);
 
         try (MockedStatic<Vehicle> mockedStatic = mockStatic(Vehicle.class)) {
-            mockedStatic.when(() -> Vehicle.additionalTractionMode(any())).thenReturn(null);
-            TractionMode tractionMode = formationRun.getAdditionalTractionMode();
+            mockedStatic.when(() -> Vehicle.getAdditionalTractions(any())).thenReturn(null);
+            List<String> tractionMode = formationRun.getAdditionalTractions();
             assertThat(tractionMode).isNull();
         }
     }
 
     @Test
-    void getAdditionalTractionMode_withAdditionalTractionMode() {
+    void getAdditionalTractions_withOneAdditionalTraction() {
         FormationRun formationRun = createFormationRunWithVehicles(null);
 
         try (MockedStatic<Vehicle> mockedStatic = mockStatic(Vehicle.class)) {
-            mockedStatic.when(() -> Vehicle.additionalTractionMode(any())).thenReturn(TractionMode.SCHIEBELOK);
-            TractionMode tractionMode = formationRun.getAdditionalTractionMode();
-            assertThat(tractionMode).isEqualTo(TractionMode.SCHIEBELOK);
+            mockedStatic.when(() -> Vehicle.getAdditionalTractions(any())).thenReturn(List.of("S (T123)"));
+            List<String> additionalTractions = formationRun.getAdditionalTractions();
+            assertThat(additionalTractions).isEqualTo(List.of("S (T123)"));
         }
     }
 
     @Test
-    void getAdditionalTractionSeries_empty() {
+    void getAdditionalTractions_withTwoAdditionalTractions() {
         FormationRun formationRun = createFormationRunWithVehicles(null);
 
         try (MockedStatic<Vehicle> mockedStatic = mockStatic(Vehicle.class)) {
-            mockedStatic.when(() -> Vehicle.additionalTractionSeries(any())).thenReturn(null);
-            String tractionSeries = formationRun.getAdditionalTractionSeries();
-            assertThat(tractionSeries).isNull();
-        }
-    }
-
-    @Test
-    void getAdditionalTractionSeries_withAdditionalTractionSeries() {
-        FormationRun formationRun = createFormationRunWithVehicles(null);
-
-        try (MockedStatic<Vehicle> mockedStatic = mockStatic(Vehicle.class)) {
-            mockedStatic.when(() -> Vehicle.additionalTractionSeries(any())).thenReturn("Oe320");
-            String tractionSeries = formationRun.getAdditionalTractionSeries();
-            assertThat(tractionSeries).isEqualTo("Oe320");
+            mockedStatic.when(() -> Vehicle.getAdditionalTractions(any())).thenReturn(List.of("P (Oe320)", "Z (U89)"));
+            List<String> tractionSeries = formationRun.getAdditionalTractions();
+            assertThat(tractionSeries).isEqualTo(List.of("P (Oe320)", "Z (U89)"));
         }
     }
 
