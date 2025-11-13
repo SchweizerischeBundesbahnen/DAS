@@ -85,13 +85,10 @@ class AutomaticAdvancementController {
     }
   }
 
-  /// Scrolls to current position. If [resetAutomaticAdvancementTimer] is true, automatic advancement is started. Otherwise it waits till idle time is over.
-  void scrollToCurrentPosition({bool resetAutomaticAdvancementTimer = false}) {
+  void scrollToCurrentPosition() {
     if (_isDisposed) return;
 
-    if (resetAutomaticAdvancementTimer) {
-      _lastTouch = null;
-    }
+    _lastTouch = null;
 
     final targetScrollPosition = _calculateScrollPosition();
     if (targetScrollPosition != null) {
@@ -169,8 +166,6 @@ class AutomaticAdvancementController {
       curve: Curves.easeInOut,
     );
   }
-
-  Stream<bool> get isActiveStream => _rxIsAutomaticAdvancementActive.distinct();
 
   bool get isActive => _rxIsAutomaticAdvancementActive.value;
 

@@ -61,7 +61,7 @@ class JourneyTableViewModel {
 
     if (_rxSettings.value.isAutoAdvancementEnabled) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        automaticAdvancementController.scrollToCurrentPosition(resetAutomaticAdvancementTimer: true);
+        automaticAdvancementController.scrollToCurrentPosition();
       });
     }
   }
@@ -73,7 +73,7 @@ class JourneyTableViewModel {
   void setAutomaticAdvancement(bool active) {
     _log.info('Automatic advancement state changed to active=$active');
     if (active) {
-      automaticAdvancementController.scrollToCurrentPosition(resetAutomaticAdvancementTimer: true);
+      automaticAdvancementController.scrollToCurrentPosition();
     }
     _rxSettings.add(_rxSettings.value.copyWith(isAutoAdvancementEnabled: active));
   }

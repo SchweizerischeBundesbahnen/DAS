@@ -36,7 +36,7 @@ class DetailModalViewModel {
       onClose: () => _rxOpenModalType.add(null),
       onOpen: () {
         if (automaticAdvancementController.isActive) {
-          automaticAdvancementController.scrollToCurrentPosition(resetAutomaticAdvancementTimer: true);
+          automaticAdvancementController.scrollToCurrentPosition();
         }
       },
     );
