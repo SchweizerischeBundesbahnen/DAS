@@ -120,8 +120,10 @@
     </SP_Areas>
 
     <SP_ContextInformation>
-        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-P"/>
-
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="450" endLocation="450" communicationNetworkType="GSM-P"/>
+        <KilometreReferencePoint location="450">
+            <KM_Reference kmRef="36.9"/>
+        </KilometreReferencePoint>
         <KilometreReferencePoint location="500">
             <KM_Reference kmRef="36.8"/>
         </KilometreReferencePoint>
