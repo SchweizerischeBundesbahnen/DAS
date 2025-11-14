@@ -1,4 +1,4 @@
-package ch.sbb.das.backend.restapi.e2etest.api;//package ch.sbb.backend;
+package ch.sbb.das.backend.restapi.e2etest.api;
 
 import ch.sbb.backend.restclient.v1.model.FormationResponse;
 import ch.sbb.das.backend.restapi.configuration.DasBackendApi;

@@ -1,8 +1,9 @@
 package ch.sbb.das.backend.restapi.configuration;
 
+import static ch.sbb.das.backend.restapi.configuration.SSOConfiguration.AUTHORIZATION_PROVIDER_AZURE_AD;
+
 import ch.sbb.backend.restclient.v1.ApiClient;
 import ch.sbb.das.backend.restapi.helper.ObjectMapperFactory;
-import ch.sbb.das.backend.restapi.iam.SSOAuthorizationTokenService;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,10 +15,9 @@ import java.time.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
-import org.springframework.web.reactive.function.client.ClientRequest;
-import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
+import org.springframework.security.oauth2.client.ReactiveOAuth2AuthorizedClientManager;
+import org.springframework.security.oauth2.client.web.reactive.function.client.ServerOAuth2AuthorizedClientExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
 
@@ -25,19 +25,30 @@ import reactor.netty.http.client.HttpClient;
 public class ApiClientConfiguration {
 
     private final DasBackendEndpointConfiguration dasBackendEndpointConfiguration;
-    private final SSOAuthorizationTokenService ssoAuthorizationTokenService;
 
     @Autowired
-    public ApiClientConfiguration(DasBackendEndpointConfiguration dasBackendEndpointConfiguration, SSOAuthorizationTokenService ssoAuthorizationTokenService) {
+    public ApiClientConfiguration(DasBackendEndpointConfiguration dasBackendEndpointConfiguration) {
         this.dasBackendEndpointConfiguration = dasBackendEndpointConfiguration;
-        this.ssoAuthorizationTokenService = ssoAuthorizationTokenService;
+    }
+
+    /**
+     * @return HttpClient for Integration-Tests requirements.
+     * @see <a href="https://www.baeldung.com/spring-webflux-timeout">configuring timeouts, keep alive, SSL/TSL, ..</a>
+     */
+    private static HttpClient createHttpClient() {
+        return HttpClient.create()
+            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 20000)
+            .responseTimeout(Duration.ofSeconds(25));
     }
 
     @Bean
-    public ApiClient apiClient() {
+    public ApiClient apiClient(ReactiveOAuth2AuthorizedClientManager authorizedClientManager) {
         final ObjectMapper objectMapper = objectMapper(false);
+        ServerOAuth2AuthorizedClientExchangeFilterFunction oauth2 = new ServerOAuth2AuthorizedClientExchangeFilterFunction(
+            authorizedClientManager);
+        oauth2.setDefaultClientRegistrationId(AUTHORIZATION_PROVIDER_AZURE_AD);
         final WebClient webClient = ApiClient.buildWebClientBuilder(objectMapper)
-            .filter(createAuthFilter(ssoAuthorizationTokenService))
+            .filter(oauth2)
             .clientConnector(new ReactorClientHttpConnector(createHttpClient()))
             // ? .exchangeStrategies(createExchangeStrategies())
             .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(2 * 1024 * 1024))
@@ -64,27 +75,5 @@ public class ApiClientConfiguration {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, strict);
         mapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, strict);
         return mapper;
-    }
-
-    /**
-     * @return HttpClient for Integration-Tests requirements.
-     * @see <a href="https://www.baeldung.com/spring-webflux-timeout">configuring timeouts, keep alive, SSL/TSL, ..</a>
-     */
-    private static HttpClient createHttpClient() {
-        return HttpClient.create()
-            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 20000)
-            .responseTimeout(Duration.ofSeconds(25));
-    }
-
-    /**
-     * @param tokenProvider implementation
-     * @return filter for clientId claim
-     * @see <a href="https://www.baeldung.com/spring-webclient-oauth2">Baeldung</a>
-     */
-    private static ExchangeFilterFunction createAuthFilter(SSOAuthorizationTokenService tokenProvider) {
-        return (request, next) -> next.exchange(
-            ClientRequest.from(request).headers(headers ->
-                headers.set(HttpHeaders.AUTHORIZATION, tokenProvider.token(request).blockFirst())
-            ).build());
     }
 }
