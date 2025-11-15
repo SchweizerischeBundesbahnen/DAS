@@ -12,7 +12,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.netty.channel.ChannelOption;
 import java.text.DateFormat;
 import java.time.Duration;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
@@ -26,7 +25,6 @@ public class ApiClientConfiguration {
 
     private final DasBackendEndpointConfiguration dasBackendEndpointConfiguration;
 
-    @Autowired
     public ApiClientConfiguration(DasBackendEndpointConfiguration dasBackendEndpointConfiguration) {
         this.dasBackendEndpointConfiguration = dasBackendEndpointConfiguration;
     }
@@ -50,7 +48,6 @@ public class ApiClientConfiguration {
         final WebClient webClient = ApiClient.buildWebClientBuilder(objectMapper)
             .filter(oauth2)
             .clientConnector(new ReactorClientHttpConnector(createHttpClient()))
-            // ? .exchangeStrategies(createExchangeStrategies())
             .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(2 * 1024 * 1024))
             .build();
         final ApiClient apiClient = new ApiClient(webClient,
