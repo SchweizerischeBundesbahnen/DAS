@@ -67,7 +67,7 @@ public abstract class RestAssuredCommand {
     private final TestContextGetterExtension testContextGetter = new TestContextGetterExtension();
     private DasBackendEndpoint configuration;
     private String url;
-    private String token = null;
+    private final String token = null;
 
     protected static String toBodyString(Response response) {
         // DO NOT use .toString() here -> System.out.println() implementation will force System.exit() while Jenkins test job execution!!!
@@ -98,13 +98,7 @@ public abstract class RestAssuredCommand {
                 if (ex.getHeaders().containsKey("Retry-After")) {
                     log.info("Retry-After={}", ex.getHeaders().getFirst("Retry-After"));
                 }
-                try {
-                    // hope to break the immediate flow of tests for a moment -> follow-up tests might have a better chance
-                    // TODO better add retry to ApiClient's WebClient, see https://www.couchbase.com/blog/spring-webclient-429-ratelimit-errors/
-                    Thread.sleep(30000L);
-                } catch (InterruptedException e) {
-                    log.warn("Retry-After sleep workaround failed", ex);
-                }
+
                 Assertions.fail(ex.getStatusCode() + " " + ex.getResponseBodyAsString());
             }
 
@@ -455,7 +449,7 @@ public abstract class RestAssuredCommand {
 
         private ParameterizedTypeReference<?> localVarReturnType = null;
 
-        private String[] localVarAuthNames = new String[]{}; // or something else... for now always overridden
+        private final String[] localVarAuthNames = new String[]{}; // or something else... for now always overridden
 
         private RequestSpecBuilder(DasBackendEndpoint configuration, String apiPath) {
             apiClient = new ApiClient();

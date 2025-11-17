@@ -151,15 +151,6 @@
                                 </caseInsensitiveResponseHeaders>
                                 <openApiNullable>false</openApiNullable>
                             </configOptions>
-                            <!-- TODO if LocalTime in service-contract: Impact on client's caller and the ApiClient(s)
-                            <typeMappings>
-                                <typeMapping>string+time-local=LocalTime</typeMapping>
-                                <typeMapping>string+time=LocalTime</typeMapping>
-                            </typeMappings>
-                            <importMappings>
-                                <importMapping>LocalTime=java.time.LocalTime</importMapping>
-                            </importMappings>
-                            -->
                         </configuration>
                     </execution>
                 </executions>

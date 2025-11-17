@@ -28,7 +28,6 @@ public final class ObjectMapperFactory {
      * @return tolerant mapper, strongly recommended for PRODuction use!
      */
     public static ObjectMapper createMapper(boolean strict) {
-        // see ch.sbb.journey.utils.DateTimeUtils
         final ObjectMapper mapper = new ObjectMapper();
         //TODO SFERA like (UTC)
         mapper.configure(SerializationFeature.WRITE_DATES_WITH_ZONE_ID, false);
