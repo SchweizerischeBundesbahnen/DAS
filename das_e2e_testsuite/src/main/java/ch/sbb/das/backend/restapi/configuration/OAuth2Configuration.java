@@ -15,28 +15,24 @@ import org.springframework.security.oauth2.client.registration.InMemoryReactiveC
 import org.springframework.security.oauth2.client.registration.ReactiveClientRegistrationRepository;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 
-/**
- * IAM Access configuration for DAS-Backend via APIM.
- * <p>
- * When you want to use AzureAd specify the azure-scope "sso.azure.scope" env.
- */
 @Configuration
 @PropertySource(value = "file:../das_e2e_testsuite/src/main/resources/DAS-Backend_SAMPLE.properties")
-// override sample with local settings where needed
+// override sample with concrete env settings
 @PropertySource(value = "file:../das_e2e_testsuite/src/main/resources/DAS-Backend.properties", ignoreResourceNotFound = true)
-public class SSOConfiguration {
+public class OAuth2Configuration {
 
-    public static final String AUTHORIZATION_PROVIDER_AZURE_AD = "azure";
     /**
-     * APIM name for an environment
+     * @see <a href="https://www.microsoft.com/en-us/security/business/identity-access/microsoft-entra-id">MS Entra Id</a>
      */
-    @Value("${sso.token-endpoint}")
+    public static final String AUTHORIZATION_PROVIDER = "azure";
+
+    @Value("${auth.token-endpoint}")
     private String ssoTokenEndpoint;
-    @Value("${sso.scope}")
+    @Value("${auth.scope}")
     private String scope;
-    @Value("${sso.client-id}")
+    @Value("${auth.client-id}")
     private String clientId;
-    @Value("${sso.client-secret}")
+    @Value("${auth.client-secret}")
     private String clientSecret;
 
     @Bean
@@ -59,7 +55,7 @@ public class SSOConfiguration {
 
     @Bean
     public ReactiveClientRegistrationRepository clientRegistrationRepository() {
-        ClientRegistration registration = ClientRegistration.withRegistrationId(AUTHORIZATION_PROVIDER_AZURE_AD)
+        ClientRegistration registration = ClientRegistration.withRegistrationId(AUTHORIZATION_PROVIDER)
             .clientId(clientId)
             .clientSecret(clientSecret)
             .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)

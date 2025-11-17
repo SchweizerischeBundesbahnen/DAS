@@ -3,7 +3,7 @@ package ch.sbb.das.backend.restapi.e2etest.configuration;
 import ch.sbb.das.backend.restapi.configuration.ApiClientConfiguration;
 import ch.sbb.das.backend.restapi.configuration.DasBackendApi;
 import ch.sbb.das.backend.restapi.configuration.DasBackendEndpointConfiguration;
-import ch.sbb.das.backend.restapi.configuration.SSOConfiguration;
+import ch.sbb.das.backend.restapi.configuration.OAuth2Configuration;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -18,9 +18,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@ActiveProfiles({"das"})
+@ActiveProfiles(/*"test"*/)
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {DasBackendEndpointConfiguration.class, DasBackendApi.class, SSOConfiguration.class, ApiClientConfiguration.class})
+@ContextConfiguration(classes = {DasBackendEndpointConfiguration.class, DasBackendApi.class, OAuth2Configuration.class, ApiClientConfiguration.class})
 public @interface ApiClientTestProfile {
 
 }
