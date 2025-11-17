@@ -13,8 +13,6 @@ public class DasBackendEndpoint {
     String endpoint;
     String port;
 
-    OAuth2Configuration oAuth2Configuration;
-
     public String getEndpointAndPort() {
         return endpoint + (StringUtils.isBlank(port) ? "" : ":" + port);
     }

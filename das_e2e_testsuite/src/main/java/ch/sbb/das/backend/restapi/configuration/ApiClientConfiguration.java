@@ -1,7 +1,5 @@
 package ch.sbb.das.backend.restapi.configuration;
 
-import static ch.sbb.das.backend.restapi.configuration.OAuth2Configuration.AUTHORIZATION_PROVIDER;
-
 import ch.sbb.backend.restclient.v1.ApiClient;
 import ch.sbb.das.backend.restapi.helper.ObjectMapperFactory;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -44,7 +42,7 @@ public class ApiClientConfiguration {
         final ObjectMapper objectMapper = objectMapper(false);
         ServerOAuth2AuthorizedClientExchangeFilterFunction oauth2 = new ServerOAuth2AuthorizedClientExchangeFilterFunction(
             authorizedClientManager);
-        oauth2.setDefaultClientRegistrationId(AUTHORIZATION_PROVIDER);
+        oauth2.setDefaultClientRegistrationId(DasBackendEndpointConfiguration.AUTHORIZATION_PROVIDER);
         final WebClient webClient = ApiClient.buildWebClientBuilder(objectMapper)
             .filter(oauth2)
             .clientConnector(new ReactorClientHttpConnector(createHttpClient()))
