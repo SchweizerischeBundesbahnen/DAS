@@ -116,8 +116,8 @@
                         </goals>
                         <configuration>
                             <inputSpec>
-                                <!-- run das_backend das_backend ApiExtractionTest before -->
-                                ./../das_backend/src/main/resources/api/api-specification.yaml
+                                https://github.com/SchweizerischeBundesbahnen/DAS/releases/download/backend-v${DAS_BACKEND_VERSION}/api-specification.yaml
+                                <!-- or run das_backend ApiExtractionTest before and use this path instead ./../das_backend/src/main/resources/api/api-specification.yaml-->
                             </inputSpec>
                             <generatorName>java</generatorName>
                             <skipValidateSpec>false</skipValidateSpec>

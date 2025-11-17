@@ -5,7 +5,9 @@
 ### REST-API tests
 
 1. das_backend [ApiExtractionTest](./../das_backend/src/test/java/ch/sbb/backend/ApiExtractionTest.java) will generate an OpenApi 3 service-contract specification yaml
-2. [pom](./pom.xml) will generate an ApiClient out of the specification yaml
+2. add maven environment variable `DAS_BACKEND_VERSION`
+3. [pom](./pom.xml) will generate an ApiClient out of the specification yaml
+
 
 ## Getting-Started
 
