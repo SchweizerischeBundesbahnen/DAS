@@ -93,16 +93,6 @@
 
     <build>
         <plugins>
-            <!--plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <argLine>
-                        -javaagent:${settings.localRepository}/org/mockito/mockito-core/${mockito.version}/mockito-core-${mockito.version}.jar
-                        -Xshare:off
-                    </argLine>
-                </configuration>
-            </plugin-->
             <plugin>
                 <groupId>org.openapitools</groupId>
                 <!-- see https://openapi-generator.tech/docs/generators/java/, https://github.com/OpenAPITools/openapi-generator/tree/master/modules/openapi-generator-maven-plugin-->

@@ -43,6 +43,7 @@ public class ApiClientConfiguration {
         ServerOAuth2AuthorizedClientExchangeFilterFunction oauth2 = new ServerOAuth2AuthorizedClientExchangeFilterFunction(
             authorizedClientManager);
         oauth2.setDefaultClientRegistrationId(DasBackendEndpointConfiguration.AUTHORIZATION_PROVIDER);
+        //TODO use RestClient for synchroneous execution
         final WebClient webClient = ApiClient.buildWebClientBuilder(objectMapper)
             .filter(oauth2)
             .clientConnector(new ReactorClientHttpConnector(createHttpClient()))
