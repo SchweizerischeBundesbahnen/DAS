@@ -203,8 +203,7 @@ void main() {
   group('communication tab tests', () {
     testWidgets('test communication network and radio channels displayed correctly', (tester) async {
       await prepareAndStartApp(tester);
-      await loadJourney(tester, trainNumber: 'T12');
-      await stopAutomaticAdvancement(tester);
+      await loadJourney(tester, trainNumber: 'T12M');
 
       // check communication information for Bern
       await _openByTapOnCellWithText(tester, 'Bern');
@@ -262,8 +261,7 @@ void main() {
     });
     testWidgets('test communication information present when opening from other tab', (tester) async {
       await prepareAndStartApp(tester);
-      await loadJourney(tester, trainNumber: '1513');
-      await stopAutomaticAdvancement(tester);
+      await loadJourney(tester, trainNumber: '1513M');
 
       final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
@@ -292,8 +290,7 @@ void main() {
 
     testWidgets('test SIM corridor information', (tester) async {
       await prepareAndStartApp(tester);
-      await loadJourney(tester, trainNumber: 'T20');
-      await stopAutomaticAdvancement(tester);
+      await loadJourney(tester, trainNumber: 'T20M');
 
       final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
@@ -388,8 +385,7 @@ void main() {
 
   testWidgets('test short signal names are displayed when modal is open', (tester) async {
     await prepareAndStartApp(tester);
-    await loadJourney(tester, trainNumber: 'T9999');
-    await stopAutomaticAdvancement(tester);
+    await loadJourney(tester, trainNumber: 'T9999M');
 
     expect(find.text(l10n.c_main_signal_function_entry), findsAny);
 
@@ -421,6 +417,37 @@ void main() {
 
     await disconnect(tester);
   });
+
+  testWidgets('test departure authorization are displayed in modal', (tester) async {
+    await prepareAndStartApp(tester);
+    await loadJourney(tester, trainNumber: 'T31M');
+
+    final scrollableFinder = find.byType(AnimatedList);
+    expect(scrollableFinder, findsOneWidget);
+
+    await _openAndCheckDepartureAuth(tester, 'Dietikon', '*');
+    await _openAndCheckDepartureAuth(tester, 'Glanzenberg', 'sms 3-6');
+
+    await _openByTapOnCellWithText(tester, 'Schlieren');
+    expect(find.byKey(DetailTabCommunication.departureAuthorizationKey), findsNothing);
+
+    await tester.dragUntilVisible(find.text('Zürich Hardbrücke'), scrollableFinder, const Offset(0, -50));
+    await tester.pumpAndSettle();
+
+    await _openAndCheckDepartureAuth(tester, 'Zürich Altstetten', 'sms 2-4 6,7');
+
+    await _openByTapOnCellWithText(tester, 'Zürich Hardbrücke');
+    expect(find.byKey(DetailTabCommunication.departureAuthorizationKey), findsNothing);
+
+    await disconnect(tester);
+  });
+}
+
+Future<void> _openAndCheckDepartureAuth(WidgetTester tester, String servicePoint, String departureAuthText) async {
+  await _openByTapOnCellWithText(tester, servicePoint);
+  final departureAuth = find.byKey(DetailTabCommunication.departureAuthorizationKey);
+  expect(departureAuth, findsOne);
+  expect(find.descendant(of: departureAuth, matching: find.text(departureAuthText)), findsOne);
 }
 
 Future<void> _openByTapOnGraduatedSpeedOf(WidgetTester tester, String text) async {
