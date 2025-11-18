@@ -14,15 +14,19 @@ import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
-final _log = Logger('AutomaticAdvancementController');
+final _log = Logger('JourneyTableScrollController');
 
-class AutomaticAdvancementController {
+/// Responsible for scrolling the [JourneyTable] to a specific JourneyPosition. This is usually the
+/// current JourneyPosition.
+///
+/// Calculates target scroll position respecting currently rendered rows and sticky header.
+class JourneyTableScrollController {
   static const int _minScrollDuration = 1000;
   static const int _maxScrollDuration = 2000;
 
   final _idleTimeAutoScroll = DI.get<TimeConstants>().automaticAdvancementIdleTimeAutoScroll;
 
-  AutomaticAdvancementController({ScrollController? controller, GlobalKey? tableKey})
+  JourneyTableScrollController({ScrollController? controller, GlobalKey? tableKey})
     : scrollController = controller ?? ScrollController(),
       tableKey = tableKey ?? GlobalKey();
 

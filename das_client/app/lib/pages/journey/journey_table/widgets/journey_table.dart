@@ -84,7 +84,7 @@ class JourneyTable extends StatelessWidget {
         final journeyPosition = snapshot.data![3] as JourneyPositionModel;
 
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          viewModel.automaticAdvancementController.handleJourneyUpdate(
+          viewModel.journeyTableScrollController.handleJourneyUpdate(
             currentPosition: journeyPosition.currentPosition,
             routeStart: journey.metadata.journeyStart,
             isAdvancementEnabledByUser: settings.isAutoAdvancementEnabled,
@@ -99,8 +99,8 @@ class JourneyTable extends StatelessWidget {
         return KeyedSubtree(
           key: loadedJourneyTableKey,
           child: Listener(
-            onPointerDown: (_) => viewModel.automaticAdvancementController.resetScrollTimer(),
-            onPointerUp: (_) => viewModel.automaticAdvancementController.resetScrollTimer(),
+            onPointerDown: (_) => viewModel.journeyTableScrollController.resetScrollTimer(),
+            onPointerUp: (_) => viewModel.journeyTableScrollController.resetScrollTimer(),
             child: _body(context, journey, settings, journeyPosition),
           ),
         );
@@ -127,7 +127,7 @@ class JourneyTable extends StatelessWidget {
         final collapsedRows = snapshot.data?.$1 ?? {};
         final journeyPosition = snapshot.data!.$2;
         final tableRows = _rows(context, journey, settings, collapsedRows, journeyPosition);
-        context.read<JourneyTableViewModel>().automaticAdvancementController.updateRenderedRows(tableRows);
+        context.read<JourneyTableViewModel>().journeyTableScrollController.updateRenderedRows(tableRows);
 
         final marginAdjustment = Platform.isIOS
             ? tableRows.lastWhereOrNull((it) => it.stickyLevel == .first)?.height ?? CellRowBuilder.rowHeight
@@ -141,7 +141,7 @@ class JourneyTable extends StatelessWidget {
             stream: detailModalViewModel.openModalType,
             builder: (context, snapshot) {
               final openModalType = snapshot.data;
-              final advancementController = context.read<JourneyTableViewModel>().automaticAdvancementController;
+              final advancementController = context.read<JourneyTableViewModel>().journeyTableScrollController;
               return ChevronAnimationWrapper(
                 journeyPosition: journeyPosition,
                 child: DASTable(

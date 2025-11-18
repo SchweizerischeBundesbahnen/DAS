@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:app/di/di.dart';
-import 'package:app/pages/journey/journey_table/automatic_advancement_controller.dart';
+import 'package:app/pages/journey/journey_table/journey_table_scroll_controller.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/config/journey_settings.dart';
 import 'package:app/util/error_code.dart';
 import 'package:app/util/time_constants.dart';
@@ -38,7 +38,7 @@ class JourneyTableViewModel {
 
   bool get showDecisiveGradientValue => _rxShowDecisiveGradient.value;
 
-  AutomaticAdvancementController automaticAdvancementController = AutomaticAdvancementController();
+  JourneyTableScrollController journeyTableScrollController = JourneyTableScrollController();
 
   final _rxSettings = BehaviorSubject<JourneySettings>.seeded(JourneySettings());
   final _rxErrorCode = BehaviorSubject<ErrorCode?>.seeded(null);
@@ -59,7 +59,7 @@ class JourneyTableViewModel {
 
     if (_rxSettings.value.isAutoAdvancementEnabled) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        automaticAdvancementController.scrollToCurrentPosition();
+        journeyTableScrollController.scrollToCurrentPosition();
       });
     }
   }
@@ -71,7 +71,7 @@ class JourneyTableViewModel {
   void setAutomaticAdvancement(bool active) {
     _log.info('Automatic advancement state changed to active=$active');
     if (active) {
-      automaticAdvancementController.scrollToCurrentPosition();
+      journeyTableScrollController.scrollToCurrentPosition();
     }
     _rxSettings.add(_rxSettings.value.copyWith(isAutoAdvancementEnabled: active));
   }
@@ -95,7 +95,7 @@ class JourneyTableViewModel {
     _rxErrorCode.close();
     _stateSubscription?.cancel();
     _journeySubscription?.cancel();
-    automaticAdvancementController.dispose();
+    journeyTableScrollController.dispose();
   }
 
   void _listenToSferaRemoteRepo() {
@@ -103,7 +103,7 @@ class JourneyTableViewModel {
     _stateSubscription = _sferaRemoteRepo.stateStream.listen((state) {
       switch (state) {
         case .connected:
-          automaticAdvancementController = AutomaticAdvancementController();
+          journeyTableScrollController = JourneyTableScrollController();
           WakelockPlus.enable();
           break;
         case .connecting:

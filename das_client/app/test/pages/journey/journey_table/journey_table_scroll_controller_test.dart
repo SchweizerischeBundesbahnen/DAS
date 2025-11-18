@@ -1,5 +1,5 @@
-import 'package:app/pages/journey/journey_table/automatic_advancement_controller.dart';
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_model.dart';
+import 'package:app/pages/journey/journey_table/journey_table_scroll_controller.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/cell_row_builder.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/service_point_row.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/signal_row.dart';
@@ -13,7 +13,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:sfera/component.dart';
 
-import 'automatic_advancement_controller_test.mocks.dart';
+import 'journey_table_scroll_controller_test.mocks.dart';
 
 @GenerateNiceMocks([
   MockSpec<ScrollController>(),
@@ -36,7 +36,7 @@ void main() {
 
   test('test does nothing without anything provided', () {
     final scrollControllerMock = MockScrollController();
-    final testee = AutomaticAdvancementController(controller: scrollControllerMock);
+    final testee = JourneyTableScrollController(controller: scrollControllerMock);
 
     testee.scrollToCurrentPosition();
 
@@ -71,7 +71,7 @@ void main() {
     when(scrollControllerMock.position).thenReturn(scrollPositionMock);
     when(scrollPositionMock.maxScrollExtent).thenReturn(CellRowBuilder.rowHeight * 4);
 
-    final testee = AutomaticAdvancementController(
+    final testee = JourneyTableScrollController(
       controller: scrollControllerMock,
       tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)),
     );
@@ -115,7 +115,7 @@ void main() {
     when(scrollControllerMock.position).thenReturn(scrollPositionMock);
     when(scrollPositionMock.maxScrollExtent).thenReturn(CellRowBuilder.rowHeight * 4);
 
-    final testee = AutomaticAdvancementController(
+    final testee = JourneyTableScrollController(
       controller: scrollControllerMock,
       tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)),
     );
@@ -153,7 +153,7 @@ void main() {
     when(scrollControllerMock.position).thenReturn(scrollPositionMock);
     when(scrollPositionMock.maxScrollExtent).thenReturn(CellRowBuilder.rowHeight * 4);
 
-    final testee = AutomaticAdvancementController(
+    final testee = JourneyTableScrollController(
       controller: scrollControllerMock,
       tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)),
     );
@@ -198,7 +198,7 @@ void main() {
     when(scrollControllerMock.position).thenReturn(scrollPositionMock);
     when(scrollPositionMock.maxScrollExtent).thenReturn(CellRowBuilder.rowHeight * 4);
 
-    final testee = AutomaticAdvancementController(
+    final testee = JourneyTableScrollController(
       controller: scrollControllerMock,
       tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)),
     );
@@ -246,7 +246,7 @@ void main() {
     when(scrollControllerMock.position).thenReturn(scrollPositionMock);
     when(scrollPositionMock.maxScrollExtent).thenReturn(CellRowBuilder.rowHeight * 4);
 
-    final testee = AutomaticAdvancementController(
+    final testee = JourneyTableScrollController(
       controller: scrollControllerMock,
       tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)),
     );
@@ -277,7 +277,7 @@ void main() {
     when(scrollControllerMock.position).thenReturn(scrollPositionMock);
     when(scrollPositionMock.maxScrollExtent).thenReturn(CellRowBuilder.rowHeight * 10);
 
-    final testee = AutomaticAdvancementController(
+    final testee = JourneyTableScrollController(
       controller: scrollControllerMock,
       tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)),
     );
@@ -322,7 +322,7 @@ void main() {
     when(scrollControllerMock.position).thenReturn(scrollPositionMock);
     when(scrollPositionMock.maxScrollExtent).thenReturn(CellRowBuilder.rowHeight * 4);
 
-    final testee = AutomaticAdvancementController(
+    final testee = JourneyTableScrollController(
       controller: scrollControllerMock,
       tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)),
     );
@@ -373,7 +373,7 @@ void main() {
     when(scrollControllerMock.position).thenReturn(scrollPositionMock);
     when(scrollPositionMock.maxScrollExtent).thenReturn(CellRowBuilder.rowHeight * 4);
 
-    final testee = AutomaticAdvancementController(
+    final testee = JourneyTableScrollController(
       controller: scrollControllerMock,
       tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)),
     );
@@ -434,7 +434,7 @@ void main() {
     when(scrollControllerMock.position).thenReturn(scrollPositionMock);
     when(scrollPositionMock.maxScrollExtent).thenReturn(CellRowBuilder.rowHeight * 4);
 
-    final testee = AutomaticAdvancementController(
+    final testee = JourneyTableScrollController(
       controller: scrollControllerMock,
       tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)),
     );

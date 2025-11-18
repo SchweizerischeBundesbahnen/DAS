@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:app/pages/journey/journey_table/automatic_advancement_controller.dart';
+import 'package:app/pages/journey/journey_table/journey_table_scroll_controller.dart';
 import 'package:app/pages/journey/journey_table/widgets/detail_modal/additional_speed_restriction_modal/additional_speed_restriction_modal_builder.dart';
 import 'package:app/pages/journey/journey_table/widgets/detail_modal/service_point_modal/service_point_modal_builder.dart';
 import 'package:app/widgets/modal_sheet/das_modal_sheet.dart';
@@ -9,11 +9,11 @@ import 'package:rxdart/rxdart.dart';
 enum DetailModalType { servicePointModal, additionalSpeedRestriction }
 
 class DetailModalViewModel {
-  DetailModalViewModel({required this.automaticAdvancementController}) {
+  DetailModalViewModel({required this.journeyTableScrollController}) {
     _init();
   }
 
-  final AutomaticAdvancementController automaticAdvancementController;
+  final JourneyTableScrollController journeyTableScrollController;
   late DASModalSheetController controller;
 
   final _rxContentBuilder = BehaviorSubject<DASModalSheetBuilder?>();
@@ -35,8 +35,8 @@ class DetailModalViewModel {
     controller = DASModalSheetController(
       onClose: () => _rxOpenModalType.add(null),
       onOpen: () {
-        if (automaticAdvancementController.isActive) {
-          automaticAdvancementController.scrollToCurrentPosition();
+        if (journeyTableScrollController.isActive) {
+          journeyTableScrollController.scrollToCurrentPosition();
         }
       },
     );
