@@ -1,11 +1,13 @@
 package ch.sbb.backend.formation.infrastructure.model;
 
 import ch.sbb.backend.common.SFERA;
+import ch.sbb.backend.common.StringListConverter;
 import ch.sbb.backend.common.TelTsi;
 import ch.sbb.backend.formation.domain.model.BrakeDesign;
 import ch.sbb.backend.formation.domain.model.Formation;
 import ch.sbb.backend.formation.domain.model.FormationRun;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -102,9 +104,8 @@ public class TrainFormationRunEntity {
 
     private Boolean simTrain;
 
-    private String additionalTractionMode;
-
-    private String additionalTractionSeries;
+    @Convert(converter = StringListConverter.class)
+    private List<String> additionalTractions;
 
     private Boolean carCarrierVehicle;
 
@@ -175,8 +176,7 @@ public class TrainFormationRunEntity {
             .brakePositionGForBrakeUnit1to5(formationRun.getBrakePositionGForBrakeUnit1to5())
             .brakePositionGForLoadHauled(formationRun.getBrakePositionGForLoadHauled())
             .simTrain(formationRun.getSimTrain())
-            .additionalTractionMode(formationRun.getAdditionalTractionMode() != null ? formationRun.getAdditionalTractionMode().getKey() : null)
-            .additionalTractionSeries(formationRun.getAdditionalTractionSeries())
+            .additionalTractions(formationRun.getAdditionalTractions())
             .carCarrierVehicle(formationRun.getCarCarrierVehicle())
             .dangerousGoods(formationRun.hasDangerousGoods())
             .vehiclesCount(formationRun.hauledLoadVehiclesCount())

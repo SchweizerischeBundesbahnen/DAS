@@ -2,7 +2,6 @@ package ch.sbb.backend.formation.domain.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +11,7 @@ class TafTapLocationReferenceTest {
     void toLocationCode_null() {
         TafTapLocationReference reference = new TafTapLocationReference(null, null);
 
-        assertThatIllegalStateException().isThrownBy(() -> reference.toLocationCode());
+        assertThatExceptionOfType(UnexpectedProviderData.class).isThrownBy(() -> reference.toLocationCode());
     }
 
     @Test
@@ -50,7 +49,7 @@ class TafTapLocationReferenceTest {
 
     @Test
     void toCountryCodeIso_unknown() {
-        assertThatIllegalStateException().isThrownBy(() -> TafTapLocationReference.toCountryCodeIso(69));
+        assertThatExceptionOfType(UnexpectedProviderData.class).isThrownBy(() -> TafTapLocationReference.toCountryCodeIso(69));
 
     }
 

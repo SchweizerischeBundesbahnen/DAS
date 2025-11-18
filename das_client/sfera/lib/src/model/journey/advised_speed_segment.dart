@@ -5,6 +5,7 @@ sealed class AdvisedSpeedSegment extends Segment {
     required int startOrder,
     required int endOrder,
     required this.endData,
+    this.isEndDataCalculated = false,
   }) : super(startOrder: startOrder, endOrder: endOrder);
 
   SingleSpeed? get speed => switch (this) {
@@ -21,9 +22,31 @@ sealed class AdvisedSpeedSegment extends Segment {
 
   final BaseData endData;
 
+  /// If the end location was unknown and mapped to the closest [JourneyPoint], this will be true.
+  final bool isEndDataCalculated;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        other is AdvisedSpeedSegment &&
+            startOrder == other.startOrder &&
+            endOrder == other.endOrder &&
+            endData == other.endData &&
+            isEndDataCalculated == other.isEndDataCalculated;
+  }
+
+  @override
+  int get hashCode => Object.hash(startOrder, endOrder, endData, isEndDataCalculated);
+
   @override
   String toString() {
-    return 'AdvisedSpeedSegment{startOrder: $startOrder, endOrder: $endOrder, speed: $speed, endData: $endData}';
+    return 'AdvisedSpeedSegment{'
+        'startOrder: $startOrder'
+        ', endOrder: $endOrder'
+        ', speed: $speed'
+        ', endData: $endData'
+        ', isEndDataCalculated: $isEndDataCalculated'
+        '}';
   }
 }
 
@@ -33,24 +56,17 @@ class FollowTrainAdvisedSpeedSegment extends AdvisedSpeedSegment {
     required super.endOrder,
     required super.endData,
     required this.speed,
+    super.isEndDataCalculated,
   });
 
   @override
   final SingleSpeed speed;
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is FollowTrainAdvisedSpeedSegment &&
-          other.startOrder == startOrder &&
-          other.endOrder == endOrder &&
-          other.endData == endData &&
-          other.speed == speed;
+  bool operator ==(Object other) => super == other && other is FollowTrainAdvisedSpeedSegment && other.speed == speed;
 
   @override
-  int get hashCode {
-    return Object.hash(startOrder, endOrder, endData, speed);
-  }
+  int get hashCode => Object.hash(super.hashCode, speed);
 }
 
 class TrainFollowingAdvisedSpeedSegment extends AdvisedSpeedSegment {
@@ -59,6 +75,7 @@ class TrainFollowingAdvisedSpeedSegment extends AdvisedSpeedSegment {
     required super.endOrder,
     required super.endData,
     required this.speed,
+    super.isEndDataCalculated,
   });
 
   @override
@@ -66,17 +83,10 @@ class TrainFollowingAdvisedSpeedSegment extends AdvisedSpeedSegment {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is TrainFollowingAdvisedSpeedSegment &&
-          other.startOrder == startOrder &&
-          other.endOrder == endOrder &&
-          other.endData == endData &&
-          other.speed == speed;
+      super == other && other is TrainFollowingAdvisedSpeedSegment && other.speed == speed;
 
   @override
-  int get hashCode {
-    return Object.hash(startOrder, endOrder, endData, speed);
-  }
+  int get hashCode => Object.hash(super.hashCode, speed);
 }
 
 class FixedTimeAdvisedSpeedSegment extends AdvisedSpeedSegment {
@@ -85,24 +95,17 @@ class FixedTimeAdvisedSpeedSegment extends AdvisedSpeedSegment {
     required super.endOrder,
     required super.endData,
     required this.speed,
+    super.isEndDataCalculated,
   });
 
   @override
   final SingleSpeed speed;
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is FixedTimeAdvisedSpeedSegment &&
-          other.startOrder == startOrder &&
-          other.endOrder == endOrder &&
-          other.endData == endData &&
-          other.speed == speed;
+  bool operator ==(Object other) => super == other && other is FixedTimeAdvisedSpeedSegment && other.speed == speed;
 
   @override
-  int get hashCode {
-    return Object.hash(startOrder, endOrder, endData, speed);
-  }
+  int get hashCode => Object.hash(super.hashCode, speed);
 }
 
 /// If deltaSpeed equal to zero is provided, train driver should drive as fast as possible.
@@ -111,18 +114,6 @@ class VelocityMaxAdvisedSpeedSegment extends AdvisedSpeedSegment {
     required super.startOrder,
     required super.endOrder,
     required super.endData,
+    super.isEndDataCalculated,
   });
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is VelocityMaxAdvisedSpeedSegment &&
-          other.startOrder == startOrder &&
-          other.endOrder == endOrder &&
-          other.endData == endData;
-
-  @override
-  int get hashCode {
-    return Object.hash(startOrder, endOrder, endData);
-  }
 }
