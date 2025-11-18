@@ -52,7 +52,7 @@ class MainHeaderBox extends StatelessWidget {
       children: [
         NextStop(),
         Spacer(),
-        DepartureAuthorization(),
+        DepartureAuthorizationDisplay(),
       ],
     ),
   );
