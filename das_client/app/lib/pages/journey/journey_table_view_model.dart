@@ -24,8 +24,6 @@ class JourneyTableViewModel {
 
   final SferaRemoteRepo _sferaRemoteRepo;
 
-  final List<void Function(Journey?)> _syncOnJourneyUpdateCallbacks = [];
-
   Stream<Journey?> get journey => _rxJourney.stream;
 
   Journey? get journeyValue => _rxJourney.value;
@@ -90,10 +88,6 @@ class JourneyTableViewModel {
     }
   }
 
-  void onJourneyUpdated(void Function(Journey?) callback) {
-    _syncOnJourneyUpdateCallbacks.add(callback);
-  }
-
   void dispose() {
     _rxJourney.close();
     _rxSettings.close();
@@ -101,7 +95,6 @@ class JourneyTableViewModel {
     _rxErrorCode.close();
     _stateSubscription?.cancel();
     _journeySubscription?.cancel();
-    _syncOnJourneyUpdateCallbacks.clear();
     automaticAdvancementController.dispose();
   }
 
@@ -128,9 +121,6 @@ class JourneyTableViewModel {
     });
     _journeySubscription = _sferaRemoteRepo.journeyStream.listen((journey) {
       _rxJourney.add(journey);
-      for (final callback in _syncOnJourneyUpdateCallbacks) {
-        callback.call(journey);
-      }
     }, onError: _rxJourney.addError);
   }
 
