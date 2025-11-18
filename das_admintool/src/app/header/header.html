@@ -1,0 +1,19 @@
+<sbb-header expanded>
+  <span class="sbb-header-info">
+    <strong>DAS Admintool</strong>
+    <span>V. {{ version }}</span>
+  </span>
+  <div class="sbb-header-spacer"></div>
+  <sbb-header-button iconName="user-small" class="sbb-header-shrinkable">
+    Sign in
+  </sbb-header-button>
+  <sbb-header-button iconName="globe-small" id="language-menu-trigger" class="last-element">
+    Deutsch
+  </sbb-header-button>
+  <sbb-menu trigger="language-menu-trigger">
+    <sbb-menu-button iconName="tick-small">Deutsch</sbb-menu-button>
+    <sbb-menu-button>Français</sbb-menu-button>
+    <sbb-menu-button>Italiano</sbb-menu-button>
+  </sbb-menu>
+  <sbb-header-environment>{{ stage !== 'prod' ? stage : '' }}</sbb-header-environment>
+</sbb-header>
