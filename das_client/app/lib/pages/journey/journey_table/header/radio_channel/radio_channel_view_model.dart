@@ -46,7 +46,7 @@ class RadioChannelViewModel {
       if (journey != null) {
         final metadata = journey.metadata;
         _radioContactLists.addAll(metadata.radioContactLists);
-        _networkChanges.addAll(metadata.communicationNetworkChanges);
+        _networkChanges.addAll(metadata.communicationNetworkChangesHeader);
       }
 
       _emitModel();

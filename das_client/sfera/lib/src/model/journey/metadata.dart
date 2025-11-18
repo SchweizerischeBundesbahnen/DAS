@@ -19,6 +19,7 @@ class Metadata {
     this.advisedSpeedSegments = const [],
     this.availableBreakSeries = const {},
     this.communicationNetworkChanges = const [],
+    this.communicationNetworkChangesHeader = const [],
     this.lineFootNoteLocations = const {},
     this.radioContactLists = const [],
     this.levelCrossingGroups = const [],
@@ -41,6 +42,7 @@ class Metadata {
   final bool anyOperationalArrivalDepartureTimes;
   final List<NonStandardTrackEquipmentSegment> nonStandardTrackEquipmentSegments;
   final List<CommunicationNetworkChange> communicationNetworkChanges;
+  final List<CommunicationNetworkChange> communicationNetworkChangesHeader;
   final List<BracketStationSegment> bracketStationSegments;
   final Iterable<AdvisedSpeedSegment> advisedSpeedSegments;
   final BreakSeries? breakSeries;

@@ -172,24 +172,21 @@ class JourneyTable extends StatelessWidget {
         .combineFootNoteAndOperationalIndication()
         .sorted((a1, a2) => a1.compareTo(a2));
 
-    final spOrders = rows.whereType<ServicePoint>().map((s) => s.order).toList();
-    final displayRows = rows.where((r) => r is! CommunicationNetworkChange || !spOrders.contains(r.order)).toList();
-
-    final groupedRows = displayRows
+    final groupedRows = rows
         .whereType<BaliseLevelCrossingGroup>()
         .map((it) => it.groupedElements)
         .expand((it) => it)
         .toList();
 
-    final journeyPoints = displayRows.whereType<JourneyPoint>().toList();
+    final journeyPoints = rows.whereType<JourneyPoint>().toList();
 
-    return List.generate(displayRows.length, (index) {
-      final rowData = displayRows[index];
+    return List.generate(rows.length, (index) {
+      final rowData = rows[index];
 
       final journeyConfig = JourneyConfig(
         settings: settings,
         trackEquipmentRenderData: TrackEquipmentRenderData.from(
-          displayRows,
+          rows,
           journey.metadata,
           index,
           currentBreakSeries,
@@ -207,7 +204,7 @@ class JourneyTable extends StatelessWidget {
 
       var hasPreviousAnnotation = false;
       if (index > 0) {
-        final previous = displayRows[index - 1];
+        final previous = rows[index - 1];
         hasPreviousAnnotation = previous is JourneyAnnotation;
       }
 

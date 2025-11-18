@@ -81,18 +81,21 @@ class SferaModelMapper {
         .where((asr) => asr.isDisplayed(trackEquipmentSegments))
         .toList();
 
-    final communicationNetworkChanges = _parseCommunicationNetworkChanges(
-      segmentProfileReferences,
-      segmentProfiles,
-      servicePointOrders: spOrders,
-    );
+    List<CommunicationNetworkChange> communicationNetworkChanges({required bool containSpPoints}) {
+      return _parseCommunicationNetworkChanges(
+        segmentProfileReferences,
+        segmentProfiles,
+        containSpPoints: containSpPoints,
+        servicePointOrders: spOrders,
+      );
+    }
 
     journeyData.addAll(_cabSignalingStart(trackEquipmentSegments));
     journeyData.addAll(_cabSignalingEnd(trackEquipmentSegments, journeyData));
     journeyData.addAll(_consolidateAdditionalSpeedRestrictions(journeyData, displayedSpeedRestrictions));
     journeyData.addAll(_parseUncodedOperationalIndications(segmentProfileReferences));
     journeyData.addAll(_parseTramAreas(segmentProfiles));
-    journeyData.addAll(communicationNetworkChanges);
+    journeyData.addAll(communicationNetworkChanges(containSpPoints: false));
     journeyData.addAll(_parseShuntingMovements(segmentProfileReferences, segmentProfiles));
     journeyData.sort();
 
@@ -117,7 +120,8 @@ class SferaModelMapper {
         bracketStationSegments: _parseBracketStationSegments(servicePoints),
         advisedSpeedSegments: SpeedMapper.advisedSpeeds(journeyProfile, segmentProfiles, journeyData),
         availableBreakSeries: _parseAvailableBreakSeries(journeyPoints, lineSpeeds),
-        communicationNetworkChanges: communicationNetworkChanges,
+        communicationNetworkChanges: communicationNetworkChanges(containSpPoints: false),
+        communicationNetworkChangesHeader: communicationNetworkChanges(containSpPoints: true),
         breakSeries:
             trainCharacteristic?.tcFeatures.trainCategoryCode != null &&
                 trainCharacteristic?.tcFeatures.brakedWeightPercentage != null
@@ -339,13 +343,15 @@ class SferaModelMapper {
   static List<CommunicationNetworkChange> _parseCommunicationNetworkChanges(
     List<SegmentProfileReferenceDto> segmentProfileReferences,
     List<SegmentProfileDto> segmentProfiles, {
+    required bool containSpPoints,
     Set<int>? servicePointOrders,
   }) {
-    return segmentProfileReferences
+    final changes = segmentProfileReferences
         .mapIndexed((index, reference) {
           final segmentProfile = segmentProfiles.firstMatch(reference);
           final kilometreMap = parseKilometre(segmentProfile);
           final communicationNetworks = segmentProfile.contextInformation?.communicationNetworks;
+
           return communicationNetworks?.map((element) {
             if (element.startLocation != element.endLocation) {
               _log.warning(
@@ -364,6 +370,12 @@ class SferaModelMapper {
         .flattened
         .nonNulls
         .toList();
+
+    if (!containSpPoints && servicePointOrders != null && servicePointOrders.isNotEmpty) {
+      return changes.where((c) => !servicePointOrders.contains(c.order)).toList();
+    }
+
+    return changes;
   }
 
   static Iterable<RadioContactList> _parseContactLists(
