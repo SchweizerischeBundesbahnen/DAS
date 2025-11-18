@@ -1,0 +1,37 @@
+{
+  "formationRuns": [
+    {
+      "smsEvu": "3412",
+      "endLocationUic": {
+        "countryCodeUic": 85,
+        "uicCode": 56831
+      },
+      "formationRunInspection": {
+        "inspected": true
+      },
+      "startLocationUic": {
+        "countryCodeUic": 85,
+        "uicCode": 56992
+      },
+      "vehicleGroups": [
+        {
+          "vehicles": [
+            {
+              "vehicleUnits": [
+                {
+                  "tractionEnergy": ""
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "key": {
+    "betriebstag": "2025-11-18",
+    "trassenId": "43-001",
+    "zugnummer": 43,
+    "infrastrukturNetz": ""
+  }
+}
