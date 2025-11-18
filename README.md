@@ -54,6 +54,12 @@ Important:
 
 ![business_context.drawio.svg](docs/content/architecture/03_context/business_context.drawio.svg)
 
+### Admintool
+
+- [das_admintool](das_admintool/README.md)
+    - [TypeScript](https://www.typescriptlang.org/)
+    - [Angular](https://angular.io/)
+
 ### Tools
 
 #### SFERA Mock

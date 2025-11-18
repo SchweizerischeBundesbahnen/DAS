@@ -1,0 +1,78 @@
+name: Continuous Integration Playground Webapp
+
+defaults:
+  run:
+    working-directory: das_playground
+
+on:
+  push:
+    paths:
+      - 'das_playground/**'
+    branches: [ "main" ]
+  pull_request:
+    paths:
+      - 'das_playground/**'
+    branches: [ "main" ]
+
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+permissions:
+  packages: write
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: 'das_playground/.nvmrc'
+          cache: 'npm'
+          cache-dependency-path: 'das_playground/package-lock.json'
+      - run: npm clean-install
+      - run: npm run lint
+
+  test:
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: 'das_playground/.nvmrc'
+          cache: 'npm'
+          cache-dependency-path: 'das_playground/package-lock.json'
+      - run: npm clean-install
+      - run: npm test
+
+  build:
+    runs-on: ubuntu-latest
+    needs: lint
+    env:
+      IMAGE_ID: ghcr.io/${{ github.repository }}/webapp
+      VERSION: main
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: 'das_playground/.nvmrc'
+          cache: 'npm'
+          cache-dependency-path: 'das_playground/package-lock.json'
+      - run: npm clean-install
+      - run: npm run build:ngssc
+      - name: Login to GitHub Container Registry
+        if: github.ref == 'refs/heads/main'
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
+      - name: Create container image
+        if: github.ref == 'refs/heads/main'
+        run: |
+          # Convert to lowercase
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[:upper:]' '[:lower:]')
+          
+          docker build -t $IMAGE_ID:$VERSION .
+          docker push $IMAGE_ID:$VERSION
+        env:
+          DOCKER_BUILDKIT: 1
