@@ -24,7 +24,6 @@ class JourneyPositionViewModel {
   final _rxModel = BehaviorSubject.seeded(JourneyPositionModel());
 
   final _rxTimedServicePointReached = BehaviorSubject<ServicePoint?>.seeded(null);
-  ServicePoint? _lastTimedServicePoint;
   Timer? _servicePointReachedTimer;
 
   final _rxManualPosition = BehaviorSubject<JourneyPoint?>.seeded(null);
@@ -72,8 +71,9 @@ class JourneyPositionViewModel {
           }
 
           if (_lastTrainIdentification != journey.metadata.trainIdentification) {
-            // Reset timed service point when train identification changes
+            // Reset manual and timed if journey changes
             _rxTimedServicePointReached.add(null);
+            _rxManualPosition.add(null);
             _lastTrainIdentification = journey.metadata.trainIdentification;
             return;
           }
@@ -143,9 +143,8 @@ class JourneyPositionViewModel {
     }
 
     final timedServicePoint = _rxTimedServicePointReached.value;
-    if (_lastTimedServicePoint != timedServicePoint && timedServicePoint != null) {
-      _lastTimedServicePoint = timedServicePoint;
-      currentPosition = _lastTimedServicePoint;
+    if (timedServicePoint != null && (currentPosition == null || timedServicePoint.order > currentPosition.order)) {
+      currentPosition = timedServicePoint;
     }
 
     final manualPosition = _rxManualPosition.value;
