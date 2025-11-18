@@ -26,7 +26,7 @@ public class VehicleUnit {
         if (vehicleUnits == null) {
             return false;
         }
-        return vehicleUnits.stream().anyMatch(vehicleUnit -> vehicleUnit.brakeStatus.isDisabled());
+        return vehicleUnits.stream().anyMatch(vehicleUnit -> vehicleUnit.brakeStatus != null && vehicleUnit.brakeStatus.isDisabled());
     }
 
     static boolean hasDangerousGoods(List<VehicleUnit> vehicleUnits) {
