@@ -62,9 +62,7 @@ public record FormationRun(
     @Schema(requiredMode = RequiredMode.REQUIRED)
     Boolean simTrain,
     @Schema(requiredMode = RequiredMode.NOT_REQUIRED)
-    String additionalTractionMode,
-    @Schema(requiredMode = RequiredMode.NOT_REQUIRED)
-    String additionalTractionSeries,
+    List<String> additionalTractions,
     @Schema(requiredMode = RequiredMode.REQUIRED)
     Boolean carCarrierVehicle,
     @Schema(requiredMode = RequiredMode.REQUIRED)
@@ -120,8 +118,7 @@ public record FormationRun(
             .brakePositionGForBrakeUnit1to5(trainFormationRunEntity.getBrakePositionGForBrakeUnit1to5())
             .brakePositionGForLoadHauled(trainFormationRunEntity.getBrakePositionGForLoadHauled())
             .simTrain(trainFormationRunEntity.getSimTrain())
-            .additionalTractionMode(trainFormationRunEntity.getAdditionalTractionMode())
-            .additionalTractionSeries(trainFormationRunEntity.getAdditionalTractionSeries())
+            .additionalTractions(trainFormationRunEntity.getAdditionalTractions())
             .carCarrierVehicle(trainFormationRunEntity.getCarCarrierVehicle())
             .dangerousGoods(trainFormationRunEntity.getDangerousGoods())
             .vehiclesCount(trainFormationRunEntity.getVehiclesCount())

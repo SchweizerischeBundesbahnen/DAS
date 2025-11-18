@@ -26,9 +26,11 @@ void main() {
     await waitUntilExists(tester, find.byKey(AdvisedSpeedCellBody.advisedSpeedDistKey));
     await tester.pumpAndSettle(const Duration(milliseconds: 100));
 
-    // 3rd advised speed Message (check icon & service point)
+    // 3rd advised speed Message (check icon & no endLocation shown in banner (unknown location))
     await waitUntilExists(tester, find.byKey(AdvisedSpeedNotification.advisedSpeedNotificationIconKey));
-    await waitUntilExists(tester, _findAdvisedSpeedNotificationContainingText('Morges'));
+    await waitUntilExists(tester, _findAdvisedSpeedNotificationContainingText('120'));
+    expect(_findAdvisedSpeedNotificationContainingText('E185'), findsNothing);
+
     // Punctuality Hidden
     expect(find.byKey(ChronographHeaderBox.punctualityTextKey), findsNothing);
     await waitUntilExists(tester, _findAdvisedSpeedNotificationContainingText(l10n.w_advised_speed_end));
@@ -40,8 +42,8 @@ void main() {
     await waitUntilExists(tester, _findAdvisedSpeedNotificationContainingText('A312'));
     expect(_findAdvisedSpeedNotificationContainingText('80'), findsNothing);
 
-    // 5th advised speed Message (check service point & cancel)
-    await waitUntilExists(tester, _findAdvisedSpeedNotificationContainingText('Lausanne'));
+    // 5th advised speed Message (check Signal & cancel)
+    await waitUntilExists(tester, _findAdvisedSpeedNotificationContainingText('E367'));
     await waitUntilExists(tester, _findAdvisedSpeedNotificationContainingText(l10n.w_advised_speed_cancel));
 
     // Check that cancel message disappears after some time
@@ -84,12 +86,15 @@ void main() {
 
     await waitUntilExists(
       tester,
-      find.descendant(of: find.byKey(StickyHeader.headerKey), matching: find.text('Rolle')),
+      find.descendant(of: find.byKey(StickyHeader.headerKey), matching: find.text('Allaman')),
       maxWaitSeconds: 30,
     );
 
+    // Check that end location is not displayed in notification banner (unknown)
+    expect(_findAdvisedSpeedNotificationContainingText('E185'), findsNothing);
+
     // Check that advisedSpeed end displayed calculated speed on signal row
-    final advisedSpeedEndRowServicePoint = findDASTableRowByText('Morges');
+    final advisedSpeedEndRowServicePoint = findDASTableRowByText('E185');
     expect(_findCalculatedSpeedCellOf(advisedSpeedEndRowServicePoint, '80'), findsOne);
 
     await disconnect(tester);

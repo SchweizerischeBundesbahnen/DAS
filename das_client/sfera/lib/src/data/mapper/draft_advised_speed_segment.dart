@@ -98,24 +98,28 @@ class DraftAdvisedSpeedSegment implements Comparable<DraftAdvisedSpeedSegment> {
         startOrder: startOrder,
         endOrder: endOrder,
         endData: endData!,
+        isEndDataCalculated: isEndAmended,
       ),
       DraftAdvisedSpeedType.followTrain => FollowTrainAdvisedSpeedSegment(
         startOrder: startOrder,
         endOrder: endOrder,
         speed: speed!,
         endData: endData!,
+        isEndDataCalculated: isEndAmended,
       ),
       DraftAdvisedSpeedType.trainFollowing => TrainFollowingAdvisedSpeedSegment(
         startOrder: startOrder,
         endOrder: endOrder,
         speed: speed!,
         endData: endData!,
+        isEndDataCalculated: isEndAmended,
       ),
       DraftAdvisedSpeedType.fixedTime => FixedTimeAdvisedSpeedSegment(
         startOrder: startOrder,
         endOrder: endOrder,
         speed: speed!,
         endData: endData!,
+        isEndDataCalculated: isEndAmended,
       ),
     };
   }
