@@ -69,6 +69,7 @@ public class FormationRun {
             .toList();
     }
 
+    // todo check Null values default
     private static Integer sum(Integer a, Integer b) {
         if (a == null && b == null) {
             return null;
