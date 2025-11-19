@@ -1,15 +1,43 @@
+import 'package:app/brightness/brightness_manager.dart';
+import 'package:app/di/di.dart';
+import 'package:app/pages/journey/journey_page.dart';
+import 'package:app/pages/journey/journey_table/widgets/communication_network_icon.dart';
+import 'package:app/pages/journey/journey_table/widgets/header/battery_status.dart';
+import 'package:app/pages/journey/journey_table/widgets/header/chronograph_header_box.dart';
+import 'package:app/pages/journey/journey_table/widgets/header/connectivity_icon.dart';
 import 'package:app/pages/journey/journey_table/widgets/header/departure_authorization_display.dart';
 import 'package:app/pages/journey/journey_table/widgets/header/extended_menu.dart';
 import 'package:app/pages/journey/journey_table/widgets/header/header.dart';
+import 'package:app/pages/journey/journey_table/widgets/header/radio_channel.dart';
+import 'package:app/pages/journey/journey_table/widgets/header/radio_contact.dart';
+import 'package:app/pages/journey/journey_table/widgets/header/sim_identifier.dart';
+import 'package:app/pages/journey/journey_table/widgets/notification/maneuver_notification.dart';
+import 'package:app/pages/journey/warn_app_view_model.dart';
+import 'package:app/provider/ru_feature_provider.dart';
+import 'package:app/theme/theme_util.dart';
+import 'package:app/util/format.dart';
+import 'package:app/util/time_constants.dart';
+import 'package:app/widgets/dot_indicator.dart';
+import 'package:battery_plus/battery_plus.dart';
+import 'package:connectivity_x/component.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:intl/intl.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+import 'package:settings/component.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 import '../app_test.dart';
+import '../mocks/mock_battery.dart';
+import '../mocks/mock_brightness_manager.dart';
+import '../mocks/mock_connectivity_manager.dart';
+import '../mocks/mock_ru_feature_provider.dart';
+import '../mocks/mock_warn_app_view_model.dart';
 import '../util/test_utils.dart';
 
 Future<void> main() async {
   group('train journey header test', () {
-    /*testWidgets('test connectivity state shown correctly', (tester) async {
+    testWidgets('test connectivity state shown correctly', (tester) async {
       await prepareAndStartApp(tester);
 
       // simulate connectivity
@@ -591,7 +619,7 @@ Future<void> main() async {
       );
 
       await disconnect(tester);
-    });*/
+    });
 
     testWidgets('test departure authorization display in header ', (tester) async {
       await prepareAndStartApp(tester);
