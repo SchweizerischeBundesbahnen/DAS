@@ -18,7 +18,7 @@ final _log = Logger('JourneyTableScrollController');
 
 /// Responsible for scrolling the [JourneyTable] to a specific JourneyPosition.
 ///
-/// Use [scrollToPosition].
+/// Use [scrollToJourneyPoint].
 ///
 /// Calculates target scroll position respecting currently rendered rows and sticky header.
 class JourneyTableScrollController {
@@ -101,7 +101,7 @@ class JourneyTableScrollController {
     }
   }
 
-  void scrollToPosition(JourneyPoint? target) {
+  void scrollToJourneyPoint(JourneyPoint? target) {
     if (_isDisposed) return;
 
     _lastTouch = null;

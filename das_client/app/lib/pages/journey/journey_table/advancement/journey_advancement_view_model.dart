@@ -41,7 +41,7 @@ class JourneyAdvancementViewModel {
   void startAutomaticAdvancement() {}
 
   void advanceToCurrentPosition() {
-    _scrollController.scrollToPosition(_currentPosition);
+    _scrollController.scrollToJourneyPoint(_currentPosition);
   }
 
   void _initSubscription(Stream<Journey?> journeyStream, Stream<JourneyPositionModel> positionStream) {
@@ -73,7 +73,7 @@ class JourneyAdvancementViewModel {
           _log.fine(isAdvancingActive);
 
           if (isAdvancingActive) {
-            _scrollController.scrollToPosition(_currentPosition);
+            _scrollController.scrollToJourneyPoint(_currentPosition);
           }
           // _rxIsAutomaticAdvancementActive.add(isAdvancingActive);
           // if (!isAdvancingActive) {
