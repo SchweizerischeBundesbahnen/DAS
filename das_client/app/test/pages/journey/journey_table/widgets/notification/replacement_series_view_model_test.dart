@@ -5,8 +5,8 @@ import 'package:app/pages/journey/journey_table/journey_position/journey_positio
 import 'package:app/pages/journey/journey_table/widgets/notification/replacement_series/illegal_speed_segment.dart';
 import 'package:app/pages/journey/journey_table/widgets/notification/replacement_series/replacement_series_model.dart';
 import 'package:app/pages/journey/journey_table/widgets/notification/replacement_series/replacement_series_view_model.dart';
-import 'package:app/pages/journey/journey_table/widgets/table/config/journey_settings.dart';
 import 'package:app/pages/journey/journey_table_view_model.dart';
+import 'package:app/pages/journey/settings/journey_settings.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';

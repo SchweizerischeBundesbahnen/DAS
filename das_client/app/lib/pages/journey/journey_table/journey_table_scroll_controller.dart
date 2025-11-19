@@ -16,8 +16,9 @@ import 'package:sfera/component.dart';
 
 final _log = Logger('JourneyTableScrollController');
 
-/// Responsible for scrolling the [JourneyTable] to a specific JourneyPosition. This is usually the
-/// current JourneyPosition.
+/// Responsible for scrolling the [JourneyTable] to a specific JourneyPosition.
+///
+/// Use [scrollToPosition].
 ///
 /// Calculates target scroll position respecting currently rendered rows and sticky header.
 class JourneyTableScrollController {
@@ -41,36 +42,36 @@ class JourneyTableScrollController {
 
   final _rxIsAutomaticAdvancementActive = BehaviorSubject.seeded(false);
 
+  bool get isActive => _rxIsAutomaticAdvancementActive.value;
+
   void updateRenderedRows(List<DASTableRowBuilder> rows) => _renderedRows = rows;
 
-  void handleJourneyUpdate({
-    JourneyPoint? currentPosition,
-    JourneyPoint? routeStart,
-    ServicePoint? firstServicePoint,
-    bool isAdvancementEnabledByUser = false,
-  }) {
-    if (_isDisposed) return;
+  // void handleJourneyUpdate({
+  //   JourneyPoint? currentPosition,
+  //   JourneyPoint? routeStart,
+  //   ServicePoint? firstServicePoint,
+  //   bool isAdvancementEnabledByUser = false,
+  // }) {
+  // if (_isDisposed) return;
 
-    _currentPosition = currentPosition;
-
-    final firstServicePointOrder = firstServicePoint?.order ?? 0;
-    final currentPositionOrder = currentPosition?.order ?? 0;
-
-    final isAdvancingActive =
-        isAdvancementEnabledByUser && (currentPosition != routeStart) && currentPositionOrder >= firstServicePointOrder;
-
-    _rxIsAutomaticAdvancementActive.add(isAdvancingActive);
-    if (!isAdvancingActive) {
-      return;
-    }
-
-    final targetScrollPosition = _calculateScrollPosition();
-    if (_lastScrollPosition != targetScrollPosition &&
-        targetScrollPosition != null &&
-        (_lastTouch == null || _lastTouch!.add(Duration(seconds: _idleTimeAutoScroll)).compareTo(clock.now()) < 0)) {
-      _scrollToPosition(targetScrollPosition);
-    }
-  }
+  // _currentPosition = currentPosition;
+  //
+  // final firstServicePointOrder = firstServicePoint?.order ?? 0;
+  // final currentPositionOrder = currentPosition?.order ?? 0;
+  //
+  // final isAdvancingActive =
+  //     isAdvancementEnabledByUser && (currentPosition != routeStart) && currentPositionOrder >= firstServicePointOrder;
+  // _log.fine(isAdvancingActive);
+  // _rxIsAutomaticAdvancementActive.add(isAdvancingActive);
+  // if (!isAdvancingActive) {
+  //   return;
+  // }
+  //
+  // final targetPosition = _calculateTargetPosition();
+  // if (_lastScrollPosition != targetPosition && targetPosition != null && _lastTouch == null) {
+  //   _scrollToPosition(targetPosition);
+  // }
+  // }
 
   void resetScrollTimer() {
     if (_isDisposed) return;
@@ -94,9 +95,20 @@ class JourneyTableScrollController {
 
     _lastTouch = null;
 
-    final targetScrollPosition = _calculateScrollPosition();
-    if (targetScrollPosition != null) {
-      _scrollToPosition(targetScrollPosition);
+    final targetPosition = _calculateTargetPosition(_currentPosition);
+    if (targetPosition != null) {
+      _scrollToPosition(targetPosition);
+    }
+  }
+
+  void scrollToPosition(JourneyPoint? target) {
+    if (_isDisposed) return;
+
+    _lastTouch = null;
+
+    final targetPosition = _calculateTargetPosition(target);
+    if (targetPosition != null) {
+      _scrollToPosition(targetPosition);
     }
   }
 
@@ -106,8 +118,8 @@ class JourneyTableScrollController {
     _isDisposed = true;
   }
 
-  double? _calculateScrollPosition() {
-    if (_currentPosition == null || scrollController.positions.isEmpty) {
+  double? _calculateTargetPosition(JourneyPoint? targetPoint) {
+    if (targetPoint == null || scrollController.positions.isEmpty) {
       return null;
     }
 
@@ -118,7 +130,7 @@ class JourneyTableScrollController {
     }
 
     final fromIndex = _renderedRows.indexOf(firstRenderedRow);
-    final toIndex = _renderedRows.indexWhere((it) => it.data == _currentPosition);
+    final toIndex = _renderedRows.indexWhere((it) => it.data == targetPoint);
 
     if (fromIndex == -1 || toIndex == -1) {
       _log.warning(
@@ -127,20 +139,7 @@ class JourneyTableScrollController {
       return null;
     }
 
-    var scrollDiff = 0.0;
-    if (fromIndex > toIndex) {
-      // Scroll up
-      for (int i = fromIndex - 1; i >= toIndex; i--) {
-        final row = _renderedRows[i];
-        scrollDiff -= row.height;
-      }
-    } else if (toIndex > fromIndex) {
-      // Scroll down
-      for (int i = fromIndex; i < toIndex; i++) {
-        final row = _renderedRows[i];
-        scrollDiff += row.height;
-      }
-    }
+    final scrollDiff = _calculateScrollDifference(fromIndex, toIndex);
 
     final firstRowOffset = WidgetUtil.findOffsetOfKey(firstRenderedRow.key);
     final listOffset = WidgetUtil.findOffsetOfKey(tableKey);
@@ -151,7 +150,7 @@ class JourneyTableScrollController {
     }
 
     final renderedDiff = firstRowOffset.dy - listOffset.dy - DASTable.headerRowHeight;
-    final stickyHeight = _calculateStickyHeight(_currentPosition!);
+    final stickyHeight = _calculateStickyHeight(targetPoint!);
 
     _log.fine(
       'currentpixels: ${scrollController.position.pixels}, renderedDiff: $renderedDiff, scrollDiff: $scrollDiff, stickyHeight: $stickyHeight',
@@ -160,28 +159,35 @@ class JourneyTableScrollController {
     return scrollController.position.pixels + renderedDiff + scrollDiff - stickyHeight;
   }
 
+  double _calculateScrollDifference(int fromIndex, int toIndex) {
+    if (fromIndex == toIndex) return 0.0;
+
+    final start = min(fromIndex, toIndex);
+    final end = max(fromIndex, toIndex);
+
+    var scrollDiff = 0.0;
+    for (int i = start; i < end; i++) {
+      scrollDiff += _renderedRows[i].height;
+    }
+    return fromIndex > toIndex ? -scrollDiff : scrollDiff;
+  }
+
   void _scrollToPosition(double targetScrollPosition) {
     _lastScrollPosition = targetScrollPosition;
 
     _log.fine('Scrolling to position $targetScrollPosition');
     scrollController.animateTo(
       targetScrollPosition,
-      duration: _calculateDuration(targetScrollPosition, 1),
+      duration: _calculateDuration(targetScrollPosition),
       curve: Curves.easeInOut,
     );
   }
 
-  bool get isActive => _rxIsAutomaticAdvancementActive.value;
+  Duration _calculateDuration(double targetPosition) {
+    final linearDuration = ((targetPosition - scrollController.offset).abs()).floor();
+    final boundedDuration = min(max(_minScrollDuration, linearDuration), _maxScrollDuration);
 
-  Duration _calculateDuration(double targetPosition, double velocity) {
-    if (velocity <= 0.0) {
-      velocity = 1.0;
-    }
-    final durationMs = ((targetPosition - scrollController.offset).abs() / velocity).floor();
-
-    return Duration(
-      milliseconds: min(max(_minScrollDuration, durationMs), _maxScrollDuration),
-    );
+    return Duration(milliseconds: boundedDuration);
   }
 
   DASTableRowBuilder? _findFirstRenderedRow() {

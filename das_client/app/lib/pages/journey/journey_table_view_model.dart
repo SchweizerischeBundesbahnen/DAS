@@ -1,8 +1,9 @@
 import 'dart:async';
 
 import 'package:app/di/di.dart';
+import 'package:app/pages/journey/journey_table/advancement/journey_advancement_model.dart';
 import 'package:app/pages/journey/journey_table/journey_table_scroll_controller.dart';
-import 'package:app/pages/journey/journey_table/widgets/table/config/journey_settings.dart';
+import 'package:app/pages/journey/settings/journey_settings.dart';
 import 'package:app/util/error_code.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:flutter/material.dart';
@@ -38,11 +39,16 @@ class JourneyTableViewModel {
 
   bool get showDecisiveGradientValue => _rxShowDecisiveGradient.value;
 
+  Stream<JourneyAdvancementModel> get journeyAdvancementModel => _rxJourneyAdvancementModel.stream;
+
+  JourneyAdvancementModel get journeyAdvancementModelValue => _rxJourneyAdvancementModel.value;
+
   JourneyTableScrollController journeyTableScrollController = JourneyTableScrollController();
 
   final _rxSettings = BehaviorSubject<JourneySettings>.seeded(JourneySettings());
   final _rxErrorCode = BehaviorSubject<ErrorCode?>.seeded(null);
   final _rxJourney = BehaviorSubject<Journey?>.seeded(null);
+  final _rxJourneyAdvancementModel = BehaviorSubject<JourneyAdvancementModel>.seeded(Paused());
 
   final _rxShowDecisiveGradient = BehaviorSubject<bool>.seeded(false);
   Timer? _showDecisiveGradientTimer;
@@ -111,7 +117,6 @@ class JourneyTableViewModel {
           break;
         case .disconnected:
           WakelockPlus.disable();
-          _resetSettings();
           if (_sferaRemoteRepo.lastError != null) {
             _rxErrorCode.add(.fromSfera(_sferaRemoteRepo.lastError!));
             setAutomaticAdvancement(false);
@@ -121,6 +126,7 @@ class JourneyTableViewModel {
     });
     _journeySubscription = _sferaRemoteRepo.journeyStream.listen((journey) {
       _rxJourney.add(journey);
+      if (journey == null) _resetSettings();
     }, onError: _rxJourney.addError);
   }
 

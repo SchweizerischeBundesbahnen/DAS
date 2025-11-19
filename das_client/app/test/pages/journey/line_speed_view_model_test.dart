@@ -1,9 +1,9 @@
 import 'dart:collection';
 
-import 'package:app/pages/journey/journey_table/widgets/table/config/journey_settings.dart';
 import 'package:app/pages/journey/journey_table_view_model.dart';
 import 'package:app/pages/journey/line_speed_view_model.dart';
 import 'package:app/pages/journey/resolved_train_series_speed.dart';
+import 'package:app/pages/journey/settings/journey_settings.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';

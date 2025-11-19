@@ -24,7 +24,6 @@ import 'package:app/pages/journey/journey_table/widgets/table/communication_netw
 import 'package:app/pages/journey/journey_table/widgets/table/config/bracket_station_render_data.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/config/chevron_animation_data.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/config/journey_config.dart';
-import 'package:app/pages/journey/journey_table/widgets/table/config/journey_settings.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/config/track_equipment_render_data.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/connection_track_row.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/curve_point_row.dart';
@@ -40,6 +39,7 @@ import 'package:app/pages/journey/journey_table/widgets/table/tram_area_row.dart
 import 'package:app/pages/journey/journey_table/widgets/table/uncoded_operational_indication_row.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/whistle_row.dart';
 import 'package:app/pages/journey/journey_table_view_model.dart';
+import 'package:app/pages/journey/settings/journey_settings.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/user_settings.dart';
 import 'package:app/widgets/assets.dart';
@@ -83,14 +83,14 @@ class JourneyTable extends StatelessWidget {
         final settings = snapshot.data![1] as JourneySettings;
         final journeyPosition = snapshot.data![3] as JourneyPositionModel;
 
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          viewModel.journeyTableScrollController.handleJourneyUpdate(
-            currentPosition: journeyPosition.currentPosition,
-            routeStart: journey.metadata.journeyStart,
-            isAdvancementEnabledByUser: settings.isAutoAdvancementEnabled,
-            firstServicePoint: journey.data.whereType<ServicePoint>().firstOrNull,
-          );
-        });
+        // WidgetsBinding.instance.addPostFrameCallback((_) {
+        //   viewModel.journeyTableScrollController.handleJourneyUpdate(
+        //     currentPosition: journeyPosition.currentPosition,
+        //     routeStart: journey.metadata.journeyStart,
+        //     isAdvancementEnabledByUser: settings.isAutoAdvancementEnabled,
+        //     firstServicePoint: journey.data.whereType<ServicePoint>().firstOrNull,
+        //   );
+        // });
 
         final servicePointModalViewModel = context.read<ServicePointModalViewModel>();
         servicePointModalViewModel.updateMetadata(journey.metadata);
