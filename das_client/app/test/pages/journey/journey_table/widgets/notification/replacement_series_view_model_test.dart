@@ -185,8 +185,6 @@ void main() {
     when(mockJourneyTableViewModel.journey).thenAnswer((_) => journeySubject.stream);
     when(mockJourneyPositionViewModel.model).thenAnswer((_) => journeyPositionSubject.stream);
     when(mockJourneyPositionViewModel.modelValue).thenAnswer((_) => journeyPositionSubject.value);
-    when(mockJourneyTableViewModel.settings).thenAnswer((_) => journeySettingsSubject.stream);
-    when(mockJourneyTableViewModel.settingsValue).thenAnswer((_) => journeySettingsSubject.value);
     when(mockJourneySettingsViewModel.model).thenAnswer((_) => journeySettingsSubject.stream);
     when(mockJourneySettingsViewModel.modelValue).thenAnswer((_) => journeySettingsSubject.value);
 
