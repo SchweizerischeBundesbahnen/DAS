@@ -26,6 +26,7 @@ import 'package:app/pages/journey/journey_table/widgets/table/arrival_departure_
 import 'package:app/pages/journey/journey_table/widgets/warn_function_modal_sheet.dart';
 import 'package:app/pages/journey/journey_table_view_model.dart';
 import 'package:app/pages/journey/line_speed_view_model.dart';
+import 'package:app/pages/journey/settings/journey_settings_view_model.dart';
 import 'package:app/pages/journey/warn_app_view_model.dart';
 import 'package:app/sound/das_sounds.dart';
 import 'package:flutter/material.dart';

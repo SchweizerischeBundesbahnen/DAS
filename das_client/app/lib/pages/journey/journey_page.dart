@@ -40,10 +40,12 @@ class JourneyPage extends StatefulWidget implements AutoRouteWrapper {
 
 class _JourneyPageState extends State<JourneyPage> {
   StreamSubscription? _errorCodeSubscription;
+  Stream? _streamCombo;
 
   @override
   void initState() {
     final journeyTableVM = DI.get<JourneyTableViewModel>();
+    final journeyNavigationVM = DI.get<JourneyNavigationViewModel>();
     _errorCodeSubscription = journeyTableVM.errorCode.listen((error) async {
       if (error != null) {
         await DI.get<ScopeHandler>().pop<JourneyScope>();
@@ -53,25 +55,26 @@ class _JourneyPageState extends State<JourneyPage> {
         }
       }
     });
+    _streamCombo = CombineLatestStream.combine2(
+      journeyTableVM.isZenViewMode,
+      journeyNavigationVM.model,
+      (a, b) => (a, b),
+    );
     super.initState();
   }
 
   @override
   void dispose() {
     _errorCodeSubscription?.cancel();
+    _streamCombo = null;
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final journeyVM = context.read<JourneyTableViewModel>();
     final journeyNavigationVM = DI.get<JourneyNavigationViewModel>();
     return StreamBuilder(
-      stream: CombineLatestStream.combine2(
-        journeyVM.isZenViewMode,
-        journeyNavigationVM.model,
-        (a, b) => (a, b),
-      ),
+      stream: _streamCombo,
       // initial zen mode is false to animate transition
       initialData: (false, journeyNavigationVM.modelValue),
       builder: (context, snapshot) {

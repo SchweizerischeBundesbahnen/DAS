@@ -22,12 +22,12 @@ class JourneySettingsViewModel {
 
   JourneySettings get modelValue => _rxSettings.value;
 
-  void onBreakSeriesChanged(BreakSeries selectedBreakSeries) {
+  void updateBreakSeries(BreakSeries selectedBreakSeries) {
     _rxSettings.add(_rxSettings.value.copyWith(selectedBreakSeries: selectedBreakSeries));
     _onBreakSeriesUpdated.call();
   }
 
-  void onExpandedGroupsChanged(List<int> expandedGroups) {
+  void updateExpandedGroups(List<int> expandedGroups) {
     _rxSettings.add(_rxSettings.value.copyWith(expandedGroups: expandedGroups));
   }
 

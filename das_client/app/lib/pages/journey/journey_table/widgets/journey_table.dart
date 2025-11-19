@@ -40,6 +40,7 @@ import 'package:app/pages/journey/journey_table/widgets/table/uncoded_operationa
 import 'package:app/pages/journey/journey_table/widgets/table/whistle_row.dart';
 import 'package:app/pages/journey/journey_table_view_model.dart';
 import 'package:app/pages/journey/settings/journey_settings.dart';
+import 'package:app/pages/journey/settings/journey_settings_view_model.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/user_settings.dart';
 import 'package:app/widgets/assets.dart';
@@ -65,12 +66,13 @@ class JourneyTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.read<JourneyTableViewModel>();
+    final journeySettingsVM = context.read<JourneySettingsViewModel>();
     final journeyPositionViewModel = context.read<JourneyPositionViewModel>();
 
     return StreamBuilder<List<dynamic>>(
       stream: CombineLatestStream.list([
         viewModel.journey,
-        viewModel.settings,
+        journeySettingsVM.model,
         viewModel.showDecisiveGradient,
         journeyPositionViewModel.model,
       ]),
@@ -528,11 +530,13 @@ class JourneyTable extends StatelessWidget {
       newList.add(group.order);
     }
 
-    context.read<JourneyTableViewModel>().updateExpandedGroups(newList);
+    context.read<JourneySettingsViewModel>().updateExpandedGroups(newList);
   }
 
   Future<void> _onBreakSeriesTap(BuildContext context, Metadata? metadata, JourneySettings? settings) async {
-    final viewModel = context.read<JourneyTableViewModel>();
+    final viewModel = context.read<JourneySettingsViewModel>();
+
+    print('tapped');
 
     final selectedBreakSeries = await showSBBModalSheet<BreakSeries>(
       context: context,

@@ -7,6 +7,7 @@ import 'package:app/pages/journey/journey_table/widgets/notification/replacement
 import 'package:app/pages/journey/journey_table/widgets/notification/replacement_series/replacement_series_view_model.dart';
 import 'package:app/pages/journey/journey_table_view_model.dart';
 import 'package:app/pages/journey/settings/journey_settings.dart';
+import 'package:app/pages/journey/settings/journey_settings_view_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -18,11 +19,13 @@ import 'replacement_series_view_model_test.mocks.dart';
 @GenerateNiceMocks([
   MockSpec<JourneyTableViewModel>(),
   MockSpec<JourneyPositionViewModel>(),
+  MockSpec<JourneySettingsViewModel>(),
 ])
 void main() {
   late ReplacementSeriesViewModel testee;
   late MockJourneyTableViewModel mockJourneyTableViewModel;
   late MockJourneyPositionViewModel mockJourneyPositionViewModel;
+  late MockJourneySettingsViewModel mockJourneySettingsViewModel;
   late BehaviorSubject<Journey?> journeySubject;
   late BehaviorSubject<JourneyPositionModel> journeyPositionSubject;
   late BehaviorSubject<JourneySettings> journeySettingsSubject;
@@ -175,6 +178,7 @@ void main() {
   setUp(() {
     mockJourneyPositionViewModel = MockJourneyPositionViewModel();
     mockJourneyTableViewModel = MockJourneyTableViewModel();
+    mockJourneySettingsViewModel = MockJourneySettingsViewModel();
     journeySubject = BehaviorSubject<Journey?>.seeded(null);
     journeyPositionSubject = BehaviorSubject<JourneyPositionModel>.seeded(JourneyPositionModel());
     journeySettingsSubject = BehaviorSubject<JourneySettings>.seeded(JourneySettings());
@@ -183,10 +187,13 @@ void main() {
     when(mockJourneyPositionViewModel.modelValue).thenAnswer((_) => journeyPositionSubject.value);
     when(mockJourneyTableViewModel.settings).thenAnswer((_) => journeySettingsSubject.stream);
     when(mockJourneyTableViewModel.settingsValue).thenAnswer((_) => journeySettingsSubject.value);
+    when(mockJourneySettingsViewModel.model).thenAnswer((_) => journeySettingsSubject.stream);
+    when(mockJourneySettingsViewModel.modelValue).thenAnswer((_) => journeySettingsSubject.value);
 
     testee = ReplacementSeriesViewModel(
       journeyTableViewModel: mockJourneyTableViewModel,
       journeyPositionViewModel: mockJourneyPositionViewModel,
+      journeySettingsViewModel: mockJourneySettingsViewModel,
     );
   });
 

@@ -42,12 +42,12 @@ void main() {
 
   test('constructor_whenCalled_buildsSubscription', () => expect(rxMockJourney.hasListener, isTrue));
 
-  test('onBreakSeriesChanged_whenCalled_emitsCorrectBreakSeriesAndCallsCallback', () {
+  test('updateBreakSeries_whenCalled_emitsCorrectBreakSeriesAndCallsCallback', () {
     // ARRANGE
     final aBreakSeries = BreakSeries(trainSeries: TrainSeries.A, breakSeries: 100);
     expect(onBreakSeriesUpdatedCalled, isFalse);
     // ACT
-    testee.onBreakSeriesChanged(aBreakSeries);
+    testee.updateBreakSeries(aBreakSeries);
     processStreams();
     // EXPECT
     expect(testee.modelValue, equals(JourneySettings(selectedBreakSeries: aBreakSeries)));
@@ -55,12 +55,12 @@ void main() {
     expect(onBreakSeriesUpdatedCalled, isTrue);
   });
 
-  test('onExpandedGroupsChanged_whenCalled_emitsCorrectExpandedGroups', () {
+  test('updateExpandedGroups_whenCalled_emitsCorrectExpandedGroups', () {
     // ARRANGE
     final aExpandedGroups = const [1, 2];
 
     // ACT
-    testee.onExpandedGroupsChanged(aExpandedGroups);
+    testee.updateExpandedGroups(aExpandedGroups);
     processStreams();
 
     // EXPECT
