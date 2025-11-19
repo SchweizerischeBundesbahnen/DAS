@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:app/di/di.dart';
-import 'package:app/pages/journey/journey_table/advancement/journey_advancement_model.dart';
 import 'package:app/pages/journey/journey_table/journey_table_scroll_controller.dart';
 import 'package:app/pages/journey/settings/journey_settings.dart';
 import 'package:app/util/error_code.dart';
@@ -39,16 +38,18 @@ class JourneyTableViewModel {
 
   bool get showDecisiveGradientValue => _rxShowDecisiveGradient.value;
 
-  Stream<JourneyAdvancementModel> get journeyAdvancementModel => _rxJourneyAdvancementModel.stream;
-
-  JourneyAdvancementModel get journeyAdvancementModelValue => _rxJourneyAdvancementModel.value;
+  Stream<bool> get isZenViewMode => _zenViewMode.stream;
 
   JourneyTableScrollController journeyTableScrollController = JourneyTableScrollController();
 
   final _rxSettings = BehaviorSubject<JourneySettings>.seeded(JourneySettings());
   final _rxErrorCode = BehaviorSubject<ErrorCode?>.seeded(null);
   final _rxJourney = BehaviorSubject<Journey?>.seeded(null);
-  final _rxJourneyAdvancementModel = BehaviorSubject<JourneyAdvancementModel>.seeded(Paused());
+
+  /// Zen mode will hide the AppBar.
+  ///
+  /// StreamController to control number of listeners to only JourneyPage.
+  late final _zenViewMode = StreamController<bool>(onListen: () => updateZenViewMode(true));
 
   final _rxShowDecisiveGradient = BehaviorSubject<bool>.seeded(false);
   Timer? _showDecisiveGradientTimer;
@@ -70,6 +71,13 @@ class JourneyTableViewModel {
     }
   }
 
+  void updateZenViewMode(bool value) {
+    if (!_zenViewMode.hasListener) return;
+
+    _log.info('ZenViewMode active: $value');
+    _zenViewMode.add(value);
+  }
+
   void updateExpandedGroups(List<int> expandedGroups) {
     _rxSettings.add(_rxSettings.value.copyWith(expandedGroups: expandedGroups));
   }
@@ -80,6 +88,7 @@ class JourneyTableViewModel {
       journeyTableScrollController.scrollToCurrentPosition();
     }
     _rxSettings.add(_rxSettings.value.copyWith(isAutoAdvancementEnabled: active));
+    updateZenViewMode(active);
   }
 
   void toggleKmDecisiveGradient() {
@@ -97,6 +106,7 @@ class JourneyTableViewModel {
   void dispose() {
     _rxJourney.close();
     _rxSettings.close();
+    _zenViewMode.close();
     _rxShowDecisiveGradient.close();
     _rxErrorCode.close();
     _stateSubscription?.cancel();

@@ -7,9 +7,7 @@ import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/app_router.dart';
 import 'package:app/pages/journey/journey_table/journey_overview.dart';
 import 'package:app/pages/journey/journey_table_view_model.dart';
-import 'package:app/pages/journey/navigation/journey_navigation_model.dart';
 import 'package:app/pages/journey/navigation/journey_navigation_view_model.dart';
-import 'package:app/pages/journey/settings/journey_settings.dart';
 import 'package:app/pages/journey/warn_app_view_model.dart';
 import 'package:app/pages/journey/widgets/das_journey_scaffold.dart';
 import 'package:app/util/format.dart';
@@ -66,19 +64,24 @@ class _JourneyPageState extends State<JourneyPage> {
 
   @override
   Widget build(BuildContext context) {
+    final journeyVM = context.read<JourneyTableViewModel>();
+    final journeyNavigationVM = DI.get<JourneyNavigationViewModel>();
     return StreamBuilder(
-      stream: CombineLatestStream.list([
-        context.read<JourneyTableViewModel>().settings,
-        DI.get<JourneyNavigationViewModel>().model,
-      ]),
+      stream: CombineLatestStream.combine2(
+        journeyVM.isZenViewMode,
+        journeyNavigationVM.model,
+        (a, b) => (a, b),
+      ),
+      // initial zen mode is false to animate transition
+      initialData: (false, journeyNavigationVM.modelValue),
       builder: (context, snapshot) {
-        final settings = snapshot.data?[0] as JourneySettings?;
-        final model = snapshot.data?[1] as JourneyNavigationModel?;
+        final isZenViewMode = snapshot.requireData.$1;
+        final model = snapshot.requireData.$2;
 
         return DASJourneyScaffold(
           body: JourneyOverview(),
           appBarTitle: _appBarTitle(context, model?.trainIdentification),
-          hideAppBar: settings?.isAutoAdvancementEnabled == true,
+          hideAppBar: isZenViewMode,
           appBarTrailingAction: _DismissJourneyButton(),
         );
       },
