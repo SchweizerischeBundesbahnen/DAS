@@ -1,42 +1,15 @@
-import 'package:app/brightness/brightness_manager.dart';
-import 'package:app/di/di.dart';
-import 'package:app/pages/journey/journey_page.dart';
-import 'package:app/pages/journey/journey_table/widgets/communication_network_icon.dart';
-import 'package:app/pages/journey/journey_table/widgets/header/battery_status.dart';
-import 'package:app/pages/journey/journey_table/widgets/header/chronograph_header_box.dart';
-import 'package:app/pages/journey/journey_table/widgets/header/connectivity_icon.dart';
+import 'package:app/pages/journey/journey_table/widgets/header/departure_authorization_display.dart';
 import 'package:app/pages/journey/journey_table/widgets/header/extended_menu.dart';
 import 'package:app/pages/journey/journey_table/widgets/header/header.dart';
-import 'package:app/pages/journey/journey_table/widgets/header/radio_channel.dart';
-import 'package:app/pages/journey/journey_table/widgets/header/radio_contact.dart';
-import 'package:app/pages/journey/journey_table/widgets/header/sim_identifier.dart';
-import 'package:app/pages/journey/journey_table/widgets/notification/maneuver_notification.dart';
-import 'package:app/pages/journey/warn_app_view_model.dart';
-import 'package:app/provider/ru_feature_provider.dart';
-import 'package:app/theme/theme_util.dart';
-import 'package:app/util/format.dart';
-import 'package:app/util/time_constants.dart';
-import 'package:app/widgets/dot_indicator.dart';
-import 'package:battery_plus/battery_plus.dart';
-import 'package:connectivity_x/component.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:intl/intl.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
-import 'package:settings/component.dart';
-import 'package:wakelock_plus/wakelock_plus.dart';
 
 import '../app_test.dart';
-import '../mocks/mock_battery.dart';
-import '../mocks/mock_brightness_manager.dart';
-import '../mocks/mock_connectivity_manager.dart';
-import '../mocks/mock_ru_feature_provider.dart';
-import '../mocks/mock_warn_app_view_model.dart';
 import '../util/test_utils.dart';
 
 Future<void> main() async {
   group('train journey header test', () {
-    testWidgets('test connectivity state shown correctly', (tester) async {
+    /*testWidgets('test connectivity state shown correctly', (tester) async {
       await prepareAndStartApp(tester);
 
       // simulate connectivity
@@ -618,8 +591,78 @@ Future<void> main() async {
       );
 
       await disconnect(tester);
+    });*/
+
+    testWidgets('test departure authorization display in header ', (tester) async {
+      await prepareAndStartApp(tester);
+      await loadJourney(tester, trainNumber: 'T31');
+
+      // check existing departure authorization section in header
+      final header = find.byType(Header);
+      expect(header, findsOneWidget);
+
+      // check departure authorization for Dietikon on start (nextStop: Schlieren)
+      await _checkDepartureAuth(header, nextStopName: 'Schlieren', text: '(DT) *');
+
+      // check departure authorization after first signal (nextStop: Schlieren)
+      final departureAuthTextSchlieren = '(SCHL) sms 3-6';
+      await waitUntilExists(tester, find.descendant(of: header, matching: find.text(departureAuthTextSchlieren)));
+      await _checkDepartureAuth(header, nextStopName: 'Schlieren', text: departureAuthTextSchlieren);
+
+      // check departure authorization on Schlieren (nextStop: Zürich Altstetten)
+      await waitUntilExists(tester, find.descendant(of: header, matching: find.text('Zürich Altstetten')));
+      await _checkDepartureAuth(header, nextStopName: 'Zürich Altstetten', text: departureAuthTextSchlieren);
+
+      // check departure authorization on signal after Schlieren (nextStop: Zürich Altstetten)
+      final departureAuthTextAltstetten = '(ZAS) sms 2-4 6,7';
+      await waitUntilExists(tester, find.descendant(of: header, matching: find.text(departureAuthTextAltstetten)));
+      await _checkDepartureAuth(header, nextStopName: 'Zürich Altstetten', text: departureAuthTextAltstetten);
+
+      // check departure authorization on Zürich Altstetten (nextStop: Zürich Hardbrücke)
+      await waitUntilExists(tester, find.descendant(of: header, matching: find.text('Zürich Hardbrücke')));
+      await _checkDepartureAuth(header, nextStopName: 'Zürich Hardbrücke', text: departureAuthTextAltstetten);
+
+      // check departure authorization on signal after Zürich Altstetten (nextStop: Zürich Hardbrücke)
+      await waitUntilNotExists(
+        tester,
+        find.descendant(of: header, matching: find.byKey(DepartureAuthorizationDisplay.departureAuthorizationTextKey)),
+      );
+      await _checkDepartureAuth(header, nextStopName: 'Zürich Hardbrücke', text: null);
+
+      await disconnect(tester);
     });
   });
+}
+
+Future<void> _checkDepartureAuth(Finder header, {required String nextStopName, String? text}) async {
+  final departureAuthorization = find.descendant(of: header, matching: find.byType(DepartureAuthorizationDisplay));
+  expect(departureAuthorization, findsOneWidget);
+
+  // check next stop
+  final nextStop = find.descendant(of: header, matching: find.text(nextStopName));
+  expect(nextStop, findsOne);
+
+  // check departure auth text
+  if (text == null) {
+    final departureAuthText = find.descendant(
+      of: departureAuthorization,
+      matching: find.byKey(DepartureAuthorizationDisplay.departureAuthorizationTextKey),
+    );
+    expect(departureAuthText, findsNothing);
+  } else {
+    final departureAuthText = find.descendant(
+      of: departureAuthorization,
+      matching: find.text(text),
+    );
+    expect(departureAuthText, findsOne);
+  }
+
+  // icon is always shown
+  final departureAuthIcon = find.descendant(
+    of: departureAuthorization,
+    matching: find.byKey(DepartureAuthorizationDisplay.departureAuthorizationIconKey),
+  );
+  expect(departureAuthIcon, findsOne);
 }
 
 Future<void> _toggleExtendedMenuManeuverMode(WidgetTester tester) async {

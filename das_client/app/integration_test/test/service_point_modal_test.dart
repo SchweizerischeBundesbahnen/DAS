@@ -328,6 +328,26 @@ void main() {
 
       await disconnect(tester);
     });
+
+    testWidgets('test departure authorization are displayed in modal', (tester) async {
+      await prepareAndStartApp(tester);
+      await loadJourney(tester, trainNumber: 'T31M');
+
+      final scrollableFinder = find.byType(AnimatedList);
+      expect(scrollableFinder, findsOneWidget);
+
+      await _openAndCheckDepartureAuth(tester, 'Dietikon', '*');
+      await _openAndCheckDepartureAuth(tester, 'Glanzenberg', '* sms 2-4');
+      await _openAndCheckDepartureAuth(tester, 'Schlieren', 'sms 3-6');
+
+      await dragUntilTextInStickyHeader(tester, 'Zürich Altstetten');
+      await _openAndCheckDepartureAuth(tester, 'Zürich Altstetten', 'sms 2-4 6,7');
+
+      await _openByTapOnCellWithText(tester, 'Zürich Hardbrücke');
+      expect(find.byKey(DetailTabCommunication.departureAuthorizationKey), findsNothing);
+
+      await disconnect(tester);
+    });
   });
 
   group('local regulation tab tests', () {
@@ -414,30 +434,6 @@ void main() {
     expect(find.text(l10n.c_main_signal_function_exit), findsNothing);
     expect(find.text(l10n.c_main_signal_function_entry_short), findsAny);
     expect(find.text(l10n.c_main_signal_function_exit_short), findsAny);
-
-    await disconnect(tester);
-  });
-
-  testWidgets('test departure authorization are displayed in modal', (tester) async {
-    await prepareAndStartApp(tester);
-    await loadJourney(tester, trainNumber: 'T31M');
-
-    final scrollableFinder = find.byType(AnimatedList);
-    expect(scrollableFinder, findsOneWidget);
-
-    await _openAndCheckDepartureAuth(tester, 'Dietikon', '*');
-    await _openAndCheckDepartureAuth(tester, 'Glanzenberg', 'sms 3-6');
-
-    await _openByTapOnCellWithText(tester, 'Schlieren');
-    expect(find.byKey(DetailTabCommunication.departureAuthorizationKey), findsNothing);
-
-    await tester.dragUntilVisible(find.text('Zürich Hardbrücke'), scrollableFinder, const Offset(0, -50));
-    await tester.pumpAndSettle();
-
-    await _openAndCheckDepartureAuth(tester, 'Zürich Altstetten', 'sms 2-4 6,7');
-
-    await _openByTapOnCellWithText(tester, 'Zürich Hardbrücke');
-    expect(find.byKey(DetailTabCommunication.departureAuthorizationKey), findsNothing);
 
     await disconnect(tester);
   });

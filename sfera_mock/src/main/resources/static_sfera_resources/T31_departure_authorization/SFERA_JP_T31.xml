@@ -21,6 +21,11 @@
                 <TP_ID_Reference TP_ID="Dietikon"/>
             </TimingPointReference>
         </TimingPointConstraints>
+
+        <TrainCharacteristicsRef TC_ID="T31_1" TC_VersionMajor="1" TC_VersionMinor="0" location="0">
+            <TC_RU_ID>1285</TC_RU_ID>
+        </TrainCharacteristicsRef>
+
         <JP_ContextInformation>
 
             <!-- VPro for Dietikon -->

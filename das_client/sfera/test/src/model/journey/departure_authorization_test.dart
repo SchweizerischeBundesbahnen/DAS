@@ -55,4 +55,15 @@ void main() {
     // WHEN THEN
     expect(departureAuth.text, 'sms 3-6 ');
   });
+
+  test('text_whenTextWithLineBreaksAndHTMLFormatting_thenReturnsTextWithSpacesAndFormatting', () {
+    // GIVEN
+    final departureAuth = DepartureAuthorization(
+      types: [DepartureAuthorizationType.sms],
+      originalText: 'sms<br/><b>3-6</b>\n',
+    );
+
+    // WHEN THEN
+    expect(departureAuth.text, 'sms <b>3-6</b> ');
+  });
 }

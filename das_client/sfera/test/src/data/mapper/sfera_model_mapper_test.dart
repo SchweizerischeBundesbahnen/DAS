@@ -1764,7 +1764,7 @@ void main() {
     expect(departureAuthorization2, isNotNull);
     expect(departureAuthorization2?.hasDispatcherAuth, isFalse);
     expect(departureAuthorization2?.hasSmsAuth, isTrue);
-    expect(departureAuthorization2?.text, 'sms 3-6');
+    expect(departureAuthorization2?.text, 'sms <b>3-6</b>');
 
     final departureAuthorization3 = servicePoint[3].departureAuthorization;
     expect(departureAuthorization3, isNotNull);
