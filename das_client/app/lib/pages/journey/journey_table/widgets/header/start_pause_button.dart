@@ -28,6 +28,7 @@ class StartPauseButton extends StatelessWidget {
             context.l10n.p_journey_header_button_start,
             next is Automatic ? SBBIcons.play_small : SBBIcons.hand_cursor_small,
             context,
+            next is Automatic ? false : true,
           ),
           Automatic() => _button(
             pauseButtonKey,
@@ -40,36 +41,22 @@ class StartPauseButton extends StatelessWidget {
             context.l10n.p_journey_header_button_pause,
             SBBIcons.hand_cursor_small,
             context,
+            true,
           ),
         };
       },
     );
   }
 
-  Widget _button(Key key, String label, IconData icon, BuildContext context) {
+  Widget _button(Key key, String label, IconData icon, BuildContext context, [bool invertColors = false]) {
     return HeaderIconButton(
       key: key,
       label: label,
       icon: icon,
+      invertColors: invertColors,
       onPressed: () {
         context.read<JourneyTableAdvancementViewModel>().toggleAdvancementMode();
       },
     );
   }
-
-  //   final automaticAdvancementActive = asyncSnapshot.requireData.isAutoAdvancementEnabled;
-  //   return HeaderIconButton(
-  //     key: automaticAdvancementActive ? pauseButtonKey : startButtonKey,
-  //     label: automaticAdvancementActive
-  //         ? context.l10n.p_journey_header_button_pause
-  //         : context.l10n.p_journey_header_button_start,
-  //     icon: automaticAdvancementActive ? SBBIcons.pause_small : SBBIcons.play_small,
-  //     onPressed: () {
-  //       final newValue = !automaticAdvancementActive;
-  //       context.read<JourneyTableViewModel>().setAutomaticAdvancement(newValue);
-  //     },
-  //   );
-  // },
-  // );
-  // }
 }
