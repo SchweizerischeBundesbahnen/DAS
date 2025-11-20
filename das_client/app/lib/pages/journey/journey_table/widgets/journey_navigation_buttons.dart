@@ -18,7 +18,7 @@ class JourneyNavigationButtons extends StatelessWidget {
     final journeyVM = context.read<JourneyTableViewModel>();
     return StreamBuilder(
       stream: CombineLatestStream.combine2(navigationVM.model, journeyVM.isZenViewMode, (a, b) => (a, b)),
-      initialData: (navigationVM.modelValue, journeyVM.isZenViewModeValue),
+      initialData: (navigationVM.modelValue, journeyVM.isZenViewModelValue),
       builder: (context, snapshot) {
         final (navigationModel, isZenViewMode) = snapshot.requireData;
 
