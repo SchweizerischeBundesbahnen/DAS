@@ -7,11 +7,11 @@ defaults:
 on:
   push:
     paths:
-      - '../../das_admin_tool/**'
+      - 'das_admin_tool/**'
     branches: [ "main" ]
   pull_request:
     paths:
-      - '../../das_admin_tool/**'
+      - 'das_admin_tool/**'
     branches: [ "main" ]
 
 
