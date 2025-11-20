@@ -34,6 +34,25 @@ void main() {
     expect(departureAuth.text, 'sms 3-6');
   });
 
+  test('text_whenSmsTypeAndNoText_thenReturnsNull', () {
+    // GIVEN
+    final departureAuth = DepartureAuthorization(types: [DepartureAuthorizationType.sms], originalText: null);
+
+    // WHEN THEN
+    expect(departureAuth.text, isNull);
+  });
+
+  test('text_whenSmsAndDispatcherTypeAndNoText_thenReturnsPrefix', () {
+    // GIVEN
+    final departureAuth = DepartureAuthorization(
+      types: [DepartureAuthorizationType.sms, DepartureAuthorizationType.dispatcher],
+      originalText: null,
+    );
+
+    // WHEN THEN
+    expect(departureAuth.text, '*');
+  });
+
   test('text_whenSmsAndDispatcherTypeAndText_thenReturnsText', () {
     // GIVEN
     final departureAuth = DepartureAuthorization(

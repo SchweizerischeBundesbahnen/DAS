@@ -16,8 +16,6 @@ class LocalRegulationHtmlGeneratorImpl implements LocalRegulationHtmlGenerator {
   }
 }
 
-// extensions
-
 extension _StringExtension on String {
   String appendCSS() => replaceAll(cssTemplateString, cssStyle);
 

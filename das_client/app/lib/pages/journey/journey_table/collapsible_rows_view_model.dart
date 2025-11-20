@@ -92,8 +92,6 @@ class CollapsibleRowsViewModel {
   }
 }
 
-// extension
-
 extension BaseDataExtension on BaseData {
   bool get isCollapsible => this is BaseFootNote || this is UncodedOperationalIndication;
 }

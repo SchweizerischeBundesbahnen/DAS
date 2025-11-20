@@ -446,7 +446,7 @@ class SegmentProfileMapper {
   static DepartureAuthorization? _parseDepartureAuthorization(DepartureAuthNspDto? departureAuthNsp) {
     if (departureAuthNsp == null || !departureAuthNsp.departureAuth) return null;
 
-    // authorization type can either be sms, dispatcher or both. If text does not contain sms and [departureAuthDispatcher] is false, it has to be type sms
+    // If text does not contain sms and [departureAuthDispatcher] is false, intentional fallback to type sms
     final hasSmsAuth = departureAuthNsp.departureAuthText?.toLowerCase().contains('sms') ?? false;
     final authTypes = <DepartureAuthorizationType>[
       if (departureAuthNsp.departureAuthDispatcher) DepartureAuthorizationType.dispatcher,

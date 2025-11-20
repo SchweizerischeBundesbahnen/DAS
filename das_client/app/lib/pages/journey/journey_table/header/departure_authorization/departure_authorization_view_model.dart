@@ -43,11 +43,13 @@ class DepartureAuthorizationViewModel {
         return;
       }
 
+      // Once the first signal after a stop is passed, the departure authorization for the next stop is shown.
       final passedSignals = journey.data.passedSignalsBetween(
         start: journeyPosition.previousStop,
         end: journeyPosition.currentPosition,
       );
 
+      // Intermediate signals are excluded from this logic, since long trains sometimes need to pass them while stopping.
       final relevantServicePoint = passedSignals.anyNonIntermediateSignals()
           ? journeyPosition.nextStop
           : journeyPosition.previousStop;
@@ -56,8 +58,6 @@ class DepartureAuthorizationViewModel {
     });
   }
 }
-
-// extensions
 
 extension _BaseDataListExtension on List<BaseData> {
   /// returns passed signal between two JourneyPoints. Will return empty list if start or end not given.

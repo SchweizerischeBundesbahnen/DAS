@@ -33,8 +33,6 @@ class CommunicationNetworkChange extends JourneyPoint {
 
 enum CommunicationNetworkType { gsmR, gsmP, sim }
 
-// extensions
-
 extension CommunicationNetworkChangeListExtension on Iterable<CommunicationNetworkChange> {
   /// Returns network type that returns last lower or equal to given [order].
   CommunicationNetworkType? typeByLastBefore(int order) {

@@ -49,8 +49,6 @@ class TafTapLocationDto extends SferaSegmentXmlElementDto {
   }
 }
 
-// extensions
-
 extension TafTapLocationDtoIterableExtension on Iterable<TafTapLocationDto> {
   TafTapLocationDto firstWhereGiven({String? countryCode, int? primaryCode}) =>
       _whereGiven(countryCode, primaryCode).first;

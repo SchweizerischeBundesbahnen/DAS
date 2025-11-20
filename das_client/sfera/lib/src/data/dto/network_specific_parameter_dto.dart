@@ -90,8 +90,6 @@ class NetworkSpecificParameterDto extends SferaXmlElementDto {
   }
 }
 
-// extensions
-
 extension NetworkSpecificParametersExtension on Iterable<NetworkSpecificParameterDto> {
   NetworkSpecificParameterDto? withName(String name) => where((it) => it.name == name).firstOrNull;
 }

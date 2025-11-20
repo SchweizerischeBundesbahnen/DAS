@@ -32,8 +32,6 @@ class UncodedOperationalIndication extends JourneyAnnotation {
   }
 }
 
-// extensions
-
 extension UncodedOperationalIndicationIterableExtension on Iterable<UncodedOperationalIndication> {
   Iterable<UncodedOperationalIndication> mergeOnSameLocation() =>
       groupFoldBy<int, UncodedOperationalIndication>((i) => i.order, (previous, next) {

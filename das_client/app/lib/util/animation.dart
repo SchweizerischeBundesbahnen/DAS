@@ -20,8 +20,6 @@ class DASAnimation {
       CurvedAnimation(parent: parent, curve: Curves.easeInOutCubicEmphasized);
 }
 
-// extensions
-
 extension AnimationControllerExtension on AnimationController {
   CurvedAnimation toEmphasizedEasingAnimation() => DASAnimation.emphasizedEasingCurvedAnimation(this);
 }

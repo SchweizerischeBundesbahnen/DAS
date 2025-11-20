@@ -42,8 +42,6 @@ class FootNoteRow<T extends BaseFootNote> extends WidgetRowBuilder<T> {
   }
 }
 
-// extension
-
 extension FootNoteExtension on BaseFootNote {
   StickyLevel get stickyLevel {
     switch (this) {

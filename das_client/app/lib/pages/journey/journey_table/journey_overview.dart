@@ -159,10 +159,6 @@ class _ProviderScope extends StatelessWidget {
           create: (_) => LineSpeedViewModel(journeyTableViewModel: journeyTableViewModel),
           dispose: (_, vm) => vm.dispose(),
         ),
-        Provider(
-          create: (_) => LineSpeedViewModel(journeyTableViewModel: journeyTableViewModel),
-          dispose: (_, vm) => vm.dispose(),
-        ),
 
         // PROXY  PROVIDERS
         ProxyProvider<PunctualityViewModel, JourneyPositionViewModel>(

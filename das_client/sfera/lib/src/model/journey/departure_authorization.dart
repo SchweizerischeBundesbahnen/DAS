@@ -43,8 +43,6 @@ class DepartureAuthorization {
   }
 }
 
-// extensions
-
 extension _StringExtension on String {
   String replaceLineBreaksWithSpace() {
     final pattern = RegExp(r'(\r\n|\r|\n|<br\s*/?>)', multiLine: true);

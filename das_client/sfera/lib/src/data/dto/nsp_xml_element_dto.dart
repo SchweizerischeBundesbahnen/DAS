@@ -31,12 +31,8 @@ mixin NspXmlElementDto<T extends SferaXmlElementDto> on SferaXmlElementDto {
   }
 }
 
-// extensions
-
 extension _XmlNullableStringExtension on String? {
-  String? get unescapedString {
-    return this?.unescapedString ?? this;
-  }
+  String? get unescapedString => this?.unescapedString ?? this;
 }
 
 extension _XmlStringExtension on String {
