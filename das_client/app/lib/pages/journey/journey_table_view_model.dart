@@ -60,11 +60,11 @@ class JourneyTableViewModel {
     _listenToSferaRemoteRepo();
   }
 
-  void updateZenViewMode(bool value) {
+  void toggleZenViewMode() {
     if (!_rxZenViewMode.hasListener) return;
 
-    _log.fine('ZenViewMode active: $value');
-    _rxZenViewMode.add(value);
+    _log.fine('ZenViewMode active: ${!isZenViewModeValue}');
+    _rxZenViewMode.add(!isZenViewModeValue);
   }
 
   void setAutomaticAdvancement(bool active) {
@@ -73,7 +73,7 @@ class JourneyTableViewModel {
       journeyTableScrollController.scrollToCurrentPosition();
     }
     _rxSettings.add(_rxSettings.value.copyWith(isAutoAdvancementEnabled: active));
-    updateZenViewMode(active);
+    toggleZenViewMode();
   }
 
   void toggleKmDecisiveGradient() {
