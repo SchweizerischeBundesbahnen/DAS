@@ -54,9 +54,9 @@ Important:
 
 ![business_context.drawio.svg](docs/content/architecture/03_context/business_context.drawio.svg)
 
-### Admintool
+### Admin-Tool
 
-- [das_admintool](das_admintool/README.md)
+- [das_admin_tool](das_admin_tool/README.md)
     - [TypeScript](https://www.typescriptlang.org/)
     - [Angular](https://angular.io/)
 

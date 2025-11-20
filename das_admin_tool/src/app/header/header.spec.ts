@@ -27,7 +27,7 @@ describe('Header', () => {
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
     const headerInfo = compiled.querySelector('.sbb-header-info');
-    expect(headerInfo?.querySelector('strong')?.textContent).toContain('DAS Admintool');
+    expect(headerInfo?.querySelector('strong')?.textContent).toContain('DAS Admin-Tool');
     expect(headerInfo?.querySelector("span")?.textContent).toContain(`V. ${packageJson.version}`);
   });
 });

@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "das_admintool": {
+    "das_admin_tool": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -57,10 +57,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "das_admintool:build:production"
+              "buildTarget": "das_admin_tool:build:production"
             },
             "development": {
-              "buildTarget": "das_admintool:build:development"
+              "buildTarget": "das_admin_tool:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -92,11 +92,21 @@
           "builder": "angular-server-side-configuration:ngsscbuild",
           "options": {
             "additionalEnvironmentVariables": [],
-            "buildTarget": "das_admintool:build"
+            "buildTarget": "das_admin_tool:build"
           },
           "configurations": {
             "production": {
-              "buildTarget": "das_admintool:build:production"
+              "buildTarget": "das_admin_tool:build:production"
+            },
+            "ci": {
+              "browsers": "ChromeHeadless",
+              "codeCoverage": true,
+              "sourceMap": true,
+              "progress": false,
+              "watch": false,
+              "reporters": [
+                "dots"
+              ]
             }
           }
         },

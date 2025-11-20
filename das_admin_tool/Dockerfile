@@ -4,7 +4,7 @@ FROM nginxinc/nginx-unprivileged:alpine-slim
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copy webapp
-COPY ./dist/das_admintool/browser /usr/share/nginx/html
+COPY ./dist/das_admin_tool/browser /usr/share/nginx/html
 
 USER root
 
