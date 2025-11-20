@@ -15,16 +15,19 @@ import 'angular-server-side-configuration/process';
  *
  * Please note that process.env[variable] cannot be resolved. Please directly use strings.
  */
+import {
+  ApplicationConfig,
+  provideBrowserGlobalErrorListeners,
+  provideZonelessChangeDetection
+} from '@angular/core';
+import {provideRouter} from '@angular/router';
 
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter } from '@angular/router';
-
-import { routes } from './app.routes';
+import {routes} from './app.routes';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideZonelessChangeDetection(),
     provideRouter(routes)
   ]
 };
