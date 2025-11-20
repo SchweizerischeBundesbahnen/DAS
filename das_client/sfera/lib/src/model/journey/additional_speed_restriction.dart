@@ -77,8 +77,6 @@ class AdditionalSpeedRestriction {
       restrictionUntil.hashCode;
 }
 
-// extension
-
 extension T on Iterable<AdditionalSpeedRestriction> {
   AdditionalSpeedRestriction get getLowestByOrderFrom {
     return reduce((current, next) => current.orderFrom < next.orderFrom ? current : next);

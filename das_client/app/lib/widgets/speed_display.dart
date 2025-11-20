@@ -126,8 +126,6 @@ class SpeedDisplay extends StatelessWidget {
   TextStyle get _textStyle => isNextStop ? textStyle.copyWith(color: SBBColors.white) : textStyle;
 }
 
-// extensions
-
 extension _SpeedIterableX on List<SingleSpeed> {
   String toJoinedString({String divider = '-'}) => map((it) => it.value).join(divider);
 

@@ -44,8 +44,6 @@ class SegmentProfileDto extends SferaXmlElementDto {
   }
 }
 
-// extensions
-
 extension SegmentProfileListExtension on Iterable<SegmentProfileDto> {
   SegmentProfileDto firstMatch(SegmentProfileReferenceDto segmentProfileReference) {
     return where(

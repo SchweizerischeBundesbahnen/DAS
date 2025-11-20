@@ -728,8 +728,6 @@ class _SegmentMapperData {
   }
 }
 
-// extensions
-
 extension _BaseDataIterableExtension on Iterable<BaseData> {
   /// removes all additional service points that are not at the route start/end and have no speed change.
   Iterable<BaseData> removeIrrelevantServicePoints(SplayTreeMap<int, SingleSpeed?> calculatedSpeeds) {

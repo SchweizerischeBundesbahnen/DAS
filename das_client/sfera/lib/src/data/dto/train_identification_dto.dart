@@ -25,8 +25,6 @@ class TrainIdentificationDto extends SferaXmlElementDto {
   }
 }
 
-// extensions
-
 extension TrainIdentificationMapperExtension on TrainIdentificationDto {
   TrainIdentification toTrainIdentification() {
     return TrainIdentification(

@@ -7,6 +7,7 @@ import 'package:sfera/src/model/journey/order_priority.dart';
 class ServicePoint extends JourneyPoint {
   const ServicePoint({
     required this.name,
+    required this.abbreviation,
     required super.order,
     required super.kilometre,
     super.localSpeeds,
@@ -24,9 +25,11 @@ class ServicePoint extends JourneyPoint {
     this.trackGroup,
     this.properties = const [],
     this.localRegulationSections = const [],
+    this.departureAuthorization,
   }) : super(type: Datatype.servicePoint);
 
   final String name;
+  final String abbreviation;
   final bool mandatoryStop;
   final bool isStop;
   final bool isStation;
@@ -41,6 +44,7 @@ class ServicePoint extends JourneyPoint {
   final String? trackGroup;
   final List<StationProperty> properties;
   final List<LocalRegulationSection> localRegulationSections;
+  final DepartureAuthorization? departureAuthorization;
 
   List<TrainSeriesSpeed> relevantGraduatedSpeedInfo(BreakSeries? breakSeries) {
     final speedInfo = graduatedSpeedInfo ?? [];
@@ -75,6 +79,7 @@ class ServicePoint extends JourneyPoint {
           order == other.order &&
           ListEquality().equals(kilometre, other.kilometre) &&
           name == other.name &&
+          abbreviation == other.abbreviation &&
           mandatoryStop == other.mandatoryStop &&
           isStop == other.isStop &&
           isStation == other.isStation &&
@@ -87,6 +92,7 @@ class ServicePoint extends JourneyPoint {
           stationSign1 == other.stationSign1 &&
           stationSign2 == other.stationSign2 &&
           trackGroup == other.trackGroup &&
+          departureAuthorization == other.departureAuthorization &&
           ListEquality().equals(properties, other.properties) &&
           DeepCollectionEquality().equals(localSpeeds, other.localSpeeds);
 
@@ -96,6 +102,7 @@ class ServicePoint extends JourneyPoint {
       order.hashCode ^
       Object.hashAll(kilometre) ^
       name.hashCode ^
+      abbreviation.hashCode ^
       mandatoryStop.hashCode ^
       isStop.hashCode ^
       isStation.hashCode ^
@@ -108,6 +115,7 @@ class ServicePoint extends JourneyPoint {
       stationSign1.hashCode ^
       stationSign2.hashCode ^
       trackGroup.hashCode ^
+      departureAuthorization.hashCode ^
       Object.hashAll(properties) ^
       Object.hashAll(localSpeeds ?? []);
 
@@ -117,6 +125,7 @@ class ServicePoint extends JourneyPoint {
         'order: $order, '
         'kilometre: $kilometre, '
         'name: $name, '
+        'abbreviation: $abbreviation, '
         'mandatoryStop: $mandatoryStop, '
         'isStop: $isStop, '
         'isStation: $isStation, '
@@ -130,6 +139,7 @@ class ServicePoint extends JourneyPoint {
         'stationSign1: $stationSign1, '
         'stationSign2: $stationSign2, '
         'trackGroup: $trackGroup, '
+        'departureAuthorization: $departureAuthorization, '
         'properties: $properties, '
         'localRegulationSections: $localRegulationSections'
         '}';

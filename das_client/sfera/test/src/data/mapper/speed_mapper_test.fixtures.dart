@@ -14,37 +14,37 @@ class ThreeServicePointsWithSurroundingSignalsJourneyFixture {
 
   static List<JourneyPoint> get overOneSegment => [
     Signal(order: 950, kilometre: [], functions: [SignalFunction.entry]),
-    ServicePoint(name: 'a', order: 1000, kilometre: []),
+    ServicePoint(name: 'a', abbreviation: '', order: 1000, kilometre: []),
     Signal(order: 1050, kilometre: [], functions: [SignalFunction.exit]),
     Signal(order: 2950, kilometre: [], functions: [SignalFunction.entry]),
-    ServicePoint(name: 'b', order: 3000, kilometre: []),
+    ServicePoint(name: 'b', abbreviation: '', order: 3000, kilometre: []),
     Signal(order: 3050, kilometre: [], functions: [SignalFunction.exit]),
     Signal(order: 4950, kilometre: [], functions: [SignalFunction.entry]),
-    ServicePoint(name: 'c', order: 5000, kilometre: []),
+    ServicePoint(name: 'c', abbreviation: '', order: 5000, kilometre: []),
     Signal(order: 5050, kilometre: [], functions: [SignalFunction.exit]),
   ];
 
   static List<JourneyPoint> get overTwoSegments => [
     Signal(order: 950, kilometre: [], functions: [SignalFunction.entry]),
-    ServicePoint(name: 'a', order: 1000, kilometre: []),
+    ServicePoint(name: 'a', abbreviation: '', order: 1000, kilometre: []),
     Signal(order: 1050, kilometre: [], functions: [SignalFunction.exit]),
     Signal(order: 2950, kilometre: [], functions: [SignalFunction.entry]),
-    ServicePoint(name: 'b', order: 3000, kilometre: []),
+    ServicePoint(name: 'b', abbreviation: '', order: 3000, kilometre: []),
     Signal(order: 3050, kilometre: [], functions: [SignalFunction.exit]),
     Signal(order: 100950, kilometre: [], functions: [SignalFunction.entry]),
-    ServicePoint(name: 'c', order: 101000, kilometre: []),
+    ServicePoint(name: 'c', abbreviation: '', order: 101000, kilometre: []),
     Signal(order: 101050, kilometre: [], functions: [SignalFunction.exit]),
   ];
 
   static List<JourneyPoint> get overThreeSegments => [
     Signal(order: 950, kilometre: [], functions: [SignalFunction.entry]),
-    ServicePoint(name: 'a', order: 1000, kilometre: []),
+    ServicePoint(name: 'a', abbreviation: '', order: 1000, kilometre: []),
     Signal(order: 1050, kilometre: [], functions: [SignalFunction.exit]),
     Signal(order: 100950, kilometre: [], functions: [SignalFunction.entry]),
-    ServicePoint(name: 'b', order: 101000, kilometre: []),
+    ServicePoint(name: 'b', abbreviation: '', order: 101000, kilometre: []),
     Signal(order: 101050, kilometre: [], functions: [SignalFunction.exit]),
     Signal(order: 200950, kilometre: [], functions: [SignalFunction.entry]),
-    ServicePoint(name: 'c', order: 201000, kilometre: []),
+    ServicePoint(name: 'c', abbreviation: '', order: 201000, kilometre: []),
     Signal(order: 201050, kilometre: [], functions: [SignalFunction.exit]),
   ];
 }

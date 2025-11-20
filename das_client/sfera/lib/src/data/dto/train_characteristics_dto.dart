@@ -29,8 +29,6 @@ class TrainCharacteristicsDto extends SferaXmlElementDto {
   }
 }
 
-// extensions
-
 extension TrainCharacteristicsDtoIterableExtension on Iterable<TrainCharacteristicsDto> {
   TrainCharacteristicsDto? firstWhereGivenOrNull(TrainCharacteristicsRefDto trainReference) => firstWhereOrNull(
     (it) =>
