@@ -162,45 +162,63 @@ class _ProviderScope extends StatelessWidget {
 
         // PROXY  PROVIDERS
         ProxyProvider<PunctualityViewModel, JourneyPositionViewModel>(
-          update: (_, punctualityVM, _) => JourneyPositionViewModel(
-            journeyStream: journeyTableViewModel.journey,
-            punctualityStream: punctualityVM.model,
-          ),
+          update: (_, punctualityVM, prev) {
+            if (prev != null) return prev;
+            return JourneyPositionViewModel(
+              journeyStream: journeyTableViewModel.journey,
+              punctualityStream: punctualityVM.model,
+            );
+          },
           dispose: (_, vm) => vm.dispose(),
         ),
         ProxyProvider<JourneyPositionViewModel, CollapsibleRowsViewModel>(
-          update: (_, journeyPositionVM, _) => CollapsibleRowsViewModel(
-            journeyStream: journeyTableViewModel.journey,
-            journeyPositionStream: journeyPositionVM.model,
-          ),
+          update: (_, journeyPositionVM, prev) {
+            if (prev != null) return prev;
+            return CollapsibleRowsViewModel(
+              journeyStream: journeyTableViewModel.journey,
+              journeyPositionStream: journeyPositionVM.model,
+            );
+          },
           dispose: (_, vm) => vm.dispose(),
         ),
         ProxyProvider<JourneyPositionViewModel, AdvisedSpeedViewModel>(
-          update: (_, journeyPositionVM, _) => AdvisedSpeedViewModel(
-            journeyStream: journeyTableViewModel.journey,
-            journeyPositionStream: journeyPositionVM.model,
-          ),
+          update: (_, journeyPositionVM, prev) {
+            if (prev != null) return prev;
+            return AdvisedSpeedViewModel(
+              journeyStream: journeyTableViewModel.journey,
+              journeyPositionStream: journeyPositionVM.model,
+            );
+          },
           dispose: (_, vm) => vm.dispose(),
         ),
         ProxyProvider<JourneyPositionViewModel, ReplacementSeriesViewModel>(
-          update: (_, journeyPositionVM, _) => ReplacementSeriesViewModel(
-            journeyTableViewModel: journeyTableViewModel,
-            journeyPositionViewModel: journeyPositionVM,
-          ),
+          update: (_, journeyPositionVM, prev) {
+            if (prev != null) return prev;
+            return ReplacementSeriesViewModel(
+              journeyTableViewModel: journeyTableViewModel,
+              journeyPositionViewModel: journeyPositionVM,
+            );
+          },
           dispose: (_, vm) => vm.dispose(),
         ),
         ProxyProvider<JourneyPositionViewModel, DepartureAuthorizationViewModel>(
-          update: (_, journeyPositionVM, _) => DepartureAuthorizationViewModel(
-            journeyStream: journeyTableViewModel.journey,
-            journeyPositionStream: journeyPositionVM.model,
-          ),
+          update: (_, journeyPositionVM, prev) {
+            if (prev != null) return prev;
+            return DepartureAuthorizationViewModel(
+              journeyStream: journeyTableViewModel.journey,
+              journeyPositionStream: journeyPositionVM.model,
+            );
+          },
           dispose: (_, vm) => vm.dispose(),
         ),
         ProxyProvider<LineSpeedViewModel, CalculatedSpeedViewModel>(
-          update: (_, lineSpeedVM, _) => CalculatedSpeedViewModel(
-            journeyTableViewModel: journeyTableViewModel,
-            lineSpeedViewModel: lineSpeedVM,
-          ),
+          update: (_, lineSpeedVM, prev) {
+            if (prev != null) return prev;
+            return CalculatedSpeedViewModel(
+              journeyTableViewModel: journeyTableViewModel,
+              lineSpeedViewModel: lineSpeedVM,
+            );
+          },
           dispose: (_, vm) => vm.dispose(),
         ),
         ProxyProvider4<
@@ -210,13 +228,16 @@ class _ProviderScope extends StatelessWidget {
           CalculatedSpeedViewModel,
           ChronographViewModel
         >(
-          update: (_, journeyPositionVM, punctualityVM, advisedSpeedVM, calculatedSpeedVM, _) => ChronographViewModel(
-            journeyStream: journeyTableViewModel.journey,
-            journeyPositionStream: journeyPositionVM.model,
-            punctualityStream: punctualityVM.model,
-            advisedSpeedModelStream: advisedSpeedVM.model,
-            calculatedSpeedViewModel: calculatedSpeedVM,
-          ),
+          update: (_, journeyPositionVM, punctualityVM, advisedSpeedVM, calculatedSpeedVM, prev) {
+            if (prev != null) return prev;
+            return ChronographViewModel(
+              journeyStream: journeyTableViewModel.journey,
+              journeyPositionStream: journeyPositionVM.model,
+              punctualityStream: punctualityVM.model,
+              advisedSpeedModelStream: advisedSpeedVM.model,
+              calculatedSpeedViewModel: calculatedSpeedVM,
+            );
+          },
           dispose: (_, vm) => vm.dispose(),
         ),
       ],
