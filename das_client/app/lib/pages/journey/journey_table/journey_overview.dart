@@ -1,7 +1,7 @@
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/break_load_slip/break_load_slip_view_model.dart';
 import 'package:app/pages/journey/calculated_speed_view_model.dart';
-import 'package:app/pages/journey/journey_table/advancement/journey_advancement_view_model.dart';
+import 'package:app/pages/journey/journey_table/advancement/journey_table_advancement_view_model.dart';
 import 'package:app/pages/journey/journey_table/advised_speed/advised_speed_notification.dart';
 import 'package:app/pages/journey/journey_table/advised_speed/advised_speed_view_model.dart';
 import 'package:app/pages/journey/journey_table/collapsible_rows_view_model.dart';

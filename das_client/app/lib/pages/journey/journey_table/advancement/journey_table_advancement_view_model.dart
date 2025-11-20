@@ -16,8 +16,8 @@ final _log = Logger('JourneyAdvancementViewModel');
 /// * manual (auto scrolling is enabled)
 ///
 /// Automatic scrolling will scroll the [JourneyTable] to the current position after an idle time has been reached.
-class JourneyAdvancementViewModel {
-  JourneyAdvancementViewModel({
+class JourneyTableAdvancementViewModel {
+  JourneyTableAdvancementViewModel({
     required Stream<Journey?> journeyStream,
     required Stream<JourneyPositionModel> positionStream,
     required JourneyTableScrollController scrollController,
