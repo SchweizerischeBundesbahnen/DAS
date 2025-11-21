@@ -1189,7 +1189,7 @@ void main() {
 
   test('Test advised speeds are parsed correctly', () async {
     final journey = getJourney('T24', 6);
-    expect(journey.valid, isTrue);
+    expect(journey.valid, true);
 
     final advisedSpeeds = journey.metadata.advisedSpeedSegments.toList();
     expect(advisedSpeeds.length, 5);
