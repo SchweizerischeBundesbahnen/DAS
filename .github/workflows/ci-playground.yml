@@ -1,4 +1,4 @@
-name: Continuous Integration Webapp
+name: Continuous Integration Playground Webapp
 
 defaults:
   run:
