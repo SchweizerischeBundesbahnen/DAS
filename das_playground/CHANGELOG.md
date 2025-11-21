@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.2](https://github.com/SchweizerischeBundesbahnen/DAS/compare/webapp-v0.7.1...webapp-v0.7.2) (2025-11-20)
+
+
+### Bug Fixes
+
+* sfera v3 ([#1391](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1391)) ([e612808](https://github.com/SchweizerischeBundesbahnen/DAS/commit/e6128083360ab330ce734b46f9aabf83b8bc488f))
+
 ## [0.7.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/webapp-v0.7.0...webapp-v0.7.1) (2025-10-22)
 
 
