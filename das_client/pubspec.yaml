@@ -18,7 +18,7 @@ workspace:
   - local_regulations
 
 dev_dependencies:
-  melos: ^7.1.1
+  melos: ^7.2.0
 
 # Melos Configuration
 
@@ -33,9 +33,9 @@ melos:
         flutter: true
 
     generate:
-      run: |
-        melos run generate:build_runner --no-select &&
-        melos run generate:intl
+      steps:
+        - melos run generate:build_runner --no-select
+        - melos run generate:intl
 
     generate:build_runner:
       run: dart run build_runner build --delete-conflicting-outputs

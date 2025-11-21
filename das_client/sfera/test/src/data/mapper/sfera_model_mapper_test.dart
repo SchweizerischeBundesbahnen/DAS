@@ -1,89 +1,26 @@
-import 'dart:io';
-
 import 'package:collection/collection.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/dto/delay_dto.dart';
-import 'package:sfera/src/data/dto/g2b_event_payload_dto.dart';
-import 'package:sfera/src/data/dto/journey_profile_dto.dart';
-import 'package:sfera/src/data/dto/related_train_information_dto.dart';
-import 'package:sfera/src/data/dto/segment_profile_dto.dart';
-import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
-import 'package:sfera/src/data/mapper/sfera_model_mapper.dart';
+
+import '../../../util/test_util.dart';
 
 void main() {
-  List<File> getFilesForSp(String path, String baseName, int count) {
-    final files = <File>[];
-    for (var i = 1; i <= count; i++) {
-      files.add(File('$path/${baseName}_$i.xml'));
-    }
-    return files;
-  }
-
-  List<File> getFilesForTc(String path, String baseName, int count) {
-    final files = <File>[];
-    for (var i = 1; i <= count; i++) {
-      files.add(File('$path/${baseName}_$i.xml'));
-    }
-    return files;
-  }
+  late List<TestJourney> allTestJourneys;
+  setUpAll(() {
+    allTestJourneys = TestJourneyRepository.getFromClientTestResources().toList(growable: false);
+  });
 
   Journey getJourney(
     String trainNumber,
     int spCount, {
-    String? spPostfix,
-    String? jpPostfix,
-    String? tcPostfix,
     int tcCount = 0,
     int? relatedTrainInfoEventId,
-    Journey? lastJourney,
   }) {
-    final resourceDir = Directory('test_resources');
-    expect(resourceDir.existsSync(), true);
+    bool journeyNameAndEventMatches(TestJourney journey) =>
+        journey.name == trainNumber && relatedTrainInfoEventId?.toString() == journey.eventName;
 
-    // Filter files that match the regex
-    final directoryRegex = RegExp('${trainNumber}_.+');
-    final testDirectory = resourceDir.listSync().firstWhereOrNull((entry) {
-      final baseName = entry.path.split(Platform.pathSeparator).last;
-      return entry is Directory && directoryRegex.hasMatch(baseName);
-    });
-    expect(testDirectory, isNotNull);
-
-    final baseJPFileName = 'SFERA_JP_$trainNumber${jpPostfix != null ? '_$jpPostfix' : ''}';
-    final journeyFile = File('${testDirectory!.path}/$baseJPFileName.xml');
-    final journeyProfile = SferaReplyParser.parse<JourneyProfileDto>(journeyFile.readAsStringSync());
-    expect(journeyProfile.validate(), true);
-
-    final List<SegmentProfileDto> segmentProfiles = [];
-    final baseSPFileName = 'SFERA_SP_$trainNumber${spPostfix != null ? '_$spPostfix' : ''}';
-    for (final File file in getFilesForSp(testDirectory.path, baseSPFileName, spCount)) {
-      final segmentProfile = SferaReplyParser.parse<SegmentProfileDto>(file.readAsStringSync());
-      expect(segmentProfile.validate(), true);
-      segmentProfiles.add(segmentProfile);
-    }
-
-    final List<TrainCharacteristicsDto> trainCharacteristics = [];
-    final baseTCFileName = 'SFERA_TC_$trainNumber${tcPostfix != null ? '_$tcPostfix' : ''}';
-    for (final File file in getFilesForTc(testDirectory.path, baseTCFileName, tcCount)) {
-      final trainCharacteristic = SferaReplyParser.parse<TrainCharacteristicsDto>(file.readAsStringSync());
-      expect(trainCharacteristic.validate(), true);
-      trainCharacteristics.add(trainCharacteristic);
-    }
-
-    RelatedTrainInformationDto? relatedTrainInformation;
-    if (relatedTrainInfoEventId != null) {
-      final file = File('${testDirectory.path}/SFERA_Event_${trainNumber}_$relatedTrainInfoEventId.xml');
-      final g2bEventPayload = SferaReplyParser.parse<G2bEventPayloadDto>(file.readAsStringSync());
-      relatedTrainInformation = g2bEventPayload.relatedTrainInformation;
-    }
-
-    return SferaModelMapper.mapToJourney(
-      journeyProfile: journeyProfile,
-      segmentProfiles: segmentProfiles,
-      trainCharacteristics: trainCharacteristics,
-      relatedTrainInformation: relatedTrainInformation,
-      lastJourney: lastJourney,
-    );
+    return allTestJourneys.where(journeyNameAndEventMatches).first.journey;
   }
 
   test('returns null delay when delay is missing in event', () {
@@ -110,7 +47,7 @@ void main() {
   });
 
   test('Test invalid journey on SP missing', () async {
-    final journey = getJourney('T9999', 4);
+    final journey = TestJourneyRepository.partialJourney('T9999', maxSpCount: 4).journey;
 
     expect(journey.valid, false);
   });
@@ -300,7 +237,7 @@ void main() {
   });
 
   test('Test speed change on CAB signaling end is generated correctly', () async {
-    final journey = getJourney('T1', 5);
+    final journey = TestJourneyRepository.partialJourney('T1').journey;
 
     expect(journey.valid, true);
 
@@ -438,7 +375,7 @@ void main() {
   });
 
   test('Test protection section is parsed correctly', () async {
-    final journey = getJourney('T3', 1);
+    final journey = TestJourneyRepository.partialJourney('T3').journey;
     final protectionSections = journey.data
         .where((it) => it.type == Datatype.protectionSection)
         .cast<ProtectionSection>()
@@ -644,7 +581,7 @@ void main() {
   });
 
   test('Test speed change is parsed correctly', () async {
-    final journey = getJourney('T9999', 5);
+    final journey = TestJourneyRepository.partialJourney('T9999').journey;
     final speedChanges = journey.data.where((it) => it.type == Datatype.speedChange).cast<SpeedChange>().toList();
 
     expect(journey.valid, true);
@@ -684,7 +621,7 @@ void main() {
   });
 
   test('Test connection tracks are parsed correctly', () async {
-    final journey = getJourney('T9999', 5);
+    final journey = TestJourneyRepository.partialJourney('T9999').journey;
     final connectionTracks = journey.data
         .where((it) => it.type == Datatype.connectionTrack)
         .cast<ConnectionTrack>()
@@ -1207,7 +1144,7 @@ void main() {
     expect(servicePoints, hasLength(16));
 
     // service points without calculated speed
-    final servicePointIdxWithoutCalculatedSpeed = {0, 1, 8, 10, 12, 13, 15};
+    final servicePointIdxWithoutCalculatedSpeed = {0, 1, 12, 13, 15};
     expect(
       servicePoints
           .whereIndexed((idx, _) => servicePointIdxWithoutCalculatedSpeed.contains(idx))
@@ -1251,7 +1188,7 @@ void main() {
   });
 
   test('Test advised speeds are parsed correctly', () async {
-    final journey = getJourney('T24', 1);
+    final journey = getJourney('T24', 6);
     expect(journey.valid, isTrue);
 
     final advisedSpeeds = journey.metadata.advisedSpeedSegments.toList();
@@ -1259,28 +1196,42 @@ void main() {
 
     expect(advisedSpeeds[0], isA<FollowTrainAdvisedSpeedSegment>());
     expect(advisedSpeeds[0].speed, equals(SingleSpeed(value: '80')));
+    expect(advisedSpeeds[0].isDIST, isFalse);
     expect(advisedSpeeds[0].startOrder, 500);
     expect(advisedSpeeds[0].endOrder, 2500);
+    expect(advisedSpeeds[0].endData, equals(journey.data[7]));
+    expect(advisedSpeeds[0].isEndDataCalculated, isFalse);
 
-    expect(advisedSpeeds[1], isA<FixedTimeAdvisedSpeedSegment>());
-    expect(advisedSpeeds[1].speed, equals(SingleSpeed(value: '80')));
-    expect(advisedSpeeds[1].startOrder, 4500);
-    expect(advisedSpeeds[1].endOrder, 5000);
+    expect(advisedSpeeds[1], isA<FollowTrainAdvisedSpeedSegment>());
+    expect(advisedSpeeds[1].speed, equals(SingleSpeed(value: '0')));
+    expect(advisedSpeeds[1].isDIST, isTrue);
+    expect(advisedSpeeds[1].startOrder, 101500);
+    expect(advisedSpeeds[1].endOrder, 201500);
+    expect(advisedSpeeds[1].endData, equals(journey.data[22]));
+    expect(advisedSpeeds[1].isEndDataCalculated, isFalse);
 
     expect(advisedSpeeds[2], isA<TrainFollowingAdvisedSpeedSegment>());
     expect(advisedSpeeds[2].speed, equals(SingleSpeed(value: '120')));
-    expect(advisedSpeeds[2].startOrder, 5500);
-    expect(advisedSpeeds[2].endOrder, 6500);
+    expect(advisedSpeeds[2].isDIST, isFalse);
+    expect(advisedSpeeds[2].startOrder, 301050);
+    expect(advisedSpeeds[2].endOrder, 304950);
+    expect(advisedSpeeds[2].endData, equals(journey.data[31]));
+    expect(advisedSpeeds[2].isEndDataCalculated, isTrue);
 
     expect(advisedSpeeds[3], isA<VelocityMaxAdvisedSpeedSegment>());
     expect(advisedSpeeds[3].speed, isNull);
-    expect(advisedSpeeds[3].startOrder, 7000);
-    expect(advisedSpeeds[3].endOrder, 7500);
+    expect(advisedSpeeds[3].isDIST, isFalse);
+    expect(advisedSpeeds[3].startOrder, 305100);
+    expect(advisedSpeeds[3].endOrder, 500500);
+    expect(advisedSpeeds[3].endData, equals(journey.data[42]));
+    expect(advisedSpeeds[3].isEndDataCalculated, isFalse);
 
-    expect(advisedSpeeds[4], isA<VelocityMaxAdvisedSpeedSegment>());
-    expect(advisedSpeeds[4].speed, isNull);
-    expect(advisedSpeeds[4].startOrder, 8000);
-    expect(advisedSpeeds[4].endOrder, 12000);
+    expect(advisedSpeeds[4], isA<FixedTimeAdvisedSpeedSegment>());
+    expect(advisedSpeeds[4].speed, SingleSpeed(value: '80'));
+    expect(advisedSpeeds[4].startOrder, 500500);
+    expect(advisedSpeeds[4].endOrder, 500950);
+    expect(advisedSpeeds[4].endData, equals(journey.data[44]));
+    expect(advisedSpeeds[4].isEndDataCalculated, isFalse);
   });
 
   test('Test signaled position is null when nothing is given', () async {
@@ -1610,6 +1561,17 @@ void main() {
     expect(servicePoints[7].stationSign2, isNull);
   });
 
+  test('whenTafTapLocationHasNSPWithTrackGroup_thenServicePointHasNonNullTrackGroup', () {
+    final journey = getJourney('T6', 2);
+    expect(journey.valid, true);
+
+    final servicePoints = journey.data.whereType<ServicePoint>().toList(growable: false);
+    expect(servicePoints[0].trackGroup, isNull);
+    expect(servicePoints[1].name, equals('Hardbrücke'));
+    expect(servicePoints[1].trackGroup, equals('3'));
+    expect(servicePoints[6].trackGroup, equals('N'));
+  });
+
   test('Test stations properties are parsed correctly', () {
     final journey = getJourney('T21', 1);
     expect(journey.valid, true);
@@ -1757,11 +1719,60 @@ void main() {
     expect(additionalServicePoints[2].name, 'Olten Tunnel (Spw)');
     expect(additionalServicePoints[3].name, 'Dulliken (Depot)');
 
-    // ADL speed update should be on nearest non-additional service point
+    // ADL speed update should ignore additional service points and land on closest JourneyPoints
     final advisedSpeedSegments = journey.metadata.advisedSpeedSegments.toList();
     expect(advisedSpeedSegments, hasLength(1));
-    expect(advisedSpeedSegments[0].startOrder, 1000);
-    expect(advisedSpeedSegments[0].endOrder, 3500);
+    expect(advisedSpeedSegments[0].startOrder, 1600);
+    expect(advisedSpeedSegments[0].endOrder, 3100);
+  });
+
+  test('Test shunting movement markers are parsed correctly', () {
+    final journey = TestJourneyRepository.partialJourney('T29').journey;
+    expect(journey.valid, true);
+
+    final markers = journey.data.whereType<ShuntingMovement>().toList();
+    expect(markers, hasLength(3));
+
+    expect(markers[0].isStart, true);
+    expect(markers[0].order, 0);
+    expect(markers[1].isStart, false);
+    expect(markers[1].order, 200000);
+    expect(markers[2].isStart, true);
+    expect(markers[2].order, 400000);
+  });
+
+  test('Test departure authorizations are parsed correctly', () {
+    final journey = getJourney('T31', 5);
+    expect(journey.valid, true);
+
+    final servicePoint = journey.data.whereType<ServicePoint>().toList();
+    expect(servicePoint, hasLength(5));
+
+    final departureAuthorization0 = servicePoint[0].departureAuthorization;
+    expect(departureAuthorization0, isNotNull);
+    expect(departureAuthorization0?.hasDispatcherAuth, isTrue);
+    expect(departureAuthorization0?.hasSmsAuth, isFalse);
+    expect(departureAuthorization0?.text, '*');
+
+    final departureAuthorization1 = servicePoint[1].departureAuthorization;
+    expect(departureAuthorization1, isNotNull);
+    expect(departureAuthorization1?.hasDispatcherAuth, isTrue);
+    expect(departureAuthorization1?.hasSmsAuth, isTrue);
+    expect(departureAuthorization1?.text, '* sms 2-4');
+
+    final departureAuthorization2 = servicePoint[2].departureAuthorization;
+    expect(departureAuthorization2, isNotNull);
+    expect(departureAuthorization2?.hasDispatcherAuth, isFalse);
+    expect(departureAuthorization2?.hasSmsAuth, isTrue);
+    expect(departureAuthorization2?.text, 'sms <b>3-6</b>');
+
+    final departureAuthorization3 = servicePoint[3].departureAuthorization;
+    expect(departureAuthorization3, isNotNull);
+    expect(departureAuthorization3?.hasDispatcherAuth, isFalse);
+    expect(departureAuthorization3?.hasSmsAuth, isTrue);
+    expect(departureAuthorization3?.text, 'sms 2-4 6,7');
+
+    expect(servicePoint[4].departureAuthorization, isNull);
   });
 }
 

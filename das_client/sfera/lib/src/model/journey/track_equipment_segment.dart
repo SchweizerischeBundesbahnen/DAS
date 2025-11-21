@@ -23,7 +23,7 @@ class NonStandardTrackEquipmentSegment extends Segment implements Comparable {
 
   @override
   String toString() {
-    return 'NonStandardTrackEquipmentSegment(startKm: $startKm, endKm: $endKm, startOrder: $startOrder, endOrder: $endOrder, type: $type)';
+    return 'NonStandardTrackEquipmentSegment{startKm: $startKm, endKm: $endKm, startOrder: $startOrder, endOrder: $endOrder, type: $type}';
   }
 }
 
@@ -47,8 +47,6 @@ enum TrackEquipmentType {
 
   bool get isConventionalSpeed => this == etcsL2ConvSpeedReversingImpossible;
 }
-
-// extensions
 
 extension BaseDataListSegmentExtension on Iterable<BaseData> {
   Iterable<BaseData> inNonStandardTrackEquipmentSegment(NonStandardTrackEquipmentSegment segment) {

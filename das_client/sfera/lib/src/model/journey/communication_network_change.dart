@@ -23,16 +23,15 @@ class CommunicationNetworkChange extends JourneyPoint {
           const ListEquality<double>().equals(kilometre, other.kilometre);
 
   @override
-  int get hashCode => Object.hash(order, communicationNetworkType, Object.hashAll(kilometre));
+  int get hashCode => Object.hash(type, order, communicationNetworkType, Object.hashAll(kilometre));
 
   @override
-  String toString() =>
-      'CommunicationNetworkChange(communicationNetworkType: $communicationNetworkType, order: $order, kilometre: $kilometre)';
+  String toString() {
+    return 'CommunicationNetworkChange{order: $order, kilometre: $kilometre, communicationNetworkType: $communicationNetworkType}';
+  }
 }
 
 enum CommunicationNetworkType { gsmR, gsmP, sim }
-
-// extensions
 
 extension CommunicationNetworkChangeListExtension on Iterable<CommunicationNetworkChange> {
   /// Returns network type that returns last lower or equal to given [order].

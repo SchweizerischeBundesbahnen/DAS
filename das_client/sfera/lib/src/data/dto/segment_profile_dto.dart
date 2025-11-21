@@ -17,7 +17,7 @@ class SegmentProfileDto extends SferaXmlElementDto {
 
   String get versionMinor => attributes['SP_VersionMinor']!;
 
-  String get length => attributes['SP_Length']!;
+  double get length => double.parse(attributes['SP_Length']!);
 
   String get id => attributes['SP_ID']!;
 
@@ -38,13 +38,11 @@ class SegmentProfileDto extends SferaXmlElementDto {
   bool validate() {
     return validateHasAttribute('SP_VersionMajor') &&
         validateHasAttribute('SP_VersionMinor') &&
-        validateHasAttribute('SP_Length') &&
+        validateHasAttributeDouble('SP_Length') &&
         validateHasAttribute('SP_ID') &&
         super.validate();
   }
 }
-
-// extensions
 
 extension SegmentProfileListExtension on Iterable<SegmentProfileDto> {
   SegmentProfileDto firstMatch(SegmentProfileReferenceDto segmentProfileReference) {

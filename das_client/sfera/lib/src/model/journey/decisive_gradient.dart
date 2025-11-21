@@ -12,9 +12,7 @@ class DecisiveGradient {
   int get hashCode => Object.hash(uphill, downhill);
 
   @override
-  String toString() =>
-      'DecisiveGradient('
-      'uphill: $uphill'
-      ', downhill: $downhill'
-      ')';
+  String toString() {
+    return 'DecisiveGradient{uphill: $uphill, downhill: $downhill}';
+  }
 }

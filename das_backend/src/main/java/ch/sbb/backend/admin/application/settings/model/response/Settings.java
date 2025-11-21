@@ -5,10 +5,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 
 public record Settings(
-        @ArraySchema(arraySchema = @Schema(requiredMode = Schema.RequiredMode.REQUIRED))
-        List<RuFeature> ruFeatures,
-        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-        Logging logging
+    @ArraySchema(arraySchema = @Schema(requiredMode = Schema.RequiredMode.REQUIRED))
+    List<RuFeature> ruFeatures,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
+    Logging logging,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
+    Preload preload
 ) {
 
 }

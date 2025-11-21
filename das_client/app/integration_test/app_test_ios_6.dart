@@ -4,7 +4,9 @@ import 'package:integration_test/integration_test.dart';
 import 'package:logger/component.dart';
 import 'package:logging/logging.dart';
 
-import 'test/train_journey_replacement_series_test.dart' as train_journey_replacement_series_test;
+import 'test/journey_replacement_series_test.dart' as journey_replacement_series_test;
+import 'test/journey_table_time_test.dart' as journey_table_time_tests;
+import 'test/reduced_journey_table_test.dart' as reduced_journey_table_tests;
 
 AppLocalizations l10n = AppLocalizationsDe();
 
@@ -14,5 +16,7 @@ void main() {
   Logger.root.level = Level.FINE;
   Logger.root.onRecord.listen(LogPrinter(appName: 'DAS IntegrationTests').call);
 
-  train_journey_replacement_series_test.main();
+  journey_replacement_series_test.main();
+  reduced_journey_table_tests.main();
+  journey_table_time_tests.main();
 }

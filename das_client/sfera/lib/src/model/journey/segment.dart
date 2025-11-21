@@ -39,11 +39,9 @@ abstract class Segment implements Comparable {
 
   @override
   String toString() {
-    return 'Segment(startOrder: $startOrder, endOrder: $endOrder)';
+    return 'Segment{startOrder: $startOrder, endOrder: $endOrder}';
   }
 }
-
-// extensions
 
 extension SegmentsExtension<T extends Segment> on Iterable<T> {
   Iterable<T> appliesToOrder(int order) => where((segment) => segment.appliesToOrder(order));

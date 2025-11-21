@@ -2,10 +2,10 @@ import 'dart:io';
 
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
-import 'package:app/pages/journey/train_journey/widgets/header/extended_menu.dart';
-import 'package:app/pages/journey/train_journey/widgets/header/next_stop.dart';
-import 'package:app/pages/journey/train_journey/widgets/header/start_pause_button.dart';
-import 'package:app/pages/journey/train_journey/widgets/train_journey.dart';
+import 'package:app/pages/journey/journey_table/widgets/header/extended_menu.dart';
+import 'package:app/pages/journey/journey_table/widgets/header/next_stop.dart';
+import 'package:app/pages/journey/journey_table/widgets/header/start_pause_button.dart';
+import 'package:app/pages/journey/journey_table/widgets/journey_table.dart';
 import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:app/widgets/table/scrollable_align.dart';
@@ -65,6 +65,10 @@ Finder findDASTableRowByText(String text) {
   );
 }
 
+Finder findDASTableColumnByText(String text) {
+  return find.ancestor(of: find.text(text), matching: find.byKey(DASTable.columnHeaderKey));
+}
+
 Finder findColoredRowCells({required FinderBase<Element> of, required Color color}) {
   return find.descendant(
     of: of,
@@ -75,7 +79,7 @@ Finder findColoredRowCells({required FinderBase<Element> of, required Color colo
 }
 
 /// Verifies, that SBB is selected and loads train journey with [trainNumber]
-Future<void> loadTrainJourney(WidgetTester tester, {required String trainNumber}) async {
+Future<void> loadJourney(WidgetTester tester, {required String trainNumber}) async {
   // verify we have ru SBB selected.
   expect(find.text(l10n.c_ru_sbb_p), findsOneWidget);
 
@@ -89,7 +93,7 @@ Future<void> loadTrainJourney(WidgetTester tester, {required String trainNumber}
   await tester.tap(primaryButton);
 
   // wait for train journey to load
-  await waitUntilExists(tester, find.byKey(TrainJourney.loadedTrainJourneyTableKey));
+  await waitUntilExists(tester, find.byKey(JourneyTable.loadedJourneyTableKey));
   await tester.pumpAndSettle();
 }
 
@@ -117,10 +121,10 @@ Future<void> dismissExtendedMenu(WidgetTester tester) async {
 
 Future<void> selectBreakSeries(WidgetTester tester, {required String breakSeries}) async {
   // Open break series bottom sheet
-  await tapElement(tester, find.byKey(TrainJourney.breakingSeriesHeaderKey));
+  await tapElement(tester, find.byKey(JourneyTable.breakingSeriesHeaderKey));
 
   // Check if the bottom sheet is opened
-  expect(find.text(l10n.p_train_journey_break_series), findsOneWidget);
+  expect(find.text(l10n.p_journey_break_series), findsOneWidget);
   await tapElement(tester, find.text(breakSeries));
 }
 

@@ -13,13 +13,9 @@ class ProtectionSection extends JourneyPoint {
   final bool isLong;
 
   @override
-  String toString() =>
-      'ProtectionSection('
-      'order: $order'
-      ', kilometre: $kilometre'
-      ', isOptional: $isOptional'
-      ', isLong: $isLong'
-      ')';
+  String toString() {
+    return 'ProtectionSection{order: $order, kilometre: $kilometre, isOptional: $isOptional, isLong: $isLong}';
+  }
 
   @override
   bool operator ==(Object other) =>
@@ -32,5 +28,6 @@ class ProtectionSection extends JourneyPoint {
           isLong == other.isLong;
 
   @override
-  int get hashCode => order.hashCode ^ Object.hashAll(kilometre) ^ isOptional.hashCode ^ isLong.hashCode;
+  int get hashCode =>
+      type.hashCode ^ order.hashCode ^ Object.hashAll(kilometre) ^ isOptional.hashCode ^ isLong.hashCode;
 }

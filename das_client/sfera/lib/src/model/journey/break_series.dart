@@ -12,6 +12,9 @@ class BreakSeries {
   final TrainSeries trainSeries;
   final int breakSeries;
 
+  /// returns train series name + break series number (ie. R150)
+  String get name => '${trainSeries.name}$breakSeries';
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -25,6 +28,6 @@ class BreakSeries {
 
   @override
   String toString() {
-    return '${trainSeries.name}$breakSeries';
+    return 'BreakSeries{trainSeries: $trainSeries, breakSeries: $breakSeries}';
   }
 }

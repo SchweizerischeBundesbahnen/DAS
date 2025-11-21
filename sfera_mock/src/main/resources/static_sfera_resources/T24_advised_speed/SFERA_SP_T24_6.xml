@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T24_6" SP_VersionMajor="1"
+                SP_VersionMinor="0" SP_Length="1000" SP_Status="Valid">
+    <SP_Zone>
+        <IM_ID>0085</IM_ID>
+    </SP_Zone>
+    <SP_Points>
+
+        <TimingPoint TP_ID="LS" location="1000">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01120</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <!--Entry and exit signals-->
+        <Signal>
+            <Signal_ID signal_ID_Physical="E367" location="950"/>
+            <SignalFunction>entry</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="E367"/>
+        </Signal>
+
+        <!--ADL Signals-->
+        <!--VMax TrainFollowing-->
+        <Signal>
+            <Signal_ID signal_ID_Physical="A312" location="500"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="A312"/>
+        </Signal>
+
+        <!-- Filler Signal -->
+        <Signal>
+            <Signal_ID signal_ID_Physical="F862" location="600"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="F862"/>
+        </Signal>
+
+
+    </SP_Points>
+
+    <SP_Areas>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="1000" endLocation="1000" TAF_TAP_location_abbreviation="LS"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01120</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Lausanne</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+
+    </SP_Areas>
+
+    <SP_ContextInformation>
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-P"/>
+        <KilometreReferencePoint location="500">
+            <KM_Reference kmRef="12.9"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="600">
+            <KM_Reference kmRef="10.5"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="800">
+            <KM_Reference kmRef="1.2"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="950">
+            <KM_Reference kmRef="0.2"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="1000">
+            <KM_Reference kmRef="0.0"/>
+        </KilometreReferencePoint>
+    </SP_ContextInformation>
+</SegmentProfile>

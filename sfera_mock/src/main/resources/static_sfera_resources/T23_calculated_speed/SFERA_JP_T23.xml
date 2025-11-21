@@ -201,12 +201,26 @@
 
 
         <JP_ContextInformation>
+            <!-- VPro for ZOER -->
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="90"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
             <!-- VPro for ZRH higher than line speed from ZUE-->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="130"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="100" endLocation="100"/>
+            </JP_ContextInformation_NSPs>
+            <!-- VPro for BSD higher than line speed from ZUE-->
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="130"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="150" endLocation="150"/>
             </JP_ContextInformation_NSPs>
             <!-- VPro for W lower than previous line speed from ZUE-->
             <JP_ContextInformation_NSPs>

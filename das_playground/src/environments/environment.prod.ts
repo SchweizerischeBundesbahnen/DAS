@@ -18,6 +18,7 @@ const authConfig: PassedInitialConfig = {
     customParamsAuthRequest: {
       prompt: 'select_account',
     },
+    strictIssuerValidationOnWellKnownRetrievalOff: true
   }
 }
 

@@ -44,9 +44,9 @@ void main() {
       // ARRANGE
       final speed = Speed.parse('90-80');
       final expectedString =
-          'GraduatedSpeed(speeds: '
-          '[SingleSpeed(value: 90, isSquared: false, isCircled: false), '
-          'SingleSpeed(value: 80, isSquared: false, isCircled: false)])';
+          'GraduatedSpeed{speeds: '
+          '[SingleSpeed{value: 90, isSquared: false, isCircled: false}, '
+          'SingleSpeed{value: 80, isSquared: false, isCircled: false}]}';
 
       // ACT & EXPECT
       expect(speed.toString(), equals(expectedString));

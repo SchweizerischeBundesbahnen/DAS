@@ -15,12 +15,9 @@ class Balise extends JourneyPoint {
   OrderPriority get orderPriority => OrderPriority.balise;
 
   @override
-  String toString() =>
-      'Balise('
-      'order: $order'
-      ', kilometre: $kilometre'
-      ', amountLevelCrossings: $amountLevelCrossings'
-      ')';
+  String toString() {
+    return 'Balise{order: $order, kilometre: $kilometre, amountLevelCrossings: $amountLevelCrossings}';
+  }
 
   @override
   bool operator ==(Object other) =>
@@ -32,5 +29,5 @@ class Balise extends JourneyPoint {
           ListEquality().equals(kilometre, other.kilometre);
 
   @override
-  int get hashCode => order.hashCode ^ Object.hashAll(kilometre) ^ amountLevelCrossings.hashCode;
+  int get hashCode => type.hashCode ^ order.hashCode ^ Object.hashAll(kilometre) ^ amountLevelCrossings.hashCode;
 }

@@ -11,6 +11,6 @@ class BracketStationSegment extends Segment {
 
   @override
   String toString() {
-    return 'BracketStationSegment(mainStationAbbreviation: $mainStationAbbreviation, startOrder: $startOrder, endOrder: $endOrder)';
+    return 'BracketStationSegment{mainStationAbbreviation: $mainStationAbbreviation, startOrder: $startOrder, endOrder: $endOrder}';
   }
 }

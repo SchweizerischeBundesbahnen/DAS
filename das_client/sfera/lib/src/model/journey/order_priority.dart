@@ -1,4 +1,5 @@
 enum OrderPriority {
+  shuntingMovementStart,
   cabSignalingStart,
   group,
   balise,
@@ -11,4 +12,5 @@ enum OrderPriority {
   curve,
   trackFootNote,
   cabSignalingEnd,
+  shuntingMovementEnd,
 }

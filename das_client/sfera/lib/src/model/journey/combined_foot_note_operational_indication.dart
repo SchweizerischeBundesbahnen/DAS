@@ -17,6 +17,11 @@ class CombinedFootNoteOperationalIndication extends JourneyAnnotation {
   OrderPriority get orderPriority => OrderPriority.uncodedOperationalIndication;
 
   @override
+  String toString() {
+    return 'CombinedFootNoteOperationalIndication{order: $order, footNote: $footNote, operationalIndication: $operationalIndication}';
+  }
+
+  @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is CombinedFootNoteOperationalIndication &&
@@ -25,5 +30,5 @@ class CombinedFootNoteOperationalIndication extends JourneyAnnotation {
           order == other.order);
 
   @override
-  int get hashCode => Object.hash(order, footNote, operationalIndication);
+  int get hashCode => Object.hash(type, order, footNote, operationalIndication);
 }

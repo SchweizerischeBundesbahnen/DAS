@@ -1,7 +1,7 @@
 import 'package:app/di/di.dart';
-import 'package:app/pages/journey/train_journey/widgets/header/header.dart';
-import 'package:app/pages/journey/train_journey/widgets/header/start_pause_button.dart';
-import 'package:app/pages/journey/train_journey/widgets/table/cells/route_chevron.dart';
+import 'package:app/pages/journey/journey_table/widgets/header/header.dart';
+import 'package:app/pages/journey/journey_table/widgets/header/start_pause_button.dart';
+import 'package:app/pages/journey/journey_table/widgets/table/cells/route_chevron.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -12,11 +12,8 @@ import '../util/test_utils.dart';
 void main() {
   group('automatic advancement tests', () {
     testWidgets('check if automatic advancement is scrolling automatically', (tester) async {
-      // Load app widget.
       await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
-      await loadTrainJourney(tester, trainNumber: 'T9');
+      await loadJourney(tester, trainNumber: 'T9');
 
       // Check chevron at start
       expect(
@@ -37,11 +34,8 @@ void main() {
     });
 
     testWidgets('check scrolling after idle time', (tester) async {
-      // Load app widget.
       await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
-      await loadTrainJourney(tester, trainNumber: 'T9');
+      await loadJourney(tester, trainNumber: 'T9');
 
       // Wait until all events are done
       await Future.delayed(const Duration(seconds: 12));
@@ -67,11 +61,8 @@ void main() {
     });
 
     testWidgets('check scrolling to position if automatic scrolling gets enabled', (tester) async {
-      // Load app widget.
       await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
-      await loadTrainJourney(tester, trainNumber: 'T9');
+      await loadJourney(tester, trainNumber: 'T9');
 
       await stopAutomaticAdvancement(tester);
 
@@ -89,11 +80,8 @@ void main() {
     });
 
     testWidgets('check not scrolling if automatic advancement is off', (tester) async {
-      // Load app widget.
       await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
-      await loadTrainJourney(tester, trainNumber: 'T9');
+      await loadJourney(tester, trainNumber: 'T9');
 
       await stopAutomaticAdvancement(tester);
 
@@ -114,11 +102,8 @@ void main() {
     });
 
     testWidgets('check if automatic advancement is enabled by default', (tester) async {
-      // Load app widget.
       await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
-      await loadTrainJourney(tester, trainNumber: 'T9');
+      await loadJourney(tester, trainNumber: 'T9');
 
       // Find the header and check if it is existent
       final headerFinder = find.byType(Header);
@@ -133,11 +118,8 @@ void main() {
     });
 
     testWidgets('check sticky footer is displayed', (tester) async {
-      // Load app widget.
       await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
-      await loadTrainJourney(tester, trainNumber: 'T9');
+      await loadJourney(tester, trainNumber: 'T9');
 
       await stopAutomaticAdvancement(tester);
 

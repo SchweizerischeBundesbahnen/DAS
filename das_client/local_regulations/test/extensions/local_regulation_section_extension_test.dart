@@ -84,8 +84,6 @@ void expectIgnoreNewLines(String actual, String expected) {
   expect(actual.removeWhitespacesNewLines(), expected.removeWhitespacesNewLines());
 }
 
-// extensions
-
 extension _StringExtension on String {
   String removeWhitespacesNewLines() => replaceAll(RegExp(r'\s+'), '').replaceAll('/n', '');
 }

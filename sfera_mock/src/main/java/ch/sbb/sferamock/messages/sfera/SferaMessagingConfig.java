@@ -1,6 +1,6 @@
 package ch.sbb.sferamock.messages.sfera;
 
-import ch.sbb.sferamock.adapters.sfera.model.v0201.ObjectFactory;
+import ch.sbb.sferamock.adapters.sfera.model.v0300.ObjectFactory;
 import jakarta.xml.bind.Marshaller;
 import java.util.Map;
 import java.util.function.Consumer;

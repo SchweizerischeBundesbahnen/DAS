@@ -87,7 +87,15 @@ void main() {
       // EXPECT
       expect(
         emitRegister,
-        orderedEquals([RailwayUndertaking.sbbC, RailwayUndertaking.sbbP]),
+        orderedEquals([
+          RailwayUndertaking.sbbC,
+          RailwayUndertaking.sbb,
+          RailwayUndertaking.sbbP,
+          RailwayUndertaking.sbbD,
+          RailwayUndertaking.sbbInfra,
+          RailwayUndertaking.sbbInfraBuildLog,
+          RailwayUndertaking.sbbCInt,
+        ]),
       );
     });
 
@@ -139,7 +147,7 @@ void main() {
 
     test('updateIsSelectingRailwayUndertaking_whenSetSelectedRuCalled_thenIsCalled', () {
       // ARRANGE
-      final newRu = RailwayUndertaking.sob;
+      final newRu = RailwayUndertaking.sobT;
       reset(mockUpdateAvailableRuFunction);
 
       // ACT
@@ -155,7 +163,7 @@ List<RailwayUndertaking> _sortedRailwayValues(
   AppLocalizations localizations, {
   selectedRailwayUndertaking = RailwayUndertaking.sbbP,
 }) {
-  return RailwayUndertaking.values
+  return RailwayUndertaking.knownRUs
       .map((ru) => (ru.localizedText(localizations).toLowerCase().trim(), ru))
       .sortedBy((pair) => pair.$2 == selectedRailwayUndertaking ? '' : pair.$1)
       .map((ruPair) => ruPair.$2)

@@ -50,7 +50,7 @@ class HttpException {
 
   @override
   String toString() {
-    return 'HttpException(label="$statusLabel" status=$statusCode, url=$url, body="${response.body}")';
+    return 'HttpException{label: $statusLabel, status: $statusCode, url: $url, body: ${response.body}}';
   }
 }
 

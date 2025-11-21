@@ -1,8 +1,8 @@
 package ch.sbb.sferamock.messages.common;
 
-import ch.sbb.sferamock.adapters.sfera.model.v0201.JourneyProfile;
-import ch.sbb.sferamock.adapters.sfera.model.v0201.StoppingPointDepartureDetails;
-import ch.sbb.sferamock.adapters.sfera.model.v0201.TimingPointConstraints;
+import ch.sbb.sferamock.adapters.sfera.model.v0300.JourneyProfile;
+import ch.sbb.sferamock.adapters.sfera.model.v0300.StoppingPointDepartureDetails;
+import ch.sbb.sferamock.adapters.sfera.model.v0300.TimingPointConstraints;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -13,7 +13,7 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 public final class XmlDateHelper {
-    
+
     private static final ZonedDateTime MINUS_TIMESTAMP = ZonedDateTime.of(1, 1, 1, 0, 0, 0, 0, ZoneId.of("UTC"));
     private static final ZonedDateTime PLUS_TIMESTAMP = ZonedDateTime.of(9999, 1, 1, 0, 0, 0, 0, ZoneId.of("UTC"));
 

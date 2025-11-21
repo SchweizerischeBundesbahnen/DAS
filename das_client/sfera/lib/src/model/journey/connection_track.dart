@@ -8,12 +8,9 @@ class ConnectionTrack extends JourneyPoint {
   final String? text;
 
   @override
-  String toString() =>
-      'ConnectionTrack('
-      'order: $order'
-      ', kilometre: $kilometre'
-      ', text: $text'
-      ')';
+  String toString() {
+    return 'ConnectionTrack{order: $order, kilometre: $kilometre, text: $text}';
+  }
 
   @override
   bool operator ==(Object other) =>
@@ -25,5 +22,5 @@ class ConnectionTrack extends JourneyPoint {
           text == other.text;
 
   @override
-  int get hashCode => order.hashCode ^ Object.hashAll(kilometre) ^ text.hashCode;
+  int get hashCode => type.hashCode ^ order.hashCode ^ Object.hashAll(kilometre) ^ text.hashCode;
 }

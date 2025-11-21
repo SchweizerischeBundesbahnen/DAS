@@ -1,22 +1,23 @@
 package ch.sbb.sferamock.messages.services;
 
+import ch.sbb.sferamock.messages.common.Resettable;
 import ch.sbb.sferamock.messages.model.ClientId;
 import ch.sbb.sferamock.messages.model.OperationMode;
 import ch.sbb.sferamock.messages.model.RequestContext;
 import ch.sbb.sferamock.messages.model.TrainIdentification;
+import ch.sbb.sferamock.messages.model.Version;
 import java.time.ZonedDateTime;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RegistrationService {
+@Slf4j
+public class RegistrationService implements Resettable {
 
-    private static final Logger log = LogManager.getLogger(RegistrationService.class);
     private final Map<TrainIdentification, Set<ClientId>> activeTrains = new ConcurrentHashMap<>();
     private final Map<ClientId, Registration> registrationMap = new ConcurrentHashMap<>();
 
@@ -45,7 +46,7 @@ public class RegistrationService {
         var clientId = requestContext.clientId();
         var trainIdentification = requestContext.tid();
         log.info("Registering DAS Client {} with company {}, train {}, date {}", clientId, trainIdentification.companyCode(), trainIdentification.operationalNumber(), trainIdentification.date());
-        var registration = new Registration(trainIdentification, operationMode);
+        var registration = new Registration(trainIdentification, operationMode, requestContext.version());
         registrationMap.put(clientId, registration);
 
         if (operationMode.sendJourneyProfileUpdates()) {
@@ -84,6 +85,7 @@ public class RegistrationService {
         return registrationMap.containsKey(clientId);
     }
 
+    @Override
     public void reset() {
         registrationMap.clear();
         activeTrains.clear();
@@ -93,8 +95,9 @@ public class RegistrationService {
         if (isRegistered(clientId)) {
             var registration = registrationMap.get(clientId);
             if (registration.trainIdentification.isManualEvents()) {
-                eventService.nextEvent(new RequestContext(registration.trainIdentification, clientId), registration.manualEventIndex, registration.timestamp);
-                registrationMap.put(clientId, new Registration(registration.trainIdentification, registration.operationMode, registration.timestamp, registration.manualEventIndex + 1));
+                eventService.nextEvent(new RequestContext(registration.trainIdentification, clientId, registration.version), registration.manualEventIndex, registration.timestamp);
+                registrationMap.put(clientId,
+                    new Registration(registration.trainIdentification, registration.operationMode, registration.version, registration.timestamp, registration.manualEventIndex + 1));
             }
         }
     }
@@ -103,10 +106,10 @@ public class RegistrationService {
         return registrationMap.get(clientId).timestamp;
     }
 
-    public record Registration(TrainIdentification trainIdentification, OperationMode operationMode, ZonedDateTime timestamp, int manualEventIndex) {
+    public record Registration(TrainIdentification trainIdentification, OperationMode operationMode, Version version, ZonedDateTime timestamp, int manualEventIndex) {
 
-        public Registration(TrainIdentification trainIdentification, OperationMode operationMode) {
-            this(trainIdentification, operationMode, ZonedDateTime.now(), 0);
+        public Registration(TrainIdentification trainIdentification, OperationMode operationMode, Version version) {
+            this(trainIdentification, operationMode, version, ZonedDateTime.now(), 0);
         }
     }
 }

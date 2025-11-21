@@ -1,7 +1,8 @@
-import 'package:app/pages/journey/train_journey/widgets/header/header.dart';
-import 'package:app/pages/journey/train_journey/widgets/header/journey_search_overlay.dart';
-import 'package:app/pages/journey/train_journey/widgets/header/start_pause_button.dart';
-import 'package:app/pages/journey/train_journey/widgets/journey_navigation_buttons.dart';
+import 'package:app/pages/journey/journey_table/widgets/header/header.dart';
+import 'package:app/pages/journey/journey_table/widgets/header/journey_identifier.dart';
+import 'package:app/pages/journey/journey_table/widgets/header/journey_search_overlay.dart';
+import 'package:app/pages/journey/journey_table/widgets/header/start_pause_button.dart';
+import 'package:app/pages/journey/journey_table/widgets/journey_navigation_buttons.dart';
 import 'package:app/util/format.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -14,10 +15,10 @@ void main() {
   group('Journey search overlay tests', () {
     testWidgets('overlay can be opened and dismissed', (tester) async {
       await prepareAndStartApp(tester);
-      await loadTrainJourney(tester, trainNumber: 'T1');
+      await loadJourney(tester, trainNumber: 'T1');
 
       // closed by default - should show journeySearch icon with key
-      expect(find.byKey(JourneySearchOverlay.journeySearchKey), findsOneWidget);
+      expect(find.byKey(JourneySearchOverlay.journeySearchWidgetKey), findsOneWidget);
       expect(find.byKey(JourneySearchOverlay.journeySearchCloseKey), findsNothing);
 
       // open
@@ -30,7 +31,7 @@ void main() {
       await _closeJourneySearchOverlayByTap(tester);
 
       // closed
-      expect(find.byKey(JourneySearchOverlay.journeySearchKey), findsOneWidget);
+      expect(find.byKey(JourneySearchOverlay.journeySearchWidgetKey), findsOneWidget);
       expect(find.byKey(JourneySearchOverlay.journeySearchCloseKey), findsNothing);
 
       await disconnect(tester);
@@ -38,7 +39,7 @@ void main() {
 
     testWidgets('input fields have defaults and validation works', (tester) async {
       await prepareAndStartApp(tester);
-      await loadTrainJourney(tester, trainNumber: 'T1');
+      await loadJourney(tester, trainNumber: 'T1');
       final journeySearchOverlay = find.byType(JourneySearchOverlay);
 
       // open
@@ -73,7 +74,7 @@ void main() {
 
     testWidgets('loading another train journey and displaying navigation buttons work', (tester) async {
       await prepareAndStartApp(tester);
-      await loadTrainJourney(tester, trainNumber: 'T1');
+      await loadJourney(tester, trainNumber: 'T1');
       final journeySearchOverlay = find.byType(JourneySearchOverlay);
 
       // open
@@ -92,7 +93,10 @@ void main() {
       await tapElement(tester, primaryButton);
 
       // wait until T2 opened
-      await waitUntilExists(tester, find.descendant(of: find.byType(Header), matching: find.text('T2 SBB')));
+      await waitUntilExists(
+        tester,
+        find.descendant(of: find.byType(Header), matching: find.text('T2 ${l10n.c_ru_sbb_p}')),
+      );
       await tester.pumpAndSettle();
 
       // should not display navigation buttons (autoAdvancement is active)
@@ -115,7 +119,10 @@ void main() {
       await tapElement(tester, previousButton);
 
       // wait until T1 opened
-      await waitUntilExists(tester, find.descendant(of: find.byType(Header), matching: find.text('T1 SBB')));
+      await waitUntilExists(
+        tester,
+        find.descendant(of: find.byType(Header), matching: find.text('T1 ${l10n.c_ru_sbb_p}')),
+      );
 
       await disconnect(tester);
     });
@@ -123,11 +130,11 @@ void main() {
 }
 
 Future<void> _openJourneySearchOverlayByTap(WidgetTester tester) async {
-  final icon = find.descendant(
+  final journeyIdentifier = find.descendant(
     of: find.byType(JourneySearchOverlay),
-    matching: find.byIcon(SBBIcons.magnifying_glass_small),
+    matching: find.byKey(JourneyIdentifier.journeyIdentifierKey),
   );
-  await tapElement(tester, icon, warnIfMissed: false);
+  await tapElement(tester, journeyIdentifier, warnIfMissed: false);
   await Future.delayed(const Duration(milliseconds: 250));
 }
 

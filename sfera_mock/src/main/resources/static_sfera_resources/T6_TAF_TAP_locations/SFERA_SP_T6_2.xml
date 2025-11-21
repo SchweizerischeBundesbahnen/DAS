@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T6_2" SP_VersionMajor="2"
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T6_2" SP_VersionMajor="3"
                 SP_VersionMinor="1" SP_Length="41500" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
@@ -33,7 +33,7 @@
             </TAF_TAP_LocationReference>
         </TimingPoint>
 
-        <TimingPoint TP_ID="Killwangen-S" location="16100">
+        <TimingPoint TP_ID="Killwangen-Spreitenbach" location="16100">
             <TAF_TAP_LocationReference>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3006</teltsi_LocationPrimaryCode>
@@ -102,6 +102,12 @@
                 <teltsi_LocationPrimaryCode>3015</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="E309" location="16150"/>
+            <SignalFunction>exit</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="E309"/>
+        </Signal>
     </SP_Points>
     <SP_Areas>
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="4100" endLocation="4100" TAF_TAP_location_abbreviation="ALT"
@@ -145,8 +151,13 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3006</teltsi_LocationPrimaryCode>
-                <teltsi_PrimaryLocationName>Killwangen-S</teltsi_PrimaryLocationName>
+                <teltsi_PrimaryLocationName>Killwangen-Spreitenbach</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>routeTableData</NSP_GroupName>
+                <NetworkSpecificParameter name="trackGroup" value="N"/>
+            </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="22200" endLocation="22200" TAF_TAP_location_abbreviation="MEL"
@@ -262,6 +273,10 @@
 
         <KilometreReferencePoint location="16100">
             <KM_Reference kmRef="16.1"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="16150">
+            <KM_Reference kmRef="16.2"/>
         </KilometreReferencePoint>
 
         <KilometreReferencePoint location="22200">

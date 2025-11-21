@@ -7,12 +7,9 @@ class SpeedChange extends JourneyPoint {
   final String? text;
 
   @override
-  String toString() =>
-      'SpeedChange('
-      'order: $order'
-      ', kilometre: $kilometre'
-      ', text: $text'
-      ')';
+  String toString() {
+    return 'SpeedChange{order: $order, kilometre: $kilometre, text: $text}';
+  }
 
   @override
   bool operator ==(Object other) =>
@@ -24,5 +21,5 @@ class SpeedChange extends JourneyPoint {
           text == other.text;
 
   @override
-  int get hashCode => order.hashCode ^ Object.hashAll(kilometre) ^ text.hashCode;
+  int get hashCode => type.hashCode ^ order.hashCode ^ Object.hashAll(kilometre) ^ text.hashCode;
 }

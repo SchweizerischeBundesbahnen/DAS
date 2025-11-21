@@ -7,8 +7,6 @@ class LocalRegulationTitleNspDto extends NetworkSpecificParameterDto {
   LocalRegulationTitleNspDto({super.attributes, super.children, super.value});
 }
 
-// extensions
-
 extension LocalRegulationTitleNspDtoIterableX on Iterable<LocalRegulationTitleNspDto> {
   String? textFor(String locale) => where((it) => it.name.toLowerCase().endsWith(locale)).firstOrNull?.nspValue;
 

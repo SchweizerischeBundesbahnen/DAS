@@ -50,6 +50,11 @@ class DASRowController {
   void _stickyListener() {
     if (stickyController == null) return;
 
+    if (isAlwaysSticky) {
+      _rxRowState.add(DASRowState.sticky);
+      return;
+    }
+
     final stickyOffset = stickyController!.stickyHeaderOffset();
     final rowOffset = WidgetUtil.findOffsetOfKey(_rowKey);
     if (stickyOffset == null || rowOffset == null) return;

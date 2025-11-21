@@ -5,11 +5,9 @@ class Whistle extends JourneyPoint {
   const Whistle({required super.order, required super.kilometre}) : super(type: Datatype.whistle);
 
   @override
-  String toString() =>
-      'Whistle('
-      'order: $order'
-      ', kilometre: $kilometre'
-      ')';
+  String toString() {
+    return 'Whistle{order: $order, kilometre: $kilometre}';
+  }
 
   @override
   bool operator ==(Object other) =>
@@ -20,5 +18,5 @@ class Whistle extends JourneyPoint {
           ListEquality().equals(kilometre, other.kilometre);
 
   @override
-  int get hashCode => order.hashCode ^ Object.hashAll(kilometre);
+  int get hashCode => type.hashCode ^ order.hashCode ^ Object.hashAll(kilometre);
 }

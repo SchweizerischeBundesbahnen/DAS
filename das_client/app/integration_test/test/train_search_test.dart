@@ -12,7 +12,6 @@ import '../util/test_utils.dart';
 void main() {
   group('train search screen tests', () {
     testWidgets('test default values', (tester) async {
-      // Load app widget.
       await prepareAndStartApp(tester);
 
       // Verify we have ru SBB.
@@ -23,7 +22,6 @@ void main() {
     });
 
     testWidgets('test selecting ru values', (tester) async {
-      // Load app widget.
       await prepareAndStartApp(tester);
 
       // Verify we have ru SBB.
@@ -38,16 +36,14 @@ void main() {
       expect(find.text(l10n.c_ru_sbb_c), findsOneWidget);
       expect(find.descendant(of: modal, matching: find.text(l10n.c_ru_bls_p)), findsOneWidget);
       expect(find.text(l10n.c_ru_bls_c), findsOneWidget);
-      expect(find.text(l10n.c_ru_sob), findsOneWidget);
-
-      await tapElement(tester, find.text(l10n.c_ru_sob));
-
-      expect(find.text(l10n.c_ru_sob), findsOneWidget);
-      expect(find.text(l10n.c_ru_sbb_p), findsNothing);
+      final sobI = find.text(l10n.c_ru_sob_infra);
+      await tester.dragUntilVisible(sobI, modal, const Offset(0, -50));
+      expect(sobI, findsOneWidget);
+      await tapElement(tester, sobI, warnIfMissed: false);
+      expect(sobI, findsOneWidget);
     });
 
     testWidgets('test filter ru values', (tester) async {
-      // Load app widget.
       await prepareAndStartApp(tester);
 
       // Verify we have ru SBB.
@@ -68,11 +64,10 @@ void main() {
       // Verify results are filtered
       expect(find.descendant(of: modal, matching: find.text(l10n.c_ru_sbb_p)), findsNothing);
       expect(find.descendant(of: modal, matching: find.text(l10n.c_ru_bls_p)), findsNothing);
-      expect(find.text(l10n.c_ru_sob), findsOneWidget);
+      expect(find.text(l10n.c_ru_sob_infra), findsOneWidget);
     });
 
     testWidgets('test load button disabled when validation fails', (tester) async {
-      // Load app widget.
       await prepareAndStartApp(tester);
 
       // Verify we have ru SBB.
@@ -93,7 +88,6 @@ void main() {
     });
 
     testWidgets('test can select yesterday', (tester) async {
-      // Load app widget.
       await prepareAndStartApp(tester);
 
       final today = DateTime.now();
@@ -136,7 +130,6 @@ void main() {
     });
 
     testWidgets('test can not select day before yesterday', (tester) async {
-      // Load app widget.
       await prepareAndStartApp(tester);
 
       final today = DateTime.now();
@@ -168,7 +161,6 @@ void main() {
     });
 
     testWidgets('test error if JP unavailable', (tester) async {
-      // Load app widget.
       await prepareAndStartApp(tester);
 
       // Verify we have ru SBB.

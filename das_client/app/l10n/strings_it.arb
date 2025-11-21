@@ -5,43 +5,48 @@
   "p_train_selection_date_description": "Data",
   "p_train_selection_choose_date": "Seleziona data",
   "p_train_selection_date_not_today_warning": "La data selezionata non corrisponde alla data attuale.",
-  "p_train_journey_header_button_dark_theme": "Modalità notturna",
-  "p_train_journey_header_button_light_theme": "Modalità diurna",
-  "p_train_journey_header_button_pause": "Pausa",
-  "p_train_journey_header_button_start": "Inizio",
-  "p_train_journey_table_kilometre_label": "km",
-  "p_train_journey_table_time_label_new": "ar/pt nuovo",
-  "p_train_journey_table_time_label_planned": "ar/pt previsti",
-  "p_train_journey_table_journey_information_label": "Informazioni sulla tratta",
-  "p_train_journey_table_advised_speed_label": "RG",
-  "p_train_journey_table_graduated_speed_label": "VL",
-  "p_train_journey_table_communication_network": "Tipo di rete",
-  "p_train_journey_break_series": "Categoria di freno",
-  "p_train_journey_break_series_empty": "Non sono presenti categorie di freno",
-  "p_train_journey_table_curve_type_curve": "Curva",
-  "p_train_journey_table_curve_type_station_exit_curve": "Curva d’uscita",
-  "p_train_journey_table_curve_type_curve_after_halt": "Curva dopo la fermata",
-  "p_train_journey_table_level_crossing": "Pl",
-  "p_train_journey_table_tram_area": "TS",
-  "p_train_journey_appbar_text": "Informazioni sulla corsa",
-  "w_adl_cancel": "ADL Cancel",
-  "w_adl_end": "ADL END",
-  "w_adl_vopt": "ADL VOpt: viaggiare a {speed}km/h fino a {endLocation}",
-  "@w_adl_vopt": {
+  "p_journey_header_button_dark_theme": "Modalità notturna",
+  "p_journey_header_button_light_theme": "Modalità diurna",
+  "p_journey_header_button_pause": "Pausa",
+  "p_journey_header_button_start": "Inizio",
+  "p_journey_table_kilometre_label": "km",
+  "p_journey_table_time_label_new": "ar/pt nuovo",
+  "p_journey_table_time_label_planned": "ar/pt previsti",
+  "p_journey_table_journey_information_label": "Informazioni sulla tratta",
+  "p_journey_table_advised_speed_label": "RG",
+  "p_journey_table_graduated_speed_label": "VL",
+  "p_journey_table_communication_network": "Tipo di rete",
+  "p_journey_break_series": "Categoria di freno",
+  "p_journey_break_series_empty": "Non sono presenti categorie di freno",
+  "p_journey_table_curve_type_curve": "Curva",
+  "p_journey_table_curve_type_station_exit_curve": "Curva d’uscita",
+  "p_journey_table_curve_type_curve_after_halt": "Curva dopo la fermata",
+  "p_journey_table_level_crossing": "Pl",
+  "p_journey_table_tram_area": "TS",
+  "p_journey_appbar_text": "Informazioni sulla corsa",
+  "w_advised_speed_cancel": "ADL Cancel",
+  "w_advised_speed_end": "ADL END",
+  "w_advised_speed_drive_until": "fino a {endLocation}",
+  "@w_advised_speed_drive_until": {
     "type": "text",
     "placeholders": {
-      "speed": {},
-      "endLocation": {}
+      "endLocation": {
+        "type": "String"
+      }
     }
   },
-  "w_adl_vmax": "ADL Vmax: viaggare fino a {endLocation}",
-  "@w_adl_vmax": {
+  "w_advised_speed_vopt": "ADL VOpt: {speed}km/h",
+  "@w_advised_speed_vopt": {
     "type": "text",
     "placeholders": {
-      "endLocation": {}
+      "speed": {
+        "type": "String"
+      }
     }
   },
-  "w_reduced_train_journey_title": "Panoramica della corsa",
+  "w_advised_speed_vmax": "ADL Vmax",
+  "w_advised_speed_dist": "ADL DIST",
+  "w_reduced_journey_table_title": "Panoramica della corsa",
   "w_navigation_drawer_fahrtinfo_title": "Informazioni sulla corsa",
   "w_navigation_drawer_links_title": "Link",
   "w_navigation_drawer_settings_title": "Impostazioni",
@@ -50,7 +55,7 @@
   "p_login_login_button_text": "Login",
   "p_login_login_button_description": "Accedi con il tuo account",
   "p_login_login_failed": "Login non riuscito",
-  "w_adl_notification_title": "Annuncio ADL",
+  "w_advised_speed_notification_title": "Annuncio ADL",
   "w_extended_menu_title": "Altre funzionalità",
   "w_extended_menu_maneuver_mode": "Modalità di manovra",
   "w_extended_menu_breaking_slip_action": "Apri il bollettino di frenatura e peso treno",

@@ -1,8 +1,10 @@
-# DAS Client
+# DAS-Client
 
 DAS (Driver Advisory System) is a mobile application that provides all the required journey data to the train driver.
 
 ## Supported platforms
+
+The UI/UX of the DAS-Client is optimized for **tablet** (at least 11") usage only!
 
 <div id="supported_platforms">
   <img src="https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Android"/>
@@ -20,6 +22,11 @@ mono-repos support.
 * [Melos installation guide](https://melos.invertase.dev/getting-started)
 
 ### Generate code
+
+Hint:
+
+* [Android Studio](https://developer.android.com/studio) is recommended as an IDE (Flutter Plugin,
+  tablet emulator, etc).
 
 Use the following Melos command to generate the necessary code for all the components:
 
@@ -94,7 +101,8 @@ fvm dart run melos test
 
 ### Running integration tests
 
-Instrumentation tests do not use user authentication. Therefore the credentials must be provided as environment
+Instrumentation tests do not use user authentication. Therefore, the credentials must be provided as
+environment
 variables.
 Run the following command in the `app` directory.
 

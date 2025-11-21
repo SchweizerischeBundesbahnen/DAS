@@ -5,26 +5,26 @@
   "p_train_selection_date_description": "Datum",
   "p_train_selection_choose_date": "Datum wählen",
   "p_train_selection_date_not_today_warning": "Das gewählte Datum entspricht nicht dem aktuellen Datum.",
-  "p_train_journey_header_button_dark_theme": "Nachtmodus",
-  "p_train_journey_header_button_light_theme": "Tagmodus",
-  "p_train_journey_header_button_pause": "Pause",
-  "p_train_journey_header_button_start": "Start",
-  "p_train_journey_table_kilometre_label": "km",
-  "p_train_journey_table_time_label_new": "an/ab neu",
-  "p_train_journey_table_time_label_planned": "an/ab geplant",
-  "p_train_journey_table_journey_information_label": "Streckeninformationen",
-  "p_train_journey_table_advised_speed_label": "FE",
-  "p_train_journey_table_graduated_speed_label": "OG",
-  "p_train_journey_table_communication_network": "Netzart",
-  "p_train_journey_break_series": "Bremsreihe",
-  "p_train_journey_break_series_empty": "Es sind keine Bremsreihen vorhanden",
-  "p_train_journey_table_curve_type_curve": "Kurve",
-  "p_train_journey_table_curve_type_station_exit_curve": "Kurve Ausfahrt",
-  "p_train_journey_table_curve_type_curve_after_halt": "Kurve nach Haltestelle",
-  "p_train_journey_table_level_crossing": "BUe",
-  "p_train_journey_table_tram_area": "TS",
-  "p_train_journey_appbar_text": "Fahrtinfo",
-  "w_reduced_train_journey_title": "Fahrtübersicht",
+  "p_journey_header_button_dark_theme": "Nachtmodus",
+  "p_journey_header_button_light_theme": "Tagmodus",
+  "p_journey_header_button_pause": "Pause",
+  "p_journey_header_button_start": "Start",
+  "p_journey_table_kilometre_label": "km",
+  "p_journey_table_time_label_new": "an/ab neu",
+  "p_journey_table_time_label_planned": "an/ab geplant",
+  "p_journey_table_journey_information_label": "Streckeninformationen",
+  "p_journey_table_advised_speed_label": "FE",
+  "p_journey_table_graduated_speed_label": "OG",
+  "p_journey_table_communication_network": "Netzart",
+  "p_journey_break_series": "Bremsreihe",
+  "p_journey_break_series_empty": "Es sind keine Bremsreihen vorhanden",
+  "p_journey_table_curve_type_curve": "Kurve",
+  "p_journey_table_curve_type_station_exit_curve": "Kurve Ausfahrt",
+  "p_journey_table_curve_type_curve_after_halt": "Kurve nach Haltestelle",
+  "p_journey_table_level_crossing": "BUe",
+  "p_journey_table_tram_area": "TS",
+  "p_journey_appbar_text": "Fahrtinfo",
+  "w_reduced_journey_table_title": "Fahrtübersicht",
   "w_navigation_drawer_fahrtinfo_title": "Fahrtinfo",
   "w_navigation_drawer_links_title": "Links",
   "w_navigation_drawer_settings_title": "Einstellungen",
@@ -33,23 +33,28 @@
   "p_login_login_button_text": "Login",
   "p_login_login_button_description": "Mit Ihrem Account einloggen",
   "p_login_login_failed": "Login fehlgeschlagen",
-  "w_adl_cancel": "ADL Cancel",
-  "w_adl_end": "ADL END",
-  "w_adl_vopt": "ADL VOpt: {speed}km/h fahren bis {endLocation}",
-  "@w_adl_vopt": {
+  "w_advised_speed_cancel": "ADL Cancel",
+  "w_advised_speed_end": "ADL END",
+  "w_advised_speed_drive_until": "bis {endLocation}",
+  "@w_advised_speed_drive_until": {
     "type": "text",
     "placeholders": {
-      "speed": {},
-      "endLocation": {}
+      "endLocation": {
+        "type": "String"
+      }
     }
   },
-  "w_adl_vmax": "ADL Vmax: fahren bis {endLocation}",
-  "@w_adl_vmax": {
+  "w_advised_speed_vopt": "ADL VOpt: {speed}km/h",
+  "@w_advised_speed_vopt": {
     "type": "text",
     "placeholders": {
-      "endLocation": {}
+      "speed": {
+        "type": "String"
+      }
     }
   },
+  "w_advised_speed_vmax": "ADL Vmax",
+  "w_advised_speed_dist": "ADL DIST",
   "w_extended_menu_title": "Weitere Funktionalitäten",
   "w_extended_menu_maneuver_mode": "Manövermodus",
   "w_extended_menu_breaking_slip_action": "Brems- und Lastzettel öffnen",
@@ -86,11 +91,20 @@
       "originalSeries": {}
     }
   },
+  "w_replacement_series_notification_none_title": "Zug- und Bremsreihe ab {fromStation} nicht zugelassen",
+  "@w_replacement_series_notification_none_title": {
+    "type": "text",
+    "placeholders": {
+      "fromStation": {}
+    }
+  },
+  "w_replacement_series_notification_none_text": "Ein Teil der Strecke darf mit der ausgewählten Zug- und Bremsreihe nicht befahren werden.",
   "w_departure_process_modal_sheet_title": "Checkliste Abfahrprozess.",
   "w_departure_process_modal_sheet_content": "1. Zustimmung\n2. Zugbeeinflussung\n3. Abfahrtszeit\n4. Türverriegelung\n5. Zustimmung",
   "w_service_point_modal_communication_label": "Netzart und Funkkanal",
   "w_service_point_modal_communication_radio_channel": "Funkkanal",
   "w_service_point_modal_communication_radio_channels_not_found": "Kein Funkkanal verfügbar",
+  "w_service_point_modal_departure_authorization": "Abfahrerlaubnis",
   "w_service_point_modal_communication_network": "Netzart",
   "w_service_point_modal_communication_sim": "SIM",
   "w_service_point_modal_graduated_speed_label": "Abgestufte Geschwindigkeiten",
@@ -104,11 +118,26 @@
   "w_additional_speed_restriction_modal_table_label_from": "Von",
   "w_additional_speed_restriction_modal_table_label_until": "Bis",
   "w_additional_speed_restriction_modal_table_label_reason": "Grund",
-  "c_ru_sbb_p": "SBB",
-  "c_ru_sbb_c": "SBB Cargo",
+  "c_ru_sbb": "SBB",
+  "c_ru_sbb_p": "SBBP",
+  "c_ru_sbb_c": "SBBC",
+  "c_ru_sbbc_int": "SBBIN",
+  "c_ru_sbb_d": "SBBD",
+  "c_ru_sbb_infra_baulog": "SBBIB",
+  "c_ru_sbb_infra": "SBBI",
+  "c_ru_bls_n": "BLSN",
   "c_ru_bls_p": "BLS",
-  "c_ru_bls_c": "BLS Cargo",
-  "c_ru_sob": "SOB",
+  "c_ru_bls_c": "BLSC",
+  "c_ru_sob_t": "SOB",
+  "c_ru_sob_infra": "SOBI",
+  "c_ru_thu": "THURBO",
+  "c_ru_ra": "RA",
+  "c_ru_travys": "TRAVYS",
+  "c_ru_transn": "TRN",
+  "c_ru_tpf_infra": "TPFI",
+  "c_ru_tpf_trafic": "TPF",
+  "c_ru_tmr": "TMR",
+  "c_ru_mbc": "MCB",
   "c_unknown": "Unbekannt",
   "c_train_number": "Zugnummer",
   "c_today": "Heute",
@@ -161,5 +190,19 @@
   "p_settings_page_decisive_gradient_title": "Massgebende Neigung",
   "p_settings_page_decisive_gradient_show_setting": "Neigung einblenden",
   "w_global_error_widget_title": "Unerwarteter Fehler",
-  "w_global_error_widget_description": "Es ist ein unerwarteter Fehler aufgetreten, die Fehlermeldung wird an die Entwickler geschickt. Versuche, die App neu zu starten."
+  "w_global_error_widget_description": "Es ist ein unerwarteter Fehler aufgetreten, die Fehlermeldung wird an die Entwickler geschickt. Versuche, die App neu zu starten.",
+  "w_shunting_movement_start": "Rangierfahrt {trainNumber}",
+  "@w_shunting_movement_start": {
+    "type": "text",
+    "placeholders": {
+      "trainNumber": {}
+    }
+  },
+  "w_shunting_movement_end": "Fahrt nach Streckensignalen {trainNumber}",
+  "@w_shunting_movement_end": {
+    "type": "text",
+    "placeholders": {
+      "trainNumber": {}
+    }
+  }
 }

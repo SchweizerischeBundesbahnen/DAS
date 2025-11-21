@@ -13,13 +13,9 @@ class TramArea extends JourneyPoint {
   final int amountTramSignals;
 
   @override
-  String toString() =>
-      'TramArea('
-      'order: $order'
-      ', kilometre: $kilometre'
-      ', endKilometre: $endKilometre'
-      ', amountTramSignals: $amountTramSignals'
-      ')';
+  String toString() {
+    return 'TramArea{order: $order, kilometre: $kilometre, endKilometre: $endKilometre, amountTramSignals: $amountTramSignals}';
+  }
 
   @override
   bool operator ==(Object other) =>
@@ -32,5 +28,6 @@ class TramArea extends JourneyPoint {
           amountTramSignals == other.amountTramSignals;
 
   @override
-  int get hashCode => order.hashCode ^ Object.hashAll(kilometre) ^ endKilometre.hashCode ^ amountTramSignals.hashCode;
+  int get hashCode =>
+      type.hashCode ^ order.hashCode ^ Object.hashAll(kilometre) ^ endKilometre.hashCode ^ amountTramSignals.hashCode;
 }

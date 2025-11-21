@@ -35,12 +35,9 @@ class AdditionalSpeedRestrictionData extends JourneyPoint {
   int? get speed => restrictions.minSpeed;
 
   @override
-  String toString() =>
-      'AdditionalSpeedRestrictionData('
-      'order: $order'
-      ', kilometre: $kilometre'
-      ', restrictions: $restrictions'
-      ')';
+  String toString() {
+    return 'AdditionalSpeedRestrictionData{order: $order, kilometre: $kilometre, restrictions: $restrictions}';
+  }
 
   @override
   bool operator ==(Object other) =>
@@ -52,5 +49,5 @@ class AdditionalSpeedRestrictionData extends JourneyPoint {
           ListEquality().equals(restrictions, other.restrictions);
 
   @override
-  int get hashCode => order.hashCode ^ Object.hashAll(kilometre) ^ Object.hashAll(restrictions);
+  int get hashCode => type.hashCode ^ order.hashCode ^ Object.hashAll(kilometre) ^ Object.hashAll(restrictions);
 }
