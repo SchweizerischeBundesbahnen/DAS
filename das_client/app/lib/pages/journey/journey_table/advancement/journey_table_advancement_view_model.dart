@@ -19,7 +19,6 @@ final _log = Logger('JourneyAdvancementViewModel');
 /// * paused (automatic scrolling is disabled)
 /// * auto (automatic scrolling is enabled)
 /// * manual (automatic scrolling is enabled)
-///
 class JourneyTableAdvancementViewModel {
   JourneyTableAdvancementViewModel({
     required Stream<Journey?> journeyStream,
@@ -116,6 +115,9 @@ class JourneyTableAdvancementViewModel {
               _currentPosition != journey.metadata.journeyStart && currentPositionOrder >= firstServicePointOrder;
 
           _emitAutomaticScrolling();
+
+          // TODO: add timer logic
+          // TODO: do not scroll here if last position same as _currentPosition (compare to automaticAdvancementController on main)
 
           if (automaticScrollingActiveValue) {
             _scrollController.scrollToJourneyPoint(_currentPosition);
