@@ -35,6 +35,7 @@ export 'package:sfera/src/model/journey/contact_list.dart';
 export 'package:sfera/src/model/journey/curve_point.dart';
 export 'package:sfera/src/model/journey/datatype.dart';
 export 'package:sfera/src/model/journey/delay.dart';
+export 'package:sfera/src/model/journey/departure_authorization.dart';
 export 'package:sfera/src/model/journey/foot_note.dart';
 export 'package:sfera/src/model/journey/grouped_journey_point.dart';
 export 'package:sfera/src/model/journey/journey.dart';

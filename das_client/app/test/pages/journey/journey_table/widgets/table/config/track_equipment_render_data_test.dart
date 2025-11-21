@@ -55,7 +55,7 @@ void main() {
       data: [
         CurvePoint(order: 100, kilometre: []),
         CABSignaling(order: 200, kilometre: [], isStart: true),
-        ServicePoint(name: '', order: 300, kilometre: []),
+        ServicePoint(name: '', abbreviation: '', order: 300, kilometre: []),
         CABSignaling(order: 400, kilometre: []),
         Signal(order: 500, kilometre: []),
       ],
@@ -91,7 +91,7 @@ void main() {
       ),
       data: [
         CurvePoint(order: 100, kilometre: []),
-        ServicePoint(name: '', order: 200, kilometre: []),
+        ServicePoint(name: '', abbreviation: '', order: 200, kilometre: []),
         Signal(order: 300, kilometre: []),
       ],
     );
@@ -125,7 +125,7 @@ void main() {
       data: [
         CurvePoint(order: 100, kilometre: []),
         CABSignaling(order: 200, kilometre: []),
-        ServicePoint(name: '', order: 300, kilometre: []),
+        ServicePoint(name: '', abbreviation: '', order: 300, kilometre: []),
         Signal(order: 400, kilometre: []),
         ConnectionTrack(order: 500, kilometre: []),
         LevelCrossing(order: 600, kilometre: []),
@@ -169,10 +169,10 @@ void main() {
       data: [
         CurvePoint(order: 100, kilometre: []),
         CABSignaling(order: 200, kilometre: []),
-        ServicePoint(name: '', order: 300, kilometre: []),
+        ServicePoint(name: '', abbreviation: '', order: 300, kilometre: []),
         Signal(order: 400, kilometre: []),
         ConnectionTrack(order: 500, kilometre: []),
-        ServicePoint(name: '', order: 600, kilometre: []),
+        ServicePoint(name: '', abbreviation: '', order: 600, kilometre: []),
       ],
     );
 

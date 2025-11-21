@@ -141,8 +141,7 @@ void main() {
 
     testWidgets('test journey settings are not reset when navigating ', (tester) async {
       await prepareAndStartApp(tester);
-      await loadJourney(tester, trainNumber: 'T5');
-      await stopAutomaticAdvancement(tester);
+      await loadJourney(tester, trainNumber: 'T5M');
 
       final selectedBreakSeries = 'D30';
       await selectBreakSeries(tester, breakSeries: selectedBreakSeries);

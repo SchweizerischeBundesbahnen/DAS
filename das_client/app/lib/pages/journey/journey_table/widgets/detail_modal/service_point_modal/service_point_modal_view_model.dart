@@ -21,6 +21,7 @@ class ServicePointModalViewModel {
   final _rxCommunicationNetworkType = BehaviorSubject<CommunicationNetworkType?>();
   final _rxRadioContactList = BehaviorSubject<RadioContactList?>();
   final _rxSimCorridor = BehaviorSubject<RadioContactList?>();
+  final _rxDepartureAuth = BehaviorSubject<DepartureAuthorization?>();
   final _rxMetadata = BehaviorSubject<Metadata>();
   final _rxServicePoint = BehaviorSubject<ServicePoint>();
   final _rxSelectedTab = BehaviorSubject<ServicePointModalTab?>();
@@ -54,6 +55,8 @@ class ServicePointModalViewModel {
 
   Stream<String> get localRegulationHtml => _rxLocalRegulationHtml.distinct();
 
+  Stream<DepartureAuthorization?> get departureAuthorization => _rxDepartureAuth.distinct();
+
   void _init() {
     _initRadioContacts();
     _initSimCorridor();
@@ -63,6 +66,7 @@ class ServicePointModalViewModel {
     _initSelectedTab();
     _initLocalRegulationSection();
     _initLocalRegulationHtml();
+    _initDepartureAuth();
   }
 
   void _initRadioContacts() {
@@ -157,6 +161,13 @@ class ServicePointModalViewModel {
     _subscriptions.add(subscription);
   }
 
+  void _initDepartureAuth() {
+    final subscription = _rxServicePoint
+        .map((servicePoint) => servicePoint.departureAuthorization)
+        .listen(_rxDepartureAuth.add, onError: _rxDepartureAuth.addError);
+    _subscriptions.add(subscription);
+  }
+
   void updateMetadata(Metadata metadata) => _rxMetadata.add(metadata);
 
   void updateSettings(JourneySettings settings) => _rxSettings.add(settings);
@@ -190,5 +201,6 @@ class ServicePointModalViewModel {
     _rxLocalRegulationSections.close();
     _rxLocalRegulationHtml.close();
     _rxTabs.close();
+    _rxDepartureAuth.close();
   }
 }

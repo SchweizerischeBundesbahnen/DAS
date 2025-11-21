@@ -1,7 +1,5 @@
 import 'package:sfera/component.dart';
-import 'package:sfera/src/data/dto/network_specific_parameter_dto.dart';
 import 'package:sfera/src/data/dto/route_table_data_relevant_wrapper_dto.dart';
-import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 import 'package:sfera/src/data/dto/taf_tap_location_nsp_dto.dart';
 
 class TafTapRouteTableDataNspDto extends TafTapLocationNspDto {
@@ -22,9 +20,4 @@ class TafTapRouteTableDataNspDto extends TafTapLocationNspDto {
       children.whereNspWithName('betweenBrackets').map((it) => bool.tryParse(it.nspValue)).firstOrNull ?? false;
 
   String? get trackGroup => children.whereNspWithName('trackGroup').firstOrNull?.nspValue;
-}
-
-extension _SferaXmlElementDtoIterableExtension on Iterable<SferaXmlElementDto> {
-  Iterable<NetworkSpecificParameterDto> whereNspWithName(String name) =>
-      whereType<NetworkSpecificParameterDto>().where((it) => it.name == name);
 }

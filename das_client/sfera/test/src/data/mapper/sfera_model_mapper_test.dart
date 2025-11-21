@@ -1739,6 +1739,40 @@ void main() {
     expect(markers[2].isStart, true);
     expect(markers[2].order, 400000);
   });
+
+  test('Test departure authorizations are parsed correctly', () {
+    final journey = getJourney('T31', 5);
+    expect(journey.valid, true);
+
+    final servicePoint = journey.data.whereType<ServicePoint>().toList();
+    expect(servicePoint, hasLength(5));
+
+    final departureAuthorization0 = servicePoint[0].departureAuthorization;
+    expect(departureAuthorization0, isNotNull);
+    expect(departureAuthorization0?.hasDispatcherAuth, isTrue);
+    expect(departureAuthorization0?.hasSmsAuth, isFalse);
+    expect(departureAuthorization0?.text, '*');
+
+    final departureAuthorization1 = servicePoint[1].departureAuthorization;
+    expect(departureAuthorization1, isNotNull);
+    expect(departureAuthorization1?.hasDispatcherAuth, isTrue);
+    expect(departureAuthorization1?.hasSmsAuth, isTrue);
+    expect(departureAuthorization1?.text, '* sms 2-4');
+
+    final departureAuthorization2 = servicePoint[2].departureAuthorization;
+    expect(departureAuthorization2, isNotNull);
+    expect(departureAuthorization2?.hasDispatcherAuth, isFalse);
+    expect(departureAuthorization2?.hasSmsAuth, isTrue);
+    expect(departureAuthorization2?.text, 'sms <b>3-6</b>');
+
+    final departureAuthorization3 = servicePoint[3].departureAuthorization;
+    expect(departureAuthorization3, isNotNull);
+    expect(departureAuthorization3?.hasDispatcherAuth, isFalse);
+    expect(departureAuthorization3?.hasSmsAuth, isTrue);
+    expect(departureAuthorization3?.text, 'sms 2-4 6,7');
+
+    expect(servicePoint[4].departureAuthorization, isNull);
+  });
 }
 
 void _checkTrainSeriesSpeed<T extends Speed>(

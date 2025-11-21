@@ -1,6 +1,6 @@
 import 'package:app/pages/journey/journey_table/widgets/header/battery_status.dart';
 import 'package:app/pages/journey/journey_table/widgets/header/connectivity_icon.dart';
-import 'package:app/pages/journey/journey_table/widgets/header/departure_authorization.dart';
+import 'package:app/pages/journey/journey_table/widgets/header/departure_authorization_display.dart';
 import 'package:app/pages/journey/journey_table/widgets/header/extended_menu.dart';
 import 'package:app/pages/journey/journey_table/widgets/header/next_stop.dart';
 import 'package:app/pages/journey/journey_table/widgets/header/start_pause_button.dart';
@@ -52,7 +52,7 @@ class MainHeaderBox extends StatelessWidget {
       children: [
         NextStop(),
         Spacer(),
-        DepartureAuthorization(),
+        DepartureAuthorizationDisplay(),
       ],
     ),
   );

@@ -261,7 +261,7 @@ void main() {
   test('test scrolling adjust to sticky header', () {
     final signalData = Signal(order: 100, kilometre: []);
     final targetSignalData = Signal(order: 300, kilometre: []);
-    final servicePointData = ServicePoint(order: 0, kilometre: [], name: '');
+    final servicePointData = ServicePoint(order: 0, kilometre: [], name: '', abbreviation: '');
 
     final List<CellRowBuilder> rows = [
       mockServicePointRow(servicePointData, Offset(0, 0)),
@@ -422,7 +422,12 @@ void main() {
         )
         .toList();
     final currentPosition = journeyData[2] as JourneyPoint;
-    final firstServicePoint = ServicePoint(order: 500, kilometre: [], name: ''); // after current position
+    final firstServicePoint = ServicePoint(
+      order: 500,
+      kilometre: [],
+      name: '',
+      abbreviation: '',
+    ); // after current position
 
     final scrollControllerMock = MockScrollController();
     final scrollPositionMock = MockScrollPosition();

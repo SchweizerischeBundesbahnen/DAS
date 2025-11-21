@@ -24,8 +24,8 @@ import 'chronograph_view_model_test.mocks.dart';
 ])
 void main() {
   const testDelay = Delay(value: Duration(seconds: 10), location: 'Bern');
-  const aServicePoint = ServicePoint(name: 'A', order: 0, kilometre: []);
-  const bServicePoint = ServicePoint(name: 'B', order: 10, kilometre: []);
+  const aServicePoint = ServicePoint(name: 'A', abbreviation: '', order: 0, kilometre: []);
+  const bServicePoint = ServicePoint(name: 'B', abbreviation: '', order: 10, kilometre: []);
   final testHiddenModel = PunctualityModel.hidden();
   final testStaleModel = PunctualityModel.stale(delay: testDelay);
   final testVisibleModel = PunctualityModel.visible(delay: testDelay);

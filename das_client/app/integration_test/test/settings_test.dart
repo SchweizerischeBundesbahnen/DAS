@@ -9,7 +9,6 @@ void main() {
   testWidgets('test show decisive gradient setting', (tester) async {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T9999M');
-    await stopAutomaticAdvancement(tester);
 
     // check km, up and down gradients are shown
     expect(find.text('km'), findsOneWidget);
@@ -58,7 +57,6 @@ void main() {
     await tapElement(tester, find.text(l10n.w_navigation_drawer_fahrtinfo_title));
 
     await loadJourney(tester, trainNumber: 'T9999M');
-    await stopAutomaticAdvancement(tester);
 
     // check km is shown, up and down gradients are hidden
     expect(find.text(l10n.p_journey_table_kilometre_label), findsOneWidget);

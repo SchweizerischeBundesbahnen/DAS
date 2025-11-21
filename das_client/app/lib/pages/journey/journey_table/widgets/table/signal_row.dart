@@ -75,8 +75,6 @@ class SignalRow extends CellRowBuilder<Signal> {
   }
 }
 
-// extensions
-
 extension _SignalFunctionExtension on SignalFunction {
   String localizedName(BuildContext context) {
     return switch (this) {

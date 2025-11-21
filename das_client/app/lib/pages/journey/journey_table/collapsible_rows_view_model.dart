@@ -66,7 +66,7 @@ class CollapsibleRowsViewModel {
 
     final fromIndex = journey.data.indexOf(lastPosition);
     final toIndex = journey.data.indexOf(currentPosition);
-    if (fromIndex > toIndex) return;
+    if (fromIndex > toIndex || fromIndex == -1 || toIndex == -1) return;
 
     final passedCollapsibleData = journey.data.sublist(fromIndex, toIndex).where((data) => data.isCollapsible);
 
@@ -91,8 +91,6 @@ class CollapsibleRowsViewModel {
     _rxCollapsedRows.close();
   }
 }
-
-// extension
 
 extension BaseDataExtension on BaseData {
   bool get isCollapsible => this is BaseFootNote || this is UncodedOperationalIndication;

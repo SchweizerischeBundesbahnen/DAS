@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:sfera/src/data/dto/departure_auth_nsp_dto.dart';
 import 'package:sfera/src/data/dto/enums/taf_tap_location_type_dto.dart';
 import 'package:sfera/src/data/dto/enums/xml_enum.dart';
 import 'package:sfera/src/data/dto/line_foot_notes_nsp_dto.dart';
@@ -38,6 +39,8 @@ class TafTapLocationDto extends SferaSegmentXmlElementDto {
 
   TafTapRouteTableDataNspDto? get routeTableDataNsp => children.whereType<TafTapRouteTableDataNspDto>().firstOrNull;
 
+  DepartureAuthNspDto? get departureAuthNsp => children.whereType<DepartureAuthNspDto>().firstOrNull;
+
   StationPropertyNspDto? get property => children.whereType<StationPropertyNspDto>().firstOrNull;
 
   @override
@@ -45,8 +48,6 @@ class TafTapLocationDto extends SferaSegmentXmlElementDto {
     return validateHasChildOfType<TafTapLocationIdentDto>() && super.validate();
   }
 }
-
-// extensions
 
 extension TafTapLocationDtoIterableExtension on Iterable<TafTapLocationDto> {
   TafTapLocationDto firstWhereGiven({String? countryCode, int? primaryCode}) =>
