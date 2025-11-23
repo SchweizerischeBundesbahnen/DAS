@@ -40,12 +40,12 @@ void main() {
       }),
     ),
     data: [
-      ServicePoint(name: 'A', order: 0, kilometre: []),
-      ServicePoint(name: 'B', order: 5, kilometre: []),
-      ServicePoint(name: 'C', order: 10, kilometre: []),
-      ServicePoint(name: 'D', order: 15, kilometre: []),
-      ServicePoint(name: 'E', order: 20, kilometre: []),
-      ServicePoint(name: 'F', order: 25, kilometre: []),
+      ServicePoint(name: 'A', abbreviation: '', order: 0, kilometre: []),
+      ServicePoint(name: 'B', abbreviation: '', order: 5, kilometre: []),
+      ServicePoint(name: 'C', abbreviation: '', order: 10, kilometre: []),
+      ServicePoint(name: 'D', abbreviation: '', order: 15, kilometre: []),
+      ServicePoint(name: 'E', abbreviation: '', order: 20, kilometre: []),
+      ServicePoint(name: 'F', abbreviation: '', order: 25, kilometre: []),
     ],
   );
 

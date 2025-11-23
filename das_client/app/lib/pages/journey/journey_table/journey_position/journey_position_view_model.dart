@@ -87,7 +87,9 @@ class JourneyPositionViewModel {
 
           // delay position update, so journey is processed first (animation will jump otherwise)
           await Future.delayed(Duration(milliseconds: 2));
-          _rxModel.add(model);
+          if (!_rxModel.isClosed) {
+            _rxModel.add(model);
+          }
         });
   }
 

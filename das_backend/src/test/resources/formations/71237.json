@@ -30,8 +30,9 @@
           "brakePositionGForBrakeUnit1to5": false,
           "brakePositionGForLoadHauled": true,
           "simTrain": false,
-          "additionalTractionMode": "Z",
-          "additionalTractionSeries": "Re420-C",
+          "additionalTractions": [
+            "Z (Re420-C)"
+          ],
           "carCarrierVehicle": false,
           "dangerousGoods": true,
           "vehiclesCount": 11,

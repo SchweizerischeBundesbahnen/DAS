@@ -48,8 +48,6 @@ enum TrackEquipmentType {
   bool get isConventionalSpeed => this == etcsL2ConvSpeedReversingImpossible;
 }
 
-// extensions
-
 extension BaseDataListSegmentExtension on Iterable<BaseData> {
   Iterable<BaseData> inNonStandardTrackEquipmentSegment(NonStandardTrackEquipmentSegment segment) {
     final dataInsideSegment = where((data) => segment.appliesToOrder(data.order)).toList();

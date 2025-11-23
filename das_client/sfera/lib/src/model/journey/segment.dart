@@ -43,8 +43,6 @@ abstract class Segment implements Comparable {
   }
 }
 
-// extensions
-
 extension SegmentsExtension<T extends Segment> on Iterable<T> {
   Iterable<T> appliesToOrder(int order) => where((segment) => segment.appliesToOrder(order));
 

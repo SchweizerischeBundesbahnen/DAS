@@ -1,0 +1,167 @@
+import 'dart:async';
+
+import 'package:app/pages/journey/journey_table/header/departure_authorization/departure_authorization_model.dart';
+import 'package:app/pages/journey/journey_table/header/departure_authorization/departure_authorization_view_model.dart';
+import 'package:app/pages/journey/journey_table/journey_position/journey_position_model.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:rxdart/rxdart.dart';
+import 'package:sfera/component.dart';
+
+void main() {
+  group('DepartureAuthorizationViewModel', () {
+    late BehaviorSubject<Journey?> rxMockJourney;
+    late BehaviorSubject<JourneyPositionModel> rxMockJourneyPosition;
+    late DepartureAuthorizationViewModel testee;
+    final List<dynamic> emitRegister = [];
+    late StreamSubscription<DepartureAuthorizationModel?> modelSubscription;
+
+    setUp(() {
+      rxMockJourney = BehaviorSubject<Journey?>.seeded(null);
+      rxMockJourneyPosition = BehaviorSubject<JourneyPositionModel>.seeded(JourneyPositionModel());
+      testee = DepartureAuthorizationViewModel(
+        journeyStream: rxMockJourney.stream,
+        journeyPositionStream: rxMockJourneyPosition.stream,
+      );
+      modelSubscription = testee.model.listen(emitRegister.add);
+    });
+
+    tearDown(() {
+      modelSubscription.cancel();
+      emitRegister.clear();
+      testee.dispose();
+      rxMockJourney.close();
+    });
+
+    test('constructor_whenCalled_thenSubscribesToStreams', () {
+      expect(rxMockJourney.hasListener, isTrue);
+      expect(rxMockJourneyPosition.hasListener, isTrue);
+    });
+
+    test('model_whenJourneyNull_thenAllValuesNull', () => expect(testee.modelValue, isNull));
+
+    test('model_whenNoPosition_thenReturnsWithFirstServicePoint', () async {
+      // ARRANGE
+      rxMockJourney.add(_mockJourney);
+      await _streamProcessing();
+
+      // EXPECT
+      expect(
+        emitRegister.last,
+        equals(DepartureAuthorizationModel(servicePoint: _stopA)),
+      );
+    });
+
+    test('model_whenPositionOnServicePointStop_thenReturnsCurrentStop', () async {
+      // ARRANGE
+      rxMockJourney.add(_mockJourney);
+      rxMockJourneyPosition.add(
+        JourneyPositionModel(
+          currentPosition: _stopB,
+          previousStop: _stopB,
+          nextStop: _stopD,
+        ),
+      );
+      await _streamProcessing();
+
+      // EXPECT
+      expect(
+        emitRegister.last,
+        equals(DepartureAuthorizationModel(servicePoint: _stopB)),
+      );
+    });
+
+    test('model_whenPositionOnServicePointWithoutStop_thenReturnsNextStop', () async {
+      // ARRANGE
+      rxMockJourney.add(_mockJourney);
+      rxMockJourneyPosition.add(
+        JourneyPositionModel(
+          currentPosition: _passingPointC,
+          previousStop: _stopB,
+          nextStop: _stopD,
+        ),
+      );
+      await _streamProcessing();
+
+      // EXPECT
+      expect(
+        emitRegister.last,
+        equals(DepartureAuthorizationModel(servicePoint: _stopD)),
+      );
+    });
+
+    test('model_whenPositionOnFirstNonIntermediateSignalAfterStop_thenReturnsNextStop', () async {
+      // ARRANGE
+      rxMockJourney.add(_mockJourney);
+      rxMockJourneyPosition.add(
+        JourneyPositionModel(
+          currentPosition: _intermediateSignalAfterStopB,
+          previousStop: _stopB,
+          nextStop: _stopD,
+        ),
+      );
+      await _streamProcessing();
+
+      // EXPECT
+      expect(
+        emitRegister.last,
+        equals(DepartureAuthorizationModel(servicePoint: _stopB)),
+      );
+    });
+
+    test('model_whenPositionOnIntermediateSignalAfterStop_thenReturnsCurrentStop', () async {
+      // ARRANGE
+      rxMockJourney.add(_mockJourney);
+      rxMockJourneyPosition.add(
+        JourneyPositionModel(
+          currentPosition: _exitSignalAfterIntermediateSignalStopB,
+          previousStop: _stopB,
+          nextStop: _stopD,
+        ),
+      );
+      await _streamProcessing();
+
+      // EXPECT
+      expect(
+        emitRegister.last,
+        equals(DepartureAuthorizationModel(servicePoint: _stopD)),
+      );
+    });
+  });
+}
+
+Future<void> _streamProcessing() async => Future.delayed(Duration.zero);
+
+final _stopA = ServicePoint(name: 'Stop A', abbreviation: 'SA', order: 0, kilometre: []);
+final _stopB = ServicePoint(name: 'Stop B', abbreviation: 'SB', order: 500, kilometre: []);
+final _passingPointC = ServicePoint(
+  name: 'ServicePoint C',
+  abbreviation: 'SC',
+  order: 1000,
+  kilometre: [],
+  isStop: false,
+);
+final _stopD = ServicePoint(name: 'ServicePoint D', abbreviation: 'SD', order: 1500, kilometre: []);
+final _intermediateSignalAfterStopB = Signal(order: 600, kilometre: [], functions: [SignalFunction.intermediate]);
+final _exitSignalAfterIntermediateSignalStopB = Signal(order: 700, kilometre: [], functions: [SignalFunction.exit]);
+
+Journey get _mockJourney {
+  return Journey(
+    metadata: Metadata(),
+    data: [
+      _stopA,
+      Signal(order: 100, kilometre: [], functions: [SignalFunction.exit]),
+      Signal(order: 200, kilometre: [], functions: [SignalFunction.intermediate]),
+      Signal(order: 300, kilometre: [], functions: [SignalFunction.entry]),
+      _stopB,
+      _intermediateSignalAfterStopB,
+      _exitSignalAfterIntermediateSignalStopB,
+      Signal(order: 800, kilometre: [], functions: [SignalFunction.intermediate]),
+      Signal(order: 900, kilometre: [], functions: [SignalFunction.entry]),
+      _passingPointC,
+      Signal(order: 1100, kilometre: [], functions: [SignalFunction.exit]),
+      Signal(order: 1200, kilometre: [], functions: [SignalFunction.intermediate]),
+      Signal(order: 1300, kilometre: [], functions: [SignalFunction.entry]),
+      _stopD,
+    ],
+  );
+}

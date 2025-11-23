@@ -76,34 +76,19 @@ public class Vehicle {
             .toList();
     }
 
-    static TractionMode additionalTractionMode(List<Vehicle> vehicles) {
-        Vehicle vehicle = findAdditionalTractionVehicle(vehicles);
-        if (vehicle == null) {
-            return null;
-        }
-        return vehicle.tractionMode;
+    static List<String> getAdditionalTractions(List<Vehicle> vehicles) {
+        return filterAdditionalTractionVehicles(vehicles).stream().map(Vehicle::getAdditionalTraction).toList();
     }
 
-    static String additionalTractionSeries(List<Vehicle> vehicles) {
-        Vehicle vehicle = findAdditionalTractionVehicle(vehicles);
-        if (vehicle == null) {
-            return null;
-        }
-        if (vehicle.vehicleUnits.size() != 1) {
+    private static List<Vehicle> filterAdditionalTractionVehicles(List<Vehicle> vehicles) {
+        return filterTraction(vehicles).stream().filter(vehicle -> ADDITIONAL_TRACTION_MODES.contains(vehicle.tractionMode)).toList();
+    }
+
+    private String getAdditionalTraction() {
+        if (vehicleUnits.size() != 1) {
             throw new UnexpectedProviderData("Additional traction vehicle must have exactly one vehicle unit");
         }
-        return vehicle.vehicleUnits.getFirst().getVehicleSeries();
-    }
-
-    private static Vehicle findAdditionalTractionVehicle(List<Vehicle> vehicles) {
-        List<Vehicle> additionalTractionVehicles = filterTraction(vehicles).stream().filter(vehicle -> ADDITIONAL_TRACTION_MODES.contains(vehicle.tractionMode)).toList();
-        if (additionalTractionVehicles.isEmpty()) {
-            return null;
-        }
-        if (additionalTractionVehicles.size() > 1) {
-            throw new UnexpectedProviderData("More than one additional traction vehicle");
-        }
-        return additionalTractionVehicles.getFirst();
+        return String.format("%s (%s)", tractionMode.getKey(), vehicleUnits.getFirst().getVehicleSeries());
     }
 
     private boolean isTraction() {
