@@ -38,8 +38,7 @@ class FormationRun {
     this.brakePositionGForLeadingTraction,
     this.brakePositionGForBrakeUnit1to5,
     this.brakePositionGForLoadHauled,
-    this.additionalTractionMode,
-    this.additionalTractionSeries,
+    this.additionalTractions = const [],
     this.europeanVehicleNumberFirst,
     this.europeanVehicleNumberLast,
     this.routeClass,
@@ -74,8 +73,7 @@ class FormationRun {
   final bool? brakePositionGForBrakeUnit1to5;
   final bool? brakePositionGForLoadHauled;
   final bool simTrain;
-  final String? additionalTractionMode;
-  final String? additionalTractionSeries;
+  final List<String> additionalTractions;
   final bool carCarrierVehicle;
   final bool dangerousGoods;
   final int vehiclesCount;
