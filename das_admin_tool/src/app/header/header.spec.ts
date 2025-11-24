@@ -12,7 +12,6 @@ describe('Header', () => {
     await TestBed.configureTestingModule({
       imports: [Header],
       providers: [provideZonelessChangeDetection()]
-
     })
       .compileComponents();
 

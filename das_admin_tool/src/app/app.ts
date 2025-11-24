@@ -10,5 +10,4 @@ import {Header} from './header/header';
   styleUrl: './app.css'
 })
 export class App {
-  protected title = 'DAS Admin-Tool';
 }
