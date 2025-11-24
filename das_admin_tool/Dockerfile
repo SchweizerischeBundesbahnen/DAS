@@ -8,6 +8,15 @@ COPY ./dist/das_admin_tool/browser /usr/share/nginx/html
 
 USER root
 
+# Rename language directories from i. e. de-CH to de
+RUN cd /usr/share/nginx/html && \
+    for dir in *-CH; do \
+        if [ -d "$dir" ]; then \
+            mv "$dir" "${dir%-CH}"; \
+        fi; \
+    done && \
+    ls -la
+
 # Add write permission for random user for the index.html
 RUN chmod a+w /usr/share/nginx/html/index.html
 

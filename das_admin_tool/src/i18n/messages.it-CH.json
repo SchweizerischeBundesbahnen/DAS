@@ -1,0 +1,8 @@
+{
+  "locale": "fr-CH",
+  "translations": {
+    "c_header_app_name": "DAS Admin-Tool",
+    "c_header_login_button": "Login ",
+    "c_home_title": "Buongiorno Admin"
+  }
+}
