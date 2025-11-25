@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T28_1" SP_VersionMajor="1"
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T28_1" SP_VersionMajor="2"
                 SP_VersionMinor="0" SP_Length="18000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
@@ -407,7 +407,7 @@
     </SP_Areas>
 
     <SP_ContextInformation>
-        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-P"/>
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="2" endLocation="2" communicationNetworkType="GSM-P"/>
         <KilometreReferencePoint location="1">
             <KM_Reference kmRef="70.0"/>
         </KilometreReferencePoint>

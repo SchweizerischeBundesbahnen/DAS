@@ -9,7 +9,7 @@
         </OTN_ID>
     </TrainIdentification>
 
-    <SegmentProfileReference SP_ID="T24_1" SP_VersionMajor="2" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T24_1" SP_VersionMajor="2" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
@@ -61,7 +61,7 @@
 
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="T24_2" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T24_2" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
@@ -108,7 +108,7 @@
 
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="T24_3" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T24_3" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
@@ -139,7 +139,7 @@
 
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="T24_4" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T24_4" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
@@ -210,7 +210,7 @@
 
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="T24_5" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T24_5" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
@@ -241,7 +241,7 @@
 
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="T24_6" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T24_6" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>

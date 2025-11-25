@@ -70,6 +70,7 @@ class SferaModelMapper {
     final trackEquipmentSegments = TrackEquipmentMapper.parseSegments(segmentProfileReferences, segmentProfiles);
 
     final servicePoints = journeyData.whereType<ServicePoint>().sortedBy((sP) => sP.order);
+    final spOrders = servicePoints.map((s) => s.order).toSet();
 
     final additionalSpeedRestrictions = _parseAdditionalSpeedRestrictions(
       journeyProfile,
@@ -85,8 +86,10 @@ class SferaModelMapper {
     journeyData.addAll(_consolidateAdditionalSpeedRestrictions(journeyData, displayedSpeedRestrictions));
     journeyData.addAll(_parseUncodedOperationalIndications(segmentProfileReferences));
     journeyData.addAll(_parseTramAreas(segmentProfiles));
-    journeyData.addAll(_parseCommunicationNetworkChanges(segmentProfileReferences, segmentProfiles));
     journeyData.addAll(_parseShuntingMovements(segmentProfileReferences, segmentProfiles));
+
+    final communicationChanges = _parseCommunicationNetworkChanges(segmentProfileReferences, segmentProfiles, spOrders);
+    journeyData.addAll(communicationChanges.where((it) => it.isServicePoint == false));
     journeyData.sort();
 
     final journeyPoints = journeyData.whereType<JourneyPoint>().toList();
@@ -110,7 +113,7 @@ class SferaModelMapper {
         bracketStationSegments: _parseBracketStationSegments(servicePoints),
         advisedSpeedSegments: SpeedMapper.advisedSpeeds(journeyProfile, segmentProfiles, journeyData),
         availableBreakSeries: _parseAvailableBreakSeries(journeyPoints, lineSpeeds),
-        communicationNetworkChanges: _parseCommunicationNetworkChanges(segmentProfileReferences, segmentProfiles),
+        communicationNetworkChanges: communicationChanges,
         breakSeries:
             trainCharacteristic?.tcFeatures.trainCategoryCode != null &&
                 trainCharacteristic?.tcFeatures.brakedWeightPercentage != null
@@ -335,29 +338,36 @@ class SferaModelMapper {
   static List<CommunicationNetworkChange> _parseCommunicationNetworkChanges(
     List<SegmentProfileReferenceDto> segmentProfileReferences,
     List<SegmentProfileDto> segmentProfiles,
+    Set<int> servicePointOrders,
   ) {
-    return segmentProfileReferences
+    final changes = segmentProfileReferences
         .mapIndexed((index, reference) {
           final segmentProfile = segmentProfiles.firstMatch(reference);
           final kilometreMap = parseKilometre(segmentProfile);
           final communicationNetworks = segmentProfile.contextInformation?.communicationNetworks;
+
           return communicationNetworks?.map((element) {
             if (element.startLocation != element.endLocation) {
               _log.warning(
                 'CommunicationNetwork found without identical location (start=${element.startLocation} end=${element.endLocation}).',
               );
             }
+            final order = calculateOrder(index, element.startLocation);
 
             return CommunicationNetworkChange(
               communicationNetworkType: element.communicationNetworkType.communicationNetworkType,
-              order: calculateOrder(index, element.startLocation),
+              order: order,
+              isServicePoint: servicePointOrders.contains(order),
               kilometre: kilometreMap[element.startLocation] ?? const [],
             );
           });
         })
         .nonNulls
         .flattened
+        .nonNulls
         .toList();
+
+    return changes;
   }
 
   static Iterable<RadioContactList> _parseContactLists(
