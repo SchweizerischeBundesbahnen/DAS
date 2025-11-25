@@ -113,7 +113,7 @@ void main() {
 
     // segment 1
     expect((journey.data[0] as JourneyPoint).kilometre[0], 0.2);
-    expect((journey.data[1] as JourneyPoint).kilometre[0], 0.2);
+    expect((journey.data[1] as JourneyPoint).kilometre[0], 0.35);
     expect((journey.data[2] as JourneyPoint).kilometre[0], 0.5);
     expect((journey.data[3] as JourneyPoint).kilometre[0], 0.6);
     expect((journey.data[4] as JourneyPoint).kilometre[0], 0.7);
@@ -156,7 +156,7 @@ void main() {
 
     // segment 1
     expect(journey.data[0].order, 000200);
-    expect(journey.data[1].order, 000200);
+    expect(journey.data[1].order, 000300);
     expect(journey.data[2].order, 000500);
     expect(journey.data[3].order, 000600);
     expect(journey.data[4].order, 000700);
@@ -1186,7 +1186,7 @@ void main() {
 
   test('Test advised speeds are parsed correctly', () async {
     final journey = getJourney('T24', 6);
-    expect(journey.valid, isTrue);
+    expect(journey.valid, true);
 
     final advisedSpeeds = journey.metadata.advisedSpeedSegments.toList();
     expect(advisedSpeeds.length, 5);
@@ -1196,7 +1196,7 @@ void main() {
     expect(advisedSpeeds[0].isDIST, isFalse);
     expect(advisedSpeeds[0].startOrder, 500);
     expect(advisedSpeeds[0].endOrder, 2500);
-    expect(advisedSpeeds[0].endData, equals(journey.data[7]));
+    expect(advisedSpeeds[0].endData, equals(journey.data[6]));
     expect(advisedSpeeds[0].isEndDataCalculated, isFalse);
 
     expect(advisedSpeeds[1], isA<FollowTrainAdvisedSpeedSegment>());
@@ -1204,7 +1204,7 @@ void main() {
     expect(advisedSpeeds[1].isDIST, isTrue);
     expect(advisedSpeeds[1].startOrder, 101500);
     expect(advisedSpeeds[1].endOrder, 201500);
-    expect(advisedSpeeds[1].endData, equals(journey.data[22]));
+    expect(advisedSpeeds[1].endData, equals(journey.data[21]));
     expect(advisedSpeeds[1].isEndDataCalculated, isFalse);
 
     expect(advisedSpeeds[2], isA<TrainFollowingAdvisedSpeedSegment>());
@@ -1212,7 +1212,7 @@ void main() {
     expect(advisedSpeeds[2].isDIST, isFalse);
     expect(advisedSpeeds[2].startOrder, 301050);
     expect(advisedSpeeds[2].endOrder, 304950);
-    expect(advisedSpeeds[2].endData, equals(journey.data[31]));
+    expect(advisedSpeeds[2].endData, equals(journey.data[30]));
     expect(advisedSpeeds[2].isEndDataCalculated, isTrue);
 
     expect(advisedSpeeds[3], isA<VelocityMaxAdvisedSpeedSegment>());
@@ -1220,14 +1220,14 @@ void main() {
     expect(advisedSpeeds[3].isDIST, isFalse);
     expect(advisedSpeeds[3].startOrder, 305100);
     expect(advisedSpeeds[3].endOrder, 500500);
-    expect(advisedSpeeds[3].endData, equals(journey.data[42]));
+    expect(advisedSpeeds[3].endData, equals(journey.data[41]));
     expect(advisedSpeeds[3].isEndDataCalculated, isFalse);
 
     expect(advisedSpeeds[4], isA<FixedTimeAdvisedSpeedSegment>());
     expect(advisedSpeeds[4].speed, SingleSpeed(value: '80'));
     expect(advisedSpeeds[4].startOrder, 500500);
     expect(advisedSpeeds[4].endOrder, 500950);
-    expect(advisedSpeeds[4].endData, equals(journey.data[44]));
+    expect(advisedSpeeds[4].endData, equals(journey.data[43]));
     expect(advisedSpeeds[4].isEndDataCalculated, isFalse);
   });
 
@@ -1245,27 +1245,35 @@ void main() {
   });
 
   test('Test CommunicationNetworks parsed correctly', () async {
-    final journey = getJourney('T12', 4);
-    expect(journey.valid, true);
+    final journey = getJourney('T24', 6);
+    expect(journey.valid, isTrue);
 
     final networkChanges = journey.metadata.communicationNetworkChanges;
-    expect(networkChanges, hasLength(8));
-    expect(networkChanges[0].order, 1000);
+    expect(networkChanges, hasLength(6));
+
+    expect(networkChanges[0].order, 0);
     expect(networkChanges[0].communicationNetworkType, CommunicationNetworkType.gsmP);
-    expect(networkChanges[1].order, 1500);
-    expect(networkChanges[1].communicationNetworkType, CommunicationNetworkType.sim);
-    expect(networkChanges[2].order, 2000);
-    expect(networkChanges[2].communicationNetworkType, CommunicationNetworkType.gsmR);
-    expect(networkChanges[3].order, 100100);
+    expect(networkChanges[0].isServicePoint, true);
+
+    expect(networkChanges[1].order, 100900);
+    expect(networkChanges[1].communicationNetworkType, CommunicationNetworkType.gsmP);
+    expect(networkChanges[1].isServicePoint, false);
+
+    expect(networkChanges[2].order, 200900);
+    expect(networkChanges[2].communicationNetworkType, CommunicationNetworkType.gsmP);
+    expect(networkChanges[2].isServicePoint, false);
+
+    expect(networkChanges[3].order, 300450);
     expect(networkChanges[3].communicationNetworkType, CommunicationNetworkType.gsmP);
-    expect(networkChanges[4].order, 100500);
-    expect(networkChanges[4].communicationNetworkType, CommunicationNetworkType.sim);
-    expect(networkChanges[5].order, 200300);
-    expect(networkChanges[5].communicationNetworkType, CommunicationNetworkType.sim);
-    expect(networkChanges[6].order, 300100);
-    expect(networkChanges[6].communicationNetworkType, CommunicationNetworkType.sim);
-    expect(networkChanges[7].order, 300500);
-    expect(networkChanges[7].communicationNetworkType, CommunicationNetworkType.gsmR);
+    expect(networkChanges[3].isServicePoint, false);
+
+    expect(networkChanges[4].order, 400550);
+    expect(networkChanges[4].communicationNetworkType, CommunicationNetworkType.gsmP);
+    expect(networkChanges[4].isServicePoint, false);
+
+    expect(networkChanges[5].order, 500450);
+    expect(networkChanges[5].communicationNetworkType, CommunicationNetworkType.gsmP);
+    expect(networkChanges[5].isServicePoint, false);
   });
 
   test('Test opFootNote parsed correctly', () async {

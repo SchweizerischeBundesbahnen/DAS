@@ -168,7 +168,11 @@ void main() {
       rxMockJourney.add(
         mockJourney(
           communicationNetworkChanges: [
-            CommunicationNetworkChange(communicationNetworkType: .sim, order: 10),
+            CommunicationNetworkChange(
+              communicationNetworkType: .sim,
+              order: 10,
+              kilometre: [0.0],
+            ),
           ],
         ),
       );
@@ -185,8 +189,16 @@ void main() {
       rxMockJourney.add(
         mockJourney(
           communicationNetworkChanges: [
-            CommunicationNetworkChange(communicationNetworkType: .sim, order: 10),
-            CommunicationNetworkChange(communicationNetworkType: .gsmP, order: 20),
+            CommunicationNetworkChange(
+              communicationNetworkType: .sim,
+              order: 10,
+              kilometre: [0.0],
+            ),
+            CommunicationNetworkChange(
+              communicationNetworkType: .gsmP,
+              order: 20,
+              kilometre: [0.0],
+            ),
           ],
         ),
       );
