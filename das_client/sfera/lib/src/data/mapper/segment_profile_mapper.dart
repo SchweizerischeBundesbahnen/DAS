@@ -250,36 +250,64 @@ class SegmentProfileMapper {
         .sortedBy((p) => p.order)
         .toList();
 
-    final summarized = <CurvePoint>[];
-    CurvePoint? temporary;
-
-    for (final point in points) {
-      if (point.curvePointType == CurvePointType.begin) {
-        temporary = point;
-        continue;
-      }
-      if (point.curvePointType == CurvePointType.end && temporary != null) {
-        final startKm = temporary.kilometre.firstOrNull;
-        final endKm = point.kilometre.firstOrNull;
-        summarized.add(
-          CurvePoint(
-            order: temporary.order,
-            kilometre: [
-              if (startKm != null) startKm,
-              if (endKm != null) endKm,
-            ],
-            localSpeeds: temporary.localSpeeds,
-            curvePointType: CurvePointType.summarized,
-            curveType: temporary.curveType,
-            text: temporary.text,
-            comment: temporary.comment,
-          ),
-        );
-        temporary = null;
+    final segments = <MapEntry<CurvePoint, CurvePoint>>[];
+    CurvePoint? open;
+    for (final p in points) {
+      if (p.curvePointType == CurvePointType.begin) {
+        open = p;
+      } else if (p.curvePointType == CurvePointType.end && open != null) {
+        segments.add(MapEntry(open, p));
+        open = null;
       }
     }
 
-    return summarized;
+    if (segments.isEmpty) {
+      return points.where((p) => p.curvePointType == CurvePointType.begin).toList();
+    }
+
+    segments.sort((a, b) => a.key.order.compareTo(b.key.order));
+
+    final mergedSegments = <MapEntry<CurvePoint, CurvePoint>>[];
+    MapEntry<CurvePoint, CurvePoint>? current;
+
+    for (final seg in segments) {
+      current ??= seg;
+
+      final sameType = current.key.curveType == seg.key.curveType;
+      final isAdjacent = current.value.order == seg.key.order;
+
+      if (sameType && isAdjacent) {
+        current = MapEntry(current.key, seg.value);
+      } else {
+        mergedSegments.add(current);
+        current = seg;
+      }
+    }
+    if (current != null) {
+      mergedSegments.add(current);
+    }
+
+    return mergedSegments.map((seg) {
+      final begin = seg.key;
+      final end = seg.value;
+
+      final startKm = begin.kilometre.firstOrNull;
+      final endKm = end.kilometre.firstOrNull;
+
+      final kmList = <double>[];
+      if (startKm != null) kmList.add(startKm);
+      if (endKm != null && endKm != startKm) kmList.add(endKm);
+
+      return CurvePoint(
+        order: begin.order,
+        kilometre: kmList,
+        localSpeeds: begin.localSpeeds,
+        curvePointType: CurvePointType.summarized,
+        curveType: begin.curveType,
+        text: begin.text,
+        comment: begin.comment,
+      );
+    }).toList();
   }
 
   static List<ConnectionTrack> _parseConnectionTrack(_MapperData mapperData, List<SpeedChange> newLineSpeeds) {
