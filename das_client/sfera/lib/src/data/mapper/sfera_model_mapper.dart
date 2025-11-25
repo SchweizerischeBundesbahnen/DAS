@@ -276,12 +276,14 @@ class SferaModelMapper {
     final journeyStartMinusBuffer = journeyStartTime?.subtract(timeBuffer);
     final journeyEndPlusBuffer = journeyEndTime?.add(timeBuffer);
 
+    // Skip ASR if it ends before the journey start time minus timeBuffer
     if (asrTemporaryConstrain.endTime != null &&
         journeyStartMinusBuffer != null &&
         asrTemporaryConstrain.endTime!.isBefore(journeyStartMinusBuffer)) {
       return true;
     }
 
+    // Skip ASR if it starts after the journey end time plus timeBuffer
     if (asrTemporaryConstrain.startTime != null &&
         journeyEndPlusBuffer != null &&
         asrTemporaryConstrain.startTime!.isAfter(journeyEndPlusBuffer)) {
@@ -325,6 +327,7 @@ class SferaModelMapper {
       );
     }
 
+    // remove SpeedChange that were used for CAB signaling end
     for (final speedChange in cabEndSpeedChanges) {
       journeyData.remove(speedChange);
     }
