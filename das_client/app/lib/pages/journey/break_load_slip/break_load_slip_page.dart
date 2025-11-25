@@ -1,4 +1,6 @@
 import 'package:app/i18n/i18n.dart';
+import 'package:app/pages/journey/break_load_slip/break_load_slip_header.dart';
+import 'package:app/pages/journey/break_load_slip/break_load_slip_train_data.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -25,7 +27,12 @@ class BreakLoadSlipPage extends StatelessWidget {
   }
 
   Widget _body(BuildContext context) {
-    return Center(child: Text(context.l10n.p_break_load_slip_page_title));
+    return Column(
+      children: [
+        BreakLoadSlipHeader(),
+        BreakLoadSlipTrainData(),
+      ],
+    );
   }
 }
 
