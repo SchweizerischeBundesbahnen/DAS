@@ -43,9 +43,6 @@ void main() {
       await disconnect(tester);
     });
     testWidgets('test interaction points for modal sheet', (tester) async {
-      // TODO: Workaround till SegmentedButton is fixed in Design System: https://github.com/SchweizerischeBundesbahnen/design_system_flutter/issues/312
-      FlutterError.onError = ignoreOverflowErrors;
-
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T8');
 
