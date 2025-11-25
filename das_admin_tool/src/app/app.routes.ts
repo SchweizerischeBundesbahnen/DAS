@@ -1,14 +1,23 @@
 import {Routes} from '@angular/router';
-import {Home} from './home/home';
-import {Page} from './page/page';
+import {autoLoginPartialRoutesGuard} from 'angular-auth-oidc-client';
 
 export const routes: Routes = [
   {
-    path: 'page',
-    component: Page
+    path: '',
+    canActivateChild: [autoLoginPartialRoutesGuard],
+    children: [
+      {
+        path: '',
+        loadComponent: () => import('./home/home').then(m => m.Home)
+      },
+      {
+        path: 'page',
+        loadComponent: () => import('./page/page').then(m => m.Page)
+      },
+    ]
   },
   {
-    path: '',
-    component: Home
-  },
+    path: 'unauthorized',
+    loadComponent: () => import('./unauthorized/unauthorized').then(m => m.Unauthorized)
+  }
 ];
