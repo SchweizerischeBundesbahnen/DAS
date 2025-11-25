@@ -32,5 +32,5 @@ class CABSignalingRow extends CellRowBuilder<CABSignaling> {
   }
 
   @override
-  ShowSpeedBehavior get showSpeedBehavior => ShowSpeedBehavior.always;
+  ShowSpeedBehavior get showSpeedBehavior => .always;
 }

@@ -21,7 +21,7 @@ class WhistleRow extends CellRowBuilder<Whistle> {
   @override
   DASTableCell iconsCell2(BuildContext context) {
     return DASTableCell(
-      padding: EdgeInsets.all(sbbDefaultSpacing * 0.25),
+      padding: .all(sbbDefaultSpacing * 0.25),
       child: SvgPicture.asset(
         AppAssets.iconWhistle,
         key: whistleIconKey,

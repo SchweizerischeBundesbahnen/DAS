@@ -83,7 +83,7 @@ class DASNavigationDrawer extends StatelessWidget {
 
   Widget _inactiveIcon(IconData icon) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(sbbDefaultSpacing / 2, 0, sbbDefaultSpacing / 2, 0),
+      padding: const .fromLTRB(sbbDefaultSpacing / 2, 0, sbbDefaultSpacing / 2, 0),
       child: Icon(icon),
     );
   }
@@ -92,7 +92,7 @@ class DASNavigationDrawer extends StatelessWidget {
     return const Align(
       alignment: Alignment.bottomCenter,
       child: Padding(
-        padding: EdgeInsets.all(sbbDefaultSpacing),
+        padding: .all(sbbDefaultSpacing),
         child: Column(
           children: [
             AppVersionText(

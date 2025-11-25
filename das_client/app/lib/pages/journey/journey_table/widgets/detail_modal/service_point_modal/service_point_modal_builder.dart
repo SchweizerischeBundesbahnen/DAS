@@ -115,13 +115,10 @@ class ServicePointModalBuilder extends DASModalSheetBuilder {
   }
 
   Widget _tabContent(BuildContext context, ServicePointModalTab selectedTab) {
-    switch (selectedTab) {
-      case ServicePointModalTab.communication:
-        return DetailTabCommunication();
-      case ServicePointModalTab.graduatedSpeeds:
-        return DetailTabGraduatedSpeeds();
-      case ServicePointModalTab.localRegulations:
-        return DetailTabLocalRegulations();
-    }
+    return switch (selectedTab) {
+      .communication => DetailTabCommunication(),
+      .graduatedSpeeds => DetailTabGraduatedSpeeds(),
+      .localRegulations => DetailTabLocalRegulations(),
+    };
   }
 }

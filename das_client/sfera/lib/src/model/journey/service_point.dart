@@ -26,7 +26,7 @@ class ServicePoint extends JourneyPoint {
     this.properties = const [],
     this.localRegulationSections = const [],
     this.departureAuthorization,
-  }) : super(type: Datatype.servicePoint);
+  }) : super(type: .servicePoint);
 
   final String name;
   final String abbreviation;
@@ -69,7 +69,7 @@ class ServicePoint extends JourneyPoint {
   }
 
   @override
-  OrderPriority get orderPriority => OrderPriority.servicePoint;
+  OrderPriority get orderPriority => .servicePoint;
 
   @override
   bool operator ==(Object other) =>

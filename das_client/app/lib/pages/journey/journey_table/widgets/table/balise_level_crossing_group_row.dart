@@ -65,7 +65,7 @@ class BaliseLevelCrossingGroupRow extends CellRowBuilder<BaliseLevelCrossingGrou
   DASTableCell iconsCell2(BuildContext context) {
     if (_baliseCount > 0) {
       return DASTableCell(
-        padding: EdgeInsets.all(sbbDefaultSpacing * 0.25),
+        padding: .all(sbbDefaultSpacing * 0.25),
         child: SvgPicture.asset(
           AppAssets.iconBalise,
           key: baliseIconKey,

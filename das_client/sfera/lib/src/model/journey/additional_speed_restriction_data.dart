@@ -4,7 +4,7 @@ import 'package:sfera/component.dart';
 class AdditionalSpeedRestrictionData extends JourneyPoint {
   AdditionalSpeedRestrictionData({required this.restrictions, required super.order, required super.kilometre})
     : assert(restrictions.isNotEmpty),
-      super(type: Datatype.additionalSpeedRestriction);
+      super(type: .additionalSpeedRestriction);
 
   factory AdditionalSpeedRestrictionData.start(List<AdditionalSpeedRestriction> restrictions) {
     if (restrictions.isEmpty) throw ArgumentError('Restrictions can not be empty');

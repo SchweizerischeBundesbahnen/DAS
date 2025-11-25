@@ -102,7 +102,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
   DASTableCell routeCell(BuildContext context) {
     return DASTableCell(
       color: specialCellColor,
-      padding: EdgeInsets.all(0.0),
+      padding: .all(0.0),
       alignment: null,
       clipBehaviour: Clip.none,
       child: RouteCellBody(
@@ -124,7 +124,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
 
     return DASTableCell(
       color: specialCellColor,
-      padding: EdgeInsets.all(0.0),
+      padding: .all(0.0),
       alignment: null,
       child: TrackEquipmentCellBody(
         renderData: config.trackEquipmentRenderData!,
@@ -139,12 +139,12 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
 
   DASTableCell brakedWeightSpeedCell(BuildContext context) {
     final inEtcsLevel2Segment = metadata.nonStandardTrackEquipmentSegments.isInEtcsLevel2Segment(data.order);
-    if (inEtcsLevel2Segment && data.type != Datatype.cabSignaling) {
+    if (inEtcsLevel2Segment && data.type != .cabSignaling) {
       return DASTableCell.empty();
     }
     return DASTableCell(
       alignment: Alignment.center,
-      padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: sbbDefaultSpacing * 0.5),
+      padding: .symmetric(vertical: 2.0, horizontal: sbbDefaultSpacing * 0.5),
       child: LineSpeedCellBody(
         order: data.order,
         showSpeedBehavior: showSpeedBehavior,
@@ -162,7 +162,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
 
     return DASTableCell(
       alignment: Alignment.center,
-      padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: sbbDefaultSpacing * 0.5),
+      padding: .symmetric(vertical: 2.0, horizontal: sbbDefaultSpacing * 0.5),
       child: SpeedDisplay(
         speed: trainSeriesSpeed?.speed,
         isNextStop: _isNextStop,
@@ -175,7 +175,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     if (bracketStationRenderData == null) return DASTableCell.empty();
 
     return DASTableCell(
-      padding: EdgeInsets.all(0.0),
+      padding: .all(0.0),
       clipBehaviour: Clip.none,
       child: BracketStationCellBody(
         stationAbbreviation: config.bracketStationRenderData!.isStart
@@ -188,9 +188,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
 
   DASTableCell communicationNetworkCell(BuildContext context) {
     final networkChange = metadata.communicationNetworkChanges.changeAtOrder(data.order);
-    if (networkChange == null) {
-      return DASTableCell.empty();
-    }
+    if (networkChange == null) return DASTableCell.empty();
 
     return DASTableCell(
       alignment: Alignment.bottomCenter,
@@ -214,26 +212,24 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
       final isFirst = advisedSpeedsSegment.first.startOrder == data.order;
 
       return DASTableCell(
-        padding: EdgeInsets.all(0.0),
+        padding: .all(0.0),
         clipBehaviour: Clip.none,
         child: AdvisedSpeedCellBody(
           metadata: metadata,
           settings: config.settings,
           order: data.order,
-          showSpeedBehavior: isFirst ? ShowSpeedBehavior.always : showSpeedBehavior,
-        ),
-      );
-    } else {
-      return DASTableCell(
-        child: CalculatedSpeedCellBody(
-          order: data.order,
-          showSpeedBehavior: showAdvisedSpeed && isLastAdvisedSpeed
-              ? ShowSpeedBehavior.alwaysOrPrevious
-              : showSpeedBehavior,
-          isNextStop: _isNextStop,
+          showSpeedBehavior: isFirst ? .always : showSpeedBehavior,
         ),
       );
     }
+
+    return DASTableCell(
+      child: CalculatedSpeedCellBody(
+        order: data.order,
+        showSpeedBehavior: showAdvisedSpeed && isLastAdvisedSpeed ? .alwaysOrPrevious : showSpeedBehavior,
+        isNextStop: _isNextStop,
+      ),
+    );
   }
 
   DASTableCell iconsCell1(BuildContext context) => DASTableCell.empty();
@@ -260,31 +256,29 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
         .firstOrNull;
   }
 
-  ShowSpeedBehavior get showSpeedBehavior => ShowSpeedBehavior.never;
+  ShowSpeedBehavior get showSpeedBehavior => .never;
 
   bool get _isNextStop => journeyPosition.nextStop == data;
 
   static double rowHeightForData(BaseData data, BreakSeries? currentBreakSeries) {
-    switch (data.type) {
-      case Datatype.servicePoint:
-        return ServicePointRow.calculateHeight(data as ServicePoint, currentBreakSeries);
-      default:
-        return CellRowBuilder.rowHeight;
-    }
+    return switch (data.type) {
+      .servicePoint => ServicePointRow.calculateHeight(data as ServicePoint, currentBreakSeries),
+      _ => CellRowBuilder.rowHeight,
+    };
   }
 
   double get chevronPosition => CellRowBuilder.calculateChevronPosition(data, height);
 
   static double calculateChevronPosition(BaseData data, double height) {
     switch (data.type) {
-      case Datatype.servicePoint:
+      case .servicePoint:
         final servicePoint = data as ServicePoint;
         if (servicePoint.isStop) {
           return RouteCellBody.routeCirclePosition - RouteChevron.chevronHeight;
         } else {
           return RouteCellBody.routeCirclePosition + RouteChevron.chevronHeight;
         }
-      case Datatype.baliseLevelCrossingGroup:
+      case .baliseLevelCrossingGroup:
         return height * 0.5;
       default:
         // additional -1.5 because line overdraws a bit from rotation

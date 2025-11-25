@@ -154,7 +154,7 @@ void main() {
     // ARRANGE
     testee.updateTrainNumber('123');
     final aTrainId = TrainIdentification(
-      ru: RailwayUndertaking.sbbP,
+      ru: .sbbP,
       trainNumber: '123',
       date: fixedClock.now(),
     );
@@ -171,7 +171,7 @@ void main() {
     // ARRANGE
     testee.updateTrainNumber('  123  ');
     final aTrainId = TrainIdentification(
-      ru: RailwayUndertaking.sbbP,
+      ru: .sbbP,
       trainNumber: '123',
       date: fixedClock.now(),
     );
@@ -188,7 +188,7 @@ void main() {
     // ARRANGE
     testee.updateTrainNumber('lowercase123a');
     final aTrainId = TrainIdentification(
-      ru: RailwayUndertaking.sbbP,
+      ru: .sbbP,
       trainNumber: 'LOWERCASE123A',
       date: fixedClock.now(),
     );

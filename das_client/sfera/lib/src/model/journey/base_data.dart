@@ -25,5 +25,5 @@ abstract class BaseData implements Comparable {
 
   /// Used for comparing if [order] is equal.
   /// If [orderPriority] is smaller, this is ordered before other, a bigger value is ordered after other.
-  OrderPriority get orderPriority => OrderPriority.baseData;
+  OrderPriority get orderPriority => .baseData;
 }

@@ -38,7 +38,7 @@ class _ReducedOverviewModalSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing),
+      padding: const .symmetric(horizontal: sbbDefaultSpacing),
       child: Column(
         mainAxisSize: MainAxisSize.max,
         spacing: sbbDefaultSpacing * 0.5,
@@ -58,7 +58,7 @@ class _ReducedOverviewModalSheet extends StatelessWidget {
 
         final journey = snapshot.requireData;
         return SBBGroup(
-          padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: sbbDefaultSpacing),
+          padding: const .symmetric(vertical: 20.0, horizontal: sbbDefaultSpacing),
           child: Row(
             mainAxisSize: MainAxisSize.max,
             children: [

@@ -1,4 +1,3 @@
-import 'package:sfera/src/data/dto/enums/temporary_constraint_type_dto.dart';
 import 'package:sfera/src/data/dto/jp_context_information_dto.dart';
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 import 'package:sfera/src/data/dto/sp_zone_dto.dart';
@@ -23,14 +22,11 @@ class SegmentProfileReferenceDto extends SferaXmlElementDto {
 
   Iterable<TrainCharacteristicsRefDto> get trainCharacteristicsRef => children.whereType<TrainCharacteristicsRefDto>();
 
-  Iterable<TemporaryConstraintsDto> get asrTemporaryConstraints => children.whereType<TemporaryConstraintsDto>().where(
-    (it) => it.temporaryConstraintType == TemporaryConstraintTypeDto.asr,
-  );
+  Iterable<TemporaryConstraintsDto> get asrTemporaryConstraints =>
+      children.whereType<TemporaryConstraintsDto>().where((it) => it.temporaryConstraintType == .asr);
 
   Iterable<TemporaryConstraintsDto> get advisedSpeedTemporaryConstraints =>
-      children.whereType<TemporaryConstraintsDto>().where(
-        (it) => it.temporaryConstraintType == TemporaryConstraintTypeDto.advisedSpeed,
-      );
+      children.whereType<TemporaryConstraintsDto>().where((it) => it.temporaryConstraintType == .advisedSpeed);
 
   JpContextInformationDto? get jpContextInformation => children.whereType<JpContextInformationDto>().firstOrNull;
 

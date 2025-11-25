@@ -19,7 +19,7 @@ class ChronographHeaderBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SBBGroup(
-      padding: const EdgeInsets.all(sbbDefaultSpacing),
+      padding: const .all(sbbDefaultSpacing),
       child: SizedBox(
         width: _width,
         height: _height,
@@ -52,7 +52,7 @@ class ChronographHeaderBox extends StatelessWidget {
           opacity: showPunctuality ? 1.0 : 0.0,
           duration: _animationDuration,
           child: Padding(
-            padding: const EdgeInsets.all(sbbDefaultSpacing * 0.5),
+            padding: const .all(sbbDefaultSpacing * 0.5),
             child: Text(
               key: showPunctuality ? ChronographHeaderBox.punctualityTextKey : null,
               model?.formattedDelay ?? '',
@@ -84,7 +84,7 @@ class ChronographHeaderBox extends StatelessWidget {
         if (!snapshot.hasData) return SizedBox.expand();
 
         return Padding(
-          padding: const EdgeInsets.all(sbbDefaultSpacing * 0.5),
+          padding: const .all(sbbDefaultSpacing * 0.5),
           child: Text(snapshot.requireData, key: currentTimeTextKey, style: DASTextStyles.xLargeBold),
         );
       },

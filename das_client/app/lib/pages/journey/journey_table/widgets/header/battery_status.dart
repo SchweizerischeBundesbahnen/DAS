@@ -59,7 +59,7 @@ class _BatteryStatusState extends State<BatteryStatus> {
 
   Widget _batteryIcon() {
     return Padding(
-      padding: const EdgeInsets.only(right: 20),
+      padding: const .only(right: 20),
       child: ExclamationIconButton(
         icon: AppAssets.iconBatteryStatusLow,
         key: BatteryStatus.batteryLevelLowIconKey,
@@ -74,7 +74,7 @@ class _BatteryStatusState extends State<BatteryStatus> {
       title: '',
       constraints: BoxConstraints(minWidth: double.infinity),
       child: Padding(
-        padding: const EdgeInsets.all(sbbDefaultSpacing),
+        padding: const .all(sbbDefaultSpacing),
         child: SBBMessage(
           title: context.l10n.w_modal_sheet_battery_status_battery_almost_empty,
           description: context.l10n.w_modal_sheet_battery_status_plug_in_device,

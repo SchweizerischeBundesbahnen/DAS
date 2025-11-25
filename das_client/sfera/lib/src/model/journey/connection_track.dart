@@ -2,8 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:sfera/component.dart';
 
 class ConnectionTrack extends JourneyPoint {
-  const ConnectionTrack({required super.order, required super.kilometre, this.text})
-    : super(type: Datatype.connectionTrack);
+  const ConnectionTrack({required super.order, required super.kilometre, this.text}) : super(type: .connectionTrack);
 
   final String? text;
 

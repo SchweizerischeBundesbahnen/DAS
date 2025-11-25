@@ -140,7 +140,7 @@ class ExtendedMenu extends StatelessWidget {
             viewModel.toggleManeuverMode();
           },
           trailingWidget: Padding(
-            padding: const EdgeInsets.fromLTRB(0, 0, sbbDefaultSpacing * 0.5, 0),
+            padding: const .fromLTRB(0, 0, sbbDefaultSpacing * 0.5, 0),
             child: StreamBuilder(
               stream: viewModel.isManeuverModeEnabled,
               builder: (context, snapshot) {

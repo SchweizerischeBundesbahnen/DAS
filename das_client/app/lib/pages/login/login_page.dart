@@ -65,7 +65,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _message(BuildContext context) {
     return Container(
       alignment: AlignmentDirectional.center,
-      padding: const EdgeInsets.all(16),
+      padding: const .all(16),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -82,7 +82,7 @@ class _LoginPageState extends State<LoginPage> {
     final flavor = DI.get<Flavor>();
     return Container(
       alignment: AlignmentDirectional.center,
-      padding: const EdgeInsets.all(16.0),
+      padding: const .all(16.0),
       child: Text(
         'Flavor: ${flavor.displayName}',
       ),
@@ -94,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
     if (!flavor.isTmsEnabledForFlavor) return SizedBox.shrink();
 
     return Padding(
-      padding: const EdgeInsets.all(sbbDefaultSpacing),
+      padding: const .all(sbbDefaultSpacing),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [

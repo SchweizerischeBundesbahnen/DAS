@@ -13,7 +13,8 @@ enum ConnectionTrackTypeDto implements XmlEnum {
   divergenceAtRight(xmlValue: 'DivergenceAtRight'),
   divergenceIntoLeft(xmlValue: 'DivergenceIntoLeft'),
   divergenceAtLeft(xmlValue: 'DivergenceAtLeft'),
-  unknown(xmlValue: 'Unknown');
+  unknown(xmlValue: 'Unknown')
+  ;
 
   const ConnectionTrackTypeDto({
     required this.xmlValue,

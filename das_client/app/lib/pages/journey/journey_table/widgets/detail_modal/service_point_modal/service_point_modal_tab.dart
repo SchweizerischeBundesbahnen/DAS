@@ -6,7 +6,8 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 enum ServicePointModalTab {
   communication(icon: SBBIcons.telephone_gsm_small),
   graduatedSpeeds(icon: DasIcons.appIconSmallTempo),
-  localRegulations(icon: SBBIcons.location_pin_surrounding_area_small);
+  localRegulations(icon: SBBIcons.location_pin_surrounding_area_small)
+  ;
 
   const ServicePointModalTab({required this.icon});
 

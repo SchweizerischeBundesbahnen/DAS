@@ -101,12 +101,12 @@ void main() {
     test('equality_whenPropertiesAreEqual_thenObjectsAreEqual', () {
       // ARRANGE
       final model1 = RadioChannelModel(
-        networkType: CommunicationNetworkType.gsmR,
+        networkType: .gsmR,
         lastServicePoint: null,
         radioContacts: RadioContactList(contacts: [MainContact(contactIdentifier: '123')], order: 0, endOrder: 0),
       );
       final model2 = RadioChannelModel(
-        networkType: CommunicationNetworkType.gsmR,
+        networkType: .gsmR,
         lastServicePoint: null,
         radioContacts: RadioContactList(contacts: [MainContact(contactIdentifier: '123')], order: 0, endOrder: 0),
       );
@@ -118,12 +118,12 @@ void main() {
     test('equality_whenPropertiesAreDifferent_thenObjectsAreNotEqual', () {
       // ARRANGE
       final model1 = RadioChannelModel(
-        networkType: CommunicationNetworkType.gsmR,
+        networkType: .gsmR,
         lastServicePoint: null,
         radioContacts: RadioContactList(contacts: [MainContact(contactIdentifier: '123')], order: 0, endOrder: 0),
       );
       final model2 = RadioChannelModel(
-        networkType: CommunicationNetworkType.gsmP,
+        networkType: .gsmP,
         lastServicePoint: null,
         radioContacts: RadioContactList(contacts: [MainContact(contactIdentifier: '123')], order: 0, endOrder: 0),
       );
@@ -135,12 +135,12 @@ void main() {
     test('hashCode_whenPropertiesAreEqual_thenHashCodesAreEqual', () {
       // ARRANGE
       final model1 = RadioChannelModel(
-        networkType: CommunicationNetworkType.gsmR,
+        networkType: .gsmR,
         lastServicePoint: null,
         radioContacts: RadioContactList(contacts: [MainContact(contactIdentifier: '123')], order: 0, endOrder: 0),
       );
       final model2 = RadioChannelModel(
-        networkType: CommunicationNetworkType.gsmR,
+        networkType: .gsmR,
         lastServicePoint: null,
         radioContacts: RadioContactList(contacts: [MainContact(contactIdentifier: '123')], order: 0, endOrder: 0),
       );

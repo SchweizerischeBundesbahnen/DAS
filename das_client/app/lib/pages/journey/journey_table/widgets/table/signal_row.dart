@@ -37,9 +37,7 @@ class SignalRow extends CellRowBuilder<Signal> {
   Widget _signalFunctions(BuildContext context) {
     Iterable<SignalFunction> signalFunctions = data.functions;
     if (signalFunctions.length > 1) {
-      signalFunctions = signalFunctions.where(
-        (function) => function != SignalFunction.laneChange && function != SignalFunction.unknown,
-      );
+      signalFunctions = signalFunctions.where((function) => function != .laneChange && function != .unknown);
     }
     final detailModalViewModel = context.read<DetailModalViewModel>();
 
@@ -78,25 +76,25 @@ class SignalRow extends CellRowBuilder<Signal> {
 extension _SignalFunctionExtension on SignalFunction {
   String localizedName(BuildContext context) {
     return switch (this) {
-      SignalFunction.entry => context.l10n.c_main_signal_function_entry,
-      SignalFunction.block => context.l10n.c_main_signal_function_block,
-      SignalFunction.exit => context.l10n.c_main_signal_function_exit,
-      SignalFunction.laneChange => context.l10n.c_main_signal_function_laneChange,
-      SignalFunction.intermediate => context.l10n.c_main_signal_function_intermediate,
-      SignalFunction.protection => context.l10n.c_main_signal_function_protection,
-      SignalFunction.unknown => context.l10n.c_unknown,
+      .entry => context.l10n.c_main_signal_function_entry,
+      .block => context.l10n.c_main_signal_function_block,
+      .exit => context.l10n.c_main_signal_function_exit,
+      .laneChange => context.l10n.c_main_signal_function_laneChange,
+      .intermediate => context.l10n.c_main_signal_function_intermediate,
+      .protection => context.l10n.c_main_signal_function_protection,
+      .unknown => context.l10n.c_unknown,
     };
   }
 
   String localizedNameShort(BuildContext context) {
     return switch (this) {
-      SignalFunction.entry => context.l10n.c_main_signal_function_entry_short,
-      SignalFunction.block => context.l10n.c_main_signal_function_block_short,
-      SignalFunction.exit => context.l10n.c_main_signal_function_exit_short,
-      SignalFunction.laneChange => context.l10n.c_main_signal_function_laneChange_short,
-      SignalFunction.intermediate => context.l10n.c_main_signal_function_intermediate_short,
-      SignalFunction.protection => context.l10n.c_main_signal_function_protection_short,
-      SignalFunction.unknown => context.l10n.c_unknown,
+      .entry => context.l10n.c_main_signal_function_entry_short,
+      .block => context.l10n.c_main_signal_function_block_short,
+      .exit => context.l10n.c_main_signal_function_exit_short,
+      .laneChange => context.l10n.c_main_signal_function_laneChange_short,
+      .intermediate => context.l10n.c_main_signal_function_intermediate_short,
+      .protection => context.l10n.c_main_signal_function_protection_short,
+      .unknown => context.l10n.c_unknown,
     };
   }
 }

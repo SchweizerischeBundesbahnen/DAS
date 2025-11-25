@@ -7,7 +7,7 @@ class LevelCrossing extends JourneyPoint {
     required super.kilometre,
     int? originalOrder,
   }) : _originalOrder = originalOrder ?? order,
-       super(type: Datatype.levelCrossing);
+       super(type: .levelCrossing);
 
   final int _originalOrder;
 

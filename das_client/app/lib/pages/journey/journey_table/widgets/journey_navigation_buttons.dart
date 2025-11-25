@@ -42,8 +42,8 @@ class JourneyNavigationButtons extends StatelessWidget {
             ignoring: !resolvedShowNavButtons,
             child: Container(
               key: journeyNavigationButtonKey,
-              margin: EdgeInsets.only(bottom: sbbDefaultSpacing * 2),
-              padding: EdgeInsets.all(sbbDefaultSpacing / 2),
+              margin: .only(bottom: sbbDefaultSpacing * 2),
+              padding: .all(sbbDefaultSpacing / 2),
               decoration: _navigationButtonsDecoration(context),
               child: Row(
                 mainAxisSize: MainAxisSize.min,

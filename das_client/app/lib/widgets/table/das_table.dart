@@ -312,7 +312,7 @@ class _DASTableState extends State<DASTable> {
                 color: cell.color ?? row.color ?? column.color ?? tableThemeData?.dataRowColor,
               ),
               padding: _adjustPaddingToBorder(
-                cell.padding ?? column.padding ?? EdgeInsets.all(sbbDefaultSpacing * 0.5),
+                cell.padding ?? column.padding ?? .all(sbbDefaultSpacing * 0.5),
                 cellBorder,
               ),
               clipBehavior: cell.clipBehaviour,
@@ -337,7 +337,7 @@ class _DASTableState extends State<DASTable> {
     final borderSideStart = border is BorderDirectional ? border.start : (border as Border).left;
     final borderSideEnd = border is BorderDirectional ? border.end : (border as Border).right;
 
-    return EdgeInsets.fromLTRB(
+    return .fromLTRB(
       max(padding.left - borderSideStart.width, 0),
       max(padding.top - border.top.width, 0),
       max(padding.right - borderSideEnd.width, 0),

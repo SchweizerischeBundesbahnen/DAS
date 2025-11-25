@@ -7,7 +7,7 @@ class TramArea extends JourneyPoint {
     required super.kilometre,
     required this.endKilometre,
     required this.amountTramSignals,
-  }) : super(type: Datatype.tramArea);
+  }) : super(type: .tramArea);
 
   final double endKilometre;
   final int amountTramSignals;

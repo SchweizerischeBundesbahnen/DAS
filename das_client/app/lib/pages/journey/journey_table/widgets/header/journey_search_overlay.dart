@@ -102,7 +102,7 @@ class JourneySearchOverlay extends StatelessWidget {
         final model = snapshot.data;
 
         Widget wrapWithPadding(Widget child) => Padding(
-          padding: const EdgeInsets.symmetric(vertical: sbbDefaultSpacing, horizontal: sbbDefaultSpacing * 0.5),
+          padding: const .symmetric(vertical: sbbDefaultSpacing, horizontal: sbbDefaultSpacing * 0.5),
           child: child,
         );
 

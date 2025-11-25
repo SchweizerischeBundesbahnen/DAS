@@ -6,7 +6,7 @@ class BaliseLevelCrossingGroup extends GroupedJourneyPoint {
     required super.order,
     required super.kilometre,
     required super.groupedElements,
-  }) : super(type: Datatype.baliseLevelCrossingGroup);
+  }) : super(type: .baliseLevelCrossingGroup);
 
   @override
   String toString() {

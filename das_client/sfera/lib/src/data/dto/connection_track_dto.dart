@@ -8,11 +8,8 @@ class ConnectionTrackDto extends SpGenericPointDto {
 
   ConnectionTrackDto({super.type = elementType, super.attributes, super.children, super.value});
 
-  ConnectionTrackTypeDto get connectionTrackType => XmlEnum.valueOfOr(
-    ConnectionTrackTypeDto.values,
-    attributes['connectionTrackType'],
-    ConnectionTrackTypeDto.unknown,
-  );
+  ConnectionTrackTypeDto get connectionTrackType =>
+      XmlEnum.valueOfOr(ConnectionTrackTypeDto.values, attributes['connectionTrackType'], .unknown);
 
   ConnectionTrackDescriptionDto? get connectionTrackDescription =>
       children.whereType<ConnectionTrackDescriptionDto>().firstOrNull;

@@ -8,13 +8,13 @@ class Signal extends JourneyPoint {
     required super.kilometre,
     this.visualIdentifier,
     this.functions = const [],
-  }) : super(type: Datatype.signal);
+  }) : super(type: .signal);
 
   final List<SignalFunction> functions;
   final String? visualIdentifier;
 
   @override
-  OrderPriority get orderPriority => OrderPriority.signal;
+  OrderPriority get orderPriority => .signal;
 
   @override
   bool operator ==(Object other) =>
@@ -43,12 +43,13 @@ enum SignalFunction {
   block,
   protection,
   laneChange,
-  unknown;
+  unknown
+  ;
 
   factory SignalFunction.from(String value) {
     return values.firstWhere(
       (e) => e.name.toLowerCase() == value.toLowerCase(),
-      orElse: () => SignalFunction.unknown,
+      orElse: () => .unknown,
     );
   }
 }

@@ -26,7 +26,7 @@ class CalculatedSpeedCellBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (showSpeedBehavior == ShowSpeedBehavior.never) {
+    if (showSpeedBehavior == .never) {
       return DASTableCell.emptyBuilder;
     }
     return _speedContent(context);
@@ -67,9 +67,8 @@ class CalculatedSpeedCellBody extends StatelessWidget {
 
   bool _shouldShowPrevious(DASRowState state) {
     return switch (showSpeedBehavior) {
-      ShowSpeedBehavior.alwaysOrPreviousOnStickiness =>
-        state == DASRowState.sticky || state == DASRowState.firstVisibleRow,
-      ShowSpeedBehavior.alwaysOrPrevious => true,
+      .alwaysOrPreviousOnStickiness => state == .sticky || state == .firstVisibleRow,
+      .alwaysOrPrevious => true,
       _ => false,
     };
   }

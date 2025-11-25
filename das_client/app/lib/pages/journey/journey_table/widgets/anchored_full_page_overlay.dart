@@ -139,7 +139,7 @@ class _AnchoredFullPageOverlayState extends State<AnchoredFullPageOverlay> with 
           crossAxisAlignment: widget.targetAnchor.x < 0.0 ? CrossAxisAlignment.start : CrossAxisAlignment.center,
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: widget.contentWidth / 4),
+              padding: .symmetric(horizontal: widget.contentWidth / 4),
               child: SvgPicture.asset(
                 AppAssets.shapeMenuArrow,
                 colorFilter: ColorFilter.mode(
@@ -157,7 +157,7 @@ class _AnchoredFullPageOverlayState extends State<AnchoredFullPageOverlay> with 
                 ),
                 width: widget.contentWidth,
                 child: Padding(
-                  padding: const EdgeInsets.all(sbbDefaultSpacing),
+                  padding: const .all(sbbDefaultSpacing),
                   child: widget.contentBuilder(context, _removeOverlay),
                 ),
               ),

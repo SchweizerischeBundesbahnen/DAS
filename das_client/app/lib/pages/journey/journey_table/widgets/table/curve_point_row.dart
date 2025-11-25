@@ -43,16 +43,10 @@ class CurvePointRow extends CellRowBuilder<CurvePoint> {
 }
 
 extension _CurveTypeExtension on CurveType {
-  String localizedName(BuildContext context) {
-    switch (this) {
-      case CurveType.curve:
-        return context.l10n.p_journey_table_curve_type_curve;
-      case CurveType.curveAfterHalt:
-        return context.l10n.p_journey_table_curve_type_curve_after_halt;
-      case CurveType.stationExitCurve:
-        return context.l10n.p_journey_table_curve_type_station_exit_curve;
-      case CurveType.unknown:
-        return context.l10n.c_unknown;
-    }
-  }
+  String localizedName(BuildContext context) => switch (this) {
+    .curve => context.l10n.p_journey_table_curve_type_curve,
+    .curveAfterHalt => context.l10n.p_journey_table_curve_type_curve_after_halt,
+    .stationExitCurve => context.l10n.p_journey_table_curve_type_station_exit_curve,
+    .unknown => context.l10n.c_unknown,
+  };
 }

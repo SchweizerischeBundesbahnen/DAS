@@ -3,9 +3,6 @@ import 'dart:collection';
 import 'package:collection/collection.dart';
 import 'package:logging/logging.dart';
 import 'package:sfera/component.dart';
-import 'package:sfera/src/data/dto/enums/operational_indication_type_dto.dart';
-import 'package:sfera/src/data/dto/enums/start_end_qualifier_dto.dart';
-import 'package:sfera/src/data/dto/enums/train_run_type_dto.dart';
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
 import 'package:sfera/src/data/dto/multilingual_text_dto.dart';
 import 'package:sfera/src/data/dto/operational_indication_nsp_dto.dart';
@@ -203,14 +200,14 @@ class SferaModelMapper {
         final segmentData = segmentsData[parallelAsrId]!;
 
         switch (asrTemporaryConstrain.startEndQualifier) {
-          case StartEndQualifierDto.starts:
+          case .starts:
             segmentData.startLocation = asrTemporaryConstrain.startLocation;
             segmentData.startIndex = segmentIndex;
             segmentData.startKmRef = kmReferencePoints
                 ?.firstWhereOrNull((it) => it.constraint?.startLocation == asrTemporaryConstrain.startLocation)
                 ?.kmRef;
             break;
-          case StartEndQualifierDto.startsEnds:
+          case .startsEnds:
             segmentData.startLocation = asrTemporaryConstrain.startLocation;
             segmentData.startIndex = segmentIndex;
             segmentData.startKmRef = kmReferencePoints
@@ -218,14 +215,14 @@ class SferaModelMapper {
                 ?.kmRef;
             continue next;
           next:
-          case StartEndQualifierDto.ends:
+          case .ends:
             segmentData.endLocation = asrTemporaryConstrain.endLocation;
             segmentData.endIndex = segmentIndex;
             segmentData.endKmRef = kmReferencePoints
                 ?.firstWhereOrNull((it) => it.constraint?.endLocation == asrTemporaryConstrain.endLocation)
                 ?.kmRef;
             break;
-          case StartEndQualifierDto.wholeSp:
+          case .wholeSp:
             break;
         }
 
@@ -310,7 +307,7 @@ class SferaModelMapper {
     final cabSignalingEnds = <CABSignaling>[];
     for (final segment in trackEquipmentSegments.withCABSignalingEnd) {
       final speedChange = journeyData.firstWhereOrNull(
-        (data) => data.type == Datatype.speedChange && data.order == segment.endOrder,
+        (data) => data.type == .speedChange && data.order == segment.endOrder,
       );
       if (speedChange != null) {
         cabEndSpeedChanges.add(speedChange);
@@ -439,7 +436,7 @@ class SferaModelMapper {
       }
 
       return indications
-          .where((indication) => indication.operationalIndicationType == OperationalIndicationTypeDto.uncoded)
+          .where((indication) => indication.operationalIndicationType == .uncoded)
           .map(mapToModel)
           .nonNulls
           .mergeOnSameLocation();
@@ -456,7 +453,7 @@ class SferaModelMapper {
 
     for (final reference in segmentProfilesReferences) {
       final nonStandardIndication = reference.jpContextInformation?.nonStandardIndications.firstOrNull;
-      if (nonStandardIndication?.trainRunType == TrainRunTypeDto.shuntingOnOpenTrack) {
+      if (nonStandardIndication?.trainRunType == .shuntingOnOpenTrack) {
         final segmentProfile = segmentProfiles.firstMatch(reference);
         final segmentIndex = segmentProfiles.indexOf(segmentProfile);
 
@@ -467,20 +464,20 @@ class SferaModelMapper {
         }
 
         switch (constraint.startEndQualifier) {
-          case StartEndQualifierDto.starts:
+          case .starts:
             segmentData.startLocation = constraint.startLocation;
             segmentData.startIndex = segmentIndex;
             break;
-          case StartEndQualifierDto.startsEnds:
+          case .startsEnds:
             segmentData.startLocation = constraint.startLocation;
             segmentData.startIndex = segmentIndex;
             continue next;
           next:
-          case StartEndQualifierDto.ends:
+          case .ends:
             segmentData.endLocation = constraint.endLocation;
             segmentData.endIndex = segmentIndex;
             break;
-          case StartEndQualifierDto.wholeSp:
+          case .wholeSp:
             break;
         }
 
@@ -514,22 +511,22 @@ class SferaModelMapper {
 
       for (final tramArea in segmentProfile.areas!.tramAreas) {
         switch (tramArea.startEndQualifier) {
-          case StartEndQualifierDto.starts:
+          case .starts:
             segmentData.startLocation = tramArea.startLocation;
             segmentData.startIndex = segmentIndex;
             amountTramSignals = tramArea.amountTramSignals?.amountTramSignals;
             break;
-          case StartEndQualifierDto.startsEnds:
+          case .startsEnds:
             segmentData.startLocation = tramArea.startLocation;
             segmentData.startIndex = segmentIndex;
             amountTramSignals = tramArea.amountTramSignals?.amountTramSignals;
             continue next;
           next:
-          case StartEndQualifierDto.ends:
+          case .ends:
             segmentData.endLocation = tramArea.endLocation;
             segmentData.endIndex = segmentIndex;
             break;
-          case StartEndQualifierDto.wholeSp:
+          case .wholeSp:
             break;
         }
 

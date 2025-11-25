@@ -8,7 +8,8 @@ enum DasDrivingModeDto implements XmlEnum {
   goa1(xmlValue: 'GoA1'),
   goa2(xmlValue: 'GoA2'),
   goa3(xmlValue: 'GoA3'),
-  goa4(xmlValue: 'GoA4');
+  goa4(xmlValue: 'GoA4')
+  ;
 
   const DasDrivingModeDto({
     required this.xmlValue,

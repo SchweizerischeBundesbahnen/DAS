@@ -93,13 +93,13 @@ void main() {
 
       await _openByTapOnCellWithText(tester, 'Bern');
       await _checkModalSheetTabs(tester, [
-        ServicePointModalTab.communication, // always displayed
-        ServicePointModalTab.graduatedSpeeds,
+        .communication, // always displayed
+        .graduatedSpeeds,
       ]);
 
       await _openByTapOnCellWithText(tester, 'Burgdorf');
       await _checkModalSheetTabs(tester, [
-        ServicePointModalTab.communication, // always displayed
+        .communication, // always displayed
       ]);
 
       await disconnect(tester);
@@ -113,11 +113,11 @@ void main() {
       _checkOpenModalSheet(DetailTabCommunication.communicationTabKey, 'Bern');
 
       // change tab to graduated speeds
-      await _selectTab(tester, ServicePointModalTab.graduatedSpeeds);
+      await _selectTab(tester, .graduatedSpeeds);
       _checkOpenModalSheet(DetailTabGraduatedSpeeds.graduatedSpeedsTabKey, 'Bern');
 
       // change back to tab radio channels
-      await _selectTab(tester, ServicePointModalTab.communication);
+      await _selectTab(tester, .communication);
       _checkOpenModalSheet(DetailTabCommunication.communicationTabKey, 'Bern');
 
       await disconnect(tester);
@@ -270,7 +270,7 @@ void main() {
       _checkOpenModalSheet(DetailTabGraduatedSpeeds.graduatedSpeedsTabKey, 'Rupperswil');
 
       // change to communication tab and check content
-      await _selectTab(tester, ServicePointModalTab.communication);
+      await _selectTab(tester, .communication);
       final tabContent = find.byKey(DetailTabCommunication.communicationTabKey);
       expect(tabContent, findsOneWidget);
       final gsmRIcon = find.descendant(of: tabContent, matching: find.byKey(CommunicationNetworkIcon.gsmRKey));
@@ -355,14 +355,14 @@ void main() {
 
       await _openByTapOnCellWithText(tester, 'Olten');
       await _checkModalSheetTabs(tester, [
-        ServicePointModalTab.communication, // always displayed
-        ServicePointModalTab.localRegulations,
+        .communication, // always displayed
+        .localRegulations,
       ]);
 
       await tester.dragUntilVisible(find.text('A604'), scrollableFinder, const Offset(0, -50));
       await _openByTapOnCellWithText(tester, 'Dulliken');
       await _checkModalSheetTabs(tester, [
-        ServicePointModalTab.communication, // always displayed
+        .communication, // always displayed
       ]);
 
       await disconnect(tester);
@@ -375,11 +375,11 @@ void main() {
       await _openByTapOnCellWithText(tester, 'Olten');
 
       // change tab to local regulations and check if full width
-      await _selectTab(tester, ServicePointModalTab.localRegulations);
+      await _selectTab(tester, .localRegulations);
       _checkOpenModalSheet(DetailTabLocalRegulations.localRegulationsTabKey, 'Olten', isMaximized: true);
 
       // change back to tab radio channels
-      await _selectTab(tester, ServicePointModalTab.communication);
+      await _selectTab(tester, .communication);
       _checkOpenModalSheet(DetailTabCommunication.communicationTabKey, 'Olten');
 
       await disconnect(tester);
@@ -392,7 +392,7 @@ void main() {
       await _openByTapOnCellWithText(tester, 'Olten');
 
       // change tab to local regulations and check if web view is loaded
-      await _selectTab(tester, ServicePointModalTab.localRegulations);
+      await _selectTab(tester, .localRegulations);
       _checkOpenModalSheet(DetailTabLocalRegulations.localRegulationsTabKey, 'Olten', isMaximized: true);
       await waitUntilNotExists(tester, find.byKey(LocalRegulationHtmlView.webViewKey), maxWaitSeconds: 5);
 

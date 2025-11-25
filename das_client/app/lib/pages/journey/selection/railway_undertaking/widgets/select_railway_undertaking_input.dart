@@ -83,7 +83,7 @@ class _RailwayUndertakingTextFieldState extends State<_RailwayUndertakingTextFie
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: widget.isModalVersion ? EdgeInsets.zero : _inputPadding,
+      padding: widget.isModalVersion ? .zero : _inputPadding,
       child: GestureDetector(
         child: SBBTextField(
           enabled: false,

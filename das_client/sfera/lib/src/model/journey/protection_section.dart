@@ -7,7 +7,7 @@ class ProtectionSection extends JourneyPoint {
     required this.isLong,
     required super.order,
     required super.kilometre,
-  }) : super(type: Datatype.protectionSection);
+  }) : super(type: .protectionSection);
 
   final bool isOptional;
   final bool isLong;

@@ -49,7 +49,7 @@ class JourneyIdentifierHeaderBox extends StatelessWidget {
         final isModalOpen = asyncSnapshot.requireData;
 
         return SBBGroup(
-          padding: const EdgeInsets.all(sbbDefaultSpacing),
+          padding: const .all(sbbDefaultSpacing),
           child: SizedBox(
             width: isModalOpen ? _smallWidth : _width,
             height: _height,

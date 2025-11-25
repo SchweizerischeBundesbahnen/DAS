@@ -15,7 +15,7 @@ class DetailTabLocalRegulations extends StatelessWidget {
     if (isDarkTheme) {
       return SBBGroup(
         color: SBBColors.white,
-        padding: EdgeInsets.all(sbbDefaultSpacing),
+        padding: .all(sbbDefaultSpacing),
         child: _htmlView(context),
       );
     }

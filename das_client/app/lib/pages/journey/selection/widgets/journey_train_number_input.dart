@@ -43,7 +43,7 @@ class _JourneyTrainNumberInputState extends State<JourneyTrainNumberInput> {
 
   Widget _buildTrainNumberInput(BuildContext context, {Function(String)? onChanged, Function(String)? onSubmitted}) {
     return Padding(
-      padding: widget.isModalVersion ? EdgeInsets.zero : _inputPadding,
+      padding: widget.isModalVersion ? .zero : _inputPadding,
       child: SBBTextField(
         labelText: widget.isModalVersion ? null : context.l10n.p_train_selection_trainnumber_description,
         hintText: widget.isModalVersion ? context.l10n.p_train_selection_trainnumber_description : null,

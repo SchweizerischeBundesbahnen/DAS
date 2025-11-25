@@ -1,7 +1,6 @@
 import 'package:app/extension/station_sign_extension.dart';
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_model.dart';
 import 'package:app/pages/journey/journey_table/widgets/detail_modal/detail_modal_view_model.dart';
-import 'package:app/pages/journey/journey_table/widgets/detail_modal/service_point_modal/service_point_modal_tab.dart';
 import 'package:app/pages/journey/journey_table/widgets/detail_modal/service_point_modal/service_point_modal_view_model.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/arrival_departure_time/arrival_departure_time_view_model.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/cell_row_builder.dart';
@@ -16,7 +15,6 @@ import 'package:app/widgets/assets.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/dot_indicator.dart';
 import 'package:app/widgets/speed_display.dart';
-import 'package:app/widgets/stickyheader/sticky_level.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:app/widgets/table/das_table_theme.dart';
 import 'package:flutter/material.dart';
@@ -56,7 +54,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     Color? rowColor,
   }) : super(
          rowColor: rowColor ?? _resolveRowColor(context, journeyPosition, data),
-         stickyLevel: StickyLevel.first,
+         stickyLevel: .first,
          height: calculateHeight(data, config.settings.resolvedBreakSeries(metadata)),
        );
 
@@ -73,7 +71,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
       onTap: () {
         if (shouldOpenDetailModalOnTap) {
           final viewModel = context.read<ServicePointModalViewModel>();
-          viewModel.open(context, tab: ServicePointModalTab.communication, servicePoint: data);
+          viewModel.open(context, tab: .communication, servicePoint: data);
         }
       },
       alignment: Alignment.bottomLeft,
@@ -118,7 +116,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
   DASTableCell routeCell(BuildContext context) {
     return DASTableCell(
       color: specialCellColor,
-      padding: EdgeInsets.all(0.0),
+      padding: .all(0.0),
       alignment: null,
       clipBehaviour: Clip.none,
       child: RouteCellBody(
@@ -141,9 +139,9 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     return _wrapToBaseHeight(
       DASTableCell(
         alignment: Alignment.bottomRight,
-        padding: EdgeInsets.symmetric(vertical: sbbDefaultSpacing * 0.5, horizontal: 2),
+        padding: .symmetric(vertical: sbbDefaultSpacing * 0.5, horizontal: 2),
         child: Padding(
-          padding: config.bracketStationRenderData != null ? const EdgeInsets.only(right: 24.0) : EdgeInsets.zero,
+          padding: config.bracketStationRenderData != null ? const .only(right: 24.0) : .zero,
           child: Wrap(
             spacing: 2,
             children: [
@@ -179,7 +177,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     if (trainSeriesSpeed == null && relevantGraduatedSpeedInfo.isEmpty) return DASTableCell.empty();
 
     Widget child = Padding(
-      padding: EdgeInsets.only(top: sbbDefaultSpacing * .5, right: sbbDefaultSpacing * .25),
+      padding: .only(top: sbbDefaultSpacing * .5, right: sbbDefaultSpacing * .25),
       child: DotIndicator(
         child: SizedBox.expand(),
       ),
@@ -195,7 +193,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     return DASTableCell(
       onTap: relevantGraduatedSpeedInfo.isNotEmpty ? () => _openGraduatedSpeedDetails(context) : null,
       alignment: Alignment.center,
-      padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: sbbDefaultSpacing * 0.5),
+      padding: .symmetric(vertical: 2.0, horizontal: sbbDefaultSpacing * 0.5),
       child: child,
     );
   }
@@ -208,7 +206,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
 
     return DASTableCell(
       color: specialCellColor,
-      padding: const EdgeInsets.all(0.0),
+      padding: const .all(0.0),
       alignment: null,
       child: TrackEquipmentCellBody(
         renderData: config.trackEquipmentRenderData!,
@@ -229,7 +227,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
   }
 
   @override
-  ShowSpeedBehavior get showSpeedBehavior => ShowSpeedBehavior.alwaysOrPreviousOnStickiness;
+  ShowSpeedBehavior get showSpeedBehavior => .alwaysOrPreviousOnStickiness;
 
   DASTableCell _gradientCell(BuildContext context, double? value) {
     if (value == null) {
@@ -250,7 +248,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
 
   void _openGraduatedSpeedDetails(BuildContext context) {
     final viewModel = context.read<ServicePointModalViewModel>();
-    viewModel.open(context, tab: ServicePointModalTab.graduatedSpeeds, servicePoint: data);
+    viewModel.open(context, tab: .graduatedSpeeds, servicePoint: data);
   }
 
   Stream<bool> isModalOpenStream(BuildContext context) => context.read<DetailModalViewModel>().isModalOpen;
@@ -305,7 +303,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
       );
 
       return Padding(
-        padding: EdgeInsets.only(top: 4),
+        padding: .only(top: 4),
         child: SizedBox(
           height: propertyRowHeight - 4,
           child: Row(

@@ -20,9 +20,9 @@ class ConnectivityIcon extends StatelessWidget {
       stream: viewModel.model,
       initialData: viewModel.modelValue,
       builder: (context, snapshot) {
-        if (snapshot.data == ConnectivityDisplayStatus.connected) return SizedBox.shrink();
+        if (snapshot.data == .connected) return SizedBox.shrink();
 
-        final isDisconnected = snapshot.data == ConnectivityDisplayStatus.disconnected;
+        final isDisconnected = snapshot.data == .disconnected;
 
         final icon = isDisconnected ? AppAssets.iconWifiDisabled : AppAssets.iconWifi;
         final onTap = isDisconnected ? () => _onDisconnectedTap(context) : () => _onConnectedWifiTap(context);
@@ -39,7 +39,7 @@ class ConnectivityIcon extends StatelessWidget {
       title: '',
       constraints: BoxConstraints(minWidth: double.infinity),
       child: Padding(
-        padding: const EdgeInsets.all(sbbDefaultSpacing),
+        padding: const .all(sbbDefaultSpacing),
         child: SBBMessage(
           title: context.l10n.w_modal_sheet_disconnected_wifi_message_title,
           description: context.l10n.w_modal_sheet_disconnected_wifi_message_text,
@@ -55,7 +55,7 @@ class ConnectivityIcon extends StatelessWidget {
       title: '',
       constraints: BoxConstraints(minWidth: double.infinity),
       child: Padding(
-        padding: const EdgeInsets.all(sbbDefaultSpacing),
+        padding: const .all(sbbDefaultSpacing),
         child: SBBMessage(
           title: context.l10n.w_modal_sheet_disconnected_message_title,
           description: context.l10n.w_modal_sheet_disconnected_message_text,

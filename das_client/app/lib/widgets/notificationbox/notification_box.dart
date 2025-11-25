@@ -35,7 +35,7 @@ class NotificationBox extends StatelessWidget {
           ),
           color: style.backgroundColor.withAlpha((255.0 * .05).round()),
         ),
-        padding: const EdgeInsets.all(sbbDefaultSpacing / 2),
+        padding: const .all(sbbDefaultSpacing / 2),
         child: _content(context),
       ),
     );

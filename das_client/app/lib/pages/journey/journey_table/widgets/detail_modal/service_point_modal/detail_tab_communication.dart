@@ -59,7 +59,7 @@ class DetailTabCommunication extends StatelessWidget {
 
   Widget _simContactItem(Contact contact) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      padding: const .symmetric(vertical: 4.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -79,7 +79,7 @@ class DetailTabCommunication extends StatelessWidget {
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10.0),
+            padding: const .symmetric(vertical: 10.0),
             child: Text(context.l10n.w_service_point_modal_communication_radio_channels_not_found),
           );
         }
@@ -100,7 +100,7 @@ class DetailTabCommunication extends StatelessWidget {
 
   Widget _contactItem(Contact contact) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing, vertical: 10.0),
+      padding: const .symmetric(horizontal: sbbDefaultSpacing, vertical: 10.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         spacing: 4.0,
@@ -117,7 +117,7 @@ class DetailTabCommunication extends StatelessWidget {
     return StreamBuilder(
       stream: viewModel.communicationNetworkType,
       builder: (context, snapshot) {
-        if (!snapshot.hasData || snapshot.data == CommunicationNetworkType.sim) {
+        if (!snapshot.hasData || snapshot.data == .sim) {
           return SizedBox.shrink();
         }
 
@@ -126,7 +126,7 @@ class DetailTabCommunication extends StatelessWidget {
           children: [
             Text(context.l10n.w_service_point_modal_communication_network, style: DASTextStyles.smallRoman),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: sbbDefaultSpacing),
+              padding: const .symmetric(vertical: 10.0, horizontal: sbbDefaultSpacing),
               child: CommunicationNetworkIcon(networkType: snapshot.data!),
             ),
           ],
@@ -149,7 +149,7 @@ class DetailTabCommunication extends StatelessWidget {
           children: [
             Text(context.l10n.w_service_point_modal_departure_authorization, style: DASTextStyles.smallRoman),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: sbbDefaultSpacing),
+              padding: const .symmetric(vertical: 10.0, horizontal: sbbDefaultSpacing),
               child: Text.rich(TextUtil.parseHtmlText(departureAuthText, DASTextStyles.mediumRoman)),
             ),
           ],

@@ -62,7 +62,7 @@ class ReducedJourneyTable extends StatelessWidget {
       );
 
       switch (rowData.type) {
-        case Datatype.servicePoint:
+        case .servicePoint:
           return ReducedServicePointRow(
             key: GlobalKey(),
             metadata: metadata,
@@ -71,7 +71,7 @@ class ReducedJourneyTable extends StatelessWidget {
             context: context,
             rowIndex: index,
           );
-        case Datatype.additionalSpeedRestriction:
+        case .additionalSpeedRestriction:
           return AdditionalSpeedRestrictionRow(
             key: GlobalKey(),
             metadata: metadata,
@@ -80,7 +80,7 @@ class ReducedJourneyTable extends StatelessWidget {
             config: journeyConfig,
             rowIndex: index,
           );
-        case Datatype.communicationNetworkChannel:
+        case .communicationNetworkChannel:
           return ReducedCommunicationNetworkChangeRow(
             key: GlobalKey(),
             metadata: metadata,

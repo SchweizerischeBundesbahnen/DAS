@@ -34,7 +34,7 @@ class FootNoteAccordion extends StatelessWidget {
       isExpanded: isExpanded,
       toggleCallback: () => context.read<CollapsibleRowsViewModel>().toggleRow(data),
       icon: SBBIcons.form_small,
-      margin: EdgeInsets.only(
+      margin: .only(
         bottom: _verticalMargin,
         top: addTopMargin ? _verticalMargin : 0.0,
       ),

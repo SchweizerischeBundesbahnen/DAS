@@ -44,7 +44,7 @@ class NextStop extends StatelessWidget {
         final displayedStop = model.nextStop ?? model.previousStop; // if at last stop, show previous one
 
         return Padding(
-          padding: const EdgeInsets.only(left: sbbDefaultSpacing * 0.5),
+          padding: const .only(left: sbbDefaultSpacing * 0.5),
           child: Text(
             displayedStop?.name ?? context.l10n.c_unknown,
             style: DASTextStyles.xLargeLight,

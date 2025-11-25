@@ -4,7 +4,6 @@ import 'package:app/pages/journey/journey_table/widgets/table/config/track_equip
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/table/das_table_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:sfera/component.dart';
 
 class TrackEquipmentCellBody extends StatelessWidget {
   static const Key conventionalExtendedSpeedBorderKey = Key('conventionalExtendedSpeedBorder');
@@ -38,16 +37,13 @@ class TrackEquipmentCellBody extends StatelessWidget {
           alignment: Alignment.center,
           children: [
             if (renderData.isConventionalExtendedSpeedBorder) _conventionalExtendedSpeedBorder(context),
-            if (trackEquipmentType == TrackEquipmentType.etcsL2ExtSpeedReversingPossible)
-              _extSpeedReversingPossible(context, height),
-            if (trackEquipmentType == TrackEquipmentType.etcsL2ExtSpeedReversingImpossible)
-              _extSpeedReversingImpossible(context, height),
-            if (trackEquipmentType == TrackEquipmentType.etcsL2ConvSpeedReversingImpossible)
+            if (trackEquipmentType == .etcsL2ExtSpeedReversingPossible) _extSpeedReversingPossible(context, height),
+            if (trackEquipmentType == .etcsL2ExtSpeedReversingImpossible) _extSpeedReversingImpossible(context, height),
+            if (trackEquipmentType == .etcsL2ConvSpeedReversingImpossible)
               _convSpeedReversingImpossible(context, height),
-            if (trackEquipmentType == TrackEquipmentType.etcsL1ls2TracksWithSingleTrackEquipment)
+            if (trackEquipmentType == .etcsL1ls2TracksWithSingleTrackEquipment)
               _twoTracksWithSingleTrackEquipment(context, height),
-            if (trackEquipmentType == TrackEquipmentType.etcsL1lsSingleTrackNoBlock)
-              _singleTrackNoBlock(context, height),
+            if (trackEquipmentType == .etcsL1lsSingleTrackNoBlock) _singleTrackNoBlock(context, height),
           ],
         );
       },

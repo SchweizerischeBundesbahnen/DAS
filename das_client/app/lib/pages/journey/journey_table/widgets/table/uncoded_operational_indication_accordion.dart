@@ -35,11 +35,11 @@ class UncodedOperationalIndicationAccordion extends StatelessWidget {
       key: ObjectKey(data.hashCode),
       title: context.l10n.c_uncoded_operational_indication,
       body: _body(context),
-      isExpanded: collapsedState != CollapsedState.collapsed,
+      isExpanded: collapsedState != .collapsed,
       toggleCallback: () =>
           context.read<CollapsibleRowsViewModel>().toggleRow(data, isContentExpandable: _hasTextOverflow),
       icon: SBBIcons.form_small,
-      margin: EdgeInsets.only(
+      margin: .only(
         bottom: _verticalMargin,
         top: addTopMargin ? _verticalMargin : 0.0,
       ),
@@ -48,7 +48,7 @@ class UncodedOperationalIndicationAccordion extends StatelessWidget {
   }
 
   Widget _body(BuildContext context) {
-    if (collapsedState == CollapsedState.expandedWithCollapsedContent && _hasTextOverflow) {
+    if (collapsedState == .expandedWithCollapsedContent && _hasTextOverflow) {
       final textWithoutLineBreaks = TextUtil.replaceLineBreaks(data.combinedText);
       return Row(
         children: [
@@ -91,12 +91,12 @@ class UncodedOperationalIndicationAccordion extends StatelessWidget {
     required bool addTopMargin,
   }) {
     final margin = _verticalMargin * (addTopMargin ? 2 : 1);
-    if (collapsedState == CollapsedState.collapsed) {
+    if (collapsedState == .collapsed) {
       return Accordion.defaultCollapsedHeight + margin;
     }
 
     final content = _contentText(text);
-    final maxLines = collapsedState == CollapsedState.expandedWithCollapsedContent ? 1 : null;
+    final maxLines = collapsedState == .expandedWithCollapsedContent ? 1 : null;
     final tp = TextPainter(text: content.textSpan, textDirection: TextDirection.ltr, maxLines: maxLines)
       ..layout(maxWidth: _accordionContentWidth);
     return Accordion.defaultExpandedHeight + tp.height + margin;

@@ -27,7 +27,7 @@ class CommunicationNetworkChangeRow extends CellRowBuilder<CommunicationNetworkC
     } else {
       return DASTableCell(
         color: specialCellColor,
-        padding: const EdgeInsets.all(8.0),
+        padding: const .all(8.0),
         alignment: Alignment.centerLeft,
         clipBehaviour: Clip.none,
         child: Text(
@@ -47,7 +47,7 @@ class CommunicationNetworkChangeRow extends CellRowBuilder<CommunicationNetworkC
       alignment: Alignment.centerLeft,
       child: Row(
         children: [
-          if (networkType == CommunicationNetworkType.sim)
+          if (networkType == .sim)
             Flexible(
               child: SimIdentifier(textStyle: DASTextStyles.largeRoman),
             )

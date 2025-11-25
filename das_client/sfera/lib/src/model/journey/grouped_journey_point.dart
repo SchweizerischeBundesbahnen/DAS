@@ -18,7 +18,7 @@ class GroupedJourneyPoint extends JourneyPoint {
   }
 
   @override
-  OrderPriority get orderPriority => OrderPriority.group;
+  OrderPriority get orderPriority => .group;
 
   @override
   bool operator ==(Object other) =>

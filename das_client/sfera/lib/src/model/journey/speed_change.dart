@@ -2,7 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:sfera/component.dart';
 
 class SpeedChange extends JourneyPoint {
-  const SpeedChange({required super.order, required super.kilometre, this.text}) : super(type: Datatype.speedChange);
+  const SpeedChange({required super.order, required super.kilometre, this.text}) : super(type: .speedChange);
 
   final String? text;
 

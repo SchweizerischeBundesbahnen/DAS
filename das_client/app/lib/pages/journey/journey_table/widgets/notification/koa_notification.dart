@@ -21,10 +21,10 @@ class KoaNotification extends StatelessWidget {
     return StreamBuilder<KoaState>(
       stream: viewModel.koaState,
       builder: (context, snapshot) {
-        if (!snapshot.hasData || snapshot.data == KoaState.waitHide) return SizedBox.shrink();
+        if (!snapshot.hasData || snapshot.data == .waitHide) return SizedBox.shrink();
         return Container(
-          margin: EdgeInsets.all(JourneyOverview.horizontalPadding).copyWith(top: 0),
-          child: snapshot.data == KoaState.wait ? _WaitNotification() : _WaitCancelledNotification(),
+          margin: const EdgeInsets.all(JourneyOverview.horizontalPadding).copyWith(top: 0),
+          child: snapshot.data == .wait ? _WaitNotification() : _WaitCancelledNotification(),
         );
       },
     );

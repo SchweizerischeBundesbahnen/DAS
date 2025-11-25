@@ -76,7 +76,7 @@ class _SelectRailwayUndertakingModalState extends State<SelectRailwayUndertaking
         final localizedFilteredRus = snap.data ?? [];
         final resolvedForegroundColor = ThemeUtil.getColor(context, SBBColors.milk, SBBColors.midnight);
         return Padding(
-          padding: EdgeInsets.only(bottom: bottom),
+          padding: .only(bottom: bottom),
           child: CustomScrollView(
             key: SelectRailwayUndertakingModal.modalKey,
             controller: scrollController,

@@ -41,7 +41,6 @@ import 'package:app/pages/journey/journey_table/widgets/table/whistle_row.dart';
 import 'package:app/pages/journey/journey_table_view_model.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/user_settings.dart';
-import 'package:app/widgets/stickyheader/sticky_level.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:app/widgets/table/das_table_column.dart';
 import 'package:app/widgets/table/das_table_row.dart';
@@ -126,13 +125,13 @@ class JourneyTable extends StatelessWidget {
         context.read<JourneyTableViewModel>().automaticAdvancementController.updateRenderedRows(tableRows);
 
         final marginAdjustment = Platform.isIOS
-            ? tableRows.lastWhereOrNull((it) => it.stickyLevel == StickyLevel.first)?.height ?? CellRowBuilder.rowHeight
+            ? tableRows.lastWhereOrNull((it) => it.stickyLevel == .first)?.height ?? CellRowBuilder.rowHeight
             : 0.0;
 
         final detailModalViewModel = context.read<DetailModalViewModel>();
 
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: JourneyOverview.horizontalPadding),
+          padding: const .symmetric(horizontal: JourneyOverview.horizontalPadding),
           child: StreamBuilder(
             stream: detailModalViewModel.openModalType,
             builder: (context, snapshot) {
@@ -209,7 +208,7 @@ class JourneyTable extends StatelessWidget {
       }
 
       switch (rowData.type) {
-        case Datatype.servicePoint:
+        case .servicePoint:
           return ServicePointRow(
             metadata: journey.metadata,
             data: rowData as ServicePoint,
@@ -218,7 +217,7 @@ class JourneyTable extends StatelessWidget {
             context: context,
             rowIndex: index,
           );
-        case Datatype.protectionSection:
+        case .protectionSection:
           return ProtectionSectionRow(
             metadata: journey.metadata,
             data: rowData as ProtectionSection,
@@ -226,7 +225,7 @@ class JourneyTable extends StatelessWidget {
             config: journeyConfig,
             rowIndex: index,
           );
-        case Datatype.curvePoint:
+        case .curvePoint:
           return CurvePointRow(
             metadata: journey.metadata,
             data: rowData as CurvePoint,
@@ -234,7 +233,7 @@ class JourneyTable extends StatelessWidget {
             config: journeyConfig,
             rowIndex: index,
           );
-        case Datatype.signal:
+        case .signal:
           return SignalRow(
             metadata: journey.metadata,
             data: rowData as Signal,
@@ -242,7 +241,7 @@ class JourneyTable extends StatelessWidget {
             config: journeyConfig,
             rowIndex: index,
           );
-        case Datatype.additionalSpeedRestriction:
+        case .additionalSpeedRestriction:
           return AdditionalSpeedRestrictionRow(
             metadata: journey.metadata,
             data: rowData as AdditionalSpeedRestrictionData,
@@ -251,7 +250,7 @@ class JourneyTable extends StatelessWidget {
             onTap: () => _onAdditionalSpeedRestrictionTab(context, rowData),
             rowIndex: index,
           );
-        case Datatype.connectionTrack:
+        case .connectionTrack:
           return ConnectionTrackRow(
             metadata: journey.metadata,
             data: rowData as ConnectionTrack,
@@ -259,7 +258,7 @@ class JourneyTable extends StatelessWidget {
             config: journeyConfig,
             rowIndex: index,
           );
-        case Datatype.speedChange:
+        case .speedChange:
           return SpeedChangeRow(
             metadata: journey.metadata,
             data: rowData as SpeedChange,
@@ -267,7 +266,7 @@ class JourneyTable extends StatelessWidget {
             config: journeyConfig,
             rowIndex: index,
           );
-        case Datatype.cabSignaling:
+        case .cabSignaling:
           return CABSignalingRow(
             metadata: journey.metadata,
             data: rowData as CABSignaling,
@@ -275,7 +274,7 @@ class JourneyTable extends StatelessWidget {
             config: journeyConfig,
             rowIndex: index,
           );
-        case Datatype.balise:
+        case .balise:
           return BaliseRow(
             metadata: journey.metadata,
             data: rowData as Balise,
@@ -284,7 +283,7 @@ class JourneyTable extends StatelessWidget {
             isGrouped: groupedRows.contains(rowData),
             rowIndex: index,
           );
-        case Datatype.whistle:
+        case .whistle:
           return WhistleRow(
             metadata: journey.metadata,
             data: rowData as Whistle,
@@ -292,7 +291,7 @@ class JourneyTable extends StatelessWidget {
             config: journeyConfig,
             rowIndex: index,
           );
-        case Datatype.levelCrossing:
+        case .levelCrossing:
           return LevelCrossingRow(
             metadata: journey.metadata,
             data: rowData as LevelCrossing,
@@ -301,7 +300,7 @@ class JourneyTable extends StatelessWidget {
             isGrouped: groupedRows.contains(rowData),
             rowIndex: index,
           );
-        case Datatype.tramArea:
+        case .tramArea:
           return TramAreaRow(
             metadata: journey.metadata,
             data: rowData as TramArea,
@@ -309,7 +308,7 @@ class JourneyTable extends StatelessWidget {
             config: journeyConfig,
             rowIndex: index,
           );
-        case Datatype.baliseLevelCrossingGroup:
+        case .baliseLevelCrossingGroup:
           return BaliseLevelCrossingGroupRow(
             metadata: journey.metadata,
             data: rowData as BaliseLevelCrossingGroup,
@@ -320,16 +319,16 @@ class JourneyTable extends StatelessWidget {
             context: context,
             isExpanded: settings.expandedGroups.contains(rowData.order),
           );
-        case Datatype.opFootNote || Datatype.lineFootNote || Datatype.trackFootNote:
+        case .opFootNote || .lineFootNote || .trackFootNote:
           return FootNoteRow(
             metadata: journey.metadata,
             data: rowData as BaseFootNote,
             config: journeyConfig,
-            isExpanded: collapsedRows.stateOf(rowData) != CollapsedState.collapsed,
+            isExpanded: collapsedRows.stateOf(rowData) != .collapsed,
             addTopMargin: !hasPreviousAnnotation,
             rowIndex: index,
           );
-        case Datatype.uncodedOperationalIndication:
+        case .uncodedOperationalIndication:
           return UncodedOperationalIndicationRow(
             metadata: journey.metadata,
             data: rowData as UncodedOperationalIndication,
@@ -338,7 +337,7 @@ class JourneyTable extends StatelessWidget {
             addTopMargin: !hasPreviousAnnotation,
             rowIndex: index,
           );
-        case Datatype.combinedFootNoteOperationalIndication:
+        case .combinedFootNoteOperationalIndication:
           return CombinedFootNoteOperationalIndicationRow(
             rowIndex: index,
             metadata: journey.metadata,
@@ -346,7 +345,7 @@ class JourneyTable extends StatelessWidget {
             footNoteState: collapsedRows.stateOf(rowData.footNote),
             operationIndicationState: collapsedRows.stateOf(rowData.operationalIndication),
           );
-        case Datatype.communicationNetworkChannel:
+        case .communicationNetworkChannel:
           return CommunicationNetworkChangeRow(
             metadata: journey.metadata,
             data: rowData as CommunicationNetworkChange,
@@ -355,7 +354,7 @@ class JourneyTable extends StatelessWidget {
             rowIndex: index,
             context: context,
           );
-        case Datatype.shuntingMovement:
+        case .shuntingMovement:
           return ShuntingMovementRow(
             metadata: journey.metadata,
             data: rowData as ShuntingMovement,
@@ -378,7 +377,7 @@ class JourneyTable extends StatelessWidget {
     final userSettings = DI.get<UserSettings>();
 
     return [
-      if (openModalType == null || openModalType == DetailModalType.additionalSpeedRestriction) ...[
+      if (openModalType == null || openModalType == .additionalSpeedRestriction) ...[
         if (userSettings.showDecisiveGradient ||
             (!userSettings.showDecisiveGradient && !journeyViewModel.showDecisiveGradientValue))
           DASTableColumn(
@@ -402,7 +401,7 @@ class JourneyTable extends StatelessWidget {
           ),
         ],
       ],
-      if (openModalType == null || openModalType != DetailModalType.additionalSpeedRestriction)
+      if (openModalType == null || openModalType != .additionalSpeedRestriction)
         DASTableColumn(
           id: ColumnDefinition.time.index,
           child: StreamBuilder(

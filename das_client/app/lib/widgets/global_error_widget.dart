@@ -51,14 +51,14 @@ class GlobalErrorWidget extends StatelessWidget {
 }
 
 Future<void> _showErrorDetailsModalSheet(BuildContext context, FlutterErrorDetails details) async {
-  final errorDetails = details.toString(minLevel: DiagnosticLevel.debug);
+  final errorDetails = details.toString(minLevel: .debug);
   return showSBBModalSheet(
     context: context,
     title: details.exceptionAsString(),
     constraints: BoxConstraints(),
     child: SingleChildScrollView(
       child: Container(
-        padding: EdgeInsets.all(sbbDefaultSpacing),
+        padding: .all(sbbDefaultSpacing),
         width: double.maxFinite,
         child: Text(errorDetails, style: DASTextStyles.smallLight),
       ),

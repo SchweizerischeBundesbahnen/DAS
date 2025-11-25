@@ -25,5 +25,5 @@ class ConnectionTrackRow extends CellRowBuilder<ConnectionTrack> {
   }
 
   @override
-  ShowSpeedBehavior get showSpeedBehavior => ShowSpeedBehavior.always;
+  ShowSpeedBehavior get showSpeedBehavior => .always;
 }

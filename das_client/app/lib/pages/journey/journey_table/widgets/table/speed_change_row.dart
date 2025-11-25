@@ -29,7 +29,7 @@ class SpeedChangeRow extends CellRowBuilder<SpeedChange> {
   @override
   DASTableCell iconsCell2(BuildContext context) {
     return DASTableCell(
-      padding: EdgeInsets.all(sbbDefaultSpacing * 0.25),
+      padding: .all(sbbDefaultSpacing * 0.25),
       child: SvgPicture.asset(
         AppAssets.iconKmIndicator,
         key: kmIndicatorKey,
@@ -40,5 +40,5 @@ class SpeedChangeRow extends CellRowBuilder<SpeedChange> {
   }
 
   @override
-  ShowSpeedBehavior get showSpeedBehavior => ShowSpeedBehavior.always;
+  ShowSpeedBehavior get showSpeedBehavior => .always;
 }

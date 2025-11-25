@@ -38,7 +38,7 @@ class AdvisedSpeedCellBody extends StatelessWidget {
   }
 
   Widget _content(BuildContext context) {
-    if (showSpeedBehavior == ShowSpeedBehavior.never) {
+    if (showSpeedBehavior == .never) {
       return DASTableCell.emptyBuilder;
     }
 

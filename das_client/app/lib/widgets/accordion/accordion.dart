@@ -51,7 +51,7 @@ class Accordion extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       key: isExpanded ? expandedKey : collapsedKey,
-      padding: margin ?? EdgeInsets.zero,
+      padding: margin ?? .zero,
       child: _accordion(context),
     );
   }
@@ -67,7 +67,7 @@ class Accordion extends StatelessWidget {
             Radius.circular(isExpanded ? sbbDefaultSpacing : sbbDefaultSpacing * 0.5),
           ),
         ),
-        padding: EdgeInsets.symmetric(
+        padding: .symmetric(
           vertical: isExpanded ? _expandedVerticalPadding : _collapsedVerticalPadding,
           horizontal: _horizontalPadding,
         ),

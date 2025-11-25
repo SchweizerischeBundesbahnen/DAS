@@ -7,12 +7,12 @@ class Balise extends JourneyPoint {
     required super.order,
     required super.kilometre,
     required this.amountLevelCrossings,
-  }) : super(type: Datatype.balise);
+  }) : super(type: .balise);
 
   final int amountLevelCrossings;
 
   @override
-  OrderPriority get orderPriority => OrderPriority.balise;
+  OrderPriority get orderPriority => .balise;
 
   @override
   String toString() {

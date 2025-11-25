@@ -30,7 +30,7 @@ class BaliseRow extends CellRowBuilder<Balise> {
       return DASTableCell(
         color: specialCellColor,
         child: Padding(
-          padding: const EdgeInsets.only(left: 8.0),
+          padding: const .only(left: 8.0),
           child: OverflowBox(
             maxWidth: double.infinity,
             child: Text(data.kilometre[0].toStringAsFixed(3)),
@@ -54,7 +54,7 @@ class BaliseRow extends CellRowBuilder<Balise> {
   @override
   DASTableCell iconsCell2(BuildContext context) {
     return DASTableCell(
-      padding: EdgeInsets.all(sbbDefaultSpacing * 0.25),
+      padding: .all(sbbDefaultSpacing * 0.25),
       child: SvgPicture.asset(
         AppAssets.iconBalise,
         key: baliseIconKey,

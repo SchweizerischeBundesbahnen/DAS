@@ -31,7 +31,7 @@ class LevelCrossingRow extends CellRowBuilder<LevelCrossing> {
       return DASTableCell(
         color: specialCellColor,
         child: Padding(
-          padding: EdgeInsets.only(left: 8.0),
+          padding: .only(left: 8.0),
           child: OverflowBox(
             maxWidth: double.infinity,
             child: Text(data.kilometre[0].toStringAsFixed(3)),
@@ -59,7 +59,7 @@ class LevelCrossingRow extends CellRowBuilder<LevelCrossing> {
 
     if (group != null && group.shouldShowBaliseIconForLevelCrossing(data)) {
       return DASTableCell(
-        padding: EdgeInsets.all(sbbDefaultSpacing * 0.25),
+        padding: .all(sbbDefaultSpacing * 0.25),
         child: SvgPicture.asset(
           AppAssets.iconBalise,
           key: baliseIconLevelCrossingKey,
