@@ -12,16 +12,16 @@
       "i18n": {
         "sourceLocale": {
           "code": "de-CH",
-          "baseHref": "/de/"
+          "subPath": "de"
         },
         "locales": {
           "fr-CH": {
             "translation": "src/i18n/messages.fr-CH.json",
-            "baseHref": "/fr/"
+            "subPath": "fr"
           },
           "it-CH": {
             "translation": "src/i18n/messages.it-CH.json",
-            "baseHref": "/it/"
+            "subPath": "it"
           }
         }
       },
