@@ -1256,21 +1256,27 @@ void main() {
 
     expect(networkChanges[0].order, 0);
     expect(networkChanges[0].communicationNetworkType, CommunicationNetworkType.gsmP);
+    expect(networkChanges[0].isServicePoint, true);
 
     expect(networkChanges[1].order, 100900);
     expect(networkChanges[1].communicationNetworkType, CommunicationNetworkType.gsmP);
+    expect(networkChanges[1].isServicePoint, false);
 
     expect(networkChanges[2].order, 200900);
     expect(networkChanges[2].communicationNetworkType, CommunicationNetworkType.gsmP);
+    expect(networkChanges[2].isServicePoint, false);
 
     expect(networkChanges[3].order, 300450);
     expect(networkChanges[3].communicationNetworkType, CommunicationNetworkType.gsmP);
+    expect(networkChanges[3].isServicePoint, false);
 
     expect(networkChanges[4].order, 400550);
     expect(networkChanges[4].communicationNetworkType, CommunicationNetworkType.gsmP);
+    expect(networkChanges[4].isServicePoint, false);
 
     expect(networkChanges[5].order, 500450);
     expect(networkChanges[5].communicationNetworkType, CommunicationNetworkType.gsmP);
+    expect(networkChanges[5].isServicePoint, false);
   });
 
   test('Test opFootNote parsed correctly', () async {
