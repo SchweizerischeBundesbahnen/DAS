@@ -1252,22 +1252,25 @@ void main() {
     expect(journey.valid, isTrue);
 
     final networkChanges = journey.metadata.communicationNetworkChanges;
-    expect(networkChanges, hasLength(5));
+    expect(networkChanges, hasLength(6));
 
-    expect(networkChanges[0].order, 100900);
+    expect(networkChanges[0].order, 0);
     expect(networkChanges[0].communicationNetworkType, CommunicationNetworkType.gsmP);
 
-    expect(networkChanges[1].order, 200900);
+    expect(networkChanges[1].order, 100900);
     expect(networkChanges[1].communicationNetworkType, CommunicationNetworkType.gsmP);
 
-    expect(networkChanges[2].order, 300450);
+    expect(networkChanges[2].order, 200900);
     expect(networkChanges[2].communicationNetworkType, CommunicationNetworkType.gsmP);
 
-    expect(networkChanges[3].order, 400550);
+    expect(networkChanges[3].order, 300450);
     expect(networkChanges[3].communicationNetworkType, CommunicationNetworkType.gsmP);
 
-    expect(networkChanges[4].order, 500450);
+    expect(networkChanges[4].order, 400550);
     expect(networkChanges[4].communicationNetworkType, CommunicationNetworkType.gsmP);
+
+    expect(networkChanges[5].order, 500450);
+    expect(networkChanges[5].communicationNetworkType, CommunicationNetworkType.gsmP);
   });
 
   test('Test opFootNote parsed correctly', () async {

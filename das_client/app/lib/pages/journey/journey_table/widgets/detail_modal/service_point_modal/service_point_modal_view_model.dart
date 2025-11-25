@@ -111,8 +111,7 @@ class ServicePointModalViewModel {
     final subscription = Rx.combineLatest2(
       _rxServicePoint.stream,
       _rxMetadata.stream,
-      (servicePoint, metadata) =>
-          metadata.communicationNetworkChangesHeader.whereNotSim.typeByLastBefore(servicePoint.order),
+      (servicePoint, metadata) => metadata.communicationNetworkChanges.whereNotSim.typeByLastBefore(servicePoint.order),
     ).listen(_rxCommunicationNetworkType.add, onError: _rxCommunicationNetworkType.addError);
     _subscriptions.add(subscription);
   }
