@@ -219,7 +219,7 @@ Journey mockJourney({
 }) => Journey(
   metadata: Metadata(
     radioContactLists: radioContacts,
-    communicationNetworkChangesHeader: communicationNetworkChanges,
+    communicationNetworkChanges: communicationNetworkChanges,
   ),
   data: [],
 );

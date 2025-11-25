@@ -55,12 +55,8 @@ class ReducedJourneyTable extends StatelessWidget {
     Metadata metadata,
     List<BaseData> data,
   ) {
-    final spOrders = data.whereType<ServicePoint>().map((s) => s.order).toList();
     final List<CellRowBuilder?> builders = List.generate(data.length, (index) {
       final rowData = data[index];
-      if (rowData is CommunicationNetworkChange && spOrders.contains(rowData.order)) {
-        return null;
-      }
       final journeyConfig = JourneyConfig(
         bracketStationRenderData: BracketStationRenderData.from(rowData, metadata),
       );

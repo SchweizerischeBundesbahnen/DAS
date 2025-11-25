@@ -81,22 +81,15 @@ class SferaModelMapper {
         .where((asr) => asr.isDisplayed(trackEquipmentSegments))
         .toList();
 
-    List<CommunicationNetworkChange> communicationNetworkChanges({required bool containSpPoints}) {
-      return _parseCommunicationNetworkChanges(
-        segmentProfileReferences,
-        segmentProfiles,
-        containSpPoints: containSpPoints,
-        servicePointOrders: spOrders,
-      );
-    }
-
     journeyData.addAll(_cabSignalingStart(trackEquipmentSegments));
     journeyData.addAll(_cabSignalingEnd(trackEquipmentSegments, journeyData));
     journeyData.addAll(_consolidateAdditionalSpeedRestrictions(journeyData, displayedSpeedRestrictions));
     journeyData.addAll(_parseUncodedOperationalIndications(segmentProfileReferences));
     journeyData.addAll(_parseTramAreas(segmentProfiles));
-    journeyData.addAll(communicationNetworkChanges(containSpPoints: false));
     journeyData.addAll(_parseShuntingMovements(segmentProfileReferences, segmentProfiles));
+
+    final communicationChanges = _parseCommunicationNetworkChanges(segmentProfileReferences, segmentProfiles, spOrders);
+    journeyData.addAll(communicationChanges.where((it) => it.isServicePoint == false));
     journeyData.sort();
 
     final journeyPoints = journeyData.whereType<JourneyPoint>().toList();
@@ -120,8 +113,7 @@ class SferaModelMapper {
         bracketStationSegments: _parseBracketStationSegments(servicePoints),
         advisedSpeedSegments: SpeedMapper.advisedSpeeds(journeyProfile, segmentProfiles, journeyData),
         availableBreakSeries: _parseAvailableBreakSeries(journeyPoints, lineSpeeds),
-        communicationNetworkChanges: communicationNetworkChanges(containSpPoints: false),
-        communicationNetworkChangesHeader: communicationNetworkChanges(containSpPoints: true),
+        communicationNetworkChanges: communicationChanges,
         breakSeries:
             trainCharacteristic?.tcFeatures.trainCategoryCode != null &&
                 trainCharacteristic?.tcFeatures.brakedWeightPercentage != null
@@ -342,10 +334,9 @@ class SferaModelMapper {
 
   static List<CommunicationNetworkChange> _parseCommunicationNetworkChanges(
     List<SegmentProfileReferenceDto> segmentProfileReferences,
-    List<SegmentProfileDto> segmentProfiles, {
-    required bool containSpPoints,
-    Set<int>? servicePointOrders,
-  }) {
+    List<SegmentProfileDto> segmentProfiles,
+    Set<int> servicePointOrders,
+  ) {
     final changes = segmentProfileReferences
         .mapIndexed((index, reference) {
           final segmentProfile = segmentProfiles.firstMatch(reference);
@@ -358,10 +349,12 @@ class SferaModelMapper {
                 'CommunicationNetwork found without identical location (start=${element.startLocation} end=${element.endLocation}).',
               );
             }
+            final order = calculateOrder(index, element.startLocation);
 
             return CommunicationNetworkChange(
               communicationNetworkType: element.communicationNetworkType.communicationNetworkType,
-              order: calculateOrder(index, element.startLocation),
+              order: order,
+              isServicePoint: servicePointOrders.contains(order),
               kilometre: kilometreMap[element.startLocation] ?? const [],
             );
           });
@@ -370,10 +363,6 @@ class SferaModelMapper {
         .flattened
         .nonNulls
         .toList();
-
-    if (!containSpPoints && servicePointOrders != null && servicePointOrders.isNotEmpty) {
-      return changes.where((c) => !servicePointOrders.contains(c.order)).toList();
-    }
 
     return changes;
   }
