@@ -21,6 +21,7 @@
     "@angular/router": "^20.0.0",
     "@sbb-esta/lyne-angular": "^20.0.0-rc.8",
     "@sbb-esta/lyne-elements": "^3.13.2",
+    "angular-auth-oidc-client": "20.0.3",
     "angular-server-side-configuration": "^20.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
