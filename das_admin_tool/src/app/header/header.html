@@ -1,0 +1,21 @@
+<sbb-header expanded>
+  <span class="sbb-header-info">
+    <strong i18n="@@c_header_app_name">DAS Admin-Tool</strong>
+    <span>V. {{ version }}</span>
+  </span>
+  <div class="sbb-header-spacer"></div>
+  <sbb-header-button iconName="user-small" class="sbb-header-shrinkable"
+                     i18n="@@c_header_login_button">Login
+  </sbb-header-button>
+  <sbb-header-button iconName="globe-small" id="language-menu-trigger" class="last-element">
+    {{ currentLanguage?.label }}
+  </sbb-header-button>
+  <sbb-menu trigger="language-menu-trigger">
+    @for (language of languages; track language.localeId) {
+      <sbb-menu-link (click)="switchLanguage(language.path)"
+                     [iconName]="language.localeId === currentLanguage?.localeId ? 'tick-small': ''">{{ language.label }}
+      </sbb-menu-link>
+    }
+  </sbb-menu>
+  <sbb-header-environment>{{ stage !== 'prod' ? stage : '' }}</sbb-header-environment>
+</sbb-header>
