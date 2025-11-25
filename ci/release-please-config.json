@@ -15,6 +15,9 @@
     "das_playground": {
       "bump-minor-pre-major": true
     },
+    "das_admin_tool": {
+      "bump-minor-pre-major": true
+    },
     "sfera_mock": {
       "release-type": "maven",
       "package-name": "sfera_mock",

@@ -8,17 +8,9 @@ COPY ./dist/das_admin_tool/browser /usr/share/nginx/html
 
 USER root
 
-# Rename language directories from i. e. de-CH to de
-RUN cd /usr/share/nginx/html && \
-    for dir in *-CH; do \
-        if [ -d "$dir" ]; then \
-            mv "$dir" "${dir%-CH}"; \
-        fi; \
-    done && \
-    ls -la
-
-# Add write permission for random user for the index.html
-RUN chmod a+w /usr/share/nginx/html/index.html
+# ngssc requires write permission for html files
+RUN find /usr/share/nginx/html -name "index.html" -exec chmod a+w {} \; && \
+    ls -R -la /usr/share/nginx/html
 
 # Install ngssc binary
 ADD https://github.com/kyubisation/angular-server-side-configuration/releases/download/v20.0.0/ngssc_64bit /usr/sbin/ngssc
