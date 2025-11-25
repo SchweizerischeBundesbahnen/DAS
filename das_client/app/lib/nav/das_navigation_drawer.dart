@@ -90,17 +90,13 @@ class DASNavigationDrawer extends StatelessWidget {
 
   Widget _versionFooter() {
     return const Align(
-      alignment: Alignment.bottomCenter,
+      alignment: .bottomCenter,
       child: Padding(
         padding: .all(sbbDefaultSpacing),
         child: Column(
           children: [
-            AppVersionText(
-              color: SBBColors.granite,
-            ),
-            DeviceIdText(
-              color: SBBColors.granite,
-            ),
+            AppVersionText(color: SBBColors.granite),
+            DeviceIdText(color: SBBColors.granite),
           ],
         ),
       ),

@@ -426,7 +426,7 @@ class JourneyTable extends StatelessWidget {
         id: ColumnDefinition.informationCell.index,
         child: Text(context.l10n.p_journey_table_journey_information_label),
         expanded: true,
-        alignment: Alignment.centerLeft,
+        alignment: .centerLeft,
       ),
       DASTableColumn(id: ColumnDefinition.icons2.index, width: 68.0), // icons column
       DASTableColumn(id: ColumnDefinition.icons3.index, width: 48.0), // icons column

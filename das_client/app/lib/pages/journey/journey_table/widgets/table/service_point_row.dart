@@ -74,10 +74,10 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
           viewModel.open(context, tab: .communication, servicePoint: data);
         }
       },
-      alignment: Alignment.bottomLeft,
+      alignment: .bottomLeft,
       child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: .min,
+        crossAxisAlignment: .start,
         children: [
           _informationCellTitle(context),
           ..._stationProperties(context),
@@ -118,7 +118,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
       color: specialCellColor,
       padding: .all(0.0),
       alignment: null,
-      clipBehaviour: Clip.none,
+      clipBehavior: .none,
       child: RouteCellBody(
         isStop: data.isStop,
         isCurrentPosition: isCurrentPosition,
@@ -138,7 +138,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
 
     return _wrapToBaseHeight(
       DASTableCell(
-        alignment: Alignment.bottomRight,
+        alignment: .bottomRight,
         padding: .symmetric(vertical: sbbDefaultSpacing * 0.5, horizontal: 2),
         child: Padding(
           padding: config.bracketStationRenderData != null ? const .only(right: 24.0) : .zero,
@@ -147,7 +147,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
             children: [
               if (!data.mandatoryStop) _icon(context, AppAssets.iconStopOnRequest, stopOnRequestKey),
               Row(
-                mainAxisSize: MainAxisSize.min,
+                mainAxisSize: .min,
                 spacing: 2,
                 children: [
                   if (data.stationSign2 != null)
@@ -192,7 +192,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
 
     return DASTableCell(
       onTap: relevantGraduatedSpeedInfo.isNotEmpty ? () => _openGraduatedSpeedDetails(context) : null,
-      alignment: Alignment.center,
+      alignment: .center,
       padding: .symmetric(vertical: 2.0, horizontal: sbbDefaultSpacing * 0.5),
       child: child,
     );
@@ -270,13 +270,13 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
           child: AnimatedSwitcher(
             duration: DASAnimation.longDuration,
             child: Row(
-              mainAxisAlignment: isModalOpen ? MainAxisAlignment.spaceBetween : MainAxisAlignment.start,
+              mainAxisAlignment: isModalOpen ? .spaceBetween : .start,
               children: [
                 Flexible(
                   child: Text(
                     servicePointName,
                     textAlign: TextAlign.start,
-                    overflow: TextOverflow.ellipsis,
+                    overflow: .ellipsis,
                   ),
                 ),
                 if (data.trackGroup != null) ...[
@@ -307,8 +307,8 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
         child: SizedBox(
           height: propertyRowHeight - 4,
           child: Row(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: .min,
+            crossAxisAlignment: .center,
             spacing: sbbDefaultSpacing * 0.25,
             children: [
               if (property.sign != null) _icon(context, property.sign!.iconAsset(), Key(property.sign!.name)),
@@ -320,7 +320,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
                         ? DASTextStyles.mediumRoman.copyWith(color: SBBColors.white)
                         : DASTextStyles.mediumRoman,
                   ),
-                  overflow: TextOverflow.ellipsis,
+                  overflow: .ellipsis,
                 ),
               if (speed != null && speed.reduced) _icon(context, AppAssets.iconReducedSpeed, reducedSpeedKey),
               if (speed != null)
@@ -342,7 +342,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
       key: key,
       colorFilter: ColorFilter.mode(
         _isNextStop ? SBBColors.white : ThemeUtil.getIconColor(context),
-        BlendMode.srcIn,
+        .srcIn,
       ),
     );
   }
@@ -353,8 +353,8 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
       onTap: cell.onTap,
       color: cell.color,
       padding: cell.padding,
-      alignment: Alignment.topLeft,
-      clipBehaviour: cell.clipBehaviour,
+      alignment: .topLeft,
+      clipBehavior: cell.clipBehavior,
       child: SizedBox(
         height: baseRowHeight - verticalPadding * 2,
         child: Align(alignment: cell.alignment ?? defaultAlignment, child: cell.child),

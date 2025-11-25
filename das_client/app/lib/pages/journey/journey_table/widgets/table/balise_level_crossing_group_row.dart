@@ -38,14 +38,14 @@ class BaliseLevelCrossingGroupRow extends CellRowBuilder<BaliseLevelCrossingGrou
     if (firstBalise == null) {
       return DASTableCell(
         child: Text('$_levelCrossingCount ${context.l10n.p_journey_table_level_crossing}'),
-        alignment: Alignment.centerLeft,
+        alignment: .centerLeft,
       );
     } else if (shownLevelCrossingsCount > 1) {
       return DASTableCell(
         child: Text(
           '($shownLevelCrossingsCount ${context.l10n.p_journey_table_level_crossing})',
         ),
-        alignment: Alignment.centerRight,
+        alignment: .centerRight,
       );
     } else {
       return DASTableCell(
@@ -56,7 +56,7 @@ class BaliseLevelCrossingGroupRow extends CellRowBuilder<BaliseLevelCrossingGrou
             Text(_baliseCount > 1 ? _baliseCount.toString() : ''),
           ],
         ),
-        alignment: Alignment.centerRight,
+        alignment: .centerRight,
       );
     }
   }
@@ -69,9 +69,9 @@ class BaliseLevelCrossingGroupRow extends CellRowBuilder<BaliseLevelCrossingGrou
         child: SvgPicture.asset(
           AppAssets.iconBalise,
           key: baliseIconKey,
-          colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
+          colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), .srcIn),
         ),
-        alignment: Alignment.centerLeft,
+        alignment: .centerLeft,
       );
     } else {
       return DASTableCell.empty();

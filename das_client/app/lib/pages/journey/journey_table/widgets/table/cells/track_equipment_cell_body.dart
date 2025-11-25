@@ -33,8 +33,8 @@ class TrackEquipmentCellBody extends StatelessWidget {
         final height = constraints.maxHeight;
         final trackEquipmentType = renderData.trackEquipmentType;
         return Stack(
-          clipBehavior: Clip.none,
-          alignment: Alignment.center,
+          clipBehavior: .none,
+          alignment: .center,
           children: [
             if (renderData.isConventionalExtendedSpeedBorder) _conventionalExtendedSpeedBorder(context),
             if (trackEquipmentType == .etcsL2ExtSpeedReversingPossible) _extSpeedReversingPossible(context, height),
@@ -57,7 +57,7 @@ class TrackEquipmentCellBody extends StatelessWidget {
       bottom: _calculateBottom(context, height),
       left: 2.0,
       child: Row(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: .min,
         children: [
           _extSpeedLine(context),
           SizedBox(width: 2.0),

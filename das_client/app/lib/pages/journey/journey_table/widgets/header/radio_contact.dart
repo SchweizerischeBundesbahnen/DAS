@@ -17,7 +17,7 @@ class RadioContactChannels extends StatelessWidget {
           key: radioContactChannelsKey,
           mainContactIdentifiers!,
           style: DASTextStyles.xLargeRoman,
-          overflow: TextOverflow.ellipsis,
+          overflow: .ellipsis,
         )
       : SizedBox.shrink();
 }

@@ -29,8 +29,8 @@ class ChronographHeaderBox extends StatelessWidget {
   }
 
   Widget body(BuildContext context) => Column(
-    mainAxisAlignment: MainAxisAlignment.start,
-    crossAxisAlignment: CrossAxisAlignment.end,
+    mainAxisAlignment: .start,
+    crossAxisAlignment: .end,
     children: [
       Flexible(child: _currentTime(context)),
       Divider(height: sbbDefaultSpacing, color: SBBColors.cloud),

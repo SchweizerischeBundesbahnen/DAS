@@ -95,7 +95,7 @@ class _SelectRailwayUndertakingModalState extends State<SelectRailwayUndertaking
                             key: SelectRailwayUndertakingModal.filterFieldKey,
                             controller: controller?.textEditingController,
                             labelText: context.l10n.p_train_selection_ru_description,
-                            keyboardType: TextInputType.text,
+                            keyboardType: .text,
                             suffixIcon: IconButton(
                               icon: Icon(SBBIcons.cross_small),
                               onPressed: () => controller?.textEditingController.clear(),

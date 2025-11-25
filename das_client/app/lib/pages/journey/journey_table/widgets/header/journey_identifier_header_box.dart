@@ -61,8 +61,8 @@ class JourneyIdentifierHeaderBox extends StatelessWidget {
   }
 
   Widget _body(BuildContext context) => Column(
-    mainAxisAlignment: MainAxisAlignment.start,
-    crossAxisAlignment: CrossAxisAlignment.end,
+    mainAxisAlignment: .start,
+    crossAxisAlignment: .end,
     children: [
       Flexible(child: JourneyIdentifier()),
       Divider(height: sbbDefaultSpacing, color: SBBColors.cloud),

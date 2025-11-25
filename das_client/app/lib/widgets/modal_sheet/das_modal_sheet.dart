@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:app/di/di.dart';
+import 'package:app/theme/theme_util.dart';
 import 'package:app/util/animation.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:app/widgets/extended_header_container.dart';
@@ -190,7 +191,7 @@ class _DASModalSheetState extends State<DasModalSheet> with TickerProviderStateM
     final modalWidth = _calculateModalWidth(context);
     // Flutter stack can't handle hits outside bounds: https://github.com/flutter/flutter/issues/31728
     return StackHitTestWithoutSizeLimit(
-      clipBehavior: Clip.none,
+      clipBehavior: .none,
       children: [
         // invisible widget used to extend stack width
         Container(width: min(widget.controller.maxExpandedWidth, modalWidth)),
@@ -207,14 +208,13 @@ class _DASModalSheetState extends State<DasModalSheet> with TickerProviderStateM
   }
 
   Widget _modalSheet(double width) {
-    final isDarkTheme = SBBBaseStyle.of(context).brightness == Brightness.dark;
     return ExtendedAppBarWrapper(
       child: Container(
         width: width,
         padding: .all(sbbDefaultSpacing),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.only(topLeft: Radius.circular(sbbDefaultSpacing * 2)),
-          color: isDarkTheme ? SBBColors.charcoal : SBBColors.white,
+          color: ThemeUtil.isDarkMode(context) ? SBBColors.charcoal : SBBColors.white,
         ),
         child: widget.controller.isOpen
             ? _body()
@@ -226,7 +226,7 @@ class _DASModalSheetState extends State<DasModalSheet> with TickerProviderStateM
   Widget _body() {
     return Column(
       key: DasModalSheet.modalSheetKey,
-      mainAxisSize: MainAxisSize.max,
+      mainAxisSize: .max,
       children: [
         _integrationTestKey(),
         _header(),

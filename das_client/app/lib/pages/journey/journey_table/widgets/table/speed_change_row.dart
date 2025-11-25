@@ -22,7 +22,7 @@ class SpeedChangeRow extends CellRowBuilder<SpeedChange> {
   @override
   DASTableCell informationCell(BuildContext context) {
     return DASTableCell(
-      child: Text(data.text ?? '', overflow: TextOverflow.ellipsis),
+      child: Text(data.text ?? '', overflow: .ellipsis),
     );
   }
 
@@ -33,9 +33,9 @@ class SpeedChangeRow extends CellRowBuilder<SpeedChange> {
       child: SvgPicture.asset(
         AppAssets.iconKmIndicator,
         key: kmIndicatorKey,
-        colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
+        colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), .srcIn),
       ),
-      alignment: Alignment.centerLeft,
+      alignment: .centerLeft,
     );
   }
 

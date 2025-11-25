@@ -34,8 +34,8 @@ class MainHeaderBox extends StatelessWidget {
     return SBBGroup(
       padding: const .all(sbbDefaultSpacing),
       child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: .min,
+        crossAxisAlignment: .stretch,
         children: [
           _topHeaderRow(),
           _divider(),
@@ -48,7 +48,7 @@ class MainHeaderBox extends StatelessWidget {
   Widget _bottomHeaderRow() => SizedBox(
     height: 48.0,
     child: Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: .center,
       children: [
         NextStop(),
         Spacer(),

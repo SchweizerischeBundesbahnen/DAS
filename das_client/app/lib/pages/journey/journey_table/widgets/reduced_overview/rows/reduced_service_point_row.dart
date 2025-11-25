@@ -46,7 +46,7 @@ class ReducedServicePointRow extends ServicePointRow {
       color: specialCellColor,
       padding: .all(0.0),
       alignment: null,
-      clipBehaviour: Clip.none,
+      clipBehavior: .none,
       child: RouteCellBody(
         isStop: data.isStop,
         isCurrentPosition: false,

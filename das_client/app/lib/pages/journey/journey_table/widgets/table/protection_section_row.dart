@@ -22,7 +22,7 @@ class ProtectionSectionRow extends CellRowBuilder<ProtectionSection> {
   DASTableCell informationCell(BuildContext context) {
     return DASTableCell(
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment: .end,
         children: [
           Expanded(child: _kilometreText(context)),
           Text('${data.isOptional ? 'F' : ''}${data.isLong ? 'L' : ''}'),
@@ -34,7 +34,7 @@ class ProtectionSectionRow extends CellRowBuilder<ProtectionSection> {
   Widget _kilometreText(BuildContext context) {
     return Text(
       '${context.l10n.p_journey_table_kilometre_label} ${data.kilometre[0].toStringAsFixed(1)}',
-      overflow: TextOverflow.ellipsis,
+      overflow: .ellipsis,
     );
   }
 
@@ -45,7 +45,7 @@ class ProtectionSectionRow extends CellRowBuilder<ProtectionSection> {
         AppAssets.iconProtectionSection,
         key: protectionSectionKey,
       ),
-      alignment: Alignment.bottomCenter,
+      alignment: .bottomCenter,
     );
   }
 }

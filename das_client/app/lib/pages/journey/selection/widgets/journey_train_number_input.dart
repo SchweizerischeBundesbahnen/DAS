@@ -50,7 +50,7 @@ class _JourneyTrainNumberInputState extends State<JourneyTrainNumberInput> {
         enabled: onChanged != null,
         onChanged: onChanged,
         controller: _controller,
-        keyboardType: TextInputType.text,
+        keyboardType: .text,
         onSubmitted: onSubmitted,
         isLastElement: true,
       ),

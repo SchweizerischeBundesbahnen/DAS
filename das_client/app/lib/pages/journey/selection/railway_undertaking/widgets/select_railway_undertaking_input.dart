@@ -95,7 +95,7 @@ class _RailwayUndertakingTextFieldState extends State<_RailwayUndertakingTextFie
           showModalBottomSheet(
             context: context,
             isScrollControlled: true,
-            clipBehavior: Clip.hardEdge,
+            clipBehavior: .hardEdge,
             backgroundColor: _modalBackgroundColor(context),
             shape: SelectRailwayUndertakingModal.shapeBorder,
             constraints: _modalConstraints,

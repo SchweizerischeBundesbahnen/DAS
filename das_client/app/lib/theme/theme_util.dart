@@ -27,6 +27,6 @@ class ThemeUtil {
   }
 
   static bool isDarkMode(BuildContext context) {
-    return SBBBaseStyle.of(context).brightness == Brightness.dark;
+    return SBBBaseStyle.of(context).brightness == .dark;
   }
 }

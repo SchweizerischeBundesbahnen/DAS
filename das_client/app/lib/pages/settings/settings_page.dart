@@ -5,7 +5,6 @@ import 'package:app/util/user_settings.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 @RoutePage()
@@ -32,7 +31,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   SBBHeader _appBar(BuildContext context) => SBBHeader(
     title: context.l10n.c_app_name,
-    systemOverlayStyle: SystemUiOverlayStyle.light,
+    systemOverlayStyle: .light,
   );
 
   Widget _body(BuildContext context) {
@@ -56,7 +55,7 @@ class _SettingsPageState extends State<SettingsPage> {
     return SingleChildScrollView(
       padding: const .symmetric(horizontal: sbbDefaultSpacing * 0.5),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: .start,
         children: [
           _settingTitle(context.l10n.p_settings_page_decisive_gradient_title),
           _decisiveGradientSettings(context),

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:app/widgets/table/das_row_controller_wrapper.dart';
@@ -211,7 +212,7 @@ class _DASTableState extends State<DASTable> {
   }
 
   DASTableThemeData _defaultThemeData(BuildContext context) {
-    final isDarkTheme = SBBBaseStyle.of(context).brightness == Brightness.dark;
+    final isDarkTheme = ThemeUtil.isDarkMode(context);
     final borderColor = isDarkTheme ? SBBColors.iron : SBBColors.cloud;
     return DASTableThemeData(
       backgroundColor: isDarkTheme ? SBBColors.charcoal : SBBColors.white,
@@ -315,7 +316,7 @@ class _DASTableState extends State<DASTable> {
                 cell.padding ?? column.padding ?? .all(sbbDefaultSpacing * 0.5),
                 cellBorder,
               ),
-              clipBehavior: cell.clipBehaviour,
+              clipBehavior: cell.clipBehavior,
               child: DefaultTextStyle(
                 style: DefaultTextStyle.of(context).style.merge(tableThemeData?.dataTextStyle),
                 child: effectiveAlignment != null
@@ -364,7 +365,7 @@ class _FixedHeightRow extends StatelessWidget {
       height: height,
       child: Row(
         key: DASTable.rowKey,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment: .stretch,
         children: children,
       ),
     );

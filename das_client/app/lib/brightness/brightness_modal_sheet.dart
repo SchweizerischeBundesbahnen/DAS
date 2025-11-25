@@ -31,7 +31,7 @@ class BrightnessModalSheet extends StatelessWidget {
 
   Widget _body(BuildContext context) {
     return Column(
-      mainAxisSize: MainAxisSize.min,
+      mainAxisSize: .min,
       children: [
         Text(
           context.l10n.w_modal_sheet_permission_brightness,

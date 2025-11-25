@@ -34,7 +34,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     super.stickyLevel,
     super.key,
     this.config = const JourneyConfig(),
-    this.defaultAlignment = Alignment.bottomCenter,
+    this.defaultAlignment = .bottomCenter,
     this.rowColor,
     this.onTap,
     this.isGrouped = false,
@@ -88,14 +88,14 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     return DASTableCell(
       color: specialCellColor,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: .end,
+        crossAxisAlignment: .start,
         children: [
           Text(data.kilometre[0].toStringAsFixed(1), style: textStyle),
           if (data.kilometre.length > 1) Text(data.kilometre[1].toStringAsFixed(1), style: textStyle),
         ],
       ),
-      alignment: Alignment.centerLeft,
+      alignment: .centerLeft,
     );
   }
 
@@ -104,7 +104,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
       color: specialCellColor,
       padding: .all(0.0),
       alignment: null,
-      clipBehaviour: Clip.none,
+      clipBehavior: .none,
       child: RouteCellBody(
         isCurrentPosition: isCurrentPosition,
         isRouteStart: metadata.journeyStart == data,
@@ -143,7 +143,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
       return DASTableCell.empty();
     }
     return DASTableCell(
-      alignment: Alignment.center,
+      alignment: .center,
       padding: .symmetric(vertical: 2.0, horizontal: sbbDefaultSpacing * 0.5),
       child: LineSpeedCellBody(
         order: data.order,
@@ -161,7 +161,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     );
 
     return DASTableCell(
-      alignment: Alignment.center,
+      alignment: .center,
       padding: .symmetric(vertical: 2.0, horizontal: sbbDefaultSpacing * 0.5),
       child: SpeedDisplay(
         speed: trainSeriesSpeed?.speed,
@@ -176,7 +176,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
 
     return DASTableCell(
       padding: .all(0.0),
-      clipBehaviour: Clip.none,
+      clipBehavior: .none,
       child: BracketStationCellBody(
         stationAbbreviation: config.bracketStationRenderData!.isStart
             ? bracketStationRenderData.stationAbbreviation
@@ -191,7 +191,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     if (networkChange == null) return DASTableCell.empty();
 
     return DASTableCell(
-      alignment: Alignment.bottomCenter,
+      alignment: .bottomCenter,
       child: CommunicationNetworkIcon(networkType: networkChange),
     );
   }
@@ -213,7 +213,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
 
       return DASTableCell(
         padding: .all(0.0),
-        clipBehaviour: Clip.none,
+        clipBehavior: .none,
         child: AdvisedSpeedCellBody(
           metadata: metadata,
           settings: config.settings,

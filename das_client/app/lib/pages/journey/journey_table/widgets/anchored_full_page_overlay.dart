@@ -23,8 +23,8 @@ class AnchoredFullPageOverlay extends StatefulWidget {
     this.contentWidth = 360.0,
     this.openAnimationDuration = DASAnimation.mediumDuration,
     this.closeAnimationDuration = DASAnimation.shortDuration,
-    this.targetAnchor = Alignment.bottomCenter,
-    this.followerAnchor = Alignment.topCenter,
+    this.targetAnchor = .bottomCenter,
+    this.followerAnchor = .topCenter,
     this.offset = const Offset(0, sbbDefaultSpacing / 2),
     this.isClosableOnBackgroundTap = true,
   });
@@ -135,8 +135,8 @@ class _AnchoredFullPageOverlayState extends State<AnchoredFullPageOverlay> with 
       child: ScaleTransition(
         scale: _scaleAnimation,
         child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: widget.targetAnchor.x < 0.0 ? CrossAxisAlignment.start : CrossAxisAlignment.center,
+          mainAxisSize: .min,
+          crossAxisAlignment: widget.targetAnchor.x < 0.0 ? .start : .center,
           children: [
             Padding(
               padding: .symmetric(horizontal: widget.contentWidth / 4),
@@ -144,7 +144,7 @@ class _AnchoredFullPageOverlayState extends State<AnchoredFullPageOverlay> with 
                 AppAssets.shapeMenuArrow,
                 colorFilter: ColorFilter.mode(
                   ThemeUtil.getColor(context, SBBColors.milk, SBBColors.black),
-                  BlendMode.srcIn,
+                  .srcIn,
                 ),
               ),
             ),

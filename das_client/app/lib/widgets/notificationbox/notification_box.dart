@@ -43,7 +43,7 @@ class NotificationBox extends StatelessWidget {
 
   Widget _content(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: .start,
       children: [
         Row(
           children: [

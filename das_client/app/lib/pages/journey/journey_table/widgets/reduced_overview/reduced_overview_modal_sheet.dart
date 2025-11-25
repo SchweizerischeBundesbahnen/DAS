@@ -40,7 +40,7 @@ class _ReducedOverviewModalSheet extends StatelessWidget {
     return Padding(
       padding: const .symmetric(horizontal: sbbDefaultSpacing),
       child: Column(
-        mainAxisSize: MainAxisSize.max,
+        mainAxisSize: .max,
         spacing: sbbDefaultSpacing * 0.5,
         children: [
           _header(context),
@@ -60,7 +60,7 @@ class _ReducedOverviewModalSheet extends StatelessWidget {
         return SBBGroup(
           padding: const .symmetric(vertical: 20.0, horizontal: sbbDefaultSpacing),
           child: Row(
-            mainAxisSize: MainAxisSize.max,
+            mainAxisSize: .max,
             children: [
               Text(_formattedJourneyDate(context, journey), style: DASTextStyles.largeRoman),
               Spacer(),

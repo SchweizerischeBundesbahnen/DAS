@@ -67,7 +67,7 @@ class AdvisedSpeedCellBody extends StatelessWidget {
     final resolvedBackgroundColor = ThemeUtil.getColor(context, SBBColors.iron, SBBColors.platinum);
 
     return Stack(
-      clipBehavior: Clip.none,
+      clipBehavior: .none,
       children: [
         Positioned(
           top: -horizontalBorderWidth * 2,

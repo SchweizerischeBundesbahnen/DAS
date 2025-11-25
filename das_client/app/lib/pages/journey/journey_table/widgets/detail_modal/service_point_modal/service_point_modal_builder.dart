@@ -39,7 +39,7 @@ class ServicePointModalBuilder extends DASModalSheetBuilder {
   @override
   Widget header(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: .start,
       children: [
         _headerTitle(context),
         _headerSubtitle(context),
@@ -62,7 +62,7 @@ class ServicePointModalBuilder extends DASModalSheetBuilder {
         return AnimatedSwitcher(
           duration: DASAnimation.shortDuration,
           transitionBuilder: (child, animation) {
-            final centerLeftTween = AlignmentTween(begin: Alignment.centerLeft, end: Alignment.centerLeft);
+            final centerLeftTween = AlignmentTween(begin: .centerLeft, end: .centerLeft);
             return AlignTransition(
               alignment: centerLeftTween.animate(animation),
               child: ScaleTransition(scale: animation, child: child),

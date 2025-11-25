@@ -30,7 +30,7 @@ class JourneyIdentifier extends StatelessWidget {
             child: Text(
               formattedIdentifier,
               style: _resolvedTextStyle(context),
-              overflow: TextOverflow.ellipsis,
+              overflow: .ellipsis,
             ),
           ),
         );

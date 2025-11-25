@@ -51,7 +51,7 @@ class SignalRow extends CellRowBuilder<Signal> {
           signalFunctions
               .map((function) => isModalOpen ? function.localizedNameShort(context) : function.localizedName(context))
               .join('/'),
-          overflow: TextOverflow.ellipsis,
+          overflow: .ellipsis,
         );
       },
     );
@@ -64,9 +64,9 @@ class SignalRow extends CellRowBuilder<Signal> {
         child: SvgPicture.asset(
           key: signalLineChangeIconKey,
           AppAssets.iconSignalLaneChange,
-          colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
+          colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), .srcIn),
         ),
-        alignment: Alignment.center,
+        alignment: .center,
       );
     }
     return DASTableCell.empty();

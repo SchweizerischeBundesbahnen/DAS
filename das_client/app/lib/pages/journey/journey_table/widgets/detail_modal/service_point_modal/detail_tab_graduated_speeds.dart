@@ -28,8 +28,8 @@ class DetailTabGraduatedSpeeds extends StatelessWidget {
         if (breakSeries == null || relevantSpeeds.isEmpty) return _emptyInformation(context);
 
         return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: .start,
+          mainAxisAlignment: .start,
           children: [
             Text(
               '${context.l10n.w_service_point_modal_graduated_speed_break_series_title}: ${breakSeries.name}',
@@ -68,7 +68,7 @@ class DetailTabGraduatedSpeeds extends StatelessWidget {
         return Padding(
           padding: const .symmetric(horizontal: sbbDefaultSpacing, vertical: 10),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: .start,
             children: [
               SpeedDisplay(
                 speed: speed.speed,

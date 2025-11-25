@@ -19,7 +19,7 @@ class DASTableCell {
     this.color,
     this.padding,
     this.alignment,
-    this.clipBehaviour = Clip.hardEdge,
+    this.clipBehavior = Clip.hardEdge,
   });
 
   const DASTableCell.empty({Color? color, VoidCallback? onTap, EdgeInsets? padding, Clip clipBehaviour = Clip.hardEdge})
@@ -34,7 +34,7 @@ class DASTableCell {
   final VoidCallback? onTap;
   final Color? color;
   final EdgeInsets? padding;
-  final Clip clipBehaviour;
+  final Clip clipBehavior;
 
   /// If provided, wraps child in Align widget. Can also be defined in [DASTableColumn]
   final Alignment? alignment;

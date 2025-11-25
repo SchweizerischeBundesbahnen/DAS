@@ -72,7 +72,7 @@ class Accordion extends StatelessWidget {
           horizontal: _horizontalPadding,
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: .start,
           children: [
             _header(),
             isExpanded
@@ -99,7 +99,7 @@ class Accordion extends StatelessWidget {
             title,
             style: DASTextStyles.largeBold,
             maxLines: 1,
-            overflow: TextOverflow.ellipsis,
+            overflow: .ellipsis,
           ),
         ),
         Icon(

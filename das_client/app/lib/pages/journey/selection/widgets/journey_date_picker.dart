@@ -26,7 +26,7 @@ class JourneyDatePicker extends StatelessWidget {
     padding: .symmetric(vertical: sbbDefaultSpacing * .5, horizontal: sbbDefaultSpacing),
     child: Column(
       spacing: sbbDefaultSpacing * .5,
-      mainAxisSize: MainAxisSize.min,
+      mainAxisSize: .min,
       children: availableStartDates.map((d) => _dateItem(context, d)).toList(),
     ),
   );

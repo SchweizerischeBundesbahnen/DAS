@@ -30,13 +30,13 @@ class ExtendedMenu extends StatelessWidget {
           create: (_) => viewModel,
           child: Builder(
             builder: (context) => Column(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: .start,
               children: [
                 _menuHeader(context, hideOverlay),
                 SizedBox(height: sbbDefaultSpacing),
                 SBBGroup(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: .start,
                     children: [
                       _breakSlipItem(context),
                       _transportDocumentItem(context),
@@ -56,7 +56,7 @@ class ExtendedMenu extends StatelessWidget {
 
   Widget _menuHeader(BuildContext context, VoidCallback hideOverlay) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: .center,
       children: [
         Expanded(
           child: Text(

@@ -25,7 +25,7 @@ class CurvePointRow extends CellRowBuilder<CurvePoint> {
     return DASTableCell(
       child: Text(
         data.curveType?.localizedName(context) ?? '',
-        overflow: TextOverflow.ellipsis,
+        overflow: .ellipsis,
       ),
     );
   }
@@ -37,7 +37,7 @@ class CurvePointRow extends CellRowBuilder<CurvePoint> {
         AppAssets.iconCurveStart,
         key: curvePointIconKey,
       ),
-      alignment: Alignment.center,
+      alignment: .center,
     );
   }
 }

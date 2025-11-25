@@ -25,9 +25,9 @@ class WhistleRow extends CellRowBuilder<Whistle> {
       child: SvgPicture.asset(
         AppAssets.iconWhistle,
         key: whistleIconKey,
-        colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
+        colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), .srcIn),
       ),
-      alignment: Alignment.centerLeft,
+      alignment: .centerLeft,
     );
   }
 }

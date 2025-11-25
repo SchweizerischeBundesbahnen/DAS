@@ -36,8 +36,8 @@ class BaliseRow extends CellRowBuilder<Balise> {
             child: Text(data.kilometre[0].toStringAsFixed(3)),
           ),
         ),
-        clipBehaviour: Clip.none,
-        alignment: Alignment.centerLeft,
+        clipBehavior: .none,
+        alignment: .centerLeft,
       );
     }
   }
@@ -47,7 +47,7 @@ class BaliseRow extends CellRowBuilder<Balise> {
     final levelCrossingCount = '(${data.amountLevelCrossings} ${context.l10n.p_journey_table_level_crossing})';
     return DASTableCell(
       child: Text(data.amountLevelCrossings > 1 && !isGrouped ? levelCrossingCount : ''),
-      alignment: Alignment.centerRight,
+      alignment: .centerRight,
     );
   }
 
@@ -58,9 +58,9 @@ class BaliseRow extends CellRowBuilder<Balise> {
       child: SvgPicture.asset(
         AppAssets.iconBalise,
         key: baliseIconKey,
-        colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
+        colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), .srcIn),
       ),
-      alignment: Alignment.centerLeft,
+      alignment: .centerLeft,
     );
   }
 }

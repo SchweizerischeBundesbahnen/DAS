@@ -14,7 +14,7 @@ class AdditionalSpeedRestrictionModalBuilder extends DASModalSheetBuilder {
   Widget header(BuildContext context) {
     final viewModel = context.read<AdditionalSpeedRestrictionModalViewModel>();
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: .start,
       children: [
         Text(context.l10n.w_additional_speed_restriction_modal_title, style: DASTextStyles.largeRoman),
         StreamBuilder(

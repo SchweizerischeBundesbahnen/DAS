@@ -37,8 +37,8 @@ class LevelCrossingRow extends CellRowBuilder<LevelCrossing> {
             child: Text(data.kilometre[0].toStringAsFixed(3)),
           ),
         ),
-        clipBehaviour: Clip.none,
-        alignment: Alignment.centerLeft,
+        clipBehavior: .none,
+        alignment: .centerLeft,
       );
     }
   }
@@ -47,7 +47,7 @@ class LevelCrossingRow extends CellRowBuilder<LevelCrossing> {
   DASTableCell informationCell(BuildContext context) {
     return DASTableCell(
       child: Text(context.l10n.p_journey_table_level_crossing),
-      alignment: Alignment.centerRight,
+      alignment: .centerRight,
     );
   }
 
@@ -63,9 +63,9 @@ class LevelCrossingRow extends CellRowBuilder<LevelCrossing> {
         child: SvgPicture.asset(
           AppAssets.iconBalise,
           key: baliseIconLevelCrossingKey,
-          colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
+          colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), .srcIn),
         ),
-        alignment: Alignment.centerLeft,
+        alignment: .centerLeft,
       );
     } else {
       return DASTableCell.empty();

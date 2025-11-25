@@ -43,8 +43,8 @@ class _BreakSeriesSelectionState extends State<BreakSeriesSelection> {
         child: SizedBox(
           width: double.infinity,
           child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: .min,
+            crossAxisAlignment: .start,
             children: _rows(context),
           ),
         ),

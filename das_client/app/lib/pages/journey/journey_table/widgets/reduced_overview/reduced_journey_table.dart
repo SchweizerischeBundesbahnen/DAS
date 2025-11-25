@@ -109,7 +109,7 @@ class ReducedJourneyTable extends StatelessWidget {
       DASTableColumn(
         id: ColumnDefinition.informationCell.index,
         expanded: true,
-        alignment: Alignment.centerLeft,
+        alignment: .centerLeft,
         child: Text(context.l10n.p_journey_table_journey_information_label),
       ),
       DASTableColumn(id: ColumnDefinition.icons2.index, width: 48.0), // icons column

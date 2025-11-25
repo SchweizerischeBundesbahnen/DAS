@@ -44,8 +44,8 @@ class SpeedDisplay extends StatelessWidget {
 
   Widget _rowSpeed(BuildContext context, IncomingOutgoingSpeed ioSpeed) {
     return Row(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisSize: .min,
+      crossAxisAlignment: .center,
       children: [
         _visualizedSpeeds(key: incomingSpeedsKey, speeds: ioSpeed.incoming),
         Text(
@@ -59,7 +59,7 @@ class SpeedDisplay extends StatelessWidget {
 
   Widget _columnSpeed(BuildContext context, IncomingOutgoingSpeed ioSpeed) {
     return Column(
-      mainAxisSize: MainAxisSize.min,
+      mainAxisSize: .min,
       children: [
         _visualizedSpeeds(key: incomingSpeedsKey, speeds: ioSpeed.incoming),
         Padding(
@@ -80,7 +80,7 @@ class SpeedDisplay extends StatelessWidget {
     if (singleSpeeds.hasSquaredOrCircled) {
       return Row(
         key: key,
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: .min,
         children: singleSpeeds
             .map((speed) => _speedText(speed))
             .withDivider(

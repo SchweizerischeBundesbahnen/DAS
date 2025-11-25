@@ -38,7 +38,7 @@ class WarnFunctionModalSheet extends StatelessWidget {
       key: warnappModalSheetKey,
       padding: const .fromLTRB(sbbDefaultSpacing, 64.0, sbbDefaultSpacing, sbbDefaultSpacing * 2),
       child: Column(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: .min,
         spacing: sbbDefaultSpacing * 2,
         children: [
           SvgPicture.asset(AppAssets.imageTypeNSignalStop),

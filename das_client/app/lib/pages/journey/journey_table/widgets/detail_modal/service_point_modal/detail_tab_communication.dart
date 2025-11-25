@@ -22,7 +22,7 @@ class DetailTabCommunication extends StatelessWidget {
       child: SizedBox(
         width: double.maxFinite,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: .start,
           children: [
             _departureAuthorization(context),
             _communicationNetworkType(context),
@@ -61,8 +61,8 @@ class DetailTabCommunication extends StatelessWidget {
     return Padding(
       padding: const .symmetric(vertical: 4.0),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: .start,
+        mainAxisAlignment: .start,
         spacing: 4.0,
         children: [
           SizedBox(width: 60.0, child: Text(contact.contactIdentifier, style: DASTextStyles.smallBold)),
@@ -102,7 +102,7 @@ class DetailTabCommunication extends StatelessWidget {
     return Padding(
       padding: const .symmetric(horizontal: sbbDefaultSpacing, vertical: 10.0),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: .start,
         spacing: 4.0,
         children: [
           if (contact.contactRole != null) Text(contact.contactRole!, style: DASTextStyles.mediumRoman),
@@ -122,7 +122,7 @@ class DetailTabCommunication extends StatelessWidget {
         }
 
         return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: .start,
           children: [
             Text(context.l10n.w_service_point_modal_communication_network, style: DASTextStyles.smallRoman),
             Padding(
@@ -145,7 +145,7 @@ class DetailTabCommunication extends StatelessWidget {
 
         return Column(
           key: departureAuthorizationKey,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: .start,
           children: [
             Text(context.l10n.w_service_point_modal_departure_authorization, style: DASTextStyles.smallRoman),
             Padding(

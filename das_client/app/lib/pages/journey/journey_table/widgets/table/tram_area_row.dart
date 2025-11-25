@@ -41,7 +41,7 @@ class TramAreaRow extends CellRowBuilder<TramArea> {
     final endKilometre = data.endKilometre.toStringAsFixed(1);
     return Text(
       '${context.l10n.p_journey_table_kilometre_label} $startKilometre-$endKilometre',
-      overflow: TextOverflow.ellipsis,
+      overflow: .ellipsis,
     );
   }
 
@@ -52,9 +52,9 @@ class TramAreaRow extends CellRowBuilder<TramArea> {
       child: SvgPicture.asset(
         AppAssets.iconTramArea,
         key: tramAreaIconKey,
-        colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
+        colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), .srcIn),
       ),
-      alignment: Alignment.centerLeft,
+      alignment: .centerLeft,
     );
   }
 }

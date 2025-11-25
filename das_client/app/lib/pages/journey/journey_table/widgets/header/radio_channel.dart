@@ -27,14 +27,14 @@ class RadioChannel extends StatelessWidget {
             viewModel.open(context, tab: .communication, servicePoint: model.lastServicePoint);
           },
           child: Align(
-            alignment: Alignment.centerRight,
+            alignment: .centerRight,
             child: DotIndicator(
               show: model.showDotIndicator,
               offset: Offset(-6.0, -8.0),
               child: Row(
                 spacing: sbbDefaultSpacing * 0.5,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: .center,
+                mainAxisSize: .min,
                 children: [
                   const Icon(SBBIcons.telephone_gsm_small),
                   Flexible(child: RadioContactChannels(mainContactIdentifiers: model.mainContactsIdentifier)),

@@ -20,11 +20,11 @@ class NextStop extends StatelessWidget {
       key: tappableAreaKey,
       onTap: () => showReducedOverviewModalSheet(context),
       child: Row(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: .min,
         children: [
           SvgPicture.asset(
             AppAssets.iconHeaderStop,
-            colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
+            colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), .srcIn),
           ),
           _servicePointName(context),
         ],
@@ -48,7 +48,7 @@ class NextStop extends StatelessWidget {
           child: Text(
             displayedStop?.name ?? context.l10n.c_unknown,
             style: DASTextStyles.xLargeLight,
-            overflow: TextOverflow.ellipsis,
+            overflow: .ellipsis,
           ),
         );
       },

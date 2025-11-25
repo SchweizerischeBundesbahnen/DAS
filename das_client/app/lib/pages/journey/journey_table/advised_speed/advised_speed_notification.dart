@@ -84,7 +84,7 @@ class AdvisedSpeedNotification extends StatelessWidget {
       constraints: BoxConstraints(minHeight: 54.0),
       padding: .only(left: 22.0),
       child: Align(
-        alignment: Alignment.centerLeft,
+        alignment: .centerLeft,
         child: Row(
           children: [
             if (icon != null) ...[
@@ -114,7 +114,7 @@ extension _AdvisedSpeedSegmentX on AdvisedSpeedSegment {
         ? SvgPicture.asset(
             iconName,
             key: AdvisedSpeedNotification.advisedSpeedNotificationIconKey,
-            colorFilter: ColorFilter.mode(isDarkMode ? SBBColors.black : SBBColors.white, BlendMode.srcIn),
+            colorFilter: ColorFilter.mode(isDarkMode ? SBBColors.black : SBBColors.white, .srcIn),
           )
         : null;
   }

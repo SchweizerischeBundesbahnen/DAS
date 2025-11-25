@@ -22,7 +22,7 @@ class DetailsTable extends StatelessWidget {
         borderRadius: BorderRadius.circular(sbbDefaultSpacing * 0.5),
       ),
       child: Column(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: .min,
         children: data.entries
             .mapIndexed((index, row) => _tableRow(context, row.key, row.value, isLastItem: index == data.length - 1))
             .toList(),
@@ -37,7 +37,7 @@ class DetailsTable extends StatelessWidget {
     final cellPadding = sbbDefaultSpacing * 0.5;
     return IntrinsicHeight(
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment: .stretch,
         children: [
           Container(
             width: _maxTitleWidth + cellPadding * 2,
