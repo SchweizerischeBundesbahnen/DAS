@@ -22,10 +22,13 @@ class BreakLoadSlipViewModel {
   StreamSubscription? _formationSubscription;
 
   final _rxFormation = BehaviorSubject<Formation?>.seeded(null);
+  final _rxFormationRun = BehaviorSubject<FormationRun?>.seeded(null);
 
   Stream<Formation?> get formation => _rxFormation.stream;
+  Stream<FormationRun?> get formationRun => _rxFormationRun.stream;
 
   Formation? get formationValue => _rxFormation.value;
+  FormationRun? get formationRunValue => _rxFormationRun.value;
 
   void _init() {
     _journeySubscription = _journeyTableViewModel.journey.listen((journey) {
@@ -39,12 +42,14 @@ class BreakLoadSlipViewModel {
   void _subscribeToFormation(TrainIdentification? trainIdentification) {
     _formationSubscription?.cancel();
     _rxFormation.add(null);
+    _rxFormationRun.add(null);
 
     if (trainIdentification != null) {
       _formationSubscription = _formationRepository
           .watchFormation(trainIdentification.trainNumber, trainIdentification.ru.companyCode, trainIdentification.date)
           .listen((formation) {
             _rxFormation.add(formation);
+            _rxFormationRun.add(formation?.formationRuns.firstOrNull);
           });
     }
   }
@@ -54,5 +59,27 @@ class BreakLoadSlipViewModel {
     _journeySubscription = null;
     _formationSubscription?.cancel();
     _formationSubscription = null;
+  }
+
+  void previous() {
+    final formation = formationValue;
+    final activeFormationRun = formationRunValue;
+    if (formation == null || activeFormationRun == null) return;
+
+    final currentIndex = formation.formationRuns.indexOf(activeFormationRun);
+    if (currentIndex != -1 && currentIndex > 0) {
+      _rxFormationRun.add(formation.formationRuns[currentIndex - 1]);
+    }
+  }
+
+  void next() {
+    final formation = formationValue;
+    final activeFormationRun = formationRunValue;
+    if (formation == null || activeFormationRun == null) return;
+
+    final currentIndex = formation.formationRuns.indexOf(activeFormationRun);
+    if (currentIndex != -1 && currentIndex < formation.formationRuns.length - 1) {
+      _rxFormationRun.add(formation.formationRuns[currentIndex + 1]);
+    }
   }
 }

@@ -3,7 +3,7 @@ import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_brake_
 import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_data_row.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
-import 'package:formation/src/model/formation_run.dart';
+import 'package:formation/component.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class BreakLoadSlipBrakeDetails extends StatelessWidget {

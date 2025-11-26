@@ -8,10 +8,12 @@ import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_header
 import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_other_data.dart';
 import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_special_restrictions.dart';
 import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_train_details.dart';
+import 'package:app/pages/journey/break_load_slip/widgets/formation_run_navigation_buttons.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:formation/component.dart';
 import 'package:provider/provider.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 @RoutePage()
@@ -39,28 +41,34 @@ class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
     final viewModel = context.read<BreakLoadSlipViewModel>();
 
     return StreamBuilder(
-      stream: viewModel.formation,
-      initialData: viewModel.formationValue,
+      stream: CombineLatestStream.list([viewModel.formation, viewModel.formationRun]),
+      initialData: [viewModel.formationValue, viewModel.formationRunValue],
       builder: (context, snapshot) {
-        if (!snapshot.hasData || snapshot.data == null) return _noDataAvailable(context);
+        final snap = snapshot.data;
+        if (snap == null || snap[0] == null || snap[1] == null) return _noDataAvailable(context);
 
-        final formation = snapshot.requireData!;
-        final formationRun = formation.formationRuns[0];
+        final formation = snap[0] as Formation;
+        final formationRun = snap[1] as FormationRun;
 
-        return Column(
-          spacing: sbbDefaultSpacing,
+        return Stack(
           children: [
-            BreakLoadSlipHeader(formationRun: formationRun),
-            SingleChildScrollView(
-              child: Column(
-                spacing: sbbDefaultSpacing,
-                children: [
-                  BreakLoadSlipTrainDetails(formation: formation, formationRun: formationRun),
-                  _otherDataAndBrakeDetailsRow(context, formation, formationRun),
-                  _hauledLoadSpecialAndButtonRow(context, formationRun),
-                ],
-              ),
+            Column(
+              spacing: sbbDefaultSpacing,
+              children: [
+                BreakLoadSlipHeader(formationRun: formationRun),
+                SingleChildScrollView(
+                  child: Column(
+                    spacing: sbbDefaultSpacing,
+                    children: [
+                      BreakLoadSlipTrainDetails(formation: formation, formationRun: formationRun),
+                      _otherDataAndBrakeDetailsRow(context, formation, formationRun),
+                      _hauledLoadSpecialAndButtonRow(context, formationRun),
+                    ],
+                  ),
+                ),
+              ],
             ),
+            Align(alignment: Alignment.bottomCenter, child: FormationRunNavigationButtons()),
           ],
         );
       },
