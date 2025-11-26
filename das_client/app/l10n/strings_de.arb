@@ -34,6 +34,21 @@
   "p_login_login_button_description": "Mit Ihrem Account einloggen",
   "p_login_login_failed": "Login fehlgeschlagen",
   "p_break_load_slip_page_title": "Brems- und Lastzettel",
+  "p_break_load_slip_header_title": "Zug und Bremsreihe: {trainSeries} {breakSeries}%",
+  "@p_break_load_slip_header_title": {
+    "type": "text",
+    "placeholders": {
+      "trainSeries": {},
+      "breakSeries": {}
+    }
+  },
+  "p_break_load_slip_header_subtitle": "Erstellt am {dateTime}",
+  "@p_break_load_slip_header_subtitle": {
+    "type": "text",
+    "placeholders": {
+      "dateTime": {}
+    }
+  },
   "p_break_load_slip_train_data_title": "Zugdaten",
   "p_break_load_slip_train_data_train_number": "Zugnummer",
   "p_break_load_slip_train_data_date": "Datum",
@@ -160,6 +175,8 @@
   "w_additional_speed_restriction_modal_table_label_from": "Von",
   "w_additional_speed_restriction_modal_table_label_until": "Bis",
   "w_additional_speed_restriction_modal_table_label_reason": "Grund",
+  "c_yes": "Ja",
+  "c_no": "Nein",
   "c_ru_sbb": "SBB",
   "c_ru_sbb_p": "SBBP",
   "c_ru_sbb_c": "SBBC",

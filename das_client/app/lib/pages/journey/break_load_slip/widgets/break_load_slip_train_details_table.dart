@@ -1,19 +1,22 @@
 import 'package:app/i18n/i18n.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:formation/component.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 typedef TextFunction = Text Function(String);
 
 class BreakLoadSlipTrainDetailsTable extends StatelessWidget {
-  const BreakLoadSlipTrainDetailsTable({super.key});
+  const BreakLoadSlipTrainDetailsTable({required this.formationRun, super.key});
+
+  final FormationRun formationRun;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         _tableRow(
-          '',
+          null,
           context.l10n.p_break_load_slip_train_data_table_header_traction,
           context.l10n.p_break_load_slip_train_data_table_header_hauled_load,
           context.l10n.p_break_load_slip_train_data_table_header_formation,
@@ -22,22 +25,42 @@ class BreakLoadSlipTrainDetailsTable extends StatelessWidget {
         ),
         const SizedBox(height: sbbDefaultSpacing * 0.25),
         _tableDivider(height: 2),
-        _tableRow(context.l10n.p_break_load_slip_train_data_table_vmax, '160', '100', '100'),
+        _tableRow(
+          context.l10n.p_break_load_slip_train_data_table_vmax,
+          formationRun.tractionMaxSpeedInKmh?.toString(),
+          formationRun.hauledLoadMaxSpeedInKmh?.toString(),
+          formationRun.formationMaxSpeedInKmh?.toString(),
+        ),
         _tableDivider(),
-        _tableRow(context.l10n.p_break_load_slip_train_data_table_length, '19', '298', '317'),
+        _tableRow(
+          context.l10n.p_break_load_slip_train_data_table_length,
+          (formationRun.tractionLengthInCm / 100).toString(),
+          (formationRun.hauledLoadLengthInCm / 100).toString(),
+          (formationRun.formationLengthInCm / 100).toString(),
+        ),
         _tableDivider(),
-        _tableRow(context.l10n.p_break_load_slip_train_data_table_weight, '90', '787', '877'),
+        _tableRow(
+          context.l10n.p_break_load_slip_train_data_table_weight,
+          formationRun.tractionWeightInT.toString(),
+          formationRun.hauledLoadWeightInT.toString(),
+          formationRun.formationWeightInT.toString(),
+        ),
         _tableDivider(),
-        _tableRow(context.l10n.p_break_load_slip_train_data_table_braked_weight, '58', '682', '740'),
+        _tableRow(
+          context.l10n.p_break_load_slip_train_data_table_braked_weight,
+          formationRun.tractionBrakedWeightInT.toString(),
+          formationRun.hauledLoadBrakedWeightInT.toString(),
+          formationRun.formationBrakedWeightInT.toString(),
+        ),
       ],
     );
   }
 
   Widget _tableRow(
-    String label,
-    String c1,
-    String c2,
-    String c3, {
+    String? label,
+    String? c1,
+    String? c2,
+    String? c3, {
     TextStyle style = DASTextStyles.smallRoman,
     EdgeInsetsGeometry? padding,
   }) {
@@ -47,10 +70,10 @@ class BreakLoadSlipTrainDetailsTable extends StatelessWidget {
           const EdgeInsets.symmetric(vertical: sbbDefaultSpacing * 0.25).copyWith(left: sbbDefaultSpacing * 0.5),
       child: Row(
         children: [
-          Expanded(flex: 3, child: _tableText(label, style)),
-          Expanded(flex: 2, child: Center(child: _tableText(c1, style))),
-          Expanded(flex: 2, child: Center(child: _tableText(c2, style))),
-          Expanded(flex: 2, child: Center(child: _tableText(c3, style))),
+          Expanded(flex: 3, child: _tableText(label ?? '', style)),
+          Expanded(flex: 2, child: Center(child: _tableText(c1 ?? '', style))),
+          Expanded(flex: 2, child: Center(child: _tableText(c2 ?? '', style))),
+          Expanded(flex: 2, child: Center(child: _tableText(c3 ?? '', style))),
         ],
       ),
     );

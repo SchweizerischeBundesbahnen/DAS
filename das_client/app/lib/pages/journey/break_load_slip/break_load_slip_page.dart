@@ -10,6 +10,7 @@ import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_specia
 import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_train_details.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:formation/component.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -43,17 +44,20 @@ class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.data == null) return _noDataAvailable(context);
 
+        final formation = snapshot.requireData!;
+        final formationRun = formation.formationRuns[0];
+
         return Column(
           spacing: sbbDefaultSpacing,
           children: [
-            BreakLoadSlipHeader(),
+            BreakLoadSlipHeader(formationRun: formationRun),
             SingleChildScrollView(
               child: Column(
                 spacing: sbbDefaultSpacing,
                 children: [
-                  BreakLoadSlipTrainDetails(),
-                  _otherDataAndBrakeDetailsRow(context),
-                  _hauledLoadSpecialAndButtonRow(context),
+                  BreakLoadSlipTrainDetails(formation: formation, formationRun: formationRun),
+                  _otherDataAndBrakeDetailsRow(context, formation, formationRun),
+                  _hauledLoadSpecialAndButtonRow(context, formationRun),
                 ],
               ),
             ),
@@ -73,7 +77,7 @@ class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
     );
   }
 
-  Row _otherDataAndBrakeDetailsRow(BuildContext context) {
+  Row _otherDataAndBrakeDetailsRow(BuildContext context, Formation formation, FormationRun formationRun) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -81,21 +85,21 @@ class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
           flex: 3,
           child: Padding(
             padding: const EdgeInsets.only(left: sbbDefaultSpacing, right: sbbDefaultSpacing * 0.5),
-            child: BreakLoadSlipOtherData(),
+            child: BreakLoadSlipOtherData(formation: formation, formationRun: formationRun),
           ),
         ),
         Expanded(
           flex: 7,
           child: Padding(
             padding: const EdgeInsets.only(left: sbbDefaultSpacing * 0.5, right: sbbDefaultSpacing),
-            child: BreakLoadSlipBrakeDetails(),
+            child: BreakLoadSlipBrakeDetails(formationRun: formationRun),
           ),
         ),
       ],
     );
   }
 
-  Row _hauledLoadSpecialAndButtonRow(BuildContext context) {
+  Row _hauledLoadSpecialAndButtonRow(BuildContext context, FormationRun formationRun) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -103,14 +107,14 @@ class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
           flex: 3,
           child: Padding(
             padding: const EdgeInsets.only(left: sbbDefaultSpacing, right: sbbDefaultSpacing * 0.5),
-            child: BreakLoadSlipHauledLoadDetails(),
+            child: BreakLoadSlipHauledLoadDetails(formationRun: formationRun),
           ),
         ),
         Expanded(
           flex: 3,
           child: Padding(
             padding: const EdgeInsets.only(left: sbbDefaultSpacing * 0.5, right: sbbDefaultSpacing * 0.5),
-            child: BreakLoadSlipSpecialRestrictions(),
+            child: BreakLoadSlipSpecialRestrictions(formationRun: formationRun),
           ),
         ),
         Expanded(

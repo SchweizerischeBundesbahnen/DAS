@@ -3,10 +3,13 @@ import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_brake_
 import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_data_row.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:formation/src/model/formation_run.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class BreakLoadSlipBrakeDetails extends StatelessWidget {
-  const BreakLoadSlipBrakeDetails({super.key});
+  const BreakLoadSlipBrakeDetails({required this.formationRun, super.key});
+
+  final FormationRun formationRun;
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +37,18 @@ class BreakLoadSlipBrakeDetails extends StatelessWidget {
             labelStyle: DASTextStyles.smallBold,
           ),
           SizedBox(height: sbbDefaultSpacing * 0.5),
-          BreakLoadSlipDataRow(context.l10n.p_break_load_slip_brake_details_brake_ratio_front, 'ok'),
-          BreakLoadSlipDataRow(context.l10n.p_break_load_slip_brake_details_brake_ratio_back, 'ok'),
-          BreakLoadSlipDataRow(context.l10n.p_break_load_slip_brake_details_min_holding_force, '124'),
+          BreakLoadSlipDataRow(
+            context.l10n.p_break_load_slip_brake_details_brake_ratio_front,
+            formationRun.gradientUphillMaxInPermille.toString(),
+          ),
+          BreakLoadSlipDataRow(
+            context.l10n.p_break_load_slip_brake_details_brake_ratio_back,
+            formationRun.gradientDownhillMaxInPermille.toString(),
+          ),
+          BreakLoadSlipDataRow(
+            context.l10n.p_break_load_slip_brake_details_min_holding_force,
+            formationRun.slopeMaxForHoldingForceMinInPermille,
+          ),
         ],
       ),
     );
@@ -45,7 +57,7 @@ class BreakLoadSlipBrakeDetails extends StatelessWidget {
   Widget _brakeDetailsColumn2(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(sbbDefaultSpacing * 0.5).copyWith(right: 0.0),
-      child: BreakLoadSlipBrakeDetailsTable(),
+      child: BreakLoadSlipBrakeDetailsTable(formationRun: formationRun),
     );
   }
 }

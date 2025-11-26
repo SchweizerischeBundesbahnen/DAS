@@ -3,10 +3,15 @@ import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_data_r
 import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_train_details_table.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:formation/component.dart';
+import 'package:intl/intl.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class BreakLoadSlipTrainDetails extends StatelessWidget {
-  const BreakLoadSlipTrainDetails({super.key});
+  const BreakLoadSlipTrainDetails({required this.formation, required this.formationRun, super.key});
+
+  final Formation formation;
+  final FormationRun formationRun;
 
   @override
   Widget build(BuildContext context) {
@@ -38,11 +43,23 @@ class BreakLoadSlipTrainDetails extends StatelessWidget {
             labelStyle: DASTextStyles.smallBold,
           ),
           SizedBox(height: sbbDefaultSpacing * 0.5),
-          BreakLoadSlipDataRow(context.l10n.p_break_load_slip_train_data_train_number, '62159'),
-          BreakLoadSlipDataRow(context.l10n.p_break_load_slip_train_data_date, '27.01.2025'),
-          BreakLoadSlipDataRow(context.l10n.p_break_load_slip_train_data_from, 'Graftal'),
-          BreakLoadSlipDataRow(context.l10n.p_break_load_slip_train_data_to, 'Twinn'),
-          BreakLoadSlipDataRow(context.l10n.p_break_load_slip_train_data_train_series, 'A 80%'),
+          BreakLoadSlipDataRow(
+            context.l10n.p_break_load_slip_train_data_train_number,
+            formation.operationalTrainNumber,
+          ),
+          BreakLoadSlipDataRow(
+            context.l10n.p_break_load_slip_train_data_date,
+            DateFormat('yyyy.MM.dd').format(formation.operationalDay),
+          ),
+          BreakLoadSlipDataRow(
+            context.l10n.p_break_load_slip_train_data_from,
+            formationRun.tafTapLocationReferenceStart,
+          ),
+          BreakLoadSlipDataRow(context.l10n.p_break_load_slip_train_data_to, formationRun.tafTapLocationReferenceEnd),
+          BreakLoadSlipDataRow(
+            context.l10n.p_break_load_slip_train_data_train_series,
+            '${formationRun.trainCategoryCode ?? ''} ${formationRun.brakedWeightPercentage ?? ''}%',
+          ),
         ],
       ),
     );
@@ -57,10 +74,22 @@ class BreakLoadSlipTrainDetails extends StatelessWidget {
           // Empty row for alignment with other columns
           BreakLoadSlipDataRow(' ', null, labelStyle: DASTextStyles.smallBold),
           SizedBox(height: sbbDefaultSpacing * 0.5),
-          BreakLoadSlipDataRow(context.l10n.p_break_load_slip_train_data_train_traction, 'Q (420) und P (843)'),
-          BreakLoadSlipDataRow(context.l10n.p_break_load_slip_train_data_brake_position_g_leading_traction, 'Ja'),
-          BreakLoadSlipDataRow(context.l10n.p_break_load_slip_train_data_brake_position_g_break_unit, 'Nein'),
-          BreakLoadSlipDataRow(context.l10n.p_break_load_slip_train_data_brake_position_g_load_hauled, 'Nein'),
+          BreakLoadSlipDataRow(
+            context.l10n.p_break_load_slip_train_data_train_traction,
+            formationRun.additionalTractions.join(' '),
+          ),
+          BreakLoadSlipDataRow(
+            context.l10n.p_break_load_slip_train_data_brake_position_g_leading_traction,
+            formationRun.brakePositionGForLeadingTraction == true ? context.l10n.c_yes : context.l10n.c_no,
+          ),
+          BreakLoadSlipDataRow(
+            context.l10n.p_break_load_slip_train_data_brake_position_g_break_unit,
+            formationRun.brakePositionGForBrakeUnit1to5 == true ? context.l10n.c_yes : context.l10n.c_no,
+          ),
+          BreakLoadSlipDataRow(
+            context.l10n.p_break_load_slip_train_data_brake_position_g_load_hauled,
+            formationRun.brakePositionGForLoadHauled == true ? context.l10n.c_yes : context.l10n.c_no,
+          ),
         ],
       ),
     );
@@ -69,7 +98,7 @@ class BreakLoadSlipTrainDetails extends StatelessWidget {
   Widget _trainDataColumn3(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(sbbDefaultSpacing * 0.5).copyWith(right: 0.0),
-      child: BreakLoadSlipTrainDetailsTable(),
+      child: BreakLoadSlipTrainDetailsTable(formationRun: formationRun),
     );
   }
 }
