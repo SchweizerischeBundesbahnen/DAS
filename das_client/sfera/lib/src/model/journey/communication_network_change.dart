@@ -8,10 +8,12 @@ class CommunicationNetworkChange extends JourneyPoint {
   const CommunicationNetworkChange({
     required this.communicationNetworkType,
     required super.order,
+    this.isServicePoint = false,
     super.kilometre = const [],
   }) : super(type: Datatype.communicationNetworkChannel);
 
   final CommunicationNetworkType communicationNetworkType;
+  final bool isServicePoint;
 
   @override
   bool operator ==(Object other) =>

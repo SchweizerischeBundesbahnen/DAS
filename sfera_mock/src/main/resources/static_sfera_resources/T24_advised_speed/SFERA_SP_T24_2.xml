@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T24_2" SP_VersionMajor="1"
-                SP_VersionMinor="0" SP_Length="3100" SP_Status="Valid">
+                SP_VersionMinor="1" SP_Length="3100" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
     </SP_Zone>
@@ -100,7 +100,10 @@
     </SP_Areas>
 
     <SP_ContextInformation>
-        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-P"/>
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="900" endLocation="900" communicationNetworkType="GSM-P"/>
+        <KilometreReferencePoint location="900">
+            <KM_Reference kmRef="46.0"/>
+        </KilometreReferencePoint>
         <KilometreReferencePoint location="950">
             <KM_Reference kmRef="45.2"/>
         </KilometreReferencePoint>

@@ -1,5 +1,4 @@
 import 'package:app/pages/journey/journey_table/widgets/communication_network_icon.dart';
-import 'package:app/pages/journey/journey_table/widgets/header/sim_identifier.dart';
 import 'package:app/pages/journey/journey_table/widgets/journey_table.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/additional_speed_restriction_row.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/balise_row.dart';
@@ -27,19 +26,15 @@ void main() {
   group('train journey table test', () {
     testWidgets('test displays kilometer and communication network changes correctly', (tester) async {
       await prepareAndStartApp(tester);
-      await loadJourney(tester, trainNumber: 'T14');
+      await loadJourney(tester, trainNumber: 'T9999');
+
+      // find pause button and press it
+      final pauseButton = find.text(l10n.p_journey_header_button_pause);
+      expect(pauseButton, findsOneWidget);
 
       // find gsmP-Icon
       final gsmPKey = find.byKey(CommunicationNetworkIcon.gsmPKey);
       expect(gsmPKey, findsOneWidget);
-
-      // find gsmR-Icon
-      final gsmRKey = find.byKey(CommunicationNetworkIcon.gsmRKey);
-      expect(gsmRKey, findsOneWidget);
-
-      // find SIM-Key
-      final simKey = find.byKey(SimIdentifier.simKey);
-      expect(simKey, findsOneWidget);
 
       await disconnect(tester);
     });

@@ -26,6 +26,9 @@ jobs:
       das_playground--release_created: ${{ steps.release.outputs.das_playground--release_created }}
       das_playground--version: ${{ steps.release.outputs.das_playground--version }}
       das_playground--tag_name: ${{ steps.release.outputs.das_playground--tag_name }}
+      das_admin_tool--release_created: ${{ steps.release.outputs.das_admin_tool--release_created }}
+      das_admin_tool--version: ${{ steps.release.outputs.das_admin_tool--version }}
+      das_admin_tool--tag_name: ${{ steps.release.outputs.das_admin_tool--tag_name }}
     steps:
       - uses: googleapis/release-please-action@v4
         id: release
@@ -138,6 +141,37 @@ jobs:
         env:
           IMAGE_ID: ghcr.io/${{ github.repository }}/webapp
           VERSION: ${{ needs.release-please.outputs.das_playground--version }}
+          DOCKER_BUILDKIT: 1
+        run: |
+          # Convert to lowercase
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[:upper:]' '[:lower:]')
+
+          docker build -t $IMAGE_ID:$VERSION .
+          docker push $IMAGE_ID:$VERSION
+          docker tag $IMAGE_ID:$VERSION $IMAGE_ID:latest
+          docker push $IMAGE_ID:latest
+  das_admin_tool-release:
+    needs: release-please
+    if: needs.release-please.outputs.das_admin_tool--release_created
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: das_admin_tool
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: 'das_admin_tool/.nvmrc'
+          cache: 'npm'
+          cache-dependency-path: 'das_admin_tool/package-lock.json'
+      - run: npm clean-install
+      - run: npm run build:ngssc
+      - name: Login to GitHub Container Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
+      - name: Create container image
+        env:
+          IMAGE_ID: ghcr.io/${{ github.repository }}/das_admin_tool
+          VERSION: ${{ needs.release-please.outputs.das_admin_tool--version }}
           DOCKER_BUILDKIT: 1
         run: |
           # Convert to lowercase
