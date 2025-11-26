@@ -37,14 +37,13 @@ class FormationDatabaseServiceImpl extends _$FormationDatabaseServiceImpl implem
   }
 
   @override
-  Future<Formation?> findFormation(String operationalTrainNumber, String company, DateTime operationalDay) async {
-    final formationData =
-        await (select(formationTable)
-              ..where((tbl) => tbl.operationalTrainNumber.equals(operationalTrainNumber))
-              ..where((tbl) => tbl.company.equals(company))
-              ..where((tbl) => tbl.operationalDay.equals(operationalDay)))
-            .getSingleOrNull();
-    return formationData?.toDomain();
+  Stream<Formation?> watchFormation(String operationalTrainNumber, String company, DateTime operationalDay) {
+    return (select(formationTable)
+          ..where((tbl) => tbl.operationalTrainNumber.equals(operationalTrainNumber))
+          ..where((tbl) => tbl.company.equals(company))
+          ..where((tbl) => tbl.operationalDay.equals(operationalDay)))
+        .watchSingleOrNull()
+        .map((it) => it?.toDomain());
   }
 
   @override

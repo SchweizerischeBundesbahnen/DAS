@@ -6,5 +6,5 @@ abstract class FormationDatabaseService {
 
   Future<void> saveFormation(FormationDto formation);
 
-  Future<Formation?> findFormation(String operationalTrainNumber, String company, DateTime operationalDay);
+  Stream<Formation?> watchFormation(String operationalTrainNumber, String company, DateTime operationalDay);
 }

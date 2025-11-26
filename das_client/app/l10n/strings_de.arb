@@ -74,6 +74,7 @@
   "p_break_load_slip_special_restrictions_route_class": "Streckenklasse",
   "p_break_load_slip_button_apply_train_series": "Zug/Bremsreihe übernehmen",
   "p_break_load_slip_button_transport_documents": "Beförderungspapier",
+  "p_break_load_slip_no_data_available": "Keine Daten vorhanden.",
   "w_advised_speed_cancel": "ADL Cancel",
   "w_advised_speed_end": "ADL END",
   "w_advised_speed_drive_until": "bis {endLocation}",

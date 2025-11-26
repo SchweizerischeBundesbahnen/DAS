@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:formation/src/model/formation.dart';
 import 'package:formation/src/model/formation_run.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -22,7 +20,7 @@ class FormationDto {
   final String operationalTrainNumber;
   final String company;
   final DateTime operationalDay;
-  final String formationRuns;
+  final List<dynamic> formationRuns;
 
   Map<String, dynamic> toJson() => _$FormationDtoToJson(this);
 }
@@ -33,9 +31,7 @@ extension FormationDtoX on FormationDto {
       operationalTrainNumber: operationalTrainNumber,
       company: company,
       operationalDay: operationalDay,
-      formationRuns: ((jsonDecode(formationRuns)) as List<dynamic>)
-          .map((e) => FormationRun.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      formationRuns: formationRuns.map((e) => FormationRun.fromJson(e as Map<String, dynamic>)).toList(),
     );
   }
 }

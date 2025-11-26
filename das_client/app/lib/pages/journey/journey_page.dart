@@ -5,6 +5,7 @@ import 'package:app/di/scope_handler.dart';
 import 'package:app/di/scopes/journey_scope.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/app_router.dart';
+import 'package:app/pages/journey/break_load_slip/break_load_slip_view_model.dart';
 import 'package:app/pages/journey/journey_table/journey_overview.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/config/journey_settings.dart';
 import 'package:app/pages/journey/journey_table_view_model.dart';
@@ -32,6 +33,7 @@ class JourneyPage extends StatefulWidget implements AutoRouteWrapper {
     providers: [
       Provider<JourneyTableViewModel>(create: (_) => DI.get()),
       Provider<WarnAppViewModel>(create: (_) => DI.get()),
+      Provider<BreakLoadSlipViewModel>(create: (_) => DI.get()),
     ],
     child: this,
   );

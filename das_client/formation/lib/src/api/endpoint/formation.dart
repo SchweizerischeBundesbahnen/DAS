@@ -22,7 +22,12 @@ class FormationRequest {
   Future<FormationResponse> call() async {
     final url = Uri.https(
       baseUrl,
-      'v1/formations?operationalTrainNumber=$operationalTrainNumber&company=$company&operationalDay=${DateFormat('yyyy-MM-dd').format(operationalDay)}',
+      'v1/formations',
+      {
+        'operationalTrainNumber': operationalTrainNumber,
+        'company': company,
+        'operationalDay': DateFormat('yyyy-MM-dd').format(operationalDay),
+      },
     );
     final response = await httpClient.get(url);
     return FormationResponse.fromHttpResponse(response);

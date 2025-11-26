@@ -1,4 +1,6 @@
+import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
+import 'package:app/pages/journey/break_load_slip/break_load_slip_view_model.dart';
 import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_brake_details.dart';
 import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_buttons.dart';
 import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_hauled_load_details.dart';
@@ -8,10 +10,11 @@ import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_specia
 import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_train_details.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 @RoutePage()
-class BreakLoadSlipPage extends StatelessWidget {
+class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
   const BreakLoadSlipPage({super.key});
 
   @override
@@ -32,21 +35,41 @@ class BreakLoadSlipPage extends StatelessWidget {
   }
 
   Widget _body(BuildContext context) {
-    return Column(
-      spacing: sbbDefaultSpacing,
-      children: [
-        BreakLoadSlipHeader(),
-        SingleChildScrollView(
-          child: Column(
-            spacing: sbbDefaultSpacing,
-            children: [
-              BreakLoadSlipTrainDetails(),
-              _otherDataAndBrakeDetailsRow(context),
-              _hauledLoadSpecialAndButtonRow(context),
-            ],
-          ),
-        ),
-      ],
+    final viewModel = context.read<BreakLoadSlipViewModel>();
+
+    return StreamBuilder(
+      stream: viewModel.formation,
+      initialData: viewModel.formationValue,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData || snapshot.data == null) return _noDataAvailable(context);
+
+        return Column(
+          spacing: sbbDefaultSpacing,
+          children: [
+            BreakLoadSlipHeader(),
+            SingleChildScrollView(
+              child: Column(
+                spacing: sbbDefaultSpacing,
+                children: [
+                  BreakLoadSlipTrainDetails(),
+                  _otherDataAndBrakeDetailsRow(context),
+                  _hauledLoadSpecialAndButtonRow(context),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _noDataAvailable(BuildContext context) {
+    return Center(
+      child: SBBMessage(
+        illustration: MessageIllustration.Display,
+        title: context.l10n.p_break_load_slip_no_data_available,
+        description: '',
+      ),
     );
   }
 
@@ -100,6 +123,14 @@ class BreakLoadSlipPage extends StatelessWidget {
       ],
     );
   }
+
+  @override
+  Widget wrappedRoute(BuildContext context) => MultiProvider(
+    providers: [
+      Provider<BreakLoadSlipViewModel>(create: (_) => DI.get()),
+    ],
+    child: this,
+  );
 }
 
 class _DismissButton extends StatelessWidget {

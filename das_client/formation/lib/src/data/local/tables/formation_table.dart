@@ -27,7 +27,7 @@ extension FormationMapperX on FormationDto {
       operationalTrainNumber: operationalTrainNumber,
       company: company,
       operationalDay: operationalDay,
-      formationRuns: formationRuns,
+      formationRuns: jsonEncode(formationRuns),
     );
   }
 }
