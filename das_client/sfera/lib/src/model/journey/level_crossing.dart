@@ -7,7 +7,7 @@ class LevelCrossing extends JourneyPoint {
     required super.kilometre,
     int? originalOrder,
   }) : _originalOrder = originalOrder ?? order,
-       super(type: .levelCrossing);
+       super(dataType: .levelCrossing);
 
   final int _originalOrder;
 
@@ -25,7 +25,7 @@ class LevelCrossing extends JourneyPoint {
           ListEquality().equals(kilometre, other.kilometre);
 
   @override
-  int get hashCode => type.hashCode ^ _originalOrder.hashCode ^ Object.hashAll(kilometre);
+  int get hashCode => dataType.hashCode ^ _originalOrder.hashCode ^ Object.hashAll(kilometre);
 
   LevelCrossing copyWith({int? order}) {
     return LevelCrossing(

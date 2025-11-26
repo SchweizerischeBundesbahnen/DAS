@@ -33,7 +33,7 @@ class SpeedChangeRow extends CellRowBuilder<SpeedChange> {
       child: SvgPicture.asset(
         AppAssets.iconKmIndicator,
         key: kmIndicatorKey,
-        colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), .srcIn),
+        colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
       ),
       alignment: .centerLeft,
     );

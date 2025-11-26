@@ -25,7 +25,7 @@ class CABSignalingRow extends CellRowBuilder<CABSignaling> {
       child: SvgPicture.asset(
         key: data.isStart ? cabSignalingStartIconKey : cabSignalingEndIconKey,
         data.isStart ? AppAssets.iconCabStart : AppAssets.iconCabEnd,
-        colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), .srcIn),
+        colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
       ),
       alignment: .center,
     );

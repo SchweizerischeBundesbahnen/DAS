@@ -7,7 +7,7 @@ class Balise extends JourneyPoint {
     required super.order,
     required super.kilometre,
     required this.amountLevelCrossings,
-  }) : super(type: .balise);
+  }) : super(dataType: .balise);
 
   final int amountLevelCrossings;
 
@@ -29,5 +29,5 @@ class Balise extends JourneyPoint {
           ListEquality().equals(kilometre, other.kilometre);
 
   @override
-  int get hashCode => type.hashCode ^ order.hashCode ^ Object.hashAll(kilometre) ^ amountLevelCrossings.hashCode;
+  int get hashCode => dataType.hashCode ^ order.hashCode ^ Object.hashAll(kilometre) ^ amountLevelCrossings.hashCode;
 }

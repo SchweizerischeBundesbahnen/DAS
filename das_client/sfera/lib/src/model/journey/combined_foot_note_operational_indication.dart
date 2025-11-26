@@ -8,7 +8,7 @@ class CombinedFootNoteOperationalIndication extends JourneyAnnotation {
   CombinedFootNoteOperationalIndication({
     required this.footNote,
     required this.operationalIndication,
-  }) : super(type: .combinedFootNoteOperationalIndication, order: operationalIndication.order);
+  }) : super(dataType: .combinedFootNoteOperationalIndication, order: operationalIndication.order);
 
   final BaseFootNote footNote;
   final UncodedOperationalIndication operationalIndication;
@@ -30,5 +30,5 @@ class CombinedFootNoteOperationalIndication extends JourneyAnnotation {
           order == other.order);
 
   @override
-  int get hashCode => Object.hash(type, order, footNote, operationalIndication);
+  int get hashCode => Object.hash(dataType, order, footNote, operationalIndication);
 }

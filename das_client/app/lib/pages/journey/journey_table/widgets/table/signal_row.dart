@@ -64,7 +64,7 @@ class SignalRow extends CellRowBuilder<Signal> {
         child: SvgPicture.asset(
           key: signalLineChangeIconKey,
           AppAssets.iconSignalLaneChange,
-          colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), .srcIn),
+          colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
         ),
         alignment: .center,
       );

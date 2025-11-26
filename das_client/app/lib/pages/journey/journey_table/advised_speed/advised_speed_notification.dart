@@ -114,7 +114,7 @@ extension _AdvisedSpeedSegmentX on AdvisedSpeedSegment {
         ? SvgPicture.asset(
             iconName,
             key: AdvisedSpeedNotification.advisedSpeedNotificationIconKey,
-            colorFilter: ColorFilter.mode(isDarkMode ? SBBColors.black : SBBColors.white, .srcIn),
+            colorFilter: ColorFilter.mode(isDarkMode ? SBBColors.black : SBBColors.white, BlendMode.srcIn),
           )
         : null;
   }

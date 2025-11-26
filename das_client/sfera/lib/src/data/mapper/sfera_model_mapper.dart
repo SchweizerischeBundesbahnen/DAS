@@ -310,7 +310,7 @@ class SferaModelMapper {
     final cabSignalingEnds = <CABSignaling>[];
     for (final segment in trackEquipmentSegments.withCABSignalingEnd) {
       final speedChange = journeyData.firstWhereOrNull(
-        (data) => data.type == .speedChange && data.order == segment.endOrder,
+        (data) => data.dataType == .speedChange && data.order == segment.endOrder,
       );
       if (speedChange != null) {
         cabEndSpeedChanges.add(speedChange);

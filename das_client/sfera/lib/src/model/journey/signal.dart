@@ -8,7 +8,7 @@ class Signal extends JourneyPoint {
     required super.kilometre,
     this.visualIdentifier,
     this.functions = const [],
-  }) : super(type: .signal);
+  }) : super(dataType: .signal);
 
   final List<SignalFunction> functions;
   final String? visualIdentifier;
@@ -20,7 +20,7 @@ class Signal extends JourneyPoint {
   bool operator ==(Object other) =>
       identical(other, this) ||
       (other is Signal &&
-          other.type == type &&
+          other.dataType == dataType &&
           other.order == order &&
           ListEquality().equals(other.kilometre, kilometre) &&
           other.visualIdentifier == visualIdentifier &&
@@ -28,7 +28,7 @@ class Signal extends JourneyPoint {
 
   @override
   int get hashCode =>
-      Object.hash(type, order, ListEquality().hash(kilometre), visualIdentifier, ListEquality().hash(functions));
+      Object.hash(dataType, order, ListEquality().hash(kilometre), visualIdentifier, ListEquality().hash(functions));
 
   @override
   String toString() {

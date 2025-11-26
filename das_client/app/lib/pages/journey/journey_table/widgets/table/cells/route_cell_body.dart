@@ -70,7 +70,7 @@ class RouteCellBody extends StatelessWidget {
 
   Widget _coloredRoute(Widget child) {
     return ColorFiltered(
-      colorFilter: ColorFilter.mode(routeColor!, .srcATop),
+      colorFilter: ColorFilter.mode(routeColor!, BlendMode.srcATop),
       child: child,
     );
   }

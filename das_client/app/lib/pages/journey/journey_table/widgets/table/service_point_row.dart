@@ -342,7 +342,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
       key: key,
       colorFilter: ColorFilter.mode(
         _isNextStop ? SBBColors.white : ThemeUtil.getIconColor(context),
-        .srcIn,
+        BlendMode.srcIn,
       ),
     );
   }

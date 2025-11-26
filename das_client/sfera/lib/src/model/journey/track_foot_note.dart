@@ -5,7 +5,7 @@ class TrackFootNote extends BaseFootNote {
   const TrackFootNote({
     required super.order,
     required super.footNote,
-  }) : super(type: .trackFootNote);
+  }) : super(dataType: .trackFootNote);
 
   @override
   OrderPriority get orderPriority => .trackFootNote;

@@ -207,7 +207,7 @@ class JourneyTable extends StatelessWidget {
         hasPreviousAnnotation = previous is JourneyAnnotation;
       }
 
-      switch (rowData.type) {
+      switch (rowData.dataType) {
         case .servicePoint:
           return ServicePointRow(
             metadata: journey.metadata,

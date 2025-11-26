@@ -52,7 +52,7 @@ class TramAreaRow extends CellRowBuilder<TramArea> {
       child: SvgPicture.asset(
         AppAssets.iconTramArea,
         key: tramAreaIconKey,
-        colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), .srcIn),
+        colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
       ),
       alignment: .centerLeft,
     );

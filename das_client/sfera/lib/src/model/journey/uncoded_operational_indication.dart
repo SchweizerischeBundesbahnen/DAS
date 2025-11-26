@@ -6,7 +6,7 @@ class UncodedOperationalIndication extends JourneyAnnotation {
   const UncodedOperationalIndication({
     required super.order,
     required this.texts,
-  }) : super(type: .uncodedOperationalIndication);
+  }) : super(dataType: .uncodedOperationalIndication);
 
   final List<String> texts;
 
@@ -21,7 +21,7 @@ class UncodedOperationalIndication extends JourneyAnnotation {
           order == other.order;
 
   @override
-  int get hashCode => Object.hash(type, order, const ListEquality().hash(texts));
+  int get hashCode => Object.hash(dataType, order, const ListEquality().hash(texts));
 
   @override
   OrderPriority get orderPriority => .uncodedOperationalIndication;

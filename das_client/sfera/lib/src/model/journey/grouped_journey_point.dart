@@ -4,7 +4,7 @@ import 'package:sfera/src/model/journey/order_priority.dart';
 
 class GroupedJourneyPoint extends JourneyPoint {
   const GroupedJourneyPoint({
-    required super.type,
+    required super.dataType,
     required super.order,
     required super.kilometre,
     required this.groupedElements,
@@ -31,5 +31,9 @@ class GroupedJourneyPoint extends JourneyPoint {
 
   @override
   int get hashCode =>
-      type.hashCode ^ type.hashCode ^ order.hashCode ^ Object.hashAll(kilometre) ^ Object.hashAll(groupedElements);
+      dataType.hashCode ^
+      dataType.hashCode ^
+      order.hashCode ^
+      Object.hashAll(kilometre) ^
+      Object.hashAll(groupedElements);
 }

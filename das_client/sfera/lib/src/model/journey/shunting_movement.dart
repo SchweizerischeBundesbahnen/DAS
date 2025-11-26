@@ -5,7 +5,7 @@ class ShuntingMovement extends JourneyAnnotation {
   const ShuntingMovement({
     required super.order,
     this.isStart = true,
-  }) : super(type: .shuntingMovement);
+  }) : super(dataType: .shuntingMovement);
 
   final bool isStart;
 

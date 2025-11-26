@@ -6,11 +6,11 @@ import 'package:sfera/src/model/journey/order_priority.dart';
 @immutable
 abstract class BaseData implements Comparable {
   const BaseData({
-    required this.type,
+    required this.dataType,
     required this.order,
   });
 
-  final Datatype type;
+  final Datatype dataType;
   final int order;
 
   @override

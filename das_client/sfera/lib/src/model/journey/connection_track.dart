@@ -2,7 +2,8 @@ import 'package:collection/collection.dart';
 import 'package:sfera/component.dart';
 
 class ConnectionTrack extends JourneyPoint {
-  const ConnectionTrack({required super.order, required super.kilometre, this.text}) : super(type: .connectionTrack);
+  const ConnectionTrack({required super.order, required super.kilometre, this.text})
+    : super(dataType: .connectionTrack);
 
   final String? text;
 
@@ -21,5 +22,5 @@ class ConnectionTrack extends JourneyPoint {
           text == other.text;
 
   @override
-  int get hashCode => type.hashCode ^ order.hashCode ^ Object.hashAll(kilometre) ^ text.hashCode;
+  int get hashCode => dataType.hashCode ^ order.hashCode ^ Object.hashAll(kilometre) ^ text.hashCode;
 }

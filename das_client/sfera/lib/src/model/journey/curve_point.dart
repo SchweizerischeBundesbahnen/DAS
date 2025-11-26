@@ -11,7 +11,7 @@ class CurvePoint extends JourneyPoint {
     this.curveType,
     this.text,
     this.comment,
-  }) : super(type: .curvePoint);
+  }) : super(dataType: .curvePoint);
 
   final CurvePointType? curvePointType;
   final CurveType? curveType;
@@ -41,7 +41,7 @@ class CurvePoint extends JourneyPoint {
 
   @override
   int get hashCode =>
-      type.hashCode ^
+      dataType.hashCode ^
       order.hashCode ^
       Object.hashAll(kilometre) ^
       curvePointType.hashCode ^

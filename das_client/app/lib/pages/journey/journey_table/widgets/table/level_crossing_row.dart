@@ -63,7 +63,7 @@ class LevelCrossingRow extends CellRowBuilder<LevelCrossing> {
         child: SvgPicture.asset(
           AppAssets.iconBalise,
           key: baliseIconLevelCrossingKey,
-          colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), .srcIn),
+          colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
         ),
         alignment: .centerLeft,
       );

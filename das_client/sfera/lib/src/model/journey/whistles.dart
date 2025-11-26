@@ -2,7 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:sfera/component.dart';
 
 class Whistle extends JourneyPoint {
-  const Whistle({required super.order, required super.kilometre}) : super(type: .whistle);
+  const Whistle({required super.order, required super.kilometre}) : super(dataType: .whistle);
 
   @override
   String toString() {
@@ -18,5 +18,5 @@ class Whistle extends JourneyPoint {
           ListEquality().equals(kilometre, other.kilometre);
 
   @override
-  int get hashCode => type.hashCode ^ order.hashCode ^ Object.hashAll(kilometre);
+  int get hashCode => dataType.hashCode ^ order.hashCode ^ Object.hashAll(kilometre);
 }

@@ -6,7 +6,7 @@ class LineFootNote extends BaseFootNote {
     required super.order,
     required super.footNote,
     required this.locationName,
-  }) : super(type: .lineFootNote);
+  }) : super(dataType: .lineFootNote);
 
   final String locationName;
 

@@ -43,7 +43,7 @@ class _WaitNotification extends StatelessWidget {
     return SBBPromotionBox.custom(
       leading: SvgPicture.asset(
         AppAssets.iconKoaWait,
-        colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), .srcIn),
+        colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
       ),
       content: Text(
         context.l10n.w_koa_notification_wait,

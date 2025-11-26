@@ -7,7 +7,7 @@ class TramArea extends JourneyPoint {
     required super.kilometre,
     required this.endKilometre,
     required this.amountTramSignals,
-  }) : super(type: .tramArea);
+  }) : super(dataType: .tramArea);
 
   final double endKilometre;
   final int amountTramSignals;
@@ -29,5 +29,9 @@ class TramArea extends JourneyPoint {
 
   @override
   int get hashCode =>
-      type.hashCode ^ order.hashCode ^ Object.hashAll(kilometre) ^ endKilometre.hashCode ^ amountTramSignals.hashCode;
+      dataType.hashCode ^
+      order.hashCode ^
+      Object.hashAll(kilometre) ^
+      endKilometre.hashCode ^
+      amountTramSignals.hashCode;
 }

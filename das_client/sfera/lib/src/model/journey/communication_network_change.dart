@@ -10,7 +10,7 @@ class CommunicationNetworkChange extends JourneyPoint {
     required super.order,
     this.isServicePoint = false,
     super.kilometre = const [],
-  }) : super(type: .communicationNetworkChannel);
+  }) : super(dataType: .communicationNetworkChannel);
 
   final CommunicationNetworkType communicationNetworkType;
   final bool isServicePoint;
@@ -25,7 +25,7 @@ class CommunicationNetworkChange extends JourneyPoint {
           const ListEquality<double>().equals(kilometre, other.kilometre);
 
   @override
-  int get hashCode => Object.hash(type, order, communicationNetworkType, Object.hashAll(kilometre));
+  int get hashCode => Object.hash(dataType, order, communicationNetworkType, Object.hashAll(kilometre));
 
   @override
   String toString() {

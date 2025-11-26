@@ -55,7 +55,7 @@ void main() {
   test('Test service point names are resolved correctly', () async {
     final journey = getJourney('T9999', 5);
 
-    final servicePoints = journey.data.where((it) => it.type == .servicePoint).cast<ServicePoint>().toList();
+    final servicePoints = journey.data.where((it) => it.dataType == .servicePoint).cast<ServicePoint>().toList();
 
     expect(journey.valid, true);
     expect(servicePoints, hasLength(6));
@@ -241,7 +241,7 @@ void main() {
 
     expect(journey.valid, true);
 
-    final cabSignaling = journey.data.where((it) => it.type == .cabSignaling).cast<CABSignaling>();
+    final cabSignaling = journey.data.where((it) => it.dataType == .cabSignaling).cast<CABSignaling>();
     final endSignaling = cabSignaling.where((signaling) => signaling.isEnd).toList();
 
     expect(endSignaling, hasLength(2));
@@ -266,7 +266,7 @@ void main() {
 
   test('Test signals are generated correctly', () async {
     final journey = getJourney('T9999', 5);
-    final signals = journey.data.where((it) => it.type == .signal).cast<Signal>().toList();
+    final signals = journey.data.where((it) => it.dataType == .signal).cast<Signal>().toList();
 
     expect(journey.valid, true);
     expect(signals, hasLength(7));
@@ -297,7 +297,7 @@ void main() {
 
   test('Test curvePoint are generated correctly', () async {
     final journey = getJourney('T9999', 5);
-    final curvePoints = journey.data.where((it) => it.type == .curvePoint).cast<CurvePoint>().toList();
+    final curvePoints = journey.data.where((it) => it.dataType == .curvePoint).cast<CurvePoint>().toList();
 
     expect(journey.valid, true);
     expect(curvePoints, hasLength(4));
@@ -318,7 +318,7 @@ void main() {
 
   test('Test stop on demand is parsed correctly', () async {
     final journey = getJourney('T9999', 5);
-    final servicePoints = journey.data.where((it) => it.type == .servicePoint).cast<ServicePoint>().toList();
+    final servicePoints = journey.data.where((it) => it.dataType == .servicePoint).cast<ServicePoint>().toList();
 
     expect(journey.valid, true);
     expect(servicePoints, hasLength(6));
@@ -332,7 +332,7 @@ void main() {
 
   test('Test passing point is parsed correctly', () async {
     final journey = getJourney('T9999', 5);
-    final servicePoints = journey.data.where((it) => it.type == .servicePoint).cast<ServicePoint>().toList();
+    final servicePoints = journey.data.where((it) => it.dataType == .servicePoint).cast<ServicePoint>().toList();
 
     expect(journey.valid, true);
     expect(servicePoints, hasLength(6));
@@ -346,7 +346,7 @@ void main() {
 
   test('Test station point is parsed correctly', () async {
     final journey = getJourney('T9999', 5);
-    final servicePoints = journey.data.where((it) => it.type == .servicePoint).cast<ServicePoint>().toList();
+    final servicePoints = journey.data.where((it) => it.dataType == .servicePoint).cast<ServicePoint>().toList();
 
     expect(journey.valid, true);
     expect(servicePoints, hasLength(6));
@@ -360,7 +360,7 @@ void main() {
 
   test('Test bracket stations is parsed correctly', () async {
     final journey = getJourney('T9999', 5);
-    final servicePoints = journey.data.where((it) => it.type == .servicePoint).cast<ServicePoint>().toList();
+    final servicePoints = journey.data.where((it) => it.dataType == .servicePoint).cast<ServicePoint>().toList();
 
     expect(journey.valid, true);
     expect(servicePoints, hasLength(6));
@@ -377,7 +377,7 @@ void main() {
   test('Test protection section is parsed correctly', () async {
     final journey = TestJourneyRepository.partialJourney('T3').journey;
     final protectionSections = journey.data
-        .where((it) => it.type == .protectionSection)
+        .where((it) => it.dataType == .protectionSection)
         .cast<ProtectionSection>()
         .toList();
 
@@ -400,7 +400,7 @@ void main() {
   test('Test additional speed restriction is parsed correctly no items between', () async {
     final journey = getJourney('T3', 1);
     final speedRestrictions = journey.data
-        .where((it) => it.type == .additionalSpeedRestriction)
+        .where((it) => it.dataType == .additionalSpeedRestriction)
         .cast<AdditionalSpeedRestrictionData>()
         .toList();
 
@@ -434,7 +434,7 @@ void main() {
   test('Test additional speed restriction out of journey times are filtered correctly', () async {
     final journey = getJourney('T3', 1);
     final speedRestrictions = journey.data
-        .where((it) => it.type == .additionalSpeedRestriction)
+        .where((it) => it.dataType == .additionalSpeedRestriction)
         .cast<AdditionalSpeedRestrictionData>()
         .toList();
 
@@ -447,7 +447,7 @@ void main() {
   test('Test additional speed restriction is parsed correctly over multiple segments', () async {
     final journey = getJourney('T2', 3);
     final speedRestrictions = journey.data
-        .where((it) => it.type == .additionalSpeedRestriction)
+        .where((it) => it.dataType == .additionalSpeedRestriction)
         .cast<AdditionalSpeedRestrictionData>()
         .toList();
 
@@ -478,7 +478,7 @@ void main() {
   test('Test additional speed restriction without a date', () async {
     final journey = getJourney('T2', 3);
     final speedRestrictions = journey.data
-        .where((it) => it.type == .additionalSpeedRestriction)
+        .where((it) => it.dataType == .additionalSpeedRestriction)
         .cast<AdditionalSpeedRestrictionData>()
         .toList();
 
@@ -501,7 +501,7 @@ void main() {
   test('Test complex additional speed restrictions are parsed correctly', () async {
     final journey = getJourney('T18', 3);
     final speedRestrictions = journey.data
-        .where((it) => it.type == .additionalSpeedRestriction)
+        .where((it) => it.dataType == .additionalSpeedRestriction)
         .cast<AdditionalSpeedRestrictionData>()
         .toList();
 
@@ -582,7 +582,7 @@ void main() {
 
   test('Test speed change is parsed correctly', () async {
     final journey = TestJourneyRepository.partialJourney('T9999').journey;
-    final speedChanges = journey.data.where((it) => it.type == .speedChange).cast<SpeedChange>().toList();
+    final speedChanges = journey.data.where((it) => it.dataType == .speedChange).cast<SpeedChange>().toList();
 
     expect(journey.valid, true);
     expect(speedChanges, hasLength(2));
@@ -622,7 +622,10 @@ void main() {
 
   test('Test connection tracks are parsed correctly', () async {
     final journey = TestJourneyRepository.partialJourney('T9999').journey;
-    final connectionTracks = journey.data.where((it) => it.type == .connectionTrack).cast<ConnectionTrack>().toList();
+    final connectionTracks = journey.data
+        .where((it) => it.dataType == .connectionTrack)
+        .cast<ConnectionTrack>()
+        .toList();
 
     expect(journey.valid, true);
     expect(connectionTracks, hasLength(3));
@@ -691,7 +694,7 @@ void main() {
     final journey = getJourney('T5', 1);
     expect(journey.valid, true);
 
-    final curvePoints = journey.data.where((it) => it.type == .curvePoint).cast<CurvePoint>().toList();
+    final curvePoints = journey.data.where((it) => it.dataType == .curvePoint).cast<CurvePoint>().toList();
     expect(curvePoints, hasLength(3));
     expect(curvePoints[0].localSpeeds, isNotNull);
     expect(curvePoints[0].localSpeeds, hasLength(4));
@@ -699,7 +702,7 @@ void main() {
     expect(curvePoints[1].localSpeeds, hasLength(3));
     expect(curvePoints[2].localSpeeds, isNull);
 
-    final servicePoints = journey.data.where((it) => it.type == .servicePoint).cast<ServicePoint>().toList();
+    final servicePoints = journey.data.where((it) => it.dataType == .servicePoint).cast<ServicePoint>().toList();
 
     expect(servicePoints, hasLength(3));
     expect(journey.metadata.lineSpeeds[servicePoints[0].order], isNotNull);
@@ -776,7 +779,7 @@ void main() {
     final journey = getJourney('T7', 1, tcCount: 1);
     expect(journey.valid, true);
 
-    final tramAreas = journey.data.where((it) => it.type == .tramArea).cast<TramArea>().toList();
+    final tramAreas = journey.data.where((it) => it.dataType == .tramArea).cast<TramArea>().toList();
     expect(tramAreas, hasLength(1));
     expect(tramAreas[0].order, 900);
     expect(tramAreas[0].kilometre[0], 37.8);
@@ -788,7 +791,7 @@ void main() {
     final journey = getJourney('T7', 1, tcCount: 1);
     expect(journey.valid, true);
 
-    final whistles = journey.data.where((it) => it.type == .whistle).cast<Whistle>().toList();
+    final whistles = journey.data.where((it) => it.dataType == .whistle).cast<Whistle>().toList();
     expect(whistles, hasLength(1));
     expect(whistles[0].order, 610);
     expect(whistles[0].kilometre[0], 39.600);
@@ -798,7 +801,7 @@ void main() {
     final journey = getJourney('T7', 1, tcCount: 1);
     expect(journey.valid, true);
 
-    final balises = journey.data.where((it) => it.type == .balise).cast<Balise>().toList();
+    final balises = journey.data.where((it) => it.dataType == .balise).cast<Balise>().toList();
     expect(balises, hasLength(8));
     expect(balises[0].order, 600);
     expect(balises[0].kilometre[0], 41.552);
@@ -826,7 +829,7 @@ void main() {
     final journey = getJourney('T7', 1, tcCount: 1);
     expect(journey.valid, true);
 
-    final levelCrossings = journey.data.where((it) => it.type == .levelCrossing).cast<LevelCrossing>().toList();
+    final levelCrossings = journey.data.where((it) => it.dataType == .levelCrossing).cast<LevelCrossing>().toList();
     expect(levelCrossings, hasLength(12));
     expect(levelCrossings[0].order, 601);
     expect(levelCrossings[0].kilometre[0], 41.492);
@@ -848,7 +851,7 @@ void main() {
     final journey = getJourney('T8', 1);
     expect(journey.valid, true);
 
-    final servicePoints = journey.data.where((it) => it.type == .servicePoint).cast<ServicePoint>().toList();
+    final servicePoints = journey.data.where((it) => it.dataType == .servicePoint).cast<ServicePoint>().toList();
     expect(servicePoints, hasLength(8));
 
     // check ServicePoint Bern
@@ -969,7 +972,7 @@ void main() {
     final journey = getJourney('T8', 1);
     expect(journey.valid, true);
 
-    final servicePoints = journey.data.where((it) => it.type == .servicePoint).cast<ServicePoint>().toList();
+    final servicePoints = journey.data.where((it) => it.dataType == .servicePoint).cast<ServicePoint>().toList();
     expect(servicePoints, hasLength(8));
 
     // check ServicePoint Bern

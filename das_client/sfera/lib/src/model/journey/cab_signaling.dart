@@ -7,7 +7,7 @@ class CABSignaling extends JourneyPoint {
     required super.order,
     required super.kilometre,
     this.isStart = false,
-  }) : super(type: .cabSignaling);
+  }) : super(dataType: .cabSignaling);
 
   final bool isStart;
 
@@ -31,5 +31,5 @@ class CABSignaling extends JourneyPoint {
           isStart == other.isStart;
 
   @override
-  int get hashCode => type.hashCode ^ order.hashCode ^ Object.hashAll(kilometre) ^ isStart.hashCode;
+  int get hashCode => dataType.hashCode ^ order.hashCode ^ Object.hashAll(kilometre) ^ isStart.hashCode;
 }

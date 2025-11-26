@@ -5,7 +5,7 @@ class OpFootNote extends BaseFootNote {
   const OpFootNote({
     required super.order,
     required super.footNote,
-  }) : super(type: .opFootNote);
+  }) : super(dataType: .opFootNote);
 
   @override
   OrderPriority get orderPriority => .opFootNote;

@@ -144,7 +144,7 @@ class _AnchoredFullPageOverlayState extends State<AnchoredFullPageOverlay> with 
                 AppAssets.shapeMenuArrow,
                 colorFilter: ColorFilter.mode(
                   ThemeUtil.getColor(context, SBBColors.milk, SBBColors.black),
-                  .srcIn,
+                  BlendMode.srcIn,
                 ),
               ),
             ),

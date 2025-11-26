@@ -61,7 +61,7 @@ class ReducedJourneyTable extends StatelessWidget {
         bracketStationRenderData: BracketStationRenderData.from(rowData, metadata),
       );
 
-      switch (rowData.type) {
+      switch (rowData.dataType) {
         case .servicePoint:
           return ReducedServicePointRow(
             key: GlobalKey(),

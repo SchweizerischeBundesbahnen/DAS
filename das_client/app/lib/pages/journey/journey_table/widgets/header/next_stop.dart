@@ -24,7 +24,7 @@ class NextStop extends StatelessWidget {
         children: [
           SvgPicture.asset(
             AppAssets.iconHeaderStop,
-            colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), .srcIn),
+            colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
           ),
           _servicePointName(context),
         ],

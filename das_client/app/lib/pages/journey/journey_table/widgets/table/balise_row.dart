@@ -58,7 +58,7 @@ class BaliseRow extends CellRowBuilder<Balise> {
       child: SvgPicture.asset(
         AppAssets.iconBalise,
         key: baliseIconKey,
-        colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), .srcIn),
+        colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
       ),
       alignment: .centerLeft,
     );

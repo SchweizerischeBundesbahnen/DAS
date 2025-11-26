@@ -139,7 +139,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
 
   DASTableCell brakedWeightSpeedCell(BuildContext context) {
     final inEtcsLevel2Segment = metadata.nonStandardTrackEquipmentSegments.isInEtcsLevel2Segment(data.order);
-    if (inEtcsLevel2Segment && data.type != .cabSignaling) {
+    if (inEtcsLevel2Segment && data.dataType != .cabSignaling) {
       return DASTableCell.empty();
     }
     return DASTableCell(
@@ -261,7 +261,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
   bool get _isNextStop => journeyPosition.nextStop == data;
 
   static double rowHeightForData(BaseData data, BreakSeries? currentBreakSeries) {
-    return switch (data.type) {
+    return switch (data.dataType) {
       .servicePoint => ServicePointRow.calculateHeight(data as ServicePoint, currentBreakSeries),
       _ => CellRowBuilder.rowHeight,
     };
@@ -270,7 +270,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
   double get chevronPosition => CellRowBuilder.calculateChevronPosition(data, height);
 
   static double calculateChevronPosition(BaseData data, double height) {
-    switch (data.type) {
+    switch (data.dataType) {
       case .servicePoint:
         final servicePoint = data as ServicePoint;
         if (servicePoint.isStop) {

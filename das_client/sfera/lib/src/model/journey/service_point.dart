@@ -26,7 +26,7 @@ class ServicePoint extends JourneyPoint {
     this.properties = const [],
     this.localRegulationSections = const [],
     this.departureAuthorization,
-  }) : super(type: .servicePoint);
+  }) : super(dataType: .servicePoint);
 
   final String name;
   final String abbreviation;
@@ -98,7 +98,7 @@ class ServicePoint extends JourneyPoint {
 
   @override
   int get hashCode =>
-      type.hashCode ^
+      dataType.hashCode ^
       order.hashCode ^
       Object.hashAll(kilometre) ^
       name.hashCode ^
