@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/pages/journey/journey_table_view_model.dart';
+import 'package:collection/collection.dart';
 import 'package:formation/component.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
@@ -25,9 +26,11 @@ class BreakLoadSlipViewModel {
   final _rxFormationRun = BehaviorSubject<FormationRun?>.seeded(null);
 
   Stream<Formation?> get formation => _rxFormation.stream;
+
   Stream<FormationRun?> get formationRun => _rxFormationRun.stream;
 
   Formation? get formationValue => _rxFormation.value;
+
   FormationRun? get formationRunValue => _rxFormationRun.value;
 
   void _init() {
@@ -52,6 +55,15 @@ class BreakLoadSlipViewModel {
             _rxFormationRun.add(formation?.formationRuns.firstOrNull);
           });
     }
+  }
+
+  String resolveStationName(String tafTapLocationCode) {
+    if (_latestJourney == null) return tafTapLocationCode;
+
+    final matchedServicePoint = _latestJourney!.journeyPoints.whereType<ServicePoint>().firstWhereOrNull(
+      (it) => it.locationCode == tafTapLocationCode,
+    );
+    return matchedServicePoint?.name ?? tafTapLocationCode;
   }
 
   void dispose() {

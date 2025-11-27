@@ -47,7 +47,7 @@ class NextStop extends StatelessWidget {
           padding: const EdgeInsets.only(left: sbbDefaultSpacing * 0.5),
           child: Text(
             displayedStop?.name ?? context.l10n.c_unknown,
-            style: DASTextStyles.xLargeLight,
+            style: DASTextStyles.xxLargeBold,
             overflow: TextOverflow.ellipsis,
           ),
         );

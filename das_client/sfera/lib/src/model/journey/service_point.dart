@@ -26,6 +26,7 @@ class ServicePoint extends JourneyPoint {
     this.properties = const [],
     this.localRegulationSections = const [],
     this.departureAuthorization,
+    this.locationCode,
   }) : super(type: Datatype.servicePoint);
 
   final String name;
@@ -45,6 +46,7 @@ class ServicePoint extends JourneyPoint {
   final List<StationProperty> properties;
   final List<LocalRegulationSection> localRegulationSections;
   final DepartureAuthorization? departureAuthorization;
+  final String? locationCode;
 
   List<TrainSeriesSpeed> relevantGraduatedSpeedInfo(BreakSeries? breakSeries) {
     final speedInfo = graduatedSpeedInfo ?? [];

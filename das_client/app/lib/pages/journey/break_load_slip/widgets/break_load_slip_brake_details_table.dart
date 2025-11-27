@@ -1,4 +1,5 @@
 import 'package:app/i18n/i18n.dart';
+import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:formation/component.dart';
@@ -24,14 +25,14 @@ class BreakLoadSlipBrakeDetailsTable extends StatelessWidget {
           padding: EdgeInsets.zero,
         ),
         const SizedBox(height: sbbDefaultSpacing * 0.25),
-        _tableDivider(height: 2),
+        _tableDivider(context, height: 2),
         _tableRow(
           context.l10n.p_break_load_slip_brake_details_holding_force,
           (formationRun.tractionHoldingForceInHectoNewton / 10).toString(),
           (formationRun.hauledLoadHoldingForceInHectoNewton / 10).toString(),
           (formationRun.formationHoldingForceInHectoNewton / 10).toString(),
         ),
-        _tableDivider(),
+        _tableDivider(context),
       ],
     );
   }
@@ -66,10 +67,10 @@ class BreakLoadSlipBrakeDetailsTable extends StatelessWidget {
     );
   }
 
-  Widget _tableDivider({double height = 1}) {
+  Widget _tableDivider(BuildContext context, {double height = 1}) {
     return Container(
       height: height,
-      color: SBBColors.cloud,
+      color: ThemeUtil.isDarkMode(context) ? SBBColors.iron : SBBColors.cloud,
     );
   }
 }
