@@ -2,7 +2,7 @@ import 'package:warnapp/src/rechner/ring_buffer.dart';
 
 class LocationFahrtHysterese {
   LocationFahrtHysterese(this.schwelleSpeed, this.gueltigkeitsDauer)
-    : _ringBuffer = RingBuffer(gueltigkeitsDauer, options: [RingBufferOptions.minMax]);
+    : _ringBuffer = RingBuffer(gueltigkeitsDauer, options: [.minMax]);
 
   final double schwelleSpeed;
   final int gueltigkeitsDauer;

@@ -32,10 +32,10 @@ class _SplashPageState extends State<SplashPage> {
 
   Widget _body() {
     return Container(
-      alignment: AlignmentDirectional.center,
+      alignment: .center,
       color: Colors.blue,
       child: const Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: .center,
         children: [
           CircularProgressIndicator(
             color: Colors.black,

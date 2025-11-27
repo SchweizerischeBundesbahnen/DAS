@@ -58,11 +58,11 @@ class _FlappyGameState extends State<FlappyScreen> with SingleTickerProviderStat
       constraints: const BoxConstraints(minWidth: double.infinity),
       context: context,
       child: Column(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: .min,
         children: [
           const Text(
             'Choose your EVU',
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 22, fontWeight: .bold),
           ),
           const SizedBox(height: sbbDefaultSpacing),
           _buildEvuButton(context, 'SBB'),
@@ -267,7 +267,7 @@ class _FlappyGameState extends State<FlappyScreen> with SingleTickerProviderStat
                   'Score: $score',
                   style: TextStyle(
                     fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: .bold,
                     color: ThemeUtil.getColor(context, SBBColors.black, SBBColors.white),
                   ),
                 ),

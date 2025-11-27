@@ -10,7 +10,8 @@ enum AdviceTypeDto implements XmlEnum {
   endOfAdvice(xmlValue: 'EndOfAdvice'),
   departureAdvice(xmlValue: 'DepartureAdvice'),
   textAdvice(xmlValue: 'TextAdvice'),
-  deleteAdvice(xmlValue: 'DeleteAdvice');
+  deleteAdvice(xmlValue: 'DeleteAdvice')
+  ;
 
   const AdviceTypeDto({
     required this.xmlValue,

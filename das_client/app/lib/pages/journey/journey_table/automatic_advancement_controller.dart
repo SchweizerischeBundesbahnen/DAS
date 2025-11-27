@@ -203,20 +203,20 @@ class AutomaticAdvancementController {
 
     for (final row in _renderedRows) {
       if (data == row.data) {
-        if (row.stickyLevel == StickyLevel.none) {
+        if (row.stickyLevel == .none) {
           return stickyHeaderHeights.values.sum;
-        } else if (row.stickyLevel == StickyLevel.second) {
+        } else if (row.stickyLevel == .second) {
           return stickyHeaderHeights[StickyLevel.first]!;
         } else {
           return 0.0;
         }
       }
 
-      if (row.stickyLevel == StickyLevel.first) {
-        stickyHeaderHeights[StickyLevel.first] = row.height;
-        stickyHeaderHeights[StickyLevel.second] = 0.0;
-      } else if (row.stickyLevel == StickyLevel.second) {
-        stickyHeaderHeights[StickyLevel.second] = row.height;
+      if (row.stickyLevel == .first) {
+        stickyHeaderHeights[.first] = row.height;
+        stickyHeaderHeights[.second] = 0.0;
+      } else if (row.stickyLevel == .second) {
+        stickyHeaderHeights[.second] = row.height;
       }
     }
 

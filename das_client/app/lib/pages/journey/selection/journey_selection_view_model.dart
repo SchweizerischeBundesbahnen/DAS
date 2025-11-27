@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:app/pages/journey/selection/journey_selection_model.dart';
-import 'package:app/util/error_code.dart';
 import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -76,31 +75,31 @@ class JourneySelectionViewModel {
   void _initSferaRepoSubscription() {
     _sferaRemoteRepoSubscription = _sferaRemoteRepo.stateStream.listen((state) {
       switch (state) {
-        case SferaRemoteRepositoryState.connected:
+        case .connected:
           final currentState = _state.value;
           if (currentState is! Loading) return;
 
           return _state.add(JourneySelectionModel.loaded(trainIdentification: currentState.trainIdentification));
-        case SferaRemoteRepositoryState.connecting:
+        case .connecting:
           final currentState = _state.value;
           if (currentState is! Selecting) return;
 
           return _state.add(JourneySelectionModel.loading(trainIdentification: _trainIdFrom(currentState)));
-        case SferaRemoteRepositoryState.disconnected:
+        case .disconnected:
           if (_sferaRemoteRepo.lastError == null) return;
 
           return switch (_state.value) {
             final Loading l => _state.add(
               JourneySelectionModel.error(
                 trainIdentification: l.trainIdentification,
-                errorCode: ErrorCode.fromSfera(_sferaRemoteRepo.lastError!),
+                errorCode: .fromSfera(_sferaRemoteRepo.lastError!),
                 availableStartDates: _availableStartDates(),
               ),
             ),
             final Selecting s => _state.add(
               JourneySelectionModel.error(
                 trainIdentification: _trainIdFrom(s),
-                errorCode: ErrorCode.fromSfera(_sferaRemoteRepo.lastError!),
+                errorCode: .fromSfera(_sferaRemoteRepo.lastError!),
                 availableStartDates: s.availableStartDates,
               ),
             ),
@@ -114,7 +113,7 @@ class JourneySelectionViewModel {
     _state.add(
       JourneySelectionModel.selecting(
         startDate: _midnightToday(),
-        railwayUndertaking: RailwayUndertaking.sbbP,
+        railwayUndertaking: .sbbP,
         availableStartDates: _availableStartDates(),
       ),
     );

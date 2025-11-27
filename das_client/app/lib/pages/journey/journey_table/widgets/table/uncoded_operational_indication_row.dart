@@ -2,7 +2,6 @@ import 'package:app/pages/journey/journey_table/collapsible_rows_view_model.dart
 import 'package:app/pages/journey/journey_table/widgets/table/uncoded_operational_indication_accordion.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/widget_row_builder.dart';
 import 'package:app/theme/theme_util.dart';
-import 'package:app/widgets/stickyheader/sticky_level.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
@@ -17,7 +16,7 @@ class UncodedOperationalIndicationRow extends WidgetRowBuilder<UncodedOperationa
     super.config,
     super.identifier,
   }) : super(
-         stickyLevel: StickyLevel.second,
+         stickyLevel: .second,
          height: UncodedOperationalIndicationAccordion.calculateHeight(
            data.combinedText,
            collapsedState: collapsedState,

@@ -24,14 +24,14 @@ class BrightnessModalSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(sbbDefaultSpacing),
+      padding: const .all(sbbDefaultSpacing),
       child: _body(context),
     );
   }
 
   Widget _body(BuildContext context) {
     return Column(
-      mainAxisSize: MainAxisSize.min,
+      mainAxisSize: .min,
       children: [
         Text(
           context.l10n.w_modal_sheet_permission_brightness,

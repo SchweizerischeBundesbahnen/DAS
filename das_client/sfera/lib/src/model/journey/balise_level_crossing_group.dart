@@ -6,7 +6,7 @@ class BaliseLevelCrossingGroup extends GroupedJourneyPoint {
     required super.order,
     required super.kilometre,
     required super.groupedElements,
-  }) : super(type: Datatype.baliseLevelCrossingGroup);
+  }) : super(dataType: .baliseLevelCrossingGroup);
 
   @override
   String toString() {
@@ -23,5 +23,5 @@ class BaliseLevelCrossingGroup extends GroupedJourneyPoint {
           ListEquality().equals(groupedElements, other.groupedElements);
 
   @override
-  int get hashCode => type.hashCode ^ order.hashCode ^ Object.hashAll(kilometre) ^ Object.hashAll(groupedElements);
+  int get hashCode => dataType.hashCode ^ order.hashCode ^ Object.hashAll(kilometre) ^ Object.hashAll(groupedElements);
 }

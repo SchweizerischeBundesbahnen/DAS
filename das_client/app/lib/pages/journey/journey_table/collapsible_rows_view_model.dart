@@ -7,10 +7,11 @@ import 'package:sfera/component.dart';
 enum CollapsedState {
   collapsed,
   expandedWithCollapsedContent,
-  expanded;
+  expanded
+  ;
 
   static CollapsedState defaultOf(BaseData data) =>
-      data is UncodedOperationalIndication ? CollapsedState.expandedWithCollapsedContent : CollapsedState.expanded;
+      data is UncodedOperationalIndication ? .expandedWithCollapsedContent : .expanded;
 }
 
 class CollapsibleRowsViewModel {
@@ -46,12 +47,12 @@ class CollapsibleRowsViewModel {
   void toggleRow(BaseData data, {bool isContentExpandable = false}) {
     final newMap = Map<int, CollapsedState>.from(_rxCollapsedRows.value);
     final currentState = newMap.stateOf(data);
-    if (currentState == CollapsedState.collapsed) {
-      newMap[data.hashCode] = CollapsedState.defaultOf(data);
-    } else if (currentState == CollapsedState.expandedWithCollapsedContent && isContentExpandable) {
-      newMap[data.hashCode] = CollapsedState.expanded;
+    if (currentState == .collapsed) {
+      newMap[data.hashCode] = .defaultOf(data);
+    } else if (currentState == .expandedWithCollapsedContent && isContentExpandable) {
+      newMap[data.hashCode] = .expanded;
     } else {
-      newMap[data.hashCode] = CollapsedState.collapsed;
+      newMap[data.hashCode] = .collapsed;
     }
 
     _rxCollapsedRows.add(newMap);
@@ -74,10 +75,10 @@ class CollapsibleRowsViewModel {
     final newMap = Map.of(collapsedRows);
     for (final data in passedCollapsibleData) {
       final current = collapsedRows[data.hashCode];
-      if (current != null && current == CollapsedState.collapsed) continue;
+      if (current != null && current == .collapsed) continue;
 
       if (journey.data.lastIndexWhere((it) => it.isCollapsible && it.hashCode == data.hashCode) <= toIndex) {
-        newMap[data.hashCode] = CollapsedState.collapsed;
+        newMap[data.hashCode] = .collapsed;
       }
     }
 
@@ -97,5 +98,5 @@ extension BaseDataExtension on BaseData {
 }
 
 extension CollapsedStateMap on Map<int, CollapsedState> {
-  CollapsedState stateOf(BaseData data) => this[data.hashCode] ?? CollapsedState.defaultOf(data);
+  CollapsedState stateOf(BaseData data) => this[data.hashCode] ?? .defaultOf(data);
 }

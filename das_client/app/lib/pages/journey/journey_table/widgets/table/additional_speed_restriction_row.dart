@@ -30,7 +30,7 @@ class AdditionalSpeedRestrictionRow extends CellRowBuilder<AdditionalSpeedRestri
     return DASTableCell(
       child: Text(
         '$kilometreLabel $fromKilometre - $kilometreLabel $endKilometre',
-        overflow: TextOverflow.ellipsis,
+        overflow: .ellipsis,
       ),
     );
   }
@@ -47,7 +47,7 @@ class AdditionalSpeedRestrictionRow extends CellRowBuilder<AdditionalSpeedRestri
           key: additionalSpeedRestrictionIconKey,
         ),
       ),
-      alignment: Alignment.center,
+      alignment: .center,
     );
   }
 
@@ -57,7 +57,7 @@ class AdditionalSpeedRestrictionRow extends CellRowBuilder<AdditionalSpeedRestri
 
     return DASTableCell(
       child: Text(data.speed!.toString()),
-      alignment: Alignment.center,
+      alignment: .center,
     );
   }
 }

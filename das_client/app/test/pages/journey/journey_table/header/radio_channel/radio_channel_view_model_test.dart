@@ -134,7 +134,7 @@ void main() {
       rxMockJourney.add(
         mockJourney(
           communicationNetworkChanges: [
-            CommunicationNetworkChange(communicationNetworkType: CommunicationNetworkType.sim, order: 0),
+            CommunicationNetworkChange(communicationNetworkType: .sim, order: 0),
           ],
         ),
       );
@@ -151,7 +151,7 @@ void main() {
       rxMockJourney.add(
         mockJourney(
           communicationNetworkChanges: [
-            CommunicationNetworkChange(communicationNetworkType: CommunicationNetworkType.sim, order: 10),
+            CommunicationNetworkChange(communicationNetworkType: .sim, order: 10),
           ],
         ),
       );
@@ -169,7 +169,7 @@ void main() {
         mockJourney(
           communicationNetworkChanges: [
             CommunicationNetworkChange(
-              communicationNetworkType: CommunicationNetworkType.sim,
+              communicationNetworkType: .sim,
               order: 10,
               kilometre: [0.0],
             ),
@@ -180,7 +180,7 @@ void main() {
 
       // EXPECT
       expect(emitRegister, hasLength(2));
-      expect(emitRegister.last, equals(RadioChannelModel(networkType: CommunicationNetworkType.sim)));
+      expect(emitRegister.last, equals(RadioChannelModel(networkType: .sim)));
     });
 
     test('model_whenJourneyWithTwoCommunicationNetworksAndCurrentPosition_thenHasNetworkType', () async {
@@ -190,12 +190,12 @@ void main() {
         mockJourney(
           communicationNetworkChanges: [
             CommunicationNetworkChange(
-              communicationNetworkType: CommunicationNetworkType.sim,
+              communicationNetworkType: .sim,
               order: 10,
               kilometre: [0.0],
             ),
             CommunicationNetworkChange(
-              communicationNetworkType: CommunicationNetworkType.gsmP,
+              communicationNetworkType: .gsmP,
               order: 20,
               kilometre: [0.0],
             ),
@@ -206,7 +206,7 @@ void main() {
 
       // EXPECT
       expect(emitRegister, hasLength(2));
-      expect(emitRegister.last, equals(RadioChannelModel(networkType: CommunicationNetworkType.gsmP)));
+      expect(emitRegister.last, equals(RadioChannelModel(networkType: .gsmP)));
     });
   });
 }

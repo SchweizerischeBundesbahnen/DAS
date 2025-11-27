@@ -109,18 +109,18 @@ class JourneyTableViewModel {
     _stateSubscription?.cancel();
     _stateSubscription = _sferaRemoteRepo.stateStream.listen((state) {
       switch (state) {
-        case SferaRemoteRepositoryState.connected:
+        case .connected:
           automaticAdvancementController = AutomaticAdvancementController();
           WakelockPlus.enable();
           break;
-        case SferaRemoteRepositoryState.connecting:
+        case .connecting:
           _rxErrorCode.add(null);
           break;
-        case SferaRemoteRepositoryState.disconnected:
+        case .disconnected:
           WakelockPlus.disable();
           _resetSettings();
           if (_sferaRemoteRepo.lastError != null) {
-            _rxErrorCode.add(ErrorCode.fromSfera(_sferaRemoteRepo.lastError!));
+            _rxErrorCode.add(.fromSfera(_sferaRemoteRepo.lastError!));
             setAutomaticAdvancement(false);
           }
           break;

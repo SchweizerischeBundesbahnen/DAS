@@ -27,10 +27,10 @@ void main() {
   final journey = Journey(
     metadata: Metadata(
       availableBreakSeries: {
-        BreakSeries(trainSeries: TrainSeries.R, breakSeries: 120),
-        BreakSeries(trainSeries: TrainSeries.A, breakSeries: 100),
+        BreakSeries(trainSeries: .R, breakSeries: 120),
+        BreakSeries(trainSeries: .A, breakSeries: 100),
       },
-      breakSeries: BreakSeries(trainSeries: TrainSeries.R, breakSeries: 120),
+      breakSeries: BreakSeries(trainSeries: .R, breakSeries: 120),
       calculatedSpeeds: SplayTreeMap.from({
         5: SingleSpeed(value: '100'),
         10: null,
@@ -120,7 +120,7 @@ void main() {
 
     resolvedTrainSeriesSpeed = ResolvedTrainSeriesSpeed(
       speed: TrainSeriesSpeed(
-        trainSeries: TrainSeries.R,
+        trainSeries: .R,
         speed: SingleSpeed(value: '50'),
         breakSeries: 120,
       ),
@@ -157,7 +157,7 @@ void main() {
     when(mockLineSpeedViewModel.getResolvedSpeedForOrder(15)).thenReturn(
       ResolvedTrainSeriesSpeed(
         speed: TrainSeriesSpeed(
-          trainSeries: TrainSeries.R,
+          trainSeries: .R,
           speed: SingleSpeed(value: '50'),
           breakSeries: 120,
         ),
@@ -167,7 +167,7 @@ void main() {
     when(mockLineSpeedViewModel.getResolvedSpeedForOrder(20)).thenReturn(
       ResolvedTrainSeriesSpeed(
         speed: TrainSeriesSpeed(
-          trainSeries: TrainSeries.R,
+          trainSeries: .R,
           speed: SingleSpeed(value: '60'),
           breakSeries: 120,
         ),
@@ -177,7 +177,7 @@ void main() {
     when(mockLineSpeedViewModel.getResolvedSpeedForOrder(25)).thenReturn(
       ResolvedTrainSeriesSpeed(
         speed: TrainSeriesSpeed(
-          trainSeries: TrainSeries.R,
+          trainSeries: .R,
           speed: SingleSpeed(value: '60'),
           breakSeries: 120,
         ),

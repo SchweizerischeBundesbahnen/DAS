@@ -65,7 +65,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
   final List<TrainCharacteristicsDto> _trainCharacteristics = [];
   RelatedTrainInformationDto? _relatedTrainInformation;
 
-  final _rxState = BehaviorSubject.seeded(SferaRemoteRepositoryInternalState.disconnected);
+  final _rxState = BehaviorSubject<SferaRemoteRepositoryInternalState>.seeded(.disconnected);
   final _rxJourney = BehaviorSubject<Journey?>.seeded(null);
   final _rxUxTestingEvent = BehaviorSubject<UxTestingEvent?>.seeded(null);
   final _rxWarnappEvent = BehaviorSubject<WarnappEvent?>.seeded(null);
@@ -99,7 +99,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
     _otnId = otnId;
     _tasks.clear();
     lastError = null;
-    _rxState.add(SferaRemoteRepositoryInternalState.connecting);
+    _rxState.add(.connecting);
 
     final sferaTrain = Format.sferaTrain(otnId.operationalTrainNumber, otnId.startDate);
     final isConnected = await _mqttService.connect(otnId.company, sferaTrain);
@@ -107,8 +107,8 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
       await _initiateHandshake(otnId);
     } else {
       _otnId = null;
-      lastError = SferaError.connectionFailed;
-      _rxState.add(SferaRemoteRepositoryInternalState.disconnected);
+      lastError = .connectionFailed;
+      _rxState.add(.disconnected);
     }
   }
 
@@ -127,7 +127,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
   @override
   Future<void> disconnect() async {
     final otnId = _otnId;
-    if (_rxState.value == SferaRemoteRepositoryInternalState.connected && otnId != null) {
+    if (_rxState.value == .connected && otnId != null) {
       _log.info('Sending session termination request for $otnId...');
       final header = messageHeader(sender: otnId.company);
       final sessionTerminationMessage = SferaB2gEventMessageDto.createSessionTermination(messageHeader: header);
@@ -139,7 +139,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
     _rxJourney.add(null);
     _rxUxTestingEvent.add(null);
     _rxWarnappEvent.add(null);
-    _rxState.add(SferaRemoteRepositoryInternalState.disconnected);
+    _rxState.add(.disconnected);
   }
 
   @override
@@ -200,9 +200,9 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
   }
 
   Future<void> _initiateHandshake(OtnId otnId) async {
-    _rxState.add(SferaRemoteRepositoryInternalState.handshaking);
+    _rxState.add(.handshaking);
     final isDriver = await _authProvider.isDriver();
-    final drivingMode = isDriver ? DasDrivingModeDto.dasNotConnected : DasDrivingModeDto.readOnly;
+    final DasDrivingModeDto drivingMode = isDriver ? .dasNotConnected : .readOnly;
 
     final handshakeTask = HandshakeTask(
       mqttService: _mqttService,
@@ -226,15 +226,15 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
 
     if (_allTasksCompleted()) {
       switch (_rxState.value) {
-        case SferaRemoteRepositoryInternalState.loadingAdditionalData:
+        case .loadingAdditionalData:
           await _refreshSegmentProfiles();
           await _refreshTrainCharacteristics();
           _updateJourney(
-            onSuccess: () => _rxState.add(SferaRemoteRepositoryInternalState.connected),
+            onSuccess: () => _rxState.add(.connected),
             onInvalid: () => disconnect(),
           );
           break;
-        case SferaRemoteRepositoryInternalState.connected:
+        case .connected:
           await _refreshSegmentProfiles();
           await _refreshTrainCharacteristics();
           _updateJourney();
@@ -245,7 +245,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
   }
 
   Future<void> _handleHandshakeTaskCompleted() async {
-    _rxState.add(SferaRemoteRepositoryInternalState.loadingJourney);
+    _rxState.add(.loadingJourney);
     final requestJourneyTask = RequestJourneyProfileTask(
       mqttService: _mqttService,
       sferaService: this,
@@ -257,7 +257,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
   }
 
   Future<void> _handleRequestJourneyProfileTaskCompleted(dynamic data) async {
-    _rxState.add(SferaRemoteRepositoryInternalState.loadingAdditionalData);
+    _rxState.add(.loadingAdditionalData);
     final dataList = data as List;
     _journeyProfile = dataList.whereType<JourneyProfileDto>().first;
     _relatedTrainInformation = dataList.whereType<RelatedTrainInformationDto>().firstOrNull;
@@ -344,7 +344,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
         onSuccess?.call();
       } else {
         _log.warning('Failed to update journey as it is not valid');
-        lastError = SferaError.invalid;
+        lastError = .invalid;
         onInvalid?.call();
       }
     }
@@ -388,7 +388,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
     _log.severe('Task $task failed with error code $errorCode');
     _tasks.remove(task);
     lastError = errorCode;
-    if (_rxState.value != SferaRemoteRepositoryInternalState.connected) {
+    if (_rxState.value != .connected) {
       disconnect();
     }
   }
@@ -396,7 +396,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
   @override
   TrainIdentification? get connectedTrain => _otnId != null
       ? TrainIdentification(
-          ru: RailwayUndertaking.fromCompanyCode(_otnId!.company),
+          ru: .fromCompanyCode(_otnId!.company),
           trainNumber: _otnId!.operationalTrainNumber,
           date: _otnId!.startDate,
         )
@@ -410,15 +410,12 @@ enum SferaRemoteRepositoryInternalState {
   loadingJourney,
   loadingAdditionalData,
   connected,
-  offline;
+  offline
+  ;
 
   SferaRemoteRepositoryState toExternalState() => switch (this) {
-    SferaRemoteRepositoryInternalState.disconnected ||
-    SferaRemoteRepositoryInternalState.offline => SferaRemoteRepositoryState.disconnected,
-    SferaRemoteRepositoryInternalState.connecting ||
-    SferaRemoteRepositoryInternalState.handshaking ||
-    SferaRemoteRepositoryInternalState.loadingJourney ||
-    SferaRemoteRepositoryInternalState.loadingAdditionalData => SferaRemoteRepositoryState.connecting,
-    SferaRemoteRepositoryInternalState.connected => SferaRemoteRepositoryState.connected,
+    .disconnected || .offline => .disconnected,
+    .connecting || .handshaking || .loadingJourney || .loadingAdditionalData => .connecting,
+    .connected => .connected,
   };
 }

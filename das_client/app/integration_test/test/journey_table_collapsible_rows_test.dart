@@ -26,7 +26,7 @@ void main() {
     await loadJourney(tester, trainNumber: 'T15M');
 
     final footnote = FootNote(
-      type: FootNoteType.decisiveGradientDown,
+      type: .decisiveGradientDown,
       refText: '1)',
       text: 'Renens - Lausanne <i>"via saut-de-mouton"</i> 0‰',
     );
@@ -161,7 +161,7 @@ void main() {
     await loadJourney(tester, trainNumber: 'T15');
 
     final footnote = FootNote(
-      type: FootNoteType.decisiveGradientDown,
+      type: .decisiveGradientDown,
       refText: '1)',
       text: 'Renens - Lausanne <i>"via saut-de-mouton"</i> 0‰',
     );

@@ -3,7 +3,6 @@ import 'package:mqtt/component.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/api/task/sfera_task.dart';
 import 'package:sfera/src/data/dto/b2g_request_dto.dart';
-import 'package:sfera/src/data/dto/enums/sp_status_dto.dart';
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
@@ -107,7 +106,7 @@ class RequestSegmentProfilesTask extends SferaTask<List<SegmentProfileDto>> {
     bool allValid = true;
 
     for (final element in replyMessage.payload!.segmentProfiles) {
-      if (element.status == SpStatusDto.valid) {
+      if (element.status == .valid) {
         await _sferaDatabaseRepository.saveSegmentProfile(element);
       } else {
         allValid = false;
@@ -117,7 +116,7 @@ class RequestSegmentProfilesTask extends SferaTask<List<SegmentProfileDto>> {
     if (allValid) {
       _taskCompletedCallback(this, replyMessage.payload!.segmentProfiles.toList());
     } else {
-      _taskFailedCallback(this, SferaError.invalid);
+      _taskFailedCallback(this, .invalid);
     }
 
     return true;

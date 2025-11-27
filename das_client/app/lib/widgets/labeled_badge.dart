@@ -24,7 +24,7 @@ class LabeledBadge extends StatelessWidget {
     if (label == null) return child;
 
     return Stack(
-      clipBehavior: Clip.none,
+      clipBehavior: .none,
       children: [
         child,
         Positioned(
@@ -50,7 +50,7 @@ class LabeledBadge extends StatelessWidget {
           label ?? '',
           style: DASTextStyles.extraSmallBold.copyWith(
             color: SBBColors.white,
-            fontWeight: FontWeight.w700,
+            fontWeight: .w700,
           ),
         ),
       ),

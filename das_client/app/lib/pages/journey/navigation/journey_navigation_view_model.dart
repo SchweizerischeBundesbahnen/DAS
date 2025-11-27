@@ -98,8 +98,8 @@ class JourneyNavigationViewModel {
     _sferaRemoteStateSubscription?.cancel();
     _sferaRemoteStateSubscription = _sferaRemoteRepo.stateStream.listen(
       (s) => switch (s) {
-        SferaRemoteRepositoryState.disconnected => _sferaRemoteRepo.lastError != null ? _reset() : null,
-        SferaRemoteRepositoryState.connected || SferaRemoteRepositoryState.connecting => null,
+        .disconnected => _sferaRemoteRepo.lastError != null ? _reset() : null,
+        .connected || .connecting => null,
       },
     );
   }

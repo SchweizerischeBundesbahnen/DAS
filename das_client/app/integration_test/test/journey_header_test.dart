@@ -24,7 +24,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
-import 'package:settings/component.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
 import '../app_test.dart';
@@ -223,7 +222,7 @@ Future<void> main() async {
 
       final brightness = SBBBaseStyle.of(context).brightness;
 
-      final searchedButtonLabel = brightness != Brightness.dark
+      final searchedButtonLabel = brightness != .dark
           ? l10n.p_journey_header_button_dark_theme
           : l10n.p_journey_header_button_light_theme;
 
@@ -302,7 +301,7 @@ Future<void> main() async {
       await prepareAndStartApp(tester);
 
       final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;
-      featureProvider.disableFeature(RuFeatureKeys.warnapp);
+      featureProvider.disableFeature(.warnapp);
 
       await loadJourney(tester, trainNumber: 'T9999');
 

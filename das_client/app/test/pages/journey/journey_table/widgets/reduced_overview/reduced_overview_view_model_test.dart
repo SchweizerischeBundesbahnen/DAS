@@ -6,7 +6,7 @@ import 'package:sfera/component.dart';
 
 import 'reduced_overview_view_model_test.mocks.dart';
 
-final trainIdentification = TrainIdentification(ru: RailwayUndertaking.sbbP, trainNumber: '1234', date: DateTime.now());
+final trainIdentification = TrainIdentification(ru: .sbbP, trainNumber: '1234', date: DateTime.now());
 
 @GenerateNiceMocks([
   MockSpec<SferaLocalRepo>(),
@@ -39,7 +39,7 @@ void main() {
     final data = <BaseData>[stop1, withoutStop, stop2, withoutStopWithNetworkChange];
 
     final communicationNetworkChanges = [
-      CommunicationNetworkChange(communicationNetworkType: CommunicationNetworkType.gsmR, order: 400),
+      CommunicationNetworkChange(communicationNetworkType: .gsmR, order: 400),
     ];
     final metadata = Metadata(communicationNetworkChanges: communicationNetworkChanges);
 

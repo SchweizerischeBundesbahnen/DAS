@@ -22,13 +22,13 @@ void main() {
     final now = DateTime(1970, 1, 1);
     final tomorrow = now.add(Duration(days: 1));
     final yesterday = now.subtract(Duration(days: 1));
-    final trainId1 = TrainIdentification(ru: RailwayUndertaking.sbbP, trainNumber: '1234', date: now);
-    final trainId2 = TrainIdentification(ru: RailwayUndertaking.sbbC, trainNumber: '5678', date: tomorrow);
-    final trainId3 = TrainIdentification(ru: RailwayUndertaking.blsP, trainNumber: '9999', date: yesterday);
+    final trainId1 = TrainIdentification(ru: .sbbP, trainNumber: '1234', date: now);
+    final trainId2 = TrainIdentification(ru: .sbbC, trainNumber: '5678', date: tomorrow);
+    final trainId3 = TrainIdentification(ru: .blsP, trainNumber: '9999', date: yesterday);
 
     setUp(() {
       mockSferaRepo = MockSferaRemoteRepo();
-      mockStream = BehaviorSubject<SferaRemoteRepositoryState>.seeded(SferaRemoteRepositoryState.disconnected);
+      mockStream = BehaviorSubject<SferaRemoteRepositoryState>.seeded(.disconnected);
       when(mockSferaRepo.stateStream).thenAnswer((_) => mockStream.stream);
       testee = JourneyNavigationViewModel(sferaRepo: mockSferaRepo);
       emitRegister = <dynamic>[];
@@ -237,10 +237,10 @@ void main() {
       await testee.push(trainId1);
       await processStreams();
       emitRegister.clear();
-      when(mockSferaRepo.lastError).thenReturn(SferaError.requestTimeout);
+      when(mockSferaRepo.lastError).thenReturn(.requestTimeout);
 
       // ACT
-      mockStream.add(SferaRemoteRepositoryState.disconnected);
+      mockStream.add(.disconnected);
       await processStreams();
 
       // EXCPECT

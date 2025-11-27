@@ -3,10 +3,7 @@ import 'package:mqtt/component.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/api/task/sfera_task.dart';
 import 'package:sfera/src/data/dto/das_operating_modes_supported_dto.dart';
-import 'package:sfera/src/data/dto/enums/das_architecture_dto.dart';
-import 'package:sfera/src/data/dto/enums/das_connectivity_dto.dart';
 import 'package:sfera/src/data/dto/enums/das_driving_mode_dto.dart';
-import 'package:sfera/src/data/dto/enums/related_train_request_type_dto.dart';
 import 'package:sfera/src/data/dto/handshake_request_dto.dart';
 import 'package:sfera/src/data/dto/sfera_b2g_request_message_dto.dart';
 import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
@@ -46,14 +43,10 @@ class HandshakeTask extends SferaTask {
     final sferaTrain = Format.sferaTrain(otnId.operationalTrainNumber, otnId.startDate);
 
     _log.info('Sending handshake request for company=${otnId.company} train=$sferaTrain');
-    final operationMode = DasOperatingModesSupportedDto.create(
-      dasDrivingMode,
-      DasArchitectureDto.boardAdviceCalculation,
-      DasConnectivityDto.connected,
-    );
+    final operationMode = DasOperatingModesSupportedDto.create(dasDrivingMode, .boardAdviceCalculation, .connected);
     final handshakeRequest = HandshakeRequestDto.create(
       [operationMode],
-      relatedTrainRequestType: RelatedTrainRequestTypeDto.ownTrainAndRelatedTrains,
+      relatedTrainRequestType: .ownTrainAndRelatedTrains,
       statusReportsEnabled: false,
     );
 
@@ -66,7 +59,7 @@ class HandshakeTask extends SferaTask {
     );
 
     if (!success) {
-      _taskFailedCallback(this, SferaError.connectionFailed);
+      _taskFailedCallback(this, .connectionFailed);
     }
   }
 
@@ -82,7 +75,7 @@ class HandshakeTask extends SferaTask {
       _log.warning(
         'Received handshake reject with reason=${replyMessage.handshakeReject?.handshakeRejectReason?.toString()}',
       );
-      _taskFailedCallback(this, SferaError.handshakeRejected);
+      _taskFailedCallback(this, .handshakeRejected);
       _mqttService.disconnect();
       return true;
     } else {

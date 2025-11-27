@@ -28,7 +28,7 @@ class TrainIdentificationDto extends SferaXmlElementDto {
 extension TrainIdentificationMapperExtension on TrainIdentificationDto {
   TrainIdentification toTrainIdentification() {
     return TrainIdentification(
-      ru: RailwayUndertaking.fromCompanyCode(otnId.company),
+      ru: .fromCompanyCode(otnId.company),
       trainNumber: otnId.operationalTrainNumber,
       date: otnId.startDate,
     );

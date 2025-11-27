@@ -66,8 +66,8 @@ class _RouteChevronState extends State<RouteChevron> {
   @override
   Widget build(BuildContext context) {
     return Stack(
-      clipBehavior: Clip.hardEdge,
-      alignment: Alignment.center,
+      clipBehavior: .hardEdge,
+      alignment: .center,
       children: [
         Positioned(
           top: widget.chevronPosition + currentOffsetValue,

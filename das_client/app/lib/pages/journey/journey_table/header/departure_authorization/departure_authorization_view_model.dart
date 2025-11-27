@@ -68,6 +68,5 @@ extension _BaseDataListExtension on List<BaseData> {
 }
 
 extension _SignalListExtension on List<Signal> {
-  bool anyNonIntermediateSignals() =>
-      any((signal) => signal.functions.any((function) => function != SignalFunction.intermediate));
+  bool anyNonIntermediateSignals() => any((signal) => signal.functions.any((function) => function != .intermediate));
 }

@@ -27,14 +27,14 @@ class CommunicationNetworkChangeRow extends CellRowBuilder<CommunicationNetworkC
     } else {
       return DASTableCell(
         color: specialCellColor,
-        padding: const EdgeInsets.all(8.0),
-        alignment: Alignment.centerLeft,
-        clipBehaviour: Clip.none,
+        padding: const .all(8.0),
+        alignment: .centerLeft,
+        clipBehavior: .none,
         child: Text(
           data.kilometre[0].toStringAsFixed(1),
           maxLines: 1,
           softWrap: false,
-          overflow: TextOverflow.ellipsis,
+          overflow: .ellipsis,
         ),
       );
     }
@@ -44,10 +44,10 @@ class CommunicationNetworkChangeRow extends CellRowBuilder<CommunicationNetworkC
   DASTableCell informationCell(BuildContext context) {
     final networkType = data.communicationNetworkType;
     return DASTableCell(
-      alignment: Alignment.centerLeft,
+      alignment: .centerLeft,
       child: Row(
         children: [
-          if (networkType == CommunicationNetworkType.sim)
+          if (networkType == .sim)
             Flexible(
               child: SimIdentifier(textStyle: DASTextStyles.largeRoman),
             )
@@ -58,7 +58,7 @@ class CommunicationNetworkChangeRow extends CellRowBuilder<CommunicationNetworkC
                 style: DASTextStyles.largeRoman,
                 maxLines: 1,
                 softWrap: false,
-                overflow: TextOverflow.ellipsis,
+                overflow: .ellipsis,
               ),
             ),
             const SizedBox(width: sbbDefaultSpacing / 2),

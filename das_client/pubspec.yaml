@@ -3,7 +3,7 @@ publish_to: none
 description: "DAS (Driver Advisory System) is a mobile application that provides all the required journey data to the train driver."
 
 environment:
-  sdk: ^3.9.0
+  sdk: ^3.10.0
 
 workspace:
   - app
@@ -18,7 +18,7 @@ workspace:
   - local_regulations
 
 dev_dependencies:
-  melos: ^7.2.0
+  melos: ^7.3.0
 
 # Melos Configuration
 
@@ -38,7 +38,9 @@ melos:
         - melos run generate:intl
 
     generate:build_runner:
-      run: dart run build_runner build --delete-conflicting-outputs
+      # TODO: dot-shorthands are enabled by default but some packages (ie. json_serializable, drift_dev) fail otherwise. Remove when fixed.
+      # see also similar issue: https://github.com/rrousselGit/riverpod/issues/4416
+      run: dart run build_runner build --delete-conflicting-outputs --enable-experiment=dot-shorthands
       description: Run build_runner in all components
       exec:
         orderDependents: true

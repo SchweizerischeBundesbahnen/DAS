@@ -3,11 +3,11 @@ import 'package:local_regulations/src/local_regulation_relevance.dart';
 
 void main() {
   test('from_whenStartsWithAbbreviation_thenReturnRelevance', () {
-    _checkAbbreviationAtStart('ZR', LocalRegulationRelevance.trainJourneysAndShuntingManoeuvres);
-    _checkAbbreviationAtStart('Z', LocalRegulationRelevance.trainJourneys);
-    _checkAbbreviationAtStart('R', LocalRegulationRelevance.shuntingManoeuvres);
-    _checkAbbreviationAtStart('GV', LocalRegulationRelevance.crossBorderTraffic);
-    _checkAbbreviationAtStart('Fdl', LocalRegulationRelevance.trafficControllers);
+    _checkAbbreviationAtStart('ZR', .trainJourneysAndShuntingManoeuvres);
+    _checkAbbreviationAtStart('Z', .trainJourneys);
+    _checkAbbreviationAtStart('R', .shuntingManoeuvres);
+    _checkAbbreviationAtStart('GV', .crossBorderTraffic);
+    _checkAbbreviationAtStart('Fdl', .trafficControllers);
   });
 
   test('from_whenUnknownAbbreviation_thenReturnNull', () {

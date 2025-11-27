@@ -31,7 +31,7 @@ class UserSettings {
     }
   }
 
-  bool get showDecisiveGradient => getUserSetting(UserSettingKeys.showDecisiveGradient, true);
+  bool get showDecisiveGradient => getUserSetting(.showDecisiveGradient, true);
 }
 
 enum UserSettingKeys {

@@ -19,7 +19,7 @@ void main() {
     localizations = lookupAppLocalizations(const Locale('en'));
     testee = SelectRailwayUndertakingModalController(
       localizations: localizations,
-      initialRailwayUndertaking: RailwayUndertaking.sbbP,
+      initialRailwayUndertaking: .sbbP,
       updateRailwayUndertaking: mockUpdateAvailableRuFunction.call,
     );
     testee.availableRailwayUndertakings.listen(emitRegister.addAll);
@@ -37,7 +37,7 @@ void main() {
 
   group('SelectRailwayUndertakingModalController Unit Test', () {
     test('filterValue_whenInstantiatedWithDefault_isLocalizedString', () {
-      expect(testee.filterValue, equals(englishLocalized(RailwayUndertaking.sbbP)));
+      expect(testee.filterValue, equals(englishLocalized(.sbbP)));
     });
 
     test('filterValue_whenSelectedRailwayUndertakingChanged_thenUpdatesTextController', () {
@@ -48,7 +48,7 @@ void main() {
       testee.selectedRailwayUndertaking = newRu;
 
       // EXPECT
-      expect(testee.filterValue, equals(englishLocalized(RailwayUndertaking.blsC)));
+      expect(testee.filterValue, equals(englishLocalized(.blsC)));
     });
 
     test('filterValue_whenFilterChanged_thenIsNewFilter', () {
@@ -63,7 +63,7 @@ void main() {
       // ACT
       testee = SelectRailwayUndertakingModalController(
         localizations: localizations,
-        initialRailwayUndertaking: RailwayUndertaking.sbbP,
+        initialRailwayUndertaking: .sbbP,
         updateRailwayUndertaking: mockUpdateAvailableRuFunction.call,
       );
       testee.availableRailwayUndertakings.listen(emitRegister.addAll);
@@ -76,7 +76,7 @@ void main() {
     test('availableRailwayUndertakings_whenFilterChanged_thenIsEmittedWithUndertakingsFilteredCorrectly', () async {
       // ARRANGE
       // should be ordered 0th even though not lexicographically the 0th element
-      testee.selectedRailwayUndertaking = RailwayUndertaking.sbbC;
+      testee.selectedRailwayUndertaking = .sbbC;
       await processStreams();
       emitRegister.clear();
 
@@ -87,14 +87,14 @@ void main() {
       // EXPECT
       expect(
         emitRegister,
-        orderedEquals([
-          RailwayUndertaking.sbbC,
-          RailwayUndertaking.sbb,
-          RailwayUndertaking.sbbP,
-          RailwayUndertaking.sbbD,
-          RailwayUndertaking.sbbInfra,
-          RailwayUndertaking.sbbInfraBuildLog,
-          RailwayUndertaking.sbbCInt,
+        orderedEquals(<RailwayUndertaking>[
+          .sbbC,
+          .sbb,
+          .sbbP,
+          .sbbD,
+          .sbbInfra,
+          .sbbInfraBuildLog,
+          .sbbCInt,
         ]),
       );
     });

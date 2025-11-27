@@ -2,7 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:sfera/component.dart';
 
 class SpeedChange extends JourneyPoint {
-  const SpeedChange({required super.order, required super.kilometre, this.text}) : super(type: Datatype.speedChange);
+  const SpeedChange({required super.order, required super.kilometre, this.text}) : super(dataType: .speedChange);
 
   final String? text;
 
@@ -21,5 +21,5 @@ class SpeedChange extends JourneyPoint {
           text == other.text;
 
   @override
-  int get hashCode => type.hashCode ^ order.hashCode ^ Object.hashAll(kilometre) ^ text.hashCode;
+  int get hashCode => dataType.hashCode ^ order.hashCode ^ Object.hashAll(kilometre) ^ text.hashCode;
 }

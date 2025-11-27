@@ -4,7 +4,8 @@ enum OperationalIndicationTypeDto implements XmlEnum {
   uncoded(xmlValue: 'uncoded'),
   occupiedEntry(xmlValue: 'occupiedEntry'),
   limitedUsableTrack(xmlValue: 'limitedUsableTrack'),
-  dispatcherDepartureAuthorization(xmlValue: 'dispatcherDepartureAuthorization');
+  dispatcherDepartureAuthorization(xmlValue: 'dispatcherDepartureAuthorization')
+  ;
 
   const OperationalIndicationTypeDto({
     required this.xmlValue,

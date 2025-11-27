@@ -23,7 +23,7 @@ abstract class SferaTask<T> {
     timeoutTimer?.cancel();
     timeoutTimer = Timer(_timeout, () {
       _log.severe('Timeout reached for task $this');
-      onFailed(this, SferaError.requestTimeout);
+      onFailed(this, .requestTimeout);
     });
   }
 

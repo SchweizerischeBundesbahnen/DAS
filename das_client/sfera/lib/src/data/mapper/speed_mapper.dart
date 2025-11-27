@@ -5,7 +5,6 @@ import 'package:sfera/src/data/dto/graduated_speed_info_dto.dart';
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
 import 'package:sfera/src/data/dto/jp_context_information_nsp_dto.dart';
 import 'package:sfera/src/data/dto/new_speed_nsp_dto.dart';
-import 'package:sfera/src/data/dto/reason_code_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/temporary_constraints_dto.dart';
 import 'package:sfera/src/data/dto/velocity_dto.dart';
@@ -64,18 +63,18 @@ class SpeedMapper {
 
     for (final entity in graduatedSpeedInfo.entities) {
       if (entity.adSpeed != null) {
-        addSpeed(TrainSeries.A, entity.adSpeed!, entity.text);
-        addSpeed(TrainSeries.D, entity.adSpeed!, entity.text);
+        addSpeed(.A, entity.adSpeed!, entity.text);
+        addSpeed(.D, entity.adSpeed!, entity.text);
       }
       if (entity.nSpeed != null) {
-        addSpeed(TrainSeries.N, entity.nSpeed!, entity.text);
+        addSpeed(.N, entity.nSpeed!, entity.text);
       }
       if (entity.sSpeed != null) {
-        addSpeed(TrainSeries.S, entity.sSpeed!, entity.text);
+        addSpeed(.S, entity.sSpeed!, entity.text);
       }
       if (entity.roSpeed != null) {
-        addSpeed(TrainSeries.R, entity.roSpeed!, entity.text);
-        addSpeed(TrainSeries.O, entity.roSpeed!, entity.text);
+        addSpeed(.R, entity.roSpeed!, entity.text);
+        addSpeed(.O, entity.roSpeed!, entity.text);
       }
     }
 
@@ -166,15 +165,15 @@ class SpeedMapper {
     DraftAdvisedSpeedType? segmentType;
 
     if (speed == null) {
-      segmentType = DraftAdvisedSpeedType.velocityMax;
+      segmentType = .velocityMax;
     } else {
       switch (advisedSpeed.reasonCode) {
-        case ReasonCodeDto.followTrain:
-          segmentType = DraftAdvisedSpeedType.followTrain;
-        case ReasonCodeDto.trainFollowing:
-          segmentType = DraftAdvisedSpeedType.trainFollowing;
-        case ReasonCodeDto.advisedSpeedFixedTime:
-          segmentType = DraftAdvisedSpeedType.fixedTime;
+        case .followTrain:
+          segmentType = .followTrain;
+        case .trainFollowing:
+          segmentType = .trainFollowing;
+        case .advisedSpeedFixedTime:
+          segmentType = .fixedTime;
         default:
           break;
       }

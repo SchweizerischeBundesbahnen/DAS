@@ -4,7 +4,6 @@ import 'package:app/pages/journey/journey_table/widgets/table/cell_row_builder.d
 import 'package:app/pages/journey/journey_table/widgets/table/service_point_row.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/signal_row.dart';
 import 'package:app/util/time_constants.dart';
-import 'package:app/widgets/stickyheader/sticky_level.dart';
 import 'package:collection/collection.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter/material.dart';
@@ -456,7 +455,7 @@ ServicePointRow mockServicePointRow(ServicePoint data, Offset offset) {
   final mockKey = mockGlobalKeyOffset(offset);
   when(servicePointRow.data).thenReturn(data);
   when(servicePointRow.height).thenReturn(ServicePointRow.baseRowHeight);
-  when(servicePointRow.stickyLevel).thenReturn(StickyLevel.first);
+  when(servicePointRow.stickyLevel).thenReturn(.first);
   when(servicePointRow.key).thenReturn(mockKey);
   return servicePointRow;
 }

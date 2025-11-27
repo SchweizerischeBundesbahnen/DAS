@@ -4,7 +4,7 @@ abstract class BaseFootNote extends JourneyAnnotation {
   const BaseFootNote({
     required super.order,
     required this.footNote,
-    required super.type,
+    required super.dataType,
   });
 
   final FootNote footNote;
@@ -22,5 +22,5 @@ abstract class BaseFootNote extends JourneyAnnotation {
       other is BaseFootNote && runtimeType == other.runtimeType && footNote == other.footNote && order == other.order;
 
   @override
-  int get hashCode => type.hashCode ^ footNote.hashCode ^ order.hashCode;
+  int get hashCode => dataType.hashCode ^ footNote.hashCode ^ order.hashCode;
 }

@@ -6,7 +6,7 @@ class AbfahrtDetector {
     required this.laengeHalt,
     required this.schwelleFahrt,
     required this.schwelleQuiet,
-  }) : _ringBufferHalt = RingBuffer(laengeHalt, options: [RingBufferOptions.sum, RingBufferOptions.minMax]),
+  }) : _ringBufferHalt = RingBuffer(laengeHalt, options: [.sum, .minMax]),
        _ringBufferFahrt = RingBuffer(length - laengeHalt) {
     reset(0);
   }

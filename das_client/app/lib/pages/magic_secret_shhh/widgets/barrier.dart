@@ -32,8 +32,8 @@ class Barrier extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: isDarkMode ? [SBBColors.white, SBBColors.silver] : [SBBColors.iron, SBBColors.charcoal],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+            begin: .topCenter,
+            end: .bottomCenter,
           ),
           borderRadius: isBottom
               ? const BorderRadius.only(

@@ -23,7 +23,7 @@ class BracketStationCellBody extends StatelessWidget {
     final tableBorder = DASTableTheme.of(context)?.data.tableBorder;
     final bottomBorder = -(tableBorder?.horizontalInside.width ?? 0);
     return Stack(
-      clipBehavior: Clip.none,
+      clipBehavior: .none,
       children: [
         Positioned(
           top: 0,
@@ -39,7 +39,7 @@ class BracketStationCellBody extends StatelessWidget {
               SBBColors.white,
             ),
             child: Align(
-              alignment: Alignment.center,
+              alignment: .center,
               child: RotatedBox(
                 quarterTurns: -1,
                 child: Text(

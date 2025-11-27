@@ -30,27 +30,27 @@ void main() {
   final journey = Journey(
     metadata: Metadata(
       availableBreakSeries: {
-        BreakSeries(trainSeries: TrainSeries.N, breakSeries: 180),
-        BreakSeries(trainSeries: TrainSeries.N, breakSeries: 160),
-        BreakSeries(trainSeries: TrainSeries.R, breakSeries: 120),
-        BreakSeries(trainSeries: TrainSeries.A, breakSeries: 100),
-        BreakSeries(trainSeries: TrainSeries.D, breakSeries: 100),
+        BreakSeries(trainSeries: .N, breakSeries: 180),
+        BreakSeries(trainSeries: .N, breakSeries: 160),
+        BreakSeries(trainSeries: .R, breakSeries: 120),
+        BreakSeries(trainSeries: .A, breakSeries: 100),
+        BreakSeries(trainSeries: .D, breakSeries: 100),
       },
-      breakSeries: BreakSeries(trainSeries: TrainSeries.N, breakSeries: 180),
+      breakSeries: BreakSeries(trainSeries: .N, breakSeries: 180),
       lineSpeeds: SplayTreeMap.from({
         0: [
           TrainSeriesSpeed(
-            trainSeries: TrainSeries.N,
+            trainSeries: .N,
             breakSeries: 180,
             speed: SingleSpeed(value: '120'),
           ),
           TrainSeriesSpeed(
-            trainSeries: TrainSeries.N,
+            trainSeries: .N,
             breakSeries: 160,
             speed: SingleSpeed(value: '110'),
           ),
           TrainSeriesSpeed(
-            trainSeries: TrainSeries.R,
+            trainSeries: .R,
             breakSeries: 120,
             speed: SingleSpeed(value: '105'),
           ),

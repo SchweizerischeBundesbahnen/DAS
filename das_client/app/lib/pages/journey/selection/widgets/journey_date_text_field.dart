@@ -43,7 +43,7 @@ class _JourneyDateTextFieldState extends State<JourneyDateTextField> {
   Widget build(BuildContext context) => GestureDetector(
     onTap: widget.onTap,
     child: Padding(
-      padding: widget.isModalVersion ? EdgeInsets.zero : _inputPadding,
+      padding: widget.isModalVersion ? .zero : _inputPadding,
       child: SBBTextField(
         labelText: widget.isModalVersion ? null : context.l10n.p_train_selection_date_description,
         hintText: widget.isModalVersion ? context.l10n.p_train_selection_date_description : null,

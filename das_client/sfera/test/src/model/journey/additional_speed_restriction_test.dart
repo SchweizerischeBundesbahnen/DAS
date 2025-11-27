@@ -7,7 +7,7 @@ void main() {
     // GIVEN
     final asr = AdditionalSpeedRestriction(kmFrom: 5.0, kmTo: 10.0, orderFrom: 500, orderTo: 1000, speed: 50);
     final etcsL1TrackEquipments = [
-      _trackEquipment(TrackEquipmentType.etcsL1lsSingleTrackNoBlock, 0, 9999),
+      _trackEquipment(.etcsL1lsSingleTrackNoBlock, 0, 9999),
     ];
 
     // WHEN
@@ -44,7 +44,7 @@ void main() {
       speed: 20,
     );
     final etcsL2TrackEquipments = [
-      _trackEquipment(TrackEquipmentType.etcsL2ExtSpeedReversingImpossible, 500, 1000),
+      _trackEquipment(.etcsL2ExtSpeedReversingImpossible, 500, 1000),
     ];
 
     // WHEN
@@ -85,7 +85,7 @@ void main() {
       speed: 40,
     );
     final etcsL2TrackEquipments = [
-      _trackEquipment(TrackEquipmentType.etcsL2ConvSpeedReversingImpossible, 500, 1000),
+      _trackEquipment(.etcsL2ConvSpeedReversingImpossible, 500, 1000),
     ];
 
     // WHEN

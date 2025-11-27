@@ -11,7 +11,7 @@ class CurvePoint extends JourneyPoint {
     this.curveType,
     this.text,
     this.comment,
-  }) : super(type: Datatype.curvePoint);
+  }) : super(dataType: .curvePoint);
 
   final CurvePointType? curvePointType;
   final CurveType? curveType;
@@ -19,7 +19,7 @@ class CurvePoint extends JourneyPoint {
   final String? comment;
 
   @override
-  OrderPriority get orderPriority => OrderPriority.curve;
+  OrderPriority get orderPriority => .curve;
 
   @override
   String toString() {
@@ -41,7 +41,7 @@ class CurvePoint extends JourneyPoint {
 
   @override
   int get hashCode =>
-      type.hashCode ^
+      dataType.hashCode ^
       order.hashCode ^
       Object.hashAll(kilometre) ^
       curvePointType.hashCode ^
@@ -55,14 +55,11 @@ class CurvePoint extends JourneyPoint {
 enum CurvePointType {
   begin,
   end,
-  unknown;
+  unknown
+  ;
 
-  factory CurvePointType.from(String value) {
-    return values.firstWhere(
-      (e) => e.name.toLowerCase() == value.toLowerCase(),
-      orElse: () => CurvePointType.unknown,
-    );
-  }
+  factory CurvePointType.from(String value) =>
+      values.firstWhere((e) => e.name.toLowerCase() == value.toLowerCase(), orElse: () => .unknown);
 }
 
 /// Type of curve. Is provided only if type is [CurvePointType.begin]
@@ -75,12 +72,9 @@ enum CurveType {
 
   /// begins at an halt
   curveAfterHalt,
-  unknown;
+  unknown
+  ;
 
-  factory CurveType.from(String value) {
-    return values.firstWhere(
-      (e) => e.name.toLowerCase() == value.toLowerCase(),
-      orElse: () => CurveType.unknown,
-    );
-  }
+  factory CurveType.from(String value) =>
+      values.firstWhere((e) => e.name.toLowerCase() == value.toLowerCase(), orElse: () => .unknown);
 }

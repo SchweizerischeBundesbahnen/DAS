@@ -20,18 +20,9 @@ class StickyWidgetController with ChangeNotifier {
   List<DASTableRow> _rows;
   bool _recalculating = false;
 
-  Map<StickyLevel, double> headerOffsets = {
-    StickyLevel.first: 0.0,
-    StickyLevel.second: 0.0,
-  };
-  Map<StickyLevel, int> headerIndexes = {
-    StickyLevel.first: -1,
-    StickyLevel.second: -1,
-  };
-  Map<StickyLevel, int> nextHeaderIndex = {
-    StickyLevel.first: -1,
-    StickyLevel.second: -1,
-  };
+  Map<StickyLevel, double> headerOffsets = {.first: 0.0, .second: 0.0};
+  Map<StickyLevel, int> headerIndexes = {.first: -1, .second: -1};
+  Map<StickyLevel, int> nextHeaderIndex = {.first: -1, .second: -1};
 
   var footerIndex = -1;
 
@@ -56,10 +47,7 @@ class StickyWidgetController with ChangeNotifier {
       return;
     }
 
-    headerIndexes = {
-      StickyLevel.first: -1,
-      StickyLevel.second: -1,
-    };
+    headerIndexes = {.first: -1, .second: -1};
     footerIndex = -1;
 
     if (scrollController.positions.isNotEmpty) {
@@ -97,7 +85,7 @@ class StickyWidgetController with ChangeNotifier {
   void _calculateHeaders(int startIndex) {
     for (int i = startIndex; i >= 0; i--) {
       final stickyLevel = _rows[i].stickyLevel;
-      if (stickyLevel == StickyLevel.first) {
+      if (stickyLevel == .first) {
         headerIndexes[stickyLevel] = i;
         break;
       }
@@ -108,7 +96,7 @@ class StickyWidgetController with ChangeNotifier {
       for (int i = startIndex + 1; i >= firstHeaderIndex; i--) {
         if (i < _rows.length) {
           final stickyLevel = _rows[i].stickyLevel;
-          if (stickyLevel == StickyLevel.second) {
+          if (stickyLevel == .second) {
             headerIndexes[stickyLevel] = i;
             break;
           }
@@ -123,12 +111,8 @@ class StickyWidgetController with ChangeNotifier {
         : 0.0;
 
     headerOffsets = {
-      StickyLevel.first: _calculateHeaderOffset(headerIndexes[StickyLevel.first]!, StickyLevel.first, 0.0),
-      StickyLevel.second: _calculateHeaderOffset(
-        headerIndexes[StickyLevel.second]!,
-        StickyLevel.second,
-        firstHeaderHeight,
-      ),
+      .first: _calculateHeaderOffset(headerIndexes[StickyLevel.first]!, .first, 0.0),
+      .second: _calculateHeaderOffset(headerIndexes[StickyLevel.second]!, .second, firstHeaderHeight),
     };
   }
 
@@ -149,7 +133,7 @@ class StickyWidgetController with ChangeNotifier {
   }
 
   int _calculateFooter(int startIndex) {
-    var stickyFooterIndex = _findNextStickyBelowLevel(startIndex, StickyLevel.first);
+    var stickyFooterIndex = _findNextStickyBelowLevel(startIndex, .first);
 
     if (stickyFooterIndex != -1) {
       final stickyOffset = stickyHeaderOffset();
@@ -165,7 +149,7 @@ class StickyWidgetController with ChangeNotifier {
 
   int _findNextStickyBelowLevel(int startIndex, StickyLevel stickyLevel) {
     for (int i = startIndex; i < _rows.length; i++) {
-      if (_rows[i].stickyLevel != StickyLevel.none && _rows[i].stickyLevel.index <= stickyLevel.index) return i;
+      if (_rows[i].stickyLevel != .none && _rows[i].stickyLevel.index <= stickyLevel.index) return i;
     }
     return -1;
   }
@@ -177,8 +161,8 @@ class StickyWidgetController with ChangeNotifier {
 
   void _calculateNextHeaderIndex() {
     nextHeaderIndex = {
-      StickyLevel.first: _findNextStickyBelowLevel(headerIndexes[StickyLevel.first]! + 1, StickyLevel.first),
-      StickyLevel.second: _findNextStickyBelowLevel(headerIndexes[StickyLevel.second]! + 1, StickyLevel.second),
+      .first: _findNextStickyBelowLevel(headerIndexes[StickyLevel.first]! + 1, .first),
+      .second: _findNextStickyBelowLevel(headerIndexes[StickyLevel.second]! + 1, .second),
     };
   }
 

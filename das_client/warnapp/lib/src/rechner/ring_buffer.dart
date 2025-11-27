@@ -5,9 +5,7 @@ enum RingBufferOptions {
 }
 
 class RingBuffer {
-  RingBuffer(this.length, {this.options = const [RingBufferOptions.none]})
-    : assert(length > 0),
-      _x = List<double>.filled(length, 0.0);
+  RingBuffer(this.length, {this.options = const [.none]}) : assert(length > 0), _x = List<double>.filled(length, 0.0);
 
   final int length;
   final List<RingBufferOptions> options;

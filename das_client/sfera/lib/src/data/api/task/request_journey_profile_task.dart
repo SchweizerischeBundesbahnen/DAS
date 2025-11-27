@@ -68,11 +68,11 @@ class RequestJourneyProfileTask extends SferaTask<List<dynamic>> {
 
     stopTimeout();
     final journeyProfile = replyMessage.payload!.journeyProfiles.first;
-    if (journeyProfile.status == JpStatusDto.invalid || journeyProfile.status == JpStatusDto.unavailable) {
+    if (journeyProfile.status == .invalid || journeyProfile.status == .unavailable) {
       _log.warning(
         'Received JourneyProfile with status=${journeyProfile.status}.',
       );
-      _taskFailedCallback(this, SferaError.jpUnavailable);
+      _taskFailedCallback(this, .jpUnavailable);
       return true;
     }
 

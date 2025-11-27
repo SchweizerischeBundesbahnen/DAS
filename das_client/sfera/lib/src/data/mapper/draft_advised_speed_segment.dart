@@ -94,27 +94,27 @@ class DraftAdvisedSpeedSegment implements Comparable<DraftAdvisedSpeedSegment> {
   AdvisedSpeedSegment toAdvisedSegment() {
     if (endData == null) throw FormatException('Cannot map to advisedSegment without having endData set!');
     return switch (type) {
-      DraftAdvisedSpeedType.velocityMax => VelocityMaxAdvisedSpeedSegment(
+      .velocityMax => VelocityMaxAdvisedSpeedSegment(
         startOrder: startOrder,
         endOrder: endOrder,
         endData: endData!,
         isEndDataCalculated: isEndAmended,
       ),
-      DraftAdvisedSpeedType.followTrain => FollowTrainAdvisedSpeedSegment(
-        startOrder: startOrder,
-        endOrder: endOrder,
-        speed: speed!,
-        endData: endData!,
-        isEndDataCalculated: isEndAmended,
-      ),
-      DraftAdvisedSpeedType.trainFollowing => TrainFollowingAdvisedSpeedSegment(
+      .followTrain => FollowTrainAdvisedSpeedSegment(
         startOrder: startOrder,
         endOrder: endOrder,
         speed: speed!,
         endData: endData!,
         isEndDataCalculated: isEndAmended,
       ),
-      DraftAdvisedSpeedType.fixedTime => FixedTimeAdvisedSpeedSegment(
+      .trainFollowing => TrainFollowingAdvisedSpeedSegment(
+        startOrder: startOrder,
+        endOrder: endOrder,
+        speed: speed!,
+        endData: endData!,
+        isEndDataCalculated: isEndAmended,
+      ),
+      .fixedTime => FixedTimeAdvisedSpeedSegment(
         startOrder: startOrder,
         endOrder: endOrder,
         speed: speed!,

@@ -5,14 +5,14 @@ class ShuntingMovement extends JourneyAnnotation {
   const ShuntingMovement({
     required super.order,
     this.isStart = true,
-  }) : super(type: Datatype.shuntingMovement);
+  }) : super(dataType: .shuntingMovement);
 
   final bool isStart;
 
   bool get isEnd => !isStart;
 
   @override
-  OrderPriority get orderPriority => isStart ? OrderPriority.shuntingMovementStart : OrderPriority.shuntingMovementEnd;
+  OrderPriority get orderPriority => isStart ? .shuntingMovementStart : .shuntingMovementEnd;
 
   @override
   String toString() {

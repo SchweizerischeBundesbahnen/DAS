@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:app/di/di.dart';
+import 'package:app/theme/theme_util.dart';
 import 'package:app/util/animation.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:app/widgets/extended_header_container.dart';
@@ -31,7 +32,7 @@ class DASModalSheetController {
     this.maxExpandedWidth = 300.0,
     this.onClose,
     this.onOpen,
-  }) : _state = _ControllerState.closed;
+  }) : _state = .closed;
 
   final Duration openAnimationDuration;
   final Duration closeAnimationDuration;
@@ -79,13 +80,13 @@ class DASModalSheetController {
   Future<void> expand() async {
     if (!_initialized) return;
 
-    if (_state == _ControllerState.closed) {
+    if (_state == .closed) {
       onOpen?.call();
       await _controller.forward();
-      _state = _ControllerState.expanded;
-    } else if (_state == _ControllerState.maximized) {
+      _state = .expanded;
+    } else if (_state == .maximized) {
       _fullWidthController.reverse();
-      _state = _ControllerState.expanded;
+      _state = .expanded;
     }
     resetAutomaticClose();
   }
@@ -94,13 +95,13 @@ class DASModalSheetController {
   Future<void> maximize() async {
     if (!_initialized) return;
 
-    if (_state == _ControllerState.closed) {
+    if (_state == .closed) {
       onOpen?.call();
     }
 
-    if (_state != _ControllerState.maximized) {
+    if (_state != .maximized) {
       await _fullWidthController.forward();
-      _state = _ControllerState.maximized;
+      _state = .maximized;
     }
     resetAutomaticClose();
   }
@@ -109,11 +110,11 @@ class DASModalSheetController {
   void close() {
     if (!_initialized) return;
 
-    if (_state != _ControllerState.closed) {
+    if (_state != .closed) {
       onClose?.call();
       _controller.reverse();
       _fullWidthController.reverse();
-      _state = _ControllerState.closed;
+      _state = .closed;
     }
     resetAutomaticClose();
   }
@@ -146,9 +147,9 @@ class DASModalSheetController {
 
   bool get isOpen => isExpanded || isMaximized;
 
-  bool get isExpanded => _state == _ControllerState.expanded;
+  bool get isExpanded => _state == .expanded;
 
-  bool get isMaximized => _state == _ControllerState.maximized;
+  bool get isMaximized => _state == .maximized;
 }
 
 /// Modal sheet that that can extend to a certain width and occupy this space but also overlap to the full screen width.
@@ -190,7 +191,7 @@ class _DASModalSheetState extends State<DasModalSheet> with TickerProviderStateM
     final modalWidth = _calculateModalWidth(context);
     // Flutter stack can't handle hits outside bounds: https://github.com/flutter/flutter/issues/31728
     return StackHitTestWithoutSizeLimit(
-      clipBehavior: Clip.none,
+      clipBehavior: .none,
       children: [
         // invisible widget used to extend stack width
         Container(width: min(widget.controller.maxExpandedWidth, modalWidth)),
@@ -207,14 +208,13 @@ class _DASModalSheetState extends State<DasModalSheet> with TickerProviderStateM
   }
 
   Widget _modalSheet(double width) {
-    final isDarkTheme = SBBBaseStyle.of(context).brightness == Brightness.dark;
     return ExtendedAppBarWrapper(
       child: Container(
         width: width,
-        padding: EdgeInsets.all(sbbDefaultSpacing),
+        padding: .all(sbbDefaultSpacing),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.only(topLeft: Radius.circular(sbbDefaultSpacing * 2)),
-          color: isDarkTheme ? SBBColors.charcoal : SBBColors.white,
+          color: ThemeUtil.isDarkMode(context) ? SBBColors.charcoal : SBBColors.white,
         ),
         child: widget.controller.isOpen
             ? _body()
@@ -226,7 +226,7 @@ class _DASModalSheetState extends State<DasModalSheet> with TickerProviderStateM
   Widget _body() {
     return Column(
       key: DasModalSheet.modalSheetKey,
-      mainAxisSize: MainAxisSize.max,
+      mainAxisSize: .max,
       children: [
         _integrationTestKey(),
         _header(),

@@ -25,9 +25,9 @@ class ManeuverNotification extends StatelessWidget {
         if (!isManeuverModeEnabled) return SizedBox.shrink();
 
         return Container(
-          margin: EdgeInsets.all(JourneyOverview.horizontalPadding).copyWith(top: 0),
+          margin: const EdgeInsets.all(JourneyOverview.horizontalPadding).copyWith(top: 0),
           child: NotificationBox(
-            style: NotificationBoxStyle.warning,
+            style: .warning,
             title: context.l10n.w_maneuver_notification_text,
             action: Row(
               children: [
@@ -55,7 +55,7 @@ class ManeuverNotification extends StatelessWidget {
         if (!isWaraAppInstalled) return SizedBox.shrink();
 
         return Padding(
-          padding: const EdgeInsets.only(right: sbbDefaultSpacing),
+          padding: const .only(right: sbbDefaultSpacing),
           child: SBBTertiaryButtonSmall(
             key: openWaraAppButtonKey,
             icon: DasIcons.appIconWarnfunktionRangier,

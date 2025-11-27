@@ -221,12 +221,12 @@ void main() {
       ),
       OpFootNote(
         order: 202,
-        footNote: FootNote(text: 'OpFootNote', trainSeries: [TrainSeries.R]),
+        footNote: FootNote(text: 'OpFootNote', trainSeries: [.R]),
       ),
       TrackFootNote(order: 303, footNote: FootNote(text: 'TrackFootNot')),
     ];
 
-    final filteredRows = originalRows.hideFootNotesForNotSelectedTrainSeries(TrainSeries.N).toList();
+    final filteredRows = originalRows.hideFootNotesForNotSelectedTrainSeries(.N).toList();
 
     expect(filteredRows, hasLength(2));
     expect(filteredRows[0], isA<LineFootNote>());
@@ -242,12 +242,12 @@ void main() {
       ),
       OpFootNote(
         order: 202,
-        footNote: FootNote(text: 'OpFootNote', trainSeries: [TrainSeries.R]),
+        footNote: FootNote(text: 'OpFootNote', trainSeries: [.R]),
       ),
       TrackFootNote(order: 303, footNote: FootNote(text: 'TrackFootNot')),
     ];
 
-    final filteredRows = originalRows.hideFootNotesForNotSelectedTrainSeries(TrainSeries.R).toList();
+    final filteredRows = originalRows.hideFootNotesForNotSelectedTrainSeries(.R).toList();
 
     expect(filteredRows, hasLength(3));
     expect(filteredRows[0], isA<LineFootNote>());
@@ -264,7 +264,7 @@ void main() {
       ),
       OpFootNote(
         order: 202,
-        footNote: FootNote(text: 'OpFootNote', trainSeries: [TrainSeries.R]),
+        footNote: FootNote(text: 'OpFootNote', trainSeries: [.R]),
       ),
       TrackFootNote(order: 303, footNote: FootNote(text: 'TrackFootNot')),
     ];

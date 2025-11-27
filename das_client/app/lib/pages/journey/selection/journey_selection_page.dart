@@ -101,7 +101,7 @@ class _ContentState extends State<_Content> {
         final model = snapshot.requireData;
 
         return SBBHeaderbox.custom(
-          padding: EdgeInsets.zero,
+          padding: .zero,
           flap: !model.isStartDateSameAsToday
               ? SBBHeaderboxFlap(
                   title: context.l10n.p_train_selection_date_not_today_warning,
@@ -150,7 +150,7 @@ class _ContentState extends State<_Content> {
         final model = snapshot.data;
 
         Widget wrapWithPadding(Widget child) => Padding(
-          padding: const EdgeInsets.symmetric(vertical: sbbDefaultSpacing, horizontal: sbbDefaultSpacing * 0.5),
+          padding: const .symmetric(vertical: sbbDefaultSpacing, horizontal: sbbDefaultSpacing * 0.5),
           child: child,
         );
 
@@ -158,7 +158,7 @@ class _ContentState extends State<_Content> {
         return switch (model) {
           final Loading _ => wrapWithPadding(SBBPrimaryButton(label: buttonLabel, onPressed: null, isLoading: true)),
           final Selecting s => Padding(
-            padding: const EdgeInsets.symmetric(vertical: sbbDefaultSpacing, horizontal: sbbDefaultSpacing / 2),
+            padding: const .symmetric(vertical: sbbDefaultSpacing, horizontal: sbbDefaultSpacing / 2),
             child: SBBPrimaryButton(
               label: buttonLabel,
               onPressed: s.isInputComplete ? () => viewModel.loadJourney() : null,

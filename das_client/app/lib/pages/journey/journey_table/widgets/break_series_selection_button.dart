@@ -22,7 +22,7 @@ class BreakSeriesSelectionButton extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Stack(
-        clipBehavior: Clip.none,
+        clipBehavior: .none,
         children: [
           Container(
             decoration: BoxDecoration(

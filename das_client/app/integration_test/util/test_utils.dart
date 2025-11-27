@@ -184,18 +184,6 @@ Future<void> waitUntilNotExists(WidgetTester tester, FinderBase<Element> element
   await tester.pumpAndSettle();
 }
 
-void ignoreOverflowErrors(
-  FlutterErrorDetails details, {
-  bool forceReport = false,
-}) {
-  final exception = details.exception;
-  if (exception is FlutterError && exception.isPixelOverflowError) {
-    debugPrint('Ignored Error');
-  } else {
-    FlutterError.dumpErrorToConsole(details, forceReport: forceReport);
-  }
-}
-
 Future<void> dragUntilTextInStickyHeader(WidgetTester tester, String textToSearch) async {
   final scrollableFinder = find.byType(AnimatedList);
   final stickyHeader = find.byKey(StickyHeader.headerKey);

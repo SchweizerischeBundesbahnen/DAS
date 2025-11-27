@@ -37,14 +37,14 @@ class _BreakSeriesSelectionState extends State<BreakSeriesSelection> {
     }
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(sbbDefaultSpacing, 0, sbbDefaultSpacing, 21),
+      padding: const .fromLTRB(sbbDefaultSpacing, 0, sbbDefaultSpacing, 21),
       child: SBBGroup(
-        padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing),
+        padding: const .symmetric(horizontal: sbbDefaultSpacing),
         child: SizedBox(
           width: double.infinity,
           child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: .min,
+            crossAxisAlignment: .start,
             children: _rows(context),
           ),
         ),
@@ -67,14 +67,14 @@ class _BreakSeriesSelectionState extends State<BreakSeriesSelection> {
 
     return [
       Padding(
-        padding: const EdgeInsets.symmetric(vertical: sbbDefaultSpacing),
+        padding: const .symmetric(vertical: sbbDefaultSpacing),
         child: Text(
           trainSeries.name,
           style: DASTextStyles.mediumBold,
         ),
       ),
       Padding(
-        padding: const EdgeInsets.only(bottom: sbbDefaultSpacing),
+        padding: const .only(bottom: sbbDefaultSpacing),
         child: Wrap(
           spacing: sbbDefaultSpacing * 0.75,
           runSpacing: sbbDefaultSpacing,

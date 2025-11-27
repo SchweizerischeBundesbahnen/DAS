@@ -5,7 +5,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 class DASTheme {
   const DASTheme._();
 
-  static SBBBaseStyle baseStyle([Brightness brightness = Brightness.light]) => SBBBaseStyle(
+  static SBBBaseStyle baseStyle([Brightness brightness = .light]) => SBBBaseStyle(
     primarySwatch: SBBColors.royal.toSingleMaterialColor(),
     primaryColor: SBBColors.royal,
     primaryColorDark: SBBColors.royal125,
@@ -14,5 +14,5 @@ class DASTheme {
 
   static ThemeData light() => SBBTheme.light(baseStyle: baseStyle());
 
-  static ThemeData dark() => SBBTheme.dark(baseStyle: baseStyle(Brightness.dark));
+  static ThemeData dark() => SBBTheme.dark(baseStyle: baseStyle(.dark));
 }

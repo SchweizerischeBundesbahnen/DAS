@@ -14,7 +14,7 @@ class DASTextStyles {
     fontSize: xxLargeFontSize,
     height: xxLargeFontHeight,
     fontStyle: FontStyle.normal,
-    fontWeight: FontWeight.w700,
+    fontWeight: .w700,
     fontFamily: SBBFontFamily.sbbFontBold,
   );
 
@@ -22,7 +22,7 @@ class DASTextStyles {
     fontSize: xLargeFontSize,
     height: xLargeFontHeight,
     fontStyle: FontStyle.normal,
-    fontWeight: FontWeight.w700,
+    fontWeight: .w700,
     fontFamily: SBBFontFamily.sbbFontBold,
   );
 
@@ -30,7 +30,7 @@ class DASTextStyles {
     fontSize: xLargeFontSize,
     height: xLargeFontHeight,
     fontStyle: FontStyle.normal,
-    fontWeight: FontWeight.w400,
+    fontWeight: .w400,
     fontFamily: SBBFontFamily.sbbFontRoman,
   );
 
@@ -38,7 +38,7 @@ class DASTextStyles {
     fontSize: xLargeFontSize,
     height: xLargeFontHeight,
     fontStyle: FontStyle.normal,
-    fontWeight: FontWeight.w300,
+    fontWeight: .w300,
     fontFamily: SBBFontFamily.sbbFontLight,
   );
 
@@ -48,7 +48,7 @@ class DASTextStyles {
     fontSize: SBBTextStyles.largeFontSize,
     height: SBBTextStyles.largeFontHeight,
     fontStyle: FontStyle.normal,
-    fontWeight: FontWeight.w400,
+    fontWeight: .w400,
     fontFamily: SBBFontFamily.sbbFontRoman,
   );
 
@@ -60,7 +60,7 @@ class DASTextStyles {
     fontSize: SBBTextStyles.mediumFontSize,
     height: SBBTextStyles.mediumFontHeight,
     fontStyle: FontStyle.normal,
-    fontWeight: FontWeight.w400,
+    fontWeight: .w400,
     fontFamily: SBBFontFamily.sbbFontRoman,
   );
 
@@ -74,7 +74,7 @@ class DASTextStyles {
     fontSize: SBBTextStyles.smallFontSize,
     height: SBBTextStyles.smallFontHeight,
     fontStyle: FontStyle.normal,
-    fontWeight: FontWeight.w400,
+    fontWeight: .w400,
     fontFamily: SBBFontFamily.sbbFontRoman,
   );
 
@@ -84,7 +84,7 @@ class DASTextStyles {
     fontSize: SBBTextStyles.xSmallFontSize,
     height: SBBTextStyles.xSmallFontHeight,
     fontStyle: FontStyle.normal,
-    fontWeight: FontWeight.w400,
+    fontWeight: .w400,
     fontFamily: SBBFontFamily.sbbFontRoman,
   );
 }

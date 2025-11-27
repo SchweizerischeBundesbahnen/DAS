@@ -44,8 +44,8 @@ class SpeedDisplay extends StatelessWidget {
 
   Widget _rowSpeed(BuildContext context, IncomingOutgoingSpeed ioSpeed) {
     return Row(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisSize: .min,
+      crossAxisAlignment: .center,
       children: [
         _visualizedSpeeds(key: incomingSpeedsKey, speeds: ioSpeed.incoming),
         Text(
@@ -59,11 +59,11 @@ class SpeedDisplay extends StatelessWidget {
 
   Widget _columnSpeed(BuildContext context, IncomingOutgoingSpeed ioSpeed) {
     return Column(
-      mainAxisSize: MainAxisSize.min,
+      mainAxisSize: .min,
       children: [
         _visualizedSpeeds(key: incomingSpeedsKey, speeds: ioSpeed.incoming),
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 2.0),
+          padding: const .symmetric(vertical: 2.0),
           child: Divider(color: isNextStop ? SBBColors.white : Theme.of(context).colorScheme.onSurface, height: 1.0),
         ),
         _visualizedSpeeds(key: outgoingSpeedsKey, speeds: ioSpeed.outgoing),
@@ -80,7 +80,7 @@ class SpeedDisplay extends StatelessWidget {
     if (singleSpeeds.hasSquaredOrCircled) {
       return Row(
         key: key,
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: .min,
         children: singleSpeeds
             .map((speed) => _speedText(speed))
             .withDivider(
@@ -102,7 +102,7 @@ class SpeedDisplay extends StatelessWidget {
         final squaredOrCircled = speed.isCircled || speed.isSquared;
         return Container(
           key: squaredOrCircled ? (speed.isCircled ? circledSpeedKey : squaredSpeedKey) : null,
-          padding: EdgeInsets.all(1.0),
+          padding: .all(1.0),
           decoration: squaredOrCircled
               ? BoxDecoration(
                   border: Border.all(color: isNextStop ? SBBColors.white : Theme.of(context).colorScheme.onSurface),

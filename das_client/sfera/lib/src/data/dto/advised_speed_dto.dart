@@ -1,6 +1,6 @@
-import 'package:sfera/src/data/dto/advice_type_dto.dart';
+import 'package:sfera/src/data/dto/enums/advice_type_dto.dart';
 import 'package:sfera/src/data/dto/enums/xml_enum.dart';
-import 'package:sfera/src/data/dto/reason_code_dto.dart';
+import 'package:sfera/src/data/dto/enums/reason_code_dto.dart';
 import 'package:sfera/src/data/dto/reason_text_dto.dart';
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 

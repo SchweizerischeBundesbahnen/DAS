@@ -4,7 +4,6 @@ import 'package:app/pages/journey/journey_table/widgets/table/foot_note_row.dart
 import 'package:app/pages/journey/journey_table/widgets/table/uncoded_operational_indication_accordion.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/widget_row_builder.dart';
 import 'package:app/theme/theme_util.dart';
-import 'package:app/widgets/stickyheader/sticky_level.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
@@ -21,7 +20,7 @@ class CombinedFootNoteOperationalIndicationRow extends WidgetRowBuilder<Combined
     super.config,
     super.identifier,
   }) : super(
-         stickyLevel: StickyLevel.second,
+         stickyLevel: .second,
          height:
              UncodedOperationalIndicationAccordion.calculateHeight(
                data.operationalIndication.combinedText,
@@ -30,7 +29,7 @@ class CombinedFootNoteOperationalIndicationRow extends WidgetRowBuilder<Combined
              ) +
              FootNoteAccordion.calculateHeight(
                data: data.footNote,
-               isExpanded: footNoteState != CollapsedState.collapsed,
+               isExpanded: footNoteState != .collapsed,
                addTopMargin: false,
              ),
        );
@@ -52,7 +51,7 @@ class CombinedFootNoteOperationalIndicationRow extends WidgetRowBuilder<Combined
           ),
           FootNoteAccordion(
             title: data.footNote.title(context, metadata),
-            isExpanded: footNoteState != CollapsedState.collapsed,
+            isExpanded: footNoteState != .collapsed,
             addTopMargin: false,
             data: data.footNote,
           ),

@@ -4,7 +4,7 @@ import 'package:sfera/component.dart';
 class AdditionalSpeedRestrictionData extends JourneyPoint {
   AdditionalSpeedRestrictionData({required this.restrictions, required super.order, required super.kilometre})
     : assert(restrictions.isNotEmpty),
-      super(type: Datatype.additionalSpeedRestriction);
+      super(dataType: .additionalSpeedRestriction);
 
   factory AdditionalSpeedRestrictionData.start(List<AdditionalSpeedRestriction> restrictions) {
     if (restrictions.isEmpty) throw ArgumentError('Restrictions can not be empty');
@@ -49,5 +49,5 @@ class AdditionalSpeedRestrictionData extends JourneyPoint {
           ListEquality().equals(restrictions, other.restrictions);
 
   @override
-  int get hashCode => type.hashCode ^ order.hashCode ^ Object.hashAll(kilometre) ^ Object.hashAll(restrictions);
+  int get hashCode => dataType.hashCode ^ order.hashCode ^ Object.hashAll(kilometre) ^ Object.hashAll(restrictions);
 }

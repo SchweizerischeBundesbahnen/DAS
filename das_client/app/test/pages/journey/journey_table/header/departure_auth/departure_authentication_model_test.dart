@@ -29,7 +29,7 @@ void main() {
           order: 0,
           kilometre: [],
           departureAuthorization: DepartureAuthorization(
-            types: [DepartureAuthorizationType.sms],
+            types: [.sms],
           ),
         ),
       );
@@ -47,7 +47,7 @@ void main() {
           order: 0,
           kilometre: [],
           departureAuthorization: DepartureAuthorization(
-            types: [DepartureAuthorizationType.sms],
+            types: [.sms],
             originalText: 'sms 2-4',
           ),
         ),

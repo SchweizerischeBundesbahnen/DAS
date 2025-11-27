@@ -43,14 +43,14 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _loading() {
     return Container(
-      alignment: AlignmentDirectional.center,
+      alignment: .center,
       child: const CircularProgressIndicator(),
     );
   }
 
   Widget _body() {
     return Column(
-      mainAxisSize: MainAxisSize.max,
+      mainAxisSize: .max,
       children: [
         const Spacer(),
         _message(context),
@@ -64,10 +64,10 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _message(BuildContext context) {
     return Container(
-      alignment: AlignmentDirectional.center,
-      padding: const EdgeInsets.all(16),
+      alignment: .center,
+      padding: const .all(16),
       child: Column(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: .min,
         children: [
           const SizedBox(height: 32),
           Text(
@@ -81,8 +81,8 @@ class _LoginPageState extends State<LoginPage> {
   Widget _flavor(BuildContext context) {
     final flavor = DI.get<Flavor>();
     return Container(
-      alignment: AlignmentDirectional.center,
-      padding: const EdgeInsets.all(16.0),
+      alignment: .center,
+      padding: const .all(16.0),
       child: Text(
         'Flavor: ${flavor.displayName}',
       ),
@@ -94,9 +94,9 @@ class _LoginPageState extends State<LoginPage> {
     if (!flavor.isTmsEnabledForFlavor) return SizedBox.shrink();
 
     return Padding(
-      padding: const EdgeInsets.all(sbbDefaultSpacing),
+      padding: const .all(sbbDefaultSpacing),
       child: Row(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: .min,
         children: [
           SBBCheckbox(
             value: isTmsChecked,

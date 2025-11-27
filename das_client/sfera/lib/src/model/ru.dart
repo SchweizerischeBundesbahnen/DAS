@@ -21,7 +21,8 @@ enum RailwayUndertaking {
   tpfTrafic(companyCode: '5495'),
   tmr(companyCode: '5429'),
   mbc(companyCode: '5230'),
-  unknown(companyCode: '-1');
+  unknown(companyCode: '-1')
+  ;
 
   const RailwayUndertaking({
     required this.companyCode,
@@ -32,6 +33,6 @@ enum RailwayUndertaking {
   static Iterable<RailwayUndertaking> get knownRUs => values.whereNot((ru) => ru == unknown);
 
   static RailwayUndertaking fromCompanyCode(String companyCode) {
-    return RailwayUndertaking.values.firstWhereOrNull((e) => e.companyCode == companyCode) ?? unknown;
+    return .values.firstWhereOrNull((e) => e.companyCode == companyCode) ?? unknown;
   }
 }

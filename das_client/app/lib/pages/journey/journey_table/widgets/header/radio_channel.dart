@@ -1,6 +1,5 @@
 import 'package:app/pages/journey/journey_table/header/radio_channel/radio_channel_view_model.dart';
 import 'package:app/pages/journey/journey_table/widgets/communication_network_icon.dart';
-import 'package:app/pages/journey/journey_table/widgets/detail_modal/service_point_modal/service_point_modal_tab.dart';
 import 'package:app/pages/journey/journey_table/widgets/detail_modal/service_point_modal/service_point_modal_view_model.dart';
 import 'package:app/pages/journey/journey_table/widgets/header/radio_contact.dart';
 import 'package:app/pages/journey/journey_table/widgets/header/sim_identifier.dart';
@@ -8,7 +7,6 @@ import 'package:app/widgets/dot_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
-import 'package:sfera/component.dart';
 
 class RadioChannel extends StatelessWidget {
   const RadioChannel({super.key});
@@ -26,22 +24,22 @@ class RadioChannel extends StatelessWidget {
         return GestureDetector(
           onTap: () {
             final viewModel = context.read<ServicePointModalViewModel>();
-            viewModel.open(context, tab: ServicePointModalTab.communication, servicePoint: model.lastServicePoint);
+            viewModel.open(context, tab: .communication, servicePoint: model.lastServicePoint);
           },
           child: Align(
-            alignment: Alignment.centerRight,
+            alignment: .centerRight,
             child: DotIndicator(
               show: model.showDotIndicator,
               offset: Offset(-6.0, -8.0),
               child: Row(
                 spacing: sbbDefaultSpacing * 0.5,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: .center,
+                mainAxisSize: .min,
                 children: [
                   const Icon(SBBIcons.telephone_gsm_small),
                   Flexible(child: RadioContactChannels(mainContactIdentifiers: model.mainContactsIdentifier)),
-                  if (model.networkType == CommunicationNetworkType.sim) SimIdentifier(),
-                  if (model.networkType != null && model.networkType != CommunicationNetworkType.sim)
+                  if (model.networkType == .sim) SimIdentifier(),
+                  if (model.networkType != null && model.networkType != .sim)
                     CommunicationNetworkIcon(networkType: model.networkType!),
                 ],
               ),

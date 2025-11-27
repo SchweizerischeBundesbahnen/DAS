@@ -13,10 +13,10 @@ class DASTableColumn {
     this.child,
     this.border,
     this.color,
-    this.padding = const EdgeInsets.all(sbbDefaultSpacing * 0.5),
+    this.padding = const .all(sbbDefaultSpacing * 0.5),
     this.expanded = false,
     this.width,
-    this.alignment = Alignment.center,
+    this.alignment = .center,
     this.onTap,
     this.headerKey,
   }) : assert(width != null || expanded);

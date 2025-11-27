@@ -19,11 +19,11 @@ class ConnectionTrackRow extends CellRowBuilder<ConnectionTrack> {
     return DASTableCell(
       child: Text(
         data.text ?? context.l10n.c_connection_track_weiche,
-        overflow: TextOverflow.ellipsis,
+        overflow: .ellipsis,
       ),
     );
   }
 
   @override
-  ShowSpeedBehavior get showSpeedBehavior => ShowSpeedBehavior.always;
+  ShowSpeedBehavior get showSpeedBehavior => .always;
 }

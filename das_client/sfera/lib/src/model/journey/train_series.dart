@@ -7,7 +7,8 @@ enum TrainSeries {
   D,
   O,
   W,
-  S;
+  S
+  ;
 
   factory TrainSeries.from(String value) => values.firstWhere(
     (e) => e.name.toLowerCase() == value.toLowerCase(),
@@ -19,9 +20,9 @@ enum TrainSeries {
 
   bool canReplace(TrainSeries other) {
     if (this == other) return true;
-    if (this == TrainSeries.R && other == TrainSeries.N) return true;
-    if (this == TrainSeries.A && other == TrainSeries.N) return true;
-    if (this == TrainSeries.A && other == TrainSeries.R) return true;
+    if (this == .R && other == .N) return true;
+    if (this == .A && other == .N) return true;
+    if (this == .A && other == .R) return true;
     return false;
   }
 }

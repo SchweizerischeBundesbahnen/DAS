@@ -124,7 +124,7 @@ class TrackEquipmentMapper {
       type: element.trackEquipmentTypeWrapper!.unwrapped,
       startLocation: element.startLocation,
       endLocation: element.endLocation,
-      appliesToWholeSp: element.startEndQualifier == StartEndQualifierDto.wholeSp,
+      appliesToWholeSp: element.startEndQualifier == .wholeSp,
       startKm: kilometreMap[element.startLocation] ?? [],
       endKm: kilometreMap[element.endLocation] ?? [],
     );

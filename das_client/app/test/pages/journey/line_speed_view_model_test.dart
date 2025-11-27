@@ -24,33 +24,33 @@ void main() {
   final journey = Journey(
     metadata: Metadata(
       availableBreakSeries: {
-        BreakSeries(trainSeries: TrainSeries.R, breakSeries: 120),
-        BreakSeries(trainSeries: TrainSeries.A, breakSeries: 100),
+        BreakSeries(trainSeries: .R, breakSeries: 120),
+        BreakSeries(trainSeries: .A, breakSeries: 100),
       },
-      breakSeries: BreakSeries(trainSeries: TrainSeries.R, breakSeries: 120),
+      breakSeries: BreakSeries(trainSeries: .R, breakSeries: 120),
       lineSpeeds: SplayTreeMap.from({
         0: [
           TrainSeriesSpeed(
-            trainSeries: TrainSeries.R,
+            trainSeries: .R,
             breakSeries: 120,
             speed: SingleSpeed(value: '105'),
           ),
           TrainSeriesSpeed(
-            trainSeries: TrainSeries.A,
+            trainSeries: .A,
             breakSeries: 100,
             speed: SingleSpeed(value: '100'),
           ),
         ],
         5: [
           TrainSeriesSpeed(
-            trainSeries: TrainSeries.R,
+            trainSeries: .R,
             breakSeries: 120,
             speed: SingleSpeed(value: '100'),
           ),
         ],
         10: [
           TrainSeriesSpeed(
-            trainSeries: TrainSeries.R,
+            trainSeries: .R,
             breakSeries: 120,
             speed: SingleSpeed(value: '95'),
           ),
@@ -96,7 +96,7 @@ void main() {
       testee.getResolvedSpeedForOrder(0),
       ResolvedTrainSeriesSpeed(
         speed: TrainSeriesSpeed(
-          trainSeries: TrainSeries.R,
+          trainSeries: .R,
           speed: SingleSpeed(value: '105'),
           breakSeries: 120,
         ),
@@ -107,7 +107,7 @@ void main() {
       testee.getResolvedSpeedForOrder(5),
       ResolvedTrainSeriesSpeed(
         speed: TrainSeriesSpeed(
-          trainSeries: TrainSeries.R,
+          trainSeries: .R,
           speed: SingleSpeed(value: '100'),
           breakSeries: 120,
         ),
@@ -118,14 +118,14 @@ void main() {
 
   test('test uses breakSeries from settings', () async {
     journeySettings = JourneySettings(
-      selectedBreakSeries: BreakSeries(trainSeries: TrainSeries.A, breakSeries: 100),
+      selectedBreakSeries: BreakSeries(trainSeries: .A, breakSeries: 100),
     );
 
     expect(
       testee.getResolvedSpeedForOrder(0),
       ResolvedTrainSeriesSpeed(
         speed: TrainSeriesSpeed(
-          trainSeries: TrainSeries.A,
+          trainSeries: .A,
           speed: SingleSpeed(value: '100'),
           breakSeries: 100,
         ),
@@ -139,7 +139,7 @@ void main() {
       testee.getResolvedSpeedForOrder(18),
       ResolvedTrainSeriesSpeed(
         speed: TrainSeriesSpeed(
-          trainSeries: TrainSeries.R,
+          trainSeries: .R,
           speed: SingleSpeed(value: '95'),
           breakSeries: 120,
         ),
@@ -150,14 +150,14 @@ void main() {
 
   test('test return previous over multiple last entries', () async {
     journeySettings = JourneySettings(
-      selectedBreakSeries: BreakSeries(trainSeries: TrainSeries.A, breakSeries: 100),
+      selectedBreakSeries: BreakSeries(trainSeries: .A, breakSeries: 100),
     );
 
     expect(
       testee.getResolvedSpeedForOrder(18),
       ResolvedTrainSeriesSpeed(
         speed: TrainSeriesSpeed(
-          trainSeries: TrainSeries.A,
+          trainSeries: .A,
           speed: SingleSpeed(value: '100'),
           breakSeries: 100,
         ),
@@ -168,7 +168,7 @@ void main() {
 
   test('test return none if not found', () async {
     journeySettings = JourneySettings(
-      selectedBreakSeries: BreakSeries(trainSeries: TrainSeries.N, breakSeries: 100),
+      selectedBreakSeries: BreakSeries(trainSeries: .N, breakSeries: 100),
     );
 
     expect(

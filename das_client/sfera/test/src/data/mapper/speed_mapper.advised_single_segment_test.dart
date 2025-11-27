@@ -4,7 +4,7 @@ import 'package:mockito/mockito.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/dto/advised_speed_dto.dart';
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
-import 'package:sfera/src/data/dto/reason_code_dto.dart';
+import 'package:sfera/src/data/dto/enums/reason_code_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
 import 'package:sfera/src/data/dto/temporary_constraints_dto.dart';
@@ -138,7 +138,7 @@ void main() {
         when(mockTemporaryConstraint.startLocation).thenReturn(0);
         when(mockTemporaryConstraint.endLocation).thenReturn(100.0);
         when(mockAdvisedSpeed.speed).thenReturn('80');
-        when(mockAdvisedSpeed.reasonCode).thenReturn(ReasonCodeDto.nationalUse10);
+        when(mockAdvisedSpeed.reasonCode).thenReturn(.nationalUse10);
         // ACT & EXPECT
         expect(
           testee.call(mockJourneyProfile, [mockSegmentProfile], SpeedMapperTestFixtures.twoSignalJourney),
@@ -194,7 +194,7 @@ void main() {
       test('whenHasSpeedAndFollowTrainReasonCode_thenIsFollowTrainAdvisedSpeedSegment', () {
         // ARRANGE
         when(mockAdvisedSpeed.speed).thenReturn('90');
-        when(mockAdvisedSpeed.reasonCode).thenReturn(ReasonCodeDto.followTrain);
+        when(mockAdvisedSpeed.reasonCode).thenReturn(.followTrain);
 
         // ACT & EXPECT
         expect(
@@ -214,7 +214,7 @@ void main() {
       test('whenHasSpeedAndTrainFollowing_thenIsTrainFollowingAdvisedSpeedSegment', () {
         // ARRANGE
         when(mockAdvisedSpeed.speed).thenReturn('90');
-        when(mockAdvisedSpeed.reasonCode).thenReturn(ReasonCodeDto.trainFollowing);
+        when(mockAdvisedSpeed.reasonCode).thenReturn(.trainFollowing);
 
         // ACT & EXPECT
         expect(
@@ -234,7 +234,7 @@ void main() {
       test('whenHasSpeedAndFixedTime_thenIsFixedTimeAdvisedSpeedSegment', () {
         // ARRANGE
         when(mockAdvisedSpeed.speed).thenReturn('90');
-        when(mockAdvisedSpeed.reasonCode).thenReturn(ReasonCodeDto.advisedSpeedFixedTime);
+        when(mockAdvisedSpeed.reasonCode).thenReturn(.advisedSpeedFixedTime);
 
         // ACT & EXPECT
         expect(

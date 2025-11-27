@@ -70,12 +70,12 @@ class DasLoggerImpl extends DasLogger {
 
   LogLevel _getLogLevel(Level level) {
     return switch (level.value) {
-      700 => LogLevel.debug,
-      800 => LogLevel.info,
-      900 => LogLevel.warning,
-      1000 => LogLevel.error,
-      1200 => LogLevel.fatal,
-      _ => LogLevel.trace,
+      700 => .debug,
+      800 => .info,
+      900 => .warning,
+      1000 => .error,
+      1200 => .fatal,
+      _ => .trace,
     };
   }
 }

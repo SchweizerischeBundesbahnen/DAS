@@ -14,7 +14,7 @@ class AdditionalSpeedRestrictionModalBuilder extends DASModalSheetBuilder {
   Widget header(BuildContext context) {
     final viewModel = context.read<AdditionalSpeedRestrictionModalViewModel>();
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: .start,
       children: [
         Text(context.l10n.w_additional_speed_restriction_modal_title, style: DASTextStyles.largeRoman),
         StreamBuilder(
@@ -41,7 +41,7 @@ class AdditionalSpeedRestrictionModalBuilder extends DASModalSheetBuilder {
 
         final restrictions = snapshot.requireData;
         return ListView.separated(
-          padding: EdgeInsets.only(top: 10.0),
+          padding: .only(top: 10.0),
           separatorBuilder: (context, index) => SizedBox(height: sbbDefaultSpacing),
           itemCount: restrictions.length,
           itemBuilder: (context, index) => _restrictionDetailsTable(context, restrictions[index]),

@@ -10,7 +10,8 @@ enum TemporaryConstraintTypeDto implements XmlEnum {
   wind(xmlValue: 'Wind'),
   unavailableDasOperatingModes(xmlValue: 'Unavailable_DAS_OperatingModes'),
   advisedSpeed(xmlValue: 'AdvisedSpeed'),
-  networkSpecificConstraint(xmlValue: 'NetworkSpecificConstraint');
+  networkSpecificConstraint(xmlValue: 'NetworkSpecificConstraint')
+  ;
 
   const TemporaryConstraintTypeDto({
     required this.xmlValue,

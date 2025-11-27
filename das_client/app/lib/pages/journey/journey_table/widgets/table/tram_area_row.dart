@@ -41,20 +41,20 @@ class TramAreaRow extends CellRowBuilder<TramArea> {
     final endKilometre = data.endKilometre.toStringAsFixed(1);
     return Text(
       '${context.l10n.p_journey_table_kilometre_label} $startKilometre-$endKilometre',
-      overflow: TextOverflow.ellipsis,
+      overflow: .ellipsis,
     );
   }
 
   @override
   DASTableCell iconsCell2(BuildContext context) {
     return DASTableCell(
-      padding: EdgeInsets.all(sbbDefaultSpacing * 0.25),
+      padding: .all(sbbDefaultSpacing * 0.25),
       child: SvgPicture.asset(
         AppAssets.iconTramArea,
         key: tramAreaIconKey,
         colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
       ),
-      alignment: Alignment.centerLeft,
+      alignment: .centerLeft,
     );
   }
 }
