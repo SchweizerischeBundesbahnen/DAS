@@ -119,7 +119,7 @@
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>routeTableData</NSP_GroupName>
                 <NetworkSpecificParameter name="routeTableDataRelevant" value="true"/>
-				<NetworkSpecificParameter name="trackGroup" value="&lt;3&gt;" />  
+				<NetworkSpecificParameter name="trackGroup" value="3" />  
             </TAF_TAP_Location_NSP>
 
         </TAF_TAP_Location>
