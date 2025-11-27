@@ -67,18 +67,18 @@ void main() {
     expect(_findNonEmptyAdvisedSpeedCellOf(geneveRow), findsOne);
     _findTextWithin(geneveRow, '80');
 
-    await dragUntilTextInStickyHeader(tester, 'Coppet');
-
-    // Check that advised speed end displayed calculated speed on signal row
-    final advisedSpeedEndRow = findDASTableRowByText('A653');
-    await waitUntilExists(tester, _findCalculatedSpeedCellOf(advisedSpeedEndRow, '80'));
-
     final advisedSpeedDistStartRow = findDASTableRowByText('A136');
     final distSpeedCell = find.descendant(
       of: advisedSpeedDistStartRow,
       matching: find.byKey(AdvisedSpeedCellBody.advisedSpeedDistKey),
     );
-    expect(distSpeedCell, findsOne);
+    await waitUntilExists(tester, distSpeedCell);
+
+    await dragUntilTextInStickyHeader(tester, 'Gland');
+
+    // Check that advised speed end displayed calculated speed on signal row
+    final advisedSpeedEndRow = findDASTableRowByText('A653');
+    await waitUntilExists(tester, _findCalculatedSpeedCellOf(advisedSpeedEndRow, '80'));
 
     // Do not display zero speed
     final advisedSpeedCellWithZeroSpeed = _findCalculatedSpeedCellOf(advisedSpeedDistStartRow, '0');
