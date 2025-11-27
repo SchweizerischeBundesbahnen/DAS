@@ -9,6 +9,9 @@ import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_other_
 import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_special_restrictions.dart';
 import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_train_details.dart';
 import 'package:app/pages/journey/break_load_slip/widgets/formation_run_navigation_buttons.dart';
+import 'package:app/pages/journey/journey_table/journey_position/journey_position_view_model.dart';
+import 'package:app/pages/journey/journey_table/punctuality/punctuality_view_model.dart';
+import 'package:app/pages/journey/journey_table_view_model.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:formation/component.dart';
@@ -19,6 +22,46 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 @RoutePage()
 class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
   const BreakLoadSlipPage({super.key});
+
+  @override
+  Widget wrappedRoute(BuildContext context) => MultiProvider(
+    providers: [
+      Provider<JourneyTableViewModel>(create: (_) => DI.get()),
+
+      // PROXY  PROVIDERS
+      ProxyProvider<JourneyTableViewModel, PunctualityViewModel>(
+        update: (_, journeyVM, prev) {
+          if (prev != null) return prev;
+          return PunctualityViewModel(
+            journeyStream: journeyVM.journey,
+          );
+        },
+        dispose: (_, vm) => vm.dispose(),
+      ),
+      ProxyProvider2<JourneyTableViewModel, PunctualityViewModel, JourneyPositionViewModel>(
+        update: (_, journeyVM, punctualityVM, prev) {
+          if (prev != null) return prev;
+          return JourneyPositionViewModel(
+            journeyStream: journeyVM.journey,
+            punctualityStream: punctualityVM.model,
+          );
+        },
+        dispose: (_, vm) => vm.dispose(),
+      ),
+      ProxyProvider2<JourneyTableViewModel, JourneyPositionViewModel, BreakLoadSlipViewModel>(
+        update: (_, journeyVM, positionVM, prev) {
+          if (prev != null) return prev;
+          return BreakLoadSlipViewModel(
+            journeyTableViewModel: journeyVM,
+            journeyPositionViewModel: positionVM,
+            formationRepository: DI.get(),
+          );
+        },
+        dispose: (_, vm) => vm.dispose(),
+      ),
+    ],
+    child: this,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -135,14 +178,6 @@ class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
       ],
     );
   }
-
-  @override
-  Widget wrappedRoute(BuildContext context) => MultiProvider(
-    providers: [
-      Provider<BreakLoadSlipViewModel>(create: (_) => DI.get()),
-    ],
-    child: this,
-  );
 }
 
 class _DismissButton extends StatelessWidget {

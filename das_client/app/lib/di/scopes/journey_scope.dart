@@ -1,5 +1,4 @@
 import 'package:app/di/di.dart';
-import 'package:app/pages/journey/break_load_slip/break_load_slip_view_model.dart';
 import 'package:app/pages/journey/journey_table_view_model.dart';
 import 'package:app/pages/journey/navigation/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
@@ -23,7 +22,6 @@ class JourneyScope extends DIScope {
     getIt.registerJourneyTableViewModel();
     getIt.registerWarnAppViewModel();
     getIt.registerLocalRegulationHtmlGenerator();
-    getIt.registerBreakLoadSlipViewModel();
   }
 }
 
@@ -71,15 +69,5 @@ extension JourneyScopeExtension on GetIt {
 
   void registerLocalRegulationHtmlGenerator() {
     registerSingleton(LocalRegulationComponent.createLocalRegulationHtmlGenerator());
-  }
-
-  void registerBreakLoadSlipViewModel() {
-    registerSingleton(
-      BreakLoadSlipViewModel(
-        journeyTableViewModel: DI.get(),
-        formationRepository: DI.get(),
-      ),
-      dispose: (vm) => vm.dispose(),
-    );
   }
 }

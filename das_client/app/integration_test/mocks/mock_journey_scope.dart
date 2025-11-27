@@ -21,7 +21,6 @@ class MockJourneyScope extends JourneyScope {
     getIt.registerJourneyTableViewModel();
     getIt.registerLocalRegulationHtmlGenerator();
     _registerWarnAppViewModel();
-    getIt.registerBreakLoadSlipViewModel();
 
     return getIt.allReady();
   }
