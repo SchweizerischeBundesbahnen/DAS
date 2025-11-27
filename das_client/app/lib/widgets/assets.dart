@@ -48,7 +48,8 @@ class AppAssets {
   static const sbbTrain = '$_othersDir/sbb-train.svg';
   static const blsTrain = '$_othersDir/bls-train.svg';
   static const sobTrain = '$_othersDir/sob-train.svg';
-  static const shapeRoundedEdgeLeft = '$_othersDir/shape_rounded_edge_left.svg';
+  static const shapeRoundedEdgeLeftSmall = '$_othersDir/shape_rounded_edge_left_small.svg';
+  static const shapeRoundedEdgeLeftMedium = '$_othersDir/shape_rounded_edge_left_medium.svg';
 
   // audio
   static const soundKoaWaitCanceled = '$_soundsDir/koa_wait_canceled.mp3';
