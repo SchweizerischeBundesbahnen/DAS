@@ -34,7 +34,6 @@ class _MapperData {
 
 final _log = Logger('SegmentProfileMapper');
 
-/// Used to map journey data from a SFERA segment profile.
 class SegmentProfileMapper {
   SegmentProfileMapper._();
 
@@ -65,13 +64,11 @@ class SegmentProfileMapper {
     journeyData.addAll(_parseServicePoint(mapperData, segmentProfiles, segmentProfileReference));
 
     final curvePoints = _parseCurvePoints(mapperData);
-    final curveBeginPoints = curvePoints.where((curve) => curve.curvePointType == CurvePointType.begin);
-    journeyData.addAll(curveBeginPoints);
+    journeyData.addAll(curvePoints);
 
     final newLineSpeeds = _parseNewLineSpeed(mapperData);
     final connectionTracks = _parseConnectionTrack(mapperData, newLineSpeeds);
 
-    // Remove new line speeds that are already present as connection tracks
     newLineSpeeds.removeWhere(
       (speedChange) =>
           connectionTracks.firstWhereOrNull((connectionTrack) => connectionTrack.order == speedChange.order) != null,
@@ -234,21 +231,152 @@ class SegmentProfileMapper {
   }
 
   static List<CurvePoint> _parseCurvePoints(_MapperData mapperData) {
-    final curvePointsNsp = mapperData.segmentProfile.points?.curvePointsNsp ?? [];
-    return curvePointsNsp.map<CurvePoint>((curvePointNsp) {
-      final curveSpeed = curvePointNsp.xmlCurveSpeed?.element;
+    final raw = mapperData.segmentProfile.points?.curvePointsNsp ?? [];
+    final points = raw
+        .map<CurvePoint>((curvePointNsp) {
+          final curveSpeed = curvePointNsp.xmlCurveSpeed?.element;
+          return CurvePoint(
+            order: calculateOrder(mapperData.segmentIndex, curvePointNsp.location),
+            kilometre: mapperData.kilometreMap[curvePointNsp.location] ?? [],
+            curvePointType: curvePointNsp.curvePointType != null
+                ? CurvePointType.from(curvePointNsp.curvePointType!)
+                : null,
+            curveType: curvePointNsp.curveType != null ? CurveType.from(curvePointNsp.curveType!) : null,
+            text: curveSpeed?.text,
+            comment: curveSpeed?.comment,
+            localSpeeds: SpeedMapper.fromVelocities(curveSpeed?.speeds?.velocities),
+          );
+        })
+        .sortedBy((p) => p.order)
+        .toList();
+
+    final segments = <MapEntry<CurvePoint, CurvePoint>>[];
+    CurvePoint? open;
+    for (final p in points) {
+      if (p.curvePointType == CurvePointType.begin) {
+        open = p;
+      } else if (p.curvePointType == CurvePointType.end && open != null) {
+        segments.add(MapEntry(open, p));
+        open = null;
+      }
+    }
+
+    if (segments.isEmpty) {
+      return points.where((p) => p.curvePointType == CurvePointType.begin).toList();
+    }
+
+    segments.sort((a, b) => a.key.order.compareTo(b.key.order));
+
+    final duplicateFreeCurves = <MapEntry<CurvePoint, CurvePoint>>[];
+    MapEntry<CurvePoint, CurvePoint>? last;
+    for (final segment in segments) {
+      if (last != null &&
+          last.key.order == segment.key.order &&
+          last.value.order == segment.value.order &&
+          last.key.curveType == segment.key.curveType) {
+        continue;
+      }
+      duplicateFreeCurves.add(segment);
+      last = segment;
+    }
+
+    final mergedSegments = <MapEntry<CurvePoint, CurvePoint>>[];
+    MapEntry<CurvePoint, CurvePoint>? current;
+    for (final segment in duplicateFreeCurves) {
+      if (current == null) {
+        current = segment;
+        continue;
+      }
+
+      final sameType = current.key.curveType == segment.key.curveType;
+      final isAdjacent = current.value.order == segment.key.order;
+
+      if (sameType && isAdjacent) {
+        current = MapEntry(current.key, segment.value);
+      } else {
+        mergedSegments.add(current);
+        current = segment;
+      }
+    }
+    if (current != null) {
+      mergedSegments.add(current);
+    }
+
+    return mergedSegments.map((segment) {
+      final begin = segment.key;
+      final end = segment.value;
+
+      final startKm = begin.kilometre.firstOrNull;
+      final endKm = end.kilometre.firstOrNull ?? startKm;
+
+      final kmList = <double>[];
+      if (startKm != null) kmList.add(startKm);
+      if (endKm != null && endKm != startKm) kmList.add(endKm);
+
+      final mergedLocalSpeeds = _mergeCurveSpeeds(
+        begin.localSpeeds,
+        end.localSpeeds,
+      );
+
       return CurvePoint(
-        order: calculateOrder(mapperData.segmentIndex, curvePointNsp.location),
-        kilometre: mapperData.kilometreMap[curvePointNsp.location] ?? [],
-        curvePointType: curvePointNsp.curvePointType != null
-            ? CurvePointType.from(curvePointNsp.curvePointType!)
-            : null,
-        curveType: curvePointNsp.curveType != null ? CurveType.from(curvePointNsp.curveType!) : null,
-        text: curveSpeed?.text,
-        comment: curveSpeed?.comment,
-        localSpeeds: SpeedMapper.fromVelocities(curveSpeed?.speeds?.velocities),
+        order: begin.order,
+        kilometre: kmList,
+        localSpeeds: mergedLocalSpeeds,
+        curvePointType: CurvePointType.summarized,
+        curveType: begin.curveType,
+        text: begin.text,
+        comment: begin.comment,
       );
     }).toList();
+  }
+
+  static List<TrainSeriesSpeed>? _mergeCurveSpeeds(
+    List<TrainSeriesSpeed>? begin,
+    List<TrainSeriesSpeed>? end,
+  ) {
+    if ((begin == null || begin.isEmpty) && (end == null || end.isEmpty)) {
+      return null;
+    }
+    if (begin == null || begin.isEmpty) return end;
+    if (end == null || end.isEmpty) return begin;
+
+    final result = <TrainSeriesSpeed>[];
+
+    for (final currentBegin in begin) {
+      final matchingEnd = end.firstWhereOrNull(
+        (end) => end.trainSeries == currentBegin.trainSeries && end.breakSeries == currentBegin.breakSeries,
+      );
+
+      if (matchingEnd != null) {
+        final mergedSpeed = IncomingOutgoingSpeed(
+          incoming: currentBegin.speed,
+          outgoing: matchingEnd.speed,
+        );
+
+        result.add(
+          TrainSeriesSpeed(
+            trainSeries: currentBegin.trainSeries,
+            speed: mergedSpeed,
+            breakSeries: currentBegin.breakSeries,
+            text: currentBegin.text ?? matchingEnd.text,
+            reduced: currentBegin.reduced || matchingEnd.reduced,
+          ),
+        );
+      } else {
+        result.add(currentBegin);
+      }
+    }
+
+    for (final currentEnd in end) {
+      final hasBegin = begin.any(
+        (b) => b.trainSeries == currentEnd.trainSeries && b.breakSeries == currentEnd.breakSeries,
+      );
+      if (!hasBegin) {
+        result.add(currentEnd);
+      }
+    }
+
+    return result;
   }
 
   static List<ConnectionTrack> _parseConnectionTrack(_MapperData mapperData, List<SpeedChange> newLineSpeeds) {
