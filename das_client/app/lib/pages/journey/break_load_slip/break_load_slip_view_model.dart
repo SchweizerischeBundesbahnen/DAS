@@ -46,34 +46,12 @@ class BreakLoadSlipViewModel {
         _subscribeToFormation(journey?.metadata.trainIdentification);
       }
       _latestJourney = journey;
-      _calculateActiveFormationRun();
+      _emitFormationRun();
     });
     _journeyPositionSubscription = _journeyPositionViewModel.model.listen((position) {
       _latestPosition = position;
-      _calculateActiveFormationRun();
+      _emitFormationRun();
     });
-  }
-
-  void _calculateActiveFormationRun() {
-    final position = _latestPosition;
-    final currentFormation = formationValue;
-    if (position != null &&
-        position.currentPosition != null &&
-        currentFormation != null &&
-        currentFormation.formationRuns.isNotEmpty) {
-      final activeFormationRun = currentFormation.formationRuns.lastWhere((it) {
-        final startServicePoint = _resolveServicePoint(it.tafTapLocationReferenceStart);
-        final endServicePoint = _resolveServicePoint(it.tafTapLocationReferenceEnd);
-        if (startServicePoint == null || endServicePoint == null) return false;
-
-        return position.currentPosition!.order >= startServicePoint.order &&
-            position.currentPosition!.order <= endServicePoint.order;
-      }, orElse: () => currentFormation.formationRuns.first);
-
-      _rxFormationRun.add(activeFormationRun);
-    } else {
-      _rxFormationRun.add(null);
-    }
   }
 
   void _subscribeToFormation(TrainIdentification? trainIdentification) {
@@ -86,9 +64,33 @@ class BreakLoadSlipViewModel {
           .watchFormation(trainIdentification.trainNumber, trainIdentification.ru.companyCode, trainIdentification.date)
           .listen((formation) {
             _rxFormation.add(formation);
-            _calculateActiveFormationRun();
+            _emitFormationRun();
           });
     }
+  }
+
+  void _emitFormationRun() {
+    _rxFormationRun.add(_calculateActiveFormationRun());
+  }
+
+  FormationRun? _calculateActiveFormationRun() {
+    final position = _latestPosition;
+    final currentFormation = formationValue;
+    if (position == null ||
+        position.currentPosition == null ||
+        currentFormation == null ||
+        currentFormation.formationRuns.isEmpty) {
+      return null;
+    }
+
+    return currentFormation.formationRuns.reversed.firstWhere((it) {
+      final startServicePoint = _resolveServicePoint(it.tafTapLocationReferenceStart);
+      final endServicePoint = _resolveServicePoint(it.tafTapLocationReferenceEnd);
+      if (startServicePoint == null || endServicePoint == null) return false;
+
+      return position.currentPosition!.order >= startServicePoint.order &&
+          position.currentPosition!.order <= endServicePoint.order;
+    }, orElse: () => currentFormation.formationRuns.first);
   }
 
   ServicePoint? _resolveServicePoint(String tafTapLocationCode) {
@@ -97,6 +99,23 @@ class BreakLoadSlipViewModel {
     return _latestJourney!.journeyPoints.whereType<ServicePoint>().firstWhereOrNull(
       (it) => it.locationCode == tafTapLocationCode,
     );
+  }
+
+  bool get isActiveFormationRun => _calculateActiveFormationRun() == formationRunValue;
+
+  bool activeFormationRunHasDifferentBreakSeries() {
+    final selectedBreakSeries = _journeyTableViewModel.settingsValue.resolvedBreakSeries(_latestJourney?.metadata);
+    final formationRunBreakSeries = _resolveBreakSeries(formationRunValue);
+    return formationRunBreakSeries != null && formationRunBreakSeries != selectedBreakSeries;
+  }
+
+  BreakSeries? _resolveBreakSeries(FormationRun? formationRun) {
+    final trainSeries = TrainSeries.fromOptional(formationRun?.trainCategoryCode);
+    final breakSeries = formationRun?.brakedWeightPercentage;
+
+    return (trainSeries != null && breakSeries != null)
+        ? BreakSeries(trainSeries: trainSeries, breakSeries: breakSeries)
+        : null;
   }
 
   String resolveStationName(String tafTapLocationCode) {

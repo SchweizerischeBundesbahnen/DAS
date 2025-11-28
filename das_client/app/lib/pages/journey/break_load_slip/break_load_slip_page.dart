@@ -172,7 +172,7 @@ class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
           flex: 4,
           child: Padding(
             padding: const EdgeInsets.only(left: sbbDefaultSpacing * 0.5, right: sbbDefaultSpacing),
-            child: BreakLoadSlipButtons(),
+            child: BreakLoadSlipButtons(formationRun: formationRun),
           ),
         ),
       ],
