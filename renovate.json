@@ -11,6 +11,12 @@
         "das_client/**"
       ],
       "enabled": false
+    },
+    {
+      "matchDatasources": [
+        "npm"
+      ],
+      "minimumReleaseAge": "3 days"
     }
   ],
   "schedule": [
