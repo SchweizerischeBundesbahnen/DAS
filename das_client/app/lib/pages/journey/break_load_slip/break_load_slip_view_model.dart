@@ -137,6 +137,11 @@ class BreakLoadSlipViewModel {
     return matchedServicePoint?.name ?? tafTapLocationCode;
   }
 
+  String resolveRailwayUndertaking(String companyCode) {
+    final ru = RailwayUndertaking.fromCompanyCode(companyCode);
+    return ru != RailwayUndertaking.unknown ? ru.name : companyCode;
+  }
+
   void dispose() {
     _journeySubscription?.cancel();
     _journeySubscription = null;

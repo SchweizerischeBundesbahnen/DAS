@@ -1,5 +1,6 @@
 import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/app_router.dart';
+import 'package:app/pages/journey/break_load_slip/break_load_slip_view_model.dart';
 import 'package:app/pages/journey/journey_table/widgets/anchored_full_page_overlay.dart';
 import 'package:app/pages/journey/journey_table/widgets/reduced_overview/reduced_overview_modal_sheet.dart';
 import 'package:app/pages/journey/journey_table_view_model.dart';
@@ -21,6 +22,7 @@ class ExtendedMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.read<JourneyTableViewModel>();
+    final breakLoadSlipVM = context.read<BreakLoadSlipViewModel>();
     return AnchoredFullPageOverlay(
       triggerBuilder: (_, showOverlay) => SBBIconButtonLarge(
         key: menuButtonKey,
@@ -40,7 +42,7 @@ class ExtendedMenu extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _breakSlipItem(context, hideOverlay),
+                      _breakSlipItem(context, breakLoadSlipVM, hideOverlay),
                       _transportDocumentItem(context),
                       _journeyOverviewItem(context, hideOverlay),
                       _maneuverItem(context, hideOverlay),
@@ -75,14 +77,16 @@ class ExtendedMenu extends StatelessWidget {
     );
   }
 
-  Widget _breakSlipItem(BuildContext context, VoidCallback hideOverlay) {
-    return SBBListItem(
-      title: context.l10n.w_extended_menu_breaking_slip_action,
-      onPressed: () {
-        context.router.push(BreakLoadSlipRoute());
-        hideOverlay();
-      },
-    );
+  Widget _breakSlipItem(BuildContext context, BreakLoadSlipViewModel vm, VoidCallback hideOverlay) {
+    return vm.formationValue != null
+        ? SBBListItem(
+            title: context.l10n.w_extended_menu_breaking_slip_action,
+            onPressed: () {
+              context.router.push(BreakLoadSlipRoute());
+              hideOverlay();
+            },
+          )
+        : SizedBox.shrink();
   }
 
   Widget _transportDocumentItem(BuildContext context) {

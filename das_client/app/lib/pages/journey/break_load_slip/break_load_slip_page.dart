@@ -5,7 +5,6 @@ import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_brake_
 import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_buttons.dart';
 import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_hauled_load_details.dart';
 import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_header.dart';
-import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_other_data.dart';
 import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_special_restrictions.dart';
 import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_train_details.dart';
 import 'package:app/pages/journey/break_load_slip/widgets/formation_run_navigation_buttons.dart';
@@ -104,8 +103,7 @@ class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
                     spacing: sbbDefaultSpacing,
                     children: [
                       BreakLoadSlipTrainDetails(formation: formation, formationRun: formationRun),
-                      _otherDataAndBrakeDetailsRow(context, formation, formationRun),
-                      _hauledLoadSpecialAndButtonRow(context, formationRun),
+                      _secondRow(context, formation, formationRun),
                     ],
                   ),
                 ),
@@ -128,54 +126,47 @@ class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
     );
   }
 
-  Row _otherDataAndBrakeDetailsRow(BuildContext context, Formation formation, FormationRun formationRun) {
+  Row _specialRestrctionsAndBrakeDetailsRow(BuildContext context, Formation formation, FormationRun formationRun) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: sbbDefaultSpacing,
       children: [
         Expanded(
           flex: 3,
-          child: Padding(
-            padding: const EdgeInsets.only(left: sbbDefaultSpacing, right: sbbDefaultSpacing * 0.5),
-            child: BreakLoadSlipOtherData(formation: formation, formationRun: formationRun),
-          ),
+          child: BreakLoadSlipSpecialRestrictions(formationRun: formationRun),
         ),
         Expanded(
-          flex: 7,
-          child: Padding(
-            padding: const EdgeInsets.only(left: sbbDefaultSpacing * 0.5, right: sbbDefaultSpacing),
-            child: BreakLoadSlipBrakeDetails(formationRun: formationRun),
-          ),
+          flex: 3,
+          child: BreakLoadSlipBrakeDetails(formationRun: formationRun),
         ),
       ],
     );
   }
 
-  Row _hauledLoadSpecialAndButtonRow(BuildContext context, FormationRun formationRun) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-          flex: 3,
-          child: Padding(
-            padding: const EdgeInsets.only(left: sbbDefaultSpacing, right: sbbDefaultSpacing * 0.5),
+  Widget _secondRow(BuildContext context, Formation formation, FormationRun formationRun) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        spacing: sbbDefaultSpacing,
+        children: [
+          Expanded(
+            flex: 3,
             child: BreakLoadSlipHauledLoadDetails(formationRun: formationRun),
           ),
-        ),
-        Expanded(
-          flex: 3,
-          child: Padding(
-            padding: const EdgeInsets.only(left: sbbDefaultSpacing * 0.5, right: sbbDefaultSpacing * 0.5),
-            child: BreakLoadSlipSpecialRestrictions(formationRun: formationRun),
+          Expanded(
+            flex: 6,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _specialRestrctionsAndBrakeDetailsRow(context, formation, formationRun),
+                SizedBox(height: sbbDefaultSpacing),
+                BreakLoadSlipButtons(formationRun: formationRun),
+              ],
+            ),
           ),
-        ),
-        Expanded(
-          flex: 4,
-          child: Padding(
-            padding: const EdgeInsets.only(left: sbbDefaultSpacing * 0.5, right: sbbDefaultSpacing),
-            child: BreakLoadSlipButtons(formationRun: formationRun),
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

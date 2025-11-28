@@ -67,6 +67,10 @@ class BreakLoadSlipTrainDetails extends StatelessWidget {
             context.l10n.p_break_load_slip_train_data_train_series,
             '${formationRun.trainCategoryCode ?? ''} ${formationRun.brakedWeightPercentage ?? ''}%',
           ),
+          BreakLoadSlipDataRow(
+            context.l10n.p_break_load_slip_other_data_rru,
+            vm.resolveRailwayUndertaking(formation.company),
+          ),
         ],
       ),
     );
@@ -83,7 +87,7 @@ class BreakLoadSlipTrainDetails extends StatelessWidget {
           SizedBox(height: sbbDefaultSpacing * 0.5),
           BreakLoadSlipDataRow(
             context.l10n.p_break_load_slip_train_data_train_traction,
-            formationRun.additionalTractions.join(' '),
+            formationRun.additionalTractions.isEmpty ? '-' : formationRun.additionalTractions.join(' '),
           ),
           BreakLoadSlipDataRow(
             context.l10n.p_break_load_slip_train_data_brake_position_g_leading_traction,

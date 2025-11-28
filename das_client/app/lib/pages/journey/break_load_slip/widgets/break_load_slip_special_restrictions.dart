@@ -62,11 +62,8 @@ class BreakLoadSlipSpecialRestrictions extends StatelessWidget {
           ),
           BreakLoadSlipDataRow(
             context.l10n.p_break_load_slip_special_restrictions_route_class,
-            formationRun.routeClass,
+            formationRun.routeClass ?? '-',
           ),
-          BreakLoadSlipDataRow('', ''),
-          BreakLoadSlipDataRow('', ''),
-          BreakLoadSlipDataRow('', ''),
         ],
       ),
     );
