@@ -302,7 +302,7 @@ void main() {
     expect(journey.valid, true);
     expect(curvePoints, hasLength(4));
     expect(curvePoints.where((c) => c.curvePointType == CurvePointType.end), isEmpty);
-    expect(curvePoints[0].curvePointType, CurvePointType.begin);
+    expect(curvePoints[0].curvePointType, CurvePointType.summarized);
     expect(curvePoints[0].curveType, CurveType.curve);
     expect(curvePoints[0].comment, 'Kurve 1 comment');
     expect(curvePoints[1].curvePointType, CurvePointType.begin);

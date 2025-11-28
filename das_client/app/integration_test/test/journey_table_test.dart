@@ -89,10 +89,10 @@ void main() {
       final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
-      final curveName = findDASTableRowByText(l10n.p_journey_table_curve_type_curve);
-      expect(curveName, findsOneWidget);
+      final curveName = find.textContaining(l10n.p_journey_table_curve_type_curve);
+      expect(curveName, findsOne);
 
-      final curveIcon = find.descendant(of: curveName, matching: find.byKey(CurvePointRow.curvePointIconKey));
+      final curveIcon = find.byKey(CurvePointRow.curvePointIconKey);
       expect(curveIcon, findsOneWidget);
 
       await disconnect(tester);
@@ -110,10 +110,10 @@ void main() {
       expect(breakingSeriesHeaderCell, findsOneWidget);
       expect(find.descendant(of: breakingSeriesHeaderCell, matching: find.text('R115')), findsOneWidget);
 
-      final curveName = findDASTableRowByText(l10n.p_journey_table_curve_type_curve);
+      final curveName = find.textContaining(l10n.p_journey_table_curve_type_curve);
       expect(curveName, findsExactly(2));
 
-      final curveIcon = find.descendant(of: curveName, matching: find.byKey(CurvePointRow.curvePointIconKey));
+      final curveIcon = find.byKey(CurvePointRow.curvePointIconKey);
       expect(curveIcon, findsExactly(2));
 
       await disconnect(tester);

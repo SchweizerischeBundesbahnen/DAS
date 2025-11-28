@@ -1,3 +1,4 @@
+import 'package:app/widgets/speed_display.dart';
 import 'package:collection/collection.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/cell_row_builder.dart';
@@ -19,7 +20,33 @@ class CurvePointRow extends CellRowBuilder<CurvePoint> {
   });
 
   @override
-  DASTableCell localSpeedCell(BuildContext context) => speedCell(data.localSpeeds);
+  DASTableCell localSpeedCell(BuildContext context) {
+    final speed = _resolveCurveSpeed();
+
+    return DASTableCell(
+      alignment: Alignment.center,
+      child: SpeedDisplay(
+        speed: speed,
+        summarizedCurve: data.curvePointType == CurvePointType.summarized,
+        singleLine: true,
+      ),
+    );
+  }
+
+  Speed? _resolveCurveSpeed() {
+    final speeds = data.localSpeeds;
+
+    if (speeds == null || speeds.isEmpty) return null;
+    if (speeds.length == 1) return speeds.first.speed;
+
+    final begin = speeds[0].speed;
+    final end = speeds[1].speed;
+
+    return IncomingOutgoingSpeed(
+      incoming: begin,
+      outgoing: end,
+    );
+  }
 
   @override
   DASTableCell kilometreCell(BuildContext context) {
