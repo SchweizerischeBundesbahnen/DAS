@@ -53,6 +53,13 @@ class BreakLoadSlipTrainDetailsTable extends StatelessWidget {
           formationRun.hauledLoadBrakedWeightInT.toString(),
           formationRun.formationBrakedWeightInT.toString(),
         ),
+        _tableDivider(context),
+        _tableRow(
+          context.l10n.p_break_load_slip_brake_details_holding_force,
+          (formationRun.tractionHoldingForceInHectoNewton / 10).toString(),
+          (formationRun.hauledLoadHoldingForceInHectoNewton / 10).toString(),
+          (formationRun.formationHoldingForceInHectoNewton / 10).toString(),
+        ),
       ],
     );
   }

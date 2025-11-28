@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_model.dart';
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_view_model.dart';
+import 'package:app/pages/journey/journey_table/widgets/table/config/journey_settings.dart';
 import 'package:app/pages/journey/journey_table_view_model.dart';
 import 'package:collection/collection.dart';
 import 'package:formation/component.dart';
@@ -35,6 +36,8 @@ class BreakLoadSlipViewModel {
   Stream<Formation?> get formation => _rxFormation.stream.distinct();
 
   Stream<FormationRun?> get formationRun => _rxFormationRun.distinct();
+
+  Stream<JourneySettings?> get settings => _journeyTableViewModel.settings;
 
   Formation? get formationValue => _rxFormation.value;
 
@@ -107,6 +110,13 @@ class BreakLoadSlipViewModel {
     final selectedBreakSeries = _journeyTableViewModel.settingsValue.resolvedBreakSeries(_latestJourney?.metadata);
     final formationRunBreakSeries = _resolveBreakSeries(formationRunValue);
     return formationRunBreakSeries != null && formationRunBreakSeries != selectedBreakSeries;
+  }
+
+  void applyActiveFormationRunBreakSeries() {
+    final formationRunBreakSeries = _resolveBreakSeries(formationRunValue);
+    if (formationRunBreakSeries != null) {
+      _journeyTableViewModel.updateBreakSeries(formationRunBreakSeries);
+    }
   }
 
   BreakSeries? _resolveBreakSeries(FormationRun? formationRun) {

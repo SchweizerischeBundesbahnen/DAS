@@ -14,18 +14,31 @@ class BreakLoadSlipButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel = context.read<BreakLoadSlipViewModel>();
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      spacing: sbbDefaultSpacing * 0.5,
-      children: [
-        SBBSecondaryButton(label: context.l10n.p_break_load_slip_button_apply_train_series, onPressed: () {}),
-        SBBTertiaryButtonLarge(
-          label: context.l10n.p_break_load_slip_button_transport_documents,
-          icon: SBBIcons.link_external_small,
-          onPressed: () {},
-        ),
-      ],
+    return StreamBuilder(
+      stream: viewModel.settings,
+      builder: (context, asyncSnapshot) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          spacing: sbbDefaultSpacing * 0.5,
+          children: [
+            if (viewModel.isActiveFormationRun)
+              SBBSecondaryButton(
+                label: context.l10n.p_break_load_slip_button_apply_train_series,
+                onPressed: viewModel.activeFormationRunHasDifferentBreakSeries()
+                    ? () {
+                        viewModel.applyActiveFormationRunBreakSeries();
+                      }
+                    : null,
+              ),
+            SBBTertiaryButtonLarge(
+              label: context.l10n.p_break_load_slip_button_transport_documents,
+              icon: SBBIcons.link_external_small,
+              onPressed: () {},
+            ),
+          ],
+        );
+      },
     );
   }
 }

@@ -81,9 +81,9 @@ export class SferaObserverComponent implements OnInit, OnDestroy {
     const customTopicPrefix = this.environmentControl.value ? this.customPrefixControl.value : '';
     const trainOperation = this.trainControl.value + '_' + this.dateControl.value;
     // todo migrate to v3 when client also updated
-    this.g2bTopic = customTopicPrefix + '90940/2/G2B/' + this.companyControl.value + '/' + trainOperation + '/' + this.clientIdControl.value;
-    this.b2gTopic = customTopicPrefix + '90940/2/B2G/' + this.companyControl.value + '/' + trainOperation + '/' + this.clientIdControl.value;
-    this.eventTopic = customTopicPrefix + '90940/2/event/' + this.companyControl.value + '/' + trainOperation + '/' + this.clientIdControl.value;
+    this.g2bTopic = customTopicPrefix + '90940/3/G2B/' + this.companyControl.value + '/' + trainOperation + '/' + this.clientIdControl.value;
+    this.b2gTopic = customTopicPrefix + '90940/3/B2G/' + this.companyControl.value + '/' + trainOperation + '/' + this.clientIdControl.value;
+    this.eventTopic = customTopicPrefix + '90940/3/event/' + this.companyControl.value + '/' + trainOperation + '/' + this.clientIdControl.value;
     const token = await firstValueFrom(this.oidcSecurityService.getAccessToken());
     const username = await firstValueFrom(this.oidcSecurityService.getUserData().pipe(map((data) => data?.preferred_username)));
     await this.mqService.connect(username, token);
