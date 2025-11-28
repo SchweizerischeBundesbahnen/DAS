@@ -1,17 +1,17 @@
-name: Continuous Integration Webapp
+name: Continuous Integration Admin-Tool Webapp
 
 defaults:
   run:
-    working-directory: das_playground
+    working-directory: das_admin_tool
 
 on:
   push:
     paths:
-      - 'das_playground/**'
+      - 'das_admin_tool/**'
     branches: [ "main" ]
   pull_request:
     paths:
-      - 'das_playground/**'
+      - 'das_admin_tool/**'
     branches: [ "main" ]
 
 
@@ -26,12 +26,12 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
-          node-version-file: 'das_playground/.nvmrc'
+          node-version-file: 'das_admin_tool/.nvmrc'
           cache: 'npm'
-          cache-dependency-path: 'das_playground/package-lock.json'
+          cache-dependency-path: 'das_admin_tool/package-lock.json'
       - run: npm clean-install
       - run: npm run lint
 
@@ -39,12 +39,12 @@ jobs:
     runs-on: ubuntu-latest
     needs: lint
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
-          node-version-file: 'das_playground/.nvmrc'
+          node-version-file: 'das_admin_tool/.nvmrc'
           cache: 'npm'
-          cache-dependency-path: 'das_playground/package-lock.json'
+          cache-dependency-path: 'das_admin_tool/package-lock.json'
       - run: npm clean-install
       - run: npm test
 
@@ -52,15 +52,15 @@ jobs:
     runs-on: ubuntu-latest
     needs: lint
     env:
-      IMAGE_ID: ghcr.io/${{ github.repository }}/webapp
+      IMAGE_ID: ghcr.io/${{ github.repository }}/das_admin_tool
       VERSION: main
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
-          node-version-file: 'das_playground/.nvmrc'
+          node-version-file: 'das_admin_tool/.nvmrc'
           cache: 'npm'
-          cache-dependency-path: 'das_playground/package-lock.json'
+          cache-dependency-path: 'das_admin_tool/package-lock.json'
       - run: npm clean-install
       - run: npm run build:ngssc
       - name: Login to GitHub Container Registry

@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.31.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.30.0...das_client-v0.31.0) (2025-11-25)
+
+
+### Features
+
+* add departure authorization ([#226](https://github.com/SchweizerischeBundesbahnen/DAS/issues/226)) ([#1439](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1439)) ([25a36ad](https://github.com/SchweizerischeBundesbahnen/DAS/commit/25a36ad8a228e9465041672c47a4eac1b79ab5ab))
+* add DIST to advised speeds ([#1401](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1401)) ([#1426](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1426)) ([ee5f02b](https://github.com/SchweizerischeBundesbahnen/DAS/commit/ee5f02b79a05c14e21fe5c74f1e943d6b83b79a5))
+* add track group to service point ([#1072](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1072)) ([#1421](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1421)) ([00d1897](https://github.com/SchweizerischeBundesbahnen/DAS/commit/00d18973c23994cff7ae1ba727651bb87c5f93dd))
+* advised speed is more prominently displayed ([#1271](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1271)) ([#1422](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1422)) ([80d8212](https://github.com/SchweizerischeBundesbahnen/DAS/commit/80d8212ab0b2c431aab53417af2121fed65a5f02))
+* header redesign ([#1186](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1186)) ([#1423](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1423)) ([5d12973](https://github.com/SchweizerischeBundesbahnen/DAS/commit/5d12973d6b7462d412b97fa29830ec75ebe4643e))
+* unknown advised speeds are displayed to signals ([#1306](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1306)) ([#1427](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1427)) ([8063e95](https://github.com/SchweizerischeBundesbahnen/DAS/commit/8063e951a86eaec2a956ad306c04862636f1011a))
+
+
+### Bug Fixes
+
+* communication network changes display ([#1404](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1404)) ([61d18d9](https://github.com/SchweizerischeBundesbahnen/DAS/commit/61d18d95886b4e65fe26f2c6f9f16bf21038b7b6))
+* fix footer flickering ([#1412](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1412)) ([3b7ad9a](https://github.com/SchweizerischeBundesbahnen/DAS/commit/3b7ad9a244cff0b5aca60c19e30e3072ef203c66))
+
 ## [0.30.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.29.0...das_client-v0.30.0) (2025-11-04)
 
 
