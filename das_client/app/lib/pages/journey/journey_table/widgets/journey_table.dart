@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
+import 'package:app/pages/journey/break_load_slip/break_load_slip_view_model.dart';
 import 'package:app/pages/journey/journey_table/collapsible_rows_view_model.dart';
 import 'package:app/pages/journey/journey_table/journey_overview.dart';
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_model.dart';
@@ -41,12 +42,15 @@ import 'package:app/pages/journey/journey_table/widgets/table/whistle_row.dart';
 import 'package:app/pages/journey/journey_table_view_model.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/user_settings.dart';
+import 'package:app/widgets/assets.dart';
+import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/stickyheader/sticky_level.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:app/widgets/table/das_table_column.dart';
 import 'package:app/widgets/table/das_table_row.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -442,7 +446,8 @@ class JourneyTable extends StatelessWidget {
       ),
       DASTableColumn(
         id: ColumnDefinition.brakedWeightSpeed.index,
-        child: Text(currentBreakSeries?.name ?? '??'),
+        child: _brakedWeightSpeedHeader(context, currentBreakSeries),
+        padding: EdgeInsets.zero,
         width: 62.0,
         onTap: () => _onBreakSeriesTap(context, metadata, settings),
         headerKey: breakingSeriesHeaderKey,
@@ -453,6 +458,59 @@ class JourneyTable extends StatelessWidget {
         width: 62.0,
       ),
     ];
+  }
+
+  Widget _brakedWeightSpeedHeader(BuildContext context, BreakSeries? currentBreakSeries) {
+    final breakLoadSlipVM = context.read<BreakLoadSlipViewModel>();
+
+    return StreamBuilder(
+      stream: breakLoadSlipVM.formationRun,
+      initialData: breakLoadSlipVM.formationRunValue,
+      builder: (context, snapshot) {
+        return breakLoadSlipVM.activeFormationRunHasDifferentBreakSeries()
+            ? Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Positioned(
+                    top: -2,
+                    left: -sbbDefaultSpacing * 0.5,
+                    right: -2,
+                    bottom: -2,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                          left: BorderSide(color: SBBColors.peach, width: sbbDefaultSpacing * 0.5),
+                          top: BorderSide(color: SBBColors.peach, width: 2),
+                          right: BorderSide(color: SBBColors.peach, width: 2),
+                          bottom: BorderSide(color: SBBColors.peach, width: 2),
+                        ),
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(sbbDefaultSpacing * 0.75),
+                          bottomLeft: Radius.circular(sbbDefaultSpacing * 0.75),
+                          topRight: Radius.circular(sbbDefaultSpacing * 0.5),
+                          bottomRight: Radius.circular(sbbDefaultSpacing * 0.5),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            currentBreakSeries?.name ?? '??',
+                            style: DASTextStyles.smallBold,
+                          ),
+                          SvgPicture.asset(AppAssets.iconSignExclamationPoint),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            : Text(
+                currentBreakSeries?.name ?? '??',
+                style: DASTextStyles.smallLight,
+              );
+      },
+    );
   }
 
   void _onBaliseLevelCrossingGroupTap(

@@ -18,6 +18,8 @@ import 'package:sfera/src/data/dto/delay_dto.dart';
 import 'package:sfera/src/data/dto/foot_note_dto.dart';
 import 'package:sfera/src/data/dto/g2b_event_payload_dto.dart';
 import 'package:sfera/src/data/dto/g2b_reply_payload_dto.dart';
+import 'package:sfera/src/data/dto/general_jp_information_dto.dart';
+import 'package:sfera/src/data/dto/general_jp_information_nsp_dto.dart';
 import 'package:sfera/src/data/dto/graduated_speed_info_dto.dart';
 import 'package:sfera/src/data/dto/graduated_speed_info_entity_dto.dart';
 import 'package:sfera/src/data/dto/handshake_acknowledgement_dto.dart';
@@ -320,6 +322,10 @@ class SferaReplyParser {
         return AdvisedSpeedDto(attributes: attributes, children: children, value: value);
       case ReasonTextDto.elementType:
         return ReasonTextDto(attributes: attributes, children: children, value: value);
+      case GeneralJpInformationDto.elementType:
+        return GeneralJpInformationDto(attributes: attributes, children: children, value: value);
+      case GeneralJpInformationNspDto.elementType:
+        return GeneralJpInformationNspDto(attributes: attributes, children: children, value: value);
       default:
         return SferaXmlElementDto(type: type, attributes: attributes, children: children, value: value);
     }

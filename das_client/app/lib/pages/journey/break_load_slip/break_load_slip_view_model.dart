@@ -64,7 +64,11 @@ class BreakLoadSlipViewModel {
 
     if (trainIdentification != null) {
       _formationSubscription = _formationRepository
-          .watchFormation(trainIdentification.trainNumber, trainIdentification.ru.companyCode, trainIdentification.date)
+          .watchFormation(
+            trainIdentification.trainNumber,
+            trainIdentification.ru.companyCode,
+            trainIdentification.operatingDay ?? trainIdentification.date,
+          )
           .listen((formation) {
             _rxFormation.add(formation);
             _emitFormationRun();
@@ -99,9 +103,15 @@ class BreakLoadSlipViewModel {
   ServicePoint? _resolveServicePoint(String tafTapLocationCode) {
     if (_latestJourney == null) return null;
 
-    return _latestJourney!.journeyPoints.whereType<ServicePoint>().firstWhereOrNull(
+    final servicePoints = _latestJourney!.journeyPoints.whereType<ServicePoint>().where(
       (it) => it.locationCode == tafTapLocationCode,
     );
+
+    if (servicePoints.length > 1) {
+      return servicePoints.firstWhereOrNull((it) => it.isStop) ?? servicePoints.first;
+    }
+
+    return servicePoints.firstOrNull;
   }
 
   bool get isActiveFormationRun => _calculateActiveFormationRun() == formationRunValue;
