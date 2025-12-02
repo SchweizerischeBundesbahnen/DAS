@@ -4,9 +4,29 @@
     <span>V. {{ version }}</span>
   </span>
   <div class="sbb-header-spacer"></div>
-  <sbb-header-button iconName="user-small" class="sbb-header-shrinkable"
-                     i18n="@@c_header_login_button">Login
-  </sbb-header-button>
+  @if (oidcSecurityService.authenticated().isAuthenticated) {
+    <sbb-header-button iconName="user-small" class="sbb-header-shrinkable" id="user-menu-trigger"
+                       i18n="@@c_header_login_button" >
+      {{oidcSecurityService.userData().userData.name }}
+    </sbb-header-button>
+    <sbb-menu trigger="user-menu-trigger">
+      <div class="email">{{oidcSecurityService.userData().userData.preferred_username }}</div>
+      @for (role of roles(); track role) {
+        <span class="role">{{role}}</span>
+      }
+      <sbb-divider></sbb-divider>
+      <sbb-menu-button icon-name="user-plus-small" (click)="switchLogin()" i18n="@@c_header_switch_account_button">Account wechseln</sbb-menu-button>
+      <sbb-divider></sbb-divider>
+      <sbb-menu-button icon-name="exit-small" (click)="logout()" i18n="@@c_header_logout_button">Logout</sbb-menu-button>
+    </sbb-menu>
+  }
+  @else {
+    <sbb-header-button iconName="user-small" class="sbb-header-shrinkable"
+                       i18n="@@c_header_login_button" (click)="login()">
+      Login
+    </sbb-header-button>
+  }
+
   <sbb-header-button iconName="globe-small" id="language-menu-trigger" class="last-element">
     {{ currentLanguage?.label }}
   </sbb-header-button>
