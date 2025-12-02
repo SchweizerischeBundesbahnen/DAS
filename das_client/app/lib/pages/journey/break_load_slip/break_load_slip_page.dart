@@ -132,11 +132,9 @@ class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
       spacing: sbbDefaultSpacing,
       children: [
         Expanded(
-          flex: 3,
           child: BreakLoadSlipSpecialRestrictions(formationRun: formationRun),
         ),
         Expanded(
-          flex: 3,
           child: BreakLoadSlipBrakeDetails(formationRun: formationRun),
         ),
       ],
@@ -151,11 +149,11 @@ class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
         spacing: sbbDefaultSpacing,
         children: [
           Expanded(
-            flex: 3,
+            flex: 1,
             child: BreakLoadSlipHauledLoadDetails(formationRun: formationRun),
           ),
           Expanded(
-            flex: 6,
+            flex: 2,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
