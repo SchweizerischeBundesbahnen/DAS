@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<G2B_EventPayload>
+    <RelatedTrainInformation>
+        <OwnTrain>
+            <TrainIdentification>
+                <OTN_ID>
+                    <teltsi_Company>1285</teltsi_Company>
+                    <teltsi_OperationalTrainNumber>43527</teltsi_OperationalTrainNumber>
+                    <teltsi_StartDate>2025-11-13</teltsi_StartDate>
+                </OTN_ID>
+            </TrainIdentification>
+            <TrainLocationInformation>
+                <PositionSpeed SP_ID="43527_1_Start" location="300">
+                    <SP_Zone>
+                        <IM_ID>1285</IM_ID>
+                    </SP_Zone>
+                </PositionSpeed>
+                <Delay Delay="PT0M00S"/>
+            </TrainLocationInformation>
+        </OwnTrain>
+    </RelatedTrainInformation>
+</G2B_EventPayload>

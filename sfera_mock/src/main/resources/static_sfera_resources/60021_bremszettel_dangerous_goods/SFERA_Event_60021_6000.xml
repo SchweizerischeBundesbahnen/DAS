@@ -5,12 +5,12 @@
             <TrainIdentification>
                 <OTN_ID>
                     <teltsi_Company>1285</teltsi_Company>
-                    <teltsi_OperationalTrainNumber>50061</teltsi_OperationalTrainNumber>
+                    <teltsi_OperationalTrainNumber>60021</teltsi_OperationalTrainNumber>
                     <teltsi_StartDate>2025-11-13</teltsi_StartDate>
                 </OTN_ID>
             </TrainIdentification>
             <TrainLocationInformation>
-                <PositionSpeed SP_ID="50061_1_Start" location="300">
+                <PositionSpeed SP_ID="60021_1_Start" location="300">
                     <SP_Zone>
                         <IM_ID>1285</IM_ID>
                     </SP_Zone>
