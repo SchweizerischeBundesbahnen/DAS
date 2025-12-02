@@ -2,6 +2,6 @@
   "das_playground": "0.7.2",
   "das_client/app": "0.31.0",
   "das_backend": "0.7.0",
-  "sfera_mock": "0.9.0",
+  "sfera_mock": "0.10.0",
   "das_admin_tool": "0.0.0"
 }
