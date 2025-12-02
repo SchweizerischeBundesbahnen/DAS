@@ -1,6 +1,9 @@
 spring:
   datasource:
     url: jdbc
+  jpa:
+    hibernate:
+      ddl-auto: validate
   kafka:
     consumer:
       group-id: test
