@@ -1,5 +1,36 @@
 # Changelog
 
+## [0.10.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.9.0...sfera_mock-v0.10.0) (2025-12-02)
+
+
+### Features
+
+* add departure authorization ([#226](https://github.com/SchweizerischeBundesbahnen/DAS/issues/226)) ([#1439](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1439)) ([25a36ad](https://github.com/SchweizerischeBundesbahnen/DAS/commit/25a36ad8a228e9465041672c47a4eac1b79ab5ab))
+* add DIST to advised speeds ([#1401](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1401)) ([#1426](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1426)) ([ee5f02b](https://github.com/SchweizerischeBundesbahnen/DAS/commit/ee5f02b79a05c14e21fe5c74f1e943d6b83b79a5))
+* add track group to service point ([#1072](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1072)) ([#1421](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1421)) ([00d1897](https://github.com/SchweizerischeBundesbahnen/DAS/commit/00d18973c23994cff7ae1ba727651bb87c5f93dd))
+* advised speeds over multiple segment profiles ([#1285](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1285)) ([#1364](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1364)) ([61a9be2](https://github.com/SchweizerischeBundesbahnen/DAS/commit/61a9be2675dfbe6e6cc528b0e6372b692742d2de))
+* implement no replacement series available notification ([#938](https://github.com/SchweizerischeBundesbahnen/DAS/issues/938)) ([#1368](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1368)) ([c6338c1](https://github.com/SchweizerischeBundesbahnen/DAS/commit/c6338c10f68b50bccd23ec372b489f6aa3f87b1f))
+* unknown advised speeds are displayed to signals ([#1306](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1306)) ([#1427](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1427)) ([8063e95](https://github.com/SchweizerischeBundesbahnen/DAS/commit/8063e951a86eaec2a956ad306c04862636f1011a))
+
+
+### Bug Fixes
+
+* communication network changes display ([#1404](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1404)) ([61d18d9](https://github.com/SchweizerischeBundesbahnen/DAS/commit/61d18d95886b4e65fe26f2c6f9f16bf21038b7b6))
+* conjunct advised speed will not signal END but only play start sound ([#1364](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1364)) ([61a9be2](https://github.com/SchweizerischeBundesbahnen/DAS/commit/61a9be2675dfbe6e6cc528b0e6372b692742d2de))
+* **deps:** update dependency org.springframework.boot:spring-boot-starter-parent to v3.5.7 ([#1396](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1396)) ([d143f27](https://github.com/SchweizerischeBundesbahnen/DAS/commit/d143f274cd571188826f6e80cd3f88a15f18e0f2))
+* **deps:** update dependency org.springframework.boot:spring-boot-starter-parent to v3.5.8 ([#1464](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1464)) ([a63429b](https://github.com/SchweizerischeBundesbahnen/DAS/commit/a63429ba3e2d9c637b6bfe5aee1925d118555205))
+* refactor line- and calculated speed ([#1317](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1317)) ([#1382](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1382)) ([1907f30](https://github.com/SchweizerischeBundesbahnen/DAS/commit/1907f302f67065fff01b5d1e1ffa89f349fb7af0))
+* sfera v3 ([#1391](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1391)) ([e612808](https://github.com/SchweizerischeBundesbahnen/DAS/commit/e6128083360ab330ce734b46f9aabf83b8bc488f))
+
+
+### Documentation
+
+* 2266 add vpro to liestal ([#1425](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1425)) ([e629e12](https://github.com/SchweizerischeBundesbahnen/DAS/commit/e629e12d3e452b98f619677b539a2c687a54698b))
+* add vpro to all servicepoints and fix time ([#1410](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1410)) ([4a3577f](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4a3577f30219323e9e21378cd3295a9e3c8cff85))
+* fix calculated speed location of Sissach in 2266 ([#1317](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1317)) ([#1380](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1380)) ([2611fce](https://github.com/SchweizerischeBundesbahnen/DAS/commit/2611fce85f534bb7b947a65b84e8f4c212551d2c))
+* fix track group and date ([#1486](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1486)) ([5d582e3](https://github.com/SchweizerischeBundesbahnen/DAS/commit/5d582e3e2ea15cb82ea4f358988d85978b092b3c))
+* fix version for time and vpro ([#1415](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1415)) ([d06239b](https://github.com/SchweizerischeBundesbahnen/DAS/commit/d06239bfb1a38b0014c02539329ee1270b2fc65e))
+
 ## [0.9.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.8.0...sfera_mock-v0.9.0) (2025-10-21)
 
 
