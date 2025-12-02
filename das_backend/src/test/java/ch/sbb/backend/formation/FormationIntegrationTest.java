@@ -11,7 +11,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.backend.TestContainerConfiguration;
 import ch.sbb.zis.trainformation.api.model.DailyFormationTrain;
 import ch.sbb.zis.trainformation.api.model.DailyFormationTrainKey;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -21,14 +20,15 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.json.JsonCompareMode;
 import org.springframework.test.web.servlet.MockMvc;
+import tools.jackson.databind.json.JsonMapper;
 
 @SpringBootTest
 @Import({TestContainerConfiguration.class})
@@ -40,7 +40,7 @@ class FormationIntegrationTest {
     private KafkaTemplate<DailyFormationTrainKey, DailyFormationTrain> kafkaTemplate;
 
     @Autowired
-    private ObjectMapper objectMapper;
+    private JsonMapper jsonMapper;
 
     @Autowired
     private MockMvc mockMvc;
@@ -50,8 +50,8 @@ class FormationIntegrationTest {
 
     @Test
     void whenNewInspectedFormationMessage_shouldBeAvailabe() throws IOException {
-        DailyFormationTrainKey key = this.objectMapper.readValue(new File("src/test/resources/kafka/71237/key.json"), DailyFormationTrainKey.class);
-        DailyFormationTrain value = this.objectMapper.readValue(new File("src/test/resources/kafka/71237/value.json"), DailyFormationTrain.class);
+        DailyFormationTrainKey key = this.jsonMapper.readValue(new File("src/test/resources/kafka/71237/key.json"), DailyFormationTrainKey.class);
+        DailyFormationTrain value = this.jsonMapper.readValue(new File("src/test/resources/kafka/71237/value.json"), DailyFormationTrain.class);
 
         kafkaTemplate.send(topic, key, value);
 
@@ -70,12 +70,12 @@ class FormationIntegrationTest {
 
     @Test
     void whenUpdatedFormationMessage_shouldBeAvailabe() throws Exception {
-        DailyFormationTrainKey key = this.objectMapper.readValue(new File("src/test/resources/kafka/71237/key.json"), DailyFormationTrainKey.class);
-        DailyFormationTrain value = this.objectMapper.readValue(new File("src/test/resources/kafka/71237/value.json"), DailyFormationTrain.class);
+        DailyFormationTrainKey key = this.jsonMapper.readValue(new File("src/test/resources/kafka/71237/key.json"), DailyFormationTrainKey.class);
+        DailyFormationTrain value = this.jsonMapper.readValue(new File("src/test/resources/kafka/71237/value.json"), DailyFormationTrain.class);
 
         kafkaTemplate.send(topic, key, value);
 
-        DailyFormationTrain updatedValue = this.objectMapper.readValue(new File("src/test/resources/kafka/71237/value_update.json"), DailyFormationTrain.class);
+        DailyFormationTrain updatedValue = this.jsonMapper.readValue(new File("src/test/resources/kafka/71237/value_update.json"), DailyFormationTrain.class);
 
         kafkaTemplate.send(topic, key, updatedValue);
 
@@ -94,8 +94,8 @@ class FormationIntegrationTest {
 
     @Test
     void whenUpdatedNonInpsectedFormationMessage_shouldNotHaveUpdateByEtag() throws Exception {
-        DailyFormationTrainKey key = this.objectMapper.readValue(new File("src/test/resources/kafka/71237/key.json"), DailyFormationTrainKey.class);
-        DailyFormationTrain value = this.objectMapper.readValue(new File("src/test/resources/kafka/71237/value.json"), DailyFormationTrain.class);
+        DailyFormationTrainKey key = this.jsonMapper.readValue(new File("src/test/resources/kafka/71237/key.json"), DailyFormationTrainKey.class);
+        DailyFormationTrain value = this.jsonMapper.readValue(new File("src/test/resources/kafka/71237/value.json"), DailyFormationTrain.class);
 
         kafkaTemplate.send(topic, key, value);
 
@@ -122,7 +122,7 @@ class FormationIntegrationTest {
                 .with(user("any").roles("observer")))
             .andExpect(status().isNotModified());
 
-        DailyFormationTrain updatedValue = this.objectMapper.readValue(new File("src/test/resources/kafka/71237/value_update_non_inspected.json"), DailyFormationTrain.class);
+        DailyFormationTrain updatedValue = this.jsonMapper.readValue(new File("src/test/resources/kafka/71237/value_update_non_inspected.json"), DailyFormationTrain.class);
 
         kafkaTemplate.send(topic, key, updatedValue);
 
@@ -139,9 +139,9 @@ class FormationIntegrationTest {
     }
 
     @Test
-    void whenNonInspectedFormationMessage_shouldNotBeAvailabe() throws IOException {
-        DailyFormationTrainKey key = this.objectMapper.readValue(new File("src/test/resources/kafka/11/key.json"), DailyFormationTrainKey.class);
-        DailyFormationTrain value = this.objectMapper.readValue(new File("src/test/resources/kafka/11/value.json"), DailyFormationTrain.class);
+    void whenNonInspectedFormationMessage_shouldNotBeAvailabe() {
+        DailyFormationTrainKey key = this.jsonMapper.readValue(new File("src/test/resources/kafka/11/key.json"), DailyFormationTrainKey.class);
+        DailyFormationTrain value = this.jsonMapper.readValue(new File("src/test/resources/kafka/11/value.json"), DailyFormationTrain.class);
 
         kafkaTemplate.send(topic, key, value);
 
@@ -157,8 +157,8 @@ class FormationIntegrationTest {
 
     @Test
     void whenUpdatedFormationRunsMessage_shouldBeAvailabe() throws Exception {
-        DailyFormationTrainKey key = this.objectMapper.readValue(new File("src/test/resources/kafka/87389/key.json"), DailyFormationTrainKey.class);
-        DailyFormationTrain value = this.objectMapper.readValue(new File("src/test/resources/kafka/87389/value.json"), DailyFormationTrain.class);
+        DailyFormationTrainKey key = this.jsonMapper.readValue(new File("src/test/resources/kafka/87389/key.json"), DailyFormationTrainKey.class);
+        DailyFormationTrain value = this.jsonMapper.readValue(new File("src/test/resources/kafka/87389/value.json"), DailyFormationTrain.class);
 
         kafkaTemplate.send(topic, key, value);
 
@@ -173,7 +173,7 @@ class FormationIntegrationTest {
                     .andExpect(content().json(expectedJson, JsonCompareMode.STRICT));
             });
 
-        DailyFormationTrain updatedValue = this.objectMapper.readValue(new File("src/test/resources/kafka/87389/value_update.json"), DailyFormationTrain.class);
+        DailyFormationTrain updatedValue = this.jsonMapper.readValue(new File("src/test/resources/kafka/87389/value_update.json"), DailyFormationTrain.class);
 
         kafkaTemplate.send(topic, key, updatedValue);
 
