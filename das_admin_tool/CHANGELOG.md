@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das-admin-tool-v0.1.0...das-admin-tool-v0.1.1) (2025-12-02)
+
+
+### Bug Fixes
+
+* auth redirect ([#1503](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1503)) ([c13f42e](https://github.com/SchweizerischeBundesbahnen/DAS/commit/c13f42eb28ae4509d8b49f690e865737f1c84e90))
+
 ## [0.1.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das-admin-tool-v0.0.1...das-admin-tool-v0.1.0) (2025-12-02)
 
 
