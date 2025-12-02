@@ -29,7 +29,7 @@ dependencies:
   # https://pub.dev/packages/android_id
   android_id: ^0.5.1
   # https://pub.dev/packages/auto_route
-  auto_route: ^10.2.3
+  auto_route: ^11.0.0
   # https://pub.dev/packages/battery_plus
   battery_plus: ^7.0.0
   # https://pub.dev/packages/collection
@@ -74,9 +74,9 @@ dependencies:
   # https://pub.dev/packages/webview_flutter
   webview_flutter: ^4.13.0
   # https://pub.dev/packages/skeletonizer
-  skeletonizer: ^2.1.0+1
-  # https://pub.dev/packages/skeletonizer
-  appcheck: ^1.5.4+1
+  skeletonizer: ^2.1.1
+  # https://pub.dev/packages/appcheck
+  appcheck: ^1.6.0
 
 dev_dependencies:
   integration_test:
@@ -85,7 +85,7 @@ dev_dependencies:
     sdk: flutter
 
   # https://pub.dev/packages/auto_route_generator
-  auto_route_generator: ^10.2.6
+  auto_route_generator: ^10.4.0
   # https://pub.dev/packages/build_runner
   build_runner: ^2.10.4
   # https://pub.dev/packages/flutter_launcher_icons
