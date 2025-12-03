@@ -1,23 +1,28 @@
 import 'dart:async';
 
 import 'package:auth/component.dart';
+import 'package:auth/src/oidc_client_provider.dart';
 import 'package:logging/logging.dart';
 import 'package:sbb_oidc/sbb_oidc.dart';
 
 final _log = Logger('AzureAuthenticator');
 
 class AzureAuthenticator implements Authenticator {
-  AzureAuthenticator({required this.config});
+  AzureAuthenticator({
+    required this.config,
+    this.oidcClientProvider = const SBBOidcClientProvider(),
+  });
 
   final AuthenticatorConfig config;
-  late final OidcClient oidcClient;
+  final OidcClientProvider oidcClientProvider;
+  late final OidcClient _oidcClient;
   bool isInitialized = false;
 
   Future<void> _init() async {
     if (isInitialized) return;
     _log.fine('Initialize AzureAuthenticator');
     try {
-      oidcClient = await SBBOpenIDConnect.createClient(
+      _oidcClient = await oidcClientProvider.createClient(
         discoveryUrl: config.discoveryUrl,
         clientId: config.clientId,
         redirectUrl: config.redirectUrl,
@@ -48,10 +53,14 @@ class AzureAuthenticator implements Authenticator {
     await _init();
     TokenSpec? tokenSpec = config.tokenSpecs.getById(tokenId);
     tokenSpec ??= config.tokenSpecs.all.first;
-    return oidcClient.login(
+    final token = await _oidcClient.login(
       scopes: tokenSpec.scopes,
       prompt: LoginPrompt.selectAccount,
     );
+
+    _validateToken(token);
+
+    return token;
   }
 
   @override
@@ -61,7 +70,11 @@ class AzureAuthenticator implements Authenticator {
     if (tokenSpec == null) {
       throw ArgumentError.value(tokenId, 'tokenId', 'Unknown token id.');
     }
-    return oidcClient.getToken(scopes: tokenSpec.scopes, forceRefresh: forceRefresh ?? false);
+
+    final token = await _oidcClient.getToken(scopes: tokenSpec.scopes, forceRefresh: forceRefresh ?? false);
+    _validateToken(token);
+
+    return token;
   }
 
   @override
@@ -78,12 +91,26 @@ class AzureAuthenticator implements Authenticator {
   @override
   Future<void> logout() async {
     await _init();
-    return oidcClient.logout();
+    return _oidcClient.logout();
   }
 
   @override
   Future<void> endSession() async {
     await _init();
-    return oidcClient.endSession();
+    return _oidcClient.endSession();
+  }
+
+  void _validateToken(OidcToken token) {
+    if (!token.isIssuedByTenant(config.trustedTenantIds)) {
+      throw Exception('Token issued by untrusted tenant');
+    }
+  }
+}
+
+extension _OidcTokenExtension on OidcToken {
+  bool isIssuedByTenant(List<String> trustedIds) {
+    final token = JsonWebToken.decode(idToken);
+    final tenantId = token.payload['tid'] as String?;
+    return tenantId != null && trustedIds.any((id) => id.toLowerCase() == tenantId.toLowerCase());
   }
 }
