@@ -35,17 +35,8 @@ class CurvePointRow extends CellRowBuilder<CurvePoint> {
 
   Speed? _resolveCurveSpeed() {
     final speeds = data.localSpeeds;
-
     if (speeds == null || speeds.isEmpty) return null;
-    if (speeds.length == 1) return speeds.first.speed;
-
-    final begin = speeds[0].speed;
-    final end = speeds[1].speed;
-
-    return IncomingOutgoingSpeed(
-      incoming: begin,
-      outgoing: end,
-    );
+    return speeds.first.speed;
   }
 
   @override
@@ -92,6 +83,7 @@ class CurvePointRow extends CellRowBuilder<CurvePoint> {
     );
   }
 
+  //TODO should have two decimal numbers behind i
   String _stringifyKm(Object? km) {
     if (km == null) return '';
     final s = km.toString().trim();
