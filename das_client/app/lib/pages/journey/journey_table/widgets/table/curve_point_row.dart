@@ -1,3 +1,5 @@
+import 'package:app/widgets/speed_display.dart';
+import 'package:collection/collection.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/cell_row_builder.dart';
 import 'package:app/widgets/assets.dart';
@@ -18,13 +20,53 @@ class CurvePointRow extends CellRowBuilder<CurvePoint> {
   });
 
   @override
-  DASTableCell localSpeedCell(BuildContext context) => speedCell(data.localSpeeds);
+  DASTableCell localSpeedCell(BuildContext context) {
+    final speed = _resolveCurveSpeed();
+
+    return DASTableCell(
+      alignment: Alignment.center,
+      child: SpeedDisplay(
+        speed: speed,
+        summarizedCurve: data.curvePointType == CurvePointType.summarized,
+        singleLine: true,
+      ),
+    );
+  }
+
+  Speed? _resolveCurveSpeed() {
+    final speeds = data.localSpeeds;
+    if (speeds == null || speeds.isEmpty) return null;
+    return speeds.first.speed;
+  }
+
+  @override
+  DASTableCell kilometreCell(BuildContext context) {
+    if (data.kilometre.isEmpty) {
+      return DASTableCell.empty(color: specialCellColor);
+    } else {
+      return DASTableCell(
+        color: specialCellColor,
+        padding: const EdgeInsets.all(8.0),
+        alignment: Alignment.centerLeft,
+        clipBehaviour: Clip.none,
+        child: Text(
+          data.kilometre[0].toStringAsFixed(1),
+        ),
+      );
+    }
+  }
 
   @override
   DASTableCell informationCell(BuildContext context) {
+    final typeText = data.curveType?.localizedName(context) ?? '';
+    final startKm = _stringifyKm(data.kilometre.firstOrNull);
+    final endKm = _stringifyKm(data.kilometre.length > 1 ? data.kilometre.last : null);
+
+    final text = endKm.isNotEmpty ? '$typeText km $startKm - $endKm' : (startKm.isNotEmpty ? typeText : typeText);
+
     return DASTableCell(
       child: Text(
-        data.curveType?.localizedName(context) ?? '',
+        text,
         overflow: TextOverflow.ellipsis,
       ),
     );
@@ -39,6 +81,13 @@ class CurvePointRow extends CellRowBuilder<CurvePoint> {
       ),
       alignment: Alignment.center,
     );
+  }
+
+  //TODO should have two decimal numbers behind i
+  String _stringifyKm(Object? km) {
+    if (km == null) return '';
+    final s = km.toString().trim();
+    return s.isEmpty ? '' : s;
   }
 }
 

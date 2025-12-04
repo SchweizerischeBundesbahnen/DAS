@@ -55,6 +55,7 @@ class CurvePoint extends JourneyPoint {
 enum CurvePointType {
   begin,
   end,
+  summarized,
   unknown;
 
   factory CurvePointType.from(String value) {
