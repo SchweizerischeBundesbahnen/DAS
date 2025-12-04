@@ -15,7 +15,8 @@ enum LocalRegulationRelevance {
   crossBorderTraffic(abbreviation: 'GV'),
 
   /// Local regulations for traffic controllers
-  trafficControllers(abbreviation: 'Fdl');
+  trafficControllers(abbreviation: 'Fdl')
+  ;
 
   const LocalRegulationRelevance({required this.abbreviation});
 

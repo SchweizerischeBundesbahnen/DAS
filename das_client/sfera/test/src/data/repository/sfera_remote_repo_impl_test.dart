@@ -21,7 +21,7 @@ import 'sfera_remote_repo_impl_test.mocks.dart';
 ])
 void main() {
   final TrainIdentification trainId = TrainIdentification(
-    ru: RailwayUndertaking.sbbP,
+    ru: .sbbP,
     trainNumber: '12345',
     date: DateTime.now(),
   );
@@ -60,9 +60,9 @@ void main() {
     // LATER THEN
     expectLater(
       sferaRemoteRepo.stateStream,
-      emitsInOrder([
-        SferaRemoteRepositoryState.disconnected, // seeded state
-        SferaRemoteRepositoryState.connecting,
+      emitsInOrder(<SferaRemoteRepositoryState>[
+        .disconnected, // seeded state
+        .connecting,
       ]),
     );
 
@@ -90,10 +90,10 @@ void main() {
     // LATER THEN
     expectLater(
       sferaRemoteRepo.stateStream,
-      emitsInOrder([
-        SferaRemoteRepositoryState.disconnected, // seeded state
-        SferaRemoteRepositoryState.connecting,
-        SferaRemoteRepositoryState.disconnected,
+      emitsInOrder(<SferaRemoteRepositoryState>[
+        .disconnected, // seeded state
+        .connecting,
+        .disconnected,
       ]),
     );
 
@@ -123,9 +123,9 @@ void main() {
     // LATER THEN
     expectLater(
       sferaRemoteRepo.stateStream,
-      emitsInOrder([
-        SferaRemoteRepositoryState.disconnected, // seeded state
-        SferaRemoteRepositoryState.connecting,
+      emitsInOrder(<SferaRemoteRepositoryState>[
+        .disconnected, // seeded state
+        .connecting,
       ]),
     );
 
@@ -166,10 +166,10 @@ void main() {
     // LATER THEN
     expectLater(
       sferaRemoteRepo.stateStream,
-      emitsInOrder([
-        SferaRemoteRepositoryState.disconnected, // seeded state
-        SferaRemoteRepositoryState.connecting,
-        SferaRemoteRepositoryState.disconnected,
+      emitsInOrder(<SferaRemoteRepositoryState>[
+        .disconnected, // seeded state
+        .connecting,
+        .disconnected,
       ]),
     );
 
@@ -203,9 +203,9 @@ void main() {
     // LATER THEN
     expectLater(
       sferaRemoteRepo.stateStream,
-      emitsInOrder([
-        SferaRemoteRepositoryState.disconnected, // seeded state
-        SferaRemoteRepositoryState.connecting,
+      emitsInOrder(<SferaRemoteRepositoryState>[
+        .disconnected, // seeded state
+        .connecting,
       ]),
     );
 
@@ -278,10 +278,10 @@ void main() {
     // LATER THEN
     expectLater(
       sferaRemoteRepo.stateStream,
-      emitsInOrder([
-        SferaRemoteRepositoryState.disconnected, // seeded state
-        SferaRemoteRepositoryState.connecting,
-        SferaRemoteRepositoryState.connected,
+      emitsInOrder(<SferaRemoteRepositoryState>[
+        .disconnected, // seeded state
+        .connecting,
+        .connected,
       ]),
     );
     expectLater(
@@ -354,10 +354,10 @@ void main() {
     // LATER THEN
     expectLater(
       sferaRemoteRepo.stateStream,
-      emitsInOrder([
-        SferaRemoteRepositoryState.disconnected, // seeded state
-        SferaRemoteRepositoryState.connecting,
-        SferaRemoteRepositoryState.connected,
+      emitsInOrder(<SferaRemoteRepositoryState>[
+        .disconnected, // seeded state
+        .connecting,
+        .connected,
       ]),
     );
     expectLater(
@@ -436,10 +436,10 @@ void main() {
     // LATER THEN
     expectLater(
       sferaRemoteRepo.stateStream,
-      emitsInOrder([
-        SferaRemoteRepositoryState.disconnected, // seeded state
-        SferaRemoteRepositoryState.connecting,
-        SferaRemoteRepositoryState.connected,
+      emitsInOrder(<SferaRemoteRepositoryState>[
+        .disconnected, // seeded state
+        .connecting,
+        .connected,
       ]),
     );
     expectLater(
@@ -518,11 +518,11 @@ void main() {
     // LATER THEN
     expectLater(
       sferaRemoteRepo.stateStream,
-      emitsInOrder([
-        SferaRemoteRepositoryState.disconnected, // seeded state
-        SferaRemoteRepositoryState.connecting,
-        SferaRemoteRepositoryState.connected,
-        SferaRemoteRepositoryState.disconnected,
+      emitsInOrder(<SferaRemoteRepositoryState>[
+        .disconnected, // seeded state
+        .connecting,
+        .connected,
+        .disconnected,
       ]),
     );
     expectLater(

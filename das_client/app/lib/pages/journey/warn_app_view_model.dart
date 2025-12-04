@@ -6,7 +6,6 @@ import 'package:app/provider/ru_feature_provider.dart';
 import 'package:appcheck/appcheck.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:settings/component.dart';
 import 'package:sfera/component.dart';
 import 'package:warnapp/component.dart';
 
@@ -37,7 +36,7 @@ class WarnAppViewModel {
 
   Stream<WarnappEvent> get warnappEvents => _rxWarnapp.stream;
 
-  Future<bool> get isWarnappFeatureEnabled => _ruFeatureProvider.isRuFeatureEnabled(RuFeatureKeys.warnapp);
+  Future<bool> get isWarnappFeatureEnabled => _ruFeatureProvider.isRuFeatureEnabled(.warnapp);
 
   Stream<bool> get isManeuverModeEnabled => _rxManeuverModeEnabled.distinct();
 
@@ -88,12 +87,12 @@ class WarnAppViewModel {
     _stateSubscription?.cancel();
     _stateSubscription = _sferaRemoteRepo.stateStream.listen((state) {
       switch (state) {
-        case SferaRemoteRepositoryState.connected:
+        case .connected:
           _enableWarnapp();
           break;
-        case SferaRemoteRepositoryState.connecting:
+        case .connecting:
           break;
-        case SferaRemoteRepositoryState.disconnected:
+        case .disconnected:
           _disableWarnapp();
           _rxManeuverModeEnabled.add(false);
           break;
@@ -102,7 +101,7 @@ class WarnAppViewModel {
   }
 
   void _enableWarnapp() async {
-    final isWarnappFeatEnabled = await _ruFeatureProvider.isRuFeatureEnabled(RuFeatureKeys.warnapp) && Platform.isIOS;
+    final isWarnappFeatEnabled = await _ruFeatureProvider.isRuFeatureEnabled(.warnapp) && Platform.isIOS;
     _log.info('Warnapp is ${isWarnappFeatEnabled ? 'enabled' : 'disabled'} for active train');
     if (isWarnappFeatEnabled) {
       _warnappAbfahrtSubscription = _warnappRepo.abfahrtEventStream.listen((_) => _handleAbfahrtEvent());

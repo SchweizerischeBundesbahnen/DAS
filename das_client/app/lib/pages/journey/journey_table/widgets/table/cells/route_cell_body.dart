@@ -1,6 +1,7 @@
 import 'package:app/pages/journey/journey_table/widgets/table/cells/route_chevron.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/config/chevron_animation_data.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/service_point_row.dart';
+import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/table/das_table_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -55,8 +56,8 @@ class RouteCellBody extends StatelessWidget {
         final height = constraints.maxHeight;
         final width = constraints.maxWidth;
         return Stack(
-          clipBehavior: Clip.none,
-          alignment: Alignment.center,
+          clipBehavior: .none,
+          alignment: .center,
           children: [
             _routeLine(context, height, width),
             if (isCurrentPosition || chevronAnimationData != null) _chevron(context),
@@ -91,8 +92,7 @@ class RouteCellBody extends StatelessWidget {
   }
 
   Widget _routeLine(BuildContext context, double height, double width) {
-    final isDarkTheme = SBBBaseStyle.of(context).brightness == Brightness.dark;
-    final lineColor = isDarkTheme ? SBBColors.white : SBBColors.black;
+    final lineColor = ThemeUtil.isDarkMode(context) ? SBBColors.white : SBBColors.black;
     final horizontalBorderWidth =
         DASTableTheme.of(context)?.data.tableBorder?.horizontalInside.width ?? sbbDefaultSpacing;
     return Positioned(
@@ -105,8 +105,7 @@ class RouteCellBody extends StatelessWidget {
   }
 
   Positioned _circle(BuildContext context) {
-    final isDarkTheme = SBBBaseStyle.of(context).brightness == Brightness.dark;
-    final circleColor = isDarkTheme ? SBBColors.white : SBBColors.black;
+    final circleColor = ThemeUtil.isDarkMode(context) ? SBBColors.white : SBBColors.black;
     return Positioned(
       top: routeCirclePosition,
       child: _RouteCircle(size: routeCircleSize, color: circleColor, isStopOnRequest: isStopOnRequest),

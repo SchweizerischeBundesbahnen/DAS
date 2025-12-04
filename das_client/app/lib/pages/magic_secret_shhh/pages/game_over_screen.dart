@@ -28,7 +28,7 @@ class GameOverScreen extends StatelessWidget {
   Widget _body(BuildContext context) {
     return Center(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: .center,
         children: [
           Text(
             'Oops, you died. That\'s too bad',

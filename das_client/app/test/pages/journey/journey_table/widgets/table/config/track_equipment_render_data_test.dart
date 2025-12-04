@@ -18,7 +18,7 @@ void main() {
     final journey = Journey(
       metadata: Metadata(
         nonStandardTrackEquipmentSegments: [
-          _trackEquipmentSegment(TrackEquipmentType.etcsL2ExtSpeedReversingImpossible, 0, 9999),
+          _trackEquipmentSegment(.etcsL2ExtSpeedReversingImpossible, 0, 9999),
         ],
       ),
       data: [
@@ -49,7 +49,7 @@ void main() {
     final journey = Journey(
       metadata: Metadata(
         nonStandardTrackEquipmentSegments: [
-          _trackEquipmentSegment(TrackEquipmentType.etcsL2ExtSpeedReversingImpossible, 0, 9999),
+          _trackEquipmentSegment(.etcsL2ExtSpeedReversingImpossible, 0, 9999),
         ],
       ),
       data: [
@@ -86,7 +86,7 @@ void main() {
     final journey = Journey(
       metadata: Metadata(
         nonStandardTrackEquipmentSegments: [
-          _trackEquipmentSegment(TrackEquipmentType.etcsL1lsSingleTrackNoBlock, null, 9000),
+          _trackEquipmentSegment(.etcsL1lsSingleTrackNoBlock, null, 9000),
         ],
       ),
       data: [
@@ -115,11 +115,11 @@ void main() {
     final journey = Journey(
       metadata: Metadata(
         nonStandardTrackEquipmentSegments: [
-          _trackEquipmentSegment(TrackEquipmentType.etcsL2ExtSpeedReversingPossible, 150, 250),
-          _trackEquipmentSegment(TrackEquipmentType.etcsL2ConvSpeedReversingImpossible, 250, 350),
-          _trackEquipmentSegment(TrackEquipmentType.etcsL2ExtSpeedReversingImpossible, 350, 450),
-          _trackEquipmentSegment(TrackEquipmentType.etcsL1ls2TracksWithSingleTrackEquipment, 450, 550),
-          _trackEquipmentSegment(TrackEquipmentType.etcsL1lsSingleTrackNoBlock, 550, 650),
+          _trackEquipmentSegment(.etcsL2ExtSpeedReversingPossible, 150, 250),
+          _trackEquipmentSegment(.etcsL2ConvSpeedReversingImpossible, 250, 350),
+          _trackEquipmentSegment(.etcsL2ExtSpeedReversingImpossible, 350, 450),
+          _trackEquipmentSegment(.etcsL1ls2TracksWithSingleTrackEquipment, 450, 550),
+          _trackEquipmentSegment(.etcsL1lsSingleTrackNoBlock, 550, 650),
         ],
       ),
       data: [
@@ -159,11 +159,11 @@ void main() {
     final journey = Journey(
       metadata: Metadata(
         nonStandardTrackEquipmentSegments: [
-          _trackEquipmentSegment(TrackEquipmentType.etcsL2ExtSpeedReversingPossible, 150, 250),
-          _trackEquipmentSegment(TrackEquipmentType.etcsL2ConvSpeedReversingImpossible, 250, 350),
-          _trackEquipmentSegment(TrackEquipmentType.etcsL1ls2TracksWithSingleTrackEquipment, 350, 450),
-          _trackEquipmentSegment(TrackEquipmentType.etcsL2ConvSpeedReversingImpossible, 450, 550),
-          _trackEquipmentSegment(TrackEquipmentType.etcsL2ExtSpeedReversingImpossible, 550, 650),
+          _trackEquipmentSegment(.etcsL2ExtSpeedReversingPossible, 150, 250),
+          _trackEquipmentSegment(.etcsL2ConvSpeedReversingImpossible, 250, 350),
+          _trackEquipmentSegment(.etcsL1ls2TracksWithSingleTrackEquipment, 350, 450),
+          _trackEquipmentSegment(.etcsL2ConvSpeedReversingImpossible, 450, 550),
+          _trackEquipmentSegment(.etcsL2ExtSpeedReversingImpossible, 550, 650),
         ],
       ),
       data: [

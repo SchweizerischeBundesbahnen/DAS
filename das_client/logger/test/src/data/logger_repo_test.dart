@@ -10,7 +10,6 @@ import 'package:logger/src/data/local/log_file_service.dart';
 import 'package:logger/src/data/logger_repo.dart';
 import 'package:logger/src/data/logger_repo_impl.dart';
 import 'package:logger/src/data/mappers.dart';
-import 'package:logger/src/log_level.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
@@ -39,7 +38,7 @@ void main() {
 
   final simpleLogFile = LogEntry(
     'A simple log message',
-    LogLevel.warning,
+    .warning,
     {'key': 'value'},
   );
 

@@ -17,14 +17,14 @@ class CommunicationNetworkIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isGsmP = networkType == CommunicationNetworkType.gsmP;
+    final isGsmP = networkType == .gsmP;
     return Container(
       key: isGsmP ? gsmPKey : gsmRKey,
       decoration: BoxDecoration(
         border: Border.all(color: ThemeUtil.getIconColor(context), width: 1.0),
         borderRadius: BorderRadius.circular(sbbDefaultSpacing),
       ),
-      padding: EdgeInsets.symmetric(horizontal: 15.0),
+      padding: .symmetric(horizontal: 15.0),
       child: Text(isGsmP ? 'P' : 'R', style: DASTextStyles.largeRoman),
     );
   }

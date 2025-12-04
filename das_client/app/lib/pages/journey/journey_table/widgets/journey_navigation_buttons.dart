@@ -3,6 +3,7 @@ import 'package:app/pages/journey/journey_table/widgets/table/config/journey_set
 import 'package:app/pages/journey/journey_table_view_model.dart';
 import 'package:app/pages/journey/navigation/journey_navigation_model.dart';
 import 'package:app/pages/journey/navigation/journey_navigation_view_model.dart';
+import 'package:app/theme/theme_util.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
@@ -42,11 +43,11 @@ class JourneyNavigationButtons extends StatelessWidget {
             ignoring: !resolvedShowNavButtons,
             child: Container(
               key: journeyNavigationButtonKey,
-              margin: EdgeInsets.only(bottom: sbbDefaultSpacing * 2),
-              padding: EdgeInsets.all(sbbDefaultSpacing / 2),
+              margin: .only(bottom: sbbDefaultSpacing * 2),
+              padding: .all(sbbDefaultSpacing / 2),
               decoration: _navigationButtonsDecoration(context),
               child: Row(
-                mainAxisSize: MainAxisSize.min,
+                mainAxisSize: .min,
                 children: [
                   SBBIconButtonLarge(
                     key: journeyNavigationButtonPreviousKey,
@@ -74,7 +75,7 @@ class JourneyNavigationButtons extends StatelessWidget {
   }
 
   ShapeDecoration _navigationButtonsDecoration(BuildContext context) {
-    final isDark = Theme.brightnessOf(context) == Brightness.dark;
+    final isDark = ThemeUtil.isDarkMode(context);
     return ShapeDecoration(
       shape: StadiumBorder(),
       color: isDark ? SBBColors.granite : SBBColors.milk,

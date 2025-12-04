@@ -18,7 +18,7 @@ class ExclamationIconButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Stack(
-        clipBehavior: Clip.none,
+        clipBehavior: .none,
         children: [
           Container(
             decoration: BoxDecoration(

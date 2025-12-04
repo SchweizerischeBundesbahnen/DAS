@@ -4,7 +4,6 @@ import 'package:app/pages/journey/journey_table/widgets/table/config/track_equip
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/table/das_table_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:sfera/component.dart';
 
 class TrackEquipmentCellBody extends StatelessWidget {
   static const Key conventionalExtendedSpeedBorderKey = Key('conventionalExtendedSpeedBorder');
@@ -34,20 +33,17 @@ class TrackEquipmentCellBody extends StatelessWidget {
         final height = constraints.maxHeight;
         final trackEquipmentType = renderData.trackEquipmentType;
         return Stack(
-          clipBehavior: Clip.none,
-          alignment: Alignment.center,
+          clipBehavior: .none,
+          alignment: .center,
           children: [
             if (renderData.isConventionalExtendedSpeedBorder) _conventionalExtendedSpeedBorder(context),
-            if (trackEquipmentType == TrackEquipmentType.etcsL2ExtSpeedReversingPossible)
-              _extSpeedReversingPossible(context, height),
-            if (trackEquipmentType == TrackEquipmentType.etcsL2ExtSpeedReversingImpossible)
-              _extSpeedReversingImpossible(context, height),
-            if (trackEquipmentType == TrackEquipmentType.etcsL2ConvSpeedReversingImpossible)
+            if (trackEquipmentType == .etcsL2ExtSpeedReversingPossible) _extSpeedReversingPossible(context, height),
+            if (trackEquipmentType == .etcsL2ExtSpeedReversingImpossible) _extSpeedReversingImpossible(context, height),
+            if (trackEquipmentType == .etcsL2ConvSpeedReversingImpossible)
               _convSpeedReversingImpossible(context, height),
-            if (trackEquipmentType == TrackEquipmentType.etcsL1ls2TracksWithSingleTrackEquipment)
+            if (trackEquipmentType == .etcsL1ls2TracksWithSingleTrackEquipment)
               _twoTracksWithSingleTrackEquipment(context, height),
-            if (trackEquipmentType == TrackEquipmentType.etcsL1lsSingleTrackNoBlock)
-              _singleTrackNoBlock(context, height),
+            if (trackEquipmentType == .etcsL1lsSingleTrackNoBlock) _singleTrackNoBlock(context, height),
           ],
         );
       },
@@ -61,7 +57,7 @@ class TrackEquipmentCellBody extends StatelessWidget {
       bottom: _calculateBottom(context, height),
       left: 2.0,
       child: Row(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: .min,
         children: [
           _extSpeedLine(context),
           SizedBox(width: 2.0),

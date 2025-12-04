@@ -38,7 +38,7 @@ class AdvisedSpeedCellBody extends StatelessWidget {
   }
 
   Widget _content(BuildContext context) {
-    if (showSpeedBehavior == ShowSpeedBehavior.never) {
+    if (showSpeedBehavior == .never) {
       return DASTableCell.emptyBuilder;
     }
 
@@ -67,7 +67,7 @@ class AdvisedSpeedCellBody extends StatelessWidget {
     final resolvedBackgroundColor = ThemeUtil.getColor(context, SBBColors.iron, SBBColors.platinum);
 
     return Stack(
-      clipBehavior: Clip.none,
+      clipBehavior: .none,
       children: [
         Positioned(
           top: -horizontalBorderWidth * 2,

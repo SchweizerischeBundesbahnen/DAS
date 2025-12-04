@@ -10,7 +10,7 @@ class CommunicationNetworkChange extends JourneyPoint {
     required super.order,
     this.isServicePoint = false,
     super.kilometre = const [],
-  }) : super(type: Datatype.communicationNetworkChannel);
+  }) : super(dataType: .communicationNetworkChannel);
 
   final CommunicationNetworkType communicationNetworkType;
   final bool isServicePoint;
@@ -25,7 +25,7 @@ class CommunicationNetworkChange extends JourneyPoint {
           const ListEquality<double>().equals(kilometre, other.kilometre);
 
   @override
-  int get hashCode => Object.hash(type, order, communicationNetworkType, Object.hashAll(kilometre));
+  int get hashCode => Object.hash(dataType, order, communicationNetworkType, Object.hashAll(kilometre));
 
   @override
   String toString() {
@@ -44,7 +44,7 @@ extension CommunicationNetworkChangeListExtension on Iterable<CommunicationNetwo
 
   /// Return the network type that changes at given [order].
   CommunicationNetworkType? changeAtOrder(int order) {
-    final sortedList = where((it) => it.communicationNetworkType != CommunicationNetworkType.sim).toList()..sort();
+    final sortedList = where((it) => it.communicationNetworkType != .sim).toList()..sort();
     final change = sortedList.firstWhereOrNull((it) => it.order == order);
     if (change == null) return null;
     final index = sortedList.indexOf(change);
@@ -57,6 +57,5 @@ extension CommunicationNetworkChangeListExtension on Iterable<CommunicationNetwo
     }
   }
 
-  Iterable<CommunicationNetworkChange> get whereNotSim =>
-      whereNot((change) => change.communicationNetworkType == CommunicationNetworkType.sim);
+  Iterable<CommunicationNetworkChange> get whereNotSim => whereNot((change) => change.communicationNetworkType == .sim);
 }
