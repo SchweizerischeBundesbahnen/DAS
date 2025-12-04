@@ -4,12 +4,12 @@ import 'package:sfera/src/model/ru.dart';
 @sealed
 @immutable
 class TrainIdentification {
-  const TrainIdentification({
+  TrainIdentification({
     required this.ru,
     required this.trainNumber,
-    required this.date,
+    required DateTime date,
     this.operatingDay,
-  });
+  }) : date = DateTime(date.year, date.month, date.day);
 
   final RailwayUndertaking ru;
   final String trainNumber;

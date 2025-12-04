@@ -1,3 +1,4 @@
+import 'package:app/extension/ru_extension.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/break_load_slip/break_load_slip_view_model.dart';
 import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_data_row.dart';
@@ -8,6 +9,7 @@ import 'package:formation/component.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+import 'package:sfera/component.dart';
 
 class BreakLoadSlipTrainDetails extends StatelessWidget {
   const BreakLoadSlipTrainDetails({required this.formation, required this.formationRun, super.key});
@@ -69,11 +71,16 @@ class BreakLoadSlipTrainDetails extends StatelessWidget {
           ),
           BreakLoadSlipDataRow(
             context.l10n.p_break_load_slip_other_data_rru,
-            vm.resolveRailwayUndertaking(formation.company),
+            _resolveCompanyCode(context, formation.company),
           ),
         ],
       ),
     );
+  }
+
+  String _resolveCompanyCode(BuildContext context, String companyCode) {
+    final ru = RailwayUndertaking.fromCompanyCode(companyCode);
+    return ru != RailwayUndertaking.unknown ? ru.displayText(context) : companyCode;
   }
 
   Widget _trainDataColumn2(BuildContext context) {

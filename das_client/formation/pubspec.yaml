@@ -23,8 +23,15 @@ dependencies:
   drift_flutter: ^0.2.7
   # https://pub.dev/packages/path_provider
   path_provider: ^2.1.5
+  # https://pub.dev/packages/collection
+  collection: ^1.19.1
 
 dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # https://pub.dev/packages/mockito
+  mockito: ^5.5.1
   # https://pub.dev/packages/build_runner
   build_runner: ^2.10.0
   # https://pub.dev/packages/flutter_lints

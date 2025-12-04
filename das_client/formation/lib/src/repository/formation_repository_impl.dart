@@ -16,12 +16,13 @@ class FormationRepositoryImpl implements FormationRepository {
     _log.info('Loading formation for train $operationalTrainNumber (company=$company) on $operationalDay');
     try {
       final formationResponse = await apiService.formation(operationalTrainNumber, company, operationalDay).call();
-      final formation = formationResponse.body.data.firstOrNull;
+
+      final formation = formationResponse.body?.data.firstOrNull;
       if (formation != null) {
         await databaseService.saveFormation(formation);
         _log.info('Formation loaded successfully.');
       } else {
-        _log.warning('Received empty formation');
+        _log.info('No formation found.');
       }
     } catch (e) {
       _log.severe('Connection error while loading formation', e);
@@ -29,7 +30,11 @@ class FormationRepositoryImpl implements FormationRepository {
   }
 
   @override
-  Stream<Formation?> watchFormation(String operationalTrainNumber, String company, DateTime operationalDay) {
+  Stream<Formation?> watchFormation({
+    required String operationalTrainNumber,
+    required String company,
+    required DateTime operationalDay,
+  }) {
     _loadFormation(operationalTrainNumber, company, operationalDay);
 
     return databaseService.watchFormation(operationalTrainNumber, company, operationalDay);

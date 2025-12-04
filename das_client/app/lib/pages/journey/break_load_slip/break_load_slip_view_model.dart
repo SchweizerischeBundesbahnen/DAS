@@ -65,9 +65,9 @@ class BreakLoadSlipViewModel {
     if (trainIdentification != null) {
       _formationSubscription = _formationRepository
           .watchFormation(
-            trainIdentification.trainNumber,
-            trainIdentification.ru.companyCode,
-            trainIdentification.operatingDay ?? trainIdentification.date,
+            operationalTrainNumber: trainIdentification.trainNumber,
+            company: trainIdentification.ru.companyCode,
+            operationalDay: trainIdentification.operatingDay ?? trainIdentification.date,
           )
           .listen((formation) {
             _rxFormation.add(formation);
@@ -145,11 +145,6 @@ class BreakLoadSlipViewModel {
       (it) => it.locationCode == tafTapLocationCode,
     );
     return matchedServicePoint?.name ?? tafTapLocationCode;
-  }
-
-  String resolveRailwayUndertaking(String companyCode) {
-    final ru = RailwayUndertaking.fromCompanyCode(companyCode);
-    return ru != RailwayUndertaking.unknown ? ru.name : companyCode;
   }
 
   void dispose() {

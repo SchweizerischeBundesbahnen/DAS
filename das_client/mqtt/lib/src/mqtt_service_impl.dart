@@ -14,6 +14,7 @@ final _log = Logger('MqttServiceImpl');
 
 class MqttServiceImpl implements MqttService {
   static const _keepAlivePeriodSeconds = 15;
+  static const _sferaVersion = 3;
 
   MqttServiceImpl({
     required String mqttUrl,
@@ -87,9 +88,9 @@ class MqttServiceImpl implements MqttService {
       disconnect();
     }
     if (await _mqttClientConnector.connect(_client, company, train)) {
-      _client.subscribe('${prefix}90940/3/event/$company/$train', MqttQos.exactlyOnce);
-      _client.subscribe('${prefix}90940/3/event/$company/$train/$deviceId', MqttQos.exactlyOnce);
-      _client.subscribe('${prefix}90940/3/G2B/$company/$train/$deviceId', MqttQos.exactlyOnce);
+      _client.subscribe('${prefix}90940/$_sferaVersion/event/$company/$train', MqttQos.exactlyOnce);
+      _client.subscribe('${prefix}90940/$_sferaVersion/event/$company/$train/$deviceId', MqttQos.exactlyOnce);
+      _client.subscribe('${prefix}90940/$_sferaVersion/G2B/$company/$train/$deviceId', MqttQos.exactlyOnce);
       _log.info("Subscribed to topic with prefix='$prefix'...");
       _startUpdateListener();
       _connected = true;
@@ -102,7 +103,7 @@ class MqttServiceImpl implements MqttService {
   @override
   bool publishMessage(String company, String train, String message) {
     if (_client.connectionStatus?.state == MqttConnectionState.connected) {
-      final topic = '${prefix}90940/3/B2G/$company/$train/$deviceId';
+      final topic = '${prefix}90940/$_sferaVersion/B2G/$company/$train/$deviceId';
 
       final builder = MqttClientPayloadBuilder();
       builder.addString(message);

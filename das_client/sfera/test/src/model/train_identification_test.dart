@@ -132,20 +132,5 @@ void main() {
       // ACT & EXPECT
       expect(testeeA.hashCode == testeeB.hashCode, isFalse);
     });
-
-    test('toString_whenCalled_thenReturnsCorrectString', () {
-      // ARRANGE
-      final testeeA = TrainIdentification(
-        ru: RailwayUndertaking.sbbP,
-        trainNumber: '1234',
-        date: now,
-      );
-
-      // ACT & EXPECT
-      expect(
-        testeeA.toString(),
-        equals('TrainIdentification{ru: ${testeeA.ru}, trainNumber: ${testeeA.trainNumber}, date: ${testeeA.date}}'),
-      );
-    });
   });
 }

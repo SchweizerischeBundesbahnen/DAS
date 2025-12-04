@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:formation/src/api/dto/formation_response_dto.dart';
 import 'package:http_x/component.dart';
@@ -39,8 +40,9 @@ class FormationResponse {
 
   factory FormationResponse.fromHttpResponse(Response response) {
     final status = response.statusCode;
-    final isSuccess = status == 200;
-    if (isSuccess) {
+    if (status == HttpStatus.notFound) {
+      return FormationResponse(headers: response.headers, body: null);
+    } else if (status == HttpStatus.ok) {
       final body = utf8.decode(response.bodyBytes);
       final json = jsonDecode(body);
       final formation = FormationResponseDto.fromJson(json);
@@ -54,5 +56,5 @@ class FormationResponse {
   }
 
   final Map<String, String> headers;
-  final FormationResponseDto body;
+  final FormationResponseDto? body;
 }

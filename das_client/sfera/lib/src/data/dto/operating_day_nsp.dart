@@ -7,9 +7,4 @@ class OperatingDayNsp extends NetworkSpecificParameterDto {
   OperatingDayNsp({super.type, super.attributes, super.children, super.value});
 
   DateTime? get operatingDay => ParseUtils.tryParseDateTime(attributes['value']!);
-
-  @override
-  bool validate() {
-    return validateHasAttribute('value') && super.validate();
-  }
 }
