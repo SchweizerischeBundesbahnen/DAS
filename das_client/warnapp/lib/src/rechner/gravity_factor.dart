@@ -17,15 +17,15 @@ class GravityFactorStatus {
 }
 
 class GravityFactor {
-  GravityFactor({GravityFactorStatusType type = GravityFactorStatusType.init}) {
+  GravityFactor({GravityFactorStatusType type = .init}) {
     _alleStatus = [
-      GravityFactorStatus(GravityFactorStatusType.init, 1.0, true),
-      GravityFactorStatus(GravityFactorStatusType.fahrtUndefiniert, 0.0002, false),
-      GravityFactorStatus(GravityFactorStatusType.haltAnfang, 1.0, true),
-      GravityFactorStatus(GravityFactorStatusType.halt, 0.01, false),
-      GravityFactorStatus(GravityFactorStatusType.fahrt, 0.0001, false),
-      GravityFactorStatus(GravityFactorStatusType.rotation, 1.0, true),
-      GravityFactorStatus(GravityFactorStatusType.rotationBeendetImHalt, 0.01, false),
+      GravityFactorStatus(.init, 1.0, true),
+      GravityFactorStatus(.fahrtUndefiniert, 0.0002, false),
+      GravityFactorStatus(.haltAnfang, 1.0, true),
+      GravityFactorStatus(.halt, 0.01, false),
+      GravityFactorStatus(.fahrt, 0.0001, false),
+      GravityFactorStatus(.rotation, 1.0, true),
+      GravityFactorStatus(.rotationBeendetImHalt, 0.01, false),
     ];
     _aktuellerStatus = _alleStatus[type.index];
   }
@@ -36,45 +36,45 @@ class GravityFactor {
 
   void updateWithFahrt(bool fahrt, bool drehung, bool handbewegung) {
     if (drehung) {
-      _changeStatus(GravityFactorStatusType.rotation);
+      _changeStatus(.rotation);
     } else if (handbewegung && !fahrt) {
-      _changeStatus(GravityFactorStatusType.rotation);
+      _changeStatus(.rotation);
     } else {
       switch (_aktuellerStatus.type) {
-        case GravityFactorStatusType.haltAnfang:
-          _changeStatus(fahrt ? GravityFactorStatusType.fahrt : GravityFactorStatusType.halt);
+        case .haltAnfang:
+          _changeStatus(fahrt ? .fahrt : .halt);
           break;
-        case GravityFactorStatusType.halt:
+        case .halt:
           if (fahrt) {
-            _changeStatus(GravityFactorStatusType.fahrt);
+            _changeStatus(.fahrt);
           }
           break;
-        case GravityFactorStatusType.fahrt:
+        case .fahrt:
           if (!fahrt) {
-            _changeStatus(GravityFactorStatusType.haltAnfang);
+            _changeStatus(.haltAnfang);
           }
           break;
-        case GravityFactorStatusType.init:
+        case .init:
           if (anzahlUpdatesSeitStatuswechsel > 1) {
-            _changeStatus(fahrt ? GravityFactorStatusType.fahrtUndefiniert : GravityFactorStatusType.halt);
+            _changeStatus(fahrt ? .fahrtUndefiniert : .halt);
           }
           break;
-        case GravityFactorStatusType.fahrtUndefiniert:
+        case .fahrtUndefiniert:
           if (!fahrt) {
-            _changeStatus(GravityFactorStatusType.haltAnfang);
+            _changeStatus(.haltAnfang);
           }
           break;
-        case GravityFactorStatusType.rotation:
+        case .rotation:
           _changeStatus(
-            fahrt ? GravityFactorStatusType.fahrtUndefiniert : GravityFactorStatusType.rotationBeendetImHalt,
+            fahrt ? .fahrtUndefiniert : .rotationBeendetImHalt,
           );
           break;
-        case GravityFactorStatusType.rotationBeendetImHalt:
+        case .rotationBeendetImHalt:
           if (fahrt) {
-            _changeStatus(GravityFactorStatusType.fahrtUndefiniert);
+            _changeStatus(.fahrtUndefiniert);
           } else {
             if (anzahlUpdatesSeitStatuswechsel > 50) {
-              _changeStatus(GravityFactorStatusType.halt);
+              _changeStatus(.halt);
             }
           }
           break;

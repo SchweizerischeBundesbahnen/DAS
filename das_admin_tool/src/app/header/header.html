@@ -5,8 +5,7 @@
   </span>
   <div class="sbb-header-spacer"></div>
   @if (oidcSecurityService.authenticated().isAuthenticated) {
-    <sbb-header-button iconName="user-small" class="sbb-header-shrinkable" id="user-menu-trigger"
-                       i18n="@@c_header_login_button" >
+    <sbb-header-button iconName="user-small" class="sbb-header-shrinkable" id="user-menu-trigger">
       {{oidcSecurityService.userData().userData.name }}
     </sbb-header-button>
     <sbb-menu trigger="user-menu-trigger">

@@ -1,6 +1,6 @@
+import 'package:app/theme/theme_util.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class ThemeViewModel {
   static const defaultMode = ThemeMode.system;
@@ -11,11 +11,10 @@ class ThemeViewModel {
 
   void toggleTheme(BuildContext context) {
     ThemeMode newThemeMode;
-    if (_rxThemeMode.value == ThemeMode.system) {
-      final currentBrightness = SBBBaseStyle.of(context).brightness;
-      newThemeMode = currentBrightness == Brightness.light ? ThemeMode.dark : ThemeMode.light;
+    if (_rxThemeMode.value == .system) {
+      newThemeMode = ThemeUtil.isDarkMode(context) ? .light : .dark;
     } else {
-      newThemeMode = _rxThemeMode.value == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
+      newThemeMode = _rxThemeMode.value == .light ? .dark : .light;
     }
     _rxThemeMode.add(newThemeMode);
   }

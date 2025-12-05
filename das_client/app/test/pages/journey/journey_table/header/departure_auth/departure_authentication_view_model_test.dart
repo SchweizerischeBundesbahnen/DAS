@@ -141,26 +141,26 @@ final _passingPointC = ServicePoint(
   isStop: false,
 );
 final _stopD = ServicePoint(name: 'ServicePoint D', abbreviation: 'SD', order: 1500, kilometre: []);
-final _intermediateSignalAfterStopB = Signal(order: 600, kilometre: [], functions: [SignalFunction.intermediate]);
-final _exitSignalAfterIntermediateSignalStopB = Signal(order: 700, kilometre: [], functions: [SignalFunction.exit]);
+final _intermediateSignalAfterStopB = Signal(order: 600, kilometre: [], functions: [.intermediate]);
+final _exitSignalAfterIntermediateSignalStopB = Signal(order: 700, kilometre: [], functions: [.exit]);
 
 Journey get _mockJourney {
   return Journey(
     metadata: Metadata(),
     data: [
       _stopA,
-      Signal(order: 100, kilometre: [], functions: [SignalFunction.exit]),
-      Signal(order: 200, kilometre: [], functions: [SignalFunction.intermediate]),
-      Signal(order: 300, kilometre: [], functions: [SignalFunction.entry]),
+      Signal(order: 100, kilometre: [], functions: [.exit]),
+      Signal(order: 200, kilometre: [], functions: [.intermediate]),
+      Signal(order: 300, kilometre: [], functions: [.entry]),
       _stopB,
       _intermediateSignalAfterStopB,
       _exitSignalAfterIntermediateSignalStopB,
-      Signal(order: 800, kilometre: [], functions: [SignalFunction.intermediate]),
-      Signal(order: 900, kilometre: [], functions: [SignalFunction.entry]),
+      Signal(order: 800, kilometre: [], functions: [.intermediate]),
+      Signal(order: 900, kilometre: [], functions: [.entry]),
       _passingPointC,
-      Signal(order: 1100, kilometre: [], functions: [SignalFunction.exit]),
-      Signal(order: 1200, kilometre: [], functions: [SignalFunction.intermediate]),
-      Signal(order: 1300, kilometre: [], functions: [SignalFunction.entry]),
+      Signal(order: 1100, kilometre: [], functions: [.exit]),
+      Signal(order: 1200, kilometre: [], functions: [.intermediate]),
+      Signal(order: 1300, kilometre: [], functions: [.entry]),
       _stopD,
     ],
   );

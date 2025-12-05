@@ -1,7 +1,8 @@
 import 'package:sfera/src/data/dto/enums/xml_enum.dart';
 
 enum TrainRunTypeDto implements XmlEnum {
-  shuntingOnOpenTrack(xmlValue: 'shuntingOnOpenTrack');
+  shuntingOnOpenTrack(xmlValue: 'shuntingOnOpenTrack')
+  ;
 
   const TrainRunTypeDto({required this.xmlValue});
 

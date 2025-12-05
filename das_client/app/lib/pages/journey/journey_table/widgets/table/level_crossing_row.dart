@@ -31,14 +31,14 @@ class LevelCrossingRow extends CellRowBuilder<LevelCrossing> {
       return DASTableCell(
         color: specialCellColor,
         child: Padding(
-          padding: EdgeInsets.only(left: 8.0),
+          padding: .only(left: 8.0),
           child: OverflowBox(
             maxWidth: double.infinity,
             child: Text(data.kilometre[0].toStringAsFixed(3)),
           ),
         ),
-        clipBehaviour: Clip.none,
-        alignment: Alignment.centerLeft,
+        clipBehavior: .none,
+        alignment: .centerLeft,
       );
     }
   }
@@ -47,7 +47,7 @@ class LevelCrossingRow extends CellRowBuilder<LevelCrossing> {
   DASTableCell informationCell(BuildContext context) {
     return DASTableCell(
       child: Text(context.l10n.p_journey_table_level_crossing),
-      alignment: Alignment.centerRight,
+      alignment: .centerRight,
     );
   }
 
@@ -59,13 +59,13 @@ class LevelCrossingRow extends CellRowBuilder<LevelCrossing> {
 
     if (group != null && group.shouldShowBaliseIconForLevelCrossing(data)) {
       return DASTableCell(
-        padding: EdgeInsets.all(sbbDefaultSpacing * 0.25),
+        padding: .all(sbbDefaultSpacing * 0.25),
         child: SvgPicture.asset(
           AppAssets.iconBalise,
           key: baliseIconLevelCrossingKey,
           colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
         ),
-        alignment: Alignment.centerLeft,
+        alignment: .centerLeft,
       );
     } else {
       return DASTableCell.empty();

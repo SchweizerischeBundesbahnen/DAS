@@ -39,7 +39,7 @@ class ServicePointModalBuilder extends DASModalSheetBuilder {
   @override
   Widget header(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: .start,
       children: [
         _headerTitle(context),
         _headerSubtitle(context),
@@ -62,7 +62,7 @@ class ServicePointModalBuilder extends DASModalSheetBuilder {
         return AnimatedSwitcher(
           duration: DASAnimation.shortDuration,
           transitionBuilder: (child, animation) {
-            final centerLeftTween = AlignmentTween(begin: Alignment.centerLeft, end: Alignment.centerLeft);
+            final centerLeftTween = AlignmentTween(begin: .centerLeft, end: .centerLeft);
             return AlignTransition(
               alignment: centerLeftTween.animate(animation),
               child: ScaleTransition(scale: animation, child: child),
@@ -115,13 +115,10 @@ class ServicePointModalBuilder extends DASModalSheetBuilder {
   }
 
   Widget _tabContent(BuildContext context, ServicePointModalTab selectedTab) {
-    switch (selectedTab) {
-      case ServicePointModalTab.communication:
-        return DetailTabCommunication();
-      case ServicePointModalTab.graduatedSpeeds:
-        return DetailTabGraduatedSpeeds();
-      case ServicePointModalTab.localRegulations:
-        return DetailTabLocalRegulations();
-    }
+    return switch (selectedTab) {
+      .communication => DetailTabCommunication(),
+      .graduatedSpeeds => DetailTabGraduatedSpeeds(),
+      .localRegulations => DetailTabLocalRegulations(),
+    };
   }
 }

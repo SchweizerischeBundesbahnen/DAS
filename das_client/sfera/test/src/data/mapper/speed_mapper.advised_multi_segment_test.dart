@@ -5,7 +5,7 @@ import 'package:sfera/component.dart';
 import 'package:sfera/src/data/dto/advised_speed_dto.dart';
 import 'package:sfera/src/data/dto/enums/start_end_qualifier_dto.dart';
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
-import 'package:sfera/src/data/dto/reason_code_dto.dart';
+import 'package:sfera/src/data/dto/enums/reason_code_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
 import 'package:sfera/src/data/dto/temporary_constraints_dto.dart';
@@ -134,7 +134,7 @@ void main() {
           when(mockTemporaryConstraintA1.startLocation).thenReturn(950.0);
           when(mockTemporaryConstraintA1.endLocation).thenReturn(3050.0);
           when(mockAdvisedSpeedA1.speed).thenReturn('80');
-          when(mockAdvisedSpeedA1.reasonCode).thenReturn(ReasonCodeDto.advisedSpeedFixedTime);
+          when(mockAdvisedSpeedA1.reasonCode).thenReturn(.advisedSpeedFixedTime);
           when(mockTemporaryConstraintA2.startLocation).thenReturn(2950.0);
           when(mockTemporaryConstraintA2.endLocation).thenReturn(3050.0);
 
@@ -249,7 +249,7 @@ void main() {
 
         test('whenHasOnlyWholeSP_thenReturnsEmpty', () {
           // ARRANGE
-          when(mockTemporaryConstraintA1.startEndQualifier).thenReturn(StartEndQualifierDto.wholeSp);
+          when(mockTemporaryConstraintA1.startEndQualifier).thenReturn(.wholeSp);
 
           // ACT & EXPECT
           expect(testee.call(mockJourneyProfile, segmentProfiles, journey), isEmpty);
@@ -425,7 +425,7 @@ void main() {
       test('whenOneStartsInFirstSegmentOtherIsWholeSP_thenSkip', () {
         // ARRANGE
         when(mockTemporaryConstraintA1.startLocation).thenReturn(950.0);
-        when(mockTemporaryConstraintB1.startEndQualifier).thenReturn(StartEndQualifierDto.wholeSp);
+        when(mockTemporaryConstraintB1.startEndQualifier).thenReturn(.wholeSp);
 
         // ACT & EXPECT
         expect(testee.call(mockJourneyProfile, segmentProfiles, journey), isEmpty);
@@ -434,7 +434,7 @@ void main() {
       test('whenOneStartsInFirstSegmentOtherIsWholeSPAndHasEndInLast_thenReturnCorrectSegment', () {
         // ARRANGE
         when(mockTemporaryConstraintA1.startLocation).thenReturn(950.0);
-        when(mockTemporaryConstraintB1.startEndQualifier).thenReturn(StartEndQualifierDto.wholeSp);
+        when(mockTemporaryConstraintB1.startEndQualifier).thenReturn(.wholeSp);
         when(mockTemporaryConstraintC1.endLocation).thenReturn(1050.0);
 
         // ACT & EXPECT

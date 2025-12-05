@@ -30,7 +30,7 @@ import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 import org.eclipse.paho.mqttv5.common.MqttMessage;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.retry.annotation.Retryable;
+import org.springframework.resilience.annotation.Retryable;
 import org.springframework.stereotype.Service;
 
 @Service

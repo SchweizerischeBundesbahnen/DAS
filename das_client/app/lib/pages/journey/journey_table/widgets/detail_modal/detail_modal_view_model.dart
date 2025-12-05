@@ -45,9 +45,9 @@ class DetailModalViewModel {
   void open(DASModalSheetBuilder builder, {bool maximize = false}) {
     switch (builder) {
       case AdditionalSpeedRestrictionModalBuilder():
-        _rxOpenModalType.add(DetailModalType.additionalSpeedRestriction);
+        _rxOpenModalType.add(.additionalSpeedRestriction);
       case ServicePointModalBuilder():
-        _rxOpenModalType.add(DetailModalType.servicePointModal);
+        _rxOpenModalType.add(.servicePointModal);
     }
 
     _rxContentBuilder.add(builder);

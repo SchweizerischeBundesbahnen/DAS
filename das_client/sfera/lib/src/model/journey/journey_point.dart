@@ -5,7 +5,7 @@ import 'package:sfera/component.dart';
 @immutable
 abstract class JourneyPoint extends BaseData {
   const JourneyPoint({
-    required super.type,
+    required super.dataType,
     required super.order,
     required this.kilometre,
     this.localSpeeds,

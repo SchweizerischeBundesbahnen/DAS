@@ -36,14 +36,14 @@ class WarnFunctionModalSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       key: warnappModalSheetKey,
-      padding: const EdgeInsets.fromLTRB(sbbDefaultSpacing, 64.0, sbbDefaultSpacing, sbbDefaultSpacing * 2),
+      padding: const .fromLTRB(sbbDefaultSpacing, 64.0, sbbDefaultSpacing, sbbDefaultSpacing * 2),
       child: Column(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: .min,
         spacing: sbbDefaultSpacing * 2,
         children: [
           SvgPicture.asset(AppAssets.imageTypeNSignalStop),
           Container(
-            padding: EdgeInsets.all(sbbDefaultSpacing * 0.5),
+            padding: .all(sbbDefaultSpacing * 0.5),
             color: SBBColors.red125,
             width: double.infinity,
             child: Text(

@@ -122,13 +122,13 @@ class ServicePointModalViewModel {
       _rxRelevantSpeedInfo.stream,
       _rxLocalRegulationSections.stream,
       (breakSeries, relevantSpeedData, localRegulations) {
-        final tabsWithData = <ServicePointModalTab>[ServicePointModalTab.communication];
+        final tabsWithData = <ServicePointModalTab>[.communication];
         if (breakSeries != null && relevantSpeedData.isNotEmpty) {
-          tabsWithData.add(ServicePointModalTab.graduatedSpeeds);
+          tabsWithData.add(.graduatedSpeeds);
         }
 
         if (localRegulations.isNotEmpty) {
-          tabsWithData.add(ServicePointModalTab.localRegulations);
+          tabsWithData.add(.localRegulations);
         }
 
         return tabsWithData;
@@ -180,7 +180,7 @@ class ServicePointModalViewModel {
     }
 
     final viewModel = context.read<DetailModalViewModel>();
-    final openAsMaximized = tab == ServicePointModalTab.localRegulations;
+    final openAsMaximized = tab == .localRegulations;
     viewModel.open(ServicePointModalBuilder(), maximize: openAsMaximized);
   }
 
