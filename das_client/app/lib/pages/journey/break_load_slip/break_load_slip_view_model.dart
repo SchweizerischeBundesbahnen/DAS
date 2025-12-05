@@ -83,20 +83,26 @@ class BreakLoadSlipViewModel {
   FormationRun? _calculateActiveFormationRun() {
     final position = _latestPosition;
     final currentFormation = formationValue;
-    if (position == null ||
-        position.currentPosition == null ||
-        currentFormation == null ||
-        currentFormation.formationRuns.isEmpty) {
+    if (currentFormation == null || currentFormation.formationRuns.isEmpty) {
       return null;
+    }
+
+    if (position == null || position.currentPosition == null) {
+      return currentFormation.formationRuns.first;
     }
 
     return currentFormation.formationRuns.reversed.firstWhere((it) {
       final startServicePoint = _resolveServicePoint(it.tafTapLocationReferenceStart);
       final endServicePoint = _resolveServicePoint(it.tafTapLocationReferenceEnd);
-      if (startServicePoint == null || endServicePoint == null) return false;
-
-      return position.currentPosition!.order >= startServicePoint.order &&
-          position.currentPosition!.order <= endServicePoint.order;
+      if (startServicePoint != null && endServicePoint != null) {
+        return position.currentPosition!.order >= startServicePoint.order &&
+            position.currentPosition!.order <= endServicePoint.order;
+      } else if (startServicePoint != null) {
+        return position.currentPosition!.order >= startServicePoint.order;
+      } else if (endServicePoint != null) {
+        return position.currentPosition!.order <= endServicePoint.order;
+      }
+      return false;
     }, orElse: () => currentFormation.formationRuns.first);
   }
 
@@ -116,13 +122,13 @@ class BreakLoadSlipViewModel {
 
   bool get isActiveFormationRun => _calculateActiveFormationRun() == formationRunValue;
 
-  bool activeFormationRunHasDifferentBreakSeries() {
+  bool isJourneyAndActiveFormationRunBreakSeriesDifferent() {
     final selectedBreakSeries = _journeyTableViewModel.settingsValue.resolvedBreakSeries(_latestJourney?.metadata);
     final formationRunBreakSeries = _resolveBreakSeries(formationRunValue);
     return formationRunBreakSeries != null && formationRunBreakSeries != selectedBreakSeries;
   }
 
-  void applyActiveFormationRunBreakSeries() {
+  void updateJourneyBreakSeriesFromActiveFormationRun() {
     final formationRunBreakSeries = _resolveBreakSeries(formationRunValue);
     if (formationRunBreakSeries != null) {
       _journeyTableViewModel.updateBreakSeries(formationRunBreakSeries);
@@ -133,7 +139,7 @@ class BreakLoadSlipViewModel {
     final trainSeries = TrainSeries.fromOptional(formationRun?.trainCategoryCode);
     final breakSeries = formationRun?.brakedWeightPercentage;
 
-    return (trainSeries != null && breakSeries != null)
+    return trainSeries != null && breakSeries != null
         ? BreakSeries(trainSeries: trainSeries, breakSeries: breakSeries)
         : null;
   }
@@ -154,6 +160,8 @@ class BreakLoadSlipViewModel {
     _formationSubscription = null;
     _journeyPositionSubscription?.cancel();
     _journeyPositionSubscription = null;
+    _rxFormation.close();
+    _rxFormationRun.close();
   }
 
   void previous() {

@@ -22,12 +22,12 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
   const BreakLoadSlipPage({super.key});
 
+  static const Key dismissButtonKey = Key('dismissBreakLoadSlipPageButton');
+
   @override
   Widget wrappedRoute(BuildContext context) => MultiProvider(
     providers: [
       Provider<JourneyTableViewModel>(create: (_) => DI.get()),
-
-      // PROXY  PROVIDERS
       ProxyProvider<JourneyTableViewModel, PunctualityViewModel>(
         update: (_, journeyVM, prev) {
           if (prev != null) return prev;
@@ -98,14 +98,12 @@ class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
               spacing: sbbDefaultSpacing,
               children: [
                 BreakLoadSlipHeader(formationRun: formationRun),
-                SingleChildScrollView(
-                  child: Column(
-                    spacing: sbbDefaultSpacing,
-                    children: [
-                      BreakLoadSlipTrainDetails(formation: formation, formationRun: formationRun),
-                      _secondRow(context, formation, formationRun),
-                    ],
-                  ),
+                Column(
+                  spacing: sbbDefaultSpacing,
+                  children: [
+                    BreakLoadSlipTrainDetails(formation: formation, formationRun: formationRun),
+                    _loadDetailsAndButtons(context, formation, formationRun),
+                  ],
                 ),
               ],
             ),
@@ -141,7 +139,7 @@ class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
     );
   }
 
-  Widget _secondRow(BuildContext context, Formation formation, FormationRun formationRun) {
+  Widget _loadDetailsAndButtons(BuildContext context, Formation formation, FormationRun formationRun) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing),
       child: Row(
@@ -172,6 +170,7 @@ class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
 class _DismissButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => IconButton(
+    key: BreakLoadSlipPage.dismissButtonKey,
     icon: const Icon(SBBIcons.chevron_left_small),
     onPressed: () {
       if (context.mounted) {

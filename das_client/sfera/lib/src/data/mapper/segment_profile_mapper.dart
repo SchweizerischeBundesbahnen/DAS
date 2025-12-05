@@ -154,18 +154,12 @@ class SegmentProfileMapper {
           departureAuthorization: _parseDepartureAuthorization(tafTapLocation.departureAuthNsp),
           properties: _parseStationProperties(tafTapLocation.property?.xmlStationProperty.element.properties),
           localRegulationSections: _parseLocalRegulationSegments(tafTapLocation.localRegulations),
-          locationCode: _parseLocationCode(tafTapLocation),
+          locationCode: tafTapLocation.locationIdent.locationCode,
         ),
       );
     }
 
     return servicePoints;
-  }
-
-  static String _parseLocationCode(TafTapLocationDto tafTapLocation) {
-    final countryCode = tafTapLocation.locationIdent.countryCodeISO;
-    final primaryCode = tafTapLocation.locationIdent.locationPrimaryCode.toString().padLeft(5, '0');
-    return '$countryCode$primaryCode';
   }
 
   static Iterable<Signal> _parseSignals(_MapperData mapperData) {

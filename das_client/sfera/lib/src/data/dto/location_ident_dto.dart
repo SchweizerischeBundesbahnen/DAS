@@ -12,6 +12,8 @@ class LocationIdentDto extends SferaXmlElementDto {
 
   int get locationPrimaryCode => int.parse(childrenWithType(_locationPrimaryCodeAttribute).first.value!);
 
+  String get locationCode => '$countryCodeISO${locationPrimaryCode.toString().padLeft(5, '0')}';
+
   @override
   bool validate() {
     return validateHasChild(_countryCodeISOAttribute) &&

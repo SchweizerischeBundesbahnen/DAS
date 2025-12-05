@@ -22,7 +22,6 @@ void main() {
 
   setUp(() {
     mockHttpClient = MockClient();
-    reset(mockHttpClient);
 
     testee = FormationApiServiceImpl(
       baseUrl: baseUrl,

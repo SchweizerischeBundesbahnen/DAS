@@ -4,6 +4,7 @@ import 'package:app/pages/journey/journey_table/ux_testing_view_model.dart';
 import 'package:app/pages/journey/journey_table/widgets/departure_process_modal_sheet.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/assets.dart';
+import 'package:app/widgets/das_colors.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -60,7 +61,7 @@ class _WaitNotification extends StatelessWidget {
     final isLight = Theme.brightnessOf(context) == Brightness.light;
     final resolvedGradientColors = isLight
         ? [SBBColors.cloud, SBBColors.milk, SBBColors.milk, SBBColors.cloud]
-        : [Color(0xFF0079C7), Color(0xFF143A85), Color(0xFF143A85), Color(0xFF0079C7)];
+        : [DASColors.koaLightBlue, DASColors.koaDarkBlue, DASColors.koaDarkBlue, DASColors.koaLightBlue];
     final resolvedBadgeShadowColor = isLight
         ? SBBColors.royal.withValues(alpha: 0.2)
         : SBBColors.royal.withValues(alpha: 0.6);

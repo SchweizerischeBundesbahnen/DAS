@@ -78,19 +78,21 @@ class BreakLoadSlipTrainDetailsTable extends StatelessWidget {
           const EdgeInsets.symmetric(vertical: sbbDefaultSpacing * 0.25).copyWith(left: sbbDefaultSpacing * 0.5),
       child: Row(
         children: [
-          Expanded(flex: 3, child: _tableText(label ?? '', style)),
-          Expanded(flex: 2, child: Center(child: _tableText(c1 ?? '', style))),
-          Expanded(flex: 2, child: Center(child: _tableText(c2 ?? '', style))),
-          Expanded(flex: 2, child: Center(child: _tableText(c3 ?? '', style))),
+          Expanded(flex: 3, child: Text(label ?? '', style: style)),
+          Expanded(
+            flex: 2,
+            child: Center(child: Text(c1 ?? '', style: style)),
+          ),
+          Expanded(
+            flex: 2,
+            child: Center(child: Text(c2 ?? '', style: style)),
+          ),
+          Expanded(
+            flex: 2,
+            child: Center(child: Text(c3 ?? '', style: style)),
+          ),
         ],
       ),
-    );
-  }
-
-  Text _tableText(String text, TextStyle style) {
-    return Text(
-      text,
-      style: style,
     );
   }
 

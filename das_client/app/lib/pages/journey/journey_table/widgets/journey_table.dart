@@ -61,6 +61,7 @@ class JourneyTable extends StatelessWidget {
 
   static const Key loadedJourneyTableKey = Key('loadedJourneyTable');
   static const Key breakingSeriesHeaderKey = Key('breakingSeriesHeader');
+  static const Key differentBreakSeriesWarningKey = Key('differentBreakSeriesWarning');
 
   @override
   Widget build(BuildContext context) {
@@ -467,49 +468,52 @@ class JourneyTable extends StatelessWidget {
       stream: breakLoadSlipVM.formationRun,
       initialData: breakLoadSlipVM.formationRunValue,
       builder: (context, snapshot) {
-        return breakLoadSlipVM.activeFormationRunHasDifferentBreakSeries()
-            ? Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  Positioned(
-                    top: -2,
-                    left: -sbbDefaultSpacing * 0.5,
-                    right: -2,
-                    bottom: -2,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border(
-                          left: BorderSide(color: SBBColors.peach, width: sbbDefaultSpacing * 0.5),
-                          top: BorderSide(color: SBBColors.peach, width: 2),
-                          right: BorderSide(color: SBBColors.peach, width: 2),
-                          bottom: BorderSide(color: SBBColors.peach, width: 2),
-                        ),
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(sbbDefaultSpacing * 0.75),
-                          bottomLeft: Radius.circular(sbbDefaultSpacing * 0.75),
-                          topRight: Radius.circular(sbbDefaultSpacing * 0.5),
-                          bottomRight: Radius.circular(sbbDefaultSpacing * 0.5),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            currentBreakSeries?.name ?? '??',
-                            style: DASTextStyles.smallBold,
-                          ),
-                          SvgPicture.asset(AppAssets.iconSignExclamationPoint),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              )
+        return breakLoadSlipVM.isJourneyAndActiveFormationRunBreakSeriesDifferent()
+            ? _brakedWeightHeaderNotification(currentBreakSeries)
             : Text(
                 currentBreakSeries?.name ?? '??',
                 style: DASTextStyles.smallLight,
               );
       },
+    );
+  }
+
+  Stack _brakedWeightHeaderNotification(BreakSeries? currentBreakSeries) {
+    return Stack(
+      key: differentBreakSeriesWarningKey,
+      clipBehavior: Clip.none,
+      children: [
+        Positioned(
+          top: -2,
+          left: -sbbDefaultSpacing * 0.5,
+          right: -2,
+          bottom: -2,
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border(
+                left: BorderSide(color: SBBColors.peach, width: sbbDefaultSpacing * 0.5),
+                top: BorderSide(color: SBBColors.peach, width: 2),
+                right: BorderSide(color: SBBColors.peach, width: 2),
+                bottom: BorderSide(color: SBBColors.peach, width: 2),
+              ),
+              borderRadius: const BorderRadius.horizontal(
+                left: Radius.circular(sbbDefaultSpacing * 0.75),
+                right: Radius.circular(sbbDefaultSpacing * 0.5),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  currentBreakSeries?.name ?? '??',
+                  style: DASTextStyles.smallBold,
+                ),
+                SvgPicture.asset(AppAssets.iconSignExclamationPoint),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 

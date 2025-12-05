@@ -13,6 +13,9 @@ class BreakLoadSlipHeader extends StatelessWidget {
   static const specialIndicatorBackgroundHeight = 52.0;
   static const specialIndicatorHeight = 38.0;
 
+  static const Key simTrainHeaderBannerKey = Key('simTrainHeaderBanner');
+  static const Key dangerousGoodsHeaderBannerKey = Key('dangerousGoodsHeaderBanner');
+
   const BreakLoadSlipHeader({required this.formationRun, super.key});
 
   final FormationRun formationRun;
@@ -40,20 +43,22 @@ class BreakLoadSlipHeader extends StatelessWidget {
     );
   }
 
-  List<_SpecialIndicators> _specialIndicatorsData(BuildContext context) => <_SpecialIndicators>[
+  List<_SpecialIndicator> _specialIndicatorsData(BuildContext context) => <_SpecialIndicator>[
     if (formationRun.simTrain)
-      _SpecialIndicators(
+      _SpecialIndicator(
         asset: AppAssets.iconSimZug,
         backgroundColor: DASColors.simTrain,
         text: context.l10n.p_break_load_slip_header_sim_train,
         textColor: SBBColors.white,
+        key: simTrainHeaderBannerKey,
       ),
     if (formationRun.dangerousGoods)
-      _SpecialIndicators(
+      _SpecialIndicator(
         asset: AppAssets.iconSignExclamationPoint,
         backgroundColor: SBBColors.peach,
         text: context.l10n.p_break_load_slip_header_dangerous_goods,
         textColor: SBBColors.black,
+        key: dangerousGoodsHeaderBannerKey,
       ),
   ];
 
@@ -69,15 +74,15 @@ class BreakLoadSlipHeader extends StatelessWidget {
         children: indicators.mapIndexed((index, element) {
           return _specialIndicatorBackgroundElement(
             element,
-            index == 0,
-            index == indicators.length - 1,
+            isFirst: index == 0,
+            isLast: index == indicators.length - 1,
           );
         }).toList(),
       ),
     );
   }
 
-  Widget _specialIndicatorBackgroundElement(_SpecialIndicators indicator, bool isFirst, bool isLast) {
+  Widget _specialIndicatorBackgroundElement(_SpecialIndicator indicator, {bool isFirst = false, bool isLast = false}) {
     return Expanded(
       child: Stack(
         clipBehavior: Clip.none,
@@ -115,29 +120,27 @@ class BreakLoadSlipHeader extends StatelessWidget {
       child: Row(
         children: indicators.mapIndexed((index, element) {
           return _specialIndicatorElement(
-            element.asset,
-            element.backgroundColor,
-            element.text,
-            element.textColor,
-            index == 0,
+            element,
+            isFirst: index == 0,
           );
         }).toList(),
       ),
     );
   }
 
-  Widget _specialIndicatorElement(String asset, Color color, String text, Color textColor, bool isFirst) {
+  Widget _specialIndicatorElement(_SpecialIndicator specialIndicator, {bool isFirst = false}) {
     return Expanded(
       child: Container(
+        key: specialIndicator.key,
         height: specialIndicatorHeight,
         padding: EdgeInsets.only(left: sbbDefaultSpacing * (isFirst ? 1 : 0.25)),
         child: Row(
           spacing: sbbDefaultSpacing * 0.5,
           children: [
             SvgPicture.asset(
-              asset,
+              specialIndicator.asset,
             ),
-            Text(text, style: DASTextStyles.smallLight.copyWith(color: textColor)),
+            Text(specialIndicator.text, style: DASTextStyles.smallLight.copyWith(color: specialIndicator.textColor)),
           ],
         ),
       ),
@@ -145,11 +148,18 @@ class BreakLoadSlipHeader extends StatelessWidget {
   }
 }
 
-class _SpecialIndicators {
-  _SpecialIndicators({required this.asset, required this.backgroundColor, required this.text, required this.textColor});
+class _SpecialIndicator {
+  _SpecialIndicator({
+    required this.asset,
+    required this.backgroundColor,
+    required this.text,
+    required this.textColor,
+    required this.key,
+  });
 
   final String asset;
   final Color backgroundColor;
   final String text;
   final Color textColor;
+  final Key key;
 }

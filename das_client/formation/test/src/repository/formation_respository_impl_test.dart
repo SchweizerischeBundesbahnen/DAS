@@ -33,7 +33,7 @@ void main() {
     );
   });
 
-  test('whenWatchFormation_thenDatabaseWatchFormation', () async {
+  test('watchFormation_whenCalled_thenCallsWatchFormationOnDatabaseService', () async {
     // GIVEN
     final operationalTrainNumber = 'T1234';
     final company = '1285';

@@ -78,15 +78,15 @@ class ExtendedMenu extends StatelessWidget {
   }
 
   Widget _breakSlipItem(BuildContext context, BreakLoadSlipViewModel vm, VoidCallback hideOverlay) {
-    return vm.formationValue != null
-        ? SBBListItem(
-            title: context.l10n.w_extended_menu_breaking_slip_action,
-            onPressed: () {
-              context.router.push(BreakLoadSlipRoute());
-              hideOverlay();
-            },
-          )
-        : SizedBox.shrink();
+    if (vm.formationValue == null) return SizedBox.shrink();
+
+    return SBBListItem(
+      title: context.l10n.w_extended_menu_breaking_slip_action,
+      onPressed: () {
+        context.router.push(BreakLoadSlipRoute());
+        hideOverlay();
+      },
+    );
   }
 
   Widget _transportDocumentItem(BuildContext context) {
