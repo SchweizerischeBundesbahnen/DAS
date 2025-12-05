@@ -26,7 +26,9 @@ export class App implements OnInit {
 
   ngOnInit(): void {
     ineum('meta', 'version', packageJson.version);
-    ineum('user', this.oidcSecurityService.userData().userData.oid);
+    if (this.oidcSecurityService.authenticated().isAuthenticated) {
+      ineum('user', this.oidcSecurityService.userData().userData.oid);
+    }
     this.router.events
       .subscribe(event => {
         if (event instanceof NavigationEnd && typeof ineum !== 'undefined') {
