@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.7.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.7.0...backend-v0.7.1) (2025-12-05)
+
+
+### Bug Fixes
+
+* **deps:** update dependency org.springdoc:springdoc-openapi-starter-webmvc-ui to v3 ([#1479](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1479)) ([eaf9089](https://github.com/SchweizerischeBundesbahnen/DAS/commit/eaf9089a85c06e33365d716b6b94202ef24bc6d3))
+* **deps:** update dependency software.amazon.awssdk:bom to v2.40.1 ([#1512](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1512)) ([503a43b](https://github.com/SchweizerischeBundesbahnen/DAS/commit/503a43b4fbacf79f983e2ea3d57dae6f417b73f8))
+* **deps:** update shedlock monorepo to v7.2.1 ([#1511](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1511)) ([63a0aea](https://github.com/SchweizerischeBundesbahnen/DAS/commit/63a0aeaa52962dbe7016a08e45f4571e0a76ef40))
+* **deps:** update spring-boot to v4 ([#1480](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1480)) ([d76c3fb](https://github.com/SchweizerischeBundesbahnen/DAS/commit/d76c3fbe11ba9de802266247c0bcf68143ed7faa))
+
 ## [0.7.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.6.0...backend-v0.7.0) (2025-12-02)
 
 
