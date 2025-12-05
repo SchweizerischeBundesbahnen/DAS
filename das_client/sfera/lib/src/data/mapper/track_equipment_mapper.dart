@@ -1,6 +1,5 @@
 import 'package:logging/logging.dart';
 import 'package:sfera/src/data/comparator/start_end_int_comparator.dart';
-import 'package:sfera/src/data/dto/enums/start_end_qualifier_dto.dart';
 import 'package:sfera/src/data/dto/enums/track_equipment_type_dto.dart';
 import 'package:sfera/src/data/dto/network_specific_area_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
@@ -124,7 +123,7 @@ class TrackEquipmentMapper {
       type: element.trackEquipmentTypeWrapper!.unwrapped,
       startLocation: element.startLocation,
       endLocation: element.endLocation,
-      appliesToWholeSp: element.startEndQualifier == StartEndQualifierDto.wholeSp,
+      appliesToWholeSp: element.startEndQualifier == .wholeSp,
       startKm: kilometreMap[element.startLocation] ?? [],
       endKm: kilometreMap[element.endLocation] ?? [],
     );

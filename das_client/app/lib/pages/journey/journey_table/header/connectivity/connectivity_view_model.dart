@@ -17,9 +17,7 @@ class ConnectivityViewModel {
   static const timerTickDuration = Duration(seconds: 1);
 
   final _connectivityLostNotificationDelay = DI.get<TimeConstants>().connectivityLostNotificationDelay;
-  final BehaviorSubject<ConnectivityDisplayStatus> _rxModel = BehaviorSubject.seeded(
-    ConnectivityDisplayStatus.connected,
-  );
+  final BehaviorSubject<ConnectivityDisplayStatus> _rxModel = BehaviorSubject.seeded(.connected);
 
   Stream<ConnectivityDisplayStatus> get model => _rxModel.stream.distinct();
 
@@ -33,11 +31,7 @@ class ConnectivityViewModel {
   void _init() {
     _connectivitySubscription = _connectivityManager.onConnectivityChanged.listen((connected) {
       if (connected) {
-        if (_connectivityManager.isWifiActive()) {
-          _rxModel.add(ConnectivityDisplayStatus.connectedWifi);
-        } else {
-          _rxModel.add(ConnectivityDisplayStatus.connected);
-        }
+        _rxModel.add(_connectivityManager.isWifiActive() ? .connectedWifi : .connected);
         _timer?.cancel();
       } else {
         _timer?.cancel();
@@ -51,7 +45,7 @@ class ConnectivityViewModel {
     final lastConnected = _connectivityManager.lastConnected;
     if (lastConnected == null ||
         now.difference(lastConnected) > Duration(seconds: _connectivityLostNotificationDelay)) {
-      _rxModel.add(ConnectivityDisplayStatus.disconnected);
+      _rxModel.add(.disconnected);
       _timer?.cancel();
     }
   }

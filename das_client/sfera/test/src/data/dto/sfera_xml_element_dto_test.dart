@@ -2,10 +2,6 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sfera/src/data/dto/das_operating_modes_supported_dto.dart';
-import 'package:sfera/src/data/dto/enums/das_architecture_dto.dart';
-import 'package:sfera/src/data/dto/enums/das_connectivity_dto.dart';
-import 'package:sfera/src/data/dto/enums/das_driving_mode_dto.dart';
-import 'package:sfera/src/data/dto/enums/related_train_request_type_dto.dart';
 import 'package:sfera/src/data/dto/handshake_request_dto.dart';
 import 'package:sfera/src/data/dto/message_header_dto.dart';
 import 'package:sfera/src/data/dto/sfera_b2g_request_message_dto.dart';
@@ -14,18 +10,10 @@ void main() {
   test('Test Sfera HandshakeRequest generation', () async {
     final handshakeRequest = HandshakeRequestDto.create(
       [
-        DasOperatingModesSupportedDto.create(
-          DasDrivingModeDto.goa1,
-          DasArchitectureDto.boardAdviceCalculation,
-          DasConnectivityDto.connected,
-        ),
-        DasOperatingModesSupportedDto.create(
-          DasDrivingModeDto.goa1,
-          DasArchitectureDto.boardAdviceCalculation,
-          DasConnectivityDto.standalone,
-        ),
+        DasOperatingModesSupportedDto.create(.goa1, .boardAdviceCalculation, .connected),
+        DasOperatingModesSupportedDto.create(.goa1, .boardAdviceCalculation, .standalone),
       ],
-      relatedTrainRequestType: RelatedTrainRequestTypeDto.ownTrainAndOrRelatedTrains,
+      relatedTrainRequestType: .ownTrainAndOrRelatedTrains,
       statusReportsEnabled: true,
     );
 

@@ -5,7 +5,8 @@ enum RelatedTrainRequestTypeDto implements XmlEnum {
   ownTrain(xmlValue: 'OwnTrain'),
   relatedTrains(xmlValue: 'RelatedTrains'),
   ownTrainAndRelatedTrains(xmlValue: 'OwnTrainAndRelatedTrains'),
-  ownTrainAndOrRelatedTrains(xmlValue: 'OwnTrainAndOrRelatedTrains');
+  ownTrainAndOrRelatedTrains(xmlValue: 'OwnTrainAndOrRelatedTrains')
+  ;
 
   const RelatedTrainRequestTypeDto({
     required this.xmlValue,

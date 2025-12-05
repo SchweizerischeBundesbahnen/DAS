@@ -196,18 +196,6 @@ Future<void> waitUntilNotExists(WidgetTester tester, FinderBase<Element> element
   await tester.pumpAndSettle();
 }
 
-void ignoreOverflowErrors(
-  FlutterErrorDetails details, {
-  bool forceReport = false,
-}) {
-  final exception = details.exception;
-  if (exception is FlutterError && exception.isPixelOverflowError) {
-    debugPrint('Ignored Error');
-  } else {
-    FlutterError.dumpErrorToConsole(details, forceReport: forceReport);
-  }
-}
-
 Future<void> dragUntilTextInStickyHeader(WidgetTester tester, String textToSearch) async {
   final scrollableFinder = find.byType(AnimatedList);
   final stickyHeader = find.byKey(StickyHeader.headerKey);
@@ -218,8 +206,4 @@ Future<void> dragUntilTextInStickyHeader(WidgetTester tester, String textToSearc
     maxIteration: 100,
   );
   await tester.pumpAndSettle(ScrollableAlign.alignScrollDuration);
-}
-
-extension _FlutterErrorExtension on FlutterError {
-  bool get isPixelOverflowError => diagnostics.any((e) => e.value.toString().startsWith('A RenderFlex overflowed by'));
 }

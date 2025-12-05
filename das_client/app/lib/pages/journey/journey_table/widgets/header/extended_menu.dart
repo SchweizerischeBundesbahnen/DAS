@@ -34,13 +34,13 @@ class ExtendedMenu extends StatelessWidget {
           create: (_) => viewModel,
           child: Builder(
             builder: (context) => Column(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: .start,
               children: [
                 _menuHeader(context, hideOverlay),
                 SizedBox(height: sbbDefaultSpacing),
                 SBBGroup(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: .start,
                     children: [
                       _breakSlipItem(context, breakLoadSlipVM, hideOverlay),
                       _transportDocumentItem(context),
@@ -60,7 +60,7 @@ class ExtendedMenu extends StatelessWidget {
 
   Widget _menuHeader(BuildContext context, VoidCallback hideOverlay) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: .center,
       children: [
         Expanded(
           child: Text(
@@ -147,7 +147,7 @@ class ExtendedMenu extends StatelessWidget {
             viewModel.toggleManeuverMode();
           },
           trailingWidget: Padding(
-            padding: const EdgeInsets.fromLTRB(0, 0, sbbDefaultSpacing * 0.5, 0),
+            padding: const .fromLTRB(0, 0, sbbDefaultSpacing * 0.5, 0),
             child: StreamBuilder(
               stream: viewModel.isManeuverModeEnabled,
               builder: (context, snapshot) {

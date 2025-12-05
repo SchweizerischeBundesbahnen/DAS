@@ -5,7 +5,7 @@ import 'package:sfera/component.dart';
 @immutable
 abstract class JourneyAnnotation extends BaseData {
   const JourneyAnnotation({
-    required super.type,
+    required super.dataType,
     required super.order,
   });
 }

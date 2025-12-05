@@ -23,8 +23,8 @@ class JourneySearchOverlay extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel = DI.get<JourneySelectionViewModel>();
     return AnchoredFullPageOverlay(
-      targetAnchor: Alignment.bottomLeft,
-      followerAnchor: Alignment.topLeft,
+      targetAnchor: .bottomLeft,
+      followerAnchor: .topLeft,
       triggerBuilder: (_, showOverlay) {
         return InkWell(
           key: journeySearchWidgetKey,
@@ -42,7 +42,7 @@ class JourneySearchOverlay extends StatelessWidget {
           child: Builder(
             builder: (context) {
               return Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: .start,
                 children: [
                   _header(context, hideOverlay),
                   SizedBox(height: sbbDefaultSpacing),
@@ -59,7 +59,7 @@ class JourneySearchOverlay extends StatelessWidget {
 
   Widget _inputFields() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: .start,
       children: [
         JourneyDateInput(isModalVersion: true),
         SelectRailwayUndertakingInput(isModalVersion: true),
@@ -71,7 +71,7 @@ class JourneySearchOverlay extends StatelessWidget {
   Widget _header(BuildContext context, VoidCallback hideOverlay) {
     final viewModel = context.read<JourneySelectionViewModel>();
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: .center,
       children: [
         Expanded(
           child: Text(
@@ -102,7 +102,7 @@ class JourneySearchOverlay extends StatelessWidget {
         final model = snapshot.data;
 
         Widget wrapWithPadding(Widget child) => Padding(
-          padding: const EdgeInsets.symmetric(vertical: sbbDefaultSpacing, horizontal: sbbDefaultSpacing * 0.5),
+          padding: const .symmetric(vertical: sbbDefaultSpacing, horizontal: sbbDefaultSpacing * 0.5),
           child: child,
         );
 

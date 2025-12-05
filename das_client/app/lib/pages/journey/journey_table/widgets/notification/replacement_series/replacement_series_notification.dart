@@ -44,7 +44,7 @@ class ReplacementSeriesNotification extends StatelessWidget {
   Widget _noReplacementSeriesAvailableNotification(BuildContext context, NoReplacementSeries model) {
     return _notification(
       key: noReplacementSeriesAvailableKey,
-      style: NotificationBoxStyle.information,
+      style: .information,
       title: context.l10n.w_replacement_series_notification_none_title(
         model.segment.start.name,
       ),
@@ -55,7 +55,7 @@ class ReplacementSeriesNotification extends StatelessWidget {
   Widget _replacementSeriesAvailableNotification(BuildContext context, ReplacementSeriesAvailable model) {
     return _notification(
       key: replacementSeriesAvailableKey,
-      style: NotificationBoxStyle.warning,
+      style: .warning,
       title: context.l10n.w_replacement_series_notification_available_title(
         model.segment.start.name,
         model.segment.end.name,
@@ -69,7 +69,7 @@ class ReplacementSeriesNotification extends StatelessWidget {
   Widget _replacementSeriesOriginalNotification(BuildContext context, OriginalSeriesAvailable model) {
     return _notification(
       key: originalSeriesAvailableKey,
-      style: NotificationBoxStyle.warning,
+      style: .warning,
       title: context.l10n.w_replacement_series_notification_original_title(
         model.segment.end.name,
         model.segment.original.name,
@@ -80,7 +80,7 @@ class ReplacementSeriesNotification extends StatelessWidget {
   Widget _notification({required String title, required NotificationBoxStyle style, String? text, Key? key}) {
     return Container(
       key: key,
-      margin: EdgeInsets.all(JourneyOverview.horizontalPadding).copyWith(top: 0),
+      margin: const EdgeInsets.all(JourneyOverview.horizontalPadding).copyWith(top: 0),
       child: NotificationBox(
         style: style,
         title: title,

@@ -30,7 +30,7 @@ jobs:
 
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.35.x'
+          flutter-version: '3.38.x'
           cache: true
 
       - name: Setup melos
@@ -88,7 +88,7 @@ jobs:
 
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.35.x'
+          flutter-version: '3.38.x'
           cache: true
 
       - name: Get dependencies
@@ -126,7 +126,7 @@ jobs:
           security list-keychain -d user -s $KEYCHAIN_PATH
 
       - name: Download Provisioning Profiles
-        uses: apple-actions/download-provisioning-profiles@v4
+        uses: apple-actions/download-provisioning-profiles@v5
         with:
           bundle-id: ${{ matrix.bundle-id }}
           issuer-id: ${{ secrets.APPSTORE_CONNECT_ISSUER_ID }}

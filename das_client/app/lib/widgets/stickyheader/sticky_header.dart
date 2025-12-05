@@ -71,7 +71,7 @@ class StickyHeaderState extends State<StickyHeader> {
   Widget build(BuildContext context) {
     return Stack(
       key: key,
-      clipBehavior: Clip.hardEdge,
+      clipBehavior: .hardEdge,
       children: [
         NotificationListener<ScrollEndNotification>(
           onNotification: (_) {

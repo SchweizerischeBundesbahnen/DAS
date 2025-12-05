@@ -20,7 +20,7 @@ class JourneyLoadingTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: JourneyOverview.horizontalPadding),
+      padding: const .symmetric(horizontal: JourneyOverview.horizontalPadding),
       child: Skeletonizer(
         enabled: true,
         child: DASTable(

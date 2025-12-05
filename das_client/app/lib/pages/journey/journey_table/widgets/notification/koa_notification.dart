@@ -22,10 +22,10 @@ class KoaNotification extends StatelessWidget {
     return StreamBuilder<KoaState>(
       stream: viewModel.koaState,
       builder: (context, snapshot) {
-        if (!snapshot.hasData || snapshot.data == KoaState.waitHide) return SizedBox.shrink();
+        if (!snapshot.hasData || snapshot.data == .waitHide) return SizedBox.shrink();
         return Container(
-          margin: EdgeInsets.all(JourneyOverview.horizontalPadding).copyWith(top: 0),
-          child: snapshot.data == KoaState.wait ? _WaitNotification() : _WaitCancelledNotification(),
+          margin: const EdgeInsets.all(JourneyOverview.horizontalPadding).copyWith(top: 0),
+          child: snapshot.data == .wait ? _WaitNotification() : _WaitCancelledNotification(),
         );
       },
     );
@@ -37,10 +37,9 @@ class _WaitNotification extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isLight = Theme.brightnessOf(context) == Brightness.light;
-    final resolvedTextStyle = isLight
-        ? DASTextStyles.mediumRoman.copyWith(color: SBBColors.black)
-        : DASTextStyles.mediumBold.copyWith(color: SBBColors.white);
+    final resolvedTextStyle = ThemeUtil.isDarkMode(context)
+        ? DASTextStyles.mediumBold.copyWith(color: SBBColors.white)
+        : DASTextStyles.mediumRoman.copyWith(color: SBBColors.black);
 
     return SBBPromotionBox.custom(
       leading: SvgPicture.asset(
@@ -58,13 +57,13 @@ class _WaitNotification extends StatelessWidget {
   }
 
   PromotionBoxStyle _waitStyle(BuildContext context) {
-    final isLight = Theme.brightnessOf(context) == Brightness.light;
-    final resolvedGradientColors = isLight
-        ? [SBBColors.cloud, SBBColors.milk, SBBColors.milk, SBBColors.cloud]
-        : [DASColors.koaLightBlue, DASColors.koaDarkBlue, DASColors.koaDarkBlue, DASColors.koaLightBlue];
-    final resolvedBadgeShadowColor = isLight
-        ? SBBColors.royal.withValues(alpha: 0.2)
-        : SBBColors.royal.withValues(alpha: 0.6);
+    final isDark = ThemeUtil.isDarkMode(context);
+    final resolvedGradientColors = isDark
+        ? [DASColors.koaLightBlue, DASColors.koaDarkBlue, DASColors.koaDarkBlue, DASColors.koaLightBlue]
+        : [SBBColors.cloud, SBBColors.milk, SBBColors.milk, SBBColors.cloud];
+    final resolvedBadgeShadowColor = isDark
+        ? SBBColors.royal.withValues(alpha: 0.6)
+        : SBBColors.royal.withValues(alpha: 0.2);
 
     return PromotionBoxStyle.$default(baseStyle: SBBBaseStyle.of(context)).copyWith(
       badgeColor: SBBColors.royal,
@@ -80,10 +79,9 @@ class _WaitCancelledNotification extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isLight = Theme.brightnessOf(context) == Brightness.light;
-    final resolvedTextStyle = isLight
-        ? DASTextStyles.mediumRoman.copyWith(color: SBBColors.black)
-        : DASTextStyles.mediumBold.copyWith(color: SBBColors.black);
+    final resolvedTextStyle = ThemeUtil.isDarkMode(context)
+        ? DASTextStyles.mediumBold.copyWith(color: SBBColors.black)
+        : DASTextStyles.mediumRoman.copyWith(color: SBBColors.black);
 
     return SBBPromotionBox.custom(
       leading: Icon(SBBIcons.circle_tick_medium, color: SBBColors.black, size: 36.0),
@@ -95,13 +93,13 @@ class _WaitCancelledNotification extends StatelessWidget {
   }
 
   PromotionBoxStyle _waitCancelledStyle(BuildContext context) {
-    final isLight = Theme.brightnessOf(context) == Brightness.light;
-    final resolvedGradientColors = isLight
-        ? [SBBColors.cloud, SBBColors.milk, SBBColors.milk, SBBColors.cloud]
-        : [SBBColors.aluminum, SBBColors.cement, SBBColors.cement, SBBColors.aluminum];
-    final resolvedBadgeShadowColor = isLight
-        ? SBBColors.royal.withValues(alpha: 0.2)
-        : SBBColors.royal.withValues(alpha: 0.6);
+    final isDark = ThemeUtil.isDarkMode(context);
+    final resolvedGradientColors = isDark
+        ? [SBBColors.aluminum, SBBColors.cement, SBBColors.cement, SBBColors.aluminum]
+        : [SBBColors.cloud, SBBColors.milk, SBBColors.milk, SBBColors.cloud];
+    final resolvedBadgeShadowColor = isDark
+        ? SBBColors.royal.withValues(alpha: 0.6)
+        : SBBColors.royal.withValues(alpha: 0.2);
 
     return PromotionBoxStyle.$default(baseStyle: SBBBaseStyle.of(context)).copyWith(
       borderColor: SBBColors.royal,

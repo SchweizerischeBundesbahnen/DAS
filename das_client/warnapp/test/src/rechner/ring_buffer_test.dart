@@ -4,7 +4,7 @@ import 'package:warnapp/src/rechner/ring_buffer.dart';
 void main() {
   group('WAPRingBuffer Tests', () {
     test('update Bulk', () {
-      final b = RingBuffer(5, options: [RingBufferOptions.sum, RingBufferOptions.minMax]);
+      final b = RingBuffer(5, options: [.sum, .minMax]);
 
       withBuffer(b, 0, () {
         expect(b.sum, equals(0));
@@ -81,7 +81,7 @@ void main() {
     });
 
     test('update Bulk Inited With 999', () {
-      final b = RingBuffer(3, options: [RingBufferOptions.sum, RingBufferOptions.minMax]);
+      final b = RingBuffer(3, options: [.sum, .minMax]);
 
       b.reset(999);
       expect(b.sum, equals(999 * 3));
@@ -164,7 +164,7 @@ void main() {
     });
 
     test('min', () {
-      final b = RingBuffer(3, options: [RingBufferOptions.minMax]);
+      final b = RingBuffer(3, options: [.minMax]);
 
       withBuffer(b, 0, () {
         expect(b.min, equals(0));
@@ -199,7 +199,7 @@ void main() {
     });
 
     test('max', () {
-      final b = RingBuffer(3, options: [RingBufferOptions.minMax]);
+      final b = RingBuffer(3, options: [.minMax]);
 
       withBuffer(b, 0, () {
         expect(b.max, equals(0));

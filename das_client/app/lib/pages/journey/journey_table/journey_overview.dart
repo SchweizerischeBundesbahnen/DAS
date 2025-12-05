@@ -69,7 +69,7 @@ class JourneyOverview extends StatelessWidget {
           child: Stack(
             children: [
               JourneyTable(),
-              Align(alignment: Alignment.bottomCenter, child: JourneyNavigationButtons()),
+              Align(alignment: .bottomCenter, child: JourneyNavigationButtons()),
             ],
           ),
         ),

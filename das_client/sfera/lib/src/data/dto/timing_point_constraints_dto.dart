@@ -20,8 +20,7 @@ class TimingPointConstraintsDto extends SferaXmlElementDto {
       children.whereType<StoppingPointDepartureDetailsDto>().firstOrNull;
 
   StopSkipPassDto get stopSkipPass =>
-      XmlEnum.valueOf<StopSkipPassDto>(StopSkipPassDto.values, attributes['TP_StopSkipPass']) ??
-      StopSkipPassDto.stoppingPoint;
+      XmlEnum.valueOf<StopSkipPassDto>(StopSkipPassDto.values, attributes['TP_StopSkipPass']) ?? .stoppingPoint;
 
   DateTime? get latestArrivalTime => DateTimeX.parseNullable(attributes['TP_latestArrivalTime']);
 

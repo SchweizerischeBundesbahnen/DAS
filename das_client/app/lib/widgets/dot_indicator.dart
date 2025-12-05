@@ -29,7 +29,7 @@ class DotIndicator extends StatelessWidget {
         : ThemeUtil.getColor(context, Theme.of(context).colorScheme.primary, SBBColors.sky);
 
     return Stack(
-      clipBehavior: Clip.none,
+      clipBehavior: .none,
       children: [
         child,
         Positioned(

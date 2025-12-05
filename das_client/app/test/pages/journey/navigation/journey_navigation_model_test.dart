@@ -15,12 +15,12 @@ void main() {
 
     setUp(() {
       trainId = TrainIdentification(
-        ru: RailwayUndertaking.sbbP,
+        ru: .sbbP,
         trainNumber: '1234',
         date: DateTime.now(),
       );
       trainId2 = TrainIdentification(
-        ru: RailwayUndertaking.sbbC,
+        ru: .sbbC,
         trainNumber: '5678',
         date: DateTime.now().add(Duration(days: 1)),
       );
