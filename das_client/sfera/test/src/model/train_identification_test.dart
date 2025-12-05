@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sfera/src/model/ru.dart';
 import 'package:sfera/src/model/train_identification.dart';
 
 void main() {
@@ -131,21 +130,6 @@ void main() {
 
       // ACT & EXPECT
       expect(testeeA.hashCode == testeeB.hashCode, isFalse);
-    });
-
-    test('toString_whenCalled_thenReturnsCorrectString', () {
-      // ARRANGE
-      final testeeA = TrainIdentification(
-        ru: .sbbP,
-        trainNumber: '1234',
-        date: now,
-      );
-
-      // ACT & EXPECT
-      expect(
-        testeeA.toString(),
-        equals('TrainIdentification{ru: ${testeeA.ru}, trainNumber: ${testeeA.trainNumber}, date: ${testeeA.date}}'),
-      );
     });
   });
 }

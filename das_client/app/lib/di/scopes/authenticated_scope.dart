@@ -4,6 +4,7 @@ import 'package:app/provider/ru_feature_provider.dart';
 import 'package:app/provider/ru_feature_provider_impl.dart';
 import 'package:app/util/device_id_info.dart';
 import 'package:auth/component.dart';
+import 'package:formation/component.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http_x/component.dart';
 import 'package:logger/component.dart';
@@ -33,6 +34,7 @@ class AuthenticatedScope extends DIScope {
     getIt.registerSferaRemoteRepo();
     getIt.registerSettingsRepository();
     getIt.registerRuFeatureProvider();
+    getIt.registerFormationRepository();
 
     await getIt.allReady();
   }
@@ -149,6 +151,13 @@ extension AuthenticatedScopeExtension on GetIt {
     }
 
     registerLazySingleton<RuFeatureProvider>(factoryFunc);
+  }
+
+  void registerFormationRepository() {
+    final flavor = DI.get<Flavor>();
+    registerSingleton<FormationRepository>(
+      FormationComponent.createRepository(baseUrl: flavor.backendUrl, client: DI.get()),
+    );
   }
 }
 

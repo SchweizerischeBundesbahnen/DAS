@@ -4,7 +4,6 @@ import 'package:mockito/mockito.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/dto/advised_speed_dto.dart';
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
-import 'package:sfera/src/data/dto/enums/reason_code_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
 import 'package:sfera/src/data/dto/temporary_constraints_dto.dart';

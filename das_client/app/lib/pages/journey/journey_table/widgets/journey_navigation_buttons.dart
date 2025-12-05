@@ -3,19 +3,14 @@ import 'package:app/pages/journey/journey_table/widgets/table/config/journey_set
 import 'package:app/pages/journey/journey_table_view_model.dart';
 import 'package:app/pages/journey/navigation/journey_navigation_model.dart';
 import 'package:app/pages/journey/navigation/journey_navigation_view_model.dart';
-import 'package:app/theme/theme_util.dart';
+import 'package:app/widgets/navigation_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 const _animationDuration = Duration(milliseconds: 300);
 
 class JourneyNavigationButtons extends StatelessWidget {
-  static const Key journeyNavigationButtonKey = Key('JourneyNavigationButtons');
-  static const Key journeyNavigationButtonPreviousKey = Key('JourneyNavigationButtonsPreviousButton');
-  static const Key journeyNavigationButtonNextKey = Key('JourneyNavigationButtonsNextButton');
-
   const JourneyNavigationButtons({super.key});
 
   @override
@@ -41,50 +36,15 @@ class JourneyNavigationButtons extends StatelessWidget {
           duration: _animationDuration,
           child: IgnorePointer(
             ignoring: !resolvedShowNavButtons,
-            child: Container(
-              key: journeyNavigationButtonKey,
-              margin: .only(bottom: sbbDefaultSpacing * 2),
-              padding: .all(sbbDefaultSpacing / 2),
-              decoration: _navigationButtonsDecoration(context),
-              child: Row(
-                mainAxisSize: .min,
-                children: [
-                  SBBIconButtonLarge(
-                    key: journeyNavigationButtonPreviousKey,
-                    icon: SBBIcons.chevron_left_small,
-                    onPressed: () => navigationVM.previous(),
-                  ),
-                  SizedBox(width: sbbDefaultSpacing),
-                  SBBPagination(
-                    numberPages: navigationModel.navigationStackLength,
-                    currentPage: navigationModel.currentIndex,
-                  ),
-                  SizedBox(width: sbbDefaultSpacing),
-                  SBBIconButtonLarge(
-                    key: journeyNavigationButtonNextKey,
-                    icon: SBBIcons.chevron_right_small,
-                    onPressed: () => navigationVM.next(),
-                  ),
-                ],
-              ),
+            child: NavigationButtons(
+              currentPage: navigationModel.currentIndex,
+              numberPages: navigationModel.navigationStackLength,
+              onPreviousPressed: () => navigationVM.previous(),
+              onNextPressed: () => navigationVM.next(),
             ),
           ),
         );
       },
-    );
-  }
-
-  ShapeDecoration _navigationButtonsDecoration(BuildContext context) {
-    final isDark = ThemeUtil.isDarkMode(context);
-    return ShapeDecoration(
-      shape: StadiumBorder(),
-      color: isDark ? SBBColors.granite : SBBColors.milk,
-      shadows: [
-        BoxShadow(
-          blurRadius: sbbDefaultSpacing / 2,
-          color: isDark ? SBBColors.white.withValues(alpha: .4) : SBBColors.black.withValues(alpha: .2),
-        ),
-      ],
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:app/di/di.dart';
+import 'package:app/pages/journey/break_load_slip/break_load_slip_view_model.dart';
 import 'package:app/pages/journey/calculated_speed_view_model.dart';
 import 'package:app/pages/journey/journey_table/advised_speed/advised_speed_notification.dart';
 import 'package:app/pages/journey/journey_table/advised_speed/advised_speed_view_model.dart';
@@ -236,6 +237,17 @@ class _ProviderScope extends StatelessWidget {
               punctualityStream: punctualityVM.model,
               advisedSpeedModelStream: advisedSpeedVM.model,
               calculatedSpeedViewModel: calculatedSpeedVM,
+            );
+          },
+          dispose: (_, vm) => vm.dispose(),
+        ),
+        ProxyProvider2<JourneyTableViewModel, JourneyPositionViewModel, BreakLoadSlipViewModel>(
+          update: (_, journeyVM, positionVM, prev) {
+            if (prev != null) return prev;
+            return BreakLoadSlipViewModel(
+              journeyTableViewModel: journeyVM,
+              journeyPositionViewModel: positionVM,
+              formationRepository: DI.get(),
             );
           },
           dispose: (_, vm) => vm.dispose(),

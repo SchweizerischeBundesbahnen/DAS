@@ -4,6 +4,7 @@ import 'package:app/pages/journey/journey_table/widgets/header/journey_search_ov
 import 'package:app/pages/journey/journey_table/widgets/header/start_pause_button.dart';
 import 'package:app/pages/journey/journey_table/widgets/journey_navigation_buttons.dart';
 import 'package:app/util/format.dart';
+import 'package:app/widgets/navigation_buttons.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -115,7 +116,7 @@ void main() {
       expect(tester.widget<AnimatedOpacity>(opacity).opacity, isNonZero);
 
       // navigate to previous journey
-      final previousButton = find.byKey(JourneyNavigationButtons.journeyNavigationButtonPreviousKey);
+      final previousButton = find.byKey(NavigationButtons.navigationButtonPreviousKey);
       await tapElement(tester, previousButton);
 
       // wait until T1 opened

@@ -39,7 +39,7 @@ class JourneyIdentifier extends StatelessWidget {
   }
 
   TextStyle _resolvedTextStyle(BuildContext context) {
-    final resolvedColor = ThemeUtil.getColor(context, SBBColors.black, SBBColors.graphite);
+    final resolvedColor = ThemeUtil.getColor(context, SBBColors.black, SBBColors.white);
     return DASTextStyles.xLargeRoman.copyWith(color: resolvedColor);
   }
 }

@@ -1,9 +1,12 @@
 import 'package:app/i18n/i18n.dart';
+import 'package:app/nav/app_router.dart';
+import 'package:app/pages/journey/break_load_slip/break_load_slip_view_model.dart';
 import 'package:app/pages/journey/journey_table/widgets/anchored_full_page_overlay.dart';
 import 'package:app/pages/journey/journey_table/widgets/reduced_overview/reduced_overview_modal_sheet.dart';
 import 'package:app/pages/journey/journey_table_view_model.dart';
 import 'package:app/pages/journey/warn_app_view_model.dart';
 import 'package:app/widgets/das_text_styles.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -19,6 +22,7 @@ class ExtendedMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.read<JourneyTableViewModel>();
+    final breakLoadSlipVM = context.read<BreakLoadSlipViewModel>();
     return AnchoredFullPageOverlay(
       triggerBuilder: (_, showOverlay) => SBBIconButtonLarge(
         key: menuButtonKey,
@@ -38,7 +42,7 @@ class ExtendedMenu extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: .start,
                     children: [
-                      _breakSlipItem(context),
+                      _breakSlipItem(context, breakLoadSlipVM, hideOverlay),
                       _transportDocumentItem(context),
                       _journeyOverviewItem(context, hideOverlay),
                       _maneuverItem(context, hideOverlay),
@@ -73,11 +77,14 @@ class ExtendedMenu extends StatelessWidget {
     );
   }
 
-  Widget _breakSlipItem(BuildContext context) {
+  Widget _breakSlipItem(BuildContext context, BreakLoadSlipViewModel vm, VoidCallback hideOverlay) {
+    if (vm.formationValue == null) return SizedBox.shrink();
+
     return SBBListItem(
       title: context.l10n.w_extended_menu_breaking_slip_action,
       onPressed: () {
-        // Placeholder
+        context.router.push(BreakLoadSlipRoute());
+        hideOverlay();
       },
     );
   }

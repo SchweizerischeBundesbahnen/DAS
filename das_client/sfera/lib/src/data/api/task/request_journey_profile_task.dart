@@ -3,7 +3,6 @@ import 'package:mqtt/component.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/api/task/sfera_task.dart';
 import 'package:sfera/src/data/dto/b2g_request_dto.dart';
-import 'package:sfera/src/data/dto/enums/jp_status_dto.dart';
 import 'package:sfera/src/data/dto/jp_request_dto.dart';
 import 'package:sfera/src/data/dto/otn_id_dto.dart';
 import 'package:sfera/src/data/dto/sfera_b2g_request_message_dto.dart';

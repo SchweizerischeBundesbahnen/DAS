@@ -65,11 +65,11 @@ class ChronographHeaderBox extends StatelessWidget {
   }
 
   TextStyle _resolvedDelayStyle(PunctualityModel? model, BuildContext context) => switch (model) {
-    final Stale _ => DASTextStyles.xLargeLight.copyWith(
+    final Stale _ => DASTextStyles.xLargeRoman.copyWith(
       color: ThemeUtil.getColor(
         context,
         SBBColors.graphite,
-        SBBColors.granite,
+        SBBColors.white,
       ),
     ),
     final Visible _ || final Hidden _ || null => DASTextStyles.xLargeLight,

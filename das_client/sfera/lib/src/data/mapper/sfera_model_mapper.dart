@@ -97,7 +97,9 @@ class SferaModelMapper {
 
     return Journey(
       metadata: Metadata(
-        trainIdentification: journeyProfile.trainIdentification.toTrainIdentification(),
+        trainIdentification: journeyProfile.trainIdentification.toModel(
+          operatingDay: journeyProfile.generalJpInformation?.operatingDayNsp?.operatingDay,
+        ),
         signaledPosition: _signaledPosition(relatedTrainInformation, segmentProfileReferences),
         additionalSpeedRestrictions: additionalSpeedRestrictions,
         journeyStart: journeyPoints.firstOrNull,
