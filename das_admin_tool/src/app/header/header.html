@@ -1,25 +1,33 @@
 <sbb-header expanded>
+  <sbb-header-button iconName="hamburger-menu-small" expandFrom="small" id="hamburger-menu">
+    Menu
+  </sbb-header-button>
   <span class="sbb-header-info">
     <strong i18n="@@c_header_app_name">DAS Admin-Tool</strong>
     <span>V. {{ version }}</span>
   </span>
+  <sbb-header-button class="sbb-active">Site 1</sbb-header-button>
+  <sbb-header-button>Site 2</sbb-header-button>
   <div class="sbb-header-spacer"></div>
   @if (oidcSecurityService.authenticated().isAuthenticated) {
     <sbb-header-button iconName="user-small" class="sbb-header-shrinkable" id="user-menu-trigger">
-      {{oidcSecurityService.userData().userData.name }}
+      {{ oidcSecurityService.userData().userData.name }}
     </sbb-header-button>
     <sbb-menu trigger="user-menu-trigger">
-      <div class="email">{{oidcSecurityService.userData().userData.preferred_username }}</div>
+      <div class="email">{{ oidcSecurityService.userData().userData.preferred_username }}</div>
       @for (role of roles(); track role) {
-        <span class="role">{{role}}</span>
+        <span class="role">{{ role }}</span>
       }
       <sbb-divider></sbb-divider>
-      <sbb-menu-button icon-name="user-plus-small" (click)="switchLogin()" i18n="@@c_header_switch_account_button">Account wechseln</sbb-menu-button>
+      <sbb-menu-button icon-name="user-plus-small" (click)="switchLogin()"
+                       i18n="@@c_header_switch_account_button">Account wechseln
+      </sbb-menu-button>
       <sbb-divider></sbb-divider>
-      <sbb-menu-button icon-name="exit-small" (click)="logout()" i18n="@@c_header_logout_button">Logout</sbb-menu-button>
+      <sbb-menu-button icon-name="exit-small" (click)="logout()" i18n="@@c_header_logout_button">
+        Logout
+      </sbb-menu-button>
     </sbb-menu>
-  }
-  @else {
+  } @else {
     <sbb-header-button iconName="user-small" class="sbb-header-shrinkable"
                        i18n="@@c_header_login_button" (click)="login()">
       Login
@@ -38,3 +46,41 @@
   </sbb-menu>
   <sbb-header-environment>{{ stage !== 'prod' ? stage : '' }}</sbb-header-environment>
 </sbb-header>
+
+<sbb-navigation trigger="hamburger-menu">
+  <sbb-navigation-marker>
+    <sbb-navigation-button aria-current="page" id="nav-1" class="sbb-active">
+      Menu 1
+    </sbb-navigation-button>
+    <sbb-navigation-button id="nav-2">Menu 2</sbb-navigation-button>
+  </sbb-navigation-marker>
+
+  <sbb-navigation-marker>
+    @for (language of languages; track language.localeId) {
+      <sbb-navigation-button (click)="switchLanguage(language.path)"
+                             [class]="language.localeId === currentLanguage?.localeId ? 'sbb-active': ''">
+        {{ language.label }}
+      </sbb-navigation-button>
+    }
+  </sbb-navigation-marker>
+
+  <sbb-navigation-section titleContent="Menu 1" trigger="nav-1">
+    <sbb-navigation-list label="Submenu 1">
+      <sbb-navigation-button aria-current="page" class="sbb-active">Site 1</sbb-navigation-button>
+      <sbb-navigation-button>Site 2</sbb-navigation-button>
+    </sbb-navigation-list>
+
+    <sbb-navigation-list label="Submenu 2">
+      <sbb-navigation-button>Site 1</sbb-navigation-button>
+      <sbb-navigation-button>Site 2</sbb-navigation-button>
+      <sbb-navigation-button>Site 3</sbb-navigation-button>
+    </sbb-navigation-list>
+    <sbb-button class="navigation-button">Button</sbb-button>
+  </sbb-navigation-section>
+
+  <sbb-navigation-section titleContent="Menu 2" trigger="nav-2">
+    <sbb-navigation-list label="Submenu">
+      <sbb-navigation-button>Site 1</sbb-navigation-button>
+    </sbb-navigation-list>
+  </sbb-navigation-section>
+</sbb-navigation>
