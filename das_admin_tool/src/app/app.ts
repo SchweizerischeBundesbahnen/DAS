@@ -1,22 +1,30 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit, signal} from '@angular/core';
 import {NavigationEnd, Router, RouterOutlet} from '@angular/router';
 import {Header} from './header/header';
 import {IconSidebar} from './icon-sidebar/icon-sidebar';
 import packageJson from '../../package.json';
 import {OidcSecurityService} from 'angular-auth-oidc-client';
+import {SbbTitle} from '@sbb-esta/lyne-angular/title';
+import {SbbNotification} from '@sbb-esta/lyne-angular/notification';
+import {SbbLink} from '@sbb-esta/lyne-angular/link/link';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Header, IconSidebar],
+  imports: [RouterOutlet, Header, IconSidebar, SbbTitle, SbbNotification, SbbLink],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App implements OnInit {
+  protected isAdBlockerDetected = signal(this.isInstanaBlockedByAdBlocker);
   private router = inject(Router);
   private oidcSecurityService = inject(OidcSecurityService);
 
+  private get isInstanaBlockedByAdBlocker(): boolean {
+    const pageLoadId = ineum('getPageLoadId');
+    return pageLoadId == null;
+  }
+
   ngOnInit(): void {
-    ineum('meta', 'blockedByAdBlocker', this.isInstanaBlockedByAdBlocker);
     ineum('meta', 'version', packageJson.version);
     ineum('user', this.oidcSecurityService.userData().userData.oid);
     this.router.events
@@ -26,10 +34,5 @@ export class App implements OnInit {
           ineum('page', event.url);
         }
       });
-  }
-
-  public get isInstanaBlockedByAdBlocker(): boolean {
-    const pageLoadId = ineum('getPageLoadId');
-    return pageLoadId == null;
   }
 }
