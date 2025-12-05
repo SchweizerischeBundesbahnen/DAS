@@ -1,10 +1,5 @@
 import {Component} from '@angular/core';
 import {
-  SbbIconSidebar,
-  SbbIconSidebarButton,
-  SbbIconSidebarContainer,
-  SbbIconSidebarContent,
-  SbbIconSidebarLink,
   SbbSidebar,
   SbbSidebarCloseButton,
   SbbSidebarContainer,
@@ -14,6 +9,13 @@ import {
 import {SbbBlockLink} from '@sbb-esta/lyne-angular/link/block-link';
 import {SbbLinkList} from '@sbb-esta/lyne-angular/link-list/link-list';
 import {SbbTooltipDirective} from '@sbb-esta/lyne-angular/tooltip';
+import {
+  SbbIconSidebar,
+  SbbIconSidebarButton,
+  SbbIconSidebarContainer,
+  SbbIconSidebarContent,
+  SbbIconSidebarLink
+} from '@sbb-esta/lyne-angular/icon-sidebar';
 
 @Component({
   selector: 'app-icon-sidebar',
