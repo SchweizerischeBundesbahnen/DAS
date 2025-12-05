@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das-admin-tool-v0.1.1...das-admin-tool-v0.2.0) (2025-12-05)
+
+
+### Features
+
+* add menu items ([#212](https://github.com/SchweizerischeBundesbahnen/DAS/issues/212)) ([#1522](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1522)) ([c69e284](https://github.com/SchweizerischeBundesbahnen/DAS/commit/c69e284b77cc91e06e6876d316f6a3d34c48c7f2))
+* basic instana monitoring ([#212](https://github.com/SchweizerischeBundesbahnen/DAS/issues/212)) ([#1523](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1523)) ([a6d60d5](https://github.com/SchweizerischeBundesbahnen/DAS/commit/a6d60d551b4bf618d8876742820ba2a12fe2854a))
+
+
+### Bug Fixes
+
+* login button always showed ([#1519](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1519)) ([0a1ffa6](https://github.com/SchweizerischeBundesbahnen/DAS/commit/0a1ffa6f4eb8d76b7446ef7f0cfb7e308492cf9a))
+
 ## [0.1.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das-admin-tool-v0.1.0...das-admin-tool-v0.1.1) (2025-12-02)
 
 
