@@ -9,7 +9,7 @@ class RouteTableDataRelevantWrapperDto extends NetworkSpecificParameterDto {
 
   RouteTableDataRelevantDto get unwrapped => XmlEnum.valueOf(RouteTableDataRelevantDto.values, nspValue)!;
 
-  bool get isAdditional => unwrapped != RouteTableDataRelevantDto.isTrue;
+  bool get isAdditional => unwrapped != .isTrue;
 
   @override
   bool validate() {

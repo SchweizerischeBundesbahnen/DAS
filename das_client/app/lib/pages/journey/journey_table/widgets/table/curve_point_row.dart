@@ -3,6 +3,7 @@ import 'package:collection/collection.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/cell_row_builder.dart';
 import 'package:app/widgets/assets.dart';
+import 'package:app/widgets/speed_display.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -66,8 +67,8 @@ class CurvePointRow extends CellRowBuilder<CurvePoint> {
 
     return DASTableCell(
       child: Text(
+        overflow: .ellipsis,
         text,
-        overflow: TextOverflow.ellipsis,
       ),
     );
   }
@@ -79,7 +80,7 @@ class CurvePointRow extends CellRowBuilder<CurvePoint> {
         AppAssets.iconCurveStart,
         key: curvePointIconKey,
       ),
-      alignment: Alignment.center,
+      alignment: .center,
     );
   }
 
@@ -92,16 +93,10 @@ class CurvePointRow extends CellRowBuilder<CurvePoint> {
 }
 
 extension _CurveTypeExtension on CurveType {
-  String localizedName(BuildContext context) {
-    switch (this) {
-      case CurveType.curve:
-        return context.l10n.p_journey_table_curve_type_curve;
-      case CurveType.curveAfterHalt:
-        return context.l10n.p_journey_table_curve_type_curve_after_halt;
-      case CurveType.stationExitCurve:
-        return context.l10n.p_journey_table_curve_type_station_exit_curve;
-      case CurveType.unknown:
-        return context.l10n.c_unknown;
-    }
-  }
+  String localizedName(BuildContext context) => switch (this) {
+    .curve => context.l10n.p_journey_table_curve_type_curve,
+    .curveAfterHalt => context.l10n.p_journey_table_curve_type_curve_after_halt,
+    .stationExitCurve => context.l10n.p_journey_table_curve_type_station_exit_curve,
+    .unknown => context.l10n.c_unknown,
+  };
 }

@@ -2,12 +2,12 @@ package ch.sbb.backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.web.servlet.ServletComponentScan;
-import org.springframework.retry.annotation.EnableRetry;
+import org.springframework.boot.web.server.servlet.context.ServletComponentScan;
+import org.springframework.resilience.annotation.EnableResilientMethods;
 
 @ServletComponentScan
 @SpringBootApplication
-@EnableRetry
+@EnableResilientMethods
 public class DASBackendApplication {
 
     public static void main(String[] args) {

@@ -194,7 +194,7 @@ void main() {
 
 NonStandardTrackEquipmentSegment _etcsL2ExtSpeedReversingPossible(int? startOrder, int? endOrder) {
   return NonStandardTrackEquipmentSegment(
-    type: TrackEquipmentType.etcsL2ExtSpeedReversingPossible,
+    type: .etcsL2ExtSpeedReversingPossible,
     startOrder: startOrder,
     endOrder: endOrder,
     startKm: [],
@@ -204,7 +204,7 @@ NonStandardTrackEquipmentSegment _etcsL2ExtSpeedReversingPossible(int? startOrde
 
 NonStandardTrackEquipmentSegment _etcsL2ExtSpeedReversingImpossible(int? startOrder, int? endOrder) {
   return NonStandardTrackEquipmentSegment(
-    type: TrackEquipmentType.etcsL2ExtSpeedReversingImpossible,
+    type: .etcsL2ExtSpeedReversingImpossible,
     startOrder: startOrder,
     endOrder: endOrder,
     startKm: [],
@@ -214,7 +214,7 @@ NonStandardTrackEquipmentSegment _etcsL2ExtSpeedReversingImpossible(int? startOr
 
 NonStandardTrackEquipmentSegment _etcsL2ConvSpeedReversingImpossible(int? startOrder, int? endOrder) {
   return NonStandardTrackEquipmentSegment(
-    type: TrackEquipmentType.etcsL2ConvSpeedReversingImpossible,
+    type: .etcsL2ConvSpeedReversingImpossible,
     startOrder: startOrder,
     endOrder: endOrder,
     startKm: [],
@@ -224,7 +224,7 @@ NonStandardTrackEquipmentSegment _etcsL2ConvSpeedReversingImpossible(int? startO
 
 NonStandardTrackEquipmentSegment _etcsL1ls2TracksWithSingleTrackEquipment(int? startOrder, int? endOrder) {
   return NonStandardTrackEquipmentSegment(
-    type: TrackEquipmentType.etcsL1ls2TracksWithSingleTrackEquipment,
+    type: .etcsL1ls2TracksWithSingleTrackEquipment,
     startOrder: startOrder,
     endOrder: endOrder,
     startKm: [],

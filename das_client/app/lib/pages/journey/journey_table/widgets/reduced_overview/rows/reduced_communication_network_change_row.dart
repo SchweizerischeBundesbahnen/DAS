@@ -21,7 +21,7 @@ class ReducedCommunicationNetworkChangeRow extends CellRowBuilder<CommunicationN
   @override
   DASTableCell informationCell(BuildContext context) {
     return DASTableCell(
-      alignment: Alignment.centerLeft,
+      alignment: .centerLeft,
       child: Text(
         '${context.l10n.p_journey_table_kilometre_label} ${data.kilometre[0].toStringAsFixed(1)}',
         style: DASTextStyles.largeRoman,

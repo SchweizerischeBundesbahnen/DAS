@@ -7,7 +7,7 @@ class ProtectionSection extends JourneyPoint {
     required this.isLong,
     required super.order,
     required super.kilometre,
-  }) : super(type: Datatype.protectionSection);
+  }) : super(dataType: .protectionSection);
 
   final bool isOptional;
   final bool isLong;
@@ -29,5 +29,5 @@ class ProtectionSection extends JourneyPoint {
 
   @override
   int get hashCode =>
-      type.hashCode ^ order.hashCode ^ Object.hashAll(kilometre) ^ isOptional.hashCode ^ isLong.hashCode;
+      dataType.hashCode ^ order.hashCode ^ Object.hashAll(kilometre) ^ isOptional.hashCode ^ isLong.hashCode;
 }

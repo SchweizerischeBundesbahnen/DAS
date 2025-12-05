@@ -5,7 +5,6 @@ import 'package:app/util/user_settings.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 @RoutePage()
@@ -32,7 +31,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   SBBHeader _appBar(BuildContext context) => SBBHeader(
     title: context.l10n.c_app_name,
-    systemOverlayStyle: SystemUiOverlayStyle.light,
+    systemOverlayStyle: .light,
   );
 
   Widget _body(BuildContext context) {
@@ -54,9 +53,9 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Widget _settingsBody(BuildContext context) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing * 0.5),
+      padding: const .symmetric(horizontal: sbbDefaultSpacing * 0.5),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: .start,
         children: [
           _settingTitle(context.l10n.p_settings_page_decisive_gradient_title),
           _decisiveGradientSettings(context),
@@ -67,15 +66,15 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Widget _decisiveGradientSettings(BuildContext context) {
     return SBBGroup(
-      padding: const EdgeInsets.only(right: sbbDefaultSpacing),
+      padding: const .only(right: sbbDefaultSpacing),
       child: SBBListItem.custom(
         title: context.l10n.p_settings_page_decisive_gradient_show_setting,
-        onPressed: () => _updateSettings(UserSettingKeys.showDecisiveGradient, !_userSettings.showDecisiveGradient),
+        onPressed: () => _updateSettings(.showDecisiveGradient, !_userSettings.showDecisiveGradient),
         isLastElement: true,
         trailingWidget: SBBSwitch(
           key: SettingsPage.decisiveGradientSwitchKey,
           value: _userSettings.showDecisiveGradient,
-          onChanged: (value) => _updateSettings(UserSettingKeys.showDecisiveGradient, value),
+          onChanged: (value) => _updateSettings(.showDecisiveGradient, value),
         ),
       ),
     );

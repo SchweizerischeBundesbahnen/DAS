@@ -4,10 +4,7 @@ import 'package:collection/collection.dart';
 import 'package:logging/logging.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/dto/departure_auth_nsp_dto.dart';
-import 'package:sfera/src/data/dto/enums/gradient_direction_type_dto.dart';
 import 'package:sfera/src/data/dto/enums/length_type_dto.dart';
-import 'package:sfera/src/data/dto/enums/stop_skip_pass_dto.dart';
-import 'package:sfera/src/data/dto/enums/taf_tap_location_type_dto.dart';
 import 'package:sfera/src/data/dto/enums/xml_enum.dart';
 import 'package:sfera/src/data/dto/foot_note_dto.dart';
 import 'package:sfera/src/data/dto/local_regulation_content_nsp_dto.dart';
@@ -34,6 +31,7 @@ class _MapperData {
 
 final _log = Logger('SegmentProfileMapper');
 
+/// Used to map journey data from a SFERA segment profile.
 class SegmentProfileMapper {
   SegmentProfileMapper._();
 
@@ -131,8 +129,8 @@ class SegmentProfileMapper {
           abbreviation: tafTapLocation.abbreviation,
           order: calculateOrder(mapperData.segmentIndex, timingPoint.location),
           mandatoryStop: tpConstraint.stoppingPointInformation?.stopType?.mandatoryStop ?? true,
-          isStop: tpConstraint.stopSkipPass == StopSkipPassDto.stoppingPoint,
-          isStation: tafTapLocation.locationType != TafTapLocationTypeDto.halt,
+          isStop: tpConstraint.stopSkipPass == .stoppingPoint,
+          isStation: tafTapLocation.locationType != .halt,
           isAdditional: tafTapLocation.routeTableDataNsp?.routeTableDataRelevant?.isAdditional ?? false,
           betweenBrackets: tafTapLocation.routeTableDataNsp?.betweenBrackets ?? false,
           bracketMainStation: _parseBracketMainStation(tafTapLocations, tafTapLocation),
@@ -498,7 +496,7 @@ class SegmentProfileMapper {
 
     double? uphill, downhill;
     for (final gradientArea in decisiveGradientAreas) {
-      if (gradientArea.gradientDirectionType == GradientDirectionTypeDto.uphill) {
+      if (gradientArea.gradientDirectionType == .uphill) {
         uphill = gradientArea.gradientValue;
       } else {
         downhill = gradientArea.gradientValue;
@@ -551,8 +549,8 @@ class SegmentProfileMapper {
     // If text does not contain sms and [departureAuthDispatcher] is false, intentional fallback to type sms
     final hasSmsAuth = departureAuthNsp.departureAuthText?.toLowerCase().contains('sms') ?? false;
     final authTypes = <DepartureAuthorizationType>[
-      if (departureAuthNsp.departureAuthDispatcher) DepartureAuthorizationType.dispatcher,
-      if (hasSmsAuth || !departureAuthNsp.departureAuthDispatcher) DepartureAuthorizationType.sms,
+      if (departureAuthNsp.departureAuthDispatcher) .dispatcher,
+      if (hasSmsAuth || !departureAuthNsp.departureAuthDispatcher) .sms,
     ];
 
     return DepartureAuthorization(types: authTypes, originalText: departureAuthNsp.departureAuthText);

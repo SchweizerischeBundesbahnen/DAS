@@ -12,7 +12,7 @@ void main() {
 
   test('text_whenDispatcherTypeAndNoText_thenReturnsPrefix', () {
     // GIVEN
-    final departureAuth = DepartureAuthorization(types: [DepartureAuthorizationType.dispatcher], originalText: null);
+    final departureAuth = DepartureAuthorization(types: [.dispatcher], originalText: null);
 
     // WHEN THEN
     expect(departureAuth.text, '*');
@@ -20,7 +20,7 @@ void main() {
 
   test('text_whenDispatcherTypeAndText_thenReturnsPrefixedText', () {
     // GIVEN
-    final departureAuth = DepartureAuthorization(types: [DepartureAuthorizationType.dispatcher], originalText: '10-30');
+    final departureAuth = DepartureAuthorization(types: [.dispatcher], originalText: '10-30');
 
     // WHEN THEN
     expect(departureAuth.text, '* 10-30');
@@ -28,7 +28,7 @@ void main() {
 
   test('text_whenSmsTypeAndText_thenReturnsText', () {
     // GIVEN
-    final departureAuth = DepartureAuthorization(types: [DepartureAuthorizationType.sms], originalText: 'sms 3-6');
+    final departureAuth = DepartureAuthorization(types: [.sms], originalText: 'sms 3-6');
 
     // WHEN THEN
     expect(departureAuth.text, 'sms 3-6');
@@ -36,7 +36,7 @@ void main() {
 
   test('text_whenSmsTypeAndNoText_thenReturnsNull', () {
     // GIVEN
-    final departureAuth = DepartureAuthorization(types: [DepartureAuthorizationType.sms], originalText: null);
+    final departureAuth = DepartureAuthorization(types: [.sms], originalText: null);
 
     // WHEN THEN
     expect(departureAuth.text, isNull);
@@ -44,10 +44,7 @@ void main() {
 
   test('text_whenSmsAndDispatcherTypeAndNoText_thenReturnsPrefix', () {
     // GIVEN
-    final departureAuth = DepartureAuthorization(
-      types: [DepartureAuthorizationType.sms, DepartureAuthorizationType.dispatcher],
-      originalText: null,
-    );
+    final departureAuth = DepartureAuthorization(types: [.sms, .dispatcher], originalText: null);
 
     // WHEN THEN
     expect(departureAuth.text, '*');
@@ -55,10 +52,7 @@ void main() {
 
   test('text_whenSmsAndDispatcherTypeAndText_thenReturnsText', () {
     // GIVEN
-    final departureAuth = DepartureAuthorization(
-      types: [DepartureAuthorizationType.sms, DepartureAuthorizationType.dispatcher],
-      originalText: 'sms 3-6',
-    );
+    final departureAuth = DepartureAuthorization(types: [.sms, .dispatcher], originalText: 'sms 3-6');
 
     // WHEN THEN
     expect(departureAuth.text, '* sms 3-6');
@@ -66,10 +60,7 @@ void main() {
 
   test('text_whenTextWithLineBreaks_thenReturnsTextWithSpaces', () {
     // GIVEN
-    final departureAuth = DepartureAuthorization(
-      types: [DepartureAuthorizationType.sms],
-      originalText: 'sms<br/>3-6\n',
-    );
+    final departureAuth = DepartureAuthorization(types: [.sms], originalText: 'sms<br/>3-6\n');
 
     // WHEN THEN
     expect(departureAuth.text, 'sms 3-6 ');
@@ -77,10 +68,7 @@ void main() {
 
   test('text_whenTextWithLineBreaksAndHTMLFormatting_thenReturnsTextWithSpacesAndFormatting', () {
     // GIVEN
-    final departureAuth = DepartureAuthorization(
-      types: [DepartureAuthorizationType.sms],
-      originalText: 'sms<br/><b>3-6</b>\n',
-    );
+    final departureAuth = DepartureAuthorization(types: [.sms], originalText: 'sms<br/><b>3-6</b>\n');
 
     // WHEN THEN
     expect(departureAuth.text, 'sms <b>3-6</b> ');
