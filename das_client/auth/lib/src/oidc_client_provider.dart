@@ -1,6 +1,6 @@
 import 'package:sbb_oidc/sbb_oidc.dart';
 
-abstract class OidcClientProvider {
+abstract class OidcClientFactory {
   Future<OidcClient> createClient({
     required String discoveryUrl,
     required String clientId,
@@ -9,8 +9,8 @@ abstract class OidcClientProvider {
   });
 }
 
-class SBBOidcClientProvider implements OidcClientProvider {
-  const SBBOidcClientProvider();
+class SBBOidcClientFactory implements OidcClientFactory {
+  const SBBOidcClientFactory();
 
   @override
   Future<OidcClient> createClient({

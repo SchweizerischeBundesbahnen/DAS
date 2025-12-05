@@ -13,12 +13,12 @@ import 'package:sbb_oidc/sbb_oidc.dart';
 import 'azure_authenticator_test.mocks.dart';
 
 @GenerateNiceMocks([
-  MockSpec<OidcClientProvider>(),
+  MockSpec<OidcClientFactory>(),
   MockSpec<OidcClient>(),
   MockSpec<OidcToken>(),
 ])
 void main() {
-  late MockOidcClientProvider mockOidcClientProvider;
+  late MockOidcClientFactory mockOidcClientFactory;
   late MockOidcClient mockOidcClient;
   late AzureAuthenticator authenticator;
 
@@ -43,11 +43,11 @@ void main() {
   );
 
   setUp(() {
-    mockOidcClientProvider = MockOidcClientProvider();
+    mockOidcClientFactory = MockOidcClientFactory();
     mockOidcClient = MockOidcClient();
 
     when(
-      mockOidcClientProvider.createClient(
+      mockOidcClientFactory.createClient(
         discoveryUrl: anyNamed('discoveryUrl'),
         clientId: anyNamed('clientId'),
         redirectUrl: anyNamed('redirectUrl'),
@@ -57,7 +57,7 @@ void main() {
 
     authenticator = AzureAuthenticator(
       config: config,
-      oidcClientProvider: mockOidcClientProvider,
+      oidcClientFactory: mockOidcClientFactory,
     );
   });
 

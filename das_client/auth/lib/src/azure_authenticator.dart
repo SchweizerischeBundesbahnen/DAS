@@ -10,11 +10,11 @@ final _log = Logger('AzureAuthenticator');
 class AzureAuthenticator implements Authenticator {
   AzureAuthenticator({
     required this.config,
-    this.oidcClientProvider = const SBBOidcClientProvider(),
+    this.oidcClientFactory = const SBBOidcClientFactory(),
   });
 
   final AuthenticatorConfig config;
-  final OidcClientProvider oidcClientProvider;
+  final OidcClientFactory oidcClientFactory;
   late final OidcClient _oidcClient;
   bool isInitialized = false;
 
@@ -22,7 +22,7 @@ class AzureAuthenticator implements Authenticator {
     if (isInitialized) return;
     _log.fine('Initialize AzureAuthenticator');
     try {
-      _oidcClient = await oidcClientProvider.createClient(
+      _oidcClient = await oidcClientFactory.createClient(
         discoveryUrl: config.discoveryUrl,
         clientId: config.clientId,
         redirectUrl: config.redirectUrl,
