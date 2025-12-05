@@ -1,11 +1,11 @@
 import {Component} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
-import {SbbContainer} from '@sbb-esta/lyne-angular/container/container';
 import {Header} from './header/header';
+import {IconSidebar} from './icon-sidebar/icon-sidebar';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, SbbContainer, Header],
+  imports: [RouterOutlet, Header, IconSidebar],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

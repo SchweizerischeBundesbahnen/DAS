@@ -1,0 +1,25 @@
+<sbb-icon-sidebar-container>
+  <sbb-icon-sidebar color="white">
+    <sbb-icon-sidebar-link sbb-tooltip="Menu 1" icon-name="glass-cocktail-small" ></sbb-icon-sidebar-link>
+    <sbb-icon-sidebar-link sbb-tooltip="Menu 2" icon-name="unicorn-small" class="sbb-active"></sbb-icon-sidebar-link>
+    <sbb-icon-sidebar-button sbb-tooltip="Menu 3" icon-name="face-grinning-small"></sbb-icon-sidebar-button>
+  </sbb-icon-sidebar>
+  <sbb-icon-sidebar-content>
+    <sbb-sidebar-container>
+      <sbb-sidebar opened color="milk" position="start">
+        <sbb-sidebar-title>Menu 1</sbb-sidebar-title>
+        <sbb-sidebar-close-button></sbb-sidebar-close-button>
+
+        <sbb-link-list>
+          <sbb-block-link>Site 1</sbb-block-link>
+          <sbb-block-link>Site 2</sbb-block-link>
+          <sbb-block-link class="sbb-active" >Site 3</sbb-block-link>
+          <sbb-block-link>Site 4</sbb-block-link>
+        </sbb-link-list>
+      </sbb-sidebar>
+      <sbb-sidebar-content>
+<ng-content/>
+      </sbb-sidebar-content>
+    </sbb-sidebar-container>
+  </sbb-icon-sidebar-content>
+</sbb-icon-sidebar-container>
