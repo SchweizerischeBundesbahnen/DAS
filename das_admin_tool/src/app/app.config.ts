@@ -15,24 +15,21 @@ import 'angular-server-side-configuration/process';
  *
  * Please note that process.env[variable] cannot be resolved. Please directly use strings.
  */
-import {
-  ApplicationConfig,
-  provideBrowserGlobalErrorListeners,
-  provideZonelessChangeDetection
-} from '@angular/core';
+import {ApplicationConfig, ErrorHandler, provideZonelessChangeDetection} from '@angular/core';
 import {provideRouter} from '@angular/router';
 
 import {routes} from './app.routes';
 import {authInterceptor, provideAuth, withAppInitializerAuthCheck} from 'angular-auth-oidc-client';
 import {provideHttpClient, withInterceptors} from '@angular/common/http';
 import {environment} from '../environments/environment';
+import {ReportToInstanaErrorHandler} from './errorHandler';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideBrowserGlobalErrorListeners(),
+    {provide: ErrorHandler, useClass: ReportToInstanaErrorHandler},
     provideZonelessChangeDetection(),
     provideRouter(routes),
     provideAuth(environment.authConfig, withAppInitializerAuthCheck()),
-    provideHttpClient(withInterceptors([authInterceptor()]))
+    provideHttpClient(withInterceptors([authInterceptor()])),
   ]
 };

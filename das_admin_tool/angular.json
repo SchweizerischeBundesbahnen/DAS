@@ -135,7 +135,9 @@
         "ngsscbuild": {
           "builder": "angular-server-side-configuration:ngsscbuild",
           "options": {
-            "additionalEnvironmentVariables": [],
+            "additionalEnvironmentVariables": [
+              "INSTANA_KEY"
+            ],
             "buildTarget": "das_admin_tool:build"
           },
           "configurations": {
