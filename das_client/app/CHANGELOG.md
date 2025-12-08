@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.32.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.31.0...das_client-v0.32.0) (2025-12-08)
+
+
+### Features
+
+* add break- and loadslip ([#692](https://github.com/SchweizerischeBundesbahnen/DAS/issues/692)) ([#1506](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1506)) ([19ee997](https://github.com/SchweizerischeBundesbahnen/DAS/commit/19ee997dad58e2f1cc6bca12736ed05c4a2e2f55))
+
 ## [0.31.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.30.0...das_client-v0.31.0) (2025-11-25)
 
 
