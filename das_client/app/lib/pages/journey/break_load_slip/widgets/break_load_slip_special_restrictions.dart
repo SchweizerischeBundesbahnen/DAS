@@ -14,6 +14,7 @@ class BreakLoadSlipSpecialRestrictions extends StatelessWidget {
 
   static const Key simTrainBannerKey = Key('simTrainBanner');
   static const Key dangerousGoodsBannerKey = Key('dangerousGoodsBanner');
+  static const Key carCarrierBannerKey = Key('carCarrierBanner');
 
   final FormationRun formationRun;
 
@@ -36,6 +37,8 @@ class BreakLoadSlipSpecialRestrictions extends StatelessWidget {
         if (formationRun.simTrain) _indicator(AppAssets.iconSimZug, DASColors.simTrain, key: simTrainBannerKey),
         if (formationRun.dangerousGoods)
           _indicator(AppAssets.iconSignExclamationPoint, SBBColors.peach, key: dangerousGoodsBannerKey),
+        if (formationRun.carCarrierVehicle)
+          _indicator(AppAssets.iconCarCarrier, SBBColors.pink, key: carCarrierBannerKey),
       ],
     );
   }
@@ -69,12 +72,12 @@ class BreakLoadSlipSpecialRestrictions extends StatelessWidget {
   Widget _indicator(String asset, Color color, {Key? key}) {
     return Padding(
       key: key,
-      padding: EdgeInsets.only(left: 6),
+      padding: EdgeInsets.only(left: sbbDefaultSpacing * 0.25),
       child: Stack(
         clipBehavior: Clip.none,
         children: [
           Positioned(
-            left: -sbbDefaultSpacing,
+            left: -sbbDefaultSpacing + 2,
             child: SvgPicture.asset(
               AppAssets.shapeRoundedEdgeLeftSmall,
               colorFilter: ColorFilter.mode(color, BlendMode.srcIn),

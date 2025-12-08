@@ -15,6 +15,7 @@ class BreakLoadSlipHeader extends StatelessWidget {
 
   static const Key simTrainHeaderBannerKey = Key('simTrainHeaderBanner');
   static const Key dangerousGoodsHeaderBannerKey = Key('dangerousGoodsHeaderBanner');
+  static const Key carCarrierHeaderBannerKey = Key('carCarrierHeaderBanner');
 
   const BreakLoadSlipHeader({required this.formationRun, super.key});
 
@@ -59,6 +60,14 @@ class BreakLoadSlipHeader extends StatelessWidget {
         text: context.l10n.p_break_load_slip_header_dangerous_goods,
         textColor: SBBColors.black,
         key: dangerousGoodsHeaderBannerKey,
+      ),
+    if (formationRun.carCarrierVehicle)
+      _SpecialIndicator(
+        asset: AppAssets.iconCarCarrier,
+        backgroundColor: SBBColors.pink,
+        text: context.l10n.p_break_load_slip_header_car_carrier,
+        textColor: SBBColors.white,
+        key: carCarrierHeaderBannerKey,
       ),
   ];
 
