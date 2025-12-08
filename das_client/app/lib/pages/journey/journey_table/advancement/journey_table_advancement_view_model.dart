@@ -17,8 +17,8 @@ final _log = Logger('JourneyAdvancementViewModel');
 ///
 /// The advancement can be in one of the following modes:
 /// * paused (automatic scrolling is disabled)
-/// * auto (automatic scrolling is enabled)
-/// * manual (automatic scrolling is enabled)
+/// * auto (automatic idle scrolling is enabled)
+/// * manual (automatic idle scrolling is enabled)
 class JourneyTableAdvancementViewModel {
   JourneyTableAdvancementViewModel({
     required Stream<Journey?> journeyStream,

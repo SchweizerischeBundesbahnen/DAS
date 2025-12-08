@@ -8,7 +8,7 @@ import 'package:app/pages/journey/journey_table/widgets/detail_modal/service_poi
 import 'package:app/pages/journey/journey_table/widgets/detail_modal/service_point_modal/service_point_modal_tab.dart';
 import 'package:app/pages/journey/journey_table/widgets/header/header.dart';
 import 'package:app/pages/journey/journey_table/widgets/header/header_icon_button.dart';
-import 'package:app/pages/journey/journey_table/widgets/header/start_pause_button.dart';
+import 'package:app/pages/journey/journey_table/widgets/header/journey_advancement_button.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:app/widgets/dot_indicator.dart';
 import 'package:app/widgets/modal_sheet/das_modal_sheet.dart';
@@ -152,7 +152,7 @@ void main() {
       _checkOpenModalSheet(DetailTabCommunication.communicationTabKey, 'Bern');
 
       // pause automatic advancement
-      final pauseButton = find.byKey(StartPauseButton.pauseButtonKey);
+      final pauseButton = find.byKey(JourneyAdvancementButton.pauseKey);
       expect(pauseButton, findsOneWidget);
       await tapElement(tester, pauseButton);
 

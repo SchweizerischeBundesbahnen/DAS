@@ -2,8 +2,8 @@ import 'package:app/pages/journey/journey_table/widgets/header/battery_status.da
 import 'package:app/pages/journey/journey_table/widgets/header/connectivity_icon.dart';
 import 'package:app/pages/journey/journey_table/widgets/header/departure_authorization_display.dart';
 import 'package:app/pages/journey/journey_table/widgets/header/extended_menu.dart';
+import 'package:app/pages/journey/journey_table/widgets/header/journey_advancement_button.dart';
 import 'package:app/pages/journey/journey_table/widgets/header/next_stop.dart';
-import 'package:app/pages/journey/journey_table/widgets/header/start_pause_button.dart';
 import 'package:app/pages/journey/journey_table/widgets/header/theme_button.dart';
 import 'package:app/pages/journey/journey_table_view_model.dart';
 import 'package:flutter/material.dart';
@@ -79,7 +79,7 @@ class MainHeaderBox extends StatelessWidget {
     children: [
       // marked as leaf as default draws a border
       Skeleton.leaf(child: ThemeButton()),
-      Skeleton.leaf(child: StartPauseButton()),
+      Skeleton.leaf(child: JourneyAdvancementButton()),
       ExtendedMenu(),
     ],
   );

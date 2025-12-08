@@ -4,8 +4,8 @@ import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/break_load_slip/break_load_slip_page.dart';
 import 'package:app/pages/journey/journey_table/widgets/header/extended_menu.dart';
+import 'package:app/pages/journey/journey_table/widgets/header/journey_advancement_button.dart';
 import 'package:app/pages/journey/journey_table/widgets/header/next_stop.dart';
-import 'package:app/pages/journey/journey_table/widgets/header/start_pause_button.dart';
 import 'package:app/pages/journey/journey_table/widgets/journey_table.dart';
 import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:app/widgets/table/das_table.dart';
@@ -141,13 +141,13 @@ Future<void> selectBreakSeries(WidgetTester tester, {required String breakSeries
 }
 
 Future<void> stopAutomaticAdvancement(WidgetTester tester) async {
-  final pauseButton = find.byKey(StartPauseButton.pauseButtonKey);
+  final pauseButton = find.byKey(JourneyAdvancementButton.pauseKey);
   expect(pauseButton, findsOneWidget);
   await tapElement(tester, pauseButton);
 }
 
 Future<void> startAutomaticAdvancement(WidgetTester tester) async {
-  final startButton = find.byKey(StartPauseButton.startButtonKey);
+  final startButton = find.byKey(JourneyAdvancementButton.startKey);
   expect(startButton, findsOneWidget);
   await tapElement(tester, startButton);
 }

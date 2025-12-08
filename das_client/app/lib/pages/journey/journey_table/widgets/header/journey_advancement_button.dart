@@ -6,12 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
-class StartPauseButton extends StatelessWidget {
-  static const startButtonKey = Key('startAutomaticAdvancementButton');
-  static const pauseButtonKey = Key('pauseAutomaticAdvancementButton');
-  static const manualButtonKey = Key('manualAdvancementButton');
+class JourneyAdvancementButton extends StatelessWidget {
+  static const startKey = Key('startAutomaticAdvancementButton');
+  static const pauseKey = Key('pauseAutomaticAdvancementButton');
+  static const manualKey = Key('manualAdvancementButton');
 
-  const StartPauseButton({super.key});
+  const JourneyAdvancementButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,20 +24,20 @@ class StartPauseButton extends StatelessWidget {
 
         return switch (model) {
           Paused(next: final next) => _button(
-            next is Automatic ? startButtonKey : manualButtonKey,
+            next is Automatic ? startKey : manualKey,
             context.l10n.p_journey_header_button_start,
             next is Automatic ? SBBIcons.play_small : SBBIcons.hand_cursor_small,
             context,
             next is Automatic ? false : true,
           ),
           Automatic() => _button(
-            pauseButtonKey,
+            pauseKey,
             context.l10n.p_journey_header_button_pause,
             SBBIcons.pause_small,
             context,
           ),
           Manual() => _button(
-            pauseButtonKey,
+            pauseKey,
             context.l10n.p_journey_header_button_pause,
             SBBIcons.hand_cursor_small,
             context,
