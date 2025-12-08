@@ -1,7 +1,6 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {Unauthorized} from './unauthorized';
-import {provideZonelessChangeDetection} from '@angular/core';
 
 describe('Unauthorized', () => {
   let component: Unauthorized;
@@ -10,13 +9,12 @@ describe('Unauthorized', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [Unauthorized],
-      providers: [provideZonelessChangeDetection()],
     })
       .compileComponents();
 
     fixture = TestBed.createComponent(Unauthorized);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    await fixture.whenStable();
   });
 
   it('should create', () => {
