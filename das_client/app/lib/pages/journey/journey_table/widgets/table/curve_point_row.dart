@@ -71,7 +71,6 @@ class CurvePointRow extends CellRowBuilder<CurvePoint> {
     );
   }
 
-  //TODO should have two decimal numbers behind i
   String _stringifyKm(double? km) {
     if (km == null) return '';
     final s = km.toStringAsFixed(2).trim();
