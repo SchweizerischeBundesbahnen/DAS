@@ -19,7 +19,7 @@
         <archunit-junit5.version>1.4.1</archunit-junit5.version>
         <springdoc-openapi-starter-webmvc-ui.version>3.0.0</springdoc-openapi-starter-webmvc-ui.version>
         <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
-        <kafka-json-schema-serializer.version>8.1.0</kafka-json-schema-serializer.version>
+        <kafka-json-schema-serializer.version>8.1.1</kafka-json-schema-serializer.version>
         <confluent.schema-registry-plugin.version>8.1.1</confluent.schema-registry-plugin.version>
         <jsonschema2pojo-maven-plugin.version>1.2.2</jsonschema2pojo-maven-plugin.version>
         <aws.java.sdk.version>2.40.1</aws.java.sdk.version>
