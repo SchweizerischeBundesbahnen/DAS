@@ -68,10 +68,10 @@ class JourneyTableAdvancementViewModel {
     _onAdvancementModeToggled.call();
   }
 
-  // void setAdvancementModeToManual() {
-  //   _rxModel.add(Manual());
-  //   _emitAutomaticScrolling();
-  // }
+  void setAdvancementModeToManual() {
+    _rxModel.add(Manual());
+    _emitAutomaticScrolling();
+  }
 
   // void advanceToCurrentPosition() {
   //   _scrollController.scrollToJourneyPoint(_currentPosition);

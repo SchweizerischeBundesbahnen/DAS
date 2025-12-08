@@ -44,6 +44,7 @@ class DASTableCellRow extends DASTableRow {
     required super.rowIndex,
     this.color,
     this.onTap,
+    this.onLongPress,
     super.stickyLevel,
     super.identifier,
   });
@@ -54,6 +55,8 @@ class DASTableCellRow extends DASTableRow {
   final Map<int, DASTableCell> cells;
 
   final VoidCallback? onTap;
+
+  final VoidCallback? onLongPress;
 }
 
 class DASTableWidgetRow extends DASTableRow {
