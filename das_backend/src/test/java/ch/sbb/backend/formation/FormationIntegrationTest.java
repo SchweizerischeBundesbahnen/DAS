@@ -191,8 +191,8 @@ class FormationIntegrationTest {
 
     @Test
     void whenNewMinimalFormationMessage_shouldNotFail() throws IOException {
-        DailyFormationTrainKey key = this.objectMapper.readValue(new File("src/test/resources/kafka/43/key.json"), DailyFormationTrainKey.class);
-        DailyFormationTrain value = this.objectMapper.readValue(new File("src/test/resources/kafka/43/value.json"), DailyFormationTrain.class);
+        DailyFormationTrainKey key = this.jsonMapper.readValue(new File("src/test/resources/kafka/43/key.json"), DailyFormationTrainKey.class);
+        DailyFormationTrain value = this.jsonMapper.readValue(new File("src/test/resources/kafka/43/value.json"), DailyFormationTrain.class);
 
         kafkaTemplate.send(topic, key, value);
 

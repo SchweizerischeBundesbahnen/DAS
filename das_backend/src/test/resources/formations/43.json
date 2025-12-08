@@ -6,11 +6,9 @@
       "company": "3412",
       "formationRuns": [
         {
+          "inspectionDateTime": "2025-11-18T18:10:08.028+01:00",
           "tafTapLocationReferenceStart": "CH05699",
           "tafTapLocationReferenceEnd": "CH05683",
-          "tractionHoldingForceInHectoNewton": 0,
-          "hauledLoadHoldingForceInHectoNewton": 0,
-          "formationHoldingForceInHectoNewton": 0,
           "additionalTractions": [],
           "dangerousGoods": false,
           "vehiclesCount": 1,
