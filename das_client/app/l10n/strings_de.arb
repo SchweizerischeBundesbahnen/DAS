@@ -50,6 +50,7 @@
     }
   },
   "p_break_load_slip_header_dangerous_goods": "Zug mit gefährlichen Gütern",
+  "p_break_load_slip_header_car_carrier": "Beladener Autodoppelstockwagen",
   "p_break_load_slip_header_sim_train": "SIM Zug",
   "p_break_load_slip_train_data_title": "Zugdaten",
   "p_break_load_slip_train_data_train_number": "Zugnummer",

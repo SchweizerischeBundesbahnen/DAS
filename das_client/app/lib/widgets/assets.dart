@@ -41,6 +41,7 @@ class AppAssets {
   static const iconExclamationPoint = '$_iconsDir/icon_exclamation_point.svg';
   static const iconSimZug = '$_iconsDir/icon_sim_zug.svg';
   static const iconSignExclamationPoint = '$_iconsDir/icon_sign_exclamation_point.svg';
+  static const iconCarCarrier = '$_iconsDir/icon_car_carrier.svg';
 
   // others
   static const imageTypeNSignalStop = '$_othersDir/type_n_signal_stop.svg';

@@ -2,7 +2,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import packageJson from '../../../package.json';
 
 import {Header} from './header';
-import {provideZonelessChangeDetection, signal} from '@angular/core';
+import {signal} from '@angular/core';
 import {AuthenticatedResult, OidcSecurityService, UserDataResult} from 'angular-auth-oidc-client';
 import {By} from '@angular/platform-browser';
 
@@ -25,7 +25,7 @@ describe('Header', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [Header],
-      providers: [provideZonelessChangeDetection(), {
+      providers: [{
         provide: OidcSecurityService,
         useValue: mockOidc
       }],
@@ -34,16 +34,16 @@ describe('Header', () => {
 
     fixture = TestBed.createComponent(Header);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    await fixture.whenStable();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render title and version', () => {
+  it('should render title and version', async () => {
     const fixture = TestBed.createComponent(Header);
-    fixture.detectChanges();
+    await fixture.whenStable()
     const compiled = fixture.nativeElement as HTMLElement;
     const headerInfo = compiled.querySelector('.sbb-header-info');
     expect(headerInfo?.querySelector('strong')?.textContent).toContain('DAS Admin-Tool');
