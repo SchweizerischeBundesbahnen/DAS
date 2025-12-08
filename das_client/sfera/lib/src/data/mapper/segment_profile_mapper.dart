@@ -231,7 +231,7 @@ class SegmentProfileMapper {
 
   static List<CurvePoint> _parseCurvePoints(_MapperData mapperData) {
     final raw = mapperData.segmentProfile.points?.curvePointsNsp ?? [];
-    final points = raw
+    final curvePoints = raw
         .map<CurvePoint>((nsp) {
           final xml = nsp.xmlCurveSpeed?.element;
           return CurvePoint(
@@ -247,56 +247,60 @@ class SegmentProfileMapper {
         .sortedBy((p) => p.order)
         .toList();
 
-    final segments = <MapEntry<CurvePoint, CurvePoint>>[];
-    CurvePoint? open;
-    for (final p in points) {
-      if (p.curvePointType == CurvePointType.begin) {
-        open = p;
-      } else if (p.curvePointType == CurvePointType.end && open != null) {
-        segments.add(MapEntry(open, p));
-        open = null;
+    final beginEndPairs = <MapEntry<CurvePoint, CurvePoint>>[];
+    CurvePoint? openBegin;
+
+    for (final cp in curvePoints) {
+      if (cp.curvePointType == CurvePointType.begin) {
+        openBegin = cp;
+      } else if (cp.curvePointType == CurvePointType.end && openBegin != null) {
+        beginEndPairs.add(MapEntry(openBegin, cp));
+        openBegin = null;
       }
     }
 
-    if (segments.isEmpty) {
-      return points.where((p) => p.curvePointType == CurvePointType.begin).toList();
+    if (beginEndPairs.isEmpty) {
+      return curvePoints.where((cp) => cp.curvePointType == CurvePointType.begin).toList();
     }
 
-    segments.sort((a, b) => a.key.order.compareTo(b.key.order));
+    beginEndPairs.sort((a, b) => a.key.order.compareTo(b.key.order));
 
-    final merged = <MapEntry<CurvePoint, CurvePoint>>[];
-    MapEntry<CurvePoint, CurvePoint>? current;
-    for (final seg in segments) {
-      if (current == null) {
-        current = seg;
+    final mergedPairs = <MapEntry<CurvePoint, CurvePoint>>[];
+    MapEntry<CurvePoint, CurvePoint>? currentPair;
+
+    for (final pair in beginEndPairs) {
+      if (currentPair == null) {
+        currentPair = pair;
         continue;
       }
 
-      final sameType = seg.key.curveType == current.key.curveType;
-      final adjacent = seg.key.order == current.value.order;
+      final sameType = pair.key.curveType == currentPair.key.curveType;
+      final directlyAdjacent = pair.key.order == currentPair.value.order;
 
-      if (sameType && adjacent) {
-        current = MapEntry(current.key, seg.value);
+      if (sameType && directlyAdjacent) {
+        currentPair = MapEntry(currentPair.key, pair.value);
       } else {
-        merged.add(current);
-        current = seg;
+        mergedPairs.add(currentPair);
+        currentPair = pair;
       }
     }
-    if (current != null) merged.add(current);
-    return merged.map((seg) {
-      final begin = seg.key;
-      final end = seg.value;
+
+    if (currentPair != null) mergedPairs.add(currentPair);
+
+    return mergedPairs.map((pair) {
+      final begin = pair.key;
+      final end = pair.value;
 
       final startKm = begin.kilometre.firstOrNull;
       final endKm = end.kilometre.firstOrNull ?? startKm;
 
-      final beginPoints = points
+      final beginsWithinRange = curvePoints
           .where(
-            (p) =>
-                p.curvePointType == CurvePointType.begin &&
-                p.curveType == begin.curveType &&
-                p.order >= begin.order &&
-                p.order <= end.order,
+            (cp) =>
+                cp.curvePointType == CurvePointType.begin &&
+                cp.curveType == begin.curveType &&
+                cp.order >= begin.order &&
+                cp.order <= end.order,
           )
           .toList();
 
@@ -306,7 +310,7 @@ class SegmentProfileMapper {
           if (startKm != null) startKm,
           if (endKm != null && endKm != startKm) endKm,
         ],
-        localSpeeds: _mergeSpeeds(beginPoints),
+        localSpeeds: _mergeSpeeds(beginsWithinRange),
         curvePointType: CurvePointType.summarized,
         curveType: begin.curveType,
         text: begin.text,
@@ -315,52 +319,51 @@ class SegmentProfileMapper {
     }).toList();
   }
 
-  static List<TrainSeriesSpeed>? _mergeSpeeds(List<CurvePoint> begins) {
-    final nonEmpty = begins
+  static List<TrainSeriesSpeed>? _mergeSpeeds(List<CurvePoint> beginCurves) {
+    final speedGroups = beginCurves
         .map((cp) => cp.localSpeeds)
         .whereType<List<TrainSeriesSpeed>>()
-        .where((s) => s.isNotEmpty)
+        .where((list) => list.isNotEmpty)
         .toList();
-    if (nonEmpty.isEmpty) {
-      return null;
-    }
-    if (nonEmpty.length == 1) {
-      return nonEmpty.first;
-    }
 
-    final first = nonEmpty.first;
-    final last = nonEmpty.last;
+    if (speedGroups.isEmpty) return null;
+    if (speedGroups.length == 1) return speedGroups.first;
+
+    final firstGroup = speedGroups.first;
+    final lastGroup = speedGroups.last;
 
     final result = <TrainSeriesSpeed>[];
 
-    final lastByKey = <String, TrainSeriesSpeed>{};
-    for (final b in last) {
-      final key = '${b.trainSeries}_${b.breakSeries ?? ''}';
-      lastByKey[key] = b;
+    final lastGroupByTrainSeries = <String, TrainSeriesSpeed>{};
+    for (final entry in lastGroup) {
+      final key = '${entry.trainSeries}_${entry.breakSeries ?? ''}';
+      lastGroupByTrainSeries[key] = entry;
     }
 
-    for (final a in first) {
-      final key = '${a.trainSeries}_${a.breakSeries ?? ''}';
-      final b = lastByKey[key];
+    for (final start in firstGroup) {
+      final key = '${start.trainSeries}_${start.breakSeries ?? ''}';
+      final end = lastGroupByTrainSeries[key];
 
-      final speed = b != null ? IncomingOutgoingSpeed(incoming: a.speed, outgoing: b.speed) : a.speed;
+      final mergedSpeed = end != null ? IncomingOutgoingSpeed(incoming: start.speed, outgoing: end.speed) : start.speed;
+
       result.add(
         TrainSeriesSpeed(
-          trainSeries: a.trainSeries,
-          breakSeries: a.breakSeries,
-          text: a.text ?? b?.text,
-          reduced: a.reduced || (b?.reduced ?? false),
-          speed: speed,
+          trainSeries: start.trainSeries,
+          breakSeries: start.breakSeries,
+          text: start.text ?? end?.text,
+          reduced: start.reduced || (end?.reduced ?? false),
+          speed: mergedSpeed,
         ),
       );
     }
 
-    for (final b in last) {
-      final exists = first.any(
-        (a) => a.trainSeries == b.trainSeries && a.breakSeries == b.breakSeries,
+    for (final end in lastGroup) {
+      final isInFirstGroup = firstGroup.any(
+        (start) => start.trainSeries == end.trainSeries && start.breakSeries == end.breakSeries,
       );
-      if (!exists) {
-        result.add(b);
+
+      if (!isInFirstGroup) {
+        result.add(end);
       }
     }
     return result;

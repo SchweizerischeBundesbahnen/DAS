@@ -29,11 +29,11 @@ void main() {
       await loadJourney(tester, trainNumber: 'T5');
 
       //find first curve
-      final firstCurve = findDASTableRowByText('${l10n.p_journey_table_curve_type_curve} km 65.3 - 65.8');
+      final firstCurve = findDASTableRowByText('${l10n.p_journey_table_curve_type_curve} km 65.30 - 65.80');
       expect(firstCurve, findsOneWidget);
 
       //find second curve curve
-      final secondCurve = findDASTableRowByText('${l10n.p_journey_table_curve_type_curve} km 42.5 - 42.0');
+      final secondCurve = findDASTableRowByText('${l10n.p_journey_table_curve_type_curve} km 42.50 - 42.00');
       expect(secondCurve, findsOneWidget);
 
       await disconnect(tester);
@@ -62,9 +62,8 @@ void main() {
       );
       expect(kaltbrunnRow, findsOneWidget);
 
-      //todo still add the two after comma points to finding the row
       final summarizedCurveRow = findDASTableRowByText(
-        '${l10n.p_journey_table_curve_type_station_exit_curve} km 30.9 - 30.12',
+        '${l10n.p_journey_table_curve_type_station_exit_curve} km 30.90 - 30.12',
       );
       await tester.dragUntilVisible(summarizedCurveRow, dasTable, const Offset(0.0, -5));
       expect(summarizedCurveRow, findsOneWidget);
