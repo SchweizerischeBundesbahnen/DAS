@@ -134,7 +134,7 @@ class _ProviderScope extends StatelessWidget {
         ),
         Provider(
           create: (context) => DetailModalViewModel(
-            automaticAdvancementController: journeyTableViewModel.automaticAdvancementController,
+            journeyTableScrollController: journeyTableViewModel.journeyTableScrollController,
           ),
           dispose: (_, vm) => vm.dispose(),
         ),
@@ -158,8 +158,17 @@ class _ProviderScope extends StatelessWidget {
           create: (_) => ConnectivityViewModel(connectivityManager: DI.get()),
           dispose: (_, vm) => vm.dispose(),
         ),
+
         Provider(
-          create: (_) => LineSpeedViewModel(journeyTableViewModel: journeyTableViewModel),
+          create: (_) => JourneySettingsViewModel(
+            journeyStream: journeyTableViewModel.journey,
+            onBreakSeriesUpdated: () {
+              /// TODO: check in which advancement mode!
+              if (journeyTableViewModel.journeyTableScrollController.isActive) {
+                journeyTableViewModel.journeyTableScrollController.scrollToCurrentPosition();
+              }
+            },
+          ),
           dispose: (_, vm) => vm.dispose(),
         ),
 
@@ -194,12 +203,24 @@ class _ProviderScope extends StatelessWidget {
           },
           dispose: (_, vm) => vm.dispose(),
         ),
-        ProxyProvider<JourneyPositionViewModel, ReplacementSeriesViewModel>(
-          update: (_, journeyPositionVM, prev) {
+        ProxyProvider2<JourneyPositionViewModel, JourneyTableViewModel, JourneyTableAdvancementViewModel>(
+          update: (_, journeyPositionVM, journeyTableVM, prev) {
+            if (prev != null) return prev;
+            return JourneyTableAdvancementViewModel(
+              journeyStream: journeyTableVM.journey,
+              positionStream: journeyPositionVM.model,
+              scrollController: journeyTableVM.journeyTableScrollController,
+              onAdvancementModeToggled: journeyTableVM.toggleZenViewMode,
+            );
+          },
+        ),
+        ProxyProvider2<JourneyPositionViewModel, JourneySettingsViewModel, ReplacementSeriesViewModel>(
+          update: (_, journeyPositionVM, settingsVM, prev) {
             if (prev != null) return prev;
             return ReplacementSeriesViewModel(
               journeyTableViewModel: journeyTableViewModel,
               journeyPositionViewModel: journeyPositionVM,
+              journeySettingsViewModel: settingsVM,
             );
           },
           dispose: (_, vm) => vm.dispose(),
@@ -214,6 +235,16 @@ class _ProviderScope extends StatelessWidget {
           },
           dispose: (_, vm) => vm.dispose(),
         ),
+        ProxyProvider2<JourneyTableViewModel, JourneySettingsViewModel, LineSpeedViewModel>(
+          update: (_, journeyTableViewModel, settingsVM, prev) {
+            if (prev != null) return prev;
+            return LineSpeedViewModel(
+              journeyTableViewModel: journeyTableViewModel,
+              journeySettingsViewModel: settingsVM,
+            );
+          },
+          dispose: (_, vm) => vm.dispose(),
+        ),
         ProxyProvider<LineSpeedViewModel, CalculatedSpeedViewModel>(
           update: (_, lineSpeedVM, prev) {
             if (prev != null) return prev;
@@ -224,6 +255,7 @@ class _ProviderScope extends StatelessWidget {
           },
           dispose: (_, vm) => vm.dispose(),
         ),
+
         ProxyProvider4<
           JourneyPositionViewModel,
           PunctualityViewModel,
@@ -243,13 +275,19 @@ class _ProviderScope extends StatelessWidget {
           },
           dispose: (_, vm) => vm.dispose(),
         ),
-        ProxyProvider2<JourneyTableViewModel, JourneyPositionViewModel, BreakLoadSlipViewModel>(
-          update: (_, journeyVM, positionVM, prev) {
+        ProxyProvider3<
+          JourneyTableViewModel,
+          JourneyPositionViewModel,
+          JourneySettingsViewModel,
+          BreakLoadSlipViewModel
+        >(
+          update: (_, journeyVM, positionVM, settingsVM, prev) {
             if (prev != null) return prev;
             return BreakLoadSlipViewModel(
               journeyTableViewModel: journeyVM,
               journeyPositionViewModel: positionVM,
               formationRepository: DI.get(),
+              journeySettingsViewModel: settingsVM,
             );
           },
           dispose: (_, vm) => vm.dispose(),

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_table/journey_table_scroll_controller.dart';
-import 'package:app/pages/journey/settings/journey_settings.dart';
 import 'package:app/util/error_code.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:logging/logging.dart';
@@ -27,10 +26,6 @@ class JourneyTableViewModel {
 
   Journey? get journeyValue => _rxJourney.value;
 
-  Stream<JourneySettings> get settings => _rxSettings.stream;
-
-  JourneySettings get settingsValue => _rxSettings.value;
-
   Stream<ErrorCode?> get errorCode => _rxErrorCode.stream;
 
   Stream<bool> get showDecisiveGradient => _rxShowDecisiveGradient.distinct();
@@ -43,7 +38,6 @@ class JourneyTableViewModel {
 
   JourneyTableScrollController journeyTableScrollController = JourneyTableScrollController();
 
-  final _rxSettings = BehaviorSubject<JourneySettings>.seeded(JourneySettings());
   final _rxErrorCode = BehaviorSubject<ErrorCode?>.seeded(null);
   final _rxJourney = BehaviorSubject<Journey?>.seeded(null);
 
@@ -67,15 +61,6 @@ class JourneyTableViewModel {
     _rxZenViewMode.add(!isZenViewModeValue);
   }
 
-  void setAutomaticAdvancement(bool active) {
-    _log.info('Automatic advancement state changed to active=$active');
-    if (active) {
-      journeyTableScrollController.scrollToCurrentPosition();
-    }
-    _rxSettings.add(_rxSettings.value.copyWith(isAutoAdvancementEnabled: active));
-    toggleZenViewMode();
-  }
-
   void toggleKmDecisiveGradient() {
     if (!showDecisiveGradientValue) {
       _rxShowDecisiveGradient.add(true);
@@ -90,7 +75,6 @@ class JourneyTableViewModel {
 
   void dispose() {
     _rxJourney.close();
-    _rxSettings.close();
     _rxZenViewMode.close();
     _rxShowDecisiveGradient.close();
     _rxErrorCode.close();
@@ -114,16 +98,12 @@ class JourneyTableViewModel {
           WakelockPlus.disable();
           if (_sferaRemoteRepo.lastError != null) {
             _rxErrorCode.add(.fromSfera(_sferaRemoteRepo.lastError!));
-            setAutomaticAdvancement(false);
           }
           break;
       }
     });
     _journeySubscription = _sferaRemoteRepo.journeyStream.listen((journey) {
       _rxJourney.add(journey);
-      if (journey == null) _resetSettings();
     }, onError: _rxJourney.addError);
   }
-
-  void _resetSettings() => _rxSettings.add(JourneySettings());
 }

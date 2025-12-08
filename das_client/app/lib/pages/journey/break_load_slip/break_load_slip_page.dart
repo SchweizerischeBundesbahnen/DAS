@@ -11,6 +11,7 @@ import 'package:app/pages/journey/break_load_slip/widgets/formation_run_navigati
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_view_model.dart';
 import 'package:app/pages/journey/journey_table/punctuality/punctuality_view_model.dart';
 import 'package:app/pages/journey/journey_table_view_model.dart';
+import 'package:app/pages/journey/settings/journey_settings_view_model.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:formation/component.dart';
@@ -47,13 +48,14 @@ class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
         },
         dispose: (_, vm) => vm.dispose(),
       ),
-      ProxyProvider2<JourneyTableViewModel, JourneyPositionViewModel, BreakLoadSlipViewModel>(
-        update: (_, journeyVM, positionVM, prev) {
+      ProxyProvider3<JourneyTableViewModel, JourneyPositionViewModel, JourneySettingsViewModel, BreakLoadSlipViewModel>(
+        update: (_, journeyVM, positionVM, settingsVM, prev) {
           if (prev != null) return prev;
           return BreakLoadSlipViewModel(
             journeyTableViewModel: journeyVM,
             journeyPositionViewModel: positionVM,
             formationRepository: DI.get(),
+            journeySettingsViewModel: settingsVM,
           );
         },
         dispose: (_, vm) => vm.dispose(),

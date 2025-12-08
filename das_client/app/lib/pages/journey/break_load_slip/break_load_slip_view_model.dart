@@ -2,8 +2,9 @@ import 'dart:async';
 
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_model.dart';
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_view_model.dart';
-import 'package:app/pages/journey/journey_table/widgets/table/config/journey_settings.dart';
 import 'package:app/pages/journey/journey_table_view_model.dart';
+import 'package:app/pages/journey/settings/journey_settings.dart';
+import 'package:app/pages/journey/settings/journey_settings_view_model.dart';
 import 'package:collection/collection.dart';
 import 'package:formation/component.dart';
 import 'package:rxdart/rxdart.dart';
@@ -14,15 +15,19 @@ class BreakLoadSlipViewModel {
     required JourneyTableViewModel journeyTableViewModel,
     required FormationRepository formationRepository,
     required JourneyPositionViewModel journeyPositionViewModel,
+    required JourneySettingsViewModel journeySettingsViewModel,
   }) : _journeyTableViewModel = journeyTableViewModel,
        _formationRepository = formationRepository,
-       _journeyPositionViewModel = journeyPositionViewModel {
+       _journeyPositionViewModel = journeyPositionViewModel,
+       _journeySettingsViewModel = journeySettingsViewModel {
     _init();
   }
 
   final JourneyTableViewModel _journeyTableViewModel;
   final FormationRepository _formationRepository;
   final JourneyPositionViewModel _journeyPositionViewModel;
+  final JourneySettingsViewModel _journeySettingsViewModel;
+
   Journey? _latestJourney;
   JourneyPositionModel? _latestPosition;
 
@@ -37,7 +42,7 @@ class BreakLoadSlipViewModel {
 
   Stream<FormationRun?> get formationRun => _rxFormationRun.distinct();
 
-  Stream<JourneySettings?> get settings => _journeyTableViewModel.settings;
+  Stream<JourneySettings?> get settings => _journeySettingsViewModel.model;
 
   Formation? get formationValue => _rxFormation.value;
 
@@ -123,7 +128,7 @@ class BreakLoadSlipViewModel {
   bool get isActiveFormationRun => _calculateActiveFormationRun() == formationRunValue;
 
   bool isJourneyAndActiveFormationRunBreakSeriesDifferent() {
-    final selectedBreakSeries = _journeyTableViewModel.settingsValue.resolvedBreakSeries(_latestJourney?.metadata);
+    final selectedBreakSeries = _journeySettingsViewModel.modelValue.resolvedBreakSeries(_latestJourney?.metadata);
     final formationRunBreakSeries = _resolveBreakSeries(formationRunValue);
     return formationRunBreakSeries != null && formationRunBreakSeries != selectedBreakSeries;
   }
@@ -131,7 +136,7 @@ class BreakLoadSlipViewModel {
   void updateJourneyBreakSeriesFromActiveFormationRun() {
     final formationRunBreakSeries = _resolveBreakSeries(formationRunValue);
     if (formationRunBreakSeries != null) {
-      _journeyTableViewModel.updateBreakSeries(formationRunBreakSeries);
+      _journeySettingsViewModel.updateBreakSeries(formationRunBreakSeries);
     }
   }
 

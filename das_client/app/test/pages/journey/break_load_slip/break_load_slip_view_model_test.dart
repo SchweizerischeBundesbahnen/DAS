@@ -1,8 +1,9 @@
 import 'package:app/pages/journey/break_load_slip/break_load_slip_view_model.dart';
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_model.dart';
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_view_model.dart';
-import 'package:app/pages/journey/journey_table/widgets/table/config/journey_settings.dart';
 import 'package:app/pages/journey/journey_table_view_model.dart';
+import 'package:app/pages/journey/settings/journey_settings.dart';
+import 'package:app/pages/journey/settings/journey_settings_view_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:formation/component.dart';
 import 'package:mockito/annotations.dart';
@@ -16,12 +17,14 @@ import 'break_load_slip_view_model_test.mocks.dart';
   MockSpec<JourneyTableViewModel>(),
   MockSpec<FormationRepository>(),
   MockSpec<JourneyPositionViewModel>(),
+  MockSpec<JourneySettingsViewModel>(),
 ])
 void main() {
   late BreakLoadSlipViewModel testee;
   late MockJourneyTableViewModel mockJourneyTableViewModel;
   late MockFormationRepository mockFormationRepository;
   late MockJourneyPositionViewModel mockJourneyPositionViewModel;
+  late MockJourneySettingsViewModel mockJourneySettingsViewModel;
   late BehaviorSubject<Journey?> journeySubject;
   late BehaviorSubject<JourneySettings> settingsSubject;
   late BehaviorSubject<JourneyPositionModel> positionSubject;
@@ -92,14 +95,15 @@ void main() {
     mockJourneyTableViewModel = MockJourneyTableViewModel();
     mockFormationRepository = MockFormationRepository();
     mockJourneyPositionViewModel = MockJourneyPositionViewModel();
+    mockJourneySettingsViewModel = MockJourneySettingsViewModel();
     journeySubject = BehaviorSubject<Journey?>();
     settingsSubject = BehaviorSubject.seeded(JourneySettings());
     positionSubject = BehaviorSubject.seeded(JourneyPositionModel());
     formationSubject = BehaviorSubject<Formation?>();
 
     when(mockJourneyTableViewModel.journey).thenAnswer((_) => journeySubject.stream);
-    when(mockJourneyTableViewModel.settings).thenAnswer((_) => settingsSubject.stream);
-    when(mockJourneyTableViewModel.settingsValue).thenAnswer((_) => settingsSubject.value);
+    when(mockJourneySettingsViewModel.model).thenAnswer((_) => settingsSubject.stream);
+    when(mockJourneySettingsViewModel.modelValue).thenAnswer((_) => settingsSubject.value);
     when(mockJourneyPositionViewModel.model).thenAnswer((_) => positionSubject.stream);
     when(
       mockFormationRepository.watchFormation(
@@ -113,6 +117,7 @@ void main() {
       journeyTableViewModel: mockJourneyTableViewModel,
       formationRepository: mockFormationRepository,
       journeyPositionViewModel: mockJourneyPositionViewModel,
+      journeySettingsViewModel: mockJourneySettingsViewModel,
     );
   });
 
@@ -295,7 +300,7 @@ void main() {
     testee.updateJourneyBreakSeriesFromActiveFormationRun();
 
     verify(
-      mockJourneyTableViewModel.updateBreakSeries(BreakSeries(trainSeries: TrainSeries.A, breakSeries: 75)),
+      mockJourneySettingsViewModel.updateBreakSeries(BreakSeries(trainSeries: TrainSeries.A, breakSeries: 75)),
     ).called(1);
   });
 }
