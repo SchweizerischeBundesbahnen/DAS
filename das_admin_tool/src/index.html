@@ -11,11 +11,12 @@
     (function(s,t,a,n){s[t]||(s[t]=a,n=s[a]=function(){n.q.push(arguments)},
       n.q=[],n.v=2,n.l=1*new Date)})(window,"InstanaEumObject","ineum");
 
-    const instanaKey=typeof process==='object'&&process.env&&process.env.INSTANA_KEY?process.env.INSTANA_KEY:'m4omQnlTQXegxnP_eOSOlg';
-    ineum('reportingUrl', 'https://eum-green-saas.instana.io');
-    ineum('key', instanaKey);
-    ineum('trackSessions');
-    ineum('allowedOrigins', [/.*\.api\.sbb\.ch/i]);
+    if(process==='object'&&process.env&&process.env.INSTANA_KEY) {
+      ineum('reportingUrl', 'https://eum-green-saas.instana.io');
+      ineum('key', process.env.INSTANA_KEY);
+      ineum('trackSessions');
+      ineum('allowedOrigins', [/.*\.api\.sbb\.ch/i]);
+    }
   </script>
   <script defer crossorigin="anonymous" src="https://eum.instana.io/1.8.1/eum.min.js"
           integrity="sha384-qFzHZ5BC7HOPEBSYkbYSv+DBWrG34P1QW9mIaCR41db6yOJNYmH4antW6KLkc6v1"></script>
