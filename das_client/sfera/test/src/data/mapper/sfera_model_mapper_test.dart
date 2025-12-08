@@ -304,7 +304,6 @@ void main() {
     expect(curvePoints.where((c) => c.curvePointType == CurvePointType.end), isEmpty);
     expect(curvePoints[0].curvePointType, CurvePointType.summarized);
     expect(curvePoints.where((c) => c.curvePointType == .end), isEmpty);
-    expect(curvePoints[0].curvePointType, CurvePointType.begin);
     expect(curvePoints[0].curveType, CurveType.curve);
     expect(curvePoints[0].comment, 'Kurve 1 comment');
     expect(curvePoints[1].curvePointType, CurvePointType.begin);

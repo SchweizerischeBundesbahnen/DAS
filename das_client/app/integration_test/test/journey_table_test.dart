@@ -35,6 +35,8 @@ void main() {
       //find second curve curve
       final secondCurve = findDASTableRowByText('${l10n.p_journey_table_curve_type_curve} km 42.5 - 42.0');
       expect(secondCurve, findsOneWidget);
+
+      await disconnect(tester);
     });
 
     testWidgets('test journey displays summarized curve as one', (tester) async {
@@ -309,7 +311,7 @@ void main() {
 
       final expectedSpeeds = {
         'Genève-Aéroport': '90',
-        '65.3': '44',
+        '65.3': '55',
         'New Line Speed All': '90',
         'Gland': '90',
       };
