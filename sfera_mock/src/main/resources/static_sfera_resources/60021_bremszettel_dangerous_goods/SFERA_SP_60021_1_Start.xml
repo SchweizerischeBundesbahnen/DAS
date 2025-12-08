@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
+                SP_ID="60021_1_Start" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="800" SP_Status="Valid">
+    <SP_Zone>
+        <IM_ID>1285</IM_ID>
+    </SP_Zone>
+    <SP_Points>
+        <TimingPoint TP_ID="Start" location="100">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01150</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+        <TimingPoint TP_ID="Mid" location="400">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>00400</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+        <TimingPoint TP_ID="End" location="700">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>03034</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+        <Signal>
+            <Signal_ID signal_ID_Physical="A123" location="200"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="A123"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="B234" location="300"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="B234"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="C345" location="500"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="C345"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="D456" location="600"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="D456"/>
+        </Signal>
+    </SP_Points>
+    <SP_Areas>
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="100" endLocation="100"
+                          TAF_TAP_location_abbreviation="ST" TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01150</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Start</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="400" endLocation="400"
+                          TAF_TAP_location_abbreviation="MD" TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>00400</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Mid</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="700" endLocation="700"
+                          TAF_TAP_location_abbreviation="ED" TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>03034</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>End</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+    </SP_Areas>
+    <SP_ContextInformation>
+        <KilometreReferencePoint location="100">
+            <KM_Reference kmRef="1"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="200">
+            <KM_Reference kmRef="2"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="300">
+            <KM_Reference kmRef="3"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="400">
+            <KM_Reference kmRef="4"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="500">
+            <KM_Reference kmRef="5"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="600">
+            <KM_Reference kmRef="6"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="700">
+            <KM_Reference kmRef="7"/>
+        </KilometreReferencePoint>
+    </SP_ContextInformation>
+</SegmentProfile>

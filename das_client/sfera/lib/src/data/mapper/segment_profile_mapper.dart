@@ -151,6 +151,7 @@ class SegmentProfileMapper {
           departureAuthorization: _parseDepartureAuthorization(tafTapLocation.departureAuthNsp),
           properties: _parseStationProperties(tafTapLocation.property?.xmlStationProperty.element.properties),
           localRegulationSections: _parseLocalRegulationSegments(tafTapLocation.localRegulations),
+          locationCode: tafTapLocation.locationIdent.locationCode,
         ),
       );
     }

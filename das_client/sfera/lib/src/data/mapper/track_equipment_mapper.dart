@@ -1,6 +1,5 @@
 import 'package:logging/logging.dart';
 import 'package:sfera/src/data/comparator/start_end_int_comparator.dart';
-import 'package:sfera/src/data/dto/enums/start_end_qualifier_dto.dart';
 import 'package:sfera/src/data/dto/enums/track_equipment_type_dto.dart';
 import 'package:sfera/src/data/dto/network_specific_area_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';

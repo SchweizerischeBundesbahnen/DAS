@@ -1,7 +1,7 @@
 import 'package:app/di/di.dart';
+import 'package:app/pages/journey/journey_table_view_model.dart';
 import 'package:app/pages/journey/navigation/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
-import 'package:app/pages/journey/journey_table_view_model.dart';
 import 'package:app/pages/journey/warn_app_view_model.dart';
 import 'package:get_it/get_it.dart';
 import 'package:local_regulations/component.dart';

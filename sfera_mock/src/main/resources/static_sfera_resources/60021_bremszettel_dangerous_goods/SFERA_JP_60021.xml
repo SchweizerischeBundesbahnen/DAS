@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
+                JP_Version="1" JP_Status="Valid">
+    <TrainIdentification>
+        <OTN_ID>
+            <teltsi_Company>1285</teltsi_Company>
+            <teltsi_OperationalTrainNumber>60021</teltsi_OperationalTrainNumber>
+            <teltsi_StartDate>2025-11-13</teltsi_StartDate>
+        </OTN_ID>
+    </TrainIdentification>
+    <SegmentProfileReference SP_ID="60021_1_Start" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Start"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Mid"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="End"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TrainCharacteristicsRef TC_ID="60021_1" TC_VersionMajor="1" TC_VersionMinor="0" location="0">
+            <TC_RU_ID>1285</TC_RU_ID>
+        </TrainCharacteristicsRef>
+    </SegmentProfileReference>
+    <General_JP_Information>
+        <General_JP_Information_NSP>
+            <teltsi_Company>1285</teltsi_Company>
+            <NetworkSpecificParameter name="tms_Operating_Day_Date" value="2025-11-28"/>
+        </General_JP_Information_NSP>
+    </General_JP_Information>
+</JourneyProfile>
