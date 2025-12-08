@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {
   SbbSidebar,
   SbbSidebarCloseButton,
@@ -16,6 +16,7 @@ import {
   SbbIconSidebarContent,
   SbbIconSidebarLink
 } from '@sbb-esta/lyne-angular/icon-sidebar';
+import {OidcSecurityService} from 'angular-auth-oidc-client';
 
 @Component({
   selector: 'app-icon-sidebar',
@@ -39,5 +40,5 @@ import {
   styleUrl: './icon-sidebar.css',
 })
 export class IconSidebar {
-
+  protected oidcSecurityService = inject(OidcSecurityService);
 }
