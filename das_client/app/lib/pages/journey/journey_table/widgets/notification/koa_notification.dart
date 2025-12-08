@@ -4,6 +4,7 @@ import 'package:app/pages/journey/journey_table/ux_testing_view_model.dart';
 import 'package:app/pages/journey/journey_table/widgets/departure_process_modal_sheet.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/assets.dart';
+import 'package:app/widgets/das_colors.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -58,7 +59,7 @@ class _WaitNotification extends StatelessWidget {
   PromotionBoxStyle _waitStyle(BuildContext context) {
     final isDark = ThemeUtil.isDarkMode(context);
     final resolvedGradientColors = isDark
-        ? [Color(0xFF0079C7), Color(0xFF143A85), Color(0xFF143A85), Color(0xFF0079C7)]
+        ? [DASColors.koaLightBlue, DASColors.koaDarkBlue, DASColors.koaDarkBlue, DASColors.koaLightBlue]
         : [SBBColors.cloud, SBBColors.milk, SBBColors.milk, SBBColors.cloud];
     final resolvedBadgeShadowColor = isDark
         ? SBBColors.royal.withValues(alpha: 0.6)

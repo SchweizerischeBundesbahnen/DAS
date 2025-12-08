@@ -52,7 +52,7 @@ describe('Header', () => {
 
   it('should render name', () => {
     expect(
-      fixture.nativeElement.querySelector('sbb-header-button').textContent
+      fixture.nativeElement.querySelector('sbb-header-button:nth-last-of-type(2)').textContent
     ).toContain('User');
   })
 

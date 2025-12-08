@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
+import 'package:app/pages/journey/break_load_slip/break_load_slip_page.dart';
 import 'package:app/pages/journey/journey_table/widgets/header/extended_menu.dart';
 import 'package:app/pages/journey/journey_table/widgets/header/next_stop.dart';
 import 'package:app/pages/journey/journey_table/widgets/header/start_pause_button.dart';
@@ -113,6 +114,17 @@ Future<void> openReducedJourneyMenu(WidgetTester tester) async {
   await Future.delayed(const Duration(milliseconds: 50));
 }
 
+Future<void> openBreakSlipPage(WidgetTester tester) async {
+  await openExtendedMenu(tester);
+  await tapElement(tester, find.text(l10n.w_extended_menu_breaking_slip_action));
+  await Future.delayed(const Duration(milliseconds: 50));
+}
+
+Future<void> closeBreakSlipPage(WidgetTester tester) async {
+  await tapElement(tester, find.byKey(BreakLoadSlipPage.dismissButtonKey));
+  await Future.delayed(const Duration(milliseconds: 50));
+}
+
 Future<void> dismissExtendedMenu(WidgetTester tester) async {
   final closeButton = find.byKey(ExtendedMenu.menuButtonCloseKey);
   await tapElement(tester, closeButton.first);
@@ -194,8 +206,4 @@ Future<void> dragUntilTextInStickyHeader(WidgetTester tester, String textToSearc
     maxIteration: 100,
   );
   await tester.pumpAndSettle(ScrollableAlign.alignScrollDuration);
-}
-
-extension _FlutterErrorExtension on FlutterError {
-  bool get isPixelOverflowError => diagnostics.any((e) => e.value.toString().startsWith('A RenderFlex overflowed by'));
 }

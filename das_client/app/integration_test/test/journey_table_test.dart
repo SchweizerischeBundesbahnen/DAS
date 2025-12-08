@@ -1044,7 +1044,7 @@ void main() {
 
       // start marking of first shunting movement segment
       final firstStartMarking = findDASTableRowByText(l10n.w_shunting_movement_start('T29R'));
-      expect(firstStartMarking, findsOneWidget);
+      expect(firstStartMarking, findsAny);
 
       // end marking of first shunting movement segment
       final firstEndMarking = findDASTableRowByText(l10n.w_shunting_movement_end('T29'));

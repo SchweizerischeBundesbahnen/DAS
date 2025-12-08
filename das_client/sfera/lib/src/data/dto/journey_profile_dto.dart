@@ -1,5 +1,6 @@
 import 'package:sfera/src/data/dto/enums/jp_status_dto.dart';
 import 'package:sfera/src/data/dto/enums/xml_enum.dart';
+import 'package:sfera/src/data/dto/general_jp_information_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_ref_dto.dart';
@@ -22,6 +23,8 @@ class JourneyProfileDto extends SferaXmlElementDto {
 
   JpStatusDto get status =>
       XmlEnum.valueOf<JpStatusDto>(JpStatusDto.values, attributes['JP_Status']) ?? JpStatusDto.valid;
+
+  GeneralJpInformationDto? get generalJpInformation => children.whereType<GeneralJpInformationDto>().firstOrNull;
 
   @override
   bool validate() {
