@@ -12,7 +12,6 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:formation/component.dart';
 import 'package:logging/logging.dart';
-import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
@@ -23,15 +22,19 @@ class BreakLoadSlipViewModel {
     required JourneyTableViewModel journeyTableViewModel,
     required FormationRepository formationRepository,
     required JourneyPositionViewModel journeyPositionViewModel,
+    DetailModalViewModel? detailModalViewModel,
   }) : _journeyTableViewModel = journeyTableViewModel,
        _formationRepository = formationRepository,
-       _journeyPositionViewModel = journeyPositionViewModel {
+       _journeyPositionViewModel = journeyPositionViewModel,
+       _detailModalViewModel = detailModalViewModel {
     _init();
   }
 
   final JourneyTableViewModel _journeyTableViewModel;
   final FormationRepository _formationRepository;
   final JourneyPositionViewModel _journeyPositionViewModel;
+  final DetailModalViewModel? _detailModalViewModel;
+
   Journey? _latestJourney;
   JourneyPositionModel? _latestPosition;
   bool _openFullscreen = true;
@@ -211,8 +214,7 @@ class BreakLoadSlipViewModel {
       context.router.push(BreakLoadSlipRoute());
       _changeOpenFullscreenFlag(false);
     } else {
-      final viewModel = context.read<DetailModalViewModel>();
-      viewModel.open(BreakLoadSlipModalBuilder(), maximize: false);
+      _detailModalViewModel?.open(BreakLoadSlipModalBuilder(), maximize: false);
     }
   }
 }

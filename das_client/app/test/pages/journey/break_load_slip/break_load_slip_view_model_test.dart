@@ -1,8 +1,11 @@
 import 'package:app/pages/journey/break_load_slip/break_load_slip_view_model.dart';
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_model.dart';
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_view_model.dart';
+import 'package:app/pages/journey/journey_table/widgets/detail_modal/detail_modal_view_model.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/config/journey_settings.dart';
 import 'package:app/pages/journey/journey_table_view_model.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:formation/component.dart';
 import 'package:mockito/annotations.dart';
@@ -16,12 +19,20 @@ import 'break_load_slip_view_model_test.mocks.dart';
   MockSpec<JourneyTableViewModel>(),
   MockSpec<FormationRepository>(),
   MockSpec<JourneyPositionViewModel>(),
+  MockSpec<BuildContext>(),
+  MockSpec<StackRouter>(),
+  MockSpec<StackRouterScope>(),
+  MockSpec<DetailModalViewModel>(),
 ])
 void main() {
   late BreakLoadSlipViewModel testee;
   late MockJourneyTableViewModel mockJourneyTableViewModel;
   late MockFormationRepository mockFormationRepository;
   late MockJourneyPositionViewModel mockJourneyPositionViewModel;
+  late MockDetailModalViewModel mockDetailModalViewModel;
+  late MockBuildContext mockBuildContext;
+  late MockStackRouter mockStackRouter;
+  late MockStackRouterScope mockStackRouterScope;
   late BehaviorSubject<Journey?> journeySubject;
   late BehaviorSubject<JourneySettings> settingsSubject;
   late BehaviorSubject<JourneyPositionModel> positionSubject;
@@ -92,6 +103,11 @@ void main() {
     mockJourneyTableViewModel = MockJourneyTableViewModel();
     mockFormationRepository = MockFormationRepository();
     mockJourneyPositionViewModel = MockJourneyPositionViewModel();
+    mockDetailModalViewModel = MockDetailModalViewModel();
+    mockBuildContext = MockBuildContext();
+    mockStackRouter = MockStackRouter();
+    mockStackRouterScope = MockStackRouterScope();
+
     journeySubject = BehaviorSubject<Journey?>();
     settingsSubject = BehaviorSubject.seeded(JourneySettings());
     positionSubject = BehaviorSubject.seeded(JourneyPositionModel());
@@ -109,10 +125,14 @@ void main() {
       ),
     ).thenAnswer((_) => formationSubject.stream);
 
+    when(mockBuildContext.findAncestorWidgetOfExactType()).thenReturn(mockStackRouterScope);
+    when(mockStackRouterScope.controller).thenReturn(mockStackRouter);
+
     testee = BreakLoadSlipViewModel(
       journeyTableViewModel: mockJourneyTableViewModel,
       formationRepository: mockFormationRepository,
       journeyPositionViewModel: mockJourneyPositionViewModel,
+      detailModalViewModel: mockDetailModalViewModel,
     );
   });
 
@@ -297,6 +317,37 @@ void main() {
     verify(
       mockJourneyTableViewModel.updateBreakSeries(BreakSeries(trainSeries: TrainSeries.A, breakSeries: 75)),
     ).called(1);
+  });
+
+  test('open_whenOpenIsCalled_opensFullscreenOrModal', () async {
+    // ACT
+    journeySubject.add(journey);
+    formationSubject.add(formation);
+
+    await processStreams();
+
+    // Open first time (should open fullscreen)
+    testee.open(mockBuildContext);
+
+    verify(mockStackRouter.push(any)).called(1);
+    verifyNever(mockDetailModalViewModel.open(any, maximize: false));
+
+    // Open second time (should open modal)
+    testee.open(mockBuildContext);
+
+    verifyNever(mockStackRouter.push(any));
+    verify(mockDetailModalViewModel.open(any, maximize: false)).called(1);
+
+    final position = JourneyPositionModel(currentPosition: journey.data.whereType<ServicePoint>().elementAt(1));
+    positionSubject.add(position);
+
+    await processStreams();
+
+    // FormationRun changed, should open fullscreen again
+    testee.open(mockBuildContext);
+
+    verify(mockStackRouter.push(any)).called(1);
+    verifyNever(mockDetailModalViewModel.open(any, maximize: false));
   });
 }
 

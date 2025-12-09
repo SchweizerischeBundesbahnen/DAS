@@ -12,23 +12,18 @@ import '../mocks/mock_formation_repository.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('breakSlip_whenNoDataAvailable_doesNotShowExtendedMenuItem', (tester) async {
+  testWidgets('breakSlip_whenNoDataAvailable_doesNotShowButton', (tester) async {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T9999');
 
     final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
 
-    // Open extended menu
-    await openExtendedMenu(tester);
-    expect(find.text(l10n.w_extended_menu_breaking_slip_action), findsNothing);
-    await dismissExtendedMenu(tester);
+    expect(find.text(l10n.p_journey_header_button_break_slip), findsNothing);
 
     formationRepository.emitT9999Formation();
     await tester.pumpAndSettle();
 
-    await openExtendedMenu(tester);
-    expect(find.text(l10n.w_extended_menu_breaking_slip_action), findsOneWidget);
-    await dismissExtendedMenu(tester);
+    expect(find.text(l10n.p_journey_header_button_break_slip), findsOneWidget);
 
     await disconnect(tester);
   });
@@ -132,6 +127,50 @@ void main() {
     await closeBreakSlipPage(tester);
 
     expect(find.byKey(JourneyTable.differentBreakSeriesWarningKey), findsNothing);
+
+    await disconnect(tester);
+  });
+
+  testWidgets('breakSlipModal_opensAndDisplayCorrectInformation', (tester) async {
+    await prepareAndStartApp(tester);
+
+    final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
+    formationRepository.emitT9999Formation();
+
+    await loadJourney(tester, trainNumber: 'T9999M');
+
+    // Open fullscreen
+    await openBreakSlipPage(tester);
+    await closeBreakSlipPage(tester);
+
+    // Open modal
+    await openBreakSlipPage(tester);
+
+    expect(find.text(l10n.w_break_load_slip_modal_title), findsOneWidget);
+    expect(find.text(l10n.p_break_load_slip_special_restrictions_title), findsOneWidget);
+    expect(find.text(l10n.w_break_load_slip_modal_open_break_slip), findsOneWidget);
+
+    await disconnect(tester);
+  });
+
+  testWidgets('breakSlipModal_openFullScreenFromModal', (tester) async {
+    await prepareAndStartApp(tester);
+
+    final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
+    formationRepository.emitT9999Formation();
+
+    await loadJourney(tester, trainNumber: 'T9999M');
+
+    // Open fullscreen
+    await openBreakSlipPage(tester);
+    await closeBreakSlipPage(tester);
+
+    // Open modal
+    await openBreakSlipPage(tester);
+
+    await tapElement(tester, find.text(l10n.w_break_load_slip_modal_open_break_slip));
+
+    expect(find.byType(BreakLoadSlipPage), findsOneWidget);
 
     await disconnect(tester);
   });
