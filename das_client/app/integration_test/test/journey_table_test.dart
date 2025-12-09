@@ -96,8 +96,11 @@ void main() {
 
       await tapElement(tester, pauseButton);
 
+      final dasTable = find.byType(DASTable);
+      expect(dasTable, findsOneWidget);
+
       // find gsmP-Icon
-      final gsmPKey = find.byKey(CommunicationNetworkIcon.gsmPKey);
+      final gsmPKey = find.descendant(of: dasTable, matching: find.byKey(CommunicationNetworkIcon.gsmPKey));
       expect(gsmPKey, findsOneWidget);
 
       await disconnect(tester);
