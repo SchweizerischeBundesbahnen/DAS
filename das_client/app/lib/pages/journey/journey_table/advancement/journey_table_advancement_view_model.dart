@@ -76,7 +76,7 @@ class JourneyTableAdvancementViewModel {
   }
 
   void scrollToCurrentPositionIfNotPaused() {
-    if (_rxModel is! Paused) _scrollToCurrentPosition();
+    if (_rxModel.value is! Paused) _scrollToCurrentPositionIfInAutoScrollingZone();
   }
 
   void setAdvancementModeToManual() {
@@ -143,7 +143,7 @@ class JourneyTableAdvancementViewModel {
   }
 
   bool get _idleScrollingActiveAndTimerInactive {
-    return _rxAutomaticIdleScrollingActive.value && !(_idleScrollTimer?.isActive ?? true);
+    return _rxAutomaticIdleScrollingActive.value && !(_idleScrollTimer?.isActive ?? false);
   }
 
   void _onLastSignaledPositionChanged(SignaledPosition? signaledPosition) {

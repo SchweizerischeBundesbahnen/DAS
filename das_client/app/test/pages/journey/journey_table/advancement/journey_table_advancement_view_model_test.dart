@@ -67,6 +67,7 @@ void main() {
   tearDown(() {
     reset(mockScrollController);
     modelRegister.clear();
+    GetIt.I.reset();
   });
 
   test('toggleAdvancementMode_whenAutomatic_thenEmitsPausedWithNextAutomatic', () {

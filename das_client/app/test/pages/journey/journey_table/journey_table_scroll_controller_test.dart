@@ -6,7 +6,6 @@ import 'package:app/pages/journey/journey_table/widgets/table/signal_row.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:sfera/component.dart';
@@ -57,10 +56,6 @@ void main() {
       tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)),
     );
     testee.updateRenderedRows(renderedRows);
-  });
-
-  tearDown(() {
-    GetIt.I.reset();
   });
 
   test('scrollToJourneyPoint_whenEmptyRenderedRows_thenDoesNothing', () {
