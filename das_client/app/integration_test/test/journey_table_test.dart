@@ -24,6 +24,68 @@ import '../util/test_utils.dart';
 
 void main() {
   group('train journey table test', () {
+    testWidgets('test journey displays end of curves correctly', (tester) async {
+      await prepareAndStartApp(tester);
+      await loadJourney(tester, trainNumber: 'T5');
+
+      //find first curve
+      final firstCurve = findDASTableRowByText('${l10n.p_journey_table_curve_type_curve} km 65.30 - 65.80');
+      expect(firstCurve, findsOneWidget);
+
+      //find second curve curve
+      final secondCurve = findDASTableRowByText('${l10n.p_journey_table_curve_type_curve} km 42.50 - 42.00');
+      expect(secondCurve, findsOneWidget);
+
+      await disconnect(tester);
+    });
+
+    testWidgets('test journey displays summarized curve as one', (tester) async {
+      await prepareAndStartApp(tester);
+      await loadJourney(tester, trainNumber: '2029');
+
+      //find pause button and press it
+      final pauseButton = find.text(l10n.p_journey_header_button_pause);
+      expect(pauseButton, findsOneWidget);
+
+      await tapElement(tester, pauseButton);
+
+      final dasTable = find.byType(DASTable);
+      expect(dasTable, findsOneWidget);
+
+      final kaltbrunnRow = findDASTableRowByText('Kaltbrunn');
+      await tester.dragUntilVisible(
+        kaltbrunnRow,
+        dasTable,
+        const Offset(0, -400),
+        maxIteration: 80,
+        duration: const Duration(milliseconds: 120),
+      );
+      expect(kaltbrunnRow, findsOneWidget);
+
+      final summarizedCurveRow = findDASTableRowByText(
+        '${l10n.p_journey_table_curve_type_station_exit_curve} km 30.90 - 30.12',
+      );
+      await tester.dragUntilVisible(summarizedCurveRow, dasTable, const Offset(0.0, -5));
+      expect(summarizedCurveRow, findsOneWidget);
+
+      final speed = find.descendant(of: summarizedCurveRow, matching: find.byType(SpeedDisplay));
+      expect(speed, findsOneWidget);
+
+      //find all speeds and the partition in between separately because they are different widgets
+      final speedPartMin = find.descendant(of: speed, matching: find.text('85'));
+      final dash = String.fromCharCode(45);
+      final speedPartition = find.descendant(
+        of: speed,
+        matching: find.text(' $dash '),
+      );
+      final speedPartMax = find.descendant(of: speed, matching: find.text('95'));
+      expect(speedPartMin, findsOneWidget);
+      expect(speedPartition, findsOneWidget);
+      expect(speedPartMax, findsOneWidget);
+
+      await disconnect(tester);
+    });
+
     testWidgets('test displays kilometer and communication network changes correctly', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T9999');
@@ -32,8 +94,13 @@ void main() {
       final pauseButton = find.text(l10n.p_journey_header_button_pause);
       expect(pauseButton, findsOneWidget);
 
+      await tapElement(tester, pauseButton);
+
+      final dasTable = find.byType(DASTable);
+      expect(dasTable, findsOneWidget);
+
       // find gsmP-Icon
-      final gsmPKey = find.byKey(CommunicationNetworkIcon.gsmPKey);
+      final gsmPKey = find.descendant(of: dasTable, matching: find.byKey(CommunicationNetworkIcon.gsmPKey));
       expect(gsmPKey, findsOneWidget);
 
       await disconnect(tester);
@@ -89,10 +156,10 @@ void main() {
       final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
-      final curveName = findDASTableRowByText(l10n.p_journey_table_curve_type_curve);
-      expect(curveName, findsOneWidget);
+      final curveName = find.textContaining(l10n.p_journey_table_curve_type_curve);
+      expect(curveName, findsOne);
 
-      final curveIcon = find.descendant(of: curveName, matching: find.byKey(CurvePointRow.curvePointIconKey));
+      final curveIcon = find.byKey(CurvePointRow.curvePointIconKey);
       expect(curveIcon, findsOneWidget);
 
       await disconnect(tester);
@@ -110,10 +177,10 @@ void main() {
       expect(breakingSeriesHeaderCell, findsOneWidget);
       expect(find.descendant(of: breakingSeriesHeaderCell, matching: find.text('R115')), findsOneWidget);
 
-      final curveName = findDASTableRowByText(l10n.p_journey_table_curve_type_curve);
+      final curveName = find.textContaining(l10n.p_journey_table_curve_type_curve);
       expect(curveName, findsExactly(2));
 
-      final curveIcon = find.descendant(of: curveName, matching: find.byKey(CurvePointRow.curvePointIconKey));
+      final curveIcon = find.byKey(CurvePointRow.curvePointIconKey);
       expect(curveIcon, findsExactly(2));
 
       await disconnect(tester);

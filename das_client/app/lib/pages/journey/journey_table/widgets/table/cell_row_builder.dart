@@ -153,7 +153,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     );
   }
 
-  DASTableCell speedCell(List<TrainSeriesSpeed>? speedData) {
+  DASTableCell speedCell(List<TrainSeriesSpeed>? speedData, {bool? singleLine, bool? summarizedCurve}) {
     final selectedBreakSeries = config.settings.resolvedBreakSeries(metadata);
     final trainSeriesSpeed = speedData.speedFor(
       selectedBreakSeries?.trainSeries,
@@ -166,6 +166,8 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
       child: SpeedDisplay(
         speed: trainSeriesSpeed?.speed,
         isNextStop: _isNextStop,
+        singleLine: singleLine ?? false,
+        summarizedCurve: summarizedCurve ?? false,
       ),
     );
   }
