@@ -53,7 +53,13 @@ public class Vehicle {
     }
 
     static Integer calculateHoldingForce(List<Vehicle> vehicles) {
-        return vehicles.stream().mapToInt(Vehicle::calculateHoldingForce).sum();
+        List<Integer> holdingForces = vehicles.stream()
+            .map(Vehicle::calculateHoldingForce)
+            .toList();
+        if (holdingForces.isEmpty() || holdingForces.stream().anyMatch(java.util.Objects::isNull)) {
+            return null;
+        }
+        return holdingForces.stream().mapToInt(Integer::intValue).sum();
     }
 
     static Integer calculateTractionHoldingForceInHectoNewton(List<Vehicle> vehicles) {
@@ -105,8 +111,15 @@ public class Vehicle {
         return VehicleUnit.hasDisabledBrake(vehicleUnits);
     }
 
-    private int calculateHoldingForce() {
-        return vehicleUnits.stream().mapToInt(vehicleUnit -> vehicleUnit.calculateHoldingForce(isTraction())).sum();
+    private Integer calculateHoldingForce() {
+        List<Integer> holdingForces = vehicleUnits.stream()
+            .map(vehicleUnit -> vehicleUnit.calculateHoldingForce(isTraction()))
+            .toList();
+
+        if (holdingForces.stream().anyMatch(java.util.Objects::isNull)) {
+            return null;
+        }
+        return holdingForces.stream().mapToInt(Integer::intValue).sum();
     }
 
     private boolean hasBrakeDesign(BrakeDesign... brakeDesigns) {

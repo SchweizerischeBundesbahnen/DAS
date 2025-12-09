@@ -26,7 +26,7 @@ public class VehicleUnit {
         if (vehicleUnits == null) {
             return false;
         }
-        return vehicleUnits.stream().anyMatch(vehicleUnit -> vehicleUnit.brakeStatus.isDisabled());
+        return vehicleUnits.stream().anyMatch(vehicleUnit -> vehicleUnit.brakeStatus != null && vehicleUnit.brakeStatus.isDisabled());
     }
 
     static boolean hasDangerousGoods(List<VehicleUnit> vehicleUnits) {
@@ -58,8 +58,8 @@ public class VehicleUnit {
         if (handBrakeWeightInT != null) {
             return handBrakeWeightInT * TON_IN_HECTO_NEWTON;
         }
-        // todo: default value needs to be defined by business
-        return 0;
+        // todo: default value
+        return null;
     }
 
     private boolean hasBrakeDesign(BrakeDesign... brakeDesigns) {
