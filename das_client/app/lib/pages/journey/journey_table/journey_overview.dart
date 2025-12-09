@@ -66,7 +66,7 @@ class JourneyOverview extends StatelessWidget {
         ManeuverNotification(),
         KoaNotification(),
         ReplacementSeriesNotification(),
-        _warnappNotification(context),
+        _warnAppNotification(context),
         Expanded(
           child: Stack(
             children: [
@@ -79,7 +79,7 @@ class JourneyOverview extends StatelessWidget {
     );
   }
 
-  Widget _warnappNotification(BuildContext context) {
+  Widget _warnAppNotification(BuildContext context) {
     return StreamBuilder(
       stream: context.read<WarnAppViewModel>().warnappEvents,
       builder: (context, snapshot) {
@@ -132,43 +132,24 @@ class _ProviderScope extends StatelessWidget {
           create: (_) => PunctualityViewModel(journeyStream: journeyTableViewModel.journey),
           dispose: (_, vm) => vm.dispose(),
         ),
-        Provider(
-          create: (context) => DetailModalViewModel(
-            journeyTableScrollController: journeyTableViewModel.journeyTableScrollController,
-          ),
-          dispose: (_, vm) => vm.dispose(),
-        ),
-        Provider(
+        Provider<ServicePointModalViewModel>(
           create: (_) => ServicePointModalViewModel(localRegulationHtmlGenerator: DI.get()),
           dispose: (_, vm) => vm.dispose(),
         ),
-        Provider(
+        Provider<AdditionalSpeedRestrictionModalViewModel>(
           create: (_) => AdditionalSpeedRestrictionModalViewModel(),
           dispose: (_, vm) => vm.dispose(),
         ),
-        Provider(
+        Provider<ArrivalDepartureTimeViewModel>(
           create: (_) => ArrivalDepartureTimeViewModel(journeyStream: journeyTableViewModel.journey),
           dispose: (_, vm) => vm.dispose(),
         ),
-        Provider(
+        Provider<UxTestingViewModel>(
           create: (_) => UxTestingViewModel(sferaService: DI.get(), ruFeatureProvider: DI.get()),
           dispose: (_, vm) => vm.dispose(),
         ),
-        Provider(
+        Provider<ConnectivityViewModel>(
           create: (_) => ConnectivityViewModel(connectivityManager: DI.get()),
-          dispose: (_, vm) => vm.dispose(),
-        ),
-
-        Provider(
-          create: (_) => JourneySettingsViewModel(
-            journeyStream: journeyTableViewModel.journey,
-            onBreakSeriesUpdated: () {
-              /// TODO: check in which advancement mode!
-              if (journeyTableViewModel.journeyTableScrollController.isActive) {
-                journeyTableViewModel.journeyTableScrollController.scrollToCurrentPosition();
-              }
-            },
-          ),
           dispose: (_, vm) => vm.dispose(),
         ),
 
@@ -182,6 +163,17 @@ class _ProviderScope extends StatelessWidget {
             );
           },
           dispose: (_, vm) => vm.dispose(),
+        ),
+        ProxyProvider2<JourneyPositionViewModel, JourneyTableViewModel, JourneyTableAdvancementViewModel>(
+          update: (_, journeyPositionVM, journeyTableVM, prev) {
+            if (prev != null) return prev;
+            return JourneyTableAdvancementViewModel(
+              journeyStream: journeyTableVM.journey,
+              positionStream: journeyPositionVM.model,
+              scrollController: journeyTableVM.journeyTableScrollController,
+              onAdvancementModeToggled: journeyTableVM.toggleZenViewMode,
+            );
+          },
         ),
         ProxyProvider<JourneyPositionViewModel, CollapsibleRowsViewModel>(
           update: (_, journeyPositionVM, prev) {
@@ -203,17 +195,26 @@ class _ProviderScope extends StatelessWidget {
           },
           dispose: (_, vm) => vm.dispose(),
         ),
-        ProxyProvider2<JourneyPositionViewModel, JourneyTableViewModel, JourneyTableAdvancementViewModel>(
-          update: (_, journeyPositionVM, journeyTableVM, prev) {
+        ProxyProvider<JourneyTableAdvancementViewModel, DetailModalViewModel>(
+          update: (_, advancementVM, prev) {
             if (prev != null) return prev;
-            return JourneyTableAdvancementViewModel(
-              journeyStream: journeyTableVM.journey,
-              positionStream: journeyPositionVM.model,
-              scrollController: journeyTableVM.journeyTableScrollController,
-              onAdvancementModeToggled: journeyTableVM.toggleZenViewMode,
+            return DetailModalViewModel(onDetailModalOpen: advancementVM.scrollToCurrentPositionIfNotPaused);
+          },
+          dispose: (_, vm) => vm.dispose(),
+        ),
+        ProxyProvider<JourneyTableAdvancementViewModel, JourneySettingsViewModel>(
+          update: (_, advancementVM, prev) {
+            if (prev != null) return prev;
+            return JourneySettingsViewModel(
+              journeyStream: journeyTableViewModel.journey,
+              onBreakSeriesUpdated: () {
+                advancementVM.scrollToCurrentPositionIfNotPaused();
+              },
             );
           },
+          dispose: (_, vm) => vm.dispose(),
         ),
+
         ProxyProvider2<JourneyPositionViewModel, JourneySettingsViewModel, ReplacementSeriesViewModel>(
           update: (_, journeyPositionVM, settingsVM, prev) {
             if (prev != null) return prev;

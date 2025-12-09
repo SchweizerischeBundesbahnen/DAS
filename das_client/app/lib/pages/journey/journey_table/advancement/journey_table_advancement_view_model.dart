@@ -72,16 +72,20 @@ class JourneyTableAdvancementViewModel {
     if (_rxModel.value is! Paused) _scrollToCurrentPositionIfInAutoScrollingZone();
   }
 
+  void scrollToCurrentPositionIfNotPaused() {
+    if (_rxModel is! Paused) _scrollToCurrentPosition();
+  }
+
   void setAdvancementModeToManual() {
     final nextModel = switch (modelValue) {
       Paused() => Paused(next: Manual()),
       Manual() || Automatic() => Manual(),
     };
     _rxModel.add(nextModel);
-    scrollToCurrentPosition();
+    _scrollToCurrentPosition();
   }
 
-  void scrollToCurrentPosition() {
+  void _scrollToCurrentPosition() {
     _lastScrollPosition = _currentPosition;
     if (_currentPosition == null) return;
     _scrollController.scrollToJourneyPoint(_currentPosition);
@@ -145,11 +149,11 @@ class JourneyTableAdvancementViewModel {
     final scrollPositionChanged = _lastScrollPosition != _currentPosition;
     if (!scrollPositionChanged) return;
 
-    scrollToCurrentPosition();
+    _scrollToCurrentPosition();
   }
 
   void _scrollToCurrentPositionIfInAutoScrollingZone() {
-    if (_isInAutomaticScrollingZone) scrollToCurrentPosition();
+    if (_isInAutomaticScrollingZone) _scrollToCurrentPosition();
   }
 
   void _resetModel() {

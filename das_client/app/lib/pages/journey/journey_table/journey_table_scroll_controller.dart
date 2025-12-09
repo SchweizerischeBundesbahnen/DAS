@@ -84,13 +84,13 @@ class JourneyTableScrollController {
           _log.fine(
             'Screen idle time of $_idleTimeAutoScroll seconds reached. Scrolling to current position',
           );
-          scrollToCurrentPosition();
+          _scrollToCurrentPosition();
         }
       });
     }
   }
 
-  void scrollToCurrentPosition() {
+  void _scrollToCurrentPosition() {
     if (_isDisposed) return;
 
     _lastTouch = null;

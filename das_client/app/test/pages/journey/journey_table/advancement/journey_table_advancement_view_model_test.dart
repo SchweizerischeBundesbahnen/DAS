@@ -304,9 +304,26 @@ void main() {
     expect(modelRegister, orderedEquals([Manual(), Automatic()]));
   });
 
-  test('scrollToCurrentPosition_whenHasNoCurrentPosition_thenDoesNotScroll', () {
+  test('scrollToCurrentPositionIfNotPaused_whenHasNoCurrentPosition_thenDoesNotScroll', () {
     // ACT
-    testee.scrollToCurrentPosition();
+    testee.scrollToCurrentPositionIfNotPaused();
+
+    // EXPECT
+    verifyZeroInteractions(mockScrollController);
+  });
+
+  test('scrollToCurrentPosition_whenHasCurrentPositionButPaused_thenDoesNotScroll', () {
+    // ARRANGE
+    // ACT
+    testAsync.run((_) {
+      journeyPositionSubject.add(JourneyPositionModel(currentPosition: firstServicePoint));
+      testee.toggleAdvancementMode();
+    });
+    processStreams(fakeAsync: testAsync);
+    reset(mockScrollController);
+
+    // ACT
+    testee.scrollToCurrentPositionIfNotPaused();
 
     // EXPECT
     verifyZeroInteractions(mockScrollController);
@@ -322,7 +339,7 @@ void main() {
     reset(mockScrollController);
 
     // ACT
-    testee.scrollToCurrentPosition();
+    testee.scrollToCurrentPositionIfNotPaused();
 
     // EXPECT
     verify(mockScrollController.scrollToJourneyPoint(firstServicePoint)).called(1);
