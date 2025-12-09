@@ -1,13 +1,9 @@
-import 'dart:async';
 import 'dart:math';
 
-import 'package:app/di/di.dart';
-import 'package:app/util/time_constants.dart';
 import 'package:app/util/widget_util.dart';
 import 'package:app/widgets/stickyheader/sticky_level.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:app/widgets/table/das_table_row.dart';
-import 'package:clock/clock.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -25,19 +21,13 @@ class JourneyTableScrollController {
   static const int _minScrollDuration = 1000;
   static const int _maxScrollDuration = 2000;
 
-  final _idleTimeAutoScroll = DI.get<TimeConstants>().automaticAdvancementIdleTimeAutoScroll;
-
   JourneyTableScrollController({ScrollController? controller, GlobalKey? tableKey})
     : scrollController = controller ?? ScrollController(),
       tableKey = tableKey ?? GlobalKey();
 
   final ScrollController scrollController;
   final GlobalKey tableKey;
-  JourneyPoint? _currentPosition;
   List<DASTableRowBuilder> _renderedRows = [];
-  Timer? _scrollTimer;
-  double? _lastScrollPosition;
-  DateTime? _lastTouch;
   bool _isDisposed = false;
 
   final _rxIsAutomaticAdvancementActive = BehaviorSubject.seeded(false);
@@ -46,65 +36,8 @@ class JourneyTableScrollController {
 
   void updateRenderedRows(List<DASTableRowBuilder> rows) => _renderedRows = rows;
 
-  // void handleJourneyUpdate({
-  //   JourneyPoint? currentPosition,
-  //   JourneyPoint? routeStart,
-  //   ServicePoint? firstServicePoint,
-  //   bool isAdvancementEnabledByUser = false,
-  // }) {
-  // if (_isDisposed) return;
-
-  // _currentPosition = currentPosition;
-  //
-  // final firstServicePointOrder = firstServicePoint?.order ?? 0;
-  // final currentPositionOrder = currentPosition?.order ?? 0;
-  //
-  // final isAdvancingActive =
-  //     isAdvancementEnabledByUser && (currentPosition != routeStart) && currentPositionOrder >= firstServicePointOrder;
-  // _log.fine(isAdvancingActive);
-  // _rxIsAutomaticAdvancementActive.add(isAdvancingActive);
-  // if (!isAdvancingActive) {
-  //   return;
-  // }
-  //
-  // final targetPosition = _calculateTargetPosition();
-  // if (_lastScrollPosition != targetPosition && targetPosition != null && _lastTouch == null) {
-  //   _scrollToPosition(targetPosition);
-  // }
-  // }
-
-  void resetScrollTimer() {
-    if (_isDisposed) return;
-
-    _lastTouch = clock.now();
-    if (_rxIsAutomaticAdvancementActive.value) {
-      _scrollTimer?.cancel();
-      _scrollTimer = Timer(Duration(seconds: _idleTimeAutoScroll), () {
-        if (_rxIsAutomaticAdvancementActive.value) {
-          _log.fine(
-            'Screen idle time of $_idleTimeAutoScroll seconds reached. Scrolling to current position',
-          );
-          _scrollToCurrentPosition();
-        }
-      });
-    }
-  }
-
-  void _scrollToCurrentPosition() {
-    if (_isDisposed) return;
-
-    _lastTouch = null;
-
-    final targetPosition = _calculateTargetPosition(_currentPosition);
-    if (targetPosition != null) {
-      _scrollToPosition(targetPosition);
-    }
-  }
-
   void scrollToJourneyPoint(JourneyPoint? target) {
     if (_isDisposed) return;
-
-    _lastTouch = null;
 
     final targetPosition = _calculateTargetPosition(target);
     if (targetPosition != null) {
@@ -114,7 +47,6 @@ class JourneyTableScrollController {
 
   void dispose() {
     _rxIsAutomaticAdvancementActive.close();
-    _scrollTimer?.cancel();
     _isDisposed = true;
   }
 
@@ -173,9 +105,7 @@ class JourneyTableScrollController {
   }
 
   void _scrollToPosition(double targetScrollPosition) {
-    _lastScrollPosition = targetScrollPosition;
-
-    _log.fine('Scrolling to position $targetScrollPosition');
+    _log.finer('Scrolling to position $targetScrollPosition');
     scrollController.animateTo(
       targetScrollPosition,
       duration: _calculateDuration(targetScrollPosition),

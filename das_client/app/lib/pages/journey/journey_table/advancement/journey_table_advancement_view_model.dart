@@ -1,14 +1,16 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_table/advancement/journey_advancement_model.dart';
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_model.dart';
 import 'package:app/pages/journey/journey_table/journey_table_scroll_controller.dart';
+import 'package:app/util/time_constants.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
-final _log = Logger('JourneyAdvancementViewModel');
+final _log = Logger('JourneyTableAdvancementViewModel');
 
 /// Responsible for the (automatic) advancement of the JourneyTable.
 ///
@@ -33,20 +35,21 @@ class JourneyTableAdvancementViewModel {
 
   StreamSubscription<(Journey?, JourneyPositionModel)>? _streamSubscription;
 
+  final _idleTimeAutoScroll = Duration(seconds: DI.get<TimeConstants>().automaticAdvancementIdleTimeAutoScroll);
+
   late JourneyTableScrollController _scrollController;
+
   late VoidCallback _onAdvancementModeToggled;
-  final BehaviorSubject<bool> _rxAutomaticIdleScrollingActive = BehaviorSubject.seeded(false);
   final _rxModel = BehaviorSubject<JourneyAdvancementModel>.seeded(Automatic());
   JourneyPoint? _currentPosition;
   JourneyPoint? _lastScrollPosition;
-
   SignaledPosition? _lastSignaledPosition;
 
+  final BehaviorSubject<bool> _rxAutomaticIdleScrollingActive = BehaviorSubject.seeded(false);
+  Timer? _idleScrollTimer;
   bool _isInAutomaticScrollingZone = false;
 
-  Stream<bool> get automaticIdleScrollingActive => _rxAutomaticIdleScrollingActive.distinct();
-
-  bool get automaticIdleScrollingActiveValue => _rxAutomaticIdleScrollingActive.value;
+  bool _isDisposed = false;
 
   Stream<JourneyAdvancementModel> get model => _rxModel.distinct();
 
@@ -85,15 +88,27 @@ class JourneyTableAdvancementViewModel {
     _scrollToCurrentPosition();
   }
 
-  void _scrollToCurrentPosition() {
-    _lastScrollPosition = _currentPosition;
-    if (_currentPosition == null) return;
-    _scrollController.scrollToJourneyPoint(_currentPosition);
+  void resetIdleScrollTimer() {
+    if (_isDisposed) return;
+
+    if (_rxAutomaticIdleScrollingActive.value) {
+      _idleScrollTimer?.cancel();
+      _idleScrollTimer = Timer(_idleTimeAutoScroll, () {
+        if (_rxAutomaticIdleScrollingActive.value) {
+          _log.fine(
+            'Screen idle time of ${_idleTimeAutoScroll.inSeconds} seconds reached. Scrolling to current position',
+          );
+          _scrollToCurrentPosition();
+        }
+      });
+    }
   }
 
   void dispose() {
     _streamSubscription?.cancel();
+    _idleScrollTimer?.cancel();
     _rxModel.close();
+    _isDisposed = true;
   }
 
   void _initSubscription(Stream<Journey?> journeyStream, Stream<JourneyPositionModel> positionStream) {
@@ -112,37 +127,38 @@ class JourneyTableAdvancementViewModel {
             _resetModel();
             return;
           }
-          final signaledPosition = journey.metadata.signaledPosition;
-          final signaledPositionChanged = signaledPosition != _lastSignaledPosition;
-          _lastSignaledPosition = signaledPosition;
 
           _currentPosition = position.currentPosition;
 
-          final firstServicePoint = journey.data.whereType<ServicePoint>().firstOrNull;
-          final firstServicePointOrder = firstServicePoint?.order ?? 0;
-          final currentPositionOrder = _currentPosition?.order ?? 0;
-
-          _isInAutomaticScrollingZone =
-              _currentPosition != journey.metadata.journeyStart && currentPositionOrder >= firstServicePointOrder;
+          _setIsInAutomaticScrollingZone(journey);
 
           _emitAutomaticIdleScrolling();
 
-          // TODO: add timer logic
+          _onLastSignaledPositionChanged(journey.metadata.signaledPosition);
 
-          if (signaledPositionChanged) _setAdvancementModelToNonManual();
-
-          if (automaticIdleScrollingActiveValue) _scrollToCurrentPositionIfPositionChanged();
-
-          // _rxIsAutomaticAdvancementActive.add(isAdvancingActive);
-          // if (!isAdvancingActive) {
-          //   return;
-          // }
-
-          // final targetPosition = _calculateTargetPosition();
-          // if (_lastScrollPosition != targetPosition && targetPosition != null && _lastTouch == null) {
-          //   _scrollToPosition(targetPosition);
-          // }
+          if (_idleScrollingActiveAndTimerInactive) {
+            _scrollToCurrentPositionIfPositionChanged();
+          }
         });
+  }
+
+  bool get _idleScrollingActiveAndTimerInactive {
+    return _rxAutomaticIdleScrollingActive.value && !(_idleScrollTimer?.isActive ?? true);
+  }
+
+  void _onLastSignaledPositionChanged(SignaledPosition? signaledPosition) {
+    final signaledPositionChanged = signaledPosition != _lastSignaledPosition;
+    _lastSignaledPosition = signaledPosition;
+    if (signaledPositionChanged) _setAdvancementModelToNonManual();
+  }
+
+  void _setIsInAutomaticScrollingZone(Journey journey) {
+    final firstServicePoint = journey.data.whereType<ServicePoint>().firstOrNull;
+    final firstServicePointOrder = firstServicePoint?.order ?? 0;
+    final currentPositionOrder = _currentPosition?.order ?? 0;
+
+    _isInAutomaticScrollingZone =
+        _currentPosition != journey.metadata.journeyStart && currentPositionOrder >= firstServicePointOrder;
   }
 
   void _scrollToCurrentPositionIfPositionChanged() {
@@ -174,5 +190,15 @@ class JourneyTableAdvancementViewModel {
       Manual() || Automatic() => Automatic(),
     };
     _rxModel.add(nextModel);
+  }
+
+  void _scrollToCurrentPosition() {
+    if (_isDisposed) return;
+
+    _idleScrollTimer?.cancel();
+
+    _lastScrollPosition = _currentPosition;
+    if (_currentPosition == null) return;
+    _scrollController.scrollToJourneyPoint(_currentPosition);
   }
 }

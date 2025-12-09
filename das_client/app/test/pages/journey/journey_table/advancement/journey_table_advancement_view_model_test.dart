@@ -2,8 +2,10 @@ import 'package:app/pages/journey/journey_table/advancement/journey_advancement_
 import 'package:app/pages/journey/journey_table/advancement/journey_table_advancement_view_model.dart';
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_model.dart';
 import 'package:app/pages/journey/journey_table/journey_table_scroll_controller.dart';
+import 'package:app/util/time_constants.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rxdart/rxdart.dart';
@@ -42,6 +44,7 @@ void main() {
   );
 
   setUp(() {
+    GetIt.I.registerSingleton(TimeConstants());
     modelRegister = [];
     mockScrollController = MockJourneyTableScrollController();
 

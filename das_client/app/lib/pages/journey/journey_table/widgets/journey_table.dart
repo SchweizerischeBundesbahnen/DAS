@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/break_load_slip/break_load_slip_view_model.dart';
+import 'package:app/pages/journey/journey_table/advancement/journey_table_advancement_view_model.dart';
 import 'package:app/pages/journey/journey_table/collapsible_rows_view_model.dart';
 import 'package:app/pages/journey/journey_table/journey_overview.dart';
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_model.dart';
@@ -68,6 +69,7 @@ class JourneyTable extends StatelessWidget {
     final viewModel = context.read<JourneyTableViewModel>();
     final journeySettingsVM = context.read<JourneySettingsViewModel>();
     final journeyPositionViewModel = context.read<JourneyPositionViewModel>();
+    final advancementViewModel = context.read<JourneyTableAdvancementViewModel>();
 
     return StreamBuilder<List<dynamic>>(
       stream: CombineLatestStream.list([
@@ -85,15 +87,6 @@ class JourneyTable extends StatelessWidget {
         final settings = snapshot.data![1] as JourneySettings;
         final journeyPosition = snapshot.data![3] as JourneyPositionModel;
 
-        // WidgetsBinding.instance.addPostFrameCallback((_) {
-        //   viewModel.journeyTableScrollController.handleJourneyUpdate(
-        //     currentPosition: journeyPosition.currentPosition,
-        //     routeStart: journey.metadata.journeyStart,
-        //     isAdvancementEnabledByUser: settings.isAutoAdvancementEnabled,
-        //     firstServicePoint: journey.data.whereType<ServicePoint>().firstOrNull,
-        //   );
-        // });
-
         final servicePointModalViewModel = context.read<ServicePointModalViewModel>();
         servicePointModalViewModel.updateMetadata(journey.metadata);
         servicePointModalViewModel.updateSettings(settings);
@@ -101,8 +94,8 @@ class JourneyTable extends StatelessWidget {
         return KeyedSubtree(
           key: loadedJourneyTableKey,
           child: Listener(
-            onPointerDown: (_) => viewModel.journeyTableScrollController.resetScrollTimer(),
-            onPointerUp: (_) => viewModel.journeyTableScrollController.resetScrollTimer(),
+            onPointerDown: (_) => advancementViewModel.resetIdleScrollTimer(),
+            onPointerUp: (_) => advancementViewModel.resetIdleScrollTimer(),
             child: _body(context, journey, settings, journeyPosition),
           ),
         );
