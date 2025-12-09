@@ -529,8 +529,6 @@ class JourneyTable extends StatelessWidget {
   Future<void> _onBreakSeriesTap(BuildContext context, Metadata? metadata, JourneySettings? settings) async {
     final viewModel = context.read<JourneySettingsViewModel>();
 
-    print('tapped');
-
     final selectedBreakSeries = await showSBBModalSheet<BreakSeries>(
       context: context,
       title: context.l10n.p_journey_break_series,

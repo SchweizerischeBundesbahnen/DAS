@@ -6,15 +6,22 @@ import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
 class JourneySettingsViewModel {
-  JourneySettingsViewModel({required Stream<Journey?> journeyStream, required VoidCallback onBreakSeriesUpdated}) {
-    _onBreakSeriesUpdated = onBreakSeriesUpdated;
+  JourneySettingsViewModel({required Stream<Journey?> journeyStream}) {
     _initJourneySubscription(journeyStream);
   }
 
   late StreamSubscription<Journey?>? _journeySubscription;
   TrainIdentification? _lastTrainIdentification;
 
-  late VoidCallback _onBreakSeriesUpdated;
+  final List<VoidCallback> _onBreakSeriesUpdatedCallbacks = [];
+
+  void registerOnBreakSeriesUpdated(VoidCallback callback) {
+    _onBreakSeriesUpdatedCallbacks.add(callback);
+  }
+
+  void unregisterOnBreakSeriesUpdated(VoidCallback callback) {
+    _onBreakSeriesUpdatedCallbacks.remove(callback);
+  }
 
   final _rxSettings = BehaviorSubject<JourneySettings>.seeded(JourneySettings());
 
@@ -24,7 +31,9 @@ class JourneySettingsViewModel {
 
   void updateBreakSeries(BreakSeries selectedBreakSeries) {
     _rxSettings.add(_rxSettings.value.copyWith(selectedBreakSeries: selectedBreakSeries));
-    _onBreakSeriesUpdated.call();
+    for (final callback in _onBreakSeriesUpdatedCallbacks) {
+      callback.call();
+    }
   }
 
   void updateExpandedGroups(List<int> expandedGroups) {

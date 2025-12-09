@@ -164,15 +164,27 @@ class _ProviderScope extends StatelessWidget {
           },
           dispose: (_, vm) => vm.dispose(),
         ),
-        ProxyProvider2<JourneyPositionViewModel, JourneyTableViewModel, JourneyTableAdvancementViewModel>(
-          update: (_, journeyPositionVM, journeyTableVM, prev) {
+        ProxyProvider3<
+          JourneyPositionViewModel,
+          JourneyTableViewModel,
+          JourneySettingsViewModel,
+          JourneyTableAdvancementViewModel
+        >(
+          update: (_, journeyPositionVM, journeyTableVM, settingsVM, prev) {
             if (prev != null) return prev;
-            return JourneyTableAdvancementViewModel(
+            final vm = JourneyTableAdvancementViewModel(
               journeyStream: journeyTableVM.journey,
               positionStream: journeyPositionVM.model,
               scrollController: journeyTableVM.journeyTableScrollController,
               onAdvancementModeToggled: journeyTableVM.toggleZenViewMode,
             );
+            settingsVM.registerOnBreakSeriesUpdated(vm.scrollToCurrentPositionIfNotPaused);
+            return vm;
+          },
+          dispose: (context, vm) {
+            final settingsVM = DI.get<JourneySettingsViewModel>();
+            settingsVM.unregisterOnBreakSeriesUpdated(vm.scrollToCurrentPositionIfNotPaused);
+            vm.dispose();
           },
         ),
         ProxyProvider<JourneyPositionViewModel, CollapsibleRowsViewModel>(
@@ -199,18 +211,6 @@ class _ProviderScope extends StatelessWidget {
           update: (_, advancementVM, prev) {
             if (prev != null) return prev;
             return DetailModalViewModel(onDetailModalOpen: advancementVM.scrollToCurrentPositionIfNotPaused);
-          },
-          dispose: (_, vm) => vm.dispose(),
-        ),
-        ProxyProvider<JourneyTableAdvancementViewModel, JourneySettingsViewModel>(
-          update: (_, advancementVM, prev) {
-            if (prev != null) return prev;
-            return JourneySettingsViewModel(
-              journeyStream: journeyTableViewModel.journey,
-              onBreakSeriesUpdated: () {
-                advancementVM.scrollToCurrentPositionIfNotPaused();
-              },
-            );
           },
           dispose: (_, vm) => vm.dispose(),
         ),

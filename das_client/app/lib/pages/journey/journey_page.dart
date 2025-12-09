@@ -8,6 +8,7 @@ import 'package:app/nav/app_router.dart';
 import 'package:app/pages/journey/journey_table/journey_overview.dart';
 import 'package:app/pages/journey/journey_table_view_model.dart';
 import 'package:app/pages/journey/navigation/journey_navigation_view_model.dart';
+import 'package:app/pages/journey/settings/journey_settings_view_model.dart';
 import 'package:app/pages/journey/warn_app_view_model.dart';
 import 'package:app/pages/journey/widgets/das_journey_scaffold.dart';
 import 'package:app/util/format.dart';
@@ -28,8 +29,9 @@ class JourneyPage extends StatefulWidget implements AutoRouteWrapper {
   @override
   Widget wrappedRoute(BuildContext context) => MultiProvider(
     providers: [
-      Provider<JourneyTableViewModel>(create: (_) => DI.get()),
-      Provider<WarnAppViewModel>(create: (_) => DI.get()),
+      Provider<JourneyTableViewModel>(create: (_) => DI.get<JourneyTableViewModel>()),
+      Provider<WarnAppViewModel>(create: (_) => DI.get<WarnAppViewModel>()),
+      Provider<JourneySettingsViewModel>(create: (_) => DI.get<JourneySettingsViewModel>()),
     ],
     child: this,
   );

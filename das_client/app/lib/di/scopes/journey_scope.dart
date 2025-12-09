@@ -2,6 +2,7 @@ import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_table_view_model.dart';
 import 'package:app/pages/journey/navigation/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
+import 'package:app/pages/journey/settings/journey_settings_view_model.dart';
 import 'package:app/pages/journey/warn_app_view_model.dart';
 import 'package:get_it/get_it.dart';
 import 'package:local_regulations/component.dart';
@@ -20,6 +21,7 @@ class JourneyScope extends DIScope {
     getIt.registerJourneyNavigationViewModel();
     getIt.registerJourneySelectionViewModel();
     getIt.registerJourneyTableViewModel();
+    getIt.registerJourneySettingsViewModel();
     getIt.registerWarnAppViewModel();
     getIt.registerLocalRegulationHtmlGenerator();
   }
@@ -56,6 +58,13 @@ extension JourneyScopeExtension on GetIt {
   void registerJourneyTableViewModel() {
     registerSingleton(
       JourneyTableViewModel(sferaRemoteRepo: DI.get()),
+      dispose: (vm) => vm.dispose(),
+    );
+  }
+
+  void registerJourneySettingsViewModel() {
+    registerSingleton<JourneySettingsViewModel>(
+      JourneySettingsViewModel(journeyStream: get<JourneyTableViewModel>().journey),
       dispose: (vm) => vm.dispose(),
     );
   }
