@@ -35,16 +35,18 @@ class JourneyTableAdvancementViewModel {
 
   late JourneyTableScrollController _scrollController;
   late VoidCallback _onAdvancementModeToggled;
-  final BehaviorSubject<bool> _rxAutomaticScrollingActive = BehaviorSubject.seeded(false);
+  final BehaviorSubject<bool> _rxAutomaticIdleScrollingActive = BehaviorSubject.seeded(false);
   final _rxModel = BehaviorSubject<JourneyAdvancementModel>.seeded(Automatic());
   JourneyPoint? _currentPosition;
+  JourneyPoint? _lastScrollPosition;
+
   SignaledPosition? _lastSignaledPosition;
 
   bool _isInAutomaticScrollingZone = false;
 
-  Stream<bool> get automaticScrollingActive => _rxAutomaticScrollingActive.distinct();
+  Stream<bool> get automaticIdleScrollingActive => _rxAutomaticIdleScrollingActive.distinct();
 
-  bool get automaticScrollingActiveValue => _rxAutomaticScrollingActive.value;
+  bool get automaticIdleScrollingActiveValue => _rxAutomaticIdleScrollingActive.value;
 
   Stream<JourneyAdvancementModel> get model => _rxModel.distinct();
 
@@ -64,18 +66,26 @@ class JourneyTableAdvancementViewModel {
       Manual() => Paused(next: Manual()),
     };
     _rxModel.add(nextModel);
-    _emitAutomaticScrolling();
+    _emitAutomaticIdleScrolling();
     _onAdvancementModeToggled.call();
+
+    if (_rxModel.value is! Paused) _scrollToCurrentPositionIfInAutoScrollingZone();
   }
 
   void setAdvancementModeToManual() {
-    _rxModel.add(Manual());
-    _emitAutomaticScrolling();
+    final nextModel = switch (modelValue) {
+      Paused() => Paused(next: Manual()),
+      Manual() || Automatic() => Manual(),
+    };
+    _rxModel.add(nextModel);
+    scrollToCurrentPosition();
   }
 
-  // void advanceToCurrentPosition() {
-  //   _scrollController.scrollToJourneyPoint(_currentPosition);
-  // }
+  void scrollToCurrentPosition() {
+    _lastScrollPosition = _currentPosition;
+    if (_currentPosition == null) return;
+    _scrollController.scrollToJourneyPoint(_currentPosition);
+  }
 
   void dispose() {
     _streamSubscription?.cancel();
@@ -94,34 +104,31 @@ class JourneyTableAdvancementViewModel {
 
           if (journey == null) {
             _isInAutomaticScrollingZone = false;
-            _emitAutomaticScrolling();
+            _emitAutomaticIdleScrolling();
             _resetModel();
             return;
           }
-          _lastSignaledPosition = journey.metadata.signaledPosition;
+          final signaledPosition = journey.metadata.signaledPosition;
+          final signaledPositionChanged = signaledPosition != _lastSignaledPosition;
+          _lastSignaledPosition = signaledPosition;
+
           _currentPosition = position.currentPosition;
 
           final firstServicePoint = journey.data.whereType<ServicePoint>().firstOrNull;
-
           final firstServicePointOrder = firstServicePoint?.order ?? 0;
           final currentPositionOrder = _currentPosition?.order ?? 0;
-
-          // final isAdvancingActive =
-          //     true &&
-          //     (_currentPosition != journey.metadata.journeyStart) &&
-          //     currentPositionOrder >= firstServicePointOrder;
 
           _isInAutomaticScrollingZone =
               _currentPosition != journey.metadata.journeyStart && currentPositionOrder >= firstServicePointOrder;
 
-          _emitAutomaticScrolling();
+          _emitAutomaticIdleScrolling();
 
           // TODO: add timer logic
-          // TODO: do not scroll here if last position same as _currentPosition (compare to automaticAdvancementController on main)
 
-          if (automaticScrollingActiveValue) {
-            _scrollController.scrollToJourneyPoint(_currentPosition);
-          }
+          if (signaledPositionChanged) _setAdvancementModelToNonManual();
+
+          if (automaticIdleScrollingActiveValue) _scrollToCurrentPositionIfPositionChanged();
+
           // _rxIsAutomaticAdvancementActive.add(isAdvancingActive);
           // if (!isAdvancingActive) {
           //   return;
@@ -134,15 +141,34 @@ class JourneyTableAdvancementViewModel {
         });
   }
 
+  void _scrollToCurrentPositionIfPositionChanged() {
+    final scrollPositionChanged = _lastScrollPosition != _currentPosition;
+    if (!scrollPositionChanged) return;
+
+    scrollToCurrentPosition();
+  }
+
+  void _scrollToCurrentPositionIfInAutoScrollingZone() {
+    if (_isInAutomaticScrollingZone) scrollToCurrentPosition();
+  }
+
   void _resetModel() {
     _rxModel.add(Paused(next: Automatic()));
   }
 
-  void _emitAutomaticScrolling() {
+  void _emitAutomaticIdleScrolling() {
     if (_isInAutomaticScrollingZone && modelValue is! Paused) {
-      _rxAutomaticScrollingActive.add(true);
+      _rxAutomaticIdleScrollingActive.add(true);
     } else {
-      _rxAutomaticScrollingActive.add(false);
+      _rxAutomaticIdleScrollingActive.add(false);
     }
+  }
+
+  void _setAdvancementModelToNonManual() {
+    final nextModel = switch (modelValue) {
+      Paused() => Paused(next: Automatic()),
+      Manual() || Automatic() => Automatic(),
+    };
+    _rxModel.add(nextModel);
   }
 }

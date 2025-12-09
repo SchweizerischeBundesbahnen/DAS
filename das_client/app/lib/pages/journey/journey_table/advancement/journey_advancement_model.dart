@@ -1,4 +1,10 @@
-sealed class JourneyAdvancementModel {}
+sealed class JourneyAdvancementModel {
+  @override
+  bool operator ==(Object other) => identical(this, other) || runtimeType == other.runtimeType;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
 
 /// When JourneyAdvancement is paused, no automatic scrolling will happen.
 ///
@@ -7,6 +13,17 @@ class Paused extends JourneyAdvancementModel {
   Paused({required this.next}) : super();
 
   final JourneyAdvancementModel next;
+
+  @override
+  String toString() {
+    return 'Paused{next: $next}';
+  }
+
+  @override
+  bool operator ==(Object other) => identical(this, other) || other is Paused && next == other.next;
+
+  @override
+  int get hashCode => next.hashCode;
 }
 
 /// When JourneyAdvancement is automatic, the JourneyTable will be scrolled to current position received by
