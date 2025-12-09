@@ -252,7 +252,7 @@ class JourneyTable extends StatelessWidget {
             data: rowData as AdditionalSpeedRestrictionData,
             journeyPosition: journeyPosition,
             config: journeyConfig,
-            onTap: () => _onAdditionalSpeedRestrictionTab(context, rowData),
+            onTap: () => _onAdditionalSpeedRestrictionTap(context, rowData),
             rowIndex: index,
           );
         case .connectionTrack:
@@ -554,7 +554,7 @@ class JourneyTable extends StatelessWidget {
         data.localSpeeds?.speedFor(breakSeries?.trainSeries, breakSeries: breakSeries?.breakSeries) == null;
   }
 
-  void _onAdditionalSpeedRestrictionTab(BuildContext context, AdditionalSpeedRestrictionData data) {
+  void _onAdditionalSpeedRestrictionTap(BuildContext context, AdditionalSpeedRestrictionData data) {
     final viewModel = context.read<AdditionalSpeedRestrictionModalViewModel>();
     viewModel.open(context, data.restrictions);
   }

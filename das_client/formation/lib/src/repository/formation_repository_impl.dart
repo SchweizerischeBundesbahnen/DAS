@@ -37,6 +37,8 @@ class FormationRepositoryImpl implements FormationRepository {
   }) {
     _loadFormation(operationalTrainNumber, company, operationalDay);
 
-    return databaseService.watchFormation(operationalTrainNumber, company, operationalDay);
+    return databaseService
+        .watchFormation(operationalTrainNumber, company, operationalDay)
+        .distinct((f1, f2) => f1 == f2);
   }
 }
