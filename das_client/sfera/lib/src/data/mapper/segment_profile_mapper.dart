@@ -69,6 +69,7 @@ class SegmentProfileMapper {
     final newLineSpeeds = _parseNewLineSpeed(mapperData);
     final connectionTracks = _parseConnectionTrack(mapperData, newLineSpeeds);
 
+    // Remove new line speeds that are already present as connection tracks
     newLineSpeeds.removeWhere(
       (speedChange) =>
           connectionTracks.firstWhereOrNull((connectionTrack) => connectionTrack.order == speedChange.order) != null,
