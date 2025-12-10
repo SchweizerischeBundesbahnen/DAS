@@ -131,6 +131,9 @@ class _ProviderScope extends StatelessWidget {
         Provider<PunctualityViewModel>(
           create: (_) => DI.get<PunctualityViewModel>(),
         ),
+        Provider<JourneyPositionViewModel>(
+          create: (_) => DI.get<JourneyPositionViewModel>(),
+        ),
         Provider<ServicePointModalViewModel>(
           create: (_) => ServicePointModalViewModel(localRegulationHtmlGenerator: DI.get()),
           dispose: (_, vm) => vm.dispose(),
@@ -153,16 +156,6 @@ class _ProviderScope extends StatelessWidget {
         ),
 
         // PROXY  PROVIDERS
-        ProxyProvider<PunctualityViewModel, JourneyPositionViewModel>(
-          update: (_, punctualityVM, prev) {
-            if (prev != null) return prev;
-            return JourneyPositionViewModel(
-              journeyStream: journeyTableViewModel.journey,
-              punctualityStream: punctualityVM.model,
-            );
-          },
-          dispose: (_, vm) => vm.dispose(),
-        ),
         ProxyProvider3<
           JourneyPositionViewModel,
           JourneyTableViewModel,
