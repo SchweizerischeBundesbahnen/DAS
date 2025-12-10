@@ -162,7 +162,7 @@ class JourneyTableAdvancementViewModel {
   }
 
   void _resetModel() {
-    _rxModel.add(Paused(next: Automatic()));
+    _rxModel.add(Automatic());
   }
 
   void _emitAutomaticIdleScrolling() {

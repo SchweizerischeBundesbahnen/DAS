@@ -28,7 +28,7 @@ class JourneyAdvancementButton extends StatelessWidget {
             context.l10n.p_journey_header_button_start,
             next is Automatic ? SBBIcons.play_small : SBBIcons.hand_cursor_small,
             context,
-            next is Automatic ? false : true,
+            invertColors: next is Automatic ? false : true,
           ),
           Automatic() => _button(
             pauseKey,
@@ -41,14 +41,14 @@ class JourneyAdvancementButton extends StatelessWidget {
             context.l10n.p_journey_header_button_pause,
             SBBIcons.hand_cursor_small,
             context,
-            true,
+            invertColors: true,
           ),
         };
       },
     );
   }
 
-  Widget _button(Key key, String label, IconData icon, BuildContext context, [bool invertColors = false]) {
+  Widget _button(Key key, String label, IconData icon, BuildContext context, {bool invertColors = false}) {
     return HeaderIconButton(
       key: key,
       label: label,

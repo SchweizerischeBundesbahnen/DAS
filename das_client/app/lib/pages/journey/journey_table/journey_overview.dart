@@ -134,6 +134,9 @@ class _ProviderScope extends StatelessWidget {
         Provider<JourneyPositionViewModel>(
           create: (_) => DI.get<JourneyPositionViewModel>(),
         ),
+        Provider<JourneyTableAdvancementViewModel>(
+          create: (_) => DI.get<JourneyTableAdvancementViewModel>(),
+        ),
         Provider<ServicePointModalViewModel>(
           create: (_) => ServicePointModalViewModel(localRegulationHtmlGenerator: DI.get()),
           dispose: (_, vm) => vm.dispose(),
@@ -156,29 +159,6 @@ class _ProviderScope extends StatelessWidget {
         ),
 
         // PROXY  PROVIDERS
-        ProxyProvider3<
-          JourneyPositionViewModel,
-          JourneyTableViewModel,
-          JourneySettingsViewModel,
-          JourneyTableAdvancementViewModel
-        >(
-          update: (_, journeyPositionVM, journeyTableVM, settingsVM, prev) {
-            if (prev != null) return prev;
-            final vm = JourneyTableAdvancementViewModel(
-              journeyStream: journeyTableVM.journey,
-              positionStream: journeyPositionVM.model,
-              scrollController: journeyTableVM.journeyTableScrollController,
-              onAdvancementModeToggled: journeyTableVM.toggleZenViewMode,
-            );
-            settingsVM.registerOnBreakSeriesUpdated(vm.scrollToCurrentPositionIfNotPaused);
-            return vm;
-          },
-          dispose: (context, vm) {
-            final settingsVM = DI.get<JourneySettingsViewModel>();
-            settingsVM.unregisterOnBreakSeriesUpdated(vm.scrollToCurrentPositionIfNotPaused);
-            vm.dispose();
-          },
-        ),
         ProxyProvider<JourneyPositionViewModel, CollapsibleRowsViewModel>(
           update: (_, journeyPositionVM, prev) {
             if (prev != null) return prev;

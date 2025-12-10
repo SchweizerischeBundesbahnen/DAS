@@ -187,7 +187,14 @@ void main() {
     verify(mockScrollController.scrollToJourneyPoint(firstServicePoint)).called(2);
   });
 
-  test('journeyUpdate_whenJourneyIsNull_thenEmitsPausedWithNextAutomaticAndDoesNotScroll', () {
+  test('journeyUpdate_whenJourneyIsNull_thenEmitsAutomaticAndDoesNotScroll', () {
+    // ARRANGE
+    testAsync.run((_) {
+      testee.toggleAdvancementMode(); // PAUSED
+      processStreams(fakeAsync: testAsync);
+    });
+    modelRegister.clear();
+
     // ACT
     testAsync.run((_) {
       journeySubject.add(null);
@@ -195,7 +202,7 @@ void main() {
     });
 
     // EXPECT
-    expect(modelRegister, orderedEquals([Paused(next: Automatic())]));
+    expect(modelRegister, orderedEquals([Automatic()]));
     verifyZeroInteractions(mockScrollController);
   });
 
