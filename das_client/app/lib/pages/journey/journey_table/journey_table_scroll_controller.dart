@@ -7,7 +7,6 @@ import 'package:app/widgets/table/das_table_row.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
 final _log = Logger('JourneyTableScrollController');
@@ -30,10 +29,6 @@ class JourneyTableScrollController {
   List<DASTableRowBuilder> _renderedRows = [];
   bool _isDisposed = false;
 
-  final _rxIsAutomaticAdvancementActive = BehaviorSubject.seeded(false);
-
-  bool get isActive => _rxIsAutomaticAdvancementActive.value;
-
   void updateRenderedRows(List<DASTableRowBuilder> rows) => _renderedRows = rows;
 
   void scrollToJourneyPoint(JourneyPoint? target) {
@@ -46,7 +41,6 @@ class JourneyTableScrollController {
   }
 
   void dispose() {
-    _rxIsAutomaticAdvancementActive.close();
     _isDisposed = true;
   }
 
@@ -82,7 +76,7 @@ class JourneyTableScrollController {
     }
 
     final renderedDiff = firstRowOffset.dy - listOffset.dy - DASTable.headerRowHeight;
-    final stickyHeight = _calculateStickyHeight(targetPoint!);
+    final stickyHeight = _calculateStickyHeight(targetPoint);
 
     _log.fine(
       'currentpixels: ${scrollController.position.pixels}, renderedDiff: $renderedDiff, scrollDiff: $scrollDiff, stickyHeight: $stickyHeight',
