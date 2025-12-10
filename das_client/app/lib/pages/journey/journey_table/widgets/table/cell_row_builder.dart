@@ -37,7 +37,6 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     this.defaultAlignment = .bottomCenter,
     this.rowColor,
     this.onTap,
-    this.onLongPress,
     this.isGrouped = false,
   });
 
@@ -47,7 +46,6 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
   final JourneyPositionModel journeyPosition;
   final JourneyConfig config;
   final VoidCallback? onTap;
-  final VoidCallback? onLongPress;
   final bool isGrouped;
 
   @override
@@ -57,7 +55,6 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
       height: height,
       color: rowColor,
       onTap: onTap,
-      onLongPress: onLongPress,
       stickyLevel: stickyLevel,
       rowIndex: rowIndex,
       cells: {

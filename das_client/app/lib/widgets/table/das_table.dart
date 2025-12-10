@@ -307,7 +307,6 @@ class _DASTableState extends State<DASTable> {
           width: column.width,
           child: InkWell(
             onTap: cell.onTap,
-            onLongPress: row.onLongPress,
             child: Container(
               decoration: BoxDecoration(
                 border: cellBorder,
