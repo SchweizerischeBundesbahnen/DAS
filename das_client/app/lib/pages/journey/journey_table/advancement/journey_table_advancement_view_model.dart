@@ -42,7 +42,7 @@ class JourneyTableAdvancementViewModel {
   late VoidCallback _onAdvancementModeToggled;
   final _rxModel = BehaviorSubject<JourneyAdvancementModel>.seeded(Automatic());
   JourneyPoint? _currentPosition;
-  JourneyPoint? _lastScrollPosition;
+  JourneyPoint? _lastPosition;
   SignaledPosition? _lastSignaledPosition;
 
   final BehaviorSubject<bool> _rxAutomaticIdleScrollingActive = BehaviorSubject.seeded(false);
@@ -85,7 +85,7 @@ class JourneyTableAdvancementViewModel {
       Manual() || Automatic() => Manual(),
     };
     _rxModel.add(nextModel);
-    _scrollToCurrentPosition();
+    if (_rxAutomaticIdleScrollingActive.value) _scrollToCurrentPosition();
   }
 
   void resetIdleScrollTimer() {
@@ -136,14 +136,10 @@ class JourneyTableAdvancementViewModel {
 
           _onLastSignaledPositionChanged(journey.metadata.signaledPosition);
 
-          if (_idleScrollingActiveAndTimerInactive) {
-            _scrollToCurrentPositionIfPositionChanged();
+          if (_idleScrollingActiveAndTimerInactive && _lastPositionHasChanged) {
+            _scrollToCurrentPosition();
           }
         });
-  }
-
-  bool get _idleScrollingActiveAndTimerInactive {
-    return _rxAutomaticIdleScrollingActive.value && !(_idleScrollTimer?.isActive ?? false);
   }
 
   void _onLastSignaledPositionChanged(SignaledPosition? signaledPosition) {
@@ -159,13 +155,6 @@ class JourneyTableAdvancementViewModel {
 
     _isInAutomaticScrollingZone =
         _currentPosition != journey.metadata.journeyStart && currentPositionOrder >= firstServicePointOrder;
-  }
-
-  void _scrollToCurrentPositionIfPositionChanged() {
-    final scrollPositionChanged = _lastScrollPosition != _currentPosition;
-    if (!scrollPositionChanged) return;
-
-    _scrollToCurrentPosition();
   }
 
   void _scrollToCurrentPositionIfInAutoScrollingZone() {
@@ -192,12 +181,18 @@ class JourneyTableAdvancementViewModel {
     _rxModel.add(nextModel);
   }
 
+  bool get _idleScrollingActiveAndTimerInactive {
+    return _rxAutomaticIdleScrollingActive.value && !(_idleScrollTimer?.isActive ?? false);
+  }
+
+  bool get _lastPositionHasChanged => _currentPosition != _lastPosition;
+
   void _scrollToCurrentPosition() {
     if (_isDisposed) return;
 
     _idleScrollTimer?.cancel();
 
-    _lastScrollPosition = _currentPosition;
+    _lastPosition = _currentPosition;
     if (_currentPosition == null) return;
     _scrollController.scrollToJourneyPoint(_currentPosition);
   }
