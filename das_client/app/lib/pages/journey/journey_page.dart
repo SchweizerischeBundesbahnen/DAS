@@ -7,7 +7,6 @@ import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/app_router.dart';
 import 'package:app/pages/journey/journey_table/journey_overview.dart';
 import 'package:app/pages/journey/journey_table_view_model.dart';
-import 'package:app/pages/journey/navigation/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/settings/journey_settings_view_model.dart';
 import 'package:app/pages/journey/warn_app_view_model.dart';
 import 'package:app/pages/journey/widgets/das_journey_scaffold.dart';
@@ -42,12 +41,11 @@ class JourneyPage extends StatefulWidget implements AutoRouteWrapper {
 
 class _JourneyPageState extends State<JourneyPage> {
   StreamSubscription? _errorCodeSubscription;
-  Stream? _streamCombo;
+  Stream<(bool, Journey?)>? _streamCombo;
 
   @override
   void initState() {
     final journeyTableVM = DI.get<JourneyTableViewModel>();
-    final journeyNavigationVM = DI.get<JourneyNavigationViewModel>();
     _errorCodeSubscription = journeyTableVM.errorCode.listen((error) async {
       if (error != null) {
         await DI.get<ScopeHandler>().pop<JourneyScope>();
@@ -57,9 +55,9 @@ class _JourneyPageState extends State<JourneyPage> {
         }
       }
     });
-    _streamCombo = CombineLatestStream.combine2(
+    _streamCombo = CombineLatestStream.combine2<bool, Journey?, (bool, Journey?)>(
       journeyTableVM.isZenViewMode,
-      journeyNavigationVM.model,
+      journeyTableVM.journey,
       (a, b) => (a, b),
     );
     super.initState();
@@ -74,18 +72,18 @@ class _JourneyPageState extends State<JourneyPage> {
 
   @override
   Widget build(BuildContext context) {
-    final journeyNavigationVM = DI.get<JourneyNavigationViewModel>();
-    return StreamBuilder(
+    final journeyTableVM = DI.get<JourneyTableViewModel>();
+    return StreamBuilder<(bool, Journey?)>(
       stream: _streamCombo,
       // initial zen mode is false to animate transition
-      initialData: (false, journeyNavigationVM.modelValue),
+      initialData: (false, journeyTableVM.journeyValue),
       builder: (context, snapshot) {
         final isZenViewMode = snapshot.requireData.$1;
-        final model = snapshot.requireData.$2;
+        final journey = snapshot.requireData.$2;
 
         return DASJourneyScaffold(
           body: JourneyOverview(),
-          appBarTitle: _appBarTitle(context, model?.trainIdentification),
+          appBarTitle: _appBarTitle(context, journey?.metadata.trainIdentification),
           hideAppBar: isZenViewMode,
           appBarTrailingAction: _DismissJourneyButton(),
         );
