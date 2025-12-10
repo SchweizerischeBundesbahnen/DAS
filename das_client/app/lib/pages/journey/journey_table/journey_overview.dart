@@ -129,8 +129,7 @@ class _ProviderScope extends StatelessWidget {
     return MultiProvider(
       providers: [
         Provider<PunctualityViewModel>(
-          create: (_) => PunctualityViewModel(journeyStream: journeyTableViewModel.journey),
-          dispose: (_, vm) => vm.dispose(),
+          create: (_) => DI.get<PunctualityViewModel>(),
         ),
         Provider<ServicePointModalViewModel>(
           create: (_) => ServicePointModalViewModel(localRegulationHtmlGenerator: DI.get()),

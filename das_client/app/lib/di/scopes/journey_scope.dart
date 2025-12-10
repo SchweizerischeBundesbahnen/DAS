@@ -1,4 +1,5 @@
 import 'package:app/di/di.dart';
+import 'package:app/pages/journey/journey_table/punctuality/punctuality_view_model.dart';
 import 'package:app/pages/journey/journey_table_view_model.dart';
 import 'package:app/pages/journey/navigation/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
@@ -22,6 +23,7 @@ class JourneyScope extends DIScope {
     getIt.registerJourneySelectionViewModel();
     getIt.registerJourneyTableViewModel();
     getIt.registerJourneySettingsViewModel();
+    getIt.registerPunctualityViewModel();
     getIt.registerWarnAppViewModel();
     getIt.registerLocalRegulationHtmlGenerator();
   }
@@ -67,6 +69,13 @@ extension JourneyScopeExtension on GetIt {
   void registerJourneySettingsViewModel() {
     registerSingleton<JourneySettingsViewModel>(
       JourneySettingsViewModel(journeyStream: get<JourneyTableViewModel>().journey),
+      dispose: (vm) => vm.dispose(),
+    );
+  }
+
+  void registerPunctualityViewModel() {
+    registerSingleton<PunctualityViewModel>(
+      PunctualityViewModel(journeyStream: get<JourneyTableViewModel>().journey),
       dispose: (vm) => vm.dispose(),
     );
   }
