@@ -826,8 +826,8 @@ void main() {
 
     test('setManualPosition_whenHasSignaledPosition_thenMovesToNewPosition', () {
       // ARRANGE
-      final aServicePoint = ServicePoint(name: 'a', abbreviation: '',order: 20, kilometre: [], isStop: true);
-      final bServicePoint = ServicePoint(name: 'b',abbreviation: '', order: 25, kilometre: [], isStop: true);
+      final aServicePoint = ServicePoint(name: 'a', abbreviation: '', order: 20, kilometre: [], isStop: true);
+      final bServicePoint = ServicePoint(name: 'b', abbreviation: '', order: 25, kilometre: [], isStop: true);
       testAsync.run((_) {
         rxMockJourney.add(
           Journey(
