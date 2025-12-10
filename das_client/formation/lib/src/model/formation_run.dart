@@ -178,4 +178,9 @@ class FormationRun {
     gradientDownhillMaxInPermille,
     slopeMaxForHoldingForceMinInPermille,
   ]);
+
+  @override
+  String toString() {
+    return 'FormationRun{tafTapLocationReferenceStart: $tafTapLocationReferenceStart, tafTapLocationReferenceEnd: $tafTapLocationReferenceEnd}';
+  }
 }

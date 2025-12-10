@@ -57,4 +57,5 @@ class AppAssets {
   static const soundWarnappWarn = '$_soundsDir/warnapp_warn.wav';
   static const soundAdvisedSpeedStart = '$_soundsDir/advised_speed_start.wav';
   static const soundAdvisedSpeedEnd = '$_soundsDir/advised_speed_end.wav';
+  static const soundBreakSlipUpdated = '$_soundsDir/break_slip_updated.mp3';
 }

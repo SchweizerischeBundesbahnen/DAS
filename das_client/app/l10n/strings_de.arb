@@ -270,5 +270,6 @@
     "placeholders": {
       "trainNumber": {}
     }
-  }
+  },
+  "w_break_load_slip_notification_text": "Eine neue Version des Brems- und Lastzettels ist vorhanden."
 }

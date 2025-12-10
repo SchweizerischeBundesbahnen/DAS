@@ -108,4 +108,9 @@ class MockFormationRepository implements FormationRepository {
       additionalTractions: ['Q (420)'],
     );
   }
+
+  @override
+  Future<Formation?> loadFormation(String operationalTrainNumber, String company, DateTime operationalDay) async {
+    return formationSubject.value;
+  }
 }
