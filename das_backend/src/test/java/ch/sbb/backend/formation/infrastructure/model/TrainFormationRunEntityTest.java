@@ -120,7 +120,7 @@ class TrainFormationRunEntityTest {
         assertThat(result.getTractionBrakedWeightInT()).isEqualTo(64);
         assertThat(result.getHauledLoadBrakedWeightInT()).isEqualTo(23);
         assertThat(result.getFormationBrakedWeightInT()).isEqualTo(87);
-        assertThat(result.getTractionHoldingForceInHectoNewton()).isZero();
+        assertThat(result.getTractionHoldingForceInHectoNewton()).isNull();
         assertThat(result.getHauledLoadHoldingForceInHectoNewton()).isEqualTo(893);
         assertThat(result.getFormationHoldingForceInHectoNewton()).isEqualTo(893);
         assertThat(result.getBrakePositionGForLeadingTraction()).isTrue();

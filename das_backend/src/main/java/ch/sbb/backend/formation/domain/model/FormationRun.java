@@ -65,17 +65,8 @@ public class FormationRun {
             return Collections.emptyList();
         }
         return formationRuns.stream()
-            .filter(formationRun -> formationRun.isInspected() && formationRun.isValidCompany())
+            .filter(formationRun -> formationRun.isInspected() && formationRun.inspectionDateTime != null && formationRun.isValidCompany())
             .toList();
-    }
-
-    private static Integer sum(Integer a, Integer b) {
-        if (a == null && b == null) {
-            return null;
-        }
-        int aValue = a != null ? a : 0;
-        int bValue = b != null ? b : 0;
-        return aValue + bValue;
     }
 
     private boolean isInspected() {
@@ -92,11 +83,19 @@ public class FormationRun {
     }
 
     public Integer getFormationGrossWeightInT() {
-        return sum(tractionGrossWeightInT, hauledLoadGrossWeightInT);
+        if (tractionGrossWeightInT == null || hauledLoadGrossWeightInT == null) {
+            // todo: default value
+            return null;
+        }
+        return tractionGrossWeightInT + hauledLoadGrossWeightInT;
     }
 
     public Integer getFormationBrakedWeightInT() {
-        return sum(tractionBrakedWeightInT, hauledLoadBrakedWeightInT);
+        if (tractionBrakedWeightInT == null || hauledLoadBrakedWeightInT == null) {
+            // todo: default value
+            return null;
+        }
+        return tractionBrakedWeightInT + hauledLoadBrakedWeightInT;
     }
 
     public Integer getTractionHoldingForceInHectoNewton() {

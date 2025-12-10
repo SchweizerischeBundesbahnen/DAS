@@ -1,10 +1,5 @@
-import {Component} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {
-  SbbIconSidebar,
-  SbbIconSidebarButton,
-  SbbIconSidebarContainer,
-  SbbIconSidebarContent,
-  SbbIconSidebarLink,
   SbbSidebar,
   SbbSidebarCloseButton,
   SbbSidebarContainer,
@@ -14,6 +9,14 @@ import {
 import {SbbBlockLink} from '@sbb-esta/lyne-angular/link/block-link';
 import {SbbLinkList} from '@sbb-esta/lyne-angular/link-list/link-list';
 import {SbbTooltipDirective} from '@sbb-esta/lyne-angular/tooltip';
+import {
+  SbbIconSidebar,
+  SbbIconSidebarButton,
+  SbbIconSidebarContainer,
+  SbbIconSidebarContent,
+  SbbIconSidebarLink
+} from '@sbb-esta/lyne-angular/icon-sidebar';
+import {OidcSecurityService} from 'angular-auth-oidc-client';
 
 @Component({
   selector: 'app-icon-sidebar',
@@ -37,5 +40,5 @@ import {SbbTooltipDirective} from '@sbb-esta/lyne-angular/tooltip';
   styleUrl: './icon-sidebar.css',
 })
 export class IconSidebar {
-
+  protected oidcSecurityService = inject(OidcSecurityService);
 }

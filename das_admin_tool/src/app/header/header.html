@@ -1,13 +1,17 @@
 <sbb-header expanded>
-  <sbb-header-button iconName="hamburger-menu-small" expandFrom="small" id="hamburger-menu">
-    Menu
-  </sbb-header-button>
+  @if (oidcSecurityService.authenticated().isAuthenticated) {
+    <sbb-header-button iconName="hamburger-menu-small" expandFrom="small" id="hamburger-menu">
+      Menu
+    </sbb-header-button>
+  }
   <span class="sbb-header-info">
     <strong i18n="@@c_header_app_name">DAS Admin-Tool</strong>
     <span>V. {{ version }}</span>
   </span>
-  <sbb-header-button class="sbb-active">Site 1</sbb-header-button>
-  <sbb-header-button>Site 2</sbb-header-button>
+  @if (oidcSecurityService.authenticated().isAuthenticated) {
+    <sbb-header-button class="sbb-active">Site 1</sbb-header-button>
+    <sbb-header-button>Site 2</sbb-header-button>
+  }
   <div class="sbb-header-spacer"></div>
   @if (oidcSecurityService.authenticated().isAuthenticated) {
     <sbb-header-button iconName="user-small" class="sbb-header-shrinkable" id="user-menu-trigger">

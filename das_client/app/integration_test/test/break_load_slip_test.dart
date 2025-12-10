@@ -104,6 +104,11 @@ void main() {
     expect(find.byKey(BreakLoadSlipSpecialRestrictions.dangerousGoodsBannerKey), findsOneWidget);
     expect(find.byKey(BreakLoadSlipHeader.dangerousGoodsHeaderBannerKey), findsOneWidget);
 
+    await tapElement(tester, find.byKey(NavigationButtons.navigationButtonNextKey));
+
+    expect(find.byKey(BreakLoadSlipSpecialRestrictions.carCarrierBannerKey), findsOneWidget);
+    expect(find.byKey(BreakLoadSlipHeader.carCarrierHeaderBannerKey), findsOneWidget);
+
     await disconnect(tester);
   });
 
