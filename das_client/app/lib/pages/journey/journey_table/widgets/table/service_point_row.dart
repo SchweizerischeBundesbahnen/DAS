@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:app/extension/station_sign_extension.dart';
+import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_table/advancement/journey_table_advancement_view_model.dart';
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_model.dart';
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_view_model.dart';
@@ -81,7 +84,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
                      );
                    },
                    child: Text(
-                     'Zum Betriebspunkt springen',
+                     context.l10n.w_service_point_row_background_label,
                      key: ValueKey(dragReached),
                      style: DASTextStyles.largeRoman.copyWith(color: SBBColors.white),
                    ),

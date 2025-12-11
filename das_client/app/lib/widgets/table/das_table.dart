@@ -71,7 +71,6 @@ class DASTable extends StatefulWidget {
 class _DASTableState extends State<DASTable> {
   final _animatedListKey = GlobalKey<AnimatedListState>();
   static const _tableInsertRemoveAnimationDurationMs = 500;
-  bool progressReached = false;
 
   @override
   void didUpdateWidget(DASTable oldWidget) {
@@ -344,7 +343,9 @@ class _CellRow extends StatefulWidget {
 }
 
 class _CellRowState extends State<_CellRow> {
-  bool progressReached = false;
+  bool dragEndedAboveThreshold = false;
+  bool thresholdReachedOnce = false;
+  bool isDragging = false;
 
   @override
   Widget build(BuildContext context) {
@@ -367,26 +368,37 @@ class _CellRowState extends State<_CellRow> {
     if (widget.row.onStartToEndDragReached == null) return foreground;
 
     return Dismissible(
-      movementDuration: DASAnimation.longDuration,
+      movementDuration: DASAnimation.mediumDuration,
       confirmDismiss: (_) => Future.value(false),
       direction: DismissDirection.startToEnd,
-      dismissThresholds: {DismissDirection.startToEnd: 1},
+      dismissThresholds: {DismissDirection.startToEnd: 1.0},
       onUpdate: (update) {
-        if ((update.progress > 0.2) != progressReached && progressReached == false) {
+        final isAboveThreshold = update.progress > 0.2;
+        if (isAboveThreshold != dragEndedAboveThreshold && isDragging) {
           setState(() {
-            progressReached = true;
+            dragEndedAboveThreshold = isAboveThreshold;
+            if (!thresholdReachedOnce && isAboveThreshold) {
+              thresholdReachedOnce = true;
+            }
           });
         }
-        if (update.progress == 0 && progressReached == true) {
+        if (update.progress == 0) {
+          if (dragEndedAboveThreshold) widget.row.onStartToEndDragReached?.call();
           setState(() {
-            progressReached = false;
+            thresholdReachedOnce = false;
+            dragEndedAboveThreshold = false;
           });
-          widget.row.onStartToEndDragReached?.call();
         }
       },
-      background: widget.row.draggableBackgroundBuilder?.call(context, progressReached),
+      behavior: HitTestBehavior.translucent,
+      resizeDuration: Duration.zero,
+      background: widget.row.draggableBackgroundBuilder?.call(context, thresholdReachedOnce),
       key: ValueKey('Dismissible ${widget.row.key}'),
-      child: foreground,
+      child: Listener(
+        onPointerDown: (_) => setState(() => isDragging = true),
+        onPointerUp: (_) => setState(() => isDragging = false),
+        child: foreground,
+      ),
     );
   }
 
