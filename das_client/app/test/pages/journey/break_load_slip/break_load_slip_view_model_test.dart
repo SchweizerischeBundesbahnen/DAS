@@ -5,10 +5,15 @@ import 'package:app/pages/journey/journey_table/widgets/detail_modal/detail_moda
 import 'package:app/pages/journey/journey_table_view_model.dart';
 import 'package:app/pages/journey/settings/journey_settings.dart';
 import 'package:app/pages/journey/settings/journey_settings_view_model.dart';
+import 'package:app/sound/das_sounds.dart';
+import 'package:app/sound/sound.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:connectivity_x/component.dart';
+import 'package:fake_async/fake_async.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:formation/component.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rxdart/rxdart.dart';
@@ -25,6 +30,9 @@ import 'break_load_slip_view_model_test.mocks.dart';
   MockSpec<StackRouter>(),
   MockSpec<StackRouterScope>(),
   MockSpec<DetailModalViewModel>(),
+  MockSpec<ConnectivityManager>(),
+  MockSpec<DASSounds>(),
+  MockSpec<Sound>(),
 ])
 void main() {
   late BreakLoadSlipViewModel testee;
@@ -33,6 +41,7 @@ void main() {
   late MockJourneyPositionViewModel mockJourneyPositionViewModel;
   late MockJourneySettingsViewModel mockJourneySettingsViewModel;
   late MockDetailModalViewModel mockDetailModalViewModel;
+  late MockConnectivityManager mockConnectivityManager;
   late MockBuildContext mockBuildContext;
   late MockStackRouter mockStackRouter;
   late MockStackRouterScope mockStackRouterScope;
@@ -40,6 +49,9 @@ void main() {
   late BehaviorSubject<JourneySettings> settingsSubject;
   late BehaviorSubject<JourneyPositionModel> positionSubject;
   late BehaviorSubject<Formation?> formationSubject;
+  late BehaviorSubject<bool> connectivitySubject;
+  late DASSounds mockDasSounds;
+  late Sound mockBreakSlipUpdatedSound;
 
   final trainIdentification = TrainIdentification(
     ru: RailwayUndertaking.fromCompanyCode('2185'),
@@ -110,12 +122,14 @@ void main() {
     mockBuildContext = MockBuildContext();
     mockStackRouter = MockStackRouter();
     mockStackRouterScope = MockStackRouterScope();
+    mockConnectivityManager = MockConnectivityManager();
 
     mockJourneySettingsViewModel = MockJourneySettingsViewModel();
     journeySubject = BehaviorSubject<Journey?>();
     settingsSubject = BehaviorSubject.seeded(JourneySettings());
     positionSubject = BehaviorSubject.seeded(JourneyPositionModel());
     formationSubject = BehaviorSubject<Formation?>();
+    connectivitySubject = BehaviorSubject.seeded(true);
 
     when(mockJourneyTableViewModel.journey).thenAnswer((_) => journeySubject.stream);
     when(mockJourneySettingsViewModel.model).thenAnswer((_) => settingsSubject.stream);
@@ -128,6 +142,16 @@ void main() {
         operationalDay: trainIdentification.operatingDay!,
       ),
     ).thenAnswer((_) => formationSubject.stream);
+    when(mockConnectivityManager.onConnectivityChanged).thenAnswer((_) => connectivitySubject.stream);
+
+    when(mockBuildContext.findAncestorWidgetOfExactType()).thenReturn(mockStackRouterScope);
+    when(mockStackRouterScope.controller).thenReturn(mockStackRouter);
+
+    mockDasSounds = MockDASSounds();
+    mockBreakSlipUpdatedSound = MockSound();
+
+    when(mockDasSounds.breakSlipUpdated).thenReturn(mockBreakSlipUpdatedSound);
+    GetIt.I.registerSingleton<DASSounds>(mockDasSounds);
 
     when(mockBuildContext.findAncestorWidgetOfExactType()).thenReturn(mockStackRouterScope);
     when(mockStackRouterScope.controller).thenReturn(mockStackRouter);
@@ -138,7 +162,13 @@ void main() {
       journeyPositionViewModel: mockJourneyPositionViewModel,
       journeySettingsViewModel: mockJourneySettingsViewModel,
       detailModalViewModel: mockDetailModalViewModel,
+      connectivityManager: mockConnectivityManager,
+      checkForUpdates: true,
     );
+  });
+
+  tearDown(() {
+    GetIt.I.reset();
   });
 
   test('model_whenJourneyUpdates_repositoryWatchFormation', () async {
@@ -353,6 +383,76 @@ void main() {
 
     verify(mockStackRouter.push(any)).called(1);
     verifyNever(mockDetailModalViewModel.open(any, maximize: false));
+  });
+
+  test('model_whenFormationChanges_emitsFormationChangedAndPlaysSound', () async {
+    // ACT
+    journeySubject.add(journey);
+    formationSubject.add(formation);
+
+    await processStreams();
+
+    formationSubject.add(
+      Formation(
+        operationalTrainNumber: formation.operationalTrainNumber,
+        company: formation.company,
+        operationalDay: formation.operationalDay,
+        formationRuns: [formationRun1, formationRun2],
+      ),
+    );
+
+    await processStreams();
+
+    verify(mockBreakSlipUpdatedSound.play()).called(1);
+
+    testee.dispose();
+  });
+
+  test('model_whenFormationUpdateIntervalElapsed_checksForFormationUpdate', () async {
+    fakeAsync((fakeAsync) {
+      testee.dispose();
+      testee = BreakLoadSlipViewModel(
+        journeyTableViewModel: mockJourneyTableViewModel,
+        formationRepository: mockFormationRepository,
+        journeyPositionViewModel: mockJourneyPositionViewModel,
+        journeySettingsViewModel: mockJourneySettingsViewModel,
+        detailModalViewModel: mockDetailModalViewModel,
+        connectivityManager: mockConnectivityManager,
+        checkForUpdates: true,
+      );
+
+      journeySubject.add(journey);
+      formationSubject.add(formation);
+
+      fakeAsync.elapse(Duration.zero);
+
+      verifyNever(mockFormationRepository.loadFormation(any, any, any));
+
+      fakeAsync.elapse(Duration(minutes: 2, seconds: 30));
+
+      verify(mockFormationRepository.loadFormation(any, any, any)).called(1);
+
+      testee.dispose();
+    });
+  });
+
+  test('model_whenConnectivityChanges_checksForUpdates', () async {
+    journeySubject.add(journey);
+    formationSubject.add(formation);
+
+    await processStreams();
+
+    verifyNever(mockFormationRepository.loadFormation(any, any, any));
+
+    connectivitySubject.add(false);
+    await processStreams();
+
+    verifyNever(mockFormationRepository.loadFormation(any, any, any));
+
+    connectivitySubject.add(true);
+    await processStreams();
+
+    verify(mockFormationRepository.loadFormation(any, any, any)).called(1);
   });
 }
 

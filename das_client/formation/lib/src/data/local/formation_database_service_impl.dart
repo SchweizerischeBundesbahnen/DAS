@@ -25,12 +25,19 @@ class FormationDatabaseServiceImpl extends _$FormationDatabaseServiceImpl implem
   FormationDatabaseServiceImpl._() : super(driftDatabase(name: 'formation_db'));
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   @override
   MigrationStrategy get migration {
     return MigrationStrategy(
       onCreate: (m) async {
+        await m.createAll();
+      },
+      onUpgrade: (m, from, to) async {
+        for (final entity in m.database.allSchemaEntities) {
+          await m.drop(entity);
+        }
+
         await m.createAll();
       },
     );
@@ -47,7 +54,27 @@ class FormationDatabaseServiceImpl extends _$FormationDatabaseServiceImpl implem
   }
 
   @override
-  Future<void> saveFormation(FormationDto formation) async {
-    await formationTable.insertOnConflictUpdate(formation.toCompanion());
+  Future<void> saveFormation(FormationDto formation, {String? etag}) async {
+    await formationTable.insertOnConflictUpdate(formation.toCompanion(etag));
+  }
+
+  @override
+  Future<String?> findFormationEtag(String operationalTrainNumber, String company, DateTime operationalDay) {
+    return (select(formationTable)
+          ..where((tbl) => tbl.operationalTrainNumber.equals(operationalTrainNumber))
+          ..where((tbl) => tbl.company.equals(company))
+          ..where((tbl) => tbl.operationalDay.equals(operationalDay)))
+        .getSingleOrNull()
+        .then((it) => it?.etag);
+  }
+
+  @override
+  Future<Formation?> findFormation(String operationalTrainNumber, String company, DateTime operationalDay) async {
+    return (select(formationTable)
+          ..where((tbl) => tbl.operationalTrainNumber.equals(operationalTrainNumber))
+          ..where((tbl) => tbl.company.equals(company))
+          ..where((tbl) => tbl.operationalDay.equals(operationalDay)))
+        .getSingleOrNull()
+        .then((it) => it?.toDomain());
   }
 }

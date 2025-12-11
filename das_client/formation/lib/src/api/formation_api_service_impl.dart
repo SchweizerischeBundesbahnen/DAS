@@ -9,12 +9,13 @@ class FormationApiServiceImpl implements FormationApiService {
   final Client httpClient;
 
   @override
-  FormationRequest formation(String operationalTrainNumber, String company, DateTime operationalDay) =>
+  FormationRequest formation(String operationalTrainNumber, String company, DateTime operationalDay, String? etag) =>
       FormationRequest(
         httpClient: httpClient,
         baseUrl: baseUrl,
         operationalTrainNumber: operationalTrainNumber,
         company: company,
         operationalDay: operationalDay,
+        etag: etag,
       );
 }

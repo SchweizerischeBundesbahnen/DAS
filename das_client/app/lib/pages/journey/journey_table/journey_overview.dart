@@ -18,6 +18,7 @@ import 'package:app/pages/journey/journey_table/widgets/detail_modal/service_poi
 import 'package:app/pages/journey/journey_table/widgets/header/header.dart';
 import 'package:app/pages/journey/journey_table/widgets/journey_navigation_buttons.dart';
 import 'package:app/pages/journey/journey_table/widgets/journey_table.dart';
+import 'package:app/pages/journey/journey_table/widgets/notification/break_load_slip_notification.dart';
 import 'package:app/pages/journey/journey_table/widgets/notification/koa_notification.dart';
 import 'package:app/pages/journey/journey_table/widgets/notification/maneuver_notification.dart';
 import 'package:app/pages/journey/journey_table/widgets/notification/replacement_series/replacement_series_notification.dart';
@@ -67,6 +68,7 @@ class JourneyOverview extends StatelessWidget {
         KoaNotification(),
         ReplacementSeriesNotification(),
         _warnAppNotification(context),
+        BreakLoadSlipNotification(),
         Expanded(
           child: Stack(
             children: [
@@ -262,6 +264,8 @@ class _ProviderScope extends StatelessWidget {
               formationRepository: DI.get(),
               journeySettingsViewModel: settingsVM,
               detailModalViewModel: detailModalVM,
+              connectivityManager: DI.get(),
+              checkForUpdates: true,
             );
           },
           dispose: (_, vm) => vm.dispose(),
