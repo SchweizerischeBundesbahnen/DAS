@@ -115,8 +115,7 @@ Future<void> openReducedJourneyMenu(WidgetTester tester) async {
 }
 
 Future<void> openBreakSlipPage(WidgetTester tester) async {
-  await openExtendedMenu(tester);
-  await tapElement(tester, find.text(l10n.w_extended_menu_breaking_slip_action));
+  await tapElement(tester, find.text(l10n.p_journey_header_button_break_slip));
   await Future.delayed(const Duration(milliseconds: 50));
 }
 

@@ -123,7 +123,7 @@ class VehicleUnitTest {
 
         Integer result = vehicleUnit.calculateHoldingForce(true);
 
-        assertThat(result).isZero();
+        assertThat(result).isNull();
     }
 
     @Test

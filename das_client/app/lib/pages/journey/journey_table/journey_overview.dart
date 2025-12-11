@@ -228,7 +228,6 @@ class _ProviderScope extends StatelessWidget {
           },
           dispose: (_, vm) => vm.dispose(),
         ),
-
         ProxyProvider4<
           JourneyPositionViewModel,
           PunctualityViewModel,
@@ -248,19 +247,21 @@ class _ProviderScope extends StatelessWidget {
           },
           dispose: (_, vm) => vm.dispose(),
         ),
-        ProxyProvider3<
+        ProxyProvider4<
           JourneyTableViewModel,
           JourneyPositionViewModel,
           JourneySettingsViewModel,
+          DetailModalViewModel,
           BreakLoadSlipViewModel
         >(
-          update: (_, journeyVM, positionVM, settingsVM, prev) {
+          update: (_, journeyVM, positionVM, settingsVM, detailModalVM, prev) {
             if (prev != null) return prev;
             return BreakLoadSlipViewModel(
               journeyTableViewModel: journeyVM,
               journeyPositionViewModel: positionVM,
               formationRepository: DI.get(),
               journeySettingsViewModel: settingsVM,
+              detailModalViewModel: detailModalVM,
             );
           },
           dispose: (_, vm) => vm.dispose(),

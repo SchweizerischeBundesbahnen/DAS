@@ -1,9 +1,12 @@
 import 'package:app/pages/journey/break_load_slip/break_load_slip_view_model.dart';
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_model.dart';
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_view_model.dart';
+import 'package:app/pages/journey/journey_table/widgets/detail_modal/detail_modal_view_model.dart';
 import 'package:app/pages/journey/journey_table_view_model.dart';
 import 'package:app/pages/journey/settings/journey_settings.dart';
 import 'package:app/pages/journey/settings/journey_settings_view_model.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:formation/component.dart';
 import 'package:mockito/annotations.dart';
@@ -18,6 +21,10 @@ import 'break_load_slip_view_model_test.mocks.dart';
   MockSpec<FormationRepository>(),
   MockSpec<JourneyPositionViewModel>(),
   MockSpec<JourneySettingsViewModel>(),
+  MockSpec<BuildContext>(),
+  MockSpec<StackRouter>(),
+  MockSpec<StackRouterScope>(),
+  MockSpec<DetailModalViewModel>(),
 ])
 void main() {
   late BreakLoadSlipViewModel testee;
@@ -25,6 +32,10 @@ void main() {
   late MockFormationRepository mockFormationRepository;
   late MockJourneyPositionViewModel mockJourneyPositionViewModel;
   late MockJourneySettingsViewModel mockJourneySettingsViewModel;
+  late MockDetailModalViewModel mockDetailModalViewModel;
+  late MockBuildContext mockBuildContext;
+  late MockStackRouter mockStackRouter;
+  late MockStackRouterScope mockStackRouterScope;
   late BehaviorSubject<Journey?> journeySubject;
   late BehaviorSubject<JourneySettings> settingsSubject;
   late BehaviorSubject<JourneyPositionModel> positionSubject;
@@ -95,6 +106,11 @@ void main() {
     mockJourneyTableViewModel = MockJourneyTableViewModel();
     mockFormationRepository = MockFormationRepository();
     mockJourneyPositionViewModel = MockJourneyPositionViewModel();
+    mockDetailModalViewModel = MockDetailModalViewModel();
+    mockBuildContext = MockBuildContext();
+    mockStackRouter = MockStackRouter();
+    mockStackRouterScope = MockStackRouterScope();
+
     mockJourneySettingsViewModel = MockJourneySettingsViewModel();
     journeySubject = BehaviorSubject<Journey?>();
     settingsSubject = BehaviorSubject.seeded(JourneySettings());
@@ -113,11 +129,15 @@ void main() {
       ),
     ).thenAnswer((_) => formationSubject.stream);
 
+    when(mockBuildContext.findAncestorWidgetOfExactType()).thenReturn(mockStackRouterScope);
+    when(mockStackRouterScope.controller).thenReturn(mockStackRouter);
+
     testee = BreakLoadSlipViewModel(
       journeyTableViewModel: mockJourneyTableViewModel,
       formationRepository: mockFormationRepository,
       journeyPositionViewModel: mockJourneyPositionViewModel,
       journeySettingsViewModel: mockJourneySettingsViewModel,
+      detailModalViewModel: mockDetailModalViewModel,
     );
   });
 
@@ -302,6 +322,37 @@ void main() {
     verify(
       mockJourneySettingsViewModel.updateBreakSeries(BreakSeries(trainSeries: TrainSeries.A, breakSeries: 75)),
     ).called(1);
+  });
+
+  test('open_whenOpenIsCalled_opensFullscreenOrModal', () async {
+    // ACT
+    journeySubject.add(journey);
+    formationSubject.add(formation);
+
+    await processStreams();
+
+    // Open first time (should open fullscreen)
+    testee.open(mockBuildContext);
+
+    verify(mockStackRouter.push(any)).called(1);
+    verifyNever(mockDetailModalViewModel.open(any, maximize: false));
+
+    // Open second time (should open modal)
+    testee.open(mockBuildContext);
+
+    verifyNever(mockStackRouter.push(any));
+    verify(mockDetailModalViewModel.open(any, maximize: false)).called(1);
+
+    final position = JourneyPositionModel(currentPosition: journey.data.whereType<ServicePoint>().elementAt(1));
+    positionSubject.add(position);
+
+    await processStreams();
+
+    // FormationRun changed, should open fullscreen again
+    testee.open(mockBuildContext);
+
+    verify(mockStackRouter.push(any)).called(1);
+    verifyNever(mockDetailModalViewModel.open(any, maximize: false));
   });
 }
 
