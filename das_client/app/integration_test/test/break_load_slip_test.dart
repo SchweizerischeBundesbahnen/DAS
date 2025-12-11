@@ -2,7 +2,9 @@ import 'package:app/di/di.dart';
 import 'package:app/pages/journey/break_load_slip/break_load_slip_page.dart';
 import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_header.dart';
 import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_special_restrictions.dart';
+import 'package:app/pages/journey/journey_page.dart';
 import 'package:app/pages/journey/journey_table/widgets/journey_table.dart';
+import 'package:app/pages/journey/journey_table/widgets/notification/break_load_slip_notification.dart';
 import 'package:app/widgets/navigation_buttons.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:formation/component.dart';
@@ -171,6 +173,33 @@ void main() {
     await tapElement(tester, find.text(l10n.w_break_load_slip_modal_open_break_slip));
 
     expect(find.byType(BreakLoadSlipPage), findsOneWidget);
+
+    await disconnect(tester);
+  });
+
+  testWidgets('breakSlip_testFormationUpdateNotification', (tester) async {
+    await prepareAndStartApp(tester);
+
+    final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
+    formationRepository.emitT9999Formation();
+
+    await loadJourney(tester, trainNumber: 'T9999M');
+
+    expect(find.byKey(BreakLoadSlipNotification.breakLoadSlipNotificationKey), findsNothing);
+
+    formationRepository.emitT9999FormationUpdate();
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(BreakLoadSlipNotification.breakLoadSlipNotificationKey), findsOneWidget);
+
+    await tapElement(tester, find.byKey(BreakLoadSlipNotification.breakLoadSlipNotificationKey));
+
+    expect(find.byType(BreakLoadSlipPage), findsOneWidget);
+
+    await closeBreakSlipPage(tester);
+
+    expect(find.byType(JourneyPage), findsOneWidget);
+    expect(find.byKey(BreakLoadSlipNotification.breakLoadSlipNotificationKey), findsNothing);
 
     await disconnect(tester);
   });

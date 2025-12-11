@@ -65,6 +65,45 @@ class MockFormationRepository implements FormationRepository {
     formationSubject.add(formation);
   }
 
+  void emitT9999FormationUpdate() {
+    final formation = Formation(
+      operationalTrainNumber: 'T9999',
+      company: '2185',
+      operationalDay: DateTime.now(),
+      formationRuns: [
+        _generateFormationRun(
+          'CH09991',
+          'CH09992',
+          trainCategoryCode: 'A',
+          brakedWeightPercentage: 95,
+        ),
+        _generateFormationRun(
+          'CH09992',
+          'CH09993',
+          trainCategoryCode: 'A',
+          brakedWeightPercentage: 95,
+          simTrain: true,
+        ),
+        _generateFormationRun(
+          'CH09993',
+          'CH09994',
+          trainCategoryCode: 'A',
+          brakedWeightPercentage: 95,
+          dangerousGoods: true,
+        ),
+        _generateFormationRun(
+          'CH09994',
+          'CH09995',
+          trainCategoryCode: 'A',
+          brakedWeightPercentage: 95,
+          dangerousGoods: true,
+          simTrain: true,
+        ),
+      ],
+    );
+    formationSubject.add(formation);
+  }
+
   FormationRun _generateFormationRun(
     String tafTapStart,
     String tafTapEnd, {
@@ -107,5 +146,10 @@ class MockFormationRepository implements FormationRepository {
       formationMaxSpeedInKmh: 100,
       additionalTractions: ['Q (420)'],
     );
+  }
+
+  @override
+  Future<Formation?> loadFormation(String operationalTrainNumber, String company, DateTime operationalDay) async {
+    return formationSubject.value;
   }
 }

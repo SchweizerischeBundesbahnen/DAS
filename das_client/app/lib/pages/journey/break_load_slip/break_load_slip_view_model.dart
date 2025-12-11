@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app/di/di.dart';
 import 'package:app/nav/app_router.dart';
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_model.dart';
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_view_model.dart';
@@ -7,8 +8,11 @@ import 'package:app/pages/journey/journey_table/widgets/detail_modal/break_load_
 import 'package:app/pages/journey/journey_table/widgets/detail_modal/detail_modal_view_model.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/config/journey_settings.dart';
 import 'package:app/pages/journey/journey_table_view_model.dart';
+import 'package:app/sound/das_sounds.dart';
+import 'package:app/sound/sound.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:collection/collection.dart';
+import 'package:connectivity_x/component.dart';
 import 'package:flutter/material.dart';
 import 'package:formation/component.dart';
 import 'package:logging/logging.dart';
@@ -18,15 +22,21 @@ import 'package:sfera/component.dart';
 final _log = Logger('BreakLoadSlipViewModel');
 
 class BreakLoadSlipViewModel {
+  static const _formationUpdateInterval = Duration(minutes: 2);
+
   BreakLoadSlipViewModel({
     required JourneyTableViewModel journeyTableViewModel,
     required FormationRepository formationRepository,
     required JourneyPositionViewModel journeyPositionViewModel,
     DetailModalViewModel? detailModalViewModel,
+    ConnectivityManager? connectivityManager,
+    bool checkForUpdates = false,
   }) : _journeyTableViewModel = journeyTableViewModel,
        _formationRepository = formationRepository,
        _journeyPositionViewModel = journeyPositionViewModel,
-       _detailModalViewModel = detailModalViewModel {
+       _detailModalViewModel = detailModalViewModel,
+       _connectivityManager = connectivityManager,
+       _checkForUpdates = checkForUpdates {
     _init();
   }
 
@@ -34,27 +44,39 @@ class BreakLoadSlipViewModel {
   final FormationRepository _formationRepository;
   final JourneyPositionViewModel _journeyPositionViewModel;
   final DetailModalViewModel? _detailModalViewModel;
+  final ConnectivityManager? _connectivityManager;
+  final bool _checkForUpdates;
+
+  final Sound _breakSlipUpdatedSound = DI.get<DASSounds>().breakSlipUpdated;
 
   Journey? _latestJourney;
   JourneyPositionModel? _latestPosition;
   bool _openFullscreen = true;
+  bool _skipFirstUpdate = true;
 
   StreamSubscription? _journeySubscription;
   StreamSubscription? _journeyPositionSubscription;
   StreamSubscription? _formationSubscription;
+  StreamSubscription? _connectivitySubscription;
+  Timer? _formationUpdateTimer;
 
   final _rxFormation = BehaviorSubject<Formation?>.seeded(null);
   final _rxFormationRun = BehaviorSubject<FormationRun?>.seeded(null);
+  final _rxFormationChanged = BehaviorSubject<bool>.seeded(false);
 
   Stream<Formation?> get formation => _rxFormation.stream.distinct();
 
   Stream<FormationRun?> get formationRun => _rxFormationRun.distinct();
+
+  Stream<bool> get formationChanged => _rxFormationChanged.distinct();
 
   Stream<JourneySettings?> get settings => _journeyTableViewModel.settings;
 
   Formation? get formationValue => _rxFormation.value;
 
   FormationRun? get formationRunValue => _rxFormationRun.value;
+
+  bool get formationChangedValue => _rxFormationChanged.value;
 
   void _init() {
     _journeySubscription = _journeyTableViewModel.journey.listen((journey) {
@@ -68,6 +90,28 @@ class BreakLoadSlipViewModel {
       _latestPosition = position;
       _emitFormationRun();
     });
+    if (_checkForUpdates) {
+      _formationUpdateTimer = Timer.periodic(_formationUpdateInterval, (_) => _checkForFormationUpdates());
+    }
+    _connectivitySubscription = _connectivityManager?.onConnectivityChanged.listen((state) {
+      if (state) _checkForFormationUpdates();
+    });
+  }
+
+  void _checkForFormationUpdates() {
+    if (_skipFirstUpdate) {
+      _skipFirstUpdate = false;
+      return;
+    }
+
+    final trainIdentification = _latestJourney?.metadata.trainIdentification;
+    if (trainIdentification != null) {
+      _formationRepository.loadFormation(
+        trainIdentification.trainNumber,
+        trainIdentification.ru.companyCode,
+        trainIdentification.operatingDay ?? trainIdentification.date,
+      );
+    }
   }
 
   void _subscribeToFormation(TrainIdentification? trainIdentification) {
@@ -83,9 +127,19 @@ class BreakLoadSlipViewModel {
             operationalDay: trainIdentification.operatingDay ?? trainIdentification.date,
           )
           .listen((formation) {
+            final formationChanged = formationValue != null;
+
             _rxFormation.add(formation);
             _changeOpenFullscreenFlag(true);
             _emitFormationRun();
+
+            if (formationChanged) {
+              _rxFormationChanged.add(true);
+
+              if (_checkForUpdates) {
+                _breakSlipUpdatedSound.play();
+              }
+            }
           });
     }
   }
@@ -94,6 +148,7 @@ class BreakLoadSlipViewModel {
     final newActiveFormationRun = _calculateActiveFormationRun();
     if (newActiveFormationRun == formationRunValue) return;
 
+    _log.info('Active formation run changed to $newActiveFormationRun}');
     _changeOpenFullscreenFlag(true);
     _rxFormationRun.add(newActiveFormationRun);
   }
@@ -180,6 +235,10 @@ class BreakLoadSlipViewModel {
     _journeyPositionSubscription = null;
     _rxFormation.close();
     _rxFormationRun.close();
+    _formationUpdateTimer?.cancel();
+    _formationUpdateTimer = null;
+    _connectivitySubscription?.cancel();
+    _connectivitySubscription = null;
   }
 
   void previous() {
@@ -210,9 +269,10 @@ class BreakLoadSlipViewModel {
   }
 
   void open(BuildContext context) {
-    if (_openFullscreen) {
+    if (_openFullscreen || formationChangedValue) {
       context.router.push(BreakLoadSlipRoute());
       _changeOpenFullscreenFlag(false);
+      _rxFormationChanged.add(false);
     } else {
       _detailModalViewModel?.open(BreakLoadSlipModalBuilder(), maximize: false);
     }
