@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.33.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.32.0...das_client-v0.33.0) (2025-12-11)
+
+
+### Features
+
+* add break slip modal ([#568](https://github.com/SchweizerischeBundesbahnen/DAS/issues/568)) ([#1536](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1536)) ([7951bdc](https://github.com/SchweizerischeBundesbahnen/DAS/commit/7951bdc2b4307f43f0686f50a87fa5c9f7a770df))
+* add prominent car carrier display ([#1383](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1383)) ([#1528](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1528)) ([9abdb49](https://github.com/SchweizerischeBundesbahnen/DAS/commit/9abdb49499df2cefc0785d1a63bf372cc0e1952a))
+* break slip updates and etag ([#695](https://github.com/SchweizerischeBundesbahnen/DAS/issues/695)) ([#1541](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1541)) ([21a7221](https://github.com/SchweizerischeBundesbahnen/DAS/commit/21a722137da0ad0ba4314741f14af7fda2ccec14))
+
 ## [0.32.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.31.0...das_client-v0.32.0) (2025-12-08)
 
 
