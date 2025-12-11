@@ -1,4 +1,5 @@
 import 'package:app/pages/journey/journey_table/widgets/header/battery_status.dart';
+import 'package:app/pages/journey/journey_table/widgets/header/break_slip_button.dart';
 import 'package:app/pages/journey/journey_table/widgets/header/connectivity_icon.dart';
 import 'package:app/pages/journey/journey_table/widgets/header/departure_authorization_display.dart';
 import 'package:app/pages/journey/journey_table/widgets/header/extended_menu.dart';
@@ -78,6 +79,7 @@ class MainHeaderBox extends StatelessWidget {
     spacing: sbbDefaultSpacing * 0.5,
     children: [
       // marked as leaf as default draws a border
+      Skeleton.leaf(child: BreakSlipButton()),
       Skeleton.leaf(child: ThemeButton()),
       Skeleton.leaf(child: StartPauseButton()),
       ExtendedMenu(),

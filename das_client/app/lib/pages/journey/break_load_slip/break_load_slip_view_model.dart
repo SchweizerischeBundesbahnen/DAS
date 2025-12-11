@@ -1,30 +1,43 @@
 import 'dart:async';
 
+import 'package:app/nav/app_router.dart';
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_model.dart';
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_view_model.dart';
+import 'package:app/pages/journey/journey_table/widgets/detail_modal/break_load_slip_modal/break_load_slip_modal_builder.dart';
+import 'package:app/pages/journey/journey_table/widgets/detail_modal/detail_modal_view_model.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/config/journey_settings.dart';
 import 'package:app/pages/journey/journey_table_view_model.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
 import 'package:formation/component.dart';
+import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
+
+final _log = Logger('BreakLoadSlipViewModel');
 
 class BreakLoadSlipViewModel {
   BreakLoadSlipViewModel({
     required JourneyTableViewModel journeyTableViewModel,
     required FormationRepository formationRepository,
     required JourneyPositionViewModel journeyPositionViewModel,
+    DetailModalViewModel? detailModalViewModel,
   }) : _journeyTableViewModel = journeyTableViewModel,
        _formationRepository = formationRepository,
-       _journeyPositionViewModel = journeyPositionViewModel {
+       _journeyPositionViewModel = journeyPositionViewModel,
+       _detailModalViewModel = detailModalViewModel {
     _init();
   }
 
   final JourneyTableViewModel _journeyTableViewModel;
   final FormationRepository _formationRepository;
   final JourneyPositionViewModel _journeyPositionViewModel;
+  final DetailModalViewModel? _detailModalViewModel;
+
   Journey? _latestJourney;
   JourneyPositionModel? _latestPosition;
+  bool _openFullscreen = true;
 
   StreamSubscription? _journeySubscription;
   StreamSubscription? _journeyPositionSubscription;
@@ -71,13 +84,18 @@ class BreakLoadSlipViewModel {
           )
           .listen((formation) {
             _rxFormation.add(formation);
+            _changeOpenFullscreenFlag(true);
             _emitFormationRun();
           });
     }
   }
 
   void _emitFormationRun() {
-    _rxFormationRun.add(_calculateActiveFormationRun());
+    final newActiveFormationRun = _calculateActiveFormationRun();
+    if (newActiveFormationRun == formationRunValue) return;
+
+    _changeOpenFullscreenFlag(true);
+    _rxFormationRun.add(newActiveFormationRun);
   }
 
   FormationRun? _calculateActiveFormationRun() {
@@ -183,6 +201,20 @@ class BreakLoadSlipViewModel {
     final currentIndex = formation.formationRuns.indexOf(activeFormationRun);
     if (currentIndex != -1 && currentIndex < formation.formationRuns.length - 1) {
       _rxFormationRun.add(formation.formationRuns[currentIndex + 1]);
+    }
+  }
+
+  void _changeOpenFullscreenFlag(bool state) {
+    _log.fine('$hashCode Changing _openFullscreen to $state');
+    _openFullscreen = state;
+  }
+
+  void open(BuildContext context) {
+    if (_openFullscreen) {
+      context.router.push(BreakLoadSlipRoute());
+      _changeOpenFullscreenFlag(false);
+    } else {
+      _detailModalViewModel?.open(BreakLoadSlipModalBuilder(), maximize: false);
     }
   }
 }

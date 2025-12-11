@@ -111,7 +111,7 @@ class DASModalSheetController {
     if (!_initialized) return;
 
     if (_state != .closed) {
-      onClose?.call();
+      Future.delayed(closeAnimationDuration).then((_) => onClose?.call());
       _controller.reverse();
       _fullWidthController.reverse();
       _state = .closed;
