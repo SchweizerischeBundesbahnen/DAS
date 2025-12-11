@@ -1,7 +1,12 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {IconSidebar} from './icon-sidebar';
-import {provideZonelessChangeDetection} from '@angular/core';
+import {AuthenticatedResult, OidcSecurityService} from 'angular-auth-oidc-client';
+import {signal} from '@angular/core';
+
+const mockOidc: Partial<OidcSecurityService> = {
+  authenticated: signal({isAuthenticated: true} as AuthenticatedResult),
+};
 
 describe('IconSidebar', () => {
   let component: IconSidebar;
@@ -10,13 +15,15 @@ describe('IconSidebar', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [IconSidebar],
-      providers: [provideZonelessChangeDetection()]
+      providers: [{
+        provide: OidcSecurityService, useValue: mockOidc
+      }]
     })
       .compileComponents();
 
     fixture = TestBed.createComponent(IconSidebar);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    await fixture.whenStable();
   });
 
   it('should create', () => {

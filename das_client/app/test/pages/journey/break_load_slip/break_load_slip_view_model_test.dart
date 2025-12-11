@@ -149,6 +149,9 @@ void main() {
     when(mockDasSounds.breakSlipUpdated).thenReturn(mockBreakSlipUpdatedSound);
     GetIt.I.registerSingleton<DASSounds>(mockDasSounds);
 
+    when(mockBuildContext.findAncestorWidgetOfExactType()).thenReturn(mockStackRouterScope);
+    when(mockStackRouterScope.controller).thenReturn(mockStackRouter);
+
     testee = BreakLoadSlipViewModel(
       journeyTableViewModel: mockJourneyTableViewModel,
       formationRepository: mockFormationRepository,

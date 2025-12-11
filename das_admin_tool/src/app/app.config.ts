@@ -15,7 +15,7 @@ import 'angular-server-side-configuration/process';
  *
  * Please note that process.env[variable] cannot be resolved. Please directly use strings.
  */
-import {ApplicationConfig, ErrorHandler, provideZonelessChangeDetection} from '@angular/core';
+import {ApplicationConfig, ErrorHandler} from '@angular/core';
 import {provideRouter} from '@angular/router';
 
 import {routes} from './app.routes';
@@ -27,7 +27,6 @@ import {ReportToInstanaErrorHandler} from './errorHandler';
 export const appConfig: ApplicationConfig = {
   providers: [
     {provide: ErrorHandler, useClass: ReportToInstanaErrorHandler},
-    provideZonelessChangeDetection(),
     provideRouter(routes),
     provideAuth(environment.authConfig, withAppInitializerAuthCheck()),
     provideHttpClient(withInterceptors([authInterceptor()])),

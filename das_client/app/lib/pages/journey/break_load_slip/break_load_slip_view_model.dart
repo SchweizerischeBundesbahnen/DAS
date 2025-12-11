@@ -149,7 +149,6 @@ class BreakLoadSlipViewModel {
     if (newActiveFormationRun == formationRunValue) return;
 
     _log.info('Active formation run changed to $newActiveFormationRun}');
-
     _changeOpenFullscreenFlag(true);
     _rxFormationRun.add(newActiveFormationRun);
   }
