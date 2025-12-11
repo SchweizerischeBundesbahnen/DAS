@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/webapp-v0.7.2...webapp-v0.8.0) (2025-12-11)
+
+
+### Features
+
+* add break- and loadslip ([#692](https://github.com/SchweizerischeBundesbahnen/DAS/issues/692)) ([#1506](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1506)) ([19ee997](https://github.com/SchweizerischeBundesbahnen/DAS/commit/19ee997dad58e2f1cc6bca12736ed05c4a2e2f55))
+
 ## [0.7.2](https://github.com/SchweizerischeBundesbahnen/DAS/compare/webapp-v0.7.1...webapp-v0.7.2) (2025-12-02)
 
 
