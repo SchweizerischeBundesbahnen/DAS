@@ -66,7 +66,6 @@ class FormationDatabaseServiceImpl extends _$FormationDatabaseServiceImpl implem
           ..where((tbl) => tbl.operationalDay.equals(operationalDay)))
         .getSingleOrNull()
         .then((it) => it?.etag);
-    ;
   }
 
   @override
