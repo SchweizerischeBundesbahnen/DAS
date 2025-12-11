@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.11.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.10.0...sfera_mock-v0.11.0) (2025-12-11)
+
+
+### Features
+
+* add break- and loadslip ([#692](https://github.com/SchweizerischeBundesbahnen/DAS/issues/692)) ([#1506](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1506)) ([19ee997](https://github.com/SchweizerischeBundesbahnen/DAS/commit/19ee997dad58e2f1cc6bca12736ed05c4a2e2f55))
+
+
+### Documentation
+
+* add T9999 operating day ([#1543](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1543)) ([ca9d795](https://github.com/SchweizerischeBundesbahnen/DAS/commit/ca9d79596fc298bee377b2d671ae9063986e52e6))
+
 ## [0.10.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.9.0...sfera_mock-v0.10.0) (2025-12-02)
 
 
