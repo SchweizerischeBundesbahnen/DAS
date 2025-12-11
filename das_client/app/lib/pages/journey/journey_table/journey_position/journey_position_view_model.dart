@@ -36,6 +36,7 @@ class JourneyPositionViewModel {
   JourneyPositionModel get modelValue => _rxModel.value;
 
   void setManualPosition(JourneyPoint? manualPosition) {
+    if (manualPosition == _lastManualPosition) return;
     _log.finer('Setting manual position to: $manualPosition');
     _rxManualPosition.add(manualPosition);
   }
