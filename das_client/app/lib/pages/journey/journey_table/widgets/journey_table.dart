@@ -136,12 +136,12 @@ class JourneyTable extends StatelessWidget {
             stream: detailModalViewModel.openModalType,
             builder: (context, snapshot) {
               final openModalType = snapshot.data;
-              final advancementController = context.read<JourneyTableViewModel>().journeyTableScrollController;
+              final journeyTableScrollController = context.read<JourneyTableViewModel>().journeyTableScrollController;
               return ChevronAnimationWrapper(
                 journeyPosition: journeyPosition,
                 child: DASTable(
-                  key: advancementController.tableKey,
-                  scrollController: advancementController.scrollController,
+                  key: journeyTableScrollController.tableKey,
+                  scrollController: journeyTableScrollController.scrollController,
                   columns: _columns(context, journey.metadata, settings, openModalType),
                   rows: tableRows.map((it) => it.build(context)).toList(),
                   bottomMarginAdjustment: marginAdjustment,
