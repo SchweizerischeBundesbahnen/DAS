@@ -44,6 +44,8 @@ class DASTableCellRow extends DASTableRow {
     required super.rowIndex,
     this.color,
     this.onTap,
+    this.onStartToEndDragReached,
+    this.draggableBackgroundBuilder,
     super.stickyLevel,
     super.identifier,
   });
@@ -54,6 +56,14 @@ class DASTableCellRow extends DASTableRow {
   final Map<int, DASTableCell> cells;
 
   final VoidCallback? onTap;
+
+  /// The callback that is invoked if the user drags the row over a certain extent.
+  final VoidCallback? onStartToEndDragReached;
+
+  /// If [onStartToEndDragReached] is non null, this will be used to build the background of the row.
+  ///
+  /// The bool indicates whether the target was reached during drag movement.
+  final Widget Function(BuildContext, bool)? draggableBackgroundBuilder;
 }
 
 class DASTableWidgetRow extends DASTableRow {

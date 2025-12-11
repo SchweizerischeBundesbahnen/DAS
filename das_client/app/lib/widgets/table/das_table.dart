@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:app/theme/theme_util.dart';
+import 'package:app/util/animation.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:app/widgets/table/das_row_controller_wrapper.dart';
@@ -70,6 +71,7 @@ class DASTable extends StatefulWidget {
 class _DASTableState extends State<DASTable> {
   final _animatedListKey = GlobalKey<AnimatedListState>();
   static const _tableInsertRemoveAnimationDurationMs = 500;
+  bool progressReached = false;
 
   @override
   void didUpdateWidget(DASTable oldWidget) {
@@ -277,21 +279,114 @@ class _DASTableState extends State<DASTable> {
     if (row is! DASTableCellRow) {
       return KeyedSubtree(key: DASTable.rowKey, child: (row as DASTableWidgetRow).widget);
     }
+    return _CellRow(row: row, columns: widget.columns, isSticky: isSticky);
+  }
+}
 
-    return InkWell(
-      onTap: row.onTap,
+extension _TableBorderExtension on TableBorder {
+  BorderDirectional toBoxBorder({bool isLastCell = false}) {
+    return BorderDirectional(bottom: horizontalInside, end: isLastCell ? BorderSide.none : verticalInside);
+  }
+}
+
+class _FixedHeightRow extends StatelessWidget {
+  const _FixedHeightRow({required this.height, required this.children});
+
+  final double height;
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: height,
+      child: Row(
+        key: DASTable.rowKey,
+        crossAxisAlignment: .stretch,
+        children: children,
+      ),
+    );
+  }
+}
+
+/// A wrapper for table cells that allows for optional width and expansion.
+class _TableCellWrapper extends StatelessWidget {
+  const _TableCellWrapper({required this.child, this.width, this.expanded = false});
+
+  /// The fixed width for the cell.
+  final double? width;
+
+  /// If true, the cell is wrapped with a Expanded widget.
+  final bool expanded;
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    if (expanded) {
+      return Expanded(child: child);
+    } else if (width != null) {
+      return SizedBox(width: width, child: child);
+    } else {
+      return child;
+    }
+  }
+}
+
+class _CellRow extends StatefulWidget {
+  const _CellRow({required this.row, required this.columns, this.isSticky = false});
+
+  final DASTableCellRow row;
+  final List<DASTableColumn> columns;
+  final bool isSticky;
+
+  @override
+  State<_CellRow> createState() => _CellRowState();
+}
+
+class _CellRowState extends State<_CellRow> {
+  bool progressReached = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final foreground = GestureDetector(
+      onTap: widget.row.onTap,
       child: DASRowControllerWrapper(
-        isAlwaysSticky: isSticky,
-        rowKey: row.key,
+        isAlwaysSticky: widget.isSticky,
+        rowKey: widget.row.key,
         child: _FixedHeightRow(
-          height: row.height,
+          height: widget.row.height,
           children: List.generate(widget.columns.length, (index) {
             final column = widget.columns[index];
-            final cell = row.cells[column.id] ?? DASTableCell.empty();
-            return _dataCell(cell, column, row, isLast: widget.columns.length - 1 == index);
+            final cell = widget.row.cells[column.id] ?? DASTableCell.empty();
+            return _dataCell(cell, column, widget.row, isLast: widget.columns.length - 1 == index);
           }),
         ),
       ),
+    );
+
+    if (widget.row.onStartToEndDragReached == null) return foreground;
+
+    return Dismissible(
+      movementDuration: DASAnimation.longDuration,
+      confirmDismiss: (_) => Future.value(false),
+      direction: DismissDirection.startToEnd,
+      dismissThresholds: {DismissDirection.startToEnd: 1},
+      onUpdate: (update) {
+        if ((update.progress > 0.2) != progressReached && progressReached == false) {
+          setState(() {
+            progressReached = true;
+          });
+        }
+        if (update.progress == 0 && progressReached == true) {
+          setState(() {
+            progressReached = false;
+          });
+          widget.row.onStartToEndDragReached?.call();
+        }
+      },
+      background: widget.row.draggableBackgroundBuilder?.call(context, progressReached),
+      key: ValueKey('Dismissible ${widget.row.key}'),
+      child: foreground,
     );
   }
 
@@ -344,54 +439,5 @@ class _DASTableState extends State<DASTable> {
       max(padding.right - borderSideEnd.width, 0),
       max(padding.bottom - border.bottom.width, 0),
     );
-  }
-}
-
-extension _TableBorderExtension on TableBorder {
-  BorderDirectional toBoxBorder({bool isLastCell = false}) {
-    return BorderDirectional(bottom: horizontalInside, end: isLastCell ? BorderSide.none : verticalInside);
-  }
-}
-
-class _FixedHeightRow extends StatelessWidget {
-  const _FixedHeightRow({required this.height, required this.children});
-
-  final double height;
-  final List<Widget> children;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: height,
-      child: Row(
-        key: DASTable.rowKey,
-        crossAxisAlignment: .stretch,
-        children: children,
-      ),
-    );
-  }
-}
-
-/// A wrapper for table cells that allows for optional width and expansion.
-class _TableCellWrapper extends StatelessWidget {
-  const _TableCellWrapper({required this.child, this.width, this.expanded = false});
-
-  /// The fixed width for the cell.
-  final double? width;
-
-  /// If true, the cell is wrapped with a Expanded widget.
-  final bool expanded;
-
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    if (expanded) {
-      return Expanded(child: child);
-    } else if (width != null) {
-      return SizedBox(width: width, child: child);
-    } else {
-      return child;
-    }
   }
 }
