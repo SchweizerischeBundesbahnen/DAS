@@ -33,8 +33,6 @@ class JourneyScope extends DIScope {
   }
 }
 
-// TODO: You have the general problem that things are not persisted when navigating - one of these things is the state of advancement
-
 extension JourneyScopeExtension on GetIt {
   void registerJourneyNavigationViewModel() {
     factoryFunc() {
