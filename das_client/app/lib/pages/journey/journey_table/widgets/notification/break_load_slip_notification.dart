@@ -6,6 +6,8 @@ import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class BreakLoadSlipNotification extends StatelessWidget {
+  static const Key breakLoadSlipNotificationKey = Key('breakLoadSlipNotification');
+
   const BreakLoadSlipNotification({super.key});
 
   @override
@@ -20,6 +22,7 @@ class BreakLoadSlipNotification extends StatelessWidget {
         if (!isFormationChanged) return SizedBox.shrink();
 
         return Container(
+          key: breakLoadSlipNotificationKey,
           margin: const EdgeInsets.all(JourneyOverview.horizontalPadding).copyWith(top: 0),
           child: SBBNotificationBox.information(
             text: context.l10n.w_break_load_slip_notification_text,

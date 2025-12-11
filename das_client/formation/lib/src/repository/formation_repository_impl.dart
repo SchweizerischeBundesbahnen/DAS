@@ -17,14 +17,22 @@ class FormationRepositoryImpl implements FormationRepository {
   Future<Formation?> loadFormation(String operationalTrainNumber, String company, DateTime operationalDay) async {
     _log.info('Loading formation for train $operationalTrainNumber (company=$company) on $operationalDay');
     try {
-      final formationResponse = await apiService.formation(operationalTrainNumber, company, operationalDay).call();
+      final existingEtag = await databaseService.findFormationEtag(operationalTrainNumber, company, operationalDay);
 
+      final formationResponse = await apiService
+          .formation(operationalTrainNumber, company, operationalDay, existingEtag)
+          .call();
+
+      final etag = formationResponse.etag;
       final formation = formationResponse.body?.data.firstOrNull;
       if (formation != null) {
-        await databaseService.saveFormation(formation);
-        _log.info('Formation loaded successfully.');
+        await databaseService.saveFormation(formation, etag: formationResponse.etag);
+        _log.info('Formation loaded successfully. etag=${formationResponse.etag}');
+      } else if (existingEtag != null && existingEtag == etag) {
+        _log.info('Formation not modified. etag=${formationResponse.etag}');
+        return databaseService.findFormation(operationalTrainNumber, company, operationalDay);
       } else {
-        _log.info('No formation found.');
+        _log.info('No formation found. etag=${formationResponse.etag}');
       }
 
       return formation?.toDomain();

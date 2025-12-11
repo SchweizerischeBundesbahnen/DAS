@@ -35,16 +35,12 @@ void main() {
     final company = '1285';
     final operationalDay = DateTime.now();
 
-    when(mockHttpClient.get(any)).thenAnswer((_) => Future.value(Response('', HttpStatus.notFound)));
+    when(
+      mockHttpClient.get(any, headers: anyNamed('headers')),
+    ).thenAnswer((_) => Future.value(Response('', HttpStatus.notFound)));
 
     // ACT
-    final result = await testee
-        .formation(
-          operationalTrainNumber,
-          company,
-          operationalDay,
-        )
-        .call();
+    final result = await testee.formation(operationalTrainNumber, company, operationalDay, null).call();
 
     // VERIFY
     expect(result.body, isNull);
@@ -67,17 +63,11 @@ void main() {
     );
 
     when(
-      mockHttpClient.get(any),
+      mockHttpClient.get(any, headers: anyNamed('headers')),
     ).thenAnswer((_) => Future.value(Response(jsonEncode(formationReponseDto), HttpStatus.ok)));
 
     // ACT
-    final result = await testee
-        .formation(
-          operationalTrainNumber,
-          company,
-          operationalDay,
-        )
-        .call();
+    final result = await testee.formation(operationalTrainNumber, company, operationalDay, null).call();
 
     // VERIFY
     expect(result.body, isNotNull);
@@ -91,19 +81,39 @@ void main() {
     final operationalDay = DateTime.now();
 
     when(
-      mockHttpClient.get(any),
+      mockHttpClient.get(any, headers: anyNamed('headers')),
     ).thenAnswer((_) => Future.value(Response('', HttpStatus.badRequest, request: Request('get', Uri.parse(baseUrl)))));
 
     // ACT & VERIFY
     expect(
-      () async => await testee
-          .formation(
-            operationalTrainNumber,
-            company,
-            operationalDay,
-          )
-          .call(),
+      () async => await testee.formation(operationalTrainNumber, company, operationalDay, null).call(),
       throwsA(isA<HttpException>()),
     );
+  });
+
+  test('formation_whenEtagIsGiven_thenAddsIfNoneMatchHeader', () async {
+    // GIVEN
+    final operationalTrainNumber = 'T1234';
+    final company = '1285';
+    final operationalDay = DateTime.now();
+    final etag = 'ABCD1234';
+
+    when(
+      mockHttpClient.get(any, headers: anyNamed('headers')),
+    ).thenAnswer(
+      (_) => Future.value(
+        Response('', HttpStatus.notModified, headers: {'etag': etag}, request: Request('get', Uri.parse(baseUrl))),
+      ),
+    );
+
+    final result = await testee.formation(operationalTrainNumber, company, operationalDay, etag).call();
+
+    // VERIFY
+    expect(result.etag, etag);
+    final captured = verify(
+      mockHttpClient.get(captureAny, headers: captureAnyNamed('headers')),
+    ).captured;
+    final headers = captured[1] as Map<String, String>;
+    expect(headers['If-None-Match'], etag);
   });
 }
