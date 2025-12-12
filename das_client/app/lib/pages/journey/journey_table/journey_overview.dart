@@ -4,6 +4,8 @@ import 'package:app/pages/journey/calculated_speed_view_model.dart';
 import 'package:app/pages/journey/journey_table/advised_speed/advised_speed_notification.dart';
 import 'package:app/pages/journey/journey_table/advised_speed/advised_speed_view_model.dart';
 import 'package:app/pages/journey/journey_table/collapsible_rows_view_model.dart';
+import 'package:app/pages/journey/journey_table/departure_dispatch_notification/departure_dispatch_notification.dart';
+import 'package:app/pages/journey/journey_table/departure_dispatch_notification/departure_dispatch_notification_view_model.dart';
 import 'package:app/pages/journey/journey_table/header/chronograph/chronograph_view_model.dart';
 import 'package:app/pages/journey/journey_table/header/connectivity/connectivity_view_model.dart';
 import 'package:app/pages/journey/journey_table/header/departure_authorization/departure_authorization_view_model.dart';
@@ -64,6 +66,7 @@ class JourneyOverview extends StatelessWidget {
         ManeuverNotification(),
         KoaNotification(),
         ReplacementSeriesNotification(),
+        DepartureDispatchNotification(),
         _warnappNotification(context),
         Expanded(
           child: Stack(
@@ -207,6 +210,16 @@ class _ProviderScope extends StatelessWidget {
             if (prev != null) return prev;
             return DepartureAuthorizationViewModel(
               journeyStream: journeyTableViewModel.journey,
+              journeyPositionStream: journeyPositionVM.model,
+            );
+          },
+          dispose: (_, vm) => vm.dispose(),
+        ),
+        ProxyProvider<JourneyPositionViewModel, DepartureDispatchNotificationViewModel>(
+          update: (_, journeyPositionVM, prev) {
+            if (prev != null) return prev;
+            return DepartureDispatchNotificationViewModel(
+              sferaRemoteRepo: DI.get(),
               journeyPositionStream: journeyPositionVM.model,
             );
           },

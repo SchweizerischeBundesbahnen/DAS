@@ -127,5 +127,10 @@
   "w_modal_sheet_permissions_title": "DAS Client richiede autorizzazioni di sistema",
   "w_modal_sheet_permission_brightness": "Per regolare la luminosità dello schermo, DAS Client richiede le autorizzazioni necessarie per accedere alle impostazioni di sistema.",
   "w_modal_sheet_button_grant_permission": "Concedi le autorizzazioni",
-  "w_journey_search_overlay_title": "Ricerca Orario"
+  "w_journey_search_overlay_title": "Ricerca Orario",
+  "w_departure_dispatch_notification_long": "Partenza prevista fra: >30 Min",
+  "w_departure_dispatch_notification_middle": "Partenza prevista fra: 15 - 30 Min",
+  "w_departure_dispatch_notification_short": "Partenza prevista fra: < 15 Min",
+  "w_departure_dispatch_notification_prepare": "Prepararsi alla partenza",
+  "w_departure_dispatch_notification_withdrawn": "La disposizione di partenza è stata annullata. Il proseguimento della corsa viene comunicato di nuovo."
 }
