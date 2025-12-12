@@ -107,6 +107,7 @@ class JourneyTableAdvancementViewModel {
   void dispose() {
     _streamSubscription?.cancel();
     _idleScrollTimer?.cancel();
+    _idleScrollTimer = null;
     _rxModel.close();
     _isDisposed = true;
   }
