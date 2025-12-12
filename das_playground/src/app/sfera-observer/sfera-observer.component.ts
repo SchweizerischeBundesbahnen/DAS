@@ -22,6 +22,8 @@ import {
 import {SbbAccordionModule} from "@sbb-esta/angular/accordion";
 import {SessionsService} from "../sfera-discover/sessions.service";
 import {ActivatedRoute} from "@angular/router";
+import {FormationsService} from "./formations.service";
+import {SbbNotificationToast} from "@sbb-esta/angular/notification-toast";
 
 @Component({
   selector: 'app-sfera-observer',
@@ -60,7 +62,21 @@ export class SferaObserverComponent implements OnInit, OnDestroy {
   protected readonly MqttConnectionState = MqttConnectionState;
   private oidcSecurityService = inject(OidcSecurityService);
   private sessionsService = inject(SessionsService);
+  private formationsService = inject(FormationsService);
   private route = inject(ActivatedRoute);
+  private toastService = inject(SbbNotificationToast);
+
+  protected get operationalDay() {
+    const jpReplies = this.data.filter(row => row.type === 'SFERA_G2B_ReplyMessage' && row.info.includes('JP: Valid'))
+    if (jpReplies.length === 0) {
+      return;
+    }
+
+    const dom = this.toDom(jpReplies[jpReplies.length - 1].message)
+    const nsp = Array.from(dom.querySelectorAll('General_JP_Information_NSP > NetworkSpecificParameter'))
+      .find(el => el.getAttribute('name') === 'tms_Operating_Day_Date');
+    return nsp?.getAttribute('value') ?? undefined;
+  }
 
   ngOnInit() {
     const params = this.route.snapshot.paramMap;
@@ -485,5 +501,33 @@ export class SferaObserverComponent implements OnInit, OnDestroy {
 
   private getTrainCharacteristicsId(element: Element) {
     return element.getAttribute("TC_ID");
+  }
+
+  private readonly formationObserver = {
+    next: () => this.toastService.open('Bremszettel erstellt', {type: 'success', duration: 5000}),
+    error: () => this.toastService.open('Bremszettel konnte nicht erstellt werden', {
+      type: 'error',
+      duration: 5000
+    })
+  };
+
+  protected initialFormation() {
+    if (this.operationalDay) {
+      this.formationsService.initialFormation({
+        operationalTrainNumber: this.trainControl.value,
+        companyCode: this.companyControl.value,
+        operationalDay: this.operationalDay,
+      }).subscribe(this.formationObserver)
+    }
+  }
+
+  protected updatedFormation() {
+    if (this.operationalDay) {
+      this.formationsService.updateFormation({
+        operationalTrainNumber: this.trainControl.value,
+        companyCode: this.companyControl.value,
+        operationalDay: this.operationalDay,
+      }).subscribe(this.formationObserver)
+    }
   }
 }

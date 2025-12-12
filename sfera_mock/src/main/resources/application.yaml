@@ -14,7 +14,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,trains,sessions
+        include: health,trains,sessions,formations
       cors:
         allowed-origins: ${ALLOWED_ORIGINS}
         allowed-methods: 'GET,POST,OPTIONS'
@@ -66,3 +66,8 @@ sfera:
 localregulations:
   train-numbers: T25
   path: ${LOCALREGULATIONS_PATH}
+
+db:
+  url: ${DB_URL}
+  user: ${DB_USER}
+  password: ${DB_PW}
