@@ -2,6 +2,7 @@ import 'package:app/i18n/i18n.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:app/widgets/das_colors.dart';
 import 'package:app/widgets/das_text_styles.dart';
+import 'package:app/widgets/dot_indicator.dart';
 import 'package:app/widgets/key_value_table.dart';
 import 'package:app/widgets/key_value_table_data_row.dart';
 import 'package:flutter/material.dart';
@@ -10,14 +11,20 @@ import 'package:formation/component.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class BreakLoadSlipSpecialRestrictions extends StatelessWidget {
-  const BreakLoadSlipSpecialRestrictions({required this.formationRun, super.key, this.groupColor});
+  const BreakLoadSlipSpecialRestrictions({
+    required this.formationRunChange,
+    super.key,
+    this.groupColor,
+    this.showChangeIndicator = true,
+  });
 
   static const Key simTrainBannerKey = Key('simTrainBanner');
   static const Key dangerousGoodsBannerKey = Key('dangerousGoodsBanner');
   static const Key carCarrierBannerKey = Key('carCarrierBanner');
 
-  final FormationRun formationRun;
+  final FormationRunChange formationRunChange;
   final Color? groupColor;
+  final bool showChangeIndicator;
 
   @override
   Widget build(BuildContext context) {
@@ -40,21 +47,37 @@ class BreakLoadSlipSpecialRestrictions extends StatelessWidget {
         Expanded(
           child: Padding(
             padding: const EdgeInsets.all(sbbDefaultSpacing * 0.5).copyWith(bottom: 0),
-            child: Text(
-              context.l10n.p_break_load_slip_special_restrictions_title,
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
-              style: DASTextStyles.smallBold,
-            ),
+            child: _wrappedTitle(context),
           ),
         ),
-        if (formationRun.simTrain) _indicator(AppAssets.iconSimZug, DASColors.simTrain, key: simTrainBannerKey),
-        if (formationRun.dangerousGoods)
+        if (formationRunChange.formationRun.simTrain)
+          _indicator(AppAssets.iconSimZug, DASColors.simTrain, key: simTrainBannerKey),
+        if (formationRunChange.formationRun.dangerousGoods)
           _indicator(AppAssets.iconSignExclamationPoint, SBBColors.peach, key: dangerousGoodsBannerKey),
-        if (formationRun.carCarrierVehicle)
+        if (formationRunChange.formationRun.carCarrierVehicle)
           _indicator(AppAssets.iconCarCarrier, SBBColors.pink, key: carCarrierBannerKey),
       ],
     );
+  }
+
+  Widget _wrappedTitle(BuildContext context) {
+    final titelText = Text(
+      context.l10n.p_break_load_slip_special_restrictions_title,
+      maxLines: 3,
+      overflow: TextOverflow.ellipsis,
+      style: DASTextStyles.smallBold,
+    );
+
+    return showChangeIndicator && _hasChange()
+        ? Row(
+            children: [
+              DotIndicator(
+                offset: Offset(0, -sbbDefaultSpacing * 0.75),
+                child: titelText,
+              ),
+            ],
+          )
+        : titelText;
   }
 
   Widget _content(BuildContext context) {
@@ -62,19 +85,27 @@ class BreakLoadSlipSpecialRestrictions extends StatelessWidget {
       rows: [
         KeyValueTableDataRow(
           context.l10n.p_break_load_slip_special_restrictions_sim_train,
-          formationRun.simTrain ? context.l10n.c_yes : context.l10n.c_no,
+          formationRunChange.formationRun.simTrain ? context.l10n.c_yes : context.l10n.c_no,
+          hasChange: formationRunChange.hasChanged('simTrain'),
+          shownChangeIndicator: showChangeIndicator,
         ),
         KeyValueTableDataRow(
           context.l10n.p_break_load_slip_special_restrictions_car_carrier,
-          formationRun.carCarrierVehicle ? context.l10n.c_yes : context.l10n.c_no,
+          formationRunChange.formationRun.carCarrierVehicle ? context.l10n.c_yes : context.l10n.c_no,
+          hasChange: formationRunChange.hasChanged('carCarrierVehicle'),
+          shownChangeIndicator: showChangeIndicator,
         ),
         KeyValueTableDataRow(
           context.l10n.p_break_load_slip_special_restrictions_dangerous_goods,
-          formationRun.dangerousGoods ? context.l10n.c_yes : context.l10n.c_no,
+          formationRunChange.formationRun.dangerousGoods ? context.l10n.c_yes : context.l10n.c_no,
+          hasChange: formationRunChange.hasChanged('dangerousGoods'),
+          shownChangeIndicator: showChangeIndicator,
         ),
         KeyValueTableDataRow(
           context.l10n.p_break_load_slip_special_restrictions_route_class,
-          formationRun.routeClass ?? '-',
+          formationRunChange.formationRun.routeClass ?? '-',
+          hasChange: formationRunChange.hasChanged('routeClass'),
+          shownChangeIndicator: showChangeIndicator,
         ),
       ],
     );
@@ -105,5 +136,12 @@ class BreakLoadSlipSpecialRestrictions extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  bool _hasChange() {
+    return formationRunChange.hasChanged('simTrain') ||
+        formationRunChange.hasChanged('carCarrierVehicle') ||
+        formationRunChange.hasChanged('dangerousGoods') ||
+        formationRunChange.hasChanged('routeClass');
   }
 }

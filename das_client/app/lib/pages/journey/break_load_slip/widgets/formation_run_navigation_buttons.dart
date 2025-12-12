@@ -19,12 +19,12 @@ class FormationRunNavigationButtons extends StatelessWidget {
         if (snap == null || snap[0] == null || snap[1] == null) return SizedBox.shrink();
 
         final formation = snap[0] as Formation;
-        final selecteFormationRun = snap[1] as FormationRun;
+        final selectedFormationRun = snap[1] as FormationRunChange;
 
         if (formation.formationRuns.length <= 1) return SizedBox.shrink();
 
         return NavigationButtons(
-          currentPage: formation.formationRuns.indexOf(selecteFormationRun),
+          currentPage: formation.formationRuns.indexOf(selectedFormationRun.formationRun),
           numberPages: formation.formationRuns.length,
           onPreviousPressed: () => viewModel.previous(),
           onNextPressed: () => viewModel.next(),
