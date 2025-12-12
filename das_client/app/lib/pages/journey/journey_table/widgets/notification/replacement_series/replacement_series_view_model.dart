@@ -4,6 +4,7 @@ import 'package:app/pages/journey/journey_table/journey_position/journey_positio
 import 'package:app/pages/journey/journey_table/widgets/notification/replacement_series/illegal_speed_segment.dart';
 import 'package:app/pages/journey/journey_table/widgets/notification/replacement_series/replacement_series_model.dart';
 import 'package:app/pages/journey/journey_table_view_model.dart';
+import 'package:app/pages/journey/settings/journey_settings_view_model.dart';
 import 'package:collection/collection.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -15,8 +16,10 @@ class ReplacementSeriesViewModel {
   ReplacementSeriesViewModel({
     required JourneyTableViewModel journeyTableViewModel,
     required JourneyPositionViewModel journeyPositionViewModel,
+    required JourneySettingsViewModel journeySettingsViewModel,
   }) : _journeyTableViewModel = journeyTableViewModel,
-       _journeyPositionViewModel = journeyPositionViewModel {
+       _journeyPositionViewModel = journeyPositionViewModel,
+       _journeySettingsViewModel = journeySettingsViewModel {
     _initJourneySubscription();
     _initJourneyPositionSubscription();
     _initSettingsSubscription();
@@ -24,6 +27,7 @@ class ReplacementSeriesViewModel {
 
   final JourneyTableViewModel _journeyTableViewModel;
   final JourneyPositionViewModel _journeyPositionViewModel;
+  final JourneySettingsViewModel _journeySettingsViewModel;
   final List<StreamSubscription> _subscriptions = [];
   final _rxModel = BehaviorSubject<ReplacementSeriesModel?>.seeded(null);
 
@@ -38,7 +42,7 @@ class ReplacementSeriesViewModel {
     _subscriptions.add(
       _journeyTableViewModel.journey.listen((data) {
         _latestJourney = data;
-        final currentBreakSeries = _journeyTableViewModel.settingsValue.resolvedBreakSeries(_latestJourney?.metadata);
+        final currentBreakSeries = _journeySettingsViewModel.modelValue.resolvedBreakSeries(_latestJourney?.metadata);
         _calculateIllegalSpeedSegments(currentBreakSeries);
         _calculateActiveSegmentAndUpdateState();
       }),
@@ -55,7 +59,7 @@ class ReplacementSeriesViewModel {
 
   void _initSettingsSubscription() {
     _subscriptions.add(
-      _journeyTableViewModel.settings.listen((settings) {
+      _journeySettingsViewModel.model.listen((settings) {
         _calculateIllegalSpeedSegments(
           settings.resolvedBreakSeries(_latestJourney?.metadata),
         );
@@ -83,7 +87,7 @@ class ReplacementSeriesViewModel {
   void _calculateActiveSegmentAndUpdateState() {
     final position = _journeyPositionViewModel.modelValue;
 
-    final currentBreakSeries = _journeyTableViewModel.settingsValue.resolvedBreakSeries(_latestJourney?.metadata);
+    final currentBreakSeries = _journeySettingsViewModel.modelValue.resolvedBreakSeries(_latestJourney?.metadata);
     final currentModelValue = modelValue;
 
     final segmentWithoutReplacement = _illegalSpeedSegments.firstWhereOrNull((it) => it.replacement == null);

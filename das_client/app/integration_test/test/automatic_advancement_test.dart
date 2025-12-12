@@ -1,6 +1,6 @@
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_table/widgets/header/header.dart';
-import 'package:app/pages/journey/journey_table/widgets/header/start_pause_button.dart';
+import 'package:app/pages/journey/journey_table/widgets/header/journey_advancement_button.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/cells/route_chevron.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:flutter/material.dart';
@@ -111,8 +111,11 @@ void main() {
 
       await stopAutomaticAdvancement(tester);
 
-      expect(find.descendant(of: headerFinder, matching: find.byKey(StartPauseButton.startButtonKey)), findsOneWidget);
-      expect(find.descendant(of: headerFinder, matching: find.byKey(StartPauseButton.pauseButtonKey)), findsNothing);
+      expect(
+        find.descendant(of: headerFinder, matching: find.byKey(JourneyAdvancementButton.startKey)),
+        findsOneWidget,
+      );
+      expect(find.descendant(of: headerFinder, matching: find.byKey(JourneyAdvancementButton.pauseKey)), findsNothing);
 
       await disconnect(tester);
     });

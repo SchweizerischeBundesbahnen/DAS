@@ -1,9 +1,10 @@
 import 'dart:collection';
 
-import 'package:app/pages/journey/journey_table/widgets/table/config/journey_settings.dart';
 import 'package:app/pages/journey/journey_table_view_model.dart';
 import 'package:app/pages/journey/line_speed_view_model.dart';
 import 'package:app/pages/journey/resolved_train_series_speed.dart';
+import 'package:app/pages/journey/settings/journey_settings.dart';
+import 'package:app/pages/journey/settings/journey_settings_view_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -14,10 +15,12 @@ import 'line_speed_view_model_test.mocks.dart';
 
 @GenerateNiceMocks([
   MockSpec<JourneyTableViewModel>(),
+  MockSpec<JourneySettingsViewModel>(),
 ])
 void main() {
   late LineSpeedViewModel testee;
   late MockJourneyTableViewModel mockJourneyTableViewModel;
+  late MockJourneySettingsViewModel mockJourneySettingsViewModel;
   late BehaviorSubject<Journey?> journeySubject;
   var journeySettings = JourneySettings();
 
@@ -70,12 +73,16 @@ void main() {
   setUp(() {
     journeySettings = JourneySettings();
     mockJourneyTableViewModel = MockJourneyTableViewModel();
+    mockJourneySettingsViewModel = MockJourneySettingsViewModel();
     journeySubject = BehaviorSubject<Journey?>();
     journeySubject.add(journey);
     when(mockJourneyTableViewModel.journey).thenAnswer((_) => journeySubject.stream);
-    when(mockJourneyTableViewModel.settingsValue).thenAnswer((_) => journeySettings);
+    when(mockJourneySettingsViewModel.modelValue).thenAnswer((_) => journeySettings);
 
-    testee = LineSpeedViewModel(journeyTableViewModel: mockJourneyTableViewModel);
+    testee = LineSpeedViewModel(
+      journeyTableViewModel: mockJourneyTableViewModel,
+      journeySettingsViewModel: mockJourneySettingsViewModel,
+    );
   });
 
   tearDown(() {

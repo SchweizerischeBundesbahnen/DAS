@@ -172,6 +172,7 @@
   "w_service_point_modal_graduated_speed_break_series_title": "Zugreihe",
   "w_service_point_modal_graduated_speed_no_information": "Keine Informationen",
   "w_service_point_modal_local_regulations_label": "Lokale Bestimmungen",
+  "w_service_point_row_background_label": "Zum Betriebspunkt springen",
   "w_additional_speed_restriction_modal_title": "Langsamfahrstelle",
   "w_additional_speed_restriction_modal_subtitle_count": "Anzahl",
   "w_additional_speed_restriction_modal_table_label_km": "km",

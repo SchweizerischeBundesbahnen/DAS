@@ -33,6 +33,8 @@ class Metadata {
 
   final TrainIdentification? trainIdentification;
   final DateTime timestamp;
+
+  /// The position received by TMS VAD within a related train information event.
   final SignaledPosition? signaledPosition;
   final JourneyPoint? journeyStart;
   final JourneyPoint? journeyEnd;

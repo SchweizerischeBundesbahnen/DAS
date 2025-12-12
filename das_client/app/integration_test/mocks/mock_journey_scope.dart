@@ -19,13 +19,17 @@ class MockJourneyScope extends JourneyScope {
     getIt.registerJourneyNavigationViewModel();
     getIt.registerJourneySelectionViewModel();
     getIt.registerJourneyTableViewModel();
+    getIt.registerJourneySettingsViewModel();
+    getIt.registerPunctualityViewModel();
+    getIt.registerJourneyPositionViewModel();
+    getIt.registerJourneyTableAdvancementViewModel();
     getIt.registerLocalRegulationHtmlGenerator();
-    _registerWarnAppViewModel();
+    _registerMockWarnAppViewModel();
 
     return getIt.allReady();
   }
 
-  void _registerWarnAppViewModel() {
+  void _registerMockWarnAppViewModel() {
     getIt.registerSingleton<WarnAppViewModel>(
       MockWarnAppViewModel(
         flavor: DI.get(),

@@ -10,23 +10,27 @@ class JourneyPositionModel {
     this.nextStop,
   });
 
+  /// The position of the vehicle in the journey indicating the last point **that has been passed**.
+  ///
+  /// Is usually set by an event received from TMS VAD, but can be set manually by the train driver
+  /// or with respect to time.
   final JourneyPoint? currentPosition;
 
-  /// This is the [currentPosition] from the previously received position and journey update.
+  /// The [currentPosition] from the previously received position and journey update.
   ///
   /// Since journey updates can occur without position updates, this can be equal to [currentPosition].
   final JourneyPoint? lastPosition;
 
-  /// This is the service point closest to [currentPosition] that has already been passed.
+  /// The service point closest to [currentPosition] that has already been passed.
   final ServicePoint? previousServicePoint;
 
-  /// This is the service point closest to [currentPosition] that is still ahead.
+  /// The service point closest to [currentPosition] that is still ahead.
   final ServicePoint? nextServicePoint;
 
-  /// This is service point closest to [currentPosition] that has already been passed and is a stop.
+  /// The service point closest to [currentPosition] that has already been passed and is a stop.
   final ServicePoint? previousStop;
 
-  /// This is service point closest to [currentPosition] that is still ahead and is a stop.
+  /// The service point closest to [currentPosition] that is still ahead and is a stop.
   final ServicePoint? nextStop;
 
   @override
@@ -41,13 +45,14 @@ class JourneyPositionModel {
           nextStop == other.nextStop);
 
   @override
-  int get hashCode =>
-      currentPosition.hashCode ^
-      lastPosition.hashCode ^
-      previousServicePoint.hashCode ^
-      nextServicePoint.hashCode ^
-      previousStop.hashCode ^
-      nextStop.hashCode;
+  int get hashCode => Object.hash(
+    currentPosition,
+    lastPosition,
+    previousServicePoint,
+    nextServicePoint,
+    previousStop,
+    nextStop,
+  );
 
   @override
   String toString() {

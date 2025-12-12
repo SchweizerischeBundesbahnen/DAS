@@ -1,7 +1,7 @@
 import 'package:app/pages/journey/journey_table/widgets/header/header.dart';
+import 'package:app/pages/journey/journey_table/widgets/header/journey_advancement_button.dart';
 import 'package:app/pages/journey/journey_table/widgets/header/journey_identifier.dart';
 import 'package:app/pages/journey/journey_table/widgets/header/journey_search_overlay.dart';
-import 'package:app/pages/journey/journey_table/widgets/header/start_pause_button.dart';
 import 'package:app/pages/journey/journey_table/widgets/journey_navigation_buttons.dart';
 import 'package:app/util/format.dart';
 import 'package:app/widgets/navigation_buttons.dart';
@@ -108,7 +108,7 @@ void main() {
       expect(tester.widget<AnimatedOpacity>(opacity).opacity, isZero);
 
       // pause auto advancement
-      final pauseButton = find.byKey(StartPauseButton.pauseButtonKey);
+      final pauseButton = find.byKey(JourneyAdvancementButton.pauseKey);
       await tapElement(tester, pauseButton);
       await tester.pumpAndSettle(Duration(milliseconds: 300));
 
