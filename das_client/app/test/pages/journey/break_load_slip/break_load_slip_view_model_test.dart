@@ -197,7 +197,7 @@ void main() {
 
     expect(
       testee.formationRun,
-      emits(formationRun1),
+      emits(FormationRunChange(formationRun: formationRun1, previousFormationRun: null)),
     );
   });
 
@@ -215,7 +215,7 @@ void main() {
 
     expect(
       testee.formationRun,
-      emits(formationRun1),
+      emits(FormationRunChange(formationRun: formationRun1, previousFormationRun: null)),
     );
   });
 
@@ -228,7 +228,11 @@ void main() {
 
     expectLater(
       testee.formationRun,
-      emitsInOrder([null, formationRun2, formationRun3]),
+      emitsInOrder([
+        null,
+        FormationRunChange(formationRun: formationRun2, previousFormationRun: formationRun1),
+        FormationRunChange(formationRun: formationRun3, previousFormationRun: formationRun2),
+      ]),
     );
 
     // ACT
@@ -250,7 +254,13 @@ void main() {
     // EXPECT LATER
     expectLater(
       testee.formationRun,
-      emitsInOrder([null, formationRun1, formationRun2, formationRun3, formationRun2]),
+      emitsInOrder([
+        null,
+        FormationRunChange(formationRun: formationRun1, previousFormationRun: null),
+        FormationRunChange(formationRun: formationRun2, previousFormationRun: formationRun1),
+        FormationRunChange(formationRun: formationRun3, previousFormationRun: formationRun2),
+        FormationRunChange(formationRun: formationRun2, previousFormationRun: formationRun1),
+      ]),
     );
 
     // ACT
