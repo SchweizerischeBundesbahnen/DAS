@@ -188,4 +188,24 @@ class FormationIntegrationTest {
                     .andExpect(content().json(expectedUpdatedJson, JsonCompareMode.STRICT));
             });
     }
+
+    @Test
+    void whenNewMinimalFormationMessage_shouldNotFail() throws IOException {
+        DailyFormationTrainKey key = this.jsonMapper.readValue(new File("src/test/resources/kafka/43/key.json"), DailyFormationTrainKey.class);
+        DailyFormationTrain value = this.jsonMapper.readValue(new File("src/test/resources/kafka/43/value.json"), DailyFormationTrain.class);
+
+        kafkaTemplate.send(topic, key, value);
+
+        String expectedJson = Files.readString(Paths.get("src/test/resources/formations/43.json"));
+
+        await()
+            .atMost(1, TimeUnit.SECONDS)
+            .untilAsserted(() -> {
+                mockMvc.perform(get(API_FORMATIONS)
+                        .param("operationalTrainNumber", "43").param("operationalDay", "2025-11-18").param("company", "3412")
+                        .with(user("any").roles("observer")))
+                    .andExpect(status().isOk())
+                    .andExpect(content().json(expectedJson, JsonCompareMode.STRICT));
+            });
+    }
 }

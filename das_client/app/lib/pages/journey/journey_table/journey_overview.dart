@@ -19,6 +19,7 @@ import 'package:app/pages/journey/journey_table/widgets/detail_modal/service_poi
 import 'package:app/pages/journey/journey_table/widgets/header/header.dart';
 import 'package:app/pages/journey/journey_table/widgets/journey_navigation_buttons.dart';
 import 'package:app/pages/journey/journey_table/widgets/journey_table.dart';
+import 'package:app/pages/journey/journey_table/widgets/notification/break_load_slip_notification.dart';
 import 'package:app/pages/journey/journey_table/widgets/notification/koa_notification.dart';
 import 'package:app/pages/journey/journey_table/widgets/notification/maneuver_notification.dart';
 import 'package:app/pages/journey/journey_table/widgets/notification/replacement_series/replacement_series_notification.dart';
@@ -68,6 +69,7 @@ class JourneyOverview extends StatelessWidget {
         ReplacementSeriesNotification(),
         DepartureDispatchNotification(),
         _warnappNotification(context),
+        BreakLoadSlipNotification(),
         Expanded(
           child: Stack(
             children: [
@@ -254,13 +256,16 @@ class _ProviderScope extends StatelessWidget {
           },
           dispose: (_, vm) => vm.dispose(),
         ),
-        ProxyProvider2<JourneyTableViewModel, JourneyPositionViewModel, BreakLoadSlipViewModel>(
-          update: (_, journeyVM, positionVM, prev) {
+        ProxyProvider3<JourneyTableViewModel, JourneyPositionViewModel, DetailModalViewModel, BreakLoadSlipViewModel>(
+          update: (_, journeyVM, positionVM, detailModalVM, prev) {
             if (prev != null) return prev;
             return BreakLoadSlipViewModel(
               journeyTableViewModel: journeyVM,
               journeyPositionViewModel: positionVM,
               formationRepository: DI.get(),
+              detailModalViewModel: detailModalVM,
+              connectivityManager: DI.get(),
+              checkForUpdates: true,
             );
           },
           dispose: (_, vm) => vm.dispose(),

@@ -12,6 +12,7 @@ class FormationRequest {
     required this.operationalTrainNumber,
     required this.company,
     required this.operationalDay,
+    this.etag,
   });
 
   final Client httpClient;
@@ -19,6 +20,7 @@ class FormationRequest {
   final String operationalTrainNumber;
   final String company;
   final DateTime operationalDay;
+  final String? etag;
 
   Future<FormationResponse> call() async {
     final url = Uri.https(
@@ -30,18 +32,23 @@ class FormationRequest {
         'operationalDay': DateFormat('yyyy-MM-dd').format(operationalDay),
       },
     );
-    final response = await httpClient.get(url);
+    final headers = <String, String>{};
+    if (etag != null) {
+      headers['If-None-Match'] = etag!;
+    }
+
+    final response = await httpClient.get(url, headers: headers);
     return FormationResponse.fromHttpResponse(response);
   }
 }
 
 class FormationResponse {
-  const FormationResponse({required this.headers, required this.body});
+  const FormationResponse({required this.headers, required this.body, this.etag});
 
   factory FormationResponse.fromHttpResponse(Response response) {
     final status = response.statusCode;
-    if (status == HttpStatus.notFound) {
-      return FormationResponse(headers: response.headers, body: null);
+    if (status == HttpStatus.notFound || status == HttpStatus.notModified) {
+      return FormationResponse(headers: response.headers, body: null, etag: response.headers['etag']);
     } else if (status == HttpStatus.ok) {
       final body = utf8.decode(response.bodyBytes);
       final json = jsonDecode(body);
@@ -49,6 +56,7 @@ class FormationResponse {
       return FormationResponse(
         headers: response.headers,
         body: formation,
+        etag: response.headers['etag'],
       );
     }
     // Failure
@@ -57,4 +65,5 @@ class FormationResponse {
 
   final Map<String, String> headers;
   final FormationResponseDto? body;
+  final String? etag;
 }

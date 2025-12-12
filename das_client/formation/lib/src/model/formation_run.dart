@@ -1,3 +1,5 @@
+import 'package:collection/collection.dart';
+import 'package:formation/src/api/converter/local_data_time_converter.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'formation_run.g.dart';
@@ -49,6 +51,7 @@ class FormationRun {
     return _$FormationRunFromJson(json);
   }
 
+  @LocalDataTimeConverter()
   final DateTime inspectionDateTime;
   final String tafTapLocationReferenceStart;
   final String tafTapLocationReferenceEnd;
@@ -89,4 +92,95 @@ class FormationRun {
   final String? slopeMaxForHoldingForceMinInPermille;
 
   Map<String, dynamic> toJson() => _$FormationRunToJson(this);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is FormationRun &&
+          runtimeType == other.runtimeType &&
+          inspectionDateTime == other.inspectionDateTime &&
+          tafTapLocationReferenceStart == other.tafTapLocationReferenceStart &&
+          tafTapLocationReferenceEnd == other.tafTapLocationReferenceEnd &&
+          trainCategoryCode == other.trainCategoryCode &&
+          brakedWeightPercentage == other.brakedWeightPercentage &&
+          tractionMaxSpeedInKmh == other.tractionMaxSpeedInKmh &&
+          hauledLoadMaxSpeedInKmh == other.hauledLoadMaxSpeedInKmh &&
+          formationMaxSpeedInKmh == other.formationMaxSpeedInKmh &&
+          tractionLengthInCm == other.tractionLengthInCm &&
+          hauledLoadLengthInCm == other.hauledLoadLengthInCm &&
+          formationLengthInCm == other.formationLengthInCm &&
+          tractionWeightInT == other.tractionWeightInT &&
+          hauledLoadWeightInT == other.hauledLoadWeightInT &&
+          formationWeightInT == other.formationWeightInT &&
+          tractionBrakedWeightInT == other.tractionBrakedWeightInT &&
+          hauledLoadBrakedWeightInT == other.hauledLoadBrakedWeightInT &&
+          formationBrakedWeightInT == other.formationBrakedWeightInT &&
+          tractionHoldingForceInHectoNewton == other.tractionHoldingForceInHectoNewton &&
+          hauledLoadHoldingForceInHectoNewton == other.hauledLoadHoldingForceInHectoNewton &&
+          formationHoldingForceInHectoNewton == other.formationHoldingForceInHectoNewton &&
+          brakePositionGForLeadingTraction == other.brakePositionGForLeadingTraction &&
+          brakePositionGForBrakeUnit1to5 == other.brakePositionGForBrakeUnit1to5 &&
+          brakePositionGForLoadHauled == other.brakePositionGForLoadHauled &&
+          simTrain == other.simTrain &&
+          ListEquality().equals(additionalTractions, other.additionalTractions) &&
+          carCarrierVehicle == other.carCarrierVehicle &&
+          dangerousGoods == other.dangerousGoods &&
+          vehiclesCount == other.vehiclesCount &&
+          vehiclesWithBrakeDesignLlAndKCount == other.vehiclesWithBrakeDesignLlAndKCount &&
+          vehiclesWithBrakeDesignDCount == other.vehiclesWithBrakeDesignDCount &&
+          vehiclesWithDisabledBrakesCount == other.vehiclesWithDisabledBrakesCount &&
+          europeanVehicleNumberFirst == other.europeanVehicleNumberFirst &&
+          europeanVehicleNumberLast == other.europeanVehicleNumberLast &&
+          axleLoadMaxInKg == other.axleLoadMaxInKg &&
+          routeClass == other.routeClass &&
+          gradientUphillMaxInPermille == other.gradientUphillMaxInPermille &&
+          gradientDownhillMaxInPermille == other.gradientDownhillMaxInPermille &&
+          slopeMaxForHoldingForceMinInPermille == other.slopeMaxForHoldingForceMinInPermille;
+
+  @override
+  int get hashCode => Object.hashAll([
+    inspectionDateTime,
+    tafTapLocationReferenceStart,
+    tafTapLocationReferenceEnd,
+    trainCategoryCode,
+    brakedWeightPercentage,
+    tractionMaxSpeedInKmh,
+    hauledLoadMaxSpeedInKmh,
+    formationMaxSpeedInKmh,
+    tractionLengthInCm,
+    hauledLoadLengthInCm,
+    formationLengthInCm,
+    tractionWeightInT,
+    hauledLoadWeightInT,
+    formationWeightInT,
+    tractionBrakedWeightInT,
+    hauledLoadBrakedWeightInT,
+    formationBrakedWeightInT,
+    tractionHoldingForceInHectoNewton,
+    hauledLoadHoldingForceInHectoNewton,
+    formationHoldingForceInHectoNewton,
+    brakePositionGForLeadingTraction,
+    brakePositionGForBrakeUnit1to5,
+    brakePositionGForLoadHauled,
+    simTrain,
+    additionalTractions,
+    carCarrierVehicle,
+    dangerousGoods,
+    vehiclesCount,
+    vehiclesWithBrakeDesignLlAndKCount,
+    vehiclesWithBrakeDesignDCount,
+    vehiclesWithDisabledBrakesCount,
+    europeanVehicleNumberFirst,
+    europeanVehicleNumberLast,
+    axleLoadMaxInKg,
+    routeClass,
+    gradientUphillMaxInPermille,
+    gradientDownhillMaxInPermille,
+    slopeMaxForHoldingForceMinInPermille,
+  ]);
+
+  @override
+  String toString() {
+    return 'FormationRun{tafTapLocationReferenceStart: $tafTapLocationReferenceStart, tafTapLocationReferenceEnd: $tafTapLocationReferenceEnd}';
+  }
 }

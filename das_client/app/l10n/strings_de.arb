@@ -9,6 +9,7 @@
   "p_journey_header_button_light_theme": "Tagmodus",
   "p_journey_header_button_pause": "Pause",
   "p_journey_header_button_start": "Start",
+  "p_journey_header_button_break_slip": "Bremszettel",
   "p_journey_table_kilometre_label": "km",
   "p_journey_table_time_label_new": "an/ab neu",
   "p_journey_table_time_label_planned": "an/ab geplant",
@@ -50,6 +51,7 @@
     }
   },
   "p_break_load_slip_header_dangerous_goods": "Zug mit gefährlichen Gütern",
+  "p_break_load_slip_header_car_carrier": "Beladener Autodoppelstockwagen",
   "p_break_load_slip_header_sim_train": "SIM Zug",
   "p_break_load_slip_train_data_title": "Zugdaten",
   "p_break_load_slip_train_data_train_number": "Zugnummer",
@@ -177,6 +179,9 @@
   "w_additional_speed_restriction_modal_table_label_from": "Von",
   "w_additional_speed_restriction_modal_table_label_until": "Bis",
   "w_additional_speed_restriction_modal_table_label_reason": "Grund",
+  "w_break_load_slip_modal_title": "Brems- und Lastzettel",
+  "w_break_load_slip_modal_overview_title": "Gesamtzug",
+  "w_break_load_slip_modal_open_break_slip": "Bremszettel öffnen",
   "c_yes": "Ja",
   "c_no": "Nein",
   "c_ru_sbb": "SBB",
@@ -266,6 +271,7 @@
       "trainNumber": {}
     }
   },
+  "w_break_load_slip_notification_text": "Eine neue Version des Brems- und Lastzettels ist vorhanden.",
   "w_departure_dispatch_notification_long": "Voraussichtliche Abfahrt in: > 30 Min",
   "w_departure_dispatch_notification_middle": "Voraussichtliche Abfahrt in: 15 - 30 Min",
   "w_departure_dispatch_notification_short": "Voraussichtliche Abfahrt in: < 15 Min",

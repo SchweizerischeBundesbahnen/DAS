@@ -10,32 +10,49 @@ import 'package:formation/component.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class BreakLoadSlipSpecialRestrictions extends StatelessWidget {
-  const BreakLoadSlipSpecialRestrictions({required this.formationRun, super.key});
+  const BreakLoadSlipSpecialRestrictions({required this.formationRun, super.key, this.groupColor});
 
   static const Key simTrainBannerKey = Key('simTrainBanner');
   static const Key dangerousGoodsBannerKey = Key('dangerousGoodsBanner');
+  static const Key carCarrierBannerKey = Key('carCarrierBanner');
 
   final FormationRun formationRun;
+  final Color? groupColor;
 
   @override
   Widget build(BuildContext context) {
     return SBBGroup(
-      child: Stack(
+      color: groupColor,
+      child: Column(
         children: [
-          _specialIndicators(),
+          _headerAndSpecialIndicators(context),
           _content(context),
         ],
       ),
     );
   }
 
-  Row _specialIndicators() {
+  Row _headerAndSpecialIndicators(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(sbbDefaultSpacing * 0.5).copyWith(bottom: 0),
+            child: Text(
+              context.l10n.p_break_load_slip_special_restrictions_title,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+              style: DASTextStyles.smallBold,
+            ),
+          ),
+        ),
         if (formationRun.simTrain) _indicator(AppAssets.iconSimZug, DASColors.simTrain, key: simTrainBannerKey),
         if (formationRun.dangerousGoods)
           _indicator(AppAssets.iconSignExclamationPoint, SBBColors.peach, key: dangerousGoodsBannerKey),
+        if (formationRun.carCarrierVehicle)
+          _indicator(AppAssets.iconCarCarrier, SBBColors.pink, key: carCarrierBannerKey),
       ],
     );
   }
@@ -43,8 +60,6 @@ class BreakLoadSlipSpecialRestrictions extends StatelessWidget {
   Widget _content(BuildContext context) {
     return KeyValueTable(
       rows: [
-        KeyValueTableDataRow.title(context.l10n.p_break_load_slip_special_restrictions_title),
-        SizedBox(height: sbbDefaultSpacing * 0.5),
         KeyValueTableDataRow(
           context.l10n.p_break_load_slip_special_restrictions_sim_train,
           formationRun.simTrain ? context.l10n.c_yes : context.l10n.c_no,
@@ -56,7 +71,6 @@ class BreakLoadSlipSpecialRestrictions extends StatelessWidget {
         KeyValueTableDataRow(
           context.l10n.p_break_load_slip_special_restrictions_dangerous_goods,
           formationRun.dangerousGoods ? context.l10n.c_yes : context.l10n.c_no,
-          valueStyle: formationRun.dangerousGoods ? DASTextStyles.smallBold : null,
         ),
         KeyValueTableDataRow(
           context.l10n.p_break_load_slip_special_restrictions_route_class,
@@ -69,12 +83,12 @@ class BreakLoadSlipSpecialRestrictions extends StatelessWidget {
   Widget _indicator(String asset, Color color, {Key? key}) {
     return Padding(
       key: key,
-      padding: EdgeInsets.only(left: 6),
+      padding: EdgeInsets.only(left: sbbDefaultSpacing * 0.25),
       child: Stack(
         clipBehavior: Clip.none,
         children: [
           Positioned(
-            left: -sbbDefaultSpacing,
+            left: -sbbDefaultSpacing + 2,
             child: SvgPicture.asset(
               AppAssets.shapeRoundedEdgeLeftSmall,
               colorFilter: ColorFilter.mode(color, BlendMode.srcIn),

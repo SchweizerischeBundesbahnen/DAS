@@ -1,3 +1,4 @@
+import 'package:formation/src/api/dto/formation_dto.dart';
 import 'package:formation/src/api/formation_api_service.dart';
 import 'package:formation/src/data/local/formation_database_service.dart';
 import 'package:formation/src/model/formation.dart';
@@ -12,21 +13,33 @@ class FormationRepositoryImpl implements FormationRepository {
   final FormationApiService apiService;
   final FormationDatabaseService databaseService;
 
-  void _loadFormation(String operationalTrainNumber, String company, DateTime operationalDay) async {
+  @override
+  Future<Formation?> loadFormation(String operationalTrainNumber, String company, DateTime operationalDay) async {
     _log.info('Loading formation for train $operationalTrainNumber (company=$company) on $operationalDay');
     try {
-      final formationResponse = await apiService.formation(operationalTrainNumber, company, operationalDay).call();
+      final existingEtag = await databaseService.findFormationEtag(operationalTrainNumber, company, operationalDay);
 
+      final formationResponse = await apiService
+          .formation(operationalTrainNumber, company, operationalDay, existingEtag)
+          .call();
+
+      final etag = formationResponse.etag;
       final formation = formationResponse.body?.data.firstOrNull;
       if (formation != null) {
-        await databaseService.saveFormation(formation);
-        _log.info('Formation loaded successfully.');
+        await databaseService.saveFormation(formation, etag: formationResponse.etag);
+        _log.info('Formation loaded successfully. etag=${formationResponse.etag}');
+      } else if (existingEtag != null && existingEtag == etag) {
+        _log.info('Formation not modified. etag=${formationResponse.etag}');
+        return databaseService.findFormation(operationalTrainNumber, company, operationalDay);
       } else {
-        _log.info('No formation found.');
+        _log.info('No formation found. etag=${formationResponse.etag}');
       }
+
+      return formation?.toDomain();
     } catch (e) {
       _log.severe('Connection error while loading formation', e);
     }
+    return null;
   }
 
   @override
@@ -35,8 +48,10 @@ class FormationRepositoryImpl implements FormationRepository {
     required String company,
     required DateTime operationalDay,
   }) {
-    _loadFormation(operationalTrainNumber, company, operationalDay);
+    loadFormation(operationalTrainNumber, company, operationalDay);
 
-    return databaseService.watchFormation(operationalTrainNumber, company, operationalDay);
+    return databaseService
+        .watchFormation(operationalTrainNumber, company, operationalDay)
+        .distinct((f1, f2) => f1 == f2);
   }
 }

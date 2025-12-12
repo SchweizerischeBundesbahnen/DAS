@@ -1,0 +1,22 @@
+{
+  "data": [
+    {
+      "operationalTrainNumber": "43",
+      "operationalDay": "2025-11-18",
+      "company": "3412",
+      "formationRuns": [
+        {
+          "inspectionDateTime": "2025-11-18T18:10:08.028+01:00",
+          "tafTapLocationReferenceStart": "CH05699",
+          "tafTapLocationReferenceEnd": "CH05683",
+          "additionalTractions": [],
+          "dangerousGoods": false,
+          "vehiclesCount": 1,
+          "vehiclesWithBrakeDesignLlAndKCount": 0,
+          "vehiclesWithBrakeDesignDCount": 0,
+          "vehiclesWithDisabledBrakesCount": 0
+        }
+      ]
+    }
+  ]
+}

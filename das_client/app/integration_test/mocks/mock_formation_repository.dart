@@ -53,6 +53,52 @@ class MockFormationRepository implements FormationRepository {
           dangerousGoods: true,
           simTrain: true,
         ),
+        _generateFormationRun(
+          'CH09995',
+          'CH09996',
+          trainCategoryCode: 'A',
+          brakedWeightPercentage: 95,
+          carCarrier: true,
+        ),
+      ],
+    );
+    formationSubject.add(formation);
+  }
+
+  void emitT9999FormationUpdate() {
+    final formation = Formation(
+      operationalTrainNumber: 'T9999',
+      company: '2185',
+      operationalDay: DateTime.now(),
+      formationRuns: [
+        _generateFormationRun(
+          'CH09991',
+          'CH09992',
+          trainCategoryCode: 'A',
+          brakedWeightPercentage: 95,
+        ),
+        _generateFormationRun(
+          'CH09992',
+          'CH09993',
+          trainCategoryCode: 'A',
+          brakedWeightPercentage: 95,
+          simTrain: true,
+        ),
+        _generateFormationRun(
+          'CH09993',
+          'CH09994',
+          trainCategoryCode: 'A',
+          brakedWeightPercentage: 95,
+          dangerousGoods: true,
+        ),
+        _generateFormationRun(
+          'CH09994',
+          'CH09995',
+          trainCategoryCode: 'A',
+          brakedWeightPercentage: 95,
+          dangerousGoods: true,
+          simTrain: true,
+        ),
       ],
     );
     formationSubject.add(formation);
@@ -65,6 +111,7 @@ class MockFormationRepository implements FormationRepository {
     int? brakedWeightPercentage,
     bool simTrain = false,
     bool dangerousGoods = false,
+    bool carCarrier = false,
   }) {
     return FormationRun(
       inspectionDateTime: DateTime.now(),
@@ -83,7 +130,7 @@ class MockFormationRepository implements FormationRepository {
       hauledLoadHoldingForceInHectoNewton: 421,
       formationHoldingForceInHectoNewton: 477,
       simTrain: simTrain,
-      carCarrierVehicle: false,
+      carCarrierVehicle: carCarrier,
       dangerousGoods: dangerousGoods,
       vehiclesCount: 14,
       vehiclesWithBrakeDesignLlAndKCount: 14,
@@ -99,5 +146,10 @@ class MockFormationRepository implements FormationRepository {
       formationMaxSpeedInKmh: 100,
       additionalTractions: ['Q (420)'],
     );
+  }
+
+  @override
+  Future<Formation?> loadFormation(String operationalTrainNumber, String company, DateTime operationalDay) async {
+    return formationSubject.value;
   }
 }

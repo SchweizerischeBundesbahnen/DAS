@@ -7,6 +7,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
 
+import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -317,6 +318,7 @@ class FormationRunTest {
     private FormationRun createFormationRun(Boolean inspected, String company) {
         return FormationRun.builder()
             .inspected(inspected)
+            .inspectionDateTime(OffsetDateTime.now())
             .company(company)
             .tafTapLocationReferenceStart(new TafTapLocationReference("CH", 1))
             .tafTapLocationReferenceEnd(new TafTapLocationReference("CH", 2))
