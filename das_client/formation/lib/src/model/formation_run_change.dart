@@ -38,6 +38,18 @@ class FormationRunChange {
   }
 
   @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is FormationRunChange &&
+          runtimeType == other.runtimeType &&
+          formationRun == other.formationRun &&
+          previousFormationRun == other.previousFormationRun &&
+          MapEquality().equals(_changes, other._changes);
+
+  @override
+  int get hashCode => Object.hash(formationRun, previousFormationRun, _changes);
+
+  @override
   String toString() {
     return 'FormationRunChange{formationRun: $formationRun, previousFormationRun: $previousFormationRun, _changes: $_changes}';
   }
