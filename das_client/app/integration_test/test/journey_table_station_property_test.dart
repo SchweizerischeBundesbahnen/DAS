@@ -89,8 +89,6 @@ void main() {
     geneveRow = findDASTableRowByText('Genève');
     expect(find.descendant(of: geneveRow, matching: find.byKey(Key(StationSign.deadendStation.name))), findsNothing);
 
-    await dragUntilTextInStickyHeader(tester, 'Lausanne');
-
     veveyRow = findDASTableRowByText('Vevey');
     expect(find.descendant(of: veveyRow, matching: find.text('via Stammlinie')), findsOneWidget);
     expect(find.descendant(of: veveyRow, matching: find.byKey(ServicePointRow.reducedSpeedKey)), findsNothing);
