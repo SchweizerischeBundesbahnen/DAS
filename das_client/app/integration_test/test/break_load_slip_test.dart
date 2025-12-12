@@ -5,6 +5,7 @@ import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_specia
 import 'package:app/pages/journey/journey_page.dart';
 import 'package:app/pages/journey/journey_table/widgets/journey_table.dart';
 import 'package:app/pages/journey/journey_table/widgets/notification/break_load_slip_notification.dart';
+import 'package:app/widgets/dot_indicator.dart';
 import 'package:app/widgets/navigation_buttons.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:formation/component.dart';
@@ -200,6 +201,34 @@ void main() {
 
     expect(find.byType(JourneyPage), findsOneWidget);
     expect(find.byKey(BreakLoadSlipNotification.breakLoadSlipNotificationKey), findsNothing);
+
+    await disconnect(tester);
+  });
+
+  testWidgets('breakSlip_testFormationRunChangeDisplay', (tester) async {
+    await prepareAndStartApp(tester);
+
+    final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
+    formationRepository.emitT9999Formation();
+
+    await loadJourney(tester, trainNumber: 'T9999M');
+
+    await openBreakSlipPage(tester);
+
+    expect(find.byType(DotIndicator), findsNothing);
+
+    await tapElement(tester, find.byKey(NavigationButtons.navigationButtonNextKey));
+
+    expect(find.byType(DotIndicator), findsNWidgets(2));
+
+    formationRepository.emitFormationWithAllChanges();
+    await tester.pumpAndSettle();
+
+    expect(find.byType(DotIndicator), findsNothing);
+
+    await tapElement(tester, find.byKey(NavigationButtons.navigationButtonNextKey));
+
+    expect(find.byType(DotIndicator), findsNWidgets(38));
 
     await disconnect(tester);
   });

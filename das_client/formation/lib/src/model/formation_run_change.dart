@@ -15,6 +15,8 @@ class FormationRunChange {
 
   bool hasChanged(String propertyName) => _changes[propertyName] ?? false;
 
+  int get changesCount => _changes.length;
+
   void _calculateChanges() {
     if (previousFormationRun == null) return;
 
@@ -33,5 +35,10 @@ class FormationRunChange {
         _changes[key] = true;
       }
     }
+  }
+
+  @override
+  String toString() {
+    return 'FormationRunChange{formationRun: $formationRun, previousFormationRun: $previousFormationRun, _changes: $_changes}';
   }
 }
