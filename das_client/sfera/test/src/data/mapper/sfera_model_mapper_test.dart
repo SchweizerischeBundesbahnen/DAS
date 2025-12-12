@@ -1,8 +1,9 @@
 import 'package:collection/collection.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sfera/component.dart';
-import 'package:sfera/src/data/dto/delay_dto.dart';
+import 'package:sfera/src/data/dto/departure_dispatch_notification_event_dto.dart';
 
+import '../../../util/test_journey/test_journey_skeleton.dart';
 import '../../../util/test_util.dart';
 
 void main() {
@@ -11,20 +12,37 @@ void main() {
     allTestJourneys = TestJourneyRepository.getFromClientTestResources().toList(growable: false);
   });
 
-  Journey getJourney(
-    String trainNumber,
-    int spCount, {
-    int tcCount = 0,
-    int? relatedTrainInfoEventId,
-  }) {
+  Journey getJourney(String trainNumber, {int? relatedTrainInfoEventId}) {
     bool journeyNameAndEventMatches(TestJourney journey) =>
         journey.name == trainNumber && relatedTrainInfoEventId?.toString() == journey.eventName;
 
-    return allTestJourneys.where(journeyNameAndEventMatches).first.journey;
+    return allTestJourneys.firstWhere(journeyNameAndEventMatches).journey;
+  }
+
+  TestJourneySkeleton getJourneySkeleton(String trainNumber, {int? relatedTrainInfoEventId}) {
+    bool journeyNameAndEventMatches(TestJourney journey) =>
+        journey.name == trainNumber && relatedTrainInfoEventId?.toString() == journey.eventName;
+
+    return allTestJourneys.firstWhere(journeyNameAndEventMatches).skeleton;
+  }
+
+  void checkDepartureDispatchNotification(
+    String trainNumber,
+    int relatedTrainInfoEventId,
+    DepartureDispatchNotificationType notificationType,
+  ) {
+    final skeleton = getJourneySkeleton(trainNumber, relatedTrainInfoEventId: relatedTrainInfoEventId);
+    expect(skeleton.validate(), true);
+
+    final nspEvent = skeleton.journeyEvent!.payload.networkSpecificEvent;
+    expect(nspEvent, isA<DepartureDispatchNotificationEventDto>());
+
+    final event = nspEvent as DepartureDispatchNotificationEventDto;
+    expect(event.message.unwrapped.type, notificationType);
   }
 
   test('returns null delay when delay is missing in event', () {
-    final journey = getJourney('T8', 1);
+    final journey = getJourney('T8');
     expect(journey.valid, true);
 
     final delay = journey.metadata.delay;
@@ -33,7 +51,7 @@ void main() {
   });
 
   test('return valid delay when location and delay are given', () {
-    final journey = getJourney('T9999', 5, relatedTrainInfoEventId: 2000);
+    final journey = getJourney('T9999', relatedTrainInfoEventId: 2000);
     expect(journey.valid, true);
 
     final delay = journey.metadata.delay;
@@ -53,7 +71,7 @@ void main() {
   });
 
   test('Test service point names are resolved correctly', () async {
-    final journey = getJourney('T9999', 5);
+    final journey = getJourney('T9999');
 
     final servicePoints = journey.data.where((it) => it.dataType == .servicePoint).cast<ServicePoint>().toList();
 
@@ -68,7 +86,7 @@ void main() {
   });
 
   test('Test journey data types correctly generated', () async {
-    final journey = getJourney('T9999', 5);
+    final journey = getJourney('T9999');
 
     expect(journey.valid, true);
     expect(journey.data, hasLength(25));
@@ -106,7 +124,7 @@ void main() {
   });
 
   test('Test kilometre are parsed correctly', () async {
-    final journey = getJourney('T9999', 5);
+    final journey = getJourney('T9999');
 
     expect(journey.valid, true);
     expect(journey.data, hasLength(25));
@@ -149,7 +167,7 @@ void main() {
   });
 
   test('Test order is generated correctly', () async {
-    final journey = getJourney('T9999', 5);
+    final journey = getJourney('T9999');
 
     expect(journey.valid, true);
     expect(journey.data, hasLength(25));
@@ -187,7 +205,7 @@ void main() {
   });
 
   test('Test track equipment is generated correctly', () async {
-    final journey = getJourney('T1', 5);
+    final journey = getJourney('T1');
 
     expect(journey.valid, true);
     expect(journey.metadata.nonStandardTrackEquipmentSegments, hasLength(7));
@@ -254,7 +272,7 @@ void main() {
   });
 
   test('Test single track without block is generated correctly', () async {
-    final journey = getJourney('T10', 1);
+    final journey = getJourney('T10');
 
     expect(journey.valid, true);
     expect(journey.metadata.nonStandardTrackEquipmentSegments, hasLength(1));
@@ -265,7 +283,7 @@ void main() {
   });
 
   test('Test signals are generated correctly', () async {
-    final journey = getJourney('T9999', 5);
+    final journey = getJourney('T9999');
     final signals = journey.data.where((it) => it.dataType == .signal).cast<Signal>().toList();
 
     expect(journey.valid, true);
@@ -296,7 +314,7 @@ void main() {
   });
 
   test('Test curvePoint are generated correctly', () async {
-    final journey = getJourney('T9999', 5);
+    final journey = getJourney('T9999');
     final curvePoints = journey.data.where((it) => it.dataType == .curvePoint).cast<CurvePoint>().toList();
 
     expect(journey.valid, true);
@@ -317,7 +335,7 @@ void main() {
   });
 
   test('Test stop on demand is parsed correctly', () async {
-    final journey = getJourney('T9999', 5);
+    final journey = getJourney('T9999');
     final servicePoints = journey.data.where((it) => it.dataType == .servicePoint).cast<ServicePoint>().toList();
 
     expect(journey.valid, true);
@@ -331,7 +349,7 @@ void main() {
   });
 
   test('Test passing point is parsed correctly', () async {
-    final journey = getJourney('T9999', 5);
+    final journey = getJourney('T9999');
     final servicePoints = journey.data.where((it) => it.dataType == .servicePoint).cast<ServicePoint>().toList();
 
     expect(journey.valid, true);
@@ -345,7 +363,7 @@ void main() {
   });
 
   test('Test station point is parsed correctly', () async {
-    final journey = getJourney('T9999', 5);
+    final journey = getJourney('T9999');
     final servicePoints = journey.data.where((it) => it.dataType == .servicePoint).cast<ServicePoint>().toList();
 
     expect(journey.valid, true);
@@ -359,7 +377,7 @@ void main() {
   });
 
   test('Test bracket stations is parsed correctly', () async {
-    final journey = getJourney('T9999', 5);
+    final journey = getJourney('T9999');
     final servicePoints = journey.data.where((it) => it.dataType == .servicePoint).cast<ServicePoint>().toList();
 
     expect(journey.valid, true);
@@ -398,7 +416,7 @@ void main() {
   });
 
   test('Test additional speed restriction is parsed correctly no items between', () async {
-    final journey = getJourney('T3', 1);
+    final journey = getJourney('T3');
     final speedRestrictions = journey.data
         .where((it) => it.dataType == .additionalSpeedRestriction)
         .cast<AdditionalSpeedRestrictionData>()
@@ -432,7 +450,7 @@ void main() {
   });
 
   test('Test additional speed restriction out of journey times are filtered correctly', () async {
-    final journey = getJourney('T3', 1);
+    final journey = getJourney('T3');
     final speedRestrictions = journey.data
         .where((it) => it.dataType == .additionalSpeedRestriction)
         .cast<AdditionalSpeedRestrictionData>()
@@ -445,7 +463,7 @@ void main() {
   });
 
   test('Test additional speed restriction is parsed correctly over multiple segments', () async {
-    final journey = getJourney('T2', 3);
+    final journey = getJourney('T2');
     final speedRestrictions = journey.data
         .where((it) => it.dataType == .additionalSpeedRestriction)
         .cast<AdditionalSpeedRestrictionData>()
@@ -476,7 +494,7 @@ void main() {
   });
 
   test('Test additional speed restriction without a date', () async {
-    final journey = getJourney('T2', 3);
+    final journey = getJourney('T2');
     final speedRestrictions = journey.data
         .where((it) => it.dataType == .additionalSpeedRestriction)
         .cast<AdditionalSpeedRestrictionData>()
@@ -499,7 +517,7 @@ void main() {
   });
 
   test('Test complex additional speed restrictions are parsed correctly', () async {
-    final journey = getJourney('T18', 3);
+    final journey = getJourney('T18');
     final speedRestrictions = journey.data
         .where((it) => it.dataType == .additionalSpeedRestriction)
         .cast<AdditionalSpeedRestrictionData>()
@@ -653,7 +671,7 @@ void main() {
   });
 
   test('Test available break series are parsed correctly', () async {
-    var journey = getJourney('T9999', 5);
+    var journey = getJourney('T9999');
     expect(journey.valid, true);
     expect(journey.metadata.availableBreakSeries, hasLength(3));
     expect(journey.metadata.availableBreakSeries.elementAt(0).trainSeries, TrainSeries.R);
@@ -663,7 +681,7 @@ void main() {
     expect(journey.metadata.availableBreakSeries.elementAt(2).trainSeries, TrainSeries.A);
     expect(journey.metadata.availableBreakSeries.elementAt(2).breakSeries, 30);
 
-    journey = getJourney('T5', 1);
+    journey = getJourney('T5');
     expect(journey.valid, true);
     expect(journey.metadata.availableBreakSeries, hasLength(17));
     expect(journey.metadata.availableBreakSeries.elementAt(0).trainSeries, TrainSeries.R);
@@ -675,7 +693,7 @@ void main() {
     expect(journey.metadata.availableBreakSeries.elementAt(16).trainSeries, TrainSeries.N);
     expect(journey.metadata.availableBreakSeries.elementAt(16).breakSeries, 30);
 
-    journey = getJourney('T8', 1);
+    journey = getJourney('T8');
     expect(journey.valid, true);
     expect(journey.metadata.availableBreakSeries, hasLength(5));
     expect(journey.metadata.availableBreakSeries.elementAt(0).trainSeries, TrainSeries.R);
@@ -691,7 +709,7 @@ void main() {
   });
 
   test('Test station/curve speeds are parsed correctly', () async {
-    final journey = getJourney('T5', 1);
+    final journey = getJourney('T5');
     expect(journey.valid, true);
 
     final curvePoints = journey.data.where((it) => it.dataType == .curvePoint).cast<CurvePoint>().toList();
@@ -714,69 +732,15 @@ void main() {
   });
 
   test('Test train characteristics break series is parsed correctly', () async {
-    final journey = getJourney('T5', 1, tcCount: 1);
+    final journey = getJourney('T5');
     expect(journey.valid, true);
     expect(journey.metadata.breakSeries, isNotNull);
     expect(journey.metadata.breakSeries!.trainSeries, TrainSeries.R);
     expect(journey.metadata.breakSeries!.breakSeries, 115);
   });
 
-  test('Test correct conversion from String to duration with the delay being PT0M25S', () async {
-    final delay = DelayDto(attributes: {'Delay': 'PT0M25S'});
-    final Duration? convertedDelay = delay.delayAsDuration;
-    expect(convertedDelay, isNotNull);
-    expect(convertedDelay!.isNegative, false);
-    expect(convertedDelay.inMinutes, 0);
-    expect(convertedDelay.inSeconds, 25);
-  });
-
-  test('Test correct conversion from String to duration with negative delay', () async {
-    final delay = DelayDto(attributes: {'Delay': '-PT3M5S'});
-    final Duration? convertedDelay = delay.delayAsDuration;
-    expect(convertedDelay, isNotNull);
-    expect(convertedDelay!.isNegative, true);
-    expect(convertedDelay.inMinutes, -3);
-    expect(convertedDelay.inSeconds, -185);
-  });
-
-  test('Test null delay conversion to null duration', () async {
-    final delay = DelayDto();
-    final Duration? convertedDelay = delay.delayAsDuration;
-    expect(convertedDelay, isNull);
-  });
-
-  test('Test empty String conversion to null duration', () async {
-    final delay = DelayDto(attributes: {'Delay': ''});
-    final Duration? convertedDelay = delay.delayAsDuration;
-    expect(convertedDelay, isNull);
-  });
-
-  test('Test big delay String over one hour conversion to correct duration', () async {
-    final delay = DelayDto(attributes: {'Delay': 'PT5H45M20S'});
-    final Duration? convertedDelay = delay.delayAsDuration;
-    expect(convertedDelay, isNotNull);
-    expect(convertedDelay!.isNegative, false);
-    expect(convertedDelay.inHours, 5);
-    expect(convertedDelay.inMinutes, 345);
-    expect(convertedDelay.inSeconds, 20720);
-  });
-
-  test('Test only seconds conversion to correct duration', () async {
-    final delay = DelayDto(attributes: {'Delay': 'PT14S'});
-    final Duration? convertedDelay = delay.delayAsDuration;
-    expect(convertedDelay, isNotNull);
-    expect(convertedDelay!.isNegative, false);
-    expect(convertedDelay.inSeconds, 14);
-  });
-
-  test('Test wrong ISO 8601 format String conversion to null duration', () async {
-    final delay = DelayDto(attributes: {'Delay': '+PTH45S3434M334'});
-    final Duration? convertedDelay = delay.delayAsDuration;
-    expect(convertedDelay, isNull);
-  });
-
   test('Test tram area parsed correctly', () async {
-    final journey = getJourney('T7', 1, tcCount: 1);
+    final journey = getJourney('T7');
     expect(journey.valid, true);
 
     final tramAreas = journey.data.where((it) => it.dataType == .tramArea).cast<TramArea>().toList();
@@ -788,7 +752,7 @@ void main() {
   });
 
   test('Test whistle parsed correctly', () async {
-    final journey = getJourney('T7', 1, tcCount: 1);
+    final journey = getJourney('T7');
     expect(journey.valid, true);
 
     final whistles = journey.data.where((it) => it.dataType == .whistle).cast<Whistle>().toList();
@@ -798,7 +762,7 @@ void main() {
   });
 
   test('Test balise parsed correctly', () async {
-    final journey = getJourney('T7', 1, tcCount: 1);
+    final journey = getJourney('T7');
     expect(journey.valid, true);
 
     final balises = journey.data.where((it) => it.dataType == .balise).cast<Balise>().toList();
@@ -826,7 +790,7 @@ void main() {
   });
 
   test('Test level crossing parsed correctly', () async {
-    final journey = getJourney('T7', 1, tcCount: 1);
+    final journey = getJourney('T7');
     expect(journey.valid, true);
 
     final levelCrossings = journey.data.where((it) => it.dataType == .levelCrossing).cast<LevelCrossing>().toList();
@@ -848,7 +812,7 @@ void main() {
   });
 
   test('Test station speeds are parsed correctly', () async {
-    final journey = getJourney('T8', 1);
+    final journey = getJourney('T8');
     expect(journey.valid, true);
 
     final servicePoints = journey.data.where((it) => it.dataType == .servicePoint).cast<ServicePoint>().toList();
@@ -969,7 +933,7 @@ void main() {
   });
 
   test('Test graduated station speeds are parsed correctly', () async {
-    final journey = getJourney('T8', 1);
+    final journey = getJourney('T8');
     expect(journey.valid, true);
 
     final servicePoints = journey.data.where((it) => it.dataType == .servicePoint).cast<ServicePoint>().toList();
@@ -1137,7 +1101,7 @@ void main() {
   });
 
   test('Test calculatedSpeed are parsed correctly for each service point', () async {
-    final journey = getJourney('T23', 2);
+    final journey = getJourney('T23');
     expect(journey.valid, true);
 
     final servicePoints = journey.data.whereType<ServicePoint>().toList();
@@ -1188,7 +1152,7 @@ void main() {
   });
 
   test('Test advised speeds are parsed correctly', () async {
-    final journey = getJourney('T24', 6);
+    final journey = getJourney('T24');
     expect(journey.valid, true);
 
     final advisedSpeeds = journey.metadata.advisedSpeedSegments.toList();
@@ -1235,20 +1199,20 @@ void main() {
   });
 
   test('Test signaled position is null when nothing is given', () async {
-    final journey = getJourney('T9', 1, tcCount: 1);
+    final journey = getJourney('T9');
     expect(journey.valid, true);
     expect(journey.metadata.signaledPosition, isNull);
   });
 
   test('Test signaled position has correct order', () async {
-    final journey = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 1000);
+    final journey = getJourney('T9', relatedTrainInfoEventId: 1000);
     expect(journey.valid, true);
     expect(journey.metadata.signaledPosition, isNotNull);
     expect(journey.metadata.signaledPosition?.order, equals(3000));
   });
 
   test('Test CommunicationNetworks parsed correctly', () async {
-    final journey = getJourney('T24', 6);
+    final journey = getJourney('T24');
     expect(journey.valid, isTrue);
 
     final networkChanges = journey.metadata.communicationNetworkChanges;
@@ -1280,7 +1244,7 @@ void main() {
   });
 
   test('Test opFootNote parsed correctly', () async {
-    final journey = getJourney('T15', 4);
+    final journey = getJourney('T15');
     expect(journey.valid, true);
 
     final opFootNotes = journey.data.whereType<OpFootNote>().toList();
@@ -1300,7 +1264,7 @@ void main() {
   });
 
   test('Test lineFootNote parsed correctly', () async {
-    final journey = getJourney('T15', 4);
+    final journey = getJourney('T15');
     expect(journey.valid, true);
 
     final lineFootNotes = journey.data.whereType<LineFootNote>().toList();
@@ -1329,7 +1293,7 @@ void main() {
   });
 
   test('Test trackFootNote parsed correctly', () async {
-    final journey = getJourney('T15', 4);
+    final journey = getJourney('T15');
     expect(journey.valid, true);
 
     final trackFootNotes = journey.data.whereType<TrackFootNote>().toList();
@@ -1342,7 +1306,7 @@ void main() {
   });
 
   test('Test operational indications parsed correctly', () async {
-    final journey = getJourney('T22', 4);
+    final journey = getJourney('T22');
     expect(journey.valid, true);
 
     final uncodedOperationalIndications = journey.data.whereType<UncodedOperationalIndication>().toList();
@@ -1371,7 +1335,7 @@ void main() {
   });
 
   test('Test ContactList T9999 parsed correctly', () async {
-    final journey = getJourney('T9999', 5);
+    final journey = getJourney('T9999');
     expect(journey.valid, true);
 
     final radioContactLists = journey.metadata.radioContactLists.toList();
@@ -1390,7 +1354,7 @@ void main() {
   });
 
   test('Test ContactList T12 parsed correctly', () async {
-    final journey = getJourney('T12', 4);
+    final journey = getJourney('T12');
     expect(journey.valid, true);
 
     final radioContactLists = journey.metadata.radioContactLists.toList();
@@ -1423,7 +1387,7 @@ void main() {
   });
 
   test('Test SIM ContactList T20 parsed correctly', () async {
-    final journey = getJourney('T20', 1);
+    final journey = getJourney('T20');
     expect(journey.valid, true);
 
     final radioContactLists = journey.metadata.radioContactLists.toList();
@@ -1446,7 +1410,7 @@ void main() {
   });
 
   test('Test DecisiveGradientArea parsed correctly', () {
-    final journey = getJourney('T15', 4);
+    final journey = getJourney('T15');
     expect(journey.valid, true);
 
     final servicePoints = journey.data.whereType<ServicePoint>().toList();
@@ -1465,7 +1429,7 @@ void main() {
   });
 
   test('Test ArrivalDepartureTime parsed correctly in near time', () {
-    final journey = getJourney('T16', 1);
+    final journey = getJourney('T16');
     expect(journey.valid, true);
 
     final servicePoints = journey.data.whereType<ServicePoint>().toList();
@@ -1529,7 +1493,7 @@ void main() {
   });
 
   test('metadata.hasCalculatedTimes_whenNoCalculatedTimesInJourney_thenFalse', () {
-    final journey = getJourney('T4', 1);
+    final journey = getJourney('T4');
     expect(journey.valid, true);
 
     // has calculated times
@@ -1537,7 +1501,7 @@ void main() {
   });
 
   test('metadata.hasCalculatedTimes_whenNoTimesInJourney_thenFalse', () {
-    final journey = getJourney('T5', 1);
+    final journey = getJourney('T5');
     expect(journey.valid, true);
 
     // has calculated times
@@ -1545,7 +1509,7 @@ void main() {
   });
 
   test('Test stations signs are parsed correctly', () {
-    final journey = getJourney('T21', 1);
+    final journey = getJourney('T21');
     expect(journey.valid, true);
 
     final servicePoints = journey.data.whereType<ServicePoint>().toList();
@@ -1570,7 +1534,7 @@ void main() {
   });
 
   test('whenTafTapLocationHasNSPWithTrackGroup_thenServicePointHasNonNullTrackGroup', () {
-    final journey = getJourney('T6', 2);
+    final journey = getJourney('T6');
     expect(journey.valid, true);
 
     final servicePoints = journey.data.whereType<ServicePoint>().toList(growable: false);
@@ -1581,7 +1545,7 @@ void main() {
   });
 
   test('Test stations properties are parsed correctly', () {
-    final journey = getJourney('T21', 1);
+    final journey = getJourney('T21');
     expect(journey.valid, true);
 
     final servicePoints = journey.data.whereType<ServicePoint>().toList();
@@ -1637,7 +1601,7 @@ void main() {
   });
 
   test('Test properties for break series', () {
-    final journey = getJourney('T21', 1);
+    final journey = getJourney('T21');
     expect(journey.valid, true);
 
     final servicePoints = journey.data.whereType<ServicePoint>().toList();
@@ -1660,7 +1624,7 @@ void main() {
   });
 
   test('Test local regulations are parsed correctly', () {
-    final journey = getJourney('T26', 1);
+    final journey = getJourney('T26');
     expect(journey.valid, true);
 
     final servicePoints = journey.data.whereType<ServicePoint>().toList();
@@ -1698,7 +1662,7 @@ void main() {
   });
 
   test('Test between brackets is parsed correctly', () {
-    final journey = getJourney('T9999', 5);
+    final journey = getJourney('T9999');
     expect(journey.valid, true);
 
     final servicePoints = journey.data.whereType<ServicePoint>().toList();
@@ -1712,7 +1676,7 @@ void main() {
   });
 
   test('Test additional service points are parsed correctly', () {
-    final journey = getJourney('T27', 1);
+    final journey = getJourney('T27');
     expect(journey.valid, true);
 
     final servicePoints = journey.data.whereType<ServicePoint>().toList();
@@ -1750,7 +1714,7 @@ void main() {
   });
 
   test('Test departure authorizations are parsed correctly', () {
-    final journey = getJourney('T31', 5);
+    final journey = getJourney('T31');
     expect(journey.valid, true);
 
     final servicePoint = journey.data.whereType<ServicePoint>().toList();
@@ -1781,6 +1745,14 @@ void main() {
     expect(departureAuthorization3?.text, 'sms 2-4 6,7');
 
     expect(servicePoint[4].departureAuthorization, isNull);
+  });
+
+  test('Test departure dispatch notification events are parsed correctly', () {
+    checkDepartureDispatchNotification('T32', 3000, DepartureDispatchNotificationType.prepareForDepartureLong);
+    checkDepartureDispatchNotification('T32', 5000, DepartureDispatchNotificationType.prepareForDepartureMiddle);
+    checkDepartureDispatchNotification('T32', 7000, DepartureDispatchNotificationType.departureProvisionWithdrawn);
+    checkDepartureDispatchNotification('T32', 9000, DepartureDispatchNotificationType.prepareForDepartureShort);
+    checkDepartureDispatchNotification('T32', 11000, DepartureDispatchNotificationType.prepareForDeparture);
   });
 }
 

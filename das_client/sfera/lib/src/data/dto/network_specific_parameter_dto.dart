@@ -1,4 +1,5 @@
 import 'package:sfera/src/data/dto/amount_tram_signals_dto.dart';
+import 'package:sfera/src/data/dto/departure_dispatch_notification_type_wrapper_dto.dart';
 import 'package:sfera/src/data/dto/id_nsp_dto.dart';
 import 'package:sfera/src/data/dto/km_ref_nsp_dto.dart';
 import 'package:sfera/src/data/dto/local_regulation_content_nsp_dto.dart';
@@ -74,6 +75,8 @@ class NetworkSpecificParameterDto extends SferaXmlElementDto {
       return TrainRunTypeNspDto(attributes: attributes, children: children, value: value);
     } else if (attributeName == OperatingDayNsp.elementName) {
       return OperatingDayNsp(attributes: attributes, children: children, value: value);
+    } else if (attributeName == DepartureDispatchNotificationTypeWrapperDto.elementName) {
+      return DepartureDispatchNotificationTypeWrapperDto(attributes: attributes, children: children, value: value);
     }
     return NetworkSpecificParameterDto(attributes: attributes, children: children, value: value);
   }

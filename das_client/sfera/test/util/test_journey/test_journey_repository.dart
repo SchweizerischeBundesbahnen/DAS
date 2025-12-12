@@ -109,11 +109,6 @@ class TestJourneyRepository {
 
       final eventPayload = SferaReplyParser.parse<G2bEventPayloadDto>(file.readAsStringSync());
 
-      final eventJourneyProfiles = eventPayload.journeyProfiles;
-      final eventRelatedTrainInformation = eventPayload.relatedTrainInformation;
-
-      if (eventJourneyProfiles.isEmpty && eventRelatedTrainInformation == null) continue;
-
       JourneyProfileDto journeyProfile = baseJourneyProfile;
       if (eventPayload.journeyProfiles.isNotEmpty) journeyProfile = eventPayload.journeyProfiles.first;
 
