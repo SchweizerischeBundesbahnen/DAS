@@ -38,6 +38,7 @@ class SpeedDisplay extends StatelessWidget {
       offset: _dotIndicatorOffset(speed!),
       isNextStop: isNextStop,
       child: switch (speed!) {
+        final SummarizedCurvesSpeed _ => _visualizedSpeeds(speeds: speed!),
         final IncomingOutgoingSpeed s => singleLine ? _rowSpeed(context, s) : _columnSpeed(context, s),
         final GraduatedSpeed _ || final SingleSpeed _ => _visualizedSpeeds(key: incomingSpeedsKey, speeds: speed!),
       },
@@ -51,7 +52,7 @@ class SpeedDisplay extends StatelessWidget {
       children: [
         _visualizedSpeeds(key: incomingSpeedsKey, speeds: ioSpeed.incoming),
         Text(
-          summarizedCurve ? ' - ' : ' / ',
+          ' / ',
           style: _textStyle,
         ),
         _visualizedSpeeds(key: outgoingSpeedsKey, speeds: ioSpeed.outgoing),
@@ -75,6 +76,7 @@ class SpeedDisplay extends StatelessWidget {
 
   Widget _visualizedSpeeds({required Speed speeds, Key? key}) {
     final List<SingleSpeed> singleSpeeds = switch (speeds) {
+      final SummarizedCurvesSpeed sc => sc.speeds,
       final GraduatedSpeed g => g.speeds,
       final SingleSpeed s => [s],
       final IncomingOutgoingSpeed _ => throw UnimplementedError(),
@@ -121,6 +123,7 @@ class SpeedDisplay extends StatelessWidget {
   }
 
   Offset _dotIndicatorOffset(Speed resolvedSpeed) => switch (resolvedSpeed) {
+    final SummarizedCurvesSpeed _ => const Offset(0, 0),
     final IncomingOutgoingSpeed _ => const Offset(0, 0),
     final GraduatedSpeed _ || final SingleSpeed _ => const Offset(0, -sbbDefaultSpacing * 0.5),
   };

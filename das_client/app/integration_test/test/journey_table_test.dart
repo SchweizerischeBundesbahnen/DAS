@@ -76,7 +76,7 @@ void main() {
       final dash = String.fromCharCode(45);
       final speedPartition = find.descendant(
         of: speed,
-        matching: find.text(' $dash '),
+        matching: find.text(dash),
       );
       final speedPartMax = find.descendant(of: speed, matching: find.text('95'));
       expect(speedPartMin, findsOneWidget);
@@ -178,10 +178,10 @@ void main() {
       expect(find.descendant(of: breakingSeriesHeaderCell, matching: find.text('R115')), findsOneWidget);
 
       final curveName = find.textContaining(l10n.p_journey_table_curve_type_curve);
-      expect(curveName, findsExactly(2));
+      expect(curveName, findsExactly(3));
 
       final curveIcon = find.byKey(CurvePointRow.curvePointIconKey);
-      expect(curveIcon, findsExactly(2));
+      expect(curveIcon, findsExactly(3));
 
       await disconnect(tester);
     });
@@ -282,11 +282,11 @@ void main() {
 
       final expectedSpeeds = {
         'Genève-Aéroport': '60',
-        '65.3': '44', // 1. Curve
+        '65.3': '44-44', // 1. Curve
         'New Line Speed All': '60',
         'Genève': '60',
         'New Line Speed A Missing': '60',
-        '42.5': '44', // 2. Curve
+        '42.5': '44-44', // 2. Curve
         'Gland': '60',
       };
 

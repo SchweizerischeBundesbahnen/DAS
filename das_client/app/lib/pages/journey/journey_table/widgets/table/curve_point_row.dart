@@ -50,7 +50,7 @@ class CurvePointRow extends CellRowBuilder<CurvePoint> {
     final startKm = _stringifyKm(data.kilometre.firstOrNull);
     final endKm = _stringifyKm(data.kilometre.length > 1 ? data.kilometre.last : null);
 
-    final text = endKm.isNotEmpty ? '$typeText km $startKm - $endKm' : (startKm.isNotEmpty ? typeText : typeText);
+    final text = endKm.isNotEmpty ? '$typeText km $startKm - $endKm' : typeText;
 
     return DASTableCell(
       child: Text(
@@ -73,8 +73,7 @@ class CurvePointRow extends CellRowBuilder<CurvePoint> {
 
   String _stringifyKm(double? km) {
     if (km == null) return '';
-    final s = km.toStringAsFixed(2).trim();
-    return s.isEmpty ? '' : s;
+    return km.toStringAsFixed(2).trim();
   }
 }
 

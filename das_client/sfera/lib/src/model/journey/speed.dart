@@ -32,6 +32,30 @@ sealed class Speed {
   bool get isIllegal => false;
 }
 
+/// A speed for summarized curves, it contains a [speeds] list with all the
+/// speeds of the summarized curves joined by '-'.
+class SummarizedCurvesSpeed extends Speed {
+  const SummarizedCurvesSpeed({required this.speeds})
+    : assert(speeds.length >= 2, 'SummarizedCurvesSpeed needs at least two speeds.');
+
+  /// For one trainSeries/breakSeries: the speeds of each curve in the segment.
+  final List<SingleSpeed> speeds;
+
+  @override
+  bool get isIllegal => speeds.any((s) => s.isIllegal);
+
+  @override
+  String toString() => 'SummarizedCurvesSpeed(${speeds.map((s) => s.value).join('-')})';
+
+  @override
+  int get hashCode => const ListEquality<SingleSpeed>().hash(speeds);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is SummarizedCurvesSpeed && const ListEquality<SingleSpeed>().equals(speeds, other.speeds);
+}
+
 /// A speed comprised of either [SingleSpeed] or [GraduatedSpeed] values, combined by a single '/'.
 class IncomingOutgoingSpeed extends Speed {
   static bool _hasMatch(String formattedString) => formattedString.contains('/');
