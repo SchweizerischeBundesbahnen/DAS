@@ -55,8 +55,6 @@ class JourneyTableViewModel {
   }
 
   void toggleZenViewMode() {
-    if (!_rxZenViewMode.hasListener) return;
-
     _log.fine('ZenViewMode active: ${!isZenViewModeValue}');
     _rxZenViewMode.add(!isZenViewModeValue);
   }

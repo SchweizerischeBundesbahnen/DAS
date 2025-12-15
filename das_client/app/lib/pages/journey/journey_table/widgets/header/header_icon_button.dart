@@ -29,7 +29,9 @@ class HeaderIconButton extends StatelessWidget {
       stream: viewModel.isModalOpen,
       builder: (context, snapshot) {
         final isDetailModalSheetOpen = snapshot.requireData;
-        final buttonStyle = _optionalInvertButtonStyle(context);
+
+        ButtonStyle? buttonStyle;
+        if (invertColors) buttonStyle = _invertButtonStyle(context);
 
         return isDetailModalSheetOpen
             ? _iconButton(buttonStyle, isDetailModalSheetOpen)
@@ -57,6 +59,7 @@ class HeaderIconButton extends StatelessWidget {
   Widget _iconButton(ButtonStyle? buttonStyle, bool isDetailModalSheetOpen) {
     /// ThemeData & ButtonStyle is weirdly overwritten in Design System
     /// Will be changed with https://github.com/SchweizerischeBundesbahnen/design_system_flutter/pull/425
+    /// and v5.0.0 is released
     final iconStyle = buttonStyle?.copyWith(padding: WidgetStatePropertyAll(EdgeInsets.zero));
     return SBBIconButtonLarge(
       key: headerIconButtonKey,
@@ -66,9 +69,7 @@ class HeaderIconButton extends StatelessWidget {
     );
   }
 
-  ButtonStyle? _optionalInvertButtonStyle(BuildContext context) {
-    if (!invertColors) return null;
-
+  ButtonStyle? _invertButtonStyle(BuildContext context) {
     final baseStyle = Theme.of(context).textButtonTheme.style;
     return baseStyle?.copyWith(
       backgroundColor: WidgetStateProperty.fromMap(<WidgetStatesConstraint, Color>{

@@ -268,7 +268,7 @@ class BreakLoadSlipViewModel {
   }
 
   void _changeOpenFullscreenFlag(bool state) {
-    _log.fine('Changing _openFullscreen to $state');
+    _log.fine('$hashCode Changing _openFullscreen to $state');
     _openFullscreen = state;
   }
 
