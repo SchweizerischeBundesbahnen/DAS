@@ -8,7 +8,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
 class DepartureDispatchNotificationViewModel {
-  static Sound get _sound => DI.get<DASSounds>().advisedSpeedStart;
+  static Sound get _sound => DI.get<DASSounds>().departureDispatchNotification;
 
   DepartureDispatchNotificationViewModel({
     required SferaRemoteRepo sferaRemoteRepo,

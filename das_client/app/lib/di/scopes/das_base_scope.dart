@@ -51,10 +51,13 @@ extension BaseScopeExtension on GetIt {
   }
 
   void registerAudioPlayer() {
-    registerLazySingleton<AudioPlayer>(() {
-      _log.fine('Register AudioPlayer');
-      return AudioPlayer();
-    });
+    registerLazySingleton<AudioPlayer>(
+      () {
+        _log.fine('Register AudioPlayer');
+        return AudioPlayer();
+      },
+      dispose: (player) => player.dispose(),
+    );
   }
 
   void registerSounds() {

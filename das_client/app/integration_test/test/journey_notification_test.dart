@@ -1,3 +1,4 @@
+import 'package:app/pages/journey/journey_table/departure_dispatch_notification/departure_dispatch_notification.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../app_test.dart';
@@ -28,6 +29,20 @@ void main() {
 
       expect(find.text(l10n.w_departure_process_modal_sheet_title), findsOneWidget);
       expect(find.text(l10n.w_departure_process_modal_sheet_content), findsOneWidget);
+
+      await disconnect(tester);
+    });
+
+    testWidgets('test departure dispatch notifications are displayed properly', (tester) async {
+      await prepareAndStartApp(tester);
+      await loadJourney(tester, trainNumber: 'T32');
+
+      await waitUntilExists(tester, find.text(l10n.w_departure_dispatch_notification_long));
+      await waitUntilExists(tester, find.text(l10n.w_departure_dispatch_notification_middle));
+      await waitUntilExists(tester, find.text(l10n.w_departure_dispatch_notification_withdrawn));
+      await waitUntilExists(tester, find.text(l10n.w_departure_dispatch_notification_short));
+      await waitUntilExists(tester, find.text(l10n.w_departure_dispatch_notification_prepare));
+      await waitUntilNotExists(tester, find.byKey(DepartureDispatchNotification.departureDispatchNotificationKey));
 
       await disconnect(tester);
     });
