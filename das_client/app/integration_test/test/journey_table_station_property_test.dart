@@ -12,15 +12,13 @@ void main() {
 
     await loadJourney(tester, trainNumber: 'T21M');
 
-    final scrollableFinder = find.byType(AnimatedList);
-
     expect(find.byKey(Key(StationSign.deadendStation.name)), findsAtLeast(4));
     expect(find.byKey(Key(StationSign.noExitSignal.name)), findsNWidgets(2));
     expect(find.byKey(Key(StationSign.noEntrySignal.name)), findsNWidgets(1));
     expect(find.byKey(Key(StationSign.noEntryExitSignal.name)), findsNWidgets(1));
     expect(find.byKey(Key(StationSign.entryStationWithoutRailFreeAccess.name)), findsNWidgets(1));
 
-    await dragUntilTextInStickyHeader(tester, 'Morges');
+    await dragUntilTextInStickyHeader(tester, 'Nyon');
 
     expect(find.byKey(Key(StationSign.openLevelCrossingBeforeExitSignal.name)), findsNWidgets(2));
 
