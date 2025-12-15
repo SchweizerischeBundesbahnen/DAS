@@ -63,18 +63,13 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _message(BuildContext context) {
-    return Container(
-      alignment: .center,
-      padding: const .all(16),
-      child: Column(
-        mainAxisSize: .min,
-        children: [
-          const SizedBox(height: 32),
-          Text(
-            context.l10n.p_login_login_button_description,
-          ),
-        ],
-      ),
+    return Column(
+      mainAxisSize: .min,
+      spacing: 8.0,
+      children: [
+        Text(context.l10n.p_login_bottom_sheet_title, style: sbbTextStyle.boldStyle.xLarge),
+        Text(context.l10n.p_login_bottom_sheet_subtitle),
+      ],
     );
   }
 
