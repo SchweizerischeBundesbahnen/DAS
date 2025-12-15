@@ -223,7 +223,8 @@ enum FormationRunFields {
   routeClass('routeClass'),
   gradientUphillMaxInPermille('gradientUphillMaxInPermille'),
   gradientDownhillMaxInPermille('gradientDownhillMaxInPermille'),
-  slopeMaxForHoldingForceMinInPermille('slopeMaxForHoldingForceMinInPermille');
+  slopeMaxForHoldingForceMinInPermille('slopeMaxForHoldingForceMinInPermille')
+  ;
 
   const FormationRunFields(
     this.fieldName,
