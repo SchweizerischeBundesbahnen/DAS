@@ -31,10 +31,11 @@
   "w_navigation_drawer_settings_title": "Einstellungen",
   "w_navigation_drawer_profile_title": "Profil",
   "p_login_connect_to_tms": "Mit TMS verbinden",
-  "p_login_bottom_sheet_title": "Herzlich Willkommen bei DAS!",
+  "p_login_bottom_sheet_title": "Herzlich Willkommen bei DAS",
   "p_login_bottom_sheet_subtitle": "Logge dich ein um zu beginnen.",
+  "p_login_bottom_sheet_title_failed": "Hoppla, da hat etwas nicht funktioniert",
+  "p_login_bottom_sheet_subtitle_failed": "Fehler",
   "p_login_login_button_text": "Login",
-  "p_login_login_failed": "Login fehlgeschlagen",
   "p_break_load_slip_page_title": "Brems- und Lastzettel",
   "p_break_load_slip_header_title": "Zug und Bremsreihe: {trainSeries} {breakSeries}%",
   "@p_break_load_slip_header_title": {
