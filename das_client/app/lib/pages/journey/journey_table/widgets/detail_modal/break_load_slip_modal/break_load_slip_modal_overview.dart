@@ -7,9 +7,9 @@ import 'package:formation/component.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class BreakLoadSlipModalOverview extends StatelessWidget {
-  const BreakLoadSlipModalOverview({required this.formationRun, super.key});
+  const BreakLoadSlipModalOverview({required this.formationRunChange, super.key});
 
-  final FormationRun formationRun;
+  final FormationRunChange formationRunChange;
 
   @override
   Widget build(BuildContext context) {
@@ -21,23 +21,28 @@ class BreakLoadSlipModalOverview extends StatelessWidget {
           SizedBox(height: sbbDefaultSpacing * 0.5),
           KeyValueTableDataRow(
             context.l10n.p_break_load_slip_train_data_train_series,
-            '${formationRun.trainCategoryCode ?? ''} ${formationRun.brakedWeightPercentage ?? ''}%',
+            '${formationRunChange.formationRun.trainCategoryCode ?? ''} ${formationRunChange.formationRun.brakedWeightPercentage ?? ''}%',
+            showChangeIndicator: false,
           ),
           KeyValueTableDataRow(
             context.l10n.p_break_load_slip_train_data_table_vmax,
-            formationRun.formationMaxSpeedInKmh.toString(),
+            formationRunChange.formationRun.formationMaxSpeedInKmh.toString(),
+            showChangeIndicator: false,
           ),
           KeyValueTableDataRow(
             context.l10n.p_break_load_slip_train_data_table_length,
-            (formationRun.formationLengthInCm / 100).toString(),
+            (formationRunChange.formationRun.formationLengthInCm / 100).toString(),
+            showChangeIndicator: false,
           ),
           KeyValueTableDataRow(
             context.l10n.p_break_load_slip_train_data_table_weight,
-            formationRun.formationWeightInT.toString(),
+            formationRunChange.formationRun.formationWeightInT.toString(),
+            showChangeIndicator: false,
           ),
           KeyValueTableDataRow(
             context.l10n.p_break_load_slip_train_data_table_braked_weight,
-            formationRun.formationBrakedWeightInT.toString(),
+            formationRunChange.formationRun.formationBrakedWeightInT.toString(),
+            showChangeIndicator: false,
           ),
         ],
       ),
