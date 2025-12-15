@@ -28,26 +28,10 @@ class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
   @override
   Widget wrappedRoute(BuildContext context) => MultiProvider(
     providers: [
-      Provider<JourneyTableViewModel>(create: (_) => DI.get()),
-      ProxyProvider<JourneyTableViewModel, PunctualityViewModel>(
-        update: (_, journeyVM, prev) {
-          if (prev != null) return prev;
-          return PunctualityViewModel(
-            journeyStream: journeyVM.journey,
-          );
-        },
-        dispose: (_, vm) => vm.dispose(),
-      ),
-      ProxyProvider2<JourneyTableViewModel, PunctualityViewModel, JourneyPositionViewModel>(
-        update: (_, journeyVM, punctualityVM, prev) {
-          if (prev != null) return prev;
-          return JourneyPositionViewModel(
-            journeyStream: journeyVM.journey,
-            punctualityStream: punctualityVM.model,
-          );
-        },
-        dispose: (_, vm) => vm.dispose(),
-      ),
+      Provider<JourneyTableViewModel>(create: (_) => DI.get<JourneyTableViewModel>()),
+      Provider<JourneySettingsViewModel>(create: (_) => DI.get<JourneySettingsViewModel>()),
+      Provider<PunctualityViewModel>(create: (_) => DI.get<PunctualityViewModel>()),
+      Provider<JourneyPositionViewModel>(create: (_) => DI.get<JourneyPositionViewModel>()),
       ProxyProvider3<JourneyTableViewModel, JourneyPositionViewModel, JourneySettingsViewModel, BreakLoadSlipViewModel>(
         update: (_, journeyVM, positionVM, settingsVM, prev) {
           if (prev != null) return prev;
