@@ -84,6 +84,5 @@ public class FormationsService {
             stmt.setString(3, companyCode);
         });
         log.info("Updated {} rows", affectedRows);
-        throw new IllegalStateException("Test ex");
     }
 }
