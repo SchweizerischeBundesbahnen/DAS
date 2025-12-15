@@ -4,9 +4,12 @@ import 'package:app/di/scopes/journey_scope.dart';
 import 'package:app/flavor.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/app_router.dart';
+import 'package:app/theme/theme_util.dart';
+import 'package:app/widgets/assets.dart';
 import 'package:auth/component.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:logging/logging.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -35,9 +38,41 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: isLoading ? _loading() : _body(),
+      body: Stack(
+        alignment: .bottomCenter,
+        children: [
+          _background(),
+          _bottomSheet(context, child: isLoading ? _loading() : _body()),
+        ],
       ),
+    );
+  }
+
+  Widget _background() => SvgPicture.asset(
+    AppAssets.loginPageBackground,
+    fit: .fill,
+    width: double.infinity,
+    height: double.infinity,
+  );
+
+  Widget _bottomSheet(BuildContext context, {required Widget child}) {
+    return Container(
+      decoration: ShapeDecoration(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(sbbDefaultSpacing),
+            topRight: Radius.circular(sbbDefaultSpacing),
+          ),
+        ),
+        shadows: [
+          BoxShadow(
+            color: SBBColors.black.withValues(alpha: 0.2),
+            blurRadius: 8,
+          ),
+        ],
+        color: ThemeUtil.getColor(context, SBBColors.white, SBBColors.charcoal),
+      ),
+      child: child,
     );
   }
 
@@ -49,16 +84,17 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _body() {
-    return Column(
-      mainAxisSize: .max,
-      children: [
-        const Spacer(),
-        _message(context),
-        _loginButton(context),
-        _tmsCheckbox(context),
-        const Spacer(),
-        _flavor(context),
-      ],
+    return Padding(
+      padding: EdgeInsets.fromLTRB(56, 24, 32, 32),
+      child: Row(
+        children: [
+          Expanded(child: _message(context)),
+          // TODO: think of a way to display this information
+          // _tmsCheckbox(context),
+          // _flavor(context),
+          _loginButton(context),
+        ],
+      ),
     );
   }
 
@@ -109,9 +145,14 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _loginButton(BuildContext context) {
+    // TODO: change to SBBSecondaryButton with custom label once v5.0.0 is released
+    // TODO: https://github.com/SchweizerischeBundesbahnen/design_system_flutter/pull/425
     return OutlinedButton(
       onPressed: _onLoginPressed,
-      child: Text(context.l10n.p_login_login_button_text),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+        child: Text(context.l10n.p_login_login_button_text),
+      ),
     );
   }
 
