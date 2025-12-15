@@ -79,47 +79,13 @@ class _LoginDraggableBottomSheetState extends State<LoginDraggableBottomSheet> {
             child: CustomScrollView(
               controller: controller,
               slivers: [
-                PinnedHeaderSliver(child: _body(context)),
+                PinnedHeaderSliver(child: _header(context)),
                 SliverPadding(
-                  padding: const EdgeInsets.symmetric(vertical: sbbDefaultSpacing, horizontal: sbbDefaultSpacing * .5),
-                  sliver: SliverToBoxAdapter(
-                    child: Column(
-                      crossAxisAlignment: .start,
-                      children: [
-                        SBBGroup(
-                          child: SBBSwitchListItem(
-                            title: context.l10n.p_login_connect_to_tms,
-                            value: isTmsChecked,
-                            onChanged: (value) {
-                              setState(() {
-                                isTmsChecked = value;
-                                DI.resetToUnauthenticatedScope(useTms: isTmsChecked);
-                              });
-                            },
-                            isLastElement: true,
-                          ),
-                        ),
-                        SizedBox(height: 32.0),
-                        RichText(
-                          text: TextSpan(
-                            text: 'App Flavor: ',
-                            style: DASTextStyles.smallLight.copyWith(color: SBBColors.granite),
-                            children: [
-                              TextSpan(
-                                text: flavor.displayName,
-                                style: DASTextStyles.smallBold.copyWith(color: SBBColors.granite),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 8.0),
-                        Text(
-                          'App Version: ${packageInfo.version}+${packageInfo.buildNumber}',
-                          style: DASTextStyles.smallLight.copyWith(color: SBBColors.granite),
-                        ),
-                      ],
-                    ),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: sbbDefaultSpacing * 2,
+                    horizontal: sbbDefaultSpacing * .5,
                   ),
+                  sliver: SliverToBoxAdapter(child: _body(context, packageInfo)),
                 ),
               ],
             ),
@@ -129,7 +95,54 @@ class _LoginDraggableBottomSheetState extends State<LoginDraggableBottomSheet> {
     );
   }
 
-  Widget _body(BuildContext context) {
+  Column _body(BuildContext context, PackageInfo packageInfo) {
+    return Column(
+      crossAxisAlignment: .start,
+      children: [
+        SBBGroup(
+          child: SBBSwitchListItem(
+            title: context.l10n.p_login_connect_to_tms,
+            value: isTmsChecked,
+            onChanged: (value) {
+              setState(() {
+                isTmsChecked = value;
+                DI.resetToUnauthenticatedScope(useTms: isTmsChecked);
+              });
+            },
+            isLastElement: true,
+          ),
+        ),
+        SizedBox(height: sbbDefaultSpacing * 2),
+        RichText(
+          text: TextSpan(
+            text: 'App Flavor: ',
+            style: DASTextStyles.smallLight.copyWith(color: SBBColors.granite),
+            children: [
+              TextSpan(
+                text: flavor.displayName,
+                style: DASTextStyles.smallBold.copyWith(color: SBBColors.granite),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: 8.0),
+        RichText(
+          text: TextSpan(
+            text: 'App Version: ',
+            style: DASTextStyles.smallLight.copyWith(color: SBBColors.granite),
+            children: [
+              TextSpan(
+                text: '${packageInfo.version}+${packageInfo.buildNumber}',
+                style: DASTextStyles.smallBold.copyWith(color: SBBColors.granite),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _header(BuildContext context) {
     return Container(
       padding: EdgeInsets.fromLTRB(56, 24, 32, 32),
       color: SBBColors.white,
