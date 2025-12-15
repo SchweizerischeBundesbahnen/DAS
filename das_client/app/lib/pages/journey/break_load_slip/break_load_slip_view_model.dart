@@ -144,7 +144,7 @@ class BreakLoadSlipViewModel {
     }
   }
 
-  FormationRunChange? _generateFormationRuneChange(FormationRun? formationRun) {
+  FormationRunChange? _generateFormationRunChange(FormationRun? formationRun) {
     if (formationRun == null) return null;
 
     final index = formationValue?.formationRuns.indexOf(formationRun);
@@ -162,7 +162,7 @@ class BreakLoadSlipViewModel {
 
     _log.info('Active formation run changed to $newActiveFormationRun}');
     _changeOpenFullscreenFlag(true);
-    _rxFormationRun.add(_generateFormationRuneChange(newActiveFormationRun));
+    _rxFormationRun.add(_generateFormationRunChange(newActiveFormationRun));
   }
 
   FormationRun? _calculateActiveFormationRun() {
@@ -260,7 +260,7 @@ class BreakLoadSlipViewModel {
 
     final currentIndex = formation.formationRuns.indexOf(activeFormationRun.formationRun);
     if (currentIndex != -1 && currentIndex > 0) {
-      _rxFormationRun.add(_generateFormationRuneChange(formation.formationRuns[currentIndex - 1]));
+      _rxFormationRun.add(_generateFormationRunChange(formation.formationRuns[currentIndex - 1]));
     }
   }
 
@@ -271,7 +271,7 @@ class BreakLoadSlipViewModel {
 
     final currentIndex = formation.formationRuns.indexOf(activeFormationRun.formationRun);
     if (currentIndex != -1 && currentIndex < formation.formationRuns.length - 1) {
-      _rxFormationRun.add(_generateFormationRuneChange(formation.formationRuns[currentIndex + 1]));
+      _rxFormationRun.add(_generateFormationRunChange(formation.formationRuns[currentIndex + 1]));
     }
   }
 

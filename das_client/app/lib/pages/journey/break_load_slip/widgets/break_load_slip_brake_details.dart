@@ -28,17 +28,17 @@ class BreakLoadSlipBrakeDetails extends StatelessWidget {
         KeyValueTableDataRow(
           context.l10n.p_break_load_slip_brake_details_brake_ratio_front,
           formationRunChange.formationRun.gradientUphillMaxInPermille.toString(),
-          hasChange: formationRunChange.hasChanged('gradientUphillMaxInPermille'),
+          hasChange: formationRunChange.hasChanged(.gradientUphillMaxInPermille),
         ),
         KeyValueTableDataRow(
           context.l10n.p_break_load_slip_brake_details_brake_ratio_back,
           formationRunChange.formationRun.gradientDownhillMaxInPermille.toString(),
-          hasChange: formationRunChange.hasChanged('gradientDownhillMaxInPermille'),
+          hasChange: formationRunChange.hasChanged(.gradientDownhillMaxInPermille),
         ),
         KeyValueTableDataRow(
           context.l10n.p_break_load_slip_brake_details_min_holding_force,
           formationRunChange.formationRun.slopeMaxForHoldingForceMinInPermille,
-          hasChange: formationRunChange.hasChanged('slopeMaxForHoldingForceMinInPermille'),
+          hasChange: formationRunChange.hasChanged(.slopeMaxForHoldingForceMinInPermille),
         ),
         KeyValueTableDataRow.empty(),
       ],
@@ -46,8 +46,8 @@ class BreakLoadSlipBrakeDetails extends StatelessWidget {
   }
 
   bool _hasChange() {
-    return formationRunChange.hasChanged('gradientUphillMaxInPermille') ||
-        formationRunChange.hasChanged('gradientDownhillMaxInPermille') ||
-        formationRunChange.hasChanged('slopeMaxForHoldingForceMinInPermille');
+    return formationRunChange.hasChanged(.gradientUphillMaxInPermille) ||
+        formationRunChange.hasChanged(.gradientDownhillMaxInPermille) ||
+        formationRunChange.hasChanged(.slopeMaxForHoldingForceMinInPermille);
   }
 }

@@ -22,27 +22,27 @@ class BreakLoadSlipModalOverview extends StatelessWidget {
           KeyValueTableDataRow(
             context.l10n.p_break_load_slip_train_data_train_series,
             '${formationRunChange.formationRun.trainCategoryCode ?? ''} ${formationRunChange.formationRun.brakedWeightPercentage ?? ''}%',
-            shownChangeIndicator: false,
+            showChangeIndicator: false,
           ),
           KeyValueTableDataRow(
             context.l10n.p_break_load_slip_train_data_table_vmax,
             formationRunChange.formationRun.formationMaxSpeedInKmh.toString(),
-            shownChangeIndicator: false,
+            showChangeIndicator: false,
           ),
           KeyValueTableDataRow(
             context.l10n.p_break_load_slip_train_data_table_length,
             (formationRunChange.formationRun.formationLengthInCm / 100).toString(),
-            shownChangeIndicator: false,
+            showChangeIndicator: false,
           ),
           KeyValueTableDataRow(
             context.l10n.p_break_load_slip_train_data_table_weight,
             formationRunChange.formationRun.formationWeightInT.toString(),
-            shownChangeIndicator: false,
+            showChangeIndicator: false,
           ),
           KeyValueTableDataRow(
             context.l10n.p_break_load_slip_train_data_table_braked_weight,
             formationRunChange.formationRun.formationBrakedWeightInT.toString(),
-            shownChangeIndicator: false,
+            showChangeIndicator: false,
           ),
         ],
       ),

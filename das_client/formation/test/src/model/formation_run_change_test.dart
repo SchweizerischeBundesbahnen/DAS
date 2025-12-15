@@ -103,19 +103,106 @@ void main() {
 
     // VERIFY
     expect(testee.changesCount, 10);
-    expect(testee.hasChanged('additionalTractions'), isTrue);
-    expect(testee.hasChanged('brakedWeightPercentage'), isTrue);
-    expect(testee.hasChanged('trainCategoryCode'), isTrue);
-    expect(testee.hasChanged('simTrain'), isTrue);
-    expect(testee.hasChanged('carCarrierVehicle'), isTrue);
-    expect(testee.hasChanged('tafTapLocationReferenceStart'), isTrue);
-    expect(testee.hasChanged('tafTapLocationReferenceEnd'), isTrue);
-    expect(testee.hasChanged('inspectionDateTime'), isTrue);
-    expect(testee.hasChanged('vehiclesCount'), isTrue);
-    expect(testee.hasChanged('vehiclesWithBrakeDesignDCount'), isTrue);
+    expect(testee.hasChanged(.additionalTractions), isTrue);
+    expect(testee.hasChanged(.brakedWeightPercentage), isTrue);
+    expect(testee.hasChanged(.trainCategoryCode), isTrue);
+    expect(testee.hasChanged(.simTrain), isTrue);
+    expect(testee.hasChanged(.carCarrierVehicle), isTrue);
+    expect(testee.hasChanged(.tafTapLocationReferenceStart), isTrue);
+    expect(testee.hasChanged(.tafTapLocationReferenceEnd), isTrue);
+    expect(testee.hasChanged(.inspectionDateTime), isTrue);
+    expect(testee.hasChanged(.vehiclesCount), isTrue);
+    expect(testee.hasChanged(.vehiclesWithBrakeDesignDCount), isTrue);
 
-    expect(testee.hasChanged('europeanVehicleNumberFirst'), isFalse);
-    expect(testee.hasChanged('brakePositionGForLeadingTraction'), isFalse);
-    expect(testee.hasChanged('hauledLoadBrakedWeightInT'), isFalse);
+    expect(testee.hasChanged(.europeanVehicleNumberFirst), isFalse);
+    expect(testee.hasChanged(.brakePositionGForLeadingTraction), isFalse);
+    expect(testee.hasChanged(.hauledLoadBrakedWeightInT), isFalse);
+  });
+
+  test('formationRunChange_whenAllFieldsAreDifferent_thenHasAllChanges', () async {
+    final now = DateTime.now();
+
+    // ACT
+    final testee = FormationRunChange(
+      formationRun: FormationRun(
+        inspectionDateTime: now,
+        tafTapLocationReferenceStart: 'CH09991',
+        tafTapLocationReferenceEnd: 'CH09992',
+        tractionLengthInCm: 20,
+        hauledLoadLengthInCm: 200,
+        formationLengthInCm: 320,
+        tractionWeightInT: 95,
+        hauledLoadWeightInT: 800,
+        formationWeightInT: 895,
+        tractionBrakedWeightInT: 60,
+        hauledLoadBrakedWeightInT: 690,
+        formationBrakedWeightInT: 750,
+        tractionHoldingForceInHectoNewton: 58,
+        hauledLoadHoldingForceInHectoNewton: 430,
+        formationHoldingForceInHectoNewton: 488,
+        simTrain: true,
+        carCarrierVehicle: true,
+        dangerousGoods: true,
+        vehiclesCount: 15,
+        vehiclesWithBrakeDesignLlAndKCount: 15,
+        vehiclesWithBrakeDesignDCount: 0,
+        vehiclesWithDisabledBrakesCount: 1,
+        axleLoadMaxInKg: 130,
+        gradientUphillMaxInPermille: 30,
+        gradientDownhillMaxInPermille: 30,
+        trainCategoryCode: 'R',
+        brakedWeightPercentage: 150,
+        tractionMaxSpeedInKmh: 170,
+        hauledLoadMaxSpeedInKmh: 110,
+        formationMaxSpeedInKmh: 110,
+        additionalTractions: ['Q (420)', 'Z (500)'],
+      ),
+      previousFormationRun: FormationRun(
+        inspectionDateTime: now.add(Duration(seconds: 3)),
+        tafTapLocationReferenceStart: 'CH09995',
+        tafTapLocationReferenceEnd: 'CH09996',
+        tractionLengthInCm: 30,
+        hauledLoadLengthInCm: 220,
+        formationLengthInCm: 350,
+        tractionWeightInT: 100,
+        hauledLoadWeightInT: 900,
+        formationWeightInT: 995,
+        tractionBrakedWeightInT: 80,
+        hauledLoadBrakedWeightInT: 890,
+        formationBrakedWeightInT: 950,
+        tractionHoldingForceInHectoNewton: 78,
+        hauledLoadHoldingForceInHectoNewton: 530,
+        formationHoldingForceInHectoNewton: 688,
+        simTrain: false,
+        carCarrierVehicle: false,
+        dangerousGoods: false,
+        vehiclesCount: 21,
+        vehiclesWithBrakeDesignLlAndKCount: 14,
+        vehiclesWithBrakeDesignDCount: 2,
+        vehiclesWithDisabledBrakesCount: 5,
+        axleLoadMaxInKg: 170,
+        gradientUphillMaxInPermille: 20,
+        gradientDownhillMaxInPermille: 15,
+        trainCategoryCode: 'A',
+        brakedWeightPercentage: 85,
+        tractionMaxSpeedInKmh: 190,
+        hauledLoadMaxSpeedInKmh: 150,
+        formationMaxSpeedInKmh: 150,
+        additionalTractions: [],
+        europeanVehicleNumberFirst: 'CH1234567890',
+        europeanVehicleNumberLast: 'CH0987654321',
+        brakePositionGForBrakeUnit1to5: true,
+        brakePositionGForLeadingTraction: true,
+        brakePositionGForLoadHauled: true,
+        routeClass: 'ABC',
+        slopeMaxForHoldingForceMinInPermille: '20',
+      ),
+    );
+
+    // VERIFY
+    expect(testee.changesCount, 38);
+    for (final field in FormationRunFields.values) {
+      expect(testee.hasChanged(field), isTrue);
+    }
   });
 }

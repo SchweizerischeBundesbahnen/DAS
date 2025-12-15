@@ -61,7 +61,7 @@ class BreakLoadSlipSpecialRestrictions extends StatelessWidget {
   }
 
   Widget _wrappedTitle(BuildContext context) {
-    final titelText = Text(
+    final titleText = Text(
       context.l10n.p_break_load_slip_special_restrictions_title,
       maxLines: 3,
       overflow: TextOverflow.ellipsis,
@@ -73,11 +73,11 @@ class BreakLoadSlipSpecialRestrictions extends StatelessWidget {
             children: [
               DotIndicator(
                 offset: Offset(0, -sbbDefaultSpacing * 0.75),
-                child: titelText,
+                child: titleText,
               ),
             ],
           )
-        : titelText;
+        : titleText;
   }
 
   Widget _content(BuildContext context) {
@@ -86,26 +86,26 @@ class BreakLoadSlipSpecialRestrictions extends StatelessWidget {
         KeyValueTableDataRow(
           context.l10n.p_break_load_slip_special_restrictions_sim_train,
           formationRunChange.formationRun.simTrain ? context.l10n.c_yes : context.l10n.c_no,
-          hasChange: formationRunChange.hasChanged('simTrain'),
-          shownChangeIndicator: showChangeIndicator,
+          hasChange: formationRunChange.hasChanged(.simTrain),
+          showChangeIndicator: showChangeIndicator,
         ),
         KeyValueTableDataRow(
           context.l10n.p_break_load_slip_special_restrictions_car_carrier,
           formationRunChange.formationRun.carCarrierVehicle ? context.l10n.c_yes : context.l10n.c_no,
-          hasChange: formationRunChange.hasChanged('carCarrierVehicle'),
-          shownChangeIndicator: showChangeIndicator,
+          hasChange: formationRunChange.hasChanged(.carCarrierVehicle),
+          showChangeIndicator: showChangeIndicator,
         ),
         KeyValueTableDataRow(
           context.l10n.p_break_load_slip_special_restrictions_dangerous_goods,
           formationRunChange.formationRun.dangerousGoods ? context.l10n.c_yes : context.l10n.c_no,
-          hasChange: formationRunChange.hasChanged('dangerousGoods'),
-          shownChangeIndicator: showChangeIndicator,
+          hasChange: formationRunChange.hasChanged(.dangerousGoods),
+          showChangeIndicator: showChangeIndicator,
         ),
         KeyValueTableDataRow(
           context.l10n.p_break_load_slip_special_restrictions_route_class,
           formationRunChange.formationRun.routeClass ?? '-',
-          hasChange: formationRunChange.hasChanged('routeClass'),
-          shownChangeIndicator: showChangeIndicator,
+          hasChange: formationRunChange.hasChanged(.routeClass),
+          showChangeIndicator: showChangeIndicator,
         ),
       ],
     );
@@ -139,9 +139,9 @@ class BreakLoadSlipSpecialRestrictions extends StatelessWidget {
   }
 
   bool _hasChange() {
-    return formationRunChange.hasChanged('simTrain') ||
-        formationRunChange.hasChanged('carCarrierVehicle') ||
-        formationRunChange.hasChanged('dangerousGoods') ||
-        formationRunChange.hasChanged('routeClass');
+    return formationRunChange.hasChanged(.simTrain) ||
+        formationRunChange.hasChanged(.carCarrierVehicle) ||
+        formationRunChange.hasChanged(.dangerousGoods) ||
+        formationRunChange.hasChanged(.routeClass);
   }
 }

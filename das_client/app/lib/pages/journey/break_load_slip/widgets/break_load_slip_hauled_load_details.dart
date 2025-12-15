@@ -23,37 +23,37 @@ class BreakLoadSlipHauledLoadDetails extends StatelessWidget {
           KeyValueTableDataRow(
             context.l10n.p_break_load_slip_hauled_load_total_vehicles,
             formationRunChange.formationRun.vehiclesCount.toString(),
-            hasChange: formationRunChange.hasChanged('vehiclesCount'),
+            hasChange: formationRunChange.hasChanged(.vehiclesCount),
           ),
           KeyValueTableDataRow(
             context.l10n.p_break_load_slip_hauled_load_total_vehicles_LL_K,
             formationRunChange.formationRun.vehiclesWithBrakeDesignLlAndKCount.toString(),
-            hasChange: formationRunChange.hasChanged('vehiclesWithBrakeDesignLlAndKCount'),
+            hasChange: formationRunChange.hasChanged(.vehiclesWithBrakeDesignLlAndKCount),
           ),
           KeyValueTableDataRow(
             context.l10n.p_break_load_slip_hauled_load_total_vehicles_D,
             formationRunChange.formationRun.vehiclesWithBrakeDesignDCount.toString(),
-            hasChange: formationRunChange.hasChanged('vehiclesWithBrakeDesignDCount'),
+            hasChange: formationRunChange.hasChanged(.vehiclesWithBrakeDesignDCount),
           ),
           KeyValueTableDataRow(
             context.l10n.p_break_load_slip_hauled_load_total_vehicles_disabled_brakes,
             formationRunChange.formationRun.vehiclesWithDisabledBrakesCount.toString(),
-            hasChange: formationRunChange.hasChanged('vehiclesWithDisabledBrakesCount'),
+            hasChange: formationRunChange.hasChanged(.vehiclesWithDisabledBrakesCount),
           ),
           KeyValueTableDataRow(
             context.l10n.p_break_load_slip_hauled_load_first_vehicle_evn,
             _formationVehicleEvn(formationRunChange.formationRun.europeanVehicleNumberFirst),
-            hasChange: formationRunChange.hasChanged('europeanVehicleNumberFirst'),
+            hasChange: formationRunChange.hasChanged(.europeanVehicleNumberFirst),
           ),
           KeyValueTableDataRow(
             context.l10n.p_break_load_slip_hauled_load_last_vehicle_evn,
             _formationVehicleEvn(formationRunChange.formationRun.europeanVehicleNumberLast),
-            hasChange: formationRunChange.hasChanged('europeanVehicleNumberLast'),
+            hasChange: formationRunChange.hasChanged(.europeanVehicleNumberLast),
           ),
           KeyValueTableDataRow(
             context.l10n.p_break_load_slip_hauled_load_max_axle_load,
             (formationRunChange.formationRun.axleLoadMaxInKg / 1000).toString(),
-            hasChange: formationRunChange.hasChanged('axleLoadMaxInKg'),
+            hasChange: formationRunChange.hasChanged(.axleLoadMaxInKg),
           ),
         ],
       ),
@@ -61,13 +61,13 @@ class BreakLoadSlipHauledLoadDetails extends StatelessWidget {
   }
 
   bool _hasChange() {
-    return formationRunChange.hasChanged('vehiclesCount') ||
-        formationRunChange.hasChanged('vehiclesWithBrakeDesignLlAndKCount') ||
-        formationRunChange.hasChanged('vehiclesWithBrakeDesignDCount') ||
-        formationRunChange.hasChanged('vehiclesWithDisabledBrakesCount') ||
-        formationRunChange.hasChanged('europeanVehicleNumberFirst') ||
-        formationRunChange.hasChanged('europeanVehicleNumberLast') ||
-        formationRunChange.hasChanged('axleLoadMaxInKg');
+    return formationRunChange.hasChanged(.vehiclesCount) ||
+        formationRunChange.hasChanged(.vehiclesWithBrakeDesignLlAndKCount) ||
+        formationRunChange.hasChanged(.vehiclesWithBrakeDesignDCount) ||
+        formationRunChange.hasChanged(.vehiclesWithDisabledBrakesCount) ||
+        formationRunChange.hasChanged(.europeanVehicleNumberFirst) ||
+        formationRunChange.hasChanged(.europeanVehicleNumberLast) ||
+        formationRunChange.hasChanged(.axleLoadMaxInKg);
   }
 
   String _formationVehicleEvn(String? evn) {

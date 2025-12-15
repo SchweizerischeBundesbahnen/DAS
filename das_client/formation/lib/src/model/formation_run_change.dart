@@ -13,7 +13,7 @@ class FormationRunChange {
   final FormationRun? previousFormationRun;
   final Map<String, bool> _changes = {};
 
-  bool hasChanged(String propertyName) => _changes[propertyName] ?? false;
+  bool hasChanged(FormationRunFields field) => _changes[field.fieldName] ?? false;
 
   int get changesCount => _changes.length;
 

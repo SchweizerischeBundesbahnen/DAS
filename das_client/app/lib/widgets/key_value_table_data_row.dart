@@ -11,7 +11,7 @@ class KeyValueTableDataRow extends StatelessWidget {
     this.hasChange = false,
     this.labelStyle,
     this.valueStyle,
-    this.shownChangeIndicator = true,
+    this.showChangeIndicator = true,
   });
 
   const KeyValueTableDataRow.title(String label, {Key? key, bool hasChange = false})
@@ -24,7 +24,7 @@ class KeyValueTableDataRow extends StatelessWidget {
   final bool hasChange;
   final TextStyle? labelStyle;
   final TextStyle? valueStyle;
-  final bool shownChangeIndicator;
+  final bool showChangeIndicator;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class KeyValueTableDataRow extends StatelessWidget {
           Container(
             constraints: BoxConstraints(minWidth: 40),
             child: Padding(
-              padding: shownChangeIndicator ? const EdgeInsets.only(right: sbbDefaultSpacing * 0.75) : EdgeInsets.zero,
+              padding: showChangeIndicator ? const EdgeInsets.only(right: sbbDefaultSpacing * 0.75) : EdgeInsets.zero,
               child: Align(
                 alignment: Alignment.centerRight,
                 child: _valueText(),
@@ -56,7 +56,7 @@ class KeyValueTableDataRow extends StatelessWidget {
       style: labelStyle ?? DASTextStyles.smallRoman,
     );
 
-    return hasChange && shownChangeIndicator && value == null
+    return hasChange && showChangeIndicator && value == null
         ? DotIndicator(
             offset: Offset(0, -sbbDefaultSpacing * 0.75),
             child: labelText,
@@ -69,10 +69,10 @@ class KeyValueTableDataRow extends StatelessWidget {
       maxLines: 2,
       value ?? '',
       overflow: TextOverflow.ellipsis,
-      style: valueStyle ?? (hasChange && shownChangeIndicator ? DASTextStyles.smallBold : DASTextStyles.smallRoman),
+      style: valueStyle ?? (hasChange && showChangeIndicator ? DASTextStyles.smallBold : DASTextStyles.smallRoman),
     );
 
-    return hasChange && shownChangeIndicator && value != null
+    return hasChange && showChangeIndicator && value != null
         ? DotIndicator(
             offset: Offset(0, -sbbDefaultSpacing * 0.75),
             child: text,

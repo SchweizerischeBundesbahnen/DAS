@@ -124,7 +124,7 @@ class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
     );
   }
 
-  Row _specialRestrctionsAndBrakeDetailsRow(
+  Row _specialRestrictionsAndBrakeDetailsRow(
     BuildContext context,
     Formation formation,
     FormationRunChange formationRun,
@@ -159,7 +159,7 @@ class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _specialRestrctionsAndBrakeDetailsRow(context, formation, formationRun),
+                _specialRestrictionsAndBrakeDetailsRow(context, formation, formationRun),
                 SizedBox(height: sbbDefaultSpacing),
                 BreakLoadSlipButtons(),
               ],

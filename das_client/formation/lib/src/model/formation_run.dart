@@ -184,3 +184,50 @@ class FormationRun {
     return 'FormationRun{tafTapLocationReferenceStart: $tafTapLocationReferenceStart, tafTapLocationReferenceEnd: $tafTapLocationReferenceEnd}';
   }
 }
+
+enum FormationRunFields {
+  inspectionDateTime('inspectionDateTime'),
+  tafTapLocationReferenceStart('tafTapLocationReferenceStart'),
+  tafTapLocationReferenceEnd('tafTapLocationReferenceEnd'),
+  trainCategoryCode('trainCategoryCode'),
+  brakedWeightPercentage('brakedWeightPercentage'),
+  tractionMaxSpeedInKmh('tractionMaxSpeedInKmh'),
+  hauledLoadMaxSpeedInKmh('hauledLoadMaxSpeedInKmh'),
+  formationMaxSpeedInKmh('formationMaxSpeedInKmh'),
+  tractionLengthInCm('tractionLengthInCm'),
+  hauledLoadLengthInCm('hauledLoadLengthInCm'),
+  formationLengthInCm('formationLengthInCm'),
+  tractionWeightInT('tractionWeightInT'),
+  hauledLoadWeightInT('hauledLoadWeightInT'),
+  formationWeightInT('formationWeightInT'),
+  tractionBrakedWeightInT('tractionBrakedWeightInT'),
+  hauledLoadBrakedWeightInT('hauledLoadBrakedWeightInT'),
+  formationBrakedWeightInT('formationBrakedWeightInT'),
+  tractionHoldingForceInHectoNewton('tractionHoldingForceInHectoNewton'),
+  hauledLoadHoldingForceInHectoNewton('hauledLoadHoldingForceInHectoNewton'),
+  formationHoldingForceInHectoNewton('formationHoldingForceInHectoNewton'),
+  brakePositionGForLeadingTraction('brakePositionGForLeadingTraction'),
+  brakePositionGForBrakeUnit1to5('brakePositionGForBrakeUnit1to5'),
+  brakePositionGForLoadHauled('brakePositionGForLoadHauled'),
+  simTrain('simTrain'),
+  additionalTractions('additionalTractions'),
+  carCarrierVehicle('carCarrierVehicle'),
+  dangerousGoods('dangerousGoods'),
+  vehiclesCount('vehiclesCount'),
+  vehiclesWithBrakeDesignLlAndKCount('vehiclesWithBrakeDesignLlAndKCount'),
+  vehiclesWithBrakeDesignDCount('vehiclesWithBrakeDesignDCount'),
+  vehiclesWithDisabledBrakesCount('vehiclesWithDisabledBrakesCount'),
+  europeanVehicleNumberFirst('europeanVehicleNumberFirst'),
+  europeanVehicleNumberLast('europeanVehicleNumberLast'),
+  axleLoadMaxInKg('axleLoadMaxInKg'),
+  routeClass('routeClass'),
+  gradientUphillMaxInPermille('gradientUphillMaxInPermille'),
+  gradientDownhillMaxInPermille('gradientDownhillMaxInPermille'),
+  slopeMaxForHoldingForceMinInPermille('slopeMaxForHoldingForceMinInPermille');
+
+  const FormationRunFields(
+    this.fieldName,
+  );
+
+  final String fieldName;
+}
