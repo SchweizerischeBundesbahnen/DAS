@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.33.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.32.0...das_client-v0.33.0) (2025-12-16)
+
+
+### Features
+
+* add break slip modal ([#568](https://github.com/SchweizerischeBundesbahnen/DAS/issues/568)) ([#1536](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1536)) ([7951bdc](https://github.com/SchweizerischeBundesbahnen/DAS/commit/7951bdc2b4307f43f0686f50a87fa5c9f7a770df))
+* add manual journey advancement ([#741](https://github.com/SchweizerischeBundesbahnen/DAS/issues/741)) ([#1548](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1548)) ([f5628bf](https://github.com/SchweizerischeBundesbahnen/DAS/commit/f5628bfcfbab0d6ed72c1e60cd23bc99c31098d1))
+* add prominent car carrier display ([#1383](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1383)) ([#1528](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1528)) ([9abdb49](https://github.com/SchweizerischeBundesbahnen/DAS/commit/9abdb49499df2cefc0785d1a63bf372cc0e1952a))
+* added departure dispatch notification ([#124](https://github.com/SchweizerischeBundesbahnen/DAS/issues/124)) ([#1551](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1551)) ([74682a4](https://github.com/SchweizerischeBundesbahnen/DAS/commit/74682a4eefce92584a46560c5e290a3f86f1878d))
+* break slip updates and etag ([#695](https://github.com/SchweizerischeBundesbahnen/DAS/issues/695)) ([#1541](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1541)) ([21a7221](https://github.com/SchweizerischeBundesbahnen/DAS/commit/21a722137da0ad0ba4314741f14af7fda2ccec14))
+* highlight break slip changes ([#694](https://github.com/SchweizerischeBundesbahnen/DAS/issues/694)) ([#1549](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1549)) ([7e52e4d](https://github.com/SchweizerischeBundesbahnen/DAS/commit/7e52e4dc570f6c18a127c03966af21c47ef5c7a5))
+* login page is improved ([#686](https://github.com/SchweizerischeBundesbahnen/DAS/issues/686)) ([#1555](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1555)) ([071fce2](https://github.com/SchweizerischeBundesbahnen/DAS/commit/071fce29e6313c982a39149ddc5233c156cc67c5))
+
 ## [0.32.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.31.0...das_client-v0.32.0) (2025-12-08)
 
 
