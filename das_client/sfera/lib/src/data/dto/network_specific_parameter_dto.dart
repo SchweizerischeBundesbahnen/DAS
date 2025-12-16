@@ -1,10 +1,11 @@
 import 'package:sfera/src/data/dto/amount_tram_signals_dto.dart';
+import 'package:sfera/src/data/dto/disturbance_msg_nsp_dto.dart';
 import 'package:sfera/src/data/dto/id_nsp_dto.dart';
 import 'package:sfera/src/data/dto/km_ref_nsp_dto.dart';
 import 'package:sfera/src/data/dto/local_regulation_content_nsp_dto.dart';
 import 'package:sfera/src/data/dto/local_regulation_title_nsp_dto.dart';
 import 'package:sfera/src/data/dto/new_speed_nsp_dto.dart';
-import 'package:sfera/src/data/dto/operating_day_nsp.dart';
+import 'package:sfera/src/data/dto/operating_day_nsp_dto.dart';
 import 'package:sfera/src/data/dto/operational_indication_type_nsp_dto.dart';
 import 'package:sfera/src/data/dto/operational_indication_uncoded_text_nsp_dto.dart';
 import 'package:sfera/src/data/dto/route_table_data_relevant_wrapper_dto.dart';
@@ -72,8 +73,10 @@ class NetworkSpecificParameterDto extends SferaXmlElementDto {
       return RouteTableDataRelevantWrapperDto(attributes: attributes, children: children, value: value);
     } else if (attributeName == TrainRunTypeNspDto.elementName) {
       return TrainRunTypeNspDto(attributes: attributes, children: children, value: value);
-    } else if (attributeName == OperatingDayNsp.elementName) {
-      return OperatingDayNsp(attributes: attributes, children: children, value: value);
+    } else if (attributeName == OperatingDayNspDto.elementName) {
+      return OperatingDayNspDto(attributes: attributes, children: children, value: value);
+    } else if (attributeName == DisturbanceMsgNspDto.elementName) {
+      return DisturbanceMsgNspDto(attributes: attributes, children: children, value: value);
     }
     return NetworkSpecificParameterDto(attributes: attributes, children: children, value: value);
   }

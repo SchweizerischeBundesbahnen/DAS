@@ -1,6 +1,7 @@
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/break_load_slip/break_load_slip_view_model.dart';
 import 'package:app/pages/journey/calculated_speed_view_model.dart';
+import 'package:app/pages/journey/disturbance_view_modal.dart';
 import 'package:app/pages/journey/journey_table/advised_speed/advised_speed_notification.dart';
 import 'package:app/pages/journey/journey_table/advised_speed/advised_speed_view_model.dart';
 import 'package:app/pages/journey/journey_table/collapsible_rows_view_model.dart';
@@ -18,6 +19,7 @@ import 'package:app/pages/journey/journey_table/widgets/header/header.dart';
 import 'package:app/pages/journey/journey_table/widgets/journey_navigation_buttons.dart';
 import 'package:app/pages/journey/journey_table/widgets/journey_table.dart';
 import 'package:app/pages/journey/journey_table/widgets/notification/break_load_slip_notification.dart';
+import 'package:app/pages/journey/journey_table/widgets/notification/disturbance_notification.dart';
 import 'package:app/pages/journey/journey_table/widgets/notification/koa_notification.dart';
 import 'package:app/pages/journey/journey_table/widgets/notification/maneuver_notification.dart';
 import 'package:app/pages/journey/journey_table/widgets/notification/replacement_series/replacement_series_notification.dart';
@@ -67,6 +69,7 @@ class JourneyOverview extends StatelessWidget {
         ReplacementSeriesNotification(),
         _warnappNotification(context),
         BreakLoadSlipNotification(),
+        DisturbanceNotification(),
         Expanded(
           child: Stack(
             children: [
@@ -160,6 +163,10 @@ class _ProviderScope extends StatelessWidget {
         ),
         Provider(
           create: (_) => LineSpeedViewModel(journeyTableViewModel: journeyTableViewModel),
+          dispose: (_, vm) => vm.dispose(),
+        ),
+        Provider(
+          create: (_) => DisturbanceViewModal(sferaRemoteRepo: DI.get()),
           dispose: (_, vm) => vm.dispose(),
         ),
 

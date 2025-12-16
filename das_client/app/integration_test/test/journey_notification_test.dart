@@ -1,3 +1,4 @@
+import 'package:app/pages/journey/journey_table/widgets/notification/disturbance_notification.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../app_test.dart';
@@ -28,6 +29,16 @@ void main() {
 
       expect(find.text(l10n.w_departure_process_modal_sheet_title), findsOneWidget);
       expect(find.text(l10n.w_departure_process_modal_sheet_content), findsOneWidget);
+
+      await disconnect(tester);
+    });
+
+    testWidgets('test disturbance notification', (tester) async {
+      await prepareAndStartApp(tester);
+      await loadJourney(tester, trainNumber: 'T33');
+
+      await waitUntilExists(tester, find.byKey(DisturbanceNotification.disturbanceNotificationKey));
+      await waitUntilNotExists(tester, find.byKey(DisturbanceNotification.disturbanceNotificationKey));
 
       await disconnect(tester);
     });
