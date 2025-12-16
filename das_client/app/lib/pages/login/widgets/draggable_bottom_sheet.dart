@@ -37,23 +37,7 @@ class _LoginDraggableBottomSheetState extends State<LoginDraggableBottomSheet> {
       initialChildSize: minHeight,
       maxChildSize: 0.5,
       minChildSize: minHeight,
-      builder: (context, controller) => Container(
-        clipBehavior: Clip.hardEdge,
-        decoration: ShapeDecoration(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(sbbDefaultSpacing),
-              topRight: Radius.circular(sbbDefaultSpacing),
-            ),
-          ),
-          shadows: [
-            BoxShadow(
-              color: SBBColors.black.withValues(alpha: 0.2),
-              blurRadius: 8,
-            ),
-          ],
-          color: ThemeUtil.getColor(context, SBBColors.milk, SBBColors.black),
-        ),
+      builder: (context, controller) => _roundedShadowedSheet(
         child: CustomScrollView(
           controller: controller,
           slivers: [
@@ -71,62 +55,88 @@ class _LoginDraggableBottomSheetState extends State<LoginDraggableBottomSheet> {
     );
   }
 
+  Widget _roundedShadowedSheet({required Widget child}) {
+    return Container(
+      clipBehavior: Clip.hardEdge,
+      decoration: ShapeDecoration(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(sbbDefaultSpacing),
+            topRight: Radius.circular(sbbDefaultSpacing),
+          ),
+        ),
+        shadows: [
+          BoxShadow(
+            color: SBBColors.black.withValues(alpha: 0.2),
+            blurRadius: 8,
+          ),
+        ],
+        color: ThemeUtil.getColor(context, SBBColors.milk, SBBColors.black),
+      ),
+      child: child,
+    );
+  }
+
   Widget _body(BuildContext context) {
     final vm = context.read<LoginViewModel>();
-    return FutureBuilder(
-      future: _packageInfo,
-      builder: (context, asyncSnapshot) {
-        final packageInfo = asyncSnapshot.data;
 
-        return Column(
-          crossAxisAlignment: .start,
-          children: [
-            StreamBuilder(
-              stream: vm.model,
-              initialData: vm.modelValue,
-              builder: (context, asyncSnapshot) {
-                final model = asyncSnapshot.requireData;
-                return SBBGroup(
-                  child: SBBSwitchListItem(
-                    title: context.l10n.p_login_connect_to_tms,
-                    value: model.connectToTmsVad,
-                    onChanged: vm.setConnectToTmsVad,
-                    isLastElement: true,
-                  ),
-                );
-              },
-            ),
-            SizedBox(height: sbbDefaultSpacing * 2),
-            RichText(
-              text: TextSpan(
-                text: 'App Flavor: ',
-                style: DASTextStyles.smallLight.copyWith(color: SBBColors.granite),
-                children: [
-                  TextSpan(
-                    text: flavor.displayName,
-                    style: DASTextStyles.smallBold.copyWith(color: SBBColors.granite),
-                  ),
-                ],
+    return Column(
+      crossAxisAlignment: .start,
+      children: [
+        StreamBuilder(
+          stream: vm.model,
+          initialData: vm.modelValue,
+          builder: (context, asyncSnapshot) {
+            final model = asyncSnapshot.requireData;
+            return SBBGroup(
+              child: SBBSwitchListItem(
+                title: context.l10n.p_login_connect_to_tms,
+                value: model.connectToTmsVad,
+                onChanged: vm.setConnectToTmsVad,
+                isLastElement: true,
               ),
-            ),
-            if (packageInfo != null) ...[
-              SizedBox(height: 8.0),
-              RichText(
-                text: TextSpan(
-                  text: 'App Version: ',
-                  style: DASTextStyles.smallLight.copyWith(color: SBBColors.granite),
-                  children: [
-                    TextSpan(
-                      text: '${packageInfo.version}+${packageInfo.buildNumber}',
-                      style: DASTextStyles.smallBold.copyWith(color: SBBColors.granite),
-                    ),
-                  ],
-                ),
+            );
+          },
+        ),
+        SizedBox(height: sbbDefaultSpacing * 2),
+        RichText(
+          text: TextSpan(
+            text: 'App Flavor: ',
+            style: DASTextStyles.smallLight.copyWith(color: SBBColors.granite),
+            children: [
+              TextSpan(
+                text: flavor.displayName,
+                style: DASTextStyles.smallBold.copyWith(color: SBBColors.granite),
               ),
             ],
-          ],
-        );
-      },
+          ),
+        ),
+        FutureBuilder(
+          future: _packageInfo,
+          builder: (context, asyncSnapshot) {
+            final packageInfo = asyncSnapshot.data;
+
+            if (packageInfo == null) return SizedBox.shrink();
+            return Column(
+              children: [
+                SizedBox(height: 8.0),
+                RichText(
+                  text: TextSpan(
+                    text: 'App Version: ',
+                    style: DASTextStyles.smallLight.copyWith(color: SBBColors.granite),
+                    children: [
+                      TextSpan(
+                        text: '${packageInfo.version}+${packageInfo.buildNumber}',
+                        style: DASTextStyles.smallBold.copyWith(color: SBBColors.granite),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
+      ],
     );
   }
 
