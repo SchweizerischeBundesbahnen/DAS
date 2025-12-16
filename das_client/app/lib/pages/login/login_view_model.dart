@@ -10,7 +10,7 @@ class LoginViewModel {
 
   final Authenticator _authenticator;
 
-  final _rxModel = BehaviorSubject<LoginModel>.seeded(LoginModel.loggedOut());
+  final _rxModel = BehaviorSubject<LoginModel>.seeded(LoginModel.loggedOut(connectToTmsVad: false));
 
   LoginModel get modelValue => _rxModel.value;
 
@@ -23,18 +23,13 @@ class LoginViewModel {
   Future<void> login() async {
     if (modelValue is! LoggedOut && modelValue is! Error) return;
 
-    _rxModel.add(Loading());
+    _rxModel.add(Loading(connectToTmsVad: modelValue.connectToTmsVad));
     try {
       await _authenticator.login();
-      // await DI.get<ScopeHandler>().push<AuthenticatedScope>();
-      // await DI.get<ScopeHandler>().push<JourneyScope>();
-      // if (context.mounted) {
-      //   context.router.replace(const JourneySelectionRoute());
-      // }
-      _rxModel.add(LoggedIn());
+      _rxModel.add(LoggedIn(connectToTmsVad: modelValue.connectToTmsVad));
     } catch (e) {
       _log.severe('Login failed', e);
-      _rxModel.add(Error(errorMessage: e.toString()));
+      _rxModel.add(Error(connectToTmsVad: modelValue.connectToTmsVad, errorMessage: e.toString()));
     }
   }
 }

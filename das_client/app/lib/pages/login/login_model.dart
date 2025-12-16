@@ -1,61 +1,74 @@
 sealed class LoginModel {
-  const LoginModel._();
+  const LoginModel._({this.connectToTmsVad = false});
 
-  factory LoginModel.loggedOut() = LoggedOut;
+  factory LoginModel.loggedOut({required bool connectToTmsVad}) = LoggedOut;
 
-  factory LoginModel.loading() = Loading;
+  factory LoginModel.loading({required bool connectToTmsVad}) = Loading;
 
-  factory LoginModel.loggedIn() = LoggedIn;
+  factory LoginModel.loggedIn({required bool connectToTmsVad}) = LoggedIn;
 
-  factory LoginModel.error({required String errorMessage}) = Error;
+  factory LoginModel.error({required String errorMessage, required bool connectToTmsVad}) = Error;
+
+  final bool connectToTmsVad;
 
   @override
-  bool operator ==(Object other) => runtimeType == other.runtimeType;
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is LoginModel && runtimeType == other.runtimeType && connectToTmsVad == other.connectToTmsVad;
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, connectToTmsVad);
 }
 
 class LoggedOut extends LoginModel {
-  const LoggedOut() : super._();
+  const LoggedOut({required super.connectToTmsVad}) : super._();
 
-  @override
-  bool operator ==(Object other) => identical(this, other) || other is LoggedOut && runtimeType == other.runtimeType;
-
-  @override
-  int get hashCode => runtimeType.hashCode;
+  LoggedOut copyWith({bool? connectToTmsVad}) {
+    return LoggedOut(
+      connectToTmsVad: connectToTmsVad ?? this.connectToTmsVad,
+    );
+  }
 }
 
 class Loading extends LoginModel {
-  const Loading() : super._();
+  const Loading({required super.connectToTmsVad}) : super._();
 
-  @override
-  bool operator ==(Object other) => identical(this, other) || other is Loading && runtimeType == other.runtimeType;
-
-  @override
-  int get hashCode => runtimeType.hashCode;
+  Loading copyWith({bool? connectToTmsVad}) {
+    return Loading(
+      connectToTmsVad: connectToTmsVad ?? this.connectToTmsVad,
+    );
+  }
 }
 
 class LoggedIn extends LoginModel {
-  const LoggedIn() : super._();
+  const LoggedIn({required super.connectToTmsVad}) : super._();
 
-  @override
-  bool operator ==(Object other) => identical(this, other) || other is LoggedIn && runtimeType == other.runtimeType;
-
-  @override
-  int get hashCode => runtimeType.hashCode;
+  LoggedIn copyWith({bool? connectToTmsVad}) {
+    return LoggedIn(
+      connectToTmsVad: connectToTmsVad ?? this.connectToTmsVad,
+    );
+  }
 }
 
 class Error extends LoginModel {
-  const Error({required this.errorMessage}) : super._();
+  const Error({required this.errorMessage, required super.connectToTmsVad}) : super._();
 
   final String errorMessage;
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Error && runtimeType == other.runtimeType && errorMessage == other.errorMessage;
+      identical(this, other) || super == other || other is Error && errorMessage == other.errorMessage;
 
   @override
-  int get hashCode => Object.hash(runtimeType, errorMessage);
+  int get hashCode => Object.hash(super.hashCode, errorMessage);
+
+  Error copyWith({
+    String? errorMessage,
+    bool? connectToTmsVad,
+  }) {
+    return Error(
+      errorMessage: errorMessage ?? this.errorMessage,
+      connectToTmsVad: connectToTmsVad ?? this.connectToTmsVad,
+    );
+  }
 }

@@ -33,7 +33,7 @@ void main() {
 
   test('model_whenInitialized_thenIsInitialModel', () {
     expect(emitRegister, hasLength(1));
-    expect(emitRegister.first, equals(LoggedOut()));
+    expect(emitRegister.first, equals(LoggedOut(connectToTmsVad: false)));
   });
 
   test('login_whenAuthenticationSuccessful_thenEmitsLoadingAndLoggedIn', () async {
@@ -46,7 +46,14 @@ void main() {
 
     // EXPECT
     expect(emitRegister, hasLength(3));
-    expect(emitRegister, orderedEquals([LoggedOut(), Loading(), LoggedIn()]));
+    expect(
+      emitRegister,
+      orderedEquals([
+        LoggedOut(connectToTmsVad: false),
+        Loading(connectToTmsVad: false),
+        LoggedIn(connectToTmsVad: false),
+      ]),
+    );
   });
 
   test('login_whenAuthenticationThrows_thenEmitsLoadingAndError', () async {
@@ -60,6 +67,13 @@ void main() {
 
     // EXPECT
     expect(emitRegister, hasLength(3));
-    expect(emitRegister, orderedEquals([LoggedOut(), Loading(), Error(errorMessage: argumentError.toString())]));
+    expect(
+      emitRegister,
+      orderedEquals([
+        LoggedOut(connectToTmsVad: false),
+        Loading(connectToTmsVad: false),
+        Error(connectToTmsVad: false, errorMessage: argumentError.toString()),
+      ]),
+    );
   });
 }
