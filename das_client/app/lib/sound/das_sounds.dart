@@ -13,6 +13,8 @@ class DASSounds {
 
   Sound get advisedSpeedStart => AdvisedSpeedStartSound();
 
+  Sound get departureDispatchNotification => AdvisedSpeedStartSound();
+
   Sound get koa => KoaSound();
 
   Sound get warnApp => WarnAppSound();

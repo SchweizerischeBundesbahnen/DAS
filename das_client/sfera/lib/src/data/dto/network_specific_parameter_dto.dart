@@ -1,10 +1,14 @@
 import 'package:sfera/src/data/dto/amount_tram_signals_dto.dart';
+import 'package:sfera/src/data/dto/departure_dispatch_notification_event_dto.dart';
+import 'package:sfera/src/data/dto/departure_dispatch_notification_type_wrapper_dto.dart';
 import 'package:sfera/src/data/dto/disturbance_msg_nsp_dto.dart';
 import 'package:sfera/src/data/dto/id_nsp_dto.dart';
 import 'package:sfera/src/data/dto/km_ref_nsp_dto.dart';
 import 'package:sfera/src/data/dto/local_regulation_content_nsp_dto.dart';
 import 'package:sfera/src/data/dto/local_regulation_title_nsp_dto.dart';
 import 'package:sfera/src/data/dto/new_speed_nsp_dto.dart';
+import 'package:sfera/src/data/dto/nsp_dto.dart';
+import 'package:sfera/src/data/dto/operating_day_nsp.dart';
 import 'package:sfera/src/data/dto/operating_day_nsp_dto.dart';
 import 'package:sfera/src/data/dto/operational_indication_type_nsp_dto.dart';
 import 'package:sfera/src/data/dto/operational_indication_uncoded_text_nsp_dto.dart';
@@ -21,6 +25,7 @@ import 'package:sfera/src/data/dto/xml_op_foot_notes_dto.dart';
 import 'package:sfera/src/data/dto/xml_station_property_dto.dart';
 import 'package:sfera/src/data/dto/xml_station_speed_dto.dart';
 import 'package:sfera/src/data/dto/xml_track_foot_notes_dto.dart';
+import 'package:xml/xml.dart';
 
 class NetworkSpecificParameterDto extends SferaXmlElementDto {
   static const String elementType = 'NetworkSpecificParameter';
@@ -28,6 +33,7 @@ class NetworkSpecificParameterDto extends SferaXmlElementDto {
   NetworkSpecificParameterDto({super.type = elementType, super.attributes, super.children, super.value});
 
   factory NetworkSpecificParameterDto.from({
+    required XmlElement? parent,
     Map<String, String>? attributes,
     List<SferaXmlElementDto>? children,
     String? value,
@@ -77,6 +83,9 @@ class NetworkSpecificParameterDto extends SferaXmlElementDto {
       return OperatingDayNspDto(attributes: attributes, children: children, value: value);
     } else if (attributeName == DisturbanceMsgNspDto.elementName) {
       return DisturbanceMsgNspDto(attributes: attributes, children: children, value: value);
+    } else if (attributeName == DepartureDispatchNotificationTypeWrapperDto.elementName &&
+        _isDepartureDispatchNotificationEvent(parent)) {
+      return DepartureDispatchNotificationTypeWrapperDto(attributes: attributes, children: children, value: value);
     }
     return NetworkSpecificParameterDto(attributes: attributes, children: children, value: value);
   }
@@ -93,6 +102,12 @@ class NetworkSpecificParameterDto extends SferaXmlElementDto {
   @override
   String toString() {
     return 'NetworkSpecificParameterDto{name: $name, nspValue: $nspValue}';
+  }
+
+  static bool _isDepartureDispatchNotificationEvent(XmlElement? parent) {
+    if (parent == null) return false;
+    final name = DepartureDispatchNotificationEventDto.elementName;
+    return parent.toXmlString().contains('$name</${NspDto.groupNameElement}>');
   }
 }
 

@@ -1,5 +1,10 @@
+import 'dart:math';
+
 import 'package:app/extension/station_sign_extension.dart';
+import 'package:app/i18n/i18n.dart';
+import 'package:app/pages/journey/journey_table/advancement/journey_table_advancement_view_model.dart';
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_model.dart';
+import 'package:app/pages/journey/journey_table/journey_position/journey_position_view_model.dart';
 import 'package:app/pages/journey/journey_table/widgets/detail_modal/detail_modal_view_model.dart';
 import 'package:app/pages/journey/journey_table/widgets/detail_modal/service_point_modal/service_point_modal_view_model.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/arrival_departure_time/arrival_departure_time_view_model.dart';
@@ -56,6 +61,38 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
          rowColor: rowColor ?? _resolveRowColor(context, journeyPosition, data),
          stickyLevel: .first,
          height: calculateHeight(data, config.settings.resolvedBreakSeries(metadata)),
+         onStartToEndDragReached: journeyPosition.currentPosition != data
+             ? () {
+                 context.read<JourneyPositionViewModel>().setManualPosition(data);
+                 context.read<JourneyTableAdvancementViewModel>().setAdvancementModeToManual();
+               }
+             : null,
+         draggableBackgroundBuilder: (context, dragReached) {
+           return DecoratedBox(
+             decoration: BoxDecoration(color: SBBColors.granite),
+             child: Padding(
+               padding: const .only(left: sbbDefaultSpacing),
+               child: Align(
+                 alignment: .centerLeft,
+                 child: AnimatedSwitcher(
+                   duration: DASAnimation.mediumDuration,
+                   transitionBuilder: (child, animation) {
+                     final centerLeftTween = AlignmentTween(begin: .centerLeft, end: .centerLeft);
+                     return AlignTransition(
+                       alignment: centerLeftTween.animate(animation),
+                       child: ScaleTransition(scale: animation, child: child),
+                     );
+                   },
+                   child: Text(
+                     context.l10n.w_service_point_row_background_label,
+                     key: ValueKey(dragReached),
+                     style: DASTextStyles.largeRoman.copyWith(color: SBBColors.white),
+                   ),
+                 ),
+               ),
+             ),
+           );
+         },
        );
 
   final bool highlightNextStop;

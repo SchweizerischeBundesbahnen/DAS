@@ -37,6 +37,8 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     this.defaultAlignment = .bottomCenter,
     this.rowColor,
     this.onTap,
+    this.onStartToEndDragReached,
+    this.draggableBackgroundBuilder,
     this.isGrouped = false,
   });
 
@@ -46,6 +48,8 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
   final JourneyPositionModel journeyPosition;
   final JourneyConfig config;
   final VoidCallback? onTap;
+  final VoidCallback? onStartToEndDragReached;
+  final Widget Function(BuildContext, bool)? draggableBackgroundBuilder;
   final bool isGrouped;
 
   @override
@@ -55,6 +59,8 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
       height: height,
       color: rowColor,
       onTap: onTap,
+      onStartToEndDragReached: onStartToEndDragReached,
+      draggableBackgroundBuilder: draggableBackgroundBuilder,
       stickyLevel: stickyLevel,
       rowIndex: rowIndex,
       cells: {
