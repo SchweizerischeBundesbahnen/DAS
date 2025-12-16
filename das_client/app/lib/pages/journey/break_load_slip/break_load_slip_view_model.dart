@@ -65,12 +65,12 @@ class BreakLoadSlipViewModel {
   Timer? _formationUpdateTimer;
 
   final _rxFormation = BehaviorSubject<Formation?>.seeded(null);
-  final _rxFormationRun = BehaviorSubject<FormationRun?>.seeded(null);
+  final _rxFormationRun = BehaviorSubject<FormationRunChange?>.seeded(null);
   final _rxFormationChanged = BehaviorSubject<bool>.seeded(false);
 
   Stream<Formation?> get formation => _rxFormation.stream.distinct();
 
-  Stream<FormationRun?> get formationRun => _rxFormationRun.distinct();
+  Stream<FormationRunChange?> get formationRun => _rxFormationRun.distinct();
 
   Stream<bool> get formationChanged => _rxFormationChanged.distinct();
 
@@ -78,7 +78,7 @@ class BreakLoadSlipViewModel {
 
   Formation? get formationValue => _rxFormation.value;
 
-  FormationRun? get formationRunValue => _rxFormationRun.value;
+  FormationRunChange? get formationRunValue => _rxFormationRun.value;
 
   bool get formationChangedValue => _rxFormationChanged.value;
 
@@ -148,13 +148,25 @@ class BreakLoadSlipViewModel {
     }
   }
 
+  FormationRunChange? _generateFormationRunChange(FormationRun? formationRun) {
+    if (formationRun == null) return null;
+
+    final index = formationValue?.formationRuns.indexOf(formationRun);
+    final previousIndex = (index != null && index > 0) ? index - 1 : null;
+    final previousFormationRun = (previousIndex != null && formationValue != null)
+        ? formationValue!.formationRuns[previousIndex]
+        : null;
+
+    return FormationRunChange(formationRun: formationRun, previousFormationRun: previousFormationRun);
+  }
+
   void _emitFormationRun() {
     final newActiveFormationRun = _calculateActiveFormationRun();
-    if (newActiveFormationRun == formationRunValue) return;
+    if (newActiveFormationRun == formationRunValue?.formationRun) return;
 
     _log.info('Active formation run changed to $newActiveFormationRun}');
     _changeOpenFullscreenFlag(true);
-    _rxFormationRun.add(newActiveFormationRun);
+    _rxFormationRun.add(_generateFormationRunChange(newActiveFormationRun));
   }
 
   FormationRun? _calculateActiveFormationRun() {
@@ -197,16 +209,16 @@ class BreakLoadSlipViewModel {
     return servicePoints.firstOrNull;
   }
 
-  bool get isActiveFormationRun => _calculateActiveFormationRun() == formationRunValue;
+  bool get isActiveFormationRun => _calculateActiveFormationRun() == formationRunValue?.formationRun;
 
   bool isJourneyAndActiveFormationRunBreakSeriesDifferent() {
     final selectedBreakSeries = _journeySettingsViewModel.modelValue.resolvedBreakSeries(_latestJourney?.metadata);
-    final formationRunBreakSeries = _resolveBreakSeries(formationRunValue);
+    final formationRunBreakSeries = _resolveBreakSeries(formationRunValue?.formationRun);
     return formationRunBreakSeries != null && formationRunBreakSeries != selectedBreakSeries;
   }
 
   void updateJourneyBreakSeriesFromActiveFormationRun() {
-    final formationRunBreakSeries = _resolveBreakSeries(formationRunValue);
+    final formationRunBreakSeries = _resolveBreakSeries(formationRunValue?.formationRun);
     if (formationRunBreakSeries != null) {
       _journeySettingsViewModel.updateBreakSeries(formationRunBreakSeries);
     }
@@ -250,9 +262,9 @@ class BreakLoadSlipViewModel {
     final activeFormationRun = formationRunValue;
     if (formation == null || activeFormationRun == null) return;
 
-    final currentIndex = formation.formationRuns.indexOf(activeFormationRun);
+    final currentIndex = formation.formationRuns.indexOf(activeFormationRun.formationRun);
     if (currentIndex != -1 && currentIndex > 0) {
-      _rxFormationRun.add(formation.formationRuns[currentIndex - 1]);
+      _rxFormationRun.add(_generateFormationRunChange(formation.formationRuns[currentIndex - 1]));
     }
   }
 
@@ -261,9 +273,9 @@ class BreakLoadSlipViewModel {
     final activeFormationRun = formationRunValue;
     if (formation == null || activeFormationRun == null) return;
 
-    final currentIndex = formation.formationRuns.indexOf(activeFormationRun);
+    final currentIndex = formation.formationRuns.indexOf(activeFormationRun.formationRun);
     if (currentIndex != -1 && currentIndex < formation.formationRuns.length - 1) {
-      _rxFormationRun.add(formation.formationRuns[currentIndex + 1]);
+      _rxFormationRun.add(_generateFormationRunChange(formation.formationRuns[currentIndex + 1]));
     }
   }
 

@@ -37,12 +37,13 @@ class BreakLoadSlipModalBuilder extends DASModalSheetBuilder {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             BreakLoadSlipModalOverview(
-              formationRun: formationRun,
+              formationRunChange: formationRun,
             ),
             SizedBox(height: sbbDefaultSpacing),
             BreakLoadSlipSpecialRestrictions(
-              formationRun: formationRun,
+              formationRunChange: formationRun,
               groupColor: ThemeUtil.getColor(context, SBBColors.milk, SBBColors.midnight),
+              showChangeIndicator: false,
             ),
             SizedBox(height: sbbDefaultSpacing),
             SBBTertiaryButtonLarge(
