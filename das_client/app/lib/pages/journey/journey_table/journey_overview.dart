@@ -166,10 +166,6 @@ class _ProviderScope extends StatelessWidget {
           dispose: (_, vm) => vm.dispose(),
         ),
         Provider(
-          create: (_) => LineSpeedViewModel(journeyTableViewModel: journeyTableViewModel),
-          dispose: (_, vm) => vm.dispose(),
-        ),
-        Provider(
           create: (_) => DisturbanceViewModal(sferaRemoteRepo: DI.get()),
           dispose: (_, vm) => vm.dispose(),
         ),
