@@ -7,10 +7,6 @@ import 'package:rxdart/rxdart.dart';
 final _log = Logger('LoginViewModel');
 
 class LoginViewModel {
-  LoginViewModel({required Authenticator authenticator}) : _authenticator = authenticator;
-
-  final Authenticator _authenticator;
-
   final _rxModel = BehaviorSubject<LoginModel>.seeded(LoginModel.loggedOut(connectToTmsVad: false));
 
   LoginModel get modelValue => _rxModel.value;
@@ -32,8 +28,9 @@ class LoginViewModel {
     if (modelValue is! LoggedOut && modelValue is! Error) return;
 
     _rxModel.add(Loading(connectToTmsVad: modelValue.connectToTmsVad));
+    final authenticator = DI.get<Authenticator>();
     try {
-      await _authenticator.login();
+      await authenticator.login();
       _rxModel.add(LoggedIn(connectToTmsVad: modelValue.connectToTmsVad));
     } catch (e) {
       _log.severe('Login failed', e);

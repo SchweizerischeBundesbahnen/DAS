@@ -8,7 +8,6 @@ import 'package:app/pages/login/login_model.dart';
 import 'package:app/pages/login/login_view_model.dart';
 import 'package:app/pages/login/widgets/draggable_bottom_sheet.dart';
 import 'package:app/widgets/assets.dart';
-import 'package:auth/component.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -26,7 +25,7 @@ class LoginPage extends StatefulWidget implements AutoRouteWrapper {
   @override
   Widget wrappedRoute(BuildContext context) {
     return Provider<LoginViewModel>(
-      create: (_) => LoginViewModel(authenticator: DI.get<Authenticator>()),
+      create: (_) => LoginViewModel(),
       dispose: (_, vm) => vm.dispose(),
       child: this,
     );

@@ -69,7 +69,7 @@ class Error extends LoginModel {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) || super == other || other is Error && errorMessage == other.errorMessage;
+      identical(this, other) || super == other && other is Error && errorMessage == other.errorMessage;
 
   @override
   int get hashCode => Object.hash(super.hashCode, errorMessage);
