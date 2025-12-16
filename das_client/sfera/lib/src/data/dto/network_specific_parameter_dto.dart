@@ -8,7 +8,6 @@ import 'package:sfera/src/data/dto/local_regulation_content_nsp_dto.dart';
 import 'package:sfera/src/data/dto/local_regulation_title_nsp_dto.dart';
 import 'package:sfera/src/data/dto/new_speed_nsp_dto.dart';
 import 'package:sfera/src/data/dto/nsp_dto.dart';
-import 'package:sfera/src/data/dto/operating_day_nsp.dart';
 import 'package:sfera/src/data/dto/operating_day_nsp_dto.dart';
 import 'package:sfera/src/data/dto/operational_indication_type_nsp_dto.dart';
 import 'package:sfera/src/data/dto/operational_indication_uncoded_text_nsp_dto.dart';
