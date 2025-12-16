@@ -1,7 +1,7 @@
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/break_load_slip/break_load_slip_view_model.dart';
 import 'package:app/pages/journey/calculated_speed_view_model.dart';
-import 'package:app/pages/journey/disturbance_view_modal.dart';
+import 'package:app/pages/journey/disturbance_view_model.dart';
 import 'package:app/pages/journey/journey_table/advancement/journey_table_advancement_view_model.dart';
 import 'package:app/pages/journey/journey_table/advised_speed/advised_speed_notification.dart';
 import 'package:app/pages/journey/journey_table/advised_speed/advised_speed_view_model.dart';
@@ -166,7 +166,7 @@ class _ProviderScope extends StatelessWidget {
           dispose: (_, vm) => vm.dispose(),
         ),
         Provider(
-          create: (_) => DisturbanceViewModal(sferaRemoteRepo: DI.get()),
+          create: (_) => DisturbanceViewModel(sferaRemoteRepo: DI.get()),
           dispose: (_, vm) => vm.dispose(),
         ),
 

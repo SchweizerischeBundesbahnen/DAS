@@ -5,8 +5,8 @@ import 'package:app/sound/das_sounds.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
-class DisturbanceViewModal {
-  DisturbanceViewModal({
+class DisturbanceViewModel {
+  DisturbanceViewModel({
     required SferaRemoteRepo sferaRemoteRepo,
   }) : _sferaRemoteRepo = sferaRemoteRepo {
     _init();

@@ -1,5 +1,5 @@
 import 'package:app/i18n/i18n.dart';
-import 'package:app/pages/journey/disturbance_view_modal.dart';
+import 'package:app/pages/journey/disturbance_view_model.dart';
 import 'package:app/pages/journey/journey_table/journey_overview.dart';
 import 'package:app/widgets/notificationbox/notification_box.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +14,7 @@ class DisturbanceNotification extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.read<DisturbanceViewModal>();
+    final viewModel = context.read<DisturbanceViewModel>();
 
     return StreamBuilder(
       stream: viewModel.disturbanceStream,
