@@ -41,7 +41,7 @@ void main() {
 
     testWidgets('test journey displays summarized curve as one', (tester) async {
       await prepareAndStartApp(tester);
-      await loadJourney(tester, trainNumber: '2029');
+      await loadJourney(tester, trainNumber: 'T5');
 
       //find pause button and press it
       final pauseButton = find.text(l10n.p_journey_header_button_pause);
@@ -52,18 +52,8 @@ void main() {
       final dasTable = find.byType(DASTable);
       expect(dasTable, findsOneWidget);
 
-      final kaltbrunnRow = findDASTableRowByText('Kaltbrunn');
-      await tester.dragUntilVisible(
-        kaltbrunnRow,
-        dasTable,
-        const Offset(0, -400),
-        maxIteration: 80,
-        duration: const Duration(milliseconds: 120),
-      );
-      expect(kaltbrunnRow, findsOneWidget);
-
       final summarizedCurveRow = findDASTableRowByText(
-        '${l10n.p_journey_table_curve_type_station_exit_curve} km 30.90 - 30.12',
+        '${l10n.p_journey_table_curve_type_curve} km 33.80 - 30.50',
       );
       await tester.dragUntilVisible(summarizedCurveRow, dasTable, const Offset(0.0, -5));
       expect(summarizedCurveRow, findsOneWidget);
@@ -72,16 +62,8 @@ void main() {
       expect(speed, findsOneWidget);
 
       //find all speeds and the partition in between separately because they are different widgets
-      final speedPartMin = find.descendant(of: speed, matching: find.text('85'));
-      final dash = String.fromCharCode(45);
-      final speedPartition = find.descendant(
-        of: speed,
-        matching: find.text(dash),
-      );
-      final speedPartMax = find.descendant(of: speed, matching: find.text('95'));
-      expect(speedPartMin, findsOneWidget);
-      expect(speedPartition, findsOneWidget);
-      expect(speedPartMax, findsOneWidget);
+      final summarizedCurvesSpeeds = find.descendant(of: speed, matching: find.text('50-30-91'));
+      expect(summarizedCurvesSpeeds, findsOneWidget);
 
       await disconnect(tester);
     });
@@ -141,7 +123,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test find one curve is found when breakingSeries A50 is chosen', (tester) async {
+    testWidgets('test find two curves found when breakingSeries A50 is chosen', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T5');
 
@@ -157,15 +139,15 @@ void main() {
       expect(scrollableFinder, findsOneWidget);
 
       final curveName = find.textContaining(l10n.p_journey_table_curve_type_curve);
-      expect(curveName, findsOne);
+      expect(curveName, findsExactly(2));
 
       final curveIcon = find.byKey(CurvePointRow.curvePointIconKey);
-      expect(curveIcon, findsOneWidget);
+      expect(curveIcon, findsExactly(2));
 
       await disconnect(tester);
     });
 
-    testWidgets('test find two curves when breakingSeries R115 is chosen', (tester) async {
+    testWidgets('test find three curves when breakingSeries R115 is chosen', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T5');
 
@@ -282,11 +264,12 @@ void main() {
 
       final expectedSpeeds = {
         'Genève-Aéroport': '60',
-        '65.3': '44-44', // 1. Curve
+        '65.3': '44', // 1. Curve
         'New Line Speed All': '60',
         'Genève': '60',
         'New Line Speed A Missing': '60',
-        '42.5': '44-44', // 2. Curve
+        '42.5': '44', // 2. Curve
+        '33.8': '50-30-91', // 3. Curve
         'Gland': '60',
       };
 
@@ -315,6 +298,7 @@ void main() {
         'Genève-Aéroport': '90',
         '65.3': '55',
         'New Line Speed All': '90',
+        '33.8': '60-70-53',
         'Gland': '90',
       };
 
