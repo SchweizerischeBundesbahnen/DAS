@@ -1,3 +1,4 @@
+import 'package:sfera/src/data/dto/departure_dispatch_notification_event_dto.dart';
 import 'package:sfera/src/data/dto/nsp_dto.dart';
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 import 'package:sfera/src/data/dto/ux_testing_nse_dto.dart';
@@ -18,6 +19,8 @@ class NetworkSpecificEventDto extends NspDto {
       return UxTestingNseDto(attributes: attributes, children: children, value: value);
     } else if (groupName?.value == WarnAppMsgDto.elementName) {
       return WarnAppMsgDto(attributes: attributes, children: children, value: value);
+    } else if (groupName?.value == DepartureDispatchNotificationEventDto.elementName) {
+      return DepartureDispatchNotificationEventDto(attributes: attributes, children: children, value: value);
     }
     return NetworkSpecificEventDto(attributes: attributes, children: children, value: value);
   }

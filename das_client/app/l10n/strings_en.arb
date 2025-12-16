@@ -128,5 +128,10 @@
   "w_modal_sheet_button_grant_permission": "Grant permissions",
   "w_journey_search_overlay_title": "Search Timetable",
   "w_global_error_widget_title": "Unexpected Error",
-  "w_global_error_widget_description": "An unexpected error has occurred, the error message will be sent to the developers. Try restarting the app."
+  "w_global_error_widget_description": "An unexpected error has occurred, the error message will be sent to the developers. Try restarting the app.",
+  "w_departure_dispatch_notification_long": "Estimated departure in: > 30 min",
+  "w_departure_dispatch_notification_middle": "Estimated departure in: 15 - 30 minutes",
+  "w_departure_dispatch_notification_short": "Estimated departure in: < 15 min",
+  "w_departure_dispatch_notification_prepare": "Get ready to depart",
+  "w_departure_dispatch_notification_withdrawn": "Departure schedule has been cancelled. Onward journey will be announced again."
 }

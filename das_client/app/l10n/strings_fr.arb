@@ -126,5 +126,10 @@
   "w_modal_sheet_permissions_title": "Le client DAS a besoin d’autorisations système",
   "w_modal_sheet_permission_brightness": "Pour adapter la luminosité de l’écran, le client DAS doit accéder aux paramètres système.",
   "w_modal_sheet_button_grant_permission": "Octroyer les autorisations",
-  "w_journey_search_overlay_title": "Rechercher Marche"
+  "w_journey_search_overlay_title": "Rechercher Marche",
+  "w_departure_dispatch_notification_long": "Départ prévu dans : > 30 Min",
+  "w_departure_dispatch_notification_middle": "Départ prévu dans : 15 - 30 Min",
+  "w_departure_dispatch_notification_short": "Départ prévu dans : < 15 Min",
+  "w_departure_dispatch_notification_prepare": "Se tenir prêt au départ",
+  "w_departure_dispatch_notification_withdrawn": "La disposition de départ a été retirée. La continuation de la marche sera communiquée."
 }
