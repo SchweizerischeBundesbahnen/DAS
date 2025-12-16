@@ -37,6 +37,7 @@ class MockDASBaseScope extends DASBaseScope {
     _registerTestTimeConstants();
     _registerUserSettings();
     _registerMockConnectivityManager();
+    getIt.registerLoginViewModel();
 
     await getIt.allReady();
   }

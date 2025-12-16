@@ -10,12 +10,9 @@ import 'package:app/theme/theme_util.dart';
 import 'package:app/util/device_screen.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
-import 'package:logging/logging.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
-
-final _log = Logger('LoginDraggableBottomSheet');
 
 class LoginDraggableBottomSheet extends StatefulWidget {
   @override
@@ -29,67 +26,52 @@ class LoginDraggableBottomSheet extends StatefulWidget {
 class _LoginDraggableBottomSheetState extends State<LoginDraggableBottomSheet> {
   final _controller = DraggableScrollableController();
   final minHeight = min(LoginDraggableBottomSheet._minHeight / DeviceScreen.size.height, 0.5);
-  final flavor = DI.get<Flavor>();
 
+  final flavor = DI.get<Flavor>();
   final _packageInfo = PackageInfo.fromPlatform();
 
   @override
-  void initState() {
-    context.read<LoginViewModel>().setConnectToTmsVad(false);
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return FutureBuilder<PackageInfo>(
-      future: _packageInfo,
-      builder: (context, asyncSnapshot) {
-        final packageInfo = asyncSnapshot.data;
-
-        if (packageInfo == null) return SizedBox.shrink();
-
-        return DraggableScrollableSheet(
-          controller: _controller,
-          initialChildSize: minHeight,
-          maxChildSize: 0.5,
-          minChildSize: minHeight,
-          builder: (context, controller) => Container(
-            clipBehavior: Clip.hardEdge,
-            decoration: ShapeDecoration(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(sbbDefaultSpacing),
-                  topRight: Radius.circular(sbbDefaultSpacing),
-                ),
-              ),
-              shadows: [
-                BoxShadow(
-                  color: SBBColors.black.withValues(alpha: 0.2),
-                  blurRadius: 8,
-                ),
-              ],
-              color: ThemeUtil.getColor(context, SBBColors.milk, SBBColors.black),
-            ),
-            child: CustomScrollView(
-              controller: controller,
-              slivers: [
-                PinnedHeaderSliver(child: _header(context)),
-                SliverPadding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: sbbDefaultSpacing * 2,
-                    horizontal: sbbDefaultSpacing * .5,
-                  ),
-                  sliver: SliverToBoxAdapter(child: _body(context, packageInfo)),
-                ),
-              ],
+    return DraggableScrollableSheet(
+      controller: _controller,
+      initialChildSize: minHeight,
+      maxChildSize: 0.5,
+      minChildSize: minHeight,
+      builder: (context, controller) => Container(
+        clipBehavior: Clip.hardEdge,
+        decoration: ShapeDecoration(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(sbbDefaultSpacing),
+              topRight: Radius.circular(sbbDefaultSpacing),
             ),
           ),
-        );
-      },
+          shadows: [
+            BoxShadow(
+              color: SBBColors.black.withValues(alpha: 0.2),
+              blurRadius: 8,
+            ),
+          ],
+          color: ThemeUtil.getColor(context, SBBColors.milk, SBBColors.black),
+        ),
+        child: CustomScrollView(
+          controller: controller,
+          slivers: [
+            PinnedHeaderSliver(child: _header(context)),
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(
+                vertical: sbbDefaultSpacing * 2,
+                horizontal: sbbDefaultSpacing * .5,
+              ),
+              sliver: SliverToBoxAdapter(child: _body(context)),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
-  Widget _body(BuildContext context, PackageInfo packageInfo) {
+  Widget _body(BuildContext context) {
     final vm = context.read<LoginViewModel>();
     return FutureBuilder(
       future: _packageInfo,

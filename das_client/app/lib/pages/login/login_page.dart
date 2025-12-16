@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:app/di/di.dart';
-import 'package:app/di/scope_handler.dart';
-import 'package:app/di/scopes/journey_scope.dart';
 import 'package:app/nav/app_router.dart';
 import 'package:app/pages/login/login_model.dart';
 import 'package:app/pages/login/login_view_model.dart';
@@ -25,8 +23,7 @@ class LoginPage extends StatefulWidget implements AutoRouteWrapper {
   @override
   Widget wrappedRoute(BuildContext context) {
     return Provider<LoginViewModel>(
-      create: (_) => LoginViewModel(),
-      dispose: (_, vm) => vm.dispose(),
+      create: (_) => DI.get<LoginViewModel>(),
       child: this,
     );
   }
@@ -43,8 +40,6 @@ class _LoginPageState extends State<LoginPage> {
     final viewModel = context.read<LoginViewModel>();
     _subscription = viewModel.model.listen((model) async {
       if (model is LoggedIn) {
-        await DI.get<ScopeHandler>().push<AuthenticatedScope>();
-        await DI.get<ScopeHandler>().push<JourneyScope>();
         if (mounted) {
           context.router.replace(const JourneySelectionRoute());
         }
