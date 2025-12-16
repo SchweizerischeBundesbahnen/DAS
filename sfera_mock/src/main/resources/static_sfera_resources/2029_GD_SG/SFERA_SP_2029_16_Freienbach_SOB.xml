@@ -22,9 +22,9 @@
         </Signal>
 		
 		<Signal>
-            <Signal_ID signal_ID_Physical="B604" location="2325"/>
+            <Signal_ID signal_ID_Physical="A607" location="2325"/>
             <SignalFunction>entry</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="B604"/>
+            <SignalPhysicalCharacteristics visualIdentifier="A607"/>
         </Signal>
 		
 		<BaliseGroup>
@@ -100,7 +100,7 @@
             <KM_Reference kmRef="4.942"/>
         </KilometreReferencePoint>
 		<KilometreReferencePoint location="2325">
-            <KM_Reference kmRef="3.275"/>
+            <KM_Reference kmRef="32.631"/>
         </KilometreReferencePoint>
 		
 		<DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="8.0" gradientDirection="Downhill"

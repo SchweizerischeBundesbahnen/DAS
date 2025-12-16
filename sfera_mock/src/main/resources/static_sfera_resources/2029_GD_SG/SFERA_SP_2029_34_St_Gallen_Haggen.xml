@@ -28,9 +28,9 @@
         </Signal>
 		
 		<Signal>
-            <Signal_ID signal_ID_Physical="D82" location="2000"/>
+            <Signal_ID signal_ID_Physical="D83" location="2000"/>
             <SignalFunction>intermediate</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="D82"/>
+            <SignalPhysicalCharacteristics visualIdentifier="D83"/>
         </Signal>
 
     </SP_Points>
