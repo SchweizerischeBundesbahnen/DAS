@@ -15,7 +15,6 @@ class SpeedDisplay extends StatelessWidget {
   const SpeedDisplay({
     this.hasAdditionalInformation = false,
     this.singleLine = false,
-    this.summarizedCurve = false,
     this.textStyle = DASTextStyles.largeRoman,
     this.speed,
     this.isNextStop = false,
@@ -24,7 +23,6 @@ class SpeedDisplay extends StatelessWidget {
 
   final bool hasAdditionalInformation;
   final bool singleLine;
-  final bool summarizedCurve;
   final TextStyle textStyle;
   final Speed? speed;
   final bool isNextStop;

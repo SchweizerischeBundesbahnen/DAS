@@ -53,8 +53,7 @@ class _EmptyLoadingRow extends CellRowBuilder<JourneyPoint> {
   DASTableCell brakedWeightSpeedCell(BuildContext context) => DASTableCell.empty();
 
   @override
-  DASTableCell speedCell(List<TrainSeriesSpeed>? speedData, {bool? singleLine, bool? summarizedCurve}) =>
-      DASTableCell.empty();
+  DASTableCell speedCell(List<TrainSeriesSpeed>? speedData) => DASTableCell.empty();
 
   @override
   DASTableCell bracketStation(BuildContext context) => DASTableCell.empty();
