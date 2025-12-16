@@ -3,13 +3,10 @@ import 'dart:async';
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_model.dart';
 import 'package:app/sound/das_sounds.dart';
-import 'package:app/sound/sound.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
 class DepartureDispatchNotificationViewModel {
-  static Sound get _sound => DI.get<DASSounds>().departureDispatchNotification;
-
   DepartureDispatchNotificationViewModel({
     required SferaRemoteRepo sferaRemoteRepo,
     required Stream<JourneyPositionModel> journeyPositionStream,
@@ -17,11 +14,13 @@ class DepartureDispatchNotificationViewModel {
     _init(journeyPositionStream);
   }
 
+  final SferaRemoteRepo _sferaRemoteRepo;
+
   final _rxDepartureDispatchNotificationType = BehaviorSubject<DepartureDispatchNotificationType?>.seeded(null);
 
   StreamSubscription? _streamSubscription;
 
-  final SferaRemoteRepo _sferaRemoteRepo;
+  final _sound = DI.get<DASSounds>().departureDispatchNotification;
 
   Stream<DepartureDispatchNotificationType?> get type => _rxDepartureDispatchNotificationType.distinct();
 

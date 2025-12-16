@@ -102,9 +102,8 @@ class NetworkSpecificParameterDto extends SferaXmlElementDto {
 
   static bool _isDepartureDispatchNotificationEvent(XmlElement? parent) {
     if (parent == null) return false;
-    final xmlElement = NspDto.groupNameElement;
     final name = DepartureDispatchNotificationEventDto.elementName;
-    return parent.toXmlString().contains('<$xmlElement>$name</$xmlElement>');
+    return parent.toXmlString().contains('$name</${NspDto.groupNameElement}>');
   }
 }
 

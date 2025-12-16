@@ -143,6 +143,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
 
     _mqttService.disconnect();
     _rxJourney.add(null);
+    _rxDepartureDispatchNotificationEvent.add(null);
     _rxUxTestingEvent.add(null);
     _rxWarnappEvent.add(null);
     _rxState.add(.disconnected);
