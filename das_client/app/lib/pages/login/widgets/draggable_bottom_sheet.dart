@@ -99,13 +99,20 @@ class _LoginDraggableBottomSheetState extends State<LoginDraggableBottomSheet> {
         return Column(
           crossAxisAlignment: .start,
           children: [
-            SBBGroup(
-              child: SBBSwitchListItem(
-                title: context.l10n.p_login_connect_to_tms,
-                value: vm.modelValue.connectToTmsVad,
-                onChanged: vm.setConnectToTmsVad,
-                isLastElement: true,
-              ),
+            StreamBuilder(
+              stream: vm.model,
+              initialData: vm.modelValue,
+              builder: (context, asyncSnapshot) {
+                final model = asyncSnapshot.requireData;
+                return SBBGroup(
+                  child: SBBSwitchListItem(
+                    title: context.l10n.p_login_connect_to_tms,
+                    value: model.connectToTmsVad,
+                    onChanged: vm.setConnectToTmsVad,
+                    isLastElement: true,
+                  ),
+                );
+              },
             ),
             SizedBox(height: sbbDefaultSpacing * 2),
             RichText(
