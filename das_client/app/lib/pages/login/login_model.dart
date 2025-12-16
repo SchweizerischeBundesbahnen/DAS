@@ -18,11 +18,21 @@ sealed class LoginModel {
 
   @override
   int get hashCode => Object.hash(runtimeType, connectToTmsVad);
+
+  LoginModel copyWith({required bool connectToTmsVad}) {
+    return switch (this) {
+      final LoggedOut l => l.copyWith(connectToTmsVad: connectToTmsVad),
+      final Loading l => l.copyWith(connectToTmsVad: connectToTmsVad),
+      final LoggedIn l => l.copyWith(connectToTmsVad: connectToTmsVad),
+      final Error e => e.copyWith(connectToTmsVad: connectToTmsVad),
+    };
+  }
 }
 
 class LoggedOut extends LoginModel {
   const LoggedOut({required super.connectToTmsVad}) : super._();
 
+  @override
   LoggedOut copyWith({bool? connectToTmsVad}) {
     return LoggedOut(
       connectToTmsVad: connectToTmsVad ?? this.connectToTmsVad,
@@ -33,6 +43,7 @@ class LoggedOut extends LoginModel {
 class Loading extends LoginModel {
   const Loading({required super.connectToTmsVad}) : super._();
 
+  @override
   Loading copyWith({bool? connectToTmsVad}) {
     return Loading(
       connectToTmsVad: connectToTmsVad ?? this.connectToTmsVad,
@@ -43,6 +54,7 @@ class Loading extends LoginModel {
 class LoggedIn extends LoginModel {
   const LoggedIn({required super.connectToTmsVad}) : super._();
 
+  @override
   LoggedIn copyWith({bool? connectToTmsVad}) {
     return LoggedIn(
       connectToTmsVad: connectToTmsVad ?? this.connectToTmsVad,
@@ -62,6 +74,7 @@ class Error extends LoginModel {
   @override
   int get hashCode => Object.hash(super.hashCode, errorMessage);
 
+  @override
   Error copyWith({
     String? errorMessage,
     bool? connectToTmsVad,

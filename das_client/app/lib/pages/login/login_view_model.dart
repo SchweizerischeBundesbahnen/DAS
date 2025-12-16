@@ -1,3 +1,4 @@
+import 'package:app/di/di.dart';
 import 'package:app/pages/login/login_model.dart';
 import 'package:auth/component.dart';
 import 'package:logging/logging.dart';
@@ -18,6 +19,13 @@ class LoginViewModel {
 
   void dispose() {
     _rxModel.close();
+  }
+
+  void setConnectToTmsVad(bool update) {
+    if (modelValue.connectToTmsVad == update) return;
+
+    DI.resetToUnauthenticatedScope(useTms: update);
+    _rxModel.add(modelValue.copyWith(connectToTmsVad: update));
   }
 
   Future<void> login() async {

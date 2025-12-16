@@ -33,14 +33,9 @@ class _LoginDraggableBottomSheetState extends State<LoginDraggableBottomSheet> {
 
   final _packageInfo = PackageInfo.fromPlatform();
 
-  bool isTmsChecked = false;
-  bool isLoading = false;
-
-  String? errorText;
-
   @override
   void initState() {
-    DI.resetToUnauthenticatedScope(useTms: isTmsChecked);
+    context.read<LoginViewModel>().setConnectToTmsVad(false);
     super.initState();
   }
 
@@ -94,50 +89,55 @@ class _LoginDraggableBottomSheetState extends State<LoginDraggableBottomSheet> {
     );
   }
 
-  Column _body(BuildContext context, PackageInfo packageInfo) {
-    return Column(
-      crossAxisAlignment: .start,
-      children: [
-        SBBGroup(
-          child: SBBSwitchListItem(
-            title: context.l10n.p_login_connect_to_tms,
-            value: isTmsChecked,
-            onChanged: (value) {
-              setState(() {
-                isTmsChecked = value;
-                DI.resetToUnauthenticatedScope(useTms: isTmsChecked);
-              });
-            },
-            isLastElement: true,
-          ),
-        ),
-        SizedBox(height: sbbDefaultSpacing * 2),
-        RichText(
-          text: TextSpan(
-            text: 'App Flavor: ',
-            style: DASTextStyles.smallLight.copyWith(color: SBBColors.granite),
-            children: [
-              TextSpan(
-                text: flavor.displayName,
-                style: DASTextStyles.smallBold.copyWith(color: SBBColors.granite),
+  Widget _body(BuildContext context, PackageInfo packageInfo) {
+    final vm = context.read<LoginViewModel>();
+    return FutureBuilder(
+      future: _packageInfo,
+      builder: (context, asyncSnapshot) {
+        final packageInfo = asyncSnapshot.data;
+
+        return Column(
+          crossAxisAlignment: .start,
+          children: [
+            SBBGroup(
+              child: SBBSwitchListItem(
+                title: context.l10n.p_login_connect_to_tms,
+                value: vm.modelValue.connectToTmsVad,
+                onChanged: vm.setConnectToTmsVad,
+                isLastElement: true,
+              ),
+            ),
+            SizedBox(height: sbbDefaultSpacing * 2),
+            RichText(
+              text: TextSpan(
+                text: 'App Flavor: ',
+                style: DASTextStyles.smallLight.copyWith(color: SBBColors.granite),
+                children: [
+                  TextSpan(
+                    text: flavor.displayName,
+                    style: DASTextStyles.smallBold.copyWith(color: SBBColors.granite),
+                  ),
+                ],
+              ),
+            ),
+            if (packageInfo != null) ...[
+              SizedBox(height: 8.0),
+              RichText(
+                text: TextSpan(
+                  text: 'App Version: ',
+                  style: DASTextStyles.smallLight.copyWith(color: SBBColors.granite),
+                  children: [
+                    TextSpan(
+                      text: '${packageInfo.version}+${packageInfo.buildNumber}',
+                      style: DASTextStyles.smallBold.copyWith(color: SBBColors.granite),
+                    ),
+                  ],
+                ),
               ),
             ],
-          ),
-        ),
-        SizedBox(height: 8.0),
-        RichText(
-          text: TextSpan(
-            text: 'App Version: ',
-            style: DASTextStyles.smallLight.copyWith(color: SBBColors.granite),
-            children: [
-              TextSpan(
-                text: '${packageInfo.version}+${packageInfo.buildNumber}',
-                style: DASTextStyles.smallBold.copyWith(color: SBBColors.granite),
-              ),
-            ],
-          ),
-        ),
-      ],
+          ],
+        );
+      },
     );
   }
 
@@ -167,7 +167,7 @@ class _LoginDraggableBottomSheetState extends State<LoginDraggableBottomSheet> {
             Text(context.l10n.p_login_bottom_sheet_title, style: sbbTextStyle.boldStyle.xLarge),
             Text(context.l10n.p_login_bottom_sheet_subtitle),
           ],
-          Error() => [
+          Error(errorMessage: final errorMessage) => [
             Row(
               mainAxisSize: .min,
               children: [
@@ -176,7 +176,7 @@ class _LoginDraggableBottomSheetState extends State<LoginDraggableBottomSheet> {
                 Text(context.l10n.p_login_bottom_sheet_title_failed, style: sbbTextStyle.boldStyle.xLarge),
               ],
             ),
-            Text('${context.l10n.p_login_bottom_sheet_subtitle_failed}: $errorText'),
+            Text('${context.l10n.p_login_bottom_sheet_subtitle_failed}: $errorMessage'),
           ],
         };
 
