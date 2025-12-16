@@ -6,8 +6,9 @@ import 'package:app/pages/journey/journey_table/journey_position/journey_positio
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_view_model.dart';
 import 'package:app/pages/journey/journey_table/widgets/detail_modal/break_load_slip_modal/break_load_slip_modal_builder.dart';
 import 'package:app/pages/journey/journey_table/widgets/detail_modal/detail_modal_view_model.dart';
-import 'package:app/pages/journey/journey_table/widgets/table/config/journey_settings.dart';
 import 'package:app/pages/journey/journey_table_view_model.dart';
+import 'package:app/pages/journey/settings/journey_settings.dart';
+import 'package:app/pages/journey/settings/journey_settings_view_model.dart';
 import 'package:app/sound/das_sounds.dart';
 import 'package:app/sound/sound.dart';
 import 'package:auto_route/auto_route.dart';
@@ -28,12 +29,14 @@ class BreakLoadSlipViewModel {
     required JourneyTableViewModel journeyTableViewModel,
     required FormationRepository formationRepository,
     required JourneyPositionViewModel journeyPositionViewModel,
+    required JourneySettingsViewModel journeySettingsViewModel,
     DetailModalViewModel? detailModalViewModel,
     ConnectivityManager? connectivityManager,
     bool checkForUpdates = false,
   }) : _journeyTableViewModel = journeyTableViewModel,
        _formationRepository = formationRepository,
        _journeyPositionViewModel = journeyPositionViewModel,
+       _journeySettingsViewModel = journeySettingsViewModel,
        _detailModalViewModel = detailModalViewModel,
        _connectivityManager = connectivityManager,
        _checkForUpdates = checkForUpdates {
@@ -44,6 +47,7 @@ class BreakLoadSlipViewModel {
   final FormationRepository _formationRepository;
   final JourneyPositionViewModel _journeyPositionViewModel;
   final DetailModalViewModel? _detailModalViewModel;
+  final JourneySettingsViewModel _journeySettingsViewModel;
   final ConnectivityManager? _connectivityManager;
   final bool _checkForUpdates;
 
@@ -70,7 +74,7 @@ class BreakLoadSlipViewModel {
 
   Stream<bool> get formationChanged => _rxFormationChanged.distinct();
 
-  Stream<JourneySettings?> get settings => _journeyTableViewModel.settings;
+  Stream<JourneySettings?> get settings => _journeySettingsViewModel.model;
 
   Formation? get formationValue => _rxFormation.value;
 
@@ -208,7 +212,7 @@ class BreakLoadSlipViewModel {
   bool get isActiveFormationRun => _calculateActiveFormationRun() == formationRunValue?.formationRun;
 
   bool isJourneyAndActiveFormationRunBreakSeriesDifferent() {
-    final selectedBreakSeries = _journeyTableViewModel.settingsValue.resolvedBreakSeries(_latestJourney?.metadata);
+    final selectedBreakSeries = _journeySettingsViewModel.modelValue.resolvedBreakSeries(_latestJourney?.metadata);
     final formationRunBreakSeries = _resolveBreakSeries(formationRunValue?.formationRun);
     return formationRunBreakSeries != null && formationRunBreakSeries != selectedBreakSeries;
   }
@@ -216,7 +220,7 @@ class BreakLoadSlipViewModel {
   void updateJourneyBreakSeriesFromActiveFormationRun() {
     final formationRunBreakSeries = _resolveBreakSeries(formationRunValue?.formationRun);
     if (formationRunBreakSeries != null) {
-      _journeyTableViewModel.updateBreakSeries(formationRunBreakSeries);
+      _journeySettingsViewModel.updateBreakSeries(formationRunBreakSeries);
     }
   }
 

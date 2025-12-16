@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/break_load_slip/break_load_slip_view_model.dart';
+import 'package:app/pages/journey/journey_table/advancement/journey_table_advancement_view_model.dart';
 import 'package:app/pages/journey/journey_table/collapsible_rows_view_model.dart';
 import 'package:app/pages/journey/journey_table/journey_overview.dart';
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_model.dart';
@@ -24,7 +25,6 @@ import 'package:app/pages/journey/journey_table/widgets/table/communication_netw
 import 'package:app/pages/journey/journey_table/widgets/table/config/bracket_station_render_data.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/config/chevron_animation_data.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/config/journey_config.dart';
-import 'package:app/pages/journey/journey_table/widgets/table/config/journey_settings.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/config/track_equipment_render_data.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/connection_track_row.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/curve_point_row.dart';
@@ -40,6 +40,8 @@ import 'package:app/pages/journey/journey_table/widgets/table/tram_area_row.dart
 import 'package:app/pages/journey/journey_table/widgets/table/uncoded_operational_indication_row.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/whistle_row.dart';
 import 'package:app/pages/journey/journey_table_view_model.dart';
+import 'package:app/pages/journey/settings/journey_settings.dart';
+import 'package:app/pages/journey/settings/journey_settings_view_model.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/user_settings.dart';
 import 'package:app/widgets/assets.dart';
@@ -65,12 +67,14 @@ class JourneyTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.read<JourneyTableViewModel>();
+    final journeySettingsVM = context.read<JourneySettingsViewModel>();
     final journeyPositionViewModel = context.read<JourneyPositionViewModel>();
+    final advancementViewModel = context.read<JourneyTableAdvancementViewModel>();
 
     return StreamBuilder<List<dynamic>>(
       stream: CombineLatestStream.list([
         viewModel.journey,
-        viewModel.settings,
+        journeySettingsVM.model,
         viewModel.showDecisiveGradient,
         journeyPositionViewModel.model,
       ]),
@@ -83,15 +87,6 @@ class JourneyTable extends StatelessWidget {
         final settings = snapshot.data![1] as JourneySettings;
         final journeyPosition = snapshot.data![3] as JourneyPositionModel;
 
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          viewModel.automaticAdvancementController.handleJourneyUpdate(
-            currentPosition: journeyPosition.currentPosition,
-            routeStart: journey.metadata.journeyStart,
-            isAdvancementEnabledByUser: settings.isAutoAdvancementEnabled,
-            firstServicePoint: journey.data.whereType<ServicePoint>().firstOrNull,
-          );
-        });
-
         final servicePointModalViewModel = context.read<ServicePointModalViewModel>();
         servicePointModalViewModel.updateMetadata(journey.metadata);
         servicePointModalViewModel.updateSettings(settings);
@@ -99,8 +94,8 @@ class JourneyTable extends StatelessWidget {
         return KeyedSubtree(
           key: loadedJourneyTableKey,
           child: Listener(
-            onPointerDown: (_) => viewModel.automaticAdvancementController.resetScrollTimer(),
-            onPointerUp: (_) => viewModel.automaticAdvancementController.resetScrollTimer(),
+            onPointerDown: (_) => advancementViewModel.resetIdleScrollTimer(),
+            onPointerUp: (_) => advancementViewModel.resetIdleScrollTimer(),
             child: _body(context, journey, settings, journeyPosition),
           ),
         );
@@ -127,7 +122,7 @@ class JourneyTable extends StatelessWidget {
         final collapsedRows = snapshot.data?.$1 ?? {};
         final journeyPosition = snapshot.data!.$2;
         final tableRows = _rows(context, journey, settings, collapsedRows, journeyPosition);
-        context.read<JourneyTableViewModel>().automaticAdvancementController.updateRenderedRows(tableRows);
+        context.read<JourneyTableViewModel>().journeyTableScrollController.updateRenderedRows(tableRows);
 
         final marginAdjustment = Platform.isIOS
             ? tableRows.lastWhereOrNull((it) => it.stickyLevel == .first)?.height ?? CellRowBuilder.rowHeight
@@ -141,12 +136,12 @@ class JourneyTable extends StatelessWidget {
             stream: detailModalViewModel.openModalType,
             builder: (context, snapshot) {
               final openModalType = snapshot.data;
-              final advancementController = context.read<JourneyTableViewModel>().automaticAdvancementController;
+              final journeyTableScrollController = context.read<JourneyTableViewModel>().journeyTableScrollController;
               return ChevronAnimationWrapper(
                 journeyPosition: journeyPosition,
                 child: DASTable(
-                  key: advancementController.tableKey,
-                  scrollController: advancementController.scrollController,
+                  key: journeyTableScrollController.tableKey,
+                  scrollController: journeyTableScrollController.scrollController,
                   columns: _columns(context, journey.metadata, settings, openModalType),
                   rows: tableRows.map((it) => it.build(context)).toList(),
                   bottomMarginAdjustment: marginAdjustment,
@@ -528,11 +523,11 @@ class JourneyTable extends StatelessWidget {
       newList.add(group.order);
     }
 
-    context.read<JourneyTableViewModel>().updateExpandedGroups(newList);
+    context.read<JourneySettingsViewModel>().updateExpandedGroups(newList);
   }
 
   Future<void> _onBreakSeriesTap(BuildContext context, Metadata? metadata, JourneySettings? settings) async {
-    final viewModel = context.read<JourneyTableViewModel>();
+    final viewModel = context.read<JourneySettingsViewModel>();
 
     final selectedBreakSeries = await showSBBModalSheet<BreakSeries>(
       context: context,

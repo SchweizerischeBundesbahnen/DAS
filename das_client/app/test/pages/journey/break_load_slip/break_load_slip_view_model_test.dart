@@ -2,8 +2,9 @@ import 'package:app/pages/journey/break_load_slip/break_load_slip_view_model.dar
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_model.dart';
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_view_model.dart';
 import 'package:app/pages/journey/journey_table/widgets/detail_modal/detail_modal_view_model.dart';
-import 'package:app/pages/journey/journey_table/widgets/table/config/journey_settings.dart';
 import 'package:app/pages/journey/journey_table_view_model.dart';
+import 'package:app/pages/journey/settings/journey_settings.dart';
+import 'package:app/pages/journey/settings/journey_settings_view_model.dart';
 import 'package:app/sound/das_sounds.dart';
 import 'package:app/sound/sound.dart';
 import 'package:auto_route/auto_route.dart';
@@ -24,6 +25,7 @@ import 'break_load_slip_view_model_test.mocks.dart';
   MockSpec<JourneyTableViewModel>(),
   MockSpec<FormationRepository>(),
   MockSpec<JourneyPositionViewModel>(),
+  MockSpec<JourneySettingsViewModel>(),
   MockSpec<BuildContext>(),
   MockSpec<StackRouter>(),
   MockSpec<StackRouterScope>(),
@@ -37,6 +39,7 @@ void main() {
   late MockJourneyTableViewModel mockJourneyTableViewModel;
   late MockFormationRepository mockFormationRepository;
   late MockJourneyPositionViewModel mockJourneyPositionViewModel;
+  late MockJourneySettingsViewModel mockJourneySettingsViewModel;
   late MockDetailModalViewModel mockDetailModalViewModel;
   late MockConnectivityManager mockConnectivityManager;
   late MockBuildContext mockBuildContext;
@@ -121,6 +124,7 @@ void main() {
     mockStackRouterScope = MockStackRouterScope();
     mockConnectivityManager = MockConnectivityManager();
 
+    mockJourneySettingsViewModel = MockJourneySettingsViewModel();
     journeySubject = BehaviorSubject<Journey?>();
     settingsSubject = BehaviorSubject.seeded(JourneySettings());
     positionSubject = BehaviorSubject.seeded(JourneyPositionModel());
@@ -128,8 +132,8 @@ void main() {
     connectivitySubject = BehaviorSubject.seeded(true);
 
     when(mockJourneyTableViewModel.journey).thenAnswer((_) => journeySubject.stream);
-    when(mockJourneyTableViewModel.settings).thenAnswer((_) => settingsSubject.stream);
-    when(mockJourneyTableViewModel.settingsValue).thenAnswer((_) => settingsSubject.value);
+    when(mockJourneySettingsViewModel.model).thenAnswer((_) => settingsSubject.stream);
+    when(mockJourneySettingsViewModel.modelValue).thenAnswer((_) => settingsSubject.value);
     when(mockJourneyPositionViewModel.model).thenAnswer((_) => positionSubject.stream);
     when(
       mockFormationRepository.watchFormation(
@@ -156,6 +160,7 @@ void main() {
       journeyTableViewModel: mockJourneyTableViewModel,
       formationRepository: mockFormationRepository,
       journeyPositionViewModel: mockJourneyPositionViewModel,
+      journeySettingsViewModel: mockJourneySettingsViewModel,
       detailModalViewModel: mockDetailModalViewModel,
       connectivityManager: mockConnectivityManager,
       checkForUpdates: true,
@@ -355,7 +360,7 @@ void main() {
     testee.updateJourneyBreakSeriesFromActiveFormationRun();
 
     verify(
-      mockJourneyTableViewModel.updateBreakSeries(BreakSeries(trainSeries: TrainSeries.A, breakSeries: 75)),
+      mockJourneySettingsViewModel.updateBreakSeries(BreakSeries(trainSeries: TrainSeries.A, breakSeries: 75)),
     ).called(1);
   });
 
@@ -420,6 +425,7 @@ void main() {
         journeyTableViewModel: mockJourneyTableViewModel,
         formationRepository: mockFormationRepository,
         journeyPositionViewModel: mockJourneyPositionViewModel,
+        journeySettingsViewModel: mockJourneySettingsViewModel,
         detailModalViewModel: mockDetailModalViewModel,
         connectivityManager: mockConnectivityManager,
         checkForUpdates: true,

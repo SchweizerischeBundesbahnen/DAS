@@ -6,10 +6,8 @@ import 'package:app/di/scopes/journey_scope.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/app_router.dart';
 import 'package:app/pages/journey/journey_table/journey_overview.dart';
-import 'package:app/pages/journey/journey_table/widgets/table/config/journey_settings.dart';
 import 'package:app/pages/journey/journey_table_view_model.dart';
-import 'package:app/pages/journey/navigation/journey_navigation_model.dart';
-import 'package:app/pages/journey/navigation/journey_navigation_view_model.dart';
+import 'package:app/pages/journey/settings/journey_settings_view_model.dart';
 import 'package:app/pages/journey/warn_app_view_model.dart';
 import 'package:app/pages/journey/widgets/das_journey_scaffold.dart';
 import 'package:app/util/format.dart';
@@ -30,8 +28,9 @@ class JourneyPage extends StatefulWidget implements AutoRouteWrapper {
   @override
   Widget wrappedRoute(BuildContext context) => MultiProvider(
     providers: [
-      Provider<JourneyTableViewModel>(create: (_) => DI.get()),
-      Provider<WarnAppViewModel>(create: (_) => DI.get()),
+      Provider<JourneyTableViewModel>(create: (_) => DI.get<JourneyTableViewModel>()),
+      Provider<WarnAppViewModel>(create: (_) => DI.get<WarnAppViewModel>()),
+      Provider<JourneySettingsViewModel>(create: (_) => DI.get<JourneySettingsViewModel>()),
     ],
     child: this,
   );
@@ -42,6 +41,7 @@ class JourneyPage extends StatefulWidget implements AutoRouteWrapper {
 
 class _JourneyPageState extends State<JourneyPage> {
   StreamSubscription? _errorCodeSubscription;
+  Stream<(bool, Journey?)>? _streamCombo;
 
   @override
   void initState() {
@@ -55,30 +55,36 @@ class _JourneyPageState extends State<JourneyPage> {
         }
       }
     });
+    _streamCombo = CombineLatestStream.combine2<bool, Journey?, (bool, Journey?)>(
+      journeyTableVM.isZenViewMode,
+      journeyTableVM.journey,
+      (a, b) => (a, b),
+    );
     super.initState();
   }
 
   @override
   void dispose() {
     _errorCodeSubscription?.cancel();
+    _streamCombo = null;
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: CombineLatestStream.list([
-        context.read<JourneyTableViewModel>().settings,
-        DI.get<JourneyNavigationViewModel>().model,
-      ]),
+    final journeyTableVM = DI.get<JourneyTableViewModel>();
+    return StreamBuilder<(bool, Journey?)>(
+      stream: _streamCombo,
+      // initial zen mode is false to animate transition
+      initialData: (false, journeyTableVM.journeyValue),
       builder: (context, snapshot) {
-        final settings = snapshot.data?[0] as JourneySettings?;
-        final model = snapshot.data?[1] as JourneyNavigationModel?;
+        final isZenViewMode = snapshot.requireData.$1;
+        final journey = snapshot.requireData.$2;
 
         return DASJourneyScaffold(
           body: JourneyOverview(),
-          appBarTitle: _appBarTitle(context, model?.trainIdentification),
-          hideAppBar: settings?.isAutoAdvancementEnabled == true,
+          appBarTitle: _appBarTitle(context, journey?.metadata.trainIdentification),
+          hideAppBar: isZenViewMode,
           appBarTrailingAction: _DismissJourneyButton(),
         );
       },
