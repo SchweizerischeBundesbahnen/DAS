@@ -33,7 +33,7 @@ void main() {
 
   test('model_whenInitialized_thenIsInitialModel', () {
     expect(emitRegister, hasLength(1));
-    expect(emitRegister.first, equals(LoggedOut(connectToTmsVad: false)));
+    expect(emitRegister.first, equals(LoggedOut()));
   });
 
   test('login_whenAuthenticationSuccessful_thenEmitsLoadingAndLoggedIn', () async {
@@ -48,11 +48,7 @@ void main() {
     expect(emitRegister, hasLength(3));
     expect(
       emitRegister,
-      orderedEquals([
-        LoggedOut(connectToTmsVad: false),
-        Loading(connectToTmsVad: false),
-        LoggedIn(connectToTmsVad: false),
-      ]),
+      orderedEquals([LoggedOut(), Loading(), LoggedIn()]),
     );
   });
 
@@ -69,11 +65,25 @@ void main() {
     expect(emitRegister, hasLength(3));
     expect(
       emitRegister,
-      orderedEquals([
-        LoggedOut(connectToTmsVad: false),
-        Loading(connectToTmsVad: false),
-        Error(connectToTmsVad: false, errorMessage: argumentError.toString()),
-      ]),
+      orderedEquals([LoggedOut(), Loading(), Error(errorMessage: argumentError.toString())]),
     );
+  });
+
+  test('setConnectToTmsVad_whenIsFalseAndUpdatedWithFalse_thenDoesNothing', () {
+    // ACT
+    testee.setConnectToTmsVad(false);
+
+    // EXPECT
+    expect(emitRegister, hasLength(1));
+    expect(emitRegister.first, equals(LoggedOut()));
+  });
+
+  test('setConnectToTmsVad_whenIsFalseAndUpdatedWithTrue_thenEmitsWithTrue', () {
+    // ACT
+    testee.setConnectToTmsVad(true);
+
+    // EXPECT
+    expect(emitRegister, hasLength(2));
+    expect(emitRegister, orderedEquals([LoggedOut(), LoggedOut(connectToTmsVad: true)]));
   });
 }

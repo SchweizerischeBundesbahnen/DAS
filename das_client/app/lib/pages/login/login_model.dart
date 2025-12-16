@@ -1,13 +1,13 @@
 sealed class LoginModel {
   const LoginModel._({this.connectToTmsVad = false});
 
-  factory LoginModel.loggedOut({required bool connectToTmsVad}) = LoggedOut;
+  factory LoginModel.loggedOut({bool connectToTmsVad}) = LoggedOut;
 
-  factory LoginModel.loading({required bool connectToTmsVad}) = Loading;
+  factory LoginModel.loading({bool connectToTmsVad}) = Loading;
 
-  factory LoginModel.loggedIn({required bool connectToTmsVad}) = LoggedIn;
+  factory LoginModel.loggedIn({bool connectToTmsVad}) = LoggedIn;
 
-  factory LoginModel.error({required String errorMessage, required bool connectToTmsVad}) = Error;
+  factory LoginModel.error({required String errorMessage, bool connectToTmsVad}) = Error;
 
   final bool connectToTmsVad;
 
@@ -19,7 +19,7 @@ sealed class LoginModel {
   @override
   int get hashCode => Object.hash(runtimeType, connectToTmsVad);
 
-  LoginModel copyWith({required bool connectToTmsVad}) {
+  LoginModel copyWith({bool? connectToTmsVad}) {
     return switch (this) {
       final LoggedOut l => l.copyWith(connectToTmsVad: connectToTmsVad),
       final Loading l => l.copyWith(connectToTmsVad: connectToTmsVad),
@@ -30,7 +30,7 @@ sealed class LoginModel {
 }
 
 class LoggedOut extends LoginModel {
-  const LoggedOut({required super.connectToTmsVad}) : super._();
+  const LoggedOut({super.connectToTmsVad}) : super._();
 
   @override
   LoggedOut copyWith({bool? connectToTmsVad}) {
@@ -41,7 +41,7 @@ class LoggedOut extends LoginModel {
 }
 
 class Loading extends LoginModel {
-  const Loading({required super.connectToTmsVad}) : super._();
+  const Loading({super.connectToTmsVad}) : super._();
 
   @override
   Loading copyWith({bool? connectToTmsVad}) {
@@ -52,7 +52,7 @@ class Loading extends LoginModel {
 }
 
 class LoggedIn extends LoginModel {
-  const LoggedIn({required super.connectToTmsVad}) : super._();
+  const LoggedIn({super.connectToTmsVad}) : super._();
 
   @override
   LoggedIn copyWith({bool? connectToTmsVad}) {
@@ -63,7 +63,7 @@ class LoggedIn extends LoginModel {
 }
 
 class Error extends LoginModel {
-  const Error({required this.errorMessage, required super.connectToTmsVad}) : super._();
+  const Error({required this.errorMessage, super.connectToTmsVad}) : super._();
 
   final String errorMessage;
 
