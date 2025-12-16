@@ -1,6 +1,7 @@
 import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/brightness/brightness_manager_impl.dart';
 import 'package:app/di/di.dart';
+import 'package:app/pages/login/login_view_model.dart';
 import 'package:app/sound/das_sounds.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:app/util/user_settings.dart';
@@ -32,6 +33,7 @@ class DASBaseScope extends DIScope {
     getIt.registerTimeConstants();
     getIt.registerUserSettings();
     getIt.registerConnectivityManager();
+    getIt.registerLoginViewModel();
     await getIt.allReady();
   }
 }
@@ -61,26 +63,37 @@ extension BaseScopeExtension on GetIt {
   }
 
   void registerSounds() {
+    _log.fine('Register DASSounds');
     registerSingleton<DASSounds>(DASSounds());
   }
 
   void registerMotionDataService() {
+    _log.fine('Register MotionDataServce');
     registerSingleton(WarnappComponent.createDeviceMotionDataService());
   }
 
   void registerWarnapp() {
+    _log.fine('Register WarnApp');
     registerSingleton(WarnappComponent.createWarnappRepository(motionDataService: DI.get()));
   }
 
   void registerTimeConstants() {
+    _log.fine('Register TimeConstants');
     registerSingleton<TimeConstants>(TimeConstants());
   }
 
   void registerUserSettings() {
+    _log.fine('Register UserSettings');
     registerSingleton<UserSettings>(UserSettings());
   }
 
   void registerConnectivityManager() {
+    _log.fine('Register ConnectivityManager');
     registerSingleton<ConnectivityManager>(ConnectivityComponent.connectivityManager());
+  }
+
+  void registerLoginViewModel() {
+    _log.fine('Register LoginViewModel');
+    registerSingleton<LoginViewModel>(LoginViewModel(), dispose: (vm) => vm.dispose());
   }
 }

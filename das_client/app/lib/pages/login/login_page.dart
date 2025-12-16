@@ -1,153 +1,76 @@
+import 'dart:async';
+
 import 'package:app/di/di.dart';
-import 'package:app/di/scope_handler.dart';
-import 'package:app/di/scopes/journey_scope.dart';
-import 'package:app/flavor.dart';
-import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/app_router.dart';
-import 'package:auth/component.dart';
+import 'package:app/pages/login/login_model.dart';
+import 'package:app/pages/login/login_view_model.dart';
+import 'package:app/pages/login/widgets/draggable_bottom_sheet.dart';
+import 'package:app/widgets/assets.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:logging/logging.dart';
-import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+import 'package:provider/provider.dart';
 
 final _log = Logger('LoginPage');
 
 @RoutePage()
-class LoginPage extends StatefulWidget {
+class LoginPage extends StatefulWidget implements AutoRouteWrapper {
   static const routeName = 'login';
 
   const LoginPage({super.key});
+
+  @override
+  Widget wrappedRoute(BuildContext context) {
+    return Provider<LoginViewModel>(
+      create: (_) => DI.get<LoginViewModel>(),
+      child: this,
+    );
+  }
 
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  bool isLoading = false;
-  bool isTmsChecked = false;
+  late StreamSubscription<LoginModel> _subscription;
 
   @override
   void initState() {
-    DI.resetToUnauthenticatedScope(useTms: isTmsChecked);
+    final viewModel = context.read<LoginViewModel>();
+    _subscription = viewModel.model.listen((model) async {
+      if (model is LoggedIn) {
+        if (mounted) {
+          context.router.replace(const JourneySelectionRoute());
+        }
+      }
+    });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _subscription.cancel();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: isLoading ? _loading() : _body(),
-      ),
-    );
-  }
-
-  Widget _loading() {
-    return Container(
-      alignment: .center,
-      child: const CircularProgressIndicator(),
-    );
-  }
-
-  Widget _body() {
-    return Column(
-      mainAxisSize: .max,
-      children: [
-        const Spacer(),
-        _message(context),
-        _loginButton(context),
-        _tmsCheckbox(context),
-        const Spacer(),
-        _flavor(context),
-      ],
-    );
-  }
-
-  Widget _message(BuildContext context) {
-    return Container(
-      alignment: .center,
-      padding: const .all(16),
-      child: Column(
-        mainAxisSize: .min,
+      body: Stack(
+        alignment: .bottomCenter,
         children: [
-          const SizedBox(height: 32),
-          Text(
-            context.l10n.p_login_login_button_description,
-          ),
+          _background(),
+          LoginDraggableBottomSheet(),
         ],
       ),
     );
   }
 
-  Widget _flavor(BuildContext context) {
-    final flavor = DI.get<Flavor>();
-    return Container(
-      alignment: .center,
-      padding: const .all(16.0),
-      child: Text(
-        'Flavor: ${flavor.displayName}',
-      ),
-    );
-  }
-
-  Widget _tmsCheckbox(BuildContext context) {
-    final flavor = DI.get<Flavor>();
-    if (!flavor.isTmsEnabledForFlavor) return SizedBox.shrink();
-
-    return Padding(
-      padding: const .all(sbbDefaultSpacing),
-      child: Row(
-        mainAxisSize: .min,
-        children: [
-          SBBCheckbox(
-            value: isTmsChecked,
-            onChanged: (value) {
-              setState(() {
-                isTmsChecked = value ?? false;
-                DI.resetToUnauthenticatedScope(useTms: isTmsChecked);
-              });
-            },
-          ),
-          Text(context.l10n.p_login_connect_to_tms),
-        ],
-      ),
-    );
-  }
-
-  Widget _loginButton(BuildContext context) {
-    return OutlinedButton(
-      onPressed: _onLoginPressed,
-      child: Text(context.l10n.p_login_login_button_text),
-    );
-  }
-
-  void _onLoginPressed() async {
-    final authenticator = DI.get<Authenticator>();
-
-    setState(() {
-      isLoading = true;
-    });
-
-    final context = this.context;
-    try {
-      await authenticator.login();
-      await DI.get<ScopeHandler>().push<AuthenticatedScope>();
-      await DI.get<ScopeHandler>().push<JourneyScope>();
-      if (context.mounted) {
-        context.router.replace(const JourneySelectionRoute());
-      }
-    } catch (e) {
-      _log.severe('Login failed', e);
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(context.l10n.p_login_login_failed),
-          ),
-        );
-      }
-    }
-
-    setState(() {
-      isLoading = false;
-    });
-  }
+  Widget _background() => SvgPicture.asset(
+    AppAssets.loginPageBackground,
+    fit: .fill,
+    width: double.infinity,
+    height: double.infinity,
+  );
 }
