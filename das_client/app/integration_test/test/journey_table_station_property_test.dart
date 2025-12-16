@@ -10,9 +10,7 @@ void main() {
   testWidgets('test station signs are displayed', (tester) async {
     await prepareAndStartApp(tester);
 
-    await loadJourney(tester, trainNumber: 'T21');
-
-    final scrollableFinder = find.byType(AnimatedList);
+    await loadJourney(tester, trainNumber: 'T21M');
 
     expect(find.byKey(Key(StationSign.deadendStation.name)), findsAtLeast(4));
     expect(find.byKey(Key(StationSign.noExitSignal.name)), findsNWidgets(2));
@@ -20,11 +18,11 @@ void main() {
     expect(find.byKey(Key(StationSign.noEntryExitSignal.name)), findsNWidgets(1));
     expect(find.byKey(Key(StationSign.entryStationWithoutRailFreeAccess.name)), findsNWidgets(1));
 
-    await tester.dragUntilVisible(find.text('Lausanne'), scrollableFinder, const Offset(0, -50));
+    await dragUntilTextInStickyHeader(tester, 'Nyon');
 
     expect(find.byKey(Key(StationSign.openLevelCrossingBeforeExitSignal.name)), findsNWidgets(2));
 
-    await tester.dragUntilVisible(find.text('Aigle'), scrollableFinder, const Offset(0, -50));
+    await dragUntilTextInStickyHeader(tester, 'Montreux');
 
     expect(find.byKey(Key(StationSign.entryOccupiedTrack.name)), findsNWidgets(1));
 
@@ -34,7 +32,7 @@ void main() {
   testWidgets('test station properties are displayed', (tester) async {
     await prepareAndStartApp(tester);
 
-    await loadJourney(tester, trainNumber: 'T21');
+    await loadJourney(tester, trainNumber: 'T21M');
 
     final geneveRow = findDASTableRowByText('Genève');
     expect(find.descendant(of: geneveRow, matching: find.byKey(Key(StationSign.deadendStation.name))), findsOneWidget);
@@ -48,8 +46,7 @@ void main() {
     expect(find.descendant(of: nyonRow, matching: find.text('70')), findsOneWidget);
     expect(find.descendant(of: nyonRow, matching: find.text(' / ')), findsOneWidget);
 
-    Finder scrollableFinder = find.byType(AnimatedList);
-    await tester.dragUntilVisible(find.text('Vevey'), scrollableFinder, const Offset(0, -50));
+    await dragUntilTextInStickyHeader(tester, 'Lausanne');
 
     final veveyRow = findDASTableRowByText('Vevey');
     expect(find.text('Vevey'), findsOneWidget);
@@ -59,8 +56,7 @@ void main() {
     expect(find.descendant(of: veveyRow, matching: find.byKey(ServicePointRow.reducedSpeedKey)), findsOneWidget);
     expect(find.descendant(of: veveyRow, matching: find.byKey(Key(StationSign.deadendStation.name))), findsOneWidget);
 
-    scrollableFinder = find.byType(AnimatedList);
-    await tester.dragUntilVisible(find.text('Aigle'), scrollableFinder, const Offset(0, -50));
+    await dragUntilTextInStickyHeader(tester, 'Montreux');
 
     final aigleRow = findDASTableRowByText('Aigle');
     expect(
@@ -74,13 +70,12 @@ void main() {
   testWidgets('test station properties are displayed depending on TrainSeries', (tester) async {
     await prepareAndStartApp(tester);
 
-    await loadJourney(tester, trainNumber: 'T21');
+    await loadJourney(tester, trainNumber: 'T21M');
 
     var geneveRow = findDASTableRowByText('Genève');
     expect(find.descendant(of: geneveRow, matching: find.byKey(Key(StationSign.deadendStation.name))), findsOneWidget);
 
-    final scrollableFinder = find.byType(AnimatedList);
-    await tester.dragUntilVisible(find.text('Vevey'), scrollableFinder, const Offset(0, -50));
+    await dragUntilTextInStickyHeader(tester, 'Lausanne');
 
     var veveyRow = findDASTableRowByText('Vevey');
     expect(find.descendant(of: veveyRow, matching: find.text('via Stammlinie')), findsOneWidget);
@@ -91,8 +86,6 @@ void main() {
 
     geneveRow = findDASTableRowByText('Genève');
     expect(find.descendant(of: geneveRow, matching: find.byKey(Key(StationSign.deadendStation.name))), findsNothing);
-
-    await tester.dragUntilVisible(find.text('Vevey'), scrollableFinder, const Offset(0, -50));
 
     veveyRow = findDASTableRowByText('Vevey');
     expect(find.descendant(of: veveyRow, matching: find.text('via Stammlinie')), findsOneWidget);

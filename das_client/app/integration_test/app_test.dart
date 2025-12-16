@@ -16,6 +16,7 @@ import 'package:logging/logging.dart';
 import 'integration_test_di.dart';
 import 'test/additional_speed_restriction_modal_test.dart' as additional_speed_restriction_modal_test;
 import 'test/automatic_advancement_test.dart' as automatic_advancement_tests;
+import 'test/break_load_slip_test.dart' as break_load_slip_tests;
 import 'test/journey_header_test.dart' as journey_header_tests;
 import 'test/journey_notification_test.dart' as journey_notification_tests;
 import 'test/journey_replacement_series_test.dart' as journey_replacement_series_test;
@@ -28,6 +29,7 @@ import 'test/journey_table_station_property_test.dart' as journey_table_station_
 import 'test/journey_table_test.dart' as journey_table_tests;
 import 'test/journey_table_time_test.dart' as journey_table_time_tests;
 import 'test/journey_table_track_equipment_test.dart' as journey_table_track_equipment_tests;
+import 'test/manual_advancement_test.dart' as manual_advancement_tests;
 import 'test/navigation_test.dart' as navigation_tests;
 import 'test/reduced_journey_table_test.dart' as reduced_journey_table_tests;
 import 'test/service_point_modal_test.dart' as service_point_modal_test;
@@ -52,26 +54,28 @@ void main() {
     await _delayOnAndroidEmulator();
   });
 
-  settings_test.main();
-  reduced_journey_table_tests.main();
-  journey_table_tests.main();
-  journey_table_time_tests.main();
+  additional_speed_restriction_modal_test.main();
+  automatic_advancement_tests.main();
+  break_load_slip_tests.main();
   journey_header_tests.main();
-  journey_table_track_equipment_tests.main();
+  journey_notification_tests.main();
+  journey_replacement_series_test.main();
+  journey_search_overlay_tests.main();
+  journey_table_advised_speeds_tests.main();
   journey_table_break_series_tests.main();
   journey_table_calculated_speed_tests.main();
   journey_table_collapsible_rows_test.main();
-  journey_notification_tests.main();
-  navigation_tests.main();
-  train_search_tests.main();
-  automatic_advancement_tests.main();
-  service_point_modal_test.main();
-  journey_search_overlay_tests.main();
-  additional_speed_restriction_modal_test.main();
-  warnapp_tests.main();
   journey_table_station_property_test.main();
-  journey_table_advised_speeds_tests.main();
-  journey_replacement_series_test.main();
+  journey_table_tests.main();
+  journey_table_time_tests.main();
+  journey_table_track_equipment_tests.main();
+  manual_advancement_tests.main();
+  navigation_tests.main();
+  reduced_journey_table_tests.main();
+  service_point_modal_test.main();
+  settings_test.main();
+  train_search_tests.main();
+  warnapp_tests.main();
 }
 
 Future<void> prepareAndStartApp(WidgetTester tester, {VoidCallback? onBeforeRun}) async {

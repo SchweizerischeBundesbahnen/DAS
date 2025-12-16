@@ -6,9 +6,9 @@ import 'package:formation/component.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class BreakLoadSlipBrakeDetails extends StatelessWidget {
-  const BreakLoadSlipBrakeDetails({required this.formationRun, super.key});
+  const BreakLoadSlipBrakeDetails({required this.formationRunChange, super.key});
 
-  final FormationRun formationRun;
+  final FormationRunChange formationRunChange;
 
   @override
   Widget build(BuildContext context) {
@@ -20,22 +20,34 @@ class BreakLoadSlipBrakeDetails extends StatelessWidget {
   Widget _brakeDetails(BuildContext context) {
     return KeyValueTable(
       rows: [
-        KeyValueTableDataRow.title(context.l10n.p_break_load_slip_brake_details_title),
+        KeyValueTableDataRow.title(
+          context.l10n.p_break_load_slip_brake_details_title,
+          hasChange: _hasChange(),
+        ),
         SizedBox(height: sbbDefaultSpacing * 0.5),
         KeyValueTableDataRow(
           context.l10n.p_break_load_slip_brake_details_brake_ratio_front,
-          formationRun.gradientUphillMaxInPermille.toString(),
+          formationRunChange.formationRun.gradientUphillMaxInPermille.toString(),
+          hasChange: formationRunChange.hasChanged(.gradientUphillMaxInPermille),
         ),
         KeyValueTableDataRow(
           context.l10n.p_break_load_slip_brake_details_brake_ratio_back,
-          formationRun.gradientDownhillMaxInPermille.toString(),
+          formationRunChange.formationRun.gradientDownhillMaxInPermille.toString(),
+          hasChange: formationRunChange.hasChanged(.gradientDownhillMaxInPermille),
         ),
         KeyValueTableDataRow(
           context.l10n.p_break_load_slip_brake_details_min_holding_force,
-          formationRun.slopeMaxForHoldingForceMinInPermille,
+          formationRunChange.formationRun.slopeMaxForHoldingForceMinInPermille,
+          hasChange: formationRunChange.hasChanged(.slopeMaxForHoldingForceMinInPermille),
         ),
         KeyValueTableDataRow.empty(),
       ],
     );
+  }
+
+  bool _hasChange() {
+    return formationRunChange.hasChanged(.gradientUphillMaxInPermille) ||
+        formationRunChange.hasChanged(.gradientDownhillMaxInPermille) ||
+        formationRunChange.hasChanged(.slopeMaxForHoldingForceMinInPermille);
   }
 }

@@ -11,6 +11,7 @@ import 'package:app/pages/journey/break_load_slip/widgets/formation_run_navigati
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_view_model.dart';
 import 'package:app/pages/journey/journey_table/punctuality/punctuality_view_model.dart';
 import 'package:app/pages/journey/journey_table_view_model.dart';
+import 'package:app/pages/journey/settings/journey_settings_view_model.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:formation/component.dart';
@@ -27,33 +28,18 @@ class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
   @override
   Widget wrappedRoute(BuildContext context) => MultiProvider(
     providers: [
-      Provider<JourneyTableViewModel>(create: (_) => DI.get()),
-      ProxyProvider<JourneyTableViewModel, PunctualityViewModel>(
-        update: (_, journeyVM, prev) {
-          if (prev != null) return prev;
-          return PunctualityViewModel(
-            journeyStream: journeyVM.journey,
-          );
-        },
-        dispose: (_, vm) => vm.dispose(),
-      ),
-      ProxyProvider2<JourneyTableViewModel, PunctualityViewModel, JourneyPositionViewModel>(
-        update: (_, journeyVM, punctualityVM, prev) {
-          if (prev != null) return prev;
-          return JourneyPositionViewModel(
-            journeyStream: journeyVM.journey,
-            punctualityStream: punctualityVM.model,
-          );
-        },
-        dispose: (_, vm) => vm.dispose(),
-      ),
-      ProxyProvider2<JourneyTableViewModel, JourneyPositionViewModel, BreakLoadSlipViewModel>(
-        update: (_, journeyVM, positionVM, prev) {
+      Provider<JourneyTableViewModel>(create: (_) => DI.get<JourneyTableViewModel>()),
+      Provider<JourneySettingsViewModel>(create: (_) => DI.get<JourneySettingsViewModel>()),
+      Provider<PunctualityViewModel>(create: (_) => DI.get<PunctualityViewModel>()),
+      Provider<JourneyPositionViewModel>(create: (_) => DI.get<JourneyPositionViewModel>()),
+      ProxyProvider3<JourneyTableViewModel, JourneyPositionViewModel, JourneySettingsViewModel, BreakLoadSlipViewModel>(
+        update: (_, journeyVM, positionVM, settingsVM, prev) {
           if (prev != null) return prev;
           return BreakLoadSlipViewModel(
             journeyTableViewModel: journeyVM,
             journeyPositionViewModel: positionVM,
             formationRepository: DI.get(),
+            journeySettingsViewModel: settingsVM,
           );
         },
         dispose: (_, vm) => vm.dispose(),
@@ -90,19 +76,19 @@ class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
         if (snap == null || snap[0] == null || snap[1] == null) return _noDataAvailable(context);
 
         final formation = snap[0] as Formation;
-        final formationRun = snap[1] as FormationRun;
+        final formationRunChange = snap[1] as FormationRunChange;
 
         return Stack(
           children: [
             Column(
               spacing: sbbDefaultSpacing,
               children: [
-                BreakLoadSlipHeader(formationRun: formationRun),
+                BreakLoadSlipHeader(formationRun: formationRunChange.formationRun),
                 Column(
                   spacing: sbbDefaultSpacing,
                   children: [
-                    BreakLoadSlipTrainDetails(formation: formation, formationRun: formationRun),
-                    _loadDetailsAndButtons(context, formation, formationRun),
+                    BreakLoadSlipTrainDetails(formation: formation, formationRunChange: formationRunChange),
+                    _loadDetailsAndButtons(context, formation, formationRunChange),
                   ],
                 ),
               ],
@@ -124,22 +110,26 @@ class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
     );
   }
 
-  Row _specialRestrctionsAndBrakeDetailsRow(BuildContext context, Formation formation, FormationRun formationRun) {
+  Row _specialRestrictionsAndBrakeDetailsRow(
+    BuildContext context,
+    Formation formation,
+    FormationRunChange formationRun,
+  ) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: sbbDefaultSpacing,
       children: [
         Expanded(
-          child: BreakLoadSlipSpecialRestrictions(formationRun: formationRun),
+          child: BreakLoadSlipSpecialRestrictions(formationRunChange: formationRun),
         ),
         Expanded(
-          child: BreakLoadSlipBrakeDetails(formationRun: formationRun),
+          child: BreakLoadSlipBrakeDetails(formationRunChange: formationRun),
         ),
       ],
     );
   }
 
-  Widget _loadDetailsAndButtons(BuildContext context, Formation formation, FormationRun formationRun) {
+  Widget _loadDetailsAndButtons(BuildContext context, Formation formation, FormationRunChange formationRun) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing),
       child: Row(
@@ -148,16 +138,16 @@ class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
         children: [
           Expanded(
             flex: 1,
-            child: BreakLoadSlipHauledLoadDetails(formationRun: formationRun),
+            child: BreakLoadSlipHauledLoadDetails(formationRunChange: formationRun),
           ),
           Expanded(
             flex: 2,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _specialRestrctionsAndBrakeDetailsRow(context, formation, formationRun),
+                _specialRestrictionsAndBrakeDetailsRow(context, formation, formationRun),
                 SizedBox(height: sbbDefaultSpacing),
-                BreakLoadSlipButtons(formationRun: formationRun),
+                BreakLoadSlipButtons(),
               ],
             ),
           ),
