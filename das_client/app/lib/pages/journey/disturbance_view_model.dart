@@ -35,5 +35,6 @@ class DisturbanceViewModel {
   void dispose() {
     _disturbanceSubscription?.cancel();
     _disturbanceSubscription = null;
+    _rxDisturbance.close();
   }
 }
