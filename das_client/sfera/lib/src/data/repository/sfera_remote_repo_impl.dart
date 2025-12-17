@@ -16,6 +16,7 @@ import 'package:sfera/src/data/api/task/request_segment_profiles_task.dart';
 import 'package:sfera/src/data/api/task/request_train_characteristics_task.dart';
 import 'package:sfera/src/data/api/task/sfera_task.dart';
 import 'package:sfera/src/data/dto/departure_dispatch_notification_event_dto.dart';
+import 'package:sfera/src/data/dto/disturbance_msg_event_dto.dart';
 import 'package:sfera/src/data/dto/enums/das_driving_mode_dto.dart';
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
 import 'package:sfera/src/data/dto/message_header_dto.dart';
@@ -71,6 +72,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
   final _rxUxTestingEvent = BehaviorSubject<UxTestingEvent?>.seeded(null);
   final _rxWarnappEvent = BehaviorSubject<WarnappEvent?>.seeded(null);
   final _rxDepartureDispatchNotificationEvent = BehaviorSubject<DepartureDispatchNotificationEvent?>.seeded(null);
+  final _rxDisturbanceEvent = BehaviorSubject<DisturbanceEvent?>.seeded(null);
 
   // TODO: refactor _sferaService.stateStream & journeyUpdateStream & (connect / disconnect)
   // repository should not expose a state, should just expose data stream
@@ -88,6 +90,9 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
 
   @override
   Stream<WarnappEvent?> get warnappEventStream => _rxWarnappEvent.stream;
+
+  @override
+  Stream<DisturbanceEvent?> get disturbanceEventStream => _rxDisturbanceEvent.distinct();
 
   @override
   Stream<DepartureDispatchNotificationEvent?> get departureDispatchNotificationEventStream =>
@@ -146,6 +151,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
     _rxDepartureDispatchNotificationEvent.add(null);
     _rxUxTestingEvent.add(null);
     _rxWarnappEvent.add(null);
+    _rxDisturbanceEvent.add(null);
     _rxState.add(.disconnected);
   }
 
@@ -158,6 +164,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
     _mqttStreamSubscription?.cancel();
     _mqttStreamSubscription = null;
     _rxWarnappEvent.close();
+    _rxDisturbanceEvent.close();
   }
 
   @override
@@ -389,6 +396,10 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
 
     if (data is WarnAppMsgDto) {
       _rxWarnappEvent.add(WarnappEvent());
+    }
+
+    if (data is DisturbanceMsgEventDto) {
+      _rxDisturbanceEvent.add(DisturbanceEvent(type: data.disturbanceMsgNsp.disturbanceMsgType.type));
     }
 
     if (data is DepartureDispatchNotificationEventDto) {

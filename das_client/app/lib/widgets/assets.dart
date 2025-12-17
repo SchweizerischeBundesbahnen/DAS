@@ -59,4 +59,5 @@ class AppAssets {
   static const soundAdvisedSpeedStart = '$_soundsDir/advised_speed_start.wav';
   static const soundAdvisedSpeedEnd = '$_soundsDir/advised_speed_end.wav';
   static const soundBreakSlipUpdated = '$_soundsDir/break_slip_updated.mp3';
+  static const soundGridOverload = '$_soundsDir/grid_overload.mp3';
 }

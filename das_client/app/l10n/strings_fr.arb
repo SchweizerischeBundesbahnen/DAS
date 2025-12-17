@@ -125,6 +125,7 @@
   "w_modal_sheet_permission_brightness": "Pour adapter la luminosité de l’écran, le client DAS doit accéder aux paramètres système.",
   "w_modal_sheet_button_grant_permission": "Octroyer les autorisations",
   "w_journey_search_overlay_title": "Rechercher Marche",
+  "w_disturbance_notification_text": "Alimentation critique en courant de traction.",
   "w_departure_dispatch_notification_long": "Départ prévu dans : > 30 Min",
   "w_departure_dispatch_notification_middle": "Départ prévu dans : 15 - 30 Min",
   "w_departure_dispatch_notification_short": "Départ prévu dans : < 15 Min",

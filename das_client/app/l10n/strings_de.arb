@@ -275,6 +275,7 @@
     }
   },
   "w_break_load_slip_notification_text": "Eine neue Version des Brems- und Lastzettels ist vorhanden.",
+  "w_disturbance_notification_text": "Kritische Bahnstromversorgung.",
   "w_departure_dispatch_notification_long": "Voraussichtliche Abfahrt in: > 30 Min",
   "w_departure_dispatch_notification_middle": "Voraussichtliche Abfahrt in: 15 - 30 Min",
   "w_departure_dispatch_notification_short": "Voraussichtliche Abfahrt in: < 15 Min",

@@ -6,12 +6,13 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 part 'notification_box_style.dart';
 
 class NotificationBox extends StatelessWidget {
-  const NotificationBox({required this.style, required this.title, this.action, this.text, super.key});
+  const NotificationBox({required this.style, required this.title, this.action, this.text, this.customIcon, super.key});
 
   final NotificationBoxStyle style;
   final String title;
   final Widget? action;
   final String? text;
+  final IconData? customIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +49,7 @@ class NotificationBox extends StatelessWidget {
         Row(
           children: [
             Icon(
-              style.icon,
+              customIcon ?? style.icon,
               color: ThemeUtil.getColor(context, style.iconColor, style.iconColorDark),
             ),
             const SizedBox(width: sbbDefaultSpacing / 2),
