@@ -61,43 +61,44 @@ class RequestJourneyProfileTask extends SferaTask<List<dynamic>> {
 
   @override
   Future<bool> handleMessage(SferaG2bReplyMessageDto replyMessage) async {
-    if (replyMessage.payload == null || replyMessage.payload!.journeyProfiles.isEmpty) {
+    // TODO: Handle errors
+
+    final payload = replyMessage.payload;
+    if (payload == null || payload.journeyProfiles.isEmpty) {
       return false;
     }
 
     stopTimeout();
-    final journeyProfile = replyMessage.payload!.journeyProfiles.first;
+    final journeyProfile = payload.journeyProfiles.first;
     if (journeyProfile.status == .invalid || journeyProfile.status == .unavailable) {
-      _log.warning(
-        'Received JourneyProfile with status=${journeyProfile.status}.',
-      );
-      _taskFailedCallback(this, .jpUnavailable);
+      _log.warning('Received JourneyProfile with status=${journeyProfile.status}.');
+      _taskFailedCallback(this, .jpUnavailable());
       return true;
     }
 
     _log.info(
-      'Received G2bReplyPayload response with ${replyMessage.payload!.journeyProfiles.length} JourneyProfiles, '
-      '${replyMessage.payload!.segmentProfiles.length} SegmentProfiles and '
-      '${replyMessage.payload!.trainCharacteristics.length} TrainCharacteristics...',
+      'Received G2bReplyPayload response with ${payload.journeyProfiles.length} JourneyProfiles, '
+      '${payload.segmentProfiles.length} SegmentProfiles and '
+      '${payload.trainCharacteristics.length} TrainCharacteristics...',
     );
 
-    for (final element in replyMessage.payload!.segmentProfiles) {
+    for (final element in payload.segmentProfiles) {
       await _sferaDatabaseRepository.saveSegmentProfile(element);
     }
 
-    for (final trainCharacteristics in replyMessage.payload!.trainCharacteristics) {
+    for (final trainCharacteristics in payload.trainCharacteristics) {
       await _sferaDatabaseRepository.saveTrainCharacteristics(trainCharacteristics);
     }
 
-    for (final journeyProfile in replyMessage.payload!.journeyProfiles) {
+    for (final journeyProfile in payload.journeyProfiles) {
       await _sferaDatabaseRepository.saveJourneyProfile(journeyProfile);
     }
 
     final result = [];
-    result.addAll(replyMessage.payload!.journeyProfiles);
-    result.addAll(replyMessage.payload!.segmentProfiles);
-    result.addAll(replyMessage.payload!.trainCharacteristics);
-    result.addAll(replyMessage.payload!.relatedTrainInformation);
+    result.addAll(payload.journeyProfiles);
+    result.addAll(payload.segmentProfiles);
+    result.addAll(payload.trainCharacteristics);
+    result.addAll(payload.relatedTrainInformation);
 
     _taskCompletedCallback(this, result);
     return true;

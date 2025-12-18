@@ -1,10 +1,10 @@
 import 'package:app/pages/journey/selection/railway_undertaking/widgets/select_railway_undertaking_modal.dart';
 import 'package:app/pages/journey/selection/widgets/journey_date_picker.dart';
-import 'package:app/util/error_code.dart';
 import 'package:app/util/format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+import 'package:sfera/component.dart';
 
 import '../app_test.dart';
 import '../util/test_utils.dart';
@@ -180,7 +180,7 @@ void main() {
 
       await tapElement(tester, primaryButton);
 
-      expect(find.text('${l10n.c_error_code}: ${ErrorCode.sferaJpUnavailable.code}'), findsOneWidget);
+      expect(find.text('${l10n.c_error_code}: ${JpUnavailable().code}'), findsOneWidget);
       expect(find.text(l10n.c_error_sfera_jp_unavailable), findsOneWidget);
     });
   });

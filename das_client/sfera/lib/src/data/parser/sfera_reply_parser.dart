@@ -1,3 +1,4 @@
+import 'package:sfera/src/data/dto/additional_info_dto.dart';
 import 'package:sfera/src/data/dto/additional_speed_restriction_dto.dart';
 import 'package:sfera/src/data/dto/advised_speed_dto.dart';
 import 'package:sfera/src/data/dto/b2g_event_payload_dto.dart';
@@ -16,7 +17,9 @@ import 'package:sfera/src/data/dto/das_operating_modes_selected_dto.dart';
 import 'package:sfera/src/data/dto/decisive_gradient_area_dto.dart';
 import 'package:sfera/src/data/dto/delay_dto.dart';
 import 'package:sfera/src/data/dto/foot_note_dto.dart';
+import 'package:sfera/src/data/dto/g2b_error.dart';
 import 'package:sfera/src/data/dto/g2b_event_payload_dto.dart';
+import 'package:sfera/src/data/dto/g2b_message_response.dart';
 import 'package:sfera/src/data/dto/g2b_reply_payload_dto.dart';
 import 'package:sfera/src/data/dto/general_jp_information_dto.dart';
 import 'package:sfera/src/data/dto/general_jp_information_nsp_dto.dart';
@@ -265,6 +268,10 @@ class SferaReplyParser {
         return SferaG2bEventMessageDto(type: type, attributes: attributes, children: children, value: value);
       case G2bEventPayloadDto.elementType:
         return G2bEventPayloadDto(type: type, attributes: attributes, children: children, value: value);
+      case G2bErrorDto.elementType:
+        return G2bErrorDto(type: type, attributes: attributes, children: children, value: value);
+      case G2bMessageResponseDto.elementType:
+        return G2bMessageResponseDto(type: type, attributes: attributes, children: children, value: value);
       case RelatedTrainInformationDto.elementType:
         return RelatedTrainInformationDto(type: type, attributes: attributes, children: children, value: value);
       case OwnTrainDto.elementType:
@@ -331,6 +338,8 @@ class SferaReplyParser {
         return GeneralJpInformationDto(attributes: attributes, children: children, value: value);
       case GeneralJpInformationNspDto.elementType:
         return GeneralJpInformationNspDto(attributes: attributes, children: children, value: value);
+      case AdditionalInfoDto.elementType:
+        return AdditionalInfoDto(type: type, attributes: attributes, children: children, value: value);
       default:
         return SferaXmlElementDto(type: type, attributes: attributes, children: children, value: value);
     }

@@ -44,8 +44,40 @@ class RequestSegmentProfilesTask extends SferaTask<List<SegmentProfileDto>> {
     await _requestSegmentProfiles();
   }
 
+  @override
+  Future<bool> handleMessage(SferaG2bReplyMessageDto replyMessage) async {
+    // TODO: Handle errors
+
+    if (replyMessage.payload == null || replyMessage.payload!.segmentProfiles.isEmpty) {
+      return false;
+    }
+
+    stopTimeout();
+    _log.info(
+      'Received G2bReplyPayload response with ${replyMessage.payload!.segmentProfiles.length} SegmentProfiles...',
+    );
+
+    bool allValid = true;
+
+    for (final element in replyMessage.payload!.segmentProfiles) {
+      if (element.status == .valid) {
+        await _sferaDatabaseRepository.saveSegmentProfile(element);
+      } else {
+        allValid = false;
+      }
+    }
+
+    if (allValid) {
+      _taskCompletedCallback(this, replyMessage.payload!.segmentProfiles.toList());
+    } else {
+      _taskFailedCallback(this, .invalid());
+    }
+
+    return true;
+  }
+
   Future<void> _requestSegmentProfiles() async {
-    final missingSp = await findMissingSegmentProfiles();
+    final missingSp = await _findMissingSegmentProfiles();
     if (missingSp.isEmpty) {
       _log.info('No missing SegmentProfiles found...');
       _taskCompletedCallback(this, []);
@@ -75,7 +107,7 @@ class RequestSegmentProfilesTask extends SferaTask<List<SegmentProfileDto>> {
     _mqttService.publishMessage(otnId.company, sferaTrain, sferaB2gRequestMessage.buildDocument().toString());
   }
 
-  Future<List<SegmentProfileReferenceDto>> findMissingSegmentProfiles() async {
+  Future<List<SegmentProfileReferenceDto>> _findMissingSegmentProfiles() async {
     final missingSps = <SegmentProfileReferenceDto>[];
 
     for (final segment in journeyProfile.segmentProfileReferences) {
@@ -90,35 +122,5 @@ class RequestSegmentProfilesTask extends SferaTask<List<SegmentProfileDto>> {
     }
 
     return missingSps;
-  }
-
-  @override
-  Future<bool> handleMessage(SferaG2bReplyMessageDto replyMessage) async {
-    if (replyMessage.payload == null || replyMessage.payload!.segmentProfiles.isEmpty) {
-      return false;
-    }
-
-    stopTimeout();
-    _log.info(
-      'Received G2bReplyPayload response with ${replyMessage.payload!.segmentProfiles.length} SegmentProfiles...',
-    );
-
-    bool allValid = true;
-
-    for (final element in replyMessage.payload!.segmentProfiles) {
-      if (element.status == .valid) {
-        await _sferaDatabaseRepository.saveSegmentProfile(element);
-      } else {
-        allValid = false;
-      }
-    }
-
-    if (allValid) {
-      _taskCompletedCallback(this, replyMessage.payload!.segmentProfiles.toList());
-    } else {
-      _taskFailedCallback(this, .invalid);
-    }
-
-    return true;
   }
 }

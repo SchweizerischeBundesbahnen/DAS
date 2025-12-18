@@ -52,19 +52,25 @@ class HandshakeTask extends SferaTask {
 
     final messageHeader = _sferaService.messageHeader(sender: otnId.company);
     final sferaB2gRequestMessage = SferaB2gRequestMessageDto.create(messageHeader, handshakeRequest: handshakeRequest);
-    final success = _mqttService.publishMessage(
-      otnId.company,
-      sferaTrain,
-      sferaB2gRequestMessage.buildDocument().toString(),
-    );
+    final message = sferaB2gRequestMessage.buildDocument().toString();
+    final success = _mqttService.publishMessage(otnId.company, sferaTrain, message);
 
     if (!success) {
-      _taskFailedCallback(this, .connectionFailed);
+      _taskFailedCallback(this, .connectionFailed());
     }
   }
 
   @override
   Future<bool> handleMessage(SferaG2bReplyMessageDto replyMessage) async {
+    // TODO: Handle errors
+    if (replyMessage.hasErrors) {
+      final errors = replyMessage.payload?.messageResponse!.errors;
+      _log.info('Received reply with errors $errors');
+      // TODO: map to protocol error
+      _taskFailedCallback(this, SferaError.protocolError(errors: []));
+      return false;
+    }
+
     if (replyMessage.handshakeAcknowledgement != null) {
       stopTimeout();
       _log.info('Received handshake acknowledgment');
@@ -75,7 +81,7 @@ class HandshakeTask extends SferaTask {
       _log.warning(
         'Received handshake reject with reason=${replyMessage.handshakeReject?.handshakeRejectReason?.toString()}',
       );
-      _taskFailedCallback(this, .handshakeRejected);
+      _taskFailedCallback(this, .handshakeRejected());
       _mqttService.disconnect();
       return true;
     } else {
