@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.11.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.10.0...sfera_mock-v0.11.0) (2025-12-18)
+
+
+### Features
+
+* add break- and loadslip ([#692](https://github.com/SchweizerischeBundesbahnen/DAS/issues/692)) ([#1506](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1506)) ([19ee997](https://github.com/SchweizerischeBundesbahnen/DAS/commit/19ee997dad58e2f1cc6bca12736ed05c4a2e2f55))
+* add power grid overload notification ([#244](https://github.com/SchweizerischeBundesbahnen/DAS/issues/244)) ([#1556](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1556)) ([db1c2a2](https://github.com/SchweizerischeBundesbahnen/DAS/commit/db1c2a2a6f9a738215d1c7522d0771eb5a11aab0))
+* added departure dispatch notification ([#124](https://github.com/SchweizerischeBundesbahnen/DAS/issues/124)) ([#1551](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1551)) ([74682a4](https://github.com/SchweizerischeBundesbahnen/DAS/commit/74682a4eefce92584a46560c5e290a3f86f1878d))
+* zis formation triggers for ux tests ([#1445](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1445)) ([#1550](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1550)) ([381aa16](https://github.com/SchweizerischeBundesbahnen/DAS/commit/381aa1620ab5685bc759b1fcdfac0419d67d8c7e))
+
+
+### Documentation
+
+* add T9999 operating day ([#1543](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1543)) ([ca9d795](https://github.com/SchweizerischeBundesbahnen/DAS/commit/ca9d79596fc298bee377b2d671ae9063986e52e6))
+* testdata minor fixes ([#1558](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1558)) ([6a89cb1](https://github.com/SchweizerischeBundesbahnen/DAS/commit/6a89cb13a442e93a6438c6b08eb3431b05682754))
+
 ## [0.10.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.9.0...sfera_mock-v0.10.0) (2025-12-02)
 
 
