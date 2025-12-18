@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.34.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.33.0...das_client-v0.34.0) (2025-12-18)
+
+
+### Features
+
+* add power grid overload notification ([#244](https://github.com/SchweizerischeBundesbahnen/DAS/issues/244)) ([#1556](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1556)) ([db1c2a2](https://github.com/SchweizerischeBundesbahnen/DAS/commit/db1c2a2a6f9a738215d1c7522d0771eb5a11aab0))
+
 ## [0.33.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.32.0...das_client-v0.33.0) (2025-12-16)
 
 
