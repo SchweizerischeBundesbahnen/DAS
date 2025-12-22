@@ -28,6 +28,7 @@
         <jaxb2-maven-plugin.version>4.0.0</jaxb2-maven-plugin.version>
         <paho.mqttv5.client.version>1.2.5</paho.mqttv5.client.version>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
