@@ -64,6 +64,17 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
+  cloud:
+    vault:
+      uri: https://vault-nonprod.sbb.ch
+      kv:
+        enabled: true
+        backend: kv/DSO-BPS/driver-advisory-system
+      authentication: KUBERNETES
+      kubernetes:
+        role: ${ROLE}
+        kubernetes-path: ${CLUSTERNAME}
+        service-account-token-file: /var/run/secrets/vault/token
 management:
   endpoint:
     health:
