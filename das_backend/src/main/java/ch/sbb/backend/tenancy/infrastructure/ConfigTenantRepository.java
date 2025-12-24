@@ -23,7 +23,7 @@ public class ConfigTenantRepository implements TenantRepository {
             .filter(t -> issuerUri.equals(t.issuerUri()))
             .findAny()
             .orElseThrow(() -> new IllegalArgumentException("unknown tenant"));
-        log.debug("got Tenant::name={}", tenant.name());
+        log.info("Tenant::name={}", tenant.name());
         return tenant;
     }
 }
