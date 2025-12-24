@@ -79,15 +79,12 @@ auth:
     service-name: ${AUTH_SERVICE_NAME}
   tenants:
     - name: sbb
-      id: 2cda5d11-f0ac-46b3-967d-af1b2e1bd01a
       issuer-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0
       jwk-set-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/discovery/v2.0/keys
     - name: sob
-      id: d653d01f-17a4-48a1-9aab-b780b61b4273
       issuer-uri: https://login.microsoftonline.com/d653d01f-17a4-48a1-9aab-b780b61b4273/v2.0
       jwk-set-uri: https://login.microsoftonline.com/d653d01f-17a4-48a1-9aab-b780b61b4273/discovery/v2.0/keys
     - name: bls
-      id: a64ce5df-4ad8-40b9-91ee-54bac2bb8326
       issuer-uri: https://login.microsoftonline.com/a64ce5df-4ad8-40b9-91ee-54bac2bb8326/v2.0
       jwk-set-uri: https://login.microsoftonline.com/a64ce5df-4ad8-40b9-91ee-54bac2bb8326/discovery/v2.0/keys
 zis:

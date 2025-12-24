@@ -18,8 +18,10 @@ auth:
   audience:
     service-name: test
   tenants:
-    - name: test
-      id: 3409e798-d567-49b1-9bae-f0be66427c54
+    - name: sbb
+      issuer-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0
+      jwk-set-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/discovery/v2.0/keys
+    - name: unknown-tenant
       issuer-uri: https://login.microsoftonline.com/3409e798-d567-49b1-9bae-f0be66427c54/v2.0
       jwk-set-uri: https://login.microsoftonline.com/3409e798-d567-49b1-9bae-f0be66427c54/discovery/v2.0/keys
 
