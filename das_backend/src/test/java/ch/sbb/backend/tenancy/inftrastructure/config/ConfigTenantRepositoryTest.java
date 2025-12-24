@@ -6,7 +6,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import ch.sbb.backend.tenancy.domain.model.Tenant;
 import ch.sbb.backend.tenancy.infrastructure.ConfigTenantRepository;
 import ch.sbb.backend.tenancy.infrastructure.config.TenantConfig;
-import com.nimbusds.jose.KeySourceException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +43,7 @@ class ConfigTenantRepositoryTest {
     @Test
     void getByIssuerUri_badUri() {
         assertThatThrownBy(() -> tenantRepository.getByIssuerUri("https://bad.issuer"))
-            .isInstanceOf(KeySourceException.class)
+            .isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("unknown tenant");
     }
 }
