@@ -38,7 +38,7 @@ class ConfigTenantRepositoryTest {
     }
 
     @Test
-    void getByIssuerUri_BadUri() {
+    void getByIssuerUri_badUri() {
         assertThatThrownBy(() -> tenantRepository.getByIssuerUri("https://bad.issuer"))
             .isInstanceOf(KeySourceException.class)
             .hasMessageContaining("unknown tenant");
