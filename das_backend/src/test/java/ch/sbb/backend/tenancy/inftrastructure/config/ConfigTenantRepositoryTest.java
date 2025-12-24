@@ -32,9 +32,13 @@ class ConfigTenantRepositoryTest {
      */
     @Test
     void getByIssuerUri() {
-        Tenant tenant = tenantRepository.getByIssuerUri("https://login.microsoftonline.com/3409e798-d567-49b1-9bae-f0be66427c54/v2.0");
+        Tenant tenant = tenantRepository.getByIssuerUri("https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0");
         assertThat(tenant).isNotNull();
-        assertThat(tenant.name()).isEqualTo("test");
+        assertThat(tenant.name()).isEqualTo("sbb");
+
+        tenant = tenantRepository.getByIssuerUri("https://login.microsoftonline.com/3409e798-d567-49b1-9bae-f0be66427c54/v2.0");
+        assertThat(tenant).isNotNull();
+        assertThat(tenant.name()).isEqualTo("unknown-tenant");
     }
 
     @Test
