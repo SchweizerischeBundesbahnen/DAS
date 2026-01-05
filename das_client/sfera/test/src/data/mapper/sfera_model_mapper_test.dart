@@ -335,6 +335,45 @@ void main() {
     expect(curvePoints[3].comment, 'Kurve 5 after stop');
   });
 
+  test('Test summarized speeds are generated correctly', () async {
+    final journey = getJourney('T5');
+    final curvePoints = journey.data.where((it) => it.dataType == .curvePoint).cast<CurvePoint>().toList();
+
+    expect(journey.valid, true);
+    expect(curvePoints, hasLength(4));
+    expect(curvePoints[0].curvePointType, CurvePointType.begin);
+    expect(curvePoints[1].curvePointType, CurvePointType.begin);
+    expect(curvePoints[2].curvePointType, CurvePointType.begin);
+    expect(curvePoints[3].curvePointType, CurvePointType.summarized);
+    expect(curvePoints[3].localSpeeds, hasLength(4));
+    expect(curvePoints[3].localSpeeds!.elementAt(0).speed, isA<SummarizedCurvesSpeed>());
+    expect(curvePoints[3].localSpeeds!.elementAt(0).speed.isIllegal, false);
+    expect(
+      (curvePoints[3].localSpeeds!.elementAt(0).speed as SummarizedCurvesSpeed).speeds[0],
+      SingleSpeed(value: '50'),
+    );
+    expect(
+      (curvePoints[3].localSpeeds!.elementAt(0).speed as SummarizedCurvesSpeed).speeds[1],
+      SingleSpeed(value: '30'),
+    );
+    expect(
+      (curvePoints[3].localSpeeds!.elementAt(0).speed as SummarizedCurvesSpeed).speeds[2],
+      SingleSpeed(value: '91'),
+    );
+    expect(curvePoints[3].localSpeeds!.elementAt(1).speed, isA<SummarizedCurvesSpeed>());
+    expect(curvePoints[3].localSpeeds!.elementAt(2).speed, isA<SummarizedCurvesSpeed>());
+    expect(curvePoints[3].localSpeeds!.elementAt(3).speed, isA<SummarizedCurvesSpeed>());
+    expect(curvePoints[3].localSpeeds!.elementAt(3).speed.isIllegal, true);
+    expect(
+      (curvePoints[3].localSpeeds!.elementAt(3).speed as SummarizedCurvesSpeed).speeds[1],
+      SingleSpeed(value: 'XX'),
+    );
+    expect(
+      (curvePoints[3].localSpeeds!.elementAt(3).speed as SummarizedCurvesSpeed).speeds[2],
+      SingleSpeed(value: 'XX'),
+    );
+  });
+
   test('Test stop on demand is parsed correctly', () async {
     final journey = getJourney('T9999');
     final servicePoints = journey.data.where((it) => it.dataType == .servicePoint).cast<ServicePoint>().toList();
