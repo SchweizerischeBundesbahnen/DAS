@@ -319,8 +319,9 @@ void main() {
 
     expect(journey.valid, true);
     expect(curvePoints, hasLength(4));
-    expect(curvePoints.where((c) => c.curvePointType == .end), isEmpty);
+    expect(curvePoints.where((c) => c.curvePointType == CurvePointType.end), isEmpty);
     expect(curvePoints[0].curvePointType, CurvePointType.begin);
+    expect(curvePoints.where((c) => c.curvePointType == .end), isEmpty);
     expect(curvePoints[0].curveType, CurveType.curve);
     expect(curvePoints[0].comment, 'Kurve 1 comment');
     expect(curvePoints[1].curvePointType, CurvePointType.begin);
@@ -332,6 +333,45 @@ void main() {
     expect(curvePoints[3].curvePointType, CurvePointType.begin);
     expect(curvePoints[3].curveType, CurveType.curveAfterHalt);
     expect(curvePoints[3].comment, 'Kurve 5 after stop');
+  });
+
+  test('Test summarized speeds are generated correctly', () async {
+    final journey = getJourney('T5');
+    final curvePoints = journey.data.where((it) => it.dataType == .curvePoint).cast<CurvePoint>().toList();
+
+    expect(journey.valid, true);
+    expect(curvePoints, hasLength(4));
+    expect(curvePoints[0].curvePointType, CurvePointType.begin);
+    expect(curvePoints[1].curvePointType, CurvePointType.begin);
+    expect(curvePoints[2].curvePointType, CurvePointType.begin);
+    expect(curvePoints[3].curvePointType, CurvePointType.summarized);
+    expect(curvePoints[3].localSpeeds, hasLength(4));
+    expect(curvePoints[3].localSpeeds!.elementAt(0).speed, isA<SummarizedCurvesSpeed>());
+    expect(curvePoints[3].localSpeeds!.elementAt(0).speed.isIllegal, false);
+    expect(
+      (curvePoints[3].localSpeeds!.elementAt(0).speed as SummarizedCurvesSpeed).speeds[0],
+      SingleSpeed(value: '50'),
+    );
+    expect(
+      (curvePoints[3].localSpeeds!.elementAt(0).speed as SummarizedCurvesSpeed).speeds[1],
+      SingleSpeed(value: '30'),
+    );
+    expect(
+      (curvePoints[3].localSpeeds!.elementAt(0).speed as SummarizedCurvesSpeed).speeds[2],
+      SingleSpeed(value: '91'),
+    );
+    expect(curvePoints[3].localSpeeds!.elementAt(1).speed, isA<SummarizedCurvesSpeed>());
+    expect(curvePoints[3].localSpeeds!.elementAt(2).speed, isA<SummarizedCurvesSpeed>());
+    expect(curvePoints[3].localSpeeds!.elementAt(3).speed, isA<SummarizedCurvesSpeed>());
+    expect(curvePoints[3].localSpeeds!.elementAt(3).speed.isIllegal, true);
+    expect(
+      (curvePoints[3].localSpeeds!.elementAt(3).speed as SummarizedCurvesSpeed).speeds[1],
+      SingleSpeed(value: 'XX'),
+    );
+    expect(
+      (curvePoints[3].localSpeeds!.elementAt(3).speed as SummarizedCurvesSpeed).speeds[2],
+      SingleSpeed(value: 'XX'),
+    );
   });
 
   test('Test stop on demand is parsed correctly', () async {
@@ -713,7 +753,7 @@ void main() {
     expect(journey.valid, true);
 
     final curvePoints = journey.data.where((it) => it.dataType == .curvePoint).cast<CurvePoint>().toList();
-    expect(curvePoints, hasLength(3));
+    expect(curvePoints, hasLength(4));
     expect(curvePoints[0].localSpeeds, isNotNull);
     expect(curvePoints[0].localSpeeds, hasLength(4));
     expect(curvePoints[1].localSpeeds, isNotNull);

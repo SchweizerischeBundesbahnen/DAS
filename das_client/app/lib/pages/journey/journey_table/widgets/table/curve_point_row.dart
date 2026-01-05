@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/cell_row_builder.dart';
 import 'package:app/widgets/assets.dart';
@@ -21,11 +22,34 @@ class CurvePointRow extends CellRowBuilder<CurvePoint> {
   DASTableCell localSpeedCell(BuildContext context) => speedCell(data.localSpeeds);
 
   @override
+  DASTableCell kilometreCell(BuildContext context) {
+    if (data.kilometre.isEmpty) {
+      return DASTableCell.empty(color: specialCellColor);
+    } else {
+      return DASTableCell(
+        color: specialCellColor,
+        padding: const EdgeInsets.all(8.0),
+        alignment: Alignment.centerLeft,
+        clipBehavior: Clip.none,
+        child: Text(
+          data.kilometre[0].toStringAsFixed(1),
+        ),
+      );
+    }
+  }
+
+  @override
   DASTableCell informationCell(BuildContext context) {
+    final typeText = data.curveType?.localizedName(context) ?? '';
+    final startKm = _stringifyKm(data.kilometre.firstOrNull);
+    final endKm = _stringifyKm(data.kilometre.length > 1 ? data.kilometre.last : null);
+
+    final text = endKm.isNotEmpty ? '$typeText km $startKm - $endKm' : typeText;
+
     return DASTableCell(
       child: Text(
-        data.curveType?.localizedName(context) ?? '',
         overflow: .ellipsis,
+        text,
       ),
     );
   }
@@ -39,6 +63,11 @@ class CurvePointRow extends CellRowBuilder<CurvePoint> {
       ),
       alignment: .center,
     );
+  }
+
+  String _stringifyKm(double? km) {
+    if (km == null) return '';
+    return km.toStringAsFixed(2).trim();
   }
 }
 
