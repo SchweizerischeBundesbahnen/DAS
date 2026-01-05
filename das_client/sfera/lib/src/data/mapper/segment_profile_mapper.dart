@@ -351,15 +351,17 @@ class SegmentProfileMapper {
           (it) => it.trainSeries == template.trainSeries && it.breakSeries == template.breakSeries,
         );
         if (ts == null) continue;
+        final speed = ts.speed;
 
-        final single = switch (ts.speed) {
-          final SingleSpeed s => s,
-          final GraduatedSpeed g => g.speeds.firstOrNull,
-          final SummarizedCurvesSpeed sc => sc.speeds.firstOrNull,
-          _ => null,
-        };
-
-        if (single != null) collected.add(single);
+        switch (speed) {
+          case SingleSpeed():
+            collected.add(speed);
+          case GraduatedSpeed():
+            collected.addAll(speed.speeds);
+          case SummarizedCurvesSpeed():
+            collected.addAll(speed.speeds);
+          default:
+        }
       }
 
       if (collected.isEmpty) continue;
