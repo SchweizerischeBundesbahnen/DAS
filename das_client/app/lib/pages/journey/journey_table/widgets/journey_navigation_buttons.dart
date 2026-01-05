@@ -1,7 +1,5 @@
 import 'package:app/di/di.dart';
-import 'package:app/pages/journey/journey_table/widgets/table/config/journey_settings.dart';
 import 'package:app/pages/journey/journey_table_view_model.dart';
-import 'package:app/pages/journey/navigation/journey_navigation_model.dart';
 import 'package:app/pages/journey/navigation/journey_navigation_view_model.dart';
 import 'package:app/widgets/navigation_buttons.dart';
 import 'package:flutter/material.dart';
@@ -18,18 +16,14 @@ class JourneyNavigationButtons extends StatelessWidget {
     final navigationVM = DI.get<JourneyNavigationViewModel>();
     final journeyVM = context.read<JourneyTableViewModel>();
     return StreamBuilder(
-      stream: CombineLatestStream.list([navigationVM.model, journeyVM.settings]),
-      initialData: [navigationVM.modelValue, journeyVM.settingsValue],
+      stream: CombineLatestStream.combine2(navigationVM.model, journeyVM.isZenViewMode, (a, b) => (a, b)),
+      initialData: (navigationVM.modelValue, journeyVM.isZenViewModeValue),
       builder: (context, snapshot) {
-        final snap = snapshot.data;
-        if (snap == null || snap[0] == null || snap[1] == null) return SizedBox.shrink();
+        final (navigationModel, isZenViewMode) = snapshot.requireData;
 
-        final navigationModel = snap[0] as JourneyNavigationModel;
-        final settings = snap[1] as JourneySettings;
+        if (navigationModel == null || !navigationModel.showNavigationButtons) return SizedBox.shrink();
 
-        if (!navigationModel.showNavigationButtons) return SizedBox.shrink();
-
-        final resolvedShowNavButtons = navigationModel.showNavigationButtons && !settings.isAutoAdvancementEnabled;
+        final resolvedShowNavButtons = navigationModel.showNavigationButtons && !isZenViewMode;
 
         return AnimatedOpacity(
           opacity: resolvedShowNavButtons ? 1.0 : 0.0,

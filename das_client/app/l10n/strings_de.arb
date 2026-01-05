@@ -9,6 +9,7 @@
   "p_journey_header_button_light_theme": "Tagmodus",
   "p_journey_header_button_pause": "Pause",
   "p_journey_header_button_start": "Start",
+  "p_journey_header_button_break_slip": "Bremszettel",
   "p_journey_table_kilometre_label": "km",
   "p_journey_table_time_label_new": "an/ab neu",
   "p_journey_table_time_label_planned": "an/ab geplant",
@@ -30,9 +31,11 @@
   "w_navigation_drawer_settings_title": "Einstellungen",
   "w_navigation_drawer_profile_title": "Profil",
   "p_login_connect_to_tms": "Mit TMS verbinden",
+  "p_login_bottom_sheet_title": "Herzlich Willkommen bei DAS",
+  "p_login_bottom_sheet_subtitle": "Logge dich ein um zu beginnen.",
+  "p_login_bottom_sheet_title_failed": "Hoppla, da hat etwas nicht funktioniert",
+  "p_login_bottom_sheet_subtitle_failed": "Fehler",
   "p_login_login_button_text": "Login",
-  "p_login_login_button_description": "Mit Ihrem Account einloggen",
-  "p_login_login_failed": "Login fehlgeschlagen",
   "p_break_load_slip_page_title": "Brems- und Lastzettel",
   "p_break_load_slip_header_title": "Zug und Bremsreihe: {trainSeries} {breakSeries}%",
   "@p_break_load_slip_header_title": {
@@ -171,6 +174,7 @@
   "w_service_point_modal_graduated_speed_break_series_title": "Zugreihe",
   "w_service_point_modal_graduated_speed_no_information": "Keine Informationen",
   "w_service_point_modal_local_regulations_label": "Lokale Bestimmungen",
+  "w_service_point_row_background_label": "Zum Betriebspunkt springen",
   "w_additional_speed_restriction_modal_title": "Langsamfahrstelle",
   "w_additional_speed_restriction_modal_subtitle_count": "Anzahl",
   "w_additional_speed_restriction_modal_table_label_km": "km",
@@ -178,6 +182,9 @@
   "w_additional_speed_restriction_modal_table_label_from": "Von",
   "w_additional_speed_restriction_modal_table_label_until": "Bis",
   "w_additional_speed_restriction_modal_table_label_reason": "Grund",
+  "w_break_load_slip_modal_title": "Brems- und Lastzettel",
+  "w_break_load_slip_modal_overview_title": "Gesamtzug",
+  "w_break_load_slip_modal_open_break_slip": "Bremszettel öffnen",
   "c_yes": "Ja",
   "c_no": "Nein",
   "c_ru_sbb": "SBB",
@@ -266,5 +273,12 @@
     "placeholders": {
       "trainNumber": {}
     }
-  }
+  },
+  "w_break_load_slip_notification_text": "Eine neue Version des Brems- und Lastzettels ist vorhanden.",
+  "w_disturbance_notification_text": "Kritische Bahnstromversorgung.",
+  "w_departure_dispatch_notification_long": "Voraussichtliche Abfahrt in: > 30 Min",
+  "w_departure_dispatch_notification_middle": "Voraussichtliche Abfahrt in: 15 - 30 Min",
+  "w_departure_dispatch_notification_short": "Voraussichtliche Abfahrt in: < 15 Min",
+  "w_departure_dispatch_notification_prepare": "Bereitmachen zur Abfahrt",
+  "w_departure_dispatch_notification_withdrawn": "Abfahrtsdisposition wurde zurückgenommen. Weiterfahrt wird neu avisiert."
 }

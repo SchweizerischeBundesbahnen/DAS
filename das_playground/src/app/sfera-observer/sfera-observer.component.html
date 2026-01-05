@@ -56,6 +56,11 @@
       <button class="glow-on-hover" (click)="sendG2BEvent({koa: 'wait'})">KOA Warten︎ 🛑</button>
       <button class="glow-on-hover ml-3" (click)="sendG2BEvent({koa: 'waitCancelled'})">KOA Warten aufgehoben ✅</button>
       <button class="glow-on-hover ml-3" (click)="sendG2BEvent({koa: 'waitHide'})">KOA Warten︎ ausblenden</button>
+      @if (operationalDay) {
+        |
+        <button class="glow-on-hover" (click)="initialFormation()">Bremszettel 🧾</button>
+        <button class="glow-on-hover ml-3" (click)="updatedFormation()">Update Bremszettel 🔄</button>
+      }
     </div>
   }
 

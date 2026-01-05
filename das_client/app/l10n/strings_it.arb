@@ -53,8 +53,6 @@
   "w_navigation_drawer_profile_title": "Profilo",
   "p_login_connect_to_tms": "Collegamento a TMS",
   "p_login_login_button_text": "Login",
-  "p_login_login_button_description": "Accedi con il tuo account",
-  "p_login_login_failed": "Login non riuscito",
   "w_advised_speed_notification_title": "Annuncio ADL",
   "w_extended_menu_title": "Altre funzionalità",
   "w_extended_menu_maneuver_mode": "Modalità di manovra",
@@ -127,5 +125,11 @@
   "w_modal_sheet_permissions_title": "DAS Client richiede autorizzazioni di sistema",
   "w_modal_sheet_permission_brightness": "Per regolare la luminosità dello schermo, DAS Client richiede le autorizzazioni necessarie per accedere alle impostazioni di sistema.",
   "w_modal_sheet_button_grant_permission": "Concedi le autorizzazioni",
-  "w_journey_search_overlay_title": "Ricerca Orario"
+  "w_disturbance_notification_text": "Insufficiente alimentazione con corrente di trazione",
+  "w_journey_search_overlay_title": "Ricerca Orario",
+  "w_departure_dispatch_notification_long": "Partenza prevista fra: >30 Min",
+  "w_departure_dispatch_notification_middle": "Partenza prevista fra: 15 - 30 Min",
+  "w_departure_dispatch_notification_short": "Partenza prevista fra: < 15 Min",
+  "w_departure_dispatch_notification_prepare": "Prepararsi alla partenza",
+  "w_departure_dispatch_notification_withdrawn": "La disposizione di partenza è stata annullata. Il proseguimento della corsa viene comunicato di nuovo."
 }

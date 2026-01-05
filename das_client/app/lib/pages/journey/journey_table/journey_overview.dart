@@ -1,9 +1,13 @@
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/break_load_slip/break_load_slip_view_model.dart';
 import 'package:app/pages/journey/calculated_speed_view_model.dart';
+import 'package:app/pages/journey/disturbance_view_model.dart';
+import 'package:app/pages/journey/journey_table/advancement/journey_table_advancement_view_model.dart';
 import 'package:app/pages/journey/journey_table/advised_speed/advised_speed_notification.dart';
 import 'package:app/pages/journey/journey_table/advised_speed/advised_speed_view_model.dart';
 import 'package:app/pages/journey/journey_table/collapsible_rows_view_model.dart';
+import 'package:app/pages/journey/journey_table/departure_dispatch_notification/departure_dispatch_notification.dart';
+import 'package:app/pages/journey/journey_table/departure_dispatch_notification/departure_dispatch_notification_view_model.dart';
 import 'package:app/pages/journey/journey_table/header/chronograph/chronograph_view_model.dart';
 import 'package:app/pages/journey/journey_table/header/connectivity/connectivity_view_model.dart';
 import 'package:app/pages/journey/journey_table/header/departure_authorization/departure_authorization_view_model.dart';
@@ -17,6 +21,8 @@ import 'package:app/pages/journey/journey_table/widgets/detail_modal/service_poi
 import 'package:app/pages/journey/journey_table/widgets/header/header.dart';
 import 'package:app/pages/journey/journey_table/widgets/journey_navigation_buttons.dart';
 import 'package:app/pages/journey/journey_table/widgets/journey_table.dart';
+import 'package:app/pages/journey/journey_table/widgets/notification/break_load_slip_notification.dart';
+import 'package:app/pages/journey/journey_table/widgets/notification/disturbance_notification.dart';
 import 'package:app/pages/journey/journey_table/widgets/notification/koa_notification.dart';
 import 'package:app/pages/journey/journey_table/widgets/notification/maneuver_notification.dart';
 import 'package:app/pages/journey/journey_table/widgets/notification/replacement_series/replacement_series_notification.dart';
@@ -25,6 +31,7 @@ import 'package:app/pages/journey/journey_table/widgets/table/arrival_departure_
 import 'package:app/pages/journey/journey_table/widgets/warn_function_modal_sheet.dart';
 import 'package:app/pages/journey/journey_table_view_model.dart';
 import 'package:app/pages/journey/line_speed_view_model.dart';
+import 'package:app/pages/journey/settings/journey_settings_view_model.dart';
 import 'package:app/pages/journey/warn_app_view_model.dart';
 import 'package:app/sound/das_sounds.dart';
 import 'package:flutter/material.dart';
@@ -64,7 +71,10 @@ class JourneyOverview extends StatelessWidget {
         ManeuverNotification(),
         KoaNotification(),
         ReplacementSeriesNotification(),
-        _warnappNotification(context),
+        DepartureDispatchNotification(),
+        _warnAppNotification(context),
+        BreakLoadSlipNotification(),
+        DisturbanceNotification(),
         Expanded(
           child: Stack(
             children: [
@@ -77,7 +87,7 @@ class JourneyOverview extends StatelessWidget {
     );
   }
 
-  Widget _warnappNotification(BuildContext context) {
+  Widget _warnAppNotification(BuildContext context) {
     return StreamBuilder(
       stream: context.read<WarnAppViewModel>().warnappEvents,
       builder: (context, snapshot) {
@@ -127,51 +137,40 @@ class _ProviderScope extends StatelessWidget {
     return MultiProvider(
       providers: [
         Provider<PunctualityViewModel>(
-          create: (_) => PunctualityViewModel(journeyStream: journeyTableViewModel.journey),
-          dispose: (_, vm) => vm.dispose(),
+          create: (_) => DI.get<PunctualityViewModel>(),
         ),
-        Provider(
-          create: (context) => DetailModalViewModel(
-            automaticAdvancementController: journeyTableViewModel.automaticAdvancementController,
-          ),
-          dispose: (_, vm) => vm.dispose(),
+        Provider<JourneyPositionViewModel>(
+          create: (_) => DI.get<JourneyPositionViewModel>(),
         ),
-        Provider(
+        Provider<JourneyTableAdvancementViewModel>(
+          create: (_) => DI.get<JourneyTableAdvancementViewModel>(),
+        ),
+        Provider<ServicePointModalViewModel>(
           create: (_) => ServicePointModalViewModel(localRegulationHtmlGenerator: DI.get()),
           dispose: (_, vm) => vm.dispose(),
         ),
-        Provider(
+        Provider<AdditionalSpeedRestrictionModalViewModel>(
           create: (_) => AdditionalSpeedRestrictionModalViewModel(),
           dispose: (_, vm) => vm.dispose(),
         ),
-        Provider(
+        Provider<ArrivalDepartureTimeViewModel>(
           create: (_) => ArrivalDepartureTimeViewModel(journeyStream: journeyTableViewModel.journey),
           dispose: (_, vm) => vm.dispose(),
         ),
-        Provider(
+        Provider<UxTestingViewModel>(
           create: (_) => UxTestingViewModel(sferaService: DI.get(), ruFeatureProvider: DI.get()),
           dispose: (_, vm) => vm.dispose(),
         ),
-        Provider(
+        Provider<ConnectivityViewModel>(
           create: (_) => ConnectivityViewModel(connectivityManager: DI.get()),
           dispose: (_, vm) => vm.dispose(),
         ),
         Provider(
-          create: (_) => LineSpeedViewModel(journeyTableViewModel: journeyTableViewModel),
+          create: (_) => DisturbanceViewModel(sferaRemoteRepo: DI.get()),
           dispose: (_, vm) => vm.dispose(),
         ),
 
         // PROXY  PROVIDERS
-        ProxyProvider<PunctualityViewModel, JourneyPositionViewModel>(
-          update: (_, punctualityVM, prev) {
-            if (prev != null) return prev;
-            return JourneyPositionViewModel(
-              journeyStream: journeyTableViewModel.journey,
-              punctualityStream: punctualityVM.model,
-            );
-          },
-          dispose: (_, vm) => vm.dispose(),
-        ),
         ProxyProvider<JourneyPositionViewModel, CollapsibleRowsViewModel>(
           update: (_, journeyPositionVM, prev) {
             if (prev != null) return prev;
@@ -192,12 +191,21 @@ class _ProviderScope extends StatelessWidget {
           },
           dispose: (_, vm) => vm.dispose(),
         ),
-        ProxyProvider<JourneyPositionViewModel, ReplacementSeriesViewModel>(
-          update: (_, journeyPositionVM, prev) {
+        ProxyProvider<JourneyTableAdvancementViewModel, DetailModalViewModel>(
+          update: (_, advancementVM, prev) {
+            if (prev != null) return prev;
+            return DetailModalViewModel(onDetailModalOpen: advancementVM.scrollToCurrentPositionIfNotPaused);
+          },
+          dispose: (_, vm) => vm.dispose(),
+        ),
+
+        ProxyProvider2<JourneyPositionViewModel, JourneySettingsViewModel, ReplacementSeriesViewModel>(
+          update: (_, journeyPositionVM, settingsVM, prev) {
             if (prev != null) return prev;
             return ReplacementSeriesViewModel(
               journeyTableViewModel: journeyTableViewModel,
               journeyPositionViewModel: journeyPositionVM,
+              journeySettingsViewModel: settingsVM,
             );
           },
           dispose: (_, vm) => vm.dispose(),
@@ -208,6 +216,26 @@ class _ProviderScope extends StatelessWidget {
             return DepartureAuthorizationViewModel(
               journeyStream: journeyTableViewModel.journey,
               journeyPositionStream: journeyPositionVM.model,
+            );
+          },
+          dispose: (_, vm) => vm.dispose(),
+        ),
+        ProxyProvider<JourneyPositionViewModel, DepartureDispatchNotificationViewModel>(
+          update: (_, journeyPositionVM, prev) {
+            if (prev != null) return prev;
+            return DepartureDispatchNotificationViewModel(
+              sferaRemoteRepo: DI.get(),
+              journeyPositionStream: journeyPositionVM.model,
+            );
+          },
+          dispose: (_, vm) => vm.dispose(),
+        ),
+        ProxyProvider2<JourneyTableViewModel, JourneySettingsViewModel, LineSpeedViewModel>(
+          update: (_, journeyTableViewModel, settingsVM, prev) {
+            if (prev != null) return prev;
+            return LineSpeedViewModel(
+              journeyTableViewModel: journeyTableViewModel,
+              journeySettingsViewModel: settingsVM,
             );
           },
           dispose: (_, vm) => vm.dispose(),
@@ -241,13 +269,23 @@ class _ProviderScope extends StatelessWidget {
           },
           dispose: (_, vm) => vm.dispose(),
         ),
-        ProxyProvider2<JourneyTableViewModel, JourneyPositionViewModel, BreakLoadSlipViewModel>(
-          update: (_, journeyVM, positionVM, prev) {
+        ProxyProvider4<
+          JourneyTableViewModel,
+          JourneyPositionViewModel,
+          JourneySettingsViewModel,
+          DetailModalViewModel,
+          BreakLoadSlipViewModel
+        >(
+          update: (_, journeyVM, positionVM, settingsVM, detailModalVM, prev) {
             if (prev != null) return prev;
             return BreakLoadSlipViewModel(
               journeyTableViewModel: journeyVM,
               journeyPositionViewModel: positionVM,
               formationRepository: DI.get(),
+              journeySettingsViewModel: settingsVM,
+              detailModalViewModel: detailModalVM,
+              connectivityManager: DI.get(),
+              checkForUpdates: true,
             );
           },
           dispose: (_, vm) => vm.dispose(),

@@ -37,6 +37,7 @@ class MockDASBaseScope extends DASBaseScope {
     _registerTestTimeConstants();
     _registerUserSettings();
     _registerMockConnectivityManager();
+    getIt.registerLoginViewModel();
 
     await getIt.allReady();
   }
@@ -57,10 +58,16 @@ class MockDASBaseScope extends DASBaseScope {
   }
 
   void _registerIntegrationTestAudioPlayer() {
-    getIt.registerLazySingleton<AudioPlayer>(() {
-      _log.fine('Register IntegrationTestAudioPlayer');
-      return IntegrationTestAudioPlayer();
-    });
+    getIt.registerLazySingleton<AudioPlayer>(
+      () {
+        _log.fine('Register IntegrationTestAudioPlayer');
+        final audioPlayer = IntegrationTestAudioPlayer();
+        // position updater leads to error in integration tests after widget dispose
+        audioPlayer.positionUpdater = null;
+        return audioPlayer;
+      },
+      dispose: (player) => player.dispose(),
+    );
   }
 
   void _registerTestTimeConstants() {

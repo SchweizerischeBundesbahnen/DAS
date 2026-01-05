@@ -7,6 +7,7 @@ import 'package:logging/logging.dart';
 import 'test/break_load_slip_test.dart' as break_load_slip_tests;
 import 'test/journey_replacement_series_test.dart' as journey_replacement_series_test;
 import 'test/journey_table_time_test.dart' as journey_table_time_tests;
+import 'test/manual_advancement_test.dart' as manual_advancement_tests;
 import 'test/reduced_journey_table_test.dart' as reduced_journey_table_tests;
 
 AppLocalizations l10n = AppLocalizationsDe();
@@ -21,4 +22,5 @@ void main() {
   journey_replacement_series_test.main();
   reduced_journey_table_tests.main();
   journey_table_time_tests.main();
+  manual_advancement_tests.main();
 }

@@ -144,19 +144,20 @@
             </TimingPointReference>
         </TimingPointConstraints>
 
-        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T07:52:00Z"
-                                TP_PlannedLatestArrivalTime="2025-05-17T07:52:00Z">
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T07:53:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T07:53:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Gelterkinden"/>
             </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="2025-05-17T07:53:20Z" plannedDepartureTime="2025-05-17T07:53:00Z"/>
         </TimingPointConstraints>
 
-        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T07:54:20Z"
-                                TP_PlannedLatestArrivalTime="2025-05-17T07:54:00Z">
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T07:57:20Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T07:57:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Sissach"/>
             </TimingPointReference>
-            <StoppingPointDepartureDetails departureTime="2025-05-17T07:55:20Z" plannedDepartureTime="2025-05-17T07:55:00Z"/>
+            <StoppingPointDepartureDetails departureTime="2025-05-17T07:57:20Z" plannedDepartureTime="2025-05-17T07:57:00Z"/>
         </TimingPointConstraints>
 
         <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="7700" endLocation="8000"
@@ -222,8 +223,8 @@
             <IM_ID>1285</IM_ID>
         </SP_Zone>
 
-        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T07:57:20Z"
-                                TP_PlannedLatestArrivalTime="2025-05-17T07:57:00Z">
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T08:00:20Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T08:00:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Itingen"/>
             </TimingPointReference>
@@ -244,8 +245,8 @@
             <IM_ID>1285</IM_ID>
         </SP_Zone>
 
-        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T07:58:40Z"
-                                TP_PlannedLatestArrivalTime="2025-05-17T07:58:00Z">
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T08:01:40Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T08:01:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Lausen"/>
             </TimingPointReference>
@@ -282,16 +283,16 @@
             <IM_ID>1285</IM_ID>
         </SP_Zone>
 
-        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T08:01:00Z"
-                                TP_PlannedLatestArrivalTime="2025-05-17T08:01:00Z">
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T08:04:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T08:04:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Liestal"/>
             </TimingPointReference>
-            <StoppingPointDepartureDetails departureTime="2025-05-17T08:02:10Z" plannedDepartureTime="2025-05-17T08:02:00Z"/>
+            <StoppingPointDepartureDetails departureTime="2025-05-17T08:05:10Z" plannedDepartureTime="2025-05-17T08:05:00Z"/>
         </TimingPointConstraints>
 
-        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T08:08:20Z"
-                                TP_PlannedLatestArrivalTime="2025-05-17T08:08:00Z">
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T08:10:20Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T08:10:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Muttenz"/>
             </TimingPointReference>
@@ -338,8 +339,8 @@
             <IM_ID>1285</IM_ID>
         </SP_Zone>
 
-        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="End_of_Journey" TP_latestArrivalTime="2025-05-17T08:13:30Z"
-                                TP_PlannedLatestArrivalTime="2025-05-17T08:13:00Z">
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="End_of_Journey" TP_latestArrivalTime="2025-05-17T08:16:30Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T08:16:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Basel_SBB"/>
             </TimingPointReference>

@@ -15,6 +15,10 @@ abstract class SferaRemoteRepo {
 
   Stream<WarnappEvent?> get warnappEventStream;
 
+  Stream<DisturbanceEvent?> get disturbanceEventStream;
+
+  Stream<DepartureDispatchNotificationEvent?> get departureDispatchNotificationEventStream;
+
   SferaError? get lastError;
 
   TrainIdentification? get connectedTrain;

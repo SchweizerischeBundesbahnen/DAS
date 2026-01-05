@@ -30,9 +30,11 @@
   "w_navigation_drawer_settings_title": "Settings",
   "w_navigation_drawer_profile_title": "Profile",
   "p_login_connect_to_tms": "Connect to TMS",
+  "p_login_bottom_sheet_title": "Welcome to DAS",
+  "p_login_bottom_sheet_subtitle": "Log in to begin.",
+  "p_login_bottom_sheet_title_failed": "Oops, something went wrong there",
+  "p_login_bottom_sheet_subtitle_failed": "Error",
   "p_login_login_button_text": "Login",
-  "p_login_login_button_description": "Log in with your account",
-  "p_login_login_failed": "Login failed",
   "w_advised_speed_cancel": "ADL Cancel",
   "w_advised_speed_end": "ADL END",
   "w_advised_speed_drive_until": "until {endLocation}",
@@ -128,5 +130,10 @@
   "w_modal_sheet_button_grant_permission": "Grant permissions",
   "w_journey_search_overlay_title": "Search Timetable",
   "w_global_error_widget_title": "Unexpected Error",
-  "w_global_error_widget_description": "An unexpected error has occurred, the error message will be sent to the developers. Try restarting the app."
+  "w_global_error_widget_description": "An unexpected error has occurred, the error message will be sent to the developers. Try restarting the app.",
+  "w_departure_dispatch_notification_long": "Estimated departure in: > 30 min",
+  "w_departure_dispatch_notification_middle": "Estimated departure in: 15 - 30 minutes",
+  "w_departure_dispatch_notification_short": "Estimated departure in: < 15 min",
+  "w_departure_dispatch_notification_prepare": "Get ready to depart",
+  "w_departure_dispatch_notification_withdrawn": "Departure schedule has been cancelled. Onward journey will be announced again."
 }

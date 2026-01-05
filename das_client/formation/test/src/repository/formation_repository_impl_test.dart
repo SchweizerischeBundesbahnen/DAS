@@ -9,7 +9,7 @@ import 'package:formation/src/repository/formation_repository_impl.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'formation_respository_impl_test.mocks.dart';
+import 'formation_repository_impl_test.mocks.dart';
 
 @GenerateNiceMocks([
   MockSpec<FormationApiService>(),
@@ -59,7 +59,7 @@ void main() {
     final operationalDay = DateTime.now();
 
     when(
-      mockApiService.formation(operationalTrainNumber, company, operationalDay),
+      mockApiService.formation(operationalTrainNumber, company, operationalDay, any),
     ).thenAnswer((_) => mockFormationRequest);
     when(mockFormationRequest.call()).thenAnswer(
       (_) => Future.value(
@@ -93,7 +93,7 @@ void main() {
       mockDatabaseService.saveFormation(any),
     ).called(1);
     verify(
-      mockApiService.formation(operationalTrainNumber, company, operationalDay),
+      mockApiService.formation(operationalTrainNumber, company, operationalDay, any),
     ).called(1);
   });
 
@@ -105,8 +105,11 @@ void main() {
 
     // ACT
     when(
-      mockApiService.formation(operationalTrainNumber, company, operationalDay),
+      mockApiService.formation(operationalTrainNumber, company, operationalDay, any),
     ).thenAnswer((_) => mockFormationRequest);
+    when(
+      mockDatabaseService.findFormationEtag(operationalTrainNumber, company, operationalDay),
+    ).thenAnswer((_) => Future.value(null));
     when(mockFormationRequest.call()).thenAnswer(
       (_) => Future.value(
         FormationResponse(
@@ -123,11 +126,13 @@ void main() {
       operationalDay: operationalDay,
     );
 
+    await Future.delayed(Duration(milliseconds: 10));
+
     verifyNever(
       mockDatabaseService.saveFormation(any),
     );
     verify(
-      mockApiService.formation(operationalTrainNumber, company, operationalDay),
+      mockApiService.formation(operationalTrainNumber, company, operationalDay, any),
     ).called(1);
   });
 }

@@ -13,10 +13,10 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
 class BreakLoadSlipTrainDetails extends StatelessWidget {
-  const BreakLoadSlipTrainDetails({required this.formation, required this.formationRun, super.key});
+  const BreakLoadSlipTrainDetails({required this.formation, required this.formationRunChange, super.key});
 
   final Formation formation;
-  final FormationRun formationRun;
+  final FormationRunChange formationRunChange;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,10 @@ class BreakLoadSlipTrainDetails extends StatelessWidget {
 
     return KeyValueTable(
       rows: [
-        KeyValueTableDataRow.title(context.l10n.p_break_load_slip_train_data_title),
+        KeyValueTableDataRow.title(
+          context.l10n.p_break_load_slip_train_data_title,
+          hasChange: _hasChange(),
+        ),
         SizedBox(height: sbbDefaultSpacing * 0.5),
         KeyValueTableDataRow(
           context.l10n.p_break_load_slip_train_data_train_number,
@@ -53,15 +56,18 @@ class BreakLoadSlipTrainDetails extends StatelessWidget {
         ),
         KeyValueTableDataRow(
           context.l10n.p_break_load_slip_train_data_from,
-          vm.resolveStationName(formationRun.tafTapLocationReferenceStart),
+          vm.resolveStationName(formationRunChange.formationRun.tafTapLocationReferenceStart),
         ),
         KeyValueTableDataRow(
           context.l10n.p_break_load_slip_train_data_to,
-          vm.resolveStationName(formationRun.tafTapLocationReferenceEnd),
+          vm.resolveStationName(formationRunChange.formationRun.tafTapLocationReferenceEnd),
         ),
         KeyValueTableDataRow(
           context.l10n.p_break_load_slip_train_data_train_series,
-          '${formationRun.trainCategoryCode ?? ''} ${formationRun.brakedWeightPercentage ?? ''}%',
+          '${formationRunChange.formationRun.trainCategoryCode ?? ''} ${formationRunChange.formationRun.brakedWeightPercentage ?? ''}%',
+          hasChange:
+              formationRunChange.hasChanged(.trainCategoryCode) ||
+              formationRunChange.hasChanged(.brakedWeightPercentage),
         ),
         KeyValueTableDataRow(
           context.l10n.p_break_load_slip_other_data_rru,
@@ -87,19 +93,31 @@ class BreakLoadSlipTrainDetails extends StatelessWidget {
           SizedBox(height: sbbDefaultSpacing * 0.5),
           KeyValueTableDataRow(
             context.l10n.p_break_load_slip_train_data_train_traction,
-            formationRun.additionalTractions.isEmpty ? '-' : formationRun.additionalTractions.join(' '),
+            formationRunChange.formationRun.additionalTractions.isEmpty
+                ? '-'
+                : formationRunChange.formationRun.additionalTractions.join(' '),
+            hasChange: formationRunChange.hasChanged(.additionalTractions),
           ),
           KeyValueTableDataRow(
             context.l10n.p_break_load_slip_train_data_brake_position_g_leading_traction,
-            formationRun.brakePositionGForLeadingTraction == true ? context.l10n.c_yes : context.l10n.c_no,
+            formationRunChange.formationRun.brakePositionGForLeadingTraction == true
+                ? context.l10n.c_yes
+                : context.l10n.c_no,
+            hasChange: formationRunChange.hasChanged(.brakePositionGForLeadingTraction),
           ),
           KeyValueTableDataRow(
             context.l10n.p_break_load_slip_train_data_brake_position_g_break_unit,
-            formationRun.brakePositionGForBrakeUnit1to5 == true ? context.l10n.c_yes : context.l10n.c_no,
+            formationRunChange.formationRun.brakePositionGForBrakeUnit1to5 == true
+                ? context.l10n.c_yes
+                : context.l10n.c_no,
+            hasChange: formationRunChange.hasChanged(.brakePositionGForBrakeUnit1to5),
           ),
           KeyValueTableDataRow(
             context.l10n.p_break_load_slip_train_data_brake_position_g_load_hauled,
-            formationRun.brakePositionGForLoadHauled == true ? context.l10n.c_yes : context.l10n.c_no,
+            formationRunChange.formationRun.brakePositionGForLoadHauled == true
+                ? context.l10n.c_yes
+                : context.l10n.c_no,
+            hasChange: formationRunChange.hasChanged(.brakePositionGForLoadHauled),
           ),
         ],
       ),
@@ -109,7 +127,28 @@ class BreakLoadSlipTrainDetails extends StatelessWidget {
   Widget _trainDataColumn3(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(sbbDefaultSpacing * 0.5).copyWith(right: 0.0),
-      child: BreakLoadSlipTrainDetailsTable(formationRun: formationRun),
+      child: BreakLoadSlipTrainDetailsTable(formationRunChange: formationRunChange),
     );
+  }
+
+  bool _hasChange() {
+    return formationRunChange.hasChanged(.tractionMaxSpeedInKmh) ||
+        formationRunChange.hasChanged(.hauledLoadMaxSpeedInKmh) ||
+        formationRunChange.hasChanged(.formationMaxSpeedInKmh) ||
+        formationRunChange.hasChanged(.tractionLengthInCm) ||
+        formationRunChange.hasChanged(.hauledLoadLengthInCm) ||
+        formationRunChange.hasChanged(.formationLengthInCm) ||
+        formationRunChange.hasChanged(.tractionWeightInT) ||
+        formationRunChange.hasChanged(.hauledLoadWeightInT) ||
+        formationRunChange.hasChanged(.formationWeightInT) ||
+        formationRunChange.hasChanged(.tractionBrakedWeightInT) ||
+        formationRunChange.hasChanged(.hauledLoadBrakedWeightInT) ||
+        formationRunChange.hasChanged(.formationBrakedWeightInT) ||
+        formationRunChange.hasChanged(.additionalTractions) ||
+        formationRunChange.hasChanged(.brakePositionGForLeadingTraction) ||
+        formationRunChange.hasChanged(.brakePositionGForBrakeUnit1to5) ||
+        formationRunChange.hasChanged(.brakePositionGForLoadHauled) ||
+        formationRunChange.hasChanged(.trainCategoryCode) ||
+        formationRunChange.hasChanged(.brakedWeightPercentage);
   }
 }

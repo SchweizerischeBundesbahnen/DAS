@@ -17,17 +17,20 @@ class FormationTable extends Table {
 
   TextColumn get formationRuns => text()();
 
+  TextColumn get etag => text().nullable()();
+
   @override
   Set<Column<Object>> get primaryKey => {operationalTrainNumber, company, operationalDay};
 }
 
 extension FormationMapperX on FormationDto {
-  FormationTableCompanion toCompanion() {
+  FormationTableCompanion toCompanion(String? etag) {
     return FormationTableCompanion.insert(
       operationalTrainNumber: operationalTrainNumber,
       company: company,
       operationalDay: operationalDay,
       formationRuns: jsonEncode(formationRuns),
+      etag: etag != null ? Value(etag) : const Value.absent(),
     );
   }
 }

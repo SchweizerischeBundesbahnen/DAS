@@ -1,19 +1,21 @@
 import 'dart:async';
+import 'dart:ui';
 
-import 'package:app/pages/journey/journey_table/automatic_advancement_controller.dart';
 import 'package:app/pages/journey/journey_table/widgets/detail_modal/additional_speed_restriction_modal/additional_speed_restriction_modal_builder.dart';
+import 'package:app/pages/journey/journey_table/widgets/detail_modal/break_load_slip_modal/break_load_slip_modal_builder.dart';
 import 'package:app/pages/journey/journey_table/widgets/detail_modal/service_point_modal/service_point_modal_builder.dart';
 import 'package:app/widgets/modal_sheet/das_modal_sheet.dart';
 import 'package:rxdart/rxdart.dart';
 
-enum DetailModalType { servicePointModal, additionalSpeedRestriction }
+enum DetailModalType { servicePointModal, additionalSpeedRestriction, breakSlip }
 
 class DetailModalViewModel {
-  DetailModalViewModel({required this.automaticAdvancementController}) {
+  DetailModalViewModel({required this.onDetailModalOpen}) {
     _init();
   }
 
-  final AutomaticAdvancementController automaticAdvancementController;
+  final VoidCallback onDetailModalOpen;
+
   late DASModalSheetController controller;
 
   final _rxContentBuilder = BehaviorSubject<DASModalSheetBuilder?>();
@@ -22,6 +24,8 @@ class DetailModalViewModel {
   bool get isModalOpenValue => _rxOpenModalType.value != null;
 
   Stream<DetailModalType?> get openModalType => _rxOpenModalType.distinct();
+
+  DetailModalType? get openModalTypeValue => _rxOpenModalType.value;
 
   Stream<bool> get isModalOpen => _rxOpenModalType.map((type) => type != null);
 
@@ -34,11 +38,7 @@ class DetailModalViewModel {
   void _initController() {
     controller = DASModalSheetController(
       onClose: () => _rxOpenModalType.add(null),
-      onOpen: () {
-        if (automaticAdvancementController.isActive) {
-          automaticAdvancementController.scrollToCurrentPosition(resetAutomaticAdvancementTimer: true);
-        }
-      },
+      onOpen: () => onDetailModalOpen.call(),
     );
   }
 
@@ -48,6 +48,8 @@ class DetailModalViewModel {
         _rxOpenModalType.add(.additionalSpeedRestriction);
       case ServicePointModalBuilder():
         _rxOpenModalType.add(.servicePointModal);
+      case BreakLoadSlipModalBuilder():
+        _rxOpenModalType.add(.breakSlip);
     }
 
     _rxContentBuilder.add(builder);
