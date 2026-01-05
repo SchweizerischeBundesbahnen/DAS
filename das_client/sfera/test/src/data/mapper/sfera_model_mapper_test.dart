@@ -1203,7 +1203,7 @@ void main() {
     expect(advisedSpeeds[0].isDIST, isFalse);
     expect(advisedSpeeds[0].startOrder, 500);
     expect(advisedSpeeds[0].endOrder, 2500);
-    expect(advisedSpeeds[0].endData, equals(journey.data[6]));
+    expect(advisedSpeeds[0].endData, equals(journey.data[7]));
     expect(advisedSpeeds[0].isEndDataCalculated, isFalse);
 
     expect(advisedSpeeds[1], isA<FollowTrainAdvisedSpeedSegment>());
@@ -1211,7 +1211,7 @@ void main() {
     expect(advisedSpeeds[1].isDIST, isTrue);
     expect(advisedSpeeds[1].startOrder, 101500);
     expect(advisedSpeeds[1].endOrder, 201500);
-    expect(advisedSpeeds[1].endData, equals(journey.data[21]));
+    expect(advisedSpeeds[1].endData, equals(journey.data[22]));
     expect(advisedSpeeds[1].isEndDataCalculated, isFalse);
 
     expect(advisedSpeeds[2], isA<TrainFollowingAdvisedSpeedSegment>());
@@ -1219,7 +1219,7 @@ void main() {
     expect(advisedSpeeds[2].isDIST, isFalse);
     expect(advisedSpeeds[2].startOrder, 301050);
     expect(advisedSpeeds[2].endOrder, 304950);
-    expect(advisedSpeeds[2].endData, equals(journey.data[30]));
+    expect(advisedSpeeds[2].endData, equals(journey.data[31]));
     expect(advisedSpeeds[2].isEndDataCalculated, isTrue);
 
     expect(advisedSpeeds[3], isA<VelocityMaxAdvisedSpeedSegment>());
@@ -1227,14 +1227,14 @@ void main() {
     expect(advisedSpeeds[3].isDIST, isFalse);
     expect(advisedSpeeds[3].startOrder, 305100);
     expect(advisedSpeeds[3].endOrder, 500500);
-    expect(advisedSpeeds[3].endData, equals(journey.data[41]));
+    expect(advisedSpeeds[3].endData, equals(journey.data[42]));
     expect(advisedSpeeds[3].isEndDataCalculated, isFalse);
 
     expect(advisedSpeeds[4], isA<FixedTimeAdvisedSpeedSegment>());
     expect(advisedSpeeds[4].speed, SingleSpeed(value: '80'));
     expect(advisedSpeeds[4].startOrder, 500500);
     expect(advisedSpeeds[4].endOrder, 500950);
-    expect(advisedSpeeds[4].endData, equals(journey.data[43]));
+    expect(advisedSpeeds[4].endData, equals(journey.data[44]));
     expect(advisedSpeeds[4].isEndDataCalculated, isFalse);
   });
 
