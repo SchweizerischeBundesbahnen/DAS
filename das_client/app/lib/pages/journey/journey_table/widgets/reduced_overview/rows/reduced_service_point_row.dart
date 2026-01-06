@@ -5,7 +5,6 @@ import 'package:app/pages/journey/journey_table/widgets/table/service_point_row.
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:flutter/material.dart';
-import 'package:rxdart/rxdart.dart';
 
 class ReducedServicePointRow extends ServicePointRow {
   ReducedServicePointRow({
@@ -20,8 +19,6 @@ class ReducedServicePointRow extends ServicePointRow {
          journeyPosition: JourneyPositionModel(),
          highlightNextStop: false,
        );
-
-  final modalOpenSubject = BehaviorSubject.seeded(false);
 
   @override
   DASTableCell localSpeedCell(BuildContext context) {
@@ -62,7 +59,7 @@ class ReducedServicePointRow extends ServicePointRow {
   }
 
   @override
-  Stream<bool> isModalOpenStream(BuildContext context) => modalOpenSubject.stream;
+  Stream<bool> isModalOpenStream(BuildContext context) => Stream.value(false).asBroadcastStream();
 
   @override
   bool isModalOpenValue(BuildContext context) => false;
