@@ -20,6 +20,10 @@ void main() {
       final gsmPKey = find.descendant(of: reducedTable, matching: find.byKey(CommunicationNetworkIcon.gsmPKey));
       expect(gsmPKey, findsOneWidget);
 
+      // find gsm-R-Icons
+      final gsmRIcons = find.descendant(of: reducedTable, matching: find.byKey(CommunicationNetworkIcon.gsmRKey));
+      expect(gsmRIcons, findsNWidgets(2));
+
       // find communication network change row by text km 0.3
       final firstCommunicationNetworkChangeRow = find.descendant(of: reducedTable, matching: find.text('km 0.3'));
       expect(firstCommunicationNetworkChangeRow, findsOneWidget);
