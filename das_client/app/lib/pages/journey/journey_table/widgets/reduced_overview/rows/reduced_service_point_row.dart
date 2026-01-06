@@ -59,7 +59,7 @@ class ReducedServicePointRow extends ServicePointRow {
   }
 
   @override
-  Stream<bool> isModalOpenStream(BuildContext context) => Stream.value(false);
+  Stream<bool> isModalOpenStream(BuildContext context) => Stream.value(false).asBroadcastStream();
 
   @override
   bool isModalOpenValue(BuildContext context) => false;

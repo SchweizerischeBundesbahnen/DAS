@@ -86,7 +86,7 @@ class SferaModelMapper {
     journeyData.addAll(_parseShuntingMovements(segmentProfileReferences, segmentProfiles));
 
     final communicationChanges = _parseCommunicationNetworkChanges(segmentProfileReferences, segmentProfiles, spOrders);
-    journeyData.addAll(communicationChanges.where((it) => it.isServicePoint == false));
+    journeyData.addAll(communicationChanges);
     journeyData.sort();
 
     final journeyPoints = journeyData.whereType<JourneyPoint>().toList();

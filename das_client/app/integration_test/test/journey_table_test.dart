@@ -81,8 +81,12 @@ void main() {
       final dasTable = find.byType(DASTable);
       expect(dasTable, findsOneWidget);
 
-      // find gsmP-Icon
+      // find gsmP-Icon (only 1 should be found, 2nd should be hidden)
       final gsmPKey = find.descendant(of: dasTable, matching: find.byKey(CommunicationNetworkIcon.gsmPKey));
+      expect(gsmPKey, findsOneWidget);
+
+      // find gsmR-Icon
+      final gsmRIcon = find.descendant(of: dasTable, matching: find.byKey(CommunicationNetworkIcon.gsmRKey));
       expect(gsmPKey, findsOneWidget);
 
       await disconnect(tester);

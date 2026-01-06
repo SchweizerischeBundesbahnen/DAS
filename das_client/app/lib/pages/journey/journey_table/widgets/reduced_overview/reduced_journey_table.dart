@@ -11,6 +11,7 @@ import 'package:app/pages/journey/journey_table/widgets/table/config/journey_con
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:app/widgets/table/das_table_column.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
@@ -40,10 +41,14 @@ class ReducedJourneyTable extends StatelessWidget {
   }
 
   Widget _body(BuildContext context, Metadata metadata, List<BaseData> data) {
+    final rows = data.hideCommunicationNetworkChangesWithSameTypeAsPreviousOrIsServicePoint().sorted(
+      (a1, a2) => a1.compareTo(a2),
+    );
+
     return DASTable(
       key: reducedJourneyTableKey,
       columns: _columns(context),
-      rows: _rows(context, metadata, data).map((it) => it.build(context)).toList(),
+      rows: _rows(context, metadata, rows).map((it) => it.build(context)).toList(),
       hasStickyRows: false,
       addBottomSpacer: false,
     );

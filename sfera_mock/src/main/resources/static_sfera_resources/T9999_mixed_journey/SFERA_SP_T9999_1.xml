@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T9999_1" SP_VersionMajor="7"
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T9999_1" SP_VersionMajor="9"
                 SP_VersionMinor="0" SP_Length="1000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
@@ -97,12 +97,18 @@
 
     <SP_ContextInformation>
         <ConnectionTrack location="800" connectionTrackType="Unknown"/>
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="200" endLocation="200" communicationNetworkType="GSM-R"/>
         <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="300" endLocation="300" communicationNetworkType="GSM-P"/>
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="400" endLocation="400" communicationNetworkType="GSM-P"/>
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="950" endLocation="950" communicationNetworkType="GSM-R"/>
         <KilometreReferencePoint location="200">
             <KM_Reference kmRef="0.2"/>
         </KilometreReferencePoint>
         <KilometreReferencePoint location="300">
             <KM_Reference kmRef="0.35"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="400">
+            <KM_Reference kmRef="0.4"/>
         </KilometreReferencePoint>
         <KilometreReferencePoint location="500">
             <KM_Reference kmRef="0.5"/>
@@ -121,6 +127,9 @@
         </KilometreReferencePoint>
         <KilometreReferencePoint location="900">
             <KM_Reference kmRef="0.9"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="950">
+            <KM_Reference kmRef="0.95"/>
         </KilometreReferencePoint>
 
     </SP_ContextInformation>
