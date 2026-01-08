@@ -19,8 +19,6 @@ class BreakSlipButton extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.data == null) return SizedBox.shrink();
 
-        print(snapshot.data);
-
         return StreamBuilder(
           initialData: viewModel.openModalTypeValue,
           stream: viewModel.openModalType,

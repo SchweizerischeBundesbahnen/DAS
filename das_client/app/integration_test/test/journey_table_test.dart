@@ -87,7 +87,7 @@ void main() {
 
       // find gsmR-Icon
       final gsmRIcon = find.descendant(of: dasTable, matching: find.byKey(CommunicationNetworkIcon.gsmRKey));
-      expect(gsmPKey, findsOneWidget);
+      expect(gsmRIcon, findsOneWidget);
 
       await disconnect(tester);
     });

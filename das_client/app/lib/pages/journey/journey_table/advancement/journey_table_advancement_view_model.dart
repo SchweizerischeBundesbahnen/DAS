@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ui';
 
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_table/advancement/journey_advancement_model.dart';
@@ -11,6 +10,8 @@ import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
 final _log = Logger('JourneyTableAdvancementViewModel');
+
+typedef AdvancementModeChangedCallback = void Function(JourneyAdvancementModel);
 
 /// Responsible for the (automatic) advancement of the JourneyTable.
 ///
@@ -26,10 +27,10 @@ class JourneyTableAdvancementViewModel {
     required Stream<Journey?> journeyStream,
     required Stream<JourneyPositionModel> positionStream,
     required JourneyTableScrollController scrollController,
-    required VoidCallback onAdvancementModeToggled,
+    required AdvancementModeChangedCallback onAdvancementModeChanged,
   }) {
     _scrollController = scrollController;
-    _onAdvancementModeToggled = onAdvancementModeToggled;
+    _onAdvancementModeChanged = onAdvancementModeChanged;
     _initSubscription(journeyStream, positionStream);
   }
 
@@ -39,7 +40,7 @@ class JourneyTableAdvancementViewModel {
 
   late JourneyTableScrollController _scrollController;
 
-  late VoidCallback _onAdvancementModeToggled;
+  late AdvancementModeChangedCallback _onAdvancementModeChanged;
   final _rxModel = BehaviorSubject<JourneyAdvancementModel>.seeded(Automatic());
   JourneyPoint? _currentPosition;
   JourneyPoint? _lastPosition;
@@ -68,9 +69,8 @@ class JourneyTableAdvancementViewModel {
       Automatic() => Paused(next: Automatic()),
       Manual() => Paused(next: Manual()),
     };
-    _rxModel.add(nextModel);
+    _setModel(nextModel);
     _emitAutomaticIdleScrolling();
-    _onAdvancementModeToggled.call();
 
     if (_rxModel.value is! Paused) _scrollToCurrentPositionIfInAutoScrollingZone();
   }
@@ -84,7 +84,7 @@ class JourneyTableAdvancementViewModel {
       Paused() => Paused(next: Manual()),
       Manual() || Automatic() => Manual(),
     };
-    _rxModel.add(nextModel);
+    _setModel(nextModel);
     if (_rxAutomaticIdleScrollingActive.value) _scrollToCurrentPosition();
   }
 
@@ -163,7 +163,12 @@ class JourneyTableAdvancementViewModel {
   }
 
   void _resetModel() {
-    _rxModel.add(Automatic());
+    _setModel(Automatic());
+  }
+
+  void _setModel(JourneyAdvancementModel model) {
+    _rxModel.add(model);
+    _onAdvancementModeChanged.call(model);
   }
 
   void _emitAutomaticIdleScrolling() {
@@ -179,7 +184,7 @@ class JourneyTableAdvancementViewModel {
       Paused() => Paused(next: Automatic()),
       Manual() || Automatic() => Automatic(),
     };
-    _rxModel.add(nextModel);
+    _setModel(nextModel);
   }
 
   bool get _idleScrollingActiveAndTimerInactive {

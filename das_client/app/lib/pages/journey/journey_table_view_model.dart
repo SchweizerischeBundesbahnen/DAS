@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/di/di.dart';
+import 'package:app/pages/journey/journey_table/advancement/journey_advancement_model.dart';
 import 'package:app/pages/journey/journey_table/journey_table_scroll_controller.dart';
 import 'package:app/util/error_code.dart';
 import 'package:app/util/time_constants.dart';
@@ -54,9 +55,10 @@ class JourneyTableViewModel {
     _listenToSferaRemoteRepo();
   }
 
-  void toggleZenViewMode() {
-    _log.fine('ZenViewMode active: ${!isZenViewModeValue}');
-    _rxZenViewMode.add(!isZenViewModeValue);
+  void updateZenViewMode(JourneyAdvancementModel journeyAdvancementModel) {
+    final newState = journeyAdvancementModel is! Paused;
+    _log.fine('ZenViewMode active: $newState}');
+    _rxZenViewMode.add(newState);
   }
 
   void toggleKmDecisiveGradient() {

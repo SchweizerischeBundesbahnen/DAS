@@ -55,7 +55,7 @@ void main() {
         journeyStream: journeySubject.stream,
         positionStream: journeyPositionSubject.stream,
         scrollController: mockScrollController,
-        onAdvancementModeToggled: () {},
+        onAdvancementModeChanged: (model) {},
       );
       testee.model.listen(modelRegister.add);
       testAsync = fakeAsync;

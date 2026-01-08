@@ -99,7 +99,7 @@ extension JourneyScopeExtension on GetIt {
       journeyStream: journeyTableVM.journey,
       positionStream: DI.get<JourneyPositionViewModel>().model,
       scrollController: journeyTableVM.journeyTableScrollController,
-      onAdvancementModeToggled: journeyTableVM.toggleZenViewMode,
+      onAdvancementModeChanged: journeyTableVM.updateZenViewMode,
     );
     settingsVM.registerOnBreakSeriesUpdated(vm.scrollToCurrentPositionIfNotPaused);
     registerSingleton<JourneyTableAdvancementViewModel>(
