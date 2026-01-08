@@ -14,10 +14,12 @@ class BreakSlipButton extends StatelessWidget {
     final viewModel = context.read<DetailModalViewModel>();
     final breakLoadSlipVM = context.read<BreakLoadSlipViewModel>();
     return StreamBuilder(
-      initialData: breakLoadSlipVM.formationRun,
+      initialData: breakLoadSlipVM.formationValue,
       stream: breakLoadSlipVM.formation,
       builder: (context, snapshot) {
         if (snapshot.data == null) return SizedBox.shrink();
+
+        print(snapshot.data);
 
         return StreamBuilder(
           initialData: viewModel.openModalTypeValue,

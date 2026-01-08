@@ -64,9 +64,9 @@ class JourneyIdentifierHeaderBox extends StatelessWidget {
     mainAxisAlignment: .start,
     crossAxisAlignment: .end,
     children: [
-      Flexible(child: JourneyIdentifier()),
+      Expanded(child: JourneyIdentifier()),
       Divider(height: sbbDefaultSpacing, color: SBBColors.cloud),
-      Flexible(child: _radioChannel()),
+      Expanded(child: _radioChannel()),
     ],
   );
 

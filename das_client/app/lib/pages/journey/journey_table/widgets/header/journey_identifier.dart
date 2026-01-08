@@ -19,9 +19,7 @@ class JourneyIdentifier extends StatelessWidget {
     return StreamBuilder(
       stream: viewModel.journey,
       builder: (context, snapshot) {
-        if (!snapshot.hasData) return SizedBox.shrink();
-
-        final journey = snapshot.requireData;
+        final journey = snapshot.data;
         final formattedIdentifier = journey?.formattedTrainIdentifier(context) ?? context.l10n.c_unknown;
         return JourneySearchOverlay(
           child: Padding(
