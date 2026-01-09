@@ -57,6 +57,11 @@ void main() {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
+      final scrollableFinder = find.byType(AnimatedList);
+      expect(scrollableFinder, findsOneWidget);
+
+      await tester.dragUntilVisible(find.text('Haltestelle B'), scrollableFinder, const Offset(0, 50));
+
       // set position to B manually
       final b = 'Haltestelle B';
       await tester.drag(findDASTableRowByText(b), const Offset(600, 0));
