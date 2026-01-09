@@ -1,6 +1,7 @@
-import 'package:app/pages/journey/journey_table/advised_speed/advised_speed_model.dart';
-import 'package:app/pages/journey/journey_table/advised_speed/advised_speed_view_model.dart';
-import 'package:app/pages/journey/journey_table/journey_position/journey_position_model.dart';
+import 'package:app/pages/journey/journey_screen/model/advised_speed_model.dart';
+import 'package:app/pages/journey/journey_screen/model/journey_position_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/advised_speed_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
 import 'package:app/sound/das_sounds.dart';
 import 'package:app/sound/sound.dart';
 import 'package:app/util/time_constants.dart';
@@ -12,12 +13,17 @@ import 'package:mockito/mockito.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
-@GenerateNiceMocks([MockSpec<DASSounds>(), MockSpec<Sound>()])
 import 'advised_speed_view_model_test.mocks.dart';
 
+@GenerateNiceMocks([
+  MockSpec<JourneyTableViewModel>(),
+  MockSpec<DASSounds>(),
+  MockSpec<Sound>(),
+])
 void main() {
   group('Unit Test Advised Speed View Model', () {
     late AdvisedSpeedViewModel testee;
+    late MockJourneyTableViewModel mockJourneyTableViewModel;
     late BehaviorSubject<Journey?> journeySubject;
     late BehaviorSubject<JourneyPositionModel> journeyPositionSubject;
     late FakeAsync testAsync;
@@ -50,13 +56,15 @@ void main() {
       GetIt.I.registerSingleton<DASSounds>(mockDasSounds);
 
       fakeAsync((fakeAsync) {
+        mockJourneyTableViewModel = MockJourneyTableViewModel();
         journeySubject = BehaviorSubject<Journey?>.seeded(null);
+        when(mockJourneyTableViewModel.journey).thenAnswer((_) => journeySubject.stream);
         journeyPositionSubject = BehaviorSubject<JourneyPositionModel>.seeded(JourneyPositionModel());
         testAsync = fakeAsync;
 
         testee = AdvisedSpeedViewModel(
-          journeyStream: journeySubject.stream,
           journeyPositionStream: journeyPositionSubject,
+          journeyTableViewModel: mockJourneyTableViewModel,
         );
         modelRegister = [];
         testee.model.listen(modelRegister.add);
@@ -290,7 +298,9 @@ void main() {
         endData: baseJourney.data[7],
       );
       final disjointAdvisedSegmentJourney = Journey(
-        metadata: Metadata(advisedSpeedSegments: [advisedSpeedSegmentOne, advisedSpeedSegmentTwo]),
+        metadata: Metadata(
+          advisedSpeedSegments: [advisedSpeedSegmentOne, advisedSpeedSegmentTwo],
+        ),
         data: List.from(baseJourney.data),
       );
 
@@ -346,7 +356,9 @@ void main() {
         endData: baseJourney.data[7],
       );
       final disjointAdvisedSegmentJourney = Journey(
-        metadata: Metadata(advisedSpeedSegments: [advisedSpeedSegmentOne, advisedSpeedSegmentTwo]),
+        metadata: Metadata(
+          advisedSpeedSegments: [advisedSpeedSegmentOne, advisedSpeedSegmentTwo],
+        ),
         data: List.from(baseJourney.data),
       );
 

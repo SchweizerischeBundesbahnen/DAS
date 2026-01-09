@@ -1,4 +1,4 @@
-import 'package:app/pages/journey/journey_table/header/radio_channel/radio_channel_model.dart';
+import 'package:app/pages/journey/journey_screen/header/model/radio_channel_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sfera/component.dart';
 

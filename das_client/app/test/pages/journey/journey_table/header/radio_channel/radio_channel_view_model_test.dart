@@ -1,12 +1,20 @@
 import 'dart:async';
 
-import 'package:app/pages/journey/journey_table/header/radio_channel/radio_channel_model.dart';
-import 'package:app/pages/journey/journey_table/header/radio_channel/radio_channel_view_model.dart';
-import 'package:app/pages/journey/journey_table/journey_position/journey_position_model.dart';
+import 'package:app/pages/journey/journey_screen/header/model/radio_channel_model.dart';
+import 'package:app/pages/journey/journey_screen/header/view_model/radio_channel_view_model.dart';
+import 'package:app/pages/journey/journey_screen/model/journey_position_model.dart';
+import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
+import 'radio_channel_view_model_test.mocks.dart';
+
+@GenerateNiceMocks([
+  MockSpec<JourneyTableViewModel>(),
+])
 void main() {
   group('RadioChannelViewModel', () {
     late BehaviorSubject<Journey?> rxMockJourney;
@@ -14,13 +22,16 @@ void main() {
     late RadioChannelViewModel testee;
     final List<dynamic> emitRegister = [];
     late StreamSubscription<RadioChannelModel> modelSubscription;
+    late MockJourneyTableViewModel mockJourneyTableViewModel;
 
     setUp(() {
       rxMockJourney = BehaviorSubject<Journey?>.seeded(null);
       rxMockJourneyPosition = BehaviorSubject<JourneyPositionModel>.seeded(JourneyPositionModel());
+      mockJourneyTableViewModel = MockJourneyTableViewModel();
+      when(mockJourneyTableViewModel.journey).thenAnswer((_) => rxMockJourney.stream);
       testee = RadioChannelViewModel(
-        journeyStream: rxMockJourney.stream,
         journeyPositionStream: rxMockJourneyPosition.stream,
+        journeyTableViewModel: mockJourneyTableViewModel,
       );
       modelSubscription = testee.model.listen(emitRegister.add);
     });

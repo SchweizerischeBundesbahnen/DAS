@@ -1,23 +1,34 @@
 import 'dart:async';
 
 import 'package:app/extension/datetime_extension.dart';
-import 'package:app/pages/journey/journey_table/widgets/table/arrival_departure_time/arrival_departure_time_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/arrival_departure_time_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:clock/clock.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
 import 'package:sfera/src/model/journey/journey.dart';
 import 'package:sfera/src/model/journey/metadata.dart';
 
+import 'arrival_departure_time_view_model_test.mocks.dart';
+
+@GenerateNiceMocks([
+  MockSpec<JourneyTableViewModel>(),
+])
 void main() {
   late ArrivalDepartureTimeViewModel testee;
   late StreamController<Journey?> journeyStreamController;
+  late MockJourneyTableViewModel mockJourneyTableViewModel;
 
   setUp(() {
     GetIt.I.registerSingleton(TimeConstants());
     journeyStreamController = StreamController<Journey?>();
-    testee = ArrivalDepartureTimeViewModel(journeyStream: journeyStreamController.stream);
+    mockJourneyTableViewModel = MockJourneyTableViewModel();
+    when(mockJourneyTableViewModel.journey).thenAnswer((_) => journeyStreamController.stream);
+    testee = ArrivalDepartureTimeViewModel(journeyTableViewModel: mockJourneyTableViewModel);
   });
 
   tearDown(() {
@@ -52,11 +63,11 @@ void main() {
     expect(testee.showOperationalTimeValue, isTrue);
   });
 
-  test('rxShowOperationalTime_whenJourneyIsNull_thenEmitsFalse', () async {
+  test('rxShowOperationalTime_whenJourneyIsNull_thenEmitsTrue', () async {
     journeyStreamController.add(null);
     await Future.delayed(Duration(milliseconds: 10));
 
-    expect(await testee.showOperationalTime.first, isFalse);
+    expect(await testee.showOperationalTime.first, isTrue);
   });
 
   test('rxShowOperationalTime_whenJourneyHasNoOperationalTimes_thenEmitsFalse', () async {

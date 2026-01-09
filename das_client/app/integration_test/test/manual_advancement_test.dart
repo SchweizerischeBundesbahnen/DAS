@@ -1,5 +1,5 @@
-import 'package:app/pages/journey/journey_table/widgets/header/journey_advancement_button.dart';
-import 'package:app/pages/journey/journey_table/widgets/table/cells/route_chevron.dart';
+import 'package:app/pages/journey/journey_screen/header/widgets/journey_advancement_button.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_chevron.dart';
 import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';

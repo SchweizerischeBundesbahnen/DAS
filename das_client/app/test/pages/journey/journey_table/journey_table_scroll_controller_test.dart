@@ -1,8 +1,8 @@
-import 'package:app/pages/journey/journey_table/journey_position/journey_position_model.dart';
-import 'package:app/pages/journey/journey_table/journey_table_scroll_controller.dart';
-import 'package:app/pages/journey/journey_table/widgets/table/cell_row_builder.dart';
-import 'package:app/pages/journey/journey_table/widgets/table/service_point_row.dart';
-import 'package:app/pages/journey/journey_table/widgets/table/signal_row.dart';
+import 'package:app/pages/journey/journey_screen/journey_table_scroll_controller.dart';
+import 'package:app/pages/journey/journey_screen/model/journey_position_model.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/cell_row_builder.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/service_point_row.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/signal_row.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';

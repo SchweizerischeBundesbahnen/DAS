@@ -1,4 +1,4 @@
-import 'package:app/pages/journey/journey_table/widgets/table/config/bracket_station_render_data.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/config/bracket_station_render_data.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sfera/src/model/journey/bracket_station_segment.dart';
 import 'package:sfera/src/model/journey/journey.dart';

@@ -1,7 +1,7 @@
 import 'package:app/di/di.dart';
-import 'package:app/pages/journey/journey_table/journey_position/journey_position_view_model.dart';
-import 'package:app/pages/journey/journey_table/view_model/journey_table_advancement_view_model.dart';
-import 'package:app/pages/journey/journey_table/view_model/punctuality_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/journey_table_advancement_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/punctuality_view_model.dart';
 import 'package:app/pages/journey/selection/view_model/journey_selection_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
@@ -85,7 +85,6 @@ extension JourneyScopeExtension on GetIt {
   void registerJourneyPositionViewModel() {
     registerSingleton<JourneyPositionViewModel>(
       JourneyPositionViewModel(
-        journeyStream: get<JourneyTableViewModel>().journey,
         punctualityStream: get<PunctualityViewModel>().model,
       ),
       dispose: (vm) => vm.dispose(),

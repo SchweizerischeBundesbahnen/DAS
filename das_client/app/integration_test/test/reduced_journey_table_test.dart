@@ -1,5 +1,5 @@
-import 'package:app/pages/journey/journey_table/widgets/communication_network_icon.dart';
-import 'package:app/pages/journey/journey_table/widgets/reduced_overview/reduced_journey_table.dart';
+import 'package:app/pages/journey/journey_screen/reduced_overview/widgets/reduced_journey_table.dart';
+import 'package:app/pages/journey/journey_screen/widgets/communication_network_icon.dart';
 import 'package:app/util/format.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:flutter_test/flutter_test.dart';

@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:app/di/di.dart';
-import 'package:app/pages/journey/journey_table/journey_table_scroll_controller.dart';
-import 'package:app/pages/journey/journey_table/model/journey_advancement_model.dart';
+import 'package:app/pages/journey/journey_screen/journey_table_scroll_controller.dart';
+import 'package:app/pages/journey/journey_screen/model/journey_advancement_model.dart';
 import 'package:app/util/error_code.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:logging/logging.dart';

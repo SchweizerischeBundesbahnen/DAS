@@ -27,13 +27,13 @@ abstract class JourneyAwareViewModel {
     });
   }
 
+  void journeyUpdated(Journey? journey) {}
+
+  void journeyIdentificationChanged(Journey? journey);
+
   @mustCallSuper
   void dispose() {
     _journeySubscription?.cancel();
     _journeySubscription = null;
   }
-
-  void journeyUpdated(Journey? journey) {}
-
-  void journeyIdentificationChanged(Journey? journey);
 }

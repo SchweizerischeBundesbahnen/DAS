@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:app/di/di.dart';
-import 'package:app/pages/journey/journey_table/widgets/header/extended_menu.dart';
-import 'package:app/pages/journey/journey_table/widgets/warn_function_modal_sheet.dart';
+import 'package:app/pages/journey/journey_screen/header/widgets/extended_menu.dart';
+import 'package:app/pages/journey/journey_screen/widgets/warn_function_modal_sheet.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:warnapp/component.dart';
 
