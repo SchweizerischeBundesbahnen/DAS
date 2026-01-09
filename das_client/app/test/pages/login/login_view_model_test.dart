@@ -9,7 +9,7 @@ import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import '../../../test_util.dart';
+import '../../test_util.dart';
 import 'login_view_model_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<Authenticator>(), MockSpec<OidcToken>(), MockSpec<ScopeHandler>()])
