@@ -60,7 +60,7 @@ void main() {
       final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
-      await tester.dragUntilVisible(find.text('Haltestelle B'), scrollableFinder, const Offset(0, 50));
+      await tester.dragUntilVisible(find.text('Haltestelle B'), scrollableFinder, const Offset(0, -50));
 
       // set position to B manually
       final b = 'Haltestelle B';
