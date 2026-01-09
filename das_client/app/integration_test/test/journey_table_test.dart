@@ -734,7 +734,7 @@ void main() {
       final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
-      await tester.dragUntilVisible(find.text('Halt auf Verlangen C'), scrollableFinder, const Offset(0, -50));
+      await tester.dragUntilVisible(find.text('1.8'), scrollableFinder, const Offset(0, -50));
 
       final curveLabel = l10n.p_journey_table_curve_type_curve;
       final curveRows = findDASTableRowByText(curveLabel);
