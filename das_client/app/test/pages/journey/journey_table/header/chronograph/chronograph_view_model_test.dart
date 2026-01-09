@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:collection';
 
-import 'package:app/pages/journey/calculated_speed.dart';
-import 'package:app/pages/journey/calculated_speed_view_model.dart';
 import 'package:app/pages/journey/journey_table/advised_speed/advised_speed_model.dart';
 import 'package:app/pages/journey/journey_table/header/chronograph/chronograph_view_model.dart';
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_model.dart';
-import 'package:app/pages/journey/journey_table/punctuality/punctuality_model.dart';
+import 'package:app/pages/journey/journey_table/model/punctuality_model.dart';
+import 'package:app/pages/journey/model/calculated_speed.dart';
+import 'package:app/pages/journey/view_model/calculated_speed_view_model.dart';
 import 'package:clock/clock.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';

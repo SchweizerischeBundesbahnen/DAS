@@ -1,5 +1,5 @@
-import 'package:app/pages/journey/journey_table/collapsible_rows_view_model.dart';
 import 'package:app/pages/journey/journey_table/journey_overview.dart';
+import 'package:app/pages/journey/journey_table/view_model/collapsible_rows_view_model.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/text_util.dart';
 import 'package:app/widgets/accordion/accordion.dart';

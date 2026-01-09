@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_model.dart';
+import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
@@ -14,12 +15,12 @@ enum CollapsedState {
       data is UncodedOperationalIndication ? .expandedWithCollapsedContent : .expanded;
 }
 
-class CollapsibleRowsViewModel {
+class CollapsibleRowsViewModel extends JourneyAwareViewModel {
   CollapsibleRowsViewModel({
-    required Stream<Journey?> journeyStream,
     required Stream<JourneyPositionModel> journeyPositionStream,
+    super.journeyTableViewModel,
   }) {
-    _init(journeyStream, journeyPositionStream);
+    _init(journeyTableViewModel.journey, journeyPositionStream);
   }
 
   Stream<Map<int, CollapsedState>> get collapsedRows => _rxCollapsedRows.stream;
@@ -87,9 +88,16 @@ class CollapsibleRowsViewModel {
     }
   }
 
+  @override
   void dispose() {
+    super.dispose();
     _journeySubscription?.cancel();
     _rxCollapsedRows.close();
+  }
+
+  @override
+  void journeyIdentificationChanged(Journey? journey) {
+    _rxCollapsedRows.add({});
   }
 }
 

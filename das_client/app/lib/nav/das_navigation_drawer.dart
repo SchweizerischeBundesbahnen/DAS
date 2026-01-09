@@ -1,7 +1,7 @@
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/app_router.dart';
-import 'package:app/pages/journey/navigation/journey_navigation_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
 import 'package:app/widgets/app_version_text.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/device_id_text.dart';

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_model.dart';
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_view_model.dart';
-import 'package:app/pages/journey/journey_table/punctuality/punctuality_model.dart';
+import 'package:app/pages/journey/journey_table/model/punctuality_model.dart';
 import 'package:clock/clock.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';

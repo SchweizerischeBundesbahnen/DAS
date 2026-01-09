@@ -1,4 +1,4 @@
-import 'package:app/pages/journey/break_load_slip/break_load_slip_view_model.dart';
+import 'package:app/pages/journey/break_load_slip/view_model/break_load_slip_view_model.dart';
 import 'package:app/widgets/navigation_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:formation/component.dart';

@@ -3,7 +3,7 @@ import 'package:app/pages/journey/journey_table/journey_position/journey_positio
 import 'package:app/pages/journey/journey_table/widgets/detail_modal/detail_modal_view_model.dart';
 import 'package:app/pages/journey/journey_table/widgets/header/journey_identifier.dart';
 import 'package:app/pages/journey/journey_table/widgets/header/radio_channel.dart';
-import 'package:app/pages/journey/journey_table_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';

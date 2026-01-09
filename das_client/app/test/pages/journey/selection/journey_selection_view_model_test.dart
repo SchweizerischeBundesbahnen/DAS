@@ -1,5 +1,5 @@
-import 'package:app/pages/journey/selection/journey_selection_model.dart';
-import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
+import 'package:app/pages/journey/selection/model/journey_selection_model.dart';
+import 'package:app/pages/journey/selection/view_model/journey_selection_view_model.dart';
 import 'package:clock/clock.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';

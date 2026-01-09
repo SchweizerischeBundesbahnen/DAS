@@ -1,19 +1,17 @@
 import 'package:app/di/di.dart';
-import 'package:app/pages/journey/break_load_slip/break_load_slip_view_model.dart';
-import 'package:app/pages/journey/calculated_speed_view_model.dart';
-import 'package:app/pages/journey/disturbance_view_model.dart';
-import 'package:app/pages/journey/journey_table/advancement/journey_table_advancement_view_model.dart';
-import 'package:app/pages/journey/journey_table/advised_speed/advised_speed_notification.dart';
+import 'package:app/pages/journey/break_load_slip/view_model/break_load_slip_view_model.dart';
 import 'package:app/pages/journey/journey_table/advised_speed/advised_speed_view_model.dart';
-import 'package:app/pages/journey/journey_table/collapsible_rows_view_model.dart';
+import 'package:app/pages/journey/journey_table/advised_speed/widgets/advised_speed_notification.dart';
 import 'package:app/pages/journey/journey_table/departure_dispatch_notification/departure_dispatch_notification.dart';
 import 'package:app/pages/journey/journey_table/departure_dispatch_notification/departure_dispatch_notification_view_model.dart';
 import 'package:app/pages/journey/journey_table/header/chronograph/chronograph_view_model.dart';
 import 'package:app/pages/journey/journey_table/header/connectivity/connectivity_view_model.dart';
 import 'package:app/pages/journey/journey_table/header/departure_authorization/departure_authorization_view_model.dart';
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_view_model.dart';
-import 'package:app/pages/journey/journey_table/punctuality/punctuality_view_model.dart';
-import 'package:app/pages/journey/journey_table/ux_testing_view_model.dart';
+import 'package:app/pages/journey/journey_table/view_model/collapsible_rows_view_model.dart';
+import 'package:app/pages/journey/journey_table/view_model/journey_table_advancement_view_model.dart';
+import 'package:app/pages/journey/journey_table/view_model/punctuality_view_model.dart';
+import 'package:app/pages/journey/journey_table/view_model/ux_testing_view_model.dart';
 import 'package:app/pages/journey/journey_table/widgets/detail_modal/additional_speed_restriction_modal/additional_speed_restriction_modal_view_model.dart';
 import 'package:app/pages/journey/journey_table/widgets/detail_modal/detail_modal.dart';
 import 'package:app/pages/journey/journey_table/widgets/detail_modal/detail_modal_view_model.dart';
@@ -29,10 +27,12 @@ import 'package:app/pages/journey/journey_table/widgets/notification/replacement
 import 'package:app/pages/journey/journey_table/widgets/notification/replacement_series/replacement_series_view_model.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/arrival_departure_time/arrival_departure_time_view_model.dart';
 import 'package:app/pages/journey/journey_table/widgets/warn_function_modal_sheet.dart';
-import 'package:app/pages/journey/journey_table_view_model.dart';
-import 'package:app/pages/journey/line_speed_view_model.dart';
-import 'package:app/pages/journey/settings/journey_settings_view_model.dart';
-import 'package:app/pages/journey/warn_app_view_model.dart';
+import 'package:app/pages/journey/view_model/calculated_speed_view_model.dart';
+import 'package:app/pages/journey/view_model/disturbance_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
+import 'package:app/pages/journey/view_model/line_speed_view_model.dart';
+import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
 import 'package:app/sound/das_sounds.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -175,7 +175,6 @@ class _ProviderScope extends StatelessWidget {
           update: (_, journeyPositionVM, prev) {
             if (prev != null) return prev;
             return CollapsibleRowsViewModel(
-              journeyStream: journeyTableViewModel.journey,
               journeyPositionStream: journeyPositionVM.model,
             );
           },

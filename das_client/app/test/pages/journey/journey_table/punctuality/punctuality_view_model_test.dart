@@ -1,15 +1,23 @@
 import 'dart:async';
 
-import 'package:app/pages/journey/journey_table/punctuality/punctuality_model.dart';
-import 'package:app/pages/journey/journey_table/punctuality/punctuality_view_model.dart';
+import 'package:app/pages/journey/journey_table/model/punctuality_model.dart';
+import 'package:app/pages/journey/journey_table/view_model/punctuality_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:clock/clock.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
+import 'punctuality_view_model_test.mocks.dart';
+
+@GenerateNiceMocks([
+  MockSpec<JourneyTableViewModel>(),
+])
 void main() {
   const timeConstants = TimeConstants();
   const testDelay = Delay(value: Duration(seconds: 10), location: 'Bern');
@@ -19,6 +27,7 @@ void main() {
 
   late Clock testClock;
   late PunctualityViewModel testee;
+  late MockJourneyTableViewModel mockJourneyTableViewModel;
   late BehaviorSubject<Journey?> rxMockJourney;
   late StreamSubscription modelSubscription;
   late List<PunctualityModel> emitRegister;
@@ -39,9 +48,11 @@ void main() {
     testClock = Clock.fixed(clock.now());
     fakeAsync((fakeAsync) {
       rxMockJourney = BehaviorSubject<Journey?>();
+      mockJourneyTableViewModel = MockJourneyTableViewModel();
+      when(mockJourneyTableViewModel.journey).thenAnswer((_) => rxMockJourney.stream);
       testAsync = fakeAsync;
       withClock(testClock, () {
-        testee = PunctualityViewModel(journeyStream: rxMockJourney.stream);
+        testee = PunctualityViewModel(journeyTableViewModel: mockJourneyTableViewModel);
       });
       emitRegister = <PunctualityModel>[];
       modelSubscription = testee.model.listen(emitRegister.add);

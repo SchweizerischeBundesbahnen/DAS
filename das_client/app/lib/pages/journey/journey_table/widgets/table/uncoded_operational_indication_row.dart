@@ -1,4 +1,4 @@
-import 'package:app/pages/journey/journey_table/collapsible_rows_view_model.dart';
+import 'package:app/pages/journey/journey_table/view_model/collapsible_rows_view_model.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/uncoded_operational_indication_accordion.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/widget_row_builder.dart';
 import 'package:app/theme/theme_util.dart';

@@ -1,5 +1,5 @@
-import 'package:app/pages/journey/selection/journey_selection_model.dart';
-import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
+import 'package:app/pages/journey/selection/model/journey_selection_model.dart';
+import 'package:app/pages/journey/selection/view_model/journey_selection_view_model.dart';
 import 'package:app/pages/journey/selection/widgets/journey_date_field_bottom_modal.dart';
 import 'package:app/pages/journey/selection/widgets/journey_date_field_overlay.dart';
 import 'package:flutter/material.dart';

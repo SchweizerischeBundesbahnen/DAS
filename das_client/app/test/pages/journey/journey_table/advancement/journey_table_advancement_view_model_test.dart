@@ -1,7 +1,8 @@
-import 'package:app/pages/journey/journey_table/advancement/journey_advancement_model.dart';
-import 'package:app/pages/journey/journey_table/advancement/journey_table_advancement_view_model.dart';
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_model.dart';
 import 'package:app/pages/journey/journey_table/journey_table_scroll_controller.dart';
+import 'package:app/pages/journey/journey_table/model/journey_advancement_model.dart';
+import 'package:app/pages/journey/journey_table/view_model/journey_table_advancement_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -16,9 +17,11 @@ import 'journey_table_advancement_view_model_test.mocks.dart';
 
 @GenerateNiceMocks([
   MockSpec<JourneyTableScrollController>(),
+  MockSpec<JourneyTableViewModel>(),
 ])
 void main() {
   late JourneyTableAdvancementViewModel testee;
+  late MockJourneyTableViewModel mockJourneyTableViewModel;
   late BehaviorSubject<Journey?> journeySubject;
   late BehaviorSubject<JourneyPositionModel> journeyPositionSubject;
   late JourneyTableScrollController mockScrollController;
@@ -31,6 +34,7 @@ void main() {
   final baseJourney = Journey(
     metadata: Metadata(
       journeyStart: journeyStart,
+      trainIdentification: TrainIdentification(ru: RailwayUndertaking.sbb, trainNumber: '123', date: DateTime.now()),
     ),
     data: [
       journeyStart,
@@ -49,10 +53,12 @@ void main() {
     mockScrollController = MockJourneyTableScrollController();
 
     fakeAsync((fakeAsync) {
+      mockJourneyTableViewModel = MockJourneyTableViewModel();
       journeySubject = BehaviorSubject<Journey?>.seeded(baseJourney);
+      when(mockJourneyTableViewModel.journey).thenAnswer((_) => journeySubject.stream);
       journeyPositionSubject = BehaviorSubject<JourneyPositionModel>.seeded(JourneyPositionModel());
       testee = JourneyTableAdvancementViewModel(
-        journeyStream: journeySubject.stream,
+        journeyTableViewModel: mockJourneyTableViewModel,
         positionStream: journeyPositionSubject.stream,
         scrollController: mockScrollController,
         onAdvancementModeChanged: (model) {},
@@ -267,7 +273,10 @@ void main() {
       journeySubject.add(
         Journey(
           data: baseJourney.data,
-          metadata: Metadata(signaledPosition: SignaledPosition(order: thirdSignal.order)),
+          metadata: Metadata(
+            signaledPosition: SignaledPosition(order: thirdSignal.order),
+            trainIdentification: baseJourney.metadata.trainIdentification,
+          ),
         ),
       );
       processStreams(fakeAsync: testAsync);

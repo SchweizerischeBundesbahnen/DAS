@@ -1,5 +1,5 @@
-import 'package:app/pages/journey/calculated_speed_view_model.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/cells/show_speed_behaviour.dart';
+import 'package:app/pages/journey/view_model/calculated_speed_view_model.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/table/das_row_controller.dart';
 import 'package:app/widgets/table/das_row_controller_wrapper.dart';

@@ -1,6 +1,6 @@
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_table/journey_overview.dart';
-import 'package:app/pages/journey/warn_app_view_model.dart';
+import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
 import 'package:app/widgets/das_icons.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/notificationbox/notification_box.dart';

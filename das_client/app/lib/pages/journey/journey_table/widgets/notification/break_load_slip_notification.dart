@@ -1,5 +1,5 @@
 import 'package:app/i18n/i18n.dart';
-import 'package:app/pages/journey/break_load_slip/break_load_slip_view_model.dart';
+import 'package:app/pages/journey/break_load_slip/view_model/break_load_slip_view_model.dart';
 import 'package:app/pages/journey/journey_table/journey_overview.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

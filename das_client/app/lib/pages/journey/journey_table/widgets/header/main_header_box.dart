@@ -6,7 +6,7 @@ import 'package:app/pages/journey/journey_table/widgets/header/extended_menu.dar
 import 'package:app/pages/journey/journey_table/widgets/header/journey_advancement_button.dart';
 import 'package:app/pages/journey/journey_table/widgets/header/next_stop.dart';
 import 'package:app/pages/journey/journey_table/widgets/header/theme_button.dart';
-import 'package:app/pages/journey/journey_table_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';

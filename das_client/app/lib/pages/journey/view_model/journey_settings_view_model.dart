@@ -1,17 +1,13 @@
 import 'dart:async';
 import 'dart:ui';
 
-import 'package:app/pages/journey/settings/journey_settings.dart';
+import 'package:app/pages/journey/model/journey_settings.dart';
+import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
-class JourneySettingsViewModel {
-  JourneySettingsViewModel({required Stream<Journey?> journeyStream}) {
-    _initJourneySubscription(journeyStream);
-  }
-
-  late StreamSubscription<Journey?>? _journeySubscription;
-  TrainIdentification? _lastTrainIdentification;
+class JourneySettingsViewModel extends JourneyAwareViewModel {
+  JourneySettingsViewModel({super.journeyTableViewModel});
 
   final List<VoidCallback> _onBreakSeriesUpdatedCallbacks = [];
 
@@ -40,17 +36,8 @@ class JourneySettingsViewModel {
     _rxSettings.add(_rxSettings.value.copyWith(expandedGroups: expandedGroups));
   }
 
-  void dispose() {
-    _journeySubscription?.cancel();
-    _journeySubscription = null;
-  }
-
-  void _initJourneySubscription(Stream<Journey?> journeyStream) {
-    _journeySubscription = journeyStream.listen((data) {
-      if (data == null || data.metadata.trainIdentification != _lastTrainIdentification) {
-        _lastTrainIdentification = data?.metadata.trainIdentification;
-        _rxSettings.add(JourneySettings());
-      }
-    });
+  @override
+  void journeyIdentificationChanged(Journey? journey) {
+    _rxSettings.add(JourneySettings());
   }
 }

@@ -1,9 +1,10 @@
 import 'dart:async';
 
 import 'package:app/di/di.dart';
-import 'package:app/pages/journey/journey_table/advancement/journey_advancement_model.dart';
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_model.dart';
 import 'package:app/pages/journey/journey_table/journey_table_scroll_controller.dart';
+import 'package:app/pages/journey/journey_table/model/journey_advancement_model.dart';
+import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -22,16 +23,16 @@ typedef AdvancementModeChangedCallback = void Function(JourneyAdvancementModel);
 /// * paused (automatic scrolling is disabled)
 /// * auto (automatic idle scrolling is enabled)
 /// * manual (automatic idle scrolling is enabled)
-class JourneyTableAdvancementViewModel {
+class JourneyTableAdvancementViewModel extends JourneyAwareViewModel {
   JourneyTableAdvancementViewModel({
-    required Stream<Journey?> journeyStream,
     required Stream<JourneyPositionModel> positionStream,
     required JourneyTableScrollController scrollController,
     required AdvancementModeChangedCallback onAdvancementModeChanged,
+    super.journeyTableViewModel,
   }) {
     _scrollController = scrollController;
     _onAdvancementModeChanged = onAdvancementModeChanged;
-    _initSubscription(journeyStream, positionStream);
+    _initSubscription(journeyTableViewModel.journey, positionStream);
   }
 
   StreamSubscription<(Journey?, JourneyPositionModel)>? _streamSubscription;
@@ -104,7 +105,9 @@ class JourneyTableAdvancementViewModel {
     }
   }
 
+  @override
   void dispose() {
+    super.dispose();
     _streamSubscription?.cancel();
     _idleScrollTimer?.cancel();
     _idleScrollTimer = null;
@@ -123,9 +126,6 @@ class JourneyTableAdvancementViewModel {
           final position = data.$2;
 
           if (journey == null) {
-            _isInAutomaticScrollingZone = false;
-            _emitAutomaticIdleScrolling();
-            _resetModel();
             return;
           }
 
@@ -163,6 +163,8 @@ class JourneyTableAdvancementViewModel {
   }
 
   void _resetModel() {
+    _isInAutomaticScrollingZone = false;
+    _emitAutomaticIdleScrolling();
     _setModel(Automatic());
   }
 
@@ -201,5 +203,10 @@ class JourneyTableAdvancementViewModel {
     _lastPosition = _currentPosition;
     if (_currentPosition == null) return;
     _scrollController.scrollToJourneyPoint(_currentPosition);
+  }
+
+  @override
+  void journeyIdentificationChanged(Journey? journey) {
+    _resetModel();
   }
 }

@@ -2,12 +2,12 @@ import 'dart:io';
 
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
-import 'package:app/pages/journey/break_load_slip/break_load_slip_view_model.dart';
-import 'package:app/pages/journey/journey_table/advancement/journey_table_advancement_view_model.dart';
-import 'package:app/pages/journey/journey_table/collapsible_rows_view_model.dart';
+import 'package:app/pages/journey/break_load_slip/view_model/break_load_slip_view_model.dart';
 import 'package:app/pages/journey/journey_table/journey_overview.dart';
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_model.dart';
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_view_model.dart';
+import 'package:app/pages/journey/journey_table/view_model/collapsible_rows_view_model.dart';
+import 'package:app/pages/journey/journey_table/view_model/journey_table_advancement_view_model.dart';
 import 'package:app/pages/journey/journey_table/widgets/break_series_selection.dart';
 import 'package:app/pages/journey/journey_table/widgets/chevron_animation_wrapper.dart';
 import 'package:app/pages/journey/journey_table/widgets/detail_modal/additional_speed_restriction_modal/additional_speed_restriction_modal_view_model.dart';
@@ -39,9 +39,9 @@ import 'package:app/pages/journey/journey_table/widgets/table/speed_change_row.d
 import 'package:app/pages/journey/journey_table/widgets/table/tram_area_row.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/uncoded_operational_indication_row.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/whistle_row.dart';
-import 'package:app/pages/journey/journey_table_view_model.dart';
-import 'package:app/pages/journey/settings/journey_settings.dart';
-import 'package:app/pages/journey/settings/journey_settings_view_model.dart';
+import 'package:app/pages/journey/model/journey_settings.dart';
+import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/user_settings.dart';
 import 'package:app/widgets/assets.dart';

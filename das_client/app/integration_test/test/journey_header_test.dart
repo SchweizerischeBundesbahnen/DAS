@@ -12,7 +12,7 @@ import 'package:app/pages/journey/journey_table/widgets/header/radio_channel.dar
 import 'package:app/pages/journey/journey_table/widgets/header/radio_contact.dart';
 import 'package:app/pages/journey/journey_table/widgets/header/sim_identifier.dart';
 import 'package:app/pages/journey/journey_table/widgets/notification/maneuver_notification.dart';
-import 'package:app/pages/journey/warn_app_view_model.dart';
+import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/format.dart';

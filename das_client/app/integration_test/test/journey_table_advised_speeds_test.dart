@@ -1,4 +1,4 @@
-import 'package:app/pages/journey/journey_table/advised_speed/advised_speed_notification.dart';
+import 'package:app/pages/journey/journey_table/advised_speed/widgets/advised_speed_notification.dart';
 import 'package:app/pages/journey/journey_table/widgets/header/chronograph_header_box.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/cells/advised_speed_cell_body.dart';
 import 'package:app/widgets/stickyheader/sticky_header.dart';

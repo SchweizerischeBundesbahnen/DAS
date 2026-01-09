@@ -1,6 +1,6 @@
 import 'package:app/di/di.dart';
-import 'package:app/pages/journey/journey_table_view_model.dart';
-import 'package:app/pages/journey/navigation/journey_navigation_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
 import 'package:app/widgets/navigation_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

@@ -1,6 +1,6 @@
 import 'package:app/i18n/i18n.dart';
-import 'package:app/pages/journey/disturbance_view_model.dart';
 import 'package:app/pages/journey/journey_table/journey_overview.dart';
+import 'package:app/pages/journey/view_model/disturbance_view_model.dart';
 import 'package:app/widgets/notificationbox/notification_box.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

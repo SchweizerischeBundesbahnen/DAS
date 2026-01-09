@@ -1,33 +1,18 @@
-import 'dart:async';
-
-import 'package:app/pages/journey/journey_table_view_model.dart';
-import 'package:app/pages/journey/resolved_train_series_speed.dart';
-import 'package:app/pages/journey/settings/journey_settings_view_model.dart';
+import 'package:app/pages/journey/model/resolved_train_series_speed.dart';
+import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:sfera/component.dart';
 
-class LineSpeedViewModel {
+class LineSpeedViewModel extends JourneyAwareViewModel {
   LineSpeedViewModel({
-    required JourneyTableViewModel journeyTableViewModel,
     required JourneySettingsViewModel journeySettingsViewModel,
-  }) : _journeyTableViewModel = journeyTableViewModel,
-       _journeySettingsViewModel = journeySettingsViewModel {
-    _init();
-  }
+    super.journeyTableViewModel,
+  }) : _journeySettingsViewModel = journeySettingsViewModel;
 
-  final JourneyTableViewModel _journeyTableViewModel;
   final JourneySettingsViewModel _journeySettingsViewModel;
-  Metadata? _lastMetadata;
-
-  StreamSubscription? _journeySubscription;
-
-  void _init() {
-    _journeySubscription = _journeyTableViewModel.journey.listen((journey) {
-      _lastMetadata = journey?.metadata;
-    });
-  }
 
   ResolvedTrainSeriesSpeed getResolvedSpeedForOrder(int order) {
-    final metadata = _lastMetadata;
+    final metadata = lastJourney?.metadata;
     if (metadata == null) return ResolvedTrainSeriesSpeed.none();
 
     final settings = _journeySettingsViewModel.modelValue;
@@ -61,8 +46,6 @@ class LineSpeedViewModel {
         null;
   }
 
-  void dispose() {
-    _journeySubscription?.cancel();
-    _journeySubscription = null;
-  }
+  @override
+  void journeyIdentificationChanged(Journey? journey) {}
 }

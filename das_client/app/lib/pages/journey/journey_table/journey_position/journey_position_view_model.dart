@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:app/extension/datetime_extension.dart';
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_model.dart';
-import 'package:app/pages/journey/journey_table/punctuality/punctuality_model.dart';
+import 'package:app/pages/journey/journey_table/model/punctuality_model.dart';
 import 'package:clock/clock.dart';
 import 'package:collection/collection.dart';
 import 'package:logging/logging.dart';

@@ -1,6 +1,6 @@
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_table/journey_overview.dart';
-import 'package:app/pages/journey/journey_table/ux_testing_view_model.dart';
+import 'package:app/pages/journey/journey_table/view_model/ux_testing_view_model.dart';
 import 'package:app/pages/journey/journey_table/widgets/departure_process_modal_sheet.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/assets.dart';

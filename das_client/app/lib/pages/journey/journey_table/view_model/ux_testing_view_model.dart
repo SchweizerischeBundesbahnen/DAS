@@ -41,6 +41,7 @@ class UxTestingViewModel {
             }
           }
         }
+
         _rxUxTestingEvents.add(data);
       }
     });

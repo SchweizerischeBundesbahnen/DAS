@@ -1,6 +1,6 @@
 import 'package:app/i18n/i18n.dart';
-import 'package:app/pages/journey/journey_table/advancement/journey_advancement_model.dart';
-import 'package:app/pages/journey/journey_table/advancement/journey_table_advancement_view_model.dart';
+import 'package:app/pages/journey/journey_table/model/journey_advancement_model.dart';
+import 'package:app/pages/journey/journey_table/view_model/journey_table_advancement_view_model.dart';
 import 'package:app/pages/journey/journey_table/widgets/header/header_icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

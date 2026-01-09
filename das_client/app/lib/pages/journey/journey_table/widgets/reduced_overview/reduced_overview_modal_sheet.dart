@@ -3,7 +3,7 @@ import 'package:app/extension/journey_extension.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_table/widgets/reduced_overview/reduced_journey_table.dart';
 import 'package:app/pages/journey/journey_table/widgets/reduced_overview/reduced_overview_view_model.dart';
-import 'package:app/pages/journey/journey_table_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/format.dart';
 import 'package:app/widgets/das_text_styles.dart';

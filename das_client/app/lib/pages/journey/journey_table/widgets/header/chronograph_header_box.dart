@@ -1,5 +1,5 @@
 import 'package:app/pages/journey/journey_table/header/chronograph/chronograph_view_model.dart';
-import 'package:app/pages/journey/journey_table/punctuality/punctuality_model.dart';
+import 'package:app/pages/journey/journey_table/model/punctuality_model.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';

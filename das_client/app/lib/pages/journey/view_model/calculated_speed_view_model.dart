@@ -1,33 +1,18 @@
-import 'dart:async';
-
-import 'package:app/pages/journey/calculated_speed.dart';
-import 'package:app/pages/journey/line_speed_view_model.dart';
-import 'package:app/pages/journey/journey_table_view_model.dart';
+import 'package:app/pages/journey/model/calculated_speed.dart';
+import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
+import 'package:app/pages/journey/view_model/line_speed_view_model.dart';
 import 'package:sfera/component.dart';
 
-class CalculatedSpeedViewModel {
+class CalculatedSpeedViewModel extends JourneyAwareViewModel {
   CalculatedSpeedViewModel({
-    required JourneyTableViewModel journeyTableViewModel,
     required LineSpeedViewModel lineSpeedViewModel,
-  }) : _journeyTableViewModel = journeyTableViewModel,
-       _lineSpeedViewModel = lineSpeedViewModel {
-    _init();
-  }
+    super.journeyTableViewModel,
+  }) : _lineSpeedViewModel = lineSpeedViewModel;
 
-  final JourneyTableViewModel _journeyTableViewModel;
   final LineSpeedViewModel _lineSpeedViewModel;
-  Metadata? _lastMetadata;
-
-  StreamSubscription? _journeySubscription;
-
-  void _init() {
-    _journeySubscription = _journeyTableViewModel.journey.listen((journey) {
-      _lastMetadata = journey?.metadata;
-    });
-  }
 
   CalculatedSpeed getCalculatedSpeedForOrder(int order) {
-    final metadata = _lastMetadata;
+    final metadata = lastJourney?.metadata;
     if (metadata == null) return CalculatedSpeed.none();
 
     var key = order;
@@ -71,10 +56,8 @@ class CalculatedSpeedViewModel {
     return (reducedDueToLineSpeed, reducedDueToLineSpeed ? resolvedLineSpeed!.speed as SingleSpeed : calculatedSpeed);
   }
 
-  void dispose() {
-    _journeySubscription?.cancel();
-    _journeySubscription = null;
-  }
+  @override
+  void journeyIdentificationChanged(Journey? journey) {}
 }
 
 extension _SingleSpeedExtension on SingleSpeed {

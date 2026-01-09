@@ -1,6 +1,6 @@
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
-import 'package:app/pages/journey/break_load_slip/break_load_slip_view_model.dart';
+import 'package:app/pages/journey/break_load_slip/view_model/break_load_slip_view_model.dart';
 import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_brake_details.dart';
 import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_buttons.dart';
 import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_hauled_load_details.dart';
@@ -9,9 +9,9 @@ import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_specia
 import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_train_details.dart';
 import 'package:app/pages/journey/break_load_slip/widgets/formation_run_navigation_buttons.dart';
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_view_model.dart';
-import 'package:app/pages/journey/journey_table/punctuality/punctuality_view_model.dart';
-import 'package:app/pages/journey/journey_table_view_model.dart';
-import 'package:app/pages/journey/settings/journey_settings_view_model.dart';
+import 'package:app/pages/journey/journey_table/view_model/punctuality_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:formation/component.dart';

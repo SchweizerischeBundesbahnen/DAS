@@ -2,9 +2,9 @@ import 'dart:math';
 
 import 'package:app/extension/station_sign_extension.dart';
 import 'package:app/i18n/i18n.dart';
-import 'package:app/pages/journey/journey_table/advancement/journey_table_advancement_view_model.dart';
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_model.dart';
 import 'package:app/pages/journey/journey_table/journey_position/journey_position_view_model.dart';
+import 'package:app/pages/journey/journey_table/view_model/journey_table_advancement_view_model.dart';
 import 'package:app/pages/journey/journey_table/widgets/detail_modal/detail_modal_view_model.dart';
 import 'package:app/pages/journey/journey_table/widgets/detail_modal/service_point_modal/service_point_modal_view_model.dart';
 import 'package:app/pages/journey/journey_table/widgets/table/arrival_departure_time/arrival_departure_time_view_model.dart';
