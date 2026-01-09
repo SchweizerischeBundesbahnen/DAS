@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.8.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/webapp-v0.7.2...webapp-v0.8.0) (2026-01-08)
+
+
+### Features
+
+* add break- and loadslip ([#692](https://github.com/SchweizerischeBundesbahnen/DAS/issues/692)) ([#1506](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1506)) ([19ee997](https://github.com/SchweizerischeBundesbahnen/DAS/commit/19ee997dad58e2f1cc6bca12736ed05c4a2e2f55))
+* zis formation triggers for ux tests ([#1445](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1445)) ([#1550](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1550)) ([381aa16](https://github.com/SchweizerischeBundesbahnen/DAS/commit/381aa1620ab5685bc759b1fcdfac0419d67d8c7e))
+
 ## [0.7.2](https://github.com/SchweizerischeBundesbahnen/DAS/compare/webapp-v0.7.1...webapp-v0.7.2) (2025-12-02)
 
 
