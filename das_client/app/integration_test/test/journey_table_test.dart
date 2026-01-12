@@ -729,7 +729,7 @@ void main() {
     testWidgets('test curves are displayed correctly', (tester) async {
       await prepareAndStartApp(tester);
 
-      await loadJourney(tester, trainNumber: 'T9999');
+      await loadJourney(tester, trainNumber: 'T9999M');
 
       final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
