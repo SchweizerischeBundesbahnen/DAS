@@ -34,6 +34,7 @@ import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
 import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
 import 'package:app/sound/das_sounds.dart';
+import 'package:app/widgets/stream_listener.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -88,29 +89,21 @@ class JourneyOverview extends StatelessWidget {
   }
 
   Widget _warnAppNotification(BuildContext context) {
-    return StreamBuilder(
+    return StreamListener(
       stream: context.read<WarnAppViewModel>().warnappEvents,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          _triggerWarnappNotification(context);
-        }
-
-        return SizedBox.shrink();
+      onData: (data) {
+        _triggerWarnappNotification(context);
       },
     );
   }
 
   Widget _uxTestingEventListener(BuildContext context) {
-    return StreamBuilder(
+    return StreamListener(
       stream: context.read<UxTestingViewModel>().uxTestingEvents,
-      builder: (context, snapshot) {
-        final event = snapshot.data;
-
-        if (event?.isWarn ?? false) {
+      onData: (data) {
+        if (data.isWarn) {
           _triggerWarnappNotification(context);
         }
-
-        return SizedBox.shrink();
       },
     );
   }

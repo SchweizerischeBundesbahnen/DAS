@@ -33,6 +33,29 @@ void main() {
       await disconnect(tester);
     });
 
+    testWidgets('test warnapp notification not appearing multiple times when UI is rebuilt', (tester) async {
+      await prepareAndStartApp(tester);
+
+      final motionDataService = DI.get<MotionDataService>() as MockMotionDataService;
+      motionDataService.updateMotionData(motionDataAbfahrt1);
+
+      await loadJourney(tester, trainNumber: 'T17');
+
+      await waitUntilExists(tester, find.byKey(WarnFunctionModalSheet.warnappModalSheetKey));
+
+      await tapElement(tester, find.text(l10n.w_modal_sheet_warn_function_confirm_button));
+
+      // Make sure the modal sheet is closed after confirmation
+      expect(find.byKey(WarnFunctionModalSheet.warnappModalSheetKey), findsNothing);
+
+      await stopAutomaticAdvancement(tester);
+
+      // Make sure the modal sheet did not appear again
+      expect(find.byKey(WarnFunctionModalSheet.warnappModalSheetKey), findsNothing);
+
+      await disconnect(tester);
+    });
+
     testWidgets('test warnapp maneuver button activates maneuver mode', (tester) async {
       await prepareAndStartApp(tester);
 
