@@ -7,6 +7,19 @@
 
     <SP_Points>
 
+        <TimingPoint TP_ID="Graftal" location="0">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>00001</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Fischerz" location="5300">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>00002</teltsi_LocationPrimaryCode>
+        </TAF_TAP_LocationReference>
+
         <TimingPoint TP_ID="Twinn" location="9100">
             <TAF_TAP_LocationReference>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
@@ -70,6 +83,23 @@
             </TAF_TAP_LocationReference>
         </TimingPoint>
 
+        <Signal>
+            <Signal_ID signal_ID_Physical="S24" location="1340"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="S24"/>
+        </Signal>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="S23" location="2170"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="S23"/>
+        </Signal>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="S22" location="3350"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="S22"/>
+        </Signal>
 
         <Signal>
             <Signal_ID signal_ID_Physical="G16" location="9240"/>
