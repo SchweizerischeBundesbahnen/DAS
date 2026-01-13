@@ -45,13 +45,7 @@
       "breakSeries": {}
     }
   },
-  "p_break_load_slip_header_subtitle": "Erstellt am {dateTime}",
-  "@p_break_load_slip_header_subtitle": {
-    "type": "text",
-    "placeholders": {
-      "dateTime": {}
-    }
-  },
+  "p_break_load_slip_header_subtitle": "Erstellt am ",
   "p_break_load_slip_header_dangerous_goods": "Zug mit gefährlichen Gütern",
   "p_break_load_slip_header_car_carrier": "Beladener Autodoppelstockwagen",
   "p_break_load_slip_header_sim_train": "SIM Zug",

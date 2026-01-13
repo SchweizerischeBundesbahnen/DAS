@@ -1,4 +1,5 @@
 import 'package:app/i18n/i18n.dart';
+import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:app/widgets/das_colors.dart';
 import 'package:app/widgets/das_text_styles.dart';
@@ -17,9 +18,9 @@ class BreakLoadSlipHeader extends StatelessWidget {
   static const Key dangerousGoodsHeaderBannerKey = Key('dangerousGoodsHeaderBanner');
   static const Key carCarrierHeaderBannerKey = Key('carCarrierHeaderBanner');
 
-  const BreakLoadSlipHeader({required this.formationRun, super.key});
+  const BreakLoadSlipHeader({required this.formationRunChange, super.key});
 
-  final FormationRun formationRun;
+  final FormationRunChange formationRunChange;
 
   @override
   Widget build(BuildContext context) {
@@ -28,15 +29,7 @@ class BreakLoadSlipHeader extends StatelessWidget {
         _specialIndicatorBackground(context),
         Column(
           children: [
-            SBBHeaderbox(
-              title: context.l10n.p_break_load_slip_header_title(
-                formationRun.trainCategoryCode ?? '',
-                formationRun.brakedWeightPercentage ?? '',
-              ),
-              secondaryLabel: context.l10n.p_break_load_slip_header_subtitle(
-                DateFormat('dd.MM.yyyy HH:mm').format(formationRun.inspectionDateTime),
-              ),
-            ),
+            SBBHeaderbox.custom(child: _customHeaderboxContent(context)),
             _specialIndicators(context),
           ],
         ),
@@ -44,8 +37,47 @@ class BreakLoadSlipHeader extends StatelessWidget {
     );
   }
 
+  Widget _customHeaderboxContent(BuildContext context) {
+    final subtitleColor = ThemeUtil.getColor(context, SBBColors.granite, SBBColors.graphite);
+    final dateChanged = formationRunChange.hasInspectionDateChanged();
+    final timeChanged = formationRunChange.hasChanged(.inspectionDateTime);
+
+    return Column(
+      crossAxisAlignment: .start,
+      children: [
+        Text(
+          context.l10n.p_break_load_slip_header_title(
+            formationRunChange.formationRun.trainCategoryCode ?? '',
+            formationRunChange.formationRun.brakedWeightPercentage ?? '',
+          ),
+          style: DASTextStyles.mediumBold,
+        ),
+        Row(
+          children: [
+            Text(
+              context.l10n.p_break_load_slip_header_subtitle,
+              style: DASTextStyles.smallLight.copyWith(color: subtitleColor),
+            ),
+            Text(
+              DateFormat('dd.MM.yyyy').format(formationRunChange.formationRun.inspectionDateTime),
+              style: dateChanged
+                  ? DASTextStyles.smallBold.copyWith(color: subtitleColor)
+                  : DASTextStyles.smallLight.copyWith(color: subtitleColor),
+            ),
+            Text(
+              DateFormat(' HH:mm').format(formationRunChange.formationRun.inspectionDateTime),
+              style: timeChanged
+                  ? DASTextStyles.smallBold.copyWith(color: subtitleColor)
+                  : DASTextStyles.smallLight.copyWith(color: subtitleColor),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
   List<_SpecialIndicator> _specialIndicatorsData(BuildContext context) => <_SpecialIndicator>[
-    if (formationRun.simTrain)
+    if (formationRunChange.formationRun.simTrain)
       _SpecialIndicator(
         asset: AppAssets.iconSimZug,
         backgroundColor: DASColors.simTrain,
@@ -53,7 +85,7 @@ class BreakLoadSlipHeader extends StatelessWidget {
         textColor: SBBColors.white,
         key: simTrainHeaderBannerKey,
       ),
-    if (formationRun.dangerousGoods)
+    if (formationRunChange.formationRun.dangerousGoods)
       _SpecialIndicator(
         asset: AppAssets.iconSignExclamationPoint,
         backgroundColor: SBBColors.peach,
@@ -61,7 +93,7 @@ class BreakLoadSlipHeader extends StatelessWidget {
         textColor: SBBColors.black,
         key: dangerousGoodsHeaderBannerKey,
       ),
-    if (formationRun.carCarrierVehicle)
+    if (formationRunChange.formationRun.carCarrierVehicle)
       _SpecialIndicator(
         asset: AppAssets.iconCarCarrier,
         backgroundColor: SBBColors.pink,
