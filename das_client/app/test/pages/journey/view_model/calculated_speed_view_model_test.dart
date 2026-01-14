@@ -2,9 +2,9 @@ import 'dart:collection';
 
 import 'package:app/pages/journey/journey_screen/view_model/calculated_speed_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/line_speed_view_model.dart';
-import 'package:app/pages/journey/model/calculated_speed.dart';
-import 'package:app/pages/journey/model/resolved_train_series_speed.dart';
 import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
+import 'package:app/pages/journey/view_model/model/calculated_speed.dart';
+import 'package:app/pages/journey/view_model/model/resolved_train_series_speed.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';

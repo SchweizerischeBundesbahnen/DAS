@@ -1,4 +1,4 @@
-import 'package:app/pages/journey/journey_screen/model/journey_position_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/additional_speed_restriction_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/advised_speed_cell_body.dart';

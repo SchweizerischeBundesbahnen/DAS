@@ -1,6 +1,6 @@
 import 'package:app/extension/ru_extension.dart';
 import 'package:app/i18n/i18n.dart';
-import 'package:app/pages/journey/break_load_slip/view_model/break_load_slip_view_model.dart';
+import 'package:app/pages/journey/break_load_slip/break_load_slip_view_model.dart';
 import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_train_details_table.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/key_value_table.dart';

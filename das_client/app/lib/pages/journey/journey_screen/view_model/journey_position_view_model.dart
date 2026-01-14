@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:app/extension/datetime_extension.dart';
-import 'package:app/pages/journey/journey_screen/model/journey_position_model.dart';
-import 'package:app/pages/journey/journey_screen/model/punctuality_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/punctuality_model.dart';
 import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
 import 'package:clock/clock.dart';
 import 'package:collection/collection.dart';

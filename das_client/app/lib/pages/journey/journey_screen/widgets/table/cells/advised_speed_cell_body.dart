@@ -1,6 +1,6 @@
 import 'package:app/pages/journey/journey_screen/view_model/line_speed_view_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/show_speed_behaviour.dart';
-import 'package:app/pages/journey/model/journey_settings.dart';
+import 'package:app/pages/journey/view_model/model/journey_settings.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/table/das_table_cell.dart';

@@ -1,5 +1,5 @@
-import 'package:app/pages/journey/journey_screen/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/widgets/cells/reduced_time_cell_body.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_cell_body.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/service_point_row.dart';
 import 'package:app/theme/theme_util.dart';

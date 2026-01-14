@@ -1,7 +1,7 @@
 import 'package:app/pages/journey/journey_screen/journey_table_scroll_controller.dart';
-import 'package:app/pages/journey/journey_screen/model/journey_advancement_model.dart';
-import 'package:app/pages/journey/journey_screen/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_table_advancement_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/journey_advancement_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:fake_async/fake_async.dart';

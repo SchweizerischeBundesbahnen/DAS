@@ -1,4 +1,4 @@
-import 'package:app/pages/journey/journey_screen/model/journey_position_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/util/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:sfera/component.dart';

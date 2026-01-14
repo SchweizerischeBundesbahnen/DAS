@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:app/pages/journey/journey_screen/model/illegal_speed_segment.dart';
-import 'package:app/pages/journey/journey_screen/model/replacement_series_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/illegal_speed_segment.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/replacement_series_model.dart';
 import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:collection/collection.dart';

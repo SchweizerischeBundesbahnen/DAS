@@ -1,7 +1,7 @@
 import 'package:app/extension/ru_extension.dart';
 import 'package:app/i18n/i18n.dart';
+import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
 import 'package:app/pages/journey/selection/railway_undertaking/select_railway_undertaking_modal_controller.dart';
-import 'package:app/pages/journey/selection/view_model/journey_selection_view_model.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:collection/collection.dart';

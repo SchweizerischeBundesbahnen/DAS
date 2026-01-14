@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:ui';
 
-import 'package:app/pages/journey/model/journey_settings.dart';
 import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
+import 'package:app/pages/journey/view_model/model/journey_settings.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
@@ -39,5 +39,11 @@ class JourneySettingsViewModel extends JourneyAwareViewModel {
   @override
   void journeyIdentificationChanged(Journey? journey) {
     _rxSettings.add(JourneySettings());
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _rxSettings.close();
   }
 }

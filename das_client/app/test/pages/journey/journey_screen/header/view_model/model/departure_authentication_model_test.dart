@@ -1,4 +1,4 @@
-import 'package:app/pages/journey/journey_screen/header/model/departure_authorization_model.dart';
+import 'package:app/pages/journey/journey_screen/header/view_model/model/departure_authorization_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sfera/component.dart';
 

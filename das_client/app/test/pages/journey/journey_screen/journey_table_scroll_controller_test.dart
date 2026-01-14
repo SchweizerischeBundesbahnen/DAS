@@ -1,5 +1,5 @@
 import 'package:app/pages/journey/journey_screen/journey_table_scroll_controller.dart';
-import 'package:app/pages/journey/journey_screen/model/journey_position_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cell_row_builder.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/service_point_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/signal_row.dart';

@@ -1,6 +1,6 @@
-import 'package:app/pages/journey/journey_screen/model/advised_speed_model.dart';
-import 'package:app/pages/journey/journey_screen/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/advised_speed_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/advised_speed_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
 import 'package:app/sound/das_sounds.dart';
 import 'package:app/sound/sound.dart';

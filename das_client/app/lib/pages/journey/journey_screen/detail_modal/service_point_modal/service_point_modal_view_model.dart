@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:app/pages/journey/journey_screen/detail_modal/detail_modal_view_model.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/service_point_modal/service_point_modal_builder.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/service_point_modal/service_point_modal_tab.dart';
-import 'package:app/pages/journey/model/journey_settings.dart';
+import 'package:app/pages/journey/view_model/model/journey_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:local_regulations/component.dart';
 import 'package:provider/provider.dart';

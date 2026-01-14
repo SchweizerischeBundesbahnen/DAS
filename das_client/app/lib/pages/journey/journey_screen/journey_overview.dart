@@ -1,5 +1,5 @@
 import 'package:app/di/di.dart';
-import 'package:app/pages/journey/break_load_slip/view_model/break_load_slip_view_model.dart';
+import 'package:app/pages/journey/break_load_slip/break_load_slip_view_model.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/additional_speed_restriction_modal/additional_speed_restriction_modal_view_model.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/detail_modal.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/detail_modal_view_model.dart';

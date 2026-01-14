@@ -1,5 +1,5 @@
 import 'package:app/extension/journey_point_extension.dart';
-import 'package:app/pages/journey/journey_screen/model/journey_position_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cell_row_builder.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_cell_body.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_chevron.dart';

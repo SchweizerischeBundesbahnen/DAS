@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:app/di/di.dart';
-import 'package:app/pages/journey/journey_screen/model/punctuality_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/punctuality_model.dart';
 import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:rxdart/rxdart.dart';

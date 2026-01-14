@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:app/pages/journey/selection/model/journey_selection_model.dart';
+import 'package:app/pages/journey/selection/journey_selection_model.dart';
 import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';

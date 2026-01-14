@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:app/pages/journey/journey_screen/model/punctuality_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/punctuality_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/punctuality_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
 import 'package:app/util/time_constants.dart';

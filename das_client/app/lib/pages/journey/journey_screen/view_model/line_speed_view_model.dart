@@ -1,6 +1,6 @@
-import 'package:app/pages/journey/model/resolved_train_series_speed.dart';
 import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
+import 'package:app/pages/journey/view_model/model/resolved_train_series_speed.dart';
 import 'package:sfera/component.dart';
 
 class LineSpeedViewModel extends JourneyAwareViewModel {

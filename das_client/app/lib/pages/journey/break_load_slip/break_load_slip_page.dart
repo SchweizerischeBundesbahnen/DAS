@@ -1,6 +1,6 @@
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
-import 'package:app/pages/journey/break_load_slip/view_model/break_load_slip_view_model.dart';
+import 'package:app/pages/journey/break_load_slip/break_load_slip_view_model.dart';
 import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_brake_details.dart';
 import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_buttons.dart';
 import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_hauled_load_details.dart';

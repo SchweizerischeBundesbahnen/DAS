@@ -1,8 +1,8 @@
 import 'package:app/i18n/i18n.dart';
-import 'package:app/pages/journey/journey_screen/model/journey_position_model.dart';
-import 'package:app/pages/journey/journey_screen/reduced_overview/view_model/reduced_overview_view_model.dart';
+import 'package:app/pages/journey/journey_screen/reduced_overview/reduced_overview_view_model.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/widgets/rows/reduced_communication_network_change_row.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/widgets/rows/reduced_service_point_row.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/additional_speed_restriction_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cell_row_builder.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/column_definition.dart';

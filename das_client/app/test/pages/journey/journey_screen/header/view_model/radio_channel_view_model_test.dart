@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:app/pages/journey/journey_screen/header/model/radio_channel_model.dart';
+import 'package:app/pages/journey/journey_screen/header/view_model/model/radio_channel_model.dart';
 import 'package:app/pages/journey/journey_screen/header/view_model/radio_channel_view_model.dart';
-import 'package:app/pages/journey/journey_screen/model/journey_position_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';

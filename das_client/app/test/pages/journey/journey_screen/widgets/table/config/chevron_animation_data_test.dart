@@ -1,4 +1,4 @@
-import 'package:app/pages/journey/journey_screen/model/journey_position_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/config/chevron_animation_data.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sfera/component.dart';

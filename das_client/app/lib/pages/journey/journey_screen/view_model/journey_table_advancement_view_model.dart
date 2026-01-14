@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_screen/journey_table_scroll_controller.dart';
-import 'package:app/pages/journey/journey_screen/model/journey_advancement_model.dart';
-import 'package:app/pages/journey/journey_screen/model/journey_position_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/journey_advancement_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:logging/logging.dart';

@@ -1,9 +1,9 @@
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/widgets/anchored_full_page_overlay.dart';
-import 'package:app/pages/journey/selection/model/journey_selection_model.dart';
+import 'package:app/pages/journey/selection/journey_selection_model.dart';
+import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
 import 'package:app/pages/journey/selection/railway_undertaking/widgets/select_railway_undertaking_input.dart';
-import 'package:app/pages/journey/selection/view_model/journey_selection_view_model.dart';
 import 'package:app/pages/journey/selection/widgets/journey_date_input.dart';
 import 'package:app/pages/journey/selection/widgets/journey_train_number_input.dart';
 import 'package:app/widgets/das_text_styles.dart';

@@ -10,6 +10,7 @@
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:label="DAS Client">
+        <!-- TODO: Find a solution for remove forced landscape mode on tablets-->
         <property
             android:name="android.window.PROPERTY_COMPAT_ALLOW_RESTRICTED_RESIZABILITY"
             android:value="true" />

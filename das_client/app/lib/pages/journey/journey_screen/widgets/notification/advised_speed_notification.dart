@@ -1,6 +1,6 @@
 import 'package:app/i18n/i18n.dart';
-import 'package:app/pages/journey/journey_screen/model/advised_speed_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/advised_speed_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/advised_speed_model.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:app/widgets/das_text_styles.dart';

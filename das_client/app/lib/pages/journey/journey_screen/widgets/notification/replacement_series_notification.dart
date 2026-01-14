@@ -1,6 +1,6 @@
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/journey_overview.dart';
-import 'package:app/pages/journey/journey_screen/model/replacement_series_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/replacement_series_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/replacement_series_view_model.dart';
 import 'package:app/widgets/notificationbox/notification_box.dart';
 import 'package:flutter/material.dart';

@@ -1,4 +1,4 @@
-import 'package:app/pages/journey/journey_screen/model/illegal_speed_segment.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/illegal_speed_segment.dart';
 
 sealed class ReplacementSeriesModel {
   const ReplacementSeriesModel._({
