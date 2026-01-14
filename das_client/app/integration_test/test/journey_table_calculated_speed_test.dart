@@ -1,6 +1,6 @@
-import 'package:app/pages/journey/journey_table/header/chronograph/chronograph_view_model.dart';
-import 'package:app/pages/journey/journey_table/widgets/header/chronograph_header_box.dart';
-import 'package:app/pages/journey/journey_table/widgets/table/cells/calculated_speed_cell_body.dart';
+import 'package:app/pages/journey/journey_screen/header/view_model/chronograph_view_model.dart';
+import 'package:app/pages/journey/journey_screen/header/widgets/chronograph_header_box.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/cells/calculated_speed_cell_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';

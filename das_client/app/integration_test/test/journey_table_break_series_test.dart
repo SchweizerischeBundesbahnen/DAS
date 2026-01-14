@@ -1,4 +1,4 @@
-import 'package:app/pages/journey/journey_table/widgets/journey_table.dart';
+import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../app_test.dart';

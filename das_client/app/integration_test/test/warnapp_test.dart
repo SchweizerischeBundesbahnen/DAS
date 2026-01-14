@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:app/di/di.dart';
-import 'package:app/pages/journey/journey_table/widgets/header/extended_menu.dart';
-import 'package:app/pages/journey/journey_table/widgets/warn_function_modal_sheet.dart';
+import 'package:app/pages/journey/journey_screen/header/widgets/extended_menu.dart';
+import 'package:app/pages/journey/journey_screen/widgets/warn_function_modal_sheet.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:warnapp/component.dart';
 
@@ -28,6 +28,29 @@ void main() {
       await tapElement(tester, find.text(l10n.w_modal_sheet_warn_function_confirm_button));
 
       // Make sure the modal sheet is closed after confirmation
+      expect(find.byKey(WarnFunctionModalSheet.warnappModalSheetKey), findsNothing);
+
+      await disconnect(tester);
+    });
+
+    testWidgets('test warnapp notification not appearing multiple times when UI is rebuilt', (tester) async {
+      await prepareAndStartApp(tester);
+
+      final motionDataService = DI.get<MotionDataService>() as MockMotionDataService;
+      motionDataService.updateMotionData(motionDataAbfahrt1);
+
+      await loadJourney(tester, trainNumber: 'T17');
+
+      await waitUntilExists(tester, find.byKey(WarnFunctionModalSheet.warnappModalSheetKey));
+
+      await tapElement(tester, find.text(l10n.w_modal_sheet_warn_function_confirm_button));
+
+      // Make sure the modal sheet is closed after confirmation
+      expect(find.byKey(WarnFunctionModalSheet.warnappModalSheetKey), findsNothing);
+
+      await stopAutomaticAdvancement(tester);
+
+      // Make sure the modal sheet did not appear again
       expect(find.byKey(WarnFunctionModalSheet.warnappModalSheetKey), findsNothing);
 
       await disconnect(tester);

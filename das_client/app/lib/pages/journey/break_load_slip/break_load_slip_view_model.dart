@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'package:app/di/di.dart';
 import 'package:app/nav/app_router.dart';
-import 'package:app/pages/journey/journey_table/journey_position/journey_position_model.dart';
-import 'package:app/pages/journey/journey_table/journey_position/journey_position_view_model.dart';
-import 'package:app/pages/journey/journey_table/widgets/detail_modal/break_load_slip_modal/break_load_slip_modal_builder.dart';
-import 'package:app/pages/journey/journey_table/widgets/detail_modal/detail_modal_view_model.dart';
-import 'package:app/pages/journey/journey_table_view_model.dart';
-import 'package:app/pages/journey/settings/journey_settings.dart';
-import 'package:app/pages/journey/settings/journey_settings_view_model.dart';
+import 'package:app/pages/journey/journey_screen/detail_modal/break_load_slip_modal/break_load_slip_modal_builder.dart';
+import 'package:app/pages/journey/journey_screen/detail_modal/detail_modal_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
+import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
+import 'package:app/pages/journey/view_model/model/journey_settings.dart';
 import 'package:app/sound/das_sounds.dart';
 import 'package:app/sound/sound.dart';
 import 'package:auto_route/auto_route.dart';
@@ -22,19 +22,18 @@ import 'package:sfera/component.dart';
 
 final _log = Logger('BreakLoadSlipViewModel');
 
-class BreakLoadSlipViewModel {
+class BreakLoadSlipViewModel extends JourneyAwareViewModel {
   static const _formationUpdateInterval = Duration(minutes: 2);
 
   BreakLoadSlipViewModel({
-    required JourneyTableViewModel journeyTableViewModel,
     required FormationRepository formationRepository,
     required JourneyPositionViewModel journeyPositionViewModel,
     required JourneySettingsViewModel journeySettingsViewModel,
     DetailModalViewModel? detailModalViewModel,
     ConnectivityManager? connectivityManager,
     bool checkForUpdates = false,
-  }) : _journeyTableViewModel = journeyTableViewModel,
-       _formationRepository = formationRepository,
+    super.journeyTableViewModel,
+  }) : _formationRepository = formationRepository,
        _journeyPositionViewModel = journeyPositionViewModel,
        _journeySettingsViewModel = journeySettingsViewModel,
        _detailModalViewModel = detailModalViewModel,
@@ -43,7 +42,6 @@ class BreakLoadSlipViewModel {
     _init();
   }
 
-  final JourneyTableViewModel _journeyTableViewModel;
   final FormationRepository _formationRepository;
   final JourneyPositionViewModel _journeyPositionViewModel;
   final DetailModalViewModel? _detailModalViewModel;
@@ -53,12 +51,10 @@ class BreakLoadSlipViewModel {
 
   final Sound _breakSlipUpdatedSound = DI.get<DASSounds>().breakSlipUpdated;
 
-  Journey? _latestJourney;
   JourneyPositionModel? _latestPosition;
   bool _openFullscreen = true;
   bool _skipFirstUpdate = true;
 
-  StreamSubscription? _journeySubscription;
   StreamSubscription? _journeyPositionSubscription;
   StreamSubscription? _formationSubscription;
   StreamSubscription? _connectivitySubscription;
@@ -83,13 +79,6 @@ class BreakLoadSlipViewModel {
   bool get formationChangedValue => _rxFormationChanged.value;
 
   void _init() {
-    _journeySubscription = _journeyTableViewModel.journey.listen((journey) {
-      if (_latestJourney?.metadata.trainIdentification != journey?.metadata.trainIdentification) {
-        _subscribeToFormation(journey?.metadata.trainIdentification);
-      }
-      _latestJourney = journey;
-      _emitFormationRun();
-    });
     _journeyPositionSubscription = _journeyPositionViewModel.model.listen((position) {
       _latestPosition = position;
       _emitFormationRun();
@@ -102,13 +91,18 @@ class BreakLoadSlipViewModel {
     });
   }
 
+  @override
+  void journeyUpdated(Journey? journey) {
+    _emitFormationRun();
+  }
+
   void _checkForFormationUpdates() {
     if (_skipFirstUpdate) {
       _skipFirstUpdate = false;
       return;
     }
 
-    final trainIdentification = _latestJourney?.metadata.trainIdentification;
+    final trainIdentification = lastJourney?.metadata.trainIdentification;
     if (trainIdentification != null) {
       _formationRepository.loadFormation(
         trainIdentification.trainNumber,
@@ -196,9 +190,9 @@ class BreakLoadSlipViewModel {
   }
 
   ServicePoint? _resolveServicePoint(String tafTapLocationCode) {
-    if (_latestJourney == null) return null;
+    if (lastJourney == null) return null;
 
-    final servicePoints = _latestJourney!.journeyPoints.whereType<ServicePoint>().where(
+    final servicePoints = lastJourney!.journeyPoints.whereType<ServicePoint>().where(
       (it) => it.locationCode == tafTapLocationCode,
     );
 
@@ -212,7 +206,7 @@ class BreakLoadSlipViewModel {
   bool get isActiveFormationRun => _calculateActiveFormationRun() == formationRunValue?.formationRun;
 
   bool isJourneyAndActiveFormationRunBreakSeriesDifferent() {
-    final selectedBreakSeries = _journeySettingsViewModel.modelValue.resolvedBreakSeries(_latestJourney?.metadata);
+    final selectedBreakSeries = _journeySettingsViewModel.modelValue.resolvedBreakSeries(lastJourney?.metadata);
     final formationRunBreakSeries = _resolveBreakSeries(formationRunValue?.formationRun);
     return formationRunBreakSeries != null && formationRunBreakSeries != selectedBreakSeries;
   }
@@ -234,17 +228,17 @@ class BreakLoadSlipViewModel {
   }
 
   String resolveStationName(String tafTapLocationCode) {
-    if (_latestJourney == null) return tafTapLocationCode;
+    if (lastJourney == null) return tafTapLocationCode;
 
-    final matchedServicePoint = _latestJourney!.journeyPoints.whereType<ServicePoint>().firstWhereOrNull(
+    final matchedServicePoint = lastJourney!.journeyPoints.whereType<ServicePoint>().firstWhereOrNull(
       (it) => it.locationCode == tafTapLocationCode,
     );
     return matchedServicePoint?.name ?? tafTapLocationCode;
   }
 
+  @override
   void dispose() {
-    _journeySubscription?.cancel();
-    _journeySubscription = null;
+    super.dispose();
     _formationSubscription?.cancel();
     _formationSubscription = null;
     _journeyPositionSubscription?.cancel();
@@ -292,5 +286,15 @@ class BreakLoadSlipViewModel {
     } else {
       _detailModalViewModel?.open(BreakLoadSlipModalBuilder(), maximize: false);
     }
+  }
+
+  @override
+  void journeyIdentificationChanged(Journey? journey) {
+    _latestPosition = null;
+    _openFullscreen = true;
+    _rxFormation.add(null);
+    _rxFormationRun.add(null);
+    _rxFormationChanged.add(false);
+    _subscribeToFormation(journey?.metadata.trainIdentification);
   }
 }

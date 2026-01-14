@@ -1,10 +1,10 @@
 import 'package:app/pages/journey/break_load_slip/break_load_slip_view_model.dart';
-import 'package:app/pages/journey/journey_table/journey_position/journey_position_model.dart';
-import 'package:app/pages/journey/journey_table/journey_position/journey_position_view_model.dart';
-import 'package:app/pages/journey/journey_table/widgets/detail_modal/detail_modal_view_model.dart';
-import 'package:app/pages/journey/journey_table_view_model.dart';
-import 'package:app/pages/journey/settings/journey_settings.dart';
-import 'package:app/pages/journey/settings/journey_settings_view_model.dart';
+import 'package:app/pages/journey/journey_screen/detail_modal/detail_modal_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
+import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
+import 'package:app/pages/journey/view_model/model/journey_settings.dart';
 import 'package:app/sound/das_sounds.dart';
 import 'package:app/sound/sound.dart';
 import 'package:auto_route/auto_route.dart';

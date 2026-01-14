@@ -1,4 +1,4 @@
-import 'package:app/pages/journey/journey_table/widgets/notification/replacement_series/replacement_series_notification.dart';
+import 'package:app/pages/journey/journey_screen/widgets/notification/replacement_series_notification.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../app_test.dart';
