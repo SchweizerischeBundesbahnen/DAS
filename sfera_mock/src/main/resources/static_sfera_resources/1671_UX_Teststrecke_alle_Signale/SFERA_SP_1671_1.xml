@@ -102,6 +102,24 @@
         </Signal>
 
         <Signal>
+            <Signal_ID signal_ID_Physical="E1" location="4690"/>
+            <SignalFunction>entry</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="E1"/>
+        </Signal>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="A1" location="5806"/>
+            <SignalFunction>exit</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="A1"/>
+        </Signal>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="E2" location="8220"/>
+            <SignalFunction>entry</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="E2"/>
+        </Signal>
+
+        <Signal>
             <Signal_ID signal_ID_Physical="G16" location="9240"/>
             <SignalFunction>exit</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="G16"/>
@@ -791,6 +809,31 @@
         <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="33800" endLocation="33800"
                               communicationNetworkType="GSM-R"/>
 
+        
+        <KilometreReferencePoint location="0">
+            <KM_Reference kmRef="42.1"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="1340">
+            <KM_Reference kmRef="40.76"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="2170">
+            <KM_Reference kmRef="39.93"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="3350">
+            <KM_Reference kmRef="38.75"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="4690">
+            <KM_Reference kmRef="37.41"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="5300">
+            <KM_Reference kmRef="36.8"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="5806">
+            <KM_Reference kmRef="36.294"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="8220">
+            <KM_Reference kmRef="33.88"/>
+        </KilometreReferencePoint>
         <KilometreReferencePoint location="9100">
             <KM_Reference kmRef="33.0"/>
         </KilometreReferencePoint>
