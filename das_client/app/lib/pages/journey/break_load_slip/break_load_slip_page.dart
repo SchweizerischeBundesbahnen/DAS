@@ -83,7 +83,7 @@ class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
             Column(
               spacing: sbbDefaultSpacing,
               children: [
-                BreakLoadSlipHeader(formationRun: formationRunChange.formationRun),
+                BreakLoadSlipHeader(formationRunChange: formationRunChange),
                 Column(
                   spacing: sbbDefaultSpacing,
                   children: [

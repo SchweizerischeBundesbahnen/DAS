@@ -205,4 +205,111 @@ void main() {
       expect(testee.hasChanged(field), isTrue);
     }
   });
+
+  test('hasInspectionDateChanged_whenDateIsDifferent_thenIsTrue', () async {
+    // GIVEN
+    final prevFormationRun = FormationRun(
+      inspectionDateTime: DateTime.now().add(Duration(days: -1)),
+      tafTapLocationReferenceStart: 'CH00002',
+      tafTapLocationReferenceEnd: 'CH00003',
+      tractionLengthInCm: 19,
+      hauledLoadLengthInCm: 198,
+      formationLengthInCm: 317,
+      tractionWeightInT: 90,
+      hauledLoadWeightInT: 787,
+      formationWeightInT: 877,
+      tractionBrakedWeightInT: 58,
+      hauledLoadBrakedWeightInT: 682,
+      formationBrakedWeightInT: 740,
+      tractionHoldingForceInHectoNewton: 56,
+      hauledLoadHoldingForceInHectoNewton: 421,
+      formationHoldingForceInHectoNewton: 477,
+      simTrain: false,
+      carCarrierVehicle: false,
+      dangerousGoods: true,
+      vehiclesCount: 16,
+      vehiclesWithBrakeDesignLlAndKCount: 14,
+      vehiclesWithBrakeDesignDCount: 2,
+      vehiclesWithDisabledBrakesCount: 0,
+      axleLoadMaxInKg: 124,
+      gradientUphillMaxInPermille: 25,
+      gradientDownhillMaxInPermille: 25,
+    );
+
+    // ACT
+    final testee = FormationRunChange(formationRun: formationRun, previousFormationRun: prevFormationRun);
+
+    // VERIFY
+    expect(testee.hasChanged(.inspectionDateTime), isTrue);
+    expect(testee.hasInspectionDateChanged(), isTrue);
+  });
+
+  test('hasInspectionDateChanged_whenOnlyTimeIsDifferent_thenIsFalse', () async {
+    final year = 2025;
+    final month = 5;
+    final day = 15;
+
+    // GIVEN
+    final currentFormationRun = FormationRun(
+      inspectionDateTime: DateTime(year, month, day, 10, 30, 0),
+      tafTapLocationReferenceStart: 'CH00002',
+      tafTapLocationReferenceEnd: 'CH00003',
+      tractionLengthInCm: 19,
+      hauledLoadLengthInCm: 198,
+      formationLengthInCm: 317,
+      tractionWeightInT: 90,
+      hauledLoadWeightInT: 787,
+      formationWeightInT: 877,
+      tractionBrakedWeightInT: 58,
+      hauledLoadBrakedWeightInT: 682,
+      formationBrakedWeightInT: 740,
+      tractionHoldingForceInHectoNewton: 56,
+      hauledLoadHoldingForceInHectoNewton: 421,
+      formationHoldingForceInHectoNewton: 477,
+      simTrain: false,
+      carCarrierVehicle: false,
+      dangerousGoods: true,
+      vehiclesCount: 16,
+      vehiclesWithBrakeDesignLlAndKCount: 14,
+      vehiclesWithBrakeDesignDCount: 2,
+      vehiclesWithDisabledBrakesCount: 0,
+      axleLoadMaxInKg: 124,
+      gradientUphillMaxInPermille: 25,
+      gradientDownhillMaxInPermille: 25,
+    );
+    final prevFormationRun = FormationRun(
+      inspectionDateTime: DateTime(year, month, day, 11, 30, 0),
+      tafTapLocationReferenceStart: 'CH00002',
+      tafTapLocationReferenceEnd: 'CH00003',
+      tractionLengthInCm: 19,
+      hauledLoadLengthInCm: 198,
+      formationLengthInCm: 317,
+      tractionWeightInT: 90,
+      hauledLoadWeightInT: 787,
+      formationWeightInT: 877,
+      tractionBrakedWeightInT: 58,
+      hauledLoadBrakedWeightInT: 682,
+      formationBrakedWeightInT: 740,
+      tractionHoldingForceInHectoNewton: 56,
+      hauledLoadHoldingForceInHectoNewton: 421,
+      formationHoldingForceInHectoNewton: 477,
+      simTrain: false,
+      carCarrierVehicle: false,
+      dangerousGoods: true,
+      vehiclesCount: 16,
+      vehiclesWithBrakeDesignLlAndKCount: 14,
+      vehiclesWithBrakeDesignDCount: 2,
+      vehiclesWithDisabledBrakesCount: 0,
+      axleLoadMaxInKg: 124,
+      gradientUphillMaxInPermille: 25,
+      gradientDownhillMaxInPermille: 25,
+    );
+
+    // ACT
+    final testee = FormationRunChange(formationRun: currentFormationRun, previousFormationRun: prevFormationRun);
+
+    // VERIFY
+    expect(testee.hasChanged(.inspectionDateTime), isTrue);
+    expect(testee.hasInspectionDateChanged(), isFalse);
+  });
 }

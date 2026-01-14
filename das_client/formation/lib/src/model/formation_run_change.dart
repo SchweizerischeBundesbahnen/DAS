@@ -37,6 +37,17 @@ class FormationRunChange {
     }
   }
 
+  bool hasInspectionDateChanged() {
+    if (!hasChanged(.inspectionDateTime)) return false;
+
+    final currentDate = formationRun.inspectionDateTime;
+    final previousDate = previousFormationRun?.inspectionDateTime;
+
+    return currentDate.day != previousDate?.day ||
+        currentDate.month != previousDate?.month ||
+        currentDate.year != previousDate?.year;
+  }
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
