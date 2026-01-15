@@ -3,14 +3,13 @@ package ch.sbb.backend.tenancy.infrastructure;
 import ch.sbb.backend.tenancy.domain.model.Tenant;
 import ch.sbb.backend.tenancy.domain.repository.TenantRepository;
 import ch.sbb.backend.tenancy.infrastructure.config.TenantConfig;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class ConfigTenantRepository implements TenantRepository {
-
-    private static final Logger log = LoggerFactory.getLogger(ConfigTenantRepository.class);
 
     private final TenantConfig tenantConfig;
 
@@ -19,9 +18,12 @@ public class ConfigTenantRepository implements TenantRepository {
     }
 
     @Override
-    public Tenant getByIssuerUri(String issuerUri) {
-        Tenant tenant = tenantConfig.getTenants().stream().filter(t -> issuerUri.equals(t.issuerUri())).findAny().orElseThrow(() -> new IllegalArgumentException("unknown tenant"));
-        log.debug("got tenant with name=${tenant.name}");
+    public Tenant getByIssuerUri(@NonNull String issuerUri) {
+        Tenant tenant = tenantConfig.getTenants().stream()
+            .filter(t -> issuerUri.equals(t.issuerUri()))
+            .findAny()
+            .orElseThrow(() -> new IllegalArgumentException("unknown tenant"));
+        log.info("Tenant::name={}", tenant.name());
         return tenant;
     }
 }

@@ -16,5 +16,4 @@ import org.springframework.context.annotation.Configuration;
 public class TenantConfig {
 
     private List<Tenant> tenants;
-
 }

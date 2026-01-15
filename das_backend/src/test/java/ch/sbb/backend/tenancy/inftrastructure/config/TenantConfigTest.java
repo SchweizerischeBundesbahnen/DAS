@@ -22,11 +22,18 @@ class TenantConfigTest {
         List<Tenant> tenants = tenantConfig.getTenants();
         assertThat(tenants).isNotNull()
             .isNotEmpty()
-            .hasSize(1);
+            .hasSize(2);
+
         Tenant tenant = tenants.getFirst();
-        assertThat(tenant.name()).isEqualTo("test");
-        assertThat(tenant.id()).isEqualTo("3409e798-d567-49b1-9bae-f0be66427c54");
+        assertThat(tenant.name()).isEqualTo("sbb");
+        assertThat(tenant.issuerUri()).isEqualTo("https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0");
+        assertThat(tenant.jwkSetUri()).isEqualTo("https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/discovery/v2.0/keys");
+        assertThat(tenant.getId()).isEqualTo("2cda5d11-f0ac-46b3-967d-af1b2e1bd01a");
+
+        tenant = tenants.get(1);
+        assertThat(tenant.name()).isEqualTo("unknown-tenant");
         assertThat(tenant.issuerUri()).isEqualTo("https://login.microsoftonline.com/3409e798-d567-49b1-9bae-f0be66427c54/v2.0");
         assertThat(tenant.jwkSetUri()).isEqualTo("https://login.microsoftonline.com/3409e798-d567-49b1-9bae-f0be66427c54/discovery/v2.0/keys");
+        assertThat(tenant.getId()).isEqualTo("3409e798-d567-49b1-9bae-f0be66427c54");
     }
 }

@@ -41,6 +41,8 @@ class SegmentProfileMapper {
   static const String _protectionSectionNspFacultativeName = 'facultative';
   static const String _protectionSectionNspLengthTypeName = 'lengthType';
 
+  static String _trainSeriesKey(TrainSeriesSpeed speed) => '${speed.trainSeries}_${speed.breakSeries ?? ''}';
+
   static List<BaseData> parseSegmentProfile(
     SegmentProfileReferenceDto segmentProfileReference,
     int segmentIndex,
@@ -62,8 +64,7 @@ class SegmentProfileMapper {
     journeyData.addAll(_parseServicePoint(mapperData, segmentProfiles, segmentProfileReference));
 
     final curvePoints = _parseCurvePoints(mapperData);
-    final curveBeginPoints = curvePoints.where((curve) => curve.curvePointType == .begin);
-    journeyData.addAll(curveBeginPoints);
+    journeyData.addAll(curvePoints);
 
     final newLineSpeeds = _parseNewLineSpeed(mapperData);
     final connectionTracks = _parseConnectionTrack(mapperData, newLineSpeeds);
@@ -233,20 +234,152 @@ class SegmentProfileMapper {
 
   static List<CurvePoint> _parseCurvePoints(_MapperData mapperData) {
     final curvePointsNsp = mapperData.segmentProfile.points?.curvePointsNsp ?? [];
-    return curvePointsNsp.map<CurvePoint>((curvePointNsp) {
-      final curveSpeed = curvePointNsp.xmlCurveSpeed?.element;
+
+    final curvePoints = curvePointsNsp
+        .map<CurvePoint>((nsp) {
+          final xml = nsp.xmlCurveSpeed?.element;
+          return CurvePoint(
+            order: calculateOrder(mapperData.segmentIndex, nsp.location),
+            kilometre: mapperData.kilometreMap[nsp.location] ?? [],
+            curvePointType: nsp.curvePointType != null ? CurvePointType.from(nsp.curvePointType!) : null,
+            curveType: nsp.curveType != null ? CurveType.from(nsp.curveType!) : null,
+            text: xml?.text,
+            comment: xml?.comment,
+            localSpeeds: SpeedMapper.fromVelocities(xml?.speeds?.velocities),
+          );
+        })
+        .sortedBy((p) => p.order)
+        .toList();
+
+    final beginEndPairs = <MapEntry<CurvePoint, CurvePoint>>[];
+    CurvePoint? openBegin;
+
+    for (final cp in curvePoints) {
+      if (cp.curvePointType == CurvePointType.begin) {
+        openBegin = cp;
+      } else if (cp.curvePointType == CurvePointType.end && openBegin != null) {
+        beginEndPairs.add(MapEntry(openBegin, cp));
+        openBegin = null;
+      }
+    }
+
+    if (beginEndPairs.isEmpty) {
+      return curvePoints.where((cp) => cp.curvePointType == CurvePointType.begin).toList();
+    }
+
+    beginEndPairs.sort((a, b) => a.key.order.compareTo(b.key.order));
+
+    final mergedPairs = <MapEntry<CurvePoint, CurvePoint>>[];
+    MapEntry<CurvePoint, CurvePoint>? currentPair;
+
+    for (final pair in beginEndPairs) {
+      if (currentPair == null) {
+        currentPair = pair;
+        continue;
+      }
+
+      final sameType = pair.key.curveType == currentPair.key.curveType;
+      final directlyAdjacent = pair.key.order == currentPair.value.order;
+
+      if (sameType && directlyAdjacent) {
+        currentPair = MapEntry(currentPair.key, pair.value);
+      } else {
+        mergedPairs.add(currentPair);
+        currentPair = pair;
+      }
+    }
+    if (currentPair != null) mergedPairs.add(currentPair);
+
+    return mergedPairs.map((pair) {
+      final begin = pair.key;
+      final end = pair.value;
+
+      final startKm = begin.kilometre.firstOrNull;
+      final endKm = end.kilometre.firstOrNull ?? startKm;
+
+      final beginsInThisSegment = curvePoints
+          .where(
+            (cp) =>
+                cp.curvePointType == CurvePointType.begin &&
+                cp.curveType == begin.curveType &&
+                cp.order >= begin.order &&
+                cp.order <= end.order,
+          )
+          .toList();
+
+      final isSummarized = beginsInThisSegment.length >= 2;
+
       return CurvePoint(
-        order: calculateOrder(mapperData.segmentIndex, curvePointNsp.location),
-        kilometre: mapperData.kilometreMap[curvePointNsp.location] ?? [],
-        curvePointType: curvePointNsp.curvePointType != null
-            ? CurvePointType.from(curvePointNsp.curvePointType!)
-            : null,
-        curveType: curvePointNsp.curveType != null ? CurveType.from(curvePointNsp.curveType!) : null,
-        text: curveSpeed?.text,
-        comment: curveSpeed?.comment,
-        localSpeeds: SpeedMapper.fromVelocities(curveSpeed?.speeds?.velocities),
+        order: begin.order,
+        kilometre: [
+          if (startKm != null) startKm,
+          if (endKm != null && endKm != startKm) endKm,
+        ],
+        localSpeeds: isSummarized ? _mergeSpeeds(beginsInThisSegment) : begin.localSpeeds,
+        curvePointType: isSummarized ? CurvePointType.summarized : begin.curvePointType,
+        curveType: begin.curveType,
+        text: begin.text,
+        comment: begin.comment,
       );
     }).toList();
+  }
+
+  static List<TrainSeriesSpeed>? _mergeSpeeds(List<CurvePoint> beginPointsInSegment) {
+    final speedListsByBeginPoint = beginPointsInSegment
+        .map((cp) => cp.localSpeeds)
+        .nonNulls
+        .where((list) => list.isNotEmpty)
+        .toList();
+
+    if (speedListsByBeginPoint.isEmpty) return null;
+    if (speedListsByBeginPoint.length == 1) return speedListsByBeginPoint.first;
+
+    final Map<String, TrainSeriesSpeed> templateByKey = {};
+    for (final speeds in speedListsByBeginPoint) {
+      for (final ts in speeds) {
+        templateByKey.putIfAbsent(_trainSeriesKey(ts), () => ts);
+      }
+    }
+
+    final result = <TrainSeriesSpeed>[];
+
+    for (final template in templateByKey.values) {
+      final collected = <SingleSpeed>[];
+
+      for (final speedsOfCurve in speedListsByBeginPoint) {
+        final ts = speedsOfCurve.firstWhereOrNull(
+          (it) => it.trainSeries == template.trainSeries && it.breakSeries == template.breakSeries,
+        );
+        if (ts == null) continue;
+        final speed = ts.speed;
+
+        switch (speed) {
+          case SingleSpeed():
+            collected.add(speed);
+          case GraduatedSpeed():
+            collected.addAll(speed.speeds);
+          case SummarizedCurvesSpeed():
+            collected.addAll(speed.speeds);
+          default:
+        }
+      }
+
+      if (collected.isEmpty) continue;
+
+      final Speed mergedSpeed = collected.length == 1 ? collected.first : SummarizedCurvesSpeed(speeds: collected);
+
+      result.add(
+        TrainSeriesSpeed(
+          trainSeries: template.trainSeries,
+          breakSeries: template.breakSeries,
+          text: template.text,
+          reduced: template.reduced,
+          speed: mergedSpeed,
+        ),
+      );
+    }
+
+    return result;
   }
 
   static List<ConnectionTrack> _parseConnectionTrack(_MapperData mapperData, List<SpeedChange> newLineSpeeds) {

@@ -1,4 +1,4 @@
-import 'package:app/pages/journey/warn_app_view_model.dart';
+import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
 
 class MockWarnAppViewModel extends WarnAppViewModel {
   MockWarnAppViewModel({

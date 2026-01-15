@@ -50,6 +50,7 @@ body:
       label: DAS Version
       description: Welche Version von DAS wurde genutzt?
       options:
+        - 0.34.0
         - 0.31.0
         - 0.29.0
         - 0.27.0

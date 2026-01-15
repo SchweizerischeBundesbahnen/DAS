@@ -1,5 +1,5 @@
-import 'package:app/pages/journey/journey_table/widgets/communication_network_icon.dart';
-import 'package:app/pages/journey/journey_table/widgets/reduced_overview/reduced_journey_table.dart';
+import 'package:app/pages/journey/journey_screen/reduced_overview/widgets/reduced_journey_table.dart';
+import 'package:app/pages/journey/journey_screen/widgets/communication_network_icon.dart';
 import 'package:app/util/format.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -19,6 +19,10 @@ void main() {
       // find gsm-P-Icon
       final gsmPKey = find.descendant(of: reducedTable, matching: find.byKey(CommunicationNetworkIcon.gsmPKey));
       expect(gsmPKey, findsOneWidget);
+
+      // find gsm-R-Icons
+      final gsmRIcons = find.descendant(of: reducedTable, matching: find.byKey(CommunicationNetworkIcon.gsmRKey));
+      expect(gsmRIcons, findsNWidgets(2));
 
       // find communication network change row by text km 0.3
       final firstCommunicationNetworkChangeRow = find.descendant(of: reducedTable, matching: find.text('km 0.3'));

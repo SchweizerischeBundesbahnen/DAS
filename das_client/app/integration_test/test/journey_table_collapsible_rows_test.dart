@@ -1,5 +1,5 @@
-import 'package:app/pages/journey/journey_table/widgets/table/combined_foot_note_operational_indication_row.dart';
-import 'package:app/pages/journey/journey_table/widgets/table/uncoded_operational_indication_accordion.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/combined_foot_note_operational_indication_row.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/uncoded_operational_indication_accordion.dart';
 import 'package:app/widgets/accordion/accordion.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:app/widgets/table/scrollable_align.dart';

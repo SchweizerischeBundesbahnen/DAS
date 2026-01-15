@@ -482,4 +482,47 @@ void main() {
     expect(combinedDataList, isNot(contains(footNoteToBeCombined)));
     expect(combinedDataList, isNot(contains(operationalIndicationToBeCombined)));
   });
+
+  test('Test hide repeated network changes with same type', () {
+    // GIVEN
+    final baseData = <BaseData>[
+      CommunicationNetworkChange(communicationNetworkType: CommunicationNetworkType.gsmR, order: 0),
+      CommunicationNetworkChange(communicationNetworkType: CommunicationNetworkType.gsmR, order: 100),
+      CommunicationNetworkChange(communicationNetworkType: CommunicationNetworkType.gsmP, order: 200),
+      CommunicationNetworkChange(communicationNetworkType: CommunicationNetworkType.gsmP, order: 300),
+      CommunicationNetworkChange(communicationNetworkType: CommunicationNetworkType.gsmR, order: 400),
+    ];
+
+    // WHEN
+    final resultList = baseData.hideCommunicationNetworkChangesWithSameTypeAsPreviousOrIsServicePoint().toList();
+
+    // THEN
+    expect(resultList, hasLength(3));
+    expect(resultList[0].order, 0);
+    expect(resultList[1].order, 200);
+    expect(resultList[2].order, 400);
+  });
+
+  test('Test hide network changes on service Points', () {
+    // GIVEN
+    final baseData = <BaseData>[
+      CommunicationNetworkChange(communicationNetworkType: CommunicationNetworkType.gsmR, order: 0),
+      CommunicationNetworkChange(communicationNetworkType: CommunicationNetworkType.gsmR, order: 100),
+      CommunicationNetworkChange(
+        communicationNetworkType: CommunicationNetworkType.gsmP,
+        order: 200,
+        isServicePoint: true,
+      ),
+      CommunicationNetworkChange(communicationNetworkType: CommunicationNetworkType.gsmP, order: 300),
+      CommunicationNetworkChange(communicationNetworkType: CommunicationNetworkType.gsmR, order: 400),
+    ];
+
+    // WHEN
+    final resultList = baseData.hideCommunicationNetworkChangesWithSameTypeAsPreviousOrIsServicePoint().toList();
+
+    // THEN
+    expect(resultList, hasLength(2));
+    expect(resultList[0].order, 0);
+    expect(resultList[1].order, 400);
+  });
 }

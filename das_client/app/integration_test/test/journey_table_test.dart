@@ -1,15 +1,15 @@
-import 'package:app/pages/journey/journey_table/widgets/communication_network_icon.dart';
-import 'package:app/pages/journey/journey_table/widgets/journey_table.dart';
-import 'package:app/pages/journey/journey_table/widgets/table/additional_speed_restriction_row.dart';
-import 'package:app/pages/journey/journey_table/widgets/table/balise_row.dart';
-import 'package:app/pages/journey/journey_table/widgets/table/cells/bracket_station_cell_body.dart';
-import 'package:app/pages/journey/journey_table/widgets/table/cells/route_cell_body.dart';
-import 'package:app/pages/journey/journey_table/widgets/table/curve_point_row.dart';
-import 'package:app/pages/journey/journey_table/widgets/table/protection_section_row.dart';
-import 'package:app/pages/journey/journey_table/widgets/table/service_point_row.dart';
-import 'package:app/pages/journey/journey_table/widgets/table/signal_row.dart';
-import 'package:app/pages/journey/journey_table/widgets/table/tram_area_row.dart';
-import 'package:app/pages/journey/journey_table/widgets/table/whistle_row.dart';
+import 'package:app/pages/journey/journey_screen/widgets/communication_network_icon.dart';
+import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/additional_speed_restriction_row.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/balise_row.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/cells/bracket_station_cell_body.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_cell_body.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/curve_point_row.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/protection_section_row.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/service_point_row.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/signal_row.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/tram_area_row.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/whistle_row.dart';
 import 'package:app/theme/themes.dart';
 import 'package:app/widgets/dot_indicator.dart';
 import 'package:app/widgets/labeled_badge.dart';
@@ -24,6 +24,50 @@ import '../util/test_utils.dart';
 
 void main() {
   group('train journey table test', () {
+    testWidgets('test journey displays end of curves correctly', (tester) async {
+      await prepareAndStartApp(tester);
+      await loadJourney(tester, trainNumber: 'T5');
+
+      //find first curve
+      final firstCurve = findDASTableRowByText('${l10n.p_journey_table_curve_type_curve} km 65.30 - 65.80');
+      expect(firstCurve, findsOneWidget);
+
+      //find second curve curve
+      final secondCurve = findDASTableRowByText('${l10n.p_journey_table_curve_type_curve} km 42.50 - 42.00');
+      expect(secondCurve, findsOneWidget);
+
+      await disconnect(tester);
+    });
+
+    testWidgets('test journey displays summarized curve as one', (tester) async {
+      await prepareAndStartApp(tester);
+      await loadJourney(tester, trainNumber: 'T5');
+
+      //find pause button and press it
+      final pauseButton = find.text(l10n.p_journey_header_button_pause);
+      expect(pauseButton, findsOneWidget);
+
+      await tapElement(tester, pauseButton);
+
+      final dasTable = find.byType(DASTable);
+      expect(dasTable, findsOneWidget);
+
+      final summarizedCurveRow = findDASTableRowByText(
+        '${l10n.p_journey_table_curve_type_curve} km 33.80 - 30.50',
+      );
+      await tester.dragUntilVisible(summarizedCurveRow, dasTable, const Offset(0.0, -5));
+      expect(summarizedCurveRow, findsOneWidget);
+
+      final speed = find.descendant(of: summarizedCurveRow, matching: find.byType(SpeedDisplay));
+      expect(speed, findsOneWidget);
+
+      //find all speeds and the partition in between separately because they are different widgets
+      final summarizedCurvesSpeeds = find.descendant(of: speed, matching: find.text('50-30-91'));
+      expect(summarizedCurvesSpeeds, findsOneWidget);
+
+      await disconnect(tester);
+    });
+
     testWidgets('test displays kilometer and communication network changes correctly', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T9999');
@@ -32,9 +76,18 @@ void main() {
       final pauseButton = find.text(l10n.p_journey_header_button_pause);
       expect(pauseButton, findsOneWidget);
 
-      // find gsmP-Icon
-      final gsmPKey = find.byKey(CommunicationNetworkIcon.gsmPKey);
+      await tapElement(tester, pauseButton);
+
+      final dasTable = find.byType(DASTable);
+      expect(dasTable, findsOneWidget);
+
+      // find gsmP-Icon (only 1 should be found, 2nd should be hidden)
+      final gsmPKey = find.descendant(of: dasTable, matching: find.byKey(CommunicationNetworkIcon.gsmPKey));
       expect(gsmPKey, findsOneWidget);
+
+      // find gsmR-Icon
+      final gsmRIcon = find.descendant(of: dasTable, matching: find.byKey(CommunicationNetworkIcon.gsmRKey));
+      expect(gsmRIcon, findsOneWidget);
 
       await disconnect(tester);
     });
@@ -74,7 +127,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test find one curve is found when breakingSeries A50 is chosen', (tester) async {
+    testWidgets('test find two curves found when breakingSeries A50 is chosen', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T5');
 
@@ -89,16 +142,16 @@ void main() {
       final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
-      final curveName = findDASTableRowByText(l10n.p_journey_table_curve_type_curve);
-      expect(curveName, findsOneWidget);
+      final curveName = find.textContaining(l10n.p_journey_table_curve_type_curve);
+      expect(curveName, findsExactly(2));
 
-      final curveIcon = find.descendant(of: curveName, matching: find.byKey(CurvePointRow.curvePointIconKey));
-      expect(curveIcon, findsOneWidget);
+      final curveIcon = find.byKey(CurvePointRow.curvePointIconKey);
+      expect(curveIcon, findsExactly(2));
 
       await disconnect(tester);
     });
 
-    testWidgets('test find two curves when breakingSeries R115 is chosen', (tester) async {
+    testWidgets('test find three curves when breakingSeries R115 is chosen', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T5');
 
@@ -110,11 +163,11 @@ void main() {
       expect(breakingSeriesHeaderCell, findsOneWidget);
       expect(find.descendant(of: breakingSeriesHeaderCell, matching: find.text('R115')), findsOneWidget);
 
-      final curveName = findDASTableRowByText(l10n.p_journey_table_curve_type_curve);
-      expect(curveName, findsExactly(2));
+      final curveName = find.textContaining(l10n.p_journey_table_curve_type_curve);
+      expect(curveName, findsExactly(3));
 
-      final curveIcon = find.descendant(of: curveName, matching: find.byKey(CurvePointRow.curvePointIconKey));
-      expect(curveIcon, findsExactly(2));
+      final curveIcon = find.byKey(CurvePointRow.curvePointIconKey);
+      expect(curveIcon, findsExactly(3));
 
       await disconnect(tester);
     });
@@ -220,6 +273,7 @@ void main() {
         'Genève': '60',
         'New Line Speed A Missing': '60',
         '42.5': '44', // 2. Curve
+        '33.8': '50-30-91', // 3. Curve
         'Gland': '60',
       };
 
@@ -248,6 +302,7 @@ void main() {
         'Genève-Aéroport': '90',
         '65.3': '55',
         'New Line Speed All': '90',
+        '33.8': '60-70-53',
         'Gland': '90',
       };
 
@@ -674,14 +729,14 @@ void main() {
     testWidgets('test curves are displayed correctly', (tester) async {
       await prepareAndStartApp(tester);
 
-      await loadJourney(tester, trainNumber: 'T9999');
+      await loadJourney(tester, trainNumber: 'T9999M');
 
       final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
-      final curveLabel = l10n.p_journey_table_curve_type_curve;
-      await tester.dragUntilVisible(find.text(curveLabel).first, scrollableFinder, const Offset(0, -50));
+      await tester.dragUntilVisible(find.text('1.8'), scrollableFinder, const Offset(0, -50));
 
+      final curveLabel = l10n.p_journey_table_curve_type_curve;
       final curveRows = findDASTableRowByText(curveLabel);
       expect(curveRows, findsAtLeast(1));
 

@@ -1,8 +1,8 @@
-import 'package:app/pages/journey/journey_table/widgets/header/header.dart';
-import 'package:app/pages/journey/journey_table/widgets/header/journey_advancement_button.dart';
-import 'package:app/pages/journey/journey_table/widgets/header/journey_identifier.dart';
-import 'package:app/pages/journey/journey_table/widgets/header/journey_search_overlay.dart';
-import 'package:app/pages/journey/journey_table/widgets/journey_navigation_buttons.dart';
+import 'package:app/pages/journey/journey_screen/header/widgets/header.dart';
+import 'package:app/pages/journey/journey_screen/header/widgets/journey_advancement_button.dart';
+import 'package:app/pages/journey/journey_screen/header/widgets/journey_identifier.dart';
+import 'package:app/pages/journey/journey_screen/header/widgets/journey_search_overlay.dart';
+import 'package:app/pages/journey/journey_screen/widgets/journey_navigation_buttons.dart';
 import 'package:app/util/format.dart';
 import 'package:app/widgets/navigation_buttons.dart';
 import 'package:flutter/widgets.dart';

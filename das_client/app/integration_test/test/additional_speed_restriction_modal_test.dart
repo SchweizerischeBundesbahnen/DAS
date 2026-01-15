@@ -1,4 +1,4 @@
-import 'package:app/pages/journey/journey_table/widgets/detail_modal/additional_speed_restriction_modal/details_table.dart';
+import 'package:app/pages/journey/journey_screen/detail_modal/additional_speed_restriction_modal/details_table.dart';
 import 'package:app/widgets/modal_sheet/das_modal_sheet.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';

@@ -1,7 +1,7 @@
 import 'package:app/di/di.dart';
-import 'package:app/pages/journey/journey_table/widgets/header/header.dart';
-import 'package:app/pages/journey/journey_table/widgets/header/journey_advancement_button.dart';
-import 'package:app/pages/journey/journey_table/widgets/table/cells/route_chevron.dart';
+import 'package:app/pages/journey/journey_screen/header/widgets/header.dart';
+import 'package:app/pages/journey/journey_screen/header/widgets/journey_advancement_button.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_chevron.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
