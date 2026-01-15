@@ -102,21 +102,21 @@
         </Signal>
 
         <Signal>
-            <Signal_ID signal_ID_Physical="E1" location="4690"/>
+            <Signal_ID signal_ID_Physical="C19" location="4690"/>
             <SignalFunction>entry</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="E1"/>
+            <SignalPhysicalCharacteristics visualIdentifier="C19"/>
         </Signal>
 
         <Signal>
-            <Signal_ID signal_ID_Physical="A1" location="5806"/>
+            <Signal_ID signal_ID_Physical="C20" location="5806"/>
             <SignalFunction>exit</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="A1"/>
+            <SignalPhysicalCharacteristics visualIdentifier="C20"/>
         </Signal>
 
         <Signal>
-            <Signal_ID signal_ID_Physical="E2" location="8220"/>
+            <Signal_ID signal_ID_Physical="G18" location="8220"/>
             <SignalFunction>entry</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="E2"/>
+            <SignalPhysicalCharacteristics visualIdentifier="G18"/>
         </Signal>
 
         <Signal>
@@ -342,6 +342,78 @@
     </SP_Points>
 
     <SP_Areas>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0"
+                          TAF_TAP_location_abbreviation="GR" TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>00001</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Graftal</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>newLineSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+					&lt;lineSpeed&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;130&quot;/&gt;
+                        &lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;150&quot; speed=&quot;130&quot;/&gt;
+					&lt;/lineSpeed&gt;
+				"/>
+            </TAF_TAP_Location_NSP>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>departureAuth</NSP_GroupName>
+                <NetworkSpecificParameter name="departureAuth" value="false"/>
+            </TAF_TAP_Location_NSP>
+
+        </TAF_TAP_Location>
+
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="5300" endLocation="5300"
+                          TAF_TAP_location_abbreviation="FI" TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>00002</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Fischerz</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>stationSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlGraduatedSpeedInfo" value="
+                    &lt;entries&gt;
+						&lt;entry roSpeed=&quot;160&quot; adSpeed=&quot;160&quot; nSpeed=&quot;160&quot; text=&quot;Ab Perronanfang&quot;/&gt;
+                        &lt;entry roSpeed=&quot;140&quot; adSpeed=&quot;140&quot; nSpeed=&quot;140&quot; text=&quot;Ab Perronmitte&quot;/&gt;
+                    &lt;/entries&gt;
+                "/>
+                <NetworkSpecificParameter name="xmlStationSpeed" value="
+					&lt;stationSpeed&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;160/140&quot;/&gt;
+						&lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;150&quot; speed=&quot;160/140&quot;/&gt;
+					&lt;/stationSpeed&gt;
+				"/>
+            </TAF_TAP_Location_NSP>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>newLineSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+					&lt;lineSpeed&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;130&quot;/&gt;
+                        &lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;150&quot; speed=&quot;130&quot;/&gt;
+					&lt;/lineSpeed&gt;
+				"/>
+            </TAF_TAP_Location_NSP>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>departureAuth</NSP_GroupName>
+                <NetworkSpecificParameter name="departureAuth" value="false"/>
+            </TAF_TAP_Location_NSP>
+
+        </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="9100" endLocation="9100"
                           TAF_TAP_location_abbreviation="TW" TAF_TAP_location_type="station">
@@ -731,7 +803,16 @@
         <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="32110" endLocation="32110"/>
         <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="33430" endLocation="33430"/>
 
-
+        <ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
+            <Contact mainContact="true">
+                <OtherContactType contactIdentifier="1304"/>
+            </Contact>
+        </ContactList>
+        <ContactList startEndQualifier="StartsEnds" startLocation="5300" endLocation="5300">
+            <Contact mainContact="true">
+                <OtherContactType contactIdentifier="1304"/>
+            </Contact>
+        </ContactList>
         <ContactList startEndQualifier="StartsEnds" startLocation="9100" endLocation="9100">
             <Contact mainContact="true">
                 <OtherContactType contactIdentifier="1305"/>
@@ -790,6 +871,10 @@
             </Contact>
         </ContactList>
 
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0"
+                              communicationNetworkType="GSM-R"/>
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="5300" endLocation="5300"
+                              communicationNetworkType="GSM-R"/>
         <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="9100" endLocation="9100"
                               communicationNetworkType="GSM-R"/>
         <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="11200" endLocation="11200"
@@ -1028,6 +1113,18 @@
         </KilometreReferencePoint>
 
 
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0"
+                              gradientValue="3.0" gradientDirection="Downhill"
+                              directionOfApplicationOnSP="Nominal"/>
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0"
+                              gradientValue="2.0" gradientDirection="Uphill"
+                              directionOfApplicationOnSP="Nominal"/>
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="5300" endLocation="5300"
+                              gradientValue="1.0" gradientDirection="Downhill"
+                              directionOfApplicationOnSP="Nominal"/>
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="5300" endLocation="5300"
+                              gradientValue="0.0" gradientDirection="Uphill"
+                              directionOfApplicationOnSP="Nominal"/>
         <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="9100" endLocation="9100"
                               gradientValue="1.0" gradientDirection="Downhill"
                               directionOfApplicationOnSP="Nominal"/>
