@@ -66,17 +66,7 @@ export class SferaObserverComponent implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
   private toastService = inject(SbbNotificationToast);
 
-  protected get operationalDay() {
-    const jpReplies = this.data.filter(row => row.type === 'SFERA_G2B_ReplyMessage' && row.info.includes('JP: Valid'))
-    if (jpReplies.length === 0) {
-      return;
-    }
-
-    const dom = this.toDom(jpReplies[jpReplies.length - 1].message)
-    const nsp = Array.from(dom.querySelectorAll('General_JP_Information_NSP > NetworkSpecificParameter'))
-      .find(el => el.getAttribute('name') === 'tms_Operating_Day_Date');
-    return nsp?.getAttribute('value') ?? undefined;
-  }
+  private readonly MOCK_OPATIONAL_DAY = '2025-12-01';
 
   ngOnInit() {
     const params = this.route.snapshot.paramMap;
@@ -512,22 +502,18 @@ export class SferaObserverComponent implements OnInit, OnDestroy {
   };
 
   protected initialFormation() {
-    if (this.operationalDay) {
-      this.formationsService.initialFormation({
-        operationalTrainNumber: this.trainControl.value,
-        companyCode: this.companyControl.value,
-        operationalDay: this.operationalDay,
-      }).subscribe(this.formationObserver)
-    }
+    this.formationsService.initialFormation({
+      operationalTrainNumber: this.trainControl.value,
+      companyCode: this.companyControl.value,
+      operationalDay: this.MOCK_OPATIONAL_DAY,
+    }).subscribe(this.formationObserver)
   }
 
   protected updatedFormation() {
-    if (this.operationalDay) {
-      this.formationsService.updateFormation({
-        operationalTrainNumber: this.trainControl.value,
-        companyCode: this.companyControl.value,
-        operationalDay: this.operationalDay,
-      }).subscribe(this.formationObserver)
-    }
+    this.formationsService.updateFormation({
+      operationalTrainNumber: this.trainControl.value,
+      companyCode: this.companyControl.value,
+      operationalDay: this.MOCK_OPATIONAL_DAY,
+    }).subscribe(this.formationObserver)
   }
 }
