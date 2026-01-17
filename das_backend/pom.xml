@@ -9,7 +9,7 @@
     </parent>
     <groupId>ch.sbb</groupId>
     <artifactId>das_backend</artifactId>
-    <version>0.7.1</version>
+    <version>0.7.2-SNAPSHOT</version>
     <name>DAS-Backend</name>
     <description>DAS-Backend</description>
     <properties>
