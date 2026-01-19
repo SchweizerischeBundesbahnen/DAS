@@ -50,6 +50,9 @@
   "schedule": [
     "before 7am on Thursday"
   ],
+  "automergeSchedule": [
+    "before 7am on Thursday"
+  ],
   "prHourlyLimit": 0,
   "prConcurrentLimit": 0
 }
