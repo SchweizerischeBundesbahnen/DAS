@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.backend.restclient.v1.model.FormationResponse;
 import ch.sbb.backend.restclient.v1.model.Logging;
+import ch.sbb.backend.restclient.v1.model.Preload;
 import ch.sbb.backend.restclient.v1.model.RuFeature;
 import ch.sbb.backend.restclient.v1.model.Settings;
 import ch.sbb.backend.restclient.v1.model.SettingsResponse;
@@ -15,18 +16,20 @@ public class AssertionsApiClientModel {
 
     public static Settings assertSettingsResponse(SettingsResponse settingsResponse) {
         assertThat(settingsResponse).isNotNull();
-        assertThat(settingsResponse.getData()).as("Settings").hasSize(1);
+        assertThat(settingsResponse.getData()).as(Settings.class.getSimpleName()).hasSize(1);
         final Settings settings = settingsResponse.getData().get(0);
+
         final List<RuFeature> ruFeatures = settings.getRuFeatures();
         assertThat(ruFeatures).hasSizeGreaterThanOrEqualTo(11);
+
         final Logging logging = settings.getLogging();
         assertThat(logging.getUrl()).isNotBlank();
         assertThat(logging.getToken()).isNotBlank();
-        // TODO: not available in backend v0.6.0
-        //        final Preload preload = settings.getPreload();
-        //        assertThat(preload.getBucketUrl()).isNotBlank();
-        //        assertThat(preload.getAccessKey()).isNotBlank();
-        //        assertThat(preload.getAccessKey()).isNotBlank();
+
+        final Preload preload = settings.getPreload();
+        assertThat(preload.getBucketUrl()).isNotBlank();
+        assertThat(preload.getAccessKey()).isNotBlank();
+        assertThat(preload.getAccessKey()).isNotBlank();
 
         return settings;
     }
