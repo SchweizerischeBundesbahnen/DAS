@@ -448,8 +448,9 @@
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>departureAuth</NSP_GroupName>
-                <NetworkSpecificParameter name="departureAuth" value="false"/>
-            </TAF_TAP_Location_NSP>  
+                <NetworkSpecificParameter name="departureAuth" value="true"/>
+				<NetworkSpecificParameter name="departureAuthDispatcher" value="true" /> 
+            </TAF_TAP_Location_NSP> 
 
         </TAF_TAP_Location>
 
@@ -565,7 +566,8 @@
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>departureAuth</NSP_GroupName>
-                <NetworkSpecificParameter name="departureAuth" value="false"/>
+                <NetworkSpecificParameter name="departureAuth" value="true"/>
+				<NetworkSpecificParameter name="departureAuthDispatcher" value="true" /> 
             </TAF_TAP_Location_NSP>
 
         </TAF_TAP_Location>

@@ -145,4 +145,11 @@
 
     </SegmentProfileReference>
 
+    <General_JP_Information>
+        <General_JP_Information_NSP>
+            <teltsi_Company>1285</teltsi_Company>
+            <NetworkSpecificParameter name="tms_Operating_Day_Date" value="2026-02-01"/>
+        </General_JP_Information_NSP>
+    </General_JP_Information>
+
 </JourneyProfile>
