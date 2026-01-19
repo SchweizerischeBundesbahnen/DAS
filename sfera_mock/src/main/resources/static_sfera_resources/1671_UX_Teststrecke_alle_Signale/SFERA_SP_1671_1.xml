@@ -449,19 +449,7 @@
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>departureAuth</NSP_GroupName>
                 <NetworkSpecificParameter name="departureAuth" value="false"/>
-            </TAF_TAP_Location_NSP>
-
-            <TAF_TAP_Location_NSP>
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>oPFootNotes</NSP_GroupName>
-                <NetworkSpecificParameter name="xmlOPFootNotes" value="
-				&lt;oPFootNotes&gt; 
-					&lt;footNote type=&quot;contact&quot; refText=&quot;1)&quot;&gt; 
-						&lt;text&gt;+41 512 800 503 RBC AXEN&lt;/text&gt; 
-					&lt;/footNote&gt; 
-				&lt;/oPFootNotes&gt;
-				"/>
-            </TAF_TAP_Location_NSP>   
+            </TAF_TAP_Location_NSP>  
 
         </TAF_TAP_Location>
 
@@ -489,19 +477,6 @@
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>departureAuth</NSP_GroupName>
                 <NetworkSpecificParameter name="departureAuth" value="false"/>
-            </TAF_TAP_Location_NSP>
-
-            <TAF_TAP_Location_NSP>
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>lineFootNotes</NSP_GroupName>
-                <NetworkSpecificParameter name="xmlLineFootNotes" value="
-				&lt;lineFootNotes&gt; 
-					&lt;footNote identifier=&quot;8D289607429F44C9A7FF4C8D037832F1&quot;&gt; 
-						&lt;text&gt;Zugelassen nur für &lt;b&gt;RABDe 500&lt;/b&gt;&lt;/text&gt;
-                        &lt;trainSeries>N&lt;/trainSeries&gt; 
-					&lt;/footNote&gt; 
-				&lt;/lineFootNotes&gt;
-				"/>
             </TAF_TAP_Location_NSP>
 
         </TAF_TAP_Location>
@@ -549,19 +524,6 @@
                 <NetworkSpecificParameter name="departureAuth" value="false"/>
             </TAF_TAP_Location_NSP>
 
-            <TAF_TAP_Location_NSP>
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>lineFootNotes</NSP_GroupName>
-                <NetworkSpecificParameter name="xmlLineFootNotes" value="
-				&lt;lineFootNotes&gt; 
-					&lt;footNote identifier=&quot;8D289607429F44C9A7FF4C8D037832F1&quot;&gt;  
-						&lt;text&gt;Zugelassen nur für &lt;b&gt;RABDe 500&lt;/b&gt;&lt;/text&gt;
-                        &lt;trainSeries>N&lt;/trainSeries&gt; 
-					&lt;/footNote&gt; 
-				&lt;/lineFootNotes&gt;
-				"/>
-            </TAF_TAP_Location_NSP>
-
         </TAF_TAP_Location>
 
 
@@ -604,19 +566,6 @@
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>departureAuth</NSP_GroupName>
                 <NetworkSpecificParameter name="departureAuth" value="false"/>
-            </TAF_TAP_Location_NSP>
-
-            <TAF_TAP_Location_NSP>
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>lineFootNotes</NSP_GroupName>
-                <NetworkSpecificParameter name="xmlLineFootNotes" value="
-				&lt;lineFootNotes&gt; 
-					&lt;footNote identifier=&quot;8D289607429F44C9A7FF4C8D037832F1&quot;&gt;  
-						&lt;text&gt;Zugelassen nur für &lt;b&gt;RABDe 500&lt;/b&gt;&lt;/text&gt;
-                        &lt;trainSeries>N&lt;/trainSeries&gt; 
-					&lt;/footNote&gt; 
-				&lt;/lineFootNotes&gt;
-				"/>
             </TAF_TAP_Location_NSP>
 
         </TAF_TAP_Location>
