@@ -18,7 +18,8 @@
             <TAF_TAP_LocationReference>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>00002</teltsi_LocationPrimaryCode>
-        </TAF_TAP_LocationReference>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
 
         <TimingPoint TP_ID="Twinn" location="9100">
             <TAF_TAP_LocationReference>
