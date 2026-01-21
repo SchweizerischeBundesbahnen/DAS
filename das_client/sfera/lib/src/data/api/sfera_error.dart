@@ -22,12 +22,22 @@ sealed class SferaError {
   factory SferaError.invalid() = Invalid;
 
   final String code;
+
+  @override
+  String toString() {
+    return 'SferaError{code: $code}';
+  }
 }
 
 final class ProtocolErrors extends SferaError {
   const ProtocolErrors({this.errors = const []}) : super._(code: '0');
 
   final Iterable<ProtocolError> errors;
+
+  @override
+  String toString() {
+    return 'ProtocolErrors{errors: $errors}';
+  }
 }
 
 final class ProtocolError {
@@ -35,6 +45,11 @@ final class ProtocolError {
 
   final String code;
   final LocalizedString? additionalInfo;
+
+  @override
+  String toString() {
+    return 'ProtocolError{code: $code, additionalInfo: $additionalInfo}';
+  }
 }
 
 final class Invalid extends SferaError {

@@ -407,10 +407,10 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
     }
   }
 
-  void _onTaskFailed(SferaTask task, SferaError errorCode) {
-    _log.severe('Task $task failed with error code $errorCode');
+  void _onTaskFailed(SferaTask task, SferaError error) {
+    _log.severe('Task $task failed with error $error');
     _tasks.remove(task);
-    lastError = errorCode;
+    lastError = error;
     if (_rxState.value != .connected) {
       disconnect();
     }
