@@ -73,6 +73,10 @@ public class FormationsService {
             stmt.setString(4, operationalTrainNumber);
             stmt.setDate(5, Date.valueOf(operationalDay));
             stmt.setString(6, companyCode);
+            // 3nd formation
+            stmt.setString(7, operationalTrainNumber);
+            stmt.setDate(8, Date.valueOf(operationalDay));
+            stmt.setString(9, companyCode);
         });
         log.info("Created {} rows", affectedRows);
     }
