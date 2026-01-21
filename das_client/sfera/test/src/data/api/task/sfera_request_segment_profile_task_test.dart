@@ -32,7 +32,7 @@ void main() {
     otnId = OtnId(company: '1085', operationalTrainNumber: '719', startDate: DateTime.now());
   });
 
-  test('Test SP request successful', () async {
+  test('execute_whenRequestSegmentProfilesSuccessful_thenReturnsTrue', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final file = File('test_resources/SFERA_G2B_Reply_JP_request_9232.xml');
@@ -51,9 +51,7 @@ void main() {
         expect(task, segmentTask);
         expect(data, sferaG2bReplyMessage.payload!.segmentProfiles);
       },
-      (task, errorCode) {
-        fail('Task failed with error code $errorCode');
-      },
+      (task, error) => fail('Task failed with error $error'),
     );
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
@@ -62,7 +60,7 @@ void main() {
     expect(result, true);
   });
 
-  test('Test SP request saves to sfera repository', () async {
+  test('execute_whenRequestSegmentProfilesSuccessful_thenSavesToSferaRepository', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final file = File('test_resources/SFERA_G2B_Reply_JP_request_9232.xml');
@@ -77,12 +75,8 @@ void main() {
     );
 
     await segmentTask.execute(
-      (task, data) {
-        expect(task, segmentTask);
-      },
-      (task, errorCode) {
-        fail('Task failed with error code $errorCode');
-      },
+      (task, data) => expect(task, segmentTask),
+      (task, error) => fail('Task failed with error $error'),
     );
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
@@ -94,7 +88,7 @@ void main() {
     verify(sferaLocalService.saveSegmentProfile(any)).called(23);
   });
 
-  test('Test SP request fail on invalid SP', () async {
+  test('execute_whenRequestSegmentProfilesWithInvalidSP_thenFailsWithInvalid', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final file = File('test_resources/SFERA_G2B_Reply_JP_request_9232_invalid_sp.xml');
@@ -109,12 +103,10 @@ void main() {
     );
 
     await segmentTask.execute(
-      (task, data) {
-        fail('Test should not call success');
-      },
-      (task, errorCode) {
+      (task, data) => fail('Test should not call success'),
+      (task, error) {
         expect(task, segmentTask);
-        expect(errorCode, SferaError.invalid);
+        expect(error, isA<Invalid>());
       },
     );
 
@@ -127,7 +119,7 @@ void main() {
     verify(sferaLocalService.saveSegmentProfile(any)).called(22);
   });
 
-  test('Test SP request ignores other messages', () async {
+  test('execute_whenRequestSegmentProfilesWithOtherMessage_thenIsIgnored', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final file = File('test_resources/SFERA_G2B_Reply_JP_request_9232.xml');
@@ -142,12 +134,8 @@ void main() {
     );
 
     await segmentTask.execute(
-      (task, data) {
-        fail('Test should not call success');
-      },
-      (task, errorCode) {
-        fail('Test should not call error');
-      },
+      (task, data) => fail('Test should not call success'),
+      (task, error) => fail('Test should not call error'),
     );
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
@@ -160,7 +148,7 @@ void main() {
     expect(result, false);
   });
 
-  test('Test request segment profile timeout', () async {
+  test('execute_whenRequestSegmentProfilesIsTimedOut_thenFailsWithRequestTimeout', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final file = File('test_resources/SFERA_G2B_Reply_JP_request_9232.xml');
@@ -177,11 +165,9 @@ void main() {
 
     var timeoutReached = false;
     await spTask.execute(
-      (task, data) {
-        fail('Test should not call success');
-      },
-      (task, errorCode) {
-        expect(errorCode, SferaError.requestTimeout);
+      (task, data) => fail('Test should not call success'),
+      (task, error) {
+        expect(error, isA<RequestTimeout>());
         timeoutReached = true;
       },
     );
@@ -190,5 +176,46 @@ void main() {
 
     await Future.delayed(const Duration(milliseconds: 1200));
     expect(timeoutReached, true);
+  });
+
+  test('execute_whenRequestSegmentProfilesFailsWithError_thenFailsWithProtocolError', () async {
+    when(mqttService.publishMessage(any, any, any)).thenReturn(true);
+
+    final jpRequestFile = File('test_resources/SFERA_G2B_Reply_JP_request_9232.xml');
+    final jpRequest = SferaReplyParser.parse<SferaG2bReplyMessageDto>(jpRequestFile.readAsStringSync());
+
+    final segmentTask = RequestSegmentProfilesTask(
+      sferaService: sferaRemoteRepo,
+      mqttService: mqttService,
+      sferaDatabaseRepository: sferaLocalService,
+      otnId: otnId,
+      journeyProfile: jpRequest.payload!.journeyProfiles.first,
+    );
+
+    await segmentTask.execute(
+      (task, data) => fail('Test should not call success'),
+      (task, error) {
+        expect(error, isA<ProtocolErrors>());
+        final protocolError = error as ProtocolErrors;
+        expect(protocolError.errors, hasLength(1));
+        expect(protocolError.errors.first.code, '26');
+        expect(
+          protocolError.errors.first.additionalInfo?.de,
+          'Die Nachricht verwendet eine bereits verwendete message_ID.',
+        );
+        expect(
+          protocolError.errors.first.additionalInfo?.fr,
+          'Le message utilise un identifiant message_ID déjà utilisé.',
+        );
+        expect(protocolError.errors.first.additionalInfo?.it, 'Il messaggio utilizza un message_ID già utilizzato.');
+      },
+    );
+
+    verify(mqttService.publishMessage(any, any, any)).called(1);
+
+    final file = File('test_resources/SFERA_G2B_ReplyMessage_Error.xml');
+    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
+    final result = await segmentTask.handleMessage(sferaG2bReplyMessage);
+    expect(result, false);
   });
 }

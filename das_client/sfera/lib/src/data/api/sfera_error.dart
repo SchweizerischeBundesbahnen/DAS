@@ -25,7 +25,7 @@ sealed class SferaError {
 }
 
 final class ProtocolErrors extends SferaError {
-  const ProtocolErrors({this.errors = const []}) : super._(code: '1000');
+  const ProtocolErrors({this.errors = const []}) : super._(code: '0');
 
   final Iterable<ProtocolError> errors;
 }
@@ -35,6 +35,10 @@ final class ProtocolError {
 
   final String code;
   final LocalizedString? additionalInfo;
+}
+
+final class Invalid extends SferaError {
+  const Invalid() : super._(code: '1000');
 }
 
 final class ConnectionFailed extends SferaError {
@@ -55,8 +59,4 @@ final class RequestTimeout extends SferaError {
 
 final class JpUnavailable extends SferaError {
   const JpUnavailable() : super._(code: '1005');
-}
-
-final class Invalid extends SferaError {
-  const Invalid() : super._(code: '1000');
 }

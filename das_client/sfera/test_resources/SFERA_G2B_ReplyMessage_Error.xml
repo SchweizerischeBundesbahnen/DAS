@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SFERA_G2B_ReplyMessage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SFERA_v3.00.xsd">
+    <MessageHeader SFERA_version="3.00" message_ID="bfc9754f-2361-49d1-90af-4c4fac7f419f" timestamp="2022-05-06T10:00:00Z" sourceDevice="INFRABEL">
+        <Sender>0088</Sender>
+        <Recipient>1088</Recipient>
+    </MessageHeader>
+    <G2B_ReplyPayload>
+        <G2B_MessageResponse result="ERROR">
+            <G2B_Error errorCode="26" dataFirstAvailable="2026-01-01T10:00:00Z" XPath="SFERA_G2B_ReplyMessage/MessageHeader">
+                <AdditionalInfo language="de" text="Die Nachricht verwendet eine bereits verwendete message_ID."/>
+                <AdditionalInfo language="fr" text="Le message utilise un identifiant message_ID déjà utilisé."/>
+                <AdditionalInfo language="it" text="Il messaggio utilizza un message_ID già utilizzato."/>
+            </G2B_Error>
+        </G2B_MessageResponse>
+    </G2B_ReplyPayload>
+</SFERA_G2B_ReplyMessage>

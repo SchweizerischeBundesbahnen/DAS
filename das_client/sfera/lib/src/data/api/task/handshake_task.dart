@@ -4,6 +4,7 @@ import 'package:sfera/component.dart';
 import 'package:sfera/src/data/api/task/sfera_task.dart';
 import 'package:sfera/src/data/dto/das_operating_modes_supported_dto.dart';
 import 'package:sfera/src/data/dto/enums/das_driving_mode_dto.dart';
+import 'package:sfera/src/data/dto/g2b_error.dart';
 import 'package:sfera/src/data/dto/handshake_request_dto.dart';
 import 'package:sfera/src/data/dto/sfera_b2g_request_message_dto.dart';
 import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
@@ -62,12 +63,10 @@ class HandshakeTask extends SferaTask {
 
   @override
   Future<bool> handleMessage(SferaG2bReplyMessageDto replyMessage) async {
-    // TODO: Handle errors
     if (replyMessage.hasErrors) {
-      final errors = replyMessage.payload?.messageResponse!.errors;
+      final errors = replyMessage.payload!.messageResponse!.errors;
       _log.info('Received reply with errors $errors');
-      // TODO: map to protocol error
-      _taskFailedCallback(this, SferaError.protocolError(errors: []));
+      _taskFailedCallback(this, .protocolError(errors: errors.map((error) => error.toProtocolError)));
       return false;
     }
 
