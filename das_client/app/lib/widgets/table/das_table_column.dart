@@ -13,7 +13,7 @@ class DASTableColumn {
     this.child,
     this.border,
     this.color,
-    this.padding = const .all(sbbDefaultSpacing * 0.5),
+    this.padding = const .all(SBBSpacing.xSmall),
     this.expanded = false,
     this.width,
     this.alignment = .center,

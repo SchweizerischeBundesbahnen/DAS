@@ -109,8 +109,8 @@ class BreakLoadSlipHeader extends StatelessWidget {
 
     return Positioned(
       bottom: 0,
-      left: sbbDefaultSpacing * 0.5,
-      right: sbbDefaultSpacing * 0.5,
+      left: SBBSpacing.xSmall,
+      right: SBBSpacing.xSmall,
       child: Row(
         children: indicators.mapIndexed((index, element) {
           return _specialIndicatorBackgroundElement(
@@ -130,7 +130,7 @@ class BreakLoadSlipHeader extends StatelessWidget {
         children: [
           if (!isFirst)
             Positioned(
-              left: -sbbDefaultSpacing * 0.75,
+              left: -SBBSpacing.small,
               bottom: 0,
               child: SvgPicture.asset(
                 AppAssets.shapeRoundedEdgeLeftMedium,
@@ -141,8 +141,8 @@ class BreakLoadSlipHeader extends StatelessWidget {
             decoration: BoxDecoration(
               color: indicator.backgroundColor,
               borderRadius: BorderRadius.only(
-                bottomLeft: isFirst ? Radius.circular(sbbDefaultSpacing) : Radius.zero,
-                bottomRight: isLast ? Radius.circular(sbbDefaultSpacing) : Radius.zero,
+                bottomLeft: isFirst ? Radius.circular(SBBSpacing.medium) : Radius.zero,
+                bottomRight: isLast ? Radius.circular(SBBSpacing.medium) : Radius.zero,
               ),
             ),
             height: specialIndicatorBackgroundHeight,
@@ -157,7 +157,7 @@ class BreakLoadSlipHeader extends StatelessWidget {
     if (indicators.isEmpty) return SizedBox.shrink();
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing * 0.5),
+      padding: const EdgeInsets.symmetric(horizontal: SBBSpacing.xSmall),
       child: Row(
         children: indicators.mapIndexed((index, element) {
           return _specialIndicatorElement(
@@ -174,13 +174,11 @@ class BreakLoadSlipHeader extends StatelessWidget {
       child: Container(
         key: specialIndicator.key,
         height: specialIndicatorHeight,
-        padding: EdgeInsets.only(left: sbbDefaultSpacing * (isFirst ? 1 : 0.25)),
+        padding: EdgeInsets.only(left: isFirst ? SBBSpacing.medium : SBBSpacing.xxSmall),
         child: Row(
-          spacing: sbbDefaultSpacing * 0.5,
+          spacing: SBBSpacing.xSmall,
           children: [
-            SvgPicture.asset(
-              specialIndicator.asset,
-            ),
+            SvgPicture.asset(specialIndicator.asset),
             Text(specialIndicator.text, style: DASTextStyles.smallLight.copyWith(color: specialIndicator.textColor)),
           ],
         ),

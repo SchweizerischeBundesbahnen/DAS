@@ -33,8 +33,8 @@ class ExtendedMenu extends StatelessWidget {
               mainAxisAlignment: .start,
               children: [
                 _menuHeader(context, hideOverlay),
-                SizedBox(height: sbbDefaultSpacing),
-                SBBGroup(
+                SizedBox(height: SBBSpacing.medium),
+                SBBContentBox(
                   child: Column(
                     crossAxisAlignment: .start,
                     children: [
@@ -130,7 +130,7 @@ class ExtendedMenu extends StatelessWidget {
             viewModel.toggleManeuverMode();
           },
           trailingWidget: Padding(
-            padding: const .fromLTRB(0, 0, sbbDefaultSpacing * 0.5, 0),
+            padding: const .fromLTRB(0, 0, SBBSpacing.xSmall, 0),
             child: StreamBuilder(
               stream: viewModel.isManeuverModeEnabled,
               builder: (context, snapshot) {

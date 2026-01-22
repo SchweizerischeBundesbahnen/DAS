@@ -71,7 +71,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
            return DecoratedBox(
              decoration: BoxDecoration(color: SBBColors.granite),
              child: Padding(
-               padding: const .only(left: sbbDefaultSpacing),
+               padding: const .only(left: SBBSpacing.medium),
                child: Align(
                  alignment: .centerLeft,
                  child: AnimatedSwitcher(
@@ -176,7 +176,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     return _wrapToBaseHeight(
       DASTableCell(
         alignment: .bottomRight,
-        padding: .symmetric(vertical: sbbDefaultSpacing * 0.5, horizontal: 2),
+        padding: .symmetric(vertical: SBBSpacing.xSmall, horizontal: 2),
         child: Padding(
           padding: config.bracketStationRenderData != null ? const .only(right: 24.0) : .zero,
           child: Wrap(
@@ -214,7 +214,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     if (trainSeriesSpeed == null && relevantGraduatedSpeedInfo.isEmpty) return DASTableCell.empty();
 
     Widget child = Padding(
-      padding: .only(top: sbbDefaultSpacing * .5, right: sbbDefaultSpacing * .25),
+      padding: .only(top: SBBSpacing.xSmall, right: SBBSpacing.xxSmall),
       child: DotIndicator(
         child: SizedBox.expand(),
       ),
@@ -230,7 +230,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     return DASTableCell(
       onTap: relevantGraduatedSpeedInfo.isNotEmpty ? () => _openGraduatedSpeedDetails(context) : null,
       alignment: .center,
-      padding: .symmetric(vertical: 2.0, horizontal: sbbDefaultSpacing * 0.5),
+      padding: .symmetric(vertical: 2.0, horizontal: SBBSpacing.xSmall),
       child: child,
     );
   }
@@ -317,7 +317,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
                   ),
                 ),
                 if (data.trackGroup != null) ...[
-                  if (!isModalOpen) SizedBox(width: sbbDefaultSpacing),
+                  if (!isModalOpen) SizedBox(width: SBBSpacing.medium),
                   Text(data.trackGroup!),
                 ],
               ],
@@ -346,7 +346,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
           child: Row(
             mainAxisSize: .min,
             crossAxisAlignment: .center,
-            spacing: sbbDefaultSpacing * 0.25,
+            spacing: SBBSpacing.xxSmall,
             children: [
               if (property.sign != null) _icon(context, property.sign!.iconAsset(), Key(property.sign!.name)),
               if (property.text != null)

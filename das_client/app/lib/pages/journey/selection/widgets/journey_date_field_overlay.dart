@@ -33,7 +33,7 @@ class JourneyDateFieldOverlay extends StatelessWidget {
       ],
     ),
     targetAnchor: .bottomLeft,
-    offset: Offset(AnchoredFullPageOverlay.defaultContentWidth * .5 + sbbDefaultSpacing, sbbDefaultSpacing * .5),
+    offset: Offset(AnchoredFullPageOverlay.defaultContentWidth * .5 + SBBSpacing.medium, SBBSpacing.xSmall),
   );
 
   Widget _header(BuildContext context, VoidCallback hideOverlay) {

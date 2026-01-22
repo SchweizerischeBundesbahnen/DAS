@@ -54,7 +54,7 @@ class BaliseRow extends CellRowBuilder<Balise> {
   @override
   DASTableCell iconsCell2(BuildContext context) {
     return DASTableCell(
-      padding: .all(sbbDefaultSpacing * 0.25),
+      padding: .all(SBBSpacing.xxSmall),
       child: SvgPicture.asset(
         AppAssets.iconBalise,
         key: baliseIconKey,

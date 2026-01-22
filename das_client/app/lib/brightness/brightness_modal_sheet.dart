@@ -24,7 +24,7 @@ class BrightnessModalSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const .all(sbbDefaultSpacing),
+      padding: const .all(SBBSpacing.medium),
       child: _body(context),
     );
   }
@@ -37,7 +37,7 @@ class BrightnessModalSheet extends StatelessWidget {
           context.l10n.w_modal_sheet_permission_brightness,
           style: DASTextStyles.mediumRoman,
         ),
-        SizedBox(height: sbbDefaultSpacing * 2),
+        SizedBox(height: SBBSpacing.xLarge),
         SBBPrimaryButton(
           label: context.l10n.w_modal_sheet_button_grant_permission,
           onPressed: () async {

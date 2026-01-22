@@ -37,9 +37,9 @@ class _BreakSeriesSelectionState extends State<BreakSeriesSelection> {
     }
 
     return Padding(
-      padding: const .fromLTRB(sbbDefaultSpacing, 0, sbbDefaultSpacing, 21),
-      child: SBBGroup(
-        padding: const .symmetric(horizontal: sbbDefaultSpacing),
+      padding: const .fromLTRB(SBBSpacing.medium, 0, SBBSpacing.medium, 21),
+      child: SBBContentBox(
+        padding: const .symmetric(horizontal: SBBSpacing.medium),
         child: SizedBox(
           width: double.infinity,
           child: Column(
@@ -67,17 +67,17 @@ class _BreakSeriesSelectionState extends State<BreakSeriesSelection> {
 
     return [
       Padding(
-        padding: const .symmetric(vertical: sbbDefaultSpacing),
+        padding: const .symmetric(vertical: SBBSpacing.medium),
         child: Text(
           trainSeries.name,
           style: DASTextStyles.mediumBold,
         ),
       ),
       Padding(
-        padding: const .only(bottom: sbbDefaultSpacing),
+        padding: const .only(bottom: SBBSpacing.medium),
         child: Wrap(
-          spacing: sbbDefaultSpacing * 0.75,
-          runSpacing: sbbDefaultSpacing,
+          spacing: SBBSpacing.small,
+          runSpacing: SBBSpacing.medium,
           children: List.generate(
             breakSeries.length,
             (index) {

@@ -32,8 +32,8 @@ class MainHeaderBox extends StatelessWidget {
   }
 
   Widget _content() {
-    return SBBGroup(
-      padding: const .all(sbbDefaultSpacing),
+    return SBBContentBox(
+      padding: const .all(SBBSpacing.medium),
       child: Column(
         mainAxisSize: .min,
         crossAxisAlignment: .stretch,
@@ -59,7 +59,7 @@ class MainHeaderBox extends StatelessWidget {
   );
 
   Widget _divider() => const Padding(
-    padding: .symmetric(vertical: sbbDefaultSpacing * 0.5),
+    padding: .symmetric(vertical: SBBSpacing.xSmall),
     child: Divider(height: 1.0, color: SBBColors.cloud),
   );
 
@@ -76,7 +76,7 @@ class MainHeaderBox extends StatelessWidget {
   );
 
   Widget _buttons() => Row(
-    spacing: sbbDefaultSpacing * 0.5,
+    spacing: SBBSpacing.xSmall,
     children: [
       // marked as leaf as default draws a border
       Skeleton.leaf(child: BreakSlipButton()),

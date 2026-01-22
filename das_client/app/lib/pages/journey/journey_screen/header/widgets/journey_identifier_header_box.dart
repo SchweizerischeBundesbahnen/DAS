@@ -47,8 +47,8 @@ class JourneyIdentifierHeaderBox extends StatelessWidget {
       builder: (context, asyncSnapshot) {
         final isModalOpen = asyncSnapshot.requireData;
 
-        return SBBGroup(
-          padding: const .all(sbbDefaultSpacing),
+        return SBBContentBox(
+          padding: const .all(SBBSpacing.medium),
           child: SizedBox(
             width: isModalOpen ? _smallWidth : _width,
             height: _height,
@@ -64,7 +64,7 @@ class JourneyIdentifierHeaderBox extends StatelessWidget {
     crossAxisAlignment: .end,
     children: [
       Expanded(child: JourneyIdentifier()),
-      Divider(height: sbbDefaultSpacing, color: SBBColors.cloud),
+      Divider(height: SBBSpacing.medium, color: SBBColors.cloud),
       Expanded(child: _radioChannel()),
     ],
   );

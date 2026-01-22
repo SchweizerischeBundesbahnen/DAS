@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
-const _inputPadding = EdgeInsets.fromLTRB(sbbDefaultSpacing, 0, 0, sbbDefaultSpacing / 2);
+const _inputPadding = EdgeInsets.fromLTRB(SBBSpacing.medium, 0, 0, SBBSpacing.xSmall);
 
 class SelectRailwayUndertakingInput extends StatelessWidget {
   const SelectRailwayUndertakingInput({super.key, this.isModalVersion = false});
@@ -118,7 +118,7 @@ class _RailwayUndertakingTextFieldState extends State<_RailwayUndertakingTextFie
   );
 
   BoxConstraints get _modalConstraints => BoxConstraints(
-    maxWidth: DeviceScreen.size.width - sbbDefaultSpacing,
+    maxWidth: DeviceScreen.size.width - SBBSpacing.medium,
     maxHeight: _maxModalHeight,
   );
 

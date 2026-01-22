@@ -61,7 +61,7 @@ class CommunicationNetworkChangeRow extends CellRowBuilder<CommunicationNetworkC
                 overflow: .ellipsis,
               ),
             ),
-            const SizedBox(width: sbbDefaultSpacing / 2),
+            const SizedBox(width: SBBSpacing.xSmall),
             CommunicationNetworkIcon(networkType: networkType),
           ],
         ],

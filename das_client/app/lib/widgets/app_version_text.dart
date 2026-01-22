@@ -24,7 +24,7 @@ class AppVersionText extends StatelessWidget {
                 color: color,
               ),
               const SizedBox(
-                width: sbbDefaultSpacing / 2,
+                width: SBBSpacing.xSmall,
               ),
               GestureDetector(
                 behavior: HitTestBehavior.opaque,

@@ -28,7 +28,7 @@ class BreakLoadSlipSpecialRestrictions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SBBGroup(
+    return SBBContentBox(
       color: groupColor,
       child: Column(
         children: [
@@ -46,7 +46,7 @@ class BreakLoadSlipSpecialRestrictions extends StatelessWidget {
       children: [
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.all(sbbDefaultSpacing * 0.5).copyWith(bottom: 0),
+            padding: const EdgeInsets.all(SBBSpacing.xSmall).copyWith(bottom: 0),
             child: _wrappedTitle(context),
           ),
         ),
@@ -72,7 +72,7 @@ class BreakLoadSlipSpecialRestrictions extends StatelessWidget {
         ? Row(
             children: [
               DotIndicator(
-                offset: Offset(0, -sbbDefaultSpacing * 0.75),
+                offset: Offset(0, -SBBSpacing.small),
                 child: titleText,
               ),
             ],
@@ -114,12 +114,12 @@ class BreakLoadSlipSpecialRestrictions extends StatelessWidget {
   Widget _indicator(String asset, Color color, {Key? key}) {
     return Padding(
       key: key,
-      padding: EdgeInsets.only(left: sbbDefaultSpacing * 0.25),
+      padding: EdgeInsets.only(left: SBBSpacing.xxSmall),
       child: Stack(
         clipBehavior: Clip.none,
         children: [
           Positioned(
-            left: -sbbDefaultSpacing + 2,
+            left: -SBBSpacing.medium + 2,
             child: SvgPicture.asset(
               AppAssets.shapeRoundedEdgeLeftSmall,
               colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
@@ -128,7 +128,7 @@ class BreakLoadSlipSpecialRestrictions extends StatelessWidget {
           Container(
             color: color,
             height: 28.0,
-            padding: EdgeInsets.only(right: sbbDefaultSpacing * 0.75),
+            padding: EdgeInsets.only(right: SBBSpacing.small),
             child: SvgPicture.asset(
               asset,
             ),

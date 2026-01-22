@@ -32,11 +32,11 @@ class KeyValueTableDataRow extends StatelessWidget {
       child: Row(
         children: [
           _wrappedLabel(),
-          SizedBox(width: sbbDefaultSpacing * 0.5),
+          SizedBox(width: SBBSpacing.xSmall),
           Container(
             constraints: BoxConstraints(minWidth: 40),
             child: Padding(
-              padding: showChangeIndicator ? const EdgeInsets.only(right: sbbDefaultSpacing * 0.75) : EdgeInsets.zero,
+              padding: showChangeIndicator ? const EdgeInsets.only(right: SBBSpacing.small) : EdgeInsets.zero,
               child: Align(
                 alignment: Alignment.centerRight,
                 child: _valueText(),
@@ -58,7 +58,7 @@ class KeyValueTableDataRow extends StatelessWidget {
 
     return hasChange && showChangeIndicator && value == null
         ? DotIndicator(
-            offset: Offset(0, -sbbDefaultSpacing * 0.75),
+            offset: Offset(0, -SBBSpacing.small),
             child: labelText,
           )
         : Expanded(child: labelText);
@@ -74,7 +74,7 @@ class KeyValueTableDataRow extends StatelessWidget {
 
     return hasChange && showChangeIndicator && value != null
         ? DotIndicator(
-            offset: Offset(0, -sbbDefaultSpacing * 0.75),
+            offset: Offset(0, -SBBSpacing.small),
             child: text,
           )
         : text;

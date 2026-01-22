@@ -19,10 +19,10 @@ class NotificationBox extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         border: Border(
-          left: BorderSide(color: style.backgroundColor, width: sbbDefaultSpacing / 2),
+          left: BorderSide(color: style.backgroundColor, width: SBBSpacing.xSmall),
         ),
         borderRadius: const BorderRadius.all(
-          Radius.circular(sbbDefaultSpacing),
+          Radius.circular(SBBSpacing.medium),
         ),
       ),
       child: Container(
@@ -36,7 +36,7 @@ class NotificationBox extends StatelessWidget {
           ),
           color: style.backgroundColor.withAlpha((255.0 * .05).round()),
         ),
-        padding: const .all(sbbDefaultSpacing / 2),
+        padding: const .all(SBBSpacing.xSmall),
         child: _content(context),
       ),
     );
@@ -52,7 +52,7 @@ class NotificationBox extends StatelessWidget {
               customIcon ?? style.icon,
               color: ThemeUtil.getColor(context, style.iconColor, style.iconColorDark),
             ),
-            const SizedBox(width: sbbDefaultSpacing / 2),
+            const SizedBox(width: SBBSpacing.xSmall),
             Expanded(
               child: Text(
                 title,

@@ -16,7 +16,7 @@ class SelectRailwayUndertakingModal extends StatefulWidget {
   static Key get filterFieldKey => Key('SelectRailwayUndertakingModalFilterField');
 
   static ShapeBorder get shapeBorder =>
-      RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(sbbDefaultSpacing)));
+      RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(SBBSpacing.medium)));
 
   const SelectRailwayUndertakingModal({
     required this.selectedRailwayUndertaking,
@@ -87,7 +87,7 @@ class _SelectRailwayUndertakingModalState extends State<SelectRailwayUndertaking
                   shape: SelectRailwayUndertakingModal.shapeBorder,
                   color: resolvedForegroundColor,
                   child: Padding(
-                    padding: const EdgeInsets.all(sbbDefaultSpacing).copyWith(left: 0),
+                    padding: const EdgeInsets.all(SBBSpacing.medium).copyWith(left: 0),
                     child: Row(
                       children: [
                         Expanded(
@@ -109,7 +109,7 @@ class _SelectRailwayUndertakingModalState extends State<SelectRailwayUndertaking
                 ),
               ),
               SliverPadding(
-                padding: EdgeInsetsGeometry.symmetric(vertical: sbbDefaultSpacing),
+                padding: EdgeInsetsGeometry.symmetric(vertical: SBBSpacing.medium),
                 sliver: SliverList.list(
                   children: localizedFilteredRus
                       .mapIndexed(

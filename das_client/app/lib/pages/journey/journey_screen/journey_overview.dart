@@ -40,7 +40,7 @@ import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class JourneyOverview extends StatelessWidget {
-  static const double horizontalPadding = sbbDefaultSpacing * 0.5;
+  static const double horizontalPadding = SBBSpacing.xSmall;
 
   const JourneyOverview({super.key});
 

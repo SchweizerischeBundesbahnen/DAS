@@ -66,7 +66,7 @@ class DetailTabGraduatedSpeeds extends StatelessWidget {
         final speed = speedInfo[index];
 
         return Padding(
-          padding: const .symmetric(horizontal: sbbDefaultSpacing, vertical: 10),
+          padding: const .symmetric(horizontal: SBBSpacing.medium, vertical: 10),
           child: Column(
             crossAxisAlignment: .start,
             children: [

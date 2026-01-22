@@ -28,7 +28,7 @@ class JourneySearchOverlay extends StatelessWidget {
       triggerBuilder: (_, showOverlay) {
         return InkWell(
           key: journeySearchWidgetKey,
-          borderRadius: BorderRadius.circular(sbbDefaultSpacing * 0.5),
+          borderRadius: BorderRadius.circular(SBBSpacing.xSmall),
           child: child,
           onTap: () {
             viewModel.dismissSelection();
@@ -45,8 +45,8 @@ class JourneySearchOverlay extends StatelessWidget {
                 mainAxisAlignment: .start,
                 children: [
                   _header(context, hideOverlay),
-                  SizedBox(height: sbbDefaultSpacing),
-                  SBBGroup(child: _inputFields()),
+                  SizedBox(height: SBBSpacing.medium),
+                  SBBContentBox(child: _inputFields()),
                   _loadJourneyButton(context, hideOverlay),
                 ],
               );
@@ -102,7 +102,7 @@ class JourneySearchOverlay extends StatelessWidget {
         final model = snapshot.data;
 
         Widget wrapWithPadding(Widget child) => Padding(
-          padding: const .symmetric(vertical: sbbDefaultSpacing, horizontal: sbbDefaultSpacing * 0.5),
+          padding: const .symmetric(vertical: SBBSpacing.medium, horizontal: SBBSpacing.xSmall),
           child: child,
         );
 

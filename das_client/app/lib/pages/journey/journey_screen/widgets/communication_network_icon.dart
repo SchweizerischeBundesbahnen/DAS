@@ -22,7 +22,7 @@ class CommunicationNetworkIcon extends StatelessWidget {
       key: isGsmP ? gsmPKey : gsmRKey,
       decoration: BoxDecoration(
         border: Border.all(color: ThemeUtil.getIconColor(context), width: 1.0),
-        borderRadius: BorderRadius.circular(sbbDefaultSpacing),
+        borderRadius: BorderRadius.circular(SBBSpacing.medium),
       ),
       padding: .symmetric(horizontal: 15.0),
       child: Text(isGsmP ? 'P' : 'R', style: DASTextStyles.largeRoman),

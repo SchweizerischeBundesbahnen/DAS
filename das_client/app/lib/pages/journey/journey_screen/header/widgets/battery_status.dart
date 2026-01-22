@@ -72,7 +72,7 @@ class _BatteryStatusState extends State<BatteryStatus> {
       title: '',
       constraints: BoxConstraints(minWidth: double.infinity),
       child: Padding(
-        padding: const .all(sbbDefaultSpacing),
+        padding: const .all(SBBSpacing.medium),
         child: SBBMessage(
           title: context.l10n.w_modal_sheet_battery_status_battery_almost_empty,
           description: context.l10n.w_modal_sheet_battery_status_plug_in_device,

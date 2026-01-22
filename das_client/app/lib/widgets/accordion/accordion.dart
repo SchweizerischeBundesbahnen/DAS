@@ -22,11 +22,11 @@ class Accordion extends StatelessWidget {
       ScreenDimensions.width - 2 * Accordion._horizontalPadding - 2 * Accordion._contentPadding - (outsidePadding ?? 0);
 
   static const double _contentPadding = 28.0; // 24.0 (icon) + spacing
-  static const double _horizontalPadding = sbbDefaultSpacing * 0.5;
+  static const double _horizontalPadding = SBBSpacing.xSmall;
   static const double _headerFontSize = 24.0; // Large Bold
-  static const double _expandedVerticalPadding = sbbDefaultSpacing;
+  static const double _expandedVerticalPadding = SBBSpacing.medium;
   static const double _collapsedVerticalPadding = 2.0;
-  static const double _headerContentSpacing = sbbDefaultSpacing * 0.5;
+  static const double _headerContentSpacing = SBBSpacing.xSmall;
 
   const Accordion({
     required this.title,
@@ -64,7 +64,7 @@ class Accordion extends StatelessWidget {
         decoration: BoxDecoration(
           color: backgroundColor ?? style.accordionBackgroundColor,
           borderRadius: BorderRadius.all(
-            Radius.circular(isExpanded ? sbbDefaultSpacing : sbbDefaultSpacing * 0.5),
+            Radius.circular(isExpanded ? SBBSpacing.medium : SBBSpacing.xSmall),
           ),
         ),
         padding: .symmetric(
@@ -91,7 +91,7 @@ class Accordion extends StatelessWidget {
 
   Widget _header() {
     return Row(
-      spacing: sbbDefaultSpacing * 0.5,
+      spacing: SBBSpacing.xSmall,
       children: [
         if (icon != null) Icon(icon, size: 20.0),
         Expanded(

@@ -150,7 +150,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     }
     return DASTableCell(
       alignment: .center,
-      padding: .symmetric(vertical: 2.0, horizontal: sbbDefaultSpacing * 0.5),
+      padding: .symmetric(vertical: 2.0, horizontal: SBBSpacing.xSmall),
       child: LineSpeedCellBody(
         order: data.order,
         showSpeedBehavior: showSpeedBehavior,
@@ -168,7 +168,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
 
     return DASTableCell(
       alignment: .center,
-      padding: .symmetric(vertical: 2.0, horizontal: sbbDefaultSpacing * 0.5),
+      padding: .symmetric(vertical: 2.0, horizontal: SBBSpacing.xSmall),
       child: SpeedDisplay(
         speed: trainSeriesSpeed?.speed,
         isNextStop: _isNextStop,

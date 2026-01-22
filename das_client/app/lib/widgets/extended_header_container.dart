@@ -25,7 +25,7 @@ class ExtendedAppBarWrapper extends StatelessWidget {
       top: 0,
       child: Container(
         color: primary,
-        height: sbbDefaultSpacing * 2,
+        height: SBBSpacing.xLarge,
       ),
     );
   }

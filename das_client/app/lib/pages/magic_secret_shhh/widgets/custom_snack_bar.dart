@@ -10,7 +10,7 @@ class CustomSnackBar {
     return SnackBar(
       closeIconColor: SBBColors.white,
       backgroundColor: SBBColors.charcoal,
-      padding: .all(sbbDefaultSpacing * 1.5),
+      padding: .all(SBBSpacing.large),
       content: Center(
         child: Text(
           label,

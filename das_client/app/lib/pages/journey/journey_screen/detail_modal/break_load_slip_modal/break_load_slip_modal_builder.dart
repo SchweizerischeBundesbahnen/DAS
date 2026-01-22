@@ -39,13 +39,13 @@ class BreakLoadSlipModalBuilder extends DASModalSheetBuilder {
             BreakLoadSlipModalOverview(
               formationRunChange: formationRun,
             ),
-            SizedBox(height: sbbDefaultSpacing),
+            SizedBox(height: SBBSpacing.medium),
             BreakLoadSlipSpecialRestrictions(
               formationRunChange: formationRun,
               groupColor: ThemeUtil.getColor(context, SBBColors.milk, SBBColors.midnight),
               showChangeIndicator: false,
             ),
-            SizedBox(height: sbbDefaultSpacing),
+            SizedBox(height: SBBSpacing.medium),
             SBBTertiaryButtonLarge(
               label: context.l10n.w_break_load_slip_modal_open_break_slip,
               icon: SBBIcons.link_external_small,

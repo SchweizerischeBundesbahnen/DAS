@@ -63,7 +63,7 @@ class AdvisedSpeedCellBody extends StatelessWidget {
 
   Widget _backgroundStack(BuildContext context, Widget child) {
     final horizontalBorderWidth =
-        DASTableTheme.of(context)?.data.tableBorder?.horizontalInside.width ?? sbbDefaultSpacing;
+        DASTableTheme.of(context)?.data.tableBorder?.horizontalInside.width ?? SBBSpacing.medium;
     final resolvedBackgroundColor = ThemeUtil.getColor(context, SBBColors.iron, SBBColors.platinum);
 
     return Stack(
