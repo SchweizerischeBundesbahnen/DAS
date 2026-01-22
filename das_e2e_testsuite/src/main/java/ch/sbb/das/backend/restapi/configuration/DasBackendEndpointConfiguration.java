@@ -79,7 +79,7 @@ public class DasBackendEndpointConfiguration {
     }
 
     @Bean
-    public DasBackendEndpoint createEndpointConfiguration() {
+    public DasBackendEndpoint endpoint() {
         final DasBackendEndpoint backendEndpoint = DasBackendEndpoint.builder()
             .endpoint(endpoint)
             .port(port)
@@ -96,7 +96,7 @@ public class DasBackendEndpointConfiguration {
         return backendEndpoint;
     }
 
-    public String getEndpoint() {
+    public String getEndpointAndPort() {
         return endpoint + ":" + port;
     }
 }

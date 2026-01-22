@@ -25,4 +25,15 @@ public final class ApiDocumentation {
         + "according to [RFC-7232](https://www.rfc-editor.org/rfc/rfc7232).";
     public static final String HEADER_CACHE_IF_NONE_MATCH_DESCRIPTION = "An optional ETag"
         + " given in a previous response header _" + HttpHeaders.ETAG + "_ and which can save network traffic.";
+
+    public static final String HEADER_REQUEST_ID_DESCRIPTION = "The given '" + MonitoringConstants.HEADER_REQUEST_ID
+        + "' will support traceability (monitoring by Instana and logging by Splunk). The given value will be returned by the appropriate response as well (see [SBB Instana](https://confluence.sbb.ch/display/MON/Instana+-+HTTP+Header+Whitelist)).";
+
+    public static final String HEADER_CONTENT_LANGUAGE_ERROR_DETAIL_DEFAULT = "en";
+
+    /**
+     * @see <a href="https://tools.ietf.org/html/rfc7807">Obsoletes RFC7807</a>
+     */
+    public static final String RFC9457 = "[RFC-9457](https://tools.ietf.org/html/https://datatracker.ietf.org/doc/html/rfc9457)";
+    public static final String PROBLEM_TYPE = "https://github.com/SchweizerischeBundesbahnen/DAS/tree/main/docs/content/architecture/06_runtime_view/03_problem-manual.md";
 }

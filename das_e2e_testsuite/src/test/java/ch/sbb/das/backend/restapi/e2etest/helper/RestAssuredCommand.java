@@ -6,8 +6,8 @@ package ch.sbb.das.backend.restapi.e2etest.helper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import _todo_.Problem;
 import ch.sbb.backend.restclient.v1.ApiClient;
+import ch.sbb.backend.restclient.v1.model.Problem;
 import ch.sbb.das.backend.restapi.configuration.DasBackendEndpoint;
 import ch.sbb.das.backend.restapi.helper.ObjectMapperFactory;
 import ch.sbb.das.backend.restapi.monitoring.MonitoringConstants;
@@ -244,7 +244,7 @@ public abstract class RestAssuredCommand {
     private void configureEndpoint(@NonNull DasBackendEndpoint configuration) {
         this.configuration = configuration;
         if (StringUtils.isNotBlank(System.getProperty(ENVIRONMENT_URL))) {
-            // called by Jenkinsfile
+            // called by Test-Automation mechanism
             url = System.getProperty(ENVIRONMENT_URL);
             log.info("using environment variable {} = {}", ENVIRONMENT_URL, url);
         } else {
@@ -253,7 +253,7 @@ public abstract class RestAssuredCommand {
     }
 
     /**
-     * @param service for e.g. "/api/sbb/v1/locations"
+     * @param service for e.g. "/v1/settings"
      * @return service-URL
      */
     protected final String getUrl(String service) {
@@ -333,7 +333,7 @@ public abstract class RestAssuredCommand {
     }
 
     /**
-     * Create a B2C header and request with a concrete POST body.
+     * Create a header and request with a concrete POST body.
      *
      * @param url POST URL
      * @param postBody JSON object serialized
@@ -399,7 +399,6 @@ public abstract class RestAssuredCommand {
         }
 
         String responseRequestId = null;
-        /* TODO
         if (!responseEntity.getHeaders().get(MonitoringConstants.HEADER_REQUEST_ID).isEmpty()) {
             responseRequestId = responseEntity.getHeaders().get(MonitoringConstants.HEADER_REQUEST_ID).get(0);
             assertThat(responseEntity.getHeaders().get(MonitoringConstants.HEADER_REQUEST_ID.toLowerCase()).get(0))
@@ -409,7 +408,6 @@ public abstract class RestAssuredCommand {
         if (StringUtils.isNotBlank(requestId)) {
             assertThat(responseEntity.getHeaders().get(MonitoringConstants.HEADER_REQUEST_ID).get(0)).contains(requestId);
         }
-         */
 
         if (responseEntity.getStatusCode().value() == HttpStatus.SC_OK) {
             if (StringUtils.isNotBlank(acceptLanguage)) {
@@ -447,7 +445,7 @@ public abstract class RestAssuredCommand {
         private org.springframework.http.HttpHeaders headerParams = new org.springframework.http.HttpHeaders();
         private String requestId = null;
 
-        private ParameterizedTypeReference<?> localVarReturnType = null;
+        private final ParameterizedTypeReference<?> localVarReturnType = null;
 
         private final String[] localVarAuthNames = new String[]{}; // or something else... for now always overridden
 
@@ -487,11 +485,6 @@ public abstract class RestAssuredCommand {
             return this;
         }
 
-        public RequestSpecBuilder withLocalVarReturnType(ParameterizedTypeReference<?> localVarReturnType) {
-            this.localVarReturnType = localVarReturnType;
-            return this;
-        }
-
         public WebClient.ResponseSpec invoke() {
             if (requestId != null) {
                 headerParams.add(MonitoringConstants.HEADER_REQUEST_ID, apiClient.parameterToString(requestId));
@@ -509,11 +502,6 @@ public abstract class RestAssuredCommand {
         }
 
         public ResponseEntity<?> invokeToEntity() {
-            return invoke().toEntity(localVarReturnType).block();
-        }
-
-        public <T> ResponseEntity<T> invokeToEntity(ParameterizedTypeReference<T> localVarReturnType) {
-            withLocalVarReturnType(localVarReturnType);
             return invoke().toEntity(localVarReturnType).block();
         }
     }

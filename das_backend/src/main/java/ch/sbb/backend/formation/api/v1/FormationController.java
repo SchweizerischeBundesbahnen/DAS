@@ -1,9 +1,14 @@
 package ch.sbb.backend.formation.api.v1;
 
 import ch.sbb.backend.common.ApiDocumentation;
-import ch.sbb.backend.common.ApiErrorResponses;
+import ch.sbb.backend.common.ApiParametersDefault.ParamRequestId;
+import ch.sbb.backend.common.MonitoringConstants;
+import ch.sbb.backend.common.ResponseEntityFactory;
 import ch.sbb.backend.common.SFERA;
 import ch.sbb.backend.common.TelTsi;
+import ch.sbb.backend.common.model.response.ApiErrorResponses;
+import ch.sbb.backend.common.model.response.Problem;
+import ch.sbb.backend.common.model.response.Response;
 import ch.sbb.backend.formation.api.v1.model.Formation;
 import ch.sbb.backend.formation.api.v1.model.FormationResponse;
 import ch.sbb.backend.formation.application.FormationService;
@@ -24,7 +29,9 @@ import java.util.List;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -44,34 +51,43 @@ public class FormationController {
         this.formationService = formationService;
     }
 
-    @Operation(summary = "Get formation by train identification")
+    @Operation(summary = "Get formation by train identification.")
     @ApiResponse(responseCode = "200", description = "Formation found", headers = {
         @Header(name = ApiDocumentation.HEADER_CACHE_CONTROL, description = ApiDocumentation.HEADER_CACHE_CONTROL_RESPONSE_DESCRIPTION,
             schema = @Schema(type = "string")),
         @Header(name = ApiDocumentation.HEADER_CACHE_ETAG, description = ApiDocumentation.HEADER_CACHE_ETAG_RESPONSE_DESCRIPTION,
             schema = @Schema(type = "string", example = ApiDocumentation.SAMPLE_CACHE_ETAG))
-    })
-    @ApiResponse(responseCode = "304", description = ApiDocumentation.STATUS_304, content = @Content)
-    @ApiResponse(responseCode = "404", description = ApiDocumentation.STATUS_404, content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/ErrorResponse")))
+    }, content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = FormationResponse.class)))
+    @ApiResponse(responseCode = "304", description = ApiDocumentation.STATUS_304, content = @Content /* actually empty body/content */)
+    @ApiResponse(responseCode = "404", description = ApiDocumentation.STATUS_404,
+        content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
     @ApiErrorResponses
-    @GetMapping(path = API_FORMATIONS, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = API_FORMATIONS)
     @Parameter(name = HttpHeaders.IF_NONE_MATCH, schema = @Schema(type = "string", example = ApiDocumentation.SAMPLE_CACHE_ETAG), description = ApiDocumentation.HEADER_CACHE_IF_NONE_MATCH_DESCRIPTION, in = ParameterIn.HEADER)
-    ResponseEntity<FormationResponse> getFormation(
+    ResponseEntity<? extends Response> getFormation(
+        @ParamRequestId @RequestHeader(value = MonitoringConstants.HEADER_REQUEST_ID, required = false) String requestId,
+
         @Parameter(description = OPERATIONAL_TRAIN_NUMBER_DESCRIPTION, required = true)
         @SFERA @TelTsi @RequestParam @NotBlank String operationalTrainNumber,
 
-        @Parameter(description = OPERATIONAL_DAY_DESCRIPTION, required = true)
+        @Parameter(description = OPERATIONAL_DAY_DESCRIPTION, required = true, example = "2026-01-22")
         @SFERA(nsp = true) @RequestParam @NotNull LocalDate operationalDay,
 
-        @Parameter(description = COMPANY_DESCRIPTION)
+        @Parameter(description = COMPANY_DESCRIPTION, example = "1033")
         @SFERA @TelTsi @RequestParam @Pattern(regexp = "\\d{4}") String company) {
-        List<TrainFormationRunEntity> entities = formationService.findByTrainIdentifier(operationalTrainNumber, operationalDay, company);
-        if (entities.isEmpty()) {
-            return ResponseEntity.notFound().build();
+
+        final List<TrainFormationRunEntity> entities = formationService.findByTrainIdentifier(operationalTrainNumber, operationalDay, company);
+        if (CollectionUtils.isEmpty(entities)) {
+            //TODO hardoded: replace by RequestContext
+            String instance = API_FORMATIONS + "/" + operationalTrainNumber + "/" + operationalDay + "/" + company;
+            return ResponseEntityFactory.createNotFoundResponse(requestId, instance);
         }
-        Formation formation = Formation.from(entities);
-        return ResponseEntity.ok()
-            .header(HttpHeaders.CACHE_CONTROL, "private")
-            .body(new FormationResponse(List.of(formation)));
+
+        final HttpHeaders headers = ResponseEntityFactory.createOkHeaders(null, requestId);
+        headers.add(HttpHeaders.CACHE_CONTROL, "private");
+        return ResponseEntityFactory.createOkResponse(
+            headers,
+            new FormationResponse(List.of(Formation.from(entities)))
+        );
     }
 }

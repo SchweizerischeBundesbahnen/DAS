@@ -2,6 +2,7 @@ package ch.sbb.das.backend.restapi.e2etest.api;//package ch.sbb.backend;
 
 import ch.sbb.backend.restclient.v1.model.SettingsResponse;
 import ch.sbb.das.backend.restapi.configuration.DasBackendApi;
+import ch.sbb.das.backend.restapi.configuration.DasBackendEndpointConfiguration;
 import ch.sbb.das.backend.restapi.e2etest.configuration.ApiClientTestProfile;
 import ch.sbb.das.backend.restapi.e2etest.helper.RestAssuredCommand;
 import ch.sbb.das.backend.restapi.e2etest.helper.ServiceDoc;
@@ -17,16 +18,19 @@ import reactor.core.publisher.Mono;
 class SettingsApiTest extends RestAssuredCommand {
 
     @Autowired
-    DasBackendApi dasBackendApi;
+    DasBackendApi backendApi;
+
+    @Autowired
+    DasBackendEndpointConfiguration endpointConfiguration;
 
     @Test
     void getConfigurations() {
         try {
-            final Mono<ResponseEntity<SettingsResponse>> responseAsync = dasBackendApi.getSettingsApi().getConfigurationsWithHttpInfo();
-            SettingsResponse settingsResponse = getResponseBodyOrFail(responseAsync, "de", ServiceDoc.REQUEST_ID_VALUE_E2E_TEST, null);
+            final Mono<ResponseEntity<SettingsResponse>> responseAsync = backendApi.getSettingsApi().getConfigurationsWithHttpInfo(ServiceDoc.REQUEST_ID_VALUE_E2E_TEST);
+            SettingsResponse settingsResponse = getResponseBodyOrFail(responseAsync, null /*irrelevant for API*/, ServiceDoc.REQUEST_ID_VALUE_E2E_TEST, null);
             log.debug("{} in {}", settingsResponse, responseAsync);
 
-            AssertionsApiClientModel.assertSettingsResponse(settingsResponse);
+            AssertionsApiClientModel.assertSettingsResponse(settingsResponse, endpointConfiguration.endpoint());
         } catch (WebClientResponseException e) {
             log.error("Exception when calling SettingsApi#getConfigurations", e);
         }

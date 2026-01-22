@@ -53,7 +53,7 @@ public class ApiClientConfiguration {
             objectMapper,
             // UTC OffsetDateTime relevant
             DateFormat.getDateTimeInstance());
-        apiClient.setBasePath(dasBackendEndpointConfiguration.getEndpoint());
+        apiClient.setBasePath(dasBackendEndpointConfiguration.getEndpointAndPort());
         // do not transfer null properties in (POST) requests
         apiClient.getObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_NULL);
         return apiClient;

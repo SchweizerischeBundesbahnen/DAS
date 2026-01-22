@@ -1,6 +1,6 @@
 package ch.sbb.backend.formation.api.v1.model;
 
-import ch.sbb.backend.common.ApiResponse;
+import ch.sbb.backend.common.model.response.ApiResponse;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;

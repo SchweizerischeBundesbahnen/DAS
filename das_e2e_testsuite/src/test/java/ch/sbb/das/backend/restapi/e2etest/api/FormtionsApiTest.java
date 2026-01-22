@@ -27,13 +27,14 @@ class FormtionsApiTest extends RestAssuredCommand {
     @Test
     void getConfigurations_badOperationTrainNumber() {
         try {
-            final Mono<ResponseEntity<FormationResponse>> responseAsync = dasBackendApi.getFormationsApi().getFormationWithHttpInfo("007", LocalDate.now(), "1033", null);
+            final Mono<ResponseEntity<FormationResponse>> responseAsync = dasBackendApi.getFormationsApi()
+                .getFormationWithHttpInfo(ServiceDoc.REQUEST_ID_VALUE_E2E_TEST, "007", LocalDate.now(), "1033", null);
             responseAsync.block();
 
             Assertions.fail("Bad test conditions, should fail");
         } catch (WebClientResponseException ex) {
             AssertionsResponse.assertClientException(ex, getRequestId(), null);
-            Assertions.fail("Block: " + ex.getResponseBodyAsString());
+            log.info("failed with proper response: " + ex.getResponseBodyAsString());
         } catch (WebClientException ex) {
             Assertions.fail("Block: " + ex.getMessage(), ex);
         }
@@ -43,7 +44,8 @@ class FormtionsApiTest extends RestAssuredCommand {
     @Disabled
     void getConfigurations_concreteCargoTrain() {
         try {
-            final Mono<ResponseEntity<FormationResponse>> responseAsync = dasBackendApi.getFormationsApi().getFormationWithHttpInfo("762", LocalDate.now(), "1033", null);
+            final Mono<ResponseEntity<FormationResponse>> responseAsync = dasBackendApi.getFormationsApi()
+                .getFormationWithHttpInfo(ServiceDoc.REQUEST_ID_VALUE_E2E_TEST, "762", LocalDate.now(), "1033", null);
             FormationResponse formationResponse = getResponseBodyOrFail(responseAsync, "de", ServiceDoc.REQUEST_ID_VALUE_E2E_TEST, null);
             log.debug("{} in {}", formationResponse, responseAsync);
 
