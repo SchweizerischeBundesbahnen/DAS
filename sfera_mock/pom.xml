@@ -120,7 +120,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>jaxb2-maven-plugin</artifactId>
-                <version>4.0.0</version>
+                <version>4.1.0</version>
                 <configuration>
                     <sources>
                         <source>${basedir}/src/main/resources/SFERA_v3.00.xsd</source>
