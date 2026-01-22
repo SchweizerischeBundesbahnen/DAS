@@ -1,4 +1,4 @@
-package ch.sbb.backend.common;
+package ch.sbb.backend.common.config;
 
 import ch.sbb.backend.formation.api.v1.FormationController;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;

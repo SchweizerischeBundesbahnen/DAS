@@ -1,4 +1,4 @@
-package ch.sbb.backend.common;
+package ch.sbb.backend.common.standards;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
