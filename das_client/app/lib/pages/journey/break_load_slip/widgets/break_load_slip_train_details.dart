@@ -21,10 +21,10 @@ class BreakLoadSlipTrainDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing),
-      child: SBBGroup(
+      padding: const EdgeInsets.symmetric(horizontal: SBBSpacing.medium),
+      child: SBBContentBox(
         child: Row(
-          spacing: sbbDefaultSpacing,
+          spacing: SBBSpacing.medium,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(flex: 3, child: _trainDataColumn1(context)),
@@ -45,7 +45,7 @@ class BreakLoadSlipTrainDetails extends StatelessWidget {
           context.l10n.p_break_load_slip_train_data_title,
           hasChange: _hasChange(),
         ),
-        SizedBox(height: sbbDefaultSpacing * 0.5),
+        SizedBox(height: SBBSpacing.xSmall),
         KeyValueTableDataRow(
           context.l10n.p_break_load_slip_train_data_train_number,
           formation.operationalTrainNumber,
@@ -84,13 +84,13 @@ class BreakLoadSlipTrainDetails extends StatelessWidget {
 
   Widget _trainDataColumn2(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: sbbDefaultSpacing * 0.5),
+      padding: const EdgeInsets.symmetric(vertical: SBBSpacing.xSmall),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           // Empty row for alignment with other columns
           KeyValueTableDataRow(' ', null, labelStyle: DASTextStyles.smallBold),
-          SizedBox(height: sbbDefaultSpacing * 0.5),
+          SizedBox(height: SBBSpacing.xSmall),
           KeyValueTableDataRow(
             context.l10n.p_break_load_slip_train_data_train_traction,
             formationRunChange.formationRun.additionalTractions.isEmpty
@@ -126,7 +126,7 @@ class BreakLoadSlipTrainDetails extends StatelessWidget {
 
   Widget _trainDataColumn3(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(sbbDefaultSpacing * 0.5).copyWith(right: 0.0),
+      padding: EdgeInsets.all(SBBSpacing.xSmall).copyWith(right: 0.0),
       child: BreakLoadSlipTrainDetailsTable(formationRunChange: formationRunChange),
     );
   }

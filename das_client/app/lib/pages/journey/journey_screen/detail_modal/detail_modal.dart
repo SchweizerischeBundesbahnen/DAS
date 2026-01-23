@@ -15,7 +15,7 @@ class DetailModalSheet extends StatelessWidget {
       builder: (context, snapshot) {
         return DasModalSheet(
           controller: viewModel.controller,
-          leftMargin: sbbDefaultSpacing * 0.5,
+          leftMargin: SBBSpacing.xSmall,
           builder: snapshot.data ?? DASModalSheetBuilder(),
         );
       },

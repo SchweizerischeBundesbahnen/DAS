@@ -1,6 +1,6 @@
 import 'package:app/i18n/i18n.dart';
-import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/reduced_overview_modal_sheet.dart';
+import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:app/widgets/das_text_styles.dart';
@@ -44,7 +44,7 @@ class NextStop extends StatelessWidget {
         final displayedStop = model.nextStop ?? model.previousStop; // if at last stop, show previous one
 
         return Padding(
-          padding: const .only(left: sbbDefaultSpacing * 0.5),
+          padding: const .only(left: SBBSpacing.xSmall),
           child: Text(
             displayedStop?.name ?? context.l10n.c_unknown,
             style: DASTextStyles.xxLargeBold,

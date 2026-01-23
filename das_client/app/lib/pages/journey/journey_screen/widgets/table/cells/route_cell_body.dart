@@ -13,7 +13,7 @@ class RouteCellBody extends StatelessWidget {
   static const Key routeEndKey = Key('endRouteCell');
 
   static const double routeCircleSize = 14.0;
-  static const double routeCirclePosition = ServicePointRow.baseRowHeight - sbbDefaultSpacing - routeCircleSize;
+  static const double routeCirclePosition = ServicePointRow.baseRowHeight - SBBSpacing.medium - routeCircleSize;
 
   const RouteCellBody({
     required this.chevronPosition,
@@ -77,7 +77,7 @@ class RouteCellBody extends StatelessWidget {
 
   Widget _chevron(BuildContext context) {
     final horizontalBorderWidth =
-        DASTableTheme.of(context)?.data.tableBorder?.horizontalInside.width ?? sbbDefaultSpacing;
+        DASTableTheme.of(context)?.data.tableBorder?.horizontalInside.width ?? SBBSpacing.medium;
     return Positioned(
       top: -horizontalBorderWidth,
       bottom: -horizontalBorderWidth,
@@ -94,7 +94,7 @@ class RouteCellBody extends StatelessWidget {
   Widget _routeLine(BuildContext context, double height, double width) {
     final lineColor = ThemeUtil.isDarkMode(context) ? SBBColors.white : SBBColors.black;
     final horizontalBorderWidth =
-        DASTableTheme.of(context)?.data.tableBorder?.horizontalInside.width ?? sbbDefaultSpacing;
+        DASTableTheme.of(context)?.data.tableBorder?.horizontalInside.width ?? SBBSpacing.medium;
     return Positioned(
       key: _routeKey(),
       top: isRouteStart ? routeCirclePosition + routeCircleSize / 2 : 0,

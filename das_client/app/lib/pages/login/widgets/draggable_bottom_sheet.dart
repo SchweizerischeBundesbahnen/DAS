@@ -44,8 +44,8 @@ class _LoginDraggableBottomSheetState extends State<LoginDraggableBottomSheet> {
             PinnedHeaderSliver(child: _header(context)),
             SliverPadding(
               padding: const EdgeInsets.symmetric(
-                vertical: sbbDefaultSpacing * 2,
-                horizontal: sbbDefaultSpacing * .5,
+                vertical: SBBSpacing.xLarge,
+                horizontal: SBBSpacing.xSmall,
               ),
               sliver: SliverToBoxAdapter(child: _body(context)),
             ),
@@ -61,8 +61,8 @@ class _LoginDraggableBottomSheetState extends State<LoginDraggableBottomSheet> {
       decoration: ShapeDecoration(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(sbbDefaultSpacing),
-            topRight: Radius.circular(sbbDefaultSpacing),
+            topLeft: Radius.circular(SBBSpacing.medium),
+            topRight: Radius.circular(SBBSpacing.medium),
           ),
         ),
         shadows: [
@@ -88,7 +88,7 @@ class _LoginDraggableBottomSheetState extends State<LoginDraggableBottomSheet> {
           initialData: vm.modelValue,
           builder: (context, asyncSnapshot) {
             final model = asyncSnapshot.requireData;
-            return SBBGroup(
+            return SBBContentBox(
               child: SBBSwitchListItem(
                 title: context.l10n.p_login_connect_to_tms,
                 value: model.connectToTmsVad,
@@ -98,7 +98,7 @@ class _LoginDraggableBottomSheetState extends State<LoginDraggableBottomSheet> {
             );
           },
         ),
-        SizedBox(height: sbbDefaultSpacing * 2),
+        SizedBox(height: SBBSpacing.xLarge),
         RichText(
           text: TextSpan(
             text: 'App Flavor: ',
@@ -171,7 +171,7 @@ class _LoginDraggableBottomSheetState extends State<LoginDraggableBottomSheet> {
               mainAxisSize: .min,
               children: [
                 Icon(SBBIcons.circle_cross_small, color: SBBColors.red),
-                SizedBox(width: sbbDefaultSpacing * .5),
+                SizedBox(width: SBBSpacing.xSmall),
                 Text(context.l10n.p_login_bottom_sheet_title_failed, style: sbbTextStyle.boldStyle.xLarge),
               ],
             ),

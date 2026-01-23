@@ -81,11 +81,11 @@ class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
         return Stack(
           children: [
             Column(
-              spacing: sbbDefaultSpacing,
+              spacing: SBBSpacing.medium,
               children: [
                 BreakLoadSlipHeader(formationRunChange: formationRunChange),
                 Column(
-                  spacing: sbbDefaultSpacing,
+                  spacing: SBBSpacing.medium,
                   children: [
                     BreakLoadSlipTrainDetails(formation: formation, formationRunChange: formationRunChange),
                     _loadDetailsAndButtons(context, formation, formationRunChange),
@@ -117,7 +117,7 @@ class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
   ) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
-      spacing: sbbDefaultSpacing,
+      spacing: SBBSpacing.medium,
       children: [
         Expanded(
           child: BreakLoadSlipSpecialRestrictions(formationRunChange: formationRun),
@@ -131,10 +131,10 @@ class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
 
   Widget _loadDetailsAndButtons(BuildContext context, Formation formation, FormationRunChange formationRun) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing),
+      padding: const EdgeInsets.symmetric(horizontal: SBBSpacing.medium),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: sbbDefaultSpacing,
+        spacing: SBBSpacing.medium,
         children: [
           Expanded(
             flex: 1,
@@ -146,7 +146,7 @@ class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _specialRestrictionsAndBrakeDetailsRow(context, formation, formationRun),
-                SizedBox(height: sbbDefaultSpacing),
+                SizedBox(height: SBBSpacing.medium),
                 BreakLoadSlipButtons(),
               ],
             ),

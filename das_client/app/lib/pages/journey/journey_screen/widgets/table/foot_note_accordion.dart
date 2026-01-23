@@ -10,7 +10,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
 class FootNoteAccordion extends StatelessWidget {
-  static const double _verticalMargin = sbbDefaultSpacing * 0.5;
+  static const double _verticalMargin = SBBSpacing.xSmall;
 
   const FootNoteAccordion({
     required this.data,

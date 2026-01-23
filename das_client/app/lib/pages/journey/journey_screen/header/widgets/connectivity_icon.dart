@@ -39,7 +39,7 @@ class ConnectivityIcon extends StatelessWidget {
       title: '',
       constraints: BoxConstraints(minWidth: double.infinity),
       child: Padding(
-        padding: const .all(sbbDefaultSpacing),
+        padding: const .all(SBBSpacing.medium),
         child: SBBMessage(
           title: context.l10n.w_modal_sheet_disconnected_wifi_message_title,
           description: context.l10n.w_modal_sheet_disconnected_wifi_message_text,
@@ -55,7 +55,7 @@ class ConnectivityIcon extends StatelessWidget {
       title: '',
       constraints: BoxConstraints(minWidth: double.infinity),
       child: Padding(
-        padding: const .all(sbbDefaultSpacing),
+        padding: const .all(SBBSpacing.medium),
         child: SBBMessage(
           title: context.l10n.w_modal_sheet_disconnected_message_title,
           description: context.l10n.w_modal_sheet_disconnected_message_text,

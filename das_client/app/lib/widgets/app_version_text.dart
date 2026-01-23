@@ -18,11 +18,8 @@ class AppVersionText extends StatelessWidget {
         final info = snapshot.data as PackageInfo;
         return Row(
           children: [
-            Icon(
-              SBBIcons.circle_information_small,
-              color: color,
-            ),
-            const SizedBox(width: sbbDefaultSpacing / 2),
+            Icon(SBBIcons.circle_information_small, color: color),
+            const SizedBox(width: SBBSpacing.xSmall),
             Text(
               info.version,
               style: DASTextStyles.smallLight.copyWith(color: color),

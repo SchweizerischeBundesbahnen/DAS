@@ -38,10 +38,10 @@ class _ReducedOverviewModalSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const .symmetric(horizontal: sbbDefaultSpacing),
+      padding: const .symmetric(horizontal: SBBSpacing.medium),
       child: Column(
         mainAxisSize: .max,
-        spacing: sbbDefaultSpacing * 0.5,
+        spacing: SBBSpacing.xSmall,
         children: [
           _header(context),
           Expanded(child: ReducedJourneyTable()),
@@ -57,8 +57,8 @@ class _ReducedOverviewModalSheet extends StatelessWidget {
         if (!snapshot.hasData) return SizedBox.shrink();
 
         final journey = snapshot.requireData;
-        return SBBGroup(
-          padding: const .symmetric(vertical: 20.0, horizontal: sbbDefaultSpacing),
+        return SBBContentBox(
+          padding: const .symmetric(vertical: 20.0, horizontal: SBBSpacing.medium),
           child: Row(
             mainAxisSize: .max,
             children: [

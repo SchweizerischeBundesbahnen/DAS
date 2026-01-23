@@ -15,7 +15,7 @@ class UncodedOperationalIndicationAccordion extends StatelessWidget {
   static const Key expandedContentKey = Key('operationalIndicationExpandedContent');
   static const Key collapsedContentKey = Key('operationalIndicationCollapsedContent');
 
-  static const double _verticalMargin = sbbDefaultSpacing * 0.5;
+  static const double _verticalMargin = SBBSpacing.xSmall;
   static const TextStyle _textStyle = DASTextStyles.largeRoman;
 
   const UncodedOperationalIndicationAccordion({

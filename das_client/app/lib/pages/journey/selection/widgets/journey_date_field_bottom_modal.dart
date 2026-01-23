@@ -33,7 +33,7 @@ class JourneyDateFieldBottomModal extends StatelessWidget {
         title: context.l10n.p_train_selection_choose_date,
         constraints: BoxConstraints(maxWidth: 350),
         child: Padding(
-          padding: const .symmetric(horizontal: sbbDefaultSpacing),
+          padding: const .symmetric(horizontal: SBBSpacing.medium),
           child: JourneyDatePicker(
             onChanged: (d) {
               onSelect?.call(d);

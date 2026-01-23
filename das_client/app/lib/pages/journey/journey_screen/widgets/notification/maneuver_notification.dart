@@ -33,7 +33,7 @@ class ManeuverNotification extends StatelessWidget {
               children: [
                 _openWaraButton(viewModel),
                 Text(context.l10n.w_maneuver_notification_maneuver, style: DASTextStyles.mediumLight),
-                const SizedBox(width: sbbDefaultSpacing * 0.5),
+                const SizedBox(width: SBBSpacing.xSmall),
                 SBBSwitch(
                   key: maneuverNotificationSwitchKey,
                   value: isManeuverModeEnabled,
@@ -55,7 +55,7 @@ class ManeuverNotification extends StatelessWidget {
         if (!isWaraAppInstalled) return SizedBox.shrink();
 
         return Padding(
-          padding: const .only(right: sbbDefaultSpacing),
+          padding: const .only(right: SBBSpacing.medium),
           child: SBBTertiaryButtonSmall(
             key: openWaraAppButtonKey,
             icon: DasIcons.appIconWarnfunktionRangier,

@@ -44,7 +44,7 @@ class _HeaderState extends State<Header> {
         child: Padding(
           padding: const EdgeInsets.all(JourneyOverview.horizontalPadding).copyWith(top: 0),
           child: Row(
-            spacing: sbbDefaultSpacing * 0.5,
+            spacing: SBBSpacing.xSmall,
             children: [
               JourneyIdentifierHeaderBox(),
               Expanded(child: MainHeaderBox()),

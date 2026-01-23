@@ -24,23 +24,22 @@ class NavigationButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       key: navigationButtonKey,
-      margin: EdgeInsets.only(bottom: sbbDefaultSpacing * 2),
-      padding: EdgeInsets.all(sbbDefaultSpacing / 2),
+      margin: EdgeInsets.only(bottom: SBBSpacing.xLarge),
+      padding: EdgeInsets.all(SBBSpacing.xSmall),
       decoration: _navigationButtonsDecoration(context),
       child: Row(
         mainAxisSize: .min,
+        spacing: SBBSpacing.medium,
         children: [
           SBBIconButtonLarge(
             key: navigationButtonPreviousKey,
             icon: SBBIcons.chevron_left_small,
             onPressed: onPreviousPressed,
           ),
-          SizedBox(width: sbbDefaultSpacing),
           SBBPagination(
             numberPages: numberPages,
             currentPage: currentPage,
           ),
-          SizedBox(width: sbbDefaultSpacing),
           SBBIconButtonLarge(
             key: navigationButtonNextKey,
             icon: SBBIcons.chevron_right_small,
@@ -58,7 +57,7 @@ class NavigationButtons extends StatelessWidget {
       color: isDark ? SBBColors.granite : SBBColors.milk,
       shadows: [
         BoxShadow(
-          blurRadius: sbbDefaultSpacing / 2,
+          blurRadius: SBBSpacing.xSmall,
           color: isDark ? SBBColors.white.withValues(alpha: .4) : SBBColors.black.withValues(alpha: .2),
         ),
       ],

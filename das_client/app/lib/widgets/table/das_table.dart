@@ -223,8 +223,8 @@ class _DASTableState extends State<DASTable> {
       tableBorder: TableBorder(
         horizontalInside: BorderSide(width: 1, color: borderColor),
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(sbbDefaultSpacing),
-          topRight: Radius.circular(sbbDefaultSpacing),
+          topLeft: Radius.circular(SBBSpacing.medium),
+          topRight: Radius.circular(SBBSpacing.medium),
         ),
       ),
     );
@@ -420,7 +420,7 @@ class _CellRowState extends State<_CellRow> {
                 color: cell.color ?? row.color ?? column.color ?? tableThemeData?.dataRowColor,
               ),
               padding: _adjustPaddingToBorder(
-                cell.padding ?? column.padding ?? .all(sbbDefaultSpacing * 0.5),
+                cell.padding ?? column.padding ?? .all(SBBSpacing.xSmall),
                 cellBorder,
               ),
               clipBehavior: cell.clipBehavior,

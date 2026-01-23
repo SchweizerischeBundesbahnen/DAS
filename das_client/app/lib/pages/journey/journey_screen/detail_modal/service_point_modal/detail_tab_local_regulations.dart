@@ -13,9 +13,9 @@ class DetailTabLocalRegulations extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (ThemeUtil.isDarkMode(context)) {
-      return SBBGroup(
+      return SBBContentBox(
         color: SBBColors.white,
-        padding: .all(sbbDefaultSpacing),
+        padding: .all(SBBSpacing.medium),
         child: _htmlView(context),
       );
     }

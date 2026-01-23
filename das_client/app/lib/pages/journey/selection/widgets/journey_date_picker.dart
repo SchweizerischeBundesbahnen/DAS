@@ -20,12 +20,12 @@ class JourneyDatePicker extends StatelessWidget {
   final Function(DateTime) onChanged;
 
   @override
-  Widget build(BuildContext context) => SBBGroup(
+  Widget build(BuildContext context) => SBBContentBox(
     key: datePickerKey,
-    margin: .symmetric(vertical: sbbDefaultSpacing * .5),
-    padding: .symmetric(vertical: sbbDefaultSpacing * .5, horizontal: sbbDefaultSpacing),
+    margin: .symmetric(vertical: SBBSpacing.xSmall),
+    padding: .symmetric(vertical: SBBSpacing.xSmall, horizontal: SBBSpacing.medium),
     child: Column(
-      spacing: sbbDefaultSpacing * .5,
+      spacing: SBBSpacing.xSmall,
       mainAxisSize: .min,
       children: availableStartDates.map((d) => _dateItem(context, d)).toList(),
     ),
@@ -47,7 +47,7 @@ class JourneyDatePicker extends StatelessWidget {
         constraints: BoxConstraints(minWidth: double.infinity),
         padding: .symmetric(vertical: 2.0),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(sbbDefaultSpacing * .5)),
+          borderRadius: BorderRadius.all(Radius.circular(SBBSpacing.xSmall)),
           color: isSelected ? ThemeUtil.getColor(context, SBBColors.cloud, SBBColors.iron) : SBBColors.transparent,
         ),
         child: Center(

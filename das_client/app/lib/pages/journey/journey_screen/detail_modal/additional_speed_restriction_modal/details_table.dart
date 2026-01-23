@@ -16,10 +16,10 @@ class DetailsTable extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       key: detailsTableKey,
-      padding: .symmetric(horizontal: sbbDefaultSpacing),
+      padding: .symmetric(horizontal: SBBSpacing.medium),
       decoration: BoxDecoration(
         color: ThemeUtil.getColor(context, SBBColors.milk, SBBColors.black),
-        borderRadius: BorderRadius.circular(sbbDefaultSpacing * 0.5),
+        borderRadius: BorderRadius.circular(SBBSpacing.xSmall),
       ),
       child: Column(
         mainAxisSize: .min,
@@ -34,7 +34,7 @@ class DetailsTable extends StatelessWidget {
     final borderColor = ThemeUtil.getColor(context, SBBColors.cloud, SBBColors.granite);
     final borderSide = BorderSide(color: borderColor);
     final bottomBorder = isLastItem ? BorderSide.none : borderSide;
-    final cellPadding = sbbDefaultSpacing * 0.5;
+    final cellPadding = SBBSpacing.xSmall;
     return IntrinsicHeight(
       child: Row(
         crossAxisAlignment: .stretch,
@@ -53,7 +53,7 @@ class DetailsTable extends StatelessWidget {
           ),
           Expanded(
             child: Container(
-              padding: .all(sbbDefaultSpacing * 0.5),
+              padding: .all(SBBSpacing.xSmall),
               decoration: BoxDecoration(
                 border: Border(bottom: bottomBorder, left: borderSide),
               ),

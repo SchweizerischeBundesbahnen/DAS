@@ -13,12 +13,12 @@ class BreakLoadSlipModalOverview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SBBGroup(
+    return SBBContentBox(
       color: ThemeUtil.getColor(context, SBBColors.milk, SBBColors.midnight),
       child: KeyValueTable(
         rows: [
           KeyValueTableDataRow.title(context.l10n.w_break_load_slip_modal_overview_title),
-          SizedBox(height: sbbDefaultSpacing * 0.5),
+          SizedBox(height: SBBSpacing.xSmall),
           KeyValueTableDataRow(
             context.l10n.p_break_load_slip_train_data_train_series,
             '${formationRunChange.formationRun.trainCategoryCode ?? ''} ${formationRunChange.formationRun.brakedWeightPercentage ?? ''}%',

@@ -108,7 +108,7 @@ class SpeedDisplay extends StatelessWidget {
           decoration: squaredOrCircled
               ? BoxDecoration(
                   border: Border.all(color: isNextStop ? SBBColors.white : Theme.of(context).colorScheme.onSurface),
-                  borderRadius: speed.isCircled ? BorderRadius.circular(sbbDefaultSpacing) : BorderRadius.zero,
+                  borderRadius: speed.isCircled ? BorderRadius.circular(SBBSpacing.medium) : BorderRadius.zero,
                 )
               : null,
           child: Text(
@@ -123,7 +123,7 @@ class SpeedDisplay extends StatelessWidget {
   Offset _dotIndicatorOffset(Speed resolvedSpeed) => switch (resolvedSpeed) {
     final SummarizedCurvesSpeed _ => const Offset(0, 0),
     final IncomingOutgoingSpeed _ => const Offset(0, 0),
-    final GraduatedSpeed _ || final SingleSpeed _ => const Offset(0, -sbbDefaultSpacing * 0.5),
+    final GraduatedSpeed _ || final SingleSpeed _ => const Offset(0, -SBBSpacing.xSmall),
   };
 
   TextStyle get _textStyle => isNextStop ? textStyle.copyWith(color: SBBColors.white) : textStyle;

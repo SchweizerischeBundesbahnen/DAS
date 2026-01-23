@@ -28,7 +28,7 @@ class ServicePointModalBuilder extends DASModalSheetBuilder {
         return Column(
           children: [
             _segmentedIconButton(context, selectedTab),
-            SizedBox(height: sbbDefaultSpacing),
+            SizedBox(height: SBBSpacing.medium),
             Expanded(child: _tabContent(context, selectedTab)),
           ],
         );

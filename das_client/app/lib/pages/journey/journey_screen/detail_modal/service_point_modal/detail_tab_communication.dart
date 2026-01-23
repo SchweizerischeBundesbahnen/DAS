@@ -100,7 +100,7 @@ class DetailTabCommunication extends StatelessWidget {
 
   Widget _contactItem(Contact contact) {
     return Padding(
-      padding: const .symmetric(horizontal: sbbDefaultSpacing, vertical: 10.0),
+      padding: const .symmetric(horizontal: SBBSpacing.medium, vertical: 10.0),
       child: Column(
         crossAxisAlignment: .start,
         spacing: 4.0,
@@ -126,7 +126,7 @@ class DetailTabCommunication extends StatelessWidget {
           children: [
             Text(context.l10n.w_service_point_modal_communication_network, style: DASTextStyles.smallRoman),
             Padding(
-              padding: const .symmetric(vertical: 10.0, horizontal: sbbDefaultSpacing),
+              padding: const .symmetric(vertical: 10.0, horizontal: SBBSpacing.medium),
               child: CommunicationNetworkIcon(networkType: snapshot.data!),
             ),
           ],
@@ -149,7 +149,7 @@ class DetailTabCommunication extends StatelessWidget {
           children: [
             Text(context.l10n.w_service_point_modal_departure_authorization, style: DASTextStyles.smallRoman),
             Padding(
-              padding: const .symmetric(vertical: 10.0, horizontal: sbbDefaultSpacing),
+              padding: const .symmetric(vertical: 10.0, horizontal: SBBSpacing.medium),
               child: Text.rich(TextUtil.parseHtmlText(departureAuthText, DASTextStyles.mediumRoman)),
             ),
           ],

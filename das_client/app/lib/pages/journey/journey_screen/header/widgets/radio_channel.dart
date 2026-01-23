@@ -32,7 +32,7 @@ class RadioChannel extends StatelessWidget {
               show: model.showDotIndicator,
               offset: Offset(-6.0, -8.0),
               child: Row(
-                spacing: sbbDefaultSpacing * 0.5,
+                spacing: SBBSpacing.xSmall,
                 crossAxisAlignment: .center,
                 mainAxisSize: .min,
                 children: [

@@ -15,7 +15,7 @@ class DepartureAuthorizationDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      spacing: sbbDefaultSpacing * 0.5,
+      spacing: SBBSpacing.xSmall,
       children: [
         Icon(
           key: departureAuthorizationIconKey,

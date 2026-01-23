@@ -18,8 +18,8 @@ class ChronographHeaderBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SBBGroup(
-      padding: const .all(sbbDefaultSpacing),
+    return SBBContentBox(
+      padding: const .all(SBBSpacing.medium),
       child: SizedBox(
         width: _width,
         height: _height,
@@ -33,7 +33,7 @@ class ChronographHeaderBox extends StatelessWidget {
     crossAxisAlignment: .end,
     children: [
       Flexible(child: _currentTime(context)),
-      Divider(height: sbbDefaultSpacing, color: SBBColors.cloud),
+      Divider(height: SBBSpacing.medium, color: SBBColors.cloud),
       Flexible(child: _delay(context)),
     ],
   );
@@ -52,7 +52,7 @@ class ChronographHeaderBox extends StatelessWidget {
           opacity: showPunctuality ? 1.0 : 0.0,
           duration: _animationDuration,
           child: Padding(
-            padding: const .all(sbbDefaultSpacing * 0.5),
+            padding: const .all(SBBSpacing.xSmall),
             child: Text(
               key: showPunctuality ? ChronographHeaderBox.punctualityTextKey : null,
               model?.formattedDelay ?? '',
@@ -84,7 +84,7 @@ class ChronographHeaderBox extends StatelessWidget {
         if (!snapshot.hasData) return SizedBox.expand();
 
         return Padding(
-          padding: const .all(sbbDefaultSpacing * 0.5),
+          padding: const .all(SBBSpacing.xSmall),
           child: Text(snapshot.requireData, key: currentTimeTextKey, style: DASTextStyles.xLargeBold),
         );
       },

@@ -76,10 +76,10 @@ class AdvisedSpeedNotification extends StatelessWidget {
 
     return Container(
       key: advisedSpeedNotificationKey,
-      margin: const EdgeInsets.all(sbbDefaultSpacing * 0.5).copyWith(top: 0),
+      margin: const EdgeInsets.all(SBBSpacing.xSmall).copyWith(top: 0),
       decoration: BoxDecoration(
         color: resolvedBackgroundColor,
-        borderRadius: BorderRadius.circular(sbbDefaultSpacing),
+        borderRadius: BorderRadius.circular(SBBSpacing.medium),
       ),
       constraints: BoxConstraints(minHeight: 54.0),
       padding: .only(left: 22.0),
@@ -89,7 +89,7 @@ class AdvisedSpeedNotification extends StatelessWidget {
           children: [
             if (icon != null) ...[
               icon,
-              const SizedBox(width: sbbDefaultSpacing * 0.5),
+              const SizedBox(width: SBBSpacing.xSmall),
             ],
             Text(
               message,

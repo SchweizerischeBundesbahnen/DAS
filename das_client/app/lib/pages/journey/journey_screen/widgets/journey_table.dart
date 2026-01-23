@@ -480,20 +480,20 @@ class JourneyTable extends StatelessWidget {
       children: [
         Positioned(
           top: -2,
-          left: -sbbDefaultSpacing * 0.5,
+          left: -SBBSpacing.xSmall,
           right: -2,
           bottom: -2,
           child: Container(
             decoration: BoxDecoration(
               border: Border(
-                left: BorderSide(color: SBBColors.peach, width: sbbDefaultSpacing * 0.5),
+                left: BorderSide(color: SBBColors.peach, width: SBBSpacing.xSmall),
                 top: BorderSide(color: SBBColors.peach, width: 2),
                 right: BorderSide(color: SBBColors.peach, width: 2),
                 bottom: BorderSide(color: SBBColors.peach, width: 2),
               ),
               borderRadius: const BorderRadius.horizontal(
-                left: Radius.circular(sbbDefaultSpacing * 0.75),
-                right: Radius.circular(sbbDefaultSpacing * 0.5),
+                left: Radius.circular(SBBSpacing.small),
+                right: Radius.circular(SBBSpacing.xSmall),
               ),
             ),
             child: Row(

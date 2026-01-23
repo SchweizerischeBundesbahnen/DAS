@@ -59,7 +59,7 @@ class LevelCrossingRow extends CellRowBuilder<LevelCrossing> {
 
     if (group != null && group.shouldShowBaliseIconForLevelCrossing(data)) {
       return DASTableCell(
-        padding: .all(sbbDefaultSpacing * 0.25),
+        padding: .all(SBBSpacing.xxSmall),
         child: SvgPicture.asset(
           AppAssets.iconBalise,
           key: baliseIconLevelCrossingKey,

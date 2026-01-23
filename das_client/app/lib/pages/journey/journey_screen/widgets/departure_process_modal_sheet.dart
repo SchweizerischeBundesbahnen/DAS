@@ -19,7 +19,7 @@ class DepartureProcessModalSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const .symmetric(horizontal: sbbDefaultSpacing),
+      padding: const .symmetric(horizontal: SBBSpacing.medium),
       child: Text(
         context.l10n.w_departure_process_modal_sheet_content,
         style: DASTextStyles.mediumRoman,

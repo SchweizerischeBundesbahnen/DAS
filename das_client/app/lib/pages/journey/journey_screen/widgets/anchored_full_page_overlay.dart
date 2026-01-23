@@ -25,7 +25,7 @@ class AnchoredFullPageOverlay extends StatefulWidget {
     this.closeAnimationDuration = DASAnimation.shortDuration,
     this.targetAnchor = .bottomCenter,
     this.followerAnchor = .topCenter,
-    this.offset = const Offset(0, sbbDefaultSpacing / 2),
+    this.offset = const Offset(0, SBBSpacing.xSmall),
     this.isClosableOnBackgroundTap = true,
   });
 
@@ -153,11 +153,11 @@ class _AnchoredFullPageOverlayState extends State<AnchoredFullPageOverlay> with 
               child: Container(
                 decoration: BoxDecoration(
                   color: ThemeUtil.getColor(context, SBBColors.milk, SBBColors.black),
-                  borderRadius: BorderRadius.circular(sbbDefaultSpacing),
+                  borderRadius: BorderRadius.circular(SBBSpacing.medium),
                 ),
                 width: widget.contentWidth,
                 child: Padding(
-                  padding: const .all(sbbDefaultSpacing),
+                  padding: const .all(SBBSpacing.medium),
                   child: widget.contentBuilder(context, _removeOverlay),
                 ),
               ),

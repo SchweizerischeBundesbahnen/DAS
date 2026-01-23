@@ -32,17 +32,17 @@ class DepartureDispatchNotification extends StatelessWidget {
 
     return Container(
       key: departureDispatchNotificationKey,
-      margin: const EdgeInsets.all(sbbDefaultSpacing * 0.5).copyWith(top: 0),
+      margin: const EdgeInsets.all(SBBSpacing.xSmall).copyWith(top: 0),
       decoration: BoxDecoration(
         color: resolvedBackgroundColor,
-        borderRadius: BorderRadius.circular(sbbDefaultSpacing),
+        borderRadius: BorderRadius.circular(SBBSpacing.medium),
       ),
       constraints: BoxConstraints(minHeight: 54.0),
       padding: .only(left: 22.0),
       child: Align(
         alignment: .centerLeft,
         child: Row(
-          spacing: sbbDefaultSpacing * 0.5,
+          spacing: SBBSpacing.xSmall,
           children: [
             Icon(SBBIcons.clock_small, color: resolvedForegroundColor),
             Text(

@@ -24,7 +24,7 @@ class JourneyIdentifier extends StatelessWidget {
         return JourneySearchOverlay(
           child: Padding(
             key: journeyIdentifierKey,
-            padding: const .symmetric(vertical: sbbDefaultSpacing * 0.5, horizontal: 0),
+            padding: const .symmetric(vertical: SBBSpacing.xSmall, horizontal: 0),
             child: Text(
               formattedIdentifier,
               style: _resolvedTextStyle(context),
