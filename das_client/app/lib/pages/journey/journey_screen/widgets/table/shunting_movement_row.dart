@@ -22,7 +22,7 @@ class ShuntingMovementRow extends WidgetRowBuilder<ShuntingMovement> {
       width: double.infinity,
       key: data.isStart ? shuntingMovementStartKey : shuntingMovementEndKey,
       color: ThemeUtil.getColor(context, SBBColors.milk, SBBColors.black),
-      padding: const EdgeInsets.all(SBBSpacing.medium).copyWith(left: 24.0),
+      padding: const EdgeInsets.all(SBBSpacing.medium).copyWith(left: SBBSpacing.large),
       child: Text(_labelText(context), style: DASTextStyles.mediumBold),
     );
   }

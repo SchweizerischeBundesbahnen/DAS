@@ -36,7 +36,7 @@ class LoginButton extends StatelessWidget {
     return OutlinedButton(
       onPressed: onPressed,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+        padding: const EdgeInsets.symmetric(horizontal: SBBSpacing.large),
         child: Text(context.l10n.p_login_login_button_text),
       ),
     );

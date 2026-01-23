@@ -178,7 +178,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
         alignment: .bottomRight,
         padding: .symmetric(vertical: SBBSpacing.xSmall, horizontal: 2),
         child: Padding(
-          padding: config.bracketStationRenderData != null ? const .only(right: 24.0) : .zero,
+          padding: config.bracketStationRenderData != null ? const .only(right: SBBSpacing.large) : .zero,
           child: Wrap(
             spacing: 2,
             children: [
