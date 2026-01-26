@@ -183,5 +183,23 @@ void main() {
       expect(find.text('${l10n.c_error_code}: ${JpUnavailable().code}'), findsOneWidget);
       expect(find.text(l10n.c_error_sfera_jp_unavailable), findsOneWidget);
     });
+
+    testWidgets('test error is displayed if SFERA returns error', (tester) async {
+      await prepareAndStartApp(tester);
+
+      final trainNumberText = findTextFieldByLabel(l10n.p_train_selection_trainnumber_description);
+      expect(trainNumberText, findsOneWidget);
+
+      await enterText(tester, trainNumberText, 'T34');
+
+      final primaryButton = find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first;
+      await tapElement(tester, primaryButton);
+
+      // general error code for sfera protocol errors
+      expect(find.text('${l10n.c_error_code}: ${ProtocolErrors().code}'), findsOneWidget);
+
+      // specific error code expected from SFERA response without additional info
+      expect(find.text('${l10n.c_error_code} 50: ${l10n.c_error_sfera_no_additional_info}'), findsOneWidget);
+    });
   });
 }
