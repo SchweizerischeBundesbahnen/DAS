@@ -52,8 +52,8 @@ values (nextval('train_formation_run_id_seq'),
         120, -- traction_weight_in_t
         484, -- hauled_load_weight_in_t
         604, -- formation_weight_in_t
-        100, -- traction_braked_weight_in_t
-        486, -- hauled_load_braked_weight_in_t
+        150, -- traction_braked_weight_in_t
+        436, -- hauled_load_braked_weight_in_t
         586, -- formation_braked_weight_in_t
         48, -- traction_holding_force_in_hecto_newton
         297, -- hauled_load_holding_force_in_hecto_newton
@@ -138,8 +138,8 @@ values (nextval('train_formation_run_id_seq'),
         120, -- traction_weight_in_t
         506, -- hauled_load_weight_in_t
         626, -- formation_weight_in_t
-        100, -- traction_braked_weight_in_t
-        508, -- hauled_load_braked_weight_in_t
+        150, -- traction_braked_weight_in_t
+        458, -- hauled_load_braked_weight_in_t
         608, -- formation_braked_weight_in_t
         48, -- traction_holding_force_in_hecto_newton
         321, -- hauled_load_holding_force_in_hecto_newton

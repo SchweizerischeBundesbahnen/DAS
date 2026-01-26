@@ -9,7 +9,7 @@
         </OTN_ID>
     </TrainIdentification>
 
-    <SegmentProfileReference SP_ID="1671_1" SP_VersionMajor="3" SP_VersionMinor="6" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="1671_1" SP_VersionMajor="3" SP_VersionMinor="7" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -110,6 +110,13 @@
             <TemporaryConstraintReason text="Schutz Personal" language="DE"/>
             <TemporaryConstraintReason text="Protection du personnel" language="FR"/>
             <TemporaryConstraintReason text="Protezione del personale" language="IT"/>
+        </TemporaryConstraints>
+
+        <!--ADL Graftal-->
+        <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="AdvisedSpeed" startLocation="2170" endLocation="3350">
+                <AdvisedSpeed optimalSpeed="80" reasonCode="followTrain" adviceType="ConstantspeedAdvice">
+                    <ReasonText language="DE" text="ADL"/>
+                </AdvisedSpeed>
         </TemporaryConstraints>
 
         <TrainCharacteristicsRef TC_ID="1671_1" TC_VersionMajor="1" TC_VersionMinor="1" location="0">

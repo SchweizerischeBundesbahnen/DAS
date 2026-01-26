@@ -10,8 +10,8 @@
                 </OTN_ID>
             </TrainIdentification>
             <TrainLocationInformation>
-                <!-- Einfahrsignal D31 -->
-                <PositionSpeed SP_ID="1671_1" location="27830">
+                <!-- Twinn -->
+                <PositionSpeed SP_ID="1671_1" location="9100">
                     <SP_Zone>
                         <IM_ID>1285</IM_ID>
                     </SP_Zone>

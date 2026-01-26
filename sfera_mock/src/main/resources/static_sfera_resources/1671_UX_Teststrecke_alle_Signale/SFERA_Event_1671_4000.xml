@@ -10,6 +10,7 @@
                 </OTN_ID>
             </TrainIdentification>
             <TrainLocationInformation>
+                <!-- Block S24 -->
                 <PositionSpeed SP_ID="1671_1" location="1340">
                     <SP_Zone>
                         <IM_ID>1285</IM_ID>

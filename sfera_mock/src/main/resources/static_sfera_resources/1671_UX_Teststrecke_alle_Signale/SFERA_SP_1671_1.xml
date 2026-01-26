@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="1671_1"
-                SP_VersionMajor="3" SP_VersionMinor="6" SP_Length="36000" SP_Status="Valid">
+                SP_VersionMajor="3" SP_VersionMinor="7" SP_Length="36000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
@@ -252,7 +252,7 @@
                 &lt;curveSpeed &gt;
 					&lt;speeds&gt;
 						&lt;v trainSeries=&quot;R&quot; speed=&quot;80&quot;/&gt;
-                        &lt;v trainSeries=&quot;N&quot; speed=&quot;80&quot;/&gt;
+                        &lt;v trainSeries=&quot;A&quot; speed=&quot;80&quot;/&gt;
 					&lt;/speeds&gt;
                 &lt;/curveSpeed&gt;
             "/>
@@ -273,7 +273,7 @@
                 &lt;curveSpeed &gt;
 					&lt;speeds&gt;
 						&lt;v trainSeries=&quot;R&quot; speed=&quot;80&quot;/&gt;
-                        &lt;v trainSeries=&quot;N&quot; speed=&quot;80&quot;/&gt;
+                        &lt;v trainSeries=&quot;A&quot; speed=&quot;80&quot;/&gt;
 					&lt;/speeds&gt;
                 &lt;/curveSpeed&gt;
             "/>
@@ -294,7 +294,7 @@
                 &lt;curveSpeed &gt;
 					&lt;speeds&gt;
 						&lt;v trainSeries=&quot;R&quot; speed=&quot;85&quot;/&gt;
-                        &lt;v trainSeries=&quot;N&quot; speed=&quot;85&quot;/&gt;
+                        &lt;v trainSeries=&quot;A&quot; speed=&quot;85&quot;/&gt;
 					&lt;/speeds&gt;
                 &lt;/curveSpeed&gt;
             "/>
@@ -315,7 +315,7 @@
                 &lt;curveSpeed &gt;
 					&lt;speeds&gt;
 						&lt;v trainSeries=&quot;R&quot; speed=&quot;80&quot;/&gt;
-                        &lt;v trainSeries=&quot;N&quot; speed=&quot;80&quot;/&gt;
+                        &lt;v trainSeries=&quot;A&quot; speed=&quot;80&quot;/&gt;
 					&lt;/speeds&gt;
                 &lt;/curveSpeed&gt;
             "/>
@@ -333,8 +333,8 @@
             <NetworkSpecificParameter name="xmlNewLineSpeed" value="
 				&lt;lineSpeed&gt;
 					&lt;speeds&gt;
-						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;85&quot;/&gt;
-                        &lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;150&quot; speed=&quot;85&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;85&quot;/&gt;
+                        &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;85&quot;/&gt;
 					&lt;/speeds&gt;
 				&lt;/lineSpeed&gt;
 			"/>
@@ -357,8 +357,8 @@
                 <NSP_GroupName>newLineSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlNewLineSpeed" value="
 					&lt;lineSpeed&gt;
-						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;130&quot;/&gt;
-                        &lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;150&quot; speed=&quot;130&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;130&quot;/&gt;
+                        &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;130&quot;/&gt;
 					&lt;/lineSpeed&gt;
 				"/>
             </TAF_TAP_Location_NSP>
@@ -391,8 +391,8 @@
                 "/>
                 <NetworkSpecificParameter name="xmlStationSpeed" value="
 					&lt;stationSpeed&gt;
-						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;160/140&quot;/&gt;
-						&lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;150&quot; speed=&quot;160/140&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;160/140&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;160/140&quot;/&gt;
 					&lt;/stationSpeed&gt;
 				"/>
             </TAF_TAP_Location_NSP>
@@ -402,8 +402,8 @@
                 <NSP_GroupName>newLineSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlNewLineSpeed" value="
 					&lt;lineSpeed&gt;
-						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;130&quot;/&gt;
-                        &lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;150&quot; speed=&quot;130&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;130&quot;/&gt;
+                        &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;130&quot;/&gt;
 					&lt;/lineSpeed&gt;
 				"/>
             </TAF_TAP_Location_NSP>
@@ -429,8 +429,8 @@
                 <NSP_GroupName>stationSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlStationSpeed" value="
 					&lt;stationSpeed&gt;
-						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;125/100&quot;/&gt;
-                        &lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;150&quot; speed=&quot;125/100&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;125/100&quot;/&gt;
+                        &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;125/100&quot;/&gt;
 					&lt;/stationSpeed&gt;
 				"/>
             </TAF_TAP_Location_NSP>
@@ -440,8 +440,8 @@
                 <NSP_GroupName>newLineSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlNewLineSpeed" value="
 					&lt;lineSpeed&gt;
-						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;100&quot;/&gt;
-                        &lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;150&quot; speed=&quot;100&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;100&quot;/&gt;
+                        &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;100&quot;/&gt;
 					&lt;/lineSpeed&gt;
 				"/>
             </TAF_TAP_Location_NSP>
@@ -469,8 +469,8 @@
                 <NSP_GroupName>newLineSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlNewLineSpeed" value="
 					&lt;lineSpeed&gt;
-						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;100&quot;/&gt;
-                        &lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;150&quot; speed=&quot;100&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;100&quot;/&gt;
+                        &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;100&quot;/&gt;
 					&lt;/lineSpeed&gt;
 				"/>
             </TAF_TAP_Location_NSP>
@@ -503,8 +503,8 @@
                 "/>
                 <NetworkSpecificParameter name="xmlStationSpeed" value="
 					&lt;stationSpeed&gt;
-						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;160/140&quot;/&gt;
-						&lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;150&quot; speed=&quot;160/140&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;160/140&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;160/140&quot;/&gt;
 					&lt;/stationSpeed&gt;
 				"/>
             </TAF_TAP_Location_NSP>
@@ -514,8 +514,8 @@
                 <NSP_GroupName>newLineSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlNewLineSpeed" value="
 					&lt;lineSpeed&gt;
-						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;85&quot;/&gt;
-                        &lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;150&quot; speed=&quot;85&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;85&quot;/&gt;
+                        &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;85&quot;/&gt;
 					&lt;/lineSpeed&gt;
 				"/>
             </TAF_TAP_Location_NSP>
@@ -548,8 +548,8 @@
                 "/>
                 <NetworkSpecificParameter name="xmlStationSpeed" value="
 					&lt;stationSpeed&gt;
-						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;85-75/75-80&quot;/&gt;
-                        &lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;150&quot; speed=&quot;85-75/75-80&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;85-75/75-80&quot;/&gt;
+                        &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;85-75/75-80&quot;/&gt;
 					&lt;/stationSpeed&gt;
 				"/>
             </TAF_TAP_Location_NSP>
@@ -559,7 +559,8 @@
                 <NSP_GroupName>newLineSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlNewLineSpeed" value="
 					&lt;lineSpeed&gt;
-						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;85&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;85&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;85&quot;/&gt;
 					&lt;/lineSpeed&gt;
 				"/>
             </TAF_TAP_Location_NSP>
@@ -587,8 +588,8 @@
                 <NSP_GroupName>newLineSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlNewLineSpeed" value="
 					&lt;lineSpeed&gt;
-						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;85&quot;/&gt;
-                        &lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;150&quot; speed=&quot;85&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;85&quot;/&gt;
+                        &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;85&quot;/&gt;
 					&lt;/lineSpeed&gt;
 				"/>
             </TAF_TAP_Location_NSP>
@@ -615,8 +616,8 @@
                 <NSP_GroupName>newLineSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlNewLineSpeed" value="
 					&lt;lineSpeed&gt;
-						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;95&quot;/&gt;
-                        &lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;150&quot; speed=&quot;95&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;95&quot;/&gt;
+                        &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;95&quot;/&gt;
 					&lt;/lineSpeed&gt;
 				"/>
             </TAF_TAP_Location_NSP>
@@ -649,8 +650,8 @@
                 "/>
                 <NetworkSpecificParameter name="xmlStationSpeed" value="
 					&lt;stationSpeed&gt;
-						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;95/85&quot;/&gt;
-                        &lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;150&quot; speed=&quot;95/85&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;95/85&quot;/&gt;
+                        &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;95/85&quot;/&gt;
 					&lt;/stationSpeed&gt;
 				"/>
             </TAF_TAP_Location_NSP>
@@ -660,8 +661,8 @@
                 <NSP_GroupName>newLineSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlNewLineSpeed" value="
 					&lt;lineSpeed&gt;
-						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;100&quot;/&gt;
-                        &lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;150&quot; speed=&quot;100&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;100&quot;/&gt;
+                        &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;100&quot;/&gt;
 					&lt;/lineSpeed&gt;
 				"/>
             </TAF_TAP_Location_NSP>
@@ -688,8 +689,8 @@
                 <NSP_GroupName>newLineSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlNewLineSpeed" value="
 					&lt;lineSpeed&gt;
-						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;100&quot;/&gt;
-                        &lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;150&quot; speed=&quot;100&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;100&quot;/&gt;
+                        &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;100&quot;/&gt;
 					&lt;/lineSpeed&gt;
 				"/>
             </TAF_TAP_Location_NSP>
@@ -716,8 +717,8 @@
                 <NSP_GroupName>stationSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlStationSpeed" value="
 					&lt;stationSpeed&gt;
-						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;100/80&quot;/&gt;
-                        &lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;150&quot; speed=&quot;100/80&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;100/80&quot;/&gt;
+                        &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;100/80&quot;/&gt;
 					&lt;/stationSpeed&gt;
 				"/>
             </TAF_TAP_Location_NSP>
@@ -727,8 +728,8 @@
                 <NSP_GroupName>newLineSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlNewLineSpeed" value="
 					&lt;lineSpeed&gt;
-						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;90&quot;/&gt;
-                        &lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;150&quot; speed=&quot;90&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;90&quot;/&gt;
+                        &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;90&quot;/&gt;
 					&lt;/lineSpeed&gt;
 				"/>
             </TAF_TAP_Location_NSP>
