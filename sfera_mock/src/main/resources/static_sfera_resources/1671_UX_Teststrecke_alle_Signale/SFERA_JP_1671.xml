@@ -119,7 +119,7 @@
                 </AdvisedSpeed>
         </TemporaryConstraints>
 
-        <TrainCharacteristicsRef TC_ID="1671_1" TC_VersionMajor="1" TC_VersionMinor="1" location="0">
+        <TrainCharacteristicsRef TC_ID="1671_1" TC_VersionMajor="1" TC_VersionMinor="2" location="0">
             <TC_RU_ID>1285</TC_RU_ID>
         </TrainCharacteristicsRef>
 
