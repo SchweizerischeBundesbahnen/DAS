@@ -2,18 +2,24 @@ package ch.sbb.backend.common;
 
 import ch.sbb.backend.common.model.response.Problem;
 import java.io.IOException;
+import java.util.Map;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.connector.ClientAbortException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.hibernate.exception.SQLGrammarException;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.dao.InvalidDataAccessResourceUsageException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
@@ -21,6 +27,31 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class TopLevelHandler extends ResponseEntityExceptionHandler {
 
     private static final String UNEXPECTED_ERROR = "Unexpected error";
+
+    /**
+     * Handles the exception thrown by Spring.
+     */
+    @Override
+    protected ResponseEntity<Object> handleExceptionInternal(@NotNull Exception ex, Object body, @NotNull HttpHeaders headers,
+        @NotNull HttpStatusCode statusCode, @NotNull WebRequest request) {
+
+        ResponseEntity<Object> response = super.handleExceptionInternal(ex, body, headers, statusCode, request);
+        if (response != null && response.getBody() instanceof ProblemDetail responseProblem) {
+            Map<String, Object> customProperties = responseProblem.getProperties();
+            if (customProperties != null && !customProperties.isEmpty()) {
+                log.warn("custom properties of Spring's ProblemDetail will not be converted: {}", customProperties);
+            }
+
+            HttpStatus status = HttpStatus.resolve(statusCode.value());
+            if (status == null) {
+                log.warn("Developer fault - HttpStatus unknown: {}", statusCode.value());
+                status = HttpStatus.INTERNAL_SERVER_ERROR;
+            }
+            ResponseEntity<Problem> responseEntity = createProblemResponse(status, responseProblem.getTitle(), responseProblem.getDetail(), ex);
+            return new ResponseEntity<>(responseEntity.getBody(), responseEntity.getStatusCode());
+        }
+        return response;
+    }
 
     // 400 Bad Request
     @ExceptionHandler(value = {IllegalArgumentException.class})
