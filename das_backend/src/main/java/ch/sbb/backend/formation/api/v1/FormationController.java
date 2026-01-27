@@ -64,7 +64,7 @@ public class FormationController {
     @ApiErrorResponses
     @GetMapping(path = API_FORMATIONS)
     @Parameter(name = HttpHeaders.IF_NONE_MATCH, schema = @Schema(type = "string", example = ApiDocumentation.SAMPLE_CACHE_ETAG), description = ApiDocumentation.HEADER_CACHE_IF_NONE_MATCH_DESCRIPTION, in = ParameterIn.HEADER)
-    ResponseEntity<? extends Response> getFormation(
+    ResponseEntity<? extends Response> getFormations(
         @ParamRequestId @RequestHeader(value = MonitoringConstants.HEADER_REQUEST_ID, required = false) String requestId,
 
         @Parameter(description = OPERATIONAL_TRAIN_NUMBER_DESCRIPTION, required = true)

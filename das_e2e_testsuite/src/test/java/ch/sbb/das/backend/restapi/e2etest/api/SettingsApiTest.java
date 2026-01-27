@@ -17,6 +17,8 @@ import reactor.core.publisher.Mono;
 @Slf4j
 class SettingsApiTest extends RestAssuredCommand {
 
+    final static String ENDPOINT = "/v1/settings";
+
     @Autowired
     DasBackendApi backendApi;
 
@@ -24,9 +26,9 @@ class SettingsApiTest extends RestAssuredCommand {
     DasBackendEndpointConfiguration endpointConfiguration;
 
     @Test
-    void getConfigurations() {
+    void getSettings() {
         try {
-            final Mono<ResponseEntity<SettingsResponse>> responseAsync = backendApi.getSettingsApi().getConfigurationsWithHttpInfo(ServiceDoc.REQUEST_ID_VALUE_E2E_TEST);
+            final Mono<ResponseEntity<SettingsResponse>> responseAsync = backendApi.getSettingsApi().getSettingsWithHttpInfo(ServiceDoc.REQUEST_ID_VALUE_E2E_TEST);
             SettingsResponse settingsResponse = getResponseBodyOrFail(responseAsync, null /*irrelevant for API*/, ServiceDoc.REQUEST_ID_VALUE_E2E_TEST, null);
             log.debug("{} in {}", settingsResponse, responseAsync);
 

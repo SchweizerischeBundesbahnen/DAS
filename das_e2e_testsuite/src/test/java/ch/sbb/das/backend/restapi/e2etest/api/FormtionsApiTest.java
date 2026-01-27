@@ -25,10 +25,10 @@ class FormtionsApiTest extends RestAssuredCommand {
     DasBackendApi dasBackendApi;
 
     @Test
-    void getConfigurations_badOperationTrainNumber() {
+    void getFormations_badOperationTrainNumber() {
         try {
             final Mono<ResponseEntity<FormationResponse>> responseAsync = dasBackendApi.getFormationsApi()
-                .getFormationWithHttpInfo(ServiceDoc.REQUEST_ID_VALUE_E2E_TEST, "007", LocalDate.now(), "1033", null);
+                .getFormationsWithHttpInfo(ServiceDoc.REQUEST_ID_VALUE_E2E_TEST, "007", LocalDate.now(), "1033", null);
             responseAsync.block();
 
             Assertions.fail("Bad test conditions, should fail");
@@ -42,10 +42,10 @@ class FormtionsApiTest extends RestAssuredCommand {
 
     //TODO find regular Cargo Train
     @Disabled
-    void getConfigurations_concreteCargoTrain() {
+    void getFormations_concreteCargoTrain() {
         try {
             final Mono<ResponseEntity<FormationResponse>> responseAsync = dasBackendApi.getFormationsApi()
-                .getFormationWithHttpInfo(ServiceDoc.REQUEST_ID_VALUE_E2E_TEST, "762", LocalDate.now(), "1033", null);
+                .getFormationsWithHttpInfo(ServiceDoc.REQUEST_ID_VALUE_E2E_TEST, "762", LocalDate.now(), "1033", null);
             FormationResponse formationResponse = getResponseBodyOrFail(responseAsync, "de", ServiceDoc.REQUEST_ID_VALUE_E2E_TEST, null);
             log.debug("{} in {}", formationResponse, responseAsync);
 

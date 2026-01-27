@@ -43,10 +43,10 @@ public class SettingsController {
 
     @GetMapping(API_SETTINGS)
     @Operation(summary = "Fetch all configuration settings.")
-    @ApiResponse(responseCode = "200", description = "Settings retrieved",
+    @ApiResponse(responseCode = "200", description = "Settings relevant for DAS-Client.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = SettingsResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getConfigurations(
+    public ResponseEntity<? extends Response> getSettings(
         @ParamRequestId @RequestHeader(value = MonitoringConstants.HEADER_REQUEST_ID, required = false) String requestId
     ) {
         List<RuFeature> allFeatures = ruFeatureService.getAll().stream()
