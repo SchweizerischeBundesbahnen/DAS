@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SFERA_B2G_RequestMessage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SFERA_v3.00.xsd">
-    <MessageHeader SFERA_version="1.91" message_ID="f4601b45-da9a-4333-96ef-61031097cd90" timestamp="2022-04-01T20:13:12Z" sourceDevice="DAS"
+    <MessageHeader SFERA_version="3.00" message_ID="f4601b45-da9a-4333-96ef-61031097cd90" timestamp="2022-04-01T20:13:12Z" sourceDevice="DAS"
                    destinationDevice="TMS">
         <Sender>1084</Sender>
         <Recipient>0084</Recipient>

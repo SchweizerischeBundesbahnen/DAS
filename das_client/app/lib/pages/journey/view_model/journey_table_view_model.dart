@@ -96,7 +96,7 @@ class JourneyTableViewModel {
         case .disconnected:
           WakelockPlus.disable();
           if (_sferaRemoteRepo.lastError != null) {
-            _rxErrorCode.add(.fromSfera(_sferaRemoteRepo.lastError!));
+            _rxErrorCode.add(.fromSfera(error: _sferaRemoteRepo.lastError!));
           }
           break;
       }

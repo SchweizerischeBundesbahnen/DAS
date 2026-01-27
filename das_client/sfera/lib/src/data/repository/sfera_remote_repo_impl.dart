@@ -118,7 +118,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
       await _initiateHandshake(otnId);
     } else {
       _otnId = null;
-      lastError = .connectionFailed;
+      lastError = .connectionFailed();
       _rxState.add(.disconnected);
     }
   }
@@ -359,7 +359,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
         onSuccess?.call();
       } else {
         _log.warning('Failed to update journey as it is not valid');
-        lastError = .invalid;
+        lastError = .invalid();
         onInvalid?.call();
       }
     }
@@ -407,10 +407,10 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
     }
   }
 
-  void _onTaskFailed(SferaTask task, SferaError errorCode) {
-    _log.severe('Task $task failed with error code $errorCode');
+  void _onTaskFailed(SferaTask task, SferaError error) {
+    _log.severe('Task $task failed with error $error');
     _tasks.remove(task);
-    lastError = errorCode;
+    lastError = error;
     if (_rxState.value != .connected) {
       disconnect();
     }

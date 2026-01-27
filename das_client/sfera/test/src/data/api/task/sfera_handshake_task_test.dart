@@ -28,7 +28,7 @@ void main() {
     otnId = OtnId(company: '1085', operationalTrainNumber: '719', startDate: DateTime.now());
   });
 
-  test('Test handshake successful', () async {
+  test('execute_whenHandshakeSuccessful_thenReturnsTrue', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final handshakeTask = HandshakeTask(
@@ -43,9 +43,7 @@ void main() {
         expect(task, handshakeTask);
         expect(data, isNull);
       },
-      (task, errorCode) {
-        fail('Task failed with error code $errorCode');
-      },
+      (task, error) => fail('Task failed with error $error'),
     );
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
@@ -57,7 +55,7 @@ void main() {
     expect(result, true);
   });
 
-  test('Test handshake reject', () async {
+  test('execute_whenHandshakeRejected_thenReturnsTrueWithHandshakeRejectedError', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final handshakeTask = HandshakeTask(
@@ -68,12 +66,8 @@ void main() {
     );
 
     await handshakeTask.execute(
-      (task, data) {
-        fail('Task should not be sucessful');
-      },
-      (task, errorCode) {
-        expect(errorCode, SferaError.handshakeRejected);
-      },
+      (task, data) => fail('Task should not be sucessful'),
+      (task, error) => expect(error, isA<HandshakeRejected>()),
     );
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
@@ -85,7 +79,7 @@ void main() {
     expect(result, true);
   });
 
-  test('Test handshake ignore other messages', () async {
+  test('execute_whenCalledWithOtherMessage_thenIsIgnored', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final handshakeTask = HandshakeTask(
@@ -96,12 +90,8 @@ void main() {
     );
 
     await handshakeTask.execute(
-      (task, data) {
-        fail('Test should not call success');
-      },
-      (task, errorCode) {
-        fail('Test should not call error');
-      },
+      (task, data) => fail('Test should not call success'),
+      (task, error) => fail('Test should not call error'),
     );
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
@@ -113,7 +103,7 @@ void main() {
     expect(result, false);
   });
 
-  test('Test handshake timeout', () async {
+  test('execute_whenHandshakeIsTimedOut_thenFailsWithRequestTimeout', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final handshakeTask = HandshakeTask(
@@ -126,11 +116,9 @@ void main() {
 
     var timeoutReached = false;
     await handshakeTask.execute(
-      (task, data) {
-        fail('Test should not call success');
-      },
-      (task, errorCode) {
-        expect(errorCode, SferaError.requestTimeout);
+      (task, data) => fail('Test should not call success'),
+      (task, error) {
+        expect(error, isA<RequestTimeout>());
         timeoutReached = true;
       },
     );
@@ -139,5 +127,42 @@ void main() {
 
     await Future.delayed(const Duration(milliseconds: 1200));
     expect(timeoutReached, true);
+  });
+
+  test('execute_whenHandshakeFailsWithError_thenFailsWithProtocolError', () async {
+    when(mqttService.publishMessage(any, any, any)).thenReturn(true);
+
+    final handshakeTask = HandshakeTask(
+      sferaService: sferaRemoteRepo,
+      mqttService: mqttService,
+      otnId: otnId,
+      dasDrivingMode: .readOnly,
+      timeout: const Duration(seconds: 1),
+    );
+
+    await handshakeTask.execute(
+      (task, data) => fail('Test should not call success'),
+      (task, error) {
+        expect(error, isA<ProtocolErrors>());
+        final protocolError = error as ProtocolErrors;
+        expect(protocolError.errors, hasLength(1));
+        expect(protocolError.errors.first.code, '26');
+        expect(
+          protocolError.errors.first.additionalInfo?.de,
+          'Die Nachricht verwendet eine bereits verwendete message_ID.',
+        );
+        expect(
+          protocolError.errors.first.additionalInfo?.fr,
+          'Le message utilise un identifiant message_ID déjà utilisé.',
+        );
+        expect(protocolError.errors.first.additionalInfo?.it, 'Il messaggio utilizza un message_ID già utilizzato.');
+      },
+    );
+
+    final file = File('test_resources/SFERA_G2B_ReplyMessage_Error.xml');
+    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
+
+    final result = await handshakeTask.handleMessage(sferaG2bReplyMessage);
+    expect(result, false);
   });
 }
