@@ -53,9 +53,8 @@ class FormationDatabaseServiceImpl extends _$FormationDatabaseServiceImpl implem
   }
 
   @override
-  Future<void> saveFormation(FormationDto formation, {String? etag}) async {
-    await formationTable.insertOnConflictUpdate(formation.toCompanion(etag));
-  }
+  Future<void> saveFormation(FormationDto formation, {String? etag}) async =>
+      formationTable.insertOnConflictUpdate(formation.toCompanion(etag));
 
   @override
   Future<String?> findFormationEtag(String operationalTrainNumber, String company, DateTime operationalDay) {

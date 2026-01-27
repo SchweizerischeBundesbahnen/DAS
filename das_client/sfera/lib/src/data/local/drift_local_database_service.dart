@@ -87,7 +87,7 @@ class DriftLocalDatabaseService extends _$DriftLocalDatabaseService implements S
     _log.fine(
       'Writing journey profile to db company=${journeyProfileCompanion.company} operationalTrainNumber=${journeyProfileCompanion.operationalTrainNumber} startDate=${journeyProfileCompanion.startDate}',
     );
-    journeyProfileTable.insertOnConflictUpdate(journeyProfileCompanion);
+    await journeyProfileTable.insertOnConflictUpdate(journeyProfileCompanion);
   }
 
   @override
@@ -101,7 +101,7 @@ class DriftLocalDatabaseService extends _$DriftLocalDatabaseService implements S
       _log.fine(
         'Writing segment profile to db spId=${segmentProfile.id} majorVersion=${segmentProfile.versionMajor} minorVersion=${segmentProfile.versionMinor}',
       );
-      segmentProfileTable.insertOnConflictUpdate(segmentProfile.toCompanion());
+      await segmentProfileTable.insertOnConflictUpdate(segmentProfile.toCompanion());
     } else {
       _log.fine(
         'Segment profile already exists in db spId=${segmentProfile.id} majorVersion=${segmentProfile.versionMajor} minorVersion=${segmentProfile.versionMinor}',
@@ -121,7 +121,7 @@ class DriftLocalDatabaseService extends _$DriftLocalDatabaseService implements S
       _log.fine(
         'Writing train characteristics to db tcId=${trainCharacteristics.tcId} majorVersion=${trainCharacteristics.versionMajor} minorVersion=${trainCharacteristics.versionMinor}',
       );
-      trainCharacteristicsTable.insertOnConflictUpdate(trainCharacteristics.toCompanion());
+      await trainCharacteristicsTable.insertOnConflictUpdate(trainCharacteristics.toCompanion());
     } else {
       _log.fine(
         'train characteristics already exists in db tcId=${existingTrainCharacteristics.tcId} majorVersion=${existingTrainCharacteristics.majorVersion} minorVersion=${existingTrainCharacteristics.minorVersion}',
