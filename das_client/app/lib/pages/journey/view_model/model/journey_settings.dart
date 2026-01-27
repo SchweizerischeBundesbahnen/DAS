@@ -13,7 +13,6 @@ class JourneySettings {
   JourneySettings copyWith({
     BreakSeries? selectedBreakSeries,
     List<int>? expandedGroups,
-    bool? isAutoAdvancementEnabled,
   }) {
     return JourneySettings(
       selectedBreakSeries: selectedBreakSeries ?? this.selectedBreakSeries,

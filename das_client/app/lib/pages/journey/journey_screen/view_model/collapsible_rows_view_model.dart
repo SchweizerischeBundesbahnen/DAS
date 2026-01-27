@@ -96,9 +96,7 @@ class CollapsibleRowsViewModel extends JourneyAwareViewModel {
   }
 
   @override
-  void journeyIdentificationChanged(Journey? journey) {
-    _rxCollapsedRows.add({});
-  }
+  void journeyIdentificationChanged(_) => _rxCollapsedRows.add({});
 }
 
 extension BaseDataExtension on BaseData {

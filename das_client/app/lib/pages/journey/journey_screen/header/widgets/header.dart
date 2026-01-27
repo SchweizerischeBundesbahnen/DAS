@@ -66,11 +66,11 @@ class _HeaderState extends State<Header> {
     await _brightnessManager.setBrightness(newBrightness);
   }
 
-  void _onHorizontalDragStart(DragStartDetails details) async {
+  void _onHorizontalDragStart(DragStartDetails _) async {
     _dragBrightness = await _brightnessManager.getCurrentBrightness();
   }
 
-  void _onHorizontalDragEnd(DragEndDetails details) {
+  void _onHorizontalDragEnd(DragEndDetails _) {
     _dragBrightness = null;
   }
 

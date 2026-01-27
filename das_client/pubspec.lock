@@ -5,18 +5,18 @@ packages:
     dependency: transitive
     description:
       name: _fe_analyzer_shared
-      sha256: "5b7468c326d2f8a4f630056404ca0d291ade42918f4a3c6233618e724f39da8e"
+      sha256: c209688d9f5a5f26b2fb47a188131a6fb9e876ae9e47af3737c0b4f58a93470d
       url: "https://pub.dev"
     source: hosted
-    version: "92.0.0"
+    version: "91.0.0"
   analyzer:
     dependency: transitive
     description:
       name: analyzer
-      sha256: "70e4b1ef8003c64793a9e268a551a82869a8a96f39deb73dea28084b0e8bf75e"
+      sha256: f51c8499b35f9b26820cfe914828a6a98a94efd5cc78b37bb7d03debae3a1d08
       url: "https://pub.dev"
     source: hosted
-    version: "9.0.0"
+    version: "8.4.1"
   android_id:
     dependency: transitive
     description:
@@ -480,6 +480,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_prunekit:
+    dependency: transitive
+    description:
+      name: flutter_prunekit
+      sha256: "9c4d8d4e59d7635405a6a50cb6eddd03c51f41b3e576326ff147710838eb0bda"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.4.0"
   flutter_secure_storage:
     dependency: transitive
     description:
@@ -752,10 +760,10 @@ packages:
     dependency: transitive
     description:
       name: json_serializable
-      sha256: "5b89c1e32ae3840bb20a1b3434e3a590173ad3cb605896fb0f60487ce2f8104e"
+      sha256: c5b2ee75210a0f263c6c7b9eeea80553dbae96ea1bf57f02484e806a3ffdffa3
       url: "https://pub.dev"
     source: hosted
-    version: "6.11.4"
+    version: "6.11.2"
   leak_tracker:
     dependency: transitive
     description:
@@ -1261,10 +1269,10 @@ packages:
     dependency: transitive
     description:
       name: source_helper
-      sha256: "4a85e90b50694e652075cbe4575665539d253e6ec10e46e76b45368ab5e3caae"
+      sha256: "6a3c6cc82073a8797f8c4dc4572146114a39652851c157db37e964d9c7038723"
       url: "https://pub.dev"
     source: hosted
-    version: "1.3.10"
+    version: "1.3.8"
   source_span:
     dependency: transitive
     description:

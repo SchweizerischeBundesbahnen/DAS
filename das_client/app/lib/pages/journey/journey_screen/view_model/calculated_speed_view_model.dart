@@ -57,7 +57,7 @@ class CalculatedSpeedViewModel extends JourneyAwareViewModel {
   }
 
   @override
-  void journeyIdentificationChanged(Journey? journey) {}
+  void journeyIdentificationChanged(_) {}
 }
 
 extension _SingleSpeedExtension on SingleSpeed {

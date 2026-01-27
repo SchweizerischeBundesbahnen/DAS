@@ -79,8 +79,6 @@ class ReplacementSeriesViewModel extends JourneyAwareViewModel {
 
   void _calculateActiveSegmentAndUpdateState() {
     final position = _journeyPositionViewModel.modelValue;
-
-    final currentBreakSeries = _journeySettingsViewModel.modelValue.resolvedBreakSeries(_latestJourney?.metadata);
     final currentModelValue = modelValue;
 
     final segmentWithoutReplacement = _illegalSpeedSegments.firstWhereOrNull((it) => it.replacement == null);
@@ -98,7 +96,7 @@ class ReplacementSeriesViewModel extends JourneyAwareViewModel {
     if (position.currentPosition == null) return;
 
     final currentPosition = position.currentPosition!;
-    final activeSegment = _activeIllegalSpeedSegment(currentBreakSeries, currentPosition);
+    final activeSegment = _activeIllegalSpeedSegment(currentPosition);
 
     if (activeSegment != null && activeSegment.replacement != null) {
       // Show notification for replacement series
@@ -125,7 +123,7 @@ class ReplacementSeriesViewModel extends JourneyAwareViewModel {
     }
   }
 
-  IllegalSpeedSegment? _activeIllegalSpeedSegment(BreakSeries? currentBreakSeries, JourneyPoint currentPosition) =>
+  IllegalSpeedSegment? _activeIllegalSpeedSegment(JourneyPoint currentPosition) =>
       _illegalSpeedSegments.firstWhereOrNull(
         (it) => it.start.order <= currentPosition.order && it.end.order > currentPosition.order,
       );

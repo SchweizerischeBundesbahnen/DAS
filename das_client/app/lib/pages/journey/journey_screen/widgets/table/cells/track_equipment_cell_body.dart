@@ -73,10 +73,7 @@ class TrackEquipmentCellBody extends StatelessWidget {
       top: 0.0,
       left: 0.0,
       child: CustomPaint(
-        painter: _ConventionalExtendedSpeedBorderPainter(
-          context: context,
-          color: _lineColor(context),
-        ),
+        painter: _ConventionalExtendedSpeedBorderPainter(color: _lineColor(context)),
       ),
     );
   }
@@ -95,7 +92,6 @@ class TrackEquipmentCellBody extends StatelessWidget {
     final width = 3.0;
     return CustomPaint(
       painter: _CumulativeDashedLinePainter(
-        context: context,
         cumulativeHeight: renderData.cumulativeHeight,
         dashHeights: [7.0],
         dashSpace: 5.0,
@@ -115,7 +111,6 @@ class TrackEquipmentCellBody extends StatelessWidget {
       left: 2.0,
       child: CustomPaint(
         painter: _CumulativeDashedLinePainter(
-          context: context,
           cumulativeHeight: renderData.cumulativeHeight,
           dashHeights: [3.0, 7.0],
           dashSpace: 5.0,
@@ -138,7 +133,6 @@ class TrackEquipmentCellBody extends StatelessWidget {
       child: CustomPaint(
         key: TrackEquipmentCellBody.conventionalSpeedReversingImpossibleKey,
         painter: _CumulativeDashedLinePainter(
-          context: context,
           cumulativeHeight: renderData.cumulativeHeight,
           dashHeights: [7.0],
           dashSpace: 5.0,
@@ -162,7 +156,6 @@ class TrackEquipmentCellBody extends StatelessWidget {
         key: TrackEquipmentCellBody.conventionalSpeedReversingImpossibleKey,
         painter: _SingleTrackNoBlockPainter(
           cumulativeHeight: renderData.cumulativeHeight,
-          context: context,
           color: _lineColor(context),
         ),
         child: SizedBox(height: double.infinity, width: width),
@@ -199,12 +192,8 @@ class TrackEquipmentCellBody extends StatelessWidget {
 }
 
 class _ConventionalExtendedSpeedBorderPainter extends CustomPainter {
-  const _ConventionalExtendedSpeedBorderPainter({
-    required this.context,
-    required this.color,
-  });
+  const _ConventionalExtendedSpeedBorderPainter({required this.color});
 
-  final BuildContext context;
   final Color color;
 
   static const double height = 3.0;
@@ -221,14 +210,11 @@ class _ConventionalExtendedSpeedBorderPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
-  }
+  bool shouldRepaint(_) => true;
 }
 
 class _CumulativeDashedLinePainter extends CustomPainter {
   _CumulativeDashedLinePainter({
-    required this.context,
     required this.cumulativeHeight,
     required this.color,
     this.dashHeights = const [4.0],
@@ -237,7 +223,6 @@ class _CumulativeDashedLinePainter extends CustomPainter {
     this.borderWidth,
   }) : assert(dashHeights.isNotEmpty);
 
-  final BuildContext context;
   final double cumulativeHeight;
   final List<double> dashHeights;
   final double dashSpace;
@@ -291,20 +276,16 @@ class _CumulativeDashedLinePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return true;
-  }
+  bool shouldRepaint(_) => true;
 }
 
 class _SingleTrackNoBlockPainter extends CustomPainter {
   _SingleTrackNoBlockPainter({
     required this.cumulativeHeight,
-    required this.context,
     required this.color,
   });
 
   final double cumulativeHeight;
-  final BuildContext context;
   final Color color;
   static const double _strokeWidth = 3.0;
   static const double _dashHeight = 6.0;
@@ -346,7 +327,5 @@ class _SingleTrackNoBlockPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return true;
-  }
+  bool shouldRepaint(_) => true;
 }

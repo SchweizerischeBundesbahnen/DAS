@@ -9,14 +9,12 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
 class CommunicationNetworkChangeRow extends CellRowBuilder<CommunicationNetworkChange> {
-  final BuildContext context;
-
   CommunicationNetworkChangeRow({
     required super.metadata,
     required super.data,
     required super.rowIndex,
-    required this.context,
     required super.journeyPosition,
+    required BuildContext context,
     super.config,
   }) : super(rowColor: ThemeUtil.getColor(context, SBBColors.milk, SBBColors.black));
 

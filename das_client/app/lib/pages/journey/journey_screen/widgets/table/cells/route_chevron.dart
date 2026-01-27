@@ -111,5 +111,5 @@ class _ChevronPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(CustomPainter oldDelegate) => false;
+  bool shouldRepaint(_) => false;
 }

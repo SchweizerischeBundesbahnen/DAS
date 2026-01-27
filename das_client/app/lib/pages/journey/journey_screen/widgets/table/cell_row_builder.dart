@@ -222,7 +222,6 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
         clipBehavior: .none,
         child: AdvisedSpeedCellBody(
           metadata: metadata,
-          settings: config.settings,
           order: data.order,
           showSpeedBehavior: isFirst ? .always : showSpeedBehavior,
         ),

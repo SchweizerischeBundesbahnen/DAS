@@ -138,7 +138,7 @@ class AdvisedSpeedViewModel extends JourneyAwareViewModel {
   }
 
   @override
-  void journeyIdentificationChanged(Journey? journey) {
+  void journeyIdentificationChanged(_) {
     _rxModel.add(AdvisedSpeedModel.inactive());
     _setToInactiveTimer?.cancel();
   }

@@ -9,15 +9,10 @@ import 'package:app/widgets/assets.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
-
-final _log = Logger('LoginPage');
 
 @RoutePage()
 class LoginPage extends StatefulWidget implements AutoRouteWrapper {
-  static const routeName = 'login';
-
   const LoginPage({super.key});
 
   @override

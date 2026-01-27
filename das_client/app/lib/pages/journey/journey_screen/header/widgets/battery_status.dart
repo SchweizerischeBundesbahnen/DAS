@@ -35,7 +35,7 @@ class _BatteryStatusState extends State<BatteryStatus> {
   }
 
   void _startBatteryCheck() {
-    _batteryTimer = Timer.periodic(batteryCheckInterval, (timer) => _setBatteryLevel());
+    _batteryTimer = Timer.periodic(batteryCheckInterval, (_) => _setBatteryLevel());
   }
 
   void _setBatteryLevel() {

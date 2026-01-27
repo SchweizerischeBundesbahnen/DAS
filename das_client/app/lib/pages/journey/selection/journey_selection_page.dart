@@ -11,7 +11,6 @@ import 'package:app/pages/journey/selection/widgets/journey_date_input.dart';
 import 'package:app/pages/journey/selection/widgets/journey_train_number_input.dart';
 import 'package:app/pages/journey/selection/widgets/logout_button.dart';
 import 'package:app/pages/journey/widgets/das_journey_scaffold.dart';
-import 'package:app/util/error_code.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

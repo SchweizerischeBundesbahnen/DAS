@@ -8,14 +8,12 @@ import 'package:flutter/material.dart';
 import 'package:sfera/component.dart';
 
 class ReducedCommunicationNetworkChangeRow extends CellRowBuilder<CommunicationNetworkChange> {
-  final BuildContext context;
-
   ReducedCommunicationNetworkChangeRow({
     required super.key,
     required super.metadata,
     required super.data,
     required super.rowIndex,
-    required this.context,
+    required BuildContext context,
   }) : super(rowColor: ThemeUtil.getDASTableColor(context), journeyPosition: JourneyPositionModel());
 
   @override
