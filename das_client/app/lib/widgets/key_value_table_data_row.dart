@@ -1,4 +1,3 @@
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/dot_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -14,8 +13,8 @@ class KeyValueTableDataRow extends StatelessWidget {
     this.showChangeIndicator = true,
   });
 
-  const KeyValueTableDataRow.title(String label, {Key? key, bool hasChange = false})
-    : this(label, null, key: key, labelStyle: DASTextStyles.smallBold, hasChange: hasChange);
+  KeyValueTableDataRow.title(String label, {Key? key, bool hasChange = false})
+    : this(label, null, key: key, labelStyle: sbbTextStyle.boldStyle.small, hasChange: hasChange);
 
   const KeyValueTableDataRow.empty({Key? key}) : this('', null, key: key);
 
@@ -53,7 +52,7 @@ class KeyValueTableDataRow extends StatelessWidget {
       label,
       maxLines: 2,
       overflow: TextOverflow.ellipsis,
-      style: labelStyle ?? DASTextStyles.smallRoman,
+      style: labelStyle ?? sbbTextStyle.romanStyle.small,
     );
 
     return hasChange && showChangeIndicator && value == null
@@ -69,7 +68,9 @@ class KeyValueTableDataRow extends StatelessWidget {
       maxLines: 2,
       value ?? '',
       overflow: TextOverflow.ellipsis,
-      style: valueStyle ?? (hasChange && showChangeIndicator ? DASTextStyles.smallBold : DASTextStyles.smallRoman),
+      style:
+          valueStyle ??
+          (hasChange && showChangeIndicator ? sbbTextStyle.boldStyle.small : sbbTextStyle.romanStyle.small),
     );
 
     return hasChange && showChangeIndicator && value != null

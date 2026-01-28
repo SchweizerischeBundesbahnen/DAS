@@ -1,7 +1,6 @@
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/view_model/departure_dispatch_notification_view_model.dart';
 import 'package:app/theme/theme_util.dart';
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -47,7 +46,7 @@ class DepartureDispatchNotification extends StatelessWidget {
             Icon(SBBIcons.clock_small, color: resolvedForegroundColor),
             Text(
               type.toLocalized(context),
-              style: DASTextStyles.largeBold.copyWith(color: resolvedForegroundColor),
+              style: sbbTextStyle.boldStyle.large.copyWith(color: resolvedForegroundColor),
             ),
           ],
         ),

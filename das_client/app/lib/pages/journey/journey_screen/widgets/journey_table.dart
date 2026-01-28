@@ -45,7 +45,6 @@ import 'package:app/pages/journey/view_model/model/journey_settings.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/user_settings.dart';
 import 'package:app/widgets/assets.dart';
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:app/widgets/table/das_table_column.dart';
 import 'package:app/widgets/table/das_table_row.dart';
@@ -459,7 +458,7 @@ class JourneyTable extends StatelessWidget {
             ? _brakedWeightHeaderNotification(currentBreakSeries)
             : Text(
                 currentBreakSeries?.name ?? '??',
-                style: DASTextStyles.smallLight,
+                style: sbbTextStyle.lightStyle.small,
               );
       },
     );
@@ -493,7 +492,7 @@ class JourneyTable extends StatelessWidget {
               children: [
                 Text(
                   currentBreakSeries?.name ?? '??',
-                  style: DASTextStyles.smallBold,
+                  style: sbbTextStyle.boldStyle.small,
                 ),
                 SvgPicture.asset(AppAssets.iconSignExclamationPoint),
               ],

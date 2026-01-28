@@ -1,5 +1,4 @@
 import 'package:app/theme/theme_util.dart';
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -48,7 +47,7 @@ class DetailsTable extends StatelessWidget {
             child: Text(
               title,
               maxLines: 1,
-              style: DASTextStyles.mediumBold,
+              style: sbbTextStyle.boldStyle.medium,
             ),
           ),
           Expanded(
@@ -57,7 +56,7 @@ class DetailsTable extends StatelessWidget {
               decoration: BoxDecoration(
                 border: Border(bottom: bottomBorder, left: borderSide),
               ),
-              child: Text(data ?? '-', style: DASTextStyles.mediumRoman),
+              child: Text(data ?? '-', style: sbbTextStyle.romanStyle.medium),
             ),
           ),
         ],
@@ -68,7 +67,7 @@ class DetailsTable extends StatelessWidget {
   static double _calculateMaxTextWidth(Iterable<String> texts) {
     double maxWidth = 0.0;
     for (final text in texts) {
-      final textSpan = TextSpan(text: text, style: DASTextStyles.mediumBold);
+      final textSpan = TextSpan(text: text, style: sbbTextStyle.boldStyle.medium);
       final textPainter = TextPainter(text: textSpan, maxLines: 1, textDirection: TextDirection.ltr);
       textPainter.layout();
       maxWidth = maxWidth < textPainter.width ? textPainter.width : maxWidth;

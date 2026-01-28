@@ -1,7 +1,6 @@
 import 'package:app/pages/journey/journey_screen/view_model/line_speed_view_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/show_speed_behaviour.dart';
 import 'package:app/theme/theme_util.dart';
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:app/widgets/table/das_table_theme.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +51,7 @@ class AdvisedSpeedCellBody extends StatelessWidget {
     return Text(
       resolvedSpeedDisplay,
       key: advisedSpeed.isDIST ? advisedSpeedDistKey : nonEmptyKey,
-      style: DASTextStyles.largeBold.copyWith(color: resolvedTextColor),
+      style: sbbTextStyle.boldStyle.large.copyWith(color: resolvedTextColor),
     );
   }
 

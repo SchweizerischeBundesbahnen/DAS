@@ -1,5 +1,4 @@
 import 'package:app/util/screen_dimensions.dart';
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -97,7 +96,7 @@ class Accordion extends StatelessWidget {
         Expanded(
           child: Text(
             title,
-            style: DASTextStyles.largeBold,
+            style: sbbTextStyle.boldStyle.large,
             maxLines: 1,
             overflow: .ellipsis,
           ),

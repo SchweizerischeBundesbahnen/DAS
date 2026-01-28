@@ -1,7 +1,6 @@
 import 'package:app/i18n/i18n.dart';
+import 'package:app/theme/das_colors.dart';
 import 'package:app/widgets/assets.dart';
-import 'package:app/widgets/das_colors.dart';
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/dot_indicator.dart';
 import 'package:app/widgets/key_value_table.dart';
 import 'package:app/widgets/key_value_table_data_row.dart';
@@ -65,7 +64,7 @@ class BreakLoadSlipSpecialRestrictions extends StatelessWidget {
       context.l10n.p_break_load_slip_special_restrictions_title,
       maxLines: 3,
       overflow: TextOverflow.ellipsis,
-      style: DASTextStyles.smallBold,
+      style: sbbTextStyle.boldStyle.small,
     );
 
     return showChangeIndicator && _hasChange()

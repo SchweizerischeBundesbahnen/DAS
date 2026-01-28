@@ -1,6 +1,5 @@
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/assets.dart';
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -19,6 +18,12 @@ class BreakSeriesSelectionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final backgroundColor = currentlySelected
+        ? ThemeUtil.getColor(context, SBBColors.granite, SBBColors.graphite)
+        : ThemeUtil.getColor(context, SBBColors.cloud, SBBColors.iron);
+    final labelColor = currentlySelected
+        ? ThemeUtil.getFontColor(context)
+        : ThemeUtil.getColor(context, SBBColors.black, SBBColors.white);
     return InkWell(
       onTap: onTap,
       child: Stack(
@@ -27,24 +32,14 @@ class BreakSeriesSelectionButton extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
-              color: currentlySelected
-                  ? ThemeUtil.getColor(context, SBBColors.granite, SBBColors.graphite)
-                  : ThemeUtil.getColor(context, SBBColors.cloud, SBBColors.iron),
+              color: backgroundColor,
             ),
             width: 72,
             height: 48,
             child: Center(
               child: Text(
                 label,
-                style: DASTextStyles.mediumBold.copyWith(
-                  color: currentlySelected
-                      ? ThemeUtil.getFontColor(context)
-                      : ThemeUtil.getColor(
-                          context,
-                          SBBColors.black,
-                          SBBColors.white,
-                        ),
-                ),
+                style: sbbTextStyle.boldStyle.medium.copyWith(color: labelColor),
               ),
             ),
           ),

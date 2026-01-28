@@ -1,7 +1,6 @@
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/additional_speed_restriction_modal/additional_speed_restriction_modal_view_model.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/additional_speed_restriction_modal/details_table.dart';
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/modal_sheet/das_modal_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' show DateFormat;
@@ -16,13 +15,13 @@ class AdditionalSpeedRestrictionModalBuilder extends DASModalSheetBuilder {
     return Column(
       crossAxisAlignment: .start,
       children: [
-        Text(context.l10n.w_additional_speed_restriction_modal_title, style: DASTextStyles.largeRoman),
+        Text(context.l10n.w_additional_speed_restriction_modal_title, style: sbbTextStyle.romanStyle.large),
         StreamBuilder(
           stream: viewModel.additionalSpeedRestrictions,
           builder: (context, snapshot) {
             final count = snapshot.data?.length ?? 0;
             final countLabel = context.l10n.w_additional_speed_restriction_modal_subtitle_count;
-            return Text('$countLabel: $count', style: DASTextStyles.extraSmallRoman);
+            return Text('$countLabel: $count', style: sbbTextStyle.romanStyle.xSmall);
           },
         ),
       ],

@@ -2,7 +2,6 @@ import 'package:app/extension/ru_extension.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/break_load_slip/break_load_slip_view_model.dart';
 import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_train_details_table.dart';
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/key_value_table.dart';
 import 'package:app/widgets/key_value_table_data_row.dart';
 import 'package:flutter/material.dart';
@@ -89,7 +88,7 @@ class BreakLoadSlipTrainDetails extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           // Empty row for alignment with other columns
-          KeyValueTableDataRow(' ', null, labelStyle: DASTextStyles.smallBold),
+          KeyValueTableDataRow(' ', null, labelStyle: sbbTextStyle.boldStyle.small),
           SizedBox(height: SBBSpacing.xSmall),
           KeyValueTableDataRow(
             context.l10n.p_break_load_slip_train_data_train_traction,
