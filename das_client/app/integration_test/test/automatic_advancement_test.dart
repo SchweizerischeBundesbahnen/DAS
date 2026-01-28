@@ -1,5 +1,5 @@
 import 'package:app/di/di.dart';
-import 'package:app/pages/journey/journey_screen/header/widgets/header.dart';
+import 'package:app/pages/journey/journey_screen/header/header.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/journey_advancement_button.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_chevron.dart';
 import 'package:app/util/time_constants.dart';

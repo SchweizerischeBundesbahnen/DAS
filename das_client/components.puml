@@ -3,6 +3,7 @@
 component app
 component auth
 component logger
+component formation
 component sfera
 component mqtt
 component connectivity_x
@@ -23,9 +24,12 @@ app --> settings
 app --> warnapp
 app --> logger
 app --> http_x
+app --> formation
 
 settings --> http_x
 settings --> logger
+
+formation --> http_x
 
 logger --> http_x
 

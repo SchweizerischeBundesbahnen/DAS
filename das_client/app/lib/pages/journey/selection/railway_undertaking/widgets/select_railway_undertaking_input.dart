@@ -118,7 +118,7 @@ class _RailwayUndertakingTextFieldState extends State<_RailwayUndertakingTextFie
   );
 
   BoxConstraints get _modalConstraints => BoxConstraints(
-    maxWidth: DeviceScreen.size.width - SBBSpacing.medium,
+    maxWidth: DeviceScreen.width - SBBSpacing.medium,
     maxHeight: _maxModalHeight,
   );
 

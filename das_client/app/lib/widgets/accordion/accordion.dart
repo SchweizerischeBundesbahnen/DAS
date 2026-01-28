@@ -1,4 +1,4 @@
-import 'package:app/util/screen_dimensions.dart';
+import 'package:app/util/device_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -18,7 +18,7 @@ class Accordion extends StatelessWidget {
 
   /// Returns width of accordion content in logical pixels (dp).
   static double contentWidth({double? outsidePadding}) =>
-      ScreenDimensions.width - 2 * Accordion._horizontalPadding - 2 * Accordion._contentPadding - (outsidePadding ?? 0);
+      DeviceScreen.width - 2 * Accordion._horizontalPadding - 2 * Accordion._contentPadding - (outsidePadding ?? 0);
 
   static const double _contentPadding = 28.0; // 24.0 (icon) + spacing
   static const double _horizontalPadding = SBBSpacing.xSmall;

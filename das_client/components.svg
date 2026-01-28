@@ -1,13 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" contentStyleType="text/css" data-diagram-type="DESCRIPTION" height="591px"
-     preserveAspectRatio="none" style="width:891px;height:591px;background:#FFFFFF;" version="1.1" viewBox="0 0 891 591" width="891px" zoomAndPan="magnify">
+     preserveAspectRatio="none" style="width:962px;height:591px;background:#FFFFFF;" version="1.1" viewBox="0 0 962 591" width="962px" zoomAndPan="magnify">
     <defs/>
     <g><!--entity app-->
         <g class="entity" data-entity="app" data-source-line="2" data-uid="ent0002" id="entity_app">
-            <rect fill="#F1F1F1" height="46.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="65.3545" x="428.5" y="7"/>
-            <rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="473.8545" y="12"/>
-            <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="471.8545" y="14"/>
-            <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="471.8545" y="18"/>
-            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="25.3545" x="443.5" y="40.5352">app</text>
+            <rect fill="#F1F1F1" height="46.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="65.3545" x="389.5" y="7"/>
+            <rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="434.8545" y="12"/>
+            <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="432.8545" y="14"/>
+            <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="432.8545" y="18"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="25.3545" x="404.5" y="40.5352">app</text>
         </g><!--entity auth-->
         <g class="entity" data-entity="auth" data-source-line="3" data-uid="ent0003" id="entity_auth">
             <rect fill="#F1F1F1" height="46.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="70.3447" x="7" y="113.49"/>
@@ -17,194 +17,211 @@
             <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="30.3447" x="22" y="147.0252">auth</text>
         </g><!--entity logger-->
         <g class="entity" data-entity="logger" data-source-line="4" data-uid="ent0004" id="entity_logger">
-            <rect fill="#F1F1F1" height="46.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="83.6338" x="183.36" y="219.98"/>
-            <rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="246.9938" y="224.98"/>
-            <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="244.9938" y="226.98"/>
-            <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="244.9938" y="230.98"/>
-            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="43.6338" x="198.36" y="253.5152">logger</text>
+            <rect fill="#F1F1F1" height="46.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="83.6338" x="254.36" y="219.98"/>
+            <rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="317.9938" y="224.98"/>
+            <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="315.9938" y="226.98"/>
+            <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="315.9938" y="230.98"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="43.6338" x="269.36" y="253.5152">logger</text>
+        </g><!--entity formation-->
+        <g class="entity" data-entity="formation" data-source-line="5" data-uid="ent0005" id="entity_formation">
+            <rect fill="#F1F1F1" height="46.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="106.8486" x="41.75" y="219.98"/>
+            <rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="128.5986" y="224.98"/>
+            <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="126.5986" y="226.98"/>
+            <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="126.5986" y="230.98"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="66.8486" x="56.75" y="253.5152">formation</text>
         </g><!--entity sfera-->
-        <g class="entity" data-entity="sfera" data-source-line="5" data-uid="ent0005" id="entity_sfera">
-            <rect fill="#F1F1F1" height="46.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="73.5439" x="536.4" y="219.98"/>
-            <rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="589.9439" y="224.98"/>
-            <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="587.9439" y="226.98"/>
-            <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="587.9439" y="230.98"/>
-            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="33.5439" x="551.4" y="253.5152">sfera</text>
+        <g class="entity" data-entity="sfera" data-source-line="6" data-uid="ent0006" id="entity_sfera">
+            <rect fill="#F1F1F1" height="46.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="73.5439" x="505.4" y="219.98"/>
+            <rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="558.9439" y="224.98"/>
+            <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="556.9439" y="226.98"/>
+            <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="556.9439" y="230.98"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="33.5439" x="520.4" y="253.5152">sfera</text>
         </g><!--entity mqtt-->
-        <g class="entity" data-entity="mqtt" data-source-line="6" data-uid="ent0006" id="entity_mqtt">
-            <rect fill="#F1F1F1" height="46.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="72.3545" x="573" y="326.47"/>
-            <rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="625.3545" y="331.47"/>
-            <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="623.3545" y="333.47"/>
-            <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="623.3545" y="337.47"/>
-            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="32.3545" x="588" y="360.0052">mqtt</text>
+        <g class="entity" data-entity="mqtt" data-source-line="7" data-uid="ent0007" id="entity_mqtt">
+            <rect fill="#F1F1F1" height="46.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="72.3545" x="643" y="326.47"/>
+            <rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="695.3545" y="331.47"/>
+            <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="693.3545" y="333.47"/>
+            <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="693.3545" y="337.47"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="32.3545" x="658" y="360.0052">mqtt</text>
         </g><!--entity connectivity_x-->
-        <g class="entity" data-entity="connectivity_x" data-source-line="7" data-uid="ent0007" id="entity_connectivity_x">
-            <rect fill="#F1F1F1" height="46.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="136.8311" x="665.76" y="432.95"/>
-            <rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="782.5911" y="437.95"/>
-            <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="780.5911" y="439.95"/>
-            <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="780.5911" y="443.95"/>
-            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="96.8311" x="680.76" y="466.4852">connectivity_x
+        <g class="entity" data-entity="connectivity_x" data-source-line="8" data-uid="ent0008" id="entity_connectivity_x">
+            <rect fill="#F1F1F1" height="46.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="136.8311" x="736.76" y="432.95"/>
+            <rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="853.5911" y="437.95"/>
+            <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="851.5911" y="439.95"/>
+            <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="851.5911" y="443.95"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="96.8311" x="751.76" y="466.4852">connectivity_x
             </text>
         </g><!--entity local_regulations-->
-        <g class="entity" data-entity="local_regulations" data-source-line="8" data-uid="ent0008" id="entity_local_regulations">
-            <rect fill="#F1F1F1" height="46.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="155.0283" x="383.66" y="113.49"/>
-            <rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="518.6883" y="118.49"/>
-            <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="516.6883" y="120.49"/>
-            <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="516.6883" y="124.49"/>
-            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="115.0283" x="398.66" y="147.0252">
+        <g class="entity" data-entity="local_regulations" data-source-line="9" data-uid="ent0009" id="entity_local_regulations">
+            <rect fill="#F1F1F1" height="46.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="155.0283" x="525.66" y="113.49"/>
+            <rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="660.6883" y="118.49"/>
+            <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="658.6883" y="120.49"/>
+            <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="658.6883" y="124.49"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="115.0283" x="540.66" y="147.0252">
                 local_regulations
             </text>
         </g><!--entity settings-->
-        <g class="entity" data-entity="settings" data-source-line="9" data-uid="ent0009" id="entity_settings">
-            <rect fill="#F1F1F1" height="46.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="94.0107" x="254.17" y="113.49"/>
-            <rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="328.1807" y="118.49"/>
-            <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="326.1807" y="120.49"/>
-            <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="326.1807" y="124.49"/>
-            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="54.0107" x="269.17" y="147.0252">settings</text>
+        <g class="entity" data-entity="settings" data-source-line="10" data-uid="ent0010" id="entity_settings">
+            <rect fill="#F1F1F1" height="46.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="94.0107" x="325.17" y="113.49"/>
+            <rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="399.1807" y="118.49"/>
+            <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="397.1807" y="120.49"/>
+            <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="397.1807" y="124.49"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="54.0107" x="340.17" y="147.0252">settings</text>
         </g><!--entity warnapp-->
-        <g class="entity" data-entity="warnapp" data-source-line="10" data-uid="ent0010" id="entity_warnapp">
-            <rect fill="#F1F1F1" height="46.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="98.29" x="787.03" y="113.49"/>
-            <rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="865.32" y="118.49"/>
-            <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="863.32" y="120.49"/>
-            <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="863.32" y="124.49"/>
-            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="58.29" x="802.03" y="147.0252">warnapp</text>
+        <g class="entity" data-entity="warnapp" data-source-line="11" data-uid="ent0011" id="entity_warnapp">
+            <rect fill="#F1F1F1" height="46.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="98.29" x="858.03" y="113.49"/>
+            <rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="936.32" y="118.49"/>
+            <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="934.32" y="120.49"/>
+            <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="934.32" y="124.49"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="58.29" x="873.03" y="147.0252">warnapp</text>
         </g><!--entity mqtt_client-->
-        <g class="entity" data-entity="mqtt_client" data-source-line="11" data-uid="ent0011" id="entity_mqtt_client">
-            <rect fill="#4DB1FF" height="46.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="116.3438" x="514" y="432.95"/>
-            <rect fill="#4DB1FF" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="610.3438" y="437.95"/>
-            <rect fill="#4DB1FF" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="608.3438" y="439.95"/>
-            <rect fill="#4DB1FF" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="608.3438" y="443.95"/>
-            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="76.3438" x="529" y="466.4852">mqtt_client</text>
+        <g class="entity" data-entity="mqtt_client" data-source-line="12" data-uid="ent0012" id="entity_mqtt_client">
+            <rect fill="#4DB1FF" height="46.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="116.3438" x="585" y="432.95"/>
+            <rect fill="#4DB1FF" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="681.3438" y="437.95"/>
+            <rect fill="#4DB1FF" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="679.3438" y="439.95"/>
+            <rect fill="#4DB1FF" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="679.3438" y="443.95"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="76.3438" x="600" y="466.4852">mqtt_client</text>
         </g><!--entity http_x-->
-        <g class="entity" data-entity="http_x" data-source-line="12" data-uid="ent0012" id="entity_http_x">
-            <rect fill="#F1F1F1" height="46.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="83.5586" x="231.39" y="326.47"/>
-            <rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="294.9486" y="331.47"/>
-            <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="292.9486" y="333.47"/>
-            <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="292.9486" y="337.47"/>
-            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="43.5586" x="246.39" y="360.0052">http_x</text>
+        <g class="entity" data-entity="http_x" data-source-line="13" data-uid="ent0013" id="entity_http_x">
+            <rect fill="#F1F1F1" height="46.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="83.5586" x="254.39" y="326.47"/>
+            <rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="317.9486" y="331.47"/>
+            <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="315.9486" y="333.47"/>
+            <rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="315.9486" y="337.47"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="43.5586" x="269.39" y="360.0052">http_x</text>
         </g><!--entity http-->
-        <g class="entity" data-entity="http" data-source-line="13" data-uid="ent0013" id="entity_http">
-            <rect fill="#4DB1FF" height="46.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="67.9727" x="239.19" y="432.95"/>
-            <rect fill="#4DB1FF" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="287.1627" y="437.95"/>
-            <rect fill="#4DB1FF" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="285.1627" y="439.95"/>
-            <rect fill="#4DB1FF" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="285.1627" y="443.95"/>
-            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="27.9727" x="254.19" y="466.4852">http</text>
+        <g class="entity" data-entity="http" data-source-line="14" data-uid="ent0014" id="entity_http">
+            <rect fill="#4DB1FF" height="46.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="67.9727" x="262.19" y="432.95"/>
+            <rect fill="#4DB1FF" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="310.1627" y="437.95"/>
+            <rect fill="#4DB1FF" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="308.1627" y="439.95"/>
+            <rect fill="#4DB1FF" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="308.1627" y="443.95"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="27.9727" x="277.19" y="466.4852">http</text>
         </g><!--entity connectivity_plus-->
-        <g class="entity" data-entity="connectivity_plus" data-source-line="14" data-uid="ent0014" id="entity_connectivity_plus">
-            <rect fill="#4DB1FF" height="46.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="156.9287" x="655.71" y="539.44"/>
-            <rect fill="#4DB1FF" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="792.6387" y="544.44"/>
-            <rect fill="#4DB1FF" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="790.6387" y="546.44"/>
-            <rect fill="#4DB1FF" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="790.6387" y="550.44"/>
-            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="116.9287" x="670.71" y="572.9752">
+        <g class="entity" data-entity="connectivity_plus" data-source-line="15" data-uid="ent0015" id="entity_connectivity_plus">
+            <rect fill="#4DB1FF" height="46.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="156.9287" x="726.71" y="539.44"/>
+            <rect fill="#4DB1FF" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="863.6387" y="544.44"/>
+            <rect fill="#4DB1FF" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="861.6387" y="546.44"/>
+            <rect fill="#4DB1FF" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="861.6387" y="550.44"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="116.9287" x="741.71" y="572.9752">
                 connectivity_plus
             </text>
         </g><!--link app to auth-->
-        <g class="link" data-entity-1="app" data-entity-2="auth" data-source-line="16" data-uid="lnk15" id="link_app_auth">
-            <path d="M428.35,37.46 C365.05,49.73 221.96,78.92 104.17,113.49 C95.5,116.03 91.9336,117.1107 83.3236,120.1707" fill="none" id="app-to-auth"
+        <g class="link" data-entity-1="app" data-entity-2="auth" data-source-line="17" data-uid="lnk16" id="link_app_auth">
+            <path d="M389.39,38.68 C331.42,52.05 207.17,81.76 104.17,113.49 C95.54,116.15 91.9815,117.2649 83.3715,120.3349" fill="none" id="app-to-auth"
                   style="stroke:#181818;stroke-width:1;"/>
-            <polygon fill="#181818" points="77.67,122.18,87.4899,122.9351,82.3813,120.5056,84.8108,115.397,77.67,122.18"
+            <polygon fill="#181818" points="77.72,122.35,87.5406,123.095,82.4296,120.6707,84.8538,115.5597,77.72,122.35"
                      style="stroke:#181818;stroke-width:1;"/>
         </g><!--link app to sfera-->
-        <g class="link" data-entity-1="app" data-entity-2="sfera" data-source-line="17" data-uid="lnk16" id="link_app_sfera">
-            <path d="M494.01,50.67 C515.4,65.16 541.89,86.99 556.17,113.49 C574.35,147.23 576.1073,186.9243 575.0873,213.8243" fill="none" id="app-to-sfera"
-                  style="stroke:#181818;stroke-width:1;"/>
-            <polygon fill="#181818" points="574.86,219.82,579.1981,210.978,575.0495,214.8236,571.2039,210.6749,574.86,219.82"
+        <g class="link" data-entity-1="app" data-entity-2="sfera" data-source-line="18" data-uid="lnk17" id="link_app_sfera">
+            <path d="M435.01,53.82 C458.05,94.32 503.174,173.6544 526.274,214.2744" fill="none" id="app-to-sfera" style="stroke:#181818;stroke-width:1;"/>
+            <polygon fill="#181818" points="529.24,219.49,528.268,209.6892,526.7683,215.1437,521.3139,213.6439,529.24,219.49"
                      style="stroke:#181818;stroke-width:1;"/>
         </g><!--link app to mqtt-->
-        <g class="link" data-entity-1="app" data-entity-2="mqtt" data-source-line="18" data-uid="lnk17" id="link_app_mqtt">
-            <path
-                d="M494.17,44.97 C522.96,58.49 563.96,81.74 589.17,113.49 C632.74,168.35 634.7,196.82 627.17,266.47 C624.96,286.95 621.2276,304.0125 616.9676,320.4225"
-                fill="none" id="app-to-mqtt" style="stroke:#181818;stroke-width:1;"/>
-            <polygon fill="#181818" points="615.46,326.23,621.5931,318.5238,616.7163,321.3904,613.8498,316.5137,615.46,326.23"
+        <g class="link" data-entity-1="app" data-entity-2="mqtt" data-source-line="19" data-uid="lnk18" id="link_app_mqtt">
+            <path d="M455.21,36.12 C521.91,46.72 668.81,74.1 698.17,113.49 C746.04,177.7 712.1293,275.525 692.2893,320.775" fill="none" id="app-to-mqtt"
+                  style="stroke:#181818;stroke-width:1;"/>
+            <polygon fill="#181818" points="689.88,326.27,697.1573,319.6337,691.8878,321.6908,689.8306,316.4213,689.88,326.27"
                      style="stroke:#181818;stroke-width:1;"/>
         </g><!--link app to connectivity_x-->
-        <g class="link" data-entity-1="app" data-entity-2="connectivity_x" data-source-line="19" data-uid="lnk18" id="link_app_connectivity_x">
-            <path d="M494.06,38.75 C532.18,49.14 594.37,71.55 630.17,113.49 C713.32,210.88 729.6623,367.4995 733.0023,426.7395" fill="none"
+        <g class="link" data-entity-1="app" data-entity-2="connectivity_x" data-source-line="20" data-uid="lnk19" id="link_app_connectivity_x">
+            <path d="M455.17,35.53 C527.3,45.58 695.67,72.9 734.17,113.49 C820.69,204.71 814.1733,366.5775 808.3833,426.8975" fill="none"
                   id="app-to-connectivity_x" style="stroke:#181818;stroke-width:1;"/>
-            <polygon fill="#181818" points="733.34,432.73,736.827,423.5191,733.0585,427.7379,728.8397,423.9694,733.34,432.73"
+            <polygon fill="#181818" points="807.81,432.87,812.6516,424.2934,808.2877,427.8929,804.6882,423.529,807.81,432.87"
                      style="stroke:#181818;stroke-width:1;"/>
         </g><!--link app to local_regulations-->
-        <g class="link" data-entity-1="app" data-entity-2="local_regulations" data-source-line="20" data-uid="lnk19" id="link_app_local_regulations">
-            <path d="M461.17,53.92 C461.17,71.44 461.17,89.59 461.17,107.1" fill="none" id="app-to-local_regulations" style="stroke:#181818;stroke-width:1;"/>
-            <polygon fill="#181818" points="461.17,113.1,465.17,104.1,461.17,108.1,457.17,104.1,461.17,113.1" style="stroke:#181818;stroke-width:1;"/>
-        </g><!--link app to settings-->
-        <g class="link" data-entity-1="app" data-entity-2="settings" data-source-line="21" data-uid="lnk20" id="link_app_settings">
-            <path d="M428.02,52.89 C401.11,70.47 368.3032,91.8886 340.9632,109.7486" fill="none" id="app-to-settings" style="stroke:#181818;stroke-width:1;"/>
-            <polygon fill="#181818" points="335.94,113.03,345.6624,111.4567,340.126,110.2955,341.2872,104.7591,335.94,113.03"
-                     style="stroke:#181818;stroke-width:1;"/>
-        </g><!--link app to warnapp-->
-        <g class="link" data-entity-1="app" data-entity-2="warnapp" data-source-line="22" data-uid="lnk21" id="link_app_warnapp">
-            <path d="M493.96,40.08 C549.04,54.95 663.58,86.07 760.17,113.49 C768.77,115.93 772.1403,116.879 780.9803,119.459" fill="none" id="app-to-warnapp"
+        <g class="link" data-entity-1="app" data-entity-2="local_regulations" data-source-line="21" data-uid="lnk20" id="link_app_local_regulations">
+            <path d="M454.95,50.17 C485.61,67.87 526.2536,91.3305 558.8236,110.1305" fill="none" id="app-to-local_regulations"
                   style="stroke:#181818;stroke-width:1;"/>
-            <polygon fill="#181818" points="786.74,121.14,779.2211,114.7787,781.9402,119.7392,776.9798,122.4583,786.74,121.14"
+            <polygon fill="#181818" points="564.02,113.13,558.225,105.1665,559.6896,110.6304,554.2257,112.0951,564.02,113.13"
+                     style="stroke:#181818;stroke-width:1;"/>
+        </g><!--link app to settings-->
+        <g class="link" data-entity-1="app" data-entity-2="settings" data-source-line="22" data-uid="lnk21" id="link_app_settings">
+            <path d="M411.32,53.92 C402.94,71.44 393.9702,90.1779 385.5902,107.6879" fill="none" id="app-to-settings" style="stroke:#181818;stroke-width:1;"/>
+            <polygon fill="#181818" points="383,113.1,390.4933,106.7086,385.1585,108.5899,383.2771,103.255,383,113.1" style="stroke:#181818;stroke-width:1;"/>
+        </g><!--link app to warnapp-->
+        <g class="link" data-entity-1="app" data-entity-2="warnapp" data-source-line="23" data-uid="lnk22" id="link_app_warnapp">
+            <path d="M455.26,36.9 C525.11,49.05 692.63,79.35 831.17,113.49 C839.85,115.63 843.2494,116.4668 852.0994,118.9868" fill="none" id="app-to-warnapp"
+                  style="stroke:#181818;stroke-width:1;"/>
+            <polygon fill="#181818" points="857.87,120.63,850.3095,114.3182,853.0612,119.2607,848.1186,122.0123,857.87,120.63"
                      style="stroke:#181818;stroke-width:1;"/>
         </g><!--link app to logger-->
-        <g class="link" data-entity-1="app" data-entity-2="logger" data-source-line="23" data-uid="lnk22" id="link_app_logger">
-            <path d="M428,32.74 C377.51,36.98 282.4,53.03 236.17,113.49 C212.74,144.14 214.8653,185.7881 219.4153,213.7181" fill="none" id="app-to-logger"
+        <g class="link" data-entity-1="app" data-entity-2="logger" data-source-line="24" data-uid="lnk23" id="link_app_logger">
+            <path d="M389.26,45.15 C362.23,58.45 325.51,81.28 307.17,113.49 C288.3,146.63 288.9733,186.5572 292.0033,213.6572" fill="none" id="app-to-logger"
                   style="stroke:#181818;stroke-width:1;"/>
-            <polygon fill="#181818" points="220.38,219.64,222.8809,210.1139,219.5761,214.7051,214.985,211.4002,220.38,219.64"
+            <polygon fill="#181818" points="292.67,219.62,295.6452,210.2313,292.1144,214.651,287.6947,211.1202,292.67,219.62"
                      style="stroke:#181818;stroke-width:1;"/>
         </g><!--link app to http_x-->
-        <g class="link" data-entity-1="app" data-entity-2="http_x" data-source-line="24" data-uid="lnk23" id="link_app_http_x">
+        <g class="link" data-entity-1="app" data-entity-2="http_x" data-source-line="25" data-uid="lnk24" id="link_app_http_x">
             <path
-                d="M428.07,33.54 C375.66,38.87 273.17,56.37 211.17,113.49 C159.05,161.51 134.85,202.89 166.17,266.47 C179.68,293.89 202.046,311.7091 225.796,325.5491"
+                d="M389.25,44.16 C358.8,57.53 314.02,81.04 285.17,113.49 C250.68,152.28 248.08,169.22 237.17,219.98 C232.83,240.18 230.85,246.8 237.17,266.47 C244.44,289.05 256.4932,306.1796 270.0032,321.5796"
                 fill="none" id="app-to-http_x" style="stroke:#181818;stroke-width:1;"/>
-            <polygon fill="#181818" points="230.98,328.57,225.2179,320.5826,226.66,326.0526,221.19,327.4946,230.98,328.57"
+            <polygon fill="#181818" points="273.96,326.09,271.0317,316.6865,270.6626,322.3314,265.0178,321.9623,273.96,326.09"
+                     style="stroke:#181818;stroke-width:1;"/>
+        </g><!--link app to formation-->
+        <g class="link" data-entity-1="app" data-entity-2="formation" data-source-line="26" data-uid="lnk25" id="link_app_formation">
+            <path d="M389.21,34.99 C338.42,42.24 240.1,62.25 175.17,113.49 C139.23,141.85 117.4594,185.5757 105.7494,214.2357" fill="none" id="app-to-formation"
+                  style="stroke:#181818;stroke-width:1;"/>
+            <polygon fill="#181818" points="103.48,219.79,110.5869,212.9715,105.3712,215.1614,103.1812,209.9457,103.48,219.79"
                      style="stroke:#181818;stroke-width:1;"/>
         </g><!--link settings to http_x-->
-        <g class="link" data-entity-1="settings" data-entity-2="http_x" data-source-line="26" data-uid="lnk24" id="link_settings_http_x">
-            <path d="M298.24,160.06 C294.86,185.73 289.13,229.15 284.17,266.47 C281.5,286.6 279.2256,303.553 277.0156,320.073" fill="none"
+        <g class="link" data-entity-1="settings" data-entity-2="http_x" data-source-line="28" data-uid="lnk26" id="link_settings_http_x">
+            <path d="M372.47,160.43 C372.07,186.81 369.11,231.25 355.17,266.47 C346.38,288.69 334.1534,305.9278 320.9834,321.5078" fill="none"
                   id="settings-to-http_x" style="stroke:#181818;stroke-width:1;"/>
-            <polygon fill="#181818" points="276.22,326.02,281.378,317.6299,276.883,321.0641,273.4487,316.5691,276.22,326.02"
+            <polygon fill="#181818" points="317.11,326.09,325.9749,321.799,320.3378,322.2715,319.8653,316.6344,317.11,326.09"
                      style="stroke:#181818;stroke-width:1;"/>
         </g><!--link settings to logger-->
-        <g class="link" data-entity-1="settings" data-entity-2="logger" data-source-line="27" data-uid="lnk25" id="link_settings_logger">
-            <path d="M284.68,160.41 C271.93,177.93 257.9,197.2283 245.16,214.7383" fill="none" id="settings-to-logger" style="stroke:#181818;stroke-width:1;"/>
-            <polygon fill="#181818" points="241.63,219.59,250.1595,214.6658,244.5717,215.5469,243.6906,209.9591,241.63,219.59"
+        <g class="link" data-entity-1="settings" data-entity-2="logger" data-source-line="29" data-uid="lnk27" id="link_settings_logger">
+            <path d="M355.68,160.41 C342.93,177.93 328.9,197.2283 316.16,214.7383" fill="none" id="settings-to-logger" style="stroke:#181818;stroke-width:1;"/>
+            <polygon fill="#181818" points="312.63,219.59,321.1595,214.6658,315.5717,215.5469,314.6906,209.9591,312.63,219.59"
+                     style="stroke:#181818;stroke-width:1;"/>
+        </g><!--link formation to http_x-->
+        <g class="link" data-entity-1="formation" data-entity-2="http_x" data-source-line="31" data-uid="lnk28" id="link_formation_http_x">
+            <path d="M138.79,266.89 C172.96,284.66 214.9066,306.462 248.6966,324.032" fill="none" id="formation-to-http_x"
+                  style="stroke:#181818;stroke-width:1;"/>
+            <polygon fill="#181818" points="254.02,326.8,247.8803,319.0991,249.5839,324.4933,244.1896,326.1969,254.02,326.8"
                      style="stroke:#181818;stroke-width:1;"/>
         </g><!--link logger to http_x-->
-        <g class="link" data-entity-1="logger" data-entity-2="http_x" data-source-line="29" data-uid="lnk26" id="link_logger_http_x">
-            <path d="M235.59,266.89 C243.64,284.42 252.2237,303.1185 260.2737,320.6285" fill="none" id="logger-to-http_x"
-                  style="stroke:#181818;stroke-width:1;"/>
-            <polygon fill="#181818" points="262.78,326.08,262.6549,316.2319,260.6915,321.5371,255.3863,319.5736,262.78,326.08"
-                     style="stroke:#181818;stroke-width:1;"/>
+        <g class="link" data-entity-1="logger" data-entity-2="http_x" data-source-line="33" data-uid="lnk29" id="link_logger_http_x">
+            <path d="M296.17,266.89 C296.17,284.42 296.17,302.57 296.17,320.08" fill="none" id="logger-to-http_x" style="stroke:#181818;stroke-width:1;"/>
+            <polygon fill="#181818" points="296.17,326.08,300.17,317.08,296.17,321.08,292.17,317.08,296.17,326.08" style="stroke:#181818;stroke-width:1;"/>
         </g><!--link sfera to mqtt-->
-        <g class="link" data-entity-1="sfera" data-entity-2="mqtt" data-source-line="31" data-uid="lnk27" id="link_sfera_mqtt">
-            <path d="M580.98,266.89 C587.02,284.42 593.3835,302.898 599.4235,320.408" fill="none" id="sfera-to-mqtt" style="stroke:#181818;stroke-width:1;"/>
-            <polygon fill="#181818" points="601.38,326.08,602.2265,316.2676,599.7495,321.3533,594.6638,318.8763,601.38,326.08"
+        <g class="link" data-entity-1="sfera" data-entity-2="mqtt" data-source-line="35" data-uid="lnk30" id="link_sfera_mqtt">
+            <path d="M571.9,266.89 C594.88,284.42 621.7691,304.9315 644.7291,322.4415" fill="none" id="sfera-to-mqtt" style="stroke:#181818;stroke-width:1;"/>
+            <polygon fill="#181818" points="649.5,326.08,644.7693,317.4417,645.5242,323.048,639.918,323.8029,649.5,326.08"
                      style="stroke:#181818;stroke-width:1;"/>
         </g><!--link sfera to http_x-->
-        <g class="link" data-entity-1="sfera" data-entity-2="http_x" data-source-line="32" data-uid="lnk28" id="link_sfera_http_x">
-            <path d="M536.09,257.14 C479.96,276.69 379.4463,311.697 320.6563,332.167" fill="none" id="sfera-to-http_x" style="stroke:#181818;stroke-width:1;"/>
-            <polygon fill="#181818" points="314.99,334.14,324.8048,334.9581,319.712,332.4959,322.1742,327.403,314.99,334.14"
+        <g class="link" data-entity-1="sfera" data-entity-2="http_x" data-source-line="36" data-uid="lnk31" id="link_sfera_http_x">
+            <path d="M505.08,259.98 C460.25,279.02 390.5325,308.6344 343.6325,328.5544" fill="none" id="sfera-to-http_x"
+                  style="stroke:#181818;stroke-width:1;"/>
+            <polygon fill="#181818" points="338.11,330.9,347.9575,331.0633,342.7121,328.9453,344.83,323.6999,338.11,330.9"
                      style="stroke:#181818;stroke-width:1;"/>
         </g><!--link local_regulations to sfera-->
-        <g class="link" data-entity-1="local_regulations" data-entity-2="sfera" data-source-line="34" data-uid="lnk29" id="link_local_regulations_sfera">
-            <path d="M485.47,160.41 C504.26,177.93 525.7516,197.9883 544.5316,215.4983" fill="none" id="local_regulations-to-sfera"
+        <g class="link" data-entity-1="local_regulations" data-entity-2="sfera" data-source-line="38" data-uid="lnk32" id="link_local_regulations_sfera">
+            <path d="M589.94,160.41 C579.7,177.93 568.6367,196.8994 558.4067,214.4094" fill="none" id="local_regulations-to-sfera"
                   style="stroke:#181818;stroke-width:1;"/>
-            <polygon fill="#181818" points="548.92,219.59,545.0651,210.5269,545.263,216.1803,539.6096,216.3781,548.92,219.59"
+            <polygon fill="#181818" points="555.38,219.59,563.3738,213.8369,557.9023,215.2728,556.4663,209.8012,555.38,219.59"
                      style="stroke:#181818;stroke-width:1;"/>
         </g><!--reverse link http_x to http-->
-        <g class="link" data-entity-1="http_x" data-entity-2="http" data-source-line="36" data-uid="lnk30" id="link_http_x_http">
-            <path d="M273.17,385.38 C273.17,402.91 273.17,415.05 273.17,432.57" fill="none" id="http_x-backto-http" style="stroke:#181818;stroke-width:1;"/>
-            <polygon fill="#181818" points="273.17,373.38,269.17,379.38,273.17,385.38,277.17,379.38,273.17,373.38" style="stroke:#181818;stroke-width:1;"/>
+        <g class="link" data-entity-1="http_x" data-entity-2="http" data-source-line="40" data-uid="lnk33" id="link_http_x_http">
+            <path d="M296.17,385.38 C296.17,402.91 296.17,415.05 296.17,432.57" fill="none" id="http_x-backto-http" style="stroke:#181818;stroke-width:1;"/>
+            <polygon fill="#181818" points="296.17,373.38,292.17,379.38,296.17,385.38,300.17,379.38,296.17,373.38" style="stroke:#181818;stroke-width:1;"/>
         </g><!--link mqtt to connectivity_x-->
-        <g class="link" data-entity-1="mqtt" data-entity-2="connectivity_x" data-source-line="38" data-uid="lnk31" id="link_mqtt_connectivity_x">
-            <path d="M636.3,373.38 C657.26,390.91 681.5473,411.2009 702.4973,428.7209" fill="none" id="mqtt-to-connectivity_x"
+        <g class="link" data-entity-1="mqtt" data-entity-2="connectivity_x" data-source-line="42" data-uid="lnk34" id="link_mqtt_connectivity_x">
+            <path d="M706.51,373.38 C727.65,390.91 752.1412,411.2203 773.2712,428.7403" fill="none" id="mqtt-to-connectivity_x"
                   style="stroke:#181818;stroke-width:1;"/>
-            <polygon fill="#181818" points="707.1,432.57,702.7621,423.7279,703.2645,429.3624,697.6299,429.8648,707.1,432.57"
+            <polygon fill="#181818" points="777.89,432.57,773.5149,423.7462,774.041,429.3786,768.4087,429.9047,777.89,432.57"
                      style="stroke:#181818;stroke-width:1;"/>
         </g><!--reverse link mqtt to mqtt_client-->
-        <g class="link" data-entity-1="mqtt" data-entity-2="mqtt_client" data-source-line="39" data-uid="lnk32" id="link_mqtt_mqtt_client">
-            <path d="M597.1387,384.6933 C590.9387,402.2233 586.39,415.05 580.19,432.57" fill="none" id="mqtt-backto-mqtt_client"
+        <g class="link" data-entity-1="mqtt" data-entity-2="mqtt_client" data-source-line="43" data-uid="lnk35" id="link_mqtt_mqtt_client">
+            <path d="M667.4509,384.7254 C661.4109,402.2554 657,415.05 650.97,432.57" fill="none" id="mqtt-backto-mqtt_client"
                   style="stroke:#181818;stroke-width:1;"/>
-            <polygon fill="#181818" points="601.14,373.38,595.3683,377.7029,597.1387,384.6933,602.9105,380.3704,601.14,373.38"
+            <polygon fill="#181818" points="671.36,373.38,665.6236,377.7497,667.4509,384.7254,673.1873,380.3558,671.36,373.38"
                      style="stroke:#181818;stroke-width:1;"/>
         </g><!--reverse link connectivity_x to connectivity_plus-->
-        <g class="link" data-entity-1="connectivity_x" data-entity-2="connectivity_plus" data-source-line="41" data-uid="lnk33"
+        <g class="link" data-entity-1="connectivity_x" data-entity-2="connectivity_plus" data-source-line="45" data-uid="lnk36"
            id="link_connectivity_x_connectivity_plus">
-            <path d="M734.17,491.87 C734.17,509.4 734.17,521.54 734.17,539.06" fill="none" id="connectivity_x-backto-connectivity_plus"
+            <path d="M805.17,491.87 C805.17,509.4 805.17,521.54 805.17,539.06" fill="none" id="connectivity_x-backto-connectivity_plus"
                   style="stroke:#181818;stroke-width:1;"/>
-            <polygon fill="#181818" points="734.17,479.87,730.17,485.87,734.17,491.87,738.17,485.87,734.17,479.87" style="stroke:#181818;stroke-width:1;"/>
-        </g><!--SRC=[RL6x3iCW3Dpz5P6wLMAerBb3LUKt8eHeWaI09auVVzy2SMAQJ737sRupolV1E-smaY60Mj647OFMjwqU637UzI0PxX-832hld5PedWO_pRjefAHj1jrELgBnRkGzDQ9nBQTUSd2biJYeKTR4- -5ykvxgchrsYA6O5uaTNU4ls6bSDF0RLmbnoHiWaECIIc49_4KbUXjqwKKnYQ2GQsbQDi4v4r0T9mjkheDybhNH_-fzXIJOs6Mn8Okgen193n2Rx8LFV9InNm8eHUbzit_u0W00]-->
+            <polygon fill="#181818" points="805.17,479.87,801.17,485.87,805.17,491.87,809.17,485.87,805.17,479.87" style="stroke:#181818;stroke-width:1;"/>
+        </g><!--SRC=[RL6x3iCW3Dpz5P6wLSfGgNE7giflH0WHYaI04gUFlsyXTJ1jDkvyFdEsz6FmJZbiH0WW2vhnog3rMgl8YC77KQ3nZd7JeA9WUBmXCYYzSqgYkHjyzS_AN0hRHwLdcoqdxgaGZTESUeZewi-cGRsq9hrtnylvq7MiUaKCrRn4REYg_mKxJwi6FkEQjZqjMo6mn2MKmnBuYKhqVz3LYs8IGI5BQpu0mMycWkKQG4vSLd5V9rXxk1AMQaNbd2LZWQNd9nPR3ooYPj-sMG-GJBQMbFaaOzS4g4Mv_dSdU0C0]-->
     </g>
 </svg>

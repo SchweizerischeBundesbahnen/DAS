@@ -24,7 +24,7 @@ class LoginDraggableBottomSheet extends StatefulWidget {
 
 class _LoginDraggableBottomSheetState extends State<LoginDraggableBottomSheet> {
   final _controller = DraggableScrollableController();
-  final minHeight = min(LoginDraggableBottomSheet._minHeight / DeviceScreen.size.height, 0.5);
+  final minHeight = min(LoginDraggableBottomSheet._minHeight / DeviceScreen.height, 0.5);
 
   final flavor = DI.get<Flavor>();
   final _packageInfo = PackageInfo.fromPlatform();
