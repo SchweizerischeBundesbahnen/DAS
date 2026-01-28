@@ -351,7 +351,6 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
         segmentProfiles: _segmentProfiles,
         trainCharacteristics: _trainCharacteristics,
         relatedTrainInformation: _relatedTrainInformation,
-        lastJourney: _rxJourney.value,
       );
       if (newJourney.valid) {
         _rxJourney.add(newJourney);
@@ -371,17 +370,17 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
     _eventMessageHandlers.add(NetworkSpecificEventHandler(_onNetworkSpecificEvent));
   }
 
-  void _onJourneyProfileUpdated(SferaEventMessageHandler handler, JourneyProfileDto data) async {
+  void _onJourneyProfileUpdated(SferaEventMessageHandler _, JourneyProfileDto data) async {
     _journeyProfile = data;
     _startSegmentProfileAndTCTask();
   }
 
-  void _onRelatedTrainInformationUpdated(SferaEventMessageHandler handler, RelatedTrainInformationDto data) async {
+  void _onRelatedTrainInformationUpdated(SferaEventMessageHandler _, RelatedTrainInformationDto data) async {
     _relatedTrainInformation = data;
     _updateJourney();
   }
 
-  void _onNetworkSpecificEvent(SferaEventMessageHandler handler, NetworkSpecificEventDto data) async {
+  void _onNetworkSpecificEvent(SferaEventMessageHandler _, NetworkSpecificEventDto data) async {
     if (data is UxTestingNseDto) {
       if (data.koa != null) {
         final event = UxTestingEvent(name: data.koa!.name, value: data.koa!.nspValue);

@@ -54,9 +54,7 @@ class DepartureAuthorizationViewModel extends JourneyAwareViewModel {
   }
 
   @override
-  void journeyIdentificationChanged(Journey? journey) {
-    _rxModel.add(null);
-  }
+  void journeyIdentificationChanged(_) => _rxModel.add(null);
 
   @override
   void dispose() {

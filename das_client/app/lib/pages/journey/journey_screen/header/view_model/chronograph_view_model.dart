@@ -11,8 +11,6 @@ import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
 class ChronographViewModel extends JourneyAwareViewModel {
-  static const String trainIsPunctualString = '+00:00';
-
   ChronographViewModel({
     required Stream<JourneyPositionModel> journeyPositionStream,
     required Stream<PunctualityModel> punctualityStream,
@@ -95,12 +93,10 @@ class ChronographViewModel extends JourneyAwareViewModel {
   }
 
   @override
-  void journeyUpdated(Journey? journey) {
-    _emitState();
-  }
+  void journeyUpdated(Journey? _) => _emitState();
 
   @override
-  void journeyIdentificationChanged(Journey? journey) {
+  void journeyIdentificationChanged(_) {
     _punctualityModel = PunctualityModel.hidden();
     _rxModel.add(_punctualityModel);
     _isAdvisedSpeedActive = false;

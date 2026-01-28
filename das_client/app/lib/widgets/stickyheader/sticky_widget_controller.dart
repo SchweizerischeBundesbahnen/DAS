@@ -22,7 +22,6 @@ class StickyWidgetController with ChangeNotifier {
 
   Map<StickyLevel, double> headerOffsets = {.first: 0.0, .second: 0.0};
   Map<StickyLevel, int> headerIndexes = {.first: -1, .second: -1};
-  Map<StickyLevel, int> nextHeaderIndex = {.first: -1, .second: -1};
 
   var footerIndex = -1;
 
@@ -52,7 +51,6 @@ class StickyWidgetController with ChangeNotifier {
 
     if (scrollController.positions.isNotEmpty) {
       _calculateHeaders(firstVisibleIndex);
-      _calculateNextHeaderIndex();
       _calculateHeaderOffsets();
       footerIndex = _calculateFooter(headerIndexes[StickyLevel.first]! + 1);
     }
@@ -157,13 +155,6 @@ class StickyWidgetController with ChangeNotifier {
   double widgetHeight(int index) {
     if (index < 0 || index >= _rows.length) return 0.0;
     return _rows[index].height;
-  }
-
-  void _calculateNextHeaderIndex() {
-    nextHeaderIndex = {
-      .first: _findNextStickyBelowLevel(headerIndexes[StickyLevel.first]! + 1, .first),
-      .second: _findNextStickyBelowLevel(headerIndexes[StickyLevel.second]! + 1, .second),
-    };
   }
 
   @override

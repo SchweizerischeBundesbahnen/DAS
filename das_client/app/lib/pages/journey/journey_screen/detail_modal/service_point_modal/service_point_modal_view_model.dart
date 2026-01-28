@@ -51,8 +51,6 @@ class ServicePointModalViewModel {
 
   Stream<List<ServicePointModalTab>> get tabs => _rxTabs.distinct();
 
-  Stream<List<LocalRegulationSection>> get localRegulationSections => _rxLocalRegulationSections.distinct();
-
   Stream<String> get localRegulationHtml => _rxLocalRegulationHtml.distinct();
 
   Stream<DepartureAuthorization?> get departureAuthorization => _rxDepartureAuth.distinct();

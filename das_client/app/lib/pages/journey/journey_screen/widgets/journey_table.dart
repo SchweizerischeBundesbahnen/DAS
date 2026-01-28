@@ -68,7 +68,6 @@ class JourneyTable extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel = context.read<JourneyTableViewModel>();
     final journeySettingsVM = context.read<JourneySettingsViewModel>();
-    final journeyPositionViewModel = context.read<JourneyPositionViewModel>();
     final advancementViewModel = context.read<JourneyTableAdvancementViewModel>();
 
     return StreamBuilder<List<dynamic>>(
@@ -76,7 +75,6 @@ class JourneyTable extends StatelessWidget {
         viewModel.journey,
         journeySettingsVM.model,
         viewModel.showDecisiveGradient,
-        journeyPositionViewModel.model,
       ]),
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.data?[0] == null) {
@@ -85,7 +83,6 @@ class JourneyTable extends StatelessWidget {
 
         final journey = snapshot.data![0] as Journey;
         final settings = snapshot.data![1] as JourneySettings;
-        final journeyPosition = snapshot.data![3] as JourneyPositionModel;
 
         final servicePointModalViewModel = context.read<ServicePointModalViewModel>();
         servicePointModalViewModel.updateMetadata(journey.metadata);
@@ -96,19 +93,14 @@ class JourneyTable extends StatelessWidget {
           child: Listener(
             onPointerDown: (_) => advancementViewModel.resetIdleScrollTimer(),
             onPointerUp: (_) => advancementViewModel.resetIdleScrollTimer(),
-            child: _body(context, journey, settings, journeyPosition),
+            child: _body(context, journey, settings),
           ),
         );
       },
     );
   }
 
-  Widget _body(
-    BuildContext context,
-    Journey journey,
-    JourneySettings settings,
-    JourneyPositionModel journeyPosition,
-  ) {
+  Widget _body(BuildContext context, Journey journey, JourneySettings settings) {
     final collapsibleRowsViewModel = context.read<CollapsibleRowsViewModel>();
     final journeyPositionViewModel = context.read<JourneyPositionViewModel>();
     return StreamBuilder(

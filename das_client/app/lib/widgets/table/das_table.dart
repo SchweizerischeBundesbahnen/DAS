@@ -90,11 +90,7 @@ class _DASTableState extends State<DASTable> {
       }
     } else if (oldLength > newLength) {
       for (int i = 0; i < diff; i++) {
-        _animatedListKey.currentState!.removeItem(
-          oldLength - i,
-          (context, animation) => Container(),
-          duration: Duration.zero,
-        );
+        _animatedListKey.currentState!.removeItem(oldLength - i, (_, _) => SizedBox.shrink(), duration: Duration.zero);
       }
     }
   }
@@ -108,7 +104,7 @@ class _DASTableState extends State<DASTable> {
     for (int i = 0; i < oldWidget.rows.length && i < widget.rows.length; i++) {
       final oldRow = oldWidget.rows[i];
       if (oldRow.identifier != null && widget.rows[i].identifier != oldRow.identifier) {
-        _animatedListKey.currentState!.removeItem(i, (context, animation) {
+        _animatedListKey.currentState!.removeItem(i, (_, animation) {
           return SizeTransition(sizeFactor: animation, child: _dataRow(oldRow));
         }, duration: Duration(milliseconds: _tableInsertRemoveAnimationDurationMs));
       }

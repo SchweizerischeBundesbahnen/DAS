@@ -1,6 +1,5 @@
 import 'package:app/pages/journey/journey_screen/view_model/line_speed_view_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/show_speed_behaviour.dart';
-import 'package:app/pages/journey/view_model/model/journey_settings.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
@@ -11,21 +10,17 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
 class AdvisedSpeedCellBody extends StatelessWidget {
-  static const String zeroSpeedContent = '\u{2013}'; // en dash '–'
   static const Key nonEmptyKey = Key('AdvisedSpeedCellBodyNonEmptyKey');
   static const Key advisedSpeedDistKey = Key('AdvisedSpeedCellBodyNonEmptyDISTKey');
-  static const Key generalKey = Key('AdvisedSpeedCellBodyGeneralKey');
 
   const AdvisedSpeedCellBody({
     required this.metadata,
-    required this.settings,
     required this.order,
     required this.showSpeedBehavior,
     super.key,
   });
 
   final Metadata metadata;
-  final JourneySettings settings;
   final int order;
   final ShowSpeedBehavior showSpeedBehavior;
 

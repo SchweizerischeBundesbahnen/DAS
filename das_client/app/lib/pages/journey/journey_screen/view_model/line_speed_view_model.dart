@@ -47,5 +47,5 @@ class LineSpeedViewModel extends JourneyAwareViewModel {
   }
 
   @override
-  void journeyIdentificationChanged(Journey? journey) {}
+  void journeyIdentificationChanged(_) {}
 }

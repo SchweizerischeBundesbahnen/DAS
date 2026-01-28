@@ -33,9 +33,7 @@ class HeaderIconButton extends StatelessWidget {
         ButtonStyle? buttonStyle;
         if (invertColors) buttonStyle = _invertButtonStyle(context);
 
-        return isDetailModalSheetOpen
-            ? _iconButton(buttonStyle, isDetailModalSheetOpen)
-            : _iconWithLabelButton(buttonStyle, context);
+        return isDetailModalSheetOpen ? _iconButton(buttonStyle) : _iconWithLabelButton(buttonStyle, context);
       },
     );
   }
@@ -56,7 +54,7 @@ class HeaderIconButton extends StatelessWidget {
     );
   }
 
-  Widget _iconButton(ButtonStyle? buttonStyle, bool isDetailModalSheetOpen) {
+  Widget _iconButton(ButtonStyle? buttonStyle) {
     /// ThemeData & ButtonStyle is weirdly overwritten in Design System
     /// Will be changed with https://github.com/SchweizerischeBundesbahnen/design_system_flutter/pull/425
     /// and v5.0.0 is released

@@ -75,6 +75,7 @@ class RSFlipFlop {
     negativeSchwelleErkannt = oldState && !state;
   }
 
+  // TODO: firstPositivIndex does nothing, could be port error as changedSoftSetIndex is also class variable. Check with original source
   bool _hasPositivValue(List<bool> newValues, int firstPositivIndex) {
     for (int i = 0; i < newValues.length; i++) {
       if (newValues[i]) {
@@ -85,6 +86,7 @@ class RSFlipFlop {
     return false;
   }
 
+  // TODO: changedIndex does nothing, could be port error as changedSetIndex is a class variable. Check with original source
   bool _hasChanged(List<bool> lastValues, List<bool> newValues, int changedIndex) {
     for (int i = 0; i < newValues.length; i++) {
       if (!lastValues[i] && newValues[i]) {

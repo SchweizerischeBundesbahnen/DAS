@@ -58,11 +58,7 @@ class JourneyPositionViewModel extends JourneyAwareViewModel {
             return;
           }
 
-          final updatedPosition = _calculateCurrentPosition(
-            journey.metadata.signaledPosition,
-            journey.journeyPoints,
-            punctuality,
-          );
+          final updatedPosition = _calculateCurrentPosition(journey.metadata.signaledPosition, journey.journeyPoints);
 
           _setTimedServicePoint(updatedPosition, journey.journeyPoints, punctuality);
 
@@ -108,7 +104,6 @@ class JourneyPositionViewModel extends JourneyAwareViewModel {
   JourneyPoint? _calculateCurrentPosition(
     SignaledPosition? signaledPosition,
     List<JourneyPoint> journeyPoints,
-    PunctualityModel punctuality,
   ) {
     if (journeyPoints.isEmpty) return null;
     if (signaledPosition == null && _rxManualPosition.value == null && _rxTimedServicePointReached.value == null) {
@@ -223,7 +218,7 @@ class JourneyPositionViewModel extends JourneyAwareViewModel {
   }
 
   @override
-  void journeyIdentificationChanged(Journey? journey) {
+  void journeyIdentificationChanged(_) {
     // Reset manual and timed if journey changes
     _rxTimedServicePointReached.add(null);
     _rxManualPosition.add(null);
