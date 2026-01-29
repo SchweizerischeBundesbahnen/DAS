@@ -6,9 +6,8 @@ package ch.sbb.das.backend.restapi.e2etest.helper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.backend.restclient.v1.ApiClient;
 import ch.sbb.backend.restclient.v1.model.Problem;
-import ch.sbb.das.backend.restapi.configuration.DasBackendEndpoint;
+import ch.sbb.das.backend.restapi.configuration.DasBackendEndpointConfiguration;
 import ch.sbb.das.backend.restapi.helper.ObjectMapperFactory;
 import ch.sbb.das.backend.restapi.monitoring.MonitoringConstants;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,9 +18,6 @@ import io.restassured.parsing.Parser;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -34,14 +30,11 @@ import org.apache.http.params.CoreConnectionPNames;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.RegisterExtension;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.security.oauth2.client.OAuth2AuthorizeRequest;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.web.reactive.function.client.WebClientException;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.core.publisher.Mono;
@@ -55,6 +48,12 @@ import reactor.core.publisher.Mono;
 @Slf4j
 public abstract class RestAssuredCommand {
 
+    /**
+     * Tokens for authorization must start with a Bearer-Prefix.
+     *
+     * @see <a href="https://confluence.sbb.ch/display/AITG/Spring+Boot+Anwendung">Authorziation</a>
+     */
+    public static final String SSO_BEARER_TOKEN_PREFIX = "Bearer ";
     protected static final String MEDIA_TYPE_APPLICATION_JSON_PROBLEM = MediaType.APPLICATION_PROBLEM_JSON_VALUE;
     protected static final String NO_HITS = "NO_HITS";
     /**
@@ -62,12 +61,10 @@ public abstract class RestAssuredCommand {
      */
     protected static final ObjectMapper MAPPER = ObjectMapperFactory.createMapper(true);
     private static final int WEBCLIENT_TIMEOUT = 30 * 1000;
-    private static final String ENVIRONMENT_URL = "envUrl";
+
     @RegisterExtension
     private final TestContextGetterExtension testContextGetter = new TestContextGetterExtension();
-    private DasBackendEndpoint configuration;
-    private String url;
-    private final String token = null;
+    private DasBackendEndpointConfiguration endpointConfiguration;
 
     protected static String toBodyString(Response response) {
         // DO NOT use .toString() here -> System.out.println() implementation will force System.exit() while Jenkins test job execution!!!
@@ -82,7 +79,6 @@ public abstract class RestAssuredCommand {
      * @param responseAsync
      * @param <T>
      * @return assumed response with T as body
-     * @see #getResponseBodyOrFail(Mono)
      */
     protected static <T> ResponseEntity<T> blockBody(Mono<ResponseEntity<T>> responseAsync, String acceptLanguage, String requestId, String instance) {
         assertThat(responseAsync).as("Mono-object").isNotNull();
@@ -114,7 +110,7 @@ public abstract class RestAssuredCommand {
         }
 
         assertThat(responseEntity).isNotNull();
-        //TODO assertThat(responseEntity.getHeaders()).containsKey(MonitoringConstants.HEADER_REQUEST_ID);
+        assertThat(responseEntity.getHeaders()).containsKey(MonitoringConstants.HEADER_REQUEST_ID);
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.SC_OK);
         // see assertOK();
         AssertionsResponse.assertApplicationJson(responseEntity.getHeaders().getFirst(HttpHeaders.CONTENT_TYPE));
@@ -132,10 +128,6 @@ public abstract class RestAssuredCommand {
         return AssertionsResponse
             .isNotFound(response.getStatusCode(), toBodyString(response), response.getHeader(HttpHeaders.CONTENT_TYPE), acceptLanguage, response.getHeader(HttpHeaders.CONTENT_LANGUAGE),
                 response.getHeader(MonitoringConstants.HEADER_REQUEST_ID), requestId);
-    }
-
-    protected static void assertOK(Response response, String acceptLanguage, @NonNull String requestId) {
-        assertOK(response, acceptLanguage, requestId, null);
     }
 
     /**
@@ -183,7 +175,7 @@ public abstract class RestAssuredCommand {
             if (acceptLanguage != null) {
                 AssertionsResponse.assertLanguage(acceptLanguage, response.getHeader(HttpHeaders.CONTENT_LANGUAGE));
             }
-            // Assertions.assertThat(response.getHeader(HEADER_REQUEST_ID)).endsWith(requestId);
+            assertThat(response.getHeader(MonitoringConstants.HEADER_REQUEST_ID)).startsWith(requestId);
             assertThat(bodyString).as("developer-error: OK-body is empty").isNotEmpty();
             assertThat(bodyString.length()).as("developer-error: OK-body too short").isGreaterThan(2);
         } else if (StringUtils.isBlank(bodyString)) {
@@ -238,30 +230,19 @@ public abstract class RestAssuredCommand {
         AssertionsResponse.assertApplicationJson(response.getHeader(HttpHeaders.CONTENT_TYPE));
     }
 
-    /**
-     * @param configuration
-     */
-    private void configureEndpoint(@NonNull DasBackendEndpoint configuration) {
-        this.configuration = configuration;
-        if (StringUtils.isNotBlank(System.getProperty(ENVIRONMENT_URL))) {
-            // called by Test-Automation mechanism
-            url = System.getProperty(ENVIRONMENT_URL);
-            log.info("using environment variable {} = {}", ENVIRONMENT_URL, url);
-        } else {
-            url = configuration.getEndpointAndPort();
-        }
+    protected final void configure(@NonNull DasBackendEndpointConfiguration configuration) {
+        this.endpointConfiguration = configuration;
     }
-
     /**
      * @param service for e.g. "/v1/settings"
      * @return service-URL
      */
     protected final String getUrl(String service) {
-        return url + service;
+        return endpointConfiguration.getEndpointAndPort() + service;
     }
 
     /**
-     * Gives a request id for test, based on the test (method) name.
+     * @return request-id in test-scope, adding test (method) name.
      */
     protected final String getRequestId() {
         ExtensionContext testContext = testContextGetter.getContext();
@@ -279,7 +260,7 @@ public abstract class RestAssuredCommand {
      * @param requestId tracing info
      * @return new basic RestAssured.io Request
      */
-    protected final RequestSpecification createRequest(String requestId) {
+    private RequestSpecification createRequest(String requestId) {
         fiddleThatNastyRestAssuredStuff();
 
         final String requestIdValue = StringUtils.startsWith(requestId, ServiceDoc.REQUEST_ID_VALUE_E2E_TEST) ? requestId : ServiceDoc.REQUEST_ID_VALUE_E2E_TEST + "_" + requestId;
@@ -287,21 +268,22 @@ public abstract class RestAssuredCommand {
             .config(RestAssured.config().objectMapperConfig(new ObjectMapperConfig().jackson2ObjectMapperFactory(
                 (type, s) -> MAPPER /* will set OffsetDateTime deserialization! */))
             )
-            // fix javax.net.ssl.SSLHandshakeException: Remote host closed connection during handshake
-            // .config(RestAssured.config.encoderConfig(EncoderConfig.encoderConfig().appendDefaultContentCharsetToContentTypeIfUndefined(true)))
             .urlEncodingEnabled(true) // necessary for params with Umlaut
             .header(MonitoringConstants.HEADER_REQUEST_ID, requestIdValue);
     }
 
-    /**
-     * Try to use ApiClient instead!
-     *
-     * @param acceptLanguage
-     * @param requestId for explicite override of generic test-method
-     * @return
-     */
-    protected RequestSpecification createRequestWithHeader(@NonNull String acceptLanguage, String requestId) {
-        return createRequestWithHeader(acceptLanguage, requestId, token);
+    protected RequestSpecification createRequestWithHeader(String acceptLanguage, String requestId) {
+        return createRequestWithHeader(acceptLanguage, requestId, getFreshToken());
+    }
+
+    // RestAssured does not provide any help in obtaining the access token
+    private String getFreshToken() {
+        OAuth2AuthorizeRequest req = OAuth2AuthorizeRequest.withClientRegistrationId(DasBackendEndpointConfiguration.AUTHORIZATION_PROVIDER)
+            .principal("N/A")
+            .build();
+        OAuth2AuthorizedClient client = endpointConfiguration.authorizedClientManager(endpointConfiguration.clientRegistrationRepository(),
+            endpointConfiguration.authorizedClientService(endpointConfiguration.clientRegistrationRepository())).authorize(req).block();
+        return SSO_BEARER_TOKEN_PREFIX + client.getAccessToken().getTokenValue();
     }
 
     /**
@@ -311,54 +293,17 @@ public abstract class RestAssuredCommand {
      * <p>
      *
      * @param acceptLanguage de, fr, it, en
-     * @param requestId logging-context (SPLUNK, Instana header {@link MonitoringConstants#HEADER_REQUEST_ID})
+     * @param requestId Instana header {@link MonitoringConstants#HEADER_REQUEST_ID})
      * @param
      * @return GET request header for APIM
      */
-    protected RequestSpecification createRequestWithHeader(@NonNull String acceptLanguage, String requestId, @NonNull String bearerToken) {
-        return createRequest(requestId)
-            .header(HttpHeaders.AUTHORIZATION, bearerToken)
-            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguage);
-    }
-
-    // non-translatable APIs
-    protected Response requestPOST(@NonNull String url, @NonNull String postBody, @NonNull String requestId) {
-        return createRequest(requestId)
-            // specify to avoid HttpStatus 415
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .header(HttpHeaders.AUTHORIZATION, token)
-            .body(postBody)
-            .when()
-            .post(getUrl(url));
-    }
-
-    /**
-     * Create a header and request with a concrete POST body.
-     *
-     * @param url POST URL
-     * @param postBody JSON object serialized
-     * @param acceptLanguage de,fr,it,en enforcing response texts translated
-     * @param requestId log-tag
-     * @return HTTP response
-     */
-    protected final Response requestPOST(@NonNull String url, @NonNull String postBody, @NonNull String acceptLanguage, @NonNull String requestId) {
-        return createRequestWithHeader(acceptLanguage, requestId)
-            // specify to avoid HttpStatus 415
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .body(postBody)
-            .when()
-            .post(getUrl(url));
-    }
-
-    /*
-     * Cache-Control headers in ServiceCalendarController request are not declared explicitly yet -> call it generically by ApiClient
-     *  responseAsync = journeyServiceApi.getSchedulesV3Api().getServiceCalendarWithHttpInfo(reqId, headerParams);
-     *  response = blockBody(responseAsync);
-     *
-     * Unfortunately: header cannot be specified by: journeyServiceApi.getSchedulesV3Api().getServiceCalendarWithResponseSpec(requestID)
-     */
-    protected RequestSpecBuilder createRequestSpec(String apiPath) {
-        return new RequestSpecBuilder(configuration, apiPath);
+    protected RequestSpecification createRequestWithHeader(String acceptLanguage, String requestId, @NonNull String bearerToken) {
+        final RequestSpecification requestSpecification = createRequest(requestId)
+            .header(HttpHeaders.AUTHORIZATION, bearerToken);
+        if (acceptLanguage != null) {
+            requestSpecification.header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguage);
+        }
+        return requestSpecification;
     }
 
     private void fiddleThatNastyRestAssuredStuff() {
@@ -374,14 +319,6 @@ public abstract class RestAssuredCommand {
             .httpClient(httpClientConfig)
             .xmlConfig(RestAssured.config.getXmlConfig().with().validating(false).namespaceAware(false));
         RestAssured.useRelaxedHTTPSValidation();
-    }
-
-    protected <T> ResponseEntity<T> blockBody(Mono<ResponseEntity<T>> responseAsync) {
-        return blockBody(responseAsync, null, getRequestId(), null);
-    }
-
-    protected <T> T getResponseBodyOrFail(Mono<ResponseEntity<T>> responseAsync) {
-        return getResponseBodyOrFail(responseAsync, null, null, null);
     }
 
     protected <T> T getResponseBodyOrFail(Mono<ResponseEntity<T>> responseAsync, String acceptLanguage, String requestId, String instance) {
@@ -428,81 +365,5 @@ public abstract class RestAssuredCommand {
         }
         // won't reach
         return null;
-    }
-
-    public static final class RequestSpecBuilder {
-
-        private final ApiClient apiClient;
-
-        private final String apiPath;
-        // create path and map variables
-        private final Map<String, Object> pathParams = new HashMap<>();
-        private final MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
-        private final MultiValueMap<String, String> cookieParams = new LinkedMultiValueMap<>();
-        private final MultiValueMap<String, Object> formParams = new LinkedMultiValueMap<>();
-        private HttpMethod method = HttpMethod.GET;
-        private Object postBody = null;
-        private org.springframework.http.HttpHeaders headerParams = new org.springframework.http.HttpHeaders();
-        private String requestId = null;
-
-        private final ParameterizedTypeReference<?> localVarReturnType = null;
-
-        private final String[] localVarAuthNames = new String[]{}; // or something else... for now always overridden
-
-        private RequestSpecBuilder(DasBackendEndpoint configuration, String apiPath) {
-            apiClient = new ApiClient();
-            apiClient.setBasePath(configuration.getEndpointAndPort());
-            this.apiPath = apiPath;
-        }
-
-        public RequestSpecBuilder withMethod(HttpMethod method) {
-            this.method = method;
-            return this;
-        }
-
-        public RequestSpecBuilder withPostBody(Object postBody) {
-            this.postBody = postBody;
-            return this;
-        }
-
-        public RequestSpecBuilder withRequestId(String requestId) {
-            this.requestId = requestId;
-            return this;
-        }
-
-        public RequestSpecBuilder withPathParam(String key, Object value) {
-            this.pathParams.put(key, value);
-            return this;
-        }
-
-        public RequestSpecBuilder withQueryParam(String key, String value) {
-            this.queryParams.add(key, value);
-            return this;
-        }
-
-        public RequestSpecBuilder withHttpHeaders(org.springframework.http.HttpHeaders headerParams) {
-            this.headerParams = headerParams;
-            return this;
-        }
-
-        public WebClient.ResponseSpec invoke() {
-            if (requestId != null) {
-                headerParams.add(MonitoringConstants.HEADER_REQUEST_ID, apiClient.parameterToString(requestId));
-            }
-            final String[] localVarAccepts = {
-                MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_PROBLEM_JSON_VALUE
-            };
-            final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-            final String[] localVarContentTypes = {};
-            final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-            return apiClient
-                .invokeAPI(apiPath, method, pathParams, queryParams, postBody, headerParams, cookieParams, formParams,
-                    localVarAccept, localVarContentType, localVarAuthNames,
-                    /* seems unused !*/ localVarReturnType);
-        }
-
-        public ResponseEntity<?> invokeToEntity() {
-            return invoke().toEntity(localVarReturnType).block();
-        }
     }
 }

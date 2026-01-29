@@ -33,8 +33,8 @@ class SettingsApiTest extends RestAssuredCommand {
             log.debug("{} in {}", settingsResponse, responseAsync);
 
             AssertionsApiClientModel.assertSettingsResponse(settingsResponse, endpointConfiguration.endpoint());
-        } catch (WebClientResponseException e) {
-            log.error("Exception when calling SettingsApi#getConfigurations", e);
+        } catch (WebClientResponseException ex) {
+            log.error("Exception when calling SettingsApi#getSettings", ex);
         }
     }
 }

@@ -1,6 +1,7 @@
 package ch.sbb.das.backend.restapi.configuration;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -96,7 +97,8 @@ public class DasBackendEndpointConfiguration {
         return backendEndpoint;
     }
 
+    @Bean
     public String getEndpointAndPort() {
-        return endpoint + ":" + port;
+        return endpoint + (StringUtils.isBlank(port) ? "" : ":" + port);
     }
 }

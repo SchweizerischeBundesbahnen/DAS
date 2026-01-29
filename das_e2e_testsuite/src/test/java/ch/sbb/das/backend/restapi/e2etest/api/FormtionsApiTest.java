@@ -1,6 +1,9 @@
 package ch.sbb.das.backend.restapi.e2etest.api;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.backend.restclient.v1.model.FormationResponse;
+import ch.sbb.backend.restclient.v1.model.Problem;
 import ch.sbb.das.backend.restapi.configuration.DasBackendApi;
 import ch.sbb.das.backend.restapi.e2etest.configuration.ApiClientTestProfile;
 import ch.sbb.das.backend.restapi.e2etest.helper.AssertionsResponse;
@@ -12,6 +15,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.reactive.function.client.WebClientException;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
@@ -26,21 +30,23 @@ class FormtionsApiTest extends RestAssuredCommand {
 
     @Test
     void getFormations_badOperationTrainNumber() {
+        final LocalDate today = LocalDate.now();
         try {
             final Mono<ResponseEntity<FormationResponse>> responseAsync = dasBackendApi.getFormationsApi()
-                .getFormationsWithHttpInfo(ServiceDoc.REQUEST_ID_VALUE_E2E_TEST, "007", LocalDate.now(), "1033", null);
+                .getFormationsWithHttpInfo(ServiceDoc.REQUEST_ID_VALUE_E2E_TEST, "007", today, "1033", null);
             responseAsync.block();
 
             Assertions.fail("Bad test conditions, should fail");
         } catch (WebClientResponseException ex) {
-            AssertionsResponse.assertClientException(ex, getRequestId(), null);
-            log.info("failed with proper response: " + ex.getResponseBodyAsString());
+            final Problem problem = AssertionsResponse.assertClientException(ex, getRequestId(), null);
+            assertThat(problem.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
+            assertThat(problem.getInstance().toString()).isEqualTo("/v1/formations/007/" + today + "/1033");
         } catch (WebClientException ex) {
             Assertions.fail("Block: " + ex.getMessage(), ex);
         }
     }
 
-    //TODO find regular Cargo Train
+    // TODO find regular Cargo Train
     @Disabled
     void getFormations_concreteCargoTrain() {
         try {
