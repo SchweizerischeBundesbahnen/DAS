@@ -12,14 +12,14 @@ class BreakLoadSlipHauledLoadDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SBBGroup(
+    return SBBContentBox(
       child: KeyValueTable(
         rows: [
           KeyValueTableDataRow.title(
             context.l10n.p_break_load_slip_hauled_load_title,
             hasChange: _hasChange(),
           ),
-          SizedBox(height: sbbDefaultSpacing * 0.5),
+          SizedBox(height: SBBSpacing.xSmall),
           KeyValueTableDataRow(
             context.l10n.p_break_load_slip_hauled_load_total_vehicles,
             formationRunChange.formationRun.vehiclesCount.toString(),

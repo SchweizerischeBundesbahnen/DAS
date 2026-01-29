@@ -12,7 +12,7 @@ class BreakLoadSlipBrakeDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SBBGroup(
+    return SBBContentBox(
       child: _brakeDetails(context),
     );
   }
@@ -24,7 +24,7 @@ class BreakLoadSlipBrakeDetails extends StatelessWidget {
           context.l10n.p_break_load_slip_brake_details_title,
           hasChange: _hasChange(),
         ),
-        SizedBox(height: sbbDefaultSpacing * 0.5),
+        SizedBox(height: SBBSpacing.xSmall),
         KeyValueTableDataRow(
           context.l10n.p_break_load_slip_brake_details_brake_ratio_front,
           formationRunChange.formationRun.gradientUphillMaxInPermille.toString(),

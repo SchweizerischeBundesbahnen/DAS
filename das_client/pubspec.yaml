@@ -3,7 +3,7 @@ publish_to: none
 description: "DAS (Driver Advisory System) is a mobile application that provides all the required journey data to the train driver."
 
 environment:
-  sdk: ^3.10.0
+  sdk: ^3.10.4
 
 workspace:
   - app
@@ -71,6 +71,14 @@ melos:
         failFast: false
       packageFilters:
         dirExists: test
+
+    unused_code:
+      run: dart run flutter_prunekit unused_code
+      description: Run build_runner in all components
+      exec:
+        failFast: false
+      packageFilters:
+        dependsOn: "flutter_prunekit"
 
   command:
     clean:

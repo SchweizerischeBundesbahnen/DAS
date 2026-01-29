@@ -1,4 +1,5 @@
 import 'package:app/i18n/i18n.dart';
+import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:app/widgets/das_colors.dart';
 import 'package:app/widgets/das_text_styles.dart';
@@ -17,9 +18,9 @@ class BreakLoadSlipHeader extends StatelessWidget {
   static const Key dangerousGoodsHeaderBannerKey = Key('dangerousGoodsHeaderBanner');
   static const Key carCarrierHeaderBannerKey = Key('carCarrierHeaderBanner');
 
-  const BreakLoadSlipHeader({required this.formationRun, super.key});
+  const BreakLoadSlipHeader({required this.formationRunChange, super.key});
 
-  final FormationRun formationRun;
+  final FormationRunChange formationRunChange;
 
   @override
   Widget build(BuildContext context) {
@@ -28,15 +29,7 @@ class BreakLoadSlipHeader extends StatelessWidget {
         _specialIndicatorBackground(context),
         Column(
           children: [
-            SBBHeaderbox(
-              title: context.l10n.p_break_load_slip_header_title(
-                formationRun.trainCategoryCode ?? '',
-                formationRun.brakedWeightPercentage ?? '',
-              ),
-              secondaryLabel: context.l10n.p_break_load_slip_header_subtitle(
-                DateFormat('dd.MM.yyyy HH:mm').format(formationRun.inspectionDateTime),
-              ),
-            ),
+            SBBHeaderbox.custom(child: _customHeaderboxContent(context)),
             _specialIndicators(context),
           ],
         ),
@@ -44,8 +37,47 @@ class BreakLoadSlipHeader extends StatelessWidget {
     );
   }
 
+  Widget _customHeaderboxContent(BuildContext context) {
+    final subtitleColor = ThemeUtil.getColor(context, SBBColors.granite, SBBColors.graphite);
+    final dateChanged = formationRunChange.hasInspectionDateChanged();
+    final timeChanged = formationRunChange.hasChanged(.inspectionDateTime);
+
+    return Column(
+      crossAxisAlignment: .start,
+      children: [
+        Text(
+          context.l10n.p_break_load_slip_header_title(
+            formationRunChange.formationRun.trainCategoryCode ?? '',
+            formationRunChange.formationRun.brakedWeightPercentage ?? '',
+          ),
+          style: DASTextStyles.mediumBold,
+        ),
+        Row(
+          children: [
+            Text(
+              context.l10n.p_break_load_slip_header_subtitle,
+              style: DASTextStyles.smallLight.copyWith(color: subtitleColor),
+            ),
+            Text(
+              DateFormat('dd.MM.yyyy').format(formationRunChange.formationRun.inspectionDateTime),
+              style: dateChanged
+                  ? DASTextStyles.smallBold.copyWith(color: subtitleColor)
+                  : DASTextStyles.smallLight.copyWith(color: subtitleColor),
+            ),
+            Text(
+              DateFormat(' HH:mm').format(formationRunChange.formationRun.inspectionDateTime),
+              style: timeChanged
+                  ? DASTextStyles.smallBold.copyWith(color: subtitleColor)
+                  : DASTextStyles.smallLight.copyWith(color: subtitleColor),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
   List<_SpecialIndicator> _specialIndicatorsData(BuildContext context) => <_SpecialIndicator>[
-    if (formationRun.simTrain)
+    if (formationRunChange.formationRun.simTrain)
       _SpecialIndicator(
         asset: AppAssets.iconSimZug,
         backgroundColor: DASColors.simTrain,
@@ -53,7 +85,7 @@ class BreakLoadSlipHeader extends StatelessWidget {
         textColor: SBBColors.white,
         key: simTrainHeaderBannerKey,
       ),
-    if (formationRun.dangerousGoods)
+    if (formationRunChange.formationRun.dangerousGoods)
       _SpecialIndicator(
         asset: AppAssets.iconSignExclamationPoint,
         backgroundColor: SBBColors.peach,
@@ -61,7 +93,7 @@ class BreakLoadSlipHeader extends StatelessWidget {
         textColor: SBBColors.black,
         key: dangerousGoodsHeaderBannerKey,
       ),
-    if (formationRun.carCarrierVehicle)
+    if (formationRunChange.formationRun.carCarrierVehicle)
       _SpecialIndicator(
         asset: AppAssets.iconCarCarrier,
         backgroundColor: SBBColors.pink,
@@ -77,8 +109,8 @@ class BreakLoadSlipHeader extends StatelessWidget {
 
     return Positioned(
       bottom: 0,
-      left: sbbDefaultSpacing * 0.5,
-      right: sbbDefaultSpacing * 0.5,
+      left: SBBSpacing.xSmall,
+      right: SBBSpacing.xSmall,
       child: Row(
         children: indicators.mapIndexed((index, element) {
           return _specialIndicatorBackgroundElement(
@@ -98,7 +130,7 @@ class BreakLoadSlipHeader extends StatelessWidget {
         children: [
           if (!isFirst)
             Positioned(
-              left: -sbbDefaultSpacing * 0.75,
+              left: -SBBSpacing.small,
               bottom: 0,
               child: SvgPicture.asset(
                 AppAssets.shapeRoundedEdgeLeftMedium,
@@ -109,8 +141,8 @@ class BreakLoadSlipHeader extends StatelessWidget {
             decoration: BoxDecoration(
               color: indicator.backgroundColor,
               borderRadius: BorderRadius.only(
-                bottomLeft: isFirst ? Radius.circular(sbbDefaultSpacing) : Radius.zero,
-                bottomRight: isLast ? Radius.circular(sbbDefaultSpacing) : Radius.zero,
+                bottomLeft: isFirst ? Radius.circular(SBBSpacing.medium) : Radius.zero,
+                bottomRight: isLast ? Radius.circular(SBBSpacing.medium) : Radius.zero,
               ),
             ),
             height: specialIndicatorBackgroundHeight,
@@ -125,7 +157,7 @@ class BreakLoadSlipHeader extends StatelessWidget {
     if (indicators.isEmpty) return SizedBox.shrink();
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing * 0.5),
+      padding: const EdgeInsets.symmetric(horizontal: SBBSpacing.xSmall),
       child: Row(
         children: indicators.mapIndexed((index, element) {
           return _specialIndicatorElement(
@@ -142,13 +174,11 @@ class BreakLoadSlipHeader extends StatelessWidget {
       child: Container(
         key: specialIndicator.key,
         height: specialIndicatorHeight,
-        padding: EdgeInsets.only(left: sbbDefaultSpacing * (isFirst ? 1 : 0.25)),
+        padding: EdgeInsets.only(left: isFirst ? SBBSpacing.medium : SBBSpacing.xxSmall),
         child: Row(
-          spacing: sbbDefaultSpacing * 0.5,
+          spacing: SBBSpacing.xSmall,
           children: [
-            SvgPicture.asset(
-              specialIndicator.asset,
-            ),
+            SvgPicture.asset(specialIndicator.asset),
             Text(specialIndicator.text, style: DASTextStyles.smallLight.copyWith(color: specialIndicator.textColor)),
           ],
         ),

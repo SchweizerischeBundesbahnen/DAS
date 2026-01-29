@@ -92,14 +92,14 @@ class JourneySelectionViewModel {
             final Loading l => _state.add(
               JourneySelectionModel.error(
                 trainIdentification: l.trainIdentification,
-                errorCode: .fromSfera(_sferaRemoteRepo.lastError!),
+                errorCode: .fromSfera(error: _sferaRemoteRepo.lastError!),
                 availableStartDates: _availableStartDates(),
               ),
             ),
             final Selecting s => _state.add(
               JourneySelectionModel.error(
                 trainIdentification: _trainIdFrom(s),
-                errorCode: .fromSfera(_sferaRemoteRepo.lastError!),
+                errorCode: .fromSfera(error: _sferaRemoteRepo.lastError!),
                 availableStartDates: s.availableStartDates,
               ),
             ),

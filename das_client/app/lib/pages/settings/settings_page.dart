@@ -36,7 +36,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Widget _body(BuildContext context) {
     return Column(
-      spacing: sbbDefaultSpacing,
+      spacing: SBBSpacing.medium,
       children: [
         _settingsHeader(context),
         _settingsBody(context),
@@ -53,7 +53,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Widget _settingsBody(BuildContext context) {
     return SingleChildScrollView(
-      padding: const .symmetric(horizontal: sbbDefaultSpacing * 0.5),
+      padding: const .symmetric(horizontal: SBBSpacing.xSmall),
       child: Column(
         crossAxisAlignment: .start,
         children: [
@@ -65,8 +65,8 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Widget _decisiveGradientSettings(BuildContext context) {
-    return SBBGroup(
-      padding: const .only(right: sbbDefaultSpacing),
+    return SBBContentBox(
+      padding: const .only(right: SBBSpacing.medium),
       child: SBBListItem.custom(
         title: context.l10n.p_settings_page_decisive_gradient_show_setting,
         onPressed: () => _updateSettings(.showDecisiveGradient, !_userSettings.showDecisiveGradient),
@@ -82,7 +82,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Widget _settingTitle(String title) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing).copyWith(bottom: sbbDefaultSpacing * 0.5),
+      padding: const EdgeInsets.symmetric(horizontal: SBBSpacing.medium).copyWith(bottom: SBBSpacing.xSmall),
       child: Text(title, style: DASTextStyles.smallLight),
     );
   }

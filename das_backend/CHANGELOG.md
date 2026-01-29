@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.7.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.7.0...backend-v0.7.1) (2026-01-12)
+
+
+### Bug Fixes
+
+* **deps:** update dependency io.confluent:kafka-json-schema-serializer to v8.1.1 ([#1510](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1510)) ([86b9c01](https://github.com/SchweizerischeBundesbahnen/DAS/commit/86b9c01daf2e020e331db3c1af3fde3821a0641b))
+* **deps:** update dependency org.springdoc:springdoc-openapi-starter-webmvc-ui to v3 ([#1479](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1479)) ([eaf9089](https://github.com/SchweizerischeBundesbahnen/DAS/commit/eaf9089a85c06e33365d716b6b94202ef24bc6d3))
+* **deps:** update dependency software.amazon.awssdk:bom to v2.40.1 ([#1512](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1512)) ([503a43b](https://github.com/SchweizerischeBundesbahnen/DAS/commit/503a43b4fbacf79f983e2ea3d57dae6f417b73f8))
+* **deps:** update dependency software.amazon.awssdk:bom to v2.40.6 ([#1540](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1540)) ([ec18d8f](https://github.com/SchweizerischeBundesbahnen/DAS/commit/ec18d8f400a056926cebbea236c3145db6e84d68))
+* **deps:** update shedlock monorepo to v7.2.1 ([#1511](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1511)) ([63a0aea](https://github.com/SchweizerischeBundesbahnen/DAS/commit/63a0aeaa52962dbe7016a08e45f4571e0a76ef40))
+* **deps:** update shedlock monorepo to v7.3.0 ([#1569](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1569)) ([92beeb6](https://github.com/SchweizerischeBundesbahnen/DAS/commit/92beeb609d08659aabae63c70abde3ac7f5e001c))
+* **deps:** update spring-boot to v4 ([#1480](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1480)) ([d76c3fb](https://github.com/SchweizerischeBundesbahnen/DAS/commit/d76c3fbe11ba9de802266247c0bcf68143ed7faa))
+* zis api ([#1533](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1533)) ([2653039](https://github.com/SchweizerischeBundesbahnen/DAS/commit/2653039505fd6576fb33b30e3aaf399e70514b08))
+
 ## [0.7.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.6.0...backend-v0.7.0) (2025-12-02)
 
 

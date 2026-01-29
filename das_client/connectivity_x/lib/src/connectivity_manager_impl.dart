@@ -36,20 +36,14 @@ class ConnectivityManagerImpl implements ConnectivityManager {
   Timer? _timer;
 
   void _startPeriodicCheck() {
-    _timer = Timer.periodic(connectivityCheckInterval, (timer) async {
-      _checkAndUpdateConnectivity();
-    });
+    _timer = Timer.periodic(connectivityCheckInterval, (_) => _checkAndUpdateConnectivity());
   }
 
   @override
-  bool isConnected() {
-    return _connectedSubject.value;
-  }
+  bool isConnected() => _connectedSubject.value;
 
   @override
-  bool isWifiActive() {
-    return _latestConnectivityResults.contains(ConnectivityResult.wifi);
-  }
+  bool isWifiActive() => _latestConnectivityResults.contains(ConnectivityResult.wifi);
 
   @override
   Stream<bool> get onConnectivityChanged => _connectedSubject.stream;

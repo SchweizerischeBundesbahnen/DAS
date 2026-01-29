@@ -28,7 +28,7 @@ class LoggingInterceptor implements InterceptorContract {
 
   @override
   Future<BaseResponse> interceptResponse({required BaseResponse response}) async {
-    final jsonString = response.toJsonString(obfuscateSecrets);
+    final jsonString = response.toJsonString();
     _log.finer('Response $jsonString');
     return response;
   }
@@ -74,7 +74,7 @@ extension _BaseRequestX on BaseRequest {
 }
 
 extension _BaseResponseX on BaseResponse {
-  String toJsonString(bool obfuscateSecrets) {
+  String toJsonString() {
     final json = <String, dynamic>{
       'url': request?.url.toString(),
       'status_code': statusCode,

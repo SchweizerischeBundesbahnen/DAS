@@ -62,5 +62,5 @@ class _DotPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(CustomPainter oldDelegate) => false;
+  bool shouldRepaint(_) => false;
 }

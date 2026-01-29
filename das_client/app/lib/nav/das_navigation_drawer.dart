@@ -1,7 +1,7 @@
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/app_router.dart';
-import 'package:app/pages/journey/navigation/journey_navigation_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
 import 'package:app/widgets/app_version_text.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/device_id_text.dart';
@@ -83,7 +83,7 @@ class DASNavigationDrawer extends StatelessWidget {
 
   Widget _inactiveIcon(IconData icon) {
     return Padding(
-      padding: const .fromLTRB(sbbDefaultSpacing / 2, 0, sbbDefaultSpacing / 2, 0),
+      padding: const .fromLTRB(SBBSpacing.xSmall, 0, SBBSpacing.xSmall, 0),
       child: Icon(icon),
     );
   }
@@ -92,7 +92,7 @@ class DASNavigationDrawer extends StatelessWidget {
     return const Align(
       alignment: .bottomCenter,
       child: Padding(
-        padding: .all(sbbDefaultSpacing),
+        padding: .all(SBBSpacing.medium),
         child: Column(
           children: [
             AppVersionText(color: SBBColors.granite),

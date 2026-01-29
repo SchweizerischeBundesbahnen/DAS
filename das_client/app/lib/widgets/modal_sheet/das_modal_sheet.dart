@@ -211,9 +211,9 @@ class _DASModalSheetState extends State<DasModalSheet> with TickerProviderStateM
     return ExtendedAppBarWrapper(
       child: Container(
         width: width,
-        padding: .all(sbbDefaultSpacing),
+        padding: .all(SBBSpacing.medium),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(topLeft: Radius.circular(sbbDefaultSpacing * 2)),
+          borderRadius: BorderRadius.only(topLeft: Radius.circular(SBBSpacing.xLarge)),
           color: ThemeUtil.isDarkMode(context) ? SBBColors.charcoal : SBBColors.white,
         ),
         child: widget.controller.isOpen
@@ -230,7 +230,7 @@ class _DASModalSheetState extends State<DasModalSheet> with TickerProviderStateM
       children: [
         _integrationTestKey(),
         _header(),
-        SizedBox(height: sbbDefaultSpacing * 0.5),
+        SizedBox(height: SBBSpacing.xSmall),
         Expanded(child: widget.builder.body(context)),
       ],
     );

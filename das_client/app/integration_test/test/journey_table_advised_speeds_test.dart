@@ -1,6 +1,6 @@
-import 'package:app/pages/journey/journey_table/advised_speed/advised_speed_notification.dart';
-import 'package:app/pages/journey/journey_table/widgets/header/chronograph_header_box.dart';
-import 'package:app/pages/journey/journey_table/widgets/table/cells/advised_speed_cell_body.dart';
+import 'package:app/pages/journey/journey_screen/header/widgets/chronograph_header_box.dart';
+import 'package:app/pages/journey/journey_screen/widgets/notification/advised_speed_notification.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/cells/advised_speed_cell_body.dart';
 import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:flutter_test/flutter_test.dart';
 

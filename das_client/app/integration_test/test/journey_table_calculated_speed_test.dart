@@ -1,6 +1,5 @@
-import 'package:app/pages/journey/journey_table/header/chronograph/chronograph_view_model.dart';
-import 'package:app/pages/journey/journey_table/widgets/header/chronograph_header_box.dart';
-import 'package:app/pages/journey/journey_table/widgets/table/cells/calculated_speed_cell_body.dart';
+import 'package:app/pages/journey/journey_screen/header/widgets/chronograph_header_box.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/cells/calculated_speed_cell_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -156,7 +155,7 @@ void main() {
 
     // should not display chronograph string
     expect(
-      find.descendant(of: chronograph, matching: find.text(ChronographViewModel.trainIsPunctualString)),
+      find.descendant(of: chronograph, matching: find.text('+00:00')),
       findsNothing,
     );
 

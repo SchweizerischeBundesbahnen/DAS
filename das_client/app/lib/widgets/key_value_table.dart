@@ -9,7 +9,7 @@ class KeyValueTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(sbbDefaultSpacing * 0.5),
+      padding: const EdgeInsets.all(SBBSpacing.xSmall),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: rows,

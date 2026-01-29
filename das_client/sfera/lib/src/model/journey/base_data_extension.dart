@@ -182,4 +182,21 @@ extension BaseDataExtension on Iterable<BaseData> {
       ..removeWhere((it) => dataToBeRemoved.contains(it))
       ..addAll(combinedData);
   }
+
+  Iterable<BaseData> hideCommunicationNetworkChangesWithSameTypeAsPreviousOrIsServicePoint() {
+    final List<BaseData> resultList = toList();
+    CommunicationNetworkChange? previousChange;
+    for (final data in this) {
+      if (data is CommunicationNetworkChange) {
+        if (previousChange != null && previousChange.communicationNetworkType == data.communicationNetworkType) {
+          resultList.remove(data);
+        } else if (data.isServicePoint) {
+          resultList.remove(data);
+        }
+        previousChange = data;
+      }
+    }
+
+    return resultList;
+  }
 }

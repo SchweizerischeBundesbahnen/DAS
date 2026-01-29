@@ -1,0 +1,59 @@
+import 'dart:async';
+
+import 'package:app/di/di.dart';
+import 'package:app/util/time_constants.dart';
+import 'package:connectivity_x/component.dart';
+import 'package:rxdart/rxdart.dart';
+
+enum ConnectivityDisplayStatus { connected, connectedWifi, disconnected }
+
+class ConnectivityViewModel {
+  ConnectivityViewModel({
+    required ConnectivityManager connectivityManager,
+  }) : _connectivityManager = connectivityManager {
+    _init();
+  }
+
+  static const timerTickDuration = Duration(seconds: 1);
+
+  final _connectivityLostNotificationDelay = DI.get<TimeConstants>().connectivityLostNotificationDelay;
+  final BehaviorSubject<ConnectivityDisplayStatus> _rxModel = BehaviorSubject.seeded(.connected);
+
+  Stream<ConnectivityDisplayStatus> get model => _rxModel.stream.distinct();
+
+  ConnectivityDisplayStatus get modelValue => _rxModel.value;
+
+  final ConnectivityManager _connectivityManager;
+  StreamSubscription? _connectivitySubscription;
+
+  Timer? _timer;
+
+  void _init() {
+    _connectivitySubscription = _connectivityManager.onConnectivityChanged.listen((connected) {
+      if (connected) {
+        _rxModel.add(_connectivityManager.isWifiActive() ? .connectedWifi : .connected);
+        _timer?.cancel();
+      } else {
+        _timer?.cancel();
+        _timer = Timer.periodic(timerTickDuration, (_) => _checkConnectivityState());
+      }
+    });
+  }
+
+  void _checkConnectivityState() {
+    final now = DateTime.now();
+    final lastConnected = _connectivityManager.lastConnected;
+    if (lastConnected == null ||
+        now.difference(lastConnected) > Duration(seconds: _connectivityLostNotificationDelay)) {
+      _rxModel.add(.disconnected);
+      _timer?.cancel();
+    }
+  }
+
+  void dispose() {
+    _rxModel.close();
+    _timer?.cancel();
+    _connectivitySubscription?.cancel();
+    _connectivitySubscription = null;
+  }
+}

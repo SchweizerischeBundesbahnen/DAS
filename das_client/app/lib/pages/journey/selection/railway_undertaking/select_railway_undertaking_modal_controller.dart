@@ -61,9 +61,9 @@ class SelectRailwayUndertakingModalController {
 
   void _init() {
     _initRuToLocalizedMap();
-    _initRxAvailableRailwayUndertakings(_selectedRailwayUndertaking);
-    _initFilter(_selectedRailwayUndertaking);
-    _initTextEditingController(_selectedRailwayUndertaking);
+    _initRxAvailableRailwayUndertakings();
+    _initFilter();
+    _initTextEditingController();
   }
 
   void _initRuToLocalizedMap() {
@@ -72,18 +72,18 @@ class SelectRailwayUndertakingModalController {
         .sorted((a, b) => a.$1.compareTo(b.$1));
   }
 
-  void _initRxAvailableRailwayUndertakings(RailwayUndertaking selectedRailwayUndertaking) {
+  void _initRxAvailableRailwayUndertakings() {
     _rxAvailableRailwayUndertakings = BehaviorSubject<List<RailwayUndertaking>>();
     _rxAvailableRailwayUndertakings.add(
       _localizedToRailwayUndertaking.sortedWithSelectedFirst(_selectedRailwayUndertaking),
     );
   }
 
-  void _initFilter(RailwayUndertaking selectedRailwayUndertaking) {
+  void _initFilter() {
     _filter = _selectedRailwayUndertaking.localizedText(localizations);
   }
 
-  void _initTextEditingController(RailwayUndertaking? selectedRailwayUndertaking) {
+  void _initTextEditingController() {
     _textController = TextEditingController(text: _filter);
     _textController.addListener(_onTextControllerChanged);
   }

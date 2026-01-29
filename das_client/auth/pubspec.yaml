@@ -3,13 +3,13 @@ publish_to: 'none'
 version: 1.0.0
 
 environment:
-  sdk: ^3.10.0
+  sdk: ^3.10.4
 
 resolution: workspace
 
 dependencies:
   # https://pub.dev/packages/meta
-  meta: ^1.16.0
+  meta: ^1.17.0
   # https://pub.dev/packages/sbb_oidc
   sbb_oidc: ^4.4.0
   # https://pub.dev/packages/collection
@@ -24,6 +24,8 @@ dev_dependencies:
   # https://pub.dev/packages/flutter_lints
   flutter_lints: ^6.0.0
   # https://pub.dev/packages/mockito
-  mockito: ^5.6.1
+  mockito: ^5.6.3
   # https://pub.dev/packages/build_runner
-  build_runner: ^2.10.4
+  build_runner: ^2.10.5
+  # https://pub.dev/packages/flutter_prunekit
+  flutter_prunekit: ^2.4.0

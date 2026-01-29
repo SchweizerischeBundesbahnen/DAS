@@ -1,15 +1,15 @@
-import 'package:app/pages/journey/journey_table/widgets/communication_network_icon.dart';
-import 'package:app/pages/journey/journey_table/widgets/journey_table.dart';
-import 'package:app/pages/journey/journey_table/widgets/table/additional_speed_restriction_row.dart';
-import 'package:app/pages/journey/journey_table/widgets/table/balise_row.dart';
-import 'package:app/pages/journey/journey_table/widgets/table/cells/bracket_station_cell_body.dart';
-import 'package:app/pages/journey/journey_table/widgets/table/cells/route_cell_body.dart';
-import 'package:app/pages/journey/journey_table/widgets/table/curve_point_row.dart';
-import 'package:app/pages/journey/journey_table/widgets/table/protection_section_row.dart';
-import 'package:app/pages/journey/journey_table/widgets/table/service_point_row.dart';
-import 'package:app/pages/journey/journey_table/widgets/table/signal_row.dart';
-import 'package:app/pages/journey/journey_table/widgets/table/tram_area_row.dart';
-import 'package:app/pages/journey/journey_table/widgets/table/whistle_row.dart';
+import 'package:app/pages/journey/journey_screen/widgets/communication_network_icon.dart';
+import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/additional_speed_restriction_row.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/balise_row.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/cells/bracket_station_cell_body.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_cell_body.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/curve_point_row.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/protection_section_row.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/service_point_row.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/signal_row.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/tram_area_row.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/whistle_row.dart';
 import 'package:app/theme/themes.dart';
 import 'package:app/widgets/dot_indicator.dart';
 import 'package:app/widgets/labeled_badge.dart';
@@ -81,9 +81,13 @@ void main() {
       final dasTable = find.byType(DASTable);
       expect(dasTable, findsOneWidget);
 
-      // find gsmP-Icon
+      // find gsmP-Icon (only 1 should be found, 2nd should be hidden)
       final gsmPKey = find.descendant(of: dasTable, matching: find.byKey(CommunicationNetworkIcon.gsmPKey));
       expect(gsmPKey, findsOneWidget);
+
+      // find gsmR-Icon
+      final gsmRIcon = find.descendant(of: dasTable, matching: find.byKey(CommunicationNetworkIcon.gsmRKey));
+      expect(gsmRIcon, findsOneWidget);
 
       await disconnect(tester);
     });
@@ -725,14 +729,14 @@ void main() {
     testWidgets('test curves are displayed correctly', (tester) async {
       await prepareAndStartApp(tester);
 
-      await loadJourney(tester, trainNumber: 'T9999');
+      await loadJourney(tester, trainNumber: 'T9999M');
 
       final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
-      final curveLabel = l10n.p_journey_table_curve_type_curve;
-      await tester.dragUntilVisible(find.text(curveLabel).first, scrollableFinder, const Offset(0, -50));
+      await tester.dragUntilVisible(find.text('1.8'), scrollableFinder, const Offset(0, -50));
 
+      final curveLabel = l10n.p_journey_table_curve_type_curve;
       final curveRows = findDASTableRowByText(curveLabel);
       expect(curveRows, findsAtLeast(1));
 

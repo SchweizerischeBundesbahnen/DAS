@@ -1,5 +1,5 @@
 import 'package:app/di/di.dart';
-import 'package:app/pages/journey/journey_table/widgets/table/cells/time_cell_body.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/cells/time_cell_body.dart';
 import 'package:app/util/format.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:flutter/material.dart';

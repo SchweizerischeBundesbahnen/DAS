@@ -1,7 +1,7 @@
 import 'package:app/i18n/i18n.dart';
+import 'package:app/pages/journey/journey_screen/widgets/anchored_full_page_overlay.dart';
 import 'package:app/pages/journey/selection/widgets/journey_date_picker.dart';
 import 'package:app/pages/journey/selection/widgets/journey_date_text_field.dart';
-import 'package:app/pages/journey/journey_table/widgets/anchored_full_page_overlay.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -33,7 +33,7 @@ class JourneyDateFieldOverlay extends StatelessWidget {
       ],
     ),
     targetAnchor: .bottomLeft,
-    offset: Offset(AnchoredFullPageOverlay.defaultContentWidth * .5 + sbbDefaultSpacing, sbbDefaultSpacing * .5),
+    offset: Offset(AnchoredFullPageOverlay.defaultContentWidth * .5 + SBBSpacing.medium, SBBSpacing.xSmall),
   );
 
   Widget _header(BuildContext context, VoidCallback hideOverlay) {

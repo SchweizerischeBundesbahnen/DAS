@@ -67,7 +67,7 @@ class SegmentProfileMapper {
     journeyData.addAll(curvePoints);
 
     final newLineSpeeds = _parseNewLineSpeed(mapperData);
-    final connectionTracks = _parseConnectionTrack(mapperData, newLineSpeeds);
+    final connectionTracks = _parseConnectionTrack(mapperData);
 
     // Remove new line speeds that are already present as connection tracks
     newLineSpeeds.removeWhere(
@@ -382,7 +382,7 @@ class SegmentProfileMapper {
     return result;
   }
 
-  static List<ConnectionTrack> _parseConnectionTrack(_MapperData mapperData, List<SpeedChange> newLineSpeeds) {
+  static List<ConnectionTrack> _parseConnectionTrack(_MapperData mapperData) {
     final connectionTracks = mapperData.segmentProfile.contextInformation?.connectionTracks ?? [];
     return connectionTracks.map<ConnectionTrack>((connectionTrack) {
       return ConnectionTrack(

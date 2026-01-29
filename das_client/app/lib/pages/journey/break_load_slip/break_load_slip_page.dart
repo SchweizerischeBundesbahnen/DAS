@@ -8,10 +8,10 @@ import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_header
 import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_special_restrictions.dart';
 import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_train_details.dart';
 import 'package:app/pages/journey/break_load_slip/widgets/formation_run_navigation_buttons.dart';
-import 'package:app/pages/journey/journey_table/journey_position/journey_position_view_model.dart';
-import 'package:app/pages/journey/journey_table/punctuality/punctuality_view_model.dart';
-import 'package:app/pages/journey/journey_table_view_model.dart';
-import 'package:app/pages/journey/settings/journey_settings_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/punctuality_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:formation/component.dart';
@@ -81,14 +81,14 @@ class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
         return Stack(
           children: [
             Column(
-              spacing: sbbDefaultSpacing,
+              spacing: SBBSpacing.medium,
               children: [
-                BreakLoadSlipHeader(formationRun: formationRunChange.formationRun),
+                BreakLoadSlipHeader(formationRunChange: formationRunChange),
                 Column(
-                  spacing: sbbDefaultSpacing,
+                  spacing: SBBSpacing.medium,
                   children: [
                     BreakLoadSlipTrainDetails(formation: formation, formationRunChange: formationRunChange),
-                    _loadDetailsAndButtons(context, formation, formationRunChange),
+                    _loadDetailsAndButtons(formationRunChange),
                   ],
                 ),
               ],
@@ -110,14 +110,10 @@ class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
     );
   }
 
-  Row _specialRestrictionsAndBrakeDetailsRow(
-    BuildContext context,
-    Formation formation,
-    FormationRunChange formationRun,
-  ) {
+  Row _specialRestrictionsAndBrakeDetailsRow(FormationRunChange formationRun) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
-      spacing: sbbDefaultSpacing,
+      spacing: SBBSpacing.medium,
       children: [
         Expanded(
           child: BreakLoadSlipSpecialRestrictions(formationRunChange: formationRun),
@@ -129,12 +125,12 @@ class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
     );
   }
 
-  Widget _loadDetailsAndButtons(BuildContext context, Formation formation, FormationRunChange formationRun) {
+  Widget _loadDetailsAndButtons(FormationRunChange formationRun) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing),
+      padding: const EdgeInsets.symmetric(horizontal: SBBSpacing.medium),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: sbbDefaultSpacing,
+        spacing: SBBSpacing.medium,
         children: [
           Expanded(
             flex: 1,
@@ -145,8 +141,8 @@ class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _specialRestrictionsAndBrakeDetailsRow(context, formation, formationRun),
-                SizedBox(height: sbbDefaultSpacing),
+                _specialRestrictionsAndBrakeDetailsRow(formationRun),
+                SizedBox(height: SBBSpacing.medium),
                 BreakLoadSlipButtons(),
               ],
             ),

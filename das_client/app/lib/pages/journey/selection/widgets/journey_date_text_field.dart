@@ -3,7 +3,7 @@ import 'package:app/util/format.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
-const _inputPadding = EdgeInsets.fromLTRB(sbbDefaultSpacing, sbbDefaultSpacing, 0, sbbDefaultSpacing / 2);
+const _inputPadding = EdgeInsets.fromLTRB(SBBSpacing.medium, SBBSpacing.medium, 0, SBBSpacing.xSmall);
 
 class JourneyDateTextField extends StatefulWidget {
   const JourneyDateTextField({required this.onTap, required this.isModalVersion, required this.date, super.key});

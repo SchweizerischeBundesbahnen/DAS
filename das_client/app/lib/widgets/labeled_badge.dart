@@ -10,12 +10,10 @@ class LabeledBadge extends StatelessWidget {
     required this.child,
     this.label,
     this.offset = const Offset(0, 0),
-    this.size = 8.0,
     super.key,
   });
 
   final Offset offset;
-  final double size;
   final String? label;
   final Widget child;
 

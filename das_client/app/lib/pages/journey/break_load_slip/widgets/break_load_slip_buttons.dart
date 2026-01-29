@@ -17,7 +17,7 @@ class BreakLoadSlipButtons extends StatelessWidget {
         return Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
-          spacing: sbbDefaultSpacing * 0.5,
+          spacing: SBBSpacing.xSmall,
           children: [
             if (viewModel.isActiveFormationRun)
               SBBSecondaryButton(

@@ -1,4 +1,4 @@
-import 'package:app/pages/journey/journey_table/widgets/table/service_point_row.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/service_point_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sfera/component.dart';

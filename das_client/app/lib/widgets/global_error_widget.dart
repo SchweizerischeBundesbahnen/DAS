@@ -57,7 +57,7 @@ Future<void> _showErrorDetailsModalSheet(BuildContext context, FlutterErrorDetai
     constraints: BoxConstraints(),
     child: SingleChildScrollView(
       child: Container(
-        padding: .all(sbbDefaultSpacing),
+        padding: .all(SBBSpacing.medium),
         width: double.maxFinite,
         child: Text(errorDetails, style: DASTextStyles.smallLight),
       ),

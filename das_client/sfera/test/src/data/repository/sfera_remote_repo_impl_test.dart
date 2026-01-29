@@ -102,7 +102,7 @@ void main() {
 
     // THEN
     verify(mockMqttService.connect(any, any)).called(1);
-    expect(sferaRemoteRepo.lastError, SferaError.connectionFailed);
+    expect(sferaRemoteRepo.lastError, isA<ConnectionFailed>());
   });
 
   test('should disconnect and set state to disconnected', () async {

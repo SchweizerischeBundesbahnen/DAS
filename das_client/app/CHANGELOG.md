@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.34.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.33.0...das_client-v0.34.0) (2026-01-08)
+
+
+### Features
+
+* add power grid overload notification ([#244](https://github.com/SchweizerischeBundesbahnen/DAS/issues/244)) ([#1556](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1556)) ([db1c2a2](https://github.com/SchweizerischeBundesbahnen/DAS/commit/db1c2a2a6f9a738215d1c7522d0771eb5a11aab0))
+* summarize graded curve speeds ([#584](https://github.com/SchweizerischeBundesbahnen/DAS/issues/584)) ([#1489](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1489)) ([c3aa807](https://github.com/SchweizerischeBundesbahnen/DAS/commit/c3aa8073852ee7ca713fb1f930b8fd800120457b))
+
+
+### Bug Fixes
+
+* break load slip table styling ([#1591](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1591)) ([8648bba](https://github.com/SchweizerischeBundesbahnen/DAS/commit/8648bba75e6527611f1cfa2556859302fc2d6505))
+* only show network change when type changes ([#1585](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1585)) ([40fcff6](https://github.com/SchweizerischeBundesbahnen/DAS/commit/40fcff6ec1d07a405bdb0f05e73d91923438e2c8))
+
 ## [0.33.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.32.0...das_client-v0.33.0) (2025-12-16)
 
 

@@ -38,5 +38,5 @@ jobs:
       - name: Build with Maven
         env:
           # TODO: get latest version
-          DAS_BACKEND_VERSION: 0.6.0
+          DAS_BACKEND_VERSION: 0.7.1
         run: mvn -B package --file pom.xml -DskipTests

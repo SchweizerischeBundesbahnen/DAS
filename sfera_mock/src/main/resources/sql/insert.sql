@@ -39,38 +39,38 @@ values (nextval('train_formation_run_id_seq'),
         ?,
         ?,
         ?,
-        'CH09991',
-        'CH09994',
+        'CH00001', --Graftal
+        'CH00003', --Twinn
         'A', -- train_category_code
-        80, -- braked_weight_percentage
-        120, -- traction_max_speed_in_kmh
+        95, -- braked_weight_percentage
+        140, -- traction_max_speed_in_kmh
         120, -- hauled_load_max_speed_in_kmh
         120, -- formation_max_speed_in_kmh
         1900, -- traction_length_in_cm
-        30466, -- hauled_load_length_in_cm
-        32366, -- formation_length_in_cm
-        86, -- traction_weight_in_t
-        941, -- hauled_load_weight_in_t
-        1027, -- formation_weight_in_t
-        58, -- traction_braked_weight_in_t
-        781, -- hauled_load_braked_weight_in_t
-        839, -- formation_braked_weight_in_t
-        560, -- traction_holding_force_in_hecto_newton
-        3261, -- hauled_load_holding_force_in_hecto_newton
-        3821, -- formation_holding_force_in_hecto_newton
-        true, -- brake_position_g_for_leading_traction
+        26400, -- hauled_load_length_in_cm
+        28300, -- formation_length_in_cm
+        120, -- traction_weight_in_t
+        484, -- hauled_load_weight_in_t
+        604, -- formation_weight_in_t
+        150, -- traction_braked_weight_in_t
+        436, -- hauled_load_braked_weight_in_t
+        586, -- formation_braked_weight_in_t
+        48, -- traction_holding_force_in_hecto_newton
+        297, -- hauled_load_holding_force_in_hecto_newton
+        345, -- formation_holding_force_in_hecto_newton
+        false, -- brake_position_g_for_leading_traction
         false, -- brake_position_g_for_brake_unit_1_to_5
         false, -- brake_position_g_for_load_hauled
         false, -- sim_train
         null, -- additional_tractions
         false, -- car_carrier_vehicle
         false, -- dangerous_goods
-        15, -- vehicles_count
-        15, -- vehicles_with_brake_design_ll_and_k_count
+        12, -- vehicles_count
+        12, -- vehicles_with_brake_design_ll_and_k_count
         0, -- vehicles_with_brake_design_d_count
         0, -- vehicles_with_disabled_brakes_count
-        318545522050, -- european_vehicle_number_first
-        318528910132, -- european_vehicle_number_last
+        378045644663, -- european_vehicle_number_first
+        318545521086, -- european_vehicle_number_last
         19993, -- axle_load_max_in_kg
         'C2', -- route_class
         39, -- gradient_uphill_max_in_permille
@@ -82,38 +82,81 @@ values (nextval('train_formation_run_id_seq'),
         ?,
         ?,
         ?,
-        'CH09991',
-        'CH09996',
+        'CH00003', --Twinn
+        'CH00006', --Baumen
         'A', -- train_category_code
-        80, -- braked_weight_percentage
+        105, -- braked_weight_percentage
+        140, -- traction_max_speed_in_kmh
+        100, -- hauled_load_max_speed_in_kmh
+        100, -- formation_max_speed_in_kmh
+        1900, -- traction_length_in_cm
+        33400, -- hauled_load_length_in_cm
+        35300, -- formation_length_in_cm
+        120, -- traction_weight_in_t
+        599, -- hauled_load_weight_in_t
+        719, -- formation_weight_in_t
+        150, -- traction_braked_weight_in_t
+        616, -- hauled_load_braked_weight_in_t
+        766, -- formation_braked_weight_in_t
+        48, -- traction_holding_force_in_hecto_newton
+        435, -- hauled_load_holding_force_in_hecto_newton
+        483, -- formation_holding_force_in_hecto_newton
+        false, -- brake_position_g_for_leading_traction
+        false, -- brake_position_g_for_brake_unit_1_to_5
+        false, -- brake_position_g_for_load_hauled
+        false, -- sim_train
+        null, -- additional_tractions
+        false, -- car_carrier_vehicle
+        true, -- dangerous_goods
+        16, -- vehicles_count
+        16, -- vehicles_with_brake_design_ll_and_k_count
+        0, -- vehicles_with_brake_design_d_count
+        0, -- vehicles_with_disabled_brakes_count
+        378045644663, -- european_vehicle_number_first
+        378079335360, -- european_vehicle_number_last
+        19993, -- axle_load_max_in_kg
+        'C2', -- route_class
+        39, -- gradient_uphill_max_in_permille
+        40, -- gradient_downhill_max_in_permille
+        15, -- slope_max_for_holding_force_min_in_permille
+        'ux_test'),
+       (nextval('train_formation_run_id_seq'),
+        now(),
+        ?,
+        ?,
+        ?,
+        'CH00006', --Twinn
+        'CH00011', --Baumen
+        'A', -- train_category_code
+        95, -- braked_weight_percentage
         120, -- traction_max_speed_in_kmh
         120, -- hauled_load_max_speed_in_kmh
         120, -- formation_max_speed_in_kmh
         1900, -- traction_length_in_cm
-        30466, -- hauled_load_length_in_cm
-        32366, -- formation_length_in_cm
-        86, -- traction_weight_in_t
-        941, -- hauled_load_weight_in_t
-        1027, -- formation_weight_in_t
-        58, -- traction_braked_weight_in_t
-        781, -- hauled_load_braked_weight_in_t
-        839, -- formation_braked_weight_in_t
-        560, -- traction_holding_force_in_hecto_newton
-        3261, -- hauled_load_holding_force_in_hecto_newton
-        3821, -- formation_holding_force_in_hecto_newton
-        true, -- brake_position_g_for_leading_traction
+        28100, -- hauled_load_length_in_cm
+        30000, -- formation_length_in_cm
+        120, -- traction_weight_in_t
+        506, -- hauled_load_weight_in_t
+        626, -- formation_weight_in_t
+        150, -- traction_braked_weight_in_t
+        458, -- hauled_load_braked_weight_in_t
+        608, -- formation_braked_weight_in_t
+        48, -- traction_holding_force_in_hecto_newton
+        321, -- hauled_load_holding_force_in_hecto_newton
+        369, -- formation_holding_force_in_hecto_newton
+        false, -- brake_position_g_for_leading_traction
         false, -- brake_position_g_for_brake_unit_1_to_5
         false, -- brake_position_g_for_load_hauled
-        true, -- sim_train
+        false, -- sim_train
         null, -- additional_tractions
-        false, -- car_carrier_vehicle
-        false, -- dangerous_goods
+        true, -- car_carrier_vehicle
+        true, -- dangerous_goods
         13, -- vehicles_count
         13, -- vehicles_with_brake_design_ll_and_k_count
         0, -- vehicles_with_brake_design_d_count
         0, -- vehicles_with_disabled_brakes_count
-        318545522050, -- european_vehicle_number_first
-        318528910132, -- european_vehicle_number_last
+        378045644663, -- european_vehicle_number_first
+        218524611660, -- european_vehicle_number_last
         19993, -- axle_load_max_in_kg
         'C2', -- route_class
         39, -- gradient_uphill_max_in_permille

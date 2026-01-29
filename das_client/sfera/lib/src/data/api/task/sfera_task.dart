@@ -15,15 +15,17 @@ abstract class SferaTask<T> {
   final Duration _timeout;
   Timer? timeoutTimer;
 
+  /// executes given SFERA task. Use callback [TaskCompleted] and [TaskFailed] to handle result.
   Future<void> execute(TaskCompleted<T> onCompleted, TaskFailed onFailed);
 
+  /// handles received reply and return [bool] whether message could be handled or not.
   Future<bool> handleMessage(SferaG2bReplyMessageDto replyMessage);
 
   void startTimeout(TaskFailed onFailed) {
     timeoutTimer?.cancel();
     timeoutTimer = Timer(_timeout, () {
       _log.severe('Timeout reached for task $this');
-      onFailed(this, .requestTimeout);
+      onFailed(this, .requestTimeout());
     });
   }
 

@@ -29,7 +29,7 @@ class BreakLoadSlipTrainDetailsTable extends StatelessWidget {
           padding: EdgeInsets.zero,
           alignment: .center,
         ),
-        const SizedBox(height: sbbDefaultSpacing * 0.25),
+        const SizedBox(height: SBBSpacing.xxSmall),
         _tableDivider(context, height: 2),
         _tableRow(
           context.l10n.p_break_load_slip_train_data_table_vmax,
@@ -97,12 +97,10 @@ class BreakLoadSlipTrainDetailsTable extends StatelessWidget {
     AlignmentGeometry? alignment,
   }) {
     return Padding(
-      padding:
-          padding ??
-          const EdgeInsets.symmetric(vertical: sbbDefaultSpacing * 0.25).copyWith(left: sbbDefaultSpacing * 0.5),
+      padding: padding ?? const EdgeInsets.symmetric(vertical: SBBSpacing.xxSmall).copyWith(left: SBBSpacing.xSmall),
       child: Row(
         children: [
-          Expanded(flex: 3, child: Text(label ?? '', style: style)),
+          Expanded(flex: 3, child: Text(label ?? '', style: style ?? DASTextStyles.smallRoman)),
           Expanded(
             flex: 2,
             child: _cell(c1, hasChangeC1, style: style, padding: padding, alignment: alignment),
@@ -128,7 +126,7 @@ class BreakLoadSlipTrainDetailsTable extends StatelessWidget {
     AlignmentGeometry? alignment,
   }) {
     return Padding(
-      padding: padding ?? const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing),
+      padding: padding ?? const EdgeInsets.symmetric(horizontal: SBBSpacing.medium),
       child: Align(
         alignment: alignment ?? .centerRight,
         child: _wrappedText(text, hasChange, style: style),
@@ -141,7 +139,7 @@ class BreakLoadSlipTrainDetailsTable extends StatelessWidget {
     final textWidget = Text(text ?? '', style: finalStyle);
     return hasChange
         ? DotIndicator(
-            offset: Offset(0, -sbbDefaultSpacing * 0.75),
+            offset: Offset(0, -SBBSpacing.small),
             child: textWidget,
           )
         : textWidget;

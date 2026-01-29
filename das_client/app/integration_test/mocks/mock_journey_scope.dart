@@ -1,6 +1,6 @@
 import 'package:app/di/di.dart';
 import 'package:app/di/scopes/journey_scope.dart';
-import 'package:app/pages/journey/warn_app_view_model.dart';
+import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
 import 'package:logging/logging.dart';
 
 import 'mock_warn_app_view_model.dart';
