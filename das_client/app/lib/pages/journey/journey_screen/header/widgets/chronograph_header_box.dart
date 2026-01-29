@@ -1,7 +1,6 @@
 import 'package:app/pages/journey/journey_screen/header/view_model/chronograph_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/punctuality_model.dart';
 import 'package:app/theme/theme_util.dart';
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -65,14 +64,14 @@ class ChronographHeaderBox extends StatelessWidget {
   }
 
   TextStyle _resolvedDelayStyle(PunctualityModel? model, BuildContext context) => switch (model) {
-    final Stale _ => DASTextStyles.xLargeRoman.copyWith(
+    final Stale _ => sbbTextStyle.romanStyle.xLarge.copyWith(
       color: ThemeUtil.getColor(
         context,
         SBBColors.graphite,
         SBBColors.white,
       ),
     ),
-    final Visible _ || final Hidden _ || null => DASTextStyles.xLargeLight,
+    final Visible _ || final Hidden _ || null => sbbTextStyle.lightStyle.xLarge,
   };
 
   Widget _currentTime(BuildContext context) {
@@ -85,7 +84,7 @@ class ChronographHeaderBox extends StatelessWidget {
 
         return Padding(
           padding: const .all(SBBSpacing.xSmall),
-          child: Text(snapshot.requireData, key: currentTimeTextKey, style: DASTextStyles.xLargeBold),
+          child: Text(snapshot.requireData, key: currentTimeTextKey, style: sbbTextStyle.boldStyle.xLarge),
         );
       },
     );

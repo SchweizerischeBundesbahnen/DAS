@@ -11,11 +11,11 @@ class UserSettings {
     _prefs = await SharedPreferences.getInstance();
   }
 
-  T getUserSetting<T>(UserSettingKeys key, T defaultValue) {
+  T get<T>(UserSettingKeys key, T defaultValue) {
     return _prefs.get(key.name) as T? ?? defaultValue;
   }
 
-  Future<void> setUserSetting<T>(UserSettingKeys key, T value) async {
+  Future<void> set<T>(UserSettingKeys key, T value) async {
     if (value is bool) {
       await _prefs.setBool(key.name, value);
     } else if (value is int) {
@@ -31,7 +31,7 @@ class UserSettings {
     }
   }
 
-  bool get showDecisiveGradient => getUserSetting(.showDecisiveGradient, true);
+  bool get showDecisiveGradient => get(.showDecisiveGradient, true);
 }
 
 enum UserSettingKeys {

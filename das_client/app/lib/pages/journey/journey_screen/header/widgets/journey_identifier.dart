@@ -4,7 +4,6 @@ import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/journey_search_overlay.dart';
 import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
 import 'package:app/theme/theme_util.dart';
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -38,6 +37,6 @@ class JourneyIdentifier extends StatelessWidget {
 
   TextStyle _resolvedTextStyle(BuildContext context) {
     final resolvedColor = ThemeUtil.getColor(context, SBBColors.black, SBBColors.white);
-    return DASTextStyles.xLargeRoman.copyWith(color: resolvedColor);
+    return sbbTextStyle.romanStyle.xLarge.copyWith(color: resolvedColor);
   }
 }

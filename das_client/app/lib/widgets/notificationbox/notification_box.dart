@@ -1,5 +1,4 @@
 import 'package:app/theme/theme_util.dart';
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -47,16 +46,16 @@ class NotificationBox extends StatelessWidget {
       crossAxisAlignment: .start,
       children: [
         Row(
+          spacing: SBBSpacing.xSmall,
           children: [
             Icon(
               customIcon ?? style.icon,
               color: ThemeUtil.getColor(context, style.iconColor, style.iconColorDark),
             ),
-            const SizedBox(width: SBBSpacing.xSmall),
             Expanded(
               child: Text(
                 title,
-                style: DASTextStyles.mediumBold,
+                style: sbbTextStyle.boldStyle.medium,
               ),
             ),
             if (action != null) action!,
@@ -65,7 +64,7 @@ class NotificationBox extends StatelessWidget {
         if (text != null)
           Text(
             text!,
-            style: DASTextStyles.smallLight,
+            style: sbbTextStyle.lightStyle.small,
           ),
       ],
     );

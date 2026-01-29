@@ -1,4 +1,3 @@
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -46,7 +45,7 @@ class LabeledBadge extends StatelessWidget {
       child: Center(
         child: Text(
           label ?? '',
-          style: DASTextStyles.extraSmallBold.copyWith(
+          style: sbbTextStyle.boldStyle.xSmall.copyWith(
             color: SBBColors.white,
             fontWeight: .w700,
           ),

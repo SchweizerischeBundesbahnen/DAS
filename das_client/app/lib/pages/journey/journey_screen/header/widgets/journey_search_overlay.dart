@@ -6,7 +6,6 @@ import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
 import 'package:app/pages/journey/selection/railway_undertaking/widgets/select_railway_undertaking_input.dart';
 import 'package:app/pages/journey/selection/widgets/journey_date_input.dart';
 import 'package:app/pages/journey/selection/widgets/journey_train_number_input.dart';
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -76,7 +75,7 @@ class JourneySearchOverlay extends StatelessWidget {
         Expanded(
           child: Text(
             context.l10n.w_journey_search_overlay_title,
-            style: DASTextStyles.largeLight,
+            style: sbbTextStyle.lightStyle.large,
           ),
         ),
         StreamBuilder(

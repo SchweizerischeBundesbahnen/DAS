@@ -17,7 +17,6 @@ import 'package:app/theme/theme_util.dart';
 import 'package:app/util/animation.dart';
 import 'package:app/util/text_util.dart';
 import 'package:app/widgets/assets.dart';
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/dot_indicator.dart';
 import 'package:app/widgets/speed_display.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
@@ -86,7 +85,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
                    child: Text(
                      context.l10n.w_service_point_row_background_label,
                      key: ValueKey(dragReached),
-                     style: DASTextStyles.largeRoman.copyWith(color: SBBColors.white),
+                     style: sbbTextStyle.romanStyle.large.copyWith(color: SBBColors.white),
                    ),
                  ),
                ),
@@ -273,7 +272,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     }
 
     final textColor = _isNextStop && specialCellColor == null ? SBBColors.white : null;
-    final defaultTextStyle = DASTableTheme.of(context)?.data.dataTextStyle ?? DASTextStyles.largeRoman;
+    final defaultTextStyle = DASTableTheme.of(context)?.data.dataTextStyle ?? sbbTextStyle.romanStyle.large;
     return DASTableCell(
       color: specialCellColor,
       child: Text(
@@ -303,8 +302,8 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
         final color = _isNextStop && highlightNextStop ? SBBColors.white : null;
         return DefaultTextStyle.merge(
           style: data.isStation
-              ? DASTextStyles.xLargeBold.copyWith(color: color)
-              : DASTextStyles.xLargeLight.copyWith(fontStyle: FontStyle.italic, color: color),
+              ? sbbTextStyle.boldStyle.xLarge.copyWith(color: color)
+              : sbbTextStyle.lightStyle.xLarge.italic.copyWith(color: color),
           child: AnimatedSwitcher(
             duration: DASAnimation.longDuration,
             child: Row(
@@ -355,8 +354,8 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
                   TextUtil.parseHtmlText(
                     property.text!,
                     _isNextStop && highlightNextStop
-                        ? DASTextStyles.mediumRoman.copyWith(color: SBBColors.white)
-                        : DASTextStyles.mediumRoman,
+                        ? sbbTextStyle.romanStyle.medium.copyWith(color: SBBColors.white)
+                        : sbbTextStyle.romanStyle.medium,
                   ),
                   overflow: .ellipsis,
                 ),

@@ -4,7 +4,6 @@ import 'package:app/pages/journey/break_load_slip/break_load_slip_view_model.dar
 import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_special_restrictions.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/break_load_slip_modal/break_load_slip_modal_overview.dart';
 import 'package:app/theme/theme_util.dart';
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/modal_sheet/das_modal_sheet.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +15,7 @@ class BreakLoadSlipModalBuilder extends DASModalSheetBuilder {
   Widget header(BuildContext context) {
     return Text(
       context.l10n.w_break_load_slip_modal_title,
-      style: DASTextStyles.largeRoman,
+      style: sbbTextStyle.romanStyle.large,
     );
   }
 

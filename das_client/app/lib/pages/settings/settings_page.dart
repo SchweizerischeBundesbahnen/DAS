@@ -1,8 +1,7 @@
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/das_navigation_drawer.dart';
-import 'package:app/util/user_settings.dart';
-import 'package:app/widgets/das_text_styles.dart';
+import 'package:app/pages/settings/user_settings.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -83,12 +82,12 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget _settingTitle(String title) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: SBBSpacing.medium).copyWith(bottom: SBBSpacing.xSmall),
-      child: Text(title, style: DASTextStyles.smallLight),
+      child: Text(title, style: sbbTextStyle.lightStyle.small),
     );
   }
 
   void _updateSettings<T>(UserSettingKeys key, T value) async {
-    await _userSettings.setUserSetting(key, value);
+    await _userSettings.set(key, value);
     setState(() {});
   }
 }

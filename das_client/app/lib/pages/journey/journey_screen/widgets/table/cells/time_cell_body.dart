@@ -4,11 +4,11 @@ import 'package:app/pages/journey/journey_screen/widgets/table/service_point_row
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/format.dart';
 import 'package:app/widgets/assets.dart';
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
 class TimeCellBody extends StatelessWidget {
@@ -58,12 +58,12 @@ class TimeCellBody extends StatelessWidget {
               TextSpan(
                 text: arrivalTime,
                 style: isArrivalBold
-                    ? DASTextStyles.largeBold.copyWith(color: fontColor)
-                    : DASTextStyles.largeRoman.copyWith(color: fontColor),
+                    ? sbbTextStyle.boldStyle.large.copyWith(color: fontColor)
+                    : sbbTextStyle.romanStyle.large.copyWith(color: fontColor),
               ),
               TextSpan(
                 text: departureTime,
-                style: DASTextStyles.largeBold.copyWith(
+                style: sbbTextStyle.boldStyle.large.copyWith(
                   decoration: isDepartureUnderlined ? TextDecoration.underline : TextDecoration.none,
                   color: fontColor,
                 ),

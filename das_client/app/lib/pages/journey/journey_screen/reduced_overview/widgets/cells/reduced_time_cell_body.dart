@@ -1,7 +1,7 @@
 import 'package:app/util/format.dart';
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:flutter/material.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
 class ReducedTimeCellBody extends StatelessWidget {
@@ -28,8 +28,8 @@ class ReducedTimeCellBody extends StatelessWidget {
       key: timeCellKey,
       TextSpan(
         children: [
-          TextSpan(text: arrivalTime, style: isArrivalBold ? DASTextStyles.largeBold : null),
-          TextSpan(text: departureTime, style: DASTextStyles.largeBold),
+          TextSpan(text: arrivalTime, style: isArrivalBold ? sbbTextStyle.boldStyle.large : null),
+          TextSpan(text: departureTime, style: sbbTextStyle.boldStyle.large),
         ],
       ),
     );

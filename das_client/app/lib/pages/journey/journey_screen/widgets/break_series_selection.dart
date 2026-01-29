@@ -1,6 +1,5 @@
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/widgets/break_series_selection_button.dart';
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -70,7 +69,7 @@ class _BreakSeriesSelectionState extends State<BreakSeriesSelection> {
         padding: const .symmetric(vertical: SBBSpacing.medium),
         child: Text(
           trainSeries.name,
-          style: DASTextStyles.mediumBold,
+          style: sbbTextStyle.boldStyle.medium,
         ),
       ),
       Padding(

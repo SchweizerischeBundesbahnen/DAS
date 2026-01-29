@@ -1,6 +1,5 @@
 import 'package:app/i18n/i18n.dart';
 import 'package:app/theme/themes.dart';
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -59,7 +58,7 @@ Future<void> _showErrorDetailsModalSheet(BuildContext context, FlutterErrorDetai
       child: Container(
         padding: .all(SBBSpacing.medium),
         width: double.maxFinite,
-        child: Text(errorDetails, style: DASTextStyles.smallLight),
+        child: Text(errorDetails, style: sbbTextStyle.lightStyle.small),
       ),
     ),
   );

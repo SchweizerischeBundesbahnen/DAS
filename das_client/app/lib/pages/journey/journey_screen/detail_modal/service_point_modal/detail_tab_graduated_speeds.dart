@@ -1,6 +1,5 @@
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/service_point_modal/service_point_modal_view_model.dart';
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/speed_display.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -33,7 +32,7 @@ class DetailTabGraduatedSpeeds extends StatelessWidget {
           children: [
             Text(
               '${context.l10n.w_service_point_modal_graduated_speed_break_series_title}: ${breakSeries.name}',
-              style: DASTextStyles.smallBold,
+              style: sbbTextStyle.boldStyle.small,
             ),
             Expanded(child: _buildSpeedInfoList(context, relevantSpeeds)),
           ],
@@ -46,7 +45,7 @@ class DetailTabGraduatedSpeeds extends StatelessWidget {
     return Center(
       child: Text(
         context.l10n.w_service_point_modal_graduated_speed_no_information,
-        style: DASTextStyles.mediumRoman,
+        style: sbbTextStyle.romanStyle.medium,
       ),
     );
   }
@@ -73,10 +72,10 @@ class DetailTabGraduatedSpeeds extends StatelessWidget {
               SpeedDisplay(
                 speed: speed.speed,
                 singleLine: true,
-                textStyle: DASTextStyles.mediumBold,
+                textStyle: sbbTextStyle.boldStyle.medium,
               ),
               const SizedBox(height: 10),
-              Text(speed.text!, style: DASTextStyles.mediumRoman),
+              Text(speed.text!, style: sbbTextStyle.romanStyle.medium),
             ],
           ),
         );
