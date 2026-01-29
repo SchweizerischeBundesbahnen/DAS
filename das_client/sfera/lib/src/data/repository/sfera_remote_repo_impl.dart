@@ -66,7 +66,6 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
   final List<SegmentProfileDto> _segmentProfiles = [];
   final List<TrainCharacteristicsDto> _trainCharacteristics = [];
   RelatedTrainInformationDto? _relatedTrainInformation;
-  bool _isDisposed = false;
 
   final _rxState = BehaviorSubject<SferaRemoteRepositoryInternalState>.seeded(.disconnected);
   final _rxJourney = BehaviorSubject<Journey?>.seeded(null);
@@ -148,9 +147,6 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
     }
 
     _mqttService.disconnect();
-
-    if (_isDisposed) return;
-
     _rxJourney.add(null);
     _rxDepartureDispatchNotificationEvent.add(null);
     _rxUxTestingEvent.add(null);
@@ -169,7 +165,6 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
     _mqttStreamSubscription = null;
     _rxWarnappEvent.close();
     _rxDisturbanceEvent.close();
-    _isDisposed = true;
   }
 
   @override
