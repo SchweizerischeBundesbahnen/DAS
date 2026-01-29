@@ -28,7 +28,7 @@ import org.springframework.http.MediaType;
 @Builder
 @Value
 @JsonPropertyOrder({"status", "title", "detail", "instance", "type"})
-public class /*TODO perhaps configure Spring ProblemDetail https://www.baeldung.com/spring-boot-return-errors-problemdetail ?*/ Problem implements Response {
+public class Problem implements Response {
 
     /**
      * Variants acc. to RFC 9475:

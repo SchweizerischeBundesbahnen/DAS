@@ -1,6 +1,9 @@
 package ch.sbb.backend.common;
 
 import java.io.IOException;
+import java.net.URI;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Map;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -26,36 +29,75 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class TopLevelHandler extends ResponseEntityExceptionHandler {
 
     private static final String UNEXPECTED_ERROR = "Unexpected error";
+    private static final String INSTANCE_FALLBACK="/v1/toplevel-error";
+    // experimental -> Spring WebRequest::description prefix
+    private static final String INSTANCE_PREFIX = "uri=";
 
-    /**
-     * Handles the exception thrown by Spring.
-     */
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(@NotNull Exception ex, Object body, @NotNull HttpHeaders headers,
         @NotNull HttpStatusCode statusCode, @NotNull WebRequest request) {
 
-        ResponseEntity<Object> response = super.handleExceptionInternal(ex, body, headers, statusCode, request);
-        if (response != null && response.getBody() instanceof ProblemDetail responseProblem) {
-            Map<String, Object> customProperties = responseProblem.getProperties();
-            if (customProperties != null && !customProperties.isEmpty()) {
-                log.warn("custom properties of Spring's ProblemDetail will not be converted: {}", customProperties);
-            }
-
-            HttpStatus status = HttpStatus.resolve(statusCode.value());
-            if (status == null) {
-                log.warn("Developer fault - HttpStatus unknown: {}", statusCode.value());
-                status = HttpStatus.INTERNAL_SERVER_ERROR;
-            }
-            ResponseEntity<Problem> responseEntity = createProblemResponse(status, responseProblem.getTitle(), responseProblem.getDetail(), ex);
-            return new ResponseEntity<>(responseEntity.getBody(), responseEntity.getStatusCode());
+        final ResponseEntity<Object> response = super.handleExceptionInternal(ex, body, headers, statusCode, request);
+        if (response == null || !(response.getBody() instanceof ProblemDetail responseProblemDetail)) {
+            log.warn("developer fault: Spring ProblemDetail not properly configured");
+            return response;
         }
-        return response;
+
+        Map<String, Object> customProperties = responseProblemDetail.getProperties();
+        if (customProperties != null && !customProperties.isEmpty()) {
+            log.warn("ProblemDetail::properties by Spring ignored yet: {}", customProperties);
+        }
+
+        HttpStatus status = HttpStatus.resolve(statusCode.value());
+        if (status == null) {
+            log.warn("Developer fault - HttpStatus unknown: {}", statusCode.value());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+
+        final Problem problem = ResponseEntityFactory.createProblem(
+            status,
+            StringUtils.isBlank(responseProblemDetail.getTitle()) ? UNEXPECTED_ERROR : responseProblemDetail.getTitle(),
+            extractDetail(responseProblemDetail, request),
+            extractInstance(responseProblemDetail, request)            );
+
+        return new ResponseEntity<>(problem,
+            ResponseEntityFactory.createProblemHeader(ApiDocumentation.HEADER_CONTENT_LANGUAGE_ERROR_DETAIL_DEFAULT, request.getHeader(ApiParametersDefault.HEADER_REQUEST_ID)),
+            status);
     }
 
-    // 400 Bad Request
-    @ExceptionHandler(value = {IllegalArgumentException.class})
-    ResponseEntity<Problem> handleBadArguments(IllegalArgumentException exception) {
-        return createBadParamResponse(exception, HttpStatus.BAD_REQUEST.getReasonPhrase(), "Refine your arguments");
+    private String extractDetail(ProblemDetail problemDetail, WebRequest request) {
+        final StringBuilder builder = new StringBuilder();
+        builder.append(StringUtils.isBlank(problemDetail.getDetail())? "<UNKNOWN>" : problemDetail.getDetail());
+        builder.append(" -> params: ");
+        Map<String, String[]> params = request.getParameterMap();
+        if (!params.isEmpty()) {
+            Iterator<String> i = request.getParameterNames();
+            while (i.hasNext()) {
+                String paramName = i.next();
+                builder.append(paramName);
+                builder.append("=");
+                builder.append(Arrays.toString(params.get(paramName)));
+                builder.append(";");
+            }
+        }
+        return builder.toString();
+    }
+
+    private String extractInstance(ProblemDetail problemDetail, WebRequest request) {
+        if (problemDetail.getInstance() != null) {
+            return problemDetail.getInstance().toString();
+        }
+        if (StringUtils.isNotBlank(request.getContextPath())) {
+            return request.getContextPath();
+        }
+        if (StringUtils.isNotBlank(request.getDescription(false))) {
+            String instance = request.getDescription(false);
+            if (instance.startsWith(INSTANCE_PREFIX)) {
+                return instance.substring(INSTANCE_PREFIX.length());
+            }
+        }
+
+        return INSTANCE_FALLBACK;
     }
 
     // 500
@@ -96,12 +138,6 @@ public class TopLevelHandler extends ResponseEntityExceptionHandler {
         return createUnexpectedProblemResponse(getMaskedDetailMessage("no explanation yet", exception), exception);
     }
 
-    private ResponseEntity<Problem> createBadParamResponse(Exception exception, @NonNull String param, @NonNull String fault) {
-        Throwable rootCause = ExceptionUtils.getRootCause(exception);
-        String detail = (exception == null) ? "" : ": " + exception.getMessage() + ((exception == rootCause) ? "" : ": " + rootCause.getMessage());
-        return createProblemResponse(HttpStatus.BAD_REQUEST, param, fault + detail, null);
-    }
-
     private ResponseEntity<Problem> createDeveloperFaultResponse(@NonNull String detail, Throwable exceptionToLog) {
         return createProblemResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Developer error", detail, exceptionToLog);
     }
@@ -119,10 +155,9 @@ public class TopLevelHandler extends ResponseEntityExceptionHandler {
      *     logs</a>
      */
     private ResponseEntity<Problem> createProblemResponse(HttpStatus status, String title, String detail, Throwable internalExceptionToLog) {
-        //TODO final RequestContext requestContext = requestContextHolder.getRequestContext();
-        final String apiPath = "/v1/toplevel-error"; // requestContext.getApiPath();
+        final String apiPath = INSTANCE_FALLBACK; // TODO requestContext.getApiPath();
         //final String traceId = getTraceId(); //TODO io.micrometer.tracing.Tracer -> tracer.currentTraceContext().context().traceId();
-        final String requestId = null; // requestContext.getRequestId();
+        final String requestId = null; // TODO requestContext.getRequestId();
 
         if (status.is4xxClientError()) {
             log.info("{} title={}, detail={}, path={}", status, title, detail, apiPath, internalExceptionToLog);

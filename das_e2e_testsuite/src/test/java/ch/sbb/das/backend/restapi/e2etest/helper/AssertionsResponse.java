@@ -113,7 +113,7 @@ public final class AssertionsResponse {
             if (StringUtils.isBlank(instance)) {
                 // generally failing instance is expected in error body
                 assertThat(responseBody.contains("\"instance\":\"/v1/")
-                    || responseBody.contains("\"instance\":\"toplevel-error" /*see TopLevelHandler*/)).isTrue();
+                    || responseBody.contains("\"instance\":\"/v1/toplevel-error" /*see TopLevelHandler*/)).isTrue();
             } else {
                 // when url match not exact-path -> always different
                 if (instance.contains("/")) {

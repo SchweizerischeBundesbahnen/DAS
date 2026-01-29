@@ -85,14 +85,14 @@ public class ProblemHandlingTest extends RestAssuredCommand {
             .response();
 
         if (isAccessibleWithoutApim()) {
-            // reaches DAS-Backend::TenantJWSKeySelector
+            // see TopLevelHandler::handleExceptionInternal
             assertThat(response.getStatusCode()).as("depends on environment at caller and server").isEqualTo(HttpStatus.SC_NOT_FOUND);
             final String body = toBodyString(response);
             assertThat(body).as("No RestController there -> TopLevelHandler").isNotBlank();
             assertThat(body).as("Problem::status").contains("\"status\":404");
             assertThat(body).as("Problem::title").contains("\"title\":\"Not Found\"");
-            assertThat(body).as("Problem::detail").contains("\"detail\":\"No static resource v1/bad_api.\"");
-            assertThat(body).as("Problem::instance").contains("\"instance\":\"/v1/toplevel-error\"");
+            assertThat(body).as("Problem::detail").contains("\"detail\":\"No static resource v1/bad_api. -> params: dummy=[VALUE];");
+            assertThat(body).as("Problem::instance").contains("\"instance\":\"/v1/bad_api\"");
             assertThat(body).as("Problem::type").contains("\"type\":\"https://github.com/SchweizerischeBundesbahnen/DAS/tree/main/docs/content/architecture/06_runtime_view/03_problem-manual.md\"");
         } else {
             assertThat(response.getStatusCode()).as("depends on environment at caller and server").isEqualTo(HttpStatus.SC_FORBIDDEN);
@@ -100,7 +100,7 @@ public class ProblemHandlingTest extends RestAssuredCommand {
             final String jsonErrorBody = toBodyString(response);
             assertThat(jsonErrorBody).isNotBlank();
             if (jsonErrorBody.contains("\"timestamp\":")) {
-                log.warn("Spring problem sent for non-existing endpoint instead of proper Problem: {}", jsonErrorBody);
+                log.warn("spring.mvc.problemdetails.enabled=true not properly configured: {}", jsonErrorBody);
             } else {
                 log.info("proper Problem: {}", jsonErrorBody);
                 // TODO adapt when > v0.7.1 is deployed on DEV acc. to APIM response

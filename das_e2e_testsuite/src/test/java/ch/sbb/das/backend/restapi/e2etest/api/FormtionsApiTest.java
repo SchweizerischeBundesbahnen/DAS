@@ -9,6 +9,7 @@ import ch.sbb.das.backend.restapi.e2etest.configuration.ApiClientTestProfile;
 import ch.sbb.das.backend.restapi.e2etest.helper.AssertionsResponse;
 import ch.sbb.das.backend.restapi.e2etest.helper.RestAssuredCommand;
 import ch.sbb.das.backend.restapi.e2etest.helper.ServiceDoc;
+import ch.sbb.das.backend.restapi.monitoring.MonitoringConstants;
 import java.time.LocalDate;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
@@ -29,6 +30,28 @@ class FormtionsApiTest extends RestAssuredCommand {
     DasBackendApi dasBackendApi;
 
     @Test
+    void getFormations_badCompanyFormat() {
+        final LocalDate today = LocalDate.now();
+        final String company = MonitoringConstants.TESTMARKER_BAD+"RICS";
+        try {
+            final Mono<ResponseEntity<FormationResponse>> responseAsync = dasBackendApi.getFormationsApi()
+                .getFormationsWithHttpInfo(ServiceDoc.REQUEST_ID_VALUE_E2E_TEST, "007", today, company, null);
+            responseAsync.block();
+
+            Assertions.fail("Bad test conditions, should fail");
+        } catch (WebClientResponseException ex) {
+            // see TopLevelHandler::handleExceptionInternal
+            final Problem problem = AssertionsResponse.assertClientException(ex, ServiceDoc.REQUEST_ID_VALUE_E2E_TEST, null);
+            assertThat(problem.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+            assertThat(problem.getTitle()).as("Spring ProblemDetail::title").contains("Bad Request");
+            assertThat(problem.getDetail()).as("FormationsController::formations @Pattern of regex").contains("company=["+MonitoringConstants.TESTMARKER_BAD+"RICS"+"]");
+            assertThat(problem.getInstance().toString()).as("TopLevelHandler::handleExceptionInternal").isEqualTo("/v1/formations");
+        } catch (WebClientException ex) {
+            Assertions.fail("Block: " + ex.getMessage(), ex);
+        }
+    }
+
+    @Test
     void getFormations_badOperationTrainNumber() {
         final LocalDate today = LocalDate.now();
         try {
@@ -38,7 +61,7 @@ class FormtionsApiTest extends RestAssuredCommand {
 
             Assertions.fail("Bad test conditions, should fail");
         } catch (WebClientResponseException ex) {
-            final Problem problem = AssertionsResponse.assertClientException(ex, getRequestId(), null);
+            final Problem problem = AssertionsResponse.assertClientException(ex, ServiceDoc.REQUEST_ID_VALUE_E2E_TEST, null);
             assertThat(problem.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
             assertThat(problem.getInstance().toString()).isEqualTo("/v1/formations/007/" + today + "/1033");
         } catch (WebClientException ex) {
