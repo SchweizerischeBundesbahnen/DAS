@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.35.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.34.0...das_client-v0.35.0) (2026-01-29)
+
+
+### Features
+
+* handle and display errors from SFERA ([#652](https://github.com/SchweizerischeBundesbahnen/DAS/issues/652)) ([#1632](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1632)) ([6a4a631](https://github.com/SchweizerischeBundesbahnen/DAS/commit/6a4a631b17001f14e3554fb5dc20effeeefae797))
+
+
+### Bug Fixes
+
+* refactoring and improvements ([#1595](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1595)) ([dfc90ef](https://github.com/SchweizerischeBundesbahnen/DAS/commit/dfc90efdf1c62c0ed5b813f77501160441dfb1b5))
+
 ## [0.34.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.33.0...das_client-v0.34.0) (2026-01-08)
 
 
