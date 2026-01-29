@@ -1,7 +1,5 @@
 package ch.sbb.backend.common;
 
-import ch.sbb.backend.common.model.response.ApiResponse;
-import ch.sbb.backend.common.model.response.Problem;
 import java.net.URI;
 import java.util.Locale;
 import lombok.NonNull;

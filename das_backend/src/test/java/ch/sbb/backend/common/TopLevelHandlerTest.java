@@ -2,7 +2,6 @@ package ch.sbb.backend.common;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.backend.common.model.response.Problem;
 import java.io.IOException;
 import org.apache.catalina.connector.ClientAbortException;
 import org.junit.jupiter.api.Test;

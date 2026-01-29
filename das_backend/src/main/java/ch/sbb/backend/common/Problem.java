@@ -1,6 +1,5 @@
-package ch.sbb.backend.common.model.response;
+package ch.sbb.backend.common;
 
-import ch.sbb.backend.common.ApiDocumentation;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;

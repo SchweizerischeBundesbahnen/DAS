@@ -1,4 +1,4 @@
-package ch.sbb.backend.common.model.response;
+package ch.sbb.backend.common;
 
 /**
  * @see <a href="https://schweizerischebundesbahnen.github.io/api-principles/restful/best-practices/#always-return-json-objects-as-top-level-data-structures-to-support-extensibility">SBB API Principles</a>

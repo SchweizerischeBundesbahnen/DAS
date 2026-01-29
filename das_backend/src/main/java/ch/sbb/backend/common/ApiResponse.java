@@ -1,4 +1,4 @@
-package ch.sbb.backend.common.model.response;
+package ch.sbb.backend.common;
 
 import java.util.List;
 

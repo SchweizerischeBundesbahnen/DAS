@@ -1,8 +1,8 @@
 package ch.sbb.backend.formation.infrastructure.model;
 
 import ch.sbb.backend.common.StringListConverter;
-import ch.sbb.backend.common.standards.SFERA;
-import ch.sbb.backend.common.standards.TelTsi;
+import ch.sbb.backend.common.SFERA;
+import ch.sbb.backend.common.TelTsi;
 import ch.sbb.backend.formation.domain.model.BrakeDesign;
 import ch.sbb.backend.formation.domain.model.Formation;
 import ch.sbb.backend.formation.domain.model.FormationRun;

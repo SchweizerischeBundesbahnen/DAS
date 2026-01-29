@@ -2,8 +2,6 @@ package ch.sbb.backend.common;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.backend.common.model.response.ApiResponse;
-import ch.sbb.backend.common.model.response.Problem;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;

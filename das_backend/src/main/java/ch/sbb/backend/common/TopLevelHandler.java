@@ -1,6 +1,5 @@
 package ch.sbb.backend.common;
 
-import ch.sbb.backend.common.model.response.Problem;
 import java.io.IOException;
 import java.util.Map;
 import lombok.NonNull;
