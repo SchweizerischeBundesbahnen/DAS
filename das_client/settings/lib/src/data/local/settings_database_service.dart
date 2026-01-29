@@ -28,28 +28,19 @@ class SettingsDatabaseService extends _$SettingsDatabaseService implements RuFea
   int get schemaVersion => 1;
 
   @override
-  MigrationStrategy get migration {
-    return MigrationStrategy(
-      onCreate: (m) async {
-        await m.createAll();
-      },
-    );
-  }
+  MigrationStrategy get migration => MigrationStrategy(onCreate: (m) => m.createAll());
 
   @override
   Future<RuFeatureDto?> findRuFeature(String companyCodeRics, RuFeatureKeys featureKey) async {
-    final featureData =
-        await (select(ruFeaturesTable)
-              ..where((tbl) => tbl.companyCodeRics.equals(companyCodeRics))
-              ..where((tbl) => tbl.key.equals(featureKey.key)))
-            .getSingleOrNull();
+    final featureData = await _manager
+        .filter((f) => f.companyCodeRics(companyCodeRics) & f.key(featureKey.key))
+        .getSingleOrNull();
     return featureData?.toDomain();
   }
 
   @override
-  Future<void> saveRuFeatures(List<RuFeatureDto> ruFeatures) async {
-    for (final ruFeature in ruFeatures) {
-      await ruFeaturesTable.insertOnConflictUpdate(ruFeature.toCompanion());
-    }
-  }
+  Future<void> saveRuFeatures(List<RuFeatureDto> ruFeatures) async =>
+      _manager.bulkCreate((_) => ruFeatures.map((element) => element.toCompanion()), mode: InsertMode.insertOrReplace);
+
+  $$RuFeaturesTableTableTableManager get _manager => managers.ruFeaturesTable;
 }

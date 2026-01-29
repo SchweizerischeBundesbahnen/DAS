@@ -36,61 +36,40 @@ class DriftLocalDatabaseService extends _$DriftLocalDatabaseService implements S
   int get schemaVersion => 1;
 
   @override
-  MigrationStrategy get migration {
-    return MigrationStrategy(
-      onCreate: (m) async {
-        await m.createAll();
-      },
-    );
-  }
+  MigrationStrategy get migration => MigrationStrategy(onCreate: (m) => m.createAll());
 
   @override
   Future<JourneyProfileTableData?> findJourneyProfile(
     String company,
     String operationalTrainNumber,
     DateTime startDate,
-  ) async {
-    return (select(journeyProfileTable)
-          ..where((tbl) => tbl.company.equals(company))
-          ..where((tbl) => tbl.operationalTrainNumber.equals(operationalTrainNumber))
-          ..where((tbl) => tbl.startDate.equals(startDate)))
-        .getSingleOrNull();
-  }
+  ) async => _jpManager
+      .filter((f) => f.company(company) & f.operationalTrainNumber(operationalTrainNumber) & f.startDate(startDate))
+      .getSingleOrNull();
 
   @override
-  Future<SegmentProfileTableData?> findSegmentProfile(String spId, String majorVersion, String minorVersion) {
-    return (select(segmentProfileTable)
-          ..where((tbl) => tbl.spId.equals(spId))
-          ..where((tbl) => tbl.majorVersion.equals(majorVersion))
-          ..where((tbl) => tbl.minorVersion.equals(minorVersion)))
-        .getSingleOrNull();
-  }
+  Future<SegmentProfileTableData?> findSegmentProfile(String spId, String majorVersion, String minorVersion) async =>
+      _spManager
+          .filter((f) => f.spId(spId) & f.majorVersion(majorVersion) & f.minorVersion(minorVersion))
+          .getSingleOrNull();
 
   @override
   Future<TrainCharacteristicsTableData?> findTrainCharacteristics(
     String tcId,
     String majorVersion,
     String minorVersion,
-  ) {
-    return (select(trainCharacteristicsTable)
-          ..where((tbl) => tbl.tcId.equals(tcId))
-          ..where((tbl) => tbl.majorVersion.equals(majorVersion))
-          ..where((tbl) => tbl.minorVersion.equals(minorVersion)))
-        .getSingleOrNull();
-  }
+  ) async => _tcManager
+      .filter((f) => f.tcId(tcId) & f.majorVersion(majorVersion) & f.minorVersion(minorVersion))
+      .getSingleOrNull();
 
   @override
   Stream<JourneyProfileTableData?> observeJourneyProfile(
     String company,
     String operationalTrainNumber,
     DateTime startDate,
-  ) {
-    return (select(journeyProfileTable)
-          ..where((tbl) => tbl.company.equals(company))
-          ..where((tbl) => tbl.operationalTrainNumber.equals(operationalTrainNumber))
-          ..where((tbl) => tbl.startDate.equals(startDate)))
-        .watchSingleOrNull();
-  }
+  ) => _jpManager
+      .filter((f) => f.company(company) & f.operationalTrainNumber(operationalTrainNumber) & f.startDate(startDate))
+      .watchSingleOrNull();
 
   @override
   Future<void> saveJourneyProfile(JourneyProfileDto journeyProfile) async {
@@ -103,15 +82,12 @@ class DriftLocalDatabaseService extends _$DriftLocalDatabaseService implements S
       //journeyProfile.trainIdentification.otnId.startDate);
     );
 
-    final journeyProfileCompanion = journeyProfile.toCompanion(
-      id: existingProfile?.id,
-      startDate: today,
-    );
+    final journeyProfileCompanion = journeyProfile.toCompanion(id: existingProfile?.id, startDate: today);
 
     _log.fine(
       'Writing journey profile to db company=${journeyProfileCompanion.company} operationalTrainNumber=${journeyProfileCompanion.operationalTrainNumber} startDate=${journeyProfileCompanion.startDate}',
     );
-    journeyProfileTable.insertOnConflictUpdate(journeyProfileCompanion);
+    await journeyProfileTable.insertOnConflictUpdate(journeyProfileCompanion);
   }
 
   @override
@@ -122,11 +98,10 @@ class DriftLocalDatabaseService extends _$DriftLocalDatabaseService implements S
       segmentProfile.versionMinor,
     );
     if (existingProfile == null) {
-      final segmentProfileCompanion = segmentProfile.toCompanion();
       _log.fine(
-        'Writing segment profile to db spId=${segmentProfileCompanion.spId} majorVersion=${segmentProfileCompanion.majorVersion} minorVersion=${segmentProfileCompanion.minorVersion}',
+        'Writing segment profile to db spId=${segmentProfile.id} majorVersion=${segmentProfile.versionMajor} minorVersion=${segmentProfile.versionMinor}',
       );
-      segmentProfileTable.insertOnConflictUpdate(segmentProfileCompanion);
+      await segmentProfileTable.insertOnConflictUpdate(segmentProfile.toCompanion());
     } else {
       _log.fine(
         'Segment profile already exists in db spId=${segmentProfile.id} majorVersion=${segmentProfile.versionMajor} minorVersion=${segmentProfile.versionMinor}',
@@ -143,15 +118,20 @@ class DriftLocalDatabaseService extends _$DriftLocalDatabaseService implements S
     );
 
     if (existingTrainCharacteristics == null) {
-      final trainCharacteristicsCompanion = trainCharacteristics.toCompanion();
       _log.fine(
-        'Writing train characteristics to db tcId=${trainCharacteristicsCompanion.tcId} majorVersion=${trainCharacteristicsCompanion.majorVersion} minorVersion=${trainCharacteristicsCompanion.minorVersion}',
+        'Writing train characteristics to db tcId=${trainCharacteristics.tcId} majorVersion=${trainCharacteristics.versionMajor} minorVersion=${trainCharacteristics.versionMinor}',
       );
-      trainCharacteristicsTable.insertOnConflictUpdate(trainCharacteristicsCompanion);
+      await trainCharacteristicsTable.insertOnConflictUpdate(trainCharacteristics.toCompanion());
     } else {
       _log.fine(
         'train characteristics already exists in db tcId=${existingTrainCharacteristics.tcId} majorVersion=${existingTrainCharacteristics.majorVersion} minorVersion=${existingTrainCharacteristics.minorVersion}',
       );
     }
   }
+
+  $$TrainCharacteristicsTableTableTableManager get _tcManager => managers.trainCharacteristicsTable;
+
+  $$JourneyProfileTableTableTableManager get _jpManager => managers.journeyProfileTable;
+
+  $$SegmentProfileTableTableTableManager get _spManager => managers.segmentProfileTable;
 }

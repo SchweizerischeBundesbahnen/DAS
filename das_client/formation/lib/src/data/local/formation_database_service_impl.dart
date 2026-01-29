@@ -30,9 +30,7 @@ class FormationDatabaseServiceImpl extends _$FormationDatabaseServiceImpl implem
   @override
   MigrationStrategy get migration {
     return MigrationStrategy(
-      onCreate: (m) async {
-        await m.createAll();
-      },
+      onCreate: (m) => m.createAll(),
       onUpgrade: (m, from, to) async {
         for (final entity in m.database.allSchemaEntities) {
           await m.drop(entity);
@@ -45,36 +43,40 @@ class FormationDatabaseServiceImpl extends _$FormationDatabaseServiceImpl implem
 
   @override
   Stream<Formation?> watchFormation(String operationalTrainNumber, String company, DateTime operationalDay) {
-    return (select(formationTable)
-          ..where((tbl) => tbl.operationalTrainNumber.equals(operationalTrainNumber))
-          ..where((tbl) => tbl.company.equals(company))
-          ..where((tbl) => tbl.operationalDay.equals(operationalDay)))
+    return _manager
+        .filter(
+          (f) =>
+              f.operationalTrainNumber(operationalTrainNumber) & f.company(company) & f.operationalDay(operationalDay),
+        )
         .watchSingleOrNull()
         .map((it) => it?.toDomain());
   }
 
   @override
-  Future<void> saveFormation(FormationDto formation, {String? etag}) async {
-    await formationTable.insertOnConflictUpdate(formation.toCompanion(etag));
-  }
+  Future<void> saveFormation(FormationDto formation, {String? etag}) async =>
+      formationTable.insertOnConflictUpdate(formation.toCompanion(etag));
 
   @override
   Future<String?> findFormationEtag(String operationalTrainNumber, String company, DateTime operationalDay) {
-    return (select(formationTable)
-          ..where((tbl) => tbl.operationalTrainNumber.equals(operationalTrainNumber))
-          ..where((tbl) => tbl.company.equals(company))
-          ..where((tbl) => tbl.operationalDay.equals(operationalDay)))
+    return _manager
+        .filter(
+          (f) =>
+              f.operationalTrainNumber(operationalTrainNumber) & f.company(company) & f.operationalDay(operationalDay),
+        )
         .getSingleOrNull()
         .then((it) => it?.etag);
   }
 
   @override
   Future<Formation?> findFormation(String operationalTrainNumber, String company, DateTime operationalDay) async {
-    return (select(formationTable)
-          ..where((tbl) => tbl.operationalTrainNumber.equals(operationalTrainNumber))
-          ..where((tbl) => tbl.company.equals(company))
-          ..where((tbl) => tbl.operationalDay.equals(operationalDay)))
+    return _manager
+        .filter(
+          (f) =>
+              f.operationalTrainNumber(operationalTrainNumber) & f.company(company) & f.operationalDay(operationalDay),
+        )
         .getSingleOrNull()
         .then((it) => it?.toDomain());
   }
+
+  $$FormationTableTableTableManager get _manager => managers.formationTable;
 }

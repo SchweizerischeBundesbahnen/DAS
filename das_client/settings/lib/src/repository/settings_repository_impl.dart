@@ -22,9 +22,7 @@ class SettingsRepositoryImpl implements SettingsRepository {
   void init() async {
     final success = await loadSettings();
     if (!success) {
-      Future.delayed(retryDelay).then((value) {
-        init();
-      });
+      Future.delayed(retryDelay).then((_) => init());
     }
   }
 
