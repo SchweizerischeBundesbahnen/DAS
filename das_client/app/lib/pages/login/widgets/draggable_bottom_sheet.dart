@@ -67,7 +67,7 @@ class _LoginDraggableBottomSheetState extends State<LoginDraggableBottomSheet> {
         shadows: [
           BoxShadow(
             color: SBBColors.black.withValues(alpha: 0.2),
-            blurRadius: 8,
+            blurRadius: SBBSpacing.xSmall,
           ),
         ],
         color: ThemeUtil.getColor(context, SBBColors.milk, SBBColors.black),
@@ -118,7 +118,7 @@ class _LoginDraggableBottomSheetState extends State<LoginDraggableBottomSheet> {
             if (packageInfo == null) return SizedBox.shrink();
             return Column(
               children: [
-                SizedBox(height: 8.0),
+                SizedBox(height: SBBSpacing.xSmall),
                 RichText(
                   text: TextSpan(
                     text: 'App Version: ',
@@ -141,8 +141,9 @@ class _LoginDraggableBottomSheetState extends State<LoginDraggableBottomSheet> {
 
   Widget _header(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(56, 24, 32, 32),
+      padding: EdgeInsets.fromLTRB(56, SBBSpacing.large, SBBSpacing.xLarge, SBBSpacing.xLarge),
       color: SBBColors.white,
+      constraints: BoxConstraints(minHeight: LoginDraggableBottomSheet._minHeight),
       child: Row(
         children: [
           Expanded(child: _titleAndSubtitle(context)),
@@ -160,25 +161,27 @@ class _LoginDraggableBottomSheetState extends State<LoginDraggableBottomSheet> {
       builder: (context, asyncSnapshot) {
         final model = asyncSnapshot.requireData;
 
-        final children = switch (model) {
-          LoggedOut() || Loading() || LoggedIn() => [
-            Text(context.l10n.p_login_bottom_sheet_title, style: sbbTextStyle.boldStyle.xLarge),
-            Text(context.l10n.p_login_bottom_sheet_subtitle),
-          ],
-          Error(errorMessage: final errorMessage) => [
-            Row(
-              mainAxisSize: .min,
-              children: [
-                Icon(SBBIcons.circle_cross_small, color: SBBColors.red),
-                SizedBox(width: SBBSpacing.xSmall),
-                Text(context.l10n.p_login_bottom_sheet_title_failed, style: sbbTextStyle.boldStyle.xLarge),
-              ],
-            ),
-            Text('${context.l10n.p_login_bottom_sheet_subtitle_failed}: $errorMessage'),
-          ],
+        return switch (model) {
+          LoggedOut() || Loading() || LoggedIn() => Column(
+            mainAxisSize: .min,
+            spacing: SBBSpacing.xSmall,
+            children: [
+              Text(context.l10n.p_login_bottom_sheet_title, style: sbbTextStyle.boldStyle.xLarge),
+              Text(context.l10n.p_login_bottom_sheet_subtitle),
+            ],
+          ),
+          Error() => Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                SBBIcons.circle_cross_small,
+                color: ThemeUtil.getColor(context, SBBColors.error, SBBColors.errorDark),
+              ),
+              SizedBox(width: SBBSpacing.xSmall),
+              Text(context.l10n.p_login_bottom_sheet_title_failed, style: sbbTextStyle.boldStyle.xLarge),
+            ],
+          ),
         };
-
-        return Column(mainAxisSize: .min, spacing: 8.0, children: children);
       },
     );
   }
