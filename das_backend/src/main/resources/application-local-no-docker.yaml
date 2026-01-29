@@ -15,7 +15,7 @@ spring:
     #database-platform: org.hibernate.dialect.H2Dialect
     #hibernate:
     #  ddl-auto: validate #update #create-drop #none
-    show-sql: true
+    show-sql: false
   h2:
     console:
       path: /h2-console
@@ -23,3 +23,9 @@ spring:
       settings.web-allow-others: false
       # https://www.baeldung.com/spring-boot-h2-console-error -> if true: adapt WebSecurityConfig::filterChain
       enabled: true # turn it on only for temporary debugging -> http://localhost:8080/h2-console
+logging:
+  level:
+    root: ${LOG_LEVEL:-WARN}
+    ch.sbb: INFO
+    org.springframework.boot.autoconfigure: INFO
+    org.springframework.security: DEBUG
