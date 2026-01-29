@@ -29,7 +29,6 @@ class SferaModelMapper {
     List<SegmentProfileDto> segmentProfiles = const [],
     List<TrainCharacteristicsDto> trainCharacteristics = const [],
     RelatedTrainInformationDto? relatedTrainInformation,
-    Journey? lastJourney,
   }) {
     try {
       return _tryMapToJourney(
@@ -37,7 +36,6 @@ class SferaModelMapper {
         segmentProfiles,
         trainCharacteristics,
         relatedTrainInformation,
-        lastJourney,
       );
     } catch (e, s) {
       _log.severe('Error mapping journey-/segment profiles to journey:', e, s);
@@ -50,7 +48,6 @@ class SferaModelMapper {
     List<SegmentProfileDto> segmentProfiles,
     List<TrainCharacteristicsDto> trainCharacteristics,
     RelatedTrainInformationDto? relatedTrainInformation,
-    Journey? lastJourney,
   ) {
     final journeyData = <BaseData>[];
 
@@ -69,11 +66,7 @@ class SferaModelMapper {
     final servicePoints = journeyData.whereType<ServicePoint>().sortedBy((sP) => sP.order);
     final spOrders = servicePoints.map((s) => s.order).toSet();
 
-    final additionalSpeedRestrictions = _parseAdditionalSpeedRestrictions(
-      journeyProfile,
-      segmentProfiles,
-      servicePoints,
-    );
+    final additionalSpeedRestrictions = _parseAdditionalSpeedRestrictions(journeyProfile, servicePoints);
     final displayedSpeedRestrictions = additionalSpeedRestrictions
         .where((asr) => asr.isDisplayed(trackEquipmentSegments))
         .toList();
@@ -184,7 +177,6 @@ class SferaModelMapper {
 
   static List<AdditionalSpeedRestriction> _parseAdditionalSpeedRestrictions(
     JourneyProfileDto journeyProfile,
-    List<SegmentProfileDto> segmentProfiles,
     List<ServicePoint> servicePoints,
   ) {
     final List<AdditionalSpeedRestriction> result = [];

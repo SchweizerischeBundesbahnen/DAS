@@ -116,6 +116,7 @@
   "c_error_sfera_request_timeout": "Timeout for request",
   "c_error_sfera_jp_unavailable": "Working timetable not available",
   "c_error_sfera_invalid": "Received incomplete data",
+  "c_error_sfera_no_additional_info": "Without additional information",
   "c_connection_track_weiche": "Point",
   "c_button_confirm": "Accept",
   "c_radn": "RADN",

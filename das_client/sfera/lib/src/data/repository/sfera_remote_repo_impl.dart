@@ -118,7 +118,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
       await _initiateHandshake(otnId);
     } else {
       _otnId = null;
-      lastError = .connectionFailed;
+      lastError = .connectionFailed();
       _rxState.add(.disconnected);
     }
   }
@@ -351,7 +351,6 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
         segmentProfiles: _segmentProfiles,
         trainCharacteristics: _trainCharacteristics,
         relatedTrainInformation: _relatedTrainInformation,
-        lastJourney: _rxJourney.value,
       );
       if (newJourney.valid) {
         _rxJourney.add(newJourney);
@@ -359,7 +358,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
         onSuccess?.call();
       } else {
         _log.warning('Failed to update journey as it is not valid');
-        lastError = .invalid;
+        lastError = .invalid();
         onInvalid?.call();
       }
     }
@@ -371,17 +370,17 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
     _eventMessageHandlers.add(NetworkSpecificEventHandler(_onNetworkSpecificEvent));
   }
 
-  void _onJourneyProfileUpdated(SferaEventMessageHandler handler, JourneyProfileDto data) async {
+  void _onJourneyProfileUpdated(SferaEventMessageHandler _, JourneyProfileDto data) async {
     _journeyProfile = data;
     _startSegmentProfileAndTCTask();
   }
 
-  void _onRelatedTrainInformationUpdated(SferaEventMessageHandler handler, RelatedTrainInformationDto data) async {
+  void _onRelatedTrainInformationUpdated(SferaEventMessageHandler _, RelatedTrainInformationDto data) async {
     _relatedTrainInformation = data;
     _updateJourney();
   }
 
-  void _onNetworkSpecificEvent(SferaEventMessageHandler handler, NetworkSpecificEventDto data) async {
+  void _onNetworkSpecificEvent(SferaEventMessageHandler _, NetworkSpecificEventDto data) async {
     if (data is UxTestingNseDto) {
       if (data.koa != null) {
         final event = UxTestingEvent(name: data.koa!.name, value: data.koa!.nspValue);
@@ -407,10 +406,10 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
     }
   }
 
-  void _onTaskFailed(SferaTask task, SferaError errorCode) {
-    _log.severe('Task $task failed with error code $errorCode');
+  void _onTaskFailed(SferaTask task, SferaError error) {
+    _log.severe('Task $task failed with error $error');
     _tasks.remove(task);
-    lastError = errorCode;
+    lastError = error;
     if (_rxState.value != .connected) {
       disconnect();
     }

@@ -11,7 +11,6 @@ class TrackEquipmentRenderData {
     this.isEnd = false,
     this.isConventionalExtendedSpeedBorder = false,
     this.trackEquipmentType,
-    this.dataType,
   });
 
   final double cumulativeHeight;
@@ -19,7 +18,6 @@ class TrackEquipmentRenderData {
   final bool isEnd;
   final bool isConventionalExtendedSpeedBorder;
   final TrackEquipmentType? trackEquipmentType;
-  final Type? dataType;
 
   static TrackEquipmentRenderData? from(
     List<BaseData> rowData,
@@ -33,7 +31,6 @@ class TrackEquipmentRenderData {
     if (matchingSegment == null) return null;
 
     return TrackEquipmentRenderData(
-      dataType: data.runtimeType,
       trackEquipmentType: matchingSegment.type,
       cumulativeHeight: _calculateTrackEquipmentCumulativeHeight(
         rowData,

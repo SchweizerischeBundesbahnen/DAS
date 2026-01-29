@@ -1,6 +1,5 @@
 import 'package:app/pages/journey/journey_screen/view_model/calculated_speed_view_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/show_speed_behaviour.dart';
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/table/das_row_controller.dart';
 import 'package:app/widgets/table/das_row_controller_wrapper.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
@@ -59,7 +58,7 @@ class CalculatedSpeedCellBody extends StatelessWidget {
         return Text(
           key: nonEmptyKey,
           speed.value == '0' ? zeroSpeedContent : speed.value,
-          style: DASTextStyles.largeLight.copyWith(color: isSpeedReducedDueToLineSpeed ? reducedColor : color),
+          style: sbbTextStyle.lightStyle.large.copyWith(color: isSpeedReducedDueToLineSpeed ? reducedColor : color),
         );
       },
     );

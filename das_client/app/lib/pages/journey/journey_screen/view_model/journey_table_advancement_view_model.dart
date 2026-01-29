@@ -206,7 +206,5 @@ class JourneyTableAdvancementViewModel extends JourneyAwareViewModel {
   }
 
   @override
-  void journeyIdentificationChanged(Journey? journey) {
-    _resetModel();
-  }
+  void journeyIdentificationChanged(_) => _resetModel();
 }

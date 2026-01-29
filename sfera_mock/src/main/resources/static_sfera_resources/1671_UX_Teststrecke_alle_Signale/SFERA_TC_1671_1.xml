@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <TrainCharacteristics xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" TC_ID="1671_1"
-                      TC_VersionMajor="1" TC_VersionMinor="1">
+                      TC_VersionMajor="1" TC_VersionMinor="2">
     <TC_RU_ID>1285</TC_RU_ID>
-    <TC_Features trainCategoryCode="N" brakedWeightPercentage="150" trainLength="150" trainMaxSpeed="140"/>
+    <TC_Features trainCategoryCode="A" brakedWeightPercentage="105" trainLength="150" trainMaxSpeed="140"/>
 </TrainCharacteristics>

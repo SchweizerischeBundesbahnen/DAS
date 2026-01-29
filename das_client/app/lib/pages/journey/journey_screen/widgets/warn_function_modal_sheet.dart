@@ -1,7 +1,6 @@
 import 'package:app/i18n/i18n.dart';
 import 'package:app/sound/sound.dart';
 import 'package:app/widgets/assets.dart';
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -49,7 +48,7 @@ class WarnFunctionModalSheet extends StatelessWidget {
             child: Text(
               context.l10n.w_modal_sheet_warn_function_stop_message,
               textAlign: TextAlign.center,
-              style: DASTextStyles.xxLargeBold.copyWith(color: SBBColors.white),
+              style: sbbTextStyle.boldStyle.xxLarge.copyWith(color: SBBColors.white),
             ),
           ),
           Row(

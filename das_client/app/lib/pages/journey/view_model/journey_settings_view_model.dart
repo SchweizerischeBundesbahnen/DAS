@@ -37,9 +37,7 @@ class JourneySettingsViewModel extends JourneyAwareViewModel {
   }
 
   @override
-  void journeyIdentificationChanged(Journey? journey) {
-    _rxSettings.add(JourneySettings());
-  }
+  void journeyIdentificationChanged(_) => _rxSettings.add(JourneySettings());
 
   @override
   void dispose() {

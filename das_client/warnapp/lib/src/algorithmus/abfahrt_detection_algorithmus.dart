@@ -204,8 +204,6 @@ class AbfahrtDetectionAlgorithmus {
       delayedTriggerLageaenderung = DelayedTrigger(false, 0, properties.lageaenderungDelay),
       lageaenderungOrNachAnd = properties.lageaenderungOrNachAnd;
 
-  String? get abfahrtInfos => abfahrtInfo;
-
   bool updateWithAcceleration(
     double accX,
     double accY,
@@ -360,6 +358,7 @@ class AbfahrtDetectionAlgorithmus {
 
   bool get isHalt => updatesCount >= lengthForInitialization && !flipFlop.state;
 
+  // TODO: unused, check with original code
   void reset() {
     updatesCount = 0;
   }

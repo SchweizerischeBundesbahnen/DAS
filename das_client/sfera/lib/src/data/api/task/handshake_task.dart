@@ -4,6 +4,7 @@ import 'package:sfera/component.dart';
 import 'package:sfera/src/data/api/task/sfera_task.dart';
 import 'package:sfera/src/data/dto/das_operating_modes_supported_dto.dart';
 import 'package:sfera/src/data/dto/enums/das_driving_mode_dto.dart';
+import 'package:sfera/src/data/dto/g2b_error.dart';
 import 'package:sfera/src/data/dto/handshake_request_dto.dart';
 import 'package:sfera/src/data/dto/sfera_b2g_request_message_dto.dart';
 import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
@@ -52,19 +53,24 @@ class HandshakeTask extends SferaTask {
 
     final messageHeader = _sferaService.messageHeader(sender: otnId.company);
     final sferaB2gRequestMessage = SferaB2gRequestMessageDto.create(messageHeader, handshakeRequest: handshakeRequest);
-    final success = _mqttService.publishMessage(
-      otnId.company,
-      sferaTrain,
-      sferaB2gRequestMessage.buildDocument().toString(),
-    );
+    final message = sferaB2gRequestMessage.buildDocument().toString();
+    final success = _mqttService.publishMessage(otnId.company, sferaTrain, message);
 
     if (!success) {
-      _taskFailedCallback(this, .connectionFailed);
+      _taskFailedCallback(this, .connectionFailed());
     }
   }
 
   @override
   Future<bool> handleMessage(SferaG2bReplyMessageDto replyMessage) async {
+    if (replyMessage.hasErrors) {
+      final errors = replyMessage.payload!.messageResponse!.errors;
+      _log.info('Received reply with errors $errors');
+      _taskFailedCallback(this, .protocolError(errors: errors.map((error) => error.toProtocolError)));
+      stopTimeout();
+      return false;
+    }
+
     if (replyMessage.handshakeAcknowledgement != null) {
       stopTimeout();
       _log.info('Received handshake acknowledgment');
@@ -75,7 +81,7 @@ class HandshakeTask extends SferaTask {
       _log.warning(
         'Received handshake reject with reason=${replyMessage.handshakeReject?.handshakeRejectReason?.toString()}',
       );
-      _taskFailedCallback(this, .handshakeRejected);
+      _taskFailedCallback(this, .handshakeRejected());
       _mqttService.disconnect();
       return true;
     } else {

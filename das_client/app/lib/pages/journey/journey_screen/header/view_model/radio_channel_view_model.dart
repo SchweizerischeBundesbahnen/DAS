@@ -66,7 +66,7 @@ class RadioChannelViewModel extends JourneyAwareViewModel {
       _currentPosition != null ? _networkChanges.typeByLastBefore(_currentPosition!.order) : null;
 
   @override
-  void journeyIdentificationChanged(Journey? journey) {
+  void journeyIdentificationChanged(_) {
     _rxModel.add(RadioChannelModel());
     _radioContactLists.clear();
     _networkChanges.clear();

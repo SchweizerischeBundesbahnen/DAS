@@ -3,6 +3,7 @@ import 'package:mqtt/component.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/api/task/sfera_task.dart';
 import 'package:sfera/src/data/dto/b2g_request_dto.dart';
+import 'package:sfera/src/data/dto/g2b_error.dart';
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
 import 'package:sfera/src/data/dto/sfera_b2g_request_message_dto.dart';
 import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
@@ -97,6 +98,14 @@ class RequestTrainCharacteristicsTask extends SferaTask<List<TrainCharacteristic
 
   @override
   Future<bool> handleMessage(SferaG2bReplyMessageDto replyMessage) async {
+    if (replyMessage.hasErrors) {
+      final errors = replyMessage.payload!.messageResponse!.errors;
+      _log.info('Received reply with errors $errors');
+      _taskFailedCallback(this, .protocolError(errors: errors.map((error) => error.toProtocolError)));
+      stopTimeout();
+      return false;
+    }
+
     if (replyMessage.payload == null || replyMessage.payload!.trainCharacteristics.isEmpty) {
       return false;
     }

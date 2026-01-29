@@ -3,7 +3,6 @@ import 'package:app/pages/journey/journey_screen/view_model/advised_speed_view_m
 import 'package:app/pages/journey/journey_screen/view_model/model/advised_speed_model.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/assets.dart';
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -93,7 +92,7 @@ class AdvisedSpeedNotification extends StatelessWidget {
             ],
             Text(
               message,
-              style: DASTextStyles.largeBold.copyWith(color: resolvedForegroundColor),
+              style: sbbTextStyle.boldStyle.large.copyWith(color: resolvedForegroundColor),
             ),
           ],
         ),

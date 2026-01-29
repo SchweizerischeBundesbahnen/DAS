@@ -92,9 +92,7 @@ class BreakLoadSlipViewModel extends JourneyAwareViewModel {
   }
 
   @override
-  void journeyUpdated(Journey? journey) {
-    _emitFormationRun();
-  }
+  void journeyUpdated(Journey? _) => _emitFormationRun();
 
   void _checkForFormationUpdates() {
     if (_skipFirstUpdate) {

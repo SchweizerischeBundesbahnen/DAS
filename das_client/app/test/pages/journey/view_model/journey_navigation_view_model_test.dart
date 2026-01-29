@@ -237,7 +237,7 @@ void main() {
       await testee.push(trainId1);
       await processStreams();
       emitRegister.clear();
-      when(mockSferaRepo.lastError).thenReturn(.requestTimeout);
+      when(mockSferaRepo.lastError).thenReturn(RequestTimeout());
 
       // ACT
       mockStream.add(.disconnected);

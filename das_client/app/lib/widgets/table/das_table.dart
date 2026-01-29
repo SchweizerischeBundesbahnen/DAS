@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/animation.dart';
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:app/widgets/table/das_row_controller_wrapper.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
@@ -90,11 +89,7 @@ class _DASTableState extends State<DASTable> {
       }
     } else if (oldLength > newLength) {
       for (int i = 0; i < diff; i++) {
-        _animatedListKey.currentState!.removeItem(
-          oldLength - i,
-          (context, animation) => Container(),
-          duration: Duration.zero,
-        );
+        _animatedListKey.currentState!.removeItem(oldLength - i, (_, _) => SizedBox.shrink(), duration: Duration.zero);
       }
     }
   }
@@ -108,7 +103,7 @@ class _DASTableState extends State<DASTable> {
     for (int i = 0; i < oldWidget.rows.length && i < widget.rows.length; i++) {
       final oldRow = oldWidget.rows[i];
       if (oldRow.identifier != null && widget.rows[i].identifier != oldRow.identifier) {
-        _animatedListKey.currentState!.removeItem(i, (context, animation) {
+        _animatedListKey.currentState!.removeItem(i, (_, animation) {
           return SizeTransition(sizeFactor: animation, child: _dataRow(oldRow));
         }, duration: Duration(milliseconds: _tableInsertRemoveAnimationDurationMs));
       }
@@ -217,8 +212,8 @@ class _DASTableState extends State<DASTable> {
     final borderColor = isDarkTheme ? SBBColors.iron : SBBColors.cloud;
     return DASTableThemeData(
       backgroundColor: isDarkTheme ? SBBColors.charcoal : SBBColors.white,
-      headingTextStyle: DASTextStyles.smallLight,
-      dataTextStyle: DASTextStyles.largeRoman,
+      headingTextStyle: sbbTextStyle.lightStyle.small,
+      dataTextStyle: sbbTextStyle.romanStyle.large,
       headingRowBorder: Border(bottom: BorderSide(width: 2, color: borderColor)),
       tableBorder: TableBorder(
         horizontalInside: BorderSide(width: 1, color: borderColor),

@@ -35,12 +35,12 @@ class ConnectivityViewModel {
         _timer?.cancel();
       } else {
         _timer?.cancel();
-        _timer = Timer.periodic(timerTickDuration, _checkConnectivityState);
+        _timer = Timer.periodic(timerTickDuration, (_) => _checkConnectivityState());
       }
     });
   }
 
-  void _checkConnectivityState(Timer t) {
+  void _checkConnectivityState() {
     final now = DateTime.now();
     final lastConnected = _connectivityManager.lastConnected;
     if (lastConnected == null ||

@@ -88,7 +88,7 @@ class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
                   spacing: SBBSpacing.medium,
                   children: [
                     BreakLoadSlipTrainDetails(formation: formation, formationRunChange: formationRunChange),
-                    _loadDetailsAndButtons(context, formation, formationRunChange),
+                    _loadDetailsAndButtons(formationRunChange),
                   ],
                 ),
               ],
@@ -110,11 +110,7 @@ class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
     );
   }
 
-  Row _specialRestrictionsAndBrakeDetailsRow(
-    BuildContext context,
-    Formation formation,
-    FormationRunChange formationRun,
-  ) {
+  Row _specialRestrictionsAndBrakeDetailsRow(FormationRunChange formationRun) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: SBBSpacing.medium,
@@ -129,7 +125,7 @@ class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
     );
   }
 
-  Widget _loadDetailsAndButtons(BuildContext context, Formation formation, FormationRunChange formationRun) {
+  Widget _loadDetailsAndButtons(FormationRunChange formationRun) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: SBBSpacing.medium),
       child: Row(
@@ -145,7 +141,7 @@ class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _specialRestrictionsAndBrakeDetailsRow(context, formation, formationRun),
+                _specialRestrictionsAndBrakeDetailsRow(formationRun),
                 SizedBox(height: SBBSpacing.medium),
                 BreakLoadSlipButtons(),
               ],

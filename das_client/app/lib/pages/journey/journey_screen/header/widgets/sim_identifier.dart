@@ -1,10 +1,10 @@
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class SimIdentifier extends StatelessWidget {
   static const Key simKey = Key('sim');
 
-  const SimIdentifier({super.key, this.textStyle = DASTextStyles.xLargeRoman});
+  SimIdentifier({super.key, TextStyle? textStyle}) : textStyle = textStyle ?? sbbTextStyle.romanStyle.xLarge;
 
   final TextStyle textStyle;
 

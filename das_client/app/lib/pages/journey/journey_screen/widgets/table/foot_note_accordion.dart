@@ -3,7 +3,6 @@ import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_vie
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/text_util.dart';
 import 'package:app/widgets/accordion/accordion.dart';
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -45,7 +44,7 @@ class FootNoteAccordion extends StatelessWidget {
   Text contentText(BaseFootNote data) => _contentText(data);
 
   static Text _contentText(BaseFootNote data) {
-    return Text.rich(TextUtil.parseHtmlText(data.footNote.text, DASTextStyles.largeRoman));
+    return Text.rich(TextUtil.parseHtmlText(data.footNote.text, sbbTextStyle.romanStyle.large));
   }
 
   static double calculateHeight({required BaseFootNote data, required bool isExpanded, required bool addTopMargin}) {

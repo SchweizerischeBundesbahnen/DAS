@@ -5,7 +5,6 @@ import 'package:app/pages/journey/journey_screen/detail_modal/service_point_moda
 import 'package:app/pages/journey/journey_screen/detail_modal/service_point_modal/service_point_modal_tab.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/service_point_modal/service_point_modal_view_model.dart';
 import 'package:app/util/animation.dart';
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/modal_sheet/das_modal_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -55,7 +54,7 @@ class ServicePointModalBuilder extends DASModalSheetBuilder {
         if (servicePointName == null) {
           return Skeletonizer(
             enabled: !snapshot.hasData,
-            child: Text(context.l10n.c_unknown, style: DASTextStyles.largeRoman),
+            child: Text(context.l10n.c_unknown, style: sbbTextStyle.romanStyle.large),
           );
         }
 
@@ -71,7 +70,7 @@ class ServicePointModalBuilder extends DASModalSheetBuilder {
           child: Text(
             servicePointName,
             key: ValueKey(servicePointName),
-            style: DASTextStyles.largeRoman,
+            style: sbbTextStyle.romanStyle.large,
           ),
         );
       },
@@ -85,7 +84,7 @@ class ServicePointModalBuilder extends DASModalSheetBuilder {
         final tabSubtitle = snapshot.data?.localized(context) ?? BoneMock.subtitle;
         return Skeletonizer(
           enabled: !snapshot.hasData,
-          child: Text(tabSubtitle, style: DASTextStyles.extraSmallRoman),
+          child: Text(tabSubtitle, style: sbbTextStyle.romanStyle.xSmall),
         );
       },
     );

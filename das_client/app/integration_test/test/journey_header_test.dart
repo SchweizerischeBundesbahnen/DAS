@@ -1,12 +1,12 @@
 import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_page.dart';
+import 'package:app/pages/journey/journey_screen/header/header.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/battery_status.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/chronograph_header_box.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/connectivity_icon.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/departure_authorization_display.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/extended_menu.dart';
-import 'package:app/pages/journey/journey_screen/header/widgets/header.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/radio_channel.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/radio_contact.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/sim_identifier.dart';

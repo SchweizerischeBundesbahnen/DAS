@@ -12,7 +12,6 @@ import 'package:app/pages/journey/journey_screen/widgets/table/cells/track_equip
 import 'package:app/pages/journey/journey_screen/widgets/table/column_definition.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/config/journey_config.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/service_point_row.dart';
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/speed_display.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:app/widgets/table/das_table_row.dart';
@@ -90,7 +89,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
 
     final textColor = _isNextStop && specialCellColor == null ? SBBColors.white : null;
     final defaultTextStyle = DASTableTheme.of(context)?.data.dataTextStyle;
-    final textStyle = (defaultTextStyle ?? DASTextStyles.largeRoman).copyWith(color: textColor);
+    final textStyle = (defaultTextStyle ?? sbbTextStyle.romanStyle.large).copyWith(color: textColor);
     return DASTableCell(
       color: specialCellColor,
       child: Column(
@@ -222,7 +221,6 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
         clipBehavior: .none,
         child: AdvisedSpeedCellBody(
           metadata: metadata,
-          settings: config.settings,
           order: data.order,
           showSpeedBehavior: isFirst ? .always : showSpeedBehavior,
         ),

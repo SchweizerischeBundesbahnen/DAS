@@ -3,7 +3,6 @@ import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/app_router.dart';
 import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
 import 'package:app/widgets/app_version_text.dart';
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/device_id_text.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -66,7 +65,7 @@ class DASNavigationDrawer extends StatelessWidget {
 
     return ListTile(
       leading: isActiveRoute ? _activeIcon(icon) : _inactiveIcon(icon),
-      title: Text(title, style: isActiveRoute ? DASTextStyles.mediumBold : DASTextStyles.mediumLight),
+      title: Text(title, style: isActiveRoute ? sbbTextStyle.boldStyle.medium : sbbTextStyle.lightStyle.medium),
       onTap: () {
         Navigator.pop(context);
         context.router.replace(route);

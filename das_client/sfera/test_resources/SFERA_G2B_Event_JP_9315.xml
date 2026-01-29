@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <SFERA_G2B_EventMessage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SFERA_v3.00.xsd">
-    <MessageHeader SFERA_version="1.91" message_ID="f382b8f2-cb75-4edf-a49b-566d90f6035e" timestamp="2022-05-06T10:52:52Z" sourceDevice="INFRABEL">
+    <MessageHeader SFERA_version="3.00" message_ID="f382b8f2-cb75-4edf-a49b-566d90f6035e" timestamp="2022-05-06T10:52:52Z" sourceDevice="INFRABEL">
         <Sender>0088</Sender>
         <Recipient>1088</Recipient>
     </MessageHeader>

@@ -3,7 +3,6 @@ import 'package:app/pages/journey/journey_screen/reduced_overview/reduced_overvi
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/assets.dart';
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -47,7 +46,7 @@ class NextStop extends StatelessWidget {
           padding: const .only(left: SBBSpacing.xSmall),
           child: Text(
             displayedStop?.name ?? context.l10n.c_unknown,
-            style: DASTextStyles.xxLargeBold,
+            style: sbbTextStyle.boldStyle.xxLarge,
             overflow: .ellipsis,
           ),
         );

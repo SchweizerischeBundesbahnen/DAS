@@ -196,7 +196,7 @@ class SpeedMapper {
   static List<DraftAdvisedSpeedSegment> _mergeAdvisedSegments(List<DraftAdvisedSpeedSegment> drafts) {
     final groupedAdvisedSpeedSegments = drafts.groupListsBy((draft) => draft.advisedSpeedGroupKey);
 
-    groupedAdvisedSpeedSegments.updateAll((key, drafts) {
+    groupedAdvisedSpeedSegments.updateAll((_, drafts) {
       drafts.sort();
       final mergedDrafts = <DraftAdvisedSpeedSegment>[];
 
