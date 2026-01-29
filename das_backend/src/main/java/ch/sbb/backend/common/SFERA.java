@@ -5,7 +5,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * Given by IRS 90940 Ed. 2 or derrived NSPs.
+ * Data exchange specification by IRS 90940 Ed. 2 or derrived NSPs.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Documented

@@ -7,12 +7,21 @@ import ch.sbb.backend.admin.application.settings.model.response.Settings;
 import ch.sbb.backend.admin.application.settings.model.response.SettingsResponse;
 import ch.sbb.backend.admin.domain.settings.RuFeatureService;
 import ch.sbb.backend.common.ApiDocumentation;
+import ch.sbb.backend.common.ApiParametersDefault;
+import ch.sbb.backend.common.ApiParametersDefault.ParamRequestId;
+import ch.sbb.backend.common.ResponseEntityFactory;
 import ch.sbb.backend.common.ApiErrorResponses;
+import ch.sbb.backend.common.Response;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -34,9 +43,12 @@ public class SettingsController {
 
     @GetMapping(API_SETTINGS)
     @Operation(summary = "Fetch all configuration settings.")
-    @ApiResponse(responseCode = "200", description = "Settings retrieved")
+    @ApiResponse(responseCode = "200", description = "Settings relevant for DAS-Client.",
+        content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = SettingsResponse.class)))
     @ApiErrorResponses
-    public SettingsResponse getConfigurations() {
+    public ResponseEntity<? extends Response> getSettings(
+        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId
+    ) {
         List<RuFeature> allFeatures = ruFeatureService.getAll().stream()
             .map(RuFeature::new)
             .toList();
@@ -44,6 +56,8 @@ public class SettingsController {
         Logging logging = configService.getLogging();
         Preload preload = configService.getPreload();
 
-        return new SettingsResponse(List.of(new Settings(allFeatures, logging, preload)));
+        return ResponseEntityFactory.createOkResponse(new SettingsResponse(List.of(new Settings(allFeatures, logging, preload))),
+            null,
+            requestId);
     }
 }

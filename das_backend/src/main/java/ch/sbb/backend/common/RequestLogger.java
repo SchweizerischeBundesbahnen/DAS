@@ -2,15 +2,14 @@ package ch.sbb.backend.common;
 
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.stream.Collectors;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.event.Level;
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.StopWatch;
 
+@Slf4j
 public class RequestLogger {
 
-    private static final Logger log = LoggerFactory.getLogger(RequestLogger.class);
     private final StopWatch stopWatch;
     private final Level level;
 

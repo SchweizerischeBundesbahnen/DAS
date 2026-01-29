@@ -1,4 +1,4 @@
-package ch.sbb.backend.common;
+package ch.sbb.backend.common.config;
 
 import javax.sql.DataSource;
 import net.javacrumbs.shedlock.core.LockProvider;
