@@ -171,7 +171,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
 
   @override
   DASTableCell iconsCell1(BuildContext context) {
-    if (data.mandatoryStop && data.stationSign1 == null && data.stationSign2 == null) return DASTableCell.empty();
+    if (data.stationSign1 == null && data.stationSign2 == null) return DASTableCell.empty();
 
     return _wrapToBaseHeight(
       DASTableCell(
@@ -179,20 +179,14 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
         padding: .symmetric(vertical: SBBSpacing.xSmall, horizontal: 2),
         child: Padding(
           padding: config.bracketStationRenderData != null ? const .only(right: SBBSpacing.large) : .zero,
-          child: Wrap(
+          child: Row(
+            mainAxisSize: .min,
             spacing: 2,
             children: [
-              // if (!data.mandatoryStop) _icon(context, AppAssets.iconStopOnRequest, stopOnRequestKey),
-              Row(
-                mainAxisSize: .min,
-                spacing: 2,
-                children: [
-                  if (data.stationSign2 != null)
-                    _icon(context, data.stationSign2!.iconAsset(), Key(data.stationSign2!.name)),
-                  if (data.stationSign1 != null)
-                    _icon(context, data.stationSign1!.iconAsset(), Key(data.stationSign1!.name)),
-                ],
-              ),
+              if (data.stationSign2 != null)
+                _icon(context, data.stationSign2!.iconAsset(), Key(data.stationSign2!.name)),
+              if (data.stationSign1 != null)
+                _icon(context, data.stationSign1!.iconAsset(), Key(data.stationSign1!.name)),
             ],
           ),
         ),
