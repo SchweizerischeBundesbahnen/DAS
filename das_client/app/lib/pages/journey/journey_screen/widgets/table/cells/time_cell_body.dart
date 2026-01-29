@@ -76,7 +76,10 @@ class TimeCellBody extends StatelessWidget {
           return Align(alignment: .centerRight, child: _mandatoryStopIcon(context));
         }
 
-        return Stack(
+        return Row(
+          crossAxisAlignment: .start,
+          mainAxisSize: .min,
+          spacing: SBBSpacing.xxSmall,
           children: [
             timeTexts,
             Align(alignment: .topRight, child: _mandatoryStopIcon(context)),
