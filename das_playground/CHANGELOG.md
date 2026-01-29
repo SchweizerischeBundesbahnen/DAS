@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/webapp-v0.8.0...webapp-v0.8.1) (2026-01-29)
+
+
+### Bug Fixes
+
+* always show ux buttons with mocked operational day ([#1610](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1610)) ([973868f](https://github.com/SchweizerischeBundesbahnen/DAS/commit/973868fd117a2d2577338306e87330776b9d2a76))
+
 ## [0.8.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/webapp-v0.7.2...webapp-v0.8.0) (2026-01-09)
 
 
