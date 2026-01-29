@@ -1,5 +1,4 @@
 import 'package:app/theme/theme_util.dart';
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
@@ -25,7 +24,7 @@ class CommunicationNetworkIcon extends StatelessWidget {
         borderRadius: BorderRadius.circular(SBBSpacing.medium),
       ),
       padding: .symmetric(horizontal: 15.0),
-      child: Text(isGsmP ? 'P' : 'R', style: DASTextStyles.largeRoman),
+      child: Text(isGsmP ? 'P' : 'R', style: sbbTextStyle.romanStyle.large),
     );
   }
 }

@@ -67,6 +67,7 @@ class HandshakeTask extends SferaTask {
       final errors = replyMessage.payload!.messageResponse!.errors;
       _log.info('Received reply with errors $errors');
       _taskFailedCallback(this, .protocolError(errors: errors.map((error) => error.toProtocolError)));
+      stopTimeout();
       return false;
     }
 

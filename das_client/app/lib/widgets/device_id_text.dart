@@ -1,6 +1,6 @@
 import 'package:app/util/device_id_info.dart';
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class DeviceIdText extends StatelessWidget {
   const DeviceIdText({required this.color, super.key});
@@ -11,13 +11,11 @@ class DeviceIdText extends StatelessWidget {
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: DeviceIdInfo.getDeviceId(),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.hasData) {
-          final deviceId = snapshot.data as String? ?? '';
-          return Text(deviceId, style: DASTextStyles.smallLight.copyWith(color: color));
-        } else {
-          return const SizedBox.shrink();
-        }
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return const SizedBox.shrink();
+
+        final deviceId = snapshot.data ?? '';
+        return Text(deviceId, style: sbbTextStyle.lightStyle.small.copyWith(color: color));
       },
     );
   }

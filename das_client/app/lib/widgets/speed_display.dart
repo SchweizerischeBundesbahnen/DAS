@@ -1,7 +1,5 @@
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/dot_indicator.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
-import 'package:app/widgets/widget_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
@@ -12,14 +10,14 @@ class SpeedDisplay extends StatelessWidget {
   static const Key circledSpeedKey = Key('graduatedSpeedCircled');
   static const Key squaredSpeedKey = Key('graduatedSpeedSquared');
 
-  const SpeedDisplay({
+  SpeedDisplay({
     this.hasAdditionalInformation = false,
     this.singleLine = false,
-    this.textStyle = DASTextStyles.largeRoman,
+    TextStyle? textStyle,
     this.speed,
     this.isNextStop = false,
     super.key,
-  });
+  }) : textStyle = textStyle ?? sbbTextStyle.romanStyle.large;
 
   final bool hasAdditionalInformation;
   final bool singleLine;
@@ -133,4 +131,10 @@ extension _SpeedIterableX on List<SingleSpeed> {
   String toJoinedString({String divider = '-'}) => map((it) => it.value).join(divider);
 
   bool get hasSquaredOrCircled => any((it) => it.isSquared || it.isCircled);
+}
+
+extension _WidgetListExtension on Iterable<Widget> {
+  List<Widget> withDivider(final Widget divider) {
+    return expand((x) => [divider, x]).skip(1).toList();
+  }
 }

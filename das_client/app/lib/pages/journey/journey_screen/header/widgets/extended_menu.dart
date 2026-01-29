@@ -3,7 +3,6 @@ import 'package:app/pages/journey/journey_screen/reduced_overview/reduced_overvi
 import 'package:app/pages/journey/journey_screen/widgets/anchored_full_page_overlay.dart';
 import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
 import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -60,7 +59,7 @@ class ExtendedMenu extends StatelessWidget {
         Expanded(
           child: Text(
             context.l10n.w_extended_menu_title,
-            style: DASTextStyles.largeLight,
+            style: sbbTextStyle.lightStyle.large,
           ),
         ),
         SBBIconButtonSmall(

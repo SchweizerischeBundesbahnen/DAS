@@ -1,8 +1,7 @@
 import 'package:app/i18n/i18n.dart';
+import 'package:app/theme/das_colors.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/assets.dart';
-import 'package:app/widgets/das_colors.dart';
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/svg.dart';
@@ -50,25 +49,25 @@ class BreakLoadSlipHeader extends StatelessWidget {
             formationRunChange.formationRun.trainCategoryCode ?? '',
             formationRunChange.formationRun.brakedWeightPercentage ?? '',
           ),
-          style: DASTextStyles.mediumBold,
+          style: sbbTextStyle.boldStyle.medium,
         ),
         Row(
           children: [
             Text(
               context.l10n.p_break_load_slip_header_subtitle,
-              style: DASTextStyles.smallLight.copyWith(color: subtitleColor),
+              style: sbbTextStyle.lightStyle.small.copyWith(color: subtitleColor),
             ),
             Text(
               DateFormat('dd.MM.yyyy').format(formationRunChange.formationRun.inspectionDateTime),
               style: dateChanged
-                  ? DASTextStyles.smallBold.copyWith(color: subtitleColor)
-                  : DASTextStyles.smallLight.copyWith(color: subtitleColor),
+                  ? sbbTextStyle.boldStyle.small.copyWith(color: subtitleColor)
+                  : sbbTextStyle.lightStyle.small.copyWith(color: subtitleColor),
             ),
             Text(
               DateFormat(' HH:mm').format(formationRunChange.formationRun.inspectionDateTime),
               style: timeChanged
-                  ? DASTextStyles.smallBold.copyWith(color: subtitleColor)
-                  : DASTextStyles.smallLight.copyWith(color: subtitleColor),
+                  ? sbbTextStyle.boldStyle.small.copyWith(color: subtitleColor)
+                  : sbbTextStyle.lightStyle.small.copyWith(color: subtitleColor),
             ),
           ],
         ),
@@ -179,7 +178,10 @@ class BreakLoadSlipHeader extends StatelessWidget {
           spacing: SBBSpacing.xSmall,
           children: [
             SvgPicture.asset(specialIndicator.asset),
-            Text(specialIndicator.text, style: DASTextStyles.smallLight.copyWith(color: specialIndicator.textColor)),
+            Text(
+              specialIndicator.text,
+              style: sbbTextStyle.lightStyle.small.copyWith(color: specialIndicator.textColor),
+            ),
           ],
         ),
       ),

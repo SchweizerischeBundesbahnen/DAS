@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/animation.dart';
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:app/widgets/table/das_row_controller_wrapper.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
@@ -213,8 +212,8 @@ class _DASTableState extends State<DASTable> {
     final borderColor = isDarkTheme ? SBBColors.iron : SBBColors.cloud;
     return DASTableThemeData(
       backgroundColor: isDarkTheme ? SBBColors.charcoal : SBBColors.white,
-      headingTextStyle: DASTextStyles.smallLight,
-      dataTextStyle: DASTextStyles.largeRoman,
+      headingTextStyle: sbbTextStyle.lightStyle.small,
+      dataTextStyle: sbbTextStyle.romanStyle.large,
       headingRowBorder: Border(bottom: BorderSide(width: 2, color: borderColor)),
       tableBorder: TableBorder(
         horizontalInside: BorderSide(width: 1, color: borderColor),

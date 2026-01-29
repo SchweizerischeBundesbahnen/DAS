@@ -1,5 +1,5 @@
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class RadioContactChannels extends StatelessWidget {
   static const Key radioContactChannelsKey = Key('radioContactChannels');
@@ -16,7 +16,7 @@ class RadioContactChannels extends StatelessWidget {
       ? Text(
           key: radioContactChannelsKey,
           mainContactIdentifiers!,
-          style: DASTextStyles.xLargeRoman,
+          style: sbbTextStyle.romanStyle.xLarge,
           overflow: .ellipsis,
         )
       : SizedBox.shrink();

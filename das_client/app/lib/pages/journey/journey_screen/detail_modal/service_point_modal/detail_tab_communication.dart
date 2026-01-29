@@ -2,7 +2,6 @@ import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/service_point_modal/service_point_modal_view_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/communication_network_icon.dart';
 import 'package:app/util/text_util.dart';
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -26,7 +25,7 @@ class DetailTabCommunication extends StatelessWidget {
           children: [
             _departureAuthorization(context),
             _communicationNetworkType(context),
-            Text(context.l10n.w_service_point_modal_communication_radio_channel, style: DASTextStyles.smallRoman),
+            Text(context.l10n.w_service_point_modal_communication_radio_channel, style: sbbTextStyle.romanStyle.small),
             _contactList(context),
             _simCorridor(context),
           ],
@@ -50,7 +49,7 @@ class DetailTabCommunication extends StatelessWidget {
           physics: NeverScrollableScrollPhysics(),
           itemCount: simContacts.length + 1,
           itemBuilder: (context, index) => index == 0
-              ? Text(context.l10n.w_service_point_modal_communication_sim, style: DASTextStyles.smallRoman)
+              ? Text(context.l10n.w_service_point_modal_communication_sim, style: sbbTextStyle.romanStyle.small)
               : _simContactItem(simContacts.elementAt(index - 1)),
         );
       },
@@ -65,8 +64,9 @@ class DetailTabCommunication extends StatelessWidget {
         mainAxisAlignment: .start,
         spacing: 4.0,
         children: [
-          SizedBox(width: 60.0, child: Text(contact.contactIdentifier, style: DASTextStyles.smallBold)),
-          if (contact.contactRole != null) Expanded(child: Text(contact.contactRole!, style: DASTextStyles.smallRoman)),
+          SizedBox(width: 60.0, child: Text(contact.contactIdentifier, style: sbbTextStyle.boldStyle.small)),
+          if (contact.contactRole != null)
+            Expanded(child: Text(contact.contactRole!, style: sbbTextStyle.romanStyle.small)),
         ],
       ),
     );
@@ -105,8 +105,8 @@ class DetailTabCommunication extends StatelessWidget {
         crossAxisAlignment: .start,
         spacing: 4.0,
         children: [
-          if (contact.contactRole != null) Text(contact.contactRole!, style: DASTextStyles.mediumRoman),
-          Text(contact.contactIdentifier, style: DASTextStyles.mediumBold),
+          if (contact.contactRole != null) Text(contact.contactRole!, style: sbbTextStyle.romanStyle.medium),
+          Text(contact.contactIdentifier, style: sbbTextStyle.boldStyle.medium),
         ],
       ),
     );
@@ -124,7 +124,7 @@ class DetailTabCommunication extends StatelessWidget {
         return Column(
           crossAxisAlignment: .start,
           children: [
-            Text(context.l10n.w_service_point_modal_communication_network, style: DASTextStyles.smallRoman),
+            Text(context.l10n.w_service_point_modal_communication_network, style: sbbTextStyle.romanStyle.small),
             Padding(
               padding: const .symmetric(vertical: 10.0, horizontal: SBBSpacing.medium),
               child: CommunicationNetworkIcon(networkType: snapshot.data!),
@@ -147,10 +147,10 @@ class DetailTabCommunication extends StatelessWidget {
           key: departureAuthorizationKey,
           crossAxisAlignment: .start,
           children: [
-            Text(context.l10n.w_service_point_modal_departure_authorization, style: DASTextStyles.smallRoman),
+            Text(context.l10n.w_service_point_modal_departure_authorization, style: sbbTextStyle.romanStyle.small),
             Padding(
               padding: const .symmetric(vertical: 10.0, horizontal: SBBSpacing.medium),
-              child: Text.rich(TextUtil.parseHtmlText(departureAuthText, DASTextStyles.mediumRoman)),
+              child: Text.rich(TextUtil.parseHtmlText(departureAuthText, sbbTextStyle.romanStyle.medium)),
             ),
           ],
         );

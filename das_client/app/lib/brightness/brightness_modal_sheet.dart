@@ -1,7 +1,6 @@
 import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -35,7 +34,7 @@ class BrightnessModalSheet extends StatelessWidget {
       children: [
         Text(
           context.l10n.w_modal_sheet_permission_brightness,
-          style: DASTextStyles.mediumRoman,
+          style: sbbTextStyle.romanStyle.medium,
         ),
         SizedBox(height: SBBSpacing.xLarge),
         SBBPrimaryButton(

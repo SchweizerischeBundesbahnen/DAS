@@ -2,7 +2,6 @@ import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/journey_overview.dart';
 import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
 import 'package:app/widgets/das_icons.dart';
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/notificationbox/notification_box.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -32,7 +31,7 @@ class ManeuverNotification extends StatelessWidget {
             action: Row(
               children: [
                 _openWaraButton(viewModel),
-                Text(context.l10n.w_maneuver_notification_maneuver, style: DASTextStyles.mediumLight),
+                Text(context.l10n.w_maneuver_notification_maneuver, style: sbbTextStyle.lightStyle.medium),
                 const SizedBox(width: SBBSpacing.xSmall),
                 SBBSwitch(
                   key: maneuverNotificationSwitchKey,

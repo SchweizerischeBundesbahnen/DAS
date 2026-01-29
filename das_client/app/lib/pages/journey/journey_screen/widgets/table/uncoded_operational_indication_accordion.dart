@@ -4,7 +4,6 @@ import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_vie
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/text_util.dart';
 import 'package:app/widgets/accordion/accordion.dart';
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -16,7 +15,14 @@ class UncodedOperationalIndicationAccordion extends StatelessWidget {
   static const Key collapsedContentKey = Key('operationalIndicationCollapsedContent');
 
   static const double _verticalMargin = SBBSpacing.xSmall;
-  static const TextStyle _textStyle = DASTextStyles.largeRoman;
+
+  static const TextStyle _textStyle = TextStyle(
+    fontSize: SBBTextStyles.largeFontSize,
+    height: SBBTextStyles.largeFontHeight,
+    fontStyle: FontStyle.normal,
+    fontWeight: .w400,
+    fontFamily: SBBFontFamily.sbbFontRoman,
+  );
 
   const UncodedOperationalIndicationAccordion({
     required this.collapsedState,

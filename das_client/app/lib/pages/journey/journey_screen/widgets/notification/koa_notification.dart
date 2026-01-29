@@ -2,10 +2,9 @@ import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/journey_overview.dart';
 import 'package:app/pages/journey/journey_screen/view_model/ux_testing_view_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/departure_process_modal_sheet.dart';
+import 'package:app/theme/das_colors.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/assets.dart';
-import 'package:app/widgets/das_colors.dart';
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -38,8 +37,8 @@ class _WaitNotification extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final resolvedTextStyle = ThemeUtil.isDarkMode(context)
-        ? DASTextStyles.mediumBold.copyWith(color: SBBColors.white)
-        : DASTextStyles.mediumRoman.copyWith(color: SBBColors.black);
+        ? sbbTextStyle.boldStyle.medium.copyWith(color: SBBColors.white)
+        : sbbTextStyle.romanStyle.medium.copyWith(color: SBBColors.black);
 
     return SBBPromotionBox.custom(
       leading: SvgPicture.asset(
@@ -80,8 +79,8 @@ class _WaitCancelledNotification extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final resolvedTextStyle = ThemeUtil.isDarkMode(context)
-        ? DASTextStyles.mediumBold.copyWith(color: SBBColors.black)
-        : DASTextStyles.mediumRoman.copyWith(color: SBBColors.black);
+        ? sbbTextStyle.boldStyle.medium.copyWith(color: SBBColors.black)
+        : sbbTextStyle.romanStyle.medium.copyWith(color: SBBColors.black);
 
     return SBBPromotionBox.custom(
       leading: Icon(SBBIcons.circle_tick_medium, color: SBBColors.black, size: 36.0),

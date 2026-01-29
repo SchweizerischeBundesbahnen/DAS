@@ -6,7 +6,6 @@ import 'package:app/pages/journey/journey_screen/reduced_overview/widgets/reduce
 import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/format.dart';
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -62,11 +61,11 @@ class _ReducedOverviewModalSheet extends StatelessWidget {
           child: Row(
             mainAxisSize: .max,
             children: [
-              Text(_formattedJourneyDate(context, journey), style: DASTextStyles.largeRoman),
+              Text(_formattedJourneyDate(context, journey), style: sbbTextStyle.romanStyle.large),
               Spacer(),
               Text(
                 journey.formattedTrainIdentifier(context),
-                style: DASTextStyles.mediumRoman.copyWith(
+                style: sbbTextStyle.romanStyle.medium.copyWith(
                   color: ThemeUtil.getColor(
                     context,
                     SBBColors.granite,
