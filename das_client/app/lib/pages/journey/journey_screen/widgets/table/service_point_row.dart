@@ -130,7 +130,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     final times = data.arrivalDepartureTime;
     final viewModel = context.read<ArrivalDepartureTimeViewModel>();
 
-    if (times == null || !times.hasAnyTime) {
+    if ((times == null || !times.hasAnyTime) && data.mandatoryStop) {
       return DASTableCell.empty(color: specialCellColor, onTap: () => viewModel.toggleOperationalTime());
     }
 
@@ -141,6 +141,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
           times: times,
           viewModel: viewModel,
           showTimesInBrackets: !data.isStop,
+          mandatoryStop: data.mandatoryStop,
           fontColor: _isNextStop && specialCellColor == null ? Colors.white : null,
         ),
         alignment: defaultAlignment,
@@ -182,7 +183,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
           child: Wrap(
             spacing: 2,
             children: [
-              if (!data.mandatoryStop) _icon(context, AppAssets.iconStopOnRequest, stopOnRequestKey),
+              // if (!data.mandatoryStop) _icon(context, AppAssets.iconStopOnRequest, stopOnRequestKey),
               Row(
                 mainAxisSize: .min,
                 spacing: 2,

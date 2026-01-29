@@ -1,9 +1,13 @@
 import 'package:app/extension/datetime_extension.dart';
 import 'package:app/pages/journey/journey_screen/view_model/arrival_departure_time_view_model.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/service_point_row.dart';
+import 'package:app/theme/theme_util.dart';
 import 'package:app/util/format.dart';
+import 'package:app/widgets/assets.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
@@ -11,16 +15,18 @@ class TimeCellBody extends StatelessWidget {
   static const timeCellKey = Key('timeCellKey');
 
   const TimeCellBody({
-    required this.times,
     required this.viewModel,
     required this.showTimesInBrackets,
+    required this.mandatoryStop,
+    this.times,
     this.fontColor,
     super.key,
   });
 
-  final ArrivalDepartureTime times;
+  final ArrivalDepartureTime? times;
   final ArrivalDepartureTimeViewModel viewModel;
   final bool showTimesInBrackets;
+  final bool mandatoryStop;
   final Color? fontColor;
 
   @override
@@ -38,14 +44,14 @@ class TimeCellBody extends StatelessWidget {
 
         final (departureTime, arrivalTime) = _formattedTimes(showOperationalTime);
 
-        if (departureTime.isEmpty && arrivalTime.isEmpty) {
+        if (departureTime.isEmpty && arrivalTime.isEmpty && mandatoryStop) {
           return SizedBox.shrink(key: DASTableCell.emptyCellKey);
         }
 
         final isArrivalBold = departureTime.isEmpty && !showOperationalTime;
-        final isDepartureUnderlined = currentTime.isAfterOrSameToTheMinute(times.plannedDepartureTime);
+        final isDepartureUnderlined = currentTime.isAfterOrSameToTheMinute(times?.plannedDepartureTime);
 
-        return Text.rich(
+        final timeTexts = Text.rich(
           key: timeCellKey,
           TextSpan(
             children: [
@@ -65,7 +71,29 @@ class TimeCellBody extends StatelessWidget {
             ],
           ),
         );
+        if (mandatoryStop) return timeTexts;
+        if (!mandatoryStop && departureTime.isEmpty && arrivalTime.isEmpty) {
+          return Center(child: _mandatoryStopIcon(context));
+        }
+
+        return Stack(
+          children: [
+            timeTexts,
+            Align(alignment: .topRight, child: _mandatoryStopIcon(context)),
+          ],
+        );
       },
+    );
+  }
+
+  SvgPicture _mandatoryStopIcon(BuildContext context) {
+    return SvgPicture.asset(
+      AppAssets.iconStopOnRequest,
+      key: ServicePointRow.stopOnRequestKey,
+      colorFilter: ColorFilter.mode(
+        fontColor ?? ThemeUtil.getIconColor(context),
+        BlendMode.srcIn,
+      ),
     );
   }
 
@@ -74,11 +102,11 @@ class TimeCellBody extends StatelessWidget {
     String arrivalTime = '';
 
     if (showOperationalTime) {
-      departureTime = Format.operationalTime(times.operationalDepartureTime);
-      arrivalTime = Format.operationalTime(times.operationalArrivalTime);
+      departureTime = Format.operationalTime(times?.operationalDepartureTime);
+      arrivalTime = Format.operationalTime(times?.operationalArrivalTime);
     } else {
-      departureTime = Format.plannedTime(times.plannedDepartureTime);
-      arrivalTime = Format.plannedTime(times.plannedArrivalTime);
+      departureTime = Format.plannedTime(times?.plannedDepartureTime);
+      arrivalTime = Format.plannedTime(times?.plannedArrivalTime);
     }
 
     if (showTimesInBrackets) {
