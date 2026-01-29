@@ -143,7 +143,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
           mandatoryStop: data.mandatoryStop,
           fontColor: _isNextStop && specialCellColor == null ? Colors.white : null,
         ),
-        alignment: defaultAlignment,
+        alignment: .bottomLeft,
         color: specialCellColor,
       ),
     );

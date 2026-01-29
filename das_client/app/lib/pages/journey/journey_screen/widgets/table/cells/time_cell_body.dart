@@ -73,7 +73,7 @@ class TimeCellBody extends StatelessWidget {
         );
         if (mandatoryStop) return timeTexts;
         if (!mandatoryStop && departureTime.isEmpty && arrivalTime.isEmpty) {
-          return Center(child: _mandatoryStopIcon(context));
+          return Align(alignment: .centerRight, child: _mandatoryStopIcon(context));
         }
 
         return Stack(
