@@ -7,8 +7,8 @@ import ch.sbb.backend.admin.application.settings.model.response.Settings;
 import ch.sbb.backend.admin.application.settings.model.response.SettingsResponse;
 import ch.sbb.backend.admin.domain.settings.RuFeatureService;
 import ch.sbb.backend.common.ApiDocumentation;
+import ch.sbb.backend.common.ApiParametersDefault;
 import ch.sbb.backend.common.ApiParametersDefault.ParamRequestId;
-import ch.sbb.backend.common.MonitoringConstants;
 import ch.sbb.backend.common.ResponseEntityFactory;
 import ch.sbb.backend.common.model.response.ApiErrorResponses;
 import ch.sbb.backend.common.model.response.Response;
@@ -47,7 +47,7 @@ public class SettingsController {
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = SettingsResponse.class)))
     @ApiErrorResponses
     public ResponseEntity<? extends Response> getSettings(
-        @ParamRequestId @RequestHeader(value = MonitoringConstants.HEADER_REQUEST_ID, required = false) String requestId
+        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId
     ) {
         List<RuFeature> allFeatures = ruFeatureService.getAll().stream()
             .map(RuFeature::new)

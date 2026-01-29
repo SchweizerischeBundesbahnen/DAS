@@ -58,7 +58,7 @@ public class ResponseEntityFactory {
     private static HttpHeaders createHeaders(String requestId) {
         final HttpHeaders headers = new HttpHeaders();
         if (StringUtils.isNotBlank(requestId)) {
-            headers.add(MonitoringConstants.HEADER_REQUEST_ID, requestId);
+            headers.add(ApiParametersDefault.HEADER_REQUEST_ID, requestId);
         }
         return headers;
     }

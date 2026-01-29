@@ -1,8 +1,8 @@
 package ch.sbb.backend.formation.api.v1;
 
 import ch.sbb.backend.common.ApiDocumentation;
+import ch.sbb.backend.common.ApiParametersDefault;
 import ch.sbb.backend.common.ApiParametersDefault.ParamRequestId;
-import ch.sbb.backend.common.MonitoringConstants;
 import ch.sbb.backend.common.ResponseEntityFactory;
 import ch.sbb.backend.common.model.response.ApiErrorResponses;
 import ch.sbb.backend.common.model.response.Problem;
@@ -65,7 +65,7 @@ public class FormationController {
     @GetMapping(path = API_FORMATIONS)
     @Parameter(name = HttpHeaders.IF_NONE_MATCH, schema = @Schema(type = "string", example = ApiDocumentation.SAMPLE_CACHE_ETAG), description = ApiDocumentation.HEADER_CACHE_IF_NONE_MATCH_DESCRIPTION, in = ParameterIn.HEADER)
     ResponseEntity<? extends Response> getFormations(
-        @ParamRequestId @RequestHeader(value = MonitoringConstants.HEADER_REQUEST_ID, required = false) String requestId,
+        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
 
         @Parameter(description = OPERATIONAL_TRAIN_NUMBER_DESCRIPTION, required = true)
         @SFERA @TelTsi @RequestParam @NotBlank String operationalTrainNumber,
