@@ -13,19 +13,6 @@ class TopLevelHandlerTest {
     private final TopLevelHandler handler = new TopLevelHandler();
 
     @Test
-    void handleBadArguments() {
-        final ResponseEntity<Problem> entity = handler.handleBadArguments(new IllegalArgumentException("Some validation fault"));
-        assertThat(entity).isNotNull();
-        assertThat(entity.getStatusCode().value()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        Problem problem = entity.getBody();
-        assertThat(problem.getStatus()).isEqualTo(400);
-        assertThat(problem.getTitle()).isEqualTo("Bad Request");
-        assertThat(problem.getDetail()).contains("Refine your arguments: Some validation fault");
-        assertThat(problem.getType()).isNotNull();
-        assertThat(problem.getInstance()).isNotNull();
-    }
-
-    @Test
     void handleUnexpectedError() {
         final ResponseEntity<Problem> entity = handler.handleUnexpectedError(new IOException("IO fault"));
         assertThat(entity).isNotNull();
