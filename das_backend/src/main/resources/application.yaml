@@ -8,7 +8,7 @@ spring:
     name: backend
   mvc:
     problemdetails:
-      enabled=true:
+      enabled: true
   security:
     oauth2:
       resourceserver:
