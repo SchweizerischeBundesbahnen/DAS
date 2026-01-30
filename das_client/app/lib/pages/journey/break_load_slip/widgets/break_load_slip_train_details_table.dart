@@ -140,9 +140,12 @@ class BreakLoadSlipTrainDetailsTable extends StatelessWidget {
     final finalStyle = hasChange ? sbbTextStyle.boldStyle.small : sbbTextStyle.romanStyle.small;
     final textWidget = Text(text ?? '', style: finalStyle);
     return hasChange
-        ? DotIndicator(
-            offset: Offset(0, -SBBSpacing.small),
-            child: textWidget,
+        ? Padding(
+            padding: const EdgeInsets.only(right: SBBSpacing.small),
+            child: DotIndicator(
+              offset: Offset(0, -SBBSpacing.small),
+              child: textWidget,
+            ),
           )
         : textWidget;
   }
