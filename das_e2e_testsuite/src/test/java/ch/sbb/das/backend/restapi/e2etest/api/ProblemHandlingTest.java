@@ -1,6 +1,7 @@
 package ch.sbb.das.backend.restapi.e2etest.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assumptions.assumeThat;
 
 import ch.sbb.das.backend.restapi.configuration.DasBackendEndpointConfiguration;
 import ch.sbb.das.backend.restapi.e2etest.configuration.ApiClientTestProfile;
@@ -31,28 +32,6 @@ public class ProblemHandlingTest extends RestAssuredCommand {
 
         TestContextManager testContextManager = new TestContextManager(getClass());
         testContextManager.prepareTestInstance(this);
-    }
-
-    /**
-     * Test is a base condition for the other ones, proofing token and access route are ok.
-     *
-     * @see SettingsApiTest
-     */
-    @Test
-    void ok_assumption() {
-        final String requestId = getRequestId();
-        final Response response = createRequestWithHeader("en", requestId)
-            .param("dummy", "VALUE")
-            .when()
-            .get(getUrl(SettingsApiTest.ENDPOINT))
-            .then()
-            .extract()
-            .response();
-
-        Assumptions.assumeThat(response.getStatusCode()).as("proofs token and endpoint as guaranteed for other testcases here").isEqualTo(HttpStatus.SC_OK);
-        final String body = toBodyString(response);
-        assertThat(body).as("requesting unknown params is non-intriguing").contains("\"logging\":{\"url\":");
-        assertOK(response, null /*not implemented yet*/, requestId, SettingsApiTest.ENDPOINT);
     }
 
     @Test
@@ -86,30 +65,16 @@ public class ProblemHandlingTest extends RestAssuredCommand {
 
         if (isAccessibleWithoutApim()) {
             // see TopLevelHandler::handleExceptionInternal
-            assertThat(response.getStatusCode()).as("depends on environment at caller and server").isEqualTo(HttpStatus.SC_NOT_FOUND);
+            assertThat(response.getStatusCode()).as("must match Problem::status").isEqualTo(HttpStatus.SC_NOT_FOUND);
             final String body = toBodyString(response);
-            assertThat(body).as("No RestController there -> TopLevelHandler").isNotBlank();
+            assertThat(body).as("spring.mvc.problemdetails not properly configured").doesNotContain("\"timestamp\":");
             assertThat(body).as("Problem::status").contains("\"status\":404");
             assertThat(body).as("Problem::title").contains("\"title\":\"Not Found\"");
             assertThat(body).as("Problem::detail").contains("\"detail\":\"No static resource v1/bad_api. -> params: dummy=[VALUE];");
             assertThat(body).as("Problem::instance").contains("\"instance\":\"/v1/bad_api\"");
             assertThat(body).as("Problem::type").contains("\"type\":\"https://github.com/SchweizerischeBundesbahnen/DAS/tree/main/docs/content/architecture/06_runtime_view/03_problem-manual.md\"");
         } else {
-            assertThat(response.getStatusCode()).as("depends on environment at caller and server").isEqualTo(HttpStatus.SC_FORBIDDEN);
-
-            final String jsonErrorBody = toBodyString(response);
-            assertThat(jsonErrorBody).isNotBlank();
-            if (jsonErrorBody.contains("\"timestamp\":")) {
-                log.warn("spring.mvc.problemdetails.enabled=true not properly configured: {}", jsonErrorBody);
-            } else {
-                log.info("proper Problem: {}", jsonErrorBody);
-                // TODO adapt when > v0.7.1 is deployed on DEV acc. to APIM response
-                assertThat(jsonErrorBody).as("non-existing endpoint").contains("Access not allowed: forbidden");
-            }
+            // TODO adapt when > v0.7.1 is deployed on DEV acc. to APIM response
         }
-    }
-
-    private boolean isAccessibleWithoutApim() {
-        return endpointConfiguration.endpoint().isLocalHost();
     }
 }

@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 @UtilityClass
 public class ResponseEntityFactory {
 
-    private static final String TITLE_NOT_FOUND = "Object not found";
+    public static final String TITLE_NOT_FOUND = "No results found";
     private static final URI TYPE = URI.create(ApiDocumentation.PROBLEM_TYPE);
 
     public static <R extends ApiResponse<?>> ResponseEntity<R> createOkResponse(@NonNull R body, Locale locale, String requestId) {

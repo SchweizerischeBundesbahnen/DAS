@@ -5,6 +5,7 @@
 package ch.sbb.das.backend.restapi.e2etest.helper;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assumptions.assumeThat;
 
 import ch.sbb.backend.restclient.v1.model.Problem;
 import ch.sbb.das.backend.restapi.configuration.DasBackendEndpointConfiguration;
@@ -163,8 +164,7 @@ public abstract class RestAssuredCommand {
                 // prevented by APIM limits matrix
                 Assertions.fail("APIM blocked call: " + bodyString);
             } else if (bodyString.contains("\"status\":403")) {
-                // DEPRECATED: should not happen anymore
-                assertThat(bodyString).as("AITG-1599 Spring error instead of <Problem> object").contains("timestamp");
+                assertThat(bodyString).as("spring.mvc.problemdetails not properly configured").doesNotContain("\"timestamp\":");
             }
             Assertions.fail("Developer security fault: unexpected response: " + response.getStatusCode() + " " + bodyString);
         } else if (HttpStatus.SC_UNAUTHORIZED == response.getStatusCode()) {
@@ -233,12 +233,13 @@ public abstract class RestAssuredCommand {
     protected final void configure(@NonNull DasBackendEndpointConfiguration configuration) {
         this.endpointConfiguration = configuration;
     }
-    /**
-     * @param service for e.g. "/v1/settings"
-     * @return service-URL
-     */
+
     protected final String getUrl(String service) {
         return endpointConfiguration.getEndpointAndPort() + service;
+    }
+
+    protected final boolean isAccessibleWithoutApim() {
+        return endpointConfiguration.endpoint().isLocalHost();
     }
 
     /**
@@ -278,24 +279,20 @@ public abstract class RestAssuredCommand {
 
     // RestAssured does not provide any help in obtaining the access token
     private String getFreshToken() {
-        OAuth2AuthorizeRequest req = OAuth2AuthorizeRequest.withClientRegistrationId(DasBackendEndpointConfiguration.AUTHORIZATION_PROVIDER)
+        OAuth2AuthorizeRequest request = OAuth2AuthorizeRequest.withClientRegistrationId(DasBackendEndpointConfiguration.AUTHORIZATION_PROVIDER)
             .principal("N/A")
             .build();
         OAuth2AuthorizedClient client = endpointConfiguration.authorizedClientManager(endpointConfiguration.clientRegistrationRepository(),
-            endpointConfiguration.authorizedClientService(endpointConfiguration.clientRegistrationRepository())).authorize(req).block();
+            endpointConfiguration.authorizedClientService(endpointConfiguration.clientRegistrationRepository())).authorize(request).block();
         return SSO_BEARER_TOKEN_PREFIX + client.getAccessToken().getTokenValue();
     }
 
     /**
-     * Try to use ApiClient instead!
-     * <p>
-     * Create a Request to be executed directly to Openshift instance skiping APIM validation.
+     * Alternate for generated ApiClient calls (for e.g. to violate checked params).
      * <p>
      *
      * @param acceptLanguage de, fr, it, en
      * @param requestId Instana header {@link MonitoringConstants#HEADER_REQUEST_ID})
-     * @param
-     * @return GET request header for APIM
      */
     protected RequestSpecification createRequestWithHeader(String acceptLanguage, String requestId, @NonNull String bearerToken) {
         final RequestSpecification requestSpecification = createRequest(requestId)
@@ -348,8 +345,7 @@ public abstract class RestAssuredCommand {
 
         if (responseEntity.getStatusCode().value() == HttpStatus.SC_OK) {
             if (StringUtils.isNotBlank(acceptLanguage)) {
-                // could be en in error-case
-                //TODO                assertThat(responseEntity.getHeaders().get(HttpHeaders.CONTENT_LANGUAGE).get(0)).isEqualTo(acceptLanguage);
+                assertThat(responseEntity.getHeaders().get(HttpHeaders.CONTENT_LANGUAGE).get(0)).isEqualTo(acceptLanguage);
             }
             assertThat(responseEntity.getBody()).as("Backend must always return a JsonResponse object").isNotNull();
             return responseEntity.getBody();

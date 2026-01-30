@@ -1,6 +1,7 @@
 package ch.sbb.das.backend.restapi.e2etest.helper;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assumptions.assumeThat;
 
 import ch.sbb.backend.restclient.v1.model.Problem;
 import ch.sbb.das.backend.restapi.helper.ObjectMapperFactory;
@@ -14,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpHeaders;
 import org.assertj.core.api.Assertions;
+import org.assertj.core.api.Assumptions;
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.MatcherAssert;
 import org.springframework.http.HttpStatus;
@@ -57,14 +59,7 @@ public final class AssertionsResponse {
         if (StringUtils.isBlank(ex.getResponseBodyAsString())) {
             Assertions.fail("request did not reach @RestController API method body (probably related to some mapping problem like &dateTime= format,..)");
         }
-        if (ex.getResponseBodyAsString().contains("\"timestamp\"")) {
-            if (HttpStatus.NOT_ACCEPTABLE.isSameCodeAs(ex.getStatusCode())) {
-                // https://stackoverflow.com/questions/7462202/spring-json-request-getting-406-not-acceptable
-                // if @RequestMapping(..,produces = MediaType.APPLICATION_PROBLEM_JSON_VALUE) only this might result
-                Assertions.fail("Spring problem: request did not reach Controller method body (probably some mapping problem like dateTime format,..)", ex);
-            }
-            Assertions.fail("Spring exception caught instead of proper 'Problem'", ex);
-        }
+        assertThat(ex.getResponseBodyAsString()).as("spring.mvc.problemdetails not properly configured").doesNotContain("\"timestamp\":");
 
         assertThat(ex.getHeaders().getFirst(HttpHeaders.CONTENT_TYPE)).as("API-block probably not reached based on " + HttpHeaders.CONTENT_TYPE + ": " + ex)
             .isEqualTo(RestAssuredCommand.MEDIA_TYPE_APPLICATION_JSON_PROBLEM);

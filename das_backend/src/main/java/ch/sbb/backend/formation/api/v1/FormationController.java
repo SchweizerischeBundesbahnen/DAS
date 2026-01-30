@@ -63,7 +63,8 @@ public class FormationController {
         content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
     @ApiErrorResponses
     @GetMapping(path = API_FORMATIONS)
-    @Parameter(name = HttpHeaders.IF_NONE_MATCH, schema = @Schema(type = "string", example = ApiDocumentation.SAMPLE_CACHE_ETAG), description = ApiDocumentation.HEADER_CACHE_IF_NONE_MATCH_DESCRIPTION, in = ParameterIn.HEADER)
+    @Parameter(name = HttpHeaders.IF_NONE_MATCH, schema = @Schema(type = "string", example = ApiDocumentation.SAMPLE_CACHE_ETAG), description = ApiDocumentation.HEADER_CACHE_IF_NONE_MATCH_DESCRIPTION,
+        in = ParameterIn.HEADER)
     ResponseEntity<? extends Response> getFormations(
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
 
@@ -78,9 +79,16 @@ public class FormationController {
 
         final List<TrainFormationRunEntity> entities = formationService.findByTrainIdentifier(operationalTrainNumber, operationalDay, company);
         if (CollectionUtils.isEmpty(entities)) {
-            //TODO hardoded: replace by RequestContext
+            // TODO hardoded: replace by generic RequestContext
             String instance = API_FORMATIONS + "/" + operationalTrainNumber + "/" + operationalDay + "/" + company;
-            return ResponseEntityFactory.createNotFoundResponse(requestId, instance);
+            final LocalDate today = LocalDate.now();
+            if (operationalDay.isBefore(today) || operationalDay.isAfter(today)) {
+                return ResponseEntityFactory.createNotFoundResponse(
+                    ResponseEntityFactory.TITLE_NOT_FOUND, "operationalDay='" + operationalDay + "' -> data may not be available at all if not TODAY.",
+                    null, requestId, instance);
+            } else {
+                return ResponseEntityFactory.createNotFoundResponse(requestId, instance);
+            }
         }
 
         final HttpHeaders headers = ResponseEntityFactory.createOkHeaders(null, requestId);

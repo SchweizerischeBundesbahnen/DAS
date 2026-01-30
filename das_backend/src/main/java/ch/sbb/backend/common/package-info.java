@@ -1,1 +1,0 @@
-package ch.sbb.backend.common;
