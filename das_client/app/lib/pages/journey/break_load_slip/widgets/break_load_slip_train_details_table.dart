@@ -117,36 +117,57 @@ class BreakLoadSlipTrainDetailsTable extends StatelessWidget {
         DataCell(
           Align(
             alignment: Alignment.centerRight,
-            child: _wrappedText(c1, hasChangeC1),
+            child: _wrappedText(c1, hasChangeC1, _hasAnyChangesColumnOne),
           ),
         ),
         DataCell(
           Align(
             alignment: Alignment.centerRight,
-            child: _wrappedText(c2, hasChangeC2),
+            child: _wrappedText(c2, hasChangeC2, _hasAnyChangesColumnTwo),
           ),
         ),
         DataCell(
           Align(
             alignment: Alignment.centerRight,
-            child: _wrappedText(c3, hasChangeC3),
+            child: _wrappedText(c3, hasChangeC3, _hasAnyChangesColumnThree),
           ),
         ),
       ],
     );
   }
 
-  Widget _wrappedText(String? text, bool hasChange) {
+  Widget _wrappedText(String? text, bool hasChange, bool padRight) {
     final finalStyle = hasChange ? sbbTextStyle.boldStyle.small : sbbTextStyle.romanStyle.small;
-    final textWidget = Text(text ?? '', style: finalStyle);
-    return hasChange
-        ? Padding(
-            padding: const EdgeInsets.only(right: SBBSpacing.small),
-            child: DotIndicator(
-              offset: Offset(0, -SBBSpacing.small),
-              child: textWidget,
-            ),
-          )
-        : textWidget;
+    const rightPadding = EdgeInsets.only(right: SBBSpacing.small);
+    Widget child = Text(text ?? '', style: finalStyle);
+
+    if (hasChange) child = DotIndicator(offset: Offset(0, -SBBSpacing.small), child: child);
+    if (padRight) child = Padding(padding: rightPadding, child: child);
+
+    return child;
+  }
+
+  bool get _hasAnyChangesColumnOne {
+    return formationRunChange.hasChanged(.tractionMaxSpeedInKmh) ||
+        formationRunChange.hasChanged(.tractionLengthInCm) ||
+        formationRunChange.hasChanged(.tractionWeightInT) ||
+        formationRunChange.hasChanged(.tractionBrakedWeightInT) ||
+        formationRunChange.hasChanged(.tractionHoldingForceInHectoNewton);
+  }
+
+  bool get _hasAnyChangesColumnTwo {
+    return formationRunChange.hasChanged(.hauledLoadMaxSpeedInKmh) ||
+        formationRunChange.hasChanged(.hauledLoadLengthInCm) ||
+        formationRunChange.hasChanged(.hauledLoadWeightInT) ||
+        formationRunChange.hasChanged(.hauledLoadBrakedWeightInT) ||
+        formationRunChange.hasChanged(.hauledLoadHoldingForceInHectoNewton);
+  }
+
+  bool get _hasAnyChangesColumnThree {
+    return formationRunChange.hasChanged(.formationMaxSpeedInKmh) ||
+        formationRunChange.hasChanged(.formationLengthInCm) ||
+        formationRunChange.hasChanged(.formationWeightInT) ||
+        formationRunChange.hasChanged(.formationBrakedWeightInT) ||
+        formationRunChange.hasChanged(.formationHoldingForceInHectoNewton);
   }
 }
