@@ -10,7 +10,7 @@ class KeyValueTableDataRow extends StatelessWidget {
     this.hasChange = false,
     this.labelStyle,
     this.valueStyle,
-    this.showChangeIndicator = false,
+    this.showChangeIndicator = true,
   });
 
   KeyValueTableDataRow.title(String label, {Key? key, bool hasChange = false})
