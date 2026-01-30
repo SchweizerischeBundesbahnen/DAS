@@ -82,14 +82,14 @@ class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
           children: [
             Column(
               spacing: SBBSpacing.medium,
+              crossAxisAlignment: .start,
               children: [
-                BreakLoadSlipHeader(formationRunChange: formationRunChange),
-                Column(
-                  spacing: SBBSpacing.medium,
-                  children: [
-                    BreakLoadSlipTrainDetails(formation: formation, formationRunChange: formationRunChange),
-                    _loadDetailsAndButtons(formationRunChange),
-                  ],
+                BreakLoadSlipHeaderBox(formationRunChange: formationRunChange),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: SBBSpacing.medium),
+                    child: _content(formation, formationRunChange),
+                  ),
                 ),
               ],
             ),
@@ -97,6 +97,31 @@ class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
           ],
         );
       },
+    );
+  }
+
+  Column _content(Formation formation, FormationRunChange formationRunChange) {
+    return Column(
+      crossAxisAlignment: .start,
+      spacing: SBBSpacing.xSmall,
+      children: [
+        Expanded(
+          child: Row(
+            crossAxisAlignment: .start,
+            spacing: SBBSpacing.medium,
+            children: [
+              Expanded(
+                child: BreakLoadSlipTrainDetails(
+                  formation: formation,
+                  formationRunChange: formationRunChange,
+                ),
+              ),
+              Expanded(child: _loadDetailsColumn(formationRunChange)),
+            ],
+          ),
+        ),
+        BreakLoadSlipOpenTransportDocumentsButton(),
+      ],
     );
   }
 
@@ -110,45 +135,14 @@ class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
     );
   }
 
-  Row _specialRestrictionsAndBrakeDetailsRow(FormationRunChange formationRun) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+  Widget _loadDetailsColumn(FormationRunChange formationRun) {
+    return Column(
       spacing: SBBSpacing.medium,
       children: [
-        Expanded(
-          child: BreakLoadSlipSpecialRestrictions(formationRunChange: formationRun),
-        ),
-        Expanded(
-          child: BreakLoadSlipBrakeDetails(formationRunChange: formationRun),
-        ),
+        BreakLoadSlipBrakeDetails(formationRunChange: formationRun),
+        BreakLoadSlipSpecialRestrictions(formationRunChange: formationRun),
+        BreakLoadSlipHauledLoadDetails(formationRunChange: formationRun),
       ],
-    );
-  }
-
-  Widget _loadDetailsAndButtons(FormationRunChange formationRun) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: SBBSpacing.medium),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: SBBSpacing.medium,
-        children: [
-          Expanded(
-            flex: 1,
-            child: BreakLoadSlipHauledLoadDetails(formationRunChange: formationRun),
-          ),
-          Expanded(
-            flex: 2,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _specialRestrictionsAndBrakeDetailsRow(formationRun),
-                SizedBox(height: SBBSpacing.medium),
-                BreakLoadSlipOpenTransportDocumentsButton(),
-              ],
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

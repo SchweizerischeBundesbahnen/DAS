@@ -19,18 +19,15 @@ class BreakLoadSlipTrainDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: SBBSpacing.medium),
-      child: SBBContentBox(
-        child: Row(
-          spacing: SBBSpacing.medium,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(flex: 3, child: _trainDataColumn1(context)),
-            Expanded(flex: 3, child: _trainDataColumn2(context)),
-            Expanded(flex: 4, child: _trainDataColumn3(context)),
-          ],
-        ),
+    return SBBContentBox(
+      child: Row(
+        spacing: SBBSpacing.medium,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(flex: 3, child: _trainDataColumn1(context)),
+          Expanded(flex: 3, child: _trainDataColumn2(context)),
+          Expanded(flex: 4, child: _trainDataColumn3(context)),
+        ],
       ),
     );
   }

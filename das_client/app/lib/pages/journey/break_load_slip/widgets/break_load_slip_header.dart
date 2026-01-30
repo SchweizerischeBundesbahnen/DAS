@@ -10,7 +10,7 @@ import 'package:formation/component.dart';
 import 'package:intl/intl.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
-class BreakLoadSlipHeader extends StatelessWidget {
+class BreakLoadSlipHeaderBox extends StatelessWidget {
   static const specialIndicatorBackgroundHeight = 52.0;
   static const specialIndicatorHeight = 38.0;
 
@@ -18,7 +18,7 @@ class BreakLoadSlipHeader extends StatelessWidget {
   static const Key dangerousGoodsHeaderBannerKey = Key('dangerousGoodsHeaderBanner');
   static const Key carCarrierHeaderBannerKey = Key('carCarrierHeaderBanner');
 
-  const BreakLoadSlipHeader({required this.formationRunChange, super.key});
+  const BreakLoadSlipHeaderBox({required this.formationRunChange, super.key});
 
   final FormationRunChange formationRunChange;
 
