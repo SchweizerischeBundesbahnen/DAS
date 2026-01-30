@@ -26,7 +26,7 @@ class BreakLoadSlipTrainDetailsTable extends StatelessWidget {
           false,
           style: sbbTextStyle.lightStyle.small,
           padding: EdgeInsets.zero,
-          alignment: .center,
+          alignment: .centerRight,
         ),
         const SizedBox(height: SBBSpacing.xxSmall),
         _tableDivider(context, height: 2),

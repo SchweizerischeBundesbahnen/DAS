@@ -100,27 +100,26 @@ class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
     );
   }
 
-  Column _content(Formation formation, FormationRunChange formationRunChange) {
-    return Column(
+  Widget _content(Formation formation, FormationRunChange formationRunChange) {
+    return Row(
       crossAxisAlignment: .start,
-      spacing: SBBSpacing.xSmall,
+      spacing: SBBSpacing.medium,
       children: [
         Expanded(
-          child: Row(
+          child: Column(
+            mainAxisSize: .min,
+            spacing: SBBSpacing.xSmall,
             crossAxisAlignment: .start,
-            spacing: SBBSpacing.medium,
             children: [
-              Expanded(
-                child: BreakLoadSlipTrainDetails(
-                  formation: formation,
-                  formationRunChange: formationRunChange,
-                ),
+              BreakLoadSlipTrainDetails(
+                formation: formation,
+                formationRunChange: formationRunChange,
               ),
-              Expanded(child: _loadDetailsColumn(formationRunChange)),
+              BreakLoadSlipOpenTransportDocumentsButton(),
             ],
           ),
         ),
-        BreakLoadSlipOpenTransportDocumentsButton(),
+        Expanded(child: _loadDetailsColumn(formationRunChange)),
       ],
     );
   }
