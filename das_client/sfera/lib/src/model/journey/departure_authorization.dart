@@ -18,8 +18,7 @@ class DepartureAuthorization {
   bool get hasSmsAuth => types.contains(DepartureAuthorizationType.sms);
 
   String? get text {
-    final textHasAsterisk = _originalText?.contains('*') ?? false;
-    final prefix = hasDispatcherAuth && !textHasAsterisk ? '*' : null;
+    final prefix = hasDispatcherAuth ? '*' : null;
 
     if (_originalText == null) return prefix;
 

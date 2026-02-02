@@ -26,12 +26,12 @@ void main() {
     expect(departureAuth.text, '* 10-30');
   });
 
-  test('text_whenDispatcherTypeAndTextWithAsterisk_thenReturnsTextWithoutPrefix', () {
+  test('text_whenDispatcherTypeAndTextWithAsterisk_thenReturnsTextWithPrefix', () {
     // GIVEN
     final departureAuth = DepartureAuthorization(types: [.dispatcher], originalText: '10-30, * 27');
 
     // WHEN THEN
-    expect(departureAuth.text, '10-30, * 27');
+    expect(departureAuth.text, '* 10-30, * 27');
   });
 
   test('text_whenSmsTypeAndTextWithAsterisk_thenReturnsTextWithoutPrefix', () {
