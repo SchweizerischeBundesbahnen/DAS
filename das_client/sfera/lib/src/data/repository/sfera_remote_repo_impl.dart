@@ -391,6 +391,11 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
         final event = UxTestingEvent(name: data.warn!.name, value: data.warn!.nspValue);
         _rxUxTestingEvent.add(event);
       }
+
+      if (data.connectivity != null) {
+        final event = UxTestingEvent(name: data.connectivity!.name, value: data.connectivity!.nspValue);
+        _rxUxTestingEvent.add(event);
+      }
     }
 
     if (data is WarnAppMsgDto) {
