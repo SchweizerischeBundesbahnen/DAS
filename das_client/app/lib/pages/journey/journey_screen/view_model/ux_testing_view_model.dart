@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:app/di/di.dart';
+import 'package:app/pages/journey/journey_screen/header/view_model/connectivity_view_model.dart';
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:app/sound/das_sounds.dart';
+import 'package:collection/collection.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
@@ -21,8 +23,11 @@ class UxTestingViewModel {
 
   final _rxUxTestingEvents = BehaviorSubject<UxTestingEvent>();
   final _rxKoaState = BehaviorSubject<KoaState>.seeded(.waitHide);
+  final _rxConnectivityDisplayStatus = BehaviorSubject<ConnectivityDisplayStatus?>();
 
   Stream<KoaState> get koaState => _rxKoaState.distinct();
+
+  Stream<ConnectivityDisplayStatus?> get connectivityDisplayStatus => _rxConnectivityDisplayStatus.stream;
 
   Stream<UxTestingEvent> get uxTestingEvents => _rxUxTestingEvents.stream;
 
@@ -42,6 +47,11 @@ class UxTestingViewModel {
           }
         }
 
+        if (data.isConnectivity) {
+          final connectivityDisplayStatus = _connectivityDisplayStatusFromUxTestingEvent(data.value);
+          _rxConnectivityDisplayStatus.add(connectivityDisplayStatus);
+        }
+
         _rxUxTestingEvents.add(data);
       }
     });
@@ -57,4 +67,9 @@ class UxTestingViewModel {
     _eventSubscription?.cancel();
     _sferaStateSubscription?.cancel();
   }
+}
+
+ConnectivityDisplayStatus? _connectivityDisplayStatusFromUxTestingEvent(String value) {
+  if (value == 'wifi') value = 'connectedWifi';
+  return ConnectivityDisplayStatus.values.firstWhereOrNull((c) => c.name == value);
 }
