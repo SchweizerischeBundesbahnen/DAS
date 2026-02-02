@@ -7,8 +7,8 @@ import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
 class UxTestingViewModel {
-  UxTestingViewModel({required SferaRemoteRepo sferaService, required RuFeatureProvider ruFeatureProvider})
-    : _sferaService = sferaService,
+  UxTestingViewModel({required SferaRemoteRepo sferaRepo, required RuFeatureProvider ruFeatureProvider})
+    : _sferaService = sferaRepo,
       _ruFeatureProvider = ruFeatureProvider {
     _init();
   }
