@@ -91,7 +91,8 @@ public class DasBackendEndpointConfiguration {
         } else if (backendEndpoint.isDev()) {
             log.info("DEV data under test");
         } else {
-            log.warn("Environment under test unclear");
+            // TODO int/prod
+            log.warn("<Environment> under test unclear");
         }
 
         return backendEndpoint;

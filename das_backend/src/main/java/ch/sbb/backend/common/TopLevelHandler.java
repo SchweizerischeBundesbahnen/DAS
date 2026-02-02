@@ -33,6 +33,10 @@ public class TopLevelHandler extends ResponseEntityExceptionHandler {
     // experimental -> Spring WebRequest::description prefix
     private static final String INSTANCE_PREFIX = "uri=";
 
+    /**
+     * Handle any unexpected {@link org.springframework.web.bind.annotation.RestController} failure based on Spring {@link ProblemDetail}.
+     * @return wrapped {@link Problem}
+     */
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(@NotNull Exception ex, Object body, @NotNull HttpHeaders headers,
         @NotNull HttpStatusCode statusCode, @NotNull WebRequest request) {
@@ -100,28 +104,10 @@ public class TopLevelHandler extends ResponseEntityExceptionHandler {
         return INSTANCE_FALLBACK;
     }
 
-    // 500
-    @ExceptionHandler(value = {IOException.class})
-    ResponseEntity<Problem> handleIOError(Exception exception) {
-        if (exception instanceof ClientAbortException) {
-            // might be caused by debugging -> timeout
-            return createTimeoutResponse(getMaskedDetailMessage("Client aborted (timeout) if not a temporary problem", null), exception);
-        }
-
-        return createUnexpectedProblemResponse(getMaskedDetailMessage("I/O", exception), exception);
-    }
-
-    // 500
-    @ExceptionHandler(value = {InvalidDataAccessResourceUsageException.class})
-    ResponseEntity<Problem> handleDbDeploymentError(Exception exception) {
-        if ((exception.getCause() != null) && (exception.getCause() instanceof SQLGrammarException)) {
-            return createDeveloperFaultResponse(getMaskedDetailMessage("DB update not yet deployed.", null), exception);
-        }
-
-        return createUnexpectedProblemResponse(getMaskedDetailMessage("Invalid resource", exception), exception);
-    }
-
-    // 500
+    /**
+     * Handle any unexpected failure which is not thrown by {@link #handleExceptionInternal(Exception, Object, HttpHeaders, HttpStatusCode, WebRequest)}
+     * @return wrapped {@link Problem} 500
+     */
     @ExceptionHandler(value = {Exception.class})
     ResponseEntity<Problem> handleUnexpectedError(Exception exception) {
         if ((exception instanceof NullPointerException) || (exception.getCause() instanceof NullPointerException)) {
@@ -135,19 +121,11 @@ public class TopLevelHandler extends ResponseEntityExceptionHandler {
             // for e.g. no JSON constructor -> check @Builder vs @Data, #*ArgsConstructor
             return createDeveloperFaultResponse(getMaskedDetailMessage("internal mapping problem", exception), exception);
         }
-        return createUnexpectedProblemResponse(getMaskedDetailMessage("no explanation yet", exception), exception);
+        return createProblemResponse(HttpStatus.INTERNAL_SERVER_ERROR, UNEXPECTED_ERROR, "no explanation yet", exception);
     }
 
     private ResponseEntity<Problem> createDeveloperFaultResponse(@NonNull String detail, Throwable exceptionToLog) {
         return createProblemResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Developer error", detail, exceptionToLog);
-    }
-
-    private ResponseEntity<Problem> createTimeoutResponse(@NonNull String detail, @NonNull Throwable exceptionToLog) {
-        return createProblemResponse(HttpStatus.GATEWAY_TIMEOUT, "Timeout", detail, exceptionToLog);
-    }
-
-    private ResponseEntity<Problem> createUnexpectedProblemResponse(@NonNull String detail, @NonNull Throwable exceptionToLog) {
-        return createProblemResponse(HttpStatus.INTERNAL_SERVER_ERROR, UNEXPECTED_ERROR, detail, exceptionToLog);
     }
 
     /**

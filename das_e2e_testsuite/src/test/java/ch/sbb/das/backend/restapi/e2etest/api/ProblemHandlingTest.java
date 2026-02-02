@@ -72,7 +72,7 @@ public class ProblemHandlingTest extends RestAssuredCommand {
             assertThat(body).as("Problem::title").contains("\"title\":\"Not Found\"");
             assertThat(body).as("Problem::detail").contains("\"detail\":\"No static resource v1/bad_api. -> params: dummy=[VALUE];");
             assertThat(body).as("Problem::instance").contains("\"instance\":\"/v1/bad_api\"");
-            assertThat(body).as("Problem::type").contains("\"type\":\"https://github.com/SchweizerischeBundesbahnen/DAS/tree/main/docs/content/architecture/06_runtime_view/03_problem-manual.md\"");
+            assertThat(body).as("Problem::type").doesNotContain("\type\"");
         } else {
             // TODO adapt when > v0.7.1 is deployed on DEV acc. to APIM response
         }

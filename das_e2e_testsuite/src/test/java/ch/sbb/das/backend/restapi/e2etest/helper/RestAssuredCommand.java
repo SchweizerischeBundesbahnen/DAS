@@ -329,7 +329,6 @@ public abstract class RestAssuredCommand {
         if (responseEntity.getHeaders().get(HttpHeaders.CONTENT_LANGUAGE) != null) {
             contentLanguage = responseEntity.getHeaders().get(HttpHeaders.CONTENT_LANGUAGE).get(0);
             assertThat(responseEntity.getHeaders().get(HttpHeaders.CONTENT_LANGUAGE.toLowerCase()).get(0)).isEqualTo(contentLanguage);
-
         }
 
         String responseRequestId = null;

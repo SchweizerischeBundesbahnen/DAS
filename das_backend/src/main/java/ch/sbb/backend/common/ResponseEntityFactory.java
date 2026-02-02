@@ -15,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 public class ResponseEntityFactory {
 
     public static final String TITLE_NOT_FOUND = "No results found";
-    private static final URI TYPE = URI.create(ApiDocumentation.PROBLEM_TYPE);
 
     public static <R extends ApiResponse<?>> ResponseEntity<R> createOkResponse(@NonNull R body, Locale locale, String requestId) {
         return createOkResponse(createOkHeaders(locale, requestId), body);
@@ -68,7 +67,6 @@ public class ResponseEntityFactory {
 
     public static Problem createProblem(HttpStatusCode status, String title, String detail, String instance) {
         return Problem.builder()
-            .type(TYPE)
             .status(status.value())
             .title(title)
             .detail(detail)

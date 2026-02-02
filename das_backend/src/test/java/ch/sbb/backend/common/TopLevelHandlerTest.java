@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+// Further tests see e2e ProblemHandlingTest
 class TopLevelHandlerTest {
 
     private final TopLevelHandler handler = new TopLevelHandler();
@@ -20,37 +21,9 @@ class TopLevelHandlerTest {
         Problem problem = entity.getBody();
         assertThat(problem.getStatus()).isEqualTo(500);
         assertThat(problem.getTitle()).isEqualTo("Unexpected error");
-        assertThat(problem.getDetail()).startsWith("about 'no explanation yet: IOException'");
-        assertThat(problem.getType()).isNotNull();
+        assertThat(problem.getDetail()).startsWith("no explanation yet");
         assertThat(problem.getInstance()).isNotNull();
-    }
-
-    @Test
-    void handleIOError_ClientAbortException() {
-        final ResponseEntity<Problem> entity = handler.handleIOError(new ClientAbortException("Broken Pipe"));
-
-        assertThat(entity).isNotNull();
-        assertThat(entity.getStatusCode().value()).isEqualTo(HttpStatus.GATEWAY_TIMEOUT.value());
-        Problem problem = entity.getBody();
-        assertThat(problem.getStatus()).isEqualTo(504);
-        assertThat(problem.getTitle()).isEqualTo("Timeout");
-        assertThat(problem.getDetail()).startsWith("about 'Client aborted (timeout) if not a temporary problem'");
-        assertThat(problem.getType()).isNotNull();
-        assertThat(problem.getInstance()).isNotNull();
-    }
-
-    @Test
-    void handleIOError_IOExceptionWithInnerException() {
-        final ResponseEntity<Problem> entity = handler.handleIOError(new IOException("IO fault", new ClientAbortException("Broken Pipe")));
-
-        assertThat(entity).isNotNull();
-        assertThat(entity.getStatusCode().value()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR.value());
-        Problem problem = entity.getBody();
-        assertThat(problem.getStatus()).isEqualTo(500);
-        assertThat(problem.getTitle()).isEqualTo("Unexpected error");
-        assertThat(problem.getDetail()).startsWith("about 'I/O: IOException'");
-        assertThat(problem.getType()).isNotNull();
-        assertThat(problem.getInstance()).isNotNull();
+        assertThat(problem.getType()).isNull();
     }
 
     @Test
@@ -63,7 +36,7 @@ class TopLevelHandlerTest {
         assertThat(problem.getStatus()).isEqualTo(500);
         assertThat(problem.getTitle()).isEqualTo("Developer error");
         assertThat(problem.getDetail()).startsWith("about 'NP: RuntimeException'");
-        assertThat(problem.getType()).isNotNull();
         assertThat(problem.getInstance()).isNotNull();
+        assertThat(problem.getType()).isNull();
     }
 }

@@ -80,13 +80,15 @@ public class FormationController {
         final List<TrainFormationRunEntity> entities = formationService.findByTrainIdentifier(operationalTrainNumber, operationalDay, company);
         if (CollectionUtils.isEmpty(entities)) {
             // TODO hardoded: replace by generic RequestContext
-            String instance = API_FORMATIONS + "/" + operationalTrainNumber + "/" + operationalDay + "/" + company;
+            final String instance = API_FORMATIONS + "/" + operationalTrainNumber + "/" + operationalDay + "/" + company;
+
             final LocalDate today = LocalDate.now();
             if (operationalDay.isBefore(today) || operationalDay.isAfter(today)) {
                 return ResponseEntityFactory.createNotFoundResponse(
                     ResponseEntityFactory.TITLE_NOT_FOUND, "operationalDay='" + operationalDay + "' -> data may not be available at all if not TODAY.",
                     null, requestId, instance);
             } else {
+                // TODO check whether company exists as CompanyEntity -> otherwise provide specific Problem::title="NOT FOUND: company", detail="company="+company+" is unknown yet"
                 return ResponseEntityFactory.createNotFoundResponse(requestId, instance);
             }
         }

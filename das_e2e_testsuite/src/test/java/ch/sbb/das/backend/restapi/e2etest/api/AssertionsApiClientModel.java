@@ -11,9 +11,14 @@ import ch.sbb.backend.restclient.v1.model.SettingsResponse;
 import ch.sbb.das.backend.restapi.configuration.DasBackendEndpoint;
 import java.util.List;
 import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
+@Slf4j
 @UtilityClass
-public class AssertionsApiClientModel {
+public final class AssertionsApiClientModel {
 
     public static Settings assertSettingsResponse(SettingsResponse settingsResponse, DasBackendEndpoint backendEndpoint) {
         assertThat(settingsResponse).isNotNull();

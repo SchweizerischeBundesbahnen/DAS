@@ -20,6 +20,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.TestContextManager;
@@ -64,9 +66,10 @@ class FormtionsApiTest extends RestAssuredCommand {
         final String body = toBodyString(response);
         assertThat(body).as("Problem::status").contains("\"status\":400");
         assertThat(body).as("Problem::title").contains("\"title\":\"Bad Request\"");
-        assertThat(body).as("Problem::detail").contains("\"detail\":\"Failed to convert 'operationalDay' with value: '2026-02-30' -> params: operationalTrainNumber=[89455];operationalDay=[2026-02-30];company=[1033];\"");
-        assertThat(body).as("Problem::instance").contains("\"instance\":\"/v1/formations\"");
-        assertThat(body).as("Problem::type").contains("\"type\":\"https://github.com/SchweizerischeBundesbahnen/DAS/tree/main/docs/content/architecture/06_runtime_view/03_problem-manual.md\"");
+        assertThat(body).as("Problem::detail")
+            .contains("\"detail\":\"Failed to convert 'operationalDay' with value: '2026-02-30' -> params: operationalTrainNumber=[89455];operationalDay=[2026-02-30];company=[1033];\"");
+        assertThat(body).as("Problem::instance").contains("\"instance\":\"" + ENDPOINT + "\"");
+        assertThat(body).as("Problem::type").doesNotContain("\type\"");
     }
 
     @Test
@@ -74,7 +77,7 @@ class FormtionsApiTest extends RestAssuredCommand {
         final String operationalDay = LocalDate.now().plusDays(10).toString();
         final Response response = createRequestWithHeader("en", MonitoringConstants.HEADER_REQUEST_ID)
             .param("operationalTrainNumber", "70982")
-            .param("operationalDay",operationalDay)
+            .param("operationalDay", operationalDay)
             .param("company", "1033")
             .when()
             .get(getUrl(ENDPOINT))
@@ -87,15 +90,15 @@ class FormtionsApiTest extends RestAssuredCommand {
         final String body = toBodyString(response);
         assertThat(body).as("Problem::status").contains("\"status\":404");
         assertThat(body).as("Problem::title").contains("\"title\":\"No results found\"");
-        assertThat(body).as("Problem::detail").contains("operationalDay='"+operationalDay+"' -> data may not be available at all if not TODAY.");
-        assertThat(body).as("Problem::instance").contains("\"instance\":\"/v1/formations/70982/2026-02-09/1033\"");
-        assertThat(body).as("Problem::type").contains("\"type\":\"https://github.com/SchweizerischeBundesbahnen/DAS/tree/main/docs/content/architecture/06_runtime_view/03_problem-manual.md\"");
+        assertThat(body).as("Problem::detail").contains("operationalDay='" + operationalDay + "' -> data may not be available at all if not TODAY.");
+        assertThat(body).as("Problem::instance").contains("\"instance\":\"" + ENDPOINT + "/70982/" + operationalDay + "/1033\"");
+        assertThat(body).as("Problem::type").doesNotContain("\type\"");
     }
 
     @Test
     void getFormations_companyBadFormat() {
         final LocalDate today = LocalDate.now();
-        final String company = MonitoringConstants.TESTMARKER_BAD + "RICS";
+        final String company = "RICS";
         try {
             final Mono<ResponseEntity<FormationResponse>> responseAsync = dasBackendApi.getFormationsApi()
                 .getFormationsWithHttpInfo(ServiceDoc.REQUEST_ID_VALUE_E2E_TEST, "007", today, company, null);
@@ -108,8 +111,9 @@ class FormtionsApiTest extends RestAssuredCommand {
             final Problem problem = AssertionsResponse.assertClientException(ex, ServiceDoc.REQUEST_ID_VALUE_E2E_TEST, null);
             assertThat(problem.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
             assertThat(problem.getTitle()).as("Spring ProblemDetail::title").contains("Bad Request");
-            assertThat(problem.getDetail()).as("FormationsController::formations @Pattern of REGEX").contains("company=[" + MonitoringConstants.TESTMARKER_BAD + "RICS" + "]");
-            assertThat(problem.getInstance().toString()).as("TopLevelHandler::handleExceptionInternal").isEqualTo("/v1/formations");
+            assertThat(problem.getDetail()).as("FormationsController::formations @Pattern of REGEX").contains("company=[" + company + "]");
+            assertThat(problem.getInstance().toString()).as("TopLevelHandler::handleExceptionInternal").isEqualTo(ENDPOINT);
+            assertThat(problem.getType()).isNull();
         } catch (WebClientException ex) {
             Assertions.fail("Block: " + ex.getMessage(), ex);
         }
@@ -129,6 +133,7 @@ class FormtionsApiTest extends RestAssuredCommand {
             final Problem problem = AssertionsResponse.assertClientException(ex, ServiceDoc.REQUEST_ID_VALUE_E2E_TEST, null);
             assertThat(problem.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
             assertThat(problem.getInstance().toString()).isEqualTo("/v1/formations/007/" + today + "/1033");
+            assertThat(problem.getType()).isNull();
         } catch (WebClientException ex) {
             Assertions.fail("Block: " + ex.getMessage(), ex);
         }
@@ -137,15 +142,37 @@ class FormtionsApiTest extends RestAssuredCommand {
     // TODO find regular Cargo Train
     @Disabled
     void getFormations_concreteCargoTrain() {
-        try {
-            final Mono<ResponseEntity<FormationResponse>> responseAsync = dasBackendApi.getFormationsApi()
-                .getFormationsWithHttpInfo(ServiceDoc.REQUEST_ID_VALUE_E2E_TEST, "762", LocalDate.now(), "1033", null);
-            FormationResponse formationResponse = getResponseBodyOrFail(responseAsync, "de", ServiceDoc.REQUEST_ID_VALUE_E2E_TEST, null);
-            log.debug("{} in {}", formationResponse, responseAsync);
+        final Mono<ResponseEntity<FormationResponse>> responseAsync = dasBackendApi.getFormationsApi()
+            .getFormationsWithHttpInfo(ServiceDoc.REQUEST_ID_VALUE_E2E_TEST, "762", LocalDate.now(), "1033", null);
+        final FormationResponse formationResponse = getResponseBodyOrFail(responseAsync, "de", ServiceDoc.REQUEST_ID_VALUE_E2E_TEST, null);
+        log.debug("{} in {}", formationResponse, responseAsync);
 
-            AssertionsApiClientModel.assertFormationResponse(formationResponse);
-        } catch (WebClientResponseException e) {
-            log.error("Exception when calling SettingsApi#getConfigurations", e);
-        }
+        AssertionsApiClientModel.assertFormationResponse(formationResponse);
+    }
+
+    @Disabled
+    void getFormations_cacheControl() {
+        final String operationalTrainNumber = "762";
+        final LocalDate date = LocalDate.now();
+        final String company = "1033";
+
+        // 1) request concrete cargo train without caching headers
+        Mono<ResponseEntity<FormationResponse>> responseAsync = dasBackendApi.getFormationsApi()
+            .getFormationsWithHttpInfo(ServiceDoc.REQUEST_ID_VALUE_E2E_TEST, operationalTrainNumber, date, company, null);
+        ResponseEntity<FormationResponse> responseEntity = blockBody(responseAsync, "de",ServiceDoc.REQUEST_ID_VALUE_E2E_TEST, null);
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        AssertionsApiClientModel.assertFormationResponse(responseEntity.getBody());
+        final String eTag = responseEntity.getHeaders().getETag();
+        assertThat(eTag).as("Header ETag").isNotBlank();
+        final String cacheControl = responseEntity.getHeaders().getCacheControl();
+        assertThat(cacheControl).as("Header Cache-Control CONST declared by Service-Contract").startsWith("private, max-age=");
+        log.debug("Header ETag({})={}, {}={}", HttpHeaders.IF_NONE_MATCH, eTag, HttpHeaders.CACHE_CONTROL, cacheControl);
+
+        // 2) request with known ETag from previous response
+        responseAsync = dasBackendApi.getFormationsApi()
+            .getFormationsWithHttpInfo(ServiceDoc.REQUEST_ID_VALUE_E2E_TEST, "762", LocalDate.now(), "1033", eTag);
+        responseEntity = blockBody(responseAsync, "de",ServiceDoc.REQUEST_ID_VALUE_E2E_TEST, null);
+        assertThat(responseEntity.getStatusCode()).as("caching should signal 304").isEqualTo(HttpStatus.NOT_MODIFIED);
+        assertThat(responseEntity.getBody()).as("not a 'Problem', client may use its cached object instead").isNull();
     }
 }
