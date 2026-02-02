@@ -13,6 +13,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 class BreakLoadSlipHeaderBox extends StatelessWidget {
   static const specialIndicatorBackgroundHeight = 52.0;
   static const specialIndicatorHeight = 38.0;
+  static const minHeaderBoxContentHeight = 44.0;
 
   static const Key simTrainHeaderBannerKey = Key('simTrainHeaderBanner');
   static const Key dangerousGoodsHeaderBannerKey = Key('dangerousGoodsHeaderBanner');
@@ -38,12 +39,15 @@ class BreakLoadSlipHeaderBox extends StatelessWidget {
   }
 
   Widget _customHeaderboxContent(BuildContext context) {
-    return Row(
-      mainAxisAlignment: .spaceBetween,
-      children: [
-        _headerboxTextContent(context),
-        BreakLoadSlipReplaceBreakSeriesButton(),
-      ],
+    return ConstrainedBox(
+      constraints: BoxConstraints(minHeight: minHeaderBoxContentHeight),
+      child: Row(
+        mainAxisAlignment: .spaceBetween,
+        children: [
+          _headerboxTextContent(context),
+          BreakLoadSlipReplaceBreakSeriesButton(),
+        ],
+      ),
     );
   }
 
