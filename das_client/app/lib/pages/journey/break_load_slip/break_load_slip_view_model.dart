@@ -23,7 +23,7 @@ import 'package:sfera/component.dart';
 final _log = Logger('BreakLoadSlipViewModel');
 
 class BreakLoadSlipViewModel extends JourneyAwareViewModel {
-  static const _formationUpdateInterval = Duration(minutes: 2);
+  static const _formationUpdateInterval = Duration(minutes: 1);
 
   BreakLoadSlipViewModel({
     required FormationRepository formationRepository,
