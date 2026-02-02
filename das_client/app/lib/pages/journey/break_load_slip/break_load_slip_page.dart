@@ -2,9 +2,9 @@ import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/break_load_slip/break_load_slip_view_model.dart';
 import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_brake_details.dart';
-import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_buttons.dart';
 import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_hauled_load_details.dart';
 import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_header.dart';
+import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_open_transport_documents_button.dart';
 import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_special_restrictions.dart';
 import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_train_details.dart';
 import 'package:app/pages/journey/break_load_slip/widgets/formation_run_navigation_buttons.dart';
@@ -82,14 +82,14 @@ class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
           children: [
             Column(
               spacing: SBBSpacing.medium,
+              crossAxisAlignment: .start,
               children: [
-                BreakLoadSlipHeader(formationRunChange: formationRunChange),
-                Column(
-                  spacing: SBBSpacing.medium,
-                  children: [
-                    BreakLoadSlipTrainDetails(formation: formation, formationRunChange: formationRunChange),
-                    _loadDetailsAndButtons(formationRunChange),
-                  ],
+                BreakLoadSlipHeaderBox(formationRunChange: formationRunChange),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: SBBSpacing.medium),
+                    child: _content(formation, formationRunChange),
+                  ),
                 ),
               ],
             ),
@@ -97,6 +97,30 @@ class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
           ],
         );
       },
+    );
+  }
+
+  Widget _content(Formation formation, FormationRunChange formationRunChange) {
+    return Row(
+      crossAxisAlignment: .start,
+      spacing: SBBSpacing.medium,
+      children: [
+        Expanded(
+          child: Column(
+            mainAxisSize: .min,
+            spacing: SBBSpacing.xSmall,
+            crossAxisAlignment: .start,
+            children: [
+              BreakLoadSlipTrainDetails(
+                formation: formation,
+                formationRunChange: formationRunChange,
+              ),
+              BreakLoadSlipOpenTransportDocumentsButton(),
+            ],
+          ),
+        ),
+        Expanded(child: _loadDetailsColumn(formationRunChange)),
+      ],
     );
   }
 
@@ -110,45 +134,14 @@ class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
     );
   }
 
-  Row _specialRestrictionsAndBrakeDetailsRow(FormationRunChange formationRun) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+  Widget _loadDetailsColumn(FormationRunChange formationRun) {
+    return Column(
       spacing: SBBSpacing.medium,
       children: [
-        Expanded(
-          child: BreakLoadSlipSpecialRestrictions(formationRunChange: formationRun),
-        ),
-        Expanded(
-          child: BreakLoadSlipBrakeDetails(formationRunChange: formationRun),
-        ),
+        BreakLoadSlipBrakeDetails(formationRunChange: formationRun),
+        BreakLoadSlipSpecialRestrictions(formationRunChange: formationRun),
+        BreakLoadSlipHauledLoadDetails(formationRunChange: formationRun),
       ],
-    );
-  }
-
-  Widget _loadDetailsAndButtons(FormationRunChange formationRun) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: SBBSpacing.medium),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: SBBSpacing.medium,
-        children: [
-          Expanded(
-            flex: 1,
-            child: BreakLoadSlipHauledLoadDetails(formationRunChange: formationRun),
-          ),
-          Expanded(
-            flex: 2,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _specialRestrictionsAndBrakeDetailsRow(formationRun),
-                SizedBox(height: SBBSpacing.medium),
-                BreakLoadSlipButtons(),
-              ],
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

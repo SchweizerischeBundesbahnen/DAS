@@ -19,23 +19,22 @@ class BreakLoadSlipTrainDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: SBBSpacing.medium),
-      child: SBBContentBox(
-        child: Row(
-          spacing: SBBSpacing.medium,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(flex: 3, child: _trainDataColumn1(context)),
-            Expanded(flex: 3, child: _trainDataColumn2(context)),
-            Expanded(flex: 4, child: _trainDataColumn3(context)),
-          ],
-        ),
+    return SBBContentBox(
+      child: Column(
+        mainAxisSize: .min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _trainDataRow1(context),
+          Divider(),
+          _trainDataRow2(context),
+          Divider(),
+          _trainDataRow3(context),
+        ],
       ),
     );
   }
 
-  Widget _trainDataColumn1(BuildContext context) {
+  Widget _trainDataRow1(BuildContext context) {
     final vm = context.read<BreakLoadSlipViewModel>();
 
     return KeyValueTable(
@@ -81,52 +80,43 @@ class BreakLoadSlipTrainDetails extends StatelessWidget {
     return ru != RailwayUndertaking.unknown ? ru.displayText(context) : companyCode;
   }
 
-  Widget _trainDataColumn2(BuildContext context) {
+  Widget _trainDataRow2(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: SBBSpacing.xSmall),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // Empty row for alignment with other columns
-          KeyValueTableDataRow(' ', null, labelStyle: sbbTextStyle.boldStyle.small),
-          SizedBox(height: SBBSpacing.xSmall),
-          KeyValueTableDataRow(
-            context.l10n.p_break_load_slip_train_data_train_traction,
-            formationRunChange.formationRun.additionalTractions.isEmpty
-                ? '-'
-                : formationRunChange.formationRun.additionalTractions.join(' '),
-            hasChange: formationRunChange.hasChanged(.additionalTractions),
-          ),
-          KeyValueTableDataRow(
-            context.l10n.p_break_load_slip_train_data_brake_position_g_leading_traction,
-            formationRunChange.formationRun.brakePositionGForLeadingTraction == true
-                ? context.l10n.c_yes
-                : context.l10n.c_no,
-            hasChange: formationRunChange.hasChanged(.brakePositionGForLeadingTraction),
-          ),
-          KeyValueTableDataRow(
-            context.l10n.p_break_load_slip_train_data_brake_position_g_break_unit,
-            formationRunChange.formationRun.brakePositionGForBrakeUnit1to5 == true
-                ? context.l10n.c_yes
-                : context.l10n.c_no,
-            hasChange: formationRunChange.hasChanged(.brakePositionGForBrakeUnit1to5),
-          ),
-          KeyValueTableDataRow(
-            context.l10n.p_break_load_slip_train_data_brake_position_g_load_hauled,
-            formationRunChange.formationRun.brakePositionGForLoadHauled == true
-                ? context.l10n.c_yes
-                : context.l10n.c_no,
-            hasChange: formationRunChange.hasChanged(.brakePositionGForLoadHauled),
-          ),
-        ],
-      ),
+      child: BreakLoadSlipTrainDetailsTable(formationRunChange: formationRunChange),
     );
   }
 
-  Widget _trainDataColumn3(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(SBBSpacing.xSmall).copyWith(right: 0.0),
-      child: BreakLoadSlipTrainDetailsTable(formationRunChange: formationRunChange),
+  Widget _trainDataRow3(BuildContext context) {
+    return KeyValueTable(
+      rows: [
+        KeyValueTableDataRow(
+          context.l10n.p_break_load_slip_train_data_train_traction,
+          formationRunChange.formationRun.additionalTractions.isEmpty
+              ? '-'
+              : formationRunChange.formationRun.additionalTractions.join(' '),
+          hasChange: formationRunChange.hasChanged(.additionalTractions),
+        ),
+        KeyValueTableDataRow(
+          context.l10n.p_break_load_slip_train_data_brake_position_g_leading_traction,
+          formationRunChange.formationRun.brakePositionGForLeadingTraction == true
+              ? context.l10n.c_yes
+              : context.l10n.c_no,
+          hasChange: formationRunChange.hasChanged(.brakePositionGForLeadingTraction),
+        ),
+        KeyValueTableDataRow(
+          context.l10n.p_break_load_slip_train_data_brake_position_g_break_unit,
+          formationRunChange.formationRun.brakePositionGForBrakeUnit1to5 == true
+              ? context.l10n.c_yes
+              : context.l10n.c_no,
+          hasChange: formationRunChange.hasChanged(.brakePositionGForBrakeUnit1to5),
+        ),
+        KeyValueTableDataRow(
+          context.l10n.p_break_load_slip_train_data_brake_position_g_load_hauled,
+          formationRunChange.formationRun.brakePositionGForLoadHauled == true ? context.l10n.c_yes : context.l10n.c_no,
+          hasChange: formationRunChange.hasChanged(.brakePositionGForLoadHauled),
+        ),
+      ],
     );
   }
 

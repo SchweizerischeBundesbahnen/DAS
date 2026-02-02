@@ -1,4 +1,5 @@
 import 'package:app/i18n/i18n.dart';
+import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_replace_break_series_button.dart';
 import 'package:app/theme/das_colors.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/assets.dart';
@@ -9,7 +10,7 @@ import 'package:formation/component.dart';
 import 'package:intl/intl.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
-class BreakLoadSlipHeader extends StatelessWidget {
+class BreakLoadSlipHeaderBox extends StatelessWidget {
   static const specialIndicatorBackgroundHeight = 52.0;
   static const specialIndicatorHeight = 38.0;
 
@@ -17,7 +18,7 @@ class BreakLoadSlipHeader extends StatelessWidget {
   static const Key dangerousGoodsHeaderBannerKey = Key('dangerousGoodsHeaderBanner');
   static const Key carCarrierHeaderBannerKey = Key('carCarrierHeaderBanner');
 
-  const BreakLoadSlipHeader({required this.formationRunChange, super.key});
+  const BreakLoadSlipHeaderBox({required this.formationRunChange, super.key});
 
   final FormationRunChange formationRunChange;
 
@@ -37,11 +38,21 @@ class BreakLoadSlipHeader extends StatelessWidget {
   }
 
   Widget _customHeaderboxContent(BuildContext context) {
+    return Row(
+      mainAxisAlignment: .spaceBetween,
+      children: [
+        _headerboxTextContent(context),
+        BreakLoadSlipReplaceBreakSeriesButton(),
+      ],
+    );
+  }
+
+  Widget _headerboxTextContent(BuildContext context) {
     final subtitleColor = ThemeUtil.getColor(context, SBBColors.granite, SBBColors.graphite);
     final dateChanged = formationRunChange.hasInspectionDateChanged();
     final timeChanged = formationRunChange.hasChanged(.inspectionDateTime);
-
     return Column(
+      mainAxisSize: .min,
       crossAxisAlignment: .start,
       children: [
         Text(
@@ -52,6 +63,7 @@ class BreakLoadSlipHeader extends StatelessWidget {
           style: sbbTextStyle.boldStyle.medium,
         ),
         Row(
+          mainAxisSize: .min,
           children: [
             Text(
               context.l10n.p_break_load_slip_header_subtitle,

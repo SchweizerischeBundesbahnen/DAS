@@ -77,35 +77,35 @@ void main() {
     await openBreakSlipPage(tester);
 
     expect(find.byKey(BreakLoadSlipSpecialRestrictions.simTrainBannerKey), findsNothing);
-    expect(find.byKey(BreakLoadSlipHeader.simTrainHeaderBannerKey), findsNothing);
+    expect(find.byKey(BreakLoadSlipHeaderBox.simTrainHeaderBannerKey), findsNothing);
     expect(find.byKey(BreakLoadSlipSpecialRestrictions.dangerousGoodsBannerKey), findsNothing);
-    expect(find.byKey(BreakLoadSlipHeader.dangerousGoodsHeaderBannerKey), findsNothing);
+    expect(find.byKey(BreakLoadSlipHeaderBox.dangerousGoodsHeaderBannerKey), findsNothing);
 
     await tapElement(tester, find.byKey(NavigationButtons.navigationButtonNextKey));
 
     expect(find.byKey(BreakLoadSlipSpecialRestrictions.simTrainBannerKey), findsOneWidget);
-    expect(find.byKey(BreakLoadSlipHeader.simTrainHeaderBannerKey), findsOneWidget);
+    expect(find.byKey(BreakLoadSlipHeaderBox.simTrainHeaderBannerKey), findsOneWidget);
     expect(find.byKey(BreakLoadSlipSpecialRestrictions.dangerousGoodsBannerKey), findsNothing);
-    expect(find.byKey(BreakLoadSlipHeader.dangerousGoodsHeaderBannerKey), findsNothing);
+    expect(find.byKey(BreakLoadSlipHeaderBox.dangerousGoodsHeaderBannerKey), findsNothing);
 
     await tapElement(tester, find.byKey(NavigationButtons.navigationButtonNextKey));
 
     expect(find.byKey(BreakLoadSlipSpecialRestrictions.simTrainBannerKey), findsNothing);
-    expect(find.byKey(BreakLoadSlipHeader.simTrainHeaderBannerKey), findsNothing);
+    expect(find.byKey(BreakLoadSlipHeaderBox.simTrainHeaderBannerKey), findsNothing);
     expect(find.byKey(BreakLoadSlipSpecialRestrictions.dangerousGoodsBannerKey), findsOneWidget);
-    expect(find.byKey(BreakLoadSlipHeader.dangerousGoodsHeaderBannerKey), findsOneWidget);
+    expect(find.byKey(BreakLoadSlipHeaderBox.dangerousGoodsHeaderBannerKey), findsOneWidget);
 
     await tapElement(tester, find.byKey(NavigationButtons.navigationButtonNextKey));
 
     expect(find.byKey(BreakLoadSlipSpecialRestrictions.simTrainBannerKey), findsOneWidget);
-    expect(find.byKey(BreakLoadSlipHeader.simTrainHeaderBannerKey), findsOneWidget);
+    expect(find.byKey(BreakLoadSlipHeaderBox.simTrainHeaderBannerKey), findsOneWidget);
     expect(find.byKey(BreakLoadSlipSpecialRestrictions.dangerousGoodsBannerKey), findsOneWidget);
-    expect(find.byKey(BreakLoadSlipHeader.dangerousGoodsHeaderBannerKey), findsOneWidget);
+    expect(find.byKey(BreakLoadSlipHeaderBox.dangerousGoodsHeaderBannerKey), findsOneWidget);
 
     await tapElement(tester, find.byKey(NavigationButtons.navigationButtonNextKey));
 
     expect(find.byKey(BreakLoadSlipSpecialRestrictions.carCarrierBannerKey), findsOneWidget);
-    expect(find.byKey(BreakLoadSlipHeader.carCarrierHeaderBannerKey), findsOneWidget);
+    expect(find.byKey(BreakLoadSlipHeaderBox.carCarrierHeaderBannerKey), findsOneWidget);
 
     await disconnect(tester);
   });

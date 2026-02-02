@@ -1,5 +1,4 @@
 import 'package:app/i18n/i18n.dart';
-import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/dot_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:formation/component.dart';
@@ -8,29 +7,51 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 typedef TextFunction = Text Function(String);
 
 class BreakLoadSlipTrainDetailsTable extends StatelessWidget {
+  static const double _rowHeight = 32.0;
+
   const BreakLoadSlipTrainDetailsTable({required this.formationRunChange, super.key});
 
   final FormationRunChange formationRunChange;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        _tableRow(
-          null,
-          context.l10n.p_break_load_slip_train_data_table_header_traction,
-          false,
-          context.l10n.p_break_load_slip_train_data_table_header_hauled_load,
-          false,
-          context.l10n.p_break_load_slip_train_data_table_header_formation,
-          false,
-          style: sbbTextStyle.lightStyle.small,
-          padding: EdgeInsets.zero,
-          alignment: .center,
+    return DataTable(
+      dataRowMinHeight: _rowHeight,
+      dataRowMaxHeight: _rowHeight,
+      headingRowHeight: _rowHeight,
+      columnSpacing: SBBSpacing.medium,
+      horizontalMargin: SBBSpacing.xSmall,
+      dividerThickness: 1,
+      headingTextStyle: sbbTextStyle.lightStyle.small,
+      dataTextStyle: sbbTextStyle.romanStyle.small,
+      columns: [
+        DataColumn(
+          label: Text(''),
         ),
-        const SizedBox(height: SBBSpacing.xxSmall),
-        _tableDivider(context, height: 2),
-        _tableRow(
+        DataColumn(
+          label: Align(
+            alignment: Alignment.center,
+            child: Text(context.l10n.p_break_load_slip_train_data_table_header_traction),
+          ),
+          numeric: true,
+        ),
+        DataColumn(
+          label: Align(
+            alignment: Alignment.center,
+            child: Text(context.l10n.p_break_load_slip_train_data_table_header_hauled_load),
+          ),
+          numeric: true,
+        ),
+        DataColumn(
+          label: Align(
+            alignment: Alignment.center,
+            child: Text(context.l10n.p_break_load_slip_train_data_table_header_formation),
+          ),
+          numeric: true,
+        ),
+      ],
+      rows: [
+        _buildDataRow(
           context.l10n.p_break_load_slip_train_data_table_vmax,
           formationRunChange.formationRun.tractionMaxSpeedInKmh?.toString(),
           formationRunChange.hasChanged(.tractionMaxSpeedInKmh),
@@ -39,8 +60,7 @@ class BreakLoadSlipTrainDetailsTable extends StatelessWidget {
           formationRunChange.formationRun.formationMaxSpeedInKmh?.toString(),
           formationRunChange.hasChanged(.formationMaxSpeedInKmh),
         ),
-        _tableDivider(context),
-        _tableRow(
+        _buildDataRow(
           context.l10n.p_break_load_slip_train_data_table_length,
           (formationRunChange.formationRun.tractionLengthInCm / 100).toString(),
           formationRunChange.hasChanged(.tractionLengthInCm),
@@ -49,8 +69,7 @@ class BreakLoadSlipTrainDetailsTable extends StatelessWidget {
           (formationRunChange.formationRun.formationLengthInCm / 100).toString(),
           formationRunChange.hasChanged(.formationLengthInCm),
         ),
-        _tableDivider(context),
-        _tableRow(
+        _buildDataRow(
           context.l10n.p_break_load_slip_train_data_table_weight,
           formationRunChange.formationRun.tractionWeightInT.toString(),
           formationRunChange.hasChanged(.tractionWeightInT),
@@ -59,8 +78,7 @@ class BreakLoadSlipTrainDetailsTable extends StatelessWidget {
           formationRunChange.formationRun.formationWeightInT.toString(),
           formationRunChange.hasChanged(.formationWeightInT),
         ),
-        _tableDivider(context),
-        _tableRow(
+        _buildDataRow(
           context.l10n.p_break_load_slip_train_data_table_braked_weight,
           formationRunChange.formationRun.tractionBrakedWeightInT.toString(),
           formationRunChange.hasChanged(.tractionBrakedWeightInT),
@@ -69,8 +87,7 @@ class BreakLoadSlipTrainDetailsTable extends StatelessWidget {
           formationRunChange.formationRun.formationBrakedWeightInT.toString(),
           formationRunChange.hasChanged(.formationBrakedWeightInT),
         ),
-        _tableDivider(context),
-        _tableRow(
+        _buildDataRow(
           context.l10n.p_break_load_slip_brake_details_holding_force,
           (formationRunChange.formationRun.tractionHoldingForceInHectoNewton / 10).toString(),
           formationRunChange.hasChanged(.tractionHoldingForceInHectoNewton),
@@ -83,71 +100,74 @@ class BreakLoadSlipTrainDetailsTable extends StatelessWidget {
     );
   }
 
-  Widget _tableRow(
-    String? label,
+  DataRow _buildDataRow(
+    String label,
     String? c1,
     bool hasChangeC1,
     String? c2,
     bool hasChangeC2,
     String? c3,
-    bool hasChangeC3, {
-    TextStyle? style,
-    EdgeInsetsGeometry? padding,
-    AlignmentGeometry? alignment,
-  }) {
-    return Padding(
-      padding: padding ?? const EdgeInsets.symmetric(vertical: SBBSpacing.xxSmall).copyWith(left: SBBSpacing.xSmall),
-      child: Row(
-        children: [
-          Expanded(flex: 3, child: Text(label ?? '', style: style ?? sbbTextStyle.romanStyle.small)),
-          Expanded(
-            flex: 2,
-            child: _cell(c1, hasChangeC1, style: style, padding: padding, alignment: alignment),
+    bool hasChangeC3,
+  ) {
+    return DataRow(
+      cells: [
+        DataCell(
+          Text(label, style: sbbTextStyle.romanStyle.small),
+        ),
+        DataCell(
+          Align(
+            alignment: Alignment.centerRight,
+            child: _wrappedText(c1, hasChangeC1, _hasAnyChangesColumnOne),
           ),
-          Expanded(
-            flex: 2,
-            child: _cell(c2, hasChangeC2, style: style, padding: padding, alignment: alignment),
+        ),
+        DataCell(
+          Align(
+            alignment: Alignment.centerRight,
+            child: _wrappedText(c2, hasChangeC2, _hasAnyChangesColumnTwo),
           ),
-          Expanded(
-            flex: 2,
-            child: _cell(c3, hasChangeC3, style: style, padding: padding, alignment: alignment),
+        ),
+        DataCell(
+          Align(
+            alignment: Alignment.centerRight,
+            child: _wrappedText(c3, hasChangeC3, _hasAnyChangesColumnThree),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
-  Widget _cell(
-    String? text,
-    bool hasChange, {
-    TextStyle? style,
-    EdgeInsetsGeometry? padding,
-    AlignmentGeometry? alignment,
-  }) {
-    return Padding(
-      padding: padding ?? const EdgeInsets.symmetric(horizontal: SBBSpacing.medium),
-      child: Align(
-        alignment: alignment ?? .centerRight,
-        child: _wrappedText(text, hasChange, style: style),
-      ),
-    );
+  Widget _wrappedText(String? text, bool hasChange, bool padRight) {
+    final finalStyle = hasChange ? sbbTextStyle.boldStyle.small : sbbTextStyle.romanStyle.small;
+    const rightPadding = EdgeInsets.only(right: SBBSpacing.small);
+    Widget child = Text(text ?? '', style: finalStyle);
+
+    if (hasChange) child = DotIndicator(offset: Offset(0, -SBBSpacing.small), child: child);
+    if (padRight) child = Padding(padding: rightPadding, child: child);
+
+    return child;
   }
 
-  Widget _wrappedText(String? text, bool hasChange, {TextStyle? style}) {
-    final finalStyle = style ?? (hasChange ? sbbTextStyle.boldStyle.small : sbbTextStyle.romanStyle.small);
-    final textWidget = Text(text ?? '', style: finalStyle);
-    return hasChange
-        ? DotIndicator(
-            offset: Offset(0, -SBBSpacing.small),
-            child: textWidget,
-          )
-        : textWidget;
+  bool get _hasAnyChangesColumnOne {
+    return formationRunChange.hasChanged(.tractionMaxSpeedInKmh) ||
+        formationRunChange.hasChanged(.tractionLengthInCm) ||
+        formationRunChange.hasChanged(.tractionWeightInT) ||
+        formationRunChange.hasChanged(.tractionBrakedWeightInT) ||
+        formationRunChange.hasChanged(.tractionHoldingForceInHectoNewton);
   }
 
-  Widget _tableDivider(BuildContext context, {double height = 1}) {
-    return Container(
-      height: height,
-      color: ThemeUtil.isDarkMode(context) ? SBBColors.iron : SBBColors.cloud,
-    );
+  bool get _hasAnyChangesColumnTwo {
+    return formationRunChange.hasChanged(.hauledLoadMaxSpeedInKmh) ||
+        formationRunChange.hasChanged(.hauledLoadLengthInCm) ||
+        formationRunChange.hasChanged(.hauledLoadWeightInT) ||
+        formationRunChange.hasChanged(.hauledLoadBrakedWeightInT) ||
+        formationRunChange.hasChanged(.hauledLoadHoldingForceInHectoNewton);
+  }
+
+  bool get _hasAnyChangesColumnThree {
+    return formationRunChange.hasChanged(.formationMaxSpeedInKmh) ||
+        formationRunChange.hasChanged(.formationLengthInCm) ||
+        formationRunChange.hasChanged(.formationWeightInT) ||
+        formationRunChange.hasChanged(.formationBrakedWeightInT) ||
+        formationRunChange.hasChanged(.formationHoldingForceInHectoNewton);
   }
 }
