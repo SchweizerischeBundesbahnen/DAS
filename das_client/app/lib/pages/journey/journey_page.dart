@@ -82,7 +82,7 @@ class _JourneyPageState extends State<JourneyPage> {
         final journey = snapshot.requireData.$2;
 
         return DASJourneyScaffold(
-          body: JourneyOverview(),
+          body: JourneyOverview(key: ValueKey(journey?.metadata.trainIdentification)),
           appBarTitle: _appBarTitle(context, journey?.metadata.trainIdentification),
           hideAppBar: isZenViewMode,
           appBarTrailingAction: _DismissJourneyButton(),
