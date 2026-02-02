@@ -47,10 +47,10 @@ class ResponseEntityFactoryTest {
         assertThat(responseEntity.getHeaders().get(ApiParametersDefault.HEADER_REQUEST_ID).getFirst()).isEqualTo("createNotFoundResponse");
         assertThat(responseEntity.getBody()).isInstanceOf(Problem.class);
         assertThat(responseEntity.getBody().getStatus()).isEqualTo(404);
-        assertThat(responseEntity.getBody().getType().toString()).isEqualTo(ApiDocumentation.PROBLEM_TYPE);
         assertThat(responseEntity.getBody().getTitle()).isEqualTo("notFound");
         assertThat(responseEntity.getBody().getDetail()).isEqualTo("Pojo not found");
         assertThat(responseEntity.getBody().getInstance().toString()).isEqualTo("/nowhere");
+        assertThat(responseEntity.getBody().getType()).isNull();
     }
 
     @Data
