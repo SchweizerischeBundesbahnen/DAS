@@ -23,7 +23,7 @@ class UxTestingViewModel {
 
   final _rxUxTestingEvents = BehaviorSubject<UxTestingEvent>();
   final _rxKoaState = BehaviorSubject<KoaState>.seeded(.waitHide);
-  final _rxConnectivityDisplayStatus = BehaviorSubject<ConnectivityDisplayStatus?>();
+  final _rxConnectivityDisplayStatus = BehaviorSubject<ConnectivityDisplayStatus?>.seeded(null);
 
   Stream<KoaState> get koaState => _rxKoaState.distinct();
 
