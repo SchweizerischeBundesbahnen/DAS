@@ -438,7 +438,7 @@ void main() {
 
       verifyNever(mockFormationRepository.loadFormation(any, any, any));
 
-      fakeAsync.elapse(Duration(minutes: 2, seconds: 30));
+      fakeAsync.elapse(Duration(minutes: 1, seconds: 30));
 
       verify(mockFormationRepository.loadFormation(any, any, any)).called(1);
 
