@@ -1,8 +1,8 @@
+import 'package:app/extension/arrival_departure_time_extension.dart';
 import 'package:app/extension/datetime_extension.dart';
 import 'package:app/pages/journey/journey_screen/view_model/arrival_departure_time_view_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/service_point_row.dart';
 import 'package:app/theme/theme_util.dart';
-import 'package:app/util/format.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +42,10 @@ class TimeCellBody extends StatelessWidget {
         final showOperationalTime = snapshot.requireData.$1;
         final currentTime = snapshot.requireData.$2;
 
-        final (departureTime, arrivalTime) = _formattedTimes(showOperationalTime);
+        final (departureTime, arrivalTime) = times.formattedTimes(
+          showOperationalTime: showOperationalTime,
+          showTimesInBrackets: showTimesInBrackets,
+        );
 
         if (departureTime.isEmpty && arrivalTime.isEmpty && mandatoryStop) {
           return SizedBox.shrink(key: DASTableCell.emptyCellKey);
@@ -98,28 +101,6 @@ class TimeCellBody extends StatelessWidget {
         BlendMode.srcIn,
       ),
     );
-  }
-
-  (String, String) _formattedTimes(bool showOperationalTime) {
-    String departureTime = '';
-    String arrivalTime = '';
-
-    if (showOperationalTime) {
-      departureTime = Format.operationalTime(times?.operationalDepartureTime);
-      arrivalTime = Format.operationalTime(times?.operationalArrivalTime);
-    } else {
-      departureTime = Format.plannedTime(times?.plannedDepartureTime);
-      arrivalTime = Format.plannedTime(times?.plannedArrivalTime);
-    }
-
-    if (showTimesInBrackets) {
-      departureTime = departureTime.isNotEmpty ? '($departureTime)' : departureTime;
-      arrivalTime = arrivalTime.isNotEmpty ? '($arrivalTime)' : arrivalTime;
-    }
-
-    arrivalTime = arrivalTime.isNotEmpty ? '$arrivalTime\n' : arrivalTime;
-
-    return (departureTime, arrivalTime);
   }
 }
 
