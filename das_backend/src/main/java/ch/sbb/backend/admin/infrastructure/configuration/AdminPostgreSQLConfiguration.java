@@ -1,6 +1,5 @@
 package ch.sbb.backend.admin.infrastructure.configuration;
 
-import ch.sbb.backend.admin.infrastructure.servicepoint.SpringDataJpaServicePointRepository;
 import ch.sbb.backend.admin.infrastructure.settings.SpringDataJpaRuFeatureRepository;
 import ch.sbb.backend.common.AuditorAwareImpl;
 import org.springframework.context.annotation.Bean;
@@ -11,7 +10,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
 @EnableJpaAuditing(auditorAwareRef = "auditorProvider")
-@EnableJpaRepositories(basePackageClasses = {SpringDataJpaServicePointRepository.class, SpringDataJpaRuFeatureRepository.class})
+@EnableJpaRepositories(basePackageClasses = {SpringDataJpaRuFeatureRepository.class})
 public class AdminPostgreSQLConfiguration {
 
     @Bean
