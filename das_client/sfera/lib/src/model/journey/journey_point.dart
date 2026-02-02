@@ -9,10 +9,15 @@ abstract class JourneyPoint extends BaseData {
     required super.order,
     required this.kilometre,
     this.localSpeeds,
+    this.lastModificationDate,
+    this.lastModificationType,
   });
 
   final List<double> kilometre;
   final List<TrainSeriesSpeed>? localSpeeds;
+
+  final DateTime? lastModificationDate;
+  final ModificationType? lastModificationType;
 
   @override
   @mustBeOverridden

@@ -1,10 +1,12 @@
 import 'package:collection/collection.dart';
 import 'package:sfera/src/data/dto/departure_auth_nsp_dto.dart';
+import 'package:sfera/src/data/dto/enums/modification_type_dto.dart';
 import 'package:sfera/src/data/dto/enums/taf_tap_location_type_dto.dart';
 import 'package:sfera/src/data/dto/enums/xml_enum.dart';
 import 'package:sfera/src/data/dto/line_foot_notes_nsp_dto.dart';
 import 'package:sfera/src/data/dto/local_regulation_nsp_dto.dart';
 import 'package:sfera/src/data/dto/new_line_speed_taf_tap_location_dto.dart';
+import 'package:sfera/src/data/dto/nsp_dto.dart';
 import 'package:sfera/src/data/dto/op_foot_notes_nsp_dto.dart';
 import 'package:sfera/src/data/dto/sfera_segment_xml_element_dto.dart';
 import 'package:sfera/src/data/dto/station_property_nsp_dto.dart';
@@ -25,7 +27,7 @@ class TafTapLocationDto extends SferaSegmentXmlElementDto {
 
   String get abbreviation => attributes['TAF_TAP_location_abbreviation'] ?? '';
 
-  Iterable<TafTapLocationNspDto> get nsp => children.whereType<TafTapLocationNspDto>();
+  Iterable<TafTapLocationNspDto> get nsps => children.whereType<TafTapLocationNspDto>();
 
   StationSpeedNspDto? get stationSpeed => children.whereType<StationSpeedNspDto>().firstOrNull;
 
@@ -42,6 +44,14 @@ class TafTapLocationDto extends SferaSegmentXmlElementDto {
   DepartureAuthNspDto? get departureAuthNsp => children.whereType<DepartureAuthNspDto>().firstOrNull;
 
   StationPropertyNspDto? get property => children.whereType<StationPropertyNspDto>().firstOrNull;
+
+  Iterable<NspDto> get _allModificationsDesc => <NspDto>[...nsps, ?property]
+      .where((it) => it.lastModificationDate != null)
+      .sorted((b, a) => a.lastModificationDate!.compareTo(b.lastModificationDate!));
+
+  DateTime? get lastModificationDate => _allModificationsDesc.firstOrNull?.lastModificationDate;
+
+  ModificationTypeDto? get lastModificationType => _allModificationsDesc.firstOrNull?.lastModificationType;
 
   @override
   bool validate() {

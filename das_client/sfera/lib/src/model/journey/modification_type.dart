@@ -1,0 +1,4 @@
+enum ModificationType {
+  updated,
+  deleted,
+}
