@@ -87,6 +87,7 @@ export const ACTIVE_MODE: SupportedOperationModes[] = [{
 export interface G2BEventNSPOptions {
   warn?: boolean,
   koa?: 'wait' | 'waitCancelled' | 'waitHide',
+  connectivity?: 'connected' | 'disconnected' | 'wifi'
 }
 
 export class SferaXmlCreation {
@@ -233,6 +234,7 @@ export class SferaXmlCreation {
 
     const warnNsp = options.warn ? this.createNsp('warn') : '';
     const koaNsp = options.koa ? this.createNsp('koa', options.koa) : '';
+    const connectivityNsp = options.connectivity ? this.createNsp('connectivity', options.connectivity) : '';
 
 
     return `<?xml version="1.0"?>
@@ -247,6 +249,7 @@ export class SferaXmlCreation {
                       <NSP_GroupName>uxTesting</NSP_GroupName>
                       ${warnNsp}
                       ${koaNsp}
+                      ${connectivityNsp}
                     </NetworkSpecificEvent>
                   </G2B_EventPayload>
 

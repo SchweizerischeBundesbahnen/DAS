@@ -15,6 +15,10 @@
 
 .triggers {
   margin-bottom: sbb.pxToRem(16);
+
+  div {
+    margin-bottom: sbb.pxToRem(8);
+  }
 }
 
 .glow-on-hover {
