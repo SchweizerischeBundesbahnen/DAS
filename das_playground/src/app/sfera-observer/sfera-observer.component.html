@@ -49,16 +49,26 @@
   @if (trainControl.value.endsWith('M')) {
     <div class="triggers">
       <h2>Manual Triggers</h2>
-      <button class="glow-on-hover" (click)="nextLocation()">Nächste Fortschaltung</button>
-      |
-      <button class="glow-on-hover" (click)="sendG2BEvent({warn: true})">Warnfunktion ⚠️</button>
-      |
-      <button class="glow-on-hover" (click)="sendG2BEvent({koa: 'wait'})">KOA Warten︎ 🛑</button>
-      <button class="glow-on-hover ml-3" (click)="sendG2BEvent({koa: 'waitCancelled'})">KOA Warten aufgehoben ✅</button>
-      <button class="glow-on-hover ml-3" (click)="sendG2BEvent({koa: 'waitHide'})">KOA Warten︎ ausblenden</button>
-      |
-      <button class="glow-on-hover" (click)="initialFormation()">Bremszettel 🧾</button>
-      <button class="glow-on-hover ml-3" (click)="updatedFormation()">Update Bremszettel 🔄</button>
+      <div>
+        <button class="glow-on-hover" (click)="nextLocation()">Nächste Fortschaltung</button>
+      </div>
+      <div>
+        <button class="glow-on-hover" (click)="sendG2BEvent({warn: true})">Warnfunktion ⚠️</button>
+      </div>
+      <div>
+        <button class="glow-on-hover" (click)="sendG2BEvent({koa: 'wait'})">KOA Warten︎ 🛑</button>
+        <button class="glow-on-hover ml-3" (click)="sendG2BEvent({koa: 'waitCancelled'})">KOA Warten aufgehoben ✅</button>
+        <button class="glow-on-hover ml-3" (click)="sendG2BEvent({koa: 'waitHide'})">KOA Warten︎ ausblenden</button>
+      </div>
+      <div>
+        <button class="glow-on-hover" (click)="sendG2BEvent({connectivity: 'wifi'})">Verbindung WLAN 🛜</button>
+        <button class="glow-on-hover ml-3" (click)="sendG2BEvent({connectivity: 'disconnected'})">Verbindung unterbrochen 📵</button>
+        <button class="glow-on-hover ml-3" (click)="sendG2BEvent({connectivity: 'connected'})">Verbindung ok 📶</button>
+      </div>
+      <div>
+        <button class="glow-on-hover" (click)="initialFormation()">Bremszettel 🧾</button>
+        <button class="glow-on-hover ml-3" (click)="updatedFormation()">Update Bremszettel 🔄</button>
+      </div>
     </div>
   }
 
