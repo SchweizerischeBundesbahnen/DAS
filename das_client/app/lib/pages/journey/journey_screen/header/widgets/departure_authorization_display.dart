@@ -34,11 +34,44 @@ class DepartureAuthorizationDisplay extends StatelessWidget {
         final departureAuthText = snapshot.data?.departureAuthText;
         if (departureAuthText == null) return SizedBox.shrink();
 
+        final parsed = TextUtil.parseHtmlText(departureAuthText, sbbTextStyle.romanStyle.large);
         return Text.rich(
           key: departureAuthorizationTextKey,
-          TextUtil.parseHtmlText(departureAuthText, sbbTextStyle.romanStyle.large),
+          _replaceAsteriskWithStyle(parsed, sbbTextStyle.boldStyle.xxLarge),
         );
       },
     );
   }
+}
+
+/// Recursively replaces every '*' character with a TextSpan that uses [style].
+InlineSpan _replaceAsteriskWithStyle(InlineSpan span, TextStyle style) {
+  if (span is! TextSpan) return span;
+
+  final transformedChildren = span.children?.map((c) => _replaceAsteriskWithStyle(c, style)).toList();
+
+  final text = span.text;
+  final hasStar = text != null && text.contains('*');
+  if (!hasStar) {
+    if (transformedChildren == null) return span;
+    return TextSpan(text: text, style: span.style, children: transformedChildren);
+  }
+
+  final parts = text.split('*');
+  final pieces = <InlineSpan>[];
+  for (int i = 0; i < parts.length; i++) {
+    final part = parts[i];
+    if (part.isNotEmpty) {
+      pieces.add(TextSpan(text: part, style: span.style));
+    }
+    if (i < parts.length - 1) {
+      pieces.add(TextSpan(text: '*', style: style));
+    }
+  }
+
+  if (transformedChildren != null && transformedChildren.isNotEmpty) {
+    pieces.addAll(transformedChildren);
+  }
+
+  return TextSpan(style: span.style, children: pieces);
 }

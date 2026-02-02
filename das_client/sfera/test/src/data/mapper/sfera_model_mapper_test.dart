@@ -1767,7 +1767,7 @@ void main() {
     expect(journey.valid, true);
 
     final servicePoint = journey.data.whereType<ServicePoint>().toList();
-    expect(servicePoint, hasLength(5));
+    expect(servicePoint, hasLength(6));
 
     final departureAuthorization0 = servicePoint[0].departureAuthorization;
     expect(departureAuthorization0, isNotNull);
@@ -1794,6 +1794,12 @@ void main() {
     expect(departureAuthorization3?.text, 'sms 2-4 6,7');
 
     expect(servicePoint[4].departureAuthorization, isNull);
+
+    final departureAuthorization5 = servicePoint[5].departureAuthorization;
+    expect(departureAuthorization5, isNotNull);
+    expect(departureAuthorization5?.hasDispatcherAuth, isFalse);
+    expect(departureAuthorization5?.hasSmsAuth, isTrue);
+    expect(departureAuthorization5?.text, 'sms *962 -967');
   });
 
   test('Test departure dispatch notification events are parsed correctly', () {

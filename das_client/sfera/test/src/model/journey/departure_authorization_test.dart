@@ -26,6 +26,22 @@ void main() {
     expect(departureAuth.text, '* 10-30');
   });
 
+  test('text_whenDispatcherTypeAndTextWithAsterisk_thenReturnsTextWithoutPrefix', () {
+    // GIVEN
+    final departureAuth = DepartureAuthorization(types: [.dispatcher], originalText: '10-30, * 27');
+
+    // WHEN THEN
+    expect(departureAuth.text, '10-30, * 27');
+  });
+
+  test('text_whenSmsTypeAndTextWithAsterisk_thenReturnsTextWithoutPrefix', () {
+    // GIVEN
+    final departureAuth = DepartureAuthorization(types: [.sms], originalText: 'sms 10-30, * 27');
+
+    // WHEN THEN
+    expect(departureAuth.text, 'sms 10-30, * 27');
+  });
+
   test('text_whenSmsTypeAndText_thenReturnsText', () {
     // GIVEN
     final departureAuth = DepartureAuthorization(types: [.sms], originalText: 'sms 3-6');
