@@ -3,7 +3,7 @@ import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/break_load_slip/break_load_slip_view_model.dart';
 import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_brake_details.dart';
 import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_hauled_load_details.dart';
-import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_header.dart';
+import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_header_box.dart';
 import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_open_transport_documents_button.dart';
 import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_special_restrictions.dart';
 import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_train_details.dart';
