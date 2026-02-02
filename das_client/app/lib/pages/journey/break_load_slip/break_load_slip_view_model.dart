@@ -293,6 +293,7 @@ class BreakLoadSlipViewModel extends JourneyAwareViewModel {
     _rxFormation.add(null);
     _rxFormationRun.add(null);
     _rxFormationChanged.add(false);
+    _detailModalViewModel?.close();
     _subscribeToFormation(journey?.metadata.trainIdentification);
   }
 }
