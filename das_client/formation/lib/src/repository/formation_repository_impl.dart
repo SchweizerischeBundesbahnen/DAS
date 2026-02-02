@@ -15,6 +15,7 @@ class FormationRepositoryImpl implements FormationRepository {
 
   @override
   Future<Formation?> loadFormation(String operationalTrainNumber, String company, DateTime operationalDay) async {
+    operationalTrainNumber = _sanitizeTrainNumber(operationalTrainNumber);
     _log.info('Loading formation for train $operationalTrainNumber (company=$company) on $operationalDay');
     try {
       final existingEtag = await databaseService.findFormationEtag(operationalTrainNumber, company, operationalDay);
@@ -48,10 +49,15 @@ class FormationRepositoryImpl implements FormationRepository {
     required String company,
     required DateTime operationalDay,
   }) {
+    operationalTrainNumber = _sanitizeTrainNumber(operationalTrainNumber);
     loadFormation(operationalTrainNumber, company, operationalDay);
 
     return databaseService
         .watchFormation(operationalTrainNumber, company, operationalDay)
         .distinct((f1, f2) => f1 == f2);
+  }
+
+  String _sanitizeTrainNumber(String trainNumber) {
+    return trainNumber.replaceAll('M', '');
   }
 }
