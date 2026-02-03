@@ -12,6 +12,8 @@ class UxTestingEvent {
 
   bool get isKoa => name == 'koa';
 
+  bool get isConnectivity => name == 'connectivity';
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

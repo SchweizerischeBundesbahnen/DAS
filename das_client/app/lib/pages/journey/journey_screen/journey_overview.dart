@@ -151,7 +151,7 @@ class _ProviderScope extends StatelessWidget {
           dispose: (_, vm) => vm.dispose(),
         ),
         Provider<UxTestingViewModel>(
-          create: (_) => UxTestingViewModel(sferaService: DI.get(), ruFeatureProvider: DI.get()),
+          create: (_) => UxTestingViewModel(sferaRepo: DI.get(), ruFeatureProvider: DI.get()),
           dispose: (_, vm) => vm.dispose(),
         ),
         Provider<ConnectivityViewModel>(

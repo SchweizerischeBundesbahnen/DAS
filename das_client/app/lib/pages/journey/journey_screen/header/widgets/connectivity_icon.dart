@@ -1,9 +1,11 @@
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/header/view_model/connectivity_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/ux_testing_view_model.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:app/widgets/exlamation_icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class ConnectivityIcon extends StatelessWidget {
@@ -15,14 +17,20 @@ class ConnectivityIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.read<ConnectivityViewModel>();
+    final uxTestingVM = context.read<UxTestingViewModel>();
 
     return StreamBuilder(
-      stream: viewModel.model,
-      initialData: viewModel.modelValue,
+      stream: Rx.combineLatest2(viewModel.model, uxTestingVM.connectivityDisplayStatus, (a, b) => (a, b)),
+      initialData: (viewModel.modelValue, null),
       builder: (context, snapshot) {
-        if (snapshot.data == .connected) return SizedBox.shrink();
+        final deviceData = snapshot.data?.$1;
+        final uxData = snapshot.data?.$2;
 
-        final isDisconnected = snapshot.data == .disconnected;
+        final snapshotData = uxData ?? deviceData;
+
+        if (snapshotData == .connected) return SizedBox.shrink();
+
+        final isDisconnected = snapshotData == .disconnected;
 
         final icon = isDisconnected ? AppAssets.iconWifiDisabled : AppAssets.iconWifi;
         final onTap = isDisconnected ? () => _onDisconnectedTap(context) : () => _onConnectedWifiTap(context);
