@@ -14,13 +14,13 @@ class UxTestingViewModel {
     required SferaRemoteRepo sferaRepo,
     required RuFeatureProvider ruFeatureProvider,
     required FormationRepository formationRepository,
-  }) : _sferaService = sferaRepo,
+  }) : _sferaRepo = sferaRepo,
        _ruFeatureProvider = ruFeatureProvider,
        _formationRepository = formationRepository {
     _init();
   }
 
-  final SferaRemoteRepo _sferaService;
+  final SferaRemoteRepo _sferaRepo;
   final RuFeatureProvider _ruFeatureProvider;
   final FormationRepository _formationRepository;
 
@@ -40,7 +40,7 @@ class UxTestingViewModel {
   Future<bool> get isDepartueProcessFeatureEnabled => _ruFeatureProvider.isRuFeatureEnabled(.departureProcess);
 
   void _init() {
-    _eventSubscription = _sferaService.uxTestingEventStream.listen((data) async {
+    _eventSubscription = _sferaRepo.uxTestingEventStream.listen((data) async {
       if (data != null) {
         if (data.isKoa) {
           final koaEnabled = await _ruFeatureProvider.isRuFeatureEnabled(.koa);
@@ -59,7 +59,7 @@ class UxTestingViewModel {
         }
 
         if (data.isFormation) {
-          final connectedTrain = _sferaService.connectedTrain;
+          final connectedTrain = _sferaRepo.connectedTrain;
           if (connectedTrain != null) {
             _formationRepository.loadFormation(
               connectedTrain.trainNumber,
@@ -72,7 +72,7 @@ class UxTestingViewModel {
         _rxUxTestingEvents.add(data);
       }
     });
-    _sferaStateSubscription = _sferaService.stateStream.listen((state) {
+    _sferaStateSubscription = _sferaRepo.stateStream.listen((state) {
       if (state == .disconnected) {
         _rxKoaState.add(.waitHide);
       }

@@ -19,19 +19,19 @@ final _log = Logger('RequestTrainCharacteristicsTask');
 class RequestTrainCharacteristicsTask extends SferaTask<List<TrainCharacteristicsDto>> {
   RequestTrainCharacteristicsTask({
     required MqttService mqttService,
-    required SferaRemoteRepo sferaService,
+    required SferaRemoteRepo sferaRepo,
     required SferaLocalDatabaseService sferaDatabaseRepository,
     required this.otnId,
     required this.journeyProfile,
     super.timeout,
   }) : _mqttService = mqttService,
        _sferaDatabaseRepository = sferaDatabaseRepository,
-       _sferaService = sferaService;
+       _sferaRepo = sferaRepo;
 
   final MqttService _mqttService;
   final OtnId otnId;
   final SferaLocalDatabaseService _sferaDatabaseRepository;
-  final SferaRemoteRepo _sferaService;
+  final SferaRemoteRepo _sferaRepo;
   final JourneyProfileDto journeyProfile;
 
   late TaskCompleted<List<TrainCharacteristicsDto>> _taskCompletedCallback;
@@ -66,7 +66,7 @@ class RequestTrainCharacteristicsTask extends SferaTask<List<TrainCharacteristic
     }
 
     final sferaB2gRequestMessage = SferaB2gRequestMessageDto.create(
-      _sferaService.messageHeader(sender: otnId.company),
+      _sferaRepo.messageHeader(sender: otnId.company),
       b2gRequest: B2gRequestDto.createTCRequest(tcRequests),
     );
     _log.info('Sending train characteristics request...');

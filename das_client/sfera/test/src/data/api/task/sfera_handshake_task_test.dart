@@ -32,7 +32,7 @@ void main() {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final handshakeTask = HandshakeTask(
-      sferaService: sferaRemoteRepo,
+      sferaRepo: sferaRemoteRepo,
       mqttService: mqttService,
       otnId: otnId,
       dasDrivingMode: .readOnly,
@@ -59,7 +59,7 @@ void main() {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final handshakeTask = HandshakeTask(
-      sferaService: sferaRemoteRepo,
+      sferaRepo: sferaRemoteRepo,
       mqttService: mqttService,
       otnId: otnId,
       dasDrivingMode: .readOnly,
@@ -83,7 +83,7 @@ void main() {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final handshakeTask = HandshakeTask(
-      sferaService: sferaRemoteRepo,
+      sferaRepo: sferaRemoteRepo,
       mqttService: mqttService,
       otnId: otnId,
       dasDrivingMode: .readOnly,
@@ -107,7 +107,7 @@ void main() {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final handshakeTask = HandshakeTask(
-      sferaService: sferaRemoteRepo,
+      sferaRepo: sferaRemoteRepo,
       mqttService: mqttService,
       otnId: otnId,
       dasDrivingMode: .readOnly,
@@ -133,7 +133,7 @@ void main() {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final handshakeTask = HandshakeTask(
-      sferaService: sferaRemoteRepo,
+      sferaRepo: sferaRemoteRepo,
       mqttService: mqttService,
       otnId: otnId,
       dasDrivingMode: .readOnly,

@@ -18,18 +18,18 @@ final _log = Logger('RequestJourneyProfileTask');
 class RequestJourneyProfileTask extends SferaTask<List<dynamic>> {
   RequestJourneyProfileTask({
     required MqttService mqttService,
-    required SferaRemoteRepo sferaService,
+    required SferaRemoteRepo sferaRepo,
     required SferaLocalDatabaseService sferaDatabaseRepository,
     required this.otnId,
     super.timeout,
   }) : _mqttService = mqttService,
        _sferaDatabaseRepository = sferaDatabaseRepository,
-       _sferaService = sferaService;
+       _sferaRepo = sferaRepo;
 
   final MqttService _mqttService;
   final OtnId otnId;
   final SferaLocalDatabaseService _sferaDatabaseRepository;
-  final SferaRemoteRepo _sferaService;
+  final SferaRemoteRepo _sferaRepo;
 
   late TaskCompleted<List<dynamic>> _taskCompletedCallback;
   late TaskFailed _taskFailedCallback;
@@ -49,7 +49,7 @@ class RequestJourneyProfileTask extends SferaTask<List<dynamic>> {
     final jpRequest = JpRequestDto.create(trainIdentification);
 
     final sferaB2gRequestMessage = SferaB2gRequestMessageDto.create(
-      _sferaService.messageHeader(sender: otnId.company),
+      _sferaRepo.messageHeader(sender: otnId.company),
       b2gRequest: B2gRequestDto.createJPRequest(jpRequest),
     );
     _log.info('Sending journey profile request...');

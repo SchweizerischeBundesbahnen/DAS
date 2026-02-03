@@ -39,7 +39,7 @@ void main() {
     final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final segmentTask = RequestSegmentProfilesTask(
-      sferaService: sferaRemoteRepo,
+      sferaRepo: sferaRemoteRepo,
       mqttService: mqttService,
       sferaDatabaseRepository: sferaLocalService,
       otnId: otnId,
@@ -67,7 +67,7 @@ void main() {
     final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final segmentTask = RequestSegmentProfilesTask(
-      sferaService: sferaRemoteRepo,
+      sferaRepo: sferaRemoteRepo,
       mqttService: mqttService,
       sferaDatabaseRepository: sferaLocalService,
       otnId: otnId,
@@ -95,7 +95,7 @@ void main() {
     final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final segmentTask = RequestSegmentProfilesTask(
-      sferaService: sferaRemoteRepo,
+      sferaRepo: sferaRemoteRepo,
       mqttService: mqttService,
       sferaDatabaseRepository: sferaLocalService,
       otnId: otnId,
@@ -126,7 +126,7 @@ void main() {
     final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final segmentTask = RequestSegmentProfilesTask(
-      sferaService: sferaRemoteRepo,
+      sferaRepo: sferaRemoteRepo,
       mqttService: mqttService,
       sferaDatabaseRepository: sferaLocalService,
       otnId: otnId,
@@ -155,7 +155,7 @@ void main() {
     final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final spTask = RequestSegmentProfilesTask(
-      sferaService: sferaRemoteRepo,
+      sferaRepo: sferaRemoteRepo,
       mqttService: mqttService,
       sferaDatabaseRepository: sferaLocalService,
       otnId: otnId,
@@ -185,7 +185,7 @@ void main() {
     final jpRequest = SferaReplyParser.parse<SferaG2bReplyMessageDto>(jpRequestFile.readAsStringSync());
 
     final segmentTask = RequestSegmentProfilesTask(
-      sferaService: sferaRemoteRepo,
+      sferaRepo: sferaRemoteRepo,
       mqttService: mqttService,
       sferaDatabaseRepository: sferaLocalService,
       otnId: otnId,

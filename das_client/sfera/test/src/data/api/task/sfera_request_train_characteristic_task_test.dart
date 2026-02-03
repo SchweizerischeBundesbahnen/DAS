@@ -39,7 +39,7 @@ void main() {
     final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final tcTask = RequestTrainCharacteristicsTask(
-      sferaService: sferaService,
+      sferaRepo: sferaService,
       mqttService: mqttService,
       sferaDatabaseRepository: sferaRepository,
       otnId: otnId,
@@ -67,7 +67,7 @@ void main() {
     final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final tcTask = RequestTrainCharacteristicsTask(
-      sferaService: sferaService,
+      sferaRepo: sferaService,
       mqttService: mqttService,
       sferaDatabaseRepository: sferaRepository,
       otnId: otnId,
@@ -94,7 +94,7 @@ void main() {
     final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final tcTask = RequestTrainCharacteristicsTask(
-      sferaService: sferaService,
+      sferaRepo: sferaService,
       mqttService: mqttService,
       sferaDatabaseRepository: sferaRepository,
       otnId: otnId,
@@ -123,7 +123,7 @@ void main() {
     final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final tcTask = RequestTrainCharacteristicsTask(
-      sferaService: sferaService,
+      sferaRepo: sferaService,
       mqttService: mqttService,
       sferaDatabaseRepository: sferaRepository,
       otnId: otnId,
@@ -153,7 +153,7 @@ void main() {
     final tcRequest = SferaReplyParser.parse<SferaG2bReplyMessageDto>(tcRequestFile.readAsStringSync());
 
     final tcTask = RequestTrainCharacteristicsTask(
-      sferaService: sferaService,
+      sferaRepo: sferaService,
       mqttService: mqttService,
       sferaDatabaseRepository: sferaRepository,
       otnId: otnId,

@@ -221,7 +221,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
 
     final handshakeTask = HandshakeTask(
       mqttService: _mqttService,
-      sferaService: this,
+      sferaRepo: this,
       otnId: otnId,
       dasDrivingMode: drivingMode,
     );
@@ -263,7 +263,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
     _rxState.add(.loadingJourney);
     final requestJourneyTask = RequestJourneyProfileTask(
       mqttService: _mqttService,
-      sferaService: this,
+      sferaRepo: this,
       sferaDatabaseRepository: _localService,
       otnId: _otnId!,
     );
@@ -281,7 +281,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
 
   void _startSegmentProfileAndTCTask() {
     final requestSegmentProfilesTask = RequestSegmentProfilesTask(
-      sferaService: this,
+      sferaRepo: this,
       mqttService: _mqttService,
       sferaDatabaseRepository: _localService,
       otnId: _otnId!,
@@ -291,7 +291,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
     requestSegmentProfilesTask.execute(_onTaskCompleted, _onTaskFailed);
 
     final requestTrainCharacteristicsTask = RequestTrainCharacteristicsTask(
-      sferaService: this,
+      sferaRepo: this,
       mqttService: _mqttService,
       sferaDatabaseRepository: _localService,
       otnId: _otnId!,
