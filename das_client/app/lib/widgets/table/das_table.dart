@@ -9,6 +9,7 @@ import 'package:app/widgets/table/das_table_column.dart';
 import 'package:app/widgets/table/das_table_row.dart';
 import 'package:app/widgets/table/das_table_theme.dart';
 import 'package:app/widgets/table/scrollable_align.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -284,21 +285,67 @@ extension _TableBorderExtension on TableBorder {
 }
 
 class _FixedHeightRow extends StatelessWidget {
-  const _FixedHeightRow({required this.height, required this.children});
+  const _FixedHeightRow({required this.height, required this.children, this.strikethrough = false});
 
   final double height;
   final List<Widget> children;
+  final bool strikethrough;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: height,
-      child: Row(
-        key: DASTable.rowKey,
-        crossAxisAlignment: .stretch,
-        children: children,
-      ),
+    return Stack(
+      children: [
+        SizedBox(
+          height: height,
+          child: Row(
+            key: DASTable.rowKey,
+            crossAxisAlignment: .stretch,
+            children: children,
+          ),
+        ),
+        if (strikethrough)
+          Positioned.fill(
+            child: DottedBorder(
+              options: RectDottedBorderOptions(
+                dashPattern: [12, 8],
+                strokeWidth: 2,
+                color: ThemeUtil.getColor(context, SBBColors.graphite, SBBColors.smoke),
+                padding: .zero,
+                strokeCap: .square,
+              ),
+              child: Container(
+                color: ThemeUtil.getColor(context, SBBColors.white, SBBColors.black).withAlpha((255.0 * 0.5).round()),
+                width: double.infinity,
+                height: double.infinity,
+                child: CustomPaint(
+                  painter: _StrikethroughPainter(ThemeUtil.getColor(context, SBBColors.granite, SBBColors.graphite)),
+                ),
+              ),
+            ),
+          ),
+      ],
     );
+  }
+}
+
+class _StrikethroughPainter extends CustomPainter {
+  _StrikethroughPainter(this.color);
+
+  final Color color;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = color
+      ..strokeWidth = 1.0;
+
+    final y = size.height / 2;
+    canvas.drawLine(Offset(SBBSpacing.xxSmall, y), Offset(size.width - SBBSpacing.xxSmall, y), paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
   }
 }
 
@@ -351,6 +398,7 @@ class _CellRowState extends State<_CellRow> {
         rowKey: widget.row.key,
         child: _FixedHeightRow(
           height: widget.row.height,
+          strikethrough: widget.row.strikethrough,
           children: List.generate(widget.columns.length, (index) {
             final column = widget.columns[index];
             final cell = widget.row.cells[column.id] ?? DASTableCell.empty();
@@ -402,8 +450,9 @@ class _CellRowState extends State<_CellRow> {
       builder: (context) {
         final tableThemeData = DASTableTheme.of(context)?.data;
         final effectiveAlignment = cell.alignment ?? column.alignment;
-        final BoxBorder? cellBorder =
-            cell.border ?? column.border ?? tableThemeData?.tableBorder?.toBoxBorder(isLastCell: isLast);
+        final BoxBorder? cellBorder = !row.strikethrough
+            ? cell.border ?? column.border ?? tableThemeData?.tableBorder?.toBoxBorder(isLastCell: isLast)
+            : null;
         return _TableCellWrapper(
           expanded: column.expanded,
           width: column.width,
