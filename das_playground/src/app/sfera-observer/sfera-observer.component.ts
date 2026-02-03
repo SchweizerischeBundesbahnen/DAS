@@ -494,7 +494,10 @@ export class SferaObserverComponent implements OnInit, OnDestroy {
   }
 
   private readonly formationObserver = {
-    next: () => this.toastService.open('Bremszettel erstellt', {type: 'success', duration: 5000}),
+    next: () => {
+      this.sendG2BEvent({formation: true})
+      this.toastService.open('Bremszettel erstellt', {type: 'success', duration: 5000})
+    },
     error: () => this.toastService.open('Bremszettel konnte nicht erstellt werden', {
       type: 'error',
       duration: 5000
