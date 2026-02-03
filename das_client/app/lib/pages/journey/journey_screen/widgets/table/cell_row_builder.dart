@@ -95,16 +95,18 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
       color: specialCellColor,
       child: ModificationIndicator(
         show: data.hasModificationUpdated,
+        offset: Offset(0, -SBBSpacing.small),
         child: Column(
           mainAxisAlignment: .end,
           crossAxisAlignment: .start,
+          mainAxisSize: .min,
           children: [
             Text(data.kilometre[0].toStringAsFixed(1), style: textStyle),
             if (data.kilometre.length > 1) Text(data.kilometre[1].toStringAsFixed(1), style: textStyle),
           ],
         ),
       ),
-      alignment: .centerLeft,
+      alignment: .bottomLeft,
     );
   }
 

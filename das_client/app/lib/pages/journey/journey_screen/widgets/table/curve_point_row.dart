@@ -1,10 +1,12 @@
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cell_row_builder.dart';
 import 'package:app/widgets/assets.dart';
+import 'package:app/widgets/modification_indicator.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
 class CurvePointRow extends CellRowBuilder<CurvePoint> {
@@ -20,6 +22,27 @@ class CurvePointRow extends CellRowBuilder<CurvePoint> {
 
   @override
   DASTableCell localSpeedCell(BuildContext context) => speedCell(data.localSpeeds);
+
+  @override
+  DASTableCell kilometreCell(BuildContext context) {
+    if (data.kilometre.isEmpty) {
+      return DASTableCell.empty(color: specialCellColor);
+    } else {
+      return DASTableCell(
+        color: specialCellColor,
+        padding: const EdgeInsets.all(8.0),
+        alignment: Alignment.centerLeft,
+        clipBehavior: Clip.none,
+        child: ModificationIndicator(
+          show: data.hasModificationUpdated,
+          offset: Offset(0, -SBBSpacing.small),
+          child: Text(
+            data.kilometre[0].toStringAsFixed(1),
+          ),
+        ),
+      );
+    }
+  }
 
   @override
   DASTableCell informationCell(BuildContext context) {
