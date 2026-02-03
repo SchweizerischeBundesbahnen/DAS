@@ -506,7 +506,7 @@ export class SferaObserverComponent implements OnInit, OnDestroy {
 
   protected initialFormation() {
     this.formationsService.initialFormation({
-      operationalTrainNumber: this.trainControl.value,
+      operationalTrainNumber: this.trainControl.value.replace('M', ''),
       companyCode: this.companyControl.value,
       operationalDay: this.MOCK_OPATIONAL_DAY,
     }).subscribe(this.formationObserver)
@@ -514,7 +514,7 @@ export class SferaObserverComponent implements OnInit, OnDestroy {
 
   protected updatedFormation() {
     this.formationsService.updateFormation({
-      operationalTrainNumber: this.trainControl.value,
+      operationalTrainNumber: this.trainControl.value.replace('M', ''),
       companyCode: this.companyControl.value,
       operationalDay: this.MOCK_OPATIONAL_DAY,
     }).subscribe(this.formationObserver)
