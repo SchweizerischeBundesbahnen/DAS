@@ -10,7 +10,7 @@ import '../util/test_utils.dart';
 
 void main() {
   group('manual advancement tests', () {
-    testWidgets('whenServicePointDragged_thenJourneyPositionMoved', skip: true, (tester) async {
+    testWidgets('whenServicePointDragged_thenJourneyPositionMoved', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T9999M');
 

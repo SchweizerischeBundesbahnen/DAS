@@ -28,11 +28,11 @@ class ReducedServicePointRow extends ServicePointRow {
   @override
   DASTableCell timeCell(BuildContext context) {
     final times = data.arrivalDepartureTime;
-    if (times == null) return DASTableCell.empty(color: specialCellColor);
+    if (times == null && data.mandatoryStop) return DASTableCell.empty(color: specialCellColor);
 
     return DASTableCell(
-      child: ReducedTimeCellBody(times: times, showTimesInBrackets: !data.isStop),
-      alignment: defaultAlignment,
+      child: ReducedTimeCellBody(times: times, showTimesInBrackets: !data.isStop, mandatoryStop: data.mandatoryStop),
+      alignment: .bottomLeft,
       color: specialCellColor,
     );
   }
