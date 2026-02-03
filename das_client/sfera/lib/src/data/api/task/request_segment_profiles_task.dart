@@ -19,19 +19,19 @@ final _log = Logger('RequestSegmentProfilesTask');
 class RequestSegmentProfilesTask extends SferaTask<List<SegmentProfileDto>> {
   RequestSegmentProfilesTask({
     required MqttService mqttService,
-    required SferaRemoteRepo sferaService,
+    required SferaRemoteRepo sferaRepo,
     required SferaLocalDatabaseService sferaDatabaseRepository,
     required this.otnId,
     required this.journeyProfile,
     super.timeout,
   }) : _mqttService = mqttService,
        _sferaDatabaseRepository = sferaDatabaseRepository,
-       _sferaService = sferaService;
+       _sferaRepo = sferaRepo;
 
   final MqttService _mqttService;
   final OtnId otnId;
   final SferaLocalDatabaseService _sferaDatabaseRepository;
-  final SferaRemoteRepo _sferaService;
+  final SferaRemoteRepo _sferaRepo;
   final JourneyProfileDto journeyProfile;
 
   late TaskCompleted<List<SegmentProfileDto>> _taskCompletedCallback;
@@ -104,7 +104,7 @@ class RequestSegmentProfilesTask extends SferaTask<List<SegmentProfileDto>> {
     }
 
     final sferaB2gRequestMessage = SferaB2gRequestMessageDto.create(
-      _sferaService.messageHeader(sender: otnId.company),
+      _sferaRepo.messageHeader(sender: otnId.company),
       b2gRequest: B2gRequestDto.createSPRequest(spRequests),
     );
     _log.info('Sending segment profiles request...');

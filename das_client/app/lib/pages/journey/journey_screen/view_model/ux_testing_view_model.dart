@@ -5,18 +5,24 @@ import 'package:app/pages/journey/journey_screen/header/view_model/connectivity_
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:app/sound/das_sounds.dart';
 import 'package:collection/collection.dart';
+import 'package:formation/component.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
 class UxTestingViewModel {
-  UxTestingViewModel({required SferaRemoteRepo sferaRepo, required RuFeatureProvider ruFeatureProvider})
-    : _sferaService = sferaRepo,
-      _ruFeatureProvider = ruFeatureProvider {
+  UxTestingViewModel({
+    required SferaRemoteRepo sferaRepo,
+    required RuFeatureProvider ruFeatureProvider,
+    required FormationRepository formationRepository,
+  }) : _sferaRepo = sferaRepo,
+       _ruFeatureProvider = ruFeatureProvider,
+       _formationRepository = formationRepository {
     _init();
   }
 
-  final SferaRemoteRepo _sferaService;
+  final SferaRemoteRepo _sferaRepo;
   final RuFeatureProvider _ruFeatureProvider;
+  final FormationRepository _formationRepository;
 
   StreamSubscription? _eventSubscription;
   StreamSubscription? _sferaStateSubscription;
@@ -34,7 +40,7 @@ class UxTestingViewModel {
   Future<bool> get isDepartueProcessFeatureEnabled => _ruFeatureProvider.isRuFeatureEnabled(.departureProcess);
 
   void _init() {
-    _eventSubscription = _sferaService.uxTestingEventStream.listen((data) async {
+    _eventSubscription = _sferaRepo.uxTestingEventStream.listen((data) async {
       if (data != null) {
         if (data.isKoa) {
           final koaEnabled = await _ruFeatureProvider.isRuFeatureEnabled(.koa);
@@ -52,10 +58,21 @@ class UxTestingViewModel {
           _rxConnectivityDisplayStatus.add(connectivityDisplayStatus);
         }
 
+        if (data.isFormation) {
+          final connectedTrain = _sferaRepo.connectedTrain;
+          if (connectedTrain != null) {
+            _formationRepository.loadFormation(
+              connectedTrain.trainNumber,
+              connectedTrain.ru.companyCode,
+              connectedTrain.operatingDay ?? connectedTrain.date,
+            );
+          }
+        }
+
         _rxUxTestingEvents.add(data);
       }
     });
-    _sferaStateSubscription = _sferaService.stateStream.listen((state) {
+    _sferaStateSubscription = _sferaRepo.stateStream.listen((state) {
       if (state == .disconnected) {
         _rxKoaState.add(.waitHide);
       }

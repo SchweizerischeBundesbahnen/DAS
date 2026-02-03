@@ -40,7 +40,7 @@ void main() {
     final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final journeyTask = RequestJourneyProfileTask(
-      sferaService: sferaRemoteRepo,
+      sferaRepo: sferaRemoteRepo,
       mqttService: mqttService,
       sferaDatabaseRepository: sferaRepository,
       otnId: otnId,
@@ -67,7 +67,7 @@ void main() {
     final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final journeyTask = RequestJourneyProfileTask(
-      sferaService: sferaRemoteRepo,
+      sferaRepo: sferaRemoteRepo,
       mqttService: mqttService,
       sferaDatabaseRepository: sferaRepository,
       otnId: otnId,
@@ -94,7 +94,7 @@ void main() {
     final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final journeyTask = RequestJourneyProfileTask(
-      sferaService: sferaRemoteRepo,
+      sferaRepo: sferaRemoteRepo,
       mqttService: mqttService,
       sferaDatabaseRepository: sferaRepository,
       otnId: otnId,
@@ -124,7 +124,7 @@ void main() {
     final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final journeyTask = RequestJourneyProfileTask(
-      sferaService: sferaRemoteRepo,
+      sferaRepo: sferaRemoteRepo,
       mqttService: mqttService,
       sferaDatabaseRepository: sferaRepository,
       otnId: otnId,
@@ -151,7 +151,7 @@ void main() {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final journeyTask = RequestJourneyProfileTask(
-      sferaService: sferaRemoteRepo,
+      sferaRepo: sferaRemoteRepo,
       mqttService: mqttService,
       sferaDatabaseRepository: sferaRepository,
       otnId: otnId,
@@ -175,7 +175,7 @@ void main() {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final journeyTask = RequestJourneyProfileTask(
-      sferaService: sferaRemoteRepo,
+      sferaRepo: sferaRemoteRepo,
       mqttService: mqttService,
       sferaDatabaseRepository: sferaRepository,
       otnId: otnId,
@@ -204,7 +204,7 @@ void main() {
     final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final journeyTask = RequestJourneyProfileTask(
-      sferaService: sferaRemoteRepo,
+      sferaRepo: sferaRemoteRepo,
       mqttService: mqttService,
       sferaDatabaseRepository: sferaRepository,
       otnId: otnId,
@@ -228,7 +228,7 @@ void main() {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final journeyTask = RequestJourneyProfileTask(
-      sferaService: sferaRemoteRepo,
+      sferaRepo: sferaRemoteRepo,
       mqttService: mqttService,
       sferaDatabaseRepository: sferaRepository,
       otnId: otnId,

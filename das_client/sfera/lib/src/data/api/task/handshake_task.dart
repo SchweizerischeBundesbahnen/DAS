@@ -16,14 +16,14 @@ final _log = Logger('HandshakeTask');
 class HandshakeTask extends SferaTask {
   HandshakeTask({
     required MqttService mqttService,
-    required SferaRemoteRepo sferaService,
+    required SferaRemoteRepo sferaRepo,
     required this.otnId,
     required this.dasDrivingMode,
     super.timeout,
   }) : _mqttService = mqttService,
-       _sferaService = sferaService;
+       _sferaRepo = sferaRepo;
 
-  final SferaRemoteRepo _sferaService;
+  final SferaRemoteRepo _sferaRepo;
   final MqttService _mqttService;
   final OtnId otnId;
   final DasDrivingModeDto dasDrivingMode;
@@ -51,7 +51,7 @@ class HandshakeTask extends SferaTask {
       statusReportsEnabled: false,
     );
 
-    final messageHeader = _sferaService.messageHeader(sender: otnId.company);
+    final messageHeader = _sferaRepo.messageHeader(sender: otnId.company);
     final sferaB2gRequestMessage = SferaB2gRequestMessageDto.create(messageHeader, handshakeRequest: handshakeRequest);
     final message = sferaB2gRequestMessage.buildDocument().toString();
     final success = _mqttService.publishMessage(otnId.company, sferaTrain, message);
