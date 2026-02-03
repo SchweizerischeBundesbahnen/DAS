@@ -22,23 +22,6 @@ class CurvePointRow extends CellRowBuilder<CurvePoint> {
   DASTableCell localSpeedCell(BuildContext context) => speedCell(data.localSpeeds);
 
   @override
-  DASTableCell kilometreCell(BuildContext context) {
-    if (data.kilometre.isEmpty) {
-      return DASTableCell.empty(color: specialCellColor);
-    } else {
-      return DASTableCell(
-        color: specialCellColor,
-        padding: const EdgeInsets.all(8.0),
-        alignment: Alignment.centerLeft,
-        clipBehavior: Clip.none,
-        child: Text(
-          data.kilometre[0].toStringAsFixed(1),
-        ),
-      );
-    }
-  }
-
-  @override
   DASTableCell informationCell(BuildContext context) {
     final typeText = data.curveType?.localizedName(context) ?? '';
     final startKm = _stringifyKm(data.kilometre.firstOrNull);

@@ -4,6 +4,8 @@ import 'package:sfera/component.dart';
 @sealed
 @immutable
 abstract class JourneyPoint extends BaseData {
+  static const showModificationDays = 30;
+
   const JourneyPoint({
     required super.dataType,
     required super.order,
@@ -18,6 +20,18 @@ abstract class JourneyPoint extends BaseData {
 
   final DateTime? lastModificationDate;
   final ModificationType? lastModificationType;
+
+  bool get hasModificationUpdated =>
+      lastModificationType == ModificationType.updated &&
+      lastModificationDate != null &&
+      lastModificationDate!.isAfter(DateTime.now().add(Duration(days: -showModificationDays)));
+
+  bool get shouldHide =>
+      isDeleted &&
+      lastModificationDate != null &&
+      lastModificationDate!.isAfter(DateTime.now().add(Duration(days: -showModificationDays)));
+
+  bool get isDeleted => lastModificationType == ModificationType.deleted;
 
   @override
   @mustBeOverridden

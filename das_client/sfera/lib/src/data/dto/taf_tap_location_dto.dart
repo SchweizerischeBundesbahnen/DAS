@@ -45,7 +45,7 @@ class TafTapLocationDto extends SferaSegmentXmlElementDto {
 
   StationPropertyNspDto? get property => children.whereType<StationPropertyNspDto>().firstOrNull;
 
-  Iterable<NspDto> get _allModificationsDesc => <NspDto>[...nsps, ?property]
+  Iterable<NspDto> get _allModificationsDesc => nsps
       .where((it) => it.lastModificationDate != null)
       .sorted((b, a) => a.lastModificationDate!.compareTo(b.lastModificationDate!));
 

@@ -24,9 +24,6 @@ class DotIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (!show) return child;
-    final resolvedDotColor = isNextStop
-        ? SBBColors.sky
-        : ThemeUtil.getColor(context, Theme.of(context).colorScheme.primary, SBBColors.sky);
 
     return Stack(
       clipBehavior: .none,
@@ -35,13 +32,21 @@ class DotIndicator extends StatelessWidget {
         Positioned(
           top: offset.dx,
           right: offset.dy,
-          child: CustomPaint(
-            key: indicatorKey,
-            painter: _DotPainter(color: resolvedDotColor),
-            size: Size(size, size),
-          ),
+          child: indicatorWidget(context),
         ),
       ],
+    );
+  }
+
+  Widget indicatorWidget(BuildContext context) {
+    final resolvedDotColor = isNextStop
+        ? SBBColors.sky
+        : ThemeUtil.getColor(context, Theme.of(context).colorScheme.primary, SBBColors.sky);
+
+    return CustomPaint(
+      key: indicatorKey,
+      painter: _DotPainter(color: resolvedDotColor),
+      size: Size(size, size),
     );
   }
 }
