@@ -431,6 +431,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
           ru: .fromCompanyCode(_otnId!.company),
           trainNumber: _otnId!.operationalTrainNumber,
           date: _otnId!.startDate,
+          operatingDay: _rxJourney.value?.metadata.trainIdentification?.operatingDay,
         )
       : null;
 }
