@@ -5,18 +5,24 @@ import 'package:app/pages/journey/journey_screen/header/view_model/connectivity_
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:app/sound/das_sounds.dart';
 import 'package:collection/collection.dart';
+import 'package:formation/component.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
 class UxTestingViewModel {
-  UxTestingViewModel({required SferaRemoteRepo sferaRepo, required RuFeatureProvider ruFeatureProvider})
-    : _sferaService = sferaRepo,
-      _ruFeatureProvider = ruFeatureProvider {
+  UxTestingViewModel({
+    required SferaRemoteRepo sferaRepo,
+    required RuFeatureProvider ruFeatureProvider,
+    required FormationRepository formationRepository,
+  }) : _sferaService = sferaRepo,
+       _ruFeatureProvider = ruFeatureProvider,
+       _formationRepository = formationRepository {
     _init();
   }
 
   final SferaRemoteRepo _sferaService;
   final RuFeatureProvider _ruFeatureProvider;
+  final FormationRepository _formationRepository;
 
   StreamSubscription? _eventSubscription;
   StreamSubscription? _sferaStateSubscription;
@@ -50,6 +56,17 @@ class UxTestingViewModel {
         if (data.isConnectivity) {
           final connectivityDisplayStatus = _connectivityDisplayStatusFromUxTestingEvent(data.value);
           _rxConnectivityDisplayStatus.add(connectivityDisplayStatus);
+        }
+
+        if (data.isFormation) {
+          final connectedTrain = _sferaService.connectedTrain;
+          if (connectedTrain != null) {
+            _formationRepository.loadFormation(
+              connectedTrain.trainNumber,
+              connectedTrain.ru.companyCode,
+              connectedTrain.operatingDay ?? connectedTrain.date,
+            );
+          }
         }
 
         _rxUxTestingEvents.add(data);
