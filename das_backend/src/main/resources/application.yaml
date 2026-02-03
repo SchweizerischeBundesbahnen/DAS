@@ -6,6 +6,9 @@ spring:
     active: ${STAGE:local}
   application:
     name: backend
+  mvc:
+    problemdetails:
+      enabled: true
   security:
     oauth2:
       resourceserver:

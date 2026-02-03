@@ -3,7 +3,6 @@ package ch.sbb.das.backend.restapi.configuration;
 import lombok.Builder;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 
 @Builder
 @Value
@@ -12,10 +11,6 @@ public class DasBackendEndpoint {
 
     String endpoint;
     String port;
-
-    public String getEndpointAndPort() {
-        return endpoint + (StringUtils.isBlank(port) ? "" : ":" + port);
-    }
 
     /**
      * @return no APIM between
