@@ -314,7 +314,7 @@ class _FixedHeightRow extends StatelessWidget {
                 strokeCap: .square,
               ),
               child: Container(
-                color: ThemeUtil.getColor(context, SBBColors.white, SBBColors.black).withAlpha((255.0 * 0.5).round()),
+                color: ThemeUtil.getDASTableColor(context).withAlpha((255.0 * 0.5).round()),
                 width: double.infinity,
                 height: double.infinity,
                 child: CustomPaint(

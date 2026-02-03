@@ -29,7 +29,7 @@ abstract class JourneyPoint extends BaseData {
   bool get shouldHide =>
       isDeleted &&
       lastModificationDate != null &&
-      lastModificationDate!.isAfter(DateTime.now().add(Duration(days: -showModificationDays)));
+      lastModificationDate!.isBefore(DateTime.now().add(Duration(days: -showModificationDays)));
 
   bool get isDeleted => lastModificationType == ModificationType.deleted;
 

@@ -5,6 +5,7 @@ import 'package:logging/logging.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/dto/departure_auth_nsp_dto.dart';
 import 'package:sfera/src/data/dto/enums/length_type_dto.dart';
+import 'package:sfera/src/data/dto/enums/modification_type_dto.dart';
 import 'package:sfera/src/data/dto/enums/xml_enum.dart';
 import 'package:sfera/src/data/dto/foot_note_dto.dart';
 import 'package:sfera/src/data/dto/local_regulation_content_nsp_dto.dart';
@@ -97,6 +98,10 @@ class SegmentProfileMapper {
 
       final newLineSpeeds = segmentProfile.points?.newLineSpeedsNsp ?? [];
       for (final newLineSpeed in newLineSpeeds) {
+        if (newLineSpeed.lastModificationType == ModificationTypeDto.deleted) {
+          continue;
+        }
+
         final velocities = newLineSpeed.xmlNewLineSpeed.element.speeds?.velocities;
         final speed = SpeedMapper.fromVelocities(velocities);
         if (speed != null) {

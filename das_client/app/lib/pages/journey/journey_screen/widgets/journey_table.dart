@@ -156,6 +156,7 @@ class JourneyTable extends StatelessWidget {
 
     final rows = journey.data
         .whereNot((it) => _isCurvePointWithoutSpeed(it, journey, settings))
+        .hideJourneyPointThatShouldNotBeDisplayed()
         .groupBaliseAndLevelCrossings(settings.expandedGroups, journey.metadata)
         .hideCommunicationNetworkChangesWithSameTypeAsPreviousOrIsServicePoint()
         .hideRepeatedLineFootNotes(journeyPosition.currentPosition)
