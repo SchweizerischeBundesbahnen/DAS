@@ -13,6 +13,7 @@ public class ServiceDoc {
      * RequestId for all E2E-Tests (make it distinguishable from real production requests).
      */
     public static final String REQUEST_ID_VALUE_E2E_TEST = "e2eTest";
+    // TODO clone of das_backend ApiDocumentation
     public static final String HEADER_CONTENT_LANGUAGE_ERROR_DETAIL_DEFAULT = "en";
     /**
      * Provoke tag for false positives.

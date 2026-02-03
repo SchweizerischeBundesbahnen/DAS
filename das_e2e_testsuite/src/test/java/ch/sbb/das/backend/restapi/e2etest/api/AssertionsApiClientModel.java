@@ -8,28 +8,40 @@ import ch.sbb.backend.restclient.v1.model.Preload;
 import ch.sbb.backend.restclient.v1.model.RuFeature;
 import ch.sbb.backend.restclient.v1.model.Settings;
 import ch.sbb.backend.restclient.v1.model.SettingsResponse;
+import ch.sbb.das.backend.restapi.configuration.DasBackendEndpoint;
 import java.util.List;
 import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
+@Slf4j
 @UtilityClass
-public class AssertionsApiClientModel {
+public final class AssertionsApiClientModel {
 
-    public static Settings assertSettingsResponse(SettingsResponse settingsResponse) {
+    public static Settings assertSettingsResponse(SettingsResponse settingsResponse, DasBackendEndpoint backendEndpoint) {
         assertThat(settingsResponse).isNotNull();
         assertThat(settingsResponse.getData()).as(Settings.class.getSimpleName()).hasSize(1);
         final Settings settings = settingsResponse.getData().get(0);
 
         final List<RuFeature> ruFeatures = settings.getRuFeatures();
-        assertThat(ruFeatures).hasSizeGreaterThanOrEqualTo(11);
+        if (!backendEndpoint.isLocalHost()) {
+            assertThat(ruFeatures).as("check implemented and administrated RUFeatures for env").hasSizeGreaterThanOrEqualTo(11);
+        }
 
         final Logging logging = settings.getLogging();
         assertThat(logging.getUrl()).isNotBlank();
-        assertThat(logging.getToken()).isNotBlank();
+        if (!backendEndpoint.isLocalHost()) {
+            assertThat(logging.getToken()).isNotBlank();
+        }
 
         final Preload preload = settings.getPreload();
         assertThat(preload.getBucketUrl()).isNotBlank();
-        assertThat(preload.getAccessKey()).isNotBlank();
-        assertThat(preload.getAccessKey()).isNotBlank();
+        if (!backendEndpoint.isLocalHost()) {
+            assertThat(preload.getAccessKey()).isNotBlank();
+            assertThat(preload.getAccessKey()).isNotBlank();
+        }
 
         return settings;
     }

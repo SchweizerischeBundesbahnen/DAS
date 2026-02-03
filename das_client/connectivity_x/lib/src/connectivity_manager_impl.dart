@@ -32,7 +32,7 @@ class ConnectivityManagerImpl implements ConnectivityManager {
   StreamSubscription? _connectivitySubscription;
   List<ConnectivityResult> _latestConnectivityResults = [];
   DateTime? _lastConnectedTime;
-  bool _lasteWifiActive = false;
+  bool _lastWifiActive = false;
   Timer? _timer;
 
   void _startPeriodicCheck() {
@@ -60,9 +60,9 @@ class ConnectivityManagerImpl implements ConnectivityManager {
   }
 
   void _emitState(bool isConnected, bool wifiActive) {
-    if (_connectedSubject.value != isConnected || _lasteWifiActive != wifiActive) {
+    if (_connectedSubject.value != isConnected || _lastWifiActive != wifiActive) {
       _log.info('Internet connectivity changed: $isConnected, isWifi: $wifiActive}');
-      _lasteWifiActive = wifiActive;
+      _lastWifiActive = wifiActive;
       _connectedSubject.add(isConnected);
     }
   }

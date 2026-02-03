@@ -10,8 +10,10 @@ class UxTestingNseDto extends NetworkSpecificEventDto {
 
   NetworkSpecificParameterDto? get warn => parameters.withName('warn');
 
+  NetworkSpecificParameterDto? get connectivity => parameters.withName('connectivity');
+
   @override
   String toString() {
-    return 'UxTestingNse{koa: $koa, warn: $warn}';
+    return 'UxTestingNse{koa: $koa, warn: $warn, connectivity: $connectivity}';
   }
 }

@@ -656,6 +656,15 @@ Future<void> main() async {
       );
       await _checkDepartureAuth(header, nextStopName: 'Zürich Hardbrücke', text: null);
 
+      // check departure authorization on Zürich Hardbrücke (nextStop: Zürich HB)
+      await waitUntilExists(tester, find.descendant(of: header, matching: find.text('Zürich HB')));
+      await _checkDepartureAuth(header, nextStopName: 'Zürich HB', text: null);
+
+      // check departure authorization on signal after Zürich Hardbrücke (nextStop: Zürich HB)
+      final departureAuthTextZuerich = '(ZUE) sms *962 -967';
+      await waitUntilExists(tester, find.descendant(of: header, matching: find.text(departureAuthTextZuerich)));
+      await _checkDepartureAuth(header, nextStopName: 'Zürich HB', text: departureAuthTextZuerich);
+
       await disconnect(tester);
     });
   });

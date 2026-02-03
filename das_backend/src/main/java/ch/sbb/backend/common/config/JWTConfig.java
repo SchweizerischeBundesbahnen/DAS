@@ -1,4 +1,4 @@
-package ch.sbb.backend.common;
+package ch.sbb.backend.common.config;
 
 import com.nimbusds.jose.proc.SecurityContext;
 import com.nimbusds.jwt.proc.DefaultJWTProcessor;

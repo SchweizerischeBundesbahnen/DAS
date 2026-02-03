@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 
-<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="1"
+<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="2"
                 xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
     <TrainIdentification>
         <OTN_ID>
@@ -111,7 +111,7 @@
         </JP_ContextInformation>
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="T31_5" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T31_5" SP_VersionMajor="2" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -126,6 +126,37 @@
         <JP_ContextInformation>
 
             <!-- VPro for Hardbruecke -->
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="135"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0"
+                                                       endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
+    </SegmentProfileReference>
+
+    <SegmentProfileReference SP_ID="T31_6" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="End_of_Journey"
+                                TP_latestArrivalTime="2025-05-17T09:30:30Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T09:30:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Zuerich_HB"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>nonStandardIndication</NSP_GroupName>
+                <NetworkSpecificParameter name="trainRunType" value="shuntingOnOpenTrack"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="WholeSP"/>
+            </JP_ContextInformation_NSPs>
+
+            <!-- VPro for Zuerich_HB -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
