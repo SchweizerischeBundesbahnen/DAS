@@ -20,6 +20,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 class DASTable extends StatefulWidget {
   static const Key tableKey = Key('dasTable');
   static const Key rowKey = Key('dasTableRow');
+  static const Key strikethroughRowKey = Key('strikethroughRow');
   static const Key columnHeaderKey = Key('dasTableColumnHeader');
   static const double headerRowHeight = 40.0;
 
@@ -294,17 +295,18 @@ class _FixedHeightRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(
+      key: DASTable.rowKey,
       children: [
         SizedBox(
           height: height,
           child: Row(
-            key: DASTable.rowKey,
             crossAxisAlignment: .stretch,
             children: children,
           ),
         ),
         if (strikethrough)
           Positioned.fill(
+            key: DASTable.strikethroughRowKey,
             child: DottedBorder(
               options: RectDottedBorderOptions(
                 dashPattern: [12, 8],

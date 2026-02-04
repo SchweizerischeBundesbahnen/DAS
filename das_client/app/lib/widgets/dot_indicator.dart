@@ -32,13 +32,13 @@ class DotIndicator extends StatelessWidget {
         Positioned(
           top: offset.dx,
           right: offset.dy,
-          child: indicatorWidget(context),
+          child: indicator(context),
         ),
       ],
     );
   }
 
-  Widget indicatorWidget(BuildContext context) {
+  Widget indicator(BuildContext context) {
     final resolvedDotColor = isNextStop
         ? SBBColors.sky
         : ThemeUtil.getColor(context, Theme.of(context).colorScheme.primary, SBBColors.sky);

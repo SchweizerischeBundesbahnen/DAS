@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class ModificationIndicator extends DotIndicator {
+  static const Key indicatorKey = Key('modificationIndicator');
+
   const ModificationIndicator({
     required super.child,
     super.show,
@@ -14,7 +16,10 @@ class ModificationIndicator extends DotIndicator {
   });
 
   @override
-  Widget indicatorWidget(BuildContext context) {
-    return SvgPicture.asset(AppAssets.iconModificationIndicator);
+  Widget indicator(BuildContext context) {
+    return SvgPicture.asset(
+      AppAssets.iconModificationIndicator,
+      key: indicatorKey,
+    );
   }
 }
