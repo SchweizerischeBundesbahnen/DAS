@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.35.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.34.0...das_client-v0.35.0) (2026-02-03)
+
+
+### Features
+
+* align stop on request icon in time cell ([#1101](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1101)) ([#1672](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1672)) ([c26641f](https://github.com/SchweizerischeBundesbahnen/DAS/commit/c26641f45d0b9ab0ff988c7072845c771a7efbec))
+* change connectivity icon from ux testing events for i9 ([#1651](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1651)) ([#1685](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1685)) ([7f567aa](https://github.com/SchweizerischeBundesbahnen/DAS/commit/7f567aa40f3c4d844775d5b391c05020ea1aea0f))
+* handle and display errors from SFERA ([#652](https://github.com/SchweizerischeBundesbahnen/DAS/issues/652)) ([#1632](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1632)) ([6a4a631](https://github.com/SchweizerischeBundesbahnen/DAS/commit/6a4a631b17001f14e3554fb5dc20effeeefae797))
+* increase size of asterisk for dispatcher auth ([#1588](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1588)) ([#1680](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1680)) ([ec2c016](https://github.com/SchweizerischeBundesbahnen/DAS/commit/ec2c016c22ebe58187e4892726b32bb41aa02471))
+* reorder break load slip UI ([#1618](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1618)) ([#1673](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1673)) ([54b0c81](https://github.com/SchweizerischeBundesbahnen/DAS/commit/54b0c81a48f8e653adda11627876b6d81749750b))
+
+
+### Bug Fixes
+
+* adapt formation update interval to one minute for I9 testing ([#1674](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1674)) ([a21f830](https://github.com/SchweizerischeBundesbahnen/DAS/commit/a21f830e41810ad765d71117d607ca16b2a37de5))
+* close break load slip side modal when journey changes ([#1676](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1676)) ([df3d5ba](https://github.com/SchweizerischeBundesbahnen/DAS/commit/df3d5ba037940fb51a0e0be232b23731f32fa489))
+* correct login page background ([#686](https://github.com/SchweizerischeBundesbahnen/DAS/issues/686)) ([#1669](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1669)) ([30959c6](https://github.com/SchweizerischeBundesbahnen/DAS/commit/30959c68a59a8484993659787986a1cd7d8c257d))
+* refactoring and improvements ([#1595](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1595)) ([dfc90ef](https://github.com/SchweizerischeBundesbahnen/DAS/commit/dfc90efdf1c62c0ed5b813f77501160441dfb1b5))
+
 ## [0.34.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.33.0...das_client-v0.34.0) (2026-01-08)
 
 
