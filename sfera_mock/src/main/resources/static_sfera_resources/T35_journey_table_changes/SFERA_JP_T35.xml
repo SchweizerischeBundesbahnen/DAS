@@ -9,7 +9,7 @@
             <teltsi_StartDate>2025-11-13</teltsi_StartDate>
         </OTN_ID>
     </TrainIdentification>
-    <SegmentProfileReference SP_ID="T35_1_Normal_station" SP_VersionMajor="1" SP_VersionMinor="3"
+    <SegmentProfileReference SP_ID="T35_1_Normal_station" SP_VersionMajor="1" SP_VersionMinor="4"
                              SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
