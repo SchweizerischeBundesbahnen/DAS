@@ -2555,7 +2555,7 @@ or to send them in combination.</xs:documentation>
   </xs:element>
   <xs:element name="TAF_TAP_ID" type="teltsi_CompositIdentifierOperationalType">
     <xs:annotation>
-      <xs:documentation>TAF/TAP Identifier. Daily Reference Train-ID of the train, according to the processes defined by TAF/TAP.
+      <xs:documentation>TAF/TAP Identifier. Daily Reference Train-ID of the train, according to the processes defined by TAF/TAP. 
 ObjectType shall always be TR.</xs:documentation>
     </xs:annotation>
   </xs:element>
@@ -2721,10 +2721,10 @@ ObjectType shall always be TR.</xs:documentation>
   <xs:element name="TimingPoint">
     <xs:annotation>
       <xs:documentation>A location and stopping accuracy defined in the Segment Profile for which a type (Stopping or Passing Point) and specific time may be identified in the Journey Profile. This time may be an arrival time, a departure time, or in the case of a train not scheduled to stop at that location, the passing time. A TAF_TAP_LocationReference can be used to attach a Timing Point to a TAF_TAP_Location.
-        The attachment to a TAF_TAP_Location is implicit in case the Timing Points are within a TAF_TAP_Location area,
-        but this element allows to attach Timing Points to a TAF_TAP_Location despite being outside its area.
-        It can be done by providing at least the Country Code ISO and the Location Primary Code,
-        and it can be attached to a specific Subsidiary Location by providing the mandatory fields of the Location Susbsidiary Identification.</xs:documentation>
+The attachment to a TAF_TAP_Location is implicit in case the Timing Points are within a TAF_TAP_Location area,
+but this element allows to attach Timing Points to a TAF_TAP_Location despite being outside its area.
+It can be done by providing at least the Country Code ISO and the Location Primary Code,
+and it can be attached to a specific Subsidiary Location by providing the mandatory fields of the Location Susbsidiary Identification.</xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:sequence>
@@ -4633,7 +4633,7 @@ The special value 0 indicates "maximum allowed track speed/most restrictive spee
   </xs:attribute>
   <xs:attribute name="optimalSpeed" type="speedType">
     <xs:annotation>
-      <xs:documentation>Optimal speed given to the
+      <xs:documentation>Optimal speed given to the 
 driver (km/h). It is recommended to fill the parameter optimalSpeed according to the
 following rules, depending on the advice instance being sent:
 - Stop Advice: optimalSpeed must be null
@@ -4996,7 +4996,7 @@ or to send them in combination. Predefined reasonCodes are:
   </xs:attribute>
   <xs:attribute name="SP_Altitude" type="xs:decimal">
     <xs:annotation>
-      <xs:documentation>[SUBSET-126] Altitude (in m) at the beginning of the SP. Considering ETRS89 as reference. Starting at
+      <xs:documentation>[SUBSET-126] Altitude (in m) at the beginning of the SP. Considering ETRS89 as reference. Starting at 
 -1000m.</xs:documentation>
     </xs:annotation>
   </xs:attribute>
@@ -5100,7 +5100,7 @@ b) Invalid: the requested Segment Profile is not available in the ATO-TS.</xs:do
   </xs:attribute>
   <xs:attribute name="SSP_NC_DIFF" type="NC_TrainType">
     <xs:annotation>
-      <xs:documentation>[SUBSET-126] (If specific_SSP_Category = Other_SSP_*)
+      <xs:documentation>[SUBSET-126] (If specific_SSP_Category = Other_SSP_*) 
 It is the “other specific” SSP category for which a different value for the static line speed exists. Used together with SS126_V_DIFF to permit trains belonging to the corresponding “other international” train
 category to go faster or lower than the “international basic static speed” given by SSP_Speed.</xs:documentation>
     </xs:annotation>
@@ -5175,7 +5175,7 @@ category to go faster or lower than the “international basic static speed” g
   </xs:attribute>
   <xs:attribute name="stationTrack" type="xs:string">
     <xs:annotation>
-      <xs:documentation>If the Timing Point is a station: identifier of the track where the train will stop or pass through without stopping at the station.
+      <xs:documentation>If the Timing Point is a station: identifier of the track where the train will stop or pass through without stopping at the station. 
 Examples : “1” “14” “2M” “1bis”</xs:documentation>
     </xs:annotation>
   </xs:attribute>
@@ -5301,7 +5301,7 @@ Junction</xs:documentation>
   </xs:attribute>
   <xs:attribute name="TP_Accurate_Stopping">
     <xs:annotation>
-      <xs:documentation>[SUBSET-126] (If TP_Pass_Stop_Depart = Stopped)
+      <xs:documentation>[SUBSET-126] (If TP_Pass_Stop_Depart = Stopped) 
 This qualifier specifies if the train has stopped accurately or not at the Operational Stopping Point.
 </xs:documentation>
     </xs:annotation>
@@ -5393,7 +5393,7 @@ This qualifier specifies if the train has stopped accurately or not at the Opera
   </xs:attribute>
   <xs:attribute name="TP_type" type="xs:string">
     <xs:annotation>
-      <xs:documentation>Type of Timing Point. Examples:
+      <xs:documentation>Type of Timing Point. Examples: 
 Very important station
 Important station
 Station
@@ -5630,7 +5630,7 @@ Resolution: 15 min
 5006        WagonETI_ETA_Message
 
 -- sector message (Wagon interchange) --
-5009        WagonInterchangeNoticeMessage
+5009        WagonInterchangeNoticeMessage 
 5012        WagonReceivedAtInterchangeMessage
 5013        WagonRefusedAtInterchangeMessage
 -- sector message  end --
@@ -5655,7 +5655,7 @@ Resolution: 15 min
 6502        TCRCanceledMessage
 -- Sector Messages TCR end --
 
--- sector (TrainID) begin --
+-- sector (TrainID) begin -- 
 8500        UpateLinkMessage
 8501        ObjectInfoMessage
 -- sector end --
@@ -5665,7 +5665,7 @@ Resolution: 15 min
 --Reserved:  (IM-RU for SFERA) ---
 SF00 to SF99 for SFERA messages (see IRS90940)
 – Reserved end –
-
+			
 			</xs:documentation>
     </xs:annotation>
     <xs:simpleType>
@@ -6121,50 +6121,50 @@ brake test, checking load
 0009	Change gauge	RU/IM	continuation on a network with a different gauge with change of bogies or adaptation of the axles (F-&gt;E, SVE-&gt;FI)
 0010	attach engine/unit	RU	Unit not previously in service
 0011	detach engine/unit	RU	Unit no longer in service
-0012	change engine	RU
-0013	attach coach/wagon	RU
-0014	detach coach/wagon	RU
-0015	attach and detach coach/wagon	RU
+0012	change engine	RU	
+0013	attach coach/wagon	RU	
+0014	detach coach/wagon	RU	
+0015	attach and detach coach/wagon	RU	
 0016	attach train		Operational Train (in service)
 0017	split train		Operational Train (in service)
 0018	Parking of vehicle	RU	e.g. need to park the train/composition midway for several hours
-0019	Mail/parcel services	RU
+0019	Mail/parcel services	RU	
 0020	shunting	RU	actual activity of shunting
 0021	shunting service	RU	Request for shunting service (if offered by the IM or a third party)
 0022	Terminal service (terminal in the meaning of final destination)	RU	Request for services at the end of a train run (if offered by the IM or a third party)
-0023	Loco driver change	RU
+0023	Loco driver change	RU	
 0024	Loco driver break	RU	legal issue, e.g. to respect working law
 0025	Crew change	RU	different to loco driver change as for the change of the crew a platform will be needed
-0026	Custom and passport facilities	RU
-0027	Other stop reason (miscellaneous)	RU/IM
-0028	Boarding only	RU
-0029	Disembarking only	RU
-0030	Stop on request	RU
+0026	Custom and passport facilities	RU	
+0027	Other stop reason (miscellaneous)	RU/IM	
+0028	Boarding only	RU	
+0029	Disembarking only	RU	
+0030	Stop on request	RU	
 0031	Departure equals to arrival time	RU	If in some stations only arrival times are published, this activity code may used to indicate that the train cannot continue before the published arrival time in case of an early arrival.
 0032	Departure after disembarking	RU	mainly used at the end of train run, train may continue as soon as all passengers have disembarked
-0033	No waiting for connection	RU
+0033	No waiting for connection	RU	
 0034	Watering	RU	Indicates the IM that a track with water access will be needed.
 0035	Heating		Indicates the IM that a track with heating equipment will be needed.
-0036	Cleaning / disinfecting	RU
+0036	Cleaning / disinfecting	RU	
 0037	Treatment on plants and live animals	RU	Watering, Foddering, Milking, Spraying, Closing ventilation flaps, Opening ventilation flaps
 0038	Treatment of perishable goods	RU	Checking the temperature, Re-icing, Heating, Checking the proper functioning of the mechanical refrigeration equipment, Refuelling machinery, Switching machinery on or off
 0039	Administrative operations	RU	Weighing, Re-forwarding, Submission to phytosanitary inspections
-0040	Run Through (Passing Time)	IM
-0041	Photo run-by / Photo-stop
+0040	Run Through (Passing Time)	IM	
+0041	Photo run-by / Photo-stop		
 0042	Train Waiting		Waiting according to local rules
 0043	Train running with another train	RU	Where trains have been attached at a previous location on the schedule
 0044    Dependency between trains (rolling stock). The same wagon/train/trainset is used for the next train service.    RU
 0045    Dependency between trains (rolling stock). The same wagon/train/trainset is reused from the previous train service.     RU
 0046    Dependency between trains (passengers/goods). Passengers/goods change from this train to another.    RU
 0047    Dependency between trains (passengers/goods). Passengers/goods change from another train to this train.    RU
-0048	Linkage of OTNs belonging to the same transport if no TrainID is present
+0048	Linkage of OTNs belonging to the same transport if no TrainID is present			
 0049 	Loco battery charging
-
- 	National / company codes:
+			
+ 	National / company codes:	 	 
  	Examples:	 	Numbers 00 to 99 may be used by an IM for Network national purposes, just adding ISO country code
-CZ01	Stops from new stop opening day
-UK55	Stop shorter than 1/2 min
-IT72	Train report stop cancelled
+CZ01	Stops from new stop opening day		
+UK55	Stop shorter than 1/2 min		
+IT72	Train report stop cancelled		
 </xs:documentation>
     </xs:annotation>
     <xs:simpleType>
@@ -6672,7 +6672,7 @@ IT72	Train report stop cancelled
         <xs:enumeration value="9">
           <xs:annotation>
             <xs:documentation>Depot / Maintenance workshop.
-	Place for overhaul or maintenance of the rolling stock.
+	Place for overhaul or maintenance of the rolling stock.						
 						</xs:documentation>
           </xs:annotation>
         </xs:enumeration>
