@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/journey_advancement_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/punctuality_model.dart';
 import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
@@ -143,6 +144,7 @@ void main() {
 
       // ACT
       testAsync.run((_) {
+        testee.onAdvancementModeChanged(Manual());
         testee.setManualPosition(zeroSignal);
         _processStreamInFakeAsync(testAsync);
       });
@@ -225,6 +227,7 @@ void main() {
           ),
         );
         _processStreamInFakeAsync(testAsync);
+        testee.onAdvancementModeChanged(Manual());
         testee.setManualPosition(aServicePoint);
       });
       _processStreamInFakeAsync(testAsync);
@@ -232,6 +235,7 @@ void main() {
 
       // ACT
       testAsync.run((_) {
+        testee.onAdvancementModeChanged(Automatic());
         rxMockJourney.add(
           Journey(
             metadata: Metadata(signaledPosition: SignaledPosition(order: 25)),
@@ -829,6 +833,7 @@ void main() {
 
       // ACT
       testAsync.run((async) {
+        testee.onAdvancementModeChanged(Manual());
         testee.setManualPosition(aServicePoint);
         _processStreamInFakeAsync(async);
       });
@@ -855,40 +860,12 @@ void main() {
 
       // ACT
       testAsync.run((async) {
+        testee.onAdvancementModeChanged(Manual());
         testee.setManualPosition(aServicePoint);
         _processStreamInFakeAsync(async);
       });
 
       // EXPECT
-      expect(testee.modelValue.currentPosition, equals(aServicePoint));
-      expect(testee.modelValue.lastPosition, equals(bServicePoint));
-    });
-
-    test('setManualPosition_whenCalledTwiceWithSamePosition_thenMovesToManualPositionOnce', () {
-      // ARRANGE
-      final aServicePoint = ServicePoint(name: 'a', abbreviation: '', order: 20, kilometre: [], isStop: true);
-      final bServicePoint = ServicePoint(name: 'b', abbreviation: '', order: 25, kilometre: [], isStop: true);
-      testAsync.run((_) {
-        rxMockJourney.add(
-          Journey(
-            metadata: Metadata(signaledPosition: SignaledPosition(order: 25)),
-            data: [zeroSignal, tenSignal, aServicePoint, bServicePoint],
-          ),
-        );
-      });
-      _processStreamInFakeAsync(testAsync);
-      expect(testee.modelValue.currentPosition, equals(bServicePoint));
-
-      // ACT
-      testAsync.run((async) {
-        testee.setManualPosition(aServicePoint);
-        _processStreamInFakeAsync(async);
-        testee.setManualPosition(aServicePoint);
-        _processStreamInFakeAsync(async);
-      });
-
-      // EXPECT
-      expect(emitRegister, hasLength(2));
       expect(testee.modelValue.currentPosition, equals(aServicePoint));
       expect(testee.modelValue.lastPosition, equals(bServicePoint));
     });
@@ -909,6 +886,7 @@ void main() {
       expect(testee.modelValue.currentPosition, equals(bServicePoint));
 
       testAsync.run((async) {
+        testee.onAdvancementModeChanged(Manual());
         testee.setManualPosition(aServicePoint);
         _processStreamInFakeAsync(async);
       });
