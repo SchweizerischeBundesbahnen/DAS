@@ -2,7 +2,7 @@ import 'package:sfera/src/data/dto/network_specific_event_dto.dart';
 import 'package:sfera/src/data/dto/network_specific_parameter_dto.dart';
 
 class UxTestingNseDto extends NetworkSpecificEventDto {
-  static const String elementName = 'uxTesting';
+  static const String groupNameValue = 'uxTesting';
 
   UxTestingNseDto({super.type, super.attributes, super.children, super.value});
 

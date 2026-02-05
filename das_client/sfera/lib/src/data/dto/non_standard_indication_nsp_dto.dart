@@ -3,7 +3,7 @@ import 'package:sfera/src/data/dto/jp_context_information_nsp_dto.dart';
 import 'package:sfera/src/data/dto/train_run_type_nsp_dto.dart';
 
 class NonStandardIndicationNspDto extends JpContextInformationNspDto {
-  static const String elementName = 'nonStandardIndication';
+  static const String groupNameValue = 'nonStandardIndication';
 
   NonStandardIndicationNspDto({super.type, super.attributes, super.children, super.value});
 
