@@ -80,7 +80,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
         ColumnDefinition.gradientUphill.index: gradientUphillCell(context),
         ColumnDefinition.gradientDownhill.index: gradientDownhillCell(context),
       },
-      strikethrough: data.isDeleted,
+      markAsDeleted: data.isDeleted,
     );
   }
 

@@ -286,11 +286,11 @@ extension _TableBorderExtension on TableBorder {
 }
 
 class _FixedHeightRow extends StatelessWidget {
-  const _FixedHeightRow({required this.height, required this.children, this.strikethrough = false});
+  const _FixedHeightRow({required this.height, required this.children, this.markAsDeleted = false});
 
   final double height;
   final List<Widget> children;
-  final bool strikethrough;
+  final bool markAsDeleted;
 
   @override
   Widget build(BuildContext context) {
@@ -304,7 +304,7 @@ class _FixedHeightRow extends StatelessWidget {
             children: children,
           ),
         ),
-        if (strikethrough)
+        if (markAsDeleted)
           Positioned.fill(
             key: DASTable.strikethroughRowKey,
             child: DottedBorder(
@@ -400,7 +400,7 @@ class _CellRowState extends State<_CellRow> {
         rowKey: widget.row.key,
         child: _FixedHeightRow(
           height: widget.row.height,
-          strikethrough: widget.row.strikethrough,
+          markAsDeleted: widget.row.markAsDeleted,
           children: List.generate(widget.columns.length, (index) {
             final column = widget.columns[index];
             final cell = widget.row.cells[column.id] ?? DASTableCell.empty();
@@ -452,7 +452,7 @@ class _CellRowState extends State<_CellRow> {
       builder: (context) {
         final tableThemeData = DASTableTheme.of(context)?.data;
         final effectiveAlignment = cell.alignment ?? column.alignment;
-        final BoxBorder? cellBorder = !row.strikethrough
+        final BoxBorder? cellBorder = !row.markAsDeleted
             ? cell.border ?? column.border ?? tableThemeData?.tableBorder?.toBoxBorder(isLastCell: isLast)
             : null;
         return _TableCellWrapper(

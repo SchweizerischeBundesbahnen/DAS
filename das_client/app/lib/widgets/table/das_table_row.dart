@@ -48,7 +48,7 @@ class DASTableCellRow extends DASTableRow {
     this.draggableBackgroundBuilder,
     super.stickyLevel,
     super.identifier,
-    this.strikethrough = false,
+    this.markAsDeleted = false,
   });
 
   /// The background color for all cells of the row if not overridden by cell style.
@@ -67,7 +67,7 @@ class DASTableCellRow extends DASTableRow {
   final Widget Function(BuildContext, bool)? draggableBackgroundBuilder;
 
   /// Whether to draw a strikethrough line and border over the row.
-  final bool strikethrough;
+  final bool markAsDeleted;
 }
 
 class DASTableWidgetRow extends DASTableRow {
