@@ -6,7 +6,7 @@ class Stop2PassOrPass2StopNspDto extends GeneralJpInformationNspDto {
 
   Stop2PassOrPass2StopNspDto({super.type, super.attributes, super.children, super.value});
 
-  Iterable<XmlStop2PassOrPass2StopDto> get xmlStop2PassOrPass2Stop => children.whereType<XmlStop2PassOrPass2StopDto>();
+  XmlStop2PassOrPass2StopDto get xmlStop2PassOrPass2Stop => children.whereType<XmlStop2PassOrPass2StopDto>().first;
 
   @override
   bool validate() {
