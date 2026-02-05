@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
+                SP_ID="T36_1" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="2400" SP_Status="Valid">
+    <SP_Zone>
+        <IM_ID>1285</IM_ID>
+    </SP_Zone>
+    <SP_Points>
+        <TimingPoint TP_ID="Station1" location="100">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>00100</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+        <TimingPoint TP_ID="Station2" location="300">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>00300</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+        <TimingPoint TP_ID="Station3" location="500">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>00500</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+        <TimingPoint TP_ID="Station4" location="700">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>00700</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+        <TimingPoint TP_ID="Station5" location="900">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>00900</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+        <TimingPoint TP_ID="Station6" location="1100">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01100</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+        <TimingPoint TP_ID="Station7" location="1200">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01200</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+        <TimingPoint TP_ID="Station8" location="1300">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01300</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+        <TimingPoint TP_ID="Station9" location="1400">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01400</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+        <TimingPoint TP_ID="Station10" location="1500">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01500</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+        <TimingPoint TP_ID="Station11" location="1600">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01600</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+        <TimingPoint TP_ID="Station12" location="1700">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01700</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+        <TimingPoint TP_ID="Station13" location="1800">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01800</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+        <TimingPoint TP_ID="Station14" location="1900">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01900</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+        <TimingPoint TP_ID="Station15" location="2000">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>02000</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+        <TimingPoint TP_ID="Station16" location="2100">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>02100</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+        <TimingPoint TP_ID="Station17" location="2200">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>02200</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+        <TimingPoint TP_ID="Station18" location="2300">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>02300</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+        <TimingPoint TP_ID="Station19" location="2400">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>02400</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+        <Signal>
+            <Signal_ID signal_ID_Physical="A1" location="200"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="NS"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="B1" location="400"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="C1"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="C1" location="600"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="D1"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="D1" location="800"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="C2"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="E1" location="1050"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="E1"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="F1" location="1150"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="F1"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="G1" location="1250"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="G1"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="H1" location="1350"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="H1"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="I1" location="1450"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="I1"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="J1" location="1550"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="J1"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="K1" location="1750"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="K1"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="L1" location="1850"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="L1"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="M1" location="1950"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="M1"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="N1" location="2050"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="N1"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="O1" location="2150"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="O1"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="P1" location="2250"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="P1"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="Q1" location="2350"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="Q1"/>
+        </Signal>
+    </SP_Points>
+    <SP_Areas>
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="100" endLocation="100" TAF_TAP_location_abbreviation="1"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>00100</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Station 1</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="300" endLocation="300" TAF_TAP_location_abbreviation="2"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>00300</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Station 2</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="500" endLocation="500" TAF_TAP_location_abbreviation="3"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>00500</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Station 3</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="700" endLocation="700" TAF_TAP_location_abbreviation="4"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>00700</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Station 4</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="900" endLocation="900" TAF_TAP_location_abbreviation="5"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>00900</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Station 5</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="1100" endLocation="1100" TAF_TAP_location_abbreviation="6"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01100</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Station 6</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="1200" endLocation="1200" TAF_TAP_location_abbreviation="7"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01200</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Station 7</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="1300" endLocation="1300" TAF_TAP_location_abbreviation="8"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01300</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Station 8</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="1400" endLocation="1400" TAF_TAP_location_abbreviation="9"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01400</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Station 9</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="1500" endLocation="1500" TAF_TAP_location_abbreviation="10"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01500</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Station 10</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="1600" endLocation="1600" TAF_TAP_location_abbreviation="11"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01600</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Station 11</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="1700" endLocation="1700" TAF_TAP_location_abbreviation="12"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01700</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Station 12</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="1800" endLocation="1800" TAF_TAP_location_abbreviation="13"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01800</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Station 13</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="1900" endLocation="1900" TAF_TAP_location_abbreviation="14"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01900</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Station 14</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="2000" endLocation="2000" TAF_TAP_location_abbreviation="15"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>02000</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Station 15</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="2100" endLocation="2100" TAF_TAP_location_abbreviation="16"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>02100</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Station 16</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="2200" endLocation="2200" TAF_TAP_location_abbreviation="17"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>02200</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Station 17</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="2300" endLocation="2300" TAF_TAP_location_abbreviation="18"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>02300</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Station 18</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="2400" endLocation="2400" TAF_TAP_location_abbreviation="19"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>02400</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Station 19</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+
+    </SP_Areas>
+    <SP_ContextInformation>
+        <KilometreReferencePoint location="100">
+            <KM_Reference kmRef="1"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="200">
+            <KM_Reference kmRef="2"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="300">
+            <KM_Reference kmRef="3"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="400">
+            <KM_Reference kmRef="4"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="500">
+            <KM_Reference kmRef="5"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="600">
+            <KM_Reference kmRef="105"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="700">
+            <KM_Reference kmRef="103"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="800">
+            <KM_Reference kmRef="101"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="900">
+            <KM_Reference kmRef="100"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="1000">
+            <KM_Reference kmRef="99.3"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="1050">
+            <KM_Reference kmRef="98.3"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="1100">
+            <KM_Reference kmRef="97.3"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="1200">
+            <KM_Reference kmRef="96.3"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="1300">
+            <KM_Reference kmRef="95.3"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="1400">
+            <KM_Reference kmRef="94.3"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="1500">
+            <KM_Reference kmRef="93.3"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="1600">
+            <KM_Reference kmRef="92.3"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="1700">
+            <KM_Reference kmRef="91.3"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="1800">
+            <KM_Reference kmRef="90.3"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="1900">
+            <KM_Reference kmRef="89.3"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="2000">
+            <KM_Reference kmRef="88.3"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="2100">
+            <KM_Reference kmRef="87.3"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="2200">
+            <KM_Reference kmRef="86.3"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="2300">
+            <KM_Reference kmRef="85.3"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="2400">
+            <KM_Reference kmRef="84.3"/>
+        </KilometreReferencePoint>
+    </SP_ContextInformation>
+</SegmentProfile>
+
