@@ -5,7 +5,7 @@ import 'package:sfera/src/data/dto/speed_nsp_dto.dart';
 class ParallelAsrConstraintDto extends NetworkSpecificConstraintDto {
   static const String groupNameValue = 'parallel_ASR';
 
-  ParallelAsrConstraintDto({super.type = groupNameValue, super.attributes, super.children, super.value});
+  ParallelAsrConstraintDto({super.type, super.attributes, super.children, super.value});
 
   IdNetworkSpecificParameterDto get idNsp => parameters.whereType<IdNetworkSpecificParameterDto>().first;
 
