@@ -8,6 +8,8 @@ class Signal extends JourneyPoint {
     required super.kilometre,
     this.visualIdentifier,
     this.functions = const [],
+    super.lastModificationDate,
+    super.lastModificationType,
   }) : super(dataType: .signal);
 
   final List<SignalFunction> functions;

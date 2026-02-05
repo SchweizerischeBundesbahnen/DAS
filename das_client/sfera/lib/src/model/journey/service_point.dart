@@ -27,6 +27,8 @@ class ServicePoint extends JourneyPoint {
     this.localRegulationSections = const [],
     this.departureAuthorization,
     this.locationCode,
+    super.lastModificationDate,
+    super.lastModificationType,
   }) : super(dataType: .servicePoint);
 
   final String name;
