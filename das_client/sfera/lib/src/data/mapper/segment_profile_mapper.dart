@@ -5,6 +5,7 @@ import 'package:logging/logging.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/dto/departure_auth_nsp_dto.dart';
 import 'package:sfera/src/data/dto/enums/length_type_dto.dart';
+import 'package:sfera/src/data/dto/enums/modification_type_dto.dart';
 import 'package:sfera/src/data/dto/enums/xml_enum.dart';
 import 'package:sfera/src/data/dto/foot_note_dto.dart';
 import 'package:sfera/src/data/dto/local_regulation_content_nsp_dto.dart';
@@ -97,6 +98,10 @@ class SegmentProfileMapper {
 
       final newLineSpeeds = segmentProfile.points?.newLineSpeedsNsp ?? [];
       for (final newLineSpeed in newLineSpeeds) {
+        if (newLineSpeed.lastModificationType == ModificationTypeDto.deleted) {
+          continue;
+        }
+
         final velocities = newLineSpeed.xmlNewLineSpeed.element.speeds?.velocities;
         final speed = SpeedMapper.fromVelocities(velocities);
         if (speed != null) {
@@ -153,6 +158,8 @@ class SegmentProfileMapper {
           properties: _parseStationProperties(tafTapLocation.property?.xmlStationProperty.element.properties),
           localRegulationSections: _parseLocalRegulationSegments(tafTapLocation.localRegulations),
           locationCode: tafTapLocation.locationIdent.locationCode,
+          lastModificationDate: tafTapLocation.lastModificationDate,
+          lastModificationType: tafTapLocation.lastModificationType?.modificationType,
         ),
       );
     }
@@ -168,6 +175,8 @@ class SegmentProfileMapper {
         functions: signal.functions.map((function) => SignalFunction.from(function.value!)).toList(),
         order: calculateOrder(mapperData.segmentIndex, signal.id.location),
         kilometre: mapperData.kilometreMap[signal.id.location] ?? [],
+        lastModificationDate: signal.lastModificationDate,
+        lastModificationType: signal.lastModificationType?.modificationType,
       );
     });
   }
@@ -195,6 +204,8 @@ class SegmentProfileMapper {
                 : false,
             order: calculateOrder(mapperData.segmentIndex, currentLimitationChange.location),
             kilometre: mapperData.kilometreMap[currentLimitationChange.location]!,
+            lastModificationDate: protectionSectionNsp?.lastModificationDate,
+            lastModificationType: protectionSectionNsp?.lastModificationType?.modificationType,
           ),
         );
       }
@@ -206,7 +217,7 @@ class SegmentProfileMapper {
     List<TafTapLocationDto> allLocations,
     TafTapLocationDto tafTapLocation,
   ) {
-    for (final tafTapLocationNsp in tafTapLocation.nsp) {
+    for (final tafTapLocationNsp in tafTapLocation.nsps) {
       if (tafTapLocationNsp.groupName == _bracketStationNspName) {
         final mainStationNsp = tafTapLocationNsp.parameters.withName(_bracketStationMainStationNspName);
         final textNsp = tafTapLocationNsp.parameters.withName(_bracketStationTextNspName);
@@ -246,6 +257,8 @@ class SegmentProfileMapper {
             text: xml?.text,
             comment: xml?.comment,
             localSpeeds: SpeedMapper.fromVelocities(xml?.speeds?.velocities),
+            lastModificationDate: nsp.lastModificationDate,
+            lastModificationType: nsp.lastModificationType?.modificationType,
           );
         })
         .sortedBy((p) => p.order)
@@ -320,6 +333,8 @@ class SegmentProfileMapper {
         curveType: begin.curveType,
         text: begin.text,
         comment: begin.comment,
+        lastModificationDate: begin.lastModificationDate ?? end.lastModificationDate,
+        lastModificationType: begin.lastModificationType ?? end.lastModificationType,
       );
     }).toList();
   }
@@ -400,6 +415,8 @@ class SegmentProfileMapper {
         text: newLineSpeed.xmlNewLineSpeed.element.text,
         order: calculateOrder(mapperData.segmentIndex, newLineSpeed.location),
         kilometre: mapperData.kilometreMap[newLineSpeed.location] ?? [],
+        lastModificationDate: newLineSpeed.lastModificationDate,
+        lastModificationType: newLineSpeed.lastModificationType?.modificationType,
       );
     }).toList();
   }

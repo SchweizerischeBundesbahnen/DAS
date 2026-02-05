@@ -37,6 +37,11 @@ class Visible extends PunctualityModel {
 
   @override
   int get hashCode => Object.hash(runtimeType, delay);
+
+  @override
+  String toString() {
+    return 'Visible{delay: $delay}';
+  }
 }
 
 class Stale extends PunctualityModel {
@@ -49,6 +54,11 @@ class Stale extends PunctualityModel {
 
   @override
   int get hashCode => Object.hash(runtimeType, delay);
+
+  @override
+  String toString() {
+    return 'Stale{delay: $delay}';
+  }
 }
 
 class Hidden extends PunctualityModel {
@@ -59,6 +69,11 @@ class Hidden extends PunctualityModel {
 
   @override
   int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'Hidden{}';
+  }
 }
 
 extension _DelayExtension on Delay? {

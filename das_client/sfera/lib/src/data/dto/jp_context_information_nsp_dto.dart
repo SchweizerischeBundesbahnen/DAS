@@ -16,11 +16,11 @@ class JpContextInformationNspDto extends NspDto {
     String? value,
   }) {
     final groupName = children?.where((it) => it.type == NspDto.groupNameElement).firstOrNull;
-    if (groupName?.value == OperationalIndicationNspDto.elementName) {
+    if (groupName?.value == OperationalIndicationNspDto.groupNameValue) {
       return OperationalIndicationNspDto(attributes: attributes, children: children, value: value);
-    } else if (groupName?.value == KilometreReferencePointNspDto.elementName) {
+    } else if (groupName?.value == KilometreReferencePointNspDto.groupNameValue) {
       return KilometreReferencePointNspDto(attributes: attributes, children: children, value: value);
-    } else if (groupName?.value == NonStandardIndicationNspDto.elementName) {
+    } else if (groupName?.value == NonStandardIndicationNspDto.groupNameValue) {
       return NonStandardIndicationNspDto(attributes: attributes, children: children, value: value);
     }
     return JpContextInformationNspDto(attributes: attributes, children: children, value: value);

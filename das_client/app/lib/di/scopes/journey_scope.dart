@@ -94,11 +94,12 @@ extension JourneyScopeExtension on GetIt {
   void registerJourneyTableAdvancementViewModel() {
     final journeyTableVM = DI.get<JourneyTableViewModel>();
     final settingsVM = DI.get<JourneySettingsViewModel>();
+    final positionVM = DI.get<JourneyPositionViewModel>();
     final vm = JourneyTableAdvancementViewModel(
       journeyTableViewModel: journeyTableVM,
-      positionStream: DI.get<JourneyPositionViewModel>().model,
+      positionStream: positionVM.model,
       scrollController: journeyTableVM.journeyTableScrollController,
-      onAdvancementModeChanged: journeyTableVM.updateZenViewMode,
+      onAdvancementModeChanged: [journeyTableVM.updateZenViewMode, positionVM.onAdvancementModeChanged],
     );
     settingsVM.registerOnBreakSeriesUpdated(vm.scrollToCurrentPositionIfNotPaused);
     registerSingleton<JourneyTableAdvancementViewModel>(
