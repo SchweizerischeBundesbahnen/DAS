@@ -8,6 +8,7 @@ class ServicePoint extends JourneyPoint {
   const ServicePoint({
     required this.name,
     required this.abbreviation,
+    required this.locationCode,
     required super.order,
     required super.kilometre,
     super.localSpeeds,
@@ -26,7 +27,6 @@ class ServicePoint extends JourneyPoint {
     this.properties = const [],
     this.localRegulationSections = const [],
     this.departureAuthorization,
-    this.locationCode,
     super.lastModificationDate,
     super.lastModificationType,
   }) : super(dataType: .servicePoint);
@@ -48,7 +48,7 @@ class ServicePoint extends JourneyPoint {
   final List<StationProperty> properties;
   final List<LocalRegulationSection> localRegulationSections;
   final DepartureAuthorization? departureAuthorization;
-  final String? locationCode;
+  final String locationCode;
 
   List<TrainSeriesSpeed> relevantGraduatedSpeedInfo(BreakSeries? breakSeries) {
     final speedInfo = graduatedSpeedInfo ?? [];

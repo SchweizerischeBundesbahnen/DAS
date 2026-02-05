@@ -539,6 +539,7 @@ void main() {
       ServicePoint(
         name: 'abc',
         abbreviation: 'abc',
+        locationCode: '',
         order: 200,
         kilometre: [2.0],
         lastModificationDate: DateTime.now().add(Duration(days: -(JourneyPoint.showModificationDays + 1))),

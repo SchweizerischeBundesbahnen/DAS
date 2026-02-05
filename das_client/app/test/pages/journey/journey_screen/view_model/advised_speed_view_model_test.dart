@@ -37,13 +37,13 @@ void main() {
       metadata: Metadata(),
       data: [
         Signal(order: 9, kilometre: []),
-        ServicePoint(name: 'B', abbreviation: '', order: 10, kilometre: []),
+        ServicePoint(name: 'B', abbreviation: '', locationCode: '', order: 10, kilometre: []),
         Signal(order: 11, kilometre: []),
         Signal(order: 19, kilometre: []),
-        ServicePoint(name: 'C', abbreviation: '', order: 20, kilometre: []),
+        ServicePoint(name: 'C', abbreviation: '', locationCode: '', order: 20, kilometre: []),
         Signal(order: 21, kilometre: []),
         Signal(order: 29, kilometre: []),
-        ServicePoint(name: 'D', abbreviation: '', order: 30, kilometre: []),
+        ServicePoint(name: 'D', abbreviation: '', locationCode: '', order: 30, kilometre: []),
         Signal(order: 31, kilometre: []),
       ],
     );
