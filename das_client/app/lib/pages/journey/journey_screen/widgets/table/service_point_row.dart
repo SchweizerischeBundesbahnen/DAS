@@ -1,8 +1,8 @@
 import 'dart:math';
 
+import 'package:app/extension/short_term_change_x.dart';
 import 'package:app/extension/station_sign_extension.dart';
 import 'package:app/i18n/i18n.dart';
-import 'package:app/pages/journey/journey_screen/detail_modal/detail_modal_view_model.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/service_point_modal/service_point_modal_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/arrival_departure_time_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
@@ -10,6 +10,7 @@ import 'package:app/pages/journey/journey_screen/view_model/journey_table_advanc
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cell_row_builder.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_cell_body.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/cells/service_point_information_cell_title.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/show_speed_behaviour.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/time_cell_body.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/track_equipment_cell_body.dart';
@@ -115,7 +116,13 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
         mainAxisSize: .min,
         crossAxisAlignment: .start,
         children: [
-          _informationCellTitle(context),
+          ServicePointInformationCellTitle(
+            name: data.betweenBrackets ? '(${data.name})' : data.name,
+            foregroundColor: _isNextStop && highlightNextStop ? SBBColors.white : null,
+            isStation: data.isStation,
+            trackGroup: data.trackGroup,
+            shortTermChange: metadata.shortTermChanges.appliesToOrder(data.order).getHighestPriority,
+          ),
           ..._stationProperties(context),
         ],
       ),
@@ -280,46 +287,6 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
   void _openGraduatedSpeedDetails(BuildContext context) {
     final viewModel = context.read<ServicePointModalViewModel>();
     viewModel.open(context, tab: .graduatedSpeeds, servicePoint: data);
-  }
-
-  Stream<bool> isModalOpenStream(BuildContext context) => context.read<DetailModalViewModel>().isModalOpen;
-
-  bool isModalOpenValue(BuildContext context) => context.read<DetailModalViewModel>().isModalOpenValue;
-
-  Widget _informationCellTitle(BuildContext context) {
-    return StreamBuilder<bool>(
-      stream: isModalOpenStream(context),
-      initialData: isModalOpenValue(context),
-      builder: (context, asyncSnapshot) {
-        final isModalOpen = asyncSnapshot.requireData;
-        final servicePointName = data.betweenBrackets ? '(${data.name})' : data.name;
-        final color = _isNextStop && highlightNextStop ? SBBColors.white : null;
-        return DefaultTextStyle.merge(
-          style: data.isStation
-              ? sbbTextStyle.boldStyle.xLarge.copyWith(color: color)
-              : sbbTextStyle.lightStyle.xLarge.italic.copyWith(color: color),
-          child: AnimatedSwitcher(
-            duration: DASAnimation.longDuration,
-            child: Row(
-              mainAxisAlignment: isModalOpen ? .spaceBetween : .start,
-              children: [
-                Flexible(
-                  child: Text(
-                    servicePointName,
-                    textAlign: TextAlign.start,
-                    overflow: .ellipsis,
-                  ),
-                ),
-                if (data.trackGroup != null) ...[
-                  if (!isModalOpen) SizedBox(width: SBBSpacing.medium),
-                  Text(data.trackGroup!),
-                ],
-              ],
-            ),
-          ),
-        );
-      },
-    );
   }
 
   List<Widget> _stationProperties(BuildContext context) {
