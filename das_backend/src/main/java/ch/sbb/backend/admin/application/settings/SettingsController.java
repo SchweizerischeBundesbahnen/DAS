@@ -1,5 +1,6 @@
 package ch.sbb.backend.admin.application.settings;
 
+import ch.sbb.backend.admin.application.settings.model.response.AppVersion;
 import ch.sbb.backend.admin.application.settings.model.response.Logging;
 import ch.sbb.backend.admin.application.settings.model.response.Preload;
 import ch.sbb.backend.admin.application.settings.model.response.RuFeature;
@@ -7,11 +8,11 @@ import ch.sbb.backend.admin.application.settings.model.response.Settings;
 import ch.sbb.backend.admin.application.settings.model.response.SettingsResponse;
 import ch.sbb.backend.admin.domain.settings.RuFeatureService;
 import ch.sbb.backend.common.ApiDocumentation;
+import ch.sbb.backend.common.ApiErrorResponses;
 import ch.sbb.backend.common.ApiParametersDefault;
 import ch.sbb.backend.common.ApiParametersDefault.ParamRequestId;
-import ch.sbb.backend.common.ResponseEntityFactory;
-import ch.sbb.backend.common.ApiErrorResponses;
 import ch.sbb.backend.common.Response;
+import ch.sbb.backend.common.ResponseEntityFactory;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -55,8 +56,9 @@ public class SettingsController {
 
         Logging logging = configService.getLogging();
         Preload preload = configService.getPreload();
+        AppVersion appVersion = configService.getAppVersion();
 
-        return ResponseEntityFactory.createOkResponse(new SettingsResponse(List.of(new Settings(allFeatures, logging, preload))),
+        return ResponseEntityFactory.createOkResponse(new SettingsResponse(List.of(new Settings(allFeatures, logging, preload, appVersion))),
             null,
             requestId);
     }
