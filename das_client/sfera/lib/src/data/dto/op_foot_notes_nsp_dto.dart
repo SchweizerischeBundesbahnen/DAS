@@ -2,7 +2,7 @@ import 'package:sfera/src/data/dto/taf_tap_location_nsp_dto.dart';
 import 'package:sfera/src/data/dto/xml_op_foot_notes_dto.dart';
 
 class OpFootNotesNspDto extends TafTapLocationNspDto {
-  static const String elementName = 'oPFootNotes';
+  static const String groupNameValue = 'oPFootNotes';
 
   OpFootNotesNspDto({super.type, super.attributes, super.children, super.value});
 
