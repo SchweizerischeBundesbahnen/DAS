@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.36.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.35.0...das_client-v0.36.0) (2026-02-05)
+
+
+### Features
+
+* visualize changes (update & deletes) of journey table ([#241](https://github.com/SchweizerischeBundesbahnen/DAS/issues/241)) ([#1695](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1695)) ([53b668a](https://github.com/SchweizerischeBundesbahnen/DAS/commit/53b668adbf155406c22658255cbeedc9c4af06d1))
+
+
+### Bug Fixes
+
+* chevron jumping when püa changes ([#1696](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1696)) ([6afe724](https://github.com/SchweizerischeBundesbahnen/DAS/commit/6afe7249b70641bceca95474486a7a4d4efb0ed0))
+
 ## [0.35.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.34.0...das_client-v0.35.0) (2026-02-03)
 
 
