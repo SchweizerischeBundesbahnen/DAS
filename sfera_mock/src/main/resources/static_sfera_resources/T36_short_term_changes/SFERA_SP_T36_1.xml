@@ -266,7 +266,7 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>01200</teltsi_LocationPrimaryCode>
-                <teltsi_PrimaryLocationName>Station 7</teltsi_PrimaryLocationName>
+                <teltsi_PrimaryLocationName>StationWithAlongName 7</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
         </TAF_TAP_Location>
 

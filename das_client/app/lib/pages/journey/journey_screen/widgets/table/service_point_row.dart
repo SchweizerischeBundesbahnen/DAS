@@ -104,6 +104,11 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
 
   @override
   DASTableCell informationCell(BuildContext context) {
+    ShortTermChange? shortTermChange = metadata.shortTermChanges.appliesToOrder(data.order).getHighestPriority;
+    if (shortTermChange != null) {
+      shortTermChange = shortTermChange.startData == data ? shortTermChange : null;
+    }
+
     return DASTableCell(
       onTap: () {
         if (shouldOpenDetailModalOnTap) {
@@ -121,7 +126,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
             foregroundColor: _isNextStop && highlightNextStop ? SBBColors.white : null,
             isStation: data.isStation,
             trackGroup: data.trackGroup,
-            shortTermChange: metadata.shortTermChanges.appliesToOrder(data.order).getHighestPriority,
+            shortTermChange: shortTermChange,
           ),
           ..._stationProperties(context),
         ],
