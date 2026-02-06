@@ -239,7 +239,7 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>00700</teltsi_LocationPrimaryCode>
-                <teltsi_PrimaryLocationName>Station 4</teltsi_PrimaryLocationName>
+                <teltsi_PrimaryLocationName>ExceptionalStopStation 4</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
         </TAF_TAP_Location>
 
@@ -266,7 +266,7 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>01200</teltsi_LocationPrimaryCode>
-                <teltsi_PrimaryLocationName>StationWithAlongName 7</teltsi_PrimaryLocationName>
+                <teltsi_PrimaryLocationName>SkippedStoppingStation 7</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
         </TAF_TAP_Location>
 
@@ -293,7 +293,7 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>01500</teltsi_LocationPrimaryCode>
-                <teltsi_PrimaryLocationName>Station 10</teltsi_PrimaryLocationName>
+                <teltsi_PrimaryLocationName>BeginOfReroutingStation 10</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
         </TAF_TAP_Location>
 
@@ -338,7 +338,7 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>02000</teltsi_LocationPrimaryCode>
-                <teltsi_PrimaryLocationName>Station 15</teltsi_PrimaryLocationName>
+                <teltsi_PrimaryLocationName>EndDestinationChangeStation 15</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
         </TAF_TAP_Location>
 

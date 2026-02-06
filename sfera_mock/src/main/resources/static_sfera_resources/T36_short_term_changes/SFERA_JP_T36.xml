@@ -44,7 +44,7 @@
                 <TP_ID_Reference TP_ID="Station6"/>
             </TimingPointReference>
         </TimingPointConstraints>
-        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Station7"/>
             </TimingPointReference>
