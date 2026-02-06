@@ -2,8 +2,24 @@ spring:
   docker:
     compose:
       file: ./das_backend/compose.yaml
+  cloud:
+    vault:
+      # mit vault token
+      #      token: ${VAULT_TOKEN}
+      # oder mit approle
+      app-role:
+        role-id: ${VAULT_ROLE_ID}
+        secret-id: ${VAULT_SECRET_ID}
+      authentication: approle
+  # for dynamic database secrets
+  #      database:
+  #        enabled: true
+  #        role: dso-bps_driver-advisory-system_driver_advisory_system
+  #        backend: db
+  #        username-property: spring.datasource.username
+  #        password-property: spring.datasource.password
   config:
-    import: optional:file:./das_backend/.env[.properties]
+    import: optional:file:./das_backend/.env[.properties], vault://
 zis:
   clean-up:
     cron: '-'
