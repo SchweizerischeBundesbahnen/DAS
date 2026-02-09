@@ -31,6 +31,7 @@ class MockAuthenticatedScope extends AuthenticatedScope {
     getIt.registerSettingsRepository();
     _registerMockRuFeaturesProvider();
     _registerMockFormationRepository();
+    _registerMockPreloadRepository();
 
     return getIt.allReady();
   }
@@ -40,6 +41,10 @@ class MockAuthenticatedScope extends AuthenticatedScope {
   }
 
   void _registerMockFormationRepository() {
+    getIt.registerSingleton<FormationRepository>(MockFormationRepository());
+  }
+
+  void _registerMockPreloadRepository() {
     getIt.registerSingleton<FormationRepository>(MockFormationRepository());
   }
 }

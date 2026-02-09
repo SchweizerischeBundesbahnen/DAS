@@ -10,6 +10,7 @@ import 'package:http_x/component.dart';
 import 'package:logger/component.dart';
 import 'package:logging/logging.dart';
 import 'package:mqtt/component.dart';
+import 'package:preload/component.dart';
 import 'package:settings/component.dart';
 import 'package:sfera/component.dart';
 
@@ -35,6 +36,7 @@ class AuthenticatedScope extends DIScope {
     getIt.registerSettingsRepository();
     getIt.registerRuFeatureProvider();
     getIt.registerFormationRepository();
+    getIt.registerPreloadRepository();
 
     await getIt.allReady();
   }
@@ -138,9 +140,19 @@ extension AuthenticatedScopeExtension on GetIt {
     registerLazySingleton<SferaLocalRepo>(factoryFunc);
   }
 
+  void registerPreloadRepository() {
+    registerSingleton<PreloadRepository>(PreloadComponent.createPreloadRepository());
+  }
+
   void registerSettingsRepository() {
     final flavor = DI.get<Flavor>();
-    final configRepository = SettingsComponent.createRepository(baseUrl: flavor.backendUrl, client: DI.get());
+    final configRepository = SettingsComponent.createRepository(
+      baseUrl: flavor.backendUrl,
+      client: DI.get(),
+      onAwsCredentialsChanged: (credentials) {
+        DI.get<PreloadRepository>().updateConfiguration(credentials);
+      },
+    );
     registerSingleton<SettingsRepository>(configRepository);
     registerSingleton<LogEndpoint>(configRepository);
   }
