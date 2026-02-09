@@ -12,7 +12,7 @@ public record Settings(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     Preload preload,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-    AppVersion appVersion
+    CurrentAppVersion currentAppVersion
 ) {
 
 }

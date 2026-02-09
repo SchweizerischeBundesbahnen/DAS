@@ -1,6 +1,6 @@
 package ch.sbb.backend.admin.application.settings;
 
-import ch.sbb.backend.admin.application.settings.model.response.AppVersion;
+import ch.sbb.backend.admin.application.settings.model.response.CurrentAppVersion;
 import ch.sbb.backend.admin.application.settings.model.response.Logging;
 import ch.sbb.backend.admin.application.settings.model.response.Preload;
 import ch.sbb.backend.admin.application.settings.model.response.RuFeature;
@@ -36,10 +36,12 @@ public class SettingsController {
     private final RuFeatureService ruFeatureService;
 
     private final ConfigService configService;
+    private final SettingsService settingsService;
 
-    public SettingsController(RuFeatureService ruFeatureService, ConfigService configService) {
+    public SettingsController(RuFeatureService ruFeatureService, ConfigService configService, SettingsService settingsService) {
         this.ruFeatureService = ruFeatureService;
         this.configService = configService;
+        this.settingsService = settingsService;
     }
 
     @GetMapping(API_SETTINGS)
@@ -48,7 +50,10 @@ public class SettingsController {
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = SettingsResponse.class)))
     @ApiErrorResponses
     public ResponseEntity<? extends Response> getSettings(
-        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId
+        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
+
+        //todo: implement a semantic pattern
+        @RequestHeader(value = "X-App-Version", required = false) String xAppVersion
     ) {
         List<RuFeature> allFeatures = ruFeatureService.getAll().stream()
             .map(RuFeature::new)
@@ -56,9 +61,9 @@ public class SettingsController {
 
         Logging logging = configService.getLogging();
         Preload preload = configService.getPreload();
-        AppVersion appVersion = configService.getAppVersion();
+        CurrentAppVersion currentAppVersion = settingsService.getAppVersion();
 
-        return ResponseEntityFactory.createOkResponse(new SettingsResponse(List.of(new Settings(allFeatures, logging, preload, appVersion))),
+        return ResponseEntityFactory.createOkResponse(new SettingsResponse(List.of(new Settings(allFeatures, logging, preload, currentAppVersion))),
             null,
             requestId);
     }
