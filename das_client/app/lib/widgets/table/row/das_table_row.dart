@@ -1,37 +1,30 @@
 import 'package:app/widgets/stickyheader/sticky_level.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
+import 'package:app/widgets/table/row/das_table_row_decoration.dart';
 import 'package:flutter/material.dart';
 
-/// Interface for a class that builds [DASTableRow]
-abstract class DASTableRowBuilder<T> {
-  static final Map<int, GlobalKey> _tableRowKeys = {};
-
-  static GlobalKey _getRowKey(int identifier) {
-    if (!_tableRowKeys.containsKey(identifier)) {
-      _tableRowKeys[identifier] = GlobalKey();
-    }
-    return _tableRowKeys[identifier]!;
-  }
-
-  static void clearRowKeys() => _tableRowKeys.clear();
-
-  DASTableRowBuilder({
+/// Represents a row in the [DASTable].
+sealed class DASTableRow {
+  const DASTableRow({
     required this.height,
-    required this.data,
+    required this.key,
     required this.rowIndex,
     this.stickyLevel = .none,
     this.identifier,
-    GlobalKey? key,
-  }) : key = key ?? _getRowKey(data.hashCode ^ rowIndex);
+    this.decoration,
+  });
 
-  DASTableRow build(BuildContext context);
+  final GlobalKey key;
 
   final double height;
+
   final StickyLevel stickyLevel;
-  final T data;
-  final int rowIndex;
+
   final String? identifier;
-  final GlobalKey key;
+
+  final int rowIndex;
+
+  final DASTableRowDecoration? decoration;
 }
 
 /// Represents a row in the [DASTable] containing cells.
@@ -42,7 +35,7 @@ class DASTableCellRow extends DASTableRow {
     required super.height,
     required super.key,
     required super.rowIndex,
-    this.color,
+    super.decoration,
     this.onTap,
     this.onStartToEndDragReached,
     this.draggableBackgroundBuilder,
@@ -50,9 +43,6 @@ class DASTableCellRow extends DASTableRow {
     super.identifier,
     this.markAsDeleted = false,
   });
-
-  /// The background color for all cells of the row if not overridden by cell style.
-  final Color? color;
 
   final Map<int, DASTableCell> cells;
 
@@ -78,27 +68,8 @@ class DASTableWidgetRow extends DASTableRow {
     required super.rowIndex,
     super.stickyLevel,
     super.identifier,
+    super.decoration,
   });
 
   final Widget widget;
-}
-
-abstract class DASTableRow {
-  const DASTableRow({
-    required this.height,
-    required this.key,
-    required this.rowIndex,
-    this.stickyLevel = .none,
-    this.identifier,
-  });
-
-  final double height;
-
-  final StickyLevel stickyLevel;
-
-  final String? identifier;
-
-  final int rowIndex;
-
-  final GlobalKey key;
 }

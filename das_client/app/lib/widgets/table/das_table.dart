@@ -475,7 +475,8 @@ class _CellRowState extends State<_CellRow> {
                 decoration: BoxDecoration(
                   borderRadius: cell.decoration?.borderRadius,
                   border: effectiveBorder,
-                  color: cell.decoration?.color ?? row.color ?? column.color ?? tableThemeData?.dataRowColor,
+                  color:
+                      cell.decoration?.color ?? row.decoration?.color ?? column.color ?? tableThemeData?.dataRowColor,
                 ),
                 padding: _adjustPaddingToBorder(
                   cell.padding ?? column.padding ?? .all(SBBSpacing.xSmall),

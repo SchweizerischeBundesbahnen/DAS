@@ -18,6 +18,7 @@ import 'package:app/widgets/speed_display.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:app/widgets/table/das_table_theme.dart';
 import 'package:app/widgets/table/row/das_table_row.dart';
+import 'package:app/widgets/table/row/das_table_row_builder.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -34,9 +35,9 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     super.height = rowHeight,
     super.stickyLevel,
     super.key,
+    super.decoration,
     this.config = const JourneyConfig(),
     this.defaultAlignment = .bottomCenter,
-    this.rowColor,
     this.onTap,
     this.onStartToEndDragReached,
     this.draggableBackgroundBuilder,
@@ -44,7 +45,6 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
   });
 
   final Alignment defaultAlignment;
-  final Color? rowColor;
   final Metadata metadata;
   final JourneyPositionModel journeyPosition;
   final JourneyConfig config;
@@ -58,7 +58,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     return DASTableCellRow(
       key: key,
       height: height,
-      color: rowColor,
+      decoration: decoration,
       onTap: onTap,
       onStartToEndDragReached: onStartToEndDragReached,
       draggableBackgroundBuilder: draggableBackgroundBuilder,

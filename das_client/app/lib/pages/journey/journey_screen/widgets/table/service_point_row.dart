@@ -22,6 +22,7 @@ import 'package:app/widgets/dot_indicator.dart';
 import 'package:app/widgets/speed_display.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:app/widgets/table/das_table_theme.dart';
+import 'package:app/widgets/table/row/das_table_row_decoration.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -58,7 +59,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     super.key,
     Color? rowColor,
   }) : super(
-         rowColor: rowColor ?? _resolveRowColor(context, journeyPosition, data),
+         decoration: DASTableRowDecoration(color: rowColor ?? _resolveRowColor(context, journeyPosition, data)),
          stickyLevel: .first,
          height: calculateHeight(data, config.settings.resolvedBreakSeries(metadata)),
          onStartToEndDragReached: journeyPosition.currentPosition != data
