@@ -48,6 +48,7 @@ android {
         versionName flutterVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders += [
+                'deepLinkHost'   : 'driveradvisorysystem.sbb.ch',
                 'waraPackageName': 'ch.sbb.tms.iad.shas_mobile'
         ]
     }
@@ -59,20 +60,23 @@ android {
             dimension 'env'
             applicationIdSuffix '.dev'
             manifestPlaceholders += [
-                    'appAuthRedirectScheme': 'ch.sbb.das'
+                    'appAuthRedirectScheme': 'ch.sbb.das',
+                    'deepLinkPathPrefix'   : '/dev'
             ]
         }
         inte {
             dimension 'env'
             applicationIdSuffix '.inte'
             manifestPlaceholders += [
-                    'appAuthRedirectScheme': 'ch.sbb.das'
+                    'appAuthRedirectScheme': 'ch.sbb.das',
+                    'deepLinkPathPrefix'   : '/inte'
             ]
         }
         prod {
             dimension 'env'
             manifestPlaceholders += [
-                    'appAuthRedirectScheme': 'ch.sbb.das'
+                    'appAuthRedirectScheme': 'ch.sbb.das',
+                    'deepLinkPathPrefix'   : '/prod'
             ]
         }
     }
