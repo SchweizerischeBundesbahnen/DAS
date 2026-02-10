@@ -15,27 +15,69 @@ class DASTableCell {
   const DASTableCell({
     required this.child,
     this.onTap,
-    this.border,
-    this.color,
+    this.decoration,
     this.padding,
     this.alignment,
     this.clipBehavior = Clip.hardEdge,
   });
 
-  const DASTableCell.empty({Color? color, VoidCallback? onTap, EdgeInsets? padding, Clip clipBehaviour = Clip.hardEdge})
-    : this(
-        child: emptyBuilder,
-        color: color,
-        onTap: onTap,
-      );
+  const DASTableCell.empty({
+    VoidCallback? onTap,
+    EdgeInsets? padding,
+    DASTableCellDecoration? decoration,
+    Clip clipBehaviour = Clip.hardEdge,
+  }) : this(child: emptyBuilder, onTap: onTap, decoration: decoration);
 
-  final BoxBorder? border;
+  final DASTableCellDecoration? decoration;
   final Widget child;
   final VoidCallback? onTap;
-  final Color? color;
   final EdgeInsets? padding;
   final Clip clipBehavior;
 
   /// If provided, wraps child in Align widget. Can also be defined in [DASTableColumn]
   final Alignment? alignment;
+
+  DASTableCell copyWith({
+    Widget? child,
+    VoidCallback? onTap,
+    DASTableCellDecoration? decoration,
+    EdgeInsets? padding,
+    Alignment? alignment,
+    Clip? clipBehavior,
+  }) {
+    return DASTableCell(
+      child: child ?? this.child,
+      onTap: onTap ?? this.onTap,
+      decoration: decoration ?? this.decoration,
+      padding: padding ?? this.padding,
+      alignment: alignment ?? this.alignment,
+      clipBehavior: clipBehavior ?? this.clipBehavior,
+    );
+  }
+}
+
+/// Data class for holding the decoration fields of a [DASTableCell].
+@immutable
+class DASTableCellDecoration {
+  const DASTableCellDecoration({
+    this.color,
+    this.border,
+    this.borderRadius,
+  });
+
+  final Color? color;
+  final BorderRadius? borderRadius;
+  final BoxBorder? border;
+
+  DASTableCellDecoration copyWith({
+    BoxBorder? border,
+    BorderRadius? borderRadius,
+    Color? color,
+  }) {
+    return DASTableCellDecoration(
+      border: border ?? this.border,
+      borderRadius: borderRadius ?? this.borderRadius,
+      color: color ?? this.color,
+    );
+  }
 }

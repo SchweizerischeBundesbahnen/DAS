@@ -86,14 +86,14 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
 
   DASTableCell kilometreCell(BuildContext context) {
     if (data.kilometre.isEmpty) {
-      return DASTableCell.empty(color: specialCellColor);
+      return DASTableCell.empty(decoration: DASTableCellDecoration(color: specialCellColor));
     }
 
     final textColor = _isNextStop && specialCellColor == null ? SBBColors.white : null;
     final defaultTextStyle = DASTableTheme.of(context)?.data.dataTextStyle;
     final textStyle = (defaultTextStyle ?? sbbTextStyle.romanStyle.large).copyWith(color: textColor);
     return DASTableCell(
-      color: specialCellColor,
+      decoration: DASTableCellDecoration(color: specialCellColor),
       child: ModificationIndicator(
         show: data.hasModificationUpdated,
         offset: Offset(0, -SBBSpacing.small),
@@ -113,7 +113,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
 
   DASTableCell routeCell(BuildContext context) {
     return DASTableCell(
-      color: specialCellColor,
+      decoration: DASTableCellDecoration(color: specialCellColor),
       padding: .all(0.0),
       alignment: null,
       clipBehavior: .none,
@@ -131,11 +131,11 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
 
   DASTableCell trackEquipment(BuildContext context) {
     if (config.trackEquipmentRenderData == null) {
-      return DASTableCell.empty(color: specialCellColor);
+      return DASTableCell.empty(decoration: DASTableCellDecoration(color: specialCellColor));
     }
 
     return DASTableCell(
-      color: specialCellColor,
+      decoration: DASTableCellDecoration(color: specialCellColor),
       padding: .all(0.0),
       alignment: null,
       child: TrackEquipmentCellBody(
@@ -208,7 +208,8 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     );
   }
 
-  DASTableCell timeCell(BuildContext context) => DASTableCell.empty(color: specialCellColor);
+  DASTableCell timeCell(BuildContext context) =>
+      DASTableCell.empty(decoration: DASTableCellDecoration(color: specialCellColor));
 
   DASTableCell informationCell(BuildContext context) => DASTableCell.empty();
 
@@ -249,9 +250,11 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
 
   DASTableCell iconsCell3(BuildContext context) => DASTableCell.empty();
 
-  DASTableCell gradientUphillCell(BuildContext context) => DASTableCell.empty(color: specialCellColor);
+  DASTableCell gradientUphillCell(BuildContext context) =>
+      DASTableCell.empty(decoration: DASTableCellDecoration(color: specialCellColor));
 
-  DASTableCell gradientDownhillCell(BuildContext context) => DASTableCell.empty(color: specialCellColor);
+  DASTableCell gradientDownhillCell(BuildContext context) =>
+      DASTableCell.empty(decoration: DASTableCellDecoration(color: specialCellColor));
 
   Color? get specialCellColor =>
       getAdditionalSpeedRestriction() != null ? AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor : null;

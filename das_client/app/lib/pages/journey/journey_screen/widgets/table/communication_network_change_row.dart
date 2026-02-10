@@ -20,10 +20,10 @@ class CommunicationNetworkChangeRow extends CellRowBuilder<CommunicationNetworkC
   @override
   DASTableCell kilometreCell(BuildContext context) {
     if (data.kilometre.isEmpty) {
-      return DASTableCell.empty(color: specialCellColor);
+      return DASTableCell.empty(decoration: DASTableCellDecoration(color: specialCellColor));
     } else {
       return DASTableCell(
-        color: specialCellColor,
+        decoration: DASTableCellDecoration(color: specialCellColor),
         padding: const .all(8.0),
         alignment: .centerLeft,
         clipBehavior: .none,

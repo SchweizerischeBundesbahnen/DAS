@@ -453,28 +453,32 @@ class _CellRowState extends State<_CellRow> {
         final tableThemeData = DASTableTheme.of(context)?.data;
         final effectiveAlignment = cell.alignment ?? column.alignment;
         final BoxBorder? cellBorder = !row.markAsDeleted
-            ? cell.border ?? column.border ?? tableThemeData?.tableBorder?.toBoxBorder(isLastCell: isLast)
+            ? cell.decoration?.border ?? column.border ?? tableThemeData?.tableBorder?.toBoxBorder(isLastCell: isLast)
             : null;
         return _TableCellWrapper(
           expanded: column.expanded,
           width: column.width,
-          child: InkWell(
-            onTap: cell.onTap,
-            child: Container(
-              decoration: BoxDecoration(
-                border: cellBorder,
-                color: cell.color ?? row.color ?? column.color ?? tableThemeData?.dataRowColor,
-              ),
-              padding: _adjustPaddingToBorder(
-                cell.padding ?? column.padding ?? .all(SBBSpacing.xSmall),
-                cellBorder,
-              ),
-              clipBehavior: cell.clipBehavior,
-              child: DefaultTextStyle(
-                style: DefaultTextStyle.of(context).style.merge(tableThemeData?.dataTextStyle),
-                child: effectiveAlignment != null
-                    ? Align(alignment: effectiveAlignment, child: cell.child)
-                    : cell.child,
+          child: Material(
+            color: ThemeUtil.getDASTableColor(context),
+            child: InkWell(
+              onTap: cell.onTap,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: cell.decoration?.borderRadius,
+                  border: cellBorder,
+                  color: cell.decoration?.color ?? row.color ?? column.color ?? tableThemeData?.dataRowColor,
+                ),
+                padding: _adjustPaddingToBorder(
+                  cell.padding ?? column.padding ?? .all(SBBSpacing.xSmall),
+                  cellBorder,
+                ),
+                clipBehavior: cell.clipBehavior,
+                child: DefaultTextStyle(
+                  style: DefaultTextStyle.of(context).style.merge(tableThemeData?.dataTextStyle),
+                  child: effectiveAlignment != null
+                      ? Align(alignment: effectiveAlignment, child: cell.child)
+                      : cell.child,
+                ),
               ),
             ),
           ),

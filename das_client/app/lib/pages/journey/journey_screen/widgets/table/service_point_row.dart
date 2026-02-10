@@ -142,7 +142,10 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     final viewModel = context.read<ArrivalDepartureTimeViewModel>();
 
     if ((times == null || !times.hasAnyTime) && data.mandatoryStop) {
-      return DASTableCell.empty(color: specialCellColor, onTap: () => viewModel.toggleOperationalTime());
+      return DASTableCell.empty(
+        decoration: DASTableCellDecoration(color: specialCellColor),
+        onTap: () => viewModel.toggleOperationalTime(),
+      );
     }
 
     return _wrapToBaseHeight(
@@ -156,7 +159,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
           fontColor: _isNextStop && specialCellColor == null ? Colors.white : null,
         ),
         alignment: .bottomLeft,
-        color: specialCellColor,
+        decoration: DASTableCellDecoration(color: specialCellColor),
       ),
     );
   }
@@ -164,7 +167,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
   @override
   DASTableCell routeCell(BuildContext context) {
     return DASTableCell(
-      color: specialCellColor,
+      decoration: DASTableCellDecoration(color: specialCellColor),
       padding: .all(0.0),
       alignment: null,
       clipBehavior: .none,
@@ -244,11 +247,11 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
   @override
   DASTableCell trackEquipment(BuildContext context) {
     if (config.trackEquipmentRenderData == null) {
-      return DASTableCell.empty(color: specialCellColor);
+      return DASTableCell.empty(decoration: DASTableCellDecoration(color: specialCellColor));
     }
 
     return DASTableCell(
-      color: specialCellColor,
+      decoration: DASTableCellDecoration(color: specialCellColor),
       padding: const .all(0.0),
       alignment: null,
       child: TrackEquipmentCellBody(
@@ -274,13 +277,13 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
 
   DASTableCell _gradientCell(BuildContext context, double? value) {
     if (value == null) {
-      return DASTableCell.empty(color: specialCellColor);
+      return DASTableCell.empty(decoration: DASTableCellDecoration(color: specialCellColor));
     }
 
     final textColor = _isNextStop && specialCellColor == null ? SBBColors.white : null;
     final defaultTextStyle = DASTableTheme.of(context)?.data.dataTextStyle ?? sbbTextStyle.romanStyle.large;
     return DASTableCell(
-      color: specialCellColor,
+      decoration: DASTableCellDecoration(color: specialCellColor),
       child: Text(
         value.round().toString(),
         style: defaultTextStyle.copyWith(color: textColor),
@@ -351,13 +354,8 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
   }
 
   DASTableCell _wrapToBaseHeight(DASTableCell cell, [double verticalPadding = 8.0]) {
-    return DASTableCell(
-      border: cell.border,
-      onTap: cell.onTap,
-      color: cell.color,
-      padding: cell.padding,
+    return cell.copyWith(
       alignment: .topLeft,
-      clipBehavior: cell.clipBehavior,
       child: SizedBox(
         height: baseRowHeight - verticalPadding * 2,
         child: Align(alignment: cell.alignment ?? defaultAlignment, child: cell.child),
