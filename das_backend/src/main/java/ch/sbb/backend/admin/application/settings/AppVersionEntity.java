@@ -1,0 +1,22 @@
+package ch.sbb.backend.admin.application.settings;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import java.time.LocalDate;
+
+@Table(name = "app_version")
+@Entity
+public class AppVersionEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "app_version_id_seq")
+    @SequenceGenerator(name = "app_version_id_seq", allocationSize = 1)
+    private Integer id;
+    private String version;
+    private Boolean minimalVersion;
+    private LocalDate expiryDate;
+}
