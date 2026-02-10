@@ -67,10 +67,10 @@ class DASTableCellDecoration {
 
   final Color? color;
   final BorderRadius? borderRadius;
-  final BoxBorder? border;
+  final Border? border;
 
   DASTableCellDecoration copyWith({
-    BoxBorder? border,
+    Border? border,
     BorderRadius? borderRadius,
     Color? color,
   }) {

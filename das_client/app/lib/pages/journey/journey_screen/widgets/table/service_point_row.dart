@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:app/extension/short_term_change_x.dart';
+import 'package:app/extension/short_term_change_extension.dart';
 import 'package:app/extension/station_sign_extension.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/service_point_modal/service_point_modal_view_model.dart';

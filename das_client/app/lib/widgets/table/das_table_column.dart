@@ -27,8 +27,11 @@ class DASTableColumn {
   /// The content of the column header as a widget.
   final Widget? child;
 
-  /// Border style for the heading and data cells
-  final BoxBorder? border;
+  /// Border style for the heading and data cells.
+  ///
+  /// The resulting Border will be tried to merge with the cell border
+  /// If that is not possible, the cell border is used.
+  final Border? border;
 
   /// The background color for the heading and data cells
   final Color? color;

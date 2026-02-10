@@ -12,6 +12,7 @@ import 'package:app/pages/journey/journey_screen/widgets/table/cells/track_equip
 import 'package:app/pages/journey/journey_screen/widgets/table/column_definition.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/config/journey_config.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/service_point_row.dart';
+import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/modification_indicator.dart';
 import 'package:app/widgets/speed_display.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
@@ -85,15 +86,30 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
   }
 
   DASTableCell kilometreCell(BuildContext context) {
+    Border? leftBorder;
+    if (_isWithinShortTermChange) {
+      leftBorder = Border(
+        left: BorderSide(
+          width: SBBSpacing.xxSmall,
+          color: ThemeUtil.getColor(context, SBBColors.turquoise, SBBColors.turquoiseDark),
+        ),
+      );
+    }
+
     if (data.kilometre.isEmpty) {
-      return DASTableCell.empty(decoration: DASTableCellDecoration(color: specialCellColor));
+      return DASTableCell.empty(
+        decoration: DASTableCellDecoration(
+          border: leftBorder,
+          color: specialCellColor,
+        ),
+      );
     }
 
     final textColor = _isNextStop && specialCellColor == null ? SBBColors.white : null;
     final defaultTextStyle = DASTableTheme.of(context)?.data.dataTextStyle;
     final textStyle = (defaultTextStyle ?? sbbTextStyle.romanStyle.large).copyWith(color: textColor);
     return DASTableCell(
-      decoration: DASTableCellDecoration(color: specialCellColor),
+      decoration: DASTableCellDecoration(color: specialCellColor, border: leftBorder),
       child: ModificationIndicator(
         show: data.hasModificationUpdated,
         offset: Offset(0, -SBBSpacing.small),
@@ -214,6 +230,17 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
   DASTableCell informationCell(BuildContext context) => DASTableCell.empty();
 
   DASTableCell advisedSpeedCell(BuildContext context) {
+    Border? rightBorder;
+    if (_isWithinShortTermChange) {
+      rightBorder = Border(
+        right: BorderSide(
+          width: SBBSpacing.xxSmall,
+          color: ThemeUtil.getColor(context, SBBColors.turquoise, SBBColors.turquoiseDark),
+          strokeAlign: BorderSide.strokeAlignInside,
+        ),
+      );
+    }
+
     final advisedSpeedsSegment = metadata.advisedSpeedSegments.appliesToOrder(data.order);
     final isLastAdvisedSpeed = advisedSpeedsSegment.firstOrNull?.endData == data;
     final showAdvisedSpeed =
@@ -226,6 +253,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
 
       return DASTableCell(
         padding: .all(0.0),
+        decoration: DASTableCellDecoration(border: rightBorder),
         clipBehavior: .none,
         child: AdvisedSpeedCellBody(
           metadata: metadata,
@@ -236,6 +264,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     }
 
     return DASTableCell(
+      decoration: DASTableCellDecoration(border: rightBorder),
       child: CalculatedSpeedCellBody(
         order: data.order,
         showSpeedBehavior: showAdvisedSpeed && isLastAdvisedSpeed ? .alwaysOrPrevious : showSpeedBehavior,
@@ -282,6 +311,8 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
   }
 
   double get chevronPosition => CellRowBuilder.calculateChevronPosition(data, height);
+
+  bool get _isWithinShortTermChange => metadata.shortTermChanges.appliesToOrder(data.order).isNotEmpty;
 
   static double calculateChevronPosition(BaseData data, double height) {
     switch (data.dataType) {

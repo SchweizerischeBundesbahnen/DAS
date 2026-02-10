@@ -280,8 +280,8 @@ class _DASTableState extends State<DASTable> {
 }
 
 extension _TableBorderExtension on TableBorder {
-  BorderDirectional toBoxBorder({bool isLastCell = false}) {
-    return BorderDirectional(bottom: horizontalInside, end: isLastCell ? BorderSide.none : verticalInside);
+  Border toBoxBorder({bool isLastCell = false}) {
+    return Border(bottom: horizontalInside, right: isLastCell ? BorderSide.none : verticalInside);
   }
 }
 
@@ -452,9 +452,18 @@ class _CellRowState extends State<_CellRow> {
       builder: (context) {
         final tableThemeData = DASTableTheme.of(context)?.data;
         final effectiveAlignment = cell.alignment ?? column.alignment;
-        final BoxBorder? cellBorder = !row.markAsDeleted
-            ? cell.decoration?.border ?? column.border ?? tableThemeData?.tableBorder?.toBoxBorder(isLastCell: isLast)
-            : null;
+        Border? effectiveBorder;
+
+        // markAsDeleted border (dotted) is painted stacked on top of row
+        if (!row.markAsDeleted) {
+          // try to add the more specific to the less specific - if not possible, use more specific
+          effectiveBorder = tableThemeData?.tableBorder?.toBoxBorder(isLastCell: isLast);
+          if (column.border != null) effectiveBorder = effectiveBorder?.add(column.border!) ?? column.border;
+          if (cell.decoration?.border != null) {
+            effectiveBorder = effectiveBorder?.add(cell.decoration!.border!) ?? cell.decoration?.border;
+          }
+        }
+
         return _TableCellWrapper(
           expanded: column.expanded,
           width: column.width,
@@ -465,12 +474,12 @@ class _CellRowState extends State<_CellRow> {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: cell.decoration?.borderRadius,
-                  border: cellBorder,
+                  border: effectiveBorder,
                   color: cell.decoration?.color ?? row.color ?? column.color ?? tableThemeData?.dataRowColor,
                 ),
                 padding: _adjustPaddingToBorder(
                   cell.padding ?? column.padding ?? .all(SBBSpacing.xSmall),
-                  cellBorder,
+                  effectiveBorder,
                 ),
                 clipBehavior: cell.clipBehavior,
                 child: DefaultTextStyle(
