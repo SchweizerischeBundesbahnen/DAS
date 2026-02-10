@@ -17,49 +17,43 @@ class PreloadStatusDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     final vm = context.read<PreloadViewModel>();
 
-    return SBBContentBox(
-      child: StreamBuilder(
-        stream: vm.preloadDetailsStream,
-        builder: (context, asyncSnapshot) {
-          return Column(
-            mainAxisSize: .min,
-            spacing: SBBSpacing.xSmall,
-            children: [
-              _progressBarRow(asyncSnapshot.data),
-              _description(context, asyncSnapshot.data),
-            ],
-          );
-        },
-      ),
+    return StreamBuilder(
+      stream: vm.preloadDetailsStream,
+      builder: (context, asyncSnapshot) {
+        return Column(
+          mainAxisSize: .min,
+          spacing: SBBSpacing.xSmall,
+          children: [
+            _progressBarRow(asyncSnapshot.data),
+            _description(context, asyncSnapshot.data),
+          ],
+        );
+      },
     );
   }
 
   Widget _progressBarRow(PreloadDetails? preloadDetails) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: SBBSpacing.xSmall),
-      child: Container(
-        clipBehavior: Clip.hardEdge,
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(SBBSpacing.medium)),
-        height: 20,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            if (preloadDetails != null) ...[
-              if (preloadDetails.downloadedFilesCount > 0)
-                _progressSegment(preloadDetails.downloadedFilesCount, _downloadedColor),
-              if (preloadDetails.initialFilesCount > 0)
-                _progressSegment(preloadDetails.initialFilesCount, _initialColor),
-              if (preloadDetails.errorFilesCount > 0) _progressSegment(preloadDetails.errorFilesCount, _errorColor),
-            ],
-            if (preloadDetails == null)
-              Expanded(
-                flex: 1,
-                child: Container(
-                  color: SBBColors.metal,
-                ),
-              ),
+    return Container(
+      clipBehavior: Clip.hardEdge,
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(SBBSpacing.medium)),
+      height: 20,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (preloadDetails != null) ...[
+            if (preloadDetails.downloadedFilesCount > 0)
+              _progressSegment(preloadDetails.downloadedFilesCount, _downloadedColor),
+            if (preloadDetails.initialFilesCount > 0) _progressSegment(preloadDetails.initialFilesCount, _initialColor),
+            if (preloadDetails.errorFilesCount > 0) _progressSegment(preloadDetails.errorFilesCount, _errorColor),
           ],
-        ),
+          if (preloadDetails == null)
+            Expanded(
+              flex: 1,
+              child: Container(
+                color: SBBColors.metal,
+              ),
+            ),
+        ],
       ),
     );
   }
@@ -78,18 +72,15 @@ class PreloadStatusDisplay extends StatelessWidget {
   }
 
   Widget _description(BuildContext context, PreloadDetails? preloadDetails) {
-    return Padding(
-      padding: EdgeInsetsGeometry.symmetric(horizontal: SBBSpacing.xSmall),
-      child: Row(
-        spacing: SBBSpacing.large,
-        crossAxisAlignment: .start,
-        children: [
-          Expanded(flex: 1, child: _legend(context)),
-          Expanded(flex: 1, child: _metrics(context, preloadDetails)),
-          Expanded(flex: 1, child: _status(context, preloadDetails)),
-          Expanded(flex: 1, child: _startButton(context, preloadDetails)),
-        ],
-      ),
+    return Row(
+      spacing: SBBSpacing.large,
+      crossAxisAlignment: .start,
+      children: [
+        Expanded(flex: 1, child: _legend(context)),
+        Expanded(flex: 1, child: _metrics(context, preloadDetails)),
+        Expanded(flex: 1, child: _status(context, preloadDetails)),
+        Expanded(flex: 1, child: _startButton(context, preloadDetails)),
+      ],
     );
   }
 
