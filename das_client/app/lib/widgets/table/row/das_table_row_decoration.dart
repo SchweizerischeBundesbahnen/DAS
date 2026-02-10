@@ -15,9 +15,13 @@ class DASTableRowDecoration {
   final Color? color;
 
   /// The borderRadius of the border of this row. This is merged or overridden by specific cell border radii.
+  ///
+  /// The topLeft / bottomLeft and topRight / bottomRight will only be applied to the left / right cell respectively.
   final BorderRadius? borderRadius;
 
   /// The sides of the border of this row. This is merged or overridden by specific cell borders.
+  ///
+  /// The right and left border will only be applied to the first and last cell of the row respectively.
   final Border? border;
 
   DASTableRowDecoration copyWith({

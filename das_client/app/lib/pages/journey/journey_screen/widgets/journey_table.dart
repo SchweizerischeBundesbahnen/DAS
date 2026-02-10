@@ -427,8 +427,10 @@ class JourneyTable extends StatelessWidget {
         id: ColumnDefinition.localSpeed.index,
         child: Text(context.l10n.p_journey_table_graduated_speed_label),
         width: 100.0,
-        border: Border(
-          right: BorderSide(color: ThemeUtil.getDASTableBorderColor(context), width: 2.0),
+        decoration: DASTableColumnDecoration(
+          border: Border(
+            right: BorderSide(color: ThemeUtil.getDASTableBorderColor(context), width: 2.0),
+          ),
         ),
       ),
       DASTableColumn(

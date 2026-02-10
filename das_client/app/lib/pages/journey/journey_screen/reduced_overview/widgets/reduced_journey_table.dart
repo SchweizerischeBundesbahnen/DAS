@@ -121,8 +121,10 @@ class ReducedJourneyTable extends StatelessWidget {
       DASTableColumn(
         id: ColumnDefinition.localSpeed.index,
         width: 100.0,
-        border: Border(
-          right: BorderSide(color: ThemeUtil.getDASTableBorderColor(context), width: 2.0),
+        decoration: DASTableColumnDecoration(
+          border: Border(
+            right: BorderSide(color: ThemeUtil.getDASTableBorderColor(context), width: 2.0),
+          ),
         ),
       ),
       DASTableColumn(
