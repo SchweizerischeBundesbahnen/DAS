@@ -1,7 +1,5 @@
 package ch.sbb.backend.admin.application.settings;
 
-import ch.sbb.backend.admin.domain.settings.AppVersion;
-import ch.sbb.backend.admin.domain.settings.AppVersionService;
 import ch.sbb.backend.common.ApiDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

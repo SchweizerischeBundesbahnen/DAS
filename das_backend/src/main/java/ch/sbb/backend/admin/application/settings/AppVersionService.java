@@ -1,4 +1,4 @@
-package ch.sbb.backend.admin.domain.settings;
+package ch.sbb.backend.admin.application.settings;
 
 import java.util.List;
 
