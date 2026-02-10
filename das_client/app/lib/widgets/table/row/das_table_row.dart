@@ -24,6 +24,11 @@ sealed class DASTableRow {
 
   final int rowIndex;
 
+  /// The decoration for the specific row.
+  ///
+  /// Decorations from this will try to merge with column or Table wide decorations or override them.
+  ///
+  /// This will be overridden or merged where possible by specific cell decorations.
   final DASTableRowDecoration? decoration;
 }
 

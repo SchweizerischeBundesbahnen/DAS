@@ -459,6 +459,9 @@ class _CellRowState extends State<_CellRow> {
           // try to add the more specific to the less specific - if not possible, use more specific
           effectiveBorder = tableThemeData?.tableBorder?.toBoxBorder(isLastCell: isLast);
           if (column.border != null) effectiveBorder = effectiveBorder?.add(column.border!) ?? column.border;
+          if (row.decoration?.border != null) {
+            effectiveBorder = effectiveBorder?.add(row.decoration!.border!) ?? row.decoration?.border;
+          }
           if (cell.decoration?.border != null) {
             effectiveBorder = effectiveBorder?.add(cell.decoration!.border!) ?? cell.decoration?.border;
           }
