@@ -4,6 +4,6 @@ import java.util.List;
 
 public interface AppVersionService {
 
-    List<AppVersion> getAll();
+    List<AppVersionEntity> getAll();
 
 }

@@ -13,7 +13,7 @@ public class AppVersionServiceImpl implements AppVersionService {
     }
 
     @Override
-    public List<AppVersion> getAll() {
+    public List<AppVersionEntity> getAll() {
         return repository.findAll();
     }
 }
