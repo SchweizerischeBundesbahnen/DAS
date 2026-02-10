@@ -1,6 +1,6 @@
 import 'package:app/widgets/table/das_table_column.dart';
-import 'package:app/widgets/table/das_table_row.dart';
 import 'package:app/widgets/table/das_table_theme.dart';
+import 'package:app/widgets/table/row/das_table_row.dart';
 import 'package:flutter/material.dart';
 
 /// Represents a cell in the [DASTable] with optional styling and behavior.

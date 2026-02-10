@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:app/util/widget_util.dart';
 import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:app/widgets/stickyheader/sticky_level.dart';
-import 'package:app/widgets/table/das_table_row.dart';
+import 'package:app/widgets/table/row/das_table_row.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 

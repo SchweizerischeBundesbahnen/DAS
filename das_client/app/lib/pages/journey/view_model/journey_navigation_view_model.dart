@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:app/pages/journey/view_model/model/journey_navigation_model.dart';
-import 'package:app/widgets/table/das_table_row.dart';
+import 'package:app/widgets/table/row/das_table_row.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
