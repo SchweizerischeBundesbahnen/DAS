@@ -30,6 +30,8 @@ dependencies:
   archive: ^4.0.7
   # https://pub.dev/packages/rxdart
   rxdart: ^0.28.0
+  # https://pub.dev/packages/intl
+  intl: ^0.20.2
 
 dev_dependencies:
   # https://pub.dev/packages/build_runner

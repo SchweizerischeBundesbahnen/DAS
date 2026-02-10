@@ -9,4 +9,7 @@ class MockPreloadRepository implements PreloadRepository {
 
   @override
   void triggerPreload() {}
+
+  @override
+  Stream<PreloadDetails> get preloadDetailsStream => Stream.empty(broadcast: true);
 }

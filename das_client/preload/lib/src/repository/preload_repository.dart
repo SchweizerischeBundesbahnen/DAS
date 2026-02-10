@@ -1,3 +1,4 @@
+import 'package:preload/src/model/preload_details.dart';
 import 'package:settings/component.dart';
 
 abstract class PreloadRepository {
@@ -6,4 +7,6 @@ abstract class PreloadRepository {
   void updateConfiguration(AwsConfiguration awsConfiguration);
 
   void triggerPreload();
+
+  Stream<PreloadDetails> get preloadDetailsStream;
 }
