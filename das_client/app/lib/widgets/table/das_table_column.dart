@@ -64,12 +64,16 @@ class DASTableColumnDecoration {
   /// The background color of this column. This is overridden by specific row background colors.
   final Color? color;
 
-  /// The borderRadius of the border of this column. This is merged or overridden by specific row border radii.
+  /// The radius of the border of this column.
   ///
-  /// The topLeft / topRight and bottomLeft / bottomRight will only be applied to the first / last row respectively.
+  /// The radii will be overridden by more specific row border radii.
+  ///
+  /// The radii will only be applied to the edge cells (top and bottom) of the column.
   final BorderRadius? borderRadius;
 
-  /// The sides of the border of this column. This is merged or overridden by specific row borders.
+  /// The sides of the border of this column.
+  ///
+  /// The sides will be overridden by more specific row border sides.
   ///
   /// The top and bottom border will only be applied to the first and last row of the table respectively.
   final Border? border;

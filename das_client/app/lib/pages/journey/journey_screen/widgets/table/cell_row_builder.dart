@@ -1,3 +1,4 @@
+import 'package:app/extension/short_term_change_extension.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/additional_speed_restriction_row.dart';
@@ -19,6 +20,7 @@ import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:app/widgets/table/das_table_theme.dart';
 import 'package:app/widgets/table/row/das_table_row.dart';
 import 'package:app/widgets/table/row/das_table_row_builder.dart';
+import 'package:app/widgets/table/row/das_table_row_decoration.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -58,7 +60,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     return DASTableCellRow(
       key: key,
       height: height,
-      decoration: decoration,
+      decoration: _decorationWithOptionalShortTermChangeBorders(context),
       onTap: onTap,
       onStartToEndDragReached: onStartToEndDragReached,
       draggableBackgroundBuilder: draggableBackgroundBuilder,
@@ -86,20 +88,9 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
   }
 
   DASTableCell kilometreCell(BuildContext context) {
-    Border? leftBorder;
-    if (_isWithinShortTermChange) {
-      leftBorder = Border(
-        left: BorderSide(
-          width: SBBSpacing.xxSmall,
-          color: ThemeUtil.getColor(context, SBBColors.turquoise, SBBColors.turquoiseDark),
-        ),
-      );
-    }
-
     if (data.kilometre.isEmpty) {
       return DASTableCell.empty(
         decoration: DASTableCellDecoration(
-          border: leftBorder,
           color: specialCellColor,
         ),
       );
@@ -109,7 +100,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     final defaultTextStyle = DASTableTheme.of(context)?.data.dataTextStyle;
     final textStyle = (defaultTextStyle ?? sbbTextStyle.romanStyle.large).copyWith(color: textColor);
     return DASTableCell(
-      decoration: DASTableCellDecoration(color: specialCellColor, border: leftBorder),
+      decoration: DASTableCellDecoration(color: specialCellColor),
       child: ModificationIndicator(
         show: data.hasModificationUpdated,
         offset: Offset(0, -SBBSpacing.small),
@@ -230,17 +221,6 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
   DASTableCell informationCell(BuildContext context) => DASTableCell.empty();
 
   DASTableCell advisedSpeedCell(BuildContext context) {
-    Border? rightBorder;
-    if (_isWithinShortTermChange) {
-      rightBorder = Border(
-        right: BorderSide(
-          width: SBBSpacing.xxSmall,
-          color: ThemeUtil.getColor(context, SBBColors.turquoise, SBBColors.turquoiseDark),
-          strokeAlign: BorderSide.strokeAlignInside,
-        ),
-      );
-    }
-
     final advisedSpeedsSegment = metadata.advisedSpeedSegments.appliesToOrder(data.order);
     final isLastAdvisedSpeed = advisedSpeedsSegment.firstOrNull?.endData == data;
     final showAdvisedSpeed =
@@ -253,7 +233,6 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
 
       return DASTableCell(
         padding: .all(0.0),
-        decoration: DASTableCellDecoration(border: rightBorder),
         clipBehavior: .none,
         child: AdvisedSpeedCellBody(
           metadata: metadata,
@@ -264,7 +243,6 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     }
 
     return DASTableCell(
-      decoration: DASTableCellDecoration(border: rightBorder),
       child: CalculatedSpeedCellBody(
         order: data.order,
         showSpeedBehavior: showAdvisedSpeed && isLastAdvisedSpeed ? .alwaysOrPrevious : showSpeedBehavior,
@@ -329,5 +307,31 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
         // additional -1.5 because line overdraws a bit from rotation
         return height - RouteChevron.chevronHeight - 1.5;
     }
+  }
+
+  DASTableRowDecoration? _decorationWithOptionalShortTermChangeBorders(BuildContext context) {
+    final shortTermChange = metadata.shortTermChanges.appliesToOrder(data.order).getHighestPriority;
+    if (shortTermChange == null) return decoration;
+    final isShortTermChangeStart = shortTermChange.startOrder == data.order;
+    final isShortTermChangeEnd = shortTermChange.endOrder == data.order;
+
+    final borderSide = BorderSide(
+      color: ThemeUtil.getColor(context, SBBColors.turquoise, SBBColors.turquoiseDark),
+      width: 4.0,
+    );
+    final border = Border(
+      left: borderSide,
+      right: borderSide,
+      top: isShortTermChangeStart ? borderSide.copyWith(width: 1) : BorderSide.none,
+      bottom: isShortTermChangeEnd ? borderSide.copyWith(width: 1) : BorderSide.none,
+    );
+    final borderRadius = BorderRadius.only(
+      topLeft: isShortTermChangeStart ? Radius.circular(SBBSpacing.xSmall) : Radius.zero,
+      topRight: isShortTermChangeStart ? Radius.circular(SBBSpacing.xSmall) : Radius.zero,
+      bottomLeft: isShortTermChangeEnd ? Radius.circular(SBBSpacing.xSmall) : Radius.zero,
+      bottomRight: isShortTermChangeEnd ? Radius.circular(SBBSpacing.xSmall) : Radius.zero,
+    );
+
+    return decoration?.copyWith(border: border) ?? DASTableRowDecoration(border: border);
   }
 }

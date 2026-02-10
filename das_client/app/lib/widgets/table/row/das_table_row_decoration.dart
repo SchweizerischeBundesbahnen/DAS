@@ -14,14 +14,18 @@ class DASTableRowDecoration {
   /// The background color of this row. This is overridden by specific cell background colors.
   final Color? color;
 
-  /// The borderRadius of the border of this row. This is merged or overridden by specific cell border radii.
+  /// The radius of the border of this row.
   ///
-  /// The topLeft / bottomLeft and topRight / bottomRight will only be applied to the left / right cell respectively.
+  /// The radii will be overridden by more specific cell border radii.
+  ///
+  /// The radii will only be applied to the edge cells of the row.
   final BorderRadius? borderRadius;
 
-  /// The sides of the border of this row. This is merged or overridden by specific cell borders.
+  /// The sides of the border of this column.
   ///
-  /// The right and left border will only be applied to the first and last cell of the row respectively.
+  /// The sides will be overridden by more specific cell border sides.
+  ///
+  /// The left and right border will only be applied to the left and right cell of the row respectively.
   final Border? border;
 
   DASTableRowDecoration copyWith({
