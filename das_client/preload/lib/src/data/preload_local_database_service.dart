@@ -5,5 +5,9 @@ abstract class PreloadLocalDatabaseService {
 
   Future<int> saveS3File(S3File file);
 
-  Future<List<S3File>> findAllNotDeletedFiles();
+  Future<List<S3File>> findAll();
+
+  Stream<List<S3File>> watchAll();
+
+  Future<int> deleteS3File(S3File file);
 }

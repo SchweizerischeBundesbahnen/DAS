@@ -4,4 +4,6 @@ abstract class PreloadRepository {
   const PreloadRepository._();
 
   void updateConfiguration(AwsConfiguration awsConfiguration);
+
+  void triggerPreload();
 }

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:archive/archive.dart';
@@ -5,18 +6,32 @@ import 'package:collection/collection.dart';
 import 'package:logging/logging.dart';
 import 'package:preload/src/aws/s3_client.dart';
 import 'package:preload/src/data/preload_local_database_service.dart';
+import 'package:preload/src/model/preload_details.dart';
 import 'package:preload/src/model/s3file.dart';
 import 'package:preload/src/repository/preload_repository.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:settings/component.dart';
+import 'package:sfera/component.dart';
 
 final _log = Logger('PreloadRepositoryImpl');
 
 class PreloadRepositoryImpl implements PreloadRepository {
-  PreloadRepositoryImpl({required this.databaseService});
+  PreloadRepositoryImpl({required this.databaseService, required this.sferaLocalRepo}) {
+    _init();
+  }
 
   final PreloadLocalDatabaseService databaseService;
+  final SferaLocalRepo sferaLocalRepo;
   S3Client? _s3client;
+  StreamSubscription? _databaseSubscription;
+
+  final _rxDetails = BehaviorSubject<PreloadDetails>();
   bool _isRunning = false;
+
+  void _init() {
+    _log.info('Initializing PreloadRepositoryImpl...');
+    _databaseSubscription = databaseService.watchAll().listen((files) => _emit(files));
+  }
 
   @override
   void updateConfiguration(AwsConfiguration awsConfiguration) {
@@ -27,10 +42,11 @@ class PreloadRepositoryImpl implements PreloadRepository {
     );
 
     _s3client = S3Client(configuration: awsConfiguration);
-    doPreload();
+    triggerPreload();
   }
 
-  void doPreload() async {
+  @override
+  void triggerPreload() async {
     if (_s3client == null) {
       _log.warning('S3 client is not initialized. Cannot perform preload.');
       return;
@@ -40,17 +56,23 @@ class PreloadRepositoryImpl implements PreloadRepository {
       _log.info('Preload is already running. Skipping new preload request.');
       return;
     }
-    _isRunning = true;
+    _updateRunning(true);
     _log.info('Starting preload...');
 
     try {
+      await _cleanup();
       await _listS3BucketAndUpdateLocalDatabase();
       await _processAllFiles();
     } catch (e, s) {
       _log.severe('Error during preload.', e, s);
     }
 
-    _isRunning = false;
+    _log.info('Preload completed.');
+    _updateRunning(false);
+  }
+
+  Future<int> _cleanup() {
+    return sferaLocalRepo.cleanup();
   }
 
   Future<void> _listS3BucketAndUpdateLocalDatabase() async {
@@ -58,7 +80,7 @@ class PreloadRepositoryImpl implements PreloadRepository {
     if (result != null) {
       _log.info('Bucket contents retrieved successfully. Total items: ${result.contents.length}');
 
-      final dbEntries = await databaseService.findAllNotDeletedFiles();
+      final dbEntries = await databaseService.findAll();
 
       int newItem = 0;
       int updatedItem = 0;
@@ -86,7 +108,7 @@ class PreloadRepositoryImpl implements PreloadRepository {
       }
 
       for (final deletedEntry in dbEntries) {
-        await databaseService.saveS3File(deletedEntry.copyWith(status: S3FileSyncStatus.deleted));
+        await databaseService.deleteS3File(deletedEntry);
       }
 
       _log.info(
@@ -98,10 +120,11 @@ class PreloadRepositoryImpl implements PreloadRepository {
   }
 
   Future<void> _processAllFiles() async {
-    final filesToProcess = await databaseService.findAllNotDeletedFiles();
+    final filesToProcess = await databaseService.findAll();
     _log.info(
       'Processing files from local database (initial: ${filesToProcess.where((f) => f.status == S3FileSyncStatus.initial).length}, '
       'error: ${filesToProcess.where((f) => f.status == S3FileSyncStatus.error).length}, '
+      'corrupted: ${filesToProcess.where((f) => f.status == S3FileSyncStatus.corrupted).length}, '
       'downloaded: ${filesToProcess.where((f) => f.status == S3FileSyncStatus.downloaded).length}).',
     );
 
@@ -122,17 +145,26 @@ class PreloadRepositoryImpl implements PreloadRepository {
         _log.info('File ${file.name} downloaded successfully. Size: ${fileData.length} bytes.');
 
         final archive = ZipDecoder().decodeBytes(fileData);
+        final saveFutures = <Future<bool>>[];
         for (final archiveFile in archive.files) {
           if (archiveFile.isFile) {
             final content = utf8.decode(archiveFile.readBytes()!);
             _log.finer(
               'Extracted file ${archiveFile.name} from archive ${file.name}. Content length: ${content.length} characters. ${content.substring(0, content.length > 100 ? 100 : content.length)}',
             );
-            // TODO: Process the content of the extracted file as needed.
+            saveFutures.add(sferaLocalRepo.saveData(content));
           }
         }
+        final successList = await Future.wait(saveFutures);
+        final success = successList.fold(true, (a, b) => a && b);
 
-        await databaseService.saveS3File(file.copyWith(status: S3FileSyncStatus.downloaded));
+        if (success) {
+          _log.info('All data extracted from file ${file.name} saved successfully.');
+          await databaseService.saveS3File(file.copyWith(status: S3FileSyncStatus.downloaded));
+        } else {
+          _log.warning('Failed to save some data extracted from file ${file.name}. Marking as corrupted.');
+          await databaseService.saveS3File(file.copyWith(status: S3FileSyncStatus.corrupted));
+        }
       } else {
         _log.warning('Failed to download file ${file.name}.');
         await databaseService.saveS3File(file.copyWith(status: S3FileSyncStatus.error));
@@ -141,5 +173,35 @@ class PreloadRepositoryImpl implements PreloadRepository {
       _log.severe('Error downloading file ${file.name}.', e, s);
       await databaseService.saveS3File(file.copyWith(status: S3FileSyncStatus.error));
     }
+  }
+
+  void _updateRunning(bool isRunning) {
+    _isRunning = isRunning;
+    _emit();
+  }
+
+  Future<void> _emit([List<S3File>? files]) async {
+    final details = await _gatherDetails(files);
+    _rxDetails.add(details);
+  }
+
+  PreloadStatus _status() {
+    if (_s3client == null) {
+      return PreloadStatus.missingConfiguration;
+    } else if (_isRunning) {
+      return PreloadStatus.running;
+    } else {
+      return PreloadStatus.idle;
+    }
+  }
+
+  Future<PreloadDetails> _gatherDetails(List<S3File>? files) async {
+    files = files ?? await databaseService.findAll();
+    return PreloadDetails(files: files, status: _status(), metrics: await sferaLocalRepo.retrieveMetrics());
+  }
+
+  void dispose() {
+    _databaseSubscription?.cancel();
+    _rxDetails.close();
   }
 }

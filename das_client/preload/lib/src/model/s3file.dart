@@ -30,5 +30,5 @@ enum S3FileSyncStatus {
   initial,
   downloaded,
   error,
-  deleted,
+  corrupted,
 }

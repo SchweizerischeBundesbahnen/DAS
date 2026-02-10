@@ -10,6 +10,7 @@ import 'package:sfera/src/data/local/sfera_local_database_service.dart';
 import 'package:sfera/src/data/local/tables/journey_profile_table.dart';
 import 'package:sfera/src/data/local/tables/segment_profile_table.dart';
 import 'package:sfera/src/data/local/tables/train_characteristics_table.dart';
+import 'package:sfera/src/model/db_metrics.dart';
 
 part 'drift_local_database_service.g.dart';
 
@@ -23,6 +24,7 @@ final _log = Logger('DriftDatabaseService');
   ],
 )
 class DriftLocalDatabaseService extends _$DriftLocalDatabaseService implements SferaLocalDatabaseService {
+  static const int cleanupDays = 2;
   static DriftLocalDatabaseService? _instance;
 
   static DriftLocalDatabaseService get instance {
@@ -73,16 +75,13 @@ class DriftLocalDatabaseService extends _$DriftLocalDatabaseService implements S
 
   @override
   Future<void> saveJourneyProfile(JourneyProfileDto journeyProfile) async {
-    final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
     final existingProfile = await findJourneyProfile(
       journeyProfile.trainIdentification.otnId.company,
       journeyProfile.trainIdentification.otnId.operationalTrainNumber,
-      today, // TODO: Temporary fix, because our backend does not return correct date in Journey Profile
-      //journeyProfile.trainIdentification.otnId.startDate);
+      journeyProfile.trainIdentification.otnId.startDate,
     );
 
-    final journeyProfileCompanion = journeyProfile.toCompanion(id: existingProfile?.id, startDate: today);
+    final journeyProfileCompanion = journeyProfile.toCompanion(id: existingProfile?.id);
 
     _log.fine(
       'Writing journey profile to db company=${journeyProfileCompanion.company} operationalTrainNumber=${journeyProfileCompanion.operationalTrainNumber} startDate=${journeyProfileCompanion.startDate}',
@@ -134,4 +133,24 @@ class DriftLocalDatabaseService extends _$DriftLocalDatabaseService implements S
   $$JourneyProfileTableTableTableManager get _jpManager => managers.journeyProfileTable;
 
   $$SegmentProfileTableTableTableManager get _spManager => managers.segmentProfileTable;
+
+  @override
+  Future<DbMetrics> retrieveMetrics() async {
+    return Future.value(
+      DbMetrics(
+        jpCount: await _jpManager.count(),
+        spCount: await _spManager.count(),
+        tcCount: await _tcManager.count(),
+      ),
+    );
+  }
+
+  @override
+  Future<int> cleanup() async {
+    final deletedCount = await _jpManager
+        .filter((f) => f.startDate.isBefore(DateTime.now().subtract(const Duration(days: cleanupDays))))
+        .delete();
+    _log.info('Deleted $deletedCount old journey profiles from database.');
+    return deletedCount;
+  }
 }

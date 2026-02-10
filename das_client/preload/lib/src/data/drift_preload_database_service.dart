@@ -2,14 +2,11 @@
 
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
-import 'package:logging/logging.dart';
 import 'package:preload/src/data/preload_local_database_service.dart';
 import 'package:preload/src/data/tables/s3_preload_table.dart';
 import 'package:preload/src/model/s3file.dart';
 
 part 'drift_preload_database_service.g.dart';
-
-final _log = Logger('DriftPreloadDatabaseService');
 
 @DriftDatabase(
   tables: [
@@ -33,13 +30,8 @@ class DriftPreloadDatabaseService extends _$DriftPreloadDatabaseService implemen
   MigrationStrategy get migration => MigrationStrategy(onCreate: (m) => m.createAll());
 
   @override
-  Future<List<S3File>> findAllNotDeletedFiles() {
-    return _manager
-        .filter(
-          (f) => f.status.not(S3FileSyncStatus.deleted.name),
-        )
-        .get()
-        .then((it) => it.map((it) => it.toDomain()).toList());
+  Future<List<S3File>> findAll() {
+    return _manager.get().then((it) => it.map((it) => it.toDomain()).toList());
   }
 
   @override
@@ -48,4 +40,14 @@ class DriftPreloadDatabaseService extends _$DriftPreloadDatabaseService implemen
   }
 
   $$S3PreloadTableTableTableManager get _manager => managers.s3PreloadTable;
+
+  @override
+  Stream<List<S3File>> watchAll() {
+    return _manager.watch().map((it) => it.map((it) => it.toDomain()).toList());
+  }
+
+  @override
+  Future<int> deleteS3File(S3File file) {
+    return _manager.filter((f) => f.name(file.name)).delete();
+  }
 }

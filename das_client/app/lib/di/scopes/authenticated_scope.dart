@@ -141,7 +141,11 @@ extension AuthenticatedScopeExtension on GetIt {
   }
 
   void registerPreloadRepository() {
-    registerSingleton<PreloadRepository>(PreloadComponent.createPreloadRepository());
+    registerSingleton<PreloadRepository>(
+      PreloadComponent.createPreloadRepository(
+        sferaLocalRepo: DI.get(),
+      ),
+    );
   }
 
   void registerSettingsRepository() {

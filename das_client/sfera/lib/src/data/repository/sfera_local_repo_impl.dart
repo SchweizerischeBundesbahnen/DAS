@@ -1,3 +1,4 @@
+import 'package:logging/logging.dart';
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
@@ -6,8 +7,12 @@ import 'package:sfera/src/data/local/tables/journey_profile_table.dart';
 import 'package:sfera/src/data/local/tables/segment_profile_table.dart';
 import 'package:sfera/src/data/local/tables/train_characteristics_table.dart';
 import 'package:sfera/src/data/mapper/sfera_model_mapper.dart';
+import 'package:sfera/src/data/parser/sfera_reply_parser.dart';
 import 'package:sfera/src/data/repository/sfera_local_repo.dart';
+import 'package:sfera/src/model/db_metrics.dart';
 import 'package:sfera/src/model/journey/journey.dart';
+
+final _log = Logger('SferaLocalRepoImpl');
 
 class SferaLocalRepoImpl implements SferaLocalRepo {
   const SferaLocalRepoImpl({required SferaLocalDatabaseService localService}) : _databaseService = localService;
@@ -62,5 +67,37 @@ class SferaLocalRepoImpl implements SferaLocalRepo {
       }
     }
     return segmentProfiles;
+  }
+
+  @override
+  Future<int> cleanup() {
+    _log.info('Cleaning up local database...');
+    return _databaseService.cleanup();
+  }
+
+  @override
+  Future<bool> saveData(String data) async {
+    try {
+      final sferaElement = SferaReplyParser.parse(data);
+      if (sferaElement is JourneyProfileDto) {
+        await _databaseService.saveJourneyProfile(sferaElement);
+      } else if (sferaElement is SegmentProfileDto) {
+        await _databaseService.saveSegmentProfile(sferaElement);
+      } else if (sferaElement is TrainCharacteristicsDto) {
+        await _databaseService.saveTrainCharacteristics(sferaElement);
+      } else {
+        _log.warning('Parsed data is of unsupported type: ${sferaElement.runtimeType}');
+        return false;
+      }
+      return true;
+    } catch (e, s) {
+      _log.severe('Failed to save data', e, s);
+      return false;
+    }
+  }
+
+  @override
+  Future<DbMetrics> retrieveMetrics() {
+    return _databaseService.retrieveMetrics();
   }
 }

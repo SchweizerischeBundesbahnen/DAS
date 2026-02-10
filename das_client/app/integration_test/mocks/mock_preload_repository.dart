@@ -6,4 +6,7 @@ class MockPreloadRepository implements PreloadRepository {
 
   @override
   void updateConfiguration(AwsConfiguration awsConfiguration) {}
+
+  @override
+  void triggerPreload() {}
 }
