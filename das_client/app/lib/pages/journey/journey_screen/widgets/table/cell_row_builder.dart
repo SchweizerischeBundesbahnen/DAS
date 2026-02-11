@@ -130,7 +130,20 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
         isRouteEnd: metadata.journeyEnd == data,
         chevronAnimationData: config.chevronAnimationData,
         chevronPosition: chevronPosition,
+        shortTermChangeData: routeCellShortTermChangeData,
       ),
+    );
+  }
+
+  ShortTermChangeRouteCellData? get routeCellShortTermChangeData {
+    ShortTermChange? shortTermChange = metadata.shortTermChanges.appliesToOrder(data.order).getHighestPriority;
+    if (shortTermChange is! TrainRunReroutingChange) shortTermChange = null;
+    if (shortTermChange == null) return null;
+
+    return (
+      drawMiddle: shortTermChange.startOrder != data.order && shortTermChange.endOrder != data.order,
+      drawEnd: shortTermChange.endOrder == data.order,
+      drawStart: shortTermChange.startOrder == data.order,
     );
   }
 
@@ -289,8 +302,6 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
   }
 
   double get chevronPosition => CellRowBuilder.calculateChevronPosition(data, height);
-
-  bool get _isWithinShortTermChange => metadata.shortTermChanges.appliesToOrder(data.order).isNotEmpty;
 
   static double calculateChevronPosition(BaseData data, double height) {
     switch (data.dataType) {

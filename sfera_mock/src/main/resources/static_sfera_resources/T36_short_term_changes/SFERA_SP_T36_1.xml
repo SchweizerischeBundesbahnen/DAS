@@ -241,7 +241,11 @@
                 <teltsi_LocationPrimaryCode>00700</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>ExceptionalStopStation 4</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+
+
         </TAF_TAP_Location>
+
+
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="900" endLocation="900" TAF_TAP_location_abbreviation="5"
                           TAF_TAP_location_type="station">
@@ -304,6 +308,18 @@
                 <teltsi_LocationPrimaryCode>01600</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Station 11</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>1285</teltsi_Company>
+                <NSP_GroupName>oPFootNotes</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlOPFootNotes" value="
+				&lt;oPFootNotes&gt;
+					&lt;footNote  type=&quot;decisiveGradientDown&quot; refText=&quot;1)&quot;&gt;
+						&lt;text&gt;Station 11 -  Station 12&lt;i&gt;&quot;via saut-de-mouton&quot;&lt;/i&gt; 2‰&lt;/text&gt;
+					&lt;/footNote&gt;
+				&lt;/oPFootNotes&gt;
+				"/>
+            </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="1700" endLocation="1700" TAF_TAP_location_abbreviation="12"

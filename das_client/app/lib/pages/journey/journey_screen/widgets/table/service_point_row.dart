@@ -181,6 +181,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
         chevronAnimationData: config.chevronAnimationData,
         chevronPosition: chevronPosition,
         routeColor: _isNextStop && specialCellColor == null ? Colors.white : null,
+        shortTermChangeData: routeCellShortTermChangeData,
       ),
     );
   }
