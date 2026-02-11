@@ -19,7 +19,7 @@ class PreloadStatusDisplay extends StatelessWidget {
     final vm = context.read<PreloadViewModel>();
 
     return StreamBuilder(
-      stream: vm.preloadDetailsStream,
+      stream: vm.preloadDetails,
       builder: (context, asyncSnapshot) {
         return Column(
           mainAxisSize: .min,

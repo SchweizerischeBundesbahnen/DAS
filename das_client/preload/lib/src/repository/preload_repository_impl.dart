@@ -16,7 +16,7 @@ import 'package:sfera/component.dart';
 final _log = Logger('PreloadRepositoryImpl');
 
 class PreloadRepositoryImpl implements PreloadRepository {
-  static const _syncInterval = Duration(minutes: 5);
+  static const syncInterval = Duration(minutes: 5);
 
   PreloadRepositoryImpl({required this.databaseService, required this.sferaLocalRepo}) {
     _init();
@@ -32,7 +32,7 @@ class PreloadRepositoryImpl implements PreloadRepository {
   final _rxDetails = BehaviorSubject<PreloadDetails>();
 
   @override
-  Stream<PreloadDetails> get preloadDetailsStream => _rxDetails.stream;
+  Stream<PreloadDetails> get preloadDetails => _rxDetails.stream;
 
   void _init() {
     _log.info('Initializing PreloadRepositoryImpl...');
@@ -47,11 +47,15 @@ class PreloadRepositoryImpl implements PreloadRepository {
       'accessSecret=${awsConfiguration.accessSecret.codeUnits.map((e) => '*').join()}',
     );
 
-    _s3client = S3Client(configuration: awsConfiguration);
+    _s3client = createS3Client(awsConfiguration);
     triggerPreload();
 
     _syncTimer?.cancel();
-    _syncTimer = Timer.periodic(_syncInterval, (_) => triggerPreload());
+    _syncTimer = Timer.periodic(syncInterval, (_) => triggerPreload());
+  }
+
+  S3Client createS3Client(AwsConfiguration awsConfiguration) {
+    return S3Client(configuration: awsConfiguration);
   }
 
   @override
@@ -210,6 +214,7 @@ class PreloadRepositoryImpl implements PreloadRepository {
     return PreloadDetails(files: files, status: _status(), metrics: await sferaLocalRepo.retrieveMetrics());
   }
 
+  @override
   void dispose() {
     _databaseSubscription?.cancel();
     _rxDetails.close();

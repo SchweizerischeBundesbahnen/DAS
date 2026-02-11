@@ -8,5 +8,7 @@ abstract class PreloadRepository {
 
   void triggerPreload();
 
-  Stream<PreloadDetails> get preloadDetailsStream;
+  Stream<PreloadDetails> get preloadDetails;
+
+  void dispose();
 }

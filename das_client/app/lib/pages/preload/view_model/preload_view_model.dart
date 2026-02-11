@@ -5,7 +5,7 @@ class PreloadViewModel {
 
   final PreloadRepository _preloadRepository;
 
-  Stream<PreloadDetails> get preloadDetailsStream => _preloadRepository.preloadDetailsStream;
+  Stream<PreloadDetails> get preloadDetails => _preloadRepository.preloadDetails;
 
   void triggerPreload() {
     _preloadRepository.triggerPreload();

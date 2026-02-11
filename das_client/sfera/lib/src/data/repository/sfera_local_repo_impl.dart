@@ -79,6 +79,11 @@ class SferaLocalRepoImpl implements SferaLocalRepo {
   Future<bool> saveData(String data) async {
     try {
       final sferaElement = SferaReplyParser.parse(data);
+      if (!sferaElement.validate()) {
+        _log.warning('Parsed data is invalid: ${sferaElement.runtimeType}');
+        return false;
+      }
+
       if (sferaElement is JourneyProfileDto) {
         await _databaseService.saveJourneyProfile(sferaElement);
       } else if (sferaElement is SegmentProfileDto) {
