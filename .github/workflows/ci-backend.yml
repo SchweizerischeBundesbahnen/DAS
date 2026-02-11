@@ -29,10 +29,19 @@ jobs:
     env:
       ZIS_SR_URL: ${{ secrets.ZIS_SR_URL }}
       ZIS_SR_API_KEY: ${{ secrets.ZIS_SR_API_KEY }}
-      ZIS_SR_API_SECRET: ${{ secrets.ZIS_SR_API_SECRET }}
 
     steps:
       - uses: actions/checkout@v6
+      - name: Import Secrets
+        id: import-secrets
+        uses: hashicorp/vault-action@v2
+        with:
+          url: https://vault-nonprod.sbb.ch:443
+          method: approle
+          roleId: ${{ secrets.VAULT_ROLE_ID }}
+          secretId: ${{ secrets.VAULT_SECRET_ID }}
+          secrets: |
+            kv/data/DSO-BPS/driver-advisory-system/ci ZIS_SR_API_SECRET ;
       - name: Set up JDK 21
         uses: actions/setup-java@v5
         with:
