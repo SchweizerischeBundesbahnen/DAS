@@ -7,7 +7,7 @@ import java.time.ZonedDateTime;
 import lombok.experimental.UtilityClass;
 
 /**
- * See <a href="https://confluence.sbb.ch/spaces/TAS/pages/3276983309/Umrechnen+vom+Planzeiten">Umrechnen von Planzeiten</a>
+ * See <a href="https://confluence.sbb.ch/x/DcxSww">Umrechnen von Planzeiten</a>
  */
 @UtilityClass
 public class TimeConverter {

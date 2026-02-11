@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import org.springframework.stereotype.Component;
@@ -72,16 +73,16 @@ public class TrainRunConverter {
     }
 
     private Optional<Integer> findFirstDepartureTime(List<TrainRunPoint> zuglaufPunkte) {
+        return findFirstSwissDepartureTime(zuglaufPunkte, TrainRunPoint::getCommercialDepartureTime)
+            .or(() -> findFirstSwissDepartureTime(zuglaufPunkte, TrainRunPoint::getOperationalDepartureTime));
+    }
+
+    private Optional<Integer> findFirstSwissDepartureTime(List<TrainRunPoint> zuglaufPunkte, Function<TrainRunPoint, Integer> departureTimeExtractor) {
         return zuglaufPunkte.stream()
             .filter(it -> it.getCountryCode() == UIC_COUNTRY_CODE_CH)
-            .map(TrainRunPoint::getCommercialDepartureTime)
+            .map(departureTimeExtractor)
             .filter(Objects::nonNull)
-            .findFirst()
-            .or(() -> zuglaufPunkte.stream()
-                .filter(it -> it.getCountryCode() == UIC_COUNTRY_CODE_CH)
-                .map(TrainRunPoint::getOperationalDepartureTime)
-                .filter(Objects::nonNull)
-                .findFirst());
+            .findFirst();
     }
 
     private OffsetDateTime convertToStartDate(LocalDate operationalDate, Optional<Integer> firstSwissOperationalDepartureTime) {
