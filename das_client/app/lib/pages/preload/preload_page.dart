@@ -33,6 +33,7 @@ class PreloadPage extends StatelessWidget implements AutoRouteWrapper {
     return SBBHeader(
       title: context.l10n.p_preload_page_title,
       systemOverlayStyle: .light,
+      actions: [Container()],
     );
   }
 

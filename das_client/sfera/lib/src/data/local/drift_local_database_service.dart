@@ -14,7 +14,7 @@ import 'package:sfera/src/model/db_metrics.dart';
 
 part 'drift_local_database_service.g.dart';
 
-final _log = Logger('DriftDatabaseService');
+final _log = Logger('SferaDriftLocalDatabaseService');
 
 @DriftDatabase(
   tables: [

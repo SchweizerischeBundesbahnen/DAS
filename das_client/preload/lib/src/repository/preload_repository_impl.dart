@@ -16,6 +16,8 @@ import 'package:sfera/component.dart';
 final _log = Logger('PreloadRepositoryImpl');
 
 class PreloadRepositoryImpl implements PreloadRepository {
+  static const _syncInterval = Duration(minutes: 5);
+
   PreloadRepositoryImpl({required this.databaseService, required this.sferaLocalRepo}) {
     _init();
   }
@@ -24,6 +26,7 @@ class PreloadRepositoryImpl implements PreloadRepository {
   final SferaLocalRepo sferaLocalRepo;
   S3Client? _s3client;
   StreamSubscription? _databaseSubscription;
+  Timer? _syncTimer;
 
   bool _isRunning = false;
   final _rxDetails = BehaviorSubject<PreloadDetails>();
@@ -46,6 +49,9 @@ class PreloadRepositoryImpl implements PreloadRepository {
 
     _s3client = S3Client(configuration: awsConfiguration);
     triggerPreload();
+
+    _syncTimer?.cancel();
+    _syncTimer = Timer.periodic(_syncInterval, (_) => triggerPreload());
   }
 
   @override
@@ -207,6 +213,7 @@ class PreloadRepositoryImpl implements PreloadRepository {
   void dispose() {
     _databaseSubscription?.cancel();
     _rxDetails.close();
+    _syncTimer?.cancel();
   }
 
   PreloadDetails _dummyData() {

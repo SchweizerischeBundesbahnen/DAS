@@ -289,6 +289,6 @@
   "w_preload_status_idle": "Bereit",
   "w_preload_status_running": "Synchronisiere...",
   "w_preload_status_missing_configuration": "Offline",
-  "w_preload_status_last_update": "Letztes Update:",
+  "w_preload_status_last_update": "Datenstand:",
   "w_preload_status_start_preload": "Starten"
 }

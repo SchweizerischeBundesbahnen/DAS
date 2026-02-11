@@ -9,6 +9,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 class PreloadStatusDisplay extends StatelessWidget {
   const PreloadStatusDisplay({super.key});
 
+  static final _progressBarHeight = 20.0;
   static final _downloadedColor = SBBColors.night;
   static final _initialColor = SBBColors.sky;
   static final _errorColor = SBBColors.violet;
@@ -36,7 +37,7 @@ class PreloadStatusDisplay extends StatelessWidget {
     return Container(
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(SBBSpacing.medium)),
-      height: 20,
+      height: _progressBarHeight,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -46,9 +47,8 @@ class PreloadStatusDisplay extends StatelessWidget {
             if (preloadDetails.initialFilesCount > 0) _progressSegment(preloadDetails.initialFilesCount, _initialColor),
             if (preloadDetails.errorFilesCount > 0) _progressSegment(preloadDetails.errorFilesCount, _errorColor),
           ],
-          if (preloadDetails == null)
+          if (preloadDetails == null || preloadDetails.files.isEmpty)
             Expanded(
-              flex: 1,
               child: Container(
                 color: SBBColors.metal,
               ),
@@ -64,7 +64,7 @@ class PreloadStatusDisplay extends StatelessWidget {
       child: Container(
         color: color,
         child: Align(
-          alignment: Alignment.center,
+          alignment: .center,
           child: Text(count.toString(), style: SBBTextStyles.smallLight.copyWith(color: SBBColors.white)),
         ),
       ),
