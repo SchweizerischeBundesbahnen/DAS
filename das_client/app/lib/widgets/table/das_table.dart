@@ -491,26 +491,23 @@ class _CellRowState extends State<_CellRow> {
         return _TableCellWrapper(
           expanded: column.expanded,
           width: column.width,
-          child: Material(
-            color: ThemeUtil.getDASTableColor(context),
-            child: InkWell(
-              onTap: cell.onTap,
-              child: Container(
-                decoration: BoxDecoration(
-                  border: effectiveBorder,
-                  color: effectiveBackgroundColor,
-                ),
-                padding: _adjustPaddingToBorder(
-                  cell.padding ?? column.padding ?? .all(SBBSpacing.xSmall),
-                  effectiveBorder,
-                ),
-                clipBehavior: cell.clipBehavior,
-                child: DefaultTextStyle(
-                  style: DefaultTextStyle.of(context).style.merge(tableThemeData?.dataTextStyle),
-                  child: effectiveAlignment != null
-                      ? Align(alignment: effectiveAlignment, child: cell.child)
-                      : cell.child,
-                ),
+          child: InkWell(
+            onTap: cell.onTap,
+            child: Container(
+              decoration: BoxDecoration(
+                border: effectiveBorder,
+                color: effectiveBackgroundColor,
+              ),
+              padding: _adjustPaddingToBorder(
+                cell.padding ?? column.padding ?? .all(SBBSpacing.xSmall),
+                effectiveBorder,
+              ),
+              clipBehavior: cell.clipBehavior,
+              child: DefaultTextStyle(
+                style: DefaultTextStyle.of(context).style.merge(tableThemeData?.dataTextStyle),
+                child: effectiveAlignment != null
+                    ? Align(alignment: effectiveAlignment, child: cell.child)
+                    : cell.child,
               ),
             ),
           ),
