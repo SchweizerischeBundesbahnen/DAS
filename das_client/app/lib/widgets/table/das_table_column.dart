@@ -52,24 +52,16 @@ class DASTableColumn {
   final Key? headerKey;
 }
 
-/// Data class for holding the decoration fields of a [DASTableRow].
+/// Represents the decoration of a column of the [DASTable].
 @immutable
 class DASTableColumnDecoration {
   const DASTableColumnDecoration({
     this.color,
     this.border,
-    this.borderRadius,
   });
 
   /// The background color of this column. This is overridden by specific row background colors.
   final Color? color;
-
-  /// The radius of the border of this column.
-  ///
-  /// The radii will be overridden by more specific row border radii.
-  ///
-  /// The radii will only be applied to the edge cells (top and bottom) of the column.
-  final BorderRadius? borderRadius;
 
   /// The sides of the border of this column.
   ///
@@ -80,12 +72,10 @@ class DASTableColumnDecoration {
 
   DASTableColumnDecoration copyWith({
     Border? border,
-    BorderRadius? borderRadius,
     Color? color,
   }) {
     return DASTableColumnDecoration(
       border: border ?? this.border,
-      borderRadius: borderRadius ?? this.borderRadius,
       color: color ?? this.color,
     );
   }

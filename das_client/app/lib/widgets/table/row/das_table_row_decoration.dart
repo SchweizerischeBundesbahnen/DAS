@@ -8,18 +8,10 @@ class DASTableRowDecoration {
   const DASTableRowDecoration({
     this.color,
     this.border,
-    this.borderRadius,
   });
 
   /// The background color of this row. This is overridden by specific cell background colors.
   final Color? color;
-
-  /// The radius of the border of this row.
-  ///
-  /// The radii will be overridden by more specific cell border radii.
-  ///
-  /// The radii will only be applied to the edge cells of the row.
-  final BorderRadius? borderRadius;
 
   /// The sides of the border of this column.
   ///
@@ -30,12 +22,10 @@ class DASTableRowDecoration {
 
   DASTableRowDecoration copyWith({
     Border? border,
-    BorderRadius? borderRadius,
     Color? color,
   }) {
     return DASTableRowDecoration(
       border: border ?? this.border,
-      borderRadius: borderRadius ?? this.borderRadius,
       color: color ?? this.color,
     );
   }

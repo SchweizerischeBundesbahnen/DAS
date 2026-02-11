@@ -325,12 +325,6 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
       top: isShortTermChangeStart ? borderSide.copyWith(width: 1) : BorderSide.none,
       bottom: isShortTermChangeEnd ? borderSide.copyWith(width: 1) : BorderSide.none,
     );
-    final borderRadius = BorderRadius.only(
-      topLeft: isShortTermChangeStart ? Radius.circular(SBBSpacing.xSmall) : Radius.zero,
-      topRight: isShortTermChangeStart ? Radius.circular(SBBSpacing.xSmall) : Radius.zero,
-      bottomLeft: isShortTermChangeEnd ? Radius.circular(SBBSpacing.xSmall) : Radius.zero,
-      bottomRight: isShortTermChangeEnd ? Radius.circular(SBBSpacing.xSmall) : Radius.zero,
-    );
 
     return decoration?.copyWith(border: border) ?? DASTableRowDecoration(border: border);
   }

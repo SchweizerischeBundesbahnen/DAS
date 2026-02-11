@@ -471,7 +471,6 @@ class _CellRowState extends State<_CellRow> {
         final tableThemeData = DASTableTheme.of(context)?.data;
         final effectiveAlignment = cell.alignment ?? column.alignment;
         Border? effectiveBorder;
-        BorderRadius? effectiveBorderRadius;
 
         // markAsDeleted border is painted stacked on top of row
         if (!row.markAsDeleted) {
@@ -485,18 +484,7 @@ class _CellRowState extends State<_CellRow> {
           if (columnBorder != null) effectiveBorder = columnBorder.override(effectiveBorder);
           if (rowBorder != null) effectiveBorder = rowBorder.override(effectiveBorder);
           if (cellBorder != null) effectiveBorder = cellBorder.override(effectiveBorder);
-
-          final defaultBorderRadius = BorderRadius.zero;
-          final columnBorderRadius = column.decoration?.toBorderRadius(cellPositionInTable: cellPositionInTable);
-          final rowBorderRadius = row.decoration?.toBorderRadius(cellPositionInTable: cellPositionInTable);
-          final cellBorderRadius = cell.decoration?.borderRadius;
-
-          effectiveBorderRadius = defaultBorderRadius;
-          if (columnBorderRadius != null) effectiveBorderRadius = columnBorderRadius.override(effectiveBorderRadius);
-          if (rowBorderRadius != null) effectiveBorderRadius = rowBorderRadius.override(effectiveBorderRadius);
-          if (cellBorderRadius != null) effectiveBorderRadius = cellBorderRadius.override(effectiveBorderRadius);
         }
-
         final effectiveBackgroundColor =
             cell.decoration?.color ?? row.decoration?.color ?? column.decoration?.color ?? tableThemeData?.dataRowColor;
 
@@ -509,7 +497,6 @@ class _CellRowState extends State<_CellRow> {
               onTap: cell.onTap,
               child: Container(
                 decoration: BoxDecoration(
-                  borderRadius: effectiveBorderRadius,
                   border: effectiveBorder,
                   color: effectiveBackgroundColor,
                 ),
@@ -584,15 +571,6 @@ extension _ColumnDecorationExtension on DASTableColumnDecoration {
       bottom: cellPositionInTable.y == 1 ? border?.bottom : BorderSide.none,
     );
   }
-
-  BorderRadius? toBorderRadius({required Alignment cellPositionInTable}) {
-    return borderRadius?.copyWith(
-      topLeft: cellPositionInTable.y == -1 ? borderRadius?.topLeft : Radius.zero,
-      topRight: cellPositionInTable.y == -1 ? borderRadius?.topRight : Radius.zero,
-      bottomLeft: cellPositionInTable.y == 1 ? borderRadius?.bottomLeft : Radius.zero,
-      bottomRight: cellPositionInTable.y == 1 ? borderRadius?.bottomRight : Radius.zero,
-    );
-  }
 }
 
 extension _RowDecorationExtension on DASTableRowDecoration {
@@ -600,27 +578,6 @@ extension _RowDecorationExtension on DASTableRowDecoration {
     return border?.copyWith(
       left: cellPositionInTable.x == -1 ? border?.left : BorderSide.none,
       right: cellPositionInTable.x == 1 ? border?.right : BorderSide.none,
-    );
-  }
-
-  BorderRadius? toBorderRadius({required Alignment cellPositionInTable}) {
-    return borderRadius?.copyWith(
-      topLeft: cellPositionInTable.x == -1 ? borderRadius?.topLeft : Radius.zero,
-      bottomLeft: cellPositionInTable.x == -1 ? borderRadius?.bottomLeft : Radius.zero,
-      topRight: cellPositionInTable.x == 1 ? borderRadius?.topRight : Radius.zero,
-      bottomRight: cellPositionInTable.x == 1 ? borderRadius?.bottomRight : Radius.zero,
-    );
-  }
-}
-
-extension _BorderRadiusExtension on BorderRadius {
-  BorderRadius override(BorderRadius? other) {
-    if (other == null) return this;
-    return other.copyWith(
-      topLeft: topLeft != Radius.zero ? topLeft : null,
-      topRight: topRight != Radius.zero ? topRight : null,
-      bottomLeft: bottomLeft != Radius.zero ? bottomLeft : null,
-      bottomRight: bottomRight != Radius.zero ? bottomRight : null,
     );
   }
 }

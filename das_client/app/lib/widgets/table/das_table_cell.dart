@@ -62,11 +62,9 @@ class DASTableCellDecoration {
   const DASTableCellDecoration({
     this.color,
     this.border,
-    this.borderRadius,
   });
 
   final Color? color;
-  final BorderRadius? borderRadius;
   final Border? border;
 
   DASTableCellDecoration copyWith({
@@ -76,7 +74,6 @@ class DASTableCellDecoration {
   }) {
     return DASTableCellDecoration(
       border: border ?? this.border,
-      borderRadius: borderRadius ?? this.borderRadius,
       color: color ?? this.color,
     );
   }
