@@ -1,9 +1,11 @@
 import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/brightness/brightness_modal_sheet.dart';
 import 'package:app/di/di.dart';
+import 'package:app/pages/journey/journey_screen/header/widgets/animated_main_headerbox.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/chronograph_header_box.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/journey_identifier_header_box.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/main_header_box.dart';
+import 'package:app/pages/journey/journey_screen/header/widgets/main_header_box_flap.dart';
 import 'package:app/pages/journey/journey_screen/journey_overview.dart';
 import 'package:app/widgets/extended_header_container.dart';
 import 'package:flutter/material.dart';
@@ -45,9 +47,18 @@ class _HeaderState extends State<Header> {
           padding: const EdgeInsets.all(JourneyOverview.horizontalPadding).copyWith(top: 0),
           child: Row(
             spacing: SBBSpacing.xSmall,
+            crossAxisAlignment: .start,
             children: [
               JourneyIdentifierHeaderBox(),
-              Expanded(child: MainHeaderBox()),
+              Expanded(
+                child: AnimatedMainHeaderBox(
+                  showFlap: true,
+                  flap: ShortTermChangeHeaderBoxFlap(child: Text('Hello')),
+                  mainContent: MainHeaderBox(),
+                  mainContentHeight: MainHeaderBox.height,
+                  flapHeight: ShortTermChangeHeaderBoxFlap.height,
+                ),
+              ),
               GestureDetector(
                 onDoubleTap: _doubleTap,
                 behavior: HitTestBehavior.translucent,
