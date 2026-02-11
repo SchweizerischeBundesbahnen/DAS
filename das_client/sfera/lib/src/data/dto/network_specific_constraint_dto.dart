@@ -13,7 +13,7 @@ class NetworkSpecificConstraintDto extends NspDto {
     String? value,
   }) {
     final groupName = children?.where((it) => it.type == NspDto.groupNameElement).firstOrNull;
-    if (groupName?.value == ParallelAsrConstraintDto.elementType) {
+    if (groupName?.value == ParallelAsrConstraintDto.groupNameValue) {
       return ParallelAsrConstraintDto(attributes: attributes, children: children, value: value);
     }
     return NetworkSpecificConstraintDto(attributes: attributes, children: children, value: value);

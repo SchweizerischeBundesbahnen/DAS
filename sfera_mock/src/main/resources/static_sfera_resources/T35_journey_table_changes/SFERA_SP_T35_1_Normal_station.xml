@@ -1,0 +1,631 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
+                SP_ID="T35_1_Normal_station" SP_VersionMajor="1" SP_VersionMinor="4" SP_Length="800" SP_Status="Valid">
+    <SP_Zone>
+        <IM_ID>1285</IM_ID>
+    </SP_Zone>
+    <SP_Points>
+        <TimingPoint TP_ID="Normal_station" location="100">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>00100</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+        <TimingPoint TP_ID="Property_Updated" location="300">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>00300</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+        <TimingPoint TP_ID="Line_Speed_Updated" location="500">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>00500</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+        <TimingPoint TP_ID="Station_Speed_Updated" location="700">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>00700</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+        <TimingPoint TP_ID="50_Days_ago" location="900">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>00900</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+        <Signal>
+            <Signal_ID signal_ID_Physical="NS" location="200"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="NS"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="C1" location="400"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="C1"/>
+            <Signal_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>modification</NSP_GroupName>
+                <NetworkSpecificParameter name="lastModificationType" value="updated" />
+                <NetworkSpecificParameter name="lastModificationDate" value="2050-01-01" />
+            </Signal_NSPs>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="D1" location="600"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="D1"/>
+            <Signal_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>modification</NSP_GroupName>
+                <NetworkSpecificParameter name="lastModificationType" value="deleted" />
+                <NetworkSpecificParameter name="lastModificationDate" value="2050-01-01" />
+            </Signal_NSPs>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="D1" location="800"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="C2"/>
+            <Signal_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>modification</NSP_GroupName>
+                <NetworkSpecificParameter name="lastModificationType" value="updated" />
+                <NetworkSpecificParameter name="lastModificationDate" value="2024-01-01" />
+            </Signal_NSPs>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="D2" location="940"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="D2"/>
+            <Signal_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>modification</NSP_GroupName>
+                <NetworkSpecificParameter name="lastModificationType" value="deleted" />
+                <NetworkSpecificParameter name="lastModificationDate" value="2024-01-01" />
+            </Signal_NSPs>
+        </Signal>
+        <NetworkSpecificPoint location="150" identifier="871EC7BF49524D868B0D6B6F67544EDD">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>curvePoint</NSP_GroupName>
+            <NetworkSpecificParameter name="curvePointType" value="begin"/>
+            <NetworkSpecificParameter name="curveType" value="stationExitCurve"/>
+            <NetworkSpecificParameter name="xmlCurveSpeed" value="
+                &lt;curveSpeed &gt;
+					&lt;speeds&gt;
+                        &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;&quot; speed=&quot;70&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;&quot; speed=&quot;65&quot;/&gt;
+						&lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;&quot; speed=&quot;65&quot;/&gt;
+					&lt;/speeds&gt;
+                &lt;/curveSpeed&gt;
+            "/>
+        </NetworkSpecificPoint>
+        <NetworkSpecificPoint location="160">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>newLineSpeed</NSP_GroupName>
+            <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+				&lt;lineSpeed&gt;
+					&lt;speeds&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;60&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;60&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;60&quot;/&gt;
+					&lt;/speeds&gt;
+				&lt;/lineSpeed&gt;
+			"/>
+        </NetworkSpecificPoint>
+        <NetworkSpecificPoint location="170">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>protectionSection</NSP_GroupName>
+            <NetworkSpecificParameter name="lengthType" value="short"/>
+            <NetworkSpecificParameter name="facultative" value="true"/>
+        </NetworkSpecificPoint>
+        <NetworkSpecificPoint location="350" identifier="871EC7BF49524D868B0D6B6F67544EDD">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>curvePoint</NSP_GroupName>
+            <NetworkSpecificParameter name="curvePointType" value="begin"/>
+            <NetworkSpecificParameter name="curveType" value="stationExitCurve"/>
+            <NetworkSpecificParameter name="xmlCurveSpeed" value="
+                &lt;curveSpeed text=&quot;Kurve updated&quot;&gt;
+					&lt;speeds&gt;
+                        &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;&quot; speed=&quot;70&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;&quot; speed=&quot;65&quot;/&gt;
+						&lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;&quot; speed=&quot;65&quot;/&gt;
+					&lt;/speeds&gt;
+                &lt;/curveSpeed&gt;
+            "/>
+            <NetworkSpecificParameter name="lastModificationType" value="updated" />
+            <NetworkSpecificParameter name="lastModificationDate" value="2050-01-01" />
+        </NetworkSpecificPoint>
+        <NetworkSpecificPoint location="360">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>newLineSpeed</NSP_GroupName>
+            <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+				&lt;lineSpeed&gt;
+					&lt;speeds&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;60&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;60&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;60&quot;/&gt;
+					&lt;/speeds&gt;
+				&lt;/lineSpeed&gt;
+			"/>
+            <NetworkSpecificParameter name="lastModificationType" value="updated" />
+            <NetworkSpecificParameter name="lastModificationDate" value="2050-01-01" />
+        </NetworkSpecificPoint>
+        <NetworkSpecificPoint location="370">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>protectionSection</NSP_GroupName>
+            <NetworkSpecificParameter name="lengthType" value="short"/>
+            <NetworkSpecificParameter name="facultative" value="true"/>
+            <NetworkSpecificParameter name="lastModificationType" value="updated" />
+            <NetworkSpecificParameter name="lastModificationDate" value="2050-01-01" />
+        </NetworkSpecificPoint>
+        <NetworkSpecificPoint location="550" identifier="871EC7BF49524D868B0D6B6F67544EDD">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>curvePoint</NSP_GroupName>
+            <NetworkSpecificParameter name="curvePointType" value="begin"/>
+            <NetworkSpecificParameter name="curveType" value="stationExitCurve"/>
+            <NetworkSpecificParameter name="xmlCurveSpeed" value="
+                &lt;curveSpeed text=&quot;Kurve deleted&quot;&gt;
+					&lt;speeds&gt;
+                        &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;&quot; speed=&quot;70&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;&quot; speed=&quot;65&quot;/&gt;
+						&lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;&quot; speed=&quot;65&quot;/&gt;
+					&lt;/speeds&gt;
+                &lt;/curveSpeed&gt;
+            "/>
+            <NetworkSpecificParameter name="lastModificationType" value="deleted" />
+            <NetworkSpecificParameter name="lastModificationDate" value="2050-01-01" />
+        </NetworkSpecificPoint>
+        <NetworkSpecificPoint location="560">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>newLineSpeed</NSP_GroupName>
+            <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+				&lt;lineSpeed&gt;
+					&lt;speeds&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;60&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;60&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;60&quot;/&gt;
+					&lt;/speeds&gt;
+				&lt;/lineSpeed&gt;
+			"/>
+            <NetworkSpecificParameter name="lastModificationType" value="deleted" />
+            <NetworkSpecificParameter name="lastModificationDate" value="2050-01-01" />
+        </NetworkSpecificPoint>
+        <NetworkSpecificPoint location="570">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>protectionSection</NSP_GroupName>
+            <NetworkSpecificParameter name="lengthType" value="short"/>
+            <NetworkSpecificParameter name="facultative" value="true"/>
+            <NetworkSpecificParameter name="lastModificationType" value="deleted" />
+            <NetworkSpecificParameter name="lastModificationDate" value="2050-01-01" />
+        </NetworkSpecificPoint>
+        <NetworkSpecificPoint location="750" identifier="871EC7BF49524D868B0D6B6F67544EDD">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>curvePoint</NSP_GroupName>
+            <NetworkSpecificParameter name="curvePointType" value="begin"/>
+            <NetworkSpecificParameter name="curveType" value="stationExitCurve"/>
+            <NetworkSpecificParameter name="xmlCurveSpeed" value="
+                &lt;curveSpeed text=&quot;Kurve long time ago&quot;&gt;
+					&lt;speeds&gt;
+                        &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;&quot; speed=&quot;70&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;&quot; speed=&quot;65&quot;/&gt;
+						&lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;&quot; speed=&quot;65&quot;/&gt;
+					&lt;/speeds&gt;
+                &lt;/curveSpeed&gt;
+            "/>
+            <NetworkSpecificParameter name="lastModificationType" value="updated" />
+            <NetworkSpecificParameter name="lastModificationDate" value="2024-01-01" />
+        </NetworkSpecificPoint>
+        <NetworkSpecificPoint location="760">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>newLineSpeed</NSP_GroupName>
+            <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+				&lt;lineSpeed&gt;
+					&lt;speeds&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;60&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;60&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;60&quot;/&gt;
+					&lt;/speeds&gt;
+				&lt;/lineSpeed&gt;
+			"/>
+            <NetworkSpecificParameter name="lastModificationType" value="updated" />
+            <NetworkSpecificParameter name="lastModificationDate" value="2024-01-01" />
+        </NetworkSpecificPoint>
+        <NetworkSpecificPoint location="770">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>protectionSection</NSP_GroupName>
+            <NetworkSpecificParameter name="lengthType" value="short"/>
+            <NetworkSpecificParameter name="facultative" value="true"/>
+            <NetworkSpecificParameter name="lastModificationType" value="updated" />
+            <NetworkSpecificParameter name="lastModificationDate" value="2024-01-01" />
+        </NetworkSpecificPoint>
+        <NetworkSpecificPoint location="950" identifier="871EC7BF49524D868B0D6B6F67544EDD">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>curvePoint</NSP_GroupName>
+            <NetworkSpecificParameter name="curvePointType" value="begin"/>
+            <NetworkSpecificParameter name="curveType" value="stationExitCurve"/>
+            <NetworkSpecificParameter name="xmlCurveSpeed" value="
+                &lt;curveSpeed text=&quot;Kurve deleted long time ago&quot;&gt;
+					&lt;speeds&gt;
+                        &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;&quot; speed=&quot;70&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;&quot; speed=&quot;65&quot;/&gt;
+						&lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;&quot; speed=&quot;65&quot;/&gt;
+					&lt;/speeds&gt;
+                &lt;/curveSpeed&gt;
+            "/>
+            <NetworkSpecificParameter name="lastModificationType" value="deleted" />
+            <NetworkSpecificParameter name="lastModificationDate" value="2024-01-01" />
+        </NetworkSpecificPoint>
+        <NetworkSpecificPoint location="960">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>newLineSpeed</NSP_GroupName>
+            <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+				&lt;lineSpeed&gt;
+					&lt;speeds&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;60&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;60&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;60&quot;/&gt;
+					&lt;/speeds&gt;
+				&lt;/lineSpeed&gt;
+			"/>
+            <NetworkSpecificParameter name="lastModificationType" value="deleted" />
+            <NetworkSpecificParameter name="lastModificationDate" value="2024-01-01" />
+        </NetworkSpecificPoint>
+        <NetworkSpecificPoint location="970">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>protectionSection</NSP_GroupName>
+            <NetworkSpecificParameter name="lengthType" value="short"/>
+            <NetworkSpecificParameter name="facultative" value="true"/>
+            <NetworkSpecificParameter name="lastModificationType" value="deleted" />
+            <NetworkSpecificParameter name="lastModificationDate" value="2024-01-01" />
+        </NetworkSpecificPoint>
+    </SP_Points>
+    <SP_Areas>
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="100" endLocation="100"
+                          TAF_TAP_location_abbreviation="NS" TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>00100</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Normal station</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>newLineSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+                    &lt;lineSpeed&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;55&quot;/&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;60&quot;/&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;65&quot;/&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;70&quot;/&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;75&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;50&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;60&quot; speed=&quot;55&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;65&quot; speed=&quot;65&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;70&quot; speed=&quot;70&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;75&quot; speed=&quot;80&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;80&quot; speed=&quot;85&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;85&quot; speed=&quot;90&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;95&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;100&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;115&quot; speed=&quot;105&quot;/&gt;
+                    &lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;30&quot; speed=&quot;77&quot;/&gt;
+                    &lt;/lineSpeed&gt;
+                "/>
+            </TAF_TAP_Location_NSP>
+        </TAF_TAP_Location>
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="300" endLocation="300"
+                          TAF_TAP_location_abbreviation="PU" TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>00300</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Property Updated</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>newLineSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+                    &lt;lineSpeed&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;55&quot;/&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;60&quot;/&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;65&quot;/&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;70&quot;/&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;75&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;50&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;60&quot; speed=&quot;55&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;65&quot; speed=&quot;65&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;70&quot; speed=&quot;70&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;75&quot; speed=&quot;80&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;80&quot; speed=&quot;85&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;85&quot; speed=&quot;90&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;95&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;100&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;115&quot; speed=&quot;105&quot;/&gt;
+                    &lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;30&quot; speed=&quot;77&quot;/&gt;
+                    &lt;/lineSpeed&gt;
+                "/>
+            </TAF_TAP_Location_NSP>
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>stationProperty</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlStationProperty" value="
+				&lt;stationProperties&gt;
+					&lt;stationProperty text=&quot;&lt;i&gt;via Stammlinie&quot;&gt;
+					&lt;/stationProperty&gt;
+				&lt;/stationProperties&gt;
+				"/>
+                <NetworkSpecificParameter name="lastModificationType" value="updated" />
+                <NetworkSpecificParameter name="lastModificationDate" value="2050-01-01" />
+            </TAF_TAP_Location_NSP>
+        </TAF_TAP_Location>
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="500" endLocation="500"
+                          TAF_TAP_location_abbreviation="SU" TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>00500</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Line Speed Updated</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>newLineSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+                    &lt;lineSpeed&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;55&quot;/&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;60&quot;/&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;65&quot;/&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;70&quot;/&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;75&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;50&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;60&quot; speed=&quot;55&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;65&quot; speed=&quot;65&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;70&quot; speed=&quot;70&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;75&quot; speed=&quot;80&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;80&quot; speed=&quot;85&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;85&quot; speed=&quot;90&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;95&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;100&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;115&quot; speed=&quot;105&quot;/&gt;
+                    &lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;30&quot; speed=&quot;77&quot;/&gt;
+                    &lt;/lineSpeed&gt;
+                "/>
+                <NetworkSpecificParameter name="lastModificationType" value="updated" />
+                <NetworkSpecificParameter name="lastModificationDate" value="2050-01-01" />
+            </TAF_TAP_Location_NSP>
+        </TAF_TAP_Location>
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="700" endLocation="700"
+                          TAF_TAP_location_abbreviation="SSU" TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>00700</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Station Speed Updated</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>stationSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlStationSpeed" value="
+					&lt;stationSpeed&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;80/75&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;80/75&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;80/75&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;80/75&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;80/75&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;30&quot; speed=&quot;75/70&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;40&quot; speed=&quot;75/70&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;75/70&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;55&quot; speed=&quot;75/70&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;60&quot; speed=&quot;75/70&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;65&quot; speed=&quot;75/70&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;70&quot; speed=&quot;75/70&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;75&quot; speed=&quot;75/70&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;80&quot; speed=&quot;75/70&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;85&quot; speed=&quot;75/70&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;75/70&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;75/70&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;115&quot; speed=&quot;75/70&quot;/&gt;
+						&lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;30&quot; speed=&quot;75/70&quot;/&gt;
+					&lt;/stationSpeed&gt;
+				"/>
+                <NetworkSpecificParameter name="lastModificationType" value="updated" />
+                <NetworkSpecificParameter name="lastModificationDate" value="2050-01-01" />
+            </TAF_TAP_Location_NSP>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>newLineSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+                    &lt;lineSpeed&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;55&quot;/&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;60&quot;/&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;65&quot;/&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;70&quot;/&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;75&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;50&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;60&quot; speed=&quot;55&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;65&quot; speed=&quot;65&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;70&quot; speed=&quot;70&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;75&quot; speed=&quot;80&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;80&quot; speed=&quot;85&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;85&quot; speed=&quot;90&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;95&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;100&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;115&quot; speed=&quot;105&quot;/&gt;
+                    &lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;30&quot; speed=&quot;77&quot;/&gt;
+                    &lt;/lineSpeed&gt;
+                "/>
+            </TAF_TAP_Location_NSP>
+        </TAF_TAP_Location>
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="900" endLocation="900"
+                          TAF_TAP_location_abbreviation="DA" TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>00900</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>A long time ago</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>newLineSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+                    &lt;lineSpeed&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;55&quot;/&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;60&quot;/&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;65&quot;/&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;70&quot;/&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;75&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;50&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;60&quot; speed=&quot;55&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;65&quot; speed=&quot;65&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;70&quot; speed=&quot;70&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;75&quot; speed=&quot;80&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;80&quot; speed=&quot;85&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;85&quot; speed=&quot;90&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;95&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;100&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;115&quot; speed=&quot;105&quot;/&gt;
+                    &lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;30&quot; speed=&quot;77&quot;/&gt;
+                    &lt;/lineSpeed&gt;
+                "/>
+                <NetworkSpecificParameter name="lastModificationType" value="updated" />
+                <NetworkSpecificParameter name="lastModificationDate" value="2024-01-01" />
+            </TAF_TAP_Location_NSP>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>stationSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlStationSpeed" value="
+					&lt;stationSpeed&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;80/75&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;80/75&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;80/75&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;80/75&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;80/75&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;30&quot; speed=&quot;75/70&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;40&quot; speed=&quot;75/70&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;75/70&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;55&quot; speed=&quot;75/70&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;60&quot; speed=&quot;75/70&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;65&quot; speed=&quot;75/70&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;70&quot; speed=&quot;75/70&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;75&quot; speed=&quot;75/70&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;80&quot; speed=&quot;75/70&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;85&quot; speed=&quot;75/70&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;75/70&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;75/70&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;115&quot; speed=&quot;75/70&quot;/&gt;
+						&lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;30&quot; speed=&quot;75/70&quot;/&gt;
+					&lt;/stationSpeed&gt;
+				"/>
+                <NetworkSpecificParameter name="lastModificationType" value="updated" />
+                <NetworkSpecificParameter name="lastModificationDate" value="2024-01-01" />
+            </TAF_TAP_Location_NSP>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>stationProperty</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlStationProperty" value="
+				&lt;stationProperties&gt;
+					&lt;stationProperty text=&quot;&lt;i&gt;via Stammlinie&quot;&gt;
+					&lt;/stationProperty&gt;
+				&lt;/stationProperties&gt;
+				"/>
+                <NetworkSpecificParameter name="lastModificationType" value="updated" />
+                <NetworkSpecificParameter name="lastModificationDate" value="2024-01-01" />
+            </TAF_TAP_Location_NSP>
+        </TAF_TAP_Location>
+    </SP_Areas>
+    <SP_Characteristics>
+        <CurrentLimitation>
+            <CurrentLimitationStart maxCurValue="1023"/>
+            <CurrentLimitationChange maxCurValue="0" location="170"/>
+            <CurrentLimitationChange maxCurValue="1023" location="171"/>
+            <CurrentLimitationChange maxCurValue="0" location="370"/>
+            <CurrentLimitationChange maxCurValue="1023" location="371"/>
+            <CurrentLimitationChange maxCurValue="0" location="570"/>
+            <CurrentLimitationChange maxCurValue="1023" location="571"/>
+            <CurrentLimitationChange maxCurValue="0" location="770"/>
+            <CurrentLimitationChange maxCurValue="1023" location="771"/>
+            <CurrentLimitationChange maxCurValue="0" location="970"/>
+            <CurrentLimitationChange maxCurValue="1023" location="971"/>
+        </CurrentLimitation>
+    </SP_Characteristics>
+    <SP_ContextInformation>
+        <KilometreReferencePoint location="100">
+            <KM_Reference kmRef="1"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="150">
+            <KM_Reference kmRef="1.5"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="160">
+            <KM_Reference kmRef="1.6"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="170">
+            <KM_Reference kmRef="1.7"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="200">
+            <KM_Reference kmRef="2"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="300">
+            <KM_Reference kmRef="3"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="350">
+            <KM_Reference kmRef="3.5"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="360">
+            <KM_Reference kmRef="3.6"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="370">
+            <KM_Reference kmRef="3.7"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="400">
+            <KM_Reference kmRef="4"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="500">
+            <KM_Reference kmRef="5"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="500">
+            <KM_Reference kmRef="106.0"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="550">
+            <KM_Reference kmRef="105.5"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="560">
+            <KM_Reference kmRef="105.4"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="570">
+            <KM_Reference kmRef="105.3"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="600">
+            <KM_Reference kmRef="105"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="700">
+            <KM_Reference kmRef="103"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="750">
+            <KM_Reference kmRef="102.5"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="760">
+            <KM_Reference kmRef="102.4"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="770">
+            <KM_Reference kmRef="102.3"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="800">
+            <KM_Reference kmRef="101"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="900">
+            <KM_Reference kmRef="100"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="940">
+            <KM_Reference kmRef="99.6"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="950">
+            <KM_Reference kmRef="99.5"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="960">
+            <KM_Reference kmRef="99.4"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="970">
+            <KM_Reference kmRef="99.3"/>
+        </KilometreReferencePoint>
+    </SP_ContextInformation>
+</SegmentProfile>

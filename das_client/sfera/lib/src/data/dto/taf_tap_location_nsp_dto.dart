@@ -21,21 +21,21 @@ class TafTapLocationNspDto extends NspDto {
     String? value,
   }) {
     final groupName = children?.where((it) => it.type == NspDto.groupNameElement).firstOrNull;
-    if (groupName?.value == StationSpeedNspDto.elementName) {
+    if (groupName?.value == StationSpeedNspDto.groupNameValue) {
       return StationSpeedNspDto(attributes: attributes, children: children, value: value);
-    } else if (groupName?.value == NewLineSpeedTafTapLocationDto.elementName) {
+    } else if (groupName?.value == NewLineSpeedTafTapLocationDto.groupNameValue) {
       return NewLineSpeedTafTapLocationDto(attributes: attributes, children: children, value: value);
-    } else if (groupName?.value == LineFootNotesNspDto.elementName) {
+    } else if (groupName?.value == LineFootNotesNspDto.groupNameValue) {
       return LineFootNotesNspDto(attributes: attributes, children: children, value: value);
-    } else if (groupName?.value == OpFootNotesNspDto.elementName) {
+    } else if (groupName?.value == OpFootNotesNspDto.groupNameValue) {
       return OpFootNotesNspDto(attributes: attributes, children: children, value: value);
-    } else if (groupName?.value == StationPropertyNspDto.elementName) {
+    } else if (groupName?.value == StationPropertyNspDto.groupNameValue) {
       return StationPropertyNspDto(attributes: attributes, children: children, value: value);
-    } else if (groupName?.value == TafTapRouteTableDataNspDto.elementName) {
+    } else if (groupName?.value == TafTapRouteTableDataNspDto.groupNameValue) {
       return TafTapRouteTableDataNspDto(attributes: attributes, children: children, value: value);
-    } else if (groupName?.value?.startsWith(LocalRegulationNspDto.elementNameStart) == true) {
+    } else if (groupName?.value?.startsWith(LocalRegulationNspDto.groupNameValueStart) == true) {
       return LocalRegulationNspDto(attributes: attributes, children: children, value: value);
-    } else if (groupName?.value == DepartureAuthNspDto.elementName) {
+    } else if (groupName?.value == DepartureAuthNspDto.groupNameValue) {
       return DepartureAuthNspDto(attributes: attributes, children: children, value: value);
     }
     return TafTapLocationNspDto(attributes: attributes, children: children, value: value);

@@ -12,6 +12,7 @@ import 'package:app/pages/journey/journey_screen/widgets/table/cells/track_equip
 import 'package:app/pages/journey/journey_screen/widgets/table/column_definition.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/config/journey_config.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/service_point_row.dart';
+import 'package:app/widgets/modification_indicator.dart';
 import 'package:app/widgets/speed_display.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:app/widgets/table/das_table_row.dart';
@@ -79,6 +80,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
         ColumnDefinition.gradientUphill.index: gradientUphillCell(context),
         ColumnDefinition.gradientDownhill.index: gradientDownhillCell(context),
       },
+      markAsDeleted: data.isDeleted,
     );
   }
 
@@ -92,15 +94,20 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     final textStyle = (defaultTextStyle ?? sbbTextStyle.romanStyle.large).copyWith(color: textColor);
     return DASTableCell(
       color: specialCellColor,
-      child: Column(
-        mainAxisAlignment: .end,
-        crossAxisAlignment: .start,
-        children: [
-          Text(data.kilometre[0].toStringAsFixed(1), style: textStyle),
-          if (data.kilometre.length > 1) Text(data.kilometre[1].toStringAsFixed(1), style: textStyle),
-        ],
+      child: ModificationIndicator(
+        show: data.hasModificationUpdated,
+        offset: Offset(0, -SBBSpacing.small),
+        child: Column(
+          mainAxisAlignment: .end,
+          crossAxisAlignment: .start,
+          mainAxisSize: .min,
+          children: [
+            Text(data.kilometre[0].toStringAsFixed(1), style: textStyle),
+            if (data.kilometre.length > 1) Text(data.kilometre[1].toStringAsFixed(1), style: textStyle),
+          ],
+        ),
       ),
-      alignment: .centerLeft,
+      alignment: .bottomLeft,
     );
   }
 

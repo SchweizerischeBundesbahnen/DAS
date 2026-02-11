@@ -3,7 +3,7 @@ import 'package:sfera/src/data/dto/xml_graduated_speed_info_dto.dart';
 import 'package:sfera/src/data/dto/xml_station_speed_dto.dart';
 
 class StationSpeedNspDto extends TafTapLocationNspDto {
-  static const String elementName = 'stationSpeed';
+  static const String groupNameValue = 'stationSpeed';
 
   StationSpeedNspDto({super.type, super.attributes, super.children, super.value});
 

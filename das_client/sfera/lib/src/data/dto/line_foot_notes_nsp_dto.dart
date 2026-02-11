@@ -2,7 +2,7 @@ import 'package:sfera/src/data/dto/taf_tap_location_nsp_dto.dart';
 import 'package:sfera/src/data/dto/xml_line_foot_notes_dto.dart';
 
 class LineFootNotesNspDto extends TafTapLocationNspDto {
-  static const String elementName = 'lineFootNotes';
+  static const String groupNameValue = 'lineFootNotes';
 
   LineFootNotesNspDto({super.type, super.attributes, super.children, super.value});
 

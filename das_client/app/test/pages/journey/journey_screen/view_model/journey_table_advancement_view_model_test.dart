@@ -61,7 +61,7 @@ void main() {
         journeyTableViewModel: mockJourneyTableViewModel,
         positionStream: journeyPositionSubject.stream,
         scrollController: mockScrollController,
-        onAdvancementModeChanged: (model) {},
+        onAdvancementModeChanged: [],
       );
       testee.model.listen(modelRegister.add);
       testAsync = fakeAsync;

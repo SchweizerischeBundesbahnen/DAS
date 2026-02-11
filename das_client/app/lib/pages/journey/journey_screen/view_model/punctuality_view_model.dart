@@ -4,8 +4,11 @@ import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/punctuality_model.dart';
 import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
 import 'package:app/util/time_constants.dart';
+import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
+
+final _log = Logger('PunctualityViewModel');
 
 class PunctualityViewModel extends JourneyAwareViewModel {
   PunctualityViewModel({super.journeyTableViewModel}) {
@@ -55,9 +58,14 @@ class PunctualityViewModel extends JourneyAwareViewModel {
   }
 
   void _emitState() {
-    if (_isHiddenDueToNoUpdates || _delay == null) return _rxModel.add(PunctualityModel.hidden());
-    if (_isStale) return _rxModel.add(PunctualityModel.stale(delay: _delay!));
-    _rxModel.add(PunctualityModel.visible(delay: _delay!));
+    if (_isHiddenDueToNoUpdates || _delay == null) {
+      _rxModel.add(PunctualityModel.hidden());
+    } else if (_isStale) {
+      _rxModel.add(PunctualityModel.stale(delay: _delay!));
+    } else {
+      _rxModel.add(PunctualityModel.visible(delay: _delay!));
+    }
+    _log.fine('Punctuality state changed to: ${_rxModel.value}');
   }
 
   void _updateDelayRelatedStates(Delay? delay) {

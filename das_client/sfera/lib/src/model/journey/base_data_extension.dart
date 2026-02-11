@@ -199,4 +199,15 @@ extension BaseDataExtension on Iterable<BaseData> {
 
     return resultList;
   }
+
+  Iterable<BaseData> hideJourneyPointsThatShouldNotBeDisplayed() {
+    final List<BaseData> resultList = toList();
+    for (final data in this) {
+      if (data is JourneyPoint && data.shouldHide) {
+        resultList.remove(data);
+      }
+    }
+
+    return resultList;
+  }
 }

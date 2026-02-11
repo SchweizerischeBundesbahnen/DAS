@@ -78,6 +78,8 @@ dependencies:
   skeletonizer: ^2.1.2
   # https://pub.dev/packages/appcheck
   appcheck: ^1.7.0
+  # https://pub.dev/packages/dotted_border
+  dotted_border: ^3.1.0
 
 dev_dependencies:
   integration_test:

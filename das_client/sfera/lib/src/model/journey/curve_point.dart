@@ -11,6 +11,8 @@ class CurvePoint extends JourneyPoint {
     this.curveType,
     this.text,
     this.comment,
+    super.lastModificationDate,
+    super.lastModificationType,
   }) : super(dataType: .curvePoint);
 
   final CurvePointType? curvePointType;

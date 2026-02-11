@@ -2,7 +2,7 @@ import 'package:sfera/src/data/dto/network_specific_point_dto.dart';
 import 'package:sfera/src/data/dto/xml_track_foot_notes_dto.dart';
 
 class TrackFootNotesNspDto extends NetworkSpecificPointDto {
-  static const String elementName = 'trackFootNotes';
+  static const String groupNameValue = 'trackFootNotes';
 
   TrackFootNotesNspDto({super.type, super.attributes, super.children, super.value});
 

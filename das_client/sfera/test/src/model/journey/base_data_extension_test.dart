@@ -525,4 +525,49 @@ void main() {
     expect(resultList[0].order, 0);
     expect(resultList[1].order, 400);
   });
+
+  test('Test hide journey points that should not be displayed hides correct journey points', () {
+    // GIVEN
+    final baseData = <BaseData>[
+      Signal(order: 0, kilometre: [0.0]),
+      CurvePoint(
+        order: 100,
+        kilometre: [1.0],
+        lastModificationDate: DateTime.now(),
+        lastModificationType: ModificationType.updated,
+      ),
+      ServicePoint(
+        name: 'abc',
+        abbreviation: 'abc',
+        order: 200,
+        kilometre: [2.0],
+        lastModificationDate: DateTime.now().add(Duration(days: -(JourneyPoint.showModificationDays + 1))),
+        lastModificationType: ModificationType.updated,
+      ),
+      ProtectionSection(
+        order: 300,
+        kilometre: [3.0],
+        isOptional: false,
+        isLong: false,
+        lastModificationDate: DateTime.now(),
+        lastModificationType: ModificationType.deleted,
+      ),
+      SpeedChange(
+        order: 400,
+        kilometre: [4.0],
+        lastModificationDate: DateTime.now().add(Duration(days: -(JourneyPoint.showModificationDays + 1))),
+        lastModificationType: ModificationType.deleted,
+      ),
+    ];
+
+    // WHEN
+    final resultList = baseData.hideJourneyPointsThatShouldNotBeDisplayed().toList();
+
+    // THEN
+    expect(resultList, hasLength(4));
+    expect(resultList[0], isA<Signal>());
+    expect(resultList[1], isA<CurvePoint>());
+    expect(resultList[2], isA<ServicePoint>());
+    expect(resultList[3], isA<ProtectionSection>());
+  });
 }

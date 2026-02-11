@@ -49,6 +49,7 @@ export 'package:sfera/src/model/journey/level_crossing_group.dart';
 export 'package:sfera/src/model/journey/line_foot_note.dart';
 export 'package:sfera/src/model/journey/local_regulation_section.dart';
 export 'package:sfera/src/model/journey/metadata.dart';
+export 'package:sfera/src/model/journey/modification_type.dart';
 export 'package:sfera/src/model/journey/op_foot_note.dart';
 export 'package:sfera/src/model/journey/protection_section.dart';
 export 'package:sfera/src/model/journey/segment.dart';

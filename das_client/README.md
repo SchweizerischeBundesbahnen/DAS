@@ -80,6 +80,7 @@ The app is separated into the following components:
 | **settings**          | Provides settings like enabled RU features                                             |
 | **sfera**             | SFERA api integration with local database for caching                                  |
 | **warnapp**           | Alogrithm to detect start and stop of train                                            |
+| **formation**         | Provides formation including brake-/loadslip information                               |
 
 ### Component Naming
 

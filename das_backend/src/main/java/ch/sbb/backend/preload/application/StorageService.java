@@ -10,6 +10,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
 import java.util.zip.ZipEntry;
@@ -23,7 +24,7 @@ public class StorageService {
     private static final String DIR_SP = "sp/";
     private static final String DIR_TC = "tc/";
 
-    private static final DateTimeFormatter FILENAME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH-mm-ssXX");
+    private static final DateTimeFormatter FILENAME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH-mm-ss'Z'");
 
     private final XmlHelper xmlHelper;
     private final S3Service s3Service;
@@ -54,7 +55,7 @@ public class StorageService {
 
     private String buildZipName() {
         OffsetDateTime nowOffset = OffsetDateTime.now();
-        return FILENAME_FORMATTER.format(nowOffset) + ".zip";
+        return FILENAME_FORMATTER.format(nowOffset.toInstant().atZone(ZoneOffset.UTC)) + ".zip";
     }
 
     private void writeJps(Set<JourneyProfile> jps, ZipOutputStream zos) throws IOException {

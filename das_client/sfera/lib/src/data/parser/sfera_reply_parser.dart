@@ -61,6 +61,7 @@ import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 import 'package:sfera/src/data/dto/signal_dto.dart';
 import 'package:sfera/src/data/dto/signal_function_dto.dart';
 import 'package:sfera/src/data/dto/signal_id_dto.dart';
+import 'package:sfera/src/data/dto/signal_nsp_dto.dart';
 import 'package:sfera/src/data/dto/signal_physical_characteristics_dto.dart';
 import 'package:sfera/src/data/dto/sp_areas_dto.dart';
 import 'package:sfera/src/data/dto/sp_characteristics_dto.dart';
@@ -340,6 +341,8 @@ class SferaReplyParser {
         return GeneralJpInformationNspDto(attributes: attributes, children: children, value: value);
       case AdditionalInfoDto.elementType:
         return AdditionalInfoDto(type: type, attributes: attributes, children: children, value: value);
+      case SignalNspDto.elementType:
+        return SignalNspDto(type: type, attributes: attributes, children: children, value: value);
       default:
         return SferaXmlElementDto(type: type, attributes: attributes, children: children, value: value);
     }
