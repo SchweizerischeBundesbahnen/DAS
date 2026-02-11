@@ -96,11 +96,13 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
       );
     }
 
+    final hasShortTermChange = metadata.shortTermChanges.appliesToOrder(data.order).isNotEmpty;
     final textColor = _isNextStop && specialCellColor == null ? SBBColors.white : null;
     final defaultTextStyle = DASTableTheme.of(context)?.data.dataTextStyle;
     final textStyle = (defaultTextStyle ?? sbbTextStyle.romanStyle.large).copyWith(color: textColor);
     return DASTableCell(
       decoration: DASTableCellDecoration(color: specialCellColor),
+      padding: hasShortTermChange ? EdgeInsets.all(SBBSpacing.xSmall).copyWith(left: SBBSpacing.small) : null,
       child: ModificationIndicator(
         show: data.hasModificationUpdated,
         offset: Offset(0, -SBBSpacing.small),
