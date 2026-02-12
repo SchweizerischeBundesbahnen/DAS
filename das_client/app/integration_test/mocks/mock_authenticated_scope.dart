@@ -5,8 +5,10 @@ import 'package:app/di/scopes/authenticated_scope.dart';
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:formation/component.dart';
 import 'package:logging/logging.dart';
+import 'package:preload/component.dart';
 
 import 'mock_formation_repository.dart';
+import 'mock_preload_repository.dart';
 import 'mock_ru_feature_provider.dart';
 
 final _log = Logger('MockAuthenticatedScope');
@@ -45,6 +47,6 @@ class MockAuthenticatedScope extends AuthenticatedScope {
   }
 
   void _registerMockPreloadRepository() {
-    getIt.registerSingleton<FormationRepository>(MockFormationRepository());
+    getIt.registerSingleton<PreloadRepository>(MockPreloadRepository());
   }
 }
