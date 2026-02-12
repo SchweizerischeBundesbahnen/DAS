@@ -8,7 +8,7 @@ sealed class ShortTermChange extends Segment {
     required this.startData,
   }) : super(startOrder: startOrder, endOrder: endOrder);
 
-  final BaseData startData;
+  final ServicePoint startData;
 
   @override
   bool operator ==(Object other) {

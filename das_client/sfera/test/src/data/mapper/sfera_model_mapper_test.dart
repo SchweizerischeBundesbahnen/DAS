@@ -1970,20 +1970,21 @@ void main() {
     expect(journey.valid, true);
 
     final shortTermChanges = journey.metadata.shortTermChanges.toList(growable: false);
+    final servicePoints = journey.data.whereType<ServicePoint>().toList(growable: false);
     expect(shortTermChanges, hasLength(5));
     expect(
       shortTermChanges[0],
-      equals(EndDestinationChange(startOrder: 1600, endOrder: 1600, startData: journey.data[20])),
+      equals(EndDestinationChange(startOrder: 1600, endOrder: 1600, startData: servicePoints[10])),
     );
     expect(
       shortTermChanges[1],
-      equals(EndDestinationChange(startOrder: 2000, endOrder: 2000, startData: journey.data[28])),
+      equals(EndDestinationChange(startOrder: 2000, endOrder: 2000, startData: servicePoints[14])),
     );
-    expect(shortTermChanges[2], equals(Pass2StopChange(startOrder: 700, endOrder: 700, startData: journey.data[6])));
-    expect(shortTermChanges[3], equals(Stop2PassChange(startOrder: 1200, endOrder: 1200, startData: journey.data[12])));
+    expect(shortTermChanges[2], equals(Pass2StopChange(startOrder: 700, endOrder: 700, startData: servicePoints[5])));
+    expect(shortTermChanges[3], equals(Stop2PassChange(startOrder: 1200, endOrder: 1200, startData: servicePoints[8])));
     expect(
       shortTermChanges[4],
-      equals(TrainRunReroutingChange(startOrder: 1500, endOrder: 1700, startData: journey.data[18])),
+      equals(TrainRunReroutingChange(startOrder: 1500, endOrder: 1700, startData: servicePoints[17])),
     );
   });
 }
