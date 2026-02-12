@@ -120,6 +120,8 @@ extension AuthenticatedScopeExtension on GetIt {
       return SferaComponent.createSferaRemoteRepo(
         mqttService: DI.get(),
         sferaAuthProvider: DI.get(),
+        localRepo: DI.get(),
+        connectivityManager: DI.get(),
         deviceId: deviceId,
       );
     }

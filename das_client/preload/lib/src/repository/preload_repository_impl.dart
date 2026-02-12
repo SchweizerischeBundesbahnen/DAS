@@ -196,7 +196,6 @@ class PreloadRepositoryImpl implements PreloadRepository {
   Future<void> _emit([List<S3File>? files]) async {
     final details = await _gatherDetails(files);
     _rxDetails.add(details);
-    //_rxDetails.add(_dummyData());
   }
 
   PreloadStatus _status() {
@@ -219,63 +218,5 @@ class PreloadRepositoryImpl implements PreloadRepository {
     _databaseSubscription?.cancel();
     _rxDetails.close();
     _syncTimer?.cancel();
-  }
-
-  PreloadDetails _dummyData() {
-    return PreloadDetails(
-      files: [
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag1', size: 1024, status: S3FileSyncStatus.initial),
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag1', size: 1024, status: S3FileSyncStatus.initial),
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag1', size: 1024, status: S3FileSyncStatus.initial),
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag1', size: 1024, status: S3FileSyncStatus.initial),
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag1', size: 1024, status: S3FileSyncStatus.initial),
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag1', size: 1024, status: S3FileSyncStatus.initial),
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag1', size: 1024, status: S3FileSyncStatus.initial),
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag1', size: 1024, status: S3FileSyncStatus.initial),
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag1', size: 1024, status: S3FileSyncStatus.initial),
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag1', size: 1024, status: S3FileSyncStatus.initial),
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag1', size: 1024, status: S3FileSyncStatus.initial),
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag1', size: 1024, status: S3FileSyncStatus.initial),
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag1', size: 1024, status: S3FileSyncStatus.initial),
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag1', size: 1024, status: S3FileSyncStatus.initial),
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag1', size: 1024, status: S3FileSyncStatus.initial),
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag1', size: 1024, status: S3FileSyncStatus.initial),
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag1', size: 1024, status: S3FileSyncStatus.initial),
-        S3File(name: '2026-02-10T18-35-36Z.zip', eTag: 'etag2', size: 2048, status: S3FileSyncStatus.error),
-        S3File(name: '2026-02-10T18-35-36Z.zip', eTag: 'etag2', size: 2048, status: S3FileSyncStatus.error),
-        S3File(name: '2026-02-10T17-35-36Z.zip', eTag: 'etag3', size: 4096, status: S3FileSyncStatus.corrupted),
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag4', size: 8192, status: S3FileSyncStatus.downloaded),
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag4', size: 8192, status: S3FileSyncStatus.downloaded),
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag4', size: 8192, status: S3FileSyncStatus.downloaded),
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag4', size: 8192, status: S3FileSyncStatus.downloaded),
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag4', size: 8192, status: S3FileSyncStatus.downloaded),
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag4', size: 8192, status: S3FileSyncStatus.downloaded),
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag4', size: 8192, status: S3FileSyncStatus.downloaded),
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag4', size: 8192, status: S3FileSyncStatus.downloaded),
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag4', size: 8192, status: S3FileSyncStatus.downloaded),
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag4', size: 8192, status: S3FileSyncStatus.downloaded),
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag4', size: 8192, status: S3FileSyncStatus.downloaded),
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag4', size: 8192, status: S3FileSyncStatus.downloaded),
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag4', size: 8192, status: S3FileSyncStatus.downloaded),
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag4', size: 8192, status: S3FileSyncStatus.downloaded),
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag4', size: 8192, status: S3FileSyncStatus.downloaded),
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag4', size: 8192, status: S3FileSyncStatus.downloaded),
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag4', size: 8192, status: S3FileSyncStatus.downloaded),
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag4', size: 8192, status: S3FileSyncStatus.downloaded),
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag4', size: 8192, status: S3FileSyncStatus.downloaded),
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag4', size: 8192, status: S3FileSyncStatus.downloaded),
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag4', size: 8192, status: S3FileSyncStatus.downloaded),
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag4', size: 8192, status: S3FileSyncStatus.downloaded),
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag4', size: 8192, status: S3FileSyncStatus.downloaded),
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag4', size: 8192, status: S3FileSyncStatus.downloaded),
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag4', size: 8192, status: S3FileSyncStatus.downloaded),
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag4', size: 8192, status: S3FileSyncStatus.downloaded),
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag4', size: 8192, status: S3FileSyncStatus.downloaded),
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag4', size: 8192, status: S3FileSyncStatus.downloaded),
-        S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag4', size: 8192, status: S3FileSyncStatus.downloaded),
-      ],
-      status: PreloadStatus.running,
-      metrics: DbMetrics(jpCount: 41, spCount: 205, tcCount: 34),
-    );
   }
 }

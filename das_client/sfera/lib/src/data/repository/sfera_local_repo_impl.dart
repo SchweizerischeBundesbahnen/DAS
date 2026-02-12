@@ -2,6 +2,7 @@ import 'package:logging/logging.dart';
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
+import 'package:sfera/src/data/local/drift_local_database_service.dart';
 import 'package:sfera/src/data/local/sfera_local_database_service.dart';
 import 'package:sfera/src/data/local/tables/journey_profile_table.dart';
 import 'package:sfera/src/data/local/tables/segment_profile_table.dart';
@@ -22,21 +23,36 @@ class SferaLocalRepoImpl implements SferaLocalRepo {
   @override
   Stream<Journey?> journeyStream({required String company, required String trainNumber, required DateTime startDate}) {
     final date = DateTime(startDate.year, startDate.month, startDate.day);
-    return _databaseService.observeJourneyProfile(company, trainNumber, date).asyncMap((entity) async {
-      if (entity == null) {
-        return Future.value(null);
-      }
+    return _databaseService
+        .observeJourneyProfile(company, trainNumber, date)
+        .asyncMap((entity) => _loadAndMapJourney(entity));
+  }
 
-      final journeyProfile = entity.toDomain();
-      final segmentProfiles = await _loadSegmentProfiles(journeyProfile);
-      final trainCharacteristics = await _loadTrainCharacteristics(journeyProfile);
+  @override
+  Future<Journey?> getJourney({
+    required String company,
+    required String trainNumber,
+    required DateTime startDate,
+  }) async {
+    final date = DateTime(startDate.year, startDate.month, startDate.day);
+    final entity = await _databaseService.findJourneyProfile(company, trainNumber, date);
+    return _loadAndMapJourney(entity);
+  }
 
-      return SferaModelMapper.mapToJourney(
-        journeyProfile: journeyProfile,
-        segmentProfiles: segmentProfiles,
-        trainCharacteristics: trainCharacteristics,
-      );
-    });
+  Future<Journey?> _loadAndMapJourney(JourneyProfileTableData? entity) async {
+    if (entity == null) {
+      return Future.value(null);
+    }
+
+    final journeyProfile = entity.toDomain();
+    final segmentProfiles = await _loadSegmentProfiles(journeyProfile);
+    final trainCharacteristics = await _loadTrainCharacteristics(journeyProfile);
+
+    return SferaModelMapper.mapToJourney(
+      journeyProfile: journeyProfile,
+      segmentProfiles: segmentProfiles,
+      trainCharacteristics: trainCharacteristics,
+    );
   }
 
   Future<List<TrainCharacteristicsDto>> _loadTrainCharacteristics(JourneyProfileDto journeyProfile) async {

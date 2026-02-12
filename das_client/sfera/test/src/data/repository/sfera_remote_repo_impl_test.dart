@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:connectivity_x/component.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -18,6 +19,8 @@ import 'sfera_remote_repo_impl_test.mocks.dart';
   MockSpec<MqttService>(),
   MockSpec<SferaLocalDatabaseService>(),
   MockSpec<SferaAuthProvider>(),
+  MockSpec<SferaLocalRepo>(),
+  MockSpec<ConnectivityManager>(),
 ])
 void main() {
   final TrainIdentification trainId = TrainIdentification(
@@ -29,6 +32,8 @@ void main() {
   late MockMqttService mockMqttService;
   late MockSferaLocalDatabaseService mockLocalDatabaseRepository;
   late MockSferaAuthProvider mockSferaAuthProvider;
+  late MockSferaLocalRepo mockSferaLocalRepo;
+  late MockConnectivityManager mockConnectivityManager;
   late Subject<String> mqttSubject;
 
   String loadFile(String path) {
@@ -39,6 +44,8 @@ void main() {
     mockMqttService = MockMqttService();
     mockLocalDatabaseRepository = MockSferaLocalDatabaseService();
     mockSferaAuthProvider = MockSferaAuthProvider();
+    mockSferaLocalRepo = MockSferaLocalRepo();
+    mockConnectivityManager = MockConnectivityManager();
     mqttSubject = BehaviorSubject<String>();
 
     when(mockMqttService.messageStream).thenAnswer((_) => mqttSubject.stream);
@@ -47,6 +54,8 @@ void main() {
       mqttService: mockMqttService,
       localService: mockLocalDatabaseRepository,
       authProvider: mockSferaAuthProvider,
+      localRepo: mockSferaLocalRepo,
+      connectivityManager: mockConnectivityManager,
       deviceId: Uuid().v4(),
     );
   });

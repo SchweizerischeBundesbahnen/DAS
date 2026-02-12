@@ -1,3 +1,4 @@
+import 'package:connectivity_x/component.dart';
 import 'package:http_x/component.dart';
 import 'package:mqtt/component.dart';
 import 'package:sfera/src/data/api/sfera_auth_service.dart';
@@ -92,12 +93,16 @@ class SferaComponent {
     required MqttService mqttService,
     required SferaAuthProvider sferaAuthProvider,
     required String deviceId,
+    required SferaLocalRepo localRepo,
+    required ConnectivityManager connectivityManager,
   }) {
     final localDatabaseService = DriftLocalDatabaseService.instance;
     return SferaRemoteRepoImpl(
       mqttService: mqttService,
       localService: localDatabaseService,
       authProvider: sferaAuthProvider,
+      localRepo: localRepo,
+      connectivityManager: connectivityManager,
       deviceId: deviceId,
     );
   }

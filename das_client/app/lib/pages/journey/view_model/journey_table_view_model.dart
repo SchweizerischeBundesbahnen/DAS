@@ -87,6 +87,7 @@ class JourneyTableViewModel {
     _stateSubscription?.cancel();
     _stateSubscription = _sferaRemoteRepo.stateStream.listen((state) {
       switch (state) {
+        case .offline:
         case .connected:
           WakelockPlus.enable();
           break;

@@ -7,6 +7,8 @@ abstract class SferaLocalRepo {
 
   Stream<Journey?> journeyStream({required String company, required String trainNumber, required DateTime startDate});
 
+  Future<Journey?> getJourney({required String company, required String trainNumber, required DateTime startDate});
+
   Future<int> cleanup();
 
   Future<bool> saveData(String data);
