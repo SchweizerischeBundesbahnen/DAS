@@ -35,6 +35,6 @@ class SettingsControllerTest {
             .andExpect(jsonPath("$.data[0].preload.bucketUrl").value("bucketUrl"))
             .andExpect(jsonPath("$.data[0].preload.accessKey").value("accessKey"))
             .andExpect(jsonPath("$.data[0].preload.accessSecret").value("accessSecret"));
-
+        // todo version
     }
 }
