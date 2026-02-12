@@ -263,33 +263,35 @@ void main() {
     expect(emitRegister[1], equals(ShortTermChangeModel.multipleShortTermChanges()));
   });
 
-  // test('model_whenSingleShortTermChangeAndPositionAfterRouteStart_thenIsSingleShortTermChangeForDuration', () async {
-  //   testAsync.run((_) async {
-  //     rxMockJourney.add(
-  //       Journey(
-  //         metadata: Metadata(shortTermChanges: [Stop2PassChange(startOrder: 0, endOrder: 0, startData: _stopA)]),
-  //         data: [_signalA, _stopA, _stopB, _pointC, _stopD],
-  //       ),
-  //     );
-  //     rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: _signalA));
-  //     await processStreams(fakeAsync: testAsync);
-  //   });
-  //
-  //   final expectedChange = ShortTermChangeModel.singleShortTermChange(
-  //     shortTermChangeType: ShortTermChangeType.stop2Pass,
-  //     servicePointName: _stopA.name,
-  //   );
-  //   expect(testee.modelValue, equals(expectedChange));
-  //   expect(emitRegister, hasLength(2));
-  //   expect(emitRegister.last, equals(expectedChange));
-  //
-  //   // elapse duration
-  //   testAsync.run((fakeAsync) {
-  //     fakeAsync.elapse(Duration(seconds: GetIt.I.get<TimeConstants>().newShortTermChangesDisplaySeconds + 1));
-  //     processStreams(fakeAsync: fakeAsync);
-  //   });
-  //
-  //   expect(testee.modelValue, equals(ShortTermChangeModel.noShortTermChanges()));
-  //   expect(emitRegister, hasLength(3));
-  // });
+  test('model_whenSingleShortTermChangeAndPositionAfterRouteStart_thenIsSingleShortTermChangeForDuration', () async {
+    testAsync.run((_) async {
+      rxMockJourney.add(
+        Journey(
+          metadata: Metadata(
+            shortTermChanges: [Stop2PassChange(startOrder: _pointC.order, endOrder: _pointC.order, startData: _pointC)],
+          ),
+          data: [_signalA, _stopA, _stopB, _pointC, _stopD],
+        ),
+      );
+      rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: _signalA));
+      await processStreams(fakeAsync: testAsync);
+    });
+
+    final expectedChange = ShortTermChangeModel.singleShortTermChange(
+      shortTermChangeType: ShortTermChangeType.stop2Pass,
+      servicePointName: _pointC.name,
+    );
+    expect(testee.modelValue, equals(expectedChange));
+    expect(emitRegister, hasLength(2));
+    expect(emitRegister.last, equals(expectedChange));
+
+    // elapse duration
+    testAsync.run((fakeAsync) {
+      fakeAsync.elapse(Duration(seconds: GetIt.I.get<TimeConstants>().newShortTermChangesDisplaySeconds + 1));
+      processStreams(fakeAsync: fakeAsync);
+    });
+
+    expect(testee.modelValue, equals(ShortTermChangeModel.noShortTermChanges()));
+    expect(emitRegister, hasLength(3));
+  });
 }

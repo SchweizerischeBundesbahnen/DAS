@@ -12,6 +12,12 @@
                 <teltsi_LocationPrimaryCode>00100</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
+        <TimingPoint TP_ID="Station1a" location="200">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>00200</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
         <TimingPoint TP_ID="Station2" location="300">
             <TAF_TAP_LocationReference>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
@@ -216,6 +222,15 @@
             </TAF_TAP_LocationIdent>
         </TAF_TAP_Location>
 
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="200" endLocation="200" TAF_TAP_location_abbreviation="1a"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>00200</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Station 1A</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="300" endLocation="300" TAF_TAP_location_abbreviation="2"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
@@ -244,7 +259,6 @@
 
 
         </TAF_TAP_Location>
-
 
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="900" endLocation="900" TAF_TAP_location_abbreviation="5"

@@ -21,6 +21,11 @@
         </TimingPointConstraints>
         <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
             <TimingPointReference>
+                <TP_ID_Reference TP_ID="Station1a"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
                 <TP_ID_Reference TP_ID="Station2"/>
             </TimingPointReference>
         </TimingPointConstraints>
