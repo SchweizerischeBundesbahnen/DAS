@@ -10,9 +10,9 @@ class PreloadStatusDisplay extends StatelessWidget {
   const PreloadStatusDisplay({super.key});
 
   static final _progressBarHeight = 20.0;
-  static final _downloadedColor = SBBColors.night;
-  static final _initialColor = SBBColors.sky;
-  static final _errorColor = SBBColors.violet;
+  static final downloadedColor = SBBColors.night;
+  static final initialColor = SBBColors.sky;
+  static final errorColor = SBBColors.violet;
 
   @override
   Widget build(BuildContext context) {
@@ -43,9 +43,9 @@ class PreloadStatusDisplay extends StatelessWidget {
         children: [
           if (preloadDetails != null) ...[
             if (preloadDetails.downloadedFilesCount > 0)
-              _progressSegment(preloadDetails.downloadedFilesCount, _downloadedColor),
-            if (preloadDetails.initialFilesCount > 0) _progressSegment(preloadDetails.initialFilesCount, _initialColor),
-            if (preloadDetails.errorFilesCount > 0) _progressSegment(preloadDetails.errorFilesCount, _errorColor),
+              _progressSegment(preloadDetails.downloadedFilesCount, downloadedColor),
+            if (preloadDetails.initialFilesCount > 0) _progressSegment(preloadDetails.initialFilesCount, initialColor),
+            if (preloadDetails.errorFilesCount > 0) _progressSegment(preloadDetails.errorFilesCount, errorColor),
           ],
           if (preloadDetails == null || preloadDetails.files.isEmpty)
             Expanded(
@@ -87,9 +87,9 @@ class PreloadStatusDisplay extends StatelessWidget {
   Widget _legend(BuildContext context) {
     return Column(
       children: [
-        _legendItem(_downloadedColor, context.l10n.w_preload_status_downloaded),
-        _legendItem(_initialColor, context.l10n.w_preload_status_initial),
-        _legendItem(_errorColor, context.l10n.w_preload_status_error),
+        _legendItem(downloadedColor, context.l10n.w_preload_status_downloaded),
+        _legendItem(initialColor, context.l10n.w_preload_status_initial),
+        _legendItem(errorColor, context.l10n.w_preload_status_error),
       ],
     );
   }

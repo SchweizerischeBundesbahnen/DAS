@@ -80,9 +80,14 @@ Finder findColoredRowCells({required FinderBase<Element> of, required Color colo
 }
 
 /// Verifies, that SBB is selected and loads train journey with [trainNumber]
-Future<void> loadJourney(WidgetTester tester, {required String trainNumber}) async {
-  // verify we have ru SBB selected.
-  expect(find.text(l10n.c_ru_sbb_p), findsOneWidget);
+Future<void> loadJourney(WidgetTester tester, {required String trainNumber, RailwayUndertaking? ru}) async {
+  if (ru != null) {
+    await tapElement(tester, find.text(l10n.p_train_selection_ru_description));
+    await tapElement(tester, find.byWidgetPredicate((widget) => widget is SBBRadioListItem && widget.value == ru));
+  } else {
+    // verify we have ru SBB selected.
+    expect(find.text(l10n.c_ru_sbb_p), findsOneWidget);
+  }
 
   final trainNumberText = findTextFieldByLabel(l10n.p_train_selection_trainnumber_description);
   expect(trainNumberText, findsOneWidget);
