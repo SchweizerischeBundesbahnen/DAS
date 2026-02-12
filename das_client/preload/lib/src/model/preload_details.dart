@@ -3,6 +3,8 @@ import 'package:preload/src/model/s3file.dart';
 import 'package:sfera/component.dart';
 
 class PreloadDetails {
+  static const dateFormatUtcPattern = 'yyyy-MM-dd\'T\'HH-mm-ss\'Z\'';
+
   PreloadDetails({
     required this.files,
     required this.status,
@@ -35,10 +37,10 @@ class PreloadDetails {
       files.where((f) => f.status == S3FileSyncStatus.downloaded).fold(0, (sum, file) => sum + file.size);
 
   DateTime? get lastUpdated {
-    final format = DateFormat('yyyy-MM-dd\'T\'HH-mm-ss\'Z\'');
+    final format = DateFormat(dateFormatUtcPattern);
     return files
         .where((f) => f.status == S3FileSyncStatus.downloaded)
-        .map((f) => format.tryParse(f.name.split('.').first))
+        .map((f) => format.tryParse(f.name.split('.').first, true))
         .fold<DateTime?>(null, (latest, fileDate) {
           if (fileDate != null) {
             return latest == null || fileDate.isAfter(latest) ? fileDate : latest;
