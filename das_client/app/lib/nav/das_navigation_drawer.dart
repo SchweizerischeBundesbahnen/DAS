@@ -2,6 +2,7 @@ import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/app_router.dart';
 import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
+import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/app_version_text.dart';
 import 'package:app/widgets/device_id_text.dart';
 import 'package:auto_route/auto_route.dart';
@@ -26,7 +27,7 @@ class DASNavigationDrawer extends StatelessWidget {
                   context,
                   icon: SBBIcons.route_circle_start_small,
                   title: context.l10n.w_navigation_drawer_fahrtinfo_title,
-                  route: isJourneySelected ? const JourneyRoute() : const JourneySelectionRoute(),
+                  route: isJourneySelected ? JourneyRoute() : const JourneySelectionRoute(),
                 ),
                 _navigationTile(
                   context,
@@ -49,7 +50,7 @@ class DASNavigationDrawer extends StatelessWidget {
               ],
             ),
           ),
-          _versionFooter(),
+          _versionFooter(context),
         ],
       ),
     );
@@ -87,15 +88,16 @@ class DASNavigationDrawer extends StatelessWidget {
     );
   }
 
-  Widget _versionFooter() {
-    return const Align(
+  Widget _versionFooter(BuildContext context) {
+    final textColor = ThemeUtil.getColor(context, SBBColors.granite, SBBColors.graphite);
+    return Align(
       alignment: .bottomCenter,
       child: Padding(
         padding: .all(SBBSpacing.medium),
         child: Column(
           children: [
-            AppVersionText(color: SBBColors.granite),
-            DeviceIdText(color: SBBColors.granite),
+            AppVersionText(color: textColor),
+            DeviceIdText(color: textColor),
           ],
         ),
       ),

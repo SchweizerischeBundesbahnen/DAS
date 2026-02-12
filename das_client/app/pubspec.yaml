@@ -14,16 +14,17 @@ dependencies:
     sdk: flutter
 
   # workspace packages
+  app_links_x: 1.0.0
   auth: 1.0.0
+  connectivity_x: 1.0.0
+  formation: 1.0.0
+  http_x: 1.0.0
+  local_regulations: 1.0.0
   logger: 1.0.0
   mqtt: 1.0.0
-  sfera: 1.0.0
-  http_x: 1.0.0
-  warnapp: 1.0.0
   settings: 1.0.0
-  connectivity_x: 1.0.0
-  local_regulations: 1.0.0
-  formation: 1.0.0
+  sfera: 1.0.0
+  warnapp: 1.0.0
 
   # https://pub.dev/packages/audioplayers
   audioplayers: ^6.5.1

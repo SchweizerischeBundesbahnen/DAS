@@ -38,6 +38,8 @@ class MockDASBaseScope extends DASBaseScope {
     _registerUserSettings();
     _registerMockConnectivityManager();
     getIt.registerLoginViewModel();
+    // TODO: maybe use mock manager to integration test links?
+    getIt.registerAppLinksManager();
 
     await getIt.allReady();
   }

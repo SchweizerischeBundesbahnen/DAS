@@ -1,4 +1,4 @@
-import 'package:app_links_x/src/train_journey/train_journey_link_data.dart';
+import 'package:app_links_x/component.dart';
 
 /// Processes all deep-links used to open DAS app.
 ///
@@ -6,5 +6,7 @@ import 'package:app_links_x/src/train_journey/train_journey_link_data.dart';
 abstract interface class AppLinksManager {
   const AppLinksManager._();
 
-  Stream<List<TrainJourneyLinkData>> get onTrainJourneyLink;
+  Stream<AppLinkIntent> get onAppLinkIntent;
+
+  void dispose();
 }

@@ -1,0 +1,38 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "ch.sbb.das.client",
+      "sha256_cert_fingerprints": [
+        "67:A8:A2:95:58:78:6F:1A:33:72:62:98:C7:E3:08:F4:A6:16:5C:95:42:1A:84:39:24:53:BE:43:A2:CC:EF:A5"
+      ]
+    }
+  },
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "ch.sbb.das.client.inte",
+      "sha256_cert_fingerprints": [
+        "96:A7:FB:78:70:EC:48:77:F4:6F:3F:55:71:FD:AF:F5:48:B9:7F:2E:6B:F2:AC:E4:E1:6C:39:8D:FB:19:2A:BC"
+      ]
+    }
+  },
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "ch.sbb.das.client.dev",
+      "sha256_cert_fingerprints": [
+        "4B:D5:94:06:64:CB:40:12:31:35:A1:B9:70:67:9B:D6:60:50:DC:FE:A8:F0:6E:A8:99:75:FE:84:10:A4:D9:AC"
+      ]
+    }
+  }
+]

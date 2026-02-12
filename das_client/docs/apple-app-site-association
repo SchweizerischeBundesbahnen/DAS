@@ -1,0 +1,18 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": [
+          "AH7XG99W66.ch.sbb.das.dev",
+          "AH7XG99W66.ch.sbb.das.inte",
+          "AH7XG99W66.ch.sbb.das"
+        ],
+        "components": [
+          {
+            "/": "/*"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -26,6 +26,14 @@ class JourneyNavigationViewModel {
 
   TrainIdentification? get _currentTrainId => _rxModel.value?.trainIdentification;
 
+  /// replaces the current navigation stack with [trainIds] where a connection will be established for the first train.
+  Future<void> replaceWith(Iterable<TrainIdentification> trainIds) async {
+    if (_trainIds.isNotEmpty) _sferaRemoteRepo.disconnect();
+    _trainIds.addAll(trainIds);
+
+    await _establishConnection(trainIds.first);
+  }
+
   Future<void> push(TrainIdentification trainId) async {
     if (_currentTrainId == trainId) return;
 
@@ -33,9 +41,7 @@ class JourneyNavigationViewModel {
 
     if (!_trainIds.contains(trainId)) _trainIds.add(trainId);
 
-    DASTableRowBuilder.clearRowKeys();
-    await _sferaRemoteRepo.connect(trainId);
-    _addToStream(trainId);
+    await _establishConnection(trainId);
   }
 
   Future<void> next() async {
@@ -44,11 +50,7 @@ class JourneyNavigationViewModel {
     if (_isOutOfTrainIdsRange(updatedIdx)) return;
 
     await _sferaRemoteRepo.disconnect();
-
-    final trainId = _trainIds[updatedIdx];
-    DASTableRowBuilder.clearRowKeys();
-    await _sferaRemoteRepo.connect(trainId);
-    _addToStream(trainId);
+    await _establishConnection(_trainIds[updatedIdx]);
   }
 
   Future<void> previous() async {
@@ -57,11 +59,7 @@ class JourneyNavigationViewModel {
     if (_isOutOfTrainIdsRange(updatedIdx)) return;
 
     await _sferaRemoteRepo.disconnect();
-
-    final trainId = _trainIds[updatedIdx];
-    DASTableRowBuilder.clearRowKeys();
-    await _sferaRemoteRepo.connect(trainId);
-    _addToStream(trainId);
+    await _establishConnection(_trainIds[updatedIdx]);
   }
 
   void dispose() {
@@ -71,6 +69,13 @@ class JourneyNavigationViewModel {
     _addToStream(null);
     _trainIds.clear();
     _rxModel.close();
+  }
+
+  Future<void> _establishConnection(TrainIdentification trainId) async {
+    _log.fine('Establish connection to $trainId');
+    DASTableRowBuilder.clearRowKeys();
+    await _sferaRemoteRepo.connect(trainId);
+    _addToStream(trainId);
   }
 
   void _reset() {

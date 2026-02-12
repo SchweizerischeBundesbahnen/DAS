@@ -15,7 +15,7 @@ import 'app_links_manager_impl_test.mocks.dart';
 @GenerateNiceMocks([MockSpec<AppLinks>()])
 void main() {
   late AppLinksManagerImpl testee;
-  late List<List<TrainJourneyLinkData>> emitRegister;
+  late List<AppLinkIntent> emitRegister;
   late StreamSubscription sub;
   late MockAppLinks mockAppLinks;
   late BehaviorSubject<Uri> mockStream;
@@ -27,8 +27,8 @@ void main() {
     when(mockAppLinks.getInitialLink()).thenAnswer((_) async => null);
 
     testee = AppLinksManagerImpl(appLinks: mockAppLinks);
-    emitRegister = <List<TrainJourneyLinkData>>[];
-    sub = testee.onTrainJourneyLink.listen(emitRegister.add);
+    emitRegister = <AppLinkIntent>[];
+    sub = testee.onAppLinkIntent.listen(emitRegister.add);
   });
 
   tearDown(() async {
@@ -41,18 +41,20 @@ void main() {
     // GIVEN
     final initialUri = _buildTrainJourneyUri(dataJson: _testDataJson);
     when(mockAppLinks.getInitialLink()).thenAnswer((_) async => initialUri);
-    final received = <List<TrainJourneyLinkData>>[];
+    final received = <AppLinkIntent>[];
 
     // WHEN
     // fresh instance for initial link check
     final instance = AppLinksManagerImpl(appLinks: mockAppLinks);
-    final sub = instance.onTrainJourneyLink.listen(received.add);
+    final sub = instance.onAppLinkIntent.listen(received.add);
     await pumpEventQueue();
 
     // THEN
-    expect(received.length, 1);
-    final linkData = received.first.first;
-    _checkDefaultLinkData(linkData);
+    expect(received.length, hasLength(1));
+    expect(received.first, isA<TrainJourneyIntent>());
+    final intent = received.first as TrainJourneyIntent;
+    expect(intent.journeys, hasLength(1));
+    _checkDefaultLinkData(intent.journeys.first);
 
     // DISPOSE
     await sub.cancel();
@@ -78,10 +80,16 @@ void main() {
     await pumpEventQueue();
 
     // THEN
-    expect(emitRegister.length, 2);
-    final linkData1 = emitRegister[0].first;
-    _checkDefaultLinkData(linkData1);
-    final linkData2 = emitRegister[1].first;
+    expect(emitRegister, hasLength(2));
+    expect(emitRegister[0], isA<TrainJourneyIntent>());
+    final intent1 = emitRegister[0] as TrainJourneyIntent;
+    expect(intent1.journeys, hasLength(1));
+    _checkDefaultLinkData(intent1.journeys.first);
+
+    expect(emitRegister[1], isA<TrainJourneyIntent>());
+    final intent2 = emitRegister[1] as TrainJourneyIntent;
+    expect(intent2.journeys, hasLength(1));
+    final linkData2 = intent2.journeys.first;
     expect(linkData2.company, '2185');
     expect(linkData2.operationalTrainNumber, '987654321');
     expect(linkData2.startDate, isNull);
@@ -105,9 +113,11 @@ void main() {
       await pumpEventQueue();
 
       // THEN
-      expect(emitRegister.length, 1);
-      final linkData = emitRegister.first.first;
-      _checkDefaultLinkData(linkData);
+      expect(emitRegister.length, hasLength(1));
+      expect(emitRegister.first, isA<TrainJourneyIntent>());
+      final intent = emitRegister.first as TrainJourneyIntent;
+      expect(intent.journeys, hasLength(1));
+      _checkDefaultLinkData(intent.journeys.first);
     },
   );
 

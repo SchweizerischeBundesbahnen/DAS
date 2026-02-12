@@ -1,8 +1,7 @@
 import 'dart:async';
 
 import 'package:app_links/app_links.dart';
-import 'package:app_links_x/src/app_links_manager.dart';
-import 'package:app_links_x/src/train_journey/train_journey_link_data.dart';
+import 'package:app_links_x/component.dart';
 import 'package:app_links_x/src/train_journey/train_journey_parser.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -17,7 +16,7 @@ class AppLinksManagerImpl implements AppLinksManager {
 
   final AppLinks _appLinks;
 
-  final _rxJourneys = BehaviorSubject<List<TrainJourneyLinkData>>();
+  final _rxAppLinkIntent = BehaviorSubject<AppLinkIntent>();
   StreamSubscription<Uri>? _linkSubscription;
 
   AppLinksManagerImpl({AppLinks? appLinks}) : _appLinks = appLinks ?? AppLinks() {
@@ -30,11 +29,12 @@ class AppLinksManagerImpl implements AppLinksManager {
   }
 
   @override
-  Stream<List<TrainJourneyLinkData>> get onTrainJourneyLink => _rxJourneys.stream;
+  Stream<AppLinkIntent> get onAppLinkIntent => _rxAppLinkIntent.stream;
 
+  @override
   void dispose() {
     _linkSubscription?.cancel();
-    _rxJourneys.close();
+    _rxAppLinkIntent.close();
   }
 
   Future<void> _checkInitialLink() async {
@@ -81,7 +81,8 @@ class AppLinksManagerImpl implements AppLinksManager {
     try {
       switch (page) {
         case TrainJourneyParser.page:
-          _rxJourneys.add(TrainJourneyParser.parse(uri));
+          final journeys = TrainJourneyParser.parse(uri);
+          _rxAppLinkIntent.add(TrainJourneyIntent(source: uri, journeys: journeys));
           break;
         default:
           _log.info('Deep-link page "$page" is not supported and ignored.');

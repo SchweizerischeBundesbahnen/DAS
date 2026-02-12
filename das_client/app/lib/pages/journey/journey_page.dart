@@ -6,6 +6,7 @@ import 'package:app/di/scopes/journey_scope.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/app_router.dart';
 import 'package:app/pages/journey/journey_screen/journey_overview.dart';
+import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
 import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
@@ -23,7 +24,9 @@ import 'package:sfera/component.dart';
 class JourneyPage extends StatefulWidget implements AutoRouteWrapper {
   static const disconnectButtonKey = Key('disconnectButton');
 
-  const JourneyPage({super.key});
+  const JourneyPage({super.key, this.initialTrainIds});
+
+  final Iterable<TrainIdentification>? initialTrainIds;
 
   @override
   Widget wrappedRoute(BuildContext context) => MultiProvider(
@@ -55,12 +58,21 @@ class _JourneyPageState extends State<JourneyPage> {
         }
       }
     });
-    _streamCombo = CombineLatestStream.combine2<bool, Journey?, (bool, Journey?)>(
-      journeyTableVM.isZenViewMode,
-      journeyTableVM.journey,
-      (a, b) => (a, b),
-    );
+    _streamCombo = CombineLatestStream.combine2(journeyTableVM.isZenViewMode, journeyTableVM.journey, (a, b) => (a, b));
+
+    _loadInitialTrains();
+
     super.initState();
+  }
+
+  Future<void> _loadInitialTrains() async {
+    if (widget.initialTrainIds != null && widget.initialTrainIds!.isNotEmpty) {
+      // TODO: Maybe add class that holds trainIds in DASBaseScope
+      await DI.get<ScopeHandler>().pop<JourneyScope>();
+      await DI.get<ScopeHandler>().push<JourneyScope>();
+      final journeyNavigationVM = DI.get<JourneyNavigationViewModel>();
+      journeyNavigationVM.replaceWith(widget.initialTrainIds!);
+    }
   }
 
   @override
