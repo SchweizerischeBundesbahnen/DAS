@@ -123,7 +123,7 @@ Uri _uri({Map<String, dynamic>? dataJson, Map<String, dynamic>? queryParams}) {
   final params = queryParams ?? (dataJson != null ? {'data': jsonEncode(dataJson)} : null);
   return Uri(
     scheme: 'https',
-    host: 'driveradvisorysystem.sbb.ch',
+    host: 'driveradvisorysystem.app.sbb.ch',
     path: 'dev/v1/${TrainJourneyParser.page}',
     queryParameters: params,
   );

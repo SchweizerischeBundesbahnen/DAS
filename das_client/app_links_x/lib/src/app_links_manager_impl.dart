@@ -12,7 +12,7 @@ final _log = Logger('AppLinksManagerImpl');
 ///
 /// see: [AppLinksManager]
 class AppLinksManagerImpl implements AppLinksManager {
-  static const _expectedHost = 'driveradvisorysystem.sbb.ch';
+  static const _expectedHost = 'driveradvisorysystem.app.sbb.ch';
 
   final AppLinks _appLinks;
 
@@ -48,7 +48,7 @@ class AppLinksManagerImpl implements AppLinksManager {
     }
   }
 
-  /// Uri is expected to be in format https://driveradvisorysystem.sbb.ch/{env}/{version}/PATH+QUERY.
+  /// Uri is expected to be in format https://driveradvisorysystem.app.sbb.ch/{env}/{version}/PATH+QUERY.
   /// As environment and version aren't used yet, they are ignored when invalid and PATH+QUERY is processed.
   /// If uri can't be handled, it is ignored and the app will just be opened.
   void _handleUri(Uri uri) {

@@ -103,7 +103,7 @@ void main() {
       // GIVEN
       final uri = Uri(
         scheme: 'https',
-        host: 'driveradvisorysystem.sbb.ch',
+        host: 'driveradvisorysystem.app.sbb.ch',
         path: '/unknown/test/${TrainJourneyParser.page}',
         queryParameters: {'data': jsonEncode(_testDataJson)},
       );
@@ -142,7 +142,7 @@ void main() {
     // GIVEN
     final uri = Uri(
       scheme: 'https',
-      host: 'driveradvisorysystem.sbb.ch',
+      host: 'driveradvisorysystem.app.sbb.ch',
       path: '/other/${TrainJourneyParser.page}',
       queryParameters: {'data': jsonEncode(_testDataJson)},
     );
@@ -214,7 +214,7 @@ Uri _buildTrainJourneyUri({
   String env = 'dev',
   String version = 'v1',
   String page = TrainJourneyParser.page,
-  String host = 'driveradvisorysystem.sbb.ch',
+  String host = 'driveradvisorysystem.app.sbb.ch',
   Map<String, dynamic>? dataJson,
   Map<String, dynamic>? queryParams,
 }) {

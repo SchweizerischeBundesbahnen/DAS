@@ -48,7 +48,7 @@ android {
         versionName flutterVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders += [
-                'deepLinkHost'   : 'driveradvisorysystem.sbb.ch',
+                'deepLinkHost'   : 'driveradvisorysystem.app.sbb.ch',
                 'waraPackageName': 'ch.sbb.tms.iad.shas_mobile'
         ]
     }
