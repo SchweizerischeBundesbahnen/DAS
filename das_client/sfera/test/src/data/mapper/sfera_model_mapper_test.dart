@@ -1977,7 +1977,7 @@ void main() {
     );
     expect(
       shortTermChanges[1],
-      equals(EndDestinationChange(startOrder: 2000, endOrder: 2000, startData: journey.data[27])),
+      equals(EndDestinationChange(startOrder: 2000, endOrder: 2000, startData: journey.data[28])),
     );
     expect(shortTermChanges[2], equals(Pass2StopChange(startOrder: 700, endOrder: 700, startData: journey.data[6])));
     expect(shortTermChanges[3], equals(Stop2PassChange(startOrder: 1200, endOrder: 1200, startData: journey.data[12])));
