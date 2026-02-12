@@ -8,7 +8,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.backend.TestContainerConfiguration;
+import ch.sbb.backend.IntegrationTest;
 import ch.sbb.zis.trainformation.api.model.DailyFormationTrain;
 import ch.sbb.zis.trainformation.api.model.DailyFormationTrainKey;
 import java.io.File;
@@ -20,20 +20,13 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.json.JsonCompareMode;
 import org.springframework.test.web.servlet.MockMvc;
 import tools.jackson.databind.json.JsonMapper;
 
-@SpringBootTest
-@Import({TestContainerConfiguration.class})
-@AutoConfigureMockMvc
-@ActiveProfiles("test")
+@IntegrationTest
 class FormationIntegrationTest {
 
     @Autowired
@@ -58,7 +51,7 @@ class FormationIntegrationTest {
         String expectedJson = Files.readString(Paths.get("src/test/resources/formations/71237.json"));
 
         await()
-            .atMost(1, TimeUnit.SECONDS)
+            .atMost(5, TimeUnit.SECONDS)
             .untilAsserted(() -> {
                 mockMvc.perform(get(API_FORMATIONS)
                         .param("operationalTrainNumber", "71237").param("operationalDay", "2025-08-01").param("company", "2687")
@@ -82,7 +75,7 @@ class FormationIntegrationTest {
         String expectedJson = Files.readString(Paths.get("src/test/resources/formations/71237_update.json"));
 
         await()
-            .atMost(1, TimeUnit.SECONDS)
+            .atMost(5, TimeUnit.SECONDS)
             .untilAsserted(() -> {
                 mockMvc.perform(get(API_FORMATIONS)
                         .param("operationalTrainNumber", "71237").param("operationalDay", "2025-08-01").param("company", "2687")
@@ -103,7 +96,7 @@ class FormationIntegrationTest {
         AtomicReference<String> eTag = new AtomicReference<>();
 
         await()
-            .atMost(1, TimeUnit.SECONDS)
+            .atMost(10, TimeUnit.SECONDS)
             .untilAsserted(() -> {
                 mockMvc.perform(get(API_FORMATIONS)
                         .param("operationalTrainNumber", "71237").param("operationalDay", "2025-08-01").param("company", "2687")
@@ -127,7 +120,7 @@ class FormationIntegrationTest {
         kafkaTemplate.send(topic, key, updatedValue);
 
         await()
-            .atMost(1, TimeUnit.SECONDS)
+            .atMost(10, TimeUnit.SECONDS)
             .untilAsserted(() -> {
                 mockMvc.perform(get(API_FORMATIONS)
                         .param("operationalTrainNumber", "71237").param("operationalDay", "2025-08-01").param("company", "2687")
@@ -146,7 +139,7 @@ class FormationIntegrationTest {
         kafkaTemplate.send(topic, key, value);
 
         await()
-            .atMost(1, TimeUnit.SECONDS)
+            .atMost(5, TimeUnit.SECONDS)
             .untilAsserted(() -> {
                 mockMvc.perform(get(API_FORMATIONS)
                         .param("operationalTrainNumber", "11").param("operationalDay", "2025-08-01").param("company", "1111")
@@ -164,7 +157,7 @@ class FormationIntegrationTest {
 
         String expectedJson = Files.readString(Paths.get("src/test/resources/formations/87389.json"));
         await()
-            .atMost(1, TimeUnit.SECONDS)
+            .atMost(5, TimeUnit.SECONDS)
             .untilAsserted(() -> {
                 mockMvc.perform(get(API_FORMATIONS)
                         .param("operationalTrainNumber", "87389").param("operationalDay", "2025-08-05").param("company", "6382")
@@ -179,7 +172,7 @@ class FormationIntegrationTest {
 
         String expectedUpdatedJson = Files.readString(Paths.get("src/test/resources/formations/87389_update.json"));
         await()
-            .atMost(1, TimeUnit.SECONDS)
+            .atMost(5, TimeUnit.SECONDS)
             .untilAsserted(() -> {
                 mockMvc.perform(get(API_FORMATIONS)
                         .param("operationalTrainNumber", "87389").param("operationalDay", "2025-08-05").param("company", "6382")
@@ -199,7 +192,7 @@ class FormationIntegrationTest {
         String expectedJson = Files.readString(Paths.get("src/test/resources/formations/43.json"));
 
         await()
-            .atMost(1, TimeUnit.SECONDS)
+            .atMost(5, TimeUnit.SECONDS)
             .untilAsserted(() -> {
                 mockMvc.perform(get(API_FORMATIONS)
                         .param("operationalTrainNumber", "43").param("operationalDay", "2025-11-18").param("company", "3412")

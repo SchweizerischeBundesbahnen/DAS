@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.backend.AuditorAwareTestImpl;
 import ch.sbb.backend.JpaAuditingConfiguration;
-import ch.sbb.backend.TestContainerConfiguration;
+import ch.sbb.backend.PostgresTestContainerConfiguration;
 import ch.sbb.backend.admin.domain.settings.model.RuFeatureKey;
 import ch.sbb.backend.admin.infrastructure.settings.model.CompanyEntity;
 import ch.sbb.backend.admin.infrastructure.settings.model.RuFeatureEntity;
@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.jdbc.Sql;
 
 @DataJpaTest
-@Import({TestContainerConfiguration.class, JpaAuditingConfiguration.class})
+@Import({PostgresTestContainerConfiguration.class, JpaAuditingConfiguration.class})
 class SpringDataJpaRuFeatureRepositoryTest {
 
     @Autowired
