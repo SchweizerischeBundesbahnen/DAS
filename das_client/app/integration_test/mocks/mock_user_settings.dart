@@ -1,4 +1,4 @@
-import 'package:app/pages/settings/user_settings.dart';
+import 'package:app/provider/user_settings.dart';
 
 class MockUserSettings extends UserSettings {
   final Map<String, Object> _settingsMap = {};
