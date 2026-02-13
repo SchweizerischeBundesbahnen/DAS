@@ -480,11 +480,12 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
     }
   }
 
-  void _onTaskFailed(SferaTask task, SferaError error) {
+  void _onTaskFailed(SferaTask task, SferaError error) async {
     _log.severe('Task $task failed with error $error');
     _tasks.remove(task);
     lastError = error;
     if (_rxState.value != .connected) {
+      await _connectOffline(_otnId!);
       _stayOfflineOrDisconnect();
     }
   }

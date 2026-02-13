@@ -10,6 +10,7 @@ import 'package:sfera/component.dart';
 import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
 import 'package:sfera/src/data/local/drift_local_database_service.dart';
 import 'package:sfera/src/data/local/sfera_local_database_service.dart';
+import 'package:sfera/src/data/repository/sfera_local_repo_impl.dart';
 import 'package:sfera/src/data/repository/sfera_remote_repo_impl.dart';
 import 'package:uuid/uuid.dart';
 
@@ -32,9 +33,10 @@ void main() {
   late MockMqttService mockMqttService;
   late MockSferaLocalDatabaseService mockLocalDatabaseRepository;
   late MockSferaAuthProvider mockSferaAuthProvider;
-  late MockSferaLocalRepo mockSferaLocalRepo;
+  late SferaLocalRepo sferaLocalRepo;
   late MockConnectivityManager mockConnectivityManager;
   late Subject<String> mqttSubject;
+  late Subject<bool> connectivitySubject;
 
   String loadFile(String path) {
     return File(path).readAsStringSync();
@@ -44,17 +46,19 @@ void main() {
     mockMqttService = MockMqttService();
     mockLocalDatabaseRepository = MockSferaLocalDatabaseService();
     mockSferaAuthProvider = MockSferaAuthProvider();
-    mockSferaLocalRepo = MockSferaLocalRepo();
+    sferaLocalRepo = SferaLocalRepoImpl(localService: mockLocalDatabaseRepository);
     mockConnectivityManager = MockConnectivityManager();
     mqttSubject = BehaviorSubject<String>();
+    connectivitySubject = BehaviorSubject.seeded(false);
 
     when(mockMqttService.messageStream).thenAnswer((_) => mqttSubject.stream);
+    when(mockConnectivityManager.onConnectivityChanged).thenAnswer((_) => connectivitySubject.stream);
 
     sferaRemoteRepo = SferaRemoteRepoImpl(
       mqttService: mockMqttService,
       localService: mockLocalDatabaseRepository,
       authProvider: mockSferaAuthProvider,
-      localRepo: mockSferaLocalRepo,
+      localRepo: sferaLocalRepo,
       connectivityManager: mockConnectivityManager,
       deviceId: Uuid().v4(),
     );
@@ -141,12 +145,12 @@ void main() {
     // WHEN
     await sferaRemoteRepo.connect(trainId);
     // Wait till async tasks are finished
-    await Future.delayed(Duration(milliseconds: 200));
+    await Future.delayed(Duration(milliseconds: 1));
 
     final handshakeResponse = loadFile('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
     mqttSubject.add(handshakeResponse);
 
-    await Future.delayed(Duration(milliseconds: 200));
+    await Future.delayed(Duration(milliseconds: 1));
 
     // THEN
     verify(mockMqttService.connect(any, any)).called(1);
@@ -185,12 +189,12 @@ void main() {
     // WHEN
     await sferaRemoteRepo.connect(trainId);
     // Wait till async tasks are finished
-    await Future.delayed(Duration(milliseconds: 200));
+    await Future.delayed(Duration(milliseconds: 1));
 
     final handshakeResponse = loadFile('test_resources/SFERA_G2B_ReplyMessage_handshake_rejected.xml');
     mqttSubject.add(handshakeResponse);
 
-    await Future.delayed(Duration(milliseconds: 200));
+    await Future.delayed(Duration(milliseconds: 1));
 
     // THEN
     verify(mockMqttService.connect(any, any)).called(1);
@@ -221,17 +225,17 @@ void main() {
     // WHEN
     await sferaRemoteRepo.connect(trainId);
     // Wait till async tasks are finished
-    await Future.delayed(Duration(milliseconds: 200));
+    await Future.delayed(Duration(milliseconds: 1));
 
     final handshakeResponse = loadFile('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
     mqttSubject.add(handshakeResponse);
 
-    await Future.delayed(Duration(milliseconds: 200));
+    await Future.delayed(Duration(milliseconds: 1));
 
     final jpResponse = loadFile('test_resources/SFERA_G2B_Reply_JP_request_9315.xml');
     mqttSubject.add(jpResponse);
 
-    await Future.delayed(Duration(milliseconds: 200));
+    await Future.delayed(Duration(milliseconds: 1));
 
     // THEN
     verify(mockMqttService.connect(any, any)).called(1);
@@ -304,22 +308,22 @@ void main() {
     // WHEN
     await sferaRemoteRepo.connect(trainId);
     // Wait till async tasks are finished
-    await Future.delayed(Duration(milliseconds: 200));
+    await Future.delayed(Duration(milliseconds: 1));
 
     final handshakeResponse = loadFile('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
     mqttSubject.add(handshakeResponse);
 
-    await Future.delayed(Duration(milliseconds: 200));
+    await Future.delayed(Duration(milliseconds: 1));
 
     final jpResponse = loadFile('test_resources/SFERA_G2B_Reply_JP_request_9315.xml');
     mqttSubject.add(jpResponse);
 
-    await Future.delayed(Duration(milliseconds: 200));
+    await Future.delayed(Duration(milliseconds: 1));
 
     mqttSubject.add(spResponse);
     mqttSubject.add(tcResponse);
 
-    await Future.delayed(Duration(milliseconds: 200));
+    await Future.delayed(Duration(milliseconds: 1));
 
     // THEN
     verify(mockMqttService.connect(any, any)).called(1);
@@ -381,27 +385,27 @@ void main() {
     // WHEN
     await sferaRemoteRepo.connect(trainId);
     // Wait till async tasks are finished
-    await Future.delayed(Duration(milliseconds: 200));
+    await Future.delayed(Duration(milliseconds: 1));
 
     final handshakeResponse = loadFile('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
     mqttSubject.add(handshakeResponse);
 
-    await Future.delayed(Duration(milliseconds: 200));
+    await Future.delayed(Duration(milliseconds: 1));
 
     final jpResponse = loadFile('test_resources/SFERA_G2B_Reply_JP_request_9315.xml');
     mqttSubject.add(jpResponse);
 
-    await Future.delayed(Duration(milliseconds: 200));
+    await Future.delayed(Duration(milliseconds: 1));
 
     mqttSubject.add(spResponse);
     mqttSubject.add(tcResponse);
 
-    await Future.delayed(Duration(milliseconds: 200));
+    await Future.delayed(Duration(milliseconds: 1));
 
     final eventMessage = loadFile('test_resources/SFERA_G2B_EventMessage_9315.xml');
     mqttSubject.add(eventMessage);
 
-    await Future.delayed(Duration(milliseconds: 200));
+    await Future.delayed(Duration(milliseconds: 1));
 
     // THEN
     verify(mockMqttService.connect(any, any)).called(1);
@@ -463,27 +467,27 @@ void main() {
     // WHEN
     await sferaRemoteRepo.connect(trainId);
     // Wait till async tasks are finished
-    await Future.delayed(Duration(milliseconds: 200));
+    await Future.delayed(Duration(milliseconds: 1));
 
     final handshakeResponse = loadFile('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
     mqttSubject.add(handshakeResponse);
 
-    await Future.delayed(Duration(milliseconds: 200));
+    await Future.delayed(Duration(milliseconds: 1));
 
     final jpResponse = loadFile('test_resources/SFERA_G2B_Reply_JP_request_9315.xml');
     mqttSubject.add(jpResponse);
 
-    await Future.delayed(Duration(milliseconds: 200));
+    await Future.delayed(Duration(milliseconds: 1));
 
     mqttSubject.add(spResponse);
     mqttSubject.add(tcResponse);
 
-    await Future.delayed(Duration(milliseconds: 200));
+    await Future.delayed(Duration(milliseconds: 1));
 
     final jpEvent = loadFile('test_resources/SFERA_G2B_Event_JP_9315.xml');
     mqttSubject.add(jpEvent);
 
-    await Future.delayed(Duration(milliseconds: 200));
+    await Future.delayed(Duration(milliseconds: 1));
 
     // THEN
     verify(mockMqttService.connect(any, any)).called(1);
@@ -546,26 +550,26 @@ void main() {
     // WHEN
     await sferaRemoteRepo.connect(trainId);
     // Wait till async tasks are finished
-    await Future.delayed(Duration(milliseconds: 200));
+    await Future.delayed(Duration(milliseconds: 1));
 
     final handshakeResponse = loadFile('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
     mqttSubject.add(handshakeResponse);
 
-    await Future.delayed(Duration(milliseconds: 200));
+    await Future.delayed(Duration(milliseconds: 1));
 
     final jpResponse = loadFile('test_resources/SFERA_G2B_Reply_JP_request_9315.xml');
     mqttSubject.add(jpResponse);
 
-    await Future.delayed(Duration(milliseconds: 200));
+    await Future.delayed(Duration(milliseconds: 1));
 
     mqttSubject.add(spResponse);
     mqttSubject.add(tcResponse);
 
-    await Future.delayed(Duration(milliseconds: 200));
+    await Future.delayed(Duration(milliseconds: 1));
 
     sferaRemoteRepo.disconnect();
 
-    await Future.delayed(Duration(milliseconds: 200));
+    await Future.delayed(Duration(milliseconds: 1));
 
     // THEN
     verify(mockMqttService.disconnect()).called(1);
@@ -576,5 +580,266 @@ void main() {
         argThat(contains('<SessionTermination')),
       ),
     ).called(1);
+  });
+
+  test('should connect offline when mqtt connection fails', () async {
+    // GIVEN
+    final spResponse = loadFile('test_resources/SFERA_G2B_Reply_SP_request_9315.xml');
+    final parsedSPResponse = SferaReplyParser.parse<SferaG2bReplyMessageDto>(spResponse);
+    final tcResponse = loadFile('test_resources/SFERA_G2B_Reply_TC_request_9315.xml');
+    final parsedTCResponse = SferaReplyParser.parse<SferaG2bReplyMessageDto>(tcResponse);
+    final jpResponse = loadFile('test_resources/SFERA_G2B_Reply_JP_request_9315.xml');
+    final parsedJPResponse = SferaReplyParser.parse<SferaG2bReplyMessageDto>(jpResponse);
+
+    when(mockMqttService.connect(any, any)).thenAnswer((_) async => false);
+    when(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).thenAnswer(
+      (_) => Future.value(
+        SegmentProfileTableData(
+          id: 1,
+          spId: '842-2',
+          majorVersion: '1',
+          minorVersion: '0',
+          xmlData: parsedSPResponse.payload!.segmentProfiles.first.toString(),
+        ),
+      ),
+    );
+    when(mockLocalDatabaseRepository.findTrainCharacteristics(any, any, any)).thenAnswer(
+      (_) => Future.value(
+        TrainCharacteristicsTableData(
+          id: 1,
+          tcId: 'T9135',
+          majorVersion: '1',
+          minorVersion: '0',
+          xmlData: parsedTCResponse.payload!.trainCharacteristics.first.toString(),
+        ),
+      ),
+    );
+    when(mockLocalDatabaseRepository.findJourneyProfile(any, any, any)).thenAnswer(
+      (_) => Future.value(
+        JourneyProfileTableData(
+          id: 1,
+          company: '1085',
+          operationalTrainNumber: '123',
+          xmlData: parsedJPResponse.payload!.journeyProfiles.first.toString(),
+          startDate: DateTime.now(),
+        ),
+      ),
+    );
+
+    // LATER THEN
+    expectLater(
+      sferaRemoteRepo.stateStream,
+      emitsInOrder(<SferaRemoteRepositoryState>[
+        .disconnected, // seeded state
+        .connecting,
+        .offline,
+      ]),
+    );
+    expectLater(
+      sferaRemoteRepo.journeyStream,
+      emitsInOrder([
+        isNull, // seeded state
+        isNotNull,
+      ]),
+    );
+
+    // WHEN
+    await sferaRemoteRepo.connect(trainId);
+    // Wait till async tasks are finished
+    await Future.delayed(Duration(milliseconds: 1));
+
+    // THEN
+    verify(mockMqttService.connect(any, any)).called(1);
+    verify(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).called(1);
+    verify(mockLocalDatabaseRepository.findTrainCharacteristics(any, any, any)).called(1);
+    verify(mockLocalDatabaseRepository.findJourneyProfile(any, any, any)).called(1);
+
+    sferaRemoteRepo.dispose();
+  });
+
+  test('should connect offline when task fails', () async {
+    // GIVEN
+    final spResponse = loadFile('test_resources/SFERA_G2B_Reply_SP_request_9315.xml');
+    final parsedSPResponse = SferaReplyParser.parse<SferaG2bReplyMessageDto>(spResponse);
+    final tcResponse = loadFile('test_resources/SFERA_G2B_Reply_TC_request_9315.xml');
+    final parsedTCResponse = SferaReplyParser.parse<SferaG2bReplyMessageDto>(tcResponse);
+    final jpResponse = loadFile('test_resources/SFERA_G2B_Reply_JP_request_9315.xml');
+    final parsedJPResponse = SferaReplyParser.parse<SferaG2bReplyMessageDto>(jpResponse);
+    final errorResponse = loadFile('test_resources/SFERA_G2B_ReplyMessage_Error.xml');
+    final parsedErrorResponse = SferaReplyParser.parse<SferaG2bReplyMessageDto>(errorResponse);
+
+    when(mockMqttService.connect(any, any)).thenAnswer((_) async => true);
+    when(mockMqttService.publishMessage(any, any, any)).thenReturn(true);
+    when(mockSferaAuthProvider.isDriver()).thenAnswer((_) async => true);
+
+    when(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).thenAnswer(
+      (_) => Future.value(
+        SegmentProfileTableData(
+          id: 1,
+          spId: '842-2',
+          majorVersion: '1',
+          minorVersion: '0',
+          xmlData: parsedSPResponse.payload!.segmentProfiles.first.toString(),
+        ),
+      ),
+    );
+    when(mockLocalDatabaseRepository.findTrainCharacteristics(any, any, any)).thenAnswer(
+      (_) => Future.value(
+        TrainCharacteristicsTableData(
+          id: 1,
+          tcId: 'T9135',
+          majorVersion: '1',
+          minorVersion: '0',
+          xmlData: parsedTCResponse.payload!.trainCharacteristics.first.toString(),
+        ),
+      ),
+    );
+    when(mockLocalDatabaseRepository.findJourneyProfile(any, any, any)).thenAnswer(
+      (_) => Future.value(
+        JourneyProfileTableData(
+          id: 1,
+          company: '1085',
+          operationalTrainNumber: '123',
+          xmlData: parsedJPResponse.payload!.journeyProfiles.first.toString(),
+          startDate: DateTime.now(),
+        ),
+      ),
+    );
+
+    // LATER THEN
+    expectLater(
+      sferaRemoteRepo.stateStream,
+      emitsInOrder(<SferaRemoteRepositoryState>[
+        .disconnected, // seeded state
+        .connecting,
+        .offline,
+      ]),
+    );
+    expectLater(
+      sferaRemoteRepo.journeyStream,
+      emitsInOrder([
+        isNull, // seeded state
+        isNotNull,
+      ]),
+    );
+
+    // WHEN
+    await sferaRemoteRepo.connect(trainId);
+    // Wait till async tasks are finished
+    await Future.delayed(Duration(milliseconds: 1));
+
+    mqttSubject.add(errorResponse);
+
+    await Future.delayed(Duration(milliseconds: 1));
+
+    // THEN
+    verify(mockMqttService.connect(any, any)).called(1);
+    verify(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).called(1);
+    verify(mockLocalDatabaseRepository.findTrainCharacteristics(any, any, any)).called(1);
+    verify(mockLocalDatabaseRepository.findJourneyProfile(any, any, any)).called(1);
+
+    sferaRemoteRepo.dispose();
+  });
+
+  test('should reconnect when mqtt connection is available again', () async {
+    // GIVEN
+    final spResponse = loadFile('test_resources/SFERA_G2B_Reply_SP_request_9315.xml');
+    final parsedSPResponse = SferaReplyParser.parse<SferaG2bReplyMessageDto>(spResponse);
+    final tcResponse = loadFile('test_resources/SFERA_G2B_Reply_TC_request_9315.xml');
+    final parsedTCResponse = SferaReplyParser.parse<SferaG2bReplyMessageDto>(tcResponse);
+    final jpResponse = loadFile('test_resources/SFERA_G2B_Reply_JP_request_9315.xml');
+    final parsedJPResponse = SferaReplyParser.parse<SferaG2bReplyMessageDto>(jpResponse);
+
+    when(mockMqttService.connect(any, any)).thenAnswer((_) async => false);
+    when(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).thenAnswer(
+      (_) => Future.value(
+        SegmentProfileTableData(
+          id: 1,
+          spId: '842-2',
+          majorVersion: '1',
+          minorVersion: '0',
+          xmlData: parsedSPResponse.payload!.segmentProfiles.first.toString(),
+        ),
+      ),
+    );
+    when(mockLocalDatabaseRepository.findTrainCharacteristics(any, any, any)).thenAnswer(
+      (_) => Future.value(
+        TrainCharacteristicsTableData(
+          id: 1,
+          tcId: 'T9135',
+          majorVersion: '1',
+          minorVersion: '0',
+          xmlData: parsedTCResponse.payload!.trainCharacteristics.first.toString(),
+        ),
+      ),
+    );
+    when(mockLocalDatabaseRepository.findJourneyProfile(any, any, any)).thenAnswer(
+      (_) => Future.value(
+        JourneyProfileTableData(
+          id: 1,
+          company: '1085',
+          operationalTrainNumber: '123',
+          xmlData: parsedJPResponse.payload!.journeyProfiles.first.toString(),
+          startDate: DateTime.now(),
+        ),
+      ),
+    );
+
+    // LATER THEN
+    expectLater(
+      sferaRemoteRepo.stateStream,
+      emitsInOrder(<SferaRemoteRepositoryState>[
+        .disconnected, // seeded state
+        .connecting,
+        .offline,
+        .connecting,
+        .connected,
+      ]),
+    );
+    expectLater(
+      sferaRemoteRepo.journeyStream,
+      emitsInOrder([
+        isNull, // seeded state
+        isNotNull,
+        isNotNull,
+      ]),
+    );
+
+    // WHEN
+    await sferaRemoteRepo.connect(trainId);
+    // Wait till async tasks are finished
+    await Future.delayed(Duration(milliseconds: 1));
+
+    // THEN
+    verify(mockMqttService.connect(any, any)).called(1);
+    verify(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).called(1);
+    verify(mockLocalDatabaseRepository.findTrainCharacteristics(any, any, any)).called(1);
+    verify(mockLocalDatabaseRepository.findJourneyProfile(any, any, any)).called(1);
+
+    reset(mockMqttService);
+    when(mockMqttService.connect(any, any)).thenAnswer((_) async => true);
+    when(mockMqttService.publishMessage(any, any, any)).thenReturn(true);
+    when(mockSferaAuthProvider.isDriver()).thenAnswer((_) async => true);
+
+    // Trigger reconnect
+    connectivitySubject.add(true);
+
+    await Future.delayed(Duration(milliseconds: 1));
+
+    final handshakeResponse = loadFile('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
+    mqttSubject.add(handshakeResponse);
+
+    await Future.delayed(Duration(milliseconds: 1));
+
+    mqttSubject.add(jpResponse);
+
+    await Future.delayed(Duration(milliseconds: 1));
+
+    mqttSubject.add(spResponse);
+    mqttSubject.add(tcResponse);
+
+    await Future.delayed(Duration(milliseconds: 1));
+
+    sferaRemoteRepo.dispose();
   });
 }
