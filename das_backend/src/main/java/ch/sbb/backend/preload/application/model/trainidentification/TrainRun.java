@@ -1,7 +1,6 @@
 package ch.sbb.backend.preload.application.model.trainidentification;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +14,7 @@ public class TrainRun {
     List<TrainRunDate> trainRunDates;
 
     @NonNull
-    Optional<Integer> firstDepartureTime;
+    Integer firstDepartureTime;
 
     @NonNull
     @Builder.Default

@@ -34,6 +34,7 @@ public class TrainRunConverter {
                 List<LocalDate> operationalDays = convertDates(periodStartDate, zuglauf.getSolltageVp().getTage());
                 return convertTrainRun(zuglaeufe, zuglauf, operationalDays);
             })
+            .filter(Objects::nonNull)
             .toList();
     }
 
@@ -52,6 +53,9 @@ public class TrainRunConverter {
         List<TrainRunPoint> zuglaufPunkte = convertTrainRunPoints(zuglauf.getZuglaufpunkte());
 
         Optional<Integer> firstDepartureTime = findFirstDepartureTime(zuglaufPunkte);
+        if (firstDepartureTime.isEmpty()) {
+            return null;
+        }
         List<TrainRunDate> trainRunDates = new ArrayList<>();
 
         operationalDays.forEach(
@@ -66,7 +70,7 @@ public class TrainRunConverter {
             });
 
         return TrainRun.builder()
-            .firstDepartureTime(firstDepartureTime)
+            .firstDepartureTime(firstDepartureTime.get())
             .companies(collectCompanies(zuglaeufe))
             .trainRunDates(trainRunDates)
             .build();

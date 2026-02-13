@@ -45,14 +45,14 @@ public class TimetableTrainConsumer {
             .filter(rec -> deserializer.deserializeKey(rec).getId().endsWith(VERSTAENDIGTE_TRASSEN_KEY_SUFFIX))
             .toList();
 
-        List<ConsumerRecord<TimetableTrainKey, TimetableTrainValue>> fpsZugRecords = filterAndDeserialize(recordsWithVtSuffix);
-        List<ConsumerRecord<TimetableTrainKey, TimetableTrainValue>> distinctFpsZugRecords = ListUtil.removeDuplicatesKeepLast(fpsZugRecords, this::getTrassendIdAndFahrplanPeriode);
+        List<ConsumerRecord<TimetableTrainKey, TimetableTrainValue>> filteredTrains = filterAndDeserialize(recordsWithVtSuffix);
+        List<ConsumerRecord<TimetableTrainKey, TimetableTrainValue>> distinctRecords = ListUtil.removeDuplicatesKeepLast(filteredTrains, this::getTrassendIdAndFahrplanPeriode);
 
         log.info("{} records with {} valid trains, last offset: {}",
             records.size(),
             recordsWithVtSuffix.size(),
             records.isEmpty() ? "n/a" : records.getLast().offset());
-        timetableService.deleteOrSaveTrains(distinctFpsZugRecords);
+        timetableService.deleteOrSaveTrains(distinctRecords);
     }
 
     private Map.Entry<String, Integer> getTrassendIdAndFahrplanPeriode(ConsumerRecord<TimetableTrainKey, TimetableTrainValue> message) {

@@ -66,7 +66,7 @@ public class TrainRunDAO {
     }
 
     private OffsetDateTime toStartDateTime(TrainRunDate trainRunDate, TrainRun trainRun) {
-        return trainRun.getFirstDepartureTime().map(departureTime -> TimeConverter.convertTime(trainRunDate.getOperationalDate(), departureTime)).orElse(null);
+        return TimeConverter.convertTime(trainRunDate.getOperationalDate(), trainRun.getFirstDepartureTime());
     }
 
     public void deleteAllOlderThan(LocalDate date) {
