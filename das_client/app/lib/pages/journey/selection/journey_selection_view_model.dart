@@ -75,7 +75,7 @@ class JourneySelectionViewModel {
   void _initSferaRepoSubscription() {
     _sferaRemoteRepoSubscription = _sferaRemoteRepo.stateStream.listen((state) {
       switch (state) {
-        case .offline:
+        case .offlineData:
         case .connected:
           final currentState = _state.value;
           if (currentState is! Loading) return;

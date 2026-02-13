@@ -99,7 +99,7 @@ class JourneyNavigationViewModel {
     _sferaRemoteStateSubscription = _sferaRemoteRepo.stateStream.listen(
       (s) => switch (s) {
         .disconnected => _sferaRemoteRepo.lastError != null ? _reset() : null,
-        .connected || .connecting || .offline => null,
+        .connected || .connecting || .offlineData => null,
       },
     );
   }

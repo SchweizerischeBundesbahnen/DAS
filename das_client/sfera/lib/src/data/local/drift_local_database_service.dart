@@ -10,7 +10,7 @@ import 'package:sfera/src/data/local/sfera_local_database_service.dart';
 import 'package:sfera/src/data/local/tables/journey_profile_table.dart';
 import 'package:sfera/src/data/local/tables/segment_profile_table.dart';
 import 'package:sfera/src/data/local/tables/train_characteristics_table.dart';
-import 'package:sfera/src/model/db_metrics.dart';
+import 'package:sfera/src/model/sfera_db_metrics.dart';
 
 part 'drift_local_database_service.g.dart';
 
@@ -135,9 +135,9 @@ class DriftLocalDatabaseService extends _$DriftLocalDatabaseService implements S
   $$SegmentProfileTableTableTableManager get _spManager => managers.segmentProfileTable;
 
   @override
-  Future<DbMetrics> retrieveMetrics() async {
+  Future<SferaDbMetrics> getMetrics() async {
     return Future.value(
-      DbMetrics(
+      SferaDbMetrics(
         jpCount: await _jpManager.count(),
         spCount: await _spManager.count(),
         tcCount: await _tcManager.count(),

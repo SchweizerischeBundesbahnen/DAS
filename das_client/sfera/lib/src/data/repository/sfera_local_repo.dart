@@ -13,5 +13,5 @@ abstract class SferaLocalRepo {
 
   Future<bool> saveData(String data);
 
-  Future<DbMetrics> retrieveMetrics();
+  Future<SferaDbMetrics> getMetrics();
 }

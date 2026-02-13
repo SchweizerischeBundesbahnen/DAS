@@ -210,7 +210,7 @@ class PreloadRepositoryImpl implements PreloadRepository {
 
   Future<PreloadDetails> _gatherDetails(List<S3File>? files) async {
     files = files ?? await databaseService.findAll();
-    return PreloadDetails(files: files, status: _status(), metrics: await sferaLocalRepo.retrieveMetrics());
+    return PreloadDetails(files: files, status: _status(), metrics: await sferaLocalRepo.getMetrics());
   }
 
   @override

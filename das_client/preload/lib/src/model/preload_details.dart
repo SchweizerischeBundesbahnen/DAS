@@ -13,7 +13,7 @@ class PreloadDetails {
 
   final List<S3File> files;
   final PreloadStatus status;
-  final DbMetrics metrics;
+  final SferaDbMetrics metrics;
 
   int get totalFilesCount => files.length;
 

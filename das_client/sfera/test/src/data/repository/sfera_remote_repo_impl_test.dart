@@ -632,7 +632,7 @@ void main() {
       emitsInOrder(<SferaRemoteRepositoryState>[
         .disconnected, // seeded state
         .connecting,
-        .offline,
+        .offlineData,
       ]),
     );
     expectLater(
@@ -712,7 +712,7 @@ void main() {
       emitsInOrder(<SferaRemoteRepositoryState>[
         .disconnected, // seeded state
         .connecting,
-        .offline,
+        .offlineData,
       ]),
     );
     expectLater(
@@ -791,7 +791,7 @@ void main() {
       emitsInOrder(<SferaRemoteRepositoryState>[
         .disconnected, // seeded state
         .connecting,
-        .offline,
+        .offlineData,
         .connecting,
         .connected,
       ]),

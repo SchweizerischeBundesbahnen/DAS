@@ -1,6 +1,6 @@
 enum SferaRemoteRepositoryState {
   connected,
-  offline,
+  offlineData,
   connecting,
   disconnected,
 }

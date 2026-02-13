@@ -16,7 +16,6 @@ export 'package:sfera/src/data/parser/sfera_reply_parser.dart';
 export 'package:sfera/src/data/repository/sfera_local_repo.dart';
 export 'package:sfera/src/data/repository/sfera_remote_repo.dart';
 export 'package:sfera/src/data/repository/sfera_remote_repo_state.dart';
-export 'package:sfera/src/model/db_metrics.dart';
 export 'package:sfera/src/model/journey/additional_speed_restriction.dart';
 export 'package:sfera/src/model/journey/additional_speed_restriction_data.dart';
 export 'package:sfera/src/model/journey/advised_speed_segment.dart';
@@ -76,6 +75,7 @@ export 'package:sfera/src/model/journey/warnapp_event.dart';
 export 'package:sfera/src/model/journey/whistles.dart';
 export 'package:sfera/src/model/localized_string.dart';
 export 'package:sfera/src/model/ru.dart';
+export 'package:sfera/src/model/sfera_db_metrics.dart';
 export 'package:sfera/src/model/train_identification.dart';
 export 'package:sfera/src/provider/sfera_auth_provider.dart';
 

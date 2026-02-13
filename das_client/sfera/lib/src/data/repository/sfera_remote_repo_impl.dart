@@ -74,7 +74,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
   final List<SegmentProfileDto> _segmentProfiles = [];
   final List<TrainCharacteristicsDto> _trainCharacteristics = [];
   RelatedTrainInformationDto? _relatedTrainInformation;
-  bool _isOfflineConnected = false;
+  bool _hasOfflineData = false;
 
   final _rxState = BehaviorSubject<SferaRemoteRepositoryInternalState>.seeded(.disconnected);
   final _rxJourney = BehaviorSubject<Journey?>.seeded(null);
@@ -120,16 +120,15 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
     _tasks.clear();
     lastError = null;
     _rxState.add(.connecting);
-    _isOfflineConnected = false;
+    _hasOfflineData = false;
 
     final isConnected = await _tryMqttConnect();
     if (!isConnected) {
-      final success = await _connectOffline(otnId);
+      final success = await _loadLocalJourney(otnId);
       if (!success) {
         _otnId = null;
         lastError = .connectionFailed();
         _rxState.add(.disconnected);
-        _isOfflineConnected = false;
       }
     }
   }
@@ -147,17 +146,17 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
     return false;
   }
 
-  Future<bool> _connectOffline(OtnId otnId) async {
+  Future<bool> _loadLocalJourney(OtnId otnId) async {
     final localJourney = await _localRepo.getJourney(
       company: otnId.company,
       trainNumber: otnId.operationalTrainNumber,
       startDate: otnId.startDate,
     );
-    if (localJourney != null) {
-      _log.info('Connected in offline mode.');
+    if (localJourney != null && localJourney.valid) {
+      _log.info('Using offline data.');
       _rxJourney.add(localJourney);
-      _isOfflineConnected = true;
-      _rxState.add(.offline);
+      _hasOfflineData = true;
+      _rxState.add(.offlineData);
       return true;
     }
     _log.info('No offline Journey found');
@@ -173,10 +172,10 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
     return otnId;
   }
 
-  void _stayOfflineOrDisconnect() {
-    if (_isOfflineConnected) {
+  void _useOfflineDataOrDisconnect() {
+    if (_hasOfflineData) {
       _mqttService.disconnect();
-      _rxState.add(.offline);
+      _rxState.add(.offlineData);
     } else {
       disconnect();
     }
@@ -203,7 +202,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
     _rxWarnappEvent.add(null);
     _rxDisturbanceEvent.add(null);
     _rxState.add(.disconnected);
-    _isOfflineConnected = false;
+    _hasOfflineData = false;
   }
 
   @override
@@ -230,7 +229,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
     _addEventMessageHandlers();
     _mqttStreamSubscription = _mqttService.messageStream.listen(_handleMqttMessage);
     _connectivitySubscription = _connectivityManager.onConnectivityChanged.listen((connected) {
-      if (connected && _rxState.value == .offline) {
+      if (connected && _rxState.value == .offlineData) {
         _log.info(
           'Connectivity changed to connected=$connected while in offline mode, trying to connect to MQTT broker...',
         );
@@ -307,10 +306,10 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
           await _refreshTrainCharacteristics();
           _updateJourney(
             onSuccess: () {
-              _isOfflineConnected = false;
+              _hasOfflineData = false;
               _rxState.add(.connected);
             },
-            onInvalid: () => _stayOfflineOrDisconnect(),
+            onInvalid: () => _useOfflineDataOrDisconnect(),
           );
           break;
         case .connected:
@@ -485,8 +484,8 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
     _tasks.remove(task);
     lastError = error;
     if (_rxState.value != .connected) {
-      await _connectOffline(_otnId!);
-      _stayOfflineOrDisconnect();
+      await _loadLocalJourney(_otnId!);
+      _useOfflineDataOrDisconnect();
     }
   }
 
@@ -508,12 +507,12 @@ enum SferaRemoteRepositoryInternalState {
   loadingJourney,
   loadingAdditionalData,
   connected,
-  offline
+  offlineData
   ;
 
   SferaRemoteRepositoryState toExternalState() => switch (this) {
     .disconnected => .disconnected,
-    .offline => .offline,
+    .offlineData => .offlineData,
     .connecting || .handshaking || .loadingJourney || .loadingAdditionalData => .connecting,
     .connected => .connected,
   };

@@ -7,11 +7,12 @@ import 'package:sfera/src/data/local/sfera_local_database_service.dart';
 import 'package:sfera/src/data/local/tables/journey_profile_table.dart';
 import 'package:sfera/src/data/local/tables/segment_profile_table.dart';
 import 'package:sfera/src/data/local/tables/train_characteristics_table.dart';
+import 'package:sfera/src/data/mapper/datetime_x.dart';
 import 'package:sfera/src/data/mapper/sfera_model_mapper.dart';
 import 'package:sfera/src/data/parser/sfera_reply_parser.dart';
 import 'package:sfera/src/data/repository/sfera_local_repo.dart';
-import 'package:sfera/src/model/db_metrics.dart';
 import 'package:sfera/src/model/journey/journey.dart';
+import 'package:sfera/src/model/sfera_db_metrics.dart';
 
 final _log = Logger('SferaLocalRepoImpl');
 
@@ -22,9 +23,8 @@ class SferaLocalRepoImpl implements SferaLocalRepo {
 
   @override
   Stream<Journey?> journeyStream({required String company, required String trainNumber, required DateTime startDate}) {
-    final date = DateTime(startDate.year, startDate.month, startDate.day);
     return _databaseService
-        .observeJourneyProfile(company, trainNumber, date)
+        .observeJourneyProfile(company, trainNumber, startDate.floorToDay())
         .asyncMap((entity) => _loadAndMapJourney(entity));
   }
 
@@ -34,8 +34,7 @@ class SferaLocalRepoImpl implements SferaLocalRepo {
     required String trainNumber,
     required DateTime startDate,
   }) async {
-    final date = DateTime(startDate.year, startDate.month, startDate.day);
-    final entity = await _databaseService.findJourneyProfile(company, trainNumber, date);
+    final entity = await _databaseService.findJourneyProfile(company, trainNumber, startDate.floorToDay());
     return _loadAndMapJourney(entity);
   }
 
@@ -118,7 +117,7 @@ class SferaLocalRepoImpl implements SferaLocalRepo {
   }
 
   @override
-  Future<DbMetrics> retrieveMetrics() {
-    return _databaseService.retrieveMetrics();
+  Future<SferaDbMetrics> getMetrics() {
+    return _databaseService.getMetrics();
   }
 }

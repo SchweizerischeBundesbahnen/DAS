@@ -30,7 +30,7 @@ void main() {
       S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag1', size: 1024, status: S3FileSyncStatus.initial),
       S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag1', size: 1024, status: S3FileSyncStatus.initial),
     ],
-    metrics: DbMetrics(jpCount: 43, spCount: 201, tcCount: 33),
+    metrics: SferaDbMetrics(jpCount: 43, spCount: 201, tcCount: 33),
   );
   final preloadDetailsRunning = PreloadDetails(
     status: PreloadStatus.running,
@@ -44,7 +44,7 @@ void main() {
       S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag1', size: 1024, status: S3FileSyncStatus.initial),
       S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag1', size: 1024, status: S3FileSyncStatus.initial),
     ],
-    metrics: DbMetrics(jpCount: 43, spCount: 201, tcCount: 33),
+    metrics: SferaDbMetrics(jpCount: 43, spCount: 201, tcCount: 33),
   );
   final preloadDetailsMissingConfiguration = PreloadDetails(
     status: PreloadStatus.missingConfiguration,
@@ -58,7 +58,7 @@ void main() {
       S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag1', size: 1024, status: S3FileSyncStatus.initial),
       S3File(name: '2026-02-10T16-35-36Z.zip', eTag: 'etag1', size: 1024, status: S3FileSyncStatus.initial),
     ],
-    metrics: DbMetrics(jpCount: 43, spCount: 201, tcCount: 33),
+    metrics: SferaDbMetrics(jpCount: 43, spCount: 201, tcCount: 33),
   );
 
   testWidgets('test preload status is displayed correctly', (tester) async {

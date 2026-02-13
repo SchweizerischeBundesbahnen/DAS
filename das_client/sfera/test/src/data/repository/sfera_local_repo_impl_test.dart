@@ -224,12 +224,18 @@ void main() {
     subscription.cancel();
   });
 
-  test('saveData_whenDataIsPassed_returnCorrectStatus', () async {
-    expect(await testee.saveData('invalid'), isFalse); // Parse Error
+  test('saveData_whenInvalidDataIsPassed_returnFalse', () async {
+    expect(await testee.saveData('invalid'), isFalse);
+  });
+
+  test('saveData_whenValidationFails_returnFalse', () async {
     expect(
       await testee.saveData('<JourneyProfile JP_Version="1" JP_Status="Valid"></JourneyProfile>'),
       isFalse,
-    ); // validation Error
+    );
+  });
+
+  test('saveData_whenJpDataIsPassed_returnTrue', () async {
     expect(
       await testee.saveData(
         '<JourneyProfile JP_Version="1" JP_Status="Valid"><TrainIdentification>'
@@ -242,14 +248,22 @@ void main() {
         '</JourneyProfile>',
       ),
       isTrue,
-    ); // JP
+    );
+    verify(mockLocalDatabaseRepository.saveJourneyProfile(any)).called(1);
+  });
+
+  test('saveData_whenSpDataIsPassed_returnTrue', () async {
     expect(
       await testee.saveData(
         '<SegmentProfile SP_ID="T35" SP_VersionMajor="1" SP_VersionMinor="4" SP_Length="800" SP_Status="Valid">'
         '</SegmentProfile>',
       ),
       isTrue,
-    ); // SP
+    );
+    verify(mockLocalDatabaseRepository.saveSegmentProfile(any)).called(1);
+  });
+
+  test('saveData_whenTcDataIsPassed_returnTrue', () async {
     expect(
       await testee.saveData(
         '<TrainCharacteristics TC_ID="T9999_1" TC_VersionMajor="1" TC_VersionMinor="1">'
@@ -258,16 +272,16 @@ void main() {
         '</TrainCharacteristics>',
       ),
       isTrue,
-    ); // TC
+    );
+    verify(mockLocalDatabaseRepository.saveTrainCharacteristics(any)).called(1);
+  });
+
+  test('saveData_whenUnsupportedDataIsPassed_returnFalse', () async {
     expect(
       await testee.saveData(
         '<SP_Zone><IM_ID>0085</IM_ID></SP_Zone>',
       ),
       isFalse,
-    ); // unsupported element
-
-    verify(mockLocalDatabaseRepository.saveJourneyProfile(any)).called(1);
-    verify(mockLocalDatabaseRepository.saveSegmentProfile(any)).called(1);
-    verify(mockLocalDatabaseRepository.saveTrainCharacteristics(any)).called(1);
+    );
   });
 }
