@@ -90,46 +90,47 @@ class PreloadRepositoryImpl implements PreloadRepository {
 
   Future<void> _listS3BucketAndUpdateLocalDatabase() async {
     final result = await _s3client!.listBucket();
-    if (result != null) {
-      _log.info('Bucket contents retrieved successfully. Total items: ${result.contents.length}');
-
-      final dbEntries = await databaseService.findAll();
-
-      int newItem = 0;
-      int updatedItem = 0;
-
-      for (final s3Content in result.contents) {
-        final matchingDbEntry = dbEntries.firstWhereOrNull((it) => it.name == s3Content.key);
-        if (matchingDbEntry == null) {
-          _log.fine('No database entry for key ${s3Content.key}. Adding new entry.');
-          await databaseService.saveS3File(
-            S3File(name: s3Content.key, eTag: s3Content.eTag, size: s3Content.size, status: S3FileSyncStatus.initial),
-          );
-          newItem++;
-        } else {
-          if (matchingDbEntry.eTag != s3Content.eTag) {
-            _log.fine('File ${s3Content.key} has changed. Updating database entry.');
-            await databaseService.saveS3File(
-              matchingDbEntry.copyWith(eTag: s3Content.eTag, size: s3Content.size, status: S3FileSyncStatus.initial),
-            );
-            updatedItem++;
-          } else {
-            _log.finer('Database entry already exists for key ${s3Content.key}.');
-          }
-          dbEntries.remove(matchingDbEntry);
-        }
-      }
-
-      for (final deletedEntry in dbEntries) {
-        await databaseService.deleteS3File(deletedEntry);
-      }
-
-      _log.info(
-        'List bucket completed. New items: $newItem, Updated items: $updatedItem, Deleted items: ${dbEntries.length}',
-      );
-    } else {
+    if (result == null) {
       _log.warning('Failed to retrieve bucket contents.');
+      return;
     }
+
+    _log.info('Bucket contents retrieved successfully. Total items: ${result.contents.length}');
+
+    final dbEntries = await databaseService.findAll();
+
+    int newItem = 0;
+    int updatedItem = 0;
+
+    for (final s3Content in result.contents) {
+      final matchingDbEntry = dbEntries.firstWhereOrNull((it) => it.name == s3Content.key);
+      if (matchingDbEntry == null) {
+        _log.fine('No database entry for key ${s3Content.key}. Adding new entry.');
+        await databaseService.saveS3File(
+          S3File(name: s3Content.key, eTag: s3Content.eTag, size: s3Content.size, status: S3FileSyncStatus.initial),
+        );
+        newItem++;
+      } else {
+        if (matchingDbEntry.eTag != s3Content.eTag) {
+          _log.fine('File ${s3Content.key} has changed. Updating database entry.');
+          await databaseService.saveS3File(
+            matchingDbEntry.copyWith(eTag: s3Content.eTag, size: s3Content.size, status: S3FileSyncStatus.initial),
+          );
+          updatedItem++;
+        } else {
+          _log.finer('Database entry already exists for key ${s3Content.key}.');
+        }
+        dbEntries.remove(matchingDbEntry);
+      }
+    }
+
+    for (final deletedEntry in dbEntries) {
+      await databaseService.deleteS3File(deletedEntry);
+    }
+
+    _log.info(
+      'List bucket completed. New items: $newItem, Updated items: $updatedItem, Deleted items: ${dbEntries.length}',
+    );
   }
 
   Future<void> _processAllFiles() async {
@@ -144,43 +145,44 @@ class PreloadRepositoryImpl implements PreloadRepository {
     for (final file in filesToProcess) {
       if (file.status == S3FileSyncStatus.initial || file.status == S3FileSyncStatus.error) {
         _log.info('Processing file ${file.name} with status ${file.status.name}.');
-        await _downloadAndProcessS3File(file);
+        await _downloadExtractAndSaveS3FileContent(file);
       } else {
         _log.finer('Skipping file ${file.name} with status ${file.status}.');
       }
     }
   }
 
-  Future<void> _downloadAndProcessS3File(S3File file) async {
+  Future<void> _downloadExtractAndSaveS3FileContent(S3File file) async {
     try {
       final fileData = await _s3client!.getObject(file.name);
-      if (fileData != null) {
-        _log.info('File ${file.name} downloaded successfully. Size: ${fileData.length} bytes.');
-
-        final archive = ZipDecoder().decodeBytes(fileData);
-        final saveFutures = <Future<bool>>[];
-        for (final archiveFile in archive.files) {
-          if (archiveFile.isFile) {
-            final content = utf8.decode(archiveFile.readBytes()!);
-            _log.finer(
-              'Extracted file ${archiveFile.name} from archive ${file.name}. Content length: ${content.length} characters. ${content.substring(0, content.length > 100 ? 100 : content.length)}',
-            );
-            saveFutures.add(sferaLocalRepo.saveData(content));
-          }
-        }
-        final successList = await Future.wait(saveFutures);
-        final success = successList.fold(true, (a, b) => a && b);
-
-        if (success) {
-          _log.info('All data extracted from file ${file.name} saved successfully.');
-          await databaseService.saveS3File(file.copyWith(status: S3FileSyncStatus.downloaded));
-        } else {
-          _log.warning('Failed to save some data extracted from file ${file.name}. Marking as corrupted.');
-          await databaseService.saveS3File(file.copyWith(status: S3FileSyncStatus.corrupted));
-        }
-      } else {
+      if (fileData == null) {
         _log.warning('Failed to download file ${file.name}.');
         await databaseService.saveS3File(file.copyWith(status: S3FileSyncStatus.error));
+        return;
+      }
+
+      _log.info('File ${file.name} downloaded successfully. Size: ${fileData.length} bytes.');
+
+      final archive = ZipDecoder().decodeBytes(fileData);
+      final saveFutures = <Future<bool>>[];
+      for (final archiveFile in archive.files) {
+        if (!archiveFile.isFile) continue;
+
+        final content = utf8.decode(archiveFile.readBytes()!);
+        _log.finer(
+          'Extracted file ${archiveFile.name} from archive ${file.name}. Content length: ${content.length} characters. ${content.substring(0, content.length > 100 ? 100 : content.length)}',
+        );
+        saveFutures.add(sferaLocalRepo.saveData(content));
+      }
+      final successList = await Future.wait(saveFutures);
+      final success = successList.fold(true, (a, b) => a && b);
+
+      if (success) {
+        _log.info('All data extracted from file ${file.name} saved successfully.');
+        await databaseService.saveS3File(file.copyWith(status: S3FileSyncStatus.downloaded));
+      } else {
+        _log.warning('Failed to save some data extracted from file ${file.name}. Marking as corrupted.');
+        await databaseService.saveS3File(file.copyWith(status: S3FileSyncStatus.corrupted));
       }
     } catch (e, s) {
       _log.severe('Error downloading file ${file.name}.', e, s);

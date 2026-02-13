@@ -29,7 +29,7 @@ void main() {
     trainNumber: '12345',
     date: DateTime.now(),
   );
-  late SferaRemoteRepo sferaRemoteRepo;
+  late SferaRepo sferaRepo;
   late MockMqttService mockMqttService;
   late MockSferaLocalDatabaseService mockLocalDatabaseRepository;
   late MockSferaAuthProvider mockSferaAuthProvider;
@@ -54,7 +54,7 @@ void main() {
     when(mockMqttService.messageStream).thenAnswer((_) => mqttSubject.stream);
     when(mockConnectivityManager.onConnectivityChanged).thenAnswer((_) => connectivitySubject.stream);
 
-    sferaRemoteRepo = SferaRemoteRepoImpl(
+    sferaRepo = SferaRepoImpl(
       mqttService: mockMqttService,
       localService: mockLocalDatabaseRepository,
       authProvider: mockSferaAuthProvider,
@@ -72,7 +72,7 @@ void main() {
 
     // LATER THEN
     expectLater(
-      sferaRemoteRepo.stateStream,
+      sferaRepo.stateStream,
       emitsInOrder(<SferaRemoteRepositoryState>[
         .disconnected, // seeded state
         .connecting,
@@ -80,7 +80,7 @@ void main() {
     );
 
     // WHEN
-    await sferaRemoteRepo.connect(trainId);
+    await sferaRepo.connect(trainId);
 
     // Wait till async tasks are finished
     await Future.delayed(Duration(milliseconds: 500));
@@ -102,7 +102,7 @@ void main() {
 
     // LATER THEN
     expectLater(
-      sferaRemoteRepo.stateStream,
+      sferaRepo.stateStream,
       emitsInOrder(<SferaRemoteRepositoryState>[
         .disconnected, // seeded state
         .connecting,
@@ -111,20 +111,20 @@ void main() {
     );
 
     // WHEN
-    await sferaRemoteRepo.connect(trainId);
+    await sferaRepo.connect(trainId);
 
     // THEN
     verify(mockMqttService.connect(any, any)).called(1);
-    expect(sferaRemoteRepo.lastError, isA<ConnectionFailed>());
+    expect(sferaRepo.lastError, isA<ConnectionFailed>());
   });
 
   test('should disconnect and set state to disconnected', () async {
     // WHEN
-    await sferaRemoteRepo.disconnect();
+    await sferaRepo.disconnect();
 
     // THEN
     verify(mockMqttService.disconnect()).called(1);
-    expect(sferaRemoteRepo.stateStream, emits(SferaRemoteRepositoryState.disconnected));
+    expect(sferaRepo.stateStream, emits(SferaRemoteRepositoryState.disconnected));
   });
 
   test('should start loading journey profile after handshake', () async {
@@ -135,7 +135,7 @@ void main() {
 
     // LATER THEN
     expectLater(
-      sferaRemoteRepo.stateStream,
+      sferaRepo.stateStream,
       emitsInOrder(<SferaRemoteRepositoryState>[
         .disconnected, // seeded state
         .connecting,
@@ -143,7 +143,7 @@ void main() {
     );
 
     // WHEN
-    await sferaRemoteRepo.connect(trainId);
+    await sferaRepo.connect(trainId);
     // Wait till async tasks are finished
     await Future.delayed(Duration(milliseconds: 1));
 
@@ -178,7 +178,7 @@ void main() {
 
     // LATER THEN
     expectLater(
-      sferaRemoteRepo.stateStream,
+      sferaRepo.stateStream,
       emitsInOrder(<SferaRemoteRepositoryState>[
         .disconnected, // seeded state
         .connecting,
@@ -187,7 +187,7 @@ void main() {
     );
 
     // WHEN
-    await sferaRemoteRepo.connect(trainId);
+    await sferaRepo.connect(trainId);
     // Wait till async tasks are finished
     await Future.delayed(Duration(milliseconds: 1));
 
@@ -215,7 +215,7 @@ void main() {
 
     // LATER THEN
     expectLater(
-      sferaRemoteRepo.stateStream,
+      sferaRepo.stateStream,
       emitsInOrder(<SferaRemoteRepositoryState>[
         .disconnected, // seeded state
         .connecting,
@@ -223,7 +223,7 @@ void main() {
     );
 
     // WHEN
-    await sferaRemoteRepo.connect(trainId);
+    await sferaRepo.connect(trainId);
     // Wait till async tasks are finished
     await Future.delayed(Duration(milliseconds: 1));
 
@@ -290,7 +290,7 @@ void main() {
 
     // LATER THEN
     expectLater(
-      sferaRemoteRepo.stateStream,
+      sferaRepo.stateStream,
       emitsInOrder(<SferaRemoteRepositoryState>[
         .disconnected, // seeded state
         .connecting,
@@ -298,7 +298,7 @@ void main() {
       ]),
     );
     expectLater(
-      sferaRemoteRepo.journeyStream,
+      sferaRepo.journeyStream,
       emitsInOrder([
         isNull, // seeded state
         isNotNull,
@@ -306,7 +306,7 @@ void main() {
     );
 
     // WHEN
-    await sferaRemoteRepo.connect(trainId);
+    await sferaRepo.connect(trainId);
     // Wait till async tasks are finished
     await Future.delayed(Duration(milliseconds: 1));
 
@@ -366,7 +366,7 @@ void main() {
 
     // LATER THEN
     expectLater(
-      sferaRemoteRepo.stateStream,
+      sferaRepo.stateStream,
       emitsInOrder(<SferaRemoteRepositoryState>[
         .disconnected, // seeded state
         .connecting,
@@ -374,7 +374,7 @@ void main() {
       ]),
     );
     expectLater(
-      sferaRemoteRepo.journeyStream,
+      sferaRepo.journeyStream,
       emitsInOrder([
         isNull, // seeded state
         isNotNull,
@@ -383,7 +383,7 @@ void main() {
     );
 
     // WHEN
-    await sferaRemoteRepo.connect(trainId);
+    await sferaRepo.connect(trainId);
     // Wait till async tasks are finished
     await Future.delayed(Duration(milliseconds: 1));
 
@@ -448,7 +448,7 @@ void main() {
 
     // LATER THEN
     expectLater(
-      sferaRemoteRepo.stateStream,
+      sferaRepo.stateStream,
       emitsInOrder(<SferaRemoteRepositoryState>[
         .disconnected, // seeded state
         .connecting,
@@ -456,7 +456,7 @@ void main() {
       ]),
     );
     expectLater(
-      sferaRemoteRepo.journeyStream,
+      sferaRepo.journeyStream,
       emitsInOrder([
         isNull, // seeded state
         isNotNull,
@@ -465,7 +465,7 @@ void main() {
     );
 
     // WHEN
-    await sferaRemoteRepo.connect(trainId);
+    await sferaRepo.connect(trainId);
     // Wait till async tasks are finished
     await Future.delayed(Duration(milliseconds: 1));
 
@@ -530,7 +530,7 @@ void main() {
 
     // LATER THEN
     expectLater(
-      sferaRemoteRepo.stateStream,
+      sferaRepo.stateStream,
       emitsInOrder(<SferaRemoteRepositoryState>[
         .disconnected, // seeded state
         .connecting,
@@ -539,7 +539,7 @@ void main() {
       ]),
     );
     expectLater(
-      sferaRemoteRepo.journeyStream,
+      sferaRepo.journeyStream,
       emitsInOrder([
         isNull, // seeded state
         isNotNull,
@@ -548,7 +548,7 @@ void main() {
     );
 
     // WHEN
-    await sferaRemoteRepo.connect(trainId);
+    await sferaRepo.connect(trainId);
     // Wait till async tasks are finished
     await Future.delayed(Duration(milliseconds: 1));
 
@@ -567,7 +567,7 @@ void main() {
 
     await Future.delayed(Duration(milliseconds: 1));
 
-    sferaRemoteRepo.disconnect();
+    sferaRepo.disconnect();
 
     await Future.delayed(Duration(milliseconds: 1));
 
@@ -628,7 +628,7 @@ void main() {
 
     // LATER THEN
     expectLater(
-      sferaRemoteRepo.stateStream,
+      sferaRepo.stateStream,
       emitsInOrder(<SferaRemoteRepositoryState>[
         .disconnected, // seeded state
         .connecting,
@@ -636,7 +636,7 @@ void main() {
       ]),
     );
     expectLater(
-      sferaRemoteRepo.journeyStream,
+      sferaRepo.journeyStream,
       emitsInOrder([
         isNull, // seeded state
         isNotNull,
@@ -644,7 +644,7 @@ void main() {
     );
 
     // WHEN
-    await sferaRemoteRepo.connect(trainId);
+    await sferaRepo.connect(trainId);
     // Wait till async tasks are finished
     await Future.delayed(Duration(milliseconds: 1));
 
@@ -654,7 +654,7 @@ void main() {
     verify(mockLocalDatabaseRepository.findTrainCharacteristics(any, any, any)).called(1);
     verify(mockLocalDatabaseRepository.findJourneyProfile(any, any, any)).called(1);
 
-    sferaRemoteRepo.dispose();
+    sferaRepo.dispose();
   });
 
   test('should connect offline when task fails', () async {
@@ -708,7 +708,7 @@ void main() {
 
     // LATER THEN
     expectLater(
-      sferaRemoteRepo.stateStream,
+      sferaRepo.stateStream,
       emitsInOrder(<SferaRemoteRepositoryState>[
         .disconnected, // seeded state
         .connecting,
@@ -716,7 +716,7 @@ void main() {
       ]),
     );
     expectLater(
-      sferaRemoteRepo.journeyStream,
+      sferaRepo.journeyStream,
       emitsInOrder([
         isNull, // seeded state
         isNotNull,
@@ -724,7 +724,7 @@ void main() {
     );
 
     // WHEN
-    await sferaRemoteRepo.connect(trainId);
+    await sferaRepo.connect(trainId);
     // Wait till async tasks are finished
     await Future.delayed(Duration(milliseconds: 1));
 
@@ -738,7 +738,7 @@ void main() {
     verify(mockLocalDatabaseRepository.findTrainCharacteristics(any, any, any)).called(1);
     verify(mockLocalDatabaseRepository.findJourneyProfile(any, any, any)).called(1);
 
-    sferaRemoteRepo.dispose();
+    sferaRepo.dispose();
   });
 
   test('should reconnect when mqtt connection is available again', () async {
@@ -787,7 +787,7 @@ void main() {
 
     // LATER THEN
     expectLater(
-      sferaRemoteRepo.stateStream,
+      sferaRepo.stateStream,
       emitsInOrder(<SferaRemoteRepositoryState>[
         .disconnected, // seeded state
         .connecting,
@@ -797,7 +797,7 @@ void main() {
       ]),
     );
     expectLater(
-      sferaRemoteRepo.journeyStream,
+      sferaRepo.journeyStream,
       emitsInOrder([
         isNull, // seeded state
         isNotNull,
@@ -806,7 +806,7 @@ void main() {
     );
 
     // WHEN
-    await sferaRemoteRepo.connect(trainId);
+    await sferaRepo.connect(trainId);
     // Wait till async tasks are finished
     await Future.delayed(Duration(milliseconds: 1));
 
@@ -840,6 +840,6 @@ void main() {
 
     await Future.delayed(Duration(milliseconds: 1));
 
-    sferaRemoteRepo.dispose();
+    sferaRepo.dispose();
   });
 }

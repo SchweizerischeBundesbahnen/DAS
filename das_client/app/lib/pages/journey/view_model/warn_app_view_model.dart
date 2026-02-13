@@ -14,10 +14,10 @@ final _log = Logger('WarnAppViewModel');
 class WarnAppViewModel {
   WarnAppViewModel({
     required this.flavor,
-    required SferaRemoteRepo sferaRemoteRepo,
+    required SferaRepo sferaRepo,
     required WarnappRepository warnappRepo,
     required RuFeatureProvider ruFeatureProvider,
-  }) : _sferaRemoteRepo = sferaRemoteRepo,
+  }) : _sferaRepo = sferaRepo,
        _warnappRepo = warnappRepo,
        _ruFeatureProvider = ruFeatureProvider,
        _appCheck = AppCheck() {
@@ -28,7 +28,7 @@ class WarnAppViewModel {
 
   final Flavor flavor;
 
-  final SferaRemoteRepo _sferaRemoteRepo;
+  final SferaRepo _sferaRepo;
   final WarnappRepository _warnappRepo;
   final RuFeatureProvider _ruFeatureProvider;
 
@@ -85,7 +85,7 @@ class WarnAppViewModel {
 
   void _listenToSferaRemoteRepo() {
     _stateSubscription?.cancel();
-    _stateSubscription = _sferaRemoteRepo.stateStream.listen((state) {
+    _stateSubscription = _sferaRepo.stateStream.listen((state) {
       switch (state) {
         case .offlineData:
         case .connected:
@@ -106,7 +106,7 @@ class WarnAppViewModel {
     _log.info('Warnapp is ${isWarnappFeatEnabled ? 'enabled' : 'disabled'} for active train');
     if (isWarnappFeatEnabled) {
       _warnappAbfahrtSubscription = _warnappRepo.abfahrtEventStream.listen((_) => _handleAbfahrtEvent());
-      _warnappSignalSubscription = _sferaRemoteRepo.warnappEventStream.listen((_) {
+      _warnappSignalSubscription = _sferaRepo.warnappEventStream.listen((_) {
         _lastWarnappEventTimestamp = DateTime.now();
       });
       _warnappRepo.enable();

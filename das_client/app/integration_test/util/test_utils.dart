@@ -104,7 +104,7 @@ Future<void> loadJourney(WidgetTester tester, {required String trainNumber, Rail
 }
 
 Future<void> disconnect(WidgetTester tester) async {
-  DI.get<SferaRemoteRepo>().disconnect();
+  DI.get<SferaRepo>().disconnect();
   await Future.delayed(const Duration(milliseconds: 50));
 }
 

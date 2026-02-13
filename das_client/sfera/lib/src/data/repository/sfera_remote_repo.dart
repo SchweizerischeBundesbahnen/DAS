@@ -4,8 +4,9 @@ import 'package:sfera/component.dart';
 import 'package:sfera/src/data/dto/message_header_dto.dart';
 
 /// Handles connection and message exchange with SFERA broker
-abstract class SferaRemoteRepo {
-  const SferaRemoteRepo._();
+/// Will fallback to local repo if connection fails
+abstract class SferaRepo {
+  const SferaRepo._();
 
   Stream<SferaRemoteRepositoryState> get stateStream;
 

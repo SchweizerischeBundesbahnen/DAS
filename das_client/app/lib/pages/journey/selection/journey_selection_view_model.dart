@@ -11,19 +11,19 @@ final _log = Logger('JourneySelectionViewModel');
 
 class JourneySelectionViewModel {
   JourneySelectionViewModel({
-    required SferaRemoteRepo sferaRemoteRepo,
+    required SferaRepo sferaRepo,
     required Future<void> Function(TrainIdentification) onJourneySelected,
-  }) : _sferaRemoteRepo = sferaRemoteRepo,
+  }) : _sferaRepo = sferaRepo,
        _onJourneySelected = onJourneySelected {
     _emitSelectingWithDefaults();
     _initSferaRepoSubscription();
   }
 
-  final SferaRemoteRepo _sferaRemoteRepo;
+  final SferaRepo _sferaRepo;
 
   final Future<void> Function(TrainIdentification) _onJourneySelected;
 
-  StreamSubscription? _sferaRemoteRepoSubscription;
+  StreamSubscription? _sferaRepoSubscription;
 
   final _state = BehaviorSubject<JourneySelectionModel>();
 
@@ -68,12 +68,12 @@ class JourneySelectionViewModel {
   }
 
   void dispose() {
-    _sferaRemoteRepoSubscription?.cancel();
+    _sferaRepoSubscription?.cancel();
     _state.close();
   }
 
   void _initSferaRepoSubscription() {
-    _sferaRemoteRepoSubscription = _sferaRemoteRepo.stateStream.listen((state) {
+    _sferaRepoSubscription = _sferaRepo.stateStream.listen((state) {
       switch (state) {
         case .offlineData:
         case .connected:
@@ -87,20 +87,20 @@ class JourneySelectionViewModel {
 
           return _state.add(JourneySelectionModel.loading(trainIdentification: _trainIdFrom(currentState)));
         case .disconnected:
-          if (_sferaRemoteRepo.lastError == null) return;
+          if (_sferaRepo.lastError == null) return;
 
           return switch (_state.value) {
             final Loading l => _state.add(
               JourneySelectionModel.error(
                 trainIdentification: l.trainIdentification,
-                errorCode: .fromSfera(error: _sferaRemoteRepo.lastError!),
+                errorCode: .fromSfera(error: _sferaRepo.lastError!),
                 availableStartDates: _availableStartDates(),
               ),
             ),
             final Selecting s => _state.add(
               JourneySelectionModel.error(
                 trainIdentification: _trainIdFrom(s),
-                errorCode: .fromSfera(error: _sferaRemoteRepo.lastError!),
+                errorCode: .fromSfera(error: _sferaRepo.lastError!),
                 availableStartDates: s.availableStartDates,
               ),
             ),

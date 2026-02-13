@@ -89,7 +89,7 @@ class SferaComponent {
     return SferaAuthServiceImpl(httpClient: httpClient, tokenExchangeUrl: tokenExchangeUrl);
   }
 
-  static SferaRemoteRepo createSferaRemoteRepo({
+  static SferaRepo createSferaRemoteRepo({
     required MqttService mqttService,
     required SferaAuthProvider sferaAuthProvider,
     required String deviceId,
@@ -97,7 +97,7 @@ class SferaComponent {
     required ConnectivityManager connectivityManager,
   }) {
     final localDatabaseService = DriftLocalDatabaseService.instance;
-    return SferaRemoteRepoImpl(
+    return SferaRepoImpl(
       mqttService: mqttService,
       localService: localDatabaseService,
       authProvider: sferaAuthProvider,

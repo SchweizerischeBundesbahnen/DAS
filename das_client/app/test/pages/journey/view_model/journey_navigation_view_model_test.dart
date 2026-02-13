@@ -10,13 +10,13 @@ import 'package:sfera/component.dart';
 import '../../../test_util.dart';
 import 'journey_navigation_view_model_test.mocks.dart';
 
-@GenerateNiceMocks([MockSpec<SferaRemoteRepo>()])
+@GenerateNiceMocks([MockSpec<SferaRepo>()])
 void main() {
   group('JourneyNavigationViewModel', () {
     late JourneyNavigationViewModel testee;
     late List<dynamic> emitRegister;
     late StreamSubscription sub;
-    late MockSferaRemoteRepo mockSferaRepo;
+    late MockSferaRepo mockSferaRepo;
     late BehaviorSubject<SferaRemoteRepositoryState> mockStream;
 
     final now = DateTime(1970, 1, 1);
@@ -27,7 +27,7 @@ void main() {
     final trainId3 = TrainIdentification(ru: .blsP, trainNumber: '9999', date: yesterday);
 
     setUp(() {
-      mockSferaRepo = MockSferaRemoteRepo();
+      mockSferaRepo = MockSferaRepo();
       mockStream = BehaviorSubject<SferaRemoteRepositoryState>.seeded(.disconnected);
       when(mockSferaRepo.stateStream).thenAnswer((_) => mockStream.stream);
       testee = JourneyNavigationViewModel(sferaRepo: mockSferaRepo);

@@ -126,7 +126,7 @@ extension AuthenticatedScopeExtension on GetIt {
       );
     }
 
-    registerSingletonAsync<SferaRemoteRepo>(
+    registerSingletonAsync<SferaRepo>(
       factoryFunc,
       dispose: (repo) => repo.dispose(),
       dependsOn: [MqttService],
@@ -165,7 +165,7 @@ extension AuthenticatedScopeExtension on GetIt {
 
   void registerRuFeatureProvider() {
     factoryFunc() {
-      return RuFeatureProviderImpl(sferaRemoteRepo: DI.get(), settingsRepository: DI.get());
+      return RuFeatureProviderImpl(sferaRepo: DI.get(), settingsRepository: DI.get());
     }
 
     registerLazySingleton<RuFeatureProvider>(factoryFunc);

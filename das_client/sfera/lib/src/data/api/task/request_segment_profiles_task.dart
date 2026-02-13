@@ -19,7 +19,7 @@ final _log = Logger('RequestSegmentProfilesTask');
 class RequestSegmentProfilesTask extends SferaTask<List<SegmentProfileDto>> {
   RequestSegmentProfilesTask({
     required MqttService mqttService,
-    required SferaRemoteRepo sferaRepo,
+    required SferaRepo sferaRepo,
     required SferaLocalDatabaseService sferaDatabaseRepository,
     required this.otnId,
     required this.journeyProfile,
@@ -31,7 +31,7 @@ class RequestSegmentProfilesTask extends SferaTask<List<SegmentProfileDto>> {
   final MqttService _mqttService;
   final OtnId otnId;
   final SferaLocalDatabaseService _sferaDatabaseRepository;
-  final SferaRemoteRepo _sferaRepo;
+  final SferaRepo _sferaRepo;
   final JourneyProfileDto journeyProfile;
 
   late TaskCompleted<List<SegmentProfileDto>> _taskCompletedCallback;

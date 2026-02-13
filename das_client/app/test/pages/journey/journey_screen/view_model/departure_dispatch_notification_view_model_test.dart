@@ -10,7 +10,7 @@ import 'package:mockito/mockito.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
-@GenerateNiceMocks([MockSpec<DASSounds>(), MockSpec<Sound>(), MockSpec<SferaRemoteRepo>()])
+@GenerateNiceMocks([MockSpec<DASSounds>(), MockSpec<Sound>(), MockSpec<SferaRepo>()])
 import 'departure_dispatch_notification_view_model_test.mocks.dart';
 
 void main() {
@@ -18,7 +18,7 @@ void main() {
     late DepartureDispatchNotificationViewModel testee;
     late BehaviorSubject<JourneyPositionModel> journeyPositionSubject;
     late BehaviorSubject<DepartureDispatchNotificationEvent?> eventSubject;
-    late SferaRemoteRepo mockSferaRemoteRepo;
+    late SferaRepo mockSferaRepo;
     late DASSounds mockDasSounds;
     late FakeAsync testAsync;
     final Sound mockSound = MockSound();
@@ -41,18 +41,18 @@ void main() {
 
     setUp(() {
       mockDasSounds = MockDASSounds();
-      mockSferaRemoteRepo = MockSferaRemoteRepo();
+      mockSferaRepo = MockSferaRepo();
       when(mockDasSounds.departureDispatchNotification).thenReturn(mockSound);
       GetIt.I.registerSingleton<DASSounds>(mockDasSounds);
 
       fakeAsync((fakeAsync) {
         journeyPositionSubject = BehaviorSubject<JourneyPositionModel>.seeded(JourneyPositionModel());
         eventSubject = BehaviorSubject<DepartureDispatchNotificationEvent?>.seeded(null);
-        when(mockSferaRemoteRepo.departureDispatchNotificationEventStream).thenAnswer((_) => eventSubject.stream);
+        when(mockSferaRepo.departureDispatchNotificationEventStream).thenAnswer((_) => eventSubject.stream);
         testAsync = fakeAsync;
 
         testee = DepartureDispatchNotificationViewModel(
-          sferaRemoteRepo: mockSferaRemoteRepo,
+          sferaRepo: mockSferaRepo,
           journeyPositionStream: journeyPositionSubject,
         );
         streamRegister = [];

@@ -39,10 +39,10 @@ import 'package:sfera/src/data/mapper/sfera_model_mapper.dart';
 import 'package:sfera/src/model/otn_id.dart';
 import 'package:uuid/uuid.dart';
 
-final _log = Logger('SferaRemoteRepoImpl');
+final _log = Logger('SferaRepoImpl');
 
-class SferaRemoteRepoImpl implements SferaRemoteRepo {
-  SferaRemoteRepoImpl({
+class SferaRepoImpl implements SferaRepo {
+  SferaRepoImpl({
     required MqttService mqttService,
     required SferaLocalDatabaseService localService,
     required SferaAuthProvider authProvider,
@@ -152,15 +152,17 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
       trainNumber: otnId.operationalTrainNumber,
       startDate: otnId.startDate,
     );
-    if (localJourney != null && localJourney.valid) {
-      _log.info('Using offline data.');
-      _rxJourney.add(localJourney);
-      _hasOfflineData = true;
-      _rxState.add(.offlineData);
-      return true;
+
+    if (localJourney == null || !localJourney.valid) {
+      _log.info('No valid offline Journey found');
+      return false;
     }
-    _log.info('No offline Journey found');
-    return false;
+
+    _log.info('Using offline data.');
+    _rxJourney.add(localJourney);
+    _hasOfflineData = true;
+    _rxState.add(.offlineData);
+    return true;
   }
 
   OtnId _toOtnId(TrainIdentification trainId) {

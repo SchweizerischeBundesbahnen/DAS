@@ -7,12 +7,12 @@ import 'package:sfera/component.dart';
 
 class DisturbanceViewModel {
   DisturbanceViewModel({
-    required SferaRemoteRepo sferaRemoteRepo,
-  }) : _sferaRemoteRepo = sferaRemoteRepo {
+    required SferaRepo sferaRepo,
+  }) : _sferaRepo = sferaRepo {
     _init();
   }
 
-  final SferaRemoteRepo _sferaRemoteRepo;
+  final SferaRepo _sferaRepo;
   final _sound = DI.get<DASSounds>().gridOverload;
 
   final _rxDisturbance = BehaviorSubject<DisturbanceEventType?>.seeded(null);
@@ -22,7 +22,7 @@ class DisturbanceViewModel {
   StreamSubscription? _disturbanceSubscription;
 
   void _init() {
-    _disturbanceSubscription = _sferaRemoteRepo.disturbanceEventStream.listen((event) {
+    _disturbanceSubscription = _sferaRepo.disturbanceEventStream.listen((event) {
       if (event?.type == DisturbanceEventType.start) {
         _sound.play();
         _rxDisturbance.add(event!.type);

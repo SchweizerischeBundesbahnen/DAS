@@ -13,17 +13,17 @@ import 'package:sfera/src/model/otn_id.dart';
 import 'sfera_handshake_task_test.mocks.dart';
 
 @GenerateNiceMocks([
-  MockSpec<SferaRemoteRepo>(),
+  MockSpec<SferaRepo>(),
   MockSpec<MqttService>(),
 ])
 void main() {
-  late MockSferaRemoteRepo sferaRemoteRepo;
+  late MockSferaRepo mockSferaRepo;
   late MockMqttService mqttService;
   late OtnId otnId;
 
   setUp(() {
-    sferaRemoteRepo = MockSferaRemoteRepo();
-    when(sferaRemoteRepo.messageHeader(sender: anyNamed('sender'))).thenReturn(MessageHeaderDto());
+    mockSferaRepo = MockSferaRepo();
+    when(mockSferaRepo.messageHeader(sender: anyNamed('sender'))).thenReturn(MessageHeaderDto());
     mqttService = MockMqttService();
     otnId = OtnId(company: '1085', operationalTrainNumber: '719', startDate: DateTime.now());
   });
@@ -32,7 +32,7 @@ void main() {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final handshakeTask = HandshakeTask(
-      sferaRepo: sferaRemoteRepo,
+      sferaRepo: mockSferaRepo,
       mqttService: mqttService,
       otnId: otnId,
       dasDrivingMode: .readOnly,
@@ -59,7 +59,7 @@ void main() {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final handshakeTask = HandshakeTask(
-      sferaRepo: sferaRemoteRepo,
+      sferaRepo: mockSferaRepo,
       mqttService: mqttService,
       otnId: otnId,
       dasDrivingMode: .readOnly,
@@ -83,7 +83,7 @@ void main() {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final handshakeTask = HandshakeTask(
-      sferaRepo: sferaRemoteRepo,
+      sferaRepo: mockSferaRepo,
       mqttService: mqttService,
       otnId: otnId,
       dasDrivingMode: .readOnly,
@@ -107,7 +107,7 @@ void main() {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final handshakeTask = HandshakeTask(
-      sferaRepo: sferaRemoteRepo,
+      sferaRepo: mockSferaRepo,
       mqttService: mqttService,
       otnId: otnId,
       dasDrivingMode: .readOnly,
@@ -133,7 +133,7 @@ void main() {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final handshakeTask = HandshakeTask(
-      sferaRepo: sferaRemoteRepo,
+      sferaRepo: mockSferaRepo,
       mqttService: mqttService,
       otnId: otnId,
       dasDrivingMode: .readOnly,
