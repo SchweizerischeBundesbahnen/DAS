@@ -24,12 +24,14 @@ class SelectRailwayUndertakingModalController {
     required this.localizations,
     required this.updateRailwayUndertaking,
     required List<RailwayUndertaking> initialRailwayUndertaking,
+    required this.allowMultiSelect,
   }) {
     _selectedRailwayUndertaking = initialRailwayUndertaking;
     _init();
   }
 
   final AppLocalizations localizations;
+  final bool allowMultiSelect;
   final void Function(List<RailwayUndertaking>) updateRailwayUndertaking;
 
   late TextEditingController _textController;
@@ -49,7 +51,9 @@ class SelectRailwayUndertakingModalController {
 
   set selectedRailwayUndertaking(List<RailwayUndertaking> selectedRailwayUndertaking) {
     _selectedRailwayUndertaking = selectedRailwayUndertaking;
-    _resetToSelectedRailwayUndertaking();
+    if (!allowMultiSelect) {
+      _resetToSelectedRailwayUndertaking();
+    }
     updateRailwayUndertaking.call(_selectedRailwayUndertaking);
   }
 
@@ -80,7 +84,9 @@ class SelectRailwayUndertakingModalController {
   }
 
   void _initFilter() {
-    _filter = _selectedRailwayUndertaking.first.localizedText(localizations);
+    if (!allowMultiSelect) {
+      _filter = _selectedRailwayUndertaking.firstOrNull?.localizedText(localizations);
+    }
   }
 
   void _initTextEditingController() {
@@ -89,7 +95,7 @@ class SelectRailwayUndertakingModalController {
   }
 
   void _resetToSelectedRailwayUndertaking() {
-    _filter = _selectedRailwayUndertaking.first.localizedText(localizations);
+    _filter = _selectedRailwayUndertaking.firstOrNull?.localizedText(localizations);
     _textController.text = _filter!;
   }
 

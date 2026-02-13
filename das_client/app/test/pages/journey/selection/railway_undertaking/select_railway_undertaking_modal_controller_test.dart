@@ -1,6 +1,6 @@
 import 'package:app/extension/ru_extension.dart';
 import 'package:app/i18n/gen/app_localizations.dart';
-import 'package:app/pages/journey/selection/railway_undertaking/select_railway_undertaking_modal_controller.dart';
+import 'package:app/widgets/railway_undertaking/select_railway_undertaking_modal_controller.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -21,6 +21,7 @@ void main() {
       localizations: localizations,
       initialRailwayUndertaking: [.sbbP],
       updateRailwayUndertaking: mockUpdateAvailableRuFunction.call,
+      allowMultiSelect: false,
     );
     testee.availableRailwayUndertakings.listen(emitRegister.addAll);
     await processStreams();
@@ -65,6 +66,7 @@ void main() {
         localizations: localizations,
         initialRailwayUndertaking: [.sbbP],
         updateRailwayUndertaking: mockUpdateAvailableRuFunction.call,
+        allowMultiSelect: false,
       );
       testee.availableRailwayUndertakings.listen(emitRegister.addAll);
       await processStreams();

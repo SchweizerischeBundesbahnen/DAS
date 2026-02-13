@@ -1,64 +1,42 @@
 import 'package:app/extension/ru_extension.dart';
 import 'package:app/i18n/i18n.dart';
-import 'package:app/pages/journey/selection/railway_undertaking/widgets/select_railway_undertaking_modal.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/device_screen.dart';
+import 'package:app/widgets/railway_undertaking/widgets/select_railway_undertaking_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
 const _inputPadding = EdgeInsets.fromLTRB(SBBSpacing.medium, 0, 0, SBBSpacing.xSmall);
 
-class SelectRailwayUndertakingInput extends StatelessWidget {
+class SelectRailwayUndertakingInput extends StatefulWidget {
   const SelectRailwayUndertakingInput({
     required this.selectedRailwayUndertakings,
     required this.updateRailwayUndertaking,
     super.key,
     this.isModalVersion = false,
     this.allowMultiSelect = false,
+    this.isLastElement = false,
   });
 
   final List<RailwayUndertaking> selectedRailwayUndertakings;
   final void Function(List<RailwayUndertaking>) updateRailwayUndertaking;
   final bool isModalVersion;
   final bool allowMultiSelect;
+  final bool isLastElement;
 
   @override
-  Widget build(BuildContext context) {
-    return _RailwayUndertakingTextField(
-      selectedRailwayUndertaking: selectedRailwayUndertakings,
-      updateRailwayUndertaking: updateRailwayUndertaking,
-      isModalVersion: isModalVersion,
-      allowMultiSelect: allowMultiSelect,
-    );
-  }
+  State<SelectRailwayUndertakingInput> createState() => _RailwayUndertakingTextFieldState();
 }
 
-class _RailwayUndertakingTextField extends StatefulWidget {
-  const _RailwayUndertakingTextField({
-    required this.selectedRailwayUndertaking,
-    required this.updateRailwayUndertaking,
-    this.isModalVersion = false,
-    this.allowMultiSelect = false,
-  });
-
-  final List<RailwayUndertaking> selectedRailwayUndertaking;
-  final void Function(List<RailwayUndertaking>) updateRailwayUndertaking;
-  final bool isModalVersion;
-  final bool allowMultiSelect;
-
-  @override
-  State<_RailwayUndertakingTextField> createState() => _RailwayUndertakingTextFieldState();
-}
-
-class _RailwayUndertakingTextFieldState extends State<_RailwayUndertakingTextField> {
+class _RailwayUndertakingTextFieldState extends State<SelectRailwayUndertakingInput> {
   // updates the disabled text field which is tapped to show modal
   TextEditingController? baseTextEditingController;
 
   @override
-  void didUpdateWidget(covariant _RailwayUndertakingTextField oldWidget) {
-    if (widget.selectedRailwayUndertaking != oldWidget.selectedRailwayUndertaking) {
-      baseTextEditingController?.text = widget.selectedRailwayUndertaking
+  void didUpdateWidget(covariant SelectRailwayUndertakingInput oldWidget) {
+    if (widget.selectedRailwayUndertakings != oldWidget.selectedRailwayUndertakings) {
+      baseTextEditingController?.text = widget.selectedRailwayUndertakings
           .map((it) => it.displayText(context))
           .join(', ');
     }
@@ -68,7 +46,7 @@ class _RailwayUndertakingTextFieldState extends State<_RailwayUndertakingTextFie
   @override
   void didChangeDependencies() {
     baseTextEditingController ??= TextEditingController(
-      text: widget.selectedRailwayUndertaking.map((it) => it.displayText(context)).join(', '),
+      text: widget.selectedRailwayUndertakings.map((it) => it.displayText(context)).join(', '),
     );
     super.didChangeDependencies();
   }
@@ -89,6 +67,7 @@ class _RailwayUndertakingTextFieldState extends State<_RailwayUndertakingTextFie
           controller: baseTextEditingController,
           labelText: widget.isModalVersion ? null : context.l10n.p_train_selection_ru_description,
           hintText: widget.isModalVersion ? context.l10n.p_train_selection_ru_description : null,
+          isLastElement: widget.isLastElement,
         ),
         onTap: () {
           showModalBottomSheet(
@@ -99,7 +78,7 @@ class _RailwayUndertakingTextFieldState extends State<_RailwayUndertakingTextFie
             shape: SelectRailwayUndertakingModal.shapeBorder,
             constraints: _modalConstraints,
             builder: (_) => SelectRailwayUndertakingModal(
-              selectedRailwayUndertaking: widget.selectedRailwayUndertaking,
+              selectedRailwayUndertaking: widget.selectedRailwayUndertakings,
               allowMultiSelect: widget.allowMultiSelect,
               updateRailwayUndertaking: widget.updateRailwayUndertaking,
             ),

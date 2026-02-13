@@ -1,3 +1,4 @@
+import 'package:sfera/component.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserSettings {
@@ -32,8 +33,12 @@ class UserSettings {
   }
 
   bool get showDecisiveGradient => get(.showDecisiveGradient, true);
+
+  List<RailwayUndertaking> get railwayUndertakings =>
+      get(.railwayUndertakings, []).map((it) => RailwayUndertaking.values.byName(it)).toList();
 }
 
 enum UserSettingKeys {
   showDecisiveGradient,
+  railwayUndertakings,
 }

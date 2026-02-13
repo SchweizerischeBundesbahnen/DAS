@@ -1,7 +1,7 @@
 import 'package:app/extension/ru_extension.dart';
 import 'package:app/i18n/i18n.dart';
-import 'package:app/pages/journey/selection/railway_undertaking/select_railway_undertaking_modal_controller.dart';
 import 'package:app/theme/theme_util.dart';
+import 'package:app/widgets/railway_undertaking/select_railway_undertaking_modal_controller.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -54,6 +54,7 @@ class _SelectRailwayUndertakingModalState extends State<SelectRailwayUndertaking
         localizations: _appLocalizations,
         updateRailwayUndertaking: widget.updateRailwayUndertaking,
         initialRailwayUndertaking: widget.selectedRailwayUndertaking,
+        allowMultiSelect: widget.allowMultiSelect,
       );
     }
     super.didChangeDependencies();
@@ -96,13 +97,20 @@ class _SelectRailwayUndertakingModalState extends State<SelectRailwayUndertaking
                             controller: controller?.textEditingController,
                             labelText: context.l10n.p_train_selection_ru_description,
                             keyboardType: .text,
-                            suffixIcon: IconButton(
-                              icon: Icon(SBBIcons.cross_small),
-                              onPressed: () => controller?.textEditingController.clear(),
-                            ),
+                            suffixIcon: !widget.allowMultiSelect
+                                ? IconButton(
+                                    icon: Icon(SBBIcons.cross_small),
+                                    onPressed: () => controller?.textEditingController.clear(),
+                                  )
+                                : null,
                             autofocus: true,
                           ),
                         ),
+                        if (widget.allowMultiSelect)
+                          IconButton(
+                            icon: Icon(SBBIcons.cross_small),
+                            onPressed: () => context.router.pop(),
+                          ),
                       ],
                     ),
                   ),
@@ -124,13 +132,13 @@ class _SelectRailwayUndertakingModalState extends State<SelectRailwayUndertaking
                                   label: e.displayText(context),
                                   isLastElement: idx == localizedFilteredRus.length - 1,
                                   onChanged: (isSelected) {
-                                    final newSelectedRus = [...widget.selectedRailwayUndertaking];
                                     if (isSelected != null && isSelected) {
-                                      newSelectedRus.add(e);
+                                      widget.selectedRailwayUndertaking.add(e);
                                     } else {
-                                      newSelectedRus.remove(e);
+                                      widget.selectedRailwayUndertaking.remove(e);
                                     }
-                                    controller?.selectedRailwayUndertaking = newSelectedRus;
+                                    controller?.selectedRailwayUndertaking = widget.selectedRailwayUndertaking;
+                                    setState(() {});
                                   },
                                 )
                               else
