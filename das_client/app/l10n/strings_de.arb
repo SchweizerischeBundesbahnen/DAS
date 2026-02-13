@@ -280,5 +280,7 @@
   "c_tour_system_caros": "Caros",
   "c_tour_system_rail_opt": "RailOpt",
   "c_tour_system_bls_ivu": "BLS IVU",
-  "c_tour_system_rail_cube": "RailCube"
+  "c_tour_system_rail_cube": "RailCube",
+  "w_user_tour_system_selection_label": "Toursystem",
+  "w_user_tour_system_selection_title": "Toursystem wählen"
 }
