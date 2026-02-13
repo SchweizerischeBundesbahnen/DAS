@@ -127,9 +127,9 @@
             </TAF_TAP_LocationReference>
         </TimingPoint>
         <Signal>
-            <Signal_ID signal_ID_Physical="A1" location="200"/>
+            <Signal_ID signal_ID_Physical="A1" location="250"/>
             <SignalFunction>block</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="NS"/>
+            <SignalPhysicalCharacteristics visualIdentifier="A1"/>
         </Signal>
         <Signal>
             <Signal_ID signal_ID_Physical="B1" location="400"/>
@@ -415,6 +415,9 @@
         </KilometreReferencePoint>
         <KilometreReferencePoint location="200">
             <KM_Reference kmRef="2"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="250">
+            <KM_Reference kmRef="2.5"/>
         </KilometreReferencePoint>
         <KilometreReferencePoint location="300">
             <KM_Reference kmRef="3"/>

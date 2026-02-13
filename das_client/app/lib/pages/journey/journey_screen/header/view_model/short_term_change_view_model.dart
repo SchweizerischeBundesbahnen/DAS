@@ -28,10 +28,8 @@ class ShortTermChangeViewModel extends JourneyAwareViewModel {
 
   final BehaviorSubject<ShortTermChangeModel> _rxSubject = BehaviorSubject.seeded(NoShortTermChanges());
 
-  Journey? _lastJourney;
   JourneyPoint? _lastCurrentPosition;
-  bool _journeyStarted = false;
-  List<ShortTermChange> _lastShortTermChanges = [];
+  bool _displayNewShortTermChanges = false;
 
   Timer? _timer;
 
@@ -41,66 +39,64 @@ class ShortTermChangeViewModel extends JourneyAwareViewModel {
 
   @override
   void journeyUpdated(Journey? journey) {
-    _lastJourney = journey;
-    _logger.fine('Updating Journey');
-    _emitModel();
+    if (!_hasNewShortTermChanges(journey)) return;
+    _displayNewShortTermChanges = true;
+    _calculateAndEmitModel(journey: journey, currentPosition: _lastCurrentPosition);
   }
 
   @override
   void journeyIdentificationChanged(Journey? journey) {
-    if (_lastJourney != null) {
-      _logger.fine('Discarding ShortTermChanges');
-      _journeyStarted = false;
-      _lastCurrentPosition = null;
-      _lastJourney = null;
-      _lastShortTermChanges.clear();
-      _rxSubject.add(NoShortTermChanges());
-    } else {
-      _lastJourney = journey;
-      _emitModel();
-    }
+    _lastCurrentPosition = null;
+    _rxSubject.add(NoShortTermChanges());
+
+    if (journey?.metadata.shortTermChanges.isEmpty ?? true) return;
+    _displayNewShortTermChanges = true;
+    _calculateAndEmitModel(journey: journey, currentPosition: null);
   }
 
   @override
   void dispose() {
     _journeyPositionSubscription?.cancel();
+    _rxSubject.close();
+    _timer?.cancel();
     super.dispose();
   }
 
   void _initJourneyPositionSubscription() {
     _journeyPositionSubscription?.cancel();
     _journeyPositionSubscription = _journeyPositionViewModel.model.listen((model) {
-      _lastCurrentPosition = model.currentPosition;
-      if (_lastCurrentPosition != null && _lastCurrentPosition != _lastJourney?.metadata.journeyStart) {
-        _journeyStarted = true;
-      }
-      _emitModel();
+      final currentPosition = model.currentPosition;
+      if (_lastCurrentPosition == currentPosition) return;
+
+      _lastCurrentPosition = currentPosition;
+      _calculateAndEmitModel(journey: lastJourney, currentPosition: currentPosition);
     });
   }
 
-  void _emitModel() {
+  void _calculateAndEmitModel({Journey? journey, JourneyPoint? currentPosition}) {
     _timer?.cancel();
-    final shortTermChanges = _lastJourney?.metadata.shortTermChanges ?? [];
+    final shortTermChanges = journey?.metadata.shortTermChanges.toList(growable: false) ?? [];
 
     if (shortTermChanges.isEmpty) {
       _emitEmptyWithLog();
       return;
     }
 
-    if (!_journeyStarted) {
+    if (currentPosition == null || currentPosition == journey?.metadata.journeyStart) {
+      // journey has not started yet
       _emitLastingWithLog(shortTermChanges);
       return;
     }
 
     final shortTermChangeInSight = _calculateClosestShortTermChangeInSight(shortTermChanges);
     if (shortTermChangeInSight != null) {
-      _lastShortTermChanges = List.from(shortTermChanges, growable: false);
+      _displayNewShortTermChanges = false;
       _emitChangeInSightWithLog(shortTermChangeInSight);
       return;
     }
 
-    if (!_isSortedEqual(shortTermChanges.toList(growable: false), _lastShortTermChanges)) {
-      _lastShortTermChanges = List.from(shortTermChanges, growable: false);
+    if (_displayNewShortTermChanges) {
+      _displayNewShortTermChanges = false;
       _emitTimedWithLog(shortTermChanges);
       return;
     }
@@ -114,8 +110,6 @@ class ShortTermChangeViewModel extends JourneyAwareViewModel {
   }
 
   void _emitLastingWithLog(Iterable<ShortTermChange> shortTermChanges) {
-    assert(shortTermChanges.isNotEmpty);
-
     _logger.fine('ShortTermChanges within journey that has not yet started. Emitting...');
     _emitSingleOrMultipleWithLog(shortTermChanges);
   }
@@ -147,6 +141,7 @@ class ShortTermChangeViewModel extends JourneyAwareViewModel {
   }
 
   void _emitSingleOrMultipleWithLog(Iterable<ShortTermChange> shortTermChanges) {
+    assert(shortTermChanges.isNotEmpty);
     if (shortTermChanges.length > 1) {
       _logger.fine('Multiple Short Term Changes in Journey. Emitting...');
       _rxSubject.add(MultipleShortTermChanges());
@@ -167,12 +162,12 @@ class ShortTermChangeViewModel extends JourneyAwareViewModel {
     // short term changes in sight are between current position and maximum of two service points ahead
 
     final beginOfSight = _lastCurrentPosition?.order;
-    if (beginOfSight == null || _lastJourney == null) {
+    if (beginOfSight == null || lastJourney == null) {
       _logger.fine('Cannot calculate short term change in sight without journey of current position!');
       return null;
     }
 
-    final servicePointsAhead = _lastJourney!.data
+    final servicePointsAhead = lastJourney!.data
         .whereType<ServicePoint>()
         .where((sP) => sP.order > beginOfSight)
         .sortedBy((sP) => sP.order);
@@ -202,7 +197,7 @@ class ShortTermChangeViewModel extends JourneyAwareViewModel {
   }
 
   bool _isSortedEqual(List<ShortTermChange> shortTermChanges, List<ShortTermChange> lastShortTermChanges) {
-    int compareByOrderThenPriority(a, b) {
+    int compareByOrderThenPriority(ShortTermChange a, ShortTermChange b) {
       final orderComparison = a.startOrder!.compareTo(b.startOrder!);
       if (orderComparison != 0) return orderComparison;
       return a.compareByPriority(b);
@@ -212,6 +207,16 @@ class ShortTermChangeViewModel extends JourneyAwareViewModel {
       shortTermChanges.sorted(compareByOrderThenPriority),
       lastShortTermChanges.sorted(compareByOrderThenPriority),
     );
+  }
+
+  void _setDisplayNewShortTermChanges(Journey? journey) {
+    if (_hasNewShortTermChanges(journey)) _displayNewShortTermChanges = true;
+  }
+
+  bool _hasNewShortTermChanges(Journey? journey) {
+    final shortTermChanges = journey?.metadata.shortTermChanges.toList(growable: false) ?? [];
+    final lastShortTermChanges = lastJourney?.metadata.shortTermChanges.toList(growable: false) ?? [];
+    return !_isSortedEqual(shortTermChanges, lastShortTermChanges);
   }
 }
 
