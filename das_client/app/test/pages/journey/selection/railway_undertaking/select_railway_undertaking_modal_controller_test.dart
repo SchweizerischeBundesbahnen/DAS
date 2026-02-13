@@ -19,7 +19,7 @@ void main() {
     localizations = lookupAppLocalizations(const Locale('en'));
     testee = SelectRailwayUndertakingModalController(
       localizations: localizations,
-      initialRailwayUndertaking: .sbbP,
+      initialRailwayUndertaking: [.sbbP],
       updateRailwayUndertaking: mockUpdateAvailableRuFunction.call,
     );
     testee.availableRailwayUndertakings.listen(emitRegister.addAll);
@@ -45,7 +45,7 @@ void main() {
       final newRu = RailwayUndertaking.blsC;
 
       // ACT
-      testee.selectedRailwayUndertaking = newRu;
+      testee.selectedRailwayUndertaking = [newRu];
 
       // EXPECT
       expect(testee.filterValue, equals(englishLocalized(.blsC)));
@@ -63,7 +63,7 @@ void main() {
       // ACT
       testee = SelectRailwayUndertakingModalController(
         localizations: localizations,
-        initialRailwayUndertaking: .sbbP,
+        initialRailwayUndertaking: [.sbbP],
         updateRailwayUndertaking: mockUpdateAvailableRuFunction.call,
       );
       testee.availableRailwayUndertakings.listen(emitRegister.addAll);
@@ -76,7 +76,7 @@ void main() {
     test('availableRailwayUndertakings_whenFilterChanged_thenIsEmittedWithUndertakingsFilteredCorrectly', () async {
       // ARRANGE
       // should be ordered 0th even though not lexicographically the 0th element
-      testee.selectedRailwayUndertaking = .sbbC;
+      testee.selectedRailwayUndertaking = [.sbbC];
       await processStreams();
       emitRegister.clear();
 
@@ -103,7 +103,7 @@ void main() {
       // ARRANGE
       // should be ordered 0th even though not lexicographically the 0th element
       final newRu = RailwayUndertaking.sbbC;
-      testee.selectedRailwayUndertaking = newRu;
+      testee.selectedRailwayUndertaking = [newRu];
       await processStreams();
       emitRegister.clear();
 
@@ -122,7 +122,7 @@ void main() {
       // ARRANGE
       // should be ordered 0th even though not lexicographically the 0th element
       final newRu = RailwayUndertaking.sbbC;
-      testee.selectedRailwayUndertaking = newRu;
+      testee.selectedRailwayUndertaking = [newRu];
       await processStreams();
       emitRegister.clear();
 
@@ -151,10 +151,10 @@ void main() {
       reset(mockUpdateAvailableRuFunction);
 
       // ACT
-      testee.selectedRailwayUndertaking = newRu;
+      testee.selectedRailwayUndertaking = [newRu];
 
       // EXPECT
-      verify(mockUpdateAvailableRuFunction(newRu)).called(1);
+      verify(mockUpdateAvailableRuFunction([newRu])).called(1);
     });
   });
 }
@@ -171,5 +171,5 @@ List<RailwayUndertaking> _sortedRailwayValues(
 }
 
 class MockUpdateRailwayUndertaking extends Mock {
-  void call(RailwayUndertaking? update);
+  void call(List<RailwayUndertaking>? update);
 }

@@ -133,7 +133,7 @@ void main() {
     final newRU = RailwayUndertaking.blsP;
 
     // ACT
-    testee.updateRailwayUndertaking(newRU);
+    testee.updateRailwayUndertaking([newRU]);
 
     // EXPECT
     final state = testee.modelValue;

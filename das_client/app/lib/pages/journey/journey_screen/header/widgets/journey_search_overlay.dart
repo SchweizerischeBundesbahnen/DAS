@@ -45,7 +45,7 @@ class JourneySearchOverlay extends StatelessWidget {
                 children: [
                   _header(context, hideOverlay),
                   SizedBox(height: SBBSpacing.medium),
-                  SBBContentBox(child: _inputFields()),
+                  SBBContentBox(child: _inputFields(context)),
                   _loadJourneyButton(context, hideOverlay),
                 ],
               );
@@ -56,12 +56,25 @@ class JourneySearchOverlay extends StatelessWidget {
     );
   }
 
-  Widget _inputFields() {
+  Widget _inputFields(BuildContext context) {
+    final vm = context.read<JourneySelectionViewModel>();
+
     return Column(
       crossAxisAlignment: .start,
       children: [
         JourneyDateInput(isModalVersion: true),
-        SelectRailwayUndertakingInput(isModalVersion: true),
+        StreamBuilder(
+          stream: vm.model,
+          initialData: vm.modelValue,
+          builder: (context, asyncSnapshot) {
+            final model = asyncSnapshot.requireData;
+            return SelectRailwayUndertakingInput(
+              isModalVersion: true,
+              selectedRailwayUndertakings: [model.railwayUndertaking],
+              updateRailwayUndertaking: vm.updateRailwayUndertaking,
+            );
+          },
+        ),
         JourneyTrainNumberInput(isModalVersion: true),
       ],
     );

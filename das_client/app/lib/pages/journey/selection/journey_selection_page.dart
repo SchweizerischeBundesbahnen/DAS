@@ -110,7 +110,10 @@ class _ContentState extends State<_Content> {
           child: Column(
             children: [
               JourneyDateInput(),
-              SelectRailwayUndertakingInput(),
+              SelectRailwayUndertakingInput(
+                selectedRailwayUndertakings: [model.railwayUndertaking],
+                updateRailwayUndertaking: viewModel.updateRailwayUndertaking,
+              ),
               JourneyTrainNumberInput(),
             ],
           ),

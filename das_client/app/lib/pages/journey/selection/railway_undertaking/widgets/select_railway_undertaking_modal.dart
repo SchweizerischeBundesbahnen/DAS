@@ -1,12 +1,10 @@
 import 'package:app/extension/ru_extension.dart';
 import 'package:app/i18n/i18n.dart';
-import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
 import 'package:app/pages/journey/selection/railway_undertaking/select_railway_undertaking_modal_controller.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
@@ -20,10 +18,14 @@ class SelectRailwayUndertakingModal extends StatefulWidget {
 
   const SelectRailwayUndertakingModal({
     required this.selectedRailwayUndertaking,
+    required this.updateRailwayUndertaking,
     super.key,
+    this.allowMultiSelect = false,
   });
 
-  final RailwayUndertaking selectedRailwayUndertaking;
+  final List<RailwayUndertaking> selectedRailwayUndertaking;
+  final void Function(List<RailwayUndertaking>) updateRailwayUndertaking;
+  final bool allowMultiSelect;
 
   @override
   State<SelectRailwayUndertakingModal> createState() => _SelectRailwayUndertakingModalState();
@@ -47,12 +49,10 @@ class _SelectRailwayUndertakingModalState extends State<SelectRailwayUndertaking
     final appLocalizations = AppLocalizations.of(context)!;
     if (controller == null || _appLocalizations != appLocalizations) {
       _appLocalizations = appLocalizations;
-      final vm = context.read<JourneySelectionViewModel>();
-      final updateRailwayUndertaking = vm.updateRailwayUndertaking.call;
 
       controller = SelectRailwayUndertakingModalController(
         localizations: _appLocalizations,
-        updateRailwayUndertaking: updateRailwayUndertaking,
+        updateRailwayUndertaking: widget.updateRailwayUndertaking,
         initialRailwayUndertaking: widget.selectedRailwayUndertaking,
       );
     }
@@ -117,17 +117,34 @@ class _SelectRailwayUndertakingModalState extends State<SelectRailwayUndertaking
                           color: resolvedForegroundColor,
                           child: Column(
                             children: [
-                              SBBRadioListItem(
-                                key: ValueKey(e),
-                                value: e,
-                                groupValue: widget.selectedRailwayUndertaking,
-                                label: e.displayText(context),
-                                isLastElement: idx == localizedFilteredRus.length - 1,
-                                onChanged: (selectedRu) {
-                                  if (selectedRu != null) controller?.selectedRailwayUndertaking = selectedRu;
-                                  context.router.pop(selectedRu);
-                                },
-                              ),
+                              if (widget.allowMultiSelect)
+                                SBBCheckboxListItem(
+                                  key: ValueKey(e),
+                                  value: widget.selectedRailwayUndertaking.contains(e),
+                                  label: e.displayText(context),
+                                  isLastElement: idx == localizedFilteredRus.length - 1,
+                                  onChanged: (isSelected) {
+                                    final newSelectedRus = [...widget.selectedRailwayUndertaking];
+                                    if (isSelected != null && isSelected) {
+                                      newSelectedRus.add(e);
+                                    } else {
+                                      newSelectedRus.remove(e);
+                                    }
+                                    controller?.selectedRailwayUndertaking = newSelectedRus;
+                                  },
+                                )
+                              else
+                                SBBRadioListItem<RailwayUndertaking>(
+                                  key: ValueKey(e),
+                                  value: e,
+                                  groupValue: widget.selectedRailwayUndertaking.firstOrNull,
+                                  label: e.displayText(context),
+                                  isLastElement: idx == localizedFilteredRus.length - 1,
+                                  onChanged: (selectedRu) {
+                                    if (selectedRu != null) controller?.selectedRailwayUndertaking = [selectedRu];
+                                    context.router.pop(selectedRu);
+                                  },
+                                ),
                             ],
                           ),
                         ),
