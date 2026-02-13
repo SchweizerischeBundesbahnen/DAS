@@ -3,6 +3,7 @@ import 'package:app/pages/journey/journey_page.dart';
 import 'package:app/pages/journey/selection/journey_selection_page.dart';
 import 'package:app/pages/links/links_page.dart';
 import 'package:app/pages/login/login_page.dart';
+import 'package:app/pages/preload/preload_page.dart';
 import 'package:app/pages/profile/profile_page.dart';
 import 'package:app/pages/settings/settings_page.dart';
 import 'package:app/pages/splash/splash_page.dart';
@@ -22,6 +23,7 @@ class AppRouter extends RootStackRouter {
     _settings,
     _profile,
     _breakLoadSlip,
+    _preload,
   ];
 
   @override
@@ -69,4 +71,9 @@ final _profile = AutoRoute(
 final _breakLoadSlip = AutoRoute(
   path: '/break-load-slip',
   page: BreakLoadSlipRoute.page,
+);
+
+final _preload = AutoRoute(
+  path: '/preload',
+  page: PreloadRoute.page,
 );

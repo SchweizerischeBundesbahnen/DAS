@@ -50,7 +50,7 @@ extension JourneyScopeExtension on GetIt {
     factoryFunc() {
       _log.fine('Register JourneySelectionViewModel');
       return JourneySelectionViewModel(
-        sferaRemoteRepo: DI.get(),
+        sferaRepo: DI.get(),
         onJourneySelected: DI.get<JourneyNavigationViewModel>().push,
       );
     }
@@ -63,7 +63,7 @@ extension JourneyScopeExtension on GetIt {
 
   void registerJourneyTableViewModel() {
     registerSingleton(
-      JourneyTableViewModel(sferaRemoteRepo: DI.get()),
+      JourneyTableViewModel(sferaRepo: DI.get()),
       dispose: (vm) => vm.dispose(),
     );
   }
@@ -113,7 +113,7 @@ extension JourneyScopeExtension on GetIt {
 
   void registerWarnAppViewModel() {
     registerSingleton(
-      WarnAppViewModel(flavor: DI.get(), sferaRemoteRepo: DI.get(), warnappRepo: DI.get(), ruFeatureProvider: DI.get()),
+      WarnAppViewModel(flavor: DI.get(), sferaRepo: DI.get(), warnappRepo: DI.get(), ruFeatureProvider: DI.get()),
       dispose: (vm) => vm.dispose(),
     );
   }

@@ -33,7 +33,7 @@ class MockJourneyScope extends JourneyScope {
     getIt.registerSingleton<WarnAppViewModel>(
       MockWarnAppViewModel(
         flavor: DI.get(),
-        sferaRemoteRepo: DI.get(),
+        sferaRepo: DI.get(),
         warnappRepo: DI.get(),
         ruFeatureProvider: DI.get(),
       ),

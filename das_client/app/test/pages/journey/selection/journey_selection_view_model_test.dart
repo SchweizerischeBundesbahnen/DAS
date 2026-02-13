@@ -5,21 +5,21 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:sfera/component.dart';
 
-@GenerateNiceMocks([MockSpec<SferaRemoteRepo>()])
+@GenerateNiceMocks([MockSpec<SferaRepo>()])
 import 'journey_selection_view_model_test.mocks.dart';
 
 void main() {
-  late SferaRemoteRepo mockSferaRemoteRepo;
+  late SferaRepo mockSferaRemoteRepo;
   late JourneySelectionViewModel testee;
   final List<TrainIdentification> callRegister = [];
   final newYears2025 = DateTime.utc(2025, 1, 1);
   final fixedClock = Clock.fixed(newYears2025);
 
   setUp(() {
-    mockSferaRemoteRepo = MockSferaRemoteRepo();
+    mockSferaRemoteRepo = MockSferaRepo();
     withClock(fixedClock, () {
       testee = JourneySelectionViewModel(
-        sferaRemoteRepo: mockSferaRemoteRepo,
+        sferaRepo: mockSferaRemoteRepo,
         onJourneySelected: (trainIdentification) async {
           callRegister.add(trainIdentification);
         },
@@ -38,7 +38,7 @@ void main() {
     final clock = Clock.fixed(newYears1970);
     withClock(clock, () {
       // seventies testee
-      testee = JourneySelectionViewModel(sferaRemoteRepo: mockSferaRemoteRepo, onJourneySelected: (_) async {});
+      testee = JourneySelectionViewModel(sferaRepo: mockSferaRemoteRepo, onJourneySelected: (_) async {});
     });
     // ACT
     final state = testee.modelValue;
@@ -61,7 +61,7 @@ void main() {
     final newYears1970 = DateTime.utc(1970);
     final clock = Clock.fixed(closeToBerchtoldstag1970);
     withClock(clock, () {
-      testee = JourneySelectionViewModel(sferaRemoteRepo: mockSferaRemoteRepo, onJourneySelected: (_) async {});
+      testee = JourneySelectionViewModel(sferaRepo: mockSferaRemoteRepo, onJourneySelected: (_) async {});
     });
     // ACT
     final state = testee.modelValue;

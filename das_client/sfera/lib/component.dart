@@ -1,3 +1,4 @@
+import 'package:connectivity_x/component.dart';
 import 'package:http_x/component.dart';
 import 'package:mqtt/component.dart';
 import 'package:sfera/src/data/api/sfera_auth_service.dart';
@@ -74,6 +75,7 @@ export 'package:sfera/src/model/journey/warnapp_event.dart';
 export 'package:sfera/src/model/journey/whistles.dart';
 export 'package:sfera/src/model/localized_string.dart';
 export 'package:sfera/src/model/ru.dart';
+export 'package:sfera/src/model/sfera_db_metrics.dart';
 export 'package:sfera/src/model/train_identification.dart';
 export 'package:sfera/src/provider/sfera_auth_provider.dart';
 
@@ -87,16 +89,20 @@ class SferaComponent {
     return SferaAuthServiceImpl(httpClient: httpClient, tokenExchangeUrl: tokenExchangeUrl);
   }
 
-  static SferaRemoteRepo createSferaRemoteRepo({
+  static SferaRepo createSferaRemoteRepo({
     required MqttService mqttService,
     required SferaAuthProvider sferaAuthProvider,
     required String deviceId,
+    required SferaLocalRepo localRepo,
+    required ConnectivityManager connectivityManager,
   }) {
     final localDatabaseService = DriftLocalDatabaseService.instance;
-    return SferaRemoteRepoImpl(
+    return SferaRepoImpl(
       mqttService: mqttService,
       localService: localDatabaseService,
       authProvider: sferaAuthProvider,
+      localRepo: localRepo,
+      connectivityManager: connectivityManager,
       deviceId: deviceId,
     );
   }

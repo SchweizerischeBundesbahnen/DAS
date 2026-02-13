@@ -11,6 +11,11 @@ class Format {
     return dateFormat.format(localDate);
   }
 
+  static String datetime(DateTime? date, [String? defaultValue]) {
+    if (date == null && defaultValue != null) return defaultValue;
+    return _formatLocal(date, 'dd.MM.yyyy HH:mm');
+  }
+
   static String dateWithAbbreviatedDay(DateTime date, Locale locale) {
     final localDate = date.toLocal();
     final dateFormat = DateFormat('E dd.MM.yyyy', locale.toLanguageTag());

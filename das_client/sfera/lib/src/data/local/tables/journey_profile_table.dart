@@ -18,7 +18,7 @@ class JourneyProfileTable extends Table {
 }
 
 extension JourneyProfileMapperX on JourneyProfileDto {
-  JourneyProfileTableCompanion toCompanion({int? id, DateTime? startDate}) {
+  JourneyProfileTableCompanion toCompanion({int? id}) {
     return JourneyProfileTableCompanion.insert(
       id: id != null ? Value(id) : const Value.absent(),
       company: trainIdentification.otnId.company,

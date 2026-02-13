@@ -14,19 +14,19 @@ import 'package:sfera/src/model/otn_id.dart';
 import 'sfera_request_train_characteristic_task_test.mocks.dart';
 
 @GenerateNiceMocks([
-  MockSpec<SferaRemoteRepo>(),
+  MockSpec<SferaRepo>(),
   MockSpec<MqttService>(),
   MockSpec<SferaLocalDatabaseService>(),
 ])
 void main() {
-  late MockSferaRemoteRepo sferaService;
+  late MockSferaRepo mockSferaRepo;
   late MockMqttService mqttService;
   late MockSferaLocalDatabaseService sferaRepository;
   late OtnId otnId;
 
   setUp(() {
-    sferaService = MockSferaRemoteRepo();
-    when(sferaService.messageHeader(sender: anyNamed('sender'))).thenReturn(MessageHeaderDto());
+    mockSferaRepo = MockSferaRepo();
+    when(mockSferaRepo.messageHeader(sender: anyNamed('sender'))).thenReturn(MessageHeaderDto());
     mqttService = MockMqttService();
     sferaRepository = MockSferaLocalDatabaseService();
     otnId = OtnId(company: '1085', operationalTrainNumber: '719', startDate: DateTime.now());
@@ -39,7 +39,7 @@ void main() {
     final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final tcTask = RequestTrainCharacteristicsTask(
-      sferaRepo: sferaService,
+      sferaRepo: mockSferaRepo,
       mqttService: mqttService,
       sferaDatabaseRepository: sferaRepository,
       otnId: otnId,
@@ -67,7 +67,7 @@ void main() {
     final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final tcTask = RequestTrainCharacteristicsTask(
-      sferaRepo: sferaService,
+      sferaRepo: mockSferaRepo,
       mqttService: mqttService,
       sferaDatabaseRepository: sferaRepository,
       otnId: otnId,
@@ -94,7 +94,7 @@ void main() {
     final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final tcTask = RequestTrainCharacteristicsTask(
-      sferaRepo: sferaService,
+      sferaRepo: mockSferaRepo,
       mqttService: mqttService,
       sferaDatabaseRepository: sferaRepository,
       otnId: otnId,
@@ -123,7 +123,7 @@ void main() {
     final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final tcTask = RequestTrainCharacteristicsTask(
-      sferaRepo: sferaService,
+      sferaRepo: mockSferaRepo,
       mqttService: mqttService,
       sferaDatabaseRepository: sferaRepository,
       otnId: otnId,
@@ -153,7 +153,7 @@ void main() {
     final tcRequest = SferaReplyParser.parse<SferaG2bReplyMessageDto>(tcRequestFile.readAsStringSync());
 
     final tcTask = RequestTrainCharacteristicsTask(
-      sferaRepo: sferaService,
+      sferaRepo: mockSferaRepo,
       mqttService: mqttService,
       sferaDatabaseRepository: sferaRepository,
       otnId: otnId,
