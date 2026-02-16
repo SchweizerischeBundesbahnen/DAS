@@ -9,11 +9,11 @@ import 'package:sfera/component.dart';
 final _log = Logger('JourneyNavigationViewModel');
 
 class JourneyNavigationViewModel {
-  JourneyNavigationViewModel({required SferaRemoteRepo sferaRepo}) : _sferaRemoteRepo = sferaRepo {
+  JourneyNavigationViewModel({required SferaRepository sferaRepo}) : _sferaRepo = sferaRepo {
     _initSferaRemoteStateSubscription();
   }
 
-  final SferaRemoteRepo _sferaRemoteRepo;
+  final SferaRepository _sferaRepo;
   StreamSubscription<SferaRemoteRepositoryState>? _sferaRemoteStateSubscription;
   final List<TrainIdentification> _trainIds = [];
   final _rxModel = BehaviorSubject<JourneyNavigationModel?>.seeded(null);
@@ -29,12 +29,12 @@ class JourneyNavigationViewModel {
   Future<void> push(TrainIdentification trainId) async {
     if (_currentTrainId == trainId) return;
 
-    if (_trainIds.isNotEmpty) _sferaRemoteRepo.disconnect();
+    if (_trainIds.isNotEmpty) _sferaRepo.disconnect();
 
     if (!_trainIds.contains(trainId)) _trainIds.add(trainId);
 
     DASTableRowBuilder.clearRowKeys();
-    await _sferaRemoteRepo.connect(trainId);
+    await _sferaRepo.connect(trainId);
     _addToStream(trainId);
   }
 
@@ -43,11 +43,11 @@ class JourneyNavigationViewModel {
     final updatedIdx = _currentTrainIdIndex + 1;
     if (_isOutOfTrainIdsRange(updatedIdx)) return;
 
-    await _sferaRemoteRepo.disconnect();
+    await _sferaRepo.disconnect();
 
     final trainId = _trainIds[updatedIdx];
     DASTableRowBuilder.clearRowKeys();
-    await _sferaRemoteRepo.connect(trainId);
+    await _sferaRepo.connect(trainId);
     _addToStream(trainId);
   }
 
@@ -56,18 +56,18 @@ class JourneyNavigationViewModel {
     final updatedIdx = _currentTrainIdIndex - 1;
     if (_isOutOfTrainIdsRange(updatedIdx)) return;
 
-    await _sferaRemoteRepo.disconnect();
+    await _sferaRepo.disconnect();
 
     final trainId = _trainIds[updatedIdx];
     DASTableRowBuilder.clearRowKeys();
-    await _sferaRemoteRepo.connect(trainId);
+    await _sferaRepo.connect(trainId);
     _addToStream(trainId);
   }
 
   void dispose() {
     _log.fine('Disposing JourneyNavigationViewModel');
     _sferaRemoteStateSubscription?.cancel();
-    _sferaRemoteRepo.disconnect();
+    _sferaRepo.disconnect();
     _addToStream(null);
     _trainIds.clear();
     _rxModel.close();
@@ -96,10 +96,10 @@ class JourneyNavigationViewModel {
 
   void _initSferaRemoteStateSubscription() {
     _sferaRemoteStateSubscription?.cancel();
-    _sferaRemoteStateSubscription = _sferaRemoteRepo.stateStream.listen(
+    _sferaRemoteStateSubscription = _sferaRepo.stateStream.listen(
       (s) => switch (s) {
-        .disconnected => _sferaRemoteRepo.lastError != null ? _reset() : null,
-        .connected || .connecting => null,
+        .disconnected => _sferaRepo.lastError != null ? _reset() : null,
+        .connected || .connecting || .offlineData => null,
       },
     );
   }

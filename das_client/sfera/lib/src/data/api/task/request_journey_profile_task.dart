@@ -18,7 +18,7 @@ final _log = Logger('RequestJourneyProfileTask');
 class RequestJourneyProfileTask extends SferaTask<List<dynamic>> {
   RequestJourneyProfileTask({
     required MqttService mqttService,
-    required SferaRemoteRepo sferaRepo,
+    required SferaRepository sferaRepo,
     required SferaLocalDatabaseService sferaDatabaseRepository,
     required this.otnId,
     super.timeout,
@@ -29,7 +29,7 @@ class RequestJourneyProfileTask extends SferaTask<List<dynamic>> {
   final MqttService _mqttService;
   final OtnId otnId;
   final SferaLocalDatabaseService _sferaDatabaseRepository;
-  final SferaRemoteRepo _sferaRepo;
+  final SferaRepository _sferaRepo;
 
   late TaskCompleted<List<dynamic>> _taskCompletedCallback;
   late TaskFailed _taskFailedCallback;

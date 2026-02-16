@@ -14,19 +14,19 @@ import 'package:sfera/src/model/otn_id.dart';
 import 'sfera_request_journey_profile_task_test.mocks.dart';
 
 @GenerateNiceMocks([
-  MockSpec<SferaRemoteRepo>(),
+  MockSpec<SferaRepository>(),
   MockSpec<MqttService>(),
   MockSpec<SferaLocalDatabaseService>(),
 ])
 void main() {
-  late MockSferaRemoteRepo sferaRemoteRepo;
+  late MockSferaRepository mockSferaRepo;
   late MockMqttService mqttService;
   late MockSferaLocalDatabaseService sferaLocalService;
   late OtnId otnId;
 
   setUp(() {
-    sferaRemoteRepo = MockSferaRemoteRepo();
-    when(sferaRemoteRepo.messageHeader(sender: anyNamed('sender'))).thenReturn(MessageHeaderDto());
+    mockSferaRepo = MockSferaRepository();
+    when(mockSferaRepo.messageHeader(sender: anyNamed('sender'))).thenReturn(MessageHeaderDto());
     mqttService = MockMqttService();
     sferaLocalService = MockSferaLocalDatabaseService();
     otnId = OtnId(company: '1085', operationalTrainNumber: '719', startDate: DateTime.now());
@@ -39,7 +39,7 @@ void main() {
     final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final segmentTask = RequestSegmentProfilesTask(
-      sferaRepo: sferaRemoteRepo,
+      sferaRepo: mockSferaRepo,
       mqttService: mqttService,
       sferaDatabaseRepository: sferaLocalService,
       otnId: otnId,
@@ -67,7 +67,7 @@ void main() {
     final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final segmentTask = RequestSegmentProfilesTask(
-      sferaRepo: sferaRemoteRepo,
+      sferaRepo: mockSferaRepo,
       mqttService: mqttService,
       sferaDatabaseRepository: sferaLocalService,
       otnId: otnId,
@@ -95,7 +95,7 @@ void main() {
     final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final segmentTask = RequestSegmentProfilesTask(
-      sferaRepo: sferaRemoteRepo,
+      sferaRepo: mockSferaRepo,
       mqttService: mqttService,
       sferaDatabaseRepository: sferaLocalService,
       otnId: otnId,
@@ -126,7 +126,7 @@ void main() {
     final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final segmentTask = RequestSegmentProfilesTask(
-      sferaRepo: sferaRemoteRepo,
+      sferaRepo: mockSferaRepo,
       mqttService: mqttService,
       sferaDatabaseRepository: sferaLocalService,
       otnId: otnId,
@@ -155,7 +155,7 @@ void main() {
     final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final spTask = RequestSegmentProfilesTask(
-      sferaRepo: sferaRemoteRepo,
+      sferaRepo: mockSferaRepo,
       mqttService: mqttService,
       sferaDatabaseRepository: sferaLocalService,
       otnId: otnId,
@@ -185,7 +185,7 @@ void main() {
     final jpRequest = SferaReplyParser.parse<SferaG2bReplyMessageDto>(jpRequestFile.readAsStringSync());
 
     final segmentTask = RequestSegmentProfilesTask(
-      sferaRepo: sferaRemoteRepo,
+      sferaRepo: mockSferaRepo,
       mqttService: mqttService,
       sferaDatabaseRepository: sferaLocalService,
       otnId: otnId,

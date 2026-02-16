@@ -24,6 +24,7 @@ dependencies:
   connectivity_x: 1.0.0
   local_regulations: 1.0.0
   formation: 1.0.0
+  preload: 1.0.0
 
   # https://pub.dev/packages/audioplayers
   audioplayers: ^6.5.1
