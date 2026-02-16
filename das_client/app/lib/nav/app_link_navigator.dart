@@ -32,7 +32,6 @@ class AppLinkNavigator {
   Future<void> _handleTrainJourneyIntent(TrainJourneyIntent intent) async {
     final trainIdentifications = intent.journeys.map((journey) => journey.toTrainIdentification());
     _router.replace(JourneyRoute(initialTrainIds: trainIdentifications.toList()));
-    //
   }
 
   void dispose() {
