@@ -10,7 +10,6 @@ import 'package:preload/src/aws/dto/contents_dto.dart';
 import 'package:preload/src/aws/dto/list_bucket_result_dto.dart';
 import 'package:preload/src/aws/s3_client.dart';
 import 'package:preload/src/data/preload_local_database_service.dart';
-import 'package:preload/src/model/s3file.dart';
 import 'package:preload/src/repository/preload_repository_impl.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:settings/component.dart';

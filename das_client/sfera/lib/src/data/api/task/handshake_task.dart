@@ -16,14 +16,14 @@ final _log = Logger('HandshakeTask');
 class HandshakeTask extends SferaTask {
   HandshakeTask({
     required MqttService mqttService,
-    required SferaRepo sferaRepo,
+    required SferaRepository sferaRepo,
     required this.otnId,
     required this.dasDrivingMode,
     super.timeout,
   }) : _mqttService = mqttService,
        _sferaRepo = sferaRepo;
 
-  final SferaRepo _sferaRepo;
+  final SferaRepository _sferaRepo;
   final MqttService _mqttService;
   final OtnId otnId;
   final DasDrivingModeDto dasDrivingMode;

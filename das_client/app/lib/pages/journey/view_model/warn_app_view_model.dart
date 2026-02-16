@@ -14,7 +14,7 @@ final _log = Logger('WarnAppViewModel');
 class WarnAppViewModel {
   WarnAppViewModel({
     required this.flavor,
-    required SferaRepo sferaRepo,
+    required SferaRepository sferaRepo,
     required WarnappRepository warnappRepo,
     required RuFeatureProvider ruFeatureProvider,
   }) : _sferaRepo = sferaRepo,
@@ -28,7 +28,7 @@ class WarnAppViewModel {
 
   final Flavor flavor;
 
-  final SferaRepo _sferaRepo;
+  final SferaRepository _sferaRepo;
   final WarnappRepository _warnappRepo;
   final RuFeatureProvider _ruFeatureProvider;
 

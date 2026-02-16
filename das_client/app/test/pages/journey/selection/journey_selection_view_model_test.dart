@@ -5,18 +5,18 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:sfera/component.dart';
 
-@GenerateNiceMocks([MockSpec<SferaRepo>()])
+@GenerateNiceMocks([MockSpec<SferaRepository>()])
 import 'journey_selection_view_model_test.mocks.dart';
 
 void main() {
-  late SferaRepo mockSferaRemoteRepo;
+  late SferaRepository mockSferaRemoteRepo;
   late JourneySelectionViewModel testee;
   final List<TrainIdentification> callRegister = [];
   final newYears2025 = DateTime.utc(2025, 1, 1);
   final fixedClock = Clock.fixed(newYears2025);
 
   setUp(() {
-    mockSferaRemoteRepo = MockSferaRepo();
+    mockSferaRemoteRepo = MockSferaRepository();
     withClock(fixedClock, () {
       testee = JourneySelectionViewModel(
         sferaRepo: mockSferaRemoteRepo,

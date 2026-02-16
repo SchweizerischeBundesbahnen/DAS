@@ -11,7 +11,7 @@ import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
 import 'package:sfera/src/data/local/drift_local_database_service.dart';
 import 'package:sfera/src/data/local/sfera_local_database_service.dart';
 import 'package:sfera/src/data/repository/sfera_local_repo_impl.dart';
-import 'package:sfera/src/data/repository/sfera_remote_repo_impl.dart';
+import 'package:sfera/src/data/repository/sfera_repository_impl.dart';
 import 'package:uuid/uuid.dart';
 
 import 'sfera_remote_repo_impl_test.mocks.dart';
@@ -29,7 +29,7 @@ void main() {
     trainNumber: '12345',
     date: DateTime.now(),
   );
-  late SferaRepo sferaRepo;
+  late SferaRepository sferaRepo;
   late MockMqttService mockMqttService;
   late MockSferaLocalDatabaseService mockLocalDatabaseRepository;
   late MockSferaAuthProvider mockSferaAuthProvider;
@@ -666,7 +666,6 @@ void main() {
     final jpResponse = loadFile('test_resources/SFERA_G2B_Reply_JP_request_9315.xml');
     final parsedJPResponse = SferaReplyParser.parse<SferaG2bReplyMessageDto>(jpResponse);
     final errorResponse = loadFile('test_resources/SFERA_G2B_ReplyMessage_Error.xml');
-    final parsedErrorResponse = SferaReplyParser.parse<SferaG2bReplyMessageDto>(errorResponse);
 
     when(mockMqttService.connect(any, any)).thenAnswer((_) async => true);
     when(mockMqttService.publishMessage(any, any, any)).thenReturn(true);

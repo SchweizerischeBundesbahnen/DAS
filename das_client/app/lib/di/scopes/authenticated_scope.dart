@@ -126,7 +126,7 @@ extension AuthenticatedScopeExtension on GetIt {
       );
     }
 
-    registerSingletonAsync<SferaRepo>(
+    registerSingletonAsync<SferaRepository>(
       factoryFunc,
       dispose: (repo) => repo.dispose(),
       dependsOn: [MqttService],

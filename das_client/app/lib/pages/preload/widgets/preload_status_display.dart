@@ -36,7 +36,9 @@ class PreloadStatusDisplay extends StatelessWidget {
   Widget _progressBarRow(PreloadDetails? preloadDetails) {
     return Container(
       clipBehavior: Clip.hardEdge,
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(SBBSpacing.medium)),
+      decoration: ShapeDecoration(
+        shape: StadiumBorder(),
+      ),
       height: _progressBarHeight,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,

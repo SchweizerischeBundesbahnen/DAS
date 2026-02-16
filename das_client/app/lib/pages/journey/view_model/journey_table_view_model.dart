@@ -14,14 +14,14 @@ final _log = Logger('JourneyTableViewModel');
 
 class JourneyTableViewModel {
   JourneyTableViewModel({
-    required SferaRepo sferaRepo,
+    required SferaRepository sferaRepo,
   }) : _sferaRepo = sferaRepo {
     _init();
   }
 
   final _resetToKmAfterSeconds = DI.get<TimeConstants>().kmDecisiveGradientResetSeconds;
 
-  final SferaRepo _sferaRepo;
+  final SferaRepository _sferaRepo;
 
   Stream<Journey?> get journey => _rxJourney.stream;
 

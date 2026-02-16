@@ -11,7 +11,7 @@ final _log = Logger('JourneySelectionViewModel');
 
 class JourneySelectionViewModel {
   JourneySelectionViewModel({
-    required SferaRepo sferaRepo,
+    required SferaRepository sferaRepo,
     required Future<void> Function(TrainIdentification) onJourneySelected,
   }) : _sferaRepo = sferaRepo,
        _onJourneySelected = onJourneySelected {
@@ -19,7 +19,7 @@ class JourneySelectionViewModel {
     _initSferaRepoSubscription();
   }
 
-  final SferaRepo _sferaRepo;
+  final SferaRepository _sferaRepo;
 
   final Future<void> Function(TrainIdentification) _onJourneySelected;
 

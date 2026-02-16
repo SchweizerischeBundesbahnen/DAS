@@ -10,7 +10,7 @@ import 'package:mockito/mockito.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
-@GenerateNiceMocks([MockSpec<DASSounds>(), MockSpec<Sound>(), MockSpec<SferaRepo>()])
+@GenerateNiceMocks([MockSpec<DASSounds>(), MockSpec<Sound>(), MockSpec<SferaRepository>()])
 import 'departure_dispatch_notification_view_model_test.mocks.dart';
 
 void main() {
@@ -18,7 +18,7 @@ void main() {
     late DepartureDispatchNotificationViewModel testee;
     late BehaviorSubject<JourneyPositionModel> journeyPositionSubject;
     late BehaviorSubject<DepartureDispatchNotificationEvent?> eventSubject;
-    late SferaRepo mockSferaRepo;
+    late SferaRepository mockSferaRepo;
     late DASSounds mockDasSounds;
     late FakeAsync testAsync;
     final Sound mockSound = MockSound();
@@ -41,7 +41,7 @@ void main() {
 
     setUp(() {
       mockDasSounds = MockDASSounds();
-      mockSferaRepo = MockSferaRepo();
+      mockSferaRepo = MockSferaRepository();
       when(mockDasSounds.departureDispatchNotification).thenReturn(mockSound);
       GetIt.I.registerSingleton<DASSounds>(mockDasSounds);
 

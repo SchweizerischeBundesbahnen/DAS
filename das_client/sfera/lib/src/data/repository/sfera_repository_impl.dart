@@ -41,7 +41,7 @@ import 'package:uuid/uuid.dart';
 
 final _log = Logger('SferaRepoImpl');
 
-class SferaRepoImpl implements SferaRepo {
+class SferaRepoImpl implements SferaRepository {
   SferaRepoImpl({
     required MqttService mqttService,
     required SferaLocalDatabaseService localService,

@@ -15,18 +15,18 @@ import 'package:sfera/src/model/otn_id.dart';
 import 'sfera_request_journey_profile_task_test.mocks.dart';
 
 @GenerateNiceMocks([
-  MockSpec<SferaRepo>(),
+  MockSpec<SferaRepository>(),
   MockSpec<MqttService>(),
   MockSpec<SferaLocalDatabaseService>(),
 ])
 void main() {
-  late MockSferaRepo mockSferaRepo;
+  late MockSferaRepository mockSferaRepo;
   late MockMqttService mqttService;
   late MockSferaLocalDatabaseService sferaRepository;
   late OtnId otnId;
 
   setUp(() {
-    mockSferaRepo = MockSferaRepo();
+    mockSferaRepo = MockSferaRepository();
     when(mockSferaRepo.messageHeader(sender: anyNamed('sender'))).thenReturn(MessageHeaderDto());
     mqttService = MockMqttService();
     sferaRepository = MockSferaLocalDatabaseService();

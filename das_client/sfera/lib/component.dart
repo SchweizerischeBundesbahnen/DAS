@@ -6,16 +6,16 @@ import 'package:sfera/src/data/api/sfera_auth_service_impl.dart';
 import 'package:sfera/src/data/local/drift_local_database_service.dart';
 import 'package:sfera/src/data/repository/sfera_local_repo.dart';
 import 'package:sfera/src/data/repository/sfera_local_repo_impl.dart';
-import 'package:sfera/src/data/repository/sfera_remote_repo.dart';
-import 'package:sfera/src/data/repository/sfera_remote_repo_impl.dart';
+import 'package:sfera/src/data/repository/sfera_repository.dart';
+import 'package:sfera/src/data/repository/sfera_repository_impl.dart';
 import 'package:sfera/src/provider/sfera_auth_provider.dart';
 
 export 'package:sfera/src/data/api/sfera_auth_service.dart';
 export 'package:sfera/src/data/api/sfera_error.dart';
 export 'package:sfera/src/data/parser/sfera_reply_parser.dart';
 export 'package:sfera/src/data/repository/sfera_local_repo.dart';
-export 'package:sfera/src/data/repository/sfera_remote_repo.dart';
 export 'package:sfera/src/data/repository/sfera_remote_repo_state.dart';
+export 'package:sfera/src/data/repository/sfera_repository.dart';
 export 'package:sfera/src/model/journey/additional_speed_restriction.dart';
 export 'package:sfera/src/model/journey/additional_speed_restriction_data.dart';
 export 'package:sfera/src/model/journey/advised_speed_segment.dart';
@@ -89,7 +89,7 @@ class SferaComponent {
     return SferaAuthServiceImpl(httpClient: httpClient, tokenExchangeUrl: tokenExchangeUrl);
   }
 
-  static SferaRepo createSferaRemoteRepo({
+  static SferaRepository createSferaRemoteRepo({
     required MqttService mqttService,
     required SferaAuthProvider sferaAuthProvider,
     required String deviceId,

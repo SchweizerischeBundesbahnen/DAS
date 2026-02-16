@@ -7,12 +7,12 @@ import 'package:sfera/component.dart';
 
 class DisturbanceViewModel {
   DisturbanceViewModel({
-    required SferaRepo sferaRepo,
+    required SferaRepository sferaRepo,
   }) : _sferaRepo = sferaRepo {
     _init();
   }
 
-  final SferaRepo _sferaRepo;
+  final SferaRepository _sferaRepo;
   final _sound = DI.get<DASSounds>().gridOverload;
 
   final _rxDisturbance = BehaviorSubject<DisturbanceEventType?>.seeded(null);

@@ -9,11 +9,11 @@ import 'package:sfera/component.dart';
 final _log = Logger('JourneyNavigationViewModel');
 
 class JourneyNavigationViewModel {
-  JourneyNavigationViewModel({required SferaRepo sferaRepo}) : _sferaRepo = sferaRepo {
+  JourneyNavigationViewModel({required SferaRepository sferaRepo}) : _sferaRepo = sferaRepo {
     _initSferaRemoteStateSubscription();
   }
 
-  final SferaRepo _sferaRepo;
+  final SferaRepository _sferaRepo;
   StreamSubscription<SferaRemoteRepositoryState>? _sferaRemoteStateSubscription;
   final List<TrainIdentification> _trainIds = [];
   final _rxModel = BehaviorSubject<JourneyNavigationModel?>.seeded(null);

@@ -13,16 +13,16 @@ import 'package:sfera/src/model/otn_id.dart';
 import 'sfera_handshake_task_test.mocks.dart';
 
 @GenerateNiceMocks([
-  MockSpec<SferaRepo>(),
+  MockSpec<SferaRepository>(),
   MockSpec<MqttService>(),
 ])
 void main() {
-  late MockSferaRepo mockSferaRepo;
+  late MockSferaRepository mockSferaRepo;
   late MockMqttService mqttService;
   late OtnId otnId;
 
   setUp(() {
-    mockSferaRepo = MockSferaRepo();
+    mockSferaRepo = MockSferaRepository();
     when(mockSferaRepo.messageHeader(sender: anyNamed('sender'))).thenReturn(MessageHeaderDto());
     mqttService = MockMqttService();
     otnId = OtnId(company: '1085', operationalTrainNumber: '719', startDate: DateTime.now());

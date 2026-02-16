@@ -158,7 +158,7 @@ void main() {
     expect(find.byType(DASTable), findsOneWidget);
     expect(find.text('(Bahnhof A)'), findsAny);
 
-    // Allow mqtt connection again for other tests
+    // Allow mqtt connection again
     mqttConnector.forceFailToConnect = false;
     // Force connnection change to trigger reconnect
     connectivityManager.connectivitySubject.add(true);
