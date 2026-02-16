@@ -50,7 +50,7 @@ void main() {
     await pumpEventQueue();
 
     // THEN
-    expect(received.length, hasLength(1));
+    expect(received, hasLength(1));
     expect(received.first, isA<TrainJourneyIntent>());
     final intent = received.first as TrainJourneyIntent;
     expect(intent.journeys, hasLength(1));
@@ -113,7 +113,7 @@ void main() {
       await pumpEventQueue();
 
       // THEN
-      expect(emitRegister.length, hasLength(1));
+      expect(emitRegister, hasLength(1));
       expect(emitRegister.first, isA<TrainJourneyIntent>());
       final intent = emitRegister.first as TrainJourneyIntent;
       expect(intent.journeys, hasLength(1));
