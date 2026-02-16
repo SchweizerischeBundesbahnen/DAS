@@ -4,7 +4,7 @@ import 'package:preload/src/repository/preload_repository_impl.dart';
 import 'package:sfera/component.dart';
 
 export 'package:preload/src/model/preload_details.dart';
-export 'package:preload/src/model/s3file.dart';
+export 'package:preload/src/model/s3_file.dart';
 export 'package:preload/src/repository/preload_repository.dart';
 
 class PreloadComponent {

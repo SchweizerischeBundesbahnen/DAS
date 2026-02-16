@@ -9,17 +9,17 @@ import 'package:sfera/component.dart';
 import 'journey_selection_view_model_test.mocks.dart';
 
 void main() {
-  late SferaRepository mockSferaRemoteRepo;
+  late SferaRepository mockSferaRepo;
   late JourneySelectionViewModel testee;
   final List<TrainIdentification> callRegister = [];
   final newYears2025 = DateTime.utc(2025, 1, 1);
   final fixedClock = Clock.fixed(newYears2025);
 
   setUp(() {
-    mockSferaRemoteRepo = MockSferaRepository();
+    mockSferaRepo = MockSferaRepository();
     withClock(fixedClock, () {
       testee = JourneySelectionViewModel(
-        sferaRepo: mockSferaRemoteRepo,
+        sferaRepo: mockSferaRepo,
         onJourneySelected: (trainIdentification) async {
           callRegister.add(trainIdentification);
         },
@@ -38,7 +38,7 @@ void main() {
     final clock = Clock.fixed(newYears1970);
     withClock(clock, () {
       // seventies testee
-      testee = JourneySelectionViewModel(sferaRepo: mockSferaRemoteRepo, onJourneySelected: (_) async {});
+      testee = JourneySelectionViewModel(sferaRepo: mockSferaRepo, onJourneySelected: (_) async {});
     });
     // ACT
     final state = testee.modelValue;
@@ -61,7 +61,7 @@ void main() {
     final newYears1970 = DateTime.utc(1970);
     final clock = Clock.fixed(closeToBerchtoldstag1970);
     withClock(clock, () {
-      testee = JourneySelectionViewModel(sferaRepo: mockSferaRemoteRepo, onJourneySelected: (_) async {});
+      testee = JourneySelectionViewModel(sferaRepo: mockSferaRepo, onJourneySelected: (_) async {});
     });
     // ACT
     final state = testee.modelValue;

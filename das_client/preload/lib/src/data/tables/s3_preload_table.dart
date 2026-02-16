@@ -2,7 +2,7 @@
 
 import 'package:drift/drift.dart';
 import 'package:preload/src/data/drift_preload_database_service.dart';
-import 'package:preload/src/model/s3file.dart';
+import 'package:preload/src/model/s3_file.dart';
 
 class S3PreloadTable extends Table {
   TextColumn get name => text()();

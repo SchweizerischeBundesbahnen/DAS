@@ -7,7 +7,7 @@ import 'package:logging/logging.dart';
 import 'package:preload/src/aws/s3_client.dart';
 import 'package:preload/src/data/preload_local_database_service.dart';
 import 'package:preload/src/model/preload_details.dart';
-import 'package:preload/src/model/s3file.dart';
+import 'package:preload/src/model/s3_file.dart';
 import 'package:preload/src/repository/preload_repository.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:settings/component.dart';
@@ -175,7 +175,7 @@ class PreloadRepositoryImpl implements PreloadRepository {
         saveFutures.add(sferaLocalRepo.saveData(content));
       }
       final successList = await Future.wait(saveFutures);
-      final success = successList.fold(true, (a, b) => a && b);
+      final success = successList.every((it) => it);
 
       if (success) {
         _log.info('All data extracted from file ${file.name} saved successfully.');

@@ -1,4 +1,4 @@
-import 'package:preload/src/model/s3file.dart';
+import 'package:preload/src/model/s3_file.dart';
 
 abstract class PreloadLocalDatabaseService {
   const PreloadLocalDatabaseService._();

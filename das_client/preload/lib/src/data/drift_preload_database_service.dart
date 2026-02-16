@@ -4,7 +4,7 @@ import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 import 'package:preload/src/data/preload_local_database_service.dart';
 import 'package:preload/src/data/tables/s3_preload_table.dart';
-import 'package:preload/src/model/s3file.dart';
+import 'package:preload/src/model/s3_file.dart';
 
 part 'drift_preload_database_service.g.dart';
 
@@ -39,8 +39,6 @@ class DriftPreloadDatabaseService extends _$DriftPreloadDatabaseService implemen
     return s3PreloadTable.insertOnConflictUpdate(file.toCompanion());
   }
 
-  $$S3PreloadTableTableTableManager get _manager => managers.s3PreloadTable;
-
   @override
   Stream<List<S3File>> watchAll() {
     return _manager.watch().map((it) => it.map((it) => it.toDomain()).toList());
@@ -50,4 +48,6 @@ class DriftPreloadDatabaseService extends _$DriftPreloadDatabaseService implemen
   Future<int> deleteS3File(S3File file) {
     return _manager.filter((f) => f.name(file.name)).delete();
   }
+
+  $$S3PreloadTableTableTableManager get _manager => managers.s3PreloadTable;
 }

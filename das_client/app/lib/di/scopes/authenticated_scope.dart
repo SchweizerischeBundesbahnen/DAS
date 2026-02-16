@@ -117,7 +117,7 @@ extension AuthenticatedScopeExtension on GetIt {
     factoryFunc() async {
       _log.fine('Register sfera remote repo');
       final deviceId = await DeviceIdInfo.getDeviceId();
-      return SferaComponent.createSferaRemoteRepo(
+      return SferaComponent.createSferaRepository(
         mqttService: DI.get(),
         sferaAuthProvider: DI.get(),
         localRepo: DI.get(),
