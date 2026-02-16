@@ -160,7 +160,7 @@ class _ProviderScope extends StatelessWidget {
           dispose: (_, vm) => vm.dispose(),
         ),
         Provider(
-          create: (_) => DisturbanceViewModel(sferaRemoteRepo: DI.get()),
+          create: (_) => DisturbanceViewModel(sferaRepo: DI.get()),
           dispose: (_, vm) => vm.dispose(),
         ),
 
@@ -215,7 +215,7 @@ class _ProviderScope extends StatelessWidget {
           update: (_, journeyPositionVM, prev) {
             if (prev != null) return prev;
             return DepartureDispatchNotificationViewModel(
-              sferaRemoteRepo: DI.get(),
+              sferaRepo: DI.get(),
               journeyPositionStream: journeyPositionVM.model,
             );
           },

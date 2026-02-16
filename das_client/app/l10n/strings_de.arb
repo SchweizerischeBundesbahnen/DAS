@@ -30,6 +30,7 @@
   "w_navigation_drawer_links_title": "Links",
   "w_navigation_drawer_settings_title": "Einstellungen",
   "w_navigation_drawer_profile_title": "Profil",
+  "w_navigation_drawer_preload_title": "Vorladen",
   "p_login_connect_to_tms": "Mit TMS verbinden",
   "p_login_bottom_sheet_title": "Herzlich Willkommen bei DAS",
   "p_login_bottom_sheet_subtitle": "Logge dich ein um zu beginnen.",
@@ -282,5 +283,19 @@
   "c_tour_system_bls_ivu": "BLS IVU",
   "c_tour_system_rail_cube": "RailCube",
   "w_user_tour_system_selection_label": "Toursystem",
-  "w_user_tour_system_selection_title": "Toursystem wählen"
+  "w_user_tour_system_selection_title": "Toursystem wählen",
+  "p_preload_page_title": "Vorladen",
+  "w_preload_status_title": "Vorladen",
+  "w_preload_status_downloaded": "Heruntergeladen",
+  "w_preload_status_initial": "Ausstehend",
+  "w_preload_status_error": "Fehlerhaft",
+  "w_preload_status_metric_jp": "Fahrordnungen:",
+  "w_preload_status_metric_sp": "Segmente:",
+  "w_preload_status_metric_tc": "Zuginformationen:",
+  "w_preload_status_state_text": "Status: ",
+  "w_preload_status_idle": "Bereit",
+  "w_preload_status_running": "Synchronisiere...",
+  "w_preload_status_missing_configuration": "Offline",
+  "w_preload_status_last_update": "Datenstand:",
+  "w_preload_status_start_preload": "Starten"
 }

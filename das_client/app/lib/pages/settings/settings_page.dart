@@ -31,6 +31,7 @@ class _SettingsPageState extends State<SettingsPage> {
   SBBHeader _appBar(BuildContext context) => SBBHeader(
     title: context.l10n.c_app_name,
     systemOverlayStyle: .light,
+    actions: [Container()],
   );
 
   Widget _body(BuildContext context) {

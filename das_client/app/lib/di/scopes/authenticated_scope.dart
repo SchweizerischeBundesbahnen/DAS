@@ -10,6 +10,7 @@ import 'package:http_x/component.dart';
 import 'package:logger/component.dart';
 import 'package:logging/logging.dart';
 import 'package:mqtt/component.dart';
+import 'package:preload/component.dart';
 import 'package:settings/component.dart';
 import 'package:sfera/component.dart';
 
@@ -35,6 +36,7 @@ class AuthenticatedScope extends DIScope {
     getIt.registerSettingsRepository();
     getIt.registerRuFeatureProvider();
     getIt.registerFormationRepository();
+    getIt.registerPreloadRepository();
 
     await getIt.allReady();
   }
@@ -115,14 +117,16 @@ extension AuthenticatedScopeExtension on GetIt {
     factoryFunc() async {
       _log.fine('Register sfera remote repo');
       final deviceId = await DeviceIdInfo.getDeviceId();
-      return SferaComponent.createSferaRemoteRepo(
+      return SferaComponent.createSferaRepository(
         mqttService: DI.get(),
         sferaAuthProvider: DI.get(),
+        localRepo: DI.get(),
+        connectivityManager: DI.get(),
         deviceId: deviceId,
       );
     }
 
-    registerSingletonAsync<SferaRemoteRepo>(
+    registerSingletonAsync<SferaRepository>(
       factoryFunc,
       dispose: (repo) => repo.dispose(),
       dependsOn: [MqttService],
@@ -138,16 +142,30 @@ extension AuthenticatedScopeExtension on GetIt {
     registerLazySingleton<SferaLocalRepo>(factoryFunc);
   }
 
+  void registerPreloadRepository() {
+    registerSingleton<PreloadRepository>(
+      PreloadComponent.createPreloadRepository(
+        sferaLocalRepo: DI.get(),
+      ),
+    );
+  }
+
   void registerSettingsRepository() {
     final flavor = DI.get<Flavor>();
-    final configRepository = SettingsComponent.createRepository(baseUrl: flavor.backendUrl, client: DI.get());
+    final configRepository = SettingsComponent.createRepository(
+      baseUrl: flavor.backendUrl,
+      client: DI.get(),
+      onAwsCredentialsChanged: (credentials) {
+        DI.get<PreloadRepository>().updateConfiguration(credentials);
+      },
+    );
     registerSingleton<SettingsRepository>(configRepository);
     registerSingleton<LogEndpoint>(configRepository);
   }
 
   void registerRuFeatureProvider() {
     factoryFunc() {
-      return RuFeatureProviderImpl(sferaRemoteRepo: DI.get(), settingsRepository: DI.get());
+      return RuFeatureProviderImpl(sferaRepo: DI.get(), settingsRepository: DI.get());
     }
 
     registerLazySingleton<RuFeatureProvider>(factoryFunc);
