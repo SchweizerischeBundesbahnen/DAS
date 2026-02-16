@@ -82,6 +82,7 @@ The app is separated into the following components:
 | **warnapp**           | Alogrithm to detect start and stop of train                                            |
 | **formation**         | Provides formation including brake-/loadslip information                               | 
 | **app_links_x**       | Processes all deep-links used to open the DAS app.                                     | 
+| **preload**           | Handles pre-loading journey data for offline usage.                                    | 
 
 ### Component Naming
 

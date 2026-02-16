@@ -16,6 +16,7 @@ component http #4DB1FF
 component connectivity_plus #4DB1FF
 component app_links #4DB1FF
 component app_links_x
+component preload
 
 app --> auth
 app --> sfera
@@ -28,6 +29,7 @@ app --> logger
 app --> http_x
 app --> formation
 app --> app_links
+app --> preload
 
 settings --> http_x
 settings --> logger
@@ -49,5 +51,8 @@ mqtt *-- mqtt_client
 connectivity_x *-- connectivity_plus
 
 app_links_x *-- app_links
+
+preload --> settings
+preload --> sfera
 
 @enduml

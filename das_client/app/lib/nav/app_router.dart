@@ -81,11 +81,11 @@ class AppRouter extends RootStackRouter {
     guards: [authGuard],
   );
 
-final _preload = AutoRoute(
-  path: '/preload',
-  page: PreloadRoute.page,
-  guards: [authGuard],
-);
+  AutoRoute get _preload => AutoRoute(
+    path: '/preload',
+    page: PreloadRoute.page,
+    guards: [authGuard],
+  );
 
   @override
   get defaultRouteType => RouteType.custom();
