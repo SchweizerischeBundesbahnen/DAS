@@ -18,6 +18,7 @@ workspace:
   - connectivity_x
   - local_regulations
   - formation
+  - preload
 
 dev_dependencies:
   melos: ^7.3.0

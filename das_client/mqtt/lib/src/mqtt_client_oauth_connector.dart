@@ -14,10 +14,10 @@ class MqttClientOauthConnector implements MqttClientConnector {
   Future<bool> connect(MqttClient client, String company, String train) async {
     _log.info('Connecting to mqtt using oauth token');
 
-    final userId = await _mqttAuthProvider.userId();
-    _log.info('Using userId=$userId');
-
     try {
+      final userId = await _mqttAuthProvider.userId();
+      _log.info('Using userId=$userId');
+
       final accessToken = await _mqttAuthProvider.token();
       final mqttClientConnectionStatus = await client.connect(
         userId,

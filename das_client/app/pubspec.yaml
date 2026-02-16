@@ -22,6 +22,7 @@ dependencies:
   local_regulations: 1.0.0
   logger: 1.0.0
   mqtt: 1.0.0
+  preload: 1.0.0
   settings: 1.0.0
   sfera: 1.0.0
   warnapp: 1.0.0

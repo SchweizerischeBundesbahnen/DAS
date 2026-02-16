@@ -11,7 +11,7 @@ import 'package:sfera/component.dart';
 
 class UxTestingViewModel {
   UxTestingViewModel({
-    required SferaRemoteRepo sferaRepo,
+    required SferaRepository sferaRepo,
     required RuFeatureProvider ruFeatureProvider,
     required FormationRepository formationRepository,
   }) : _sferaRepo = sferaRepo,
@@ -20,7 +20,7 @@ class UxTestingViewModel {
     _init();
   }
 
-  final SferaRemoteRepo _sferaRepo;
+  final SferaRepository _sferaRepo;
   final RuFeatureProvider _ruFeatureProvider;
   final FormationRepository _formationRepository;
 

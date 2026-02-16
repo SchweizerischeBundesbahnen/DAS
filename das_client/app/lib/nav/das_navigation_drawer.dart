@@ -47,6 +47,12 @@ class DASNavigationDrawer extends StatelessWidget {
                   title: context.l10n.w_navigation_drawer_profile_title,
                   route: const ProfileRoute(),
                 ),
+                _navigationTile(
+                  context,
+                  icon: SBBIcons.download_small,
+                  title: context.l10n.w_navigation_drawer_preload_title,
+                  route: const PreloadRoute(),
+                ),
               ],
             ),
           ),

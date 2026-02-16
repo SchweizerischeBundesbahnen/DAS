@@ -21,6 +21,7 @@ class ProfilePage extends StatelessWidget {
     return SBBHeader(
       title: context.l10n.c_app_name,
       systemOverlayStyle: .light,
+      actions: [Container()],
     );
   }
 
