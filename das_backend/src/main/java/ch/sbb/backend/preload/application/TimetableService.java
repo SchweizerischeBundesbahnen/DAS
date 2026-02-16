@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,9 @@ public class TimetableService {
 
     public static final String UPDATE_EVENT_TYPE = "UPDATE";
     public static final String DELETE_EVENT_TYPE = "DELETE";
+
+    @Value("${preload.trainCleanUp.days}")
+    private int cleanUpDays;
 
     private final TrainRunDAO trainRunDao;
     private final TimetableConverter timetableConverter;
@@ -47,7 +51,7 @@ public class TimetableService {
     }
 
     @Transactional
-    public void deleteObsoleteData(LocalDate cutoffData) {
-        trainRunDao.deleteAllOlderThan(cutoffData);
+    public void deleteObsoleteData() {
+        trainRunDao.deleteAllOlderThan(LocalDate.now().minusDays(cleanUpDays));
     }
 }

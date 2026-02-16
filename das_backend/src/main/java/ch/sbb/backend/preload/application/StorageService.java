@@ -12,19 +12,27 @@ import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.List;
 import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class StorageService {
 
     private static final String DIR_JP = "jp/";
     private static final String DIR_SP = "sp/";
     private static final String DIR_TC = "tc/";
+    private static final String ZIP_FILE_ENDING = ".zip";
+    private static final DateTimeFormatter FILENAME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH-mm-ssX");
 
-    private static final DateTimeFormatter FILENAME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH-mm-ss'Z'");
+    @Value("${preload.fileCleanUp.olderThanHours}")
+    private int olderThanHours;
 
     private final XmlHelper xmlHelper;
     private final S3Service s3Service;
@@ -55,7 +63,7 @@ public class StorageService {
 
     private String buildZipName() {
         OffsetDateTime nowOffset = OffsetDateTime.now();
-        return FILENAME_FORMATTER.format(nowOffset.toInstant().atZone(ZoneOffset.UTC)) + ".zip";
+        return FILENAME_FORMATTER.format(nowOffset.toInstant().atZone(ZoneOffset.UTC)) + ZIP_FILE_ENDING;
     }
 
     private void writeJps(Set<JourneyProfile> jps, ZipOutputStream zos) throws IOException {
@@ -99,5 +107,26 @@ public class StorageService {
         zos.putNextEntry(entry);
         zos.write(xml.getBytes(StandardCharsets.UTF_8));
         zos.closeEntry();
+    }
+
+    void cleanUp() {
+        OffsetDateTime cutoff = OffsetDateTime.now().minusHours(olderThanHours);
+        List<String> keysToDelete = s3Service.listObjects().stream()
+            .filter(k -> k != null && k.endsWith(ZIP_FILE_ENDING))
+            .filter(k -> {
+                try {
+                    String base = k.substring(0, k.length() - ZIP_FILE_ENDING.length());
+                    OffsetDateTime ts = OffsetDateTime.parse(base, FILENAME_FORMATTER);
+                    return ts.isBefore(cutoff);
+                } catch (DateTimeParseException e) {
+                    log.warn("CleanUp: Skipping zip file with unexpected name: {}", k);
+                    return false;
+                }
+            })
+            .toList();
+
+        if (!keysToDelete.isEmpty()) {
+            s3Service.deleteObjects(keysToDelete);
+        }
     }
 }

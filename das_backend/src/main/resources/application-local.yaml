@@ -11,6 +11,9 @@ zis:
     # disable kafka per default
     enabled: false
 preload:
+  kafka:
+    # disable kafka per default
+    enabled: false
   timetablePeriod:
     topic: nets-t.timetable
   timetableTrain:

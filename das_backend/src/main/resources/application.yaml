@@ -121,7 +121,8 @@ preload:
     bucketUrl: ${PRELOAD_BUCKET_URL}
     accessKey: ${PRELOAD_BUCKET_KEY}
     accessSecret: ${PRELOAD_BUCKET_SECRET}
-
+  fileCleanUp:
+    olderThanHours: 48
   timetablePeriod:
     topic: ${FAHRPLAN_SERVICE_API_TIMETABLE_PERIOD_TOPIC}
   timetableTrain:
