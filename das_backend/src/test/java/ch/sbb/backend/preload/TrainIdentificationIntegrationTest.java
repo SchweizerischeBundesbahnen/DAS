@@ -132,7 +132,7 @@ class TrainIdentificationIntegrationTest {
             });
 
         // When
-        timetableService.deleteObsoleteData(LocalDate.of(testYear, 2, 25));
+        timetableService.deleteAllOlderThan(LocalDate.of(testYear, 2, 25));
 
         // Then
         waitAtMost(10, TimeUnit.SECONDS)

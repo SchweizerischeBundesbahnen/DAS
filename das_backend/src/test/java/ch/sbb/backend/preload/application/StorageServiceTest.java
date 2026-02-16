@@ -3,6 +3,7 @@ package ch.sbb.backend.preload.application;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import ch.sbb.backend.preload.infrastructure.S3Service;
 import ch.sbb.backend.preload.infrastructure.xml.SferaMessagingConfig;
@@ -14,6 +15,8 @@ import ch.sbb.backend.preload.sfera.model.v0300.TrainIdentification;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -93,5 +96,23 @@ class StorageServiceTest {
 
         assertThat(zipName).endsWith(".zip");
         assertThat(entries).containsExactly("jp/JP_9353_234_2025-10-17_2.xml");
+    }
+
+    @Test
+    void deleteAllOlderThan() {
+        when(s3Service.listObjects()).thenReturn(List.of("2026-02-20T08-00-00Z.zip", "2026-02-20T05-00-20Z.zip"));
+
+        underTest.deleteAllOlderThan(OffsetDateTime.of(2026, 2, 20, 6, 1, 0, 0, ZoneOffset.ofHours(1)));
+
+        verify(s3Service, times(1)).deleteObjects(List.of("2026-02-20T05-00-20Z.zip"));
+    }
+
+    @Test
+    void deleteAllOlderThan_withInvalidFiles() {
+        when(s3Service.listObjects()).thenReturn(List.of("myInvalidFile.das", "2026-01-01T18-21-49Z.zip", "2026-99-01T18-21-49Z.zip", "2026-01-01X18-21-49.zip"));
+
+        underTest.deleteAllOlderThan(OffsetDateTime.of(2026, 2, 1, 0, 0, 0, 0, ZoneOffset.ofHours(1)));
+
+        verify(s3Service, times(1)).deleteObjects(List.of("2026-01-01T18-21-49Z.zip"));
     }
 }
