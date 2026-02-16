@@ -3,6 +3,7 @@ import 'package:app/di/di.dart';
 import 'package:app/di/scopes/das_base_scope.dart';
 import 'package:app/pages/settings/user_settings.dart';
 import 'package:app/util/time_constants.dart';
+import 'package:app_links_x/component.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:connectivity_x/component.dart';
@@ -12,6 +13,7 @@ import 'package:warnapp/component.dart';
 
 import '../util/test_time_constants.dart';
 import 'integration_test_audio_player.dart';
+import 'mock_app_links_manager.dart';
 import 'mock_battery.dart';
 import 'mock_brightness_manager.dart';
 import 'mock_connectivity_manager.dart';
@@ -38,14 +40,17 @@ class MockDASBaseScope extends DASBaseScope {
     _registerUserSettings();
     _registerMockConnectivityManager();
     getIt.registerLoginViewModel();
-    // TODO: maybe use mock manager to integration test links?
-    getIt.registerAppLinksManager();
+    _registerMockAppLinksManager();
 
     await getIt.allReady();
   }
 
+  void _registerMockAppLinksManager() {
+    getIt.registerLazySingleton<AppLinksManager>(() => MockAppLinksManager());
+  }
+
   void _registerMockBattery() {
-    getIt.registerSingletonAsync<Battery>(() async => MockBattery());
+    getIt.registerSingleton<Battery>(MockBattery());
   }
 
   void _registerMockBrightnessManager() {

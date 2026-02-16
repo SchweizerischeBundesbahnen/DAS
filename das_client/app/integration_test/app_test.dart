@@ -15,6 +15,7 @@ import 'package:logging/logging.dart';
 
 import 'integration_test_di.dart';
 import 'test/additional_speed_restriction_modal_test.dart' as additional_speed_restriction_modal_test;
+import 'test/app_link_test.dart' as app_link_tests;
 import 'test/automatic_advancement_test.dart' as automatic_advancement_tests;
 import 'test/break_load_slip_test.dart' as break_load_slip_tests;
 import 'test/journey_header_test.dart' as journey_header_tests;
@@ -56,6 +57,7 @@ void main() {
 
   additional_speed_restriction_modal_test.main();
   automatic_advancement_tests.main();
+  app_link_tests.main();
   break_load_slip_tests.main();
   journey_header_tests.main();
   journey_notification_tests.main();

@@ -1,4 +1,6 @@
+import 'package:app/di/di.dart';
 import 'package:app/nav/app_router.dart';
+import 'package:app/pages/login/login_view_model.dart';
 import 'package:auth/component.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:logging/logging.dart';
@@ -22,6 +24,8 @@ class AuthGuard extends AutoRouteGuard {
       }
 
       _log.fine('Not authenticated. Navigating to login...');
+      final loginModel = DI.get<LoginViewModel>().modelValue;
+      DI.resetToUnauthenticatedScope(useTms: loginModel.connectToTmsVad);
       router.push(
         LoginRoute(
           onSuccess: () {

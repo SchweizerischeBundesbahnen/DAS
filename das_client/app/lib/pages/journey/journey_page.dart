@@ -46,33 +46,12 @@ class _JourneyPageState extends State<JourneyPage> {
   StreamSubscription? _errorCodeSubscription;
   Stream<(bool, Journey?)>? _streamCombo;
 
+  late final Future<void> _initFuture;
+
   @override
   void initState() {
-    final journeyTableVM = DI.get<JourneyTableViewModel>();
-    _errorCodeSubscription = journeyTableVM.errorCode.listen((error) async {
-      if (error != null) {
-        await DI.get<ScopeHandler>().pop<JourneyScope>();
-        await DI.get<ScopeHandler>().push<JourneyScope>();
-        if (mounted) {
-          context.router.replace(JourneySelectionRoute());
-        }
-      }
-    });
-    _streamCombo = CombineLatestStream.combine2(journeyTableVM.isZenViewMode, journeyTableVM.journey, (a, b) => (a, b));
-
-    _loadInitialTrains();
-
+    _initFuture = _initState();
     super.initState();
-  }
-
-  Future<void> _loadInitialTrains() async {
-    if (widget.initialTrainIds != null && widget.initialTrainIds!.isNotEmpty) {
-      // TODO: Maybe add class that holds trainIds in DASBaseScope
-      await DI.get<ScopeHandler>().pop<JourneyScope>();
-      await DI.get<ScopeHandler>().push<JourneyScope>();
-      final journeyNavigationVM = DI.get<JourneyNavigationViewModel>();
-      journeyNavigationVM.replaceWith(widget.initialTrainIds!);
-    }
   }
 
   @override
@@ -85,19 +64,27 @@ class _JourneyPageState extends State<JourneyPage> {
   @override
   Widget build(BuildContext context) {
     final journeyTableVM = DI.get<JourneyTableViewModel>();
-    return StreamBuilder<(bool, Journey?)>(
-      stream: _streamCombo,
-      // initial zen mode is false to animate transition
-      initialData: (false, journeyTableVM.journeyValue),
-      builder: (context, snapshot) {
-        final isZenViewMode = snapshot.requireData.$1;
-        final journey = snapshot.requireData.$2;
 
-        return DASJourneyScaffold(
-          body: JourneyOverview(key: ValueKey(journey?.metadata.trainIdentification)),
-          appBarTitle: _appBarTitle(context, journey?.metadata.trainIdentification),
-          hideAppBar: isZenViewMode,
-          appBarTrailingAction: _DismissJourneyButton(),
+    return FutureBuilder<void>(
+      future: _initFuture,
+      builder: (context, snap) {
+        if (snap.connectionState != ConnectionState.done || _streamCombo == null) return SizedBox.shrink();
+
+        return StreamBuilder<(bool, Journey?)>(
+          stream: _streamCombo,
+          // initial zen mode is false to animate transition
+          initialData: (false, journeyTableVM.journeyValue),
+          builder: (context, snapshot) {
+            final isZenViewMode = snapshot.requireData.$1;
+            final journey = snapshot.requireData.$2;
+
+            return DASJourneyScaffold(
+              body: JourneyOverview(key: ValueKey(journey?.metadata.trainIdentification)),
+              appBarTitle: _appBarTitle(context, journey?.metadata.trainIdentification),
+              hideAppBar: isZenViewMode,
+              appBarTrailingAction: _DismissJourneyButton(),
+            );
+          },
         );
       },
     );
@@ -111,6 +98,31 @@ class _JourneyPageState extends State<JourneyPage> {
     final locale = Localizations.localeOf(context);
     final date = Format.dateWithAbbreviatedDay(trainIdentification.date, locale);
     return '${context.l10n.p_journey_appbar_text} - $date';
+  }
+
+  Future<void> _initState() async {
+    await _loadInitialTrains();
+
+    final journeyTableVM = DI.get<JourneyTableViewModel>();
+    _errorCodeSubscription = journeyTableVM.errorCode.listen((error) async {
+      if (error != null) {
+        await DI.get<ScopeHandler>().pop<JourneyScope>();
+        await DI.get<ScopeHandler>().push<JourneyScope>();
+        if (mounted) {
+          context.router.replace(JourneySelectionRoute());
+        }
+      }
+    });
+    _streamCombo = CombineLatestStream.combine2(journeyTableVM.isZenViewMode, journeyTableVM.journey, (a, b) => (a, b));
+  }
+
+  Future<void> _loadInitialTrains() async {
+    if (widget.initialTrainIds != null && widget.initialTrainIds!.isNotEmpty) {
+      await DI.get<ScopeHandler>().pop<JourneyScope>();
+      await DI.get<ScopeHandler>().push<JourneyScope>();
+      final journeyNavigationVM = DI.get<JourneyNavigationViewModel>();
+      journeyNavigationVM.replaceWith(widget.initialTrainIds!);
+    }
   }
 }
 
