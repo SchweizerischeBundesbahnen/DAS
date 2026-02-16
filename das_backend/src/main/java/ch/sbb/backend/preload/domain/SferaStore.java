@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 public class SferaStore {
 
+    // TODO consider using a cache with eviction strategy or cleanup if memory becomes an issue
     private final Map<SegmentProfileIdentification, SegmentProfile> segmentProfiles = new HashMap<>();
     private final Map<TrainCharacteristicsIdentification, TrainCharacteristics> trainCharacteristics = new HashMap<>();
 
@@ -25,7 +26,7 @@ public class SferaStore {
     public SegmentProfile getSp(SegmentProfileIdentification segmentProfileIdentification) {
         return segmentProfiles.get(segmentProfileIdentification);
     }
-    
+
     public TrainCharacteristics getTc(TrainCharacteristicsIdentification trainCharacteristicsIdentification) {
         return trainCharacteristics.get(trainCharacteristicsIdentification);
     }
