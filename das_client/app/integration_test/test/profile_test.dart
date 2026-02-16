@@ -7,6 +7,15 @@ import '../app_test.dart';
 import '../util/test_utils.dart';
 
 void main() {
+  testWidgets('test profile page header', (tester) async {
+    await prepareAndStartApp(tester);
+    await openDrawer(tester);
+    await tapElement(tester, find.text(l10n.w_navigation_drawer_profile_title));
+
+    expect(find.text('Integration Tester'), findsAny);
+    expect(find.text('tester@testeee.com'), findsAny);
+  });
+
   testWidgets('test user ru profile selection', (tester) async {
     await prepareAndStartApp(tester);
     await openDrawer(tester);
@@ -50,8 +59,6 @@ void main() {
 
     final evuText2 = '${l10n.c_ru_sbb}, ${l10n.c_ru_sob_t}';
     expect(find.text(evuText2), findsOneWidget);
-
-    await disconnect(tester);
   });
 
   testWidgets('test user tour system profile selection', (tester) async {
@@ -73,7 +80,5 @@ void main() {
     await tapElement(tester, find.text(l10n.c_tour_system_bls_ivu).first);
 
     expect(find.text(l10n.c_tour_system_bls_ivu), findsOne);
-
-    await disconnect(tester);
   });
 }
