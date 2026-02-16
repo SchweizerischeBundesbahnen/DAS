@@ -10,3 +10,11 @@ zis:
   kafka:
     # disable kafka per default
     enabled: false
+preload:
+  timetablePeriod:
+    topic: nets-t.timetable
+  timetableTrain:
+    topic: fps.inte.sbbp.zug
+  trainCleanUp:
+    days: 2
+    cronExpression: "0 0 0 * * *"
