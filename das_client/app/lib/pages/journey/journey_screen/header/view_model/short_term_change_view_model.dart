@@ -90,7 +90,8 @@ class ShortTermChangeViewModel extends JourneyAwareViewModel {
 
     final shortTermChangeInSight = _calculateClosestShortTermChangeInSight(shortTermChanges);
     if (shortTermChangeInSight != null) {
-      _displayNewShortTermChanges = false;
+      // in case there is only one and it's already in sight, do not display afterwards anymore
+      if (shortTermChanges.length == 1) _displayNewShortTermChanges = false;
       _emitChangeInSightWithLog(shortTermChangeInSight);
       return;
     }
