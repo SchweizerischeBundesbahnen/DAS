@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class GeneralShortTermChangeIndicator extends DotIndicator {
-  static const Key stop2PassOrPass2StopIndicatorKey = Key('stop2PassOrPass2StopIndicator');
+  @override
+  static const Key indicatorKey = Key('generalShortTermChangeIndicatorKey');
 
   const GeneralShortTermChangeIndicator({
     required super.child,
@@ -19,7 +20,7 @@ class GeneralShortTermChangeIndicator extends DotIndicator {
   Widget indicator(BuildContext context) {
     return SvgPicture.asset(
       AppAssets.iconTabIndicatorExclamationTurquoise,
-      key: stop2PassOrPass2StopIndicatorKey,
+      key: indicatorKey,
     );
   }
 }

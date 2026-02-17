@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class UTurnIndicator extends DotIndicator {
-  static const Key uTurnIndicatorKey = Key('uTurnShortTermChangeIndicator');
+  @override
+  static const Key indicatorKey = Key('uTurnShortTermChangeIndicator');
 
   const UTurnIndicator({
     required super.child,
@@ -19,7 +20,7 @@ class UTurnIndicator extends DotIndicator {
   Widget indicator(BuildContext context) {
     return SvgPicture.asset(
       AppAssets.iconUturnTurquoise,
-      key: uTurnIndicatorKey,
+      key: indicatorKey,
     );
   }
 }

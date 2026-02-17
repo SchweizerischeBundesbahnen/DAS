@@ -14,6 +14,9 @@ class RouteCellBody extends StatelessWidget {
   static const Key stopOnRequestKey = Key('stopOnRequestRouteCell');
   static const Key routeStartKey = Key('startRouteCell');
   static const Key routeEndKey = Key('endRouteCell');
+  static const Key shortTermChangeBeginKey = Key('shortTermChangeRouteCellBeginKey');
+  static const Key shortTermChangeMiddleKey = Key('shortTermChangeRouteCellMiddleKey');
+  static const Key shortTermChangeEndKey = Key('shortTermChangeRouteCellEndKey');
 
   static const double routeCircleSize = 14.0;
   static const double routeCirclePosition = ServicePointRow.baseRowHeight - SBBSpacing.medium - routeCircleSize;
@@ -133,6 +136,7 @@ class RouteCellBody extends StatelessWidget {
     final color = ThemeUtil.getColor(context, SBBColors.turquoise, SBBColors.turquoiseDark);
     if (shortTermChangeData!.drawMiddle) {
       return Positioned(
+        key: shortTermChangeMiddleKey,
         top: 0,
         bottom: -horizontalBorderWidth,
         left: SBBSpacing.xSmall - (lineThickness / 2),
@@ -141,6 +145,7 @@ class RouteCellBody extends StatelessWidget {
     }
     if (shortTermChangeData!.drawStart) {
       return Positioned(
+        key: shortTermChangeBeginKey,
         top: routeCirclePosition + (routeCircleSize / 2),
         left: SBBSpacing.xSmall,
         child: ShortTermChangePaint(
@@ -154,6 +159,7 @@ class RouteCellBody extends StatelessWidget {
 
     if (shortTermChangeData!.drawEnd) {
       return Positioned(
+        key: shortTermChangeEndKey,
         top: 0,
         left: SBBSpacing.xSmall,
         child: ShortTermChangePaint(

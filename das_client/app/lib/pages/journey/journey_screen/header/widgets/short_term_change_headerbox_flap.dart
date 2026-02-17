@@ -10,9 +10,15 @@ import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class ShortTermChangeHeaderBoxFlap extends StatelessWidget {
-  const ShortTermChangeHeaderBoxFlap({required this.child, super.key});
-
   static double get height => 36.0;
+
+  static Key get hasShortTermChangeKey => Key('flapHasShortTermChangeKey');
+
+  static Key get singleShortTermChangeKey => Key('flapSingleShortTermChangeKey');
+
+  static Key get multipleShortTermChangeKey => Key('flapMultipleShortTermChangeKey');
+
+  const ShortTermChangeHeaderBoxFlap({required this.child, super.key});
 
   final Widget child;
 
@@ -42,6 +48,7 @@ class ShortTermChangeHeaderBoxFlap extends StatelessWidget {
         if (model is NoShortTermChanges) return SizedBox.shrink();
 
         return Padding(
+          key: hasShortTermChangeKey,
           padding: const EdgeInsets.only(left: SBBSpacing.medium, bottom: SBBSpacing.xSmall),
           child: Row(
             mainAxisSize: .min,
@@ -49,6 +56,7 @@ class ShortTermChangeHeaderBoxFlap extends StatelessWidget {
             children: [
               _warnIcon(),
               Text(
+                key: model is SingleShortTermChange ? singleShortTermChangeKey : multipleShortTermChangeKey,
                 model.toLocalizedDisplayString(context),
                 style: sbbTextStyle.small.boldStyle.copyWith(color: SBBColors.white),
               ),

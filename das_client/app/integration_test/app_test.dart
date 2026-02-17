@@ -34,6 +34,7 @@ import 'test/navigation_test.dart' as navigation_tests;
 import 'test/reduced_journey_table_test.dart' as reduced_journey_table_tests;
 import 'test/service_point_modal_test.dart' as service_point_modal_test;
 import 'test/settings_test.dart' as settings_test;
+import 'test/short_term_changes_test.dart' as short_term_changes_test;
 import 'test/train_search_test.dart' as train_search_tests;
 import 'test/warnapp_test.dart' as warnapp_tests;
 import 'util/test_utils.dart';
@@ -74,6 +75,7 @@ void main() {
   reduced_journey_table_tests.main();
   service_point_modal_test.main();
   settings_test.main();
+  short_term_changes_test.main();
   train_search_tests.main();
   warnapp_tests.main();
 }
