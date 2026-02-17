@@ -80,7 +80,9 @@ The app is separated into the following components:
 | **settings**          | Provides settings like enabled RU features                                             |
 | **sfera**             | SFERA api integration with local database for caching                                  |
 | **warnapp**           | Alogrithm to detect start and stop of train                                            |
-| **formation**         | Provides formation including brake-/loadslip information                               |
+| **formation**         | Provides formation including brake-/loadslip information                               | 
+| **app_links_x**       | Processes all deep-links used to open the DAS app.                                     | 
+| **preload**           | Handles pre-loading journey data for offline usage.                                    | 
 
 ### Component Naming
 

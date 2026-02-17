@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class ThemeUtil {
+  const ThemeUtil._();
+
   static Color getIconColor(BuildContext context) {
     return SBBBaseStyle.of(context).themeValue(SBBColors.black, SBBColors.white);
   }

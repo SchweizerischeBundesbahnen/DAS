@@ -27,7 +27,7 @@ class DASNavigationDrawer extends StatelessWidget {
                   context,
                   icon: SBBIcons.route_circle_start_small,
                   title: context.l10n.w_navigation_drawer_fahrtinfo_title,
-                  route: isJourneySelected ? const JourneyRoute() : const JourneySelectionRoute(),
+                  route: isJourneySelected ? JourneyRoute() : const JourneySelectionRoute(),
                 ),
                 _navigationTile(
                   context,
@@ -95,15 +95,15 @@ class DASNavigationDrawer extends StatelessWidget {
   }
 
   Widget _versionFooter(BuildContext context) {
-    final fontColor = ThemeUtil.getColor(context, SBBColors.granite, SBBColors.graphite);
+    final textColor = ThemeUtil.getColor(context, SBBColors.granite, SBBColors.graphite);
     return Align(
       alignment: .bottomCenter,
       child: Padding(
         padding: .all(SBBSpacing.medium),
         child: Column(
           children: [
-            AppVersionText(color: fontColor),
-            DeviceIdText(color: fontColor),
+            AppVersionText(color: textColor),
+            DeviceIdText(color: textColor),
           ],
         ),
       ),

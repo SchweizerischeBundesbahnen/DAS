@@ -1,11 +1,17 @@
 import 'package:auth/component.dart';
 
 class IntegrationTestAuthenticator implements Authenticator {
+  bool _isAuthenticated = true;
+
+  set isAuthenticated(bool value) {
+    _isAuthenticated = value;
+  }
+
   @override
   Future<void> endSession() async {}
 
   @override
-  Future<bool> get isAuthenticated async => true;
+  Future<bool> get isAuthenticated async => _isAuthenticated;
 
   @override
   Future<OidcToken> login({String? tokenId}) async {

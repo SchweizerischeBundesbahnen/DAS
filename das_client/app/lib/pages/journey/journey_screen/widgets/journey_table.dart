@@ -454,9 +454,9 @@ class JourneyTable extends StatelessWidget {
     return StreamBuilder(
       stream: breakLoadSlipVM.formationRun,
       initialData: breakLoadSlipVM.formationRunValue,
-      builder: (context, snapshot) {
+      builder: (context, _) {
         return breakLoadSlipVM.isJourneyAndActiveFormationRunBreakSeriesDifferent()
-            ? _brakedWeightHeaderNotification(currentBreakSeries)
+            ? _brakedWeightHeaderNotification(context, currentBreakSeries)
             : Text(
                 currentBreakSeries?.name ?? '??',
                 style: sbbTextStyle.lightStyle.small,
@@ -465,7 +465,7 @@ class JourneyTable extends StatelessWidget {
     );
   }
 
-  Stack _brakedWeightHeaderNotification(BreakSeries? currentBreakSeries) {
+  Stack _brakedWeightHeaderNotification(BuildContext context, BreakSeries? currentBreakSeries) {
     return Stack(
       key: differentBreakSeriesWarningKey,
       clipBehavior: Clip.none,
@@ -495,7 +495,10 @@ class JourneyTable extends StatelessWidget {
                   currentBreakSeries?.name ?? '??',
                   style: sbbTextStyle.boldStyle.small,
                 ),
-                SvgPicture.asset(AppAssets.iconSignExclamationPoint),
+                SvgPicture.asset(
+                  AppAssets.iconSignExclamationPoint,
+                  colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
+                ),
               ],
             ),
           ),
