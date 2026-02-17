@@ -92,8 +92,8 @@ class _SelectRailwayUndertakingModalState extends State<SelectRailwayUndertaking
                         (idx, e) => Material(
                           color: resolvedForegroundColor,
                           child: widget.allowMultiSelect
-                              ? _checkboxListItem(context, e, idx, idx == localizedFilteredRus.length - 1)
-                              : _radioListItem(context, e, idx, idx == localizedFilteredRus.length - 1),
+                              ? _checkboxListItem(context, e, isLastElement: idx == localizedFilteredRus.length - 1)
+                              : _radioListItem(context, e, isLastElement: idx == localizedFilteredRus.length - 1),
                         ),
                       )
                       .toList(),
@@ -144,10 +144,9 @@ class _SelectRailwayUndertakingModalState extends State<SelectRailwayUndertaking
 
   SBBRadioListItem<RailwayUndertaking> _radioListItem(
     BuildContext context,
-    RailwayUndertaking element,
-    int idx,
-    bool isLastElement,
-  ) {
+    RailwayUndertaking element, {
+    bool isLastElement = false,
+  }) {
     return SBBRadioListItem<RailwayUndertaking>(
       key: ValueKey(element),
       value: element,
@@ -163,10 +162,9 @@ class _SelectRailwayUndertakingModalState extends State<SelectRailwayUndertaking
 
   SBBCheckboxListItem _checkboxListItem(
     BuildContext context,
-    RailwayUndertaking element,
-    int idx,
-    isLastElement,
-  ) {
+    RailwayUndertaking element, {
+    bool isLastElement = false,
+  }) {
     return SBBCheckboxListItem(
       key: ValueKey(element),
       value: widget.selectedRailwayUndertaking.contains(element),
