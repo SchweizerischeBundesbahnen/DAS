@@ -1,3 +1,4 @@
+import 'package:app/util/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -9,7 +10,7 @@ class AnimatedMainHeaderBox extends StatefulWidget {
     required this.flapHeight,
     required this.flap,
     super.key,
-    this.duration = const Duration(milliseconds: 300),
+    this.duration = DASAnimation.mediumDuration,
   });
 
   final bool showFlap;
