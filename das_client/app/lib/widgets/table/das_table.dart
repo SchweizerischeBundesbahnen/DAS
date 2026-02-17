@@ -561,7 +561,7 @@ class _CellRowState extends State<_CellRow> {
 extension _TableBorderExtension on TableBorder {
   Border toBorder({required Alignment cellPositionInTable}) {
     return Border(
-      bottom: cellPositionInTable.y != 1 ? horizontalInside : BorderSide.none,
+      bottom: horizontalInside,
       right: cellPositionInTable.x != 1 ? verticalInside : BorderSide.none,
     );
   }
