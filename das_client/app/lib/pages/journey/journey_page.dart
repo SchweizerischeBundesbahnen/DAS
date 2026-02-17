@@ -6,6 +6,7 @@ import 'package:app/di/scopes/journey_scope.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/app_router.dart';
 import 'package:app/pages/journey/journey_screen/journey_overview.dart';
+import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
 import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
@@ -23,7 +24,9 @@ import 'package:sfera/component.dart';
 class JourneyPage extends StatefulWidget implements AutoRouteWrapper {
   static const disconnectButtonKey = Key('disconnectButton');
 
-  const JourneyPage({super.key});
+  const JourneyPage({super.key, this.initialTrainIds});
+
+  final Iterable<TrainIdentification>? initialTrainIds;
 
   @override
   Widget wrappedRoute(BuildContext context) => MultiProvider(
@@ -43,23 +46,11 @@ class _JourneyPageState extends State<JourneyPage> {
   StreamSubscription? _errorCodeSubscription;
   Stream<(bool, Journey?)>? _streamCombo;
 
+  late final Future<void> _initFuture;
+
   @override
   void initState() {
-    final journeyTableVM = DI.get<JourneyTableViewModel>();
-    _errorCodeSubscription = journeyTableVM.errorCode.listen((error) async {
-      if (error != null) {
-        await DI.get<ScopeHandler>().pop<JourneyScope>();
-        await DI.get<ScopeHandler>().push<JourneyScope>();
-        if (mounted) {
-          context.router.replace(JourneySelectionRoute());
-        }
-      }
-    });
-    _streamCombo = CombineLatestStream.combine2<bool, Journey?, (bool, Journey?)>(
-      journeyTableVM.isZenViewMode,
-      journeyTableVM.journey,
-      (a, b) => (a, b),
-    );
+    _initFuture = _initState();
     super.initState();
   }
 
@@ -73,19 +64,27 @@ class _JourneyPageState extends State<JourneyPage> {
   @override
   Widget build(BuildContext context) {
     final journeyTableVM = DI.get<JourneyTableViewModel>();
-    return StreamBuilder<(bool, Journey?)>(
-      stream: _streamCombo,
-      // initial zen mode is false to animate transition
-      initialData: (false, journeyTableVM.journeyValue),
-      builder: (context, snapshot) {
-        final isZenViewMode = snapshot.requireData.$1;
-        final journey = snapshot.requireData.$2;
 
-        return DASJourneyScaffold(
-          body: JourneyOverview(key: ValueKey(journey?.metadata.trainIdentification)),
-          appBarTitle: _appBarTitle(context, journey?.metadata.trainIdentification),
-          hideAppBar: isZenViewMode,
-          appBarTrailingAction: _DismissJourneyButton(),
+    return FutureBuilder<void>(
+      future: _initFuture,
+      builder: (context, snap) {
+        if (snap.connectionState != ConnectionState.done || _streamCombo == null) return SizedBox.shrink();
+
+        return StreamBuilder<(bool, Journey?)>(
+          stream: _streamCombo,
+          // initial zen mode is false to animate transition
+          initialData: (false, journeyTableVM.journeyValue),
+          builder: (context, snapshot) {
+            final isZenViewMode = snapshot.requireData.$1;
+            final journey = snapshot.requireData.$2;
+
+            return DASJourneyScaffold(
+              body: JourneyOverview(key: ValueKey(journey?.metadata.trainIdentification)),
+              appBarTitle: _appBarTitle(context, journey?.metadata.trainIdentification),
+              hideAppBar: isZenViewMode,
+              appBarTrailingAction: _DismissJourneyButton(),
+            );
+          },
         );
       },
     );
@@ -99,6 +98,31 @@ class _JourneyPageState extends State<JourneyPage> {
     final locale = Localizations.localeOf(context);
     final date = Format.dateWithAbbreviatedDay(trainIdentification.date, locale);
     return '${context.l10n.p_journey_appbar_text} - $date';
+  }
+
+  Future<void> _initState() async {
+    await _loadInitialTrains();
+
+    final journeyTableVM = DI.get<JourneyTableViewModel>();
+    _errorCodeSubscription = journeyTableVM.errorCode.listen((error) async {
+      if (error != null) {
+        await DI.get<ScopeHandler>().pop<JourneyScope>();
+        await DI.get<ScopeHandler>().push<JourneyScope>();
+        if (mounted) {
+          context.router.replace(JourneySelectionRoute());
+        }
+      }
+    });
+    _streamCombo = CombineLatestStream.combine2(journeyTableVM.isZenViewMode, journeyTableVM.journey, (a, b) => (a, b));
+  }
+
+  Future<void> _loadInitialTrains() async {
+    if (widget.initialTrainIds != null && widget.initialTrainIds!.isNotEmpty) {
+      await DI.get<ScopeHandler>().pop<JourneyScope>();
+      await DI.get<ScopeHandler>().push<JourneyScope>();
+      final journeyNavigationVM = DI.get<JourneyNavigationViewModel>();
+      journeyNavigationVM.replaceWith(widget.initialTrainIds!);
+    }
   }
 }
 

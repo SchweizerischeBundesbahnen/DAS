@@ -25,18 +25,18 @@ class SplashNavigator {
     if (isAuthenticated) {
       await DI.get<ScopeHandler>().push<AuthenticatedScope>();
       await DI.get<ScopeHandler>().push<JourneyScope>();
-      _navigateToJourney();
+      _navigateToJourneySelection();
     } else {
       _navigateToLogin();
     }
   }
 
-  Future<void> _navigateToJourney() async {
-    _log.fine('Navigate to home');
+  Future<void> _navigateToJourneySelection() async {
+    _log.fine('Navigate to journey selection');
     try {
       router.replaceAll([JourneySelectionRoute()]);
     } catch (e, s) {
-      _log.severe('Navigate to journey failed', e, s);
+      _log.severe('Navigate to journey selection failed', e, s);
     }
   }
 
