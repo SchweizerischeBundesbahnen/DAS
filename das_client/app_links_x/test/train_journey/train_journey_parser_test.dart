@@ -1,10 +1,11 @@
 import 'dart:convert';
 
+import 'package:app_links_x/src/app_link_version.dart';
 import 'package:app_links_x/src/train_journey/train_journey_parser.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  test('Uri with all values can be parsed', () {
+  test('parseV1_whenAllValuesProvided_returnsResult', () {
     // GIVEN
     final data = {
       'journeys': [
@@ -27,7 +28,7 @@ void main() {
     };
 
     // WHEN
-    final result = TrainJourneyParser.parse(_uri(dataJson: data));
+    final result = TrainJourneyParser.parse(_uri(dataJson: data), version: AppLinkVersion.v1);
 
     // THEN
     expect(result, hasLength(2));
@@ -47,7 +48,7 @@ void main() {
     expect(journey2.tafTapLocationReferenceEnd, 'CH03000');
   });
 
-  test('Uri with only mandatory values can be parsed', () {
+  test('parseV1_whenOnlyMandatoryValuesProvided_returnsResult', () {
     // GIVEN
     final data = {
       'journeys': [
@@ -58,7 +59,7 @@ void main() {
     };
 
     // WHEN
-    final result = TrainJourneyParser.parse(_uri(dataJson: data));
+    final result = TrainJourneyParser.parse(_uri(dataJson: data), version: AppLinkVersion.v1);
 
     // THEN
     expect(result, hasLength(1));
@@ -70,7 +71,7 @@ void main() {
     expect(parsed.tafTapLocationReferenceEnd, isNull);
   });
 
-  test('Uri can be parsed even if data parameter is not written in lower-case', () {
+  test('parseV1_whenDataParameterNotLowerCase_returnsResult', () {
     // GIVEN
     final data = {
       'journeys': [
@@ -80,10 +81,10 @@ void main() {
         },
       ],
     };
+    final queryParams = {'DATA': jsonEncode(data)};
 
     // WHEN
-    final queryParams = {'DATA': jsonEncode(data)};
-    final result = TrainJourneyParser.parse(_uri(queryParams: queryParams));
+    final result = TrainJourneyParser.parse(_uri(queryParams: queryParams), version: AppLinkVersion.v1);
 
     // THEN
     expect(result, hasLength(1));
@@ -92,30 +93,49 @@ void main() {
     expect(parsed.company, '1285');
   });
 
-  test('throws when data param is missing', () {
+  test('parseV1_whenNoDataParam_throwsFormatException', () {
     // GIVEN
     final uri = _uri();
 
     // WHEN THEN
-    expect(() => TrainJourneyParser.parse(uri), throwsFormatException);
+    expect(() => TrainJourneyParser.parse(uri, version: AppLinkVersion.v1), throwsFormatException);
   });
 
-  test('throws when data param is empty', () {
+  test('parseV1_whenEmptyDataParam_throwsFormatException', () {
     // GIVEN
     final queryParams = {'data': ''};
     final uri = _uri(queryParams: queryParams);
 
     // WHEN THEN
-    expect(() => TrainJourneyParser.parse(uri), throwsFormatException);
+    expect(() => TrainJourneyParser.parse(uri, version: AppLinkVersion.v1), throwsFormatException);
   });
 
-  test('throws when data is not valid JSON', () {
+  test('parseV1_whenNoJsonDataParam_throwsFormatException', () {
     // GIVEN
     final queryParams = {'data': 'not a json'};
     final uri = _uri(queryParams: queryParams);
 
     // WHEN THEN
-    expect(() => TrainJourneyParser.parse(uri), throwsFormatException);
+    expect(() => TrainJourneyParser.parse(uri, version: AppLinkVersion.v1), throwsFormatException);
+  });
+
+  test('parse_whenUnsupportedVersion_throwsUnimplementedError', () {
+    // GIVEN
+    final data = {
+      'journeys': [
+        {
+          'operationalTrainNumber': '123456789',
+          'company': '1285',
+        },
+      ],
+    };
+    final queryParams = {'DATA': jsonEncode(data)};
+
+    // WHEN THEN
+    expect(
+      () => TrainJourneyParser.parse(_uri(queryParams: queryParams), version: AppLinkVersion.unknown),
+      throwsUnimplementedError,
+    );
   });
 }
 

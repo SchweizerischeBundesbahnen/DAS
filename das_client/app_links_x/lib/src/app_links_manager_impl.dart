@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:app_links/app_links.dart';
 import 'package:app_links_x/component.dart';
+import 'package:app_links_x/src/app_link_version.dart';
 import 'package:app_links_x/src/train_journey/train_journey_parser.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -71,9 +72,10 @@ class AppLinksManagerImpl implements AppLinksManager {
       _log.info('Deep-link has environment that is not supported: "$env". Supported: $allowedEnvs');
     }
 
-    final version = segments[1].toLowerCase();
-    if (!RegExp(r'^v\d+$').hasMatch(version)) {
-      _log.info('Deep-link has a version in an unsupported format: "$version".');
+    final versionString = segments[1].toLowerCase();
+    final version = AppLinkVersion.parse(versionString);
+    if (version == AppLinkVersion.unknown) {
+      _log.info('Deep-link has a unknown version: "$versionString".');
     }
 
     final page = segments[2].toLowerCase();
@@ -81,8 +83,8 @@ class AppLinksManagerImpl implements AppLinksManager {
     try {
       switch (page) {
         case TrainJourneyParser.page:
-          final journeys = TrainJourneyParser.parse(uri);
-          _rxAppLinkIntent.add(TrainJourneyIntent(source: uri, journeys: journeys));
+          final journeys = TrainJourneyParser.parse(uri, version: version);
+          _rxAppLinkIntent.add(TrainJourneyIntent(appLink: uri, journeys: journeys));
           break;
         default:
           _log.info('Deep-link page "$page" is not supported and ignored.');

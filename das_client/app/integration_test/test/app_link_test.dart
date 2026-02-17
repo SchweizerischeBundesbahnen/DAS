@@ -39,9 +39,11 @@ void main() {
       await stopAutomaticAdvancement(tester);
       final navigationButtons = find.byKey(NavigationButtons.navigationButtonKey);
       expect(navigationButtons, findsNothing);
+
+      await disconnect(tester);
     });
 
-    testWidgets('appLink_whenLinkWithMultipleTrain_opensJourneyWithFirstConnectedAndRestInNavigation', (tester) async {
+    testWidgets('appLink_whenLinkWithMultipleTrains_opensFirstJourneyAndRestInNavigation', (tester) async {
       await prepareAndStartApp(tester);
 
       expect(find.byType(JourneySelectionPage), findsOne);
@@ -61,10 +63,60 @@ void main() {
       );
       expect(trainIdentification, findsOne);
 
-      // check that journeys are loaded by checking navigation buttons when paused
+      // check that journeys are loaded by navigating to next journey
       await stopAutomaticAdvancement(tester);
-      final navigationButtons = find.byKey(NavigationButtons.navigationButtonKey);
-      expect(navigationButtons, findsOne);
+      final nextButton = find.byKey(NavigationButtons.navigationButtonNextKey);
+      expect(nextButton, findsOne);
+      await tapElement(tester, nextButton);
+
+      // wait until T9999 opened
+      await waitUntilExists(
+        tester,
+        find.descendant(
+          of: find.byKey(JourneyIdentifier.journeyIdentifierKey),
+          matching: find.textContaining('T9999'),
+        ),
+      );
+
+      await disconnect(tester);
+    });
+
+    testWidgets('appLink_whenLinkWithValidAndUnknownTrain_opensFirstJourneyAndShowsErrorPageForSecond', (tester) async {
+      await prepareAndStartApp(tester);
+
+      expect(find.byType(JourneySelectionPage), findsOne);
+
+      final journeys = [
+        _trainJourneyLinkData('T1'),
+        _trainJourneyLinkData('1234'),
+      ];
+      _pushTrainJourneyAppLink(journeys);
+
+      // check that first train is loaded
+      await waitUntilExists(tester, find.byKey(JourneyTable.loadedJourneyTableKey));
+      await tester.pumpAndSettle();
+      final trainIdentification = find.descendant(
+        of: find.byKey(JourneyIdentifier.journeyIdentifierKey),
+        matching: find.textContaining('T1'),
+      );
+      expect(trainIdentification, findsOne);
+
+      // check error on second journey by navigating
+      await stopAutomaticAdvancement(tester);
+      final nextButton = find.byKey(NavigationButtons.navigationButtonNextKey);
+      expect(nextButton, findsOne);
+      await tapElement(tester, nextButton);
+
+      final errorMessage = find.byType(SBBMessage);
+      await waitUntilExists(tester, errorMessage);
+      await tester.pumpAndSettle();
+      final errorMessageText = find.descendant(
+        of: errorMessage,
+        matching: find.textContaining('${l10n.c_error_code}: ${JpUnavailable().code}'),
+      );
+      expect(errorMessageText, findsOne);
+
+      await disconnect(tester);
     });
 
     testWidgets('appLink_whenLinkWhileUnauthenticated_opensJourneyAfterLoginFlow', (tester) async {
@@ -93,6 +145,8 @@ void main() {
         matching: find.textContaining('T9999'),
       );
       expect(trainIdentification, findsOne);
+
+      await disconnect(tester);
     });
 
     testWidgets('appLink_whenLinkWithUnknownTrain_showsErrorPage', (tester) async {
@@ -126,6 +180,6 @@ TrainJourneyLinkData _trainJourneyLinkData(String trainNumber) {
 
 void _pushTrainJourneyAppLink(List<TrainJourneyLinkData> journeys) {
   final formationRepository = DI.get<AppLinksManager>() as MockAppLinksManager;
-  final intent = TrainJourneyIntent(source: Uri.parse('https://example.com'), journeys: journeys);
+  final intent = TrainJourneyIntent(appLink: Uri.parse('https://example.com'), journeys: journeys);
   formationRepository.pushAppLinkIntent(intent);
 }

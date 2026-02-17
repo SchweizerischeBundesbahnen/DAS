@@ -17,6 +17,7 @@ class TrainJourneyDto {
     return _$TrainJourneyDtoFromJson(json);
   }
 
+  // TODO: Add validation for train number when no more alpha chars (i.e. not T9999M)
   final String operationalTrainNumber;
   final String? company;
   final DateTime? startDate;

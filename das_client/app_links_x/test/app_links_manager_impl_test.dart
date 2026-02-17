@@ -98,13 +98,13 @@ void main() {
   });
 
   test(
-    'onTrainJourneyLink_whenEnvOrVersionWrongInUri_thenEmitLinkData',
+    'onTrainJourneyLink_whenEnvWrongInUri_thenEmitLinkData',
     () async {
       // GIVEN
       final uri = Uri(
         scheme: 'https',
         host: 'driveradvisorysystem.app.sbb.ch',
-        path: '/unknown/test/${TrainJourneyParser.page}',
+        path: '/test/v1/${TrainJourneyParser.page}',
         queryParameters: {'data': jsonEncode(_testDataJson)},
       );
 
@@ -118,6 +118,26 @@ void main() {
       final intent = emitRegister.first as TrainJourneyIntent;
       expect(intent.journeys, hasLength(1));
       _checkDefaultLinkData(intent.journeys.first);
+    },
+  );
+
+  test(
+    'onTrainJourneyLink_whenVersionWrongInUri_thenNoLinkDataEmitted',
+    () async {
+      // GIVEN
+      final uri = Uri(
+        scheme: 'https',
+        host: 'driveradvisorysystem.app.sbb.ch',
+        path: '/dev/abc/${TrainJourneyParser.page}',
+        queryParameters: {'data': jsonEncode(_testDataJson)},
+      );
+
+      // WHEN
+      mockStream.add(uri);
+      await pumpEventQueue();
+
+      // THEN
+      expect(emitRegister, isEmpty);
     },
   );
 
