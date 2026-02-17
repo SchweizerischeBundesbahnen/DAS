@@ -105,7 +105,10 @@ class SferaModelMapper {
         nonStandardTrackEquipmentSegments: trackEquipmentSegments,
         bracketStationSegments: _parseBracketStationSegments(servicePoints),
         advisedSpeedSegments: SpeedMapper.advisedSpeeds(journeyProfile, segmentProfiles, journeyData),
-        shortTermChanges: ShortTermChangeMapper.map(journeyProfile.generalJpInformation, servicePoints),
+        shortTermChanges: ShortTermChangeMapper.mapShortTermChanges(
+          journeyProfile.generalJpInformation,
+          servicePoints,
+        ),
         availableBreakSeries: _parseAvailableBreakSeries(journeyPoints, lineSpeeds),
         communicationNetworkChanges: communicationChanges,
         breakSeries:

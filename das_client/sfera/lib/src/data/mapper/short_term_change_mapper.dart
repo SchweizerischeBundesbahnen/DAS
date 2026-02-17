@@ -10,7 +10,7 @@ import 'package:sfera/src/model/journey/short_term_change.dart';
 final _log = Logger('ShortTermChangeMapper');
 
 class ShortTermChangeMapper {
-  static Iterable<ShortTermChange> map(
+  static Iterable<ShortTermChange> mapShortTermChanges(
     GeneralJpInformationDto? generalJpInformation,
     List<ServicePoint> servicePoints,
   ) {
