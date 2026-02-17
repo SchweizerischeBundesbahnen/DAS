@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:core';
 import 'dart:ui';
 
+import 'package:connectivity_x/component.dart';
 import 'package:logging/logging.dart';
 import 'package:mqtt/component.dart';
 import 'package:rxdart/rxdart.dart';
@@ -38,17 +39,21 @@ import 'package:sfera/src/data/mapper/sfera_model_mapper.dart';
 import 'package:sfera/src/model/otn_id.dart';
 import 'package:uuid/uuid.dart';
 
-final _log = Logger('SferaRemoteRepoImpl');
+final _log = Logger('SferaRepoImpl');
 
-class SferaRemoteRepoImpl implements SferaRemoteRepo {
-  SferaRemoteRepoImpl({
+class SferaRepoImpl implements SferaRepository {
+  SferaRepoImpl({
     required MqttService mqttService,
     required SferaLocalDatabaseService localService,
     required SferaAuthProvider authProvider,
+    required SferaLocalRepo localRepo,
+    required ConnectivityManager connectivityManager,
     required this.deviceId,
   }) : _mqttService = mqttService,
        _localService = localService,
-       _authProvider = authProvider {
+       _authProvider = authProvider,
+       _localRepo = localRepo,
+       _connectivityManager = connectivityManager {
     _initialize();
   }
 
@@ -56,8 +61,11 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
   final MqttService _mqttService;
   final SferaLocalDatabaseService _localService;
   final SferaAuthProvider _authProvider;
+  final SferaLocalRepo _localRepo;
+  final ConnectivityManager _connectivityManager;
 
   StreamSubscription? _mqttStreamSubscription;
+  StreamSubscription? _connectivitySubscription;
   final List<SferaTask> _tasks = [];
   final List<SferaEventMessageHandler> _eventMessageHandlers = [];
 
@@ -66,6 +74,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
   final List<SegmentProfileDto> _segmentProfiles = [];
   final List<TrainCharacteristicsDto> _trainCharacteristics = [];
   RelatedTrainInformationDto? _relatedTrainInformation;
+  bool _hasOfflineData = false;
 
   final _rxState = BehaviorSubject<SferaRemoteRepositoryInternalState>.seeded(.disconnected);
   final _rxJourney = BehaviorSubject<Journey?>.seeded(null);
@@ -111,16 +120,49 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
     _tasks.clear();
     lastError = null;
     _rxState.add(.connecting);
+    _hasOfflineData = false;
+
+    final isConnected = await _tryMqttConnect();
+    if (!isConnected) {
+      final success = await _loadLocalJourney(otnId);
+      if (!success) {
+        _otnId = null;
+        lastError = .connectionFailed();
+        _rxState.add(.disconnected);
+      }
+    }
+  }
+
+  Future<bool> _tryMqttConnect() async {
+    final otnId = _otnId;
+    if (otnId == null) return false;
 
     final sferaTrain = Format.sferaTrain(otnId.operationalTrainNumber, otnId.startDate);
     final isConnected = await _mqttService.connect(otnId.company, sferaTrain);
     if (isConnected) {
       await _initiateHandshake(otnId);
-    } else {
-      _otnId = null;
-      lastError = .connectionFailed();
-      _rxState.add(.disconnected);
+      return true;
     }
+    return false;
+  }
+
+  Future<bool> _loadLocalJourney(OtnId otnId) async {
+    final localJourney = await _localRepo.getJourney(
+      company: otnId.company,
+      trainNumber: otnId.operationalTrainNumber,
+      startDate: otnId.startDate,
+    );
+
+    if (localJourney == null || !localJourney.valid) {
+      _log.info('No valid offline Journey found');
+      return false;
+    }
+
+    _log.info('Using offline data.');
+    _rxJourney.add(localJourney);
+    _hasOfflineData = true;
+    _rxState.add(.offlineData);
+    return true;
   }
 
   OtnId _toOtnId(TrainIdentification trainId) {
@@ -130,6 +172,15 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
       startDate: trainId.date,
     );
     return otnId;
+  }
+
+  void _useOfflineDataOrDisconnect() {
+    if (_hasOfflineData) {
+      _mqttService.disconnect();
+      _rxState.add(.offlineData);
+    } else {
+      disconnect();
+    }
   }
 
   /// Sends [SessionTermination] and disconnects from SFERA broker.
@@ -153,6 +204,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
     _rxWarnappEvent.add(null);
     _rxDisturbanceEvent.add(null);
     _rxState.add(.disconnected);
+    _hasOfflineData = false;
   }
 
   @override
@@ -163,6 +215,8 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
     _rxDepartureDispatchNotificationEvent.close();
     _mqttStreamSubscription?.cancel();
     _mqttStreamSubscription = null;
+    _connectivitySubscription?.cancel();
+    _connectivitySubscription = null;
     _rxWarnappEvent.close();
     _rxDisturbanceEvent.close();
   }
@@ -176,6 +230,14 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
   void _initialize() {
     _addEventMessageHandlers();
     _mqttStreamSubscription = _mqttService.messageStream.listen(_handleMqttMessage);
+    _connectivitySubscription = _connectivityManager.onConnectivityChanged.listen((connected) {
+      if (connected && _rxState.value == .offlineData) {
+        _log.info(
+          'Connectivity changed to connected=$connected while in offline mode, trying to connect to MQTT broker...',
+        );
+        _tryMqttConnect();
+      }
+    });
   }
 
   void _handleMqttMessage(String xmlMessage) async {
@@ -245,8 +307,11 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
           await _refreshSegmentProfiles();
           await _refreshTrainCharacteristics();
           _updateJourney(
-            onSuccess: () => _rxState.add(.connected),
-            onInvalid: () => disconnect(),
+            onSuccess: () {
+              _hasOfflineData = false;
+              _rxState.add(.connected);
+            },
+            onInvalid: () => _useOfflineDataOrDisconnect(),
           );
           break;
         case .connected:
@@ -416,12 +481,13 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
     }
   }
 
-  void _onTaskFailed(SferaTask task, SferaError error) {
+  void _onTaskFailed(SferaTask task, SferaError error) async {
     _log.severe('Task $task failed with error $error');
     _tasks.remove(task);
     lastError = error;
     if (_rxState.value != .connected) {
-      disconnect();
+      await _loadLocalJourney(_otnId!);
+      _useOfflineDataOrDisconnect();
     }
   }
 
@@ -443,11 +509,12 @@ enum SferaRemoteRepositoryInternalState {
   loadingJourney,
   loadingAdditionalData,
   connected,
-  offline
+  offlineData
   ;
 
   SferaRemoteRepositoryState toExternalState() => switch (this) {
-    .disconnected || .offline => .disconnected,
+    .disconnected => .disconnected,
+    .offlineData => .offlineData,
     .connecting || .handshaking || .loadingJourney || .loadingAdditionalData => .connecting,
     .connected => .connected,
   };

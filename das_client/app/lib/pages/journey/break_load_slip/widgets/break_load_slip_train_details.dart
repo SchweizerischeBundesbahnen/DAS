@@ -50,7 +50,7 @@ class BreakLoadSlipTrainDetails extends StatelessWidget {
         ),
         KeyValueTableDataRow(
           context.l10n.p_break_load_slip_train_data_date,
-          DateFormat('yyyy.MM.dd').format(formation.operationalDay),
+          DateFormat('dd.MM.yyyy').format(formation.operationalDay),
         ),
         KeyValueTableDataRow(
           context.l10n.p_break_load_slip_train_data_from,

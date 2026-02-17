@@ -30,6 +30,7 @@
   "w_navigation_drawer_links_title": "Links",
   "w_navigation_drawer_settings_title": "Einstellungen",
   "w_navigation_drawer_profile_title": "Profil",
+  "w_navigation_drawer_preload_title": "Vorladen",
   "p_login_connect_to_tms": "Mit TMS verbinden",
   "p_login_bottom_sheet_title": "Herzlich Willkommen bei DAS",
   "p_login_bottom_sheet_subtitle": "Logge dich ein um zu beginnen.",
@@ -298,5 +299,19 @@
   "w_departure_dispatch_notification_middle": "Voraussichtliche Abfahrt in: 15 - 30 Min",
   "w_departure_dispatch_notification_short": "Voraussichtliche Abfahrt in: < 15 Min",
   "w_departure_dispatch_notification_prepare": "Bereitmachen zur Abfahrt",
-  "w_departure_dispatch_notification_withdrawn": "Abfahrtsdisposition wurde zurückgenommen. Weiterfahrt wird neu avisiert."
+  "w_departure_dispatch_notification_withdrawn": "Abfahrtsdisposition wurde zurückgenommen. Weiterfahrt wird neu avisiert.",
+  "p_preload_page_title": "Vorladen",
+  "w_preload_status_title": "Vorladen",
+  "w_preload_status_downloaded": "Heruntergeladen",
+  "w_preload_status_initial": "Ausstehend",
+  "w_preload_status_error": "Fehlerhaft",
+  "w_preload_status_metric_jp": "Fahrordnungen:",
+  "w_preload_status_metric_sp": "Segmente:",
+  "w_preload_status_metric_tc": "Zuginformationen:",
+  "w_preload_status_state_text": "Status: ",
+  "w_preload_status_idle": "Bereit",
+  "w_preload_status_running": "Synchronisiere...",
+  "w_preload_status_missing_configuration": "Offline",
+  "w_preload_status_last_update": "Datenstand:",
+  "w_preload_status_start_preload": "Starten"
 }
