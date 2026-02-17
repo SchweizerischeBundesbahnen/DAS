@@ -1,3 +1,6 @@
+import 'package:app/model/tour_system.dart';
+import 'package:collection/collection.dart';
+import 'package:sfera/component.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserSettings {
@@ -32,8 +35,14 @@ class UserSettings {
   }
 
   bool get showDecisiveGradient => get(.showDecisiveGradient, true);
+
+  List<RailwayUndertaking> get railwayUndertakings =>
+      get(.railwayUndertakings, []).map((it) => RailwayUndertaking.values.byName(it)).toList();
+
+  TourSystem? get tourSystem {
+    final tourSystemName = get<String?>(.tourSystem, null);
+    return TourSystem.values.firstWhereOrNull((it) => it.name == tourSystemName);
+  }
 }
 
-enum UserSettingKeys {
-  showDecisiveGradient,
-}
+enum UserSettingKeys { showDecisiveGradient, railwayUndertakings, tourSystem }

@@ -23,18 +23,20 @@ class SelectRailwayUndertakingModalController {
   SelectRailwayUndertakingModalController({
     required this.localizations,
     required this.updateRailwayUndertaking,
-    required RailwayUndertaking initialRailwayUndertaking,
+    required List<RailwayUndertaking> initialRailwayUndertaking,
+    required this.allowMultiSelect,
   }) {
     _selectedRailwayUndertaking = initialRailwayUndertaking;
     _init();
   }
 
   final AppLocalizations localizations;
-  final void Function(RailwayUndertaking) updateRailwayUndertaking;
+  final bool allowMultiSelect;
+  final void Function(List<RailwayUndertaking>) updateRailwayUndertaking;
 
   late TextEditingController _textController;
   String? _filter;
-  late RailwayUndertaking _selectedRailwayUndertaking;
+  late List<RailwayUndertaking> _selectedRailwayUndertaking;
   late List<(String, RailwayUndertaking)> _localizedToRailwayUndertaking;
   late BehaviorSubject<List<RailwayUndertaking>> _rxAvailableRailwayUndertakings;
 
@@ -47,9 +49,11 @@ class SelectRailwayUndertakingModalController {
   Stream<List<RailwayUndertaking>> get availableRailwayUndertakings =>
       _rxAvailableRailwayUndertakings.stream.distinct();
 
-  set selectedRailwayUndertaking(RailwayUndertaking selectedRailwayUndertaking) {
+  set selectedRailwayUndertaking(List<RailwayUndertaking> selectedRailwayUndertaking) {
     _selectedRailwayUndertaking = selectedRailwayUndertaking;
-    _resetToSelectedRailwayUndertaking();
+    if (!allowMultiSelect) {
+      _resetToSelectedRailwayUndertaking();
+    }
     updateRailwayUndertaking.call(_selectedRailwayUndertaking);
   }
 
@@ -80,7 +84,9 @@ class SelectRailwayUndertakingModalController {
   }
 
   void _initFilter() {
-    _filter = _selectedRailwayUndertaking.localizedText(localizations);
+    if (!allowMultiSelect) {
+      _filter = _selectedRailwayUndertaking.firstOrNull?.localizedText(localizations);
+    }
   }
 
   void _initTextEditingController() {
@@ -89,7 +95,7 @@ class SelectRailwayUndertakingModalController {
   }
 
   void _resetToSelectedRailwayUndertaking() {
-    _filter = _selectedRailwayUndertaking.localizedText(localizations);
+    _filter = _selectedRailwayUndertaking.firstOrNull?.localizedText(localizations);
     _textController.text = _filter!;
   }
 
@@ -110,6 +116,6 @@ class SelectRailwayUndertakingModalController {
 }
 
 extension on List<(String, RailwayUndertaking)> {
-  List<RailwayUndertaking> sortedWithSelectedFirst(RailwayUndertaking selectedRailwayUndertaking) =>
-      sortedBy((pair) => pair.$2 == selectedRailwayUndertaking ? '' : pair.$1).map((e) => e.$2).toList();
+  List<RailwayUndertaking> sortedWithSelectedFirst(List<RailwayUndertaking> selectedRailwayUndertaking) =>
+      sortedBy((pair) => selectedRailwayUndertaking.contains(pair.$2) ? '' : pair.$1).map((e) => e.$2).toList();
 }

@@ -56,8 +56,8 @@ class JourneySelectionViewModel {
     _ifInSelectingOrErrorEmitSelectingWith((model) => model.copyWith(operationalTrainNumber: trainNumber));
   }
 
-  void updateRailwayUndertaking(RailwayUndertaking ru) {
-    _ifInSelectingOrErrorEmitSelectingWith((model) => model.copyWith(railwayUndertaking: ru));
+  void updateRailwayUndertaking(List<RailwayUndertaking> ru) {
+    _ifInSelectingOrErrorEmitSelectingWith((model) => model.copyWith(railwayUndertaking: ru.firstOrNull));
   }
 
   void dismissSelection() {

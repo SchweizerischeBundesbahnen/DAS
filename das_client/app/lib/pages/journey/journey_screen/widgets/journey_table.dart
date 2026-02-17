@@ -42,7 +42,7 @@ import 'package:app/pages/journey/journey_screen/widgets/table/whistle_row.dart'
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
 import 'package:app/pages/journey/view_model/model/journey_settings.dart';
-import 'package:app/pages/settings/user_settings.dart';
+import 'package:app/provider/user_settings.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:app/widgets/table/das_table.dart';

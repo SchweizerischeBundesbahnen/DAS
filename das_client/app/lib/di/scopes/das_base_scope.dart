@@ -2,7 +2,7 @@ import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/brightness/brightness_manager_impl.dart';
 import 'package:app/di/di.dart';
 import 'package:app/pages/login/login_view_model.dart';
-import 'package:app/pages/settings/user_settings.dart';
+import 'package:app/provider/user_settings.dart';
 import 'package:app/sound/das_sounds.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:app_links_x/component.dart';

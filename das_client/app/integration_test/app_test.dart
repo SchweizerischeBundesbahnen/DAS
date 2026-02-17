@@ -33,6 +33,7 @@ import 'test/journey_table_track_equipment_test.dart' as journey_table_track_equ
 import 'test/manual_advancement_test.dart' as manual_advancement_tests;
 import 'test/navigation_test.dart' as navigation_tests;
 import 'test/preload_test.dart' as preload_test;
+import 'test/profile_test.dart' as profile_test;
 import 'test/reduced_journey_table_test.dart' as reduced_journey_table_tests;
 import 'test/service_point_modal_test.dart' as service_point_modal_test;
 import 'test/settings_test.dart' as settings_test;
@@ -79,6 +80,7 @@ void main() {
   settings_test.main();
   train_search_tests.main();
   warnapp_tests.main();
+  profile_test.main();
   preload_test.main();
 }
 
