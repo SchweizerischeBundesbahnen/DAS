@@ -23,7 +23,7 @@ import 'package:sfera/src/data/dto/xml_new_line_speed_dto.dart';
 import 'package:sfera/src/data/dto/xml_op_foot_notes_dto.dart';
 import 'package:sfera/src/data/dto/xml_station_property_dto.dart';
 import 'package:sfera/src/data/dto/xml_station_speed_dto.dart';
-import 'package:sfera/src/data/dto/xml_stop_2_pass_or_pass_2_stop_dto.dart';
+import 'package:sfera/src/data/dto/xml_stop_to_pass_or_pass_to_stop_dto.dart';
 import 'package:sfera/src/data/dto/xml_track_foot_notes_dto.dart';
 import 'package:sfera/src/data/dto/xml_train_run_rerouting_dto.dart';
 import 'package:xml/xml.dart';
@@ -84,8 +84,8 @@ class NetworkSpecificParameterDto extends SferaXmlElementDto {
       return OperatingDayNspDto(attributes: attributes, children: children, value: value);
     } else if (attributeName == DisturbanceMsgNspDto.elementName) {
       return DisturbanceMsgNspDto(attributes: attributes, children: children, value: value);
-    } else if (attributeName == XmlStop2PassOrPass2StopDto.elementName) {
-      return XmlStop2PassOrPass2StopDto(attributes: attributes, children: children, value: value);
+    } else if (attributeName == XmlStopToPassOrPassToStopDto.elementName) {
+      return XmlStopToPassOrPassToStopDto(attributes: attributes, children: children, value: value);
     } else if (attributeName == XmlTrainRunReroutingDto.elementName) {
       return XmlTrainRunReroutingDto(attributes: attributes, children: children, value: value);
     } else if (attributeName == DepartureDispatchNotificationTypeWrapperDto.elementName &&

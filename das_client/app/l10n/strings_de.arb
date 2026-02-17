@@ -178,15 +178,15 @@
       "servicePointName": {}
     }
   },
-  "w_short_term_change_headerbox_stop_2_pass": "Ausserordentliche Durchfahrt in {servicePointName}",
-  "@w_short_term_change_headerbox_stop_2_pass": {
+  "w_short_term_change_headerbox_stop_to_pass": "Ausserordentliche Durchfahrt in {servicePointName}",
+  "@w_short_term_change_headerbox_stop_to_pass": {
     "type": "text",
     "placeholders": {
       "servicePointName": {}
     }
   },
-  "w_short_term_change_headerbox_pass_2_stop": "Ausserordentlicher Halt in {servicePointName}",
-  "@w_short_term_change_headerbox_pass_2_stop": {
+  "w_short_term_change_headerbox_pass_to_stop": "Ausserordentlicher Halt in {servicePointName}",
+  "@w_short_term_change_headerbox_pass_to_stop": {
     "type": "text",
     "placeholders": {
       "servicePointName": {}

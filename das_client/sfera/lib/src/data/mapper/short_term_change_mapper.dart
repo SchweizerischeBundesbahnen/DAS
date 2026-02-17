@@ -2,7 +2,7 @@ import 'package:logging/logging.dart';
 import 'package:sfera/src/data/dto/end_destination_change_nsp_dto.dart';
 import 'package:sfera/src/data/dto/enums/stop_pass_change_type_dto.dart';
 import 'package:sfera/src/data/dto/general_jp_information_dto.dart';
-import 'package:sfera/src/data/dto/stop_2_pass_or_pass_2_stop_nsp_dto.dart';
+import 'package:sfera/src/data/dto/stop_to_pass_or_pass_to_stop_nsp_dto.dart';
 import 'package:sfera/src/data/dto/train_run_rerouting_nsp_dto.dart';
 import 'package:sfera/src/model/journey/service_point.dart';
 import 'package:sfera/src/model/journey/short_term_change.dart';
@@ -27,16 +27,17 @@ class ShortTermChangeMapper {
       result.add(EndDestinationChange(startOrder: startData.order, endOrder: startData.order, startData: startData));
     }
 
-    for (final stop2PassChange in generalJpInformation?.stop2PassOrPass2StopNsps ?? <Stop2PassOrPass2StopNspDto>[]) {
-      for (final change in stop2PassChange.xmlStop2PassOrPass2Stop.element.changes) {
+    for (final stopToPassChange
+        in generalJpInformation?.stopToPassOrPassToStopNsps ?? <StopToPassOrPassToStopNspDto>[]) {
+      for (final change in stopToPassChange.xmlStopToPassOrPassToStop.element.changes) {
         final startData = locationCodeToServicePoint[change.modifiedOPLocationCode];
         if (startData == null) {
           _log.warning('Skipping $change - No service point found!');
           continue;
         }
-        final shortTermChange = change.changeType == StopPassChangeTypeDto.pass2Stop
-            ? Pass2StopChange(startOrder: startData.order, endOrder: startData.order, startData: startData)
-            : Stop2PassChange(startOrder: startData.order, endOrder: startData.order, startData: startData);
+        final shortTermChange = change.changeType == StopPassChangeTypeDto.passToStop
+            ? PassToStopChange(startOrder: startData.order, endOrder: startData.order, startData: startData)
+            : StopToPassChange(startOrder: startData.order, endOrder: startData.order, startData: startData);
 
         result.add(shortTermChange);
       }

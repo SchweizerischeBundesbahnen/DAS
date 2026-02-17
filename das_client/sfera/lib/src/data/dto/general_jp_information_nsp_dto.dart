@@ -1,7 +1,7 @@
 import 'package:sfera/src/data/dto/end_destination_change_nsp_dto.dart';
 import 'package:sfera/src/data/dto/nsp_dto.dart';
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
-import 'package:sfera/src/data/dto/stop_2_pass_or_pass_2_stop_nsp_dto.dart';
+import 'package:sfera/src/data/dto/stop_to_pass_or_pass_to_stop_nsp_dto.dart';
 import 'package:sfera/src/data/dto/tms_data_dto.dart';
 import 'package:sfera/src/data/dto/train_run_rerouting_nsp_dto.dart';
 
@@ -18,8 +18,8 @@ class GeneralJpInformationNspDto extends NspDto {
     final groupName = children?.where((it) => it.type == NspDto.groupNameElement).firstOrNull;
     if (groupName?.value == TmsDataNspDto.groupNameValue) {
       return TmsDataNspDto(attributes: attributes, children: children, value: value);
-    } else if (groupName?.value == Stop2PassOrPass2StopNspDto.groupNameValue) {
-      return Stop2PassOrPass2StopNspDto(attributes: attributes, children: children, value: value);
+    } else if (groupName?.value == StopToPassOrPassToStopNspDto.groupNameValue) {
+      return StopToPassOrPassToStopNspDto(attributes: attributes, children: children, value: value);
     } else if (groupName?.value == TrainRunReroutingNspDto.groupNameValue) {
       return TrainRunReroutingNspDto(attributes: attributes, children: children, value: value);
     } else if (groupName?.value == EndDestinationChangeNspDto.groupNameValue) {

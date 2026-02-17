@@ -33,12 +33,12 @@ sealed class ShortTermChange extends Segment {
   }
 }
 
-class Stop2PassChange extends ShortTermChange {
-  const Stop2PassChange({required super.startOrder, required super.endOrder, required super.startData});
+class StopToPassChange extends ShortTermChange {
+  const StopToPassChange({required super.startOrder, required super.endOrder, required super.startData});
 }
 
-class Pass2StopChange extends ShortTermChange {
-  const Pass2StopChange({required super.startOrder, required super.endOrder, required super.startData});
+class PassToStopChange extends ShortTermChange {
+  const PassToStopChange({required super.startOrder, required super.endOrder, required super.startData});
 }
 
 class TrainRunReroutingChange extends ShortTermChange {

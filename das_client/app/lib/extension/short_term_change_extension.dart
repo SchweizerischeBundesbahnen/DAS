@@ -11,8 +11,8 @@ extension ShortTermChangeX on ShortTermChange {
   int compareByPriority(ShortTermChange other) {
     int getPriority(ShortTermChange change) {
       return switch (change) {
-        Pass2StopChange() => 0,
-        Stop2PassChange() => 1,
+        PassToStopChange() => 0,
+        StopToPassChange() => 1,
         TrainRunReroutingChange() => 2,
         EndDestinationChange() => 3,
       };

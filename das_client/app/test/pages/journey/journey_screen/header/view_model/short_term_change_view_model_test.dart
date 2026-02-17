@@ -96,7 +96,7 @@ void main() {
         Journey(
           metadata: Metadata(
             journeyStart: _signalA,
-            shortTermChanges: [Stop2PassChange(startOrder: 0, endOrder: 0, startData: _stopA)],
+            shortTermChanges: [StopToPassChange(startOrder: 0, endOrder: 0, startData: _stopA)],
           ),
           data: [_signalA, _stopA, _stopB, _pointC, _stopD],
         ),
@@ -105,7 +105,7 @@ void main() {
     });
 
     final expectedChange = ShortTermChangeModel.singleShortTermChange(
-      shortTermChangeType: .stop2Pass,
+      shortTermChangeType: .stopToPass,
       servicePointName: _stopA.name,
     );
     expect(testee.modelValue, equals(expectedChange));
@@ -120,8 +120,8 @@ void main() {
           metadata: Metadata(
             journeyStart: _signalA,
             shortTermChanges: [
-              Stop2PassChange(startOrder: _stopA.order, endOrder: _stopA.order, startData: _stopA),
-              Pass2StopChange(startOrder: _stopD.order, endOrder: _stopD.order, startData: _stopD),
+              StopToPassChange(startOrder: _stopA.order, endOrder: _stopA.order, startData: _stopA),
+              PassToStopChange(startOrder: _stopD.order, endOrder: _stopD.order, startData: _stopD),
             ],
           ),
           data: [_signalA, _stopA, _stopB, _pointC, _stopD],
@@ -143,7 +143,7 @@ void main() {
         metadata: Metadata(
           journeyStart: _signalA,
           shortTermChanges: [
-            Stop2PassChange(startOrder: _stopA.order, endOrder: _stopA.order, startData: _stopA),
+            StopToPassChange(startOrder: _stopA.order, endOrder: _stopA.order, startData: _stopA),
           ],
         ),
         data: [_signalA, _stopA, _stopB, _pointC, _stopD],
@@ -156,7 +156,7 @@ void main() {
     });
 
     final expectedMiddleChange = ShortTermChangeModel.singleShortTermChange(
-      shortTermChangeType: .stop2Pass,
+      shortTermChangeType: .stopToPass,
       servicePointName: _stopA.name,
     );
     expect(testee.modelValue, equals(NoShortTermChanges()));
@@ -171,8 +171,8 @@ void main() {
           metadata: Metadata(
             journeyStart: _signalA,
             shortTermChanges: [
-              Stop2PassChange(startOrder: _stopA.order, endOrder: _stopA.order, startData: _stopA),
-              Pass2StopChange(startOrder: _stopD.order, endOrder: _stopD.order, startData: _stopD),
+              StopToPassChange(startOrder: _stopA.order, endOrder: _stopA.order, startData: _stopA),
+              PassToStopChange(startOrder: _stopD.order, endOrder: _stopD.order, startData: _stopD),
             ],
           ),
           data: [_signalA, _stopA, _stopB, _pointC, _stopD],
@@ -186,7 +186,7 @@ void main() {
       testee.modelValue,
       equals(
         ShortTermChangeModel.singleShortTermChange(
-          shortTermChangeType: .pass2Stop,
+          shortTermChangeType: .passToStop,
           servicePointName: _stopD.name,
         ),
       ),
@@ -202,8 +202,8 @@ void main() {
           metadata: Metadata(
             journeyStart: _signalA,
             shortTermChanges: [
-              Stop2PassChange(startOrder: _stopA.order, endOrder: _stopA.order, startData: _stopA),
-              Pass2StopChange(
+              StopToPassChange(startOrder: _stopA.order, endOrder: _stopA.order, startData: _stopA),
+              PassToStopChange(
                 startOrder: _pointC.order,
                 endOrder: _pointC.order,
                 startData: _pointC,
@@ -218,7 +218,7 @@ void main() {
     });
 
     final expectChange = ShortTermChangeModel.singleShortTermChange(
-      shortTermChangeType: .stop2Pass,
+      shortTermChangeType: .stopToPass,
       servicePointName: _stopA.name,
     );
     expect(testee.modelValue, equals(expectChange));
@@ -233,8 +233,8 @@ void main() {
           metadata: Metadata(
             journeyStart: _signalA,
             shortTermChanges: [
-              Pass2StopChange(startOrder: _stopB.order, endOrder: _stopB.order, startData: _stopB),
-              Stop2PassChange(startOrder: _pointC.order, endOrder: _pointC.order, startData: _pointC),
+              PassToStopChange(startOrder: _stopB.order, endOrder: _stopB.order, startData: _stopB),
+              StopToPassChange(startOrder: _pointC.order, endOrder: _pointC.order, startData: _pointC),
             ],
           ),
           data: [_signalA, _stopA, _stopB, _pointC, _stopD],
@@ -245,7 +245,7 @@ void main() {
     });
 
     final expectedChange = ShortTermChangeModel.singleShortTermChange(
-      shortTermChangeType: .pass2Stop,
+      shortTermChangeType: .passToStop,
       servicePointName: _stopB.name,
     );
     expect(testee.modelValue, equals(expectedChange));
@@ -261,7 +261,7 @@ void main() {
             journeyStart: _signalA,
             shortTermChanges: [
               EndDestinationChange(startOrder: _stopA.order, endOrder: _stopA.order, startData: _stopA),
-              Pass2StopChange(startOrder: _stopA.order, endOrder: _stopA.order, startData: _stopA),
+              PassToStopChange(startOrder: _stopA.order, endOrder: _stopA.order, startData: _stopA),
             ],
           ),
           data: [_signalA, _stopA, _stopB, _pointC, _stopD],
@@ -272,7 +272,7 @@ void main() {
     });
 
     final expectedChange = ShortTermChangeModel.singleShortTermChange(
-      shortTermChangeType: .pass2Stop,
+      shortTermChangeType: .passToStop,
       servicePointName: _stopA.name,
     );
     expect(testee.modelValue, equals(expectedChange));
@@ -286,7 +286,7 @@ void main() {
         Journey(
           metadata: Metadata(
             journeyStart: _signalA,
-            shortTermChanges: [Stop2PassChange(startOrder: _stopD.order, endOrder: _stopD.order, startData: _stopD)],
+            shortTermChanges: [StopToPassChange(startOrder: _stopD.order, endOrder: _stopD.order, startData: _stopD)],
           ),
           data: [_signalA, _stopA, _stopB, _pointC, _stopD],
         ),
@@ -296,7 +296,7 @@ void main() {
     });
 
     final expectedChange = SingleShortTermChange(
-      shortTermChangeType: .stop2Pass,
+      shortTermChangeType: .stopToPass,
       servicePointName: _stopD.name,
     );
     expect(testee.modelValue, equals(expectedChange));
@@ -319,7 +319,9 @@ void main() {
         Journey(
           metadata: Metadata(
             journeyStart: _signalA,
-            shortTermChanges: [Stop2PassChange(startOrder: _pointC.order, endOrder: _pointC.order, startData: _pointC)],
+            shortTermChanges: [
+              StopToPassChange(startOrder: _pointC.order, endOrder: _pointC.order, startData: _pointC),
+            ],
           ),
           data: [_signalA, _stopA, _stopB, _pointC, _stopD],
         ),
@@ -328,7 +330,7 @@ void main() {
       processStreams(fakeAsync: fakeAsync);
     });
 
-    final expectedChange = SingleShortTermChange(shortTermChangeType: .stop2Pass, servicePointName: _pointC.name);
+    final expectedChange = SingleShortTermChange(shortTermChangeType: .stopToPass, servicePointName: _pointC.name);
     expect(testee.modelValue, equals(expectedChange));
     expect(emitRegister, hasLength(2));
     expect(emitRegister.last, equals(expectedChange));
@@ -340,8 +342,8 @@ void main() {
           metadata: Metadata(
             journeyStart: _signalA,
             shortTermChanges: [
-              Stop2PassChange(startOrder: _pointC.order, endOrder: _pointC.order, startData: _pointC),
-              Stop2PassChange(startOrder: _stopD.order, endOrder: _stopD.order, startData: _stopD),
+              StopToPassChange(startOrder: _pointC.order, endOrder: _pointC.order, startData: _pointC),
+              StopToPassChange(startOrder: _stopD.order, endOrder: _stopD.order, startData: _stopD),
             ],
           ),
           data: [_signalA, _stopA, _stopB, _pointC, _stopD],

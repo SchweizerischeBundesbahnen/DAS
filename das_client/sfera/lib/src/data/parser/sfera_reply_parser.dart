@@ -73,7 +73,7 @@ import 'package:sfera/src/data/dto/speeds_dto.dart';
 import 'package:sfera/src/data/dto/station_properties_dto.dart';
 import 'package:sfera/src/data/dto/station_property_dto.dart';
 import 'package:sfera/src/data/dto/station_speed_dto.dart';
-import 'package:sfera/src/data/dto/stop_2_pass_or_pass_2_stop_dto.dart';
+import 'package:sfera/src/data/dto/stop_to_pass_or_pass_to_stop_dto.dart';
 import 'package:sfera/src/data/dto/stop_type_dto.dart';
 import 'package:sfera/src/data/dto/stopping_point_departure_details_dto.dart';
 import 'package:sfera/src/data/dto/stopping_point_information_dto.dart';
@@ -348,8 +348,8 @@ class SferaReplyParser {
         return AdditionalInfoDto(type: type, attributes: attributes, children: children, value: value);
       case SignalNspDto.elementType:
         return SignalNspDto(type: type, attributes: attributes, children: children, value: value);
-      case Stop2PassOrPass2StopDto.elementType:
-        return Stop2PassOrPass2StopDto(type: type, attributes: attributes, children: children, value: value);
+      case StopToPassOrPassToStopDto.elementType:
+        return StopToPassOrPassToStopDto(type: type, attributes: attributes, children: children, value: value);
       case TrainRunReroutingDto.elementType:
         return TrainRunReroutingDto(type: type, attributes: attributes, children: children, value: value);
       default:

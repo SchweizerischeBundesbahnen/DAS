@@ -223,8 +223,8 @@ class ShortTermChangeViewModel extends JourneyAwareViewModel {
 
 extension on ShortTermChange {
   ShortTermChangeType get toChangeType => switch (this) {
-    Stop2PassChange() => .stop2Pass,
-    Pass2StopChange() => .pass2Stop,
+    StopToPassChange() => .stopToPass,
+    PassToStopChange() => .passToStop,
     TrainRunReroutingChange() => .trainRunRerouting,
     EndDestinationChange() => .endDestination,
   };

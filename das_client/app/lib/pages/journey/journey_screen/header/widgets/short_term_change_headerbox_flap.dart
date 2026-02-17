@@ -85,10 +85,10 @@ extension _ShortTermChangeModelX on ShortTermChangeModel {
             servicePointName ?? '',
           ),
           ShortTermChangeType.trainRunRerouting => context.l10n.w_short_term_change_headerbox_flap_train_run_rerouting,
-          ShortTermChangeType.stop2Pass => context.l10n.w_short_term_change_headerbox_stop_2_pass(
+          ShortTermChangeType.stopToPass => context.l10n.w_short_term_change_headerbox_stop_to_pass(
             servicePointName ?? '',
           ),
-          ShortTermChangeType.pass2Stop => context.l10n.w_short_term_change_headerbox_pass_2_stop(
+          ShortTermChangeType.passToStop => context.l10n.w_short_term_change_headerbox_pass_to_stop(
             servicePointName ?? '',
           ),
         },

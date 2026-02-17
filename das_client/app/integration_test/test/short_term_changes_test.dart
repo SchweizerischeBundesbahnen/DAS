@@ -94,7 +94,7 @@ void main() {
     // flap is hidden after a while due to timed hide®
     await waitUntilNotExists(tester, multipleShortTermChanges, maxWaitSeconds: 5);
 
-    // has flap for pass2Stop change in station 4
+    // has flap for passToStop change in station 4
     await waitUntilExists(tester, find.descendant(of: header, matching: find.text('Station 3')));
     final singleShortTermChange = find.descendant(
       of: animatedHeaderbox,

@@ -1,8 +1,8 @@
 enum ShortTermChangeType {
   endDestination,
   trainRunRerouting,
-  stop2Pass,
-  pass2Stop,
+  stopToPass,
+  passToStop,
 }
 
 sealed class ShortTermChangeModel {
