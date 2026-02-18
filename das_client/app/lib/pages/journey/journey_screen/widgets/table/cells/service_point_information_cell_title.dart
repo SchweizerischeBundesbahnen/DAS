@@ -25,12 +25,7 @@ class ServicePointInformationCellTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DetailModalViewModel? detailModalVM;
-    try {
-      detailModalVM = context.read<DetailModalViewModel>();
-    } on ProviderNotFoundException {
-      // detailModalVM is not provided in [ReducedJourneyTable] and is always false
-    }
+    final DetailModalViewModel? detailModalVM = context.read<DetailModalViewModel?>();
 
     return StreamBuilder<bool>(
       stream: detailModalVM?.isModalOpen ?? Stream.value(false),
