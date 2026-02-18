@@ -214,10 +214,10 @@ extension BaseDataExtension on Iterable<BaseData> {
   Iterable<BaseData> addTrainDriverTurnoverRows(TrainIdentification? trainIdentification) {
     if (trainIdentification == null) return this;
 
-    if (trainIdentification.tafTapLocationReferenceStart == null &&
-        trainIdentification.tafTapLocationReferenceEnd == null) {
-      return this;
-    }
+    final startLocation = trainIdentification.tafTapLocationReferenceStart;
+    final endLocation = trainIdentification.tafTapLocationReferenceEnd;
+
+    if (startLocation == null && endLocation == null) return this;
 
     final servicePoints = whereType<ServicePoint>();
     final firstServicePoint = servicePoints.firstOrNull;
@@ -229,11 +229,9 @@ extension BaseDataExtension on Iterable<BaseData> {
       if (data == firstServicePoint || data == lastServicePoint) continue;
 
       if (data is ServicePoint) {
-        if (trainIdentification.tafTapLocationReferenceStart != null &&
-            trainIdentification.tafTapLocationReferenceStart == data.locationCode) {
+        if (startLocation != null && startLocation == data.locationCode) {
           resultList.add(TrainDriverTurnover(order: data.order, isStart: true));
-        } else if (trainIdentification.tafTapLocationReferenceEnd != null &&
-            trainIdentification.tafTapLocationReferenceEnd == data.locationCode) {
+        } else if (endLocation != null && endLocation == data.locationCode) {
           resultList.add(TrainDriverTurnover(order: data.order, isStart: false));
         }
       }
