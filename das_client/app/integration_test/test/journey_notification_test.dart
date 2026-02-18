@@ -1,5 +1,5 @@
-import 'package:app/pages/journey/journey_screen/widgets/notification/departure_dispatch_notification.dart';
-import 'package:app/pages/journey/journey_screen/widgets/notification/disturbance_notification.dart';
+import 'package:app/pages/journey/journey_screen/notification/widgets/departure_dispatch_notification.dart';
+import 'package:app/pages/journey/journey_screen/notification/widgets/disturbance_notification.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../app_test.dart';

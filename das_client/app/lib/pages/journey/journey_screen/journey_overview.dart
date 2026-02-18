@@ -9,6 +9,7 @@ import 'package:app/pages/journey/journey_screen/header/view_model/chronograph_v
 import 'package:app/pages/journey/journey_screen/header/view_model/connectivity_view_model.dart';
 import 'package:app/pages/journey/journey_screen/header/view_model/departure_authorization_view_model.dart';
 import 'package:app/pages/journey/journey_screen/header/view_model/short_term_change_view_model.dart';
+import 'package:app/pages/journey/journey_screen/notification/notification_space.dart';
 import 'package:app/pages/journey/journey_screen/view_model/advised_speed_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/arrival_departure_time_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/calculated_speed_view_model.dart';
@@ -22,20 +23,9 @@ import 'package:app/pages/journey/journey_screen/view_model/replacement_series_v
 import 'package:app/pages/journey/journey_screen/view_model/ux_testing_view_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/journey_navigation_buttons.dart';
 import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
-import 'package:app/pages/journey/journey_screen/widgets/notification/advised_speed_notification.dart';
-import 'package:app/pages/journey/journey_screen/widgets/notification/break_load_slip_notification.dart';
-import 'package:app/pages/journey/journey_screen/widgets/notification/departure_dispatch_notification.dart';
-import 'package:app/pages/journey/journey_screen/widgets/notification/disturbance_notification.dart';
-import 'package:app/pages/journey/journey_screen/widgets/notification/koa_notification.dart';
-import 'package:app/pages/journey/journey_screen/widgets/notification/maneuver_notification.dart';
-import 'package:app/pages/journey/journey_screen/widgets/notification/replacement_series_notification.dart';
-import 'package:app/pages/journey/journey_screen/widgets/warn_function_modal_sheet.dart';
 import 'package:app/pages/journey/view_model/disturbance_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
-import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
-import 'package:app/sound/das_sounds.dart';
-import 'package:app/widgets/stream_listener.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -57,7 +47,6 @@ class JourneyOverview extends StatelessWidget {
             children: [
               Expanded(child: _content(context)),
               DetailModalSheet(),
-              _uxTestingEventListener(context),
             ],
           ),
         );
@@ -69,14 +58,7 @@ class JourneyOverview extends StatelessWidget {
     return Column(
       children: [
         Header(),
-        AdvisedSpeedNotification(),
-        ManeuverNotification(),
-        KoaNotification(),
-        ReplacementSeriesNotification(),
-        DepartureDispatchNotification(),
-        _warnAppNotification(context),
-        BreakLoadSlipNotification(),
-        DisturbanceNotification(),
+        NotificationSpace(),
         Expanded(
           child: Stack(
             children: [
@@ -87,36 +69,6 @@ class JourneyOverview extends StatelessWidget {
         ),
       ],
     );
-  }
-
-  Widget _warnAppNotification(BuildContext context) {
-    return StreamListener(
-      stream: context.read<WarnAppViewModel>().warnappEvents,
-      onData: (data) {
-        _triggerWarnappNotification(context);
-      },
-    );
-  }
-
-  Widget _uxTestingEventListener(BuildContext context) {
-    return StreamListener(
-      stream: context.read<UxTestingViewModel>().uxTestingEvents,
-      onData: (data) {
-        if (data.isWarn) {
-          _triggerWarnappNotification(context);
-        }
-      },
-    );
-  }
-
-  void _triggerWarnappNotification(BuildContext context) {
-    DI.get<DASSounds>().warnApp.play();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      showWarnFunctionModalSheet(
-        context,
-        onManeuverButtonPressed: () => context.read<WarnAppViewModel>().setManeuverMode(true),
-      );
-    });
   }
 }
 

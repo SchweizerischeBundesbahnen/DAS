@@ -10,8 +10,8 @@ import 'package:app/pages/journey/journey_screen/header/widgets/extended_menu.da
 import 'package:app/pages/journey/journey_screen/header/widgets/radio_channel.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/radio_contact.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/sim_identifier.dart';
+import 'package:app/pages/journey/journey_screen/notification/widgets/maneuver_notification.dart';
 import 'package:app/pages/journey/journey_screen/widgets/communication_network_icon.dart';
-import 'package:app/pages/journey/journey_screen/widgets/notification/maneuver_notification.dart';
 import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:app/theme/theme_util.dart';
