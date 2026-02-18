@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.36.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.35.0...das_client-v0.36.0) (2026-02-18)
+
+
+### Features
+
+* add ru and toursystem selection to user profile ([#427](https://github.com/SchweizerischeBundesbahnen/DAS/issues/427)) ([#1728](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1728)) ([5cd03b7](https://github.com/SchweizerischeBundesbahnen/DAS/commit/5cd03b7668eb9efc2d95f27abc8996989d7caf1c))
+* add short term changes ([#99](https://github.com/SchweizerischeBundesbahnen/DAS/issues/99)) ([#1735](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1735)) ([5c6c09c](https://github.com/SchweizerischeBundesbahnen/DAS/commit/5c6c09ce4727fc5a71914d93a26771f8bef8a535))
+* add Train Driver turnover to journey table ([#296](https://github.com/SchweizerischeBundesbahnen/DAS/issues/296)) ([#1737](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1737)) ([12bc372](https://github.com/SchweizerischeBundesbahnen/DAS/commit/12bc3721811a24dcb540645feb5161e96d77a5bd))
+* added app link handling for train journeys ([#97](https://github.com/SchweizerischeBundesbahnen/DAS/issues/97)) ([#1730](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1730)) ([785d332](https://github.com/SchweizerischeBundesbahnen/DAS/commit/785d332f60eb0728b311c26a55e21d0f70bebbf7))
+* implement preloal from S3 Bucket ([#928](https://github.com/SchweizerischeBundesbahnen/DAS/issues/928)) ([#1723](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1723)) ([dbb9d63](https://github.com/SchweizerischeBundesbahnen/DAS/commit/dbb9d630599eb32c46efe40455b63589e8bcb1a4))
+* visualize changes (update & deletes) of journey table ([#241](https://github.com/SchweizerischeBundesbahnen/DAS/issues/241)) ([#1695](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1695)) ([53b668a](https://github.com/SchweizerischeBundesbahnen/DAS/commit/53b668adbf155406c22658255cbeedc9c4af06d1))
+
+
+### Bug Fixes
+
+* change brakeslip date display ([#1726](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1726)) ([089b86d](https://github.com/SchweizerischeBundesbahnen/DAS/commit/089b86da6619147d0882a7fa0f2f5a685ea34249))
+* chevron jumping when püa changes ([#1696](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1696)) ([6afe724](https://github.com/SchweizerischeBundesbahnen/DAS/commit/6afe7249b70641bceca95474486a7a4d4efb0ed0))
+
 ## [0.35.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.34.0...das_client-v0.35.0) (2026-02-03)
 
 
