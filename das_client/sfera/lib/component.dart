@@ -56,6 +56,7 @@ export 'package:sfera/src/model/journey/personal_change.dart';
 export 'package:sfera/src/model/journey/protection_section.dart';
 export 'package:sfera/src/model/journey/segment.dart';
 export 'package:sfera/src/model/journey/service_point.dart';
+export 'package:sfera/src/model/journey/short_term_change.dart';
 export 'package:sfera/src/model/journey/shunting_movement.dart';
 export 'package:sfera/src/model/journey/signal.dart';
 export 'package:sfera/src/model/journey/signaled_position.dart';

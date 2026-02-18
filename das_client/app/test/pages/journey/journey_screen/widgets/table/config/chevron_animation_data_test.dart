@@ -10,10 +10,10 @@ void main() {
       metadata: Metadata(),
       data: [
         Signal(order: 0, kilometre: []),
-        ServicePoint(name: '', abbreviation: '', order: 100, kilometre: []),
+        ServicePoint(name: '', abbreviation: '', locationCode: '', order: 100, kilometre: []),
         Signal(order: 200, kilometre: []),
-        ServicePoint(name: '', abbreviation: '', order: 300, kilometre: []),
-        ServicePoint(name: '', abbreviation: '', order: 400, kilometre: []),
+        ServicePoint(name: '', abbreviation: '', locationCode: '', order: 300, kilometre: []),
+        ServicePoint(name: '', abbreviation: '', locationCode: '', order: 400, kilometre: []),
       ],
     );
 
@@ -73,10 +73,10 @@ void main() {
       metadata: Metadata(),
       data: [
         Signal(order: 0, kilometre: []),
-        ServicePoint(name: '', abbreviation: '', order: 100, kilometre: []),
+        ServicePoint(name: '', abbreviation: '', locationCode: '', order: 100, kilometre: []),
         Signal(order: 200, kilometre: []),
-        ServicePoint(name: '', abbreviation: '', order: 300, kilometre: []),
-        ServicePoint(name: '', abbreviation: '', order: 400, kilometre: []),
+        ServicePoint(name: '', abbreviation: '', locationCode: '', order: 300, kilometre: []),
+        ServicePoint(name: '', abbreviation: '', locationCode: '', order: 400, kilometre: []),
       ],
     );
 
@@ -284,10 +284,10 @@ void main() {
       metadata: Metadata(),
       data: [
         Signal(order: 0, kilometre: []),
-        ServicePoint(name: '', abbreviation: '', order: 100, kilometre: []),
+        ServicePoint(name: '', abbreviation: '', locationCode: '', order: 100, kilometre: []),
         Signal(order: 200, kilometre: []),
-        ServicePoint(name: '', abbreviation: '', order: 300, kilometre: []),
-        ServicePoint(name: '', abbreviation: '', order: 400, kilometre: []),
+        ServicePoint(name: '', abbreviation: '', locationCode: '', order: 300, kilometre: []),
+        ServicePoint(name: '', abbreviation: '', locationCode: '', order: 400, kilometre: []),
       ],
     );
 
@@ -341,10 +341,10 @@ void main() {
       metadata: Metadata(),
       data: [
         Signal(order: 0, kilometre: []),
-        ServicePoint(name: '', abbreviation: '', order: 100, kilometre: []),
+        ServicePoint(name: '', abbreviation: '', locationCode: '', order: 100, kilometre: []),
         Signal(order: 200, kilometre: []),
-        ServicePoint(name: '', abbreviation: '', order: 300, kilometre: []),
-        ServicePoint(name: '', abbreviation: '', order: 400, kilometre: []),
+        ServicePoint(name: '', abbreviation: '', locationCode: '', order: 300, kilometre: []),
+        ServicePoint(name: '', abbreviation: '', locationCode: '', order: 400, kilometre: []),
       ],
     );
 

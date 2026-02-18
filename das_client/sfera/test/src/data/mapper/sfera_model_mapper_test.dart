@@ -1964,6 +1964,32 @@ void main() {
     expect(lineSpeedKeys.contains(560), isFalse);
     expect(lineSpeedKeys.contains(960), isFalse);
   });
+
+  test('Test correct short term changes parsed', () {
+    final journey = getJourney('T36');
+    expect(journey.valid, true);
+
+    final shortTermChanges = journey.metadata.shortTermChanges.toList(growable: false);
+    final servicePoints = journey.data.whereType<ServicePoint>().toList(growable: false);
+    expect(shortTermChanges, hasLength(5));
+    expect(
+      shortTermChanges[0],
+      equals(EndDestinationChange(startOrder: 1600, endOrder: 1600, startData: servicePoints[11])),
+    );
+    expect(
+      shortTermChanges[1],
+      equals(EndDestinationChange(startOrder: 2000, endOrder: 2000, startData: servicePoints[15])),
+    );
+    expect(shortTermChanges[2], equals(PassToStopChange(startOrder: 700, endOrder: 700, startData: servicePoints[4])));
+    expect(
+      shortTermChanges[3],
+      equals(StopToPassChange(startOrder: 1200, endOrder: 1200, startData: servicePoints[7])),
+    );
+    expect(
+      shortTermChanges[4],
+      equals(TrainRunReroutingChange(startOrder: 1500, endOrder: 1700, startData: servicePoints[10])),
+    );
+  });
 }
 
 void _checkTrainSeriesSpeed<T extends Speed>(

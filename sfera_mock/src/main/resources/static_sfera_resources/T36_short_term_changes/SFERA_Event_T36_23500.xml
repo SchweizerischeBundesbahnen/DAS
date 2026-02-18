@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<G2B_EventPayload xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
+    <RelatedTrainInformation>
+        <OwnTrain>
+            <TrainIdentification>
+                <OTN_ID>
+                    <teltsi_Company>1285</teltsi_Company>
+                    <teltsi_OperationalTrainNumber>T36</teltsi_OperationalTrainNumber>
+                    <teltsi_StartDate>2026-01-01</teltsi_StartDate>
+                </OTN_ID>
+            </TrainIdentification>
+            <TrainLocationInformation>
+                <PositionSpeed SP_ID="T36_1" location="1750">
+                    <SP_Zone>
+                        <IM_ID>1285</IM_ID>
+                    </SP_Zone>
+                </PositionSpeed>
+                <Delay Delay="PT20S"/>
+            </TrainLocationInformation>
+        </OwnTrain>
+    </RelatedTrainInformation>
+</G2B_EventPayload>

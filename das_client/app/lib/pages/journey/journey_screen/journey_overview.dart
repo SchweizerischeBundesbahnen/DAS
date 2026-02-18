@@ -8,6 +8,7 @@ import 'package:app/pages/journey/journey_screen/header/header.dart';
 import 'package:app/pages/journey/journey_screen/header/view_model/chronograph_view_model.dart';
 import 'package:app/pages/journey/journey_screen/header/view_model/connectivity_view_model.dart';
 import 'package:app/pages/journey/journey_screen/header/view_model/departure_authorization_view_model.dart';
+import 'package:app/pages/journey/journey_screen/header/view_model/short_term_change_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/advised_speed_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/arrival_departure_time_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/calculated_speed_view_model.dart';
@@ -230,6 +231,15 @@ class _ProviderScope extends StatelessWidget {
             );
           },
           dispose: (_, vm) => vm.dispose(),
+        ),
+        ProxyProvider2<JourneyTableViewModel, JourneyPositionViewModel, ShortTermChangeViewModel>(
+          update: (_, journeyTableViewModel, journeyPositionViewModel, prev) {
+            if (prev != null) return prev;
+            return ShortTermChangeViewModel(
+              journeyTableViewModel: journeyTableViewModel,
+              journeyPositionViewModel: journeyPositionViewModel,
+            );
+          },
         ),
         ProxyProvider<LineSpeedViewModel, CalculatedSpeedViewModel>(
           update: (_, lineSpeedVM, prev) {

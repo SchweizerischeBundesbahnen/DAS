@@ -49,7 +49,7 @@ import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:app/widgets/table/das_table_column.dart';
-import 'package:app/widgets/table/das_table_row.dart';
+import 'package:app/widgets/table/row/das_table_row_builder.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -437,9 +437,10 @@ class JourneyTable extends StatelessWidget {
         id: ColumnDefinition.localSpeed.index,
         child: Text(context.l10n.p_journey_table_graduated_speed_label),
         width: 100.0,
-        border: BorderDirectional(
-          bottom: BorderSide(color: ThemeUtil.getDASTableBorderColor(context), width: 1.0),
-          end: BorderSide(color: ThemeUtil.getDASTableBorderColor(context), width: 2.0),
+        decoration: DASTableColumnDecoration(
+          border: Border(
+            right: BorderSide(color: ThemeUtil.getDASTableBorderColor(context), width: 2.0),
+          ),
         ),
       ),
       DASTableColumn(
