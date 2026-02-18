@@ -59,10 +59,10 @@ void main() {
     GetIt.I.reset();
   });
 
-  final _signalA = Signal(order: 50, kilometre: []);
-  final _stopA = ServicePoint(name: 'Stop A', abbreviation: 'SA', locationCode: '', order: 100, kilometre: []);
-  final _stopB = ServicePoint(name: 'Stop B', abbreviation: 'SB', locationCode: '', order: 500, kilometre: []);
-  final _pointC = ServicePoint(
+  final signalA = Signal(order: 50, kilometre: []);
+  final stopA = ServicePoint(name: 'Stop A', abbreviation: 'SA', locationCode: '', order: 100, kilometre: []);
+  final stopB = ServicePoint(name: 'Stop B', abbreviation: 'SB', locationCode: '', order: 500, kilometre: []);
+  final pointC = ServicePoint(
     name: 'ServicePoint C',
     abbreviation: 'SC',
     locationCode: '',
@@ -70,7 +70,7 @@ void main() {
     kilometre: [],
     isStop: false,
   );
-  final _stopD = ServicePoint(name: 'ServicePoint D', abbreviation: 'SD', locationCode: '', order: 1500, kilometre: []);
+  final stopD = ServicePoint(name: 'ServicePoint D', abbreviation: 'SD', locationCode: '', order: 1500, kilometre: []);
 
   test('modelValue_whenHasNoJourney_thenIsNoChanges', () {
     expect(testee.modelValue, equals(NoShortTermChanges()));
@@ -80,7 +80,7 @@ void main() {
     testAsync.run((fakeAsync) {
       rxMockJourney.add(
         Journey(
-          metadata: Metadata(journeyStart: _signalA),
+          metadata: Metadata(journeyStart: signalA),
           data: [],
         ),
       );
@@ -95,10 +95,10 @@ void main() {
       rxMockJourney.add(
         Journey(
           metadata: Metadata(
-            journeyStart: _signalA,
-            shortTermChanges: [StopToPassChange(startOrder: 0, endOrder: 0, startData: _stopA)],
+            journeyStart: signalA,
+            shortTermChanges: [StopToPassChange(startOrder: 0, endOrder: 0, startData: stopA)],
           ),
-          data: [_signalA, _stopA, _stopB, _pointC, _stopD],
+          data: [signalA, stopA, stopB, pointC, stopD],
         ),
       );
       processStreams(fakeAsync: fakeAsync);
@@ -106,7 +106,7 @@ void main() {
 
     final expectedChange = ShortTermChangeModel.singleShortTermChange(
       shortTermChangeType: .stopToPass,
-      servicePointName: _stopA.name,
+      servicePointName: stopA.name,
     );
     expect(testee.modelValue, equals(expectedChange));
     expect(emitRegister, hasLength(2));
@@ -118,16 +118,16 @@ void main() {
       rxMockJourney.add(
         Journey(
           metadata: Metadata(
-            journeyStart: _signalA,
+            journeyStart: signalA,
             shortTermChanges: [
-              StopToPassChange(startOrder: _stopA.order, endOrder: _stopA.order, startData: _stopA),
-              PassToStopChange(startOrder: _stopD.order, endOrder: _stopD.order, startData: _stopD),
+              StopToPassChange(startOrder: stopA.order, endOrder: stopA.order, startData: stopA),
+              PassToStopChange(startOrder: stopD.order, endOrder: stopD.order, startData: stopD),
             ],
           ),
-          data: [_signalA, _stopA, _stopB, _pointC, _stopD],
+          data: [signalA, stopA, stopB, pointC, stopD],
         ),
       );
-      rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: _signalA));
+      rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: signalA));
       processStreams(fakeAsync: fakeAsync);
     });
 
@@ -141,23 +141,23 @@ void main() {
     testAsync.run((fakeAsync) {
       final journey = Journey(
         metadata: Metadata(
-          journeyStart: _signalA,
+          journeyStart: signalA,
           shortTermChanges: [
-            StopToPassChange(startOrder: _stopA.order, endOrder: _stopA.order, startData: _stopA),
+            StopToPassChange(startOrder: stopA.order, endOrder: stopA.order, startData: stopA),
           ],
         ),
-        data: [_signalA, _stopA, _stopB, _pointC, _stopD],
+        data: [signalA, stopA, stopB, pointC, stopD],
       );
       rxMockJourney.add(journey);
-      rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: _stopA));
+      rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: stopA));
       processStreams(fakeAsync: fakeAsync);
-      rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: _stopB));
+      rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: stopB));
       processStreams(fakeAsync: fakeAsync);
     });
 
     final expectedMiddleChange = ShortTermChangeModel.singleShortTermChange(
       shortTermChangeType: .stopToPass,
-      servicePointName: _stopA.name,
+      servicePointName: stopA.name,
     );
     expect(testee.modelValue, equals(NoShortTermChanges()));
     expect(emitRegister, hasLength(3));
@@ -169,16 +169,16 @@ void main() {
       rxMockJourney.add(
         Journey(
           metadata: Metadata(
-            journeyStart: _signalA,
+            journeyStart: signalA,
             shortTermChanges: [
-              StopToPassChange(startOrder: _stopA.order, endOrder: _stopA.order, startData: _stopA),
-              PassToStopChange(startOrder: _stopD.order, endOrder: _stopD.order, startData: _stopD),
+              StopToPassChange(startOrder: stopA.order, endOrder: stopA.order, startData: stopA),
+              PassToStopChange(startOrder: stopD.order, endOrder: stopD.order, startData: stopD),
             ],
           ),
-          data: [_signalA, _stopA, _stopB, _pointC, _stopD],
+          data: [signalA, stopA, stopB, pointC, stopD],
         ),
       );
-      rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: _stopB));
+      rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: stopB));
       processStreams(fakeAsync: fakeAsync);
     });
 
@@ -187,7 +187,7 @@ void main() {
       equals(
         ShortTermChangeModel.singleShortTermChange(
           shortTermChangeType: .passToStop,
-          servicePointName: _stopD.name,
+          servicePointName: stopD.name,
         ),
       ),
     );
@@ -200,26 +200,26 @@ void main() {
       rxMockJourney.add(
         Journey(
           metadata: Metadata(
-            journeyStart: _signalA,
+            journeyStart: signalA,
             shortTermChanges: [
-              StopToPassChange(startOrder: _stopA.order, endOrder: _stopA.order, startData: _stopA),
+              StopToPassChange(startOrder: stopA.order, endOrder: stopA.order, startData: stopA),
               PassToStopChange(
-                startOrder: _pointC.order,
-                endOrder: _pointC.order,
-                startData: _pointC,
+                startOrder: pointC.order,
+                endOrder: pointC.order,
+                startData: pointC,
               ),
             ],
           ),
-          data: [_signalA, _stopA, _stopB, _pointC, _stopD],
+          data: [signalA, stopA, stopB, pointC, stopD],
         ),
       );
-      rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: _stopA));
+      rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: stopA));
       processStreams(fakeAsync: fakeAsync);
     });
 
     final expectChange = ShortTermChangeModel.singleShortTermChange(
       shortTermChangeType: .stopToPass,
-      servicePointName: _stopA.name,
+      servicePointName: stopA.name,
     );
     expect(testee.modelValue, equals(expectChange));
     expect(emitRegister, hasLength(3));
@@ -231,22 +231,22 @@ void main() {
       rxMockJourney.add(
         Journey(
           metadata: Metadata(
-            journeyStart: _signalA,
+            journeyStart: signalA,
             shortTermChanges: [
-              PassToStopChange(startOrder: _stopB.order, endOrder: _stopB.order, startData: _stopB),
-              StopToPassChange(startOrder: _pointC.order, endOrder: _pointC.order, startData: _pointC),
+              PassToStopChange(startOrder: stopB.order, endOrder: stopB.order, startData: stopB),
+              StopToPassChange(startOrder: pointC.order, endOrder: pointC.order, startData: pointC),
             ],
           ),
-          data: [_signalA, _stopA, _stopB, _pointC, _stopD],
+          data: [signalA, stopA, stopB, pointC, stopD],
         ),
       );
-      rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: _stopA));
+      rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: stopA));
       processStreams(fakeAsync: fakeAsync);
     });
 
     final expectedChange = ShortTermChangeModel.singleShortTermChange(
       shortTermChangeType: .passToStop,
-      servicePointName: _stopB.name,
+      servicePointName: stopB.name,
     );
     expect(testee.modelValue, equals(expectedChange));
     expect(emitRegister, hasLength(3));
@@ -258,22 +258,22 @@ void main() {
       rxMockJourney.add(
         Journey(
           metadata: Metadata(
-            journeyStart: _signalA,
+            journeyStart: signalA,
             shortTermChanges: [
-              EndDestinationChange(startOrder: _stopA.order, endOrder: _stopA.order, startData: _stopA),
-              PassToStopChange(startOrder: _stopA.order, endOrder: _stopA.order, startData: _stopA),
+              EndDestinationChange(startOrder: stopA.order, endOrder: stopA.order, startData: stopA),
+              PassToStopChange(startOrder: stopA.order, endOrder: stopA.order, startData: stopA),
             ],
           ),
-          data: [_signalA, _stopA, _stopB, _pointC, _stopD],
+          data: [signalA, stopA, stopB, pointC, stopD],
         ),
       );
-      rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: _stopA));
+      rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: stopA));
       processStreams(fakeAsync: fakeAsync);
     });
 
     final expectedChange = ShortTermChangeModel.singleShortTermChange(
       shortTermChangeType: .passToStop,
-      servicePointName: _stopA.name,
+      servicePointName: stopA.name,
     );
     expect(testee.modelValue, equals(expectedChange));
     expect(emitRegister, hasLength(3));
@@ -285,19 +285,19 @@ void main() {
       rxMockJourney.add(
         Journey(
           metadata: Metadata(
-            journeyStart: _signalA,
-            shortTermChanges: [StopToPassChange(startOrder: _stopD.order, endOrder: _stopD.order, startData: _stopD)],
+            journeyStart: signalA,
+            shortTermChanges: [StopToPassChange(startOrder: stopD.order, endOrder: stopD.order, startData: stopD)],
           ),
-          data: [_signalA, _stopA, _stopB, _pointC, _stopD],
+          data: [signalA, stopA, stopB, pointC, stopD],
         ),
       );
-      rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: _stopA));
+      rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: stopA));
       processStreams(fakeAsync: fakeAsync);
     });
 
     final expectedChange = SingleShortTermChange(
       shortTermChangeType: .stopToPass,
-      servicePointName: _stopD.name,
+      servicePointName: stopD.name,
     );
     expect(testee.modelValue, equals(expectedChange));
     expect(emitRegister, hasLength(2));
@@ -318,19 +318,19 @@ void main() {
       rxMockJourney.add(
         Journey(
           metadata: Metadata(
-            journeyStart: _signalA,
+            journeyStart: signalA,
             shortTermChanges: [
-              StopToPassChange(startOrder: _pointC.order, endOrder: _pointC.order, startData: _pointC),
+              StopToPassChange(startOrder: pointC.order, endOrder: pointC.order, startData: pointC),
             ],
           ),
-          data: [_signalA, _stopA, _stopB, _pointC, _stopD],
+          data: [signalA, stopA, stopB, pointC, stopD],
         ),
       );
-      rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: _signalA));
+      rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: signalA));
       processStreams(fakeAsync: fakeAsync);
     });
 
-    final expectedChange = SingleShortTermChange(shortTermChangeType: .stopToPass, servicePointName: _pointC.name);
+    final expectedChange = SingleShortTermChange(shortTermChangeType: .stopToPass, servicePointName: pointC.name);
     expect(testee.modelValue, equals(expectedChange));
     expect(emitRegister, hasLength(2));
     expect(emitRegister.last, equals(expectedChange));
@@ -340,13 +340,13 @@ void main() {
       rxMockJourney.add(
         Journey(
           metadata: Metadata(
-            journeyStart: _signalA,
+            journeyStart: signalA,
             shortTermChanges: [
-              StopToPassChange(startOrder: _pointC.order, endOrder: _pointC.order, startData: _pointC),
-              StopToPassChange(startOrder: _stopD.order, endOrder: _stopD.order, startData: _stopD),
+              StopToPassChange(startOrder: pointC.order, endOrder: pointC.order, startData: pointC),
+              StopToPassChange(startOrder: stopD.order, endOrder: stopD.order, startData: stopD),
             ],
           ),
-          data: [_signalA, _stopA, _stopB, _pointC, _stopD],
+          data: [signalA, stopA, stopB, pointC, stopD],
         ),
       );
       processStreams(fakeAsync: fakeAsync);

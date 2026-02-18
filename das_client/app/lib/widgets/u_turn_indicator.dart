@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class UTurnIndicator extends DotIndicator {
-  @override
   static const Key indicatorKey = Key('uTurnShortTermChangeIndicator');
 
   const UTurnIndicator({

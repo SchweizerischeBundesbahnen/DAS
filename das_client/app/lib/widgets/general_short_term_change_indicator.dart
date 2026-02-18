@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class GeneralShortTermChangeIndicator extends DotIndicator {
-  @override
   static const Key indicatorKey = Key('generalShortTermChangeIndicatorKey');
 
   const GeneralShortTermChangeIndicator({
