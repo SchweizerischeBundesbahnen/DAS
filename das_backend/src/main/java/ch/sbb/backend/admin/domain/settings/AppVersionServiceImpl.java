@@ -76,6 +76,18 @@ public class AppVersionServiceImpl implements AppVersionService {
     }
 
     @Override
+    public AppVersion create(AppVersionUpdateRequest createRequest) {
+        AppVersionEntity entity = new AppVersionEntity();
+        entity.setVersion(createRequest.version());
+        entity.setMinimalVersion(createRequest.minimalVersion());
+        entity.setExpiryDate(createRequest.expiryDate());
+        entity.setLastModifiedAt(java.time.LocalDateTime.now());
+        entity.setLastModifiedBy(createRequest.lastModifiedBy());
+        repository.save(entity);
+        return new AppVersion(entity.getId(), entity.getVersion(), entity.getMinimalVersion(), entity.getExpiryDate());
+    }
+
+    @Override
     public AppVersion update(Integer id, AppVersionUpdateRequest updateRequest) {
         AppVersionEntity entity = repository.findById(id).orElse(null);
         if (entity == null) {
@@ -84,6 +96,8 @@ public class AppVersionServiceImpl implements AppVersionService {
         entity.setVersion(updateRequest.version());
         entity.setMinimalVersion(updateRequest.minimalVersion());
         entity.setExpiryDate(updateRequest.expiryDate());
+        entity.setLastModifiedAt(java.time.LocalDateTime.now());
+        entity.setLastModifiedBy(updateRequest.lastModifiedBy());
         repository.save(entity);
         return new AppVersion(entity.getId(), entity.getVersion(), entity.getMinimalVersion(), entity.getExpiryDate());
     }
