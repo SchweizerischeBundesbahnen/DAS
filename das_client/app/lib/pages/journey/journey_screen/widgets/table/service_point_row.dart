@@ -59,7 +59,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
   }) : super(
          rowColor: rowColor ?? _resolveRowColor(context, journeyPosition, data),
          stickyLevel: .first,
-         height: calculateHeight(data, config.settings.resolvedBreakSeries(metadata)),
+         height: calculateHeight(data, config.settings.currentBreakSeries),
          onStartToEndDragReached: journeyPosition.currentPosition != data
              ? () {
                  context.read<JourneyPositionViewModel>().setManualPosition(data);
@@ -196,7 +196,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
 
   @override
   DASTableCell localSpeedCell(BuildContext context) {
-    final currentBreakSeries = config.settings.resolvedBreakSeries(metadata);
+    final currentBreakSeries = config.settings.currentBreakSeries;
     final relevantGraduatedSpeedInfo = data.relevantGraduatedSpeedInfo(currentBreakSeries);
 
     if (data.localSpeeds == null && relevantGraduatedSpeedInfo.isEmpty) return DASTableCell.empty();
@@ -323,7 +323,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
   }
 
   List<Widget> _stationProperties(BuildContext context) {
-    final currentBreakSeries = config.settings.resolvedBreakSeries(metadata);
+    final currentBreakSeries = config.settings.currentBreakSeries;
     final properties = data.propertiesFor(currentBreakSeries);
     if (properties.isEmpty) return [];
 

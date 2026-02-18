@@ -77,7 +77,7 @@ class JourneyTable extends StatelessWidget {
       ]),
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.data?[0] == null) {
-          return JourneyLoadingTable(columns: _columns(context, null, null, null));
+          return JourneyLoadingTable(columns: _columns(context, null, null));
         }
 
         final journey = snapshot.data![0] as Journey;
@@ -133,7 +133,7 @@ class JourneyTable extends StatelessWidget {
                 child: DASTable(
                   key: journeyTableScrollController.tableKey,
                   scrollController: journeyTableScrollController.scrollController,
-                  columns: _columns(context, journey.metadata, settings, openModalType),
+                  columns: _columns(context, settings, openModalType),
                   rows: tableRows.map((it) => it.build(context)).toList(),
                   bottomMarginAdjustment: marginAdjustment,
                 ),
@@ -152,7 +152,7 @@ class JourneyTable extends StatelessWidget {
     Map<int, CollapsedState> collapsedRows,
     JourneyPositionModel journeyPosition,
   ) {
-    final currentBreakSeries = settings.resolvedBreakSeries(journey.metadata);
+    final currentBreakSeries = settings.currentBreakSeries;
 
     final rows = journey.data
         .whereNot((it) => _isCurvePointWithoutSpeed(it, journey, settings))
@@ -359,11 +359,10 @@ class JourneyTable extends StatelessWidget {
 
   List<DASTableColumn> _columns(
     BuildContext context,
-    Metadata? metadata,
     JourneySettings? settings,
     DetailModalType? openModalType,
   ) {
-    final currentBreakSeries = settings?.resolvedBreakSeries(metadata);
+    final currentBreakSeries = settings?.currentBreakSeries;
 
     final journeyViewModel = context.read<JourneyTableViewModel>();
     final timeViewModel = context.read<ArrivalDepartureTimeViewModel>();
@@ -437,7 +436,7 @@ class JourneyTable extends StatelessWidget {
         child: _brakedWeightSpeedHeader(context, currentBreakSeries),
         padding: EdgeInsets.zero,
         width: 62.0,
-        onTap: () => _onBreakSeriesTap(context, metadata, settings),
+        onTap: () => _onBreakSeriesTap(context, settings),
         headerKey: breakingSeriesHeaderKey,
       ),
       DASTableColumn(
@@ -522,7 +521,7 @@ class JourneyTable extends StatelessWidget {
     context.read<JourneySettingsViewModel>().updateExpandedGroups(newList);
   }
 
-  Future<void> _onBreakSeriesTap(BuildContext context, Metadata? metadata, JourneySettings? settings) async {
+  Future<void> _onBreakSeriesTap(BuildContext context, JourneySettings? settings) async {
     final viewModel = context.read<JourneySettingsViewModel>();
 
     final selectedBreakSeries = await showSBBModalSheet<BreakSeries>(
@@ -530,8 +529,8 @@ class JourneyTable extends StatelessWidget {
       title: context.l10n.p_journey_break_series,
       constraints: BoxConstraints(),
       child: BreakSeriesSelection(
-        availableBreakSeries: metadata?.availableBreakSeries ?? {},
-        selectedBreakSeries: settings?.resolvedBreakSeries(metadata),
+        availableBreakSeries: settings?.initialAvailableBreakSeries ?? {},
+        selectedBreakSeries: settings?.currentBreakSeries,
       ),
     );
 
@@ -539,7 +538,7 @@ class JourneyTable extends StatelessWidget {
   }
 
   bool _isCurvePointWithoutSpeed(BaseData data, Journey journey, JourneySettings settings) {
-    final breakSeries = settings.resolvedBreakSeries(journey.metadata);
+    final breakSeries = settings.currentBreakSeries;
 
     return data is CurvePoint &&
         data.localSpeeds?.speedFor(breakSeries?.trainSeries, breakSeries: breakSeries?.breakSeries) == null;
