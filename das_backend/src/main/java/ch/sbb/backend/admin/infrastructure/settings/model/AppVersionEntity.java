@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,4 +28,7 @@ public class AppVersionEntity {
     private String version;
     private Boolean minimalVersion;
     private LocalDate expiryDate;
+    private LocalDateTime lastModifiedAt;
+    private String lastModifiedBy;
+
 }

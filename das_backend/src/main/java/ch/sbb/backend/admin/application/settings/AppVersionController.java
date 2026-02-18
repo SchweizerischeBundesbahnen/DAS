@@ -20,6 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -62,9 +63,14 @@ public class AppVersionController {
         return ResponseEntity.ok(new AppVersionResponse(List.of(version)));
     }
 
-    public ResponseEntity<? extends Response> create(Integer id) {
-        //        TODO implement
-        throw new NotImplementedException();
+    @PostMapping(API_SETTINGS_APPVERSION)
+    @Operation(summary = "Create new app version.", description = "Creates a new app version entry.")
+    @ApiResponse(responseCode = "201", description = "App version created.",
+        content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = AppVersionResponse.class)))
+    @ApiErrorResponses
+    public ResponseEntity<AppVersionResponse> create(@RequestBody AppVersionUpdateRequest createRequest) {
+        AppVersion createdVersion = appVersionService.create(createRequest);
+        return ResponseEntity.status(201).body(new AppVersionResponse(List.of(createdVersion)));
     }
 
     @PutMapping(API_SETTINGS_APPVERSION + "/{id}")

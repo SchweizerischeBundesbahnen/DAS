@@ -5,8 +5,8 @@ import java.time.LocalDate;
 public record AppVersionUpdateRequest(
     String version,
     Boolean minimalVersion,
-    LocalDate expiryDate
+    LocalDate expiryDate,
+    String lastModifiedBy
 ) {
 
 }
-

@@ -22,10 +22,10 @@ class AppVersionServiceImplTest {
     void setUp() {
         appVersionRepository = mock(AppVersionRepository.class);
         underTest = new AppVersionServiceImpl(appVersionRepository);
-        AppVersionEntity version100 = new AppVersionEntity(0, "1.0.0", true, null);
-        AppVersionEntity version103 = new AppVersionEntity(1, "1.0.3", false, null);
-        AppVersionEntity version110 = new AppVersionEntity(2, "1.1.0", false, LocalDate.now().plusDays(10));
-        AppVersionEntity version1101 = new AppVersionEntity(3, "0.10.1", true, LocalDate.now().minusDays(10));
+        AppVersionEntity version100 = new AppVersionEntity(0, "1.0.0", true, null, null, null);
+        AppVersionEntity version103 = new AppVersionEntity(1, "1.0.3", false, null, null, null);
+        AppVersionEntity version110 = new AppVersionEntity(2, "1.1.0", false, LocalDate.now().plusDays(10), null, null);
+        AppVersionEntity version1101 = new AppVersionEntity(3, "0.10.1", true, LocalDate.now().minusDays(10), null, null);
         when(appVersionRepository.findAll()).thenReturn(List.of(version100, version103, version110, version1101));
     }
 
@@ -65,7 +65,7 @@ class AppVersionServiceImplTest {
 
     @Test
     void getCurrent_expiryDateByMinimalVersion() {
-        AppVersionEntity version150 = new AppVersionEntity(4, "1.5.0", true, LocalDate.now().plusDays(100));
+        AppVersionEntity version150 = new AppVersionEntity(4, "1.5.0", true, LocalDate.now().plusDays(100), null, null);
         when(appVersionRepository.findAll()).thenReturn(List.of(version150));
 
         CurrentAppVersion result = underTest.getCurrent("1.3.0");
