@@ -1,5 +1,6 @@
 package ch.sbb.backend.admin.domain.settings;
 
+import ch.sbb.backend.admin.application.settings.model.request.AppVersionUpdateRequest;
 import ch.sbb.backend.admin.application.settings.model.response.CurrentAppVersion;
 import ch.sbb.backend.admin.domain.settings.model.AppVersion;
 import ch.sbb.backend.admin.domain.settings.model.SemVersion;
@@ -71,6 +72,19 @@ public class AppVersionServiceImpl implements AppVersionService {
         if (entity == null) {
             return null;
         }
+        return new AppVersion(entity.getId(), entity.getVersion(), entity.getMinimalVersion(), entity.getExpiryDate());
+    }
+
+    @Override
+    public AppVersion update(Integer id, AppVersionUpdateRequest updateRequest) {
+        AppVersionEntity entity = repository.findById(id).orElse(null);
+        if (entity == null) {
+            return null;
+        }
+        entity.setVersion(updateRequest.version());
+        entity.setMinimalVersion(updateRequest.minimalVersion());
+        entity.setExpiryDate(updateRequest.expiryDate());
+        repository.save(entity);
         return new AppVersion(entity.getId(), entity.getVersion(), entity.getMinimalVersion(), entity.getExpiryDate());
     }
 }

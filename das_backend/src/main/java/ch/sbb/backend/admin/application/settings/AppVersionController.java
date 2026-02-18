@@ -2,6 +2,7 @@ package ch.sbb.backend.admin.application.settings;
 
 import static ch.sbb.backend.admin.application.settings.SettingsController.PATH_SEGMENT_SETTINGS;
 
+import ch.sbb.backend.admin.application.settings.model.request.AppVersionUpdateRequest;
 import ch.sbb.backend.admin.application.settings.model.response.AppVersionResponse;
 import ch.sbb.backend.admin.domain.settings.AppVersionService;
 import ch.sbb.backend.admin.domain.settings.model.AppVersion;
@@ -19,6 +20,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -59,14 +62,23 @@ public class AppVersionController {
         return ResponseEntity.ok(new AppVersionResponse(List.of(version)));
     }
 
-    public ResponseEntity<? extends Response> update(Integer id) {
+    public ResponseEntity<? extends Response> create(Integer id) {
         //        TODO implement
         throw new NotImplementedException();
     }
 
-    public ResponseEntity<? extends Response> create(Integer id) {
-        //        TODO implement
-        throw new NotImplementedException();
+    @PutMapping(API_SETTINGS_APPVERSION + "/{id}")
+    @Operation(summary = "Update app version by id.", description = "Updates a single app version by its id.")
+    @ApiResponse(responseCode = "200", description = "App version updated.",
+        content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = AppVersionResponse.class)))
+    @ApiResponse(responseCode = "404", description = "App version not found.")
+    @ApiErrorResponses
+    public ResponseEntity<? extends Response> update(@PathVariable Integer id, @RequestBody AppVersionUpdateRequest updateRequest) {
+        AppVersion updatedVersion = appVersionService.update(id, updateRequest);
+        if (updatedVersion == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(new AppVersionResponse(List.of(updatedVersion)));
     }
 
     public ResponseEntity<? extends Response> delete(Integer id) {
