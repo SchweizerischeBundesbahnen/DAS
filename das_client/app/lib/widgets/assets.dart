@@ -45,6 +45,7 @@ class AppAssets {
   static const iconModificationIndicator = '$_iconsDir/icon_modification_indicator.svg';
   static const iconTabIndicatorExclamationTurquoise = '$_iconsDir/icon_tab_indicator_exclamation_turquoise.svg';
   static const iconUturnTurquoise = '$_iconsDir/icon_uturn_turquoise.svg';
+  static const iconTrainDriverTurnover = '$_iconsDir/icon_train_driver_turnover.svg';
 
   // others
   static const imageTypeNSignalStop = '$_othersDir/type_n_signal_stop.svg';

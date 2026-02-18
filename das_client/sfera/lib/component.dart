@@ -66,6 +66,7 @@ export 'package:sfera/src/model/journey/station_sign.dart';
 export 'package:sfera/src/model/journey/supervised_level_crossing_group.dart';
 export 'package:sfera/src/model/journey/track_equipment_segment.dart';
 export 'package:sfera/src/model/journey/track_foot_note.dart';
+export 'package:sfera/src/model/journey/train_driver_turnover.dart';
 export 'package:sfera/src/model/journey/train_series.dart';
 export 'package:sfera/src/model/journey/train_series_speed.dart';
 export 'package:sfera/src/model/journey/tram_area.dart';

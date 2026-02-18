@@ -7,6 +7,7 @@ import 'package:app/pages/login/widgets/login_button.dart';
 import 'package:app/widgets/navigation_buttons.dart';
 import 'package:app_links_x/component.dart';
 import 'package:auth/component.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
@@ -167,14 +168,46 @@ void main() {
       );
       expect(errorMessageText, findsOne);
     });
+
+    testWidgets('appLink_whenLinkWithTafTapStartAndEnd_showsTrainDriverTurnoverRows', (tester) async {
+      await prepareAndStartApp(tester);
+
+      expect(find.byType(JourneySelectionPage), findsOne);
+
+      final journeys = [_trainJourneyLinkData('T9999M', 'CH09992', 'CH09993')];
+      _pushTrainJourneyAppLink(journeys);
+
+      await waitUntilExists(tester, find.byKey(JourneyTable.loadedJourneyTableKey));
+      await tester.pumpAndSettle();
+      final trainIdentification = find.descendant(
+        of: find.byKey(JourneyIdentifier.journeyIdentifierKey),
+        matching: find.textContaining('T9999'),
+      );
+      expect(trainIdentification, findsOne);
+
+      final scrollableFinder = find.byType(AnimatedList);
+      await tester.dragUntilVisible(
+        findDASTableRowByText(l10n.p_journey_table_curve_type_curve_after_halt),
+        scrollableFinder,
+        const Offset(0, -50),
+      );
+
+      expect(find.text(l10n.w_train_driver_turnover_row_title), findsAny);
+    });
   });
 }
 
-TrainJourneyLinkData _trainJourneyLinkData(String trainNumber) {
+TrainJourneyLinkData _trainJourneyLinkData(
+  String trainNumber, [
+  String? tafTapLocationReferenceStart,
+  String? tafTapLocationReferenceEnd,
+]) {
   return TrainJourneyLinkData(
     operationalTrainNumber: trainNumber,
     company: RailwayUndertaking.sbbP.companyCode,
     startDate: DateTime.now(),
+    tafTapLocationReferenceStart: tafTapLocationReferenceStart,
+    tafTapLocationReferenceEnd: tafTapLocationReferenceEnd,
   );
 }
 
