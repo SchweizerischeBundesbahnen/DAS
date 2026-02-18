@@ -1,9 +1,7 @@
-import 'package:app/pages/journey/journey_screen/detail_modal/detail_modal_view_model.dart';
 import 'package:app/util/animation.dart';
 import 'package:app/widgets/general_short_term_change_indicator.dart';
 import 'package:app/widgets/u_turn_indicator.dart';
 import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
@@ -14,6 +12,8 @@ class ServicePointInformationCellTitle extends StatelessWidget {
     required this.isStation,
     required this.trackGroup,
     required this.shortTermChange,
+    required this.isModalOpenValue,
+    required this.isModalOpenStream,
     super.key,
   });
 
@@ -22,14 +22,14 @@ class ServicePointInformationCellTitle extends StatelessWidget {
   final bool isStation;
   final String? trackGroup;
   final ShortTermChange? shortTermChange;
+  final bool isModalOpenValue;
+  final Stream<bool> isModalOpenStream;
 
   @override
   Widget build(BuildContext context) {
-    final DetailModalViewModel? detailModalVM = context.read<DetailModalViewModel?>();
-
     return StreamBuilder<bool>(
-      stream: detailModalVM?.isModalOpen ?? Stream.value(false),
-      initialData: detailModalVM?.isModalOpenValue ?? false,
+      stream: isModalOpenStream,
+      initialData: isModalOpenValue,
       builder: (context, asyncSnapshot) {
         final isModalOpen = asyncSnapshot.requireData;
         Widget textTitle = Text(

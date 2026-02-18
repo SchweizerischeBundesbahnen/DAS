@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:app/extension/short_term_change_extension.dart';
 import 'package:app/extension/station_sign_extension.dart';
 import 'package:app/i18n/i18n.dart';
+import 'package:app/pages/journey/journey_screen/detail_modal/detail_modal_view_model.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/service_point_modal/service_point_modal_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/arrival_departure_time_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
@@ -103,6 +104,10 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     return _wrapToBaseHeight(super.kilometreCell(context));
   }
 
+  Stream<bool> isModalOpenStream(BuildContext context) => context.read<DetailModalViewModel>().isModalOpen;
+
+  bool isModalOpenValue(BuildContext context) => context.read<DetailModalViewModel>().isModalOpenValue;
+
   @override
   DASTableCell informationCell(BuildContext context) {
     ShortTermChange? shortTermChange = metadata.shortTermChanges.appliesToOrder(data.order).getHighestPriority;
@@ -123,6 +128,8 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
         crossAxisAlignment: .start,
         children: [
           ServicePointInformationCellTitle(
+            isModalOpenValue: isModalOpenValue(context),
+            isModalOpenStream: isModalOpenStream(context),
             name: data.betweenBrackets ? '(${data.name})' : data.name,
             foregroundColor: _isNextStop && highlightNextStop ? SBBColors.white : null,
             isStation: data.isStation,
