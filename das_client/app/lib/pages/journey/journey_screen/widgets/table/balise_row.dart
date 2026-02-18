@@ -25,10 +25,10 @@ class BaliseRow extends CellRowBuilder<Balise> {
     if (!isGrouped) super.kilometreCell(context);
 
     if (data.kilometre.isEmpty) {
-      return DASTableCell.empty(color: specialCellColor);
+      return DASTableCell.empty(decoration: DASTableCellDecoration(color: specialCellColor));
     } else {
       return DASTableCell(
-        color: specialCellColor,
+        decoration: DASTableCellDecoration(color: specialCellColor),
         child: Padding(
           padding: const .only(left: 8.0),
           child: OverflowBox(

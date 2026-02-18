@@ -152,11 +152,11 @@ void main() {
       }),
     ),
     data: [
-      ServicePoint(name: 'A', abbreviation: '', order: 0, kilometre: []),
-      ServicePoint(name: 'B', abbreviation: '', order: 1, kilometre: []),
-      ServicePoint(name: 'C', abbreviation: '', order: 2, kilometre: []),
-      ServicePoint(name: 'D', abbreviation: '', order: 3, kilometre: []),
-      ServicePoint(name: 'E', abbreviation: '', order: 4, kilometre: []),
+      ServicePoint(name: 'A', abbreviation: '', locationCode: '', order: 0, kilometre: []),
+      ServicePoint(name: 'B', abbreviation: '', locationCode: '', order: 1, kilometre: []),
+      ServicePoint(name: 'C', abbreviation: '', locationCode: '', order: 2, kilometre: []),
+      ServicePoint(name: 'D', abbreviation: '', locationCode: '', order: 3, kilometre: []),
+      ServicePoint(name: 'E', abbreviation: '', locationCode: '', order: 4, kilometre: []),
       CurvePoint(
         order: 5,
         kilometre: [],
@@ -171,7 +171,7 @@ void main() {
           ),
         ],
       ),
-      ServicePoint(name: 'F', abbreviation: '', order: 6, kilometre: []),
+      ServicePoint(name: 'F', abbreviation: '', locationCode: '', order: 6, kilometre: []),
     ],
   );
 

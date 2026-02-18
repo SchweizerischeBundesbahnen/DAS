@@ -4,6 +4,7 @@ import 'package:sfera/src/data/dto/advised_speed_dto.dart';
 import 'package:sfera/src/data/dto/b2g_event_payload_dto.dart';
 import 'package:sfera/src/data/dto/balise_dto.dart';
 import 'package:sfera/src/data/dto/balise_group_dto.dart';
+import 'package:sfera/src/data/dto/change_dto.dart';
 import 'package:sfera/src/data/dto/communication_network_dto.dart';
 import 'package:sfera/src/data/dto/connection_track_description_dto.dart';
 import 'package:sfera/src/data/dto/connection_track_dto.dart';
@@ -72,6 +73,7 @@ import 'package:sfera/src/data/dto/speeds_dto.dart';
 import 'package:sfera/src/data/dto/station_properties_dto.dart';
 import 'package:sfera/src/data/dto/station_property_dto.dart';
 import 'package:sfera/src/data/dto/station_speed_dto.dart';
+import 'package:sfera/src/data/dto/stop_to_pass_or_pass_to_stop_dto.dart';
 import 'package:sfera/src/data/dto/stop_type_dto.dart';
 import 'package:sfera/src/data/dto/stopping_point_departure_details_dto.dart';
 import 'package:sfera/src/data/dto/stopping_point_information_dto.dart';
@@ -95,6 +97,7 @@ import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_ref_dto.dart';
 import 'package:sfera/src/data/dto/train_identification_dto.dart';
 import 'package:sfera/src/data/dto/train_location_information_dto.dart';
+import 'package:sfera/src/data/dto/train_run_rerouting_dto.dart';
 import 'package:sfera/src/data/dto/velocity_dto.dart';
 import 'package:sfera/src/data/dto/virtual_balise_dto.dart';
 import 'package:sfera/src/data/dto/virtual_balise_position_dto.dart';
@@ -172,6 +175,8 @@ class SferaReplyParser {
         return SpPointsDto(type: type, attributes: attributes, children: children, value: value);
       case BaliseGroupDto.elementType:
         return BaliseGroupDto(type: type, attributes: attributes, children: children, value: value);
+      case ChangeDto.elementType:
+        return ChangeDto.from(attributes: attributes, children: children, value: value);
       case TimingPointDto.elementType:
         return TimingPointDto(type: type, attributes: attributes, children: children, value: value);
       case TpNameDto.elementType:
@@ -338,11 +343,15 @@ class SferaReplyParser {
       case GeneralJpInformationDto.elementType:
         return GeneralJpInformationDto(attributes: attributes, children: children, value: value);
       case GeneralJpInformationNspDto.elementType:
-        return GeneralJpInformationNspDto(attributes: attributes, children: children, value: value);
+        return GeneralJpInformationNspDto.from(attributes: attributes, children: children, value: value);
       case AdditionalInfoDto.elementType:
         return AdditionalInfoDto(type: type, attributes: attributes, children: children, value: value);
       case SignalNspDto.elementType:
         return SignalNspDto(type: type, attributes: attributes, children: children, value: value);
+      case StopToPassOrPassToStopDto.elementType:
+        return StopToPassOrPassToStopDto(type: type, attributes: attributes, children: children, value: value);
+      case TrainRunReroutingDto.elementType:
+        return TrainRunReroutingDto(type: type, attributes: attributes, children: children, value: value);
       default:
         return SferaXmlElementDto(type: type, attributes: attributes, children: children, value: value);
     }

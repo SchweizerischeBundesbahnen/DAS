@@ -17,6 +17,7 @@ class Metadata {
     this.nonStandardTrackEquipmentSegments = const [],
     this.bracketStationSegments = const [],
     this.advisedSpeedSegments = const [],
+    this.shortTermChanges = const [],
     this.availableBreakSeries = const {},
     this.communicationNetworkChanges = const [],
     this.lineFootNoteLocations = const {},
@@ -45,6 +46,7 @@ class Metadata {
   final List<CommunicationNetworkChange> communicationNetworkChanges;
   final List<BracketStationSegment> bracketStationSegments;
   final Iterable<AdvisedSpeedSegment> advisedSpeedSegments;
+  final Iterable<ShortTermChange> shortTermChanges;
   final BreakSeries? breakSeries;
   final Set<BreakSeries> availableBreakSeries;
   final Map<String, List<String>> lineFootNoteLocations;

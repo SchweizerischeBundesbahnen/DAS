@@ -12,7 +12,7 @@ import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
 import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
 import 'package:app/pages/journey/widgets/das_journey_scaffold.dart';
 import 'package:app/util/format.dart';
-import 'package:app/widgets/table/das_table_row.dart';
+import 'package:app/widgets/table/row/das_table_row_builder.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

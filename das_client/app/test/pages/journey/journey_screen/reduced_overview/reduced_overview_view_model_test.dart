@@ -26,12 +26,20 @@ void main() {
 
   test('test only service points with stop or communication network change are emitted', () {
     // GIVEN
-    final stop1 = ServicePoint(name: '', abbreviation: '', order: 100, kilometre: [], isStop: true);
-    final withoutStop = ServicePoint(name: '', abbreviation: '', order: 200, kilometre: [], isStop: false);
-    final stop2 = ServicePoint(name: '', abbreviation: '', order: 300, kilometre: [], isStop: true);
+    final stop1 = ServicePoint(name: '', abbreviation: '', locationCode: '', order: 100, kilometre: [], isStop: true);
+    final withoutStop = ServicePoint(
+      name: '',
+      abbreviation: '',
+      locationCode: '',
+      order: 200,
+      kilometre: [],
+      isStop: false,
+    );
+    final stop2 = ServicePoint(name: '', abbreviation: '', locationCode: '', order: 300, kilometre: [], isStop: true);
     final withoutStopWithNetworkChange = ServicePoint(
       name: '',
       abbreviation: '',
+      locationCode: '',
       order: 400,
       kilometre: [],
       isStop: false,
@@ -58,7 +66,14 @@ void main() {
 
   test('test only service points and ASR are emitted', () {
     // GIVEN
-    final servicePoint = ServicePoint(name: '', abbreviation: '', order: 100, kilometre: [], isStop: true);
+    final servicePoint = ServicePoint(
+      name: '',
+      abbreviation: '',
+      locationCode: '',
+      order: 100,
+      kilometre: [],
+      isStop: true,
+    );
     final curve = CurvePoint(order: 200, kilometre: []);
     final signal = Signal(order: 300, kilometre: []);
     final protectionSection = ProtectionSection(isOptional: true, isLong: true, order: 400, kilometre: []);

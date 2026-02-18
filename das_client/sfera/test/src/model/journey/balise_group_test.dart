@@ -38,7 +38,7 @@ void main() {
         LevelCrossing(order: 105, kilometre: [0.14]),
       ],
       pointsBetween: [
-        ServicePoint(name: 'Dummy', abbreviation: 'D', order: 103, kilometre: [0.12]),
+        ServicePoint(name: 'Dummy', abbreviation: 'D', order: 103, kilometre: [0.12], locationCode: ''),
       ],
     );
 

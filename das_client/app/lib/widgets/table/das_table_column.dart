@@ -11,8 +11,7 @@ class DASTableColumn {
   const DASTableColumn({
     this.id,
     this.child,
-    this.border,
-    this.color,
+    this.decoration,
     this.padding = const .all(SBBSpacing.xSmall),
     this.expanded = false,
     this.width,
@@ -27,11 +26,13 @@ class DASTableColumn {
   /// The content of the column header as a widget.
   final Widget? child;
 
-  /// Border style for the heading and data cells
-  final BoxBorder? border;
-
-  /// The background color for the heading and data cells
-  final Color? color;
+  /// The decoration for the column.
+  ///
+  /// This will merge / override the [DASTableTheme] decorations, but will be overriden / merged by
+  /// row decoration.
+  ///
+  /// The top and bottom specific properties will only be applied to first and last row and to the sticky header.
+  final DASTableColumnDecoration? decoration;
 
   final EdgeInsets? padding;
 
@@ -49,4 +50,33 @@ class DASTableColumn {
 
   /// Key for the header cell
   final Key? headerKey;
+}
+
+/// Represents the decoration of a column of the [DASTable].
+@immutable
+class DASTableColumnDecoration {
+  const DASTableColumnDecoration({
+    this.color,
+    this.border,
+  });
+
+  /// The background color of this column. This is overridden by specific row background colors.
+  final Color? color;
+
+  /// The sides of the border of this column.
+  ///
+  /// The sides will be overridden by more specific row border sides.
+  ///
+  /// The top and bottom border will only be applied to the first and last row of the table respectively.
+  final Border? border;
+
+  DASTableColumnDecoration copyWith({
+    Border? border,
+    Color? color,
+  }) {
+    return DASTableColumnDecoration(
+      border: border ?? this.border,
+      color: color ?? this.color,
+    );
+  }
 }
