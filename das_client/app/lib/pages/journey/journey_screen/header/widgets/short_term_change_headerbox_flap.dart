@@ -10,13 +10,13 @@ import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class ShortTermChangeHeaderBoxFlap extends StatelessWidget {
-  static double get height => 36.0;
+  static const double height = 36.0;
 
-  static Key get hasShortTermChangeKey => Key('flapHasShortTermChangeKey');
+  static const Key hasShortTermChangeKey = Key('flapHasShortTermChangeKey');
 
-  static Key get singleShortTermChangeKey => Key('flapSingleShortTermChangeKey');
+  static const Key singleShortTermChangeKey = Key('flapSingleShortTermChangeKey');
 
-  static Key get multipleShortTermChangeKey => Key('flapMultipleShortTermChangeKey');
+  static const Key multipleShortTermChangeKey = Key('flapMultipleShortTermChangeKey');
 
   const ShortTermChangeHeaderBoxFlap({required this.child, super.key});
 

@@ -15,7 +15,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 class MainHeaderBox extends StatelessWidget {
   const MainHeaderBox({super.key});
 
-  static double get height => 145.0;
+  static const double height = 145.0;
 
   @override
   Widget build(BuildContext context) {
