@@ -34,26 +34,43 @@ public class AppVersionServiceImpl implements AppVersionService {
             return CurrentAppVersion.DEFAULT;
         }
         SemVersion currentVersion = new SemVersion(appVersion);
-        // todo make more readable
 
-        //        exactly blockedVersion || minimalVersion greater
         List<AppVersionEntity> relevantVersions = repository.findAll().stream()
-            .filter(entity ->
-                // exactly blocked = minimalVersion false && version == currentVersion
-                !entity.getMinimalVersion() && currentVersion.equals(new SemVersion(entity.getVersion())) ||
-                    // minimalVersion = minimalVersion true && version greater than currentVersion
-                    entity.getMinimalVersion() && currentVersion.isLowerThan(new SemVersion(entity.getVersion())))
+            .filter(entity -> isBlockedVersion(entity, currentVersion) || isMinimalVersionGreater(entity, currentVersion))
             .toList();
-        // expired = (expiry date null || expiry date in the past ) && exactly blockedVersion || minimalVersion greater
-        boolean expired = relevantVersions.stream().anyMatch(entity -> entity.getExpiryDate() == null || entity.getExpiryDate().isBefore(LocalDate.now()));
 
-        // expiryDate = expiry date in the future && ( version exactly blocked || minimalVersion greater)
+        boolean expired = relevantVersions.stream()
+            .anyMatch(this::isExpired);
+
         LocalDate expiryDate = relevantVersions.stream()
             .map(AppVersionEntity::getExpiryDate)
             .filter(Objects::nonNull)
-            .filter(versionExpiryDate -> versionExpiryDate.isAfter(LocalDate.now()))
-            .min(Comparator.comparing(versionExpiryDate -> versionExpiryDate)).orElse(null);
+            .filter(date -> date.isAfter(LocalDate.now()))
+            .min(Comparator.naturalOrder())
+            .orElse(null);
 
         return new CurrentAppVersion(expired, expiryDate);
+    }
+
+    private boolean isBlockedVersion(AppVersionEntity entity, SemVersion currentVersion) {
+        return !entity.getMinimalVersion() && currentVersion.equals(new SemVersion(entity.getVersion()));
+    }
+
+    private boolean isMinimalVersionGreater(AppVersionEntity entity, SemVersion currentVersion) {
+        return entity.getMinimalVersion() && currentVersion.isLowerThan(new SemVersion(entity.getVersion()));
+    }
+
+    private boolean isExpired(AppVersionEntity entity) {
+        LocalDate expiryDate = entity.getExpiryDate();
+        return expiryDate == null || expiryDate.isBefore(LocalDate.now());
+    }
+
+    @Override
+    public AppVersion getOne(Integer id) {
+        AppVersionEntity entity = repository.findById(id).orElse(null);
+        if (entity == null) {
+            return null;
+        }
+        return new AppVersion(entity.getId(), entity.getVersion(), entity.getMinimalVersion(), entity.getExpiryDate());
     }
 }
