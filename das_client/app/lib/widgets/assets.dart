@@ -43,6 +43,7 @@ class AppAssets {
   static const iconSignExclamationPoint = '$_iconsDir/icon_sign_exclamation_point.svg';
   static const iconCarCarrier = '$_iconsDir/icon_car_carrier.svg';
   static const iconModificationIndicator = '$_iconsDir/icon_modification_indicator.svg';
+  static const iconPersonalChange = '$_iconsDir/icon_personal_change.svg';
 
   // others
   static const imageTypeNSignalStop = '$_othersDir/type_n_signal_stop.svg';

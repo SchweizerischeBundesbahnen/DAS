@@ -210,4 +210,35 @@ extension BaseDataExtension on Iterable<BaseData> {
 
     return resultList;
   }
+
+  Iterable<BaseData> addPersonChangeRows(TrainIdentification? trainIdentification) {
+    if (trainIdentification == null) return this;
+
+    if (trainIdentification.tafTapLocationReferenceStart == null &&
+        trainIdentification.tafTapLocationReferenceEnd == null) {
+      return this;
+    }
+
+    final servicePoints = whereType<ServicePoint>();
+    final firstServicePoint = servicePoints.firstOrNull;
+    final lastServicePoint = servicePoints.lastOrNull;
+
+    final List<BaseData> resultList = toList();
+
+    for (final data in this) {
+      if (data == firstServicePoint || data == lastServicePoint) continue;
+
+      if (data is ServicePoint) {
+        if (trainIdentification.tafTapLocationReferenceStart != null &&
+            trainIdentification.tafTapLocationReferenceStart == data.locationCode) {
+          resultList.add(PersonalChange(order: data.order, isStart: true));
+        } else if (trainIdentification.tafTapLocationReferenceEnd != null &&
+            trainIdentification.tafTapLocationReferenceEnd == data.locationCode) {
+          resultList.add(PersonalChange(order: data.order, isStart: false));
+        }
+      }
+    }
+
+    return resultList;
+  }
 }
