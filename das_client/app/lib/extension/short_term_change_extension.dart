@@ -1,3 +1,4 @@
+import 'package:app/pages/journey/journey_screen/header/view_model/model/short_term_change_model.dart';
 import 'package:collection/collection.dart';
 import 'package:sfera/component.dart';
 
@@ -20,4 +21,11 @@ extension ShortTermChangeX on ShortTermChange {
 
     return getPriority(this).compareTo(getPriority(other));
   }
+
+  ShortTermChangeType get toChangeType => switch (this) {
+    StopToPassChange() => .stopToPass,
+    PassToStopChange() => .passToStop,
+    TrainRunReroutingChange() => .trainRunRerouting,
+    EndDestinationChange() => .endDestination,
+  };
 }

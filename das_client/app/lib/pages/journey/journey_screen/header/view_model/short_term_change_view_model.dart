@@ -78,13 +78,13 @@ class ShortTermChangeViewModel extends JourneyAwareViewModel {
     final shortTermChanges = journey?.metadata.shortTermChanges.toList(growable: false) ?? [];
 
     if (shortTermChanges.isEmpty) {
-      _emitEmptyWithLog();
+      _emitNoShortTermChanges();
       return;
     }
 
     if (currentPosition == null || currentPosition == journey?.metadata.journeyStart) {
       // journey has not started yet
-      _emitLastingWithLog(shortTermChanges);
+      _emitLasting(shortTermChanges);
       return;
     }
 
@@ -92,30 +92,30 @@ class ShortTermChangeViewModel extends JourneyAwareViewModel {
     if (shortTermChangeInSight != null) {
       // in case there is only one and it's already in sight, do not display afterwards anymore
       if (shortTermChanges.length == 1) _displayNewShortTermChanges = false;
-      _emitChangeInSightWithLog(shortTermChangeInSight);
+      _emitChangeInSight(shortTermChangeInSight);
       return;
     }
 
     if (_displayNewShortTermChanges) {
       _displayNewShortTermChanges = false;
-      _emitTimedWithLog(shortTermChanges);
+      _emitTimed(shortTermChanges);
       return;
     }
 
-    _emitNoRelevantShortTermChangesWithLog();
+    _emitNoRelevantShortTermChanges();
   }
 
-  void _emitEmptyWithLog() {
+  void _emitNoShortTermChanges() {
     _logger.fine('No Short Term Changes in Journey - emitting empty');
     _rxSubject.add(NoShortTermChanges());
   }
 
-  void _emitLastingWithLog(Iterable<ShortTermChange> shortTermChanges) {
+  void _emitLasting(Iterable<ShortTermChange> shortTermChanges) {
     _logger.fine('ShortTermChanges within journey that has not yet started. Emitting...');
     _emitSingleOrMultipleWithLog(shortTermChanges);
   }
 
-  void _emitChangeInSightWithLog(ShortTermChange shortTermChangeInSight) {
+  void _emitChangeInSight(ShortTermChange shortTermChangeInSight) {
     _logger.fine('Emitting inSight shortTermChange: $shortTermChangeInSight');
     _rxSubject.add(
       SingleShortTermChange(
@@ -125,12 +125,12 @@ class ShortTermChangeViewModel extends JourneyAwareViewModel {
     );
   }
 
-  void _emitNoRelevantShortTermChangesWithLog() {
+  void _emitNoRelevantShortTermChanges() {
     _logger.fine('No short term changes for the current position relevant!');
     _rxSubject.add(NoShortTermChanges());
   }
 
-  void _emitTimedWithLog(Iterable<ShortTermChange> shortTermChanges) {
+  void _emitTimed(Iterable<ShortTermChange> shortTermChanges) {
     _logger.fine('Setting timer for timed ShortTermChange display!');
     _timer?.cancel();
     _timer = Timer(Duration(seconds: DI.get<TimeConstants>().newShortTermChangesDisplaySeconds), () {
@@ -210,22 +210,9 @@ class ShortTermChangeViewModel extends JourneyAwareViewModel {
     );
   }
 
-  void _setDisplayNewShortTermChanges(Journey? journey) {
-    if (_hasNewShortTermChanges(journey)) _displayNewShortTermChanges = true;
-  }
-
   bool _hasNewShortTermChanges(Journey? journey) {
     final shortTermChanges = journey?.metadata.shortTermChanges.toList(growable: false) ?? [];
     final lastShortTermChanges = lastJourney?.metadata.shortTermChanges.toList(growable: false) ?? [];
     return !_isSortedEqual(shortTermChanges, lastShortTermChanges);
   }
-}
-
-extension on ShortTermChange {
-  ShortTermChangeType get toChangeType => switch (this) {
-    StopToPassChange() => .stopToPass,
-    PassToStopChange() => .passToStop,
-    TrainRunReroutingChange() => .trainRunRerouting,
-    EndDestinationChange() => .endDestination,
-  };
 }
