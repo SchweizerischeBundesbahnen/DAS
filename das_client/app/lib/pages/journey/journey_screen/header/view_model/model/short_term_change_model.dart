@@ -28,7 +28,9 @@ class NoShortTermChanges extends ShortTermChangeModel {
   const NoShortTermChanges() : super._();
 
   @override
-  String toString() => 'NoShortTermChanges()';
+  String toString() {
+    return 'NoShortTermChanges{}';
+  }
 }
 
 class SingleShortTermChange extends ShortTermChangeModel {
@@ -52,13 +54,16 @@ class SingleShortTermChange extends ShortTermChangeModel {
   int get hashCode => Object.hash(runtimeType, shortTermChangeType, servicePointName);
 
   @override
-  String toString() =>
-      'SingleShortTermChange(shortTermChangeType: $shortTermChangeType, servicePointName: $servicePointName)';
+  String toString() {
+    return 'SingleShortTermChange{shortTermChangeType: $shortTermChangeType, servicePointName: $servicePointName}';
+  }
 }
 
 class MultipleShortTermChanges extends ShortTermChangeModel {
   const MultipleShortTermChanges() : super._();
 
   @override
-  String toString() => 'MultipleShortTermChanges()';
+  String toString() {
+    return 'MultipleShortTermChanges{}';
+  }
 }
