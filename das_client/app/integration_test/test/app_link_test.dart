@@ -169,7 +169,7 @@ void main() {
       expect(errorMessageText, findsOne);
     });
 
-    testWidgets('appLink_whenLinkWithTafTapStartAndEnd_showsPersonalChangeRows', (tester) async {
+    testWidgets('appLink_whenLinkWithTafTapStartAndEnd_showsTrainDriverTurnoverRows', (tester) async {
       await prepareAndStartApp(tester);
 
       expect(find.byType(JourneySelectionPage), findsOne);
@@ -192,7 +192,7 @@ void main() {
         const Offset(0, -50),
       );
 
-      expect(find.text(l10n.w_personal_change_row_title), findsAny);
+      expect(find.text(l10n.w_train_driver_turnover_row_title), findsAny);
     });
   });
 }

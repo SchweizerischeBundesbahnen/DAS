@@ -7,8 +7,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
-class PersonalChangeRow extends WidgetRowBuilder<PersonalChange> {
-  PersonalChangeRow({
+class TrainDriverTurnoverRow extends WidgetRowBuilder<TrainDriverTurnover> {
+  TrainDriverTurnoverRow({
     required super.metadata,
     required super.data,
     required super.rowIndex,
@@ -32,11 +32,11 @@ class PersonalChangeRow extends WidgetRowBuilder<PersonalChange> {
           spacing: SBBSpacing.xSmall,
           children: [
             SvgPicture.asset(
-              AppAssets.iconPersonalChange,
+              AppAssets.iconTrainDriverTurnover,
               colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
             ),
             Text(
-              context.l10n.w_personal_change_row_title,
+              context.l10n.w_train_driver_turnover_row_title,
               style: SBBTextStyles.largeBold,
             ),
           ],

@@ -572,7 +572,7 @@ void main() {
     expect(resultList[3], isA<ProtectionSection>());
   });
 
-  test('addPersonChangeRows_whenTrainIdentificationNull_thenDoNothing', () {
+  test('addTrainDriverTurnoverRows_whenTrainIdentificationNull_thenDoNothing', () {
     // GIVEN
     final baseData = <BaseData>[
       ServicePoint(name: 'A', abbreviation: 'A', order: 0, kilometre: [0.0], locationCode: 'A'),
@@ -584,7 +584,7 @@ void main() {
 
     final TrainIdentification? trainIdentification = null;
     // WHEN
-    final resultList = baseData.addPersonChangeRows(trainIdentification).toList();
+    final resultList = baseData.addTrainDriverTurnoverRows(trainIdentification).toList();
 
     // THEN
     expect(resultList, hasLength(baseData.length));
@@ -595,7 +595,7 @@ void main() {
     expect(resultList[4], baseData[4]);
   });
 
-  test('addPersonChangeRows_whenTrainIdentificationTafTapStartAndEndIsNull_thenDoNothing', () {
+  test('addTrainDriverTurnoverRows_whenTrainIdentificationTafTapStartAndEndIsNull_thenDoNothing', () {
     // GIVEN
     final baseData = <BaseData>[
       ServicePoint(name: 'A', abbreviation: 'A', order: 0, kilometre: [0.0], locationCode: 'A'),
@@ -611,7 +611,7 @@ void main() {
       date: DateTime.now(),
     );
     // WHEN
-    final resultList = baseData.addPersonChangeRows(trainIdentification).toList();
+    final resultList = baseData.addTrainDriverTurnoverRows(trainIdentification).toList();
 
     // THEN
     expect(resultList, hasLength(baseData.length));
@@ -622,7 +622,7 @@ void main() {
     expect(resultList[4], baseData[4]);
   });
 
-  test('addPersonChangeRows_whenTrainIdentificationTafTapStartAndEndIsSet_thenAddPersonChange', () {
+  test('addTrainDriverTurnoverRows_whenTrainIdentificationTafTapStartAndEndIsSet_thenAddTrainDriverTurnover', () {
     // GIVEN
     final baseData = <BaseData>[
       ServicePoint(name: 'A', abbreviation: 'A', order: 0, kilometre: [0.0], locationCode: 'A'),
@@ -640,8 +640,8 @@ void main() {
       tafTapLocationReferenceEnd: 'D',
     );
     // WHEN
-    final resultList = baseData.addPersonChangeRows(trainIdentification).toList();
-    final personalChanges = resultList.whereType<PersonalChange>().toList();
+    final resultList = baseData.addTrainDriverTurnoverRows(trainIdentification).toList();
+    final personalChanges = resultList.whereType<TrainDriverTurnover>().toList();
 
     // THEN
     expect(resultList, hasLength(7));
@@ -653,7 +653,7 @@ void main() {
   });
 
   test(
-    'addPersonChangeRows_whenTrainIdentificationTafTapStartAndEndIsSet_thenDoesNotAddPersonChangeForFirstAndLastServicePoint',
+    'addTrainDriverTurnoverRows_whenTrainIdentificationTafTapStartAndEndIsSet_thenDoesNotAddPersonChangeForFirstAndLastServicePoint',
     () {
       // GIVEN
       final baseData = <BaseData>[
@@ -672,12 +672,12 @@ void main() {
         tafTapLocationReferenceEnd: 'E',
       );
       // WHEN
-      final resultList = baseData.addPersonChangeRows(trainIdentification).toList();
-      final personalChanges = resultList.whereType<PersonalChange>().toList();
+      final resultList = baseData.addTrainDriverTurnoverRows(trainIdentification).toList();
+      final trainDriverTurnoverRows = resultList.whereType<TrainDriverTurnover>().toList();
 
       // THEN
       expect(resultList, hasLength(5));
-      expect(personalChanges, hasLength(0));
+      expect(trainDriverTurnoverRows, hasLength(0));
     },
   );
 }

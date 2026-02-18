@@ -19,5 +19,5 @@ enum Datatype {
   combinedFootNoteOperationalIndication,
   communicationNetworkChannel,
   shuntingMovement,
-  personalChange,
+  trainDriverTurnover,
 }

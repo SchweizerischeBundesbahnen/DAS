@@ -165,7 +165,7 @@ class JourneyTable extends StatelessWidget {
         .hideRepeatedLineFootNotes(journeyPosition.currentPosition)
         .hideFootNotesForNotSelectedTrainSeries(currentBreakSeries?.trainSeries)
         .combineFootNoteAndOperationalIndication()
-        .addPersonChangeRows(navigationVM.modelValue?.trainIdentification)
+        .addTrainDriverTurnoverRows(navigationVM.modelValue?.trainIdentification)
         .sorted((a1, a2) => a1.compareTo(a2));
 
     final groupedRows = rows
@@ -357,10 +357,10 @@ class JourneyTable extends StatelessWidget {
             data: rowData as ShuntingMovement,
             rowIndex: index,
           );
-        case Datatype.personalChange:
-          return PersonalChangeRow(
+        case Datatype.trainDriverTurnover:
+          return TrainDriverTurnoverRow(
             metadata: journey.metadata,
-            data: rowData as PersonalChange,
+            data: rowData as TrainDriverTurnover,
             rowIndex: index,
           );
       }
