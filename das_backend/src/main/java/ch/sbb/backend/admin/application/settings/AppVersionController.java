@@ -18,6 +18,7 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -44,9 +45,18 @@ public class AppVersionController {
         return ResponseEntity.ok(new AppVersionResponse(versions));
     }
 
-    public ResponseEntity<? extends Response> getOne(Integer id) {
-        //        TODO implement
-        throw new NotImplementedException();
+    @GetMapping(API_SETTINGS_APPVERSION + "/{id}")
+    @Operation(summary = "Get app version by id.", description = "Returns a single app version by its id.")
+    @ApiResponse(responseCode = "200", description = "App version found.",
+        content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = AppVersionResponse.class)))
+    @ApiResponse(responseCode = "404", description = "App version not found.")
+    @ApiErrorResponses
+    public ResponseEntity<? extends Response> getOne(@PathVariable Integer id) {
+        AppVersion version = appVersionService.getOne(id);
+        if (version == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(new AppVersionResponse(List.of(version)));
     }
 
     public ResponseEntity<? extends Response> update(Integer id) {

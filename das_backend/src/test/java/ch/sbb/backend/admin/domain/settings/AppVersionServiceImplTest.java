@@ -84,7 +84,7 @@ class AppVersionServiceImplTest {
     void getCurrent_null() {
         CurrentAppVersion result = underTest.getCurrent(null);
 
-        assertThat(result).isNull();
+        assertThat(result).isEqualTo(CurrentAppVersion.DEFAULT);
     }
 
 }

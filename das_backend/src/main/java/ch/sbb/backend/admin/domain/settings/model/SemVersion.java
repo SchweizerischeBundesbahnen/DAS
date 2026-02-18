@@ -28,17 +28,14 @@ public class SemVersion implements Comparable<SemVersion> {
 
     @Override
     public int compareTo(@NonNull SemVersion other) {
-        long result = major - other.major;
+        int result = Integer.compare(major, other.major);
         if (result == 0) {
-            result = minor - other.minor;
+            result = Integer.compare(minor, other.minor);
             if (result == 0) {
-                result = patch - other.patch;
-                if (result == 0) {
-                    return 0;
-                }
+                result = Integer.compare(patch, other.patch);
             }
         }
-        return result < 0 ? -1 : 1;
+        return result;
     }
 
     @Override

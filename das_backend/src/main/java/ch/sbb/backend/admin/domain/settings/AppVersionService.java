@@ -9,4 +9,6 @@ public interface AppVersionService {
     List<AppVersion> getAll();
 
     CurrentAppVersion getCurrent(String version);
+
+    AppVersion getOne(Integer id);
 }

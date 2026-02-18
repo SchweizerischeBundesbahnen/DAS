@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 public record AppVersion(
     // todo descriptions and ..
-    @Schema(description = "TODO", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "The unique identifier fot the app version entry", requiredMode = Schema.RequiredMode.REQUIRED)
     Integer id,
     @Schema(description = "The version number of the app", requiredMode = Schema.RequiredMode.REQUIRED, example = "1.2.3")
     String version,
