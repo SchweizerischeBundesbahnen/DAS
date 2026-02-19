@@ -60,20 +60,22 @@ void main() {
       final b = 'Haltestelle B';
       // set position to B manually
       await tester.drag(findDASTableRowByText(b), const Offset(600, 0));
+
+      // check manual mode
+      await waitUntilExists(
+        tester,
+        find.descendant(
+          of: find.byKey(JourneyAdvancementButton.pauseKey),
+          matching: find.byIcon(SBBIcons.hand_cursor_small),
+        ),
+      );
+
       await tester.pumpAndSettle();
 
       // Check chevron at B
       expect(
         find.descendant(of: findDASTableRowByText(b), matching: find.byKey(RouteChevron.chevronKey)),
         findsAny,
-      );
-      // Check manual mode
-      expect(
-        find.descendant(
-          of: find.byKey(JourneyAdvancementButton.pauseKey),
-          matching: find.byIcon(SBBIcons.hand_cursor_small),
-        ),
-        findsOne,
       );
 
       // wait until signal received and back to non manual mode
