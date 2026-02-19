@@ -128,7 +128,10 @@ extension JourneyScopeExtension on GetIt {
       ruFeatureProvider: DI.get(),
     );
     final notificationVM = DI.get<NotificationPriorityQueueViewModel>();
-    notificationVM.addStream(type: .maneuverMode, stream: vm.isManeuverModeEnabled);
+    notificationVM.addStream(
+      type: .maneuverMode,
+      stream: vm.isManeuverModeEnabled,
+    );
     registerSingleton(
       vm,
       dispose: (vm) {

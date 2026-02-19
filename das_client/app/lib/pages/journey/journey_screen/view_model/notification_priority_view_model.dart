@@ -17,7 +17,7 @@ final _logger = Logger('NotificationPriorityQueueViewModel');
 /// Notifications can be added in two ways:
 ///
 /// 1. via [insert] or removed via [remove]
-/// 2. via a Stream<bool> that handles [insert] and [remove] operations
+/// 2. via a Stream<bool> that implicitly handles [insert] and [remove] operations
 class NotificationPriorityQueueViewModel extends JourneyAwareViewModel {
   final Map<NotificationType, VoidCallback?> _notificationTypeToCallback = {
     for (final val in NotificationType.values) val: null,
@@ -33,7 +33,11 @@ class NotificationPriorityQueueViewModel extends JourneyAwareViewModel {
 
   List<NotificationType> get modelValue => _rxNotifications.value;
 
-  void addStream({required NotificationType type, required Stream<bool> stream, VoidCallback? callback}) {
+  void addStream({
+    required NotificationType type,
+    required Stream<bool> stream,
+    VoidCallback? callback,
+  }) {
     _subscriptions[type] = stream.listen((insertNotification) {
       _logger.fine('Received from stream $type: $insertNotification');
       if (insertNotification) {

@@ -109,6 +109,7 @@ class _ProviderScope extends StatelessWidget {
           dispose: (_, vm) => vm.dispose(),
         ),
         Provider<UxTestingViewModel>(
+          lazy: false,
           create: (_) => UxTestingViewModel(
             sferaRepo: DI.get(),
             ruFeatureProvider: DI.get(),
@@ -121,12 +122,16 @@ class _ProviderScope extends StatelessWidget {
           create: (_) => ConnectivityViewModel(connectivityManager: DI.get()),
           dispose: (_, vm) => vm.dispose(),
         ),
-        Provider<DisturbanceViewModel>(
-          create: (_) => DisturbanceViewModel(sferaRepo: DI.get(), notificationVM: DI.get()),
-          dispose: (_, vm) => vm.dispose(),
-        ),
 
         // PROXY  PROVIDERS
+        ProxyProvider<NotificationPriorityQueueViewModel, DisturbanceViewModel>(
+          lazy: false,
+          update: (_, notificationVM, prev) {
+            if (prev != null) return prev;
+            return DisturbanceViewModel(sferaRepo: DI.get(), notificationVM: notificationVM);
+          },
+          dispose: (_, vm) => vm.dispose(),
+        ),
         ProxyProvider<JourneyPositionViewModel, CollapsibleRowsViewModel>(
           update: (_, journeyPositionVM, prev) {
             if (prev != null) return prev;
@@ -137,6 +142,7 @@ class _ProviderScope extends StatelessWidget {
           dispose: (_, vm) => vm.dispose(),
         ),
         ProxyProvider2<JourneyPositionViewModel, NotificationPriorityQueueViewModel, AdvisedSpeedViewModel>(
+          lazy: false,
           update: (_, journeyPositionVM, notificationVM, prev) {
             if (prev != null) return prev;
             return AdvisedSpeedViewModel(
@@ -154,15 +160,20 @@ class _ProviderScope extends StatelessWidget {
           dispose: (_, vm) => vm.dispose(),
         ),
 
-        ProxyProvider2<JourneyPositionViewModel, JourneySettingsViewModel, ReplacementSeriesViewModel>(
-          update: (_, journeyPositionVM, settingsVM, prev) {
+        ProxyProvider3<
+          JourneyPositionViewModel,
+          JourneySettingsViewModel,
+          NotificationPriorityQueueViewModel,
+          ReplacementSeriesViewModel
+        >(
+          lazy: false,
+          update: (_, journeyPositionVM, settingsVM, notificationVM, prev) {
             if (prev != null) return prev;
             final vm = ReplacementSeriesViewModel(
               journeyTableViewModel: journeyTableViewModel,
               journeyPositionViewModel: journeyPositionVM,
               journeySettingsViewModel: settingsVM,
             );
-            final notificationVM = DI.get<NotificationPriorityQueueViewModel>();
             notificationVM.addStream(
               type: .illegalSegmentNoReplacement,
               stream: vm.model.map((m) => m is NoReplacementSeries),
@@ -173,7 +184,7 @@ class _ProviderScope extends StatelessWidget {
             );
             return vm;
           },
-          dispose: (context, vm) {
+          dispose: (_, vm) {
             final notificationVM = DI.get<NotificationPriorityQueueViewModel>();
             notificationVM.removeStream(type: .illegalSegmentNoReplacement);
             notificationVM.removeStream(type: .illegalSegmentWithReplacement);
@@ -194,6 +205,7 @@ class _ProviderScope extends StatelessWidget {
           NotificationPriorityQueueViewModel,
           DepartureDispatchNotificationViewModel
         >(
+          lazy: false,
           update: (_, journeyPositionVM, notificationVM, prev) {
             if (prev != null) return prev;
             return DepartureDispatchNotificationViewModel(
@@ -260,6 +272,7 @@ class _ProviderScope extends StatelessWidget {
           NotificationPriorityQueueViewModel,
           BreakLoadSlipViewModel
         >(
+          lazy: false,
           update: (_, journeyVM, positionVM, settingsVM, detailModalVM, notificationVM, prev) {
             if (prev != null) return prev;
             return BreakLoadSlipViewModel(
