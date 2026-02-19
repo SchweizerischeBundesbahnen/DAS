@@ -35,7 +35,6 @@ public class TimetableTrainConsumer {
         containerFactory = "timetableListenerContainerFactory",
         groupId = "${spring.kafka.consumer.group-id}",
         topics = "${preload.timetableTrain.topic}",
-        properties = {"max.poll.records=500", "fetch.max.bytes=524288000", "max.partition.fetch.bytes=10485760"},
         batch = "true",
         autoStartup = "false"
     )
