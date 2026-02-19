@@ -31,7 +31,7 @@ class AppAssets {
   static const iconNoEntryExitSignal = '$_iconsDir/icon_no_entry_exit_signal.svg';
   static const iconNoEntrySignal = '$_iconsDir/icon_no_entry_signal.svg';
   static const iconNoExitSignal = '$_iconsDir/icon_no_exit_signal.svg';
-  static const iconOpenLevelCrossingBeforeExitSignal = '$_iconsDir/icon_open_level_crossing_before_exit_signal.svg';
+  static const iconOpenLevelCrossing = '$_iconsDir/icon_open_level_crossing.svg';
   static const iconReducedSpeed = '$_iconsDir/icon_reduced_speed.svg';
   static const iconAdvisedSpeedFixedTime = '$_iconsDir/icon_advised_speed_fixed_time.svg';
   static const iconAdvisedSpeedFollowTrain = '$_iconsDir/icon_advised_speed_follow_train.svg';

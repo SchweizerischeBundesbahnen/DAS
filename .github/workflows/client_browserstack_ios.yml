@@ -22,7 +22,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        file-nr: [1,2,3,4,5,6]
+        file-nr: [1,2,3,4,5,6,7]
 
     runs-on: macos-15
     steps:

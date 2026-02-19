@@ -10,7 +10,7 @@ extension StationSignExtension on StationSign {
       .noEntryExitSignal => AppAssets.iconNoEntryExitSignal,
       .noEntrySignal => AppAssets.iconNoEntrySignal,
       .noExitSignal => AppAssets.iconNoExitSignal,
-      .openLevelCrossingBeforeExitSignal => AppAssets.iconOpenLevelCrossingBeforeExitSignal,
+      .openLevelCrossingBeforeExitSignal => AppAssets.iconOpenLevelCrossing,
       _ => '',
     };
   }
