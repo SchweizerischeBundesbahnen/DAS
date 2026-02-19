@@ -64,7 +64,7 @@ void main() {
     expect(findDASTableColumnByText('R150'), findsOneWidget);
 
     // wait for JP update with new SP (added service point Olten) and TC (N180)
-    waitUntilExists(tester, oltenRow, maxWaitSeconds: 3);
+    await waitUntilExists(tester, oltenRow, maxWaitSeconds: 3);
     expect(findDASTableColumnByText('N180'), findsNothing);
     expect(findDASTableColumnByText('R150'), findsOneWidget);
   });
