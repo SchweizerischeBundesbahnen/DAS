@@ -213,11 +213,16 @@ class _ProviderScope extends StatelessWidget {
           },
           dispose: (_, vm) => vm.dispose(),
         ),
-        ProxyProvider<JourneyPositionViewModel, DepartureDispatchNotificationViewModel>(
-          update: (_, journeyPositionVM, prev) {
+        ProxyProvider2<
+          JourneyPositionViewModel,
+          NotificationPriorityQueueViewModel,
+          DepartureDispatchNotificationViewModel
+        >(
+          update: (_, journeyPositionVM, notificationVM, prev) {
             if (prev != null) return prev;
             return DepartureDispatchNotificationViewModel(
               sferaRepo: DI.get(),
+              notificationVM: notificationVM,
               journeyPositionStream: journeyPositionVM.model,
             );
           },

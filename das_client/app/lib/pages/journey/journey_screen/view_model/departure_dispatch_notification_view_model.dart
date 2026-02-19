@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
 import 'package:app/sound/das_sounds.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
@@ -10,11 +11,15 @@ class DepartureDispatchNotificationViewModel {
   DepartureDispatchNotificationViewModel({
     required SferaRepository sferaRepo,
     required Stream<JourneyPositionModel> journeyPositionStream,
-  }) : _sferaRepo = sferaRepo {
+    required NotificationPriorityQueueViewModel notificationVM,
+  }) : _sferaRepo = sferaRepo,
+       _notificationVM = notificationVM {
     _init(journeyPositionStream);
   }
 
   final SferaRepository _sferaRepo;
+
+  final NotificationPriorityQueueViewModel _notificationVM;
 
   final _rxDepartureDispatchNotificationType = BehaviorSubject<DepartureDispatchNotificationType?>.seeded(null);
 
@@ -44,10 +49,11 @@ class DepartureDispatchNotificationViewModel {
   }) {
     if (event != null && journeyPosition.lastPosition == null) {
       if (event.type != _rxDepartureDispatchNotificationType.value) {
-        _sound.play();
+        _notificationVM.insert(type: .departureDispatch, callback: () => _sound.play());
       }
       _rxDepartureDispatchNotificationType.add(event.type);
     } else {
+      _notificationVM.remove(type: .departureDispatch);
       _rxDepartureDispatchNotificationType.add(null);
     }
   }
