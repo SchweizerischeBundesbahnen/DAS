@@ -1,6 +1,9 @@
 import 'package:app/pages/journey/journey_screen/notification/notification_type.dart';
 import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:rxdart/rxdart.dart';
+
+import '../../../../test_util.dart';
 
 void main() {
   late NotificationPriorityQueueViewModel testee;
@@ -35,7 +38,7 @@ void main() {
     testee.insert(type: .advisedSpeed);
 
     // EXPECT
-    expect(testee.modelValue, equals([NotificationType.advisedSpeed]));
+    expect(testee.modelValue, equals(<NotificationType>[.advisedSpeed]));
   });
 
   test('modelValue_whenSingleItemInsertedTwice_thenIsEmittedOnlyOnce', () {
@@ -52,7 +55,7 @@ void main() {
     testee.insert(type: .advisedSpeed);
 
     // EXPECT
-    expect(testee.modelValue, equals([NotificationType.advisedSpeed]));
+    expect(testee.modelValue, equals(<NotificationType>[.advisedSpeed]));
   });
 
   test('callback_whenSingleItemInsertedWithCallback_thenCallbackIsCalled', () {
@@ -79,6 +82,53 @@ void main() {
 
     // EXPECT
     expect(mockCallback.callCounter, equals(1));
+  });
+
+  test('modelValue_whenSingleStreamAdded_thenEmitsCorrectlyDependingOnStream', () async {
+    // ARRANGE
+    expectLater(
+      testee.model,
+      emitsInOrder([
+        List.empty(),
+        <NotificationType>[.advisedSpeed],
+      ]),
+    );
+    final controller = BehaviorSubject<bool>.seeded(false);
+    testee.addStream(type: .advisedSpeed, stream: controller.stream);
+
+    // ACT
+    controller.add(true);
+    await processStreams();
+
+    // EXPECT
+    expect(testee.modelValue, equals(<NotificationType>[.advisedSpeed]));
+  });
+
+  test('modelValue_whenTwoStreamsAdded_thenEmitsCorrectlyDependingOnStreams', () async {
+    // ARRANGE
+    expectLater(
+      testee.model,
+      emitsInOrder([
+        List.empty(),
+        <NotificationType>[.advisedSpeed],
+        <NotificationType>[.disturbance, .advisedSpeed],
+        <NotificationType>[.disturbance],
+      ]),
+    );
+    final controller = BehaviorSubject<bool>.seeded(false);
+    final controller2 = BehaviorSubject<bool>.seeded(false);
+    testee.addStream(type: .advisedSpeed, stream: controller.stream);
+    testee.addStream(type: .disturbance, stream: controller2.stream);
+
+    // ACT
+    controller.add(true);
+    controller2.add(true);
+
+    controller.add(false);
+    await processStreams();
+
+    // EXPECT
+    expect(testee.modelValue, equals(<NotificationType>[.disturbance]));
   });
 
   test('modelValue_whenTwoItemsInserted_thenAreTwoNotifications', () {
@@ -143,6 +193,27 @@ void main() {
     testee.insert(type: .advisedSpeed);
 
     // ACT
+    testee.remove(type: .advisedSpeed);
+
+    // EXPECT
+    expect(testee.modelValue, equals(List.empty()));
+  });
+
+  test('model_whenItemInsertedThenRemovedTwice_thenShouldEmitCorrectly', () {
+    expectLater(
+      testee.model,
+      emitsInOrder([
+        List.empty(),
+        <NotificationType>[.advisedSpeed],
+        List.empty(),
+      ]),
+    );
+
+    // ARRANGE
+    testee.insert(type: .advisedSpeed);
+
+    // ACT
+    testee.remove(type: .advisedSpeed);
     testee.remove(type: .advisedSpeed);
 
     // EXPECT

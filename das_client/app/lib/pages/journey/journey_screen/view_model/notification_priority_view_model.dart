@@ -12,7 +12,10 @@ final _logger = Logger('NotificationPriorityQueueViewModel');
 ///
 /// Allows custom callbacks to be called once the notification is shown, e.g. for playing a sound.
 ///
-/// Notifications have to be added to the queue via [insert] or removed via [remove].
+/// Notifications can be added in two ways:
+///
+/// 1. via [insert] or removed via [remove]
+/// 2. via a Stream<bool> that handles [insert] and [remove] operations
 class NotificationPriorityQueueViewModel {
   final Map<NotificationType, VoidCallback?> _notificationTypeToCallback = {
     for (final val in NotificationType.values) val: null,
@@ -20,11 +23,25 @@ class NotificationPriorityQueueViewModel {
 
   final _activeNotifications = <NotificationType>{};
 
+  final List<StreamSubscription<bool>> _subscriptions = [];
+
   final BehaviorSubject<List<NotificationType>> _rxNotifications = BehaviorSubject.seeded(List.empty());
 
   Stream<List<NotificationType>> get model => _rxNotifications.stream.distinct();
 
   List<NotificationType> get modelValue => _rxNotifications.value;
+
+  void addStream({required NotificationType type, required Stream<bool> stream, VoidCallback? callback}) {
+    _subscriptions.add(
+      stream.listen((insertNotification) {
+        if (insertNotification) {
+          insert(type: type, callback: callback);
+        } else {
+          remove(type: type);
+        }
+      }),
+    );
+  }
 
   void insert({required NotificationType type, VoidCallback? callback}) {
     _activeNotifications.add(type);
@@ -42,13 +59,15 @@ class NotificationPriorityQueueViewModel {
   void dispose() {
     _activeNotifications.clear();
     _notificationTypeToCallback.clear();
+    _cancelSubscriptions();
     _rxNotifications.close();
   }
 
   void _emitMaximumTwoPrioritizedNotifications() {
     final toEmit = _activeNotifications.sorted((a, b) => a.index.compareTo(b.index)).take(2).toList(growable: false);
-    _logger.fine('Active Notifications: $_activeNotifications)');
-    _logger.fine('Emitting: $toEmit');
+    
+    if (ListEquality().equals(toEmit, modelValue)) return;
+    _logger.fine('Emitting active notifications: $toEmit');
     _rxNotifications.add(toEmit);
   }
 
@@ -58,6 +77,12 @@ class NotificationPriorityQueueViewModel {
       // only call callback for the first time the notification is shown
       _notificationTypeToCallback[type] = null;
       callback?.call();
+    }
+  }
+
+  void _cancelSubscriptions() {
+    for (final sub in _subscriptions) {
+      sub.cancel();
     }
   }
 }
