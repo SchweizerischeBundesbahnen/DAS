@@ -1,5 +1,6 @@
 import 'package:app/pages/journey/journey_screen/widgets/table/additional_speed_restriction_row.dart';
 import 'package:app/widgets/labeled_badge.dart';
+import 'package:app/widgets/table/das_table.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -29,6 +30,34 @@ void main() {
       color: AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor,
     );
     expect(coloredCells, findsNWidgets(14));
+
+    await disconnect(tester);
+  });
+
+  testWidgets('test other non-ASR rows between are colored correctly', (tester) async {
+    await prepareAndStartApp(tester);
+    await loadJourney(tester, trainNumber: 'T2');
+
+    final tableFinder = find.byType(DASTable);
+    expect(tableFinder, findsOneWidget);
+
+    final testRows = ['Genève', 'km 32.2', 'Lengnau', 'WANZ'];
+
+    // Scroll to the table and search inside it
+    for (final rowText in testRows) {
+      final rowFinder = find.descendant(of: tableFinder, matching: find.text(rowText));
+      await tester.dragUntilVisible(rowFinder, tableFinder, const Offset(0, -50));
+
+      final testRow = findDASTableRowByText(rowText);
+      expect(testRow, findsOneWidget);
+
+      // check first 3 cells are colored
+      final coloredCells = findColoredRowCells(
+        of: testRow,
+        color: AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor,
+      );
+      expect(coloredCells, findsNWidgets(6));
+    }
 
     await disconnect(tester);
   });

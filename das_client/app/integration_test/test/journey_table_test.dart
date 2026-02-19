@@ -1,6 +1,5 @@
 import 'package:app/pages/journey/journey_screen/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
-import 'package:app/pages/journey/journey_screen/widgets/table/additional_speed_restriction_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/bracket_station_cell_body.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_cell_body.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/curve_point_row.dart';
@@ -286,35 +285,6 @@ void main() {
 
       final zahnstangeEndeRow = findDASTableRowByText('Zahnstangen Ende');
       expect(zahnstangeEndeRow, findsOneWidget);
-
-      await disconnect(tester);
-    });
-
-    // TODO: Weg?
-    testWidgets('test other rows are displayed correctly', (tester) async {
-      await prepareAndStartApp(tester);
-      await loadJourney(tester, trainNumber: 'T2');
-
-      final tableFinder = find.byType(DASTable);
-      expect(tableFinder, findsOneWidget);
-
-      final testRows = ['Genève', 'km 32.2', 'Lengnau', 'WANZ'];
-
-      // Scroll to the table and search inside it
-      for (final rowText in testRows) {
-        final rowFinder = find.descendant(of: tableFinder, matching: find.text(rowText));
-        await tester.dragUntilVisible(rowFinder, tableFinder, const Offset(0, -50));
-
-        final testRow = findDASTableRowByText(rowText);
-        expect(testRow, findsOneWidget);
-
-        // check first 3 cells are colored
-        final coloredCells = findColoredRowCells(
-          of: testRow,
-          color: AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor,
-        );
-        expect(coloredCells, findsNWidgets(6));
-      }
 
       await disconnect(tester);
     });
