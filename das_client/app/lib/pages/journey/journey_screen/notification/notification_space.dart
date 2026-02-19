@@ -43,6 +43,7 @@ class NotificationSpace extends StatelessWidget {
             final data = asyncSnapshot.requireData;
             if (data.isEmpty) return SizedBox.shrink();
             if (data.length == 1) return data.first.toWidget();
+
             return Column(
               mainAxisSize: .min,
               spacing: SBBSpacing.xSmall,

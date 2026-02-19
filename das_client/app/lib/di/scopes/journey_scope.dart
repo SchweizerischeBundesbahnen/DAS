@@ -121,9 +121,20 @@ extension JourneyScopeExtension on GetIt {
   }
 
   void registerWarnAppViewModel() {
+    final vm = WarnAppViewModel(
+      flavor: DI.get(),
+      sferaRepo: DI.get(),
+      warnappRepo: DI.get(),
+      ruFeatureProvider: DI.get(),
+    );
+    final notificationVM = DI.get<NotificationPriorityQueueViewModel>();
+    notificationVM.addStream(type: .maneuverMode, stream: vm.isManeuverModeEnabled);
     registerSingleton(
-      WarnAppViewModel(flavor: DI.get(), sferaRepo: DI.get(), warnappRepo: DI.get(), ruFeatureProvider: DI.get()),
-      dispose: (vm) => vm.dispose(),
+      vm,
+      dispose: (vm) {
+        DI.get<NotificationPriorityQueueViewModel>().removeStream(type: .maneuverMode);
+        vm.dispose();
+      },
     );
   }
 

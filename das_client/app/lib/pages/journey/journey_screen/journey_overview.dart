@@ -138,12 +138,15 @@ class _ProviderScope extends StatelessWidget {
           create: (_) => ConnectivityViewModel(connectivityManager: DI.get()),
           dispose: (_, vm) => vm.dispose(),
         ),
-        Provider(
-          create: (_) => DisturbanceViewModel(sferaRepo: DI.get()),
-          dispose: (_, vm) => vm.dispose(),
-        ),
 
         // PROXY  PROVIDERS
+        ProxyProvider<NotificationPriorityQueueViewModel, DisturbanceViewModel>(
+          update: (_, notificationVM, prev) {
+            if (prev != null) return prev;
+            return DisturbanceViewModel(sferaRepo: DI.get(), notificationVM: notificationVM);
+          },
+          dispose: (_, vm) => vm.dispose(),
+        ),
         ProxyProvider<JourneyPositionViewModel, CollapsibleRowsViewModel>(
           update: (_, journeyPositionVM, prev) {
             if (prev != null) return prev;
