@@ -18,7 +18,6 @@ import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -30,9 +29,6 @@ public class StorageService {
     private static final String DIR_TC = "tc/";
     private static final String ZIP_FILE_ENDING = ".zip";
     private static final DateTimeFormatter FILENAME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH-mm-ssX");
-
-    @Value("${preload.fileCleanUp.olderThanHours}")
-    private int olderThanHours;
 
     private final XmlHelper xmlHelper;
     private final S3Service s3Service;
@@ -109,15 +105,14 @@ public class StorageService {
         zos.closeEntry();
     }
 
-    void cleanUp() {
-        OffsetDateTime cutoff = OffsetDateTime.now().minusHours(olderThanHours);
+    void cleanUp(OffsetDateTime cutoffDate) {
         List<String> keysToDelete = s3Service.listObjects().stream()
             .filter(k -> k != null && k.endsWith(ZIP_FILE_ENDING))
             .filter(k -> {
                 try {
                     String base = k.substring(0, k.length() - ZIP_FILE_ENDING.length());
                     OffsetDateTime ts = OffsetDateTime.parse(base, FILENAME_FORMATTER);
-                    return ts.isBefore(cutoff);
+                    return ts.isBefore(cutoffDate);
                 } catch (DateTimeParseException e) {
                     log.warn("CleanUp: Skipping zip file with unexpected name: {}", k);
                     return false;
