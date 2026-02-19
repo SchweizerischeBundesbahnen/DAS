@@ -126,7 +126,9 @@ void main() {
 
     mockJourneySettingsViewModel = MockJourneySettingsViewModel();
     journeySubject = BehaviorSubject<Journey?>();
-    settingsSubject = BehaviorSubject.seeded(JourneySettings());
+    settingsSubject = BehaviorSubject.seeded(
+      JourneySettings(initialBreakSeries: breakSeries),
+    );
     positionSubject = BehaviorSubject.seeded(JourneyPositionModel());
     formationSubject = BehaviorSubject<Formation?>();
     connectivitySubject = BehaviorSubject.seeded(true);

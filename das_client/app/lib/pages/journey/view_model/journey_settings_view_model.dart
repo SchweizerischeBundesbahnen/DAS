@@ -39,10 +39,7 @@ class JourneySettingsViewModel extends JourneyAwareViewModel {
   @override
   void journeyIdentificationChanged(Journey? journey) {
     _rxSettings.add(
-      JourneySettings(
-        initialBreakSeries: journey?.metadata.breakSeries,
-        initialAvailableBreakSeries: journey?.metadata.availableBreakSeries,
-      ),
+      JourneySettings(initialBreakSeries: journey?.metadata.breakSeries),
     );
   }
 

@@ -30,16 +30,17 @@ void main() {
   late BehaviorSubject<JourneyPositionModel> journeyPositionSubject;
   late BehaviorSubject<JourneySettings> journeySettingsSubject;
 
+  final initialBreakSeries = BreakSeries(trainSeries: .N, breakSeries: 180);
   final journey = Journey(
     metadata: Metadata(
       availableBreakSeries: {
-        BreakSeries(trainSeries: .N, breakSeries: 180),
+        initialBreakSeries,
         BreakSeries(trainSeries: .N, breakSeries: 160),
         BreakSeries(trainSeries: .R, breakSeries: 120),
         BreakSeries(trainSeries: .A, breakSeries: 100),
         BreakSeries(trainSeries: .D, breakSeries: 100),
       },
-      breakSeries: BreakSeries(trainSeries: .N, breakSeries: 180),
+      breakSeries: initialBreakSeries,
       lineSpeeds: SplayTreeMap.from({
         0: [
           TrainSeriesSpeed(
@@ -181,7 +182,11 @@ void main() {
     mockJourneySettingsViewModel = MockJourneySettingsViewModel();
     journeySubject = BehaviorSubject<Journey?>.seeded(null);
     journeyPositionSubject = BehaviorSubject<JourneyPositionModel>.seeded(JourneyPositionModel());
-    journeySettingsSubject = BehaviorSubject<JourneySettings>.seeded(JourneySettings());
+    journeySettingsSubject = BehaviorSubject<JourneySettings>.seeded(
+      JourneySettings(
+        initialBreakSeries: initialBreakSeries,
+      ),
+    );
     when(mockJourneyTableViewModel.journey).thenAnswer((_) => journeySubject.stream);
     when(mockJourneyPositionViewModel.model).thenAnswer((_) => journeyPositionSubject.stream);
     when(mockJourneyPositionViewModel.modelValue).thenAnswer((_) => journeyPositionSubject.value);

@@ -79,7 +79,7 @@ class JourneyTable extends StatelessWidget {
       ]),
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.data?[0] == null) {
-          return JourneyLoadingTable(columns: _columns(context, null, null));
+          return JourneyLoadingTable(columns: _columns(context, null, null, null));
         }
 
         final journey = snapshot.data![0] as Journey;
@@ -135,7 +135,7 @@ class JourneyTable extends StatelessWidget {
                 child: DASTable(
                   key: journeyTableScrollController.tableKey,
                   scrollController: journeyTableScrollController.scrollController,
-                  columns: _columns(context, settings, openModalType),
+                  columns: _columns(context, journey.metadata, settings, openModalType),
                   rows: tableRows.map((it) => it.build(context)).toList(),
                   bottomMarginAdjustment: marginAdjustment,
                 ),
@@ -369,6 +369,7 @@ class JourneyTable extends StatelessWidget {
 
   List<DASTableColumn> _columns(
     BuildContext context,
+    Metadata? metadata,
     JourneySettings? settings,
     DetailModalType? openModalType,
   ) {
@@ -447,7 +448,7 @@ class JourneyTable extends StatelessWidget {
         child: _brakedWeightSpeedHeader(context, currentBreakSeries),
         padding: EdgeInsets.zero,
         width: 62.0,
-        onTap: () => _onBreakSeriesTap(context, settings),
+        onTap: () => _onBreakSeriesTap(context, metadata, settings),
         headerKey: breakingSeriesHeaderKey,
       ),
       DASTableColumn(
@@ -532,7 +533,7 @@ class JourneyTable extends StatelessWidget {
     context.read<JourneySettingsViewModel>().updateExpandedGroups(newList);
   }
 
-  Future<void> _onBreakSeriesTap(BuildContext context, JourneySettings? settings) async {
+  Future<void> _onBreakSeriesTap(BuildContext context, Metadata? metadata, JourneySettings? settings) async {
     final viewModel = context.read<JourneySettingsViewModel>();
 
     final selectedBreakSeries = await showSBBModalSheet<BreakSeries>(
@@ -540,7 +541,7 @@ class JourneyTable extends StatelessWidget {
       title: context.l10n.p_journey_break_series,
       constraints: BoxConstraints(),
       child: BreakSeriesSelection(
-        availableBreakSeries: settings?.initialAvailableBreakSeries ?? {},
+        availableBreakSeries: metadata?.availableBreakSeries ?? {},
         selectedBreakSeries: settings?.currentBreakSeries,
       ),
     );
