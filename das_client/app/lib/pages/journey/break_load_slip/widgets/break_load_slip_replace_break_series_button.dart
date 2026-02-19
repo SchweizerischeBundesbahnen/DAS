@@ -20,7 +20,7 @@ class BreakLoadSlipReplaceBreakSeriesButton extends StatelessWidget {
         // TODO: https://github.com/SchweizerischeBundesbahnen/design_system_flutter/pull/425
         if (viewModel.isActiveFormationRun) {
           child = OutlinedButton(
-            onPressed: viewModel.isJourneyAndActiveFormationRunBreakSeriesDifferent()
+            onPressed: viewModel.canApplyActiveFormationRunBreakSeriesToJourney()
                 ? () => viewModel.updateJourneyBreakSeriesFromActiveFormationRun()
                 : null,
             child: Text(context.l10n.p_break_load_slip_button_apply_train_series),

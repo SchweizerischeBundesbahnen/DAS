@@ -74,10 +74,14 @@ void main() {
     trainCategoryCode: 'A',
     brakedWeightPercentage: 75,
   );
-  final formationRun3 = _generateFormationRun('CH00003', 'CH00004');
+  final formationRun3 = _generateFormationRun('CH00003', 'CH00004', trainCategoryCode: 'N', brakedWeightPercentage: 50);
 
   final journey = Journey(
-    metadata: Metadata(trainIdentification: trainIdentification, breakSeries: breakSeries),
+    metadata: Metadata(
+      trainIdentification: trainIdentification,
+      breakSeries: breakSeries,
+      availableBreakSeries: {BreakSeries(trainSeries: TrainSeries.N, breakSeries: 50)},
+    ),
     data: [
       ServicePoint(
         name: 'A',
@@ -339,6 +343,55 @@ void main() {
 
     expect(
       testee.isJourneyAndActiveFormationRunBreakSeriesDifferent(),
+      isTrue,
+    );
+  });
+
+  test('canApplyActiveFormationRunBreakSeriesToJourney_whenBreakSeriesIsSame_returnsFalse', () async {
+    // ACT
+    journeySubject.add(journey);
+    formationSubject.add(formation);
+
+    await processStreams();
+
+    expect(
+      testee.canApplyActiveFormationRunBreakSeriesToJourney(),
+      isFalse,
+    );
+  });
+
+  test('canApplyActiveFormationRunBreakSeriesToJourney_whenBreakSeriesIsDifferentButNotPresent_returnsFalse', () async {
+    // ACT
+    journeySubject.add(journey);
+    formationSubject.add(formation);
+
+    await processStreams();
+
+    final position = JourneyPositionModel(currentPosition: journey.data.whereType<ServicePoint>().elementAt(1));
+    positionSubject.add(position);
+
+    await processStreams();
+
+    expect(
+      testee.canApplyActiveFormationRunBreakSeriesToJourney(),
+      isFalse,
+    );
+  });
+
+  test('canApplyActiveFormationRunBreakSeriesToJourney_whenBreakSeriesIsDifferentAndPresent_returnsTrue', () async {
+    // ACT
+    journeySubject.add(journey);
+    formationSubject.add(formation);
+
+    await processStreams();
+
+    final position = JourneyPositionModel(currentPosition: journey.data.whereType<ServicePoint>().elementAt(2));
+    positionSubject.add(position);
+
+    await processStreams();
+
+    expect(
+      testee.canApplyActiveFormationRunBreakSeriesToJourney(),
       isTrue,
     );
   });

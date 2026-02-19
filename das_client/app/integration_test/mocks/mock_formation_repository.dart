@@ -29,7 +29,7 @@ class MockFormationRepository implements FormationRepository {
           'CH09991',
           'CH09992',
           trainCategoryCode: 'A',
-          brakedWeightPercentage: 95,
+          brakedWeightPercentage: 30,
         ),
         _generateFormationRun(
           'CH09992',
