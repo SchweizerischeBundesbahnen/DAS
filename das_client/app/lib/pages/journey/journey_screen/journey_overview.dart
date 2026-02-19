@@ -28,7 +28,6 @@ import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
 import 'package:app/pages/journey/view_model/disturbance_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
-import 'package:app/sound/das_sounds.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -110,43 +109,24 @@ class _ProviderScope extends StatelessWidget {
           dispose: (_, vm) => vm.dispose(),
         ),
         Provider<UxTestingViewModel>(
-          create: (_) {
-            final vm = UxTestingViewModel(
-              sferaRepo: DI.get(),
-              ruFeatureProvider: DI.get(),
-              formationRepository: DI.get(),
-            );
-            final notificationVM = DI.get<NotificationPriorityQueueViewModel>();
-            notificationVM.addStream(
-              type: .koaWaitCancelled,
-              stream: vm.koaState.map((k) => k == .waitCancelled),
-              callback: () => DI.get<DASSounds>().koa.play(),
-            );
-            notificationVM.addStream(
-              type: .koaWait,
-              stream: vm.koaState.map((k) => k == .wait),
-            );
-            return vm;
-          },
-          dispose: (_, vm) {
-            DI.get<NotificationPriorityQueueViewModel>().removeStream(type: .koaWaitCancelled);
-            DI.get<NotificationPriorityQueueViewModel>().removeStream(type: .koaWait);
-            vm.dispose();
-          },
+          create: (_) => UxTestingViewModel(
+            sferaRepo: DI.get(),
+            ruFeatureProvider: DI.get(),
+            formationRepository: DI.get(),
+            notificationViewModel: DI.get(),
+          ),
+          dispose: (_, vm) => vm.dispose(),
         ),
         Provider<ConnectivityViewModel>(
           create: (_) => ConnectivityViewModel(connectivityManager: DI.get()),
           dispose: (_, vm) => vm.dispose(),
         ),
-
-        // PROXY  PROVIDERS
-        ProxyProvider<NotificationPriorityQueueViewModel, DisturbanceViewModel>(
-          update: (_, notificationVM, prev) {
-            if (prev != null) return prev;
-            return DisturbanceViewModel(sferaRepo: DI.get(), notificationVM: notificationVM);
-          },
+        Provider<DisturbanceViewModel>(
+          create: (_) => DisturbanceViewModel(sferaRepo: DI.get(), notificationVM: DI.get()),
           dispose: (_, vm) => vm.dispose(),
         ),
+
+        // PROXY  PROVIDERS
         ProxyProvider<JourneyPositionViewModel, CollapsibleRowsViewModel>(
           update: (_, journeyPositionVM, prev) {
             if (prev != null) return prev;
@@ -174,19 +154,15 @@ class _ProviderScope extends StatelessWidget {
           dispose: (_, vm) => vm.dispose(),
         ),
 
-        ProxyProvider3<
-          JourneyPositionViewModel,
-          JourneySettingsViewModel,
-          NotificationPriorityQueueViewModel,
-          ReplacementSeriesViewModel
-        >(
-          update: (_, journeyPositionVM, settingsVM, notificationVM, prev) {
+        ProxyProvider2<JourneyPositionViewModel, JourneySettingsViewModel, ReplacementSeriesViewModel>(
+          update: (_, journeyPositionVM, settingsVM, prev) {
             if (prev != null) return prev;
             final vm = ReplacementSeriesViewModel(
               journeyTableViewModel: journeyTableViewModel,
               journeyPositionViewModel: journeyPositionVM,
               journeySettingsViewModel: settingsVM,
             );
+            final notificationVM = DI.get<NotificationPriorityQueueViewModel>();
             notificationVM.addStream(
               type: .illegalSegmentNoReplacement,
               stream: vm.model.map((m) => m is NoReplacementSeries),
@@ -276,19 +252,21 @@ class _ProviderScope extends StatelessWidget {
           },
           dispose: (_, vm) => vm.dispose(),
         ),
-        ProxyProvider4<
+        ProxyProvider5<
           JourneyTableViewModel,
           JourneyPositionViewModel,
           JourneySettingsViewModel,
           DetailModalViewModel,
+          NotificationPriorityQueueViewModel,
           BreakLoadSlipViewModel
         >(
-          update: (_, journeyVM, positionVM, settingsVM, detailModalVM, prev) {
+          update: (_, journeyVM, positionVM, settingsVM, detailModalVM, notificationVM, prev) {
             if (prev != null) return prev;
             return BreakLoadSlipViewModel(
               journeyTableViewModel: journeyVM,
               journeyPositionViewModel: positionVM,
               formationRepository: DI.get(),
+              notificationViewModel: notificationVM,
               journeySettingsViewModel: settingsVM,
               detailModalViewModel: detailModalVM,
               connectivityManager: DI.get(),

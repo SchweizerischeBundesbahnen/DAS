@@ -35,6 +35,7 @@ class NotificationPriorityQueueViewModel extends JourneyAwareViewModel {
 
   void addStream({required NotificationType type, required Stream<bool> stream, VoidCallback? callback}) {
     _subscriptions[type] = stream.listen((insertNotification) {
+      _logger.fine('Received from stream $type: $insertNotification');
       if (insertNotification) {
         insert(type: type, callback: callback);
       } else {
