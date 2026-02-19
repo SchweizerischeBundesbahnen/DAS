@@ -22,31 +22,30 @@ class BaliseRow extends CellRowBuilder<Balise> {
 
   @override
   DASTableCell kilometreCell(BuildContext context) {
-    if (!isGrouped) super.kilometreCell(context);
+    if (!isGrouped) return super.kilometreCell(context);
 
-    if (data.kilometre.isEmpty) {
-      return DASTableCell.empty(decoration: DASTableCellDecoration(color: specialCellColor));
-    } else {
-      return DASTableCell(
-        decoration: DASTableCellDecoration(color: specialCellColor),
-        child: Padding(
-          padding: const .only(left: 8.0),
-          child: OverflowBox(
-            maxWidth: double.infinity,
-            child: Text(data.kilometre[0].toStringAsFixed(3)),
-          ),
+    if (data.kilometre.isEmpty) return DASTableCell.empty(decoration: DASTableCellDecoration(color: specialCellColor));
+
+    return DASTableCell(
+      decoration: DASTableCellDecoration(color: specialCellColor),
+      child: Padding(
+        padding: const .only(left: 8.0),
+        child: OverflowBox(
+          maxWidth: double.infinity,
+          child: Text(data.kilometre[0].toStringAsFixed(3)),
         ),
-        clipBehavior: .none,
-        alignment: .centerLeft,
-      );
-    }
+      ),
+      clipBehavior: .none,
+      alignment: .centerLeft,
+    );
   }
 
   @override
   DASTableCell informationCell(BuildContext context) {
-    final levelCrossingCount = '(${data.amountLevelCrossings} ${context.l10n.p_journey_table_level_crossing})';
+    if (data.amountLevelCrossings <= 1 || isGrouped) return DASTableCell.empty();
+
     return DASTableCell(
-      child: Text(data.amountLevelCrossings > 1 && !isGrouped ? levelCrossingCount : ''),
+      child: Text('(${data.amountLevelCrossings} ${context.l10n.p_journey_table_level_crossing})'),
       alignment: .centerRight,
     );
   }

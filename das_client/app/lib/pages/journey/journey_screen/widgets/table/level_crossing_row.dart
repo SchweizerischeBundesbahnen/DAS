@@ -10,7 +10,8 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
 class LevelCrossingRow extends CellRowBuilder<LevelCrossing> {
-  static const Key baliseIconLevelCrossingKey = Key('baliseIconLevelCrossing');
+  static const Key iconLevelCrossingKey = Key('levelCrossingIcon');
+  static const Key iconBaliseKey = Key('levelCrossingBaliseIcon');
 
   LevelCrossingRow({
     required super.metadata,
@@ -25,28 +26,28 @@ class LevelCrossingRow extends CellRowBuilder<LevelCrossing> {
   DASTableCell kilometreCell(BuildContext context) {
     if (!isGrouped) return super.kilometreCell(context);
 
-    if (data.kilometre.isEmpty) {
-      return DASTableCell.empty(decoration: DASTableCellDecoration(color: specialCellColor));
-    } else {
-      return DASTableCell(
-        decoration: DASTableCellDecoration(color: specialCellColor),
-        child: Padding(
-          padding: .only(left: 8.0),
-          child: OverflowBox(
-            maxWidth: double.infinity,
-            child: Text(data.kilometre[0].toStringAsFixed(3)),
-          ),
+    if (data.kilometre.isEmpty) return DASTableCell.empty(decoration: DASTableCellDecoration(color: specialCellColor));
+
+    return DASTableCell(
+      decoration: DASTableCellDecoration(color: specialCellColor),
+      child: Padding(
+        padding: .only(left: 8.0),
+        child: OverflowBox(
+          maxWidth: double.infinity,
+          child: Text(data.kilometre[0].toStringAsFixed(3)),
         ),
-        clipBehavior: .none,
-        alignment: .centerLeft,
-      );
-    }
+      ),
+      clipBehavior: .none,
+      alignment: .centerLeft,
+    );
   }
 
   @override
   DASTableCell informationCell(BuildContext context) {
     return DASTableCell(
-      child: Text(context.l10n.p_journey_table_level_crossing),
+      child: isInEtcsLevel2Segment
+          ? _icon(context, AppAssets.iconOpenLevelCrossing, iconLevelCrossingKey)
+          : Text(context.l10n.p_journey_table_level_crossing),
       alignment: .centerRight,
     );
   }
@@ -60,15 +61,19 @@ class LevelCrossingRow extends CellRowBuilder<LevelCrossing> {
     if (group != null && group.shouldShowBaliseIconForLevelCrossing(data)) {
       return DASTableCell(
         padding: .all(SBBSpacing.xxSmall),
-        child: SvgPicture.asset(
-          AppAssets.iconBalise,
-          key: baliseIconLevelCrossingKey,
-          colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
-        ),
+        child: _icon(context, AppAssets.iconBalise, iconBaliseKey),
         alignment: .centerLeft,
       );
     } else {
       return DASTableCell.empty();
     }
+  }
+
+  Widget _icon(BuildContext context, String assetName, Key key) {
+    return SvgPicture.asset(
+      assetName,
+      key: key,
+      colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
+    );
   }
 }

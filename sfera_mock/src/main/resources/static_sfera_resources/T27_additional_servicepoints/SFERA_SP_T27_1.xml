@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T27_1" SP_VersionMajor="3"
-                SP_VersionMinor="1" SP_Length="6000" SP_Status="Valid">
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T27_1" SP_VersionMajor="4"
+                SP_VersionMinor="0" SP_Length="6000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
     </SP_Zone>
@@ -10,6 +10,14 @@
             <TAF_TAP_LocationReference>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3000</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <!-- additional service point with stop -->
+        <TimingPoint TP_ID="Bern_Stop" location="250">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3999</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
 
@@ -58,6 +66,15 @@
                 <teltsi_LocationPrimaryCode>3006</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
+
+        <!-- additional service point with stop -->
+        <TimingPoint TP_ID="Olten_Stop" location="3250">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3998</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
 
         <TimingPoint TP_ID="Dulliken" location="3500">
             <TAF_TAP_LocationReference>
@@ -120,6 +137,21 @@
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
 
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="250" endLocation="250" TAF_TAP_location_abbreviation="BEST"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3999</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Bern Hidden Stop</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>routeTableData</NSP_GroupName>
+                <NetworkSpecificParameter name="routeTableDataRelevant" value="unlisted"/>
+            </TAF_TAP_Location_NSP>
+        </TAF_TAP_Location>
+
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="500" endLocation="500" TAF_TAP_location_abbreviation="BE"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
@@ -165,6 +197,21 @@
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>routeTableData</NSP_GroupName>
                 <NetworkSpecificParameter name="routeTableDataRelevant" value="false"/>
+            </TAF_TAP_Location_NSP>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="3250" endLocation="3250" TAF_TAP_location_abbreviation="OLST"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3998</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Olten Hidden Stop</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>routeTableData</NSP_GroupName>
+                <NetworkSpecificParameter name="routeTableDataRelevant" value="unlisted"/>
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
 
@@ -240,6 +287,10 @@
             <KM_Reference kmRef="25.8"/>
         </KilometreReferencePoint>
 
+        <KilometreReferencePoint location="250">
+            <KM_Reference kmRef="27.8"/>
+        </KilometreReferencePoint>
+
         <KilometreReferencePoint location="500">
             <KM_Reference kmRef="30.2"/>
         </KilometreReferencePoint>
@@ -278,6 +329,10 @@
 
         <KilometreReferencePoint location="3200">
             <KM_Reference kmRef="116.6"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="3250">
+            <KM_Reference kmRef="117.8"/>
         </KilometreReferencePoint>
 
         <KilometreReferencePoint location="3500">

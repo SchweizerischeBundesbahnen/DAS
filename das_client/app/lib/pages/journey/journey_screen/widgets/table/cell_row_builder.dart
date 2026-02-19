@@ -172,8 +172,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
   }
 
   DASTableCell brakedWeightSpeedCell(BuildContext context) {
-    final inEtcsLevel2Segment = metadata.nonStandardTrackEquipmentSegments.isInEtcsLevel2Segment(data.order);
-    if (inEtcsLevel2Segment && data.dataType != .cabSignaling) {
+    if (isInEtcsLevel2Segment && data.dataType != .cabSignaling) {
       return DASTableCell.empty();
     }
     return DASTableCell(
@@ -277,6 +276,8 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
 
   DASTableCell gradientDownhillCell(BuildContext context) =>
       DASTableCell.empty(decoration: DASTableCellDecoration(color: specialCellColor));
+
+  bool get isInEtcsLevel2Segment => metadata.nonStandardTrackEquipmentSegments.isInEtcsLevel2Segment(data.order);
 
   Color? get specialCellColor =>
       getAdditionalSpeedRestriction() != null ? AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor : null;

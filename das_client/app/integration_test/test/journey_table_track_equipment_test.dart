@@ -156,9 +156,6 @@ void main() {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T10');
 
-    final scrollableFinder = find.byType(AnimatedList);
-    expect(scrollableFinder, findsOneWidget);
-
     // check ExtendedSpeedReversingPossible from Genève-Aéroport to Gland
     _checkTrackEquipmentOnServicePoint('Meiringen', TrackEquipmentCellBody.singleTrackNoBlockKey);
     _checkTrackEquipmentOnServicePoint('Meiringen Alpbach', TrackEquipmentCellBody.singleTrackNoBlockKey);
