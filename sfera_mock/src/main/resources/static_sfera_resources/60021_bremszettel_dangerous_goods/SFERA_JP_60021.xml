@@ -35,7 +35,7 @@
     <General_JP_Information>
         <General_JP_Information_NSP>
             <teltsi_Company>1285</teltsi_Company>
-            <NetworkSpecificParameter name="tms_Operating_Day_Date" value="2025-11-28"/>
+            <NetworkSpecificParameter name="operatingDay" value="2025-11-28"/>
         </General_JP_Information_NSP>
     </General_JP_Information>
 </JourneyProfile>
