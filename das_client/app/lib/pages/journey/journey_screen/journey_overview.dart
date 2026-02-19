@@ -180,7 +180,7 @@ class _ProviderScope extends StatelessWidget {
             );
             notificationVM.addStream(
               type: .illegalSegmentWithReplacement,
-              stream: vm.model.map((m) => m is ReplacementSeriesAvailable),
+              stream: vm.model.map((m) => m is ReplacementSeriesAvailable || m is OriginalSeriesAvailable),
             );
             return vm;
           },

@@ -37,7 +37,9 @@ class MockJourneyScope extends JourneyScope {
         sferaRepo: DI.get(),
         warnappRepo: DI.get(),
         ruFeatureProvider: DI.get(),
+        notificationViewModel: DI.get(),
       ),
+      dispose: (vm) => vm.dispose(),
     );
   }
 }
