@@ -96,7 +96,7 @@
                 <groupId>org.openapitools</groupId>
                 <!-- see https://openapi-generator.tech/docs/generators/java/, https://github.com/OpenAPITools/openapi-generator/tree/master/modules/openapi-generator-maven-plugin-->
                 <artifactId>openapi-generator-maven-plugin</artifactId>
-                <version>7.19.0</version>
+                <version>7.20.0</version>
                 <executions>
                     <execution>
                         <id>das_backend_rest-client</id>
