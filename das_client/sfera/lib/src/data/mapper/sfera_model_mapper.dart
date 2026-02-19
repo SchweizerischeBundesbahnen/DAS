@@ -14,6 +14,7 @@ import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
 import 'package:sfera/src/data/dto/train_identification_dto.dart';
 import 'package:sfera/src/data/mapper/mapper_utils.dart';
 import 'package:sfera/src/data/mapper/segment_profile_mapper.dart';
+import 'package:sfera/src/data/mapper/short_term_change_mapper.dart';
 import 'package:sfera/src/data/mapper/speed_mapper.dart';
 import 'package:sfera/src/data/mapper/track_equipment_mapper.dart';
 import 'package:sfera/src/model/journey/bracket_station.dart';
@@ -91,7 +92,7 @@ class SferaModelMapper {
     return Journey(
       metadata: Metadata(
         trainIdentification: journeyProfile.trainIdentification.toModel(
-          operatingDay: journeyProfile.generalJpInformation?.operatingDayNsp?.operatingDay,
+          operatingDay: journeyProfile.generalJpInformation?.tmsDataNsp?.operatingDayNspDto?.operatingDay,
         ),
         signaledPosition: _signaledPosition(relatedTrainInformation, segmentProfileReferences),
         additionalSpeedRestrictions: additionalSpeedRestrictions,
@@ -104,6 +105,10 @@ class SferaModelMapper {
         nonStandardTrackEquipmentSegments: trackEquipmentSegments,
         bracketStationSegments: _parseBracketStationSegments(servicePoints),
         advisedSpeedSegments: SpeedMapper.advisedSpeeds(journeyProfile, segmentProfiles, journeyData),
+        shortTermChanges: ShortTermChangeMapper.mapShortTermChanges(
+          journeyProfile.generalJpInformation,
+          servicePoints,
+        ),
         availableBreakSeries: _parseAvailableBreakSeries(journeyPoints, lineSpeeds),
         communicationNetworkChanges: communicationChanges,
         breakSeries:

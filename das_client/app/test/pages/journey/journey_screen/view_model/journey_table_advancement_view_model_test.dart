@@ -30,7 +30,7 @@ void main() {
 
   final journeyStart = Signal(order: 9, kilometre: []);
   final secondSignal = Signal(order: 10, kilometre: []);
-  final firstServicePoint = ServicePoint(name: 'B', abbreviation: '', order: 11, kilometre: []);
+  final firstServicePoint = ServicePoint(name: 'B', abbreviation: '', locationCode: '', order: 11, kilometre: []);
   final baseJourney = Journey(
     metadata: Metadata(
       journeyStart: journeyStart,
@@ -42,7 +42,7 @@ void main() {
       firstServicePoint,
       Signal(order: 12, kilometre: []),
       Signal(order: 19, kilometre: []),
-      ServicePoint(name: 'C', abbreviation: '', order: 20, kilometre: []),
+      ServicePoint(name: 'C', abbreviation: '', locationCode: '', order: 20, kilometre: []),
       Signal(order: 21, kilometre: []),
     ],
   );

@@ -10,6 +10,7 @@ void main() {
         servicePoint: ServicePoint(
           name: 'Servicepoint A',
           abbreviation: 'SA',
+          locationCode: '',
           order: 0,
           kilometre: [],
           departureAuthorization: null,
@@ -26,6 +27,7 @@ void main() {
         servicePoint: ServicePoint(
           name: 'Servicepoint A',
           abbreviation: 'SA',
+          locationCode: '',
           order: 0,
           kilometre: [],
           departureAuthorization: DepartureAuthorization(
@@ -44,6 +46,7 @@ void main() {
         servicePoint: ServicePoint(
           name: 'Servicepoint A',
           abbreviation: 'SA',
+          locationCode: '',
           order: 0,
           kilometre: [],
           departureAuthorization: DepartureAuthorization(

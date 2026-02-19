@@ -3,7 +3,7 @@ publish_to: 'none'
 version: 1.0.0
 
 environment:
-  sdk: ^3.10.4
+  sdk: ^3.10.8
 
 resolution: workspace
 
@@ -17,7 +17,7 @@ dependencies:
   # https://pub.dev/packages/json_annotation
   json_annotation: ^4.9.0
   # https://pub.dev/packages/drift
-  drift: ^2.30.1
+  drift: ^2.31.0
   # https://pub.dev/packages/drift_flutter
   drift_flutter: ^0.2.8
   # https://pub.dev/packages/path_provider
@@ -25,12 +25,12 @@ dependencies:
 
 dev_dependencies:
   # https://pub.dev/packages/build_runner
-  build_runner: ^2.10.5
+  build_runner: ^2.11.1
   # https://pub.dev/packages/flutter_lints
   flutter_lints: ^6.0.0
   # https://pub.dev/packages/json_serializable
   json_serializable: ^6.11.2
   # https://pub.dev/packages/drift_dev
-  drift_dev: ^2.30.1
+  drift_dev: ^2.31.0
   # https://pub.dev/packages/flutter_prunekit
   flutter_prunekit: ^2.4.0

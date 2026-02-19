@@ -1,3 +1,4 @@
+import 'package:app/extension/short_term_change_extension.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/additional_speed_restriction_row.dart';
@@ -12,11 +13,14 @@ import 'package:app/pages/journey/journey_screen/widgets/table/cells/track_equip
 import 'package:app/pages/journey/journey_screen/widgets/table/column_definition.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/config/journey_config.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/service_point_row.dart';
+import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/modification_indicator.dart';
 import 'package:app/widgets/speed_display.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
-import 'package:app/widgets/table/das_table_row.dart';
 import 'package:app/widgets/table/das_table_theme.dart';
+import 'package:app/widgets/table/row/das_table_row.dart';
+import 'package:app/widgets/table/row/das_table_row_builder.dart';
+import 'package:app/widgets/table/row/das_table_row_decoration.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -33,9 +37,9 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     super.height = rowHeight,
     super.stickyLevel,
     super.key,
+    super.decoration,
     this.config = const JourneyConfig(),
     this.defaultAlignment = .bottomCenter,
-    this.rowColor,
     this.onTap,
     this.onStartToEndDragReached,
     this.draggableBackgroundBuilder,
@@ -43,7 +47,6 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
   });
 
   final Alignment defaultAlignment;
-  final Color? rowColor;
   final Metadata metadata;
   final JourneyPositionModel journeyPosition;
   final JourneyConfig config;
@@ -57,7 +60,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     return DASTableCellRow(
       key: key,
       height: height,
-      color: rowColor,
+      decoration: _decorationWithOptionalShortTermChangeBorders(context),
       onTap: onTap,
       onStartToEndDragReached: onStartToEndDragReached,
       draggableBackgroundBuilder: draggableBackgroundBuilder,
@@ -86,14 +89,20 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
 
   DASTableCell kilometreCell(BuildContext context) {
     if (data.kilometre.isEmpty) {
-      return DASTableCell.empty(color: specialCellColor);
+      return DASTableCell.empty(
+        decoration: DASTableCellDecoration(
+          color: specialCellColor,
+        ),
+      );
     }
 
+    final hasShortTermChange = metadata.shortTermChanges.appliesToOrder(data.order).isNotEmpty;
     final textColor = _isNextStop && specialCellColor == null ? SBBColors.white : null;
     final defaultTextStyle = DASTableTheme.of(context)?.data.dataTextStyle;
     final textStyle = (defaultTextStyle ?? sbbTextStyle.romanStyle.large).copyWith(color: textColor);
     return DASTableCell(
-      color: specialCellColor,
+      decoration: DASTableCellDecoration(color: specialCellColor),
+      padding: hasShortTermChange ? EdgeInsets.all(SBBSpacing.xSmall).copyWith(left: SBBSpacing.small) : null,
       child: ModificationIndicator(
         show: data.hasModificationUpdated,
         offset: Offset(0, -SBBSpacing.small),
@@ -113,7 +122,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
 
   DASTableCell routeCell(BuildContext context) {
     return DASTableCell(
-      color: specialCellColor,
+      decoration: DASTableCellDecoration(color: specialCellColor),
       padding: .all(0.0),
       alignment: null,
       clipBehavior: .none,
@@ -123,7 +132,20 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
         isRouteEnd: metadata.journeyEnd == data,
         chevronAnimationData: config.chevronAnimationData,
         chevronPosition: chevronPosition,
+        shortTermChangeData: routeCellShortTermChangeData,
       ),
+    );
+  }
+
+  ShortTermChangeRouteCellData? get routeCellShortTermChangeData {
+    ShortTermChange? shortTermChange = metadata.shortTermChanges.appliesToOrder(data.order).getHighestPriority;
+    if (shortTermChange is! TrainRunReroutingChange) shortTermChange = null;
+    if (shortTermChange == null) return null;
+
+    return (
+      drawMiddle: shortTermChange.startOrder != data.order && shortTermChange.endOrder != data.order,
+      drawEnd: shortTermChange.endOrder == data.order,
+      drawStart: shortTermChange.startOrder == data.order,
     );
   }
 
@@ -131,11 +153,11 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
 
   DASTableCell trackEquipment(BuildContext context) {
     if (config.trackEquipmentRenderData == null) {
-      return DASTableCell.empty(color: specialCellColor);
+      return DASTableCell.empty(decoration: DASTableCellDecoration(color: specialCellColor));
     }
 
     return DASTableCell(
-      color: specialCellColor,
+      decoration: DASTableCellDecoration(color: specialCellColor),
       padding: .all(0.0),
       alignment: null,
       child: TrackEquipmentCellBody(
@@ -208,7 +230,8 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     );
   }
 
-  DASTableCell timeCell(BuildContext context) => DASTableCell.empty(color: specialCellColor);
+  DASTableCell timeCell(BuildContext context) =>
+      DASTableCell.empty(decoration: DASTableCellDecoration(color: specialCellColor));
 
   DASTableCell informationCell(BuildContext context) => DASTableCell.empty();
 
@@ -249,9 +272,11 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
 
   DASTableCell iconsCell3(BuildContext context) => DASTableCell.empty();
 
-  DASTableCell gradientUphillCell(BuildContext context) => DASTableCell.empty(color: specialCellColor);
+  DASTableCell gradientUphillCell(BuildContext context) =>
+      DASTableCell.empty(decoration: DASTableCellDecoration(color: specialCellColor));
 
-  DASTableCell gradientDownhillCell(BuildContext context) => DASTableCell.empty(color: specialCellColor);
+  DASTableCell gradientDownhillCell(BuildContext context) =>
+      DASTableCell.empty(decoration: DASTableCellDecoration(color: specialCellColor));
 
   Color? get specialCellColor =>
       getAdditionalSpeedRestriction() != null ? AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor : null;
@@ -295,5 +320,25 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
         // additional -1.5 because line overdraws a bit from rotation
         return height - RouteChevron.chevronHeight - 1.5;
     }
+  }
+
+  DASTableRowDecoration? _decorationWithOptionalShortTermChangeBorders(BuildContext context) {
+    final shortTermChange = metadata.shortTermChanges.appliesToOrder(data.order).getHighestPriority;
+    if (shortTermChange == null) return decoration;
+    final isShortTermChangeStart = shortTermChange.startOrder == data.order;
+    final isShortTermChangeEnd = shortTermChange.endOrder == data.order;
+
+    final borderSide = BorderSide(
+      color: ThemeUtil.getColor(context, SBBColors.turquoise, SBBColors.turquoiseDark),
+      width: 4.0,
+    );
+    final border = Border(
+      left: borderSide,
+      right: borderSide,
+      top: isShortTermChangeStart ? borderSide.copyWith(width: 1) : BorderSide.none,
+      bottom: isShortTermChangeEnd ? borderSide.copyWith(width: 1) : BorderSide.none,
+    );
+
+    return decoration?.copyWith(border: border) ?? DASTableRowDecoration(border: border);
   }
 }

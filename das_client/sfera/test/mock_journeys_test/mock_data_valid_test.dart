@@ -18,6 +18,7 @@ void main() {
     setUpAll(() {
       Logger.root.level = Level.WARNING;
       Logger.root.onRecord.listen((record) {
+        // ignore: avoid_print
         print('${record.level.name}: ${record.time}: ${record.message}');
       });
     });

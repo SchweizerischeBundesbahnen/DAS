@@ -31,6 +31,7 @@ import 'package:app/pages/journey/journey_screen/widgets/table/curve_point_row.d
 import 'package:app/pages/journey/journey_screen/widgets/table/foot_note_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/level_crossing_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/loading_table.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/personal_change_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/protection_section_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/service_point_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/shunting_movement_row.dart';
@@ -39,6 +40,7 @@ import 'package:app/pages/journey/journey_screen/widgets/table/speed_change_row.
 import 'package:app/pages/journey/journey_screen/widgets/table/tram_area_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/uncoded_operational_indication_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/whistle_row.dart';
+import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
 import 'package:app/pages/journey/view_model/model/journey_settings.dart';
@@ -47,7 +49,7 @@ import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:app/widgets/table/das_table_column.dart';
-import 'package:app/widgets/table/das_table_row.dart';
+import 'package:app/widgets/table/row/das_table_row_builder.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -153,6 +155,7 @@ class JourneyTable extends StatelessWidget {
     JourneyPositionModel journeyPosition,
   ) {
     final currentBreakSeries = settings.currentBreakSeries;
+    final navigationVM = DI.get<JourneyNavigationViewModel>();
 
     final rows = journey.data
         .whereNot((it) => _isCurvePointWithoutSpeed(it, journey, settings))
@@ -162,6 +165,7 @@ class JourneyTable extends StatelessWidget {
         .hideRepeatedLineFootNotes(journeyPosition.currentPosition)
         .hideFootNotesForNotSelectedTrainSeries(currentBreakSeries?.trainSeries)
         .combineFootNoteAndOperationalIndication()
+        .addTrainDriverTurnoverRows(navigationVM.modelValue?.trainIdentification)
         .sorted((a1, a2) => a1.compareTo(a2));
 
     final groupedRows = rows
@@ -353,6 +357,12 @@ class JourneyTable extends StatelessWidget {
             data: rowData as ShuntingMovement,
             rowIndex: index,
           );
+        case Datatype.trainDriverTurnover:
+          return TrainDriverTurnoverRow(
+            metadata: journey.metadata,
+            data: rowData as TrainDriverTurnover,
+            rowIndex: index,
+          );
       }
     });
   }
@@ -426,9 +436,10 @@ class JourneyTable extends StatelessWidget {
         id: ColumnDefinition.localSpeed.index,
         child: Text(context.l10n.p_journey_table_graduated_speed_label),
         width: 100.0,
-        border: BorderDirectional(
-          bottom: BorderSide(color: ThemeUtil.getDASTableBorderColor(context), width: 1.0),
-          end: BorderSide(color: ThemeUtil.getDASTableBorderColor(context), width: 2.0),
+        decoration: DASTableColumnDecoration(
+          border: Border(
+            right: BorderSide(color: ThemeUtil.getDASTableBorderColor(context), width: 2.0),
+          ),
         ),
       ),
       DASTableColumn(

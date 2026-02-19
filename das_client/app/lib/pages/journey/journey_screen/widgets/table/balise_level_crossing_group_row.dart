@@ -5,6 +5,7 @@ import 'package:app/pages/journey/journey_screen/widgets/table/cell_row_builder.
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
+import 'package:app/widgets/table/row/das_table_row_decoration.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -23,7 +24,11 @@ class BaliseLevelCrossingGroupRow extends CellRowBuilder<BaliseLevelCrossingGrou
     required BuildContext context,
     super.config,
     super.onTap,
-  }) : super(rowColor: isExpanded ? ThemeUtil.getColor(context, SBBColors.cloud, SBBColors.iron) : null);
+  }) : super(
+         decoration: DASTableRowDecoration(
+           color: isExpanded ? ThemeUtil.getColor(context, SBBColors.cloud, SBBColors.iron) : null,
+         ),
+       );
 
   final bool isExpanded;
 

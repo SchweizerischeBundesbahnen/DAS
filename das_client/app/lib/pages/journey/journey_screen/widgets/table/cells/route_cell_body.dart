@@ -1,4 +1,5 @@
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_chevron.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/cells/short_term_change_paint.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/config/chevron_animation_data.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/service_point_row.dart';
 import 'package:app/theme/theme_util.dart';
@@ -6,11 +7,16 @@ import 'package:app/widgets/table/das_table_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
+typedef ShortTermChangeRouteCellData = ({bool drawMiddle, bool drawStart, bool drawEnd});
+
 class RouteCellBody extends StatelessWidget {
   static const Key stopKey = Key('stopRouteCell');
   static const Key stopOnRequestKey = Key('stopOnRequestRouteCell');
   static const Key routeStartKey = Key('startRouteCell');
   static const Key routeEndKey = Key('endRouteCell');
+  static const Key shortTermChangeBeginKey = Key('shortTermChangeRouteCellBeginKey');
+  static const Key shortTermChangeMiddleKey = Key('shortTermChangeRouteCellMiddleKey');
+  static const Key shortTermChangeEndKey = Key('shortTermChangeRouteCellEndKey');
 
   static const double routeCircleSize = 14.0;
   static const double routeCirclePosition = ServicePointRow.baseRowHeight - SBBSpacing.medium - routeCircleSize;
@@ -27,6 +33,7 @@ class RouteCellBody extends StatelessWidget {
     this.isRouteEnd = false,
     this.chevronAnimationData,
     this.routeColor,
+    this.shortTermChangeData,
   });
 
   final double chevronWidth;
@@ -38,6 +45,8 @@ class RouteCellBody extends StatelessWidget {
   final bool isStopOnRequest;
   final bool isRouteStart;
   final bool isRouteEnd;
+
+  final ShortTermChangeRouteCellData? shortTermChangeData;
 
   final Color? routeColor;
 
@@ -60,6 +69,7 @@ class RouteCellBody extends StatelessWidget {
           alignment: .center,
           children: [
             _routeLine(context, height, width),
+            if (shortTermChangeData != null) _shortTermChangeRouteLine(context, height, width),
             if (isCurrentPosition || chevronAnimationData != null) _chevron(context),
             if (isStop) _circle(context),
           ],
@@ -117,6 +127,51 @@ class RouteCellBody extends StatelessWidget {
       return null;
     }
     return isRouteStart ? routeStartKey : routeEndKey;
+  }
+
+  Widget _shortTermChangeRouteLine(BuildContext context, double height, double width) {
+    if (shortTermChangeData == null) return SizedBox.expand();
+    final horizontalBorderWidth =
+        DASTableTheme.of(context)?.data.tableBorder?.horizontalInside.width ?? SBBSpacing.medium;
+    final color = ThemeUtil.getColor(context, SBBColors.turquoise, SBBColors.turquoiseDark);
+    if (shortTermChangeData!.drawMiddle) {
+      return Positioned(
+        key: shortTermChangeMiddleKey,
+        top: 0,
+        bottom: -horizontalBorderWidth,
+        left: SBBSpacing.xSmall - (lineThickness / 2),
+        child: VerticalDivider(thickness: lineThickness, color: color),
+      );
+    }
+    if (shortTermChangeData!.drawStart) {
+      return Positioned(
+        key: shortTermChangeBeginKey,
+        top: routeCirclePosition + (routeCircleSize / 2),
+        left: SBBSpacing.xSmall,
+        child: ShortTermChangePaint(
+          isStart: true,
+          size: Size(width / 2 - SBBSpacing.xSmall, height - routeCirclePosition - routeCircleSize),
+          thickness: lineThickness,
+          color: color,
+        ),
+      );
+    }
+
+    if (shortTermChangeData!.drawEnd) {
+      return Positioned(
+        key: shortTermChangeEndKey,
+        top: 0,
+        left: SBBSpacing.xSmall,
+        child: ShortTermChangePaint(
+          isStart: false,
+          size: Size(width / 2 - SBBSpacing.xSmall, routeCirclePosition),
+          thickness: lineThickness,
+          color: color,
+        ),
+      );
+    }
+
+    return SizedBox.expand();
   }
 }
 

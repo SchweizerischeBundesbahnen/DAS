@@ -15,6 +15,8 @@ import 'package:skeletonizer/skeletonizer.dart';
 class MainHeaderBox extends StatelessWidget {
   const MainHeaderBox({super.key});
 
+  static const double height = 145.0;
+
   @override
   Widget build(BuildContext context) {
     final journeyViewModel = context.read<JourneyTableViewModel>();

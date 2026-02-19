@@ -47,6 +47,8 @@ extension _TrainJourneyLinkDataMapper on TrainJourneyLinkData {
       trainNumber: operationalTrainNumber,
       ru: railwayUndertaking,
       date: startDate ?? DateTime.now(),
+      tafTapLocationReferenceStart: tafTapLocationReferenceStart,
+      tafTapLocationReferenceEnd: tafTapLocationReferenceEnd,
     );
   }
 }

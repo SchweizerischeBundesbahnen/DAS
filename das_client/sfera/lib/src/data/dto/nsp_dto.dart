@@ -33,4 +33,8 @@ abstract class NspDto extends SferaXmlElementDto {
         validateHasChildOfType<NetworkSpecificParameterDto>() &&
         super.validate();
   }
+
+  bool validateHasParameterWithName(String name) {
+    return parameters.withName(name) != null;
+  }
 }

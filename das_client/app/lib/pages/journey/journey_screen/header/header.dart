@@ -1,12 +1,17 @@
 import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/brightness/brightness_modal_sheet.dart';
 import 'package:app/di/di.dart';
+import 'package:app/pages/journey/journey_screen/header/view_model/model/short_term_change_model.dart';
+import 'package:app/pages/journey/journey_screen/header/view_model/short_term_change_view_model.dart';
+import 'package:app/pages/journey/journey_screen/header/widgets/animated_main_headerbox.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/chronograph_header_box.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/journey_identifier_header_box.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/main_header_box.dart';
+import 'package:app/pages/journey/journey_screen/header/widgets/short_term_change_headerbox_flap.dart';
 import 'package:app/pages/journey/journey_screen/journey_overview.dart';
 import 'package:app/widgets/extended_header_container.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class Header extends StatefulWidget {
@@ -35,6 +40,7 @@ class _HeaderState extends State<Header> {
 
   @override
   Widget build(BuildContext context) {
+    final shortTermChangeViewModel = context.read<ShortTermChangeViewModel>();
     return ExtendedAppBarWrapper(
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
@@ -45,9 +51,25 @@ class _HeaderState extends State<Header> {
           padding: const EdgeInsets.all(JourneyOverview.horizontalPadding).copyWith(top: 0),
           child: Row(
             spacing: SBBSpacing.xSmall,
+            crossAxisAlignment: .start,
             children: [
               JourneyIdentifierHeaderBox(),
-              Expanded(child: MainHeaderBox()),
+              Expanded(
+                child: StreamBuilder(
+                  stream: shortTermChangeViewModel.model,
+                  initialData: shortTermChangeViewModel.modelValue,
+                  builder: (context, asyncSnapshot) {
+                    final model = asyncSnapshot.requireData;
+                    return AnimatedMainHeaderBox(
+                      showFlap: model is! NoShortTermChanges,
+                      flap: ShortTermChangeHeaderBoxFlap(child: Text('Hello')),
+                      mainContent: MainHeaderBox(),
+                      mainContentHeight: MainHeaderBox.height,
+                      flapHeight: ShortTermChangeHeaderBoxFlap.height,
+                    );
+                  },
+                ),
+              ),
               GestureDetector(
                 onDoubleTap: _doubleTap,
                 behavior: HitTestBehavior.translucent,
