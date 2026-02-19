@@ -1068,10 +1068,12 @@ void main() {
       final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
+      expect(findDASTableRowByText('Bern Hidden Stop'), findsAny);
       // check if all additional service points are displayed correctly
       await _checkAdditionalServicePoint(tester, scrollableFinder, 'Bern (Depot)');
       await _checkAdditionalServicePoint(tester, scrollableFinder, 'Olten Ost (Abzw)');
       await _checkAdditionalServicePoint(tester, scrollableFinder, 'Olten Tunnel (Spw)');
+      await _checkAdditionalServicePoint(tester, scrollableFinder, 'Olten Hidden Stop');
       await _checkAdditionalServicePoint(tester, scrollableFinder, 'Dulliken (Depot)');
 
       await disconnect(tester);

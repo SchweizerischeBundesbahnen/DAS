@@ -743,7 +743,8 @@ extension _BaseDataIterableExtension on Iterable<BaseData> {
       return data is ServicePoint &&
           data.isAdditional &&
           isNotStartOrEndServicePoint &&
-          calculatedSpeeds[data.order] == null;
+          calculatedSpeeds[data.order] == null &&
+          !data.isStop;
     });
   }
 }
