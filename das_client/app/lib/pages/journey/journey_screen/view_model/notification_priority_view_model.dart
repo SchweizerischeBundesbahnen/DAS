@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:app/pages/journey/journey_screen/notification/notification_type.dart';
+import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:sfera/component.dart';
 
 final _logger = Logger('NotificationPriorityQueueViewModel');
 
@@ -16,14 +18,14 @@ final _logger = Logger('NotificationPriorityQueueViewModel');
 ///
 /// 1. via [insert] or removed via [remove]
 /// 2. via a Stream<bool> that handles [insert] and [remove] operations
-class NotificationPriorityQueueViewModel {
+class NotificationPriorityQueueViewModel extends JourneyAwareViewModel {
   final Map<NotificationType, VoidCallback?> _notificationTypeToCallback = {
     for (final val in NotificationType.values) val: null,
   };
 
   final _activeNotifications = <NotificationType>{};
 
-  final List<StreamSubscription<bool>> _subscriptions = [];
+  final Map<NotificationType, StreamSubscription<bool>?> _subscriptions = {};
 
   final BehaviorSubject<List<NotificationType>> _rxNotifications = BehaviorSubject.seeded(List.empty());
 
@@ -32,15 +34,18 @@ class NotificationPriorityQueueViewModel {
   List<NotificationType> get modelValue => _rxNotifications.value;
 
   void addStream({required NotificationType type, required Stream<bool> stream, VoidCallback? callback}) {
-    _subscriptions.add(
-      stream.listen((insertNotification) {
-        if (insertNotification) {
-          insert(type: type, callback: callback);
-        } else {
-          remove(type: type);
-        }
-      }),
-    );
+    _subscriptions[type] = stream.listen((insertNotification) {
+      if (insertNotification) {
+        insert(type: type, callback: callback);
+      } else {
+        remove(type: type);
+      }
+    });
+  }
+
+  void removeStream({required NotificationType type}) {
+    _subscriptions[type]?.cancel();
+    _subscriptions[type] = null;
   }
 
   void insert({required NotificationType type, VoidCallback? callback}) {
@@ -56,16 +61,26 @@ class NotificationPriorityQueueViewModel {
     _callCallbacks();
   }
 
+  @override
   void dispose() {
     _activeNotifications.clear();
     _notificationTypeToCallback.clear();
     _cancelSubscriptions();
     _rxNotifications.close();
+    super.dispose();
+  }
+
+  @override
+  void journeyIdentificationChanged(Journey? journey) {
+    _activeNotifications.clear();
+    _notificationTypeToCallback.clear();
+    _rxNotifications.add(List.empty());
+    _cancelSubscriptions();
   }
 
   void _emitMaximumTwoPrioritizedNotifications() {
     final toEmit = _activeNotifications.sorted((a, b) => a.index.compareTo(b.index)).take(2).toList(growable: false);
-    
+
     if (ListEquality().equals(toEmit, modelValue)) return;
     _logger.fine('Emitting active notifications: $toEmit');
     _rxNotifications.add(toEmit);
@@ -81,8 +96,9 @@ class NotificationPriorityQueueViewModel {
   }
 
   void _cancelSubscriptions() {
-    for (final sub in _subscriptions) {
-      sub.cancel();
+    for (final sub in _subscriptions.values) {
+      sub?.cancel();
     }
+    _subscriptions.clear();
   }
 }

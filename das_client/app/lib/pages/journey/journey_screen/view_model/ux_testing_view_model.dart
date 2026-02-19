@@ -1,9 +1,7 @@
 import 'dart:async';
 
-import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_screen/header/view_model/connectivity_view_model.dart';
 import 'package:app/provider/ru_feature_provider.dart';
-import 'package:app/sound/das_sounds.dart';
 import 'package:collection/collection.dart';
 import 'package:formation/component.dart';
 import 'package:rxdart/rxdart.dart';
@@ -37,7 +35,7 @@ class UxTestingViewModel {
 
   Stream<UxTestingEvent> get uxTestingEvents => _rxUxTestingEvents.stream;
 
-  Future<bool> get isDepartueProcessFeatureEnabled => _ruFeatureProvider.isRuFeatureEnabled(.departureProcess);
+  Future<bool> get isDepartureProcessFeatureEnabled => _ruFeatureProvider.isRuFeatureEnabled(.departureProcess);
 
   void _init() {
     _eventSubscription = _sferaRepo.uxTestingEventStream.listen((data) async {
@@ -47,9 +45,6 @@ class UxTestingViewModel {
           if (koaEnabled) {
             final koaState = KoaState.from(data.value);
             _rxKoaState.add(koaState);
-            if (koaState == .waitCancelled) {
-              DI.get<DASSounds>().koa.play();
-            }
           }
         }
 

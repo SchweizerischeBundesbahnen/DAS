@@ -18,6 +18,8 @@ import 'package:app/pages/journey/journey_screen/view_model/departure_dispatch_n
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_table_advancement_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/line_speed_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/replacement_series_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/punctuality_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/replacement_series_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/ux_testing_view_model.dart';
@@ -26,6 +28,7 @@ import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
 import 'package:app/pages/journey/view_model/disturbance_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
+import 'package:app/sound/das_sounds.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -91,6 +94,9 @@ class _ProviderScope extends StatelessWidget {
         Provider<JourneyTableAdvancementViewModel>(
           create: (_) => DI.get<JourneyTableAdvancementViewModel>(),
         ),
+        Provider<NotificationPriorityQueueViewModel>(
+          create: (_) => DI.get<NotificationPriorityQueueViewModel>(),
+        ),
         Provider<ServicePointModalViewModel>(
           create: (_) => ServicePointModalViewModel(localRegulationHtmlGenerator: DI.get()),
           dispose: (_, vm) => vm.dispose(),
@@ -104,9 +110,29 @@ class _ProviderScope extends StatelessWidget {
           dispose: (_, vm) => vm.dispose(),
         ),
         Provider<UxTestingViewModel>(
-          create: (_) =>
-              UxTestingViewModel(sferaRepo: DI.get(), ruFeatureProvider: DI.get(), formationRepository: DI.get()),
-          dispose: (_, vm) => vm.dispose(),
+          create: (_) {
+            final vm = UxTestingViewModel(
+              sferaRepo: DI.get(),
+              ruFeatureProvider: DI.get(),
+              formationRepository: DI.get(),
+            );
+            final notificationVM = DI.get<NotificationPriorityQueueViewModel>();
+            notificationVM.addStream(
+              type: .koaWaitCancelled,
+              stream: vm.koaState.map((k) => k == .waitCancelled),
+              callback: () => DI.get<DASSounds>().koa.play(),
+            );
+            notificationVM.addStream(
+              type: .koaWait,
+              stream: vm.koaState.map((k) => k == .wait),
+            );
+            return vm;
+          },
+          dispose: (_, vm) {
+            DI.get<NotificationPriorityQueueViewModel>().removeStream(type: .koaWaitCancelled);
+            DI.get<NotificationPriorityQueueViewModel>().removeStream(type: .koaWait);
+            vm.dispose();
+          },
         ),
         Provider<ConnectivityViewModel>(
           create: (_) => ConnectivityViewModel(connectivityManager: DI.get()),
@@ -144,16 +170,35 @@ class _ProviderScope extends StatelessWidget {
           dispose: (_, vm) => vm.dispose(),
         ),
 
-        ProxyProvider2<JourneyPositionViewModel, JourneySettingsViewModel, ReplacementSeriesViewModel>(
-          update: (_, journeyPositionVM, settingsVM, prev) {
+        ProxyProvider3<
+          JourneyPositionViewModel,
+          JourneySettingsViewModel,
+          NotificationPriorityQueueViewModel,
+          ReplacementSeriesViewModel
+        >(
+          update: (_, journeyPositionVM, settingsVM, notificationVM, prev) {
             if (prev != null) return prev;
-            return ReplacementSeriesViewModel(
+            final vm = ReplacementSeriesViewModel(
               journeyTableViewModel: journeyTableViewModel,
               journeyPositionViewModel: journeyPositionVM,
               journeySettingsViewModel: settingsVM,
             );
+            notificationVM.addStream(
+              type: .illegalSegmentNoReplacement,
+              stream: vm.model.map((m) => m is NoReplacementSeries),
+            );
+            notificationVM.addStream(
+              type: .illegalSegmentWithReplacement,
+              stream: vm.model.map((m) => m is ReplacementSeriesAvailable),
+            );
+            return vm;
           },
-          dispose: (_, vm) => vm.dispose(),
+          dispose: (context, vm) {
+            final notificationVM = DI.get<NotificationPriorityQueueViewModel>();
+            notificationVM.removeStream(type: .illegalSegmentNoReplacement);
+            notificationVM.removeStream(type: .illegalSegmentWithReplacement);
+            vm.dispose();
+          },
         ),
         ProxyProvider<JourneyPositionViewModel, DepartureAuthorizationViewModel>(
           update: (_, journeyPositionVM, prev) {
