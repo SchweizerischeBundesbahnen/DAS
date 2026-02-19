@@ -45,7 +45,7 @@ class LevelCrossingRow extends CellRowBuilder<LevelCrossing> {
   @override
   DASTableCell informationCell(BuildContext context) {
     return DASTableCell(
-      child: _isInEtcsLevel2Segment
+      child: isInEtcsLevel2Segment
           ? _icon(context, AppAssets.iconOpenLevelCrossing, iconLevelCrossingKey)
           : Text(context.l10n.p_journey_table_level_crossing),
       alignment: .centerRight,
@@ -76,6 +76,4 @@ class LevelCrossingRow extends CellRowBuilder<LevelCrossing> {
       colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
     );
   }
-
-  bool get _isInEtcsLevel2Segment => metadata.nonStandardTrackEquipmentSegments.isInEtcsLevel2Segment(data.order);
 }

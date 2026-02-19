@@ -86,7 +86,7 @@ class BaliseLevelCrossingGroupRow extends CellRowBuilder<BaliseLevelCrossingGrou
   }
 
   DASTableCell _levelCrossingOnlyCell(BuildContext context) {
-    if (_isInEtcsLevel2Segment) {
+    if (isInEtcsLevel2Segment) {
       return DASTableCell(
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -113,6 +113,4 @@ class BaliseLevelCrossingGroupRow extends CellRowBuilder<BaliseLevelCrossingGrou
   int get _baliseCount => data.groupedElements.whereType<Balise>().length;
 
   int get _levelCrossingCount => data.groupedElements.whereType<LevelCrossing>().length;
-
-  bool get _isInEtcsLevel2Segment => metadata.nonStandardTrackEquipmentSegments.isInEtcsLevel2Segment(data.order);
 }
