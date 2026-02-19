@@ -156,11 +156,12 @@ class _ProviderScope extends StatelessWidget {
           },
           dispose: (_, vm) => vm.dispose(),
         ),
-        ProxyProvider<JourneyPositionViewModel, AdvisedSpeedViewModel>(
-          update: (_, journeyPositionVM, prev) {
+        ProxyProvider2<JourneyPositionViewModel, NotificationPriorityQueueViewModel, AdvisedSpeedViewModel>(
+          update: (_, journeyPositionVM, notificationVM, prev) {
             if (prev != null) return prev;
             return AdvisedSpeedViewModel(
               journeyPositionStream: journeyPositionVM.model,
+              notificationVM: notificationVM,
             );
           },
           dispose: (_, vm) => vm.dispose(),
