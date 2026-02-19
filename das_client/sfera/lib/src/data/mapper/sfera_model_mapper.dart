@@ -735,7 +735,7 @@ class _SegmentMapperData {
 }
 
 extension _BaseDataIterableExtension on Iterable<BaseData> {
-  /// removes all additional service points that are not at the route start/end and have no speed change.
+  /// removes all additional service points that are not at the route start/end and have no speed change and are not a stop.
   Iterable<BaseData> removeIrrelevantServicePoints(SplayTreeMap<int, SingleSpeed?> calculatedSpeeds) {
     final servicePoints = whereType<ServicePoint>().toList()..sort();
     return whereNot((data) {
