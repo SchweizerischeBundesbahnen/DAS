@@ -42,6 +42,6 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "^2.2.0",
     "typescript": "~5.9.0",
-    "typescript-eslint": "8.48.1"
+    "typescript-eslint": "8.56.0"
   }
 }
