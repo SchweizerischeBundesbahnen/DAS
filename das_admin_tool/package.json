@@ -9,7 +9,7 @@
     "lint": "ng lint"
   },
   "name": "das-admin-tool",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "private": true,
   "dependencies": {
     "@angular/cdk": "^21.0.2",
