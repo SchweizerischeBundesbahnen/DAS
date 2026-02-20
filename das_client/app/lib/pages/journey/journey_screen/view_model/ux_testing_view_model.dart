@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_screen/header/view_model/connectivity_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:app/sound/das_sounds.dart';
 import 'package:collection/collection.dart';
@@ -14,15 +15,18 @@ class UxTestingViewModel {
     required SferaRepository sferaRepo,
     required RuFeatureProvider ruFeatureProvider,
     required FormationRepository formationRepository,
+    required NotificationPriorityQueueViewModel notificationViewModel,
   }) : _sferaRepo = sferaRepo,
        _ruFeatureProvider = ruFeatureProvider,
-       _formationRepository = formationRepository {
+       _formationRepository = formationRepository,
+       _notificationViewModel = notificationViewModel {
     _init();
   }
 
   final SferaRepository _sferaRepo;
   final RuFeatureProvider _ruFeatureProvider;
   final FormationRepository _formationRepository;
+  final NotificationPriorityQueueViewModel _notificationViewModel;
 
   StreamSubscription? _eventSubscription;
   StreamSubscription? _sferaStateSubscription;
@@ -37,7 +41,7 @@ class UxTestingViewModel {
 
   Stream<UxTestingEvent> get uxTestingEvents => _rxUxTestingEvents.stream;
 
-  Future<bool> get isDepartueProcessFeatureEnabled => _ruFeatureProvider.isRuFeatureEnabled(.departureProcess);
+  Future<bool> get isDepartureProcessFeatureEnabled => _ruFeatureProvider.isRuFeatureEnabled(.departureProcess);
 
   void _init() {
     _eventSubscription = _sferaRepo.uxTestingEventStream.listen((data) async {
@@ -46,10 +50,18 @@ class UxTestingViewModel {
           final koaEnabled = await _ruFeatureProvider.isRuFeatureEnabled(.koa);
           if (koaEnabled) {
             final koaState = KoaState.from(data.value);
-            _rxKoaState.add(koaState);
-            if (koaState == .waitCancelled) {
-              DI.get<DASSounds>().koa.play();
+
+            if (koaState != .waitHide) {
+              _notificationViewModel.remove(type: .koaWait);
+              _notificationViewModel.remove(type: .koaWaitCancelled);
+              final isWaitCancelled = koaState == .waitCancelled;
+              _notificationViewModel.insert(
+                type: isWaitCancelled ? .koaWaitCancelled : .koaWait,
+                callback: isWaitCancelled ? DI.get<DASSounds>().koa.play : null,
+              );
             }
+
+            _rxKoaState.add(koaState);
           }
         }
 
