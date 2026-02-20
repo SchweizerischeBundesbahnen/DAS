@@ -1,6 +1,7 @@
 import 'package:app/pages/journey/journey_screen/view_model/advised_speed_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/advised_speed_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
 import 'package:app/sound/das_sounds.dart';
 import 'package:app/sound/sound.dart';
@@ -16,6 +17,7 @@ import 'package:sfera/component.dart';
 import 'advised_speed_view_model_test.mocks.dart';
 
 @GenerateNiceMocks([
+  MockSpec<NotificationPriorityQueueViewModel>(),
   MockSpec<JourneyTableViewModel>(),
   MockSpec<DASSounds>(),
   MockSpec<Sound>(),
@@ -24,6 +26,7 @@ void main() {
   group('Unit Test Advised Speed View Model', () {
     late AdvisedSpeedViewModel testee;
     late MockJourneyTableViewModel mockJourneyTableViewModel;
+    late MockNotificationPriorityQueueViewModel mockNotificationViewModel;
     late BehaviorSubject<Journey?> journeySubject;
     late BehaviorSubject<JourneyPositionModel> journeyPositionSubject;
     late FakeAsync testAsync;
@@ -52,6 +55,7 @@ void main() {
       mockDasSounds = MockDASSounds();
       when(mockDasSounds.advisedSpeedStart).thenReturn(mockStartSound);
       when(mockDasSounds.advisedSpeedEnd).thenReturn(mockEndSound);
+      mockNotificationViewModel = MockNotificationPriorityQueueViewModel();
       GetIt.I.registerSingleton<TimeConstants>(timeConstants);
       GetIt.I.registerSingleton<DASSounds>(mockDasSounds);
 
@@ -65,6 +69,7 @@ void main() {
         testee = AdvisedSpeedViewModel(
           journeyPositionStream: journeyPositionSubject,
           journeyTableViewModel: mockJourneyTableViewModel,
+          notificationVM: mockNotificationViewModel,
         );
         modelRegister = [];
         testee.model.listen(modelRegister.add);
@@ -76,6 +81,7 @@ void main() {
       reset(mockEndSound);
       reset(mockStartSound);
       reset(mockDasSounds);
+      reset(mockNotificationViewModel);
       modelRegister.clear();
       journeySubject.close();
       journeyPositionSubject.close();
@@ -95,6 +101,7 @@ void main() {
 
       // EXPECT
       expect(modelRegister, orderedEquals([AdvisedSpeedModel.inactive()]));
+      verifyNever(mockNotificationViewModel.insert(type: anyNamed('type')));
     });
 
     group('journey with single advised speed segment', () {
@@ -140,8 +147,8 @@ void main() {
             AdvisedSpeedModel.active(segment: advisedSpeedSegment),
           ]),
         );
-        verify(mockStartSound.play()).called(1);
-        verifyNever(mockEndSound.play());
+        verify(mockNotificationViewModel.insert(type: .advisedSpeed, callback: mockStartSound.play)).called(1);
+        verifyNever(mockNotificationViewModel.insert(type: .advisedSpeed, callback: mockEndSound.play));
       });
 
       test('whenExitsAdvisedSpeedSegment_isEndAndSoundPlayed', () {
@@ -166,8 +173,8 @@ void main() {
             AdvisedSpeedModel.end(),
           ]),
         );
-        verify(mockEndSound.play()).called(1);
-        verify(mockStartSound.play()).called(1);
+        verify(mockNotificationViewModel.insert(type: .advisedSpeed, callback: mockStartSound.play)).called(1);
+        verify(mockNotificationViewModel.insert(type: .advisedSpeed, callback: mockEndSound.play)).called(1);
       });
 
       test('whenExitsAdvisedSpeedSegmentAndTimerReached_isInactive', () {
@@ -192,8 +199,8 @@ void main() {
             AdvisedSpeedModel.inactive(),
           ]),
         );
-        verify(mockEndSound.play()).called(1);
-        verify(mockStartSound.play()).called(1);
+        verify(mockNotificationViewModel.insert(type: .advisedSpeed, callback: mockStartSound.play)).called(1);
+        verify(mockNotificationViewModel.insert(type: .advisedSpeed, callback: mockEndSound.play)).called(1);
       });
 
       test('whenWithinAdvisedSegmentAndJourneyUpdateReceivedWithNoSegments_thenIsCancelledAndSoundPlayed', () {
@@ -218,8 +225,8 @@ void main() {
             AdvisedSpeedModel.cancel(),
           ]),
         );
-        verify(mockEndSound.play()).called(1);
-        verify(mockStartSound.play()).called(1);
+        verify(mockNotificationViewModel.insert(type: .advisedSpeed, callback: mockStartSound.play)).called(1);
+        verify(mockNotificationViewModel.insert(type: .advisedSpeed, callback: mockEndSound.play)).called(1);
       });
 
       test('whenWithinAdvisedSegmentAndJourneyUpdateReceivedWithOtherSegments_thenIsCancelledAndSoundPlayed', () {
@@ -253,8 +260,8 @@ void main() {
             AdvisedSpeedModel.cancel(),
           ]),
         );
-        verify(mockEndSound.play()).called(1);
-        verify(mockStartSound.play()).called(1);
+        verify(mockNotificationViewModel.insert(type: .advisedSpeed, callback: mockStartSound.play)).called(1);
+        verify(mockNotificationViewModel.insert(type: .advisedSpeed, callback: mockEndSound.play)).called(1);
       });
 
       test('whenCancelledAndTimerReached_thenEmitsInactiveState', () {
@@ -281,8 +288,8 @@ void main() {
             AdvisedSpeedModel.inactive(),
           ]),
         );
-        verify(mockEndSound.play()).called(1);
-        verify(mockStartSound.play()).called(1);
+        verify(mockNotificationViewModel.insert(type: .advisedSpeed, callback: mockStartSound.play)).called(1);
+        verify(mockNotificationViewModel.insert(type: .advisedSpeed, callback: mockEndSound.play)).called(1);
       });
     });
 
@@ -339,8 +346,8 @@ void main() {
             AdvisedSpeedModel.active(segment: advisedSpeedSegmentTwo),
           ]),
         );
-        verify(mockEndSound.play()).called(1);
-        verify(mockStartSound.play()).called(2);
+        verify(mockNotificationViewModel.insert(type: .advisedSpeed, callback: mockStartSound.play)).called(2);
+        verify(mockNotificationViewModel.insert(type: .advisedSpeed, callback: mockEndSound.play)).called(1);
       });
     });
 
@@ -392,8 +399,8 @@ void main() {
             AdvisedSpeedModel.active(segment: advisedSpeedSegmentTwo),
           ]),
         );
-        verifyNever(mockEndSound.play());
-        verify(mockStartSound.play()).called(2);
+        verify(mockNotificationViewModel.insert(type: .advisedSpeed, callback: mockStartSound.play)).called(2);
+        verifyNever(mockNotificationViewModel.insert(type: .advisedSpeed, callback: mockEndSound.play));
       });
     });
   });

@@ -2,6 +2,7 @@ import 'package:app/pages/journey/break_load_slip/break_load_slip_view_model.dar
 import 'package:app/pages/journey/journey_screen/detail_modal/detail_modal_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
 import 'package:app/pages/journey/view_model/model/journey_settings.dart';
@@ -26,6 +27,7 @@ import 'break_load_slip_view_model_test.mocks.dart';
   MockSpec<FormationRepository>(),
   MockSpec<JourneyPositionViewModel>(),
   MockSpec<JourneySettingsViewModel>(),
+  MockSpec<NotificationPriorityQueueViewModel>(),
   MockSpec<BuildContext>(),
   MockSpec<StackRouter>(),
   MockSpec<StackRouterScope>(),
@@ -40,6 +42,7 @@ void main() {
   late MockFormationRepository mockFormationRepository;
   late MockJourneyPositionViewModel mockJourneyPositionViewModel;
   late MockJourneySettingsViewModel mockJourneySettingsViewModel;
+  late MockNotificationPriorityQueueViewModel mockNotificationViewModel;
   late MockDetailModalViewModel mockDetailModalViewModel;
   late MockConnectivityManager mockConnectivityManager;
   late MockBuildContext mockBuildContext;
@@ -51,7 +54,7 @@ void main() {
   late BehaviorSubject<Formation?> formationSubject;
   late BehaviorSubject<bool> connectivitySubject;
   late DASSounds mockDasSounds;
-  late Sound mockBreakSlipUpdatedSound;
+  late Sound mockSound;
 
   final trainIdentification = TrainIdentification(
     ru: RailwayUndertaking.fromCompanyCode('2185'),
@@ -119,6 +122,7 @@ void main() {
     mockFormationRepository = MockFormationRepository();
     mockJourneyPositionViewModel = MockJourneyPositionViewModel();
     mockDetailModalViewModel = MockDetailModalViewModel();
+    mockNotificationViewModel = MockNotificationPriorityQueueViewModel();
     mockBuildContext = MockBuildContext();
     mockStackRouter = MockStackRouter();
     mockStackRouterScope = MockStackRouterScope();
@@ -148,9 +152,9 @@ void main() {
     when(mockStackRouterScope.controller).thenReturn(mockStackRouter);
 
     mockDasSounds = MockDASSounds();
-    mockBreakSlipUpdatedSound = MockSound();
+    mockSound = MockSound();
 
-    when(mockDasSounds.breakSlipUpdated).thenReturn(mockBreakSlipUpdatedSound);
+    when(mockDasSounds.breakSlipUpdated).thenReturn(mockSound);
     GetIt.I.registerSingleton<DASSounds>(mockDasSounds);
 
     when(mockBuildContext.findAncestorWidgetOfExactType()).thenReturn(mockStackRouterScope);
@@ -161,6 +165,7 @@ void main() {
       formationRepository: mockFormationRepository,
       journeyPositionViewModel: mockJourneyPositionViewModel,
       journeySettingsViewModel: mockJourneySettingsViewModel,
+      notificationViewModel: mockNotificationViewModel,
       detailModalViewModel: mockDetailModalViewModel,
       connectivityManager: mockConnectivityManager,
       checkForUpdates: true,
@@ -168,6 +173,7 @@ void main() {
   });
 
   tearDown(() {
+    reset(mockNotificationViewModel);
     GetIt.I.reset();
   });
 
@@ -413,7 +419,7 @@ void main() {
 
     await processStreams();
 
-    verify(mockBreakSlipUpdatedSound.play()).called(1);
+    verify(mockNotificationViewModel.insert(type: .newBreakLoadSlip, callback: mockSound.play)).called(1);
 
     testee.dispose();
   });
@@ -428,6 +434,7 @@ void main() {
         journeySettingsViewModel: mockJourneySettingsViewModel,
         detailModalViewModel: mockDetailModalViewModel,
         connectivityManager: mockConnectivityManager,
+        notificationViewModel: mockNotificationViewModel,
         checkForUpdates: true,
       );
 

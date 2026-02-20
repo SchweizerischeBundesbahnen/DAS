@@ -49,7 +49,7 @@ class DepartureDispatchNotificationViewModel {
   }) {
     if (event != null && journeyPosition.lastPosition == null) {
       if (event.type != _rxDepartureDispatchNotificationType.value) {
-        _notificationVM.insert(type: .departureDispatch, callback: () => _sound.play());
+        _notificationVM.insert(type: .departureDispatch, callback: _sound.play);
       }
       _rxDepartureDispatchNotificationType.add(event.type);
     } else {
