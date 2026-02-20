@@ -42,7 +42,7 @@ class NotificationSpace extends StatelessWidget {
           initialData: notificationPriorityVM.modelValue,
           builder: (context, asyncSnapshot) {
             final data = asyncSnapshot.requireData;
-            if (data.isEmpty) return SizedBox.shrink();
+            if (data.isEmpty) return SizedBox(height: SBBSpacing.xSmall);
 
             Widget child;
             if (data.length == 1) {
