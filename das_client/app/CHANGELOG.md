@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.37.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.36.0...das_client-v0.37.0) (2026-02-20)
+
+
+### Features
+
+* ignore TC updates after journey loaded ([#1416](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1416)) ([#1780](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1780)) ([98298b9](https://github.com/SchweizerischeBundesbahnen/DAS/commit/98298b9b3187093db2ffc68f2dad70af43596214))
+* show hidden stops ([#1542](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1542)) ([#1775](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1775)) ([0b02f48](https://github.com/SchweizerischeBundesbahnen/DAS/commit/0b02f48acd4ccfbf31ac1230b66c44b0e313cbe8))
+* use icon for level crossings in ETCS level 2 ([#1429](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1429)) ([#1740](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1740)) ([7a6b0b9](https://github.com/SchweizerischeBundesbahnen/DAS/commit/7a6b0b92982df4ce39e6d674363fbe0261d1cd32))
+
+
+### Bug Fixes
+
+* fix sticky header display with collapsible rows ([#1738](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1738)) ([#1777](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1777)) ([c796cbb](https://github.com/SchweizerischeBundesbahnen/DAS/commit/c796cbbd317df44dc0c855da9df6725d1fea8a2e))
+
 ## [0.36.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.35.0...das_client-v0.36.0) (2026-02-18)
 
 
