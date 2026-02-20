@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.9.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/webapp-v0.8.0...webapp-v0.9.0) (2026-02-20)
+
+
+### Features
+
+* connectivity ux test buttons ([#1651](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1651)) ([#1681](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1681)) ([28af5c2](https://github.com/SchweizerischeBundesbahnen/DAS/commit/28af5c207149ee3333ff5282b9b764138f1e3ea7))
+
+
+### Bug Fixes
+
+* always show ux buttons with mocked operational day ([#1610](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1610)) ([973868f](https://github.com/SchweizerischeBundesbahnen/DAS/commit/973868fd117a2d2577338306e87330776b9d2a76))
+* formation train number without M postfix ([#1691](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1691)) ([2cbf6ed](https://github.com/SchweizerischeBundesbahnen/DAS/commit/2cbf6ed4442020e71d2ff35796d2937a41955691))
+* trigger formation update nsp ([#1689](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1689)) ([c42f917](https://github.com/SchweizerischeBundesbahnen/DAS/commit/c42f917be4deb051a57f41713225a9691d8d52ea))
+
 ## [0.8.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/webapp-v0.7.2...webapp-v0.8.0) (2026-01-09)
 
 
