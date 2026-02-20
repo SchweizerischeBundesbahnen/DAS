@@ -4,6 +4,7 @@
     "config:recommended",
     ":semanticCommitTypeAll(chore)"
   ],
+  "rangeStrategy": "pin",
   "additionalBranchPrefix": "{{parentDir}}-",
   "packageRules": [
     {
