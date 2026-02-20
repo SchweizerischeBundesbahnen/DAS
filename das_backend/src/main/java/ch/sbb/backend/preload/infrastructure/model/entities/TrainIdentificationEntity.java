@@ -30,4 +30,6 @@ public class TrainIdentificationEntity {
 
     private LocalDate operationalDay;
 
+    private OffsetDateTime preloadedAt;
+
 }

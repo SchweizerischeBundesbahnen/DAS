@@ -12,7 +12,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.Set;
+import java.util.Collection;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import org.springframework.stereotype.Service;
@@ -34,7 +34,7 @@ public class StorageService {
         this.s3Service = s3Service;
     }
 
-    public void save(Set<JourneyProfile> journeyProfiles, Set<SegmentProfile> segmentProfiles, Set<TrainCharacteristics> trainCharacteristics) {
+    public void save(Collection<JourneyProfile> journeyProfiles, Collection<SegmentProfile> segmentProfiles, Collection<TrainCharacteristics> trainCharacteristics) {
         try {
             String zipName = buildZipName();
 
@@ -58,7 +58,7 @@ public class StorageService {
         return FILENAME_FORMATTER.format(nowOffset.toInstant().atZone(ZoneOffset.UTC)) + ".zip";
     }
 
-    private void writeJps(Set<JourneyProfile> jps, ZipOutputStream zos) throws IOException {
+    private void writeJps(Collection<JourneyProfile> jps, ZipOutputStream zos) throws IOException {
         for (JourneyProfile jp : jps) {
             OTNID otnid = jp.getTrainIdentification().getOTNID();
             String filename = String.format("JP_%s_%s_%s_%s.xml",
@@ -70,7 +70,7 @@ public class StorageService {
         }
     }
 
-    private void writeSps(Set<SegmentProfile> sps, ZipOutputStream zos) throws IOException {
+    private void writeSps(Collection<SegmentProfile> sps, ZipOutputStream zos) throws IOException {
         for (SegmentProfile sp : sps) {
             String filename = String.format("SP_%s_%s_%s.xml",
                 sp.getSPID(),
@@ -80,7 +80,7 @@ public class StorageService {
         }
     }
 
-    private void writeTcs(Set<TrainCharacteristics> tcs, ZipOutputStream zos) throws IOException {
+    private void writeTcs(Collection<TrainCharacteristics> tcs, ZipOutputStream zos) throws IOException {
         for (TrainCharacteristics tc : tcs) {
             String filename = String.format("TC_%s_%s_%s.xml",
                 tc.getTCID(),
