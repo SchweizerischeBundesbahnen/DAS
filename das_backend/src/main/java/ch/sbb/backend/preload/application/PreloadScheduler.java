@@ -1,7 +1,7 @@
 package ch.sbb.backend.preload.application;
 
+import ch.sbb.backend.preload.application.model.trainidentification.TrainIdentification;
 import ch.sbb.backend.preload.domain.PreloadResult;
-import ch.sbb.backend.preload.domain.TrainId;
 import ch.sbb.backend.preload.infrastructure.PahoMqttClient;
 import ch.sbb.backend.preload.sfera.model.v0300.JourneyProfile;
 import ch.sbb.backend.preload.sfera.model.v0300.SegmentProfile;
@@ -10,6 +10,8 @@ import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
+import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
+import org.eclipse.paho.mqttv5.common.MqttException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -30,7 +32,8 @@ public class PreloadScheduler {
     }
 
     @Scheduled(cron = "${preload.fetch-cron}")
-    public void scheduledPreload() {
+    @SchedulerLock(name = "preload", lockAtLeastFor = "10m")
+    public void scheduledPreload() throws MqttException {
         log.info("Preload started");
         long startTime = System.currentTimeMillis();
         Set<JourneyProfile> jps = new HashSet<>();
@@ -39,7 +42,7 @@ public class PreloadScheduler {
 
         mqttService.connect();
         // todo timestamp from s3 or cache to get only new trains (#1393)
-        for (TrainId trainId : trainIdentificationsService.getNewTrainIdentifications(OffsetDateTime.now())) {
+        for (TrainIdentification trainId : trainIdentificationsService.getNewTrainIdentifications(OffsetDateTime.now())) {
             try {
                 // todo: "InterruptedException" and "ThreadDeath" should not be ignored (#1393)
                 PreloadResult preload = sferaService.preload(trainId);

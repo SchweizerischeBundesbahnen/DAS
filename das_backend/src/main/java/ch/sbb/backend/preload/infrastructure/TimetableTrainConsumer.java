@@ -47,7 +47,7 @@ public class TimetableTrainConsumer {
         List<ConsumerRecord<TimetableTrainKey, TimetableTrainValue>> filteredTrains = filterAndDeserialize(recordsWithVtSuffix);
         List<ConsumerRecord<TimetableTrainKey, TimetableTrainValue>> distinctRecords = ListUtil.removeDuplicatesKeepLast(filteredTrains, this::getTrassendIdAndFahrplanPeriode);
 
-        log.info("{} records with {} valid trains, last offset: {}",
+        log.debug("{} records with {} valid trains, last offset: {}",
             records.size(),
             recordsWithVtSuffix.size(),
             records.isEmpty() ? "n/a" : records.getLast().offset());

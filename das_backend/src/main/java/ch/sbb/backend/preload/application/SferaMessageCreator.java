@@ -1,8 +1,8 @@
 package ch.sbb.backend.preload.application;
 
+import ch.sbb.backend.preload.application.model.trainidentification.TrainIdentification;
 import ch.sbb.backend.preload.domain.SegmentProfileIdentification;
 import ch.sbb.backend.preload.domain.TrainCharacteristicsIdentification;
-import ch.sbb.backend.preload.domain.TrainId;
 import ch.sbb.backend.preload.infrastructure.xml.XmlDateHelper;
 import ch.sbb.backend.preload.sfera.model.v0300.B2GEventPayload;
 import ch.sbb.backend.preload.sfera.model.v0300.B2GRequest;
@@ -44,9 +44,9 @@ public class SferaMessageCreator {
     @Value("${sfera.recipient}")
     String sferaRecipient;
 
-    public SFERAB2GRequestMessage createHandshakeRequestMessage() {
+    public SFERAB2GRequestMessage createHandshakeRequestMessage(TrainIdentification trainIdentification) {
         SFERAB2GRequestMessage b2gRequestMessage = new SFERAB2GRequestMessage();
-        b2gRequestMessage.setMessageHeader(createMessageHeader());
+        b2gRequestMessage.setMessageHeader(createMessageHeader(trainIdentification));
         b2gRequestMessage.setHandshakeRequest(createHandshakeRequest());
         return b2gRequestMessage;
     }
@@ -61,18 +61,18 @@ public class SferaMessageCreator {
         return handshakeRequest;
     }
 
-    public SFERAB2GRequestMessage createJpRequestMessage(TrainId trainId) {
+    public SFERAB2GRequestMessage createJpRequestMessage(TrainIdentification trainIdentification) {
         SFERAB2GRequestMessage b2gRequestMessage = new SFERAB2GRequestMessage();
-        b2gRequestMessage.setMessageHeader(createMessageHeader());
+        b2gRequestMessage.setMessageHeader(createMessageHeader(trainIdentification));
         B2GRequest b2gRequest = new B2GRequest();
-        b2gRequest.getJPRequests().add(trainId.toJpRequest());
+        b2gRequest.getJPRequests().add(trainIdentification.toJpRequest());
         b2gRequestMessage.setB2GRequest(b2gRequest);
         return b2gRequestMessage;
     }
 
-    public SFERAB2GRequestMessage createSpRequestMessage(Set<SegmentProfileIdentification> spIds) {
+    public SFERAB2GRequestMessage createSpRequestMessage(TrainIdentification trainIdentification, Set<SegmentProfileIdentification> spIds) {
         SFERAB2GRequestMessage b2gRequestMessage = new SFERAB2GRequestMessage();
-        b2gRequestMessage.setMessageHeader(createMessageHeader());
+        b2gRequestMessage.setMessageHeader(createMessageHeader(trainIdentification));
         B2GRequest b2gRequest = new B2GRequest();
         List<SPRequest> spRequests = spIds.stream().map(SegmentProfileIdentification::toSpRequest).toList();
         b2gRequest.getSPRequests().addAll(spRequests);
@@ -80,9 +80,9 @@ public class SferaMessageCreator {
         return b2gRequestMessage;
     }
 
-    public SFERAB2GRequestMessage createTcRequest(Set<TrainCharacteristicsIdentification> tcIds) {
+    public SFERAB2GRequestMessage createTcRequest(TrainIdentification trainIdentification, Set<TrainCharacteristicsIdentification> tcIds) {
         SFERAB2GRequestMessage b2gRequestMessage = new SFERAB2GRequestMessage();
-        b2gRequestMessage.setMessageHeader(createMessageHeader());
+        b2gRequestMessage.setMessageHeader(createMessageHeader(trainIdentification));
         B2GRequest b2gRequest = new B2GRequest();
         List<TCRequest> tcRequests = tcIds.stream().map(TrainCharacteristicsIdentification::toTcRequest).toList();
         b2gRequest.getTCRequests().addAll(tcRequests);
@@ -90,8 +90,8 @@ public class SferaMessageCreator {
         return b2gRequestMessage;
     }
 
-    public SFERAB2GEventMessage createSessionTermination() {
-        MessageHeader header = createMessageHeader();
+    public SFERAB2GEventMessage createSessionTermination(TrainIdentification trainIdentification) {
+        MessageHeader header = createMessageHeader(trainIdentification);
         SFERAB2GEventMessage b2gEventMessage = new SFERAB2GEventMessage();
         b2gEventMessage.setMessageHeader(header);
         B2GEventPayload b2gEventPayload = new B2GEventPayload();
@@ -100,9 +100,9 @@ public class SferaMessageCreator {
         return b2gEventMessage;
     }
 
-    private MessageHeader createMessageHeader() {
+    private MessageHeader createMessageHeader(TrainIdentification trainIdentification) {
         Sender sender = new Sender();
-        sender.setValue(companyCode);
+        sender.setValue(trainIdentification.company().getValue());
         Recipient recipient = new Recipient();
         recipient.setValue(sferaRecipient);
         MessageHeader header = new MessageHeader();
