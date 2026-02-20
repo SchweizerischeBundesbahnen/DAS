@@ -37,8 +37,8 @@ class _WaitNotification extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final resolvedTextStyle = ThemeUtil.isDarkMode(context)
-        ? sbbTextStyle.boldStyle.medium.copyWith(color: SBBColors.white)
-        : sbbTextStyle.romanStyle.medium.copyWith(color: SBBColors.black);
+        ? sbbTextStyle.boldStyle.large.copyWith(color: SBBColors.white)
+        : sbbTextStyle.romanStyle.large.copyWith(color: SBBColors.black);
 
     return SBBPromotionBox.custom(
       leading: SvgPicture.asset(
@@ -79,8 +79,8 @@ class _WaitCancelledNotification extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final resolvedTextStyle = ThemeUtil.isDarkMode(context)
-        ? sbbTextStyle.boldStyle.medium.copyWith(color: SBBColors.black)
-        : sbbTextStyle.romanStyle.medium.copyWith(color: SBBColors.black);
+        ? sbbTextStyle.boldStyle.large.copyWith(color: SBBColors.black)
+        : sbbTextStyle.romanStyle.large.copyWith(color: SBBColors.black);
 
     return SBBPromotionBox.custom(
       leading: Icon(SBBIcons.circle_tick_medium, color: SBBColors.black, size: 36.0),

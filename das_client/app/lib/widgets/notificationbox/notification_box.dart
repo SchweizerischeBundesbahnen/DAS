@@ -55,7 +55,7 @@ class NotificationBox extends StatelessWidget {
             Expanded(
               child: Text(
                 title,
-                style: sbbTextStyle.boldStyle.medium,
+                style: sbbTextStyle.boldStyle.large,
               ),
             ),
             if (action != null) action!,
@@ -64,7 +64,7 @@ class NotificationBox extends StatelessWidget {
         if (text != null)
           Text(
             text!,
-            style: sbbTextStyle.lightStyle.small,
+            style: sbbTextStyle.lightStyle.medium,
           ),
       ],
     );
