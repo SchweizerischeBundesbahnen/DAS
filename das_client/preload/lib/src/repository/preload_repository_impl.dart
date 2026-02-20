@@ -60,7 +60,6 @@ class PreloadRepositoryImpl implements PreloadRepository {
 
   @override
   void triggerPreload() async {
-    return;
     if (_s3client == null) {
       _log.warning('S3 client is not initialized. Cannot perform preload.');
       return;
