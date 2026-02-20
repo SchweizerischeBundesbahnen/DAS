@@ -3,7 +3,7 @@ publish_to: none
 description: "DAS (Driver Advisory System) is a mobile application that provides all the required journey data to the train driver."
 
 environment:
-  sdk: ^3.10.4
+  sdk: ^3.10.8
 
 workspace:
   - app
@@ -20,8 +20,9 @@ workspace:
   - formation
   - preload
 
+# https://pub.dev/packages/melos
 dev_dependencies:
-  melos: ^7.3.0
+  melos: ^7.4.0
 
 # Melos Configuration
 

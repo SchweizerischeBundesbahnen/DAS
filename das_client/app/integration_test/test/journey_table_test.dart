@@ -1,10 +1,12 @@
 import 'package:app/pages/journey/journey_screen/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/additional_speed_restriction_row.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/balise_level_crossing_group_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/balise_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/bracket_station_cell_body.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_cell_body.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/curve_point_row.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/level_crossing_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/protection_section_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/service_point_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/signal_row.dart';
@@ -28,9 +30,6 @@ void main() {
     testWidgets('test journey changes are displayed correctly', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T35');
-
-      final scrollableFinder = find.byType(AnimatedList);
-      expect(scrollableFinder, findsOneWidget);
 
       // check normal rows
       _checkRowModification(tester, ModificationIndicator.indicatorKey, '1.5', false);
@@ -148,9 +147,6 @@ void main() {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T15M');
 
-      final scrollableFinder = find.byType(AnimatedList);
-      expect(scrollableFinder, findsOneWidget);
-
       final renensRow = findDASTableRowByText('Renens VD');
       expect(renensRow, findsAny);
 
@@ -191,9 +187,6 @@ void main() {
       expect(breakingSeriesHeaderCell, findsOneWidget);
       expect(find.descendant(of: breakingSeriesHeaderCell, matching: find.text('A50')), findsOneWidget);
 
-      final scrollableFinder = find.byType(AnimatedList);
-      expect(scrollableFinder, findsOneWidget);
-
       final curveName = find.textContaining(l10n.p_journey_table_curve_type_curve);
       expect(curveName, findsExactly(2));
 
@@ -206,9 +199,6 @@ void main() {
     testWidgets('test find three curves when breakingSeries R115 is chosen', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T5');
-
-      final scrollableFinder = find.byType(AnimatedList);
-      expect(scrollableFinder, findsOneWidget);
 
       // find and check if the default break series is chosen
       final breakingSeriesHeaderCell = find.byKey(JourneyTable.breakingSeriesHeaderKey);
@@ -228,13 +218,13 @@ void main() {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T7');
 
-      final scrollableFinder = find.byType(AnimatedList);
-      expect(scrollableFinder, findsOneWidget);
-
       final baliseMultiLevelCrossing = findDASTableRowByText('(2 ${l10n.p_journey_table_level_crossing})');
       expect(baliseMultiLevelCrossing, findsOneWidget);
 
-      final baliseIcon = find.descendant(of: baliseMultiLevelCrossing, matching: find.byKey(BaliseRow.baliseIconKey));
+      final baliseIcon = find.descendant(
+        of: baliseMultiLevelCrossing,
+        matching: find.byKey(BaliseLevelCrossingGroupRow.iconBaliseKey),
+      );
       expect(baliseIcon, findsOneWidget);
 
       await disconnect(tester);
@@ -266,9 +256,6 @@ void main() {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T7');
 
-      final scrollableFinder = find.byType(AnimatedList);
-      expect(scrollableFinder, findsOneWidget);
-
       final groupOf5BaliseRow = findDASTableRowByText('41.6');
       expect(groupOf5BaliseRow, findsOneWidget);
 
@@ -280,6 +267,13 @@ void main() {
         matching: find.text(l10n.p_journey_table_level_crossing),
       );
       expect(levelCrossingText, findsOneWidget);
+
+      // only in ETCS level 2
+      final levelCrossingIcon = find.descendant(
+        of: groupOf5BaliseRow,
+        matching: find.byKey(BaliseLevelCrossingGroupRow.iconLevelCrossingKey),
+      );
+      expect(levelCrossingIcon, findsNothing);
 
       var detailRowBalise = findDASTableRowByText('41.552');
       var detailRowLevelCrossing = findDASTableRowByText('41.492');
@@ -302,6 +296,13 @@ void main() {
         findsOneWidget,
       );
 
+      // only in ETCS level 2
+      final levelCrossingRowIcon = find.descendant(
+        of: groupOf5BaliseRow,
+        matching: find.byKey(LevelCrossingRow.iconLevelCrossingKey),
+      );
+      expect(levelCrossingRowIcon, findsNothing);
+
       // collapse group
       await tapElement(tester, groupOf5BaliseRow);
 
@@ -310,6 +311,53 @@ void main() {
 
       expect(detailRowLevelCrossing, findsNothing);
       expect(detailRowBalise, findsNothing);
+
+      await disconnect(tester);
+    });
+
+    testWidgets('test level crossing in ETCS level 2 section', (tester) async {
+      await prepareAndStartApp(tester);
+      await loadJourney(tester, trainNumber: 'T7');
+
+      final scrollableFinder = find.byType(AnimatedList);
+      expect(scrollableFinder, findsOneWidget);
+
+      await tester.dragUntilVisible(find.text('Rothrist'), scrollableFinder, const Offset(0, -50));
+
+      final levelCrossingGroup = findDASTableRowByText('74.7');
+
+      final levelCrossingGroupIcon = find.descendant(
+        of: levelCrossingGroup,
+        matching: find.byKey(BaliseLevelCrossingGroupRow.iconLevelCrossingKey),
+      );
+      expect(levelCrossingGroupIcon, findsOneWidget);
+
+      // only in non-ETCS level 2 sections
+      final levelCrossingGroupText = find.descendant(
+        of: levelCrossingGroup,
+        matching: find.text(l10n.p_journey_table_level_crossing),
+      );
+      expect(levelCrossingGroupText, findsNothing);
+
+      // expand group
+      await tapElement(tester, levelCrossingGroup);
+      await tester.dragUntilVisible(find.text('Rothrist'), scrollableFinder, const Offset(0, -50));
+
+      final detailRowLevelCrossing = findDASTableRowByText('74.700');
+      expect(detailRowLevelCrossing, findsOneWidget);
+
+      final levelCrossingIcon = find.descendant(
+        of: detailRowLevelCrossing,
+        matching: find.byKey(LevelCrossingRow.iconLevelCrossingKey),
+      );
+      expect(levelCrossingIcon, findsOneWidget);
+
+      // only in non-ETCS level 2 sections
+      final levelCrossingText = find.descendant(
+        of: detailRowLevelCrossing,
+        matching: find.text(l10n.p_journey_table_level_crossing),
+      );
+      expect(levelCrossingText, findsNothing);
 
       await disconnect(tester);
     });
@@ -425,9 +473,6 @@ void main() {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T2');
 
-      final scrollableFinder = find.byType(AnimatedList);
-      expect(scrollableFinder, findsOneWidget);
-
       final asrRow = findDASTableRowByText('km 64.200 - km 47.200');
       expect(asrRow, findsOneWidget);
 
@@ -488,9 +533,6 @@ void main() {
     testWidgets('test other rows are displayed correctly', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T2');
-
-      final scrollableFinder = find.byType(AnimatedList);
-      expect(scrollableFinder, findsOneWidget);
 
       final tableFinder = find.byType(DASTable);
       expect(tableFinder, findsOneWidget);
@@ -647,9 +689,6 @@ void main() {
     testWidgets('test both kilometres are displayed', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T6');
-
-      final scrollableFinder = find.byType(AnimatedList);
-      expect(scrollableFinder, findsOneWidget);
 
       final hardbruckeRow = findDASTableRowByText('Hardbrücke');
       expect(hardbruckeRow, findsOneWidget);
@@ -859,9 +898,6 @@ void main() {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T8');
 
-      final scrollableFinder = find.byType(AnimatedList);
-      expect(scrollableFinder, findsOneWidget);
-
       // check station speeds for Bern
 
       final bernStationRow = findDASTableRowByText('Bern');
@@ -1068,10 +1104,12 @@ void main() {
       final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
+      expect(findDASTableRowByText('Bern Hidden Stop'), findsAny);
       // check if all additional service points are displayed correctly
       await _checkAdditionalServicePoint(tester, scrollableFinder, 'Bern (Depot)');
       await _checkAdditionalServicePoint(tester, scrollableFinder, 'Olten Ost (Abzw)');
       await _checkAdditionalServicePoint(tester, scrollableFinder, 'Olten Tunnel (Spw)');
+      await _checkAdditionalServicePoint(tester, scrollableFinder, 'Olten Hidden Stop');
       await _checkAdditionalServicePoint(tester, scrollableFinder, 'Dulliken (Depot)');
 
       await disconnect(tester);

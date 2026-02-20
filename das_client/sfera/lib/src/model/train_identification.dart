@@ -9,16 +9,20 @@ class TrainIdentification {
     required this.trainNumber,
     required DateTime date,
     this.operatingDay,
+    this.tafTapLocationReferenceStart,
+    this.tafTapLocationReferenceEnd,
   }) : date = DateTime(date.year, date.month, date.day);
 
   final RailwayUndertaking ru;
   final String trainNumber;
   final DateTime date;
   final DateTime? operatingDay;
+  final String? tafTapLocationReferenceStart;
+  final String? tafTapLocationReferenceEnd;
 
   @override
   String toString() {
-    return 'TrainIdentification{ru: $ru, trainNumber: $trainNumber, date: $date, operatingDay: $operatingDay}';
+    return 'TrainIdentification{ru: $ru, trainNumber: $trainNumber, date: $date, operatingDay: $operatingDay, tafTapLocationReferenceStart: $tafTapLocationReferenceStart, tafTapLocationReferenceEnd: $tafTapLocationReferenceEnd}';
   }
 
   @override
@@ -29,8 +33,11 @@ class TrainIdentification {
           ru == other.ru &&
           trainNumber == other.trainNumber &&
           date == other.date &&
-          operatingDay == other.operatingDay;
+          operatingDay == other.operatingDay &&
+          tafTapLocationReferenceStart == other.tafTapLocationReferenceStart &&
+          tafTapLocationReferenceEnd == other.tafTapLocationReferenceEnd;
 
   @override
-  int get hashCode => Object.hash(ru, trainNumber, date, operatingDay);
+  int get hashCode =>
+      Object.hash(ru, trainNumber, date, operatingDay, tafTapLocationReferenceStart, tafTapLocationReferenceEnd);
 }
