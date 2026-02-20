@@ -49,6 +49,7 @@ class NotificationPriorityQueueViewModel extends JourneyAwareViewModel {
   }
 
   void removeStream({required NotificationType type}) {
+    remove(type: type);
     _subscriptions[type]?.cancel();
     _subscriptions[type] = null;
   }

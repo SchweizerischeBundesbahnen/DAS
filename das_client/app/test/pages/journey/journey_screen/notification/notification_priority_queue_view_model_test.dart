@@ -115,6 +115,33 @@ void main() {
     expect(testee.modelValue, equals(<NotificationType>[.advisedSpeed]));
   });
 
+  test('modelValue_whenSingleStreamAddedThenRemoved_thenEmitsCorrectlyDependingOnStream', () async {
+    // ARRANGE
+    expectLater(
+      testee.model,
+      emitsInOrder([
+        List.empty(),
+        <NotificationType>[.advisedSpeed],
+        List.empty(),
+      ]),
+    );
+    final controller = BehaviorSubject<bool>.seeded(false);
+    testee.addStream(type: .advisedSpeed, stream: controller.stream);
+
+    // ARRANGE
+    controller.add(true);
+    await processStreams();
+    expect(testee.modelValue, equals(<NotificationType>[.advisedSpeed]));
+
+    // ACT
+    testee.removeStream(type: .advisedSpeed);
+    controller.add(true);
+    await processStreams();
+
+    // EXPECT
+    expect(testee.modelValue, equals(List.empty()));
+  });
+
   test('modelValue_whenTwoStreamsAdded_thenEmitsCorrectlyDependingOnStreams', () async {
     // ARRANGE
     expectLater(
