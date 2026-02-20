@@ -126,9 +126,9 @@ class TrainIdentificationIntegrationTest {
                 List<TrainIdentification> trainIds = trainIdentificationService.processDailyTrainRunRequest(OffsetDateTime.of(startDate.plusDays(1), LocalTime.now(), ZoneOffset.UTC));
                 assertThat(trainIds).hasSize(1);
                 TrainIdentification trainId = trainIds.getFirst();
-                assertThat(trainId.getStartDate()).isEqualTo(startDate);
-                assertThat(trainId.getOperationalTrainNumber()).isEqualTo("728");
-                assertThat(trainId.getCompanies()).containsExactly(COMPANY_CODE_SOB);
+                assertThat(trainId.startDate()).isEqualTo(startDate);
+                assertThat(trainId.operationalTrainNumber()).isEqualTo("728");
+                assertThat(trainId.companies()).containsExactly(COMPANY_CODE_SOB);
             });
 
         // When
