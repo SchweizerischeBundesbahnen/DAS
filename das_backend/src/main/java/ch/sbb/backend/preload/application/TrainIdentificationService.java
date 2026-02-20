@@ -34,11 +34,8 @@ public class TrainIdentificationService {
     }
 
     private TrainIdentification readEntity(TrainIdentificationEntity trainRunEntity) {
-        return TrainIdentification.builder()
-            .operationalTrainNumber(trainRunEntity.getOperationalTrainNumber())
-            .startDate(trainRunEntity.getStartDateTime().toLocalDate())
-            .companies(readCompanyCodes(trainRunEntity.getCompanies()))
-            .build();
+        return new TrainIdentification(trainRunEntity.getId(), trainRunEntity.getOperationalTrainNumber(), trainRunEntity.getStartDateTime().toLocalDate(),
+            readCompanyCodes(trainRunEntity.getCompanies()));
     }
 
     private Set<CompanyCode> readCompanyCodes(String smsRus) {

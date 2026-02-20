@@ -1,10 +1,10 @@
 package ch.sbb.backend.preload.application;
 
+import ch.sbb.backend.preload.application.model.trainidentification.TrainIdentification;
 import ch.sbb.backend.preload.domain.PreloadResult;
 import ch.sbb.backend.preload.domain.SegmentProfileIdentification;
 import ch.sbb.backend.preload.domain.SferaStore;
 import ch.sbb.backend.preload.domain.TrainCharacteristicsIdentification;
-import ch.sbb.backend.preload.domain.TrainId;
 import ch.sbb.backend.preload.infrastructure.PahoMqttClient;
 import ch.sbb.backend.preload.infrastructure.xml.XmlHelper;
 import ch.sbb.backend.preload.sfera.model.v0300.JourneyProfile;
@@ -28,15 +28,17 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
+import org.eclipse.paho.mqttv5.common.MqttException;
 import org.eclipse.paho.mqttv5.common.MqttMessage;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.resilience.annotation.Retryable;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 
 @Service
 public class SferaService {
 
     private static final int MAX_MQTT_REPLY_TIMEOUT_MS = 5000;
+    private static final int MAX_RETRIES = 3;
     private static final String G2B = "G2B";
     private static final String B2G = "B2G";
     private static final String CLIENT_ID = UUID.randomUUID().toString();
@@ -60,12 +62,12 @@ public class SferaService {
         this.sferaStore = new SferaStore();
     }
 
-    @Retryable
-    PreloadResult preload(TrainId trainId) throws ExecutionException, InterruptedException {
+    @Retryable(maxAttempts = MAX_RETRIES, retryFor = {ExecutionException.class, InterruptedException.class, MqttException.class})
+    PreloadResult preload(TrainIdentification trainId) throws ExecutionException, InterruptedException, MqttException {
         // todo unsubscribe in recovery or finally
         mqttClient.subscribe(createTopic(G2B, trainId), (topic, message) -> receive(message));
 
-        SFERAG2BReplyMessage handshakeReply = sendRequest(trainId, sferaMessageCreator.createHandshakeRequestMessage()).get();
+        SFERAG2BReplyMessage handshakeReply = sendRequest(trainId, sferaMessageCreator.createHandshakeRequestMessage(trainId)).get();
         if (handshakeReply.getHandshakeAcknowledgement() == null) {
             throw new IllegalStateException("Handshake not acknowledged!");
         }
@@ -84,13 +86,13 @@ public class SferaService {
 
         Set<SegmentProfile> segmentProfiles = futureSps.get();
         Set<TrainCharacteristics> trainCharacteristics = futureTcs.get();
-        sendRequest(trainId, sferaMessageCreator.createSessionTermination()).get();
+        sendRequest(trainId, sferaMessageCreator.createSessionTermination(trainId)).get();
         mqttClient.unsubscribe(createTopic(G2B, trainId));
 
         return new PreloadResult(journeyProfiles, segmentProfiles, trainCharacteristics);
     }
 
-    private CompletableFuture<Set<SegmentProfile>> requestSps(TrainId trainId, Set<SegmentProfileReference> spRefs) {
+    private CompletableFuture<Set<SegmentProfile>> requestSps(TrainIdentification trainId, Set<SegmentProfileReference> spRefs) throws MqttException {
         Set<SegmentProfile> segmentProfiles = new HashSet<>();
         Set<SegmentProfileIdentification> segmentProfilesToFetch = new HashSet<>();
 
@@ -108,7 +110,7 @@ public class SferaService {
         });
 
         if (!segmentProfilesToFetch.isEmpty()) {
-            return sendRequest(trainId, sferaMessageCreator.createSpRequestMessage(segmentProfilesToFetch))
+            return sendRequest(trainId, sferaMessageCreator.createSpRequestMessage(trainId, segmentProfilesToFetch))
                 .thenApply(reply -> {
                     if (reply.getG2BReplyPayload() == null || reply.getG2BReplyPayload().getSegmentProfiles() == null) {
                         throw new IllegalStateException("No Segment Profile received!");
@@ -123,7 +125,7 @@ public class SferaService {
         }
     }
 
-    private CompletableFuture<Set<TrainCharacteristics>> requestTcs(TrainId trainId, Set<SegmentProfileReference> spRefs) {
+    private CompletableFuture<Set<TrainCharacteristics>> requestTcs(TrainIdentification trainId, Set<SegmentProfileReference> spRefs) throws MqttException {
         Set<TrainCharacteristics> trainCharacteristics = new HashSet<>();
         Set<TrainCharacteristicsIdentification> trainCharacteristicsToFetch = new HashSet<>();
 
@@ -143,7 +145,7 @@ public class SferaService {
 
         if (!trainCharacteristicsToFetch.isEmpty()) {
 
-            return sendRequest(trainId, sferaMessageCreator.createTcRequest(trainCharacteristicsToFetch))
+            return sendRequest(trainId, sferaMessageCreator.createTcRequest(trainId, trainCharacteristicsToFetch))
                 .thenApply(reply -> {
                     if (reply.getG2BReplyPayload() == null || reply.getG2BReplyPayload().getTrainCharacteristics() == null) {
                         throw new IllegalStateException("No Train Characteristics received!");
@@ -158,10 +160,8 @@ public class SferaService {
         }
     }
 
-    private String createTopic(String direction, TrainId trainId) {
-        return String.format("%s90940/%s/%s/%s/%s_%s/%s", topicPrefix, sferaMajorVersion, direction, trainId.companyCode(), trainId.operationalTrainNumber(),
-            trainId.startDate(),
-            CLIENT_ID);
+    private String createTopic(String direction, TrainIdentification trainId) {
+        return String.format("%s90940/%s/%s/%s/%s_%s/%s", topicPrefix, sferaMajorVersion, direction, trainId.company().getValue(), trainId.operationalTrainNumber(), trainId.startDate(), CLIENT_ID);
     }
 
     private void receive(MqttMessage mqttMessage) {
@@ -176,7 +176,7 @@ public class SferaService {
         }
     }
 
-    private CompletableFuture<SFERAG2BReplyMessage> sendRequest(TrainId trainId, Object payload) {
+    private CompletableFuture<SFERAG2BReplyMessage> sendRequest(TrainIdentification trainId, Object payload) throws MqttException {
         String messageId = switch (payload) {
             case SFERAB2GRequestMessage msg -> msg.getMessageHeader().getMessageID();
             case SFERAB2GEventMessage msg -> msg.getMessageHeader().getMessageID();

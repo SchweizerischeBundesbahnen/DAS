@@ -2,8 +2,9 @@ package ch.sbb.backend.preload.application;
 
 import static org.xmlunit.assertj3.XmlAssert.assertThat;
 
+import ch.sbb.backend.preload.application.model.trainidentification.CompanyCode;
+import ch.sbb.backend.preload.application.model.trainidentification.TrainIdentification;
 import ch.sbb.backend.preload.domain.SegmentProfileIdentification;
-import ch.sbb.backend.preload.domain.TrainId;
 import ch.sbb.backend.preload.infrastructure.xml.SferaMessagingConfig;
 import ch.sbb.backend.preload.infrastructure.xml.XmlHelper;
 import ch.sbb.backend.preload.sfera.model.v0300.SFERAB2GRequestMessage;
@@ -28,8 +29,8 @@ class SferaMessageCreatorTest {
         String localName = Nodes.getQName(attr).getLocalPart();
         return !localName.equals("timestamp") && !localName.equals("message_ID");
     };
-
     public static final DefaultNodeMatcher SP_ID_NODE_MATCHER = new DefaultNodeMatcher(ElementSelectors.byNameAndAttributes("SP_Request", "SP_ID"));
+    private final TrainIdentification trainId = new TrainIdentification(1, "51", LocalDate.of(2025, 10, 6), Set.of(CompanyCode.of("1111")));
 
     @Autowired
     SferaMessageCreator sferaMessageCreator;
@@ -39,7 +40,7 @@ class SferaMessageCreatorTest {
 
     @Test
     void createJpRequestMessage() {
-        SFERAB2GRequestMessage message = sferaMessageCreator.createJpRequestMessage(new TrainId("1111", "51", LocalDate.of(2025, 10, 6)));
+        SFERAB2GRequestMessage message = sferaMessageCreator.createJpRequestMessage(trainId);
         String result = xmlHelper.toString(message);
 
         assertThat(result).and(Input.fromFile("src/test/resources/sfera/jprequest.xml"))
@@ -50,7 +51,7 @@ class SferaMessageCreatorTest {
 
     @Test
     void createSpRequestMessage() {
-        SFERAB2GRequestMessage message = sferaMessageCreator.createSpRequestMessage(
+        SFERAB2GRequestMessage message = sferaMessageCreator.createSpRequestMessage(trainId,
             Set.of(new SegmentProfileIdentification("234", "3", "2", "1200", null), new SegmentProfileIdentification("41", "1", "0", "1300", (short) 810)));
         String result = xmlHelper.toString(message);
 

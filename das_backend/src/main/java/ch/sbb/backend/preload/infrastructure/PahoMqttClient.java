@@ -1,5 +1,6 @@
 package ch.sbb.backend.preload.infrastructure;
 
+import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.paho.mqttv5.client.IMqttMessageListener;
 import org.eclipse.paho.mqttv5.client.MqttClient;
@@ -38,11 +39,11 @@ public class PahoMqttClient {
         this.sferaAuthService = sferaAuthService;
     }
 
-    public void connect() {
+    public void connect() throws MqttException {
         OAuth2AccessToken accessToken = sferaAuthService.getAccessToken();
         if (accessToken == null) {
             log.error("connecting failed, could not obtain access token");
-            return;
+            throw new IllegalStateException("Could not obtain OAuth access token for MQTT connect");
         }
         final String password = SECRET_PREFIX + SECRET_DELIMITER + oauthProfile + SECRET_DELIMITER + accessToken.getTokenValue();
         MqttConnectionOptions connOpts = new MqttConnectionOptions();
@@ -50,48 +51,44 @@ public class PahoMqttClient {
         connOpts.setAutomaticReconnect(true);
         connOpts.setUserName(USER_NAME);
         connOpts.setPassword(password.getBytes());
-        try {
-            this.client = new MqttClient(broker, clientId, new MemoryPersistence());
-            client.connect(connOpts);
-        } catch (MqttException e) {
-            log.error("connecting failed ", e);
-        }
+        this.client = new MqttClient(broker, clientId, new MemoryPersistence());
+        this.client.connect(connOpts);
     }
 
-    public void subscribe(String topic, IMqttMessageListener messageListener) {
-        try {
-            final MqttSubscription[] subscriptions = {new MqttSubscription(topic, QOS_EXACTLY_ONCE)};
-            IMqttMessageListener[] messageListeners = {messageListener};
-            client.subscribe(subscriptions, messageListeners);
-        } catch (MqttException e) {
-            log.error("subscribing failed to topic: {}", topic, e);
-        }
+    public void subscribe(String topic, IMqttMessageListener messageListener) throws MqttException {
+        ensureConnected();
+        final MqttSubscription[] subscriptions = {new MqttSubscription(topic, QOS_EXACTLY_ONCE)};
+        IMqttMessageListener[] messageListeners = {messageListener};
+        client.subscribe(subscriptions, messageListeners);
     }
 
-    public void unsubscribe(String topic) {
-        try {
-            client.unsubscribe(topic);
-        } catch (MqttException e) {
-            log.error("unsubscribing failed to topic: {}", topic, e);
-        }
+    public void unsubscribe(String topic) throws MqttException {
+        ensureConnected();
+        client.unsubscribe(topic);
     }
 
-    public void publish(String topic, String content) {
+    public void publish(String topic, String content) throws MqttException {
+        ensureConnected();
         MqttMessage message = new MqttMessage(content.getBytes());
         message.setQos(QOS_EXACTLY_ONCE);
-        try {
-            client.publish(topic, message);
-        } catch (MqttException e) {
-            log.error("publishing failed message={}... to topic={}", content.substring(0, 100), topic, e);
-        }
+        client.publish(topic, message);
     }
 
-    public void disconnect() {
-        try {
-            client.disconnect();
-            client.close();
-        } catch (MqttException e) {
-            log.error("closing failed ", e);
+    public void disconnect() throws MqttException {
+        client.disconnect();
+        client.close();
+    }
+
+    private void ensureConnected() throws MqttException {
+        if (client != null && client.isConnected()) {
+            return;
         }
+        log.info("Reconnecting MQTT client");
+        connect();
+    }
+
+    @PreDestroy
+    public void predestroy() throws MqttException {
+        this.disconnect();
     }
 }
