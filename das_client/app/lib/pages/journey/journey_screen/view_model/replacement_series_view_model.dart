@@ -166,11 +166,7 @@ class ReplacementSeriesViewModel extends JourneyAwareViewModel {
       } else if (startServicePoint != null) {
         // end of illegal segment
         final endServicePoint = servicePoints.firstWhereOrNull((it) => it.order >= point.order) ?? servicePoints.last;
-        final replacement = _replacementSeriesFor(
-          relevantSpeeds,
-          breakSeries,
-          journey.metadata.availableBreakSeries,
-        );
+        final replacement = _replacementSeriesFor(relevantSpeeds, breakSeries, journey.metadata.availableBreakSeries);
 
         _illegalSpeedSegments.add(
           IllegalSpeedSegment(

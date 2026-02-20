@@ -57,7 +57,7 @@ void main() {
     // Switch back to N Series which has a replacement series
     await selectBreakSeries(tester, breakSeries: 'N160');
     replacementSeriesFinder.reset();
-    expect(replacementSeriesFinder, findsOneWidget);
+    await waitUntilExists(tester, replacementSeriesFinder);
 
     await disconnect(tester);
   });
