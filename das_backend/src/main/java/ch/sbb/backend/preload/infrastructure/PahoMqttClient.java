@@ -1,5 +1,6 @@
 package ch.sbb.backend.preload.infrastructure;
 
+import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.paho.mqttv5.client.IMqttMessageListener;
 import org.eclipse.paho.mqttv5.client.MqttClient;
@@ -115,5 +116,10 @@ public class PahoMqttClient {
                 reconnectInternal();
             }
         }
+    }
+
+    @PreDestroy
+    public void predestroy()  {
+        closeClientQuietly();
     }
 }

@@ -5,7 +5,6 @@ import ch.sbb.backend.preload.application.model.trainidentification.TrainIdentif
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -23,8 +22,7 @@ public class MockTrainIdentificationService {
     private String companyCode;
 
     public List<TrainIdentification> getNewTrainIdentifications(OffsetDateTime since) {
-        AtomicInteger i = new AtomicInteger();
-        return SFERA_MOCK_TRAIN_NUMBERS.stream().map(trainNumber -> new TrainIdentification(i.getAndIncrement(), trainNumber, since.toLocalDate(), Set.of(CompanyCode.of(companyCode))))
+        return SFERA_MOCK_TRAIN_NUMBERS.stream().map(trainNumber -> new TrainIdentification(0, trainNumber, since.toLocalDate(), Set.of(CompanyCode.of(companyCode))))
             .toList();
     }
 
