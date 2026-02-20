@@ -88,8 +88,14 @@ class NotificationPriorityQueueViewModel extends JourneyAwareViewModel {
     final toEmit = _activeNotifications.sorted((a, b) => a.index.compareTo(b.index)).take(2).toList(growable: false);
 
     if (ListEquality().equals(toEmit, modelValue)) return;
-    _logger.fine('Emitting active notifications: $toEmit');
-    _rxNotifications.add(toEmit);
+    
+    if (_rxNotifications.isClosed) {
+      _logger.warning('Trying to emit while stream is already closed');
+      return;
+    } else {
+      _logger.fine('Emitting active notifications: $toEmit');
+      _rxNotifications.add(toEmit);
+    }
   }
 
   void _callCallbacks() {
