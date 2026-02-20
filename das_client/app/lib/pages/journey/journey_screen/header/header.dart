@@ -48,7 +48,7 @@ class _HeaderState extends State<Header> {
         onHorizontalDragUpdate: _onHorizontalDragUpdate,
         onHorizontalDragEnd: _onHorizontalDragEnd,
         child: Padding(
-          padding: const EdgeInsets.all(JourneyOverview.horizontalPadding).copyWith(top: 0),
+          padding: const EdgeInsets.symmetric(horizontal: JourneyOverview.horizontalPadding),
           child: Row(
             spacing: SBBSpacing.xSmall,
             crossAxisAlignment: .start,

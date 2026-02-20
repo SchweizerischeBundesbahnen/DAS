@@ -1,4 +1,5 @@
 import 'package:app/di/di.dart';
+import 'package:app/pages/journey/journey_screen/journey_overview.dart';
 import 'package:app/pages/journey/journey_screen/notification/notification_type.dart';
 import 'package:app/pages/journey/journey_screen/notification/widgets/advised_speed_notification.dart';
 import 'package:app/pages/journey/journey_screen/notification/widgets/break_load_slip_notification.dart';
@@ -42,12 +43,21 @@ class NotificationSpace extends StatelessWidget {
           builder: (context, asyncSnapshot) {
             final data = asyncSnapshot.requireData;
             if (data.isEmpty) return SizedBox.shrink();
-            if (data.length == 1) return data.first.toWidget();
 
-            return Column(
-              mainAxisSize: .min,
-              spacing: SBBSpacing.xSmall,
-              children: data.map((notification) => notification.toWidget()).toList(growable: false),
+            Widget child;
+            if (data.length == 1) {
+              child = data.first.toWidget();
+            } else {
+              child = Column(
+                mainAxisSize: .min,
+                spacing: SBBSpacing.xSmall,
+                children: data.map((notification) => notification.toWidget()).toList(growable: false),
+              );
+            }
+
+            return Padding(
+              padding: EdgeInsets.symmetric(horizontal: JourneyOverview.horizontalPadding, vertical: SBBSpacing.xSmall),
+              child: child,
             );
           },
         ),
