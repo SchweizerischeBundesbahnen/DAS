@@ -33,7 +33,7 @@
     "@angular/localize": "^21.0.3",
     "@types/ineum": "^216.0.4",
     "@types/jasmine": "~6.0.0",
-    "angular-eslint": "21.0.1",
+    "angular-eslint": "21.2.0",
     "eslint": "^9.39.0",
     "jasmine-core": "~6.0.0",
     "karma": "~6.4.0",
