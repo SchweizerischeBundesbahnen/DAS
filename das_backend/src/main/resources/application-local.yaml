@@ -18,6 +18,6 @@ preload:
     topic: nets-t.timetable
   timetableTrain:
     topic: fps.inte.sbbp.zug
-  trainCleanUp:
-    days: 2
+  cleanUp:
+    hours: 48
     cronExpression: "0 0 0 * * *"

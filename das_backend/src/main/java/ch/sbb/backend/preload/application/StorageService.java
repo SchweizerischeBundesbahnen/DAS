@@ -105,7 +105,7 @@ public class StorageService {
         zos.closeEntry();
     }
 
-    void cleanUp(OffsetDateTime cutoffDate) {
+    void deleteAllOlderThan(OffsetDateTime cutoffDate) {
         List<String> keysToDelete = s3Service.listObjects().stream()
             .filter(k -> k != null && k.endsWith(ZIP_FILE_ENDING))
             .filter(k -> {

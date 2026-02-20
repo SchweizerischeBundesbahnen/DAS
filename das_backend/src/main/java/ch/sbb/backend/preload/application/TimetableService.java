@@ -47,7 +47,7 @@ public class TimetableService {
     }
 
     @Transactional
-    public void deleteObsoleteData(LocalDate cutoffDate) {
+    public void deleteAllOlderThan(LocalDate cutoffDate) {
         trainRunDao.deleteAllOlderThan(cutoffDate);
     }
 }

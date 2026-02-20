@@ -121,8 +121,6 @@ preload:
     bucketUrl: ${PRELOAD_BUCKET_URL}
     accessKey: ${PRELOAD_BUCKET_KEY}
     accessSecret: ${PRELOAD_BUCKET_SECRET}
-  fileCleanUp:
-    hours: 48
   timetablePeriod:
     topic: ${FAHRPLAN_SERVICE_API_TIMETABLE_PERIOD_TOPIC}
   timetableTrain:
@@ -140,6 +138,6 @@ preload:
     BLSC: 3356
     BLSI: 2263
     BLSP: 1163
-  trainCleanUp:
-    days: ${TRAIN_CLEANUP_DAYS}
-    cronExpression: ${TRAIN_CLEANUP_CRON_EXPRESSION}
+  cleanUp:
+    hours: ${PRELOAD_CLEANUP_HOURS}
+    cronExpression: ${PRELOAD_CLEANUP_CRON}
