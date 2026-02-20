@@ -154,7 +154,7 @@ class JourneyTable extends StatelessWidget {
     Map<int, CollapsedState> collapsedRows,
     JourneyPositionModel journeyPosition,
   ) {
-    final currentBreakSeries = settings.resolvedBreakSeries(journey.metadata);
+    final currentBreakSeries = settings.currentBreakSeries;
     final navigationVM = DI.get<JourneyNavigationViewModel>();
 
     final rows = journey.data
@@ -373,7 +373,7 @@ class JourneyTable extends StatelessWidget {
     JourneySettings? settings,
     DetailModalType? openModalType,
   ) {
-    final currentBreakSeries = settings?.resolvedBreakSeries(metadata);
+    final currentBreakSeries = settings?.currentBreakSeries;
 
     final journeyViewModel = context.read<JourneyTableViewModel>();
     final timeViewModel = context.read<ArrivalDepartureTimeViewModel>();
@@ -542,7 +542,7 @@ class JourneyTable extends StatelessWidget {
       constraints: BoxConstraints(),
       child: BreakSeriesSelection(
         availableBreakSeries: metadata?.availableBreakSeries ?? {},
-        selectedBreakSeries: settings?.resolvedBreakSeries(metadata),
+        selectedBreakSeries: settings?.currentBreakSeries,
       ),
     );
 
@@ -550,7 +550,7 @@ class JourneyTable extends StatelessWidget {
   }
 
   bool _isCurvePointWithoutSpeed(BaseData data, Journey journey, JourneySettings settings) {
-    final breakSeries = settings.resolvedBreakSeries(journey.metadata);
+    final breakSeries = settings.currentBreakSeries;
 
     return data is CurvePoint &&
         data.localSpeeds?.speedFor(breakSeries?.trainSeries, breakSeries: breakSeries?.breakSeries) == null;

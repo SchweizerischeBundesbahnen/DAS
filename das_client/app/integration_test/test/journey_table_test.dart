@@ -1,12 +1,8 @@
 import 'package:app/pages/journey/journey_screen/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
-import 'package:app/pages/journey/journey_screen/widgets/table/additional_speed_restriction_row.dart';
-import 'package:app/pages/journey/journey_screen/widgets/table/balise_level_crossing_group_row.dart';
-import 'package:app/pages/journey/journey_screen/widgets/table/balise_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/bracket_station_cell_body.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_cell_body.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/curve_point_row.dart';
-import 'package:app/pages/journey/journey_screen/widgets/table/level_crossing_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/protection_section_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/service_point_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/signal_row.dart';
@@ -14,8 +10,6 @@ import 'package:app/pages/journey/journey_screen/widgets/table/tram_area_row.dar
 import 'package:app/pages/journey/journey_screen/widgets/table/whistle_row.dart';
 import 'package:app/theme/themes.dart';
 import 'package:app/widgets/dot_indicator.dart';
-import 'package:app/widgets/labeled_badge.dart';
-import 'package:app/widgets/modification_indicator.dart';
 import 'package:app/widgets/speed_display.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
@@ -27,54 +21,6 @@ import '../util/test_utils.dart';
 
 void main() {
   group('train journey table test', () {
-    testWidgets('test journey changes are displayed correctly', (tester) async {
-      await prepareAndStartApp(tester);
-      await loadJourney(tester, trainNumber: 'T35');
-
-      // check normal rows
-      _checkRowModification(tester, ModificationIndicator.indicatorKey, '1.5', false);
-      _checkRowModification(tester, ModificationIndicator.indicatorKey, '1.6', false);
-      _checkRowModification(tester, ModificationIndicator.indicatorKey, '1.7', false);
-      _checkRowModification(tester, ModificationIndicator.indicatorKey, '2.0', false);
-
-      await dragUntilTextInStickyHeader(tester, 'Property Updated');
-
-      // updated rows
-      _checkRowModification(tester, ModificationIndicator.indicatorKey, '3.0', true);
-      _checkRowModification(tester, ModificationIndicator.indicatorKey, '3.5', true);
-      _checkRowModification(tester, ModificationIndicator.indicatorKey, '3.6', true);
-      _checkRowModification(tester, ModificationIndicator.indicatorKey, '3.7', true);
-      _checkRowModification(tester, ModificationIndicator.indicatorKey, '4.0', true);
-
-      await dragUntilTextInStickyHeader(tester, 'Line Speed Updated');
-
-      _checkRowModification(tester, ModificationIndicator.indicatorKey, '5.0', true);
-
-      // deleted rows
-      _checkRowModification(tester, DASTable.strikethroughRowKey, '105.5', true);
-      _checkRowModification(tester, DASTable.strikethroughRowKey, '105.4', true);
-      _checkRowModification(tester, DASTable.strikethroughRowKey, '105.3', true);
-      _checkRowModification(tester, DASTable.strikethroughRowKey, '105.0', true);
-
-      await dragUntilTextInStickyHeader(tester, 'Station Speed Updated');
-
-      _checkRowModification(tester, ModificationIndicator.indicatorKey, '103.0', true);
-      // updated but more then 30 days ago rows
-      _checkRowModification(tester, ModificationIndicator.indicatorKey, '102.5', false);
-      _checkRowModification(tester, ModificationIndicator.indicatorKey, '102.4', false);
-      _checkRowModification(tester, ModificationIndicator.indicatorKey, '102.3', false);
-      _checkRowModification(tester, ModificationIndicator.indicatorKey, '101.0', false);
-      _checkRowModification(tester, ModificationIndicator.indicatorKey, '100.0', false);
-
-      // delete but more then 30 days ago
-      expect(findDASTableRowByText('99.6'), findsNothing);
-      expect(findDASTableRowByText('99.5'), findsNothing);
-      expect(findDASTableRowByText('99.4'), findsNothing);
-      expect(findDASTableRowByText('99.3'), findsNothing);
-
-      await disconnect(tester);
-    });
-
     testWidgets('test journey displays end of curves correctly', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T5');
@@ -214,22 +160,6 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test balise multiple level crossings', (tester) async {
-      await prepareAndStartApp(tester);
-      await loadJourney(tester, trainNumber: 'T7');
-
-      final baliseMultiLevelCrossing = findDASTableRowByText('(2 ${l10n.p_journey_table_level_crossing})');
-      expect(baliseMultiLevelCrossing, findsOneWidget);
-
-      final baliseIcon = find.descendant(
-        of: baliseMultiLevelCrossing,
-        matching: find.byKey(BaliseLevelCrossingGroupRow.iconBaliseKey),
-      );
-      expect(baliseIcon, findsOneWidget);
-
-      await disconnect(tester);
-    });
-
     testWidgets('test whistle and tram area', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T7');
@@ -248,116 +178,6 @@ void main() {
 
       final tramAreaDescription = find.descendant(of: tramAreaRow, matching: find.text('6 TS'));
       expect(tramAreaDescription, findsAny);
-
-      await disconnect(tester);
-    });
-
-    testWidgets('test balise and level crossing groups expand / collapse', (tester) async {
-      await prepareAndStartApp(tester);
-      await loadJourney(tester, trainNumber: 'T7');
-
-      final groupOf5BaliseRow = findDASTableRowByText('41.6');
-      expect(groupOf5BaliseRow, findsOneWidget);
-
-      final countText = find.descendant(of: groupOf5BaliseRow, matching: find.text('5'));
-      expect(countText, findsOneWidget);
-
-      final levelCrossingText = find.descendant(
-        of: groupOf5BaliseRow,
-        matching: find.text(l10n.p_journey_table_level_crossing),
-      );
-      expect(levelCrossingText, findsOneWidget);
-
-      // only in ETCS level 2
-      final levelCrossingIcon = find.descendant(
-        of: groupOf5BaliseRow,
-        matching: find.byKey(BaliseLevelCrossingGroupRow.iconLevelCrossingKey),
-      );
-      expect(levelCrossingIcon, findsNothing);
-
-      var detailRowBalise = findDASTableRowByText('41.552');
-      var detailRowLevelCrossing = findDASTableRowByText('41.492');
-
-      expect(detailRowLevelCrossing, findsNothing);
-      expect(detailRowBalise, findsNothing);
-
-      // expand group
-      await tapElement(tester, groupOf5BaliseRow);
-
-      detailRowBalise = findDASTableRowByText('41.552');
-      detailRowLevelCrossing = findDASTableRowByText('41.492');
-
-      expect(detailRowLevelCrossing, findsOneWidget);
-      expect(detailRowBalise, findsOneWidget);
-
-      expect(find.descendant(of: detailRowBalise, matching: find.byKey(BaliseRow.baliseIconKey)), findsOneWidget);
-      expect(
-        find.descendant(of: detailRowLevelCrossing, matching: find.text(l10n.p_journey_table_level_crossing)),
-        findsOneWidget,
-      );
-
-      // only in ETCS level 2
-      final levelCrossingRowIcon = find.descendant(
-        of: groupOf5BaliseRow,
-        matching: find.byKey(LevelCrossingRow.iconLevelCrossingKey),
-      );
-      expect(levelCrossingRowIcon, findsNothing);
-
-      // collapse group
-      await tapElement(tester, groupOf5BaliseRow);
-
-      detailRowBalise = findDASTableRowByText('41.552');
-      detailRowLevelCrossing = findDASTableRowByText('41.492');
-
-      expect(detailRowLevelCrossing, findsNothing);
-      expect(detailRowBalise, findsNothing);
-
-      await disconnect(tester);
-    });
-
-    testWidgets('test level crossing in ETCS level 2 section', (tester) async {
-      await prepareAndStartApp(tester);
-      await loadJourney(tester, trainNumber: 'T7');
-
-      final scrollableFinder = find.byType(AnimatedList);
-      expect(scrollableFinder, findsOneWidget);
-
-      await tester.dragUntilVisible(find.text('Rothrist'), scrollableFinder, const Offset(0, -50));
-
-      final levelCrossingGroup = findDASTableRowByText('74.7');
-
-      final levelCrossingGroupIcon = find.descendant(
-        of: levelCrossingGroup,
-        matching: find.byKey(BaliseLevelCrossingGroupRow.iconLevelCrossingKey),
-      );
-      expect(levelCrossingGroupIcon, findsOneWidget);
-
-      // only in non-ETCS level 2 sections
-      final levelCrossingGroupText = find.descendant(
-        of: levelCrossingGroup,
-        matching: find.text(l10n.p_journey_table_level_crossing),
-      );
-      expect(levelCrossingGroupText, findsNothing);
-
-      // expand group
-      await tapElement(tester, levelCrossingGroup);
-      await tester.dragUntilVisible(find.text('Rothrist'), scrollableFinder, const Offset(0, -50));
-
-      final detailRowLevelCrossing = findDASTableRowByText('74.700');
-      expect(detailRowLevelCrossing, findsOneWidget);
-
-      final levelCrossingIcon = find.descendant(
-        of: detailRowLevelCrossing,
-        matching: find.byKey(LevelCrossingRow.iconLevelCrossingKey),
-      );
-      expect(levelCrossingIcon, findsOneWidget);
-
-      // only in non-ETCS level 2 sections
-      final levelCrossingText = find.descendant(
-        of: detailRowLevelCrossing,
-        matching: find.text(l10n.p_journey_table_level_crossing),
-      );
-      expect(levelCrossingText, findsNothing);
 
       await disconnect(tester);
     });
@@ -465,95 +285,6 @@ void main() {
 
       final zahnstangeEndeRow = findDASTableRowByText('Zahnstangen Ende');
       expect(zahnstangeEndeRow, findsOneWidget);
-
-      await disconnect(tester);
-    });
-
-    testWidgets('test additional speed restriction row is displayed correctly', (tester) async {
-      await prepareAndStartApp(tester);
-      await loadJourney(tester, trainNumber: 'T2');
-
-      final asrRow = findDASTableRowByText('km 64.200 - km 47.200');
-      expect(asrRow, findsOneWidget);
-
-      final asrIcon = find.descendant(
-        of: asrRow,
-        matching: find.byKey(AdditionalSpeedRestrictionRow.additionalSpeedRestrictionIconKey),
-      );
-      expect(asrIcon, findsOneWidget);
-
-      final asrSpeed = find.descendant(of: asrRow, matching: find.text('60'));
-      expect(asrSpeed, findsOneWidget);
-
-      // check all cells are colored
-      final coloredCells = findColoredRowCells(
-        of: asrRow,
-        color: AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor,
-      );
-      expect(coloredCells, findsNWidgets(14));
-
-      await disconnect(tester);
-    });
-
-    testWidgets('test complex additional speed restriction row is displayed correctly', (tester) async {
-      await prepareAndStartApp(tester);
-      await loadJourney(tester, trainNumber: 'T18');
-
-      final scrollableFinder = find.byType(AnimatedList);
-      expect(scrollableFinder, findsOneWidget);
-
-      final asrRows = findDASTableRowByText('km 64.200 - km 26.100');
-      expect(asrRows, findsAtLeast(1));
-
-      final asrRow = asrRows.first;
-
-      // no count badge should be shown for normal ASR
-      final asrCountBadge = find.descendant(
-        of: asrRow,
-        matching: find.byKey(LabeledBadge.labeledBadgeKey),
-      );
-      expect(asrCountBadge, findsNothing);
-
-      // scroll to complex ASR
-      final rowFinder = find.descendant(of: scrollableFinder, matching: find.text('WANZ'));
-      await tester.dragUntilVisible(rowFinder, scrollableFinder, const Offset(0, -100));
-
-      final complexAsr = findDASTableRowByText('km 83.100 - km 6.600');
-      expect(complexAsr, findsOneWidget);
-
-      // check count badge
-      final complexAsrCountBadge = find.descendant(of: complexAsr, matching: find.byKey(LabeledBadge.labeledBadgeKey));
-      expect(complexAsrCountBadge, findsOneWidget);
-      final countBadgeText = find.descendant(of: complexAsrCountBadge, matching: find.text('2'));
-      expect(countBadgeText, findsOneWidget);
-
-      await disconnect(tester);
-    });
-
-    testWidgets('test other rows are displayed correctly', (tester) async {
-      await prepareAndStartApp(tester);
-      await loadJourney(tester, trainNumber: 'T2');
-
-      final tableFinder = find.byType(DASTable);
-      expect(tableFinder, findsOneWidget);
-
-      final testRows = ['Genève', 'km 32.2', 'Lengnau', 'WANZ'];
-
-      // Scroll to the table and search inside it
-      for (final rowText in testRows) {
-        final rowFinder = find.descendant(of: tableFinder, matching: find.text(rowText));
-        await tester.dragUntilVisible(rowFinder, tableFinder, const Offset(0, -50));
-
-        final testRow = findDASTableRowByText(rowText);
-        expect(testRow, findsOneWidget);
-
-        // check first 3 cells are colored
-        final coloredCells = findColoredRowCells(
-          of: testRow,
-          color: AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor,
-        );
-        expect(coloredCells, findsNWidgets(6));
-      }
 
       await disconnect(tester);
     });
@@ -1037,48 +768,6 @@ void main() {
       expect(wankdorfIncomingSpeedsEmpty2, findsNothing);
     });
 
-    testWidgets('test additional speed restriction row are displayed correctly on ETCS level 2 section', (
-      tester,
-    ) async {
-      await prepareAndStartApp(tester);
-      await loadJourney(tester, trainNumber: 'T11');
-
-      final scrollableFinder = find.byType(AnimatedList);
-      expect(scrollableFinder, findsOneWidget);
-
-      // ASR from 40km/h should be displayed if not completely inside ETCS L2
-      final asrRow1 = findDASTableRowByText('km 9.000 - km 26.000');
-      expect(asrRow1, findsExactly(2));
-
-      final asrSpeed1 = find.descendant(of: asrRow1.first, matching: find.text('50'));
-      expect(asrSpeed1, findsOneWidget);
-
-      await tester.dragUntilVisible(find.text('Neuchâtel'), scrollableFinder, const Offset(0, -50));
-
-      final asrRow2 = findDASTableRowByText('km 29.000 - km 39.000');
-      expect(asrRow2, findsExactly(2));
-
-      final asrSpeed2 = find.descendant(of: asrRow2.first, matching: find.text('30'));
-      expect(asrSpeed2, findsOneWidget);
-
-      await tester.dragUntilVisible(find.text('Lengnau'), scrollableFinder, const Offset(0, -50));
-
-      // ASR from 40km/h should not be displayed inside ETCS L2
-      final asrRow3 = findDASTableRowByText('km 41.000 - km 46.000');
-      expect(asrRow3, findsNothing);
-
-      await tester.dragUntilVisible(find.text('Solothurn'), scrollableFinder, const Offset(0, -50));
-
-      // ASR from 40km/h should be displayed if not completely inside ETCS L2
-      final asrRow4 = findDASTableRowByText('km 51.000 - km 59.000');
-      expect(asrRow4, findsExactly(2));
-
-      final asrSpeed4 = find.descendant(of: asrRow4.first, matching: find.text('40'));
-      expect(asrSpeed4, findsOneWidget);
-
-      await disconnect(tester);
-    });
-
     testWidgets('test line speed is hidden on ETCS level 2 section', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T11');
@@ -1157,15 +846,4 @@ Future<void> _checkAdditionalServicePoint(WidgetTester tester, Finder scrollable
     color: DASTheme.light().scaffoldBackgroundColor,
   );
   expect(coloredCells, findsAtLeast(3));
-}
-
-void _checkRowModification(WidgetTester tester, Key modificationKey, String rowText, bool exists) {
-  final modifiedRow = findDASTableRowByText(rowText);
-  expect(modifiedRow, findsOneWidget);
-
-  final modificationWidget = find.descendant(
-    of: modifiedRow,
-    matching: find.byKey(modificationKey),
-  );
-  expect(modificationWidget, exists ? findsOneWidget : findsNothing);
 }

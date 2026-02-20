@@ -187,7 +187,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
   }
 
   DASTableCell speedCell(List<TrainSeriesSpeed>? speedData) {
-    final selectedBreakSeries = config.settings.resolvedBreakSeries(metadata);
+    final selectedBreakSeries = config.settings.currentBreakSeries;
     final trainSeriesSpeed = speedData.speedFor(
       selectedBreakSeries?.trainSeries,
       breakSeries: selectedBreakSeries?.breakSeries,

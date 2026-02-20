@@ -175,13 +175,13 @@ class BreakLoadSlipViewModel extends JourneyAwareViewModel {
     return currentFormation.formationRuns.reversed.firstWhere((it) {
       final startServicePoint = _resolveServicePoint(it.tafTapLocationReferenceStart);
       final endServicePoint = _resolveServicePoint(it.tafTapLocationReferenceEnd);
+      final currentPositionOrder = position.currentPosition!.order;
       if (startServicePoint != null && endServicePoint != null) {
-        return position.currentPosition!.order >= startServicePoint.order &&
-            position.currentPosition!.order <= endServicePoint.order;
+        return currentPositionOrder >= startServicePoint.order && currentPositionOrder <= endServicePoint.order;
       } else if (startServicePoint != null) {
-        return position.currentPosition!.order >= startServicePoint.order;
+        return currentPositionOrder >= startServicePoint.order;
       } else if (endServicePoint != null) {
-        return position.currentPosition!.order <= endServicePoint.order;
+        return currentPositionOrder <= endServicePoint.order;
       }
       return false;
     }, orElse: () => currentFormation.formationRuns.first);
@@ -204,7 +204,7 @@ class BreakLoadSlipViewModel extends JourneyAwareViewModel {
   bool get isActiveFormationRun => _calculateActiveFormationRun() == formationRunValue?.formationRun;
 
   bool isJourneyAndActiveFormationRunBreakSeriesDifferent() {
-    final selectedBreakSeries = _journeySettingsViewModel.modelValue.resolvedBreakSeries(lastJourney?.metadata);
+    final selectedBreakSeries = _journeySettingsViewModel.modelValue.currentBreakSeries;
     final formationRunBreakSeries = _resolveBreakSeries(formationRunValue?.formationRun);
     return formationRunBreakSeries != null && formationRunBreakSeries != selectedBreakSeries;
   }

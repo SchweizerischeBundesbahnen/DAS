@@ -22,15 +22,16 @@ void main() {
   late MockJourneyTableViewModel mockJourneyTableViewModel;
   late MockJourneySettingsViewModel mockJourneySettingsViewModel;
   late BehaviorSubject<Journey?> journeySubject;
-  var journeySettings = JourneySettings();
 
+  final initialBreakSeries = BreakSeries(trainSeries: .R, breakSeries: 120);
+  var journeySettings = JourneySettings(initialBreakSeries: initialBreakSeries);
   final journey = Journey(
     metadata: Metadata(
       availableBreakSeries: {
         BreakSeries(trainSeries: .R, breakSeries: 120),
         BreakSeries(trainSeries: .A, breakSeries: 100),
       },
-      breakSeries: BreakSeries(trainSeries: .R, breakSeries: 120),
+      breakSeries: initialBreakSeries,
       lineSpeeds: SplayTreeMap.from({
         0: [
           TrainSeriesSpeed(
@@ -71,7 +72,7 @@ void main() {
   );
 
   setUp(() {
-    journeySettings = JourneySettings();
+    journeySettings = JourneySettings(initialBreakSeries: initialBreakSeries);
     mockJourneyTableViewModel = MockJourneyTableViewModel();
     mockJourneySettingsViewModel = MockJourneySettingsViewModel();
     journeySubject = BehaviorSubject<Journey?>();
