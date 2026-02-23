@@ -49,11 +49,11 @@ class UxTestingViewModel {
         if (data.isKoa) {
           final koaEnabled = await _ruFeatureProvider.isRuFeatureEnabled(.koa);
           if (koaEnabled) {
+            _notificationViewModel.remove(type: .koaWait);
+            _notificationViewModel.remove(type: .koaWaitCancelled);
             final koaState = KoaState.from(data.value);
 
             if (koaState != .waitHide) {
-              _notificationViewModel.remove(type: .koaWait);
-              _notificationViewModel.remove(type: .koaWaitCancelled);
               final isWaitCancelled = koaState == .waitCancelled;
               _notificationViewModel.insert(
                 type: isWaitCancelled ? .koaWaitCancelled : .koaWait,

@@ -91,7 +91,6 @@ class NotificationPriorityQueueViewModel extends JourneyAwareViewModel {
 
     if (_rxNotifications.isClosed) {
       _logger.warning('Trying to emit while stream is already closed');
-      return;
     } else {
       _logger.fine('Emitting active notifications: $toEmit');
       _rxNotifications.add(toEmit);
