@@ -54,15 +54,15 @@ jobs:
         with:
           projectBaseDir: das_admin_tool
           args: >
-            -Dsonar.organization=schweizerischebundesbahnen \
-            -Dsonar.projectKey=schweizerischebundesbahnen-DAS-Admin-Tool \
-            -Dsonar.language=ts \
-            -Dsonar.sources=src/app \
-            -Dsonar.tests=src/app \
-            -Dsonar.verbose=true \
-            -Dsonar.exclusions=**/node_modules/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts \
-            -Dsonar.test.inclusions=src/**/*.spec.ts \
-            -Dsonar.typescript.lcov.reportPaths=coverage/das_admin_tool/lcov.info \
+            -Dsonar.organization=schweizerischebundesbahnen
+            -Dsonar.projectKey=schweizerischebundesbahnen-DAS-Admin-Tool
+            -Dsonar.language=ts
+            -Dsonar.sources=src/app
+            -Dsonar.tests=src/app
+            -Dsonar.verbose=true
+            -Dsonar.exclusions=**/node_modules/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts
+            -Dsonar.test.inclusions=src/**/*.spec.ts
+            -Dsonar.typescript.lcov.reportPaths=coverage/das_admin_tool/lcov.info
             -Dsonar.testExecutionReportPaths=coverage/das_admin_tool/sonarqube.xml
 
   build:
