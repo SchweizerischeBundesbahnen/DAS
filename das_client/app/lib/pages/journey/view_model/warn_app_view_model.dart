@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:app/flavor.dart';
+import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:appcheck/appcheck.dart';
 import 'package:logging/logging.dart';
@@ -17,9 +18,11 @@ class WarnAppViewModel {
     required SferaRepository sferaRepo,
     required WarnappRepository warnappRepo,
     required RuFeatureProvider ruFeatureProvider,
+    required NotificationPriorityQueueViewModel notificationViewModel,
   }) : _sferaRepo = sferaRepo,
        _warnappRepo = warnappRepo,
        _ruFeatureProvider = ruFeatureProvider,
+       _notificationViewModel = notificationViewModel,
        _appCheck = AppCheck() {
     _init();
   }
@@ -31,6 +34,7 @@ class WarnAppViewModel {
   final SferaRepository _sferaRepo;
   final WarnappRepository _warnappRepo;
   final RuFeatureProvider _ruFeatureProvider;
+  final NotificationPriorityQueueViewModel _notificationViewModel;
 
   final AppCheck _appCheck;
 
@@ -68,6 +72,11 @@ class WarnAppViewModel {
   void setManeuverMode(bool active) {
     _log.info('Maneuver mode state changed to active=$active');
     _rxManeuverModeEnabled.add(active);
+    if (active) {
+      _notificationViewModel.insert(type: .maneuverMode);
+    } else {
+      _notificationViewModel.remove(type: .maneuverMode);
+    }
 
     if (Platform.isIOS) {
       active ? _warnappRepo.disable() : _warnappRepo.enable();

@@ -75,7 +75,6 @@ class AdvisedSpeedNotification extends StatelessWidget {
 
     return Container(
       key: advisedSpeedNotificationKey,
-      margin: const EdgeInsets.all(SBBSpacing.xSmall).copyWith(top: 0),
       decoration: BoxDecoration(
         color: resolvedBackgroundColor,
         borderRadius: BorderRadius.circular(SBBSpacing.medium),

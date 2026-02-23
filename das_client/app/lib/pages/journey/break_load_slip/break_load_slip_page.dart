@@ -38,6 +38,7 @@ class BreakLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
           return BreakLoadSlipViewModel(
             journeyTableViewModel: journeyVM,
             journeyPositionViewModel: positionVM,
+            notificationViewModel: DI.get(),
             formationRepository: DI.get(),
             journeySettingsViewModel: settingsVM,
           );

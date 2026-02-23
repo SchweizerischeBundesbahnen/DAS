@@ -6,6 +6,7 @@ class MockWarnAppViewModel extends WarnAppViewModel {
     required super.sferaRepo,
     required super.warnappRepo,
     required super.ruFeatureProvider,
+    required super.notificationViewModel,
   });
 
   bool _isWaraInstalled = false;

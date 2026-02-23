@@ -1,5 +1,6 @@
 import 'package:app/pages/journey/journey_screen/view_model/departure_dispatch_notification_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
 import 'package:app/sound/das_sounds.dart';
 import 'package:app/sound/sound.dart';
 import 'package:fake_async/fake_async.dart';
@@ -10,7 +11,12 @@ import 'package:mockito/mockito.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
-@GenerateNiceMocks([MockSpec<DASSounds>(), MockSpec<Sound>(), MockSpec<SferaRepository>()])
+@GenerateNiceMocks([
+  MockSpec<NotificationPriorityQueueViewModel>(),
+  MockSpec<DASSounds>(),
+  MockSpec<Sound>(),
+  MockSpec<SferaRepository>(),
+])
 import 'departure_dispatch_notification_view_model_test.mocks.dart';
 
 void main() {
@@ -19,6 +25,7 @@ void main() {
     late BehaviorSubject<JourneyPositionModel> journeyPositionSubject;
     late BehaviorSubject<DepartureDispatchNotificationEvent?> eventSubject;
     late SferaRepository mockSferaRepo;
+    late MockNotificationPriorityQueueViewModel mockNotificationViewModel;
     late DASSounds mockDasSounds;
     late FakeAsync testAsync;
     final Sound mockSound = MockSound();
@@ -42,6 +49,7 @@ void main() {
     setUp(() {
       mockDasSounds = MockDASSounds();
       mockSferaRepo = MockSferaRepository();
+      mockNotificationViewModel = MockNotificationPriorityQueueViewModel();
       when(mockDasSounds.departureDispatchNotification).thenReturn(mockSound);
       GetIt.I.registerSingleton<DASSounds>(mockDasSounds);
 
@@ -54,6 +62,7 @@ void main() {
         testee = DepartureDispatchNotificationViewModel(
           sferaRepo: mockSferaRepo,
           journeyPositionStream: journeyPositionSubject,
+          notificationVM: mockNotificationViewModel,
         );
         streamRegister = [];
         testee.type.listen(streamRegister.add);
@@ -64,6 +73,7 @@ void main() {
     tearDown(() {
       reset(mockSound);
       reset(mockDasSounds);
+      reset(mockNotificationViewModel);
       journeyPositionSubject.close();
       testee.dispose();
       GetIt.I.reset();
@@ -81,7 +91,7 @@ void main() {
 
       // EXPECT
       expect(streamRegister, [null]);
-      verifyNever(mockSound.play());
+      verifyNever(mockNotificationViewModel.insert(type: anyNamed('type'), callback: anyNamed('callback')));
     });
 
     test('whenHasNoEventButPosition_doesNotEmitAndPlaySound', () {
@@ -96,7 +106,7 @@ void main() {
 
       // EXPECT
       expect(streamRegister, [null]);
-      verifyNever(mockSound.play());
+      verifyNever(mockNotificationViewModel.insert(type: anyNamed('type'), callback: anyNamed('callback')));
     });
 
     test('whenEventAndPosition_doesNotEmitAndPlaySound', () {
@@ -113,7 +123,7 @@ void main() {
 
       // EXPECT
       expect(streamRegister, [null]);
-      verifyNever(mockSound.play());
+      verifyNever(mockNotificationViewModel.insert(type: anyNamed('type'), callback: anyNamed('callback')));
     });
 
     test('whenEventsAndNoPosition_doesEmitAndPlaySound', () {
@@ -140,7 +150,7 @@ void main() {
           DepartureDispatchNotificationType.prepareForDeparture,
         ]),
       );
-      verify(mockSound.play()).called(2);
+      verify(mockNotificationViewModel.insert(type: .departureDispatch, callback: mockSound.play)).called(2);
     });
 
     test('whenEventOfSameTypeAndNoPosition_doesEmitAndPlaySoundOnce', () {
@@ -163,7 +173,7 @@ void main() {
         streamRegister,
         orderedEquals([null, DepartureDispatchNotificationType.prepareForDepartureShort]),
       );
-      verify(mockSound.play()).called(1);
+      verify(mockNotificationViewModel.insert(type: .departureDispatch, callback: mockSound.play)).called(1);
     });
 
     test('whenEventsAfterPosition_doesEmitAndPlaySoundOnlyBeforePositionUpdate', () {
@@ -204,7 +214,7 @@ void main() {
           null,
         ]),
       );
-      verify(mockSound.play()).called(2);
+      verify(mockNotificationViewModel.insert(type: .departureDispatch, callback: mockSound.play)).called(2);
     });
   });
 }
