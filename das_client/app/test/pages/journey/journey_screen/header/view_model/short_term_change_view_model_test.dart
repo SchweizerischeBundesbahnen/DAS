@@ -253,6 +253,33 @@ void main() {
     expect(emitRegister[1], equals(ShortTermChangeModel.multipleShortTermChanges()));
   });
 
+  test('modelValue_whenIsOnTrainRunReroutingAndHasEndDestinationChangeInSight_thenIsTrainRunRerouting', () async {
+    testAsync.run((fakeAsync) {
+      rxMockJourney.add(
+        Journey(
+          metadata: Metadata(
+            journeyStart: signalA,
+            shortTermChanges: [
+              EndDestinationChange(startOrder: stopB.order, endOrder: stopB.order, startData: stopB),
+              TrainRunReroutingChange(startOrder: stopA.order, endOrder: pointC.order, startData: stopA),
+            ],
+          ),
+          data: [signalA, stopA, stopB, pointC, stopD],
+        ),
+      );
+      rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: stopB));
+      processStreams(fakeAsync: fakeAsync);
+    });
+
+    final expectedChange = ShortTermChangeModel.singleShortTermChange(
+      shortTermChangeType: .trainRunRerouting,
+      servicePointName: stopA.name,
+    );
+    expect(testee.modelValue, equals(expectedChange));
+    expect(emitRegister, hasLength(3));
+    expect(emitRegister[1], equals(ShortTermChangeModel.multipleShortTermChanges()));
+  });
+
   test('modelValue_whenHasTwoChangesInSightOnSameServicePoint_thenIsWithHigherPriority', () async {
     testAsync.run((fakeAsync) {
       rxMockJourney.add(
