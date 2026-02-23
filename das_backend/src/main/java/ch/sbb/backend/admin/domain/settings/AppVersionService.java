@@ -16,4 +16,6 @@ public interface AppVersionService {
     AppVersion update(Integer id, AppVersionUpdateRequest updateRequest);
 
     AppVersion create(AppVersionUpdateRequest createRequest);
+
+    AppVersion delete(Integer id);
 }
