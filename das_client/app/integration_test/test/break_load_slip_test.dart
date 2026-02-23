@@ -219,7 +219,7 @@ void main() {
 
     await tapElement(tester, find.byKey(NavigationButtons.navigationButtonNextKey));
 
-    expect(find.byType(DotIndicator), findsNWidgets(2));
+    expect(find.byType(DotIndicator), findsNWidgets(4));
 
     formationRepository.emitFormationWithAllChanges();
     await tester.pumpAndSettle();

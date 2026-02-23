@@ -209,6 +209,12 @@ class BreakLoadSlipViewModel extends JourneyAwareViewModel {
     return formationRunBreakSeries != null && formationRunBreakSeries != selectedBreakSeries;
   }
 
+  bool canApplyActiveFormationRunBreakSeriesToJourney() {
+    final formationRunBreakSeries = _resolveBreakSeries(formationRunValue?.formationRun);
+    return isJourneyAndActiveFormationRunBreakSeriesDifferent() &&
+        lastJourney?.metadata.availableBreakSeries.contains(formationRunBreakSeries) == true;
+  }
+
   void updateJourneyBreakSeriesFromActiveFormationRun() {
     final formationRunBreakSeries = _resolveBreakSeries(formationRunValue?.formationRun);
     if (formationRunBreakSeries != null) {
