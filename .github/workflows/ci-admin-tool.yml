@@ -47,6 +47,23 @@ jobs:
           cache-dependency-path: 'das_admin_tool/package-lock.json'
       - run: npm clean-install
       - run: npm test
+      - name: Sonar scan
+        uses: SonarSource/sonarqube-scan-action@v7
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_NEW_TEST }}
+        with:
+          projectBaseDir: das_admin_tool
+          args: >
+            -Dsonar.organization=schweizerischebundesbahnen \
+            -Dsonar.projectKey=schweizerischebundesbahnen-DAS-Admin-Tool \
+            -Dsonar.language=ts \
+            -Dsonar.sources=src/app \
+            -Dsonar.tests=src/app \
+            -Dsonar.verbose=true \
+            -Dsonar.exclusions=**/node_modules/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts \
+            -Dsonar.test.inclusions=src/**/*.spec.ts \
+            -Dsonar.typescript.lcov.reportPaths=coverage/das_admin_tool/lcov.info \
+            -Dsonar.testExecutionReportPaths=coverage/das_admin_tool/sonarqube.xml
 
   build:
     runs-on: ubuntu-latest
