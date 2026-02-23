@@ -86,6 +86,27 @@
         </Signal>
 
 
+        <NetworkSpecificPoint location="1150" identifier="1">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>curvePoint</NSP_GroupName>
+            <NetworkSpecificParameter name="curvePointType" value="begin"/>
+            <NetworkSpecificParameter name="curveType" value="curve"/>
+            <NetworkSpecificParameter name="xmlCurveSpeed" value="
+                &lt;curveSpeed text=&quot;Kurve 1&quot; comment=&quot;Kurve 1 comment&quot;&gt;
+                &lt;speeds&gt;
+                &lt;v trainSeries=&quot;R&quot; speed=&quot;44&quot;/&gt;
+                &lt;/speeds&gt;
+                &lt;/curveSpeed&gt;
+            "/>
+        </NetworkSpecificPoint>
+
+        <NetworkSpecificPoint location="1650" identifier="1">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>curvePoint</NSP_GroupName>
+            <NetworkSpecificParameter name="curvePointType" value="end"/>
+        </NetworkSpecificPoint>
+
+
     </SP_Points>
 
     <SP_Areas>
@@ -97,6 +118,16 @@
                 <teltsi_LocationPrimaryCode>01033</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Rolle</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>stationSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlStationSpeed" value="
+					&lt;stationSpeed&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;100/80&quot;/&gt;
+					&lt;/stationSpeed&gt;
+				"/>
+            </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="3000" endLocation="3000" TAF_TAP_location_abbreviation="ALL"
@@ -106,6 +137,16 @@
                 <teltsi_LocationPrimaryCode>01035</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Allaman</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>stationSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlStationSpeed" value="
+					&lt;stationSpeed&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;90/80&quot;/&gt;
+					&lt;/stationSpeed&gt;
+				"/>
+            </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="5000" endLocation="5000" TAF_TAP_location_abbreviation="MOR"

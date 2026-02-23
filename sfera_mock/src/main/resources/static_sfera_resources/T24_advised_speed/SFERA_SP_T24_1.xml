@@ -21,6 +21,7 @@
             </TAF_TAP_LocationReference>
         </TimingPoint>
 
+
         <!--Entry and exit signals-->
         <Signal>
             <Signal_ID signal_ID_Physical="E409" location="50"/>
@@ -100,6 +101,16 @@
 					&lt;lineSpeed&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;120&quot;/&gt;
 					&lt;/lineSpeed&gt;
+				"/>
+            </TAF_TAP_Location_NSP>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>stationSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlStationSpeed" value="
+					&lt;stationSpeed&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;95/85&quot;/&gt;
+					&lt;/stationSpeed&gt;
 				"/>
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
