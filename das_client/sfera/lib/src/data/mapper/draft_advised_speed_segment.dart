@@ -28,6 +28,8 @@ class DraftAdvisedSpeedSegment implements Comparable<DraftAdvisedSpeedSegment> {
   bool _isStartAmended = false;
   bool _isEndAmended = false;
 
+  Set<AdvisedSpeedSegmentHint> additionalHints = {};
+
   bool get startsWithSegment => _startOrder == null;
 
   bool get endsWithSegment => _endOrder == null;
@@ -65,6 +67,7 @@ class DraftAdvisedSpeedSegment implements Comparable<DraftAdvisedSpeedSegment> {
         'nextSegmentStartOrder: $_nextSegmentStartOrder, '
         'type: $type, '
         'speed: $speed, '
+        'additionalHints: $additionalHints, '
         'isStartAmended: $_isStartAmended, '
         'isEndAmended: $_isEndAmended, '
         'endData: $endData'
@@ -99,6 +102,7 @@ class DraftAdvisedSpeedSegment implements Comparable<DraftAdvisedSpeedSegment> {
         endOrder: endOrder,
         endData: endData!,
         isEndDataCalculated: isEndAmended,
+        additionalHints: additionalHints,
       ),
       .followTrain => FollowTrainAdvisedSpeedSegment(
         startOrder: startOrder,
@@ -106,6 +110,7 @@ class DraftAdvisedSpeedSegment implements Comparable<DraftAdvisedSpeedSegment> {
         speed: speed!,
         endData: endData!,
         isEndDataCalculated: isEndAmended,
+        additionalHints: additionalHints,
       ),
       .trainFollowing => TrainFollowingAdvisedSpeedSegment(
         startOrder: startOrder,
@@ -113,6 +118,7 @@ class DraftAdvisedSpeedSegment implements Comparable<DraftAdvisedSpeedSegment> {
         speed: speed!,
         endData: endData!,
         isEndDataCalculated: isEndAmended,
+        additionalHints: additionalHints,
       ),
       .fixedTime => FixedTimeAdvisedSpeedSegment(
         startOrder: startOrder,
@@ -120,6 +126,7 @@ class DraftAdvisedSpeedSegment implements Comparable<DraftAdvisedSpeedSegment> {
         speed: speed!,
         endData: endData!,
         isEndDataCalculated: isEndAmended,
+        additionalHints: additionalHints,
       ),
     };
   }

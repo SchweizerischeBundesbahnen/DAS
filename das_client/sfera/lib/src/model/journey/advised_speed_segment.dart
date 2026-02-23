@@ -1,11 +1,18 @@
 import 'package:sfera/component.dart';
 
+enum AdvisedSpeedSegmentHint {
+  servicePointWithLocalSpeed,
+  curvePointWithLocalSpeed,
+  additionalSpeedRestriction,
+}
+
 sealed class AdvisedSpeedSegment extends Segment {
   const AdvisedSpeedSegment({
     required int startOrder,
     required int endOrder,
     required this.endData,
     this.isEndDataCalculated = false,
+    this.additionalHints = const <AdvisedSpeedSegmentHint>{},
   }) : super(startOrder: startOrder, endOrder: endOrder);
 
   SingleSpeed? get speed => switch (this) {
@@ -24,6 +31,9 @@ sealed class AdvisedSpeedSegment extends Segment {
 
   /// If the end location was unknown and mapped to the closest [JourneyPoint], this will be true.
   final bool isEndDataCalculated;
+
+  /// Additional hints depending on journey points within the advised speed segment.
+  final Set<AdvisedSpeedSegmentHint> additionalHints;
 
   @override
   bool operator ==(Object other) {
@@ -46,6 +56,7 @@ sealed class AdvisedSpeedSegment extends Segment {
         ', speed: $speed'
         ', endData: $endData'
         ', isEndDataCalculated: $isEndDataCalculated'
+        ', additionalHints: $additionalHints'
         '}';
   }
 }
@@ -57,6 +68,7 @@ class FollowTrainAdvisedSpeedSegment extends AdvisedSpeedSegment {
     required super.endData,
     required this.speed,
     super.isEndDataCalculated,
+    super.additionalHints,
   });
 
   @override
@@ -76,6 +88,7 @@ class TrainFollowingAdvisedSpeedSegment extends AdvisedSpeedSegment {
     required super.endData,
     required this.speed,
     super.isEndDataCalculated,
+    super.additionalHints,
   });
 
   @override
@@ -96,6 +109,7 @@ class FixedTimeAdvisedSpeedSegment extends AdvisedSpeedSegment {
     required super.endData,
     required this.speed,
     super.isEndDataCalculated,
+    super.additionalHints,
   });
 
   @override
@@ -115,5 +129,6 @@ class VelocityMaxAdvisedSpeedSegment extends AdvisedSpeedSegment {
     required super.endOrder,
     required super.endData,
     super.isEndDataCalculated,
+    super.additionalHints,
   });
 }

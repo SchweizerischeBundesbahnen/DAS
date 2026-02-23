@@ -166,12 +166,12 @@
             <StoppingPointDepartureDetails departureTime="9999-01-01T00:42:00Z" plannedDepartureTime="9999-01-01T00:42:00Z"/>
         </TimingPointConstraints>
 
-        <TemporaryConstraints startEndQualifier="Starts" temporaryConstraintType="ASR" startLocation="950">
+        <TemporaryConstraints startEndQualifier="Starts" temporaryConstraintType="ASR" startLocation="5150">
             <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="60"/>
         </TemporaryConstraints>
 
 
-        <TemporaryConstraints startEndQualifier="Ends" temporaryConstraintType="ASR" endLocation="2950">
+        <TemporaryConstraints startEndQualifier="Ends" temporaryConstraintType="ASR" endLocation="5250">
             <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="60"/>
         </TemporaryConstraints>
 
@@ -220,14 +220,14 @@
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
-                <NetworkSpecificParameter name="kmRef" value="35.3"/>
-                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="950" endLocation="950"/>
+                <NetworkSpecificParameter name="kmRef" value="25.4"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="5150" endLocation="5150"/>
             </JP_ContextInformation_NSPs>
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
-                <NetworkSpecificParameter name="kmRef" value="32.5"/>
-                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="2950" endLocation="2950"/>
+                <NetworkSpecificParameter name="kmRef" value="25.1"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="5250" endLocation="5250"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
 

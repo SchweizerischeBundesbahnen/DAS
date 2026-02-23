@@ -52,6 +52,16 @@
                 <teltsi_LocationPrimaryCode>01118</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Renens VD</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>stationSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlStationSpeed" value="
+					&lt;stationSpeed&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;100/80&quot;/&gt;
+					&lt;/stationSpeed&gt;
+				"/>
+            </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
 
     </SP_Areas>
