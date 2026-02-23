@@ -146,7 +146,7 @@ extension AuthenticatedScopeExtension on GetIt {
     registerSingleton<PreloadRepository>(
       PreloadComponent.createPreloadRepository(
         sferaLocalRepo: DI.get(),
-        disablePreloadForDevelopment: DI.get<Flavor>().disablePreloadForDevelopment,
+        disablePreload: DI.get<Flavor>().disablePreload,
       ),
     );
   }

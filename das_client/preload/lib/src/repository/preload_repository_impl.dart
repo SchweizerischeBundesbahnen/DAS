@@ -21,7 +21,7 @@ class PreloadRepositoryImpl implements PreloadRepository {
   PreloadRepositoryImpl({
     required this.databaseService,
     required this.sferaLocalRepo,
-    required this.disablePreloadForDevelopment,
+    required this.disablePreload,
   }) {
     _init();
   }
@@ -30,7 +30,7 @@ class PreloadRepositoryImpl implements PreloadRepository {
   final SferaLocalRepo sferaLocalRepo;
 
   /// added only for development purposes
-  final bool disablePreloadForDevelopment;
+  final bool disablePreload;
   S3Client? _s3client;
   StreamSubscription? _databaseSubscription;
   Timer? _syncTimer;
@@ -67,7 +67,7 @@ class PreloadRepositoryImpl implements PreloadRepository {
 
   @override
   void triggerPreload() async {
-    if (disablePreloadForDevelopment) {
+    if (disablePreload) {
       _log.fine('Preload has been disabled by development flag. Cancelling...');
       return;
     }
