@@ -10,8 +10,12 @@ export 'package:preload/src/repository/preload_repository.dart';
 class PreloadComponent {
   const PreloadComponent._();
 
-  static PreloadRepository createPreloadRepository({required SferaLocalRepo sferaLocalRepo}) => PreloadRepositoryImpl(
+  static PreloadRepository createPreloadRepository({
+    required SferaLocalRepo sferaLocalRepo,
+    bool enablePeriodicPreload = true,
+  }) => PreloadRepositoryImpl(
     databaseService: DriftPreloadDatabaseService.instance,
     sferaLocalRepo: sferaLocalRepo,
+    enablePeriodicPreload: enablePeriodicPreload, // TODO: added only for development purpose - rm before 1.0 release
   );
 }

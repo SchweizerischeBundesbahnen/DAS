@@ -18,12 +18,17 @@ final _log = Logger('PreloadRepositoryImpl');
 class PreloadRepositoryImpl implements PreloadRepository {
   static const syncInterval = Duration(minutes: 5);
 
-  PreloadRepositoryImpl({required this.databaseService, required this.sferaLocalRepo}) {
+  PreloadRepositoryImpl({
+    required this.databaseService,
+    required this.sferaLocalRepo,
+    required this.enablePeriodicPreload,
+  }) {
     _init();
   }
 
   final PreloadLocalDatabaseService databaseService;
   final SferaLocalRepo sferaLocalRepo;
+  final bool enablePeriodicPreload;
   S3Client? _s3client;
   StreamSubscription? _databaseSubscription;
   Timer? _syncTimer;
@@ -51,7 +56,9 @@ class PreloadRepositoryImpl implements PreloadRepository {
     triggerPreload();
 
     _syncTimer?.cancel();
-    _syncTimer = Timer.periodic(syncInterval, (_) => triggerPreload());
+    if (enablePeriodicPreload) {
+      _syncTimer = Timer.periodic(syncInterval, (_) => triggerPreload());
+    }
   }
 
   S3Client createS3Client(AwsConfiguration awsConfiguration) {
