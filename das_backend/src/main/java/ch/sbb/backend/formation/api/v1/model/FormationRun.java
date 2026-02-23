@@ -11,6 +11,7 @@ import lombok.Builder;
 // todo: property descriptions
 // todo: check required/non-required resp. default values with source
 @Builder
+@Schema(description = "Consolidated braking information of a formation run between two location references (implied by involved train wagons).")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record FormationRun(
     @Schema(description = "Last modification date and time of the formation run.", requiredMode = Schema.RequiredMode.REQUIRED)

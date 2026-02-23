@@ -13,6 +13,7 @@ import lombok.Builder;
 import org.springframework.util.CollectionUtils;
 
 @Builder
+@Schema(description = "The formation represents a composition of implied wagons of a train journey (de: Zuglauf).")
 public record Formation(
 
     @Schema(description = OPERATIONAL_TRAIN_NUMBER_DESCRIPTION, requiredMode = Schema.RequiredMode.REQUIRED)
@@ -24,7 +25,7 @@ public record Formation(
     @Schema(description = COMPANY_DESCRIPTION, requiredMode = Schema.RequiredMode.REQUIRED)
     String company,
 
-    @ArraySchema(arraySchema = @Schema(requiredMode = Schema.RequiredMode.REQUIRED), minItems = 1)
+    @ArraySchema(arraySchema = @Schema(requiredMode = Schema.RequiredMode.REQUIRED, description = "The order of items match the actual run order."), minItems = 1)
     List<FormationRun> formationRuns
 ) {
 
