@@ -15,9 +15,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
-import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -87,9 +87,18 @@ public class AppVersionController {
         return ResponseEntity.ok(new AppVersionResponse(List.of(updatedVersion)));
     }
 
-    public ResponseEntity<? extends Response> delete(Integer id) {
-        //        TODO implement
-        throw new NotImplementedException();
+    @DeleteMapping(API_SETTINGS_APPVERSION + "/{id}")
+    @Operation(summary = "Delete app version by id.", description = "Delete a single app version by its id.")
+    @ApiResponse(responseCode = "200", description = "App version deleted.",
+        content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = AppVersionResponse.class)))
+    @ApiResponse(responseCode = "404", description = "App version not found.")
+    @ApiErrorResponses
+    public ResponseEntity<? extends Response> delete(@PathVariable Integer id) {
+        AppVersion deletedVersion = appVersionService.delete(id);
+        if (deletedVersion == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(new AppVersionResponse(List.of(deletedVersion)));
     }
 
 }

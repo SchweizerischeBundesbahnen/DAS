@@ -101,4 +101,13 @@ public class AppVersionServiceImpl implements AppVersionService {
         repository.save(entity);
         return new AppVersion(entity.getId(), entity.getVersion(), entity.getMinimalVersion(), entity.getExpiryDate());
     }
+
+    @Override
+    public AppVersion delete(Integer id) {
+        AppVersionEntity entity = repository.findById(id).orElse(null);
+        if (entity == null) {
+            return null;
+        }
+        return new AppVersion(entity.getId(), entity.getVersion(), entity.getMinimalVersion(), entity.getExpiryDate());
+    }
 }
