@@ -28,6 +28,8 @@ class PreloadRepositoryImpl implements PreloadRepository {
 
   final PreloadLocalDatabaseService databaseService;
   final SferaLocalRepo sferaLocalRepo;
+
+  /// added only for development purposes
   final bool disablePreloadForDevelopment;
   S3Client? _s3client;
   StreamSubscription? _databaseSubscription;

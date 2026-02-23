@@ -16,6 +16,6 @@ class PreloadComponent {
   }) => PreloadRepositoryImpl(
     databaseService: DriftPreloadDatabaseService.instance,
     sferaLocalRepo: sferaLocalRepo,
-    disablePreloadForDevelopment: disablePreloadForDevelopment, // TODO: added only for development purpose
+    disablePreloadForDevelopment: disablePreloadForDevelopment,
   );
 }
