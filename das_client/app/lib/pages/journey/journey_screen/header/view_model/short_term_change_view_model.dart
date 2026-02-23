@@ -160,11 +160,11 @@ class ShortTermChangeViewModel extends JourneyAwareViewModel {
 
   ShortTermChange? _calculateClosestShortTermChangeInSight(Iterable<ShortTermChange> shortTermChanges) {
     assert(shortTermChanges.isNotEmpty);
-    // short term changes in sight are between current position and maximum of two service points ahead
 
+    // short term changes in sight are between current position and maximum of two service points ahead
     final beginOfSight = _lastCurrentPosition?.order;
     if (beginOfSight == null || lastJourney == null) {
-      _logger.fine('Cannot calculate short term change in sight without journey of current position!');
+      _logger.info('Cannot calculate short term change in sight without journey or without current position!');
       return null;
     }
 
@@ -177,7 +177,9 @@ class ShortTermChangeViewModel extends JourneyAwareViewModel {
     if (endOfSight != null) {
       return _shortestChangeInSightWithHighestPriority(
         shortTermChanges,
-        (change) => change.startOrder! >= beginOfSight && change.startOrder! <= endOfSight,
+        (change) =>
+            change.appliesToOrder(beginOfSight) ||
+            change.startOrder! >= beginOfSight && change.startOrder! <= endOfSight,
       );
     } else {
       return _shortestChangeInSightWithHighestPriority(
