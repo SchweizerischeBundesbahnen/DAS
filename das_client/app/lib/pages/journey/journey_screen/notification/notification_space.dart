@@ -44,14 +44,13 @@ class NotificationSpace extends StatelessWidget {
             final data = asyncSnapshot.requireData;
             if (data.isEmpty) return SizedBox(height: SBBSpacing.xSmall);
 
-            final child = Column(
-              mainAxisSize: .min,
-              spacing: SBBSpacing.xSmall,
-              children: data.map((notification) => notification.toWidget()).toList(growable: false),
-            );
             return Padding(
               padding: EdgeInsets.symmetric(horizontal: JourneyOverview.horizontalPadding, vertical: SBBSpacing.xSmall),
-              child: child,
+              child: Column(
+                mainAxisSize: .min,
+                spacing: SBBSpacing.xSmall,
+                children: data.map((notification) => notification.toWidget()).toList(growable: false),
+              ),
             );
           },
         ),
