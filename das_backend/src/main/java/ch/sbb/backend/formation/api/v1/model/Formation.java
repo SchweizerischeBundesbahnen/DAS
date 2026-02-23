@@ -13,6 +13,7 @@ import lombok.Builder;
 import org.springframework.util.CollectionUtils;
 
 @Builder
+@Schema(description = "The formation represents a composition of implied wagons of a train journey (de: Zuglauf).")
 public record Formation(
 
     @Schema(description = OPERATIONAL_TRAIN_NUMBER_DESCRIPTION, requiredMode = Schema.RequiredMode.REQUIRED)
