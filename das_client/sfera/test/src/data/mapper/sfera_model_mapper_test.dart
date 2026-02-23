@@ -1214,37 +1214,52 @@ void main() {
     expect(advisedSpeeds[0].endOrder, 2500);
     expect(advisedSpeeds[0].endData, equals(journey.data[7]));
     expect(advisedSpeeds[0].isEndDataCalculated, isFalse);
+    expect(advisedSpeeds[0].additionalHints, hasLength(1));
+    expect(advisedSpeeds[0].additionalHints, <AdvisedSpeedSegmentHint>{.servicePointWithLocalSpeed});
 
     expect(advisedSpeeds[1], isA<FollowTrainAdvisedSpeedSegment>());
     expect(advisedSpeeds[1].speed, equals(SingleSpeed(value: '0')));
     expect(advisedSpeeds[1].isDIST, isTrue);
     expect(advisedSpeeds[1].startOrder, 101500);
     expect(advisedSpeeds[1].endOrder, 201500);
-    expect(advisedSpeeds[1].endData, equals(journey.data[22]));
+    expect(advisedSpeeds[1].endData, equals(journey.data[23]));
     expect(advisedSpeeds[1].isEndDataCalculated, isFalse);
+    expect(advisedSpeeds[1].additionalHints, hasLength(2));
+    expect(advisedSpeeds[1].additionalHints, <AdvisedSpeedSegmentHint>{
+      .servicePointWithLocalSpeed,
+      .curvePointWithLocalSpeed,
+    });
 
     expect(advisedSpeeds[2], isA<TrainFollowingAdvisedSpeedSegment>());
     expect(advisedSpeeds[2].speed, equals(SingleSpeed(value: '120')));
     expect(advisedSpeeds[2].isDIST, isFalse);
     expect(advisedSpeeds[2].startOrder, 301050);
     expect(advisedSpeeds[2].endOrder, 304950);
-    expect(advisedSpeeds[2].endData, equals(journey.data[31]));
+    expect(advisedSpeeds[2].endData, equals(journey.data[32]));
     expect(advisedSpeeds[2].isEndDataCalculated, isTrue);
+    expect(advisedSpeeds[2].additionalHints, hasLength(0));
 
     expect(advisedSpeeds[3], isA<VelocityMaxAdvisedSpeedSegment>());
     expect(advisedSpeeds[3].speed, isNull);
     expect(advisedSpeeds[3].isDIST, isFalse);
     expect(advisedSpeeds[3].startOrder, 305100);
     expect(advisedSpeeds[3].endOrder, 500500);
-    expect(advisedSpeeds[3].endData, equals(journey.data[42]));
+    expect(advisedSpeeds[3].endData, equals(journey.data[46]));
     expect(advisedSpeeds[3].isEndDataCalculated, isFalse);
+    expect(advisedSpeeds[3].additionalHints, hasLength(3));
+    expect(advisedSpeeds[3].additionalHints, <AdvisedSpeedSegmentHint>{
+      .servicePointWithLocalSpeed,
+      .curvePointWithLocalSpeed,
+      .additionalSpeedRestriction,
+    });
 
     expect(advisedSpeeds[4], isA<FixedTimeAdvisedSpeedSegment>());
     expect(advisedSpeeds[4].speed, SingleSpeed(value: '80'));
     expect(advisedSpeeds[4].startOrder, 500500);
     expect(advisedSpeeds[4].endOrder, 500950);
-    expect(advisedSpeeds[4].endData, equals(journey.data[44]));
+    expect(advisedSpeeds[4].endData, equals(journey.data[48]));
     expect(advisedSpeeds[4].isEndDataCalculated, isFalse);
+    expect(advisedSpeeds[4].additionalHints, hasLength(0));
   });
 
   test('Test signaled position is null when nothing is given', () async {
