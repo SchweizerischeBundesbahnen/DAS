@@ -15,7 +15,7 @@ sealed class Flavor {
     required this.mqttOauthProfile,
     required this.waraAndroidPackageName,
     required this.waraIOSUrlScheme,
-    required this.enablePeriodicPreload,
+    required this.disablePreloadForDevelopment,
     this.color = SBBColors.transparent,
     this.showBanner = false,
     this.isTmsEnabledForFlavor = false,
@@ -35,7 +35,7 @@ sealed class Flavor {
   final Level logLevel;
   final String waraAndroidPackageName;
   final String waraIOSUrlScheme;
-  final bool enablePeriodicPreload;
+  final bool disablePreloadForDevelopment;
 
   factory Flavor.dev() = _DevFlavor;
 
@@ -98,7 +98,7 @@ class _DevFlavor extends Flavor {
     super.mqttUrl = '',
     super.mqttTopicPrefix = 'dev/',
     super.authenticatorConfig = _emptyAuthenticatorConfig,
-    super.enablePeriodicPreload = true,
+    super.disablePreloadForDevelopment = false,
   }) : super(
          displayName: 'Dev',
          backendUrl: 'das-dev-int.api.sbb.ch',
@@ -118,7 +118,7 @@ class _InteFlavor extends Flavor {
     super.mqttUrl = '',
     super.mqttTopicPrefix = '',
     super.authenticatorConfig = _emptyAuthenticatorConfig,
-    super.enablePeriodicPreload = true,
+    super.disablePreloadForDevelopment = false,
   }) : super(
          displayName: 'Inte',
          backendUrl: 'das-int.api.sbb.ch',
@@ -136,7 +136,7 @@ class _ProdFlavor extends Flavor {
     super.mqttUrl = '',
     super.mqttTopicPrefix = '',
     super.authenticatorConfig = _emptyAuthenticatorConfig,
-    super.enablePeriodicPreload = true,
+    super.disablePreloadForDevelopment = false,
   }) : super(
          displayName: 'Prod',
          backendUrl: 'das-backend-dev.app.sbb.ch',

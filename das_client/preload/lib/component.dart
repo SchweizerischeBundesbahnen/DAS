@@ -12,10 +12,10 @@ class PreloadComponent {
 
   static PreloadRepository createPreloadRepository({
     required SferaLocalRepo sferaLocalRepo,
-    bool enablePeriodicPreload = true,
+    bool disablePreloadForDevelopment = false,
   }) => PreloadRepositoryImpl(
     databaseService: DriftPreloadDatabaseService.instance,
     sferaLocalRepo: sferaLocalRepo,
-    enablePeriodicPreload: enablePeriodicPreload, // TODO: added only for development purpose - rm before 1.0 release
+    disablePreloadForDevelopment: disablePreloadForDevelopment, // TODO: added only for development purpose
   );
 }

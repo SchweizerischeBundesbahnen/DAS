@@ -21,14 +21,14 @@ class PreloadRepositoryImpl implements PreloadRepository {
   PreloadRepositoryImpl({
     required this.databaseService,
     required this.sferaLocalRepo,
-    required this.enablePeriodicPreload,
+    required this.disablePreloadForDevelopment,
   }) {
     _init();
   }
 
   final PreloadLocalDatabaseService databaseService;
   final SferaLocalRepo sferaLocalRepo;
-  final bool enablePeriodicPreload;
+  final bool disablePreloadForDevelopment;
   S3Client? _s3client;
   StreamSubscription? _databaseSubscription;
   Timer? _syncTimer;
@@ -56,9 +56,7 @@ class PreloadRepositoryImpl implements PreloadRepository {
     triggerPreload();
 
     _syncTimer?.cancel();
-    if (enablePeriodicPreload) {
-      _syncTimer = Timer.periodic(syncInterval, (_) => triggerPreload());
-    }
+    _syncTimer = Timer.periodic(syncInterval, (_) => triggerPreload());
   }
 
   S3Client createS3Client(AwsConfiguration awsConfiguration) {
@@ -67,6 +65,11 @@ class PreloadRepositoryImpl implements PreloadRepository {
 
   @override
   void triggerPreload() async {
+    if (disablePreloadForDevelopment) {
+      _log.fine('Preload has been disabled by development flag. Cancelling...');
+      return;
+    }
+
     if (_s3client == null) {
       _log.warning('S3 client is not initialized. Cannot perform preload.');
       return;
