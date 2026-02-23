@@ -36,6 +36,9 @@ public class TrainFormationRunEntity {
     @SequenceGenerator(name = "train_formation_run_id_seq", allocationSize = 1)
     private Integer id;
 
+    /**
+     * Position of this formation run within the formation.
+     */
     @Column(nullable = false)
     private Integer position;
 
