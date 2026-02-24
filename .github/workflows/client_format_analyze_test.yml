@@ -47,9 +47,8 @@ jobs:
       - name: Generate sources
         run: melos generate
 
-      # Coverage file will be `das_client/coverage/lcov.info`
-      - name: Run tests with coverage
-        run: flutter test --coverage
+      - name: Flutter test
+        run: melos test
 
       - name: Sonar scan
         uses: SonarSource/sonarqube-scan-action@v7
@@ -62,5 +61,7 @@ jobs:
             -Dsonar.projectKey=schweizerischebundesbahnen-DAS-Admin-Tool
             -Dsonar.sources=lib
             -Dsonar.tests=test
+            -Dsonar.exclusions=lib/src/fonts/**,lib/src/sbb_map/sbb_map.dart,**/*.g.dart
+            -Dsonar.flutter.enabled=true
+            -Dsonar.language=dart
             -Dsonar.dart.lcov.reportPaths=coverage/lcov.info
-            -Dsonar.exclusions=**/*.g.dart,**/*.freezed.dart,**/build/**,**/.dart_tool/**,**/android/**,**/ios/**,**/macos/**,**/windows/**,**/linux/**
