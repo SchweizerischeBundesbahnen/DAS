@@ -69,13 +69,13 @@ class BrakeLoadSlipSpecialRestrictions extends StatelessWidget {
 
     return showChangeIndicator && _hasChange()
         ? Row(
-      children: [
-        DotIndicator(
-          offset: Offset(0, -SBBSpacing.small),
-          child: titleText,
-        ),
-      ],
-    )
+            children: [
+              DotIndicator(
+                offset: Offset(0, -SBBSpacing.small),
+                child: titleText,
+              ),
+            ],
+          )
         : titleText;
   }
 
