@@ -43,7 +43,7 @@ class AdvisedSpeedNotificationHint extends StatelessWidget {
 
   Color _resolveBackgroundColor(BuildContext context) {
     return switch (hint) {
-      .servicePointWithLocalSpeed => ThemeUtil.getColor(context, SBBColors.charcoal, SBBColors.aluminum),
+      .servicePointWithLocalSpeed => ThemeUtil.getColor(context, SBBColors.charcoal, SBBColors.midnight),
       .curvePointWithLocalSpeed => ThemeUtil.getColor(context, SBBColors.sky, SBBColors.skyDark),
       .additionalSpeedRestriction => ThemeUtil.getColor(context, SBBColors.orange, SBBColors.orangeDark),
     };
