@@ -54,6 +54,7 @@ class AppAssets {
   static const shapeRoundedEdgeLeftMedium = '$_othersDir/shape_rounded_edge_left_medium.svg';
   static const shapeRoundedEdgeLeftLarge = '$_othersDir/shape_rounded_edge_left_large.svg';
   static const loginPageBackground = '$_othersDir/login_page_background.svg';
+  static const stationSignBhf = '$_othersDir/station_sign_bhf.svg';
 
   // audio
   static const soundKoaWaitCanceled = '$_soundsDir/koa_wait_canceled.mp3';
