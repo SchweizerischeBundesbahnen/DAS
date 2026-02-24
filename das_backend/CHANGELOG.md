@@ -1,5 +1,31 @@
 # Changelog
 
+## [0.8.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.7.1...backend-v0.8.0) (2026-02-24)
+
+
+### Features
+
+* train identifications from timetable ([#535](https://github.com/SchweizerischeBundesbahnen/DAS/issues/535)) ([#1712](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1712)) ([831e99b](https://github.com/SchweizerischeBundesbahnen/DAS/commit/831e99b01fa3df67edd0d30682835e0f81e8a264))
+
+
+### Bug Fixes
+
+* **deps:** update dependency org.springdoc:springdoc-openapi-starter-webmvc-ui to v3.0.1 ([#1590](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1590)) ([0d9afbf](https://github.com/SchweizerischeBundesbahnen/DAS/commit/0d9afbff69a8a107b25f9f4e578822ca8105a289))
+* **deps:** update dependency org.springframework.boot:spring-boot-starter-parent to v4.0.1 ([#1579](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1579)) ([1becd83](https://github.com/SchweizerischeBundesbahnen/DAS/commit/1becd83d41b8f147b1fa2ef42ed2a2d85c4f712e))
+* **deps:** update dependency org.springframework.modulith:spring-modulith-bom to v2.0.1 ([#1580](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1580)) ([b5a0b94](https://github.com/SchweizerischeBundesbahnen/DAS/commit/b5a0b9434fc024dc903a0df53eda422ef3878701))
+* **deps:** update dependency org.springframework.modulith:spring-modulith-bom to v2.0.2 ([#1666](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1666)) ([b2ff3e2](https://github.com/SchweizerischeBundesbahnen/DAS/commit/b2ff3e26e0dbbd23c8f9a095f89707ee0b73e72a))
+* **deps:** update dependency software.amazon.awssdk:bom to v2.41.10 ([#1623](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1623)) ([235e44e](https://github.com/SchweizerischeBundesbahnen/DAS/commit/235e44e3895acfce23737e41a60f0c4dc6d9025a))
+* **deps:** update dependency software.amazon.awssdk:bom to v2.41.7 ([#1612](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1612)) ([4734abb](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4734abb486966ea2bec14ca6e0bcf037c3f5a4f9))
+* **deps:** update shedlock monorepo to v7.5.0 ([#1582](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1582)) ([7d47a40](https://github.com/SchweizerischeBundesbahnen/DAS/commit/7d47a40301f79e1b7e7a516dad29669b718c0fcf))
+* **deps:** update shedlock monorepo to v7.6.0 ([#1667](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1667)) ([46d7ce1](https://github.com/SchweizerischeBundesbahnen/DAS/commit/46d7ce1c6e65d177cb328670b6157aa6fbedaa14))
+* e2e settings tests upgrade ([#1629](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1629)) ([028b79f](https://github.com/SchweizerischeBundesbahnen/DAS/commit/028b79f097068ede7db5d93c7d9ccd59fa6d50d6))
+* flyway migration script ([#1718](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1718)) ([d26bf85](https://github.com/SchweizerischeBundesbahnen/DAS/commit/d26bf856d6d4f5e6089027050d60f81358fe9b13))
+* ordered formation runs ([#1794](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1794)) ([5c9e448](https://github.com/SchweizerischeBundesbahnen/DAS/commit/5c9e448b12608e5277fb025df2818b2f8201cd34))
+* preload config and zip filename ([#1719](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1719)) ([6d5e2ae](https://github.com/SchweizerischeBundesbahnen/DAS/commit/6d5e2ae40962c45833ec79921e9c21f112d96086))
+* spring errorresponse replaced by problem ([#1643](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1643)) ([d77a9de](https://github.com/SchweizerischeBundesbahnen/DAS/commit/d77a9de5b70f78343f6e54f9379ad5adbf3a316f))
+* tenant code ([#1576](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1576)) ([1117ffe](https://github.com/SchweizerischeBundesbahnen/DAS/commit/1117ffe3edd055162b5d08be3309ae6a9384782e))
+* use default kafka properties for trains consumer ([#1778](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1778)) ([50f038f](https://github.com/SchweizerischeBundesbahnen/DAS/commit/50f038fe3b9da4a028c6e4b48df25112e2016778))
+
 ## [0.7.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.7.0...backend-v0.7.1) (2026-01-12)
 
 
