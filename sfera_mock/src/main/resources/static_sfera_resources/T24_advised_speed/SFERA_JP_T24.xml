@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 
-<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="3" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
+<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="4" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
     <TrainIdentification>
         <OTN_ID>
             <teltsi_Company>1285</teltsi_Company>
@@ -9,7 +9,7 @@
         </OTN_ID>
     </TrainIdentification>
 
-    <SegmentProfileReference SP_ID="T24_1" SP_VersionMajor="2" SP_VersionMinor="1" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T24_1" SP_VersionMajor="3" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
@@ -30,7 +30,7 @@
         </TimingPointConstraints>
 
 
-        <!-- first ADL - followTrain -->
+        <!-- first ADL - followTrain - includes a localSpeedSign at location 2000 -->
         <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="AdvisedSpeed" startLocation="500" endLocation="2500">
             <AdvisedSpeed optimalSpeed="80" reasonCode="followTrain" adviceType="ConstantspeedAdvice">
                 <ReasonText language="DE" text="ADL"/>
@@ -61,7 +61,7 @@
 
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="T24_2" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T24_2" SP_VersionMajor="2" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
@@ -81,7 +81,7 @@
             <StoppingPointDepartureDetails departureTime="9999-01-01T00:24:00Z" plannedDepartureTime="9999-01-01T00:24:00Z"/>
         </TimingPointConstraints>
 
-        <!-- second ADL - DIST BEGIN will be merged with the one from next Segment-->
+        <!-- second ADL - DIST BEGIN will be merged with the one from next Segment - has localSpeed indicator and curve speed-->
         <TemporaryConstraints startEndQualifier="Starts" temporaryConstraintType="AdvisedSpeed" startLocation="1500">
             <AdvisedSpeed speed="0" reasonCode="followTrain" adviceType="ConstantspeedAdvice">
                 <ReasonText language="DE" text="ADL"/>
@@ -108,7 +108,7 @@
 
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="T24_3" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T24_3" SP_VersionMajor="2" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
@@ -139,7 +139,7 @@
 
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="T24_4" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T24_4" SP_VersionMajor="2" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
@@ -165,6 +165,15 @@
             </TimingPointReference>
             <StoppingPointDepartureDetails departureTime="9999-01-01T00:42:00Z" plannedDepartureTime="9999-01-01T00:42:00Z"/>
         </TimingPointConstraints>
+
+        <TemporaryConstraints startEndQualifier="Starts" temporaryConstraintType="ASR" startLocation="5150">
+            <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="60"/>
+        </TemporaryConstraints>
+
+
+        <TemporaryConstraints startEndQualifier="Ends" temporaryConstraintType="ASR" endLocation="5250">
+            <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="60"/>
+        </TemporaryConstraints>
 
         <!-- third ADL - trainFollowing -->
         <!-- This ADL will be mapped from E912 to E185 and ending service point is MOR -->
@@ -206,11 +215,25 @@
                 <NetworkSpecificParameter name="newSpeed" value="100"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="5000" endLocation="5000"/>
             </JP_ContextInformation_NSPs>
+
+
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                <NetworkSpecificParameter name="kmRef" value="25.4"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="5150" endLocation="5150"/>
+            </JP_ContextInformation_NSPs>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                <NetworkSpecificParameter name="kmRef" value="25.1"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="5250" endLocation="5250"/>
+            </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
 
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="T24_5" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T24_5" SP_VersionMajor="2" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
@@ -241,7 +264,7 @@
 
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="T24_6" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T24_6" SP_VersionMajor="2" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
