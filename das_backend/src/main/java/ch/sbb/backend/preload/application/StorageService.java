@@ -105,7 +105,7 @@ public class StorageService {
         zos.closeEntry();
     }
 
-    void deleteAllOlderThan(OffsetDateTime cutoffDate) {
+    void deleteAllBefore(OffsetDateTime cutoffDate) {
         List<String> keysToDelete = s3Service.listObjects().stream()
             .filter(k -> k != null && k.endsWith(ZIP_FILE_ENDING))
             .filter(k -> {
@@ -114,7 +114,7 @@ public class StorageService {
                     OffsetDateTime ts = OffsetDateTime.parse(base, FILENAME_FORMATTER);
                     return ts.isBefore(cutoffDate);
                 } catch (DateTimeParseException e) {
-                    log.warn("CleanUp: Skipping zip file with unexpected name: {}", k);
+                    log.warn("Unexpected zip file name while preload cleanup. name={} was not deleted", k);
                     return false;
                 }
             })

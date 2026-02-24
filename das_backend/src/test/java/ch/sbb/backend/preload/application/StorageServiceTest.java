@@ -99,19 +99,19 @@ class StorageServiceTest {
     }
 
     @Test
-    void deleteAllOlderThan() {
+    void deleteAllBefore() {
         when(s3Service.listObjects()).thenReturn(List.of("2026-02-20T08-00-00Z.zip", "2026-02-20T05-00-20Z.zip"));
 
-        underTest.deleteAllOlderThan(OffsetDateTime.of(2026, 2, 20, 6, 1, 0, 0, ZoneOffset.ofHours(1)));
+        underTest.deleteAllBefore(OffsetDateTime.of(2026, 2, 20, 6, 1, 0, 0, ZoneOffset.ofHours(1)));
 
         verify(s3Service, times(1)).deleteObjects(List.of("2026-02-20T05-00-20Z.zip"));
     }
 
     @Test
-    void deleteAllOlderThan_withInvalidFiles() {
+    void deleteAllBefore_withInvalidFiles() {
         when(s3Service.listObjects()).thenReturn(List.of("myInvalidFile.das", "2026-01-01T18-21-49Z.zip", "2026-99-01T18-21-49Z.zip", "2026-01-01X18-21-49.zip"));
 
-        underTest.deleteAllOlderThan(OffsetDateTime.of(2026, 2, 1, 0, 0, 0, 0, ZoneOffset.ofHours(1)));
+        underTest.deleteAllBefore(OffsetDateTime.of(2026, 2, 1, 0, 0, 0, 0, ZoneOffset.ofHours(1)));
 
         verify(s3Service, times(1)).deleteObjects(List.of("2026-01-01T18-21-49Z.zip"));
     }

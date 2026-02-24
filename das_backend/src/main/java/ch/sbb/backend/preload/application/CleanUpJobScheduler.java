@@ -24,7 +24,7 @@ public class CleanUpJobScheduler {
     @SchedulerLock(name = "cleanUpPreload", lockAtLeastFor = "10m")
     void cleanUpPreload() {
         OffsetDateTime cleanUpCutOff = OffsetDateTime.now().minusHours(cleanUpHours);
-        storageService.deleteAllOlderThan(cleanUpCutOff);
-        timetableService.deleteAllOlderThan(cleanUpCutOff.toLocalDate());
+        storageService.deleteAllBefore(cleanUpCutOff);
+        timetableService.deleteAllBefore(cleanUpCutOff.toLocalDate());
     }
 }
