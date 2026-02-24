@@ -1,5 +1,6 @@
 import 'package:app/pages/journey/journey_screen/header/widgets/chronograph_header_box.dart';
 import 'package:app/pages/journey/journey_screen/notification/widgets/advised_speed_notification.dart';
+import 'package:app/pages/journey/journey_screen/notification/widgets/advised_speed_notification_hints.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/advised_speed_cell_body.dart';
 import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -18,17 +19,26 @@ void main() {
 
     // 1st advised speed Message (check speed)
     await waitUntilExists(tester, _findAdvisedSpeedNotificationContainingText('80'));
+    expect(find.byKey(AdvisedSpeedNotificationHint.servicePointSpeedKey), findsOne);
+    expect(find.byKey(AdvisedSpeedNotificationHint.additionalSpeedRestrictionKey), findsNothing);
+    expect(find.byKey(AdvisedSpeedNotificationHint.curvePointSpeedKey), findsNothing);
     await waitUntilExists(tester, _findAdvisedSpeedNotificationContainingText(l10n.w_advised_speed_end));
 
     // 2nd advised speed Message (check signal & DIST)
     await waitUntilExists(tester, _findAdvisedSpeedNotificationContainingText('A653'));
     await waitUntilExists(tester, _findAdvisedSpeedNotificationContainingText('DIST'));
+    expect(find.byKey(AdvisedSpeedNotificationHint.servicePointSpeedKey), findsOne);
+    expect(find.byKey(AdvisedSpeedNotificationHint.curvePointSpeedKey), findsOne);
+    expect(find.byKey(AdvisedSpeedNotificationHint.additionalSpeedRestrictionKey), findsNothing);
     await waitUntilExists(tester, find.byKey(AdvisedSpeedCellBody.advisedSpeedDistKey));
     await tester.pumpAndSettle(const Duration(milliseconds: 100));
 
     // 3rd advised speed Message (check icon & no endLocation shown in banner (unknown location))
     await waitUntilExists(tester, find.byKey(AdvisedSpeedNotification.advisedSpeedNotificationIconKey));
     await waitUntilExists(tester, _findAdvisedSpeedNotificationContainingText('120'));
+    expect(find.byKey(AdvisedSpeedNotificationHint.servicePointSpeedKey), findsNothing);
+    expect(find.byKey(AdvisedSpeedNotificationHint.curvePointSpeedKey), findsNothing);
+    expect(find.byKey(AdvisedSpeedNotificationHint.additionalSpeedRestrictionKey), findsNothing);
     expect(_findAdvisedSpeedNotificationContainingText('E185'), findsNothing);
 
     // Punctuality Hidden
@@ -40,10 +50,16 @@ void main() {
     // 4th advised speed Message (vmax, speed not in advised speed notification)
     // end is never displayed since goes directly to next segment
     await waitUntilExists(tester, _findAdvisedSpeedNotificationContainingText('A312'));
+    expect(find.byKey(AdvisedSpeedNotificationHint.servicePointSpeedKey), findsOne);
+    expect(find.byKey(AdvisedSpeedNotificationHint.curvePointSpeedKey), findsOne);
+    expect(find.byKey(AdvisedSpeedNotificationHint.additionalSpeedRestrictionKey), findsOne);
     expect(_findAdvisedSpeedNotificationContainingText('80'), findsNothing);
 
     // 5th advised speed Message (check Signal & cancel)
     await waitUntilExists(tester, _findAdvisedSpeedNotificationContainingText('E367'));
+    expect(find.byKey(AdvisedSpeedNotificationHint.servicePointSpeedKey), findsNothing);
+    expect(find.byKey(AdvisedSpeedNotificationHint.curvePointSpeedKey), findsNothing);
+    expect(find.byKey(AdvisedSpeedNotificationHint.additionalSpeedRestrictionKey), findsNothing);
     await waitUntilExists(tester, _findAdvisedSpeedNotificationContainingText(l10n.w_advised_speed_cancel));
 
     // Check that cancel message disappears after some time

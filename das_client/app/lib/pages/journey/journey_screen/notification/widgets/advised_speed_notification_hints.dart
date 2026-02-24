@@ -6,6 +6,10 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
 class AdvisedSpeedNotificationHint extends StatelessWidget {
+  static const servicePointSpeedKey = Key('AdvisedSpeedNotificationHintServicePoint');
+  static const curvePointSpeedKey = Key('AdvisedSpeedNotificationHintCurvePoint');
+  static const additionalSpeedRestrictionKey = Key('AdvisedSpeedNotificationHintAdditionalSpeedRestriction');
+
   static const widthWithoutRoundedLeftEdge = 40.0; // width for positioning in parent
 
   const AdvisedSpeedNotificationHint({required this.hint, required this.roundBottomRightCorner, super.key});
@@ -47,17 +51,24 @@ class AdvisedSpeedNotificationHint extends StatelessWidget {
 
   Widget _resolveChild(BuildContext context) {
     return switch (hint) {
-      .servicePointWithLocalSpeed => SvgPicture.asset(AppAssets.stationSignBhf),
+      .servicePointWithLocalSpeed => SvgPicture.asset(
+        AppAssets.stationSignBhf,
+        key: AdvisedSpeedNotificationHint.servicePointSpeedKey,
+      ),
       .curvePointWithLocalSpeed => Padding(
         padding: const EdgeInsets.all(2.0),
         child: SvgPicture.asset(
           AppAssets.iconCurveStart,
           colorFilter: ColorFilter.mode(SBBColors.white, .srcIn),
+          key: AdvisedSpeedNotificationHint.curvePointSpeedKey,
         ),
       ),
       .additionalSpeedRestriction => Padding(
         padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 5.0),
-        child: SvgPicture.asset(AppAssets.iconAdditionalSpeedRestriction),
+        child: SvgPicture.asset(
+          AppAssets.iconAdditionalSpeedRestriction,
+          key: AdvisedSpeedNotificationHint.additionalSpeedRestrictionKey,
+        ),
       ),
     };
   }
