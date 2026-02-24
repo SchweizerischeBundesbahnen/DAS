@@ -49,7 +49,8 @@ public class TimetablePeriodConsumer {
         topicPartitions = @org.springframework.kafka.annotation.TopicPartition(
             topic = "${preload.timetablePeriod.topic}",
             partitionOffsets = {@PartitionOffset(partition = "0", initialOffset = "0")}
-        )
+        ),
+        autoStartup = "${preload.kafka.enabled:true}"
     )
     public void processTimetablePeriods(List<ConsumerRecord<Bytes, Bytes>> records, Consumer<?, ?> consumer) {
 
