@@ -1,5 +1,4 @@
 import 'package:app/i18n/i18n.dart';
-import 'package:app/pages/journey/journey_screen/journey_overview.dart';
 import 'package:app/pages/journey/journey_screen/view_model/ux_testing_view_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/departure_process_modal_sheet.dart';
 import 'package:app/theme/das_colors.dart';
@@ -22,10 +21,7 @@ class KoaNotification extends StatelessWidget {
       stream: viewModel.koaState,
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.data == .waitHide) return SizedBox.shrink();
-        return Container(
-          margin: const EdgeInsets.all(JourneyOverview.horizontalPadding).copyWith(top: 0),
-          child: snapshot.data == .wait ? _WaitNotification() : _WaitCancelledNotification(),
-        );
+        return snapshot.data == .wait ? _WaitNotification() : _WaitCancelledNotification();
       },
     );
   }
@@ -37,8 +33,8 @@ class _WaitNotification extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final resolvedTextStyle = ThemeUtil.isDarkMode(context)
-        ? sbbTextStyle.boldStyle.medium.copyWith(color: SBBColors.white)
-        : sbbTextStyle.romanStyle.medium.copyWith(color: SBBColors.black);
+        ? sbbTextStyle.boldStyle.large.copyWith(color: SBBColors.white)
+        : sbbTextStyle.romanStyle.large.copyWith(color: SBBColors.black);
 
     return SBBPromotionBox.custom(
       leading: SvgPicture.asset(
@@ -79,8 +75,8 @@ class _WaitCancelledNotification extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final resolvedTextStyle = ThemeUtil.isDarkMode(context)
-        ? sbbTextStyle.boldStyle.medium.copyWith(color: SBBColors.black)
-        : sbbTextStyle.romanStyle.medium.copyWith(color: SBBColors.black);
+        ? sbbTextStyle.boldStyle.large.copyWith(color: SBBColors.black)
+        : sbbTextStyle.romanStyle.large.copyWith(color: SBBColors.black);
 
     return SBBPromotionBox.custom(
       leading: Icon(SBBIcons.circle_tick_medium, color: SBBColors.black, size: 36.0),
@@ -117,7 +113,7 @@ class _KoaTrailingButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel = context.read<UxTestingViewModel>();
     return FutureBuilder(
-      future: viewModel.isDepartueProcessFeatureEnabled,
+      future: viewModel.isDepartureProcessFeatureEnabled,
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.data == false) return SizedBox.shrink();
 

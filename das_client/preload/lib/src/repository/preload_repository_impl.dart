@@ -18,12 +18,19 @@ final _log = Logger('PreloadRepositoryImpl');
 class PreloadRepositoryImpl implements PreloadRepository {
   static const syncInterval = Duration(minutes: 5);
 
-  PreloadRepositoryImpl({required this.databaseService, required this.sferaLocalRepo}) {
+  PreloadRepositoryImpl({
+    required this.databaseService,
+    required this.sferaLocalRepo,
+    required this.disablePreload,
+  }) {
     _init();
   }
 
   final PreloadLocalDatabaseService databaseService;
   final SferaLocalRepo sferaLocalRepo;
+
+  /// added only for development purposes
+  final bool disablePreload;
   S3Client? _s3client;
   StreamSubscription? _databaseSubscription;
   Timer? _syncTimer;
@@ -60,6 +67,11 @@ class PreloadRepositoryImpl implements PreloadRepository {
 
   @override
   void triggerPreload() async {
+    if (disablePreload) {
+      _log.fine('Preload has been disabled by development flag. Cancelling...');
+      return;
+    }
+
     if (_s3client == null) {
       _log.warning('S3 client is not initialized. Cannot perform preload.');
       return;

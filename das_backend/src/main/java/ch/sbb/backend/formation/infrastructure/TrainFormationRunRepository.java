@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TrainFormationRunRepository extends ListCrudRepository<TrainFormationRunEntity, Integer> {
 
-    List<TrainFormationRunEntity> findByOperationalTrainNumberAndOperationalDayAndCompanyOrderByInspectionDateTime(String operationalTrainNumber, LocalDate operationalDay, String company);
+    List<TrainFormationRunEntity> findByOperationalTrainNumberAndOperationalDayAndCompanyOrderByPositionAsc(String operationalTrainNumber, LocalDate operationalDay, String company);
 
     void deleteByTrainPathIdAndOperationalDay(String trainPathId, LocalDate operationalDay);
 

@@ -1,7 +1,7 @@
 package ch.sbb.backend.formation.infrastructure.model;
 
-import ch.sbb.backend.common.StringListConverter;
 import ch.sbb.backend.common.SFERA;
+import ch.sbb.backend.common.StringListConverter;
 import ch.sbb.backend.common.TelTsi;
 import ch.sbb.backend.formation.domain.model.BrakeDesign;
 import ch.sbb.backend.formation.domain.model.Formation;
@@ -17,6 +17,7 @@ import jakarta.persistence.SequenceGenerator;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -34,6 +35,12 @@ public class TrainFormationRunEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "train_formation_run_id_seq")
     @SequenceGenerator(name = "train_formation_run_id_seq", allocationSize = 1)
     private Integer id;
+
+    /**
+     * Position of this formation run within the formation.
+     */
+    @Column(nullable = false)
+    private Integer position;
 
     private String trainPathId;
 
@@ -136,10 +143,11 @@ public class TrainFormationRunEntity {
     private String slopeMaxForHoldingForceMinInPermille;
 
     public static List<TrainFormationRunEntity> from(Formation formation) {
+        AtomicInteger position = new AtomicInteger(0);
         return formation.validFormationRuns().stream()
             .map(formationRun -> {
                 TrainFormationRunEntityBuilder builder = TrainFormationRunEntity.builder();
-                applyFormationRun(builder, formationRun);
+                applyFormationRun(builder, formationRun, position);
                 builder
                     .operationalTrainNumber(formation.getOperationalTrainNumber())
                     .trainPathId(formation.getTrainPathId())
@@ -149,8 +157,9 @@ public class TrainFormationRunEntity {
             .toList();
     }
 
-    private static void applyFormationRun(TrainFormationRunEntityBuilder builder, FormationRun formationRun) {
+    private static void applyFormationRun(TrainFormationRunEntityBuilder builder, FormationRun formationRun, AtomicInteger position) {
         builder
+            .position(position.getAndIncrement())
             .inspectionDateTime(formationRun.getInspectionDateTime())
             .company(formationRun.getCompany())
             .tafTapLocationReferenceStart(formationRun.getTafTapLocationReferenceStart().toLocationCode())

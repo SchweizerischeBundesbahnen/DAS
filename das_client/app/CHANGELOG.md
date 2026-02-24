@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.37.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.36.0...das_client-v0.37.0) (2026-02-23)
+
+
+### Features
+
+* ignore TC updates after journey loaded ([#1416](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1416)) ([#1780](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1780)) ([98298b9](https://github.com/SchweizerischeBundesbahnen/DAS/commit/98298b9b3187093db2ffc68f2dad70af43596214))
+* prioritize notifications displaying maximum two ([#1402](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1402)) ([#1785](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1785)) ([8b2ecab](https://github.com/SchweizerischeBundesbahnen/DAS/commit/8b2ecab4ad5861e62327efab34dbe238f4c665b2))
+* show hidden stops ([#1542](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1542)) ([#1775](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1775)) ([0b02f48](https://github.com/SchweizerischeBundesbahnen/DAS/commit/0b02f48acd4ccfbf31ac1230b66c44b0e313cbe8))
+* use icon for level crossings in ETCS level 2 ([#1429](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1429)) ([#1740](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1740)) ([7a6b0b9](https://github.com/SchweizerischeBundesbahnen/DAS/commit/7a6b0b92982df4ce39e6d674363fbe0261d1cd32))
+
+
+### Bug Fixes
+
+* disable apply button when brake series is not available ([#1793](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1793)) ([fad3319](https://github.com/SchweizerischeBundesbahnen/DAS/commit/fad3319a398206e0e7a93db8eb86c44c5c469301))
+* fix sticky header display with collapsible rows ([#1738](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1738)) ([#1777](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1777)) ([c796cbb](https://github.com/SchweizerischeBundesbahnen/DAS/commit/c796cbbd317df44dc0c855da9df6725d1fea8a2e))
+* short term change in sight calculation handles train run rerouting correctly ([#99](https://github.com/SchweizerischeBundesbahnen/DAS/issues/99)) ([#1789](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1789)) ([4287438](https://github.com/SchweizerischeBundesbahnen/DAS/commit/42874381a7253398b5b7f1331d2cbcc6e0b8daf6))
+
 ## [0.36.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.35.0...das_client-v0.36.0) (2026-02-18)
 
 

@@ -1,5 +1,4 @@
 import 'package:app/i18n/i18n.dart';
-import 'package:app/pages/journey/journey_screen/journey_overview.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/replacement_series_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/replacement_series_view_model.dart';
 import 'package:app/widgets/notificationbox/notification_box.dart';
@@ -78,14 +77,11 @@ class ReplacementSeriesNotification extends StatelessWidget {
   }
 
   Widget _notification({required String title, required NotificationBoxStyle style, String? text, Key? key}) {
-    return Container(
+    return NotificationBox(
       key: key,
-      margin: const EdgeInsets.all(JourneyOverview.horizontalPadding).copyWith(top: 0),
-      child: NotificationBox(
-        style: style,
-        title: title,
-        text: text,
-      ),
+      style: style,
+      title: title,
+      text: text,
     );
   }
 }

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<G2B_EventPayload xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
+    <NetworkSpecificEvent>
+        <teltsi_Company>1285</teltsi_Company>
+        <NSP_GroupName>lmlcMsg</NSP_GroupName>
+        <NetworkSpecificParameter name="disturbanceMsg" value="grid_power_overlad"/>
+    </NetworkSpecificEvent>
+</G2B_EventPayload>
