@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:sfera/component.dart';
 
 enum AdvisedSpeedSegmentHint {
@@ -42,11 +43,12 @@ sealed class AdvisedSpeedSegment extends Segment {
             startOrder == other.startOrder &&
             endOrder == other.endOrder &&
             endData == other.endData &&
-            isEndDataCalculated == other.isEndDataCalculated;
+            isEndDataCalculated == other.isEndDataCalculated &&
+            SetEquality().equals(additionalHints, other.additionalHints);
   }
 
   @override
-  int get hashCode => Object.hash(startOrder, endOrder, endData, isEndDataCalculated);
+  int get hashCode => Object.hash(startOrder, endOrder, endData, isEndDataCalculated, additionalHints);
 
   @override
   String toString() {

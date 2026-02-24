@@ -10,6 +10,7 @@ class DraftAdvisedSpeedSegment implements Comparable<DraftAdvisedSpeedSegment> {
     this.speed,
     int? startOrder,
     int? endOrder,
+    this.additionalHints = const <AdvisedSpeedSegmentHint>{},
   }) : _startOrder = startOrder,
        _endOrder = endOrder,
        _nextSegmentStartOrder = nextSegmentStartOrder,
@@ -85,6 +86,7 @@ class DraftAdvisedSpeedSegment implements Comparable<DraftAdvisedSpeedSegment> {
       speed: speed,
       startOrder: _mergeOrder(_startOrder, other._startOrder, min),
       endOrder: _mergeOrder(_endOrder, other._endOrder, max),
+      additionalHints: {...additionalHints, ...other.additionalHints},
     );
   }
 
