@@ -16,13 +16,13 @@ class NetworkSpecificEventDto extends NspDto {
     String? value,
   }) {
     final groupName = children?.where((it) => it.type == NspDto.groupNameElement).firstOrNull;
-    if (groupName?.value == UxTestingNseDto.elementName) {
+    if (groupName?.value == UxTestingNseDto.groupNameValue) {
       return UxTestingNseDto(attributes: attributes, children: children, value: value);
-    } else if (groupName?.value == WarnAppMsgDto.elementName) {
+    } else if (groupName?.value == WarnAppMsgDto.groupNameValue) {
       return WarnAppMsgDto(attributes: attributes, children: children, value: value);
-    } else if (groupName?.value == DisturbanceMsgEventDto.elementName) {
+    } else if (groupName?.value == DisturbanceMsgEventDto.groupNameValue) {
       return DisturbanceMsgEventDto(attributes: attributes, children: children, value: value);
-    } else if (groupName?.value == DepartureDispatchNotificationEventDto.elementName) {
+    } else if (groupName?.value == DepartureDispatchNotificationEventDto.groupNameValue) {
       return DepartureDispatchNotificationEventDto(attributes: attributes, children: children, value: value);
     }
     return NetworkSpecificEventDto(attributes: attributes, children: children, value: value);

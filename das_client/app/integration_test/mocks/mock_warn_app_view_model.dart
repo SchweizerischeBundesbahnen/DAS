@@ -3,9 +3,10 @@ import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
 class MockWarnAppViewModel extends WarnAppViewModel {
   MockWarnAppViewModel({
     required super.flavor,
-    required super.sferaRemoteRepo,
+    required super.sferaRepo,
     required super.warnappRepo,
     required super.ruFeatureProvider,
+    required super.notificationViewModel,
   });
 
   bool _isWaraInstalled = false;

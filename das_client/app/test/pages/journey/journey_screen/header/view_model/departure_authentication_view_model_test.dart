@@ -142,16 +142,17 @@ void main() {
 
 Future<void> _streamProcessing() async => Future.delayed(Duration.zero);
 
-final _stopA = ServicePoint(name: 'Stop A', abbreviation: 'SA', order: 0, kilometre: []);
-final _stopB = ServicePoint(name: 'Stop B', abbreviation: 'SB', order: 500, kilometre: []);
+final _stopA = ServicePoint(name: 'Stop A', abbreviation: 'SA', locationCode: '', order: 0, kilometre: []);
+final _stopB = ServicePoint(name: 'Stop B', abbreviation: 'SB', locationCode: '', order: 500, kilometre: []);
 final _passingPointC = ServicePoint(
   name: 'ServicePoint C',
   abbreviation: 'SC',
+  locationCode: '',
   order: 1000,
   kilometre: [],
   isStop: false,
 );
-final _stopD = ServicePoint(name: 'ServicePoint D', abbreviation: 'SD', order: 1500, kilometre: []);
+final _stopD = ServicePoint(name: 'ServicePoint D', abbreviation: 'SD', locationCode: '', order: 1500, kilometre: []);
 final _intermediateSignalAfterStopB = Signal(order: 600, kilometre: [], functions: [.intermediate]);
 final _exitSignalAfterIntermediateSignalStopB = Signal(order: 700, kilometre: [], functions: [.exit]);
 

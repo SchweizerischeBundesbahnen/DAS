@@ -14,14 +14,14 @@ final _log = Logger('JourneyTableViewModel');
 
 class JourneyTableViewModel {
   JourneyTableViewModel({
-    required SferaRemoteRepo sferaRemoteRepo,
-  }) : _sferaRemoteRepo = sferaRemoteRepo {
+    required SferaRepository sferaRepo,
+  }) : _sferaRepo = sferaRepo {
     _init();
   }
 
   final _resetToKmAfterSeconds = DI.get<TimeConstants>().kmDecisiveGradientResetSeconds;
 
-  final SferaRemoteRepo _sferaRemoteRepo;
+  final SferaRepository _sferaRepo;
 
   Stream<Journey?> get journey => _rxJourney.stream;
 
@@ -85,8 +85,9 @@ class JourneyTableViewModel {
 
   void _listenToSferaRemoteRepo() {
     _stateSubscription?.cancel();
-    _stateSubscription = _sferaRemoteRepo.stateStream.listen((state) {
+    _stateSubscription = _sferaRepo.stateStream.listen((state) {
       switch (state) {
+        case .offlineData:
         case .connected:
           WakelockPlus.enable();
           break;
@@ -95,13 +96,13 @@ class JourneyTableViewModel {
           break;
         case .disconnected:
           WakelockPlus.disable();
-          if (_sferaRemoteRepo.lastError != null) {
-            _rxErrorCode.add(.fromSfera(error: _sferaRemoteRepo.lastError!));
+          if (_sferaRepo.lastError != null) {
+            _rxErrorCode.add(.fromSfera(error: _sferaRepo.lastError!));
           }
           break;
       }
     });
-    _journeySubscription = _sferaRemoteRepo.journeyStream.listen((journey) {
+    _journeySubscription = _sferaRepo.journeyStream.listen((journey) {
       _rxJourney.add(journey);
     }, onError: _rxJourney.addError);
   }

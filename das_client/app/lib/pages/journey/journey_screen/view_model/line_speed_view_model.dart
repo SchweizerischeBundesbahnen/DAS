@@ -16,7 +16,7 @@ class LineSpeedViewModel extends JourneyAwareViewModel {
     if (metadata == null) return ResolvedTrainSeriesSpeed.none();
 
     final settings = _journeySettingsViewModel.modelValue;
-    final breakSeries = settings.resolvedBreakSeries(metadata);
+    final breakSeries = settings.currentBreakSeries;
 
     var trainSeriesSpeeds = metadata.lineSpeeds[order];
     var isPrevious = false;

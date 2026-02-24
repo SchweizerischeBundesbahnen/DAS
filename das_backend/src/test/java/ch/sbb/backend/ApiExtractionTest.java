@@ -10,16 +10,11 @@ import java.nio.file.Paths;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-@SpringBootTest
-@ActiveProfiles("test")
-@Import(TestContainerConfiguration.class)
+@IntegrationTest
 @AutoConfigureMockMvc(addFilters = false)
 @Slf4j
 class ApiExtractionTest {

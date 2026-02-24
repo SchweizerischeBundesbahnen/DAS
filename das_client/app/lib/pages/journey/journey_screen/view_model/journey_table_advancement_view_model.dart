@@ -27,7 +27,7 @@ class JourneyTableAdvancementViewModel extends JourneyAwareViewModel {
   JourneyTableAdvancementViewModel({
     required Stream<JourneyPositionModel> positionStream,
     required JourneyTableScrollController scrollController,
-    required AdvancementModeChangedCallback onAdvancementModeChanged,
+    required List<AdvancementModeChangedCallback> onAdvancementModeChanged,
     super.journeyTableViewModel,
   }) {
     _scrollController = scrollController;
@@ -41,7 +41,7 @@ class JourneyTableAdvancementViewModel extends JourneyAwareViewModel {
 
   late JourneyTableScrollController _scrollController;
 
-  late AdvancementModeChangedCallback _onAdvancementModeChanged;
+  late List<AdvancementModeChangedCallback> _onAdvancementModeChanged;
   final _rxModel = BehaviorSubject<JourneyAdvancementModel>.seeded(Automatic());
   JourneyPoint? _currentPosition;
   JourneyPoint? _lastPosition;
@@ -170,7 +170,9 @@ class JourneyTableAdvancementViewModel extends JourneyAwareViewModel {
 
   void _setModel(JourneyAdvancementModel model) {
     _rxModel.add(model);
-    _onAdvancementModeChanged.call(model);
+    for (final callback in _onAdvancementModeChanged) {
+      callback.call(model);
+    }
   }
 
   void _emitAutomaticIdleScrolling() {

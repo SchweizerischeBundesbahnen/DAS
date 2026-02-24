@@ -91,12 +91,11 @@ class ServicePointModalViewModel {
   }
 
   void _initRelevantSpeedInfo() {
-    final subscription = Rx.combineLatest3(
+    final subscription = Rx.combineLatest2(
       _rxServicePoint.stream,
-      _rxMetadata.stream,
       _rxSettings.stream,
-      (servicePoint, metadata, settings) {
-        final currentBreakSeries = settings.resolvedBreakSeries(metadata);
+      (servicePoint, settings) {
+        final currentBreakSeries = settings.currentBreakSeries;
         _rxBreakSeries.add(currentBreakSeries);
 
         return servicePoint.relevantGraduatedSpeedInfo(currentBreakSeries);

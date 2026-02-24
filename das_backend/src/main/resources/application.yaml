@@ -37,8 +37,8 @@ spring:
   flyway:
     baseline-on-migrate: true
   kafka:
+    bootstrap-servers: ${ZIS_BOOTSTRAP_URL}
     consumer:
-      bootstrap-servers: ${ZIS_BOOTSTRAP_URL}
       key-deserializer: io.confluent.kafka.serializers.json.KafkaJsonSchemaDeserializer
       value-deserializer: io.confluent.kafka.serializers.json.KafkaJsonSchemaDeserializer
       auto-offset-reset: latest
@@ -121,3 +121,24 @@ preload:
     bucketUrl: ${PRELOAD_BUCKET_URL}
     accessKey: ${PRELOAD_BUCKET_KEY}
     accessSecret: ${PRELOAD_BUCKET_SECRET}
+
+  timetablePeriod:
+    topic: ${FAHRPLAN_SERVICE_API_TIMETABLE_PERIOD_TOPIC}
+  timetableTrain:
+    topic: ${FAHRPLAN_SERVICE_API_INFRA_TRAIN_TOPIC}
+  uicCompanyCodes:
+    THURBO: 3917
+    SBBP: 1085
+    SBBCH: 2185
+    SBBD: 9087
+    SBBI: 5184
+    SBBCD: 2385
+    SBBCIN: 2585
+    SBBCI: 2485
+    SOB: 5458
+    BLSC: 3356
+    BLSI: 2263
+    BLSP: 1163
+  trainCleanUp:
+    days: ${TRAIN_CLEANUP_DAYS}
+    cronExpression: ${TRAIN_CLEANUP_CRON_EXPRESSION}

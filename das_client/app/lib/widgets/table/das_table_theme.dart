@@ -32,6 +32,9 @@ class DASTableThemeData {
   final Border? headingRowBorder;
 
   /// The border style for the table.
+  ///
+  /// The resulting Border will be tried to merge with the column / cell border.
+  /// If that is not possible, the column / cell border is used.
   final TableBorder? tableBorder;
 
   DASTableThemeData copyWith({

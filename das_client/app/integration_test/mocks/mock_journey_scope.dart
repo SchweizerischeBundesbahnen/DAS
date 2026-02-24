@@ -19,6 +19,7 @@ class MockJourneyScope extends JourneyScope {
     getIt.registerJourneyNavigationViewModel();
     getIt.registerJourneySelectionViewModel();
     getIt.registerJourneyTableViewModel();
+    getIt.registerNotificationPriorityViewModel();
     getIt.registerJourneySettingsViewModel();
     getIt.registerPunctualityViewModel();
     getIt.registerJourneyPositionViewModel();
@@ -33,10 +34,12 @@ class MockJourneyScope extends JourneyScope {
     getIt.registerSingleton<WarnAppViewModel>(
       MockWarnAppViewModel(
         flavor: DI.get(),
-        sferaRemoteRepo: DI.get(),
+        sferaRepo: DI.get(),
         warnappRepo: DI.get(),
         ruFeatureProvider: DI.get(),
+        notificationViewModel: DI.get(),
       ),
+      dispose: (vm) => vm.dispose(),
     );
   }
 }

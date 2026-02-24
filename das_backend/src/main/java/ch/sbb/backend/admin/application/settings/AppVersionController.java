@@ -2,8 +2,9 @@ package ch.sbb.backend.admin.application.settings;
 
 import static ch.sbb.backend.admin.application.settings.SettingsController.PATH_SEGMENT_SETTINGS;
 
-import ch.sbb.backend.admin.application.settings.model.request.AppVersionUpdateRequest;
+import ch.sbb.backend.admin.application.settings.model.request.AppVersionRequest;
 import ch.sbb.backend.admin.application.settings.model.response.AppVersionResponse;
+import ch.sbb.backend.admin.application.settings.model.response.AppVersionsResponse;
 import ch.sbb.backend.admin.domain.settings.AppVersionService;
 import ch.sbb.backend.admin.domain.settings.model.AppVersion;
 import ch.sbb.backend.common.ApiDocumentation;
@@ -14,6 +15,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -42,11 +44,11 @@ public class AppVersionController {
     @GetMapping(API_SETTINGS_APPVERSION)
     @Operation(summary = "Get all versions.", description = "Returns a list of all versions stored in the database.")
     @ApiResponse(responseCode = "200", description = "Settings relevant for DAS-Client.",
-        content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = AppVersionResponse.class)))
+        content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = AppVersionsResponse.class)))
     @ApiErrorResponses
     public ResponseEntity<? extends Response> getAll() {
         List<AppVersion> versions = appVersionService.getAll();
-        return ResponseEntity.ok(new AppVersionResponse(versions));
+        return ResponseEntity.ok(new AppVersionsResponse(versions));
     }
 
     @GetMapping(API_SETTINGS_APPVERSION + "/{id}")
@@ -68,7 +70,7 @@ public class AppVersionController {
     @ApiResponse(responseCode = "201", description = "App version created.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = AppVersionResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<AppVersionResponse> create(@RequestBody AppVersionUpdateRequest createRequest) {
+    public ResponseEntity<AppVersionResponse> create(@RequestBody @Valid AppVersionRequest createRequest) {
         AppVersion createdVersion = appVersionService.create(createRequest);
         return ResponseEntity.status(201).body(new AppVersionResponse(List.of(createdVersion)));
     }
@@ -79,7 +81,7 @@ public class AppVersionController {
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = AppVersionResponse.class)))
     @ApiResponse(responseCode = "404", description = "App version not found.")
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> update(@PathVariable Integer id, @RequestBody AppVersionUpdateRequest updateRequest) {
+    public ResponseEntity<? extends Response> update(@PathVariable Integer id, @RequestBody @Valid AppVersionRequest updateRequest) {
         AppVersion updatedVersion = appVersionService.update(id, updateRequest);
         if (updatedVersion == null) {
             return ResponseEntity.notFound().build();
@@ -89,16 +91,11 @@ public class AppVersionController {
 
     @DeleteMapping(API_SETTINGS_APPVERSION + "/{id}")
     @Operation(summary = "Delete app version by id.", description = "Delete a single app version by its id.")
-    @ApiResponse(responseCode = "200", description = "App version deleted.",
-        content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = AppVersionResponse.class)))
-    @ApiResponse(responseCode = "404", description = "App version not found.")
+    @ApiResponse(responseCode = "204", description = "App version deleted.")
     @ApiErrorResponses
     public ResponseEntity<? extends Response> delete(@PathVariable Integer id) {
-        AppVersion deletedVersion = appVersionService.delete(id);
-        if (deletedVersion == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(new AppVersionResponse(List.of(deletedVersion)));
+        appVersionService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

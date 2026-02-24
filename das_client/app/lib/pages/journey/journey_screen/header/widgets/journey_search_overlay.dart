@@ -3,9 +3,9 @@ import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/widgets/anchored_full_page_overlay.dart';
 import 'package:app/pages/journey/selection/journey_selection_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
-import 'package:app/pages/journey/selection/railway_undertaking/widgets/select_railway_undertaking_input.dart';
 import 'package:app/pages/journey/selection/widgets/journey_date_input.dart';
 import 'package:app/pages/journey/selection/widgets/journey_train_number_input.dart';
+import 'package:app/widgets/railway_undertaking/widgets/select_railway_undertaking_input.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -45,7 +45,7 @@ class JourneySearchOverlay extends StatelessWidget {
                 children: [
                   _header(context, hideOverlay),
                   SizedBox(height: SBBSpacing.medium),
-                  SBBContentBox(child: _inputFields()),
+                  SBBContentBox(child: _inputFields(context)),
                   _loadJourneyButton(context, hideOverlay),
                 ],
               );
@@ -56,12 +56,25 @@ class JourneySearchOverlay extends StatelessWidget {
     );
   }
 
-  Widget _inputFields() {
+  Widget _inputFields(BuildContext context) {
+    final vm = context.read<JourneySelectionViewModel>();
+
     return Column(
       crossAxisAlignment: .start,
       children: [
         JourneyDateInput(isModalVersion: true),
-        SelectRailwayUndertakingInput(isModalVersion: true),
+        StreamBuilder(
+          stream: vm.model,
+          initialData: vm.modelValue,
+          builder: (context, asyncSnapshot) {
+            final model = asyncSnapshot.requireData;
+            return SelectRailwayUndertakingInput(
+              isModalVersion: true,
+              selectedRailwayUndertakings: [model.railwayUndertaking],
+              updateRailwayUndertaking: vm.updateRailwayUndertaking,
+            );
+          },
+        ),
         JourneyTrainNumberInput(isModalVersion: true),
       ],
     );

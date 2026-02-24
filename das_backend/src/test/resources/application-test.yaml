@@ -14,6 +14,8 @@ spring:
     producer:
       key-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    security:
+      protocol: PLAINTEXT
 auth:
   audience:
     service-name: test
@@ -54,3 +56,10 @@ preload:
     bucketUrl: bucketUrl
     accessKey: accessKey
     accessSecret: accessSecret
+  timetablePeriod:
+    topic: nets-p.timetable
+  timetableTrain:
+    topic: fps.inte.infra.zug
+  trainCleanUp:
+    days: 2
+    cronExpression: "-"

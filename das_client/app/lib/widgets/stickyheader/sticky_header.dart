@@ -6,7 +6,7 @@
 
 import 'package:app/widgets/stickyheader/sticky_widget.dart';
 import 'package:app/widgets/stickyheader/sticky_widget_controller.dart';
-import 'package:app/widgets/table/das_table_row.dart';
+import 'package:app/widgets/table/row/das_table_row.dart';
 import 'package:flutter/material.dart';
 
 typedef StickyWidgetBuilder = Widget Function(BuildContext context, int index);
@@ -62,7 +62,7 @@ class StickyHeaderState extends State<StickyHeader> {
   bool _rowsEqual(List<DASTableRow> oldRows, List<DASTableRow> newRows) {
     if (oldRows.length != newRows.length) return false;
     for (int i = 0; i < oldRows.length; i++) {
-      if (oldRows[i].key != newRows[i].key) return false;
+      if (oldRows[i].key != newRows[i].key || oldRows[i].height != newRows[i].height) return false;
     }
     return true;
   }

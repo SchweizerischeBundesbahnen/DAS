@@ -111,7 +111,7 @@ void main() {
     // ARRANGE
     final signal = Signal(order: 100, kilometre: []);
     final targetSignal = Signal(order: 300, kilometre: []);
-    final servicePoint = ServicePoint(order: 0, abbreviation: '', kilometre: [], name: '');
+    final servicePoint = ServicePoint(order: 0, abbreviation: '', locationCode: '', kilometre: [], name: '');
 
     final List<CellRowBuilder> rows = [
       mockServicePointRow(servicePoint, Offset(0, 0)),
@@ -143,7 +143,7 @@ void main() {
     // ARRANGE
     final signal = Signal(order: 100, kilometre: []);
     final targetSignal = Signal(order: 300, kilometre: []);
-    final servicePoint = ServicePoint(order: 0, abbreviation: '', kilometre: [], name: '');
+    final servicePoint = ServicePoint(order: 0, abbreviation: '', locationCode: '', kilometre: [], name: '');
 
     final List<CellRowBuilder> rows = [
       mockServicePointRow(servicePoint, Offset(0, 0)),

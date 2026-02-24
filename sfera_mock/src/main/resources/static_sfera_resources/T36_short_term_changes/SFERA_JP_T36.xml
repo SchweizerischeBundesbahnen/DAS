@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
+                JP_Version="1" JP_Status="Valid">
+    <TrainIdentification>
+        <OTN_ID>
+            <teltsi_Company>1285</teltsi_Company>
+            <teltsi_OperationalTrainNumber>T36</teltsi_OperationalTrainNumber>
+            <teltsi_StartDate>2026-01-01</teltsi_StartDate>
+        </OTN_ID>
+    </TrainIdentification>
+    <SegmentProfileReference SP_ID="T36_1" SP_VersionMajor="1" SP_VersionMinor="0"
+                             SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Station1"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Station1a"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Station2"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Station3"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Station4"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Station5"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Station6"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Station7"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Station8"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Station9"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Station10"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Station11"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Station12"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Station13"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Station14"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Station15"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Station16"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Station17"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Station18"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Station19"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TrainCharacteristicsRef TC_ID="T36_1" TC_VersionMajor="1" TC_VersionMinor="0" location="0">
+            <TC_RU_ID>1285</TC_RU_ID>
+        </TrainCharacteristicsRef>
+    </SegmentProfileReference>
+
+    <General_JP_Information>
+        <!--   Ausserordentlicher Halt to Station 4  -->
+        <General_JP_Information_NSP>
+            <teltsi_Company>1285</teltsi_Company>
+            <NSP_GroupName>stop2PassOrPass2Stop</NSP_GroupName>
+            <NetworkSpecificParameter name="xmlStop2PassOrPass2Stop" value="
+                    &lt;stop2PassOrPass2Stop&gt;
+                    &lt;change changeType=&quot;pass2Stop&quot; modifiedOP=&quot;CH00700&quot;/&gt;
+                    &lt;/stop2PassOrPass2Stop&gt;
+                "/>
+        </General_JP_Information_NSP>
+
+        <!--   Ausserordentliche Durchfahrt to Station 7  -->
+        <General_JP_Information_NSP>
+            <teltsi_Company>1285</teltsi_Company>
+            <NSP_GroupName>stop2PassOrPass2Stop</NSP_GroupName>
+            <NetworkSpecificParameter name="xmlStop2PassOrPass2Stop" value="
+                    &lt;stop2PassOrPass2Stop&gt;
+                    &lt;change changeType=&quot;stop2Pass&quot; modifiedOP=&quot;CH01200&quot;/&gt;
+                    &lt;/stop2PassOrPass2Stop&gt;
+                "/>
+        </General_JP_Information_NSP>
+
+
+        <!--   Train Run Rerouting Stations 10, 11, 12  -->
+        <General_JP_Information_NSP>
+            <teltsi_Company>1285</teltsi_Company>
+            <NSP_GroupName>trainRunRerouting</NSP_GroupName>
+            <NetworkSpecificParameter name="xmlTrainRunRerouting" value="
+                    &lt;trainRunRerouting&gt;
+                    &lt;change oldRoute=&quot;CH01420-CH01520-CH01620&quot; newRoute=&quot;CH01500-CH01600-CH01700&quot;/&gt;
+                    &lt;/trainRunRerouting&gt;
+                "/>
+        </General_JP_Information_NSP>
+
+        <!--   Vorzeitiger Wendepunkt to Station 11 (overlap situation)  -->
+        <General_JP_Information_NSP>
+            <teltsi_Company>1285</teltsi_Company>
+            <NSP_GroupName>endDestinationChange</NSP_GroupName>
+            <NetworkSpecificParameter name="oldLocation" value="CH01550"/>
+            <NetworkSpecificParameter name="newLocation" value="CH01600"/>
+        </General_JP_Information_NSP>
+
+        <!--   Vorzeitiger Wendepunkt to Station 15  -->
+        <General_JP_Information_NSP>
+            <teltsi_Company>1285</teltsi_Company>
+            <NSP_GroupName>endDestinationChange</NSP_GroupName>
+            <NetworkSpecificParameter name="oldLocation" value="CH01950"/>
+            <NetworkSpecificParameter name="newLocation" value="CH02000"/>
+        </General_JP_Information_NSP>
+
+        <!--  Will receive JP update for Station 18 (Vorzeitiger Wendepunkt) -->
+
+
+    </General_JP_Information>
+</JourneyProfile>

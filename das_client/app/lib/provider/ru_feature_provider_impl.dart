@@ -4,17 +4,17 @@ import 'package:sfera/component.dart';
 
 class RuFeatureProviderImpl implements RuFeatureProvider {
   RuFeatureProviderImpl({
-    required SferaRemoteRepo sferaRemoteRepo,
+    required SferaRepository sferaRepo,
     required SettingsRepository settingsRepository,
-  }) : _sferaRemoteRepo = sferaRemoteRepo,
+  }) : _sferaRepo = sferaRepo,
        _settingsRepository = settingsRepository;
 
-  final SferaRemoteRepo _sferaRemoteRepo;
+  final SferaRepository _sferaRepo;
   final SettingsRepository _settingsRepository;
 
   @override
   Future<bool> isRuFeatureEnabled(RuFeatureKeys featureKey) async {
-    final activeTrain = _sferaRemoteRepo.connectedTrain;
+    final activeTrain = _sferaRepo.connectedTrain;
     if (activeTrain == null) return false;
 
     return await _settingsRepository.isRuFeatureEnabled(featureKey, activeTrain.ru.companyCode);

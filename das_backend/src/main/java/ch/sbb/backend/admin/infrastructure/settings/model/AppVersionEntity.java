@@ -1,6 +1,8 @@
 package ch.sbb.backend.admin.infrastructure.settings.model;
 
+import ch.sbb.backend.admin.application.settings.model.request.AppVersionRequest;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -12,6 +14,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Table(name = "app_version")
 @Entity
@@ -19,6 +24,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class AppVersionEntity {
 
     @Id
@@ -28,7 +34,18 @@ public class AppVersionEntity {
     private String version;
     private Boolean minimalVersion;
     private LocalDate expiryDate;
+
+    @LastModifiedDate
     private LocalDateTime lastModifiedAt;
+
+    @LastModifiedBy
     private String lastModifiedBy;
 
+    public static AppVersionEntity from(AppVersionRequest createRequest) {
+        AppVersionEntity entity = new AppVersionEntity();
+        entity.setVersion(createRequest.version());
+        entity.setMinimalVersion(createRequest.minimalVersion());
+        entity.setExpiryDate(createRequest.expiryDate());
+        return entity;
+    }
 }

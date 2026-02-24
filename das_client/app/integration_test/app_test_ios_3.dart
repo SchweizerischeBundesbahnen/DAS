@@ -6,6 +6,7 @@ import 'package:logging/logging.dart';
 import 'test/automatic_advancement_test.dart' as automatic_advancement_tests;
 import 'test/journey_table_advised_speeds_test.dart' as journey_table_adl_tests;
 import 'test/navigation_test.dart' as navigation_tests;
+import 'test/short_term_changes_test.dart' as short_term_changes_test;
 import 'test/train_search_test.dart' as train_search_tests;
 
 late AppLocalizations l10n;
@@ -19,5 +20,6 @@ void main() {
   journey_table_adl_tests.main();
   navigation_tests.main();
   train_search_tests.main();
+  short_term_changes_test.main();
   automatic_advancement_tests.main();
 }

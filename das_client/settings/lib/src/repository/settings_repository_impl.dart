@@ -1,14 +1,17 @@
 import 'package:logging/logging.dart';
+import 'package:settings/component.dart';
 import 'package:settings/src/api/dto/logging_setting_dto.dart';
 import 'package:settings/src/api/settings_api_service.dart';
 import 'package:settings/src/data/local/ru_feature_database_service.dart';
-import 'package:settings/src/model/ru_feature_keys.dart';
-import 'package:settings/src/repository/settings_repository.dart';
 
 final _log = Logger('SettingsRepositoryImpl');
 
 class SettingsRepositoryImpl implements SettingsRepository {
-  SettingsRepositoryImpl({required this.apiService, required this.databaseService}) {
+  SettingsRepositoryImpl({
+    required this.apiService,
+    required this.databaseService,
+    this.onAwsCredentialsChanged,
+  }) {
     init();
   }
 
@@ -16,6 +19,7 @@ class SettingsRepositoryImpl implements SettingsRepository {
 
   final SettingsApiService apiService;
   final RuFeatureDatabaseService databaseService;
+  final AwsCredentialsChanged? onAwsCredentialsChanged;
 
   LoggingSettingDto? _loggingSetting;
 
@@ -34,6 +38,18 @@ class SettingsRepositoryImpl implements SettingsRepository {
         _loggingSetting = settings.logging;
         await databaseService.saveRuFeatures(settings.ruFeatures);
         _log.info('Settings loaded successfully.');
+
+        if (onAwsCredentialsChanged != null) {
+          final preload = settings.preload;
+          onAwsCredentialsChanged!(
+            AwsConfiguration(
+              bucketUrl: preload.bucketUrl,
+              accessKey: preload.accessKey,
+              accessSecret: preload.accessSecret,
+            ),
+          );
+        }
+
         return true;
       }
       _log.warning('Received empty settings');

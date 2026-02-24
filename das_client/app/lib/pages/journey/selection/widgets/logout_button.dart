@@ -13,7 +13,7 @@ class LogoutButton extends StatelessWidget {
     icon: const Icon(SBBIcons.exit_small),
     onPressed: () {
       DI.get<LoginViewModel>().logout();
-      context.router.replace(const LoginRoute());
+      context.router.replace(LoginRoute());
     },
   );
 }

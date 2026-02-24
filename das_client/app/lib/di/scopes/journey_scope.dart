@@ -1,6 +1,7 @@
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_table_advancement_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/punctuality_view_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
@@ -24,6 +25,7 @@ class JourneyScope extends DIScope {
     getIt.registerJourneyNavigationViewModel();
     getIt.registerJourneySelectionViewModel();
     getIt.registerJourneyTableViewModel();
+    getIt.registerNotificationPriorityViewModel();
     getIt.registerJourneySettingsViewModel();
     getIt.registerPunctualityViewModel();
     getIt.registerJourneyPositionViewModel();
@@ -50,7 +52,7 @@ extension JourneyScopeExtension on GetIt {
     factoryFunc() {
       _log.fine('Register JourneySelectionViewModel');
       return JourneySelectionViewModel(
-        sferaRemoteRepo: DI.get(),
+        sferaRepo: DI.get(),
         onJourneySelected: DI.get<JourneyNavigationViewModel>().push,
       );
     }
@@ -63,7 +65,14 @@ extension JourneyScopeExtension on GetIt {
 
   void registerJourneyTableViewModel() {
     registerSingleton(
-      JourneyTableViewModel(sferaRemoteRepo: DI.get()),
+      JourneyTableViewModel(sferaRepo: DI.get()),
+      dispose: (vm) => vm.dispose(),
+    );
+  }
+
+  void registerNotificationPriorityViewModel() {
+    registerSingleton(
+      NotificationPriorityQueueViewModel(),
       dispose: (vm) => vm.dispose(),
     );
   }
@@ -94,11 +103,12 @@ extension JourneyScopeExtension on GetIt {
   void registerJourneyTableAdvancementViewModel() {
     final journeyTableVM = DI.get<JourneyTableViewModel>();
     final settingsVM = DI.get<JourneySettingsViewModel>();
+    final positionVM = DI.get<JourneyPositionViewModel>();
     final vm = JourneyTableAdvancementViewModel(
       journeyTableViewModel: journeyTableVM,
-      positionStream: DI.get<JourneyPositionViewModel>().model,
+      positionStream: positionVM.model,
       scrollController: journeyTableVM.journeyTableScrollController,
-      onAdvancementModeChanged: journeyTableVM.updateZenViewMode,
+      onAdvancementModeChanged: [journeyTableVM.updateZenViewMode, positionVM.onAdvancementModeChanged],
     );
     settingsVM.registerOnBreakSeriesUpdated(vm.scrollToCurrentPositionIfNotPaused);
     registerSingleton<JourneyTableAdvancementViewModel>(
@@ -112,7 +122,13 @@ extension JourneyScopeExtension on GetIt {
 
   void registerWarnAppViewModel() {
     registerSingleton(
-      WarnAppViewModel(flavor: DI.get(), sferaRemoteRepo: DI.get(), warnappRepo: DI.get(), ruFeatureProvider: DI.get()),
+      WarnAppViewModel(
+        flavor: DI.get(),
+        sferaRepo: DI.get(),
+        warnappRepo: DI.get(),
+        ruFeatureProvider: DI.get(),
+        notificationViewModel: DI.get(),
+      ),
       dispose: (vm) => vm.dispose(),
     );
   }

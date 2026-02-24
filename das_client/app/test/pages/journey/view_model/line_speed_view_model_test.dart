@@ -22,15 +22,16 @@ void main() {
   late MockJourneyTableViewModel mockJourneyTableViewModel;
   late MockJourneySettingsViewModel mockJourneySettingsViewModel;
   late BehaviorSubject<Journey?> journeySubject;
-  var journeySettings = JourneySettings();
 
+  final initialBreakSeries = BreakSeries(trainSeries: .R, breakSeries: 120);
+  var journeySettings = JourneySettings(initialBreakSeries: initialBreakSeries);
   final journey = Journey(
     metadata: Metadata(
       availableBreakSeries: {
         BreakSeries(trainSeries: .R, breakSeries: 120),
         BreakSeries(trainSeries: .A, breakSeries: 100),
       },
-      breakSeries: BreakSeries(trainSeries: .R, breakSeries: 120),
+      breakSeries: initialBreakSeries,
       lineSpeeds: SplayTreeMap.from({
         0: [
           TrainSeriesSpeed(
@@ -61,17 +62,17 @@ void main() {
       }),
     ),
     data: [
-      ServicePoint(name: 'A', abbreviation: '', order: 0, kilometre: []),
-      ServicePoint(name: 'B', abbreviation: '', order: 5, kilometre: []),
-      ServicePoint(name: 'C', abbreviation: '', order: 10, kilometre: []),
-      ServicePoint(name: 'D', abbreviation: '', order: 15, kilometre: []),
-      ServicePoint(name: 'E', abbreviation: '', order: 20, kilometre: []),
-      ServicePoint(name: 'F', abbreviation: '', order: 30, kilometre: []),
+      ServicePoint(name: 'A', abbreviation: '', locationCode: '', order: 0, kilometre: []),
+      ServicePoint(name: 'B', abbreviation: '', locationCode: '', order: 5, kilometre: []),
+      ServicePoint(name: 'C', abbreviation: '', locationCode: '', order: 10, kilometre: []),
+      ServicePoint(name: 'D', abbreviation: '', locationCode: '', order: 15, kilometre: []),
+      ServicePoint(name: 'E', abbreviation: '', locationCode: '', order: 20, kilometre: []),
+      ServicePoint(name: 'F', abbreviation: '', locationCode: '', order: 30, kilometre: []),
     ],
   );
 
   setUp(() {
-    journeySettings = JourneySettings();
+    journeySettings = JourneySettings(initialBreakSeries: initialBreakSeries);
     mockJourneyTableViewModel = MockJourneyTableViewModel();
     mockJourneySettingsViewModel = MockJourneySettingsViewModel();
     journeySubject = BehaviorSubject<Journey?>();

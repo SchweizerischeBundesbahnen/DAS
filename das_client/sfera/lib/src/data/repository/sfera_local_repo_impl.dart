@@ -1,13 +1,20 @@
+import 'package:logging/logging.dart';
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
+import 'package:sfera/src/data/local/drift_local_database_service.dart';
 import 'package:sfera/src/data/local/sfera_local_database_service.dart';
 import 'package:sfera/src/data/local/tables/journey_profile_table.dart';
 import 'package:sfera/src/data/local/tables/segment_profile_table.dart';
 import 'package:sfera/src/data/local/tables/train_characteristics_table.dart';
+import 'package:sfera/src/data/mapper/datetime_x.dart';
 import 'package:sfera/src/data/mapper/sfera_model_mapper.dart';
+import 'package:sfera/src/data/parser/sfera_reply_parser.dart';
 import 'package:sfera/src/data/repository/sfera_local_repo.dart';
 import 'package:sfera/src/model/journey/journey.dart';
+import 'package:sfera/src/model/sfera_db_metrics.dart';
+
+final _log = Logger('SferaLocalRepoImpl');
 
 class SferaLocalRepoImpl implements SferaLocalRepo {
   const SferaLocalRepoImpl({required SferaLocalDatabaseService localService}) : _databaseService = localService;
@@ -16,22 +23,35 @@ class SferaLocalRepoImpl implements SferaLocalRepo {
 
   @override
   Stream<Journey?> journeyStream({required String company, required String trainNumber, required DateTime startDate}) {
-    final date = DateTime(startDate.year, startDate.month, startDate.day);
-    return _databaseService.observeJourneyProfile(company, trainNumber, date).asyncMap((entity) async {
-      if (entity == null) {
-        return Future.value(null);
-      }
+    return _databaseService
+        .observeJourneyProfile(company, trainNumber, startDate.floorToDay())
+        .asyncMap((entity) => _loadAndMapJourney(entity));
+  }
 
-      final journeyProfile = entity.toDomain();
-      final segmentProfiles = await _loadSegmentProfiles(journeyProfile);
-      final trainCharacteristics = await _loadTrainCharacteristics(journeyProfile);
+  @override
+  Future<Journey?> getJourney({
+    required String company,
+    required String trainNumber,
+    required DateTime startDate,
+  }) async {
+    final entity = await _databaseService.findJourneyProfile(company, trainNumber, startDate.floorToDay());
+    return _loadAndMapJourney(entity);
+  }
 
-      return SferaModelMapper.mapToJourney(
-        journeyProfile: journeyProfile,
-        segmentProfiles: segmentProfiles,
-        trainCharacteristics: trainCharacteristics,
-      );
-    });
+  Future<Journey?> _loadAndMapJourney(JourneyProfileTableData? entity) async {
+    if (entity == null) {
+      return Future.value(null);
+    }
+
+    final journeyProfile = entity.toDomain();
+    final segmentProfiles = await _loadSegmentProfiles(journeyProfile);
+    final trainCharacteristics = await _loadTrainCharacteristics(journeyProfile);
+
+    return SferaModelMapper.mapToJourney(
+      journeyProfile: journeyProfile,
+      segmentProfiles: segmentProfiles,
+      trainCharacteristics: trainCharacteristics,
+    );
   }
 
   Future<List<TrainCharacteristicsDto>> _loadTrainCharacteristics(JourneyProfileDto journeyProfile) async {
@@ -62,5 +82,42 @@ class SferaLocalRepoImpl implements SferaLocalRepo {
       }
     }
     return segmentProfiles;
+  }
+
+  @override
+  Future<int> cleanup() {
+    _log.info('Cleaning up local database...');
+    return _databaseService.cleanup();
+  }
+
+  @override
+  Future<bool> saveData(String data) async {
+    try {
+      final sferaElement = SferaReplyParser.parse(data);
+      if (!sferaElement.validate()) {
+        _log.warning('Parsed data is invalid: ${sferaElement.runtimeType}');
+        return false;
+      }
+
+      if (sferaElement is JourneyProfileDto) {
+        await _databaseService.saveJourneyProfile(sferaElement);
+      } else if (sferaElement is SegmentProfileDto) {
+        await _databaseService.saveSegmentProfile(sferaElement);
+      } else if (sferaElement is TrainCharacteristicsDto) {
+        await _databaseService.saveTrainCharacteristics(sferaElement);
+      } else {
+        _log.warning('Parsed data is of unsupported type: ${sferaElement.runtimeType}');
+        return false;
+      }
+      return true;
+    } catch (e, s) {
+      _log.severe('Failed to save data', e, s);
+      return false;
+    }
+  }
+
+  @override
+  Future<SferaDbMetrics> getMetrics() {
+    return _databaseService.getMetrics();
   }
 }

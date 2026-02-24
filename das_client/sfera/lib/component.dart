@@ -1,3 +1,4 @@
+import 'package:connectivity_x/component.dart';
 import 'package:http_x/component.dart';
 import 'package:mqtt/component.dart';
 import 'package:sfera/src/data/api/sfera_auth_service.dart';
@@ -5,16 +6,16 @@ import 'package:sfera/src/data/api/sfera_auth_service_impl.dart';
 import 'package:sfera/src/data/local/drift_local_database_service.dart';
 import 'package:sfera/src/data/repository/sfera_local_repo.dart';
 import 'package:sfera/src/data/repository/sfera_local_repo_impl.dart';
-import 'package:sfera/src/data/repository/sfera_remote_repo.dart';
-import 'package:sfera/src/data/repository/sfera_remote_repo_impl.dart';
+import 'package:sfera/src/data/repository/sfera_repository.dart';
+import 'package:sfera/src/data/repository/sfera_repository_impl.dart';
 import 'package:sfera/src/provider/sfera_auth_provider.dart';
 
 export 'package:sfera/src/data/api/sfera_auth_service.dart';
 export 'package:sfera/src/data/api/sfera_error.dart';
 export 'package:sfera/src/data/parser/sfera_reply_parser.dart';
 export 'package:sfera/src/data/repository/sfera_local_repo.dart';
-export 'package:sfera/src/data/repository/sfera_remote_repo.dart';
 export 'package:sfera/src/data/repository/sfera_remote_repo_state.dart';
+export 'package:sfera/src/data/repository/sfera_repository.dart';
 export 'package:sfera/src/model/journey/additional_speed_restriction.dart';
 export 'package:sfera/src/model/journey/additional_speed_restriction_data.dart';
 export 'package:sfera/src/model/journey/advised_speed_segment.dart';
@@ -49,10 +50,12 @@ export 'package:sfera/src/model/journey/level_crossing_group.dart';
 export 'package:sfera/src/model/journey/line_foot_note.dart';
 export 'package:sfera/src/model/journey/local_regulation_section.dart';
 export 'package:sfera/src/model/journey/metadata.dart';
+export 'package:sfera/src/model/journey/modification_type.dart';
 export 'package:sfera/src/model/journey/op_foot_note.dart';
 export 'package:sfera/src/model/journey/protection_section.dart';
 export 'package:sfera/src/model/journey/segment.dart';
 export 'package:sfera/src/model/journey/service_point.dart';
+export 'package:sfera/src/model/journey/short_term_change.dart';
 export 'package:sfera/src/model/journey/shunting_movement.dart';
 export 'package:sfera/src/model/journey/signal.dart';
 export 'package:sfera/src/model/journey/signaled_position.dart';
@@ -63,6 +66,7 @@ export 'package:sfera/src/model/journey/station_sign.dart';
 export 'package:sfera/src/model/journey/supervised_level_crossing_group.dart';
 export 'package:sfera/src/model/journey/track_equipment_segment.dart';
 export 'package:sfera/src/model/journey/track_foot_note.dart';
+export 'package:sfera/src/model/journey/train_driver_turnover.dart';
 export 'package:sfera/src/model/journey/train_series.dart';
 export 'package:sfera/src/model/journey/train_series_speed.dart';
 export 'package:sfera/src/model/journey/tram_area.dart';
@@ -73,6 +77,7 @@ export 'package:sfera/src/model/journey/warnapp_event.dart';
 export 'package:sfera/src/model/journey/whistles.dart';
 export 'package:sfera/src/model/localized_string.dart';
 export 'package:sfera/src/model/ru.dart';
+export 'package:sfera/src/model/sfera_db_metrics.dart';
 export 'package:sfera/src/model/train_identification.dart';
 export 'package:sfera/src/provider/sfera_auth_provider.dart';
 
@@ -86,16 +91,20 @@ class SferaComponent {
     return SferaAuthServiceImpl(httpClient: httpClient, tokenExchangeUrl: tokenExchangeUrl);
   }
 
-  static SferaRemoteRepo createSferaRemoteRepo({
+  static SferaRepository createSferaRepository({
     required MqttService mqttService,
     required SferaAuthProvider sferaAuthProvider,
     required String deviceId,
+    required SferaLocalRepo localRepo,
+    required ConnectivityManager connectivityManager,
   }) {
     final localDatabaseService = DriftLocalDatabaseService.instance;
-    return SferaRemoteRepoImpl(
+    return SferaRepoImpl(
       mqttService: mqttService,
       localService: localDatabaseService,
       authProvider: sferaAuthProvider,
+      localRepo: localRepo,
+      connectivityManager: connectivityManager,
       deviceId: deviceId,
     );
   }

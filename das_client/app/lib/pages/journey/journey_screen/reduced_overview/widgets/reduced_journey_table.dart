@@ -105,7 +105,7 @@ class ReducedJourneyTable extends StatelessWidget {
     return [
       DASTableColumn(
         id: ColumnDefinition.time.index,
-        width: 100.0,
+        width: 110.0,
         child: Text(context.l10n.p_journey_table_time_label_planned),
       ),
       DASTableColumn(id: ColumnDefinition.route.index, width: 48.0), // route column
@@ -121,9 +121,10 @@ class ReducedJourneyTable extends StatelessWidget {
       DASTableColumn(
         id: ColumnDefinition.localSpeed.index,
         width: 100.0,
-        border: BorderDirectional(
-          bottom: BorderSide(color: ThemeUtil.getDASTableBorderColor(context), width: 1.0),
-          end: BorderSide(color: ThemeUtil.getDASTableBorderColor(context), width: 2.0),
+        decoration: DASTableColumnDecoration(
+          border: Border(
+            right: BorderSide(color: ThemeUtil.getDASTableBorderColor(context), width: 2.0),
+          ),
         ),
       ),
       DASTableColumn(

@@ -6,6 +6,8 @@ import 'package:logging/logging.dart';
 import 'test/journey_table_break_series_test.dart' as journey_table_break_series_tests;
 import 'test/journey_table_calculated_speed_test.dart' as journey_table_calculated_speed_tests;
 import 'test/journey_table_track_equipment_test.dart' as journey_table_track_equipment_tests;
+import 'test/preload_test.dart' as preload_test;
+import 'test/profile_test.dart' as profile_test;
 import 'test/settings_test.dart' as settings_test;
 import 'test/warnapp_test.dart' as warnapp_tests;
 
@@ -17,9 +19,12 @@ void main() {
   Logger.root.level = Level.FINE;
   Logger.root.onRecord.listen(LogPrinter(appName: 'DAS IntegrationTests').call);
 
+  profile_test.main();
+  preload_test.main();
   journey_table_calculated_speed_tests.main();
   settings_test.main();
   warnapp_tests.main();
   journey_table_break_series_tests.main();
+  journey_table_track_equipment_tests.main();
   journey_table_track_equipment_tests.main();
 }

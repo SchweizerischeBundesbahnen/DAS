@@ -1,4 +1,4 @@
-import 'package:app/pages/journey/journey_screen/widgets/notification/replacement_series_notification.dart';
+import 'package:app/pages/journey/journey_screen/notification/widgets/replacement_series_notification.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../app_test.dart';
@@ -57,7 +57,7 @@ void main() {
     // Switch back to N Series which has a replacement series
     await selectBreakSeries(tester, breakSeries: 'N160');
     replacementSeriesFinder.reset();
-    expect(replacementSeriesFinder, findsOneWidget);
+    await waitUntilExists(tester, replacementSeriesFinder);
 
     await disconnect(tester);
   });

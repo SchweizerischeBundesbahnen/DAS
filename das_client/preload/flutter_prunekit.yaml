@@ -1,0 +1,5 @@
+ignore_methods:
+  - 'toJson'
+
+exclude:
+  - '**/*_table.dart'

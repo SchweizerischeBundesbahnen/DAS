@@ -3,12 +3,14 @@ import 'dart:math';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/animation.dart';
 import 'package:app/widgets/stickyheader/sticky_header.dart';
-import 'package:app/widgets/table/das_row_controller_wrapper.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:app/widgets/table/das_table_column.dart';
-import 'package:app/widgets/table/das_table_row.dart';
 import 'package:app/widgets/table/das_table_theme.dart';
+import 'package:app/widgets/table/row/das_row_controller_wrapper.dart';
+import 'package:app/widgets/table/row/das_table_row.dart';
+import 'package:app/widgets/table/row/das_table_row_decoration.dart';
 import 'package:app/widgets/table/scrollable_align.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -19,6 +21,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 class DASTable extends StatefulWidget {
   static const Key tableKey = Key('dasTable');
   static const Key rowKey = Key('dasTableRow');
+  static const Key strikethroughRowKey = Key('strikethroughRow');
   static const Key columnHeaderKey = Key('dasTableColumnHeader');
   static const double headerRowHeight = 40.0;
 
@@ -104,7 +107,10 @@ class _DASTableState extends State<DASTable> {
       final oldRow = oldWidget.rows[i];
       if (oldRow.identifier != null && widget.rows[i].identifier != oldRow.identifier) {
         _animatedListKey.currentState!.removeItem(i, (_, animation) {
-          return SizeTransition(sizeFactor: animation, child: _dataRow(oldRow));
+          return SizeTransition(
+            sizeFactor: animation,
+            child: _dataRow(i, rows: oldWidget.rows),
+          );
         }, duration: Duration(milliseconds: _tableInsertRemoveAnimationDurationMs));
       }
     }
@@ -149,7 +155,7 @@ class _DASTableState extends State<DASTable> {
   Widget _stickyHeaderList() {
     return StickyHeader(
       footerBuilder: (context, index) => _footer(index),
-      headerBuilder: (context, index) => ClipRect(child: _dataRow(widget.rows[index], isSticky: true)),
+      headerBuilder: (context, index) => ClipRect(child: _dataRow(index, isSticky: true)),
       scrollController: widget.scrollController,
       rows: widget.rows,
       child: _animatedList(),
@@ -168,7 +174,7 @@ class _DASTableState extends State<DASTable> {
         ],
       ),
       child: ClipRect(
-        child: _dataRow(widget.rows[index], isSticky: true),
+        child: _dataRow(index, isSticky: true),
       ),
     );
   }
@@ -189,7 +195,7 @@ class _DASTableState extends State<DASTable> {
               return SizeTransition(
                 key: widget.rows[index].key,
                 sizeFactor: animation,
-                child: _dataRow(widget.rows[index]),
+                child: _dataRow(index),
               );
             },
           );
@@ -244,8 +250,8 @@ class _DASTableState extends State<DASTable> {
             child: Container(
               key: column.headerKey,
               decoration: BoxDecoration(
-                border: tableThemeData?.headingRowBorder ?? column.border,
-                color: column.color ?? tableThemeData?.headingRowColor,
+                border: tableThemeData?.headingRowBorder ?? column.decoration?.border,
+                color: column.decoration?.color ?? tableThemeData?.headingRowColor,
               ),
               padding: column.padding,
               child: column.child == null
@@ -269,36 +275,84 @@ class _DASTableState extends State<DASTable> {
     );
   }
 
-  Widget _dataRow(DASTableRow row, {bool isSticky = false}) {
+  Widget _dataRow(int idx, {bool isSticky = false, List<DASTableRow>? rows}) {
+    final row = rows != null ? rows[idx] : widget.rows[idx];
     if (row is! DASTableCellRow) {
       return KeyedSubtree(key: DASTable.rowKey, child: (row as DASTableWidgetRow).widget);
     }
-    return _CellRow(row: row, columns: widget.columns, isSticky: isSticky);
-  }
-}
-
-extension _TableBorderExtension on TableBorder {
-  BorderDirectional toBoxBorder({bool isLastCell = false}) {
-    return BorderDirectional(bottom: horizontalInside, end: isLastCell ? BorderSide.none : verticalInside);
+    return _CellRow(
+      rowIndex: idx,
+      row: row,
+      rowCount: (rows ?? widget.rows).length,
+      columns: widget.columns,
+      isSticky: isSticky,
+    );
   }
 }
 
 class _FixedHeightRow extends StatelessWidget {
-  const _FixedHeightRow({required this.height, required this.children});
+  const _FixedHeightRow({required this.height, required this.children, this.markAsDeleted = false});
 
   final double height;
   final List<Widget> children;
+  final bool markAsDeleted;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: height,
-      child: Row(
-        key: DASTable.rowKey,
-        crossAxisAlignment: .stretch,
-        children: children,
-      ),
+    return Stack(
+      key: DASTable.rowKey,
+      children: [
+        SizedBox(
+          height: height,
+          child: Row(
+            crossAxisAlignment: .stretch,
+            children: children,
+          ),
+        ),
+        if (markAsDeleted)
+          Positioned.fill(
+            key: DASTable.strikethroughRowKey,
+            child: DottedBorder(
+              options: RectDottedBorderOptions(
+                dashPattern: [12, 8],
+                strokeWidth: 2,
+                color: ThemeUtil.getColor(context, SBBColors.graphite, SBBColors.smoke),
+                padding: .zero,
+                strokeCap: .square,
+              ),
+              child: Container(
+                color: ThemeUtil.getDASTableColor(context).withAlpha((255.0 * 0.5).round()),
+                width: double.infinity,
+                height: double.infinity,
+                child: CustomPaint(
+                  painter: _StrikethroughPainter(ThemeUtil.getColor(context, SBBColors.granite, SBBColors.graphite)),
+                ),
+              ),
+            ),
+          ),
+      ],
     );
+  }
+}
+
+class _StrikethroughPainter extends CustomPainter {
+  _StrikethroughPainter(this.color);
+
+  final Color color;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = color
+      ..strokeWidth = 1.0;
+
+    final y = size.height / 2;
+    canvas.drawLine(Offset(SBBSpacing.xxSmall, y), Offset(size.width - SBBSpacing.xxSmall, y), paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
   }
 }
 
@@ -327,8 +381,16 @@ class _TableCellWrapper extends StatelessWidget {
 }
 
 class _CellRow extends StatefulWidget {
-  const _CellRow({required this.row, required this.columns, this.isSticky = false});
+  const _CellRow({
+    required this.rowIndex,
+    required this.rowCount,
+    required this.row,
+    required this.columns,
+    this.isSticky = false,
+  });
 
+  final int rowIndex;
+  final int rowCount;
   final DASTableCellRow row;
   final List<DASTableColumn> columns;
   final bool isSticky;
@@ -351,10 +413,11 @@ class _CellRowState extends State<_CellRow> {
         rowKey: widget.row.key,
         child: _FixedHeightRow(
           height: widget.row.height,
+          markAsDeleted: widget.row.markAsDeleted,
           children: List.generate(widget.columns.length, (index) {
             final column = widget.columns[index];
             final cell = widget.row.cells[column.id] ?? DASTableCell.empty();
-            return _dataCell(cell, column, widget.row, isLast: widget.columns.length - 1 == index);
+            return _dataCell(cell, column, widget.row, _cellPositionInTable(cellIndex: index));
           }),
         ),
       ),
@@ -397,13 +460,34 @@ class _CellRowState extends State<_CellRow> {
     );
   }
 
-  Widget _dataCell(DASTableCell cell, DASTableColumn column, DASTableCellRow row, {isLast = false}) {
+  Widget _dataCell(
+    DASTableCell cell,
+    DASTableColumn column,
+    DASTableCellRow row,
+    Alignment cellPositionInTable,
+  ) {
     return Builder(
       builder: (context) {
         final tableThemeData = DASTableTheme.of(context)?.data;
         final effectiveAlignment = cell.alignment ?? column.alignment;
-        final BoxBorder? cellBorder =
-            cell.border ?? column.border ?? tableThemeData?.tableBorder?.toBoxBorder(isLastCell: isLast);
+        Border? effectiveBorder;
+
+        // markAsDeleted border is painted stacked on top of row
+        if (!row.markAsDeleted) {
+          final themeBorder = tableThemeData?.tableBorder?.toBorder(cellPositionInTable: cellPositionInTable);
+          final columnBorder = column.decoration?.toBorder(cellPositionInTable: cellPositionInTable);
+          final rowBorder = row.decoration?.toBorder(cellPositionInTable: cellPositionInTable);
+          final cellBorder = cell.decoration?.border;
+
+          // more specific overrides less specific
+          effectiveBorder = themeBorder;
+          if (columnBorder != null) effectiveBorder = columnBorder.override(effectiveBorder);
+          if (rowBorder != null) effectiveBorder = rowBorder.override(effectiveBorder);
+          if (cellBorder != null) effectiveBorder = cellBorder.override(effectiveBorder);
+        }
+        final effectiveBackgroundColor =
+            cell.decoration?.color ?? row.decoration?.color ?? column.decoration?.color ?? tableThemeData?.dataRowColor;
+
         return _TableCellWrapper(
           expanded: column.expanded,
           width: column.width,
@@ -411,12 +495,12 @@ class _CellRowState extends State<_CellRow> {
             onTap: cell.onTap,
             child: Container(
               decoration: BoxDecoration(
-                border: cellBorder,
-                color: cell.color ?? row.color ?? column.color ?? tableThemeData?.dataRowColor,
+                border: effectiveBorder,
+                color: effectiveBackgroundColor,
               ),
               padding: _adjustPaddingToBorder(
                 cell.padding ?? column.padding ?? .all(SBBSpacing.xSmall),
-                cellBorder,
+                effectiveBorder,
               ),
               clipBehavior: cell.clipBehavior,
               child: DefaultTextStyle(
@@ -445,6 +529,84 @@ class _CellRowState extends State<_CellRow> {
       max(padding.top - border.top.width, 0),
       max(padding.right - borderSideEnd.width, 0),
       max(padding.bottom - border.bottom.width, 0),
+    );
+  }
+
+  // Returns the relative position of a cell in the DASTable for both x and y coordinates normalized to [-1, 1].
+  //
+  // This means that for a table with three columns and rows, the 'middle' cell in
+  // the second row and the second column will return (0, 0).
+  //
+  // This calculation allows drawing borders depending on where the cell in the table is.
+  Alignment _cellPositionInTable({required int cellIndex}) {
+    final columnCount = widget.columns.length;
+    final rowCount = widget.rowCount;
+    if (columnCount <= 1 && rowCount <= 1) return Alignment.center;
+    final double x;
+    if (columnCount <= 1) {
+      x = 0.0;
+    } else {
+      x = (cellIndex / (columnCount - 1)) * 2 - 1;
+    }
+    final double y;
+    if (rowCount <= 1) {
+      y = 0.0;
+    } else {
+      y = (widget.rowIndex / (rowCount - 1)) * 2 - 1;
+    }
+    return Alignment(x, y);
+  }
+}
+
+extension _TableBorderExtension on TableBorder {
+  Border toBorder({required Alignment cellPositionInTable}) {
+    return Border(
+      bottom: horizontalInside,
+      right: cellPositionInTable.x != 1 ? verticalInside : BorderSide.none,
+    );
+  }
+}
+
+extension _ColumnDecorationExtension on DASTableColumnDecoration {
+  Border? toBorder({required Alignment cellPositionInTable}) {
+    return border?.copyWith(
+      top: cellPositionInTable.y == -1 ? border?.top : BorderSide.none,
+      bottom: cellPositionInTable.y == 1 ? border?.bottom : BorderSide.none,
+    );
+  }
+}
+
+extension _RowDecorationExtension on DASTableRowDecoration {
+  Border? toBorder({required Alignment cellPositionInTable}) {
+    return border?.copyWith(
+      left: cellPositionInTable.x == -1 ? border?.left : BorderSide.none,
+      right: cellPositionInTable.x == 1 ? border?.right : BorderSide.none,
+    );
+  }
+}
+
+extension _BorderExtension on Border {
+  Border copyWith({
+    BorderSide? top,
+    BorderSide? right,
+    BorderSide? left,
+    BorderSide? bottom,
+  }) {
+    return Border(
+      top: top ?? this.top,
+      right: right ?? this.right,
+      left: left ?? this.left,
+      bottom: bottom ?? this.bottom,
+    );
+  }
+
+  Border override(Border? other) {
+    if (other == null) return this;
+    return other.copyWith(
+      left: left != BorderSide.none ? left : null,
+      top: top != BorderSide.none ? top : null,
+      right: right != BorderSide.none ? right : null,
+      bottom: bottom != BorderSide.none ? bottom : null,
     );
   }
 }

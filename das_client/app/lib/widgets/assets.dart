@@ -31,7 +31,7 @@ class AppAssets {
   static const iconNoEntryExitSignal = '$_iconsDir/icon_no_entry_exit_signal.svg';
   static const iconNoEntrySignal = '$_iconsDir/icon_no_entry_signal.svg';
   static const iconNoExitSignal = '$_iconsDir/icon_no_exit_signal.svg';
-  static const iconOpenLevelCrossingBeforeExitSignal = '$_iconsDir/icon_open_level_crossing_before_exit_signal.svg';
+  static const iconOpenLevelCrossing = '$_iconsDir/icon_open_level_crossing.svg';
   static const iconReducedSpeed = '$_iconsDir/icon_reduced_speed.svg';
   static const iconAdvisedSpeedFixedTime = '$_iconsDir/icon_advised_speed_fixed_time.svg';
   static const iconAdvisedSpeedFollowTrain = '$_iconsDir/icon_advised_speed_follow_train.svg';
@@ -42,6 +42,10 @@ class AppAssets {
   static const iconSimZug = '$_iconsDir/icon_sim_zug.svg';
   static const iconSignExclamationPoint = '$_iconsDir/icon_sign_exclamation_point.svg';
   static const iconCarCarrier = '$_iconsDir/icon_car_carrier.svg';
+  static const iconModificationIndicator = '$_iconsDir/icon_modification_indicator.svg';
+  static const iconTabIndicatorExclamationTurquoise = '$_iconsDir/icon_tab_indicator_exclamation_turquoise.svg';
+  static const iconUturnTurquoise = '$_iconsDir/icon_uturn_turquoise.svg';
+  static const iconTrainDriverTurnover = '$_iconsDir/icon_train_driver_turnover.svg';
 
   // others
   static const imageTypeNSignalStop = '$_othersDir/type_n_signal_stop.svg';

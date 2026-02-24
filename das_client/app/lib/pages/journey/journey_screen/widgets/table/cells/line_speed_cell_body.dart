@@ -2,8 +2,8 @@ import 'package:app/pages/journey/journey_screen/view_model/line_speed_view_mode
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/show_speed_behaviour.dart';
 import 'package:app/pages/journey/view_model/model/resolved_train_series_speed.dart';
 import 'package:app/widgets/speed_display.dart';
-import 'package:app/widgets/table/das_row_controller_wrapper.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
+import 'package:app/widgets/table/row/das_row_controller_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

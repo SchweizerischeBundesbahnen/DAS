@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/journey_advancement_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/punctuality_model.dart';
 import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
@@ -143,6 +144,7 @@ void main() {
 
       // ACT
       testAsync.run((_) {
+        testee.onAdvancementModeChanged(Manual());
         testee.setManualPosition(zeroSignal);
         _processStreamInFakeAsync(testAsync);
       });
@@ -215,8 +217,22 @@ void main() {
 
     test('currentPosition_afterSetManualPositionThenJourneyUpdate_movesToJourneyUpdatePosition', () {
       // ARRANGE
-      final aServicePoint = ServicePoint(name: 'a', abbreviation: '', order: 20, kilometre: [], isStop: true);
-      final bServicePoint = ServicePoint(name: 'b', abbreviation: '', order: 25, kilometre: [], isStop: true);
+      final aServicePoint = ServicePoint(
+        name: 'a',
+        abbreviation: '',
+        locationCode: '',
+        order: 20,
+        kilometre: [],
+        isStop: true,
+      );
+      final bServicePoint = ServicePoint(
+        name: 'b',
+        abbreviation: '',
+        locationCode: '',
+        order: 25,
+        kilometre: [],
+        isStop: true,
+      );
       testAsync.run((_) {
         rxMockJourney.add(
           Journey(
@@ -225,6 +241,7 @@ void main() {
           ),
         );
         _processStreamInFakeAsync(testAsync);
+        testee.onAdvancementModeChanged(Manual());
         testee.setManualPosition(aServicePoint);
       });
       _processStreamInFakeAsync(testAsync);
@@ -232,6 +249,7 @@ void main() {
 
       // ACT
       testAsync.run((_) {
+        testee.onAdvancementModeChanged(Automatic());
         rxMockJourney.add(
           Journey(
             metadata: Metadata(signaledPosition: SignaledPosition(order: 25)),
@@ -254,7 +272,7 @@ void main() {
     group('timed service point advancements', () {
       test('currentPosition_whenHasNoPunctuality_thenReturnsPointBeforeSP', () {
         // ARRANGE
-        final aServicePoint = ServicePoint(name: 'a', abbreviation: '', order: 16, kilometre: []);
+        final aServicePoint = ServicePoint(name: 'a', abbreviation: '', locationCode: '', order: 16, kilometre: []);
         testAsync.run((_) {
           rxMockJourney.add(
             Journey(
@@ -275,7 +293,7 @@ void main() {
 
       test('currentPosition_whenSPWithoutOperationalArrivalTime_thenReturnsPointBeforeSP', () {
         // ARRANGE
-        final aServicePoint = ServicePoint(name: 'a', abbreviation: '', order: 16, kilometre: []);
+        final aServicePoint = ServicePoint(name: 'a', abbreviation: '', locationCode: '', order: 16, kilometre: []);
         testAsync.run((_) {
           rxMockPunctuality.add(
             PunctualityModel.visible(
@@ -304,6 +322,7 @@ void main() {
         final aServicePoint = ServicePoint(
           name: 'a',
           abbreviation: '',
+          locationCode: '',
           order: 16,
           kilometre: [],
           arrivalDepartureTime: ArrivalDepartureTime(
@@ -353,6 +372,7 @@ void main() {
         final aServicePoint = ServicePoint(
           name: 'a',
           abbreviation: '',
+          locationCode: '',
           order: 16,
           kilometre: [],
           arrivalDepartureTime: ArrivalDepartureTime(
@@ -404,6 +424,7 @@ void main() {
         final aServicePoint = ServicePoint(
           name: 'a',
           abbreviation: '',
+          locationCode: '',
           order: 16,
           kilometre: [],
           arrivalDepartureTime: ArrivalDepartureTime(
@@ -556,7 +577,7 @@ void main() {
 
     test('previousServicePoint_whenNoServicePointBeforeCurrentPosition_isNull', () {
       // ARRANGE
-      final aServicePoint = ServicePoint(name: 'a', abbreviation: '', order: 10, kilometre: []);
+      final aServicePoint = ServicePoint(name: 'a', abbreviation: '', locationCode: '', order: 10, kilometre: []);
       testAsync.run((_) {
         rxMockJourney.add(
           Journey(
@@ -573,7 +594,7 @@ void main() {
 
     test('previousServicePoint_whenCurrentPositionIsServicePoint_thenIsThisServicePoint', () {
       // ARRANGE
-      final aServicePoint = ServicePoint(name: 'a', abbreviation: '', order: 10, kilometre: []);
+      final aServicePoint = ServicePoint(name: 'a', abbreviation: '', locationCode: '', order: 10, kilometre: []);
       testAsync.run((_) {
         rxMockJourney.add(
           Journey(
@@ -590,8 +611,8 @@ void main() {
 
     test('previousServicePoint_whenCurrentPositionIsAfterServicePoint_thenIsThisServicePoint', () {
       // ARRANGE
-      final aServicePoint = ServicePoint(name: 'a', abbreviation: '', order: 10, kilometre: []);
-      final bServicePoint = ServicePoint(name: 'b', abbreviation: '', order: 15, kilometre: []);
+      final aServicePoint = ServicePoint(name: 'a', abbreviation: '', locationCode: '', order: 10, kilometre: []);
+      final bServicePoint = ServicePoint(name: 'b', abbreviation: '', locationCode: '', order: 15, kilometre: []);
       testAsync.run((_) {
         rxMockJourney.add(
           Journey(
@@ -624,7 +645,7 @@ void main() {
 
     test('nextServicePoint_whenIsOnServicePointAndNoOther_thenIsNull', () {
       // ARRANGE
-      final aServicePoint = ServicePoint(name: 'a', abbreviation: '', order: 20, kilometre: []);
+      final aServicePoint = ServicePoint(name: 'a', abbreviation: '', locationCode: '', order: 20, kilometre: []);
       testAsync.run((_) {
         rxMockJourney.add(
           Journey(
@@ -641,8 +662,8 @@ void main() {
 
     test('nextServicePoint_whenIsOnServicePointAndHasOther_thenIsOther', () {
       // ARRANGE
-      final aServicePoint = ServicePoint(name: 'a', abbreviation: '', order: 20, kilometre: []);
-      final bServicePoint = ServicePoint(name: 'b', abbreviation: '', order: 25, kilometre: []);
+      final aServicePoint = ServicePoint(name: 'a', abbreviation: '', locationCode: '', order: 20, kilometre: []);
+      final bServicePoint = ServicePoint(name: 'b', abbreviation: '', locationCode: '', order: 25, kilometre: []);
       testAsync.run((_) {
         rxMockJourney.add(
           Journey(
@@ -675,7 +696,7 @@ void main() {
 
     test('previousStop_whenIsOnServicePointThatIsNoStop_thenIsNull', () {
       // ARRANGE
-      final aServicePoint = ServicePoint(name: 'a', abbreviation: '', order: 20, kilometre: []);
+      final aServicePoint = ServicePoint(name: 'a', abbreviation: '', locationCode: '', order: 20, kilometre: []);
       testAsync.run((_) {
         rxMockJourney.add(
           Journey(
@@ -692,7 +713,14 @@ void main() {
 
     test('previousStop_whenIsOnServicePointThatIsStopAndNoOther_thenIsThisServicePoint', () {
       // ARRANGE
-      final aServicePoint = ServicePoint(name: 'a', abbreviation: '', order: 20, kilometre: [], isStop: true);
+      final aServicePoint = ServicePoint(
+        name: 'a',
+        abbreviation: '',
+        locationCode: '',
+        order: 20,
+        kilometre: [],
+        isStop: true,
+      );
       testAsync.run((_) {
         rxMockJourney.add(
           Journey(
@@ -709,8 +737,22 @@ void main() {
 
     test('previousStop_whenIsOnServicePointAndFutureOtherThatIsStop_thenIsCurrentOne', () {
       // ARRANGE
-      final aServicePoint = ServicePoint(name: 'a', abbreviation: '', order: 20, kilometre: [], isStop: true);
-      final bServicePoint = ServicePoint(name: 'b', abbreviation: '', order: 25, kilometre: [], isStop: true);
+      final aServicePoint = ServicePoint(
+        name: 'a',
+        abbreviation: '',
+        locationCode: '',
+        order: 20,
+        kilometre: [],
+        isStop: true,
+      );
+      final bServicePoint = ServicePoint(
+        name: 'b',
+        abbreviation: '',
+        locationCode: '',
+        order: 25,
+        kilometre: [],
+        isStop: true,
+      );
       testAsync.run((_) {
         rxMockJourney.add(
           Journey(
@@ -727,8 +769,22 @@ void main() {
 
     test('previousStop_whenIsOnServicePointAndHasPastOtherThatIsStop_thenIsCurrentOne', () {
       // ARRANGE
-      final aServicePoint = ServicePoint(name: 'a', abbreviation: '', order: 20, kilometre: [], isStop: true);
-      final bServicePoint = ServicePoint(name: 'b', abbreviation: '', order: 25, kilometre: [], isStop: true);
+      final aServicePoint = ServicePoint(
+        name: 'a',
+        abbreviation: '',
+        locationCode: '',
+        order: 20,
+        kilometre: [],
+        isStop: true,
+      );
+      final bServicePoint = ServicePoint(
+        name: 'b',
+        abbreviation: '',
+        locationCode: '',
+        order: 25,
+        kilometre: [],
+        isStop: true,
+      );
       testAsync.run((_) {
         rxMockJourney.add(
           Journey(
@@ -761,7 +817,7 @@ void main() {
 
     test('nextStop_whenIsOnServicePointAndNoOther_thenIsNull', () {
       // ARRANGE
-      final aServicePoint = ServicePoint(name: 'a', abbreviation: '', order: 20, kilometre: []);
+      final aServicePoint = ServicePoint(name: 'a', abbreviation: '', locationCode: '', order: 20, kilometre: []);
       testAsync.run((_) {
         rxMockJourney.add(
           Journey(
@@ -778,8 +834,15 @@ void main() {
 
     test('nextStop_whenIsOnServicePointAndHasOtherThatIsNoStop_thenIsNull', () {
       // ARRANGE
-      final aServicePoint = ServicePoint(name: 'a', abbreviation: '', order: 20, kilometre: [], isStop: true);
-      final bServicePoint = ServicePoint(name: 'b', abbreviation: '', order: 25, kilometre: []);
+      final aServicePoint = ServicePoint(
+        name: 'a',
+        abbreviation: '',
+        locationCode: '',
+        order: 20,
+        kilometre: [],
+        isStop: true,
+      );
+      final bServicePoint = ServicePoint(name: 'b', abbreviation: '', locationCode: '', order: 25, kilometre: []);
       testAsync.run((_) {
         rxMockJourney.add(
           Journey(
@@ -796,8 +859,22 @@ void main() {
 
     test('nextStop_whenIsOnServicePointAndHasOtherThatIsStop_thenIsOther', () {
       // ARRANGE
-      final aServicePoint = ServicePoint(name: 'a', abbreviation: '', order: 20, kilometre: [], isStop: true);
-      final bServicePoint = ServicePoint(name: 'b', abbreviation: '', order: 25, kilometre: [], isStop: true);
+      final aServicePoint = ServicePoint(
+        name: 'a',
+        abbreviation: '',
+        locationCode: '',
+        order: 20,
+        kilometre: [],
+        isStop: true,
+      );
+      final bServicePoint = ServicePoint(
+        name: 'b',
+        abbreviation: '',
+        locationCode: '',
+        order: 25,
+        kilometre: [],
+        isStop: true,
+      );
       testAsync.run((_) {
         rxMockJourney.add(
           Journey(
@@ -814,8 +891,22 @@ void main() {
 
     test('setManualPosition_whenHasNoSignaledPosition_thenMovesCurrentAndLastPosition', () {
       // ARRANGE
-      final aServicePoint = ServicePoint(name: 'a', abbreviation: '', order: 20, kilometre: [], isStop: true);
-      final bServicePoint = ServicePoint(name: 'b', abbreviation: '', order: 25, kilometre: [], isStop: true);
+      final aServicePoint = ServicePoint(
+        name: 'a',
+        abbreviation: '',
+        locationCode: '',
+        order: 20,
+        kilometre: [],
+        isStop: true,
+      );
+      final bServicePoint = ServicePoint(
+        name: 'b',
+        abbreviation: '',
+        locationCode: '',
+        order: 25,
+        kilometre: [],
+        isStop: true,
+      );
       testAsync.run((_) {
         rxMockJourney.add(
           Journey(
@@ -829,6 +920,7 @@ void main() {
 
       // ACT
       testAsync.run((async) {
+        testee.onAdvancementModeChanged(Manual());
         testee.setManualPosition(aServicePoint);
         _processStreamInFakeAsync(async);
       });
@@ -840,8 +932,22 @@ void main() {
 
     test('setManualPosition_whenHasSignaledPosition_thenMovesToNewPosition', () {
       // ARRANGE
-      final aServicePoint = ServicePoint(name: 'a', abbreviation: '', order: 20, kilometre: [], isStop: true);
-      final bServicePoint = ServicePoint(name: 'b', abbreviation: '', order: 25, kilometre: [], isStop: true);
+      final aServicePoint = ServicePoint(
+        name: 'a',
+        abbreviation: '',
+        locationCode: '',
+        order: 20,
+        kilometre: [],
+        isStop: true,
+      );
+      final bServicePoint = ServicePoint(
+        name: 'b',
+        abbreviation: '',
+        locationCode: '',
+        order: 25,
+        kilometre: [],
+        isStop: true,
+      );
       testAsync.run((_) {
         rxMockJourney.add(
           Journey(
@@ -855,48 +961,34 @@ void main() {
 
       // ACT
       testAsync.run((async) {
+        testee.onAdvancementModeChanged(Manual());
         testee.setManualPosition(aServicePoint);
         _processStreamInFakeAsync(async);
       });
 
       // EXPECT
-      expect(testee.modelValue.currentPosition, equals(aServicePoint));
-      expect(testee.modelValue.lastPosition, equals(bServicePoint));
-    });
-
-    test('setManualPosition_whenCalledTwiceWithSamePosition_thenMovesToManualPositionOnce', () {
-      // ARRANGE
-      final aServicePoint = ServicePoint(name: 'a', abbreviation: '', order: 20, kilometre: [], isStop: true);
-      final bServicePoint = ServicePoint(name: 'b', abbreviation: '', order: 25, kilometre: [], isStop: true);
-      testAsync.run((_) {
-        rxMockJourney.add(
-          Journey(
-            metadata: Metadata(signaledPosition: SignaledPosition(order: 25)),
-            data: [zeroSignal, tenSignal, aServicePoint, bServicePoint],
-          ),
-        );
-      });
-      _processStreamInFakeAsync(testAsync);
-      expect(testee.modelValue.currentPosition, equals(bServicePoint));
-
-      // ACT
-      testAsync.run((async) {
-        testee.setManualPosition(aServicePoint);
-        _processStreamInFakeAsync(async);
-        testee.setManualPosition(aServicePoint);
-        _processStreamInFakeAsync(async);
-      });
-
-      // EXPECT
-      expect(emitRegister, hasLength(2));
       expect(testee.modelValue.currentPosition, equals(aServicePoint));
       expect(testee.modelValue.lastPosition, equals(bServicePoint));
     });
 
     test('setManualPosition_whenIsGivenNullPosition_thenMovesToSignaledPosition', () {
       // ARRANGE
-      final aServicePoint = ServicePoint(name: 'a', abbreviation: '', order: 20, kilometre: [], isStop: true);
-      final bServicePoint = ServicePoint(name: 'b', abbreviation: '', order: 25, kilometre: [], isStop: true);
+      final aServicePoint = ServicePoint(
+        name: 'a',
+        abbreviation: '',
+        locationCode: '',
+        order: 20,
+        kilometre: [],
+        isStop: true,
+      );
+      final bServicePoint = ServicePoint(
+        name: 'b',
+        abbreviation: '',
+        locationCode: '',
+        order: 25,
+        kilometre: [],
+        isStop: true,
+      );
       testAsync.run((_) {
         rxMockJourney.add(
           Journey(
@@ -909,6 +1001,7 @@ void main() {
       expect(testee.modelValue.currentPosition, equals(bServicePoint));
 
       testAsync.run((async) {
+        testee.onAdvancementModeChanged(Manual());
         testee.setManualPosition(aServicePoint);
         _processStreamInFakeAsync(async);
       });

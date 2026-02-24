@@ -1,6 +1,8 @@
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
+import 'package:app/nav/app_link_navigator.dart';
 import 'package:app/nav/app_router.dart';
+import 'package:app/nav/auth_guard.dart';
 import 'package:app/theme/theme_view_model.dart';
 import 'package:app/theme/themes.dart';
 import 'package:app/widgets/flavor_banner.dart';
@@ -16,7 +18,14 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  final _appRouter = AppRouter();
+  final _appRouter = AppRouter(authGuard: AuthGuard(authenticator: DI.get()));
+  late AppLinkNavigator _appLinkNavigator;
+
+  @override
+  void initState() {
+    super.initState();
+    _appLinkNavigator = AppLinkNavigator(appLinksManager: DI.get(), router: _appRouter)..observe();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,5 +64,11 @@ class _AppState extends State<App> {
         );
       },
     );
+  }
+
+  @override
+  void dispose() {
+    _appLinkNavigator.dispose();
+    super.dispose();
   }
 }

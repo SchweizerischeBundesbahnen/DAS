@@ -4,8 +4,9 @@ import 'package:meta/meta.dart';
 @sealed
 @immutable
 class User {
-  const User({required this.name, required this.roles});
+  const User({required this.userId, required this.roles, this.displayName});
 
-  final String name;
+  final String userId;
+  final String? displayName;
   final List<Role> roles;
 }

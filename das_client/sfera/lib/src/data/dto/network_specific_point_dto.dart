@@ -18,13 +18,13 @@ class NetworkSpecificPointDto extends NspDto {
     String? value,
   }) {
     final groupName = children?.where((it) => it.type == NspDto.groupNameElement).firstOrNull;
-    if (groupName?.value == NewLineSpeedNetworkSpecificPointDto.elementName) {
+    if (groupName?.value == NewLineSpeedNetworkSpecificPointDto.groupNameValue) {
       return NewLineSpeedNetworkSpecificPointDto(attributes: attributes, children: children, value: value);
-    } else if (groupName?.value == CurvePointNetworkSpecificPointDto.elementName) {
+    } else if (groupName?.value == CurvePointNetworkSpecificPointDto.groupNameValue) {
       return CurvePointNetworkSpecificPointDto(attributes: attributes, children: children, value: value);
-    } else if (groupName?.value == WhistleNetworkSpecificPointDto.elementName) {
+    } else if (groupName?.value == WhistleNetworkSpecificPointDto.groupNameValue) {
       return WhistleNetworkSpecificPointDto(attributes: attributes, children: children, value: value);
-    } else if (groupName?.value == TrackFootNotesNspDto.elementName) {
+    } else if (groupName?.value == TrackFootNotesNspDto.groupNameValue) {
       return TrackFootNotesNspDto(attributes: attributes, children: children, value: value);
     }
     return NetworkSpecificPointDto(attributes: attributes, children: children, value: value);

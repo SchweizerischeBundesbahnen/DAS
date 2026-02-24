@@ -34,7 +34,7 @@ public class FormationService {
     public List<TrainFormationRunEntity> findByTrainIdentifier(String operationalTrainNumber,
         LocalDate operationalDay,
         String company) {
-        return trainFormationRunRepository.findByOperationalTrainNumberAndOperationalDayAndCompanyOrderByInspectionDateTime(
+        return trainFormationRunRepository.findByOperationalTrainNumberAndOperationalDayAndCompanyOrderByPositionAsc(
             operationalTrainNumber,
             operationalDay,
             company

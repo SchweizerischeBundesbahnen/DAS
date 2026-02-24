@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:app/flavor.dart';
+import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:appcheck/appcheck.dart';
 import 'package:logging/logging.dart';
@@ -14,12 +15,14 @@ final _log = Logger('WarnAppViewModel');
 class WarnAppViewModel {
   WarnAppViewModel({
     required this.flavor,
-    required SferaRemoteRepo sferaRemoteRepo,
+    required SferaRepository sferaRepo,
     required WarnappRepository warnappRepo,
     required RuFeatureProvider ruFeatureProvider,
-  }) : _sferaRemoteRepo = sferaRemoteRepo,
+    required NotificationPriorityQueueViewModel notificationViewModel,
+  }) : _sferaRepo = sferaRepo,
        _warnappRepo = warnappRepo,
        _ruFeatureProvider = ruFeatureProvider,
+       _notificationViewModel = notificationViewModel,
        _appCheck = AppCheck() {
     _init();
   }
@@ -28,9 +31,10 @@ class WarnAppViewModel {
 
   final Flavor flavor;
 
-  final SferaRemoteRepo _sferaRemoteRepo;
+  final SferaRepository _sferaRepo;
   final WarnappRepository _warnappRepo;
   final RuFeatureProvider _ruFeatureProvider;
+  final NotificationPriorityQueueViewModel _notificationViewModel;
 
   final AppCheck _appCheck;
 
@@ -68,6 +72,11 @@ class WarnAppViewModel {
   void setManeuverMode(bool active) {
     _log.info('Maneuver mode state changed to active=$active');
     _rxManeuverModeEnabled.add(active);
+    if (active) {
+      _notificationViewModel.insert(type: .maneuverMode);
+    } else {
+      _notificationViewModel.remove(type: .maneuverMode);
+    }
 
     if (Platform.isIOS) {
       active ? _warnappRepo.disable() : _warnappRepo.enable();
@@ -85,8 +94,9 @@ class WarnAppViewModel {
 
   void _listenToSferaRemoteRepo() {
     _stateSubscription?.cancel();
-    _stateSubscription = _sferaRemoteRepo.stateStream.listen((state) {
+    _stateSubscription = _sferaRepo.stateStream.listen((state) {
       switch (state) {
+        case .offlineData:
         case .connected:
           _enableWarnapp();
           break;
@@ -105,7 +115,7 @@ class WarnAppViewModel {
     _log.info('Warnapp is ${isWarnappFeatEnabled ? 'enabled' : 'disabled'} for active train');
     if (isWarnappFeatEnabled) {
       _warnappAbfahrtSubscription = _warnappRepo.abfahrtEventStream.listen((_) => _handleAbfahrtEvent());
-      _warnappSignalSubscription = _sferaRemoteRepo.warnappEventStream.listen((_) {
+      _warnappSignalSubscription = _sferaRepo.warnappEventStream.listen((_) {
         _lastWarnappEventTimestamp = DateTime.now();
       });
       _warnappRepo.enable();

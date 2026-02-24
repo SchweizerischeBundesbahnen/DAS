@@ -525,4 +525,159 @@ void main() {
     expect(resultList[0].order, 0);
     expect(resultList[1].order, 400);
   });
+
+  test('Test hide journey points that should not be displayed hides correct journey points', () {
+    // GIVEN
+    final baseData = <BaseData>[
+      Signal(order: 0, kilometre: [0.0]),
+      CurvePoint(
+        order: 100,
+        kilometre: [1.0],
+        lastModificationDate: DateTime.now(),
+        lastModificationType: ModificationType.updated,
+      ),
+      ServicePoint(
+        name: 'abc',
+        abbreviation: 'abc',
+        locationCode: '',
+        order: 200,
+        kilometre: [2.0],
+        lastModificationDate: DateTime.now().add(Duration(days: -(JourneyPoint.showModificationDays + 1))),
+        lastModificationType: ModificationType.updated,
+      ),
+      ProtectionSection(
+        order: 300,
+        kilometre: [3.0],
+        isOptional: false,
+        isLong: false,
+        lastModificationDate: DateTime.now(),
+        lastModificationType: ModificationType.deleted,
+      ),
+      SpeedChange(
+        order: 400,
+        kilometre: [4.0],
+        lastModificationDate: DateTime.now().add(Duration(days: -(JourneyPoint.showModificationDays + 1))),
+        lastModificationType: ModificationType.deleted,
+      ),
+    ];
+
+    // WHEN
+    final resultList = baseData.hideJourneyPointsThatShouldNotBeDisplayed().toList();
+
+    // THEN
+    expect(resultList, hasLength(4));
+    expect(resultList[0], isA<Signal>());
+    expect(resultList[1], isA<CurvePoint>());
+    expect(resultList[2], isA<ServicePoint>());
+    expect(resultList[3], isA<ProtectionSection>());
+  });
+
+  test('addTrainDriverTurnoverRows_whenTrainIdentificationNull_thenDoNothing', () {
+    // GIVEN
+    final baseData = <BaseData>[
+      ServicePoint(name: 'A', abbreviation: 'A', order: 0, kilometre: [0.0], locationCode: 'A'),
+      ServicePoint(name: 'B', abbreviation: 'B', order: 1, kilometre: [1.0], locationCode: 'B'),
+      ServicePoint(name: 'C', abbreviation: 'C', order: 2, kilometre: [2.0], locationCode: 'C'),
+      ServicePoint(name: 'D', abbreviation: 'D', order: 3, kilometre: [3.0], locationCode: 'D'),
+      ServicePoint(name: 'E', abbreviation: 'E', order: 4, kilometre: [4.0], locationCode: 'E'),
+    ];
+
+    final TrainIdentification? trainIdentification = null;
+    // WHEN
+    final resultList = baseData.addTrainDriverTurnoverRows(trainIdentification).toList();
+
+    // THEN
+    expect(resultList, hasLength(baseData.length));
+    expect(resultList[0], baseData[0]);
+    expect(resultList[1], baseData[1]);
+    expect(resultList[2], baseData[2]);
+    expect(resultList[3], baseData[3]);
+    expect(resultList[4], baseData[4]);
+  });
+
+  test('addTrainDriverTurnoverRows_whenTrainIdentificationTafTapStartAndEndIsNull_thenDoNothing', () {
+    // GIVEN
+    final baseData = <BaseData>[
+      ServicePoint(name: 'A', abbreviation: 'A', order: 0, kilometre: [0.0], locationCode: 'A'),
+      ServicePoint(name: 'B', abbreviation: 'B', order: 1, kilometre: [1.0], locationCode: 'B'),
+      ServicePoint(name: 'C', abbreviation: 'C', order: 2, kilometre: [2.0], locationCode: 'C'),
+      ServicePoint(name: 'D', abbreviation: 'D', order: 3, kilometre: [3.0], locationCode: 'D'),
+      ServicePoint(name: 'E', abbreviation: 'E', order: 4, kilometre: [4.0], locationCode: 'E'),
+    ];
+
+    final TrainIdentification trainIdentification = TrainIdentification(
+      ru: .sbb,
+      trainNumber: '123',
+      date: DateTime.now(),
+    );
+    // WHEN
+    final resultList = baseData.addTrainDriverTurnoverRows(trainIdentification).toList();
+
+    // THEN
+    expect(resultList, hasLength(baseData.length));
+    expect(resultList[0], baseData[0]);
+    expect(resultList[1], baseData[1]);
+    expect(resultList[2], baseData[2]);
+    expect(resultList[3], baseData[3]);
+    expect(resultList[4], baseData[4]);
+  });
+
+  test('addTrainDriverTurnoverRows_whenTrainIdentificationTafTapStartAndEndIsSet_thenAddTrainDriverTurnover', () {
+    // GIVEN
+    final baseData = <BaseData>[
+      ServicePoint(name: 'A', abbreviation: 'A', order: 0, kilometre: [0.0], locationCode: 'A'),
+      ServicePoint(name: 'B', abbreviation: 'B', order: 1, kilometre: [1.0], locationCode: 'B'),
+      ServicePoint(name: 'C', abbreviation: 'C', order: 2, kilometre: [2.0], locationCode: 'C'),
+      ServicePoint(name: 'D', abbreviation: 'D', order: 3, kilometre: [3.0], locationCode: 'D'),
+      ServicePoint(name: 'E', abbreviation: 'E', order: 4, kilometre: [4.0], locationCode: 'E'),
+    ];
+
+    final TrainIdentification trainIdentification = TrainIdentification(
+      ru: .sbb,
+      trainNumber: '123',
+      date: DateTime.now(),
+      tafTapLocationReferenceStart: 'B',
+      tafTapLocationReferenceEnd: 'D',
+    );
+    // WHEN
+    final resultList = baseData.addTrainDriverTurnoverRows(trainIdentification).toList();
+    final personalChanges = resultList.whereType<TrainDriverTurnover>().toList();
+
+    // THEN
+    expect(resultList, hasLength(7));
+    expect(personalChanges, hasLength(2));
+    expect(personalChanges[0].order, 1);
+    expect(personalChanges[0].isStart, true);
+    expect(personalChanges[1].order, 3);
+    expect(personalChanges[1].isStart, false);
+  });
+
+  test(
+    'addTrainDriverTurnoverRows_whenTrainIdentificationTafTapStartAndEndIsSet_thenDoesNotAddPersonChangeForFirstAndLastServicePoint',
+    () {
+      // GIVEN
+      final baseData = <BaseData>[
+        ServicePoint(name: 'A', abbreviation: 'A', order: 0, kilometre: [0.0], locationCode: 'A'),
+        ServicePoint(name: 'B', abbreviation: 'B', order: 1, kilometre: [1.0], locationCode: 'B'),
+        ServicePoint(name: 'C', abbreviation: 'C', order: 2, kilometre: [2.0], locationCode: 'C'),
+        ServicePoint(name: 'D', abbreviation: 'D', order: 3, kilometre: [3.0], locationCode: 'D'),
+        ServicePoint(name: 'E', abbreviation: 'E', order: 4, kilometre: [4.0], locationCode: 'E'),
+      ];
+
+      final TrainIdentification trainIdentification = TrainIdentification(
+        ru: .sbb,
+        trainNumber: '123',
+        date: DateTime.now(),
+        tafTapLocationReferenceStart: 'A',
+        tafTapLocationReferenceEnd: 'E',
+      );
+      // WHEN
+      final resultList = baseData.addTrainDriverTurnoverRows(trainIdentification).toList();
+      final trainDriverTurnoverRows = resultList.whereType<TrainDriverTurnover>().toList();
+
+      // THEN
+      expect(resultList, hasLength(5));
+      expect(trainDriverTurnoverRows, hasLength(0));
+    },
+  );
 }

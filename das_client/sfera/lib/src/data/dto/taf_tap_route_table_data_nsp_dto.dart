@@ -3,7 +3,7 @@ import 'package:sfera/src/data/dto/route_table_data_relevant_wrapper_dto.dart';
 import 'package:sfera/src/data/dto/taf_tap_location_nsp_dto.dart';
 
 class TafTapRouteTableDataNspDto extends TafTapLocationNspDto {
-  static const String elementName = 'routeTableData';
+  static const String groupNameValue = 'routeTableData';
 
   TafTapRouteTableDataNspDto({super.type, super.attributes, super.children, super.value});
 

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/extension/datetime_extension.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/journey_advancement_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/punctuality_model.dart';
 import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
@@ -28,16 +29,20 @@ class JourneyPositionViewModel extends JourneyAwareViewModel {
   Timer? _servicePointReachedTimer;
 
   final _rxManualPosition = BehaviorSubject<JourneyPoint?>.seeded(null);
-  JourneyPoint? _lastManualPosition;
 
   Stream<JourneyPositionModel> get model => _rxModel.distinct();
 
   JourneyPositionModel get modelValue => _rxModel.value;
 
+  JourneyAdvancementModel? _currentAdvancementMode;
+
   void setManualPosition(JourneyPoint? manualPosition) {
-    if (manualPosition == _lastManualPosition) return;
-    _log.finer('Setting manual position to: $manualPosition');
+    _log.info('Setting manual position to: $manualPosition');
     _rxManualPosition.add(manualPosition);
+  }
+
+  void onAdvancementModeChanged(JourneyAdvancementModel journeyAdvancementModel) {
+    _currentAdvancementMode = journeyAdvancementModel;
   }
 
   void _initSubscription(Stream<Journey?> journeyStream, Stream<PunctualityModel> punctualityStream) {
@@ -50,6 +55,8 @@ class JourneyPositionViewModel extends JourneyAwareViewModel {
           (a, b, c, d) => (a, b, c, d),
         ).listen((data) async {
           _servicePointReachedTimer?.cancel();
+
+          _log.info('Position update triggered');
 
           final journey = data.$1;
           final punctuality = data.$2;
@@ -123,9 +130,8 @@ class JourneyPositionViewModel extends JourneyAwareViewModel {
     }
 
     final manualPosition = _rxManualPosition.value;
-    if (_lastManualPosition != manualPosition && manualPosition != null) {
-      _lastManualPosition = _rxManualPosition.value;
-      currentPosition = _lastManualPosition;
+    if (manualPosition != null && _currentAdvancementMode is Manual) {
+      currentPosition = _rxManualPosition.value;
     }
 
     return currentPosition;

@@ -4,7 +4,7 @@ import 'package:sfera/src/data/dto/operational_indication_type_nsp_dto.dart';
 import 'package:sfera/src/data/dto/operational_indication_uncoded_text_nsp_dto.dart';
 
 class OperationalIndicationNspDto extends JpContextInformationNspDto {
-  static const String elementName = 'operationalIndication';
+  static const String groupNameValue = 'operationalIndication';
 
   OperationalIndicationNspDto({super.type, super.attributes, super.children, super.value});
 

@@ -3,7 +3,7 @@ publish_to: 'none'
 version: 1.0.0
 
 environment:
-  sdk: ^3.10.4
+  sdk: ^3.10.8
 
 resolution: workspace
 
@@ -27,6 +27,6 @@ dev_dependencies:
     sdk: flutter
 
   # https://pub.dev/packages/build_runner
-  build_runner: ^2.10.5
+  build_runner: ^2.11.1
   # https://pub.dev/packages/flutter_prunekit
   flutter_prunekit: ^2.4.0

@@ -13,7 +13,12 @@ import 'package:provider/provider.dart';
 
 @RoutePage()
 class LoginPage extends StatefulWidget implements AutoRouteWrapper {
-  const LoginPage({super.key});
+  const LoginPage({super.key, this.onSuccess});
+
+  /// Callback when login was successful.
+  ///
+  /// Important: If set, it is expected that the callback handles navigation.
+  final void Function()? onSuccess;
 
   @override
   Widget wrappedRoute(BuildContext context) {
@@ -36,7 +41,12 @@ class _LoginPageState extends State<LoginPage> {
     _subscription = viewModel.model.listen((model) async {
       if (model is LoggedIn) {
         if (mounted) {
-          context.router.replace(const JourneySelectionRoute());
+          if (widget.onSuccess != null) {
+            // navigation is handled outside
+            widget.onSuccess!();
+          } else {
+            context.router.replace(const JourneySelectionRoute());
+          }
         }
       }
     });

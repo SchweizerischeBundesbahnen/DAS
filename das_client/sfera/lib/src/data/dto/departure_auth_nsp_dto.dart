@@ -1,7 +1,7 @@
 import 'package:sfera/src/data/dto/taf_tap_location_nsp_dto.dart';
 
 class DepartureAuthNspDto extends TafTapLocationNspDto {
-  static const String elementName = 'departureAuth';
+  static const String groupNameValue = 'departureAuth';
 
   DepartureAuthNspDto({super.type, super.attributes, super.children, super.value});
 

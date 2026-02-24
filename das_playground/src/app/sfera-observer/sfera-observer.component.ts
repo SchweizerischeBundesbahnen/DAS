@@ -494,7 +494,10 @@ export class SferaObserverComponent implements OnInit, OnDestroy {
   }
 
   private readonly formationObserver = {
-    next: () => this.toastService.open('Bremszettel erstellt', {type: 'success', duration: 5000}),
+    next: () => {
+      this.sendG2BEvent({formation: true})
+      this.toastService.open('Bremszettel erstellt', {type: 'success', duration: 5000})
+    },
     error: () => this.toastService.open('Bremszettel konnte nicht erstellt werden', {
       type: 'error',
       duration: 5000
@@ -503,7 +506,7 @@ export class SferaObserverComponent implements OnInit, OnDestroy {
 
   protected initialFormation() {
     this.formationsService.initialFormation({
-      operationalTrainNumber: this.trainControl.value,
+      operationalTrainNumber: this.trainControl.value.replace('M', ''),
       companyCode: this.companyControl.value,
       operationalDay: this.MOCK_OPATIONAL_DAY,
     }).subscribe(this.formationObserver)
@@ -511,7 +514,7 @@ export class SferaObserverComponent implements OnInit, OnDestroy {
 
   protected updatedFormation() {
     this.formationsService.updateFormation({
-      operationalTrainNumber: this.trainControl.value,
+      operationalTrainNumber: this.trainControl.value.replace('M', ''),
       companyCode: this.companyControl.value,
       operationalDay: this.MOCK_OPATIONAL_DAY,
     }).subscribe(this.formationObserver)

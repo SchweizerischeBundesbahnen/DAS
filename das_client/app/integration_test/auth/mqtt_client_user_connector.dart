@@ -7,9 +7,16 @@ class MqttClientUserConnector implements MqttClientConnector {
   static const mqttUsername = 'MQTT_USERNAME';
   static const mqttPassword = 'MQTT_PASSWORD';
 
+  bool forceFailToConnect = false;
+
   @override
   Future<bool> connect(MqttClient client, String company, String train) async {
     _log.info('Connecting to mqtt using static login and password');
+
+    if (forceFailToConnect) {
+      _log.warning('Forced failure to connect to MQTT broker');
+      return false;
+    }
 
     if (!const bool.hasEnvironment(mqttUsername) || !const bool.hasEnvironment(mqttPassword)) {
       _log.severe('$mqttUsername or $mqttPassword not defined');

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:app/extension/short_term_change_extension.dart';
 import 'package:app/extension/station_sign_extension.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/detail_modal_view_model.dart';
@@ -10,6 +11,7 @@ import 'package:app/pages/journey/journey_screen/view_model/journey_table_advanc
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cell_row_builder.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_cell_body.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/cells/service_point_information_cell_title.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/show_speed_behaviour.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/time_cell_body.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/track_equipment_cell_body.dart';
@@ -21,6 +23,7 @@ import 'package:app/widgets/dot_indicator.dart';
 import 'package:app/widgets/speed_display.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:app/widgets/table/das_table_theme.dart';
+import 'package:app/widgets/table/row/das_table_row_decoration.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -57,9 +60,9 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     super.key,
     Color? rowColor,
   }) : super(
-         rowColor: rowColor ?? _resolveRowColor(context, journeyPosition, data),
+         decoration: DASTableRowDecoration(color: rowColor ?? _resolveRowColor(context, journeyPosition, data)),
          stickyLevel: .first,
-         height: calculateHeight(data, config.settings.resolvedBreakSeries(metadata)),
+         height: calculateHeight(data, config.settings.currentBreakSeries),
          onStartToEndDragReached: journeyPosition.currentPosition != data
              ? () {
                  context.read<JourneyPositionViewModel>().setManualPosition(data);
@@ -101,8 +104,17 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     return _wrapToBaseHeight(super.kilometreCell(context));
   }
 
+  Stream<bool> isModalOpenStream(BuildContext context) => context.read<DetailModalViewModel>().isModalOpen;
+
+  bool isModalOpenValue(BuildContext context) => context.read<DetailModalViewModel>().isModalOpenValue;
+
   @override
   DASTableCell informationCell(BuildContext context) {
+    ShortTermChange? shortTermChange = metadata.shortTermChanges.appliesToOrder(data.order).getHighestPriority;
+    if (shortTermChange != null) {
+      shortTermChange = shortTermChange.startData == data ? shortTermChange : null;
+    }
+
     return DASTableCell(
       onTap: () {
         if (shouldOpenDetailModalOnTap) {
@@ -115,7 +127,15 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
         mainAxisSize: .min,
         crossAxisAlignment: .start,
         children: [
-          _informationCellTitle(context),
+          ServicePointInformationCellTitle(
+            isModalOpenValue: isModalOpenValue(context),
+            isModalOpenStream: isModalOpenStream(context),
+            name: data.betweenBrackets ? '(${data.name})' : data.name,
+            foregroundColor: _isNextStop && highlightNextStop ? SBBColors.white : null,
+            isStation: data.isStation,
+            trackGroup: data.trackGroup,
+            shortTermChange: shortTermChange,
+          ),
           ..._stationProperties(context),
         ],
       ),
@@ -129,8 +149,11 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     final times = data.arrivalDepartureTime;
     final viewModel = context.read<ArrivalDepartureTimeViewModel>();
 
-    if (times == null || !times.hasAnyTime) {
-      return DASTableCell.empty(color: specialCellColor, onTap: () => viewModel.toggleOperationalTime());
+    if ((times == null || !times.hasAnyTime) && data.mandatoryStop) {
+      return DASTableCell.empty(
+        decoration: DASTableCellDecoration(color: specialCellColor),
+        onTap: () => viewModel.toggleOperationalTime(),
+      );
     }
 
     return _wrapToBaseHeight(
@@ -140,10 +163,11 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
           times: times,
           viewModel: viewModel,
           showTimesInBrackets: !data.isStop,
+          mandatoryStop: data.mandatoryStop,
           fontColor: _isNextStop && specialCellColor == null ? Colors.white : null,
         ),
-        alignment: defaultAlignment,
-        color: specialCellColor,
+        alignment: .bottomLeft,
+        decoration: DASTableCellDecoration(color: specialCellColor),
       ),
     );
   }
@@ -151,7 +175,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
   @override
   DASTableCell routeCell(BuildContext context) {
     return DASTableCell(
-      color: specialCellColor,
+      decoration: DASTableCellDecoration(color: specialCellColor),
       padding: .all(0.0),
       alignment: null,
       clipBehavior: .none,
@@ -164,13 +188,14 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
         chevronAnimationData: config.chevronAnimationData,
         chevronPosition: chevronPosition,
         routeColor: _isNextStop && specialCellColor == null ? Colors.white : null,
+        shortTermChangeData: routeCellShortTermChangeData,
       ),
     );
   }
 
   @override
   DASTableCell iconsCell1(BuildContext context) {
-    if (data.mandatoryStop && data.stationSign1 == null && data.stationSign2 == null) return DASTableCell.empty();
+    if (data.stationSign1 == null && data.stationSign2 == null) return DASTableCell.empty();
 
     return _wrapToBaseHeight(
       DASTableCell(
@@ -178,20 +203,14 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
         padding: .symmetric(vertical: SBBSpacing.xSmall, horizontal: 2),
         child: Padding(
           padding: config.bracketStationRenderData != null ? const .only(right: SBBSpacing.large) : .zero,
-          child: Wrap(
+          child: Row(
+            mainAxisSize: .min,
             spacing: 2,
             children: [
-              if (!data.mandatoryStop) _icon(context, AppAssets.iconStopOnRequest, stopOnRequestKey),
-              Row(
-                mainAxisSize: .min,
-                spacing: 2,
-                children: [
-                  if (data.stationSign2 != null)
-                    _icon(context, data.stationSign2!.iconAsset(), Key(data.stationSign2!.name)),
-                  if (data.stationSign1 != null)
-                    _icon(context, data.stationSign1!.iconAsset(), Key(data.stationSign1!.name)),
-                ],
-              ),
+              if (data.stationSign2 != null)
+                _icon(context, data.stationSign2!.iconAsset(), Key(data.stationSign2!.name)),
+              if (data.stationSign1 != null)
+                _icon(context, data.stationSign1!.iconAsset(), Key(data.stationSign1!.name)),
             ],
           ),
         ),
@@ -201,7 +220,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
 
   @override
   DASTableCell localSpeedCell(BuildContext context) {
-    final currentBreakSeries = config.settings.resolvedBreakSeries(metadata);
+    final currentBreakSeries = config.settings.currentBreakSeries;
     final relevantGraduatedSpeedInfo = data.relevantGraduatedSpeedInfo(currentBreakSeries);
 
     if (data.localSpeeds == null && relevantGraduatedSpeedInfo.isEmpty) return DASTableCell.empty();
@@ -237,11 +256,11 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
   @override
   DASTableCell trackEquipment(BuildContext context) {
     if (config.trackEquipmentRenderData == null) {
-      return DASTableCell.empty(color: specialCellColor);
+      return DASTableCell.empty(decoration: DASTableCellDecoration(color: specialCellColor));
     }
 
     return DASTableCell(
-      color: specialCellColor,
+      decoration: DASTableCellDecoration(color: specialCellColor),
       padding: const .all(0.0),
       alignment: null,
       child: TrackEquipmentCellBody(
@@ -267,13 +286,13 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
 
   DASTableCell _gradientCell(BuildContext context, double? value) {
     if (value == null) {
-      return DASTableCell.empty(color: specialCellColor);
+      return DASTableCell.empty(decoration: DASTableCellDecoration(color: specialCellColor));
     }
 
     final textColor = _isNextStop && specialCellColor == null ? SBBColors.white : null;
     final defaultTextStyle = DASTableTheme.of(context)?.data.dataTextStyle ?? sbbTextStyle.romanStyle.large;
     return DASTableCell(
-      color: specialCellColor,
+      decoration: DASTableCellDecoration(color: specialCellColor),
       child: Text(
         value.round().toString(),
         style: defaultTextStyle.copyWith(color: textColor),
@@ -287,48 +306,8 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     viewModel.open(context, tab: .graduatedSpeeds, servicePoint: data);
   }
 
-  Stream<bool> isModalOpenStream(BuildContext context) => context.read<DetailModalViewModel>().isModalOpen;
-
-  bool isModalOpenValue(BuildContext context) => context.read<DetailModalViewModel>().isModalOpenValue;
-
-  Widget _informationCellTitle(BuildContext context) {
-    return StreamBuilder<bool>(
-      stream: isModalOpenStream(context),
-      initialData: isModalOpenValue(context),
-      builder: (context, asyncSnapshot) {
-        final isModalOpen = asyncSnapshot.requireData;
-        final servicePointName = data.betweenBrackets ? '(${data.name})' : data.name;
-        final color = _isNextStop && highlightNextStop ? SBBColors.white : null;
-        return DefaultTextStyle.merge(
-          style: data.isStation
-              ? sbbTextStyle.boldStyle.xLarge.copyWith(color: color)
-              : sbbTextStyle.lightStyle.xLarge.italic.copyWith(color: color),
-          child: AnimatedSwitcher(
-            duration: DASAnimation.longDuration,
-            child: Row(
-              mainAxisAlignment: isModalOpen ? .spaceBetween : .start,
-              children: [
-                Flexible(
-                  child: Text(
-                    servicePointName,
-                    textAlign: TextAlign.start,
-                    overflow: .ellipsis,
-                  ),
-                ),
-                if (data.trackGroup != null) ...[
-                  if (!isModalOpen) SizedBox(width: SBBSpacing.medium),
-                  Text(data.trackGroup!),
-                ],
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
   List<Widget> _stationProperties(BuildContext context) {
-    final currentBreakSeries = config.settings.resolvedBreakSeries(metadata);
+    final currentBreakSeries = config.settings.currentBreakSeries;
     final properties = data.propertiesFor(currentBreakSeries);
     if (properties.isEmpty) return [];
 
@@ -384,13 +363,8 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
   }
 
   DASTableCell _wrapToBaseHeight(DASTableCell cell, [double verticalPadding = 8.0]) {
-    return DASTableCell(
-      border: cell.border,
-      onTap: cell.onTap,
-      color: cell.color,
-      padding: cell.padding,
+    return cell.copyWith(
       alignment: .topLeft,
-      clipBehavior: cell.clipBehavior,
       child: SizedBox(
         height: baseRowHeight - verticalPadding * 2,
         child: Align(alignment: cell.alignment ?? defaultAlignment, child: cell.child),

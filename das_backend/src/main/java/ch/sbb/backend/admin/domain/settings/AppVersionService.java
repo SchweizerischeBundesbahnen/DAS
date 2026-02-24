@@ -1,6 +1,6 @@
 package ch.sbb.backend.admin.domain.settings;
 
-import ch.sbb.backend.admin.application.settings.model.request.AppVersionUpdateRequest;
+import ch.sbb.backend.admin.application.settings.model.request.AppVersionRequest;
 import ch.sbb.backend.admin.application.settings.model.response.CurrentAppVersion;
 import ch.sbb.backend.admin.domain.settings.model.AppVersion;
 import java.util.List;
@@ -13,9 +13,9 @@ public interface AppVersionService {
 
     AppVersion getOne(Integer id);
 
-    AppVersion update(Integer id, AppVersionUpdateRequest updateRequest);
+    AppVersion update(Integer id, AppVersionRequest updateRequest);
 
-    AppVersion create(AppVersionUpdateRequest createRequest);
+    AppVersion create(AppVersionRequest createRequest);
 
-    AppVersion delete(Integer id);
+    void delete(Integer id);
 }

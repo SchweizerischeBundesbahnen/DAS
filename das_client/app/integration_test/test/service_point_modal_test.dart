@@ -330,9 +330,6 @@ void main() {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T31M');
 
-      final scrollableFinder = find.byType(AnimatedList);
-      expect(scrollableFinder, findsOneWidget);
-
       await _openAndCheckDepartureAuth(tester, 'Dietikon', '*');
       await _openAndCheckDepartureAuth(tester, 'Glanzenberg', '* sms 2-4');
       await _openAndCheckDepartureAuth(tester, 'Schlieren', 'sms 3-6');

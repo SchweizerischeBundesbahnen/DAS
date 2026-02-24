@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:app/pages/journey/view_model/model/journey_navigation_model.dart';
-import 'package:app/widgets/table/das_table_row.dart';
+import 'package:app/widgets/table/row/das_table_row_builder.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
@@ -9,11 +9,11 @@ import 'package:sfera/component.dart';
 final _log = Logger('JourneyNavigationViewModel');
 
 class JourneyNavigationViewModel {
-  JourneyNavigationViewModel({required SferaRemoteRepo sferaRepo}) : _sferaRemoteRepo = sferaRepo {
+  JourneyNavigationViewModel({required SferaRepository sferaRepo}) : _sferaRepo = sferaRepo {
     _initSferaRemoteStateSubscription();
   }
 
-  final SferaRemoteRepo _sferaRemoteRepo;
+  final SferaRepository _sferaRepo;
   StreamSubscription<SferaRemoteRepositoryState>? _sferaRemoteStateSubscription;
   final List<TrainIdentification> _trainIds = [];
   final _rxModel = BehaviorSubject<JourneyNavigationModel?>.seeded(null);
@@ -26,16 +26,22 @@ class JourneyNavigationViewModel {
 
   TrainIdentification? get _currentTrainId => _rxModel.value?.trainIdentification;
 
+  /// replaces the current navigation stack with [trainIds] where a connection will be established for the first train.
+  Future<void> replaceWith(Iterable<TrainIdentification> trainIds) async {
+    if (_trainIds.isNotEmpty) _sferaRepo.disconnect();
+    _trainIds.addAll(trainIds);
+
+    await _establishConnection(trainIds.first);
+  }
+
   Future<void> push(TrainIdentification trainId) async {
     if (_currentTrainId == trainId) return;
 
-    if (_trainIds.isNotEmpty) _sferaRemoteRepo.disconnect();
+    if (_trainIds.isNotEmpty) _sferaRepo.disconnect();
 
     if (!_trainIds.contains(trainId)) _trainIds.add(trainId);
 
-    DASTableRowBuilder.clearRowKeys();
-    await _sferaRemoteRepo.connect(trainId);
-    _addToStream(trainId);
+    await _establishConnection(trainId);
   }
 
   Future<void> next() async {
@@ -43,12 +49,8 @@ class JourneyNavigationViewModel {
     final updatedIdx = _currentTrainIdIndex + 1;
     if (_isOutOfTrainIdsRange(updatedIdx)) return;
 
-    await _sferaRemoteRepo.disconnect();
-
-    final trainId = _trainIds[updatedIdx];
-    DASTableRowBuilder.clearRowKeys();
-    await _sferaRemoteRepo.connect(trainId);
-    _addToStream(trainId);
+    await _sferaRepo.disconnect();
+    await _establishConnection(_trainIds[updatedIdx]);
   }
 
   Future<void> previous() async {
@@ -56,21 +58,24 @@ class JourneyNavigationViewModel {
     final updatedIdx = _currentTrainIdIndex - 1;
     if (_isOutOfTrainIdsRange(updatedIdx)) return;
 
-    await _sferaRemoteRepo.disconnect();
-
-    final trainId = _trainIds[updatedIdx];
-    DASTableRowBuilder.clearRowKeys();
-    await _sferaRemoteRepo.connect(trainId);
-    _addToStream(trainId);
+    await _sferaRepo.disconnect();
+    await _establishConnection(_trainIds[updatedIdx]);
   }
 
   void dispose() {
     _log.fine('Disposing JourneyNavigationViewModel');
     _sferaRemoteStateSubscription?.cancel();
-    _sferaRemoteRepo.disconnect();
+    _sferaRepo.disconnect();
     _addToStream(null);
     _trainIds.clear();
     _rxModel.close();
+  }
+
+  Future<void> _establishConnection(TrainIdentification trainId) async {
+    _log.fine('Establish connection to $trainId');
+    DASTableRowBuilder.clearRowKeys();
+    await _sferaRepo.connect(trainId);
+    _addToStream(trainId);
   }
 
   void _reset() {
@@ -96,10 +101,10 @@ class JourneyNavigationViewModel {
 
   void _initSferaRemoteStateSubscription() {
     _sferaRemoteStateSubscription?.cancel();
-    _sferaRemoteStateSubscription = _sferaRemoteRepo.stateStream.listen(
+    _sferaRemoteStateSubscription = _sferaRepo.stateStream.listen(
       (s) => switch (s) {
-        .disconnected => _sferaRemoteRepo.lastError != null ? _reset() : null,
-        .connected || .connecting => null,
+        .disconnected => _sferaRepo.lastError != null ? _reset() : null,
+        .connected || .connecting || .offlineData => null,
       },
     );
   }

@@ -24,4 +24,7 @@ class TestTimeConstants extends TimeConstants {
 
   @override
   int get connectivityLostNotificationDelay => 2;
+
+  @override
+  int get newShortTermChangesDisplaySeconds => 2;
 }

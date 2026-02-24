@@ -30,16 +30,17 @@ void main() {
   late BehaviorSubject<JourneyPositionModel> journeyPositionSubject;
   late BehaviorSubject<JourneySettings> journeySettingsSubject;
 
+  final initialBreakSeries = BreakSeries(trainSeries: .N, breakSeries: 180);
   final journey = Journey(
     metadata: Metadata(
       availableBreakSeries: {
-        BreakSeries(trainSeries: .N, breakSeries: 180),
+        initialBreakSeries,
         BreakSeries(trainSeries: .N, breakSeries: 160),
         BreakSeries(trainSeries: .R, breakSeries: 120),
         BreakSeries(trainSeries: .A, breakSeries: 100),
         BreakSeries(trainSeries: .D, breakSeries: 100),
       },
-      breakSeries: BreakSeries(trainSeries: .N, breakSeries: 180),
+      breakSeries: initialBreakSeries,
       lineSpeeds: SplayTreeMap.from({
         0: [
           TrainSeriesSpeed(
@@ -152,11 +153,11 @@ void main() {
       }),
     ),
     data: [
-      ServicePoint(name: 'A', abbreviation: '', order: 0, kilometre: []),
-      ServicePoint(name: 'B', abbreviation: '', order: 1, kilometre: []),
-      ServicePoint(name: 'C', abbreviation: '', order: 2, kilometre: []),
-      ServicePoint(name: 'D', abbreviation: '', order: 3, kilometre: []),
-      ServicePoint(name: 'E', abbreviation: '', order: 4, kilometre: []),
+      ServicePoint(name: 'A', abbreviation: '', locationCode: '', order: 0, kilometre: []),
+      ServicePoint(name: 'B', abbreviation: '', locationCode: '', order: 1, kilometre: []),
+      ServicePoint(name: 'C', abbreviation: '', locationCode: '', order: 2, kilometre: []),
+      ServicePoint(name: 'D', abbreviation: '', locationCode: '', order: 3, kilometre: []),
+      ServicePoint(name: 'E', abbreviation: '', locationCode: '', order: 4, kilometre: []),
       CurvePoint(
         order: 5,
         kilometre: [],
@@ -171,7 +172,7 @@ void main() {
           ),
         ],
       ),
-      ServicePoint(name: 'F', abbreviation: '', order: 6, kilometre: []),
+      ServicePoint(name: 'F', abbreviation: '', locationCode: '', order: 6, kilometre: []),
     ],
   );
 
@@ -181,7 +182,11 @@ void main() {
     mockJourneySettingsViewModel = MockJourneySettingsViewModel();
     journeySubject = BehaviorSubject<Journey?>.seeded(null);
     journeyPositionSubject = BehaviorSubject<JourneyPositionModel>.seeded(JourneyPositionModel());
-    journeySettingsSubject = BehaviorSubject<JourneySettings>.seeded(JourneySettings());
+    journeySettingsSubject = BehaviorSubject<JourneySettings>.seeded(
+      JourneySettings(
+        initialBreakSeries: initialBreakSeries,
+      ),
+    );
     when(mockJourneyTableViewModel.journey).thenAnswer((_) => journeySubject.stream);
     when(mockJourneyPositionViewModel.model).thenAnswer((_) => journeyPositionSubject.stream);
     when(mockJourneyPositionViewModel.modelValue).thenAnswer((_) => journeyPositionSubject.value);

@@ -6,6 +6,7 @@ import 'package:app/pages/journey/journey_screen/detail_modal/break_load_slip_mo
 import 'package:app/pages/journey/journey_screen/detail_modal/detail_modal_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/model/journey_settings.dart';
@@ -29,6 +30,7 @@ class BreakLoadSlipViewModel extends JourneyAwareViewModel {
     required FormationRepository formationRepository,
     required JourneyPositionViewModel journeyPositionViewModel,
     required JourneySettingsViewModel journeySettingsViewModel,
+    required NotificationPriorityQueueViewModel notificationViewModel,
     DetailModalViewModel? detailModalViewModel,
     ConnectivityManager? connectivityManager,
     bool checkForUpdates = false,
@@ -36,6 +38,7 @@ class BreakLoadSlipViewModel extends JourneyAwareViewModel {
   }) : _formationRepository = formationRepository,
        _journeyPositionViewModel = journeyPositionViewModel,
        _journeySettingsViewModel = journeySettingsViewModel,
+       _notificationViewModel = notificationViewModel,
        _detailModalViewModel = detailModalViewModel,
        _connectivityManager = connectivityManager,
        _checkForUpdates = checkForUpdates {
@@ -46,6 +49,7 @@ class BreakLoadSlipViewModel extends JourneyAwareViewModel {
   final JourneyPositionViewModel _journeyPositionViewModel;
   final DetailModalViewModel? _detailModalViewModel;
   final JourneySettingsViewModel _journeySettingsViewModel;
+  final NotificationPriorityQueueViewModel _notificationViewModel;
   final ConnectivityManager? _connectivityManager;
   final bool _checkForUpdates;
 
@@ -130,11 +134,11 @@ class BreakLoadSlipViewModel extends JourneyAwareViewModel {
             _emitFormationRun();
 
             if (formationChanged) {
+              _notificationViewModel.insert(
+                type: .newBreakLoadSlip,
+                callback: _checkForUpdates ? _breakSlipUpdatedSound.play : null,
+              );
               _rxFormationChanged.add(true);
-
-              if (_checkForUpdates) {
-                _breakSlipUpdatedSound.play();
-              }
             }
           });
     }
@@ -175,13 +179,13 @@ class BreakLoadSlipViewModel extends JourneyAwareViewModel {
     return currentFormation.formationRuns.reversed.firstWhere((it) {
       final startServicePoint = _resolveServicePoint(it.tafTapLocationReferenceStart);
       final endServicePoint = _resolveServicePoint(it.tafTapLocationReferenceEnd);
+      final currentPositionOrder = position.currentPosition!.order;
       if (startServicePoint != null && endServicePoint != null) {
-        return position.currentPosition!.order >= startServicePoint.order &&
-            position.currentPosition!.order <= endServicePoint.order;
+        return currentPositionOrder >= startServicePoint.order && currentPositionOrder <= endServicePoint.order;
       } else if (startServicePoint != null) {
-        return position.currentPosition!.order >= startServicePoint.order;
+        return currentPositionOrder >= startServicePoint.order;
       } else if (endServicePoint != null) {
-        return position.currentPosition!.order <= endServicePoint.order;
+        return currentPositionOrder <= endServicePoint.order;
       }
       return false;
     }, orElse: () => currentFormation.formationRuns.first);
@@ -204,9 +208,15 @@ class BreakLoadSlipViewModel extends JourneyAwareViewModel {
   bool get isActiveFormationRun => _calculateActiveFormationRun() == formationRunValue?.formationRun;
 
   bool isJourneyAndActiveFormationRunBreakSeriesDifferent() {
-    final selectedBreakSeries = _journeySettingsViewModel.modelValue.resolvedBreakSeries(lastJourney?.metadata);
+    final selectedBreakSeries = _journeySettingsViewModel.modelValue.currentBreakSeries;
     final formationRunBreakSeries = _resolveBreakSeries(formationRunValue?.formationRun);
     return formationRunBreakSeries != null && formationRunBreakSeries != selectedBreakSeries;
+  }
+
+  bool canApplyActiveFormationRunBreakSeriesToJourney() {
+    final formationRunBreakSeries = _resolveBreakSeries(formationRunValue?.formationRun);
+    return isJourneyAndActiveFormationRunBreakSeriesDifferent() &&
+        lastJourney?.metadata.availableBreakSeries.contains(formationRunBreakSeries) == true;
   }
 
   void updateJourneyBreakSeriesFromActiveFormationRun() {
@@ -280,6 +290,7 @@ class BreakLoadSlipViewModel extends JourneyAwareViewModel {
     if (_openFullscreen || formationChangedValue) {
       context.router.push(BreakLoadSlipRoute());
       _changeOpenFullscreenFlag(false);
+      _notificationViewModel.remove(type: .newBreakLoadSlip);
       _rxFormationChanged.add(false);
     } else {
       _detailModalViewModel?.open(BreakLoadSlipModalBuilder(), maximize: false);

@@ -2,6 +2,7 @@ import 'package:app/pages/journey/break_load_slip/break_load_slip_view_model.dar
 import 'package:app/pages/journey/journey_screen/detail_modal/detail_modal_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
 import 'package:app/pages/journey/view_model/model/journey_settings.dart';
@@ -26,6 +27,7 @@ import 'break_load_slip_view_model_test.mocks.dart';
   MockSpec<FormationRepository>(),
   MockSpec<JourneyPositionViewModel>(),
   MockSpec<JourneySettingsViewModel>(),
+  MockSpec<NotificationPriorityQueueViewModel>(),
   MockSpec<BuildContext>(),
   MockSpec<StackRouter>(),
   MockSpec<StackRouterScope>(),
@@ -40,6 +42,7 @@ void main() {
   late MockFormationRepository mockFormationRepository;
   late MockJourneyPositionViewModel mockJourneyPositionViewModel;
   late MockJourneySettingsViewModel mockJourneySettingsViewModel;
+  late MockNotificationPriorityQueueViewModel mockNotificationViewModel;
   late MockDetailModalViewModel mockDetailModalViewModel;
   late MockConnectivityManager mockConnectivityManager;
   late MockBuildContext mockBuildContext;
@@ -51,7 +54,7 @@ void main() {
   late BehaviorSubject<Formation?> formationSubject;
   late BehaviorSubject<bool> connectivitySubject;
   late DASSounds mockDasSounds;
-  late Sound mockBreakSlipUpdatedSound;
+  late Sound mockSound;
 
   final trainIdentification = TrainIdentification(
     ru: RailwayUndertaking.fromCompanyCode('2185'),
@@ -74,10 +77,14 @@ void main() {
     trainCategoryCode: 'A',
     brakedWeightPercentage: 75,
   );
-  final formationRun3 = _generateFormationRun('CH00003', 'CH00004');
+  final formationRun3 = _generateFormationRun('CH00003', 'CH00004', trainCategoryCode: 'N', brakedWeightPercentage: 50);
 
   final journey = Journey(
-    metadata: Metadata(trainIdentification: trainIdentification, breakSeries: breakSeries),
+    metadata: Metadata(
+      trainIdentification: trainIdentification,
+      breakSeries: breakSeries,
+      availableBreakSeries: {BreakSeries(trainSeries: TrainSeries.N, breakSeries: 50)},
+    ),
     data: [
       ServicePoint(
         name: 'A',
@@ -119,6 +126,7 @@ void main() {
     mockFormationRepository = MockFormationRepository();
     mockJourneyPositionViewModel = MockJourneyPositionViewModel();
     mockDetailModalViewModel = MockDetailModalViewModel();
+    mockNotificationViewModel = MockNotificationPriorityQueueViewModel();
     mockBuildContext = MockBuildContext();
     mockStackRouter = MockStackRouter();
     mockStackRouterScope = MockStackRouterScope();
@@ -126,7 +134,9 @@ void main() {
 
     mockJourneySettingsViewModel = MockJourneySettingsViewModel();
     journeySubject = BehaviorSubject<Journey?>();
-    settingsSubject = BehaviorSubject.seeded(JourneySettings());
+    settingsSubject = BehaviorSubject.seeded(
+      JourneySettings(initialBreakSeries: breakSeries),
+    );
     positionSubject = BehaviorSubject.seeded(JourneyPositionModel());
     formationSubject = BehaviorSubject<Formation?>();
     connectivitySubject = BehaviorSubject.seeded(true);
@@ -148,9 +158,9 @@ void main() {
     when(mockStackRouterScope.controller).thenReturn(mockStackRouter);
 
     mockDasSounds = MockDASSounds();
-    mockBreakSlipUpdatedSound = MockSound();
+    mockSound = MockSound();
 
-    when(mockDasSounds.breakSlipUpdated).thenReturn(mockBreakSlipUpdatedSound);
+    when(mockDasSounds.breakSlipUpdated).thenReturn(mockSound);
     GetIt.I.registerSingleton<DASSounds>(mockDasSounds);
 
     when(mockBuildContext.findAncestorWidgetOfExactType()).thenReturn(mockStackRouterScope);
@@ -161,6 +171,7 @@ void main() {
       formationRepository: mockFormationRepository,
       journeyPositionViewModel: mockJourneyPositionViewModel,
       journeySettingsViewModel: mockJourneySettingsViewModel,
+      notificationViewModel: mockNotificationViewModel,
       detailModalViewModel: mockDetailModalViewModel,
       connectivityManager: mockConnectivityManager,
       checkForUpdates: true,
@@ -168,6 +179,7 @@ void main() {
   });
 
   tearDown(() {
+    reset(mockNotificationViewModel);
     GetIt.I.reset();
   });
 
@@ -343,6 +355,55 @@ void main() {
     );
   });
 
+  test('canApplyActiveFormationRunBreakSeriesToJourney_whenBreakSeriesIsSame_returnsFalse', () async {
+    // ACT
+    journeySubject.add(journey);
+    formationSubject.add(formation);
+
+    await processStreams();
+
+    expect(
+      testee.canApplyActiveFormationRunBreakSeriesToJourney(),
+      isFalse,
+    );
+  });
+
+  test('canApplyActiveFormationRunBreakSeriesToJourney_whenBreakSeriesIsDifferentButNotPresent_returnsFalse', () async {
+    // ACT
+    journeySubject.add(journey);
+    formationSubject.add(formation);
+
+    await processStreams();
+
+    final position = JourneyPositionModel(currentPosition: journey.data.whereType<ServicePoint>().elementAt(1));
+    positionSubject.add(position);
+
+    await processStreams();
+
+    expect(
+      testee.canApplyActiveFormationRunBreakSeriesToJourney(),
+      isFalse,
+    );
+  });
+
+  test('canApplyActiveFormationRunBreakSeriesToJourney_whenBreakSeriesIsDifferentAndPresent_returnsTrue', () async {
+    // ACT
+    journeySubject.add(journey);
+    formationSubject.add(formation);
+
+    await processStreams();
+
+    final position = JourneyPositionModel(currentPosition: journey.data.whereType<ServicePoint>().elementAt(2));
+    positionSubject.add(position);
+
+    await processStreams();
+
+    expect(
+      testee.canApplyActiveFormationRunBreakSeriesToJourney(),
+      isTrue,
+    );
+  });
+
   test('updateJourneyBreakSeriesFromActiveFormationRun_updatesJourneyTableViewModelBreakSeries', () async {
     // ACT
     journeySubject.add(journey);
@@ -413,7 +474,7 @@ void main() {
 
     await processStreams();
 
-    verify(mockBreakSlipUpdatedSound.play()).called(1);
+    verify(mockNotificationViewModel.insert(type: .newBreakLoadSlip, callback: mockSound.play)).called(1);
 
     testee.dispose();
   });
@@ -428,6 +489,7 @@ void main() {
         journeySettingsViewModel: mockJourneySettingsViewModel,
         detailModalViewModel: mockDetailModalViewModel,
         connectivityManager: mockConnectivityManager,
+        notificationViewModel: mockNotificationViewModel,
         checkForUpdates: true,
       );
 

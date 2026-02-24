@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/advised_speed_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
 import 'package:app/sound/das_sounds.dart';
 import 'package:app/sound/sound.dart';
@@ -17,8 +19,9 @@ final _log = Logger('AdvisedSpeedViewModel');
 class AdvisedSpeedViewModel extends JourneyAwareViewModel {
   AdvisedSpeedViewModel({
     required Stream<JourneyPositionModel> journeyPositionStream,
+    required NotificationPriorityQueueViewModel notificationVM,
     super.journeyTableViewModel,
-  }) {
+  }) : _notificationVM = notificationVM {
     _initJourneyStreamSubscription(journeyTableViewModel.journey, journeyPositionStream);
   }
 
@@ -29,6 +32,8 @@ class AdvisedSpeedViewModel extends JourneyAwareViewModel {
   final _endOrCancelDisplaySeconds = DI.get<TimeConstants>().advisedSpeedEndDisplaySeconds;
 
   Timer? _setToInactiveTimer;
+
+  final NotificationPriorityQueueViewModel _notificationVM;
 
   StreamSubscription<(Journey?, JourneyPositionModel)>? _journeySubscription;
 
@@ -103,24 +108,26 @@ class AdvisedSpeedViewModel extends JourneyAwareViewModel {
       _emitModelWithTimerAndSounds(AdvisedSpeedModel.active(segment: activeSegment));
 
   void _emitModelWithTimerAndSounds(AdvisedSpeedModel updatedModel) {
-    _playSoundsIfNecessary(updatedModel);
+    final soundCallback = _getSoundsCallback(updatedModel);
     _resetTimerIfNecessary(updatedModel);
 
+    _addToNotificationVM(updatedModel, soundCallback);
     _rxModel.add(updatedModel);
   }
 
-  Future<void> _playSoundsIfNecessary(AdvisedSpeedModel updatedModel) async {
+  VoidCallback? _getSoundsCallback(AdvisedSpeedModel updatedModel) {
     // play sounds if:
     // * Inactive / End / Cancel => Active  [Start sound]
     // * Active => End / Cancel [End Sound]
     // * Active => Active (different segment) [Start sound]
     final currentModel = modelValue;
 
-    if (currentModel is! Active && updatedModel is Active) return _startSound.play();
-    if (currentModel is! Active) return;
+    if (currentModel is! Active && updatedModel is Active) return _startSound.play;
+    if (currentModel is! Active) return null;
 
-    if (updatedModel is Cancel || updatedModel is End) return _endSound.play();
-    if (updatedModel is Active && updatedModel != currentModel) return _startSound.play();
+    if (updatedModel is Cancel || updatedModel is End) return _endSound.play;
+    if (updatedModel is Active && updatedModel != currentModel) return _startSound.play;
+    return null;
   }
 
   void _resetTimerIfNecessary(AdvisedSpeedModel updatedModel) {
@@ -134,6 +141,7 @@ class AdvisedSpeedViewModel extends JourneyAwareViewModel {
     _setToInactiveTimer = Timer(Duration(seconds: _endOrCancelDisplaySeconds), () {
       _log.fine('Timer reached: Setting AdvisedSpeedModel to inactive.');
       _rxModel.add(AdvisedSpeedModel.inactive());
+      _notificationVM.remove(type: .advisedSpeed);
     });
   }
 
@@ -149,5 +157,13 @@ class AdvisedSpeedViewModel extends JourneyAwareViewModel {
     _setToInactiveTimer?.cancel();
     _journeySubscription?.cancel();
     _rxModel.close();
+  }
+
+  void _addToNotificationVM(AdvisedSpeedModel updatedModel, VoidCallback? soundCallback) {
+    if (updatedModel is Inactive) {
+      _notificationVM.remove(type: .advisedSpeed);
+    } else {
+      _notificationVM.insert(type: .advisedSpeed, callback: soundCallback);
+    }
   }
 }

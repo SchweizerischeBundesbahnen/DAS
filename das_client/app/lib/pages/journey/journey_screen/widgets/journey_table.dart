@@ -36,18 +36,20 @@ import 'package:app/pages/journey/journey_screen/widgets/table/service_point_row
 import 'package:app/pages/journey/journey_screen/widgets/table/shunting_movement_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/signal_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/speed_change_row.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/train_driver_turnover_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/tram_area_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/uncoded_operational_indication_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/whistle_row.dart';
+import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
 import 'package:app/pages/journey/view_model/model/journey_settings.dart';
-import 'package:app/pages/settings/user_settings.dart';
+import 'package:app/provider/user_settings.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:app/widgets/table/das_table_column.dart';
-import 'package:app/widgets/table/das_table_row.dart';
+import 'package:app/widgets/table/row/das_table_row_builder.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -152,15 +154,18 @@ class JourneyTable extends StatelessWidget {
     Map<int, CollapsedState> collapsedRows,
     JourneyPositionModel journeyPosition,
   ) {
-    final currentBreakSeries = settings.resolvedBreakSeries(journey.metadata);
+    final currentBreakSeries = settings.currentBreakSeries;
+    final navigationVM = DI.get<JourneyNavigationViewModel>();
 
     final rows = journey.data
         .whereNot((it) => _isCurvePointWithoutSpeed(it, journey, settings))
+        .hideJourneyPointsThatShouldNotBeDisplayed()
         .groupBaliseAndLevelCrossings(settings.expandedGroups, journey.metadata)
         .hideCommunicationNetworkChangesWithSameTypeAsPreviousOrIsServicePoint()
         .hideRepeatedLineFootNotes(journeyPosition.currentPosition)
         .hideFootNotesForNotSelectedTrainSeries(currentBreakSeries?.trainSeries)
         .combineFootNoteAndOperationalIndication()
+        .addTrainDriverTurnoverRows(navigationVM.modelValue?.trainIdentification)
         .sorted((a1, a2) => a1.compareTo(a2));
 
     final groupedRows = rows
@@ -352,6 +357,12 @@ class JourneyTable extends StatelessWidget {
             data: rowData as ShuntingMovement,
             rowIndex: index,
           );
+        case Datatype.trainDriverTurnover:
+          return TrainDriverTurnoverRow(
+            metadata: journey.metadata,
+            data: rowData as TrainDriverTurnover,
+            rowIndex: index,
+          );
       }
     });
   }
@@ -362,7 +373,7 @@ class JourneyTable extends StatelessWidget {
     JourneySettings? settings,
     DetailModalType? openModalType,
   ) {
-    final currentBreakSeries = settings?.resolvedBreakSeries(metadata);
+    final currentBreakSeries = settings?.currentBreakSeries;
 
     final journeyViewModel = context.read<JourneyTableViewModel>();
     final timeViewModel = context.read<ArrivalDepartureTimeViewModel>();
@@ -404,7 +415,7 @@ class JourneyTable extends StatelessWidget {
                   : context.l10n.p_journey_table_time_label_planned,
             ),
           ),
-          width: 100.0,
+          width: 110.0,
           onTap: () {
             final viewModel = context.read<ArrivalDepartureTimeViewModel>();
             viewModel.toggleOperationalTime();
@@ -426,9 +437,10 @@ class JourneyTable extends StatelessWidget {
         id: ColumnDefinition.localSpeed.index,
         child: Text(context.l10n.p_journey_table_graduated_speed_label),
         width: 100.0,
-        border: BorderDirectional(
-          bottom: BorderSide(color: ThemeUtil.getDASTableBorderColor(context), width: 1.0),
-          end: BorderSide(color: ThemeUtil.getDASTableBorderColor(context), width: 2.0),
+        decoration: DASTableColumnDecoration(
+          border: Border(
+            right: BorderSide(color: ThemeUtil.getDASTableBorderColor(context), width: 2.0),
+          ),
         ),
       ),
       DASTableColumn(
@@ -453,9 +465,9 @@ class JourneyTable extends StatelessWidget {
     return StreamBuilder(
       stream: breakLoadSlipVM.formationRun,
       initialData: breakLoadSlipVM.formationRunValue,
-      builder: (context, snapshot) {
+      builder: (context, _) {
         return breakLoadSlipVM.isJourneyAndActiveFormationRunBreakSeriesDifferent()
-            ? _brakedWeightHeaderNotification(currentBreakSeries)
+            ? _brakedWeightHeaderNotification(context, currentBreakSeries)
             : Text(
                 currentBreakSeries?.name ?? '??',
                 style: sbbTextStyle.lightStyle.small,
@@ -464,7 +476,7 @@ class JourneyTable extends StatelessWidget {
     );
   }
 
-  Stack _brakedWeightHeaderNotification(BreakSeries? currentBreakSeries) {
+  Stack _brakedWeightHeaderNotification(BuildContext context, BreakSeries? currentBreakSeries) {
     return Stack(
       key: differentBreakSeriesWarningKey,
       clipBehavior: Clip.none,
@@ -494,7 +506,10 @@ class JourneyTable extends StatelessWidget {
                   currentBreakSeries?.name ?? '??',
                   style: sbbTextStyle.boldStyle.small,
                 ),
-                SvgPicture.asset(AppAssets.iconSignExclamationPoint),
+                SvgPicture.asset(
+                  AppAssets.iconSignExclamationPoint,
+                  colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
+                ),
               ],
             ),
           ),
@@ -527,7 +542,7 @@ class JourneyTable extends StatelessWidget {
       constraints: BoxConstraints(),
       child: BreakSeriesSelection(
         availableBreakSeries: metadata?.availableBreakSeries ?? {},
-        selectedBreakSeries: settings?.resolvedBreakSeries(metadata),
+        selectedBreakSeries: settings?.currentBreakSeries,
       ),
     );
 
@@ -535,7 +550,7 @@ class JourneyTable extends StatelessWidget {
   }
 
   bool _isCurvePointWithoutSpeed(BaseData data, Journey journey, JourneySettings settings) {
-    final breakSeries = settings.resolvedBreakSeries(journey.metadata);
+    final breakSeries = settings.currentBreakSeries;
 
     return data is CurvePoint &&
         data.localSpeeds?.speedFor(breakSeries?.trainSeries, breakSeries: breakSeries?.breakSeries) == null;

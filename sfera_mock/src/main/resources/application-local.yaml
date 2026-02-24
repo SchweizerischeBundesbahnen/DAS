@@ -6,3 +6,8 @@ spring:
     import: optional:file:./sfera_mock/.env[.properties]
 
 localregulations.path: sfera_mock/src/main/resources/localregulations.json
+
+db:
+  url: ''
+  user: ''
+  password: ''

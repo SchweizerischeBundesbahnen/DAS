@@ -37,7 +37,7 @@ class ReplacementSeriesViewModel extends JourneyAwareViewModel {
 
   void _journeyUpdated(Journey? journey) {
     _latestJourney = journey;
-    final currentBreakSeries = _journeySettingsViewModel.modelValue.resolvedBreakSeries(_latestJourney?.metadata);
+    final currentBreakSeries = _journeySettingsViewModel.modelValue.currentBreakSeries;
     _calculateIllegalSpeedSegments(currentBreakSeries);
     _calculateActiveSegmentAndUpdateState();
   }
@@ -53,9 +53,7 @@ class ReplacementSeriesViewModel extends JourneyAwareViewModel {
   void _initSettingsSubscription() {
     _subscriptions.add(
       _journeySettingsViewModel.model.listen((settings) {
-        _calculateIllegalSpeedSegments(
-          settings.resolvedBreakSeries(_latestJourney?.metadata),
-        );
+        _calculateIllegalSpeedSegments(settings.currentBreakSeries);
 
         final currentModelValue = modelValue;
         if (currentModelValue is ReplacementSeriesAvailable) {
@@ -128,12 +126,10 @@ class ReplacementSeriesViewModel extends JourneyAwareViewModel {
         (it) => it.start.order <= currentPosition.order && it.end.order > currentPosition.order,
       );
 
-  ///
   /// Checks every journey point for illegal speeds in either line speeds or local speeds.
   /// If an illegal speed is found, a new [IllegalSpeedSegment] is started.
   /// [IllegalSpeedSegment] are always constructed from [ServicePoint] to [ServicePoint].
   /// A Replacement [BreakSeries] that is valid for all journey points is calculated.
-  ///
   void _calculateIllegalSpeedSegments(BreakSeries? breakSeries) {
     final journey = _latestJourney;
     _illegalSpeedSegments = [];
@@ -145,7 +141,6 @@ class ReplacementSeriesViewModel extends JourneyAwareViewModel {
     ServicePoint? latestServicePoint;
 
     ServicePoint? startServicePoint;
-    var hasIllegalLineSpeed = false;
     final List<Iterable<TrainSeriesSpeed>> relevantSpeeds = [];
 
     final journeyPoints = journey.journeyPoints;
@@ -154,16 +149,12 @@ class ReplacementSeriesViewModel extends JourneyAwareViewModel {
 
       // Check line speed
       final lineSpeeds = journey.metadata.lineSpeeds[point.order];
-      if (lineSpeeds != null) {
-        hasIllegalLineSpeed = _hasIllegalSpeedFor(lineSpeeds, breakSeries);
-      }
+      final hasIllegalLineSpeed = lineSpeeds != null ? _hasIllegalSpeedFor(lineSpeeds, breakSeries) : false;
 
       // Check local speed
       final hasIllegalLocalSpeed = point.localSpeeds != null && _hasIllegalSpeedFor(point.localSpeeds!, breakSeries);
 
-      final hasIllegalSpeed = hasIllegalLineSpeed || hasIllegalLocalSpeed;
-
-      if (hasIllegalSpeed) {
+      if (hasIllegalLineSpeed || hasIllegalLocalSpeed) {
         startServicePoint ??= latestServicePoint;
 
         if (point.localSpeeds != null) {
@@ -175,11 +166,7 @@ class ReplacementSeriesViewModel extends JourneyAwareViewModel {
       } else if (startServicePoint != null) {
         // end of illegal segment
         final endServicePoint = servicePoints.firstWhereOrNull((it) => it.order >= point.order) ?? servicePoints.last;
-        final replacement = _replacementSeriesFor(
-          relevantSpeeds,
-          breakSeries,
-          journey.metadata.availableBreakSeries,
-        );
+        final replacement = _replacementSeriesFor(relevantSpeeds, breakSeries, journey.metadata.availableBreakSeries);
 
         _illegalSpeedSegments.add(
           IllegalSpeedSegment(
