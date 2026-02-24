@@ -10,11 +10,12 @@ class DraftAdvisedSpeedSegment implements Comparable<DraftAdvisedSpeedSegment> {
     this.speed,
     int? startOrder,
     int? endOrder,
-    this.additionalHints = const <AdvisedSpeedSegmentHint>{},
+    Set<AdvisedSpeedSegmentHint> additionalHints = const <AdvisedSpeedSegmentHint>{},
   }) : _startOrder = startOrder,
        _endOrder = endOrder,
        _nextSegmentStartOrder = nextSegmentStartOrder,
-       _previousSegmentEndOrder = previousSegmentEndOrder;
+       _previousSegmentEndOrder = previousSegmentEndOrder,
+       additionalHints = {...additionalHints};
 
   int? _startOrder;
   int? _endOrder;
@@ -29,7 +30,7 @@ class DraftAdvisedSpeedSegment implements Comparable<DraftAdvisedSpeedSegment> {
   bool _isStartAmended = false;
   bool _isEndAmended = false;
 
-  Set<AdvisedSpeedSegmentHint> additionalHints = {};
+  Set<AdvisedSpeedSegmentHint> additionalHints;
 
   bool get startsWithSegment => _startOrder == null;
 
