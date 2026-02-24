@@ -5,34 +5,34 @@ import '../app_test.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('test breaking series defaults to ??', (tester) async {
+  testWidgets('test brake series defaults to ??', (tester) async {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T6');
 
-    final breakingSeriesHeaderCell = find.byKey(JourneyTable.breakingSeriesHeaderKey);
-    expect(breakingSeriesHeaderCell, findsOneWidget);
-    expect(find.descendant(of: breakingSeriesHeaderCell, matching: find.text('??')), findsOneWidget);
+    final brakeSeriesHeaderCell = find.byKey(JourneyTable.brakeSeriesHeaderKey);
+    expect(brakeSeriesHeaderCell, findsOneWidget);
+    expect(find.descendant(of: brakeSeriesHeaderCell, matching: find.text('??')), findsOneWidget);
 
     await disconnect(tester);
   });
 
-  testWidgets('test default breaking series is taken from train characteristics (R115)', (tester) async {
+  testWidgets('test default brake series is taken from train characteristics (R115)', (tester) async {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T5');
 
-    final breakingSeriesHeaderCell = find.byKey(JourneyTable.breakingSeriesHeaderKey);
-    expect(breakingSeriesHeaderCell, findsOneWidget);
-    expect(find.descendant(of: breakingSeriesHeaderCell, matching: find.text('R115')), findsOneWidget);
+    final brakeSeriesHeaderCell = find.byKey(JourneyTable.brakeSeriesHeaderKey);
+    expect(brakeSeriesHeaderCell, findsOneWidget);
+    expect(find.descendant(of: brakeSeriesHeaderCell, matching: find.text('R115')), findsOneWidget);
 
     await disconnect(tester);
   });
 
-  testWidgets('test all breakseries options are displayed', (tester) async {
+  testWidgets('test all brake series options are displayed', (tester) async {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T5');
 
-    // Open break series bottom sheet
-    await tapElement(tester, find.byKey(JourneyTable.breakingSeriesHeaderKey));
+    // Open brake series bottom sheet
+    await tapElement(tester, find.byKey(JourneyTable.brakeSeriesHeaderKey));
 
     final expectedCategories = {'R', 'A', 'D'};
 
@@ -66,14 +66,14 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test message when no breakseries are defined', (tester) async {
+  testWidgets('test message when no brake series are defined', (tester) async {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T4');
 
-    // Open break series bottom sheet
-    await tapElement(tester, find.byKey(JourneyTable.breakingSeriesHeaderKey));
+    // Open brake series bottom sheet
+    await tapElement(tester, find.byKey(JourneyTable.brakeSeriesHeaderKey));
 
-    expect(find.text(l10n.p_journey_break_series_empty), findsOneWidget);
+    expect(find.text(l10n.p_journey_brake_series_empty), findsOneWidget);
 
     await disconnect(tester);
   });

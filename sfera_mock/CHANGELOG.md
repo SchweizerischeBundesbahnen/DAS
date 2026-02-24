@@ -37,7 +37,7 @@
 
 ### Features
 
-* add break- and loadslip ([#692](https://github.com/SchweizerischeBundesbahnen/DAS/issues/692)) ([#1506](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1506)) ([19ee997](https://github.com/SchweizerischeBundesbahnen/DAS/commit/19ee997dad58e2f1cc6bca12736ed05c4a2e2f55))
+* add brake- and loadslip ([#692](https://github.com/SchweizerischeBundesbahnen/DAS/issues/692)) ([#1506](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1506)) ([19ee997](https://github.com/SchweizerischeBundesbahnen/DAS/commit/19ee997dad58e2f1cc6bca12736ed05c4a2e2f55))
 * add power grid overload notification ([#244](https://github.com/SchweizerischeBundesbahnen/DAS/issues/244)) ([#1556](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1556)) ([db1c2a2](https://github.com/SchweizerischeBundesbahnen/DAS/commit/db1c2a2a6f9a738215d1c7522d0771eb5a11aab0))
 * added departure dispatch notification ([#124](https://github.com/SchweizerischeBundesbahnen/DAS/issues/124)) ([#1551](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1551)) ([74682a4](https://github.com/SchweizerischeBundesbahnen/DAS/commit/74682a4eefce92584a46560c5e290a3f86f1878d))
 * summarize graded curve speeds ([#584](https://github.com/SchweizerischeBundesbahnen/DAS/issues/584)) ([#1489](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1489)) ([c3aa807](https://github.com/SchweizerischeBundesbahnen/DAS/commit/c3aa8073852ee7ca713fb1f930b8fd800120457b))
@@ -361,7 +361,7 @@
 * backend base with logging api ([#282](https://github.com/SchweizerischeBundesbahnen/DAS/issues/282)) ([dc29b19](https://github.com/SchweizerischeBundesbahnen/DAS/commit/dc29b19d19d662e5053afbdd90ee01aecc4a23c0))
 * implement anschlussgleise, anschlussweichen und Zahnstangen ([#136](https://github.com/SchweizerischeBundesbahnen/DAS/issues/136)) ([#447](https://github.com/SchweizerischeBundesbahnen/DAS/issues/447)) ([aee3fe1](https://github.com/SchweizerischeBundesbahnen/DAS/commit/aee3fe1ebf226a16198e76f425fd247374a998de))
 * implement betriebspunktabfolge ([#388](https://github.com/SchweizerischeBundesbahnen/DAS/issues/388)) ([9f36786](https://github.com/SchweizerischeBundesbahnen/DAS/commit/9f367865190ffc91cc492891a84a9fa24f0c3a1a))
-* implement break series selection and speed display ([#89](https://github.com/SchweizerischeBundesbahnen/DAS/issues/89)) ([#469](https://github.com/SchweizerischeBundesbahnen/DAS/issues/469)) ([cd84c85](https://github.com/SchweizerischeBundesbahnen/DAS/commit/cd84c854df7dbf001294317e28673b4301a7075b))
+* implement brake series selection and speed display ([#89](https://github.com/SchweizerischeBundesbahnen/DAS/issues/89)) ([#469](https://github.com/SchweizerischeBundesbahnen/DAS/issues/469)) ([cd84c85](https://github.com/SchweizerischeBundesbahnen/DAS/commit/cd84c854df7dbf001294317e28673b4301a7075b))
 * implement protection section ([#407](https://github.com/SchweizerischeBundesbahnen/DAS/issues/407)) ([731b2ad](https://github.com/SchweizerischeBundesbahnen/DAS/commit/731b2ad7b7ccdf66622d411165640a8df4e51559))
 * mock sfera communication and add example JP and SP ([#323](https://github.com/SchweizerischeBundesbahnen/DAS/issues/323)) ([d44a434](https://github.com/SchweizerischeBundesbahnen/DAS/commit/d44a43469a722e6381465358c0308c58174433ed))
 * passing or stopping point information ([#386](https://github.com/SchweizerischeBundesbahnen/DAS/issues/386)) ([fc564a3](https://github.com/SchweizerischeBundesbahnen/DAS/commit/fc564a3f07ec6d4984f52995b718863fcfa38e88))

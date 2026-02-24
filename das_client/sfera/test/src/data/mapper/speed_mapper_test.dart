@@ -46,7 +46,7 @@ void main() {
       // EXPECT
       expect(result, isNotEmpty);
       expect(result?.first.trainSeries, TrainSeries.A);
-      expect(result?.first.breakSeries, 1);
+      expect(result?.first.brakeSeries, 1);
       expect((result?.first.speed as SingleSpeed).value, '50');
       expect(result?.first.reduced, false);
     });

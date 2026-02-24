@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
-import 'package:app/pages/journey/break_load_slip/break_load_slip_view_model.dart';
+import 'package:app/pages/journey/brake_load_slip/brake_load_slip_view_model.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/additional_speed_restriction_modal/additional_speed_restriction_modal_view_model.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/detail_modal_view_model.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/service_point_modal/service_point_modal_view_model.dart';
@@ -12,7 +12,7 @@ import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_vie
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_table_advancement_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
-import 'package:app/pages/journey/journey_screen/widgets/break_series_selection.dart';
+import 'package:app/pages/journey/journey_screen/widgets/brake_series_selection.dart';
 import 'package:app/pages/journey/journey_screen/widgets/chevron_animation_wrapper.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/additional_speed_restriction_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/balise_level_crossing_group_row.dart';
@@ -62,8 +62,8 @@ class JourneyTable extends StatelessWidget {
   const JourneyTable({super.key});
 
   static const Key loadedJourneyTableKey = Key('loadedJourneyTable');
-  static const Key breakingSeriesHeaderKey = Key('breakingSeriesHeader');
-  static const Key differentBreakSeriesWarningKey = Key('differentBreakSeriesWarning');
+  static const Key brakeSeriesHeaderKey = Key('brakeSeriesHeader');
+  static const Key differentBrakeSeriesWarningKey = Key('differentBrakeSeriesWarning');
 
   @override
   Widget build(BuildContext context) {
@@ -154,7 +154,7 @@ class JourneyTable extends StatelessWidget {
     Map<int, CollapsedState> collapsedRows,
     JourneyPositionModel journeyPosition,
   ) {
-    final currentBreakSeries = settings.currentBreakSeries;
+    final currentBrakeSeries = settings.currentBrakeSeries;
     final navigationVM = DI.get<JourneyNavigationViewModel>();
 
     final rows = journey.data
@@ -163,7 +163,7 @@ class JourneyTable extends StatelessWidget {
         .groupBaliseAndLevelCrossings(settings.expandedGroups, journey.metadata)
         .hideCommunicationNetworkChangesWithSameTypeAsPreviousOrIsServicePoint()
         .hideRepeatedLineFootNotes(journeyPosition.currentPosition)
-        .hideFootNotesForNotSelectedTrainSeries(currentBreakSeries?.trainSeries)
+        .hideFootNotesForNotSelectedTrainSeries(currentBrakeSeries?.trainSeries)
         .combineFootNoteAndOperationalIndication()
         .addTrainDriverTurnoverRows(navigationVM.modelValue?.trainIdentification)
         .sorted((a1, a2) => a1.compareTo(a2));
@@ -185,7 +185,7 @@ class JourneyTable extends StatelessWidget {
           rows,
           journey.metadata,
           index,
-          currentBreakSeries,
+          currentBrakeSeries,
         ),
         bracketStationRenderData: BracketStationRenderData.from(rowData, journey.metadata),
         chevronAnimationData: ChevronAnimationData.from(
@@ -193,7 +193,7 @@ class JourneyTable extends StatelessWidget {
           journeyPosition,
           journey.metadata,
           rowData,
-          currentBreakSeries,
+          currentBrakeSeries,
           settings.expandedGroups,
         ),
       );
@@ -373,7 +373,7 @@ class JourneyTable extends StatelessWidget {
     JourneySettings? settings,
     DetailModalType? openModalType,
   ) {
-    final currentBreakSeries = settings?.currentBreakSeries;
+    final currentBrakeSeries = settings?.currentBrakeSeries;
 
     final journeyViewModel = context.read<JourneyTableViewModel>();
     final timeViewModel = context.read<ArrivalDepartureTimeViewModel>();
@@ -445,11 +445,11 @@ class JourneyTable extends StatelessWidget {
       ),
       DASTableColumn(
         id: ColumnDefinition.brakedWeightSpeed.index,
-        child: _brakedWeightSpeedHeader(context, currentBreakSeries),
+        child: _brakedWeightSpeedHeader(context, currentBrakeSeries),
         padding: EdgeInsets.zero,
         width: 62.0,
-        onTap: () => _onBreakSeriesTap(context, metadata, settings),
-        headerKey: breakingSeriesHeaderKey,
+        onTap: () => _onBrakeSeriesTap(context, metadata, settings),
+        headerKey: brakeSeriesHeaderKey,
       ),
       DASTableColumn(
         id: ColumnDefinition.advisedSpeed.index,
@@ -459,26 +459,26 @@ class JourneyTable extends StatelessWidget {
     ];
   }
 
-  Widget _brakedWeightSpeedHeader(BuildContext context, BreakSeries? currentBreakSeries) {
-    final breakLoadSlipVM = context.read<BreakLoadSlipViewModel>();
+  Widget _brakedWeightSpeedHeader(BuildContext context, BrakeSeries? currentBrakeSeries) {
+    final brakeLoadSlipVM = context.read<BrakeLoadSlipViewModel>();
 
     return StreamBuilder(
-      stream: breakLoadSlipVM.formationRun,
-      initialData: breakLoadSlipVM.formationRunValue,
+      stream: brakeLoadSlipVM.formationRun,
+      initialData: brakeLoadSlipVM.formationRunValue,
       builder: (context, _) {
-        return breakLoadSlipVM.isJourneyAndActiveFormationRunBreakSeriesDifferent()
-            ? _brakedWeightHeaderNotification(context, currentBreakSeries)
+        return brakeLoadSlipVM.isJourneyAndActiveFormationRunBrakeSeriesDifferent()
+            ? _brakedWeightHeaderNotification(context, currentBrakeSeries)
             : Text(
-                currentBreakSeries?.name ?? '??',
+                currentBrakeSeries?.name ?? '??',
                 style: sbbTextStyle.lightStyle.small,
               );
       },
     );
   }
 
-  Stack _brakedWeightHeaderNotification(BuildContext context, BreakSeries? currentBreakSeries) {
+  Stack _brakedWeightHeaderNotification(BuildContext context, BrakeSeries? currentBrakeSeries) {
     return Stack(
-      key: differentBreakSeriesWarningKey,
+      key: differentBrakeSeriesWarningKey,
       clipBehavior: Clip.none,
       children: [
         Positioned(
@@ -503,7 +503,7 @@ class JourneyTable extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  currentBreakSeries?.name ?? '??',
+                  currentBrakeSeries?.name ?? '??',
                   style: sbbTextStyle.boldStyle.small,
                 ),
                 SvgPicture.asset(
@@ -533,27 +533,27 @@ class JourneyTable extends StatelessWidget {
     context.read<JourneySettingsViewModel>().updateExpandedGroups(newList);
   }
 
-  Future<void> _onBreakSeriesTap(BuildContext context, Metadata? metadata, JourneySettings? settings) async {
+  Future<void> _onBrakeSeriesTap(BuildContext context, Metadata? metadata, JourneySettings? settings) async {
     final viewModel = context.read<JourneySettingsViewModel>();
 
-    final selectedBreakSeries = await showSBBModalSheet<BreakSeries>(
+    final selectedBrakeSeries = await showSBBModalSheet<BrakeSeries>(
       context: context,
-      title: context.l10n.p_journey_break_series,
+      title: context.l10n.p_journey_brake_series,
       constraints: BoxConstraints(),
-      child: BreakSeriesSelection(
-        availableBreakSeries: metadata?.availableBreakSeries ?? {},
-        selectedBreakSeries: settings?.currentBreakSeries,
+      child: BrakeSeriesSelection(
+        availableBrakeSeries: metadata?.availableBrakeSeries ?? {},
+        selectedBrakeSeries: settings?.currentBrakeSeries,
       ),
     );
 
-    if (selectedBreakSeries != null) viewModel.updateBreakSeries(selectedBreakSeries);
+    if (selectedBrakeSeries != null) viewModel.updateBrakeSeries(selectedBrakeSeries);
   }
 
   bool _isCurvePointWithoutSpeed(BaseData data, Journey journey, JourneySettings settings) {
-    final breakSeries = settings.currentBreakSeries;
+    final brakeSeries = settings.currentBrakeSeries;
 
     return data is CurvePoint &&
-        data.localSpeeds?.speedFor(breakSeries?.trainSeries, breakSeries: breakSeries?.breakSeries) == null;
+        data.localSpeeds?.speedFor(brakeSeries?.trainSeries, brakeSeries: brakeSeries?.brakeSeries) == null;
   }
 
   void _onAdditionalSpeedRestrictionTap(BuildContext context, AdditionalSpeedRestrictionData data) {

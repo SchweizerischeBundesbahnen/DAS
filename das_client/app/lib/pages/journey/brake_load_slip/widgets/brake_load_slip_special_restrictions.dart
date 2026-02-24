@@ -9,8 +9,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:formation/component.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
-class BreakLoadSlipSpecialRestrictions extends StatelessWidget {
-  const BreakLoadSlipSpecialRestrictions({
+class BrakeLoadSlipSpecialRestrictions extends StatelessWidget {
+  const BrakeLoadSlipSpecialRestrictions({
     required this.formationRunChange,
     super.key,
     this.groupColor,
@@ -61,7 +61,7 @@ class BreakLoadSlipSpecialRestrictions extends StatelessWidget {
 
   Widget _wrappedTitle(BuildContext context) {
     final titleText = Text(
-      context.l10n.p_break_load_slip_special_restrictions_title,
+      context.l10n.p_brake_load_slip_special_restrictions_title,
       maxLines: 3,
       overflow: TextOverflow.ellipsis,
       style: sbbTextStyle.boldStyle.small,
@@ -83,25 +83,25 @@ class BreakLoadSlipSpecialRestrictions extends StatelessWidget {
     return KeyValueTable(
       rows: [
         KeyValueTableDataRow(
-          context.l10n.p_break_load_slip_special_restrictions_sim_train,
+          context.l10n.p_brake_load_slip_special_restrictions_sim_train,
           formationRunChange.formationRun.simTrain ? context.l10n.c_yes : context.l10n.c_no,
           hasChange: formationRunChange.hasChanged(.simTrain),
           showChangeIndicator: showChangeIndicator,
         ),
         KeyValueTableDataRow(
-          context.l10n.p_break_load_slip_special_restrictions_car_carrier,
+          context.l10n.p_brake_load_slip_special_restrictions_car_carrier,
           formationRunChange.formationRun.carCarrierVehicle ? context.l10n.c_yes : context.l10n.c_no,
           hasChange: formationRunChange.hasChanged(.carCarrierVehicle),
           showChangeIndicator: showChangeIndicator,
         ),
         KeyValueTableDataRow(
-          context.l10n.p_break_load_slip_special_restrictions_dangerous_goods,
+          context.l10n.p_brake_load_slip_special_restrictions_dangerous_goods,
           formationRunChange.formationRun.dangerousGoods ? context.l10n.c_yes : context.l10n.c_no,
           hasChange: formationRunChange.hasChanged(.dangerousGoods),
           showChangeIndicator: showChangeIndicator,
         ),
         KeyValueTableDataRow(
-          context.l10n.p_break_load_slip_special_restrictions_route_class,
+          context.l10n.p_brake_load_slip_special_restrictions_route_class,
           formationRunChange.formationRun.routeClass ?? '-',
           hasChange: formationRunChange.hasChanged(.routeClass),
           showChangeIndicator: showChangeIndicator,

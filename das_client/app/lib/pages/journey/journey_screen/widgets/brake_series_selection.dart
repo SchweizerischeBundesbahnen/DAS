@@ -1,36 +1,36 @@
 import 'package:app/i18n/i18n.dart';
-import 'package:app/pages/journey/journey_screen/widgets/break_series_selection_button.dart';
+import 'package:app/pages/journey/journey_screen/widgets/brake_series_selection_button.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
-class BreakSeriesSelection extends StatefulWidget {
-  const BreakSeriesSelection({required this.availableBreakSeries, required this.selectedBreakSeries, super.key});
+class BrakeSeriesSelection extends StatefulWidget {
+  const BrakeSeriesSelection({required this.availableBrakeSeries, required this.selectedBrakeSeries, super.key});
 
-  final Set<BreakSeries> availableBreakSeries;
-  final BreakSeries? selectedBreakSeries;
+  final Set<BrakeSeries> availableBrakeSeries;
+  final BrakeSeries? selectedBrakeSeries;
 
   @override
-  State<BreakSeriesSelection> createState() => _BreakSeriesSelectionState();
+  State<BrakeSeriesSelection> createState() => _BrakeSeriesSelectionState();
 }
 
-class _BreakSeriesSelectionState extends State<BreakSeriesSelection> {
-  BreakSeries? selectedBreakSeries;
+class _BrakeSeriesSelectionState extends State<BrakeSeriesSelection> {
+  BrakeSeries? selectedBrakeSeries;
 
   @override
   void initState() {
-    selectedBreakSeries = widget.selectedBreakSeries;
+    selectedBrakeSeries = widget.selectedBrakeSeries;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (widget.availableBreakSeries.isEmpty) {
+    if (widget.availableBrakeSeries.isEmpty) {
       return SizedBox(
         height: 100,
         child: Center(
-          child: Text(context.l10n.p_journey_break_series_empty),
+          child: Text(context.l10n.p_journey_brake_series_empty),
         ),
       );
     }
@@ -52,7 +52,7 @@ class _BreakSeriesSelectionState extends State<BreakSeriesSelection> {
   }
 
   List<Widget> _rows(BuildContext context) {
-    return widget.availableBreakSeries
+    return widget.availableBrakeSeries
         .map((it) => it.trainSeries)
         .toSet()
         .map((it) => _trainSeriesRows(context, it))
@@ -61,8 +61,8 @@ class _BreakSeriesSelectionState extends State<BreakSeriesSelection> {
   }
 
   List<Widget> _trainSeriesRows(BuildContext context, TrainSeries trainSeries) {
-    final breakSeries = widget.availableBreakSeries.where((it) => it.trainSeries == trainSeries).toList();
-    breakSeries.sort((a, b) => a.breakSeries.compareTo(b.breakSeries));
+    final brakeSeries = widget.availableBrakeSeries.where((it) => it.trainSeries == trainSeries).toList();
+    brakeSeries.sort((a, b) => a.brakeSeries.compareTo(b.brakeSeries));
 
     return [
       Padding(
@@ -78,15 +78,15 @@ class _BreakSeriesSelectionState extends State<BreakSeriesSelection> {
           spacing: SBBSpacing.small,
           runSpacing: SBBSpacing.medium,
           children: List.generate(
-            breakSeries.length,
+            brakeSeries.length,
             (index) {
-              final breakSerie = breakSeries[index];
-              return BreakSeriesSelectionButton(
-                label: breakSerie.name,
-                currentlySelected: breakSerie == selectedBreakSeries,
+              final brakeSerie = brakeSeries[index];
+              return BrakeSeriesSelectionButton(
+                label: brakeSerie.name,
+                currentlySelected: brakeSerie == selectedBrakeSeries,
                 onTap: () {
                   setState(() {
-                    context.router.maybePop(breakSerie);
+                    context.router.maybePop(brakeSerie);
                   });
                 },
               );

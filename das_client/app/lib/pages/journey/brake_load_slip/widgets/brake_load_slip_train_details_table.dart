@@ -6,10 +6,10 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 typedef TextFunction = Text Function(String);
 
-class BreakLoadSlipTrainDetailsTable extends StatelessWidget {
+class BrakeLoadSlipTrainDetailsTable extends StatelessWidget {
   static const double _rowHeight = 32.0;
 
-  const BreakLoadSlipTrainDetailsTable({required this.formationRunChange, super.key});
+  const BrakeLoadSlipTrainDetailsTable({required this.formationRunChange, super.key});
 
   final FormationRunChange formationRunChange;
 
@@ -31,28 +31,28 @@ class BreakLoadSlipTrainDetailsTable extends StatelessWidget {
         DataColumn(
           label: Align(
             alignment: Alignment.center,
-            child: Text(context.l10n.p_break_load_slip_train_data_table_header_traction),
+            child: Text(context.l10n.p_brake_load_slip_train_data_table_header_traction),
           ),
           numeric: true,
         ),
         DataColumn(
           label: Align(
             alignment: Alignment.center,
-            child: Text(context.l10n.p_break_load_slip_train_data_table_header_hauled_load),
+            child: Text(context.l10n.p_brake_load_slip_train_data_table_header_hauled_load),
           ),
           numeric: true,
         ),
         DataColumn(
           label: Align(
             alignment: Alignment.center,
-            child: Text(context.l10n.p_break_load_slip_train_data_table_header_formation),
+            child: Text(context.l10n.p_brake_load_slip_train_data_table_header_formation),
           ),
           numeric: true,
         ),
       ],
       rows: [
         _buildDataRow(
-          context.l10n.p_break_load_slip_train_data_table_vmax,
+          context.l10n.p_brake_load_slip_train_data_table_vmax,
           formationRunChange.formationRun.tractionMaxSpeedInKmh?.toString(),
           formationRunChange.hasChanged(.tractionMaxSpeedInKmh),
           formationRunChange.formationRun.hauledLoadMaxSpeedInKmh?.toString(),
@@ -61,7 +61,7 @@ class BreakLoadSlipTrainDetailsTable extends StatelessWidget {
           formationRunChange.hasChanged(.formationMaxSpeedInKmh),
         ),
         _buildDataRow(
-          context.l10n.p_break_load_slip_train_data_table_length,
+          context.l10n.p_brake_load_slip_train_data_table_length,
           (formationRunChange.formationRun.tractionLengthInCm / 100).toString(),
           formationRunChange.hasChanged(.tractionLengthInCm),
           (formationRunChange.formationRun.hauledLoadLengthInCm / 100).toString(),
@@ -70,7 +70,7 @@ class BreakLoadSlipTrainDetailsTable extends StatelessWidget {
           formationRunChange.hasChanged(.formationLengthInCm),
         ),
         _buildDataRow(
-          context.l10n.p_break_load_slip_train_data_table_weight,
+          context.l10n.p_brake_load_slip_train_data_table_weight,
           formationRunChange.formationRun.tractionWeightInT.toString(),
           formationRunChange.hasChanged(.tractionWeightInT),
           formationRunChange.formationRun.hauledLoadWeightInT.toString(),
@@ -79,7 +79,7 @@ class BreakLoadSlipTrainDetailsTable extends StatelessWidget {
           formationRunChange.hasChanged(.formationWeightInT),
         ),
         _buildDataRow(
-          context.l10n.p_break_load_slip_train_data_table_braked_weight,
+          context.l10n.p_brake_load_slip_train_data_table_braked_weight,
           formationRunChange.formationRun.tractionBrakedWeightInT.toString(),
           formationRunChange.hasChanged(.tractionBrakedWeightInT),
           formationRunChange.formationRun.hauledLoadBrakedWeightInT.toString(),
@@ -88,7 +88,7 @@ class BreakLoadSlipTrainDetailsTable extends StatelessWidget {
           formationRunChange.hasChanged(.formationBrakedWeightInT),
         ),
         _buildDataRow(
-          context.l10n.p_break_load_slip_brake_details_holding_force,
+          context.l10n.p_brake_load_slip_brake_details_holding_force,
           (formationRunChange.formationRun.tractionHoldingForceInHectoNewton / 10).toString(),
           formationRunChange.hasChanged(.tractionHoldingForceInHectoNewton),
           (formationRunChange.formationRun.hauledLoadHoldingForceInHectoNewton / 10).toString(),

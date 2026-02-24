@@ -38,7 +38,7 @@ class SummarizedCurvesSpeed extends Speed {
   const SummarizedCurvesSpeed({required this.speeds})
     : assert(speeds.length >= 2, 'SummarizedCurvesSpeed needs at least two speeds.');
 
-  /// For one trainSeries/breakSeries: the speeds of each curve in the segment.
+  /// For one trainSeries/brakeSeries: the speeds of each curve in the segment.
   final List<SingleSpeed> speeds;
 
   @override

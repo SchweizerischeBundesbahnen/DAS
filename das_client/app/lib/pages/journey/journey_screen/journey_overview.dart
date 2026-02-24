@@ -1,5 +1,5 @@
 import 'package:app/di/di.dart';
-import 'package:app/pages/journey/break_load_slip/break_load_slip_view_model.dart';
+import 'package:app/pages/journey/brake_load_slip/brake_load_slip_view_model.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/additional_speed_restriction_modal/additional_speed_restriction_modal_view_model.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/detail_modal.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/detail_modal_view_model.dart';
@@ -270,12 +270,12 @@ class _ProviderScope extends StatelessWidget {
           JourneySettingsViewModel,
           DetailModalViewModel,
           NotificationPriorityQueueViewModel,
-          BreakLoadSlipViewModel
+          BrakeLoadSlipViewModel
         >(
           lazy: false,
           update: (_, journeyVM, positionVM, settingsVM, detailModalVM, notificationVM, prev) {
             if (prev != null) return prev;
-            return BreakLoadSlipViewModel(
+            return BrakeLoadSlipViewModel(
               journeyTableViewModel: journeyVM,
               journeyPositionViewModel: positionVM,
               formationRepository: DI.get(),

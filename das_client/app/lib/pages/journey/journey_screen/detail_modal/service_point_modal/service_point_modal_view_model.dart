@@ -29,7 +29,7 @@ class ServicePointModalViewModel {
   final _rxRelevantSpeedInfo = BehaviorSubject.seeded(<TrainSeriesSpeed>[]);
   final _rxLocalRegulationSections = BehaviorSubject.seeded(<LocalRegulationSection>[]);
   final _rxLocalRegulationHtml = BehaviorSubject<String>();
-  final _rxBreakSeries = BehaviorSubject<BreakSeries?>();
+  final _rxBrakeSeries = BehaviorSubject<BrakeSeries?>();
   final _rxTabs = BehaviorSubject.seeded(<ServicePointModalTab>[]);
   final _subscriptions = <StreamSubscription>[];
 
@@ -47,7 +47,7 @@ class ServicePointModalViewModel {
 
   Stream<List<TrainSeriesSpeed>> get relevantSpeedInfo => _rxRelevantSpeedInfo.distinct();
 
-  Stream<BreakSeries?> get breakSeries => _rxBreakSeries.distinct();
+  Stream<BrakeSeries?> get brakeSeries => _rxBrakeSeries.distinct();
 
   Stream<List<ServicePointModalTab>> get tabs => _rxTabs.distinct();
 
@@ -95,10 +95,10 @@ class ServicePointModalViewModel {
       _rxServicePoint.stream,
       _rxSettings.stream,
       (servicePoint, settings) {
-        final currentBreakSeries = settings.currentBreakSeries;
-        _rxBreakSeries.add(currentBreakSeries);
+        final currentBrakeSeries = settings.currentBrakeSeries;
+        _rxBrakeSeries.add(currentBrakeSeries);
 
-        return servicePoint.relevantGraduatedSpeedInfo(currentBreakSeries);
+        return servicePoint.relevantGraduatedSpeedInfo(currentBrakeSeries);
       },
     ).listen(_rxRelevantSpeedInfo.add, onError: _rxRelevantSpeedInfo.addError);
     _subscriptions.add(subscription);
@@ -115,12 +115,12 @@ class ServicePointModalViewModel {
 
   void _initTabs() {
     final subscription = Rx.combineLatest3(
-      _rxBreakSeries.stream,
+      _rxBrakeSeries.stream,
       _rxRelevantSpeedInfo.stream,
       _rxLocalRegulationSections.stream,
-      (breakSeries, relevantSpeedData, localRegulations) {
+      (brakeSeries, relevantSpeedData, localRegulations) {
         final tabsWithData = <ServicePointModalTab>[.communication];
-        if (breakSeries != null && relevantSpeedData.isNotEmpty) {
+        if (brakeSeries != null && relevantSpeedData.isNotEmpty) {
           tabsWithData.add(.graduatedSpeeds);
         }
 
@@ -193,7 +193,7 @@ class ServicePointModalViewModel {
     _rxServicePoint.close();
     _rxSettings.close();
     _rxRelevantSpeedInfo.close();
-    _rxBreakSeries.close();
+    _rxBrakeSeries.close();
     _rxLocalRegulationSections.close();
     _rxLocalRegulationHtml.close();
     _rxTabs.close();
