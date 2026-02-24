@@ -6,8 +6,8 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 
-public record AppVersionResponse(
-    @ArraySchema(arraySchema = @Schema(requiredMode = Schema.RequiredMode.REQUIRED), minItems = 0, maxItems = 1) List<AppVersion> data)
+public record AppVersionsResponse(
+    @ArraySchema(arraySchema = @Schema(requiredMode = Schema.RequiredMode.REQUIRED)) List<AppVersion> data)
     implements ApiResponse<AppVersion> {
 
 }

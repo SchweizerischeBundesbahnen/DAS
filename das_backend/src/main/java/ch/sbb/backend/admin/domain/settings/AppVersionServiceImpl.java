@@ -1,6 +1,6 @@
 package ch.sbb.backend.admin.domain.settings;
 
-import ch.sbb.backend.admin.application.settings.model.request.AppVersionUpdateRequest;
+import ch.sbb.backend.admin.application.settings.model.request.AppVersionRequest;
 import ch.sbb.backend.admin.application.settings.model.response.CurrentAppVersion;
 import ch.sbb.backend.admin.domain.settings.model.AppVersion;
 import ch.sbb.backend.admin.domain.settings.model.SemVersion;
@@ -76,19 +76,13 @@ public class AppVersionServiceImpl implements AppVersionService {
     }
 
     @Override
-    public AppVersion create(AppVersionUpdateRequest createRequest) {
-        AppVersionEntity entity = new AppVersionEntity();
-        entity.setVersion(createRequest.version());
-        entity.setMinimalVersion(createRequest.minimalVersion());
-        entity.setExpiryDate(createRequest.expiryDate());
-        entity.setLastModifiedAt(java.time.LocalDateTime.now());
-        entity.setLastModifiedBy(createRequest.lastModifiedBy());
-        repository.save(entity);
+    public AppVersion create(AppVersionRequest createRequest) {
+        AppVersionEntity entity = repository.save(AppVersionEntity.from(createRequest));
         return new AppVersion(entity.getId(), entity.getVersion(), entity.getMinimalVersion(), entity.getExpiryDate());
     }
 
     @Override
-    public AppVersion update(Integer id, AppVersionUpdateRequest updateRequest) {
+    public AppVersion update(Integer id, AppVersionRequest updateRequest) {
         AppVersionEntity entity = repository.findById(id).orElse(null);
         if (entity == null) {
             return null;
@@ -96,18 +90,12 @@ public class AppVersionServiceImpl implements AppVersionService {
         entity.setVersion(updateRequest.version());
         entity.setMinimalVersion(updateRequest.minimalVersion());
         entity.setExpiryDate(updateRequest.expiryDate());
-        entity.setLastModifiedAt(java.time.LocalDateTime.now());
-        entity.setLastModifiedBy(updateRequest.lastModifiedBy());
         repository.save(entity);
         return new AppVersion(entity.getId(), entity.getVersion(), entity.getMinimalVersion(), entity.getExpiryDate());
     }
 
     @Override
-    public AppVersion delete(Integer id) {
-        AppVersionEntity entity = repository.findById(id).orElse(null);
-        if (entity == null) {
-            return null;
-        }
-        return new AppVersion(entity.getId(), entity.getVersion(), entity.getMinimalVersion(), entity.getExpiryDate());
+    public void delete(Integer id) {
+        repository.deleteById(id);
     }
 }
