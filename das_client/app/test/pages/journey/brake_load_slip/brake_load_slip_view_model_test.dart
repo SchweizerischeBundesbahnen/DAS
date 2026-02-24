@@ -1,4 +1,4 @@
-import 'package:app/pages/journey/break_load_slip/break_load_slip_view_model.dart';
+import 'package:app/pages/journey/brake_load_slip/brake_load_slip_view_model.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/detail_modal_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
@@ -20,7 +20,7 @@ import 'package:mockito/mockito.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
-import 'break_load_slip_view_model_test.mocks.dart';
+import 'brake_load_slip_view_model_test.mocks.dart';
 
 @GenerateNiceMocks([
   MockSpec<JourneyTableViewModel>(),
@@ -37,7 +37,7 @@ import 'break_load_slip_view_model_test.mocks.dart';
   MockSpec<Sound>(),
 ])
 void main() {
-  late BreakLoadSlipViewModel testee;
+  late BrakeLoadSlipViewModel testee;
   late MockJourneyTableViewModel mockJourneyTableViewModel;
   late MockFormationRepository mockFormationRepository;
   late MockJourneyPositionViewModel mockJourneyPositionViewModel;
@@ -63,13 +63,13 @@ void main() {
     operatingDay: DateTime.now().add(Duration(days: -1)),
   );
 
-  final breakSeries = BreakSeries(trainSeries: TrainSeries.R, breakSeries: 150);
+  final brakeSeries = BrakeSeries(trainSeries: TrainSeries.R, brakeSeries: 150);
 
   final formationRun1 = _generateFormationRun(
     'CH00001',
     'CH00002',
-    trainCategoryCode: breakSeries.trainSeries.name,
-    brakedWeightPercentage: breakSeries.breakSeries,
+    trainCategoryCode: brakeSeries.trainSeries.name,
+    brakedWeightPercentage: brakeSeries.brakeSeries,
   );
   final formationRun2 = _generateFormationRun(
     'CH00002',
@@ -82,8 +82,8 @@ void main() {
   final journey = Journey(
     metadata: Metadata(
       trainIdentification: trainIdentification,
-      breakSeries: breakSeries,
-      availableBreakSeries: {BreakSeries(trainSeries: TrainSeries.N, breakSeries: 50)},
+      brakeSeries: brakeSeries,
+      availableBrakeSeries: {BrakeSeries(trainSeries: TrainSeries.N, brakeSeries: 50)},
     ),
     data: [
       ServicePoint(
@@ -135,7 +135,7 @@ void main() {
     mockJourneySettingsViewModel = MockJourneySettingsViewModel();
     journeySubject = BehaviorSubject<Journey?>();
     settingsSubject = BehaviorSubject.seeded(
-      JourneySettings(initialBreakSeries: breakSeries),
+      JourneySettings(initialBrakeSeries: brakeSeries),
     );
     positionSubject = BehaviorSubject.seeded(JourneyPositionModel());
     formationSubject = BehaviorSubject<Formation?>();
@@ -160,13 +160,13 @@ void main() {
     mockDasSounds = MockDASSounds();
     mockSound = MockSound();
 
-    when(mockDasSounds.breakSlipUpdated).thenReturn(mockSound);
+    when(mockDasSounds.brakeSlipUpdated).thenReturn(mockSound);
     GetIt.I.registerSingleton<DASSounds>(mockDasSounds);
 
     when(mockBuildContext.findAncestorWidgetOfExactType()).thenReturn(mockStackRouterScope);
     when(mockStackRouterScope.controller).thenReturn(mockStackRouter);
 
-    testee = BreakLoadSlipViewModel(
+    testee = BrakeLoadSlipViewModel(
       journeyTableViewModel: mockJourneyTableViewModel,
       formationRepository: mockFormationRepository,
       journeyPositionViewModel: mockJourneyPositionViewModel,
@@ -327,7 +327,7 @@ void main() {
     );
   });
 
-  test('isJourneyAndActiveFormationRunBreakSeriesDifferent_whenBreakSeriesIsSame_returnsFalse', () async {
+  test('isJourneyAndActiveFormationRunBrakeSeriesDifferent_whenBrakeSeriesIsSame_returnsFalse', () async {
     // ACT
     journeySubject.add(journey);
     formationSubject.add(formation);
@@ -335,12 +335,12 @@ void main() {
     await processStreams();
 
     expect(
-      testee.isJourneyAndActiveFormationRunBreakSeriesDifferent(),
+      testee.isJourneyAndActiveFormationRunBrakeSeriesDifferent(),
       isFalse,
     );
   });
 
-  test('isJourneyAndActiveFormationRunBreakSeriesDifferent_whenBreakSeriesIsDifferent_returnsTrue', () async {
+  test('isJourneyAndActiveFormationRunBrakeSeriesDifferent_whenBrakeSeriesIsDifferent_returnsTrue', () async {
     // ACT
     journeySubject.add(journey);
     formationSubject.add(formation);
@@ -350,12 +350,12 @@ void main() {
     await processStreams();
 
     expect(
-      testee.isJourneyAndActiveFormationRunBreakSeriesDifferent(),
+      testee.isJourneyAndActiveFormationRunBrakeSeriesDifferent(),
       isTrue,
     );
   });
 
-  test('canApplyActiveFormationRunBreakSeriesToJourney_whenBreakSeriesIsSame_returnsFalse', () async {
+  test('canApplyActiveFormationRunBrakeSeriesToJourney_whenBrakeSeriesIsSame_returnsFalse', () async {
     // ACT
     journeySubject.add(journey);
     formationSubject.add(formation);
@@ -363,12 +363,12 @@ void main() {
     await processStreams();
 
     expect(
-      testee.canApplyActiveFormationRunBreakSeriesToJourney(),
+      testee.canApplyActiveFormationRunBrakeSeriesToJourney(),
       isFalse,
     );
   });
 
-  test('canApplyActiveFormationRunBreakSeriesToJourney_whenBreakSeriesIsDifferentButNotPresent_returnsFalse', () async {
+  test('canApplyActiveFormationRunBrakeSeriesToJourney_whenBrakeSeriesIsDifferentButNotPresent_returnsFalse', () async {
     // ACT
     journeySubject.add(journey);
     formationSubject.add(formation);
@@ -381,12 +381,12 @@ void main() {
     await processStreams();
 
     expect(
-      testee.canApplyActiveFormationRunBreakSeriesToJourney(),
+      testee.canApplyActiveFormationRunBrakeSeriesToJourney(),
       isFalse,
     );
   });
 
-  test('canApplyActiveFormationRunBreakSeriesToJourney_whenBreakSeriesIsDifferentAndPresent_returnsTrue', () async {
+  test('canApplyActiveFormationRunBrakeSeriesToJourney_whenBrakeSeriesIsDifferentAndPresent_returnsTrue', () async {
     // ACT
     journeySubject.add(journey);
     formationSubject.add(formation);
@@ -399,12 +399,12 @@ void main() {
     await processStreams();
 
     expect(
-      testee.canApplyActiveFormationRunBreakSeriesToJourney(),
+      testee.canApplyActiveFormationRunBrakeSeriesToJourney(),
       isTrue,
     );
   });
 
-  test('updateJourneyBreakSeriesFromActiveFormationRun_updatesJourneyTableViewModelBreakSeries', () async {
+  test('updateJourneyBrakeSeriesFromActiveFormationRun_updatesJourneyTableViewModelBrakeSeries', () async {
     // ACT
     journeySubject.add(journey);
     formationSubject.add(formation);
@@ -414,14 +414,14 @@ void main() {
     await processStreams();
 
     expect(
-      testee.isJourneyAndActiveFormationRunBreakSeriesDifferent(),
+      testee.isJourneyAndActiveFormationRunBrakeSeriesDifferent(),
       isTrue,
     );
 
-    testee.updateJourneyBreakSeriesFromActiveFormationRun();
+    testee.updateJourneyBrakeSeriesFromActiveFormationRun();
 
     verify(
-      mockJourneySettingsViewModel.updateBreakSeries(BreakSeries(trainSeries: TrainSeries.A, breakSeries: 75)),
+      mockJourneySettingsViewModel.updateBrakeSeries(BrakeSeries(trainSeries: TrainSeries.A, brakeSeries: 75)),
     ).called(1);
   });
 
@@ -474,7 +474,7 @@ void main() {
 
     await processStreams();
 
-    verify(mockNotificationViewModel.insert(type: .newBreakLoadSlip, callback: mockSound.play)).called(1);
+    verify(mockNotificationViewModel.insert(type: .newBrakeLoadSlip, callback: mockSound.play)).called(1);
 
     testee.dispose();
   });
@@ -482,7 +482,7 @@ void main() {
   test('model_whenFormationUpdateIntervalElapsed_checksForFormationUpdate', () async {
     fakeAsync((fakeAsync) {
       testee.dispose();
-      testee = BreakLoadSlipViewModel(
+      testee = BrakeLoadSlipViewModel(
         journeyTableViewModel: mockJourneyTableViewModel,
         formationRepository: mockFormationRepository,
         journeyPositionViewModel: mockJourneyPositionViewModel,

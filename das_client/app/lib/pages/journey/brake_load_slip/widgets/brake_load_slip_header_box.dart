@@ -1,5 +1,5 @@
 import 'package:app/i18n/i18n.dart';
-import 'package:app/pages/journey/break_load_slip/widgets/break_load_slip_replace_break_series_button.dart';
+import 'package:app/pages/journey/brake_load_slip/widgets/brake_load_slip_replace_brake_series_button.dart';
 import 'package:app/theme/das_colors.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/assets.dart';
@@ -10,7 +10,7 @@ import 'package:formation/component.dart';
 import 'package:intl/intl.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
-class BreakLoadSlipHeaderBox extends StatelessWidget {
+class BrakeLoadSlipHeaderBox extends StatelessWidget {
   static const specialIndicatorBackgroundHeight = 52.0;
   static const specialIndicatorHeight = 38.0;
   static const minHeaderBoxContentHeight = 44.0;
@@ -19,7 +19,7 @@ class BreakLoadSlipHeaderBox extends StatelessWidget {
   static const Key dangerousGoodsHeaderBannerKey = Key('dangerousGoodsHeaderBanner');
   static const Key carCarrierHeaderBannerKey = Key('carCarrierHeaderBanner');
 
-  const BreakLoadSlipHeaderBox({required this.formationRunChange, super.key});
+  const BrakeLoadSlipHeaderBox({required this.formationRunChange, super.key});
 
   final FormationRunChange formationRunChange;
 
@@ -45,7 +45,7 @@ class BreakLoadSlipHeaderBox extends StatelessWidget {
         mainAxisAlignment: .spaceBetween,
         children: [
           _headerboxTextContent(context),
-          BreakLoadSlipReplaceBreakSeriesButton(),
+          BrakeLoadSlipReplaceBrakeSeriesButton(),
         ],
       ),
     );
@@ -60,7 +60,7 @@ class BreakLoadSlipHeaderBox extends StatelessWidget {
       crossAxisAlignment: .start,
       children: [
         Text(
-          context.l10n.p_break_load_slip_header_title(
+          context.l10n.p_brake_load_slip_header_title(
             formationRunChange.formationRun.trainCategoryCode ?? '',
             formationRunChange.formationRun.brakedWeightPercentage ?? '',
           ),
@@ -70,7 +70,7 @@ class BreakLoadSlipHeaderBox extends StatelessWidget {
           mainAxisSize: .min,
           children: [
             Text(
-              context.l10n.p_break_load_slip_header_subtitle,
+              context.l10n.p_brake_load_slip_header_subtitle,
               style: sbbTextStyle.lightStyle.small.copyWith(color: subtitleColor),
             ),
             Text(
@@ -96,7 +96,7 @@ class BreakLoadSlipHeaderBox extends StatelessWidget {
       _SpecialIndicator(
         asset: AppAssets.iconSimZug,
         backgroundColor: DASColors.simTrain,
-        text: context.l10n.p_break_load_slip_header_sim_train,
+        text: context.l10n.p_brake_load_slip_header_sim_train,
         textColor: SBBColors.white,
         key: simTrainHeaderBannerKey,
       ),
@@ -104,7 +104,7 @@ class BreakLoadSlipHeaderBox extends StatelessWidget {
       _SpecialIndicator(
         asset: AppAssets.iconSignExclamationPoint,
         backgroundColor: SBBColors.peach,
-        text: context.l10n.p_break_load_slip_header_dangerous_goods,
+        text: context.l10n.p_brake_load_slip_header_dangerous_goods,
         textColor: SBBColors.black,
         key: dangerousGoodsHeaderBannerKey,
       ),
@@ -112,7 +112,7 @@ class BreakLoadSlipHeaderBox extends StatelessWidget {
       _SpecialIndicator(
         asset: AppAssets.iconCarCarrier,
         backgroundColor: SBBColors.pink,
-        text: context.l10n.p_break_load_slip_header_car_carrier,
+        text: context.l10n.p_brake_load_slip_header_car_carrier,
         textColor: SBBColors.white,
         key: carCarrierHeaderBannerKey,
       ),

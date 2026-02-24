@@ -37,8 +37,8 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
   static const double baseRowHeight = 64.0;
   static const double propertyRowHeight = 28.0;
 
-  static double calculateHeight(ServicePoint data, BreakSeries? currentBreakSeries) {
-    final properties = data.propertiesFor(currentBreakSeries);
+  static double calculateHeight(ServicePoint data, BrakeSeries? currentBrakeSeries) {
+    final properties = data.propertiesFor(currentBrakeSeries);
 
     if (properties.isEmpty) return baseRowHeight;
     return baseRowHeight + (properties.length * propertyRowHeight);
@@ -62,7 +62,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
   }) : super(
          decoration: DASTableRowDecoration(color: rowColor ?? _resolveRowColor(context, journeyPosition, data)),
          stickyLevel: .first,
-         height: calculateHeight(data, config.settings.currentBreakSeries),
+         height: calculateHeight(data, config.settings.currentBrakeSeries),
          onStartToEndDragReached: journeyPosition.currentPosition != data
              ? () {
                  context.read<JourneyPositionViewModel>().setManualPosition(data);
@@ -220,14 +220,14 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
 
   @override
   DASTableCell localSpeedCell(BuildContext context) {
-    final currentBreakSeries = config.settings.currentBreakSeries;
-    final relevantGraduatedSpeedInfo = data.relevantGraduatedSpeedInfo(currentBreakSeries);
+    final currentBrakeSeries = config.settings.currentBrakeSeries;
+    final relevantGraduatedSpeedInfo = data.relevantGraduatedSpeedInfo(currentBrakeSeries);
 
     if (data.localSpeeds == null && relevantGraduatedSpeedInfo.isEmpty) return DASTableCell.empty();
 
     final trainSeriesSpeed = data.localSpeeds?.speedFor(
-      currentBreakSeries?.trainSeries,
-      breakSeries: currentBreakSeries?.breakSeries,
+      currentBrakeSeries?.trainSeries,
+      brakeSeries: currentBrakeSeries?.brakeSeries,
     );
     if (trainSeriesSpeed == null && relevantGraduatedSpeedInfo.isEmpty) return DASTableCell.empty();
 
@@ -307,14 +307,14 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
   }
 
   List<Widget> _stationProperties(BuildContext context) {
-    final currentBreakSeries = config.settings.currentBreakSeries;
-    final properties = data.propertiesFor(currentBreakSeries);
+    final currentBrakeSeries = config.settings.currentBrakeSeries;
+    final properties = data.propertiesFor(currentBrakeSeries);
     if (properties.isEmpty) return [];
 
     return properties.map((property) {
       final speed = property.speeds?.speedFor(
-        currentBreakSeries?.trainSeries,
-        breakSeries: currentBreakSeries?.breakSeries,
+        currentBrakeSeries?.trainSeries,
+        brakeSeries: currentBrakeSeries?.brakeSeries,
       );
 
       return Padding(

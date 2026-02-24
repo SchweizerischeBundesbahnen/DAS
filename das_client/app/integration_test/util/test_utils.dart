@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
-import 'package:app/pages/journey/break_load_slip/break_load_slip_page.dart';
+import 'package:app/pages/journey/brake_load_slip/brake_load_slip_page.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/extended_menu.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/journey_advancement_button.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/next_stop.dart';
@@ -119,13 +119,13 @@ Future<void> openReducedJourneyMenu(WidgetTester tester) async {
   await Future.delayed(const Duration(milliseconds: 50));
 }
 
-Future<void> openBreakSlipPage(WidgetTester tester) async {
-  await tapElement(tester, find.text(l10n.p_journey_header_button_break_slip));
+Future<void> openBrakeSlipPage(WidgetTester tester) async {
+  await tapElement(tester, find.text(l10n.p_journey_header_button_brake_slip));
   await Future.delayed(const Duration(milliseconds: 50));
 }
 
-Future<void> closeBreakSlipPage(WidgetTester tester) async {
-  await tapElement(tester, find.byKey(BreakLoadSlipPage.dismissButtonKey));
+Future<void> closeBrakeSlipPage(WidgetTester tester) async {
+  await tapElement(tester, find.byKey(BrakeLoadSlipPage.dismissButtonKey));
   await Future.delayed(const Duration(milliseconds: 50));
 }
 
@@ -135,13 +135,13 @@ Future<void> dismissExtendedMenu(WidgetTester tester) async {
   await Future.delayed(const Duration(milliseconds: 100));
 }
 
-Future<void> selectBreakSeries(WidgetTester tester, {required String breakSeries}) async {
-  // Open break series bottom sheet
-  await tapElement(tester, find.byKey(JourneyTable.breakingSeriesHeaderKey));
+Future<void> selectBrakeSeries(WidgetTester tester, {required String brakeSeries}) async {
+  // Open brake series bottom sheet
+  await tapElement(tester, find.byKey(JourneyTable.brakeSeriesHeaderKey));
 
   // Check if the bottom sheet is opened
-  expect(find.text(l10n.p_journey_break_series), findsOneWidget);
-  await tapElement(tester, find.text(breakSeries));
+  expect(find.text(l10n.p_journey_brake_series), findsOneWidget);
+  await tapElement(tester, find.text(brakeSeries));
 }
 
 Future<void> stopAutomaticAdvancement(WidgetTester tester) async {

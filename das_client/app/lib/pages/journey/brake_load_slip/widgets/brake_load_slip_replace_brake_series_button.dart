@@ -1,15 +1,15 @@
 import 'package:app/i18n/i18n.dart';
-import 'package:app/pages/journey/break_load_slip/break_load_slip_view_model.dart';
+import 'package:app/pages/journey/brake_load_slip/brake_load_slip_view_model.dart';
 import 'package:app/util/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class BreakLoadSlipReplaceBreakSeriesButton extends StatelessWidget {
-  const BreakLoadSlipReplaceBreakSeriesButton({super.key});
+class BrakeLoadSlipReplaceBrakeSeriesButton extends StatelessWidget {
+  const BrakeLoadSlipReplaceBrakeSeriesButton({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.read<BreakLoadSlipViewModel>();
+    final viewModel = context.read<BrakeLoadSlipViewModel>();
 
     return StreamBuilder(
       stream: viewModel.settings,
@@ -20,10 +20,10 @@ class BreakLoadSlipReplaceBreakSeriesButton extends StatelessWidget {
         // TODO: https://github.com/SchweizerischeBundesbahnen/design_system_flutter/pull/425
         if (viewModel.isActiveFormationRun) {
           child = OutlinedButton(
-            onPressed: viewModel.canApplyActiveFormationRunBreakSeriesToJourney()
-                ? () => viewModel.updateJourneyBreakSeriesFromActiveFormationRun()
+            onPressed: viewModel.canApplyActiveFormationRunBrakeSeriesToJourney()
+                ? () => viewModel.updateJourneyBrakeSeriesFromActiveFormationRun()
                 : null,
-            child: Text(context.l10n.p_break_load_slip_button_apply_train_series),
+            child: Text(context.l10n.p_brake_load_slip_button_apply_train_series),
           );
         }
 

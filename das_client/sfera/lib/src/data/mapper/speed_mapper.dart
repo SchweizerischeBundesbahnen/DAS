@@ -23,12 +23,12 @@ class SpeedMapper {
 
     final result = <TrainSeriesSpeed>[];
 
-    void addSpeed(TrainSeries trainSeries, int? breakSeries, String speedString, bool reduced) {
+    void addSpeed(TrainSeries trainSeries, int? brakeSeries, String speedString, bool reduced) {
       try {
         final speeds = TrainSeriesSpeed(
           trainSeries: trainSeries,
           speed: Speed.parse(speedString),
-          breakSeries: breakSeries,
+          brakeSeries: brakeSeries,
           reduced: reduced,
         );
         result.add(speeds);

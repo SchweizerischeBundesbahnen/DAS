@@ -9,14 +9,14 @@ import 'package:sfera/component.dart';
 class JourneySettingsViewModel extends JourneyAwareViewModel {
   JourneySettingsViewModel({super.journeyTableViewModel});
 
-  final List<VoidCallback> _onBreakSeriesUpdatedCallbacks = [];
+  final List<VoidCallback> _onBrakeSeriesUpdatedCallbacks = [];
 
-  void registerOnBreakSeriesUpdated(VoidCallback callback) {
-    _onBreakSeriesUpdatedCallbacks.add(callback);
+  void registerOnBrakeSeriesUpdated(VoidCallback callback) {
+    _onBrakeSeriesUpdatedCallbacks.add(callback);
   }
 
-  void unregisterOnBreakSeriesUpdated(VoidCallback callback) {
-    _onBreakSeriesUpdatedCallbacks.remove(callback);
+  void unregisterOnBrakeSeriesUpdated(VoidCallback callback) {
+    _onBrakeSeriesUpdatedCallbacks.remove(callback);
   }
 
   final _rxSettings = BehaviorSubject<JourneySettings>.seeded(JourneySettings());
@@ -25,9 +25,9 @@ class JourneySettingsViewModel extends JourneyAwareViewModel {
 
   JourneySettings get modelValue => _rxSettings.value;
 
-  void updateBreakSeries(BreakSeries selectedBreakSeries) {
-    _rxSettings.add(_rxSettings.value.copyWith(selectedBreakSeries: selectedBreakSeries));
-    for (final callback in _onBreakSeriesUpdatedCallbacks) {
+  void updateBrakeSeries(BrakeSeries selectedBrakeSeries) {
+    _rxSettings.add(_rxSettings.value.copyWith(selectedBrakeSeries: selectedBrakeSeries));
+    for (final callback in _onBrakeSeriesUpdatedCallbacks) {
       callback.call();
     }
   }
@@ -39,7 +39,7 @@ class JourneySettingsViewModel extends JourneyAwareViewModel {
   @override
   void journeyIdentificationChanged(Journey? journey) {
     _rxSettings.add(
-      JourneySettings(initialBreakSeries: journey?.metadata.breakSeries),
+      JourneySettings(initialBrakeSeries: journey?.metadata.brakeSeries),
     );
   }
 

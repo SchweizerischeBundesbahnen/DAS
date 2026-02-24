@@ -121,17 +121,17 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test find two curves found when breakingSeries A50 is chosen', (tester) async {
+    testWidgets('test find two curves found when brakeSeries A50 is chosen', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T5');
 
-      // change breakseries to A50
-      await selectBreakSeries(tester, breakSeries: 'A50');
+      // change brakeSeries to A50
+      await selectBrakeSeries(tester, brakeSeries: 'A50');
 
-      // check if the breakseries A50 is chosen.
-      final breakingSeriesHeaderCell = find.byKey(JourneyTable.breakingSeriesHeaderKey);
-      expect(breakingSeriesHeaderCell, findsOneWidget);
-      expect(find.descendant(of: breakingSeriesHeaderCell, matching: find.text('A50')), findsOneWidget);
+      // check if the brakeSeries A50 is chosen.
+      final brakeSeriesHeaderCell = find.byKey(JourneyTable.brakeSeriesHeaderKey);
+      expect(brakeSeriesHeaderCell, findsOneWidget);
+      expect(find.descendant(of: brakeSeriesHeaderCell, matching: find.text('A50')), findsOneWidget);
 
       final curveName = find.textContaining(l10n.p_journey_table_curve_type_curve);
       expect(curveName, findsExactly(2));
@@ -142,14 +142,14 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test find three curves when breakingSeries R115 is chosen', (tester) async {
+    testWidgets('test find three curves when brakeSeries R115 is chosen', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T5');
 
-      // find and check if the default break series is chosen
-      final breakingSeriesHeaderCell = find.byKey(JourneyTable.breakingSeriesHeaderKey);
-      expect(breakingSeriesHeaderCell, findsOneWidget);
-      expect(find.descendant(of: breakingSeriesHeaderCell, matching: find.text('R115')), findsOneWidget);
+      // find and check if the default brake series is chosen
+      final brakeSeriesHeaderCell = find.byKey(JourneyTable.brakeSeriesHeaderKey);
+      expect(brakeSeriesHeaderCell, findsOneWidget);
+      expect(find.descendant(of: brakeSeriesHeaderCell, matching: find.text('R115')), findsOneWidget);
 
       final curveName = find.textContaining(l10n.p_journey_table_curve_type_curve);
       expect(curveName, findsExactly(3));
@@ -182,7 +182,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test speed values of default breakSeries (R115)', (tester) async {
+    testWidgets('test speed values of default brakeSeries (R115)', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T5');
 
@@ -208,15 +208,15 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test speed values of missing break Series', (tester) async {
+    testWidgets('test speed values of missing brake series', (tester) async {
       await prepareAndStartApp(tester);
 
       await loadJourney(tester, trainNumber: 'T5');
-      await selectBreakSeries(tester, breakSeries: 'A85');
+      await selectBrakeSeries(tester, brakeSeries: 'A85');
 
-      final breakingSeriesHeaderCell = find.byKey(JourneyTable.breakingSeriesHeaderKey);
-      expect(breakingSeriesHeaderCell, findsOneWidget);
-      expect(find.descendant(of: breakingSeriesHeaderCell, matching: find.text('A85')), findsOneWidget);
+      final brakeSeriesHeaderCell = find.byKey(JourneyTable.brakeSeriesHeaderKey);
+      expect(brakeSeriesHeaderCell, findsOneWidget);
+      expect(find.descendant(of: brakeSeriesHeaderCell, matching: find.text('A85')), findsOneWidget);
 
       final expectedSpeeds = {
         'Genève-Aéroport': '90',

@@ -143,8 +143,8 @@ void main() {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T5M');
 
-      final selectedBreakSeries = 'D30';
-      await selectBreakSeries(tester, breakSeries: selectedBreakSeries);
+      final selectedBrakeSeries = 'D30';
+      await selectBrakeSeries(tester, brakeSeries: selectedBrakeSeries);
 
       await openDrawer(tester);
       await tapElement(tester, find.text(l10n.w_navigation_drawer_profile_title));
@@ -156,7 +156,7 @@ void main() {
       await tapElement(tester, find.text(l10n.w_navigation_drawer_fahrtinfo_title));
 
       // check the selected train series is still selected
-      expect(find.text(selectedBreakSeries), findsOneWidget);
+      expect(find.text(selectedBrakeSeries), findsOneWidget);
 
       await disconnect(tester);
     });

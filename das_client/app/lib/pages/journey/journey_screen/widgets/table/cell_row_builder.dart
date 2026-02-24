@@ -187,10 +187,10 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
   }
 
   DASTableCell speedCell(List<TrainSeriesSpeed>? speedData) {
-    final selectedBreakSeries = config.settings.currentBreakSeries;
+    final selectedBrakeSeries = config.settings.currentBrakeSeries;
     final trainSeriesSpeed = speedData.speedFor(
-      selectedBreakSeries?.trainSeries,
-      breakSeries: selectedBreakSeries?.breakSeries,
+      selectedBrakeSeries?.trainSeries,
+      brakeSeries: selectedBrakeSeries?.brakeSeries,
     );
 
     return DASTableCell(
@@ -297,9 +297,9 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
 
   bool get _isNextStop => journeyPosition.nextStop == data;
 
-  static double rowHeightForData(BaseData data, BreakSeries? currentBreakSeries) {
+  static double rowHeightForData(BaseData data, BrakeSeries? currentBrakeSeries) {
     return switch (data.dataType) {
-      .servicePoint => ServicePointRow.calculateHeight(data as ServicePoint, currentBreakSeries),
+      .servicePoint => ServicePointRow.calculateHeight(data as ServicePoint, currentBrakeSeries),
       _ => CellRowBuilder.rowHeight,
     };
   }

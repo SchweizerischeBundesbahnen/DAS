@@ -3,41 +3,41 @@ import 'package:sfera/component.dart';
 
 class JourneySettings {
   const JourneySettings({
-    this.initialBreakSeries,
-    this.selectedBreakSeries,
+    this.initialBrakeSeries,
+    this.selectedBrakeSeries,
     this.expandedGroups = const [],
   });
 
-  /// Initial BreakSeries of journey. Use this instead of [Metadata.breakSeries] as TC updates are ignored.
-  final BreakSeries? initialBreakSeries;
+  /// Initial BrakeSeries of journey. Use this instead of [Metadata.brakeSeries] as TC updates are ignored.
+  final BrakeSeries? initialBrakeSeries;
 
-  final BreakSeries? selectedBreakSeries;
+  final BrakeSeries? selectedBrakeSeries;
   final List<int> expandedGroups;
 
   JourneySettings copyWith({
-    BreakSeries? initialBreakSeries,
-    BreakSeries? selectedBreakSeries,
+    BrakeSeries? initialBrakeSeries,
+    BrakeSeries? selectedBrakeSeries,
     List<int>? expandedGroups,
   }) {
     return JourneySettings(
-      initialBreakSeries: initialBreakSeries ?? this.initialBreakSeries,
-      selectedBreakSeries: selectedBreakSeries ?? this.selectedBreakSeries,
+      initialBrakeSeries: initialBrakeSeries ?? this.initialBrakeSeries,
+      selectedBrakeSeries: selectedBrakeSeries ?? this.selectedBrakeSeries,
       expandedGroups: expandedGroups ?? this.expandedGroups,
     );
   }
 
-  BreakSeries? get currentBreakSeries => selectedBreakSeries ?? initialBreakSeries;
+  BrakeSeries? get currentBrakeSeries => selectedBrakeSeries ?? initialBrakeSeries;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is JourneySettings &&
           runtimeType == other.runtimeType &&
-          initialBreakSeries == other.initialBreakSeries &&
-          selectedBreakSeries == other.selectedBreakSeries &&
+          initialBrakeSeries == other.initialBrakeSeries &&
+          selectedBrakeSeries == other.selectedBrakeSeries &&
           const ListEquality().equals(other.expandedGroups, expandedGroups);
 
   @override
   int get hashCode =>
-      initialBreakSeries.hashCode ^ selectedBreakSeries.hashCode ^ const ListEquality().hash(expandedGroups);
+      initialBrakeSeries.hashCode ^ selectedBrakeSeries.hashCode ^ const ListEquality().hash(expandedGroups);
 }

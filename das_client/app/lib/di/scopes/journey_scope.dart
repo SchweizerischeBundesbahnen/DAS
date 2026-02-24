@@ -110,11 +110,11 @@ extension JourneyScopeExtension on GetIt {
       scrollController: journeyTableVM.journeyTableScrollController,
       onAdvancementModeChanged: [journeyTableVM.updateZenViewMode, positionVM.onAdvancementModeChanged],
     );
-    settingsVM.registerOnBreakSeriesUpdated(vm.scrollToCurrentPositionIfNotPaused);
+    settingsVM.registerOnBrakeSeriesUpdated(vm.scrollToCurrentPositionIfNotPaused);
     registerSingleton<JourneyTableAdvancementViewModel>(
       vm,
       dispose: (vm) {
-        DI.get<JourneySettingsViewModel>().unregisterOnBreakSeriesUpdated(vm.scrollToCurrentPositionIfNotPaused);
+        DI.get<JourneySettingsViewModel>().unregisterOnBrakeSeriesUpdated(vm.scrollToCurrentPositionIfNotPaused);
         vm.dispose();
       },
     );

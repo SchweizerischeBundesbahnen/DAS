@@ -42,7 +42,7 @@ class SegmentProfileMapper {
   static const String _protectionSectionNspFacultativeName = 'facultative';
   static const String _protectionSectionNspLengthTypeName = 'lengthType';
 
-  static String _trainSeriesKey(TrainSeriesSpeed speed) => '${speed.trainSeries}_${speed.breakSeries ?? ''}';
+  static String _trainSeriesKey(TrainSeriesSpeed speed) => '${speed.trainSeries}_${speed.brakeSeries ?? ''}';
 
   static List<BaseData> parseSegmentProfile(
     SegmentProfileReferenceDto segmentProfileReference,
@@ -363,7 +363,7 @@ class SegmentProfileMapper {
 
       for (final speedsOfCurve in speedListsByBeginPoint) {
         final ts = speedsOfCurve.firstWhereOrNull(
-          (it) => it.trainSeries == template.trainSeries && it.breakSeries == template.breakSeries,
+          (it) => it.trainSeries == template.trainSeries && it.brakeSeries == template.brakeSeries,
         );
         if (ts == null) continue;
         final speed = ts.speed;
@@ -386,7 +386,7 @@ class SegmentProfileMapper {
       result.add(
         TrainSeriesSpeed(
           trainSeries: template.trainSeries,
-          breakSeries: template.breakSeries,
+          brakeSeries: template.brakeSeries,
           text: template.text,
           reduced: template.reduced,
           speed: mergedSpeed,

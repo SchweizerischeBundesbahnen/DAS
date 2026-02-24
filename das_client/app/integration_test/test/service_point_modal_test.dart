@@ -186,7 +186,7 @@ void main() {
 
       expect(find.text('Zusatzinformation A'), findsOneWidget);
 
-      await selectBreakSeries(tester, breakSeries: 'N50');
+      await selectBrakeSeries(tester, brakeSeries: 'N50');
 
       expect(find.text('Zusatzinformation A'), findsNothing);
       expect(find.text('Zusatzinformation B'), findsOne);

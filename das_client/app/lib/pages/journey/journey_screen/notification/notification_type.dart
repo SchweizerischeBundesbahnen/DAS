@@ -3,7 +3,7 @@ enum NotificationType {
   illegalSegmentNoReplacement,
   koaWait,
   koaWaitCancelled,
-  newBreakLoadSlip,
+  newBrakeLoadSlip,
   maneuverMode,
   disturbance,
   advisedSpeed,

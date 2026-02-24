@@ -23,39 +23,39 @@ void main() {
   late MockJourneySettingsViewModel mockJourneySettingsViewModel;
   late BehaviorSubject<Journey?> journeySubject;
 
-  final initialBreakSeries = BreakSeries(trainSeries: .R, breakSeries: 120);
-  var journeySettings = JourneySettings(initialBreakSeries: initialBreakSeries);
+  final initialBrakeSeries = BrakeSeries(trainSeries: .R, brakeSeries: 120);
+  var journeySettings = JourneySettings(initialBrakeSeries: initialBrakeSeries);
   final journey = Journey(
     metadata: Metadata(
-      availableBreakSeries: {
-        BreakSeries(trainSeries: .R, breakSeries: 120),
-        BreakSeries(trainSeries: .A, breakSeries: 100),
+      availableBrakeSeries: {
+        BrakeSeries(trainSeries: .R, brakeSeries: 120),
+        BrakeSeries(trainSeries: .A, brakeSeries: 100),
       },
-      breakSeries: initialBreakSeries,
+      brakeSeries: initialBrakeSeries,
       lineSpeeds: SplayTreeMap.from({
         0: [
           TrainSeriesSpeed(
             trainSeries: .R,
-            breakSeries: 120,
+            brakeSeries: 120,
             speed: SingleSpeed(value: '105'),
           ),
           TrainSeriesSpeed(
             trainSeries: .A,
-            breakSeries: 100,
+            brakeSeries: 100,
             speed: SingleSpeed(value: '100'),
           ),
         ],
         5: [
           TrainSeriesSpeed(
             trainSeries: .R,
-            breakSeries: 120,
+            brakeSeries: 120,
             speed: SingleSpeed(value: '100'),
           ),
         ],
         10: [
           TrainSeriesSpeed(
             trainSeries: .R,
-            breakSeries: 120,
+            brakeSeries: 120,
             speed: SingleSpeed(value: '95'),
           ),
         ],
@@ -72,7 +72,7 @@ void main() {
   );
 
   setUp(() {
-    journeySettings = JourneySettings(initialBreakSeries: initialBreakSeries);
+    journeySettings = JourneySettings(initialBrakeSeries: initialBrakeSeries);
     mockJourneyTableViewModel = MockJourneyTableViewModel();
     mockJourneySettingsViewModel = MockJourneySettingsViewModel();
     journeySubject = BehaviorSubject<Journey?>();
@@ -99,14 +99,14 @@ void main() {
     expect(testee.getResolvedSpeedForOrder(10), ResolvedTrainSeriesSpeed.none());
   });
 
-  test('test resolves speed for default break series', () async {
+  test('test resolves speed for default brake series', () async {
     expect(
       testee.getResolvedSpeedForOrder(0),
       ResolvedTrainSeriesSpeed(
         speed: TrainSeriesSpeed(
           trainSeries: .R,
           speed: SingleSpeed(value: '105'),
-          breakSeries: 120,
+          brakeSeries: 120,
         ),
         isPrevious: false,
       ),
@@ -117,16 +117,16 @@ void main() {
         speed: TrainSeriesSpeed(
           trainSeries: .R,
           speed: SingleSpeed(value: '100'),
-          breakSeries: 120,
+          brakeSeries: 120,
         ),
         isPrevious: false,
       ),
     );
   });
 
-  test('test uses breakSeries from settings', () async {
+  test('test uses brakeSeries from settings', () async {
     journeySettings = JourneySettings(
-      selectedBreakSeries: BreakSeries(trainSeries: .A, breakSeries: 100),
+      selectedBrakeSeries: BrakeSeries(trainSeries: .A, brakeSeries: 100),
     );
 
     expect(
@@ -135,7 +135,7 @@ void main() {
         speed: TrainSeriesSpeed(
           trainSeries: .A,
           speed: SingleSpeed(value: '100'),
-          breakSeries: 100,
+          brakeSeries: 100,
         ),
         isPrevious: false,
       ),
@@ -149,7 +149,7 @@ void main() {
         speed: TrainSeriesSpeed(
           trainSeries: .R,
           speed: SingleSpeed(value: '95'),
-          breakSeries: 120,
+          brakeSeries: 120,
         ),
         isPrevious: true,
       ),
@@ -158,7 +158,7 @@ void main() {
 
   test('test return previous over multiple last entries', () async {
     journeySettings = JourneySettings(
-      selectedBreakSeries: BreakSeries(trainSeries: .A, breakSeries: 100),
+      selectedBrakeSeries: BrakeSeries(trainSeries: .A, brakeSeries: 100),
     );
 
     expect(
@@ -167,7 +167,7 @@ void main() {
         speed: TrainSeriesSpeed(
           trainSeries: .A,
           speed: SingleSpeed(value: '100'),
-          breakSeries: 100,
+          brakeSeries: 100,
         ),
         isPrevious: true,
       ),
@@ -176,7 +176,7 @@ void main() {
 
   test('test return none if not found', () async {
     journeySettings = JourneySettings(
-      selectedBreakSeries: BreakSeries(trainSeries: .N, breakSeries: 100),
+      selectedBrakeSeries: BrakeSeries(trainSeries: .N, brakeSeries: 100),
     );
 
     expect(

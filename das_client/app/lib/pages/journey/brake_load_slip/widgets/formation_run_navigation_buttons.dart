@@ -1,4 +1,4 @@
-import 'package:app/pages/journey/break_load_slip/break_load_slip_view_model.dart';
+import 'package:app/pages/journey/brake_load_slip/brake_load_slip_view_model.dart';
 import 'package:app/widgets/navigation_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:formation/component.dart';
@@ -10,7 +10,7 @@ class FormationRunNavigationButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.read<BreakLoadSlipViewModel>();
+    final viewModel = context.read<BrakeLoadSlipViewModel>();
     return StreamBuilder(
       stream: CombineLatestStream.list([viewModel.formation, viewModel.formationRun]),
       initialData: [viewModel.formationValue, viewModel.formationRunValue],

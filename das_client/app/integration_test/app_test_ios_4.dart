@@ -3,7 +3,7 @@ import 'package:integration_test/integration_test.dart';
 import 'package:logger/component.dart';
 import 'package:logging/logging.dart';
 
-import 'test/journey_table_break_series_test.dart' as journey_table_break_series_tests;
+import 'test/journey_table_brake_series_test.dart' as journey_table_brake_series_tests;
 import 'test/journey_table_calculated_speed_test.dart' as journey_table_calculated_speed_tests;
 import 'test/journey_table_track_equipment_test.dart' as journey_table_track_equipment_tests;
 import 'test/preload_test.dart' as preload_test;
@@ -24,7 +24,7 @@ void main() {
   journey_table_calculated_speed_tests.main();
   settings_test.main();
   warnapp_tests.main();
-  journey_table_break_series_tests.main();
+  journey_table_brake_series_tests.main();
   journey_table_track_equipment_tests.main();
   journey_table_track_equipment_tests.main();
 }

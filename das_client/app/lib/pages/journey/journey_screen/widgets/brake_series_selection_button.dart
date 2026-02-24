@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
-class BreakSeriesSelectionButton extends StatelessWidget {
-  const BreakSeriesSelectionButton({
+class BrakeSeriesSelectionButton extends StatelessWidget {
+  const BrakeSeriesSelectionButton({
     required this.label,
     required this.currentlySelected,
     required this.onTap,

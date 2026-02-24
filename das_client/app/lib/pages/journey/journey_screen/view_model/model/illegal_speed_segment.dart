@@ -10,8 +10,8 @@ class IllegalSpeedSegment {
 
   final ServicePoint start;
   final ServicePoint end;
-  final BreakSeries original;
-  final BreakSeries? replacement;
+  final BrakeSeries original;
+  final BrakeSeries? replacement;
 
   @override
   bool operator ==(Object other) =>
