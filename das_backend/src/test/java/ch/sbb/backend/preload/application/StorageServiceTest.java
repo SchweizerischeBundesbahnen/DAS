@@ -99,6 +99,23 @@ class StorageServiceTest {
     }
 
     @Test
+    void save_ignoreDuplicateEntries() throws Exception {
+        underTest.save(Set.of(createJp(), createJp()), Set.of(), Set.of());
+
+        ArgumentCaptor<String> zipNameCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<byte[]> uploadDataCaptor = ArgumentCaptor.forClass(byte[].class);
+        verify(s3Service, times(1)).uploadZip(zipNameCaptor.capture(), uploadDataCaptor.capture());
+
+        String zipName = zipNameCaptor.getValue();
+        byte[] zipBytes = uploadDataCaptor.getValue();
+
+        List<String> entries = listZipEntries(zipBytes);
+
+        assertThat(zipName).endsWith(".zip");
+        assertThat(entries).containsExactly("jp/JP_9353_234_2025-10-17_2.xml");
+    }
+
+    @Test
     void deleteAllBefore() {
         when(s3Service.listObjects()).thenReturn(List.of("2026-02-20T08-00-00Z.zip", "2026-02-20T05-00-20Z.zip"));
 
@@ -116,3 +133,4 @@ class StorageServiceTest {
         verify(s3Service, times(1)).deleteObjects(List.of("2026-01-01T18-21-49Z.zip"));
     }
 }
+

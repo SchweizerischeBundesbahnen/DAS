@@ -24,19 +24,17 @@ public class TrainIdentificationService {
         this.uicCompanyCodeProvider = uicCompanyCodeProvider;
     }
 
-    public List<TrainIdentification> processDailyTrainRunRequest(OffsetDateTime startDateTime) {
-        // todo filter for preloaded_at and also older trains not yet preloaded
-
-        List<TrainIdentificationEntity> trainRunEntities = trainIdentificationRepository.findAllByStartDateTimeBefore(startDateTime);
-
+    public List<TrainIdentification> getNewTrainIdentificationsBetween(OffsetDateTime after, OffsetDateTime before) {
+        List<TrainIdentificationEntity> trainRunEntities = trainIdentificationRepository.findAllByStartDateTimeAfterAndStartDateTimeBeforeAndPreloadedAtNull(after, before);
         return trainRunEntities.stream()
             .sorted(Comparator.comparing(TrainIdentificationEntity::getStartDateTime))
             .map(this::readEntity)
+            .filter(tid -> !tid.companies().isEmpty())
             .toList();
     }
 
     private TrainIdentification readEntity(TrainIdentificationEntity trainRunEntity) {
-        return new TrainIdentification(trainRunEntity.getId(), trainRunEntity.getOperationalTrainNumber(), trainRunEntity.getStartDateTime().toLocalDate(),
+        return new TrainIdentification(trainRunEntity.getId(), trainRunEntity.getOperationalTrainNumber(), trainRunEntity.getStartDateTime(),
             readCompanyCodes(trainRunEntity.getCompanies()));
     }
 

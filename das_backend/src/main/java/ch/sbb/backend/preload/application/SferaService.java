@@ -8,6 +8,9 @@ import ch.sbb.backend.preload.domain.SferaStore;
 import ch.sbb.backend.preload.domain.TrainCharacteristicsIdentification;
 import ch.sbb.backend.preload.infrastructure.PahoMqttClient;
 import ch.sbb.backend.preload.infrastructure.xml.XmlHelper;
+import ch.sbb.backend.preload.sfera.model.v0300.B2GMessageResponse.Result;
+import ch.sbb.backend.preload.sfera.model.v0300.ErrorComplexType;
+import ch.sbb.backend.preload.sfera.model.v0300.G2BReplyPayload;
 import ch.sbb.backend.preload.sfera.model.v0300.JourneyProfile;
 import ch.sbb.backend.preload.sfera.model.v0300.JourneyProfile.JPStatus;
 import ch.sbb.backend.preload.sfera.model.v0300.SFERAB2GEventMessage;
@@ -82,11 +85,19 @@ public class SferaService {
 
         SFERAG2BReplyMessage handshakeReply = sendRequest(trainId, sferaMessageCreator.createHandshakeRequestMessage(trainId)).get();
         if (handshakeReply.getHandshakeAcknowledgement() == null) {
+            if (isG2bError(handshakeReply.getG2BReplyPayload())) {
+                String errors = extractG2bError(handshakeReply.getG2BReplyPayload());
+                throw new IllegalStateException("HS request errorCode: " + errors);
+            }
             throw new IllegalStateException("Handshake not acknowledged!");
         }
         SFERAG2BReplyMessage jpResponse = sendRequest(trainId, sferaMessageCreator.createJpRequestMessage(trainId)).get();
-        if (jpResponse.getG2BReplyPayload() == null || jpResponse.getG2BReplyPayload().getJourneyProfiles() == null) {
-            return new PreloadResult.Error("Expected exactly one Journey Profile but was none or multiple");
+        if (jpResponse.getG2BReplyPayload() == null || jpResponse.getG2BReplyPayload().getJourneyProfiles() == null || jpResponse.getG2BReplyPayload().getJourneyProfiles().size() != 1) {
+            if (isG2bError(jpResponse.getG2BReplyPayload())) {
+                String errors = extractG2bError(jpResponse.getG2BReplyPayload());
+                return terminateSessionWithResult(trainId, new PreloadResult.Error("JP request errorCode: " + errors));
+            }
+            return terminateSessionWithResult(trainId, new PreloadResult.Error("Expected exactly one Journey Profile but was none or multiple"));
         }
         JourneyProfile jp = jpResponse.getG2BReplyPayload().getJourneyProfiles().getFirst();
 
@@ -118,7 +129,8 @@ public class SferaService {
     }
 
     private PreloadResult terminateSessionWithResult(TrainIdentification trainId, PreloadResult result) throws InterruptedException, ExecutionException, MqttException {
-        sendRequest(trainId, sferaMessageCreator.createSessionTermination(trainId)).get();
+        // todo send when vad has implemented
+        // sendRequest(trainId, sferaMessageCreator.createSessionTermination(trainId)).get();
         mqttClient.unsubscribe(createTopic(G2B, trainId));
         return result;
     }
@@ -141,6 +153,10 @@ public class SferaService {
         return allSegmentProfiles;
     }
 
+    public void connect() {
+        mqttClient.connect(CLIENT_ID);
+    }
+
     private CompletableFuture<Set<SegmentProfile>> requestSps(TrainIdentification trainId, Set<SegmentProfileIdentification> spIds) throws MqttException {
         Set<SegmentProfile> segmentProfiles = new HashSet<>();
         Set<SegmentProfileIdentification> segmentProfilesToFetch = new HashSet<>();
@@ -158,6 +174,10 @@ public class SferaService {
             return sendRequest(trainId, sferaMessageCreator.createSpRequestMessage(trainId, segmentProfilesToFetch))
                 .thenApply(reply -> {
                     if (reply.getG2BReplyPayload() == null || reply.getG2BReplyPayload().getSegmentProfiles() == null) {
+                        if (isG2bError(reply.getG2BReplyPayload())) {
+                            String errors = extractG2bError(reply.getG2BReplyPayload());
+                            throw new IllegalStateException("SP request errorCode: " + errors);
+                        }
                         throw new IllegalStateException("No Segment Profile received!");
                     }
                     List<SegmentProfile> fetched = reply.getG2BReplyPayload().getSegmentProfiles();
@@ -187,6 +207,10 @@ public class SferaService {
             return sendRequest(trainId, sferaMessageCreator.createTcRequest(trainId, trainCharacteristicsToFetch))
                 .thenApply(reply -> {
                     if (reply.getG2BReplyPayload() == null || reply.getG2BReplyPayload().getTrainCharacteristics() == null) {
+                        if (isG2bError(reply.getG2BReplyPayload())) {
+                            String errors = extractG2bError(reply.getG2BReplyPayload());
+                            throw new IllegalStateException("TC request errorCode: " + errors);
+                        }
                         throw new IllegalStateException("No Train Characteristics received!");
                     }
                     List<TrainCharacteristics> fetched = reply.getG2BReplyPayload().getTrainCharacteristics();
@@ -200,7 +224,8 @@ public class SferaService {
     }
 
     private String createTopic(String direction, TrainIdentification trainId) {
-        return String.format("%s90940/%s/%s/%s/%s_%s/%s", topicPrefix, sferaMajorVersion, direction, trainId.company().getValue(), trainId.operationalTrainNumber(), trainId.startDate(), CLIENT_ID);
+        return String.format("%s90940/%s/%s/%s/%s_%s/%s", topicPrefix, sferaMajorVersion, direction, trainId.company().getValue(), trainId.operationalTrainNumber(),
+            trainId.startDateTime().toLocalDate(), CLIENT_ID);
     }
 
     private void receive(MqttMessage mqttMessage) {
@@ -235,6 +260,24 @@ public class SferaService {
         }, MAX_MQTT_REPLY_TIMEOUT_MS, TimeUnit.MILLISECONDS);
 
         return future;
+    }
+
+    private boolean isG2bError(G2BReplyPayload g2bReplyPayload) {
+        return g2bReplyPayload != null && g2bReplyPayload.getG2BMessageResponse() != null && g2bReplyPayload.getG2BMessageResponse().getResult() == Result.ERROR;
+    }
+
+    private String extractG2bError(G2BReplyPayload g2bReplyPayload) {
+        if (isG2bError(g2bReplyPayload) && g2bReplyPayload.getG2BMessageResponse().getG2BErrors() != null) {
+            return g2bReplyPayload.getG2BMessageResponse().getG2BErrors().stream()
+                .map(ErrorComplexType::getErrorCode)
+                .collect(Collectors.joining(", "));
+        } else {
+            return "";
+        }
+    }
+
+    public void disconnect() {
+        mqttClient.disconnect();
     }
 }
 

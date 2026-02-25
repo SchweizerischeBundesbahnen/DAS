@@ -4,7 +4,6 @@ import ch.sbb.backend.preload.application.model.trainidentification.TrainIdentif
 import ch.sbb.backend.preload.domain.PreloadResult;
 import ch.sbb.backend.preload.domain.SegmentProfileIdentification;
 import ch.sbb.backend.preload.domain.TrainCharacteristicsIdentification;
-import ch.sbb.backend.preload.infrastructure.PahoMqttClient;
 import ch.sbb.backend.preload.sfera.model.v0300.JourneyProfile;
 import ch.sbb.backend.preload.sfera.model.v0300.SegmentProfile;
 import ch.sbb.backend.preload.sfera.model.v0300.TrainCharacteristics;
@@ -28,30 +27,28 @@ public class PreloadScheduler {
      * Due to infrastructure realtime handling of operating trains, real train runs get clear just a few hours earlier.
      */
     private static final int PRELOAD_HOURS_BEFORE_DEPARTURE = 4;
-  
+
     private final SferaService sferaService;
-    private final PahoMqttClient mqttService;
-    private final MockTrainIdentificationService trainIdentificationsService;
+    private final TrainIdentificationService trainIdentificationsService;
     private final StorageService storageService;
 
-    public PreloadScheduler(SferaService sferaService, PahoMqttClient mqttService, MockTrainIdentificationService trainIdentificationsService, StorageService storageService) {
+    public PreloadScheduler(SferaService sferaService, TrainIdentificationService trainIdentificationsService, StorageService storageService) {
         this.sferaService = sferaService;
-        this.mqttService = mqttService;
         this.trainIdentificationsService = trainIdentificationsService;
         this.storageService = storageService;
     }
 
     @Scheduled(cron = "${preload.fetch-cron}")
-    @SchedulerLock(name = "preload", lockAtLeastFor = "10m")
+    @SchedulerLock(name = "preload", lockAtLeastFor = "4m")
     public void scheduledPreload() throws MqttException, ExecutionException, InterruptedException {
         log.info("Preload started");
         long startTime = System.currentTimeMillis();
         Map<TrainIdentification, JourneyProfile> mapJourneyProfiles = new HashMap<>();
         Map<SegmentProfileIdentification, SegmentProfile> mapSegmentProfiles = new HashMap<>();
         Map<TrainCharacteristicsIdentification, TrainCharacteristics> mapTrainCharacteristics = new HashMap<>();
-        List<TrainIdentification> trainIdentifications = trainIdentificationsService.getNewTrainIdentifications(OffsetDateTime.now().plusHours(PRELOAD_HOURS_BEFORE_DEPARTURE))
-            .stream().toList();
-        mqttService.connect();
+        List<TrainIdentification> trainIdentifications = trainIdentificationsService.getNewTrainIdentificationsBetween(OffsetDateTime.now().minusHours(4),
+            OffsetDateTime.now().plusHours(PRELOAD_HOURS_BEFORE_DEPARTURE));
+        sferaService.connect();
         for (TrainIdentification trainId : trainIdentifications) {
             PreloadResult preloadResult = sferaService.preload(trainId);
             switch (preloadResult) {
@@ -65,9 +62,9 @@ public class PreloadScheduler {
                 case PreloadResult.Error(var message, Throwable ex) -> log.error("Preload for train {} failed with message: {}", trainId, message, ex);
             }
         }
-        mqttService.disconnect();
+        sferaService.disconnect();
         storageService.save(mapJourneyProfiles.values(), mapSegmentProfiles.values(), mapTrainCharacteristics.values());
         trainIdentificationsService.savePreloadedTrains(mapJourneyProfiles.keySet());
-        log.info("Preload ended in {} ms", System.currentTimeMillis() - startTime);
+        log.info("Preload with {}/{} trains ended in {} ms", mapJourneyProfiles.size(), trainIdentifications.size(), System.currentTimeMillis() - startTime);
     }
 }

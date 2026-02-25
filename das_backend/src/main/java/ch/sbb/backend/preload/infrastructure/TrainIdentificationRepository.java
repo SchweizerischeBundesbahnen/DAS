@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TrainIdentificationRepository extends JpaRepository<TrainIdentificationEntity, Long> {
 
-    List<TrainIdentificationEntity> findAllByStartDateTimeBefore(OffsetDateTime startDate);
+    List<TrainIdentificationEntity> findAllByStartDateTimeAfterAndStartDateTimeBeforeAndPreloadedAtNull(OffsetDateTime after, OffsetDateTime before);
 
     @Modifying
     @Transactional
