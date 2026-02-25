@@ -56,6 +56,7 @@ jobs:
           args: >
             -Dsonar.organization=schweizerischebundesbahnen
             -Dsonar.projectKey=schweizerischebundesbahnen-DAS-Admin-Tool
+            -Dsonar.projectName=DAS/Admin-Tool
             -Dsonar.language=ts
             -Dsonar.sources=src/app
             -Dsonar.tests=src/app

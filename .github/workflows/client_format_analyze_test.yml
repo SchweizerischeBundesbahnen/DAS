@@ -59,6 +59,7 @@ jobs:
           args: >
             -Dsonar.organization=schweizerischebundesbahnen
             -Dsonar.projectKey=schweizerischebundesbahnen_DAS-Client
+            -Dsonar.projectName=DAS/Client
             -Dsonar.sources=app/lib,app_links_x/lib,auth/lib,formation/lib,local_regulations/lib,logger/lib,preload/lib,sfera/lib,warnapp/lib
             -Dsonar.tests=app/test,app_links_x/test,auth/test,formation/test,local_regulations/test,logger/test,preload/test,sfera/test,warnapp/test
             -Dsonar.inclusions=**/lib/**

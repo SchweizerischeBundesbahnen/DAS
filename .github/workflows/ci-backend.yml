@@ -39,8 +39,7 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
           cache: maven
-      - name: Maven verify + Sonar (PR only)
-        if: github.ref != 'refs/heads/main'
+      - name: Maven verify + Sonar
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_NEW_TEST }}
         run: |
@@ -48,6 +47,7 @@ jobs:
             org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
             -Dsonar.projectKey=schweizerischebundesbahnen-DAS-Backend \
             -Dsonar.organization=schweizerischebundesbahnen \
+            -Dsonar.projectName=DAS/Backend \
             -Dsonar.token=${SONAR_TOKEN}
       - name: Login to GitHub Container Registry
         if: github.ref == 'refs/heads/main'
