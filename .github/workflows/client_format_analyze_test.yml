@@ -19,46 +19,46 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-    - uses: actions/checkout@v6
+      - uses: actions/checkout@v6
 
-    - uses: actions/setup-java@v5
-      with:
-        distribution: 'temurin'
-        java-version: '17'
-        cache: 'gradle'
+      - uses: actions/setup-java@v5
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
 
-    - uses: subosito/flutter-action@v2
-      with:
-        flutter-version: '3.41.x'
-        cache: true
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.41.x'
+          cache: true
 
-    - name: Get dependencies
-      run: flutter pub get
+      - name: Get dependencies
+        run: flutter pub get
 
-    - name: Format check with line length 120
-      run: dart format -l 120 -o none --set-exit-if-changed .
+      - name: Format check with line length 120
+        run: dart format -l 120 -o none --set-exit-if-changed .
 
-    - name: Setup melos
-      uses: bluefireteam/melos-action@v3
-      with:
-        melos-version: '^7.4.0'
-        run-bootstrap: 'false'
+      - name: Setup melos
+        uses: bluefireteam/melos-action@v3
+        with:
+          melos-version: '^7.4.0'
+          run-bootstrap: 'false'
 
-    - name: Generate sources
-      run: melos generate
+      - name: Generate sources
+        run: melos generate
 
-    - name: Flutter tests with coverage
-      run: melos coverage
+      - name: Flutter tests with coverage
+        run: melos coverage
 
-    - name: Sonar scan
-      uses: SonarSource/sonarqube-scan-action@v7
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_NEW_TEST }}
-      with:
+      - name: Sonar scan
+        uses: SonarSource/sonarqube-scan-action@v7
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_NEW_TEST }}
+        with:
           projectBaseDir: das_client
           args: >
             -Dsonar.organization=schweizerischebundesbahnen
-            -Dsonar.projectKey=schweizerischebundesbahnen-DAS-Admin-Tool
+            -Dsonar.projectKey=schweizerischebundesbahnen_DAS-Client
             -Dsonar.sources=app/lib,app_links_x/lib,auth/lib,formation/lib,local_regulations/lib,logger/lib,preload/lib,sfera/lib,warnapp/lib
             -Dsonar.tests=app/test,app_links_x/test,auth/test,formation/test,local_regulations/test,logger/test,preload/test,sfera/test,warnapp/test
             -Dsonar.inclusions=**/lib/**
