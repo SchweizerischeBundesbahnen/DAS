@@ -4,6 +4,7 @@ import static ch.sbb.backend.admin.application.settings.AppVersionController.API
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -23,6 +24,7 @@ class AppVersionControllerTest {
 
     @Test
     @WithMockUser(authorities = "ROLE_admin")
+    @Sql("classpath:emptyAppVersions.sql")
     void getAll_empty() throws Exception {
         mockMvc.perform(get(API_SETTINGS_APPVERSION))
             .andExpect(status().isOk())
@@ -30,14 +32,25 @@ class AppVersionControllerTest {
     }
 
     @Test
-    void getOne_not_found() {
-        // should return 404
+    @WithMockUser(authorities = "ROLE_admin")
+    void getOne_not_found() throws Exception {
+        int nonExistingId = Integer.MAX_VALUE;
+        mockMvc.perform(get(API_SETTINGS_APPVERSION + "/" + nonExistingId))
+            .andExpect(status().isNotFound());
     }
 
     @Test
+    @WithMockUser(authorities = "ROLE_admin")
+    @Sql("classpath:emptyAppVersions.sql")
     @Sql("classpath:createAppVersions.sql")
-    void getOne_by_id() {
-        // get by Id and validate response
+    void getOne_by_id() throws Exception {
+        mockMvc.perform(get(API_SETTINGS_APPVERSION + "/1"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data", hasSize(1)))
+            .andExpect(jsonPath("$.data[0].id").value(1))
+            .andExpect(jsonPath("$.data[0].version").value("2.4.1"))
+            .andExpect(jsonPath("$.data[0].minimalVersion").value(false))
+            .andExpect(jsonPath("$.data[0].expiryDate").value("2025-12-31"));
     }
 
     @Test
@@ -71,14 +84,45 @@ class AppVersionControllerTest {
     }
 
     @Test
+    @WithMockUser(authorities = "ROLE_admin")
+    @Sql("classpath:emptyAppVersions.sql")
     @Sql("classpath:createAppVersions.sql")
-    void update() {
-        // put request
+    void update() throws Exception {
+        mockMvc.perform(put(API_SETTINGS_APPVERSION + "/1")
+                .contentType("application/json")
+                .content("""
+                        {
+                            "version": "2.5.0",
+                            "minimalVersion": true,
+                            "expiryDate": "2026-01-01"
+                        }
+                    """))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data", hasSize(1)))
+            .andExpect(jsonPath("$.data[0].id").value(1))
+            .andExpect(jsonPath("$.data[0].version").value("2.5.0"))
+            .andExpect(jsonPath("$.data[0].minimalVersion").value(true))
+            .andExpect(jsonPath("$.data[0].expiryDate").value("2026-01-01"));
+
+        mockMvc.perform(get(API_SETTINGS_APPVERSION + "/1"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data", hasSize(1)))
+            .andExpect(jsonPath("$.data[0].id").value(1))
+            .andExpect(jsonPath("$.data[0].version").value("2.5.0"))
+            .andExpect(jsonPath("$.data[0].minimalVersion").value(true))
+            .andExpect(jsonPath("$.data[0].expiryDate").value("2026-01-01"));
     }
 
     @Test
-    void delete() {
+    @WithMockUser(authorities = "ROLE_admin")
+    @Sql("classpath:emptyAppVersions.sql")
+    @Sql("classpath:createAppVersions.sql")
+    void delete() throws Exception {
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete(API_SETTINGS_APPVERSION + "/1"))
+            .andExpect(status().isNoContent());
 
+        mockMvc.perform(get(API_SETTINGS_APPVERSION + "/1"))
+            .andExpect(status().isNotFound());
     }
 
 }
