@@ -105,12 +105,11 @@ aws:
 
 sfera:
   company-code: '1085'
-  major-version: '3'
+  major-version: '2'
   version: '3.00'
   source-device: 'BACKEND'
   recipient: '0085'
   broker-url: ${SFERA_BROKER_URL}
-  clientId: ${SFERA_BROKER_CLIENTID}
   oauth-profile: ${SFERA_BROKER_OAUTH_PROFILE}
   topic-prefix: ${SFERA_BROKER_TOPIC_PREFIX}
 

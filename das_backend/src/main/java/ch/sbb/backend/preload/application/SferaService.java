@@ -84,10 +84,15 @@ public class SferaService {
 
         Set<SegmentProfile> segmentProfiles = futureSps.get();
         Set<TrainCharacteristics> trainCharacteristics = futureTcs.get();
-        sendRequest(trainId, sferaMessageCreator.createSessionTermination()).get();
+        // todo send when vad has implemented
+        //        sendRequest(trainId, sferaMessageCreator.createSessionTermination()).get();
         mqttClient.unsubscribe(createTopic(G2B, trainId));
 
         return new PreloadResult(journeyProfiles, segmentProfiles, trainCharacteristics);
+    }
+
+    public void connect() {
+        mqttClient.connect(CLIENT_ID);
     }
 
     private CompletableFuture<Set<SegmentProfile>> requestSps(TrainId trainId, Set<SegmentProfileReference> spRefs) {
@@ -196,6 +201,10 @@ public class SferaService {
         }, MAX_MQTT_REPLY_TIMEOUT_MS, TimeUnit.MILLISECONDS);
 
         return future;
+    }
+
+    public void disconnect() {
+        mqttClient.disconnect();
     }
 }
 

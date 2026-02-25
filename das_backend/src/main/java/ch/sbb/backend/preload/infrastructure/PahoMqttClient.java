@@ -26,9 +26,6 @@ public class PahoMqttClient {
     @Value("${sfera.broker-url}")
     String broker;
 
-    @Value("${sfera.clientId}")
-    String clientId;
-
     @Value("${sfera.oauth-profile}")
     String oauthProfile;
 
@@ -38,7 +35,7 @@ public class PahoMqttClient {
         this.sferaAuthService = sferaAuthService;
     }
 
-    public void connect() {
+    public void connect(String clientId) {
         OAuth2AccessToken accessToken = sferaAuthService.getAccessToken();
         if (accessToken == null) {
             log.error("connecting failed, could not obtain access token");
