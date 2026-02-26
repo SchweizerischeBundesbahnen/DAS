@@ -66,15 +66,11 @@ public class PahoMqttClient {
         }
     }
 
-    public void subscribe(String topic, IMqttMessageListener messageListener) {
+    public void subscribe(String topic, IMqttMessageListener messageListener) throws MqttException {
         ensureConnected();
-        try {
-            final MqttSubscription[] subscriptions = {new MqttSubscription(topic, QOS_EXACTLY_ONCE)};
-            IMqttMessageListener[] messageListeners = {messageListener};
-            client.subscribe(subscriptions, messageListeners);
-        } catch (MqttException e) {
-            throw new IllegalStateException("MQTT subscribe failed for topic=" + topic, e);
-        }
+        final MqttSubscription[] subscriptions = {new MqttSubscription(topic, QOS_EXACTLY_ONCE)};
+        IMqttMessageListener[] messageListeners = {messageListener};
+        client.subscribe(subscriptions, messageListeners);
     }
 
     public void unsubscribe(String topic) {
@@ -85,15 +81,11 @@ public class PahoMqttClient {
         }
     }
 
-    public void publish(String topic, String content) {
+    public void publish(String topic, String content) throws MqttException {
         ensureConnected();
         MqttMessage message = new MqttMessage(content.getBytes());
         message.setQos(QOS_EXACTLY_ONCE);
-        try {
-            client.publish(topic, message);
-        } catch (MqttException e) {
-            throw new IllegalStateException("MQTT publish failed for topic=" + topic, e);
-        }
+        client.publish(topic, message);
     }
 
     public void disconnect() {
