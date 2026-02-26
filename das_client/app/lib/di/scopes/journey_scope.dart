@@ -7,6 +7,7 @@ import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
+import 'package:app/pages/journey/view_model/view_mode_view_model.dart';
 import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
 import 'package:get_it/get_it.dart';
 import 'package:local_regulations/component.dart';
@@ -22,6 +23,7 @@ class JourneyScope extends DIScope {
   Future<void> push() async {
     _log.fine('Pushing scope $scopeName');
     getIt.pushNewScope(scopeName: scopeName);
+    getIt.registerViewModeViewModel();
     getIt.registerJourneyNavigationViewModel();
     getIt.registerJourneySelectionViewModel();
     getIt.registerJourneyViewModel();
@@ -36,6 +38,18 @@ class JourneyScope extends DIScope {
 }
 
 extension JourneyScopeExtension on GetIt {
+  void registerViewModeViewModel() {
+    factoryFunc() {
+      _log.fine('Register ViewModeViewModel');
+      return ViewModeViewModel();
+    }
+
+    registerLazySingleton<ViewModeViewModel>(
+      factoryFunc,
+      dispose: (vm) => vm.dispose(),
+    );
+  }
+
   void registerJourneyNavigationViewModel() {
     factoryFunc() {
       _log.fine('Register JourneyNavigationViewModel');
@@ -104,11 +118,12 @@ extension JourneyScopeExtension on GetIt {
     final journeyVM = DI.get<JourneyViewModel>();
     final settingsVM = DI.get<JourneySettingsViewModel>();
     final positionVM = DI.get<JourneyPositionViewModel>();
+    final viewModeVM = DI.get<ViewModeViewModel>();
     final vm = JourneyTableAdvancementViewModel(
       journeyViewModel: journeyVM,
       positionStream: positionVM.model,
       scrollController: journeyVM.journeyTableScrollController,
-      onAdvancementModeChanged: [journeyVM.updateZenViewMode, positionVM.onAdvancementModeChanged],
+      onAdvancementModeChanged: [viewModeVM.updateZenViewMode, positionVM.onAdvancementModeChanged],
     );
     settingsVM.registerOnBrakeSeriesUpdated(vm.scrollToCurrentPositionIfNotPaused);
     registerSingleton<JourneyTableAdvancementViewModel>(

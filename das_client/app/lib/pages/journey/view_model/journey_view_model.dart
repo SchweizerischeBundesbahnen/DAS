@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_screen/journey_table_scroll_controller.dart';
-import 'package:app/pages/journey/journey_screen/view_model/model/journey_advancement_model.dart';
 import 'package:app/util/error_code.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:logging/logging.dart';
@@ -33,17 +32,10 @@ class JourneyViewModel {
 
   bool get showDecisiveGradientValue => _rxShowDecisiveGradient.value;
 
-  Stream<bool> get isZenViewMode => _rxZenViewMode.stream;
-
-  bool get isZenViewModeValue => _rxZenViewMode.value;
-
   JourneyTableScrollController journeyTableScrollController = JourneyTableScrollController();
 
   final _rxErrorCode = BehaviorSubject<ErrorCode?>.seeded(null);
   final _rxJourney = BehaviorSubject<Journey?>.seeded(null);
-
-  /// Zen mode will hide the AppBar.
-  late final _rxZenViewMode = BehaviorSubject<bool>.seeded(true);
 
   final _rxShowDecisiveGradient = BehaviorSubject<bool>.seeded(false);
   Timer? _showDecisiveGradientTimer;
@@ -53,12 +45,6 @@ class JourneyViewModel {
 
   void _init() {
     _listenToSferaRemoteRepo();
-  }
-
-  void updateZenViewMode(JourneyAdvancementModel journeyAdvancementModel) {
-    final newState = journeyAdvancementModel is! Paused;
-    _log.fine('ZenViewMode active: $newState}');
-    _rxZenViewMode.add(newState);
   }
 
   void toggleKmDecisiveGradient() {
@@ -75,7 +61,6 @@ class JourneyViewModel {
 
   void dispose() {
     _rxJourney.close();
-    _rxZenViewMode.close();
     _rxShowDecisiveGradient.close();
     _rxErrorCode.close();
     _stateSubscription?.cancel();
