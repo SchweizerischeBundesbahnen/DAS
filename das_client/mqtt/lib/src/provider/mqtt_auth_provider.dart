@@ -1,11 +1,11 @@
+import 'package:auth/component.dart';
+
 abstract interface class MqttAuthProvider {
   const MqttAuthProvider._();
 
   Future<String> token();
 
-  Future<String?> tmsToken({required String company, required String train, required String role});
-
-  Future<String> userId();
+  Future<User> user();
 
   String get oauthProfile;
 }

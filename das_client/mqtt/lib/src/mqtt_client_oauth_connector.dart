@@ -15,12 +15,12 @@ class MqttClientOauthConnector implements MqttClientConnector {
     _log.info('Connecting to mqtt using oauth token');
 
     try {
-      final userId = await _mqttAuthProvider.userId();
-      _log.info('Using userId=$userId');
+      final user = await _mqttAuthProvider.user();
+      _log.info('Using userId=${user.userId}');
 
       final accessToken = await _mqttAuthProvider.token();
       final mqttClientConnectionStatus = await client.connect(
-        userId,
+        user.userId,
         'OAUTH~${_mqttAuthProvider.oauthProfile}~$accessToken',
       );
       _log.info('mqttClientConnectionStatus=$mqttClientConnectionStatus');
