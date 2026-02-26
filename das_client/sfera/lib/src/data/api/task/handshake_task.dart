@@ -40,7 +40,7 @@ class HandshakeTask extends SferaTask {
     _sendHandshakeRequest();
   }
 
-  void _sendHandshakeRequest() async {
+  void _sendHandshakeRequest() {
     final sferaTrain = Format.sferaTrain(otnId.operationalTrainNumber, otnId.startDate);
 
     _log.info('Sending handshake request for company=${otnId.company} train=$sferaTrain');

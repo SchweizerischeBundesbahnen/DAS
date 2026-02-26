@@ -56,7 +56,7 @@ class MqttServiceImpl implements MqttService {
     _connectivitySubscription = _connectivityManager.onConnectivityChanged.distinct().listen((connected) {
       if (_connected && connected) {
         _log.info('Reconnecting to MQTT broker due to connectivity change');
-        //_client.doAutoReconnect(force: true);
+        _client.doAutoReconnect(force: true);
       }
     });
   }
