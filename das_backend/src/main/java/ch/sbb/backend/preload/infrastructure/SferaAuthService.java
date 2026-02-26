@@ -15,6 +15,7 @@ import org.springframework.web.client.RestClientException;
 public class SferaAuthService {
 
     public static final String REGISTRATION_ID = "azure";
+    public static final int TOKEN_REFRESH_MARGIN_SECONDS = 30;
     private final OAuth2AuthorizedClientManager authorizedClientManager;
 
     private OAuth2AccessToken accessToken;
@@ -24,12 +25,16 @@ public class SferaAuthService {
     }
 
     private static boolean isTokenValid(OAuth2AccessToken token) {
-        return token != null && token.getExpiresAt() != null && token.getExpiresAt().isAfter(Instant.now());
+        return token != null && token.getExpiresAt() != null && token.getExpiresAt().minusSeconds(TOKEN_REFRESH_MARGIN_SECONDS).isAfter(Instant.now());
     }
 
     public OAuth2AccessToken getAccessToken() {
         if (!isTokenValid(accessToken)) {
-            setAccessToken();
+            synchronized (this) {
+                if (!isTokenValid(accessToken)) {
+                    setAccessToken();
+                }
+            }
         }
         return accessToken;
     }
