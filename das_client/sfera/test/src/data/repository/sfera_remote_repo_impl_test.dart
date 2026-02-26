@@ -841,4 +841,39 @@ void main() {
 
     sferaRepo.dispose();
   });
+
+  test('should retry requesting SegmentProfiles when not all are available', () async {
+    // GIVEN
+    when(mockMqttService.connect(any, any)).thenAnswer((_) async => true);
+    when(mockMqttService.publishMessage(any, any, any)).thenReturn(true);
+    when(mockSferaAuthProvider.isDriver()).thenAnswer((_) async => true);
+
+    when(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).thenAnswer((_) async => null);
+    when(mockLocalDatabaseRepository.saveSegmentProfile(any)).thenAnswer((_) async {});
+
+    // WHEN
+    await sferaRepo.connect(trainId);
+    await Future.delayed(Duration(milliseconds: 1));
+
+    final handshakeResponse = loadFile('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
+    mqttSubject.add(handshakeResponse);
+
+    await Future.delayed(Duration(milliseconds: 1));
+
+    final jpResponse = loadFile('test_resources/SFERA_G2B_Reply_JP_request_9315.xml');
+    mqttSubject.add(jpResponse);
+
+    await Future.delayed(Duration(milliseconds: 1));
+
+    // TODO: Implement test
+
+    // THEN
+    verify(
+      mockMqttService.publishMessage(
+        any,
+        any,
+        argThat(contains('<SP_Request')),
+      ),
+    ).called(2);
+  });
 }
