@@ -205,7 +205,14 @@ class _MqttAuthProvider implements MqttAuthProvider {
   }
 
   @override
-  Future<User> user() async {
-    return await authenticator.user();
+  Future<String?> tid() async {
+    final user = await authenticator.user();
+    return user.tid;
+  }
+
+  @override
+  Future<String> userId() async {
+    final user = await authenticator.user();
+    return user.userId;
   }
 }

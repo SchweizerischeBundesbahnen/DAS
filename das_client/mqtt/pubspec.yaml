@@ -10,7 +10,6 @@ resolution: workspace
 dependencies:
   # workspaces
   connectivity_x: 1.0.0
-  auth: 1.0.0
 
   # https://pub.dev/packages/mqtt_client
   mqtt_client: ^10.11.9

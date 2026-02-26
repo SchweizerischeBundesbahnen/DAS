@@ -17,8 +17,8 @@ class MqttClientTMSOpenIdConnector implements MqttClientConnector {
 
   @override
   Future<bool> connect(MqttClient client, String company, String train) async {
-    final user = await _mqttAuthProvider.user();
-    final openIdProfile = _openIdProfileMap[user.tid];
+    final tid = await _mqttAuthProvider.tid();
+    final openIdProfile = _openIdProfileMap[tid];
 
     _log.info('Connecting to TMS mqtt using openid token with openIdProfile=$openIdProfile');
 

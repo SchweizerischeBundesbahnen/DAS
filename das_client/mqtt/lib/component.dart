@@ -18,7 +18,7 @@ class MqttComponent {
     required MqttClientConnector mqttClientConnector,
     required String deviceId,
     required String prefix,
-    required String sferaVersion,
+    required int sferaVersion,
   }) {
     return MqttServiceImpl(
       mqttUrl: mqttUrl,

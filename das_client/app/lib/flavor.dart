@@ -19,7 +19,7 @@ sealed class Flavor {
     this.showBanner = false,
     this.isTmsEnabledForFlavor = false,
     this.logLevel = Level.INFO,
-    this.sferaVersion = '3',
+    this.sferaVersion = 3,
     this.mqttOpenIdProfileMap = const {},
   });
 
@@ -28,7 +28,7 @@ sealed class Flavor {
   final AuthenticatorConfig authenticatorConfig;
   final String mqttTopicPrefix;
   final String mqttOauthProfile;
-  final String sferaVersion;
+  final int sferaVersion;
   final Map<String, String> mqttOpenIdProfileMap;
   final String backendUrl;
   final bool showBanner;
@@ -72,7 +72,7 @@ sealed class Flavor {
           mqttUrl: 'wss://tms-vad-imtrackside-dev-mobile.messaging.solace.cloud',
           authenticatorConfig: _authenticatorConfigDev,
           mqttTopicPrefix: '',
-          sferaVersion: '2',
+          sferaVersion: 2,
           mqttOpenIdProfileMap: {
             '2cda5d11-f0ac-46b3-967d-af1b2e1bd01a': 'das_sbb_dev',
             'd653d01f-17a4-48a1-9aab-b780b61b4273': 'das_sob_dev',
@@ -83,7 +83,7 @@ sealed class Flavor {
         return _InteFlavor(
           mqttUrl: 'wss://tms-vad-imtrackside-int-blue-mobile.messaging.solace.cloud',
           authenticatorConfig: _authenticatorConfigDev,
-          sferaVersion: '2',
+          sferaVersion: 2,
           mqttOpenIdProfileMap: {
             '2cda5d11-f0ac-46b3-967d-af1b2e1bd01a': 'das_sbb_int',
             'd653d01f-17a4-48a1-9aab-b780b61b4273': 'das_sob_int',
@@ -94,6 +94,12 @@ sealed class Flavor {
         return _ProdFlavor(
           mqttUrl: '',
           authenticatorConfig: _emptyAuthenticatorConfig,
+          sferaVersion: 2,
+          mqttOpenIdProfileMap: {
+            '2cda5d11-f0ac-46b3-967d-af1b2e1bd01a': 'das_sbb_prod',
+            'd653d01f-17a4-48a1-9aab-b780b61b4273': 'das_sob_prod',
+            'a64ce5df-4ad8-40b9-91ee-54bac2bb8326': 'das_bls_prod',
+          },
         );
     }
   }

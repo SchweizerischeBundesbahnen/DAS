@@ -33,7 +33,7 @@ class MqttServiceImpl implements MqttService {
   final String _mqttUrl;
   final MqttClientConnector _mqttClientConnector;
   final String prefix;
-  final String sferaVersion;
+  final int sferaVersion;
 
   late MqttServerClient _client;
   late String deviceId;
