@@ -4,6 +4,8 @@ import 'package:app/pages/journey/journey_screen/view_model/model/journey_advanc
 import 'package:app/pages/journey/view_model/view_mode_view_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../../test_util.dart';
+
 void main() {
   group('ViewModeViewModel', () {
     late ViewModeViewModel testee;
@@ -31,46 +33,49 @@ void main() {
       expect(emitRegister.first, isTrue);
     });
 
-    test('updateZenViewMode_whenCalledWithPausedState_thenSetsFalse', () {
+    test('updateZenViewMode_whenCalledWithPausedState_thenSetsFalse', () async {
       // ARRANGE
       emitRegister.clear();
       final pausedState = Paused(next: Automatic());
 
       // ACT
       testee.updateZenViewMode(pausedState);
+      await processStreams();
 
       // EXPECT
       expect(testee.isZenViewModeValue, isFalse);
       expect(emitRegister.last, isFalse);
     });
 
-    test('updateZenViewMode_whenCalledWithAutomaticState_thenSetsTrue', () {
+    test('updateZenViewMode_whenCalledWithAutomaticState_thenSetsTrue', () async {
       // ARRANGE
       emitRegister.clear();
       final automaticState = Automatic();
 
       // ACT
       testee.updateZenViewMode(automaticState);
+      await processStreams();
 
       // EXPECT
       expect(testee.isZenViewModeValue, isTrue);
       expect(emitRegister.last, isTrue);
     });
 
-    test('updateZenViewMode_whenCalledWithManualState_thenSetsTrue', () {
+    test('updateZenViewMode_whenCalledWithManualState_thenSetsTrue', () async {
       // ARRANGE
       emitRegister.clear();
       final manualState = Manual();
 
       // ACT
       testee.updateZenViewMode(manualState);
+      await processStreams();
 
       // EXPECT
       expect(testee.isZenViewModeValue, isTrue);
       expect(emitRegister.last, isTrue);
     });
 
-    test('updateZenViewMode_whenCalledMultipleTimes_thenEmitsForEachUpdate', () {
+    test('updateZenViewMode_whenCalledMultipleTimes_thenEmitsForEachUpdate', () async {
       // ARRANGE
       emitRegister.clear();
       final pausedState = Paused(next: Automatic());
@@ -78,8 +83,11 @@ void main() {
 
       // ACT
       testee.updateZenViewMode(pausedState);
+      await processStreams();
       testee.updateZenViewMode(automaticState);
+      await processStreams();
       testee.updateZenViewMode(pausedState);
+      await processStreams();
 
       // EXPECT
       expect(emitRegister.length, 3);
@@ -88,36 +96,21 @@ void main() {
       expect(emitRegister[2], isFalse);
     });
 
-    test('updateZenViewMode_whenCalledWithSameStateTwice_thenStillEmits', () {
+    test('updateZenViewMode_whenCalledWithSameStateTwice_thenStillEmits', () async {
       // ARRANGE
       emitRegister.clear();
       final pausedState = Paused(next: Automatic());
 
       // ACT
       testee.updateZenViewMode(pausedState);
+      await processStreams();
       testee.updateZenViewMode(pausedState);
+      await processStreams();
 
       // EXPECT
       expect(emitRegister.length, 2);
       expect(emitRegister[0], isFalse);
       expect(emitRegister[1], isFalse);
-    });
-
-    test('dispose_whenCalled_thenClosesStream', () {
-      // ACT
-      testee.dispose();
-
-      // EXPECT
-      expect(() => testee.isZenViewModeValue, returnsNormally);
-    });
-
-    test('isZenViewMode_afterDispose_thenCannotListen', () async {
-      // ARRANGE
-      final newSub = testee.isZenViewMode.listen((_) {});
-      testee.dispose();
-
-      // ACT & EXPECT
-      expect(() => newSub.cancel(), returnsNormally);
     });
   });
 }

@@ -25,6 +25,7 @@ import 'package:app/pages/journey/journey_screen/view_model/replacement_series_v
 import 'package:app/pages/journey/journey_screen/view_model/ux_testing_view_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/journey_navigation_buttons.dart';
 import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
+import 'package:app/pages/journey/view_model/decisive_gradient_view_model.dart';
 import 'package:app/pages/journey/view_model/disturbance_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
@@ -106,6 +107,10 @@ class _ProviderScope extends StatelessWidget {
         ),
         Provider<ArrivalDepartureTimeViewModel>(
           create: (_) => ArrivalDepartureTimeViewModel(),
+          dispose: (_, vm) => vm.dispose(),
+        ),
+        Provider<DecisiveGradientViewModel>(
+          create: (_) => DecisiveGradientViewModel(),
           dispose: (_, vm) => vm.dispose(),
         ),
         Provider<UxTestingViewModel>(

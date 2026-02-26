@@ -40,6 +40,7 @@ import 'package:app/pages/journey/journey_screen/widgets/table/train_driver_turn
 import 'package:app/pages/journey/journey_screen/widgets/table/tram_area_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/uncoded_operational_indication_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/whistle_row.dart';
+import 'package:app/pages/journey/view_model/decisive_gradient_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
@@ -70,12 +71,13 @@ class JourneyTable extends StatelessWidget {
     final viewModel = context.read<JourneyViewModel>();
     final journeySettingsVM = context.read<JourneySettingsViewModel>();
     final advancementViewModel = context.read<JourneyTableAdvancementViewModel>();
+    final decisiveGradientVM = context.read<DecisiveGradientViewModel>();
 
     return StreamBuilder<List<dynamic>>(
       stream: CombineLatestStream.list([
         viewModel.journey,
         journeySettingsVM.model,
-        viewModel.showDecisiveGradient,
+        decisiveGradientVM.showDecisiveGradient,
       ]),
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.data?[0] == null) {
@@ -375,32 +377,32 @@ class JourneyTable extends StatelessWidget {
   ) {
     final currentBrakeSeries = settings?.currentBrakeSeries;
 
-    final journeyViewModel = context.read<JourneyViewModel>();
+    final decisiveGradientVM = context.read<DecisiveGradientViewModel>();
     final timeViewModel = context.read<ArrivalDepartureTimeViewModel>();
     final userSettings = DI.get<UserSettings>();
 
     return [
       if (openModalType == null || openModalType == .additionalSpeedRestriction) ...[
         if (userSettings.showDecisiveGradient ||
-            (!userSettings.showDecisiveGradient && !journeyViewModel.showDecisiveGradientValue))
+            (!userSettings.showDecisiveGradient && !decisiveGradientVM.showDecisiveGradientValue))
           DASTableColumn(
             id: ColumnDefinition.kilometre.index,
             child: Text(context.l10n.p_journey_table_kilometre_label),
             width: 64.0,
-            onTap: !userSettings.showDecisiveGradient ? () => journeyViewModel.toggleKmDecisiveGradient() : null,
+            onTap: !userSettings.showDecisiveGradient ? () => decisiveGradientVM.toggleShowDecisiveGradient() : null,
           ),
-        if (userSettings.showDecisiveGradient || journeyViewModel.showDecisiveGradientValue) ...[
+        if (userSettings.showDecisiveGradient || decisiveGradientVM.showDecisiveGradientValue) ...[
           DASTableColumn(
             id: ColumnDefinition.gradientDownhill.index,
             child: Text('-'),
             width: 40.0,
-            onTap: !userSettings.showDecisiveGradient ? () => journeyViewModel.toggleKmDecisiveGradient() : null,
+            onTap: !userSettings.showDecisiveGradient ? () => decisiveGradientVM.toggleShowDecisiveGradient() : null,
           ),
           DASTableColumn(
             id: ColumnDefinition.gradientUphill.index,
             child: Text('+'),
             width: 40.0,
-            onTap: !userSettings.showDecisiveGradient ? () => journeyViewModel.toggleKmDecisiveGradient() : null,
+            onTap: !userSettings.showDecisiveGradient ? () => decisiveGradientVM.toggleShowDecisiveGradient() : null,
           ),
         ],
       ],
