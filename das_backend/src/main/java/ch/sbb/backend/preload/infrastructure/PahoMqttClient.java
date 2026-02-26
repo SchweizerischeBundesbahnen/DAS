@@ -33,17 +33,24 @@ public class PahoMqttClient {
     String oauthProfile;
 
     private MqttClient client;
+    private final Object connectLock = new Object();
 
     public PahoMqttClient(SferaAuthService sferaAuthService) {
         this.sferaAuthService = sferaAuthService;
     }
 
     public void connect() {
+        synchronized (connectLock) {
+            reconnectInternal();
+        }
+    }
+
+    private void reconnectInternal() {
         OAuth2AccessToken accessToken = sferaAuthService.getAccessToken();
         if (accessToken == null) {
-            log.error("connecting failed, could not obtain access token");
-            return;
+            throw new IllegalStateException("MQTT connect failed: cannot obtain access token");
         }
+        closeClientQuietly();
         final String password = SECRET_PREFIX + SECRET_DELIMITER + oauthProfile + SECRET_DELIMITER + accessToken.getTokenValue();
         MqttConnectionOptions connOpts = new MqttConnectionOptions();
         connOpts.setCleanStart(true);
@@ -54,17 +61,19 @@ public class PahoMqttClient {
             this.client = new MqttClient(broker, clientId, new MemoryPersistence());
             client.connect(connOpts);
         } catch (MqttException e) {
-            log.error("connecting failed ", e);
+            closeClientQuietly();
+            throw new IllegalStateException("MQTT connect failed", e);
         }
     }
 
     public void subscribe(String topic, IMqttMessageListener messageListener) {
+        ensureConnected();
         try {
             final MqttSubscription[] subscriptions = {new MqttSubscription(topic, QOS_EXACTLY_ONCE)};
             IMqttMessageListener[] messageListeners = {messageListener};
             client.subscribe(subscriptions, messageListeners);
         } catch (MqttException e) {
-            log.error("subscribing failed to topic: {}", topic, e);
+            throw new IllegalStateException("MQTT subscribe failed for topic=" + topic, e);
         }
     }
 
@@ -77,21 +86,42 @@ public class PahoMqttClient {
     }
 
     public void publish(String topic, String content) {
+        ensureConnected();
         MqttMessage message = new MqttMessage(content.getBytes());
         message.setQos(QOS_EXACTLY_ONCE);
         try {
             client.publish(topic, message);
         } catch (MqttException e) {
-            log.error("publishing failed message={}... to topic={}", content.substring(0, 100), topic, e);
+            throw new IllegalStateException("MQTT publish failed for topic=" + topic, e);
         }
     }
 
     public void disconnect() {
+        synchronized (connectLock) {
+            closeClientQuietly();
+        }
+    }
+
+    private void closeClientQuietly() {
         try {
-            client.disconnect();
-            client.close();
+            if (client != null) {
+                if (client.isConnected()) {
+                    client.disconnect();
+                }
+                client.close();
+            }
         } catch (MqttException e) {
-            log.error("closing failed ", e);
+            log.warn("mqtt client closing failed ", e);
+        } finally {
+            client = null;
+        }
+    }
+
+    private void ensureConnected() {
+        synchronized (connectLock) {
+            if (client == null || !client.isConnected()) {
+                reconnectInternal();
+            }
         }
     }
 }

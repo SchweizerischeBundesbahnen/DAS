@@ -62,32 +62,34 @@ public class SferaService {
 
     @Retryable
     PreloadResult preload(TrainId trainId) throws ExecutionException, InterruptedException {
-        // todo unsubscribe in recovery or finally
-        mqttClient.subscribe(createTopic(G2B, trainId), (topic, message) -> receive(message));
+        try {
+            mqttClient.subscribe(createTopic(G2B, trainId), (topic, message) -> receive(message));
 
-        SFERAG2BReplyMessage handshakeReply = sendRequest(trainId, sferaMessageCreator.createHandshakeRequestMessage()).get();
-        if (handshakeReply.getHandshakeAcknowledgement() == null) {
-            throw new IllegalStateException("Handshake not acknowledged!");
+            SFERAG2BReplyMessage handshakeReply = sendRequest(trainId, sferaMessageCreator.createHandshakeRequestMessage()).get();
+            if (handshakeReply.getHandshakeAcknowledgement() == null) {
+                throw new IllegalStateException("Handshake not acknowledged!");
+            }
+            SFERAG2BReplyMessage jpResponse = sendRequest(trainId, sferaMessageCreator.createJpRequestMessage(trainId)).get();
+            if (jpResponse.getG2BReplyPayload() == null || jpResponse.getG2BReplyPayload().getJourneyProfiles() == null) {
+                throw new IllegalStateException("No Journey Profile received!");
+            }
+            Set<JourneyProfile> journeyProfiles = new HashSet<>(jpResponse.getG2BReplyPayload().getJourneyProfiles());
+
+            Set<SegmentProfileReference> spRefs = journeyProfiles.stream()
+                .flatMap(jp -> jp.getSegmentProfileReferences().stream()).collect(Collectors.toSet());
+
+            CompletableFuture<Set<SegmentProfile>> futureSps = requestSps(trainId, spRefs);
+
+            CompletableFuture<Set<TrainCharacteristics>> futureTcs = requestTcs(trainId, spRefs);
+
+            Set<SegmentProfile> segmentProfiles = futureSps.get();
+            Set<TrainCharacteristics> trainCharacteristics = futureTcs.get();
+            sendRequest(trainId, sferaMessageCreator.createSessionTermination()).get();
+
+            return new PreloadResult(journeyProfiles, segmentProfiles, trainCharacteristics);
+        } finally {
+            mqttClient.unsubscribe(createTopic(G2B, trainId));
         }
-        SFERAG2BReplyMessage jpResponse = sendRequest(trainId, sferaMessageCreator.createJpRequestMessage(trainId)).get();
-        if (jpResponse.getG2BReplyPayload() == null || jpResponse.getG2BReplyPayload().getJourneyProfiles() == null) {
-            throw new IllegalStateException("No Journey Profile received!");
-        }
-        Set<JourneyProfile> journeyProfiles = new HashSet<>(jpResponse.getG2BReplyPayload().getJourneyProfiles());
-
-        Set<SegmentProfileReference> spRefs = journeyProfiles.stream()
-            .flatMap(jp -> jp.getSegmentProfileReferences().stream()).collect(Collectors.toSet());
-
-        CompletableFuture<Set<SegmentProfile>> futureSps = requestSps(trainId, spRefs);
-
-        CompletableFuture<Set<TrainCharacteristics>> futureTcs = requestTcs(trainId, spRefs);
-
-        Set<SegmentProfile> segmentProfiles = futureSps.get();
-        Set<TrainCharacteristics> trainCharacteristics = futureTcs.get();
-        sendRequest(trainId, sferaMessageCreator.createSessionTermination()).get();
-        mqttClient.unsubscribe(createTopic(G2B, trainId));
-
-        return new PreloadResult(journeyProfiles, segmentProfiles, trainCharacteristics);
     }
 
     private CompletableFuture<Set<SegmentProfile>> requestSps(TrainId trainId, Set<SegmentProfileReference> spRefs) {
