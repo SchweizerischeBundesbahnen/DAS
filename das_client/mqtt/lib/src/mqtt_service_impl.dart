@@ -14,13 +14,13 @@ final _log = Logger('MqttServiceImpl');
 
 class MqttServiceImpl implements MqttService {
   static const _keepAlivePeriodSeconds = 15;
-  static const _sferaVersion = 3;
 
   MqttServiceImpl({
     required String mqttUrl,
     required MqttClientConnector mqttClientConnector,
     required this.deviceId,
     required this.prefix,
+    required this.sferaVersion,
   }) : _mqttUrl = mqttUrl,
        _mqttClientConnector = mqttClientConnector {
     _init();
@@ -33,6 +33,7 @@ class MqttServiceImpl implements MqttService {
   final String _mqttUrl;
   final MqttClientConnector _mqttClientConnector;
   final String prefix;
+  final int sferaVersion;
 
   late MqttServerClient _client;
   late String deviceId;
@@ -88,9 +89,9 @@ class MqttServiceImpl implements MqttService {
       disconnect();
     }
     if (await _mqttClientConnector.connect(_client, company, train)) {
-      _client.subscribe('${prefix}90940/$_sferaVersion/event/$company/$train', MqttQos.exactlyOnce);
-      _client.subscribe('${prefix}90940/$_sferaVersion/event/$company/$train/$deviceId', MqttQos.exactlyOnce);
-      _client.subscribe('${prefix}90940/$_sferaVersion/G2B/$company/$train/$deviceId', MqttQos.exactlyOnce);
+      _client.subscribe('${prefix}90940/$sferaVersion/event/$company/$train', MqttQos.exactlyOnce);
+      _client.subscribe('${prefix}90940/$sferaVersion/event/$company/$train/$deviceId', MqttQos.exactlyOnce);
+      _client.subscribe('${prefix}90940/$sferaVersion/G2B/$company/$train/$deviceId', MqttQos.exactlyOnce);
       _log.info("Subscribed to topic with prefix='$prefix'...");
       _startUpdateListener();
       _connected = true;
@@ -103,7 +104,7 @@ class MqttServiceImpl implements MqttService {
   @override
   bool publishMessage(String company, String train, String message) {
     if (_client.connectionStatus?.state == MqttConnectionState.connected) {
-      final topic = '${prefix}90940/$_sferaVersion/B2G/$company/$train/$deviceId';
+      final topic = '${prefix}90940/$sferaVersion/B2G/$company/$train/$deviceId';
 
       final builder = MqttClientPayloadBuilder();
       builder.addString(message);
