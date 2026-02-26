@@ -32,11 +32,11 @@ The distinguished flavors (variants) are: dev, inte, prod.
 
 The (http) schemes that resolve from the above points are:
 
-| Flavor (Variant) | Version | Authority                   | Scheme                                                 |
-|------------------|---------|-----------------------------|--------------------------------------------------------|
-| DEV              | v1      | driveradvisorysystem.sbb.ch | https://driveradvisorysystem.sbb.ch/dev/v1/PATH+QUERY  |
-| INTE             | v1      | driveradvisorysystem.sbb.ch | https://driveradvisorysystem.sbb.ch/inte/v1/PATH+QUERY |
-| PROD             | v1      | driveradvisorysystem.sbb.ch | https://driveradvisorysystem.sbb.ch/prod/v1/PATH+QUERY |
+| Flavor (Variant) | Version | Authority                       | Scheme                                                     |
+|------------------|---------|---------------------------------|------------------------------------------------------------|
+| DEV              | v1      | driveradvisorysystem.app.sbb.ch | https://driveradvisorysystem.app.sbb.ch/dev/v1/PATH+QUERY  |
+| INTE             | v1      | driveradvisorysystem.app.sbb.ch | https://driveradvisorysystem.app.sbb.ch/inte/v1/PATH+QUERY |
+| PROD             | v1      | driveradvisorysystem.app.sbb.ch | https://driveradvisorysystem.app.sbb.ch/prod/v1/PATH+QUERY |
 
 #### Path And Query Parameters
 
@@ -46,15 +46,15 @@ on the device, one needs to add at least the following path and query parameters
 
 | Route (Page)  | MUST Params                                                                  | RECOMMENDED Params                                                                                                                                                                                                                                                                                                                                                            |
 |---------------|------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Train Journey | /train-journey?data={"journeys":[{"operationalTrainNumber":"123456789"}]} (or as above) | /train-journey?data={<br>"returnUrl": "https://www.sbb.ch",<br>"journeys": [<br>{"operationalTrainNumber":"123456789", "company"="1285", "startDate":"1970-01-31", "tafTapLocationReferenceStart":"CH04128", "tafTapLocationReferenceEnd":"CH07000"},<br>{"operationalTrainNumber":"987654321", "company"="2185", "startDate":"1970-01-31", "tafTapLocationReferenceStart":"CH00218", "tafTapLocationReferenceEnd":"CH03000"}<br>]} |
+| Train Journey | /train-journey?data={"journeys":[{"operationalTrainNumber":"123456789", "company"="1285"}]} (or as above) | /train-journey?data={<br>"returnUrl": "https://www.sbb.ch",<br>"journeys": [<br>{"operationalTrainNumber":"123456789", "company"="1285", "startDate":"1970-01-31", "tafTapLocationReferenceStart":"CH04128", "tafTapLocationReferenceEnd":"CH07000"},<br>{"operationalTrainNumber":"987654321", "company"="2185", "startDate":"1970-01-31", "tafTapLocationReferenceStart":"CH00218", "tafTapLocationReferenceEnd":"CH03000"}<br>]} |
 
 Remarks about parameter-values (derived from [SFERA xsd](../../../../../sfera_mock/src/main/resources/SFERA_v3.00.xsd) copy):
-* `returnUrl`: The return URL of the calling system. This can either be a web url or custom app schema.
 * `journeys`: The list allows passing a whole tour [1..*] of the very same train driver. Entries must be provided in ascending chronological order (by departure time). The first entry represents the immediate/next train journey and is the one that will be opened.
 * `operationalTrainNumber`: Source NeTS-FPS, which represents an operational train-number (for e.g. as in "IC 1 **625**"). In the near future 2031 this may change with TMS::CM1. 
-* `tafTapLocationReferenceStart/End`: Represents operational stop-points (de:Betriebspunkte), considered by a train journey and consists of an ISO Country Code ([ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html)) and the primary location code (the format within this specification is proprietary and derived from the underlying SFERA service-contract, for e.g. Bern "CH07000").
 * `company`: As defined by [RICS company code](https://uic.org/support-activities/it/rics), for e.g. BLS P "1163", BLS C "3356".
-* `startDate`: SFERA focuses on the day when the train journey begins (must not be misunderstood as operationDay of the vehicle-journey).
+* `startDate`: If not provided it defaults to today's date. SFERA focuses on the day when the train journey begins (must not be misunderstood as operationDay of the vehicle-journey). 
+* `returnUrl`: The return URL of the calling system. This can either be a web url or custom app schema.
+* `tafTapLocationReferenceStart/End`: Represents operational stop-points (de:Betriebspunkte), considered by a train journey and consists of an ISO Country Code ([ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html)) and the primary location code (the format within this specification is proprietary and derived from the underlying SFERA service-contract, for e.g. Bern "CH07000").
 
 ### Testing during development
 
