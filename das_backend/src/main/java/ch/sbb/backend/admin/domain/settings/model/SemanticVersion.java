@@ -8,7 +8,7 @@ import org.jspecify.annotations.NonNull;
 /**
  * Represents a semantic version, consisting of major, minor and patch numbers as defined by <a href="https://semver.org/">Semantic Versioning</a>
  */
-public class SemVersion implements Comparable<SemVersion> {
+public class SemanticVersion implements Comparable<SemanticVersion> {
 
     public static final String SEM_VERSION_PATTERN = "(\\d+)\\.(\\d+)\\.(\\d+)";
 
@@ -16,10 +16,10 @@ public class SemVersion implements Comparable<SemVersion> {
     private final int minor;
     private final int patch;
 
-    public SemVersion(String version) {
+    public SemanticVersion(String version) {
         Matcher matcher = Pattern.compile(SEM_VERSION_PATTERN).matcher(version);
         if (!matcher.matches()) {
-            throw new IllegalArgumentException("Version must match SemVersion pattern");
+            throw new IllegalArgumentException("Version must match SemanticVersion pattern");
         }
         this.major = Integer.parseInt(matcher.group(1));
         this.minor = Integer.parseInt(matcher.group(2));
@@ -27,7 +27,7 @@ public class SemVersion implements Comparable<SemVersion> {
     }
 
     @Override
-    public int compareTo(@NonNull SemVersion other) {
+    public int compareTo(@NonNull SemanticVersion other) {
         int result = Integer.compare(major, other.major);
         if (result == 0) {
             result = Integer.compare(minor, other.minor);
@@ -43,7 +43,7 @@ public class SemVersion implements Comparable<SemVersion> {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        SemVersion that = (SemVersion) o;
+        SemanticVersion that = (SemanticVersion) o;
         return compareTo(that) == 0;
     }
 
@@ -52,7 +52,7 @@ public class SemVersion implements Comparable<SemVersion> {
         return Objects.hash(major, minor, patch);
     }
 
-    public boolean isLowerThan(SemVersion other) {
+    public boolean isLowerThan(SemanticVersion other) {
         return compareTo(other) < 0;
     }
 }

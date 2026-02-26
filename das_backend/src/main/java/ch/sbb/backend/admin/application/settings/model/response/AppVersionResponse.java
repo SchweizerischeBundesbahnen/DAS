@@ -10,5 +10,9 @@ public record AppVersionResponse(
     @ArraySchema(arraySchema = @Schema(requiredMode = Schema.RequiredMode.REQUIRED), minItems = 0, maxItems = 1) List<AppVersion> data)
     implements ApiResponse<AppVersion> {
 
+    public AppVersionResponse(AppVersion appVersion) {
+        this(List.of(appVersion));
+    }
+
 }
 

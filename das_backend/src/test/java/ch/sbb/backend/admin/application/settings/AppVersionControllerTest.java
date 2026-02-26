@@ -1,6 +1,6 @@
 package ch.sbb.backend.admin.application.settings;
 
-import static ch.sbb.backend.admin.application.settings.AppVersionController.API_SETTINGS_APPVERSION;
+import static ch.sbb.backend.admin.application.settings.AppVersionController.API_SETTINGS_APP_VERSION;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -26,16 +26,16 @@ class AppVersionControllerTest {
     @WithMockUser(authorities = "ROLE_admin")
     @Sql("classpath:emptyAppVersions.sql")
     void getAll_empty() throws Exception {
-        mockMvc.perform(get(API_SETTINGS_APPVERSION))
+        mockMvc.perform(get(API_SETTINGS_APP_VERSION))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data", hasSize(0)));
     }
 
     @Test
     @WithMockUser(authorities = "ROLE_admin")
-    void getOne_not_found() throws Exception {
+    void getById_not_found() throws Exception {
         int nonExistingId = Integer.MAX_VALUE;
-        mockMvc.perform(get(API_SETTINGS_APPVERSION + "/" + nonExistingId))
+        mockMvc.perform(get(API_SETTINGS_APP_VERSION + "/" + nonExistingId))
             .andExpect(status().isNotFound());
     }
 
@@ -43,8 +43,8 @@ class AppVersionControllerTest {
     @WithMockUser(authorities = "ROLE_admin")
     @Sql("classpath:emptyAppVersions.sql")
     @Sql("classpath:createAppVersions.sql")
-    void getOne_by_id() throws Exception {
-        mockMvc.perform(get(API_SETTINGS_APPVERSION + "/1"))
+    void getById_by_id() throws Exception {
+        mockMvc.perform(get(API_SETTINGS_APP_VERSION + "/1"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data", hasSize(1)))
             .andExpect(jsonPath("$.data[0].id").value(1))
@@ -56,7 +56,7 @@ class AppVersionControllerTest {
     @Test
     @WithMockUser(authorities = "ROLE_admin")
     void create() throws Exception {
-        String jsonResult = mockMvc.perform(post(API_SETTINGS_APPVERSION)
+        String jsonResult = mockMvc.perform(post(API_SETTINGS_APP_VERSION)
                 .contentType("application/json")
                 .content("""
                     {
@@ -74,7 +74,7 @@ class AppVersionControllerTest {
 
         int id = JsonPath.read(jsonResult, "$.data[0].id");
 
-        mockMvc.perform(get(API_SETTINGS_APPVERSION + "/" + id))
+        mockMvc.perform(get(API_SETTINGS_APP_VERSION + "/" + id))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data", hasSize(1)))
             .andExpect(jsonPath("$.data[0].id").isNumber())
@@ -88,7 +88,7 @@ class AppVersionControllerTest {
     @Sql("classpath:emptyAppVersions.sql")
     @Sql("classpath:createAppVersions.sql")
     void update() throws Exception {
-        mockMvc.perform(put(API_SETTINGS_APPVERSION + "/1")
+        mockMvc.perform(put(API_SETTINGS_APP_VERSION + "/1")
                 .contentType("application/json")
                 .content("""
                         {
@@ -104,7 +104,7 @@ class AppVersionControllerTest {
             .andExpect(jsonPath("$.data[0].minimalVersion").value(true))
             .andExpect(jsonPath("$.data[0].expiryDate").value("2026-01-01"));
 
-        mockMvc.perform(get(API_SETTINGS_APPVERSION + "/1"))
+        mockMvc.perform(get(API_SETTINGS_APP_VERSION + "/1"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data", hasSize(1)))
             .andExpect(jsonPath("$.data[0].id").value(1))
@@ -118,10 +118,10 @@ class AppVersionControllerTest {
     @Sql("classpath:emptyAppVersions.sql")
     @Sql("classpath:createAppVersions.sql")
     void delete() throws Exception {
-        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete(API_SETTINGS_APPVERSION + "/1"))
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete(API_SETTINGS_APP_VERSION + "/1"))
             .andExpect(status().isNoContent());
 
-        mockMvc.perform(get(API_SETTINGS_APPVERSION + "/1"))
+        mockMvc.perform(get(API_SETTINGS_APP_VERSION + "/1"))
             .andExpect(status().isNotFound());
     }
 

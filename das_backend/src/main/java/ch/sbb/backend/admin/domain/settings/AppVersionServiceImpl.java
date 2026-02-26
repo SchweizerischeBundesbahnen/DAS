@@ -3,7 +3,7 @@ package ch.sbb.backend.admin.domain.settings;
 import ch.sbb.backend.admin.application.settings.model.request.AppVersionRequest;
 import ch.sbb.backend.admin.application.settings.model.response.CurrentAppVersion;
 import ch.sbb.backend.admin.domain.settings.model.AppVersion;
-import ch.sbb.backend.admin.domain.settings.model.SemVersion;
+import ch.sbb.backend.admin.domain.settings.model.SemanticVersion;
 import ch.sbb.backend.admin.infrastructure.settings.AppVersionRepository;
 import ch.sbb.backend.admin.infrastructure.settings.model.AppVersionEntity;
 import java.time.LocalDate;
@@ -34,7 +34,7 @@ public class AppVersionServiceImpl implements AppVersionService {
         if (appVersion == null) {
             return CurrentAppVersion.DEFAULT;
         }
-        SemVersion currentVersion = new SemVersion(appVersion);
+        SemanticVersion currentVersion = new SemanticVersion(appVersion);
 
         List<AppVersionEntity> relevantVersions = repository.findAll().stream()
             .filter(entity -> isBlockedVersion(entity, currentVersion) || isMinimalVersionGreater(entity, currentVersion))
@@ -53,12 +53,12 @@ public class AppVersionServiceImpl implements AppVersionService {
         return new CurrentAppVersion(expired, expiryDate);
     }
 
-    private boolean isBlockedVersion(AppVersionEntity entity, SemVersion currentVersion) {
-        return !entity.getMinimalVersion() && currentVersion.equals(new SemVersion(entity.getVersion()));
+    private boolean isBlockedVersion(AppVersionEntity entity, SemanticVersion currentVersion) {
+        return !entity.getMinimalVersion() && currentVersion.equals(new SemanticVersion(entity.getVersion()));
     }
 
-    private boolean isMinimalVersionGreater(AppVersionEntity entity, SemVersion currentVersion) {
-        return entity.getMinimalVersion() && currentVersion.isLowerThan(new SemVersion(entity.getVersion()));
+    private boolean isMinimalVersionGreater(AppVersionEntity entity, SemanticVersion currentVersion) {
+        return entity.getMinimalVersion() && currentVersion.isLowerThan(new SemanticVersion(entity.getVersion()));
     }
 
     private boolean isExpired(AppVersionEntity entity) {

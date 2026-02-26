@@ -1,6 +1,6 @@
 package ch.sbb.backend.admin.application.settings.model.request;
 
-import static ch.sbb.backend.admin.domain.settings.model.SemVersion.SEM_VERSION_PATTERN;
+import static ch.sbb.backend.admin.domain.settings.model.SemanticVersion.SEM_VERSION_PATTERN;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;

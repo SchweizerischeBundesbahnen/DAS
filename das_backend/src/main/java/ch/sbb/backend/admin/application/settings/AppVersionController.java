@@ -9,7 +9,10 @@ import ch.sbb.backend.admin.domain.settings.AppVersionService;
 import ch.sbb.backend.admin.domain.settings.model.AppVersion;
 import ch.sbb.backend.common.ApiDocumentation;
 import ch.sbb.backend.common.ApiErrorResponses;
+import ch.sbb.backend.common.ApiParametersDefault;
+import ch.sbb.backend.common.ApiParametersDefault.ParamRequestId;
 import ch.sbb.backend.common.Response;
+import ch.sbb.backend.common.ResponseEntityFactory;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -25,15 +28,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Tag(name = "AppVersions", description = "API for app versions.")
 public class AppVersionController {
 
-    static final String PATH_SEGMENT_SETTINGS_APPVERSION = PATH_SEGMENT_SETTINGS + "/app-version";
-
-    static final String API_SETTINGS_APPVERSION = ApiDocumentation.VERSION_URI_V1 + PATH_SEGMENT_SETTINGS_APPVERSION;
+    static final String PATH_SEGMENT_SETTINGS_APP_VERSION = PATH_SEGMENT_SETTINGS + "/app-version";
+    static final String API_SETTINGS_APP_VERSION = ApiDocumentation.VERSION_URI_V1 + PATH_SEGMENT_SETTINGS_APP_VERSION;
+    static final String API_SETTINGS_APP_VERSION_ID = API_SETTINGS_APP_VERSION + "/{id}";
 
     private final AppVersionService appVersionService;
 
@@ -41,59 +45,64 @@ public class AppVersionController {
         this.appVersionService = appVersionService;
     }
 
-    @GetMapping(API_SETTINGS_APPVERSION)
-    @Operation(summary = "Get all versions.", description = "Returns a list of all versions stored in the database.")
-    @ApiResponse(responseCode = "200", description = "Settings relevant for DAS-Client.",
+    @GetMapping(API_SETTINGS_APP_VERSION)
+    @Operation(summary = "Get all versions.", description = "Returns relevant usage status of App versions deployed.")
+    @ApiResponse(responseCode = "200", description = "App versions resp. its managed state.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = AppVersionsResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getAll() {
+    public ResponseEntity<? extends Response> getAll(
+        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
         List<AppVersion> versions = appVersionService.getAll();
-        return ResponseEntity.ok(new AppVersionsResponse(versions));
+        return ResponseEntityFactory.createOkResponse(new AppVersionsResponse(versions), null, requestId);
     }
 
-    @GetMapping(API_SETTINGS_APPVERSION + "/{id}")
+    @GetMapping(API_SETTINGS_APP_VERSION_ID)
     @Operation(summary = "Get app version by id.", description = "Returns a single app version by its id.")
     @ApiResponse(responseCode = "200", description = "App version found.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = AppVersionResponse.class)))
     @ApiResponse(responseCode = "404", description = "App version not found.")
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getOne(@PathVariable Integer id) {
+    public ResponseEntity<? extends Response> getById(@PathVariable Integer id,
+        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
         AppVersion version = appVersionService.getOne(id);
         if (version == null) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntityFactory.createNotFoundResponse(requestId, null);
         }
-        return ResponseEntity.ok(new AppVersionResponse(List.of(version)));
+        return ResponseEntityFactory.createOkResponse(new AppVersionResponse(version), null, requestId);
     }
 
-    @PostMapping(API_SETTINGS_APPVERSION)
+    @PostMapping(API_SETTINGS_APP_VERSION)
     @Operation(summary = "Create new app version.", description = "Creates a new app version entry.")
     @ApiResponse(responseCode = "201", description = "App version created.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = AppVersionResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<AppVersionResponse> create(@RequestBody @Valid AppVersionRequest createRequest) {
+    public ResponseEntity<AppVersionResponse> create(@RequestBody @Valid AppVersionRequest createRequest,
+        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
         AppVersion createdVersion = appVersionService.create(createRequest);
-        return ResponseEntity.status(201).body(new AppVersionResponse(List.of(createdVersion)));
+        return ResponseEntityFactory.createOkResponse(new AppVersionResponse(List.of(createdVersion)), null, requestId);
     }
 
-    @PutMapping(API_SETTINGS_APPVERSION + "/{id}")
+    @PutMapping(API_SETTINGS_APP_VERSION_ID)
     @Operation(summary = "Update app version by id.", description = "Updates a single app version by its id.")
     @ApiResponse(responseCode = "200", description = "App version updated.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = AppVersionResponse.class)))
     @ApiResponse(responseCode = "404", description = "App version not found.")
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> update(@PathVariable Integer id, @RequestBody @Valid AppVersionRequest updateRequest) {
+    public ResponseEntity<? extends Response> update(@PathVariable Integer id, @RequestBody @Valid AppVersionRequest updateRequest,
+        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
         AppVersion updatedVersion = appVersionService.update(id, updateRequest);
         if (updatedVersion == null) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntityFactory.createNotFoundResponse(requestId, null);
         }
-        return ResponseEntity.ok(new AppVersionResponse(List.of(updatedVersion)));
+        return ResponseEntityFactory.createOkResponse(new AppVersionResponse(List.of(updatedVersion)), null, requestId);
     }
 
-    @DeleteMapping(API_SETTINGS_APPVERSION + "/{id}")
+    @DeleteMapping(API_SETTINGS_APP_VERSION_ID)
     @Operation(summary = "Delete app version by id.", description = "Delete a single app version by its id.")
     @ApiResponse(responseCode = "204", description = "App version deleted.")
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> delete(@PathVariable Integer id) {
+    public ResponseEntity<? extends Response> delete(@PathVariable Integer id,
+        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
         appVersionService.delete(id);
         return ResponseEntity.noContent().build();
     }

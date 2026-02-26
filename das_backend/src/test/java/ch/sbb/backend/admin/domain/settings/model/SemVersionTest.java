@@ -9,30 +9,30 @@ class SemVersionTest {
 
     @Test
     void versionGreaterThan() {
-        SemVersion smallerVersion = new SemVersion("1.0.1");
-        SemVersion greaterVersion = new SemVersion("1.13.0");
+        SemanticVersion smallerVersion = new SemanticVersion("1.0.1");
+        SemanticVersion greaterVersion = new SemanticVersion("1.13.0");
 
         assertThat(smallerVersion.compareTo(greaterVersion)).isEqualTo(-1);
     }
 
     @Test
     void versionSmallerThan() {
-        SemVersion smallerVersion = new SemVersion("0.3.123");
-        SemVersion greaterVersion = new SemVersion("1.2.6");
+        SemanticVersion smallerVersion = new SemanticVersion("0.3.123");
+        SemanticVersion greaterVersion = new SemanticVersion("1.2.6");
 
         assertThat(greaterVersion.compareTo(smallerVersion)).isEqualTo(1);
     }
 
     @Test
     void versionEqual() {
-        SemVersion smallerVersion = new SemVersion("2.1.0");
-        SemVersion greaterVersion = new SemVersion("2.1.0");
+        SemanticVersion smallerVersion = new SemanticVersion("2.1.0");
+        SemanticVersion greaterVersion = new SemanticVersion("2.1.0");
 
         assertThat(greaterVersion).isEqualByComparingTo(smallerVersion);
     }
 
     @Test
     void versionWrongPattern() {
-        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> new SemVersion("I'm invalid"));
+        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> new SemanticVersion("I'm invalid"));
     }
 }
