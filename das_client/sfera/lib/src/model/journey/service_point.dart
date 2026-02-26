@@ -50,16 +50,16 @@ class ServicePoint extends JourneyPoint {
   final DepartureAuthorization? departureAuthorization;
   final String locationCode;
 
-  List<TrainSeriesSpeed> relevantGraduatedSpeedInfo(BreakSeries? breakSeries) {
+  List<TrainSeriesSpeed> relevantGraduatedSpeedInfo(BrakeSeries? brakeSeries) {
     final speedInfo = graduatedSpeedInfo ?? [];
-    return speedInfo.where((speed) => speed.trainSeries == breakSeries?.trainSeries && speed.text != null).toList();
+    return speedInfo.where((speed) => speed.trainSeries == brakeSeries?.trainSeries && speed.text != null).toList();
   }
 
-  Iterable<StationProperty> propertiesFor(BreakSeries? breakSeries) {
+  Iterable<StationProperty> propertiesFor(BrakeSeries? brakeSeries) {
     return properties.where(
       (property) =>
           property.speeds == null ||
-          property.speeds?.speedFor(breakSeries?.trainSeries, breakSeries: breakSeries?.breakSeries) != null,
+          property.speeds?.speedFor(brakeSeries?.trainSeries, brakeSeries: brakeSeries?.brakeSeries) != null,
     );
   }
 

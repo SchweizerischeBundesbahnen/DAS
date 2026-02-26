@@ -17,21 +17,21 @@ class DetailTabGraduatedSpeeds extends StatelessWidget {
     final viewModel = context.read<ServicePointModalViewModel>();
 
     return StreamBuilder(
-      stream: CombineLatestStream.list([viewModel.breakSeries, viewModel.relevantSpeedInfo]),
+      stream: CombineLatestStream.list([viewModel.brakeSeries, viewModel.relevantSpeedInfo]),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return _loading();
 
-        final breakSeries = snapshot.requireData[0] as BreakSeries?;
+        final brakeSeries = snapshot.requireData[0] as BrakeSeries?;
         final relevantSpeeds = snapshot.requireData[1] as List<TrainSeriesSpeed>;
 
-        if (breakSeries == null || relevantSpeeds.isEmpty) return _emptyInformation(context);
+        if (brakeSeries == null || relevantSpeeds.isEmpty) return _emptyInformation(context);
 
         return Column(
           crossAxisAlignment: .start,
           mainAxisAlignment: .start,
           children: [
             Text(
-              '${context.l10n.w_service_point_modal_graduated_speed_break_series_title}: ${breakSeries.name}',
+              '${context.l10n.w_service_point_modal_graduated_speed_brake_series_title}: ${brakeSeries.name}',
               style: sbbTextStyle.boldStyle.small,
             ),
             Expanded(child: _buildSpeedInfoList(context, relevantSpeeds)),

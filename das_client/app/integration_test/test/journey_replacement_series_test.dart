@@ -18,7 +18,7 @@ void main() {
       findsOneWidget,
     );
 
-    await selectBreakSeries(tester, breakSeries: expectedReplacementSeries);
+    await selectBrakeSeries(tester, brakeSeries: expectedReplacementSeries);
 
     replacementSeriesFinder.reset();
     expect(replacementSeriesFinder, findsNothing);
@@ -30,7 +30,7 @@ void main() {
       findsOneWidget,
     );
 
-    await selectBreakSeries(tester, breakSeries: originalSeries);
+    await selectBrakeSeries(tester, brakeSeries: originalSeries);
     originalSeriesFinder.reset();
     expect(originalSeriesFinder, findsNothing);
 
@@ -50,12 +50,12 @@ void main() {
     );
 
     // Switch to D Series which has no replacement series
-    await selectBreakSeries(tester, breakSeries: 'D150');
+    await selectBrakeSeries(tester, brakeSeries: 'D150');
     replacementSeriesFinder.reset();
     expect(replacementSeriesFinder, findsNothing);
 
     // Switch back to N Series which has a replacement series
-    await selectBreakSeries(tester, breakSeries: 'N160');
+    await selectBrakeSeries(tester, brakeSeries: 'N160');
     replacementSeriesFinder.reset();
     await waitUntilExists(tester, replacementSeriesFinder);
 
@@ -66,7 +66,7 @@ void main() {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T30');
 
-    await selectBreakSeries(tester, breakSeries: 'N160');
+    await selectBrakeSeries(tester, brakeSeries: 'N160');
 
     final expectedReplacementSeries = 'R150';
     final replacementSeriesFinder = find.byKey(ReplacementSeriesNotification.replacementSeriesAvailableKey);
@@ -91,12 +91,12 @@ void main() {
     final replacementSeriesFinder = find.byKey(ReplacementSeriesNotification.noReplacementSeriesAvailableKey);
     expect(replacementSeriesFinder, findsNothing);
 
-    await selectBreakSeries(tester, breakSeries: 'D150');
+    await selectBrakeSeries(tester, brakeSeries: 'D150');
 
     replacementSeriesFinder.reset();
     expect(replacementSeriesFinder, findsOneWidget);
 
-    await selectBreakSeries(tester, breakSeries: 'R150');
+    await selectBrakeSeries(tester, brakeSeries: 'R150');
 
     replacementSeriesFinder.reset();
     expect(replacementSeriesFinder, findsNothing);

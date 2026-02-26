@@ -10,20 +10,20 @@ class TrainSeriesSpeed {
   const TrainSeriesSpeed({
     required this.trainSeries,
     required this.speed,
-    this.breakSeries,
+    this.brakeSeries,
     this.text,
     this.reduced = false,
   });
 
   final TrainSeries trainSeries;
   final Speed speed;
-  final int? breakSeries;
+  final int? brakeSeries;
   final String? text;
   final bool reduced;
 
   @override
   String toString() {
-    return 'TrainSeriesSpeed{trainSeries: $trainSeries, speed: $speed, breakSeries: $breakSeries, text: $text, reduced: $reduced}';
+    return 'TrainSeriesSpeed{trainSeries: $trainSeries, speed: $speed, brakeSeries: $brakeSeries, text: $text, reduced: $reduced}';
   }
 
   @override
@@ -32,22 +32,22 @@ class TrainSeriesSpeed {
         (other is TrainSeriesSpeed &&
             trainSeries == other.trainSeries &&
             speed == other.speed &&
-            breakSeries == other.breakSeries &&
+            brakeSeries == other.brakeSeries &&
             text == other.text &&
             reduced == other.reduced);
   }
 
   @override
-  int get hashCode => Object.hash(trainSeries, speed, breakSeries, text, reduced);
+  int get hashCode => Object.hash(trainSeries, speed, brakeSeries, text, reduced);
 }
 
 extension TrainSeriesSpeedExtension on Iterable<TrainSeriesSpeed>? {
-  TrainSeriesSpeed? speedFor(TrainSeries? trainSeries, {int? breakSeries}) {
+  TrainSeriesSpeed? speedFor(TrainSeries? trainSeries, {int? brakeSeries}) {
     if (trainSeries == null) return null;
     if (this == null) return null;
 
     final trainSeriesSpeeds = this!.where((it) => it.trainSeries == trainSeries);
-    final exactMatchingVelocity = trainSeriesSpeeds.firstWhereOrNull((it) => it.breakSeries == breakSeries);
-    return exactMatchingVelocity ?? trainSeriesSpeeds.firstWhereOrNull((it) => it.breakSeries == null);
+    final exactMatchingVelocity = trainSeriesSpeeds.firstWhereOrNull((it) => it.brakeSeries == brakeSeries);
+    return exactMatchingVelocity ?? trainSeriesSpeeds.firstWhereOrNull((it) => it.brakeSeries == null);
   }
 }

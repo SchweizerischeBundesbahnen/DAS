@@ -23,12 +23,12 @@ class SpeedMapper {
 
     final result = <TrainSeriesSpeed>[];
 
-    void addSpeed(TrainSeries trainSeries, int? breakSeries, String speedString, bool reduced) {
+    void addSpeed(TrainSeries trainSeries, int? brakeSeries, String speedString, bool reduced) {
       try {
         final speeds = TrainSeriesSpeed(
           trainSeries: trainSeries,
           speed: Speed.parse(speedString),
-          breakSeries: breakSeries,
+          brakeSeries: brakeSeries,
           reduced: reduced,
         );
         result.add(speeds);
@@ -105,8 +105,10 @@ class SpeedMapper {
     List<BaseData> journeyData,
   ) {
     final drafts = _parseAllSegmentsToDrafts(journeyProfile, segmentProfiles);
-    final List<DraftAdvisedSpeedSegment> mergedDrafts = _mergeAdvisedSegments(drafts);
-    final result = _mapUnknownLocationsToClosestJourneyPoints(mergedDrafts, journeyData);
+    final mergedDrafts = _mergeAdvisedSegments(drafts);
+    final draftsWithMappedStartEndPoints = _mapUnknownLocationsToClosestJourneyPoints(mergedDrafts, journeyData);
+    final draftsWithHints = _addRelatedHintsToDrafts(draftsWithMappedStartEndPoints, journeyData);
+    final result = _mapDraftsToAdvisedSpeedSegments(draftsWithHints, journeyData);
 
     return result;
   }
@@ -225,7 +227,7 @@ class SpeedMapper {
     return groupedAdvisedSpeedSegments.values.flattened.toList(growable: false).sorted();
   }
 
-  static List<AdvisedSpeedSegment> _mapUnknownLocationsToClosestJourneyPoints(
+  static List<DraftAdvisedSpeedSegment> _mapUnknownLocationsToClosestJourneyPoints(
     List<DraftAdvisedSpeedSegment> mergedDrafts,
     List<BaseData> journeyData,
   ) {
@@ -234,7 +236,7 @@ class SpeedMapper {
       (it) => it is ServicePoint && it.isAdditional,
     );
 
-    final result = <AdvisedSpeedSegment>[];
+    final result = <DraftAdvisedSpeedSegment>[];
     for (int idx = 0; idx < mergedDrafts.length; idx++) {
       final draft = mergedDrafts[idx];
 
@@ -247,11 +249,7 @@ class SpeedMapper {
       if (endUnknown) {
         draft.endOrder = _orderFromClosestJourneyPoint(draft.endOrder, possiblePoints.toList().reversed) ?? 0;
       }
-
-      if (draft.isValid) {
-        draft.endData = journeyData.firstWhere((it) => it.order == draft.endOrder);
-        result.add(draft.toAdvisedSegment());
-      }
+      result.add(draft);
     }
     return result;
   }
@@ -310,5 +308,40 @@ class SpeedMapper {
     }
 
     return false;
+  }
+
+  static Iterable<DraftAdvisedSpeedSegment> _addRelatedHintsToDrafts(
+    List<DraftAdvisedSpeedSegment> drafts,
+    List<BaseData> journeyData,
+  ) {
+    for (final draft in drafts) {
+      final relevantJourneyData = journeyData.where((d) => draft.startOrder <= d.order && draft.endOrder >= d.order);
+      for (final data in relevantJourneyData) {
+        if (data is CurvePoint && (data.localSpeeds?.isNotEmpty ?? false)) {
+          draft.additionalHints.add(.curvePointWithLocalSpeed);
+        }
+        if (data is AdditionalSpeedRestrictionData) {
+          draft.additionalHints.add(.additionalSpeedRestriction);
+        }
+        if (data is ServicePoint && (data.localSpeeds?.isNotEmpty ?? false)) {
+          draft.additionalHints.add(.servicePointWithLocalSpeed);
+        }
+      }
+    }
+    return drafts;
+  }
+
+  static List<AdvisedSpeedSegment> _mapDraftsToAdvisedSpeedSegments(
+    Iterable<DraftAdvisedSpeedSegment> draftsWithHints,
+    List<BaseData> journeyData,
+  ) {
+    return draftsWithHints
+        .map((draft) {
+          if (!draft.isValid) return null;
+          draft.endData = journeyData.firstWhere((it) => it.order == draft.endOrder);
+          return draft.toAdvisedSegment();
+        })
+        .nonNulls
+        .toList(growable: false);
   }
 }

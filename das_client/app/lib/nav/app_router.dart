@@ -1,5 +1,5 @@
 import 'package:app/nav/auth_guard.dart';
-import 'package:app/pages/journey/break_load_slip/break_load_slip_page.dart';
+import 'package:app/pages/journey/brake_load_slip/brake_load_slip_page.dart';
 import 'package:app/pages/journey/journey_page.dart';
 import 'package:app/pages/journey/selection/journey_selection_page.dart';
 import 'package:app/pages/links/links_page.dart';
@@ -30,7 +30,7 @@ class AppRouter extends RootStackRouter {
     _links,
     _settings,
     _profile,
-    _breakLoadSlip,
+    _brakeLoadSlip,
     _preload,
   ];
 
@@ -75,9 +75,9 @@ class AppRouter extends RootStackRouter {
     guards: [authGuard],
   );
 
-  AutoRoute get _breakLoadSlip => AutoRoute(
-    path: '/break-load-slip',
-    page: BreakLoadSlipRoute.page,
+  AutoRoute get _brakeLoadSlip => AutoRoute(
+    path: '/brake-load-slip',
+    page: BrakeLoadSlipRoute.page,
     guards: [authGuard],
   );
 

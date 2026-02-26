@@ -85,11 +85,13 @@ class AzureAuthenticator implements Authenticator {
     final userId = idToken.payload['preferred_username'] as String;
     final roles = idToken.payload['roles'] as List<dynamic>? ?? [];
     final displayName = idToken.payload['name'] as String?;
+    final tid = idToken.payload['tid'] as String?;
 
     return User(
       userId: userId,
       roles: roles.map((it) => Role.fromName(it)).nonNulls.toList(),
       displayName: displayName,
+      tid: tid,
     );
   }
 

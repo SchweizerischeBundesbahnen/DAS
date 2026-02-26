@@ -82,7 +82,7 @@ void main() {
     expect(find.descendant(of: veveyRow, matching: find.byKey(ServicePointRow.reducedSpeedKey)), findsOneWidget);
     expect(find.descendant(of: veveyRow, matching: find.byKey(Key(StationSign.deadendStation.name))), findsOneWidget);
 
-    await selectBreakSeries(tester, breakSeries: 'R115');
+    await selectBrakeSeries(tester, brakeSeries: 'R115');
 
     geneveRow = findDASTableRowByText('Genève');
     expect(find.descendant(of: geneveRow, matching: find.byKey(Key(StationSign.deadendStation.name))), findsNothing);

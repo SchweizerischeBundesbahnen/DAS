@@ -60,6 +60,6 @@ preload:
     topic: nets-p.timetable
   timetableTrain:
     topic: fps.inte.infra.zug
-  trainCleanUp:
-    days: 2
+  cleanUp:
+    hours: 48
     cronExpression: "-"

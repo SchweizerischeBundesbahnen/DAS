@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T24_2" SP_VersionMajor="1"
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T24_2" SP_VersionMajor="2"
                 SP_VersionMinor="1" SP_Length="3100" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
@@ -65,6 +65,26 @@
             <SignalPhysicalCharacteristics visualIdentifier="S2"/>
         </Signal>
 
+        <NetworkSpecificPoint location="1600" identifier="1">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>curvePoint</NSP_GroupName>
+            <NetworkSpecificParameter name="curvePointType" value="begin"/>
+            <NetworkSpecificParameter name="curveType" value="curve"/>
+            <NetworkSpecificParameter name="xmlCurveSpeed" value="
+                &lt;curveSpeed text=&quot;Kurve 1&quot; comment=&quot;Kurve 1 comment&quot;&gt;
+                &lt;speeds&gt;
+                &lt;v trainSeries=&quot;R&quot; speed=&quot;44&quot;/&gt;
+                &lt;/speeds&gt;
+                &lt;/curveSpeed&gt;
+            "/>
+        </NetworkSpecificPoint>
+
+        <NetworkSpecificPoint location="1650" identifier="1">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>curvePoint</NSP_GroupName>
+            <NetworkSpecificParameter name="curvePointType" value="end"/>
+        </NetworkSpecificPoint>
+
     </SP_Points>
 
     <SP_Areas>
@@ -95,6 +115,16 @@
 					&lt;/lineSpeed&gt;
 				"/>
             </TAF_TAP_Location_NSP>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>stationSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlStationSpeed" value="
+					&lt;stationSpeed&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;90/80&quot;/&gt;
+					&lt;/stationSpeed&gt;
+				"/>
+            </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
 
     </SP_Areas>
@@ -121,6 +151,12 @@
         </KilometreReferencePoint>
         <KilometreReferencePoint location="1500">
             <KM_Reference kmRef="43.8"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="1600">
+            <KM_Reference kmRef="43.7"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="1650">
+            <KM_Reference kmRef="43.6"/>
         </KilometreReferencePoint>
         <KilometreReferencePoint location="2950">
             <KM_Reference kmRef="43.5"/>

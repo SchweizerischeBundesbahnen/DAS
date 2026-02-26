@@ -16,21 +16,21 @@ class LineSpeedViewModel extends JourneyAwareViewModel {
     if (metadata == null) return ResolvedTrainSeriesSpeed.none();
 
     final settings = _journeySettingsViewModel.modelValue;
-    final breakSeries = settings.currentBreakSeries;
+    final brakeSeries = settings.currentBrakeSeries;
 
     var trainSeriesSpeeds = metadata.lineSpeeds[order];
     var isPrevious = false;
 
-    if (!_hasSpeed(trainSeriesSpeeds, breakSeries)) {
+    if (!_hasSpeed(trainSeriesSpeeds, brakeSeries)) {
       var lastKey = metadata.lineSpeeds.lastKeyBefore(order);
-      while (!_hasSpeed(trainSeriesSpeeds, breakSeries) && lastKey != null) {
+      while (!_hasSpeed(trainSeriesSpeeds, brakeSeries) && lastKey != null) {
         trainSeriesSpeeds = metadata.lineSpeeds[lastKey];
         lastKey = metadata.lineSpeeds.lastKeyBefore(lastKey);
         isPrevious = true;
       }
     }
 
-    final speed = trainSeriesSpeeds?.speedFor(breakSeries?.trainSeries, breakSeries: breakSeries?.breakSeries);
+    final speed = trainSeriesSpeeds?.speedFor(brakeSeries?.trainSeries, brakeSeries: brakeSeries?.brakeSeries);
 
     return ResolvedTrainSeriesSpeed(
       speed: speed,
@@ -38,10 +38,10 @@ class LineSpeedViewModel extends JourneyAwareViewModel {
     );
   }
 
-  bool _hasSpeed(Iterable<TrainSeriesSpeed>? speeds, BreakSeries? selectedBreakSeries) {
+  bool _hasSpeed(Iterable<TrainSeriesSpeed>? speeds, BrakeSeries? selectedBrakeSeries) {
     return speeds?.speedFor(
-          selectedBreakSeries?.trainSeries,
-          breakSeries: selectedBreakSeries?.breakSeries,
+          selectedBrakeSeries?.trainSeries,
+          brakeSeries: selectedBrakeSeries?.brakeSeries,
         ) !=
         null;
   }
