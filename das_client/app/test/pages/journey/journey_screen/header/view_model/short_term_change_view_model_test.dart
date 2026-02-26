@@ -4,7 +4,7 @@ import 'package:app/pages/journey/journey_screen/header/view_model/model/short_t
 import 'package:app/pages/journey/journey_screen/header/view_model/short_term_change_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
-import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -19,7 +19,7 @@ import 'short_term_change_view_model_test.mocks.dart';
 
 @GenerateNiceMocks([
   MockSpec<JourneyPositionViewModel>(),
-  MockSpec<JourneyTableViewModel>(),
+  MockSpec<JourneyViewModel>(),
 ])
 void main() {
   late BehaviorSubject<Journey?> rxMockJourney;
@@ -28,7 +28,7 @@ void main() {
   late FakeAsync testAsync;
   final List<dynamic> emitRegister = [];
   late StreamSubscription<ShortTermChangeModel?> modelSubscription;
-  late MockJourneyTableViewModel mockJourneyTableViewModel;
+  late MockJourneyViewModel mockJourneyViewModel;
   late MockJourneyPositionViewModel mockJourneyPositionViewModel;
 
   setUp(() {
@@ -37,13 +37,13 @@ void main() {
       testAsync = fakeAsync;
       rxMockJourney = BehaviorSubject<Journey?>.seeded(null);
       rxMockJourneyPosition = BehaviorSubject<JourneyPositionModel>.seeded(JourneyPositionModel());
-      mockJourneyTableViewModel = MockJourneyTableViewModel();
+      mockJourneyViewModel = MockJourneyViewModel();
       mockJourneyPositionViewModel = MockJourneyPositionViewModel();
-      when(mockJourneyTableViewModel.journey).thenAnswer((_) => rxMockJourney.stream);
+      when(mockJourneyViewModel.journey).thenAnswer((_) => rxMockJourney.stream);
       when(mockJourneyPositionViewModel.model).thenAnswer((_) => rxMockJourneyPosition.stream);
       testee = ShortTermChangeViewModel(
         journeyPositionViewModel: mockJourneyPositionViewModel,
-        journeyTableViewModel: mockJourneyTableViewModel,
+        journeyViewModel: mockJourneyViewModel,
       );
       modelSubscription = testee.model.listen(emitRegister.add);
       processStreams(fakeAsync: fakeAsync);

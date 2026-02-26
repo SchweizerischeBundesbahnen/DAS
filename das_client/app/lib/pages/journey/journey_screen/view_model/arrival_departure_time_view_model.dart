@@ -11,7 +11,7 @@ import 'package:sfera/component.dart';
 class ArrivalDepartureTimeViewModel extends JourneyAwareViewModel {
   final _resetToOperationalAfterSeconds = DI.get<TimeConstants>().arrivalDepartureOperationalResetSeconds;
 
-  ArrivalDepartureTimeViewModel({super.journeyTableViewModel});
+  ArrivalDepartureTimeViewModel({super.journeyViewModel});
 
   Stream<bool> get showOperationalTime => _rxShowOperationalTimes;
 

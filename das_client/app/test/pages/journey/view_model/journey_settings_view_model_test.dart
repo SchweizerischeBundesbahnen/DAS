@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
-import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/pages/journey/view_model/model/journey_settings.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -13,11 +13,11 @@ import '../../../test_util.dart';
 import 'journey_settings_view_model_test.mocks.dart';
 
 @GenerateNiceMocks([
-  MockSpec<JourneyTableViewModel>(),
+  MockSpec<JourneyViewModel>(),
 ])
 void main() {
   late JourneySettingsViewModel testee;
-  late MockJourneyTableViewModel mockJourneyTableViewModel;
+  late MockJourneyViewModel mockJourneyViewModel;
   late BehaviorSubject<Journey?> rxMockJourney;
   late StreamSubscription<JourneySettings> modelSubscription;
   late List<dynamic> emitRegister;
@@ -25,12 +25,12 @@ void main() {
 
   setUp(() {
     onBrakeSeriesUpdatedCalled = false;
-    mockJourneyTableViewModel = MockJourneyTableViewModel();
+    mockJourneyViewModel = MockJourneyViewModel();
     rxMockJourney = BehaviorSubject<Journey?>.seeded(null);
-    when(mockJourneyTableViewModel.journey).thenAnswer((_) => rxMockJourney.stream);
+    when(mockJourneyViewModel.journey).thenAnswer((_) => rxMockJourney.stream);
 
     testee = JourneySettingsViewModel(
-      journeyTableViewModel: mockJourneyTableViewModel,
+      journeyViewModel: mockJourneyViewModel,
     );
     emitRegister = <dynamic>[];
     modelSubscription = testee.model.listen(emitRegister.add);

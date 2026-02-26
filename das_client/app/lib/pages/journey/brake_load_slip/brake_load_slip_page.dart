@@ -11,7 +11,7 @@ import 'package:app/pages/journey/brake_load_slip/widgets/formation_run_navigati
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/punctuality_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
-import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:formation/component.dart';
@@ -28,15 +28,15 @@ class BrakeLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
   @override
   Widget wrappedRoute(BuildContext context) => MultiProvider(
     providers: [
-      Provider<JourneyTableViewModel>(create: (_) => DI.get<JourneyTableViewModel>()),
+      Provider<JourneyViewModel>(create: (_) => DI.get<JourneyViewModel>()),
       Provider<JourneySettingsViewModel>(create: (_) => DI.get<JourneySettingsViewModel>()),
       Provider<PunctualityViewModel>(create: (_) => DI.get<PunctualityViewModel>()),
       Provider<JourneyPositionViewModel>(create: (_) => DI.get<JourneyPositionViewModel>()),
-      ProxyProvider3<JourneyTableViewModel, JourneyPositionViewModel, JourneySettingsViewModel, BrakeLoadSlipViewModel>(
+      ProxyProvider3<JourneyViewModel, JourneyPositionViewModel, JourneySettingsViewModel, BrakeLoadSlipViewModel>(
         update: (_, journeyVM, positionVM, settingsVM, prev) {
           if (prev != null) return prev;
           return BrakeLoadSlipViewModel(
-            journeyTableViewModel: journeyVM,
+            journeyViewModel: journeyVM,
             journeyPositionViewModel: positionVM,
             notificationViewModel: DI.get(),
             formationRepository: DI.get(),

@@ -3,7 +3,7 @@ import 'package:app/extension/journey_extension.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/reduced_overview_view_model.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/widgets/reduced_journey_table.dart';
-import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/format.dart';
 import 'package:flutter/widgets.dart';
@@ -12,7 +12,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
 Future<void> showReducedOverviewModalSheet(BuildContext context) async {
-  final viewModel = DI.get<JourneyTableViewModel>();
+  final viewModel = DI.get<JourneyViewModel>();
   final trainIdentification = viewModel.journeyValue?.metadata.trainIdentification;
   if (trainIdentification == null) return;
 

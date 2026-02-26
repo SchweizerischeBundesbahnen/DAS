@@ -1,6 +1,6 @@
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
-import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/widgets/navigation_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +14,7 @@ class JourneyNavigationButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final navigationVM = DI.get<JourneyNavigationViewModel>();
-    final journeyVM = context.read<JourneyTableViewModel>();
+    final journeyVM = context.read<JourneyViewModel>();
     return StreamBuilder(
       stream: CombineLatestStream.combine2(navigationVM.model, journeyVM.isZenViewMode, (a, b) => (a, b)),
       initialData: (navigationVM.modelValue, journeyVM.isZenViewModeValue),

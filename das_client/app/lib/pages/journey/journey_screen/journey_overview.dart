@@ -27,7 +27,7 @@ import 'package:app/pages/journey/journey_screen/widgets/journey_navigation_butt
 import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
 import 'package:app/pages/journey/view_model/disturbance_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
-import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -81,7 +81,7 @@ class _ProviderScope extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final journeyTableViewModel = context.read<JourneyTableViewModel>();
+    final journeyViewModel = context.read<JourneyViewModel>();
     return MultiProvider(
       providers: [
         Provider<PunctualityViewModel>(
@@ -170,7 +170,7 @@ class _ProviderScope extends StatelessWidget {
           update: (_, journeyPositionVM, settingsVM, notificationVM, prev) {
             if (prev != null) return prev;
             final vm = ReplacementSeriesViewModel(
-              journeyTableViewModel: journeyTableViewModel,
+              journeyViewModel: journeyViewModel,
               journeyPositionViewModel: journeyPositionVM,
               journeySettingsViewModel: settingsVM,
             );
@@ -216,21 +216,21 @@ class _ProviderScope extends StatelessWidget {
           },
           dispose: (_, vm) => vm.dispose(),
         ),
-        ProxyProvider2<JourneyTableViewModel, JourneySettingsViewModel, LineSpeedViewModel>(
-          update: (_, journeyTableViewModel, settingsVM, prev) {
+        ProxyProvider2<JourneyViewModel, JourneySettingsViewModel, LineSpeedViewModel>(
+          update: (_, journeyViewModel, settingsVM, prev) {
             if (prev != null) return prev;
             return LineSpeedViewModel(
-              journeyTableViewModel: journeyTableViewModel,
+              journeyViewModel: journeyViewModel,
               journeySettingsViewModel: settingsVM,
             );
           },
           dispose: (_, vm) => vm.dispose(),
         ),
-        ProxyProvider2<JourneyTableViewModel, JourneyPositionViewModel, ShortTermChangeViewModel>(
-          update: (_, journeyTableViewModel, journeyPositionViewModel, prev) {
+        ProxyProvider2<JourneyViewModel, JourneyPositionViewModel, ShortTermChangeViewModel>(
+          update: (_, journeyViewModel, journeyPositionViewModel, prev) {
             if (prev != null) return prev;
             return ShortTermChangeViewModel(
-              journeyTableViewModel: journeyTableViewModel,
+              journeyViewModel: journeyViewModel,
               journeyPositionViewModel: journeyPositionViewModel,
             );
           },
@@ -239,7 +239,7 @@ class _ProviderScope extends StatelessWidget {
           update: (_, lineSpeedVM, prev) {
             if (prev != null) return prev;
             return CalculatedSpeedViewModel(
-              journeyTableViewModel: journeyTableViewModel,
+              journeyViewModel: journeyViewModel,
               lineSpeedViewModel: lineSpeedVM,
             );
           },
@@ -259,13 +259,13 @@ class _ProviderScope extends StatelessWidget {
               punctualityStream: punctualityVM.model,
               advisedSpeedModelStream: advisedSpeedVM.model,
               calculatedSpeedViewModel: calculatedSpeedVM,
-              journeyTableViewModel: journeyTableViewModel,
+              journeyViewModel: journeyViewModel,
             );
           },
           dispose: (_, vm) => vm.dispose(),
         ),
         ProxyProvider5<
-          JourneyTableViewModel,
+          JourneyViewModel,
           JourneyPositionViewModel,
           JourneySettingsViewModel,
           DetailModalViewModel,
@@ -276,7 +276,7 @@ class _ProviderScope extends StatelessWidget {
           update: (_, journeyVM, positionVM, settingsVM, detailModalVM, notificationVM, prev) {
             if (prev != null) return prev;
             return BrakeLoadSlipViewModel(
-              journeyTableViewModel: journeyVM,
+              journeyViewModel: journeyVM,
               journeyPositionViewModel: positionVM,
               formationRepository: DI.get(),
               notificationViewModel: notificationVM,

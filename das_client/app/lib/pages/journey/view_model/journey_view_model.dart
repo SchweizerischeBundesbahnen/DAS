@@ -10,10 +10,10 @@ import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
-final _log = Logger('JourneyTableViewModel');
+final _log = Logger('JourneyViewModel');
 
-class JourneyTableViewModel {
-  JourneyTableViewModel({
+class JourneyViewModel {
+  JourneyViewModel({
     required SferaRepository sferaRepo,
   }) : _sferaRepo = sferaRepo {
     _init();

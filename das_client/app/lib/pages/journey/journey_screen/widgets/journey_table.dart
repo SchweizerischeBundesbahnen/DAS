@@ -42,7 +42,7 @@ import 'package:app/pages/journey/journey_screen/widgets/table/uncoded_operation
 import 'package:app/pages/journey/journey_screen/widgets/table/whistle_row.dart';
 import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
-import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/pages/journey/view_model/model/journey_settings.dart';
 import 'package:app/provider/user_settings.dart';
 import 'package:app/theme/theme_util.dart';
@@ -67,7 +67,7 @@ class JourneyTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.read<JourneyTableViewModel>();
+    final viewModel = context.read<JourneyViewModel>();
     final journeySettingsVM = context.read<JourneySettingsViewModel>();
     final advancementViewModel = context.read<JourneyTableAdvancementViewModel>();
 
@@ -115,7 +115,7 @@ class JourneyTable extends StatelessWidget {
         final collapsedRows = snapshot.data?.$1 ?? {};
         final journeyPosition = snapshot.data!.$2;
         final tableRows = _rows(context, journey, settings, collapsedRows, journeyPosition);
-        context.read<JourneyTableViewModel>().journeyTableScrollController.updateRenderedRows(tableRows);
+        context.read<JourneyViewModel>().journeyTableScrollController.updateRenderedRows(tableRows);
 
         final marginAdjustment = Platform.isIOS
             ? tableRows.lastWhereOrNull((it) => it.stickyLevel == .first)?.height ?? CellRowBuilder.rowHeight
@@ -129,7 +129,7 @@ class JourneyTable extends StatelessWidget {
             stream: detailModalViewModel.openModalType,
             builder: (context, snapshot) {
               final openModalType = snapshot.data;
-              final journeyTableScrollController = context.read<JourneyTableViewModel>().journeyTableScrollController;
+              final journeyTableScrollController = context.read<JourneyViewModel>().journeyTableScrollController;
               return ChevronAnimationWrapper(
                 journeyPosition: journeyPosition,
                 child: DASTable(
@@ -375,7 +375,7 @@ class JourneyTable extends StatelessWidget {
   ) {
     final currentBrakeSeries = settings?.currentBrakeSeries;
 
-    final journeyViewModel = context.read<JourneyTableViewModel>();
+    final journeyViewModel = context.read<JourneyViewModel>();
     final timeViewModel = context.read<ArrivalDepartureTimeViewModel>();
     final userSettings = DI.get<UserSettings>();
 

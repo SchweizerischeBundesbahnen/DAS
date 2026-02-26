@@ -18,9 +18,9 @@ enum CollapsedState {
 class CollapsibleRowsViewModel extends JourneyAwareViewModel {
   CollapsibleRowsViewModel({
     required Stream<JourneyPositionModel> journeyPositionStream,
-    super.journeyTableViewModel,
+    super.journeyViewModel,
   }) {
-    _init(journeyTableViewModel.journey, journeyPositionStream);
+    _init(journeyViewModel.journey, journeyPositionStream);
   }
 
   Stream<Map<int, CollapsedState>> get collapsedRows => _rxCollapsedRows.stream;

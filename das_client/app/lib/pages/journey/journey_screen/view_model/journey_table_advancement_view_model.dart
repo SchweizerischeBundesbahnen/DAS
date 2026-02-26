@@ -28,11 +28,11 @@ class JourneyTableAdvancementViewModel extends JourneyAwareViewModel {
     required Stream<JourneyPositionModel> positionStream,
     required JourneyTableScrollController scrollController,
     required List<AdvancementModeChangedCallback> onAdvancementModeChanged,
-    super.journeyTableViewModel,
+    super.journeyViewModel,
   }) {
     _scrollController = scrollController;
     _onAdvancementModeChanged = onAdvancementModeChanged;
-    _initSubscription(journeyTableViewModel.journey, positionStream);
+    _initSubscription(journeyViewModel.journey, positionStream);
   }
 
   StreamSubscription<(Journey?, JourneyPositionModel)>? _streamSubscription;

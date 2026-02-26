@@ -34,7 +34,7 @@ class BrakeLoadSlipViewModel extends JourneyAwareViewModel {
     DetailModalViewModel? detailModalViewModel,
     ConnectivityManager? connectivityManager,
     bool checkForUpdates = false,
-    super.journeyTableViewModel,
+    super.journeyViewModel,
   }) : _formationRepository = formationRepository,
        _journeyPositionViewModel = journeyPositionViewModel,
        _journeySettingsViewModel = journeySettingsViewModel,
