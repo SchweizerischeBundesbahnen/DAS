@@ -76,19 +76,19 @@ public class SferaService {
         }
     }
 
+    todo check for MQTT Exception etc
     @Retryable(maxAttempts = MAX_RETRIES, retryFor = {ExecutionException.class, InterruptedException.class, MqttException.class})
-    PreloadResult preload(TrainIdentification trainId) throws ExecutionException, InterruptedException, MqttException {
-        mqttClient.subscribe(createTopic(G2B, trainId), (topic, message) -> receive(message));
+    PreloadResult preload(TrainIdentification trainId) throws ExecutionException, InterruptedException {
+            mqttClient.subscribe(createTopic(G2B, trainId), (topic, message) -> receive(message));
 
-        SFERAG2BReplyMessage handshakeReply = sendRequest(trainId, sferaMessageCreator.createHandshakeRequestMessage(trainId)).get();
-        if (handshakeReply.getHandshakeAcknowledgement() == null) {
-            throw new IllegalStateException("Handshake not acknowledged!");
-        }
-        SFERAG2BReplyMessage jpResponse = sendRequest(trainId, sferaMessageCreator.createJpRequestMessage(trainId)).get();
-        if (jpResponse.getG2BReplyPayload() == null || jpResponse.getG2BReplyPayload().getJourneyProfiles() == null || jpResponse.getG2BReplyPayload().getJourneyProfiles().size() != 1) {
-            return new PreloadResult.Error("Expected exactly one Journey Profile but was none or multiple");
-        }
-
+            SFERAG2BReplyMessage handshakeReply = sendRequest(trainId, sferaMessageCreator.createHandshakeRequestMessage(trainId)).get();
+            if (handshakeReply.getHandshakeAcknowledgement() == null) {
+                throw new IllegalStateException("Handshake not acknowledged!");
+            }
+            SFERAG2BReplyMessage jpResponse = sendRequest(trainId, sferaMessageCreator.createJpRequestMessage(trainId)).get();
+            if (jpResponse.getG2BReplyPayload() == null || jpResponse.getG2BReplyPayload().getJourneyProfiles() == null) {
+                return new PreloadResult.Error("Expected exactly one Journey Profile but was none or multiple");
+            }
         JourneyProfile jp = jpResponse.getG2BReplyPayload().getJourneyProfiles().getFirst();
 
         if (JPStatus.UNAVAILABLE.equals(jp.getJPStatus())) {
