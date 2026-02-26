@@ -79,7 +79,7 @@ extension JourneyScopeExtension on GetIt {
 
   void registerJourneyViewModel() {
     registerSingleton(
-      JourneyViewModel(sferaRepo: DI.get()),
+      JourneyViewModel(sferaRepository: DI.get()),
       dispose: (vm) => vm.dispose(),
     );
   }

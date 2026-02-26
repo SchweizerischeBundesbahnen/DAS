@@ -41,7 +41,6 @@ import 'package:app/pages/journey/journey_screen/widgets/table/tram_area_row.dar
 import 'package:app/pages/journey/journey_screen/widgets/table/uncoded_operational_indication_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/whistle_row.dart';
 import 'package:app/pages/journey/view_model/decisive_gradient_view_model.dart';
-import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/pages/journey/view_model/model/journey_settings.dart';
@@ -157,7 +156,6 @@ class JourneyTable extends StatelessWidget {
     JourneyPositionModel journeyPosition,
   ) {
     final currentBrakeSeries = settings.currentBrakeSeries;
-    final navigationVM = DI.get<JourneyNavigationViewModel>();
 
     final rows = journey.data
         .whereNot((it) => _isCurvePointWithoutSpeed(it, journey, settings))
@@ -167,7 +165,7 @@ class JourneyTable extends StatelessWidget {
         .hideRepeatedLineFootNotes(journeyPosition.currentPosition)
         .hideFootNotesForNotSelectedTrainSeries(currentBrakeSeries?.trainSeries)
         .combineFootNoteAndOperationalIndication()
-        .addTrainDriverTurnoverRows(navigationVM.modelValue?.trainIdentification)
+        .addTrainDriverTurnoverRows(journey.metadata.trainIdentification)
         .sorted((a1, a2) => a1.compareTo(a2));
 
     final groupedRows = rows

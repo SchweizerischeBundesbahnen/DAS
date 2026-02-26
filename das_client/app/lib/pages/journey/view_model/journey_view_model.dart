@@ -11,12 +11,10 @@ final _log = Logger('JourneyViewModel');
 
 class JourneyViewModel {
   JourneyViewModel({
-    required SferaRepository sferaRepo,
-  }) : _sferaRepo = sferaRepo {
+    required SferaRepository sferaRepository,
+  }) : _sferaRepository = sferaRepository {
     _init();
   }
-
-  final SferaRepository _sferaRepo;
 
   Stream<Journey?> get journey => _rxJourney.stream;
 
@@ -26,27 +24,29 @@ class JourneyViewModel {
 
   JourneyTableScrollController journeyTableScrollController = JourneyTableScrollController();
 
+  final SferaRepository _sferaRepository;
   final _rxErrorCode = BehaviorSubject<ErrorCode?>.seeded(null);
   final _rxJourney = BehaviorSubject<Journey?>.seeded(null);
 
-  StreamSubscription? _stateSubscription;
+  StreamSubscription? _sferaRepositoryStateSubscription;
   StreamSubscription? _journeySubscription;
-
-  void _init() {
-    _listenToSferaRemoteRepo();
-  }
 
   void dispose() {
     _rxJourney.close();
     _rxErrorCode.close();
-    _stateSubscription?.cancel();
+    _sferaRepositoryStateSubscription?.cancel();
     _journeySubscription?.cancel();
     journeyTableScrollController.dispose();
   }
 
-  void _listenToSferaRemoteRepo() {
-    _stateSubscription?.cancel();
-    _stateSubscription = _sferaRepo.stateStream.listen((state) {
+  void _init() {
+    _initSferaRepositoryStateSubscription();
+    _initJourneySubscription();
+  }
+
+  void _initSferaRepositoryStateSubscription() {
+    _sferaRepositoryStateSubscription?.cancel();
+    _sferaRepositoryStateSubscription = _sferaRepository.stateStream.listen((state) {
       switch (state) {
         case .offlineData:
         case .connected:
@@ -57,14 +57,16 @@ class JourneyViewModel {
           break;
         case .disconnected:
           WakelockPlus.disable();
-          if (_sferaRepo.lastError != null) {
-            _rxErrorCode.add(.fromSfera(error: _sferaRepo.lastError!));
+          if (_sferaRepository.lastError != null) {
+            _rxErrorCode.add(.fromSfera(error: _sferaRepository.lastError!));
           }
           break;
       }
     });
-    _journeySubscription = _sferaRepo.journeyStream.listen((journey) {
-      _rxJourney.add(journey);
-    }, onError: _rxJourney.addError);
+  }
+
+  void _initJourneySubscription() {
+    _journeySubscription?.cancel();
+    _journeySubscription = _sferaRepository.journeyStream.listen(_rxJourney.add, onError: _rxJourney.addError);
   }
 }
