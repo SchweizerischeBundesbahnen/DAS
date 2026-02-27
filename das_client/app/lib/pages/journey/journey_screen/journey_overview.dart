@@ -135,6 +135,7 @@ class _ProviderScope extends StatelessWidget {
           dispose: (_, vm) => vm.dispose(),
         ),
         ProxyProvider2<JourneyViewModel, JourneySettingsViewModel, ServicePointModalViewModel>(
+          lazy: false,
           update: (_, journeyVM, settingsVM, prev) {
             if (prev != null) return prev;
             return ServicePointModalViewModel(

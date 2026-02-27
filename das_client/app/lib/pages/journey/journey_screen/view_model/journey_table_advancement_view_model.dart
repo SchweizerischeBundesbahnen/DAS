@@ -107,12 +107,12 @@ class JourneyTableAdvancementViewModel extends JourneyAwareViewModel {
 
   @override
   void dispose() {
-    super.dispose();
+    _isDisposed = true;
     _streamSubscription?.cancel();
     _idleScrollTimer?.cancel();
     _idleScrollTimer = null;
     _rxModel.close();
-    _isDisposed = true;
+    super.dispose();
   }
 
   void _initSubscription(Stream<Journey?> journeyStream, Stream<JourneyPositionModel> positionStream) {

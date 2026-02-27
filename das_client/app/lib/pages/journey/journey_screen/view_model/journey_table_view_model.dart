@@ -52,7 +52,7 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
 
   final _rxModel = BehaviorSubject<JourneyTableModel>.seeded(TableLoading());
 
-  Stream<JourneyTableModel> get model => _rxModel.stream.distinct();
+  Stream<JourneyTableModel> get model => _rxModel.stream;
 
   JourneyTableModel get modelValue => _rxModel.value;
 
