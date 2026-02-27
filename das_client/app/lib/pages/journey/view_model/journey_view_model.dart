@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:app/pages/journey/journey_screen/journey_table_scroll_controller.dart';
 import 'package:app/util/error_code.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -22,8 +21,6 @@ class JourneyViewModel {
 
   Stream<ErrorCode?> get errorCode => _rxErrorCode.stream;
 
-  JourneyTableScrollController journeyTableScrollController = JourneyTableScrollController();
-
   final SferaRepository _sferaRepository;
   final _rxErrorCode = BehaviorSubject<ErrorCode?>.seeded(null);
   final _rxJourney = BehaviorSubject<Journey?>.seeded(null);
@@ -36,7 +33,6 @@ class JourneyViewModel {
     _rxErrorCode.close();
     _sferaRepositoryStateSubscription?.cancel();
     _journeySubscription?.cancel();
-    journeyTableScrollController.dispose();
   }
 
   void _init() {

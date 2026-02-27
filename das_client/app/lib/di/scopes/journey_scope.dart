@@ -1,4 +1,5 @@
 import 'package:app/di/di.dart';
+import 'package:app/pages/journey/journey_screen/journey_table_scroll_controller.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_table_advancement_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
@@ -31,6 +32,7 @@ class JourneyScope extends DIScope {
     getIt.registerJourneySettingsViewModel();
     getIt.registerPunctualityViewModel();
     getIt.registerJourneyPositionViewModel();
+    getIt.registerJourneyTableScrollController();
     getIt.registerJourneyTableAdvancementViewModel();
     getIt.registerWarnAppViewModel();
     getIt.registerLocalRegulationHtmlGenerator();
@@ -122,7 +124,7 @@ extension JourneyScopeExtension on GetIt {
     final vm = JourneyTableAdvancementViewModel(
       journeyViewModel: journeyVM,
       positionStream: positionVM.model,
-      scrollController: journeyVM.journeyTableScrollController,
+      scrollController: DI.get<JourneyTableScrollController>(),
       onAdvancementModeChanged: [viewModeVM.updateZenViewMode, positionVM.onAdvancementModeChanged],
     );
     settingsVM.registerOnBrakeSeriesUpdated(vm.scrollToCurrentPositionIfNotPaused);
@@ -133,6 +135,10 @@ extension JourneyScopeExtension on GetIt {
         vm.dispose();
       },
     );
+  }
+
+  void registerJourneyTableScrollController() {
+    registerSingleton(JourneyTableScrollController(), dispose: (controller) => controller.dispose());
   }
 
   void registerWarnAppViewModel() {

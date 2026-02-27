@@ -25,6 +25,7 @@ class MockJourneyScope extends JourneyScope {
     getIt.registerPunctualityViewModel();
     getIt.registerJourneyPositionViewModel();
     getIt.registerJourneyTableAdvancementViewModel();
+    getIt.registerJourneyTableScrollController();
     getIt.registerLocalRegulationHtmlGenerator();
     _registerMockWarnAppViewModel();
 
