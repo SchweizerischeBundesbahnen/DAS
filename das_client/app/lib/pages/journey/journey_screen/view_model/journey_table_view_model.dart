@@ -7,7 +7,9 @@ import 'package:app/pages/journey/journey_screen/view_model/model/journey_positi
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_table_model.dart';
 import 'package:app/pages/journey/view_model/decisive_gradient_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
+import 'package:app/pages/journey/view_model/model/journey_navigation_model.dart';
 import 'package:app/pages/journey/view_model/model/journey_settings.dart';
 import 'package:collection/collection.dart';
 import 'package:logging/logging.dart';
@@ -24,11 +26,13 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
     required JourneyPositionViewModel positionVM,
     required DetailModalViewModel detailModalVM,
     required DecisiveGradientViewModel decisiveGradientVM,
+    required JourneyNavigationViewModel navigationVM,
   }) : _settingsVM = settingsVM,
        _collapsibleRowsVM = collapsibleRowsVM,
        _positionVM = positionVM,
        _detailModalVM = detailModalVM,
-       _decisiveGradientVM = decisiveGradientVM {
+       _decisiveGradientVM = decisiveGradientVM,
+       _navigationVM = navigationVM {
     _init();
   }
 
@@ -37,18 +41,9 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
   final JourneyPositionViewModel _positionVM;
   final DetailModalViewModel _detailModalVM;
   final DecisiveGradientViewModel _decisiveGradientVM;
+  final JourneyNavigationViewModel _navigationVM;
 
-  StreamSubscription<
-    (
-      Journey?,
-      JourneySettings,
-      Map<int, CollapsedState>,
-      JourneyPositionModel,
-      DetailModalType?,
-      bool,
-    )
-  >?
-  _streamSubscription;
+  StreamSubscription? _streamSubscription;
 
   final _rxModel = BehaviorSubject<JourneyTableModel>.seeded(TableLoading());
 
@@ -65,14 +60,15 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
   void _init() {
     _streamSubscription?.cancel();
     _streamSubscription =
-        CombineLatestStream.combine6(
+        CombineLatestStream.combine7(
           journeyViewModel.journey,
           _settingsVM.model,
           _collapsibleRowsVM.collapsedRows,
           _positionVM.model,
           _detailModalVM.openModalType,
           _decisiveGradientVM.showDecisiveGradient,
-          (a, b, c, d, e, f) => (a, b, c, d, e, f),
+          _navigationVM.model,
+          (a, b, c, d, e, f, g) => (a, b, c, d, e, f, g),
         ).listen(
           (data) => _handleDataChanged(
             journey: data.$1,
@@ -81,6 +77,7 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
             position: data.$4,
             detailModalType: data.$5,
             showDecisiveGradient: data.$6,
+            navigationModel: data.$7,
           ),
         );
   }
@@ -97,6 +94,7 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
     required Map<int, CollapsedState> collapsibleRows,
     required JourneyPositionModel position,
     required bool showDecisiveGradient,
+    JourneyNavigationModel? navigationModel,
     DetailModalType? detailModalType,
     Journey? journey,
   }) {
@@ -112,7 +110,7 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
         .hideRepeatedLineFootNotes(position.currentPosition)
         .hideFootNotesForNotSelectedTrainSeries(settings.currentBrakeSeries?.trainSeries)
         .combineFootNoteAndOperationalIndication()
-        .addTrainDriverTurnoverRows(journey.metadata.trainIdentification)
+        .addTrainDriverTurnoverRows(navigationModel?.trainIdentification)
         .sorted((a1, a2) => a1.compareTo(a2));
 
     _emitLoaded(
