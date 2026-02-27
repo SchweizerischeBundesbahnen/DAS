@@ -6,7 +6,7 @@ import 'package:sfera/component.dart';
 class LineSpeedViewModel extends JourneyAwareViewModel {
   LineSpeedViewModel({
     required JourneySettingsViewModel journeySettingsViewModel,
-    super.journeyTableViewModel,
+    super.journeyViewModel,
   }) : _journeySettingsViewModel = journeySettingsViewModel;
 
   final JourneySettingsViewModel _journeySettingsViewModel;

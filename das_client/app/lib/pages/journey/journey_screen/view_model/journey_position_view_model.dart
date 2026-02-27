@@ -16,9 +16,9 @@ final _log = Logger('JourneyPositionViewModel');
 class JourneyPositionViewModel extends JourneyAwareViewModel {
   JourneyPositionViewModel({
     required Stream<PunctualityModel> punctualityStream,
-    super.journeyTableViewModel,
+    super.journeyViewModel,
   }) {
-    _initSubscription(journeyTableViewModel.journey, punctualityStream);
+    _initSubscription(journeyViewModel.journey, punctualityStream);
   }
 
   StreamSubscription<PunctualityModel>? _punctualitySubscription;

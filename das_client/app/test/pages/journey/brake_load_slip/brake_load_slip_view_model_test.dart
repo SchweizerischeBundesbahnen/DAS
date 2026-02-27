@@ -4,7 +4,7 @@ import 'package:app/pages/journey/journey_screen/view_model/journey_position_vie
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
-import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/pages/journey/view_model/model/journey_settings.dart';
 import 'package:app/sound/das_sounds.dart';
 import 'package:app/sound/sound.dart';
@@ -23,7 +23,7 @@ import 'package:sfera/component.dart';
 import 'brake_load_slip_view_model_test.mocks.dart';
 
 @GenerateNiceMocks([
-  MockSpec<JourneyTableViewModel>(),
+  MockSpec<JourneyViewModel>(),
   MockSpec<FormationRepository>(),
   MockSpec<JourneyPositionViewModel>(),
   MockSpec<JourneySettingsViewModel>(),
@@ -38,7 +38,7 @@ import 'brake_load_slip_view_model_test.mocks.dart';
 ])
 void main() {
   late BrakeLoadSlipViewModel testee;
-  late MockJourneyTableViewModel mockJourneyTableViewModel;
+  late MockJourneyViewModel mockJourneyViewModel;
   late MockFormationRepository mockFormationRepository;
   late MockJourneyPositionViewModel mockJourneyPositionViewModel;
   late MockJourneySettingsViewModel mockJourneySettingsViewModel;
@@ -122,7 +122,7 @@ void main() {
   );
 
   setUp(() {
-    mockJourneyTableViewModel = MockJourneyTableViewModel();
+    mockJourneyViewModel = MockJourneyViewModel();
     mockFormationRepository = MockFormationRepository();
     mockJourneyPositionViewModel = MockJourneyPositionViewModel();
     mockDetailModalViewModel = MockDetailModalViewModel();
@@ -141,7 +141,7 @@ void main() {
     formationSubject = BehaviorSubject<Formation?>();
     connectivitySubject = BehaviorSubject.seeded(true);
 
-    when(mockJourneyTableViewModel.journey).thenAnswer((_) => journeySubject.stream);
+    when(mockJourneyViewModel.journey).thenAnswer((_) => journeySubject.stream);
     when(mockJourneySettingsViewModel.model).thenAnswer((_) => settingsSubject.stream);
     when(mockJourneySettingsViewModel.modelValue).thenAnswer((_) => settingsSubject.value);
     when(mockJourneyPositionViewModel.model).thenAnswer((_) => positionSubject.stream);
@@ -167,7 +167,7 @@ void main() {
     when(mockStackRouterScope.controller).thenReturn(mockStackRouter);
 
     testee = BrakeLoadSlipViewModel(
-      journeyTableViewModel: mockJourneyTableViewModel,
+      journeyViewModel: mockJourneyViewModel,
       formationRepository: mockFormationRepository,
       journeyPositionViewModel: mockJourneyPositionViewModel,
       journeySettingsViewModel: mockJourneySettingsViewModel,
@@ -404,7 +404,7 @@ void main() {
     );
   });
 
-  test('updateJourneyBrakeSeriesFromActiveFormationRun_updatesJourneyTableViewModelBrakeSeries', () async {
+  test('updateJourneyBrakeSeriesFromActiveFormationRun_updatesJourneyViewModelBrakeSeries', () async {
     // ACT
     journeySubject.add(journey);
     formationSubject.add(formation);
@@ -483,7 +483,7 @@ void main() {
     fakeAsync((fakeAsync) {
       testee.dispose();
       testee = BrakeLoadSlipViewModel(
-        journeyTableViewModel: mockJourneyTableViewModel,
+        journeyViewModel: mockJourneyViewModel,
         formationRepository: mockFormationRepository,
         journeyPositionViewModel: mockJourneyPositionViewModel,
         journeySettingsViewModel: mockJourneySettingsViewModel,

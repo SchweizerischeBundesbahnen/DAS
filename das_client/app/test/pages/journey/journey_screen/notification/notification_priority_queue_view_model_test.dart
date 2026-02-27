@@ -1,6 +1,6 @@
 import 'package:app/pages/journey/journey_screen/notification/notification_type.dart';
 import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
-import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
@@ -10,17 +10,17 @@ import '../../../../test_util.dart';
 import 'notification_priority_queue_view_model_test.mocks.dart';
 
 @GenerateNiceMocks([
-  MockSpec<JourneyTableViewModel>(),
+  MockSpec<JourneyViewModel>(),
 ])
 void main() {
-  late MockJourneyTableViewModel mockJourneyTableViewModel;
+  late MockJourneyViewModel mockJourneyViewModel;
   late NotificationPriorityQueueViewModel testee;
   final MockCallback mockCallback = MockCallback();
   final MockCallback mockCallback2 = MockCallback();
 
   setUp(() {
-    mockJourneyTableViewModel = MockJourneyTableViewModel();
-    GetIt.I.registerSingleton<JourneyTableViewModel>(mockJourneyTableViewModel);
+    mockJourneyViewModel = MockJourneyViewModel();
+    GetIt.I.registerSingleton<JourneyViewModel>(mockJourneyViewModel);
     testee = NotificationPriorityQueueViewModel();
   });
 

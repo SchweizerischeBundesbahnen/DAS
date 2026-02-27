@@ -2,7 +2,7 @@ import 'package:app/pages/journey/journey_screen/journey_table_scroll_controller
 import 'package:app/pages/journey/journey_screen/view_model/journey_table_advancement_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_advancement_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
-import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -17,11 +17,11 @@ import 'journey_table_advancement_view_model_test.mocks.dart';
 
 @GenerateNiceMocks([
   MockSpec<JourneyTableScrollController>(),
-  MockSpec<JourneyTableViewModel>(),
+  MockSpec<JourneyViewModel>(),
 ])
 void main() {
   late JourneyTableAdvancementViewModel testee;
-  late MockJourneyTableViewModel mockJourneyTableViewModel;
+  late MockJourneyViewModel mockJourneyViewModel;
   late BehaviorSubject<Journey?> journeySubject;
   late BehaviorSubject<JourneyPositionModel> journeyPositionSubject;
   late JourneyTableScrollController mockScrollController;
@@ -53,12 +53,12 @@ void main() {
     mockScrollController = MockJourneyTableScrollController();
 
     fakeAsync((fakeAsync) {
-      mockJourneyTableViewModel = MockJourneyTableViewModel();
+      mockJourneyViewModel = MockJourneyViewModel();
       journeySubject = BehaviorSubject<Journey?>.seeded(baseJourney);
-      when(mockJourneyTableViewModel.journey).thenAnswer((_) => journeySubject.stream);
+      when(mockJourneyViewModel.journey).thenAnswer((_) => journeySubject.stream);
       journeyPositionSubject = BehaviorSubject<JourneyPositionModel>.seeded(JourneyPositionModel());
       testee = JourneyTableAdvancementViewModel(
-        journeyTableViewModel: mockJourneyTableViewModel,
+        journeyViewModel: mockJourneyViewModel,
         positionStream: journeyPositionSubject.stream,
         scrollController: mockScrollController,
         onAdvancementModeChanged: [],

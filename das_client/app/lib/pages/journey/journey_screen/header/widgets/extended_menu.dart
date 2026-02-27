@@ -1,7 +1,7 @@
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/reduced_overview_modal_sheet.dart';
 import 'package:app/pages/journey/journey_screen/widgets/anchored_full_page_overlay.dart';
-import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +17,7 @@ class ExtendedMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.read<JourneyTableViewModel>();
+    final viewModel = context.read<JourneyViewModel>();
     return AnchoredFullPageOverlay(
       triggerBuilder: (_, showOverlay) => SBBIconButtonLarge(
         key: menuButtonKey,

@@ -7,7 +7,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
 class JourneySettingsViewModel extends JourneyAwareViewModel {
-  JourneySettingsViewModel({super.journeyTableViewModel});
+  JourneySettingsViewModel({super.journeyViewModel});
 
   final List<VoidCallback> _onBrakeSeriesUpdatedCallbacks = [];
 

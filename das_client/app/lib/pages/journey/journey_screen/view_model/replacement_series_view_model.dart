@@ -16,7 +16,7 @@ class ReplacementSeriesViewModel extends JourneyAwareViewModel {
   ReplacementSeriesViewModel({
     required JourneyPositionViewModel journeyPositionViewModel,
     required JourneySettingsViewModel journeySettingsViewModel,
-    super.journeyTableViewModel,
+    super.journeyViewModel,
   }) : _journeyPositionViewModel = journeyPositionViewModel,
        _journeySettingsViewModel = journeySettingsViewModel {
     _initJourneyPositionSubscription();

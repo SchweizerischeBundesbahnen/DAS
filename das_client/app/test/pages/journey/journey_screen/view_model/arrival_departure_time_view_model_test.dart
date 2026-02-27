@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:app/extension/datetime_extension.dart';
 import 'package:app/pages/journey/journey_screen/view_model/arrival_departure_time_view_model.dart';
-import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:clock/clock.dart';
 import 'package:fake_async/fake_async.dart';
@@ -16,19 +16,19 @@ import 'package:sfera/src/model/journey/metadata.dart';
 import 'arrival_departure_time_view_model_test.mocks.dart';
 
 @GenerateNiceMocks([
-  MockSpec<JourneyTableViewModel>(),
+  MockSpec<JourneyViewModel>(),
 ])
 void main() {
   late ArrivalDepartureTimeViewModel testee;
   late StreamController<Journey?> journeyStreamController;
-  late MockJourneyTableViewModel mockJourneyTableViewModel;
+  late MockJourneyViewModel mockJourneyViewModel;
 
   setUp(() {
     GetIt.I.registerSingleton(TimeConstants());
     journeyStreamController = StreamController<Journey?>();
-    mockJourneyTableViewModel = MockJourneyTableViewModel();
-    when(mockJourneyTableViewModel.journey).thenAnswer((_) => journeyStreamController.stream);
-    testee = ArrivalDepartureTimeViewModel(journeyTableViewModel: mockJourneyTableViewModel);
+    mockJourneyViewModel = MockJourneyViewModel();
+    when(mockJourneyViewModel.journey).thenAnswer((_) => journeyStreamController.stream);
+    testee = ArrivalDepartureTimeViewModel(journeyViewModel: mockJourneyViewModel);
   });
 
   tearDown(() {

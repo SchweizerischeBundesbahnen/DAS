@@ -6,7 +6,7 @@ import 'package:app/pages/journey/journey_screen/view_model/calculated_speed_vie
 import 'package:app/pages/journey/journey_screen/view_model/model/advised_speed_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/punctuality_model.dart';
-import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/pages/journey/view_model/model/calculated_speed.dart';
 import 'package:clock/clock.dart';
 import 'package:fake_async/fake_async.dart';
@@ -22,7 +22,7 @@ import 'chronograph_view_model_test.mocks.dart';
 
 @GenerateNiceMocks([
   MockSpec<CalculatedSpeedViewModel>(),
-  MockSpec<JourneyTableViewModel>(),
+  MockSpec<JourneyViewModel>(),
 ])
 void main() {
   const testDelay = Delay(value: Duration(seconds: 10), location: 'Bern');
@@ -44,7 +44,7 @@ void main() {
   late List<String> formattedWallclockTimeRegister;
   late FakeAsync testAsync;
   late CalculatedSpeedViewModel mockCalculatedSpeedViewModel;
-  late MockJourneyTableViewModel mockJourneyTableViewModel;
+  late MockJourneyViewModel mockJourneyViewModel;
 
   final activeAdvisedSpeedModel = AdvisedSpeedModel.active(
     segment: VelocityMaxAdvisedSpeedSegment(
@@ -69,7 +69,7 @@ void main() {
   setUp(() {
     testClock = Clock.fixed(clock.now());
     mockCalculatedSpeedViewModel = MockCalculatedSpeedViewModel();
-    mockJourneyTableViewModel = MockJourneyTableViewModel();
+    mockJourneyViewModel = MockJourneyViewModel();
     when(
       mockCalculatedSpeedViewModel.getCalculatedSpeedForOrder(bServicePoint.order),
     ).thenReturn(CalculatedSpeed(speed: SingleSpeed(value: '100')));
@@ -79,7 +79,7 @@ void main() {
 
     fakeAsync((fakeAsync) {
       rxMockJourney = BehaviorSubject<Journey?>();
-      when(mockJourneyTableViewModel.journey).thenAnswer((_) => rxMockJourney.stream);
+      when(mockJourneyViewModel.journey).thenAnswer((_) => rxMockJourney.stream);
       rxMockAdvisedSpeedModel = BehaviorSubject<AdvisedSpeedModel>.seeded(AdvisedSpeedModel.inactive());
       rxMockJourneyPosition = BehaviorSubject<JourneyPositionModel>.seeded(JourneyPositionModel());
       rxMockPunctuality = BehaviorSubject<PunctualityModel>.seeded(PunctualityModel.hidden());
@@ -89,7 +89,7 @@ void main() {
         testee = ChronographViewModel(
           journeyPositionStream: rxMockJourneyPosition.stream,
           punctualityStream: rxMockPunctuality.stream,
-          journeyTableViewModel: mockJourneyTableViewModel,
+          journeyViewModel: mockJourneyViewModel,
           advisedSpeedModelStream: rxMockAdvisedSpeedModel.stream,
           calculatedSpeedViewModel: mockCalculatedSpeedViewModel,
         );

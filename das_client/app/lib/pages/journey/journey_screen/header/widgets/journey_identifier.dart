@@ -2,7 +2,7 @@ import 'package:app/di/di.dart';
 import 'package:app/extension/journey_extension.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/journey_search_overlay.dart';
-import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -14,7 +14,7 @@ class JourneyIdentifier extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = DI.get<JourneyTableViewModel>();
+    final viewModel = DI.get<JourneyViewModel>();
     return StreamBuilder(
       stream: viewModel.journey,
       builder: (context, snapshot) {
