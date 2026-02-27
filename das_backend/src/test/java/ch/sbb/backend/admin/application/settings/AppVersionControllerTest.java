@@ -41,8 +41,7 @@ class AppVersionControllerTest {
 
     @Test
     @WithMockUser(authorities = "ROLE_admin")
-    @Sql("classpath:emptyAppVersions.sql")
-    @Sql("classpath:createAppVersions.sql")
+    @Sql("classpath:emptyAndCreateAppVersions.sql")
     void getById_by_id() throws Exception {
         mockMvc.perform(get(API_SETTINGS_APP_VERSION + "/1"))
             .andExpect(status().isOk())
@@ -50,7 +49,7 @@ class AppVersionControllerTest {
             .andExpect(jsonPath("$.data[0].id").value(1))
             .andExpect(jsonPath("$.data[0].version").value("2.4.1"))
             .andExpect(jsonPath("$.data[0].minimalVersion").value(false))
-            .andExpect(jsonPath("$.data[0].expiryDate").value("2025-12-31"));
+            .andExpect(jsonPath("$.data[0].expiryDate").value("2026-12-31"));
     }
 
     @Test
@@ -85,8 +84,7 @@ class AppVersionControllerTest {
 
     @Test
     @WithMockUser(authorities = "ROLE_admin")
-    @Sql("classpath:emptyAppVersions.sql")
-    @Sql("classpath:createAppVersions.sql")
+    @Sql("classpath:emptyAndCreateAppVersions.sql")
     void update() throws Exception {
         mockMvc.perform(put(API_SETTINGS_APP_VERSION + "/1")
                 .contentType("application/json")
@@ -115,8 +113,7 @@ class AppVersionControllerTest {
 
     @Test
     @WithMockUser(authorities = "ROLE_admin")
-    @Sql("classpath:emptyAppVersions.sql")
-    @Sql("classpath:createAppVersions.sql")
+    @Sql("classpath:emptyAndCreateAppVersions.sql")
     void delete() throws Exception {
         mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete(API_SETTINGS_APP_VERSION + "/1"))
             .andExpect(status().isNoContent());

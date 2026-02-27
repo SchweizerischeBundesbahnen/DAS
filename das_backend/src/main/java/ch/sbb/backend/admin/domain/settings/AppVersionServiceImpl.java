@@ -67,7 +67,7 @@ public class AppVersionServiceImpl implements AppVersionService {
     }
 
     @Override
-    public AppVersion getOne(Integer id) {
+    public AppVersion getById(Integer id) {
         AppVersionEntity entity = repository.findById(id).orElse(null);
         if (entity == null) {
             return null;

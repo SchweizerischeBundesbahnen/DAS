@@ -20,6 +20,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -64,7 +66,7 @@ public class AppVersionController {
     @ApiErrorResponses
     public ResponseEntity<? extends Response> getById(@PathVariable Integer id,
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
-        AppVersion version = appVersionService.getOne(id);
+        AppVersion version = appVersionService.getById(id);
         if (version == null) {
             return ResponseEntityFactory.createNotFoundResponse(requestId, null);
         }
@@ -79,7 +81,8 @@ public class AppVersionController {
     public ResponseEntity<AppVersionResponse> create(@RequestBody @Valid AppVersionRequest createRequest,
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
         AppVersion createdVersion = appVersionService.create(createRequest);
-        return ResponseEntityFactory.createOkResponse(new AppVersionResponse(List.of(createdVersion)), null, requestId);
+        HttpHeaders headers = ResponseEntityFactory.createOkHeaders(null, requestId);
+        return new ResponseEntity<>(new AppVersionResponse(List.of(createdVersion)), headers, HttpStatus.CREATED);
     }
 
     @PutMapping(API_SETTINGS_APP_VERSION_ID)
