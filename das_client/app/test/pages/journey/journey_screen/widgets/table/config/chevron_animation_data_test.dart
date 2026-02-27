@@ -22,36 +22,36 @@ void main() {
 
     // WHEN
     final animationData1 = ChevronAnimationData.from(
-      journeyPoints,
-      journeyPosition,
-      journey.metadata,
-      journeyPoints[0],
-      null,
-      [],
+      journeyPoints: journeyPoints,
+      journeyPosition: journeyPosition,
+      metadata: journey.metadata,
+      rowData: journeyPoints[0],
+      currentBrakeSeries: null,
+      expandedGroups: [],
     );
     final animationData2 = ChevronAnimationData.from(
-      journeyPoints,
-      journeyPosition,
-      journey.metadata,
-      journeyPoints[1],
-      null,
-      [],
+      journeyPoints: journeyPoints,
+      journeyPosition: journeyPosition,
+      metadata: journey.metadata,
+      rowData: journeyPoints[1],
+      currentBrakeSeries: null,
+      expandedGroups: [],
     );
     final animationData3 = ChevronAnimationData.from(
-      journeyPoints,
-      journeyPosition,
-      journey.metadata,
-      journeyPoints[2],
-      null,
-      [],
+      journeyPoints: journeyPoints,
+      journeyPosition: journeyPosition,
+      metadata: journey.metadata,
+      rowData: journeyPoints[2],
+      currentBrakeSeries: null,
+      expandedGroups: [],
     );
     final animationData4 = ChevronAnimationData.from(
-      journeyPoints,
-      journeyPosition,
-      journey.metadata,
-      journeyPoints[3],
-      null,
-      [],
+      journeyPoints: journeyPoints,
+      journeyPosition: journeyPosition,
+      metadata: journey.metadata,
+      rowData: journeyPoints[3],
+      currentBrakeSeries: null,
+      expandedGroups: [],
     );
 
     // THEN
@@ -85,36 +85,36 @@ void main() {
 
     // WHEN
     final animationData1 = ChevronAnimationData.from(
-      journeyPoints,
-      journeyPosition,
-      journey.metadata,
-      journeyPoints[0],
-      null,
-      [],
+      journeyPoints: journeyPoints,
+      journeyPosition: journeyPosition,
+      metadata: journey.metadata,
+      rowData: journeyPoints[0],
+      currentBrakeSeries: null,
+      expandedGroups: [],
     );
     final animationData2 = ChevronAnimationData.from(
-      journeyPoints,
-      journeyPosition,
-      journey.metadata,
-      journeyPoints[1],
-      null,
-      [],
+      journeyPoints: journeyPoints,
+      journeyPosition: journeyPosition,
+      metadata: journey.metadata,
+      rowData: journeyPoints[1],
+      currentBrakeSeries: null,
+      expandedGroups: [],
     );
     final animationData3 = ChevronAnimationData.from(
-      journeyPoints,
-      journeyPosition,
-      journey.metadata,
-      journeyPoints[2],
-      null,
-      [],
+      journeyPoints: journeyPoints,
+      journeyPosition: journeyPosition,
+      metadata: journey.metadata,
+      rowData: journeyPoints[2],
+      currentBrakeSeries: null,
+      expandedGroups: [],
     );
     final animationData4 = ChevronAnimationData.from(
-      journeyPoints,
-      journeyPosition,
-      journey.metadata,
-      journeyPoints[3],
-      null,
-      [],
+      journeyPoints: journeyPoints,
+      journeyPosition: journeyPosition,
+      metadata: journey.metadata,
+      rowData: journeyPoints[3],
+      currentBrakeSeries: null,
+      expandedGroups: [],
     );
 
     // THEN
@@ -156,28 +156,28 @@ void main() {
 
     // WHEN
     final animationData1 = ChevronAnimationData.from(
-      journeyPoints,
-      journeyPosition,
-      journey.metadata,
-      journeyPoints[0],
-      null,
-      [],
+      journeyPoints: journeyPoints,
+      journeyPosition: journeyPosition,
+      metadata: journey.metadata,
+      rowData: journeyPoints[0],
+      currentBrakeSeries: null,
+      expandedGroups: [],
     );
     final animationData2 = ChevronAnimationData.from(
-      journeyPoints,
-      journeyPosition,
-      journey.metadata,
-      journeyPoints[1],
-      null,
-      [],
+      journeyPoints: journeyPoints,
+      journeyPosition: journeyPosition,
+      metadata: journey.metadata,
+      rowData: journeyPoints[1],
+      currentBrakeSeries: null,
+      expandedGroups: [],
     );
     final animationData3 = ChevronAnimationData.from(
-      journeyPoints,
-      journeyPosition,
-      journey.metadata,
-      journeyPoints[2],
-      null,
-      [],
+      journeyPoints: journeyPoints,
+      journeyPosition: journeyPosition,
+      metadata: journey.metadata,
+      rowData: journeyPoints[2],
+      currentBrakeSeries: null,
+      expandedGroups: [],
     );
 
     // THEN
@@ -220,44 +220,44 @@ void main() {
 
     // WHEN
     final animationData1 = ChevronAnimationData.from(
-      journeyPoints,
-      journeyPosition,
-      journey.metadata,
-      journeyPoints[0],
-      null,
-      [300],
+      journeyPoints: journeyPoints,
+      journeyPosition: journeyPosition,
+      metadata: journey.metadata,
+      rowData: journeyPoints[0],
+      currentBrakeSeries: null,
+      expandedGroups: [300],
     );
     final animationData2 = ChevronAnimationData.from(
-      journeyPoints,
-      journeyPosition,
-      journey.metadata,
-      journeyPoints[1],
-      null,
-      [300],
+      journeyPoints: journeyPoints,
+      journeyPosition: journeyPosition,
+      metadata: journey.metadata,
+      rowData: journeyPoints[1],
+      currentBrakeSeries: null,
+      expandedGroups: [300],
     );
     final animationData3 = ChevronAnimationData.from(
-      journeyPoints,
-      journeyPosition,
-      journey.metadata,
-      journeyPoints[2],
-      null,
-      [300],
+      journeyPoints: journeyPoints,
+      journeyPosition: journeyPosition,
+      metadata: journey.metadata,
+      rowData: journeyPoints[2],
+      currentBrakeSeries: null,
+      expandedGroups: [300],
     );
     final animationData4 = ChevronAnimationData.from(
-      journeyPoints,
-      journeyPosition,
-      journey.metadata,
-      journeyPoints[3],
-      null,
-      [300],
+      journeyPoints: journeyPoints,
+      journeyPosition: journeyPosition,
+      metadata: journey.metadata,
+      rowData: journeyPoints[3],
+      currentBrakeSeries: null,
+      expandedGroups: [300],
     );
     final animationData5 = ChevronAnimationData.from(
-      journeyPoints,
-      journeyPosition,
-      journey.metadata,
-      journeyPoints[4],
-      null,
-      [300],
+      journeyPoints: journeyPoints,
+      journeyPosition: journeyPosition,
+      metadata: journey.metadata,
+      rowData: journeyPoints[4],
+      currentBrakeSeries: null,
+      expandedGroups: [300],
     );
 
     // THEN
@@ -296,36 +296,36 @@ void main() {
 
     // WHEN
     final animationData1 = ChevronAnimationData.from(
-      journeyPoints,
-      journeyPosition,
-      journey.metadata,
-      journeyPoints[0],
-      null,
-      [],
+      journeyPoints: journeyPoints,
+      journeyPosition: journeyPosition,
+      metadata: journey.metadata,
+      rowData: journeyPoints[0],
+      currentBrakeSeries: null,
+      expandedGroups: [],
     );
     final animationData2 = ChevronAnimationData.from(
-      journeyPoints,
-      journeyPosition,
-      journey.metadata,
-      journeyPoints[1],
-      null,
-      [],
+      journeyPoints: journeyPoints,
+      journeyPosition: journeyPosition,
+      metadata: journey.metadata,
+      rowData: journeyPoints[1],
+      currentBrakeSeries: null,
+      expandedGroups: [],
     );
     final animationData3 = ChevronAnimationData.from(
-      journeyPoints,
-      journeyPosition,
-      journey.metadata,
-      journeyPoints[2],
-      null,
-      [],
+      journeyPoints: journeyPoints,
+      journeyPosition: journeyPosition,
+      metadata: journey.metadata,
+      rowData: journeyPoints[2],
+      currentBrakeSeries: null,
+      expandedGroups: [],
     );
     final animationData4 = ChevronAnimationData.from(
-      journeyPoints,
-      journeyPosition,
-      journey.metadata,
-      journeyPoints[3],
-      null,
-      [],
+      journeyPoints: journeyPoints,
+      journeyPosition: journeyPosition,
+      metadata: journey.metadata,
+      rowData: journeyPoints[3],
+      currentBrakeSeries: null,
+      expandedGroups: [],
     );
 
     // THEN
@@ -353,36 +353,36 @@ void main() {
 
     // WHEN
     final animationData1 = ChevronAnimationData.from(
-      journeyPoints,
-      journeyPosition,
-      journey.metadata,
-      journeyPoints[0],
-      null,
-      [],
+      journeyPoints: journeyPoints,
+      journeyPosition: journeyPosition,
+      metadata: journey.metadata,
+      rowData: journeyPoints[0],
+      currentBrakeSeries: null,
+      expandedGroups: [],
     );
     final animationData2 = ChevronAnimationData.from(
-      journeyPoints,
-      journeyPosition,
-      journey.metadata,
-      journeyPoints[1],
-      null,
-      [],
+      journeyPoints: journeyPoints,
+      journeyPosition: journeyPosition,
+      metadata: journey.metadata,
+      rowData: journeyPoints[1],
+      currentBrakeSeries: null,
+      expandedGroups: [],
     );
     final animationData3 = ChevronAnimationData.from(
-      journeyPoints,
-      journeyPosition,
-      journey.metadata,
-      journeyPoints[2],
-      null,
-      [],
+      journeyPoints: journeyPoints,
+      journeyPosition: journeyPosition,
+      metadata: journey.metadata,
+      rowData: journeyPoints[2],
+      currentBrakeSeries: null,
+      expandedGroups: [],
     );
     final animationData4 = ChevronAnimationData.from(
-      journeyPoints,
-      journeyPosition,
-      journey.metadata,
-      journeyPoints[3],
-      null,
-      [],
+      journeyPoints: journeyPoints,
+      journeyPosition: journeyPosition,
+      metadata: journey.metadata,
+      rowData: journeyPoints[3],
+      currentBrakeSeries: null,
+      expandedGroups: [],
     );
 
     // THEN

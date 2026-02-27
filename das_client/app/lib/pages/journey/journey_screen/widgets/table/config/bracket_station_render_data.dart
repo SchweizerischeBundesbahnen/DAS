@@ -10,7 +10,7 @@ class BracketStationRenderData {
   final String? stationAbbreviation;
   final bool isStart;
 
-  static BracketStationRenderData? from(BaseData data, Metadata metadata) {
+  static BracketStationRenderData? from({required BaseData data, required Metadata metadata}) {
     final bracketStationSegments = metadata.bracketStationSegments;
     final segment = bracketStationSegments.appliesToOrder(data.order).firstOrNull;
     if (segment == null) return null;
