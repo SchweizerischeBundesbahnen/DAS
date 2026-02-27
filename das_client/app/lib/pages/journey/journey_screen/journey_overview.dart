@@ -17,6 +17,7 @@ import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_vie
 import 'package:app/pages/journey/journey_screen/view_model/departure_dispatch_notification_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_table_advancement_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/journey_table_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/line_speed_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/replacement_series_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
@@ -289,6 +290,28 @@ class _ProviderScope extends StatelessWidget {
               detailModalViewModel: detailModalVM,
               connectivityManager: DI.get(),
               checkForUpdates: true,
+            );
+          },
+          dispose: (_, vm) => vm.dispose(),
+        ),
+        ProxyProvider6<
+          JourneyViewModel,
+          JourneySettingsViewModel,
+          CollapsibleRowsViewModel,
+          JourneyPositionViewModel,
+          DetailModalViewModel,
+          DecisiveGradientViewModel,
+          JourneyTableViewModel
+        >(
+          update: (_, journeyVM, settingsVM, collapsibleRowsVM, positionVM, detailModalVM, decisiveGradientVM, prev) {
+            if (prev != null) return prev;
+            return JourneyTableViewModel(
+              journeyViewModel: journeyViewModel,
+              settingsVM: settingsVM,
+              collapsibleRowsVM: collapsibleRowsVM,
+              positionVM: positionVM,
+              detailModalVM: detailModalVM,
+              decisiveGradientVM: decisiveGradientVM,
             );
           },
           dispose: (_, vm) => vm.dispose(),
