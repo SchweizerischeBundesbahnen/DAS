@@ -3,9 +3,9 @@ abstract interface class MqttAuthProvider {
 
   Future<String> token();
 
-  Future<String?> tmsToken({required String company, required String train, required String role});
-
   Future<String> userId();
+
+  Future<String?> tid();
 
   String get oauthProfile;
 }

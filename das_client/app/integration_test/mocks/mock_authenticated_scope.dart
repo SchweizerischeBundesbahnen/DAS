@@ -27,7 +27,6 @@ class MockAuthenticatedScope extends AuthenticatedScope {
     getIt.registerMqttAuthProvider();
     getIt.registerMqttService();
     getIt.registerHttpClient();
-    getIt.registerSferaAuthService();
     getIt.registerSferaLocalRepo();
     getIt.registerSferaRemoteRepo();
     getIt.registerSettingsRepository();

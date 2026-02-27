@@ -28,7 +28,6 @@ class AuthenticatedScope extends DIScope {
     getIt.registerAuthProvider();
     getIt.registerSferaAuthProvider();
     getIt.registerHttpClient();
-    getIt.registerSferaAuthService();
     getIt.registerMqttAuthProvider();
     getIt.registerMqttService();
     getIt.registerSferaLocalRepo();
@@ -66,7 +65,6 @@ extension AuthenticatedScopeExtension on GetIt {
       _log.fine('Register mqtt auth provider');
       return _MqttAuthProvider(
         authenticator: DI.get(),
-        sferaAuthService: DI.get(),
         oauthProfile: DI.get<Flavor>().mqttOauthProfile,
       );
     }
@@ -84,6 +82,7 @@ extension AuthenticatedScopeExtension on GetIt {
         mqttClientConnector: DI.get(),
         prefix: flavor.mqttTopicPrefix,
         deviceId: deviceId,
+        sferaVersion: flavor.sferaVersion,
       );
     }
 
@@ -97,20 +96,6 @@ extension AuthenticatedScopeExtension on GetIt {
     }
 
     registerLazySingleton<Client>(factoryFunc);
-  }
-
-  void registerSferaAuthService() {
-    factoryFunc() {
-      _log.fine('Register sfera auth service');
-      final flavor = DI.get<Flavor>();
-      final httpClient = DI.get<Client>();
-      return SferaComponent.createSferaAuthService(
-        httpClient: httpClient,
-        tokenExchangeUrl: flavor.tokenExchangeUrl,
-      );
-    }
-
-    registerLazySingleton<SferaAuthService>(factoryFunc);
   }
 
   void registerSferaRemoteRepo() {
@@ -206,23 +191,23 @@ class _SferaAuthProvider implements SferaAuthProvider {
 }
 
 class _MqttAuthProvider implements MqttAuthProvider {
-  const _MqttAuthProvider({required this.authenticator, required this.sferaAuthService, required this.oauthProfile});
+  const _MqttAuthProvider({required this.authenticator, required this.oauthProfile});
 
-  final SferaAuthService sferaAuthService;
   final Authenticator authenticator;
 
   @override
   final String oauthProfile;
 
   @override
-  Future<String?> tmsToken({required String company, required String train, required String role}) {
-    return sferaAuthService.retrieveAuthToken(company, train, role);
-  }
-
-  @override
   Future<String> token() async {
     final token = await authenticator.token();
     return token.accessToken;
+  }
+
+  @override
+  Future<String?> tid() async {
+    final user = await authenticator.user();
+    return user.tid;
   }
 
   @override
