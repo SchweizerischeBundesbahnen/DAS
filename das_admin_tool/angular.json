@@ -105,6 +105,7 @@
           "builder": "@angular/build:karma",
           "options": {
             "tsConfig": "tsconfig.spec.json",
+            "karmaConfig": "karma.conf.js",
             "assets": [
               {
                 "glob": "**/*",
@@ -127,7 +128,8 @@
               "progress": false,
               "watch": false,
               "reporters": [
-                "dots"
+                "dots",
+                "sonarqube"
               ]
             }
           }

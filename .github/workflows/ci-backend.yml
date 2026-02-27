@@ -39,9 +39,16 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
           cache: maven
-      - name: Run the Maven verify phase
-        if: github.ref != 'refs/heads/main'
-        run: mvn --batch-mode --update-snapshots verify
+      - name: Maven verify + Sonar
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          mvn --batch-mode --update-snapshots verify \
+            org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+            -Dsonar.projectKey=schweizerischebundesbahnen-DAS-Backend \
+            -Dsonar.organization=schweizerischebundesbahnen \
+            -Dsonar.projectName=DAS/Backend \
+            -Dsonar.token=${SONAR_TOKEN}
       - name: Login to GitHub Container Registry
         if: github.ref == 'refs/heads/main'
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
@@ -61,3 +68,4 @@ jobs:
             -Dspring-boot.build-image.imageName=$IMAGE_ID:$VERSION
           
           docker push $IMAGE_ID:$VERSION
+
