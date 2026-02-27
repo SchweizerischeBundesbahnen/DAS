@@ -19,7 +19,7 @@ class TableLoading extends JourneyTableModel {
 
 class TableLoaded extends JourneyTableModel {
   TableLoaded({
-    required this.journeyData,
+    required this.journeyTableRowData,
     required this.journeyMetadata,
     required this.journeySettings,
     required this.collapsedRows,
@@ -30,7 +30,7 @@ class TableLoaded extends JourneyTableModel {
 
   @override
   String toString() {
-    return 'TableLoaded{journeyData: $journeyData'
+    return 'TableLoaded{journeyTableRowData: $journeyTableRowData'
         ', journeyMetadata: $journeyMetadata'
         ', journeySettings: $journeySettings'
         ', collapsedRows: $collapsedRows'
@@ -40,7 +40,7 @@ class TableLoaded extends JourneyTableModel {
         '}';
   }
 
-  final List<BaseData> journeyData;
+  final List<BaseData> journeyTableRowData;
   final Metadata journeyMetadata;
   final JourneySettings journeySettings;
   final Map<int, CollapsedState> collapsedRows;
@@ -53,7 +53,7 @@ class TableLoaded extends JourneyTableModel {
       identical(this, other) ||
       other is TableLoaded &&
           runtimeType == other.runtimeType &&
-          journeyData == other.journeyData &&
+          journeyTableRowData == other.journeyTableRowData &&
           journeyMetadata == other.journeyMetadata &&
           journeySettings == other.journeySettings &&
           collapsedRows == other.collapsedRows &&
@@ -63,7 +63,7 @@ class TableLoaded extends JourneyTableModel {
 
   @override
   int get hashCode => Object.hash(
-    journeyData,
+    journeyTableRowData,
     journeyMetadata,
     journeySettings,
     collapsedRows,

@@ -9,6 +9,7 @@ import 'package:app/pages/journey/view_model/decisive_gradient_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/model/journey_settings.dart';
+import 'package:collection/collection.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
@@ -37,7 +38,7 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
   final DetailModalViewModel _detailModalVM;
   final DecisiveGradientViewModel _decisiveGradientVM;
 
-  late StreamSubscription<
+  StreamSubscription<
     (
       Journey?,
       JourneySettings,
@@ -103,10 +104,44 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
       _emitLoading();
       return;
     }
+    final rowData = journey.data
+        .whereNot((it) => _isCurvePointWithoutSpeed(it, settings))
+        .hideJourneyPointsThatShouldNotBeDisplayed()
+        .groupBaliseAndLevelCrossings(settings.expandedGroups, journey.metadata)
+        .hideCommunicationNetworkChangesWithSameTypeAsPreviousOrIsServicePoint()
+        .hideRepeatedLineFootNotes(position.currentPosition)
+        .hideFootNotesForNotSelectedTrainSeries(settings.currentBrakeSeries?.trainSeries)
+        .combineFootNoteAndOperationalIndication()
+        .addTrainDriverTurnoverRows(journey.metadata.trainIdentification)
+        .sorted((a1, a2) => a1.compareTo(a2));
+
+    _emitLoaded(
+      TableLoaded(
+        journeyTableRowData: rowData,
+        journeyMetadata: journey.metadata,
+        journeySettings: settings,
+        collapsedRows: collapsibleRows,
+        journeyPosition: position,
+        showDecisiveGradient: showDecisiveGradient,
+        detailModalType: detailModalType,
+      ),
+    );
+  }
+
+  bool _isCurvePointWithoutSpeed(BaseData data, JourneySettings settings) {
+    final brakeSeries = settings.currentBrakeSeries;
+
+    return data is CurvePoint &&
+        data.localSpeeds?.speedFor(brakeSeries?.trainSeries, brakeSeries: brakeSeries?.brakeSeries) == null;
   }
 
   void _emitLoading() {
     _log.fine('Emitting TableLoading.');
     _rxModel.add(TableLoading());
+  }
+
+  void _emitLoaded(TableLoaded loadedModel) {
+    _log.fine('Emitting TableLoaded.');
+    _rxModel.add(loadedModel);
   }
 }
