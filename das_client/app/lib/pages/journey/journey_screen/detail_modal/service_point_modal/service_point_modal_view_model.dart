@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:app/pages/journey/journey_screen/detail_modal/detail_modal_view_model.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/service_point_modal/service_point_modal_builder.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/service_point_modal/service_point_modal_tab.dart';
+import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/model/journey_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:local_regulations/component.dart';
@@ -10,13 +12,18 @@ import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
-class ServicePointModalViewModel {
-  ServicePointModalViewModel({required LocalRegulationHtmlGenerator localRegulationHtmlGenerator})
-    : _localRegulationHtmlGenerator = localRegulationHtmlGenerator {
+class ServicePointModalViewModel extends JourneyAwareViewModel {
+  ServicePointModalViewModel({
+    required LocalRegulationHtmlGenerator localRegulationHtmlGenerator,
+    required JourneySettingsViewModel settingsVM,
+    required super.journeyViewModel,
+  }) : _localRegulationHtmlGenerator = localRegulationHtmlGenerator,
+       _settingsVM = settingsVM {
     _init();
   }
 
   final LocalRegulationHtmlGenerator _localRegulationHtmlGenerator;
+  final JourneySettingsViewModel _settingsVM;
 
   final _rxCommunicationNetworkType = BehaviorSubject<CommunicationNetworkType?>();
   final _rxRadioContactList = BehaviorSubject<RadioContactList?>();
@@ -56,6 +63,7 @@ class ServicePointModalViewModel {
   Stream<DepartureAuthorization?> get departureAuthorization => _rxDepartureAuth.distinct();
 
   void _init() {
+    _initSettingsSubscription();
     _initRadioContacts();
     _initSimCorridor();
     _initCommunicationNetworkType();
@@ -164,10 +172,6 @@ class ServicePointModalViewModel {
     _subscriptions.add(subscription);
   }
 
-  void updateMetadata(Metadata metadata) => _rxMetadata.add(metadata);
-
-  void updateSettings(JourneySettings settings) => _rxSettings.add(settings);
-
   void open(BuildContext context, {ServicePointModalTab? tab, ServicePoint? servicePoint}) {
     if (tab != null) {
       _rxSelectedTab.add(tab);
@@ -183,10 +187,22 @@ class ServicePointModalViewModel {
 
   void close(BuildContext context) => context.read<DetailModalViewModel>().close();
 
+  @override
+  void journeyUpdated(Journey? journey) {
+    if (journey != null) _rxMetadata.add(journey.metadata);
+
+    super.journeyUpdated(journey);
+  }
+
+  @override
+  void journeyIdentificationChanged(Journey? journey) {
+    _cancelSubscriptions();
+    _init();
+  }
+
+  @override
   void dispose() {
-    for (final subscription in _subscriptions) {
-      subscription.cancel();
-    }
+    _cancelSubscriptions();
     _rxMetadata.close();
     _rxSelectedTab.close();
     _rxCommunicationNetworkType.close();
@@ -198,5 +214,17 @@ class ServicePointModalViewModel {
     _rxLocalRegulationHtml.close();
     _rxTabs.close();
     _rxDepartureAuth.close();
+    super.dispose();
+  }
+
+  void _cancelSubscriptions() {
+    for (final subscription in _subscriptions) {
+      subscription.cancel();
+    }
+  }
+
+  void _initSettingsSubscription() {
+    final subscription = _settingsVM.model.listen(_rxSettings.add);
+    _subscriptions.add(subscription);
   }
 }

@@ -5,7 +5,6 @@ import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/brake_load_slip/brake_load_slip_view_model.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/additional_speed_restriction_modal/additional_speed_restriction_modal_view_model.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/detail_modal_view_model.dart';
-import 'package:app/pages/journey/journey_screen/detail_modal/service_point_modal/service_point_modal_view_model.dart';
 import 'package:app/pages/journey/journey_screen/journey_overview.dart';
 import 'package:app/pages/journey/journey_screen/journey_table_scroll_controller.dart';
 import 'package:app/pages/journey/journey_screen/view_model/arrival_departure_time_view_model.dart';
@@ -91,10 +90,6 @@ class JourneyTable extends StatelessWidget {
   }
 
   Widget _table(BuildContext context, TableLoaded model) {
-    // TODO: update settings and metadata inside with constructor parameters
-    final servicePointModalViewModel = context.read<ServicePointModalViewModel>();
-    servicePointModalViewModel.updateMetadata(model.journeyMetadata);
-    servicePointModalViewModel.updateSettings(model.journeySettings);
     final rowBuilders = _generateRowBuilders(
       context: context,
       journeyTableRowData: model.journeyTableRowData,

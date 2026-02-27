@@ -98,10 +98,6 @@ class _ProviderScope extends StatelessWidget {
         Provider<NotificationPriorityQueueViewModel>(
           create: (_) => DI.get<NotificationPriorityQueueViewModel>(),
         ),
-        Provider<ServicePointModalViewModel>(
-          create: (_) => ServicePointModalViewModel(localRegulationHtmlGenerator: DI.get()),
-          dispose: (_, vm) => vm.dispose(),
-        ),
         Provider<AdditionalSpeedRestrictionModalViewModel>(
           create: (_) => AdditionalSpeedRestrictionModalViewModel(),
           dispose: (_, vm) => vm.dispose(),
@@ -135,6 +131,17 @@ class _ProviderScope extends StatelessWidget {
           update: (_, notificationVM, prev) {
             if (prev != null) return prev;
             return DisturbanceViewModel(sferaRepo: DI.get(), notificationVM: notificationVM);
+          },
+          dispose: (_, vm) => vm.dispose(),
+        ),
+        ProxyProvider2<JourneyViewModel, JourneySettingsViewModel, ServicePointModalViewModel>(
+          update: (_, journeyVM, settingsVM, prev) {
+            if (prev != null) return prev;
+            return ServicePointModalViewModel(
+              localRegulationHtmlGenerator: DI.get(),
+              settingsVM: settingsVM,
+              journeyViewModel: journeyVM,
+            );
           },
           dispose: (_, vm) => vm.dispose(),
         ),
