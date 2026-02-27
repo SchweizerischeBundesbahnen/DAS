@@ -1,6 +1,6 @@
 package ch.sbb.backend.preload.infrastructure;
 
-import ch.sbb.backend.preload.application.model.trainidentification.TimetablePeriod;
+import ch.sbb.backend.preload.application.model.trainidentification.OperatingPeriod;
 import ch.sbb.backend.preload.infrastructure.model.period.TimetablePeriodKey;
 import ch.sbb.backend.preload.infrastructure.model.period.TimetablePeriodValue;
 import ch.sbb.backend.preload.infrastructure.util.Coordinator;
@@ -67,10 +67,10 @@ public class TimetablePeriodConsumer {
 
         ConsumerRecord<TimetablePeriodKey, TimetablePeriodValue> convertedRecord = deserializer.deserializeRecord(message);
 
-        TimetablePeriod timetablePeriod = convert(convertedRecord.value());
+        OperatingPeriod operatingPeriod = convert(convertedRecord.value());
 
-        log.info("save timetable period {}", timetablePeriod);
-        timetablePeriodRepository.add(timetablePeriod);
+        log.info("save timetable period {}", operatingPeriod);
+        timetablePeriodRepository.add(operatingPeriod);
 
         if (endOffset.isPresent() && !coordinatorStarted.get()) {
             Long currentOffset = message.offset();
@@ -88,12 +88,12 @@ public class TimetablePeriodConsumer {
         return Optional.ofNullable(endOffsets.get(topicPartition));
     }
 
-    private TimetablePeriod convert(TimetablePeriodValue value) {
+    private OperatingPeriod convert(TimetablePeriodValue value) {
         LocalDate firstDay = value.getFirstDay();
-        return TimetablePeriod.builder()
+        return OperatingPeriod.builder()
             .year(value.getYear())
-            .firstDay(firstDay)
-            .lastDay(firstDay.plusDays(value.getNumberOfDays()))
+            .startDate(firstDay)
+            .endDate(firstDay.plusDays(value.getNumberOfDays()))
             .build();
     }
 }

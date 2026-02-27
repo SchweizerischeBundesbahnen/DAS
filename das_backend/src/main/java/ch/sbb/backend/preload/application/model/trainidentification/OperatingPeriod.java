@@ -6,12 +6,12 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class TimetablePeriod {
+public class OperatingPeriod {
 
     Integer year;
 
-    LocalDate firstDay;
+    LocalDate startDate;
 
-    LocalDate lastDay;
+    LocalDate endDate;
 
 }

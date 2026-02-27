@@ -17,7 +17,7 @@ public class Train {
     String trainPathId;
 
     @NonNull
-    Integer period;
+    Integer operatingPeriod;
 
     @NonNull
     String operationalTrainNumber;
