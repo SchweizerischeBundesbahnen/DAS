@@ -11,7 +11,7 @@ import lombok.NonNull;
 public class TrainRunDate {
 
     @NonNull
-    LocalDate operationalDate;
+    LocalDate operatingDay;
 
     @NonNull
     OffsetDateTime startDateTime;

@@ -1,6 +1,6 @@
 package ch.sbb.backend.preload.infrastructure;
 
-import ch.sbb.backend.preload.application.converter.TimeConverter;
+import ch.sbb.backend.preload.application.converter.DateTimeConverter;
 import ch.sbb.backend.preload.application.model.trainidentification.Train;
 import ch.sbb.backend.preload.application.model.trainidentification.TrainRun;
 import ch.sbb.backend.preload.application.model.trainidentification.TrainRunDate;
@@ -51,11 +51,11 @@ public class TrainRunDAO {
                 for (TrainRunDate trainRunDate : trainRun.getTrainRunDates()) {
                     MapSqlParameterSource paramValues = new MapSqlParameterSource();
                     paramValues.addValue("trainPathId", train.getTrainPathId());
-                    paramValues.addValue("period", train.getPeriod());
+                    paramValues.addValue("period", train.getOperatingPeriod());
                     paramValues.addValue("operationalTrainNumber", train.getOperationalTrainNumber());
                     paramValues.addValue("companies", String.join(",", trainRun.getCompanies()));
                     paramValues.addValue("startDateTime", toStartDateTime(trainRunDate, trainRun));
-                    paramValues.addValue("operationalDay", trainRunDate.getOperationalDate());
+                    paramValues.addValue("operationalDay", trainRunDate.getOperatingDay());
                     params.add(paramValues);
                 }
             }
@@ -66,7 +66,7 @@ public class TrainRunDAO {
     }
 
     private OffsetDateTime toStartDateTime(TrainRunDate trainRunDate, TrainRun trainRun) {
-        return TimeConverter.convertTime(trainRunDate.getOperationalDate(), trainRun.getFirstDepartureTime());
+        return DateTimeConverter.convertDateTime(trainRunDate.getOperatingDay(), trainRun.getFirstDepartureTime());
     }
 
     public void deleteAllOlderThan(LocalDate date) {
@@ -88,7 +88,7 @@ public class TrainRunDAO {
         MapSqlParameterSource[] params = trains.stream().map(train -> {
             MapSqlParameterSource paramValues = new MapSqlParameterSource();
             paramValues.addValue("trainPathId", train.getTrainPathId());
-            paramValues.addValue("period", train.getPeriod());
+            paramValues.addValue("period", train.getOperatingPeriod());
             return paramValues;
         }).toArray(MapSqlParameterSource[]::new);
         int[] rowsDeleted = namedParameterJdbcTemplate.batchUpdate(sql, params);

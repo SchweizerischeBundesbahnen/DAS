@@ -13,9 +13,9 @@ import lombok.NonNull;
 public class TrainRunPoint {
 
     @NonNull
-    Integer countryCode;
+    Integer countryCodeUic;
 
-    Integer operationalDepartureTime;
+    Integer departureTimeOperational;
 
-    Integer commercialDepartureTime;
+    Integer departureTimeCommercial;
 }

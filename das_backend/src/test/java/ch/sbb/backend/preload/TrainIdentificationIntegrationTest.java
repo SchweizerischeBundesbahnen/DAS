@@ -7,7 +7,7 @@ import ch.sbb.backend.IntegrationTest;
 import ch.sbb.backend.preload.application.TimetableService;
 import ch.sbb.backend.preload.application.TrainIdentificationService;
 import ch.sbb.backend.preload.application.model.trainidentification.CompanyCode;
-import ch.sbb.backend.preload.application.model.trainidentification.TimetablePeriod;
+import ch.sbb.backend.preload.application.model.trainidentification.OperatingPeriod;
 import ch.sbb.backend.preload.application.model.trainidentification.TrainIdentification;
 import ch.sbb.backend.preload.infrastructure.TimetablePeriodRepository;
 import ch.sbb.backend.preload.infrastructure.model.period.TimetablePeriodKey;
@@ -75,10 +75,10 @@ class TrainIdentificationIntegrationTest {
                 .hasValueSatisfying(actual ->
                     assertThat(actual)
                         .usingRecursiveComparison()
-                        .isEqualTo(TimetablePeriod.builder()
+                        .isEqualTo(OperatingPeriod.builder()
                             .year(testYear)
-                            .firstDay(LocalDate.of(testYear, 1, 1))
-                            .lastDay(LocalDate.of(testYear, 1, 1 + TEST_PERIOD_NUMBER_OF_DAYS))
+                            .startDate(LocalDate.of(testYear, 1, 1))
+                            .endDate(LocalDate.of(testYear, 1, 1 + TEST_PERIOD_NUMBER_OF_DAYS))
                             .build())
                 ));
     }
@@ -104,10 +104,10 @@ class TrainIdentificationIntegrationTest {
                 .hasValueSatisfying(actual ->
                     assertThat(actual)
                         .usingRecursiveComparison()
-                        .isEqualTo(TimetablePeriod.builder()
+                        .isEqualTo(OperatingPeriod.builder()
                             .year(testYear)
-                            .firstDay(LocalDate.of(testYear, 1, 1))
-                            .lastDay(LocalDate.of(testYear, 1, 1 + TEST_PERIOD_NUMBER_OF_DAYS))
+                            .startDate(LocalDate.of(testYear, 1, 1))
+                            .endDate(LocalDate.of(testYear, 1, 1 + TEST_PERIOD_NUMBER_OF_DAYS))
                             .build())
                 ));
 
