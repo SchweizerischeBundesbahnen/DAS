@@ -2,7 +2,7 @@ import 'dart:collection';
 
 import 'package:app/pages/journey/journey_screen/view_model/calculated_speed_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/line_speed_view_model.dart';
-import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/pages/journey/view_model/model/calculated_speed.dart';
 import 'package:app/pages/journey/view_model/model/resolved_train_series_speed.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -14,23 +14,23 @@ import 'package:sfera/component.dart';
 import 'calculated_speed_view_model_test.mocks.dart';
 
 @GenerateNiceMocks([
-  MockSpec<JourneyTableViewModel>(),
+  MockSpec<JourneyViewModel>(),
   MockSpec<LineSpeedViewModel>(),
 ])
 void main() {
   late CalculatedSpeedViewModel testee;
-  late MockJourneyTableViewModel mockJourneyTableViewModel;
+  late MockJourneyViewModel mockJourneyViewModel;
   late MockLineSpeedViewModel mockLineSpeedViewModel;
   late BehaviorSubject<Journey?> journeySubject;
   ResolvedTrainSeriesSpeed resolvedTrainSeriesSpeed = ResolvedTrainSeriesSpeed.none();
 
   final journey = Journey(
     metadata: Metadata(
-      availableBreakSeries: {
-        BreakSeries(trainSeries: .R, breakSeries: 120),
-        BreakSeries(trainSeries: .A, breakSeries: 100),
+      availableBrakeSeries: {
+        BrakeSeries(trainSeries: .R, brakeSeries: 120),
+        BrakeSeries(trainSeries: .A, brakeSeries: 100),
       },
-      breakSeries: BreakSeries(trainSeries: .R, breakSeries: 120),
+      brakeSeries: BrakeSeries(trainSeries: .R, brakeSeries: 120),
       calculatedSpeeds: SplayTreeMap.from({
         5: SingleSpeed(value: '100'),
         10: null,
@@ -50,16 +50,16 @@ void main() {
   );
 
   setUp(() {
-    mockJourneyTableViewModel = MockJourneyTableViewModel();
+    mockJourneyViewModel = MockJourneyViewModel();
     mockLineSpeedViewModel = MockLineSpeedViewModel();
     journeySubject = BehaviorSubject<Journey?>();
     journeySubject.add(journey);
-    when(mockJourneyTableViewModel.journey).thenAnswer((_) => journeySubject.stream);
+    when(mockJourneyViewModel.journey).thenAnswer((_) => journeySubject.stream);
     when(mockLineSpeedViewModel.getResolvedSpeedForOrder(any)).thenAnswer((_) => resolvedTrainSeriesSpeed);
 
     testee = CalculatedSpeedViewModel(
       lineSpeedViewModel: mockLineSpeedViewModel,
-      journeyTableViewModel: mockJourneyTableViewModel,
+      journeyViewModel: mockJourneyViewModel,
     );
   });
 
@@ -122,7 +122,7 @@ void main() {
       speed: TrainSeriesSpeed(
         trainSeries: .R,
         speed: SingleSpeed(value: '50'),
-        breakSeries: 120,
+        brakeSeries: 120,
       ),
       isPrevious: false,
     );
@@ -159,7 +159,7 @@ void main() {
         speed: TrainSeriesSpeed(
           trainSeries: .R,
           speed: SingleSpeed(value: '50'),
-          breakSeries: 120,
+          brakeSeries: 120,
         ),
         isPrevious: false,
       ),
@@ -169,7 +169,7 @@ void main() {
         speed: TrainSeriesSpeed(
           trainSeries: .R,
           speed: SingleSpeed(value: '60'),
-          breakSeries: 120,
+          brakeSeries: 120,
         ),
         isPrevious: false,
       ),
@@ -179,7 +179,7 @@ void main() {
         speed: TrainSeriesSpeed(
           trainSeries: .R,
           speed: SingleSpeed(value: '60'),
-          breakSeries: 120,
+          brakeSeries: 120,
         ),
         isPrevious: false,
       ),

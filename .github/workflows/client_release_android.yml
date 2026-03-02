@@ -31,7 +31,7 @@ jobs:
       - name: Setup melos
         uses: bluefireteam/melos-action@v3
         with:
-          melos-version: '^6.3.0'
+          melos-version: '^7.4.0'
           run-bootstrap: 'false'
 
       - name: Get dependencies

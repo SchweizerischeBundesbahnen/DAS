@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.8.0...backend-v0.8.1) (2026-02-24)
+
+
+### Bug Fixes
+
+* kafka preload enable flag ([#1801](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1801)) ([25e9659](https://github.com/SchweizerischeBundesbahnen/DAS/commit/25e96591d752e5a1afe2de4ad71f22989d151cc5))
+
 ## [0.8.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.7.1...backend-v0.8.0) (2026-02-24)
 
 

@@ -12,13 +12,13 @@ class Metadata {
     this.journeyStart,
     this.journeyEnd,
     this.delay,
-    this.breakSeries,
+    this.brakeSeries,
     this.additionalSpeedRestrictions = const [],
     this.nonStandardTrackEquipmentSegments = const [],
     this.bracketStationSegments = const [],
     this.advisedSpeedSegments = const [],
     this.shortTermChanges = const [],
-    this.availableBreakSeries = const {},
+    this.availableBrakeSeries = const {},
     this.communicationNetworkChanges = const [],
     this.lineFootNoteLocations = const {},
     this.radioContactLists = const [],
@@ -47,8 +47,8 @@ class Metadata {
   final List<BracketStationSegment> bracketStationSegments;
   final Iterable<AdvisedSpeedSegment> advisedSpeedSegments;
   final Iterable<ShortTermChange> shortTermChanges;
-  final BreakSeries? breakSeries;
-  final Set<BreakSeries> availableBreakSeries;
+  final BrakeSeries? brakeSeries;
+  final Set<BrakeSeries> availableBrakeSeries;
   final Map<String, List<String>> lineFootNoteLocations;
   final Iterable<RadioContactList> radioContactLists;
   final SplayTreeMap<int, Iterable<TrainSeriesSpeed>> lineSpeeds;

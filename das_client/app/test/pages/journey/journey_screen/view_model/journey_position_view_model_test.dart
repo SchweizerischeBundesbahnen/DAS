@@ -4,7 +4,7 @@ import 'package:app/pages/journey/journey_screen/view_model/journey_position_vie
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_advancement_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/punctuality_model.dart';
-import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:clock/clock.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -16,7 +16,7 @@ import 'package:sfera/component.dart';
 import 'journey_position_view_model_test.mocks.dart';
 
 @GenerateNiceMocks([
-  MockSpec<JourneyTableViewModel>(),
+  MockSpec<JourneyViewModel>(),
 ])
 void main() {
   group('JourneyPositionViewModel unit test', () {
@@ -27,7 +27,7 @@ void main() {
     const twentySignal = Signal(order: 20, kilometre: []);
 
     late JourneyPositionViewModel testee;
-    late MockJourneyTableViewModel mockJourneyTableViewModel;
+    late MockJourneyViewModel mockJourneyViewModel;
     late BehaviorSubject<Journey?> rxMockJourney;
     late BehaviorSubject<PunctualityModel> rxMockPunctuality;
     late List<dynamic> emitRegister;
@@ -39,13 +39,13 @@ void main() {
       now = Clock(() => DateTime(1970));
       withClock(now, () {
         fakeAsync((fakeAsync) {
-          mockJourneyTableViewModel = MockJourneyTableViewModel();
-          when(mockJourneyTableViewModel.journey).thenAnswer((_) => rxMockJourney.stream);
+          mockJourneyViewModel = MockJourneyViewModel();
+          when(mockJourneyViewModel.journey).thenAnswer((_) => rxMockJourney.stream);
           rxMockJourney = BehaviorSubject<Journey?>.seeded(null);
           rxMockPunctuality = BehaviorSubject<PunctualityModel>.seeded(PunctualityModel.hidden());
           testAsync = fakeAsync;
           testee = JourneyPositionViewModel(
-            journeyTableViewModel: mockJourneyTableViewModel,
+            journeyViewModel: mockJourneyViewModel,
             punctualityStream: rxMockPunctuality,
           );
           emitRegister = <dynamic>[];

@@ -11,7 +11,7 @@ import 'package:sfera/component.dart';
 final _log = Logger('PunctualityViewModel');
 
 class PunctualityViewModel extends JourneyAwareViewModel {
-  PunctualityViewModel({super.journeyTableViewModel}) {
+  PunctualityViewModel({super.journeyViewModel}) {
     _initTimers();
   }
 

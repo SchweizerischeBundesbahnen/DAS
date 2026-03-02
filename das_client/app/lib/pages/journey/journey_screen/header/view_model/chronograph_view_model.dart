@@ -16,7 +16,7 @@ class ChronographViewModel extends JourneyAwareViewModel {
     required Stream<PunctualityModel> punctualityStream,
     required Stream<AdvisedSpeedModel> advisedSpeedModelStream,
     required CalculatedSpeedViewModel calculatedSpeedViewModel,
-    super.journeyTableViewModel,
+    super.journeyViewModel,
   }) : _calculatedSpeedViewModel = calculatedSpeedViewModel {
     _initJourneyPositionSubscription(journeyPositionStream);
     _initPunctualitySubscription(punctualityStream);

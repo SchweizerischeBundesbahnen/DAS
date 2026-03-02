@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
-import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/pages/journey/view_model/model/journey_settings.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -13,24 +13,24 @@ import '../../../test_util.dart';
 import 'journey_settings_view_model_test.mocks.dart';
 
 @GenerateNiceMocks([
-  MockSpec<JourneyTableViewModel>(),
+  MockSpec<JourneyViewModel>(),
 ])
 void main() {
   late JourneySettingsViewModel testee;
-  late MockJourneyTableViewModel mockJourneyTableViewModel;
+  late MockJourneyViewModel mockJourneyViewModel;
   late BehaviorSubject<Journey?> rxMockJourney;
   late StreamSubscription<JourneySettings> modelSubscription;
   late List<dynamic> emitRegister;
-  bool onBreakSeriesUpdatedCalled = false;
+  bool onBrakeSeriesUpdatedCalled = false;
 
   setUp(() {
-    onBreakSeriesUpdatedCalled = false;
-    mockJourneyTableViewModel = MockJourneyTableViewModel();
+    onBrakeSeriesUpdatedCalled = false;
+    mockJourneyViewModel = MockJourneyViewModel();
     rxMockJourney = BehaviorSubject<Journey?>.seeded(null);
-    when(mockJourneyTableViewModel.journey).thenAnswer((_) => rxMockJourney.stream);
+    when(mockJourneyViewModel.journey).thenAnswer((_) => rxMockJourney.stream);
 
     testee = JourneySettingsViewModel(
-      journeyTableViewModel: mockJourneyTableViewModel,
+      journeyViewModel: mockJourneyViewModel,
     );
     emitRegister = <dynamic>[];
     modelSubscription = testee.model.listen(emitRegister.add);
@@ -48,43 +48,43 @@ void main() {
 
   test('constructor_whenCalled_buildsSubscription', () => expect(rxMockJourney.hasListener, isTrue));
 
-  test('updateBreakSeries_whenCalled_emitsCorrectBreakSeries', () {
+  test('updateBrakeSeries_whenCalled_emitsCorrectBrakeSeries', () {
     // ARRANGE
-    final aBreakSeries = BreakSeries(trainSeries: TrainSeries.A, breakSeries: 100);
+    final aBrakeSeries = BrakeSeries(trainSeries: TrainSeries.A, brakeSeries: 100);
     // ACT
-    testee.updateBreakSeries(aBreakSeries);
+    testee.updateBrakeSeries(aBrakeSeries);
     processStreams();
     // EXPECT
-    expect(testee.modelValue, equals(JourneySettings(selectedBreakSeries: aBreakSeries)));
+    expect(testee.modelValue, equals(JourneySettings(selectedBrakeSeries: aBrakeSeries)));
     expect(emitRegister, hasLength(1));
   });
 
-  test('registerOnBreakSeriesUpdated_whenCalledLater_callbackIsInvoked', () {
+  test('registerOnBrakeSeriesUpdated_whenCalledLater_callbackIsInvoked', () {
     // ARRANGE
-    final aBreakSeries = BreakSeries(trainSeries: TrainSeries.A, breakSeries: 100);
+    final aBrakeSeries = BrakeSeries(trainSeries: TrainSeries.A, brakeSeries: 100);
     void laterCallback() {
-      onBreakSeriesUpdatedCalled = true;
+      onBrakeSeriesUpdatedCalled = true;
     }
 
     // ACT
-    testee.registerOnBreakSeriesUpdated(laterCallback);
-    testee.updateBreakSeries(aBreakSeries);
+    testee.registerOnBrakeSeriesUpdated(laterCallback);
+    testee.updateBrakeSeries(aBrakeSeries);
     processStreams();
 
     // EXPECT
-    expect(onBreakSeriesUpdatedCalled, isTrue);
+    expect(onBrakeSeriesUpdatedCalled, isTrue);
   });
 
-  test('registerOnBreakSeriesUpdated_whenMultipleCallbacksRegistered_allAreInvoked', () {
+  test('registerOnBrakeSeriesUpdated_whenMultipleCallbacksRegistered_allAreInvoked', () {
     // ARRANGE
-    final aBreakSeries = BreakSeries(trainSeries: TrainSeries.A, breakSeries: 100);
+    final aBrakeSeries = BrakeSeries(trainSeries: TrainSeries.A, brakeSeries: 100);
     bool secondCallbackCalled = false;
     bool thirdCallbackCalled = false;
 
     // ACT
-    testee.registerOnBreakSeriesUpdated(() => secondCallbackCalled = true);
-    testee.registerOnBreakSeriesUpdated(() => thirdCallbackCalled = true);
-    testee.updateBreakSeries(aBreakSeries);
+    testee.registerOnBrakeSeriesUpdated(() => secondCallbackCalled = true);
+    testee.registerOnBrakeSeriesUpdated(() => thirdCallbackCalled = true);
+    testee.updateBrakeSeries(aBrakeSeries);
     processStreams();
 
     // EXPECT
@@ -92,25 +92,25 @@ void main() {
     expect(thirdCallbackCalled, isTrue);
   });
 
-  test('unregisterOnBreakSeriesUpdated_whenCalled_isNotInvokedAnymore', () {
+  test('unregisterOnBrakeSeriesUpdated_whenCalled_isNotInvokedAnymore', () {
     // ARRANGE
-    final aBreakSeries = BreakSeries(trainSeries: TrainSeries.A, breakSeries: 100);
+    final aBrakeSeries = BrakeSeries(trainSeries: TrainSeries.A, brakeSeries: 100);
     void laterCallback() {
-      onBreakSeriesUpdatedCalled = !onBreakSeriesUpdatedCalled;
+      onBrakeSeriesUpdatedCalled = !onBrakeSeriesUpdatedCalled;
     }
 
-    testee.registerOnBreakSeriesUpdated(laterCallback);
-    testee.updateBreakSeries(aBreakSeries);
+    testee.registerOnBrakeSeriesUpdated(laterCallback);
+    testee.updateBrakeSeries(aBrakeSeries);
     processStreams();
-    expect(onBreakSeriesUpdatedCalled, isTrue);
+    expect(onBrakeSeriesUpdatedCalled, isTrue);
 
     // ACT
-    testee.unregisterOnBreakSeriesUpdated(laterCallback);
-    testee.updateBreakSeries(aBreakSeries);
+    testee.unregisterOnBrakeSeriesUpdated(laterCallback);
+    testee.updateBrakeSeries(aBrakeSeries);
     processStreams();
 
     // EXPECT
-    expect(onBreakSeriesUpdatedCalled, isTrue);
+    expect(onBrakeSeriesUpdatedCalled, isTrue);
   });
 
   test('updateExpandedGroups_whenCalled_emitsCorrectExpandedGroups', () {
@@ -124,7 +124,7 @@ void main() {
     // EXPECT
     expect(testee.modelValue, equals(JourneySettings(expandedGroups: aExpandedGroups)));
     expect(emitRegister, hasLength(1));
-    expect(onBreakSeriesUpdatedCalled, isFalse);
+    expect(onBrakeSeriesUpdatedCalled, isFalse);
   });
 
   test('dispose_whenCalled_cancelsSubscription', () {

@@ -1,0 +1,80 @@
+import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+import '../app_test.dart';
+import '../util/test_utils.dart';
+
+void main() {
+  testWidgets('test brake series defaults to ??', (tester) async {
+    await prepareAndStartApp(tester);
+    await loadJourney(tester, trainNumber: 'T6');
+
+    final brakeSeriesHeaderCell = find.byKey(JourneyTable.brakeSeriesHeaderKey);
+    expect(brakeSeriesHeaderCell, findsOneWidget);
+    expect(find.descendant(of: brakeSeriesHeaderCell, matching: find.text('??')), findsOneWidget);
+
+    await disconnect(tester);
+  });
+
+  testWidgets('test default brake series is taken from train characteristics (R115)', (tester) async {
+    await prepareAndStartApp(tester);
+    await loadJourney(tester, trainNumber: 'T5');
+
+    final brakeSeriesHeaderCell = find.byKey(JourneyTable.brakeSeriesHeaderKey);
+    expect(brakeSeriesHeaderCell, findsOneWidget);
+    expect(find.descendant(of: brakeSeriesHeaderCell, matching: find.text('R115')), findsOneWidget);
+
+    await disconnect(tester);
+  });
+
+  testWidgets('test all brake series options are displayed', (tester) async {
+    await prepareAndStartApp(tester);
+    await loadJourney(tester, trainNumber: 'T5');
+
+    // Open brake series bottom sheet
+    await tapElement(tester, find.byKey(JourneyTable.brakeSeriesHeaderKey));
+
+    final expectedCategories = {'R', 'A', 'D'};
+
+    for (final entry in expectedCategories) {
+      expect(find.text(entry), findsOneWidget);
+    }
+
+    final expectedOptions = {
+      'R105',
+      'R115',
+      'R125',
+      'R135',
+      'R150',
+      'A50',
+      'A60',
+      'A65',
+      'A70',
+      'A75',
+      'A80',
+      'A85',
+      'A95',
+      'A105',
+      'A115',
+      'D30',
+    };
+
+    for (final entry in expectedOptions) {
+      expect(find.text(entry), findsAtLeast(1));
+    }
+
+    await disconnect(tester);
+  });
+
+  testWidgets('test message when no brake series are defined', (tester) async {
+    await prepareAndStartApp(tester);
+    await loadJourney(tester, trainNumber: 'T4');
+
+    // Open brake series bottom sheet
+    await tapElement(tester, find.byKey(JourneyTable.brakeSeriesHeaderKey));
+
+    expect(find.text(l10n.p_journey_brake_series_empty), findsOneWidget);
+
+    await disconnect(tester);
+  });
+}

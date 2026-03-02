@@ -5,7 +5,7 @@ import 'package:logger/component.dart';
 import 'package:logging/logging.dart';
 
 import 'test/app_link_test.dart' as app_link_tests;
-import 'test/break_load_slip_test.dart' as break_load_slip_tests;
+import 'test/brake_load_slip_test.dart' as brake_load_slip_tests;
 import 'test/journey_replacement_series_test.dart' as journey_replacement_series_test;
 import 'test/journey_table_time_test.dart' as journey_table_time_tests;
 import 'test/manual_advancement_test.dart' as manual_advancement_tests;
@@ -20,7 +20,7 @@ void main() {
   Logger.root.onRecord.listen(LogPrinter(appName: 'DAS IntegrationTests').call);
 
   app_link_tests.main();
-  break_load_slip_tests.main();
+  brake_load_slip_tests.main();
   journey_replacement_series_test.main();
   reduced_journey_table_tests.main();
   journey_table_time_tests.main();

@@ -2,7 +2,7 @@ import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_screen/journey_overview.dart';
 import 'package:app/pages/journey/journey_screen/notification/notification_type.dart';
 import 'package:app/pages/journey/journey_screen/notification/widgets/advised_speed_notification.dart';
-import 'package:app/pages/journey/journey_screen/notification/widgets/break_load_slip_notification.dart';
+import 'package:app/pages/journey/journey_screen/notification/widgets/brake_load_slip_notification.dart';
 import 'package:app/pages/journey/journey_screen/notification/widgets/departure_dispatch_notification.dart';
 import 'package:app/pages/journey/journey_screen/notification/widgets/disturbance_notification.dart';
 import 'package:app/pages/journey/journey_screen/notification/widgets/koa_notification.dart';
@@ -75,7 +75,7 @@ extension _WidgetNotificationTypeX on NotificationType {
       .illegalSegmentNoReplacement => ReplacementSeriesNotification(),
       .koaWait => KoaNotification(),
       .koaWaitCancelled => KoaNotification(),
-      .newBreakLoadSlip => BreakLoadSlipNotification(),
+      .newBrakeLoadSlip => BrakeLoadSlipNotification(),
       .maneuverMode => ManeuverNotification(),
       .disturbance => DisturbanceNotification(),
       .advisedSpeed => AdvisedSpeedNotification(),

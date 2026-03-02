@@ -1,12 +1,12 @@
 import 'package:app/pages/journey/journey_screen/header/widgets/battery_status.dart';
-import 'package:app/pages/journey/journey_screen/header/widgets/break_slip_button.dart';
+import 'package:app/pages/journey/journey_screen/header/widgets/brake_slip_button.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/connectivity_icon.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/departure_authorization_display.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/extended_menu.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/journey_advancement_button.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/next_stop.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/theme_button.dart';
-import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -19,7 +19,7 @@ class MainHeaderBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final journeyViewModel = context.read<JourneyTableViewModel>();
+    final journeyViewModel = context.read<JourneyViewModel>();
 
     return StreamBuilder(
       stream: journeyViewModel.journey,
@@ -81,7 +81,7 @@ class MainHeaderBox extends StatelessWidget {
     spacing: SBBSpacing.xSmall,
     children: [
       // marked as leaf as default draws a border
-      Skeleton.leaf(child: BreakSlipButton()),
+      Skeleton.leaf(child: BrakeSlipButton()),
       Skeleton.leaf(child: ThemeButton()),
       Skeleton.leaf(child: JourneyAdvancementButton()),
       ExtendedMenu(),

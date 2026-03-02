@@ -10,9 +10,9 @@ import 'package:sfera/component.dart';
 class DepartureAuthorizationViewModel extends JourneyAwareViewModel {
   DepartureAuthorizationViewModel({
     required Stream<JourneyPositionModel> journeyPositionStream,
-    super.journeyTableViewModel,
+    super.journeyViewModel,
   }) {
-    _initSubscriptions(journeyTableViewModel.journey, journeyPositionStream);
+    _initSubscriptions(journeyViewModel.journey, journeyPositionStream);
   }
 
   late StreamSubscription<(Journey?, JourneyPositionModel)> _subscription;

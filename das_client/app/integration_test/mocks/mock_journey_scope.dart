@@ -16,13 +16,15 @@ class MockJourneyScope extends JourneyScope {
     _log.fine('Pushing mock scope $scopeName');
     getIt.pushNewScope(scopeName: scopeName);
 
+    getIt.registerViewModeViewModel();
     getIt.registerJourneyNavigationViewModel();
     getIt.registerJourneySelectionViewModel();
-    getIt.registerJourneyTableViewModel();
+    getIt.registerJourneyViewModel();
     getIt.registerNotificationPriorityViewModel();
     getIt.registerJourneySettingsViewModel();
     getIt.registerPunctualityViewModel();
     getIt.registerJourneyPositionViewModel();
+    getIt.registerJourneyTableScrollController();
     getIt.registerJourneyTableAdvancementViewModel();
     getIt.registerLocalRegulationHtmlGenerator();
     _registerMockWarnAppViewModel();

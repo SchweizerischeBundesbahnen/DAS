@@ -19,27 +19,27 @@ class ChevronAnimationData {
   final JourneyPoint currentPosition;
   final JourneyPoint? lastPosition;
 
-  static ChevronAnimationData? from(
-    List<JourneyPoint> rows,
-    JourneyPositionModel journeyPosition,
-    Metadata metadata,
-    BaseData currentRow,
-    BreakSeries? currentBreakSeries,
-    List<int> expandedGroups,
-  ) {
+  static ChevronAnimationData? from({
+    required List<JourneyPoint> journeyPoints,
+    required JourneyPositionModel journeyPosition,
+    required Metadata metadata,
+    required BaseData rowData,
+    required BrakeSeries? currentBrakeSeries,
+    required List<int> expandedGroups,
+  }) {
     final currentPosition = journeyPosition.currentPosition;
     final lastPosition = journeyPosition.lastPosition;
     if (currentPosition == null ||
         lastPosition == null ||
         lastPosition == currentPosition ||
-        currentRow is! JourneyPoint) {
+        rowData is! JourneyPoint) {
       return null;
     }
 
-    var toIndex = rows.indexOfElementOrCollapsedGroup(currentPosition, expandedGroups);
-    final currentIndex = rows.indexOf(currentRow);
+    var toIndex = journeyPoints.indexOfElementOrCollapsedGroup(currentPosition, expandedGroups);
+    final currentIndex = journeyPoints.indexOf(rowData);
 
-    var fromIndex = rows.indexOfElementOrCollapsedGroup(lastPosition, expandedGroups);
+    var fromIndex = journeyPoints.indexOfElementOrCollapsedGroup(lastPosition, expandedGroups);
 
     bool reversed = false;
     if (fromIndex > toIndex) {
@@ -61,16 +61,16 @@ class ChevronAnimationData {
     var endOffset = 0.0;
 
     // First row chevron to end of cell
-    final startRow = rows[fromIndex];
-    final startRowHeight = CellRowBuilder.rowHeightForData(startRow, currentBreakSeries);
+    final startRow = journeyPoints[fromIndex];
+    final startRowHeight = CellRowBuilder.rowHeightForData(startRow, currentBrakeSeries);
     final startRowChevronPosition = CellRowBuilder.calculateChevronPosition(startRow, startRowHeight);
 
     endOffset += startRowHeight - startRowChevronPosition;
 
     // Full height for all rows in between
     for (var i = fromIndex + 1; i < toIndex; i++) {
-      final currentRow = rows[i];
-      final rowHeight = CellRowBuilder.rowHeightForData(currentRow, currentBreakSeries);
+      final currentRow = journeyPoints[i];
+      final rowHeight = CellRowBuilder.rowHeightForData(currentRow, currentBrakeSeries);
       if (currentIndex == i) {
         // swap startOffset when current cell is passed over
         final chevronPosition = CellRowBuilder.calculateChevronPosition(currentRow, rowHeight);
@@ -83,8 +83,8 @@ class ChevronAnimationData {
     }
 
     // Last row cell start to chevron position
-    final endRow = rows[toIndex];
-    final endRowHeight = CellRowBuilder.rowHeightForData(endRow, currentBreakSeries);
+    final endRow = journeyPoints[toIndex];
+    final endRowHeight = CellRowBuilder.rowHeightForData(endRow, currentBrakeSeries);
     final chevronPosition = metadata.journeyEnd == endRow
         ? RouteCellBody.routeCirclePosition - RouteChevron.chevronHeight
         : CellRowBuilder.calculateChevronPosition(endRow, endRowHeight);

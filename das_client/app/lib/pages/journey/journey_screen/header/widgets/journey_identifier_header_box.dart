@@ -3,7 +3,7 @@ import 'package:app/pages/journey/journey_screen/header/view_model/radio_channel
 import 'package:app/pages/journey/journey_screen/header/widgets/journey_identifier.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/radio_channel.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
-import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -18,7 +18,7 @@ class JourneyIdentifierHeaderBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final journeyViewModel = context.read<JourneyTableViewModel>();
+    final journeyViewModel = context.read<JourneyViewModel>();
     final journeyPositionViewModel = context.read<JourneyPositionViewModel>();
 
     return Provider(

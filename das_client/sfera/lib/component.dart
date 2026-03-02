@@ -1,8 +1,5 @@
 import 'package:connectivity_x/component.dart';
-import 'package:http_x/component.dart';
 import 'package:mqtt/component.dart';
-import 'package:sfera/src/data/api/sfera_auth_service.dart';
-import 'package:sfera/src/data/api/sfera_auth_service_impl.dart';
 import 'package:sfera/src/data/local/drift_local_database_service.dart';
 import 'package:sfera/src/data/repository/sfera_local_repo.dart';
 import 'package:sfera/src/data/repository/sfera_local_repo_impl.dart';
@@ -10,7 +7,6 @@ import 'package:sfera/src/data/repository/sfera_repository.dart';
 import 'package:sfera/src/data/repository/sfera_repository_impl.dart';
 import 'package:sfera/src/provider/sfera_auth_provider.dart';
 
-export 'package:sfera/src/data/api/sfera_auth_service.dart';
 export 'package:sfera/src/data/api/sfera_error.dart';
 export 'package:sfera/src/data/parser/sfera_reply_parser.dart';
 export 'package:sfera/src/data/repository/sfera_local_repo.dart';
@@ -26,7 +22,7 @@ export 'package:sfera/src/model/journey/base_data.dart';
 export 'package:sfera/src/model/journey/base_data_extension.dart';
 export 'package:sfera/src/model/journey/base_foot_note.dart';
 export 'package:sfera/src/model/journey/bracket_station_segment.dart';
-export 'package:sfera/src/model/journey/break_series.dart';
+export 'package:sfera/src/model/journey/brake_series.dart';
 export 'package:sfera/src/model/journey/cab_signaling.dart';
 export 'package:sfera/src/model/journey/combined_foot_note_operational_indication.dart';
 export 'package:sfera/src/model/journey/communication_network_change.dart';
@@ -83,13 +79,6 @@ export 'package:sfera/src/provider/sfera_auth_provider.dart';
 
 class SferaComponent {
   const SferaComponent._();
-
-  static SferaAuthService createSferaAuthService({
-    required Client httpClient,
-    required String tokenExchangeUrl,
-  }) {
-    return SferaAuthServiceImpl(httpClient: httpClient, tokenExchangeUrl: tokenExchangeUrl);
-  }
 
   static SferaRepository createSferaRepository({
     required MqttService mqttService,

@@ -28,11 +28,11 @@ class JourneyTableAdvancementViewModel extends JourneyAwareViewModel {
     required Stream<JourneyPositionModel> positionStream,
     required JourneyTableScrollController scrollController,
     required List<AdvancementModeChangedCallback> onAdvancementModeChanged,
-    super.journeyTableViewModel,
+    super.journeyViewModel,
   }) {
     _scrollController = scrollController;
     _onAdvancementModeChanged = onAdvancementModeChanged;
-    _initSubscription(journeyTableViewModel.journey, positionStream);
+    _initSubscription(journeyViewModel.journey, positionStream);
   }
 
   StreamSubscription<(Journey?, JourneyPositionModel)>? _streamSubscription;
@@ -107,12 +107,12 @@ class JourneyTableAdvancementViewModel extends JourneyAwareViewModel {
 
   @override
   void dispose() {
-    super.dispose();
+    _isDisposed = true;
     _streamSubscription?.cancel();
     _idleScrollTimer?.cancel();
     _idleScrollTimer = null;
     _rxModel.close();
-    _isDisposed = true;
+    super.dispose();
   }
 
   void _initSubscription(Stream<Journey?> journeyStream, Stream<JourneyPositionModel> positionStream) {

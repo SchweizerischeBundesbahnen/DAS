@@ -52,13 +52,15 @@ class AppAssets {
   static const shapeMenuArrow = '$_othersDir/shape_menu_arrow.svg';
   static const shapeRoundedEdgeLeftSmall = '$_othersDir/shape_rounded_edge_left_small.svg';
   static const shapeRoundedEdgeLeftMedium = '$_othersDir/shape_rounded_edge_left_medium.svg';
+  static const shapeRoundedEdgeLeftLarge = '$_othersDir/shape_rounded_edge_left_large.svg';
   static const loginPageBackground = '$_othersDir/login_page_background.svg';
+  static const stationSignBhf = '$_othersDir/station_sign_bhf.svg';
 
   // audio
   static const soundKoaWaitCanceled = '$_soundsDir/koa_wait_canceled.mp3';
   static const soundWarnappWarn = '$_soundsDir/warnapp_warn.wav';
   static const soundAdvisedSpeedStart = '$_soundsDir/advised_speed_start.wav';
   static const soundAdvisedSpeedEnd = '$_soundsDir/advised_speed_end.wav';
-  static const soundBreakSlipUpdated = '$_soundsDir/break_slip_updated.mp3';
+  static const soundBrakeSlipUpdated = '$_soundsDir/brake_slip_updated.mp3';
   static const soundGridOverload = '$_soundsDir/grid_overload.mp3';
 }

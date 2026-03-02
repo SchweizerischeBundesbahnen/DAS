@@ -2,17 +2,18 @@ import 'dart:io';
 
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
-import 'package:app/pages/journey/break_load_slip/break_load_slip_view_model.dart';
+import 'package:app/pages/journey/brake_load_slip/brake_load_slip_view_model.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/additional_speed_restriction_modal/additional_speed_restriction_modal_view_model.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/detail_modal_view_model.dart';
-import 'package:app/pages/journey/journey_screen/detail_modal/service_point_modal/service_point_modal_view_model.dart';
 import 'package:app/pages/journey/journey_screen/journey_overview.dart';
+import 'package:app/pages/journey/journey_screen/journey_table_scroll_controller.dart';
 import 'package:app/pages/journey/journey_screen/view_model/arrival_departure_time_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_view_model.dart';
-import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_table_advancement_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/journey_table_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
-import 'package:app/pages/journey/journey_screen/widgets/break_series_selection.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/journey_table_model.dart';
+import 'package:app/pages/journey/journey_screen/widgets/brake_series_selection.dart';
 import 'package:app/pages/journey/journey_screen/widgets/chevron_animation_wrapper.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/additional_speed_restriction_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/balise_level_crossing_group_row.dart';
@@ -40,9 +41,8 @@ import 'package:app/pages/journey/journey_screen/widgets/table/train_driver_turn
 import 'package:app/pages/journey/journey_screen/widgets/table/tram_area_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/uncoded_operational_indication_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/whistle_row.dart';
-import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
+import 'package:app/pages/journey/view_model/decisive_gradient_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
-import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
 import 'package:app/pages/journey/view_model/model/journey_settings.dart';
 import 'package:app/provider/user_settings.dart';
 import 'package:app/theme/theme_util.dart';
@@ -54,7 +54,6 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
@@ -62,152 +61,107 @@ class JourneyTable extends StatelessWidget {
   const JourneyTable({super.key});
 
   static const Key loadedJourneyTableKey = Key('loadedJourneyTable');
-  static const Key breakingSeriesHeaderKey = Key('breakingSeriesHeader');
-  static const Key differentBreakSeriesWarningKey = Key('differentBreakSeriesWarning');
+  static const Key brakeSeriesHeaderKey = Key('brakeSeriesHeader');
+  static const Key differentBrakeSeriesWarningKey = Key('differentBrakeSeriesWarning');
 
   @override
   Widget build(BuildContext context) {
     final viewModel = context.read<JourneyTableViewModel>();
-    final journeySettingsVM = context.read<JourneySettingsViewModel>();
     final advancementViewModel = context.read<JourneyTableAdvancementViewModel>();
 
-    return StreamBuilder<List<dynamic>>(
-      stream: CombineLatestStream.list([
-        viewModel.journey,
-        journeySettingsVM.model,
-        viewModel.showDecisiveGradient,
-      ]),
+    return StreamBuilder<JourneyTableModel>(
+      stream: viewModel.model,
+      initialData: viewModel.modelValue,
       builder: (context, snapshot) {
-        if (!snapshot.hasData || snapshot.data?[0] == null) {
-          return JourneyLoadingTable(columns: _columns(context, null, null, null));
-        }
-
-        final journey = snapshot.data![0] as Journey;
-        final settings = snapshot.data![1] as JourneySettings;
-
-        final servicePointModalViewModel = context.read<ServicePointModalViewModel>();
-        servicePointModalViewModel.updateMetadata(journey.metadata);
-        servicePointModalViewModel.updateSettings(settings);
-
-        return KeyedSubtree(
-          key: loadedJourneyTableKey,
-          child: Listener(
-            onPointerDown: (_) => advancementViewModel.resetIdleScrollTimer(),
-            onPointerUp: (_) => advancementViewModel.resetIdleScrollTimer(),
-            child: _body(context, journey, settings),
+        final model = snapshot.requireData;
+        return switch (model) {
+          TableLoading() => JourneyLoadingTable(columns: _generateColumns(context, null, null, null)),
+          TableLoaded() => KeyedSubtree(
+            key: loadedJourneyTableKey,
+            child: Listener(
+              onPointerDown: (_) => advancementViewModel.resetIdleScrollTimer(),
+              onPointerUp: (_) => advancementViewModel.resetIdleScrollTimer(),
+              child: _table(context, model),
+            ),
           ),
-        );
+        };
       },
     );
   }
 
-  Widget _body(BuildContext context, Journey journey, JourneySettings settings) {
-    final collapsibleRowsViewModel = context.read<CollapsibleRowsViewModel>();
-    final journeyPositionViewModel = context.read<JourneyPositionViewModel>();
-    return StreamBuilder(
-      stream: CombineLatestStream.combine2(
-        collapsibleRowsViewModel.collapsedRows,
-        journeyPositionViewModel.model,
-        (a, b) => (a, b),
+  Widget _table(BuildContext context, TableLoaded model) {
+    final rowBuilders = _generateRowBuilders(
+      context: context,
+      journeyTableRowData: model.journeyTableRowData,
+      metadata: model.journeyMetadata,
+      settings: model.journeySettings,
+      collapsedRows: model.collapsedRows,
+      journeyPosition: model.journeyPosition,
+    );
+    final journeyTableScrollController = DI.get<JourneyTableScrollController>();
+    journeyTableScrollController.updateRenderedRows(rowBuilders);
+
+    return Padding(
+      padding: const .symmetric(horizontal: JourneyOverview.horizontalPadding),
+      child: ChevronAnimationWrapper(
+        journeyPosition: model.journeyPosition,
+        child: DASTable(
+          key: journeyTableScrollController.tableKey,
+          scrollController: journeyTableScrollController.scrollController,
+          columns: _generateColumns(context, model.journeyMetadata, model.journeySettings, model.detailModalType),
+          rows: rowBuilders.map((it) => it.build(context)).toList(),
+          bottomMarginAdjustment: _platformDependentBottomMarginAdjustment(rowBuilders),
+        ),
       ),
-      initialData: (collapsibleRowsViewModel.collapsedRowsValue, journeyPositionViewModel.modelValue),
-      builder: (context, snapshot) {
-        final collapsedRows = snapshot.data?.$1 ?? {};
-        final journeyPosition = snapshot.data!.$2;
-        final tableRows = _rows(context, journey, settings, collapsedRows, journeyPosition);
-        context.read<JourneyTableViewModel>().journeyTableScrollController.updateRenderedRows(tableRows);
-
-        final marginAdjustment = Platform.isIOS
-            ? tableRows.lastWhereOrNull((it) => it.stickyLevel == .first)?.height ?? CellRowBuilder.rowHeight
-            : 0.0;
-
-        final detailModalViewModel = context.read<DetailModalViewModel>();
-
-        return Padding(
-          padding: const .symmetric(horizontal: JourneyOverview.horizontalPadding),
-          child: StreamBuilder(
-            stream: detailModalViewModel.openModalType,
-            builder: (context, snapshot) {
-              final openModalType = snapshot.data;
-              final journeyTableScrollController = context.read<JourneyTableViewModel>().journeyTableScrollController;
-              return ChevronAnimationWrapper(
-                journeyPosition: journeyPosition,
-                child: DASTable(
-                  key: journeyTableScrollController.tableKey,
-                  scrollController: journeyTableScrollController.scrollController,
-                  columns: _columns(context, journey.metadata, settings, openModalType),
-                  rows: tableRows.map((it) => it.build(context)).toList(),
-                  bottomMarginAdjustment: marginAdjustment,
-                ),
-              );
-            },
-          ),
-        );
-      },
     );
   }
 
-  List<DASTableRowBuilder> _rows(
-    BuildContext context,
-    Journey journey,
-    JourneySettings settings,
-    Map<int, CollapsedState> collapsedRows,
-    JourneyPositionModel journeyPosition,
-  ) {
-    final currentBreakSeries = settings.currentBreakSeries;
-    final navigationVM = DI.get<JourneyNavigationViewModel>();
-
-    final rows = journey.data
-        .whereNot((it) => _isCurvePointWithoutSpeed(it, journey, settings))
-        .hideJourneyPointsThatShouldNotBeDisplayed()
-        .groupBaliseAndLevelCrossings(settings.expandedGroups, journey.metadata)
-        .hideCommunicationNetworkChangesWithSameTypeAsPreviousOrIsServicePoint()
-        .hideRepeatedLineFootNotes(journeyPosition.currentPosition)
-        .hideFootNotesForNotSelectedTrainSeries(currentBreakSeries?.trainSeries)
-        .combineFootNoteAndOperationalIndication()
-        .addTrainDriverTurnoverRows(navigationVM.modelValue?.trainIdentification)
-        .sorted((a1, a2) => a1.compareTo(a2));
-
-    final groupedRows = rows
+  List<DASTableRowBuilder> _generateRowBuilders({
+    required BuildContext context,
+    required List<BaseData> journeyTableRowData,
+    required Metadata metadata,
+    required JourneySettings settings,
+    required Map<int, CollapsedState> collapsedRows,
+    required JourneyPositionModel journeyPosition,
+  }) {
+    final groupedRows = journeyTableRowData
         .whereType<BaliseLevelCrossingGroup>()
         .map((it) => it.groupedElements)
         .expand((it) => it)
         .toList();
 
-    final journeyPoints = rows.whereType<JourneyPoint>().toList();
-
-    return List.generate(rows.length, (index) {
-      final rowData = rows[index];
+    return List.generate(journeyTableRowData.length, (index) {
+      final rowData = journeyTableRowData[index];
 
       final journeyConfig = JourneyConfig(
         settings: settings,
         trackEquipmentRenderData: TrackEquipmentRenderData.from(
-          rows,
-          journey.metadata,
-          index,
-          currentBreakSeries,
+          rows: journeyTableRowData,
+          metadata: metadata,
+          index: index,
+          currentBrakeSeries: settings.currentBrakeSeries,
         ),
-        bracketStationRenderData: BracketStationRenderData.from(rowData, journey.metadata),
+        bracketStationRenderData: BracketStationRenderData.from(data: rowData, metadata: metadata),
         chevronAnimationData: ChevronAnimationData.from(
-          journeyPoints,
-          journeyPosition,
-          journey.metadata,
-          rowData,
-          currentBreakSeries,
-          settings.expandedGroups,
+          journeyPoints: journeyTableRowData.whereType<JourneyPoint>().toList(),
+          journeyPosition: journeyPosition,
+          metadata: metadata,
+          rowData: rowData,
+          currentBrakeSeries: settings.currentBrakeSeries,
+          expandedGroups: settings.expandedGroups,
         ),
       );
 
       var hasPreviousAnnotation = false;
       if (index > 0) {
-        final previous = rows[index - 1];
+        final previous = journeyTableRowData[index - 1];
         hasPreviousAnnotation = previous is JourneyAnnotation;
       }
 
       switch (rowData.dataType) {
         case .servicePoint:
           return ServicePointRow(
-            metadata: journey.metadata,
+            metadata: metadata,
             data: rowData as ServicePoint,
             journeyPosition: journeyPosition,
             config: journeyConfig,
@@ -216,7 +170,7 @@ class JourneyTable extends StatelessWidget {
           );
         case .protectionSection:
           return ProtectionSectionRow(
-            metadata: journey.metadata,
+            metadata: metadata,
             data: rowData as ProtectionSection,
             journeyPosition: journeyPosition,
             config: journeyConfig,
@@ -224,7 +178,7 @@ class JourneyTable extends StatelessWidget {
           );
         case .curvePoint:
           return CurvePointRow(
-            metadata: journey.metadata,
+            metadata: metadata,
             data: rowData as CurvePoint,
             journeyPosition: journeyPosition,
             config: journeyConfig,
@@ -232,7 +186,7 @@ class JourneyTable extends StatelessWidget {
           );
         case .signal:
           return SignalRow(
-            metadata: journey.metadata,
+            metadata: metadata,
             data: rowData as Signal,
             journeyPosition: journeyPosition,
             config: journeyConfig,
@@ -240,7 +194,7 @@ class JourneyTable extends StatelessWidget {
           );
         case .additionalSpeedRestriction:
           return AdditionalSpeedRestrictionRow(
-            metadata: journey.metadata,
+            metadata: metadata,
             data: rowData as AdditionalSpeedRestrictionData,
             journeyPosition: journeyPosition,
             config: journeyConfig,
@@ -249,7 +203,7 @@ class JourneyTable extends StatelessWidget {
           );
         case .connectionTrack:
           return ConnectionTrackRow(
-            metadata: journey.metadata,
+            metadata: metadata,
             data: rowData as ConnectionTrack,
             journeyPosition: journeyPosition,
             config: journeyConfig,
@@ -257,7 +211,7 @@ class JourneyTable extends StatelessWidget {
           );
         case .speedChange:
           return SpeedChangeRow(
-            metadata: journey.metadata,
+            metadata: metadata,
             data: rowData as SpeedChange,
             journeyPosition: journeyPosition,
             config: journeyConfig,
@@ -265,7 +219,7 @@ class JourneyTable extends StatelessWidget {
           );
         case .cabSignaling:
           return CABSignalingRow(
-            metadata: journey.metadata,
+            metadata: metadata,
             data: rowData as CABSignaling,
             journeyPosition: journeyPosition,
             config: journeyConfig,
@@ -273,7 +227,7 @@ class JourneyTable extends StatelessWidget {
           );
         case .balise:
           return BaliseRow(
-            metadata: journey.metadata,
+            metadata: metadata,
             data: rowData as Balise,
             journeyPosition: journeyPosition,
             config: journeyConfig,
@@ -282,7 +236,7 @@ class JourneyTable extends StatelessWidget {
           );
         case .whistle:
           return WhistleRow(
-            metadata: journey.metadata,
+            metadata: metadata,
             data: rowData as Whistle,
             journeyPosition: journeyPosition,
             config: journeyConfig,
@@ -290,7 +244,7 @@ class JourneyTable extends StatelessWidget {
           );
         case .levelCrossing:
           return LevelCrossingRow(
-            metadata: journey.metadata,
+            metadata: metadata,
             data: rowData as LevelCrossing,
             journeyPosition: journeyPosition,
             config: journeyConfig,
@@ -299,7 +253,7 @@ class JourneyTable extends StatelessWidget {
           );
         case .tramArea:
           return TramAreaRow(
-            metadata: journey.metadata,
+            metadata: metadata,
             data: rowData as TramArea,
             journeyPosition: journeyPosition,
             config: journeyConfig,
@@ -307,7 +261,7 @@ class JourneyTable extends StatelessWidget {
           );
         case .baliseLevelCrossingGroup:
           return BaliseLevelCrossingGroupRow(
-            metadata: journey.metadata,
+            metadata: metadata,
             data: rowData as BaliseLevelCrossingGroup,
             journeyPosition: journeyPosition,
             config: journeyConfig,
@@ -318,7 +272,7 @@ class JourneyTable extends StatelessWidget {
           );
         case .opFootNote || .lineFootNote || .trackFootNote:
           return FootNoteRow(
-            metadata: journey.metadata,
+            metadata: metadata,
             data: rowData as BaseFootNote,
             config: journeyConfig,
             isExpanded: collapsedRows.stateOf(rowData) != .collapsed,
@@ -327,7 +281,7 @@ class JourneyTable extends StatelessWidget {
           );
         case .uncodedOperationalIndication:
           return UncodedOperationalIndicationRow(
-            metadata: journey.metadata,
+            metadata: metadata,
             data: rowData as UncodedOperationalIndication,
             config: journeyConfig,
             collapsedState: collapsedRows.stateOf(rowData),
@@ -337,14 +291,14 @@ class JourneyTable extends StatelessWidget {
         case .combinedFootNoteOperationalIndication:
           return CombinedFootNoteOperationalIndicationRow(
             rowIndex: index,
-            metadata: journey.metadata,
+            metadata: metadata,
             data: rowData as CombinedFootNoteOperationalIndication,
             footNoteState: collapsedRows.stateOf(rowData.footNote),
             operationIndicationState: collapsedRows.stateOf(rowData.operationalIndication),
           );
         case .communicationNetworkChannel:
           return CommunicationNetworkChangeRow(
-            metadata: journey.metadata,
+            metadata: metadata,
             data: rowData as CommunicationNetworkChange,
             journeyPosition: journeyPosition,
             config: journeyConfig,
@@ -353,13 +307,13 @@ class JourneyTable extends StatelessWidget {
           );
         case .shuntingMovement:
           return ShuntingMovementRow(
-            metadata: journey.metadata,
+            metadata: metadata,
             data: rowData as ShuntingMovement,
             rowIndex: index,
           );
         case Datatype.trainDriverTurnover:
           return TrainDriverTurnoverRow(
-            metadata: journey.metadata,
+            metadata: metadata,
             data: rowData as TrainDriverTurnover,
             rowIndex: index,
           );
@@ -367,40 +321,40 @@ class JourneyTable extends StatelessWidget {
     });
   }
 
-  List<DASTableColumn> _columns(
+  List<DASTableColumn> _generateColumns(
     BuildContext context,
     Metadata? metadata,
     JourneySettings? settings,
     DetailModalType? openModalType,
   ) {
-    final currentBreakSeries = settings?.currentBreakSeries;
+    final currentBrakeSeries = settings?.currentBrakeSeries;
 
-    final journeyViewModel = context.read<JourneyTableViewModel>();
+    final decisiveGradientVM = context.read<DecisiveGradientViewModel>();
     final timeViewModel = context.read<ArrivalDepartureTimeViewModel>();
     final userSettings = DI.get<UserSettings>();
 
     return [
       if (openModalType == null || openModalType == .additionalSpeedRestriction) ...[
         if (userSettings.showDecisiveGradient ||
-            (!userSettings.showDecisiveGradient && !journeyViewModel.showDecisiveGradientValue))
+            (!userSettings.showDecisiveGradient && !decisiveGradientVM.showDecisiveGradientValue))
           DASTableColumn(
             id: ColumnDefinition.kilometre.index,
             child: Text(context.l10n.p_journey_table_kilometre_label),
             width: 64.0,
-            onTap: !userSettings.showDecisiveGradient ? () => journeyViewModel.toggleKmDecisiveGradient() : null,
+            onTap: !userSettings.showDecisiveGradient ? () => decisiveGradientVM.toggleShowDecisiveGradient() : null,
           ),
-        if (userSettings.showDecisiveGradient || journeyViewModel.showDecisiveGradientValue) ...[
+        if (userSettings.showDecisiveGradient || decisiveGradientVM.showDecisiveGradientValue) ...[
           DASTableColumn(
             id: ColumnDefinition.gradientDownhill.index,
             child: Text('-'),
             width: 40.0,
-            onTap: !userSettings.showDecisiveGradient ? () => journeyViewModel.toggleKmDecisiveGradient() : null,
+            onTap: !userSettings.showDecisiveGradient ? () => decisiveGradientVM.toggleShowDecisiveGradient() : null,
           ),
           DASTableColumn(
             id: ColumnDefinition.gradientUphill.index,
             child: Text('+'),
             width: 40.0,
-            onTap: !userSettings.showDecisiveGradient ? () => journeyViewModel.toggleKmDecisiveGradient() : null,
+            onTap: !userSettings.showDecisiveGradient ? () => decisiveGradientVM.toggleShowDecisiveGradient() : null,
           ),
         ],
       ],
@@ -445,11 +399,11 @@ class JourneyTable extends StatelessWidget {
       ),
       DASTableColumn(
         id: ColumnDefinition.brakedWeightSpeed.index,
-        child: _brakedWeightSpeedHeader(context, currentBreakSeries),
+        child: _brakedWeightSpeedHeader(context, currentBrakeSeries),
         padding: EdgeInsets.zero,
         width: 62.0,
-        onTap: () => _onBreakSeriesTap(context, metadata, settings),
-        headerKey: breakingSeriesHeaderKey,
+        onTap: () => _onBrakeSeriesTap(context, metadata, settings),
+        headerKey: brakeSeriesHeaderKey,
       ),
       DASTableColumn(
         id: ColumnDefinition.advisedSpeed.index,
@@ -459,26 +413,26 @@ class JourneyTable extends StatelessWidget {
     ];
   }
 
-  Widget _brakedWeightSpeedHeader(BuildContext context, BreakSeries? currentBreakSeries) {
-    final breakLoadSlipVM = context.read<BreakLoadSlipViewModel>();
+  Widget _brakedWeightSpeedHeader(BuildContext context, BrakeSeries? currentBrakeSeries) {
+    final brakeLoadSlipVM = context.read<BrakeLoadSlipViewModel>();
 
     return StreamBuilder(
-      stream: breakLoadSlipVM.formationRun,
-      initialData: breakLoadSlipVM.formationRunValue,
+      stream: brakeLoadSlipVM.formationRun,
+      initialData: brakeLoadSlipVM.formationRunValue,
       builder: (context, _) {
-        return breakLoadSlipVM.isJourneyAndActiveFormationRunBreakSeriesDifferent()
-            ? _brakedWeightHeaderNotification(context, currentBreakSeries)
+        return brakeLoadSlipVM.isJourneyAndActiveFormationRunBrakeSeriesDifferent()
+            ? _brakedWeightHeaderNotification(context, currentBrakeSeries)
             : Text(
-                currentBreakSeries?.name ?? '??',
+                currentBrakeSeries?.name ?? '??',
                 style: sbbTextStyle.lightStyle.small,
               );
       },
     );
   }
 
-  Stack _brakedWeightHeaderNotification(BuildContext context, BreakSeries? currentBreakSeries) {
+  Stack _brakedWeightHeaderNotification(BuildContext context, BrakeSeries? currentBrakeSeries) {
     return Stack(
-      key: differentBreakSeriesWarningKey,
+      key: differentBrakeSeriesWarningKey,
       clipBehavior: Clip.none,
       children: [
         Positioned(
@@ -503,7 +457,7 @@ class JourneyTable extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  currentBreakSeries?.name ?? '??',
+                  currentBrakeSeries?.name ?? '??',
                   style: sbbTextStyle.boldStyle.small,
                 ),
                 SvgPicture.asset(
@@ -533,31 +487,31 @@ class JourneyTable extends StatelessWidget {
     context.read<JourneySettingsViewModel>().updateExpandedGroups(newList);
   }
 
-  Future<void> _onBreakSeriesTap(BuildContext context, Metadata? metadata, JourneySettings? settings) async {
+  Future<void> _onBrakeSeriesTap(BuildContext context, Metadata? metadata, JourneySettings? settings) async {
     final viewModel = context.read<JourneySettingsViewModel>();
 
-    final selectedBreakSeries = await showSBBModalSheet<BreakSeries>(
+    final selectedBrakeSeries = await showSBBModalSheet<BrakeSeries>(
       context: context,
-      title: context.l10n.p_journey_break_series,
+      title: context.l10n.p_journey_brake_series,
       constraints: BoxConstraints(),
-      child: BreakSeriesSelection(
-        availableBreakSeries: metadata?.availableBreakSeries ?? {},
-        selectedBreakSeries: settings?.currentBreakSeries,
+      child: BrakeSeriesSelection(
+        availableBrakeSeries: metadata?.availableBrakeSeries ?? {},
+        selectedBrakeSeries: settings?.currentBrakeSeries,
       ),
     );
 
-    if (selectedBreakSeries != null) viewModel.updateBreakSeries(selectedBreakSeries);
-  }
-
-  bool _isCurvePointWithoutSpeed(BaseData data, Journey journey, JourneySettings settings) {
-    final breakSeries = settings.currentBreakSeries;
-
-    return data is CurvePoint &&
-        data.localSpeeds?.speedFor(breakSeries?.trainSeries, breakSeries: breakSeries?.breakSeries) == null;
+    if (selectedBrakeSeries != null) viewModel.updateBrakeSeries(selectedBrakeSeries);
   }
 
   void _onAdditionalSpeedRestrictionTap(BuildContext context, AdditionalSpeedRestrictionData data) {
     final viewModel = context.read<AdditionalSpeedRestrictionModalViewModel>();
     viewModel.open(context, data.restrictions);
+  }
+
+  double _platformDependentBottomMarginAdjustment(List<DASTableRowBuilder<dynamic>> rowBuilders) {
+    final marginAdjustment = Platform.isIOS
+        ? rowBuilders.lastWhereOrNull((it) => it.stickyLevel == .first)?.height ?? CellRowBuilder.rowHeight
+        : 0.0;
+    return marginAdjustment;
   }
 }

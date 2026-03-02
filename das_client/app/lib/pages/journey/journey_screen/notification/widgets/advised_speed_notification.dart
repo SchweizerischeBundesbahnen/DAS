@@ -1,8 +1,10 @@
 import 'package:app/i18n/i18n.dart';
+import 'package:app/pages/journey/journey_screen/notification/widgets/advised_speed_notification_hints.dart';
 import 'package:app/pages/journey/journey_screen/view_model/advised_speed_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/advised_speed_model.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/assets.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -27,39 +29,48 @@ class AdvisedSpeedNotification extends StatelessWidget {
         final model = snapshot.requireData;
         return switch (model) {
           Active() => _activeSegmentNotification(context, model.segment),
-          End() => _notification(context, context.l10n.w_advised_speed_end),
-          Cancel() => _notification(context, context.l10n.w_advised_speed_cancel),
+          End() => _notificationBar(context, context.l10n.w_advised_speed_end),
+          Cancel() => _notificationBar(context, context.l10n.w_advised_speed_cancel),
           Inactive() => SizedBox.shrink(),
         };
       },
     );
   }
 
-  Widget _activeSegmentNotification(BuildContext context, AdvisedSpeedSegment segment) => _notification(
-    context,
-    _activeSegmentTitle(context, segment),
-    icon: segment.displayIcon(ThemeUtil.isDarkMode(context)),
-  );
+  Widget _activeSegmentNotification(BuildContext context, AdvisedSpeedSegment segment) {
+    final notificationBar = _notificationBar(
+      context,
+      _title(context, segment),
+      subtitle: _suffix(segment, context),
+      icon: segment.displayIcon(ThemeUtil.isDarkMode(context)),
+    );
 
-  String _activeSegmentTitle(BuildContext context, AdvisedSpeedSegment adl) {
-    final segmentPrefix = _titlePrefix(context, adl);
+    if (segment.additionalHints.isEmpty) return notificationBar;
 
-    final segmentSuffix = _suffix(adl, context);
-    if (segmentSuffix == null) return segmentPrefix;
+    final lastHintIndex = segment.additionalHints.length - 1;
 
-    return segmentPrefix + _titleSeparator(adl) + segmentSuffix;
+    return Stack(
+      children: [
+        notificationBar,
+        ...segment.additionalHints.sortByDisplayOrder.mapIndexed(
+          (idx, h) => Positioned(
+            top: 0,
+            right: (lastHintIndex - idx) * AdvisedSpeedNotificationHint.widthWithoutRoundedLeftEdge,
+            child: AdvisedSpeedNotificationHint(hint: h, roundBottomRightCorner: lastHintIndex == idx),
+          ),
+        ),
+      ],
+    );
   }
 
-  String? _suffix(AdvisedSpeedSegment adl, BuildContext context) {
-    if (adl.isEndDataCalculated || adl.endData is! Signal) return null;
-    final signalName = (adl.endData as Signal).visualIdentifier;
+  String? _suffix(AdvisedSpeedSegment segment, BuildContext context) {
+    if (segment.isEndDataCalculated || segment.endData is! Signal) return null;
+    final signalName = (segment.endData as Signal).visualIdentifier;
     if (signalName == null) return null;
     return context.l10n.w_advised_speed_drive_until(signalName);
   }
 
-  String _titleSeparator(AdvisedSpeedSegment adl) => (adl.isDIST || adl is VelocityMaxAdvisedSpeedSegment) ? ': ' : ' ';
-
-  String _titlePrefix(BuildContext context, AdvisedSpeedSegment adl) {
+  String _title(BuildContext context, AdvisedSpeedSegment adl) {
     if (adl.isDIST) return context.l10n.w_advised_speed_dist;
     return switch (adl) {
       FollowTrainAdvisedSpeedSegment() => context.l10n.w_advised_speed_vopt(adl.speed.value),
@@ -69,7 +80,7 @@ class AdvisedSpeedNotification extends StatelessWidget {
     };
   }
 
-  Widget _notification(BuildContext context, String message, {Widget? icon}) {
+  Widget _notificationBar(BuildContext context, String title, {String? subtitle, Widget? icon}) {
     final resolvedBackgroundColor = ThemeUtil.getColor(context, SBBColors.iron, SBBColors.platinum);
     final resolvedForegroundColor = ThemeUtil.getColor(context, SBBColors.white, SBBColors.black);
 
@@ -79,8 +90,8 @@ class AdvisedSpeedNotification extends StatelessWidget {
         color: resolvedBackgroundColor,
         borderRadius: BorderRadius.circular(SBBSpacing.medium),
       ),
-      constraints: BoxConstraints(minHeight: 54.0),
-      padding: .only(left: 22.0),
+      constraints: BoxConstraints(minHeight: 72.0),
+      padding: .only(left: SBBSpacing.large),
       child: Align(
         alignment: .centerLeft,
         child: Row(
@@ -89,9 +100,16 @@ class AdvisedSpeedNotification extends StatelessWidget {
               icon,
               const SizedBox(width: SBBSpacing.xSmall),
             ],
-            Text(
-              message,
-              style: sbbTextStyle.boldStyle.large.copyWith(color: resolvedForegroundColor),
+            Column(
+              crossAxisAlignment: .start,
+              children: [
+                Text(
+                  title,
+                  style: sbbTextStyle.boldStyle.large.copyWith(color: resolvedForegroundColor),
+                ),
+                if (subtitle != null)
+                  Text(subtitle, style: sbbTextStyle.boldStyle.large.copyWith(color: resolvedForegroundColor)),
+              ],
             ),
           ],
         ),
@@ -115,5 +133,19 @@ extension _AdvisedSpeedSegmentX on AdvisedSpeedSegment {
             colorFilter: ColorFilter.mode(isDarkMode ? SBBColors.black : SBBColors.white, BlendMode.srcIn),
           )
         : null;
+  }
+}
+
+extension _SortAdvisedSpeedSegmentHint on Set<AdvisedSpeedSegmentHint> {
+  List<AdvisedSpeedSegmentHint> get sortByDisplayOrder {
+    int getPriority(AdvisedSpeedSegmentHint hint) {
+      return switch (hint) {
+        .servicePointWithLocalSpeed => 0,
+        .curvePointWithLocalSpeed => 1,
+        .additionalSpeedRestriction => 2,
+      };
+    }
+
+    return sorted((a, b) => getPriority(a).compareTo(getPriority(b))).toList(growable: false);
   }
 }

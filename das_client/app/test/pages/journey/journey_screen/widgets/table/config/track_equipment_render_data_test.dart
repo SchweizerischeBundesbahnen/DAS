@@ -29,9 +29,24 @@ void main() {
     );
 
     // WHEN
-    final cabSignalingStart = TrackEquipmentRenderData.from(journey.journeyPoints, journey.metadata, 0);
-    final signal = TrackEquipmentRenderData.from(journey.journeyPoints, journey.metadata, 1);
-    final cabSignalingEnd = TrackEquipmentRenderData.from(journey.journeyPoints, journey.metadata, 2);
+    final cabSignalingStart = TrackEquipmentRenderData.from(
+      rows: journey.journeyPoints,
+      metadata: journey.metadata,
+      index: 0,
+      currentBrakeSeries: null,
+    );
+    final signal = TrackEquipmentRenderData.from(
+      rows: journey.journeyPoints,
+      metadata: journey.metadata,
+      index: 1,
+      currentBrakeSeries: null,
+    );
+    final cabSignalingEnd = TrackEquipmentRenderData.from(
+      rows: journey.journeyPoints,
+      metadata: journey.metadata,
+      index: 2,
+      currentBrakeSeries: null,
+    );
 
     // THEN
     expect(cabSignalingStart, isNotNull);
@@ -62,11 +77,36 @@ void main() {
     );
 
     // WHEN
-    final curvePoint = TrackEquipmentRenderData.from(journey.journeyPoints, journey.metadata, 0);
-    final cabSignalingStart = TrackEquipmentRenderData.from(journey.journeyPoints, journey.metadata, 1);
-    final servicePoint = TrackEquipmentRenderData.from(journey.journeyPoints, journey.metadata, 2);
-    final cabSignalingEnd = TrackEquipmentRenderData.from(journey.journeyPoints, journey.metadata, 3);
-    final signal = TrackEquipmentRenderData.from(journey.journeyPoints, journey.metadata, 4);
+    final curvePoint = TrackEquipmentRenderData.from(
+      rows: journey.journeyPoints,
+      metadata: journey.metadata,
+      index: 0,
+      currentBrakeSeries: null,
+    );
+    final cabSignalingStart = TrackEquipmentRenderData.from(
+      rows: journey.journeyPoints,
+      metadata: journey.metadata,
+      index: 1,
+      currentBrakeSeries: null,
+    );
+    final servicePoint = TrackEquipmentRenderData.from(
+      rows: journey.journeyPoints,
+      metadata: journey.metadata,
+      index: 2,
+      currentBrakeSeries: null,
+    );
+    final cabSignalingEnd = TrackEquipmentRenderData.from(
+      rows: journey.journeyPoints,
+      metadata: journey.metadata,
+      index: 3,
+      currentBrakeSeries: null,
+    );
+    final signal = TrackEquipmentRenderData.from(
+      rows: journey.journeyPoints,
+      metadata: journey.metadata,
+      index: 4,
+      currentBrakeSeries: null,
+    );
 
     // THEN
     var expectedHeight = 0.0;
@@ -97,9 +137,24 @@ void main() {
     );
 
     // WHEN
-    final curvePoint = TrackEquipmentRenderData.from(journey.journeyPoints, journey.metadata, 0);
-    final servicePoint = TrackEquipmentRenderData.from(journey.journeyPoints, journey.metadata, 1);
-    final signal = TrackEquipmentRenderData.from(journey.journeyPoints, journey.metadata, 2);
+    final curvePoint = TrackEquipmentRenderData.from(
+      rows: journey.journeyPoints,
+      metadata: journey.metadata,
+      index: 0,
+      currentBrakeSeries: null,
+    );
+    final servicePoint = TrackEquipmentRenderData.from(
+      rows: journey.journeyPoints,
+      metadata: journey.metadata,
+      index: 1,
+      currentBrakeSeries: null,
+    );
+    final signal = TrackEquipmentRenderData.from(
+      rows: journey.journeyPoints,
+      metadata: journey.metadata,
+      index: 2,
+      currentBrakeSeries: null,
+    );
 
     // THEN
     var expectedHeight = 0.0;
@@ -133,12 +188,42 @@ void main() {
     );
 
     // WHEN
-    final curvePoint = TrackEquipmentRenderData.from(journey.journeyPoints, journey.metadata, 0);
-    final cabSignaling = TrackEquipmentRenderData.from(journey.journeyPoints, journey.metadata, 1);
-    final servicePoint = TrackEquipmentRenderData.from(journey.journeyPoints, journey.metadata, 2);
-    final signal = TrackEquipmentRenderData.from(journey.journeyPoints, journey.metadata, 3);
-    final connectionTrack = TrackEquipmentRenderData.from(journey.journeyPoints, journey.metadata, 4);
-    final levelCrossing = TrackEquipmentRenderData.from(journey.journeyPoints, journey.metadata, 5);
+    final curvePoint = TrackEquipmentRenderData.from(
+      rows: journey.journeyPoints,
+      metadata: journey.metadata,
+      index: 0,
+      currentBrakeSeries: null,
+    );
+    final cabSignaling = TrackEquipmentRenderData.from(
+      rows: journey.journeyPoints,
+      metadata: journey.metadata,
+      index: 1,
+      currentBrakeSeries: null,
+    );
+    final servicePoint = TrackEquipmentRenderData.from(
+      rows: journey.journeyPoints,
+      metadata: journey.metadata,
+      index: 2,
+      currentBrakeSeries: null,
+    );
+    final signal = TrackEquipmentRenderData.from(
+      rows: journey.journeyPoints,
+      metadata: journey.metadata,
+      index: 3,
+      currentBrakeSeries: null,
+    );
+    final connectionTrack = TrackEquipmentRenderData.from(
+      rows: journey.journeyPoints,
+      metadata: journey.metadata,
+      index: 4,
+      currentBrakeSeries: null,
+    );
+    final levelCrossing = TrackEquipmentRenderData.from(
+      rows: journey.journeyPoints,
+      metadata: journey.metadata,
+      index: 5,
+      currentBrakeSeries: null,
+    );
 
     // THEN
     expect(curvePoint, isNull);
@@ -177,12 +262,42 @@ void main() {
     );
 
     // WHEN
-    final curvePoint = TrackEquipmentRenderData.from(journey.journeyPoints, journey.metadata, 0);
-    final cabSignaling = TrackEquipmentRenderData.from(journey.journeyPoints, journey.metadata, 1);
-    final servicePoint = TrackEquipmentRenderData.from(journey.journeyPoints, journey.metadata, 2);
-    final signal = TrackEquipmentRenderData.from(journey.journeyPoints, journey.metadata, 3);
-    final connectionTrack = TrackEquipmentRenderData.from(journey.journeyPoints, journey.metadata, 4);
-    final servicePoint2 = TrackEquipmentRenderData.from(journey.journeyPoints, journey.metadata, 5);
+    final curvePoint = TrackEquipmentRenderData.from(
+      rows: journey.journeyPoints,
+      metadata: journey.metadata,
+      index: 0,
+      currentBrakeSeries: null,
+    );
+    final cabSignaling = TrackEquipmentRenderData.from(
+      rows: journey.journeyPoints,
+      metadata: journey.metadata,
+      index: 1,
+      currentBrakeSeries: null,
+    );
+    final servicePoint = TrackEquipmentRenderData.from(
+      rows: journey.journeyPoints,
+      metadata: journey.metadata,
+      index: 2,
+      currentBrakeSeries: null,
+    );
+    final signal = TrackEquipmentRenderData.from(
+      rows: journey.journeyPoints,
+      metadata: journey.metadata,
+      index: 3,
+      currentBrakeSeries: null,
+    );
+    final connectionTrack = TrackEquipmentRenderData.from(
+      rows: journey.journeyPoints,
+      metadata: journey.metadata,
+      index: 4,
+      currentBrakeSeries: null,
+    );
+    final servicePoint2 = TrackEquipmentRenderData.from(
+      rows: journey.journeyPoints,
+      metadata: journey.metadata,
+      index: 5,
+      currentBrakeSeries: null,
+    );
 
     // THEN
     expect(curvePoint, isNull);

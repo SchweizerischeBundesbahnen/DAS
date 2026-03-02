@@ -19,13 +19,13 @@ class TrackEquipmentRenderData {
   final bool isConventionalExtendedSpeedBorder;
   final TrackEquipmentType? trackEquipmentType;
 
-  static TrackEquipmentRenderData? from(
-    List<BaseData> rowData,
-    Metadata metadata,
-    int index, [
-    BreakSeries? currentBreakSeries,
-  ]) {
-    final data = rowData[index];
+  static TrackEquipmentRenderData? from({
+    required List<BaseData> rows,
+    required Metadata metadata,
+    required int index,
+    BrakeSeries? currentBrakeSeries,
+  }) {
+    final data = rows[index];
     final nonStandardTrackEquipmentSegments = metadata.nonStandardTrackEquipmentSegments;
     final matchingSegment = nonStandardTrackEquipmentSegments.appliesToOrder(data.order).firstOrNull;
     if (matchingSegment == null) return null;
@@ -33,15 +33,15 @@ class TrackEquipmentRenderData {
     return TrackEquipmentRenderData(
       trackEquipmentType: matchingSegment.type,
       cumulativeHeight: _calculateTrackEquipmentCumulativeHeight(
-        rowData,
+        rows,
         metadata,
         matchingSegment,
         index,
-        currentBreakSeries,
+        currentBrakeSeries,
       ),
-      isConventionalExtendedSpeedBorder: _isConventionalExtendedSpeedBorder(rowData, metadata, index),
-      isStart: _isStart(data, matchingSegment, rowData),
-      isEnd: _isEnd(data, matchingSegment, rowData),
+      isConventionalExtendedSpeedBorder: _isConventionalExtendedSpeedBorder(rows, metadata, index),
+      isStart: _isStart(data, matchingSegment, rows),
+      isEnd: _isEnd(data, matchingSegment, rows),
     );
   }
 
@@ -75,7 +75,7 @@ class TrackEquipmentRenderData {
     Metadata metadata,
     NonStandardTrackEquipmentSegment segment,
     int index,
-    BreakSeries? currentBreakSeries,
+    BrakeSeries? currentBrakeSeries,
   ) {
     var cumulativeHeight = 0.0;
     var searchIndex = index - 1;
@@ -87,7 +87,7 @@ class TrackEquipmentRenderData {
         break;
       }
 
-      cumulativeHeight += _renderHeight(data, segment, rowData, currentBreakSeries);
+      cumulativeHeight += _renderHeight(data, segment, rowData, currentBrakeSeries);
 
       // if is conventional extended speed border, reduce by it's height as it is not part of the dashed line.
       if (_isConventionalExtendedSpeedBorder(rowData, metadata, searchIndex)) {
@@ -104,9 +104,9 @@ class TrackEquipmentRenderData {
     BaseData data,
     NonStandardTrackEquipmentSegment segment,
     List<BaseData> rowData,
-    BreakSeries? currentBreakSeries,
+    BrakeSeries? currentBrakeSeries,
   ) {
-    final rowHeight = CellRowBuilder.rowHeightForData(data, currentBreakSeries);
+    final rowHeight = CellRowBuilder.rowHeightForData(data, currentBrakeSeries);
 
     final isStart = _isStart(data, segment, rowData);
     final isEnd = _isEnd(data, segment, rowData);

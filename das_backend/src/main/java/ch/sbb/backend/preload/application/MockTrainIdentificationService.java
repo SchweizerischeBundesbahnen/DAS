@@ -1,8 +1,11 @@
 package ch.sbb.backend.preload.application;
 
-import ch.sbb.backend.preload.domain.TrainId;
+import ch.sbb.backend.preload.application.model.trainidentification.CompanyCode;
+import ch.sbb.backend.preload.application.model.trainidentification.TrainIdentification;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +22,13 @@ public class MockTrainIdentificationService {
     @Value("${sfera.company-code}")
     private String companyCode;
 
-    public List<TrainId> getNewTrainIdentifications(OffsetDateTime since) {
-        return SFERA_MOCK_TRAIN_NUMBERS.stream().map(trainNumber -> new TrainId(companyCode, trainNumber, since.toLocalDate())).toList();
+    public List<TrainIdentification> getNewTrainIdentifications(OffsetDateTime since) {
+        AtomicInteger i = new AtomicInteger();
+        return SFERA_MOCK_TRAIN_NUMBERS.stream().map(trainNumber -> new TrainIdentification(i.getAndIncrement(), trainNumber, since.toLocalDate(), Set.of(CompanyCode.of(companyCode))))
+            .toList();
+    }
+
+    public void savePreloadedTrains(Set<TrainIdentification> trainIdentifications) {
+        // mock..
     }
 }

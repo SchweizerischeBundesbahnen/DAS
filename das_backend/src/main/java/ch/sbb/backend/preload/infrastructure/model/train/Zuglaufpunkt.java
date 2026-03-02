@@ -13,10 +13,10 @@ public class Zuglaufpunkt {
     Betriebspunkt betriebspunkt;
 
     @JsonProperty("kommerzielle_zeit_ab")
-    Integer kommZeitAb;  // nullable
+    Integer kommerzielleZeitAb;  // nullable
 
     @JsonProperty("betr_zeit_ab")
-    Integer betrZeitAb;  // nullable
+    Integer betrieblicheZeitAb;  // nullable
 
     @JsonProperty("sms_evu")
     String smsEvu; // nullable

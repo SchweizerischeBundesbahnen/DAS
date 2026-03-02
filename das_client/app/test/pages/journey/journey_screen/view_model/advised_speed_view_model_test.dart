@@ -2,7 +2,7 @@ import 'package:app/pages/journey/journey_screen/view_model/advised_speed_view_m
 import 'package:app/pages/journey/journey_screen/view_model/model/advised_speed_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
-import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/sound/das_sounds.dart';
 import 'package:app/sound/sound.dart';
 import 'package:app/util/time_constants.dart';
@@ -18,14 +18,14 @@ import 'advised_speed_view_model_test.mocks.dart';
 
 @GenerateNiceMocks([
   MockSpec<NotificationPriorityQueueViewModel>(),
-  MockSpec<JourneyTableViewModel>(),
+  MockSpec<JourneyViewModel>(),
   MockSpec<DASSounds>(),
   MockSpec<Sound>(),
 ])
 void main() {
   group('Unit Test Advised Speed View Model', () {
     late AdvisedSpeedViewModel testee;
-    late MockJourneyTableViewModel mockJourneyTableViewModel;
+    late MockJourneyViewModel mockJourneyViewModel;
     late MockNotificationPriorityQueueViewModel mockNotificationViewModel;
     late BehaviorSubject<Journey?> journeySubject;
     late BehaviorSubject<JourneyPositionModel> journeyPositionSubject;
@@ -60,15 +60,15 @@ void main() {
       GetIt.I.registerSingleton<DASSounds>(mockDasSounds);
 
       fakeAsync((fakeAsync) {
-        mockJourneyTableViewModel = MockJourneyTableViewModel();
+        mockJourneyViewModel = MockJourneyViewModel();
         journeySubject = BehaviorSubject<Journey?>.seeded(null);
-        when(mockJourneyTableViewModel.journey).thenAnswer((_) => journeySubject.stream);
+        when(mockJourneyViewModel.journey).thenAnswer((_) => journeySubject.stream);
         journeyPositionSubject = BehaviorSubject<JourneyPositionModel>.seeded(JourneyPositionModel());
         testAsync = fakeAsync;
 
         testee = AdvisedSpeedViewModel(
           journeyPositionStream: journeyPositionSubject,
-          journeyTableViewModel: mockJourneyTableViewModel,
+          journeyViewModel: mockJourneyViewModel,
           notificationVM: mockNotificationViewModel,
         );
         modelRegister = [];

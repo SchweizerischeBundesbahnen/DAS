@@ -109,14 +109,14 @@ class SferaModelMapper {
           journeyProfile.generalJpInformation,
           servicePoints,
         ),
-        availableBreakSeries: _parseAvailableBreakSeries(journeyPoints, lineSpeeds),
+        availableBrakeSeries: _parseAvailableBrakeSeries(journeyPoints, lineSpeeds),
         communicationNetworkChanges: communicationChanges,
-        breakSeries:
+        brakeSeries:
             trainCharacteristic?.tcFeatures.trainCategoryCode != null &&
                 trainCharacteristic?.tcFeatures.brakedWeightPercentage != null
-            ? BreakSeries(
+            ? BrakeSeries(
                 trainSeries: trainCharacteristic!.tcFeatures.trainCategoryCode!,
-                breakSeries: trainCharacteristic.tcFeatures.brakedWeightPercentage!,
+                brakeSeries: trainCharacteristic.tcFeatures.brakedWeightPercentage!,
               )
             : null,
         lineFootNoteLocations: _generateLineFootNoteLocationMap(journeyData.whereType<LineFootNote>()),
@@ -402,7 +402,7 @@ class SferaModelMapper {
         .toList();
   }
 
-  static Set<BreakSeries> _parseAvailableBreakSeries(
+  static Set<BrakeSeries> _parseAvailableBrakeSeries(
     List<JourneyPoint> journeyPoints,
     SplayTreeMap<int, Iterable<TrainSeriesSpeed>> lineSpeeds,
   ) {
@@ -410,8 +410,8 @@ class SferaModelMapper {
     speeds.addAll(lineSpeeds.values.flattened);
 
     return speeds
-        .where((it) => it.breakSeries != null)
-        .map((it) => BreakSeries(trainSeries: it.trainSeries, breakSeries: it.breakSeries!))
+        .where((it) => it.brakeSeries != null)
+        .map((it) => BrakeSeries(trainSeries: it.trainSeries, brakeSeries: it.brakeSeries!))
         .toSet();
   }
 
