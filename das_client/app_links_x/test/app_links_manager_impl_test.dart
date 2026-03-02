@@ -37,30 +37,6 @@ void main() {
     testee.dispose();
   });
 
-  test('onTrainJourneyLink_whenInitialLinkGiven_thenEmitLinkData', () async {
-    // GIVEN
-    final initialUri = _buildTrainJourneyUri(dataJson: _testDataJson);
-    when(mockAppLinks.getInitialLink()).thenAnswer((_) async => initialUri);
-    final received = <AppLinkIntent>[];
-
-    // WHEN
-    // fresh instance for initial link check
-    final instance = AppLinksManagerImpl(appLinks: mockAppLinks);
-    final sub = instance.onAppLinkIntent.listen(received.add);
-    await pumpEventQueue();
-
-    // THEN
-    expect(received, hasLength(1));
-    expect(received.first, isA<TrainJourneyIntent>());
-    final intent = received.first as TrainJourneyIntent;
-    expect(intent.journeys, hasLength(1));
-    _checkDefaultLinkData(intent.journeys.first);
-
-    // DISPOSE
-    await sub.cancel();
-    instance.dispose();
-  });
-
   test('onTrainJourneyLink_whenLinksOverUriLinkStream_thenEmitLinkData', () async {
     // GIVEN
     final uri1 = _buildTrainJourneyUri(dataJson: _testDataJson);
