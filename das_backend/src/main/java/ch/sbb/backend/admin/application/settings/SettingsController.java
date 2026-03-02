@@ -35,7 +35,7 @@ public class SettingsController {
 
     static final String PATH_SEGMENT_SETTINGS = "/settings";
 
-    static final String API_SETTINGS = ApiDocumentation.VERSION_URI_V1 + PATH_SEGMENT_SETTINGS;
+    public static final String API_SETTINGS = ApiDocumentation.VERSION_URI_V1 + PATH_SEGMENT_SETTINGS;
 
     private final RuFeatureService ruFeatureService;
 
