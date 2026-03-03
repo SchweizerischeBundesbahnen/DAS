@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:app/nav/app_router.dart';
-import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app_links_x/component.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logging/logging.dart';
@@ -35,7 +35,7 @@ class AppLinkNavigator {
   }
 
   Future<void> _handleTrainJourneyIntent(TrainJourneyIntent intent) async {
-    if (!GetIt.I.isRegistered<JourneyTableViewModel>()) {
+    if (!GetIt.I.isRegistered<JourneyViewModel>()) {
       _log.info('Waiting for App to be ready');
       // If the App was not running when opening a deeplink, we need to give DI some time to register everything
       await Future.delayed(Duration(milliseconds: 500));
