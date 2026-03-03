@@ -15,9 +15,9 @@ preload:
     # disable kafka per default
     enabled: false
   timetablePeriod:
-    topic: nets-t.timetable
+    topic: nets-p.timetable
   timetableTrain:
-    topic: fps.inte.sbbp.zug
+    topic: fps.prod.infra.zug
   cleanUp:
     hours: 48
     cronExpression: "0 0 0 * * *"

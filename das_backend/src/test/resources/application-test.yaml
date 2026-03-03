@@ -38,6 +38,10 @@ aws:
 
 zis:
   kafka:
+    bootstrap-server: ''
+    group-id: ''
+    username: ''
+    password: ''
     topic: "formation-test"
 
 sfera:
@@ -57,9 +61,14 @@ preload:
     accessKey: accessKey
     accessSecret: accessSecret
   timetablePeriod:
-    topic: nets-p.timetable
+    topic: period
   timetableTrain:
-    topic: fps.inte.infra.zug
+    topic: train
   cleanUp:
     hours: 48
     cronExpression: "-"
+  kafka:
+    bootstrap-server: ''
+    group-id: ''
+    username: ''
+    password: ''

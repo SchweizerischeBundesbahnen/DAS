@@ -45,7 +45,7 @@ public class TimetablePeriodConsumer {
     @KafkaListener(
         batch = "true",
         containerFactory = "timetableListenerContainerFactory",
-        groupId = "${spring.kafka.consumer.group-id}",
+        groupId = "${preload.kafka.group-id}",
         topicPartitions = @org.springframework.kafka.annotation.TopicPartition(
             topic = "${preload.timetablePeriod.topic}",
             partitionOffsets = {@PartitionOffset(partition = "0", initialOffset = "0")}

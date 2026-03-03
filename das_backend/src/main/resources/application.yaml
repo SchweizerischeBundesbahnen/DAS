@@ -37,12 +37,7 @@ spring:
   flyway:
     baseline-on-migrate: true
   kafka:
-    bootstrap-servers: ${ZIS_BOOTSTRAP_URL}
     consumer:
-      key-deserializer: io.confluent.kafka.serializers.json.KafkaJsonSchemaDeserializer
-      value-deserializer: io.confluent.kafka.serializers.json.KafkaJsonSchemaDeserializer
-      auto-offset-reset: latest
-      group-id: ${ZIS_GROUP_ID}
       properties:
         schema.registry.url: ${ZIS_SR_URL}
         json:
@@ -52,9 +47,6 @@ spring:
     jaas:
       enabled: true
       login-module: org.apache.kafka.common.security.plain.PlainLoginModule
-      options:
-        username: ${ZIS_API_KEY}
-        password: ${ZIS_API_SECRET}
     security:
       protocol: SASL_SSL
     properties:
@@ -91,7 +83,12 @@ auth:
       issuer-uri: https://login.microsoftonline.com/a64ce5df-4ad8-40b9-91ee-54bac2bb8326/v2.0
       jwk-set-uri: https://login.microsoftonline.com/a64ce5df-4ad8-40b9-91ee-54bac2bb8326/discovery/v2.0/keys
 zis:
-  kafka.topic: ${ZIS_TOPIC}
+  kafka:
+    bootstrap-server: ${ZIS_BOOTSTRAP_URL}
+    group-id: ${ZIS_GROUP_ID}
+    username: ${ZIS_API_KEY}
+    password: ${ZIS_API_SECRET}
+    topic: ${ZIS_TOPIC}
   clean-up:
     cron: 0 0 3 * * ?  # every day at 3am
     older-than-days: 100
@@ -121,6 +118,11 @@ preload:
     bucketUrl: ${PRELOAD_BUCKET_URL}
     accessKey: ${PRELOAD_BUCKET_KEY}
     accessSecret: ${PRELOAD_BUCKET_SECRET}
+  kafka:
+    bootstrap-server: ${PRELOAD_KAFKA_BOOTSTRAP_SERVER}
+    group-id: ${PRELOAD_KAFKA_GROUP_ID}
+    username: ${PRELOAD_KAFKA_API_KEY}
+    password: ${PRELOAD_KAFKA_API_SECRET}
   timetablePeriod:
     topic: ${FAHRPLAN_SERVICE_API_TIMETABLE_PERIOD_TOPIC}
   timetableTrain:

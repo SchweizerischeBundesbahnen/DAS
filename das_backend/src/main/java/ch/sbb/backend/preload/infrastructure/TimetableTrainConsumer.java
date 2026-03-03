@@ -33,7 +33,7 @@ public class TimetableTrainConsumer {
     @KafkaListener(
         id = "consumeTrains",
         containerFactory = "timetableListenerContainerFactory",
-        groupId = "${spring.kafka.consumer.group-id}",
+        groupId = "${preload.kafka.group-id}",
         topics = "${preload.timetableTrain.topic}",
         batch = "true",
         autoStartup = "false"
