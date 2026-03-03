@@ -141,3 +141,7 @@ preload:
   cleanUp:
     hours: ${PRELOAD_CLEANUP_HOURS}
     cronExpression: ${PRELOAD_CLEANUP_CRON}
+
+koa:
+  base-url: ${KOA_BASE_URL}
+  basic-auth: ${KOA_BASIC_AUTH}

@@ -63,3 +63,7 @@ preload:
   cleanUp:
     hours: 48
     cronExpression: "-"
+
+koa:
+  base-url: ''
+  basic-auth: ''
