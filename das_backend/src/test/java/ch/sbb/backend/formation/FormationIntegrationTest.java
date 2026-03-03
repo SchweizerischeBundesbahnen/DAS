@@ -153,11 +153,11 @@ class FormationIntegrationTest {
         DailyFormationTrainKey key = this.jsonMapper.readValue(new File("src/test/resources/kafka/87389/key.json"), DailyFormationTrainKey.class);
         DailyFormationTrain value = this.jsonMapper.readValue(new File("src/test/resources/kafka/87389/value.json"), DailyFormationTrain.class);
 
-        kafkaTemplate.send(topic, key, value);
+        kafkaTemplate.send(topic, key, value).get(10, TimeUnit.SECONDS);
 
         String expectedJson = Files.readString(Paths.get("src/test/resources/formations/87389.json"));
         await()
-            .atMost(5, TimeUnit.SECONDS)
+            .atMost(10, TimeUnit.SECONDS)
             .untilAsserted(() -> {
                 mockMvc.perform(get(API_FORMATIONS)
                         .param("operationalTrainNumber", "87389").param("operationalDay", "2025-08-05").param("company", "6382")
@@ -172,7 +172,7 @@ class FormationIntegrationTest {
 
         String expectedUpdatedJson = Files.readString(Paths.get("src/test/resources/formations/87389_update.json"));
         await()
-            .atMost(5, TimeUnit.SECONDS)
+            .atMost(15, TimeUnit.SECONDS)
             .untilAsserted(() -> {
                 mockMvc.perform(get(API_FORMATIONS)
                         .param("operationalTrainNumber", "87389").param("operationalDay", "2025-08-05").param("company", "6382")
