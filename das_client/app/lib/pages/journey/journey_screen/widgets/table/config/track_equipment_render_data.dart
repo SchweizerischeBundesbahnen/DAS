@@ -19,13 +19,13 @@ class TrackEquipmentRenderData {
   final bool isConventionalExtendedSpeedBorder;
   final TrackEquipmentType? trackEquipmentType;
 
-  static TrackEquipmentRenderData? from(
-    List<BaseData> rowData,
-    Metadata metadata,
-    int index, [
+  static TrackEquipmentRenderData? from({
+    required List<BaseData> rows,
+    required Metadata metadata,
+    required int index,
     BrakeSeries? currentBrakeSeries,
-  ]) {
-    final data = rowData[index];
+  }) {
+    final data = rows[index];
     final nonStandardTrackEquipmentSegments = metadata.nonStandardTrackEquipmentSegments;
     final matchingSegment = nonStandardTrackEquipmentSegments.appliesToOrder(data.order).firstOrNull;
     if (matchingSegment == null) return null;
@@ -33,15 +33,15 @@ class TrackEquipmentRenderData {
     return TrackEquipmentRenderData(
       trackEquipmentType: matchingSegment.type,
       cumulativeHeight: _calculateTrackEquipmentCumulativeHeight(
-        rowData,
+        rows,
         metadata,
         matchingSegment,
         index,
         currentBrakeSeries,
       ),
-      isConventionalExtendedSpeedBorder: _isConventionalExtendedSpeedBorder(rowData, metadata, index),
-      isStart: _isStart(data, matchingSegment, rowData),
-      isEnd: _isEnd(data, matchingSegment, rowData),
+      isConventionalExtendedSpeedBorder: _isConventionalExtendedSpeedBorder(rows, metadata, index),
+      isStart: _isStart(data, matchingSegment, rows),
+      isEnd: _isEnd(data, matchingSegment, rows),
     );
   }
 

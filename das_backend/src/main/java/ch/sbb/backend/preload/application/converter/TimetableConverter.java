@@ -1,6 +1,6 @@
 package ch.sbb.backend.preload.application.converter;
 
-import ch.sbb.backend.preload.application.model.trainidentification.TimetablePeriod;
+import ch.sbb.backend.preload.application.model.trainidentification.OperatingPeriod;
 import ch.sbb.backend.preload.application.model.trainidentification.Train;
 import ch.sbb.backend.preload.infrastructure.TimetablePeriodRepository;
 import ch.sbb.backend.preload.infrastructure.model.train.TimetableTrainKey;
@@ -33,16 +33,16 @@ public class TimetableConverter {
     }
 
     private Train convertTrain(String eventType, TimetableTrainValue train) {
-        Optional<TimetablePeriod> period = timetablePeriodRepository.findById(train.getFahrplanperiode());
+        Optional<OperatingPeriod> period = timetablePeriodRepository.findById(train.getFahrplanperiode());
         if (period.isEmpty()) {
             throw new RuntimeException("TimetablePeriod for Fahrplanperiode " + train.getFahrplanperiode() + " was not found.");
         }
 
-        LocalDate periodStartDate = period.get().getFirstDay();
+        LocalDate periodStartDate = period.get().getStartDate();
         return Train.builder()
             .eventType(eventType)
             .trainPathId(train.getTrassenID())
-            .period(train.getFahrplanperiode())
+            .operatingPeriod(train.getFahrplanperiode())
             .operationalTrainNumber(train.getZugnummer())
             .trainRuns(trainRunConverter.convertTrainRuns(train.getZuglaeufe(), periodStartDate))
             .build();

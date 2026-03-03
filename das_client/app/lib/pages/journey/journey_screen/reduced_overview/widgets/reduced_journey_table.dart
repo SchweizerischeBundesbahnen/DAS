@@ -63,7 +63,7 @@ class ReducedJourneyTable extends StatelessWidget {
     final List<CellRowBuilder?> builders = List.generate(data.length, (index) {
       final rowData = data[index];
       final journeyConfig = JourneyConfig(
-        bracketStationRenderData: BracketStationRenderData.from(rowData, metadata),
+        bracketStationRenderData: BracketStationRenderData.from(data: rowData, metadata: metadata),
       );
 
       switch (rowData.dataType) {

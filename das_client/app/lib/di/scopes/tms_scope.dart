@@ -27,7 +27,11 @@ extension TmsScopeExtension on GetIt {
   void registerOpenIdMqttClientConnector() {
     factoryFunc() {
       _log.fine('Register mqtt client connector');
-      return MqttComponent.createOpenIdClientConnector(authProvider: DI.get());
+      final flavor = DI.get<Flavor>();
+      return MqttComponent.createOpenIdClientConnector(
+        authProvider: DI.get(),
+        openIdProfileMap: flavor.mqttOpenIdProfileMap,
+      );
     }
 
     registerLazySingleton<MqttClientConnector>(factoryFunc);

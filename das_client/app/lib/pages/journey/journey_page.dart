@@ -8,7 +8,8 @@ import 'package:app/nav/app_router.dart';
 import 'package:app/pages/journey/journey_screen/journey_overview.dart';
 import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
-import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_view_model.dart';
+import 'package:app/pages/journey/view_model/view_mode_view_model.dart';
 import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
 import 'package:app/pages/journey/widgets/das_journey_scaffold.dart';
 import 'package:app/util/format.dart';
@@ -31,7 +32,8 @@ class JourneyPage extends StatefulWidget implements AutoRouteWrapper {
   @override
   Widget wrappedRoute(BuildContext context) => MultiProvider(
     providers: [
-      Provider<JourneyTableViewModel>(create: (_) => DI.get<JourneyTableViewModel>()),
+      Provider<JourneyViewModel>(create: (_) => DI.get<JourneyViewModel>()),
+      Provider<ViewModeViewModel>(create: (_) => DI.get<ViewModeViewModel>()),
       Provider<WarnAppViewModel>(create: (_) => DI.get<WarnAppViewModel>()),
       Provider<JourneySettingsViewModel>(create: (_) => DI.get<JourneySettingsViewModel>()),
     ],
@@ -63,7 +65,7 @@ class _JourneyPageState extends State<JourneyPage> {
 
   @override
   Widget build(BuildContext context) {
-    final journeyTableVM = DI.get<JourneyTableViewModel>();
+    final journeyVM = DI.get<JourneyViewModel>();
 
     return FutureBuilder<void>(
       future: _initFuture,
@@ -73,7 +75,7 @@ class _JourneyPageState extends State<JourneyPage> {
         return StreamBuilder<(bool, Journey?)>(
           stream: _streamCombo,
           // initial zen mode is false to animate transition
-          initialData: (false, journeyTableVM.journeyValue),
+          initialData: (false, journeyVM.journeyValue),
           builder: (context, snapshot) {
             final isZenViewMode = snapshot.requireData.$1;
             final journey = snapshot.requireData.$2;
@@ -103,8 +105,9 @@ class _JourneyPageState extends State<JourneyPage> {
   Future<void> _initState() async {
     await _loadInitialTrains();
 
-    final journeyTableVM = DI.get<JourneyTableViewModel>();
-    _errorCodeSubscription = journeyTableVM.errorCode.listen((error) async {
+    final journeyVM = DI.get<JourneyViewModel>();
+    final viewModeVM = DI.get<ViewModeViewModel>();
+    _errorCodeSubscription = journeyVM.errorCode.listen((error) async {
       if (error != null) {
         await DI.get<ScopeHandler>().pop<JourneyScope>();
         await DI.get<ScopeHandler>().push<JourneyScope>();
@@ -113,7 +116,7 @@ class _JourneyPageState extends State<JourneyPage> {
         }
       }
     });
-    _streamCombo = CombineLatestStream.combine2(journeyTableVM.isZenViewMode, journeyTableVM.journey, (a, b) => (a, b));
+    _streamCombo = CombineLatestStream.combine2(viewModeVM.isZenViewMode, journeyVM.journey, (a, b) => (a, b));
   }
 
   Future<void> _loadInitialTrains() async {

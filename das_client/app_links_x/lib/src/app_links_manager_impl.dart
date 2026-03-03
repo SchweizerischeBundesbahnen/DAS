@@ -21,7 +21,6 @@ class AppLinksManagerImpl implements AppLinksManager {
   StreamSubscription<Uri>? _linkSubscription;
 
   AppLinksManagerImpl({AppLinks? appLinks}) : _appLinks = appLinks ?? AppLinks() {
-    _checkInitialLink();
     _linkSubscription = _appLinks.uriLinkStream.listen(
       (uri) => _handleUri(uri),
       onError: (err) => _log.severe('Error while listening to deep-links updates: $err'),
@@ -36,17 +35,6 @@ class AppLinksManagerImpl implements AppLinksManager {
   void dispose() {
     _linkSubscription?.cancel();
     _rxAppLinkIntent.close();
-  }
-
-  Future<void> _checkInitialLink() async {
-    try {
-      final initialUri = await _appLinks.getInitialLink();
-      if (initialUri != null) {
-        _handleUri(initialUri);
-      }
-    } catch (e) {
-      _log.severe('Error while checking for initial link: $e');
-    }
   }
 
   /// Uri is expected to be in format https://driveradvisorysystem.app.sbb.ch/{env}/{version}/PATH+QUERY.

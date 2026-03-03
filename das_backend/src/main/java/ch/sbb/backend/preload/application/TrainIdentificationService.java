@@ -25,6 +25,8 @@ public class TrainIdentificationService {
     }
 
     public List<TrainIdentification> processDailyTrainRunRequest(OffsetDateTime startDateTime) {
+        // todo filter for preloaded_at and also older trains not yet preloaded
+
         List<TrainIdentificationEntity> trainRunEntities = trainIdentificationRepository.findAllByStartDateTimeBefore(startDateTime);
 
         return trainRunEntities.stream()
@@ -34,11 +36,8 @@ public class TrainIdentificationService {
     }
 
     private TrainIdentification readEntity(TrainIdentificationEntity trainRunEntity) {
-        return TrainIdentification.builder()
-            .operationalTrainNumber(trainRunEntity.getOperationalTrainNumber())
-            .startDate(trainRunEntity.getStartDateTime().toLocalDate())
-            .companies(readCompanyCodes(trainRunEntity.getCompanies()))
-            .build();
+        return new TrainIdentification(trainRunEntity.getId(), trainRunEntity.getOperationalTrainNumber(), trainRunEntity.getStartDateTime().toLocalDate(),
+            readCompanyCodes(trainRunEntity.getCompanies()));
     }
 
     private Set<CompanyCode> readCompanyCodes(String smsRus) {
@@ -47,5 +46,9 @@ public class TrainIdentificationService {
             .filter(Optional::isPresent)
             .map(Optional::get)
             .collect(Collectors.toSet());
+    }
+
+    public int savePreloadedTrains(Set<TrainIdentification> trainIdentifications) {
+        return trainIdentificationRepository.updatePreloadedAtByIds(OffsetDateTime.now(), trainIdentifications.stream().map(TrainIdentification::id).collect(Collectors.toSet()));
     }
 }

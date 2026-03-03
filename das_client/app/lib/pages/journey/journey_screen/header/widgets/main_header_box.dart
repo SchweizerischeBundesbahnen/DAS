@@ -6,7 +6,7 @@ import 'package:app/pages/journey/journey_screen/header/widgets/extended_menu.da
 import 'package:app/pages/journey/journey_screen/header/widgets/journey_advancement_button.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/next_stop.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/theme_button.dart';
-import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -19,7 +19,7 @@ class MainHeaderBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final journeyViewModel = context.read<JourneyTableViewModel>();
+    final journeyViewModel = context.read<JourneyViewModel>();
 
     return StreamBuilder(
       stream: journeyViewModel.journey,

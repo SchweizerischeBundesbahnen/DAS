@@ -20,9 +20,9 @@ class AdvisedSpeedViewModel extends JourneyAwareViewModel {
   AdvisedSpeedViewModel({
     required Stream<JourneyPositionModel> journeyPositionStream,
     required NotificationPriorityQueueViewModel notificationVM,
-    super.journeyTableViewModel,
+    super.journeyViewModel,
   }) : _notificationVM = notificationVM {
-    _initJourneyStreamSubscription(journeyTableViewModel.journey, journeyPositionStream);
+    _initJourneyStreamSubscription(journeyViewModel.journey, journeyPositionStream);
   }
 
   static Sound get _startSound => DI.get<DASSounds>().advisedSpeedStart;

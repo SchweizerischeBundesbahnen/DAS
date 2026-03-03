@@ -7,7 +7,7 @@ import ch.sbb.backend.IntegrationTest;
 import ch.sbb.backend.preload.application.TimetableService;
 import ch.sbb.backend.preload.application.TrainIdentificationService;
 import ch.sbb.backend.preload.application.model.trainidentification.CompanyCode;
-import ch.sbb.backend.preload.application.model.trainidentification.TimetablePeriod;
+import ch.sbb.backend.preload.application.model.trainidentification.OperatingPeriod;
 import ch.sbb.backend.preload.application.model.trainidentification.TrainIdentification;
 import ch.sbb.backend.preload.infrastructure.TimetablePeriodRepository;
 import ch.sbb.backend.preload.infrastructure.model.period.TimetablePeriodKey;
@@ -75,10 +75,10 @@ class TrainIdentificationIntegrationTest {
                 .hasValueSatisfying(actual ->
                     assertThat(actual)
                         .usingRecursiveComparison()
-                        .isEqualTo(TimetablePeriod.builder()
+                        .isEqualTo(OperatingPeriod.builder()
                             .year(testYear)
-                            .firstDay(LocalDate.of(testYear, 1, 1))
-                            .lastDay(LocalDate.of(testYear, 1, 1 + TEST_PERIOD_NUMBER_OF_DAYS))
+                            .startDate(LocalDate.of(testYear, 1, 1))
+                            .endDate(LocalDate.of(testYear, 1, 1 + TEST_PERIOD_NUMBER_OF_DAYS))
                             .build())
                 ));
     }
@@ -104,10 +104,10 @@ class TrainIdentificationIntegrationTest {
                 .hasValueSatisfying(actual ->
                     assertThat(actual)
                         .usingRecursiveComparison()
-                        .isEqualTo(TimetablePeriod.builder()
+                        .isEqualTo(OperatingPeriod.builder()
                             .year(testYear)
-                            .firstDay(LocalDate.of(testYear, 1, 1))
-                            .lastDay(LocalDate.of(testYear, 1, 1 + TEST_PERIOD_NUMBER_OF_DAYS))
+                            .startDate(LocalDate.of(testYear, 1, 1))
+                            .endDate(LocalDate.of(testYear, 1, 1 + TEST_PERIOD_NUMBER_OF_DAYS))
                             .build())
                 ));
 
@@ -126,13 +126,13 @@ class TrainIdentificationIntegrationTest {
                 List<TrainIdentification> trainIds = trainIdentificationService.processDailyTrainRunRequest(OffsetDateTime.of(startDate.plusDays(1), LocalTime.now(), ZoneOffset.UTC));
                 assertThat(trainIds).hasSize(1);
                 TrainIdentification trainId = trainIds.getFirst();
-                assertThat(trainId.getStartDate()).isEqualTo(startDate);
-                assertThat(trainId.getOperationalTrainNumber()).isEqualTo("728");
-                assertThat(trainId.getCompanies()).containsExactly(COMPANY_CODE_SOB);
+                assertThat(trainId.startDate()).isEqualTo(startDate);
+                assertThat(trainId.operationalTrainNumber()).isEqualTo("728");
+                assertThat(trainId.companies()).containsExactly(COMPANY_CODE_SOB);
             });
 
         // When
-        timetableService.deleteObsoleteData(LocalDate.of(testYear, 2, 25));
+        timetableService.deleteAllBefore(LocalDate.of(testYear, 2, 25));
 
         // Then
         waitAtMost(10, TimeUnit.SECONDS)

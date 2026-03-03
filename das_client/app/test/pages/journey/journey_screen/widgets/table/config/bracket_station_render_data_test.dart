@@ -25,11 +25,11 @@ void main() {
     );
 
     // WHEN
-    final renderData1 = BracketStationRenderData.from(journey.data[0], journey.metadata);
-    final renderData2 = BracketStationRenderData.from(journey.data[1], journey.metadata);
-    final renderData3 = BracketStationRenderData.from(journey.data[2], journey.metadata);
-    final renderData4 = BracketStationRenderData.from(journey.data[3], journey.metadata);
-    final renderData5 = BracketStationRenderData.from(journey.data[4], journey.metadata);
+    final renderData1 = BracketStationRenderData.from(data: journey.data[0], metadata: journey.metadata);
+    final renderData2 = BracketStationRenderData.from(data: journey.data[1], metadata: journey.metadata);
+    final renderData3 = BracketStationRenderData.from(data: journey.data[2], metadata: journey.metadata);
+    final renderData4 = BracketStationRenderData.from(data: journey.data[3], metadata: journey.metadata);
+    final renderData5 = BracketStationRenderData.from(data: journey.data[4], metadata: journey.metadata);
 
     // THEN
     expect(renderData1, isNull);

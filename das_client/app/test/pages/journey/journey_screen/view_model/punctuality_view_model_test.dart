@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:app/pages/journey/journey_screen/view_model/model/punctuality_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/punctuality_view_model.dart';
-import 'package:app/pages/journey/view_model/journey_table_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:clock/clock.dart';
 import 'package:fake_async/fake_async.dart';
@@ -16,7 +16,7 @@ import 'package:sfera/component.dart';
 import 'punctuality_view_model_test.mocks.dart';
 
 @GenerateNiceMocks([
-  MockSpec<JourneyTableViewModel>(),
+  MockSpec<JourneyViewModel>(),
 ])
 void main() {
   const timeConstants = TimeConstants();
@@ -27,7 +27,7 @@ void main() {
 
   late Clock testClock;
   late PunctualityViewModel testee;
-  late MockJourneyTableViewModel mockJourneyTableViewModel;
+  late MockJourneyViewModel mockJourneyViewModel;
   late BehaviorSubject<Journey?> rxMockJourney;
   late StreamSubscription modelSubscription;
   late List<PunctualityModel> emitRegister;
@@ -48,11 +48,11 @@ void main() {
     testClock = Clock.fixed(clock.now());
     fakeAsync((fakeAsync) {
       rxMockJourney = BehaviorSubject<Journey?>();
-      mockJourneyTableViewModel = MockJourneyTableViewModel();
-      when(mockJourneyTableViewModel.journey).thenAnswer((_) => rxMockJourney.stream);
+      mockJourneyViewModel = MockJourneyViewModel();
+      when(mockJourneyViewModel.journey).thenAnswer((_) => rxMockJourney.stream);
       testAsync = fakeAsync;
       withClock(testClock, () {
-        testee = PunctualityViewModel(journeyTableViewModel: mockJourneyTableViewModel);
+        testee = PunctualityViewModel(journeyViewModel: mockJourneyViewModel);
       });
       emitRegister = <PunctualityModel>[];
       modelSubscription = testee.model.listen(emitRegister.add);

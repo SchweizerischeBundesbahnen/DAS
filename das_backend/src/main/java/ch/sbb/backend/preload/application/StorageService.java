@@ -12,19 +12,23 @@ import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.Set;
+import java.time.format.DateTimeParseException;
+import java.util.Collection;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class StorageService {
 
     private static final String DIR_JP = "jp/";
     private static final String DIR_SP = "sp/";
     private static final String DIR_TC = "tc/";
-
-    private static final DateTimeFormatter FILENAME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH-mm-ss'Z'");
+    private static final String ZIP_FILE_ENDING = ".zip";
+    private static final DateTimeFormatter FILENAME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH-mm-ssX");
 
     private final XmlHelper xmlHelper;
     private final S3Service s3Service;
@@ -34,7 +38,7 @@ public class StorageService {
         this.s3Service = s3Service;
     }
 
-    public void save(Set<JourneyProfile> journeyProfiles, Set<SegmentProfile> segmentProfiles, Set<TrainCharacteristics> trainCharacteristics) {
+    public void save(Collection<JourneyProfile> journeyProfiles, Collection<SegmentProfile> segmentProfiles, Collection<TrainCharacteristics> trainCharacteristics) {
         try {
             String zipName = buildZipName();
 
@@ -55,10 +59,10 @@ public class StorageService {
 
     private String buildZipName() {
         OffsetDateTime nowOffset = OffsetDateTime.now();
-        return FILENAME_FORMATTER.format(nowOffset.toInstant().atZone(ZoneOffset.UTC)) + ".zip";
+        return FILENAME_FORMATTER.format(nowOffset.toInstant().atZone(ZoneOffset.UTC)) + ZIP_FILE_ENDING;
     }
 
-    private void writeJps(Set<JourneyProfile> jps, ZipOutputStream zos) throws IOException {
+    private void writeJps(Collection<JourneyProfile> jps, ZipOutputStream zos) throws IOException {
         for (JourneyProfile jp : jps) {
             OTNID otnid = jp.getTrainIdentification().getOTNID();
             String filename = String.format("JP_%s_%s_%s_%s.xml",
@@ -70,7 +74,7 @@ public class StorageService {
         }
     }
 
-    private void writeSps(Set<SegmentProfile> sps, ZipOutputStream zos) throws IOException {
+    private void writeSps(Collection<SegmentProfile> sps, ZipOutputStream zos) throws IOException {
         for (SegmentProfile sp : sps) {
             String filename = String.format("SP_%s_%s_%s.xml",
                 sp.getSPID(),
@@ -80,7 +84,7 @@ public class StorageService {
         }
     }
 
-    private void writeTcs(Set<TrainCharacteristics> tcs, ZipOutputStream zos) throws IOException {
+    private void writeTcs(Collection<TrainCharacteristics> tcs, ZipOutputStream zos) throws IOException {
         for (TrainCharacteristics tc : tcs) {
             String filename = String.format("TC_%s_%s_%s.xml",
                 tc.getTCID(),
@@ -99,5 +103,25 @@ public class StorageService {
         zos.putNextEntry(entry);
         zos.write(xml.getBytes(StandardCharsets.UTF_8));
         zos.closeEntry();
+    }
+
+    void deleteAllBefore(OffsetDateTime cutoffDate) {
+        List<String> keysToDelete = s3Service.listObjects().stream()
+            .filter(k -> k != null && k.endsWith(ZIP_FILE_ENDING))
+            .filter(k -> {
+                try {
+                    String base = k.substring(0, k.length() - ZIP_FILE_ENDING.length());
+                    OffsetDateTime ts = OffsetDateTime.parse(base, FILENAME_FORMATTER);
+                    return ts.isBefore(cutoffDate);
+                } catch (DateTimeParseException e) {
+                    log.warn("Unexpected zip file name while preload cleanup. name={} was not deleted", k);
+                    return false;
+                }
+            })
+            .toList();
+
+        if (!keysToDelete.isEmpty()) {
+            s3Service.deleteObjects(keysToDelete);
+        }
     }
 }

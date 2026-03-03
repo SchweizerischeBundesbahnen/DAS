@@ -9,9 +9,9 @@ import 'package:sfera/component.dart';
 class RadioChannelViewModel extends JourneyAwareViewModel {
   RadioChannelViewModel({
     required Stream<JourneyPositionModel> journeyPositionStream,
-    super.journeyTableViewModel,
+    super.journeyViewModel,
   }) {
-    _initSubscriptions(journeyTableViewModel.journey, journeyPositionStream);
+    _initSubscriptions(journeyViewModel.journey, journeyPositionStream);
   }
 
   late StreamSubscription<(Journey?, JourneyPositionModel)> _subscription;
