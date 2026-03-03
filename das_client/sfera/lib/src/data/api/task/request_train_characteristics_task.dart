@@ -42,10 +42,10 @@ class RequestTrainCharacteristicsTask extends SferaTask<List<TrainCharacteristic
     _taskCompletedCallback = onCompleted;
     _taskFailedCallback = onFailed;
 
-    await _requestSegmentProfiles();
+    await requestTrainCharacteristics();
   }
 
-  Future<void> _requestSegmentProfiles() async {
+  Future<void> requestTrainCharacteristics() async {
     final missingTrainCharacteristics = await findMissingTrainCharacteristics();
     if (missingTrainCharacteristics.isEmpty) {
       _log.info('No missing train characteristics found...');
