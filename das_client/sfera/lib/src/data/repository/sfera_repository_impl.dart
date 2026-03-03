@@ -41,11 +41,9 @@ import 'package:sfera/src/model/otn_id.dart';
 import 'package:uuid/uuid.dart';
 
 final _log = Logger('SferaRepoImpl');
+const int _missingSegmentProfilesMaxRetryCount = 3;
 
 class SferaRepoImpl implements SferaRepository {
-  // TODO: Needed and if so, what is a good count?
-  static const _missingSpRequestMaxRetries = 10;
-
   SferaRepoImpl({
     required MqttService mqttService,
     required SferaLocalDatabaseService localService,
@@ -80,6 +78,7 @@ class SferaRepoImpl implements SferaRepository {
   RelatedTrainInformationDto? _relatedTrainInformation;
   bool _hasOfflineData = false;
   int _missingSpRequestRetryCount = 0;
+  int _lastMissingSegmentProfileCount = 0;
 
   final _rxState = BehaviorSubject<SferaRemoteRepositoryInternalState>.seeded(.disconnected);
   final _rxJourney = BehaviorSubject<Journey?>.seeded(null);
@@ -347,27 +346,56 @@ class SferaRepoImpl implements SferaRepository {
     final dataList = data as List;
     _journeyProfile = dataList.whereType<JourneyProfileDto>().first;
     _relatedTrainInformation = dataList.whereType<RelatedTrainInformationDto>().firstOrNull;
+    _resetSegmentProfileRetryState();
     _startRequestSegmentProfileTask();
     _startRequestTrainCharacteristicsTask();
   }
 
   /// It's possible that not all SPs are provided because of a MQTT limit.
   /// Request missing SPs again with [RequestSegmentProfilesTask].
+  ///
+  /// After each request, check whether missing SP count has changed. If not, try at most
+  /// [_missingSegmentProfilesMaxRetryCount] until abort.
   Future<void> _handleRequestSegmentProfilesTaskCompleted() async {
     if (_journeyProfile == null) return;
     await _refreshSegmentProfiles();
 
-    final allSegmentsLoaded = _journeyProfile!.segmentProfileReferences.length == _segmentProfiles.length;
-    if (allSegmentsLoaded) return;
-
-    // TODO: Really needed? Throw what error? Pass error to UI etc.
-    if (_missingSpRequestRetryCount >= _missingSpRequestMaxRetries) {
-      _log.warning('Could not get all segment profiles within $_missingSpRequestRetryCount requests');
-      lastError = .invalid();
+    final missingSegmentProfileCount = _journeyProfile!.segmentProfileReferences.length - _segmentProfiles.length;
+    if (missingSegmentProfileCount == 0) {
+      _log.info('Received all segment profiles for journey profile.');
+      _resetSegmentProfileRetryState();
+      return;
     }
 
-    _missingSpRequestRetryCount++;
+    _retrySegmentProfileRequests(missingSegmentProfileCount);
+  }
+
+  void _retrySegmentProfileRequests(int missingSegmentProfileCount) {
+    if (missingSegmentProfileCount == _lastMissingSegmentProfileCount) {
+      _missingSpRequestRetryCount++;
+      if (_missingSpRequestRetryCount >= _missingSegmentProfilesMaxRetryCount) {
+        _log.warning(_abortRetryLog);
+        lastError = .invalid();
+        return;
+      }
+      _log.info(
+        'Missing segment profile count: $missingSegmentProfileCount'
+        '\n  Retry count (current / max): ${_missingSpRequestRetryCount + 1} / $_missingSegmentProfilesMaxRetryCount',
+      );
+    } else {
+      _log.info(
+        'Missing segment profiles changed from: $_lastMissingSegmentProfileCount to $missingSegmentProfileCount.'
+        '\n  Resetting retries!',
+      );
+      _lastMissingSegmentProfileCount = missingSegmentProfileCount;
+      _missingSpRequestRetryCount = 0;
+    }
     _startRequestSegmentProfileTask();
+  }
+
+  void _resetSegmentProfileRetryState() {
+    _lastMissingSegmentProfileCount = 0;
+    _missingSpRequestRetryCount = 0;
   }
 
   void _startRequestSegmentProfileTask() {
@@ -465,6 +493,7 @@ class SferaRepoImpl implements SferaRepository {
 
   void _onJourneyProfileUpdated(SferaEventMessageHandler _, JourneyProfileDto data) async {
     _journeyProfile = data;
+    _resetSegmentProfileRetryState();
     _startRequestSegmentProfileTask();
     _startRequestTrainCharacteristicsTask();
   }
@@ -548,3 +577,7 @@ enum SferaRemoteRepositoryInternalState {
     .connected => .connected,
   };
 }
+
+const String _abortRetryLog =
+    'Number of missing segment profiles did not change '
+    'within last $_missingSegmentProfilesMaxRetryCount requests. Aborting retry.';
