@@ -15,7 +15,7 @@ jobs:
         uses: actions/github-script@v8
         with:
           script: |
-            const checkboxes = ["<!-- check-ba -->BA Review", "<!-- check-dev -->DEV Review", "<!-- check-po -->PO Review", "<!-- check-architect -->Architekt Review"];
+            const checkboxes = ["<!-- check-ba -->BA Review", "<!-- check-dev -->DEV Review", "<!-- check-po -->PO Review", "<!-- check-architect -->PA Review"];
             const issueBody= context.payload.issue.body
             const oldIssueBody = context.payload.changes.body.from
             const username = context.actor;

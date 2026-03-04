@@ -25,4 +25,4 @@ Als <Rolle> möchte ich <Funktion>, damit <Nutzen>.
 - [ ] <!-- check-ba -->BA Review
 - [ ] <!-- check-dev -->DEV Review
 - [ ] <!-- check-po -->PO Review
-- [ ] <!-- check-architect -->Architekt Review
+- [ ] <!-- check-architect -->PA Review
