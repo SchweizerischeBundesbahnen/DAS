@@ -103,7 +103,7 @@ public class TopLevelHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(AuthorizationDeniedException.class)
     ResponseEntity<Problem> handleAuthorizationDenied(AuthorizationDeniedException exception) {
-        return createProblemResponse(HttpStatus.FORBIDDEN, "Forbidden", "Not allowed to perform this operation.", exception);
+        return createProblemResponse(HttpStatus.FORBIDDEN, "Forbidden", "Not allowed!", exception);
     }
 
     /**
