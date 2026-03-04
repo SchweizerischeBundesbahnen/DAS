@@ -27,9 +27,9 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
-      ZIS_SR_URL: ${{ secrets.ZIS_SR_URL }}
-      ZIS_SR_API_KEY: ${{ secrets.ZIS_SR_API_KEY }}
-      ZIS_SR_API_SECRET: ${{ secrets.ZIS_SR_API_SECRET }}
+      KAFKA_SR_URL: ${{ secrets.ZIS_SR_URL }}
+      KAFKA_SR_API_KEY: ${{ secrets.ZIS_SR_API_KEY }}
+      KAFKA_SR_API_SECRET: ${{ secrets.ZIS_SR_API_SECRET }}
 
     steps:
       - uses: actions/checkout@v6
