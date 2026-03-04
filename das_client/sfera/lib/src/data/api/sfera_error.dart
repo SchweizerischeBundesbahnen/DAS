@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:sfera/component.dart';
 
 /// This class represents SFERA errors that can occur e.g. during connection, validation and returned by protocol itself [ProtocolErrors].
@@ -27,6 +28,13 @@ sealed class SferaError {
   String toString() {
     return 'SferaError{code: $code}';
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) || other is SferaError && runtimeType == other.runtimeType && code == other.code;
+
+  @override
+  int get hashCode => code.hashCode;
 }
 
 final class ProtocolErrors extends SferaError {
@@ -38,6 +46,18 @@ final class ProtocolErrors extends SferaError {
   String toString() {
     return 'ProtocolErrors{errors: $errors}';
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      super == other &&
+          other is ProtocolErrors &&
+          runtimeType == other.runtimeType &&
+          super == other &&
+          IterableEquality().equals(errors, other.errors);
+
+  @override
+  int get hashCode => Object.hash(super.hashCode, errors);
 }
 
 final class ProtocolError {
@@ -50,6 +70,17 @@ final class ProtocolError {
   String toString() {
     return 'ProtocolError{code: $code, additionalInfo: $additionalInfo}';
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ProtocolError &&
+          runtimeType == other.runtimeType &&
+          code == other.code &&
+          additionalInfo == other.additionalInfo;
+
+  @override
+  int get hashCode => Object.hash(code, additionalInfo);
 }
 
 final class Invalid extends SferaError {

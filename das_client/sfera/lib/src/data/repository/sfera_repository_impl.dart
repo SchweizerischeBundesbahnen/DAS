@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:core';
 import 'dart:ui';
 
+import 'package:collection/collection.dart';
 import 'package:connectivity_x/component.dart';
 import 'package:logging/logging.dart';
 import 'package:mqtt/component.dart';
@@ -40,6 +41,7 @@ import 'package:sfera/src/model/otn_id.dart';
 import 'package:uuid/uuid.dart';
 
 final _log = Logger('SferaRepoImpl');
+const int _missingSegmentProfilesMaxRetryCount = 3;
 
 class SferaRepoImpl implements SferaRepository {
   SferaRepoImpl({
@@ -75,6 +77,8 @@ class SferaRepoImpl implements SferaRepository {
   final List<TrainCharacteristicsDto> _trainCharacteristics = [];
   RelatedTrainInformationDto? _relatedTrainInformation;
   bool _hasOfflineData = false;
+  int _missingSpRequestRetryCount = 0;
+  int _lastMissingSegmentProfileCount = 0;
 
   final _rxState = BehaviorSubject<SferaRemoteRepositoryInternalState>.seeded(.disconnected);
   final _rxJourney = BehaviorSubject<Journey?>.seeded(null);
@@ -299,12 +303,13 @@ class SferaRepoImpl implements SferaRepository {
         await _handleHandshakeTaskCompleted();
       case RequestJourneyProfileTask _:
         await _handleRequestJourneyProfileTaskCompleted(data);
+      case RequestSegmentProfilesTask _:
+        await _handleRequestSegmentProfilesTaskCompleted();
     }
 
     if (_allTasksCompleted()) {
       switch (_rxState.value) {
         case .loadingAdditionalData:
-          await _refreshSegmentProfiles();
           await _refreshTrainCharacteristics();
           _updateJourney(
             onSuccess: () {
@@ -341,10 +346,61 @@ class SferaRepoImpl implements SferaRepository {
     final dataList = data as List;
     _journeyProfile = dataList.whereType<JourneyProfileDto>().first;
     _relatedTrainInformation = dataList.whereType<RelatedTrainInformationDto>().firstOrNull;
-    _startSegmentProfileAndTCTask();
+    _resetSegmentProfileRetryState();
+    _startRequestSegmentProfileTask();
+    _startRequestTrainCharacteristicsTask();
   }
 
-  void _startSegmentProfileAndTCTask() {
+  /// It's possible that not all SPs are provided because of a MQTT limit.
+  /// Request missing SPs again with [RequestSegmentProfilesTask].
+  ///
+  /// After each request, check whether missing SP count has changed. If not, try at most
+  /// [_missingSegmentProfilesMaxRetryCount] until abort.
+  Future<void> _handleRequestSegmentProfilesTaskCompleted() async {
+    if (_journeyProfile == null) return;
+    await _refreshSegmentProfiles();
+
+    final missingSegmentProfileCount = _journeyProfile!.segmentProfileReferences.length - _segmentProfiles.length;
+    if (missingSegmentProfileCount == 0) {
+      _log.info('Received all segment profiles for journey profile.');
+      _resetSegmentProfileRetryState();
+      return;
+    }
+
+    _retrySegmentProfileRequests(missingSegmentProfileCount);
+  }
+
+  void _retrySegmentProfileRequests(int missingSegmentProfileCount) {
+    if (missingSegmentProfileCount == _lastMissingSegmentProfileCount) {
+      if (++_missingSpRequestRetryCount >= _missingSegmentProfilesMaxRetryCount) {
+        _log.warning(
+          'Number of missing segment profiles did not change within '
+          'last $_missingSegmentProfilesMaxRetryCount requests. Aborting retry.',
+        );
+        lastError = .invalid();
+        return;
+      }
+      _log.info(
+        'Missing segment profile count: $missingSegmentProfileCount'
+        '\n  Retry count (current / max): ${_missingSpRequestRetryCount} / $_missingSegmentProfilesMaxRetryCount',
+      );
+    } else {
+      _log.info(
+        'Missing segment profiles changed from: $_lastMissingSegmentProfileCount to $missingSegmentProfileCount.'
+        '\n  Resetting retries!',
+      );
+      _lastMissingSegmentProfileCount = missingSegmentProfileCount;
+      _missingSpRequestRetryCount = 0;
+    }
+    _startRequestSegmentProfileTask();
+  }
+
+  void _resetSegmentProfileRetryState() {
+    _lastMissingSegmentProfileCount = 0;
+    _missingSpRequestRetryCount = 0;
+  }
+
+  void _startRequestSegmentProfileTask() {
     final requestSegmentProfilesTask = RequestSegmentProfilesTask(
       sferaRepo: this,
       mqttService: _mqttService,
@@ -354,7 +410,9 @@ class SferaRepoImpl implements SferaRepository {
     );
     _tasks.add(requestSegmentProfilesTask);
     requestSegmentProfilesTask.execute(_onTaskCompleted, _onTaskFailed);
+  }
 
+  void _startRequestTrainCharacteristicsTask() {
     final requestTrainCharacteristicsTask = RequestTrainCharacteristicsTask(
       sferaRepo: this,
       mqttService: _mqttService,
@@ -437,7 +495,9 @@ class SferaRepoImpl implements SferaRepository {
 
   void _onJourneyProfileUpdated(SferaEventMessageHandler _, JourneyProfileDto data) async {
     _journeyProfile = data;
-    _startSegmentProfileAndTCTask();
+    _resetSegmentProfileRetryState();
+    _startRequestSegmentProfileTask();
+    _startRequestTrainCharacteristicsTask();
   }
 
   void _onRelatedTrainInformationUpdated(SferaEventMessageHandler _, RelatedTrainInformationDto data) async {

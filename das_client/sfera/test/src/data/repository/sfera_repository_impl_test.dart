@@ -14,7 +14,7 @@ import 'package:sfera/src/data/repository/sfera_local_repo_impl.dart';
 import 'package:sfera/src/data/repository/sfera_repository_impl.dart';
 import 'package:uuid/uuid.dart';
 
-import 'sfera_remote_repo_impl_test.mocks.dart';
+import 'sfera_repository_impl_test.mocks.dart';
 
 @GenerateNiceMocks([
   MockSpec<MqttService>(),
@@ -29,7 +29,7 @@ void main() {
     trainNumber: '12345',
     date: DateTime.now(),
   );
-  late SferaRepository sferaRepo;
+  late SferaRepository testee;
   late MockMqttService mockMqttService;
   late MockSferaLocalDatabaseService mockLocalDatabaseRepository;
   late MockSferaAuthProvider mockSferaAuthProvider;
@@ -54,7 +54,7 @@ void main() {
     when(mockMqttService.messageStream).thenAnswer((_) => mqttSubject.stream);
     when(mockConnectivityManager.onConnectivityChanged).thenAnswer((_) => connectivitySubject.stream);
 
-    sferaRepo = SferaRepoImpl(
+    testee = SferaRepoImpl(
       mqttService: mockMqttService,
       localService: mockLocalDatabaseRepository,
       authProvider: mockSferaAuthProvider,
@@ -72,7 +72,7 @@ void main() {
 
     // LATER THEN
     expectLater(
-      sferaRepo.stateStream,
+      testee.stateStream,
       emitsInOrder(<SferaRemoteRepositoryState>[
         .disconnected, // seeded state
         .connecting,
@@ -80,7 +80,7 @@ void main() {
     );
 
     // WHEN
-    await sferaRepo.connect(trainId);
+    await testee.connect(trainId);
 
     // Wait till async tasks are finished
     await Future.delayed(Duration(milliseconds: 500));
@@ -102,7 +102,7 @@ void main() {
 
     // LATER THEN
     expectLater(
-      sferaRepo.stateStream,
+      testee.stateStream,
       emitsInOrder(<SferaRemoteRepositoryState>[
         .disconnected, // seeded state
         .connecting,
@@ -111,20 +111,20 @@ void main() {
     );
 
     // WHEN
-    await sferaRepo.connect(trainId);
+    await testee.connect(trainId);
 
     // THEN
     verify(mockMqttService.connect(any, any)).called(1);
-    expect(sferaRepo.lastError, isA<ConnectionFailed>());
+    expect(testee.lastError, isA<ConnectionFailed>());
   });
 
   test('should disconnect and set state to disconnected', () async {
     // WHEN
-    await sferaRepo.disconnect();
+    await testee.disconnect();
 
     // THEN
     verify(mockMqttService.disconnect()).called(1);
-    expect(sferaRepo.stateStream, emits(SferaRemoteRepositoryState.disconnected));
+    expect(testee.stateStream, emits(SferaRemoteRepositoryState.disconnected));
   });
 
   test('should start loading journey profile after handshake', () async {
@@ -135,7 +135,7 @@ void main() {
 
     // LATER THEN
     expectLater(
-      sferaRepo.stateStream,
+      testee.stateStream,
       emitsInOrder(<SferaRemoteRepositoryState>[
         .disconnected, // seeded state
         .connecting,
@@ -143,7 +143,7 @@ void main() {
     );
 
     // WHEN
-    await sferaRepo.connect(trainId);
+    await testee.connect(trainId);
     // Wait till async tasks are finished
     await Future.delayed(Duration(milliseconds: 1));
 
@@ -178,7 +178,7 @@ void main() {
 
     // LATER THEN
     expectLater(
-      sferaRepo.stateStream,
+      testee.stateStream,
       emitsInOrder(<SferaRemoteRepositoryState>[
         .disconnected, // seeded state
         .connecting,
@@ -187,7 +187,7 @@ void main() {
     );
 
     // WHEN
-    await sferaRepo.connect(trainId);
+    await testee.connect(trainId);
     // Wait till async tasks are finished
     await Future.delayed(Duration(milliseconds: 1));
 
@@ -215,7 +215,7 @@ void main() {
 
     // LATER THEN
     expectLater(
-      sferaRepo.stateStream,
+      testee.stateStream,
       emitsInOrder(<SferaRemoteRepositoryState>[
         .disconnected, // seeded state
         .connecting,
@@ -223,7 +223,7 @@ void main() {
     );
 
     // WHEN
-    await sferaRepo.connect(trainId);
+    await testee.connect(trainId);
     // Wait till async tasks are finished
     await Future.delayed(Duration(milliseconds: 1));
 
@@ -290,7 +290,7 @@ void main() {
 
     // LATER THEN
     expectLater(
-      sferaRepo.stateStream,
+      testee.stateStream,
       emitsInOrder(<SferaRemoteRepositoryState>[
         .disconnected, // seeded state
         .connecting,
@@ -298,7 +298,7 @@ void main() {
       ]),
     );
     expectLater(
-      sferaRepo.journeyStream,
+      testee.journeyStream,
       emitsInOrder([
         isNull, // seeded state
         isNotNull,
@@ -306,7 +306,7 @@ void main() {
     );
 
     // WHEN
-    await sferaRepo.connect(trainId);
+    await testee.connect(trainId);
     // Wait till async tasks are finished
     await Future.delayed(Duration(milliseconds: 1));
 
@@ -324,11 +324,12 @@ void main() {
     mqttSubject.add(tcResponse);
 
     await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 1));
 
     // THEN
     verify(mockMqttService.connect(any, any)).called(1);
-    verify(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).called(3);
-    verify(mockLocalDatabaseRepository.findTrainCharacteristics(any, any, any)).called(3);
+    verify(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).called(2);
+    verify(mockLocalDatabaseRepository.findTrainCharacteristics(any, any, any)).called(4);
   });
 
   test('should refresh journey after event', () async {
@@ -366,7 +367,7 @@ void main() {
 
     // LATER THEN
     expectLater(
-      sferaRepo.stateStream,
+      testee.stateStream,
       emitsInOrder(<SferaRemoteRepositoryState>[
         .disconnected, // seeded state
         .connecting,
@@ -374,7 +375,7 @@ void main() {
       ]),
     );
     expectLater(
-      sferaRepo.journeyStream,
+      testee.journeyStream,
       emitsInOrder([
         isNull, // seeded state
         isNotNull,
@@ -383,7 +384,7 @@ void main() {
     );
 
     // WHEN
-    await sferaRepo.connect(trainId);
+    await testee.connect(trainId);
     // Wait till async tasks are finished
     await Future.delayed(Duration(milliseconds: 1));
 
@@ -409,8 +410,8 @@ void main() {
 
     // THEN
     verify(mockMqttService.connect(any, any)).called(1);
-    verify(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).called(3);
-    verify(mockLocalDatabaseRepository.findTrainCharacteristics(any, any, any)).called(3);
+    verify(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).called(2);
+    verify(mockLocalDatabaseRepository.findTrainCharacteristics(any, any, any)).called(4);
   });
 
   test('should reload SP and TC after new JP', () async {
@@ -448,7 +449,7 @@ void main() {
 
     // LATER THEN
     expectLater(
-      sferaRepo.stateStream,
+      testee.stateStream,
       emitsInOrder(<SferaRemoteRepositoryState>[
         .disconnected, // seeded state
         .connecting,
@@ -456,7 +457,7 @@ void main() {
       ]),
     );
     expectLater(
-      sferaRepo.journeyStream,
+      testee.journeyStream,
       emitsInOrder([
         isNull, // seeded state
         isNotNull,
@@ -465,7 +466,7 @@ void main() {
     );
 
     // WHEN
-    await sferaRepo.connect(trainId);
+    await testee.connect(trainId);
     // Wait till async tasks are finished
     await Future.delayed(Duration(milliseconds: 1));
 
@@ -491,8 +492,8 @@ void main() {
 
     // THEN
     verify(mockMqttService.connect(any, any)).called(1);
-    verify(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).called(5);
-    verify(mockLocalDatabaseRepository.findTrainCharacteristics(any, any, any)).called(5);
+    verify(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).called(6);
+    verify(mockLocalDatabaseRepository.findTrainCharacteristics(any, any, any)).called(7);
   });
 
   test('should send session termination on disconnect', () async {
@@ -530,7 +531,7 @@ void main() {
 
     // LATER THEN
     expectLater(
-      sferaRepo.stateStream,
+      testee.stateStream,
       emitsInOrder(<SferaRemoteRepositoryState>[
         .disconnected, // seeded state
         .connecting,
@@ -539,7 +540,7 @@ void main() {
       ]),
     );
     expectLater(
-      sferaRepo.journeyStream,
+      testee.journeyStream,
       emitsInOrder([
         isNull, // seeded state
         isNotNull,
@@ -548,7 +549,7 @@ void main() {
     );
 
     // WHEN
-    await sferaRepo.connect(trainId);
+    await testee.connect(trainId);
     // Wait till async tasks are finished
     await Future.delayed(Duration(milliseconds: 1));
 
@@ -567,7 +568,7 @@ void main() {
 
     await Future.delayed(Duration(milliseconds: 1));
 
-    sferaRepo.disconnect();
+    testee.disconnect();
 
     await Future.delayed(Duration(milliseconds: 1));
 
@@ -628,7 +629,7 @@ void main() {
 
     // LATER THEN
     expectLater(
-      sferaRepo.stateStream,
+      testee.stateStream,
       emitsInOrder(<SferaRemoteRepositoryState>[
         .disconnected, // seeded state
         .connecting,
@@ -636,7 +637,7 @@ void main() {
       ]),
     );
     expectLater(
-      sferaRepo.journeyStream,
+      testee.journeyStream,
       emitsInOrder([
         isNull, // seeded state
         isNotNull,
@@ -644,7 +645,7 @@ void main() {
     );
 
     // WHEN
-    await sferaRepo.connect(trainId);
+    await testee.connect(trainId);
     // Wait till async tasks are finished
     await Future.delayed(Duration(milliseconds: 1));
 
@@ -654,7 +655,7 @@ void main() {
     verify(mockLocalDatabaseRepository.findTrainCharacteristics(any, any, any)).called(1);
     verify(mockLocalDatabaseRepository.findJourneyProfile(any, any, any)).called(1);
 
-    sferaRepo.dispose();
+    testee.dispose();
   });
 
   test('should connect offline when task fails', () async {
@@ -707,7 +708,7 @@ void main() {
 
     // LATER THEN
     expectLater(
-      sferaRepo.stateStream,
+      testee.stateStream,
       emitsInOrder(<SferaRemoteRepositoryState>[
         .disconnected, // seeded state
         .connecting,
@@ -715,7 +716,7 @@ void main() {
       ]),
     );
     expectLater(
-      sferaRepo.journeyStream,
+      testee.journeyStream,
       emitsInOrder([
         isNull, // seeded state
         isNotNull,
@@ -723,7 +724,7 @@ void main() {
     );
 
     // WHEN
-    await sferaRepo.connect(trainId);
+    await testee.connect(trainId);
     // Wait till async tasks are finished
     await Future.delayed(Duration(milliseconds: 1));
 
@@ -737,7 +738,7 @@ void main() {
     verify(mockLocalDatabaseRepository.findTrainCharacteristics(any, any, any)).called(1);
     verify(mockLocalDatabaseRepository.findJourneyProfile(any, any, any)).called(1);
 
-    sferaRepo.dispose();
+    testee.dispose();
   });
 
   test('should reconnect when mqtt connection is available again', () async {
@@ -786,7 +787,7 @@ void main() {
 
     // LATER THEN
     expectLater(
-      sferaRepo.stateStream,
+      testee.stateStream,
       emitsInOrder(<SferaRemoteRepositoryState>[
         .disconnected, // seeded state
         .connecting,
@@ -796,7 +797,7 @@ void main() {
       ]),
     );
     expectLater(
-      sferaRepo.journeyStream,
+      testee.journeyStream,
       emitsInOrder([
         isNull, // seeded state
         isNotNull,
@@ -805,7 +806,7 @@ void main() {
     );
 
     // WHEN
-    await sferaRepo.connect(trainId);
+    await testee.connect(trainId);
     // Wait till async tasks are finished
     await Future.delayed(Duration(milliseconds: 1));
 
@@ -839,6 +840,149 @@ void main() {
 
     await Future.delayed(Duration(milliseconds: 1));
 
-    sferaRepo.dispose();
+    testee.dispose();
+  });
+
+  test('connect_whenOnlyPartialSegmentProfilesReplied_thenRetryMaximumNumberOfTimesBeforeAborting', () async {
+    // GIVEN
+    when(mockMqttService.connect(any, any)).thenAnswer((_) async => true);
+    when(mockMqttService.publishMessage(any, any, any)).thenReturn(true);
+    when(mockSferaAuthProvider.isDriver()).thenAnswer((_) async => true);
+
+    when(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).thenAnswer((_) async => null);
+    when(mockLocalDatabaseRepository.saveSegmentProfile(any)).thenAnswer((_) async {});
+
+    // WHEN
+    await testee.connect(trainId);
+    await Future.delayed(Duration(milliseconds: 1));
+
+    final handshakeResponse = loadFile('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
+    mqttSubject.add(handshakeResponse);
+
+    await Future.delayed(Duration(milliseconds: 1));
+
+    final jpResponse = loadFile('test_resources/SFERA_G2B_Reply_JP_reply_0001.xml');
+    mqttSubject.add(jpResponse);
+
+    await Future.delayed(Duration(milliseconds: 1));
+
+    reset(mockMqttService);
+
+    final spResponse = loadFile('test_resources/SFERA_G2B_Reply_SP_reply_0001_partial_1.xml');
+    mqttSubject.add(spResponse);
+
+    await Future.delayed(Duration(milliseconds: 1));
+    mqttSubject.add(spResponse);
+    await Future.delayed(Duration(milliseconds: 1));
+    mqttSubject.add(spResponse);
+    await Future.delayed(Duration(milliseconds: 1));
+    mqttSubject.add(spResponse);
+    await Future.delayed(Duration(milliseconds: 1));
+
+    // THEN
+    verify(
+      mockMqttService.publishMessage(
+        any,
+        any,
+        argThat(contains('<SP_Request')),
+      ),
+    ).called(3);
+
+    expectLater(testee.lastError, equals(SferaError.invalid()));
+  });
+
+  test('connect_whenOnlySecondReplyOtherSPs_thenResetsRetryCounter', () async {
+    // GIVEN
+    when(mockMqttService.connect(any, any)).thenAnswer((_) async => true);
+    when(mockMqttService.publishMessage(any, any, any)).thenReturn(true);
+    when(mockSferaAuthProvider.isDriver()).thenAnswer((_) async => true);
+
+    when(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).thenAnswer((_) async => null);
+    when(mockLocalDatabaseRepository.saveSegmentProfile(any)).thenAnswer((_) async {});
+
+    final spResponse = loadFile('test_resources/SFERA_G2B_Reply_SP_reply_0001_partial_1.xml');
+    final parsedSPResponse = SferaReplyParser.parse<SferaG2bReplyMessageDto>(spResponse);
+    final spResponse2 = loadFile('test_resources/SFERA_G2B_Reply_SP_reply_0001_partial_2.xml');
+    final parsedSPResponse2 = SferaReplyParser.parse<SferaG2bReplyMessageDto>(spResponse2);
+
+    // WHEN
+    await testee.connect(trainId);
+    await Future.delayed(Duration(milliseconds: 1));
+
+    final handshakeResponse = loadFile('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
+    mqttSubject.add(handshakeResponse);
+
+    await Future.delayed(Duration(milliseconds: 1));
+
+    final jpResponse = loadFile('test_resources/SFERA_G2B_Reply_JP_reply_0001.xml');
+    mqttSubject.add(jpResponse);
+
+    await Future.delayed(Duration(milliseconds: 1));
+
+    reset(mockMqttService);
+
+    mqttSubject.add(spResponse);
+    when(mockLocalDatabaseRepository.findSegmentProfile('0001_1', any, any)).thenAnswer(
+      (_) => Future.value(
+        SegmentProfileTableData(
+          id: 1,
+          spId: '0001_1',
+          majorVersion: '1',
+          minorVersion: '0',
+          xmlData: parsedSPResponse.payload!.segmentProfiles.first.toString(),
+        ),
+      ),
+    );
+    await Future.delayed(Duration(milliseconds: 1));
+
+    mqttSubject.add(spResponse);
+    await Future.delayed(Duration(milliseconds: 1));
+
+    mqttSubject.add(spResponse);
+    await Future.delayed(Duration(milliseconds: 1));
+
+    mqttSubject.add(spResponse2);
+    when(mockLocalDatabaseRepository.findSegmentProfile('0001_2', any, any)).thenAnswer(
+      (_) => Future.value(
+        SegmentProfileTableData(
+          id: 2,
+          spId: '0001_2',
+          majorVersion: '1',
+          minorVersion: '0',
+          xmlData: parsedSPResponse2.payload!.segmentProfiles.first.toString(),
+        ),
+      ),
+    );
+    await Future.delayed(Duration(milliseconds: 1));
+
+    mqttSubject.add(spResponse2);
+    await Future.delayed(Duration(milliseconds: 1));
+
+    // THEN
+    verify(
+      mockMqttService.publishMessage(
+        any,
+        any,
+        argThat(contains('<SP_Request')),
+      ),
+    ).called(5);
+
+    expect(testee.lastError, isNull);
+
+    mqttSubject.add(spResponse2);
+    await Future.delayed(Duration(milliseconds: 1));
+    mqttSubject.add(spResponse2);
+    await Future.delayed(Duration(milliseconds: 1));
+
+    // THEN
+    verify(
+      mockMqttService.publishMessage(
+        any,
+        any,
+        argThat(contains('<SP_Request')),
+      ),
+    ).called(1);
+
+    expect(testee.lastError, equals(SferaError.invalid()));
   });
 }
