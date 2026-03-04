@@ -372,15 +372,17 @@ class SferaRepoImpl implements SferaRepository {
 
   void _retrySegmentProfileRequests(int missingSegmentProfileCount) {
     if (missingSegmentProfileCount == _lastMissingSegmentProfileCount) {
-      _missingSpRequestRetryCount++;
-      if (_missingSpRequestRetryCount >= _missingSegmentProfilesMaxRetryCount) {
-        _log.warning(_abortRetryLog);
+      if (++_missingSpRequestRetryCount >= _missingSegmentProfilesMaxRetryCount) {
+        _log.warning(
+          'Number of missing segment profiles did not change within '
+          'last $_missingSegmentProfilesMaxRetryCount requests. Aborting retry.',
+        );
         lastError = .invalid();
         return;
       }
       _log.info(
         'Missing segment profile count: $missingSegmentProfileCount'
-        '\n  Retry count (current / max): ${_missingSpRequestRetryCount + 1} / $_missingSegmentProfilesMaxRetryCount',
+        '\n  Retry count (current / max): ${_missingSpRequestRetryCount} / $_missingSegmentProfilesMaxRetryCount',
       );
     } else {
       _log.info(
@@ -577,7 +579,3 @@ enum SferaRemoteRepositoryInternalState {
     .connected => .connected,
   };
 }
-
-const String _abortRetryLog =
-    'Number of missing segment profiles did not change '
-    'within last $_missingSegmentProfilesMaxRetryCount requests. Aborting retry.';
