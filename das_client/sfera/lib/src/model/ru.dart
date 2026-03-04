@@ -5,7 +5,7 @@ enum RailwayUndertaking {
   blsP(companyCode: '1163'),
   blsC(companyCode: '3356'),
   sbb(companyCode: '1085'),
-  sbbP(companyCode: '1385'),
+  sbbP(companyCode: '1285'),
   sbbC(companyCode: '2185'),
   sbbCInt(companyCode: '2585'),
   sbbD(companyCode: '5404'),

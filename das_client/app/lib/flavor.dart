@@ -82,7 +82,8 @@ sealed class Flavor {
       case _InteFlavor():
         return _InteFlavor(
           mqttUrl: 'wss://tms-vad-imtrackside-int-blue-mobile.messaging.solace.cloud',
-          authenticatorConfig: _authenticatorConfigDev,
+          authenticatorConfig: _authenticatorConfigInte,
+          mqttTopicPrefix: '',
           sferaVersion: 2,
           mqttOpenIdProfileMap: {
             '2cda5d11-f0ac-46b3-967d-af1b2e1bd01a': 'das_sbb_int',
