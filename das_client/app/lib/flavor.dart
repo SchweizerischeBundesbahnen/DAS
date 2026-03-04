@@ -72,7 +72,7 @@ sealed class Flavor {
           mqttUrl: 'wss://tms-vad-imtrackside-dev-mobile.messaging.solace.cloud',
           authenticatorConfig: _authenticatorConfigDev,
           mqttTopicPrefix: '',
-          sferaVersion: 2,
+          sferaVersion: 3,
           mqttOpenIdProfileMap: {
             '2cda5d11-f0ac-46b3-967d-af1b2e1bd01a': 'das_sbb_dev',
             'd653d01f-17a4-48a1-9aab-b780b61b4273': 'das_sob_dev',
@@ -83,7 +83,7 @@ sealed class Flavor {
         return _InteFlavor(
           mqttUrl: 'wss://tms-vad-imtrackside-int-blue-mobile.messaging.solace.cloud',
           authenticatorConfig: _authenticatorConfigInte,
-          sferaVersion: 2,
+          sferaVersion: 3,
           mqttOpenIdProfileMap: {
             '2cda5d11-f0ac-46b3-967d-af1b2e1bd01a': 'das_sbb_int',
             'd653d01f-17a4-48a1-9aab-b780b61b4273': 'das_sob_int',
