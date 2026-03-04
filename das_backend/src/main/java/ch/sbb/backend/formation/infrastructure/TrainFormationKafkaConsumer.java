@@ -22,7 +22,7 @@ public class TrainFormationKafkaConsumer {
         this.formationService = formationService;
     }
 
-    @KafkaListener(topics = "${zis.kafka.topic}", groupId = "${zis.kafka.group-id}", autoStartup = "${zis.kafka.enabled:true}", containerFactory = "trainFormationListenerContainerFactory")
+    @KafkaListener(topics = "${formation.kafka.topic}", groupId = "${formation.kafka.group-id}", autoStartup = "${formation.kafka.enabled:true}", containerFactory = "trainFormationListenerContainerFactory")
     void receive(ConsumerRecord<DailyFormationTrainKey, DailyFormationTrain> message) {
         long lagInS = (Instant.now().toEpochMilli() - message.timestamp()) / 1000;
         log.trace("lagInS={} partition={} offset={}", lagInS, message.partition(), message.offset());

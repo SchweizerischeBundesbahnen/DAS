@@ -34,7 +34,7 @@ public class TimetableTrainConsumer {
         id = "consumeTrains",
         containerFactory = "timetableListenerContainerFactory",
         groupId = "${preload.kafka.group-id}",
-        topics = "${preload.timetableTrain.topic}",
+        topics = "${preload.kafka.timetableTrainTopic}",
         batch = "true",
         autoStartup = "false"
     )

@@ -54,10 +54,10 @@ class TrainIdentificationIntegrationTest {
     @Autowired
     private KafkaTemplate<Object, Object> kafkaTemplate;
 
-    @Value("${preload.timetablePeriod.topic}")
+    @Value("${preload.kafka.timetablePeriodTopic}")
     private String timetablePeriodTopic;
 
-    @Value("${preload.timetableTrain.topic}")
+    @Value("${preload.kafka.timetableTrainTopic}")
     private String timetableTrainTopic;
 
     @Test

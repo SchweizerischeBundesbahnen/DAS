@@ -38,7 +38,7 @@ class FormationIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Value("${zis.kafka.topic}")
+    @Value("${formation.kafka.topic}")
     private String topic;
 
     @Test

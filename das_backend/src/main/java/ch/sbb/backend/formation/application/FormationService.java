@@ -19,7 +19,7 @@ public class FormationService {
 
     private final TrainFormationRunRepository trainFormationRunRepository;
 
-    @Value("${zis.clean-up.older-than-days}")
+    @Value("${formation.clean-up.older-than-days}")
     private long cleanUpOlderThanDays;
 
     public FormationService(TrainFormationRunRepository trainFormationRunRepository) {
@@ -47,7 +47,7 @@ public class FormationService {
     }
 
     @Transactional
-    @Scheduled(cron = "${zis.clean-up.cron}")
+    @Scheduled(cron = "${formation.clean-up.cron}")
     @SchedulerLock(name = "cleanUpFormations", lockAtLeastFor = "10m")
     void cleanUpFormations() {
         LockAssert.assertLocked();

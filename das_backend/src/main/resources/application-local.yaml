@@ -4,7 +4,7 @@ spring:
       file: ./das_backend/compose.yaml
   config:
     import: optional:file:./das_backend/.env[.properties]
-zis:
+formation:
   clean-up:
     cron: '-'
   kafka:
@@ -14,10 +14,8 @@ preload:
   kafka:
     # disable kafka per default
     enabled: false
-  timetablePeriod:
-    topic: nets-p.timetable
-  timetableTrain:
-    topic: fps.prod.infra.zug
+    timetablePeriodTopic: nets-p.timetable
+    timetableTrainTopic: fps.prod.infra.zug
   cleanUp:
     hours: 48
     cronExpression: "0 0 0 * * *"

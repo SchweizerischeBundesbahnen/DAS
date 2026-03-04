@@ -36,7 +36,7 @@ aws:
   secretKey: secretKey
   bucketName: bucketName
 
-zis:
+formation:
   kafka:
     bootstrap-server: ''
     group-id: ''
@@ -60,10 +60,6 @@ preload:
     bucketUrl: bucketUrl
     accessKey: accessKey
     accessSecret: accessSecret
-  timetablePeriod:
-    topic: period
-  timetableTrain:
-    topic: train
   cleanUp:
     hours: 48
     cronExpression: "-"
@@ -72,3 +68,5 @@ preload:
     group-id: ''
     username: ''
     password: ''
+    timetablePeriodTopic: period
+    timetableTrainTopic: train
