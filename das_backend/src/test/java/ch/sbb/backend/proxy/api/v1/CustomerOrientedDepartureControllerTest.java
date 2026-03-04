@@ -1,4 +1,4 @@
-package ch.sbb.backend.koa.api.v1;
+package ch.sbb.backend.proxy.api.v1;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -6,7 +6,8 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.backend.koa.KoaClient;
+import ch.sbb.backend.proxy.CustomerOrientedDepartureController;
+import ch.sbb.backend.proxy.ProxyClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
@@ -15,21 +16,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(KoaController.class)
+@WebMvcTest(CustomerOrientedDepartureController.class)
 @AutoConfigureMockMvc(addFilters = false)
-class KoaControllerTest {
+class CustomerOrientedDepartureControllerTest {
 
     @Autowired
     MockMvc mvc;
 
     @MockitoBean
-    KoaClient koaClient;
+    ProxyClient proxyClient;
 
     @Test
     void subscribe_delegatesToClient() throws Exception {
-        when(koaClient.subscribe(any())).thenReturn(ResponseEntity.noContent().build());
+        when(proxyClient.subscribe(any())).thenReturn(ResponseEntity.noContent().build());
 
-        mvc.perform(post("/v1/koa/subscribe")
+        mvc.perform(post("/v1/customer-oriented-departure/subscribe")
                 .contentType("application/json")
                 .content("""
                     {
@@ -44,16 +45,16 @@ class KoaControllerTest {
                     """))
             .andExpect(status().isNoContent());
 
-        verify(koaClient).subscribe(any());
+        verify(proxyClient).subscribe(any());
     }
 
     @Test
     void confirm_delegatesToClient() throws Exception {
-        when(koaClient.confirm("m1", "d1")).thenReturn(ResponseEntity.noContent().build());
+        when(proxyClient.confirm("m1", "d1")).thenReturn(ResponseEntity.noContent().build());
 
-        mvc.perform(post("/v1/koa/confirm/m1/d1"))
+        mvc.perform(post("/v1/customer-oriented-departure/confirm/m1/d1"))
             .andExpect(status().isNoContent());
 
-        verify(koaClient).confirm("m1", "d1");
+        verify(proxyClient).confirm("m1", "d1");
     }
 }

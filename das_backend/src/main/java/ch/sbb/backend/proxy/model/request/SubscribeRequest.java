@@ -1,4 +1,4 @@
-package ch.sbb.backend.koa.api.v1;
+package ch.sbb.backend.proxy.model.request;
 
 import java.time.Instant;
 

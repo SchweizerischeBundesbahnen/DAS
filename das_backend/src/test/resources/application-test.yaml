@@ -64,6 +64,6 @@ preload:
     hours: 48
     cronExpression: "-"
 
-koa:
+proxy:
   base-url: ''
   basic-auth: ''
