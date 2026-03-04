@@ -24,7 +24,11 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class PreloadScheduler {
 
+    /**
+     * Due to infrastructure realtime handling of operating trains, real train runs get clear just a few hours earlier.
+     */
     private static final int PRELOAD_HOURS_BEFORE_DEPARTURE = 4;
+  
     private final SferaService sferaService;
     private final PahoMqttClient mqttService;
     private final MockTrainIdentificationService trainIdentificationsService;
