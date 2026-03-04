@@ -73,6 +73,6 @@ preload:
     timetablePeriodTopic: period
     timetableTrainTopic: train
 
-koa:
+proxy:
   base-url: ''
   basic-auth: ''

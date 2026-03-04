@@ -1,6 +1,6 @@
-package ch.sbb.backend.koa;
+package ch.sbb.backend.proxy;
 
-import ch.sbb.backend.koa.api.v1.SubscribeRequest;
+import ch.sbb.backend.proxy.model.request.SubscribeRequest;
 import java.util.Base64;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -9,13 +9,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
 @Component
-public class KoaClient {
+public class ProxyClient {
 
     private final RestClient restClient;
 
-    public KoaClient(
-        @Value("${koa.base-url}") String baseUrl,
-        @Value("${koa.basic-auth}") String auth
+    public ProxyClient(
+        @Value("${proxy.base-url}") String baseUrl,
+        @Value("${proxy.basic-auth}") String auth
     ) {
         String encodedAuth = Base64.getEncoder().encodeToString(auth.getBytes());
 
