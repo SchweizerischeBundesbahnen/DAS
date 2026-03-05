@@ -2,7 +2,7 @@
 <JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="8" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
     <TrainIdentification>
         <OTN_ID>
-            <teltsi_Company>1085</teltsi_Company>
+            <teltsi_Company>1285</teltsi_Company>
             <teltsi_OperationalTrainNumber>T9999</teltsi_OperationalTrainNumber>
             <teltsi_StartDate>2022-01-04</teltsi_StartDate>
         </OTN_ID>

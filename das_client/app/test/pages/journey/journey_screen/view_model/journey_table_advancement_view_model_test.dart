@@ -34,7 +34,7 @@ void main() {
   final baseJourney = Journey(
     metadata: Metadata(
       journeyStart: journeyStart,
-      trainIdentification: TrainIdentification(ru: RailwayUndertaking.sbb, trainNumber: '123', date: DateTime.now()),
+      trainIdentification: TrainIdentification(ru: RailwayUndertaking.sbbP, trainNumber: '123', date: DateTime.now()),
     ),
     data: [
       journeyStart,

@@ -78,7 +78,7 @@ void main() {
     test('availableRailwayUndertakings_whenFilterChanged_thenIsEmittedWithUndertakingsFilteredCorrectly', () async {
       // ARRANGE
       // should be ordered 0th even though not lexicographically the 0th element
-      testee.selectedRailwayUndertaking = [.sbbC];
+      testee.selectedRailwayUndertaking = [.sbbCH];
       await processStreams();
       emitRegister.clear();
 
@@ -90,13 +90,11 @@ void main() {
       expect(
         emitRegister,
         orderedEquals(<RailwayUndertaking>[
-          .sbbC,
-          .sbb,
+          .sbbCH,
           .sbbP,
-          .sbbD,
-          .sbbInfra,
-          .sbbInfraBuildLog,
           .sbbCInt,
+          .sbbD,
+          .sbbI,
         ]),
       );
     });
@@ -104,7 +102,7 @@ void main() {
     test('availableRailwayUndertakings_whenFilterIsEmpty_thenIsEmittedWithAllUndertakingsSortedCorrectly', () async {
       // ARRANGE
       // should be ordered 0th even though not lexicographically the 0th element
-      final newRu = RailwayUndertaking.sbbC;
+      final newRu = RailwayUndertaking.sbbCH;
       testee.selectedRailwayUndertaking = [newRu];
       await processStreams();
       emitRegister.clear();
@@ -123,7 +121,7 @@ void main() {
     test('availableRailwayUndertakings_whenFilterIsWeird_thenIsEmittedEmpty', () async {
       // ARRANGE
       // should be ordered 0th even though not lexicographically the 0th element
-      final newRu = RailwayUndertaking.sbbC;
+      final newRu = RailwayUndertaking.sbbCH;
       testee.selectedRailwayUndertaking = [newRu];
       await processStreams();
       emitRegister.clear();
@@ -149,7 +147,7 @@ void main() {
 
     test('updateIsSelectingRailwayUndertaking_whenSetSelectedRuCalled_thenIsCalled', () {
       // ARRANGE
-      final newRu = RailwayUndertaking.sobT;
+      final newRu = RailwayUndertaking.sob;
       reset(mockUpdateAvailableRuFunction);
 
       // ACT

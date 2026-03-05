@@ -1,12 +1,9 @@
 import 'dart:async';
 
 import 'package:app/util/error_code.dart';
-import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
-
-final _log = Logger('JourneyViewModel');
 
 class JourneyViewModel {
   JourneyViewModel({
