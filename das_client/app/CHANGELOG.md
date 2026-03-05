@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.38.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.37.0...das_client-v0.38.0) (2026-03-05)
+
+
+### Features
+
+* add advised speed hints ([#973](https://github.com/SchweizerischeBundesbahnen/DAS/issues/973)) ([#1797](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1797)) ([1a3cff1](https://github.com/SchweizerischeBundesbahnen/DAS/commit/1a3cff119f41a6a49b5b4e0a9461a0d62ec973cc))
+
+
+### Bug Fixes
+
+* deeplinks not working when app is not running ([#1829](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1829)) ([262c34a](https://github.com/SchweizerischeBundesbahnen/DAS/commit/262c34af142ad454e04a6d7984458275d7552026))
+* show notification on first brake slip and delete local data on 404 ([#1641](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1641), [#1848](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1848)) ([#1860](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1860)) ([ca48c0a](https://github.com/SchweizerischeBundesbahnen/DAS/commit/ca48c0a4d19c76e9f41d47db00c08a1fcb4dc119))
+* updated available evu ([#1847](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1847)) ([#1862](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1862)) ([167bc8b](https://github.com/SchweizerischeBundesbahnen/DAS/commit/167bc8b651b7839296f3dd65437d02753419c243))
+
 ## [0.37.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.36.0...das_client-v0.37.0) (2026-02-23)
 
 
