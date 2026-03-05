@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.13.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.12.0...sfera_mock-v0.13.0) (2026-03-05)
+
+
+### Features
+
+* add advised speed hints ([#973](https://github.com/SchweizerischeBundesbahnen/DAS/issues/973)) ([#1797](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1797)) ([1a3cff1](https://github.com/SchweizerischeBundesbahnen/DAS/commit/1a3cff119f41a6a49b5b4e0a9461a0d62ec973cc))
+
+
+### Bug Fixes
+
+* updated available evu ([#1847](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1847)) ([#1862](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1862)) ([167bc8b](https://github.com/SchweizerischeBundesbahnen/DAS/commit/167bc8b651b7839296f3dd65437d02753419c243))
+
 ## [0.12.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.11.0...sfera_mock-v0.12.0) (2026-02-24)
 
 
