@@ -38,7 +38,7 @@ void main() {
         date: now,
       );
       final testeeB = TrainIdentification(
-        ru: .sbbC,
+        ru: .sbbCH,
         trainNumber: '1234',
         date: now,
       );
@@ -123,7 +123,7 @@ void main() {
         date: now,
       );
       final testeeB = TrainIdentification(
-        ru: .sbbC,
+        ru: .sbbCH,
         trainNumber: '1234',
         date: now,
       );

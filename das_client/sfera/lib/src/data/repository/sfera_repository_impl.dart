@@ -382,7 +382,7 @@ class SferaRepoImpl implements SferaRepository {
       }
       _log.info(
         'Missing segment profile count: $missingSegmentProfileCount'
-        '\n  Retry count (current / max): ${_missingSpRequestRetryCount} / $_missingSegmentProfilesMaxRetryCount',
+        '\n  Retry count (current / max): $_missingSpRequestRetryCount / $_missingSegmentProfilesMaxRetryCount',
       );
     } else {
       _log.info(

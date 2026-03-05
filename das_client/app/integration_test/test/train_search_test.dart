@@ -33,10 +33,10 @@ void main() {
       final modal = find.byKey(SelectRailwayUndertakingModal.modalKey);
       expect(modal, findsOneWidget);
 
-      expect(find.text(l10n.c_ru_sbb_c), findsOneWidget);
+      expect(find.text(l10n.c_ru_db), findsOneWidget);
       expect(find.descendant(of: modal, matching: find.text(l10n.c_ru_bls_p)), findsOneWidget);
       expect(find.text(l10n.c_ru_bls_c), findsOneWidget);
-      final sobI = find.text(l10n.c_ru_sob_infra);
+      final sobI = find.text(l10n.c_ru_sob);
       await tester.dragUntilVisible(sobI, modal, const Offset(0, -50));
       expect(sobI, findsOneWidget);
       await tapElement(tester, sobI, warnIfMissed: false);
@@ -64,7 +64,7 @@ void main() {
       // Verify results are filtered
       expect(find.descendant(of: modal, matching: find.text(l10n.c_ru_sbb_p)), findsNothing);
       expect(find.descendant(of: modal, matching: find.text(l10n.c_ru_bls_p)), findsNothing);
-      expect(find.text(l10n.c_ru_sob_infra), findsOneWidget);
+      expect(find.text(l10n.c_ru_sob), findsOneWidget);
     });
 
     testWidgets('test load button disabled when validation fails', (tester) async {

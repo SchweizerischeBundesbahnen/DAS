@@ -140,7 +140,7 @@ void main() {
     await prepareAndStartApp(tester);
 
     // Load T9999 so we have it available offline
-    await loadJourney(tester, trainNumber: 'T9999', ru: RailwayUndertaking.sbb);
+    await loadJourney(tester, trainNumber: 'T9999', ru: RailwayUndertaking.sbbP);
     await stopAutomaticAdvancement(tester);
     await tapElement(tester, find.byKey(JourneyPage.disconnectButtonKey));
 
@@ -152,7 +152,7 @@ void main() {
     connectivityManager.lastConnectedTime = DateTime.now().subtract(Duration(minutes: 2));
     connectivityManager.connectivitySubject.add(false);
 
-    await loadJourney(tester, trainNumber: 'T9999', ru: RailwayUndertaking.sbb);
+    await loadJourney(tester, trainNumber: 'T9999', ru: RailwayUndertaking.sbbP);
 
     // Check if Fahrbild loaded
     expect(find.byType(DASTable), findsOneWidget);

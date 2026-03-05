@@ -20,7 +20,7 @@ void main() {
         date: DateTime.now(),
       );
       trainId2 = TrainIdentification(
-        ru: .sbbC,
+        ru: .sbbCH,
         trainNumber: '5678',
         date: DateTime.now().add(Duration(days: 1)),
       );

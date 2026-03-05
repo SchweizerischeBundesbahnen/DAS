@@ -606,7 +606,7 @@ void main() {
     ];
 
     final TrainIdentification trainIdentification = TrainIdentification(
-      ru: .sbb,
+      ru: .sbbP,
       trainNumber: '123',
       date: DateTime.now(),
     );
@@ -633,7 +633,7 @@ void main() {
     ];
 
     final TrainIdentification trainIdentification = TrainIdentification(
-      ru: .sbb,
+      ru: .sbbP,
       trainNumber: '123',
       date: DateTime.now(),
       tafTapLocationReferenceStart: 'B',
@@ -665,7 +665,7 @@ void main() {
       ];
 
       final TrainIdentification trainIdentification = TrainIdentification(
-        ru: .sbb,
+        ru: .sbbP,
         trainNumber: '123',
         date: DateTime.now(),
         tafTapLocationReferenceStart: 'A',

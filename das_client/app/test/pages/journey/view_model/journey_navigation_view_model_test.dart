@@ -23,7 +23,7 @@ void main() {
     final tomorrow = now.add(Duration(days: 1));
     final yesterday = now.subtract(Duration(days: 1));
     final trainId1 = TrainIdentification(ru: .sbbP, trainNumber: '1234', date: now);
-    final trainId2 = TrainIdentification(ru: .sbbC, trainNumber: '5678', date: tomorrow);
+    final trainId2 = TrainIdentification(ru: .sbbCH, trainNumber: '5678', date: tomorrow);
     final trainId3 = TrainIdentification(ru: .blsP, trainNumber: '9999', date: yesterday);
 
     setUp(() {

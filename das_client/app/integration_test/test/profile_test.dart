@@ -27,9 +27,9 @@ void main() {
     await tapElement(tester, find.byWidgetPredicate((it) => it is SelectRailwayUndertakingInput));
 
     // select 3 RU
-    await tapElement(tester, find.text(l10n.c_ru_sbb).first);
+    await tapElement(tester, find.text(l10n.c_ru_bls_i).first);
     await tapElement(tester, find.text(l10n.c_ru_bls_c).first);
-    await tapElement(tester, find.text(l10n.c_ru_sob_t).first);
+    await tapElement(tester, find.text(l10n.c_ru_db).first);
 
     await tapElement(
       tester,
@@ -40,7 +40,7 @@ void main() {
     await tester.pumpAndSettle(Duration(seconds: 1));
 
     // check that selected RU are shown in profile
-    final evuText = '${l10n.c_ru_sbb}, ${l10n.c_ru_bls_c}, ${l10n.c_ru_sob_t}';
+    final evuText = '${l10n.c_ru_bls_i}, ${l10n.c_ru_bls_c}, ${l10n.c_ru_db}';
     expect(find.text(evuText), findsOneWidget);
 
     await tapElement(
@@ -57,7 +57,7 @@ void main() {
       ),
     );
 
-    final evuText2 = '${l10n.c_ru_sbb}, ${l10n.c_ru_sob_t}';
+    final evuText2 = '${l10n.c_ru_bls_i}, ${l10n.c_ru_db}';
     expect(find.text(evuText2), findsOneWidget);
   });
 
