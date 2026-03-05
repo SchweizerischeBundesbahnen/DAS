@@ -7,11 +7,11 @@ import ch.sbb.backend.admin.application.settings.model.response.Settings;
 import ch.sbb.backend.admin.application.settings.model.response.SettingsResponse;
 import ch.sbb.backend.admin.domain.settings.RuFeatureService;
 import ch.sbb.backend.common.ApiDocumentation;
+import ch.sbb.backend.common.ApiErrorResponses;
 import ch.sbb.backend.common.ApiParametersDefault;
 import ch.sbb.backend.common.ApiParametersDefault.ParamRequestId;
-import ch.sbb.backend.common.ResponseEntityFactory;
-import ch.sbb.backend.common.ApiErrorResponses;
 import ch.sbb.backend.common.Response;
+import ch.sbb.backend.common.ResponseEntityFactory;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -30,7 +30,7 @@ public class SettingsController {
 
     static final String PATH_SEGMENT_SETTINGS = "/settings";
 
-    static final String API_SETTINGS = ApiDocumentation.VERSION_URI_V1 + PATH_SEGMENT_SETTINGS;
+    public static final String API_SETTINGS = ApiDocumentation.VERSION_URI_V1 + PATH_SEGMENT_SETTINGS;
 
     private final RuFeatureService ruFeatureService;
 
