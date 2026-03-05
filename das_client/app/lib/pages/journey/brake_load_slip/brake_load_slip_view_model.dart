@@ -25,6 +25,7 @@ final _log = Logger('BrakeLoadSlipViewModel');
 
 class BrakeLoadSlipViewModel extends JourneyAwareViewModel {
   static const _formationUpdateInterval = Duration(minutes: 1);
+  static const initialNotificationDelay = Duration(seconds: 2);
 
   BrakeLoadSlipViewModel({
     required FormationRepository formationRepository,
@@ -52,6 +53,7 @@ class BrakeLoadSlipViewModel extends JourneyAwareViewModel {
   final NotificationPriorityQueueViewModel _notificationViewModel;
   final ConnectivityManager? _connectivityManager;
   final bool _checkForUpdates;
+  bool _notifyOnUpdate = false;
 
   final Sound _brakeSlipUpdatedSound = DI.get<DASSounds>().brakeSlipUpdated;
 
@@ -93,6 +95,8 @@ class BrakeLoadSlipViewModel extends JourneyAwareViewModel {
     _connectivitySubscription = _connectivityManager?.onConnectivityChanged.listen((state) {
       if (state) _checkForFormationUpdates();
     });
+
+    Future.delayed(initialNotificationDelay).then((it) => _notifyOnUpdate = true);
   }
 
   @override
@@ -106,7 +110,7 @@ class BrakeLoadSlipViewModel extends JourneyAwareViewModel {
 
     final trainIdentification = lastJourney?.metadata.trainIdentification;
     if (trainIdentification != null) {
-      _formationRepository.loadFormation(
+      _formationRepository.reloadFormation(
         trainIdentification.trainNumber,
         trainIdentification.ru.companyCode,
         trainIdentification.operatingDay ?? trainIdentification.date,
@@ -127,13 +131,11 @@ class BrakeLoadSlipViewModel extends JourneyAwareViewModel {
             operationalDay: trainIdentification.operatingDay ?? trainIdentification.date,
           )
           .listen((formation) {
-            final formationChanged = formationValue != null;
-
             _rxFormation.add(formation);
             _changeOpenFullscreenFlag(true);
             _emitFormationRun();
 
-            if (formationChanged) {
+            if (formation != null && _notifyOnUpdate) {
               _notificationViewModel.insert(
                 type: .newBrakeLoadSlip,
                 callback: _checkForUpdates ? _brakeSlipUpdatedSound.play : null,

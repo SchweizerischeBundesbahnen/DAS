@@ -135,4 +135,41 @@ void main() {
       mockApiService.formation(operationalTrainNumber, company, operationalDay, any),
     ).called(1);
   });
+
+  test('whenWatchFormation_thenCallApiServiceAndDeleteLocalDataOn404', () async {
+    // GIVEN
+    final operationalTrainNumber = 'T1234';
+    final company = '1285';
+    final operationalDay = DateTime.now();
+
+    // ACT
+    when(
+      mockApiService.formation(operationalTrainNumber, company, operationalDay, any),
+    ).thenAnswer((_) => mockFormationRequest);
+    when(
+      mockDatabaseService.findFormationEtag(operationalTrainNumber, company, operationalDay),
+    ).thenAnswer((_) => Future.value(null));
+    when(mockFormationRequest.call()).thenAnswer(
+      (_) => Future.value(
+        FormationResponse(
+          headers: {},
+          body: null,
+        ),
+      ),
+    );
+
+    // VERIFY
+    testee.watchFormation(
+      operationalTrainNumber: operationalTrainNumber,
+      company: company,
+      operationalDay: operationalDay,
+    );
+
+    await Future.delayed(Duration(milliseconds: 10));
+
+    verify(mockDatabaseService.deleteFormation(operationalTrainNumber, company, operationalDay)).called(1);
+    verify(
+      mockApiService.formation(operationalTrainNumber, company, operationalDay, any),
+    ).called(1);
+  });
 }

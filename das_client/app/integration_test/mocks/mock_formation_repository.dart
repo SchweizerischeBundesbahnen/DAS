@@ -235,7 +235,7 @@ class MockFormationRepository implements FormationRepository {
   }
 
   @override
-  Future<Formation?> loadFormation(String operationalTrainNumber, String company, DateTime operationalDay) async {
+  Future<Formation?> reloadFormation(String operationalTrainNumber, String company, DateTime operationalDay) async {
     return formationSubject.value;
   }
 }

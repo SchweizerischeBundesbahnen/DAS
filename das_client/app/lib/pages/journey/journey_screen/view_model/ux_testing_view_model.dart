@@ -73,7 +73,7 @@ class UxTestingViewModel {
         if (data.isFormation) {
           final connectedTrain = _sferaRepo.connectedTrain;
           if (connectedTrain != null) {
-            _formationRepository.loadFormation(
+            _formationRepository.reloadFormation(
               connectedTrain.trainNumber,
               connectedTrain.ru.companyCode,
               connectedTrain.operatingDay ?? connectedTrain.date,

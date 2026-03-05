@@ -11,4 +11,6 @@ abstract class FormationDatabaseService {
   Future<Formation?> findFormation(String operationalTrainNumber, String company, DateTime operationalDay);
 
   Stream<Formation?> watchFormation(String operationalTrainNumber, String company, DateTime operationalDay);
+
+  Future<void> deleteFormation(String operationalTrainNumber, String company, DateTime operationalDay);
 }
