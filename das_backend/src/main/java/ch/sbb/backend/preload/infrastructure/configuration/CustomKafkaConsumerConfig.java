@@ -60,8 +60,8 @@ public class CustomKafkaConsumerConfig {
         Map<String, Object> properties = kafkaProperties.buildConsumerProperties();
 
         properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapUrl.isBlank() ? connectionDetails.getBootstrapServers() : bootstrapUrl);
-        properties.put(CONSUMER_PREFIX + ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, io.confluent.kafka.serializers.json.KafkaJsonSchemaDeserializer.class);
-        properties.put(CONSUMER_PREFIX + ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, io.confluent.kafka.serializers.json.KafkaJsonSchemaDeserializer.class);
+        properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, io.confluent.kafka.serializers.json.KafkaJsonSchemaDeserializer.class);
+        properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, io.confluent.kafka.serializers.json.KafkaJsonSchemaDeserializer.class);
         properties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, AUTO_OFFSET_RESET_LATEST);
         properties.put(SaslConfigs.SASL_JAAS_CONFIG, jaasConfig(user, password));
 
