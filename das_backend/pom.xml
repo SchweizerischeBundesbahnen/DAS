@@ -283,9 +283,9 @@
                 <version>${confluent.schema-registry-plugin.version}</version>
                 <configuration>
                     <schemaRegistryUrls>
-                        <param>${ZIS_SR_URL}</param>
+                        <param>${KAFKA_SR_URL}</param>
                     </schemaRegistryUrls>
-                    <userInfoConfig>${ZIS_SR_API_KEY}:${ZIS_SR_API_SECRET}</userInfoConfig>
+                    <userInfoConfig>${KAFKA_SR_API_KEY}:${KAFKA_SR_API_SECRET}</userInfoConfig>
                     <outputDirectory>${project.build.directory}/schema_registry</outputDirectory>
                     <subjectPatterns>
                         <param>zis.inte.trafo.trainformation.operational-(key|value)</param>

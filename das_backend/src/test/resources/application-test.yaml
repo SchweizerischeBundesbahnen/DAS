@@ -36,8 +36,12 @@ aws:
   secretKey: secretKey
   bucketName: bucketName
 
-zis:
+formation:
   kafka:
+    bootstrap-server: ''
+    group-id: ''
+    username: ''
+    password: ''
     topic: "formation-test"
 
 sfera:
@@ -56,10 +60,13 @@ preload:
     bucketUrl: bucketUrl
     accessKey: accessKey
     accessSecret: accessSecret
-  timetablePeriod:
-    topic: nets-p.timetable
-  timetableTrain:
-    topic: fps.inte.infra.zug
   cleanUp:
     hours: 48
     cronExpression: "-"
+  kafka:
+    bootstrap-server: ''
+    group-id: ''
+    username: ''
+    password: ''
+    timetablePeriodTopic: period
+    timetableTrainTopic: train

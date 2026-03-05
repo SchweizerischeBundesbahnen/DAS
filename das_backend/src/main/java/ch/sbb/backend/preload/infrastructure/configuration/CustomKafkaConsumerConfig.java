@@ -2,6 +2,9 @@ package ch.sbb.backend.preload.infrastructure.configuration;
 
 import java.util.Map;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.common.config.SaslConfigs;
+import org.apache.kafka.common.security.plain.PlainLoginModule;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.kafka.autoconfigure.ConcurrentKafkaListenerContainerFactoryConfigurer;
 import org.springframework.boot.kafka.autoconfigure.KafkaConnectionDetails;
 import org.springframework.boot.kafka.autoconfigure.KafkaProperties;
@@ -16,6 +19,9 @@ import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 @Configuration
 public class CustomKafkaConsumerConfig {
 
+    private static final String CONSUMER_PREFIX = "consumer.";
+    private static final String AUTO_OFFSET_RESET_EARLIEST = "earliest";
+    private static final String AUTO_OFFSET_RESET_LATEST = "latest";
     private final KafkaProperties kafkaProperties;
 
     public CustomKafkaConsumerConfig(KafkaProperties kafkaProperties) {
@@ -24,19 +30,50 @@ public class CustomKafkaConsumerConfig {
 
     @Bean
     public ConcurrentKafkaListenerContainerFactory<Object, Object> timetableListenerContainerFactory(
-        ConcurrentKafkaListenerContainerFactoryConfigurer configurer, KafkaConnectionDetails connectionDetails) {
-        Map<String, Object> props = kafkaProperties.buildConsumerProperties();
+        ConcurrentKafkaListenerContainerFactoryConfigurer configurer, KafkaConnectionDetails connectionDetails,
+        @Value("${preload.kafka.username}") String user,
+        @Value("${preload.kafka.password}") String password,
+        @Value("${preload.kafka.bootstrap-server}") String bootstrapUrl
+    ) {
+        Map<String, Object> properties = kafkaProperties.buildConsumerProperties();
 
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, connectionDetails.getBootstrapServers());
-        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, org.apache.kafka.common.serialization.BytesDeserializer.class);
-        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, org.apache.kafka.common.serialization.BytesDeserializer.class);
-        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+        properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapUrl.isBlank() ? connectionDetails.getBootstrapServers() : bootstrapUrl);
+        properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, org.apache.kafka.common.serialization.BytesDeserializer.class);
+        properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, org.apache.kafka.common.serialization.BytesDeserializer.class);
+        properties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, AUTO_OFFSET_RESET_EARLIEST);
+        properties.put(SaslConfigs.SASL_JAAS_CONFIG, jaasConfig(user, password));
 
-        ConsumerFactory<Object, Object> consumerFactory = new DefaultKafkaConsumerFactory<>(props);
+        ConsumerFactory<Object, Object> consumerFactory = new DefaultKafkaConsumerFactory<>(properties);
 
         ConcurrentKafkaListenerContainerFactory<Object, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
         configurer.configure(factory, consumerFactory);
         return factory;
+    }
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<Object, Object> trainFormationListenerContainerFactory(
+        ConcurrentKafkaListenerContainerFactoryConfigurer configurer, KafkaConnectionDetails connectionDetails,
+        @Value("${formation.kafka.username}") String user,
+        @Value("${formation.kafka.password}") String password,
+        @Value("${formation.kafka.bootstrap-server}") String bootstrapUrl
+    ) {
+        Map<String, Object> properties = kafkaProperties.buildConsumerProperties();
+
+        properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapUrl.isBlank() ? connectionDetails.getBootstrapServers() : bootstrapUrl);
+        properties.put(CONSUMER_PREFIX + ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, io.confluent.kafka.serializers.json.KafkaJsonSchemaDeserializer.class);
+        properties.put(CONSUMER_PREFIX + ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, io.confluent.kafka.serializers.json.KafkaJsonSchemaDeserializer.class);
+        properties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, AUTO_OFFSET_RESET_LATEST);
+        properties.put(SaslConfigs.SASL_JAAS_CONFIG, jaasConfig(user, password));
+
+        ConsumerFactory<Object, Object> consumerFactory = new DefaultKafkaConsumerFactory<>(properties);
+
+        ConcurrentKafkaListenerContainerFactory<Object, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        configurer.configure(factory, consumerFactory);
+        return factory;
+    }
+
+    private static String jaasConfig(String user, String password) {
+        return String.format("%s required username=\"%s\" password=\"%s\";", PlainLoginModule.class.getName(), user, password);
     }
 
 }
