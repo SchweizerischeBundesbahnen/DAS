@@ -10,6 +10,7 @@ import org.springframework.boot.kafka.autoconfigure.KafkaConnectionDetails;
 import org.springframework.boot.kafka.autoconfigure.KafkaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
@@ -19,7 +20,6 @@ import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 @Configuration
 public class CustomKafkaConsumerConfig {
 
-    private static final String CONSUMER_PREFIX = "consumer.";
     private static final String AUTO_OFFSET_RESET_EARLIEST = "earliest";
     private static final String AUTO_OFFSET_RESET_LATEST = "latest";
     private final KafkaProperties kafkaProperties;
@@ -51,6 +51,7 @@ public class CustomKafkaConsumerConfig {
     }
 
     @Bean
+    @Profile("!test")
     public ConcurrentKafkaListenerContainerFactory<Object, Object> trainFormationListenerContainerFactory(
         ConcurrentKafkaListenerContainerFactoryConfigurer configurer, KafkaConnectionDetails connectionDetails,
         @Value("${formation.kafka.username}") String user,
@@ -60,8 +61,8 @@ public class CustomKafkaConsumerConfig {
         Map<String, Object> properties = kafkaProperties.buildConsumerProperties();
 
         properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapUrl.isBlank() ? connectionDetails.getBootstrapServers() : bootstrapUrl);
-        properties.put(CONSUMER_PREFIX + ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, io.confluent.kafka.serializers.json.KafkaJsonSchemaDeserializer.class);
-        properties.put(CONSUMER_PREFIX + ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, io.confluent.kafka.serializers.json.KafkaJsonSchemaDeserializer.class);
+        properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, io.confluent.kafka.serializers.json.KafkaJsonSchemaDeserializer.class);
+        properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, io.confluent.kafka.serializers.json.KafkaJsonSchemaDeserializer.class);
         properties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, AUTO_OFFSET_RESET_LATEST);
         properties.put(SaslConfigs.SASL_JAAS_CONFIG, jaasConfig(user, password));
 

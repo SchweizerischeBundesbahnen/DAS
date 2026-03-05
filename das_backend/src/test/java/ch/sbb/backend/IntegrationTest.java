@@ -1,5 +1,6 @@
 package ch.sbb.backend;
 
+import ch.sbb.backend.config.TestKafkaConsumerConfig;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
@@ -18,7 +19,7 @@ import org.springframework.test.context.ActiveProfiles;
 @SpringBootTest
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
-@Import({KafkaTestContainerConfiguration.class, PostgresTestContainerConfiguration.class})
+@Import({KafkaTestContainerConfiguration.class, PostgresTestContainerConfiguration.class, TestKafkaConsumerConfig.class})
 public @interface IntegrationTest {
 
 }
