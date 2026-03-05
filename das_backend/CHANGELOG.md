@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.9.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.8.1...backend-v0.9.0) (2026-03-05)
+
+
+### Features
+
+* cleanup train zip files ([#90](https://github.com/SchweizerischeBundesbahnen/DAS/issues/90)) ([#1784](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1784)) ([5a7d83f](https://github.com/SchweizerischeBundesbahnen/DAS/commit/5a7d83f062a21f8277ab4d38efb7f37b323632bb))
+* preload SPs in chunks ([#1653](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1653)) ([#1782](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1782)) ([ceda33e](https://github.com/SchweizerischeBundesbahnen/DAS/commit/ceda33e720136457c2e6f3c0f9d18f105dc01e54))
+
+
+### Bug Fixes
+
+* customize kafka config per api ([#1545](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1545)) ([#1839](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1839)) ([bccbd96](https://github.com/SchweizerischeBundesbahnen/DAS/commit/bccbd965f73b91c75630d1e5bd8ae6dbcd42e353))
+* kafka config ([#1866](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1866)) ([2303835](https://github.com/SchweizerischeBundesbahnen/DAS/commit/2303835ff608c851cef801dc340c4d8606e33833))
+* sfera authentication ([#1822](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1822)) ([54462f4](https://github.com/SchweizerischeBundesbahnen/DAS/commit/54462f4ffb4425574a2d74cd6ef0bd72aa61877c))
+
 ## [0.8.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.8.0...backend-v0.8.1) (2026-02-24)
 
 
