@@ -27,8 +27,8 @@
     "tslib": "2.8.1"
   },
   "devDependencies": {
-    "@angular/build": "21.0.2",
-    "@angular/cli": "21.0.2",
+    "@angular/build": "21.2.0",
+    "@angular/cli": "21.2.0",
     "@angular/compiler-cli": "21.1.5",
     "@angular/localize": "21.1.5",
     "@types/ineum": "216.0.4",
