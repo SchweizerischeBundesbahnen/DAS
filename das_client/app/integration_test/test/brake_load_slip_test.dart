@@ -1,5 +1,6 @@
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/brake_load_slip/brake_load_slip_page.dart';
+import 'package:app/pages/journey/brake_load_slip/brake_load_slip_view_model.dart';
 import 'package:app/pages/journey/brake_load_slip/widgets/brake_load_slip_header_box.dart';
 import 'package:app/pages/journey/brake_load_slip/widgets/brake_load_slip_special_restrictions.dart';
 import 'package:app/pages/journey/journey_page.dart';
@@ -185,6 +186,7 @@ void main() {
     formationRepository.emitT9999Formation();
 
     await loadJourney(tester, trainNumber: 'T9999M');
+    await Future.delayed(BrakeLoadSlipViewModel.notificationDelay);
 
     expect(find.byKey(BrakeLoadSlipNotification.brakeLoadSlipNotificationKey), findsNothing);
 
