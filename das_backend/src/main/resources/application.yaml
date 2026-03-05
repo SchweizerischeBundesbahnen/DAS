@@ -141,3 +141,7 @@ preload:
   cleanUp:
     hours: ${PRELOAD_CLEANUP_HOURS}
     cronExpression: ${PRELOAD_CLEANUP_CRON}
+
+proxy:
+  base-url: ${PROXY_BASE_URL}
+  basic-auth: ${PROXY_BASIC_AUTH}

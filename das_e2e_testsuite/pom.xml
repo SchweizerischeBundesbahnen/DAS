@@ -116,7 +116,7 @@
                             <apiPackage>ch.sbb.backend.restclient.v1.api</apiPackage>
                             <generateApis>true</generateApis>
                             <apisToGenerate>
-                                Settings,Formations
+                                Settings,Formations,CustomerOrientedDeparture
                             </apisToGenerate>
                             <generateApiTests>false</generateApiTests>
                             <generateApiDocumentation>false</generateApiDocumentation>
