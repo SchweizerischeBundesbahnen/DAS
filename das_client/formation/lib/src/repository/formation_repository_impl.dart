@@ -1,4 +1,3 @@
-import 'package:formation/src/api/dto/formation_dto.dart';
 import 'package:formation/src/api/formation_api_service.dart';
 import 'package:formation/src/data/local/formation_database_service.dart';
 import 'package:formation/src/model/formation.dart';
@@ -14,8 +13,17 @@ class FormationRepositoryImpl implements FormationRepository {
   final FormationDatabaseService databaseService;
 
   @override
-  Future<Formation?> loadFormation(String operationalTrainNumber, String company, DateTime operationalDay) async {
+  Future<Formation?> reloadFormation(String operationalTrainNumber, String company, DateTime operationalDay) async {
     operationalTrainNumber = _sanitizeTrainNumber(operationalTrainNumber);
+    await _loadFormationAndUpdateDatabase(operationalTrainNumber, company, operationalDay);
+    return databaseService.findFormation(operationalTrainNumber, company, operationalDay);
+  }
+
+  Future<void> _loadFormationAndUpdateDatabase(
+    String operationalTrainNumber,
+    String company,
+    DateTime operationalDay,
+  ) async {
     _log.info('Loading formation for train $operationalTrainNumber (company=$company) on $operationalDay');
     try {
       final existingEtag = await databaseService.findFormationEtag(operationalTrainNumber, company, operationalDay);
@@ -31,17 +39,13 @@ class FormationRepositoryImpl implements FormationRepository {
         _log.info('Formation loaded successfully. etag=${formationResponse.etag}');
       } else if (existingEtag != null && existingEtag == etag) {
         _log.info('Formation not modified. etag=${formationResponse.etag}');
-        return databaseService.findFormation(operationalTrainNumber, company, operationalDay);
       } else {
         await databaseService.deleteFormation(operationalTrainNumber, company, operationalDay);
         _log.info('No formation found. Deleting local formation. etag=${formationResponse.etag}');
       }
-
-      return formation?.toDomain();
     } catch (e) {
       _log.severe('Connection error while loading formation', e);
     }
-    return null;
   }
 
   @override
@@ -51,7 +55,7 @@ class FormationRepositoryImpl implements FormationRepository {
     required DateTime operationalDay,
   }) {
     operationalTrainNumber = _sanitizeTrainNumber(operationalTrainNumber);
-    loadFormation(operationalTrainNumber, company, operationalDay);
+    reloadFormation(operationalTrainNumber, company, operationalDay);
 
     return databaseService
         .watchFormation(operationalTrainNumber, company, operationalDay)

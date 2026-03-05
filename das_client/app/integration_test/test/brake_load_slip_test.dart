@@ -186,7 +186,7 @@ void main() {
     formationRepository.emitT9999Formation();
 
     await loadJourney(tester, trainNumber: 'T9999M');
-    await Future.delayed(BrakeLoadSlipViewModel.notificationDelay);
+    await Future.delayed(BrakeLoadSlipViewModel.initialNotificationDelay);
 
     expect(find.byKey(BrakeLoadSlipNotification.brakeLoadSlipNotificationKey), findsNothing);
 

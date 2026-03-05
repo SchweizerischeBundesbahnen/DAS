@@ -487,7 +487,7 @@ void main() {
     formationSubject.add(formation);
 
     await processStreams();
-    await Future.delayed(BrakeLoadSlipViewModel.notificationDelay); // Wait for init delay to pass
+    await Future.delayed(BrakeLoadSlipViewModel.initialNotificationDelay); // Wait for init delay to pass
 
     formationSubject.add(
       Formation(
@@ -526,11 +526,11 @@ void main() {
 
       fakeAsync.elapse(Duration.zero);
 
-      verifyNever(mockFormationRepository.loadFormation(any, any, any));
+      verifyNever(mockFormationRepository.reloadFormation(any, any, any));
 
       fakeAsync.elapse(Duration(minutes: 1, seconds: 30));
 
-      verify(mockFormationRepository.loadFormation(any, any, any)).called(1);
+      verify(mockFormationRepository.reloadFormation(any, any, any)).called(1);
 
       testee.dispose();
     });
@@ -542,17 +542,17 @@ void main() {
 
     await processStreams();
 
-    verifyNever(mockFormationRepository.loadFormation(any, any, any));
+    verifyNever(mockFormationRepository.reloadFormation(any, any, any));
 
     connectivitySubject.add(false);
     await processStreams();
 
-    verifyNever(mockFormationRepository.loadFormation(any, any, any));
+    verifyNever(mockFormationRepository.reloadFormation(any, any, any));
 
     connectivitySubject.add(true);
     await processStreams();
 
-    verify(mockFormationRepository.loadFormation(any, any, any)).called(1);
+    verify(mockFormationRepository.reloadFormation(any, any, any)).called(1);
   });
 }
 

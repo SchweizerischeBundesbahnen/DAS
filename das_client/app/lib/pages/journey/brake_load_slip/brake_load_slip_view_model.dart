@@ -25,7 +25,7 @@ final _log = Logger('BrakeLoadSlipViewModel');
 
 class BrakeLoadSlipViewModel extends JourneyAwareViewModel {
   static const _formationUpdateInterval = Duration(minutes: 1);
-  static const notificationDelay = Duration(seconds: 2);
+  static const initialNotificationDelay = Duration(seconds: 2);
 
   BrakeLoadSlipViewModel({
     required FormationRepository formationRepository,
@@ -96,7 +96,7 @@ class BrakeLoadSlipViewModel extends JourneyAwareViewModel {
       if (state) _checkForFormationUpdates();
     });
 
-    Future.delayed(notificationDelay).then((it) => _notifyOnUpdate = true);
+    Future.delayed(initialNotificationDelay).then((it) => _notifyOnUpdate = true);
   }
 
   @override
@@ -110,7 +110,7 @@ class BrakeLoadSlipViewModel extends JourneyAwareViewModel {
 
     final trainIdentification = lastJourney?.metadata.trainIdentification;
     if (trainIdentification != null) {
-      _formationRepository.loadFormation(
+      _formationRepository.reloadFormation(
         trainIdentification.trainNumber,
         trainIdentification.ru.companyCode,
         trainIdentification.operatingDay ?? trainIdentification.date,
