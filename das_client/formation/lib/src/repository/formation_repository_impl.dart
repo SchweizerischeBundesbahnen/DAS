@@ -33,7 +33,8 @@ class FormationRepositoryImpl implements FormationRepository {
         _log.info('Formation not modified. etag=${formationResponse.etag}');
         return databaseService.findFormation(operationalTrainNumber, company, operationalDay);
       } else {
-        _log.info('No formation found. etag=${formationResponse.etag}');
+        await databaseService.deleteFormation(operationalTrainNumber, company, operationalDay);
+        _log.info('No formation found. Deleting local formation. etag=${formationResponse.etag}');
       }
 
       return formation?.toDomain();

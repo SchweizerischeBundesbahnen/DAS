@@ -78,5 +78,15 @@ class FormationDatabaseServiceImpl extends _$FormationDatabaseServiceImpl implem
         .then((it) => it?.toDomain());
   }
 
+  @override
+  Future<void> deleteFormation(String operationalTrainNumber, String company, DateTime operationalDay) async {
+    await _manager
+        .filter(
+          (f) =>
+              f.operationalTrainNumber(operationalTrainNumber) & f.company(company) & f.operationalDay(operationalDay),
+        )
+        .delete();
+  }
+
   $$FormationTableTableTableManager get _manager => managers.formationTable;
 }

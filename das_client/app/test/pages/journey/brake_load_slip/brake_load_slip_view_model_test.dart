@@ -456,7 +456,7 @@ void main() {
     verifyNever(mockDetailModalViewModel.open(any, maximize: false));
   });
 
-  test('model_whenFormationChanges_emitsFormationChangedAndPlaysSound', () async {
+  test('model_whenFormationChangesBeforeNotificationDelay_emitsFormationChangedWithoutSound', () async {
     // ACT
     journeySubject.add(journey);
     formationSubject.add(formation);
@@ -474,6 +474,34 @@ void main() {
 
     await processStreams();
 
+    expect(testee.formationValue, isNotNull);
+    expect(testee.formationRunValue, isNotNull);
+    verifyNever(mockNotificationViewModel.insert(type: .newBrakeLoadSlip, callback: mockSound.play));
+
+    testee.dispose();
+  });
+
+  test('model_whenFormationChangesAfterNotificationDelay_emitsFormationChangedAndPlaysSound', () async {
+    // ACT
+    journeySubject.add(journey);
+    formationSubject.add(formation);
+
+    await processStreams();
+    await Future.delayed(BrakeLoadSlipViewModel.notificationDelay); // Wait for init delay to pass
+
+    formationSubject.add(
+      Formation(
+        operationalTrainNumber: formation.operationalTrainNumber,
+        company: formation.company,
+        operationalDay: formation.operationalDay,
+        formationRuns: [formationRun1, formationRun2],
+      ),
+    );
+
+    await processStreams();
+
+    expect(testee.formationValue, isNotNull);
+    expect(testee.formationRunValue, isNotNull);
     verify(mockNotificationViewModel.insert(type: .newBrakeLoadSlip, callback: mockSound.play)).called(1);
 
     testee.dispose();
