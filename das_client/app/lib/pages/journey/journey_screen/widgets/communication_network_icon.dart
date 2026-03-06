@@ -4,8 +4,8 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
 class CommunicationNetworkIcon extends StatelessWidget {
-  static const Key gsmRKey = Key('gsmPCell');
-  static const Key gsmPKey = Key('gsmRCell');
+  static const Key gsmRKey = Key('gsmRCell');
+  static const Key gsmPKey = Key('gsmPCell');
 
   const CommunicationNetworkIcon({
     required this.networkType,

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T12_4" SP_VersionMajor="2"
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T12_4" SP_VersionMajor="3"
                 SP_VersionMinor="0" SP_Length="300" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
@@ -22,6 +22,16 @@
             <Signal_ID signal_ID_Physical="L989" location="50"/>
             <SignalFunction>intermediate</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="L989"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="D0" location="90"/>
+            <SignalFunction>entry</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="D0"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="D1" location="490"/>
+            <SignalFunction>entry</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="D1"/>
         </Signal>
         <Signal>
             <Signal_ID signal_ID_Physical="1" location="200"/>
@@ -76,12 +86,23 @@
         <KilometreReferencePoint location="50">
             <KM_Reference kmRef="12.0"/>
         </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="90">
+            <KM_Reference kmRef="11.4"/>
+        </KilometreReferencePoint>
+
         <KilometreReferencePoint location="100">
             <KM_Reference kmRef="11.2"/>
         </KilometreReferencePoint>
+
         <KilometreReferencePoint location="200">
             <KM_Reference kmRef="7.3"/>
         </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="490">
+            <KM_Reference kmRef="6.7"/>
+        </KilometreReferencePoint>
+
         <KilometreReferencePoint location="500">
             <KM_Reference kmRef="6.5"/>
         </KilometreReferencePoint>

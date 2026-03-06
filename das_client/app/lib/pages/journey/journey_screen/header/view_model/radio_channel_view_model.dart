@@ -36,8 +36,7 @@ class RadioChannelViewModel extends JourneyAwareViewModel {
       _radioContactLists.clear();
       _networkChanges.clear();
 
-      _currentPosition = journeyPosition.currentPosition;
-      _lastServicePoint = journeyPosition.previousServicePoint;
+      _setCurrentPositionAndLastServicePoint(journeyPosition, journey);
 
       if (journey != null) {
         final metadata = journey.metadata;
@@ -48,6 +47,39 @@ class RadioChannelViewModel extends JourneyAwareViewModel {
       _emitModel();
     });
   }
+
+  void _setCurrentPositionAndLastServicePoint(JourneyPositionModel journeyPosition, Journey? journey) {
+    final currentPosition = journeyPosition.currentPosition;
+
+    if (currentPosition == null || !_isEntrySignal(currentPosition)) {
+      _setCurrentPositionAndLastServicePointFrom(journeyPosition);
+      return;
+    }
+
+    final journeyPoints = journey?.data.whereType<JourneyPoint>().toList(growable: false) ?? [];
+    final currentPositionIdx = journeyPoints.indexOf(currentPosition);
+    if (currentPositionIdx == -1 || currentPositionIdx == journeyPoints.length - 1) {
+      _setCurrentPositionAndLastServicePointFrom(journeyPosition);
+      return;
+    }
+
+    final nextPosition = journeyPoints[currentPositionIdx + 1];
+    if (nextPosition is! ServicePoint) {
+      _setCurrentPositionAndLastServicePointFrom(journeyPosition);
+      return;
+    }
+
+    _currentPosition = nextPosition;
+    _lastServicePoint = nextPosition;
+  }
+
+  void _setCurrentPositionAndLastServicePointFrom(JourneyPositionModel journeyPosition) {
+    _currentPosition = journeyPosition.currentPosition;
+    _lastServicePoint = journeyPosition.previousServicePoint;
+  }
+
+  bool _isEntrySignal(JourneyPoint currentPosition) =>
+      currentPosition is Signal && currentPosition.functions.contains(SignalFunction.entry);
 
   void _emitModel() {
     _rxModel.add(
