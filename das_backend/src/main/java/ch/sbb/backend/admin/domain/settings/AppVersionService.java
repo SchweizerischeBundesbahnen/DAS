@@ -11,6 +11,8 @@ public interface AppVersionService {
 
     CurrentAppVersion getCurrent(String version);
 
+    boolean isExpired(AppVersion appVersion);
+
     AppVersion getById(Integer id);
 
     AppVersion update(Integer id, AppVersionRequest updateRequest);
