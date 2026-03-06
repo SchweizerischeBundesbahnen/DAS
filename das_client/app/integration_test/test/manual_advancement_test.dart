@@ -50,6 +50,15 @@ void main() {
         findsNothing,
       );
 
+      // pause mode
+      await stopAutomaticAdvancement(tester);
+
+      final stationCName = 'Halt auf Verlangen C';
+      await tester.dragUntilVisible(find.text('AB1'), scrollableFinder, const Offset(0, -50));
+
+      await tester.drag(findDASTableRowByText(stationCName), const Offset(600, 0));
+      await tester.pumpAndSettle();
+
       await disconnect(tester);
     });
 
