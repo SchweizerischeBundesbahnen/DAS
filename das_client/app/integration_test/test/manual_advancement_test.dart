@@ -50,6 +50,20 @@ void main() {
         findsNothing,
       );
 
+      // pause mode
+      await stopAutomaticAdvancement(tester);
+
+      await tester.drag(
+        find.descendant(of: find.byKey(StickyHeader.headerKey), matching: find.text(a)),
+        const Offset(600, 0),
+      );
+      await tester.pumpAndSettle(Duration(seconds: 1));
+
+      expect(
+        find.descendant(of: find.byKey(StickyHeader.headerKey), matching: find.byKey(RouteChevron.chevronKey)),
+        findsAny,
+      );
+
       await disconnect(tester);
     });
 
