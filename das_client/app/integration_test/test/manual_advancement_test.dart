@@ -53,11 +53,16 @@ void main() {
       // pause mode
       await stopAutomaticAdvancement(tester);
 
-      final stationCName = 'Halt auf Verlangen C';
-      await tester.dragUntilVisible(find.text('AB1'), scrollableFinder, const Offset(0, -50));
+      await tester.drag(
+        find.descendant(of: find.byKey(StickyHeader.headerKey), matching: find.text(a)),
+        const Offset(600, 0),
+      );
+      await tester.pumpAndSettle(Duration(seconds: 1));
 
-      await tester.drag(findDASTableRowByText(stationCName), const Offset(600, 0));
-      await tester.pumpAndSettle();
+      expect(
+        find.descendant(of: find.byKey(StickyHeader.headerKey), matching: find.byKey(RouteChevron.chevronKey)),
+        findsAny,
+      );
 
       await disconnect(tester);
     });
