@@ -23,8 +23,9 @@ class SettingsControllerTest {
     @Test
     @WithMockUser(authorities = "ROLE_observer")
     @Sql("classpath:createRuFeature.sql")
+    @Sql("classpath:emptyAndCreateAppVersions.sql")
     void should_respond_with_settings() throws Exception {
-        mockMvc.perform(get(API_SETTINGS))
+        mockMvc.perform(get(API_SETTINGS).header("X-App-Version", "2.4.1"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data[0].ruFeatures", hasSize(1)))
             .andExpect(jsonPath("$.data[0].ruFeatures.[0].key").value(RuFeatureKey.CHECKLIST_DEPARTURE_PROCESS.name()))
@@ -34,7 +35,8 @@ class SettingsControllerTest {
             .andExpect(jsonPath("$.data[0].logging.token").value("token"))
             .andExpect(jsonPath("$.data[0].preload.bucketUrl").value("bucketUrl"))
             .andExpect(jsonPath("$.data[0].preload.accessKey").value("accessKey"))
-            .andExpect(jsonPath("$.data[0].preload.accessSecret").value("accessSecret"));
-
+            .andExpect(jsonPath("$.data[0].preload.accessSecret").value("accessSecret"))
+            .andExpect(jsonPath("$.data[0].currentAppVersion.expired").value(false))
+            .andExpect(jsonPath("$.data[0].currentAppVersion.expiryDate").value("2026-12-31"));
     }
 }
