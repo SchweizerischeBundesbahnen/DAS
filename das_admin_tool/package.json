@@ -12,7 +12,7 @@
   "version": "0.2.0",
   "private": true,
   "dependencies": {
-    "@angular/cdk": "21.1.4",
+    "@angular/cdk": "21.2.1",
     "@angular/common": "21.1.5",
     "@angular/compiler": "21.1.5",
     "@angular/core": "21.1.5",
