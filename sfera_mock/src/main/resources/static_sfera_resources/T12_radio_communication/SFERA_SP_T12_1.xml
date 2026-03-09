@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T12_1" SP_VersionMajor="2" SP_VersionMinor="0" SP_Length="3000" SP_Status="Valid">
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T12_1" SP_VersionMajor="3"
+                SP_VersionMinor="0" SP_Length="3000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
     </SP_Zone>
@@ -38,6 +39,27 @@
                 <teltsi_LocationPrimaryCode>3005</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
+        <Signal>
+            <Signal_ID signal_ID_Physical="A12" location="990"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="A12"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="A2" location="1490"/>
+            <SignalFunction>entry</SignalFunction>
+            <SignalFunction>laneChange</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="A2"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="A3" location="1990"/>
+            <SignalFunction>entry</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="A3"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="A4" location="2490"/>
+            <SignalFunction>entry</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="A4"/>
+        </Signal>
 
     </SP_Points>
     <SP_Areas>
@@ -125,16 +147,32 @@
             <KM_Reference kmRef="30.2"/>
         </KilometreReferencePoint>
 
+        <KilometreReferencePoint location="990">
+            <KM_Reference kmRef="33.4"/>
+        </KilometreReferencePoint>
+
         <KilometreReferencePoint location="1000">
             <KM_Reference kmRef="33.5"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="1490">
+            <KM_Reference kmRef="54.5"/>
         </KilometreReferencePoint>
 
         <KilometreReferencePoint location="1500">
             <KM_Reference kmRef="54.7"/>
         </KilometreReferencePoint>
 
+        <KilometreReferencePoint location="1990">
+            <KM_Reference kmRef="84.7"/>
+        </KilometreReferencePoint>
+
         <KilometreReferencePoint location="2000">
             <KM_Reference kmRef="84.9"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="2490">
+            <KM_Reference kmRef="105.1"/>
         </KilometreReferencePoint>
 
         <KilometreReferencePoint location="2500">

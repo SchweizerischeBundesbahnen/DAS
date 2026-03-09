@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T12_3" SP_VersionMajor="2"
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T12_3" SP_VersionMajor="3"
                 SP_VersionMinor="0" SP_Length="900" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
@@ -28,6 +28,21 @@
             <Signal_ID signal_ID_Physical="L324" location="50"/>
             <SignalFunction>intermediate</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="L324"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="C1" location="290"/>
+            <SignalFunction>entry</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="C1"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="C1" location="490"/>
+            <SignalFunction>entry</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="C1"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="C2" location="790"/>
+            <SignalFunction>entry</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="C2"/>
         </Signal>
 
     </SP_Points>
@@ -80,12 +95,27 @@
         <KilometreReferencePoint location="50">
             <KM_Reference kmRef="99.1"/>
         </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="290">
+            <KM_Reference kmRef="98.4"/>
+        </KilometreReferencePoint>
+
         <KilometreReferencePoint location="300">
             <KM_Reference kmRef="98.2"/>
         </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="490">
+            <KM_Reference kmRef="80.7"/>
+        </KilometreReferencePoint>
+
         <KilometreReferencePoint location="500">
             <KM_Reference kmRef="80.5"/>
         </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="790">
+            <KM_Reference kmRef="49.6"/>
+        </KilometreReferencePoint>
+
         <KilometreReferencePoint location="800">
             <KM_Reference kmRef="49.4"/>
         </KilometreReferencePoint>

@@ -10,6 +10,7 @@ import 'package:mockito/mockito.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
+import '../../../../../test_util.dart';
 import 'radio_channel_view_model_test.mocks.dart';
 
 @GenerateNiceMocks([
@@ -43,6 +44,15 @@ void main() {
       rxMockJourney.close();
     });
 
+    const zeroOrderServicePoint = ServicePoint(name: 'A', abbreviation: '', locationCode: '', order: 0, kilometre: [0]);
+    const twentyOrderServicePoint = ServicePoint(
+      name: 'A',
+      abbreviation: '',
+      locationCode: '',
+      order: 20,
+      kilometre: [20],
+    );
+
     test('constructor_whenCalled_thenSubscribesToStreams', () {
       expect(rxMockJourney.hasListener, isTrue);
     });
@@ -51,13 +61,12 @@ void main() {
 
     test('model_whenJourneyWithLastServicePoint_thenLastServicePointIsEqual', () async {
       // ARRANGE
-      final aServicePoint = ServicePoint(name: 'A', abbreviation: '', locationCode: '', order: 0, kilometre: [0]);
-      rxMockJourneyPosition.add(JourneyPositionModel(previousServicePoint: aServicePoint));
-      await _streamProcessing();
+      rxMockJourneyPosition.add(JourneyPositionModel(previousServicePoint: zeroOrderServicePoint));
+      await processStreams();
 
       // EXPECT
       expect(emitRegister, hasLength(2));
-      expect(emitRegister.last, equals(RadioChannelModel(lastServicePoint: aServicePoint)));
+      expect(emitRegister.last, equals(RadioChannelModel(lastServicePoint: zeroOrderServicePoint)));
     });
 
     test('model_whenJourneyWithSingleRadioContactListAndCurrentPositionIsNull_thenHasNoRadioContactList', () async {
@@ -68,7 +77,7 @@ void main() {
         contacts: [MainContact(contactIdentifier: '123')],
       );
       rxMockJourney.add(mockJourney(radioContacts: [aRadioContactList]));
-      await _streamProcessing();
+      await processStreams();
 
       // EXPECT
       expect(emitRegister, hasLength(1));
@@ -88,7 +97,7 @@ void main() {
           radioContacts: [aRadioContactList],
         ),
       );
-      await _streamProcessing();
+      await processStreams();
 
       // EXPECT
       expect(emitRegister, hasLength(1));
@@ -108,7 +117,7 @@ void main() {
           radioContacts: [aRadioContactList],
         ),
       );
-      await _streamProcessing();
+      await processStreams();
 
       // EXPECT
       expect(emitRegister, hasLength(2));
@@ -133,7 +142,7 @@ void main() {
           radioContacts: [aRadioContactList, bRadioContactList],
         ),
       );
-      await _streamProcessing();
+      await processStreams();
 
       // EXPECT
       expect(emitRegister, hasLength(2));
@@ -149,7 +158,7 @@ void main() {
           ],
         ),
       );
-      await _streamProcessing();
+      await processStreams();
 
       // EXPECT
       expect(emitRegister, hasLength(1));
@@ -166,7 +175,7 @@ void main() {
           ],
         ),
       );
-      await _streamProcessing();
+      await processStreams();
 
       // EXPECT
       expect(emitRegister, hasLength(1));
@@ -187,7 +196,7 @@ void main() {
           ],
         ),
       );
-      await _streamProcessing();
+      await processStreams();
 
       // EXPECT
       expect(emitRegister, hasLength(2));
@@ -213,24 +222,116 @@ void main() {
           ],
         ),
       );
-      await _streamProcessing();
+      await processStreams();
 
       // EXPECT
       expect(emitRegister, hasLength(2));
       expect(emitRegister.last, equals(RadioChannelModel(networkType: .gsmP)));
     });
+
+    test('model_whenJourneyWithEntrySignalAndNonServicePointFollowingJourneyPoint_thenHasCorrectNetwork', () async {
+      // ARRANGE
+      const entrySignal = Signal(order: 18, kilometre: [0.0], functions: [.entry]);
+      const blocker = Signal(order: 19, kilometre: [0.0], functions: [.block]);
+
+      rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: entrySignal));
+
+      rxMockJourney.add(
+        mockJourney(
+          data: [entrySignal, blocker, twentyOrderServicePoint],
+          communicationNetworkChanges: [
+            CommunicationNetworkChange(
+              communicationNetworkType: .sim,
+              order: 10,
+              kilometre: [0.0],
+            ),
+            CommunicationNetworkChange(
+              communicationNetworkType: .gsmP,
+              order: 20,
+              kilometre: [0.0],
+              isServicePoint: true,
+            ),
+          ],
+        ),
+      );
+      await processStreams();
+
+      // EXPECT
+      expect(emitRegister, hasLength(2));
+      expect(
+        emitRegister.last,
+        equals(RadioChannelModel(networkType: .gsmP, lastServicePoint: twentyOrderServicePoint)),
+      );
+    });
+
+    test('model_whenJourneyWithEntrySignalAndServicePointWithoutChangesFollowing_thenHasCurrentNetworkType', () async {
+      // ARRANGE
+      const entrySignal = Signal(order: 18, kilometre: [0.0], functions: [.entry]);
+      rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: entrySignal));
+      rxMockJourney.add(
+        mockJourney(
+          data: [entrySignal, twentyOrderServicePoint],
+          communicationNetworkChanges: [
+            CommunicationNetworkChange(
+              communicationNetworkType: .sim,
+              order: 10,
+              kilometre: [0.0],
+            ),
+          ],
+        ),
+      );
+      await processStreams();
+
+      // EXPECT
+      expect(emitRegister, hasLength(2));
+      expect(
+        emitRegister.last,
+        equals(RadioChannelModel(networkType: .sim, lastServicePoint: twentyOrderServicePoint)),
+      );
+    });
+
+    test('model_whenJourneyWithEntrySignalAndServicePointWithChanges_thenHasNextNetworkType', () async {
+      // ARRANGE
+      const entrySignal = Signal(order: 18, kilometre: [0.0], functions: [.entry]);
+      rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: entrySignal));
+      rxMockJourney.add(
+        mockJourney(
+          data: [entrySignal, twentyOrderServicePoint],
+          communicationNetworkChanges: [
+            CommunicationNetworkChange(
+              communicationNetworkType: .sim,
+              order: 10,
+              kilometre: [0.0],
+            ),
+            CommunicationNetworkChange(
+              communicationNetworkType: .gsmP,
+              order: 20,
+              kilometre: [0.0],
+              isServicePoint: true,
+            ),
+          ],
+        ),
+      );
+      await processStreams();
+
+      // EXPECT
+      expect(emitRegister, hasLength(2));
+      expect(
+        emitRegister.last,
+        equals(RadioChannelModel(networkType: .gsmP, lastServicePoint: twentyOrderServicePoint)),
+      );
+    });
   });
 }
-
-Future<void> _streamProcessing() async => Future.delayed(Duration.zero);
 
 Journey mockJourney({
   Iterable<RadioContactList> radioContacts = const [],
   List<CommunicationNetworkChange> communicationNetworkChanges = const [],
+  List<BaseData> data = const [],
 }) => Journey(
   metadata: Metadata(
     radioContactLists: radioContacts,
     communicationNetworkChanges: communicationNetworkChanges,
   ),
-  data: [],
+  data: data,
 );

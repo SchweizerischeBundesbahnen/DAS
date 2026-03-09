@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:app/pages/journey/journey_screen/header/view_model/model/radio_channel_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
+import 'package:collection/collection.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
@@ -36,8 +37,7 @@ class RadioChannelViewModel extends JourneyAwareViewModel {
       _radioContactLists.clear();
       _networkChanges.clear();
 
-      _currentPosition = journeyPosition.currentPosition;
-      _lastServicePoint = journeyPosition.previousServicePoint;
+      _setCurrentPositionAndLastServicePoint(journeyPosition, journey);
 
       if (journey != null) {
         final metadata = journey.metadata;
@@ -48,6 +48,42 @@ class RadioChannelViewModel extends JourneyAwareViewModel {
       _emitModel();
     });
   }
+
+  void _setCurrentPositionAndLastServicePoint(JourneyPositionModel journeyPosition, Journey? journey) {
+    final currentPosition = journeyPosition.currentPosition;
+
+    if (currentPosition == null || !_isEntrySignal(currentPosition)) {
+      _setCurrentPositionAndLastServicePointFrom(journeyPosition);
+      return;
+    }
+
+    final journeyPoints = journey?.data.whereType<JourneyPoint>().toList(growable: false) ?? [];
+    final currentPositionIdx = journeyPoints.indexOf(currentPosition);
+    if (currentPositionIdx == -1 || currentPositionIdx == journeyPoints.length - 1) {
+      _setCurrentPositionAndLastServicePointFrom(journeyPosition);
+      return;
+    }
+
+    final nextServicePoint = journeyPoints
+        .getRange(currentPositionIdx, journeyPoints.length)
+        .whereType<ServicePoint>()
+        .firstOrNull;
+    if (nextServicePoint == null) {
+      _setCurrentPositionAndLastServicePointFrom(journeyPosition);
+      return;
+    }
+
+    _currentPosition = nextServicePoint;
+    _lastServicePoint = nextServicePoint;
+  }
+
+  void _setCurrentPositionAndLastServicePointFrom(JourneyPositionModel journeyPosition) {
+    _currentPosition = journeyPosition.currentPosition;
+    _lastServicePoint = journeyPosition.previousServicePoint;
+  }
+
+  bool _isEntrySignal(JourneyPoint currentPosition) =>
+      currentPosition is Signal && currentPosition.functions.contains(SignalFunction.entry);
 
   void _emitModel() {
     _rxModel.add(

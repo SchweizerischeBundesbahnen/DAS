@@ -10,7 +10,7 @@
                 </OTN_ID>
             </TrainIdentification>
             <TrainLocationInformation>
-                <PositionSpeed SP_ID="T12_4" location="100">
+                <PositionSpeed SP_ID="T12_4" location="90">
                     <SP_Zone>
                         <IM_ID>0085</IM_ID>
                     </SP_Zone>
