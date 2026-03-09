@@ -1,6 +1,7 @@
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/widgets/brake_series_selection_button.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
@@ -55,6 +56,7 @@ class _BrakeSeriesSelectionState extends State<BrakeSeriesSelection> {
     return widget.availableBrakeSeries
         .map((it) => it.trainSeries)
         .toSet()
+        .sorted(_sortForSelectionDisplay)
         .map((it) => _trainSeriesRows(context, it))
         .expand((it) => it)
         .toList();
@@ -62,7 +64,7 @@ class _BrakeSeriesSelectionState extends State<BrakeSeriesSelection> {
 
   List<Widget> _trainSeriesRows(BuildContext context, TrainSeries trainSeries) {
     final brakeSeries = widget.availableBrakeSeries.where((it) => it.trainSeries == trainSeries).toList();
-    brakeSeries.sort((a, b) => a.brakeSeries.compareTo(b.brakeSeries));
+    brakeSeries.sort((a, b) => b.brakeSeries.compareTo(a.brakeSeries));
 
     return [
       Padding(
@@ -95,5 +97,19 @@ class _BrakeSeriesSelectionState extends State<BrakeSeriesSelection> {
         ),
       ),
     ];
+  }
+
+  int _sortForSelectionDisplay(TrainSeries a, TrainSeries b) {
+    int getOrder(TrainSeries trainSeries) => switch (trainSeries) {
+      .R => 0,
+      .A => 1,
+      .D => 2,
+      .N => 3,
+      .O => 4,
+      .W => 5,
+      .S => 6,
+    };
+
+    return getOrder(a).compareTo(getOrder(b));
   }
 }
