@@ -229,7 +229,7 @@ void main() {
       expect(emitRegister.last, equals(RadioChannelModel(networkType: .gsmP)));
     });
 
-    test('model_whenJourneyWithEntrySignalAndNonServicePointFollowingJourneyPoint_thenHasNetworkType', () async {
+    test('model_whenJourneyWithEntrySignalAndNonServicePointFollowingJourneyPoint_thenHasCorrectNetwork', () async {
       // ARRANGE
       const entrySignal = Signal(order: 18, kilometre: [0.0], functions: [.entry]);
       const blocker = Signal(order: 19, kilometre: [0.0], functions: [.block]);
@@ -258,7 +258,10 @@ void main() {
 
       // EXPECT
       expect(emitRegister, hasLength(2));
-      expect(emitRegister.last, equals(RadioChannelModel(networkType: .sim)));
+      expect(
+        emitRegister.last,
+        equals(RadioChannelModel(networkType: .gsmP, lastServicePoint: twentyOrderServicePoint)),
+      );
     });
 
     test('model_whenJourneyWithEntrySignalAndServicePointWithoutChangesFollowing_thenHasCurrentNetworkType', () async {

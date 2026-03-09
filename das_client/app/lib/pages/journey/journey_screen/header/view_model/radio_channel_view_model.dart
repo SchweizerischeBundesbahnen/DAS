@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:app/pages/journey/journey_screen/header/view_model/model/radio_channel_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
+import 'package:collection/collection.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
@@ -63,14 +64,17 @@ class RadioChannelViewModel extends JourneyAwareViewModel {
       return;
     }
 
-    final nextPosition = journeyPoints[currentPositionIdx + 1];
-    if (nextPosition is! ServicePoint) {
+    final nextServicePoint = journeyPoints
+        .getRange(currentPositionIdx, journeyPoints.length)
+        .whereType<ServicePoint>()
+        .firstOrNull;
+    if (nextServicePoint == null) {
       _setCurrentPositionAndLastServicePointFrom(journeyPosition);
       return;
     }
 
-    _currentPosition = nextPosition;
-    _lastServicePoint = nextPosition;
+    _currentPosition = nextServicePoint;
+    _lastServicePoint = nextServicePoint;
   }
 
   void _setCurrentPositionAndLastServicePointFrom(JourneyPositionModel journeyPosition) {
