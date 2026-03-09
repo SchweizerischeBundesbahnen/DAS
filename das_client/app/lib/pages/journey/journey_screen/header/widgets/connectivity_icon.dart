@@ -51,7 +51,7 @@ class ConnectivityIcon extends StatelessWidget {
         child: SBBMessage(
           title: context.l10n.w_modal_sheet_disconnected_wifi_message_title,
           description: context.l10n.w_modal_sheet_disconnected_wifi_message_text,
-          illustration: MessageIllustration.Man,
+          illustration: MessageIllustration.Display,
         ),
       ),
     );
@@ -67,7 +67,7 @@ class ConnectivityIcon extends StatelessWidget {
         child: SBBMessage(
           title: context.l10n.w_modal_sheet_disconnected_message_title,
           description: context.l10n.w_modal_sheet_disconnected_message_text,
-          illustration: MessageIllustration.Display,
+          illustration: .Display,
         ),
       ),
     );
