@@ -2,6 +2,7 @@ package ch.sbb.backend.admin.application.settings;
 
 import static ch.sbb.backend.admin.application.settings.SettingsController.API_SETTINGS;
 import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.context.jdbc.SqlMergeMode.MergeMode.MERGE;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -12,9 +13,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlMergeMode;
 import org.springframework.test.web.servlet.MockMvc;
 
 @IntegrationTest
+@Sql("classpath:emptyAppVersions.sql")
+@SqlMergeMode(MERGE)
 class SettingsControllerTest {
 
     @Autowired
@@ -23,7 +27,7 @@ class SettingsControllerTest {
     @Test
     @WithMockUser(authorities = "ROLE_observer")
     @Sql("classpath:createRuFeature.sql")
-    @Sql("classpath:emptyAndCreateAppVersions.sql")
+    @Sql("classpath:createAppVersions.sql")
     void should_respond_with_settings() throws Exception {
         mockMvc.perform(get(API_SETTINGS).header("X-App-Version", "2.4.1"))
             .andExpect(status().isOk())

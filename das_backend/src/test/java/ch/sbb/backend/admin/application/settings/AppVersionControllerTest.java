@@ -2,6 +2,7 @@ package ch.sbb.backend.admin.application.settings;
 
 import static ch.sbb.backend.admin.application.settings.AppVersionController.API_SETTINGS_APP_VERSION;
 import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.context.jdbc.SqlMergeMode.MergeMode.MERGE;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -14,9 +15,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlMergeMode;
 import org.springframework.test.web.servlet.MockMvc;
 
 @IntegrationTest
+@Sql("classpath:emptyAppVersions.sql")
+@SqlMergeMode(MERGE)
 class AppVersionControllerTest {
 
     @Autowired
@@ -24,7 +28,6 @@ class AppVersionControllerTest {
 
     @Test
     @WithMockUser(authorities = "ROLE_admin")
-    @Sql("classpath:emptyAppVersions.sql")
     void getAll_empty() throws Exception {
         mockMvc.perform(get(API_SETTINGS_APP_VERSION))
             .andExpect(status().isOk())
@@ -41,7 +44,7 @@ class AppVersionControllerTest {
 
     @Test
     @WithMockUser(authorities = "ROLE_admin")
-    @Sql("classpath:emptyAndCreateAppVersions.sql")
+    @Sql("classpath:createAppVersions.sql")
     void getById_by_id() throws Exception {
         mockMvc.perform(get(API_SETTINGS_APP_VERSION + "/1"))
             .andExpect(status().isOk())
@@ -84,7 +87,7 @@ class AppVersionControllerTest {
 
     @Test
     @WithMockUser(authorities = "ROLE_admin")
-    @Sql("classpath:emptyAndCreateAppVersions.sql")
+    @Sql("classpath:createAppVersions.sql")
     void update() throws Exception {
         mockMvc.perform(put(API_SETTINGS_APP_VERSION + "/1")
                 .contentType("application/json")
@@ -113,7 +116,7 @@ class AppVersionControllerTest {
 
     @Test
     @WithMockUser(authorities = "ROLE_admin")
-    @Sql("classpath:emptyAndCreateAppVersions.sql")
+    @Sql("classpath:createAppVersions.sql")
     void delete() throws Exception {
         mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete(API_SETTINGS_APP_VERSION + "/1"))
             .andExpect(status().isNoContent());
