@@ -1,8 +1,8 @@
 package ch.sbb.backend.admin.domain.settings;
 
 import ch.sbb.backend.admin.application.settings.model.request.AppVersionRequest;
+import ch.sbb.backend.admin.application.settings.model.response.AppVersion;
 import ch.sbb.backend.admin.application.settings.model.response.CurrentAppVersion;
-import ch.sbb.backend.admin.domain.settings.model.AppVersion;
 import ch.sbb.backend.admin.domain.settings.model.SemanticVersion;
 import ch.sbb.backend.admin.infrastructure.settings.model.AppVersionEntity;
 import java.time.LocalDate;

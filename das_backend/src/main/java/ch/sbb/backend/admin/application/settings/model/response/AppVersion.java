@@ -1,4 +1,4 @@
-package ch.sbb.backend.admin.domain.settings.model;
+package ch.sbb.backend.admin.application.settings.model.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;

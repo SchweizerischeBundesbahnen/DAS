@@ -1,7 +1,7 @@
 package ch.sbb.backend.admin.infrastructure.settings.model;
 
 import ch.sbb.backend.admin.application.settings.model.request.AppVersionRequest;
-import ch.sbb.backend.admin.domain.settings.model.AppVersion;
+import ch.sbb.backend.admin.application.settings.model.response.AppVersion;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;

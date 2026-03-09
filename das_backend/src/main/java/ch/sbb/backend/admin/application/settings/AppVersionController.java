@@ -3,10 +3,10 @@ package ch.sbb.backend.admin.application.settings;
 import static ch.sbb.backend.admin.application.settings.SettingsController.PATH_SEGMENT_SETTINGS;
 
 import ch.sbb.backend.admin.application.settings.model.request.AppVersionRequest;
+import ch.sbb.backend.admin.application.settings.model.response.AppVersion;
 import ch.sbb.backend.admin.application.settings.model.response.AppVersionResponse;
 import ch.sbb.backend.admin.application.settings.model.response.AppVersionsResponse;
 import ch.sbb.backend.admin.domain.settings.AppVersionService;
-import ch.sbb.backend.admin.domain.settings.model.AppVersion;
 import ch.sbb.backend.common.ApiDocumentation;
 import ch.sbb.backend.common.ApiErrorResponses;
 import ch.sbb.backend.common.ApiParametersDefault;

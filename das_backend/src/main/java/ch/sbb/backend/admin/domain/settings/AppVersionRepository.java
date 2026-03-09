@@ -1,6 +1,6 @@
 package ch.sbb.backend.admin.domain.settings;
 
-import ch.sbb.backend.admin.domain.settings.model.AppVersion;
+import ch.sbb.backend.admin.application.settings.model.response.AppVersion;
 import java.util.List;
 import java.util.Optional;
 

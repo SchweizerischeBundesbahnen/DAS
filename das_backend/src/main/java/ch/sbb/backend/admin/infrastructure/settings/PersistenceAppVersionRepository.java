@@ -1,7 +1,7 @@
 package ch.sbb.backend.admin.infrastructure.settings;
 
+import ch.sbb.backend.admin.application.settings.model.response.AppVersion;
 import ch.sbb.backend.admin.domain.settings.AppVersionRepository;
-import ch.sbb.backend.admin.domain.settings.model.AppVersion;
 import ch.sbb.backend.admin.infrastructure.settings.model.AppVersionEntity;
 import java.util.List;
 import java.util.Optional;
