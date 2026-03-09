@@ -76,6 +76,7 @@ class _BatteryStatusState extends State<BatteryStatus> {
         child: SBBMessage(
           title: context.l10n.w_modal_sheet_battery_status_battery_almost_empty,
           description: context.l10n.w_modal_sheet_battery_status_plug_in_device,
+          illustration: .Display,
         ),
       ),
     );
