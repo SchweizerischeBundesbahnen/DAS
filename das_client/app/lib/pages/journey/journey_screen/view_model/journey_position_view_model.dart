@@ -130,16 +130,12 @@ class JourneyPositionViewModel extends JourneyAwareViewModel {
     }
 
     final manualPosition = _rxManualPosition.value;
-    if (manualPosition != null && _shouldRespectManualPosition) {
+    if (manualPosition != null && (_currentAdvancementMode?.isInManualCycle ?? false)) {
       currentPosition = _rxManualPosition.value;
     }
 
     return currentPosition;
   }
-
-  bool get _shouldRespectManualPosition =>
-      (_currentAdvancementMode is Manual ||
-      (_currentAdvancementMode is Paused && (_currentAdvancementMode as Paused).next is Manual));
 
   ServicePoint? _calculatePreviousServicePoint(
     JourneyPoint? updatedPosition,
