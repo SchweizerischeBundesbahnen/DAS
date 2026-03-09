@@ -4,6 +4,12 @@ sealed class JourneyAdvancementModel {
 
   @override
   int get hashCode => runtimeType.hashCode;
+
+  bool get isInManualCycle => switch (this) {
+    final Paused p => p.next is Manual,
+    Automatic _ => false,
+    Manual _ => true,
+  };
 }
 
 /// When JourneyAdvancement is paused, no automatic scrolling will happen.

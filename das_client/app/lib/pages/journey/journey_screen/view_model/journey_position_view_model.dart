@@ -130,7 +130,7 @@ class JourneyPositionViewModel extends JourneyAwareViewModel {
     }
 
     final manualPosition = _rxManualPosition.value;
-    if (manualPosition != null && _currentAdvancementMode is Manual) {
+    if (manualPosition != null && (_currentAdvancementMode?.isInManualCycle ?? false)) {
       currentPosition = _rxManualPosition.value;
     }
 
