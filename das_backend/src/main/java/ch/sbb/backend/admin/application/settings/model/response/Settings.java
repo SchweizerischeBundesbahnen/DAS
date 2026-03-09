@@ -10,7 +10,9 @@ public record Settings(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     Logging logging,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-    Preload preload
+    Preload preload,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
+    CurrentAppVersion currentAppVersion
 ) {
 
 }
