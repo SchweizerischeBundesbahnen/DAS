@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.13.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.12.0...sfera_mock-v0.13.0) (2026-03-10)
+
+
+### Features
+
+* add advised speed hints ([#973](https://github.com/SchweizerischeBundesbahnen/DAS/issues/973)) ([#1797](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1797)) ([1a3cff1](https://github.com/SchweizerischeBundesbahnen/DAS/commit/1a3cff119f41a6a49b5b4e0a9461a0d62ec973cc))
+* radio channel change on entry signal ([#1237](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1237)) ([#1881](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1881)) ([5539278](https://github.com/SchweizerischeBundesbahnen/DAS/commit/5539278aa3ee60a72f44387de3445dd6aa9446ac))
+
+
+### Bug Fixes
+
+* updated available evu ([#1847](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1847)) ([#1862](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1862)) ([167bc8b](https://github.com/SchweizerischeBundesbahnen/DAS/commit/167bc8b651b7839296f3dd65437d02753419c243))
+
+
+### Documentation
+
+* update operating days ([#1889](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1889)) ([0f2795c](https://github.com/SchweizerischeBundesbahnen/DAS/commit/0f2795cda61f272e4b5a01bac38cdb931d58f257))
+
 ## [0.12.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.11.0...sfera_mock-v0.12.0) (2026-02-24)
 
 
