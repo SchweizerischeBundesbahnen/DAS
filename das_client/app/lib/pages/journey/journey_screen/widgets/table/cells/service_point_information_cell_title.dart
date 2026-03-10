@@ -38,7 +38,13 @@ class ServicePointInformationCellTitle extends StatelessWidget {
           overflow: .ellipsis,
         );
         if (shortTermChange != null) {
-          textTitle = wrapWithIndicator(textTitle);
+          textTitle = Row(
+            mainAxisSize: .min,
+            children: [
+              Flexible(child: wrapWithIndicator(textTitle)),
+              SizedBox(width: SBBSpacing.medium),
+            ],
+          );
         }
 
         return DefaultTextStyle.merge(
