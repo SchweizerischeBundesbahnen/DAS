@@ -40,6 +40,40 @@ class CompanyAuthorizerTest {
     }
 
     @Test
+    void canEditCompany_returnsFalse_whenCompaniesIsNull() {
+        Authentication auth = mock(Authentication.class);
+
+        boolean result = underTest.canEditCompany(auth, null);
+
+        assertThat(result).isFalse();
+        verifyNoInteractions(tenantRepository);
+    }
+
+    @Test
+    void canEditCompany_returnsFalse_whenTenantCompaniesNull() {
+        JwtAuthenticationToken auth = jwtAuthWithIssuer("https://issuer.example/v2.0");
+        Tenant tenant = tenantWithCompanies("t1", "https://issuer.example/v2.0", "https://jwks.example", null);
+
+        when(tenantRepository.getByIssuerUri("https://issuer.example/v2.0")).thenReturn(tenant);
+
+        boolean result = underTest.canEditCompany(auth, Set.of("2185"));
+
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    void canEditCompany_returnsFalse_whenTenantCompaniesEmpty() {
+        JwtAuthenticationToken auth = jwtAuthWithIssuer("https://issuer.example/v2.0");
+        Tenant tenant = tenantWithCompanies("t1", "https://issuer.example/v2.0", "https://jwks.example", Set.of());
+
+        when(tenantRepository.getByIssuerUri("https://issuer.example/v2.0")).thenReturn(tenant);
+
+        boolean result = underTest.canEditCompany(auth, Set.of("2185"));
+
+        assertThat(result).isFalse();
+    }
+
+    @Test
     void canEditCompany_throws_whenTenantRepositoryDoesNotKnowIssuer() {
         JwtAuthenticationToken auth = jwtAuthWithIssuer("https://issuer.example/v2.0");
         when(tenantRepository.getByIssuerUri("https://issuer.example/v2.0"))
