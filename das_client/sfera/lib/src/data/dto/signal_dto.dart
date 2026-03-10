@@ -1,4 +1,5 @@
 import 'package:sfera/src/data/dto/enums/modification_type_dto.dart';
+import 'package:sfera/src/data/dto/sbb_function_signal_dto.dart';
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 import 'package:sfera/src/data/dto/signal_function_dto.dart';
 import 'package:sfera/src/data/dto/signal_id_dto.dart';
@@ -15,13 +16,19 @@ class SignalDto extends SferaXmlElementDto {
   SignalPhysicalCharacteristicsDto? get physicalCharacteristics =>
       children.whereType<SignalPhysicalCharacteristicsDto>().firstOrNull;
 
-  Iterable<SignalFunctionDto> get functions => children.whereType<SignalFunctionDto>();
+  Iterable<SignalFunctionDto> get functions => children.whereType<SignalFunctionDto>().followedBy(nspFunctions);
 
   Iterable<SignalNspDto> get nsps => children.whereType<SignalNspDto>();
 
   DateTime? get lastModificationDate => nsps.map((it) => it.lastModificationDate).nonNulls.firstOrNull;
 
   ModificationTypeDto? get lastModificationType => nsps.map((it) => it.lastModificationType).nonNulls.firstOrNull;
+
+  Iterable<SignalFunctionDto> get nspFunctions => nsps
+      .map((it) => it.parameters.whereType<SbbFunctionSignalDto>())
+      .expand((it) => it)
+      .map((it) => SignalFunctionDto(value: it.nspValue))
+      .nonNulls;
 
   @override
   bool validate() {

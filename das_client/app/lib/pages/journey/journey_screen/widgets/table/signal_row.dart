@@ -82,6 +82,7 @@ extension _SignalFunctionExtension on SignalFunction {
       .laneChange => context.l10n.c_main_signal_function_laneChange,
       .intermediate => context.l10n.c_main_signal_function_intermediate,
       .protection => context.l10n.c_main_signal_function_protection,
+      .lockingOutSignal => context.l10n.c_main_signal_function_locking_out,
       .unknown => context.l10n.c_unknown,
     };
   }
@@ -94,6 +95,7 @@ extension _SignalFunctionExtension on SignalFunction {
       .laneChange => context.l10n.c_main_signal_function_laneChange_short,
       .intermediate => context.l10n.c_main_signal_function_intermediate_short,
       .protection => context.l10n.c_main_signal_function_protection_short,
+      .lockingOutSignal => context.l10n.c_main_signal_function_locking_out_short,
       .unknown => context.l10n.c_unknown,
     };
   }
