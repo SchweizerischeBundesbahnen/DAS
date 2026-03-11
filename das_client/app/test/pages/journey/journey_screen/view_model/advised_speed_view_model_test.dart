@@ -1,8 +1,10 @@
 import 'package:app/pages/journey/journey_screen/view_model/advised_speed_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/line_speed_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/advised_speed_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
+import 'package:app/pages/journey/view_model/model/resolved_train_series_speed.dart';
 import 'package:app/sound/das_sounds.dart';
 import 'package:app/sound/sound.dart';
 import 'package:app/util/time_constants.dart';
@@ -19,6 +21,7 @@ import 'advised_speed_view_model_test.mocks.dart';
 @GenerateNiceMocks([
   MockSpec<NotificationPriorityQueueViewModel>(),
   MockSpec<JourneyViewModel>(),
+  MockSpec<LineSpeedViewModel>(),
   MockSpec<DASSounds>(),
   MockSpec<Sound>(),
 ])
@@ -27,6 +30,7 @@ void main() {
     late AdvisedSpeedViewModel testee;
     late MockJourneyViewModel mockJourneyViewModel;
     late MockNotificationPriorityQueueViewModel mockNotificationViewModel;
+    late MockLineSpeedViewModel mockLineSpeedViewModel;
     late BehaviorSubject<Journey?> journeySubject;
     late BehaviorSubject<JourneyPositionModel> journeyPositionSubject;
     late FakeAsync testAsync;
@@ -61,14 +65,17 @@ void main() {
 
       fakeAsync((fakeAsync) {
         mockJourneyViewModel = MockJourneyViewModel();
+        mockLineSpeedViewModel = MockLineSpeedViewModel();
         journeySubject = BehaviorSubject<Journey?>.seeded(null);
         when(mockJourneyViewModel.journey).thenAnswer((_) => journeySubject.stream);
+        when(mockLineSpeedViewModel.getResolvedSpeedForOrder(any)).thenReturn(ResolvedTrainSeriesSpeed.none());
         journeyPositionSubject = BehaviorSubject<JourneyPositionModel>.seeded(JourneyPositionModel());
         testAsync = fakeAsync;
 
         testee = AdvisedSpeedViewModel(
           journeyPositionStream: journeyPositionSubject,
           journeyViewModel: mockJourneyViewModel,
+          lineSpeedViewModel: mockLineSpeedViewModel,
           notificationVM: mockNotificationViewModel,
         );
         modelRegister = [];
@@ -290,6 +297,96 @@ void main() {
         );
         verify(mockNotificationViewModel.insert(type: .advisedSpeed, callback: mockStartSound.play)).called(1);
         verify(mockNotificationViewModel.insert(type: .advisedSpeed, callback: mockEndSound.play)).called(1);
+      });
+    });
+
+    group('line speed reduction', () {
+      final advisedSpeedSegmentOne = FollowTrainAdvisedSpeedSegment(
+        startOrder: 10,
+        endOrder: 29,
+        endData: baseJourney.data[6],
+        speed: SingleSpeed(value: '100'),
+      );
+      final followTrainAdvisedSpeedJourney = Journey(
+        metadata: Metadata(
+          advisedSpeedSegments: [advisedSpeedSegmentOne],
+        ),
+        data: List.from(baseJourney.data),
+      );
+
+      setUp(() {
+        testAsync.run((_) {
+          journeySubject.add(followTrainAdvisedSpeedJourney);
+        });
+      });
+
+      test('whenEntersAdvisedSpeedSegmentWithLineSpeed_isActiveWithCorrectModelAndSoundPlayed', () {
+        // ARRANGE
+        final lineSpeed = SingleSpeed(value: '90');
+        when(mockLineSpeedViewModel.getResolvedSpeedForOrder(baseJourney.data[1].order)).thenReturn(
+          ResolvedTrainSeriesSpeed(
+            speed: TrainSeriesSpeed(trainSeries: TrainSeries.A, speed: lineSpeed),
+            isPrevious: false,
+          ),
+        );
+
+        // ACT
+        testAsync.run((testAsync) {
+          journeyPositionSubject.add(JourneyPositionModel(currentPosition: baseJourney.data[1] as JourneyPoint));
+          _processStreamInFakeAsync(testAsync);
+        });
+
+        // EXPECT & VERIFY
+        expect(
+          modelRegister,
+          orderedEquals([
+            AdvisedSpeedModel.inactive(),
+            AdvisedSpeedModel.active(segment: advisedSpeedSegmentOne, lineSpeed: lineSpeed),
+          ]),
+        );
+        verify(mockNotificationViewModel.insert(type: .advisedSpeed, callback: mockStartSound.play)).called(1);
+        verifyNever(mockNotificationViewModel.insert(type: .advisedSpeed, callback: mockEndSound.play));
+      });
+
+      test('whenLineSpeedAppliesWithinSegment_isActiveWithCorrectModelAndDoesNotPlaySound', () {
+        // ARRANGE
+        final lineSpeed = SingleSpeed(value: '90');
+        final lowerLineSpeed = SingleSpeed(value: '80');
+        when(mockLineSpeedViewModel.getResolvedSpeedForOrder(baseJourney.data[1].order)).thenReturn(
+          ResolvedTrainSeriesSpeed(
+            speed: TrainSeriesSpeed(trainSeries: TrainSeries.A, speed: lineSpeed),
+            isPrevious: false,
+          ),
+        );
+        when(mockLineSpeedViewModel.getResolvedSpeedForOrder(baseJourney.data[4].order)).thenReturn(
+          ResolvedTrainSeriesSpeed(
+            speed: TrainSeriesSpeed(trainSeries: TrainSeries.A, speed: lowerLineSpeed),
+            isPrevious: false,
+          ),
+        );
+
+        // ACT
+        testAsync.run((testAsync) {
+          journeyPositionSubject.add(JourneyPositionModel(currentPosition: baseJourney.data[1] as JourneyPoint));
+          _processStreamInFakeAsync(testAsync);
+        });
+
+        testAsync.run((testAsync) {
+          journeyPositionSubject.add(JourneyPositionModel(currentPosition: baseJourney.data[4] as JourneyPoint));
+          _processStreamInFakeAsync(testAsync);
+        });
+
+        // EXPECT & VERIFY
+        expect(
+          modelRegister,
+          orderedEquals([
+            AdvisedSpeedModel.inactive(),
+            AdvisedSpeedModel.active(segment: advisedSpeedSegmentOne, lineSpeed: lineSpeed),
+            AdvisedSpeedModel.active(segment: advisedSpeedSegmentOne, lineSpeed: lowerLineSpeed),
+          ]),
+        );
+        verify(mockNotificationViewModel.insert(type: .advisedSpeed, callback: mockStartSound.play)).called(1);
+        verifyNever(mockNotificationViewModel.insert(type: .advisedSpeed, callback: mockEndSound.play));
       });
     });
 
