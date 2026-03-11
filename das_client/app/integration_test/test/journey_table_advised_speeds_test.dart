@@ -39,6 +39,7 @@ void main() {
     expect(find.byKey(AdvisedSpeedNotificationHint.servicePointSpeedKey), findsNothing);
     expect(find.byKey(AdvisedSpeedNotificationHint.curvePointSpeedKey), findsNothing);
     expect(find.byKey(AdvisedSpeedNotificationHint.additionalSpeedRestrictionKey), findsNothing);
+    await waitUntilExists(tester, _findAdvisedSpeedNotificationContainingText('80'));
     expect(_findAdvisedSpeedNotificationContainingText('E185'), findsNothing);
 
     // Punctuality Hidden
@@ -100,14 +101,17 @@ void main() {
     final advisedSpeedCellWithZeroSpeed = _findCalculatedSpeedCellOf(advisedSpeedDistStartRow, '0');
     expect(advisedSpeedCellWithZeroSpeed, findsNothing);
 
-    await waitUntilExists(
-      tester,
-      find.descendant(of: find.byKey(StickyHeader.headerKey), matching: find.text('Allaman')),
-      maxWaitSeconds: 30,
+    final allamanStickyHeaderRow = find.descendant(
+      of: find.byKey(StickyHeader.headerKey),
+      matching: find.text('Allaman'),
     );
+    await waitUntilExists(tester, allamanStickyHeaderRow, maxWaitSeconds: 30);
 
     // Check that end location is not displayed in notification banner (unknown)
     expect(_findAdvisedSpeedNotificationContainingText('E185'), findsNothing);
+
+    // check that advised speed is lowered to line speed in table
+    expect(_findCalculatedSpeedCellOf(allamanStickyHeaderRow, '80'), findsOne);
 
     // Check that advisedSpeed end displayed calculated speed on signal row
     final advisedSpeedEndRowServicePoint = findDASTableRowByText('E185');
