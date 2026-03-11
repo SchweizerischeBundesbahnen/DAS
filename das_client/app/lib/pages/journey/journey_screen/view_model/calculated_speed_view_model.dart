@@ -1,3 +1,4 @@
+import 'package:app/extension/single_speed_extension.dart';
 import 'package:app/pages/journey/journey_screen/view_model/line_speed_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
 import 'package:app/pages/journey/view_model/model/calculated_speed.dart';
@@ -58,13 +59,4 @@ class CalculatedSpeedViewModel extends JourneyAwareViewModel {
 
   @override
   void journeyIdentificationChanged(_) {}
-}
-
-extension _SingleSpeedExtension on SingleSpeed {
-  bool isLargerThan(Speed? other) {
-    if (other == null) return false;
-    if (other.isIllegal) return false;
-    if (other is! SingleSpeed) return false;
-    return int.parse(value) > int.parse(other.value);
-  }
 }
