@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:app/di/di.dart';
+import 'package:app/pages/journey/journey_screen/view_model/line_speed_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/advised_speed_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
@@ -20,8 +21,10 @@ class AdvisedSpeedViewModel extends JourneyAwareViewModel {
   AdvisedSpeedViewModel({
     required Stream<JourneyPositionModel> journeyPositionStream,
     required NotificationPriorityQueueViewModel notificationVM,
+    required LineSpeedViewModel lineSpeedViewModel,
     super.journeyViewModel,
-  }) : _notificationVM = notificationVM {
+  }) : _notificationVM = notificationVM,
+       _lineSpeedViewModel = lineSpeedViewModel {
     _initJourneyStreamSubscription(journeyViewModel.journey, journeyPositionStream);
   }
 
@@ -33,7 +36,14 @@ class AdvisedSpeedViewModel extends JourneyAwareViewModel {
 
   Timer? _setToInactiveTimer;
 
+  List<AdvisedSpeedSegment> _activeSegments = [];
+
+  int _currentPositionOrder = 0;
+
+  SingleSpeed? _activeLineSpeed;
+
   final NotificationPriorityQueueViewModel _notificationVM;
+  final LineSpeedViewModel _lineSpeedViewModel;
 
   StreamSubscription<(Journey?, JourneyPositionModel)>? _journeySubscription;
 
@@ -54,40 +64,42 @@ class AdvisedSpeedViewModel extends JourneyAwareViewModel {
       final journeyPosition = data.$2;
       if (_cannotDetermineAdvisedSpeed(journey, journeyPosition)) return;
 
-      _handleJourneyUpdate(journey, journeyPosition);
+      _handleUpdate(journey, journeyPosition);
     });
   }
 
   bool _cannotDetermineAdvisedSpeed(Journey? journey, JourneyPositionModel journeyPosition) =>
       journey == null || journeyPosition.currentPosition == null;
 
-  void _handleJourneyUpdate(Journey? journey, JourneyPositionModel journeyPosition) {
-    final currentPositionOrder = journeyPosition.currentPosition!.order;
+  void _handleUpdate(Journey? journey, JourneyPositionModel journeyPosition) {
+    _currentPositionOrder = journeyPosition.currentPosition!.order;
     final advisedSpeedSegments = journey!.metadata.advisedSpeedSegments;
-    final activeSegments = advisedSpeedSegments.appliesToOrder(currentPositionOrder).toList();
+    _activeSegments = advisedSpeedSegments.appliesToOrder(_currentPositionOrder).toList();
+    _activeLineSpeed = _lineSpeedViewModel.getResolvedSpeedForOrder(_currentPositionOrder).speed?.speed as SingleSpeed?;
 
-    if (activeSegments.length > 1) {
-      _handleMultipleSegments(activeSegments, currentPositionOrder);
+    if (_activeSegments.length > 1) {
+      _handleMultipleSegments();
     } else {
-      _handleSingleSegment(activeSegments.firstOrNull, currentPositionOrder);
+      _handleSingleSegment(_activeSegments.firstOrNull);
     }
   }
 
-  void _handleMultipleSegments(List<AdvisedSpeedSegment> activeSegments, int currentPositionOrder) {
+  void _handleMultipleSegments() {
     // idea is to reduce multi segment case to single case
-    final nonEndingSegments = activeSegments.where((segment) => segment.endOrder != currentPositionOrder);
+    final nonEndingSegments = _activeSegments.where((segment) => segment.endOrder != _currentPositionOrder);
     if (nonEndingSegments.isEmpty) return;
     if (nonEndingSegments.length == 1) return _maybeStartAdvisedSpeed(nonEndingSegments.first);
 
     _log.warning('Received multiple advised speed segments for same position. Displaying first one!');
-    _handleSingleSegment(nonEndingSegments.sorted((a, b) => a.compareTo(b)).first, currentPositionOrder);
+    _handleSingleSegment(nonEndingSegments.sorted((a, b) => a.compareTo(b)).first);
   }
 
-  void _handleSingleSegment(AdvisedSpeedSegment? activeSegment, int currentPositionOrder) {
+  void _handleSingleSegment(AdvisedSpeedSegment? activeSegment) {
     // 1st priority: if we're active and on the end of the current segment => end AdvisedSpeed
     // 2nd priority: if active segment is null and we're in active state => cancel AdvisedSpeed
     // 3rd priority: if the activeSegment is not null => start or keep AdvisedSpeed
-    if (activeSegment != null && activeSegment.endOrder == currentPositionOrder) return _endAdvisedSpeed();
+
+    if (activeSegment != null && activeSegment.endOrder == _currentPositionOrder) return _endAdvisedSpeed();
     if (activeSegment == null) return _cancelAdvisedSpeed();
     _maybeStartAdvisedSpeed(activeSegment);
   }
@@ -95,17 +107,18 @@ class AdvisedSpeedViewModel extends JourneyAwareViewModel {
   void _endAdvisedSpeed() {
     if (modelValue is! Active) return;
     _log.fine('Setting AdvisedSpeedModel to end.');
-    _emitModelWithTimerAndSounds(AdvisedSpeedModel.end());
+    _emitModelWithTimerAndSounds(.end());
   }
 
   void _cancelAdvisedSpeed() {
     if (modelValue is! Active) return;
     _log.fine('Setting AdvisedSpeedModel to cancel.');
-    _emitModelWithTimerAndSounds(AdvisedSpeedModel.cancel());
+    _emitModelWithTimerAndSounds(.cancel());
   }
 
-  void _maybeStartAdvisedSpeed(AdvisedSpeedSegment activeSegment) =>
-      _emitModelWithTimerAndSounds(AdvisedSpeedModel.active(segment: activeSegment));
+  void _maybeStartAdvisedSpeed(AdvisedSpeedSegment activeSegment) {
+    _emitModelWithTimerAndSounds(.active(segment: activeSegment, lineSpeed: _activeLineSpeed));
+  }
 
   void _emitModelWithTimerAndSounds(AdvisedSpeedModel updatedModel) {
     final soundCallback = _getSoundsCallback(updatedModel);
@@ -126,7 +139,8 @@ class AdvisedSpeedViewModel extends JourneyAwareViewModel {
     if (currentModel is! Active) return null;
 
     if (updatedModel is Cancel || updatedModel is End) return _endSound.play;
-    if (updatedModel is Active && updatedModel != currentModel) return _startSound.play;
+
+    if (updatedModel is Active && updatedModel.segment != currentModel.segment) return _startSound.play;
     return null;
   }
 
