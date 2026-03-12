@@ -19,6 +19,7 @@ import org.springframework.test.context.jdbc.Sql;
 
 @DataJpaTest
 @Import({PostgresTestContainerConfiguration.class, JpaAuditingConfiguration.class})
+@Sql("classpath:createRuFeature.sql")
 class SpringDataJpaRuFeatureRepositoryTest {
 
     @Autowired
@@ -28,7 +29,6 @@ class SpringDataJpaRuFeatureRepositoryTest {
     private TestEntityManager entityManager;
 
     @Test
-    @Sql("classpath:createRuFeature.sql")
     void existingRuFeaturesCanBeFound() {
         RuFeatureEntity entity = underTest.findAll().getFirst();
         assertThat(entity).isNotNull();
@@ -42,7 +42,6 @@ class SpringDataJpaRuFeatureRepositoryTest {
     }
 
     @Test
-    @Sql("classpath:createRuFeature.sql")
     void existingRuFeaturesCanBeUpdated() {
         RuFeatureEntity entityToUpdate = underTest.findAll().getFirst();
         entityToUpdate.setEnabled(false);
@@ -62,7 +61,6 @@ class SpringDataJpaRuFeatureRepositoryTest {
     }
 
     @Test
-    @Sql("classpath:createRuFeature.sql")
     void ruFeaturesCanBeCreated() {
         CompanyEntity company = entityManager.find(CompanyEntity.class, 2);
         RuFeatureEntity entityToCreate = new RuFeatureEntity();
@@ -88,7 +86,6 @@ class SpringDataJpaRuFeatureRepositoryTest {
     }
 
     @Test
-    @Sql("classpath:createRuFeature.sql")
     void ruFeaturesCanBeDeleted() {
         underTest.deleteById(1);
         entityManager.flush();

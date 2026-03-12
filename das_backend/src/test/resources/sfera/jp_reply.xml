@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SFERA_G2B_ReplyMessage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../main/resources/SFERA_v3.00.xsd">
+    <MessageHeader SFERA_version="3.00" message_ID="f552c19f-d8f6-434c-95b5-996b99b71f21" sourceDevice="TEST" timestamp="2025-10-20T13:19:29Z"
+                   correlation_ID="${correlationId}">
+        <Sender>1111</Sender>
+        <Recipient>2222</Recipient>
+    </MessageHeader>
+
+    <G2B_ReplyPayload>
+        <JourneyProfile JP_Status="Valid">
+            <TrainIdentification>
+                <OTN_ID>
+                    <teltsi_Company>2222</teltsi_Company>
+                    <teltsi_OperationalTrainNumber>1</teltsi_OperationalTrainNumber>
+                    <teltsi_StartDate>2026-03-01</teltsi_StartDate>
+                </OTN_ID>
+            </TrainIdentification>
+            <SegmentProfileReference SP_ID="SP_1" SP_VersionMajor="1">
+                <SP_Zone>
+                    <IM_ID>0011</IM_ID>
+                </SP_Zone>
+                <TrainCharacteristicsRef TC_ID="TC_1" TC_VersionMajor="1">
+                    <TC_RU_ID>1011</TC_RU_ID>
+                </TrainCharacteristicsRef>
+            </SegmentProfileReference>
+        </JourneyProfile>
+    </G2B_ReplyPayload>
+</SFERA_G2B_ReplyMessage>
