@@ -1,24 +1,20 @@
 package ch.sbb.backend.common;
 
-import java.io.IOException;
-import java.net.URI;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.connector.ClientAbortException;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.hibernate.exception.SQLGrammarException;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -29,12 +25,13 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class TopLevelHandler extends ResponseEntityExceptionHandler {
 
     private static final String UNEXPECTED_ERROR = "Unexpected error";
-    private static final String INSTANCE_FALLBACK="/v1/toplevel-error";
+    private static final String INSTANCE_FALLBACK = "/v1/toplevel-error";
     // experimental -> Spring WebRequest::description prefix
     private static final String INSTANCE_PREFIX = "uri=";
 
     /**
      * Handle any unexpected {@link org.springframework.web.bind.annotation.RestController} failure based on Spring {@link ProblemDetail}.
+     *
      * @return wrapped {@link Problem}
      */
     @Override
@@ -62,7 +59,7 @@ public class TopLevelHandler extends ResponseEntityExceptionHandler {
             status,
             StringUtils.isBlank(responseProblemDetail.getTitle()) ? UNEXPECTED_ERROR : responseProblemDetail.getTitle(),
             extractDetail(responseProblemDetail, request),
-            extractInstance(responseProblemDetail, request)            );
+            extractInstance(responseProblemDetail, request));
 
         return new ResponseEntity<>(problem,
             ResponseEntityFactory.createProblemHeader(ApiDocumentation.HEADER_CONTENT_LANGUAGE_ERROR_DETAIL_DEFAULT, request.getHeader(ApiParametersDefault.HEADER_REQUEST_ID)),
@@ -71,7 +68,7 @@ public class TopLevelHandler extends ResponseEntityExceptionHandler {
 
     private String extractDetail(ProblemDetail problemDetail, WebRequest request) {
         final StringBuilder builder = new StringBuilder();
-        builder.append(StringUtils.isBlank(problemDetail.getDetail())? "<UNKNOWN>" : problemDetail.getDetail());
+        builder.append(StringUtils.isBlank(problemDetail.getDetail()) ? "<UNKNOWN>" : problemDetail.getDetail());
         builder.append(" -> params: ");
         Map<String, String[]> params = request.getParameterMap();
         if (!params.isEmpty()) {
@@ -104,8 +101,14 @@ public class TopLevelHandler extends ResponseEntityExceptionHandler {
         return INSTANCE_FALLBACK;
     }
 
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    ResponseEntity<Problem> handleAuthorizationDenied(AuthorizationDeniedException exception) {
+        return createProblemResponse(HttpStatus.FORBIDDEN, "Forbidden", "Not allowed!", exception);
+    }
+
     /**
      * Handle any unexpected failure which is not thrown by {@link #handleExceptionInternal(Exception, Object, HttpHeaders, HttpStatusCode, WebRequest)}
+     *
      * @return wrapped {@link Problem} 500
      */
     @ExceptionHandler(value = {Exception.class})
