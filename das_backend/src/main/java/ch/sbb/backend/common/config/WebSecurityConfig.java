@@ -3,6 +3,7 @@ package ch.sbb.backend.common.config;
 import static ch.sbb.backend.admin.application.settings.SettingsController.API_SETTINGS;
 import static ch.sbb.backend.formation.api.v1.FormationController.API_FORMATIONS;
 
+import ch.sbb.backend.common.security.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,11 +26,6 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity
 public class WebSecurityConfig {
 
-    public static final String ROLE_OBSERVER = "observer";
-    public static final String ROLE_DRIVER = "driver";
-    public static final String ROLE_RU_ADMIN = "ru_admin";
-    public static final String ROLE_ADMIN = "admin";
-
     @Autowired
     JwtAuthenticationConverter jwtAuthenticationConverter;
 
@@ -38,7 +34,7 @@ public class WebSecurityConfig {
         http.authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .requestMatchers("/actuator/health/**").permitAll()
-                .requestMatchers(API_SETTINGS, API_FORMATIONS).hasAnyRole(ROLE_OBSERVER, ROLE_DRIVER)
+                .requestMatchers(API_SETTINGS, API_FORMATIONS).hasAnyRole(UserRole.OBSERVER, UserRole.DRIVER)
                 .anyRequest().authenticated()
             )
             .csrf(AbstractHttpConfigurer::disable)
