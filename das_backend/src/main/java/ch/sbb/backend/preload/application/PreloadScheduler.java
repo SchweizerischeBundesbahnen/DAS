@@ -39,14 +39,14 @@ public class PreloadScheduler {
     }
 
     @Scheduled(cron = "${preload.fetch-cron}")
-    @SchedulerLock(name = "preload", lockAtLeastFor = "4m")
+    @SchedulerLock(name = "preload", lockAtLeastFor = "4m" /* must be shorter than cron-job */)
     public void scheduledPreload() throws MqttException, ExecutionException, InterruptedException {
         log.info("Preload started");
         long startTime = System.currentTimeMillis();
         Map<TrainIdentification, JourneyProfile> mapJourneyProfiles = new HashMap<>();
         Map<SegmentProfileIdentification, SegmentProfile> mapSegmentProfiles = new HashMap<>();
         Map<TrainCharacteristicsIdentification, TrainCharacteristics> mapTrainCharacteristics = new HashMap<>();
-        List<TrainIdentification> trainIdentifications = trainIdentificationsService.getNewTrainIdentificationsBetween(OffsetDateTime.now().minusHours(4),
+        List<TrainIdentification> trainIdentifications = trainIdentificationsService.getNewTrainIdentificationsBetween(OffsetDateTime.now().minusHours(PRELOAD_HOURS_BEFORE_DEPARTURE),
             OffsetDateTime.now().plusHours(PRELOAD_HOURS_BEFORE_DEPARTURE));
         sferaService.connect();
         for (TrainIdentification trainId : trainIdentifications) {
@@ -65,6 +65,6 @@ public class PreloadScheduler {
         sferaService.disconnect();
         storageService.save(mapJourneyProfiles.values(), mapSegmentProfiles.values(), mapTrainCharacteristics.values());
         trainIdentificationsService.savePreloadedTrains(mapJourneyProfiles.keySet());
-        log.info("Preload with {}/{} trains ended in {} ms", mapJourneyProfiles.size(), trainIdentifications.size(), System.currentTimeMillis() - startTime);
+        log.info("Preload with {} JPs of requested {} JPs ended in {} ms", mapJourneyProfiles.size(), trainIdentifications.size(), System.currentTimeMillis() - startTime);
     }
 }

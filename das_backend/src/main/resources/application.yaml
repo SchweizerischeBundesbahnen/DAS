@@ -110,8 +110,8 @@ sfera:
   topic-prefix: ${SFERA_BROKER_TOPIC_PREFIX}
 
 preload:
-  # deactivated for now
-  fetch-cron: '-'
+  # adapt corresponding lockAtLeastFor time in @SchedulerLock
+  fetch-cron: ${PRELOAD_FETCH_CRON}
   bucket:
     bucketUrl: ${PRELOAD_BUCKET_URL}
     accessKey: ${PRELOAD_BUCKET_KEY}

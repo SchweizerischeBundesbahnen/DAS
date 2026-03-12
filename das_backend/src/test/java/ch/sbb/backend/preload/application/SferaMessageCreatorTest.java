@@ -31,7 +31,7 @@ class SferaMessageCreatorTest {
         return !localName.equals("timestamp") && !localName.equals("message_ID");
     };
     public static final DefaultNodeMatcher SP_ID_NODE_MATCHER = new DefaultNodeMatcher(ElementSelectors.byNameAndAttributes("SP_Request", "SP_ID"));
-    private final TrainIdentification trainId = new TrainIdentification(1, "51", OffsetDateTime.of(2025, 10, 6, 16, 38, 12, 0, ZoneOffset.ofHours(1)), Set.of(CompanyCode.of("1111")));
+    private final TrainIdentification trainId = new TrainIdentification(1, "51", OffsetDateTime.of(2025, 10, 6, 16, 38, 12, 0, ZoneOffset.ofHours(2)), Set.of(CompanyCode.of("1111")));
 
     @Autowired
     SferaMessageCreator sferaMessageCreator;

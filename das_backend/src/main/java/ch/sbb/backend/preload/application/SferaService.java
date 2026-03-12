@@ -87,7 +87,7 @@ public class SferaService {
         if (handshakeReply.getHandshakeAcknowledgement() == null) {
             if (isG2bError(handshakeReply.getG2BReplyPayload())) {
                 String errors = extractG2bError(handshakeReply.getG2BReplyPayload());
-                throw new IllegalStateException("HS request errorCode: " + errors);
+                throw new IllegalStateException("Handshake request G2B error: " + errors);
             }
             throw new IllegalStateException("Handshake not acknowledged!");
         }
@@ -95,7 +95,7 @@ public class SferaService {
         if (jpResponse.getG2BReplyPayload() == null || jpResponse.getG2BReplyPayload().getJourneyProfiles() == null || jpResponse.getG2BReplyPayload().getJourneyProfiles().size() != 1) {
             if (isG2bError(jpResponse.getG2BReplyPayload())) {
                 String errors = extractG2bError(jpResponse.getG2BReplyPayload());
-                return terminateSessionWithResult(trainId, new PreloadResult.Error("JP request errorCode: " + errors));
+                return terminateSessionWithResult(trainId, new PreloadResult.Error("JP request G2B error: " + errors));
             }
             return terminateSessionWithResult(trainId, new PreloadResult.Error("Expected exactly one Journey Profile but was none or multiple"));
         }
@@ -176,9 +176,9 @@ public class SferaService {
                     if (reply.getG2BReplyPayload() == null || reply.getG2BReplyPayload().getSegmentProfiles() == null) {
                         if (isG2bError(reply.getG2BReplyPayload())) {
                             String errors = extractG2bError(reply.getG2BReplyPayload());
-                            throw new IllegalStateException("SP request errorCode: " + errors);
+                            throw new IllegalStateException("SP request G2B error: " + errors);
                         }
-                        throw new IllegalStateException("No Segment Profile received!");
+                        throw new IllegalStateException("No SP(s) received!");
                     }
                     List<SegmentProfile> fetched = reply.getG2BReplyPayload().getSegmentProfiles();
                     sferaStore.addSps(fetched);
@@ -209,7 +209,7 @@ public class SferaService {
                     if (reply.getG2BReplyPayload() == null || reply.getG2BReplyPayload().getTrainCharacteristics() == null) {
                         if (isG2bError(reply.getG2BReplyPayload())) {
                             String errors = extractG2bError(reply.getG2BReplyPayload());
-                            throw new IllegalStateException("TC request errorCode: " + errors);
+                            throw new IllegalStateException("TC request G2B error: " + errors);
                         }
                         throw new IllegalStateException("No Train Characteristics received!");
                     }
