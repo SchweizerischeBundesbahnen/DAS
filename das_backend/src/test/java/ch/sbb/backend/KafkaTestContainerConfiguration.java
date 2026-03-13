@@ -9,9 +9,15 @@ import org.testcontainers.utility.DockerImageName;
 @TestConfiguration
 public class KafkaTestContainerConfiguration {
 
+    private static final KafkaContainer KAFKA = new KafkaContainer(DockerImageName.parse("apache/kafka-native:4.1.0"));
+
+    static {
+        KAFKA.start();
+    }
+
     @Bean
     @ServiceConnection
     KafkaContainer kafkaContainer() {
-        return new KafkaContainer(DockerImageName.parse("apache/kafka-native:latest"));
+        return KAFKA;
     }
 }

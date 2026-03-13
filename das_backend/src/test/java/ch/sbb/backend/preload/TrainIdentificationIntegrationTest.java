@@ -34,7 +34,7 @@ import tools.jackson.databind.json.JsonMapper;
 class TrainIdentificationIntegrationTest {
 
     private static final int TEST_PERIOD_NUMBER_OF_DAYS = 10;
-    private static final CompanyCode COMPANY_CODE_SOB = CompanyCode.of("5458");
+    private static final CompanyCode COMPANY_CODE_SOB = CompanyCode.of("9058");
 
     @Autowired
     private JsonMapper jsonMapper;
@@ -123,10 +123,11 @@ class TrainIdentificationIntegrationTest {
         // Then
         waitAtMost(10, TimeUnit.SECONDS)
             .untilAsserted(() -> {
-                List<TrainIdentification> trainIds = trainIdentificationService.processDailyTrainRunRequest(OffsetDateTime.of(startDate.plusDays(1), LocalTime.now(), ZoneOffset.UTC));
+                List<TrainIdentification> trainIds = trainIdentificationService.getNewTrainIdentificationsBetween(OffsetDateTime.now(),
+                    OffsetDateTime.of(startDate.plusDays(1), LocalTime.now(), ZoneOffset.UTC));
                 assertThat(trainIds).hasSize(1);
                 TrainIdentification trainId = trainIds.getFirst();
-                assertThat(trainId.startDate()).isEqualTo(startDate);
+                assertThat(trainId.startDateTime().toLocalDate()).isEqualTo(startDate);
                 assertThat(trainId.operationalTrainNumber()).isEqualTo("728");
                 assertThat(trainId.companies()).containsExactly(COMPANY_CODE_SOB);
             });
@@ -137,7 +138,8 @@ class TrainIdentificationIntegrationTest {
         // Then
         waitAtMost(10, TimeUnit.SECONDS)
             .untilAsserted(() -> {
-                List<TrainIdentification> trainIds = trainIdentificationService.processDailyTrainRunRequest(OffsetDateTime.of(startDate.plusDays(1), LocalTime.now(), ZoneOffset.UTC));
+                List<TrainIdentification> trainIds = trainIdentificationService.getNewTrainIdentificationsBetween(OffsetDateTime.now(),
+                    OffsetDateTime.of(startDate.plusDays(1), LocalTime.now(), ZoneOffset.UTC));
                 assertThat(trainIds).isEmpty();
             });
     }

@@ -20,8 +20,8 @@ import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 @Configuration
 public class CustomKafkaConsumerConfig {
 
-    private static final String AUTO_OFFSET_RESET_EARLIEST = "earliest";
-    private static final String AUTO_OFFSET_RESET_LATEST = "latest";
+    public static final String AUTO_OFFSET_RESET_EARLIEST = "earliest";
+    public static final String AUTO_OFFSET_RESET_LATEST = "latest";
     private final KafkaProperties kafkaProperties;
 
     public CustomKafkaConsumerConfig(KafkaProperties kafkaProperties) {

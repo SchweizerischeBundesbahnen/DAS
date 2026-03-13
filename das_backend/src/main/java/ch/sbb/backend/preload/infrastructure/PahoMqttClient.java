@@ -27,20 +27,19 @@ public class PahoMqttClient {
     @Value("${sfera.broker-url}")
     String broker;
 
-    @Value("${sfera.clientId}")
-    String clientId;
-
     @Value("${sfera.oauth-profile}")
     String oauthProfile;
 
     private MqttClient client;
+    private String clientId;
     private final Object connectLock = new Object();
 
     public PahoMqttClient(SferaAuthService sferaAuthService) {
         this.sferaAuthService = sferaAuthService;
     }
 
-    public void connect() {
+    public void connect(String clientId) {
+        this.clientId = clientId;
         synchronized (connectLock) {
             reconnectInternal();
         }
@@ -112,6 +111,9 @@ public class PahoMqttClient {
 
     private void ensureConnected() {
         synchronized (connectLock) {
+            if (clientId == null) {
+                throw new IllegalStateException("MQTT client not initialized with clientId");
+            }
             if (client == null || !client.isConnected()) {
                 reconnectInternal();
             }
@@ -119,7 +121,7 @@ public class PahoMqttClient {
     }
 
     @PreDestroy
-    public void predestroy()  {
+    public void predestroy() {
         closeClientQuietly();
     }
 }

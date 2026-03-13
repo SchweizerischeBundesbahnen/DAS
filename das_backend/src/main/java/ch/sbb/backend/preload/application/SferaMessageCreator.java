@@ -32,9 +32,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class SferaMessageCreator {
 
-    @Value("${sfera.company-code}")
-    String companyCode;
-
     @Value("${sfera.version}")
     String sferaVersion;
 
