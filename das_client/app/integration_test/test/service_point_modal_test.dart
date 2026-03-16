@@ -50,7 +50,7 @@ void main() {
 
       // open and check modal sheet over radio channel tap in header
       await _openRadioChannelByHeaderTap(tester);
-      _checkOpenModalSheet(DetailTabCommunication.communicationTabKey, 'Bern');
+      await _checkOpenModalSheet(tester, DetailTabCommunication.communicationTabKey, 'Bern');
 
       // close modal sheet
       await _closeModalSheet(tester);
@@ -62,11 +62,11 @@ void main() {
 
       // open and check modal sheet with tap on graduated speeds
       await _openByTapOnCellWithText(tester, '75-70-60');
-      _checkOpenModalSheet(DetailTabGraduatedSpeeds.graduatedSpeedsTabKey, 'Bern');
+      await _checkOpenModalSheet(tester, DetailTabGraduatedSpeeds.graduatedSpeedsTabKey, 'Bern');
 
       // test tap on service point name without closing modal sheet
       await _openByTapOnCellWithText(tester, 'Olten');
-      _checkOpenModalSheet(DetailTabCommunication.communicationTabKey, 'Olten');
+      await _checkOpenModalSheet(tester, DetailTabCommunication.communicationTabKey, 'Olten');
 
       await disconnect(tester);
     });
@@ -110,15 +110,15 @@ void main() {
 
       // open modal with tap on service point name
       await _openByTapOnCellWithText(tester, 'Bern');
-      _checkOpenModalSheet(DetailTabCommunication.communicationTabKey, 'Bern');
+      await _checkOpenModalSheet(tester, DetailTabCommunication.communicationTabKey, 'Bern');
 
       // change tab to graduated speeds
       await _selectTab(tester, .graduatedSpeeds);
-      _checkOpenModalSheet(DetailTabGraduatedSpeeds.graduatedSpeedsTabKey, 'Bern');
+      await _checkOpenModalSheet(tester, DetailTabGraduatedSpeeds.graduatedSpeedsTabKey, 'Bern');
 
       // change back to tab radio channels
       await _selectTab(tester, .communication);
-      _checkOpenModalSheet(DetailTabCommunication.communicationTabKey, 'Bern');
+      await _checkOpenModalSheet(tester, DetailTabCommunication.communicationTabKey, 'Bern');
 
       await disconnect(tester);
     });
@@ -129,7 +129,7 @@ void main() {
 
       // open modal sheet with tap on service point name
       await _openByTapOnCellWithText(tester, 'Bern');
-      _checkOpenModalSheet(DetailTabCommunication.communicationTabKey, 'Bern');
+      await _checkOpenModalSheet(tester, DetailTabCommunication.communicationTabKey, 'Bern');
 
       final waitTime = DI.get<TimeConstants>().modalSheetAutomaticCloseAfterSeconds + 1;
 
@@ -149,7 +149,7 @@ void main() {
 
       // open modal sheet with tap on service point name
       await _openByTapOnCellWithText(tester, 'Bern');
-      _checkOpenModalSheet(DetailTabCommunication.communicationTabKey, 'Bern');
+      await _checkOpenModalSheet(tester, DetailTabCommunication.communicationTabKey, 'Bern');
 
       // pause automatic advancement
       final pauseButton = find.byKey(JourneyAdvancementButton.pauseKey);
@@ -180,7 +180,7 @@ void main() {
 
       // open and check modal sheet with tap on graduated speeds
       await _openByTapOnCellWithText(tester, '75-70-60');
-      _checkOpenModalSheet(DetailTabGraduatedSpeeds.graduatedSpeedsTabKey, 'Bern');
+      await _checkOpenModalSheet(tester, DetailTabGraduatedSpeeds.graduatedSpeedsTabKey, 'Bern');
 
       expect(find.text('75-70-60'), findsExactly(3));
 
@@ -267,7 +267,7 @@ void main() {
 
       // open graduated speed tab of Rupperswil
       await _openByTapOnGraduatedSpeedOf(tester, 'Rupperswil');
-      _checkOpenModalSheet(DetailTabGraduatedSpeeds.graduatedSpeedsTabKey, 'Rupperswil');
+      await _checkOpenModalSheet(tester, DetailTabGraduatedSpeeds.graduatedSpeedsTabKey, 'Rupperswil');
 
       // change to communication tab and check content
       await _selectTab(tester, .communication);
@@ -373,11 +373,16 @@ void main() {
 
       // change tab to local regulations and check if full width
       await _selectTab(tester, .localRegulations);
-      _checkOpenModalSheet(DetailTabLocalRegulations.localRegulationsTabKey, 'Olten', isMaximized: true);
+      await _checkOpenModalSheet(
+        tester,
+        DetailTabLocalRegulations.localRegulationsTabKey,
+        'Olten',
+        isMaximized: true,
+      );
 
       // change back to tab radio channels
       await _selectTab(tester, .communication);
-      _checkOpenModalSheet(DetailTabCommunication.communicationTabKey, 'Olten');
+      await _checkOpenModalSheet(tester, DetailTabCommunication.communicationTabKey, 'Olten');
 
       await disconnect(tester);
     });
@@ -390,7 +395,7 @@ void main() {
 
       // change tab to local regulations and check if web view is loaded
       await _selectTab(tester, .localRegulations);
-      _checkOpenModalSheet(DetailTabLocalRegulations.localRegulationsTabKey, 'Olten', isMaximized: true);
+      await _checkOpenModalSheet(tester, DetailTabLocalRegulations.localRegulationsTabKey, 'Olten', isMaximized: true);
       await waitUntilNotExists(tester, find.byKey(LocalRegulationHtmlView.webViewKey), maxWaitSeconds: 5);
 
       await disconnect(tester);
@@ -471,16 +476,21 @@ Future<void> _selectTab(WidgetTester tester, ServicePointModalTab tab) async {
   await tapElement(tester, segment, warnIfMissed: false);
 }
 
-void _checkOpenModalSheet(Key tabContentKey, String servicePointName, {bool isMaximized = false}) {
+Future<void> _checkOpenModalSheet(
+  WidgetTester tester,
+  Key tabContentKey,
+  String servicePointName, {
+  bool isMaximized = false,
+}) async {
   final modalSheetStateKey = isMaximized ? DasModalSheet.modalSheetMaximizedKey : DasModalSheet.modalSheetExpandedKey;
   final modalSheetState = find.byKey(modalSheetStateKey);
-  expect(modalSheetState, findsOneWidget);
+  await waitUntilExists(tester, modalSheetState, maxWaitSeconds: 5);
 
   final modalSheet = find.byKey(DasModalSheet.modalSheetKey);
   final tabContent = find.descendant(of: modalSheet, matching: find.byKey(tabContentKey));
-  expect(tabContent, findsOneWidget);
+  await waitUntilExists(tester, tabContent, maxWaitSeconds: 5);
   final servicePointLabel = find.descendant(of: modalSheet, matching: find.text(servicePointName));
-  expect(servicePointLabel, findsOneWidget);
+  await waitUntilExists(tester, servicePointLabel, maxWaitSeconds: 5);
 }
 
 Future<void> _checkModalSheetTabs(WidgetTester tester, List<ServicePointModalTab> displayedTabs) async {
