@@ -15,7 +15,6 @@ class TrainCharacteristicsTable extends Table {
   TextColumn get xmlData => text()();
 
   @override
-  // TODO: implement primaryKey
   Set<Column<Object>>? get primaryKey => {tcId, majorVersion, minorVersion};
 }
 
