@@ -6,8 +6,6 @@ import 'package:sfera/src/data/local/drift_local_database_service.dart';
 import 'package:sfera/src/data/parser/sfera_reply_parser.dart';
 
 class SegmentProfileTable extends Table {
-  IntColumn get id => integer().autoIncrement()();
-
   TextColumn get spId => text()();
 
   TextColumn get majorVersion => text()();
@@ -15,6 +13,9 @@ class SegmentProfileTable extends Table {
   TextColumn get minorVersion => text()();
 
   TextColumn get xmlData => text()();
+
+  @override
+  Set<Column<Object>>? get primaryKey => {spId, majorVersion, minorVersion};
 }
 
 extension SegmentProfileMapperX on SegmentProfileDto {

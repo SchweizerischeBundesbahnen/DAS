@@ -92,7 +92,6 @@ void main() {
       ],
     );
     final segmentProfile = SegmentProfileTableData(
-      id: 1,
       spId: spId,
       majorVersion: majorVersion,
       minorVersion: minorVersion,
@@ -170,7 +169,6 @@ void main() {
     );
 
     final segmentProfile = SegmentProfileTableData(
-      id: 1,
       spId: spId,
       majorVersion: majorVersion,
       minorVersion: minorVersion,
@@ -178,7 +176,6 @@ void main() {
     );
 
     final trainCharacteristics = TrainCharacteristicsTableData(
-      id: 1,
       tcId: spId,
       majorVersion: majorVersion,
       minorVersion: minorVersion,

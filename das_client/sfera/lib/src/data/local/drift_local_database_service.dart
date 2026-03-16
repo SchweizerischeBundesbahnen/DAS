@@ -35,10 +35,20 @@ class DriftLocalDatabaseService extends _$DriftLocalDatabaseService implements S
   DriftLocalDatabaseService._() : super(driftDatabase(name: 'sfera_db'));
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   @override
-  MigrationStrategy get migration => MigrationStrategy(onCreate: (m) => m.createAll());
+  MigrationStrategy get migration => MigrationStrategy(
+    onCreate: (m) => m.createAll(),
+    onUpgrade: (m, from, to) async {
+      if (from < 2) {
+        await m.drop(segmentProfileTable);
+        await m.create(segmentProfileTable);
+        await m.drop(trainCharacteristicsTable);
+        await m.create(trainCharacteristicsTable);
+      }
+    },
+  );
 
   @override
   Future<JourneyProfileTableData?> findJourneyProfile(
@@ -91,41 +101,12 @@ class DriftLocalDatabaseService extends _$DriftLocalDatabaseService implements S
 
   @override
   Future<void> saveSegmentProfile(SegmentProfileDto segmentProfile) async {
-    final existingProfile = await findSegmentProfile(
-      segmentProfile.id,
-      segmentProfile.versionMajor,
-      segmentProfile.versionMinor,
-    );
-    if (existingProfile == null) {
-      _log.fine(
-        'Writing segment profile to db spId=${segmentProfile.id} majorVersion=${segmentProfile.versionMajor} minorVersion=${segmentProfile.versionMinor}',
-      );
-      await segmentProfileTable.insertOnConflictUpdate(segmentProfile.toCompanion());
-    } else {
-      _log.fine(
-        'Segment profile already exists in db spId=${segmentProfile.id} majorVersion=${segmentProfile.versionMajor} minorVersion=${segmentProfile.versionMinor}',
-      );
-    }
+    await segmentProfileTable.insertOnConflictUpdate(segmentProfile.toCompanion());
   }
 
   @override
   Future<void> saveTrainCharacteristics(TrainCharacteristicsDto trainCharacteristics) async {
-    final existingTrainCharacteristics = await findTrainCharacteristics(
-      trainCharacteristics.tcId,
-      trainCharacteristics.versionMajor,
-      trainCharacteristics.versionMinor,
-    );
-
-    if (existingTrainCharacteristics == null) {
-      _log.fine(
-        'Writing train characteristics to db tcId=${trainCharacteristics.tcId} majorVersion=${trainCharacteristics.versionMajor} minorVersion=${trainCharacteristics.versionMinor}',
-      );
-      await trainCharacteristicsTable.insertOnConflictUpdate(trainCharacteristics.toCompanion());
-    } else {
-      _log.fine(
-        'train characteristics already exists in db tcId=${existingTrainCharacteristics.tcId} majorVersion=${existingTrainCharacteristics.majorVersion} minorVersion=${existingTrainCharacteristics.minorVersion}',
-      );
-    }
+    await trainCharacteristicsTable.insertOnConflictUpdate(trainCharacteristics.toCompanion());
   }
 
   $$TrainCharacteristicsTableTableTableManager get _tcManager => managers.trainCharacteristicsTable;
