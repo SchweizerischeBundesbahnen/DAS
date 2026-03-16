@@ -6,8 +6,6 @@ import 'package:sfera/src/data/local/drift_local_database_service.dart';
 import 'package:sfera/src/data/parser/sfera_reply_parser.dart';
 
 class TrainCharacteristicsTable extends Table {
-  IntColumn get id => integer().autoIncrement()();
-
   TextColumn get tcId => text()();
 
   TextColumn get majorVersion => text()();
@@ -15,6 +13,10 @@ class TrainCharacteristicsTable extends Table {
   TextColumn get minorVersion => text()();
 
   TextColumn get xmlData => text()();
+
+  @override
+  // TODO: implement primaryKey
+  Set<Column<Object>>? get primaryKey => {tcId, majorVersion, minorVersion};
 }
 
 extension TrainCharacteristicsMapperX on TrainCharacteristicsDto {

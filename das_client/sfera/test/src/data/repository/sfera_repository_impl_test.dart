@@ -268,7 +268,6 @@ void main() {
     when(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).thenAnswer(
       (_) => Future.value(
         SegmentProfileTableData(
-          id: 1,
           spId: '842-2',
           majorVersion: '1',
           minorVersion: '0',
@@ -279,7 +278,6 @@ void main() {
     when(mockLocalDatabaseRepository.findTrainCharacteristics(any, any, any)).thenAnswer(
       (_) => Future.value(
         TrainCharacteristicsTableData(
-          id: 1,
           tcId: 'T9135',
           majorVersion: '1',
           minorVersion: '0',
@@ -345,7 +343,6 @@ void main() {
     when(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).thenAnswer(
       (_) => Future.value(
         SegmentProfileTableData(
-          id: 1,
           spId: '842-2',
           majorVersion: '1',
           minorVersion: '0',
@@ -356,7 +353,6 @@ void main() {
     when(mockLocalDatabaseRepository.findTrainCharacteristics(any, any, any)).thenAnswer(
       (_) => Future.value(
         TrainCharacteristicsTableData(
-          id: 1,
           tcId: 'T9135',
           majorVersion: '1',
           minorVersion: '0',
@@ -427,7 +423,6 @@ void main() {
     when(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).thenAnswer(
       (_) => Future.value(
         SegmentProfileTableData(
-          id: 1,
           spId: '842-2',
           majorVersion: '1',
           minorVersion: '0',
@@ -438,7 +433,6 @@ void main() {
     when(mockLocalDatabaseRepository.findTrainCharacteristics(any, any, any)).thenAnswer(
       (_) => Future.value(
         TrainCharacteristicsTableData(
-          id: 1,
           tcId: 'T9135',
           majorVersion: '1',
           minorVersion: '0',
@@ -509,7 +503,6 @@ void main() {
     when(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).thenAnswer(
       (_) => Future.value(
         SegmentProfileTableData(
-          id: 1,
           spId: '842-2',
           majorVersion: '1',
           minorVersion: '0',
@@ -520,7 +513,6 @@ void main() {
     when(mockLocalDatabaseRepository.findTrainCharacteristics(any, any, any)).thenAnswer(
       (_) => Future.value(
         TrainCharacteristicsTableData(
-          id: 1,
           tcId: 'T9135',
           majorVersion: '1',
           minorVersion: '0',
@@ -596,7 +588,6 @@ void main() {
     when(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).thenAnswer(
       (_) => Future.value(
         SegmentProfileTableData(
-          id: 1,
           spId: '842-2',
           majorVersion: '1',
           minorVersion: '0',
@@ -607,7 +598,6 @@ void main() {
     when(mockLocalDatabaseRepository.findTrainCharacteristics(any, any, any)).thenAnswer(
       (_) => Future.value(
         TrainCharacteristicsTableData(
-          id: 1,
           tcId: 'T9135',
           majorVersion: '1',
           minorVersion: '0',
@@ -675,7 +665,6 @@ void main() {
     when(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).thenAnswer(
       (_) => Future.value(
         SegmentProfileTableData(
-          id: 1,
           spId: '842-2',
           majorVersion: '1',
           minorVersion: '0',
@@ -686,7 +675,6 @@ void main() {
     when(mockLocalDatabaseRepository.findTrainCharacteristics(any, any, any)).thenAnswer(
       (_) => Future.value(
         TrainCharacteristicsTableData(
-          id: 1,
           tcId: 'T9135',
           majorVersion: '1',
           minorVersion: '0',
@@ -754,7 +742,6 @@ void main() {
     when(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).thenAnswer(
       (_) => Future.value(
         SegmentProfileTableData(
-          id: 1,
           spId: '842-2',
           majorVersion: '1',
           minorVersion: '0',
@@ -765,7 +752,6 @@ void main() {
     when(mockLocalDatabaseRepository.findTrainCharacteristics(any, any, any)).thenAnswer(
       (_) => Future.value(
         TrainCharacteristicsTableData(
-          id: 1,
           tcId: 'T9135',
           majorVersion: '1',
           minorVersion: '0',
@@ -925,7 +911,6 @@ void main() {
     when(mockLocalDatabaseRepository.findSegmentProfile('0001_1', any, any)).thenAnswer(
       (_) => Future.value(
         SegmentProfileTableData(
-          id: 1,
           spId: '0001_1',
           majorVersion: '1',
           minorVersion: '0',
@@ -945,7 +930,6 @@ void main() {
     when(mockLocalDatabaseRepository.findSegmentProfile('0001_2', any, any)).thenAnswer(
       (_) => Future.value(
         SegmentProfileTableData(
-          id: 2,
           spId: '0001_2',
           majorVersion: '1',
           minorVersion: '0',
