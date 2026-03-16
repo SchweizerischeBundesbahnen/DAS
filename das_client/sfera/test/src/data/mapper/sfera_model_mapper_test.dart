@@ -89,7 +89,7 @@ void main() {
     final journey = getJourney('T9999');
 
     expect(journey.valid, true);
-    expect(journey.data, hasLength(28));
+    expect(journey.data, hasLength(29));
 
     // segment 1
     expect(journey.data[0], TypeMatcher<ServicePoint>());
@@ -99,38 +99,39 @@ void main() {
     expect(journey.data[4], TypeMatcher<Signal>());
     expect(journey.data[5], TypeMatcher<CurvePoint>());
     expect(journey.data[6], TypeMatcher<Signal>());
-    expect(journey.data[7], TypeMatcher<ConnectionTrack>());
-    expect(journey.data[8], TypeMatcher<CommunicationNetworkChange>());
+    expect(journey.data[7], TypeMatcher<Signal>());
+    expect(journey.data[8], TypeMatcher<ConnectionTrack>());
+    expect(journey.data[9], TypeMatcher<CommunicationNetworkChange>());
     // segment 2
-    expect(journey.data[9], TypeMatcher<CABSignaling>());
-    expect(journey.data[10], TypeMatcher<Signal>());
-    expect(journey.data[11], TypeMatcher<ServicePoint>());
-    expect(journey.data[12], TypeMatcher<Signal>());
-    expect(journey.data[13], TypeMatcher<CurvePoint>());
-    expect(journey.data[14], TypeMatcher<ConnectionTrack>());
+    expect(journey.data[10], TypeMatcher<CABSignaling>());
+    expect(journey.data[11], TypeMatcher<Signal>());
+    expect(journey.data[12], TypeMatcher<ServicePoint>());
+    expect(journey.data[13], TypeMatcher<Signal>());
+    expect(journey.data[14], TypeMatcher<CurvePoint>());
+    expect(journey.data[15], TypeMatcher<ConnectionTrack>());
     // segment 3
-    expect(journey.data[15], TypeMatcher<CurvePoint>());
-    expect(journey.data[16], TypeMatcher<ConnectionTrack>());
-    expect(journey.data[17], TypeMatcher<ServicePoint>());
-    expect(journey.data[18], TypeMatcher<CurvePoint>());
-    expect(journey.data[19], TypeMatcher<Signal>());
+    expect(journey.data[16], TypeMatcher<CurvePoint>());
+    expect(journey.data[17], TypeMatcher<ConnectionTrack>());
+    expect(journey.data[18], TypeMatcher<ServicePoint>());
+    expect(journey.data[19], TypeMatcher<CurvePoint>());
+    expect(journey.data[20], TypeMatcher<Signal>());
     // segment 4
-    expect(journey.data[20], TypeMatcher<SpeedChange>());
-    expect(journey.data[21], TypeMatcher<CABSignaling>());
-    expect(journey.data[22], TypeMatcher<ServicePoint>());
-    expect(journey.data[23], TypeMatcher<SpeedChange>());
-    expect(journey.data[24], TypeMatcher<Signal>());
+    expect(journey.data[21], TypeMatcher<SpeedChange>());
+    expect(journey.data[22], TypeMatcher<CABSignaling>());
+    expect(journey.data[23], TypeMatcher<ServicePoint>());
+    expect(journey.data[24], TypeMatcher<SpeedChange>());
+    expect(journey.data[25], TypeMatcher<Signal>());
     // segment 5
-    expect(journey.data[25], TypeMatcher<ServicePoint>());
-    expect(journey.data[26], TypeMatcher<Signal>());
-    expect(journey.data[27], TypeMatcher<ServicePoint>());
+    expect(journey.data[26], TypeMatcher<ServicePoint>());
+    expect(journey.data[27], TypeMatcher<Signal>());
+    expect(journey.data[28], TypeMatcher<ServicePoint>());
   });
 
   test('Test kilometre are parsed correctly', () async {
     final journey = getJourney('T9999');
 
     expect(journey.valid, true);
-    expect(journey.data, hasLength(28));
+    expect(journey.data, hasLength(29));
 
     // segment 1
     expect((journey.data[0] as JourneyPoint).kilometre[0], 0.2);
@@ -140,43 +141,44 @@ void main() {
     expect((journey.data[4] as JourneyPoint).kilometre[0], 0.5);
     expect((journey.data[5] as JourneyPoint).kilometre[0], 0.6);
     expect((journey.data[6] as JourneyPoint).kilometre[0], 0.7);
-    expect((journey.data[7] as JourneyPoint).kilometre[0], 0.8);
-    expect((journey.data[8] as JourneyPoint).kilometre[0], 0.95);
+    expect((journey.data[7] as JourneyPoint).kilometre[0], 0.75);
+    expect((journey.data[8] as JourneyPoint).kilometre[0], 0.8);
+    expect((journey.data[9] as JourneyPoint).kilometre[0], 0.95);
 
     // segment 2
-    expect((journey.data[9] as JourneyPoint).kilometre[0], 1.2);
     expect((journey.data[10] as JourneyPoint).kilometre[0], 1.2);
-    expect((journey.data[11] as JourneyPoint).kilometre[0], 1.5);
-    expect((journey.data[12] as JourneyPoint).kilometre[0], 1.7);
-    expect((journey.data[13] as JourneyPoint).kilometre[0], 1.8);
-    expect((journey.data[14] as JourneyPoint).kilometre[0], 1.9);
+    expect((journey.data[11] as JourneyPoint).kilometre[0], 1.2);
+    expect((journey.data[12] as JourneyPoint).kilometre[0], 1.5);
+    expect((journey.data[13] as JourneyPoint).kilometre[0], 1.7);
+    expect((journey.data[14] as JourneyPoint).kilometre[0], 1.8);
+    expect((journey.data[15] as JourneyPoint).kilometre[0], 1.9);
 
     // segment 3
-    expect((journey.data[15] as JourneyPoint).kilometre[0], 2.1);
-    expect((journey.data[16] as JourneyPoint).kilometre[0], 2.2);
-    expect((journey.data[17] as JourneyPoint).kilometre[0], 2.4);
-    expect((journey.data[18] as JourneyPoint).kilometre[0], 2.5);
-    expect((journey.data[19] as JourneyPoint).kilometre[0], 2.6);
+    expect((journey.data[16] as JourneyPoint).kilometre[0], 2.1);
+    expect((journey.data[17] as JourneyPoint).kilometre[0], 2.2);
+    expect((journey.data[18] as JourneyPoint).kilometre[0], 2.4);
+    expect((journey.data[19] as JourneyPoint).kilometre[0], 2.5);
+    expect((journey.data[20] as JourneyPoint).kilometre[0], 2.6);
 
     // segment 4
-    expect((journey.data[20] as JourneyPoint).kilometre[0], 3.5);
-    expect((journey.data[21] as JourneyPoint).kilometre[0], 3.6);
-    expect((journey.data[22] as JourneyPoint).kilometre[0], 3.7);
-    expect((journey.data[22] as JourneyPoint).kilometre[1], 0.0);
-    expect((journey.data[23] as JourneyPoint).kilometre[0], 0.1);
-    expect((journey.data[24] as JourneyPoint).kilometre[0], 0.2);
+    expect((journey.data[21] as JourneyPoint).kilometre[0], 3.5);
+    expect((journey.data[22] as JourneyPoint).kilometre[0], 3.6);
+    expect((journey.data[23] as JourneyPoint).kilometre[0], 3.7);
+    expect((journey.data[23] as JourneyPoint).kilometre[1], 0.0);
+    expect((journey.data[24] as JourneyPoint).kilometre[0], 0.1);
+    expect((journey.data[25] as JourneyPoint).kilometre[0], 0.2);
 
     // segment 5
-    expect((journey.data[25] as JourneyPoint).kilometre[0], 0.6);
-    expect((journey.data[26] as JourneyPoint).kilometre[0], 0.9);
-    expect((journey.data[27] as JourneyPoint).kilometre[0], 1.1);
+    expect((journey.data[26] as JourneyPoint).kilometre[0], 0.6);
+    expect((journey.data[27] as JourneyPoint).kilometre[0], 0.9);
+    expect((journey.data[28] as JourneyPoint).kilometre[0], 1.1);
   });
 
   test('Test order is generated correctly', () async {
     final journey = getJourney('T9999');
 
     expect(journey.valid, true);
-    expect(journey.data, hasLength(28));
+    expect(journey.data, hasLength(29));
 
     // segment 1
     expect(journey.data[0].order, 000200);
@@ -186,31 +188,32 @@ void main() {
     expect(journey.data[4].order, 000500);
     expect(journey.data[5].order, 000600);
     expect(journey.data[6].order, 000700);
-    expect(journey.data[7].order, 000800);
-    expect(journey.data[8].order, 000950);
+    expect(journey.data[7].order, 000750);
+    expect(journey.data[8].order, 000800);
+    expect(journey.data[9].order, 000950);
     // segment 2
-    expect(journey.data[9].order, 100200);
     expect(journey.data[10].order, 100200);
-    expect(journey.data[11].order, 100500);
-    expect(journey.data[12].order, 100700);
-    expect(journey.data[13].order, 100800);
-    expect(journey.data[14].order, 100900);
+    expect(journey.data[11].order, 100200);
+    expect(journey.data[12].order, 100500);
+    expect(journey.data[13].order, 100700);
+    expect(journey.data[14].order, 100800);
+    expect(journey.data[15].order, 100900);
     // segment 3
-    expect(journey.data[15].order, 200100);
-    expect(journey.data[16].order, 200200);
-    expect(journey.data[17].order, 200400);
-    expect(journey.data[18].order, 200500);
-    expect(journey.data[19].order, 200600);
+    expect(journey.data[16].order, 200100);
+    expect(journey.data[17].order, 200200);
+    expect(journey.data[18].order, 200400);
+    expect(journey.data[19].order, 200500);
+    expect(journey.data[20].order, 200600);
     // segment 4
-    expect(journey.data[20].order, 300500);
-    expect(journey.data[21].order, 300600);
-    expect(journey.data[22].order, 300700);
-    expect(journey.data[23].order, 300800);
-    expect(journey.data[24].order, 300900);
+    expect(journey.data[21].order, 300500);
+    expect(journey.data[22].order, 300600);
+    expect(journey.data[23].order, 300700);
+    expect(journey.data[24].order, 300800);
+    expect(journey.data[25].order, 300900);
     // segment 5
-    expect(journey.data[25].order, 400300);
-    expect(journey.data[26].order, 400600);
-    expect(journey.data[27].order, 400800);
+    expect(journey.data[26].order, 400300);
+    expect(journey.data[27].order, 400600);
+    expect(journey.data[28].order, 400800);
   });
 
   test('Test track equipment is generated correctly', () async {
@@ -291,12 +294,12 @@ void main() {
     expect(journey.metadata.nonStandardTrackEquipmentSegments[0].endOrder, 5000);
   });
 
-  test('Test signals are generated correctly', () async {
+  test('Test signals are parsed correctly', () async {
     final journey = getJourney('T9999');
     final signals = journey.data.where((it) => it.dataType == .signal).cast<Signal>().toList();
 
     expect(journey.valid, true);
-    expect(signals, hasLength(7));
+    expect(signals, hasLength(8));
     expect(signals[0].visualIdentifier, 'B1');
     expect(signals[0].functions, hasLength(1));
     expect(signals[0].functions[0], SignalFunction.block);
@@ -304,22 +307,25 @@ void main() {
     expect(signals[1].functions, hasLength(2));
     expect(signals[1].functions[0], SignalFunction.block);
     expect(signals[1].functions[1], SignalFunction.laneChange);
-    expect(signals[2].visualIdentifier, 'E1');
+    expect(signals[2].visualIdentifier, 'S1A');
     expect(signals[2].functions, hasLength(1));
-    expect(signals[2].functions[0], SignalFunction.entry);
-    expect(signals[3].visualIdentifier, 'A1');
+    expect(signals[2].functions[0], SignalFunction.lockingOutSignal);
+    expect(signals[3].visualIdentifier, 'E1');
     expect(signals[3].functions, hasLength(1));
-    expect(signals[3].functions[0], SignalFunction.exit);
-    expect(signals[4].visualIdentifier, 'AB1');
+    expect(signals[3].functions[0], SignalFunction.entry);
+    expect(signals[4].visualIdentifier, 'A1');
     expect(signals[4].functions, hasLength(1));
-    expect(signals[4].functions[0], SignalFunction.intermediate);
-    expect(signals[5].visualIdentifier, 'D1');
+    expect(signals[4].functions[0], SignalFunction.exit);
+    expect(signals[5].visualIdentifier, 'AB1');
     expect(signals[5].functions, hasLength(1));
-    expect(signals[5].functions[0], SignalFunction.protection);
-    expect(signals[6].visualIdentifier, 'BAB1');
-    expect(signals[6].functions, hasLength(2));
-    expect(signals[6].functions[0], SignalFunction.block);
-    expect(signals[6].functions[1], SignalFunction.intermediate);
+    expect(signals[5].functions[0], SignalFunction.intermediate);
+    expect(signals[6].visualIdentifier, 'D1');
+    expect(signals[6].functions, hasLength(1));
+    expect(signals[6].functions[0], SignalFunction.protection);
+    expect(signals[7].visualIdentifier, 'BAB1');
+    expect(signals[7].functions, hasLength(2));
+    expect(signals[7].functions[0], SignalFunction.block);
+    expect(signals[7].functions[1], SignalFunction.intermediate);
   });
 
   test('Test curvePoint are generated correctly', () async {

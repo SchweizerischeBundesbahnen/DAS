@@ -12,6 +12,7 @@ import 'package:sfera/src/data/dto/operating_day_nsp_dto.dart';
 import 'package:sfera/src/data/dto/operational_indication_type_nsp_dto.dart';
 import 'package:sfera/src/data/dto/operational_indication_uncoded_text_nsp_dto.dart';
 import 'package:sfera/src/data/dto/route_table_data_relevant_wrapper_dto.dart';
+import 'package:sfera/src/data/dto/sbb_function_signal_dto.dart';
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 import 'package:sfera/src/data/dto/speed_nsp_dto.dart';
 import 'package:sfera/src/data/dto/track_equipment_type_wrapper_dto.dart';
@@ -84,6 +85,8 @@ class NetworkSpecificParameterDto extends SferaXmlElementDto {
       return OperatingDayNspDto(attributes: attributes, children: children, value: value);
     } else if (attributeName == DisturbanceMsgNspDto.elementName) {
       return DisturbanceMsgNspDto(attributes: attributes, children: children, value: value);
+    } else if (attributeName == SbbFunctionSignalDto.elementName) {
+      return SbbFunctionSignalDto(attributes: attributes, children: children, value: value);
     } else if (attributeName == XmlStopToPassOrPassToStopDto.elementName) {
       return XmlStopToPassOrPassToStopDto(attributes: attributes, children: children, value: value);
     } else if (attributeName == XmlTrainRunReroutingDto.elementName) {

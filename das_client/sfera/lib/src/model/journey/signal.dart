@@ -45,6 +45,7 @@ enum SignalFunction {
   block,
   protection,
   laneChange,
+  lockingOutSignal, // from NSP
   unknown
   ;
 
