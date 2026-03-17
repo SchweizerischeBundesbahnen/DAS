@@ -58,6 +58,10 @@ preload:
     bucketUrl: bucketUrl
     accessKey: accessKey
     accessSecret: accessSecret
+  timetablePeriod:
+    topic: nets-p.timetable
+  timetableTrain:
+    topic: fps.inte.infra.zug
   cleanUp:
     hours: 48
     cronExpression: "-"
@@ -68,3 +72,7 @@ preload:
     password: ''
     timetablePeriodTopic: period
     timetableTrainTopic: train
+
+proxy:
+  base-url: ''
+  basic-auth: ''
