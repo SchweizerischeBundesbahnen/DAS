@@ -72,7 +72,7 @@ class JourneyTableScrollController {
     }
 
     // Distance from the table's top (below the fixed header) to the
-    // target row's top, **as currently painted**.
+    // target row's top, **as currently painted**
     final distanceFromTableTop =
         targetRenderObject.localToGlobal(Offset.zero).dy -
         tableRenderObject.localToGlobal(Offset.zero).dy -
@@ -86,7 +86,7 @@ class JourneyTableScrollController {
     );
 
     // Shift the scroll position so the target row sits flush at the top of
-    // the visible content area, just below any sticky header above it.
+    // the visible content area, just below any sticky header above it
     return scrollController.position.pixels + distanceFromTableTop - stickyHeight;
   }
 
@@ -105,8 +105,6 @@ class JourneyTableScrollController {
     return Duration(milliseconds: boundedDuration);
   }
 
-  /// Returns the combined height of sticky headers that sit above [data] in
-  /// the row list, so the scroll target is placed below them.
   double _calculateStickyHeight(JourneyPoint data) {
     final stickyHeaderHeights = {StickyLevel.first: 0.0, StickyLevel.second: 0.0};
 
