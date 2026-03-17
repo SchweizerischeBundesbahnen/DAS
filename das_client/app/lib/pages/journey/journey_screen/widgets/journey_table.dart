@@ -340,7 +340,7 @@ class JourneyTable extends StatelessWidget {
           DASTableColumn(
             id: ColumnDefinition.kilometre.index,
             child: Text(context.l10n.p_journey_table_kilometre_label),
-            width: 64.0,
+            width: 66.0,
             onTap: !userSettings.showDecisiveGradient ? () => decisiveGradientVM.toggleShowDecisiveGradient() : null,
           ),
         if (userSettings.showDecisiveGradient || decisiveGradientVM.showDecisiveGradientValue) ...[
