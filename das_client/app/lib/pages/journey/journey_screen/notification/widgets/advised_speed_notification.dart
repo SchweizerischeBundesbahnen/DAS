@@ -42,7 +42,7 @@ class AdvisedSpeedNotification extends StatelessWidget {
     final notificationBar = _notificationBar(
       context,
       _title(context, model),
-      subtitle: _suffix(model.segment, context),
+      suffix: _suffix(model.segment, context),
       icon: model.segment.displayIcon(ThemeUtil.isDarkMode(context)),
     );
 
@@ -81,7 +81,7 @@ class AdvisedSpeedNotification extends StatelessWidget {
     };
   }
 
-  Widget _notificationBar(BuildContext context, String title, {String? subtitle, Widget? icon}) {
+  Widget _notificationBar(BuildContext context, String title, {String? suffix, Widget? icon}) {
     final resolvedBackgroundColor = ThemeUtil.getColor(context, SBBColors.iron, SBBColors.platinum);
     final resolvedForegroundColor = ThemeUtil.getColor(context, SBBColors.white, SBBColors.black);
 
@@ -100,7 +100,7 @@ class AdvisedSpeedNotification extends StatelessWidget {
           children: [
             ?icon,
             Text(
-              '$title${subtitle ?? ''}',
+              '$title${suffix ?? ''}',
               style: sbbTextStyle.boldStyle.large.copyWith(color: resolvedForegroundColor),
             ),
           ],
