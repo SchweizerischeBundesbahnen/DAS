@@ -16,6 +16,7 @@ import java.time.format.DateTimeParseException;
 import java.util.Collection;
 import java.util.List;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipException;
 import java.util.zip.ZipOutputStream;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,7 @@ public class StorageService {
     private static final String DIR_TC = "tc/";
     private static final String ZIP_FILE_ENDING = ".zip";
     private static final DateTimeFormatter FILENAME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH-mm-ssX");
+    private static final String DUPLICATE_ENTRY_KEY = "duplicate entry";
 
     private final XmlHelper xmlHelper;
     private final S3Service s3Service;
@@ -100,7 +102,16 @@ public class StorageService {
         }
         String xml = xmlHelper.toString(obj);
         ZipEntry entry = new ZipEntry(entryName);
-        zos.putNextEntry(entry);
+        try {
+            zos.putNextEntry(entry);
+        } catch (ZipException e) {
+            if (e.getMessage().contains(DUPLICATE_ENTRY_KEY)) {
+                log.warn("Duplicate file {} in zip file skipped", entryName);
+                zos.closeEntry();
+                return;
+            }
+            throw e;
+        }
         zos.write(xml.getBytes(StandardCharsets.UTF_8));
         zos.closeEntry();
     }

@@ -76,12 +76,15 @@ auth:
     - name: sbb
       issuer-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0
       jwk-set-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/discovery/v2.0/keys
+      companies: [ 2185,2585,2385,5184,5184,1285,1080,9009,9048,3579,3917,9083 ]
     - name: sob
       issuer-uri: https://login.microsoftonline.com/d653d01f-17a4-48a1-9aab-b780b61b4273/v2.0
       jwk-set-uri: https://login.microsoftonline.com/d653d01f-17a4-48a1-9aab-b780b61b4273/discovery/v2.0/keys
+      companies: [ 9058 ]
     - name: bls
       issuer-uri: https://login.microsoftonline.com/a64ce5df-4ad8-40b9-91ee-54bac2bb8326/v2.0
       jwk-set-uri: https://login.microsoftonline.com/a64ce5df-4ad8-40b9-91ee-54bac2bb8326/discovery/v2.0/keys
+      companies: [ 1163,3356,2263 ]
 formation:
   kafka:
     bootstrap-server: ${FORMATION_KAFKA_BOOTSTRAP_SERVER}
@@ -101,19 +104,17 @@ aws:
   bucketName: ${AWS_BUCKET_NAME}
 
 sfera:
-  company-code: '1085'
-  major-version: '3'
+  major-version: '2'
   version: '3.00'
   source-device: 'BACKEND'
   recipient: '0085'
   broker-url: ${SFERA_BROKER_URL}
-  clientId: ${SFERA_BROKER_CLIENTID}
   oauth-profile: ${SFERA_BROKER_OAUTH_PROFILE}
   topic-prefix: ${SFERA_BROKER_TOPIC_PREFIX}
 
 preload:
-  # deactivated for now
-  fetch-cron: '-'
+  # adapt corresponding lockAtLeastFor time in @SchedulerLock
+  fetch-cron: ${PRELOAD_FETCH_CRON}
   bucket:
     bucketUrl: ${PRELOAD_BUCKET_URL}
     accessKey: ${PRELOAD_BUCKET_KEY}
@@ -126,18 +127,49 @@ preload:
     timetablePeriodTopic: ${PRELOAD_KAFKA_TIMETABLE_PERIOD_TOPIC}
     timetableTrainTopic: ${PRELOAD_KAFKA_TIMETABLE_TRAIN_TOPIC}
   uicCompanyCodes:
-    THURBO: 3917
-    SBBP: 1085
-    SBBCH: 2185
-    SBBD: 9087
-    SBBI: 5184
-    SBBCD: 2385
-    SBBCIN: 2585
-    SBBCI: 2485
-    SOB: 5458
     BLSC: 3356
     BLSI: 2263
     BLSP: 1163
+    BRAG: 9007
+    CJ: 9013
+    DB: 1080
+    DBCCH: 3096
+    DBCDE: 2180
+    DVZO: 9020
+    EDG: 3527
+    GTSR: 3513
+    HSL: 3127
+    HSTB: 9027
+    MBC: 9034
+    OeBB: 9043
+    RA: 9048
+    RAILH: 9088
+    RCA: 2181
+    RCCH: 4045
+    RLC: 3538
+    SBBCH: 2185
+    SBBCIN: 2585
+    SBBD: 2385
+    SBBI: 5184
+    SBBP: 1285
+    SERSA: 3579
+    SNCFF: 2187
+    SOB: 9058
+    SRT: 3373
+    STAG: 9086
+    SZU: 9062
+    THURBO: 3917
+    TI: 9067
+    TMR: 9068
+    TPF: 9070
+    TR: 3471
+    TRAVYS: 9071
+    TRN: 9072
+    TXLCH: 3552
+    UTL: 9074
+    VDBB: 9076
+    WRSCH: 3466
+    ZB: 9083
   cleanUp:
     hours: ${PRELOAD_CLEANUP_HOURS}
     cronExpression: ${PRELOAD_CLEANUP_CRON}

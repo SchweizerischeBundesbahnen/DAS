@@ -21,6 +21,7 @@ import org.springframework.test.context.jdbc.Sql;
  */
 @PersistenceH2TestProfile
 @Import({JpaAuditingConfiguration.class})
+@Sql("classpath:createRuFeatureH2.sql")
 class SpringDataJpaRuFeatureRepositoryH2Test {
 
     @Autowired
@@ -30,7 +31,6 @@ class SpringDataJpaRuFeatureRepositoryH2Test {
     private TestEntityManager entityManager;
 
     @Test
-    @Sql("classpath:createRuFeature.sql")
     void existingRuFeaturesCanBeFound() {
         RuFeatureEntity entity = underTest.findAll().getFirst();
         assertThat(entity).isNotNull();
@@ -44,7 +44,6 @@ class SpringDataJpaRuFeatureRepositoryH2Test {
     }
 
     @Test
-    @Sql("classpath:createRuFeature.sql")
     void existingRuFeaturesCanBeUpdated() {
         RuFeatureEntity entityToUpdate = underTest.findAll().getFirst();
         entityToUpdate.setEnabled(false);
@@ -64,7 +63,6 @@ class SpringDataJpaRuFeatureRepositoryH2Test {
     }
 
     @Test
-    @Sql("classpath:createRuFeature.sql")
     void ruFeaturesCanBeCreated() {
         CompanyEntity company = entityManager.find(CompanyEntity.class, 2);
 
@@ -91,7 +89,6 @@ class SpringDataJpaRuFeatureRepositoryH2Test {
     }
 
     @Test
-    @Sql("classpath:createRuFeature.sql")
     void ruFeaturesCanBeDeleted() {
         underTest.deleteById(1);
         entityManager.flush();

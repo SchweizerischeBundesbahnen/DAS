@@ -1,10 +1,18 @@
 package ch.sbb.backend.tenancy.domain.model;
 
+import java.util.Set;
+
+/**
+ * Microsoft Entra ID tenant of an organisation registered for user authentication (see {@link org.springframework.boot.security.oauth2.server.resource.autoconfigure.OAuth2ResourceServerProperties})
+ *
+ * @param name Display name
+ * @param companies Concrete railway undertakings (RU) managed by this organisation given as RICS codes.
+ */
 public record Tenant(
-    // Name of related Railway Undertaking (RU) instance responsible for User-Mgmt Authentication.
     String name,
     String issuerUri,
-    String jwkSetUri
+    String jwkSetUri,
+    Set<String> companies
 ) {
 
     public String getId() {

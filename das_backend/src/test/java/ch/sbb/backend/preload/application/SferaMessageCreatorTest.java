@@ -8,7 +8,8 @@ import ch.sbb.backend.preload.domain.SegmentProfileIdentification;
 import ch.sbb.backend.preload.infrastructure.xml.SferaMessagingConfig;
 import ch.sbb.backend.preload.infrastructure.xml.XmlHelper;
 import ch.sbb.backend.preload.sfera.model.v0300.SFERAB2GRequestMessage;
-import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ class SferaMessageCreatorTest {
         return !localName.equals("timestamp") && !localName.equals("message_ID");
     };
     public static final DefaultNodeMatcher SP_ID_NODE_MATCHER = new DefaultNodeMatcher(ElementSelectors.byNameAndAttributes("SP_Request", "SP_ID"));
-    private final TrainIdentification trainId = new TrainIdentification(1, "51", LocalDate.of(2025, 10, 6), Set.of(CompanyCode.of("1111")));
+    private final TrainIdentification trainId = new TrainIdentification(1, "51", OffsetDateTime.of(2025, 10, 6, 16, 38, 12, 0, ZoneOffset.ofHours(2)), Set.of(CompanyCode.of("1111")));
 
     @Autowired
     SferaMessageCreator sferaMessageCreator;

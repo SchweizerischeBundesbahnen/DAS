@@ -1,5 +1,7 @@
 package ch.sbb.backend.config;
 
+import static ch.sbb.backend.preload.infrastructure.configuration.CustomKafkaConsumerConfig.AUTO_OFFSET_RESET_EARLIEST;
+
 import java.util.Map;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.springframework.boot.kafka.autoconfigure.ConcurrentKafkaListenerContainerFactoryConfigurer;
@@ -22,6 +24,7 @@ public class TestKafkaConsumerConfig {
     ) {
         Map<String, Object> properties = kafkaProperties.buildConsumerProperties();
         properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, connectionDetails.getBootstrapServers());
+        properties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, AUTO_OFFSET_RESET_EARLIEST);
         ConsumerFactory<Object, Object> consumerFactory = new DefaultKafkaConsumerFactory<>(properties);
         ConcurrentKafkaListenerContainerFactory<Object, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
         configurer.configure(factory, consumerFactory);
