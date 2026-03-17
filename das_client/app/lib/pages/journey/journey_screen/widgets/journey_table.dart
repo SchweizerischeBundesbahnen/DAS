@@ -99,7 +99,9 @@ class JourneyTable extends StatelessWidget {
       journeyPosition: model.journeyPosition,
     );
     final journeyTableScrollController = DI.get<JourneyTableScrollController>();
-    journeyTableScrollController.updateRenderedRows(rowBuilders);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      journeyTableScrollController.updateRenderedRows(rowBuilders);
+    });
 
     return Padding(
       padding: const .symmetric(horizontal: JourneyOverview.horizontalPadding),

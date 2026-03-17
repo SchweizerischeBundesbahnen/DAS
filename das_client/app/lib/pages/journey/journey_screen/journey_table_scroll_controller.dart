@@ -34,10 +34,30 @@ class JourneyTableScrollController {
   void scrollToJourneyPoint(JourneyPoint? target) {
     if (_isDisposed) return;
 
-    final targetPosition = _calculateTargetPosition(target);
-    if (targetPosition != null) {
-      _scrollToPosition(targetPosition);
-    }
+    // Two nested post-frame callbacks are needed:
+    //
+    // - updateRenderedRows() in journey_table.dart is also deferred via a
+    //   single addPostFrameCallback, registered during the same build that
+    //   triggers this call.
+    // - Post-frame callbacks fire in registration order within the same frame.
+    //   If scrollToJourneyPoint is called before the build completes (e.g. from
+    //   the advancement view model reacting to the same stream event), our
+    //   outer callback lands in the same batch as updateRenderedRows's callback
+    //   but may run before it, leaving _renderedRows still holding the old list.
+    //
+    // The inner callback is therefore scheduled from inside the outer one,
+    // guaranteeing it runs one full frame after updateRenderedRows has already
+    // swapped in the new builder list and the new layout is fully committed.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_isDisposed) return;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (_isDisposed) return;
+        final targetPosition = _calculateTargetPosition(target);
+        if (targetPosition != null) {
+          _scrollToPosition(targetPosition);
+        }
+      });
+    });
   }
 
   void dispose() {
@@ -93,9 +113,14 @@ class JourneyTableScrollController {
 
     var scrollDiff = 0.0;
     for (int i = start; i < end; i++) {
-      scrollDiff += _renderedRows[i].height;
+      scrollDiff += _actualRowHeight(_renderedRows[i]);
     }
     return fromIndex > toIndex ? -scrollDiff : scrollDiff;
+  }
+
+  double _actualRowHeight(DASTableRowBuilder row) {
+    final renderObject = row.key.currentContext?.findRenderObject() as RenderBox?;
+    return renderObject?.size.height ?? row.height;
   }
 
   void _scrollToPosition(double targetScrollPosition) {
@@ -142,10 +167,10 @@ class JourneyTableScrollController {
       }
 
       if (row.stickyLevel == .first) {
-        stickyHeaderHeights[.first] = row.height;
+        stickyHeaderHeights[.first] = _actualRowHeight(row);
         stickyHeaderHeights[.second] = 0.0;
       } else if (row.stickyLevel == .second) {
-        stickyHeaderHeights[.second] = row.height;
+        stickyHeaderHeights[.second] = _actualRowHeight(row);
       }
     }
 
