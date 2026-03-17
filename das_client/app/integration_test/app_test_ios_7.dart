@@ -4,6 +4,7 @@ import 'package:integration_test/integration_test.dart';
 import 'package:logger/component.dart';
 import 'package:logging/logging.dart';
 
+import 'test/journey_search_overlay_test.dart' as journey_search_overlay_tests;
 import 'test/journey_table_additional_speed_restriction_test.dart' as journey_table_additional_speed_restriction_tests;
 import 'test/journey_table_balise_level_crossing_test.dart' as journey_table_balise_level_crossing_tests;
 import 'test/journey_table_updates_test.dart' as journey_table_updates_tests;
@@ -21,4 +22,5 @@ void main() {
   journey_table_additional_speed_restriction_tests.main();
   journey_table_balise_level_crossing_tests.main();
   journey_table_updates_tests.main();
+  journey_search_overlay_tests.main();
 }

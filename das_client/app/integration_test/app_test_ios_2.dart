@@ -5,7 +5,6 @@ import 'package:logging/logging.dart';
 
 import 'test/journey_header_test.dart' as journey_header_tests;
 import 'test/journey_notification_test.dart' as journey_notification_tests;
-import 'test/journey_search_overlay_test.dart' as journey_search_overlay_tests;
 
 late AppLocalizations l10n;
 
@@ -17,5 +16,4 @@ void main() {
 
   journey_header_tests.main();
   journey_notification_tests.main();
-  journey_search_overlay_tests.main();
 }
