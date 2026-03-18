@@ -156,17 +156,7 @@ class _ProviderScope extends StatelessWidget {
           },
           dispose: (_, vm) => vm.dispose(),
         ),
-        ProxyProvider2<JourneyPositionViewModel, NotificationPriorityQueueViewModel, AdvisedSpeedViewModel>(
-          lazy: false,
-          update: (_, journeyPositionVM, notificationVM, prev) {
-            if (prev != null) return prev;
-            return AdvisedSpeedViewModel(
-              journeyPositionStream: journeyPositionVM.model,
-              notificationVM: notificationVM,
-            );
-          },
-          dispose: (_, vm) => vm.dispose(),
-        ),
+
         ProxyProvider<JourneyTableAdvancementViewModel, DetailModalViewModel>(
           update: (_, advancementVM, prev) {
             if (prev != null) return prev;
@@ -256,6 +246,23 @@ class _ProviderScope extends StatelessWidget {
             return CalculatedSpeedViewModel(
               journeyViewModel: journeyViewModel,
               lineSpeedViewModel: lineSpeedVM,
+            );
+          },
+          dispose: (_, vm) => vm.dispose(),
+        ),
+        ProxyProvider3<
+          JourneyPositionViewModel,
+          LineSpeedViewModel,
+          NotificationPriorityQueueViewModel,
+          AdvisedSpeedViewModel
+        >(
+          lazy: false,
+          update: (_, journeyPositionVM, lineSpeedViewModel, notificationVM, prev) {
+            if (prev != null) return prev;
+            return AdvisedSpeedViewModel(
+              journeyPositionStream: journeyPositionVM.model,
+              notificationVM: notificationVM,
+              lineSpeedViewModel: lineSpeedViewModel,
             );
           },
           dispose: (_, vm) => vm.dispose(),

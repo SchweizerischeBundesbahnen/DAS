@@ -3,7 +3,7 @@ import 'package:sfera/component.dart';
 sealed class AdvisedSpeedModel {
   const AdvisedSpeedModel._();
 
-  factory AdvisedSpeedModel.active({required AdvisedSpeedSegment segment}) = Active;
+  factory AdvisedSpeedModel.active({required AdvisedSpeedSegment segment, SingleSpeed? lineSpeed}) = Active;
 
   factory AdvisedSpeedModel.inactive() = Inactive;
 
@@ -19,14 +19,16 @@ sealed class AdvisedSpeedModel {
 }
 
 class Active extends AdvisedSpeedModel {
-  const Active({required this.segment}) : super._();
+  const Active({required this.segment, this.lineSpeed}) : super._();
   final AdvisedSpeedSegment segment;
+  final SingleSpeed? lineSpeed;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || (other is Active && segment == other.segment);
+  bool operator ==(Object other) =>
+      identical(this, other) || (other is Active && segment == other.segment && lineSpeed == other.lineSpeed);
 
   @override
-  int get hashCode => Object.hash(runtimeType, segment);
+  int get hashCode => Object.hash(runtimeType, segment, lineSpeed);
 }
 
 class Inactive extends AdvisedSpeedModel {
