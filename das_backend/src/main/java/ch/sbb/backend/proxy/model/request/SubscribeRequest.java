@@ -9,7 +9,8 @@ public record SubscribeRequest(
     String pushToken,
     Instant expired,
     String evu,
-    String type
+    String type,
+    boolean driver
 ) {
 
 }
