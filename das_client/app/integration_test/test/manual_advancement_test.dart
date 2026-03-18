@@ -75,9 +75,10 @@ void main() {
 
       final scrollableFinder = find.byType(AnimatedList);
 
-      final b = 'Haltestelle B';
-      await tester.dragUntilVisible(find.text(b), scrollableFinder, const Offset(0, 50));
+      final signalAfterB = 'A1';
+      await tester.dragUntilVisible(find.text(signalAfterB), scrollableFinder, const Offset(0, -50));
 
+      final b = 'Haltestelle B';
       // set position to B manually
       await tester.drag(findDASTableRowByText(b), const Offset(600, 0));
 
