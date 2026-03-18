@@ -77,7 +77,7 @@ void main() {
 
       final b = 'Haltestelle B';
       await tester.dragUntilVisible(find.text(b), scrollableFinder, const Offset(0, 50));
-      
+
       // set position to B manually
       await tester.drag(findDASTableRowByText(b), const Offset(600, 0));
 
