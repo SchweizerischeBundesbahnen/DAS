@@ -6,14 +6,6 @@ import packageJson from '../../../package.json';
 import {OidcSecurityService} from 'angular-auth-oidc-client';
 import {SbbDivider} from '@sbb-esta/lyne-angular/divider';
 import {Router} from '@angular/router';
-import {
-  SbbNavigation,
-  SbbNavigationButton,
-  SbbNavigationList,
-  SbbNavigationMarker,
-  SbbNavigationSection
-} from '@sbb-esta/lyne-angular/navigation';
-import {SbbButton} from '@sbb-esta/lyne-angular/button/button';
 
 @Component({
   selector: 'app-header',
@@ -25,12 +17,6 @@ import {SbbButton} from '@sbb-esta/lyne-angular/button/button';
     SbbMenuLink,
     SbbDivider,
     SbbMenuButton,
-    SbbNavigationButton,
-    SbbNavigationList,
-    SbbNavigationSection,
-    SbbButton,
-    SbbNavigationMarker,
-    SbbNavigation
   ],
   templateUrl: './header.html',
   styleUrl: './header.css',

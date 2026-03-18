@@ -1,13 +1,5 @@
 import {Component, inject} from '@angular/core';
-import {
-  SbbSidebar,
-  SbbSidebarCloseButton,
-  SbbSidebarContainer,
-  SbbSidebarContent,
-  SbbSidebarTitle
-} from '@sbb-esta/lyne-angular/sidebar';
-import {SbbBlockLink} from '@sbb-esta/lyne-angular/link/block-link';
-import {SbbLinkList} from '@sbb-esta/lyne-angular/link-list/link-list';
+import {SbbSidebarContainer, SbbSidebarContent} from '@sbb-esta/lyne-angular/sidebar';
 import {SbbTooltipDirective} from '@sbb-esta/lyne-angular/tooltip';
 import {
   SbbIconSidebar,
@@ -25,12 +17,7 @@ import {OidcSecurityService} from 'angular-auth-oidc-client';
     SbbIconSidebar,
     SbbIconSidebarLink,
     SbbIconSidebarContent,
-    SbbBlockLink,
     SbbSidebarContent,
-    SbbLinkList,
-    SbbSidebarCloseButton,
-    SbbSidebarTitle,
-    SbbSidebar,
     SbbSidebarContainer,
     SbbIconSidebarButton,
     SbbTooltipDirective,

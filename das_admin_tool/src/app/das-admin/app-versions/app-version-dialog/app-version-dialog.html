@@ -1,0 +1,43 @@
+<!--todo: all i18n ids like @@c_home_title-->
+<sbb-dialog-title>{{ title }}</sbb-dialog-title>
+<sbb-dialog-content>
+  <form class="form" [formGroup]="versionForm">
+    <sbb-form-field>
+      <label for="version" i18n>App Version</label>
+      <input id="version" required placeholder="0.0.0" formControlName="version"/>
+      @if (versionForm.touched) {
+        @if (versionForm.get('version')?.hasError('required')) {
+          <sbb-error i18n>Feld darf nicht leer sein</sbb-error>
+        }
+        @if (versionForm.get('version')?.hasError('pattern')) {
+          <sbb-error i18n>Feld muss dem Format MAJOR.MINOR.PATCH entsprechen</sbb-error>
+        }
+      }
+    </sbb-form-field>
+    <div class="minimalVersion">
+      <sbb-toggle-check formControlName="minimalVersion" i18n>Minimale Version</sbb-toggle-check>
+      <sbb-mini-button icon-name="circle-information-small" id="popover-trigger"></sbb-mini-button>
+      <sbb-popover trigger="popover-trigger" hoverTrigger="true" hideCloseButton="true">
+        <sbb-title level="2" visualLevel="6" i18n>Minimale Version</sbb-title>
+        <p class="sbb-text-s">Damit werden alle tieferen Versionen blockiert!</p>
+      </sbb-popover>
+    </div>
+    <sbb-form-field optional>
+      <label for="expiryDate" i18n>Gültig ab</label>
+      <sbb-datepicker-previous-day></sbb-datepicker-previous-day>
+      <sbb-date-input id="expiryDate" [min]="minDate" formControlName="expiryDate"></sbb-date-input>
+      <sbb-datepicker></sbb-datepicker>
+      <sbb-datepicker-toggle></sbb-datepicker-toggle>
+      <sbb-datepicker-next-day></sbb-datepicker-next-day>
+    </sbb-form-field>
+  </form>
+</sbb-dialog-content>
+<sbb-dialog-actions alignGroup="stretch">
+  <sbb-secondary-button align-self="start" sbb-dialog-close i18n>Abbrechen</sbb-secondary-button>
+  @if (isEdit) {
+    <sbb-transparent-button iconName="trash-small" sbb-dialog-close="delete" i18n>App Version löschen</sbb-transparent-button>
+  }
+  <sbb-button [sbb-dialog-close]="formValue" [disabled]="versionForm.invalid" i18n>
+    Speichern
+  </sbb-button>
+</sbb-dialog-actions>
