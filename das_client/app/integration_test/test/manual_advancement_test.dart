@@ -84,12 +84,10 @@ void main() {
         ),
       );
 
-      await tester.pumpAndSettle();
-
       // Check chevron at B
-      expect(
+      await waitUntilExists(
+        tester,
         find.descendant(of: findDASTableRowByText(b), matching: find.byKey(RouteChevron.chevronKey)),
-        findsAny,
       );
 
       // wait until signal received and back to non manual mode
