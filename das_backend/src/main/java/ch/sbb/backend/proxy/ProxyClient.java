@@ -17,7 +17,7 @@ public class ProxyClient {
         @Value("${proxy.base-url}") String baseUrl,
         @Value("${proxy.basic-auth}") String auth
     ) {
-        String encodedAuth = Base64.getEncoder().encodeToString(auth.getBytes());
+        String encodedAuth = "Basic " + Base64.getEncoder().encodeToString(auth.getBytes());
 
         this.restClient = RestClient.builder()
             .baseUrl(baseUrl)
