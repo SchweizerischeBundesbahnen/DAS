@@ -27,7 +27,7 @@ public class ProxyClient {
 
     public ResponseEntity<?> subscribe(SubscribeRequest request) {
         return restClient.post()
-            .uri("/rest/das/subscibe")
+            .uri("/rest/das/subscribe")
             .body(request)
             .retrieve()
             .toEntity(String.class);
