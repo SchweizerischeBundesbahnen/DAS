@@ -1,5 +1,6 @@
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
+import 'package:app/launcher/launcher.dart';
 import 'package:app/nav/app_router.dart';
 import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
 import 'package:app/theme/theme_util.dart';
@@ -16,6 +17,7 @@ class DASNavigationDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final journeyNavigationViewModel = DI.getOrNull<JourneyNavigationViewModel>();
     final isJourneySelected = journeyNavigationViewModel?.modelValue != null;
+    final launcher = DI.get<Launcher>();
     return Drawer(
       child: Column(
         children: [
@@ -53,6 +55,16 @@ class DASNavigationDrawer extends StatelessWidget {
                   title: context.l10n.w_navigation_drawer_preload_title,
                   route: const PreloadRoute(),
                 ),
+                if (launcher.hasTourSystemConfigured())
+                  _drawerTile(
+                    context,
+                    icon: _inactiveIcon(SBBIcons.link_external_small),
+                    title: Text(
+                      context.l10n.w_navigation_drawer_tour_system_title,
+                      style: sbbTextStyle.lightStyle.medium,
+                    ),
+                    onTap: () => launcher.launchTourSystem(),
+                  ),
               ],
             ),
           ),
@@ -70,8 +82,9 @@ class DASNavigationDrawer extends StatelessWidget {
   }) {
     final bool isActiveRoute = context.router.isRouteActive(route.routeName);
 
-    return ListTile(
-      leading: isActiveRoute ? _activeIcon(icon) : _inactiveIcon(icon),
+    return _drawerTile(
+      context,
+      icon: isActiveRoute ? _activeIcon(icon) : _inactiveIcon(icon),
       title: Text(title, style: isActiveRoute ? sbbTextStyle.boldStyle.medium : sbbTextStyle.lightStyle.medium),
       onTap: () {
         Navigator.pop(context);
@@ -80,33 +93,46 @@ class DASNavigationDrawer extends StatelessWidget {
     );
   }
 
-  Widget _activeIcon(IconData icon) {
-    return CircleAvatar(
-      backgroundColor: SBBColors.black,
-      child: Icon(icon),
+  Widget _drawerTile(
+    BuildContext context, {
+    required Widget icon,
+    required Widget title,
+    required GestureTapCallback onTap,
+  }) {
+    return ListTile(
+      leading: icon,
+      title: title,
+      onTap: onTap,
     );
   }
+}
 
-  Widget _inactiveIcon(IconData icon) {
-    return Padding(
-      padding: const .fromLTRB(SBBSpacing.xSmall, 0, SBBSpacing.xSmall, 0),
-      child: Icon(icon),
-    );
-  }
+Widget _activeIcon(IconData icon) {
+  return CircleAvatar(
+    backgroundColor: SBBColors.black,
+    child: Icon(icon),
+  );
+}
 
-  Widget _versionFooter(BuildContext context) {
-    final textColor = ThemeUtil.getColor(context, SBBColors.granite, SBBColors.graphite);
-    return Align(
-      alignment: .bottomCenter,
-      child: Padding(
-        padding: .all(SBBSpacing.medium),
-        child: Column(
-          children: [
-            AppVersionText(color: textColor),
-            DeviceIdText(color: textColor),
-          ],
-        ),
+Widget _inactiveIcon(IconData icon) {
+  return Padding(
+    padding: const .fromLTRB(SBBSpacing.xSmall, 0, SBBSpacing.xSmall, 0),
+    child: Icon(icon),
+  );
+}
+
+Widget _versionFooter(BuildContext context) {
+  final textColor = ThemeUtil.getColor(context, SBBColors.granite, SBBColors.graphite);
+  return Align(
+    alignment: .bottomCenter,
+    child: Padding(
+      padding: .all(SBBSpacing.medium),
+      child: Column(
+        children: [
+          AppVersionText(color: textColor),
+          DeviceIdText(color: textColor),
+        ],
       ),
-    );
-  }
+    ),
+  );
 }

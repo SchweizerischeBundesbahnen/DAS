@@ -27,7 +27,7 @@ class TrainJourneyParser {
     }
 
     final trainJourneyDto = TrainJourneyDataDto.fromJson(decodedData);
-    return trainJourneyDto.journeys.map((dto) => dto.toLinkData()).toList();
+    return trainJourneyDto.journeys.map((dto) => dto.toLinkData(trainJourneyDto.returnUrl)).toList();
   }
 
   static String _extractDataParam(Uri uri) {

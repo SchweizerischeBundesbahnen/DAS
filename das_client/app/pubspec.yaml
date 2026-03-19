@@ -82,6 +82,8 @@ dependencies:
   appcheck: ^1.7.0
   # https://pub.dev/packages/dotted_border
   dotted_border: ^3.1.0
+  # https://pub.dev/packages/url_launcher
+  url_launcher: ^6.3.2
 
 dev_dependencies:
   integration_test:

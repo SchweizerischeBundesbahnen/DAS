@@ -60,6 +60,7 @@ extension _TrainJourneyLinkDataMapper on TrainJourneyLinkData {
       date: startDate ?? DateTime.now(),
       tafTapLocationReferenceStart: tafTapLocationReferenceStart,
       tafTapLocationReferenceEnd: tafTapLocationReferenceEnd,
+      returnUrl: returnUrl,
     );
   }
 }

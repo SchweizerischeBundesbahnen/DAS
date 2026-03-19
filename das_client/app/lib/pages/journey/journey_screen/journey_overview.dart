@@ -1,4 +1,6 @@
 import 'package:app/di/di.dart';
+import 'package:app/i18n/src/build_context_x.dart';
+import 'package:app/launcher/launcher.dart';
 import 'package:app/pages/journey/brake_load_slip/brake_load_slip_view_model.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/additional_speed_restriction_modal/additional_speed_restriction_modal_view_model.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/detail_modal.dart';
@@ -23,6 +25,7 @@ import 'package:app/pages/journey/journey_screen/view_model/model/replacement_se
 import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/punctuality_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/replacement_series_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/tour_system_link_visibility_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/ux_testing_view_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/journey_navigation_buttons.dart';
 import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
@@ -72,7 +75,28 @@ class JourneyOverview extends StatelessWidget {
             ],
           ),
         ),
+        _tourSystemLink(context),
       ],
+    );
+  }
+
+  Widget _tourSystemLink(BuildContext context) {
+    final vm = context.read<TourSystemLinkVisibilityViewModel>();
+    return StreamBuilder(
+      stream: vm.model,
+      initialData: vm.modelValue,
+      builder: (context, asyncSnapshot) {
+        final launcher = DI.get<Launcher>();
+        if (asyncSnapshot.data != true || !launcher.hasTourSystemConfigured()) return const SizedBox.shrink();
+
+        return Padding(
+          padding: const EdgeInsets.only(top: SBBSpacing.xSmall, bottom: SBBSpacing.large),
+          child: SBBTertiaryButtonLarge(
+            label: context.l10n.p_journey_overview_tour_button_text,
+            onPressed: () => launcher.launchTourSystem(),
+          ),
+        );
+      },
     );
   }
 }
@@ -323,6 +347,18 @@ class _ProviderScope extends StatelessWidget {
               detailModalVM: detailModalVM,
               decisiveGradientVM: decisiveGradientVM,
               navigationVM: navigationVM,
+            );
+          },
+          dispose: (_, vm) => vm.dispose(),
+        ),
+        ProxyProvider2<JourneyPositionViewModel, JourneyTableAdvancementViewModel, TourSystemLinkVisibilityViewModel>(
+          lazy: false,
+          update: (_, journeyPositionVM, journeyTableAdvancementVM, prev) {
+            if (prev != null) return prev;
+            return TourSystemLinkVisibilityViewModel(
+              journeyViewModel: journeyViewModel,
+              journeyPositionViewModel: journeyPositionVM,
+              journeyTableAdvancementViewModel: journeyTableAdvancementVM,
             );
           },
           dispose: (_, vm) => vm.dispose(),

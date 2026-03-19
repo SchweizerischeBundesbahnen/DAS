@@ -1,6 +1,6 @@
 import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/di/di.dart';
-import 'package:app/di/scopes/das_base_scope.dart';
+import 'package:app/launcher/launcher.dart';
 import 'package:app/provider/user_settings.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:app_links_x/component.dart';
@@ -17,6 +17,7 @@ import 'mock_app_links_manager.dart';
 import 'mock_battery.dart';
 import 'mock_brightness_manager.dart';
 import 'mock_connectivity_manager.dart';
+import 'mock_launcher.dart';
 import 'mock_user_settings.dart';
 
 final _log = Logger('MockDASBaseScope');
@@ -41,6 +42,7 @@ class MockDASBaseScope extends DASBaseScope {
     _registerMockConnectivityManager();
     getIt.registerLoginViewModel();
     _registerMockAppLinksManager();
+    _registerMockLauncher();
 
     await getIt.allReady();
   }
@@ -87,5 +89,9 @@ class MockDASBaseScope extends DASBaseScope {
 
   void _registerMockConnectivityManager() {
     getIt.registerSingleton<ConnectivityManager>(MockConnectivityManager());
+  }
+
+  void _registerMockLauncher() {
+    getIt.registerSingleton<Launcher>(MockLauncher(userSettings: DI.get()));
   }
 }
