@@ -4,7 +4,6 @@ import 'package:app/pages/journey/journey_screen/header/widgets/journey_identifi
 import 'package:app/pages/journey/journey_screen/header/widgets/journey_search_overlay.dart';
 import 'package:app/pages/journey/journey_screen/widgets/journey_navigation_buttons.dart';
 import 'package:app/util/format.dart';
-import 'package:app/widgets/navigation_buttons.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -73,7 +72,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('loading another train journey and displaying navigation buttons work', (tester) async {
+    testWidgets('loading another train journey work and should not display navigation buttons', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T1');
       final journeySearchOverlay = find.byType(JourneySearchOverlay);
@@ -112,18 +111,8 @@ void main() {
       await tapElement(tester, pauseButton);
       await tester.pumpAndSettle(Duration(milliseconds: 300));
 
-      // navigation buttons displayed
-      expect(tester.widget<AnimatedOpacity>(opacity).opacity, isNonZero);
-
-      // navigate to previous journey
-      final previousButton = find.byKey(NavigationButtons.navigationButtonPreviousKey);
-      await tapElement(tester, previousButton);
-
-      // wait until T1 opened
-      await waitUntilExists(
-        tester,
-        find.descendant(of: find.byType(Header), matching: find.text('T1 ${l10n.c_ru_sbb_p}')),
-      );
+      // navigation buttons still not displayed
+      expect(tester.widget<AnimatedOpacity>(opacity).opacity, isZero);
 
       await disconnect(tester);
     });

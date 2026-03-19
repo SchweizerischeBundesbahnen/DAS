@@ -92,6 +92,8 @@ class TourSystemLinkVisibilityViewModel extends JourneyAwareViewModel {
   }
 
   void _emit(bool value) {
+    if (_rxModel.isClosed) return;
+
     if (value != _rxModel.value) {
       _log.info('Tour system link visibility changed to: $value');
       _rxModel.add(value);

@@ -69,7 +69,7 @@ extension JourneyScopeExtension on GetIt {
       _log.fine('Register JourneySelectionViewModel');
       return JourneySelectionViewModel(
         sferaRepo: DI.get(),
-        onJourneySelected: DI.get<JourneyNavigationViewModel>().push,
+        onJourneySelected: (trainId) => DI.get<JourneyNavigationViewModel>().replaceWith([trainId]),
       );
     }
 

@@ -1,9 +1,12 @@
 import 'package:app/di/di.dart';
+import 'package:app/launcher/launcher.dart';
+import 'package:app/model/tour_system.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/journey_identifier.dart';
 import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
 import 'package:app/pages/journey/selection/journey_selection_page.dart';
 import 'package:app/pages/login/login_page.dart';
 import 'package:app/pages/login/widgets/login_button.dart';
+import 'package:app/provider/user_settings.dart';
 import 'package:app/widgets/navigation_buttons.dart';
 import 'package:app_links_x/component.dart';
 import 'package:auth/component.dart';
@@ -15,6 +18,8 @@ import 'package:sfera/component.dart';
 import '../app_test.dart';
 import '../auth/integrationtest_authenticator.dart';
 import '../mocks/mock_app_links_manager.dart';
+import '../mocks/mock_launcher.dart';
+import '../mocks/mock_user_settings.dart';
 import '../util/test_utils.dart';
 
 void main() {
@@ -193,6 +198,45 @@ void main() {
       );
 
       expect(find.text(l10n.w_train_driver_turnover_row_title), findsAny);
+
+      await disconnect(tester);
+    });
+
+    testWidgets('appLink_whenLinkWithReturnUrl_shouldUseReturnUrlOverDefaultTourSystemUrl', (tester) async {
+      await prepareAndStartApp(tester);
+
+      expect(find.byType(JourneySelectionPage), findsOne);
+
+      final link = 'https://example.com';
+      final journeys = [_trainJourneyLinkData('T9999M', 'CH09992', 'CH09993', link)];
+      _pushTrainJourneyAppLink(journeys);
+
+      await waitUntilExists(tester, find.byKey(JourneyTable.loadedJourneyTableKey));
+      await tester.pumpAndSettle();
+      final trainIdentification = find.descendant(
+        of: find.byKey(JourneyIdentifier.journeyIdentifierKey),
+        matching: find.textContaining('T9999'),
+      );
+      expect(trainIdentification, findsOne);
+
+      // find pause button and press it
+      final pauseButton = find.text(l10n.p_journey_header_button_pause);
+      expect(pauseButton, findsOneWidget);
+      await tapElement(tester, pauseButton);
+
+      await tapElement(tester, find.text(l10n.p_journey_overview_tour_button_text));
+
+      final userSettings = DI.get<UserSettings>() as MockUserSettings;
+      userSettings.set(.tourSystem, TourSystem.tip.name);
+
+      await tapElement(tester, find.text(l10n.p_journey_overview_tour_button_text));
+
+      final launcher = DI.get<Launcher>() as MockLauncher;
+      expect(launcher.launchedUrls, hasLength(2));
+      expect(launcher.launchedUrls[0], link);
+      expect(launcher.launchedUrls[1], link);
+
+      await disconnect(tester);
     });
   });
 }
@@ -201,6 +245,7 @@ TrainJourneyLinkData _trainJourneyLinkData(
   String trainNumber, [
   String? tafTapLocationReferenceStart,
   String? tafTapLocationReferenceEnd,
+  String? returnUrl,
 ]) {
   return TrainJourneyLinkData(
     operationalTrainNumber: trainNumber,
@@ -208,6 +253,7 @@ TrainJourneyLinkData _trainJourneyLinkData(
     startDate: DateTime.now(),
     tafTapLocationReferenceStart: tafTapLocationReferenceStart,
     tafTapLocationReferenceEnd: tafTapLocationReferenceEnd,
+    returnUrl: returnUrl,
   );
 }
 

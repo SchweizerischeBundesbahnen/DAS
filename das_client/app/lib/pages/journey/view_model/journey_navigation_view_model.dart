@@ -29,6 +29,7 @@ class JourneyNavigationViewModel {
   /// replaces the current navigation stack with [trainIds] where a connection will be established for the first train.
   Future<void> replaceWith(Iterable<TrainIdentification> trainIds) async {
     if (_trainIds.isNotEmpty) _sferaRepo.disconnect();
+    _trainIds.clear();
     _trainIds.addAll(trainIds);
 
     await _establishConnection(trainIds.first);
