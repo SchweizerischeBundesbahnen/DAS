@@ -7,9 +7,10 @@ public record SubscribeRequest(
     String zugnr,
     String deviceId,
     String pushToken,
-    Instant expired,
+    Instant expiresAt,
     String evu,
-    String type
+    String type,
+    boolean driver
 ) {
 
 }

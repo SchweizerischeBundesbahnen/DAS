@@ -24,7 +24,7 @@ abstract class DASTableRowBuilder<T> {
     this.stickyLevel = .none,
     this.identifier,
     GlobalKey? key,
-  }) : key = key ?? _getRowKey(data.hashCode ^ rowIndex);
+  }) : key = key ?? _getRowKey(data.hashCode ^ rowIndex ^ height.hashCode);
 
   DASTableRow build(BuildContext context);
 

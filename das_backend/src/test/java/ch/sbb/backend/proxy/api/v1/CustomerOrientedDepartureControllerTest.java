@@ -38,9 +38,10 @@ class CustomerOrientedDepartureControllerTest {
                       "zugnr":"123",
                       "deviceId":"d1",
                       "pushToken":"t1",
-                      "expired":"2026-03-03T12:34:56Z",
+                      "expiresAt":"2026-03-03T12:34:56Z",
                       "evu":"DAS",
-                      "type":"REGISTER"
+                      "type":"REGISTER",
+                      "driver": false
                     }
                     """))
             .andExpect(status().isNoContent());

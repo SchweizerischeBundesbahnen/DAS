@@ -1,3 +1,4 @@
+import 'package:app/extension/single_speed_extension.dart';
 import 'package:app/pages/journey/journey_screen/view_model/line_speed_view_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/show_speed_behaviour.dart';
 import 'package:app/theme/theme_util.dart';
@@ -32,27 +33,34 @@ class AdvisedSpeedCellBody extends StatelessWidget {
   }
 
   Widget _content(BuildContext context) {
-    if (showSpeedBehavior == .never) {
-      return DASTableCell.emptyBuilder;
-    }
+    if (showSpeedBehavior == .never) return DASTableCell.emptyBuilder;
 
     final inEtcsLevel2Segment = metadata.nonStandardTrackEquipmentSegments.isInEtcsLevel2Segment(order);
     final advisedSpeed = metadata.advisedSpeedSegments.appliesToOrder(order).firstOrNull;
     if (inEtcsLevel2Segment || advisedSpeed == null) return DASTableCell.emptyBuilder;
 
-    var speed = advisedSpeed.speed;
-    if (advisedSpeed is VelocityMaxAdvisedSpeedSegment) {
-      final lineSpeedViewModel = context.read<LineSpeedViewModel>();
-      speed = lineSpeedViewModel.getResolvedSpeedForOrder(order).speed?.speed as SingleSpeed?;
-    }
+    final resolvedSpeed = _resolvedSpeed(advisedSpeed, context);
 
     final resolvedTextColor = ThemeUtil.getColor(context, SBBColors.white, SBBColors.black);
-    final resolvedSpeedDisplay = advisedSpeed.isDIST ? '' : speed?.value ?? '';
     return Text(
-      resolvedSpeedDisplay,
+      resolvedSpeed?.value ?? '',
       key: advisedSpeed.isDIST ? advisedSpeedDistKey : nonEmptyKey,
       style: sbbTextStyle.boldStyle.large.copyWith(color: resolvedTextColor),
     );
+  }
+
+  SingleSpeed? _resolvedSpeed(AdvisedSpeedSegment advisedSpeed, BuildContext context) {
+    SingleSpeed? resolvedSpeed = advisedSpeed.speed;
+    final lineSpeedViewModel = context.read<LineSpeedViewModel>();
+    final lineSpeed = lineSpeedViewModel.getResolvedSpeedForOrder(order).speed?.speed as SingleSpeed?;
+    if (advisedSpeed is VelocityMaxAdvisedSpeedSegment) {
+      resolvedSpeed = lineSpeed;
+    } else if (advisedSpeed.isDIST) {
+      resolvedSpeed = null;
+    } else if (resolvedSpeed?.isLargerThan(lineSpeed) ?? false) {
+      resolvedSpeed = lineSpeed;
+    }
+    return resolvedSpeed;
   }
 
   Widget _backgroundStack(BuildContext context, Widget child) {

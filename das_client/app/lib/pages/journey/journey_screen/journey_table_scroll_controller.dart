@@ -15,7 +15,13 @@ final _log = Logger('JourneyTableScrollController');
 ///
 /// Use [scrollToJourneyPoint].
 ///
-/// Calculates target scroll position respecting currently rendered rows and sticky header.
+/// Reads the target row's position directly from the render tree so that the
+/// calculation is always accurate regardless of row height changes or frame
+/// ordering — no height summation is needed.
+///
+/// If the target row is outside the viewport and therefore not laid out, falls
+/// back to the height-based calculation: it anchors on the nearest rendered
+/// row and sums up [DASTableRowBuilder.height] values to reach the target.
 class JourneyTableScrollController {
   static const int _minScrollDuration = 1000;
   static const int _maxScrollDuration = 2000;
@@ -34,10 +40,15 @@ class JourneyTableScrollController {
   void scrollToJourneyPoint(JourneyPoint? target) {
     if (_isDisposed) return;
 
-    final targetPosition = _calculateTargetPosition(target);
-    if (targetPosition != null) {
-      _scrollToPosition(targetPosition);
-    }
+    // Defer by one frame so the layout for the current build is fully committed
+    // before reading RenderBox positions.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_isDisposed) return;
+      final targetPosition = _calculateTargetPosition(target);
+      if (targetPosition != null) {
+        _scrollToPosition(targetPosition);
+      }
+    });
   }
 
   void dispose() {
@@ -49,6 +60,53 @@ class JourneyTableScrollController {
       return null;
     }
 
+    final targetRow = _renderedRows.firstWhereOrNull((it) => it.data == targetPoint);
+    if (targetRow == null) {
+      _log.warning('Target journey point not found in rendered rows');
+      return null;
+    }
+
+    final targetRenderObject = targetRow.key.currentContext?.findRenderObject() as RenderBox?;
+    final tableRenderObject = tableKey.currentContext?.findRenderObject() as RenderBox?;
+
+    if (targetRenderObject != null && tableRenderObject != null) {
+      return _calculatePositionFromRenderObject(targetPoint, targetRenderObject, tableRenderObject);
+    }
+
+    _log.fine('Target row not in viewport, falling back to height-based calculation');
+    return _calculatePositionFromHeights(targetPoint);
+  }
+
+  /// Primary strategy: reads positions directly from the render tree.
+  /// Accurate for any row that is currently laid out in the viewport.
+  double _calculatePositionFromRenderObject(
+    JourneyPoint targetPoint,
+    RenderBox targetRenderObject,
+    RenderBox tableRenderObject,
+  ) {
+    // Distance from the table's top (below the fixed header) to the
+    // target row's top, **as currently painted**
+    final distanceFromTableTop =
+        targetRenderObject.localToGlobal(Offset.zero).dy -
+        tableRenderObject.localToGlobal(Offset.zero).dy -
+        DASTable.headerRowHeight;
+
+    final stickyHeight = _calculateStickyHeight(targetPoint);
+
+    _log.fine(
+      'currentPixels: ${scrollController.position.pixels}, '
+      'distanceFromTableTop: $distanceFromTableTop, stickyHeight: $stickyHeight',
+    );
+
+    // Shift the scroll position so the target row sits flush at the top of
+    // the visible content area, just below any sticky header above it
+    return scrollController.position.pixels + distanceFromTableTop - stickyHeight;
+  }
+
+  /// Fallback strategy: used when the target row is outside the viewport and
+  /// therefore has no [RenderBox]. Anchors on the nearest rendered row and
+  /// sums [DASTableRowBuilder.height] values to bridge the gap.
+  double? _calculatePositionFromHeights(JourneyPoint targetPoint) {
     final firstRenderedRow = _findFirstRenderedRow();
     if (firstRenderedRow == null) {
       _log.warning('Failed to calculate scroll position: no rendered rows found');
@@ -79,7 +137,8 @@ class JourneyTableScrollController {
     final stickyHeight = _calculateStickyHeight(targetPoint);
 
     _log.fine(
-      'currentpixels: ${scrollController.position.pixels}, renderedDiff: $renderedDiff, scrollDiff: $scrollDiff, stickyHeight: $stickyHeight',
+      'currentPixels: ${scrollController.position.pixels}, renderedDiff: $renderedDiff, '
+      'scrollDiff: $scrollDiff, stickyHeight: $stickyHeight',
     );
 
     return scrollController.position.pixels + renderedDiff + scrollDiff - stickyHeight;
@@ -98,6 +157,19 @@ class JourneyTableScrollController {
     return fromIndex > toIndex ? -scrollDiff : scrollDiff;
   }
 
+  DASTableRowBuilder? _findFirstRenderedRow() {
+    for (int i = 0; i < _renderedRows.length; i++) {
+      final row = _renderedRows[i];
+      if (row.key.currentContext != null) {
+        final renderObject = row.key.currentContext?.findRenderObject() as RenderBox?;
+        if (renderObject != null) {
+          return _renderedRows[i];
+        }
+      }
+    }
+    return null;
+  }
+
   void _scrollToPosition(double targetScrollPosition) {
     _log.finer('Scrolling to position $targetScrollPosition');
     scrollController.animateTo(
@@ -110,21 +182,7 @@ class JourneyTableScrollController {
   Duration _calculateDuration(double targetPosition) {
     final linearDuration = ((targetPosition - scrollController.offset).abs()).floor();
     final boundedDuration = min(max(_minScrollDuration, linearDuration), _maxScrollDuration);
-
     return Duration(milliseconds: boundedDuration);
-  }
-
-  DASTableRowBuilder? _findFirstRenderedRow() {
-    for (int i = 0; i < _renderedRows.length; i++) {
-      final row = _renderedRows[i];
-      if (row.key.currentContext != null) {
-        final renderObject = row.key.currentContext?.findRenderObject() as RenderBox?;
-        if (renderObject != null) {
-          return _renderedRows[i];
-        }
-      }
-    }
-    return null;
   }
 
   double _calculateStickyHeight(JourneyPoint data) {
@@ -142,10 +200,12 @@ class JourneyTableScrollController {
       }
 
       if (row.stickyLevel == .first) {
-        stickyHeaderHeights[.first] = row.height;
+        final renderObject = row.key.currentContext?.findRenderObject() as RenderBox?;
+        stickyHeaderHeights[.first] = renderObject?.size.height ?? row.height;
         stickyHeaderHeights[.second] = 0.0;
       } else if (row.stickyLevel == .second) {
-        stickyHeaderHeights[.second] = row.height;
+        final renderObject = row.key.currentContext?.findRenderObject() as RenderBox?;
+        stickyHeaderHeights[.second] = renderObject?.size.height ?? row.height;
       }
     }
 

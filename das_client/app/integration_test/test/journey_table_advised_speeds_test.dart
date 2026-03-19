@@ -39,6 +39,7 @@ void main() {
     expect(find.byKey(AdvisedSpeedNotificationHint.servicePointSpeedKey), findsNothing);
     expect(find.byKey(AdvisedSpeedNotificationHint.curvePointSpeedKey), findsNothing);
     expect(find.byKey(AdvisedSpeedNotificationHint.additionalSpeedRestrictionKey), findsNothing);
+    await waitUntilExists(tester, _findAdvisedSpeedNotificationContainingText('80'));
     expect(_findAdvisedSpeedNotificationContainingText('E185'), findsNothing);
 
     // Punctuality Hidden
@@ -94,24 +95,25 @@ void main() {
 
     // Check that advised speed end displayed calculated speed on signal row
     final advisedSpeedEndRow = findDASTableRowByText('A653');
-    await waitUntilExists(tester, _findCalculatedSpeedCellOf(advisedSpeedEndRow, '80'));
+    await waitUntilExists(tester, _findAdvisedSpeedCellOf(advisedSpeedEndRow, '80'));
 
     // Do not display zero speed
-    final advisedSpeedCellWithZeroSpeed = _findCalculatedSpeedCellOf(advisedSpeedDistStartRow, '0');
+    final advisedSpeedCellWithZeroSpeed = _findAdvisedSpeedCellOf(advisedSpeedDistStartRow, '0');
     expect(advisedSpeedCellWithZeroSpeed, findsNothing);
 
-    await waitUntilExists(
-      tester,
-      find.descendant(of: find.byKey(StickyHeader.headerKey), matching: find.text('Allaman')),
-      maxWaitSeconds: 30,
+    final allamanStickyHeaderRow = find.descendant(
+      of: find.byKey(StickyHeader.headerKey),
+      matching: find.text('Allaman'),
     );
+    await waitUntilExists(tester, allamanStickyHeaderRow, maxWaitSeconds: 30);
 
-    // Check that end location is not displayed in notification banner (unknown)
-    expect(_findAdvisedSpeedNotificationContainingText('E185'), findsNothing);
+    // check that advised speed is lowered to line speed in table
+    final allamanRow = findDASTableRowByText('Allaman');
+    expect(_findAdvisedSpeedCellOf(allamanRow, '120'), findsNothing);
 
     // Check that advisedSpeed end displayed calculated speed on signal row
     final advisedSpeedEndRowServicePoint = findDASTableRowByText('E185');
-    expect(_findCalculatedSpeedCellOf(advisedSpeedEndRowServicePoint, '80'), findsOne);
+    expect(_findAdvisedSpeedCellOf(advisedSpeedEndRowServicePoint, '80'), findsOne);
 
     await disconnect(tester);
   });
@@ -136,7 +138,7 @@ Finder _findNonEmptyAdvisedSpeedCellOf(Finder baseFinder) {
   );
 }
 
-Finder _findCalculatedSpeedCellOf(Finder baseFinder, String speed) {
+Finder _findAdvisedSpeedCellOf(Finder baseFinder, String speed) {
   return find.descendant(
     of: baseFinder,
     matching: find.textContaining(speed),
