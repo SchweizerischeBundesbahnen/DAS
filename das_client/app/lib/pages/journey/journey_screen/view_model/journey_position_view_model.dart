@@ -71,7 +71,7 @@ class JourneyPositionViewModel extends JourneyAwareViewModel {
 
           final model = JourneyPositionModel(
             currentPosition: updatedPosition,
-            lastPosition: _calculateLastPosition(journey),
+            lastPosition: _calculateLastPosition(journey, updatedPosition),
             previousServicePoint: _calculatePreviousServicePoint(updatedPosition, journey.journeyPoints),
             nextServicePoint: _calculateNextServicePoint(updatedPosition, journey.journeyPoints),
             previousStop: _calculatePreviousStop(updatedPosition, journey.journeyPoints),
@@ -86,10 +86,10 @@ class JourneyPositionViewModel extends JourneyAwareViewModel {
         });
   }
 
-  JourneyPoint? _calculateLastPosition(Journey? journey) {
+  JourneyPoint? _calculateLastPosition(Journey? journey, JourneyPoint? updatedPosition) {
     final previousModel = _rxModel.valueOrNull;
     final previousPosition = previousModel?.currentPosition;
-    if (journey == null || previousPosition == null) return null;
+    if (journey == null || previousPosition == null || journey.metadata.journeyStart == updatedPosition) return null;
 
     final previousJourneyPointIndex = journey.journeyPoints.indexOf(previousPosition);
     if (previousJourneyPointIndex != -1) {
