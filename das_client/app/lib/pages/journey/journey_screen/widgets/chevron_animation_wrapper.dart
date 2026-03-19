@@ -32,9 +32,16 @@ class _ChevronAnimationWrapperState extends State<ChevronAnimationWrapper> with 
   @override
   void didUpdateWidget(covariant ChevronAnimationWrapper oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.journeyPosition != widget.journeyPosition) {
+    if (_relevantPositionUpdate(oldWidget)) {
       _controller.onPositionUpdate(widget.journeyPosition);
     }
+  }
+
+  bool _relevantPositionUpdate(ChevronAnimationWrapper oldWidget) {
+    return [
+      oldWidget.journeyPosition.lastPosition != widget.journeyPosition.lastPosition,
+      oldWidget.journeyPosition.currentPosition != widget.journeyPosition.currentPosition,
+    ].any((e) => e);
   }
 
   @override
