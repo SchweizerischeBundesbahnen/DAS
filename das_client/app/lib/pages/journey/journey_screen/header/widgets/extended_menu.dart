@@ -1,4 +1,6 @@
+import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
+import 'package:app/launcher/launcher.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/reduced_overview_modal_sheet.dart';
 import 'package:app/pages/journey/journey_screen/widgets/anchored_full_page_overlay.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
@@ -12,6 +14,7 @@ class ExtendedMenu extends StatelessWidget {
   static const Key menuButtonCloseKey = Key('closeExtendedMenuButton');
   static const Key maneuverSwitchKey = Key('maneuverSwitch');
   static const Key openWaraAppMenuItemKey = Key('openWaraAppMenuItem');
+  static const Key openTourSystemItemKey = Key('openTourSystemItem');
 
   const ExtendedMenu({super.key});
 
@@ -30,9 +33,9 @@ class ExtendedMenu extends StatelessWidget {
           child: Builder(
             builder: (context) => Column(
               mainAxisAlignment: .start,
+              spacing: SBBSpacing.xSmall,
               children: [
                 _menuHeader(context, hideOverlay),
-                SizedBox(height: SBBSpacing.medium),
                 SBBContentBox(
                   child: Column(
                     crossAxisAlignment: .start,
@@ -44,11 +47,27 @@ class ExtendedMenu extends StatelessWidget {
                     ],
                   ),
                 ),
+                _tourSystemContentBox(context),
               ],
             ),
           ),
         );
       },
+    );
+  }
+
+  Widget _tourSystemContentBox(BuildContext context) {
+    final launcher = DI.get<Launcher>();
+    if (!launcher.hasTourSystemConfigured()) return SizedBox.shrink();
+
+    return SBBContentBox(
+      child: SBBListItem(
+        key: openTourSystemItemKey,
+        title: context.l10n.w_extended_menu_tour_action,
+        trailingIcon: SBBIcons.link_external_medium,
+        isLastElement: true,
+        onPressed: () => launcher.launchTourSystem(),
+      ),
     );
   }
 

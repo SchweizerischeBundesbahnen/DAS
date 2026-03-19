@@ -2,11 +2,11 @@ import 'package:app/i18n/src/build_context_x.dart';
 import 'package:flutter/material.dart';
 
 enum TourSystem {
-  tip('https://www.dummy.com/'),
-  caros('https://www.dummy.com/'),
-  railOpt('https://www.dummy.com/'),
-  blsIvu('https://www.dummy.com/'),
-  railCube('https://www.dummy.com/'),
+  tip('https://www.tip.com/'),
+  caros('https://www.caros.com/'),
+  railOpt('https://www.railopt.com/'),
+  blsIvu('https://www.blsIvu.com/'),
+  railCube('https://www.railCube.com/'),
   ;
 
   const TourSystem(this.url);

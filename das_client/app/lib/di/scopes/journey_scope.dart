@@ -8,6 +8,7 @@ import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
+import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
 import 'package:app/pages/journey/view_model/view_mode_view_model.dart';
 import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
 import 'package:get_it/get_it.dart';
@@ -69,7 +70,9 @@ extension JourneyScopeExtension on GetIt {
       _log.fine('Register JourneySelectionViewModel');
       return JourneySelectionViewModel(
         sferaRepo: DI.get(),
-        onJourneySelected: DI.get<JourneyNavigationViewModel>().push,
+        onJourneySelected: (trainId) => DI.get<JourneyNavigationViewModel>().replaceWith([
+          ExtendedTrainIdentification(trainIdentification: trainId),
+        ]),
       );
     }
 

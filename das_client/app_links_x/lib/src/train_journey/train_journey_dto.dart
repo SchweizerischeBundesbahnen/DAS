@@ -28,13 +28,14 @@ class TrainJourneyDto {
 }
 
 extension TrainJourneyDtoX on TrainJourneyDto {
-  TrainJourneyLinkData toLinkData() {
+  TrainJourneyLinkData toLinkData(String? returnUrl) {
     return TrainJourneyLinkData(
       operationalTrainNumber: operationalTrainNumber,
       company: company,
       startDate: startDate,
       tafTapLocationReferenceStart: tafTapLocationReferenceStart,
       tafTapLocationReferenceEnd: tafTapLocationReferenceEnd,
+      returnUrl: returnUrl,
     );
   }
 }

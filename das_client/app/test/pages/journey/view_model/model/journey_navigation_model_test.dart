@@ -1,3 +1,4 @@
+import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
 import 'package:app/pages/journey/view_model/model/journey_navigation_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sfera/component.dart';
@@ -10,19 +11,23 @@ void main() {
     late JourneyNavigationModel diffStackLength;
     late JourneyNavigationModel diffIndex;
     late JourneyNavigationModel diffShowNavigationButtons;
-    late TrainIdentification trainId;
-    late TrainIdentification trainId2;
+    late ExtendedTrainIdentification trainId;
+    late ExtendedTrainIdentification trainId2;
 
     setUp(() {
-      trainId = TrainIdentification(
-        ru: .sbbP,
-        trainNumber: '1234',
-        date: DateTime.now(),
+      trainId = ExtendedTrainIdentification(
+        trainIdentification: TrainIdentification(
+          ru: .sbbP,
+          trainNumber: '1234',
+          date: DateTime.now(),
+        ),
       );
-      trainId2 = TrainIdentification(
-        ru: .sbbCH,
-        trainNumber: '5678',
-        date: DateTime.now().add(Duration(days: 1)),
+      trainId2 = ExtendedTrainIdentification(
+        trainIdentification: TrainIdentification(
+          ru: .sbbCH,
+          trainNumber: '5678',
+          date: DateTime.now().add(Duration(days: 1)),
+        ),
       );
       baseTestee = JourneyNavigationModel(
         trainIdentification: trainId,

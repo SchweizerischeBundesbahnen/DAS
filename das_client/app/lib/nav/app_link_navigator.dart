@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:app/nav/app_router.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
+import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
 import 'package:app_links_x/component.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logging/logging.dart';
@@ -51,15 +52,18 @@ class AppLinkNavigator {
 }
 
 extension _TrainJourneyLinkDataMapper on TrainJourneyLinkData {
-  TrainIdentification toTrainIdentification() {
+  ExtendedTrainIdentification toTrainIdentification() {
     // TODO: resolve company as soon as train number API / preload is finished or change company to required param in deep link.
     final railwayUndertaking = company != null ? RailwayUndertaking.fromCompanyCode(company!) : RailwayUndertaking.sbbP;
-    return TrainIdentification(
-      trainNumber: operationalTrainNumber,
-      ru: railwayUndertaking,
-      date: startDate ?? DateTime.now(),
+    return ExtendedTrainIdentification(
+      trainIdentification: TrainIdentification(
+        trainNumber: operationalTrainNumber,
+        ru: railwayUndertaking,
+        date: startDate ?? DateTime.now(),
+      ),
       tafTapLocationReferenceStart: tafTapLocationReferenceStart,
       tafTapLocationReferenceEnd: tafTapLocationReferenceEnd,
+      returnUrl: returnUrl,
     );
   }
 }

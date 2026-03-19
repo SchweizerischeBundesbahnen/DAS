@@ -41,6 +41,7 @@ import 'test/reduced_journey_table_test.dart' as reduced_journey_table_tests;
 import 'test/service_point_modal_test.dart' as service_point_modal_tests;
 import 'test/settings_test.dart' as settings_tests;
 import 'test/short_term_changes_test.dart' as short_term_changes_tests;
+import 'test/tour_system_link_test.dart' as tour_system_link_test;
 import 'test/train_search_test.dart' as train_search_tests;
 import 'test/warnapp_test.dart' as warnapp_tests;
 import 'util/test_utils.dart';
@@ -90,6 +91,7 @@ void main() {
   warnapp_tests.main();
   profile_tests.main();
   preload_tests.main();
+  tour_system_link_test.main();
 }
 
 Future<void> prepareAndStartApp(WidgetTester tester, {VoidCallback? onBeforeRun}) async {

@@ -1,6 +1,8 @@
 import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/brightness/brightness_manager_impl.dart';
 import 'package:app/di/di.dart';
+import 'package:app/launcher/launcher.dart';
+import 'package:app/launcher/launcher_impl.dart';
 import 'package:app/pages/login/login_view_model.dart';
 import 'package:app/provider/user_settings.dart';
 import 'package:app/sound/das_sounds.dart';
@@ -36,6 +38,7 @@ class DASBaseScope extends DIScope {
     getIt.registerConnectivityManager();
     getIt.registerLoginViewModel();
     getIt.registerAppLinksManager();
+    getIt.registerLauncher();
     await getIt.allReady();
   }
 }
@@ -109,5 +112,10 @@ extension BaseScopeExtension on GetIt {
       factoryFunc,
       dispose: (manager) => manager.dispose(),
     );
+  }
+
+  void registerLauncher() {
+    _log.fine('Register Launcher');
+    registerSingleton<Launcher>(LauncherImpl(userSettings: DI.get()));
   }
 }
