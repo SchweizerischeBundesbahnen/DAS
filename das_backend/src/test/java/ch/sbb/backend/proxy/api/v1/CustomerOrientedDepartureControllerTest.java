@@ -4,6 +4,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.backend.proxy.CustomerOrientedDepartureController;
@@ -15,6 +16,7 @@ import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.client.RestClientResponseException;
 
 @WebMvcTest(CustomerOrientedDepartureController.class)
 @AutoConfigureMockMvc(addFilters = false)
@@ -55,6 +57,18 @@ class CustomerOrientedDepartureControllerTest {
 
         mvc.perform(post("/v1/customer-oriented-departure/confirm/m1/d1"))
             .andExpect(status().isNoContent());
+
+        verify(proxyClient).confirm("m1", "d1");
+    }
+
+    @Test
+    void confirm_error502() throws Exception {
+        when(proxyClient.confirm("m1", "d1")).thenThrow(new RestClientResponseException("Message", 400, "Bad request", null, "Validation error".getBytes(), null));
+
+        mvc.perform(post("/v1/customer-oriented-departure/confirm/m1/d1"))
+            .andExpect(status().isBadGateway())
+            .andExpect(jsonPath("$.title").value("Downstream Service Error"))
+            .andExpect(jsonPath("$.detail").value("400: Validation error"));
 
         verify(proxyClient).confirm("m1", "d1");
     }

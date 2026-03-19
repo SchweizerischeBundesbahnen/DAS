@@ -6,12 +6,16 @@
   "verstaendigungs_status": "VERSTAENDIGT",
   "infrastrukturnetz": "default",
   "bestell_evu": "SOB",
+  "liniennummer": "427",
   "zuglaeufe": [
     {
       "solltage_vp": {
         "tage": "001"
       },
       "verkehrt": true,
+      "zugkategorien": [
+        "TR"
+      ],
       "zuglaufpunkte": [
         {
           "betriebspunkt": {

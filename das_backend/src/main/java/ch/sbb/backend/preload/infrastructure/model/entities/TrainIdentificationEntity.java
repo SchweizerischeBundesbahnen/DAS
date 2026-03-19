@@ -32,4 +32,11 @@ public class TrainIdentificationEntity {
 
     private OffsetDateTime preloadedAt;
 
+    private String line;
+
+    /**
+     * Comma separated list of vehicleModes.
+     */
+    private String vehicleModes;
+
 }
