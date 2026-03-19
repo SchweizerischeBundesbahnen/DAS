@@ -2,8 +2,8 @@ import 'package:app/pages/journey/journey_screen/header/header.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/journey_advancement_button.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/journey_identifier.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/journey_search_overlay.dart';
-import 'package:app/pages/journey/journey_screen/widgets/journey_navigation_buttons.dart';
 import 'package:app/util/format.dart';
+import 'package:app/widgets/navigation_buttons.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -98,7 +98,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.byType(JourneyNavigationButtons), findsNothing);
+      expect(find.byType(NavigationButtons), findsNothing);
 
       // pause auto advancement
       final pauseButton = find.byKey(JourneyAdvancementButton.pauseKey);
@@ -106,7 +106,7 @@ void main() {
       await tester.pumpAndSettle(Duration(milliseconds: 300));
 
       // navigation buttons still not displayed
-      expect(find.byType(JourneyNavigationButtons), findsNothing);
+      expect(find.byType(NavigationButtons), findsNothing);
 
       await disconnect(tester);
     });
