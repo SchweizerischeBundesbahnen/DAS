@@ -69,17 +69,20 @@ class JourneyPositionViewModel extends JourneyAwareViewModel {
 
           _setTimedServicePoint(updatedPosition, journey.journeyPoints, punctuality);
 
+          final calculatedLastPosition = _calculateLastPosition(journey, updatedPosition);
+          final lastPosition = calculatedLastPosition == updatedPosition
+              ? _rxModel.value.lastPosition
+              : calculatedLastPosition;
+
           final model = JourneyPositionModel(
             currentPosition: updatedPosition,
-            lastPosition: _calculateLastPosition(journey, updatedPosition),
+            lastPosition: lastPosition,
             previousServicePoint: _calculatePreviousServicePoint(updatedPosition, journey.journeyPoints),
             nextServicePoint: _calculateNextServicePoint(updatedPosition, journey.journeyPoints),
             previousStop: _calculatePreviousStop(updatedPosition, journey.journeyPoints),
             nextStop: _calculateNextStop(updatedPosition, journey.journeyPoints),
           );
 
-          // delay position update, so journey is processed first (animation will jump otherwise)
-          await Future.delayed(Duration(milliseconds: 2));
           if (!_rxModel.isClosed) {
             _rxModel.add(model);
           }

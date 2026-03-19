@@ -16,9 +16,9 @@ class JourneyPositionModel {
   /// or with respect to time.
   final JourneyPoint? currentPosition;
 
-  /// The [currentPosition] from the previously received position and journey update.
+  /// The previous [currentPosition], when the currentPosition **actually changed**.
   ///
-  /// Since journey updates can occur without position updates, this can be equal to [currentPosition].
+  /// This will stay the same if the [currentPosition] is updated twice to the same position.
   final JourneyPoint? lastPosition;
 
   /// The service point closest to [currentPosition] that has already been passed.
