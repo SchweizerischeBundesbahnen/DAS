@@ -20,4 +20,7 @@ public interface TrainIdentificationRepository extends JpaRepository<TrainIdenti
     @Transactional
     @Query("UPDATE TrainIdentificationEntity t SET t.preloadedAt = :timestamp WHERE t.id IN :ids")
     int updatePreloadedAtByIds(@Param("timestamp") OffsetDateTime timestamp, @Param("ids") Set<Integer> ids);
+
+    List<TrainIdentificationEntity> findAllByOperationalTrainNumberAndCompaniesContainingAndStartDateTimeGreaterThanEqualAndStartDateTimeLessThan(String operationalTrainNumber, String company,
+        OffsetDateTime fromInclusive, OffsetDateTime toExclusive);
 }

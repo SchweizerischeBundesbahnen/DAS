@@ -131,6 +131,7 @@ class TrainIdentificationIntegrationTest {
                 assertThat(trainId.startDateTime().atZoneSameInstant(SWISS_ZONE).toLocalDate()).isEqualTo(startDate);
                 assertThat(trainId.operationalTrainNumber()).isEqualTo("728");
                 assertThat(trainId.companies()).containsExactly(COMPANY_CODE_SOB);
+                assertThat(trainIdentificationService.isLineAndVehicleMode("728", COMPANY_CODE_SOB.getValue(), startDate, "427", "TR")).isTrue();
             });
 
         // When

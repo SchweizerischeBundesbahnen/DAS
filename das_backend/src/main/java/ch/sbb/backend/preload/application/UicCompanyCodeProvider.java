@@ -21,4 +21,10 @@ public class UicCompanyCodeProvider {
             : Optional.empty();
     }
 
+    public Optional<String> getNetsCode(String companyCode) {
+        return uicCodeMap.entrySet().stream()
+            .filter(entry -> entry.getValue().equals(companyCode))
+            .map(Map.Entry::getKey)
+            .findFirst();
+    }
 }

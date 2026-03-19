@@ -12,6 +12,7 @@ public final class ApiDocumentation {
     public static final String STATUS_400 = "Bad request";
     public static final String STATUS_401 = "Unauthorized";
     public static final String STATUS_404 = "No entity/resource found";
+    public static final String STATUS_409 = "Conflict";
     public static final String STATUS_500 = "Internal server error";
     public static final String STATUS_502 = "Bad gateway";
 
