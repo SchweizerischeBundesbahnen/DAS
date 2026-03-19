@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.39.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.38.0...das_client-v0.39.0) (2026-03-19)
+
+
+### Features
+
+* add locking out signals ([#453](https://github.com/SchweizerischeBundesbahnen/DAS/issues/453)) ([#1894](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1894)) ([3a35379](https://github.com/SchweizerischeBundesbahnen/DAS/commit/3a353798b3da70884799c6b9a2e4d2823a6dea6c))
+* add logout confirmation dialog ([#1870](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1870)) ([#1897](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1897)) ([909a625](https://github.com/SchweizerischeBundesbahnen/DAS/commit/909a6256a8740dc770579b11652287b4f8359191))
+* advised speed is max line speed ([#1327](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1327)) ([#1896](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1896)) ([360a602](https://github.com/SchweizerischeBundesbahnen/DAS/commit/360a6022f6bc677c80052c2478bd7cbe31d41c83))
+
+
+### Bug Fixes
+
+* fix km cell modificationIndicator clipping ([#1921](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1921)) ([3fe3077](https://github.com/SchweizerischeBundesbahnen/DAS/commit/3fe3077103dbd90cbd585a5a8a9516988eb4ec02))
+* row icon is displayed even if station name too long ([#99](https://github.com/SchweizerischeBundesbahnen/DAS/issues/99)) ([#1892](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1892)) ([16b19ce](https://github.com/SchweizerischeBundesbahnen/DAS/commit/16b19ce01dcd54b560fd1bf567a0df3c69d6a241))
+* stabilize table scrolling by using painted renderbox positions in next frame ([#1850](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1850)) ([#1922](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1922)) ([ed44f23](https://github.com/SchweizerischeBundesbahnen/DAS/commit/ed44f23749655a9756426eccd65038a4daed6592))
+
 ## [0.38.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.37.0...das_client-v0.38.0) (2026-03-10)
 
 
