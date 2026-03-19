@@ -17,5 +17,8 @@ public class Zuglauf {
     Boolean verkehrt;
 
     @NonNull
+    List<String> zugkategorien;
+
+    @NonNull
     List<Zuglaufpunkt> zuglaufpunkte;
 }
