@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
 import 'package:app/pages/journey/view_model/model/journey_navigation_model.dart';
 import 'package:app/widgets/table/row/das_table_row_builder.dart';
 import 'package:logging/logging.dart';
@@ -15,7 +16,7 @@ class JourneyNavigationViewModel {
 
   final SferaRepository _sferaRepo;
   StreamSubscription<SferaRemoteRepositoryState>? _sferaRemoteStateSubscription;
-  final List<TrainIdentification> _trainIds = [];
+  final List<ExtendedTrainIdentification> _trainIds = [];
   final _rxModel = BehaviorSubject<JourneyNavigationModel?>.seeded(null);
 
   Stream<JourneyNavigationModel?> get model => _rxModel.stream.distinct();
@@ -24,10 +25,10 @@ class JourneyNavigationViewModel {
 
   int get _currentTrainIdIndex => _rxModel.value?.currentIndex ?? -1;
 
-  TrainIdentification? get _currentTrainId => _rxModel.value?.trainIdentification;
+  ExtendedTrainIdentification? get _currentTrainId => _rxModel.value?.trainIdentification;
 
   /// replaces the current navigation stack with [trainIds] where a connection will be established for the first train.
-  Future<void> replaceWith(Iterable<TrainIdentification> trainIds) async {
+  Future<void> replaceWith(Iterable<ExtendedTrainIdentification> trainIds) async {
     if (_trainIds.isNotEmpty) _sferaRepo.disconnect();
     _trainIds.clear();
     _trainIds.addAll(trainIds);
@@ -35,7 +36,7 @@ class JourneyNavigationViewModel {
     await _establishConnection(trainIds.first);
   }
 
-  Future<void> push(TrainIdentification trainId) async {
+  Future<void> push(ExtendedTrainIdentification trainId) async {
     if (_currentTrainId == trainId) return;
 
     if (_trainIds.isNotEmpty) _sferaRepo.disconnect();
@@ -72,10 +73,10 @@ class JourneyNavigationViewModel {
     _rxModel.close();
   }
 
-  Future<void> _establishConnection(TrainIdentification trainId) async {
+  Future<void> _establishConnection(ExtendedTrainIdentification trainId) async {
     _log.fine('Establish connection to $trainId');
     DASTableRowBuilder.clearRowKeys();
-    await _sferaRepo.connect(trainId);
+    await _sferaRepo.connect(trainId.trainIdentification);
     _addToStream(trainId);
   }
 
@@ -87,7 +88,7 @@ class JourneyNavigationViewModel {
 
   bool _isOutOfTrainIdsRange(int idx) => idx < 0 || idx >= _trainIds.length;
 
-  void _addToStream(TrainIdentification? trainId) {
+  void _addToStream(ExtendedTrainIdentification? trainId) {
     if (trainId == null) return _rxModel.add(null);
 
     _rxModel.add(

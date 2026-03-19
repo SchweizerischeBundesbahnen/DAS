@@ -1,4 +1,4 @@
-import 'package:sfera/component.dart';
+import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
 
 class JourneyNavigationModel {
   JourneyNavigationModel({
@@ -8,7 +8,7 @@ class JourneyNavigationModel {
     required this.showNavigationButtons,
   });
 
-  final TrainIdentification trainIdentification;
+  final ExtendedTrainIdentification trainIdentification;
   final int currentIndex;
   final int navigationStackLength;
   final bool showNavigationButtons;

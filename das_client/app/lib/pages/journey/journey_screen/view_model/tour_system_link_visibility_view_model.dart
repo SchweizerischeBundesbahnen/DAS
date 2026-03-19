@@ -108,5 +108,6 @@ class TourSystemLinkVisibilityViewModel extends JourneyAwareViewModel {
     super.dispose();
     _rxModel.close();
     _subscription?.cancel();
+    _departureTimer?.cancel();
   }
 }

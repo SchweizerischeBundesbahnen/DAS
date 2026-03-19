@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
+import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -22,9 +23,15 @@ void main() {
     final now = DateTime(1970, 1, 1);
     final tomorrow = now.add(Duration(days: 1));
     final yesterday = now.subtract(Duration(days: 1));
-    final trainId1 = TrainIdentification(ru: .sbbP, trainNumber: '1234', date: now);
-    final trainId2 = TrainIdentification(ru: .sbbCH, trainNumber: '5678', date: tomorrow);
-    final trainId3 = TrainIdentification(ru: .blsP, trainNumber: '9999', date: yesterday);
+    final trainId1 = ExtendedTrainIdentification(
+      trainIdentification: TrainIdentification(ru: .sbbP, trainNumber: '1234', date: now),
+    );
+    final trainId2 = ExtendedTrainIdentification(
+      trainIdentification: TrainIdentification(ru: .sbbCH, trainNumber: '5678', date: tomorrow),
+    );
+    final trainId3 = ExtendedTrainIdentification(
+      trainIdentification: TrainIdentification(ru: .blsP, trainNumber: '9999', date: yesterday),
+    );
 
     setUp(() {
       mockSferaRepo = MockSferaRepository();
@@ -116,7 +123,7 @@ void main() {
       await testee.push(trainId2);
 
       // EXPECT
-      verify(mockSferaRepo.connect(trainId2)).called(1);
+      verify(mockSferaRepo.connect(trainId2.trainIdentification)).called(1);
       verify(mockSferaRepo.disconnect()).called(1);
     });
 

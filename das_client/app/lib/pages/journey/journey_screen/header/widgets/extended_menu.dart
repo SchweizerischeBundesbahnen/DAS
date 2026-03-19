@@ -61,17 +61,12 @@ class ExtendedMenu extends StatelessWidget {
     if (!launcher.hasTourSystemConfigured()) return SizedBox.shrink();
 
     return SBBContentBox(
-      child: Column(
-        crossAxisAlignment: .start,
-        children: [
-          SBBListItem(
-            key: openTourSystemItemKey,
-            title: context.l10n.w_extended_menu_tour_action,
-            trailingIcon: SBBIcons.link_external_medium,
-            isLastElement: true,
-            onPressed: () => launcher.launchTourSystem(),
-          ),
-        ],
+      child: SBBListItem(
+        key: openTourSystemItemKey,
+        title: context.l10n.w_extended_menu_tour_action,
+        trailingIcon: SBBIcons.link_external_medium,
+        isLastElement: true,
+        onPressed: () => launcher.launchTourSystem(),
       ),
     );
   }

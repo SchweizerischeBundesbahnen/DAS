@@ -2,6 +2,7 @@ import 'package:app/nav/auth_guard.dart';
 import 'package:app/pages/journey/brake_load_slip/brake_load_slip_page.dart';
 import 'package:app/pages/journey/journey_page.dart';
 import 'package:app/pages/journey/selection/journey_selection_page.dart';
+import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
 import 'package:app/pages/links/links_page.dart';
 import 'package:app/pages/login/login_page.dart';
 import 'package:app/pages/preload/preload_page.dart';
@@ -11,7 +12,6 @@ import 'package:app/pages/splash/splash_page.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
-import 'package:sfera/component.dart';
 
 part 'app_router.gr.dart';
 
