@@ -63,6 +63,11 @@ class StickyWidgetController with ChangeNotifier {
     return WidgetUtil.findOffsetOfKey(stickyHeaderKey);
   }
 
+  double _actualRowHeight(DASTableRow row) {
+    final renderObject = row.key.currentContext?.findRenderObject() as RenderBox?;
+    return renderObject?.size.height ?? row.height;
+  }
+
   int _findFirstVisibleRowIndex() {
     final stickyOffset = stickyHeaderOffset();
     if (stickyOffset == null) return -1;
@@ -72,7 +77,7 @@ class StickyWidgetController with ChangeNotifier {
       final renderObject = row.key.currentContext?.findRenderObject() as RenderBox?;
       if (renderObject != null) {
         final offset = renderObject.localToGlobal(Offset.zero) - stickyOffset;
-        if (offset.dy + row.height > 0) {
+        if (offset.dy + _actualRowHeight(row) > 0) {
           return i;
         }
       }
@@ -105,7 +110,7 @@ class StickyWidgetController with ChangeNotifier {
 
   void _calculateHeaderOffsets() {
     final firstHeaderHeight = headerIndexes[StickyLevel.first] != -1
-        ? _rows[headerIndexes[StickyLevel.first]!].height
+        ? _actualRowHeight(_rows[headerIndexes[StickyLevel.first]!])
         : 0.0;
 
     headerOffsets = {
@@ -123,7 +128,7 @@ class StickyWidgetController with ChangeNotifier {
       final offset = WidgetUtil.findOffsetOfKey(_rows[nextStickyIndex].key);
       if (offset != null) {
         final localOffset = offset - stickyOffset;
-        return min(0.0, localOffset.dy - _rows[headerIndex].height - additionalHeaderHeight);
+        return min(0.0, localOffset.dy - _actualRowHeight(_rows[headerIndex]) - additionalHeaderHeight);
       }
     }
 
@@ -137,7 +142,8 @@ class StickyWidgetController with ChangeNotifier {
       final stickyOffset = stickyHeaderOffset();
       final offset = WidgetUtil.findOffsetOfKey(_rows[stickyFooterIndex].key);
       if (offset != null &&
-          (offset - stickyOffset!).dy + _rows[stickyFooterIndex].height < scrollController.position.viewportDimension) {
+          (offset - stickyOffset!).dy + _actualRowHeight(_rows[stickyFooterIndex]) <
+              scrollController.position.viewportDimension) {
         // Footer is already on screen
         stickyFooterIndex = -1;
       }
@@ -154,7 +160,7 @@ class StickyWidgetController with ChangeNotifier {
 
   double widgetHeight(int index) {
     if (index < 0 || index >= _rows.length) return 0.0;
-    return _rows[index].height;
+    return _actualRowHeight(_rows[index]);
   }
 
   @override

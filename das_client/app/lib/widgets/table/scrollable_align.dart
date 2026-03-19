@@ -64,12 +64,17 @@ class _ScrollableAlignState extends State<ScrollableAlign> {
       final headerIndexes = stickyHeaderState.controller.headerIndexes;
 
       if (headerIndexes[StickyLevel.first] != -1) {
-        stickyHeaderHeight += widget.rows[headerIndexes[StickyLevel.first]!].height;
+        final headerRow = widget.rows[headerIndexes[StickyLevel.first]!];
+        final headerRenderObject = headerRow.key.currentContext?.findRenderObject() as RenderBox?;
+        final headerRowHeight = headerRenderObject?.size.height ?? headerRow.height;
+        stickyHeaderHeight += headerRowHeight;
         stickyHeaderOffset = stickyHeaderState.controller.headerOffsets[StickyLevel.first]!.abs();
       }
 
       if (headerIndexes[StickyLevel.second] != -1) {
-        final rowHeight = widget.rows[headerIndexes[StickyLevel.second]!].height;
+        final header2Row = widget.rows[headerIndexes[StickyLevel.second]!];
+        final header2RenderObject = header2Row.key.currentContext?.findRenderObject() as RenderBox?;
+        final rowHeight = header2RenderObject?.size.height ?? header2Row.height;
         final stickyOffset = stickyHeaderState.controller.headerOffsets[StickyLevel.second]!.abs();
         if (rowHeight >= stickyOffset) {
           stickyHeader2Offset = min(stickyOffset, rowHeight);
@@ -96,15 +101,16 @@ class _ScrollableAlignState extends State<ScrollableAlign> {
       if (row.key.currentContext != null) {
         final renderObject = row.key.currentContext?.findRenderObject() as RenderBox?;
         if (renderObject != null) {
+          final actualHeight = renderObject.size.height;
           final offset = renderObject.localToGlobal(Offset.zero) - widgetOffset;
-          final visibleArea = offset.dy + row.height - stickyHeaderHeight;
+          final visibleArea = offset.dy + actualHeight - stickyHeaderHeight;
 
-          if (visibleArea == row.height) {
+          if (visibleArea == actualHeight) {
             break;
           }
 
           if (visibleArea > 0) {
-            _scrollToTarget((currentPosition - (row.height - visibleArea)).roundToDouble());
+            _scrollToTarget((currentPosition - (actualHeight - visibleArea)).roundToDouble());
             break;
           }
         }
