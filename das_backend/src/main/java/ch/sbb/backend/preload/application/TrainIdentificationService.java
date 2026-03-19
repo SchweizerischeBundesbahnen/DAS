@@ -1,17 +1,22 @@
 package ch.sbb.backend.preload.application;
 
+import static ch.sbb.backend.preload.application.converter.DateTimeConverter.SWISS_ZONE;
+
 import ch.sbb.backend.preload.application.model.trainidentification.CompanyCode;
 import ch.sbb.backend.preload.application.model.trainidentification.TrainIdentification;
 import ch.sbb.backend.preload.infrastructure.TrainIdentificationRepository;
 import ch.sbb.backend.preload.infrastructure.model.entities.TrainIdentificationEntity;
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.springframework.modulith.NamedInterface;
 import org.springframework.stereotype.Service;
 
+@NamedInterface("preload")
 @Service
 public class TrainIdentificationService {
 
@@ -31,6 +36,15 @@ public class TrainIdentificationService {
             .map(this::readEntity)
             .filter(tid -> !tid.companies().isEmpty())
             .toList();
+    }
+
+    public boolean isLineAndVehicleMode(String operationalTrainNumber, String company, LocalDate startDate, String line, String vehicleMode) {
+        OffsetDateTime from = startDate.atStartOfDay(SWISS_ZONE).toOffsetDateTime();
+        OffsetDateTime to = startDate.plusDays(1).atStartOfDay(SWISS_ZONE).toOffsetDateTime();
+        return uicCompanyCodeProvider.getNetsCode(company).map(
+            netsCode -> trainIdentificationRepository.findAllByOperationalTrainNumberAndCompaniesContainingAndStartDateTimeGreaterThanEqualAndStartDateTimeLessThan(operationalTrainNumber, netsCode,
+                    from, to).stream()
+                .anyMatch(entity -> line.equals(entity.getLine()) && entity.getVehicleModes().contains(vehicleMode))).orElse(false);
     }
 
     private TrainIdentification readEntity(TrainIdentificationEntity trainRunEntity) {

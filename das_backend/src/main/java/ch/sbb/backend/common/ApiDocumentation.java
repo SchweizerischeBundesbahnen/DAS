@@ -8,11 +8,13 @@ public final class ApiDocumentation {
 
     public static final String VERSION_URI_V1 = "/v1";
 
+    public static final String STATUS_304 = "Resource was not modified since last request to the client.";
     public static final String STATUS_400 = "Bad request";
     public static final String STATUS_401 = "Unauthorized";
     public static final String STATUS_404 = "No entity/resource found";
-    public static final String STATUS_304 = "Resource was not modified since last request to the client.";
+    public static final String STATUS_409 = "Conflict";
     public static final String STATUS_500 = "Internal server error";
+    public static final String STATUS_502 = "Bad gateway";
 
     public static final String HEADER_CACHE_CONTROL = HttpHeaders.CACHE_CONTROL;
     public static final String HEADER_CACHE_ETAG = HttpHeaders.ETAG;

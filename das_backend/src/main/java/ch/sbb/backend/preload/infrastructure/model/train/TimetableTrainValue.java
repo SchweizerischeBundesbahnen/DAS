@@ -21,6 +21,8 @@ public class TimetableTrainValue {
     @NonNull
     String zugnummer;
 
+    String liniennummer;
+
     @NonNull
     Integer fahrplanperiode;
 

@@ -1,6 +1,5 @@
 package ch.sbb.backend.proxy;
 
-import ch.sbb.backend.proxy.model.request.SubscribeRequest;
 import java.util.Base64;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -25,10 +24,10 @@ public class ProxyClient {
             .build();
     }
 
-    public ResponseEntity<?> subscribe(SubscribeRequest request) {
+    public ResponseEntity<?> subscribe(ProxySubscribeRequest subscribe) {
         return restClient.post()
             .uri("/rest/das/subscribe")
-            .body(request)
+            .body(subscribe)
             .retrieve()
             .toEntity(String.class);
     }

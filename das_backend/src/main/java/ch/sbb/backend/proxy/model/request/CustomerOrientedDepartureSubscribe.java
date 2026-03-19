@@ -1,14 +1,16 @@
 package ch.sbb.backend.proxy.model.request;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
-public record SubscribeRequest(
+public record CustomerOrientedDepartureSubscribe(
     String messageId,
-    String zugnr,
+    String operationalTrainNumber,
+    String company,
+    LocalDate startDate,
     String deviceId,
     String pushToken,
     Instant expiresAt,
-    String evu,
     String type,
     boolean driver
 ) {

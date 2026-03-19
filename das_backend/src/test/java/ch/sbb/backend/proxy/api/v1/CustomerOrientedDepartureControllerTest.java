@@ -1,11 +1,14 @@
 package ch.sbb.backend.proxy.api.v1;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.backend.preload.application.TrainIdentificationService;
 import ch.sbb.backend.proxy.CustomerOrientedDepartureController;
 import ch.sbb.backend.proxy.ProxyClient;
 import org.junit.jupiter.api.Test;
@@ -15,6 +18,7 @@ import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.client.RestClientResponseException;
 
 @WebMvcTest(CustomerOrientedDepartureController.class)
 @AutoConfigureMockMvc(addFilters = false)
@@ -26,20 +30,25 @@ class CustomerOrientedDepartureControllerTest {
     @MockitoBean
     ProxyClient proxyClient;
 
+    @MockitoBean
+    TrainIdentificationService trainIdentificationService;
+
     @Test
     void subscribe_delegatesToClient() throws Exception {
         when(proxyClient.subscribe(any())).thenReturn(ResponseEntity.noContent().build());
+        when(trainIdentificationService.isLineAndVehicleMode(any(), any(), any(), any(), any())).thenReturn(true);
 
         mvc.perform(post("/v1/customer-oriented-departure/subscribe")
                 .contentType("application/json")
                 .content("""
                     {
                       "messageId":"m1",
-                      "zugnr":"123",
+                      "operationalTrainNumber": "10010",
+                      "company": "3931",
+                      "startDate": "2026-03-03",
                       "deviceId":"d1",
                       "pushToken":"t1",
                       "expiresAt":"2026-03-03T12:34:56Z",
-                      "evu":"DAS",
                       "type":"REGISTER",
                       "driver": false
                     }
@@ -50,11 +59,47 @@ class CustomerOrientedDepartureControllerTest {
     }
 
     @Test
+    void subscribe_whenTrainNotAllowed() throws Exception {
+        when(trainIdentificationService.isLineAndVehicleMode(any(), any(), any(), any(), any())).thenReturn(false);
+
+        mvc.perform(post("/v1/customer-oriented-departure/subscribe")
+                .contentType("application/json")
+                .content("""
+                    {
+                      "messageId":"m1",
+                      "operationalTrainNumber": "10010",
+                      "company": "3931",
+                      "startDate": "2026-03-03",
+                      "deviceId":"d1",
+                      "pushToken":"t1",
+                      "expiresAt":"2026-03-03T12:34:56Z",
+                      "type":"REGISTER",
+                      "driver": false
+                    }
+                    """))
+            .andExpect(status().isConflict());
+
+        verify(proxyClient, never()).subscribe(any());
+    }
+
+    @Test
     void confirm_delegatesToClient() throws Exception {
         when(proxyClient.confirm("m1", "d1")).thenReturn(ResponseEntity.noContent().build());
 
         mvc.perform(post("/v1/customer-oriented-departure/confirm/m1/d1"))
             .andExpect(status().isNoContent());
+
+        verify(proxyClient).confirm("m1", "d1");
+    }
+
+    @Test
+    void confirm_error502() throws Exception {
+        when(proxyClient.confirm("m1", "d1")).thenThrow(new RestClientResponseException("Message", 400, "Bad request", null, "Validation error".getBytes(), null));
+
+        mvc.perform(post("/v1/customer-oriented-departure/confirm/m1/d1"))
+            .andExpect(status().isBadGateway())
+            .andExpect(jsonPath("$.title").value("Downstream Service Error"))
+            .andExpect(jsonPath("$.detail").value("400: Validation error"));
 
         verify(proxyClient).confirm("m1", "d1");
     }

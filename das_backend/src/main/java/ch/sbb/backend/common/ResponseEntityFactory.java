@@ -32,6 +32,10 @@ public class ResponseEntityFactory {
         return createProblemResponse(HttpStatus.NOT_FOUND, title, detail, locale == null ? ApiDocumentation.HEADER_CONTENT_LANGUAGE_ERROR_DETAIL_DEFAULT : locale.getLanguage(), requestId, instance);
     }
 
+    public static ResponseEntity<Problem> createConflictResponse(@NonNull String title, @NonNull String detail, String requestId, String instance) {
+        return createProblemResponse(HttpStatus.CONFLICT, title, detail, ApiDocumentation.HEADER_CONTENT_LANGUAGE_ERROR_DETAIL_DEFAULT, requestId, instance);
+    }
+
     static ResponseEntity<Problem> createProblemResponse(HttpStatus status, String title, String detail, String language, String requestId, String instance) {
         return new ResponseEntity<>(
             createProblem(status, title, detail, instance),

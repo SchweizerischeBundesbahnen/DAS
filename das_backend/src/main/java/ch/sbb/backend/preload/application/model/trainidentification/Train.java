@@ -22,6 +22,8 @@ public class Train {
     @NonNull
     String operationalTrainNumber;
 
+    String line;
+
     @JsonProperty("trainRuns")
     @NonNull
     @Builder.Default
