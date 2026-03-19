@@ -69,18 +69,11 @@ void main() {
 
     testWidgets('whenManualPositionSet_thenManualModeActivatedUntilJourneyPositionSignaled', (tester) async {
       await prepareAndStartApp(tester);
-      await loadJourney(tester, trainNumber: 'T9999');
+      await loadJourney(tester, trainNumber: 'T30');
 
-      await tester.pumpAndSettle();
-
-      final scrollableFinder = find.byType(AnimatedList);
-
-      final signalAfterB = 'A1';
-      await tester.dragUntilVisible(find.text(signalAfterB), scrollableFinder, const Offset(0, -50));
-
-      final b = 'Haltestelle B';
-      // set position to B manually
-      await tester.drag(findDASTableRowByText(b), const Offset(600, 0));
+      final coppet = 'Coppet';
+      // set position to Coppet manually
+      await tester.drag(findDASTableRowByText(coppet), const Offset(600, 0));
 
       // check manual mode
       await waitUntilExists(
@@ -94,7 +87,7 @@ void main() {
       // Check chevron at B
       await waitUntilExists(
         tester,
-        find.descendant(of: findDASTableRowByText(b), matching: find.byKey(RouteChevron.chevronKey)),
+        find.descendant(of: findDASTableRowByText(coppet), matching: find.byKey(RouteChevron.chevronKey)),
       );
 
       // wait until signal received and back to non manual mode
