@@ -58,13 +58,11 @@ preload:
     bucketUrl: bucketUrl
     accessKey: accessKey
     accessSecret: accessSecret
-  timetablePeriod:
-    topic: nets-p.timetable
-  timetableTrain:
-    topic: fps.inte.infra.zug
-  cleanUp:
-    hours: 48
+  trainCleanUp:
+    days: 2
     cronExpression: "-"
+  storageCleanUp:
+    hours: 24
   kafka:
     bootstrap-server: ''
     group-id: ''

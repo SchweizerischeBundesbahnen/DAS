@@ -16,6 +16,8 @@ preload:
     enabled: false
     timetablePeriodTopic: nets-p.timetable
     timetableTrainTopic: fps.prod.infra.zug
-  cleanUp:
-    hours: 48
+  trainCleanUp:
     cronExpression: "0 0 0 * * *"
+    days: 2
+  storageCleanUp:
+    hours: 24

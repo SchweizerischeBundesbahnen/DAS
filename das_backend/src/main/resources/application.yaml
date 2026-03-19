@@ -170,9 +170,11 @@ preload:
     VDBB: 9076
     WRSCH: 3466
     ZB: 9083
-  cleanUp:
-    hours: ${PRELOAD_CLEANUP_HOURS}
+  trainCleanUp:
+    days: ${PRELOAD_CLEANUP_DAYS}
     cronExpression: ${PRELOAD_CLEANUP_CRON}
+  storageCleanUp:
+    hours: ${PRELOAD_CLEANUP_HOURS}
 
 proxy:
   base-url: ${PROXY_BASE_URL}
