@@ -2,6 +2,7 @@ package ch.sbb.backend.preload.application.model.trainidentification;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
@@ -15,5 +16,8 @@ public class TrainRunDate {
 
     @NonNull
     OffsetDateTime startDateTime;
+
+    @NonNull
+    List<String> vehicleModes;
 
 }

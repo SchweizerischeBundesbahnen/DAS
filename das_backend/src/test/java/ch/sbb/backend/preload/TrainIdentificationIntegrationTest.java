@@ -1,5 +1,6 @@
 package ch.sbb.backend.preload;
 
+import static ch.sbb.backend.preload.application.converter.DateTimeConverter.SWISS_ZONE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.waitAtMost;
 
@@ -118,7 +119,7 @@ class TrainIdentificationIntegrationTest {
         // When
         sendRecord(fpsKey, fpsTrain);
 
-        LocalDate startDate = LocalDate.of(testYear, 1, 2);
+        LocalDate startDate = LocalDate.of(testYear, 1, 3);
 
         // Then
         waitAtMost(10, TimeUnit.SECONDS)
@@ -127,7 +128,7 @@ class TrainIdentificationIntegrationTest {
                     OffsetDateTime.of(startDate.plusDays(1), LocalTime.now(), ZoneOffset.UTC));
                 assertThat(trainIds).hasSize(1);
                 TrainIdentification trainId = trainIds.getFirst();
-                assertThat(trainId.startDateTime().toLocalDate()).isEqualTo(startDate);
+                assertThat(trainId.startDateTime().atZoneSameInstant(SWISS_ZONE).toLocalDate()).isEqualTo(startDate);
                 assertThat(trainId.operationalTrainNumber()).isEqualTo("728");
                 assertThat(trainId.companies()).containsExactly(COMPANY_CODE_SOB);
             });

@@ -131,6 +131,21 @@ public class TopLevelHandler extends ResponseEntityExceptionHandler {
         return createProblemResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Developer error", detail, exceptionToLog);
     }
 
+    @ExceptionHandler(ProxyClientException.class)
+    ResponseEntity<Problem> handleProxyClientError(ProxyClientException exception) {
+        log.warn("Proxy service returned {} with message: {}",
+            exception.getStatusCode(),
+            exception.getProxyErrorMessage(),
+            exception);
+
+        return createProblemResponse(
+            HttpStatus.BAD_GATEWAY,
+            "Downstream Service Error",
+            exception.getStatusCode().value() + ": " + exception.getProxyErrorMessage(),
+            exception
+        );
+    }
+
     /**
      * @see <a href="https://stackoverflow.com/questions/2411487/nullpointerexception-in-java-with-no-stacktrace">StackTraces are given only a few times, then nulled to optimize performance and
      *     logs</a>

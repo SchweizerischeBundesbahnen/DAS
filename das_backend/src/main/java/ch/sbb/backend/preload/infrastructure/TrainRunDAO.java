@@ -35,12 +35,14 @@ public class TrainRunDAO {
                     CAST(:operationalTrainNumber as text) as operational_train_number,
                     CAST(:companies as text) as companies,
                     CAST(:startDateTime as timestamp with time zone) as start_date_time,
-                    CAST(:operationalDay as date) as operational_day
+                    CAST(:operationalDay as date) as operational_day,
+                    CAST(:line as text) as line,
+                    CAST(:vehicleModes as text) as vehicle_modes
             ) as source
             on (train_identification.train_path_id = source.train_path_id and train_identification.period = source.period and train_identification.operational_day = source.operational_day)
             when not matched then
-                insert (id, train_path_id, period, operational_train_number, companies, start_date_time, operational_day)
-                values (nextval('train_identification_id_seq'), source.train_path_id, source.period, source.operational_train_number, source.companies, source.start_date_time, source.operational_day)
+                insert (id, train_path_id, period, operational_train_number, companies, start_date_time, operational_day, line, vehicle_modes)
+                values (nextval('train_identification_id_seq'), source.train_path_id, source.period, source.operational_train_number, source.companies, source.start_date_time, source.operational_day, line, vehicle_modes)
             when matched then
                 update set companies = source.companies, start_date_time = source.start_date_time
             """;
@@ -56,6 +58,8 @@ public class TrainRunDAO {
                     paramValues.addValue("companies", String.join(",", trainRun.getCompanies()));
                     paramValues.addValue("startDateTime", toStartDateTime(trainRunDate, trainRun));
                     paramValues.addValue("operationalDay", trainRunDate.getOperatingDay());
+                    paramValues.addValue("line", train.getLine());
+                    paramValues.addValue("vehicleModes", String.join(",", trainRunDate.getVehicleModes()));
                     params.add(paramValues);
                 }
             }

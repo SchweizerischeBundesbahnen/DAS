@@ -64,6 +64,7 @@ public class TrainRunConverter {
                     trainRunDates.add(TrainRunDate.builder()
                         .operatingDay(operatingDay)
                         .startDateTime(startDate)
+                        .vehicleModes(zuglauf.getZugkategorien())
                         .build());
                 }
             });

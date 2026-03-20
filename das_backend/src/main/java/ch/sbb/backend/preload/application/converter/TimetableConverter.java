@@ -44,6 +44,7 @@ public class TimetableConverter {
             .trainPathId(train.getTrassenID())
             .operatingPeriod(train.getFahrplanperiode())
             .operationalTrainNumber(train.getZugnummer())
+            .line(train.getLiniennummer())
             .trainRuns(trainRunConverter.convertTrainRuns(train.getZuglaeufe(), periodStartDate))
             .build();
     }
