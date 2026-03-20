@@ -19,5 +19,5 @@ import {SbbLoadingIndicatorCircle} from '@sbb-esta/lyne-angular/loading-indicato
 })
 export class AppVersions {
   protected readonly appVersionsService = inject(AppVersionsService);
-  protected readonly appVersions = this.appVersionsService.appVersionsRessource;
+  protected readonly appVersions = this.appVersionsService.appVersionsResource;
 }

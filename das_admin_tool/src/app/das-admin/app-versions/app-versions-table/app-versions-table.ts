@@ -62,8 +62,8 @@ export class AppVersionsTable {
 
   constructor() {
     effect(() => {
-      if (this.appVersionsService.appVersionsRessource.hasValue()) {
-        this.dataSource.data = this.appVersionsService.appVersionsRessource.value().data;
+      if (this.appVersionsService.appVersionsResource.hasValue()) {
+        this.dataSource.data = this.appVersionsService.appVersionsResource.value().data;
       }
     });
     toObservable(this.paginator).subscribe((paginator) => (this.dataSource.paginator = paginator));

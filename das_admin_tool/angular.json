@@ -102,34 +102,36 @@
           }
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "tsConfig": "tsconfig.spec.json",
-            "karmaConfig": "karma.conf.js",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
+            "browsers": [
+              "chromium"
             ],
-            "styles": [
-              "src/styles.scss",
-              "node_modules/@sbb-esta/lyne-elements/off-brand-theme.css"
-            ],
-            "polyfills": [
-              "@angular/localize/init"
+            "setupFiles": [
+              "src/testing/test-setup.ts"
             ]
           },
           "configurations": {
             "ci": {
-              "browsers": "ChromeHeadless",
-              "codeCoverage": true,
-              "sourceMap": true,
+              "browsers": [
+                "chromiumHeadless"
+              ],
+              "coverage": true,
               "progress": false,
               "watch": false,
               "reporters": [
-                "dots",
-                "sonarqube"
+                "dot",
+                [
+                  "vitest-sonar-reporter",
+                  {
+                    "outputFile": "./coverage/das_admin_tool/sonarqube.xml",
+                    "silent": true
+                  }
+                ]
+              ],
+              "coverageReporters": [
+                "html",
+                "lcovonly"
               ]
             }
           }
