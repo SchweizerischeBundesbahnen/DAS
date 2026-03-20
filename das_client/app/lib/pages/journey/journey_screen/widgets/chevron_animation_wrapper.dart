@@ -37,12 +37,9 @@ class _ChevronAnimationWrapperState extends State<ChevronAnimationWrapper> with 
     }
   }
 
-  bool _relevantPositionUpdate(ChevronAnimationWrapper oldWidget) {
-    return [
-      oldWidget.journeyPosition.lastPosition != widget.journeyPosition.lastPosition,
-      oldWidget.journeyPosition.currentPosition != widget.journeyPosition.currentPosition,
-    ].any((e) => e);
-  }
+  bool _relevantPositionUpdate(ChevronAnimationWrapper oldWidget) =>
+      oldWidget.journeyPosition.lastPosition != widget.journeyPosition.lastPosition ||
+      oldWidget.journeyPosition.currentPosition != widget.journeyPosition.currentPosition;
 
   @override
   Widget build(BuildContext context) {
