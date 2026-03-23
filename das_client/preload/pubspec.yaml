@@ -3,7 +3,7 @@ publish_to: 'none'
 version: 1.0.0
 
 environment:
-  sdk: ^3.10.8
+  sdk: ^3.11.3
 
 resolution: workspace
 
@@ -21,9 +21,9 @@ dependencies:
   # https://pub.dev/packages/xml
   xml: ^6.6.1
   # https://pub.dev/packages/drift
-  drift: ^2.31.0
+  drift: ^2.32.1
   # https://pub.dev/packages/drift_flutter
-  drift_flutter: ^0.2.8
+  drift_flutter: ^0.3.0
   # https://pub.dev/packages/collection
   collection: ^1.19.1
   # https://pub.dev/packages/archive
@@ -38,13 +38,13 @@ dev_dependencies:
     sdk: flutter
 
   # https://pub.dev/packages/build_runner
-  build_runner: ^2.11.1
+  build_runner: ^2.13.1
   # https://pub.dev/packages/flutter_lints
   flutter_lints: ^6.0.0
   # https://pub.dev/packages/flutter_prunekit
-  flutter_prunekit: ^2.4.0
+  # flutter_prunekit: ^2.4.0 TODO: add back when analyzer >=10.0.0 is supported
   # https://pub.dev/packages/drift_dev
-  drift_dev: ^2.31.0
+  drift_dev: ^2.32.1
   # https://pub.dev/packages/mockito
   mockito: ^5.6.3
   # https://pub.dev/packages/fake_async
