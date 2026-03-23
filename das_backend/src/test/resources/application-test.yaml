@@ -16,6 +16,10 @@ spring:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
     security:
       protocol: PLAINTEXT
+endpoints:
+  web:
+    cors:
+      allowed-origins: ''
 auth:
   audience:
     service-name: test
