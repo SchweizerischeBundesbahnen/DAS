@@ -150,8 +150,8 @@ void main() {
       });
 
       // EXPECT
-      expect(testee.modelValue, equals(JourneyPositionModel(currentPosition: zeroSignal, lastPosition: zeroSignal)));
-      expect(emitRegister, hasLength(1));
+      expect(testee.modelValue, equals(JourneyPositionModel(currentPosition: zeroSignal, lastPosition: null)));
+      expect(emitRegister, hasLength(0));
     });
 
     test('currentPosition_whenSignaledPositionOnPoint_thenReturnsPoint', () {
@@ -193,7 +193,7 @@ void main() {
         emitRegister,
         orderedEquals([
           JourneyPositionModel(currentPosition: tenSignal, lastPosition: null),
-          JourneyPositionModel(currentPosition: tenKilometreSignal, lastPosition: tenKilometreSignal),
+          JourneyPositionModel(currentPosition: tenKilometreSignal, lastPosition: null),
         ]),
       );
     });
@@ -452,7 +452,11 @@ void main() {
           emitRegister,
           orderedEquals([
             JourneyPositionModel(currentPosition: tenSignal, nextServicePoint: aServicePoint),
-            JourneyPositionModel(currentPosition: aServicePoint, previousServicePoint: aServicePoint),
+            JourneyPositionModel(
+              currentPosition: aServicePoint,
+              lastPosition: tenSignal,
+              previousServicePoint: aServicePoint,
+            ),
           ]),
         );
         expect(emitRegister, hasLength(2));
@@ -490,13 +494,12 @@ void main() {
       });
 
       // ACT & EXPECT
-      expect(testee.modelValue, equals(JourneyPositionModel(currentPosition: tenSignal, lastPosition: tenSignal)));
-      expect(emitRegister, hasLength(2));
+      expect(testee.modelValue, equals(JourneyPositionModel(currentPosition: tenSignal, lastPosition: null)));
+      expect(emitRegister, hasLength(1));
       expect(
         emitRegister,
         orderedEquals([
           JourneyPositionModel(currentPosition: tenSignal, lastPosition: null),
-          JourneyPositionModel(currentPosition: tenSignal, lastPosition: tenSignal),
         ]),
       );
     });
