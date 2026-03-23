@@ -3,9 +3,7 @@ th.action {
 }
 
 td.action {
-  cursor: pointer;
-
-  sbb-icon {
+  sbb-mini-button {
     vertical-align: middle;
   }
 }

@@ -15,7 +15,6 @@ import {
   SbbTableDataSource,
   SbbTableWrapper
 } from "@sbb-esta/lyne-angular/table";
-import {SbbIcon} from "@sbb-esta/lyne-angular/icon";
 import {SbbSecondaryButton} from "@sbb-esta/lyne-angular/button/secondary-button";
 import {AppVersion} from '../../das-admin-api';
 import {toObservable} from '@angular/core/rxjs-interop';
@@ -23,6 +22,7 @@ import {SbbCompactPaginator} from '@sbb-esta/lyne-angular/paginator/compact-pagi
 import {DatePipe} from '@angular/common';
 import {SbbToggleCheck} from '@sbb-esta/lyne-angular/toggle-check';
 import {AppVersionsService} from '../app-versions.service';
+import {SbbMiniButton} from '@sbb-esta/lyne-angular/button/mini-button';
 
 @Component({
   selector: 'app-app-versions-table',
@@ -33,7 +33,6 @@ import {AppVersionsService} from '../app-versions.service';
     SbbHeaderCell,
     SbbHeaderRow,
     SbbHeaderRowDef,
-    SbbIcon,
     SbbRow,
     SbbRowDef,
     SbbSecondaryButton,
@@ -44,7 +43,8 @@ import {AppVersionsService} from '../app-versions.service';
     SbbSortHeader,
     DatePipe,
     SbbSort,
-    SbbToggleCheck
+    SbbToggleCheck,
+    SbbMiniButton
   ],
   templateUrl: './app-versions-table.html',
   styleUrl: './app-versions-table.css',
