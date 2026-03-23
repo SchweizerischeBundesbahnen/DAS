@@ -53,7 +53,7 @@ class AppAssets {
   static const shapeRoundedEdgeLeftSmall = '$_othersDir/shape_rounded_edge_left_small.svg';
   static const shapeRoundedEdgeLeftMedium = '$_othersDir/shape_rounded_edge_left_medium.svg';
   static const shapeRoundedEdgeLeftLarge = '$_othersDir/shape_rounded_edge_left_large.svg';
-  static const loginPageBackground = '$_othersDir/login_page_background.svg';
+  static const loginPageBackground = '$_othersDir/login_page_background.png';
   static const stationSignBhf = '$_othersDir/station_sign_bhf.svg';
 
   // audio
