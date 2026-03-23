@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.14.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.13.0...sfera_mock-v0.14.0) (2026-03-23)
+
+
+### Features
+
+* add links to tour system ([#96](https://github.com/SchweizerischeBundesbahnen/DAS/issues/96)) ([#1930](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1930)) ([f7edd9a](https://github.com/SchweizerischeBundesbahnen/DAS/commit/f7edd9a30403636a99a1a68e0dde1308f3ff2bc8))
+* add locking out signals ([#453](https://github.com/SchweizerischeBundesbahnen/DAS/issues/453)) ([#1894](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1894)) ([3a35379](https://github.com/SchweizerischeBundesbahnen/DAS/commit/3a353798b3da70884799c6b9a2e4d2823a6dea6c))
+* advised speed is max line speed ([#1327](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1327)) ([#1896](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1896)) ([360a602](https://github.com/SchweizerischeBundesbahnen/DAS/commit/360a6022f6bc677c80052c2478bd7cbe31d41c83))
+
 ## [0.13.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.12.0...sfera_mock-v0.13.0) (2026-03-10)
 
 
