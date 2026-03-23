@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.10.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.9.0...backend-v0.10.0) (2026-03-23)
+
+
+### Features
+
+* adapt preload sfera connection for tms vad ([#1393](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1393)) ([#1891](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1891)) ([a60a113](https://github.com/SchweizerischeBundesbahnen/DAS/commit/a60a11336a7f1a048572cfdc5e81db5b7a086a35))
+* add API for Admintool [#1406](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1406) ([4a18082](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4a18082733e29f8bdd1626a11fd527dbd698f3c9))
+* authorize requests ([#428](https://github.com/SchweizerischeBundesbahnen/DAS/issues/428)) ([#1834](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1834)) ([5a70c8c](https://github.com/SchweizerischeBundesbahnen/DAS/commit/5a70c8cc2e9dfb0a063d28af0a34ff427bd0a4ea))
+* customer oriented departure proxy for subscribe and confirm ([#1538](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1538)) ([#1835](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1835)) ([ba13a74](https://github.com/SchweizerischeBundesbahnen/DAS/commit/ba13a742e7637e9df521157f85be3b573f74b747))
+
+
+### Bug Fixes
+
+* proxy auth ([#1926](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1926)) ([8fb1236](https://github.com/SchweizerischeBundesbahnen/DAS/commit/8fb1236a52072e29fffd10ed4816f396ed44fa6e))
+
 ## [0.9.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.8.1...backend-v0.9.0) (2026-03-05)
 
 
