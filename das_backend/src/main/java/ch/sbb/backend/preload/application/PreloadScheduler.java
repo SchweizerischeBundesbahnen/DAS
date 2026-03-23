@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 import org.eclipse.paho.mqttv5.common.MqttException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -27,6 +28,9 @@ public class PreloadScheduler {
      * Due to infrastructure realtime handling of operating trains, real train runs get clear just a few hours earlier.
      */
     private static final int PRELOAD_HOURS_BEFORE_DEPARTURE = 4;
+
+    @Value("${preload.storageCleanUp.hours}")
+    private int cleanUpHours;
 
     private final SferaService sferaService;
     private final TrainIdentificationService trainIdentificationsService;
@@ -64,7 +68,10 @@ public class PreloadScheduler {
         }
         sferaService.disconnect();
         storageService.save(mapJourneyProfiles.values(), mapSegmentProfiles.values(), mapTrainCharacteristics.values());
+        storageService.deleteAllBefore(OffsetDateTime.now().minusHours(cleanUpHours));
         trainIdentificationsService.savePreloadedTrains(mapJourneyProfiles.keySet());
         log.info("Preload with {} JPs of requested {} JPs ended in {} ms", mapJourneyProfiles.size(), trainIdentifications.size(), System.currentTimeMillis() - startTime);
+
     }
+
 }
