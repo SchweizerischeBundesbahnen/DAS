@@ -50,21 +50,9 @@ body:
       label: DAS Version
       description: Welche Version von DAS wurde genutzt?
       options:
+        - 0.39.0
         - 0.37.0
         - 0.34.0
-        - 0.31.0
-        - 0.29.0
-        - 0.27.0
-        - 0.24.1
-        - 0.22.0
-        - 0.21.0
-        - 0.20.0
-        - 0.18.0
-        - 0.16.0
-        - 0.13.0
-        - 0.10.1
-        - 0.8.0
-        - 0.7.0
       default: 0
     validations:
       required: true
