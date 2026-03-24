@@ -11,6 +11,17 @@ class SuspiciousSegment extends Segment {
   });
 
   @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is SuspiciousSegment &&
+          runtimeType == other.runtimeType &&
+          startOrder == other.startOrder &&
+          endOrder == other.endOrder;
+
+  @override
+  int get hashCode => Object.hash(startOrder, endOrder);
+
+  @override
   String toString() {
     return 'SuspiciousSegment{startOrder: $startOrder, endOrder: $endOrder}';
   }

@@ -4,6 +4,7 @@ import 'package:app/pages/journey/journey_screen/header/view_model/suspicious_se
 import 'package:app/widgets/notificationbox/notification_box.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class SuspiciousSegmentNotification extends StatelessWidget {
   static const Key suspiciousSegmentNotificationKey = Key('suspiciousSegmentNotification');
@@ -25,6 +26,11 @@ class SuspiciousSegmentNotification extends StatelessWidget {
           key: suspiciousSegmentNotificationKey,
           style: .warning,
           title: context.l10n.w_suspicious_journey_point_warning,
+          customIcon: SBBIcons.circle_exclamation_point_small,
+          action: InkWell(
+            onTap: viewModel.dismiss,
+            child: Icon(SBBIcons.cross_tiny_small),
+          ),
         );
       },
     );
