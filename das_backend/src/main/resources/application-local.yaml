@@ -4,6 +4,10 @@ spring:
       file: ./das_backend/compose.yaml
   config:
     import: optional:file:./das_backend/.env[.properties]
+endpoints:
+  web:
+    cors:
+      allowed-origins: http://localhost:4200
 formation:
   clean-up:
     cron: '-'

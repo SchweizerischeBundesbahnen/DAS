@@ -5,11 +5,13 @@
   "compilerOptions": {
     "outDir": "./out-tsc/spec",
     "types": [
-      "ineum",
-      "jasmine"
+      "vitest/globals",
+      "@angular/localize",
+      "ineum"
     ]
   },
   "include": [
-    "src/**/*.ts"
+    "src/**/*.d.ts",
+    "src/**/*.spec.ts"
   ]
 }

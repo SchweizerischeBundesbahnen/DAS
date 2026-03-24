@@ -1,36 +1,18 @@
 import {Component, computed, inject, LOCALE_ID} from '@angular/core';
-import {SbbHeader, SbbHeaderButton, SbbHeaderEnvironment} from "@sbb-esta/lyne-angular/header";
-import {SbbMenu, SbbMenuButton, SbbMenuLink} from "@sbb-esta/lyne-angular/menu";
+import {SbbHeaderModule} from "@sbb-esta/lyne-angular/header";
+import {SbbMenuModule} from "@sbb-esta/lyne-angular/menu";
 import {environment} from '../../environments/environment';
 import packageJson from '../../../package.json';
 import {OidcSecurityService} from 'angular-auth-oidc-client';
-import {SbbDivider} from '@sbb-esta/lyne-angular/divider';
+import {SbbDividerModule} from '@sbb-esta/lyne-angular/divider';
 import {Router} from '@angular/router';
-import {
-  SbbNavigation,
-  SbbNavigationButton,
-  SbbNavigationList,
-  SbbNavigationMarker,
-  SbbNavigationSection
-} from '@sbb-esta/lyne-angular/navigation';
-import {SbbButton} from '@sbb-esta/lyne-angular/button/button';
 
 @Component({
   selector: 'app-header',
   imports: [
-    SbbHeader,
-    SbbHeaderButton,
-    SbbHeaderEnvironment,
-    SbbMenu,
-    SbbMenuLink,
-    SbbDivider,
-    SbbMenuButton,
-    SbbNavigationButton,
-    SbbNavigationList,
-    SbbNavigationSection,
-    SbbButton,
-    SbbNavigationMarker,
-    SbbNavigation
+    SbbHeaderModule,
+    SbbMenuModule,
+    SbbDividerModule,
   ],
   templateUrl: './header.html',
   styleUrl: './header.css',

@@ -26,12 +26,8 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        loadComponent: () => import('./home/home').then(m => m.Home)
-      },
-      {
-        path: 'page',
-        loadComponent: () => import('./page/page').then(m => m.Page)
-      },
+        loadComponent: () => import('./das-admin/das-admin').then(m => m.DasAdmin)
+      }
     ]
   },
   {
