@@ -1,0 +1,21 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--sbb-spacing-responsive-xs);
+}
+
+.minimalVersion {
+  display: flex;
+  align-items: center;
+  gap: var(--sbb-spacing-fixed-2x);
+
+  sbb-popover {
+    sbb-title {
+      margin-block-start: 0
+    }
+
+    p {
+      margin: 0
+    }
+  }
+}

@@ -1,18 +1,18 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {Page} from './page';
+import {AppVersionDialog} from './app-version-dialog';
 
-describe('Page', () => {
-  let component: Page;
-  let fixture: ComponentFixture<Page>;
+describe('AppVersionDialog', () => {
+  let component: AppVersionDialog;
+  let fixture: ComponentFixture<AppVersionDialog>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Page],
+      imports: [AppVersionDialog]
     })
       .compileComponents();
 
-    fixture = TestBed.createComponent(Page);
+    fixture = TestBed.createComponent(AppVersionDialog);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

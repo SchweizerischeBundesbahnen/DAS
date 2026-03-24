@@ -4,13 +4,13 @@ import {Header} from './header/header';
 import {IconSidebar} from './icon-sidebar/icon-sidebar';
 import packageJson from '../../package.json';
 import {OidcSecurityService} from 'angular-auth-oidc-client';
-import {SbbTitle} from '@sbb-esta/lyne-angular/title';
-import {SbbNotification} from '@sbb-esta/lyne-angular/notification';
+import {SbbTitleModule} from '@sbb-esta/lyne-angular/title';
+import {SbbNotificationModule} from '@sbb-esta/lyne-angular/notification';
 import {SbbLink} from '@sbb-esta/lyne-angular/link/link';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Header, IconSidebar, SbbTitle, SbbNotification, SbbLink],
+  imports: [RouterOutlet, Header, IconSidebar, SbbTitleModule, SbbNotificationModule, SbbLink],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

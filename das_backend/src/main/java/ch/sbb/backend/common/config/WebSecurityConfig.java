@@ -2,9 +2,9 @@ package ch.sbb.backend.common.config;
 
 import static ch.sbb.backend.admin.application.settings.SettingsController.API_SETTINGS;
 import static ch.sbb.backend.formation.api.v1.FormationController.API_FORMATIONS;
+import static org.springframework.security.config.Customizer.withDefaults;
 
 import ch.sbb.backend.common.security.UserRole;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -26,11 +26,8 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity
 public class WebSecurityConfig {
 
-    @Autowired
-    JwtAuthenticationConverter jwtAuthenticationConverter;
-
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) {
+    public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthenticationConverter jwtAuthenticationConverter) {
         http.authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .requestMatchers("/actuator/health/**").permitAll()
@@ -38,6 +35,7 @@ public class WebSecurityConfig {
                 .anyRequest().authenticated()
             )
             .csrf(AbstractHttpConfigurer::disable)
+            .cors(withDefaults())
             .oauth2ResourceServer(oauth2 -> oauth2
                 .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter))
             );

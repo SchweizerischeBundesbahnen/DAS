@@ -2,9 +2,9 @@
 <app-icon-sidebar>
   @if (isAdBlockerDetected()) {
     <sbb-notification readonly type="warn" animation="none">
-      <sbb-title>AdBlocker erkannt</sbb-title>
-      Für die volle Funktionalität dieser Anwendung, deaktiviere bitte deinen AdBlocker.
-      <sbb-link href="/">Neu laden</sbb-link>
+      <sbb-title i18n="@@app_notification_adblocker_title">AdBlocker erkannt</sbb-title>
+      <span i18n="@@app_notification_adblocker_message">Für die volle Funktionalität dieser Anwendung, deaktiviere bitte deinen AdBlocker.</span>
+      <sbb-link href="/" i18n="@@app_notification_adblocker_reload">Neu laden</sbb-link>
     </sbb-notification>
   }
   <router-outlet/>

@@ -5,6 +5,8 @@ import {Header} from './header';
 import {signal} from '@angular/core';
 import {AuthenticatedResult, OidcSecurityService, UserDataResult} from 'angular-auth-oidc-client';
 import {By} from '@angular/platform-browser';
+import {vi} from 'vitest';
+import {Router} from '@angular/router';
 
 const mockOidc: Partial<OidcSecurityService> = {
   userData: signal({
@@ -18,6 +20,10 @@ const mockOidc: Partial<OidcSecurityService> = {
   logoffLocalMultiple: () => Promise.resolve(true),
 };
 
+const mockRouter = {
+  navigate: vi.fn().mockResolvedValue(true),
+};
+
 describe('Header', () => {
   let component: Header;
   let fixture: ComponentFixture<Header>;
@@ -25,10 +31,10 @@ describe('Header', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [Header],
-      providers: [{
-        provide: OidcSecurityService,
-        useValue: mockOidc
-      }],
+      providers: [
+        {provide: OidcSecurityService, useValue: mockOidc},
+        {provide: Router, useValue: mockRouter}
+      ],
     })
       .compileComponents();
 
@@ -43,7 +49,7 @@ describe('Header', () => {
 
   it('should render title and version', async () => {
     const fixture = TestBed.createComponent(Header);
-    await fixture.whenStable()
+    await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
     const headerInfo = compiled.querySelector('.sbb-header-info');
     expect(headerInfo?.querySelector('strong')?.textContent).toContain('DAS Admin-Tool');
@@ -51,10 +57,8 @@ describe('Header', () => {
   });
 
   it('should render name', () => {
-    expect(
-      fixture.nativeElement.querySelector('sbb-header-button:nth-last-of-type(2)').textContent
-    ).toContain('User');
-  })
+    expect(fixture.nativeElement.querySelector('sbb-header-button:nth-last-of-type(2)').textContent).toContain('User');
+  });
 
   it('shoud render email and roles', () => {
     // Open user menu
@@ -64,10 +68,10 @@ describe('Header', () => {
 
     expect(fixture.nativeElement.querySelector('.email').textContent).toContain('user@example.com');
     expect(fixture.nativeElement.querySelector('.role').textContent).toContain('admin_role_a');
-  })
+  });
 
   it('should logout', () => {
-    const logoutSpy = spyOn(mockOidc as OidcSecurityService, 'logoffLocalMultiple');
+    const logoutSpy = vi.spyOn(mockOidc as OidcSecurityService, 'logoffLocalMultiple');
 
     // Open user menu
     const usermenuOpenButton = fixture.debugElement.query(By.css('#user-menu-trigger'));
