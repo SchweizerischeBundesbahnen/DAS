@@ -25,11 +25,17 @@ class SuspiciousSegmentNotification extends StatelessWidget {
         return NotificationBox(
           key: suspiciousSegmentNotificationKey,
           style: .warning,
-          title: context.l10n.w_suspicious_journey_point_warning,
+          titleTextStyle: SBBTextStyles.smallLight,
+          title: context.l10n.w_suspicious_segment_notification_text,
           customIcon: SBBIcons.circle_exclamation_point_small,
           action: InkWell(
             onTap: viewModel.dismiss,
-            child: Icon(SBBIcons.cross_tiny_small),
+            radius: SBBSpacing.large,
+            borderRadius: BorderRadius.circular(SBBSpacing.large),
+            child: Padding(
+              padding: const .all(SBBSpacing.xxSmall),
+              child: Icon(SBBIcons.cross_tiny_small),
+            ),
           ),
         );
       },

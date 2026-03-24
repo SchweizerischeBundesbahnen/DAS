@@ -5,10 +5,19 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 part 'notification_box_style.dart';
 
 class NotificationBox extends StatelessWidget {
-  const NotificationBox({required this.style, required this.title, this.action, this.text, this.customIcon, super.key});
+  const NotificationBox({
+    required this.style,
+    required this.title,
+    this.titleTextStyle = SBBTextStyles.largeBold,
+    this.action,
+    this.text,
+    this.customIcon,
+    super.key,
+  });
 
   final NotificationBoxStyle style;
   final String title;
+  final TextStyle? titleTextStyle;
   final Widget? action;
   final String? text;
   final IconData? customIcon;
@@ -25,6 +34,8 @@ class NotificationBox extends StatelessWidget {
         ),
       ),
       child: Container(
+        constraints: BoxConstraints(minHeight: 52.0),
+        alignment: .center,
         decoration: BoxDecoration(
           border: Border.all(color: style.backgroundColor),
           borderRadius: const BorderRadius.only(
@@ -52,12 +63,7 @@ class NotificationBox extends StatelessWidget {
               customIcon ?? style.icon,
               color: ThemeUtil.getColor(context, style.iconColor, style.iconColorDark),
             ),
-            Expanded(
-              child: Text(
-                title,
-                style: sbbTextStyle.boldStyle.large,
-              ),
-            ),
+            Expanded(child: Text(title, style: titleTextStyle)),
             if (action != null) action!,
           ],
         ),
