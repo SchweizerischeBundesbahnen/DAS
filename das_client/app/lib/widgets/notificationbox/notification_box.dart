@@ -29,18 +29,18 @@ class NotificationBox extends StatelessWidget {
         border: Border(
           left: BorderSide(color: style.backgroundColor, width: SBBSpacing.xSmall),
         ),
-        borderRadius: const BorderRadius.all(
+        borderRadius: const .all(
           Radius.circular(SBBSpacing.medium),
         ),
       ),
       child: Container(
         decoration: BoxDecoration(
-          border: Border.all(color: style.backgroundColor),
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(8.0),
-            bottomLeft: Radius.circular(8.0),
-            topRight: Radius.circular(15.0),
-            bottomRight: Radius.circular(15.0),
+          border: .all(color: style.backgroundColor),
+          borderRadius: const .only(
+            topLeft: .circular(8.0),
+            bottomLeft: .circular(8.0),
+            topRight: .circular(15.0),
+            bottomRight: .circular(15.0),
           ),
           color: style.backgroundColor.withAlpha((255.0 * .05).round()),
         ),
@@ -65,11 +65,7 @@ class NotificationBox extends StatelessWidget {
             if (action != null) action!,
           ],
         ),
-        if (text != null)
-          Text(
-            text!,
-            style: sbbTextStyle.lightStyle.medium,
-          ),
+        if (text != null) Text(text!, style: sbbTextStyle.lightStyle.medium),
       ],
     );
   }
