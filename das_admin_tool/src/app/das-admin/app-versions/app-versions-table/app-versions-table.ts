@@ -1,49 +1,22 @@
 import {Component, effect, inject, viewChild} from '@angular/core';
-import {
-  SbbCell,
-  SbbCellDef,
-  SbbColumnDef,
-  SbbHeaderCell,
-  SbbHeaderCellDef,
-  SbbHeaderRow,
-  SbbHeaderRowDef,
-  SbbRow,
-  SbbRowDef,
-  SbbSort,
-  SbbSortHeader,
-  SbbTable,
-  SbbTableDataSource,
-  SbbTableWrapper
-} from "@sbb-esta/lyne-angular/table";
+import {SbbSort, SbbTableDataSource, SbbTableModule} from "@sbb-esta/lyne-angular/table";
 import {SbbSecondaryButton} from "@sbb-esta/lyne-angular/button/secondary-button";
 import {AppVersion} from '../../das-admin-api';
 import {toObservable} from '@angular/core/rxjs-interop';
 import {SbbCompactPaginator} from '@sbb-esta/lyne-angular/paginator/compact-paginator';
 import {DatePipe} from '@angular/common';
-import {SbbToggleCheck} from '@sbb-esta/lyne-angular/toggle-check';
+import {SbbToggleCheckModule} from '@sbb-esta/lyne-angular/toggle-check';
 import {AppVersionsService} from '../app-versions.service';
 import {SbbMiniButton} from '@sbb-esta/lyne-angular/button/mini-button';
 
 @Component({
   selector: 'app-app-versions-table',
   imports: [
-    SbbCell,
-    SbbCellDef,
-    SbbColumnDef,
-    SbbHeaderCell,
-    SbbHeaderRow,
-    SbbHeaderRowDef,
-    SbbRow,
-    SbbRowDef,
+    SbbTableModule,
     SbbSecondaryButton,
-    SbbTable,
-    SbbTableWrapper,
-    SbbHeaderCellDef,
     SbbCompactPaginator,
-    SbbSortHeader,
     DatePipe,
-    SbbSort,
-    SbbToggleCheck,
+    SbbToggleCheckModule,
     SbbMiniButton
   ],
   templateUrl: './app-versions-table.html',

@@ -1,6 +1,6 @@
 <sbb-header expanded>
   <span class="sbb-header-info">
-    <strong i18n="@@c_header_app_name">DAS Admin-Tool</strong>
+    <strong i18n="@@header_nav_app_name">DAS Admin-Tool</strong>
     <span>V. {{ version }}</span>
   </span>
   <div class="sbb-header-spacer"></div>
@@ -15,16 +15,16 @@
       }
       <sbb-divider></sbb-divider>
       <sbb-menu-button icon-name="user-plus-small" (click)="switchLogin()"
-                       i18n="@@c_header_switch_account_button">Account wechseln
+                       i18n="@@header_nav_account_switch_button">Account wechseln
       </sbb-menu-button>
       <sbb-divider></sbb-divider>
-      <sbb-menu-button icon-name="exit-small" (click)="logout()" i18n="@@c_header_logout_button">
+      <sbb-menu-button icon-name="exit-small" (click)="logout()" i18n="@@header_nav_logout_button">
         Logout
       </sbb-menu-button>
     </sbb-menu>
   } @else {
     <sbb-header-button iconName="user-small" class="sbb-header-shrinkable"
-                       i18n="@@c_header_login_button" (click)="login()">
+                       i18n="@@header_nav_login_button" (click)="login()">
       Login
     </sbb-header-button>
   }

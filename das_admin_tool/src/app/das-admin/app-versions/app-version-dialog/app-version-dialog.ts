@@ -1,53 +1,36 @@
 import {Component, inject} from '@angular/core';
-import {
-  SbbDialogActions,
-  SbbDialogClose,
-  SbbDialogContent,
-  SbbDialogTitle
-} from '@sbb-esta/lyne-angular/dialog';
 import {SbbButton} from '@sbb-esta/lyne-angular/button/button';
 import {SbbSecondaryButton} from '@sbb-esta/lyne-angular/button/secondary-button';
-import {SbbError, SbbFormField} from '@sbb-esta/lyne-angular/form-field';
-import {SbbToggleCheck} from '@sbb-esta/lyne-angular/toggle-check';
-import {
-  SbbDatepicker,
-  SbbDatepickerNextDay,
-  SbbDatepickerPreviousDay,
-  SbbDatepickerToggle
-} from '@sbb-esta/lyne-angular/datepicker';
-import {SbbDateInput} from '@sbb-esta/lyne-angular/date-input';
+import {SbbToggleCheckModule} from '@sbb-esta/lyne-angular/toggle-check';
+import {SbbDatepickerModule} from '@sbb-esta/lyne-angular/datepicker';
+import {SbbDateInputModule} from '@sbb-esta/lyne-angular/date-input';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {AppVersion} from '../../das-admin-api';
 import {SBB_OVERLAY_DATA} from '@sbb-esta/lyne-angular/core/overlay';
 import {SbbTransparentButton} from '@sbb-esta/lyne-angular/button/transparent-button';
-import {SbbPopover} from '@sbb-esta/lyne-angular/popover';
-import {SbbTitle} from '@sbb-esta/lyne-angular/title';
+import {SbbPopoverModule} from '@sbb-esta/lyne-angular/popover';
+import {SbbTitleModule} from '@sbb-esta/lyne-angular/title';
 import {SbbMiniButton} from '@sbb-esta/lyne-angular/button/mini-button';
 import {toUtcDateOnly} from '../../../shared/date-util';
+import {SbbDialogModule} from '@sbb-esta/lyne-angular/dialog';
+import {SbbFormFieldModule} from '@sbb-esta/lyne-angular/form-field';
 
 export type VersionDialogEditResult = AppVersion | 'delete';
 
 @Component({
   selector: 'app-app-version-dialog',
   imports: [
-    SbbDialogTitle,
-    SbbDialogActions,
+    SbbDialogModule,
     SbbButton,
     SbbSecondaryButton,
-    SbbDialogClose,
-    SbbDialogContent,
-    SbbFormField,
-    SbbError,
-    SbbToggleCheck,
-    SbbDatepickerPreviousDay,
-    SbbDateInput,
-    SbbDatepicker,
-    SbbDatepickerToggle,
-    SbbDatepickerNextDay,
+    SbbFormFieldModule,
+    SbbToggleCheckModule,
+    SbbDateInputModule,
+    SbbDatepickerModule,
     ReactiveFormsModule,
     SbbTransparentButton,
-    SbbPopover,
-    SbbTitle,
+    SbbPopoverModule,
+    SbbTitleModule,
     SbbMiniButton
   ],
   templateUrl: './app-version-dialog.html',
@@ -68,11 +51,11 @@ export class AppVersionDialog {
     expiryDate: new FormControl<Date | null>(null)
   });
   protected minDate = new Date();
-  private dialogData = inject<AppVersion>(SBB_OVERLAY_DATA, {optional: true}) ?? null;
+  private readonly dialogData = inject<AppVersion>(SBB_OVERLAY_DATA, {optional: true}) ?? null;
 
   constructor() {
     this.isEdit = this.dialogData?.id != null;
-    this.title = this.isEdit ? $localize`:@@appVersionEditTitle:Blockierte App Version bearbeiten` : $localize`:@@appVersionCreateTitle:App Version blockieren`;
+    this.title = this.isEdit ? $localize`:@@app_versions_dialog_title_edit:Blockierte App Version bearbeiten` : $localize`:@@app_versions_dialog_title_create:App Version blockieren`;
 
     if (this.isEdit && this.dialogData) {
       this.versionForm.patchValue({

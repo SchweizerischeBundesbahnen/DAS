@@ -18,9 +18,8 @@ export interface AppVersion {
   providedIn: 'root',
 })
 export class DasAdminApi {
-  private httpClient = inject(HttpClient);
-
-  private url = `${environment.backendUrl}/v1/settings/app-version`;
+  private readonly httpClient = inject(HttpClient);
+  private readonly url = `${environment.backendUrl}/v1/settings/app-version`;
 
   appVersions = httpResource<Response>(() => this.url);
 

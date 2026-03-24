@@ -1,19 +1,19 @@
 <sbb-table-wrapper>
   <table sbb-table [dataSource]=dataSource sbbSort sbbSortActive="version" sbbSortDirection="desc">
     <ng-container sbbColumnDef="version">
-      <th sbb-header-cell *sbbHeaderCellDef sbb-sort-header="version" i18n>Version</th>
+      <th sbb-header-cell *sbbHeaderCellDef sbb-sort-header="version" i18n="@@app_versions_table_column_version">Version</th>
       <td sbb-cell *sbbCellDef="let row"> {{ row.version }}</td>
     </ng-container>
 
     <ng-container sbbColumnDef="minimalVersion">
-      <th sbb-header-cell *sbbHeaderCellDef sbb-sort-header="minimalVersion" i18n>Minimale Version
+      <th sbb-header-cell *sbbHeaderCellDef sbb-sort-header="minimalVersion" i18n="@@app_versions_table_column_minimal_version">Minimale Version
       </th>
       <td sbb-cell *sbbCellDef="let row">
         <sbb-toggle-check disabled [checked]="row.minimalVersion" label-position="after">
           @if (row.minimalVersion) {
-            <span i18n>Ja</span>
+            <span i18n="@@app_versions_table_value_true">Ja</span>
           } @else {
-            <span i18n>Nein</span>
+            <span i18n="@@app_versions_table_value_false">Nein</span>
           }
         </sbb-toggle-check>
 
@@ -21,7 +21,7 @@
     </ng-container>
 
     <ng-container sbbColumnDef="expiryDate">
-      <th sbb-header-cell *sbbHeaderCellDef sbb-sort-header="expiryDate" i18n>Gültig ab</th>
+      <th sbb-header-cell *sbbHeaderCellDef sbb-sort-header="expiryDate" i18n="@@app_versions_table_column_expiry_date">Gültig ab</th>
       <td sbb-cell *sbbCellDef="let row"> {{ row.expiryDate | date:'shortDate' }}</td>
     </ng-container>
 
@@ -39,5 +39,5 @@
 
 <div class="bottom">
   <sbb-compact-paginator [pageSize]="PAGE_SIZE"></sbb-compact-paginator>
-  <sbb-secondary-button iconName="plus-small" (click)="add()" i18n>App Version blockieren</sbb-secondary-button>
+  <sbb-secondary-button iconName="plus-small" (click)="add()" i18n="@@app_versions_button_create">App Version blockieren</sbb-secondary-button>
 </div>

@@ -1,8 +1,11 @@
 {
   "locale": "de-CH",
   "translations": {
-    "c_header_app_name": "DAS Admin-Tool",
-    "c_header_login_button": "Login ",
-    "c_home_title": "Hallo Admin"
+    "admin_title": "Admin DAS",
+    "admin_tab_app_versions": "App Versionen",
+    "header_nav_app_name": "DAS Admin-Tool",
+    "sidebar_link_menu1_tooltip": "Menu 1",
+    "sidebar_link_admin_evu_tooltip": "Admin EVU",
+    "sidebar_button_admin_das_tooltip": "Admin DAS"
   }
 }

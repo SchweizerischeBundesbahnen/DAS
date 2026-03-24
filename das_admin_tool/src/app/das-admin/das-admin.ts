@@ -1,16 +1,14 @@
 import {Component} from '@angular/core';
-import {SbbTitle} from '@sbb-esta/lyne-angular/title';
-import {SbbTab, SbbTabGroup, SbbTabLabel} from '@sbb-esta/lyne-angular/tabs';
+import {SbbTitleModule} from '@sbb-esta/lyne-angular/title';
+import {SbbTabsModule} from '@sbb-esta/lyne-angular/tabs';
 import {AppVersions} from './app-versions/app-versions';
 
 
 @Component({
   selector: 'app-das-admin',
   imports: [
-    SbbTitle,
-    SbbTab,
-    SbbTabLabel,
-    SbbTabGroup,
+    SbbTitleModule,
+    SbbTabsModule,
     AppVersions
   ],
   templateUrl: './das-admin.html',
