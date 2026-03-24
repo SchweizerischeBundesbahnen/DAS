@@ -110,6 +110,7 @@ jobs:
           cache-dependency-path: 'das_admin_tool/package-lock.json'
       - run: npm clean-install
       - run: npm run build:ngssc
+      - run: npm run gzip
       - name: Login to GitHub Container Registry
         if: github.ref == 'refs/heads/main'
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
