@@ -11,6 +11,7 @@ import 'package:app/pages/journey/journey_screen/header/view_model/chronograph_v
 import 'package:app/pages/journey/journey_screen/header/view_model/connectivity_view_model.dart';
 import 'package:app/pages/journey/journey_screen/header/view_model/departure_authorization_view_model.dart';
 import 'package:app/pages/journey/journey_screen/header/view_model/short_term_change_view_model.dart';
+import 'package:app/pages/journey/journey_screen/header/view_model/suspicious_segment_view_model.dart';
 import 'package:app/pages/journey/journey_screen/notification/notification_space.dart';
 import 'package:app/pages/journey/journey_screen/view_model/advised_speed_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/arrival_departure_time_view_model.dart';
@@ -263,6 +264,19 @@ class _ProviderScope extends StatelessWidget {
               journeyPositionViewModel: journeyPositionViewModel,
             );
           },
+        ),
+        ProxyProvider3<JourneyViewModel, JourneyPositionViewModel, NotificationPriorityQueueViewModel,
+            SuspiciousSegmentViewModel>(
+          lazy: false,
+          update: (_, journeyVM, journeyPositionVM, notificationVM, prev) {
+            if (prev != null) return prev;
+            return SuspiciousSegmentViewModel(
+              journeyViewModel: journeyVM,
+              journeyPositionViewModel: journeyPositionVM,
+              notificationVM: notificationVM,
+            );
+          },
+          dispose: (_, vm) => vm.dispose(),
         ),
         ProxyProvider<LineSpeedViewModel, CalculatedSpeedViewModel>(
           update: (_, lineSpeedVM, prev) {
