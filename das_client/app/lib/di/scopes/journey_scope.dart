@@ -1,5 +1,6 @@
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_screen/journey_table_scroll_controller.dart';
+import 'package:app/pages/journey/journey_screen/view_model/checklist_departure_process_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_table_advancement_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
@@ -33,6 +34,7 @@ class JourneyScope extends DIScope {
     getIt.registerJourneySettingsViewModel();
     getIt.registerPunctualityViewModel();
     getIt.registerJourneyPositionViewModel();
+    getIt.registerChecklistDepartureProcessViewModel();
     getIt.registerJourneyTableScrollController();
     getIt.registerJourneyTableAdvancementViewModel();
     getIt.registerWarnAppViewModel();
@@ -159,5 +161,16 @@ extension JourneyScopeExtension on GetIt {
 
   void registerLocalRegulationHtmlGenerator() {
     registerSingleton(LocalRegulationComponent.createLocalRegulationHtmlGenerator());
+  }
+
+  void registerChecklistDepartureProcessViewModel() {
+    registerSingleton<ChecklistDepartureProcessViewModel>(
+      ChecklistDepartureProcessViewModel(
+        journeyPositionViewModel: DI.get(),
+        ruFeatureProvider: DI.get(),
+        journeyViewModel: DI.get(),
+      ),
+      dispose: (vm) => vm.dispose(),
+    );
   }
 }

@@ -15,6 +15,7 @@ import 'package:app/pages/journey/journey_screen/notification/notification_space
 import 'package:app/pages/journey/journey_screen/view_model/advised_speed_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/arrival_departure_time_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/calculated_speed_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/checklist_departure_process_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/departure_dispatch_notification_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
@@ -116,6 +117,9 @@ class _ProviderScope extends StatelessWidget {
         ),
         Provider<JourneyPositionViewModel>(
           create: (_) => DI.get<JourneyPositionViewModel>(),
+        ),
+        Provider<ChecklistDepartureProcessViewModel>(
+          create: (_) => DI.get<ChecklistDepartureProcessViewModel>(),
         ),
         Provider<JourneyTableAdvancementViewModel>(
           create: (_) => DI.get<JourneyTableAdvancementViewModel>(),
