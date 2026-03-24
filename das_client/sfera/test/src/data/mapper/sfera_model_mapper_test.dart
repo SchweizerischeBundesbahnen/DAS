@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/dto/departure_dispatch_notification_event_dto.dart';
+import 'package:sfera/src/data/mapper/mapper_utils.dart';
 
 import '../../../util/test_journey/test_journey_skeleton.dart';
 import '../../../util/test_util.dart';
@@ -2013,6 +2014,60 @@ void main() {
       shortTermChanges[4],
       equals(TrainRunReroutingChange(startOrder: 1500, endOrder: 1700, startData: servicePoints[10])),
     );
+  });
+
+  test('Test correct suspicious segments parsed in T40', () {
+    final journey = getJourney('T40');
+    expect(journey.valid, isTrue);
+
+    final suspiciousSegments = journey.metadata.suspiciousSegments;
+    expect(suspiciousSegments, hasLength(2));
+
+    expect(suspiciousSegments[0].startOrder, equals(calculateOrder(1, 0)));
+    expect(suspiciousSegments[0].endOrder, equals(calculateOrder(2, 0) - 1));
+    expect(suspiciousSegments[1].startOrder, equals(calculateOrder(3, 0)));
+    expect(suspiciousSegments[1].endOrder, equals(calculateOrder(4, 0) - 1));
+  });
+
+  test('Test suspicious journey points replace all journey points in suspicious segments for T40', () {
+    final journey = getJourney('T40');
+    expect(journey.valid, isTrue);
+
+    final suspiciousPoints = journey.data.whereType<SuspiciousJourneyPoint>().toList()
+      ..sort((a, b) => a.order.compareTo(b.order));
+
+    // T40_2 (segment index 1, suspicious): ServicePoint @ 0, Signal @ 800
+    // T40_4 (segment index 3, suspicious): ServicePoint @ 0, Signal @ 100, Signal @ 900, Signal @ 2000
+    expect(suspiciousPoints, hasLength(6));
+
+    // T40_2
+    expect(suspiciousPoints[0].order, equals(calculateOrder(1, 0)));
+    expect(suspiciousPoints[0].kilometre, equals([]));
+    expect(suspiciousPoints[1].order, equals(calculateOrder(1, 800)));
+    expect(suspiciousPoints[1].kilometre, equals([]));
+
+    // T40_4
+    expect(suspiciousPoints[2].order, equals(calculateOrder(3, 0)));
+    expect(suspiciousPoints[2].kilometre, equals([]));
+    expect(suspiciousPoints[3].order, equals(calculateOrder(3, 100)));
+    expect(suspiciousPoints[3].kilometre, equals([]));
+    expect(suspiciousPoints[4].order, equals(calculateOrder(3, 900)));
+    expect(suspiciousPoints[4].kilometre, equals([]));
+    expect(suspiciousPoints[5].order, equals(calculateOrder(3, 2000)));
+    expect(suspiciousPoints[5].kilometre, equals([]));
+
+    // No regular JourneyPoints should exist for those orders
+    final regularPoints = journey.data.whereType<JourneyPoint>().where(
+      (p) =>
+          p is! SuspiciousJourneyPoint &&
+          (p.order == calculateOrder(1, 0) ||
+              p.order == calculateOrder(1, 800) ||
+              p.order == calculateOrder(3, 0) ||
+              p.order == calculateOrder(3, 100) ||
+              p.order == calculateOrder(3, 900) ||
+              p.order == calculateOrder(3, 2000)),
+    );
+    expect(regularPoints, isEmpty);
   });
 }
 
