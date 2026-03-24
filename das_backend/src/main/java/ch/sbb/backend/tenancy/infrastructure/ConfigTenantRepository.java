@@ -26,6 +26,11 @@ public class ConfigTenantRepository implements TenantRepository {
         log.info("Tenant::name={}", tenant.name());
         return tenant;
     }
+
+    @Override
+    public boolean isAdminTenant(Tenant tenant) {
+        return tenantConfig.getAdminTenantId().equals(tenant.getId());
+    }
 }
 
 

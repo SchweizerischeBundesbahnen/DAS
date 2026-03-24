@@ -2,7 +2,9 @@ package ch.sbb.backend.admin.application.settings;
 
 import static ch.sbb.backend.admin.application.settings.AppVersionController.API_SETTINGS_APP_VERSION;
 import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
 import static org.springframework.test.context.jdbc.SqlMergeMode.MergeMode.MERGE;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -13,7 +15,6 @@ import ch.sbb.backend.IntegrationTest;
 import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlMergeMode;
 import org.springframework.test.web.servlet.MockMvc;
@@ -27,26 +28,26 @@ class AppVersionControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    @WithMockUser(authorities = "ROLE_admin")
     void getAll_empty() throws Exception {
-        mockMvc.perform(get(API_SETTINGS_APP_VERSION))
+        mockMvc.perform(get(API_SETTINGS_APP_VERSION)
+                .with(authentication(JwtTestUtils.createAdminTenantAuth())))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data", hasSize(0)));
     }
 
     @Test
-    @WithMockUser(authorities = "ROLE_admin")
     void getById_not_found() throws Exception {
         int nonExistingId = Integer.MAX_VALUE;
-        mockMvc.perform(get(API_SETTINGS_APP_VERSION + "/" + nonExistingId))
+        mockMvc.perform(get(API_SETTINGS_APP_VERSION + "/" + nonExistingId)
+                .with(authentication(JwtTestUtils.createAdminTenantAuth())))
             .andExpect(status().isNotFound());
     }
 
     @Test
-    @WithMockUser(authorities = "ROLE_admin")
     @Sql("classpath:createAppVersions.sql")
     void getById_by_id() throws Exception {
-        mockMvc.perform(get(API_SETTINGS_APP_VERSION + "/1"))
+        mockMvc.perform(get(API_SETTINGS_APP_VERSION + "/1")
+                .with(authentication(JwtTestUtils.createAdminTenantAuth())))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data", hasSize(1)))
             .andExpect(jsonPath("$.data[0].id").value(1))
@@ -56,8 +57,7 @@ class AppVersionControllerTest {
     }
 
     @Test
-    @WithMockUser(authorities = "ROLE_admin")
-    void create() throws Exception {
+    void create_ok() throws Exception {
         String jsonResult = mockMvc.perform(post(API_SETTINGS_APP_VERSION)
                 .contentType("application/json")
                 .content("""
@@ -66,7 +66,8 @@ class AppVersionControllerTest {
                         "minimalVersion": true,
                         "expiryDate": null
                     }
-                    """))
+                    """)
+                .with(authentication(JwtTestUtils.createAdminTenantAuth())))
             .andExpect(status().isCreated())
             .andExpect(jsonPath("$.data", hasSize(1)))
             .andExpect(jsonPath("$.data[0].id").isNumber())
@@ -76,7 +77,8 @@ class AppVersionControllerTest {
 
         int id = JsonPath.read(jsonResult, "$.data[0].id");
 
-        mockMvc.perform(get(API_SETTINGS_APP_VERSION + "/" + id))
+        mockMvc.perform(get(API_SETTINGS_APP_VERSION + "/" + id)
+                .with(authentication(JwtTestUtils.createAdminTenantAuth())))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data", hasSize(1)))
             .andExpect(jsonPath("$.data[0].id").isNumber())
@@ -86,9 +88,8 @@ class AppVersionControllerTest {
     }
 
     @Test
-    @WithMockUser(authorities = "ROLE_admin")
     @Sql("classpath:createAppVersions.sql")
-    void update() throws Exception {
+    void update_ok() throws Exception {
         mockMvc.perform(put(API_SETTINGS_APP_VERSION + "/1")
                 .contentType("application/json")
                 .content("""
@@ -97,7 +98,8 @@ class AppVersionControllerTest {
                             "minimalVersion": true,
                             "expiryDate": "2026-01-01"
                         }
-                    """))
+                    """)
+                .with(authentication(JwtTestUtils.createAdminTenantAuth())))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data", hasSize(1)))
             .andExpect(jsonPath("$.data[0].id").value(1))
@@ -105,7 +107,8 @@ class AppVersionControllerTest {
             .andExpect(jsonPath("$.data[0].minimalVersion").value(true))
             .andExpect(jsonPath("$.data[0].expiryDate").value("2026-01-01"));
 
-        mockMvc.perform(get(API_SETTINGS_APP_VERSION + "/1"))
+        mockMvc.perform(get(API_SETTINGS_APP_VERSION + "/1")
+                .with(authentication(JwtTestUtils.createAdminTenantAuth())))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data", hasSize(1)))
             .andExpect(jsonPath("$.data[0].id").value(1))
@@ -115,14 +118,29 @@ class AppVersionControllerTest {
     }
 
     @Test
-    @WithMockUser(authorities = "ROLE_admin")
     @Sql("classpath:createAppVersions.sql")
-    void delete() throws Exception {
-        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete(API_SETTINGS_APP_VERSION + "/1"))
+    void delete_ok() throws Exception {
+        mockMvc.perform(delete(API_SETTINGS_APP_VERSION + "/1")
+                .with(authentication(JwtTestUtils.createAdminTenantAuth())))
             .andExpect(status().isNoContent());
 
-        mockMvc.perform(get(API_SETTINGS_APP_VERSION + "/1"))
+        mockMvc.perform(get(API_SETTINGS_APP_VERSION + "/1")
+                .with(authentication(JwtTestUtils.createAdminTenantAuth())))
             .andExpect(status().isNotFound());
     }
 
+    @Test
+    void create_forbidden() throws Exception {
+        mockMvc.perform(post(API_SETTINGS_APP_VERSION)
+                .contentType("application/json")
+                .content("""
+                    {
+                        "version": "1.6.3",
+                        "minimalVersion": true,
+                        "expiryDate": null
+                    }
+                    """)
+                .with(authentication(JwtTestUtils.createOtherTenantAuth())))
+            .andExpect(status().isForbidden());
+    }
 }
