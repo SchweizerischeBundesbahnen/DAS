@@ -8,6 +8,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class SuspiciousSegmentNotification extends StatelessWidget {
   static const Key suspiciousSegmentNotificationKey = Key('suspiciousSegmentNotification');
+  static const Key dismissKey = Key('suspiciousSegmentNotificationDismiss');
 
   const SuspiciousSegmentNotification({super.key});
 
@@ -29,6 +30,7 @@ class SuspiciousSegmentNotification extends StatelessWidget {
           title: context.l10n.w_suspicious_segment_notification_text,
           customIcon: SBBIcons.circle_exclamation_point_small,
           action: InkWell(
+            key: dismissKey,
             onTap: viewModel.dismiss,
             radius: SBBSpacing.large,
             borderRadius: BorderRadius.circular(SBBSpacing.large),
