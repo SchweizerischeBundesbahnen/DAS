@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:app/pages/journey/journey_screen/header/view_model/model/suspicious_segment_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
 import 'package:collection/collection.dart';
 import 'package:logging/logging.dart';
@@ -15,11 +16,14 @@ class SuspiciousSegmentViewModel extends JourneyAwareViewModel {
   SuspiciousSegmentViewModel({
     required super.journeyViewModel,
     required JourneyPositionViewModel journeyPositionViewModel,
-  }) : _journeyPositionViewModel = journeyPositionViewModel {
+    required NotificationPriorityQueueViewModel notificationVM,
+  }) : _journeyPositionViewModel = journeyPositionViewModel,
+       _notificationVM = notificationVM {
     _initJourneyPositionSubscription();
   }
 
   final JourneyPositionViewModel _journeyPositionViewModel;
+  final NotificationPriorityQueueViewModel _notificationVM;
 
   StreamSubscription<JourneyPositionModel>? _journeyPositionSubscription;
 
@@ -37,7 +41,7 @@ class SuspiciousSegmentViewModel extends JourneyAwareViewModel {
   void dismiss() {
     _logger.fine('Suspicious segment notification dismissed by user.');
     _dismissed = true;
-    _rxSubject.add(SuspiciousSegmentHidden());
+    _emitModel(SuspiciousSegmentHidden());
   }
 
   @override
@@ -63,7 +67,7 @@ class SuspiciousSegmentViewModel extends JourneyAwareViewModel {
       _calculateAndEmitModel(journey: journey, currentPosition: _lastCurrentPosition);
     } else if (allSegmentsResolved) {
       _logger.fine('All suspicious segments resolved.');
-      _rxSubject.add(SuspiciousSegmentHidden());
+      _emitModel(SuspiciousSegmentHidden());
     }
   }
 
@@ -85,12 +89,21 @@ class SuspiciousSegmentViewModel extends JourneyAwareViewModel {
     });
   }
 
+  void _emitModel(SuspiciousSegmentModel model) {
+    _rxSubject.add(model);
+    if (model is SuspiciousSegmentVisible) {
+      _notificationVM.insert(type: .suspiciousSegment);
+    } else {
+      _notificationVM.remove(type: .suspiciousSegment);
+    }
+  }
+
   void _calculateAndEmitModel({Journey? journey, JourneyPoint? currentPosition}) {
     final suspiciousSegments = journey?.metadata.suspiciousSegments ?? [];
 
     if (suspiciousSegments.isEmpty) {
       _logger.fine('No suspicious segments – emitting hidden.');
-      _rxSubject.add(SuspiciousSegmentHidden());
+      _emitModel(SuspiciousSegmentHidden());
       return;
     }
 
@@ -101,12 +114,12 @@ class SuspiciousSegmentViewModel extends JourneyAwareViewModel {
 
     if (_hasPassedAllSuspiciousSegments(suspiciousSegments, currentPosition, journey)) {
       _logger.fine('All suspicious segments have been passed – emitting hidden.');
-      _rxSubject.add(SuspiciousSegmentHidden());
+      _emitModel(SuspiciousSegmentHidden());
       return;
     }
 
     _logger.fine('Suspicious segments present – emitting visible.');
-    _rxSubject.add(SuspiciousSegmentVisible());
+    _emitModel(SuspiciousSegmentVisible());
   }
 
   bool _hasPassedAllSuspiciousSegments(

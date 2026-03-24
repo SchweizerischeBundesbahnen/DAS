@@ -8,6 +8,7 @@ import 'package:app/pages/journey/journey_screen/notification/widgets/disturbanc
 import 'package:app/pages/journey/journey_screen/notification/widgets/koa_notification.dart';
 import 'package:app/pages/journey/journey_screen/notification/widgets/maneuver_notification.dart';
 import 'package:app/pages/journey/journey_screen/notification/widgets/replacement_series_notification.dart';
+import 'package:app/pages/journey/journey_screen/notification/widgets/suspicious_segment_notification.dart';
 import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/ux_testing_view_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/warn_function_modal_sheet.dart';
@@ -81,6 +82,7 @@ extension _WidgetNotificationTypeX on NotificationType {
       .advisedSpeed => AdvisedSpeedNotification(),
       .departureDispatch => DepartureDispatchNotification(),
       .illegalSegmentWithReplacement => ReplacementSeriesNotification(),
+      .suspiciousSegment => SuspiciousSegmentNotification(),
     };
   }
 }

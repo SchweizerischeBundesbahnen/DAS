@@ -4,6 +4,7 @@ import 'package:app/pages/journey/journey_screen/header/view_model/model/suspici
 import 'package:app/pages/journey/journey_screen/header/view_model/suspicious_segment_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -18,6 +19,7 @@ import 'suspicious_segment_view_model_test.mocks.dart';
 @GenerateNiceMocks([
   MockSpec<JourneyPositionViewModel>(),
   MockSpec<JourneyViewModel>(),
+  MockSpec<NotificationPriorityQueueViewModel>(),
 ])
 void main() {
   late BehaviorSubject<Journey?> rxMockJourney;
@@ -28,6 +30,7 @@ void main() {
   late StreamSubscription<SuspiciousSegmentModel> modelSubscription;
   late MockJourneyViewModel mockJourneyViewModel;
   late MockJourneyPositionViewModel mockJourneyPositionViewModel;
+  late MockNotificationPriorityQueueViewModel mockNotificationViewModel;
 
   setUp(() {
     fakeAsync((fakeAsync) {
@@ -36,11 +39,13 @@ void main() {
       rxMockJourneyPosition = BehaviorSubject<JourneyPositionModel>.seeded(JourneyPositionModel());
       mockJourneyViewModel = MockJourneyViewModel();
       mockJourneyPositionViewModel = MockJourneyPositionViewModel();
+      mockNotificationViewModel = MockNotificationPriorityQueueViewModel();
       when(mockJourneyViewModel.journey).thenAnswer((_) => rxMockJourney.stream);
       when(mockJourneyPositionViewModel.model).thenAnswer((_) => rxMockJourneyPosition.stream);
       testee = SuspiciousSegmentViewModel(
         journeyPositionViewModel: mockJourneyPositionViewModel,
         journeyViewModel: mockJourneyViewModel,
+        notificationVM: mockNotificationViewModel,
       );
       modelSubscription = testee.model.listen(emitRegister.add);
       processStreams(fakeAsync: fakeAsync);
@@ -50,6 +55,7 @@ void main() {
   tearDown(() {
     modelSubscription.cancel();
     emitRegister.clear();
+    reset(mockNotificationViewModel);
     testee.dispose();
     rxMockJourneyPosition.close();
     rxMockJourney.close();
@@ -87,6 +93,8 @@ void main() {
     });
 
     expect(testee.modelValue, equals(SuspiciousSegmentHidden()));
+    verifyNever(mockNotificationViewModel.insert(type: anyNamed('type')));
+    verifyNever(mockNotificationViewModel.remove(type: anyNamed('type')));
   });
 
   test('modelValue_whenJourneyOpenedWithSuspiciousSegment_thenIsVisible', () {
@@ -106,6 +114,8 @@ void main() {
     expect(testee.modelValue, equals(SuspiciousSegmentVisible()));
     expect(emitRegister, hasLength(2));
     expect(emitRegister.last, equals(SuspiciousSegmentVisible()));
+    verify(mockNotificationViewModel.insert(type: .suspiciousSegment)).called(1);
+    verifyNever(mockNotificationViewModel.remove(type: .suspiciousSegment));
   });
 
   test('modelValue_whenJourneyOpenedWithSuspiciousSegmentAndPositionAtStart_thenIsVisible', () {
@@ -144,6 +154,7 @@ void main() {
 
     expect(testee.modelValue, equals(SuspiciousSegmentHidden()));
     expect(emitRegister.last, equals(SuspiciousSegmentHidden()));
+    verify(mockNotificationViewModel.remove(type: .suspiciousSegment)).called(greaterThanOrEqualTo(1));
   });
 
   test('modelValue_whenPositionWithinSuspiciousSegment_thenStaysVisible', () {
@@ -194,7 +205,7 @@ void main() {
           data: [signalA, stopA, stopB, stopC, stopD],
         ),
       );
-      // Passed stopD (order 1500) – beyond all segments
+      // beyond all segments
       final beyondD = Signal(order: 2000, kilometre: []);
       rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: beyondD));
       processStreams(fakeAsync: fakeAsync);
@@ -254,6 +265,8 @@ void main() {
 
     expect(testee.modelValue, equals(SuspiciousSegmentHidden()));
     expect(emitRegister.last, equals(SuspiciousSegmentHidden()));
+    verify(mockNotificationViewModel.insert(type: .suspiciousSegment)).called(1);
+    verify(mockNotificationViewModel.remove(type: .suspiciousSegment)).called(greaterThanOrEqualTo(1));
   });
 
   test('modelValue_whenDismissed_thenIsHidden', () async {
@@ -279,6 +292,8 @@ void main() {
 
     expect(testee.modelValue, equals(SuspiciousSegmentHidden()));
     expect(emitRegister.last, equals(SuspiciousSegmentHidden()));
+    verify(mockNotificationViewModel.insert(type: .suspiciousSegment)).called(1);
+    verify(mockNotificationViewModel.remove(type: .suspiciousSegment)).called(greaterThanOrEqualTo(1));
   });
 
   test('modelValue_whenDismissedAndPositionChangesButSegmentStillPresent_thenStaysHidden', () {
@@ -340,6 +355,7 @@ void main() {
 
     expect(testee.modelValue, equals(SuspiciousSegmentVisible()));
     expect(emitRegister.last, equals(SuspiciousSegmentVisible()));
+    verify(mockNotificationViewModel.insert(type: .suspiciousSegment)).called(1);
   });
 
   test('modelValue_whenDismissedAndTmsVadUpdateAddsNewSegment_thenBecomesVisibleAgain', () {
