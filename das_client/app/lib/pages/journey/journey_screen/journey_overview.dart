@@ -265,8 +265,12 @@ class _ProviderScope extends StatelessWidget {
             );
           },
         ),
-        ProxyProvider3<JourneyViewModel, JourneyPositionViewModel, NotificationPriorityQueueViewModel,
-            SuspiciousSegmentViewModel>(
+        ProxyProvider3<
+          JourneyViewModel,
+          JourneyPositionViewModel,
+          NotificationPriorityQueueViewModel,
+          SuspiciousSegmentViewModel
+        >(
           lazy: false,
           update: (_, journeyVM, journeyPositionVM, notificationVM, prev) {
             if (prev != null) return prev;

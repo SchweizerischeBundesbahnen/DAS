@@ -25,4 +25,3 @@ class SuspiciousSegmentVisible extends SuspiciousSegmentModel {
   @override
   String toString() => 'SuspiciousSegmentVisible{}';
 }
-
