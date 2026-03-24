@@ -6,6 +6,9 @@ spring:
     active: ${STAGE:local}
   application:
     name: backend
+  web:
+    locale: en
+    locale-resolver: fixed
   mvc:
     problemdetails:
       enabled: true

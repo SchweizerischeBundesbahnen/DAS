@@ -5,6 +5,7 @@ import ch.sbb.backend.admin.application.settings.model.response.AppVersion;
 import ch.sbb.backend.admin.application.settings.model.response.CurrentAppVersion;
 import ch.sbb.backend.admin.domain.settings.model.SemanticVersion;
 import ch.sbb.backend.admin.infrastructure.jpa.AppVersionEntity;
+import ch.sbb.backend.common.ConflictException;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
@@ -48,14 +49,6 @@ public class AppVersionServiceImpl implements AppVersionService {
         return new CurrentAppVersion(expired, expiryDate);
     }
 
-    private boolean isBlockedVersion(AppVersion appVersion, SemanticVersion currentVersion) {
-        return !appVersion.minimalVersion() && currentVersion.equals(new SemanticVersion(appVersion.version()));
-    }
-
-    private boolean isMinimalVersionGreater(AppVersion appVersion, SemanticVersion currentVersion) {
-        return appVersion.minimalVersion() && currentVersion.isLowerThan(new SemanticVersion(appVersion.version()));
-    }
-
     @Override
     public boolean isExpired(AppVersion appVersion) {
         LocalDate expiryDate = appVersion.expiryDate();
@@ -70,12 +63,14 @@ public class AppVersionServiceImpl implements AppVersionService {
 
     @Override
     public AppVersion create(AppVersionRequest createRequest) {
+        checkUniqueVersion(createRequest.version(), null);
         AppVersionEntity entity = AppVersionEntity.from(createRequest);
         return appVersionRepository.save(entity.toAppVersion());
     }
 
     @Override
     public AppVersion update(Integer id, AppVersionRequest updateRequest) {
+        checkUniqueVersion(updateRequest.version(), id);
         Optional<AppVersion> optional = appVersionRepository.findById(id);
         if (optional.isEmpty()) {
             return null;
@@ -94,5 +89,19 @@ public class AppVersionServiceImpl implements AppVersionService {
     @Override
     public void delete(Integer id) {
         appVersionRepository.deleteById(id);
+    }
+
+    private boolean isBlockedVersion(AppVersion appVersion, SemanticVersion currentVersion) {
+        return !appVersion.minimalVersion() && currentVersion.equals(new SemanticVersion(appVersion.version()));
+    }
+
+    private boolean isMinimalVersionGreater(AppVersion appVersion, SemanticVersion currentVersion) {
+        return appVersion.minimalVersion() && currentVersion.isLowerThan(new SemanticVersion(appVersion.version()));
+    }
+
+    private void checkUniqueVersion(String version, Integer selfId) {
+        if (appVersionRepository.existsByVersion(version, selfId)) {
+            throw new ConflictException("Version already exists");
+        }
     }
 }

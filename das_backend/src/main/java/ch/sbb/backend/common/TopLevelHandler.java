@@ -3,11 +3,13 @@ package ch.sbb.backend.common;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.exception.SQLGrammarException;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.Nullable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -15,6 +17,9 @@ import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -66,12 +71,44 @@ public class TopLevelHandler extends ResponseEntityExceptionHandler {
             status);
     }
 
+    @Override
+    protected @Nullable ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        final ProblemDetail springProblemDetail = ex.getBody();
+        final HttpStatus httpStatus = HttpStatus.resolve(status.value()) == null ? HttpStatus.BAD_REQUEST : HttpStatus.resolve(status.value());
+        final String springDetail = springProblemDetail == null ? null : springProblemDetail.getDetail();
+
+        final String bindingErrors = ex.getBindingResult().getAllErrors().stream()
+            .map(this::formatBindingError)
+            .collect(Collectors.joining("; "));
+
+        final String detail = StringUtils.isBlank(bindingErrors)
+            ? StringUtils.defaultIfBlank(springDetail, "Validation failed")
+            : StringUtils.defaultIfBlank(springDetail, "Validation failed") + " -> " + bindingErrors;
+
+        final Problem problem = ResponseEntityFactory.createProblem(
+            httpStatus,
+            StringUtils.defaultIfBlank(springProblemDetail == null ? null : springProblemDetail.getTitle(), "Bad Request"),
+            detail,
+            extractInstance(springProblemDetail, request));
+
+        return new ResponseEntity<>(problem,
+            ResponseEntityFactory.createProblemHeader(ApiDocumentation.HEADER_CONTENT_LANGUAGE_ERROR_DETAIL_DEFAULT, request.getHeader(ApiParametersDefault.HEADER_REQUEST_ID)),
+            httpStatus);
+    }
+
+    private String formatBindingError(ObjectError error) {
+        if (error instanceof FieldError fieldError) {
+            return fieldError.getField() + "=" + StringUtils.defaultIfBlank(fieldError.getDefaultMessage(), "invalid value");
+        }
+        return error.getObjectName() + "=" + StringUtils.defaultIfBlank(error.getDefaultMessage(), "invalid object");
+    }
+
     private String extractDetail(ProblemDetail problemDetail, WebRequest request) {
         final StringBuilder builder = new StringBuilder();
         builder.append(StringUtils.isBlank(problemDetail.getDetail()) ? "<UNKNOWN>" : problemDetail.getDetail());
-        builder.append(" -> params: ");
         Map<String, String[]> params = request.getParameterMap();
         if (!params.isEmpty()) {
+            builder.append(" -> params: ");
             Iterator<String> i = request.getParameterNames();
             while (i.hasNext()) {
                 String paramName = i.next();
@@ -85,7 +122,7 @@ public class TopLevelHandler extends ResponseEntityExceptionHandler {
     }
 
     private String extractInstance(ProblemDetail problemDetail, WebRequest request) {
-        if (problemDetail.getInstance() != null) {
+        if (problemDetail != null && problemDetail.getInstance() != null) {
             return problemDetail.getInstance().toString();
         }
         if (StringUtils.isNotBlank(request.getContextPath())) {
@@ -104,6 +141,11 @@ public class TopLevelHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(AuthorizationDeniedException.class)
     ResponseEntity<Problem> handleAuthorizationDenied(AuthorizationDeniedException exception) {
         return createProblemResponse(HttpStatus.FORBIDDEN, "Forbidden", "Not allowed!", exception);
+    }
+
+    @ExceptionHandler(ConflictException.class)
+    ResponseEntity<Problem> handleConflictException(ConflictException exception) {
+        return createProblemResponse(HttpStatus.CONFLICT, "Conflict", exception.getMessage(), exception);
     }
 
     /**

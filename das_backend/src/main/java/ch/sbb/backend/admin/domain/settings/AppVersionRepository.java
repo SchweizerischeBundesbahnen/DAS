@@ -13,4 +13,6 @@ public interface AppVersionRepository {
     AppVersion save(AppVersion appVersion);
 
     void deleteById(Integer id);
+
+    boolean existsByVersion(String version, Integer selfId);
 }

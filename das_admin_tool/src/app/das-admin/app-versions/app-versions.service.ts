@@ -4,6 +4,7 @@ import {AppVersionDialog, VersionDialogEditResult} from './app-version-dialog/ap
 import {firstValueFrom} from 'rxjs';
 import {SbbDialogService} from '@sbb-esta/lyne-angular/dialog';
 import {ToastService} from '../../shared/toast-service';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -32,10 +33,8 @@ export class AppVersionsService {
         this.toastService.success($localize`:@@app_versions_toast_edit_success:Die blockierte App Version wurde erfolgreich gespeichert.`);
         this.reloadAppVersions();
       }
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) {
-      // todo error message? (especially constraint! duplicate version)
-      this.toastService.error($localize`:@@app_versions_toast_edit_error:Beim Speichern der blockierten App Version ist ein Fehler aufgetreten.`)
+    } catch (e) {
+      this.handleError(e);
     }
   }
 
@@ -47,10 +46,16 @@ export class AppVersionsService {
         this.toastService.success($localize`:@@app_versions_toast_create_success:Die blockierte App Version wurde erfolgreich erstellt.`);
         this.reloadAppVersions();
       }
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      // todo error message? (especially constraint! duplicate version)
-      this.toastService.error($localize`:@@app_versions_toast_create_error:Beim Erstellen der blockierten App Version ist ein Fehler aufgetreten.`)
+      this.handleError(error)
+    }
+  }
+
+  private handleError(e: unknown) {
+    if (e instanceof HttpErrorResponse && e.error.status === 409) {
+      this.toastService.error($localize`:@@app_versions_toast_conflict_error:Diese App Version existiert bereits.`);
+    } else {
+      this.toastService.error($localize`:@@app_versions_toast_error:Beim Speichern der blockierten App Version ist ein Fehler aufgetreten.`)
     }
   }
 }

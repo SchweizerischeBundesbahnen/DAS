@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SpringDataJpaAppVersionRepository extends ListCrudRepository<AppVersionEntity, Integer> {
 
+    boolean existsByVersionAndIdNot(String version, Integer id);
 }
