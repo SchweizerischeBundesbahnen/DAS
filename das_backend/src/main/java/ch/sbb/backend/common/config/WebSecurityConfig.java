@@ -1,5 +1,6 @@
 package ch.sbb.backend.common.config;
 
+import static ch.sbb.backend.admin.application.settings.AppVersionController.API_SETTINGS_APP_VERSION;
 import static ch.sbb.backend.admin.application.settings.SettingsController.API_SETTINGS;
 import static ch.sbb.backend.formation.api.v1.FormationController.API_FORMATIONS;
 import static org.springframework.security.config.Customizer.withDefaults;
@@ -8,6 +9,7 @@ import ch.sbb.backend.common.security.UserRole;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -29,9 +31,11 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthenticationConverter jwtAuthenticationConverter) {
         http.authorizeHttpRequests(authorize -> authorize
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .requestMatchers("/actuator/health/**").permitAll()
                 .requestMatchers(API_SETTINGS, API_FORMATIONS).hasAnyRole(UserRole.OBSERVER, UserRole.DRIVER)
+                .requestMatchers(API_SETTINGS_APP_VERSION + "/**").hasRole(UserRole.ADMIN)
                 .anyRequest().authenticated()
             )
             .csrf(AbstractHttpConfigurer::disable)
