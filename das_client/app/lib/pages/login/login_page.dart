@@ -8,7 +8,6 @@ import 'package:app/pages/login/widgets/draggable_bottom_sheet.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 @RoutePage()
@@ -72,8 +71,8 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _background() => SvgPicture.asset(
-    AppAssets.loginPageBackground,
+  Widget _background() => Image(
+    image: AssetImage(AppAssets.loginPageBackground),
     fit: .fill,
     width: double.infinity,
     height: double.infinity,
