@@ -2040,13 +2040,11 @@ void main() {
     // T40_4 (segment index 3, suspicious): ServicePoint @ 0, Signal @ 100, Signal @ 900, Signal @ 2000
     expect(suspiciousPoints, hasLength(6));
 
-    // T40_2
     expect(suspiciousPoints[0].order, equals(calculateOrder(1, 0)));
     expect(suspiciousPoints[0].kilometre, equals([]));
     expect(suspiciousPoints[1].order, equals(calculateOrder(1, 800)));
     expect(suspiciousPoints[1].kilometre, equals([]));
 
-    // T40_4
     expect(suspiciousPoints[2].order, equals(calculateOrder(3, 0)));
     expect(suspiciousPoints[2].kilometre, equals([]));
     expect(suspiciousPoints[3].order, equals(calculateOrder(3, 100)));

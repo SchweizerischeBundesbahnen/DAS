@@ -61,21 +61,14 @@ void main() {
     rxMockJourney.close();
   });
 
-  // Journey points used across tests
   final signalA = Signal(order: 50, kilometre: []);
   final stopA = ServicePoint(name: 'Stop A', abbreviation: 'SA', locationCode: '', order: 100, kilometre: []);
   final stopB = ServicePoint(name: 'Stop B', abbreviation: 'SB', locationCode: '', order: 500, kilometre: []);
   final stopC = ServicePoint(name: 'Stop C', abbreviation: 'SC', locationCode: '', order: 1000, kilometre: []);
   final stopD = ServicePoint(name: 'Stop D', abbreviation: 'SD', locationCode: '', order: 1500, kilometre: []);
 
-  // Suspicious segment covering stopA..stopB
   final suspiciousSegmentAB = SuspiciousSegment(startOrder: stopA.order, endOrder: stopB.order);
-  // Suspicious segment covering stopC..stopD
   final suspiciousSegmentCD = SuspiciousSegment(startOrder: stopC.order, endOrder: stopD.order);
-
-  // ---------------------------------------------------------------------------
-  // Initial state
-  // ---------------------------------------------------------------------------
 
   test('modelValue_whenNoJourney_thenIsHidden', () {
     expect(testee.modelValue, equals(SuspiciousSegmentHidden()));

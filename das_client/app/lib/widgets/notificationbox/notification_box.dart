@@ -34,8 +34,6 @@ class NotificationBox extends StatelessWidget {
         ),
       ),
       child: Container(
-        constraints: BoxConstraints(minHeight: 52.0),
-        alignment: .center,
         decoration: BoxDecoration(
           border: Border.all(color: style.backgroundColor),
           borderRadius: const BorderRadius.only(
