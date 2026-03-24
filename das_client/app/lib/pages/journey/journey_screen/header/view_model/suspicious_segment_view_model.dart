@@ -46,7 +46,6 @@ class SuspiciousSegmentViewModel extends JourneyAwareViewModel {
 
   @override
   void journeyIdentificationChanged(Journey? journey) {
-    _logger.fine('Journey identification changed – resetting suspicious segment state.');
     _lastCurrentPosition = null;
     _dismissed = false;
     _calculateAndEmitModel(journey: journey, currentPosition: null);
