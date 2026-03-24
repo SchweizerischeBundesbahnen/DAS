@@ -78,6 +78,14 @@
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
+            },
+            "e2e": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.e2e.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -90,6 +98,9 @@
             },
             "development": {
               "buildTarget": "das_admin_tool:build:development"
+            },
+            "e2e": {
+              "buildTarget": "das_admin_tool:build:e2e"
             }
           },
           "defaultConfiguration": "development"
@@ -156,6 +167,21 @@
             "lintFilePatterns": [
               "src/**/*.ts",
               "src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "das_admin_tool-e2e": {
+      "root": "e2e/",
+      "projectType": "application",
+      "architect": {
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "*.ts",
+              "**/*.ts"
             ]
           }
         }
