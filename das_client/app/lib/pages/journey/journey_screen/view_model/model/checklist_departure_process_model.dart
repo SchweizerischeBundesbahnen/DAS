@@ -2,6 +2,12 @@ import 'package:sfera/component.dart';
 
 sealed class ChecklistDepartureProcessModel {
   const ChecklistDepartureProcessModel._();
+
+  ServicePoint? get nextStop => switch (this) {
+    ChecklistDepartureProcessDisabled() => null,
+    NoCustomerOrientedDepartureChecklist(nextStop: final stop) => stop,
+    CustomerOrientedDepartureChecklist(nextStop: final stop) => stop,
+  };
 }
 
 class ChecklistDepartureProcessDisabled extends ChecklistDepartureProcessModel {
