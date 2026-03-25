@@ -23,6 +23,7 @@ class Metadata {
     this.lineFootNoteLocations = const {},
     this.radioContactLists = const [],
     this.levelCrossingGroups = const [],
+    this.suspiciousSegments = const [],
     DateTime? timestamp,
     bool? anyOperationalArrivalDepartureTimes,
     SplayTreeMap<int, Iterable<TrainSeriesSpeed>>? lineSpeeds,
@@ -54,4 +55,5 @@ class Metadata {
   final SplayTreeMap<int, Iterable<TrainSeriesSpeed>> lineSpeeds;
   final SplayTreeMap<int, SingleSpeed?> calculatedSpeeds;
   final List<LevelCrossingGroup> levelCrossingGroups;
+  final List<SuspiciousSegment> suspiciousSegments;
 }

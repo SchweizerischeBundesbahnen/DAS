@@ -20,4 +20,5 @@ enum Datatype {
   communicationNetworkChannel,
   shuntingMovement,
   trainDriverTurnover,
+  suspiciousJourneyPoint,
 }

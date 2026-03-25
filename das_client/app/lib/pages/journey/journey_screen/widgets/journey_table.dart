@@ -37,6 +37,7 @@ import 'package:app/pages/journey/journey_screen/widgets/table/service_point_row
 import 'package:app/pages/journey/journey_screen/widgets/table/shunting_movement_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/signal_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/speed_change_row.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/suspicious_journey_point_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/train_driver_turnover_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/tram_area_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/uncoded_operational_indication_row.dart';
@@ -311,10 +312,16 @@ class JourneyTable extends StatelessWidget {
             data: rowData as ShuntingMovement,
             rowIndex: index,
           );
-        case Datatype.trainDriverTurnover:
+        case .trainDriverTurnover:
           return TrainDriverTurnoverRow(
             metadata: metadata,
             data: rowData as TrainDriverTurnover,
+            rowIndex: index,
+          );
+        case .suspiciousJourneyPoint:
+          return SuspiciousJourneyPointRow(
+            metadata: metadata,
+            data: rowData as SuspiciousJourneyPoint,
             rowIndex: index,
           );
       }

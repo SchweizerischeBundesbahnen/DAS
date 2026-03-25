@@ -2,6 +2,7 @@ import 'package:sfera/src/data/dto/end_destination_change_nsp_dto.dart';
 import 'package:sfera/src/data/dto/nsp_dto.dart';
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 import 'package:sfera/src/data/dto/stop_to_pass_or_pass_to_stop_nsp_dto.dart';
+import 'package:sfera/src/data/dto/suspicious_segment_nsp_dto.dart';
 import 'package:sfera/src/data/dto/tms_data_dto.dart';
 import 'package:sfera/src/data/dto/train_run_rerouting_nsp_dto.dart';
 
@@ -24,6 +25,8 @@ class GeneralJpInformationNspDto extends NspDto {
       return TrainRunReroutingNspDto(attributes: attributes, children: children, value: value);
     } else if (groupName?.value == EndDestinationChangeNspDto.groupNameValue) {
       return EndDestinationChangeNspDto(attributes: attributes, children: children, value: value);
+    } else if (groupName?.value == SuspiciousSegmentNspDto.groupNameValue) {
+      return SuspiciousSegmentNspDto(attributes: attributes, children: children, value: value);
     }
     return GeneralJpInformationNspDto(attributes: attributes, children: children, value: value);
   }
