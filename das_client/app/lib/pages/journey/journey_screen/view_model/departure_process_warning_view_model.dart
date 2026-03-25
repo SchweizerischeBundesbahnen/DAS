@@ -16,7 +16,7 @@ class DepartureProcessWarningViewModel extends JourneyAwareViewModel {
 
   final _rxShowChronographWarning = BehaviorSubject<bool>.seeded(true);
 
-  Future<bool> get _departureProcessFeatureEnabled => _ruFeatureProvider.isRuFeatureEnabled(.departureProcess);
+  bool _isDepartureProcessFeatureEnabled = false;
 
   Stream<bool> get showChronographWarning => _rxShowChronographWarning.distinct();
 
@@ -25,21 +25,20 @@ class DepartureProcessWarningViewModel extends JourneyAwareViewModel {
   /// Toggles the [showChronographWarning] stream.
   /// Has no effect if the departureProcess RU feature is disabled.
   void toggleChronographWarning() {
-    _departureProcessFeatureEnabled.then((enabled) {
-      if (!enabled) {
-        _log.info('Ignoring chronographWarning toggle: departureProcess feature is disabled');
-        return;
-      }
-      if (_rxShowChronographWarning.isClosed) return;
-      final newValue = !_rxShowChronographWarning.value;
-      _log.info('User toggled chronographWarning to $newValue');
-      _rxShowChronographWarning.add(newValue);
-    });
+    if (!_isDepartureProcessFeatureEnabled) {
+      _log.info('Ignoring chronographWarning toggle: departureProcess feature is disabled');
+      return;
+    }
+    if (_rxShowChronographWarning.isClosed) return;
+    final newValue = !_rxShowChronographWarning.value;
+    _log.info('User toggled chronographWarning to $newValue');
+    _rxShowChronographWarning.add(newValue);
   }
 
   @override
   void journeyIdentificationChanged(Journey? journey) {
-    _departureProcessFeatureEnabled.then((enabled) {
+    _ruFeatureProvider.isRuFeatureEnabled(.departureProcess).then((enabled) {
+      _isDepartureProcessFeatureEnabled = enabled;
       if (_rxShowChronographWarning.isClosed) return;
       _rxShowChronographWarning.add(enabled);
     });

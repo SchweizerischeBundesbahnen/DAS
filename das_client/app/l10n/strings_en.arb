@@ -78,6 +78,7 @@
   "w_departure_process_checklist_item_3_koa": "3. KoA / departure time",
   "w_departure_process_checklist_item_4": "4. Check door locking",
   "w_departure_process_checklist_item_5": "5. Check authorisation again",
+  "w_chronograph_no_consent_warning": "No\nAuthorisation",
   "w_service_point_modal_communication_label": "Network type and radio channel",
   "w_service_point_modal_communication_radio_channel": "Radio channel",
   "w_service_point_modal_communication_radio_channels_not_found": "No radio channel available",
