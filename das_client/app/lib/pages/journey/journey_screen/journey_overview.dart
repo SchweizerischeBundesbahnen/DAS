@@ -31,6 +31,7 @@ import 'package:app/pages/journey/journey_screen/view_model/tour_system_link_vis
 import 'package:app/pages/journey/journey_screen/view_model/ux_testing_view_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/journey_navigation_buttons.dart';
 import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
+import 'package:app/pages/journey/journey_screen/widgets/no_customer_oriented_departure_checklist_button.dart';
 import 'package:app/pages/journey/view_model/decisive_gradient_view_model.dart';
 import 'package:app/pages/journey/view_model/disturbance_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
@@ -75,6 +76,7 @@ class JourneyOverview extends StatelessWidget {
             children: [
               JourneyTable(),
               Align(alignment: .bottomCenter, child: JourneyNavigationButtons()),
+              Align(alignment: .bottomLeft, child: NoCustomerOrientedDepartureChecklistButton()),
             ],
           ),
         ),
@@ -195,19 +197,18 @@ class _ProviderScope extends StatelessWidget {
           },
           dispose: (_, vm) => vm.dispose(),
         ),
-        ProxyProvider4<
+        ProxyProvider3<
           JourneyViewModel,
           JourneyPositionViewModel,
-          RuFeatureProvider,
           UxTestingViewModel,
           ChecklistDepartureProcessViewModel
         >(
-          update: (_, journeyVM, positionVM, ruFeatureProvider, uxTestingVM, prev) {
+          update: (_, journeyVM, positionVM, uxTestingVM, prev) {
             if (prev != null) return prev;
             return ChecklistDepartureProcessViewModel(
               journeyViewModel: journeyVM,
               journeyPositionViewModel: positionVM,
-              ruFeatureProvider: ruFeatureProvider,
+              ruFeatureProvider: DI.get<RuFeatureProvider>(),
               uxTestingViewModel: uxTestingVM,
             );
           },
