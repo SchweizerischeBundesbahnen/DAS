@@ -66,7 +66,30 @@ void main() {
     });
 
     group('toggleChronographWarning', () {
+      // Pushes a journey so that journeyIdentificationChanged fires and
+      // _isDepartureProcessFeatureEnabled is set to true.
+      void activateFeature() {
+        testAsync.run((_) {
+          journeySubject.add(
+            Journey(
+              metadata: Metadata(
+                trainIdentification: TrainIdentification(
+                  ru: RailwayUndertaking.sbbP,
+                  trainNumber: '1',
+                  date: DateTime(2026, 3, 24),
+                ),
+              ),
+              data: [],
+            ),
+          );
+        });
+        processStreams(fakeAsync: testAsync);
+        chronographRegister.clear();
+      }
+
       test('whenFeatureEnabled_togglesFromTrueToFalse', () {
+        activateFeature();
+
         testAsync.run((_) {
           testee.toggleChronographWarning();
         });
@@ -76,6 +99,8 @@ void main() {
       });
 
       test('whenFeatureEnabled_togglesBackToTrueOnSecondCall', () {
+        activateFeature();
+
         testAsync.run((_) {
           testee.toggleChronographWarning();
         });
@@ -91,23 +116,58 @@ void main() {
       });
 
       test('whenFeatureDisabled_doesNotChangeChronographWarning', () {
+        // Disable the feature and push a new identification so that
+        // journeyIdentificationChanged fires with enabled=false.
         when(
           mockRuFeatureProvider.isRuFeatureEnabled(RuFeatureKeys.departureProcess),
         ).thenAnswer((_) => Future.value(false));
+        testAsync.run((_) {
+          journeySubject.add(
+            Journey(
+              metadata: Metadata(
+                trainIdentification: TrainIdentification(
+                  ru: RailwayUndertaking.sbbP,
+                  trainNumber: '1',
+                  date: DateTime(2026, 3, 24),
+                ),
+              ),
+              data: [],
+            ),
+          );
+        });
+        processStreams(fakeAsync: testAsync);
+        // After journeyIdentificationChanged with disabled feature the warning
+        // is seeded false; distinct() suppresses equal values.
+        chronographRegister.clear();
 
         testAsync.run((_) {
           testee.toggleChronographWarning();
         });
         testAsync.elapse(Duration.zero);
 
-        // distinct() suppresses second true; the register must still be [true]
-        expect(chronographRegister, orderedEquals([true]));
+        // Toggle must be ignored when feature is disabled – no new emission.
+        expect(chronographRegister, isEmpty);
       });
 
       test('whenFeatureDisabled_emitsNoAdditionalValue', () {
         when(
           mockRuFeatureProvider.isRuFeatureEnabled(RuFeatureKeys.departureProcess),
         ).thenAnswer((_) => Future.value(false));
+        testAsync.run((_) {
+          journeySubject.add(
+            Journey(
+              metadata: Metadata(
+                trainIdentification: TrainIdentification(
+                  ru: RailwayUndertaking.sbbP,
+                  trainNumber: '1',
+                  date: DateTime(2026, 3, 24),
+                ),
+              ),
+              data: [],
+            ),
+          );
+        });
+        processStreams(fakeAsync: testAsync);
         chronographRegister.clear();
 
         testAsync.run((_) {
@@ -183,6 +243,8 @@ void main() {
         expect(chronographRegister.last, isFalse);
         chronographRegister.clear();
 
+        // Push the same identification multiple times – journeyUpdated fires,
+        // not journeyIdentificationChanged, so the warning must stay false.
         testAsync.run((_) {
           journeySubject.add(
             Journey(
@@ -207,12 +269,35 @@ void main() {
       });
 
       test('whenJourneyChangesFromNullToFirstJourney_chronographWarningEmitsTrue', () {
-        // Toggle to false first so the reset to true is observable via distinct()
-        testAsync.run((_) => testee.toggleChronographWarning());
-        testAsync.elapse(Duration.zero);
-        expect(chronographRegister.last, isFalse);
+        // Toggle to false first so the reset to true is observable via distinct().
+        // At this point no journey has arrived yet, so the feature is disabled
+        // and the toggle is a no-op; force false by adding a disabled-feature
+        // journey first, then re-enable and push a new identification.
+        when(
+          mockRuFeatureProvider.isRuFeatureEnabled(RuFeatureKeys.departureProcess),
+        ).thenAnswer((_) => Future.value(false));
+        testAsync.run((_) {
+          journeySubject.add(
+            Journey(
+              metadata: Metadata(
+                trainIdentification: TrainIdentification(
+                  ru: RailwayUndertaking.sbbP,
+                  trainNumber: '0',
+                  date: DateTime(2026, 3, 24),
+                ),
+              ),
+              data: [],
+            ),
+          );
+        });
+        processStreams(fakeAsync: testAsync);
+        // Warning is now false (feature disabled).
         chronographRegister.clear();
 
+        // Re-enable the feature and change the identification.
+        when(
+          mockRuFeatureProvider.isRuFeatureEnabled(RuFeatureKeys.departureProcess),
+        ).thenAnswer((_) => Future.value(true));
         testAsync.run((_) {
           journeySubject.add(
             Journey(
