@@ -1,3 +1,5 @@
+import 'dart:isolate';
+
 import 'package:logging/logging.dart';
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
@@ -94,10 +96,7 @@ class SferaLocalRepoImpl implements SferaLocalRepo {
   @override
   Future<bool> saveData(Iterable<String> data) async {
     try {
-      final sferaElements = data
-          .map((content) => SferaReplyParser.parse(content))
-          .whereIsValid()
-          .whereIsSupportedType();
+      final sferaElements = await _parseValidElementsInIsolate(data);
 
       if (sferaElements.isEmpty) {
         _log.warning('No valid data passed: $data');
@@ -129,6 +128,11 @@ class SferaLocalRepoImpl implements SferaLocalRepo {
   @override
   Future<SferaDbMetrics> getMetrics() => _databaseService.getMetrics();
 }
+
+/// top level method to run CPU heavy parse work on background isolate
+Future<Iterable<SferaXmlElementDto>> _parseValidElementsInIsolate(Iterable<String> data) => Isolate.run(() {
+  return data.map((content) => SferaReplyParser.parse(content)).whereIsValid().whereIsSupportedType();
+});
 
 extension _SferaElementIterableExtension on Iterable<SferaXmlElementDto> {
   Iterable<SferaXmlElementDto> whereIsValid() => where((element) {
