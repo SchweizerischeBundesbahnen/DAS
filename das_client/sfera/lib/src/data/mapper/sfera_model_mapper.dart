@@ -82,13 +82,11 @@ class SferaModelMapper {
 
     final communicationChanges = _parseCommunicationNetworkChanges(segmentProfileReferences, segmentProfiles, spOrders);
     journeyData.addAll(communicationChanges);
-    journeyData.sort();
 
-    final suspiciousSegments = _parseSuspiciousSegments(
-      journeyProfile.generalJpInformation,
-      segmentProfileReferences,
-    );
-    _replaceWithinSuspiciousSegments(journeyData, suspiciousSegments);
+    final suspiciousSegments = _parseSuspiciousSegments(journeyProfile.generalJpInformation, segmentProfileReferences);
+    _replaceAllInSuspiciousSegment(journeyData, suspiciousSegments);
+
+    journeyData.sort();
 
     final journeyPoints = journeyData.whereType<JourneyPoint>().toList();
 
@@ -728,16 +726,13 @@ class SferaModelMapper {
     return result;
   }
 
-  static void _replaceWithinSuspiciousSegments(List<BaseData> journeyData, List<SuspiciousSegment> suspiciousSegments) {
+  static void _replaceAllInSuspiciousSegment(List<BaseData> journeyData, List<SuspiciousSegment> suspiciousSegments) {
     if (suspiciousSegments.isEmpty) return;
 
-    for (int i = 0; i < journeyData.length; i++) {
-      final item = journeyData[i];
-      if (item is SuspiciousJourneyPoint) continue;
-
-      final isSuspicious = suspiciousSegments.any((segment) => segment.appliesToOrder(item.order));
-      if (isSuspicious) {
-        journeyData[i] = SuspiciousJourneyPoint(order: item.order, kilometre: []);
+    for (final segment in suspiciousSegments) {
+      journeyData.removeWhere((item) => segment.appliesToOrder(item.order));
+      if (segment.startOrder != null) {
+        journeyData.add(SuspiciousJourneyPoint(order: segment.startOrder!, kilometre: []));
       }
     }
   }

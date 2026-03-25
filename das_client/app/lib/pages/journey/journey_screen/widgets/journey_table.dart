@@ -319,16 +319,10 @@ class JourneyTable extends StatelessWidget {
             rowIndex: index,
           );
         case .suspiciousJourneyPoint:
-          final previousIsSuspicious = index > 0 && journeyTableRowData[index - 1].dataType == .suspiciousJourneyPoint;
-          final nextIsSuspicious =
-              index < journeyTableRowData.length - 1 &&
-              journeyTableRowData[index + 1].dataType == .suspiciousJourneyPoint;
           return SuspiciousJourneyPointRow(
             metadata: metadata,
             data: rowData as SuspiciousJourneyPoint,
             rowIndex: index,
-            isFirst: !previousIsSuspicious,
-            isLast: !nextIsSuspicious,
           );
       }
     });
