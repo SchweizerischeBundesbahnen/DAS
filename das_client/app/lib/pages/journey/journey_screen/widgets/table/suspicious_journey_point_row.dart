@@ -20,20 +20,20 @@ class SuspiciousJourneyPointRow extends WidgetRowBuilder<SuspiciousJourneyPoint>
   Widget buildRowWidget(BuildContext context) {
     return Container(
       key: ValueKey(data.spId),
-      width: double.infinity,
+      width: .infinity,
       height: height,
       decoration: BoxDecoration(
         color: ThemeUtil.getDASTableColor(context),
         border: Border(bottom: BorderSide(color: ThemeUtil.getDASTableBorderColor(context))),
       ),
-      padding: EdgeInsets.symmetric(horizontal: SBBSpacing.xSmall),
-      alignment: Alignment.centerLeft,
+      padding: .symmetric(horizontal: SBBSpacing.xSmall),
+      alignment: .centerLeft,
       child: Row(
         spacing: SBBSpacing.xSmall,
         children: [
           SvgPicture.asset(
             AppAssets.iconSignExclamationPoint,
-            colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), .srcIn),
+            colorFilter: .mode(ThemeUtil.getIconColor(context), .srcIn),
           ),
           Text(
             context.l10n.w_suspicious_journey_point_warning,
