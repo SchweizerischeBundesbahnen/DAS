@@ -199,6 +199,57 @@ void main() {
       });
     });
 
+    test('whenFeatureDisabled_onCreation_emitsFalse', () {
+      when(mockRuFeatureProvider.isRuFeatureEnabled(.departureProcess)).thenAnswer((_) => Future.value(false));
+
+      testAsync.run((_) {
+        journeyPositionSubject.add(JourneyPositionModel(currentPosition: null));
+      });
+      processStreams(fakeAsync: testAsync);
+
+      expect(departureButtonRegister.last, isFalse);
+    });
+
+    test('whenFeatureDisabled_andPositionIsServicePoint_emitsFalse', () {
+      when(mockRuFeatureProvider.isRuFeatureEnabled(.departureProcess)).thenAnswer((_) => Future.value(false));
+
+      testAsync.run((_) {
+        journeyPositionSubject.add(JourneyPositionModel(currentPosition: servicePointA));
+      });
+      processStreams(fakeAsync: testAsync);
+
+      expect(departureButtonRegister.last, isFalse);
+    });
+
+    test('whenFeatureDisabled_andPositionIsIntermediateSignal_emitsFalse', () {
+      when(mockRuFeatureProvider.isRuFeatureEnabled(.departureProcess)).thenAnswer((_) => Future.value(false));
+
+      testAsync.run((_) {
+        journeyPositionSubject.add(JourneyPositionModel(currentPosition: intermediateSignal));
+      });
+      processStreams(fakeAsync: testAsync);
+
+      expect(departureButtonRegister.last, isFalse);
+    });
+
+    test('whenFeatureDisabledAfterEligiblePosition_emitsFalse', () {
+      testAsync.run((_) {
+        journeyPositionSubject.add(JourneyPositionModel(currentPosition: servicePointA));
+      });
+      processStreams(fakeAsync: testAsync);
+      expect(departureButtonRegister.last, isTrue);
+      departureButtonRegister.clear();
+
+      when(mockRuFeatureProvider.isRuFeatureEnabled(.departureProcess)).thenAnswer((_) => Future.value(false));
+
+      testAsync.run((_) {
+        journeyPositionSubject.add(JourneyPositionModel(currentPosition: intermediateSignal));
+      });
+      processStreams(fakeAsync: testAsync);
+
+      expect(departureButtonRegister, orderedEquals([false]));
+    });
+
     test('whenJourneyUpdatedWithSameId_departureButtonStatePreserved', () {
       final trainId = TrainIdentification(
         ru: RailwayUndertaking.sbbP,
