@@ -721,7 +721,13 @@ class SferaModelMapper {
         _log.warning('Suspicious SP_ID "$spId" not found in segment profile references.');
         continue;
       }
-      result.add(SuspiciousSegment(spId: spId, startOrder: calculateOrder(refIdx, 0), endOrder: calculateOrder(refIdx + 1, 0) - 1));
+      result.add(
+        SuspiciousSegment(
+          spId: spId,
+          startOrder: calculateOrder(refIdx, 0),
+          endOrder: calculateOrder(refIdx + 1, 0) - 1,
+        ),
+      );
     }
     return result;
   }
