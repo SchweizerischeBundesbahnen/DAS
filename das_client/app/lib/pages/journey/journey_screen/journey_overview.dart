@@ -18,6 +18,7 @@ import 'package:app/pages/journey/journey_screen/view_model/calculated_speed_vie
 import 'package:app/pages/journey/journey_screen/view_model/checklist_departure_process_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/departure_dispatch_notification_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/departure_process_warning_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_table_advancement_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_table_view_model.dart';
@@ -35,6 +36,7 @@ import 'package:app/pages/journey/view_model/disturbance_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
+import 'package:app/provider/ru_feature_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -118,8 +120,9 @@ class _ProviderScope extends StatelessWidget {
         Provider<JourneyPositionViewModel>(
           create: (_) => DI.get<JourneyPositionViewModel>(),
         ),
-        Provider<ChecklistDepartureProcessViewModel>(
-          create: (_) => DI.get<ChecklistDepartureProcessViewModel>(),
+
+        Provider<DepartureProcessWarningViewModel>(
+          create: (_) => DI.get<DepartureProcessWarningViewModel>(),
         ),
         Provider<JourneyTableAdvancementViewModel>(
           create: (_) => DI.get<JourneyTableAdvancementViewModel>(),
@@ -192,7 +195,22 @@ class _ProviderScope extends StatelessWidget {
           },
           dispose: (_, vm) => vm.dispose(),
         ),
-
+        ProxyProvider3<
+          JourneyViewModel,
+          JourneyPositionViewModel,
+          RuFeatureProvider,
+          ChecklistDepartureProcessViewModel
+        >(
+          update: (_, journeyVM, positionVM, ruFeatureProvider, prev) {
+            if (prev != null) return prev;
+            return ChecklistDepartureProcessViewModel(
+              journeyViewModel: journeyVM,
+              journeyPositionViewModel: positionVM,
+              ruFeatureProvider: ruFeatureProvider,
+            );
+          },
+          dispose: (_, vm) => vm.dispose(),
+        ),
         ProxyProvider3<
           JourneyPositionViewModel,
           JourneySettingsViewModel,

@@ -23,32 +23,13 @@ class ChecklistDepartureProcessViewModel extends JourneyAwareViewModel {
   final JourneyPositionViewModel _journeyPositionViewModel;
   final RuFeatureProvider _ruFeatureProvider;
 
-  final _rxShowChronographWarning = BehaviorSubject<bool>.seeded(true);
   final _rxShowDepartureProcessButton = BehaviorSubject<bool>.seeded(false);
-
-  Future<bool> get isDepartureProcessFeatureEnabled => _ruFeatureProvider.isRuFeatureEnabled(.departureProcess);
 
   StreamSubscription? _positionSubscription;
 
-  Stream<bool> get showChronographWarning => _rxShowChronographWarning.distinct();
-
   Stream<bool> get showDepartureProcessButton => _rxShowDepartureProcessButton.distinct();
 
-  bool get _streamsClosed => _rxShowChronographWarning.isClosed || _rxShowDepartureProcessButton.isClosed;
-
-  /// Toggles the [showChronographWarning] stream.
-  /// Has no effect if the departureProcess RU feature is disabled.
-  void toggleChronographWarning() {
-    isDepartureProcessFeatureEnabled.then((enabled) {
-      if (!enabled) {
-        _log.info('Ignoring chronographWarning toggle: departureProcess feature is disabled');
-        return;
-      }
-      final newValue = !_rxShowChronographWarning.value;
-      _log.info('User toggled chronographWarning to $newValue');
-      _rxShowChronographWarning.add(newValue);
-    });
-  }
+  bool get showDepartureProcessButtonValue => _rxShowDepartureProcessButton.value;
 
   void _initSubscription() {
     _positionSubscription = _journeyPositionViewModel.model.listen((positionModel) async {
@@ -57,20 +38,23 @@ class ChecklistDepartureProcessViewModel extends JourneyAwareViewModel {
   }
 
   Future<void> _updateDepartureProcessEnabled(JourneyPositionModel positionModel) async {
-    if (_streamsClosed) return;
+    if (_rxShowDepartureProcessButton.isClosed) return;
+    if (!await (_ruFeatureProvider.isRuFeatureEnabled(.departureProcess))) {
+      _rxShowDepartureProcessButton.add(false);
+      return;
+    }
 
-    final currentPosition = positionModel.currentPosition;
-    final isEligiblePosition = _isEligiblePosition(currentPosition);
-    _log.fine('departureProcessEnabled: isEligiblePosition=$isEligiblePosition');
+    final isEligiblePosition = _isEligiblePosition(positionModel.currentPosition);
+    _log.fine('showDepartureProcessButton: $isEligiblePosition');
     _rxShowDepartureProcessButton.add(isEligiblePosition);
   }
 
-  bool _isEligiblePosition(JourneyPoint? position) {
-    if (position == null && lastJourney?.metadata.journeyStart is ServicePoint) {
+  bool _isEligiblePosition(JourneyPoint? currentPosition) {
+    if (currentPosition == null && lastJourney?.metadata.journeyStart is ServicePoint) {
       return true;
     }
 
-    return switch (position) {
+    return switch (currentPosition) {
       ServicePoint _ => true,
       final Signal s => s.functions.contains(SignalFunction.intermediate),
       _ => false,
@@ -79,7 +63,6 @@ class ChecklistDepartureProcessViewModel extends JourneyAwareViewModel {
 
   @override
   void journeyIdentificationChanged(Journey? journey) {
-    _rxShowChronographWarning.add(true);
     _rxShowDepartureProcessButton.add(false);
   }
 
@@ -88,7 +71,6 @@ class ChecklistDepartureProcessViewModel extends JourneyAwareViewModel {
     super.dispose();
     _positionSubscription?.cancel();
     _positionSubscription = null;
-    _rxShowChronographWarning.close();
     _rxShowDepartureProcessButton.close();
   }
 }
