@@ -104,7 +104,7 @@ void main() {
         });
         processStreams(fakeAsync: testAsync);
 
-        expect(modelRegister.last, isA<ChecklistNoCustomerOrientedDeparture>());
+        expect(modelRegister.last, isA<NoCustomerOrientedDepartureChecklist>());
       });
 
       test('whenPositionChangesFromNullToServicePoint_emitsDisabledThenNoCustomerOrientedDeparture', () {
@@ -119,7 +119,7 @@ void main() {
           modelRegister,
           orderedEquals([
             isA<ChecklistDepartureProcessDisabled>(),
-            isA<ChecklistNoCustomerOrientedDeparture>(),
+            isA<NoCustomerOrientedDepartureChecklist>(),
           ]),
         );
       });
@@ -130,7 +130,7 @@ void main() {
         });
         processStreams(fakeAsync: testAsync);
 
-        expect(modelRegister.last, isA<ChecklistNoCustomerOrientedDeparture>());
+        expect(modelRegister.last, isA<NoCustomerOrientedDepartureChecklist>());
       });
 
       test('whenPositionIsExitSignal_emitsDisabled', () {
@@ -183,8 +183,8 @@ void main() {
       });
       processStreams(fakeAsync: testAsync);
 
-      expect(modelRegister.last, isA<ChecklistCustomerOrientedDeparture>());
-      expect((modelRegister.last as ChecklistCustomerOrientedDeparture).koaState, KoaState.wait);
+      expect(modelRegister.last, isA<CustomerOrientedDepartureChecklist>());
+      expect((modelRegister.last as CustomerOrientedDepartureChecklist).koaState, KoaState.wait);
     });
 
     test('whenKoaStateIsWaitCancelled_emitsCustomerOrientedDeparture', () {
@@ -199,8 +199,8 @@ void main() {
       });
       processStreams(fakeAsync: testAsync);
 
-      expect(modelRegister.last, isA<ChecklistCustomerOrientedDeparture>());
-      expect((modelRegister.last as ChecklistCustomerOrientedDeparture).koaState, KoaState.waitCancelled);
+      expect(modelRegister.last, isA<CustomerOrientedDepartureChecklist>());
+      expect((modelRegister.last as CustomerOrientedDepartureChecklist).koaState, KoaState.waitCancelled);
     });
 
     test('whenKoaStateIsWaitHide_emitsNoCustomerOrientedDeparture', () {
@@ -210,7 +210,7 @@ void main() {
       });
       processStreams(fakeAsync: testAsync);
 
-      expect(modelRegister.last, isA<ChecklistNoCustomerOrientedDeparture>());
+      expect(modelRegister.last, isA<NoCustomerOrientedDepartureChecklist>());
     });
 
     test('whenKoaStateChangesFromWaitToWaitHide_emitsCustomerOrientedDeparture_thenNoCustomerOrientedDeparture', () {
@@ -226,7 +226,7 @@ void main() {
       });
       processStreams(fakeAsync: testAsync);
 
-      expect(modelRegister.last, isA<ChecklistNoCustomerOrientedDeparture>());
+      expect(modelRegister.last, isA<NoCustomerOrientedDepartureChecklist>());
     });
 
     group('nextStop – passed through in model', () {
@@ -239,8 +239,8 @@ void main() {
         processStreams(fakeAsync: testAsync);
 
         final last = modelRegister.last;
-        expect(last, isA<ChecklistNoCustomerOrientedDeparture>());
-        expect((last as ChecklistNoCustomerOrientedDeparture).nextStop, nextStop);
+        expect(last, isA<NoCustomerOrientedDepartureChecklist>());
+        expect((last as NoCustomerOrientedDepartureChecklist).nextStop, nextStop);
       });
     });
 
@@ -250,7 +250,7 @@ void main() {
           journeyPositionSubject.add(JourneyPositionModel(currentPosition: servicePointA));
         });
         processStreams(fakeAsync: testAsync);
-        expect(modelRegister.last, isA<ChecklistNoCustomerOrientedDeparture>());
+        expect(modelRegister.last, isA<NoCustomerOrientedDepartureChecklist>());
         modelRegister.clear();
 
         final trainId1 = TrainIdentification(
@@ -326,7 +326,7 @@ void main() {
         journeyPositionSubject.add(JourneyPositionModel(currentPosition: servicePointA));
       });
       processStreams(fakeAsync: testAsync);
-      expect(modelRegister.last, isA<ChecklistNoCustomerOrientedDeparture>());
+      expect(modelRegister.last, isA<NoCustomerOrientedDepartureChecklist>());
       modelRegister.clear();
 
       when(mockRuFeatureProvider.isRuFeatureEnabled(.departureProcess)).thenAnswer((_) => Future.value(false));

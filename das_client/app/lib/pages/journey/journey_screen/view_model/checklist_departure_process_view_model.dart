@@ -72,9 +72,9 @@ class ChecklistDepartureProcessViewModel extends JourneyAwareViewModel {
 
     final nextStop = positionModel?.nextStop;
     if (_lastKoaState == KoaState.waitHide) {
-      _rxModel.add(ChecklistNoCustomerOrientedDeparture(nextStop: nextStop));
+      _rxModel.add(NoCustomerOrientedDepartureChecklist(nextStop: nextStop));
     } else {
-      _rxModel.add(ChecklistCustomerOrientedDeparture(nextStop: nextStop, koaState: _lastKoaState));
+      _rxModel.add(CustomerOrientedDepartureChecklist(nextStop: nextStop, koaState: _lastKoaState));
     }
   }
 

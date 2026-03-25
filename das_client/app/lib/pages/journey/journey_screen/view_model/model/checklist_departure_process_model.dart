@@ -14,22 +14,21 @@ class ChecklistDepartureProcessDisabled extends ChecklistDepartureProcessModel {
   int get hashCode => runtimeType.hashCode;
 }
 
-class ChecklistNoCustomerOrientedDeparture extends ChecklistDepartureProcessModel {
-  const ChecklistNoCustomerOrientedDeparture({required this.nextStop}) : super._();
+class NoCustomerOrientedDepartureChecklist extends ChecklistDepartureProcessModel {
+  const NoCustomerOrientedDepartureChecklist({required this.nextStop}) : super._();
 
   final ServicePoint? nextStop;
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is ChecklistNoCustomerOrientedDeparture && nextStop == other.nextStop;
+      identical(this, other) || other is NoCustomerOrientedDepartureChecklist && nextStop == other.nextStop;
 
   @override
   int get hashCode => nextStop.hashCode;
 }
 
-class ChecklistCustomerOrientedDeparture extends ChecklistDepartureProcessModel {
-  const ChecklistCustomerOrientedDeparture({required this.nextStop, required this.koaState}) : super._();
+class CustomerOrientedDepartureChecklist extends ChecklistDepartureProcessModel {
+  const CustomerOrientedDepartureChecklist({required this.nextStop, required this.koaState}) : super._();
 
   final ServicePoint? nextStop;
   final KoaState koaState;
@@ -37,9 +36,8 @@ class ChecklistCustomerOrientedDeparture extends ChecklistDepartureProcessModel 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ChecklistCustomerOrientedDeparture && nextStop == other.nextStop && koaState == other.koaState;
+      other is CustomerOrientedDepartureChecklist && nextStop == other.nextStop && koaState == other.koaState;
 
   @override
   int get hashCode => Object.hash(nextStop, koaState);
 }
-
