@@ -67,8 +67,8 @@ void main() {
   final stopC = ServicePoint(name: 'Stop C', abbreviation: 'SC', locationCode: '', order: 1000, kilometre: []);
   final stopD = ServicePoint(name: 'Stop D', abbreviation: 'SD', locationCode: '', order: 1500, kilometre: []);
 
-  final suspiciousSegmentAB = SuspiciousSegment(startOrder: stopA.order, endOrder: stopB.order);
-  final suspiciousSegmentCD = SuspiciousSegment(startOrder: stopC.order, endOrder: stopD.order);
+  final suspiciousSegmentAB = SuspiciousSegment(spId: 'AB', startOrder: stopA.order, endOrder: stopB.order);
+  final suspiciousSegmentCD = SuspiciousSegment(spId: 'CD', startOrder: stopC.order, endOrder: stopD.order);
 
   test('modelValue_whenNoJourney_thenIsHidden', () {
     expect(testee.modelValue, equals(SuspiciousSegmentHidden()));

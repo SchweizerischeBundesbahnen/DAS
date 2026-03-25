@@ -1,5 +1,5 @@
 import 'package:app/pages/journey/journey_screen/notification/widgets/suspicious_segment_notification.dart';
-import 'package:app/pages/journey/journey_screen/widgets/table/suspicious_journey_point_row.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../app_test.dart';
@@ -11,8 +11,7 @@ void main() {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T40M');
 
-      expect(find.byKey(SuspiciousJourneyPointRow.rowKey), findsAny);
-      expect(find.byKey(SuspiciousJourneyPointRow.firstRowKey), findsAny);
+      expect(find.byKey(const ValueKey('T40_2')), findsOneWidget);
 
       expect(find.byKey(SuspiciousSegmentNotification.suspiciousSegmentNotificationKey), findsOneWidget);
 

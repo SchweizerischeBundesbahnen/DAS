@@ -7,23 +7,27 @@ import 'package:sfera/src/model/journey/segment.dart';
 /// This segment stretches over the entire segment profile.
 class SuspiciousSegment extends Segment {
   const SuspiciousSegment({
+    required this.spId,
     super.startOrder,
     super.endOrder,
   });
+
+  final String spId;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is SuspiciousSegment &&
           runtimeType == other.runtimeType &&
+          spId == other.spId &&
           startOrder == other.startOrder &&
           endOrder == other.endOrder;
 
   @override
-  int get hashCode => Object.hash(startOrder, endOrder);
+  int get hashCode => Object.hash(spId, startOrder, endOrder);
 
   @override
   String toString() {
-    return 'SuspiciousSegment{startOrder: $startOrder, endOrder: $endOrder}';
+    return 'SuspiciousSegment{spId: $spId, startOrder: $startOrder, endOrder: $endOrder}';
   }
 }

@@ -11,7 +11,10 @@ class SuspiciousJourneyPoint extends JourneyPoint {
   const SuspiciousJourneyPoint({
     required super.order,
     required super.kilometre,
+    required this.spId,
   }) : super(dataType: Datatype.suspiciousJourneyPoint);
+
+  final String spId;
 
   @override
   OrderPriority get orderPriority => OrderPriority.baseData;
@@ -23,5 +26,5 @@ class SuspiciousJourneyPoint extends JourneyPoint {
   int get hashCode => Object.hash(dataType, order);
 
   @override
-  String toString() => 'SuspiciousJourneyPoint{order: $order, kilometre: $kilometre}';
+  String toString() => 'SuspiciousJourneyPoint{order: $order, kilometre: $kilometre, spId: $spId}';
 }

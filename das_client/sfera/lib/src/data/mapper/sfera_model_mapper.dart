@@ -721,7 +721,7 @@ class SferaModelMapper {
         _log.warning('Suspicious SP_ID "$spId" not found in segment profile references.');
         continue;
       }
-      result.add(SuspiciousSegment(startOrder: calculateOrder(refIdx, 0), endOrder: calculateOrder(refIdx + 1, 0) - 1));
+      result.add(SuspiciousSegment(spId: spId, startOrder: calculateOrder(refIdx, 0), endOrder: calculateOrder(refIdx + 1, 0) - 1));
     }
     return result;
   }
@@ -732,7 +732,7 @@ class SferaModelMapper {
     for (final segment in suspiciousSegments) {
       journeyData.removeWhere((item) => segment.appliesToOrder(item.order));
       if (segment.startOrder != null) {
-        journeyData.add(SuspiciousJourneyPoint(order: segment.startOrder!, kilometre: []));
+        journeyData.add(SuspiciousJourneyPoint(order: segment.startOrder!, kilometre: [], spId: segment.spId));
       }
     }
   }

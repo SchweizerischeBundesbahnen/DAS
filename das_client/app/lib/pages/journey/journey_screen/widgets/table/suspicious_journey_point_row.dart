@@ -8,8 +8,6 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
 class SuspiciousJourneyPointRow extends WidgetRowBuilder<SuspiciousJourneyPoint> {
-  static const rowKey = Key('SuspiciousJourneyPointRow');
-  static const firstRowKey = Key('SuspiciousJourneyPointFirstRow');
   static const rowHeight = 220.0; // 5 * standard row height
 
   SuspiciousJourneyPointRow({
@@ -21,7 +19,7 @@ class SuspiciousJourneyPointRow extends WidgetRowBuilder<SuspiciousJourneyPoint>
   @override
   Widget buildRowWidget(BuildContext context) {
     return Container(
-      key: rowKey,
+      key: ValueKey(data.spId),
       width: double.infinity,
       height: height,
       decoration: BoxDecoration(
@@ -31,7 +29,6 @@ class SuspiciousJourneyPointRow extends WidgetRowBuilder<SuspiciousJourneyPoint>
       padding: EdgeInsets.symmetric(horizontal: SBBSpacing.xSmall),
       alignment: Alignment.centerLeft,
       child: Row(
-        key: firstRowKey,
         spacing: SBBSpacing.xSmall,
         children: [
           SvgPicture.asset(

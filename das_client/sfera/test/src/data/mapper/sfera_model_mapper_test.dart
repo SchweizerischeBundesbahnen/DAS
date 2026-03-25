@@ -2043,9 +2043,11 @@ void main() {
 
     expect(suspiciousPoints[0].order, equals(calculateOrder(1, 0)));
     expect(suspiciousPoints[0].kilometre, equals([]));
+    expect(suspiciousPoints[0].spId, equals('T40_2'));
 
     expect(suspiciousPoints[1].order, equals(calculateOrder(3, 0)));
     expect(suspiciousPoints[1].kilometre, equals([]));
+    expect(suspiciousPoints[1].spId, equals('T40_4'));
 
     // No regular BaseData should exist within the suspicious segments
     final suspiciousSegments = journey.metadata.suspiciousSegments;
