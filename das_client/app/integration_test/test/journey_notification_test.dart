@@ -28,8 +28,12 @@ void main() {
 
       await tapElement(tester, find.text(l10n.w_koa_notification_departure_process));
 
-      expect(find.text(l10n.w_departure_process_modal_sheet_title), findsOneWidget);
-      expect(find.text(l10n.w_departure_process_modal_sheet_content), findsOneWidget);
+      expect(find.text(l10n.w_departure_process_dialog_title), findsOneWidget);
+      expect(find.text(l10n.w_departure_process_checklist_item_1), findsOneWidget);
+      expect(find.text(l10n.w_departure_process_checklist_item_3_koa), findsOneWidget);
+
+      // find koa notification also within departure process dialog
+      await waitUntilExists(tester, find.text(l10n.w_koa_notification_wait));
 
       await disconnect(tester);
     });

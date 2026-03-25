@@ -78,7 +78,7 @@ class DepartureProcessDialog extends StatelessWidget {
         alignment: .centerLeft,
         child: Row(
           children: [
-            Expanded(child: Text('Abfahrprozess', style: SBBTextStyles.largeLight)), // TODO: intl
+            Expanded(child: Text(context.l10n.w_departure_process_dialog_title, style: SBBTextStyles.largeLight)),
             SBBIconButtonSmall(icon: SBBIcons.cross_small, onPressed: context.router.pop),
           ],
         ),
@@ -112,7 +112,7 @@ class DepartureProcessDialog extends StatelessWidget {
           ),
           RichText(
             text: TextSpan(
-              text: 'Nächster Halt: ', // TODO: l10n
+              text: context.l10n.w_departure_process_next_stop,
               style: SBBTextStyles.mediumLight.copyWith(color: SBBColors.white),
               children: [
                 TextSpan(
@@ -133,16 +133,20 @@ class DepartureProcessDialog extends StatelessWidget {
       child: Column(
         mainAxisSize: .min,
         children: [
-          SBBListItem(title: '1. Zustimmung prüfen', onPressed: _doNothing),
-          SBBListItem(title: '2. Zugbeeinflussung beachten', onPressed: _doNothing),
+          SBBListItem(title: context.l10n.w_departure_process_checklist_item_1, onPressed: _doNothing),
+          SBBListItem(title: context.l10n.w_departure_process_checklist_item_2, onPressed: _doNothing),
           SBBListItem(
             title: isCustomerOrientedDepartureActive
-                ? '3. KoA / Abfahrzeit beachten'
-                : '3. Abfahrerlaubnis / Abfahrzeit beachten',
+                ? context.l10n.w_departure_process_checklist_item_3_koa
+                : context.l10n.w_departure_process_checklist_item_3,
             onPressed: _doNothing,
           ),
-          SBBListItem(title: '4. Türverriegelung kontrollieren', onPressed: _doNothing),
-          SBBListItem(title: '5. Zustimmung nochmals prüfen', onPressed: _doNothing, isLastElement: true),
+          SBBListItem(title: context.l10n.w_departure_process_checklist_item_4, onPressed: _doNothing),
+          SBBListItem(
+            title: context.l10n.w_departure_process_checklist_item_5,
+            onPressed: _doNothing,
+            isLastElement: true,
+          ),
         ],
       ),
     );

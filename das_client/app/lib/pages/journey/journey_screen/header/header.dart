@@ -9,6 +9,7 @@ import 'package:app/pages/journey/journey_screen/header/widgets/journey_identifi
 import 'package:app/pages/journey/journey_screen/header/widgets/main_header_box.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/short_term_change_headerbox_flap.dart';
 import 'package:app/pages/journey/journey_screen/journey_overview.dart';
+import 'package:app/pages/journey/journey_screen/view_model/departure_process_warning_view_model.dart';
 import 'package:app/widgets/extended_header_container.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -71,6 +72,7 @@ class _HeaderState extends State<Header> {
                 ),
               ),
               GestureDetector(
+                onTap: () => context.read<DepartureProcessWarningViewModel>().toggleChronographWarning(),
                 onDoubleTap: _doubleTap,
                 behavior: HitTestBehavior.translucent,
                 child: const ChronographHeaderBox(),

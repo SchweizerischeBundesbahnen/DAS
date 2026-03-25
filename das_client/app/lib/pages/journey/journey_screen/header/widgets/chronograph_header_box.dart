@@ -1,12 +1,13 @@
+import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/header/view_model/chronograph_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/departure_process_warning_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/punctuality_model.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
-const double _width = 124.0;
-const double _height = 112.0;
+const Size _fixedSize = Size(180, 144);
 const Duration _animationDuration = Duration(milliseconds: 250);
 
 class ChronographHeaderBox extends StatelessWidget {
@@ -17,12 +18,18 @@ class ChronographHeaderBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SBBContentBox(
-      padding: const .all(SBBSpacing.medium),
-      child: SizedBox(
-        width: _width,
-        height: _height,
-        child: body(context),
+    final vm = context.read<DepartureProcessWarningViewModel>();
+    return ConstrainedBox(
+      constraints: BoxConstraints.tight(_fixedSize),
+      child: StreamBuilder(
+        stream: vm.showChronographWarning,
+        initialData: vm.showChronographWarningValue,
+        builder: (context, snap) {
+          return SBBContentBox(
+            padding: snap.requireData ? .zero : const .all(SBBSpacing.medium),
+            child: snap.requireData ? warningBody(context) : body(context),
+          );
+        },
       ),
     );
   }
@@ -87,6 +94,20 @@ class ChronographHeaderBox extends StatelessWidget {
           child: Text(snapshot.requireData, key: currentTimeTextKey, style: sbbTextStyle.boldStyle.xLarge),
         );
       },
+    );
+  }
+
+  Widget warningBody(BuildContext context) {
+    return Container(
+      color: ThemeUtil.getColor(context, SBBColors.red, SBBColors.redDark),
+      child: Center(
+        child: Text(
+          context.l10n.w_chronograph_no_consent_warning,
+          maxLines: 2,
+          style: SBBTextStyles.largeBold.copyWith(color: SBBColors.white),
+          textAlign: .center,
+        ),
+      ),
     );
   }
 }
