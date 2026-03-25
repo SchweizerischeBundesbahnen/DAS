@@ -169,7 +169,7 @@
   "w_departure_process_checklist_item_3_koa": "3. KoA / Abfahrzeit beachten",
   "w_departure_process_checklist_item_4": "4. Türverriegelung kontrollieren",
   "w_departure_process_checklist_item_5": "5. Zustimmung nochmals prüfen",
-  "w_chronograph_no_consent_warning": "Keine\nZustimmung",
+  "w_chronograph_no_authorisation_warning": "KEINE\nZUSTIMMUNG",
   "w_service_point_modal_communication_label": "Netzart und Funkkanal",
   "w_service_point_modal_communication_radio_channel": "Funkkanal",
   "w_service_point_modal_communication_radio_channels_not_found": "Kein Funkkanal verfügbar",

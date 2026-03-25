@@ -102,7 +102,7 @@ class ChronographHeaderBox extends StatelessWidget {
       color: ThemeUtil.getColor(context, SBBColors.red, SBBColors.redDark),
       child: Center(
         child: Text(
-          context.l10n.w_chronograph_no_consent_warning,
+          context.l10n.w_chronograph_no_authorisation_warning,
           maxLines: 2,
           style: SBBTextStyles.largeBold.copyWith(color: SBBColors.white),
           textAlign: .center,
