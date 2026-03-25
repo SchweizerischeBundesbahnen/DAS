@@ -195,18 +195,20 @@ class _ProviderScope extends StatelessWidget {
           },
           dispose: (_, vm) => vm.dispose(),
         ),
-        ProxyProvider3<
+        ProxyProvider4<
           JourneyViewModel,
           JourneyPositionViewModel,
           RuFeatureProvider,
+          UxTestingViewModel,
           ChecklistDepartureProcessViewModel
         >(
-          update: (_, journeyVM, positionVM, ruFeatureProvider, prev) {
+          update: (_, journeyVM, positionVM, ruFeatureProvider, uxTestingVM, prev) {
             if (prev != null) return prev;
             return ChecklistDepartureProcessViewModel(
               journeyViewModel: journeyVM,
               journeyPositionViewModel: positionVM,
               ruFeatureProvider: ruFeatureProvider,
+              uxTestingViewModel: uxTestingVM,
             );
           },
           dispose: (_, vm) => vm.dispose(),

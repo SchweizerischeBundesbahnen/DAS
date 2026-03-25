@@ -1,6 +1,8 @@
 import 'package:app/pages/journey/journey_screen/view_model/checklist_departure_process_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/checklist_departure_process_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/ux_testing_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:fake_async/fake_async.dart';
@@ -17,6 +19,7 @@ import 'checklist_departure_process_view_model_test.mocks.dart';
   MockSpec<JourneyViewModel>(),
   MockSpec<JourneyPositionViewModel>(),
   MockSpec<RuFeatureProvider>(),
+  MockSpec<UxTestingViewModel>(),
 ])
 void main() {
   group('ChecklistDepartureProcessViewModel', () {
@@ -24,11 +27,13 @@ void main() {
     late MockJourneyViewModel mockJourneyViewModel;
     late MockJourneyPositionViewModel mockJourneyPositionViewModel;
     late MockRuFeatureProvider mockRuFeatureProvider;
+    late MockUxTestingViewModel mockUxTestingViewModel;
 
     late BehaviorSubject<Journey?> journeySubject;
     late BehaviorSubject<JourneyPositionModel> journeyPositionSubject;
+    late BehaviorSubject<KoaState> koaStateSubject;
 
-    late List<bool> departureButtonRegister;
+    late List<ChecklistDepartureProcessModel> modelRegister;
     late FakeAsync testAsync;
 
     final servicePointA = ServicePoint(name: 'A', abbreviation: '', locationCode: '', order: 0, kilometre: []);
@@ -44,11 +49,12 @@ void main() {
         testee = ChecklistDepartureProcessViewModel(
           journeyPositionViewModel: mockJourneyPositionViewModel,
           ruFeatureProvider: mockRuFeatureProvider,
+          uxTestingViewModel: mockUxTestingViewModel,
           journeyViewModel: mockJourneyViewModel,
         );
 
-        departureButtonRegister = [];
-        testee.showDepartureProcessButton.listen(departureButtonRegister.add);
+        modelRegister = [];
+        testee.model.listen(modelRegister.add);
         processStreams(fakeAsync: fakeAsync);
       });
     }
@@ -57,13 +63,16 @@ void main() {
       mockJourneyViewModel = MockJourneyViewModel();
       mockJourneyPositionViewModel = MockJourneyPositionViewModel();
       mockRuFeatureProvider = MockRuFeatureProvider();
+      mockUxTestingViewModel = MockUxTestingViewModel();
 
       journeySubject = BehaviorSubject<Journey?>.seeded(null);
       journeyPositionSubject = BehaviorSubject<JourneyPositionModel>.seeded(JourneyPositionModel());
+      koaStateSubject = BehaviorSubject<KoaState>.seeded(KoaState.waitHide);
 
       when(mockJourneyViewModel.journey).thenAnswer((_) => journeySubject.stream);
       when(mockJourneyPositionViewModel.model).thenAnswer((_) => journeyPositionSubject.stream);
       when(mockRuFeatureProvider.isRuFeatureEnabled(.departureProcess)).thenAnswer((_) => Future.value(true));
+      when(mockUxTestingViewModel.koaState).thenAnswer((_) => koaStateSubject.stream);
 
       setupTestee();
     });
@@ -72,77 +81,84 @@ void main() {
       testee.dispose();
       journeySubject.close();
       journeyPositionSubject.close();
+      koaStateSubject.close();
     });
 
-    test('showDepartureProcessButton_whenCreated_emitsFalse', () {
-      expect(departureButtonRegister, orderedEquals([false]));
+    test('model_whenCreated_emitsDisabled', () {
+      expect(modelRegister, orderedEquals([isA<ChecklistDepartureProcessDisabled>()]));
     });
 
-    group('showDepartureProcessButton – position eligibility', () {
-      test('whenPositionIsNull_emitsFalse', () {
+    group('model – position eligibility', () {
+      test('whenPositionIsNull_emitsDisabled', () {
         testAsync.run((_) {
           journeyPositionSubject.add(JourneyPositionModel(currentPosition: null));
         });
         processStreams(fakeAsync: testAsync);
 
-        expect(departureButtonRegister.last, isFalse);
+        expect(modelRegister.last, isA<ChecklistDepartureProcessDisabled>());
       });
 
-      test('whenPositionIsServicePoint_emitsTrue', () {
+      test('whenPositionIsServicePoint_emitsNoCustomerOrientedDeparture', () {
         testAsync.run((_) {
           journeyPositionSubject.add(JourneyPositionModel(currentPosition: servicePointA));
         });
         processStreams(fakeAsync: testAsync);
 
-        expect(departureButtonRegister.last, isTrue);
+        expect(modelRegister.last, isA<ChecklistNoCustomerOrientedDeparture>());
       });
 
-      test('whenPositionChangesFromNullToServicePoint_emitsFalseThenTrue', () {
-        expect(departureButtonRegister, orderedEquals([false]));
+      test('whenPositionChangesFromNullToServicePoint_emitsDisabledThenNoCustomerOrientedDeparture', () {
+        expect(modelRegister, orderedEquals([isA<ChecklistDepartureProcessDisabled>()]));
 
         testAsync.run((_) {
           journeyPositionSubject.add(JourneyPositionModel(currentPosition: servicePointA));
         });
         processStreams(fakeAsync: testAsync);
 
-        expect(departureButtonRegister, orderedEquals([false, true]));
+        expect(
+          modelRegister,
+          orderedEquals([
+            isA<ChecklistDepartureProcessDisabled>(),
+            isA<ChecklistNoCustomerOrientedDeparture>(),
+          ]),
+        );
       });
 
-      test('whenPositionIsIntermediateSignal_emitsTrue', () {
+      test('whenPositionIsIntermediateSignal_emitsNoCustomerOrientedDeparture', () {
         testAsync.run((_) {
           journeyPositionSubject.add(JourneyPositionModel(currentPosition: intermediateSignal));
         });
         processStreams(fakeAsync: testAsync);
 
-        expect(departureButtonRegister.last, isTrue);
+        expect(modelRegister.last, isA<ChecklistNoCustomerOrientedDeparture>());
       });
 
-      test('whenPositionIsExitSignal_emitsFalse', () {
+      test('whenPositionIsExitSignal_emitsDisabled', () {
         testAsync.run((_) {
           journeyPositionSubject.add(JourneyPositionModel(currentPosition: exitSignal));
         });
         processStreams(fakeAsync: testAsync);
 
-        expect(departureButtonRegister.last, isFalse);
+        expect(modelRegister.last, isA<ChecklistDepartureProcessDisabled>());
       });
 
-      test('whenPositionChangesFromServicePointToEntrySignal_emitsTrue_thenFalse', () {
+      test('whenPositionChangesFromServicePointToEntrySignal_emitsNoCustomerOrientedDeparture_thenDisabled', () {
         testAsync.run((_) {
           journeyPositionSubject.add(JourneyPositionModel(currentPosition: servicePointA));
         });
         processStreams(fakeAsync: testAsync);
-        departureButtonRegister.clear();
+        modelRegister.clear();
 
         testAsync.run((_) {
           journeyPositionSubject.add(JourneyPositionModel(currentPosition: entrySignal));
         });
         processStreams(fakeAsync: testAsync);
 
-        expect(departureButtonRegister, orderedEquals([false]));
+        expect(modelRegister, orderedEquals([isA<ChecklistDepartureProcessDisabled>()]));
       });
 
-      test('whenMultipleIneligiblePositionUpdates_distinctSuppressesDuplicateFalse', () {
-        final initialLength = departureButtonRegister.length;
+      test('whenMultipleIneligiblePositionUpdates_distinctSuppressesDuplicateDisabled', () {
+        final initialLength = modelRegister.length;
 
         testAsync.run((_) {
           journeyPositionSubject.add(JourneyPositionModel(currentPosition: entrySignal));
@@ -151,18 +167,91 @@ void main() {
         });
         processStreams(fakeAsync: testAsync);
 
-        expect(departureButtonRegister.length, initialLength);
+        expect(modelRegister.length, initialLength);
+      });
+    });
+
+    test('whenKoaStateIsWait_emitsCustomerOrientedDeparture', () {
+      testAsync.run((_) {
+        journeyPositionSubject.add(JourneyPositionModel(currentPosition: servicePointA));
+      });
+      processStreams(fakeAsync: testAsync);
+      modelRegister.clear();
+
+      testAsync.run((_) {
+        koaStateSubject.add(KoaState.wait);
+      });
+      processStreams(fakeAsync: testAsync);
+
+      expect(modelRegister.last, isA<ChecklistCustomerOrientedDeparture>());
+      expect((modelRegister.last as ChecklistCustomerOrientedDeparture).koaState, KoaState.wait);
+    });
+
+    test('whenKoaStateIsWaitCancelled_emitsCustomerOrientedDeparture', () {
+      testAsync.run((_) {
+        journeyPositionSubject.add(JourneyPositionModel(currentPosition: servicePointA));
+      });
+      processStreams(fakeAsync: testAsync);
+      modelRegister.clear();
+
+      testAsync.run((_) {
+        koaStateSubject.add(KoaState.waitCancelled);
+      });
+      processStreams(fakeAsync: testAsync);
+
+      expect(modelRegister.last, isA<ChecklistCustomerOrientedDeparture>());
+      expect((modelRegister.last as ChecklistCustomerOrientedDeparture).koaState, KoaState.waitCancelled);
+    });
+
+    test('whenKoaStateIsWaitHide_emitsNoCustomerOrientedDeparture', () {
+      testAsync.run((_) {
+        journeyPositionSubject.add(JourneyPositionModel(currentPosition: servicePointA));
+        koaStateSubject.add(KoaState.waitHide);
+      });
+      processStreams(fakeAsync: testAsync);
+
+      expect(modelRegister.last, isA<ChecklistNoCustomerOrientedDeparture>());
+    });
+
+    test('whenKoaStateChangesFromWaitToWaitHide_emitsCustomerOrientedDeparture_thenNoCustomerOrientedDeparture', () {
+      testAsync.run((_) {
+        journeyPositionSubject.add(JourneyPositionModel(currentPosition: servicePointA));
+        koaStateSubject.add(KoaState.wait);
+      });
+      processStreams(fakeAsync: testAsync);
+      modelRegister.clear();
+
+      testAsync.run((_) {
+        koaStateSubject.add(KoaState.waitHide);
+      });
+      processStreams(fakeAsync: testAsync);
+
+      expect(modelRegister.last, isA<ChecklistNoCustomerOrientedDeparture>());
+    });
+
+    group('nextStop – passed through in model', () {
+      test('whenPositionHasNextStop_modelContainsNextStop', () {
+        final nextStop = ServicePoint(name: 'B', abbreviation: '', locationCode: '', order: 1, kilometre: []);
+
+        testAsync.run((_) {
+          journeyPositionSubject.add(JourneyPositionModel(currentPosition: servicePointA, nextStop: nextStop));
+        });
+        processStreams(fakeAsync: testAsync);
+
+        final last = modelRegister.last;
+        expect(last, isA<ChecklistNoCustomerOrientedDeparture>());
+        expect((last as ChecklistNoCustomerOrientedDeparture).nextStop, nextStop);
       });
     });
 
     group('journeyIdentificationChanged – new train identification', () {
-      test('whenTrainIdentificationChanges_showDepartureProcessButtonEmitsFalse', () {
+      test('whenTrainIdentificationChanges_modelEmitsDisabled', () {
         testAsync.run((_) {
           journeyPositionSubject.add(JourneyPositionModel(currentPosition: servicePointA));
         });
         processStreams(fakeAsync: testAsync);
-        expect(departureButtonRegister.last, isTrue);
-        departureButtonRegister.clear();
+        expect(modelRegister.last, isA<ChecklistNoCustomerOrientedDeparture>());
+        modelRegister.clear();
 
         final trainId1 = TrainIdentification(
           ru: RailwayUndertaking.sbbP,
@@ -195,11 +284,11 @@ void main() {
         });
         processStreams(fakeAsync: testAsync);
 
-        expect(departureButtonRegister, contains(isFalse));
+        expect(modelRegister, contains(isA<ChecklistDepartureProcessDisabled>()));
       });
     });
 
-    test('whenFeatureDisabled_onCreation_emitsFalse', () {
+    test('whenFeatureDisabled_onCreation_emitsDisabled', () {
       when(mockRuFeatureProvider.isRuFeatureEnabled(.departureProcess)).thenAnswer((_) => Future.value(false));
 
       testAsync.run((_) {
@@ -207,10 +296,10 @@ void main() {
       });
       processStreams(fakeAsync: testAsync);
 
-      expect(departureButtonRegister.last, isFalse);
+      expect(modelRegister.last, isA<ChecklistDepartureProcessDisabled>());
     });
 
-    test('whenFeatureDisabled_andPositionIsServicePoint_emitsFalse', () {
+    test('whenFeatureDisabled_andPositionIsServicePoint_emitsDisabled', () {
       when(mockRuFeatureProvider.isRuFeatureEnabled(.departureProcess)).thenAnswer((_) => Future.value(false));
 
       testAsync.run((_) {
@@ -218,10 +307,10 @@ void main() {
       });
       processStreams(fakeAsync: testAsync);
 
-      expect(departureButtonRegister.last, isFalse);
+      expect(modelRegister.last, isA<ChecklistDepartureProcessDisabled>());
     });
 
-    test('whenFeatureDisabled_andPositionIsIntermediateSignal_emitsFalse', () {
+    test('whenFeatureDisabled_andPositionIsIntermediateSignal_emitsDisabled', () {
       when(mockRuFeatureProvider.isRuFeatureEnabled(.departureProcess)).thenAnswer((_) => Future.value(false));
 
       testAsync.run((_) {
@@ -229,16 +318,16 @@ void main() {
       });
       processStreams(fakeAsync: testAsync);
 
-      expect(departureButtonRegister.last, isFalse);
+      expect(modelRegister.last, isA<ChecklistDepartureProcessDisabled>());
     });
 
-    test('whenFeatureDisabledAfterEligiblePosition_emitsFalse', () {
+    test('whenFeatureDisabledAfterEligiblePosition_emitsDisabled', () {
       testAsync.run((_) {
         journeyPositionSubject.add(JourneyPositionModel(currentPosition: servicePointA));
       });
       processStreams(fakeAsync: testAsync);
-      expect(departureButtonRegister.last, isTrue);
-      departureButtonRegister.clear();
+      expect(modelRegister.last, isA<ChecklistNoCustomerOrientedDeparture>());
+      modelRegister.clear();
 
       when(mockRuFeatureProvider.isRuFeatureEnabled(.departureProcess)).thenAnswer((_) => Future.value(false));
 
@@ -247,10 +336,10 @@ void main() {
       });
       processStreams(fakeAsync: testAsync);
 
-      expect(departureButtonRegister, orderedEquals([false]));
+      expect(modelRegister, orderedEquals([isA<ChecklistDepartureProcessDisabled>()]));
     });
 
-    test('whenJourneyUpdatedWithSameId_departureButtonStatePreserved', () {
+    test('whenJourneyUpdatedWithSameId_modelStatePreserved', () {
       final trainId = TrainIdentification(
         ru: RailwayUndertaking.sbbP,
         trainNumber: '777',
@@ -267,7 +356,7 @@ void main() {
         );
       });
       processStreams(fakeAsync: testAsync);
-      departureButtonRegister.clear();
+      modelRegister.clear();
 
       testAsync.run((_) {
         journeySubject.add(
@@ -279,7 +368,7 @@ void main() {
       });
       processStreams(fakeAsync: testAsync);
 
-      expect(departureButtonRegister.where((v) => v == false), isEmpty);
+      expect(modelRegister.where((m) => m is ChecklistDepartureProcessDisabled), isEmpty);
     });
   });
 }

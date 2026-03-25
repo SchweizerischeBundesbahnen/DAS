@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/checklist_departure_process_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/ux_testing_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:logging/logging.dart';
@@ -14,39 +16,66 @@ class ChecklistDepartureProcessViewModel extends JourneyAwareViewModel {
   ChecklistDepartureProcessViewModel({
     required JourneyPositionViewModel journeyPositionViewModel,
     required RuFeatureProvider ruFeatureProvider,
+    required UxTestingViewModel uxTestingViewModel,
     super.journeyViewModel,
   }) : _journeyPositionViewModel = journeyPositionViewModel,
-       _ruFeatureProvider = ruFeatureProvider {
+       _ruFeatureProvider = ruFeatureProvider,
+       _uxTestingViewModel = uxTestingViewModel {
     _initSubscription();
   }
 
   final JourneyPositionViewModel _journeyPositionViewModel;
   final RuFeatureProvider _ruFeatureProvider;
+  final UxTestingViewModel _uxTestingViewModel;
 
-  final _rxShowDepartureProcessButton = BehaviorSubject<bool>.seeded(false);
+  final _rxModel = BehaviorSubject<ChecklistDepartureProcessModel>.seeded(const ChecklistDepartureProcessDisabled());
 
-  StreamSubscription? _positionSubscription;
+  StreamSubscription<(JourneyPositionModel, KoaState)>? _subscription;
 
-  Stream<bool> get showDepartureProcessButton => _rxShowDepartureProcessButton.distinct();
+  JourneyPositionModel? _lastPositionModel;
+  KoaState _lastKoaState = KoaState.waitHide;
 
-  bool get showDepartureProcessButtonValue => _rxShowDepartureProcessButton.value;
+  Stream<ChecklistDepartureProcessModel> get model => _rxModel.distinct();
+
+  ChecklistDepartureProcessModel get modelValue => _rxModel.value;
 
   void _initSubscription() {
-    _positionSubscription = _journeyPositionViewModel.model.listen((positionModel) async {
-      await _updateDepartureProcessEnabled(positionModel);
-    });
+    _subscription =
+        CombineLatestStream.combine2(
+          _journeyPositionViewModel.model,
+          _uxTestingViewModel.koaState,
+          (a, b) => (a, b),
+        ).listen((data) async {
+          _lastPositionModel = data.$1;
+          _lastKoaState = data.$2;
+          await _updateModel();
+        });
   }
 
-  Future<void> _updateDepartureProcessEnabled(JourneyPositionModel positionModel) async {
-    if (_rxShowDepartureProcessButton.isClosed) return;
+  Future<void> _updateModel() async {
+    if (_rxModel.isClosed) return;
     if (!await (_ruFeatureProvider.isRuFeatureEnabled(.departureProcess))) {
-      _rxShowDepartureProcessButton.add(false);
+      _rxModel.add(const ChecklistDepartureProcessDisabled());
       return;
     }
 
-    final isEligiblePosition = _isEligiblePosition(positionModel.currentPosition);
+    final positionModel = _lastPositionModel;
+    final isEligiblePosition = _isEligiblePosition(positionModel?.currentPosition);
     _log.fine('showDepartureProcessButton: $isEligiblePosition');
-    _rxShowDepartureProcessButton.add(isEligiblePosition);
+
+    if (!isEligiblePosition) {
+      _rxModel.add(const ChecklistDepartureProcessDisabled());
+      return;
+    }
+
+    if (_rxModel.isClosed) return;
+
+    final nextStop = positionModel?.nextStop;
+    if (_lastKoaState == KoaState.waitHide) {
+      _rxModel.add(ChecklistNoCustomerOrientedDeparture(nextStop: nextStop));
+    } else {
+      _rxModel.add(ChecklistCustomerOrientedDeparture(nextStop: nextStop, koaState: _lastKoaState));
+    }
   }
 
   bool _isEligiblePosition(JourneyPoint? currentPosition) {
@@ -63,14 +92,14 @@ class ChecklistDepartureProcessViewModel extends JourneyAwareViewModel {
 
   @override
   void journeyIdentificationChanged(Journey? journey) {
-    _rxShowDepartureProcessButton.add(false);
+    _rxModel.add(const ChecklistDepartureProcessDisabled());
   }
 
   @override
   void dispose() {
     super.dispose();
-    _positionSubscription?.cancel();
-    _positionSubscription = null;
-    _rxShowDepartureProcessButton.close();
+    _subscription?.cancel();
+    _subscription = null;
+    _rxModel.close();
   }
 }
