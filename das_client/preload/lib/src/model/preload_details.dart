@@ -19,36 +19,33 @@ class PreloadDetails {
 
   int get totalSize => files.fold(0, (sum, file) => sum + file.size);
 
-  int get initialFilesCount => files.where((f) => f.status == S3FileSyncStatus.initial).length;
+  int get initialFilesCount => files.whereStatus(.initial).length;
 
-  int get initialSize =>
-      files.where((f) => f.status == S3FileSyncStatus.initial).fold(0, (sum, file) => sum + file.size);
+  int get initialSize => files.whereStatus(.initial).fold(0, (sum, file) => sum + file.size);
 
-  int get errorFilesCount =>
-      files.where((f) => f.status == S3FileSyncStatus.error || f.status == S3FileSyncStatus.corrupted).length;
+  int get errorFilesCount => _errorFiles.length;
 
-  int get errorSize => files
-      .where((f) => f.status == S3FileSyncStatus.error || f.status == S3FileSyncStatus.corrupted)
-      .fold(0, (sum, file) => sum + file.size);
+  int get errorSize => _errorFiles.fold(0, (sum, file) => sum + file.size);
 
-  int get downloadedFilesCount => files.where((f) => f.status == S3FileSyncStatus.downloaded).length;
+  int get downloadedFilesCount => files.whereStatus(.downloaded).length;
 
-  int get downloadedSize =>
-      files.where((f) => f.status == S3FileSyncStatus.downloaded).fold(0, (sum, file) => sum + file.size);
+  int get downloadedSize => files.whereStatus(.downloaded).fold(0, (sum, file) => sum + file.size);
 
   DateTime? get lastUpdated {
     final format = DateFormat(dateFormatUtcPattern);
-    return files
-        .where((f) => f.status == S3FileSyncStatus.downloaded)
-        .map((f) => format.tryParse(f.name.split('.').first, true))
-        .fold<DateTime?>(null, (latest, fileDate) {
-          if (fileDate != null) {
-            return latest == null || fileDate.isAfter(latest) ? fileDate : latest;
-          } else {
-            return latest;
-          }
-        });
+    return files.whereStatus(.downloaded).map((f) => format.tryParse(f.name.split('.').first, true)).fold<DateTime?>(
+      null,
+      (latest, fileDate) {
+        if (fileDate != null) {
+          return latest == null || fileDate.isAfter(latest) ? fileDate : latest;
+        } else {
+          return latest;
+        }
+      },
+    );
   }
+
+  Iterable<S3File> get _errorFiles => files.where((f) => f.status == .error || f.status == .corrupted);
 }
 
 enum PreloadStatus { idle, running, missingConfiguration }

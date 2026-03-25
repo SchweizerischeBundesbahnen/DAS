@@ -126,9 +126,9 @@ void main() {
     );
     when(mockDatabaseService.findAll()).thenAnswer(
       (_) => Future.value([
-        S3File(name: '2026-02-10T16-35-35Z.zip', eTag: 'etag', size: 100, status: S3FileSyncStatus.downloaded),
-        S3File(name: '2026-02-10T16-35-34Z.zip', eTag: 'etag2', size: 125, status: S3FileSyncStatus.downloaded),
-        S3File(name: '2026-02-10T15-35-34Z.zip', eTag: 'old', size: 125, status: S3FileSyncStatus.downloaded),
+        S3File(name: '2026-02-10T16-35-35Z.zip', eTag: 'etag', size: 100, status: .downloaded),
+        S3File(name: '2026-02-10T16-35-34Z.zip', eTag: 'etag2', size: 125, status: .downloaded),
+        S3File(name: '2026-02-10T15-35-34Z.zip', eTag: 'old', size: 125, status: .downloaded),
       ]),
     );
 
@@ -162,11 +162,11 @@ void main() {
     // WHEN
     when(mockDatabaseService.findAll()).thenAnswer(
       (_) => Future.value([
-        S3File(name: '2026-02-10T17-35-35Z.zip', eTag: 'inital', size: 100, status: S3FileSyncStatus.initial),
-        S3File(name: '2026-02-10T16-35-35Z.zip', eTag: 'inital', size: 100, status: S3FileSyncStatus.initial),
-        S3File(name: '2026-02-10T15-35-35Z.zip', eTag: 'downloaded', size: 110, status: S3FileSyncStatus.downloaded),
-        S3File(name: '2026-02-10T14-35-35Z.zip', eTag: 'error', size: 120, status: S3FileSyncStatus.error),
-        S3File(name: '2026-02-10T13-35-35Z.zip', eTag: 'corruped', size: 120, status: S3FileSyncStatus.corrupted),
+        S3File(name: '2026-02-10T17-35-35Z.zip', eTag: 'initial', size: 100, status: .initial),
+        S3File(name: '2026-02-10T16-35-35Z.zip', eTag: 'initial', size: 100, status: .initial),
+        S3File(name: '2026-02-10T15-35-35Z.zip', eTag: 'downloaded', size: 110, status: .downloaded),
+        S3File(name: '2026-02-10T14-35-35Z.zip', eTag: 'error', size: 120, status: .error),
+        S3File(name: '2026-02-10T13-35-35Z.zip', eTag: 'corrupted', size: 120, status: .corrupted),
       ]),
     );
 
@@ -177,8 +177,8 @@ void main() {
     when(mockS3Client.getObject('2026-02-10T16-35-35Z.zip')).thenAnswer((_) => Future.value(zip1));
     when(mockS3Client.getObject('2026-02-10T14-35-35Z.zip')).thenAnswer((_) => Future.value(zip2));
 
-    when(mockSferaLocalRepo.saveData('valid')).thenAnswer((_) => Future.value(true));
-    when(mockSferaLocalRepo.saveData('invalid')).thenAnswer((_) => Future.value(false));
+    when(mockSferaLocalRepo.saveData(['valid'])).thenAnswer((_) => Future.value(true));
+    when(mockSferaLocalRepo.saveData(['invalid'])).thenAnswer((_) => Future.value(false));
 
     // ACT
     await Future.delayed(const Duration(milliseconds: 1));

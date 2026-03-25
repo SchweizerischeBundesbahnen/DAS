@@ -1,6 +1,7 @@
 import 'package:logging/logging.dart';
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
+import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
 import 'package:sfera/src/data/local/drift_local_database_service.dart';
 import 'package:sfera/src/data/local/sfera_local_database_service.dart';
@@ -91,24 +92,33 @@ class SferaLocalRepoImpl implements SferaLocalRepo {
   }
 
   @override
-  Future<bool> saveData(String data) async {
+  Future<bool> saveData(Iterable<String> data) async {
     try {
-      final sferaElement = SferaReplyParser.parse(data);
-      if (!sferaElement.validate()) {
-        _log.warning('Parsed data is invalid: ${sferaElement.runtimeType}');
+      final sferaElements = data
+          .map((content) => SferaReplyParser.parse(content))
+          .whereIsValid()
+          .whereIsSupportedType();
+
+      if (sferaElements.isEmpty) {
+        _log.warning('No valid data passed: $data');
         return false;
       }
 
-      if (sferaElement is JourneyProfileDto) {
-        await _databaseService.saveJourneyProfile(sferaElement);
-      } else if (sferaElement is SegmentProfileDto) {
-        await _databaseService.saveSegmentProfile(sferaElement);
-      } else if (sferaElement is TrainCharacteristicsDto) {
-        await _databaseService.saveTrainCharacteristics(sferaElement);
-      } else {
-        _log.warning('Parsed data is of unsupported type: ${sferaElement.runtimeType}');
-        return false;
+      final journeyProfiles = sferaElements.whereType<JourneyProfileDto>();
+      if (journeyProfiles.isNotEmpty) {
+        await _databaseService.saveBulkJourneyProfiles(journeyProfiles);
       }
+
+      final segmentProfiles = sferaElements.whereType<SegmentProfileDto>();
+      if (segmentProfiles.isNotEmpty) {
+        await _databaseService.saveBulkSegmentProfiles(segmentProfiles);
+      }
+
+      final trainCharacteristics = sferaElements.whereType<TrainCharacteristicsDto>();
+      if (trainCharacteristics.isNotEmpty) {
+        await _databaseService.saveBulkTrainCharacteristics(trainCharacteristics);
+      }
+
       return true;
     } catch (e, s) {
       _log.severe('Failed to save data', e, s);
@@ -117,7 +127,20 @@ class SferaLocalRepoImpl implements SferaLocalRepo {
   }
 
   @override
-  Future<SferaDbMetrics> getMetrics() {
-    return _databaseService.getMetrics();
-  }
+  Future<SferaDbMetrics> getMetrics() => _databaseService.getMetrics();
+}
+
+extension _SferaElementIterableExtension on Iterable<SferaXmlElementDto> {
+  Iterable<SferaXmlElementDto> whereIsValid() => where((element) {
+    if (!element.validate()) {
+      _log.warning('Parsed data is invalid: ${element.runtimeType}');
+      return false;
+    }
+
+    return true;
+  });
+
+  Iterable<SferaXmlElementDto> whereIsSupportedType() => where(
+    (element) => element is JourneyProfileDto || element is SegmentProfileDto || element is TrainCharacteristicsDto,
+  );
 }

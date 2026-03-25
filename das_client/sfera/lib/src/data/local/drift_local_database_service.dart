@@ -1,8 +1,12 @@
 // coverage:ignore-file
 
+import 'dart:io';
+
 import 'package:drift/drift.dart';
-import 'package:drift_flutter/drift_flutter.dart';
+import 'package:drift/native.dart';
 import 'package:logging/logging.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
@@ -32,10 +36,23 @@ class DriftLocalDatabaseService extends _$DriftLocalDatabaseService implements S
     return _instance!;
   }
 
-  DriftLocalDatabaseService._() : super(driftDatabase(name: 'sfera_db'));
+  DriftLocalDatabaseService._() : super(_openConnection());
+
+  static QueryExecutor _openConnection() => LazyDatabase(() async {
+    final dbFolder = await getApplicationDocumentsDirectory();
+    final file = File(p.join(dbFolder.path, 'sfera_db.sqlite'));
+    return NativeDatabase.createInBackground(
+      file,
+      setup: (db) {
+        // settings to improve writing and reduce blocking actions
+        db.execute('PRAGMA journal_mode = WAL;');
+        db.execute('PRAGMA synchronous = NORMAL;');
+      },
+    );
+  });
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -47,9 +64,15 @@ class DriftLocalDatabaseService extends _$DriftLocalDatabaseService implements S
         await m.drop(trainCharacteristicsTable);
         await m.create(trainCharacteristicsTable);
       }
+
+      if (from < 3) {
+        await m.drop(journeyProfileTable);
+        await m.create(journeyProfileTable);
+      }
     },
   );
 
+  // TODO: Sort by versions
   @override
   Future<JourneyProfileTableData?> findJourneyProfile(
     String company,
@@ -85,29 +108,41 @@ class DriftLocalDatabaseService extends _$DriftLocalDatabaseService implements S
 
   @override
   Future<void> saveJourneyProfile(JourneyProfileDto journeyProfile) async {
-    final existingProfile = await findJourneyProfile(
-      journeyProfile.trainIdentification.otnId.company,
-      journeyProfile.trainIdentification.otnId.operationalTrainNumber,
-      journeyProfile.trainIdentification.otnId.startDate,
-    );
-
-    final journeyProfileCompanion = journeyProfile.toCompanion(id: existingProfile?.id);
-
+    final otnId = journeyProfile.trainIdentification.otnId;
     _log.fine(
-      'Writing journey profile to db company=${journeyProfileCompanion.company} operationalTrainNumber=${journeyProfileCompanion.operationalTrainNumber} startDate=${journeyProfileCompanion.startDate}',
+      'Writing journey profile to db company=${otnId.company} operationalTrainNumber=${otnId.operationalTrainNumber} startDate=${otnId.startDate}',
     );
-    await journeyProfileTable.insertOnConflictUpdate(journeyProfileCompanion);
+    await journeyProfileTable.insertOnConflictUpdate(journeyProfile.toCompanion());
   }
 
   @override
-  Future<void> saveSegmentProfile(SegmentProfileDto segmentProfile) async {
-    await segmentProfileTable.insertOnConflictUpdate(segmentProfile.toCompanion());
+  Future<void> saveBulkJourneyProfiles(Iterable<JourneyProfileDto> journeyProfiles) async {
+    Insertable<JourneyProfileTableData> mapToCompanion(JourneyProfileDto jp) {
+      final otnId = jp.trainIdentification.otnId;
+      _log.fine(
+        'Writing journey profile to db company=${otnId.company} operationalTrainNumber=${otnId.operationalTrainNumber} startDate=${otnId.startDate}',
+      );
+      return jp.toCompanion();
+    }
+
+    _jpManager.bulkCreate((_) => journeyProfiles.map(mapToCompanion), mode: .insertOrReplace);
   }
 
   @override
-  Future<void> saveTrainCharacteristics(TrainCharacteristicsDto trainCharacteristics) async {
-    await trainCharacteristicsTable.insertOnConflictUpdate(trainCharacteristics.toCompanion());
-  }
+  Future<void> saveSegmentProfile(SegmentProfileDto segmentProfile) =>
+      segmentProfileTable.insertOnConflictUpdate(segmentProfile.toCompanion());
+
+  @override
+  Future<void> saveBulkSegmentProfiles(Iterable<SegmentProfileDto> segmentProfiles) =>
+      _spManager.bulkCreate((_) => segmentProfiles.map((sp) => sp.toCompanion()), mode: .insertOrReplace);
+
+  @override
+  Future<void> saveTrainCharacteristics(TrainCharacteristicsDto trainCharacteristics) =>
+      trainCharacteristicsTable.insertOnConflictUpdate(trainCharacteristics.toCompanion());
+
+  @override
+  Future<void> saveBulkTrainCharacteristics(Iterable<TrainCharacteristicsDto> trainCharacteristics) =>
+      _tcManager.bulkCreate((_) => trainCharacteristics.map((tc) => tc.toCompanion()), mode: .insertOrReplace);
 
   $$TrainCharacteristicsTableTableTableManager get _tcManager => managers.trainCharacteristicsTable;
 

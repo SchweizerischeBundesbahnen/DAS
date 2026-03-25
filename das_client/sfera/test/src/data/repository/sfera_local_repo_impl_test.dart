@@ -31,7 +31,7 @@ void main() {
     );
   });
 
-  test('test local database is beeing observed', () async {
+  test('test local database is being observed', () async {
     final company = '1085';
     final trainNumber = '719';
     final startDate = DateTime.now();
@@ -55,7 +55,7 @@ void main() {
 
     subject.add(
       JourneyProfileTableData(
-        id: 1,
+        version: '1',
         company: company,
         operationalTrainNumber: trainNumber,
         startDate: startDate,
@@ -117,7 +117,7 @@ void main() {
 
     subject.add(
       JourneyProfileTableData(
-        id: 1,
+        version: '1',
         company: company,
         operationalTrainNumber: trainNumber,
         startDate: startDate,
@@ -204,7 +204,7 @@ void main() {
 
     subject.add(
       JourneyProfileTableData(
-        id: 1,
+        version: '1',
         company: company,
         operationalTrainNumber: trainNumber,
         startDate: startDate,
@@ -222,61 +222,92 @@ void main() {
   });
 
   test('saveData_whenInvalidDataIsPassed_returnFalse', () async {
-    expect(await testee.saveData('invalid'), isFalse);
+    expect(await testee.saveData(['invalid']), isFalse);
   });
 
   test('saveData_whenValidationFails_returnFalse', () async {
     expect(
-      await testee.saveData('<JourneyProfile JP_Version="1" JP_Status="Valid"></JourneyProfile>'),
+      await testee.saveData(['<JourneyProfile JP_Version="1" JP_Status="Valid"></JourneyProfile>']),
       isFalse,
     );
   });
 
   test('saveData_whenJpDataIsPassed_returnTrue', () async {
     expect(
-      await testee.saveData(
+      await testee.saveData([
         '<JourneyProfile JP_Version="1" JP_Status="Valid"><TrainIdentification>'
-        '<OTN_ID>'
-        '<teltsi_Company>1285</teltsi_Company>'
-        '<teltsi_OperationalTrainNumber>T35</teltsi_OperationalTrainNumber>'
-        '<teltsi_StartDate>2025-11-13</teltsi_StartDate>'
-        '</OTN_ID>'
-        '</TrainIdentification>'
-        '</JourneyProfile>',
-      ),
+            '<OTN_ID>'
+            '<teltsi_Company>1285</teltsi_Company>'
+            '<teltsi_OperationalTrainNumber>T35</teltsi_OperationalTrainNumber>'
+            '<teltsi_StartDate>2025-11-13</teltsi_StartDate>'
+            '</OTN_ID>'
+            '</TrainIdentification>'
+            '</JourneyProfile>',
+      ]),
       isTrue,
     );
-    verify(mockLocalDatabaseRepository.saveJourneyProfile(any)).called(1);
+    verify(mockLocalDatabaseRepository.saveBulkJourneyProfiles(any)).called(1);
   });
 
   test('saveData_whenSpDataIsPassed_returnTrue', () async {
     expect(
       await testee.saveData(
-        '<SegmentProfile SP_ID="T35" SP_VersionMajor="1" SP_VersionMinor="4" SP_Length="800" SP_Status="Valid">'
-        '</SegmentProfile>',
+        [
+          '<SegmentProfile SP_ID="T35" SP_VersionMajor="1" SP_VersionMinor="4" SP_Length="800" SP_Status="Valid">'
+              '</SegmentProfile>',
+        ],
       ),
       isTrue,
     );
-    verify(mockLocalDatabaseRepository.saveSegmentProfile(any)).called(1);
+    verify(mockLocalDatabaseRepository.saveBulkSegmentProfiles(any)).called(1);
   });
 
   test('saveData_whenTcDataIsPassed_returnTrue', () async {
     expect(
       await testee.saveData(
-        '<TrainCharacteristics TC_ID="T9999_1" TC_VersionMajor="1" TC_VersionMinor="1">'
-        '<TC_RU_ID>1085</TC_RU_ID>'
-        '<TC_Features trainCategoryCode="R" brakedWeightPercentage="150"/>'
-        '</TrainCharacteristics>',
+        [
+          '<TrainCharacteristics TC_ID="T9999_1" TC_VersionMajor="1" TC_VersionMinor="1">'
+              '<TC_RU_ID>1085</TC_RU_ID>'
+              '<TC_Features trainCategoryCode="R" brakedWeightPercentage="150"/>'
+              '</TrainCharacteristics>',
+        ],
       ),
       isTrue,
     );
-    verify(mockLocalDatabaseRepository.saveTrainCharacteristics(any)).called(1);
+    verify(mockLocalDatabaseRepository.saveBulkTrainCharacteristics(any)).called(1);
+  });
+
+  test('saveData_whenTcJpAndSpDataIsPassed_returnTrue', () async {
+    expect(
+      await testee.saveData(
+        [
+          '<JourneyProfile JP_Version="1" JP_Status="Valid"><TrainIdentification>'
+              '<OTN_ID>'
+              '<teltsi_Company>1285</teltsi_Company>'
+              '<teltsi_OperationalTrainNumber>T35</teltsi_OperationalTrainNumber>'
+              '<teltsi_StartDate>2025-11-13</teltsi_StartDate>'
+              '</OTN_ID>'
+              '</TrainIdentification>'
+              '</JourneyProfile>',
+          '<SegmentProfile SP_ID="T35" SP_VersionMajor="1" SP_VersionMinor="4" SP_Length="800" SP_Status="Valid">'
+              '</SegmentProfile>',
+          '<TrainCharacteristics TC_ID="T9999_1" TC_VersionMajor="1" TC_VersionMinor="1">'
+              '<TC_RU_ID>1085</TC_RU_ID>'
+              '<TC_Features trainCategoryCode="R" brakedWeightPercentage="150"/>'
+              '</TrainCharacteristics>',
+        ],
+      ),
+      isTrue,
+    );
+    verify(mockLocalDatabaseRepository.saveBulkTrainCharacteristics(any)).called(1);
+    verify(mockLocalDatabaseRepository.saveBulkSegmentProfiles(any)).called(1);
+    verify(mockLocalDatabaseRepository.saveBulkJourneyProfiles(any)).called(1);
   });
 
   test('saveData_whenUnsupportedDataIsPassed_returnFalse', () async {
     expect(
       await testee.saveData(
-        '<SP_Zone><IM_ID>0085</IM_ID></SP_Zone>',
+        ['<SP_Zone><IM_ID>0085</IM_ID></SP_Zone>'],
       ),
       isFalse,
     );

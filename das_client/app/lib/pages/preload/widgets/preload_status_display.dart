@@ -142,22 +142,15 @@ class PreloadStatusDisplay extends StatelessWidget {
   Widget _startButton(BuildContext context, PreloadDetails? preloadDetails) {
     return SBBTertiaryButtonSmall(
       label: context.l10n.w_preload_status_start_preload,
-      onPressed: preloadDetails?.status == PreloadStatus.idle
-          ? () => context.read<PreloadViewModel>().triggerPreload()
-          : null,
+      onPressed: preloadDetails?.status == .idle ? () => context.read<PreloadViewModel>().triggerPreload() : null,
     );
   }
 }
 
 extension PreloadStatusX on PreloadStatus {
-  String localizedText(BuildContext context) {
-    switch (this) {
-      case PreloadStatus.idle:
-        return context.l10n.w_preload_status_idle;
-      case PreloadStatus.running:
-        return context.l10n.w_preload_status_running;
-      case PreloadStatus.missingConfiguration:
-        return context.l10n.w_preload_status_missing_configuration;
-    }
-  }
+  String localizedText(BuildContext context) => switch (this) {
+    .idle => context.l10n.w_preload_status_idle,
+    .running => context.l10n.w_preload_status_running,
+    .missingConfiguration => context.l10n.w_preload_status_missing_configuration,
+  };
 }

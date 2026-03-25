@@ -9,9 +9,15 @@ abstract class SferaLocalDatabaseService {
 
   Future<void> saveJourneyProfile(JourneyProfileDto journeyProfile);
 
+  Future<void> saveBulkJourneyProfiles(Iterable<JourneyProfileDto> journeyProfiles);
+
   Future<void> saveSegmentProfile(SegmentProfileDto segmentProfile);
 
+  Future<void> saveBulkSegmentProfiles(Iterable<SegmentProfileDto> segmentProfiles);
+
   Future<void> saveTrainCharacteristics(TrainCharacteristicsDto trainCharacteristics);
+
+  Future<void> saveBulkTrainCharacteristics(Iterable<TrainCharacteristicsDto> trainCharacteristics);
 
   Future<JourneyProfileTableData?> findJourneyProfile(
     String company,

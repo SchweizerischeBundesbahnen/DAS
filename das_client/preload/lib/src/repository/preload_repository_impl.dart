@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:isolate';
+import 'dart:typed_data';
 
 import 'package:archive/archive.dart';
 import 'package:collection/collection.dart';
@@ -31,6 +33,7 @@ class PreloadRepositoryImpl implements PreloadRepository {
 
   /// added only for development purposes
   final bool disablePreload;
+
   S3Client? _s3client;
   StreamSubscription? _databaseSubscription;
   Timer? _syncTimer;
@@ -96,9 +99,7 @@ class PreloadRepositoryImpl implements PreloadRepository {
     _updateRunning(false);
   }
 
-  Future<int> _cleanup() {
-    return sferaLocalRepo.cleanup();
-  }
+  Future<int> _cleanup() => sferaLocalRepo.cleanup();
 
   Future<void> _listS3BucketAndUpdateLocalDatabase() async {
     final result = await _s3client!.listBucket();
@@ -119,14 +120,14 @@ class PreloadRepositoryImpl implements PreloadRepository {
       if (matchingDbEntry == null) {
         _log.fine('No database entry for key ${s3Content.key}. Adding new entry.');
         await databaseService.saveS3File(
-          S3File(name: s3Content.key, eTag: s3Content.eTag, size: s3Content.size, status: S3FileSyncStatus.initial),
+          S3File(name: s3Content.key, eTag: s3Content.eTag, size: s3Content.size, status: .initial),
         );
         newItem++;
       } else {
         if (matchingDbEntry.eTag != s3Content.eTag) {
           _log.fine('File ${s3Content.key} has changed. Updating database entry.');
           await databaseService.saveS3File(
-            matchingDbEntry.copyWith(eTag: s3Content.eTag, size: s3Content.size, status: S3FileSyncStatus.initial),
+            matchingDbEntry.copyWith(eTag: s3Content.eTag, size: s3Content.size, status: .initial),
           );
           updatedItem++;
         } else {
@@ -148,14 +149,14 @@ class PreloadRepositoryImpl implements PreloadRepository {
   Future<void> _processAllFiles() async {
     final filesToProcess = await databaseService.findAll();
     _log.info(
-      'Processing files from local database (initial: ${filesToProcess.where((f) => f.status == S3FileSyncStatus.initial).length}, '
-      'error: ${filesToProcess.where((f) => f.status == S3FileSyncStatus.error).length}, '
-      'corrupted: ${filesToProcess.where((f) => f.status == S3FileSyncStatus.corrupted).length}, '
-      'downloaded: ${filesToProcess.where((f) => f.status == S3FileSyncStatus.downloaded).length}).',
+      'Processing files from local database (initial: ${filesToProcess.whereStatus(.initial).length}, '
+      'error: ${filesToProcess.whereStatus(.error).length}, '
+      'corrupted: ${filesToProcess.whereStatus(.corrupted).length}, '
+      'downloaded: ${filesToProcess.whereStatus(.downloaded).length}).',
     );
 
     for (final file in filesToProcess) {
-      if (file.status == S3FileSyncStatus.initial || file.status == S3FileSyncStatus.error) {
+      if (file.status == .initial || file.status == .error) {
         _log.info('Processing file ${file.name} with status ${file.status.name}.');
         await _downloadExtractAndSaveS3FileContent(file);
       } else {
@@ -169,36 +170,26 @@ class PreloadRepositoryImpl implements PreloadRepository {
       final fileData = await _s3client!.getObject(file.name);
       if (fileData == null) {
         _log.warning('Failed to download file ${file.name}.');
-        await databaseService.saveS3File(file.copyWith(status: S3FileSyncStatus.error));
+        await databaseService.saveS3File(file.copyWith(status: .error));
         return;
       }
 
       _log.info('File ${file.name} downloaded successfully. Size: ${fileData.length} bytes.');
 
-      final archive = ZipDecoder().decodeBytes(fileData);
-      final saveFutures = <Future<bool>>[];
-      for (final archiveFile in archive.files) {
-        if (!archiveFile.isFile) continue;
+      final ttd = TransferableTypedData.fromList([Uint8List.fromList(fileData)]);
+      final contents = await _unzipAndDecodeInIsolate(ttd);
 
-        final content = utf8.decode(archiveFile.readBytes()!);
-        _log.finer(
-          'Extracted file ${archiveFile.name} from archive ${file.name}. Content length: ${content.length} characters. ${content.substring(0, content.length > 100 ? 100 : content.length)}',
-        );
-        saveFutures.add(sferaLocalRepo.saveData(content));
-      }
-      final successList = await Future.wait(saveFutures);
-      final success = successList.every((it) => it);
-
+      final success = await sferaLocalRepo.saveData(contents);
       if (success) {
         _log.info('All data extracted from file ${file.name} saved successfully.');
-        await databaseService.saveS3File(file.copyWith(status: S3FileSyncStatus.downloaded));
+        await databaseService.saveS3File(file.copyWith(status: .downloaded));
       } else {
         _log.warning('Failed to save some data extracted from file ${file.name}. Marking as corrupted.');
-        await databaseService.saveS3File(file.copyWith(status: S3FileSyncStatus.corrupted));
+        await databaseService.saveS3File(file.copyWith(status: .corrupted));
       }
     } catch (e, s) {
       _log.severe('Error downloading file ${file.name}.', e, s);
-      await databaseService.saveS3File(file.copyWith(status: S3FileSyncStatus.error));
+      await databaseService.saveS3File(file.copyWith(status: .error));
     }
   }
 
@@ -213,13 +204,8 @@ class PreloadRepositoryImpl implements PreloadRepository {
   }
 
   PreloadStatus _status() {
-    if (_s3client == null) {
-      return PreloadStatus.missingConfiguration;
-    } else if (_isRunning) {
-      return PreloadStatus.running;
-    } else {
-      return PreloadStatus.idle;
-    }
+    if (_s3client == null) return .missingConfiguration;
+    return _isRunning ? .running : .idle;
   }
 
   Future<PreloadDetails> _gatherDetails(List<S3File>? files) async {
@@ -234,3 +220,15 @@ class PreloadRepositoryImpl implements PreloadRepository {
     _syncTimer?.cancel();
   }
 }
+
+/// top level method to run CPU heavy zip decode work on background isolate
+Future<List<String>> _unzipAndDecodeInIsolate(TransferableTypedData ttd) => Isolate.run(() {
+  final bytes = ttd.materialize().asUint8List();
+  final archive = ZipDecoder().decodeBytes(bytes);
+  final contents = <String>[];
+  for (final f in archive.files) {
+    if (!f.isFile) continue;
+    contents.add(utf8.decode(f.content as List<int>));
+  }
+  return contents;
+});
