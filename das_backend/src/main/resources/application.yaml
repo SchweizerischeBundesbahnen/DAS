@@ -23,8 +23,15 @@ spring:
             client-secret: ${SFERA_OAUTH_SECRET}
             authorization-grant-type: client_credentials
             scope: ${SFERA_OAUTH_SCOPE}
+          atlas:
+            client-id: ${SFERA_OAUTH_CLIENTID}
+            client-secret: ${SFERA_OAUTH_SECRET}
+            authorization-grant-type: client_credentials
+            scope: ${ATLAS_OAUTH_SCOPE}
         provider:
           azure:
+            token-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/oauth2/v2.0/token
+          atlas:
             token-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/oauth2/v2.0/token
   jackson:
     mapper:
@@ -97,7 +104,7 @@ formation:
     password: ${FORMATION_KAFKA_API_SECRET}
     topic: ${FORMATION_KAFKA_TOPIC}
   clean-up:
-    cron: 0 0 3 * * ?  # every day at 3am
+    cron: 0 0 3 * * ?  # every day at 3
     older-than-days: 100
 logging:
   url: ${SPLUNK_HEC_URL}
@@ -183,3 +190,7 @@ preload:
 proxy:
   base-url: ${PROXY_BASE_URL}
   basic-auth: ${PROXY_BASIC_AUTH}
+
+atlas:
+  base-url: ${ATLAS_BASE_URL}
+  import-cron: 0 0 3 * * ?  # every day at 2
