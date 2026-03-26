@@ -8,10 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
-class NoCustomerOrientedDepartureChecklistButton extends StatelessWidget {
-  const NoCustomerOrientedDepartureChecklistButton({super.key});
+class FloatingDepartureChecklistButton extends StatelessWidget {
+  const FloatingDepartureChecklistButton({super.key});
 
-  static const buttonKey = Key('NoCustomerOrientedDepartureChecklistButtonKey');
+  static const buttonKey = Key('FloatingDepartureChecklistButtonKey');
 
   @override
   Widget build(BuildContext context) {

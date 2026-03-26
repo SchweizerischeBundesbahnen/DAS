@@ -13,6 +13,7 @@ const Duration _animationDuration = Duration(milliseconds: 250);
 class ChronographHeaderBox extends StatelessWidget {
   static const Key punctualityTextKey = Key('punctualityTextKey');
   static const Key currentTimeTextKey = Key('currentTimeTextKey');
+  static const Key warningKey = Key('ChronographHeaderboxWarningKey');
 
   const ChronographHeaderBox({super.key});
 
@@ -99,6 +100,7 @@ class ChronographHeaderBox extends StatelessWidget {
 
   Widget warningBody(BuildContext context) {
     return Container(
+      key: warningKey,
       color: ThemeUtil.getColor(context, SBBColors.red, SBBColors.redDark),
       child: Center(
         child: Text(

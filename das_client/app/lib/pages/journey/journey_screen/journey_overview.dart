@@ -29,9 +29,9 @@ import 'package:app/pages/journey/journey_screen/view_model/punctuality_view_mod
 import 'package:app/pages/journey/journey_screen/view_model/replacement_series_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/tour_system_link_visibility_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/ux_testing_view_model.dart';
+import 'package:app/pages/journey/journey_screen/widgets/FloatingDepartureChecklistButton.dart';
 import 'package:app/pages/journey/journey_screen/widgets/journey_navigation_buttons.dart';
 import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
-import 'package:app/pages/journey/journey_screen/widgets/no_customer_oriented_departure_checklist_button.dart';
 import 'package:app/pages/journey/view_model/decisive_gradient_view_model.dart';
 import 'package:app/pages/journey/view_model/disturbance_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
@@ -76,7 +76,7 @@ class JourneyOverview extends StatelessWidget {
             children: [
               JourneyTable(),
               Align(alignment: .bottomCenter, child: JourneyNavigationButtons()),
-              Align(alignment: .bottomLeft, child: NoCustomerOrientedDepartureChecklistButton()),
+              Align(alignment: .bottomLeft, child: FloatingDepartureChecklistButton()),
             ],
           ),
         ),
