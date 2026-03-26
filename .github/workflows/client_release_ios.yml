@@ -138,6 +138,6 @@ jobs:
           APPSTORE_CONNECT_KEY_ID: ${{ secrets.APPSTORE_CONNECT_KEY_ID }}
           APPSTORE_CONNECT_ISSUER_ID: ${{ secrets.APPSTORE_CONNECT_ISSUER_ID }}
         run: |
-          flutter build ipa --flavor ${{ matrix.flavor }} -t ${{ matrix.app-root }} --release --no-codesign
+          flutter build ipa --flavor ${{ matrix.flavor }} -t ${{ matrix.app-root }} --release
           xcodebuild -exportArchive -archivePath "build/ios/archive/${{ matrix.archive-filename }}" -exportOptionsPlist ios/exportOptionsRelease.plist -authenticationKeyIssuerID "$APPSTORE_CONNECT_ISSUER_ID" -authenticationKeyID "$APPSTORE_CONNECT_KEY_ID" -authenticationKeyPath ~/AuthKey.p8
         working-directory: das_client/app
