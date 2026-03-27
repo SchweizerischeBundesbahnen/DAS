@@ -133,18 +133,37 @@ class DepartureProcessDialog extends StatelessWidget {
       child: Column(
         mainAxisSize: .min,
         children: [
-          SBBListItem(title: context.l10n.w_departure_process_checklist_item_1, onPressed: _doNothing),
-          SBBListItem(title: context.l10n.w_departure_process_checklist_item_2, onPressed: _doNothing),
-          SBBListItem(
+          SBBListItem.custom(
+            title: context.l10n.w_departure_process_checklist_item_1,
+            onPressed: null,
+            enabled: true,
+            trailingWidget: SizedBox.shrink(),
+          ),
+          SBBListItem.custom(
+            title: context.l10n.w_departure_process_checklist_item_2,
+            onPressed: null,
+            enabled: true,
+            trailingWidget: SizedBox.shrink(),
+          ),
+          SBBListItem.custom(
             title: isCustomerOrientedDepartureActive
                 ? context.l10n.w_departure_process_checklist_item_3_koa
                 : context.l10n.w_departure_process_checklist_item_3,
-            onPressed: _doNothing,
+            onPressed: null,
+            enabled: true,
+            trailingWidget: SizedBox.shrink(),
           ),
-          SBBListItem(title: context.l10n.w_departure_process_checklist_item_4, onPressed: _doNothing),
-          SBBListItem(
+          SBBListItem.custom(
+            title: context.l10n.w_departure_process_checklist_item_4,
+            onPressed: null,
+            enabled: true,
+            trailingWidget: SizedBox.shrink(),
+          ),
+          SBBListItem.custom(
             title: context.l10n.w_departure_process_checklist_item_5,
-            onPressed: _doNothing,
+            onPressed: null,
+            enabled: true,
+            trailingWidget: SizedBox.shrink(),
             isLastElement: true,
           ),
         ],
