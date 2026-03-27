@@ -11,7 +11,7 @@ abstract class SferaLocalRepo {
 
   Future<int> cleanup();
 
-  Future<bool> saveData(Iterable<String> data);
+  Future<bool> saveData(Iterable<SferaXmlElementDto> elements);
 
   Future<SferaDbMetrics> getMetrics();
 }

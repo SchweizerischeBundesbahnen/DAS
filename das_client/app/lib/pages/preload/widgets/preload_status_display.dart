@@ -142,7 +142,7 @@ class PreloadStatusDisplay extends StatelessWidget {
   Widget _startButton(BuildContext context, PreloadDetails? preloadDetails) {
     return SBBTertiaryButtonSmall(
       label: context.l10n.w_preload_status_start_preload,
-      onPressed: preloadDetails?.status == .idle ? () => context.read<PreloadViewModel>().triggerPreload() : null,
+      onPressed: () => context.read<PreloadViewModel>().triggerPreload(),
     );
   }
 }

@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'dart:isolate';
-import 'dart:typed_data';
 
-import 'package:archive/archive.dart';
 import 'package:collection/collection.dart';
+import 'package:flutter_archive/flutter_archive.dart';
 import 'package:logging/logging.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 import 'package:preload/src/aws/s3_client.dart';
 import 'package:preload/src/data/preload_local_database_service.dart';
 import 'package:preload/src/model/preload_details.dart';
@@ -16,6 +18,13 @@ import 'package:settings/component.dart';
 import 'package:sfera/component.dart';
 
 final _log = Logger('PreloadRepositoryImpl');
+
+class ZipToProcess {
+  ZipToProcess({required this.file, required this.zip});
+
+  final S3File file;
+  final File zip;
+}
 
 class PreloadRepositoryImpl implements PreloadRepository {
   static const syncInterval = Duration(minutes: 5);
@@ -40,6 +49,7 @@ class PreloadRepositoryImpl implements PreloadRepository {
 
   bool _isRunning = false;
   final _rxDetails = BehaviorSubject<PreloadDetails>();
+  final _rxZipsToProcess = PublishSubject<ZipToProcess>();
 
   @override
   Stream<PreloadDetails> get preloadDetails => _rxDetails.stream;
@@ -47,6 +57,37 @@ class PreloadRepositoryImpl implements PreloadRepository {
   void _init() {
     _log.info('Initializing PreloadRepositoryImpl...');
     _databaseSubscription = databaseService.watchAll().listen((files) => _emit(files));
+    // Process one ZIP at a time, in order
+    _rxZipsToProcess
+        .asyncExpand((toProcess) => Stream.fromFuture(_processZip(toProcess)))
+        .listen(
+          (_) {},
+          onError: (e, s) => _log.severe('Zip processing failed', e, s),
+        );
+  }
+
+  Future<void> _processZip(ZipToProcess toProcess) async {
+    _log.info('Start extracting file ${toProcess.file.name}');
+    try {
+      final supportDir = await getApplicationSupportDirectory();
+      final folder = Directory(
+        p.join(supportDir.path, toProcess.zip.path.split(Platform.pathSeparator).last),
+      );
+
+      await ZipFile.extractToDirectory(zipFile: toProcess.zip, destinationDir: folder);
+
+      final elements = await _readFilesAndParseValidElementsInIsolate(folder);
+      final success = await sferaLocalRepo.saveData(elements);
+
+      if (success) {
+        await databaseService.saveS3File(toProcess.file.copyWith(status: .downloaded));
+      } else {
+        await databaseService.saveS3File(toProcess.file.copyWith(status: .error));
+      }
+    } catch (e) {
+      _log.fine('Extract failed with $e for file ${toProcess.file.name}.');
+      await databaseService.saveS3File(toProcess.file.copyWith(status: .error));
+    }
   }
 
   @override
@@ -58,10 +99,10 @@ class PreloadRepositoryImpl implements PreloadRepository {
     );
 
     _s3client = createS3Client(awsConfiguration);
-    triggerPreload();
-
-    _syncTimer?.cancel();
-    _syncTimer = Timer.periodic(syncInterval, (_) => triggerPreload());
+    //triggerPreload();
+    //
+    //_syncTimer?.cancel();
+    //_syncTimer = Timer.periodic(syncInterval, (_) => triggerPreload());
   }
 
   S3Client createS3Client(AwsConfiguration awsConfiguration) {
@@ -155,7 +196,30 @@ class PreloadRepositoryImpl implements PreloadRepository {
       'downloaded: ${filesToProcess.whereStatus(.downloaded).length}).',
     );
 
-    for (final file in filesToProcess) {
+    try {
+      final supportDir = await getApplicationSupportDirectory();
+      final preloadDir = Directory(p.join(supportDir.path, 'preload'));
+      if (!await preloadDir.exists()) {
+        await preloadDir.create(recursive: true);
+        _log.fine('Created preload directory at ${preloadDir.path}');
+      } else {
+        // Clean up any existing files
+        final children = await preloadDir.list(followLinks: false).toList();
+        _log.fine('Preload directory exists with: ${children.length}');
+        for (final entity in children) {
+          try {
+            await entity.delete(recursive: entity is Directory);
+          } catch (e, s) {
+            _log.warning('Failed to delete ${entity.path} from preload directory.', e, s);
+          }
+        }
+        _log.fine('Cleared preload directory at ${preloadDir.path}');
+      }
+    } catch (e, s) {
+      _log.warning('Failed to prepare/clean preload directory.', e, s);
+    }
+
+    for (final file in filesToProcess.where((file) => file.status == .initial || file.status == .error).take(30)) {
       if (file.status == .initial || file.status == .error) {
         _log.info('Processing file ${file.name} with status ${file.status.name}.');
         await _downloadExtractAndSaveS3FileContent(file);
@@ -167,25 +231,11 @@ class PreloadRepositoryImpl implements PreloadRepository {
 
   Future<void> _downloadExtractAndSaveS3FileContent(S3File file) async {
     try {
-      final fileData = await _s3client!.getObject(file.name);
-      if (fileData == null) {
-        _log.warning('Failed to download file ${file.name}.');
-        await databaseService.saveS3File(file.copyWith(status: .error));
-        return;
-      }
-
-      _log.info('File ${file.name} downloaded successfully. Size: ${fileData.length} bytes.');
-
-      final ttd = TransferableTypedData.fromList([Uint8List.fromList(fileData)]);
-      final contents = await _unzipAndDecodeInIsolate(ttd);
-
-      final success = await sferaLocalRepo.saveData(contents);
-      if (success) {
-        _log.info('All data extracted from file ${file.name} saved successfully.');
-        await databaseService.saveS3File(file.copyWith(status: .downloaded));
+      final downloaded = await _s3client!.downloadZip(file.name);
+      if (downloaded != null) {
+        _rxZipsToProcess.add(ZipToProcess(file: file, zip: downloaded));
       } else {
-        _log.warning('Failed to save some data extracted from file ${file.name}. Marking as corrupted.');
-        await databaseService.saveS3File(file.copyWith(status: .corrupted));
+        await databaseService.saveS3File(file.copyWith(status: .error));
       }
     } catch (e, s) {
       _log.severe('Error downloading file ${file.name}.', e, s);
@@ -217,18 +267,36 @@ class PreloadRepositoryImpl implements PreloadRepository {
   void dispose() {
     _databaseSubscription?.cancel();
     _rxDetails.close();
+    _rxZipsToProcess.close();
     _syncTimer?.cancel();
   }
 }
 
-/// top level method to run CPU heavy zip decode work on background isolate
-Future<List<String>> _unzipAndDecodeInIsolate(TransferableTypedData ttd) => Isolate.run(() {
-  final bytes = ttd.materialize().asUint8List();
-  final archive = ZipDecoder().decodeBytes(bytes);
-  final contents = <String>[];
-  for (final f in archive.files) {
-    if (!f.isFile) continue;
-    contents.add(utf8.decode(f.content as List<int>));
+/// top level method to run CPU heavy parse work on background isolate
+Future<Iterable<SferaXmlElementDto>> _readFilesAndParseValidElementsInIsolate(Directory folder) =>
+    Isolate.run(() async {
+      final contents = await _readAllFilesAsStrings(folder);
+      return contents.map((content) => SferaReplyParser.parse(content));
+    });
+
+// Helper: read all files under a directory into a list of strings
+Future<List<String>> _readAllFilesAsStrings(Directory folder) async {
+  final result = <String>[];
+  final entities = await folder.list(recursive: true, followLinks: false).toList();
+
+  // Deterministic order
+  entities.sort((a, b) => a.path.compareTo(b.path));
+
+  for (final e in entities) {
+    if (e is File) {
+      try {
+        result.add(await e.readAsString(encoding: utf8));
+      } catch (_) {
+        // Fallback: attempt to decode with malformed allowed
+        final bytes = await e.readAsBytes();
+        result.add(utf8.decode(bytes, allowMalformed: true));
+      }
+    }
   }
-  return contents;
-});
+  return result;
+}

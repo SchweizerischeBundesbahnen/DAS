@@ -1,5 +1,3 @@
-import 'dart:isolate';
-
 import 'package:logging/logging.dart';
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
@@ -12,7 +10,6 @@ import 'package:sfera/src/data/local/tables/segment_profile_table.dart';
 import 'package:sfera/src/data/local/tables/train_characteristics_table.dart';
 import 'package:sfera/src/data/mapper/datetime_x.dart';
 import 'package:sfera/src/data/mapper/sfera_model_mapper.dart';
-import 'package:sfera/src/data/parser/sfera_reply_parser.dart';
 import 'package:sfera/src/data/repository/sfera_local_repo.dart';
 import 'package:sfera/src/model/journey/journey.dart';
 import 'package:sfera/src/model/sfera_db_metrics.dart';
@@ -94,26 +91,25 @@ class SferaLocalRepoImpl implements SferaLocalRepo {
   }
 
   @override
-  Future<bool> saveData(Iterable<String> data) async {
+  Future<bool> saveData(Iterable<SferaXmlElementDto> elements) async {
     try {
-      final sferaElements = await _parseValidElementsInIsolate(data);
-
-      if (sferaElements.isEmpty) {
-        _log.warning('No valid data passed: $data');
+      final validElements = elements.whereIsSupportedType().whereIsValid();
+      if (validElements.isEmpty) {
+        // TODO:
         return false;
       }
 
-      final journeyProfiles = sferaElements.whereType<JourneyProfileDto>();
+      final journeyProfiles = validElements.whereType<JourneyProfileDto>();
       if (journeyProfiles.isNotEmpty) {
         await _databaseService.saveBulkJourneyProfiles(journeyProfiles);
       }
 
-      final segmentProfiles = sferaElements.whereType<SegmentProfileDto>();
+      final segmentProfiles = validElements.whereType<SegmentProfileDto>();
       if (segmentProfiles.isNotEmpty) {
         await _databaseService.saveBulkSegmentProfiles(segmentProfiles);
       }
 
-      final trainCharacteristics = sferaElements.whereType<TrainCharacteristicsDto>();
+      final trainCharacteristics = validElements.whereType<TrainCharacteristicsDto>();
       if (trainCharacteristics.isNotEmpty) {
         await _databaseService.saveBulkTrainCharacteristics(trainCharacteristics);
       }
@@ -128,11 +124,6 @@ class SferaLocalRepoImpl implements SferaLocalRepo {
   @override
   Future<SferaDbMetrics> getMetrics() => _databaseService.getMetrics();
 }
-
-/// top level method to run CPU heavy parse work on background isolate
-Future<Iterable<SferaXmlElementDto>> _parseValidElementsInIsolate(Iterable<String> data) => Isolate.run(() {
-  return data.map((content) => SferaReplyParser.parse(content)).whereIsValid().whereIsSupportedType();
-});
 
 extension _SferaElementIterableExtension on Iterable<SferaXmlElementDto> {
   Iterable<SferaXmlElementDto> whereIsValid() => where((element) {

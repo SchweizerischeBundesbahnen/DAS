@@ -27,7 +27,7 @@ dependencies:
   # https://pub.dev/packages/collection
   collection: ^1.19.1
   # https://pub.dev/packages/archive
-  archive: ^4.0.9
+  flutter_archive: ^6.0.4
   # https://pub.dev/packages/rxdart
   rxdart: ^0.28.0
   # https://pub.dev/packages/intl
