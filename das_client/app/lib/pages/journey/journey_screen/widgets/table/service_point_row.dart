@@ -45,7 +45,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
   }
 
   static Color _resolveRowColor(BuildContext context, JourneyPositionModel position, ServicePoint data) {
-    if (position.nextStop == data) return SBBColors.night;
+    if (position.nextStop == data) return ThemeUtil.getColor(context, SBBColors.night, SBBColors.nightDark);
     return data.isAdditional ? ThemeUtil.getBackgroundColor(context) : ThemeUtil.getDASTableColor(context);
   }
 

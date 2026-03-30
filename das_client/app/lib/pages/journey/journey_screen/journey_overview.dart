@@ -16,8 +16,10 @@ import 'package:app/pages/journey/journey_screen/notification/notification_space
 import 'package:app/pages/journey/journey_screen/view_model/advised_speed_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/arrival_departure_time_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/calculated_speed_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/checklist_departure_process_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/departure_dispatch_notification_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/departure_process_warning_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_table_advancement_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_table_view_model.dart';
@@ -28,6 +30,7 @@ import 'package:app/pages/journey/journey_screen/view_model/punctuality_view_mod
 import 'package:app/pages/journey/journey_screen/view_model/replacement_series_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/tour_system_link_visibility_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/ux_testing_view_model.dart';
+import 'package:app/pages/journey/journey_screen/widgets/FloatingDepartureChecklistButton.dart';
 import 'package:app/pages/journey/journey_screen/widgets/journey_navigation_buttons.dart';
 import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
 import 'package:app/pages/journey/view_model/decisive_gradient_view_model.dart';
@@ -35,6 +38,7 @@ import 'package:app/pages/journey/view_model/disturbance_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
+import 'package:app/provider/ru_feature_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -73,6 +77,7 @@ class JourneyOverview extends StatelessWidget {
             children: [
               JourneyTable(),
               Align(alignment: .bottomCenter, child: JourneyNavigationButtons()),
+              Align(alignment: .bottomLeft, child: FloatingDepartureChecklistButton()),
             ],
           ),
         ),
@@ -117,6 +122,10 @@ class _ProviderScope extends StatelessWidget {
         ),
         Provider<JourneyPositionViewModel>(
           create: (_) => DI.get<JourneyPositionViewModel>(),
+        ),
+
+        Provider<DepartureProcessWarningViewModel>(
+          create: (_) => DI.get<DepartureProcessWarningViewModel>(),
         ),
         Provider<JourneyTableAdvancementViewModel>(
           create: (_) => DI.get<JourneyTableAdvancementViewModel>(),
@@ -189,7 +198,23 @@ class _ProviderScope extends StatelessWidget {
           },
           dispose: (_, vm) => vm.dispose(),
         ),
-
+        ProxyProvider3<
+          JourneyViewModel,
+          JourneyPositionViewModel,
+          UxTestingViewModel,
+          ChecklistDepartureProcessViewModel
+        >(
+          update: (_, journeyVM, positionVM, uxTestingVM, prev) {
+            if (prev != null) return prev;
+            return ChecklistDepartureProcessViewModel(
+              journeyViewModel: journeyVM,
+              journeyPositionViewModel: positionVM,
+              ruFeatureProvider: DI.get<RuFeatureProvider>(),
+              uxTestingViewModel: uxTestingVM,
+            );
+          },
+          dispose: (_, vm) => vm.dispose(),
+        ),
         ProxyProvider3<
           JourneyPositionViewModel,
           JourneySettingsViewModel,

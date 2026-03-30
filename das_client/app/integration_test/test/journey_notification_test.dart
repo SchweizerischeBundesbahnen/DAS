@@ -1,17 +1,28 @@
+import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_screen/notification/widgets/departure_dispatch_notification.dart';
 import 'package:app/pages/journey/journey_screen/notification/widgets/disturbance_notification.dart';
+import 'package:app/pages/journey/journey_screen/widgets/FloatingDepartureChecklistButton.dart';
+import 'package:app/provider/ru_feature_provider.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../app_test.dart';
+import '../mocks/mock_ru_feature_provider.dart';
 import '../util/test_utils.dart';
 
 void main() {
   group('train journey notification test', () {
     testWidgets('test koa notifications are displayed properly', (tester) async {
       await prepareAndStartApp(tester);
+      final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;
+      featureProvider.enableFeature(.departureProcess);
+
       await loadJourney(tester, trainNumber: 'T13');
 
+      await waitUntilExists(tester, find.byKey(FloatingDepartureChecklistButton.buttonKey));
+
       await waitUntilExists(tester, find.text(l10n.w_koa_notification_wait));
+
+      await waitUntilNotExists(tester, find.byKey(FloatingDepartureChecklistButton.buttonKey));
 
       await waitUntilExists(tester, find.text(l10n.w_koa_notification_wait_canceled));
 
@@ -20,16 +31,23 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test departure process modal sheet is displayed', (tester) async {
+    testWidgets('test departure process dialog is displayed', (tester) async {
       await prepareAndStartApp(tester);
+      final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;
+      featureProvider.enableFeature(.departureProcess);
+
       await loadJourney(tester, trainNumber: 'T13');
 
       await waitUntilExists(tester, find.text(l10n.w_koa_notification_wait));
 
       await tapElement(tester, find.text(l10n.w_koa_notification_departure_process));
 
-      expect(find.text(l10n.w_departure_process_modal_sheet_title), findsOneWidget);
-      expect(find.text(l10n.w_departure_process_modal_sheet_content), findsOneWidget);
+      expect(find.text(l10n.w_departure_process_dialog_title), findsOneWidget);
+      expect(find.text(l10n.w_departure_process_checklist_item_1), findsOneWidget);
+      expect(find.text(l10n.w_departure_process_checklist_item_3_koa), findsOneWidget);
+
+      // find koa notification also within departure process dialog
+      await waitUntilExists(tester, find.text(l10n.w_koa_notification_wait));
 
       await disconnect(tester);
     });

@@ -67,8 +67,6 @@
   "w_koa_notification_wait": "Attesa attivata.",
   "w_koa_notification_wait_canceled": "Attesa disattivata.",
   "w_koa_notification_departure_process": "Mostra processo di partenza",
-  "w_departure_process_modal_sheet_title": "Checklist processo di partenza.",
-  "w_departure_process_modal_sheet_content": "1. Consenso\n2. Controllo della marcia dei treni\n3. Orario di partenza\n4. Blocco delle porte\n5. Consenso",
   "w_service_point_modal_communication_label": "Tipo di rete e canale radio",
   "w_service_point_modal_communication_radio_channel": "Canale radio",
   "w_service_point_modal_communication_radio_channels_not_found": "Nessun canale radio disponibile",

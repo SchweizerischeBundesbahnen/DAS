@@ -70,8 +70,6 @@
   "w_koa_notification_wait": "Wait.",
   "w_koa_notification_wait_canceled": "Stop waiting.",
   "w_koa_notification_departure_process": "Show departure process",
-  "w_departure_process_modal_sheet_title": "Departure process checklist.",
-  "w_departure_process_modal_sheet_content": "1. Authorisation\n2. Train protection\n3. Departure time\n4. Door locking\n5. Confirmation",
   "w_service_point_modal_communication_label": "Network type and radio channel",
   "w_service_point_modal_communication_radio_channel": "Radio channel",
   "w_service_point_modal_communication_radio_channels_not_found": "No radio channel available",

@@ -18,6 +18,7 @@ import 'test/additional_speed_restriction_modal_test.dart' as additional_speed_r
 import 'test/app_link_test.dart' as app_link_tests;
 import 'test/automatic_advancement_test.dart' as automatic_advancement_tests;
 import 'test/brake_load_slip_test.dart' as brake_load_slip_tests;
+import 'test/departure_process_test.dart' as departure_process_tests;
 import 'test/journey_header_test.dart' as journey_header_tests;
 import 'test/journey_notification_test.dart' as journey_notification_tests;
 import 'test/journey_replacement_series_test.dart' as journey_replacement_series_tests;
@@ -67,6 +68,7 @@ void main() {
   automatic_advancement_tests.main();
   app_link_tests.main();
   brake_load_slip_tests.main();
+  departure_process_tests.main();
   journey_header_tests.main();
   journey_notification_tests.main();
   journey_table_additional_speed_restriction_tests.main();

@@ -1,6 +1,6 @@
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/view_model/ux_testing_view_model.dart';
-import 'package:app/pages/journey/journey_screen/widgets/departure_process_modal_sheet.dart';
+import 'package:app/pages/journey/journey_screen/widgets/departure_process_dialog.dart';
 import 'package:app/theme/das_colors.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/assets.dart';
@@ -11,7 +11,9 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
 class KoaNotification extends StatelessWidget {
-  const KoaNotification({super.key});
+  const KoaNotification({super.key, this.displayAction = true});
+
+  final bool displayAction;
 
   @override
   Widget build(BuildContext context) {
@@ -21,14 +23,18 @@ class KoaNotification extends StatelessWidget {
       stream: viewModel.koaState,
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.data == .waitHide) return SizedBox.shrink();
-        return snapshot.data == .wait ? _WaitNotification() : _WaitCancelledNotification();
+        return snapshot.data == .wait
+            ? _WaitNotification(displayAction: displayAction)
+            : _WaitCancelledNotification(displayAction: displayAction);
       },
     );
   }
 }
 
 class _WaitNotification extends StatelessWidget {
-  const _WaitNotification();
+  const _WaitNotification({required this.displayAction});
+
+  final bool displayAction;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +52,7 @@ class _WaitNotification extends StatelessWidget {
         style: resolvedTextStyle,
       ),
       badgeText: context.l10n.w_koa_notification_title,
-      trailing: _KoaTrailingButton(),
+      trailing: displayAction ? _KoaTrailingButton() : null,
       style: _waitStyle(context),
     );
   }
@@ -70,7 +76,9 @@ class _WaitNotification extends StatelessWidget {
 }
 
 class _WaitCancelledNotification extends StatelessWidget {
-  const _WaitCancelledNotification();
+  const _WaitCancelledNotification({required this.displayAction});
+
+  final bool displayAction;
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +90,7 @@ class _WaitCancelledNotification extends StatelessWidget {
       leading: Icon(SBBIcons.circle_tick_medium, color: SBBColors.black, size: 36.0),
       content: Text(context.l10n.w_koa_notification_wait_canceled, style: resolvedTextStyle),
       badgeText: context.l10n.w_koa_notification_title,
-      trailing: _KoaTrailingButton(),
+      trailing: displayAction ? _KoaTrailingButton() : null,
       style: _waitCancelledStyle(context),
     );
   }
@@ -119,7 +127,7 @@ class _KoaTrailingButton extends StatelessWidget {
 
         return SBBTertiaryButtonSmall(
           label: context.l10n.w_koa_notification_departure_process,
-          onPressed: () => showDepartureProcessModalSheet(context),
+          onPressed: () => showDepartureProcessDialog(context),
         );
       },
     );
