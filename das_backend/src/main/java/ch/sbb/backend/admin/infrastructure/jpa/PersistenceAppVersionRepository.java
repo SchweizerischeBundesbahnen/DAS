@@ -40,4 +40,9 @@ class PersistenceAppVersionRepository implements AppVersionRepository {
     public void deleteById(Integer id) {
         appVersionRepository.deleteById(id);
     }
+
+    @Override
+    public boolean existsByVersion(String version, Integer selfId) {
+        return appVersionRepository.existsByVersionAndIdNot(version, selfId);
+    }
 }

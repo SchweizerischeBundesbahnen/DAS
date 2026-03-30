@@ -88,6 +88,38 @@ class AppVersionControllerTest {
     }
 
     @Test
+    void create_invalid_body() throws Exception {
+        mockMvc.perform(post(API_SETTINGS_APP_VERSION)
+                .contentType("application/json")
+                .content("""
+                    {
+                        "version": "1.6.3",
+                        "expiryDate": null
+                    }
+                    """)
+                .with(authentication(JwtTestUtils.createAdminTenantAuth())))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.detail").value("Invalid request content. -> minimalVersion=must not be null"));
+    }
+
+    @Test
+    @Sql("classpath:createAppVersions.sql")
+    void create_conflict_version() throws Exception {
+        mockMvc.perform(post(API_SETTINGS_APP_VERSION)
+                .contentType("application/json")
+                .content("""
+                    {
+                        "version": "2.1.0",
+                        "minimalVersion": true,
+                        "expiryDate": null
+                    }
+                    """)
+                .with(authentication(JwtTestUtils.createAdminTenantAuth())))
+            .andExpect(status().isConflict())
+            .andExpect(jsonPath("$.detail").value("Version already exists"));
+    }
+
+    @Test
     @Sql("classpath:createAppVersions.sql")
     void update_ok() throws Exception {
         mockMvc.perform(put(API_SETTINGS_APP_VERSION + "/1")

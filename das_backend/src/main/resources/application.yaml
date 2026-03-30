@@ -6,6 +6,9 @@ spring:
     active: ${STAGE:local}
   application:
     name: backend
+  web:
+    locale: en
+    locale-resolver: fixed
   mvc:
     problemdetails:
       enabled: true
@@ -194,4 +197,4 @@ proxy:
 
 atlas:
   base-url: ${ATLAS_BASE_URL}
-  import-cron: 0 0 3 * * ?  # every day at 2
+  import-cron: 0 0 3 * * ?  # every day at 3

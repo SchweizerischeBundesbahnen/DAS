@@ -2,13 +2,20 @@ package ch.sbb.backend.admin.domain.settings;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import ch.sbb.backend.admin.application.settings.model.request.AppVersionRequest;
+import ch.sbb.backend.admin.application.settings.model.response.AppVersion;
 import ch.sbb.backend.admin.application.settings.model.response.CurrentAppVersion;
 import ch.sbb.backend.admin.infrastructure.jpa.AppVersionEntity;
+import ch.sbb.backend.common.ConflictException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -89,4 +96,31 @@ class AppVersionServiceImplTest {
         assertThat(result).isEqualTo(CurrentAppVersion.DEFAULT);
     }
 
+    @Test
+    void create_checkUnique_throwsConflictExceptionWhenVersionExists() {
+        AppVersionRequest request = new AppVersionRequest("1.5.0", true, LocalDate.now().plusDays(5));
+        when(appVersionRepository.existsByVersion("1.5.0", null)).thenReturn(true);
+
+        assertThatExceptionOfType(ConflictException.class)
+            .isThrownBy(() -> underTest.create(request))
+            .withMessage("Version already exists");
+
+        verify(appVersionRepository).existsByVersion("1.5.0", null);
+        verify(appVersionRepository, never()).save(any());
+    }
+
+    @Test
+    void update_checkUnique_throwsConflictExceptionWhenVersionExists() {
+        AppVersionRequest request = new AppVersionRequest("1.5.0", true, LocalDate.now().plusDays(5));
+        when(appVersionRepository.findById(42)).thenReturn(Optional.of(new AppVersion(42, "1.5.0", true, LocalDate.now().plusDays(4))));
+        when(appVersionRepository.existsByVersion("1.5.0", 42)).thenReturn(true);
+
+        assertThatExceptionOfType(ConflictException.class)
+            .isThrownBy(() -> underTest.update(42, request))
+            .withMessage("Version already exists");
+
+        verify(appVersionRepository).findById(42);
+        verify(appVersionRepository).existsByVersion("1.5.0", 42);
+        verify(appVersionRepository, never()).save(any());
+    }
 }
