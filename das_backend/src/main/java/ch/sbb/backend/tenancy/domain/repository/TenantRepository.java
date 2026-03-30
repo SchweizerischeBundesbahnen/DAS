@@ -6,4 +6,6 @@ import lombok.NonNull;
 public interface TenantRepository {
 
     Tenant getByIssuerUri(@NonNull String issuerUri);
+
+    boolean isAdminTenant(Tenant tenant);
 }

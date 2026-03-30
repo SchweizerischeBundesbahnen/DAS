@@ -28,7 +28,7 @@ import org.springframework.web.client.RestClientResponseException;
 public class CustomerOrientedDepartureController {
 
     static final String PATH_SEGMENT_CUSTOMER_ORIENTED_DEPARTURE = "/customer-oriented-departure";
-    static final String API_CUSTOMER_ORIENTED_DEPARTURE = ApiDocumentation.VERSION_URI_V1 + PATH_SEGMENT_CUSTOMER_ORIENTED_DEPARTURE;
+    public static final String API_CUSTOMER_ORIENTED_DEPARTURE = ApiDocumentation.VERSION_URI_V1 + PATH_SEGMENT_CUSTOMER_ORIENTED_DEPARTURE;
 
     private final ProxyClient proxyClient;
 

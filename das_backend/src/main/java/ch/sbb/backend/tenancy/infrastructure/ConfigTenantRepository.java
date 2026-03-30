@@ -3,6 +3,7 @@ package ch.sbb.backend.tenancy.infrastructure;
 import ch.sbb.backend.tenancy.domain.model.Tenant;
 import ch.sbb.backend.tenancy.domain.repository.TenantRepository;
 import ch.sbb.backend.tenancy.infrastructure.config.TenantConfig;
+import java.util.Objects;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -25,6 +26,11 @@ public class ConfigTenantRepository implements TenantRepository {
             .orElseThrow(() -> new IllegalArgumentException("unknown tenant"));
         log.info("Tenant::name={}", tenant.name());
         return tenant;
+    }
+
+    @Override
+    public boolean isAdminTenant(Tenant tenant) {
+        return Objects.equals(tenantConfig.getAdminTenantId(), tenant.getId());
     }
 }
 
