@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:meta/meta.dart';
 
 enum DepartureAuthorizationType { sms, dispatcher }
@@ -31,7 +32,7 @@ class DepartureAuthorization {
       identical(this, other) ||
       other is DepartureAuthorization &&
           runtimeType == other.runtimeType &&
-          types == other.types &&
+          ListEquality().equals(types, other.types) &&
           _originalText == other._originalText;
 
   @override
