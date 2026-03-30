@@ -93,7 +93,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: playwright-report
+          name: playwright-test-results
           path: das_admin_tool/test-results/
   build:
     runs-on: ubuntu-latest

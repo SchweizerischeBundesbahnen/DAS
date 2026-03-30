@@ -1,5 +1,4 @@
-import test, {expect, Page} from '@playwright/test';
-import {Locator} from 'playwright-core';
+import test, {expect, Locator, Page} from '@playwright/test';
 
 test.describe('admin app versions test', () => {
 
@@ -15,7 +14,7 @@ test.describe('admin app versions test', () => {
     await expect(row).not.toBeVisible();
   }
 
-  test('create, edit and delete app version', async ({page}) => {
+  test('create, edit and delete app version | tests: 1406', async ({page}) => {
     await page.goto('');
     const addButton = page.getByText('App Version blockieren', {exact: true});
 

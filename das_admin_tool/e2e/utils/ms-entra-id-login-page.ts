@@ -9,10 +9,10 @@ const LOGIN_USERNAME = process.env['E2E_LOGIN_USERNAME'] || '';
 const LOGIN_PASSWORD = process.env['E2E_LOGIN_PASSWORD'] || '';
 
 /**
- * Page Object Model for an Azure AD login page
+ * Page Object Model for an Entra ID login page
  * @see https://playwright.dev/docs/test-pom
  */
-export class AzureLoginPage {
+export class MsEntraIdLoginPage {
   constructor(
     private browser: BrowserWindow,
     private baseURL: string,
