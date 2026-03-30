@@ -1,8 +1,7 @@
-package ch.sbb.backend.admin.infrastructure.settings;
+package ch.sbb.backend.admin.infrastructure.jpa;
 
 import ch.sbb.backend.admin.application.settings.model.response.AppVersion;
 import ch.sbb.backend.admin.domain.settings.AppVersionRepository;
-import ch.sbb.backend.admin.infrastructure.settings.model.AppVersionEntity;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Component;

@@ -18,7 +18,7 @@ public class AdminServiceBeanConfiguration {
     }
 
     @Bean
-    public AppVersionService appVersionService(AppVersionRepository appVersionRepository) {
+    AppVersionService appVersionService(AppVersionRepository appVersionRepository) {
         return new AppVersionServiceImpl(appVersionRepository);
     }
 }

@@ -1,12 +1,12 @@
 package ch.sbb.backend.formation.api.v1;
 
 import ch.sbb.backend.common.ApiDocumentation;
+import ch.sbb.backend.common.ApiErrorResponses;
 import ch.sbb.backend.common.ApiParametersDefault;
 import ch.sbb.backend.common.ApiParametersDefault.ParamRequestId;
-import ch.sbb.backend.common.ResponseEntityFactory;
-import ch.sbb.backend.common.ApiErrorResponses;
 import ch.sbb.backend.common.Problem;
 import ch.sbb.backend.common.Response;
+import ch.sbb.backend.common.ResponseEntityFactory;
 import ch.sbb.backend.common.SFERA;
 import ch.sbb.backend.common.TelTsi;
 import ch.sbb.backend.formation.api.v1.model.Formation;
@@ -93,7 +93,7 @@ public class FormationController {
             }
         }
 
-        final HttpHeaders headers = ResponseEntityFactory.createOkHeaders(null, requestId);
+        final HttpHeaders headers = ResponseEntityFactory.createOkHeaders(requestId);
         headers.add(HttpHeaders.CACHE_CONTROL, "private");
         return ResponseEntityFactory.createOkResponse(
             headers,

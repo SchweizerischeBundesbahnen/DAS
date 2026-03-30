@@ -4,7 +4,7 @@ import ch.sbb.backend.admin.application.settings.model.request.AppVersionRequest
 import ch.sbb.backend.admin.application.settings.model.response.AppVersion;
 import ch.sbb.backend.admin.application.settings.model.response.CurrentAppVersion;
 import ch.sbb.backend.admin.domain.settings.model.SemanticVersion;
-import ch.sbb.backend.admin.infrastructure.settings.model.AppVersionEntity;
+import ch.sbb.backend.admin.infrastructure.jpa.AppVersionEntity;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
@@ -71,8 +71,7 @@ public class AppVersionServiceImpl implements AppVersionService {
     @Override
     public AppVersion create(AppVersionRequest createRequest) {
         AppVersionEntity entity = AppVersionEntity.from(createRequest);
-        AppVersion saved = appVersionRepository.save(entity.toAppVersion());
-        return saved;
+        return appVersionRepository.save(entity.toAppVersion());
     }
 
     @Override

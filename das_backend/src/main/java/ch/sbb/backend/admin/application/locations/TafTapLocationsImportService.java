@@ -1,0 +1,52 @@
+package ch.sbb.backend.admin.application.locations;
+
+import ch.sbb.backend.admin.domain.locations.TafTapLocation;
+import ch.sbb.backend.admin.domain.locations.TafTapLocationRepository;
+import ch.sbb.backend.admin.infrastructure.atlas.ServicePoint;
+import ch.sbb.backend.admin.infrastructure.atlas.ServicePointApiClient;
+import ch.sbb.backend.formation.domain.model.TafTapLocationReference;
+import java.util.List;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
+
+@Service
+@Slf4j
+public class TafTapLocationsImportService {
+
+    private final ServicePointApiClient servicePointApiClient;
+    private final TafTapLocationRepository tafTapLocationRepository;
+
+    public TafTapLocationsImportService(ServicePointApiClient servicePointApiClient, TafTapLocationRepository tafTapLocationRepository) {
+        this.servicePointApiClient = servicePointApiClient;
+        this.tafTapLocationRepository = tafTapLocationRepository;
+    }
+
+    private static TafTapLocationReference toLocationReference(ServicePoint.ServicePointNumber servicePointNumber) {
+        String countryCodeIso = TafTapLocationReference.toCountryCodeIso(servicePointNumber.uicCountryCode());
+        return new TafTapLocationReference(countryCodeIso, servicePointNumber.numberShort());
+    }
+
+    @Scheduled(cron = "${atlas.import-cron}")
+    public void importLocations() {
+        log.info("Starting scheduled location import");
+        List<TafTapLocation> locations = getLocations();
+        tafTapLocationRepository.deleteAll();
+        tafTapLocationRepository.saveAll(locations);
+        log.info("Finished location import");
+    }
+
+    public List<TafTapLocation> getLocations() {
+        return servicePointApiClient.getAll().stream()
+            .map(sp -> new TafTapLocation(
+                toLocationReference(sp.number()),
+                sp.designationOfficial(),
+                sp.abbreviation(),
+                sp.validFrom(),
+                sp.validTo()
+            ))
+            .filter(TafTapLocation::valid)
+            .toList();
+    }
+}
+

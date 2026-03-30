@@ -81,7 +81,7 @@ public class AppVersionController {
     public ResponseEntity<AppVersionResponse> create(@RequestBody @Valid AppVersionRequest createRequest,
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
         AppVersion createdVersion = appVersionService.create(createRequest);
-        HttpHeaders headers = ResponseEntityFactory.createOkHeaders(null, requestId);
+        HttpHeaders headers = ResponseEntityFactory.createOkHeaders(requestId);
         return new ResponseEntity<>(new AppVersionResponse(List.of(createdVersion)), headers, HttpStatus.CREATED);
     }
 

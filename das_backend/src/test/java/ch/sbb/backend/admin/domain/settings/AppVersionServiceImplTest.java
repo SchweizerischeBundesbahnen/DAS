@@ -6,7 +6,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.backend.admin.application.settings.model.response.CurrentAppVersion;
-import ch.sbb.backend.admin.infrastructure.settings.model.AppVersionEntity;
+import ch.sbb.backend.admin.infrastructure.jpa.AppVersionEntity;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;

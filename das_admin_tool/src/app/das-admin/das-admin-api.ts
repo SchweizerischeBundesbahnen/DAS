@@ -2,10 +2,7 @@ import {inject, Injectable} from '@angular/core';
 import {HttpClient, httpResource} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {Observable} from 'rxjs';
-
-export interface Response {
-  data: AppVersion[];
-}
+import {ApiResponse} from '../shared/locations-input/api-response';
 
 export interface AppVersion {
   id?: number;
@@ -14,6 +11,8 @@ export interface AppVersion {
   expiryDate?: Date;
 }
 
+export type AppVersionApiResponse = ApiResponse<AppVersion[]>;
+
 @Injectable({
   providedIn: 'root',
 })
@@ -21,14 +20,14 @@ export class DasAdminApi {
   private readonly httpClient = inject(HttpClient);
   private readonly url = `${environment.backendUrl}/v1/settings/app-version`;
 
-  appVersions = httpResource<Response>(() => this.url);
+  appVersions = httpResource<AppVersionApiResponse>(() => this.url);
 
-  postAppVersion(version: AppVersion): Observable<Response> {
-    return this.httpClient.post<Response>(this.url, version);
+  postAppVersion(version: AppVersion): Observable<AppVersionApiResponse> {
+    return this.httpClient.post<AppVersionApiResponse>(this.url, version);
   }
 
-  putAppVersion(id: number, version: AppVersion): Observable<Response> {
-    return this.httpClient.put<Response>(`${this.url}/${id}`, version);
+  putAppVersion(id: number, version: AppVersion): Observable<AppVersionApiResponse> {
+    return this.httpClient.put<AppVersionApiResponse>(`${this.url}/${id}`, version);
   }
 
   deleteAppVersion(id: number): Observable<void> {
