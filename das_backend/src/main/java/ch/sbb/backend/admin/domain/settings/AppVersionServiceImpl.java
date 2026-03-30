@@ -70,11 +70,11 @@ public class AppVersionServiceImpl implements AppVersionService {
 
     @Override
     public AppVersion update(Integer id, AppVersionRequest updateRequest) {
-        checkUniqueVersion(updateRequest.version(), id);
         Optional<AppVersion> optional = appVersionRepository.findById(id);
         if (optional.isEmpty()) {
             return null;
         }
+        checkUniqueVersion(updateRequest.version(), id);
         AppVersion old = optional.get();
         AppVersion updated = new AppVersion(
             old.id(),

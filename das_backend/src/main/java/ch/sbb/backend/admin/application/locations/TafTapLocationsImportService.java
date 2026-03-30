@@ -7,6 +7,7 @@ import ch.sbb.backend.admin.infrastructure.atlas.ServicePointApiClient;
 import ch.sbb.backend.formation.domain.model.TafTapLocationReference;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -28,12 +29,13 @@ public class TafTapLocationsImportService {
     }
 
     @Scheduled(cron = "${atlas.import-cron}")
+    @SchedulerLock(name = "importLocations", lockAtLeastFor = "${shedlock.lock-at-least-for:10m}")
     public void importLocations() {
         log.info("Starting scheduled location import");
         List<TafTapLocation> locations = getLocations();
         tafTapLocationRepository.deleteAll();
         tafTapLocationRepository.saveAll(locations);
-        log.info("Finished location import");
+        log.info("Finished location import with {} locations", locations.size());
     }
 
     public List<TafTapLocation> getLocations() {

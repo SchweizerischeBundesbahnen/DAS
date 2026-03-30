@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.exception.SQLGrammarException;
 import org.jetbrains.annotations.NotNull;
-import org.jspecify.annotations.Nullable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -72,28 +71,23 @@ public class TopLevelHandler extends ResponseEntityExceptionHandler {
     }
 
     @Override
-    protected @Nullable ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+    protected ResponseEntity<@NonNull Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, @NonNull HttpHeaders headers, HttpStatusCode status, @NonNull WebRequest request) {
         final ProblemDetail springProblemDetail = ex.getBody();
-        final HttpStatus httpStatus = HttpStatus.resolve(status.value()) == null ? HttpStatus.BAD_REQUEST : HttpStatus.resolve(status.value());
-        final String springDetail = springProblemDetail == null ? null : springProblemDetail.getDetail();
+        final HttpStatus httpStatus = HttpStatus.resolve(status.value());
+        final HttpStatus finalStatus = (httpStatus != null) ? httpStatus : HttpStatus.BAD_REQUEST;
 
         final String bindingErrors = ex.getBindingResult().getAllErrors().stream()
             .map(this::formatBindingError)
             .collect(Collectors.joining("; "));
 
-        final String detail = StringUtils.isBlank(bindingErrors)
-            ? StringUtils.defaultIfBlank(springDetail, "Validation failed")
-            : StringUtils.defaultIfBlank(springDetail, "Validation failed") + " -> " + bindingErrors;
+        final String springDetail = StringUtils.defaultIfBlank(springProblemDetail.getDetail(), "Validation failed");
+        final String detail = StringUtils.isBlank(bindingErrors) ? springDetail : springDetail + " -> " + bindingErrors;
 
-        final Problem problem = ResponseEntityFactory.createProblem(
-            httpStatus,
-            StringUtils.defaultIfBlank(springProblemDetail == null ? null : springProblemDetail.getTitle(), "Bad Request"),
-            detail,
+        final Problem problem = ResponseEntityFactory.createProblem(finalStatus, StringUtils.defaultIfBlank(springProblemDetail.getTitle(), "Bad Request"), detail,
             extractInstance(springProblemDetail, request));
 
         return new ResponseEntity<>(problem,
-            ResponseEntityFactory.createProblemHeader(ApiDocumentation.HEADER_CONTENT_LANGUAGE_ERROR_DETAIL_DEFAULT, request.getHeader(ApiParametersDefault.HEADER_REQUEST_ID)),
-            httpStatus);
+            ResponseEntityFactory.createProblemHeader(ApiDocumentation.HEADER_CONTENT_LANGUAGE_ERROR_DETAIL_DEFAULT, request.getHeader(ApiParametersDefault.HEADER_REQUEST_ID)), finalStatus);
     }
 
     private String formatBindingError(ObjectError error) {

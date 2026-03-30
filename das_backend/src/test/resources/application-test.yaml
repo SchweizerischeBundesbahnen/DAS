@@ -82,3 +82,6 @@ proxy:
 atlas:
   base-url: ''
   import-cron: '-'
+
+shedlock:
+  lock-at-least-for: 0

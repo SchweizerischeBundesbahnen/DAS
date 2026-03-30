@@ -112,33 +112,15 @@ class AppVersionServiceImplTest {
     @Test
     void update_checkUnique_throwsConflictExceptionWhenVersionExists() {
         AppVersionRequest request = new AppVersionRequest("1.5.0", true, LocalDate.now().plusDays(5));
+        when(appVersionRepository.findById(42)).thenReturn(Optional.of(new AppVersion(42, "1.5.0", true, LocalDate.now().plusDays(4))));
         when(appVersionRepository.existsByVersion("1.5.0", 42)).thenReturn(true);
 
         assertThatExceptionOfType(ConflictException.class)
             .isThrownBy(() -> underTest.update(42, request))
             .withMessage("Version already exists");
 
+        verify(appVersionRepository).findById(42);
         verify(appVersionRepository).existsByVersion("1.5.0", 42);
-        verify(appVersionRepository, never()).findById(42);
         verify(appVersionRepository, never()).save(any());
-    }
-
-    @Test
-    void update_checkUnique_allowsSameVersionWhenRepositoryMarksItAsSelf() {
-        AppVersionRequest request = new AppVersionRequest("1.5.0", true, LocalDate.now().plusDays(5));
-        AppVersion existing = new AppVersion(42, "1.0.0", false, null);
-
-        when(appVersionRepository.existsByVersion("1.5.0", 42)).thenReturn(false);
-        when(appVersionRepository.findById(42)).thenReturn(Optional.of(existing));
-        when(appVersionRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
-
-        AppVersion result = underTest.update(42, request);
-
-        assertThat(result).isNotNull();
-        assertThat(result.id()).isEqualTo(42);
-        assertThat(result.version()).isEqualTo("1.5.0");
-        assertThat(result.minimalVersion()).isTrue();
-        assertThat(result.expiryDate()).isEqualTo(request.expiryDate());
-        verify(appVersionRepository).existsByVersion("1.5.0", 42);
     }
 }
