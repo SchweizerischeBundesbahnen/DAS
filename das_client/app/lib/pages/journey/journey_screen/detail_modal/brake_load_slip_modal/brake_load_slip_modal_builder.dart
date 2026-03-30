@@ -11,9 +11,13 @@ import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class BrakeLoadSlipModalBuilder extends DASModalSheetBuilder {
+  static const headerKey = Key('BrakeLoadSlipModalBuilderHeaderKey');
+  static const buttonKey = Key('BrakeLoadSlipModalBuilderButtonKey');
+
   @override
   Widget header(BuildContext context) {
     return Text(
+      key: headerKey,
       context.l10n.w_brake_load_slip_modal_title,
       style: sbbTextStyle.romanStyle.large,
     );
@@ -34,18 +38,18 @@ class BrakeLoadSlipModalBuilder extends DASModalSheetBuilder {
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          spacing: SBBSpacing.medium,
           children: [
             BrakeLoadSlipModalOverview(
               formationRunChange: formationRun,
             ),
-            SizedBox(height: SBBSpacing.medium),
             BrakeLoadSlipSpecialRestrictions(
               formationRunChange: formationRun,
               groupColor: ThemeUtil.getColor(context, SBBColors.milk, SBBColors.midnight),
               showChangeIndicator: false,
             ),
-            SizedBox(height: SBBSpacing.medium),
             SBBTertiaryButtonLarge(
+              key: buttonKey,
               label: context.l10n.w_brake_load_slip_modal_open_brake_slip,
               icon: SBBIcons.link_external_small,
               onPressed: () {
