@@ -20,7 +20,8 @@ import '../app_test.dart';
 Locale appLocale() => Locale(l10n.localeName);
 
 Future<AppLocalizations> deviceLocalizations() async {
-  return AppLocalizations.delegate.load(_deviceLocale());
+  final supportedLocale = defaultLocale(_deviceLocale(), supportedLocales);
+  return AppLocalizations.delegate.load(supportedLocale);
 }
 
 Locale _deviceLocale() {
