@@ -1,4 +1,4 @@
-package ch.sbb.backend.admin.infrastructure.settings.model;
+package ch.sbb.backend.admin.infrastructure.jpa;
 
 import ch.sbb.backend.admin.application.settings.model.request.AppVersionRequest;
 import ch.sbb.backend.admin.application.settings.model.response.AppVersion;

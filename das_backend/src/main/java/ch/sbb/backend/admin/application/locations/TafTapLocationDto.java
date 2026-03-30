@@ -1,21 +1,22 @@
 package ch.sbb.backend.admin.application.locations;
 
-import ch.sbb.backend.admin.domain.locations.Location;
+import ch.sbb.backend.admin.domain.locations.TafTapLocation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
+import java.time.LocalDate;
 
-public record LocationDto(
+public record TafTapLocationDto(
     @Schema(description = "TAF/TAP location reference", requiredMode = RequiredMode.REQUIRED, example = "CH07000")
     String locationReference,
     @Schema(description = "Primary location name also called official designation", requiredMode = RequiredMode.REQUIRED, example = "Bern")
     String primaryLocationName,
     @Schema(description = "Location abbreviation", requiredMode = RequiredMode.NOT_REQUIRED, example = "BN")
     String locationAbbreviation,
-    @Schema(description = "Location is only valid in future timetable period", requiredMode = RequiredMode.REQUIRED)
-    boolean future
+    @Schema(description = "Location is valid in future", requiredMode = RequiredMode.NOT_REQUIRED)
+    LocalDate validFrom
 ) {
 
-    static LocationDto from(Location location) {
-        return new LocationDto(location.locationReference().toLocationCode(), location.primaryLocationName(), location.locationAbbreviation(), location.isFuture());
+    static TafTapLocationDto from(TafTapLocation location) {
+        return new TafTapLocationDto(location.locationReference().toLocationCode(), location.primaryLocationName(), location.locationAbbreviation(), location.futureValidFrom());
     }
 }

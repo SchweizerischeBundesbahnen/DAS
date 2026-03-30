@@ -1,8 +1,8 @@
-package ch.sbb.backend.admin.infrastructure.locations;
+package ch.sbb.backend.admin.infrastructure.atlas;
 
 import java.time.LocalDate;
 
-public record AtlasServicePoint(
+public record ServicePoint(
     String designationOfficial,
     String abbreviation,
     LocalDate validFrom,

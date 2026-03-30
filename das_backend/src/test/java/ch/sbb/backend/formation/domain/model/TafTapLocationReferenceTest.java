@@ -11,7 +11,7 @@ class TafTapLocationReferenceTest {
     void toLocationCode_null() {
         TafTapLocationReference reference = new TafTapLocationReference(null, null);
 
-        assertThatExceptionOfType(UnexpectedProviderData.class).isThrownBy(() -> reference.toLocationCode());
+        assertThatExceptionOfType(UnexpectedProviderData.class).isThrownBy(reference::toLocationCode);
     }
 
     @Test
@@ -38,7 +38,7 @@ class TafTapLocationReferenceTest {
     @Test
     void toLocationCode_shouldFormatCountryAndUicCodeWithTooLongUicCode() {
         TafTapLocationReference reference = new TafTapLocationReference("CH", 25675673);
-        assertThatExceptionOfType(UnexpectedProviderData.class).isThrownBy(() -> reference.toLocationCode());
+        assertThatExceptionOfType(UnexpectedProviderData.class).isThrownBy(reference::toLocationCode);
     }
 
     @Test

@@ -1,8 +1,8 @@
 package ch.sbb.backend.admin.application.locations;
 
 import ch.sbb.backend.admin.application.settings.model.response.SettingsResponse;
-import ch.sbb.backend.admin.domain.locations.Location;
-import ch.sbb.backend.admin.domain.locations.LocationRepository;
+import ch.sbb.backend.admin.domain.locations.TafTapLocation;
+import ch.sbb.backend.admin.domain.locations.TafTapLocationRepository;
 import ch.sbb.backend.common.ApiDocumentation;
 import ch.sbb.backend.common.ApiErrorResponses;
 import ch.sbb.backend.common.ApiParametersDefault;
@@ -26,16 +26,16 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@Tag(name = "Location", description = "API for locations.")
-public class LocationController {
+@Tag(name = "Location", description = "API for TAF/TAP locations.")
+public class TafTapLocationController {
 
     static final String PATH_SEGMENT_LOCATIONS = "/locations";
 
     public static final String API_LOCATIONS = ApiDocumentation.VERSION_URI_V1 + PATH_SEGMENT_LOCATIONS;
 
-    private final LocationRepository locationService;
+    private final TafTapLocationRepository locationService;
 
-    public LocationController(LocationRepository locationService) {
+    public TafTapLocationController(TafTapLocationRepository locationService) {
         this.locationService = locationService;
     }
 
@@ -51,7 +51,12 @@ public class LocationController {
         in = ParameterIn.HEADER)
     public ResponseEntity<? extends Response> getAll(
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
-        List<Location> locations = locationService.findAll();
-        return ResponseEntityFactory.createOkResponse(LocationsResponse.from(locations), null, requestId);
+        List<TafTapLocation> locations = locationService.findAll();
+        final HttpHeaders headers = ResponseEntityFactory.createOkHeaders(requestId);
+        headers.add(HttpHeaders.CACHE_CONTROL, "public, max-age=86400");
+        return ResponseEntityFactory.createOkResponse(
+            headers,
+            TafTapLocationsResponse.from(locations)
+        );
     }
 }

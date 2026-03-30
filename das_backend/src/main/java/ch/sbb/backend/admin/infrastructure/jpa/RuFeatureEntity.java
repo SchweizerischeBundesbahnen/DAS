@@ -1,4 +1,4 @@
-package ch.sbb.backend.admin.infrastructure.settings.model;
+package ch.sbb.backend.admin.infrastructure.jpa;
 
 import ch.sbb.backend.admin.domain.settings.model.RuFeature;
 import ch.sbb.backend.admin.domain.settings.model.RuFeatureKey;

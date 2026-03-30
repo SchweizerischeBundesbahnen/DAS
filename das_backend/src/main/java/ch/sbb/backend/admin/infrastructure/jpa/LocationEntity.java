@@ -1,6 +1,6 @@
-package ch.sbb.backend.admin.infrastructure.locations;
+package ch.sbb.backend.admin.infrastructure.jpa;
 
-import ch.sbb.backend.admin.domain.locations.Location;
+import ch.sbb.backend.admin.domain.locations.TafTapLocation;
 import ch.sbb.backend.formation.domain.model.TafTapLocationReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,7 +27,7 @@ public class LocationEntity {
     private LocalDate validFrom;
     private LocalDate validTo;
 
-    public static LocationEntity from(Location location) {
+    public static LocationEntity from(TafTapLocation location) {
         LocationEntity entity = new LocationEntity();
         entity.locationReference = location.locationReference().toLocationCode();
         entity.primaryLocationName = location.primaryLocationName();
@@ -37,8 +37,8 @@ public class LocationEntity {
         return entity;
     }
 
-    public Location toLocation() {
-        return new Location(locationReference(), primaryLocationName, locationAbbreviation, validFrom, validTo);
+    public TafTapLocation toLocation() {
+        return new TafTapLocation(locationReference(), primaryLocationName, locationAbbreviation, validFrom, validTo);
     }
 
     public TafTapLocationReference locationReference() {

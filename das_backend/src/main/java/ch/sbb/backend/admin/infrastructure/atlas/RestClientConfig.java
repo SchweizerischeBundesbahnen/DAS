@@ -1,4 +1,4 @@
-package ch.sbb.backend.admin.infrastructure.locations;
+package ch.sbb.backend.admin.infrastructure.atlas;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -8,7 +8,7 @@ import org.springframework.security.oauth2.client.web.client.OAuth2ClientHttpReq
 import org.springframework.web.client.RestClient;
 
 @Configuration
-public class LocationsRestClientConfig {
+public class RestClientConfig {
 
     public static final String OAUTH2_CLIENT_REGISTRATION_ID = "atlas";
 
@@ -16,13 +16,12 @@ public class LocationsRestClientConfig {
     private String apiBaseUrl;
 
     @Bean
-    public RestClient restClient(OAuth2AuthorizedClientManager authorizedClientManager) {
+    public RestClient.Builder restClient(OAuth2AuthorizedClientManager authorizedClientManager) {
         OAuth2ClientHttpRequestInterceptor requestInterceptor =
             new OAuth2ClientHttpRequestInterceptor(authorizedClientManager);
 
         return RestClient.builder()
             .baseUrl(apiBaseUrl)
-            .requestInterceptor(requestInterceptor)
-            .build();
+            .requestInterceptor(requestInterceptor);
     }
 }
