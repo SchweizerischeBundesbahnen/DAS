@@ -1,7 +1,7 @@
 import {TestBed} from '@angular/core/testing';
 
 import {AppVersionsService} from './app-versions.service';
-import {AppVersion, DasAdminApi, Response} from '../das-admin-api';
+import {AppVersion, AppVersionApiResponse, DasAdminApi} from '../das-admin-api';
 import {of} from 'rxjs';
 import {SbbDialogService} from '@sbb-esta/lyne-angular/dialog';
 import {ToastService} from '../../shared/toast-service';
@@ -16,10 +16,10 @@ const appVersion: AppVersion = {
 };
 
 const mockDasAdminApi: Partial<DasAdminApi> = {
-  putAppVersion: () => of({} as Response),
+  putAppVersion: () => of({} as AppVersionApiResponse),
   deleteAppVersion: () => of(),
-  postAppVersion: () => of({} as Response),
-  appVersions: {reload: () => true} as HttpResourceRef<Response | undefined>
+  postAppVersion: () => of({} as AppVersionApiResponse),
+  appVersions: {reload: () => true} as HttpResourceRef<AppVersionApiResponse | undefined>
 };
 
 const mockToastService: Partial<ToastService> = {

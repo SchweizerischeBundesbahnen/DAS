@@ -1,0 +1,22 @@
+<sbb-form-field>
+  <sbb-chip-group name="field-name">
+    <input [formControl]="inputControl" [sbbAutocomplete]="auto"/>
+  </sbb-chip-group>
+  <sbb-autocomplete #auto="sbbAutocomplete">
+    @for (loc of filteredLocations(); track loc.locationReference) {
+      <sbb-option [class.future]="loc.validFrom" [value]="loc.primaryLocationName">
+        @if (loc.validFrom) {
+          ab: {{ loc.validFrom | date: 'shortDate' }}
+          <span>&nbsp;&nbsp;</span>
+        }
+        {{ loc.locationReference }}
+        <span>&nbsp;&nbsp;</span>
+        {{ loc.primaryLocationName }}
+        @if (loc.locationAbbreviation) {
+          <span>&nbsp;&nbsp;</span>
+          {{ loc.locationAbbreviation }}
+        }
+      </sbb-option>
+    }
+  </sbb-autocomplete>
+</sbb-form-field>
