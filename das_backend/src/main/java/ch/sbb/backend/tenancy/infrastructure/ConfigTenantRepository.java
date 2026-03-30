@@ -3,6 +3,7 @@ package ch.sbb.backend.tenancy.infrastructure;
 import ch.sbb.backend.tenancy.domain.model.Tenant;
 import ch.sbb.backend.tenancy.domain.repository.TenantRepository;
 import ch.sbb.backend.tenancy.infrastructure.config.TenantConfig;
+import java.util.Objects;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -29,7 +30,7 @@ public class ConfigTenantRepository implements TenantRepository {
 
     @Override
     public boolean isAdminTenant(Tenant tenant) {
-        return tenantConfig.getAdminTenantId().equals(tenant.getId());
+        return Objects.equals(tenantConfig.getAdminTenantId(), tenant.getId());
     }
 }
 

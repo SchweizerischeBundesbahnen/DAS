@@ -46,6 +46,9 @@ public class CompanyAuthorizer {
         }
 
         URL issuer = jwtAuth.getToken().getIssuer();
+        if (issuer == null) {
+            return null;
+        }
 
         return tenantRepository.getByIssuerUri(issuer.toString());
     }

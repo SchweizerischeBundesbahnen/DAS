@@ -1,5 +1,6 @@
 package ch.sbb.backend.common.config;
 
+import static ch.sbb.backend.admin.application.locations.TafTapLocationController.API_LOCATIONS;
 import static ch.sbb.backend.admin.application.settings.AppVersionController.API_SETTINGS_APP_VERSION;
 import static ch.sbb.backend.admin.application.settings.SettingsController.API_SETTINGS;
 import static ch.sbb.backend.formation.api.v1.FormationController.API_FORMATIONS;
@@ -34,7 +35,7 @@ public class WebSecurityConfig {
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .requestMatchers("/actuator/health/**").permitAll()
                 .requestMatchers(API_SETTINGS, API_FORMATIONS, API_CUSTOMER_ORIENTED_DEPARTURE + "/**").hasAnyRole(UserRole.OBSERVER, UserRole.DRIVER)
-                .requestMatchers(API_SETTINGS_APP_VERSION + "/**").hasRole(UserRole.ADMIN)
+                .requestMatchers(API_SETTINGS_APP_VERSION + "/**", API_LOCATIONS).hasRole(UserRole.ADMIN)
                 .anyRequest().authenticated()
             )
             .csrf(AbstractHttpConfigurer::disable)
