@@ -16,7 +16,6 @@ const supportedLocales = [
   Locale('de', 'CH'),
   Locale('fr', 'CH'),
   Locale('it', 'CH'),
-  Locale('en'),
 ];
 
 Locale defaultLocale(Locale? locale, Iterable<Locale> supported) {

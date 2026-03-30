@@ -37,7 +37,7 @@
   "p_login_bottom_sheet_title_failed": "Oups! Il y a eu un problème.",
   "p_login_bottom_sheet_subtitle_failed": "Erreur",
   "p_login_login_button_text": "Connexion",
-  "p_brake_load_slip_page_title": "bulletin de freinage,"
+  "p_brake_load_slip_page_title": "bulletin de freinage",
   "p_brake_load_slip_header_title": "Catégorie de train et de freinage: {trainSeries} {brakeSeries}%",
   "@p_brake_load_slip_header_title": {
     "type": "text",
@@ -54,7 +54,7 @@
   "p_brake_load_slip_train_data_train_number": "Numéro de train",
   "p_brake_load_slip_train_data_date": "De",
   "p_brake_load_slip_train_data_from": "Von",
-  "p_brake_load_slip_train_data_to": "À"
+  "p_brake_load_slip_train_data_to": "À",
   "p_brake_load_slip_train_data_train_series": "Catégorie de train et de freinage",
   "p_brake_load_slip_train_data_train_traction": "Loc (série)",
   "p_brake_load_slip_train_data_brake_position_g_leading_traction": "Véhicule moteur position M",
@@ -65,7 +65,7 @@
   "p_brake_load_slip_train_data_table_header_formation": "Train entier",
   "p_brake_load_slip_train_data_table_vmax": "Vmax [km/h]",
   "p_brake_load_slip_train_data_table_length": "Longueur [m]",
-  "p_brake_load_slip_train_data_table_weight": "Poids [t]",,
+  "p_brake_load_slip_train_data_table_weight": "Poids [t]",
   "p_brake_load_slip_train_data_table_braked_weight": "Poids-frein [t]",
   "p_brake_load_slip_other_data_title": "Autres données",
   "p_brake_load_slip_other_data_valid_from": "Valable à partir de",
@@ -301,7 +301,7 @@
   "w_journey_search_overlay_title": "Rechercher Marche",
   "p_settings_page_personalize": "Personnaliser",
   "p_settings_page_decisive_gradient_title": "Déclivité déterminante",
-  "p_settings_page_decisive_gradient_show_setting": "Afficher la déclivité",,
+  "p_settings_page_decisive_gradient_show_setting": "Afficher la déclivité",
   "w_global_error_widget_title": "Erreur inattendue",
   "w_global_error_widget_description": "Il s’est produit une erreur inattendue, le message d’erreur est envoyé aux développeurs. Essaie de redémarrer l’appli.",
   "w_shunting_movement_start": "Course de manœuvre {trainNumber}",
@@ -324,7 +324,7 @@
   "w_departure_dispatch_notification_middle": "Départ prévu dans : 15 - 30 Min",
   "w_departure_dispatch_notification_short": "Départ prévu dans : < 15 Min",
   "w_departure_dispatch_notification_prepare": "Se tenir prêt au départ",
-  "w_departure_dispatch_notification_withdrawn": "La disposition de départ a été retirée. La continuation de la marche sera communiquée."
+  "w_departure_dispatch_notification_withdrawn": "La disposition de départ a été retirée. La continuation de la marche sera communiquée.",
   "c_tour_system_tip": "TIP",
   "c_tour_system_caros": "Caros",
   "c_tour_system_rail_opt": "RailOpt",
@@ -344,7 +344,7 @@
   "w_preload_status_idle": "Prêt",
   "w_preload_status_running": "Synchronisation en cours…",
   "w_preload_status_missing_configuration": "Offline",
-  "w_preload_status_last_update": "État des données"
+  "w_preload_status_last_update": "État des données",
   "w_preload_status_start_preload": "Démarrer",
   "w_train_driver_turnover_row_title": "Changement de personnel des locs"
 }
