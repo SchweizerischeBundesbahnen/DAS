@@ -82,9 +82,7 @@ class S3Client {
     return ListBucketResultDto(xmlElement: rootElement);
   }
 
-  AWSSignedRequest _listBucketRequest() {
-    return _getRequest('', {'list-type': '2'});
-  }
+  AWSSignedRequest _listBucketRequest() => _getRequest('', {'list-type': '2'});
 
   AWSSignedRequest _getRequest(String key, [Map<String, String>? queryParams]) {
     final uri = Uri.https(_configuration.bucketUrl, key, queryParams);

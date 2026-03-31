@@ -40,7 +40,6 @@ class PreloadRepositoryImpl implements PreloadRepository {
 
   bool _isRunning = false;
   final _rxDetails = BehaviorSubject<PreloadDetails>();
-  final _rxZipsToProcess = PublishSubject<_ZipToProcess>();
 
   @override
   Stream<PreloadDetails> get preloadDetails => _rxDetails.stream;
@@ -48,14 +47,6 @@ class PreloadRepositoryImpl implements PreloadRepository {
   void _init() {
     _log.info('Initializing PreloadRepositoryImpl...');
     _databaseSubscription = databaseService.watchAll().listen((files) => _emit(files));
-
-    // Process one ZIP at a time, in order
-    _rxZipsToProcess
-        .asyncExpand((toProcess) => Stream.fromFuture(_processZip(toProcess)))
-        .listen(
-          (_) {},
-          onError: (e, s) => _log.severe('Zip processing failed', e, s),
-        );
   }
 
   Future<void> _processZip(_ZipToProcess toProcess) async {
@@ -109,7 +100,6 @@ class PreloadRepositoryImpl implements PreloadRepository {
       _log.severe('Error during preload.', e, s);
     }
 
-    // TODO: wait till all files processed, cleanup folder
     _log.info('Preload completed.');
     _updateRunning(false);
   }
@@ -173,26 +163,30 @@ class PreloadRepositoryImpl implements PreloadRepository {
       'downloaded: ${filesToProcess.whereStatus(.downloaded).length}).',
     );
 
-    // TODO: remove
-    final preloadFolder = await preloadZipProcessor.preloadFolder();
-    for (final file in filesToProcess) {
-      //.where((file) => file.status == .initial || file.status == .error).take(5)) {
-      if (file.status == .initial || file.status == .error) {
-        _log.info('Processing file ${file.name} with status ${file.status.name}.');
-        await _downloadZipAndEmitToProcessing(file, preloadFolder);
-      } else {
-        _log.finer('Skipping file ${file.name} with status ${file.status}.');
-      }
-    }
-  }
+    final controller = StreamController<_ZipToProcess>();
+    final processingDone = controller.stream
+        .asyncExpand((toProcess) => Stream.fromFuture(_processZip(toProcess)))
+        .drain<void>();
 
-  Future<void> _downloadZipAndEmitToProcessing(S3File file, Directory preloadFolder) async {
     try {
-      final downloaded = await _s3client!.downloadZip(file.name, saveTo: preloadFolder);
-      _rxZipsToProcess.add(_ZipToProcess(file: file, zip: downloaded));
-    } catch (e, s) {
-      _log.severe('Error downloading file ${file.name}.', e, s);
-      await databaseService.saveS3File(file.copyWith(status: .error));
+      final preloadFolder = await preloadZipProcessor.preloadFolder();
+      for (final file in filesToProcess) {
+        if (file.status == .initial || file.status == .error) {
+          _log.info('Processing file ${file.name} with status ${file.status.name}.');
+          try {
+            final downloaded = await _s3client!.downloadZip(file.name, saveTo: preloadFolder);
+            controller.add(_ZipToProcess(file: file, zip: downloaded));
+          } catch (e, s) {
+            _log.severe('Error downloading file ${file.name}.', e, s);
+            await databaseService.saveS3File(file.copyWith(status: .error));
+          }
+        } else {
+          _log.finer('Skipping file ${file.name} with status ${file.status}.');
+        }
+      }
+    } finally {
+      await controller.close();
+      await processingDone;
     }
   }
 
@@ -220,7 +214,6 @@ class PreloadRepositoryImpl implements PreloadRepository {
   void dispose() {
     _databaseSubscription?.cancel();
     _rxDetails.close();
-    _rxZipsToProcess.close();
     _syncTimer?.cancel();
   }
 }
