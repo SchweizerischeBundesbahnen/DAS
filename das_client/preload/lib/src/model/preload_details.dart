@@ -46,6 +46,11 @@ class PreloadDetails {
   }
 
   Iterable<S3File> get _errorFiles => files.where((f) => f.status == .error || f.status == .corrupted);
+
+  @override
+  String toString() {
+    return 'PreloadDetails{status: $status}';
+  }
 }
 
 enum PreloadStatus { idle, running, missingConfiguration }

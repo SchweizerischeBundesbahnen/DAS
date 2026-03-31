@@ -12,7 +12,7 @@ import 'package:sfera/component.dart';
 
 final _log = Logger('PreloadZipProcessor');
 
-/// batch of files processed at a time before saved to database.
+/// Batch of files processed at a time before saved to database.
 const int _batchSize = 200;
 
 /// Decodes and processes preloaded ZIPs and saves the content to the local SFERA database.
@@ -89,7 +89,7 @@ class _ZipWork {
   void sendDone() => sendPort.send(null);
 }
 
-/// top level method to run CPU heavy work on background isolate
+/// Top level method to run CPU heavy work on background isolate
 void _zipWorker(_ZipWork work) async {
   try {
     final input = InputFileStream(work.zipPath);

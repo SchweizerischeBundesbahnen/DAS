@@ -7,7 +7,6 @@ import 'package:sfera/src/data/dto/journey_profile_dto.dart';
 import 'package:sfera/src/data/dto/otn_id_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
-import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_ref_dto.dart';
 import 'package:sfera/src/data/dto/train_identification_dto.dart';
@@ -222,94 +221,77 @@ void main() {
   });
 
   test('saveData_whenInvalidDataIsPassed_returnFalse', () async {
-    expect(await testee.saveData(['invalid']), isFalse);
+    final invalidElement = SferaReplyParser.parse('<KM_Reference kmRef="abc"/>');
+    expect(invalidElement.validate(), isFalse);
+    expect(await testee.saveData([invalidElement]), isFalse);
   });
 
-  test('saveData_whenValidationFails_returnFalse', () async {
-    expect(
-      await testee.saveData(['<JourneyProfile JP_Version="1" JP_Status="Valid"></JourneyProfile>']),
-      isFalse,
-    );
+  test('saveData_whenUnsupportedDataIsPassed_returnFalse', () async {
+    final validButUnsupportedElement = SferaReplyParser.parse('<KM_Reference kmRef="60"/>');
+    expect(validButUnsupportedElement.validate(), isTrue);
+    expect(await testee.saveData([validButUnsupportedElement]), isFalse);
   });
 
   test('saveData_whenJpDataIsPassed_returnTrue', () async {
-    expect(
-      await testee.saveData([
-        '<JourneyProfile JP_Version="1" JP_Status="Valid"><TrainIdentification>'
-            '<OTN_ID>'
-            '<teltsi_Company>1285</teltsi_Company>'
-            '<teltsi_OperationalTrainNumber>T35</teltsi_OperationalTrainNumber>'
-            '<teltsi_StartDate>2025-11-13</teltsi_StartDate>'
-            '</OTN_ID>'
-            '</TrainIdentification>'
-            '</JourneyProfile>',
-      ]),
-      isTrue,
+    final jpElement = SferaReplyParser.parse(
+      '<JourneyProfile JP_Version="1" JP_Status="Valid"><TrainIdentification>'
+      '<OTN_ID>'
+      '<teltsi_Company>1285</teltsi_Company>'
+      '<teltsi_OperationalTrainNumber>T35</teltsi_OperationalTrainNumber>'
+      '<teltsi_StartDate>2025-11-13</teltsi_StartDate>'
+      '</OTN_ID>'
+      '</TrainIdentification>'
+      '</JourneyProfile>',
     );
+    expect(await testee.saveData([jpElement]), isTrue);
     verify(mockLocalDatabaseRepository.saveBulkJourneyProfiles(any)).called(1);
   });
 
   test('saveData_whenSpDataIsPassed_returnTrue', () async {
-    expect(
-      await testee.saveData(
-        [
-          '<SegmentProfile SP_ID="T35" SP_VersionMajor="1" SP_VersionMinor="4" SP_Length="800" SP_Status="Valid">'
-              '</SegmentProfile>',
-        ],
-      ),
-      isTrue,
+    final spElement = SferaReplyParser.parse(
+      '<SegmentProfile SP_ID="T35" SP_VersionMajor="1" SP_VersionMinor="4" SP_Length="800" SP_Status="Valid">'
+      '</SegmentProfile>',
     );
+    expect(await testee.saveData([spElement]), isTrue);
     verify(mockLocalDatabaseRepository.saveBulkSegmentProfiles(any)).called(1);
   });
 
   test('saveData_whenTcDataIsPassed_returnTrue', () async {
-    expect(
-      await testee.saveData(
-        [
-          '<TrainCharacteristics TC_ID="T9999_1" TC_VersionMajor="1" TC_VersionMinor="1">'
-              '<TC_RU_ID>1085</TC_RU_ID>'
-              '<TC_Features trainCategoryCode="R" brakedWeightPercentage="150"/>'
-              '</TrainCharacteristics>',
-        ],
-      ),
-      isTrue,
+    final tcElement = SferaReplyParser.parse(
+      '<TrainCharacteristics TC_ID="T9999_1" TC_VersionMajor="1" TC_VersionMinor="1">'
+      '<TC_RU_ID>1085</TC_RU_ID>'
+      '<TC_Features trainCategoryCode="R" brakedWeightPercentage="150"/>'
+      '</TrainCharacteristics>',
     );
+
+    expect(await testee.saveData([tcElement]), isTrue);
     verify(mockLocalDatabaseRepository.saveBulkTrainCharacteristics(any)).called(1);
   });
 
   test('saveData_whenTcJpAndSpDataIsPassed_returnTrue', () async {
-    expect(
-      await testee.saveData(
-        [
-          '<JourneyProfile JP_Version="1" JP_Status="Valid"><TrainIdentification>'
-              '<OTN_ID>'
-              '<teltsi_Company>1285</teltsi_Company>'
-              '<teltsi_OperationalTrainNumber>T35</teltsi_OperationalTrainNumber>'
-              '<teltsi_StartDate>2025-11-13</teltsi_StartDate>'
-              '</OTN_ID>'
-              '</TrainIdentification>'
-              '</JourneyProfile>',
-          '<SegmentProfile SP_ID="T35" SP_VersionMajor="1" SP_VersionMinor="4" SP_Length="800" SP_Status="Valid">'
-              '</SegmentProfile>',
-          '<TrainCharacteristics TC_ID="T9999_1" TC_VersionMajor="1" TC_VersionMinor="1">'
-              '<TC_RU_ID>1085</TC_RU_ID>'
-              '<TC_Features trainCategoryCode="R" brakedWeightPercentage="150"/>'
-              '</TrainCharacteristics>',
-        ],
-      ),
-      isTrue,
+    final jpElement = SferaReplyParser.parse(
+      '<JourneyProfile JP_Version="1" JP_Status="Valid"><TrainIdentification>'
+      '<OTN_ID>'
+      '<teltsi_Company>1285</teltsi_Company>'
+      '<teltsi_OperationalTrainNumber>T35</teltsi_OperationalTrainNumber>'
+      '<teltsi_StartDate>2025-11-13</teltsi_StartDate>'
+      '</OTN_ID>'
+      '</TrainIdentification>'
+      '</JourneyProfile>',
     );
+    final spElement = SferaReplyParser.parse(
+      '<SegmentProfile SP_ID="T35" SP_VersionMajor="1" SP_VersionMinor="4" SP_Length="800" SP_Status="Valid">'
+      '</SegmentProfile>',
+    );
+    final tcElement = SferaReplyParser.parse(
+      '<TrainCharacteristics TC_ID="T9999_1" TC_VersionMajor="1" TC_VersionMinor="1">'
+      '<TC_RU_ID>1085</TC_RU_ID>'
+      '<TC_Features trainCategoryCode="R" brakedWeightPercentage="150"/>'
+      '</TrainCharacteristics>',
+    );
+    expect(await testee.saveData([tcElement, spElement, jpElement]), isTrue);
     verify(mockLocalDatabaseRepository.saveBulkTrainCharacteristics(any)).called(1);
     verify(mockLocalDatabaseRepository.saveBulkSegmentProfiles(any)).called(1);
     verify(mockLocalDatabaseRepository.saveBulkJourneyProfiles(any)).called(1);
-  });
-
-  test('saveData_whenUnsupportedDataIsPassed_returnFalse', () async {
-    expect(
-      await testee.saveData(
-        ['<SP_Zone><IM_ID>0085</IM_ID></SP_Zone>'],
-      ),
-      isFalse,
-    );
   });
 }

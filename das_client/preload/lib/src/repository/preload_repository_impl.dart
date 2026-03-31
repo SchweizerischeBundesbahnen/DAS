@@ -63,15 +63,13 @@ class PreloadRepositoryImpl implements PreloadRepository {
     );
 
     _s3client = createS3Client(awsConfiguration);
-    //triggerPreload();
-    //
-    //_syncTimer?.cancel();
-    //_syncTimer = Timer.periodic(syncInterval, (_) => triggerPreload());
+    triggerPreload();
+
+    _syncTimer?.cancel();
+    _syncTimer = Timer.periodic(syncInterval, (_) => triggerPreload());
   }
 
-  S3Client createS3Client(AwsConfiguration awsConfiguration) {
-    return S3Client(configuration: awsConfiguration);
-  }
+  S3Client createS3Client(AwsConfiguration awsConfiguration) => S3Client(configuration: awsConfiguration);
 
   @override
   void triggerPreload() async {
@@ -174,7 +172,7 @@ class PreloadRepositoryImpl implements PreloadRepository {
         if (file.status == .initial || file.status == .error) {
           _log.info('Processing file ${file.name} with status ${file.status.name}.');
           try {
-            final downloaded = await _s3client!.downloadZip(file.name, saveTo: preloadFolder);
+            final downloaded = await _s3client!.downloadFile(file.name, saveTo: preloadFolder);
             controller.add(_ZipToProcess(file: file, zip: downloaded));
           } catch (e, s) {
             _log.severe('Error downloading file ${file.name}.', e, s);

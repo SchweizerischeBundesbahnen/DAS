@@ -4,6 +4,7 @@ import 'package:settings/component.dart';
 
 class S3ClientOverriddenPreloadRepository extends PreloadRepositoryImpl {
   S3ClientOverriddenPreloadRepository({
+    required super.preloadZipProcessor,
     required super.databaseService,
     required super.sferaLocalRepo,
     required S3Client s3Client,

@@ -39,19 +39,7 @@ class S3Client {
     }
   }
 
-  Future<List<int>?> getObject(String key) async {
-    final signedRequest = _getRequest(key);
-    final response = await signedRequest.send(client: _httpClient).response;
-
-    if (response.statusCode == HttpStatus.ok) {
-      return response.bodyBytes;
-    } else {
-      _log.warning('Failed to get object with key $key. Status code: ${response.statusCode}');
-      return null;
-    }
-  }
-
-  Future<File> downloadZip(String key, {required Directory saveTo}) async {
+  Future<File> downloadFile(String key, {required Directory saveTo}) async {
     final signedRequest = _getRequest(key);
     final response = await signedRequest.send(client: _httpClient).response;
 
@@ -72,7 +60,7 @@ class S3Client {
       await sink.close();
     }
 
-    _log.fine('successfully downloaded: $key');
+    _log.fine('Successfully downloaded object with key $key');
     return outFile;
   }
 
