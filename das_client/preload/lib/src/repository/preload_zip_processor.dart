@@ -13,9 +13,10 @@ import 'package:sfera/component.dart';
 final _log = Logger('PreloadZipProcessor');
 
 /// batch of files processed at a time before saved to database.
-const int _batchSize = 1000;
+const int _batchSize = 200;
 
-// TODO: Change name
+/// Decodes and processes preloaded ZIPs and saves the content to the local SFERA database.
+/// Uses background isolates with batch database inserts to prevent UI freezes.
 class PreloadZipProcessor {
   /// folder used to download preload zip in application support folder.
   static String preloadFolderPath = 'preload';
