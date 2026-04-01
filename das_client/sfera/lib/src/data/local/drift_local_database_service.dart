@@ -72,15 +72,19 @@ class DriftLocalDatabaseService extends _$DriftLocalDatabaseService implements S
     },
   );
 
-  // TODO: Sort by versions
   @override
   Future<JourneyProfileTableData?> findJourneyProfile(
     String company,
     String operationalTrainNumber,
     DateTime startDate,
-  ) async => _jpManager
-      .filter((f) => f.company(company) & f.operationalTrainNumber(operationalTrainNumber) & f.startDate(startDate))
-      .getSingleOrNull();
+  ) async {
+    final journeyProfiles = await _jpManager
+        .filter((f) => f.company(company) & f.operationalTrainNumber(operationalTrainNumber) & f.startDate(startDate))
+        .orderBy((o) => o.version.desc())
+        .get();
+
+    return journeyProfiles.firstOrNull;
+  }
 
   @override
   Future<SegmentProfileTableData?> findSegmentProfile(String spId, String majorVersion, String minorVersion) async =>
