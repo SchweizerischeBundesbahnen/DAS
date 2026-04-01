@@ -17,6 +17,7 @@ void main() {
     // Check Preload is Running
     await waitUntilExists(tester, find.text(l10n.w_preload_status_running));
 
-    await waitUntilExists(tester, find.text('4'));
+    // wait until 5 files are synchronized
+    await waitUntilExists(tester, find.text('5'));
   });
 }
