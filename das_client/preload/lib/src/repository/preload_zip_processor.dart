@@ -48,6 +48,7 @@ class PreloadZipProcessor {
         }
       }
 
+      receivePort.close();
       zip.delete();
 
       if (allSuccess) {

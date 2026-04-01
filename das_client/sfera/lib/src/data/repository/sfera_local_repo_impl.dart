@@ -95,7 +95,7 @@ class SferaLocalRepoImpl implements SferaLocalRepo {
     try {
       final validElements = elements.whereIsSupportedType().whereIsValid();
       if (validElements.isEmpty) {
-        // TODO:
+        _log.info('No valid or supported SferaXmlElementDto passed to save');
         return false;
       }
 
