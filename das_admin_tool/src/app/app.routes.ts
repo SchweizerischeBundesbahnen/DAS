@@ -27,6 +27,10 @@ export const routes: Routes = [
       {
         path: '',
         loadComponent: () => import('./das-admin/das-admin').then(m => m.DasAdmin)
+      },
+      {
+        path: 'locations',
+        loadComponent: () => import('./shared/locations-input/locations-input.component').then(m => m.LocationsInput)
       }
     ]
   },

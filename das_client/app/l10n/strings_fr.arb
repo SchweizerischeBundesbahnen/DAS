@@ -73,8 +73,6 @@
   "w_koa_notification_wait": "Attente créée",
   "w_koa_notification_wait_canceled": "Attente supprimée",
   "w_koa_notification_departure_process": "Afficher le processus de départ",
-  "w_departure_process_modal_sheet_title": "Check-list du processus de départ.",
-  "w_departure_process_modal_sheet_content": "1. Assentiment\n2. Système de contrôle des trains\n3. Heure de départ\n4. Verrouillage des portes\n5. Assentiment",
   "w_service_point_modal_communication_label": "Type de réseau et canal radio",
   "w_service_point_modal_communication_radio_channel": "Canal radio",
   "w_service_point_modal_communication_radio_channels_not_found": "Aucun canal radio disponible",

@@ -39,6 +39,10 @@ public class ResponseEntityFactory {
             status);
     }
 
+    public static HttpHeaders createOkHeaders(String requestId) {
+        return createOkHeaders(null, requestId);
+    }
+    
     public static HttpHeaders createOkHeaders(Locale locale, String requestId) {
         return createHeaders(locale == null ? null : locale.getLanguage(), requestId, MediaType.APPLICATION_JSON_VALUE);
     }

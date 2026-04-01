@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:collection/collection.dart';
 import 'package:logging/logging.dart';
 import 'package:sfera/component.dart';
+import 'package:sfera/src/data/dto/general_jp_information_dto.dart';
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
 import 'package:sfera/src/data/dto/multilingual_text_dto.dart';
 import 'package:sfera/src/data/dto/operational_indication_nsp_dto.dart';
@@ -81,6 +82,10 @@ class SferaModelMapper {
 
     final communicationChanges = _parseCommunicationNetworkChanges(segmentProfileReferences, segmentProfiles, spOrders);
     journeyData.addAll(communicationChanges);
+
+    final suspiciousSegments = _parseSuspiciousSegments(journeyProfile.generalJpInformation, segmentProfileReferences);
+    _replaceAllInSuspiciousSegment(journeyData, suspiciousSegments);
+
     journeyData.sort();
 
     final journeyPoints = journeyData.whereType<JourneyPoint>().toList();
@@ -124,6 +129,7 @@ class SferaModelMapper {
         lineSpeeds: lineSpeeds,
         calculatedSpeeds: calculatedSpeeds,
         levelCrossingGroups: _parseLevelCrossingAndBaliseGroups(journeyPoints),
+        suspiciousSegments: suspiciousSegments,
       ),
       data: journeyData,
     );
@@ -695,6 +701,46 @@ class SferaModelMapper {
     }
 
     return result;
+  }
+
+  static List<SuspiciousSegment> _parseSuspiciousSegments(
+    GeneralJpInformationDto? generalJpInformation,
+    List<SegmentProfileReferenceDto> segmentProfileReferences,
+  ) {
+    final suspiciousNsp = generalJpInformation?.suspiciousSegmentNsp;
+    if (suspiciousNsp == null) return [];
+
+    final result = <SuspiciousSegment>[];
+    for (final spId in suspiciousNsp.suspiciousSpIds) {
+      int refIdx = 0;
+      final ref = segmentProfileReferences.firstWhereIndexedOrNull((idx, spRef) {
+        refIdx = idx;
+        return spRef.spId == spId;
+      });
+      if (ref == null) {
+        _log.warning('Suspicious SP_ID "$spId" not found in segment profile references.');
+        continue;
+      }
+      result.add(
+        SuspiciousSegment(
+          spId: spId,
+          startOrder: calculateOrder(refIdx, 0),
+          endOrder: calculateOrder(refIdx + 1, 0) - 1,
+        ),
+      );
+    }
+    return result;
+  }
+
+  static void _replaceAllInSuspiciousSegment(List<BaseData> journeyData, List<SuspiciousSegment> suspiciousSegments) {
+    if (suspiciousSegments.isEmpty) return;
+
+    for (final segment in suspiciousSegments) {
+      journeyData.removeWhere((item) => segment.appliesToOrder(item.order));
+      if (segment.startOrder != null) {
+        journeyData.add(SuspiciousJourneyPoint(order: segment.startOrder!, kilometre: [], spId: segment.spId));
+      }
+    }
   }
 }
 

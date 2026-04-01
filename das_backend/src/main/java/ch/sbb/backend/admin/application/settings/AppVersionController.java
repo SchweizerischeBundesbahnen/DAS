@@ -24,6 +24,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,10 +36,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Tag(name = "AppVersions", description = "API for app versions.")
+@PreAuthorize("@companyAuthorizer.isAdminTenant(authentication)")
 public class AppVersionController {
 
     static final String PATH_SEGMENT_SETTINGS_APP_VERSION = PATH_SEGMENT_SETTINGS + "/app-version";
-    static final String API_SETTINGS_APP_VERSION = ApiDocumentation.VERSION_URI_V1 + PATH_SEGMENT_SETTINGS_APP_VERSION;
+    public static final String API_SETTINGS_APP_VERSION = ApiDocumentation.VERSION_URI_V1 + PATH_SEGMENT_SETTINGS_APP_VERSION;
     static final String API_SETTINGS_APP_VERSION_ID = API_SETTINGS_APP_VERSION + "/{id}";
 
     private final AppVersionService appVersionService;
@@ -81,7 +83,7 @@ public class AppVersionController {
     public ResponseEntity<AppVersionResponse> create(@RequestBody @Valid AppVersionRequest createRequest,
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
         AppVersion createdVersion = appVersionService.create(createRequest);
-        HttpHeaders headers = ResponseEntityFactory.createOkHeaders(null, requestId);
+        HttpHeaders headers = ResponseEntityFactory.createOkHeaders(requestId);
         return new ResponseEntity<>(new AppVersionResponse(List.of(createdVersion)), headers, HttpStatus.CREATED);
     }
 

@@ -71,6 +71,30 @@ jobs:
             -Dsonar.issue.ignore.multicriteria.e2.ruleKey=Web:MouseEventWithoutKeyboardEquivalentCheck
             -Dsonar.issue.ignore.multicriteria.e2.resourceKey=**
 
+  e2e:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: 'das_admin_tool/.nvmrc'
+          cache: 'npm'
+          cache-dependency-path: 'das_admin_tool/package-lock.json'
+      - run: npm clean-install
+      - run: npx playwright install --with-deps
+        working-directory: das_admin_tool
+      - run: npm run e2e
+        working-directory: das_admin_tool
+        env:
+          CI: true
+          E2E_LOGIN_USERNAME: ${{ secrets.E2E_LOGIN_USERNAME }}
+          E2E_LOGIN_PASSWORD: ${{ secrets.E2E_LOGIN_PASSWORD }}
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-test-results
+          path: das_admin_tool/test-results/
   build:
     runs-on: ubuntu-latest
     needs: lint
@@ -86,6 +110,7 @@ jobs:
           cache-dependency-path: 'das_admin_tool/package-lock.json'
       - run: npm clean-install
       - run: npm run build:ngssc
+      - run: npm run gzip
       - name: Login to GitHub Container Registry
         if: github.ref == 'refs/heads/main'
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin

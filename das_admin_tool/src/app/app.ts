@@ -16,8 +16,8 @@ import {SbbLink} from '@sbb-esta/lyne-angular/link/link';
 })
 export class App implements OnInit {
   protected isAdBlockerDetected = signal(this.isInstanaBlockedByAdBlocker);
-  private router = inject(Router);
-  private oidcSecurityService = inject(OidcSecurityService);
+  private readonly router = inject(Router);
+  private readonly oidcSecurityService = inject(OidcSecurityService);
 
   private get isInstanaBlockedByAdBlocker(): boolean {
     const pageLoadId = ineum('getPageLoadId');

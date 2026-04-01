@@ -6,6 +6,7 @@ import 'package:logging/logging.dart';
 import 'test/additional_speed_restriction_modal_test.dart' as additional_speed_restriction_modal_test;
 import 'test/journey_table_collapsible_rows_test.dart' as journey_table_collapsible_rows_test;
 import 'test/journey_table_station_property_test.dart' as journey_table_station_property_test;
+import 'test/suspicious_segment_test.dart' as suspicious_segment_tests;
 
 late AppLocalizations l10n;
 
@@ -18,4 +19,5 @@ void main() {
   additional_speed_restriction_modal_test.main();
   journey_table_station_property_test.main();
   journey_table_collapsible_rows_test.main();
+  suspicious_segment_tests.main();
 }

@@ -18,6 +18,7 @@ import 'test/additional_speed_restriction_modal_test.dart' as additional_speed_r
 import 'test/app_link_test.dart' as app_link_tests;
 import 'test/automatic_advancement_test.dart' as automatic_advancement_tests;
 import 'test/brake_load_slip_test.dart' as brake_load_slip_tests;
+import 'test/departure_process_test.dart' as departure_process_tests;
 import 'test/journey_header_test.dart' as journey_header_tests;
 import 'test/journey_notification_test.dart' as journey_notification_tests;
 import 'test/journey_replacement_series_test.dart' as journey_replacement_series_tests;
@@ -41,6 +42,7 @@ import 'test/reduced_journey_table_test.dart' as reduced_journey_table_tests;
 import 'test/service_point_modal_test.dart' as service_point_modal_tests;
 import 'test/settings_test.dart' as settings_tests;
 import 'test/short_term_changes_test.dart' as short_term_changes_tests;
+import 'test/suspicious_segment_test.dart' as suspicious_segment_tests;
 import 'test/tour_system_link_test.dart' as tour_system_link_test;
 import 'test/train_search_test.dart' as train_search_tests;
 import 'test/warnapp_test.dart' as warnapp_tests;
@@ -66,6 +68,7 @@ void main() {
   automatic_advancement_tests.main();
   app_link_tests.main();
   brake_load_slip_tests.main();
+  departure_process_tests.main();
   journey_header_tests.main();
   journey_notification_tests.main();
   journey_table_additional_speed_restriction_tests.main();
@@ -87,6 +90,7 @@ void main() {
   service_point_modal_tests.main();
   settings_tests.main();
   short_term_changes_tests.main();
+  suspicious_segment_tests.main();
   train_search_tests.main();
   warnapp_tests.main();
   profile_tests.main();

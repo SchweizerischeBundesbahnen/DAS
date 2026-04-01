@@ -9,4 +9,5 @@ enum NotificationType {
   advisedSpeed,
   departureDispatch,
   illegalSegmentWithReplacement,
+  suspiciousSegment,
 }

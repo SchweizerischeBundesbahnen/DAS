@@ -6,7 +6,11 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test -c ci",
     "build:ngssc": "ng run das_admin_tool:ngsscbuild:production",
-    "lint": "ng lint"
+    "gzip": "gzipper compress ./dist -e html",
+    "lint": "ng lint",
+    "e2e": "npx playwright test --config=e2e/playwright.config.ts",
+    "e2e:local": "npx playwright test --config=e2e/playwright.local.config.ts",
+    "e2e:local:headed": "npx playwright test --config=e2e/playwright.local.config.ts --headed"
   },
   "name": "das-admin-tool",
   "version": "0.2.0",
@@ -38,6 +42,7 @@
     "@vitest/ui": "^4.1.0",
     "angular-eslint": "21.3.1",
     "eslint": "9.39.4",
+    "gzipper": "^8.2.1",
     "typescript": "5.9.3",
     "typescript-eslint": "8.57.1",
     "vitest": "^4.1.0",

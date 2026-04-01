@@ -21,18 +21,36 @@ public class CompanyAuthorizer {
         if (companies == null || companies.isEmpty()) {
             return false;
         }
-        if (!(authentication instanceof JwtAuthenticationToken jwtAuth)) {
+        Tenant tenant = getTenant(authentication);
+        if (tenant == null) {
             return false;
         }
-
-        URL issuer = jwtAuth.getToken().getIssuer();
-
-        Tenant tenant = tenantRepository.getByIssuerUri(issuer.toString());
         if (tenant.companies() == null || tenant.companies().isEmpty()) {
             return false;
         }
 
         return tenant.companies().containsAll(companies);
+    }
+
+    public boolean isAdminTenant(Authentication authentication) {
+        Tenant tenant = getTenant(authentication);
+        if (tenant == null) {
+            return false;
+        }
+        return tenantRepository.isAdminTenant(tenant);
+    }
+
+    private Tenant getTenant(Authentication authentication) {
+        if (!(authentication instanceof JwtAuthenticationToken jwtAuth)) {
+            return null;
+        }
+
+        URL issuer = jwtAuth.getToken().getIssuer();
+        if (issuer == null) {
+            return null;
+        }
+
+        return tenantRepository.getByIssuerUri(issuer.toString());
     }
 }
 
