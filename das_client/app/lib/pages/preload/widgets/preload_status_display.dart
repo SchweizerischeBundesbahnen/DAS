@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/preload/view_model/preload_view_model.dart';
 import 'package:app/util/format.dart';
@@ -20,13 +22,13 @@ class PreloadStatusDisplay extends StatelessWidget {
 
     return StreamBuilder(
       stream: vm.preloadDetails,
-      builder: (context, asyncSnapshot) {
+      builder: (context, snapshot) {
         return Column(
           mainAxisSize: .min,
           spacing: SBBSpacing.xSmall,
           children: [
-            _progressBarRow(asyncSnapshot.data),
-            _description(context, asyncSnapshot.data),
+            _progressBarRow(snapshot.data),
+            _description(context, snapshot.data),
           ],
         );
       },
@@ -34,35 +36,37 @@ class PreloadStatusDisplay extends StatelessWidget {
   }
 
   Widget _progressBarRow(PreloadDetails? preloadDetails) {
+    Widget? child;
+    if (preloadDetails != null) {
+      final minWidth = (preloadDetails.totalFilesCount * 0.025).ceil();
+      child = Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (preloadDetails.downloadedFilesCount > 0)
+            _progressSegment(preloadDetails.downloadedFilesCount, downloadedColor, minWidth: minWidth),
+          if (preloadDetails.initialFilesCount > 0)
+            _progressSegment(preloadDetails.initialFilesCount, initialColor, minWidth: minWidth),
+          if (preloadDetails.errorFilesCount > 0)
+            _progressSegment(preloadDetails.errorFilesCount, errorColor, minWidth: minWidth),
+        ],
+      );
+    }
+
     return Container(
       clipBehavior: Clip.hardEdge,
       decoration: ShapeDecoration(
         shape: StadiumBorder(),
+        color: SBBColors.metal,
       ),
       height: _progressBarHeight,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          if (preloadDetails != null) ...[
-            if (preloadDetails.downloadedFilesCount > 0)
-              _progressSegment(preloadDetails.downloadedFilesCount, downloadedColor),
-            if (preloadDetails.initialFilesCount > 0) _progressSegment(preloadDetails.initialFilesCount, initialColor),
-            if (preloadDetails.errorFilesCount > 0) _progressSegment(preloadDetails.errorFilesCount, errorColor),
-          ],
-          if (preloadDetails == null || preloadDetails.files.isEmpty)
-            Expanded(
-              child: Container(
-                color: SBBColors.metal,
-              ),
-            ),
-        ],
-      ),
+      width: double.maxFinite,
+      child: child,
     );
   }
 
-  Widget _progressSegment(int count, Color color) {
+  Widget _progressSegment(int count, Color color, {required int minWidth}) {
     return Expanded(
-      flex: count,
+      flex: max(minWidth, count),
       child: Container(
         color: color,
         child: Align(
