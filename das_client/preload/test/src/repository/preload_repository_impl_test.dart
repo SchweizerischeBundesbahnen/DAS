@@ -85,7 +85,6 @@ void main() {
     expect(preloadDetailsRegister[2].status, PreloadStatus.idle);
   });
 
-  // TODO: Fix test
   test('preloadDetails_whenAwsConfigurationUpdated_startsPeriodicTimerForPreload', () async {
     await Future.delayed(const Duration(milliseconds: 1));
     testee.dispose();
@@ -110,10 +109,9 @@ void main() {
 
       // ACT
       fakeAsync.elapse(const Duration(seconds: 1));
-      fakeAsync.elapse(const Duration(seconds: 1));
       testee.updateConfiguration(AwsConfiguration(bucketUrl: 'https://www.dummy.ch', accessKey: '', accessSecret: ''));
       fakeAsync.elapse(const Duration(seconds: 1));
-      fakeAsync.elapse(const Duration(seconds: 1));
+      testAsync.flushMicrotasks();
 
       // VERIFY
       expect(preloadDetailsRegister, hasLength(3));
@@ -122,6 +120,7 @@ void main() {
       expect(preloadDetailsRegister[2].status, PreloadStatus.idle);
 
       testAsync.elapse(Duration(minutes: PreloadRepositoryImpl.syncInterval.inMinutes + 1));
+      testAsync.flushMicrotasks();
 
       expect(preloadDetailsRegister, hasLength(5));
       expect(preloadDetailsRegister[0].status, PreloadStatus.missingConfiguration);
@@ -178,7 +177,6 @@ void main() {
     verify(mockPreloadZipProcessor.cleanup()).called(1);
   });
 
-  // TODO: Fix test
   test('preload_whenTriggered_loadS3FilesProcessAndUpdateStatus', () async {
     // WHEN
     when(mockDatabaseService.findAll()).thenAnswer(
