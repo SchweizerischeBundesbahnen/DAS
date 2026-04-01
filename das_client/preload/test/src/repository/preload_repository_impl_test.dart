@@ -93,7 +93,9 @@ void main() {
     late FakeAsync testAsync;
 
     fakeAsync((fakeAsync) {
+      // WHEN
       testAsync = fakeAsync;
+      mockPreloadZipProcessor = MockPreloadZipProcessor();
       testee = S3ClientOverriddenPreloadRepository(
         preloadZipProcessor: mockPreloadZipProcessor,
         databaseService: mockDatabaseService,
@@ -102,10 +104,18 @@ void main() {
       );
       preloadDetailsSubscription.cancel();
       preloadDetailsSubscription = testee.preloadDetails.listen(preloadDetailsRegister.add);
+      when(mockPreloadZipProcessor.processZip(any)).thenAnswer((_) => Future.value(.downloaded));
+      when(mockPreloadZipProcessor.cleanup()).thenAnswer((_) => Future.value());
+      when(mockPreloadZipProcessor.preloadFolder()).thenAnswer((_) => Future.value(Directory('Test')));
+
+      // ACT
+      fakeAsync.elapse(const Duration(seconds: 1));
       fakeAsync.elapse(const Duration(seconds: 1));
       testee.updateConfiguration(AwsConfiguration(bucketUrl: 'https://www.dummy.ch', accessKey: '', accessSecret: ''));
       fakeAsync.elapse(const Duration(seconds: 1));
+      fakeAsync.elapse(const Duration(seconds: 1));
 
+      // VERIFY
       expect(preloadDetailsRegister, hasLength(3));
       expect(preloadDetailsRegister[0].status, PreloadStatus.missingConfiguration);
       expect(preloadDetailsRegister[1].status, PreloadStatus.running);
@@ -157,7 +167,7 @@ void main() {
     verify(mockDatabaseService.deleteS3File(any)).called(1);
   });
 
-  test('preload_whenTriggered_callsSferaLocalRepoCleanup', () async {
+  test('preload_whenTriggered_callsCleanup', () async {
     // ACT
     await Future.delayed(const Duration(milliseconds: 1));
     testee.updateConfiguration(AwsConfiguration(bucketUrl: 'https://www.dummy.ch', accessKey: '', accessSecret: ''));
@@ -165,6 +175,7 @@ void main() {
 
     // VERIFY
     verify(mockSferaLocalRepo.cleanup()).called(1);
+    verify(mockPreloadZipProcessor.cleanup()).called(1);
   });
 
   // TODO: Fix test
@@ -182,19 +193,22 @@ void main() {
 
     final zip1 = File('test1.zip');
     final zip2 = File('test2.zip');
-
     when(
       mockS3Client.downloadFile('2026-02-10T17-35-35Z.zip', saveTo: anyNamed('saveTo')),
     ).thenThrow(Exception('Failed'));
     when(
       mockS3Client.downloadFile('2026-02-10T16-35-35Z.zip', saveTo: anyNamed('saveTo')),
-    ).thenAnswer((_) => Future.value(zip1));
+    ).thenAnswer((_) {
+      return Future.value(zip1);
+    });
     when(
       mockS3Client.downloadFile('2026-02-10T14-35-35Z.zip', saveTo: anyNamed('saveTo')),
-    ).thenAnswer((_) => Future.value(zip2));
+    ).thenAnswer((_) {
+      return Future.value(zip2);
+    });
 
-    // TODO:
-    when(mockSferaLocalRepo.saveData(any)).thenAnswer((_) => Future.value(true));
+    when(mockPreloadZipProcessor.processZip(zip1)).thenAnswer((_) => Future.value(.corrupted));
+    when(mockPreloadZipProcessor.processZip(zip2)).thenAnswer((_) => Future.value(.downloaded));
 
     // ACT
     await Future.delayed(const Duration(milliseconds: 1));
@@ -208,19 +222,19 @@ void main() {
     expect(captured[1], '2026-02-10T16-35-35Z.zip');
     expect(captured[2], '2026-02-10T14-35-35Z.zip');
 
-    final capturesSave = verify(mockSferaLocalRepo.saveData(captureAny)).captured;
-    expect(capturesSave, hasLength(2));
-    expect(capturesSave[0], 'valid');
-    expect(capturesSave[1], 'invalid');
+    final capturesZip = verify(mockPreloadZipProcessor.processZip(captureAny)).captured;
+    expect(capturesZip, hasLength(2));
+    expect(capturesZip[0], zip1);
+    expect(capturesZip[1], zip2);
 
     final capturedDb = verify(mockDatabaseService.saveS3File(captureAny)).captured;
     expect(capturedDb, hasLength(3));
     expect((capturedDb[0] as S3File).name, '2026-02-10T17-35-35Z.zip');
     expect((capturedDb[0] as S3File).status, S3FileSyncStatus.error);
     expect((capturedDb[1] as S3File).name, '2026-02-10T16-35-35Z.zip');
-    expect((capturedDb[1] as S3File).status, S3FileSyncStatus.downloaded);
+    expect((capturedDb[1] as S3File).status, S3FileSyncStatus.corrupted);
     expect((capturedDb[2] as S3File).name, '2026-02-10T14-35-35Z.zip');
-    expect((capturedDb[2] as S3File).status, S3FileSyncStatus.corrupted);
+    expect((capturedDb[2] as S3File).status, S3FileSyncStatus.downloaded);
   });
 }
 
