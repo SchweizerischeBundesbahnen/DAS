@@ -80,7 +80,7 @@ jobs:
         MQTT_USERNAME: ${{ secrets.MQTT_USERNAME }}
         MQTT_PASSWORD: ${{ secrets.MQTT_PASSWORD }}
       run: |
-        flutter build apk --flavor dev -t integration_test/app_test.dart --no-tree-shake-icons --debug --dart-define=MQTT_USERNAME=$MQTT_USERNAME --dart-define=MQTT_PASSWORD=$MQTT_PASSWORD --dart-define=ACCESS_TOKEN=${{ steps.jwt.outputs.access_token }}
+        flutter build apk --flavor dev -t integration_test/app_e2e_test.dart --no-tree-shake-icons --debug --dart-define=MQTT_USERNAME=$MQTT_USERNAME --dart-define=MQTT_PASSWORD=$MQTT_PASSWORD --dart-define=ACCESS_TOKEN=${{ steps.jwt.outputs.access_token }}
       working-directory: das_client/app
 
     - name: Build Test Package

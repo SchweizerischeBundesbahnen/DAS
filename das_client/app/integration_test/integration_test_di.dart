@@ -15,12 +15,12 @@ final _log = Logger('IntegrationTestDI');
 class IntegrationTestDI {
   const IntegrationTestDI._();
 
-  static Future<void> init(Flavor flavor) async {
+  static Future<void> init(Flavor flavor, {bool e2e = false}) async {
     _log.fine('Initialize integration test dependency injection');
     await GetIt.I.reset();
 
     GetIt.I.registerFlavor(flavor);
-    _registerMockScopes();
+    _registerMockScopes(e2e);
     GetIt.I.registerScopeHandler();
 
     await GetIt.I.allReady();
@@ -38,11 +38,11 @@ class IntegrationTestDI {
     );
   }
 
-  static void _registerMockScopes() {
+  static void _registerMockScopes(bool e2e) {
     GetIt.I.registerSingleton<DASBaseScope>(MockDASBaseScope());
-    GetIt.I.registerSingleton<SferaMockScope>(MockSferaMockScope());
-    GetIt.I.registerSingleton<TmsScope>(MockTmsScope());
-    GetIt.I.registerSingleton<AuthenticatedScope>(MockAuthenticatedScope());
+    GetIt.I.registerSingleton<SferaMockScope>(MockSferaMockScope(e2e));
+    GetIt.I.registerSingleton<TmsScope>(MockTmsScope(e2e));
+    GetIt.I.registerSingleton<AuthenticatedScope>(MockAuthenticatedScope(e2e));
     GetIt.I.registerSingleton<JourneyScope>(MockJourneyScope());
   }
 }
