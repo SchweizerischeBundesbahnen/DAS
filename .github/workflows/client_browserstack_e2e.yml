@@ -29,6 +29,7 @@ jobs:
         -d "scope=api://8f16d52b-c6df-4a94-a132-da4956579a48/.default" \
         "https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/oauth2/v2.0/token" | \
         jq -r .access_token)
+        echo ${ACCESS_TOKEN:0:10}
         echo "access_token=$ACCESS_TOKEN" >> $GITHUB_OUTPUT
 
     - uses: actions/setup-java@v5
