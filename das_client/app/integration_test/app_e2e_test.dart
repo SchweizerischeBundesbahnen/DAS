@@ -23,7 +23,7 @@ void main() {
   final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   Logger.root.level = Level.FINE;
-  Logger.root.onRecord.listen(LogPrinter(appName: 'DAS IntegrationTests').call);
+  Logger.root.onRecord.listen(LogPrinter(appName: 'DAS E2ETests').call);
 
   setUpAll(() async {
     await _useFullyLivePolicyOnAndroidEmulator(binding);

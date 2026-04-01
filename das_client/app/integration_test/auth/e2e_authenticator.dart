@@ -24,7 +24,7 @@ class E2EAuthenticator implements Authenticator {
 
   @override
   Future<User> user({String? tokenId}) async {
-    final roles = AuthenticationComponent.resolveRoles(String.fromEnvironment(accessToken));
+    final roles = AuthenticationComponent.resolveRoles(const String.fromEnvironment(accessToken));
 
     return User(
       userId: 'e2e@sbb.com',
@@ -34,8 +34,8 @@ class E2EAuthenticator implements Authenticator {
   }
 
   OidcToken _token() => OidcToken(
-    tokenType: 'jwt',
-    accessToken: String.fromEnvironment(accessToken),
-    idToken: String.fromEnvironment(accessToken),
+    tokenType: 'Bearer',
+    accessToken: const String.fromEnvironment(accessToken),
+    idToken: const String.fromEnvironment(accessToken),
   );
 }

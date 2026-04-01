@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import '../app_test.dart';
+import '../app_e2e_test.dart';
 import '../util/test_utils.dart';
 
 void main() {
@@ -17,10 +17,6 @@ void main() {
     // Check Preload is Running
     await waitUntilExists(tester, find.text(l10n.w_preload_status_running));
 
-    for (var i = 0; i < 10; i++) {
-      // Check Preload is still Running
-      await waitUntilExists(tester, find.text(l10n.w_preload_status_running));
-      await Future.delayed(const Duration(seconds: 1));
-    }
+    await waitUntilExists(tester, find.text('4'));
   });
 }
