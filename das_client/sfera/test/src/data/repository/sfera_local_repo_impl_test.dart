@@ -10,7 +10,7 @@ import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_ref_dto.dart';
 import 'package:sfera/src/data/dto/train_identification_dto.dart';
-import 'package:sfera/src/data/local/drift_local_database_service.dart';
+import 'package:sfera/src/data/local/drift_sfera_local_database_service.dart';
 import 'package:sfera/src/data/local/sfera_local_database_service.dart';
 import 'package:sfera/src/data/repository/sfera_local_repo_impl.dart';
 

@@ -49,11 +49,6 @@ class PreloadRepositoryImpl implements PreloadRepository {
     _databaseSubscription = databaseService.watchAll().listen((files) => _emit(files));
   }
 
-  Future<void> _processZip(_ZipToProcess toProcess) async {
-    final result = await preloadZipProcessor.processZip(toProcess.zip);
-    await databaseService.saveS3File(toProcess.file.copyWith(status: result));
-  }
-
   @override
   void updateConfiguration(AwsConfiguration awsConfiguration) {
     _log.info(
@@ -100,6 +95,13 @@ class PreloadRepositoryImpl implements PreloadRepository {
 
     _log.info('Preload completed.');
     _updateRunning(false);
+  }
+
+  @override
+  void dispose() {
+    _databaseSubscription?.cancel();
+    _rxDetails.close();
+    _syncTimer?.cancel();
   }
 
   Future<void> _cleanup() async {
@@ -167,12 +169,12 @@ class PreloadRepositoryImpl implements PreloadRepository {
         .drain<void>();
 
     try {
-      final preloadFolder = await preloadZipProcessor.preloadFolder();
+      final preloadDirectory = await preloadZipProcessor.preloadDirectory();
       for (final file in filesToProcess) {
         if (file.status == .initial || file.status == .error) {
           _log.info('Processing file ${file.name} with status ${file.status.name}.');
           try {
-            final downloaded = await _s3client!.downloadFile(file.name, saveTo: preloadFolder);
+            final downloaded = await _s3client!.downloadFile(file.name, saveTo: preloadDirectory);
             controller.add(_ZipToProcess(file: file, zip: downloaded));
           } catch (e, s) {
             _log.severe('Error downloading file ${file.name}.', e, s);
@@ -186,6 +188,11 @@ class PreloadRepositoryImpl implements PreloadRepository {
       await controller.close();
       await processingDone;
     }
+  }
+
+  Future<void> _processZip(_ZipToProcess toProcess) async {
+    final result = await preloadZipProcessor.extractToLocalDatabase(toProcess.zip);
+    await databaseService.saveS3File(toProcess.file.copyWith(status: result));
   }
 
   void _updateRunning(bool isRunning) {
@@ -206,13 +213,6 @@ class PreloadRepositoryImpl implements PreloadRepository {
   Future<PreloadDetails> _gatherDetails(List<S3File>? files) async {
     files = files ?? await databaseService.findAll();
     return PreloadDetails(files: files, status: _status(), metrics: await sferaLocalRepo.getMetrics());
-  }
-
-  @override
-  void dispose() {
-    _databaseSubscription?.cancel();
-    _rxDetails.close();
-    _syncTimer?.cancel();
   }
 }
 

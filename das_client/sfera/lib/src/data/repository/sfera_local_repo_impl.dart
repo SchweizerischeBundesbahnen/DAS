@@ -3,7 +3,7 @@ import 'package:sfera/src/data/dto/journey_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
-import 'package:sfera/src/data/local/drift_local_database_service.dart';
+import 'package:sfera/src/data/local/drift_sfera_local_database_service.dart';
 import 'package:sfera/src/data/local/sfera_local_database_service.dart';
 import 'package:sfera/src/data/local/tables/journey_profile_table.dart';
 import 'package:sfera/src/data/local/tables/segment_profile_table.dart';
@@ -95,7 +95,7 @@ class SferaLocalRepoImpl implements SferaLocalRepo {
     try {
       final validElements = elements.whereIsSupportedType().whereIsValid();
       if (validElements.isEmpty) {
-        _log.info('No valid or supported SferaXmlElementDto passed to save');
+        _log.warning('No valid or supported SferaXmlElementDto passed to save');
         return false;
       }
 

@@ -1,6 +1,6 @@
 import 'package:connectivity_x/component.dart';
 import 'package:mqtt/component.dart';
-import 'package:sfera/src/data/local/drift_local_database_service.dart';
+import 'package:sfera/src/data/local/drift_sfera_local_database_service.dart';
 import 'package:sfera/src/data/repository/sfera_local_repo.dart';
 import 'package:sfera/src/data/repository/sfera_local_repo_impl.dart';
 import 'package:sfera/src/data/repository/sfera_repository.dart';
@@ -90,7 +90,7 @@ class SferaComponent {
     required SferaLocalRepo localRepo,
     required ConnectivityManager connectivityManager,
   }) {
-    final localDatabaseService = DriftLocalDatabaseService.instance;
+    final localDatabaseService = DriftSferaLocalDatabaseService.instance;
     return SferaRepoImpl(
       mqttService: mqttService,
       localService: localDatabaseService,
@@ -102,7 +102,7 @@ class SferaComponent {
   }
 
   static SferaLocalRepo createSferaLocalRepo() {
-    final localDatabaseService = DriftLocalDatabaseService.instance;
+    final localDatabaseService = DriftSferaLocalDatabaseService.instance;
     return SferaLocalRepoImpl(localService: localDatabaseService);
   }
 }

@@ -16,9 +16,9 @@ import 'package:sfera/src/data/local/tables/segment_profile_table.dart';
 import 'package:sfera/src/data/local/tables/train_characteristics_table.dart';
 import 'package:sfera/src/model/sfera_db_metrics.dart';
 
-part 'drift_local_database_service.g.dart';
+part 'drift_sfera_local_database_service.g.dart';
 
-final _log = Logger('SferaDriftLocalDatabaseService');
+final _log = Logger('DriftSferaLocalDatabaseService');
 
 @DriftDatabase(
   tables: [
@@ -27,16 +27,16 @@ final _log = Logger('SferaDriftLocalDatabaseService');
     TrainCharacteristicsTable,
   ],
 )
-class DriftLocalDatabaseService extends _$DriftLocalDatabaseService implements SferaLocalDatabaseService {
+class DriftSferaLocalDatabaseService extends _$DriftSferaLocalDatabaseService implements SferaLocalDatabaseService {
   static const int cleanupDays = 2;
-  static DriftLocalDatabaseService? _instance;
+  static DriftSferaLocalDatabaseService? _instance;
 
-  static DriftLocalDatabaseService get instance {
-    _instance ??= DriftLocalDatabaseService._();
+  static DriftSferaLocalDatabaseService get instance {
+    _instance ??= DriftSferaLocalDatabaseService._();
     return _instance!;
   }
 
-  DriftLocalDatabaseService._() : super(_openConnection());
+  DriftSferaLocalDatabaseService._() : super(_openConnection());
 
   static QueryExecutor _openConnection() => LazyDatabase(() async {
     final dbFolder = await getApplicationDocumentsDirectory();

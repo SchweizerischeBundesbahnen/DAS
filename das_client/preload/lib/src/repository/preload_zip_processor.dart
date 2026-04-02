@@ -18,16 +18,13 @@ const int _batchSize = 200;
 /// Decodes and processes preloaded ZIPs and saves the content to the local SFERA database.
 /// Uses background isolates with batch database inserts to prevent UI freezes.
 class PreloadZipProcessor {
-  /// folder used to download preload zip in application support folder.
-  static String preloadFolderPath = 'preload';
-
   PreloadZipProcessor({required this.sferaLocalRepo});
 
   final SferaLocalRepo sferaLocalRepo;
 
   final Set<String> _processedFiles = {};
 
-  Future<S3FileSyncStatus> processZip(File zip) async {
+  Future<S3FileSyncStatus> extractToLocalDatabase(File zip) async {
     _log.info('Start extracting file ${zip.name}');
 
     try {
@@ -78,15 +75,15 @@ class PreloadZipProcessor {
 
   Future<void> cleanup() async {
     _processedFiles.clear();
-    final preloadDir = await preloadFolder();
+    final preloadDir = await preloadDirectory();
     if (preloadDir.existsSync()) {
       preloadDir.delete(recursive: true);
     }
   }
 
-  Future<Directory> preloadFolder() async {
+  Future<Directory> preloadDirectory() async {
     final supportDir = await getApplicationSupportDirectory();
-    final preloadDir = Directory(p.join(supportDir.path, preloadFolderPath));
+    final preloadDir = Directory(p.join(supportDir.path, 'preload'));
     if (!await preloadDir.exists()) {
       await preloadDir.create(recursive: true);
     }

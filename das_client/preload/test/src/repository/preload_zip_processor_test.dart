@@ -37,19 +37,19 @@ void main() {
     }
   });
 
-  test('processZip_whenEmptyZip_returnsDownloadedWithoutSaves', () async {
+  test('extractToLocalDatabase_whenEmptyZip_returnsDownloadedWithoutSaves', () async {
     // GIVEN
     final zip = await _makeZip(const [], saveTo: tempDir);
 
     // WHEN
-    final status = await testee.processZip(zip);
+    final status = await testee.extractToLocalDatabase(zip);
 
     // THEN
     expect(status, S3FileSyncStatus.downloaded);
     verifyNever(mockSferaLocalRepo.saveData(captureAny));
   });
 
-  test('processZip_whenZipWithFiles_returnsDownloadedWithSaves', () async {
+  test('extractToLocalDatabase_whenZipWithFiles_returnsDownloadedWithSaves', () async {
     // GIVEN
     final zip = await _makeZip(
       [
@@ -61,7 +61,7 @@ void main() {
     );
 
     // WHEN
-    final status = await testee.processZip(zip);
+    final status = await testee.extractToLocalDatabase(zip);
 
     // THEN
     expect(status, S3FileSyncStatus.downloaded);
@@ -74,49 +74,52 @@ void main() {
     expect(savedElements[2].type, 'TrainCharacteristics');
   });
 
-  test('processZip_whenMultipleZipsWithDuplicatedFiles_ignoresDuplicatedAndReturnsDownloadedWithSaves', () async {
-    // GIVEN
-    final zip1 = await _makeZip(
-      [
-        _testJP,
-        _testSP,
-        _testSP,
-      ],
-      fileName: 'test1.zip',
-      saveTo: tempDir,
-    );
+  test(
+    'extractToLocalDatabase_whenMultipleZipsWithDuplicatedFiles_ignoresDuplicatedAndReturnsDownloadedWithSaves',
+    () async {
+      // GIVEN
+      final zip1 = await _makeZip(
+        [
+          _testJP,
+          _testSP,
+          _testSP,
+        ],
+        fileName: 'test1.zip',
+        saveTo: tempDir,
+      );
 
-    final zip2 = await _makeZip(
-      [
-        _testJP,
-        _testSP,
-        _testSP,
-        _testTC, // only file that should be processed
-      ],
-      fileName: 'test2.zip',
-      saveTo: tempDir,
-    );
+      final zip2 = await _makeZip(
+        [
+          _testJP,
+          _testSP,
+          _testSP,
+          _testTC, // only file that should be processed
+        ],
+        fileName: 'test2.zip',
+        saveTo: tempDir,
+      );
 
-    // WHEN
-    final status1 = await testee.processZip(zip1);
-    final status2 = await testee.processZip(zip2);
+      // WHEN
+      final status1 = await testee.extractToLocalDatabase(zip1);
+      final status2 = await testee.extractToLocalDatabase(zip2);
 
-    // THEN
-    expect(status1, S3FileSyncStatus.downloaded);
-    expect(status2, S3FileSyncStatus.downloaded);
-    final capturesSave = verify(mockSferaLocalRepo.saveData(captureAny)).captured;
-    expect(capturesSave, hasLength(2));
-    final savedElements1 = capturesSave[0];
-    expect(savedElements1, hasLength(3));
-    expect(savedElements1[0].type, 'JourneyProfile');
-    expect(savedElements1[1].type, 'SegmentProfile');
-    expect(savedElements1[2].type, 'SegmentProfile');
-    final savedElements2 = capturesSave[1];
-    expect(savedElements2, hasLength(1));
-    expect(savedElements2[0].type, 'TrainCharacteristics');
-  });
+      // THEN
+      expect(status1, S3FileSyncStatus.downloaded);
+      expect(status2, S3FileSyncStatus.downloaded);
+      final capturesSave = verify(mockSferaLocalRepo.saveData(captureAny)).captured;
+      expect(capturesSave, hasLength(2));
+      final savedElements1 = capturesSave[0];
+      expect(savedElements1, hasLength(3));
+      expect(savedElements1[0].type, 'JourneyProfile');
+      expect(savedElements1[1].type, 'SegmentProfile');
+      expect(savedElements1[2].type, 'SegmentProfile');
+      final savedElements2 = capturesSave[1];
+      expect(savedElements2, hasLength(1));
+      expect(savedElements2[0].type, 'TrainCharacteristics');
+    },
+  );
 
-  test('processZip_whenZipWithFilesAndDirectory_ignoresDirectory', () async {
+  test('extractToLocalDatabase_whenZipWithFilesAndDirectory_ignoresDirectory', () async {
     // GIVEN
     final zip = await _makeZip(
       [_testSP],
@@ -125,7 +128,7 @@ void main() {
     );
 
     // WHEN
-    final status = await testee.processZip(zip);
+    final status = await testee.extractToLocalDatabase(zip);
 
     // THEN
     expect(status, S3FileSyncStatus.downloaded);
@@ -136,7 +139,7 @@ void main() {
     expect(savedElements[0].type, 'SegmentProfile');
   });
 
-  test('processZip_whenZipWithInvalidFiles_returnsCorrupted', () async {
+  test('extractToLocalDatabase_whenZipWithInvalidFiles_returnsCorrupted', () async {
     // GIVEN
     final zip = await _makeZip(
       [_testSP, '<invalid'],
@@ -145,20 +148,20 @@ void main() {
     );
 
     // WHEN
-    final status = await testee.processZip(zip);
+    final status = await testee.extractToLocalDatabase(zip);
 
     // THEN
     expect(status, S3FileSyncStatus.corrupted);
     verifyNever(mockSferaLocalRepo.saveData(captureAny));
   });
 
-  test('processZip_whenSaveReturnsFalse_returnsCorrupted', () async {
+  test('extractToLocalDatabase_whenSaveReturnsFalse_returnsCorrupted', () async {
     // GIVEN
     final zip = await _makeZip([_testJP], saveTo: tempDir);
     when(mockSferaLocalRepo.saveData(any)).thenAnswer((_) => Future.value(false));
 
     // WHEN
-    final status = await testee.processZip(zip);
+    final status = await testee.extractToLocalDatabase(zip);
 
     // THEN
     expect(status, S3FileSyncStatus.corrupted);
@@ -166,13 +169,13 @@ void main() {
     expect(capturesSave, hasLength(1));
   });
 
-  test('processZip_whenErrorIsThrown_returnsError', () async {
+  test('extractToLocalDatabase_whenErrorIsThrown_returnsError', () async {
     // GIVEN
     final zip = await _makeZip([_testJP], saveTo: tempDir);
     when(mockSferaLocalRepo.saveData(any)).thenThrow(Exception('Test'));
 
     // WHEN
-    final status = await testee.processZip(zip);
+    final status = await testee.extractToLocalDatabase(zip);
 
     // THEN
     expect(status, S3FileSyncStatus.error);

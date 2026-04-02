@@ -45,8 +45,8 @@ void main() {
     preloadDetailsRegister = [];
     databaseSubject = BehaviorSubject.seeded([]);
     when(mockDatabaseService.watchAll()).thenAnswer((_) => databaseSubject.stream);
-    when(mockPreloadZipProcessor.processZip(any)).thenAnswer((_) => Future.value(.downloaded));
-    when(mockPreloadZipProcessor.preloadFolder()).thenAnswer((_) => Future.value(Directory('test')));
+    when(mockPreloadZipProcessor.extractToLocalDatabase(any)).thenAnswer((_) => Future.value(.downloaded));
+    when(mockPreloadZipProcessor.preloadDirectory()).thenAnswer((_) => Future.value(Directory('test')));
 
     testee = S3ClientOverriddenPreloadRepository(
       preloadZipProcessor: mockPreloadZipProcessor,
@@ -103,9 +103,9 @@ void main() {
       );
       preloadDetailsSubscription.cancel();
       preloadDetailsSubscription = testee.preloadDetails.listen(preloadDetailsRegister.add);
-      when(mockPreloadZipProcessor.processZip(any)).thenAnswer((_) => Future.value(.downloaded));
+      when(mockPreloadZipProcessor.extractToLocalDatabase(any)).thenAnswer((_) => Future.value(.downloaded));
       when(mockPreloadZipProcessor.cleanup()).thenAnswer((_) => Future.value());
-      when(mockPreloadZipProcessor.preloadFolder()).thenAnswer((_) => Future.value(Directory('Test')));
+      when(mockPreloadZipProcessor.preloadDirectory()).thenAnswer((_) => Future.value(Directory('Test')));
 
       // ACT
       fakeAsync.elapse(const Duration(seconds: 1));
@@ -205,8 +205,8 @@ void main() {
       return Future.value(zip2);
     });
 
-    when(mockPreloadZipProcessor.processZip(zip1)).thenAnswer((_) => Future.value(.corrupted));
-    when(mockPreloadZipProcessor.processZip(zip2)).thenAnswer((_) => Future.value(.downloaded));
+    when(mockPreloadZipProcessor.extractToLocalDatabase(zip1)).thenAnswer((_) => Future.value(.corrupted));
+    when(mockPreloadZipProcessor.extractToLocalDatabase(zip2)).thenAnswer((_) => Future.value(.downloaded));
 
     // ACT
     await Future.delayed(const Duration(milliseconds: 1));
@@ -220,7 +220,7 @@ void main() {
     expect(captured[1], '2026-02-10T16-35-35Z.zip');
     expect(captured[2], '2026-02-10T14-35-35Z.zip');
 
-    final capturesZip = verify(mockPreloadZipProcessor.processZip(captureAny)).captured;
+    final capturesZip = verify(mockPreloadZipProcessor.extractToLocalDatabase(captureAny)).captured;
     expect(capturesZip, hasLength(2));
     expect(capturesZip[0], zip1);
     expect(capturesZip[1], zip2);
