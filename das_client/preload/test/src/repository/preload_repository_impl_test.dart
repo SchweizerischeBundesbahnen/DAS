@@ -104,14 +104,13 @@ void main() {
       preloadDetailsSubscription.cancel();
       preloadDetailsSubscription = testee.preloadDetails.listen(preloadDetailsRegister.add);
       when(mockPreloadZipProcessor.extractToLocalDatabase(any)).thenAnswer((_) => Future.value(.downloaded));
-      when(mockPreloadZipProcessor.cleanup()).thenAnswer((_) => Future.value());
+      when(mockPreloadZipProcessor.cleanup()).thenAnswer((_) async => {});
       when(mockPreloadZipProcessor.preloadDirectory()).thenAnswer((_) => Future.value(Directory('Test')));
 
       // ACT
       fakeAsync.elapse(const Duration(seconds: 1));
       testee.updateConfiguration(AwsConfiguration(bucketUrl: 'https://www.dummy.ch', accessKey: '', accessSecret: ''));
       fakeAsync.elapse(const Duration(seconds: 1));
-      testAsync.flushMicrotasks();
 
       // VERIFY
       expect(preloadDetailsRegister, hasLength(3));
@@ -120,7 +119,6 @@ void main() {
       expect(preloadDetailsRegister[2].status, PreloadStatus.idle);
 
       testAsync.elapse(Duration(minutes: PreloadRepositoryImpl.syncInterval.inMinutes + 1));
-      testAsync.flushMicrotasks();
 
       expect(preloadDetailsRegister, hasLength(5));
       expect(preloadDetailsRegister[0].status, PreloadStatus.missingConfiguration);

@@ -164,7 +164,6 @@ class PreloadRepositoryImpl implements PreloadRepository {
     );
 
     final processingFutures = <Future>[];
-
     try {
       final preloadDirectory = await preloadZipProcessor.preloadDirectory();
       for (final file in filesToProcess) {
