@@ -1,6 +1,6 @@
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/chronograph_header_box.dart';
-import 'package:app/pages/journey/journey_screen/widgets/FloatingDepartureChecklistButton.dart';
+import 'package:app/pages/journey/journey_screen/widgets/floating_eeparture_checklist_button.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_chevron.dart';
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:flutter_test/flutter_test.dart';

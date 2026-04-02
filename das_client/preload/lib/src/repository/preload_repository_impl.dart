@@ -163,10 +163,7 @@ class PreloadRepositoryImpl implements PreloadRepository {
       'downloaded: ${filesToProcess.whereStatus(.downloaded).length}).',
     );
 
-    final controller = StreamController<_ZipToProcess>();
-    final processingDone = controller.stream
-        .asyncExpand((toProcess) => Stream.fromFuture(_processZip(toProcess)))
-        .drain<void>();
+    final processingFutures = <Future>[];
 
     try {
       final preloadDirectory = await preloadZipProcessor.preloadDirectory();
@@ -175,7 +172,8 @@ class PreloadRepositoryImpl implements PreloadRepository {
           _log.info('Processing file ${file.name} with status ${file.status.name}.');
           try {
             final downloaded = await _s3client!.downloadFile(file.name, saveTo: preloadDirectory);
-            controller.add(_ZipToProcess(file: file, zip: downloaded));
+            await Future.wait(processingFutures);
+            processingFutures.add(_processZip(_ZipToProcess(file: file, zip: downloaded)));
           } catch (e, s) {
             _log.severe('Error downloading file ${file.name}.', e, s);
             await databaseService.saveS3File(file.copyWith(status: .error));
@@ -185,8 +183,7 @@ class PreloadRepositoryImpl implements PreloadRepository {
         }
       }
     } finally {
-      await controller.close();
-      await processingDone;
+      await Future.wait(processingFutures);
     }
   }
 
