@@ -8,7 +8,7 @@ import 'package:mqtt/component.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
-import 'package:sfera/src/data/local/drift_local_database_service.dart';
+import 'package:sfera/src/data/local/drift_sfera_local_database_service.dart';
 import 'package:sfera/src/data/local/sfera_local_database_service.dart';
 import 'package:sfera/src/data/repository/sfera_local_repo_impl.dart';
 import 'package:sfera/src/data/repository/sfera_repository_impl.dart';
@@ -608,7 +608,7 @@ void main() {
     when(mockLocalDatabaseRepository.findJourneyProfile(any, any, any)).thenAnswer(
       (_) => Future.value(
         JourneyProfileTableData(
-          id: 1,
+          version: '1',
           company: '1085',
           operationalTrainNumber: '123',
           xmlData: parsedJPResponse.payload!.journeyProfiles.first.toString(),
@@ -685,7 +685,7 @@ void main() {
     when(mockLocalDatabaseRepository.findJourneyProfile(any, any, any)).thenAnswer(
       (_) => Future.value(
         JourneyProfileTableData(
-          id: 1,
+          version: '1',
           company: '1085',
           operationalTrainNumber: '123',
           xmlData: parsedJPResponse.payload!.journeyProfiles.first.toString(),
@@ -762,7 +762,7 @@ void main() {
     when(mockLocalDatabaseRepository.findJourneyProfile(any, any, any)).thenAnswer(
       (_) => Future.value(
         JourneyProfileTableData(
-          id: 1,
+          version: '1',
           company: '1085',
           operationalTrainNumber: '123',
           xmlData: parsedJPResponse.payload!.journeyProfiles.first.toString(),

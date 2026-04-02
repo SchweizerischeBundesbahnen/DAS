@@ -32,3 +32,7 @@ enum S3FileSyncStatus {
   error,
   corrupted,
 }
+
+extension S3FileIterableExtension on Iterable<S3File> {
+  Iterable<S3File> whereStatus(S3FileSyncStatus status) => where((file) => file.status == status);
+}

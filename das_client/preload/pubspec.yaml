@@ -32,6 +32,10 @@ dependencies:
   rxdart: ^0.28.0
   # https://pub.dev/packages/intl
   intl: ^0.20.2
+  # https://pub.dev/packages/path_provider
+  path_provider: ^2.1.5
+  # https://pub.dev/packages/path
+  path: ^1.9.1
 
 dev_dependencies:
   flutter_test:

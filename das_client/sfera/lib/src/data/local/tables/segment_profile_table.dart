@@ -2,7 +2,7 @@
 
 import 'package:drift/drift.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
-import 'package:sfera/src/data/local/drift_local_database_service.dart';
+import 'package:sfera/src/data/local/drift_sfera_local_database_service.dart';
 import 'package:sfera/src/data/parser/sfera_reply_parser.dart';
 
 class SegmentProfileTable extends Table {

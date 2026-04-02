@@ -1,7 +1,7 @@
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
-import 'package:sfera/src/data/local/drift_local_database_service.dart';
+import 'package:sfera/src/data/local/drift_sfera_local_database_service.dart';
 import 'package:sfera/src/model/sfera_db_metrics.dart';
 
 abstract class SferaLocalDatabaseService {
@@ -9,9 +9,15 @@ abstract class SferaLocalDatabaseService {
 
   Future<void> saveJourneyProfile(JourneyProfileDto journeyProfile);
 
+  Future<void> saveBulkJourneyProfiles(Iterable<JourneyProfileDto> journeyProfiles);
+
   Future<void> saveSegmentProfile(SegmentProfileDto segmentProfile);
 
+  Future<void> saveBulkSegmentProfiles(Iterable<SegmentProfileDto> segmentProfiles);
+
   Future<void> saveTrainCharacteristics(TrainCharacteristicsDto trainCharacteristics);
+
+  Future<void> saveBulkTrainCharacteristics(Iterable<TrainCharacteristicsDto> trainCharacteristics);
 
   Future<JourneyProfileTableData?> findJourneyProfile(
     String company,

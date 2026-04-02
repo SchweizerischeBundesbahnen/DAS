@@ -2,11 +2,11 @@
 
 import 'package:drift/drift.dart';
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
-import 'package:sfera/src/data/local/drift_local_database_service.dart';
+import 'package:sfera/src/data/local/drift_sfera_local_database_service.dart';
 import 'package:sfera/src/data/parser/sfera_reply_parser.dart';
 
 class JourneyProfileTable extends Table {
-  IntColumn get id => integer().autoIncrement()();
+  TextColumn get version => text()();
 
   TextColumn get company => text()();
 
@@ -15,12 +15,15 @@ class JourneyProfileTable extends Table {
   DateTimeColumn get startDate => dateTime()();
 
   TextColumn get xmlData => text()();
+
+  @override
+  Set<Column<Object>>? get primaryKey => {company, operationalTrainNumber, startDate, version};
 }
 
 extension JourneyProfileMapperX on JourneyProfileDto {
-  JourneyProfileTableCompanion toCompanion({int? id}) {
+  JourneyProfileTableCompanion toCompanion() {
     return JourneyProfileTableCompanion.insert(
-      id: id != null ? Value(id) : const Value.absent(),
+      version: version,
       company: trainIdentification.otnId.company,
       operationalTrainNumber: trainIdentification.otnId.operationalTrainNumber,
       startDate: trainIdentification.otnId.startDate,
@@ -30,7 +33,5 @@ extension JourneyProfileMapperX on JourneyProfileDto {
 }
 
 extension JourneyProfileTableDataX on JourneyProfileTableData {
-  JourneyProfileDto toDomain() {
-    return SferaReplyParser.parse<JourneyProfileDto>(xmlData);
-  }
+  JourneyProfileDto toDomain() => SferaReplyParser.parse<JourneyProfileDto>(xmlData);
 }

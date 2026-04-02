@@ -1,7 +1,6 @@
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/dto/additional_info_dto.dart';
 import 'package:sfera/src/data/dto/multilingual_text_dto.dart';
-import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 
 class G2bErrorDto extends SferaXmlElementDto {
   static const String elementType = 'G2B_Error';
