@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:aws_common/aws_common.dart';
 import 'package:aws_signature_v4/aws_signature_v4.dart';
 import 'package:logging/logging.dart';
+import 'package:path/path.dart' as p;
 import 'package:preload/src/aws/dto/list_bucket_result_dto.dart';
 import 'package:preload/src/aws/in_memory_credential_provider.dart';
 import 'package:settings/component.dart';
@@ -38,16 +39,29 @@ class S3Client {
     }
   }
 
-  Future<List<int>?> getObject(String key) async {
+  Future<File> downloadFile(String key, {required Directory saveTo}) async {
     final signedRequest = _getRequest(key);
     final response = await signedRequest.send(client: _httpClient).response;
 
-    if (response.statusCode == HttpStatus.ok) {
-      return response.bodyBytes;
-    } else {
-      _log.warning('Failed to get object with key $key. Status code: ${response.statusCode}');
-      return null;
+    if (response.statusCode != HttpStatus.ok) {
+      throw Exception('Failed to download object with key $key. Status code: ${response.statusCode}');
     }
+
+    final fileName = key.split('/').isNotEmpty ? key.split('/').last : key;
+    final outFile = File(p.join(saveTo.path, fileName));
+
+    final sink = outFile.openWrite(mode: FileMode.writeOnly);
+    try {
+      await for (final chunk in response.body) {
+        sink.add(chunk);
+      }
+      await sink.flush();
+    } finally {
+      await sink.close();
+    }
+
+    _log.fine('Successfully downloaded object with key $key');
+    return outFile;
   }
 
   ListBucketResultDto _parseListBucketResult(String xmlString) {
@@ -56,9 +70,7 @@ class S3Client {
     return ListBucketResultDto(xmlElement: rootElement);
   }
 
-  AWSSignedRequest _listBucketRequest() {
-    return _getRequest('', {'list-type': '2'});
-  }
+  AWSSignedRequest _listBucketRequest() => _getRequest('', {'list-type': '2'});
 
   AWSSignedRequest _getRequest(String key, [Map<String, String>? queryParams]) {
     final uri = Uri.https(_configuration.bucketUrl, key, queryParams);

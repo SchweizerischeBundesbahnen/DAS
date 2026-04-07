@@ -1,6 +1,6 @@
 import 'dart:async';
+import 'dart:io';
 
-import 'package:archive/archive.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -11,6 +11,7 @@ import 'package:preload/src/aws/dto/list_bucket_result_dto.dart';
 import 'package:preload/src/aws/s3_client.dart';
 import 'package:preload/src/data/preload_local_database_service.dart';
 import 'package:preload/src/repository/preload_repository_impl.dart';
+import 'package:preload/src/repository/preload_zip_processor.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:settings/component.dart';
 import 'package:sfera/component.dart';
@@ -19,6 +20,7 @@ import 'preload_repository_impl_test.mocks.dart';
 import 's3_client_overridden_preload_repository.dart';
 
 @GenerateNiceMocks([
+  MockSpec<PreloadZipProcessor>(),
   MockSpec<PreloadLocalDatabaseService>(),
   MockSpec<S3Client>(),
   MockSpec<SferaLocalRepo>(),
@@ -27,6 +29,7 @@ import 's3_client_overridden_preload_repository.dart';
 ])
 void main() {
   late PreloadRepository testee;
+  late MockPreloadZipProcessor mockPreloadZipProcessor;
   late MockPreloadLocalDatabaseService mockDatabaseService;
   late MockSferaLocalRepo mockSferaLocalRepo;
   late MockS3Client mockS3Client;
@@ -38,11 +41,15 @@ void main() {
     mockDatabaseService = MockPreloadLocalDatabaseService();
     mockSferaLocalRepo = MockSferaLocalRepo();
     mockS3Client = MockS3Client();
+    mockPreloadZipProcessor = MockPreloadZipProcessor();
     preloadDetailsRegister = [];
     databaseSubject = BehaviorSubject.seeded([]);
     when(mockDatabaseService.watchAll()).thenAnswer((_) => databaseSubject.stream);
+    when(mockPreloadZipProcessor.extractToLocalDatabase(any)).thenAnswer((_) => Future.value(.downloaded));
+    when(mockPreloadZipProcessor.preloadDirectory()).thenAnswer((_) => Future.value(Directory('test')));
 
     testee = S3ClientOverriddenPreloadRepository(
+      preloadZipProcessor: mockPreloadZipProcessor,
       databaseService: mockDatabaseService,
       sferaLocalRepo: mockSferaLocalRepo,
       s3Client: mockS3Client,
@@ -85,18 +92,27 @@ void main() {
     late FakeAsync testAsync;
 
     fakeAsync((fakeAsync) {
+      // WHEN
       testAsync = fakeAsync;
+      mockPreloadZipProcessor = MockPreloadZipProcessor();
       testee = S3ClientOverriddenPreloadRepository(
+        preloadZipProcessor: mockPreloadZipProcessor,
         databaseService: mockDatabaseService,
         sferaLocalRepo: mockSferaLocalRepo,
         s3Client: mockS3Client,
       );
       preloadDetailsSubscription.cancel();
       preloadDetailsSubscription = testee.preloadDetails.listen(preloadDetailsRegister.add);
+      when(mockPreloadZipProcessor.extractToLocalDatabase(any)).thenAnswer((_) => Future.value(.downloaded));
+      when(mockPreloadZipProcessor.cleanup()).thenAnswer((_) async => {});
+      when(mockPreloadZipProcessor.preloadDirectory()).thenAnswer((_) => Future.value(Directory('Test')));
+
+      // ACT
       fakeAsync.elapse(const Duration(seconds: 1));
       testee.updateConfiguration(AwsConfiguration(bucketUrl: 'https://www.dummy.ch', accessKey: '', accessSecret: ''));
       fakeAsync.elapse(const Duration(seconds: 1));
 
+      // VERIFY
       expect(preloadDetailsRegister, hasLength(3));
       expect(preloadDetailsRegister[0].status, PreloadStatus.missingConfiguration);
       expect(preloadDetailsRegister[1].status, PreloadStatus.running);
@@ -126,9 +142,9 @@ void main() {
     );
     when(mockDatabaseService.findAll()).thenAnswer(
       (_) => Future.value([
-        S3File(name: '2026-02-10T16-35-35Z.zip', eTag: 'etag', size: 100, status: S3FileSyncStatus.downloaded),
-        S3File(name: '2026-02-10T16-35-34Z.zip', eTag: 'etag2', size: 125, status: S3FileSyncStatus.downloaded),
-        S3File(name: '2026-02-10T15-35-34Z.zip', eTag: 'old', size: 125, status: S3FileSyncStatus.downloaded),
+        S3File(name: '2026-02-10T16-35-35Z.zip', eTag: 'etag', size: 100, status: .downloaded),
+        S3File(name: '2026-02-10T16-35-34Z.zip', eTag: 'etag2', size: 125, status: .downloaded),
+        S3File(name: '2026-02-10T15-35-34Z.zip', eTag: 'old', size: 125, status: .downloaded),
       ]),
     );
 
@@ -148,7 +164,7 @@ void main() {
     verify(mockDatabaseService.deleteS3File(any)).called(1);
   });
 
-  test('preload_whenTriggered_callsSferaLocalRepoCleanup', () async {
+  test('preload_whenTriggered_callsCleanup', () async {
     // ACT
     await Future.delayed(const Duration(milliseconds: 1));
     testee.updateConfiguration(AwsConfiguration(bucketUrl: 'https://www.dummy.ch', accessKey: '', accessSecret: ''));
@@ -156,29 +172,39 @@ void main() {
 
     // VERIFY
     verify(mockSferaLocalRepo.cleanup()).called(1);
+    verify(mockPreloadZipProcessor.cleanup()).called(1);
   });
 
   test('preload_whenTriggered_loadS3FilesProcessAndUpdateStatus', () async {
     // WHEN
     when(mockDatabaseService.findAll()).thenAnswer(
       (_) => Future.value([
-        S3File(name: '2026-02-10T17-35-35Z.zip', eTag: 'inital', size: 100, status: S3FileSyncStatus.initial),
-        S3File(name: '2026-02-10T16-35-35Z.zip', eTag: 'inital', size: 100, status: S3FileSyncStatus.initial),
-        S3File(name: '2026-02-10T15-35-35Z.zip', eTag: 'downloaded', size: 110, status: S3FileSyncStatus.downloaded),
-        S3File(name: '2026-02-10T14-35-35Z.zip', eTag: 'error', size: 120, status: S3FileSyncStatus.error),
-        S3File(name: '2026-02-10T13-35-35Z.zip', eTag: 'corruped', size: 120, status: S3FileSyncStatus.corrupted),
+        S3File(name: '2026-02-10T17-35-35Z.zip', eTag: 'initial', size: 100, status: .initial),
+        S3File(name: '2026-02-10T16-35-35Z.zip', eTag: 'initial', size: 100, status: .initial),
+        S3File(name: '2026-02-10T15-35-35Z.zip', eTag: 'downloaded', size: 110, status: .downloaded),
+        S3File(name: '2026-02-10T14-35-35Z.zip', eTag: 'error', size: 120, status: .error),
+        S3File(name: '2026-02-10T13-35-35Z.zip', eTag: 'corrupted', size: 120, status: .corrupted),
       ]),
     );
 
-    final zip1 = _createZipBytes({'jp_valid.xml': 'valid'});
-    final zip2 = _createZipBytes({'jp_invalid.xml': 'invalid'});
+    final zip1 = File('test1.zip');
+    final zip2 = File('test2.zip');
+    when(
+      mockS3Client.downloadFile('2026-02-10T17-35-35Z.zip', saveTo: anyNamed('saveTo')),
+    ).thenThrow(Exception('Failed'));
+    when(
+      mockS3Client.downloadFile('2026-02-10T16-35-35Z.zip', saveTo: anyNamed('saveTo')),
+    ).thenAnswer((_) {
+      return Future.value(zip1);
+    });
+    when(
+      mockS3Client.downloadFile('2026-02-10T14-35-35Z.zip', saveTo: anyNamed('saveTo')),
+    ).thenAnswer((_) {
+      return Future.value(zip2);
+    });
 
-    when(mockS3Client.getObject('2026-02-10T17-35-35Z.zip')).thenAnswer((_) => Future.value(null));
-    when(mockS3Client.getObject('2026-02-10T16-35-35Z.zip')).thenAnswer((_) => Future.value(zip1));
-    when(mockS3Client.getObject('2026-02-10T14-35-35Z.zip')).thenAnswer((_) => Future.value(zip2));
-
-    when(mockSferaLocalRepo.saveData('valid')).thenAnswer((_) => Future.value(true));
-    when(mockSferaLocalRepo.saveData('invalid')).thenAnswer((_) => Future.value(false));
+    when(mockPreloadZipProcessor.extractToLocalDatabase(zip1)).thenAnswer((_) => Future.value(.corrupted));
+    when(mockPreloadZipProcessor.extractToLocalDatabase(zip2)).thenAnswer((_) => Future.value(.downloaded));
 
     // ACT
     await Future.delayed(const Duration(milliseconds: 1));
@@ -186,25 +212,25 @@ void main() {
     await Future.delayed(const Duration(milliseconds: 1));
 
     // VERIFY
-    final captured = verify(mockS3Client.getObject(captureAny)).captured;
+    final captured = verify(mockS3Client.downloadFile(captureAny, saveTo: anyNamed('saveTo'))).captured;
     expect(captured, hasLength(3));
     expect(captured[0], '2026-02-10T17-35-35Z.zip');
     expect(captured[1], '2026-02-10T16-35-35Z.zip');
     expect(captured[2], '2026-02-10T14-35-35Z.zip');
 
-    final capturesSave = verify(mockSferaLocalRepo.saveData(captureAny)).captured;
-    expect(capturesSave, hasLength(2));
-    expect(capturesSave[0], 'valid');
-    expect(capturesSave[1], 'invalid');
+    final capturesZip = verify(mockPreloadZipProcessor.extractToLocalDatabase(captureAny)).captured;
+    expect(capturesZip, hasLength(2));
+    expect(capturesZip[0], zip1);
+    expect(capturesZip[1], zip2);
 
     final capturedDb = verify(mockDatabaseService.saveS3File(captureAny)).captured;
     expect(capturedDb, hasLength(3));
     expect((capturedDb[0] as S3File).name, '2026-02-10T17-35-35Z.zip');
     expect((capturedDb[0] as S3File).status, S3FileSyncStatus.error);
     expect((capturedDb[1] as S3File).name, '2026-02-10T16-35-35Z.zip');
-    expect((capturedDb[1] as S3File).status, S3FileSyncStatus.downloaded);
+    expect((capturedDb[1] as S3File).status, S3FileSyncStatus.corrupted);
     expect((capturedDb[2] as S3File).name, '2026-02-10T14-35-35Z.zip');
-    expect((capturedDb[2] as S3File).status, S3FileSyncStatus.corrupted);
+    expect((capturedDb[2] as S3File).status, S3FileSyncStatus.downloaded);
   });
 }
 
@@ -220,13 +246,4 @@ MockListBucketResultDto _createMockListBucketResultDto(List<ContentsDto> content
   final mock = MockListBucketResultDto();
   when(mock.contents).thenReturn(contents);
   return mock;
-}
-
-List<int> _createZipBytes(Map<String, String> fileNameToContent) {
-  final archive = Archive();
-  fileNameToContent.forEach((fileName, content) {
-    archive.add(ArchiveFile.string(fileName, content));
-  });
-  final zipEncoder = ZipEncoder();
-  return zipEncoder.encode(archive);
 }

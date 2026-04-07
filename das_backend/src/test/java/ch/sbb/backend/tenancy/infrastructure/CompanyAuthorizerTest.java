@@ -110,6 +110,67 @@ class CompanyAuthorizerTest {
         assertThat(result).isFalse();
     }
 
+    @Test
+    void isAdmin_returnsFalse_whenAuthenticationIsNull() {
+        boolean result = underTest.isAdminTenant(null);
+
+        assertThat(result).isFalse();
+        verifyNoInteractions(tenantRepository);
+    }
+
+    @Test
+    void isAdmin_returnsFalse_whenAuthenticationIsNotJwt() {
+        Authentication auth = mock(Authentication.class);
+
+        boolean result = underTest.isAdminTenant(auth);
+
+        assertThat(result).isFalse();
+        verifyNoInteractions(tenantRepository);
+    }
+
+    @Test
+    void isAdmin_returnsTrue_whenTenantIsAdminTenant() {
+        JwtAuthenticationToken auth = jwtAuthWithIssuer("https://issuer.example/v2.0");
+        Tenant tenant = tenantWithCompanies("sbb", "https://issuer.example/v2.0", "https://jwks.example", Set.of("2185"));
+
+        when(tenantRepository.getByIssuerUri("https://issuer.example/v2.0")).thenReturn(tenant);
+        when(tenantRepository.isAdminTenant(tenant)).thenReturn(true);
+
+        boolean result = underTest.isAdminTenant(auth);
+
+        assertThat(result).isTrue();
+        verify(tenantRepository).getByIssuerUri("https://issuer.example/v2.0");
+        verify(tenantRepository).isAdminTenant(tenant);
+    }
+
+    @Test
+    void isAdmin_returnsFalse_whenTenantIsNotAdminTenant() {
+        JwtAuthenticationToken auth = jwtAuthWithIssuer("https://issuer.example/v2.0");
+        Tenant tenant = tenantWithCompanies("sob", "https://issuer.example/v2.0", "https://jwks.example", Set.of("9058"));
+
+        when(tenantRepository.getByIssuerUri("https://issuer.example/v2.0")).thenReturn(tenant);
+        when(tenantRepository.isAdminTenant(tenant)).thenReturn(false);
+
+        boolean result = underTest.isAdminTenant(auth);
+
+        assertThat(result).isFalse();
+        verify(tenantRepository).getByIssuerUri("https://issuer.example/v2.0");
+        verify(tenantRepository).isAdminTenant(tenant);
+    }
+
+    @Test
+    void isAdmin_throws_whenTenantRepositoryDoesNotKnowIssuer() {
+        JwtAuthenticationToken auth = jwtAuthWithIssuer("https://issuer.example/v2.0");
+        when(tenantRepository.getByIssuerUri("https://issuer.example/v2.0"))
+            .thenThrow(new IllegalArgumentException("unknown tenant"));
+
+        assertThatThrownBy(() -> underTest.isAdminTenant(auth))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("unknown tenant");
+
+        verify(tenantRepository).getByIssuerUri("https://issuer.example/v2.0");
+    }
+
     private static JwtAuthenticationToken jwtAuthWithIssuer(String issuer) {
         Jwt jwt = Jwt.withTokenValue("token")
             .header("alg", "none")

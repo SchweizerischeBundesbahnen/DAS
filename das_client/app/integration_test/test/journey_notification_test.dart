@@ -1,7 +1,7 @@
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_screen/notification/widgets/departure_dispatch_notification.dart';
 import 'package:app/pages/journey/journey_screen/notification/widgets/disturbance_notification.dart';
-import 'package:app/pages/journey/journey_screen/widgets/FloatingDepartureChecklistButton.dart';
+import 'package:app/pages/journey/journey_screen/widgets/floating_departure_checklist_button.dart';
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:flutter_test/flutter_test.dart';
 

@@ -1,6 +1,6 @@
 import 'package:connectivity_x/component.dart';
 import 'package:mqtt/component.dart';
-import 'package:sfera/src/data/local/drift_local_database_service.dart';
+import 'package:sfera/src/data/local/drift_sfera_local_database_service.dart';
 import 'package:sfera/src/data/repository/sfera_local_repo.dart';
 import 'package:sfera/src/data/repository/sfera_local_repo_impl.dart';
 import 'package:sfera/src/data/repository/sfera_repository.dart';
@@ -8,6 +8,7 @@ import 'package:sfera/src/data/repository/sfera_repository_impl.dart';
 import 'package:sfera/src/provider/sfera_auth_provider.dart';
 
 export 'package:sfera/src/data/api/sfera_error.dart';
+export 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 export 'package:sfera/src/data/parser/sfera_reply_parser.dart';
 export 'package:sfera/src/data/repository/sfera_local_repo.dart';
 export 'package:sfera/src/data/repository/sfera_remote_repo_state.dart';
@@ -89,7 +90,7 @@ class SferaComponent {
     required SferaLocalRepo localRepo,
     required ConnectivityManager connectivityManager,
   }) {
-    final localDatabaseService = DriftLocalDatabaseService.instance;
+    final localDatabaseService = DriftSferaLocalDatabaseService.instance;
     return SferaRepoImpl(
       mqttService: mqttService,
       localService: localDatabaseService,
@@ -101,7 +102,7 @@ class SferaComponent {
   }
 
   static SferaLocalRepo createSferaLocalRepo() {
-    final localDatabaseService = DriftLocalDatabaseService.instance;
+    final localDatabaseService = DriftSferaLocalDatabaseService.instance;
     return SferaLocalRepoImpl(localService: localDatabaseService);
   }
 }

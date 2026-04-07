@@ -16,4 +16,5 @@ import org.springframework.context.annotation.Configuration;
 public class TenantConfig {
 
     private List<Tenant> tenants;
+    private String adminTenantId;
 }

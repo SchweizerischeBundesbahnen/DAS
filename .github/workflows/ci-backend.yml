@@ -48,7 +48,10 @@ jobs:
             -Dsonar.projectKey=schweizerischebundesbahnen-DAS-Backend \
             -Dsonar.organization=schweizerischebundesbahnen \
             -Dsonar.projectName=DAS/Backend \
-            -Dsonar.token=${SONAR_TOKEN}
+            -Dsonar.token=${SONAR_TOKEN} \
+            -Dsonar.issue.ignore.multicriteria=e1 \
+            -Dsonar.issue.ignore.multicriteria.e1.ruleKey=java:S1452 \
+            -Dsonar.issue.ignore.multicriteria.e1.resourceKey=**
       - name: Login to GitHub Container Registry
         if: github.ref == 'refs/heads/main'
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
