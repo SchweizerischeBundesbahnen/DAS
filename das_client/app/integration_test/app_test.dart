@@ -98,12 +98,12 @@ void main() {
   tour_system_link_test.main();
 }
 
-Future<void> prepareAndStartApp(WidgetTester tester, {VoidCallback? onBeforeRun}) async {
+Future<void> prepareAndStartApp(WidgetTester tester, {VoidCallback? onBeforeRun, bool e2e = false}) async {
   // iOS workaround for enterText not working on some devices, if its the first element
   // (https://github.com/leancodepl/patrol/issues/1868#issuecomment-1814241939)
   tester.testTextInput.register();
 
-  await IntegrationTestDI.init(Flavor.dev()); // registers flavor, mockScopes and scope handler
+  await IntegrationTestDI.init(Flavor.dev(), e2e: e2e); // registers flavor, mockScopes and scope handler
 
   final scopeHandler = IntegrationTestDI.get<ScopeHandler>();
   await scopeHandler.push<DASBaseScope>();

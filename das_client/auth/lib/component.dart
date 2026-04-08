@@ -1,6 +1,7 @@
 import 'package:auth/src/authenticator.dart';
 import 'package:auth/src/authenticator_config.dart';
 import 'package:auth/src/azure_authenticator.dart';
+import 'package:sbb_oidc/sbb_oidc.dart';
 
 export 'package:auth/src/authenticator.dart';
 export 'package:auth/src/authenticator_config.dart';
@@ -15,5 +16,10 @@ class AuthenticationComponent {
 
   static Authenticator createAzureAuthenticator({required AuthenticatorConfig config}) {
     return AzureAuthenticator(config: config);
+  }
+
+  static List<String> resolveRoles(String token) {
+    final decodedToken = JsonWebToken.decode(token);
+    return decodedToken.payload['roles'] as List<String>? ?? [];
   }
 }

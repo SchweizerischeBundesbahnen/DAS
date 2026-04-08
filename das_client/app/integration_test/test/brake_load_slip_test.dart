@@ -8,7 +8,6 @@ import 'package:app/pages/journey/journey_screen/detail_modal/brake_load_slip_mo
 import 'package:app/pages/journey/journey_screen/notification/widgets/brake_load_slip_notification.dart';
 import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
 import 'package:app/widgets/dot_indicator.dart';
-import 'package:app/widgets/modal_sheet/das_modal_sheet.dart';
 import 'package:app/widgets/navigation_buttons.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:formation/component.dart';

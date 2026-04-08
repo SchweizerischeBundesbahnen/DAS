@@ -14,6 +14,10 @@ import 'mock_ru_feature_provider.dart';
 final _log = Logger('MockAuthenticatedScope');
 
 class MockAuthenticatedScope extends AuthenticatedScope {
+  MockAuthenticatedScope(this.e2e);
+
+  final bool e2e;
+
   @override
   String get scopeName => 'MockAuthenticatedScope';
 
@@ -30,9 +34,15 @@ class MockAuthenticatedScope extends AuthenticatedScope {
     getIt.registerSferaLocalRepo();
     getIt.registerSferaRemoteRepo();
     getIt.registerSettingsRepository();
-    _registerMockRuFeaturesProvider();
-    _registerMockFormationRepository();
-    _registerMockPreloadRepository();
+    if (e2e) {
+      getIt.registerPreloadRepository();
+      getIt.registerRuFeatureProvider();
+      getIt.registerFormationRepository();
+    } else {
+      _registerMockPreloadRepository();
+      _registerMockRuFeaturesProvider();
+      _registerMockFormationRepository();
+    }
 
     return getIt.allReady();
   }

@@ -18,6 +18,20 @@ jobs:
 
     - uses: actions/checkout@v6
 
+    - name: Generate jwt
+      id: jwt
+      env: 
+        CLIENT_SECRET: ${{ secrets.CLIENT_SECRET_OBSERVER_DEV }}
+      run: |
+        ACCESS_TOKEN=$(curl -s -d "grant_type=client_credentials" \
+        -d "client_id=64baca3f-be6d-4c90-ace3-db86f298525d" \
+        -d "client_secret=$CLIENT_SECRET" \
+        -d "scope=api://8f16d52b-c6df-4a94-a132-da4956579a48/.default" \
+        "https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/oauth2/v2.0/token" | \
+        jq -r .access_token)
+        echo ${ACCESS_TOKEN:0:10}
+        echo "access_token=$ACCESS_TOKEN" >> $GITHUB_OUTPUT
+
     - uses: actions/setup-java@v5
       with:
         distribution: 'temurin'
@@ -66,7 +80,7 @@ jobs:
         MQTT_USERNAME: ${{ secrets.MQTT_USERNAME }}
         MQTT_PASSWORD: ${{ secrets.MQTT_PASSWORD }}
       run: |
-        flutter build apk --flavor dev -t integration_test/app_test.dart --no-tree-shake-icons --debug --dart-define=MQTT_USERNAME=$MQTT_USERNAME --dart-define=MQTT_PASSWORD=$MQTT_PASSWORD
+        flutter build apk --flavor dev -t integration_test/app_e2e_test.dart --no-tree-shake-icons --debug --dart-define=MQTT_USERNAME=$MQTT_USERNAME --dart-define=MQTT_PASSWORD=$MQTT_PASSWORD --dart-define=ACCESS_TOKEN=${{ steps.jwt.outputs.access_token }}
       working-directory: das_client/app
 
     - name: Build Test Package
