@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.40.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.39.0...das_client-v0.40.0) (2026-04-02)
+
+
+### Features
+
+* add departure process checklist dialog and warning ([#627](https://github.com/SchweizerischeBundesbahnen/DAS/issues/627)) ([#1978](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1978)) ([30af84e](https://github.com/SchweizerischeBundesbahnen/DAS/commit/30af84eaef7d8c46d116dfef691754cf4ceb5c3b))
+* add links to tour system ([#96](https://github.com/SchweizerischeBundesbahnen/DAS/issues/96)) ([#1930](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1930)) ([f7edd9a](https://github.com/SchweizerischeBundesbahnen/DAS/commit/f7edd9a30403636a99a1a68e0dde1308f3ff2bc8))
+* add suspicious segment profiles ([#409](https://github.com/SchweizerischeBundesbahnen/DAS/issues/409)) ([#1960](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1960)) ([ab39558](https://github.com/SchweizerischeBundesbahnen/DAS/commit/ab395588ac13c3713af50e8e6fe0cdf8e27d9fac))
+
+
+### Bug Fixes
+
+* background of next stop does not flicker ([#1850](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1850)) ([#1934](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1934)) ([df75a53](https://github.com/SchweizerischeBundesbahnen/DAS/commit/df75a53b84ed2e99bc1b594835592f6b40eadec2))
+* login page background on Android ([#1948](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1948)) ([ed91885](https://github.com/SchweizerischeBundesbahnen/DAS/commit/ed918859111e563e0dc2a88a074478368fa9aadb))
+* overhaul preload and fix UI lags while running ([#1940](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1940)) ([#1993](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1993)) ([b15383d](https://github.com/SchweizerischeBundesbahnen/DAS/commit/b15383d88ea824421ee3971e7946ab723be095bb))
+
 ## [0.39.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.38.0...das_client-v0.39.0) (2026-03-19)
 
 

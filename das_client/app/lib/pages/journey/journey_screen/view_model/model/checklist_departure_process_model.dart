@@ -23,6 +23,7 @@ class ChecklistDepartureProcessDisabled extends ChecklistDepartureProcessModel {
 class NoCustomerOrientedDepartureChecklist extends ChecklistDepartureProcessModel {
   const NoCustomerOrientedDepartureChecklist({required this.nextStop}) : super._();
 
+  @override
   final ServicePoint? nextStop;
 
   @override
@@ -36,6 +37,7 @@ class NoCustomerOrientedDepartureChecklist extends ChecklistDepartureProcessMode
 class CustomerOrientedDepartureChecklist extends ChecklistDepartureProcessModel {
   const CustomerOrientedDepartureChecklist({required this.nextStop, required this.koaState}) : super._();
 
+  @override
   final ServicePoint? nextStop;
   final KoaState koaState;
 

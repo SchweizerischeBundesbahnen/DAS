@@ -1,6 +1,5 @@
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/dto/otn_id_dto.dart';
-import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 
 class TrainIdentificationDto extends SferaXmlElementDto {
   static const String elementType = 'TrainIdentification';

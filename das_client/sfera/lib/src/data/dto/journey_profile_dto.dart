@@ -11,6 +11,8 @@ class JourneyProfileDto extends SferaXmlElementDto {
 
   JourneyProfileDto({super.type = elementType, super.attributes, super.children, super.value});
 
+  String get version => attributes['JP_Version']!;
+
   TrainIdentificationDto get trainIdentification => children.whereType<TrainIdentificationDto>().first;
 
   Iterable<SegmentProfileReferenceDto> get segmentProfileReferences => children.whereType<SegmentProfileReferenceDto>();

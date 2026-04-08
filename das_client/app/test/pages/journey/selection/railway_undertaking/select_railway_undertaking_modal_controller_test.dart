@@ -16,7 +16,7 @@ void main() {
   final List<RailwayUndertaking> emitRegister = [];
 
   setUp(() async {
-    localizations = lookupAppLocalizations(const Locale('en'));
+    localizations = lookupAppLocalizations(const Locale('de', 'CH'));
     testee = SelectRailwayUndertakingModalController(
       localizations: localizations,
       initialRailwayUndertaking: [.sbbP],
@@ -91,10 +91,10 @@ void main() {
         emitRegister,
         orderedEquals(<RailwayUndertaking>[
           .sbbCH,
-          .sbbP,
           .sbbCInt,
           .sbbD,
           .sbbI,
+          .sbbP,
         ]),
       );
     });

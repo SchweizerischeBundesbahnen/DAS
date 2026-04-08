@@ -1,6 +1,7 @@
 import 'package:preload/src/data/drift_preload_database_service.dart';
 import 'package:preload/src/repository/preload_repository.dart';
 import 'package:preload/src/repository/preload_repository_impl.dart';
+import 'package:preload/src/repository/preload_zip_processor.dart';
 import 'package:sfera/component.dart';
 
 export 'package:preload/src/model/preload_details.dart';
@@ -14,6 +15,7 @@ class PreloadComponent {
     required SferaLocalRepo sferaLocalRepo,
     bool disablePreload = false,
   }) => PreloadRepositoryImpl(
+    preloadZipProcessor: PreloadZipProcessor(sferaLocalRepo: sferaLocalRepo),
     databaseService: DriftPreloadDatabaseService.instance,
     sferaLocalRepo: sferaLocalRepo,
     disablePreload: disablePreload,

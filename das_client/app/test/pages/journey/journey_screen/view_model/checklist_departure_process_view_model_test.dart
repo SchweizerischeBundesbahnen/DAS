@@ -368,7 +368,7 @@ void main() {
       });
       processStreams(fakeAsync: testAsync);
 
-      expect(modelRegister.where((m) => m is ChecklistDepartureProcessDisabled), isEmpty);
+      expect(modelRegister.whereType<ChecklistDepartureProcessDisabled>(), isEmpty);
     });
   });
 }

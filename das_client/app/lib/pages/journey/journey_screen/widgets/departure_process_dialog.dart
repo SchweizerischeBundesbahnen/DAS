@@ -170,6 +170,4 @@ class DepartureProcessDialog extends StatelessWidget {
       ),
     );
   }
-
-  void _doNothing() {}
 }

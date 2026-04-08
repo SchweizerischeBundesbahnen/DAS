@@ -4,9 +4,11 @@ import 'package:app/pages/journey/brake_load_slip/brake_load_slip_view_model.dar
 import 'package:app/pages/journey/brake_load_slip/widgets/brake_load_slip_header_box.dart';
 import 'package:app/pages/journey/brake_load_slip/widgets/brake_load_slip_special_restrictions.dart';
 import 'package:app/pages/journey/journey_page.dart';
+import 'package:app/pages/journey/journey_screen/detail_modal/brake_load_slip_modal/brake_load_slip_modal_builder.dart';
 import 'package:app/pages/journey/journey_screen/notification/widgets/brake_load_slip_notification.dart';
 import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
 import 'package:app/widgets/dot_indicator.dart';
+import 'package:app/widgets/modal_sheet/das_modal_sheet.dart';
 import 'package:app/widgets/navigation_buttons.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:formation/component.dart';
@@ -150,9 +152,9 @@ void main() {
     // Open modal
     await openBrakeSlipPage(tester);
 
-    expect(find.text(l10n.w_brake_load_slip_modal_title), findsOneWidget);
+    expect(find.byKey(BrakeLoadSlipModalBuilder.headerKey), findsOneWidget);
     expect(find.text(l10n.p_brake_load_slip_special_restrictions_title), findsOneWidget);
-    expect(find.text(l10n.w_brake_load_slip_modal_open_brake_slip), findsOneWidget);
+    expect(find.byKey(BrakeLoadSlipModalBuilder.buttonKey), findsOneWidget);
 
     await disconnect(tester);
   });
@@ -172,7 +174,7 @@ void main() {
     // Open modal
     await openBrakeSlipPage(tester);
 
-    await tapElement(tester, find.text(l10n.w_brake_load_slip_modal_open_brake_slip));
+    await tapElement(tester, find.byKey(BrakeLoadSlipModalBuilder.buttonKey));
 
     expect(find.byType(BrakeLoadSlipPage), findsOneWidget);
 

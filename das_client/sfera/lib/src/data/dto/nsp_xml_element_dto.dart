@@ -1,6 +1,5 @@
 import 'package:logging/logging.dart';
 import 'package:sfera/component.dart';
-import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 
 final _log = Logger('NspXmlElementDto');
 
