@@ -1,11 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import '../app_e2e_test.dart';
+import '../app_test.dart';
 import '../util/test_utils.dart';
 
 void main() {
   testWidgets('test preload is starting after login and retrieving settings', (tester) async {
-    await prepareAndStartApp(tester);
+    await prepareAndStartApp(tester, e2e: true);
 
     // Navigate to preload page
     await openDrawer(tester);
