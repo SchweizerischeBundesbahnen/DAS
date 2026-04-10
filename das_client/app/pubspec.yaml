@@ -61,7 +61,7 @@ dependencies:
   # https://pub.dev/packages/sbb_design_system_mobile
   sbb_design_system_mobile: ^4.9.0
   # https://pub.dev/packages/volume_controller
-  volume_controller: ^3.4.3
+  volume_controller: ^3.4.4
   # https://pub.dev/packages/wakelock_plus
   wakelock_plus: ^1.5.1
   # https://pub.dev/packages/screen_brightness/

@@ -84,7 +84,7 @@ class ChecklistDepartureProcessViewModel extends JourneyAwareViewModel {
     }
 
     return switch (currentPosition) {
-      ServicePoint _ => true,
+      final ServicePoint sP => sP.isStop,
       final Signal s => s.functions.contains(SignalFunction.intermediate),
       _ => false,
     };
