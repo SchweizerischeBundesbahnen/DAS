@@ -13,6 +13,4 @@ class PreloadDto {
   final String bucketUrl;
   final String accessKey;
   final String accessSecret;
-
-  Map<String, dynamic> toJson() => _$PreloadDtoToJson(this);
 }

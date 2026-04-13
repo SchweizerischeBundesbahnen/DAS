@@ -12,6 +12,4 @@ class SettingsResponseDto {
   }
 
   final List<SettingsDto> data;
-
-  Map<String, dynamic> toJson() => _$SettingsResponseDtoToJson(this);
 }

@@ -4,12 +4,12 @@ part 'app_version_setting_dto.g.dart';
 
 @JsonSerializable()
 class AppVersionSettingDto {
-  AppVersionSettingDto({required this.expired, required this.expiryDate});
+  AppVersionSettingDto({required this.expired, this.expiryDate});
 
   factory AppVersionSettingDto.fromJson(Map<String, dynamic> json) {
     return _$AppVersionSettingDtoFromJson(json);
   }
 
   final bool expired;
-  final DateTime expiryDate;
+  final DateTime? expiryDate;
 }

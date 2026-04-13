@@ -1,7 +1,10 @@
 import 'dart:convert';
 
 import 'package:http_x/component.dart';
+import 'package:logging/logging.dart';
 import 'package:settings/src/api/dto/settings_response_dto.dart';
+
+final _log = Logger('SettingsRequest');
 
 class SettingsRequest {
   static const appVersionHeader = 'X-App-Version';
@@ -28,6 +31,7 @@ class SettingsResponse {
     if (isSuccess) {
       final body = utf8.decode(response.bodyBytes);
       final json = jsonDecode(body);
+      _log.info(json);
       final settings = SettingsResponseDto.fromJson(json);
       return SettingsResponse(
         headers: response.headers,

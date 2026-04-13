@@ -23,6 +23,4 @@ class SettingsDto {
   final List<RuFeatureDto> ruFeatures;
   final PreloadDto preload;
   final AppVersionSettingDto currentAppVersion;
-
-  Map<String, dynamic> toJson() => _$SettingsDtoToJson(this);
 }
