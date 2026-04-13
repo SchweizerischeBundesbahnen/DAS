@@ -17,10 +17,11 @@ class SettingsComponent {
   static SettingsRepository createRepository({
     required String baseUrl,
     required Client client,
+    required String appVersion,
     AwsCredentialsChanged? onAwsCredentialsChanged,
   }) {
     return SettingsRepositoryImpl(
-      apiService: SettingsApiServiceImpl(baseUrl: baseUrl, httpClient: client),
+      apiService: SettingsApiServiceImpl(baseUrl: baseUrl, httpClient: client, appVersion: appVersion),
       databaseService: SettingsDatabaseService.instance,
       onAwsCredentialsChanged: onAwsCredentialsChanged,
     );

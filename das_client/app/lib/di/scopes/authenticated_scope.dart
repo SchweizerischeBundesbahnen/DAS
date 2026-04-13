@@ -10,6 +10,7 @@ import 'package:http_x/component.dart';
 import 'package:logger/component.dart';
 import 'package:logging/logging.dart';
 import 'package:mqtt/component.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:preload/component.dart';
 import 'package:settings/component.dart';
 import 'package:sfera/component.dart';
@@ -32,7 +33,7 @@ class AuthenticatedScope extends DIScope {
     getIt.registerMqttService();
     getIt.registerSferaLocalRepo();
     getIt.registerSferaRemoteRepo();
-    getIt.registerSettingsRepository();
+    getIt.registerSettingsRepositoryAsync();
     getIt.registerRuFeatureProvider();
     getIt.registerFormationRepository();
     getIt.registerPreloadRepository();
@@ -136,17 +137,24 @@ extension AuthenticatedScopeExtension on GetIt {
     );
   }
 
-  void registerSettingsRepository() {
+  void registerSettingsRepositoryAsync() {
     final flavor = DI.get<Flavor>();
-    final configRepository = SettingsComponent.createRepository(
-      baseUrl: flavor.backendUrl,
-      client: DI.get(),
-      onAwsCredentialsChanged: (credentials) {
-        DI.get<PreloadRepository>().updateConfiguration(credentials);
-      },
+
+    registerSingletonAsync<SettingsRepository>(() async {
+      final appInfo = await PackageInfo.fromPlatform();
+      return SettingsComponent.createRepository(
+        baseUrl: flavor.backendUrl,
+        client: DI.get(),
+        onAwsCredentialsChanged: (credentials) {
+          DI.get<PreloadRepository>().updateConfiguration(credentials);
+        },
+        appVersion: appInfo.version,
+      );
+    });
+    registerSingletonAsync<LogEndpoint>(
+      () => Future.value(DI.get<SettingsRepository>()),
+      dependsOn: [SettingsRepository],
     );
-    registerSingleton<SettingsRepository>(configRepository);
-    registerSingleton<LogEndpoint>(configRepository);
   }
 
   void registerRuFeatureProvider() {
