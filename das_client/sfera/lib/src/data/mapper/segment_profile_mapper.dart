@@ -225,7 +225,7 @@ class SegmentProfileMapper {
           _log.warning('Encountered bracket station without main station NSP declaration: $tafTapLocation');
         } else {
           final countryCode = mainStationNsp.nspValue.substring(0, 2);
-          final primaryCode = int.parse(mainStationNsp.nspValue.substring(2, 6));
+          final primaryCode = int.parse(mainStationNsp.nspValue.substring(2));
           final mainStation = allLocations.firstWhereGivenOrNull(countryCode: countryCode, primaryCode: primaryCode);
           if (mainStation == null) {
             _log.warning('Failed to resolve main station for bracket station: $tafTapLocation');

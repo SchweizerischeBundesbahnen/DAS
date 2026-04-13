@@ -30,12 +30,10 @@ class AuthenticatedScope extends DIScope {
     getIt.registerHttpClient();
     getIt.registerMqttAuthProvider();
     getIt.registerMqttService();
-    getIt.registerSferaLocalRepo();
     getIt.registerSferaRemoteRepo();
     getIt.registerSettingsRepository();
     getIt.registerRuFeatureProvider();
     getIt.registerFormationRepository();
-    getIt.registerPreloadRepository();
 
     await getIt.allReady();
   }
@@ -115,24 +113,6 @@ extension AuthenticatedScopeExtension on GetIt {
       factoryFunc,
       dispose: (repo) => repo.dispose(),
       dependsOn: [MqttService],
-    );
-  }
-
-  void registerSferaLocalRepo() {
-    factoryFunc() {
-      _log.fine('Register sfera local repo');
-      return SferaComponent.createSferaLocalRepo();
-    }
-
-    registerLazySingleton<SferaLocalRepo>(factoryFunc);
-  }
-
-  void registerPreloadRepository() {
-    registerSingleton<PreloadRepository>(
-      PreloadComponent.createPreloadRepository(
-        sferaLocalRepo: DI.get(),
-        disablePreload: DI.get<Flavor>().disablePreload,
-      ),
     );
   }
 

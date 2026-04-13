@@ -8,6 +8,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:connectivity_x/component.dart';
 import 'package:logging/logging.dart';
+import 'package:preload/component.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 import 'package:warnapp/component.dart';
 
@@ -18,11 +19,16 @@ import 'mock_battery.dart';
 import 'mock_brightness_manager.dart';
 import 'mock_connectivity_manager.dart';
 import 'mock_launcher.dart';
+import 'mock_preload_repository.dart';
 import 'mock_user_settings.dart';
 
 final _log = Logger('MockDASBaseScope');
 
 class MockDASBaseScope extends DASBaseScope {
+  MockDASBaseScope(this.e2e);
+
+  final bool e2e;
+
   @override
   String get scopeName => 'DASBaseScopeMock';
 
@@ -43,6 +49,13 @@ class MockDASBaseScope extends DASBaseScope {
     getIt.registerLoginViewModel();
     _registerMockAppLinksManager();
     _registerMockLauncher();
+    getIt.registerSferaLocalRepo();
+
+    if (e2e) {
+      getIt.registerPreloadRepository();
+    } else {
+      _registerMockPreloadRepository();
+    }
 
     await getIt.allReady();
   }
@@ -93,5 +106,9 @@ class MockDASBaseScope extends DASBaseScope {
 
   void _registerMockLauncher() {
     getIt.registerSingleton<Launcher>(MockLauncher(userSettings: DI.get()));
+  }
+
+  void _registerMockPreloadRepository() {
+    getIt.registerSingleton<PreloadRepository>(MockPreloadRepository());
   }
 }
