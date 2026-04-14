@@ -62,6 +62,8 @@
             <NSP_GroupName>protectionSection</NSP_GroupName>
             <NetworkSpecificParameter name="lengthType" value="short"/>
             <NetworkSpecificParameter name="facultative" value="true"/>
+            <NetworkSpecificParameter name="lastModificationType" value="updated" />
+            <NetworkSpecificParameter name="lastModificationDate" value="2050-01-01" />
         </NetworkSpecificPoint>
 
     </SP_Points>
