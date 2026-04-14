@@ -54,6 +54,8 @@
 					&lt;/speeds&gt;
                 &lt;/curveSpeed&gt;
             "/>
+            <NetworkSpecificParameter name="lastModificationType" value="updated" />
+            <NetworkSpecificParameter name="lastModificationDate" value="2050-01-01" />
         </NetworkSpecificPoint>
 
         <NetworkSpecificPoint location="2150" identifier="98F6FEBFCD2248A88DCFB96403D462F6">
