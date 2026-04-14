@@ -116,4 +116,14 @@
         </TimingPointConstraints>
     </SegmentProfileReference>
 
+    <General_JP_Information_NSP>
+        <teltsi_Company>1285</teltsi_Company>
+        <NSP_GroupName>trainRunRerouting</NSP_GroupName>
+        <NetworkSpecificParameter name="xmlTrainRunRerouting" value="
+                &lt;trainRunRerouting&gt;
+                &lt;change oldRoute=&quot;CH2125-CH2111&quot; newRoute=&quot;CH2125-CH2112-CH2111&quot;/&gt;
+                &lt;/trainRunRerouting&gt;
+            "/>
+    </General_JP_Information_NSP>
+
 </JourneyProfile>
