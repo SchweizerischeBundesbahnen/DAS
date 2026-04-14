@@ -19,6 +19,12 @@
             <Signal_ID signal_ID_Physical="B2" location="0"/>
             <SignalFunction>exit</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="B2"/>
+            <Signal_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>modification</NSP_GroupName>
+                <NetworkSpecificParameter name="lastModificationType" value="updated" />
+                <NetworkSpecificParameter name="lastModificationDate" value="2050-01-01" />
+            </Signal_NSPs>
         </Signal>
 		
 		<Signal>

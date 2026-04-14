@@ -19,6 +19,12 @@
             <Signal_ID signal_ID_Physical="U628" location="100"/>
             <SignalFunction>protection</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="U628"/>
+            <Signal_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>modification</NSP_GroupName>
+                <NetworkSpecificParameter name="lastModificationType" value="deleted" />
+                <NetworkSpecificParameter name="lastModificationDate" value="2050-01-01" />
+            </Signal_NSPs>
         </Signal>
 		
 		<NetworkSpecificPoint location="0" identifier="95415BB8A2D9476ABA2566F7B0684570">
