@@ -1,4 +1,5 @@
 import 'package:app/di/di.dart';
+import 'package:app/flavor.dart';
 import 'package:app/launcher/launcher.dart';
 import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
 import 'package:app/provider/user_settings.dart';
@@ -8,9 +9,7 @@ import 'package:url_launcher/url_launcher.dart';
 final _log = Logger('LauncherImpl');
 
 class LauncherImpl implements Launcher {
-  LauncherImpl({
-    required UserSettings userSettings,
-  }) : _userSettings = userSettings;
+  LauncherImpl({required UserSettings userSettings}) : _userSettings = userSettings;
 
   final UserSettings _userSettings;
 
@@ -21,13 +20,11 @@ class LauncherImpl implements Launcher {
     final uri = Uri.tryParse(url);
     if (uri == null) return false;
 
-    return launchUrl(uri, mode: LaunchMode.externalApplication);
+    return launchUrl(uri, mode: .externalApplication);
   }
 
   @override
-  bool hasTourSystemConfigured() {
-    return _tourSystemUrl() != null;
-  }
+  bool hasTourSystemConfigured() => _tourSystemUrl() != null;
 
   @override
   Future<bool> launchTourSystem() async {
@@ -38,6 +35,13 @@ class LauncherImpl implements Launcher {
 
   String? _tourSystemUrl() {
     final journeyNavigationViewModel = DI.getOrNull<JourneyNavigationViewModel>();
-    return journeyNavigationViewModel?.modelValue?.trainIdentification.returnUrl ?? _userSettings.tourSystem?.url;
+    final returnUrl = journeyNavigationViewModel?.modelValue?.trainIdentification.returnUrl;
+    if (returnUrl != null) return returnUrl;
+
+    final tourSystemUrl = DI.get<Flavor>().tourSystemUrls[_userSettings.tourSystem];
+    if (tourSystemUrl == null) {
+      _log.warning('Tour system url not defined for selected tour system ${_userSettings.tourSystem}');
+    }
+    return tourSystemUrl;
   }
 }
