@@ -50,8 +50,12 @@
             <Signal_ID signal_ID_Physical="S424" location="3300"/>
             <SignalFunction>block</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="S424"/>
-            <NetworkSpecificParameter name="lastModificationType" value="deleted" />
-            <NetworkSpecificParameter name="lastModificationDate" value="2050-01-01" />
+            <Signal_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>modification</NSP_GroupName>
+                <NetworkSpecificParameter name="lastModificationType" value="deleted" />
+                <NetworkSpecificParameter name="lastModificationDate" value="2050-01-01" />
+            </Signal_NSPs>
         </Signal>
 		
 		<Signal>
