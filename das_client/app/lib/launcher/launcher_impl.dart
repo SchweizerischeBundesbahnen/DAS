@@ -9,8 +9,9 @@ import 'package:url_launcher/url_launcher.dart';
 final _log = Logger('LauncherImpl');
 
 class LauncherImpl implements Launcher {
-  LauncherImpl({required UserSettings userSettings}) : _userSettings = userSettings;
+  LauncherImpl({required UserSettings userSettings, required this.flavor}) : _userSettings = userSettings;
 
+  final Flavor flavor;
   final UserSettings _userSettings;
 
   @override
@@ -36,12 +37,6 @@ class LauncherImpl implements Launcher {
   String? _tourSystemUrl() {
     final journeyNavigationViewModel = DI.getOrNull<JourneyNavigationViewModel>();
     final returnUrl = journeyNavigationViewModel?.modelValue?.trainIdentification.returnUrl;
-    if (returnUrl != null) return returnUrl;
-
-    final tourSystemUrl = DI.get<Flavor>().tourSystemUrls[_userSettings.tourSystem];
-    if (tourSystemUrl == null) {
-      _log.warning('Tour system url not defined for selected tour system ${_userSettings.tourSystem}');
-    }
-    return tourSystemUrl;
+    return returnUrl ?? flavor.tourSystemUrls[_userSettings.tourSystem];
   }
 }

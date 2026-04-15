@@ -117,7 +117,7 @@ class _DevFlavor extends Flavor {
          logLevel: Level.FINE,
          waraAndroidPackageName: 'ch.sbb.tms.iad.shas_mobile',
          waraIOSUrlScheme: 'ch.sbb.tms.iad.shasmobile',
-         tourSystemUrls: _prodTourSystemUrls..update(.tip, (_) => 'tip3test://tours'),
+         tourSystemUrls: Map.from(_prodTourSystemUrls)..update(.tip, (_) => 'tip3test://tours'),
        );
 }
 
@@ -161,7 +161,7 @@ class _ProdFlavor extends Flavor {
        );
 }
 
-const _prodTourSystemUrls = <TourSystem, String>{
+const Map<TourSystem, String> _prodTourSystemUrls = {
   .tip: 'tip3://tours',
   .caros: 'https://sbbc.ivu-cloud.com/mbweb/pub/ivu/desktop/login',
   .railOpt: 'https://railoptweb.sob.ch/personnel-reporting-calendar',
