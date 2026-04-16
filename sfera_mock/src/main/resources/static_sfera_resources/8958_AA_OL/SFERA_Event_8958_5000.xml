@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <G2B_EventPayload xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
 
-    <JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="4" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
+    <JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="5" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
         <TrainIdentification>
             <OTN_ID>
                 <teltsi_Company>1285</teltsi_Company>
@@ -65,11 +65,12 @@
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
 
-            <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T07:40:10Z"
+            <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T07:40:10Z"
                                     TP_PlannedLatestArrivalTime="2025-05-17T07:40:00Z">
                 <TimingPointReference>
                     <TP_ID_Reference TP_ID="Schoenenwerd"/>
                 </TimingPointReference>
+                <StoppingPointDepartureDetails departureTime="2025-05-17T07:40:50Z" plannedDepartureTime="2025-05-17T07:40:00Z"/>
             </TimingPointConstraints>
 
             <JP_ContextInformation>
@@ -140,13 +141,25 @@
         </SegmentProfileReference>
 
         <General_JP_Information>
+            <!--   Umleitung -->
             <General_JP_Information_NSP>
                 <teltsi_Company>1285</teltsi_Company>
                 <NSP_GroupName>trainRunRerouting</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlTrainRunRerouting" value="
                         &lt;trainRunRerouting&gt;
-                        &lt;change oldRoute=&quot;CH2125-CH2111&quot; newRoute=&quot;CH2125-CH2112-CH2111&quot;/&gt;
+                        &lt;change oldRoute=&quot;CH02125-CH02111&quot; newRoute=&quot;CH02125-CH02112-CH02111&quot;/&gt;
                         &lt;/trainRunRerouting&gt;
+                    "/>
+            </General_JP_Information_NSP>
+
+            <!--   Ausserordentlicher Halt -->
+            <General_JP_Information_NSP>
+                <teltsi_Company>1285</teltsi_Company>
+                <NSP_GroupName>stop2PassOrPass2Stop</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlStop2PassOrPass2Stop" value="
+                        &lt;stop2PassOrPass2Stop&gt;
+                            &lt;change changeType=&quot;pass2Stop&quot; modifiedOP=&quot;CH02112&quot;/&gt;
+                        &lt;/stop2PassOrPass2Stop&gt;
                     "/>
             </General_JP_Information_NSP>
         </General_JP_Information>   

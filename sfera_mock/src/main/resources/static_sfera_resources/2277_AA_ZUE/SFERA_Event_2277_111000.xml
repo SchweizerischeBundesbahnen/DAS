@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <G2B_EventPayload xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
 
-    <JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="5" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
+    <JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="7" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
         <TrainIdentification>
             <OTN_ID>
                 <teltsi_Company>1285</teltsi_Company>
@@ -362,7 +362,7 @@
                 <NSP_GroupName>stop2PassOrPass2Stop</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlStop2PassOrPass2Stop" value="
                         &lt;stop2PassOrPass2Stop&gt;
-                            &lt;change changeType=&quot;pass2Stop&quot; modifiedOP=&quot;CH2106&quot;/&gt;
+                            &lt;change changeType=&quot;pass2Stop&quot; modifiedOP=&quot;CH02106&quot;/&gt;
                         &lt;/stop2PassOrPass2Stop&gt;
                     "/>
             </General_JP_Information_NSP>
@@ -373,7 +373,7 @@
                 <NSP_GroupName>stop2PassOrPass2Stop</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlStop2PassOrPass2Stop" value="
                         &lt;stop2PassOrPass2Stop&gt;
-                            &lt;change changeType=&quot;stop2Pass&quot; modifiedOP=&quot;CH2119&quot;/&gt;
+                            &lt;change changeType=&quot;stop2Pass&quot; modifiedOP=&quot;CH02119&quot;/&gt;
                         &lt;/stop2PassOrPass2Stop&gt;
                     "/>
             </General_JP_Information_NSP>
@@ -382,8 +382,8 @@
             <General_JP_Information_NSP>
                 <teltsi_Company>1285</teltsi_Company>
                 <NSP_GroupName>endDestinationChange</NSP_GroupName>
-                <NetworkSpecificParameter name="oldLocation" value="CH3000"/>
-                <NetworkSpecificParameter name="newLocation" value="CH3508"/>
+                <NetworkSpecificParameter name="oldLocation" value="CH03000"/>
+                <NetworkSpecificParameter name="newLocation" value="CH03508"/>
             </General_JP_Information_NSP>
         </General_JP_Information>
 
