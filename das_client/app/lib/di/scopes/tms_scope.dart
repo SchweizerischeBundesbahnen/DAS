@@ -16,7 +16,7 @@ class TmsScope extends DIScope {
     _log.fine('Pushing scope $scopeName');
     getIt.pushNewScope(scopeName: scopeName);
     final tmsFlavor = DI.get<Flavor>().withTmsValues();
-    DI.getOrNull<DASLogger>()?.connectedToTmsVad = true;
+    DI.getOrNull<DASLogger>()?.connectToSferaMock = false;
 
     getIt.registerFlavor(tmsFlavor);
     getIt.registerAzureAuthenticator();

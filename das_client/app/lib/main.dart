@@ -37,6 +37,7 @@ Future<DASLogger?> _initDASLogging(Flavor flavor) async {
 
   if (!kDebugMode) {
     final dasLogger = LoggerComponent.createDASLogger(deviceId: deviceId);
+    dasLogger.connectToSferaMock = true;
     Logger.root.onRecord.listen(dasLogger.call);
     return dasLogger;
   }

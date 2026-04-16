@@ -16,7 +16,7 @@ class SferaMockScope extends DIScope {
     _log.fine('Pushing scope $scopeName');
     getIt.pushNewScope(scopeName: scopeName);
     final sferaFlavor = DI.get<Flavor>().withSferaMockValues();
-    DI.getOrNull<DASLogger>()?.connectedToTmsVad = false;
+    DI.getOrNull<DASLogger>()?.connectToSferaMock = true;
 
     getIt.registerFlavor(sferaFlavor);
     getIt.registerAzureAuthenticator();
