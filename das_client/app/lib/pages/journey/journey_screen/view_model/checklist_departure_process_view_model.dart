@@ -53,9 +53,8 @@ class ChecklistDepartureProcessViewModel extends JourneyAwareViewModel {
   }
 
   Future<void> _updateModel() async {
-    if (_rxModel.isClosed) return;
     if (!await (_ruFeatureProvider.isRuFeatureEnabled(.departureProcess))) {
-      _rxModel.add(const ChecklistDepartureProcessDisabled());
+      _emitModel(const ChecklistDepartureProcessDisabled());
       return;
     }
 
@@ -64,18 +63,21 @@ class ChecklistDepartureProcessViewModel extends JourneyAwareViewModel {
     _log.fine('showDepartureProcessButton: $isEligiblePosition');
 
     if (!isEligiblePosition) {
-      _rxModel.add(const ChecklistDepartureProcessDisabled());
+      _emitModel(const ChecklistDepartureProcessDisabled());
       return;
     }
 
-    if (_rxModel.isClosed) return;
-
     final nextStop = positionModel?.nextStop;
     if (_lastKoaState == KoaState.waitHide) {
-      _rxModel.add(NoCustomerOrientedDepartureChecklist(nextStop: nextStop));
+      _emitModel(NoCustomerOrientedDepartureChecklist(nextStop: nextStop));
     } else {
-      _rxModel.add(CustomerOrientedDepartureChecklist(nextStop: nextStop, koaState: _lastKoaState));
+      _emitModel(CustomerOrientedDepartureChecklist(nextStop: nextStop, koaState: _lastKoaState));
     }
+  }
+
+  void _emitModel(ChecklistDepartureProcessModel model) {
+    if (_rxModel.isClosed) return;
+    _rxModel.add(model);
   }
 
   bool _isEligiblePosition(JourneyPoint? currentPosition) {
@@ -92,7 +94,7 @@ class ChecklistDepartureProcessViewModel extends JourneyAwareViewModel {
 
   @override
   void journeyIdentificationChanged(Journey? journey) {
-    _rxModel.add(const ChecklistDepartureProcessDisabled());
+    _emitModel(const ChecklistDepartureProcessDisabled());
   }
 
   @override
