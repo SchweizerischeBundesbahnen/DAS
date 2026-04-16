@@ -32,9 +32,12 @@ class _UserTourSystemSelectionState extends State<UserTourSystemSelection> {
               hint: context.l10n.w_user_tour_system_selection_label,
               title: context.l10n.w_user_tour_system_selection_title,
               value: _userSettings.tourSystem,
-              items: TourSystem.values.map((it) {
-                return SelectMenuItem(value: it, label: it.localizedName(context));
-              }).toList(),
+              items:
+                  TourSystem.values.map((it) {
+                    return SelectMenuItem<TourSystem?>(value: it, label: it.localizedName(context));
+                  }).toList()..add(
+                    SelectMenuItem<TourSystem?>(value: null, label: context.l10n.w_user_tour_system_selection_none),
+                  ),
               onChanged: (selected) {
                 _userSettings.set(.tourSystem, selected?.name);
                 setState(() {});
