@@ -1,4 +1,5 @@
 import 'package:app/di/di.dart';
+import 'package:app/flavor.dart';
 import 'package:app/launcher/launcher.dart';
 import 'package:app/model/tour_system.dart';
 import 'package:app/provider/user_settings.dart';
@@ -58,8 +59,9 @@ void main() {
       await tapElement(tester, find.text(l10n.w_navigation_drawer_tour_system_title));
 
       final launcher = DI.get<Launcher>() as MockLauncher;
+      final flavor = DI.get<Flavor>();
       expect(launcher.launchedUrls, hasLength(3));
-      expect(launcher.launchedUrls[0], TourSystem.tip.url);
+      expect(launcher.launchedUrls[0], flavor.tourSystemUrls[TourSystem.tip]);
 
       await disconnect(tester);
     });

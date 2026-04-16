@@ -36,7 +36,22 @@ void main() {
     late List<ChecklistDepartureProcessModel> modelRegister;
     late FakeAsync testAsync;
 
-    final servicePointA = ServicePoint(name: 'A', abbreviation: '', locationCode: '', order: 0, kilometre: []);
+    final servicePointA = ServicePoint(
+      name: 'A',
+      abbreviation: '',
+      locationCode: '',
+      order: 0,
+      kilometre: [],
+      isStop: true,
+    );
+    final passingPoint = ServicePoint(
+      name: 'PassingPoint',
+      abbreviation: 'PP',
+      locationCode: '',
+      order: 5,
+      kilometre: [],
+      isStop: false,
+    );
     final entrySignal = Signal(order: 1, kilometre: [], functions: [SignalFunction.entry]);
     final exitSignal = Signal(order: 2, kilometre: [], functions: [SignalFunction.exit]);
     final intermediateSignal = Signal(order: 3, kilometre: [], functions: [SignalFunction.intermediate]);
@@ -136,6 +151,15 @@ void main() {
       test('whenPositionIsExitSignal_emitsDisabled', () {
         testAsync.run((_) {
           journeyPositionSubject.add(JourneyPositionModel(currentPosition: exitSignal));
+        });
+        processStreams(fakeAsync: testAsync);
+
+        expect(modelRegister.last, isA<ChecklistDepartureProcessDisabled>());
+      });
+
+      test('whenPositionIsPassingServicePoint_emitsDisabled', () {
+        testAsync.run((_) {
+          journeyPositionSubject.add(JourneyPositionModel(currentPosition: passingPoint));
         });
         processStreams(fakeAsync: testAsync);
 

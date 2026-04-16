@@ -347,6 +347,7 @@
   "c_tour_system_rail_cube": "RailCube",
   "w_user_tour_system_selection_label": "Toursystem",
   "w_user_tour_system_selection_title": "Toursystem wählen",
+  "w_user_tour_system_selection_none": "Keines",
   "p_preload_page_title": "Vorladen",
   "w_preload_status_title": "Vorladen",
   "w_preload_status_downloaded": "Heruntergeladen",

@@ -1,4 +1,5 @@
 import 'package:app/di/di.dart';
+import 'package:app/flavor.dart';
 import 'package:app/launcher/launcher.dart';
 import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
 import 'package:app/provider/user_settings.dart';
@@ -8,10 +9,9 @@ import 'package:url_launcher/url_launcher.dart';
 final _log = Logger('LauncherImpl');
 
 class LauncherImpl implements Launcher {
-  LauncherImpl({
-    required UserSettings userSettings,
-  }) : _userSettings = userSettings;
+  LauncherImpl({required UserSettings userSettings, required this.flavor}) : _userSettings = userSettings;
 
+  final Flavor flavor;
   final UserSettings _userSettings;
 
   @override
@@ -21,13 +21,11 @@ class LauncherImpl implements Launcher {
     final uri = Uri.tryParse(url);
     if (uri == null) return false;
 
-    return launchUrl(uri, mode: LaunchMode.externalApplication);
+    return launchUrl(uri, mode: .externalApplication);
   }
 
   @override
-  bool hasTourSystemConfigured() {
-    return _tourSystemUrl() != null;
-  }
+  bool hasTourSystemConfigured() => _tourSystemUrl() != null;
 
   @override
   Future<bool> launchTourSystem() async {
@@ -38,6 +36,7 @@ class LauncherImpl implements Launcher {
 
   String? _tourSystemUrl() {
     final journeyNavigationViewModel = DI.getOrNull<JourneyNavigationViewModel>();
-    return journeyNavigationViewModel?.modelValue?.trainIdentification.returnUrl ?? _userSettings.tourSystem?.url;
+    final returnUrl = journeyNavigationViewModel?.modelValue?.trainIdentification.returnUrl;
+    return returnUrl ?? flavor.tourSystemUrls[_userSettings.tourSystem];
   }
 }
