@@ -1,6 +1,7 @@
 import 'package:app/di/di.dart';
 import 'package:app/flavor.dart';
 import 'package:get_it/get_it.dart';
+import 'package:logger/component.dart';
 import 'package:logging/logging.dart';
 import 'package:mqtt/component.dart';
 
@@ -15,11 +16,12 @@ class SferaMockScope extends DIScope {
     _log.fine('Pushing scope $scopeName');
     getIt.pushNewScope(scopeName: scopeName);
     final sferaFlavor = DI.get<Flavor>().withSferaMockValues();
+    DI.getOrNull<DASLogger>()?.connectedToTmsVad = false;
 
     getIt.registerFlavor(sferaFlavor);
     getIt.registerAzureAuthenticator();
-
     getIt.registerOAuthMqttClientConnector();
+    await getIt.allReady();
   }
 }
 
