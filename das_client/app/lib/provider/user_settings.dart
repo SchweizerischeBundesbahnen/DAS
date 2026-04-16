@@ -19,7 +19,9 @@ class UserSettings {
   }
 
   Future<void> set<T>(UserSettingKeys key, T value) async {
-    if (value is bool) {
+    if (value == null) {
+      await _prefs.remove(key.name);
+    } else if (value is bool) {
       await _prefs.setBool(key.name, value);
     } else if (value is int) {
       await _prefs.setInt(key.name, value);
