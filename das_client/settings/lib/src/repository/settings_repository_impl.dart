@@ -1,6 +1,6 @@
 import 'package:logging/logging.dart';
 import 'package:settings/component.dart';
-import 'package:settings/src/api/dto/logging_setting_dto.dart';
+import 'package:settings/src/api/dto/settings_dto.dart';
 import 'package:settings/src/api/settings_api_service.dart';
 import 'package:settings/src/data/local/ru_feature_database_service.dart';
 
@@ -10,65 +10,80 @@ class SettingsRepositoryImpl implements SettingsRepository {
   SettingsRepositoryImpl({
     required this.apiService,
     required this.databaseService,
-    this.onAwsCredentialsChanged,
-  }) {
-    init();
+    AwsCredentialsChanged? onAwsCredentialsChanged,
+  }) : _onAwsCredentialsChanged = onAwsCredentialsChanged {
+    _init();
   }
 
   static const retryDelay = Duration(minutes: 1);
 
   final SettingsApiService apiService;
   final RuFeatureDatabaseService databaseService;
-  final AwsCredentialsChanged? onAwsCredentialsChanged;
+  final AwsCredentialsChanged? _onAwsCredentialsChanged;
 
-  LoggingSettingDto? _loggingSetting;
+  // non null if successfully fetched at least once
+  SettingsDto? _lastSettings;
 
-  void init() async {
+  void _init() async {
     final success = await loadSettings();
     if (!success) {
-      Future.delayed(retryDelay).then((_) => init());
+      Future.delayed(retryDelay).then((_) => _init());
     }
   }
 
-  Future<bool> loadSettings() async {
-    try {
-      final settingsResponse = await apiService.settings();
-      final settings = settingsResponse.body.data.firstOrNull;
-      if (settings != null) {
-        _loggingSetting = settings.logging;
-        await databaseService.saveRuFeatures(settings.ruFeatures);
-        _log.info('Settings loaded successfully.');
-
-        if (onAwsCredentialsChanged != null) {
-          final preload = settings.preload;
-          onAwsCredentialsChanged!(
-            AwsConfiguration(
-              bucketUrl: preload.bucketUrl,
-              accessKey: preload.accessKey,
-              accessSecret: preload.accessSecret,
-            ),
-          );
-        }
-
-        return true;
-      }
-      _log.warning('Received empty settings');
-    } catch (e) {
-      _log.severe('Connection error while loading settings', e);
-    }
-
-    return false;
-  }
+  @override
+  String? get loggingToken => _lastSettings?.logging.token;
 
   @override
-  String? get loggingToken => _loggingSetting?.token;
-
-  @override
-  String? get loggingUrl => _loggingSetting?.url;
+  String? get loggingUrl => _lastSettings?.logging.url;
 
   @override
   Future<bool> isRuFeatureEnabled(RuFeatureKeys featureKey, String companyCode) async {
     final ruFeature = await databaseService.findRuFeature(companyCode, featureKey);
     return ruFeature?.enabled ?? false;
   }
+
+  @override
+  Future<bool> loadSettings() async {
+    SettingsDto? remoteSettings;
+    try {
+      remoteSettings = await _tryFetchSettings();
+      if (remoteSettings == null) {
+        _log.warning('Received empty settings.');
+        return false;
+      }
+      _log.info('Settings fetched successfully.');
+    } catch (e) {
+      _log.warning('Connection error while loading settings.', e);
+      return false;
+    }
+
+    await _saveRuFeatureSettings(remoteSettings);
+
+    if (_preloadSettingsChanged(remoteSettings) && _onAwsCredentialsChanged != null) {
+      final preload = remoteSettings.preload;
+      _onAwsCredentialsChanged(
+        AwsConfiguration(
+          bucketUrl: preload.bucketUrl,
+          accessKey: preload.accessKey,
+          accessSecret: preload.accessSecret,
+        ),
+      );
+    }
+
+    _lastSettings = remoteSettings;
+    return true;
+  }
+
+  Future<SettingsDto?> _tryFetchSettings() async {
+    final settingsResponse = await apiService.settings();
+    return settingsResponse.body.data.firstOrNull;
+  }
+
+  Future<void> _saveRuFeatureSettings(SettingsDto remoteSettings) async {
+    await databaseService.saveRuFeatures(remoteSettings.ruFeatures);
+    _log.info('RU settings saved successfully.');
+  }
+
+  bool _preloadSettingsChanged(SettingsDto remoteSettings) => remoteSettings.preload != _lastSettings?.preload;
 }

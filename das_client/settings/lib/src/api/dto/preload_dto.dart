@@ -13,4 +13,16 @@ class PreloadDto {
   final String bucketUrl;
   final String accessKey;
   final String accessSecret;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PreloadDto &&
+          runtimeType == other.runtimeType &&
+          bucketUrl == other.bucketUrl &&
+          accessKey == other.accessKey &&
+          accessSecret == other.accessSecret;
+
+  @override
+  int get hashCode => Object.hash(bucketUrl, accessKey, accessSecret);
 }
