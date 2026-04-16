@@ -13,7 +13,7 @@
         </TimingPoint>
 
         <Signal>
-            <Signal_ID location="100"/>
+            <Signal_ID signal_ID_Physical="H6" location="100"/>
             <SignalFunction>exit</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="H6"/>
         </Signal>
