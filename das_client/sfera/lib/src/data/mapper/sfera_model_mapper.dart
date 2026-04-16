@@ -83,7 +83,13 @@ class SferaModelMapper {
     final communicationChanges = _parseCommunicationNetworkChanges(segmentProfileReferences, segmentProfiles, spOrders);
     journeyData.addAll(communicationChanges);
 
-    final suspiciousSegments = _parseSuspiciousSegments(journeyProfile.generalJpInformation, segmentProfileReferences);
+    journeyData.sort();
+
+    final suspiciousSegments = _parseSuspiciousSegments(
+      journeyProfile.generalJpInformation,
+      segmentProfileReferences,
+      journeyData,
+    );
     _replaceAllInSuspiciousSegment(journeyData, suspiciousSegments);
 
     journeyData.sort();
@@ -706,6 +712,7 @@ class SferaModelMapper {
   static List<SuspiciousSegment> _parseSuspiciousSegments(
     GeneralJpInformationDto? generalJpInformation,
     List<SegmentProfileReferenceDto> segmentProfileReferences,
+    List<BaseData> journeyData,
   ) {
     final suspiciousNsp = generalJpInformation?.suspiciousSegmentNsp;
     if (suspiciousNsp == null) return [];
@@ -721,11 +728,30 @@ class SferaModelMapper {
         _log.warning('Suspicious SP_ID "$spId" not found in segment profile references.');
         continue;
       }
+
+      // find data just after / before previous / following service point for determining order
+      final theoreticalStart = calculateOrder(refIdx, 0);
+      final theoreticalEnd = calculateOrder(refIdx + 1, 0) - 1;
+      final previousServicePointIdx = journeyData.lastIndexWhere(
+        (it) => it.order < theoreticalStart && it.dataType == .servicePoint,
+      );
+      final followingServicePointIdx = journeyData.indexWhere(
+        (it) => it.order > theoreticalEnd && it.dataType == .servicePoint,
+      );
+      int resultingStartOrder = theoreticalStart;
+      int resultingEndOrder = theoreticalEnd;
+      if (previousServicePointIdx != -1) {
+        resultingStartOrder = journeyData[previousServicePointIdx + 1].order;
+      }
+      if (followingServicePointIdx != -1) {
+        resultingEndOrder = journeyData[followingServicePointIdx - 1].order;
+      }
+
       result.add(
         SuspiciousSegment(
           spId: spId,
-          startOrder: calculateOrder(refIdx, 0),
-          endOrder: calculateOrder(refIdx + 1, 0) - 1,
+          startOrder: resultingStartOrder,
+          endOrder: resultingEndOrder,
         ),
       );
     }
