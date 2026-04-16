@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:app/model/tour_system.dart';
 import 'package:auth/component.dart';
 import 'package:logging/logging.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -15,6 +16,7 @@ sealed class Flavor {
     required this.waraAndroidPackageName,
     required this.waraIOSUrlScheme,
     required this.disablePreload,
+    required this.tourSystemUrls,
     this.color = SBBColors.transparent,
     this.showBanner = false,
     this.isTmsEnabledForFlavor = false,
@@ -38,6 +40,7 @@ sealed class Flavor {
   final String waraAndroidPackageName;
   final String waraIOSUrlScheme;
   final bool disablePreload;
+  final Map<TourSystem, String> tourSystemUrls;
 
   factory Flavor.dev() = _DevFlavor;
 
@@ -45,69 +48,59 @@ sealed class Flavor {
 
   factory Flavor.prod() = _ProdFlavor;
 
-  Flavor withSferaMockValues() {
-    switch (this) {
-      case _DevFlavor():
-        return _DevFlavor(
-          mqttUrl: 'wss://das-poc.messaging.solace.cloud',
-          authenticatorConfig: _authenticatorConfigDev,
-        );
-      case _InteFlavor():
-        return _InteFlavor(
-          mqttUrl: 'wss://das-poc.messaging.solace.cloud',
-          authenticatorConfig: _authenticatorConfigInte,
-        );
-      case _ProdFlavor():
-        return _ProdFlavor(
-          mqttUrl: 'wss://das-poc.messaging.solace.cloud',
-          authenticatorConfig: _authenticatorConfigProd,
-        );
-    }
-  }
+  Flavor withSferaMockValues() => switch (this) {
+    _DevFlavor() => _DevFlavor(
+      mqttUrl: 'wss://das-poc.messaging.solace.cloud',
+      authenticatorConfig: _authenticatorConfigDev,
+    ),
+    _InteFlavor() => _InteFlavor(
+      mqttUrl: 'wss://das-poc.messaging.solace.cloud',
+      authenticatorConfig: _authenticatorConfigInte,
+    ),
+    _ProdFlavor() => _ProdFlavor(
+      mqttUrl: 'wss://das-poc.messaging.solace.cloud',
+      authenticatorConfig: _authenticatorConfigProd,
+    ),
+  };
 
-  Flavor withTmsValues() {
-    switch (this) {
-      case _DevFlavor():
-        return _DevFlavor(
-          mqttUrl: 'wss://tms-vad-imtrackside-dev-mobile.messaging.solace.cloud',
-          authenticatorConfig: _authenticatorConfigDev,
-          mqttTopicPrefix: '',
-          sferaVersion: 2,
-          mqttOpenIdProfileMap: {
-            '2cda5d11-f0ac-46b3-967d-af1b2e1bd01a': 'das_sbb_dev',
-            'd653d01f-17a4-48a1-9aab-b780b61b4273': 'das_sob_dev',
-            'a64ce5df-4ad8-40b9-91ee-54bac2bb8326': 'das_bls_dev',
-          },
-        );
-      case _InteFlavor():
-        return _InteFlavor(
-          mqttUrl: 'wss://tms-vad-imtrackside-int-blue-mobile.messaging.solace.cloud',
-          authenticatorConfig: _authenticatorConfigInte,
-          mqttTopicPrefix: '',
-          sferaVersion: 2,
-          mqttOpenIdProfileMap: {
-            '2cda5d11-f0ac-46b3-967d-af1b2e1bd01a': 'das_sbb_int',
-            'd653d01f-17a4-48a1-9aab-b780b61b4273': 'das_sob_int',
-            'a64ce5df-4ad8-40b9-91ee-54bac2bb8326': 'das_bls_int',
-          },
-        );
-      case _ProdFlavor():
-        return _ProdFlavor(
-          mqttUrl: '',
-          authenticatorConfig: _emptyAuthenticatorConfig,
-          sferaVersion: 2,
-          mqttOpenIdProfileMap: {
-            '2cda5d11-f0ac-46b3-967d-af1b2e1bd01a': 'das_sbb_prod',
-            'd653d01f-17a4-48a1-9aab-b780b61b4273': 'das_sob_prod',
-            'a64ce5df-4ad8-40b9-91ee-54bac2bb8326': 'das_bls_prod',
-          },
-        );
-    }
-  }
+  Flavor withTmsValues() => switch (this) {
+    _DevFlavor() => _DevFlavor(
+      mqttUrl: 'wss://tms-vad-imtrackside-dev-mobile.messaging.solace.cloud',
+      authenticatorConfig: _authenticatorConfigDev,
+      mqttTopicPrefix: '',
+      sferaVersion: 2,
+      mqttOpenIdProfileMap: {
+        '2cda5d11-f0ac-46b3-967d-af1b2e1bd01a': 'das_sbb_dev',
+        'd653d01f-17a4-48a1-9aab-b780b61b4273': 'das_sob_dev',
+        'a64ce5df-4ad8-40b9-91ee-54bac2bb8326': 'das_bls_dev',
+      },
+    ),
+    _InteFlavor() => _InteFlavor(
+      mqttUrl: 'wss://tms-vad-imtrackside-int-blue-mobile.messaging.solace.cloud',
+      authenticatorConfig: _authenticatorConfigInte,
+      mqttTopicPrefix: '',
+      sferaVersion: 2,
+      mqttOpenIdProfileMap: {
+        '2cda5d11-f0ac-46b3-967d-af1b2e1bd01a': 'das_sbb_int',
+        'd653d01f-17a4-48a1-9aab-b780b61b4273': 'das_sob_int',
+        'a64ce5df-4ad8-40b9-91ee-54bac2bb8326': 'das_bls_int',
+      },
+    ),
+    _ProdFlavor() => _ProdFlavor(
+      mqttUrl: '',
+      authenticatorConfig: _emptyAuthenticatorConfig,
+      sferaVersion: 2,
+      mqttOpenIdProfileMap: {
+        '2cda5d11-f0ac-46b3-967d-af1b2e1bd01a': 'das_sbb_prod',
+        'd653d01f-17a4-48a1-9aab-b780b61b4273': 'das_sob_prod',
+        'a64ce5df-4ad8-40b9-91ee-54bac2bb8326': 'das_bls_prod',
+      },
+    ),
+  };
 }
 
 class _DevFlavor extends Flavor {
-  const _DevFlavor({
+  _DevFlavor({
     super.mqttUrl = '',
     super.mqttTopicPrefix = 'dev/',
     super.authenticatorConfig = _emptyAuthenticatorConfig,
@@ -124,6 +117,7 @@ class _DevFlavor extends Flavor {
          logLevel: Level.FINE,
          waraAndroidPackageName: 'ch.sbb.tms.iad.shas_mobile',
          waraIOSUrlScheme: 'ch.sbb.tms.iad.shasmobile',
+         tourSystemUrls: Map.from(_prodTourSystemUrls)..update(.tip, (_) => 'tip3test://tours'),
        );
 }
 
@@ -143,6 +137,7 @@ class _InteFlavor extends Flavor {
          mqttOauthProfile: 'azureAdInt',
          waraAndroidPackageName: 'ch.sbb.tms.iad.shas_mobile',
          waraIOSUrlScheme: 'ch.sbb.tms.iad.shasmobile',
+         tourSystemUrls: _prodTourSystemUrls,
        );
 }
 
@@ -162,8 +157,17 @@ class _ProdFlavor extends Flavor {
          mqttOauthProfile: 'azureAdInt',
          waraAndroidPackageName: 'ch.sbb.tms.iad.shas_mobile',
          waraIOSUrlScheme: 'ch.sbb.tms.iad.shasmobile',
+         tourSystemUrls: _prodTourSystemUrls,
        );
 }
+
+const Map<TourSystem, String> _prodTourSystemUrls = {
+  .tip: 'tip3://tours',
+  .caros: 'https://sbbc.ivu-cloud.com/mbweb/pub/ivu/desktop/login',
+  .railOpt: 'https://railoptweb.sob.ch/personnel-reporting-calendar',
+  .railCube: 'play.google.com/store/apps/details?id=com.softlogix.railcube.mobile&hl=en',
+  .blsIvu: 'https://ivu.pad.core',
+};
 
 const _emptyAuthenticatorConfig = AuthenticatorConfig.empty();
 

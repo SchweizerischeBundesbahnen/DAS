@@ -116,6 +116,6 @@ extension BaseScopeExtension on GetIt {
 
   void registerLauncher() {
     _log.fine('Register Launcher');
-    registerSingleton<Launcher>(LauncherImpl(userSettings: DI.get()));
+    registerSingleton<Launcher>(LauncherImpl(userSettings: DI.get(), flavor: DI.get()));
   }
 }
