@@ -1,7 +1,6 @@
 import 'package:app/di/di.dart';
 import 'package:app/flavor.dart';
 import 'package:get_it/get_it.dart';
-import 'package:logger/component.dart';
 import 'package:logging/logging.dart';
 import 'package:mqtt/component.dart';
 
@@ -16,7 +15,6 @@ class TmsScope extends DIScope {
     _log.fine('Pushing scope $scopeName');
     getIt.pushNewScope(scopeName: scopeName);
     final tmsFlavor = DI.get<Flavor>().withTmsValues();
-    DI.getOrNull<DASLogger>()?.connectToSferaMock = false;
 
     getIt.registerFlavor(tmsFlavor);
     getIt.registerAzureAuthenticator();

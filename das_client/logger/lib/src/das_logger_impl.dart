@@ -20,8 +20,8 @@ class DASLoggerImpl extends DASLogger {
   late Future<void> _initialized;
 
   @override
-  set connectToSferaMock(bool value) {
-    metadata['connectToSferaMock'] = value.toString();
+  set useSferaMock(bool value) {
+    metadata['useSferaMock'] = value.toString();
   }
 
   Future<void> _init() async {
