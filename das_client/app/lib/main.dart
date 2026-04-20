@@ -8,6 +8,7 @@ import 'package:app/util/device_id_info.dart';
 import 'package:app/widgets/global_error_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:logger/component.dart';
 import 'package:logging/logging.dart';
 
@@ -17,8 +18,8 @@ Future<void> start(Flavor flavor) async {
   await runZonedGuarded(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
-      await _initDASLogging(flavor);
-      await _initDependencyInjection(flavor);
+      final dasLogger = await _initDASLogging(flavor);
+      await _initDependencyInjection(flavor, dasLogger);
       _setupFlutterErrorHandling();
       runDasApp();
     },
@@ -28,23 +29,28 @@ Future<void> start(Flavor flavor) async {
 
 void runDasApp() => runApp(App());
 
-Future<void> _initDASLogging(Flavor flavor) async {
+Future<DASLogger?> _initDASLogging(Flavor flavor) async {
   final deviceId = await DeviceIdInfo.getDeviceId();
   final logPrinter = LogPrinter(appName: 'DAS ${flavor.displayName}', isDebugMode: kDebugMode);
   Logger.root.level = flavor.logLevel;
   Logger.root.onRecord.listen(logPrinter.call);
 
   if (!kDebugMode) {
-    final dasLogger = LoggerComponent.createDasLogger(deviceId: deviceId);
+    final dasLogger = LoggerComponent.createDASLogger(deviceId: deviceId);
     Logger.root.onRecord.listen(dasLogger.call);
+    return dasLogger;
   }
+  return null;
 }
 
-Future<void> _initDependencyInjection(Flavor flavor) async {
+Future<void> _initDependencyInjection(Flavor flavor, DASLogger? dasLogger) async {
   await DI.init(flavor); // registers flavor, scopes, and scope handler
 
   final scopeHandler = DI.get<ScopeHandler>();
   await scopeHandler.push<DASBaseScope>();
+  if (dasLogger != null) {
+    GetIt.I.registerLogger(logger: dasLogger);
+  }
   // TODO: The problem here is that someone who still has a session with TMS authenticator
   // will not seem to be logged in anymore since we assume SferaMock as the default in app start.
   // This is necessary to ensure that an authenticator is available for the SplashPage
