@@ -197,12 +197,11 @@
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
 
-            <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T07:37:50Z"
+            <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T07:37:50Z"
                                     TP_PlannedLatestArrivalTime="2025-05-17T07:37:00Z">
                 <TimingPointReference>
                     <TP_ID_Reference TP_ID="Biberbrugg"/>
                 </TimingPointReference>
-                <StoppingPointDepartureDetails departureTime="2025-05-17T07:38:20Z" plannedDepartureTime="2025-05-17T07:38:00Z"/>
             </TimingPointConstraints>
             
             <JP_ContextInformation>
@@ -220,11 +219,12 @@
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
 
-            <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T07:41:00Z"
+            <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T07:41:00Z"
                                     TP_PlannedLatestArrivalTime="2025-05-17T07:41:00Z">
                 <TimingPointReference>
                     <TP_ID_Reference TP_ID="Kaltenboden"/>
                 </TimingPointReference>
+                <StoppingPointDepartureDetails departureTime="2025-05-17T08:41:00Z" plannedDepartureTime="2025-05-17T08:41:00Z"/>
             </TimingPointConstraints>
 
             <JP_ContextInformation>
@@ -784,7 +784,7 @@
         </SegmentProfileReference>
 
         <General_JP_Information>
-            <!--   Ausserordentlicher Halt -->
+            <!--   Ausserordentlicher Halt Kaltenboden (Agl) -->
             <General_JP_Information_NSP>
                 <teltsi_Company>1285</teltsi_Company>
                 <NSP_GroupName>stop2PassOrPass2Stop</NSP_GroupName>
@@ -795,7 +795,7 @@
                     "/>
             </General_JP_Information_NSP>
 
-            <!--   Ausserordentliche Durchfahrt -->
+            <!--   Ausserordentliche Durchfahrt Biberbrugg -->
             <General_JP_Information_NSP>
                 <teltsi_Company>1285</teltsi_Company>
                 <NSP_GroupName>stop2PassOrPass2Stop</NSP_GroupName>
@@ -806,7 +806,7 @@
                     "/>
             </General_JP_Information_NSP>
 
-            <!--  Vorzeitiger Wendepunkt -->
+            <!--  Vorzeitiger Wendepunkt Pfäffikon SZ -->
             <General_JP_Information_NSP>
                 <teltsi_Company>1285</teltsi_Company>
                 <NSP_GroupName>endDestinationChange</NSP_GroupName>
