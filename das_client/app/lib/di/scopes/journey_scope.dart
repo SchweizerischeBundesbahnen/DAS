@@ -39,6 +39,7 @@ class JourneyScope extends DIScope {
     getIt.registerJourneyTableAdvancementViewModel();
     getIt.registerWarnAppViewModel();
     getIt.registerLocalRegulationHtmlGenerator();
+    await getIt.allReady();
   }
 }
 

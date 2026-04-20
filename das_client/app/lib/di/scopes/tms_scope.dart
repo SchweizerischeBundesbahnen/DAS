@@ -18,8 +18,8 @@ class TmsScope extends DIScope {
 
     getIt.registerFlavor(tmsFlavor);
     getIt.registerAzureAuthenticator();
-
     getIt.registerOpenIdMqttClientConnector();
+    await getIt.allReady();
   }
 }
 

@@ -2,7 +2,6 @@ import 'package:collection/collection.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/dto/departure_dispatch_notification_event_dto.dart';
-import 'package:sfera/src/data/mapper/mapper_utils.dart';
 
 import '../../../util/test_journey/test_journey_skeleton.dart';
 import '../../../util/test_util.dart';
@@ -74,7 +73,7 @@ void main() {
   test('Test service point names are resolved correctly', () async {
     final journey = getJourney('T9999');
 
-    final servicePoints = journey.data.where((it) => it.dataType == .servicePoint).cast<ServicePoint>().toList();
+    final servicePoints = journey.data.whereType<ServicePoint>().toList(growable: false);
 
     expect(journey.valid, true);
     expect(servicePoints, hasLength(6));
@@ -392,7 +391,7 @@ void main() {
 
   test('Test stop on demand is parsed correctly', () async {
     final journey = getJourney('T9999');
-    final servicePoints = journey.data.where((it) => it.dataType == .servicePoint).cast<ServicePoint>().toList();
+    final servicePoints = journey.data.whereType<ServicePoint>().toList(growable: false);
 
     expect(journey.valid, true);
     expect(servicePoints, hasLength(6));
@@ -406,7 +405,7 @@ void main() {
 
   test('Test passing point is parsed correctly', () async {
     final journey = getJourney('T9999');
-    final servicePoints = journey.data.where((it) => it.dataType == .servicePoint).cast<ServicePoint>().toList();
+    final servicePoints = journey.data.whereType<ServicePoint>().toList(growable: false);
 
     expect(journey.valid, true);
     expect(servicePoints, hasLength(6));
@@ -420,7 +419,7 @@ void main() {
 
   test('Test station point is parsed correctly', () async {
     final journey = getJourney('T9999');
-    final servicePoints = journey.data.where((it) => it.dataType == .servicePoint).cast<ServicePoint>().toList();
+    final servicePoints = journey.data.whereType<ServicePoint>().toList(growable: false);
 
     expect(journey.valid, true);
     expect(servicePoints, hasLength(6));
@@ -434,7 +433,7 @@ void main() {
 
   test('Test bracket stations is parsed correctly', () async {
     final journey = getJourney('T9999');
-    final servicePoints = journey.data.where((it) => it.dataType == .servicePoint).cast<ServicePoint>().toList();
+    final servicePoints = journey.data.whereType<ServicePoint>().toList(growable: false);
 
     expect(journey.valid, true);
     expect(servicePoints, hasLength(6));
@@ -776,7 +775,7 @@ void main() {
     expect(curvePoints[1].localSpeeds, hasLength(3));
     expect(curvePoints[2].localSpeeds, isNull);
 
-    final servicePoints = journey.data.where((it) => it.dataType == .servicePoint).cast<ServicePoint>().toList();
+    final servicePoints = journey.data.whereType<ServicePoint>().toList(growable: false);
 
     expect(servicePoints, hasLength(3));
     expect(journey.metadata.lineSpeeds[servicePoints[0].order], isNotNull);
@@ -871,7 +870,7 @@ void main() {
     final journey = getJourney('T8');
     expect(journey.valid, true);
 
-    final servicePoints = journey.data.where((it) => it.dataType == .servicePoint).cast<ServicePoint>().toList();
+    final servicePoints = journey.data.whereType<ServicePoint>().toList(growable: false);
     expect(servicePoints, hasLength(8));
 
     // check ServicePoint Bern
@@ -992,7 +991,7 @@ void main() {
     final journey = getJourney('T8');
     expect(journey.valid, true);
 
-    final servicePoints = journey.data.where((it) => it.dataType == .servicePoint).cast<ServicePoint>().toList();
+    final servicePoints = journey.data.whereType<ServicePoint>().toList(growable: false);
     expect(servicePoints, hasLength(8));
 
     // check ServicePoint Bern
@@ -2023,10 +2022,10 @@ void main() {
     final suspiciousSegments = journey.metadata.suspiciousSegments;
     expect(suspiciousSegments, hasLength(2));
 
-    expect(suspiciousSegments[0].startOrder, equals(calculateOrder(1, 0)));
-    expect(suspiciousSegments[0].endOrder, equals(calculateOrder(2, 0) - 1));
-    expect(suspiciousSegments[1].startOrder, equals(calculateOrder(3, 0)));
-    expect(suspiciousSegments[1].endOrder, equals(calculateOrder(4, 0) - 1));
+    expect(suspiciousSegments[0].startOrder, 1400);
+    expect(suspiciousSegments[0].endOrder, 200000);
+    expect(suspiciousSegments[1].startOrder, 202300);
+    expect(suspiciousSegments[1].endOrder, 302000);
   });
 
   test('Test suspicious journey points replace all journey points in suspicious segments for T40', () {
@@ -2041,11 +2040,11 @@ void main() {
     // T40_4 (segment index 3, suspicious): single point at calculateOrder(3, 0)
     expect(suspiciousPoints, hasLength(2));
 
-    expect(suspiciousPoints[0].order, equals(calculateOrder(1, 0)));
+    expect(suspiciousPoints[0].order, 1400);
     expect(suspiciousPoints[0].kilometre, equals([]));
     expect(suspiciousPoints[0].spId, equals('T40_2'));
 
-    expect(suspiciousPoints[1].order, equals(calculateOrder(3, 0)));
+    expect(suspiciousPoints[1].order, 202300);
     expect(suspiciousPoints[1].kilometre, equals([]));
     expect(suspiciousPoints[1].spId, equals('T40_4'));
 

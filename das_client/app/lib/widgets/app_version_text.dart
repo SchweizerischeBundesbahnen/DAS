@@ -15,14 +15,12 @@ class AppVersionText extends StatelessWidget {
         if (!snapshot.hasData) return const SizedBox.shrink();
 
         final info = snapshot.data as PackageInfo;
-        return Row(
+        return Column(
+          mainAxisSize: .min,
+          crossAxisAlignment: .start,
           children: [
-            Icon(SBBIcons.circle_information_small, color: color),
-            const SizedBox(width: SBBSpacing.xSmall),
-            Text(
-              info.version,
-              style: sbbTextStyle.lightStyle.small.copyWith(color: color),
-            ),
+            Text('App Version', style: sbbTextStyle.lightStyle.xSmall.copyWith(color: color)),
+            Text(info.version, style: sbbTextStyle.boldStyle.small.copyWith(color: color)),
           ],
         );
       },

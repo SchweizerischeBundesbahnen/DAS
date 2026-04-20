@@ -12,11 +12,11 @@ export 'package:logger/src/log_printer.dart';
 class LoggerComponent {
   const LoggerComponent._();
 
-  static DasLogger createDasLogger({
+  static DASLogger createDASLogger({
     required String deviceId,
   }) {
     final apiService = LogApiService();
     final loggerRepo = LoggerRepoImpl(fileService: LogFileServiceImpl(), apiService: apiService);
-    return DasLoggerImpl(loggerRepo: loggerRepo, deviceId: deviceId);
+    return DASLoggerImpl(loggerRepo: loggerRepo, deviceId: deviceId);
   }
 }

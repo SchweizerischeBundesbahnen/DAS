@@ -9,8 +9,8 @@ import 'package:package_info_plus/package_info_plus.dart';
 
 final _log = Logger('DasLoggerImpl');
 
-class DasLoggerImpl extends DasLogger {
-  DasLoggerImpl({required LoggerRepo loggerRepo, required this.deviceId}) : _loggerRepo = loggerRepo {
+class DASLoggerImpl extends DASLogger {
+  DASLoggerImpl({required LoggerRepo loggerRepo, required this.deviceId}) : _loggerRepo = loggerRepo {
     _initialized = _init();
   }
 
@@ -18,6 +18,11 @@ class DasLoggerImpl extends DasLogger {
   final LoggerRepo _loggerRepo;
   final Map<String, String> metadata = {};
   late Future<void> _initialized;
+
+  @override
+  set useSferaMock(bool value) {
+    metadata['useSferaMock'] = value.toString();
+  }
 
   Future<void> _init() async {
     _log.fine('Initializing DasLoggerImpl...');

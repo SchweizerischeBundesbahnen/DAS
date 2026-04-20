@@ -1,5 +1,6 @@
 import 'package:app/util/device_id_info.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class DeviceIdText extends StatelessWidget {
@@ -15,7 +16,22 @@ class DeviceIdText extends StatelessWidget {
         if (!snapshot.hasData) return const SizedBox.shrink();
 
         final deviceId = snapshot.data ?? '';
-        return Text(deviceId, style: sbbTextStyle.lightStyle.small.copyWith(color: color));
+        return GestureDetector(
+          onTap: () async {
+            await Clipboard.setData(ClipboardData(text: deviceId));
+            if (context.mounted) {
+              SBBToast.of(context).show(title: 'Copied to Clipboard: $deviceId');
+            }
+          },
+          child: Column(
+            mainAxisSize: .min,
+            crossAxisAlignment: .start,
+            children: [
+              Text('Device Id', style: sbbTextStyle.lightStyle.xSmall.copyWith(color: color)),
+              SelectableText(deviceId, style: sbbTextStyle.boldStyle.small.copyWith(color: color)),
+            ],
+          ),
+        );
       },
     );
   }

@@ -5,6 +5,7 @@ import 'package:app/di/scopes/scopes.dart';
 import 'package:app/flavor.dart';
 import 'package:auth/component.dart';
 import 'package:get_it/get_it.dart';
+import 'package:logger/component.dart';
 import 'package:logging/logging.dart';
 
 export 'package:app/di/scopes/scopes.dart';
@@ -27,6 +28,8 @@ class DI {
 
     final scopeHandler = DI.get<ScopeHandler>();
     if (scopeHandler.isInStack<AuthenticatedScope>()) await scopeHandler.pop<AuthenticatedScope>();
+
+    getOrNull<DASLogger>()?.useSferaMock = !useTms;
 
     if (useTms) {
       if (scopeHandler.isTop<SferaMockScope>()) await scopeHandler.pop<SferaMockScope>();
