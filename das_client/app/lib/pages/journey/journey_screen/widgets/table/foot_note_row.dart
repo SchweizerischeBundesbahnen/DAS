@@ -16,17 +16,22 @@ class FootNoteRow<T extends BaseFootNote> extends WidgetRowBuilder<T> {
     required this.addTopMargin,
     super.config,
     super.identifier,
+    this.leftPadding = 0,
   }) : super(
          stickyLevel: data.stickyLevel,
          height: FootNoteAccordion.calculateHeight(
            data: data,
            isExpanded: isExpanded,
            addTopMargin: addTopMargin,
+           leftPadding: leftPadding,
          ),
        );
 
   final bool addTopMargin;
   final bool isExpanded;
+
+  /// used to align content with information cell
+  final double leftPadding;
 
   @override
   Widget buildRowWidget(BuildContext context) {
@@ -37,29 +42,22 @@ class FootNoteRow<T extends BaseFootNote> extends WidgetRowBuilder<T> {
         title: data.title(context, metadata),
         addTopMargin: addTopMargin,
         isExpanded: isExpanded,
+        leftPadding: leftPadding,
       ),
     );
   }
 }
 
 extension FootNoteExtension on BaseFootNote {
-  StickyLevel get stickyLevel {
-    switch (this) {
-      case LineFootNote _:
-        return .second;
-      default:
-        return .none;
-    }
-  }
+  StickyLevel get stickyLevel => switch (this) {
+    LineFootNote _ => .second,
+    _ => .none,
+  };
 
-  String title(BuildContext context, Metadata metadata) {
-    switch (this) {
-      case final LineFootNote lineFootNote:
-        return _resolveTitle(context, lineFootNote, metadata);
-      default:
-        return _defaultTitle(context);
-    }
-  }
+  String title(BuildContext context, Metadata metadata) => switch (this) {
+    final LineFootNote lineFootNote => _resolveTitle(context, lineFootNote, metadata),
+    _ => _defaultTitle(context),
+  };
 
   String _resolveTitle(BuildContext context, LineFootNote lineFootNote, Metadata metadata) {
     final identifier = lineFootNote.footNote.identifier;
@@ -72,9 +70,7 @@ extension FootNoteExtension on BaseFootNote {
   }
 
   String _defaultTitle(BuildContext context) {
-    if (footNote.refText == 'SIM') {
-      return context.l10n.c_radn_sim;
-    }
+    if (footNote.refText == 'SIM') return context.l10n.c_radn_sim;
 
     return switch (footNote.type) {
       .trackSpeed => '${context.l10n.c_radn} ${context.l10n.c_radn_type_track_speed}',

@@ -12,7 +12,7 @@ class UncodedOperationalIndicationRow extends WidgetRowBuilder<UncodedOperationa
     required super.metadata,
     required super.data,
     required this.collapsedState,
-    required this.addTopMargin,
+    this.leftPadding = 0,
     super.config,
     super.identifier,
   }) : super(
@@ -20,12 +20,12 @@ class UncodedOperationalIndicationRow extends WidgetRowBuilder<UncodedOperationa
          height: UncodedOperationalIndicationAccordion.calculateHeight(
            data.combinedText,
            collapsedState: collapsedState,
-           addTopMargin: addTopMargin,
+           leftPadding: leftPadding,
          ),
        );
 
   final CollapsedState collapsedState;
-  final bool addTopMargin;
+  final double leftPadding;
 
   @override
   Widget buildRowWidget(BuildContext context) {
@@ -33,7 +33,7 @@ class UncodedOperationalIndicationRow extends WidgetRowBuilder<UncodedOperationa
       color: ThemeUtil.getColor(context, SBBColors.milk, SBBColors.black),
       child: UncodedOperationalIndicationAccordion(
         collapsedState: collapsedState,
-        addTopMargin: addTopMargin,
+        leftPadding: leftPadding,
         data: data,
       ),
     );

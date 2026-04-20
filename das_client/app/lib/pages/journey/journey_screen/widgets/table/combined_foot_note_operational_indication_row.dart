@@ -19,23 +19,28 @@ class CombinedFootNoteOperationalIndicationRow extends WidgetRowBuilder<Combined
     required this.operationIndicationState,
     super.config,
     super.identifier,
+    this.leftPadding = 0,
   }) : super(
          stickyLevel: .second,
          height:
              UncodedOperationalIndicationAccordion.calculateHeight(
                data.operationalIndication.combinedText,
                collapsedState: operationIndicationState,
-               addTopMargin: true,
+               leftPadding: leftPadding,
              ) +
              FootNoteAccordion.calculateHeight(
                data: data.footNote,
                isExpanded: footNoteState != .collapsed,
                addTopMargin: false,
+               leftPadding: leftPadding,
              ),
        );
 
   final CollapsedState footNoteState;
   final CollapsedState operationIndicationState;
+
+  /// used to align content with information cell
+  final double leftPadding;
 
   @override
   Widget buildRowWidget(BuildContext context) {
@@ -46,14 +51,15 @@ class CombinedFootNoteOperationalIndicationRow extends WidgetRowBuilder<Combined
         children: [
           UncodedOperationalIndicationAccordion(
             collapsedState: operationIndicationState,
-            addTopMargin: true,
             data: data.operationalIndication,
+            leftPadding: leftPadding,
           ),
           FootNoteAccordion(
             title: data.footNote.title(context, metadata),
             isExpanded: footNoteState != .collapsed,
             addTopMargin: false,
             data: data.footNote,
+            leftPadding: leftPadding,
           ),
         ],
       ),

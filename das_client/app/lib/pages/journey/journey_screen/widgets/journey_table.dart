@@ -47,6 +47,7 @@ import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/model/journey_settings.dart';
 import 'package:app/provider/user_settings.dart';
 import 'package:app/theme/theme_util.dart';
+import 'package:app/widgets/accordion/accordion.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:app/widgets/table/das_table_column.dart';
@@ -91,6 +92,8 @@ class JourneyTable extends StatelessWidget {
   }
 
   Widget _table(BuildContext context, TableLoaded model) {
+    final columns = _generateColumns(context, model.journeyMetadata, model.journeySettings, model.detailModalType);
+
     final rowBuilders = _generateRowBuilders(
       context: context,
       journeyTableRowData: model.journeyTableRowData,
@@ -98,6 +101,7 @@ class JourneyTable extends StatelessWidget {
       settings: model.journeySettings,
       collapsedRows: model.collapsedRows,
       journeyPosition: model.journeyPosition,
+      leftOffsetToInformationCell: columns.leftOffsetTo(ColumnDefinition.informationCell.index),
     );
     final journeyTableScrollController = DI.get<JourneyTableScrollController>();
     journeyTableScrollController.updateRenderedRows(rowBuilders);
@@ -109,7 +113,7 @@ class JourneyTable extends StatelessWidget {
         child: DASTable(
           key: journeyTableScrollController.tableKey,
           scrollController: journeyTableScrollController.scrollController,
-          columns: _generateColumns(context, model.journeyMetadata, model.journeySettings, model.detailModalType),
+          columns: columns,
           rows: rowBuilders.map((it) => it.build(context)).toList(),
           bottomMarginAdjustment: _platformDependentBottomMarginAdjustment(rowBuilders),
         ),
@@ -124,6 +128,7 @@ class JourneyTable extends StatelessWidget {
     required JourneySettings settings,
     required Map<int, CollapsedState> collapsedRows,
     required JourneyPositionModel journeyPosition,
+    required double leftOffsetToInformationCell,
   }) {
     final groupedRows = journeyTableRowData
         .whereType<BaliseLevelCrossingGroup>()
@@ -279,6 +284,7 @@ class JourneyTable extends StatelessWidget {
             isExpanded: collapsedRows.stateOf(rowData) != .collapsed,
             addTopMargin: !hasPreviousAnnotation,
             rowIndex: index,
+            leftPadding: leftOffsetToInformationCell - Accordion.contentPadding,
           );
         case .uncodedOperationalIndication:
           return UncodedOperationalIndicationRow(
@@ -286,8 +292,8 @@ class JourneyTable extends StatelessWidget {
             data: rowData as UncodedOperationalIndication,
             config: journeyConfig,
             collapsedState: collapsedRows.stateOf(rowData),
-            addTopMargin: !hasPreviousAnnotation,
             rowIndex: index,
+            leftPadding: leftOffsetToInformationCell - Accordion.contentPadding,
           );
         case .combinedFootNoteOperationalIndication:
           return CombinedFootNoteOperationalIndicationRow(
@@ -296,6 +302,7 @@ class JourneyTable extends StatelessWidget {
             data: rowData as CombinedFootNoteOperationalIndication,
             footNoteState: collapsedRows.stateOf(rowData.footNote),
             operationIndicationState: collapsedRows.stateOf(rowData.operationalIndication),
+            leftPadding: leftOffsetToInformationCell - Accordion.contentPadding,
           );
         case .communicationNetworkChannel:
           return CommunicationNetworkChangeRow(

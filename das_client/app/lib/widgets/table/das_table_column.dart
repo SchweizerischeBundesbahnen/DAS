@@ -80,3 +80,10 @@ class DASTableColumnDecoration {
     );
   }
 }
+
+extension DASTableColumnIterableX on Iterable<DASTableColumn> {
+  /// returns the left offset of the column with the given [DASTableColumn.index]
+  double leftOffsetTo(int index) => takeWhile(
+    (column) => column.id == null || column.id != index,
+  ).map((column) => column.width).nonNulls.reduce((a, b) => a + b);
+}

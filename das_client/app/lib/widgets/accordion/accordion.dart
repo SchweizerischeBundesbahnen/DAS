@@ -16,15 +16,23 @@ class Accordion extends StatelessWidget {
   static const double defaultCollapsedHeight = _headerFontSize + 2 * _collapsedVerticalPadding;
   static const double defaultExpandedHeight = _headerFontSize + 2 * _expandedVerticalPadding + _headerContentSpacing;
 
-  /// Returns width of accordion content in logical pixels (dp).
-  static double contentWidth({double? outsidePadding}) =>
-      DeviceScreen.width - 2 * Accordion._horizontalPadding - 2 * Accordion._contentPadding - (outsidePadding ?? 0);
+  /// padding added on right and left of content to align with header title
+  static const double contentPadding = _contentRowSpacing + _contentIconSize;
 
-  static const double _contentPadding = 28.0; // 24.0 (icon) + spacing
+  /// Returns width of accordion content in logical pixels (dp).
+  static double contentWidth({double? margin, double? additionalPadding, bool hasContentIcon = true}) {
+    final iconsPadding = contentPadding * (hasContentIcon ? 2 : 1);
+    final otherSpacing = (margin ?? 0) + (additionalPadding ?? 0);
+    return DeviceScreen.width - 2 * _horizontalPadding - iconsPadding - otherSpacing;
+  }
+
+  static const double _contentRowSpacing = SBBSpacing.xSmall;
+  static const double _contentIconSize = 20.0;
+  static const double _chevronIconSize = 24.0;
   static const double _horizontalPadding = SBBSpacing.xSmall;
   static const double _headerFontSize = 24.0; // Large Bold
   static const double _expandedVerticalPadding = SBBSpacing.medium;
-  static const double _collapsedVerticalPadding = 2.0;
+  static const double _collapsedVerticalPadding = SBBSpacing.xxSmall;
   static const double _headerContentSpacing = SBBSpacing.xSmall;
 
   const Accordion({
@@ -36,6 +44,8 @@ class Accordion extends StatelessWidget {
     this.backgroundColor,
     this.icon,
     this.margin,
+    this.borderRadius,
+    this.additionalPadding,
   });
 
   final String title;
@@ -44,7 +54,9 @@ class Accordion extends StatelessWidget {
   final AccordionToggleCallback toggleCallback;
   final Color? backgroundColor;
   final IconData? icon;
+  final EdgeInsetsGeometry? additionalPadding;
   final EdgeInsetsGeometry? margin;
+  final BorderRadiusGeometry? borderRadius;
 
   @override
   Widget build(BuildContext context) {
@@ -62,14 +74,16 @@ class Accordion extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: backgroundColor ?? style.accordionBackgroundColor,
-          borderRadius: BorderRadius.all(
-            Radius.circular(isExpanded ? SBBSpacing.medium : SBBSpacing.xSmall),
-          ),
+          borderRadius:
+              borderRadius ??
+              BorderRadius.all(
+                Radius.circular(isExpanded ? SBBSpacing.medium : SBBSpacing.xSmall),
+              ),
         ),
         padding: .symmetric(
           vertical: isExpanded ? _expandedVerticalPadding : _collapsedVerticalPadding,
           horizontal: _horizontalPadding,
-        ),
+        ).add(additionalPadding ?? EdgeInsets.zero),
         child: Column(
           crossAxisAlignment: .start,
           children: [
@@ -77,7 +91,7 @@ class Accordion extends StatelessWidget {
             isExpanded
                 ? Padding(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: _contentPadding,
+                      horizontal: contentPadding,
                     ).copyWith(top: _headerContentSpacing),
                     child: body,
                   )
@@ -90,9 +104,9 @@ class Accordion extends StatelessWidget {
 
   Widget _header() {
     return Row(
-      spacing: SBBSpacing.xSmall,
+      spacing: _contentRowSpacing,
       children: [
-        if (icon != null) Icon(icon, size: 20.0),
+        if (icon != null) Icon(icon, size: _contentIconSize),
         Expanded(
           child: Text(
             title,
@@ -103,6 +117,7 @@ class Accordion extends StatelessWidget {
         ),
         Icon(
           isExpanded ? SBBIcons.chevron_small_down_small : SBBIcons.chevron_small_right_small,
+          size: _chevronIconSize,
         ),
       ],
     );
