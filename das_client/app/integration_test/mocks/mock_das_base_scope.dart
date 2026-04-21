@@ -105,7 +105,7 @@ class MockDASBaseScope extends DASBaseScope {
   }
 
   void _registerMockLauncher() {
-    getIt.registerSingleton<Launcher>(MockLauncher(userSettings: DI.get()));
+    getIt.registerSingleton<Launcher>(MockLauncher(userSettings: DI.get(), flavor: DI.get()));
   }
 
   void _registerMockPreloadRepository() {

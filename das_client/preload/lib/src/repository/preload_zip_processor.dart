@@ -58,7 +58,6 @@ class PreloadZipProcessor {
       }
 
       receivePort.close();
-      _saveDelete(zip);
 
       if (allSuccess) {
         _log.fine('Processed all files from ${zip.name}.');
@@ -70,6 +69,8 @@ class PreloadZipProcessor {
     } catch (e) {
       _log.severe('Extract failed for file ${zip.name}.', e);
       return .error;
+    } finally {
+      _saveDelete(zip);
     }
   }
 

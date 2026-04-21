@@ -10,32 +10,30 @@ void main() {
   final testResourcesDir = Directory(sferaStaticResourcesDirectoryPath);
   final invalidJourneys = ['T34'];
 
-  test('whenSferaStaticResourcesDirPath_thenShouldFindDirectory', tags: 'sfera-mock-data-validator', () {
-    expect(testResourcesDir.existsSync(), isTrue);
-  });
-
-  group('validatingJourneys', () {
+  group('mock data client validation', () {
     setUpAll(() {
-      Logger.root.level = Level.WARNING;
+      Logger.root.level = Level.INFO;
       Logger.root.onRecord.listen((record) {
         // ignore: avoid_print
         print('${record.level.name}: ${record.time}: ${record.message}');
       });
     });
 
-    group('whenLoadingAllUniqueJourneysAndValidating_thenShouldAllBeValid', () {
-      for (final testJourney in TestJourneyRepository.getAllUniqueJourneysByName()) {
-        final journeyName = [testJourney.name, testJourney.eventName].nonNulls.join('-');
-        test('whenParsingJourney_${journeyName}_thenShouldBeValid', tags: 'sfera-mock-data-validator', () {
-          expect(testJourney.validate(), isTrue, reason: 'Expected $journeyName to be valid!');
-
-          if (invalidJourneys.any((it) => journeyName.contains(it))) {
-            expect(testJourney.journey.valid, isFalse, reason: 'Expected $journeyName to be invalid!');
-          } else {
-            expect(testJourney.journey.valid, isTrue, reason: 'Expected $journeyName to be valid!');
-          }
-        });
-      }
+    test('whenSferaStaticResourcesDirPath_thenShouldFindDirectory', tags: 'sfera-mock-data-validator', () {
+      expect(testResourcesDir.existsSync(), isTrue);
     });
+
+    for (final testJourney in TestJourneyRepository.getAllUniqueJourneysByName()) {
+      final journeyName = [testJourney.name, testJourney.eventName].nonNulls.join('-');
+      test('whenParsingJourney_${journeyName}_thenShouldBeValid', tags: 'sfera-mock-data-validator', () {
+        expect(testJourney.validate(), isTrue, reason: 'Expected $journeyName to be valid!');
+
+        if (invalidJourneys.any((it) => journeyName.contains(it))) {
+          expect(testJourney.journey.valid, isFalse, reason: 'Expected $journeyName to be invalid!');
+        } else {
+          expect(testJourney.journey.valid, isTrue, reason: 'Expected $journeyName to be valid!');
+        }
+      });
+    }
   });
 }

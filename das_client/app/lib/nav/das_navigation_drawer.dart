@@ -6,6 +6,7 @@ import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart'
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/app_version_text.dart';
 import 'package:app/widgets/device_id_text.dart';
+import 'package:app/widgets/mqtt_broker_text.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -68,7 +69,7 @@ class DASNavigationDrawer extends StatelessWidget {
               ],
             ),
           ),
-          _versionFooter(context),
+          _footer(context),
         ],
       ),
     );
@@ -121,16 +122,19 @@ Widget _inactiveIcon(IconData icon) {
   );
 }
 
-Widget _versionFooter(BuildContext context) {
+Widget _footer(BuildContext context) {
   final textColor = ThemeUtil.getColor(context, SBBColors.granite, SBBColors.graphite);
   return Align(
     alignment: .bottomCenter,
     child: Padding(
       padding: .all(SBBSpacing.medium),
       child: Column(
+        crossAxisAlignment: .start,
+        spacing: SBBSpacing.xSmall,
         children: [
           AppVersionText(color: textColor),
           DeviceIdText(color: textColor),
+          MqttBrokerText(color: textColor),
         ],
       ),
     ),

@@ -21,7 +21,7 @@
             <StoppingPointDepartureDetails departureTime="2025-05-17T12:35:00Z" plannedDepartureTime="2025-05-17T12:34:20Z"/>
         </TimingPointConstraints>
 
-        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T12:45:20Z"
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T12:45:20Z"
                                 TP_PlannedLatestArrivalTime="2025-05-17T12:45:30Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="EBI"/>

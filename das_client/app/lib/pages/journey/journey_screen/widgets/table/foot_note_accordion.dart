@@ -16,6 +16,7 @@ class FootNoteAccordion extends StatelessWidget {
     required this.title,
     required this.addTopMargin,
     required this.isExpanded,
+    this.leftPadding = 0,
     super.key,
   });
 
@@ -23,6 +24,9 @@ class FootNoteAccordion extends StatelessWidget {
   final String title;
   final bool addTopMargin;
   final bool isExpanded;
+
+  /// used to align content with information cell
+  final double leftPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +37,7 @@ class FootNoteAccordion extends StatelessWidget {
       isExpanded: isExpanded,
       toggleCallback: () => context.read<CollapsibleRowsViewModel>().toggleRow(data),
       icon: SBBIcons.form_small,
+      additionalPadding: .only(left: leftPadding),
       margin: .only(
         bottom: _verticalMargin,
         top: addTopMargin ? _verticalMargin : 0.0,
@@ -47,7 +52,12 @@ class FootNoteAccordion extends StatelessWidget {
     return Text.rich(TextUtil.parseHtmlText(data.footNote.text, sbbTextStyle.romanStyle.large));
   }
 
-  static double calculateHeight({required BaseFootNote data, required bool isExpanded, required bool addTopMargin}) {
+  static double calculateHeight({
+    required BaseFootNote data,
+    required bool isExpanded,
+    required bool addTopMargin,
+    required double leftPadding,
+  }) {
     final margin = _verticalMargin * (addTopMargin ? 2 : 1);
     if (!isExpanded) {
       return Accordion.defaultCollapsedHeight + margin;
@@ -55,9 +65,10 @@ class FootNoteAccordion extends StatelessWidget {
 
     final content = _contentText(data);
     final tp = TextPainter(text: content.textSpan, textDirection: TextDirection.ltr)
-      ..layout(maxWidth: _accordionContentWidth);
+      ..layout(maxWidth: _accordionContentWidth(leftPadding: leftPadding));
     return Accordion.defaultExpandedHeight + tp.height + margin;
   }
 
-  static double get _accordionContentWidth => Accordion.contentWidth(outsidePadding: JourneyOverview.horizontalPadding);
+  static double _accordionContentWidth({required double leftPadding}) =>
+      Accordion.contentWidth(margin: JourneyOverview.horizontalPadding, additionalPadding: leftPadding);
 }

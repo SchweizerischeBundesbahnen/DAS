@@ -18,8 +18,8 @@ class SferaMockScope extends DIScope {
 
     getIt.registerFlavor(sferaFlavor);
     getIt.registerAzureAuthenticator();
-
     getIt.registerOAuthMqttClientConnector();
+    await getIt.allReady();
   }
 }
 

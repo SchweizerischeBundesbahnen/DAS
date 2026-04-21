@@ -13,6 +13,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:connectivity_x/component.dart';
 import 'package:get_it/get_it.dart';
+import 'package:logger/component.dart';
 import 'package:logging/logging.dart';
 import 'package:preload/component.dart';
 import 'package:screen_brightness/screen_brightness.dart';
@@ -50,6 +51,11 @@ class DASBaseScope extends DIScope {
 }
 
 extension BaseScopeExtension on GetIt {
+  void registerLogger({required DASLogger logger}) {
+    _log.fine('Register Logger');
+    registerSingleton<DASLogger>(logger);
+  }
+
   void registerBrightnessManager() {
     _log.fine('Register ScreenBrightness');
     registerSingleton<ScreenBrightness>(ScreenBrightness());
@@ -122,7 +128,7 @@ extension BaseScopeExtension on GetIt {
 
   void registerLauncher() {
     _log.fine('Register Launcher');
-    registerSingleton<Launcher>(LauncherImpl(userSettings: DI.get()));
+    registerSingleton<Launcher>(LauncherImpl(userSettings: DI.get(), flavor: DI.get()));
   }
 
   void registerSferaLocalRepo() {
