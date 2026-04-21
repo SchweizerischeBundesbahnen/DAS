@@ -39,6 +39,7 @@ import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart'
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/provider/ru_feature_provider.dart';
+import 'package:app/theme/theme_util.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -78,10 +79,10 @@ class JourneyOverview extends StatelessWidget {
               JourneyTable(),
               Align(alignment: .bottomCenter, child: JourneyNavigationButtons()),
               Align(alignment: .bottomLeft, child: FloatingDepartureChecklistButton()),
+              Align(alignment: .bottomCenter, child: _tourSystemLink(context)),
             ],
           ),
         ),
-        _tourSystemLink(context),
       ],
     );
   }
@@ -95,8 +96,13 @@ class JourneyOverview extends StatelessWidget {
         final launcher = DI.get<Launcher>();
         if (asyncSnapshot.data != true || !launcher.hasTourSystemConfigured()) return const SizedBox.shrink();
 
-        return Padding(
-          padding: const EdgeInsets.only(top: SBBSpacing.xSmall, bottom: SBBSpacing.large),
+        return Container(
+          margin: const EdgeInsets.only(bottom: SBBSpacing.xLarge),
+          decoration: ShapeDecoration(
+            shape: StadiumBorder(
+              side: BorderSide(color: ThemeUtil.getColor(context, SBBColors.cloud, SBBColors.iron), width: 4.0),
+            ),
+          ),
           child: SBBTertiaryButtonLarge(
             label: context.l10n.p_journey_overview_tour_button_text,
             onPressed: () => launcher.launchTourSystem(),
