@@ -77,12 +77,11 @@
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
-            <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T14:29:10Z"
+            <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T14:29:10Z"
                                     TP_PlannedLatestArrivalTime="2025-05-17T14:29:00Z">
                 <TimingPointReference>
                     <TP_ID_Reference TP_ID="Lenzburg"/>
                 </TimingPointReference>
-                <StoppingPointDepartureDetails departureTime="2025-05-17T14:31:50Z" plannedDepartureTime="2025-05-17T14:31:00Z"/>
             </TimingPointConstraints>
 
             <JP_ContextInformation>
@@ -144,11 +143,12 @@
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
-            <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T14:36:10Z"
+            <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T14:36:10Z"
                                     TP_PlannedLatestArrivalTime="2025-05-17T14:36:00Z">
                 <TimingPointReference>
                     <TP_ID_Reference TP_ID="Maegenwil"/>
                 </TimingPointReference>
+                <StoppingPointDepartureDetails departureTime="2025-05-17T14:36:50Z" plannedDepartureTime="2025-05-17T14:36:00Z"/>
             </TimingPointConstraints>
 
             <JP_ContextInformation>
@@ -356,7 +356,7 @@
         </SegmentProfileReference>
 
         <General_JP_Information>
-            <!--   Ausserordentlicher Halt -->
+            <!--   Ausserordentlicher Halt Mägenwil -->
             <General_JP_Information_NSP>
                 <teltsi_Company>1285</teltsi_Company>
                 <NSP_GroupName>stop2PassOrPass2Stop</NSP_GroupName>
@@ -367,7 +367,7 @@
                     "/>
             </General_JP_Information_NSP>
 
-            <!--   Ausserordentliche Durchfahrt -->
+            <!--   Ausserordentliche Durchfahrt Lenzburg -->
             <General_JP_Information_NSP>
                 <teltsi_Company>1285</teltsi_Company>
                 <NSP_GroupName>stop2PassOrPass2Stop</NSP_GroupName>
