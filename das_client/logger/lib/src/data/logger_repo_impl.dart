@@ -81,10 +81,9 @@ class LoggerRepoImpl implements LoggerRepo {
 
   Future<bool> _shouldRollover() async {
     final hasLogFilesToSend = await fileService.hasCompletedLogFiles;
-    final isRolloverTimeReached = _isRolloverTimeReached();
     final isAllowedToSend = _stopSendingUntil.isBefore(clock.now());
-    return isAllowedToSend && (hasLogFilesToSend || isRolloverTimeReached);
+    return isAllowedToSend && (hasLogFilesToSend || _isRolloverTimeReached);
   }
 
-  bool _isRolloverTimeReached() => _nextRolloverTimeStamp.isBefore(clock.now());
+  bool get _isRolloverTimeReached => _nextRolloverTimeStamp.isBefore(clock.now());
 }
