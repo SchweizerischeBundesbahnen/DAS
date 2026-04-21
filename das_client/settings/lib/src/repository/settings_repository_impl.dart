@@ -1,5 +1,6 @@
 import 'package:logging/logging.dart';
 import 'package:settings/component.dart';
+import 'package:settings/src/api/dto/app_version_expiration_dto.dart';
 import 'package:settings/src/api/dto/settings_dto.dart';
 import 'package:settings/src/api/settings_api_service.dart';
 import 'package:settings/src/data/local/ru_feature_database_service.dart';
@@ -36,6 +37,9 @@ class SettingsRepositoryImpl implements SettingsRepository {
 
   @override
   String? get loggingUrl => _lastSettings?.logging.url;
+
+  @override
+  AppVersionExpiration? get appVersionExpiration => _lastSettings?.currentAppVersion.toDomain();
 
   @override
   Future<bool> isRuFeatureEnabled(RuFeatureKeys featureKey, String companyCode) async {

@@ -5,6 +5,7 @@ import 'package:settings/src/model/aws_configuration.dart';
 import 'package:settings/src/repository/settings_repository.dart';
 import 'package:settings/src/repository/settings_repository_impl.dart';
 
+export 'package:settings/src/model/app_version_expiration.dart';
 export 'package:settings/src/model/aws_configuration.dart';
 export 'package:settings/src/model/ru_feature_keys.dart';
 export 'package:settings/src/repository/settings_repository.dart';

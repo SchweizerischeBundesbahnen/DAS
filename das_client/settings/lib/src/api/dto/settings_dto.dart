@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:settings/src/api/dto/app_version_setting_dto.dart';
+import 'package:settings/src/api/dto/app_version_expiration_dto.dart';
 import 'package:settings/src/api/dto/logging_setting_dto.dart';
 import 'package:settings/src/api/dto/preload_dto.dart';
 import 'package:settings/src/api/dto/ru_feature_dto.dart';
@@ -22,5 +22,5 @@ class SettingsDto {
   final LoggingSettingDto logging;
   final List<RuFeatureDto> ruFeatures;
   final PreloadDto preload;
-  final AppVersionSettingDto currentAppVersion;
+  final AppVersionExpirationDto currentAppVersion;
 }
