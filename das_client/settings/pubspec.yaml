@@ -24,6 +24,9 @@ dependencies:
   path_provider: ^2.1.5
 
 dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
   # https://pub.dev/packages/build_runner
   build_runner: ^2.13.1
   # https://pub.dev/packages/flutter_lints
@@ -32,5 +35,9 @@ dev_dependencies:
   json_serializable: ^6.13.1
   # https://pub.dev/packages/drift_dev
   drift_dev: ^2.32.1
+  # https://pub.dev/packages/mockito
+  mockito: ^5.6.3
+  # https://pub.dev/packages/fake_async
+  fake_async: ^1.3.3
   # https://pub.dev/packages/flutter_prunekit
   # flutter_prunekit: ^2.4.0 TODO: add back when analyzer >=10.0.0 is supported
