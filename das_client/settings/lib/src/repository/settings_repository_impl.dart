@@ -64,15 +64,17 @@ class SettingsRepositoryImpl implements SettingsRepository {
 
     await _saveRuFeatureSettings(remoteSettings);
 
-    if (_preloadSettingsChanged(remoteSettings) && _onAwsCredentialsChanged != null) {
+    if (_shouldCallAwsCredentialsChanged(remoteSettings)) {
       final preload = remoteSettings.preload;
-      _onAwsCredentialsChanged(
-        AwsConfiguration(
-          bucketUrl: preload.bucketUrl,
-          accessKey: preload.accessKey,
-          accessSecret: preload.accessSecret,
-        ),
-      );
+      final config = remoteSettings.currentAppVersion.toDomain().isExpired
+          ? AwsConfiguration.empty()
+          : AwsConfiguration(
+              bucketUrl: preload.bucketUrl,
+              accessKey: preload.accessKey,
+              accessSecret: preload.accessSecret,
+            );
+
+      _onAwsCredentialsChanged!(config);
     }
 
     _lastSettings = remoteSettings;
@@ -89,5 +91,7 @@ class SettingsRepositoryImpl implements SettingsRepository {
     _log.info('RU settings saved successfully.');
   }
 
-  bool _preloadSettingsChanged(SettingsDto remoteSettings) => remoteSettings.preload != _lastSettings?.preload;
+  bool _shouldCallAwsCredentialsChanged(SettingsDto remoteSettings) =>
+      _onAwsCredentialsChanged != null &&
+      (remoteSettings.preload != _lastSettings?.preload || remoteSettings.currentAppVersion.toDomain().isExpired);
 }
