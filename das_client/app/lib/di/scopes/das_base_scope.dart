@@ -140,6 +140,7 @@ extension BaseScopeExtension on GetIt {
         sferaLocalRepo: DI.get(),
         disablePreload: DI.get<Flavor>().disablePreload,
       ),
+      dispose: (repo) => repo.dispose(),
     );
   }
 }

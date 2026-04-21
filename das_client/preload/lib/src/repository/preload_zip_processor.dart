@@ -58,7 +58,7 @@ class PreloadZipProcessor {
       }
 
       receivePort.close();
-      zip.delete();
+      _saveDelete(zip);
 
       if (allSuccess) {
         _log.fine('Processed all files from ${zip.name}.');
@@ -68,16 +68,20 @@ class PreloadZipProcessor {
         return .corrupted;
       }
     } catch (e) {
-      _log.fine('Extract failed with $e for file ${zip.name}.');
+      _log.severe('Extract failed for file ${zip.name}.', e);
       return .error;
     }
   }
 
   Future<void> cleanup() async {
     _processedFiles.clear();
-    final preloadDir = await preloadDirectory();
-    if (preloadDir.existsSync()) {
-      preloadDir.delete(recursive: true);
+    try {
+      final preloadDir = await preloadDirectory();
+      if (preloadDir.existsSync()) {
+        preloadDir.delete(recursive: true);
+      }
+    } catch (e) {
+      _log.severe('Failed to delete preload directory for clean-up.', e);
     }
   }
 
@@ -88,6 +92,16 @@ class PreloadZipProcessor {
       await preloadDir.create(recursive: true);
     }
     return preloadDir;
+  }
+
+  Future<void> _saveDelete(File zip) async {
+    try {
+      if (zip.existsSync()) {
+        await zip.delete();
+      }
+    } catch (e) {
+      _log.severe('Failed to delete file ${zip.name}.', e);
+    }
   }
 }
 

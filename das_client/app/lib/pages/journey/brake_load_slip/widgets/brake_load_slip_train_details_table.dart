@@ -91,7 +91,7 @@ class BrakeLoadSlipTrainDetailsTable extends StatelessWidget {
           context.l10n.p_brake_load_slip_brake_details_holding_force,
           (formationRunChange.formationRun.tractionHoldingForceInHectoNewton / 10).toString(),
           formationRunChange.hasChanged(.tractionHoldingForceInHectoNewton),
-          (formationRunChange.formationRun.hauledLoadHoldingForceInHectoNewton / 10).toString(),
+          (formationRunChange.formationRun.hauledLoadHoldingForceInHectoNewton ?? 0 / 10).toString(),
           formationRunChange.hasChanged(.hauledLoadHoldingForceInHectoNewton),
           (formationRunChange.formationRun.formationHoldingForceInHectoNewton / 10).toString(),
           formationRunChange.hasChanged(.formationHoldingForceInHectoNewton),
