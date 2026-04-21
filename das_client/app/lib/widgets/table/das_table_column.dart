@@ -1,4 +1,5 @@
 import 'package:app/widgets/table/das_table_cell.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -82,8 +83,16 @@ class DASTableColumnDecoration {
 }
 
 extension DASTableColumnIterableX on Iterable<DASTableColumn> {
-  /// returns the left offset of the column with the given [DASTableColumn.index]
-  double leftOffsetTo(int index) => takeWhile(
-    (column) => column.id == null || column.id != index,
-  ).map((column) => column.width).nonNulls.reduce((a, b) => a + b);
+  /// returns the left offset of the column with the given [DASTableColumn.id]
+  double leftOffsetTo({required int columnId}) {
+    if (none((column) => column.id == columnId)) return 0;
+
+    final columnsOnLeft = takeWhile(
+      (column) => column.id == null || column.id != columnId,
+    ).map((column) => column.width).nonNulls;
+
+    if (columnsOnLeft.isEmpty) return 0;
+
+    return columnsOnLeft.reduce((a, b) => a + b);
+  }
 }

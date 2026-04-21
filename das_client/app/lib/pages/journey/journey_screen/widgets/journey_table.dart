@@ -101,7 +101,7 @@ class JourneyTable extends StatelessWidget {
       settings: model.journeySettings,
       collapsedRows: model.collapsedRows,
       journeyPosition: model.journeyPosition,
-      leftOffsetToInformationCell: columns.leftOffsetTo(ColumnDefinition.informationCell.index),
+      leftOffsetToInformationCell: columns.leftOffsetTo(columnId: ColumnDefinition.informationCell.index),
     );
     final journeyTableScrollController = DI.get<JourneyTableScrollController>();
     journeyTableScrollController.updateRenderedRows(rowBuilders);
