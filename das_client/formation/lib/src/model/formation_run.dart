@@ -20,7 +20,6 @@ class FormationRun {
     required this.hauledLoadBrakedWeightInT,
     required this.formationBrakedWeightInT,
     required this.tractionHoldingForceInHectoNewton,
-    required this.hauledLoadHoldingForceInHectoNewton,
     required this.formationHoldingForceInHectoNewton,
     required this.simTrain,
     required this.carCarrierVehicle,
@@ -32,6 +31,7 @@ class FormationRun {
     required this.axleLoadMaxInKg,
     required this.gradientUphillMaxInPermille,
     required this.gradientDownhillMaxInPermille,
+    this.hauledLoadHoldingForceInHectoNewton,
     this.trainCategoryCode,
     this.brakedWeightPercentage,
     this.tractionMaxSpeedInKmh,
@@ -70,7 +70,7 @@ class FormationRun {
   final int hauledLoadBrakedWeightInT;
   final int formationBrakedWeightInT;
   final int tractionHoldingForceInHectoNewton;
-  final int hauledLoadHoldingForceInHectoNewton;
+  final int? hauledLoadHoldingForceInHectoNewton;
   final int formationHoldingForceInHectoNewton;
   final bool? brakePositionGForLeadingTraction;
   final bool? brakePositionGForBrakeUnit1to5;
@@ -226,9 +226,7 @@ enum FormationRunFields {
   slopeMaxForHoldingForceMinInPermille('slopeMaxForHoldingForceMinInPermille')
   ;
 
-  const FormationRunFields(
-    this.fieldName,
-  );
+  const FormationRunFields(this.fieldName);
 
   final String fieldName;
 }
