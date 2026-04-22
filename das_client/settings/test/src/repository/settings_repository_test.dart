@@ -427,7 +427,7 @@ void main() {
     expect(testee.appVersionExpiration!.expired, isTrue);
   });
 
-  test('whenSettingsLoadedWithExpiredVersion_awsCallbackCalledWithEmptyConfig', () async {
+  test('whenSettingsLoadedWithExpiredVersion_awsCallbackCalledWithNull', () async {
     // ARRANGE
     when(mockSettingsRequest.call()).thenAnswer((_) => Future.value(buildSettingsResponse(appVersionExpired: true)));
 
@@ -435,7 +435,7 @@ void main() {
     await initTestee();
 
     // EXPECT
-    verify(mockCallbacks.awsCredentialsChanged(AwsConfiguration.empty())).called(1);
+    verify(mockCallbacks.awsCredentialsChanged(null)).called(1);
   });
 
   test('whenSettingsLoadedWithNonExpiredVersion_appVersionExpirationReturnsExpiredFalse', () async {

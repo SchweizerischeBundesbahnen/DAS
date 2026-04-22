@@ -67,7 +67,7 @@ class SettingsRepositoryImpl implements SettingsRepository {
     if (_shouldCallAwsCredentialsChanged(remoteSettings)) {
       final preload = remoteSettings.preload;
       final config = remoteSettings.currentAppVersion.toDomain().isExpired
-          ? AwsConfiguration.empty()
+          ? null
           : AwsConfiguration(
               bucketUrl: preload.bucketUrl,
               accessKey: preload.accessKey,
