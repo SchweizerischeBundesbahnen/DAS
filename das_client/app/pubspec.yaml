@@ -26,6 +26,7 @@ dependencies:
   settings: 1.0.0
   sfera: 1.0.0
   warnapp: 1.0.0
+  customer_oriented_departure: 1.0.0
 
   # https://pub.dev/packages/audioplayers
   audioplayers: ^6.6.0

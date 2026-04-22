@@ -4,6 +4,7 @@ import 'package:app/provider/ru_feature_provider.dart';
 import 'package:app/provider/ru_feature_provider_impl.dart';
 import 'package:app/util/device_id_info.dart';
 import 'package:auth/component.dart';
+import 'package:customer_oriented_departure/component.dart';
 import 'package:formation/component.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http_x/component.dart';
@@ -32,6 +33,7 @@ class AuthenticatedScope extends DIScope {
     getIt.registerMqttService();
     getIt.registerSferaRemoteRepo();
     getIt.registerSettingsRepository();
+    getIt.registerCustomerOrientedDepartureRepository();
     getIt.registerRuFeatureProvider();
     getIt.registerFormationRepository();
 
@@ -118,15 +120,24 @@ extension AuthenticatedScopeExtension on GetIt {
 
   void registerSettingsRepository() {
     final flavor = DI.get<Flavor>();
-    final configRepository = SettingsComponent.createRepository(
+    final settingsRepository = SettingsComponent.createRepository(
       baseUrl: flavor.backendUrl,
       client: DI.get(),
       onAwsCredentialsChanged: (credentials) {
         DI.get<PreloadRepository>().updateConfiguration(credentials);
       },
     );
-    registerSingleton<SettingsRepository>(configRepository);
-    registerSingleton<LogEndpoint>(configRepository);
+    registerSingleton<SettingsRepository>(settingsRepository);
+    registerSingleton<LogEndpoint>(settingsRepository);
+  }
+
+  void registerCustomerOrientedDepartureRepository() {
+    final flavor = DI.get<Flavor>();
+    final customerOrientedDepartureRepository = CustomerOrientedDepartureComponent.createRepository(
+      baseUrl: flavor.backendUrl,
+      client: DI.get(),
+    );
+    registerSingleton<CustomerOrientedDepartureRepository>(customerOrientedDepartureRepository);
   }
 
   void registerRuFeatureProvider() {

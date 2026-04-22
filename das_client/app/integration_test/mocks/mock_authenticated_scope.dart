@@ -3,9 +3,11 @@
 import 'package:app/di/di.dart';
 import 'package:app/di/scopes/authenticated_scope.dart';
 import 'package:app/provider/ru_feature_provider.dart';
+import 'package:customer_oriented_departure/component.dart';
 import 'package:formation/component.dart';
 import 'package:logging/logging.dart';
 
+import 'mock_customer_oriented_departure_repository.dart';
 import 'mock_formation_repository.dart';
 import 'mock_ru_feature_provider.dart';
 
@@ -34,9 +36,11 @@ class MockAuthenticatedScope extends AuthenticatedScope {
     if (e2e) {
       getIt.registerRuFeatureProvider();
       getIt.registerFormationRepository();
+      getIt.registerCustomerOrientedDepartureRepository();
     } else {
       _registerMockRuFeaturesProvider();
       _registerMockFormationRepository();
+      _registerMockCustomerOrientedDepartureRepository();
     }
 
     return getIt.allReady();
@@ -48,5 +52,9 @@ class MockAuthenticatedScope extends AuthenticatedScope {
 
   void _registerMockFormationRepository() {
     getIt.registerSingleton<FormationRepository>(MockFormationRepository());
+  }
+
+  void _registerMockCustomerOrientedDepartureRepository() {
+    getIt.registerSingleton<CustomerOrientedDepartureRepository>(MockCustomerOrientedDepartureRepository());
   }
 }
