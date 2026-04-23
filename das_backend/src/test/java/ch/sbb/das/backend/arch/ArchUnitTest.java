@@ -8,7 +8,7 @@ import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchRule;
 
-@AnalyzeClasses(packages = "ch.sbb.backend", importOptions = ImportOption.DoNotIncludeTests.class)
+@AnalyzeClasses(packages = "ch.sbb.das.backend", importOptions = ImportOption.DoNotIncludeTests.class)
 final class ArchUnitTest {
 
     // todo redefine rules

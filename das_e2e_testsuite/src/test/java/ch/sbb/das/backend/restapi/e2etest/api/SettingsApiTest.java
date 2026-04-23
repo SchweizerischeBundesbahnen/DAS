@@ -1,4 +1,4 @@
-package ch.sbb.das.backend.restapi.e2etest.api;//package ch.sbb.backend;
+package ch.sbb.das.backend.restapi.e2etest.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
