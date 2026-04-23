@@ -21,7 +21,7 @@ class SettingsResponse {
 
   factory SettingsResponse.fromHttpResponse(Response response) {
     final status = response.statusCode;
-    final isSuccess = status == 200;
+    final isSuccess = status >= 200 && status < 300;
     if (isSuccess) {
       final body = utf8.decode(response.bodyBytes);
       final json = jsonDecode(body);
