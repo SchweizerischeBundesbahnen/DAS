@@ -64,3 +64,22 @@ class AppExpirationDialog extends StatelessWidget {
     );
   }
 }
+
+Future<dynamic> showAppExpiresSoonDialog(ExpirySoon model, BuildContext context) {
+  return showDialog(
+    context: context,
+    builder: (context) {
+      return AppExpirationDialog(model: model);
+    },
+  );
+}
+
+Future<dynamic> showAppExpiredDialog(Expired model, BuildContext context) {
+  return showDialog(
+    context: context,
+    barrierDismissible: true,
+    builder: (context) {
+      return AppExpirationDialog(model: model);
+    },
+  );
+}

@@ -75,22 +75,10 @@ class _ContentState extends State<_Content> {
     _appExpirationSubscription = appExpirationVM.model.listen((model) {
       if (!mounted) return;
       if (model is Expired) {
-        showDialog(
-          context: context,
-          barrierDismissible: true,
-          builder: (context) {
-            return AppExpirationDialog(model: model);
-          },
-        );
+        showAppExpiredDialog(model, context);
       } else if (model is ExpirySoon) {
         if (!model.userDismissedDialog) {
-          print(model);
-          showDialog(
-            context: context,
-            builder: (context) {
-              return AppExpirationDialog(model: model);
-            },
-          ).then((_) {
+          showAppExpiresSoonDialog(model, context).then((_) {
             if (!mounted) return;
             appExpirationVM.dialogDismissedByUser();
             // TODO: add callback here for redirect after deep link entry
