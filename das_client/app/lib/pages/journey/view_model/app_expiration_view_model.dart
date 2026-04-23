@@ -34,16 +34,20 @@ class AppExpirationViewModel {
     Valid() => false,
   };
 
-  void checkIsAppExpired() {
+  Future<void> checkIsAppExpired() {
     _lastSetting = _settingsRepository.appVersionExpiration ?? _lastSetting;
 
-    if (_throttleTimer == null && !_isLoading) _loadSettings();
+    if (_throttleTimer == null && !_isLoading) {
+      return _loadSettings();
+    } else {
+      return Future.value();
+    }
   }
 
-  void _loadSettings() {
+  Future<void> _loadSettings() {
     _isLoading = true;
 
-    _settingsRepository.loadSettings().then((success) {
+    return _settingsRepository.loadSettings().then((success) {
       _isLoading = false;
       _throttleTimer = Timer(throttleDuration, () => _throttleTimer = null);
       if (success) {

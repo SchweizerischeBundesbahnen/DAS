@@ -21,7 +21,10 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 @RoutePage()
 class JourneySelectionPage extends StatelessWidget implements AutoRouteWrapper {
-  const JourneySelectionPage({super.key});
+  const JourneySelectionPage({super.key, VoidCallback? onAppExpiredDialogDismissed})
+    : _onAppExpiredDialogDismissed = onAppExpiredDialogDismissed;
+
+  final VoidCallback? _onAppExpiredDialogDismissed;
 
   @override
   Widget wrappedRoute(BuildContext context) {
@@ -41,7 +44,7 @@ class JourneySelectionPage extends StatelessWidget implements AutoRouteWrapper {
   @override
   Widget build(BuildContext context) {
     return DASJourneyScaffold(
-      body: _Content(),
+      body: _Content(onAppExpiredDialogDismissed: _onAppExpiredDialogDismissed),
       appBarTitle: context.l10n.c_app_name,
       appBarTrailingAction: LogoutButton(),
     );
@@ -49,7 +52,8 @@ class JourneySelectionPage extends StatelessWidget implements AutoRouteWrapper {
 }
 
 class _Content extends StatefulWidget {
-  const _Content();
+  const _Content({this.onAppExpiredDialogDismissed});
+  final VoidCallback? onAppExpiredDialogDismissed;
 
   @override
   State<_Content> createState() => _ContentState();
@@ -81,7 +85,7 @@ class _ContentState extends State<_Content> {
           showAppExpiresSoonDialog(model, context).then((_) {
             if (!mounted) return;
             appExpirationVM.dialogDismissedByUser();
-            // TODO: add callback here for redirect after deep link entry
+            widget.onAppExpiredDialogDismissed?.call();
           });
         }
       }
