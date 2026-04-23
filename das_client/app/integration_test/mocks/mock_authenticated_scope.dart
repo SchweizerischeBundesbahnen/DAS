@@ -8,10 +8,10 @@ import 'package:logging/logging.dart';
 import 'package:preload/component.dart';
 import 'package:settings/component.dart';
 
-import '../../test/pages/journey/view_model/app_expiration_view_model_test.mocks.dart';
 import 'mock_formation_repository.dart';
 import 'mock_preload_repository.dart';
 import 'mock_ru_feature_provider.dart';
+import 'mock_settings_repository.dart';
 
 final _log = Logger('MockAuthenticatedScope');
 

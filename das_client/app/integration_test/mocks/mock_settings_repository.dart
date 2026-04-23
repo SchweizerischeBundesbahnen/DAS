@@ -1,7 +1,7 @@
 import 'package:settings/component.dart';
 
 class MockSettingsRepository implements SettingsRepository {
-  MockSettingsRepository({AppVersionExpiration? appVersionExpiration}) : _appVersionExpiration = appVersionExpiration;
+  MockSettingsRepository() : _appVersionExpiration = AppVersionExpiration(expired: false);
 
   AppVersionExpiration? _appVersionExpiration;
 
