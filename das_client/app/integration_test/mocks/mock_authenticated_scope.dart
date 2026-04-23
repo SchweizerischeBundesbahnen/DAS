@@ -6,12 +6,10 @@ import 'package:app/provider/ru_feature_provider.dart';
 import 'package:formation/component.dart';
 import 'package:logging/logging.dart';
 import 'package:preload/component.dart';
-import 'package:settings/component.dart';
 
 import 'mock_formation_repository.dart';
 import 'mock_preload_repository.dart';
 import 'mock_ru_feature_provider.dart';
-import 'mock_settings_repository.dart';
 
 final _log = Logger('MockAuthenticatedScope');
 
@@ -41,7 +39,6 @@ class MockAuthenticatedScope extends AuthenticatedScope {
       getIt.registerRuFeatureProvider();
       getIt.registerFormationRepository();
     } else {
-      _registerMockSettingsRepository();
       _registerMockPreloadRepository();
       _registerMockRuFeaturesProvider();
       _registerMockFormationRepository();
@@ -49,10 +46,6 @@ class MockAuthenticatedScope extends AuthenticatedScope {
     getIt.registerAppExpirationViewModelAsync();
 
     return getIt.allReady();
-  }
-
-  void _registerMockSettingsRepository() {
-    getIt.registerSingleton<SettingsRepository>(MockSettingsRepository());
   }
 
   void _registerMockRuFeaturesProvider() {
