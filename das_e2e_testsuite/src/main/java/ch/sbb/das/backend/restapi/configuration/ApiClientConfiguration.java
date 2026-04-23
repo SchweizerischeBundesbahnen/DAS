@@ -1,7 +1,7 @@
 package ch.sbb.das.backend.restapi.configuration;
 
-import ch.sbb.backend.restclient.v1.ApiClient;
 import ch.sbb.das.backend.restapi.helper.ObjectMapperFactory;
+import ch.sbb.das.backend.restclient.v1.ApiClient;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
