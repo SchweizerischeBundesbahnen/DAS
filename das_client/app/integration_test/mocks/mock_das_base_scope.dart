@@ -30,8 +30,9 @@ class MockDASBaseScope extends DASBaseScope {
   Future<void> push() async {
     _log.fine('Pushing mock scope $scopeName');
     getIt.pushNewScope(scopeName: scopeName);
-    _registerMockBrightnessManager();
 
+    getIt.registerAppInfoAsync();
+    _registerMockBrightnessManager();
     _registerIntegrationTestAudioPlayer();
     getIt.registerSounds();
     _registerMockBattery();

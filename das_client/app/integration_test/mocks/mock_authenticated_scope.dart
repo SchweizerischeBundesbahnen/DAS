@@ -6,7 +6,9 @@ import 'package:app/provider/ru_feature_provider.dart';
 import 'package:formation/component.dart';
 import 'package:logging/logging.dart';
 import 'package:preload/component.dart';
+import 'package:settings/component.dart';
 
+import '../../test/pages/journey/view_model/app_expiration_view_model_test.mocks.dart';
 import 'mock_formation_repository.dart';
 import 'mock_preload_repository.dart';
 import 'mock_ru_feature_provider.dart';
@@ -33,19 +35,24 @@ class MockAuthenticatedScope extends AuthenticatedScope {
     getIt.registerHttpClient();
     getIt.registerSferaLocalRepo();
     getIt.registerSferaRemoteRepo();
-    getIt.registerSettingsRepositoryAsync();
-    getIt.registerAppExpirationViewModelAsync();
     if (e2e) {
+      getIt.registerSettingsRepositoryAsync();
       getIt.registerPreloadRepository();
       getIt.registerRuFeatureProvider();
       getIt.registerFormationRepository();
     } else {
+      _registerMockSettingsRepository();
       _registerMockPreloadRepository();
       _registerMockRuFeaturesProvider();
       _registerMockFormationRepository();
     }
+    getIt.registerAppExpirationViewModelAsync();
 
     return getIt.allReady();
+  }
+
+  void _registerMockSettingsRepository() {
+    getIt.registerSingleton<SettingsRepository>(MockSettingsRepository());
   }
 
   void _registerMockRuFeaturesProvider() {
