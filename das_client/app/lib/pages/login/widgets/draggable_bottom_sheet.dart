@@ -1,5 +1,6 @@
 import 'dart:math' show min;
 
+import 'package:app/app_info/app_info.dart';
 import 'package:app/di/di.dart';
 import 'package:app/flavor.dart';
 import 'package:app/i18n/src/build_context_x.dart';
@@ -9,7 +10,6 @@ import 'package:app/pages/login/widgets/login_button.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/device_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -27,7 +27,7 @@ class _LoginDraggableBottomSheetState extends State<LoginDraggableBottomSheet> {
   final minHeight = min(LoginDraggableBottomSheet._minHeight / DeviceScreen.height, 0.5);
 
   final flavor = DI.get<Flavor>();
-  final _packageInfo = PackageInfo.fromPlatform();
+  final _appInfo = DI.get<AppInfo>();
 
   @override
   Widget build(BuildContext context) {
@@ -110,30 +110,18 @@ class _LoginDraggableBottomSheetState extends State<LoginDraggableBottomSheet> {
             ],
           ),
         ),
-        FutureBuilder(
-          future: _packageInfo,
-          builder: (context, asyncSnapshot) {
-            final packageInfo = asyncSnapshot.data;
-
-            if (packageInfo == null) return SizedBox.shrink();
-            return Column(
-              children: [
-                SizedBox(height: SBBSpacing.xSmall),
-                RichText(
-                  text: TextSpan(
-                    text: 'App Version: ',
-                    style: sbbTextStyle.lightStyle.small.copyWith(color: SBBColors.granite),
-                    children: [
-                      TextSpan(
-                        text: '${packageInfo.version}+${packageInfo.buildNumber}',
-                        style: sbbTextStyle.boldStyle.small.copyWith(color: SBBColors.granite),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            );
-          },
+        SizedBox(height: SBBSpacing.xSmall),
+        RichText(
+          text: TextSpan(
+            text: 'App Version: ',
+            style: sbbTextStyle.lightStyle.small.copyWith(color: SBBColors.granite),
+            children: [
+              TextSpan(
+                text: '${_appInfo.version}+${_appInfo.buildNumber}',
+                style: sbbTextStyle.boldStyle.small.copyWith(color: SBBColors.granite),
+              ),
+            ],
+          ),
         ),
       ],
     );

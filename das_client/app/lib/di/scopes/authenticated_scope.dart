@@ -1,3 +1,4 @@
+import 'package:app/app_info/app_info.dart';
 import 'package:app/di/di.dart';
 import 'package:app/flavor.dart';
 import 'package:app/pages/journey/view_model/app_expiration_view_model.dart';
@@ -11,7 +12,6 @@ import 'package:http_x/component.dart';
 import 'package:logger/component.dart';
 import 'package:logging/logging.dart';
 import 'package:mqtt/component.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:preload/component.dart';
 import 'package:settings/component.dart';
 import 'package:sfera/component.dart';
@@ -143,14 +143,14 @@ extension AuthenticatedScopeExtension on GetIt {
     final flavor = DI.get<Flavor>();
 
     registerSingletonAsync<SettingsRepository>(() async {
-      final appInfo = await PackageInfo.fromPlatform();
+      final appVersion = DI.get<AppInfo>().version;
       return SettingsComponent.createRepository(
         baseUrl: flavor.backendUrl,
         client: DI.get(),
         onAwsCredentialsChanged: (credentials) {
           DI.get<PreloadRepository>().updateConfiguration(credentials);
         },
-        appVersion: appInfo.version,
+        appVersion: appVersion,
       );
     });
     registerSingletonAsync<LogEndpoint>(
@@ -162,7 +162,7 @@ extension AuthenticatedScopeExtension on GetIt {
   void registerAppExpirationViewModelAsync() {
     registerSingletonAsync<AppExpirationViewModel>(
       () async {
-        final appVersion = (await PackageInfo.fromPlatform()).version;
+        final appVersion = DI.get<AppInfo>().version;
         return Future.value(
           AppExpirationViewModel(
             settingsRepository: DI.get<SettingsRepository>(),

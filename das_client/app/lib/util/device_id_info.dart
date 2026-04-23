@@ -25,7 +25,7 @@ class DeviceIdInfo {
 
   static Future<String> _androidDeviceId() async {
     final androidId = await AndroidId().getId();
-    return androidId ?? (await DeviceInfoPlugin().androidInfo).id;
+    return androidId ?? 'UNKNOWN';
   }
 
   static Future<String> _iosDeviceId() async {
