@@ -93,5 +93,5 @@ class SettingsRepositoryImpl implements SettingsRepository {
 
   bool _shouldCallAwsCredentialsChanged(SettingsDto remoteSettings) =>
       _onAwsCredentialsChanged != null &&
-      (remoteSettings.preload != _lastSettings?.preload || remoteSettings.currentAppVersion.toDomain().isExpired);
+      (remoteSettings.preload != _lastSettings?.preload || remoteSettings.currentAppVersion.toDomain().expired);
 }

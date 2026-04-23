@@ -4,5 +4,5 @@ class AppVersionExpiration {
   final bool expired;
   final DateTime? expiryDate;
 
-  bool get isExpired => expired || (expiryDate != null && expiryDate!.isAfter(DateTime.now()));
+  bool get isExpired => expired || (expiryDate != null && expiryDate!.isBefore(DateTime.now()));
 }
