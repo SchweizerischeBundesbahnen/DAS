@@ -14,13 +14,14 @@ import 'app_expiration_view_model_test.mocks.dart';
 void main() {
   late AppExpirationViewModel testee;
   late MockSettingsRepository mockSettingsRepository;
+  const appVersionFixture = 'someAppVersion';
 
   setUp(() {
     mockSettingsRepository = MockSettingsRepository();
     when(mockSettingsRepository.loadSettings()).thenAnswer((_) async => true);
     when(mockSettingsRepository.appVersionExpiration).thenReturn(null);
 
-    testee = AppExpirationViewModel(settingsRepository: mockSettingsRepository);
+    testee = AppExpirationViewModel(settingsRepository: mockSettingsRepository, currentAppVersion: 'fakeAppVersion');
   });
 
   tearDown(() {
@@ -32,7 +33,7 @@ void main() {
     await processStreams();
 
     // EXPECT
-    expect(testee.modelValue, Valid());
+    expect(testee.modelValue, Valid(currentAppVersion: ''));
   });
 
   test('modelValue_whenNotExpiredAndNoExpiryDate_thenReturnsValid', () async {
@@ -46,7 +47,7 @@ void main() {
     await processStreams();
 
     // EXPECT
-    expect(testee.modelValue, Valid());
+    expect(testee.modelValue, Valid(currentAppVersion: appVersionFixture));
   });
 
   test('modelValue_whenExpiredIsTrue_thenReturnsExpired', () async {
@@ -60,7 +61,7 @@ void main() {
     await processStreams();
 
     // EXPECT
-    expect(testee.modelValue, Expired());
+    expect(testee.modelValue, Expired(currentAppVersion: appVersionFixture));
   });
 
   test('modelValue_whenExpiryDateIsInFuture_thenReturnsExpirySoon', () async {
@@ -75,7 +76,10 @@ void main() {
     await processStreams();
 
     // EXPECT
-    expect(testee.modelValue, ExpirySoon(expiryDate: expiryDate, userDismissedDialog: false));
+    expect(
+      testee.modelValue,
+      ExpirySoon(expiryDate: expiryDate, userDismissedDialog: false, currentAppVersion: appVersionFixture),
+    );
   });
 
   test('mustShowDialog_whenExpired_thenReturnsTrue', () async {
@@ -125,11 +129,14 @@ void main() {
     await processStreams();
 
     // ACT
-    testee.dismissDialog();
+    testee.dialogDismissedByUser();
     await processStreams();
 
     // EXPECT
-    expect(testee.modelValue, ExpirySoon(expiryDate: expiryDate, userDismissedDialog: true));
+    expect(
+      testee.modelValue,
+      ExpirySoon(expiryDate: expiryDate, userDismissedDialog: true, currentAppVersion: appVersionFixture),
+    );
     expect(testee.mustShowDialog, isFalse);
   });
 
@@ -143,17 +150,20 @@ void main() {
     await processStreams();
 
     // ACT
-    testee.dismissDialog();
-    testee.dismissDialog();
+    testee.dialogDismissedByUser();
+    testee.dialogDismissedByUser();
     await processStreams();
 
     // EXPECT
-    expect(testee.modelValue, ExpirySoon(expiryDate: expiryDate, userDismissedDialog: true));
+    expect(
+      testee.modelValue,
+      ExpirySoon(expiryDate: expiryDate, userDismissedDialog: true, currentAppVersion: appVersionFixture),
+    );
   });
 
   test('model_whenCreated_thenEmitsValid', () async {
     // ARRANGE & ACT & EXPECT
-    await expectLater(testee.model, emits(Valid()));
+    await expectLater(testee.model, emits(Valid(currentAppVersion: appVersionFixture)));
   });
 
   test('model_whenAppIsExpired_thenEmitsExpired', () async {
@@ -166,7 +176,7 @@ void main() {
     testee.checkIsAppExpired();
 
     // EXPECT
-    await expectLater(testee.model, emitsThrough(Expired()));
+    await expectLater(testee.model, emitsThrough(Expired(currentAppVersion: appVersionFixture)));
   });
 
   test('modelValue_whenLoadSettingsReturnsFalse_thenRemainsValid', () async {
@@ -181,6 +191,6 @@ void main() {
     await processStreams();
 
     // EXPECT
-    expect(testee.modelValue, Valid());
+    expect(testee.modelValue, Valid(currentAppVersion: appVersionFixture));
   });
 }

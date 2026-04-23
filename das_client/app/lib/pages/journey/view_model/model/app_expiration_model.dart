@@ -1,18 +1,25 @@
 sealed class AppExpirationModel {
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) || other is AppExpirationModel && runtimeType == other.runtimeType;
+  AppExpirationModel({required this.currentAppVersion});
+
+  final String currentAppVersion;
 
   @override
-  int get hashCode => 0;
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is AppExpirationModel && runtimeType == other.runtimeType && currentAppVersion == other.currentAppVersion;
+
+  @override
+  int get hashCode => currentAppVersion.hashCode;
 
   @override
   String toString() {
-    return 'AppExpirationModel{}';
+    return 'AppExpirationModel{currentAppVersion: $currentAppVersion}';
   }
 }
 
 class Expired extends AppExpirationModel {
+  Expired({required super.currentAppVersion});
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) || super == other && other is Expired && runtimeType == other.runtimeType;
@@ -25,6 +32,7 @@ class ExpirySoon extends AppExpirationModel {
   ExpirySoon({
     required this.expiryDate,
     required this.userDismissedDialog,
+    required super.currentAppVersion,
   });
 
   @override
@@ -48,6 +56,8 @@ class ExpirySoon extends AppExpirationModel {
 }
 
 class Valid extends AppExpirationModel {
+  Valid({required super.currentAppVersion});
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) || super == other && other is Valid && runtimeType == other.runtimeType;

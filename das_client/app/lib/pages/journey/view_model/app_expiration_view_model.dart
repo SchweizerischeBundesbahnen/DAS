@@ -3,13 +3,17 @@ import 'package:rxdart/rxdart.dart';
 import 'package:settings/component.dart';
 
 class AppExpirationViewModel {
-  AppExpirationViewModel({required SettingsRepository settingsRepository}) : _settingsRepository = settingsRepository {
+  AppExpirationViewModel({required SettingsRepository settingsRepository, required String currentAppVersion})
+    : _settingsRepository = settingsRepository,
+      _currentAppVersion = currentAppVersion {
     checkIsAppExpired();
   }
 
   final SettingsRepository _settingsRepository;
 
-  final _rxSubject = BehaviorSubject<AppExpirationModel>.seeded(Valid());
+  final String _currentAppVersion;
+
+  final _rxSubject = BehaviorSubject<AppExpirationModel>.seeded(Valid(currentAppVersion: ''));
 
   Stream<AppExpirationModel> get model => _rxSubject.stream.distinct();
 
@@ -33,7 +37,7 @@ class AppExpirationViewModel {
     });
   }
 
-  void dismissDialog() {
+  void dialogDismissedByUser() {
     if (_dialogDismissed) return;
     _dialogDismissed = true;
     _emitModel();
@@ -51,10 +55,20 @@ class AppExpirationViewModel {
   }
 
   AppExpirationModel _modelFromInternalState() {
+    // return Expired(currentAppVersion: _currentAppVersion);
     final setting = _lastSetting;
-    if (setting == null || !setting.isExpired) return Valid();
+    return ExpirySoon(
+      expiryDate: DateTime(2027),
+      userDismissedDialog: _dialogDismissed,
+      currentAppVersion: _currentAppVersion,
+    );
+    if (setting == null || !setting.isExpired) return Valid(currentAppVersion: _currentAppVersion);
 
-    if (setting.expired) return Expired();
-    return ExpirySoon(expiryDate: setting.expiryDate!, userDismissedDialog: _dialogDismissed);
+    if (setting.expired) return Expired(currentAppVersion: _currentAppVersion);
+    return ExpirySoon(
+      expiryDate: setting.expiryDate!,
+      userDismissedDialog: _dialogDismissed,
+      currentAppVersion: _currentAppVersion,
+    );
   }
 }
