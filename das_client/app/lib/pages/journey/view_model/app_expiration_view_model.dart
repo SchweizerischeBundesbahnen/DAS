@@ -55,13 +55,7 @@ class AppExpirationViewModel {
   }
 
   AppExpirationModel _modelFromInternalState() {
-    // return Expired(currentAppVersion: _currentAppVersion);
     final setting = _lastSetting;
-    return ExpirySoon(
-      expiryDate: DateTime(2027),
-      userDismissedDialog: _dialogDismissed,
-      currentAppVersion: _currentAppVersion,
-    );
     if (setting == null || !setting.isExpired) return Valid(currentAppVersion: _currentAppVersion);
 
     if (setting.expired) return Expired(currentAppVersion: _currentAppVersion);

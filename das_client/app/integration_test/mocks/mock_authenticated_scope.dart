@@ -34,6 +34,7 @@ class MockAuthenticatedScope extends AuthenticatedScope {
     getIt.registerSferaLocalRepo();
     getIt.registerSferaRemoteRepo();
     getIt.registerSettingsRepositoryAsync();
+    getIt.registerAppExpirationViewModelAsync();
     if (e2e) {
       getIt.registerPreloadRepository();
       getIt.registerRuFeatureProvider();

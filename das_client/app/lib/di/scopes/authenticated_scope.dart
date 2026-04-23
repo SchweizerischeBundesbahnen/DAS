@@ -1,5 +1,6 @@
 import 'package:app/di/di.dart';
 import 'package:app/flavor.dart';
+import 'package:app/pages/journey/view_model/app_expiration_view_model.dart';
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:app/provider/ru_feature_provider_impl.dart';
 import 'package:app/util/device_id_info.dart';
@@ -34,6 +35,7 @@ class AuthenticatedScope extends DIScope {
     getIt.registerSferaLocalRepo();
     getIt.registerSferaRemoteRepo();
     getIt.registerSettingsRepositoryAsync();
+    getIt.registerAppExpirationViewModelAsync();
     getIt.registerRuFeatureProvider();
     getIt.registerFormationRepository();
     getIt.registerPreloadRepository();
@@ -154,6 +156,22 @@ extension AuthenticatedScopeExtension on GetIt {
     registerSingletonAsync<LogEndpoint>(
       () => Future.value(DI.get<SettingsRepository>()),
       dependsOn: [SettingsRepository],
+    );
+  }
+
+  void registerAppExpirationViewModelAsync() {
+    registerSingletonAsync<AppExpirationViewModel>(
+      () async {
+        final appVersion = (await PackageInfo.fromPlatform()).version;
+        return Future.value(
+          AppExpirationViewModel(
+            settingsRepository: DI.get<SettingsRepository>(),
+            currentAppVersion: appVersion,
+          ),
+        );
+      },
+      dependsOn: [SettingsRepository],
+      dispose: (vm) => vm.dispose(),
     );
   }
 

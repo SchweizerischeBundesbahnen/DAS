@@ -4,11 +4,14 @@ import 'package:app/brightness/brightness_modal_sheet.dart';
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/app_router.dart';
+import 'package:app/pages/journey/selection/app_expiration_dialog.dart';
 import 'package:app/pages/journey/selection/journey_selection_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
 import 'package:app/pages/journey/selection/widgets/journey_date_input.dart';
 import 'package:app/pages/journey/selection/widgets/journey_train_number_input.dart';
 import 'package:app/pages/journey/selection/widgets/logout_button.dart';
+import 'package:app/pages/journey/view_model/app_expiration_view_model.dart';
+import 'package:app/pages/journey/view_model/model/app_expiration_model.dart';
 import 'package:app/pages/journey/widgets/das_journey_scaffold.dart';
 import 'package:app/widgets/railway_undertaking/widgets/select_railway_undertaking_input.dart';
 import 'package:auto_route/auto_route.dart';
@@ -22,9 +25,15 @@ class JourneySelectionPage extends StatelessWidget implements AutoRouteWrapper {
 
   @override
   Widget wrappedRoute(BuildContext context) {
-    return Provider<JourneySelectionViewModel>(
-      create: (_) => DI.get<JourneySelectionViewModel>(),
-      dispose: (_, _) {}, // dispose is called when JourneyScope is popped
+    return MultiProvider(
+      providers: [
+        Provider<AppExpirationViewModel>(
+          create: (_) => DI.get<AppExpirationViewModel>(),
+        ),
+        Provider<JourneySelectionViewModel>(
+          create: (_) => DI.get<JourneySelectionViewModel>(),
+        ),
+      ],
       child: this,
     );
   }
@@ -48,6 +57,7 @@ class _Content extends StatefulWidget {
 
 class _ContentState extends State<_Content> {
   late StreamSubscription<JourneySelectionModel?> _subscription;
+  late StreamSubscription<AppExpirationModel> _appExpirationSubscription;
 
   @override
   void initState() {
@@ -56,6 +66,36 @@ class _ContentState extends State<_Content> {
     _subscription = viewModel.model.listen((model) {
       if (model is Loaded && mounted) {
         context.router.replace(JourneyRoute());
+      }
+    });
+
+    final appExpirationVM = context.read<AppExpirationViewModel>();
+    appExpirationVM.checkIsAppExpired();
+
+    _appExpirationSubscription = appExpirationVM.model.listen((model) {
+      if (!mounted) return;
+      if (model is Expired) {
+        showDialog(
+          context: context,
+          barrierDismissible: true,
+          builder: (context) {
+            return AppExpirationDialog(model: model);
+          },
+        );
+      } else if (model is ExpirySoon) {
+        if (!model.userDismissedDialog) {
+          print(model);
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AppExpirationDialog(model: model);
+            },
+          ).then((_) {
+            if (!mounted) return;
+            appExpirationVM.dialogDismissedByUser();
+            // TODO: add callback here for redirect after deep link entry
+          });
+        }
       }
     });
 
@@ -88,6 +128,7 @@ class _ContentState extends State<_Content> {
   @override
   void dispose() {
     _subscription.cancel();
+    _appExpirationSubscription.cancel();
     super.dispose();
   }
 
