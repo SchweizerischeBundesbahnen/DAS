@@ -16,7 +16,7 @@ class MockSferaMockScope extends SferaMockScope {
   final bool e2e;
 
   @override
-  String get scopeName => 'SferaMockScopeMock';
+  String get scopeName => 'MockSferaMockScope';
 
   @override
   Future<void> push() async {
