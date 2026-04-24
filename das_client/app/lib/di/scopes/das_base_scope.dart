@@ -2,6 +2,7 @@ import 'package:app/app_info/app_info.dart';
 import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/brightness/brightness_manager_impl.dart';
 import 'package:app/di/di.dart';
+import 'package:app/flavor.dart';
 import 'package:app/launcher/launcher.dart';
 import 'package:app/launcher/launcher_impl.dart';
 import 'package:app/pages/login/login_view_model.dart';
@@ -16,7 +17,9 @@ import 'package:get_it/get_it.dart';
 import 'package:logger/component.dart';
 import 'package:logging/logging.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:preload/component.dart';
 import 'package:screen_brightness/screen_brightness.dart';
+import 'package:sfera/component.dart';
 import 'package:warnapp/component.dart';
 
 final _log = Logger('DASBaseScope');
@@ -44,6 +47,9 @@ class DASBaseScope extends DIScope {
     getIt.registerLoginViewModel();
     getIt.registerAppLinksManager();
     getIt.registerLauncher();
+    getIt.registerSferaLocalRepo();
+    getIt.registerPreloadRepository();
+
     await getIt.allReady();
   }
 }
@@ -138,5 +144,24 @@ extension BaseScopeExtension on GetIt {
   void registerLauncher() {
     _log.fine('Register Launcher');
     registerSingleton<Launcher>(LauncherImpl(userSettings: DI.get(), flavor: DI.get()));
+  }
+
+  void registerSferaLocalRepo() {
+    factoryFunc() {
+      _log.fine('Register sfera local repo');
+      return SferaComponent.createSferaLocalRepo();
+    }
+
+    registerLazySingleton<SferaLocalRepo>(factoryFunc);
+  }
+
+  void registerPreloadRepository() {
+    registerSingleton<PreloadRepository>(
+      PreloadComponent.createPreloadRepository(
+        sferaLocalRepo: DI.get(),
+        disablePreload: DI.get<Flavor>().disablePreload,
+      ),
+      dispose: (repo) => repo.dispose(),
+    );
   }
 }

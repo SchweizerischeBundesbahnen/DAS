@@ -32,13 +32,11 @@ class AuthenticatedScope extends DIScope {
     getIt.registerHttpClient();
     getIt.registerMqttAuthProvider();
     getIt.registerMqttService();
-    getIt.registerSferaLocalRepo();
     getIt.registerSferaRemoteRepo();
-    getIt.registerSettingsRepositoryAsync();
-    getIt.registerAppExpirationViewModelAsync();
+    getIt.registerSettingsRepository();
+    getIt.registerAppExpirationViewModel();
     getIt.registerRuFeatureProvider();
     getIt.registerFormationRepository();
-    getIt.registerPreloadRepository();
 
     await getIt.allReady();
   }
@@ -121,58 +119,30 @@ extension AuthenticatedScopeExtension on GetIt {
     );
   }
 
-  void registerSferaLocalRepo() {
-    factoryFunc() {
-      _log.fine('Register sfera local repo');
-      return SferaComponent.createSferaLocalRepo();
-    }
-
-    registerLazySingleton<SferaLocalRepo>(factoryFunc);
-  }
-
-  void registerPreloadRepository() {
-    registerSingleton<PreloadRepository>(
-      PreloadComponent.createPreloadRepository(
-        sferaLocalRepo: DI.get(),
-        disablePreload: DI.get<Flavor>().disablePreload,
-      ),
-    );
-  }
-
-  void registerSettingsRepositoryAsync() {
+  void registerSettingsRepository() {
     final flavor = DI.get<Flavor>();
+    final appVersion = DI.get<AppInfo>().version;
 
-    registerSingletonAsync<SettingsRepository>(() async {
-      final appVersion = DI.get<AppInfo>().version;
-      return SettingsComponent.createRepository(
-        baseUrl: flavor.backendUrl,
-        client: DI.get(),
-        onAwsCredentialsChanged: (credentials) {
-          DI.get<PreloadRepository>().updateConfiguration(credentials);
-        },
-        appVersion: appVersion,
-      );
-    });
-    registerSingletonAsync<LogEndpoint>(
-      () => Future.value(DI.get<SettingsRepository>()),
-      dependsOn: [SettingsRepository],
+    final settingsRepository = SettingsComponent.createRepository(
+      baseUrl: flavor.backendUrl,
+      client: DI.get(),
+      onAwsCredentialsChanged: (credentials) {
+        DI.get<PreloadRepository>().updateConfiguration(credentials);
+      },
+      appVersion: appVersion,
     );
+
+    registerSingleton<SettingsRepository>(settingsRepository);
+    registerSingleton<LogEndpoint>(settingsRepository);
   }
 
-  void registerAppExpirationViewModelAsync() {
-    registerSingletonAsync<AppExpirationViewModel>(
-      () async {
-        final appVersion = DI.get<AppInfo>().version;
-        return Future.value(
-          AppExpirationViewModel(
-            settingsRepository: DI.get<SettingsRepository>(),
-            currentAppVersion: appVersion,
-          ),
-        );
-      },
-      dependsOn: [SettingsRepository],
-      dispose: (vm) => vm.dispose(),
+  void registerAppExpirationViewModel() {
+    final appVersion = DI.get<AppInfo>().version;
+    final vm = AppExpirationViewModel(
+      settingsRepository: DI.get<SettingsRepository>(),
+      currentAppVersion: appVersion,
     );
+    registerSingleton<AppExpirationViewModel>(vm, dispose: (vm) => vm.dispose());
   }
 
   void registerRuFeatureProvider() {

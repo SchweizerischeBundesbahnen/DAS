@@ -39,7 +39,7 @@ class IntegrationTestDI {
   }
 
   static void _registerMockScopes(bool e2e) {
-    GetIt.I.registerSingleton<DASBaseScope>(MockDASBaseScope());
+    GetIt.I.registerSingleton<DASBaseScope>(MockDASBaseScope(e2e));
     GetIt.I.registerSingleton<SferaMockScope>(MockSferaMockScope(e2e));
     GetIt.I.registerSingleton<TmsScope>(MockTmsScope(e2e));
     GetIt.I.registerSingleton<AuthenticatedScope>(MockAuthenticatedScope(e2e));

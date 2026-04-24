@@ -453,8 +453,8 @@ class _CellRowState extends State<_CellRow> {
       background: widget.row.draggableBackgroundBuilder?.call(context, thresholdReachedOnce),
       key: ValueKey('Dismissible ${widget.row.key}'),
       child: Listener(
-        onPointerDown: (_) => setState(() => isDragging = true),
-        onPointerUp: (_) => setState(() => isDragging = false),
+        onPointerDown: (_) => _updateIsDragging(true),
+        onPointerUp: (_) => _updateIsDragging(false),
         child: foreground,
       ),
     );
@@ -532,12 +532,12 @@ class _CellRowState extends State<_CellRow> {
     );
   }
 
-  // Returns the relative position of a cell in the DASTable for both x and y coordinates normalized to [-1, 1].
-  //
-  // This means that for a table with three columns and rows, the 'middle' cell in
-  // the second row and the second column will return (0, 0).
-  //
-  // This calculation allows drawing borders depending on where the cell in the table is.
+  /// Returns the relative position of a cell in the DASTable for both x and y coordinates normalized to [-1, 1].
+  ///
+  /// This means that for a table with three columns and rows, the 'middle' cell in
+  /// the second row and the second column will return (0, 0).
+  ///
+  /// This calculation allows drawing borders depending on where the cell in the table is.
   Alignment _cellPositionInTable({required int cellIndex}) {
     final columnCount = widget.columns.length;
     final rowCount = widget.rowCount;
@@ -555,6 +555,12 @@ class _CellRowState extends State<_CellRow> {
       y = (widget.rowIndex / (rowCount - 1)) * 2 - 1;
     }
     return Alignment(x, y);
+  }
+
+  void _updateIsDragging(bool value) {
+    if (mounted) {
+      setState(() => isDragging = value);
+    }
   }
 }
 

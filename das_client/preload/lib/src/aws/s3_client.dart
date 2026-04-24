@@ -19,49 +19,66 @@ class S3Client {
           accessKey: configuration.accessKey,
           secretKey: configuration.accessSecret,
         ),
-      ),
-      _httpClient = AWSHttpClient();
+      );
 
   final AwsConfiguration _configuration;
   final AWSSigV4Signer _signer;
-  final AWSHttpClient _httpClient;
 
   Future<ListBucketResultDto?> listBucket() async {
-    final signedRequest = _listBucketRequest();
-    final response = await signedRequest.send(client: _httpClient).response;
+    final httpClient = AWSHttpClient();
+    try {
+      final signedRequest = _listBucketRequest();
+      final response = await signedRequest.send(client: httpClient).response;
 
-    if (response.statusCode == HttpStatus.ok) {
-      final responseBody = await response.decodeBody();
-      return _parseListBucketResult(responseBody);
-    } else {
-      _log.info('Failed to list bucket. Status code: ${response.statusCode}');
+      if (response.statusCode == HttpStatus.ok) {
+        final responseBody = await response.decodeBody();
+        return _parseListBucketResult(responseBody);
+      } else {
+        _log.severe('Failed to list bucket. Status code: ${response.statusCode}');
+        return null;
+      }
+    } catch (e) {
+      _log.severe('Failed to list bucket.', e);
       return null;
+    } finally {
+      httpClient.close();
     }
   }
 
   Future<File> downloadFile(String key, {required Directory saveTo}) async {
-    final signedRequest = _getRequest(key);
-    final response = await signedRequest.send(client: _httpClient).response;
-
-    if (response.statusCode != HttpStatus.ok) {
-      throw Exception('Failed to download object with key $key. Status code: ${response.statusCode}');
-    }
-
-    final fileName = key.split('/').isNotEmpty ? key.split('/').last : key;
-    final outFile = File(p.join(saveTo.path, fileName));
-
-    final sink = outFile.openWrite(mode: FileMode.writeOnly);
+    final httpClient = AWSHttpClient();
     try {
-      await for (final chunk in response.body) {
-        sink.add(chunk);
-      }
-      await sink.flush();
-    } finally {
-      await sink.close();
-    }
+      final signedRequest = _getRequest(key);
+      final response = await signedRequest.send(client: httpClient).response;
 
-    _log.fine('Successfully downloaded object with key $key');
-    return outFile;
+      if (response.statusCode != HttpStatus.ok) {
+        try {
+          response.body.drain();
+        } catch (_) {}
+        throw Exception('Failed to download object with key $key. Status code: ${response.statusCode}');
+      }
+
+      final fileName = key.split('/').isNotEmpty ? key.split('/').last : key;
+      final outFile = File(p.join(saveTo.path, fileName));
+
+      final sink = outFile.openWrite(mode: FileMode.writeOnly);
+      try {
+        await for (final chunk in response.body) {
+          sink.add(chunk);
+        }
+        await sink.flush();
+      } finally {
+        await sink.close();
+      }
+
+      _log.fine('Successfully downloaded object with key $key');
+      return outFile;
+    } catch (e) {
+      _log.severe('Failed to download object with key $key.', e);
+      rethrow;
+    } finally {
+      httpClient.close();
+    }
   }
 
   ListBucketResultDto _parseListBucketResult(String xmlString) {
@@ -70,7 +87,7 @@ class S3Client {
     return ListBucketResultDto(xmlElement: rootElement);
   }
 
-  AWSSignedRequest _listBucketRequest() => _getRequest('', {'list-type': '2'});
+  AWSSignedRequest _listBucketRequest() => _getRequest('/', {'list-type': '2'});
 
   AWSSignedRequest _getRequest(String key, [Map<String, String>? queryParams]) {
     final uri = Uri.https(_configuration.bucketUrl, key, queryParams);
@@ -82,6 +99,7 @@ class S3Client {
         region: _configuration.region,
         service: AWSService.s3,
       ),
+      serviceConfiguration: S3ServiceConfiguration(),
     );
   }
 }

@@ -26,30 +26,33 @@ class UncodedOperationalIndicationAccordion extends StatelessWidget {
 
   const UncodedOperationalIndicationAccordion({
     required this.collapsedState,
-    required this.addTopMargin,
     required this.data,
+    this.leftPadding = 0,
     super.key,
   });
 
   final UncodedOperationalIndication data;
   final CollapsedState collapsedState;
-  final bool addTopMargin;
+
+  /// used to align content with information cell
+  final double leftPadding;
 
   @override
   Widget build(BuildContext context) {
+    final isExpanded = collapsedState != .collapsed;
+    final borderRadius = Radius.circular(isExpanded ? SBBSpacing.medium : SBBSpacing.xSmall);
     return Accordion(
       key: ObjectKey(data.hashCode),
       title: context.l10n.c_uncoded_operational_indication,
       body: _body(context),
-      isExpanded: collapsedState != .collapsed,
+      isExpanded: isExpanded,
       toggleCallback: () =>
           context.read<CollapsibleRowsViewModel>().toggleRow(data, isContentExpandable: _hasTextOverflow),
-      icon: SBBIcons.form_small,
-      margin: .only(
-        bottom: _verticalMargin,
-        top: addTopMargin ? _verticalMargin : 0.0,
-      ),
-      backgroundColor: ThemeUtil.getColor(context, SBBColors.white, SBBColors.charcoal),
+      icon: SBBIcons.list_small,
+      margin: .only(bottom: _verticalMargin),
+      additionalPadding: .only(left: leftPadding),
+      backgroundColor: ThemeUtil.getColor(context, SBBColors.cloud, SBBColors.midnight),
+      borderRadius: BorderRadius.only(bottomLeft: borderRadius, bottomRight: borderRadius),
     );
   }
 
@@ -79,7 +82,7 @@ class UncodedOperationalIndicationAccordion extends StatelessWidget {
 
   bool get _hasTextOverflow {
     final textWithoutLineBreak = TextUtil.replaceLineBreaks(data.combinedText);
-    return TextUtil.hasTextOverflow(textWithoutLineBreak, _accordionContentWidth, _textStyle);
+    return TextUtil.hasTextOverflow(textWithoutLineBreak, _accordionContentWidth(leftPadding: leftPadding), _textStyle);
   }
 
   static Text _contentText(String text, {int? maxLines}) {
@@ -94,19 +97,20 @@ class UncodedOperationalIndicationAccordion extends StatelessWidget {
   static double calculateHeight(
     String text, {
     required CollapsedState collapsedState,
-    required bool addTopMargin,
+    required double leftPadding,
   }) {
-    final margin = _verticalMargin * (addTopMargin ? 2 : 1);
+    final margin = _verticalMargin;
     if (collapsedState == .collapsed) {
       return Accordion.defaultCollapsedHeight + margin;
     }
 
     final content = _contentText(text);
     final maxLines = collapsedState == .expandedWithCollapsedContent ? 1 : null;
-    final tp = TextPainter(text: content.textSpan, textDirection: TextDirection.ltr, maxLines: maxLines)
-      ..layout(maxWidth: _accordionContentWidth);
+    final tp = TextPainter(text: content.textSpan, textDirection: .ltr, maxLines: maxLines)
+      ..layout(maxWidth: _accordionContentWidth(leftPadding: leftPadding));
     return Accordion.defaultExpandedHeight + tp.height + margin;
   }
 
-  static double get _accordionContentWidth => Accordion.contentWidth(outsidePadding: JourneyOverview.horizontalPadding);
+  static double _accordionContentWidth({required double leftPadding}) =>
+      Accordion.contentWidth(margin: JourneyOverview.horizontalPadding, additionalPadding: leftPadding);
 }
