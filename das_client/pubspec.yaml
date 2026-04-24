@@ -8,12 +8,14 @@ environment:
 workspace:
   - "*"
 
-# https://pub.dev/packages/melos
+dependencies:
+  logging: ^1.3.0
+
 dev_dependencies:
-  melos: ^7.4.1
+  # https://pub.dev/packages/melos
+  melos: ^7.5.1
 
 # Melos Configuration
-
 melos:
   scripts:
     clean:das:

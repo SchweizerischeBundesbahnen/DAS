@@ -41,6 +41,7 @@ post_install do |installer|
   installer.pods_project.targets.each do |target|
     flutter_additional_ios_build_settings(target)
 
+    # TODO: This currently prevents removing CocoaPods. Need to wait for Geolocator update or migrate away
     # client doesn't need location in background
     if target.name == "geolocator_apple"
       target.build_configurations.each do |config|
