@@ -16,7 +16,7 @@ class AppVersionText extends StatelessWidget {
       crossAxisAlignment: .start,
       children: [
         Text('App Version', style: sbbTextStyle.lightStyle.xSmall.copyWith(color: color)),
-        Text(appInfo.version, style: sbbTextStyle.boldStyle.small.copyWith(color: color)),
+        Text('${appInfo.version}+${appInfo.buildNumber}', style: sbbTextStyle.boldStyle.small.copyWith(color: color)),
       ],
     );
   }
