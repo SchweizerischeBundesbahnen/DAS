@@ -24,7 +24,7 @@ class AppExpirationViewModel {
   AppVersionExpiration? _lastSetting;
   bool _dialogDismissed = false;
 
-  // do not make a request to load settings more frequent than every minute
+  /// do not make a request to load settings more frequent than every [throttleDuration]
   Timer? _throttleTimer;
   bool _isLoading = false;
 
