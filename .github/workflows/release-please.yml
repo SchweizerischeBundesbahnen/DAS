@@ -30,7 +30,7 @@ jobs:
       das_admin_tool--version: ${{ steps.release.outputs.das_admin_tool--version }}
       das_admin_tool--tag_name: ${{ steps.release.outputs.das_admin_tool--tag_name }}
     steps:
-      - uses: googleapis/release-please-action@v4
+      - uses: googleapis/release-please-action@v5
         id: release
         with:
           config-file: ci/release-please-config.json
