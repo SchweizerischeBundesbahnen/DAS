@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
+                xsi:noNamespaceSchemaLocation="../../SFERA.xsd"
                 SP_ID="T35_1_Normal_station" SP_VersionMajor="1" SP_VersionMinor="4" SP_Length="800" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
@@ -48,8 +48,8 @@
             <Signal_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>modification</NSP_GroupName>
-                <NetworkSpecificParameter name="lastModificationType" value="updated" />
-                <NetworkSpecificParameter name="lastModificationDate" value="2050-01-01" />
+                <NetworkSpecificParameter name="lastModificationType" value="updated"/>
+                <NetworkSpecificParameter name="lastModificationDate" value="2050-01-01"/>
             </Signal_NSPs>
         </Signal>
         <Signal>
@@ -59,8 +59,8 @@
             <Signal_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>modification</NSP_GroupName>
-                <NetworkSpecificParameter name="lastModificationType" value="deleted" />
-                <NetworkSpecificParameter name="lastModificationDate" value="2050-01-01" />
+                <NetworkSpecificParameter name="lastModificationType" value="deleted"/>
+                <NetworkSpecificParameter name="lastModificationDate" value="2050-01-01"/>
             </Signal_NSPs>
         </Signal>
         <Signal>
@@ -70,8 +70,8 @@
             <Signal_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>modification</NSP_GroupName>
-                <NetworkSpecificParameter name="lastModificationType" value="updated" />
-                <NetworkSpecificParameter name="lastModificationDate" value="2024-01-01" />
+                <NetworkSpecificParameter name="lastModificationType" value="updated"/>
+                <NetworkSpecificParameter name="lastModificationDate" value="2024-01-01"/>
             </Signal_NSPs>
         </Signal>
         <Signal>
@@ -81,8 +81,8 @@
             <Signal_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>modification</NSP_GroupName>
-                <NetworkSpecificParameter name="lastModificationType" value="deleted" />
-                <NetworkSpecificParameter name="lastModificationDate" value="2024-01-01" />
+                <NetworkSpecificParameter name="lastModificationType" value="deleted"/>
+                <NetworkSpecificParameter name="lastModificationDate" value="2024-01-01"/>
             </Signal_NSPs>
         </Signal>
         <NetworkSpecificPoint location="150" identifier="871EC7BF49524D868B0D6B6F67544EDD">
@@ -133,8 +133,8 @@
 					&lt;/speeds&gt;
                 &lt;/curveSpeed&gt;
             "/>
-            <NetworkSpecificParameter name="lastModificationType" value="updated" />
-            <NetworkSpecificParameter name="lastModificationDate" value="2050-01-01" />
+            <NetworkSpecificParameter name="lastModificationType" value="updated"/>
+            <NetworkSpecificParameter name="lastModificationDate" value="2050-01-01"/>
         </NetworkSpecificPoint>
         <NetworkSpecificPoint location="360">
             <teltsi_Company>0085</teltsi_Company>
@@ -148,16 +148,16 @@
 					&lt;/speeds&gt;
 				&lt;/lineSpeed&gt;
 			"/>
-            <NetworkSpecificParameter name="lastModificationType" value="updated" />
-            <NetworkSpecificParameter name="lastModificationDate" value="2050-01-01" />
+            <NetworkSpecificParameter name="lastModificationType" value="updated"/>
+            <NetworkSpecificParameter name="lastModificationDate" value="2050-01-01"/>
         </NetworkSpecificPoint>
         <NetworkSpecificPoint location="370">
             <teltsi_Company>0085</teltsi_Company>
             <NSP_GroupName>protectionSection</NSP_GroupName>
             <NetworkSpecificParameter name="lengthType" value="short"/>
             <NetworkSpecificParameter name="facultative" value="true"/>
-            <NetworkSpecificParameter name="lastModificationType" value="updated" />
-            <NetworkSpecificParameter name="lastModificationDate" value="2050-01-01" />
+            <NetworkSpecificParameter name="lastModificationType" value="updated"/>
+            <NetworkSpecificParameter name="lastModificationDate" value="2050-01-01"/>
         </NetworkSpecificPoint>
         <NetworkSpecificPoint location="550" identifier="871EC7BF49524D868B0D6B6F67544EDD">
             <teltsi_Company>0085</teltsi_Company>
@@ -173,8 +173,8 @@
 					&lt;/speeds&gt;
                 &lt;/curveSpeed&gt;
             "/>
-            <NetworkSpecificParameter name="lastModificationType" value="deleted" />
-            <NetworkSpecificParameter name="lastModificationDate" value="2050-01-01" />
+            <NetworkSpecificParameter name="lastModificationType" value="deleted"/>
+            <NetworkSpecificParameter name="lastModificationDate" value="2050-01-01"/>
         </NetworkSpecificPoint>
         <NetworkSpecificPoint location="560">
             <teltsi_Company>0085</teltsi_Company>
@@ -188,16 +188,16 @@
 					&lt;/speeds&gt;
 				&lt;/lineSpeed&gt;
 			"/>
-            <NetworkSpecificParameter name="lastModificationType" value="deleted" />
-            <NetworkSpecificParameter name="lastModificationDate" value="2050-01-01" />
+            <NetworkSpecificParameter name="lastModificationType" value="deleted"/>
+            <NetworkSpecificParameter name="lastModificationDate" value="2050-01-01"/>
         </NetworkSpecificPoint>
         <NetworkSpecificPoint location="570">
             <teltsi_Company>0085</teltsi_Company>
             <NSP_GroupName>protectionSection</NSP_GroupName>
             <NetworkSpecificParameter name="lengthType" value="short"/>
             <NetworkSpecificParameter name="facultative" value="true"/>
-            <NetworkSpecificParameter name="lastModificationType" value="deleted" />
-            <NetworkSpecificParameter name="lastModificationDate" value="2050-01-01" />
+            <NetworkSpecificParameter name="lastModificationType" value="deleted"/>
+            <NetworkSpecificParameter name="lastModificationDate" value="2050-01-01"/>
         </NetworkSpecificPoint>
         <NetworkSpecificPoint location="750" identifier="871EC7BF49524D868B0D6B6F67544EDD">
             <teltsi_Company>0085</teltsi_Company>
@@ -213,8 +213,8 @@
 					&lt;/speeds&gt;
                 &lt;/curveSpeed&gt;
             "/>
-            <NetworkSpecificParameter name="lastModificationType" value="updated" />
-            <NetworkSpecificParameter name="lastModificationDate" value="2024-01-01" />
+            <NetworkSpecificParameter name="lastModificationType" value="updated"/>
+            <NetworkSpecificParameter name="lastModificationDate" value="2024-01-01"/>
         </NetworkSpecificPoint>
         <NetworkSpecificPoint location="760">
             <teltsi_Company>0085</teltsi_Company>
@@ -228,16 +228,16 @@
 					&lt;/speeds&gt;
 				&lt;/lineSpeed&gt;
 			"/>
-            <NetworkSpecificParameter name="lastModificationType" value="updated" />
-            <NetworkSpecificParameter name="lastModificationDate" value="2024-01-01" />
+            <NetworkSpecificParameter name="lastModificationType" value="updated"/>
+            <NetworkSpecificParameter name="lastModificationDate" value="2024-01-01"/>
         </NetworkSpecificPoint>
         <NetworkSpecificPoint location="770">
             <teltsi_Company>0085</teltsi_Company>
             <NSP_GroupName>protectionSection</NSP_GroupName>
             <NetworkSpecificParameter name="lengthType" value="short"/>
             <NetworkSpecificParameter name="facultative" value="true"/>
-            <NetworkSpecificParameter name="lastModificationType" value="updated" />
-            <NetworkSpecificParameter name="lastModificationDate" value="2024-01-01" />
+            <NetworkSpecificParameter name="lastModificationType" value="updated"/>
+            <NetworkSpecificParameter name="lastModificationDate" value="2024-01-01"/>
         </NetworkSpecificPoint>
         <NetworkSpecificPoint location="950" identifier="871EC7BF49524D868B0D6B6F67544EDD">
             <teltsi_Company>0085</teltsi_Company>
@@ -253,8 +253,8 @@
 					&lt;/speeds&gt;
                 &lt;/curveSpeed&gt;
             "/>
-            <NetworkSpecificParameter name="lastModificationType" value="deleted" />
-            <NetworkSpecificParameter name="lastModificationDate" value="2024-01-01" />
+            <NetworkSpecificParameter name="lastModificationType" value="deleted"/>
+            <NetworkSpecificParameter name="lastModificationDate" value="2024-01-01"/>
         </NetworkSpecificPoint>
         <NetworkSpecificPoint location="960">
             <teltsi_Company>0085</teltsi_Company>
@@ -268,16 +268,16 @@
 					&lt;/speeds&gt;
 				&lt;/lineSpeed&gt;
 			"/>
-            <NetworkSpecificParameter name="lastModificationType" value="deleted" />
-            <NetworkSpecificParameter name="lastModificationDate" value="2024-01-01" />
+            <NetworkSpecificParameter name="lastModificationType" value="deleted"/>
+            <NetworkSpecificParameter name="lastModificationDate" value="2024-01-01"/>
         </NetworkSpecificPoint>
         <NetworkSpecificPoint location="970">
             <teltsi_Company>0085</teltsi_Company>
             <NSP_GroupName>protectionSection</NSP_GroupName>
             <NetworkSpecificParameter name="lengthType" value="short"/>
             <NetworkSpecificParameter name="facultative" value="true"/>
-            <NetworkSpecificParameter name="lastModificationType" value="deleted" />
-            <NetworkSpecificParameter name="lastModificationDate" value="2024-01-01" />
+            <NetworkSpecificParameter name="lastModificationType" value="deleted"/>
+            <NetworkSpecificParameter name="lastModificationDate" value="2024-01-01"/>
         </NetworkSpecificPoint>
     </SP_Points>
     <SP_Areas>
@@ -353,8 +353,8 @@
 					&lt;/stationProperty&gt;
 				&lt;/stationProperties&gt;
 				"/>
-                <NetworkSpecificParameter name="lastModificationType" value="updated" />
-                <NetworkSpecificParameter name="lastModificationDate" value="2050-01-01" />
+                <NetworkSpecificParameter name="lastModificationType" value="updated"/>
+                <NetworkSpecificParameter name="lastModificationDate" value="2050-01-01"/>
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="500" endLocation="500"
@@ -387,8 +387,8 @@
                     &lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;30&quot; speed=&quot;77&quot;/&gt;
                     &lt;/lineSpeed&gt;
                 "/>
-                <NetworkSpecificParameter name="lastModificationType" value="updated" />
-                <NetworkSpecificParameter name="lastModificationDate" value="2050-01-01" />
+                <NetworkSpecificParameter name="lastModificationType" value="updated"/>
+                <NetworkSpecificParameter name="lastModificationDate" value="2050-01-01"/>
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="700" endLocation="700"
@@ -425,8 +425,8 @@
 						&lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;30&quot; speed=&quot;75/70&quot;/&gt;
 					&lt;/stationSpeed&gt;
 				"/>
-                <NetworkSpecificParameter name="lastModificationType" value="updated" />
-                <NetworkSpecificParameter name="lastModificationDate" value="2050-01-01" />
+                <NetworkSpecificParameter name="lastModificationType" value="updated"/>
+                <NetworkSpecificParameter name="lastModificationDate" value="2050-01-01"/>
             </TAF_TAP_Location_NSP>
 
             <TAF_TAP_Location_NSP>
@@ -485,8 +485,8 @@
                     &lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;30&quot; speed=&quot;77&quot;/&gt;
                     &lt;/lineSpeed&gt;
                 "/>
-                <NetworkSpecificParameter name="lastModificationType" value="updated" />
-                <NetworkSpecificParameter name="lastModificationDate" value="2024-01-01" />
+                <NetworkSpecificParameter name="lastModificationType" value="updated"/>
+                <NetworkSpecificParameter name="lastModificationDate" value="2024-01-01"/>
             </TAF_TAP_Location_NSP>
 
             <TAF_TAP_Location_NSP>
@@ -515,8 +515,8 @@
 						&lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;30&quot; speed=&quot;75/70&quot;/&gt;
 					&lt;/stationSpeed&gt;
 				"/>
-                <NetworkSpecificParameter name="lastModificationType" value="updated" />
-                <NetworkSpecificParameter name="lastModificationDate" value="2024-01-01" />
+                <NetworkSpecificParameter name="lastModificationType" value="updated"/>
+                <NetworkSpecificParameter name="lastModificationDate" value="2024-01-01"/>
             </TAF_TAP_Location_NSP>
 
             <TAF_TAP_Location_NSP>
@@ -528,8 +528,8 @@
 					&lt;/stationProperty&gt;
 				&lt;/stationProperties&gt;
 				"/>
-                <NetworkSpecificParameter name="lastModificationType" value="updated" />
-                <NetworkSpecificParameter name="lastModificationDate" value="2024-01-01" />
+                <NetworkSpecificParameter name="lastModificationType" value="updated"/>
+                <NetworkSpecificParameter name="lastModificationDate" value="2024-01-01"/>
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
     </SP_Areas>

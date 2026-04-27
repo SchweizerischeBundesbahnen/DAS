@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
+                xsi:noNamespaceSchemaLocation="../../SFERA.xsd"
                 SP_ID="2017_21_Bollingen" SP_VersionMajor="1" SP_VersionMinor="1" SP_Length="5100" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
@@ -14,26 +14,26 @@
                 <teltsi_LocationPrimaryCode>3114</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
-		
-		<Signal>
+
+        <Signal>
             <Signal_ID signal_ID_Physical="B2" location="200"/>
             <SignalFunction>exit</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="B2"/>
         </Signal>
-		
-		<Signal>
+
+        <Signal>
             <Signal_ID signal_ID_Physical="S751" location="2500"/>
             <SignalFunction>block</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="S751"/>
         </Signal>
-		
-		<Signal>
+
+        <Signal>
             <Signal_ID signal_ID_Physical="D749" location="4739"/>
             <SignalFunction>entry</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="D749"/>
         </Signal>
-		
-		<NetworkSpecificPoint location="200" identifier="A4CC9B0EF98C4A77ACDBF26A6BBC9CB8">
+
+        <NetworkSpecificPoint location="200" identifier="A4CC9B0EF98C4A77ACDBF26A6BBC9CB8">
             <teltsi_Company>0085</teltsi_Company>
             <NSP_GroupName>curvePoint</NSP_GroupName>
             <NetworkSpecificParameter name="curvePointType" value="begin"/>
@@ -54,8 +54,8 @@
             <NSP_GroupName>curvePoint</NSP_GroupName>
             <NetworkSpecificParameter name="curvePointType" value="end"/>
         </NetworkSpecificPoint>
-		
-		<NetworkSpecificPoint location="4870" identifier="99F187B625784795B864E48CEC1F14A4">
+
+        <NetworkSpecificPoint location="4870" identifier="99F187B625784795B864E48CEC1F14A4">
             <teltsi_Company>0085</teltsi_Company>
             <NSP_GroupName>curvePoint</NSP_GroupName>
             <NetworkSpecificParameter name="curvePointType" value="begin"/>
@@ -87,8 +87,8 @@
                 <teltsi_LocationPrimaryCode>3114</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Bollingen</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-			
-			<TAF_TAP_Location_NSP>
+
+            <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>stationSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlStationSpeed" value="
@@ -112,9 +112,9 @@
 						&lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;30&quot; speed=&quot;100/95&quot;/&gt;
 					&lt;/stationSpeed&gt;
 				"/>
-            </TAF_TAP_Location_NSP>	
-			
-			<TAF_TAP_Location_NSP>
+            </TAF_TAP_Location_NSP>
+
+            <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>newLineSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlNewLineSpeed" value="
@@ -147,41 +147,41 @@
     </SP_Areas>
 
     <SP_ContextInformation>
-		
-		<ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
+
+        <ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
             <Contact mainContact="true">
                 <OtherContactType contactIdentifier="1303"/>
             </Contact>
         </ContactList>
-		
-		<CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R"/>
+
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R"/>
 
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="54.4"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="200">
+        <KilometreReferencePoint location="200">
             <KM_Reference kmRef="54.2"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="400">
+        <KilometreReferencePoint location="400">
             <KM_Reference kmRef="54"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="2500">
+        <KilometreReferencePoint location="2500">
             <KM_Reference kmRef="51.9"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="4739">
+        <KilometreReferencePoint location="4739">
             <KM_Reference kmRef="49.661"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="4870">
+        <KilometreReferencePoint location="4870">
             <KM_Reference kmRef="49.53"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="4900">
+        <KilometreReferencePoint location="4900">
             <KM_Reference kmRef="49.5"/>
         </KilometreReferencePoint>
-		
-		<DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="4.0" gradientDirection="Downhill"
+
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="4.0" gradientDirection="Downhill"
                               directionOfApplicationOnSP="Nominal"/>
         <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="6.0" gradientDirection="Uphill"
-                              directionOfApplicationOnSP="Nominal"/> 
+                              directionOfApplicationOnSP="Nominal"/>
 
     </SP_ContextInformation>
 

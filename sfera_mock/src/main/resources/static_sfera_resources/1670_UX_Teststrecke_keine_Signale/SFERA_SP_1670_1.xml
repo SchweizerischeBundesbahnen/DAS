@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="1670_1"
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA.xsd" SP_ID="1670_1"
                 SP_VersionMajor="2" SP_VersionMinor="5" SP_Length="36000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
@@ -330,7 +330,7 @@
 					&lt;/footNote&gt; 
 				&lt;/oPFootNotes&gt;
 				"/>
-            </TAF_TAP_Location_NSP>            
+            </TAF_TAP_Location_NSP>
 
         </TAF_TAP_Location>
 
@@ -1022,14 +1022,14 @@
                               directionOfApplicationOnSP="Nominal"/>
         <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="28800" endLocation="28800"
                               gradientValue="3.0" gradientDirection="Uphill"
-                              directionOfApplicationOnSP="Nominal"/>                      
+                              directionOfApplicationOnSP="Nominal"/>
 
         <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="31000" endLocation="31000"
                               gradientValue="4.0" gradientDirection="Downhill"
                               directionOfApplicationOnSP="Nominal"/>
         <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="31000" endLocation="31000"
                               gradientValue="0.0" gradientDirection="Uphill"
-                              directionOfApplicationOnSP="Nominal"/>                      
+                              directionOfApplicationOnSP="Nominal"/>
 
         <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="33800" endLocation="33800"
                               gradientValue="18.0" gradientDirection="Downhill"

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
+                xsi:noNamespaceSchemaLocation="../../SFERA.xsd"
                 SP_ID="15154_22_Schmitten" SP_VersionMajor="1" SP_VersionMinor="2" SP_Length="5700" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
@@ -15,38 +15,38 @@
             </TAF_TAP_LocationReference>
             <TP_Name name="SCMI"/>
         </TimingPoint>
-		
-		<Signal>
+
+        <Signal>
             <Signal_ID signal_ID_Physical="B2" location="500"/>
             <SignalFunction>exit</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="B2"/>
         </Signal>
 
-		<Signal>
+        <Signal>
             <Signal_ID signal_ID_Physical="S953" location="1600"/>
             <SignalFunction>block</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="S953"/>
         </Signal>
 
-		<Signal>
+        <Signal>
             <Signal_ID signal_ID_Physical="S952" location="2600"/>
             <SignalFunction>block</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="S952"/>
         </Signal>
 
-		<Signal>
+        <Signal>
             <Signal_ID signal_ID_Physical="S951" location="3700"/>
             <SignalFunction>block</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="S951"/>
-        </Signal>	
+        </Signal>
 
-		<Signal>
+        <Signal>
             <Signal_ID signal_ID_Physical="D950" location="5000"/>
             <SignalFunction>entry</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="D950"/>
-        </Signal>	
-		
-		<NetworkSpecificPoint location="3700" identifier="35B230929B224B939BFDED7645113FE8">
+        </Signal>
+
+        <NetworkSpecificPoint location="3700" identifier="35B230929B224B939BFDED7645113FE8">
             <teltsi_Company>0085</teltsi_Company>
             <NSP_GroupName>curvePoint</NSP_GroupName>
             <NetworkSpecificParameter name="curvePointType" value="begin"/>
@@ -77,7 +77,7 @@
                 <teltsi_PrimaryLocationName>Schmitten FR</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
 
-			<TAF_TAP_Location_NSP>
+            <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>stationSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlStationSpeed" value="
@@ -142,40 +142,40 @@
             <Contact mainContact="true">
                 <OtherContactType contactIdentifier="1301"/>
             </Contact>
-			<Contact mainContact="true">
+            <Contact mainContact="true">
                 <OtherContactType contactIdentifier="(1306)"/>
             </Contact>
         </ContactList>
-		
-		<CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R"/>
+
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R"/>
 
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="77.9"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="500">
+        <KilometreReferencePoint location="500">
             <KM_Reference kmRef="77.448"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="1600">
+        <KilometreReferencePoint location="1600">
             <KM_Reference kmRef="76.3"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="2600">
+        <KilometreReferencePoint location="2600">
             <KM_Reference kmRef="75.3"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="3700">
+        <KilometreReferencePoint location="3700">
             <KM_Reference kmRef="74.2"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="4090">
+        <KilometreReferencePoint location="4090">
             <KM_Reference kmRef="73.81"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="5000">
+        <KilometreReferencePoint location="5000">
             <KM_Reference kmRef="72.93"/>
         </KilometreReferencePoint>
-		
-		<DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="8.0" gradientDirection="Uphill"
+
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="8.0" gradientDirection="Uphill"
                               directionOfApplicationOnSP="Nominal"/>
-		<DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="8.0" gradientDirection="Downhill"
-                              directionOfApplicationOnSP="Nominal"/>					  
-		
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="8.0" gradientDirection="Downhill"
+                              directionOfApplicationOnSP="Nominal"/>
+
     </SP_ContextInformation>
 
 </SegmentProfile>

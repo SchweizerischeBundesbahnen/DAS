@@ -1,8 +1,8 @@
 package ch.sbb.sferamock.messages.common;
 
-import ch.sbb.sferamock.adapters.sfera.model.v0300.JourneyProfile;
-import ch.sbb.sferamock.adapters.sfera.model.v0300.StoppingPointDepartureDetails;
-import ch.sbb.sferamock.adapters.sfera.model.v0300.TimingPointConstraints;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.JourneyProfile;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.StoppingPointDepartureDetails;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.TimingPointConstraints;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.ZoneId;

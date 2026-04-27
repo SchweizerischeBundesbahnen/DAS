@@ -3,9 +3,9 @@ package ch.sbb.backend.preload.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import ch.sbb.backend.preload.sfera.model.v0300.SPZone;
-import ch.sbb.backend.preload.sfera.model.v0300.SegmentProfile;
-import ch.sbb.backend.preload.sfera.model.v0300.TrainCharacteristics;
+import ch.sbb.backend.preload.sfera.model.v0400.SPZone;
+import ch.sbb.backend.preload.sfera.model.v0400.SegmentProfile;
+import ch.sbb.backend.preload.sfera.model.v0400.TrainCharacteristics;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -115,9 +115,9 @@ export class SferaXmlCreation {
                         <Sender>${headerOptions.sender}</Sender>
                         <Recipient>${headerOptions.recipient}</Recipient>
                     </MessageHeader>
-                    <HandshakeRequest ${relatedTrainRequestTag} ${statusReportsEnabledTag}>
+                    <DAS_HandshakeRequest ${relatedTrainRequestTag} ${statusReportsEnabledTag}>
                         ${supportedOperationModes}
-                    </HandshakeRequest>
+                    </DAS_HandshakeRequest>
                 </SFERA_B2G_RequestMessage>
     `;
   }
@@ -266,7 +266,7 @@ export class SferaXmlCreation {
 
   private static defaultHeader(): SferaHeaderOptions {
     return {
-      sferaVersion: '3.00',
+      sferaVersion: '4.00',
       messageId: crypto.randomUUID(),
       timestamp: this.currentTimestampSferaFormat(),
       sourceDevice: 'DAS',
@@ -277,7 +277,7 @@ export class SferaXmlCreation {
 
   private static defaultG2BHeader(): SferaHeaderOptions {
     return {
-      sferaVersion: '3.00',
+      sferaVersion: '4.00',
       messageId: crypto.randomUUID(),
       timestamp: this.currentTimestampSferaFormat(),
       sourceDevice: 'TMS',
@@ -287,7 +287,7 @@ export class SferaXmlCreation {
   }
 
   private static fillUndefindeHeaderFields(headerOptions: SferaHeaderOptions) {
-    headerOptions.sferaVersion = headerOptions.sferaVersion || '3.00';
+    headerOptions.sferaVersion = headerOptions.sferaVersion || '4.00';
     headerOptions.timestamp = headerOptions.timestamp || this.currentTimestampSferaFormat()
     headerOptions.sender = headerOptions.sender || '1085';
     headerOptions.recipient = headerOptions.recipient || '0085';

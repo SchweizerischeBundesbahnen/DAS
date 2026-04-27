@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
+                xsi:noNamespaceSchemaLocation="../../SFERA.xsd"
                 SP_ID="19240_13_Winterthur" SP_VersionMajor="1" SP_VersionMinor="2" SP_Length="100" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
@@ -24,7 +24,7 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>6000</teltsi_LocationPrimaryCode>
-                <teltsi_PrimaryLocationName>Winterthur </teltsi_PrimaryLocationName>
+                <teltsi_PrimaryLocationName>Winterthur</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
 
             <TAF_TAP_Location_NSP>
@@ -72,7 +72,7 @@
 
 
     <SP_ContextInformation>
-         <ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
+        <ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
             <Contact mainContact="false" contactRole="Gleis 503 - 514, 537 - 546, Feld G, H: Fahrdienstleiter">
                 <OtherContactType contactIdentifier="1312"/>
             </Contact>
@@ -80,18 +80,18 @@
                 <OtherContactType contactIdentifier="1313"/>
             </Contact>
         </ContactList>
-		
-		<CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R"/>
+
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R"/>
 
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="137.8"/>
         </KilometreReferencePoint>
-		
-		<DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="0.0" gradientDirection="Downhill"
+
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="0.0" gradientDirection="Downhill"
                               directionOfApplicationOnSP="Nominal"/>
         <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0"
                               gradientValue="7.0" gradientDirection="Uphill"
-                              directionOfApplicationOnSP="Nominal"/> 
+                              directionOfApplicationOnSP="Nominal"/>
 
     </SP_ContextInformation>
 

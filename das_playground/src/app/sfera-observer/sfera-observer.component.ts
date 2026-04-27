@@ -86,9 +86,9 @@ export class SferaObserverComponent implements OnInit, OnDestroy {
   async observe() {
     const customTopicPrefix = this.environmentControl.value ? this.customPrefixControl.value : '';
     const trainOperation = this.trainControl.value + '_' + this.dateControl.value;
-    this.g2bTopic = customTopicPrefix + '90940/3/G2B/' + this.companyControl.value + '/' + trainOperation + '/' + this.clientIdControl.value;
-    this.b2gTopic = customTopicPrefix + '90940/3/B2G/' + this.companyControl.value + '/' + trainOperation + '/' + this.clientIdControl.value;
-    this.eventTopic = customTopicPrefix + '90940/3/event/' + this.companyControl.value + '/' + trainOperation + '/' + this.clientIdControl.value;
+    this.g2bTopic = customTopicPrefix + '90940/4/G2B/' + this.companyControl.value + '/' + trainOperation + '/' + this.clientIdControl.value;
+    this.b2gTopic = customTopicPrefix + '90940/4/B2G/' + this.companyControl.value + '/' + trainOperation + '/' + this.clientIdControl.value;
+    this.eventTopic = customTopicPrefix + '90940/4/event/' + this.companyControl.value + '/' + trainOperation + '/' + this.clientIdControl.value;
     const token = await firstValueFrom(this.oidcSecurityService.getAccessToken());
     const username = await firstValueFrom(this.oidcSecurityService.getUserData().pipe(map((data) => data?.preferred_username)));
     await this.mqService.connect(username, token);
@@ -432,15 +432,15 @@ export class SferaObserverComponent implements OnInit, OnDestroy {
   }
 
   private isHandshakeReject(document: Document): boolean {
-    return document.getElementsByTagName("HandshakeReject")?.length > 0;
+    return document.getElementsByTagName("DAS_HandshakeReject")?.length > 0;
   }
 
   private isHandshakeAcknowledgement(document: Document): boolean {
-    return document.getElementsByTagName("HandshakeAcknowledgement")?.length > 0;
+    return document.getElementsByTagName("DAS_HandshakeAcknowledgement")?.length > 0;
   }
 
   private isHandshakeRequest(document: Document) {
-    return document.getElementsByTagName("HandshakeRequest")?.length > 0;
+    return document.getElementsByTagName("DAS_HandshakeRequest")?.length > 0;
   }
 
   private getSelectedArchitecture(document: Document) {
@@ -452,7 +452,7 @@ export class SferaObserverComponent implements OnInit, OnDestroy {
   }
 
   private getRejectReason(document: Document) {
-    return document.getElementsByTagName("HandshakeReject").item(0)?.getAttribute("handshakeRejectReason") || undefined;
+    return document.getElementsByTagName("DAS_HandshakeReject").item(0)?.textContent || undefined;
   }
 
   private containsElement(document: Document, elementName: string) {

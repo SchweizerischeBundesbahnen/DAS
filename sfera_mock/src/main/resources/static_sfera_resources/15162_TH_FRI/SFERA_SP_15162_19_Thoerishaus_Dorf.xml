@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
+                xsi:noNamespaceSchemaLocation="../../SFERA.xsd"
                 SP_ID="15162_19_Thoerishaus_Dorf" SP_VersionMajor="1" SP_VersionMinor="3" SP_Length="2900" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
@@ -15,26 +15,26 @@
             </TAF_TAP_LocationReference>
             <TP_Name name="THOD"/>
         </TimingPoint>
-		
-		<Signal>
+
+        <Signal>
             <Signal_ID signal_ID_Physical="S962" location="100"/>
             <SignalFunction>block</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="S962"/>
         </Signal>
-		
-		<Signal>
+
+        <Signal>
             <Signal_ID signal_ID_Physical="S961" location="1000"/>
             <SignalFunction>block</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="S961"/>
         </Signal>
-		
-		<Signal>
+
+        <Signal>
             <Signal_ID signal_ID_Physical="D969" location="1900"/>
             <SignalFunction>entry</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="D969"/>
         </Signal>
-		
-		<NetworkSpecificPoint location="0" identifier="F19975561DDE433FAB737374F9968D08">
+
+        <NetworkSpecificPoint location="0" identifier="F19975561DDE433FAB737374F9968D08">
             <teltsi_Company>0085</teltsi_Company>
             <NSP_GroupName>curvePoint</NSP_GroupName>
             <NetworkSpecificParameter name="curvePointType" value="begin"/>
@@ -67,7 +67,7 @@
                 <teltsi_PrimaryLocationName>Thörishaus Dorf</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
 
-			<TAF_TAP_Location_NSP>
+            <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>newLineSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlNewLineSpeed" value="
@@ -108,25 +108,25 @@
                 <OtherContactType contactIdentifier="1312"/>
             </Contact>
         </ContactList>
-		
-		<CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R"/>
 
-		<KilometreReferencePoint location="0">
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R"/>
+
+        <KilometreReferencePoint location="0">
             <KM_Reference kmRef="86.9"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="100">
+        <KilometreReferencePoint location="100">
             <KM_Reference kmRef="86.8"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="200">
+        <KilometreReferencePoint location="200">
             <KM_Reference kmRef="86.7"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="1000">
+        <KilometreReferencePoint location="1000">
             <KM_Reference kmRef="85.9"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="1900">
+        <KilometreReferencePoint location="1900">
             <KM_Reference kmRef="85"/>
         </KilometreReferencePoint>
-				  
+
     </SP_ContextInformation>
 
 </SegmentProfile>

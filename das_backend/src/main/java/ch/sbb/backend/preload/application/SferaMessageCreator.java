@@ -4,21 +4,21 @@ import ch.sbb.backend.preload.application.model.trainidentification.TrainIdentif
 import ch.sbb.backend.preload.domain.SegmentProfileIdentification;
 import ch.sbb.backend.preload.domain.TrainCharacteristicsIdentification;
 import ch.sbb.backend.preload.infrastructure.xml.XmlDateHelper;
-import ch.sbb.backend.preload.sfera.model.v0300.B2GEventPayload;
-import ch.sbb.backend.preload.sfera.model.v0300.B2GRequest;
-import ch.sbb.backend.preload.sfera.model.v0300.DASModesComplexType;
-import ch.sbb.backend.preload.sfera.model.v0300.HandshakeRequest;
-import ch.sbb.backend.preload.sfera.model.v0300.MessageHeader;
-import ch.sbb.backend.preload.sfera.model.v0300.Recipient;
-import ch.sbb.backend.preload.sfera.model.v0300.ReportedDASDrivingMode.DASDrivingMode;
-import ch.sbb.backend.preload.sfera.model.v0300.SFERAB2GEventMessage;
-import ch.sbb.backend.preload.sfera.model.v0300.SFERAB2GRequestMessage;
-import ch.sbb.backend.preload.sfera.model.v0300.SPRequest;
-import ch.sbb.backend.preload.sfera.model.v0300.Sender;
-import ch.sbb.backend.preload.sfera.model.v0300.SessionTermination;
-import ch.sbb.backend.preload.sfera.model.v0300.TCRequest;
-import ch.sbb.backend.preload.sfera.model.v0300.UnavailableDASOperatingModes.DASArchitecture;
-import ch.sbb.backend.preload.sfera.model.v0300.UnavailableDASOperatingModes.DASConnectivity;
+import ch.sbb.backend.preload.sfera.model.v0400.B2GEventPayload;
+import ch.sbb.backend.preload.sfera.model.v0400.B2GRequest;
+import ch.sbb.backend.preload.sfera.model.v0400.DASHandshakeRequest;
+import ch.sbb.backend.preload.sfera.model.v0400.DASOperatingModesSupported;
+import ch.sbb.backend.preload.sfera.model.v0400.DASOperatingModesSupported.DASArchitecture;
+import ch.sbb.backend.preload.sfera.model.v0400.DASOperatingModesSupported.DASConnectivity;
+import ch.sbb.backend.preload.sfera.model.v0400.MessageHeader;
+import ch.sbb.backend.preload.sfera.model.v0400.Recipient;
+import ch.sbb.backend.preload.sfera.model.v0400.ReportedDASDrivingMode.DASDrivingMode;
+import ch.sbb.backend.preload.sfera.model.v0400.SFERAB2GEventMessage;
+import ch.sbb.backend.preload.sfera.model.v0400.SFERAB2GRequestMessage;
+import ch.sbb.backend.preload.sfera.model.v0400.SPRequest;
+import ch.sbb.backend.preload.sfera.model.v0400.Sender;
+import ch.sbb.backend.preload.sfera.model.v0400.SessionTermination;
+import ch.sbb.backend.preload.sfera.model.v0400.TCRequest;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Set;
@@ -44,13 +44,13 @@ public class SferaMessageCreator {
     public SFERAB2GRequestMessage createHandshakeRequestMessage(TrainIdentification trainIdentification) {
         SFERAB2GRequestMessage b2gRequestMessage = new SFERAB2GRequestMessage();
         b2gRequestMessage.setMessageHeader(createMessageHeader(trainIdentification));
-        b2gRequestMessage.setHandshakeRequest(createHandshakeRequest());
+        b2gRequestMessage.setDASHandshakeRequest(createHandshakeRequest());
         return b2gRequestMessage;
     }
 
-    private HandshakeRequest createHandshakeRequest() {
-        HandshakeRequest handshakeRequest = new HandshakeRequest();
-        DASModesComplexType dasModes = new DASModesComplexType();
+    private DASHandshakeRequest createHandshakeRequest() {
+        DASHandshakeRequest handshakeRequest = new DASHandshakeRequest();
+        DASOperatingModesSupported dasModes = new DASOperatingModesSupported();
         dasModes.setDASArchitecture(DASArchitecture.BOARD_ADVICE_CALCULATION);
         dasModes.setDASConnectivity(DASConnectivity.STANDALONE);
         dasModes.setDASDrivingMode(DASDrivingMode.INACTIVE);

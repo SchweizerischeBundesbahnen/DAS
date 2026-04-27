@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
+                xsi:noNamespaceSchemaLocation="../../SFERA.xsd"
                 SP_ID="15162_12_Bern" SP_VersionMajor="1" SP_VersionMinor="2" SP_Length="2200" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
@@ -21,26 +21,26 @@
             <SignalFunction>intermediate</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="E1"/>
         </Signal>
-		
-		<Signal>
+
+        <Signal>
             <Signal_ID signal_ID_Physical="G21" location="400"/>
             <SignalFunction>intermediate</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="G21"/>
         </Signal>
-		
-		<Signal>
+
+        <Signal>
             <Signal_ID signal_ID_Physical="L822" location="800"/>
             <SignalFunction>exit</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="L822"/>
         </Signal>
-		
-		<Signal>
+
+        <Signal>
             <Signal_ID signal_ID_Physical="U900" location="1400"/>
             <SignalFunction>block</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="U900"/>
         </Signal>
-		
-		<Signal>
+
+        <Signal>
             <Signal_ID signal_ID_Physical="F900" location="2100"/>
             <SignalFunction>entry</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="F900"/>
@@ -57,7 +57,7 @@
                 <teltsi_PrimaryLocationName>Bern</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
 
-			<TAF_TAP_Location_NSP>
+            <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>stationSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlStationSpeed" value="
@@ -121,44 +121,44 @@
             <Contact mainContact="true">
                 <OtherContactType contactIdentifier="1301"/>
             </Contact>
-			<Contact mainContact="false" contactRole="Ostkopf: Fahrdienstleiter">
+            <Contact mainContact="false" contactRole="Ostkopf: Fahrdienstleiter">
                 <OtherContactType contactIdentifier="1301"/>
             </Contact>
-			<Contact mainContact="false" contactRole="Westkopf Gleis T1 - T17, 900-er Gruppe: Fahrdienstleiter">
+            <Contact mainContact="false" contactRole="Westkopf Gleis T1 - T17, 900-er Gruppe: Fahrdienstleiter">
                 <OtherContactType contactIdentifier="1309"/>
             </Contact>
         </ContactList>
-		
-		<CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R"/>
+
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R"/>
 
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="106.2"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="0">
+        <KilometreReferencePoint location="0">
             <KM_Reference kmRef="97.2"/>
         </KilometreReferencePoint>
         <KilometreReferencePoint location="200">
             <KM_Reference kmRef="97.037"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="400">
+        <KilometreReferencePoint location="400">
             <KM_Reference kmRef="96.8"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="800">
+        <KilometreReferencePoint location="800">
             <KM_Reference kmRef="96.431"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="1400">
+        <KilometreReferencePoint location="1400">
             <KM_Reference kmRef="95.8"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="2100">
+        <KilometreReferencePoint location="2100">
             <KM_Reference kmRef="95.1"/>
         </KilometreReferencePoint>
-		
 
-		<DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="9.0" gradientDirection="Uphill"
+
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="9.0" gradientDirection="Uphill"
                               directionOfApplicationOnSP="Nominal"/>
         <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0"
                               gradientValue="0.0" gradientDirection="Downhill"
-                              directionOfApplicationOnSP="Nominal"/> 
+                              directionOfApplicationOnSP="Nominal"/>
 
     </SP_ContextInformation>
 

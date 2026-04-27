@@ -1,8 +1,8 @@
 package ch.sbb.backend.preload.application.model.trainidentification;
 
 import ch.sbb.backend.preload.infrastructure.xml.XmlDateHelper;
-import ch.sbb.backend.preload.sfera.model.v0300.JPRequest;
-import ch.sbb.backend.preload.sfera.model.v0300.OTNID;
+import ch.sbb.backend.preload.sfera.model.v0400.JPRequest;
+import ch.sbb.backend.preload.sfera.model.v0400.OTNID;
 import java.time.OffsetDateTime;
 import java.util.Set;
 import lombok.NonNull;
@@ -15,7 +15,7 @@ public record TrainIdentification(@NonNull Integer id, @NonNull String operation
 
     public JPRequest toJpRequest() {
         JPRequest jpRequest = new JPRequest();
-        ch.sbb.backend.preload.sfera.model.v0300.TrainIdentification trainIdentification = new ch.sbb.backend.preload.sfera.model.v0300.TrainIdentification();
+        ch.sbb.backend.preload.sfera.model.v0400.TrainIdentification trainIdentification = new ch.sbb.backend.preload.sfera.model.v0400.TrainIdentification();
         OTNID otnid = new OTNID();
         otnid.setTeltsiCompany(company().getValue());
         otnid.setTeltsiOperationalTrainNumber(operationalTrainNumber);
