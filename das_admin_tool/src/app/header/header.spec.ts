@@ -13,7 +13,7 @@ const mockOidc: Partial<OidcSecurityService> = {
     userData: {
       name: 'User',
       preferred_username: 'user@example.com',
-      roles: ['admin_role_a']
+      roles: ['ru_admin']
     }
   } as UserDataResult),
   authenticated: signal({isAuthenticated: true} as AuthenticatedResult),
@@ -67,7 +67,7 @@ describe('Header', () => {
     usermenuOpenButton.nativeElement.click();
 
     expect(fixture.nativeElement.querySelector('.email').textContent).toContain('user@example.com');
-    expect(fixture.nativeElement.querySelector('.role').textContent).toContain('admin_role_a');
+    expect(fixture.nativeElement.querySelector('.role').textContent).toContain('EVU Admin');
   });
 
   it('should logout', () => {

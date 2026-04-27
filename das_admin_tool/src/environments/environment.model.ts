@@ -4,5 +4,6 @@ export interface Environment {
   production: boolean;
   stage: string;
   backendUrl: string;
+  adminTenantId: string;
   authConfig: PassedInitialConfig
 }

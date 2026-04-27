@@ -1,0 +1,9 @@
+sbb-form-field {
+  width: 100%;
+}
+
+.category {
+  sbb-title {
+    margin-top: 0;
+  }
+}

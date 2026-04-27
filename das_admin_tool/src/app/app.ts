@@ -3,7 +3,7 @@ import {NavigationEnd, Router, RouterOutlet} from '@angular/router';
 import {Header} from './header/header';
 import {IconSidebar} from './icon-sidebar/icon-sidebar';
 import packageJson from '../../package.json';
-import {OidcSecurityService} from 'angular-auth-oidc-client';
+import {AuthService} from './shared/auth-service';
 import {SbbTitleModule} from '@sbb-esta/lyne-angular/title';
 import {SbbNotificationModule} from '@sbb-esta/lyne-angular/notification';
 import {SbbLink} from '@sbb-esta/lyne-angular/link/link';
@@ -17,7 +17,7 @@ import {SbbLink} from '@sbb-esta/lyne-angular/link/link';
 export class App implements OnInit {
   protected isAdBlockerDetected = signal(this.isInstanaBlockedByAdBlocker);
   private readonly router = inject(Router);
-  private readonly oidcSecurityService = inject(OidcSecurityService);
+  private readonly authService = inject(AuthService);
 
   private get isInstanaBlockedByAdBlocker(): boolean {
     const pageLoadId = ineum('getPageLoadId');
@@ -26,8 +26,8 @@ export class App implements OnInit {
 
   ngOnInit(): void {
     ineum('meta', 'version', packageJson.version);
-    if (this.oidcSecurityService.authenticated().isAuthenticated) {
-      ineum('user', this.oidcSecurityService.userData().userData.oid);
+    if (this.authService.isAuthenticated()) {
+      ineum('user', this.authService.oid());
     }
     this.router.events
       .subscribe(event => {

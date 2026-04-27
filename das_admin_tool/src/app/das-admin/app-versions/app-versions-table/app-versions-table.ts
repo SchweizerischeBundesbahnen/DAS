@@ -2,7 +2,6 @@ import {Component, effect, inject, viewChild} from '@angular/core';
 import {SbbSort, SbbTableDataSource, SbbTableModule} from "@sbb-esta/lyne-angular/table";
 import {SbbSecondaryButton} from "@sbb-esta/lyne-angular/button/secondary-button";
 import {AppVersion} from '../../das-admin-api';
-import {toObservable} from '@angular/core/rxjs-interop';
 import {SbbCompactPaginator} from '@sbb-esta/lyne-angular/paginator/compact-paginator';
 import {DatePipe} from '@angular/common';
 import {SbbToggleCheckModule} from '@sbb-esta/lyne-angular/toggle-check';
@@ -23,24 +22,23 @@ import {SbbMiniButton} from '@sbb-esta/lyne-angular/button/mini-button';
   styleUrl: './app-versions-table.css',
 })
 export class AppVersionsTable {
+  protected readonly PAGE_SIZE = 20;
 
   protected dataSource = new SbbTableDataSource<AppVersion>();
   protected columns = ['version', 'minimalVersion', 'expiryDate', 'action'];
+  private readonly appVersionsService = inject(AppVersionsService);
 
   private readonly paginator = viewChild.required<SbbCompactPaginator>(SbbCompactPaginator);
   private readonly sort = viewChild.required<SbbSort>(SbbSort);
-
-  protected readonly PAGE_SIZE = 20;
-  private readonly appVersionsService = inject(AppVersionsService);
 
   constructor() {
     effect(() => {
       if (this.appVersionsService.appVersionsResource.hasValue()) {
         this.dataSource.data = this.appVersionsService.appVersionsResource.value().data;
       }
+      this.dataSource.paginator = this.paginator();
+      this.dataSource.sort = this.sort();
     });
-    toObservable(this.paginator).subscribe((paginator) => (this.dataSource.paginator = paginator));
-    toObservable(this.sort).subscribe((sort) => (this.dataSource.sort = sort));
   }
 
   protected async edit(appVersion: AppVersion) {

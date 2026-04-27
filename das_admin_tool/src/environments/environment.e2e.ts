@@ -25,5 +25,6 @@ export const environment: Environment = {
   production: false,
   stage: 'e2e',
   backendUrl,
+  adminTenantId: '2cda5d11-f0ac-46b3-967d-af1b2e1bd01a',
   authConfig
 };

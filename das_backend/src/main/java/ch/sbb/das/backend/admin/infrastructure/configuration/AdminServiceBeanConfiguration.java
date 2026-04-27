@@ -1,5 +1,8 @@
 package ch.sbb.das.backend.admin.infrastructure.configuration;
 
+import ch.sbb.das.backend.admin.domain.notices.NoticeTemplateRepository;
+import ch.sbb.das.backend.admin.domain.notices.NoticeTemplateService;
+import ch.sbb.das.backend.admin.domain.notices.NoticeTemplateServiceImpl;
 import ch.sbb.das.backend.admin.domain.settings.AppVersionRepository;
 import ch.sbb.das.backend.admin.domain.settings.AppVersionService;
 import ch.sbb.das.backend.admin.domain.settings.AppVersionServiceImpl;
@@ -20,5 +23,10 @@ public class AdminServiceBeanConfiguration {
     @Bean
     AppVersionService appVersionService(AppVersionRepository appVersionRepository) {
         return new AppVersionServiceImpl(appVersionRepository);
+    }
+
+    @Bean
+    NoticeTemplateService noticeTemplateService(NoticeTemplateRepository noticeTemplateRepository) {
+        return new NoticeTemplateServiceImpl(noticeTemplateRepository);
     }
 }
