@@ -22,7 +22,6 @@ class SettingsRepositoryImpl implements SettingsRepository {
   final RuFeatureDatabaseService databaseService;
   final AwsCredentialsChanged? _onAwsCredentialsChanged;
 
-  // non null if successfully fetched at least once
   SettingsDto? _lastSettings;
 
   void _init() async {

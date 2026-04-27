@@ -15,52 +15,64 @@ class AppExpirationDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    assert(model is! Valid);
+    if (model is Valid) return SizedBox.shrink();
 
     final isExpired = model is Expired;
     return Dialog(
       alignment: .topLeft,
       child: Container(
-        decoration: BoxDecoration(
-          color: ThemeUtil.getColor(context, SBBColors.milk, SBBColors.midnight),
-          borderRadius: BorderRadius.circular(SBBSpacing.medium),
-        ),
-        padding: .all(SBBSpacing.medium),
-        constraints: BoxConstraints(maxWidth: _maxWidth),
+        decoration: _decoration(context),
+        padding: const .all(SBBSpacing.medium),
+        constraints: const BoxConstraints(maxWidth: _maxWidth),
         child: Column(
           crossAxisAlignment: .start,
           mainAxisSize: .min,
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    isExpired ? context.l10n.w_app_expired_dialog_title : context.l10n.w_app_expires_soon_dialog_title,
-                    style: sbbTextStyle.large,
-                  ),
-                ),
-                if (!isExpired)
-                  SBBIconButtonSmall(
-                    icon: SBBIcons.cross_small,
-                    onPressed: () => context.router.pop<bool>(false),
-                  ),
-              ],
-            ),
-            SBBMessage(
-              title: isExpired
-                  ? context.l10n.w_app_expired_dialog_body_title(model.currentAppVersion)
-                  : context.l10n.w_app_expires_soon_dialog_body_title(
-                      model.currentAppVersion,
-                      Format.date((model as ExpirySoon).expiryDate),
-                    ),
-              description: isExpired
-                  ? context.l10n.w_app_expired_dialog_body_subTitle
-                  : context.l10n.w_app_expires_soon_dialog_body_subTitle,
-              illustration: .Display,
-            ),
+            _title(isExpired, context),
+            _body(isExpired, context),
           ],
         ),
       ),
+    );
+  }
+
+  BoxDecoration _decoration(BuildContext context) {
+    return BoxDecoration(
+      color: ThemeUtil.getColor(context, SBBColors.milk, SBBColors.midnight),
+      borderRadius: BorderRadius.circular(SBBSpacing.medium),
+    );
+  }
+
+  Widget _title(bool isExpired, BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: Text(
+            isExpired ? context.l10n.w_app_expired_dialog_title : context.l10n.w_app_expires_soon_dialog_title,
+            style: sbbTextStyle.large,
+          ),
+        ),
+        if (!isExpired)
+          SBBIconButtonSmall(
+            icon: SBBIcons.cross_small,
+            onPressed: () => context.router.pop<bool>(false),
+          ),
+      ],
+    );
+  }
+
+  Widget _body(bool isExpired, BuildContext context) {
+    return SBBMessage(
+      title: isExpired
+          ? context.l10n.w_app_expired_dialog_body_title(model.currentAppVersion)
+          : context.l10n.w_app_expires_soon_dialog_body_title(
+              model.currentAppVersion,
+              Format.date((model as ExpirySoon).expiryDate),
+            ),
+      description: isExpired
+          ? context.l10n.w_app_expired_dialog_body_subTitle
+          : context.l10n.w_app_expires_soon_dialog_body_subTitle,
+      illustration: .Display,
     );
   }
 }
@@ -68,9 +80,7 @@ class AppExpirationDialog extends StatelessWidget {
 Future<dynamic> showAppExpiresSoonDialog(ExpirySoon model, BuildContext context) {
   return showDialog(
     context: context,
-    builder: (context) {
-      return AppExpirationDialog(model: model);
-    },
+    builder: (context) => AppExpirationDialog(model: model),
   );
 }
 
@@ -78,8 +88,6 @@ Future<dynamic> showAppExpiredDialog(Expired model, BuildContext context) {
   return showDialog(
     context: context,
     barrierDismissible: true,
-    builder: (context) {
-      return AppExpirationDialog(model: model);
-    },
+    builder: (context) => AppExpirationDialog(model: model),
   );
 }
