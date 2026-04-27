@@ -5,6 +5,7 @@ import 'package:auth/src/azure_authenticator.dart';
 import 'package:auth/src/oidc_client_provider.dart';
 import 'package:auth/src/token_spec.dart';
 import 'package:auth/src/token_spec_provider.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -16,10 +17,12 @@ import 'azure_authenticator_test.mocks.dart';
   MockSpec<OidcClientFactory>(),
   MockSpec<OidcClient>(),
   MockSpec<OidcToken>(),
+  MockSpec<FlutterSecureStorage>(),
 ])
 void main() {
   late MockOidcClientFactory mockOidcClientFactory;
   late MockOidcClient mockOidcClient;
+  late MockFlutterSecureStorage mockFlutterSecureStorage;
   late AzureAuthenticator authenticator;
 
   const trustedTenants = <String, String>{
@@ -45,6 +48,7 @@ void main() {
   setUp(() {
     mockOidcClientFactory = MockOidcClientFactory();
     mockOidcClient = MockOidcClient();
+    mockFlutterSecureStorage = MockFlutterSecureStorage();
 
     when(
       mockOidcClientFactory.createClient(
@@ -58,6 +62,7 @@ void main() {
     authenticator = AzureAuthenticator(
       config: config,
       oidcClientFactory: mockOidcClientFactory,
+      storage: mockFlutterSecureStorage,
     );
   });
 

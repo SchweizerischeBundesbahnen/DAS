@@ -2,20 +2,28 @@ import 'dart:async';
 
 import 'package:auth/component.dart';
 import 'package:auth/src/oidc_client_provider.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:logging/logging.dart';
 import 'package:sbb_oidc/sbb_oidc.dart';
 
 final _log = Logger('AzureAuthenticator');
 
 class AzureAuthenticator implements Authenticator {
+  static final _offlineTokenValidityDuration = const Duration(days: 1);
+
   AzureAuthenticator({
     required this.config,
     this.oidcClientFactory = const SBBOidcClientFactory(),
+    this.storage = const FlutterSecureStorage(
+      iOptions: IOSOptions(accountName: 'auth'),
+      aOptions: AndroidOptions(sharedPreferencesName: 'auth'),
+    ),
   });
 
   final AuthenticatorConfig config;
   final OidcClientFactory oidcClientFactory;
   late final OidcClient _oidcClient;
+  final FlutterSecureStorage storage;
   bool isInitialized = false;
 
   Future<void> _init() async {
@@ -30,57 +38,91 @@ class AzureAuthenticator implements Authenticator {
       );
       isInitialized = true;
     } catch (e, s) {
-      _log.severe('AzureAuthenticator Initialization failed', e, s);
+      final offlineToken = await _loadOfflineToken();
+      if (offlineToken == null) {
+        _log.severe('AzureAuthenticator Initialization failed', e, s);
+      }
       rethrow;
     }
   }
 
   @override
   Future<bool> get isAuthenticated async {
-    await _init();
     try {
       await token();
       return true;
     } catch (e) {
-      // Delete all existing tokens. They are invalid and might cause issues.
-      await logout();
+      if (isInitialized) {
+        // Delete all existing tokens. They are invalid and might cause issues.
+        await logout();
+      }
       return false;
     }
   }
 
   @override
   Future<OidcToken> login({String? tokenId}) async {
-    await _init();
-    TokenSpec? tokenSpec = config.tokenSpecs.getById(tokenId);
-    tokenSpec ??= config.tokenSpecs.all.first;
-    final token = await _oidcClient.login(
-      scopes: tokenSpec.scopes,
-      prompt: LoginPrompt.selectAccount,
-    );
+    try {
+      await _init();
+      TokenSpec? tokenSpec = config.tokenSpecs.getById(tokenId);
+      tokenSpec ??= config.tokenSpecs.all.first;
+      final token = await _oidcClient.login(
+        scopes: tokenSpec.scopes,
+        prompt: LoginPrompt.selectAccount,
+      );
+      _writeOfflineToken(token: token, tokenId: tokenId);
 
-    _validateToken(token);
+      _validateToken(token);
 
-    return token;
+      return token;
+    } catch (e) {
+      final token = await _loadOfflineToken(tokenId: tokenId);
+      if (token != null) {
+        _validateToken(token);
+        _log.info('Login failed, but found valid offline token. Using it as fallback.');
+        return token;
+      }
+      rethrow;
+    }
   }
 
   @override
   Future<OidcToken> token({String? tokenId, bool? forceRefresh}) async {
-    await _init();
-    final tokenSpec = config.tokenSpecs.getById(tokenId);
-    if (tokenSpec == null) {
-      throw ArgumentError.value(tokenId, 'tokenId', 'Unknown token id.');
+    try {
+      await _init();
+      final tokenSpec = config.tokenSpecs.getById(tokenId);
+      if (tokenSpec == null) {
+        throw ArgumentError.value(tokenId, 'tokenId', 'Unknown token id.');
+      }
+
+      final token = await _oidcClient.getToken(scopes: tokenSpec.scopes, forceRefresh: forceRefresh ?? false);
+      _writeOfflineToken(token: token, tokenId: tokenId);
+
+      _validateToken(token);
+      return token;
+    } catch (e) {
+      final token = await _loadOfflineToken(tokenId: tokenId);
+      if (token != null) {
+        _validateToken(token);
+        _log.info('Found valid offline token. Using it as fallback.');
+        return token;
+      }
+      rethrow;
     }
-
-    final token = await _oidcClient.getToken(scopes: tokenSpec.scopes, forceRefresh: forceRefresh ?? false);
-    _validateToken(token);
-
-    return token;
   }
 
   @override
   Future<User> user({String? tokenId}) async {
-    await _init();
-    final oidcToken = await token(tokenId: tokenId);
+    OidcToken? oidcToken;
+    try {
+      await _init();
+      oidcToken = await token(tokenId: tokenId);
+    } catch (e) {
+      oidcToken = await _loadOfflineToken(tokenId: tokenId);
+      if (oidcToken == null) {
+        rethrow;
+      }
+    }
     final idToken = JsonWebToken.decode(oidcToken.idToken);
     final userId = idToken.payload['preferred_username'] as String;
     final roles = idToken.payload['roles'] as List<dynamic>? ?? [];
@@ -98,6 +140,7 @@ class AzureAuthenticator implements Authenticator {
   @override
   Future<void> logout() async {
     await _init();
+    storage.deleteAll();
     return _oidcClient.logout();
   }
 
@@ -105,6 +148,27 @@ class AzureAuthenticator implements Authenticator {
   Future<void> endSession() async {
     await _init();
     return _oidcClient.endSession();
+  }
+
+  Future<OidcToken?> _loadOfflineToken({String? tokenId}) async {
+    final key = tokenId ?? TokenSpec.defaultTokenId;
+
+    final tokenPayload = await storage.read(key: key);
+    if (tokenPayload == null) return null;
+
+    final oidcToken = OidcToken.fromJsonString(tokenPayload);
+    if (oidcToken.accessTokenExpirationDateTime == null ||
+        oidcToken.accessTokenExpirationDateTime!.isBefore(DateTime.now().subtract(_offlineTokenValidityDuration))) {
+      // Token is too old, delete it and return null
+      await storage.delete(key: key);
+      return null;
+    }
+
+    return oidcToken;
+  }
+
+  Future<void> _writeOfflineToken({required OidcToken token, String? tokenId}) {
+    return storage.write(key: tokenId ?? TokenSpec.defaultTokenId, value: token.toJsonString());
   }
 
   void _validateToken(OidcToken token) {
