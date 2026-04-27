@@ -16,7 +16,7 @@ class AppExpirationViewModel {
 
   AppExpirationModel get modelValue => _rxSubject.value;
 
-  static const throttleDuration = Duration(minutes: 1);
+  static const throttleDuration = Duration(minutes: 30);
 
   final SettingsRepository _settingsRepository;
   final BehaviorSubject<AppExpirationModel> _rxSubject;
