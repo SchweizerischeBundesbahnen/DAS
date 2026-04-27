@@ -2,10 +2,10 @@ package ch.sbb.das.backend.preload.application;
 
 import ch.sbb.das.backend.preload.infrastructure.S3Service;
 import ch.sbb.das.backend.preload.infrastructure.xml.XmlHelper;
-import ch.sbb.das.backend.preload.sfera.model.v0300.JourneyProfile;
-import ch.sbb.das.backend.preload.sfera.model.v0300.OTNID;
-import ch.sbb.das.backend.preload.sfera.model.v0300.SegmentProfile;
-import ch.sbb.das.backend.preload.sfera.model.v0300.TrainCharacteristics;
+import ch.sbb.das.backend.preload.sfera.model.v0400.JourneyProfile;
+import ch.sbb.das.backend.preload.sfera.model.v0400.OTNID;
+import ch.sbb.das.backend.preload.sfera.model.v0400.SegmentProfile;
+import ch.sbb.das.backend.preload.sfera.model.v0400.TrainCharacteristics;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;

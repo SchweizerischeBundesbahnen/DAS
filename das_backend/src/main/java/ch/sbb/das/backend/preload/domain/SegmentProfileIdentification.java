@@ -1,9 +1,9 @@
 package ch.sbb.das.backend.preload.domain;
 
-import ch.sbb.das.backend.preload.sfera.model.v0300.SPRequest;
-import ch.sbb.das.backend.preload.sfera.model.v0300.SPZone;
-import ch.sbb.das.backend.preload.sfera.model.v0300.SegmentProfile;
-import ch.sbb.das.backend.preload.sfera.model.v0300.SegmentProfileReference;
+import ch.sbb.das.backend.preload.sfera.model.v0400.SPRequest;
+import ch.sbb.das.backend.preload.sfera.model.v0400.SPZone;
+import ch.sbb.das.backend.preload.sfera.model.v0400.SegmentProfile;
+import ch.sbb.das.backend.preload.sfera.model.v0400.SegmentProfileReference;
 
 public record SegmentProfileIdentification(String spid, String spVersionMajor, String spVersionMinor, String imid, Short nidc) {
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<SFERA_G2B_ReplyMessage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../main/resources/SFERA_v3.00.xsd">
-    <MessageHeader SFERA_version="3.00" message_ID="f552c19f-d8f6-434c-95b5-996b99b71f21" sourceDevice="TEST" timestamp="2025-10-20T13:19:29Z"
+<SFERA_G2B_ReplyMessage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../main/resources/SFERA_4.00.xsd">
+    <MessageHeader SFERA_version="4.00" message_ID="f552c19f-d8f6-434c-95b5-996b99b71f21" sourceDevice="TEST" timestamp="2025-10-20T13:19:29Z"
                    correlation_ID="${correlationId}">
         <Sender>1111</Sender>
         <Recipient>0033</Recipient>

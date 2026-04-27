@@ -7,12 +7,12 @@ import static ch.sbb.sferamock.SferaIntegrationTestData.DRIVER_CONNECTED_BOARDCA
 import static ch.sbb.sferamock.SferaIntegrationTestData.INACTIVE_STANDALONE_BOARDCALCULATION;
 import static ch.sbb.sferamock.SferaIntegrationTestData.READONLY_CONNECTED_BOARDCALCULATION;
 import static ch.sbb.sferamock.SferaIntegrationTestData.READONLY_CONNECTED_GROUNDCALCULATION;
-import static ch.sbb.sferamock.adapters.sfera.model.v0300.HandshakeRejectReason.ARCHITECTURE_NOT_SUPPORTED;
-import static ch.sbb.sferamock.adapters.sfera.model.v0300.UnavailableDASOperatingModes.DASConnectivity.CONNECTED;
-import static ch.sbb.sferamock.adapters.sfera.model.v0300.UnavailableDASOperatingModes.DASConnectivity.STANDALONE;
+import static ch.sbb.sferamock.adapters.sfera.model.v0400.HandshakeRejectReason.ARCHITECTURE_NOT_SUPPORTED;
+import static ch.sbb.sferamock.adapters.sfera.model.v0400.UnavailableDASOperatingModes.DASConnectivity.CONNECTED;
+import static ch.sbb.sferamock.adapters.sfera.model.v0400.UnavailableDASOperatingModes.DASConnectivity.STANDALONE;
 
-import ch.sbb.sferamock.adapters.sfera.model.v0300.SFERAB2GRequestMessage;
-import ch.sbb.sferamock.adapters.sfera.model.v0300.SFERAG2BReplyMessage;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.SFERAB2GRequestMessage;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.SFERAG2BReplyMessage;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
@@ -64,7 +64,7 @@ class HandshakeTest {
         SFERAB2GRequestMessage handshakeRequest = SferaIntegrationTestData.createHandshakeRequest(
             MESSAGE_ID, RU_COMPANY_CODE_SBB_P, IM_COMPANY_CODE_SBB_I,
             DRIVER_CONNECTED_BOARDCALCULATION, READONLY_CONNECTED_BOARDCALCULATION);
-        handshakeRequest.getHandshakeRequest().setStatusReportsEnabled(true);
+        handshakeRequest.getDASHandshakeRequest().setStatusReportsEnabled(true);
 
         // When
         messageAdapter.sendXml(handshakeRequest, SFERA_INCOMING_TOPIC);
@@ -81,7 +81,7 @@ class HandshakeTest {
         SFERAB2GRequestMessage handshakeRequest = SferaIntegrationTestData.createHandshakeRequest(
             MESSAGE_ID, RU_COMPANY_CODE_SBB_P, IM_COMPANY_CODE_SBB_I,
             READONLY_CONNECTED_BOARDCALCULATION, DRIVER_CONNECTED_BOARDCALCULATION);
-        handshakeRequest.getHandshakeRequest().setStatusReportsEnabled(true);
+        handshakeRequest.getDASHandshakeRequest().setStatusReportsEnabled(true);
 
         // When
         messageAdapter.sendXml(handshakeRequest, SFERA_INCOMING_TOPIC);

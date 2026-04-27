@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
-<G2B_EventPayload xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
+<G2B_EventPayload xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA.xsd">
     <JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                    xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
+                    xsi:noNamespaceSchemaLocation="../../SFERA.xsd"
                     JP_Version="2" JP_Status="Update">
         <TrainIdentification>
             <OTN_ID>

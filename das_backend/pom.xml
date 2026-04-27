@@ -337,7 +337,7 @@
                 <version>${jaxb2-maven-plugin.version}</version>
                 <configuration>
                     <sources>
-                        <source>${basedir}/src/main/resources/SFERA_v3.00.xsd</source>
+                        <source>${basedir}/src/main/resources/SFERA_4.00.xsd</source>
                     </sources>
                     <xjbSources>
                         <xjbSource>${basedir}/src/main/resources/jaxb-bindings.xjb</xjbSource>

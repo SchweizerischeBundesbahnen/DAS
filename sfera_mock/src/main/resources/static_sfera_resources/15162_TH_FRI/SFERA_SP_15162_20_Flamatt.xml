@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
+                xsi:noNamespaceSchemaLocation="../../SFERA.xsd"
                 SP_ID="15162_20_Flamatt" SP_VersionMajor="1" SP_VersionMinor="3" SP_Length="3700" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
@@ -15,32 +15,32 @@
             </TAF_TAP_LocationReference>
             <TP_Name name="FLM"/>
         </TimingPoint>
-		
-		<Signal>
+
+        <Signal>
             <Signal_ID signal_ID_Physical="B3" location="0"/>
             <SignalFunction>exit</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="B3"/>
         </Signal>
 
-		<Signal>
+        <Signal>
             <Signal_ID signal_ID_Physical="S958" location="900"/>
             <SignalFunction>block</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="S958"/>
         </Signal>
 
-		<Signal>
+        <Signal>
             <Signal_ID signal_ID_Physical="S957" location="1900"/>
             <SignalFunction>block</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="S957"/>
         </Signal>
 
-		<Signal>
+        <Signal>
             <Signal_ID signal_ID_Physical="S956" location="3200"/>
             <SignalFunction>block</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="S956"/>
-        </Signal>		
-		
-		<NetworkSpecificPoint location="0" identifier="BDD369E5B05947BC8695DB602CFA5BDB">
+        </Signal>
+
+        <NetworkSpecificPoint location="0" identifier="BDD369E5B05947BC8695DB602CFA5BDB">
             <teltsi_Company>0085</teltsi_Company>
             <NSP_GroupName>curvePoint</NSP_GroupName>
             <NetworkSpecificParameter name="curvePointType" value="begin"/>
@@ -73,7 +73,7 @@
                 <teltsi_PrimaryLocationName>Flamatt</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
 
-			<TAF_TAP_Location_NSP>
+            <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>stationSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlStationSpeed" value="
@@ -139,26 +139,26 @@
                 <OtherContactType contactIdentifier="1311"/>
             </Contact>
         </ContactList>
-		
-		<CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R"/>
+
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R"/>
 
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="84"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="900">
+        <KilometreReferencePoint location="900">
             <KM_Reference kmRef="83.1"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="1900">
+        <KilometreReferencePoint location="1900">
             <KM_Reference kmRef="82.1"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="2400">
+        <KilometreReferencePoint location="2400">
             <KM_Reference kmRef="81.6"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="3200">
+        <KilometreReferencePoint location="3200">
             <KM_Reference kmRef="80.8"/>
         </KilometreReferencePoint>
-		
-		<DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="10.0" gradientDirection="Uphill"
+
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="10.0" gradientDirection="Uphill"
                               directionOfApplicationOnSP="Nominal"/>
         <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="0.0" gradientDirection="Downhill"
                               directionOfApplicationOnSP="Nominal"/>

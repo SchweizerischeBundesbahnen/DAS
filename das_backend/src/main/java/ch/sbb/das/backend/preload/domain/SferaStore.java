@@ -1,7 +1,7 @@
 package ch.sbb.das.backend.preload.domain;
 
-import ch.sbb.das.backend.preload.sfera.model.v0300.SegmentProfile;
-import ch.sbb.das.backend.preload.sfera.model.v0300.TrainCharacteristics;
+import ch.sbb.das.backend.preload.sfera.model.v0400.SegmentProfile;
+import ch.sbb.das.backend.preload.sfera.model.v0400.TrainCharacteristics;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

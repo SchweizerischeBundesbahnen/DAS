@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
+                xsi:noNamespaceSchemaLocation="../../SFERA.xsd"
                 SP_ID="2017_6_Biberegg" SP_VersionMajor="1" SP_VersionMinor="1" SP_Length="1400" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
@@ -14,14 +14,14 @@
                 <teltsi_LocationPrimaryCode>3290</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
-		
-		<Signal>
+
+        <Signal>
             <Signal_ID signal_ID_Physical="D628" location="900"/>
             <SignalFunction>entry</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="D628"/>
         </Signal>
-		
-		<NetworkSpecificPoint location="1000" identifier="C2139E880FB743438EB5D1C277A9875B">
+
+        <NetworkSpecificPoint location="1000" identifier="C2139E880FB743438EB5D1C277A9875B">
             <teltsi_Company>0085</teltsi_Company>
             <NSP_GroupName>curvePoint</NSP_GroupName>
             <NetworkSpecificParameter name="curvePointType" value="begin"/>
@@ -33,8 +33,8 @@
 					&lt;/speeds&gt;
                 &lt;/curveSpeed&gt;
             "/>
-            <NetworkSpecificParameter name="lastModificationType" value="updated" />
-            <NetworkSpecificParameter name="lastModificationDate" value="2050-01-01" />
+            <NetworkSpecificParameter name="lastModificationType" value="updated"/>
+            <NetworkSpecificParameter name="lastModificationDate" value="2050-01-01"/>
         </NetworkSpecificPoint>
 
         <NetworkSpecificPoint location="1170" identifier="C2139E880FB743438EB5D1C277A9875B">
@@ -53,8 +53,8 @@
                 <teltsi_LocationPrimaryCode>3290</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Biberegg</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-			
-			<TAF_TAP_Location_NSP>
+
+            <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>newLineSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlNewLineSpeed" value="
@@ -85,25 +85,25 @@
 
 
     <SP_ContextInformation>
-		
-		<ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
+
+        <ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
             <Contact mainContact="true">
                 <OtherContactType contactIdentifier="1325"/>
             </Contact>
         </ContactList>
-		
-		<CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-P"/>
+
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-P"/>
 
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="27.1"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="900">
+        <KilometreReferencePoint location="900">
             <KM_Reference kmRef="26.2"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="1000">
+        <KilometreReferencePoint location="1000">
             <KM_Reference kmRef="26.16"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="1170">
+        <KilometreReferencePoint location="1170">
             <KM_Reference kmRef="25.93"/>
         </KilometreReferencePoint>
 
