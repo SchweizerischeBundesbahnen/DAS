@@ -2,6 +2,7 @@ import 'package:logging/logging.dart';
 
 final _log = Logger('CustomerOrientedDepartureStatus');
 
+// TODO: Status not enough as we need to check for right train
 enum CustomerOrientedDepartureStatus {
   wait,
   ready,

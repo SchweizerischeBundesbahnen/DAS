@@ -20,4 +20,6 @@ abstract class CustomerOrientedDepartureRepository {
     required DateTime journeyEndTime,
     required bool isDriver,
   });
+
+  void dispose();
 }

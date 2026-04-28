@@ -35,10 +35,7 @@ class FirebaseMessagingService implements MessagingService {
     final token = await FirebaseMessaging.instance.getToken();
     _rxToken.add(token);
 
-    final sub = FirebaseMessaging.instance.onTokenRefresh.listen(
-      _rxToken.add,
-      onError: _rxToken.addError,
-    );
+    final sub = FirebaseMessaging.instance.onTokenRefresh.listen(_rxToken.add, onError: _rxToken.addError);
 
     _subscriptions.add(sub);
   }
