@@ -1,4 +1,5 @@
 import 'package:customer_oriented_departure/component.dart';
+import 'package:customer_oriented_departure/src/api/confirm/request.dart';
 import 'package:customer_oriented_departure/src/api/customer_oriented_departure_api_service.dart';
 import 'package:customer_oriented_departure/src/api/subscribe/request.dart';
 import 'package:customer_oriented_departure/src/messaging/firebase/dto/train_status_message_dto.dart';
@@ -14,12 +15,14 @@ import 'customer_oriented_departure_repository_impl_test.mocks.dart';
 @GenerateNiceMocks([
   MockSpec<CustomerOrientedDepartureApiService>(),
   MockSpec<MessagingService>(),
+  MockSpec<ConfirmRequest>(),
   MockSpec<SubscribeRequest>(),
 ])
 void main() {
   late CustomerOrientedDepartureRepository testee;
   late MockCustomerOrientedDepartureApiService mockApiService;
   late MockMessagingService mockMessagingService;
+  late MockConfirmRequest mockConfirmRequest;
   late MockSubscribeRequest mockSubscribeRequest;
   late BehaviorSubject<String?> rxToken;
   late BehaviorSubject<TrainStatusMessageDto> rxTrainStatusMessage;
@@ -30,11 +33,13 @@ void main() {
   setUp(() {
     mockApiService = MockCustomerOrientedDepartureApiService();
     mockMessagingService = MockMessagingService();
+    mockConfirmRequest = MockConfirmRequest();
     mockSubscribeRequest = MockSubscribeRequest();
     rxToken = BehaviorSubject();
     rxTrainStatusMessage = BehaviorSubject();
 
     when(mockApiService.subscribe).thenReturn(mockSubscribeRequest);
+    when(mockApiService.confirm).thenReturn(mockConfirmRequest);
     when(mockMessagingService.tokenValue).thenReturn(testPushToken);
     when(mockMessagingService.token).thenAnswer((_) => rxToken.stream);
     when(mockMessagingService.message).thenAnswer((_) => rxTrainStatusMessage.stream);
@@ -51,6 +56,13 @@ void main() {
         isDriver: anyNamed('isDriver'),
       ),
     ).thenAnswer((_) => Future.value(const SubscribeResponse(headers: {})));
+
+    when(
+      mockConfirmRequest.call(
+        messageId: anyNamed('messageId'),
+        deviceId: anyNamed('deviceId'),
+      ),
+    ).thenAnswer((_) => Future.value(const ConfirmResponse(headers: {})));
 
     testee = CustomerOrientedDepartureRepositoryImpl(
       apiService: mockApiService,
@@ -144,7 +156,7 @@ void main() {
         evu: '1180',
         trainNumber: 'RB77',
         pushToken: 'new-token',
-        deviceId: 'device-2',
+        deviceId: 'device-1',
         messageId: anyNamed('messageId'),
         expiresAt: testJourneyEndTime,
         isDriver: false,
@@ -250,16 +262,16 @@ void main() {
     ).called(1);
   });
 
-  test('status_whenTrainStatusMessagesReceived_thenPublishesStatus', () async {
+  test('status_whenTrainStatusMessageReceived_thenEmitsStatusAndConfirmsMessage', () async {
     // GIVEN
     final emittedStatuses = <CustomerOrientedDepartureStatus>[];
     final subscription = testee.status.listen(emittedStatuses.add);
 
     // ACT
     rxTrainStatusMessage
-      ..add(_createMessage(status: 'READY'))
-      ..add(_createMessage(status: 'abcd')) // should be ignored
-      ..add(_createMessage(status: 'departure'));
+      ..add(_createMessage(status: 'READY', messageId: 'message-1'))
+      ..add(_createMessage(status: 'abcd', messageId: 'message-2')) // should be ignored
+      ..add(_createMessage(status: 'departure', messageId: 'message-3'));
     await Future.delayed(Duration.zero);
 
     // VERIFY
@@ -271,13 +283,26 @@ void main() {
       ]),
     );
 
+    final verificationResult = verify(
+      mockConfirmRequest.call(
+        messageId: captureAnyNamed('messageId'),
+        deviceId: anyNamed('deviceId'),
+      ),
+    );
+    verificationResult.called(2);
+
+    final messageIds = verificationResult.captured;
+    expect(messageIds, hasLength(2));
+    expect(messageIds[0], 'message-1');
+    expect(messageIds[1], 'message-3');
+
     await subscription.cancel();
   });
 }
 
-TrainStatusMessageDto _createMessage({required String status}) {
+TrainStatusMessageDto _createMessage({required String status, String messageId = 'message-1'}) {
   return TrainStatusMessageDto(
-    messageId: 'message-1',
+    messageId: messageId,
     zugnr: 'RE1234',
     bp: '1080',
     status: status,
