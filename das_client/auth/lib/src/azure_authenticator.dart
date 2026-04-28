@@ -4,6 +4,7 @@ import 'package:auth/component.dart';
 import 'package:auth/src/oidc_client_provider.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:logging/logging.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:sbb_oidc/sbb_oidc.dart';
 
 final _log = Logger('AzureAuthenticator');
@@ -12,31 +13,34 @@ class AzureAuthenticator implements Authenticator {
   static final _offlineTokenValidityDuration = const Duration(days: 1);
 
   AzureAuthenticator({
-    required this.config,
-    this.oidcClientFactory = const SBBOidcClientFactory(),
-    this.storage = const FlutterSecureStorage(
+    required AuthenticatorConfig config,
+    OidcClientFactory oidcClientFactory = const SBBOidcClientFactory(),
+    FlutterSecureStorage storage = const FlutterSecureStorage(
       iOptions: IOSOptions(accountName: 'auth'),
       aOptions: AndroidOptions(sharedPreferencesName: 'auth'),
     ),
-  });
+  }) : _config = config,
+       _oidcClientFactory = oidcClientFactory,
+       _storage = storage;
 
-  final AuthenticatorConfig config;
-  final OidcClientFactory oidcClientFactory;
+  final AuthenticatorConfig _config;
+  final OidcClientFactory _oidcClientFactory;
   late final OidcClient _oidcClient;
-  final FlutterSecureStorage storage;
-  bool isInitialized = false;
+  final FlutterSecureStorage _storage;
+  bool _isInitialized = false;
+  final _reauthenticationRequiredSubject = BehaviorSubject.seeded(false);
 
   Future<void> _init() async {
-    if (isInitialized) return;
+    if (_isInitialized) return;
     _log.fine('Initialize AzureAuthenticator');
     try {
-      _oidcClient = await oidcClientFactory.createClient(
-        discoveryUrl: config.discoveryUrl,
-        clientId: config.clientId,
-        redirectUrl: config.redirectUrl,
-        postLogoutRedirectUrl: config.postLogoutRedirectUrl,
+      _oidcClient = await _oidcClientFactory.createClient(
+        discoveryUrl: _config.discoveryUrl,
+        clientId: _config.clientId,
+        redirectUrl: _config.redirectUrl,
+        postLogoutRedirectUrl: _config.postLogoutRedirectUrl,
       );
-      isInitialized = true;
+      _isInitialized = true;
     } catch (e, s) {
       final offlineToken = await _loadOfflineToken();
       if (offlineToken == null) {
@@ -52,7 +56,7 @@ class AzureAuthenticator implements Authenticator {
       await token();
       return true;
     } catch (e) {
-      if (isInitialized) {
+      if (_isInitialized) {
         // Delete all existing tokens. They are invalid and might cause issues.
         await logout();
       }
@@ -64,12 +68,13 @@ class AzureAuthenticator implements Authenticator {
   Future<OidcToken> login({String? tokenId}) async {
     try {
       await _init();
-      TokenSpec? tokenSpec = config.tokenSpecs.getById(tokenId);
-      tokenSpec ??= config.tokenSpecs.all.first;
+      TokenSpec? tokenSpec = _config.tokenSpecs.getById(tokenId);
+      tokenSpec ??= _config.tokenSpecs.all.first;
       final token = await _oidcClient.login(
         scopes: tokenSpec.scopes,
         prompt: LoginPrompt.selectAccount,
       );
+      _reauthenticationRequiredSubject.add(false);
       _writeOfflineToken(token: token, tokenId: tokenId);
 
       _validateToken(token);
@@ -90,17 +95,22 @@ class AzureAuthenticator implements Authenticator {
   Future<OidcToken> token({String? tokenId, bool? forceRefresh}) async {
     try {
       await _init();
-      final tokenSpec = config.tokenSpecs.getById(tokenId);
+      final tokenSpec = _config.tokenSpecs.getById(tokenId);
       if (tokenSpec == null) {
         throw ArgumentError.value(tokenId, 'tokenId', 'Unknown token id.');
       }
 
       final token = await _oidcClient.getToken(scopes: tokenSpec.scopes, forceRefresh: forceRefresh ?? false);
+      _reauthenticationRequiredSubject.add(false);
       _writeOfflineToken(token: token, tokenId: tokenId);
 
       _validateToken(token);
       return token;
     } catch (e) {
+      if (e is! NetworkException) {
+        _reauthenticationRequiredSubject.add(true);
+      }
+
       final token = await _loadOfflineToken(tokenId: tokenId);
       if (token != null) {
         _validateToken(token);
@@ -140,7 +150,7 @@ class AzureAuthenticator implements Authenticator {
   @override
   Future<void> logout() async {
     await _init();
-    storage.deleteAll();
+    _storage.deleteAll();
     return _oidcClient.logout();
   }
 
@@ -153,14 +163,14 @@ class AzureAuthenticator implements Authenticator {
   Future<OidcToken?> _loadOfflineToken({String? tokenId}) async {
     final key = tokenId ?? TokenSpec.defaultTokenId;
 
-    final tokenPayload = await storage.read(key: key);
+    final tokenPayload = await _storage.read(key: key);
     if (tokenPayload == null) return null;
 
     final oidcToken = OidcToken.fromJsonString(tokenPayload);
     if (oidcToken.accessTokenExpirationDateTime == null ||
         oidcToken.accessTokenExpirationDateTime!.isBefore(DateTime.now().subtract(_offlineTokenValidityDuration))) {
       // Token is too old, delete it and return null
-      await storage.delete(key: key);
+      await _storage.delete(key: key);
       return null;
     }
 
@@ -168,14 +178,17 @@ class AzureAuthenticator implements Authenticator {
   }
 
   Future<void> _writeOfflineToken({required OidcToken token, String? tokenId}) {
-    return storage.write(key: tokenId ?? TokenSpec.defaultTokenId, value: token.toJsonString());
+    return _storage.write(key: tokenId ?? TokenSpec.defaultTokenId, value: token.toJsonString());
   }
 
   void _validateToken(OidcToken token) {
-    if (!token.isIssuedByTenant(config.trustedTenantIds)) {
+    if (!token.isIssuedByTenant(_config.trustedTenantIds)) {
       throw Exception('Token issued by untrusted tenant');
     }
   }
+
+  @override
+  Stream<bool> get reauthenticationRequired => _reauthenticationRequiredSubject.distinct();
 }
 
 extension _OidcTokenExtension on OidcToken {

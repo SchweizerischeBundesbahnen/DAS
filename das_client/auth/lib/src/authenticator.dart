@@ -15,4 +15,6 @@ abstract class Authenticator {
   Future<void> logout();
 
   Future<void> endSession();
+
+  Stream<bool> get reauthenticationRequired;
 }
