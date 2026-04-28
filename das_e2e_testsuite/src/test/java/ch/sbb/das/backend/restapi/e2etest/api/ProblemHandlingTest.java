@@ -1,23 +1,22 @@
 package ch.sbb.das.backend.restapi.e2etest.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assumptions.assumeThat;
 
 import ch.sbb.das.backend.restapi.configuration.DasBackendEndpointConfiguration;
 import ch.sbb.das.backend.restapi.e2etest.configuration.ApiClientTestProfile;
 import ch.sbb.das.backend.restapi.e2etest.helper.RestAssuredCommand;
 import ch.sbb.das.backend.restapi.monitoring.MonitoringConstants;
+import ch.sbb.das.backend.restclient.v1.model.Problem;
 import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
-import org.assertj.core.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.TestContextManager;
 
 /**
- * Testing {@link ch.sbb.backend.restclient.v1.model.Problem} returned by DAS-Backend RestControllers or TopLevelHandler.
+ * Testing {@link Problem} returned by DAS-Backend RestControllers or TopLevelHandler.
  */
 @ApiClientTestProfile
 @Slf4j

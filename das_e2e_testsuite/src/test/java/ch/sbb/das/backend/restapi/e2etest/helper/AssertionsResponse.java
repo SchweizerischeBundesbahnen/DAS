@@ -1,11 +1,10 @@
 package ch.sbb.das.backend.restapi.e2etest.helper;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assumptions.assumeThat;
 
-import ch.sbb.backend.restclient.v1.model.Problem;
 import ch.sbb.das.backend.restapi.helper.ObjectMapperFactory;
 import ch.sbb.das.backend.restapi.monitoring.MonitoringConstants;
+import ch.sbb.das.backend.restclient.v1.model.Problem;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.response.Response;
 import java.io.IOException;
@@ -15,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpHeaders;
 import org.assertj.core.api.Assertions;
-import org.assertj.core.api.Assumptions;
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.MatcherAssert;
 import org.springframework.http.HttpStatus;
