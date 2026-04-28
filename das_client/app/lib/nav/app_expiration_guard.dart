@@ -11,7 +11,15 @@ class AppExpirationGuard extends AutoRouteGuard {
   void onNavigation(NavigationResolver resolver, StackRouter router) async {
     final appExpirationVM = DI.get<AppExpirationViewModel>();
     try {
-      await appExpirationVM.checkIsAppExpired();
+      router.push(const LoadingRoute());
+
+      await _checkAppIsExpiredAndResolveOnTimeout(appExpirationVM, router, resolver);
+
+      if (resolver.isResolved) return;
+
+      // remove loading route
+      router.removeLast();
+
       if (!appExpirationVM.mustShowDialog) {
         _log.fine('AppExpiraton dialog must not be shown. Navigating to ${resolver.route}');
         resolver.next(true);
@@ -31,5 +39,20 @@ class AppExpirationGuard extends AutoRouteGuard {
       _log.severe('Navigation failed: $e');
       resolver.next(false);
     }
+  }
+
+  Future<void> _checkAppIsExpiredAndResolveOnTimeout(
+    AppExpirationViewModel appExpirationVM,
+    StackRouter router,
+    NavigationResolver resolver,
+  ) async {
+    await appExpirationVM.checkIsAppExpired().timeout(
+      const Duration(seconds: 5),
+      onTimeout: () {
+        _log.warning('AppExpiration check timed out after 5 seconds. Resolving with next(true).');
+        router.removeLast();
+        resolver.next(true);
+      },
+    );
   }
 }
