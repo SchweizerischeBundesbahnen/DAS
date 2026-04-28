@@ -1,6 +1,5 @@
 import 'package:logger/component.dart';
 import 'package:settings/component.dart';
-import 'package:settings/src/model/app_version_expiration.dart';
 
 abstract class SettingsRepository implements LogEndpoint {
   const SettingsRepository._();
