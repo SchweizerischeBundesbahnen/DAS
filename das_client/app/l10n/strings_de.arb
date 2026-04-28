@@ -324,7 +324,7 @@
   "c_radn_type_contact": "Funkkanal Kurzwahl",
   "c_radn_type_network_type": "Netzart",
   "c_radn_type_journey": "Streckeninformation",
-  "c_uncoded_operational_indication": "Arbeitsanweisung",
+  "c_uncoded_operational_indication": "Hinweis",
   "c_show_more": "Mehr anzeigen",
   "w_modal_sheet_warn_function_stop_message": "Halt!",
   "w_modal_sheet_warn_function_manoeuvre_button": "Rangieren",

@@ -10,7 +10,7 @@
     </TrainIdentification>
 
     <!-- SegmentProfileList neu SegmentProfileReference mit JP_ContextInformation -->
-    <SegmentProfileReference SP_ID="1513_1_Olten" SP_VersionMajor="3" SP_VersionMinor="2" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="1513_1_Olten" SP_VersionMajor="3" SP_VersionMinor="4" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -39,6 +39,13 @@
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="120"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>operationalIndication</NSP_GroupName>
+                <NetworkSpecificParameter name="type" value="uncoded"/>
+                <NetworkSpecificParameter name="uncodedText" value="08:45 Rückstellen Gleis 45 -> Gleis 5"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
@@ -166,6 +173,14 @@
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="155"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="700" endLocation="700"/>
+            </JP_ContextInformation_NSPs>
+
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>operationalIndication</NSP_GroupName>
+                <NetworkSpecificParameter name="type" value="uncoded"/>
+                <NetworkSpecificParameter name="uncodedText" value="Reihe N nur zugelassen für RABDe500, ETR610"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
 
@@ -469,6 +484,13 @@
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="135"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>operationalIndication</NSP_GroupName>
+                <NetworkSpecificParameter name="type" value="uncoded"/>
+                <NetworkSpecificParameter name="uncodedText" value="Kuppelbereitschaft Seite Altstetten erstellen"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
