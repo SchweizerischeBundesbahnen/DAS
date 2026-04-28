@@ -9,7 +9,7 @@ test.describe('admin app versions test', () => {
     await editButton.click();
 
     const deleteResponse = page.waitForResponse((resp) => resp.request().method() === 'DELETE');
-    await page.getByText('App Version löschen', {exact: true}).click();
+    await page.getByText('Blockierte App Version löschen', {exact: true}).click();
     await deleteResponse;
     await expect(row).not.toBeVisible();
   }

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
+                xsi:noNamespaceSchemaLocation="../../SFERA.xsd"
                 SP_ID="15154_7_Guemligen" SP_VersionMajor="1" SP_VersionMinor="1" SP_Length="3200" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
@@ -21,8 +21,8 @@
             <SignalFunction>exit</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="B2"/>
         </Signal>
-		
-		<Signal>
+
+        <Signal>
             <Signal_ID signal_ID_Physical="S308" location="1300"/>
             <SignalFunction>block</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="S308"/>
@@ -33,14 +33,14 @@
             <SignalFunction>entry</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="K307"/>
         </Signal>
-		
-		<Signal>
+
+        <Signal>
             <Signal_ID signal_ID_Physical="J72" location="2700"/>
             <SignalFunction>intermediate</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="J72"/>
         </Signal>
-		
-		<NetworkSpecificPoint location="2000" identifier="98F6FEBFCD2248A88DCFB96403D462F6">
+
+        <NetworkSpecificPoint location="2000" identifier="98F6FEBFCD2248A88DCFB96403D462F6">
             <teltsi_Company>0085</teltsi_Company>
             <NSP_GroupName>curvePoint</NSP_GroupName>
             <NetworkSpecificParameter name="curvePointType" value="begin"/>
@@ -73,7 +73,7 @@
                 <teltsi_PrimaryLocationName>Gümligen</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
 
-			<TAF_TAP_Location_NSP>
+            <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>stationSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlStationSpeed" value="
@@ -136,8 +136,8 @@
                 <OtherContactType contactIdentifier="1305"/>
             </Contact>
         </ContactList>
-		
-		<CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R"/>
+
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R"/>
 
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="114"/>
@@ -151,21 +151,21 @@
         <KilometreReferencePoint location="2000">
             <KM_Reference kmRef="111.98"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="2150">
-			<KM_Reference kmRef="111.83"/>
+        <KilometreReferencePoint location="2150">
+            <KM_Reference kmRef="111.83"/>
         </KilometreReferencePoint>
         <KilometreReferencePoint location="2200">
-			<KM_Reference kmRef="111.8"/>
+            <KM_Reference kmRef="111.8"/>
         </KilometreReferencePoint>
         <KilometreReferencePoint location="2700">
             <KM_Reference kmRef="111.3"/>
-        </KilometreReferencePoint>		
+        </KilometreReferencePoint>
 
         <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="4.0" gradientDirection="Downhill"
                               directionOfApplicationOnSP="Nominal"/>
-		<DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="2.0" gradientDirection="Uphill"
-                              directionOfApplicationOnSP="Nominal"/>					  
-				  
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="2.0" gradientDirection="Uphill"
+                              directionOfApplicationOnSP="Nominal"/>
+
     </SP_ContextInformation>
 
 </SegmentProfile>

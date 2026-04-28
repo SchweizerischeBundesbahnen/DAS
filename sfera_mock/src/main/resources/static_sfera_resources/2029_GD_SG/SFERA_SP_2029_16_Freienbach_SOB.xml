@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
+                xsi:noNamespaceSchemaLocation="../../SFERA.xsd"
                 SP_ID="2029_16_Freienbach_SOB" SP_VersionMajor="1" SP_VersionMinor="2" SP_Length="1600" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
@@ -14,20 +14,20 @@
                 <teltsi_LocationPrimaryCode>3289</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
-		
-		<Signal>
+
+        <Signal>
             <Signal_ID signal_ID_Physical="B1" location="92"/>
             <SignalFunction>exit</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="B1"/>
         </Signal>
-		
-		<Signal>
+
+        <Signal>
             <Signal_ID signal_ID_Physical="A607" location="2325"/>
             <SignalFunction>entry</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="A607"/>
         </Signal>
-		
-		<BaliseGroup>
+
+        <BaliseGroup>
             <Balise location="252" levelCrossingGuarding="true" amountLevelCrossings="1"/>
         </BaliseGroup>
 
@@ -41,8 +41,8 @@
                 <teltsi_LocationPrimaryCode>3289</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Freienbach SOB</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-			
-			<TAF_TAP_Location_NSP>
+
+            <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>newLineSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlNewLineSpeed" value="
@@ -76,37 +76,37 @@
     </SP_Areas>
 
     <SP_ContextInformation>
-	
-		<LevelCrossingArea startEndQualifier="StartsEnds" startLocation="658" endLocation="658"/>
-		
-		<ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
+
+        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="658" endLocation="658"/>
+
+        <ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
             <Contact mainContact="true">
                 <OtherContactType contactIdentifier="1323"/>
             </Contact>
         </ContactList>
-		
-		<CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R"/>
+
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R"/>
 
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="5.6"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="92">
+        <KilometreReferencePoint location="92">
             <KM_Reference kmRef="5.508"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="252">
+        <KilometreReferencePoint location="252">
             <KM_Reference kmRef="5.348"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="658">
+        <KilometreReferencePoint location="658">
             <KM_Reference kmRef="4.942"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="2325">
+        <KilometreReferencePoint location="2325">
             <KM_Reference kmRef="32.631"/>
         </KilometreReferencePoint>
-		
-		<DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="8.0" gradientDirection="Downhill"
+
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="8.0" gradientDirection="Downhill"
                               directionOfApplicationOnSP="Nominal"/>
         <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="6.0" gradientDirection="Uphill"
-                              directionOfApplicationOnSP="Nominal"/> 
+                              directionOfApplicationOnSP="Nominal"/>
 
     </SP_ContextInformation>
 

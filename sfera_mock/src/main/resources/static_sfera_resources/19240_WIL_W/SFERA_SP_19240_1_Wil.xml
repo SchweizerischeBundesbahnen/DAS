@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
+                xsi:noNamespaceSchemaLocation="../../SFERA.xsd"
                 SP_ID="19240_1_Wil" SP_VersionMajor="1" SP_VersionMinor="2" SP_Length="3200" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
@@ -21,26 +21,26 @@
             <SignalFunction>intermediate</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="E4"/>
         </Signal>
-		
-		<Signal>
+
+        <Signal>
             <Signal_ID signal_ID_Physical="G543" location="700"/>
             <SignalFunction>exit</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="G543"/>
         </Signal>
-		
-		<Signal>
+
+        <Signal>
             <Signal_ID signal_ID_Physical="P310" location="1500"/>
             <SignalFunction>block</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="P310"/>
         </Signal>
-		
-		<Signal>
+
+        <Signal>
             <Signal_ID signal_ID_Physical="A312" location="2500"/>
             <SignalFunction>entry</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="A312"/>
         </Signal>
-		
-		<NetworkSpecificPoint location="1000" identifier="BB3689DE328B4F0BB885EEF2CE87E193">
+
+        <NetworkSpecificPoint location="1000" identifier="BB3689DE328B4F0BB885EEF2CE87E193">
             <teltsi_Company>0085</teltsi_Company>
             <NSP_GroupName>curvePoint</NSP_GroupName>
             <NetworkSpecificParameter name="curvePointType" value="begin"/>
@@ -73,8 +73,8 @@
                 <teltsi_LocationPrimaryCode>6206</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Wil SG</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-			
-			<TAF_TAP_Location_NSP>
+
+            <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>stationSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlGraduatedSpeedInfo" value="
@@ -151,12 +151,12 @@
             <Contact mainContact="true">
                 <OtherContactType contactIdentifier="1303"/>
             </Contact>
-			<Contact mainContact="true">
+            <Contact mainContact="true">
                 <OtherContactType contactIdentifier="(1313)"/>
             </Contact>
         </ContactList>
-		
-		<CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R"/>
+
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R"/>
 
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="110.6"/>
@@ -164,27 +164,27 @@
         <KilometreReferencePoint location="100">
             <KM_Reference kmRef="110.7"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="700">
+        <KilometreReferencePoint location="700">
             <KM_Reference kmRef="111.3"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="1000">
+        <KilometreReferencePoint location="1000">
             <KM_Reference kmRef="111.6"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="1500">
+        <KilometreReferencePoint location="1500">
             <KM_Reference kmRef="112.1"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="1540">
+        <KilometreReferencePoint location="1540">
             <KM_Reference kmRef="112.14"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="2500">
+        <KilometreReferencePoint location="2500">
             <KM_Reference kmRef="113.1"/>
         </KilometreReferencePoint>
-		
-		<DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="10.0" gradientDirection="Downhill"
+
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="10.0" gradientDirection="Downhill"
                               directionOfApplicationOnSP="Nominal"/>
         <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0"
                               gradientValue="0.0" gradientDirection="Uphill"
-                              directionOfApplicationOnSP="Nominal"/> 
+                              directionOfApplicationOnSP="Nominal"/>
 
     </SP_ContextInformation>
 

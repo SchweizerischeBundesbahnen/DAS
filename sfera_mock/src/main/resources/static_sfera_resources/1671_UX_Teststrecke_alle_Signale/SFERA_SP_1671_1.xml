@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="1671_1"
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA.xsd" SP_ID="1671_1"
                 SP_VersionMajor="3" SP_VersionMinor="7" SP_Length="36000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
@@ -450,8 +450,8 @@
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>departureAuth</NSP_GroupName>
                 <NetworkSpecificParameter name="departureAuth" value="true"/>
-				<NetworkSpecificParameter name="departureAuthDispatcher" value="true" /> 
-            </TAF_TAP_Location_NSP> 
+                <NetworkSpecificParameter name="departureAuthDispatcher" value="true"/>
+            </TAF_TAP_Location_NSP>
 
         </TAF_TAP_Location>
 
@@ -569,7 +569,7 @@
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>departureAuth</NSP_GroupName>
                 <NetworkSpecificParameter name="departureAuth" value="true"/>
-				<NetworkSpecificParameter name="departureAuthDispatcher" value="true" /> 
+                <NetworkSpecificParameter name="departureAuthDispatcher" value="true"/>
             </TAF_TAP_Location_NSP>
 
         </TAF_TAP_Location>
@@ -847,7 +847,7 @@
         <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="33800" endLocation="33800"
                               communicationNetworkType="GSM-R"/>
 
-        
+
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="42.1"/>
         </KilometreReferencePoint>
@@ -1132,7 +1132,7 @@
                               directionOfApplicationOnSP="Nominal"/>
         <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="31000" endLocation="31000"
                               gradientValue="0.0" gradientDirection="Uphill"
-                              directionOfApplicationOnSP="Nominal"/>                      
+                              directionOfApplicationOnSP="Nominal"/>
 
         <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="33800" endLocation="33800"
                               gradientValue="18.0" gradientDirection="Downhill"

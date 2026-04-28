@@ -1,8 +1,8 @@
 package ch.sbb.backend.preload.domain;
 
-import ch.sbb.backend.preload.sfera.model.v0300.JourneyProfile;
-import ch.sbb.backend.preload.sfera.model.v0300.SegmentProfile;
-import ch.sbb.backend.preload.sfera.model.v0300.TrainCharacteristics;
+import ch.sbb.backend.preload.sfera.model.v0400.JourneyProfile;
+import ch.sbb.backend.preload.sfera.model.v0400.SegmentProfile;
+import ch.sbb.backend.preload.sfera.model.v0400.TrainCharacteristics;
 import java.util.List;
 
 public sealed interface PreloadResult {

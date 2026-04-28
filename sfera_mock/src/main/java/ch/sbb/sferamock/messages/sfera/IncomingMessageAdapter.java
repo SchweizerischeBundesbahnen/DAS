@@ -1,13 +1,13 @@
 package ch.sbb.sferamock.messages.sfera;
 
-import ch.sbb.sferamock.adapters.sfera.model.v0300.B2GRequest;
-import ch.sbb.sferamock.adapters.sfera.model.v0300.JPRequest;
-import ch.sbb.sferamock.adapters.sfera.model.v0300.RelatedTrainInformationRequest;
-import ch.sbb.sferamock.adapters.sfera.model.v0300.SFERAB2GEventMessage;
-import ch.sbb.sferamock.adapters.sfera.model.v0300.SFERAB2GReplyMessage;
-import ch.sbb.sferamock.adapters.sfera.model.v0300.SFERAB2GRequestMessage;
-import ch.sbb.sferamock.adapters.sfera.model.v0300.SPRequest;
-import ch.sbb.sferamock.adapters.sfera.model.v0300.TCRequest;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.B2GRequest;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.JPRequest;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.RelatedTrainInformationRequest;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.SFERAB2GEventMessage;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.SFERAB2GReplyMessage;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.SFERAB2GRequestMessage;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.SPRequest;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.TCRequest;
 import ch.sbb.sferamock.messages.common.SferaErrorCodes;
 import ch.sbb.sferamock.messages.common.XmlDateHelper;
 import ch.sbb.sferamock.messages.common.XmlHelper;
@@ -99,8 +99,8 @@ public class IncomingMessageAdapter {
             replyPublisher.publishErrorMessage(validationMessage.get(), requestContext);
             return;
         }
-        if (request.getHandshakeRequest() != null) {
-            var handshakeRequest = request.getHandshakeRequest();
+        if (request.getDASHandshakeRequest() != null) {
+            var handshakeRequest = request.getDASHandshakeRequest();
             sferaApplicationService.processHandshakeRequest(
                 SferaToInternalConverters.convertOperationModes(handshakeRequest.getDASOperatingModesSupported()),
                 nullSafeBoolean(handshakeRequest.isStatusReportsEnabled()),

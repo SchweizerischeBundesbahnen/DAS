@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
+                xsi:noNamespaceSchemaLocation="../../SFERA.xsd"
                 SP_ID="2029_13_Riedmatt" SP_VersionMajor="1" SP_VersionMinor="1" SP_Length="1000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
@@ -14,8 +14,8 @@
                 <teltsi_LocationPrimaryCode>3294</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
-		
-		<Signal>
+
+        <Signal>
             <Signal_ID signal_ID_Physical="D" location="520"/>
             <SignalFunction>exit</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="D"/>
@@ -31,8 +31,8 @@
                 <teltsi_LocationPrimaryCode>3294</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Riedmatt</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-			
-			<TAF_TAP_Location_NSP>
+
+            <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>newLineSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlNewLineSpeed" value="
@@ -66,19 +66,19 @@
     </SP_Areas>
 
     <SP_ContextInformation>
-		
-		<ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
+
+        <ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
             <Contact mainContact="true">
                 <OtherContactType contactIdentifier="1323"/>
             </Contact>
         </ContactList>
-		
-		<CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-P"/>
+
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-P"/>
 
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="9.3"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="520">
+        <KilometreReferencePoint location="520">
             <KM_Reference kmRef="8.78"/>
         </KilometreReferencePoint>
 

@@ -1,8 +1,8 @@
 package ch.sbb.backend.preload.domain;
 
-import ch.sbb.backend.preload.sfera.model.v0300.TCRequest;
-import ch.sbb.backend.preload.sfera.model.v0300.TrainCharacteristics;
-import ch.sbb.backend.preload.sfera.model.v0300.TrainCharacteristicsRef;
+import ch.sbb.backend.preload.sfera.model.v0400.TCRequest;
+import ch.sbb.backend.preload.sfera.model.v0400.TrainCharacteristics;
+import ch.sbb.backend.preload.sfera.model.v0400.TrainCharacteristicsRef;
 
 public record TrainCharacteristicsIdentification(String tcid, String tcVersionMajor, String tcVersionMinor, String tcruid) {
 

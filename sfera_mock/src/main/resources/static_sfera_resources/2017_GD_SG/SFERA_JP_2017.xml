@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 
-<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="2" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
+<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="2" xsi:noNamespaceSchemaLocation="../../SFERA.xsd">
     <TrainIdentification>
         <OTN_ID>
             <teltsi_Company>1285</teltsi_Company>
@@ -69,8 +69,8 @@
                 <TP_ID_Reference TP_ID="Steinerberg"/>
             </TimingPointReference>
         </TimingPointConstraints>
-		
-		<JP_ContextInformation>
+
+        <JP_ContextInformation>
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
@@ -79,7 +79,7 @@
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
     </SegmentProfileReference>
-	
+
     <SegmentProfileReference SP_ID="2017_4_Sattel_Aegeri" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
@@ -91,8 +91,8 @@
                 <TP_ID_Reference TP_ID="Sattel_Aegeri"/>
             </TimingPointReference>
         </TimingPointConstraints>
-		
-		<JP_ContextInformation>
+
+        <JP_ContextInformation>
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
@@ -100,7 +100,7 @@
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
-    </SegmentProfileReference>	
+    </SegmentProfileReference>
 
     <SegmentProfileReference SP_ID="2017_5_Sattel" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
@@ -113,8 +113,8 @@
                 <TP_ID_Reference TP_ID="Sattel"/>
             </TimingPointReference>
         </TimingPointConstraints>
-		
-		<JP_ContextInformation>
+
+        <JP_ContextInformation>
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
@@ -135,8 +135,8 @@
                 <TP_ID_Reference TP_ID="Biberegg"/>
             </TimingPointReference>
         </TimingPointConstraints>
-		
-		<JP_ContextInformation>
+
+        <JP_ContextInformation>
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
@@ -144,9 +144,9 @@
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
-    </SegmentProfileReference>	
+    </SegmentProfileReference>
 
-	<SegmentProfileReference SP_ID="2017_7_Rothenturm" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="2017_7_Rothenturm" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -158,8 +158,8 @@
             </TimingPointReference>
             <StoppingPointDepartureDetails departureTime="2025-05-17T07:30:20Z" plannedDepartureTime="2025-05-17T07:29:00Z"/>
         </TimingPointConstraints>
-		
-		<JP_ContextInformation>
+
+        <JP_ContextInformation>
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
@@ -167,7 +167,7 @@
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
-    </SegmentProfileReference>	
+    </SegmentProfileReference>
 
     <SegmentProfileReference SP_ID="2017_8_Altmatt" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
@@ -180,8 +180,8 @@
                 <TP_ID_Reference TP_ID="Altmatt"/>
             </TimingPointReference>
         </TimingPointConstraints>
-		
-		<JP_ContextInformation>
+
+        <JP_ContextInformation>
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
@@ -191,7 +191,7 @@
         </JP_ContextInformation>
     </SegmentProfileReference>
 
-	<SegmentProfileReference SP_ID="2017_9_Biberbrugg" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="2017_9_Biberbrugg" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -203,8 +203,8 @@
             </TimingPointReference>
             <StoppingPointDepartureDetails departureTime="2025-05-17T07:38:20Z" plannedDepartureTime="2025-05-17T07:38:00Z"/>
         </TimingPointConstraints>
-		
-		<JP_ContextInformation>
+
+        <JP_ContextInformation>
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
@@ -212,8 +212,8 @@
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
-    </SegmentProfileReference>	
-	
+    </SegmentProfileReference>
+
     <SegmentProfileReference SP_ID="2017_10_Kaltenboden" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
@@ -234,7 +234,7 @@
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
-    </SegmentProfileReference>	
+    </SegmentProfileReference>
 
     <SegmentProfileReference SP_ID="2017_11_Schindellegi_F" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
@@ -256,7 +256,7 @@
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
-    </SegmentProfileReference>	
+    </SegmentProfileReference>
 
     <SegmentProfileReference SP_ID="2017_12_Samstagern" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
@@ -279,7 +279,7 @@
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
     </SegmentProfileReference>
-	
+
     <SegmentProfileReference SP_ID="2017_13_Riedmatt" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
@@ -291,8 +291,8 @@
                 <TP_ID_Reference TP_ID="Riedmatt"/>
             </TimingPointReference>
         </TimingPointConstraints>
-		
-		<JP_ContextInformation>
+
+        <JP_ContextInformation>
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
@@ -323,7 +323,7 @@
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
     </SegmentProfileReference>
-	
+
     <SegmentProfileReference SP_ID="2017_15_Wilen_bei_Wollerau" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
@@ -346,7 +346,7 @@
         </JP_ContextInformation>
     </SegmentProfileReference>
 
-	<SegmentProfileReference SP_ID="2017_16_Freienbach_SOB" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="2017_16_Freienbach_SOB" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -368,7 +368,7 @@
         </JP_ContextInformation>
     </SegmentProfileReference>
 
-	<SegmentProfileReference SP_ID="2017_17_Pfaeffikon_SZ" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="2017_17_Pfaeffikon_SZ" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -380,8 +380,8 @@
             </TimingPointReference>
             <StoppingPointDepartureDetails departureTime="2025-05-17T07:54:00Z" plannedDepartureTime="2025-05-17T07:54:00Z"/>
         </TimingPointConstraints>
-		
-		<JP_ContextInformation>
+
+        <JP_ContextInformation>
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
@@ -389,9 +389,9 @@
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
-    </SegmentProfileReference>	
+    </SegmentProfileReference>
 
-	<SegmentProfileReference SP_ID="2017_18_Hurden" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="2017_18_Hurden" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -412,8 +412,8 @@
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
     </SegmentProfileReference>
-	
-	<SegmentProfileReference SP_ID="2017_19_Rapperswil" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+
+    <SegmentProfileReference SP_ID="2017_19_Rapperswil" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -425,8 +425,8 @@
             </TimingPointReference>
             <StoppingPointDepartureDetails departureTime="2025-05-17T08:07:00Z" plannedDepartureTime="2025-05-17T08:07:00Z"/>
         </TimingPointConstraints>
-		
-		<JP_ContextInformation>
+
+        <JP_ContextInformation>
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
@@ -435,8 +435,8 @@
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
     </SegmentProfileReference>
-	
-	<SegmentProfileReference SP_ID="2017_20_Blumenau" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+
+    <SegmentProfileReference SP_ID="2017_20_Blumenau" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -456,9 +456,9 @@
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
-    </SegmentProfileReference>	
+    </SegmentProfileReference>
 
-	<SegmentProfileReference SP_ID="2017_21_Bollingen" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="2017_21_Bollingen" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -469,8 +469,8 @@
                 <TP_ID_Reference TP_ID="Bollingen"/>
             </TimingPointReference>
         </TimingPointConstraints>
-		
-		<JP_ContextInformation>
+
+        <JP_ContextInformation>
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
@@ -479,8 +479,8 @@
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
     </SegmentProfileReference>
-	
-	<SegmentProfileReference SP_ID="2017_22_Schmerikon" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+
+    <SegmentProfileReference SP_ID="2017_22_Schmerikon" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -491,8 +491,8 @@
                 <TP_ID_Reference TP_ID="Schmerikon"/>
             </TimingPointReference>
         </TimingPointConstraints>
-		
-		<JP_ContextInformation>
+
+        <JP_ContextInformation>
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
@@ -502,7 +502,7 @@
         </JP_ContextInformation>
     </SegmentProfileReference>
 
-	<SegmentProfileReference SP_ID="2017_23_Uznach" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="2017_23_Uznach" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -514,8 +514,8 @@
             </TimingPointReference>
             <StoppingPointDepartureDetails departureTime="2025-05-17T08:17:20Z" plannedDepartureTime="2025-05-17T08:17:00Z"/>
         </TimingPointConstraints>
-		
-		<JP_ContextInformation>
+
+        <JP_ContextInformation>
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
@@ -523,9 +523,9 @@
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
-    </SegmentProfileReference>	
-	
-	<SegmentProfileReference SP_ID="2017_24_Kaltbrunn" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+    </SegmentProfileReference>
+
+    <SegmentProfileReference SP_ID="2017_24_Kaltbrunn" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -536,8 +536,8 @@
                 <TP_ID_Reference TP_ID="Kaltbrunn"/>
             </TimingPointReference>
         </TimingPointConstraints>
-		
-		<JP_ContextInformation>
+
+        <JP_ContextInformation>
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
@@ -545,9 +545,9 @@
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
-    </SegmentProfileReference>	
-	
-	<SegmentProfileReference SP_ID="2017_25_Wattwil" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+    </SegmentProfileReference>
+
+    <SegmentProfileReference SP_ID="2017_25_Wattwil" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -559,8 +559,8 @@
             </TimingPointReference>
             <StoppingPointDepartureDetails departureTime="2025-05-17T08:27:40Z" plannedDepartureTime="2025-05-17T08:27:00Z"/>
         </TimingPointConstraints>
-		
-		<JP_ContextInformation>
+
+        <JP_ContextInformation>
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
@@ -568,9 +568,9 @@
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
-    </SegmentProfileReference>	
-	
-	<SegmentProfileReference SP_ID="2017_26_Lichtensteig" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+    </SegmentProfileReference>
+
+    <SegmentProfileReference SP_ID="2017_26_Lichtensteig" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -590,9 +590,9 @@
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
-    </SegmentProfileReference>	
+    </SegmentProfileReference>
 
-	<SegmentProfileReference SP_ID="2017_27_Brunnadern_N" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="2017_27_Brunnadern_N" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -614,7 +614,7 @@
         </JP_ContextInformation>
     </SegmentProfileReference>
 
-	<SegmentProfileReference SP_ID="2017_28_Mogelsberg" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="2017_28_Mogelsberg" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -634,9 +634,9 @@
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
-    </SegmentProfileReference>	
+    </SegmentProfileReference>
 
-	<SegmentProfileReference SP_ID="2017_29_Degersheim_West" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="2017_29_Degersheim_West" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -656,9 +656,9 @@
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
-    </SegmentProfileReference>	
+    </SegmentProfileReference>
 
-	<SegmentProfileReference SP_ID="2017_30_Degersheim" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="2017_30_Degersheim" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -678,9 +678,9 @@
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
-    </SegmentProfileReference>	
+    </SegmentProfileReference>
 
-	<SegmentProfileReference SP_ID="2017_31_Schachen" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="2017_31_Schachen" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -691,8 +691,8 @@
                 <TP_ID_Reference TP_ID="Schachen"/>
             </TimingPointReference>
         </TimingPointConstraints>
-		
-		<JP_ContextInformation>
+
+        <JP_ContextInformation>
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
@@ -700,9 +700,9 @@
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
-    </SegmentProfileReference>	
+    </SegmentProfileReference>
 
-	<SegmentProfileReference SP_ID="2017_32_Herisau" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="2017_32_Herisau" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -714,8 +714,8 @@
             </TimingPointReference>
             <StoppingPointDepartureDetails departureTime="2025-05-17T08:47:00Z" plannedDepartureTime="2025-05-17T08:47:00Z"/>
         </TimingPointConstraints>
-		
-		<JP_ContextInformation>
+
+        <JP_ContextInformation>
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
@@ -724,8 +724,8 @@
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
     </SegmentProfileReference>
-	
-	<SegmentProfileReference SP_ID="2017_33_Guebsensee" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+
+    <SegmentProfileReference SP_ID="2017_33_Guebsensee" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -736,8 +736,8 @@
                 <TP_ID_Reference TP_ID="Guebsensee"/>
             </TimingPointReference>
         </TimingPointConstraints>
-		
-		<JP_ContextInformation>
+
+        <JP_ContextInformation>
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
@@ -745,9 +745,9 @@
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
-    </SegmentProfileReference>	
+    </SegmentProfileReference>
 
-	<SegmentProfileReference SP_ID="2017_34_St_Gallen_Haggen" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="2017_34_St_Gallen_Haggen" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -758,8 +758,8 @@
                 <TP_ID_Reference TP_ID="St_Gallen_Haggen"/>
             </TimingPointReference>
         </TimingPointConstraints>
-		
-		<JP_ContextInformation>
+
+        <JP_ContextInformation>
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>

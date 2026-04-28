@@ -2,12 +2,12 @@ package ch.sbb.sferamock.messages.sfera;
 
 import static org.springframework.util.MimeTypeUtils.APPLICATION_XML;
 
-import ch.sbb.sferamock.adapters.sfera.model.v0300.HandshakeRejectReason;
-import ch.sbb.sferamock.adapters.sfera.model.v0300.JourneyProfile;
-import ch.sbb.sferamock.adapters.sfera.model.v0300.RelatedTrainInformation;
-import ch.sbb.sferamock.adapters.sfera.model.v0300.SFERAG2BReplyMessage;
-import ch.sbb.sferamock.adapters.sfera.model.v0300.SegmentProfile;
-import ch.sbb.sferamock.adapters.sfera.model.v0300.TrainCharacteristics;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.HandshakeRejectReason;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.JourneyProfile;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.RelatedTrainInformation;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.SFERAG2BReplyMessage;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.SegmentProfile;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.TrainCharacteristics;
 import ch.sbb.sferamock.messages.common.SferaErrorCodes;
 import ch.sbb.sferamock.messages.common.XmlHelper;
 import ch.sbb.sferamock.messages.model.OperationMode;

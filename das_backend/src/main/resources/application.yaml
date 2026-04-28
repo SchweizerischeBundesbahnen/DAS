@@ -119,8 +119,8 @@ aws:
   bucketName: ${AWS_BUCKET_NAME}
 
 sfera:
-  major-version: '2'
-  version: '3.00'
+  major-version: '4'
+  version: '4.00'
   source-device: 'BACKEND'
   recipient: '0085'
   broker-url: ${SFERA_BROKER_URL}

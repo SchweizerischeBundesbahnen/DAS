@@ -8,16 +8,16 @@ import ch.sbb.backend.preload.domain.SferaStore;
 import ch.sbb.backend.preload.domain.TrainCharacteristicsIdentification;
 import ch.sbb.backend.preload.infrastructure.PahoMqttClient;
 import ch.sbb.backend.preload.infrastructure.xml.XmlHelper;
-import ch.sbb.backend.preload.sfera.model.v0300.B2GMessageResponse.Result;
-import ch.sbb.backend.preload.sfera.model.v0300.ErrorComplexType;
-import ch.sbb.backend.preload.sfera.model.v0300.G2BReplyPayload;
-import ch.sbb.backend.preload.sfera.model.v0300.JourneyProfile;
-import ch.sbb.backend.preload.sfera.model.v0300.JourneyProfile.JPStatus;
-import ch.sbb.backend.preload.sfera.model.v0300.SFERAB2GEventMessage;
-import ch.sbb.backend.preload.sfera.model.v0300.SFERAB2GRequestMessage;
-import ch.sbb.backend.preload.sfera.model.v0300.SFERAG2BReplyMessage;
-import ch.sbb.backend.preload.sfera.model.v0300.SegmentProfile;
-import ch.sbb.backend.preload.sfera.model.v0300.TrainCharacteristics;
+import ch.sbb.backend.preload.sfera.model.v0400.B2GMessageResponse.Result;
+import ch.sbb.backend.preload.sfera.model.v0400.ErrorComplexType;
+import ch.sbb.backend.preload.sfera.model.v0400.G2BReplyPayload;
+import ch.sbb.backend.preload.sfera.model.v0400.JourneyProfile;
+import ch.sbb.backend.preload.sfera.model.v0400.JourneyProfile.JPStatus;
+import ch.sbb.backend.preload.sfera.model.v0400.SFERAB2GEventMessage;
+import ch.sbb.backend.preload.sfera.model.v0400.SFERAB2GRequestMessage;
+import ch.sbb.backend.preload.sfera.model.v0400.SFERAG2BReplyMessage;
+import ch.sbb.backend.preload.sfera.model.v0400.SegmentProfile;
+import ch.sbb.backend.preload.sfera.model.v0400.TrainCharacteristics;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -84,7 +84,7 @@ public class SferaService {
         mqttClient.subscribe(createTopic(G2B, trainId), (topic, message) -> receive(message));
 
         SFERAG2BReplyMessage handshakeReply = sendRequest(trainId, sferaMessageCreator.createHandshakeRequestMessage(trainId)).get();
-        if (handshakeReply.getHandshakeAcknowledgement() == null) {
+        if (handshakeReply.getDASHandshakeAcknowledgement() == null) {
             if (isG2bError(handshakeReply.getG2BReplyPayload())) {
                 String errors = extractG2bError(handshakeReply.getG2BReplyPayload());
                 throw new IllegalStateException("Handshake request G2B error: " + errors);

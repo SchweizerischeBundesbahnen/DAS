@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
+                xsi:noNamespaceSchemaLocation="../../SFERA.xsd"
                 SP_ID="2029_15_Wilen_bei_Wollerau" SP_VersionMajor="1" SP_VersionMinor="1" SP_Length="1900" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
@@ -14,14 +14,14 @@
                 <teltsi_LocationPrimaryCode>3295</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
-		
-		<Signal>
+
+        <Signal>
             <Signal_ID signal_ID_Physical="D" location="1318"/>
             <SignalFunction>entry</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="D"/>
         </Signal>
-		
-		<NetworkSpecificPoint location="700">
+
+        <NetworkSpecificPoint location="700">
             <teltsi_Company>0085</teltsi_Company>
             <NSP_GroupName>newLineSpeed</NSP_GroupName>
             <NetworkSpecificParameter name="xmlNewLineSpeed" value="
@@ -56,8 +56,8 @@
                 <teltsi_LocationPrimaryCode>3295</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Wilen bei Wollerau</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-			
-			<TAF_TAP_Location_NSP>
+
+            <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>newLineSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlNewLineSpeed" value="
@@ -86,27 +86,27 @@
     </SP_Areas>
 
     <SP_ContextInformation>
-	
-		<LevelCrossingArea startEndQualifier="StartsEnds" startLocation="19" endLocation="19"/>
-		
-		<ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
+
+        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="19" endLocation="19"/>
+
+        <ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
             <Contact mainContact="true">
                 <OtherContactType contactIdentifier="1323"/>
             </Contact>
         </ContactList>
-		
-		<CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-P"/>
+
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-P"/>
 
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="7.5"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="19">
+        <KilometreReferencePoint location="19">
             <KM_Reference kmRef="7.481"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="700">
+        <KilometreReferencePoint location="700">
             <KM_Reference kmRef="6.8"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="1318">
+        <KilometreReferencePoint location="1318">
             <KM_Reference kmRef="6.182"/>
         </KilometreReferencePoint>
 
