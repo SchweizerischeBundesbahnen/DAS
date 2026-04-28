@@ -10,7 +10,7 @@
     </TrainIdentification>
 
     <!-- SegmentProfileList neu SegmentProfileReference mit JP_ContextInformation -->
-    <SegmentProfileReference SP_ID="1513_1_Olten" SP_VersionMajor="3" SP_VersionMinor="3" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="1513_1_Olten" SP_VersionMajor="3" SP_VersionMinor="4" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
