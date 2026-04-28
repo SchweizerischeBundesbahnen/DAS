@@ -8,7 +8,6 @@ abstract class CustomerOrientedDepartureRepository {
   Future<bool> subscribe({
     required String evu,
     required String trainNumber,
-    required String deviceId,
     required DateTime journeyEndTime,
     required bool isDriver,
   });
@@ -16,7 +15,6 @@ abstract class CustomerOrientedDepartureRepository {
   Future<bool> unsubscribe({
     required String evu,
     required String trainNumber,
-    required String deviceId,
     required DateTime journeyEndTime,
     required bool isDriver,
   });

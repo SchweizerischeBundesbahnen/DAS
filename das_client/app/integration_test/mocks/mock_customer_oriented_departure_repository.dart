@@ -13,7 +13,6 @@ class MockCustomerOrientedDepartureRepository implements CustomerOrientedDepartu
   Future<bool> subscribe({
     required String evu,
     required String trainNumber,
-    required String deviceId,
     required DateTime journeyEndTime,
     required bool isDriver,
   }) async {
@@ -25,7 +24,6 @@ class MockCustomerOrientedDepartureRepository implements CustomerOrientedDepartu
   Future<bool> unsubscribe({
     required String evu,
     required String trainNumber,
-    required String deviceId,
     required DateTime journeyEndTime,
     required bool isDriver,
   }) async {

@@ -13,10 +13,12 @@ class CustomerOrientedDepartureComponent {
   static CustomerOrientedDepartureRepository createRepository({
     required String baseUrl,
     required Client client,
+    required String deviceId,
   }) {
     return CustomerOrientedDepartureRepositoryImpl(
       apiService: CustomerOrientedDepartureApiServiceImpl(baseUrl: baseUrl, httpClient: client),
       messagingService: FirebaseMessagingService(),
+      deviceId: deviceId,
     );
   }
 }

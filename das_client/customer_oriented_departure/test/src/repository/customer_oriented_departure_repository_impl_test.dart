@@ -55,6 +55,7 @@ void main() {
     testee = CustomerOrientedDepartureRepositoryImpl(
       apiService: mockApiService,
       messagingService: mockMessagingService,
+      deviceId: 'device-1',
     );
   });
 
@@ -69,7 +70,6 @@ void main() {
     final result = await testee.subscribe(
       evu: '1080',
       trainNumber: 'RE1234',
-      deviceId: 'device-1',
       journeyEndTime: testJourneyEndTime,
       isDriver: true,
     );
@@ -98,7 +98,6 @@ void main() {
     final result = await testee.subscribe(
       evu: '1080',
       trainNumber: 'RE1234',
-      deviceId: 'device-1',
       journeyEndTime: testJourneyEndTime,
       isDriver: true,
     );
@@ -114,7 +113,6 @@ void main() {
     await testee.subscribe(
       evu: '1080',
       trainNumber: 'RE1234',
-      deviceId: 'device-1',
       journeyEndTime: testJourneyEndTime,
       isDriver: true,
     );
@@ -124,7 +122,6 @@ void main() {
     final result = await testee.subscribe(
       evu: '1180',
       trainNumber: 'RB77',
-      deviceId: 'device-2',
       journeyEndTime: testJourneyEndTime,
       isDriver: false,
     );
@@ -161,7 +158,6 @@ void main() {
     await testee.subscribe(
       evu: '1080',
       trainNumber: 'RE1234',
-      deviceId: 'device-1',
       journeyEndTime: testJourneyEndTime,
       isDriver: true,
     );
@@ -206,7 +202,6 @@ void main() {
     final result = await testee.unsubscribe(
       evu: '1080',
       trainNumber: 'RE1234',
-      deviceId: 'device-1',
       journeyEndTime: testJourneyEndTime,
       isDriver: true,
     );
@@ -235,7 +230,6 @@ void main() {
     final result = await testee.unsubscribe(
       evu: '1080',
       trainNumber: 'RE1234',
-      deviceId: 'device-1',
       journeyEndTime: testJourneyEndTime,
       isDriver: true,
     );

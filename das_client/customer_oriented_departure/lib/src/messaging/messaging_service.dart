@@ -1,4 +1,4 @@
-import 'package:customer_oriented_departure/src/messaging/firebase/dto/train_status_message_dto.dart';
+import 'package:customer_oriented_departure/src/messaging/firebase/dto/base_message_dto.dart';
 
 abstract class MessagingService {
   const MessagingService();
@@ -7,7 +7,7 @@ abstract class MessagingService {
 
   Stream<String?> get token;
 
-  Stream<TrainStatusMessageDto> get message;
+  Stream<BaseMessageDto> get message;
 
   void dispose();
 }

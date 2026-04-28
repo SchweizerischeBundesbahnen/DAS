@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:customer_oriented_departure/src/messaging/firebase/dto/base_message_dto.dart';
 import 'package:customer_oriented_departure/src/messaging/firebase/dto/train_status_message_dto.dart';
 import 'package:customer_oriented_departure/src/messaging/messaging_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -14,7 +15,7 @@ class FirebaseMessagingService implements MessagingService {
   }
 
   final _rxToken = BehaviorSubject<String?>();
-  final _rxMessage = BehaviorSubject<TrainStatusMessageDto>();
+  final _rxMessage = BehaviorSubject<BaseMessageDto>();
   final _subscriptions = <StreamSubscription>[];
 
   @override
@@ -24,7 +25,7 @@ class FirebaseMessagingService implements MessagingService {
   String? get tokenValue => _rxToken.value;
 
   @override
-  Stream<TrainStatusMessageDto> get message => _rxMessage.stream;
+  Stream<BaseMessageDto> get message => _rxMessage.stream;
 
   Future<void> _init() async {
     await _initRxToken();
@@ -49,12 +50,25 @@ class FirebaseMessagingService implements MessagingService {
     final stream = MergeStream(messageStreams).map(
       (message) {
         _log.info('Remote message received');
-        return message.toDto();
+        return _tryParseRemoteMessage(message);
       },
-    );
+    ).whereNotNull();
 
     final sub = stream.listen(_rxMessage.add, onError: _rxMessage.addError);
     _subscriptions.add(sub);
+  }
+
+  BaseMessageDto? _tryParseRemoteMessage(RemoteMessage message) {
+    try {
+      if (message.data.containsKey('status')) {
+        return TrainStatusMessageDto.fromJson(message.data);
+      }
+      // TODO: messageId part of body or message.messageId?
+      return BaseMessageDto.fromJson(message.data);
+    } catch (e) {
+      _log.severe('Failed to parse remote message ${message.messageId} with data: ${message.data}', e);
+      return null;
+    }
   }
 
   @override
@@ -63,8 +77,4 @@ class FirebaseMessagingService implements MessagingService {
       sub.cancel();
     }
   }
-}
-
-extension _RemoteMessageX on RemoteMessage {
-  TrainStatusMessageDto toDto() => TrainStatusMessageDto.fromJson(data);
 }

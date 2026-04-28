@@ -119,6 +119,7 @@ extension AuthenticatedScopeExtension on GetIt {
   }
 
   void registerSettingsRepository() {
+    _log.fine('Register settings repository');
     final flavor = DI.get<Flavor>();
     final settingsRepository = SettingsComponent.createRepository(
       baseUrl: flavor.backendUrl,
@@ -132,12 +133,21 @@ extension AuthenticatedScopeExtension on GetIt {
   }
 
   void registerCustomerOrientedDepartureRepository() {
-    final flavor = DI.get<Flavor>();
-    final customerOrientedDepartureRepository = CustomerOrientedDepartureComponent.createRepository(
-      baseUrl: flavor.backendUrl,
-      client: DI.get(),
+    factoryFunc() async {
+      _log.fine('Register customer oriented departure repository');
+      final flavor = DI.get<Flavor>();
+      final deviceId = await DeviceIdInfo.getDeviceId();
+      return CustomerOrientedDepartureComponent.createRepository(
+        baseUrl: flavor.backendUrl,
+        client: DI.get(),
+        deviceId: deviceId,
+      );
+    }
+
+    registerSingletonAsync<CustomerOrientedDepartureRepository>(
+      factoryFunc,
+      dispose: (repo) => repo.dispose(),
     );
-    registerSingleton<CustomerOrientedDepartureRepository>(customerOrientedDepartureRepository);
   }
 
   void registerRuFeatureProvider() {
