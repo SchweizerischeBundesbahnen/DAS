@@ -3,6 +3,7 @@ import 'package:integration_test/integration_test.dart';
 import 'package:logger/component.dart';
 import 'package:logging/logging.dart';
 
+import 'test/app_expiration_test.dart' as app_expiration_tests;
 import 'test/journey_table_test.dart' as journey_table_tests;
 import 'test/tour_system_link_test.dart' as tour_system_link_test;
 
@@ -14,6 +15,7 @@ void main() {
   Logger.root.level = Level.FINE;
   Logger.root.onRecord.listen(LogPrinter(appName: 'DAS IntegrationTests').call);
 
+  app_expiration_tests.main();
   tour_system_link_test.main();
   journey_table_tests.main();
 }

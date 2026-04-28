@@ -1,5 +1,7 @@
+import 'package:app/app_info/app_info.dart';
 import 'package:app/di/di.dart';
 import 'package:app/flavor.dart';
+import 'package:app/pages/journey/view_model/app_expiration_view_model.dart';
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:app/provider/ru_feature_provider_impl.dart';
 import 'package:app/util/device_id_info.dart';
@@ -32,6 +34,7 @@ class AuthenticatedScope extends DIScope {
     getIt.registerMqttService();
     getIt.registerSferaRemoteRepo();
     getIt.registerSettingsRepository();
+    getIt.registerAppExpirationViewModel();
     getIt.registerRuFeatureProvider();
     getIt.registerFormationRepository();
 
@@ -118,15 +121,28 @@ extension AuthenticatedScopeExtension on GetIt {
 
   void registerSettingsRepository() {
     final flavor = DI.get<Flavor>();
-    final configRepository = SettingsComponent.createRepository(
+    final appVersion = DI.get<AppInfo>().version;
+
+    final settingsRepository = SettingsComponent.createRepository(
       baseUrl: flavor.backendUrl,
       client: DI.get(),
       onAwsCredentialsChanged: (credentials) {
         DI.get<PreloadRepository>().updateConfiguration(credentials);
       },
+      appVersion: appVersion,
     );
-    registerSingleton<SettingsRepository>(configRepository);
-    registerSingleton<LogEndpoint>(configRepository);
+
+    registerSingleton<SettingsRepository>(settingsRepository);
+    registerSingleton<LogEndpoint>(settingsRepository);
+  }
+
+  void registerAppExpirationViewModel() {
+    final appVersion = DI.get<AppInfo>().version;
+    final vm = AppExpirationViewModel(
+      settingsRepository: DI.get<SettingsRepository>(),
+      currentAppVersion: appVersion,
+    );
+    registerSingleton<AppExpirationViewModel>(vm, dispose: (vm) => vm.dispose());
   }
 
   void registerRuFeatureProvider() {

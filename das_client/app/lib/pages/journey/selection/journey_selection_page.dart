@@ -4,11 +4,14 @@ import 'package:app/brightness/brightness_modal_sheet.dart';
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/app_router.dart';
+import 'package:app/pages/journey/selection/app_expiration_dialog.dart';
 import 'package:app/pages/journey/selection/journey_selection_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
 import 'package:app/pages/journey/selection/widgets/journey_date_input.dart';
 import 'package:app/pages/journey/selection/widgets/journey_train_number_input.dart';
 import 'package:app/pages/journey/selection/widgets/logout_button.dart';
+import 'package:app/pages/journey/view_model/app_expiration_view_model.dart';
+import 'package:app/pages/journey/view_model/model/app_expiration_model.dart';
 import 'package:app/pages/journey/widgets/das_journey_scaffold.dart';
 import 'package:app/widgets/railway_undertaking/widgets/select_railway_undertaking_input.dart';
 import 'package:auto_route/auto_route.dart';
@@ -18,13 +21,22 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 @RoutePage()
 class JourneySelectionPage extends StatelessWidget implements AutoRouteWrapper {
-  const JourneySelectionPage({super.key});
+  const JourneySelectionPage({super.key, VoidCallback? onAppExpiredDialogDismissed})
+    : _onAppExpiredDialogDismissed = onAppExpiredDialogDismissed;
+
+  final VoidCallback? _onAppExpiredDialogDismissed;
 
   @override
   Widget wrappedRoute(BuildContext context) {
-    return Provider<JourneySelectionViewModel>(
-      create: (_) => DI.get<JourneySelectionViewModel>(),
-      dispose: (_, _) {}, // dispose is called when JourneyScope is popped
+    return MultiProvider(
+      providers: [
+        Provider<AppExpirationViewModel>(
+          create: (_) => DI.get<AppExpirationViewModel>(),
+        ),
+        Provider<JourneySelectionViewModel>(
+          create: (_) => DI.get<JourneySelectionViewModel>(),
+        ),
+      ],
       child: this,
     );
   }
@@ -32,7 +44,7 @@ class JourneySelectionPage extends StatelessWidget implements AutoRouteWrapper {
   @override
   Widget build(BuildContext context) {
     return DASJourneyScaffold(
-      body: _Content(),
+      body: _Content(onAppExpiredDialogDismissed: _onAppExpiredDialogDismissed),
       appBarTitle: context.l10n.c_app_name,
       appBarTrailingAction: LogoutButton(),
     );
@@ -40,7 +52,8 @@ class JourneySelectionPage extends StatelessWidget implements AutoRouteWrapper {
 }
 
 class _Content extends StatefulWidget {
-  const _Content();
+  const _Content({this.onAppExpiredDialogDismissed});
+  final VoidCallback? onAppExpiredDialogDismissed;
 
   @override
   State<_Content> createState() => _ContentState();
@@ -48,6 +61,7 @@ class _Content extends StatefulWidget {
 
 class _ContentState extends State<_Content> {
   late StreamSubscription<JourneySelectionModel?> _subscription;
+  late StreamSubscription<AppExpirationModel> _appExpirationSubscription;
 
   @override
   void initState() {
@@ -56,6 +70,24 @@ class _ContentState extends State<_Content> {
     _subscription = viewModel.model.listen((model) {
       if (model is Loaded && mounted) {
         context.router.replace(JourneyRoute());
+      }
+    });
+
+    final appExpirationVM = context.read<AppExpirationViewModel>();
+    appExpirationVM.checkIsAppExpired();
+
+    _appExpirationSubscription = appExpirationVM.model.listen((model) {
+      if (!mounted) return;
+      if (model is Expired) {
+        showAppExpiredDialog(model, context);
+      } else if (model is ExpirySoon) {
+        if (!model.userDismissedDialog) {
+          showAppExpiresSoonDialog(model, context).then((_) {
+            if (!mounted) return;
+            appExpirationVM.dialogDismissedByUser();
+            widget.onAppExpiredDialogDismissed?.call();
+          });
+        }
       }
     });
 
@@ -88,6 +120,7 @@ class _ContentState extends State<_Content> {
   @override
   void dispose() {
     _subscription.cancel();
+    _appExpirationSubscription.cancel();
     super.dispose();
   }
 

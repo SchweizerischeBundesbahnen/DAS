@@ -1,5 +1,6 @@
+import 'package:app/app_info/app_info.dart';
+import 'package:app/di/di.dart';
 import 'package:flutter/material.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class AppVersionText extends StatelessWidget {
@@ -9,21 +10,14 @@ class AppVersionText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: PackageInfo.fromPlatform(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) return const SizedBox.shrink();
-
-        final info = snapshot.data as PackageInfo;
-        return Column(
-          mainAxisSize: .min,
-          crossAxisAlignment: .start,
-          children: [
-            Text('App Version', style: sbbTextStyle.lightStyle.xSmall.copyWith(color: color)),
-            Text(info.version, style: sbbTextStyle.boldStyle.small.copyWith(color: color)),
-          ],
-        );
-      },
+    final appInfo = DI.get<AppInfo>();
+    return Column(
+      mainAxisSize: .min,
+      crossAxisAlignment: .start,
+      children: [
+        Text('App Version', style: sbbTextStyle.lightStyle.xSmall.copyWith(color: color)),
+        Text('${appInfo.version}+${appInfo.buildNumber}', style: sbbTextStyle.boldStyle.small.copyWith(color: color)),
+      ],
     );
   }
 }

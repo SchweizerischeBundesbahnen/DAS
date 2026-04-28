@@ -5,11 +5,12 @@ import 'package:settings/src/model/aws_configuration.dart';
 import 'package:settings/src/repository/settings_repository.dart';
 import 'package:settings/src/repository/settings_repository_impl.dart';
 
+export 'package:settings/src/model/app_version_expiration.dart';
 export 'package:settings/src/model/aws_configuration.dart';
 export 'package:settings/src/model/ru_feature_keys.dart';
 export 'package:settings/src/repository/settings_repository.dart';
 
-typedef AwsCredentialsChanged = void Function(AwsConfiguration credentials);
+typedef AwsCredentialsChanged = void Function(AwsConfiguration? credentials);
 
 class SettingsComponent {
   const SettingsComponent._();
@@ -17,10 +18,11 @@ class SettingsComponent {
   static SettingsRepository createRepository({
     required String baseUrl,
     required Client client,
+    required String appVersion,
     AwsCredentialsChanged? onAwsCredentialsChanged,
   }) {
     return SettingsRepositoryImpl(
-      apiService: SettingsApiServiceImpl(baseUrl: baseUrl, httpClient: client),
+      apiService: SettingsApiServiceImpl(baseUrl: baseUrl, httpClient: client, appVersion: appVersion),
       databaseService: SettingsDatabaseService.instance,
       onAwsCredentialsChanged: onAwsCredentialsChanged,
     );

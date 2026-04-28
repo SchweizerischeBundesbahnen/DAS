@@ -1,3 +1,4 @@
+import 'package:app/app_info/app_info.dart';
 import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/brightness/brightness_manager_impl.dart';
 import 'package:app/di/di.dart';
@@ -15,6 +16,7 @@ import 'package:connectivity_x/component.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/component.dart';
 import 'package:logging/logging.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:preload/component.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 import 'package:sfera/component.dart';
@@ -31,6 +33,8 @@ class DASBaseScope extends DIScope {
   Future<void> push() async {
     _log.fine('Pushing scope $scopeName');
     getIt.pushNewScope(scopeName: scopeName);
+
+    getIt.registerAppInfoAsync();
     getIt.registerBrightnessManager();
     getIt.registerAudioPlayer();
     getIt.registerSounds();
@@ -51,6 +55,17 @@ class DASBaseScope extends DIScope {
 }
 
 extension BaseScopeExtension on GetIt {
+  void registerAppInfoAsync() {
+    _log.fine('Register AppInfo');
+    registerSingletonAsync<AppInfo>(() async {
+      final packageInfo = await PackageInfo.fromPlatform();
+      return AppInfo(
+        version: packageInfo.version,
+        buildNumber: packageInfo.buildNumber,
+      );
+    });
+  }
+
   void registerLogger({required DASLogger logger}) {
     _log.fine('Register Logger');
     registerSingleton<DASLogger>(logger);
