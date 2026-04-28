@@ -27,7 +27,6 @@ class AppRouter extends RootStackRouter {
   List<AutoRoute> get routes => [
     _splash,
     _login,
-    _loading,
     _journey,
     _journeySelection,
     _links,
@@ -46,11 +45,6 @@ class AppRouter extends RootStackRouter {
   AutoRoute get _login => AutoRoute(
     path: '/login',
     page: LoginRoute.page,
-  );
-
-  AutoRoute get _loading => AutoRoute(
-    path: '/loading',
-    page: LoadingRoute.page,
   );
 
   AutoRoute get _journey => AutoRoute(
