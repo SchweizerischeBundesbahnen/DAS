@@ -1,7 +1,8 @@
 enum KoaState {
   wait,
   waitCancelled,
-  waitHide
+  waitHide,
+  call
   ;
 
   factory KoaState.from(String value) => values.firstWhere((element) => element.name == value, orElse: () => .waitHide);

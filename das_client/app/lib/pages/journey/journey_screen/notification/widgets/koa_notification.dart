@@ -22,10 +22,14 @@ class KoaNotification extends StatelessWidget {
     return StreamBuilder<KoaState>(
       stream: viewModel.koaState,
       builder: (context, snapshot) {
-        if (!snapshot.hasData || snapshot.data == .waitHide) return SizedBox.shrink();
-        return snapshot.data == .wait
-            ? _WaitNotification(displayAction: displayAction)
-            : _WaitCancelledNotification(displayAction: displayAction);
+        if (!snapshot.hasData) return SizedBox.shrink();
+
+        return switch (snapshot.data!) {
+          KoaState.wait => _WaitNotification(displayAction: displayAction),
+          KoaState.waitCancelled => _WaitCancelledNotification(displayAction: displayAction),
+          KoaState.call => _CallNotification(displayAction: displayAction),
+          KoaState.waitHide => SizedBox.shrink(),
+        };
       },
     );
   }
@@ -38,39 +42,41 @@ class _WaitNotification extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final resolvedTextStyle = ThemeUtil.isDarkMode(context)
-        ? sbbTextStyle.boldStyle.large.copyWith(color: SBBColors.white)
-        : sbbTextStyle.romanStyle.large.copyWith(color: SBBColors.black);
-
-    return SBBPromotionBox.custom(
+    return _BaseNotification(
+      title: context.l10n.w_koa_notification_wait,
       leading: SvgPicture.asset(
         AppAssets.iconKoaWait,
-        colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
+        colorFilter: ColorFilter.mode(SBBColors.black, BlendMode.srcIn),
       ),
-      content: Text(
-        context.l10n.w_koa_notification_wait,
-        style: resolvedTextStyle,
+      style: _promotionBoxStyle(
+        context,
+        borderColor: SBBColors.white,
+        gradientColors: List.filled(4, DASColors.koaBlue),
       ),
-      badgeText: context.l10n.w_koa_notification_title,
-      trailing: displayAction ? _KoaTrailingButton() : null,
-      style: _waitStyle(context),
+      displayAction: displayAction,
     );
   }
+}
 
-  PromotionBoxStyle _waitStyle(BuildContext context) {
-    final isDark = ThemeUtil.isDarkMode(context);
-    final resolvedGradientColors = isDark
-        ? [DASColors.koaLightBlue, DASColors.koaDarkBlue, DASColors.koaDarkBlue, DASColors.koaLightBlue]
-        : [SBBColors.cloud, SBBColors.milk, SBBColors.milk, SBBColors.cloud];
-    final resolvedBadgeShadowColor = isDark
-        ? SBBColors.royal.withValues(alpha: 0.6)
-        : SBBColors.royal.withValues(alpha: 0.2);
+class _CallNotification extends StatelessWidget {
+  const _CallNotification({required this.displayAction});
 
-    return PromotionBoxStyle.$default(baseStyle: SBBBaseStyle.of(context)).copyWith(
-      badgeColor: SBBColors.royal,
-      badgeBorderColor: SBBColors.white,
-      badgeShadowColor: resolvedBadgeShadowColor,
-      gradientColors: resolvedGradientColors,
+  final bool displayAction;
+
+  @override
+  Widget build(BuildContext context) {
+    return _BaseNotification(
+      title: context.l10n.w_koa_notification_call,
+      leading: SvgPicture.asset(
+        AppAssets.iconExclamationPointLine,
+        colorFilter: ColorFilter.mode(SBBColors.black, BlendMode.srcIn),
+      ),
+      style: _promotionBoxStyle(
+        context,
+        borderColor: SBBColors.white,
+        gradientColors: List.filled(4, DASColors.koaBlue),
+      ),
+      displayAction: displayAction,
     );
   }
 }
@@ -82,43 +88,49 @@ class _WaitCancelledNotification extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = ThemeUtil.isDarkMode(context);
+    return _BaseNotification(
+      title: context.l10n.w_koa_notification_wait_canceled,
+      leading: Icon(SBBIcons.circle_tick_medium, color: SBBColors.black, size: 36.0),
+      style: _promotionBoxStyle(
+        context,
+        borderColor: isDark ? SBBColors.royalDark : SBBColors.royal,
+        gradientColors: List.filled(4, SBBColors.cloud),
+      ),
+      displayAction: displayAction,
+    );
+  }
+}
+
+class _BaseNotification extends StatelessWidget {
+  const _BaseNotification({
+    required this.leading,
+    required this.title,
+    required this.style,
+    required this.displayAction,
+  });
+
+  final Widget leading;
+  final String title;
+  final bool displayAction;
+  final PromotionBoxStyle style;
+
+  @override
+  Widget build(BuildContext context) {
     final resolvedTextStyle = ThemeUtil.isDarkMode(context)
         ? sbbTextStyle.boldStyle.large.copyWith(color: SBBColors.black)
         : sbbTextStyle.romanStyle.large.copyWith(color: SBBColors.black);
 
     return SBBPromotionBox.custom(
-      leading: Icon(SBBIcons.circle_tick_medium, color: SBBColors.black, size: 36.0),
-      content: Text(context.l10n.w_koa_notification_wait_canceled, style: resolvedTextStyle),
+      leading: leading,
+      content: Text(title, style: resolvedTextStyle),
       badgeText: context.l10n.w_koa_notification_title,
-      trailing: displayAction ? _KoaTrailingButton() : null,
-      style: _waitCancelledStyle(context),
+      trailing: displayAction ? _departureProcessButton(context) : null,
+      style: style,
     );
   }
 
-  PromotionBoxStyle _waitCancelledStyle(BuildContext context) {
-    final isDark = ThemeUtil.isDarkMode(context);
-    final resolvedGradientColors = isDark
-        ? [SBBColors.aluminum, SBBColors.cement, SBBColors.cement, SBBColors.aluminum]
-        : [SBBColors.cloud, SBBColors.milk, SBBColors.milk, SBBColors.cloud];
-    final resolvedBadgeShadowColor = isDark
-        ? SBBColors.royal.withValues(alpha: 0.6)
-        : SBBColors.royal.withValues(alpha: 0.2);
-
-    return PromotionBoxStyle.$default(baseStyle: SBBBaseStyle.of(context)).copyWith(
-      borderColor: SBBColors.royal,
-      badgeColor: SBBColors.royal,
-      badgeBorderColor: SBBColors.white,
-      badgeShadowColor: resolvedBadgeShadowColor,
-      gradientColors: resolvedGradientColors,
-    );
-  }
-}
-
-class _KoaTrailingButton extends StatelessWidget {
-  const _KoaTrailingButton();
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _departureProcessButton(BuildContext context) {
     final viewModel = context.read<UxTestingViewModel>();
     return FutureBuilder(
       future: viewModel.isDepartureProcessFeatureEnabled,
@@ -132,4 +144,16 @@ class _KoaTrailingButton extends StatelessWidget {
       },
     );
   }
+}
+
+PromotionBoxStyle _promotionBoxStyle(BuildContext context, {List<Color>? gradientColors, Color? borderColor}) {
+  final isDark = ThemeUtil.isDarkMode(context);
+  final resolvedBadgeShadowColor = SBBColors.royal.withValues(alpha: isDark ? 0.6 : 0.2);
+  return PromotionBoxStyle.$default(baseStyle: SBBBaseStyle.of(context)).copyWith(
+    badgeColor: isDark ? SBBColors.royalDark : SBBColors.royal,
+    badgeBorderColor: SBBColors.white,
+    badgeShadowColor: resolvedBadgeShadowColor,
+    gradientColors: gradientColors,
+    borderColor: borderColor,
+  );
 }
