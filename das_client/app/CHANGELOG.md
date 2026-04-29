@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.41.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.40.0...das_client-v0.41.0) (2026-04-28)
+
+
+### Features
+
+* added tour system urls ([#1724](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1724)) ([#2022](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2022)) ([e065efd](https://github.com/SchweizerischeBundesbahnen/DAS/commit/e065efd3a3e69891e4195dd5fafa19ed015b58a6))
+* client checks valid app versions ([#1407](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1407)) ([#2053](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2053)) ([e0eae7b](https://github.com/SchweizerischeBundesbahnen/DAS/commit/e0eae7b85652592dbf2d86b4df82303a3deef226))
+* reworked display of operational indication and foot notes ([#2019](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2019)) ([#2042](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2042)) ([5c2ebd4](https://github.com/SchweizerischeBundesbahnen/DAS/commit/5c2ebd40f2739d28b1ef99af1bf1a060a6a97263))
+* update internationalization files and rm english language ([#1841](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1841)) ([#1985](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1985)) ([eb5fb52](https://github.com/SchweizerischeBundesbahnen/DAS/commit/eb5fb52b6763801d439605338c29c04ef9084f6d))
+
+
+### Bug Fixes
+
+* add empty tour system selection ([#2033](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2033)) ([3c00962](https://github.com/SchweizerischeBundesbahnen/DAS/commit/3c00962da01bbf9ffa3bda17ace6f4461e588bf8))
+* checklist departure vm adds event to closed stream ([#627](https://github.com/SchweizerischeBundesbahnen/DAS/issues/627)) ([#2036](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2036)) ([26dc215](https://github.com/SchweizerischeBundesbahnen/DAS/commit/26dc21590c34125764ff38f2d4602fc03e36caf5))
+* improved preload stability and some small fixes ([#2016](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2016)) ([#2044](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2044)) ([1fb2786](https://github.com/SchweizerischeBundesbahnen/DAS/commit/1fb278682bfbd2c9625204ab646a2e893990516e))
+* make back to tour button floating ([#96](https://github.com/SchweizerischeBundesbahnen/DAS/issues/96)) ([#2045](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2045)) ([211111e](https://github.com/SchweizerischeBundesbahnen/DAS/commit/211111e7bf51e30eda5c3e5145f94b7ebed4f372))
+* show checklist button only when service point is stop ([#627](https://github.com/SchweizerischeBundesbahnen/DAS/issues/627)) ([#2017](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2017)) ([5961115](https://github.com/SchweizerischeBundesbahnen/DAS/commit/596111585c2e094cc71cb222254e410e0cdc74b4))
+
 ## [0.40.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.39.0...das_client-v0.40.0) (2026-04-02)
 
 

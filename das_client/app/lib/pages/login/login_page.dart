@@ -44,7 +44,7 @@ class _LoginPageState extends State<LoginPage> {
             // navigation is handled outside
             widget.onSuccess!();
           } else {
-            context.router.replace(const JourneySelectionRoute());
+            context.router.replace(JourneySelectionRoute());
           }
         }
       }

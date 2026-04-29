@@ -12,6 +12,4 @@ class LoggingSettingDto {
 
   final String url;
   final String token;
-
-  Map<String, dynamic> toJson() => _$LoggingSettingDtoToJson(this);
 }

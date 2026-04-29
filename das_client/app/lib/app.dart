@@ -1,5 +1,6 @@
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
+import 'package:app/nav/app_expiration_guard.dart';
 import 'package:app/nav/app_link_navigator.dart';
 import 'package:app/nav/app_router.dart';
 import 'package:app/nav/auth_guard.dart';
@@ -18,7 +19,10 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  final _appRouter = AppRouter(authGuard: AuthGuard(authenticator: DI.get()));
+  final _appRouter = AppRouter(
+    authGuard: AuthGuard(authenticator: DI.get()),
+    appExpirationGuard: AppExpirationGuard(),
+  );
   late AppLinkNavigator _appLinkNavigator;
 
   @override

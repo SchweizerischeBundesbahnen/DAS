@@ -86,7 +86,7 @@ export const ACTIVE_MODE: SupportedOperationModes[] = [{
 
 export interface G2BEventNSPOptions {
   warn?: boolean,
-  koa?: 'wait' | 'waitCancelled' | 'waitHide',
+  koa?: 'wait' | 'waitCancelled' | 'waitHide' | 'call',
   connectivity?: 'connected' | 'disconnected' | 'wifi'
   formation?: boolean
 }

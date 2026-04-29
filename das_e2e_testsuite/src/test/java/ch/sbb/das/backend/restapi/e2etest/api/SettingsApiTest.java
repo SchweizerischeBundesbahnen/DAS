@@ -1,25 +1,21 @@
-package ch.sbb.das.backend.restapi.e2etest.api;//package ch.sbb.backend;
+package ch.sbb.das.backend.restapi.e2etest.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assumptions.assumeThat;
 
-import ch.sbb.backend.restclient.v1.model.SettingsResponse;
 import ch.sbb.das.backend.restapi.configuration.DasBackendApi;
 import ch.sbb.das.backend.restapi.configuration.DasBackendEndpointConfiguration;
 import ch.sbb.das.backend.restapi.e2etest.configuration.ApiClientTestProfile;
-import ch.sbb.das.backend.restapi.e2etest.helper.AssertionsResponse;
 import ch.sbb.das.backend.restapi.e2etest.helper.RestAssuredCommand;
 import ch.sbb.das.backend.restapi.e2etest.helper.ServiceDoc;
+import ch.sbb.das.backend.restclient.v1.model.SettingsResponse;
 import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
-import org.assertj.core.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.TestContextManager;
-import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.core.publisher.Mono;
 
 @ApiClientTestProfile
@@ -44,7 +40,7 @@ class SettingsApiTest extends RestAssuredCommand {
 
     @Test
     void getSettings_okByOpenApiClient() {
-            final Mono<ResponseEntity<SettingsResponse>> responseAsync = backendApi.getSettingsApi().getSettingsWithHttpInfo(ServiceDoc.REQUEST_ID_VALUE_E2E_TEST);
+        final Mono<ResponseEntity<SettingsResponse>> responseAsync = backendApi.getSettingsApi().getSettingsWithHttpInfo(ServiceDoc.REQUEST_ID_VALUE_E2E_TEST, /*TODO config */ "9999.0.0");
             final SettingsResponse settingsResponse = getResponseBodyOrFail(responseAsync, null /*irrelevant for API*/, ServiceDoc.REQUEST_ID_VALUE_E2E_TEST, null);
             log.debug("{} in {}", settingsResponse, responseAsync);
 
