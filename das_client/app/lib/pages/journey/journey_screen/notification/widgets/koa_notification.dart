@@ -11,9 +11,9 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
 class KoaNotification extends StatelessWidget {
-  const KoaNotification({super.key, this.displayAction = true});
+  const KoaNotification({super.key, this.displayDepartureProcessButton = true});
 
-  final bool displayAction;
+  final bool displayDepartureProcessButton;
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +25,11 @@ class KoaNotification extends StatelessWidget {
         if (!snapshot.hasData) return SizedBox.shrink();
 
         return switch (snapshot.data!) {
-          KoaState.wait => _WaitNotification(displayAction: displayAction),
-          KoaState.waitCancelled => _WaitCancelledNotification(displayAction: displayAction),
-          KoaState.call => _CallNotification(displayAction: displayAction),
+          KoaState.wait => _WaitNotification(displayDepartureProcessButton: displayDepartureProcessButton),
+          KoaState.waitCancelled => _WaitCancelledNotification(
+            displayDepartureProcessButton: displayDepartureProcessButton,
+          ),
+          KoaState.call => _CallNotification(displayDepartureProcessButton: displayDepartureProcessButton),
           KoaState.waitHide => SizedBox.shrink(),
         };
       },
@@ -36,9 +38,9 @@ class KoaNotification extends StatelessWidget {
 }
 
 class _WaitNotification extends StatelessWidget {
-  const _WaitNotification({required this.displayAction});
+  const _WaitNotification({required this.displayDepartureProcessButton});
 
-  final bool displayAction;
+  final bool displayDepartureProcessButton;
 
   @override
   Widget build(BuildContext context) {
@@ -53,15 +55,15 @@ class _WaitNotification extends StatelessWidget {
         borderColor: SBBColors.white,
         gradientColors: List.filled(4, DASColors.koaBlue),
       ),
-      displayAction: displayAction,
+      displayDepartureProcessButton: displayDepartureProcessButton,
     );
   }
 }
 
 class _CallNotification extends StatelessWidget {
-  const _CallNotification({required this.displayAction});
+  const _CallNotification({required this.displayDepartureProcessButton});
 
-  final bool displayAction;
+  final bool displayDepartureProcessButton;
 
   @override
   Widget build(BuildContext context) {
@@ -76,15 +78,15 @@ class _CallNotification extends StatelessWidget {
         borderColor: SBBColors.white,
         gradientColors: List.filled(4, DASColors.koaBlue),
       ),
-      displayAction: displayAction,
+      displayDepartureProcessButton: displayDepartureProcessButton,
     );
   }
 }
 
 class _WaitCancelledNotification extends StatelessWidget {
-  const _WaitCancelledNotification({required this.displayAction});
+  const _WaitCancelledNotification({required this.displayDepartureProcessButton});
 
-  final bool displayAction;
+  final bool displayDepartureProcessButton;
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +99,7 @@ class _WaitCancelledNotification extends StatelessWidget {
         borderColor: isDark ? SBBColors.royalDark : SBBColors.royal,
         gradientColors: List.filled(4, SBBColors.cloud),
       ),
-      displayAction: displayAction,
+      displayDepartureProcessButton: displayDepartureProcessButton,
     );
   }
 }
@@ -107,12 +109,12 @@ class _BaseNotification extends StatelessWidget {
     required this.leading,
     required this.title,
     required this.style,
-    required this.displayAction,
+    required this.displayDepartureProcessButton,
   });
 
   final Widget leading;
   final String title;
-  final bool displayAction;
+  final bool displayDepartureProcessButton;
   final PromotionBoxStyle style;
 
   @override
@@ -125,7 +127,7 @@ class _BaseNotification extends StatelessWidget {
       leading: leading,
       content: Text(title, style: resolvedTextStyle),
       badgeText: context.l10n.w_koa_notification_title,
-      trailing: displayAction ? _departureProcessButton(context) : null,
+      trailing: displayDepartureProcessButton ? _departureProcessButton(context) : null,
       style: style,
     );
   }
