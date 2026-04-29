@@ -112,8 +112,8 @@
                             </inputSpec>
                             <generatorName>java</generatorName>
                             <skipValidateSpec>false</skipValidateSpec>
-                            <modelPackage>ch.sbb.backend.restclient.v1.model</modelPackage>
-                            <apiPackage>ch.sbb.backend.restclient.v1.api</apiPackage>
+                            <modelPackage>ch.sbb.das.backend.restclient.v1.model</modelPackage>
+                            <apiPackage>ch.sbb.das.backend.restclient.v1.api</apiPackage>
                             <generateApis>true</generateApis>
                             <apisToGenerate>
                                 Settings,Formations,CustomerOrientedDeparture

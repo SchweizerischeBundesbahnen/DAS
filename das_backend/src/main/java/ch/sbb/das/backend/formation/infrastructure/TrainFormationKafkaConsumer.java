@@ -1,0 +1,41 @@
+package ch.sbb.das.backend.formation.infrastructure;
+
+import ch.sbb.das.backend.formation.application.FormationService;
+import ch.sbb.das.backend.formation.domain.model.Formation;
+import ch.sbb.das.backend.formation.infrastructure.model.TrainFormationRunEntity;
+import ch.sbb.zis.trainformation.api.model.DailyFormationTrain;
+import ch.sbb.zis.trainformation.api.model.DailyFormationTrainKey;
+import java.time.Instant;
+import java.util.List;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.stereotype.Service;
+
+@Service
+@Slf4j
+public class TrainFormationKafkaConsumer {
+
+    private final FormationService formationService;
+
+    public TrainFormationKafkaConsumer(FormationService formationService) {
+        this.formationService = formationService;
+    }
+
+    @KafkaListener(topics = "${formation.kafka.topic}", groupId = "${formation.kafka.group-id}", autoStartup = "${formation.kafka.enabled:true}", containerFactory = "trainFormationListenerContainerFactory")
+    void receive(ConsumerRecord<DailyFormationTrainKey, DailyFormationTrain> message) {
+        long lagInS = (Instant.now().toEpochMilli() - message.timestamp()) / 1000;
+        log.trace("lagInS={} partition={} offset={}", lagInS, message.partition(), message.offset());
+        try {
+            Formation formation = FormationFactory.create(message);
+            List<TrainFormationRunEntity> trainFormationRunEntities = TrainFormationRunEntity.from(formation);
+
+            formationService.deleteByTrainPathIdAndOperationalDay(formation.getTrainPathId(), formation.getOperationalDay());
+            formationService.save(trainFormationRunEntities);
+            log.debug("Train formation runs saved from kafka message partition={}, offset={}", message.partition(), message.offset());
+        } catch (Exception e) {
+            log.error("Error processing kafka message partition={}, offset={}, operationalTrainNumber={}, operationalDay={}", message.partition(), message.offset(), message.key().getZugnummer(),
+                message.key().getBetriebstag(), e);
+        }
+    }
+}

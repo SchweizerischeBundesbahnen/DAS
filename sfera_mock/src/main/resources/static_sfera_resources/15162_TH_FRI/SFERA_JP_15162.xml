@@ -343,6 +343,13 @@
                 <NetworkSpecificParameter name="newSpeed" value="70"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>operationalIndication</NSP_GroupName>
+                <NetworkSpecificParameter name="type" value="uncoded"/>
+                <NetworkSpecificParameter name="uncodedText" value="Halteort 4"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
 
     </SegmentProfileReference>
@@ -537,6 +544,14 @@
                 <NetworkSpecificParameter name="newSpeed" value="100"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
+
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>operationalIndication</NSP_GroupName>
+                <NetworkSpecificParameter name="type" value="uncoded"/>
+                <NetworkSpecificParameter name="uncodedText" value="Türabschluss letzte Türe."/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
 
     </SegmentProfileReference>
@@ -659,6 +674,14 @@
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="95"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>operationalIndication</NSP_GroupName>
+                <NetworkSpecificParameter name="type" value="uncoded"/>
+                <NetworkSpecificParameter name="uncodedText" value="Nach Halt FDL kontaktieren und Abstellort anfragen."/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>

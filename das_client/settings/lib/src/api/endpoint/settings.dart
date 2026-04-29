@@ -4,14 +4,17 @@ import 'package:http_x/component.dart';
 import 'package:settings/src/api/dto/settings_response_dto.dart';
 
 class SettingsRequest {
-  const SettingsRequest({required this.httpClient, required this.baseUrl});
+  static const appVersionHeader = 'X-App-Version';
+
+  const SettingsRequest({required this.httpClient, required this.baseUrl, this.headers});
 
   final Client httpClient;
   final String baseUrl;
+  final Map<String, String>? headers;
 
   Future<SettingsResponse> call() async {
     final url = Uri.https(baseUrl, 'v1/settings');
-    final response = await httpClient.get(url);
+    final response = await httpClient.get(url, headers: headers);
     return SettingsResponse.fromHttpResponse(response);
   }
 }

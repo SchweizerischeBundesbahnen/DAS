@@ -1,0 +1,21 @@
+package ch.sbb.das.backend.admin.infrastructure.jpa;
+
+import ch.sbb.das.backend.admin.domain.settings.RuFeatureRepository;
+import ch.sbb.das.backend.admin.domain.settings.model.RuFeature;
+import java.util.List;
+import org.springframework.stereotype.Component;
+
+@Component
+class PersistenceRuFeatureRepository implements RuFeatureRepository {
+
+    private final SpringDataJpaRuFeatureRepository ruFeatureRepository;
+
+    PersistenceRuFeatureRepository(SpringDataJpaRuFeatureRepository ruFeatureRepository) {
+        this.ruFeatureRepository = ruFeatureRepository;
+    }
+
+    @Override
+    public List<RuFeature> findAll() {
+        return ruFeatureRepository.findAll().stream().map(RuFeatureEntity::toRuFeature).toList();
+    }
+}

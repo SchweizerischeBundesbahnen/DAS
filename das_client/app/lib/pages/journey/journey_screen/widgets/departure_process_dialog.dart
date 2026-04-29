@@ -88,7 +88,7 @@ class DepartureProcessDialog extends StatelessWidget {
 
   List<Widget> _koaNotification() {
     return [
-      KoaNotification(displayAction: false),
+      KoaNotification(displayDepartureProcessButton: false),
       SizedBox(height: SBBSpacing.medium),
     ];
   }

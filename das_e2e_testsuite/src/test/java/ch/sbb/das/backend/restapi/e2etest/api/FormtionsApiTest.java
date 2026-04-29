@@ -2,8 +2,6 @@ package ch.sbb.das.backend.restapi.e2etest.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.backend.restclient.v1.model.FormationResponse;
-import ch.sbb.backend.restclient.v1.model.Problem;
 import ch.sbb.das.backend.restapi.configuration.DasBackendApi;
 import ch.sbb.das.backend.restapi.configuration.DasBackendEndpointConfiguration;
 import ch.sbb.das.backend.restapi.e2etest.configuration.ApiClientTestProfile;
@@ -11,16 +9,16 @@ import ch.sbb.das.backend.restapi.e2etest.helper.AssertionsResponse;
 import ch.sbb.das.backend.restapi.e2etest.helper.RestAssuredCommand;
 import ch.sbb.das.backend.restapi.e2etest.helper.ServiceDoc;
 import ch.sbb.das.backend.restapi.monitoring.MonitoringConstants;
+import ch.sbb.das.backend.restclient.v1.model.FormationResponse;
+import ch.sbb.das.backend.restclient.v1.model.Problem;
 import io.restassured.response.Response;
 import java.time.LocalDate;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
-import org.assertj.core.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -26,6 +26,7 @@ class JourneyScope extends DIScope {
   Future<void> push() async {
     _log.fine('Pushing scope $scopeName');
     getIt.pushNewScope(scopeName: scopeName);
+
     getIt.registerViewModeViewModel();
     getIt.registerJourneyNavigationViewModel();
     getIt.registerJourneySelectionViewModel();

@@ -126,7 +126,8 @@
   "w_maneuver_notification_wara_action": "WaRa",
   "w_maneuver_notification_maneuver": "Rangiermodus",
   "w_koa_notification_title": "Kundenorientierte Abfahrt",
-  "w_koa_notification_wait": "Warten eingelegt.",
+  "w_koa_notification_wait": "Warten Zugbegleiter aktiv",
+  "w_koa_notification_call": "Erwarte Anruf vom Zugchef",
   "w_koa_notification_wait_canceled": "Warten aufgehoben.",
   "w_koa_notification_departure_process": "Abfahrprozess anzeigen",
   "w_no_customer_oriented_departure_checklist_button": "Abfahrprozess anzeigen",
@@ -218,6 +219,31 @@
   "w_logout_dialog_subTitle": "Bist du sicher, dass du dich ausloggen möchtest?",
   "w_logout_dialog_cancel_button_labelText": "Abbrechen",
   "w_logout_dialog_confirm_button_labelText": "Ausloggen",
+  "w_app_expired_dialog_title": "Version ist abgelaufen",
+  "w_app_expires_soon_dialog_title": "Version läuft demnächst ab",
+  "w_app_expired_dialog_body_title": "Die Version {appVersion} von DAS ist abgelaufen.",
+  "@w_app_expired_dialog_body_title": {
+    "type": "text",
+    "placeholders": {
+      "appVersion": {
+        "type": "String"
+      }
+    }
+  },
+  "w_app_expires_soon_dialog_body_title": "Die Version {appVersion} von DAS läuft am {appVersionExpirationDate} ab.",
+  "@w_app_expires_soon_dialog_body_title": {
+    "type": "text",
+    "placeholders": {
+      "appVersion": {
+        "type": "String"
+      },
+      "appVersionExpirationDate": {
+        "type": "String"
+      }
+    }
+  },
+  "w_app_expired_dialog_body_subTitle": "Aktualisiere die Applikation um sie weiterhin nutzen zu können.",
+  "w_app_expires_soon_dialog_body_subTitle": "Aktualisiere die Applikation demnächst, um DAS nach dem Ablaufdatum weiterhin nutzen zu können.",
   "c_yes": "Ja",
   "c_no": "Nein",
   "c_ru_bls_c": "BLSC",
@@ -299,7 +325,7 @@
   "c_radn_type_contact": "Funkkanal Kurzwahl",
   "c_radn_type_network_type": "Netzart",
   "c_radn_type_journey": "Streckeninformation",
-  "c_uncoded_operational_indication": "Arbeitsanweisung",
+  "c_uncoded_operational_indication": "Hinweis",
   "c_show_more": "Mehr anzeigen",
   "w_modal_sheet_warn_function_stop_message": "Halt!",
   "w_modal_sheet_warn_function_manoeuvre_button": "Rangieren",

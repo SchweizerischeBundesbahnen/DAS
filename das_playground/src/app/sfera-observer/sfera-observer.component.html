@@ -58,7 +58,8 @@
       <div>
         <button class="glow-on-hover" (click)="sendG2BEvent({koa: 'wait'})">KOA Warten︎ 🛑</button>
         <button class="glow-on-hover ml-3" (click)="sendG2BEvent({koa: 'waitCancelled'})">KOA Warten aufgehoben ✅</button>
-        <button class="glow-on-hover ml-3" (click)="sendG2BEvent({koa: 'waitHide'})">KOA Warten︎ ausblenden</button>
+        <button (click)="sendG2BEvent({koa: 'waitHide'})" class="glow-on-hover ml-3">KOA Warten︎ ausblenden ❌</button>
+        <button (click)="sendG2BEvent({koa: 'call'})" class="glow-on-hover ml-3">KOA Anruf einblenden 📞</button>
       </div>
       <div>
         <button class="glow-on-hover" (click)="sendG2BEvent({connectivity: 'wifi'})">Verbindung WLAN 🛜</button>

@@ -109,7 +109,7 @@ jobs:
           IMAGE_ID=$(echo $IMAGE_ID | tr '[:upper:]' '[:lower:]')
 
           mvn spring-boot:build-image \
-            -Dtest=ch.sbb.backend.ApiExtractionTest \
+            -Dtest=ch.sbb.das.backend.ApiExtractionTest \
             -Dspring-boot.build-image.imageName=$IMAGE_ID:$VERSION
 
           docker push $IMAGE_ID:$VERSION
