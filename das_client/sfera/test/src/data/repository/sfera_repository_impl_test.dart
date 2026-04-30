@@ -61,6 +61,7 @@ void main() {
       localRepo: sferaLocalRepo,
       connectivityManager: mockConnectivityManager,
       deviceId: Uuid().v4(),
+      sferaVersion: '4.00',
     );
   });
 
@@ -91,7 +92,7 @@ void main() {
       mockMqttService.publishMessage(
         any,
         any,
-        argThat(contains('</HandshakeRequest>')),
+        argThat(contains('</DAS_HandshakeRequest>')),
       ),
     ).called(1);
   });
@@ -158,7 +159,7 @@ void main() {
       mockMqttService.publishMessage(
         any,
         any,
-        argThat(contains('</HandshakeRequest>')),
+        argThat(contains('</DAS_HandshakeRequest>')),
       ),
     ).called(1);
     verify(
@@ -202,7 +203,7 @@ void main() {
       mockMqttService.publishMessage(
         any,
         any,
-        argThat(contains('</HandshakeRequest>')),
+        argThat(contains('</DAS_HandshakeRequest>')),
       ),
     ).called(1);
   });
