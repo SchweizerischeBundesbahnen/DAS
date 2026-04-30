@@ -89,6 +89,7 @@ class SferaComponent {
     required String deviceId,
     required SferaLocalRepo localRepo,
     required ConnectivityManager connectivityManager,
+    required String sferaVersion,
   }) {
     final localDatabaseService = DriftSferaLocalDatabaseService.instance;
     return SferaRepoImpl(
@@ -98,6 +99,7 @@ class SferaComponent {
       localRepo: localRepo,
       connectivityManager: connectivityManager,
       deviceId: deviceId,
+      sferaVersion: sferaVersion,
     );
   }
 

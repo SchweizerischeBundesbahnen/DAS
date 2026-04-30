@@ -3,7 +3,7 @@ import 'package:sfera/src/data/dto/enums/related_train_request_type_dto.dart';
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 
 class HandshakeRequestDto extends SferaXmlElementDto {
-  static const String elementType = 'HandshakeRequest';
+  static const String elementType = 'DAS_HandshakeRequest';
 
   HandshakeRequestDto({super.type = elementType, super.attributes, super.children, super.value});
 
