@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.15.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.14.0...sfera_mock-v0.15.0) (2026-04-30)
+
+
+### Features
+
+* add departure process checklist dialog and warning ([#627](https://github.com/SchweizerischeBundesbahnen/DAS/issues/627)) ([#1978](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1978)) ([30af84e](https://github.com/SchweizerischeBundesbahnen/DAS/commit/30af84eaef7d8c46d116dfef691754cf4ceb5c3b))
+* add suspicious segment profiles ([#409](https://github.com/SchweizerischeBundesbahnen/DAS/issues/409)) ([#1960](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1960)) ([ab39558](https://github.com/SchweizerischeBundesbahnen/DAS/commit/ab395588ac13c3713af50e8e6fe0cdf8e27d9fac))
+* client checks valid app versions ([#1407](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1407)) ([#2053](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2053)) ([e0eae7b](https://github.com/SchweizerischeBundesbahnen/DAS/commit/e0eae7b85652592dbf2d86b4df82303a3deef226))
+
+
+### Bug Fixes
+
+* show checklist button only when service point is stop ([#627](https://github.com/SchweizerischeBundesbahnen/DAS/issues/627)) ([#2017](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2017)) ([5961115](https://github.com/SchweizerischeBundesbahnen/DAS/commit/596111585c2e094cc71cb222254e410e0cdc74b4))
+* suspicious segment profiles are displayed in between adjacent service points ([#409](https://github.com/SchweizerischeBundesbahnen/DAS/issues/409)) ([#2039](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2039)) ([111d6e8](https://github.com/SchweizerischeBundesbahnen/DAS/commit/111d6e8d9161fcf5504377250b5da7efd15a58d6))
+
+
+### Documentation
+
+* lightweight usertest testdata jp fixes ([#2043](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2043)) ([a12e8aa](https://github.com/SchweizerischeBundesbahnen/DAS/commit/a12e8aae704addc60cf3d8c7c55e8fa479c8e163))
+* lightweight usertests testdata ([#2021](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2021)) ([c5d1eab](https://github.com/SchweizerischeBundesbahnen/DAS/commit/c5d1eab6641d1fc1d154fc30fb8b74f7edee882c))
+* lightweight usertests testdata fixes ([#2041](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2041)) ([d19a2a9](https://github.com/SchweizerischeBundesbahnen/DAS/commit/d19a2a90dbf39fe980460169f3cbdb5dac106bb2))
+
 ## [0.14.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.13.0...sfera_mock-v0.14.0) (2026-03-23)
 
 
