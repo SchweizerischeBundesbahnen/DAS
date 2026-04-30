@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
+                xsi:noNamespaceSchemaLocation="../../SFERA.xsd"
                 SP_ID="7318_7_Court" SP_VersionMajor="1" SP_VersionMinor="2" SP_Length="6400" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
@@ -14,20 +14,20 @@
                 <teltsi_LocationPrimaryCode>104</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
-		
-		<Signal>
+
+        <Signal>
             <Signal_ID signal_ID_Physical="C" location="300"/>
             <SignalFunction>exit</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="C"/>
         </Signal>
-		
-		<Signal>
+
+        <Signal>
             <Signal_ID signal_ID_Physical="A758" location="5600"/>
             <SignalFunction>entry</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="A758"/>
         </Signal>
-		
-		<NetworkSpecificPoint location="900" identifier="C6CCB5B4D6344B10935617D2992E2192">
+
+        <NetworkSpecificPoint location="900" identifier="C6CCB5B4D6344B10935617D2992E2192">
             <teltsi_Company>0085</teltsi_Company>
             <NSP_GroupName>curvePoint</NSP_GroupName>
             <NetworkSpecificParameter name="curvePointType" value="begin"/>
@@ -48,8 +48,8 @@
             <NSP_GroupName>curvePoint</NSP_GroupName>
             <NetworkSpecificParameter name="curvePointType" value="end"/>
         </NetworkSpecificPoint>
-		
-		<NetworkSpecificPoint location="5800" identifier="1E81187AE0AE4CB89D6A52E1C6D193B1">
+
+        <NetworkSpecificPoint location="5800" identifier="1E81187AE0AE4CB89D6A52E1C6D193B1">
             <teltsi_Company>0085</teltsi_Company>
             <NSP_GroupName>curvePoint</NSP_GroupName>
             <NetworkSpecificParameter name="curvePointType" value="begin"/>
@@ -81,7 +81,7 @@
                 <teltsi_LocationPrimaryCode>104</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Court</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-			
+
 
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
@@ -112,14 +112,14 @@
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>departureAuth</NSP_GroupName>
                 <NetworkSpecificParameter name="departureAuth" value="true"/>
-				<NetworkSpecificParameter name="departureAuthDispatcher" value="true" /> 
+                <NetworkSpecificParameter name="departureAuthDispatcher" value="true"/>
             </TAF_TAP_Location_NSP>
-			
-			<TAF_TAP_Location_NSP>
+
+            <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>routeTableData</NSP_GroupName>
                 <NetworkSpecificParameter name="routeTableDataRelevant" value="true"/>
-				<NetworkSpecificParameter name="trackGroup" value="3" />  
+                <NetworkSpecificParameter name="trackGroup" value="3"/>
             </TAF_TAP_Location_NSP>
 
         </TAF_TAP_Location>
@@ -133,36 +133,36 @@
                 <OtherContactType contactIdentifier="1305"/>
             </Contact>
         </ContactList>
-		
-		<CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R"/>
+
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R"/>
 
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="67"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="300">
+        <KilometreReferencePoint location="300">
             <KM_Reference kmRef="67.3"/>
         </KilometreReferencePoint>
         <KilometreReferencePoint location="900">
             <KM_Reference kmRef="67.9"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="1670">
+        <KilometreReferencePoint location="1670">
             <KM_Reference kmRef="68.67"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="5600">
+        <KilometreReferencePoint location="5600">
             <KM_Reference kmRef="72.6"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="5730">
+        <KilometreReferencePoint location="5730">
             <KM_Reference kmRef="72.73"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="6050">
+        <KilometreReferencePoint location="6050">
             <KM_Reference kmRef="73.05"/>
         </KilometreReferencePoint>
-		
-		<DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="27.0" gradientDirection="Downhill"
+
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="27.0" gradientDirection="Downhill"
                               directionOfApplicationOnSP="Nominal"/>
         <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0"
                               gradientValue="0.0" gradientDirection="Uphill"
-                              directionOfApplicationOnSP="Nominal"/> 
+                              directionOfApplicationOnSP="Nominal"/>
 
     </SP_ContextInformation>
 

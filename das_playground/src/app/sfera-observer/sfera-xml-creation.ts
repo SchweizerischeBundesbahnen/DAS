@@ -95,7 +95,7 @@ export class SferaXmlCreation {
 
   static createHandshakeRequest(options?: HandshakeRequestOptions) {
     let headerOptions = options?.header || this.defaultHeader();
-    headerOptions = this.fillUndefindeHeaderFields(headerOptions);
+    headerOptions = this.fillUndefinedHeaderFields(headerOptions);
 
     const relatedTrainRequestTag = options?.relatedTrainRequest
       ? `relatedTrainRequest="${options!.relatedTrainRequest}"`
@@ -115,16 +115,16 @@ export class SferaXmlCreation {
                         <Sender>${headerOptions.sender}</Sender>
                         <Recipient>${headerOptions.recipient}</Recipient>
                     </MessageHeader>
-                    <HandshakeRequest ${relatedTrainRequestTag} ${statusReportsEnabledTag}>
+                    <DAS_HandshakeRequest ${relatedTrainRequestTag} ${statusReportsEnabledTag}>
                         ${supportedOperationModes}
-                    </HandshakeRequest>
+                    </DAS_HandshakeRequest>
                 </SFERA_B2G_RequestMessage>
     `;
   }
 
   static createRequest(options: RequestOptions): string {
     let headerOptions = options?.header || this.defaultHeader();
-    headerOptions = this.fillUndefindeHeaderFields(headerOptions);
+    headerOptions = this.fillUndefinedHeaderFields(headerOptions);
 
     const jpRequests = this.createJpRequest(options.jpRequests);
     const spRequests = this.createSpRequest(options.spRequests);
@@ -147,7 +147,7 @@ export class SferaXmlCreation {
 
   static createEvent(options: EventOptions): string {
     let headerOptions = options?.header || this.defaultHeader();
-    headerOptions = this.fillUndefindeHeaderFields(headerOptions);
+    headerOptions = this.fillUndefinedHeaderFields(headerOptions);
 
     const sesssionTermination = this.createSessionTerminationRequest(options?.sessionTermination);
 
@@ -266,7 +266,7 @@ export class SferaXmlCreation {
 
   private static defaultHeader(): SferaHeaderOptions {
     return {
-      sferaVersion: '3.00',
+      sferaVersion: '4.00',
       messageId: crypto.randomUUID(),
       timestamp: this.currentTimestampSferaFormat(),
       sourceDevice: 'DAS',
@@ -277,7 +277,7 @@ export class SferaXmlCreation {
 
   private static defaultG2BHeader(): SferaHeaderOptions {
     return {
-      sferaVersion: '3.00',
+      sferaVersion: '4.00',
       messageId: crypto.randomUUID(),
       timestamp: this.currentTimestampSferaFormat(),
       sourceDevice: 'TMS',
@@ -286,8 +286,8 @@ export class SferaXmlCreation {
     }
   }
 
-  private static fillUndefindeHeaderFields(headerOptions: SferaHeaderOptions) {
-    headerOptions.sferaVersion = headerOptions.sferaVersion || '3.00';
+  private static fillUndefinedHeaderFields(headerOptions: SferaHeaderOptions) {
+    headerOptions.sferaVersion = headerOptions.sferaVersion || '4.00';
     headerOptions.timestamp = headerOptions.timestamp || this.currentTimestampSferaFormat()
     headerOptions.sender = headerOptions.sender || '1085';
     headerOptions.recipient = headerOptions.recipient || '0085';

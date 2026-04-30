@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
+                xsi:noNamespaceSchemaLocation="../../SFERA.xsd"
                 SP_ID="19240_7_Schneit" SP_VersionMajor="1" SP_VersionMinor="1" SP_Length="3000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
@@ -21,20 +21,20 @@
             <SignalFunction>exit</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="E2"/>
         </Signal>
-		
-		<Signal>
+
+        <Signal>
             <Signal_ID signal_ID_Physical="P328" location="1400"/>
             <SignalFunction>block</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="P328"/>
         </Signal>
-		
-		<Signal>
+
+        <Signal>
             <Signal_ID signal_ID_Physical="P329" location="2900"/>
             <SignalFunction>block</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="P329"/>
         </Signal>
-		
-		<NetworkSpecificPoint location="2200" identifier="A30061F317D8453CBA912D2DEEB92352">
+
+        <NetworkSpecificPoint location="2200" identifier="A30061F317D8453CBA912D2DEEB92352">
             <teltsi_Company>0085</teltsi_Company>
             <NSP_GroupName>curvePoint</NSP_GroupName>
             <NetworkSpecificParameter name="curvePointType" value="begin"/>
@@ -97,33 +97,33 @@
                 <OtherContactType contactIdentifier="1306"/>
             </Contact>
         </ContactList>
-		
-		<CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R"/>
+
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R"/>
 
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="127.5"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="300">
+        <KilometreReferencePoint location="300">
             <KM_Reference kmRef="127.8"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="1400">
+        <KilometreReferencePoint location="1400">
             <KM_Reference kmRef="128.9"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="2200">
+        <KilometreReferencePoint location="2200">
             <KM_Reference kmRef="129.7"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="2900">
+        <KilometreReferencePoint location="2900">
             <KM_Reference kmRef="130.4"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="3000">
+        <KilometreReferencePoint location="3000">
             <KM_Reference kmRef="130.5"/>
         </KilometreReferencePoint>
-		
-		<DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="10.0" gradientDirection="Downhill"
+
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="10.0" gradientDirection="Downhill"
                               directionOfApplicationOnSP="Nominal"/>
         <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0"
                               gradientValue="0.0" gradientDirection="Uphill"
-                              directionOfApplicationOnSP="Nominal"/> 
+                              directionOfApplicationOnSP="Nominal"/>
 
     </SP_ContextInformation>
 

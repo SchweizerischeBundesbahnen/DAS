@@ -14,7 +14,7 @@ import ch.sbb.das.backend.preload.domain.PreloadResult;
 import ch.sbb.das.backend.preload.infrastructure.PahoMqttClient;
 import ch.sbb.das.backend.preload.infrastructure.xml.SferaMessagingConfig;
 import ch.sbb.das.backend.preload.infrastructure.xml.XmlHelper;
-import ch.sbb.das.backend.preload.sfera.model.v0300.SFERAB2GRequestMessage;
+import ch.sbb.das.backend.preload.sfera.model.v0400.SFERAB2GRequestMessage;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
