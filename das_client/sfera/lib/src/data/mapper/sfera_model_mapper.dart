@@ -360,6 +360,10 @@ class SferaModelMapper {
                 'CommunicationNetwork found without identical location (start=${element.startLocation} end=${element.endLocation}).',
               );
             }
+            // Simple Inter Modal network changes are displayed as foot notes and ignored in metadata
+            // https://github.com/SchweizerischeBundesbahnen/DAS/issues/1126
+            if (element.communicationNetworkType.communicationNetworkType == .sim) return null;
+
             final order = calculateOrder(index, element.startLocation);
 
             return CommunicationNetworkChange(
@@ -387,7 +391,11 @@ class SferaModelMapper {
           final segmentProfile = segmentProfiles.firstMatch(reference);
 
           final contactLists = segmentProfile.contextInformation?.contactLists;
-          return contactLists?.map((contactList) {
+
+          // Simple Inter Modal network changes are displayed as foot notes and ignored in metadata
+          // https://github.com/SchweizerischeBundesbahnen/DAS/issues/1126
+          final relevantContactLists = contactLists?.whereNot((it) => it.startLocation != it.endLocation);
+          return relevantContactLists?.map((contactList) {
             final identifiableContacts = contactList.contacts.where(
               (c) => c.otherContactType != null && c.otherContactType!.contactIdentifier != null,
             );
