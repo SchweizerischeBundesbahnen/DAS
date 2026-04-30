@@ -21,7 +21,7 @@ sealed class Flavor {
     this.showBanner = false,
     this.isTmsEnabledForFlavor = false,
     this.logLevel = Level.INFO,
-    this.sferaVersion = 3,
+    this.sferaVersion = 4,
     this.mqttOpenIdProfileMap = const {},
   });
 
