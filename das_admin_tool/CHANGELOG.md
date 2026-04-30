@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.3.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das-admin-tool-v0.2.0...das-admin-tool-v0.3.0) (2026-04-30)
+
+
+### Features
+
+* import locations ([#238](https://github.com/SchweizerischeBundesbahnen/DAS/issues/238)) ([#1981](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1981)) ([70736ab](https://github.com/SchweizerischeBundesbahnen/DAS/commit/70736ab19cfb9677d8bba4e55e7bd114cb260de4))
+* manage app versions ([#1408](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1408)) ([#1937](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1937)) ([d24aaa9](https://github.com/SchweizerischeBundesbahnen/DAS/commit/d24aaa989a13010405e36a3adf86837b8199c297))
+
+
+### Bug Fixes
+
+* handle app versions conflicts ([#1966](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1966)) ([006ab49](https://github.com/SchweizerischeBundesbahnen/DAS/commit/006ab49eab815a52209abb631cde0476e58e5a45))
+
 ## [0.2.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das-admin-tool-v0.1.1...das-admin-tool-v0.2.0) (2026-02-24)
 
 

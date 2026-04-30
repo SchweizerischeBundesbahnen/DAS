@@ -3,5 +3,5 @@
   "das_client/app": "0.41.0",
   "das_backend": "0.10.0",
   "sfera_mock": "0.14.0",
-  "das_admin_tool": "0.2.0"
+  "das_admin_tool": "0.3.0"
 }
