@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.42.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.41.0...das_client-v0.42.0) (2026-04-30)
+
+
+### Features
+
+* add koa call notification and ui redesign ([#2015](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2015)) ([#2064](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2064)) ([1ae6585](https://github.com/SchweizerischeBundesbahnen/DAS/commit/1ae6585e663aab534e7496bb8d9bd97b8b3cc6d9))
+
 ## [0.41.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.40.0...das_client-v0.41.0) (2026-04-28)
 
 
