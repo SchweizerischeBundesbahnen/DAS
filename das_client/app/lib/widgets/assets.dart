@@ -39,6 +39,7 @@ class AppAssets {
   static const iconWifi = '$_iconsDir/icon_wifi.svg';
   static const iconWifiDisabled = '$_iconsDir/icon_wifi_disabled.svg';
   static const iconExclamationPoint = '$_iconsDir/icon_exclamation_point.svg';
+  static const iconExclamationPointLine = '$_iconsDir/icon_exclamation_point_line.svg';
   static const iconSimZug = '$_iconsDir/icon_sim_zug.svg';
   static const iconSignExclamationPoint = '$_iconsDir/icon_sign_exclamation_point.svg';
   static const iconCarCarrier = '$_iconsDir/icon_car_carrier.svg';

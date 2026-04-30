@@ -13,6 +13,4 @@ class RuFeatureDto {
   final String companyCodeRics;
   final String key;
   final bool enabled;
-
-  Map<String, dynamic> toJson() => _$RuFeatureDtoToJson(this);
 }

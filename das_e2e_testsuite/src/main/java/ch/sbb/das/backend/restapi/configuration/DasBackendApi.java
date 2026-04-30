@@ -1,9 +1,9 @@
 package ch.sbb.das.backend.restapi.configuration;
 
-import ch.sbb.backend.restclient.v1.ApiClient;
-import ch.sbb.backend.restclient.v1.api.CustomerOrientedDepartureApi;
-import ch.sbb.backend.restclient.v1.api.FormationsApi;
-import ch.sbb.backend.restclient.v1.api.SettingsApi;
+import ch.sbb.das.backend.restclient.v1.ApiClient;
+import ch.sbb.das.backend.restclient.v1.api.CustomerOrientedDepartureApi;
+import ch.sbb.das.backend.restclient.v1.api.FormationsApi;
+import ch.sbb.das.backend.restclient.v1.api.SettingsApi;
 import lombok.Getter;
 import org.springframework.context.annotation.Configuration;
 

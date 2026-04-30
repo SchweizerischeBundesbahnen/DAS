@@ -74,8 +74,7 @@ extension _WidgetNotificationTypeX on NotificationType {
   Widget toWidget() {
     return switch (this) {
       .illegalSegmentNoReplacement => ReplacementSeriesNotification(),
-      .koaWait => KoaNotification(),
-      .koaWaitCancelled => KoaNotification(),
+      .koa => KoaNotification(),
       .newBrakeLoadSlip => BrakeLoadSlipNotification(),
       .maneuverMode => ManeuverNotification(),
       .disturbance => DisturbanceNotification(),

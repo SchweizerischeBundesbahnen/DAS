@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA.xsd" SP_ID="1513_1_Olten"
-                SP_VersionMajor="3" SP_VersionMinor="2" SP_Length="3600" SP_Status="Valid">
+                SP_VersionMajor="3" SP_VersionMinor="4" SP_Length="3600" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
@@ -154,6 +154,18 @@
 						&lt;trainSeries>N&lt;/trainSeries&gt;
 					&lt;/footNote&gt;
 				&lt;/lineFootNotes&gt;
+				"/>
+            </TAF_TAP_Location_NSP>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>1285</teltsi_Company>
+                <NSP_GroupName>oPFootNotes</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlOPFootNotes" value="
+				&lt;oPFootNotes&gt;
+					&lt;footNote  type=&quot;decisiveGradientDown&quot; &gt;
+						&lt;text&gt;Gleis 648 Gefälle 18 ‰, Steigung 21 ‰&lt;/text&gt;
+					&lt;/footNote&gt;
+				&lt;/oPFootNotes&gt;
 				"/>
             </TAF_TAP_Location_NSP>
 

@@ -1,0 +1,27 @@
+package ch.sbb.das.backend.preload.application.model.trainidentification;
+
+import ch.sbb.das.backend.preload.infrastructure.xml.XmlDateHelper;
+import ch.sbb.das.backend.preload.sfera.model.v0400.JPRequest;
+import ch.sbb.das.backend.preload.sfera.model.v0400.OTNID;
+import java.time.OffsetDateTime;
+import java.util.Set;
+import lombok.NonNull;
+
+public record TrainIdentification(@NonNull Integer id, @NonNull String operationalTrainNumber, @NonNull OffsetDateTime startDateTime, @NonNull Set<CompanyCode> companies) {
+
+    public CompanyCode company() {
+        return companies.stream().findFirst().orElseThrow(() -> new IllegalStateException("TrainIdentification must have at least one company"));
+    }
+
+    public JPRequest toJpRequest() {
+        JPRequest jpRequest = new JPRequest();
+        ch.sbb.das.backend.preload.sfera.model.v0400.TrainIdentification trainIdentification = new ch.sbb.das.backend.preload.sfera.model.v0400.TrainIdentification();
+        OTNID otnid = new OTNID();
+        otnid.setTeltsiCompany(company().getValue());
+        otnid.setTeltsiOperationalTrainNumber(operationalTrainNumber);
+        otnid.setTeltsiStartDate(XmlDateHelper.toGregorianCalender(startDateTime.toLocalDate()));
+        trainIdentification.setOTNID(otnid);
+        jpRequest.setTrainIdentification(trainIdentification);
+        return jpRequest;
+    }
+}

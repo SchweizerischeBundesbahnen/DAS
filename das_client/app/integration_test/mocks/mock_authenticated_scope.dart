@@ -30,14 +30,15 @@ class MockAuthenticatedScope extends AuthenticatedScope {
     getIt.registerMqttService();
     getIt.registerHttpClient();
     getIt.registerSferaRemoteRepo();
-    getIt.registerSettingsRepository();
     if (e2e) {
+      getIt.registerSettingsRepository();
       getIt.registerRuFeatureProvider();
       getIt.registerFormationRepository();
     } else {
       _registerMockRuFeaturesProvider();
       _registerMockFormationRepository();
     }
+    getIt.registerAppExpirationViewModel();
 
     return getIt.allReady();
   }

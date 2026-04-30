@@ -8,7 +8,7 @@ class MockPreloadRepository implements PreloadRepository {
   final preloadDetailsSubject = BehaviorSubject<PreloadDetails>();
 
   @override
-  void updateConfiguration(AwsConfiguration awsConfiguration) {}
+  void updateConfiguration(AwsConfiguration? awsConfiguration) {}
 
   @override
   void triggerPreload() {}

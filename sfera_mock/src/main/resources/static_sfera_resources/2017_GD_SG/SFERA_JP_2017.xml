@@ -388,6 +388,14 @@
                 <NetworkSpecificParameter name="newSpeed" value="40"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
+
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>operationalIndication</NSP_GroupName>
+                <NetworkSpecificParameter name="type" value="uncoded"/>
+                <NetworkSpecificParameter name="uncodedText" value="An voraufgestellte Einheit anfahren"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
     </SegmentProfileReference>
 
@@ -567,6 +575,14 @@
                 <NetworkSpecificParameter name="newSpeed" value="85"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
+
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>operationalIndication</NSP_GroupName>
+                <NetworkSpecificParameter name="type" value="uncoded"/>
+                <NetworkSpecificParameter name="uncodedText" value="Q-Einheit Überfuhrbetrieb einschalten"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
     </SegmentProfileReference>
 
@@ -720,6 +736,14 @@
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="85"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>operationalIndication</NSP_GroupName>
+                <NetworkSpecificParameter name="type" value="uncoded"/>
+                <NetworkSpecificParameter name="uncodedText" value="Trennen 1/2"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>

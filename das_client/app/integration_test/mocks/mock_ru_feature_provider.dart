@@ -6,7 +6,7 @@ class MockRuFeatureProvider implements RuFeatureProvider {
     for (final it in RuFeatureKeys.values) {
       _featureFlags[it] = true;
     }
-    // enable only for necessart tests
+    // enable only for necessary tests
     _featureFlags[RuFeatureKeys.departureProcess] = false;
   }
 

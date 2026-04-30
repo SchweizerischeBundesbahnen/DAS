@@ -50,21 +50,20 @@ class PreloadRepositoryImpl implements PreloadRepository {
   }
 
   @override
-  void updateConfiguration(AwsConfiguration awsConfiguration) {
-    _log.info(
-      'Preload configuration updated: bucketUrl=${awsConfiguration.bucketUrl}, '
-      'accessKey=${awsConfiguration.accessKey.codeUnits.map((e) => '*').join()}, '
-      'accessSecret=${awsConfiguration.accessSecret.codeUnits.map((e) => '*').join()}',
-    );
+  void updateConfiguration(AwsConfiguration? awsConfiguration) {
+    if (awsConfiguration == null) {
+      _log.info('Received empty AWS config - disabling preload.');
+      _disablePreload();
+      return;
+    }
+    _logConfigurationIsUpdated(awsConfiguration);
 
     _s3client = createS3Client(awsConfiguration);
+
     triggerPreload();
 
-    _syncTimer?.cancel();
-    _syncTimer = Timer.periodic(syncInterval, (_) => triggerPreload());
+    _setTriggerForPeriodicPreload();
   }
-
-  S3Client createS3Client(AwsConfiguration awsConfiguration) => S3Client(configuration: awsConfiguration);
 
   @override
   void triggerPreload() async {
@@ -97,11 +96,13 @@ class PreloadRepositoryImpl implements PreloadRepository {
     _updateRunning(false);
   }
 
+  S3Client createS3Client(AwsConfiguration awsConfiguration) => S3Client(configuration: awsConfiguration);
+
   @override
   void dispose() {
     _databaseSubscription?.cancel();
     _rxDetails.close();
-    _syncTimer?.cancel();
+    _disablePreload();
   }
 
   Future<void> _cleanup() async {
@@ -209,6 +210,24 @@ class PreloadRepositoryImpl implements PreloadRepository {
   Future<PreloadDetails> _gatherDetails(List<S3File>? files) async {
     files = files ?? await databaseService.findAll();
     return PreloadDetails(files: files, status: _status(), metrics: await sferaLocalRepo.getMetrics());
+  }
+
+  void _setTriggerForPeriodicPreload() {
+    _syncTimer?.cancel();
+    _syncTimer = Timer.periodic(syncInterval, (_) => triggerPreload());
+  }
+
+  void _disablePreload() {
+    _s3client = null;
+    _syncTimer?.cancel();
+  }
+
+  void _logConfigurationIsUpdated(AwsConfiguration awsConfiguration) {
+    _log.info(
+      'Received non empty AWS config update: bucketUrl=${awsConfiguration.bucketUrl}, '
+      'accessKey=${awsConfiguration.accessKey.codeUnits.map((e) => '*').join()}, '
+      'accessSecret=${awsConfiguration.accessSecret.codeUnits.map((e) => '*').join()}',
+    );
   }
 }
 

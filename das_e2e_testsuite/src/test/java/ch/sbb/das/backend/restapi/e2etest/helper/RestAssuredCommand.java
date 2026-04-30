@@ -5,12 +5,11 @@
 package ch.sbb.das.backend.restapi.e2etest.helper;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assumptions.assumeThat;
 
-import ch.sbb.backend.restclient.v1.model.Problem;
 import ch.sbb.das.backend.restapi.configuration.DasBackendEndpointConfiguration;
 import ch.sbb.das.backend.restapi.helper.ObjectMapperFactory;
 import ch.sbb.das.backend.restapi.monitoring.MonitoringConstants;
+import ch.sbb.das.backend.restclient.v1.model.Problem;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
 import io.restassured.config.HttpClientConfig;

@@ -2,19 +2,16 @@ package ch.sbb.das.backend.restapi.e2etest.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.backend.restclient.v1.model.FormationResponse;
-import ch.sbb.backend.restclient.v1.model.Logging;
-import ch.sbb.backend.restclient.v1.model.Preload;
-import ch.sbb.backend.restclient.v1.model.RuFeature;
-import ch.sbb.backend.restclient.v1.model.Settings;
-import ch.sbb.backend.restclient.v1.model.SettingsResponse;
 import ch.sbb.das.backend.restapi.configuration.DasBackendEndpoint;
+import ch.sbb.das.backend.restclient.v1.model.FormationResponse;
+import ch.sbb.das.backend.restclient.v1.model.Logging;
+import ch.sbb.das.backend.restclient.v1.model.Preload;
+import ch.sbb.das.backend.restclient.v1.model.RuFeature;
+import ch.sbb.das.backend.restclient.v1.model.Settings;
+import ch.sbb.das.backend.restclient.v1.model.SettingsResponse;
 import java.util.List;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 @Slf4j
 @UtilityClass

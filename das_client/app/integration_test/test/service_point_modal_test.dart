@@ -263,7 +263,7 @@ void main() {
       final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
-      await tester.dragUntilVisible(find.text('Lenzburg'), scrollableFinder, const Offset(0, -50));
+      await tester.dragUntilVisible(find.text('Lenzburg'), scrollableFinder, const Offset(0, -50), maxIteration: 100);
 
       // open graduated speed tab of Rupperswil
       await _openByTapOnGraduatedSpeedOf(tester, 'Rupperswil');

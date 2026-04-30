@@ -1,3 +1,4 @@
+import 'package:app/nav/app_expiration_guard.dart';
 import 'package:app/nav/auth_guard.dart';
 import 'package:app/pages/journey/brake_load_slip/brake_load_slip_page.dart';
 import 'package:app/pages/journey/journey_page.dart';
@@ -17,9 +18,10 @@ part 'app_router.gr.dart';
 
 @AutoRouterConfig(replaceInRouteName: 'Page,Route')
 class AppRouter extends RootStackRouter {
-  AppRouter({required this.authGuard});
+  AppRouter({required this.authGuard, required this.appExpirationGuard});
 
   final AuthGuard authGuard;
+  final AppExpirationGuard appExpirationGuard;
 
   @override
   List<AutoRoute> get routes => [
@@ -48,7 +50,7 @@ class AppRouter extends RootStackRouter {
   AutoRoute get _journey => AutoRoute(
     path: '/journey',
     page: JourneyRoute.page,
-    guards: [authGuard],
+    guards: [authGuard, appExpirationGuard],
   );
 
   AutoRoute get _journeySelection => AutoRoute(
