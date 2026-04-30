@@ -95,7 +95,7 @@ export class SferaXmlCreation {
 
   static createHandshakeRequest(options?: HandshakeRequestOptions) {
     let headerOptions = options?.header || this.defaultHeader();
-    headerOptions = this.fillUndefindeHeaderFields(headerOptions);
+    headerOptions = this.fillUndefinedHeaderFields(headerOptions);
 
     const relatedTrainRequestTag = options?.relatedTrainRequest
       ? `relatedTrainRequest="${options!.relatedTrainRequest}"`
@@ -124,7 +124,7 @@ export class SferaXmlCreation {
 
   static createRequest(options: RequestOptions): string {
     let headerOptions = options?.header || this.defaultHeader();
-    headerOptions = this.fillUndefindeHeaderFields(headerOptions);
+    headerOptions = this.fillUndefinedHeaderFields(headerOptions);
 
     const jpRequests = this.createJpRequest(options.jpRequests);
     const spRequests = this.createSpRequest(options.spRequests);
@@ -147,7 +147,7 @@ export class SferaXmlCreation {
 
   static createEvent(options: EventOptions): string {
     let headerOptions = options?.header || this.defaultHeader();
-    headerOptions = this.fillUndefindeHeaderFields(headerOptions);
+    headerOptions = this.fillUndefinedHeaderFields(headerOptions);
 
     const sesssionTermination = this.createSessionTerminationRequest(options?.sessionTermination);
 
@@ -286,7 +286,7 @@ export class SferaXmlCreation {
     }
   }
 
-  private static fillUndefindeHeaderFields(headerOptions: SferaHeaderOptions) {
+  private static fillUndefinedHeaderFields(headerOptions: SferaHeaderOptions) {
     headerOptions.sferaVersion = headerOptions.sferaVersion || '4.00';
     headerOptions.timestamp = headerOptions.timestamp || this.currentTimestampSferaFormat()
     headerOptions.sender = headerOptions.sender || '1085';
