@@ -17,11 +17,11 @@ sealed class Flavor {
     required this.waraIOSUrlScheme,
     required this.disablePreload,
     required this.tourSystemUrls,
+    required this.sferaVersion,
     this.color = SBBColors.transparent,
     this.showBanner = false,
     this.isTmsEnabledForFlavor = false,
     this.logLevel = Level.INFO,
-    this.sferaVersion = 4,
     this.mqttOpenIdProfileMap = const {},
   });
 
@@ -30,7 +30,7 @@ sealed class Flavor {
   final AuthenticatorConfig authenticatorConfig;
   final String mqttTopicPrefix;
   final String mqttOauthProfile;
-  final int sferaVersion;
+  final String sferaVersion;
   final Map<String, String> mqttOpenIdProfileMap;
   final String backendUrl;
   final bool showBanner;
@@ -68,7 +68,7 @@ sealed class Flavor {
       mqttUrl: 'wss://tms-vad-imtrackside-dev-mobile.messaging.solace.cloud',
       authenticatorConfig: _authenticatorConfigDev,
       mqttTopicPrefix: '',
-      sferaVersion: 2,
+      sferaVersion: '4.00',
       mqttOpenIdProfileMap: {
         '2cda5d11-f0ac-46b3-967d-af1b2e1bd01a': 'das_sbb_dev',
         'd653d01f-17a4-48a1-9aab-b780b61b4273': 'das_sob_dev',
@@ -79,7 +79,7 @@ sealed class Flavor {
       mqttUrl: 'wss://tms-vad-imtrackside-int-blue-mobile.messaging.solace.cloud',
       authenticatorConfig: _authenticatorConfigInte,
       mqttTopicPrefix: '',
-      sferaVersion: 2,
+      sferaVersion: '4.00',
       mqttOpenIdProfileMap: {
         '2cda5d11-f0ac-46b3-967d-af1b2e1bd01a': 'das_sbb_int',
         'd653d01f-17a4-48a1-9aab-b780b61b4273': 'das_sob_int',
@@ -89,7 +89,7 @@ sealed class Flavor {
     _ProdFlavor() => _ProdFlavor(
       mqttUrl: '',
       authenticatorConfig: _emptyAuthenticatorConfig,
-      sferaVersion: 2,
+      sferaVersion: '4.00',
       mqttOpenIdProfileMap: {
         '2cda5d11-f0ac-46b3-967d-af1b2e1bd01a': 'das_sbb_prod',
         'd653d01f-17a4-48a1-9aab-b780b61b4273': 'das_sob_prod',
@@ -105,7 +105,7 @@ class _DevFlavor extends Flavor {
     super.mqttTopicPrefix = 'dev/',
     super.authenticatorConfig = _emptyAuthenticatorConfig,
     super.disablePreload = false,
-    super.sferaVersion,
+    super.sferaVersion = '4.00',
     super.mqttOpenIdProfileMap,
   }) : super(
          displayName: 'Dev',
@@ -122,12 +122,12 @@ class _DevFlavor extends Flavor {
 }
 
 class _InteFlavor extends Flavor {
-  const _InteFlavor({
+  _InteFlavor({
     super.mqttUrl = '',
     super.mqttTopicPrefix = '',
     super.authenticatorConfig = _emptyAuthenticatorConfig,
     super.disablePreload = false,
-    super.sferaVersion,
+    super.sferaVersion = '4.00',
     super.mqttOpenIdProfileMap,
   }) : super(
          displayName: 'Inte',
@@ -137,7 +137,7 @@ class _InteFlavor extends Flavor {
          mqttOauthProfile: 'azureAdInt',
          waraAndroidPackageName: 'ch.sbb.tms.iad.shas_mobile',
          waraIOSUrlScheme: 'ch.sbb.tms.iad.shasmobile',
-         tourSystemUrls: _prodTourSystemUrls,
+         tourSystemUrls: Map.from(_prodTourSystemUrls)..update(.tip, (_) => 'tip3test://tours'),
        );
 }
 
@@ -147,7 +147,7 @@ class _ProdFlavor extends Flavor {
     super.mqttTopicPrefix = '',
     super.authenticatorConfig = _emptyAuthenticatorConfig,
     super.disablePreload = false,
-    super.sferaVersion,
+    super.sferaVersion = '4.00',
     super.mqttOpenIdProfileMap,
   }) : super(
          displayName: 'Prod',

@@ -5,16 +5,17 @@ class MessageHeaderDto extends SferaXmlElementDto {
 
   MessageHeaderDto({super.type = elementType, super.attributes, super.children, super.value});
 
-  factory MessageHeaderDto.create(
-    String messageId,
-    String timestamp,
-    String sourceDevice,
-    String destinationDevice,
-    String sender,
-    String recipient,
-  ) {
+  factory MessageHeaderDto.create({
+    required String messageId,
+    required String timestamp,
+    required String sourceDevice,
+    required String destinationDevice,
+    required String sender,
+    required String recipient,
+    required String sferaVersion,
+  }) {
     final messageHeader = MessageHeaderDto();
-    messageHeader.attributes['SFERA_version'] = '3.00';
+    messageHeader.attributes['SFERA_version'] = sferaVersion;
     messageHeader.attributes['message_ID'] = messageId;
     messageHeader.attributes['timestamp'] = timestamp;
     messageHeader.attributes['sourceDevice'] = sourceDevice;

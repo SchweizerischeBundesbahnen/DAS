@@ -18,12 +18,13 @@ void main() {
     );
 
     final messageHeader = MessageHeaderDto.create(
-      'a24e63c3-ab2e-4102-9a10-ba058dec5efe',
-      '2019-09-26T20:07:36Z',
-      'DAS',
-      'TMS',
-      '1084',
-      '0084',
+      messageId: 'a24e63c3-ab2e-4102-9a10-ba058dec5efe',
+      timestamp: '2019-09-26T20:07:36Z',
+      sourceDevice: 'DAS',
+      destinationDevice: 'TMS',
+      sender: '1084',
+      recipient: '0084',
+      sferaVersion: '4.00',
     );
 
     final sferaB2gRequestMessage = SferaB2gRequestMessageDto.create(messageHeader, handshakeRequest: handshakeRequest);
