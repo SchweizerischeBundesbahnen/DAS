@@ -139,13 +139,43 @@ void main() {
         );
       });
 
-      test('whenPositionIsIntermediateSignal_emitsNoCustomerOrientedDeparture', () {
+      test('whenPositionIsIntermediateSignal_withoutPriorStop_emitsDisabled', () {
         testAsync.run((_) {
           journeyPositionSubject.add(JourneyPositionModel(currentPosition: intermediateSignal));
         });
         processStreams(fakeAsync: testAsync);
 
+        expect(modelRegister.last, isA<ChecklistDepartureProcessDisabled>());
+      });
+
+      test('whenPositionIsIntermediateSignal_afterStopServicePoint_emitsNoCustomerOrientedDeparture', () {
+        testAsync.run((_) {
+          journeyPositionSubject.add(JourneyPositionModel(currentPosition: servicePointA));
+        });
+        processStreams(fakeAsync: testAsync);
+
+        testAsync.run((_) {
+          journeyPositionSubject.add(JourneyPositionModel(currentPosition: intermediateSignal));
+        });
+        processStreams(fakeAsync: testAsync);
+
+        // intermediate signal after stop preserves the enabled state
         expect(modelRegister.last, isA<NoCustomerOrientedDepartureChecklist>());
+      });
+
+      test('whenPositionIsIntermediateSignal_afterPassingServicePoint_emitsDisabled', () {
+        testAsync.run((_) {
+          journeyPositionSubject.add(JourneyPositionModel(currentPosition: passingPoint));
+        });
+        processStreams(fakeAsync: testAsync);
+
+        testAsync.run((_) {
+          journeyPositionSubject.add(JourneyPositionModel(currentPosition: intermediateSignal));
+        });
+        processStreams(fakeAsync: testAsync);
+
+        // intermediate signal after passing point stays disabled (no prior stop)
+        expect(modelRegister.last, isA<ChecklistDepartureProcessDisabled>());
       });
 
       test('whenPositionIsExitSignal_emitsDisabled', () {
