@@ -16,6 +16,12 @@
             <Signal_ID signal_ID_Physical="6" location="900"/>
             <SignalFunction>protection</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="D1"/>
+
+            <Signal_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>routeTableData</NSP_GroupName>
+                <NetworkSpecificParameter name="km" value="0.3" />
+            </Signal_NSPs>
         </Signal>
 
         <NetworkSpecificPoint location="500">

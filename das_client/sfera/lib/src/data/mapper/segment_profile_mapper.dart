@@ -131,6 +131,10 @@ class SegmentProfileMapper {
         primaryCode: timingPoint.locationReference?.locationPrimaryCode,
       );
 
+      final kmNspRef = tafTapLocation.routeTableDataNsp?.km1 != null || tafTapLocation.routeTableDataNsp?.km2 != null
+          ? [?tafTapLocation.routeTableDataNsp?.km1, ?tafTapLocation.routeTableDataNsp?.km2]
+          : null;
+
       servicePoints.add(
         ServicePoint(
           name: tafTapLocation.locationIdent.primaryLocationName?.value ?? '',
@@ -142,7 +146,7 @@ class SegmentProfileMapper {
           isAdditional: tafTapLocation.routeTableDataNsp?.routeTableDataRelevant?.isAdditional ?? false,
           betweenBrackets: tafTapLocation.routeTableDataNsp?.betweenBrackets ?? false,
           bracketMainStation: _parseBracketMainStation(tafTapLocations, tafTapLocation),
-          kilometre: mapperData.kilometreMap[timingPoint.location] ?? [],
+          kilometre: kmNspRef ?? mapperData.kilometreMap[timingPoint.location] ?? [],
           localSpeeds: SpeedMapper.fromVelocities(
             tafTapLocation.stationSpeed?.xmlStationSpeed?.element.velocities,
           ),
@@ -170,11 +174,13 @@ class SegmentProfileMapper {
   static Iterable<Signal> _parseSignals(_MapperData mapperData) {
     final signals = mapperData.segmentProfile.points?.signals ?? [];
     return signals.map((signal) {
+      final kmNspRef = signal.km != null ? [signal.km!] : null;
+
       return Signal(
         visualIdentifier: signal.physicalCharacteristics?.visualIdentifier,
         functions: signal.functions.map((function) => SignalFunction.from(function.value!)).toList(),
         order: calculateOrder(mapperData.segmentIndex, signal.id.location),
-        kilometre: mapperData.kilometreMap[signal.id.location] ?? [],
+        kilometre: kmNspRef ?? mapperData.kilometreMap[signal.id.location] ?? [],
         lastModificationDate: signal.lastModificationDate,
         lastModificationType: signal.lastModificationType?.modificationType,
       );
