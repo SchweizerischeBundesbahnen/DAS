@@ -83,7 +83,7 @@ void main() {
 
       // EXPECT
       verify(notificationViewModel.insert(type: .reauthenticationRequired)).called(1);
-      verify(notificationViewModel.remove(type: .reauthenticationRequired)).called(1);
+      verify(notificationViewModel.remove(type: .reauthenticationRequired)).called(4);
     });
   });
 }
