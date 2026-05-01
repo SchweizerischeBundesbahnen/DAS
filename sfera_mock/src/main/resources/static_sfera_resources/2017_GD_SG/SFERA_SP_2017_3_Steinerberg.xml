@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
+                xsi:noNamespaceSchemaLocation="../../SFERA.xsd"
                 SP_ID="2017_3_Steinerberg" SP_VersionMajor="1" SP_VersionMinor="1" SP_Length="4800" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
@@ -14,30 +14,30 @@
                 <teltsi_LocationPrimaryCode>3280</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
-		
-		<Signal>
+
+        <Signal>
             <Signal_ID signal_ID_Physical="B2" location="0"/>
             <SignalFunction>exit</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="B2"/>
             <Signal_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>modification</NSP_GroupName>
-                <NetworkSpecificParameter name="lastModificationType" value="updated" />
-                <NetworkSpecificParameter name="lastModificationDate" value="2050-01-01" />
+                <NetworkSpecificParameter name="lastModificationType" value="updated"/>
+                <NetworkSpecificParameter name="lastModificationDate" value="2050-01-01"/>
             </Signal_NSPs>
         </Signal>
-		
-		<Signal>
+
+        <Signal>
             <Signal_ID signal_ID_Physical="D" location="4177"/>
             <SignalFunction>entry</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="D"/>
         </Signal>
-		
-		<BaliseGroup>
+
+        <BaliseGroup>
             <Balise location="2800" levelCrossingGuarding="true" amountLevelCrossings="1"/>
         </BaliseGroup>
-		
-		<NetworkSpecificPoint location="0" identifier="EC72626695A04051B4F3AC4C57010203">
+
+        <NetworkSpecificPoint location="0" identifier="EC72626695A04051B4F3AC4C57010203">
             <teltsi_Company>0085</teltsi_Company>
             <NSP_GroupName>curvePoint</NSP_GroupName>
             <NetworkSpecificParameter name="curvePointType" value="begin"/>
@@ -69,8 +69,8 @@
                 <teltsi_LocationPrimaryCode>3280</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Steinerberg</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-			
-			<TAF_TAP_Location_NSP>
+
+            <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>stationSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlStationSpeed" value="
@@ -128,37 +128,37 @@
 
 
     <SP_ContextInformation>
-    
-		<LevelCrossingArea startEndQualifier="StartsEnds" startLocation="2962" endLocation="2962"/>
 
-		<ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
+        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="2962" endLocation="2962"/>
+
+        <ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
             <Contact mainContact="true">
                 <OtherContactType contactIdentifier="1325"/>
             </Contact>
         </ContactList>
-		
-		<CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-P"/>
+
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-P"/>
 
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="35.6"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="2210">
+        <KilometreReferencePoint location="2210">
             <KM_Reference kmRef="33.39"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="2800">
+        <KilometreReferencePoint location="2800">
             <KM_Reference kmRef="32.8"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="2962">
+        <KilometreReferencePoint location="2962">
             <KM_Reference kmRef="32.638"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="4177">
+        <KilometreReferencePoint location="4177">
             <KM_Reference kmRef="31.423"/>
         </KilometreReferencePoint>
-		
-		<DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="0.0" gradientDirection="Downhill"
+
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="0.0" gradientDirection="Downhill"
                               directionOfApplicationOnSP="Nominal"/>
         <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="46.0" gradientDirection="Uphill"
-                              directionOfApplicationOnSP="Nominal"/> 
+                              directionOfApplicationOnSP="Nominal"/>
 
     </SP_ContextInformation>
 

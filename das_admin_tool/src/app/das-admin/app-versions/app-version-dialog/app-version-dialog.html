@@ -34,7 +34,7 @@
 <sbb-dialog-actions alignGroup="stretch">
   <sbb-secondary-button align-self="start" sbb-dialog-close i18n="@@app_versions_dialog_button_cancel">Abbrechen</sbb-secondary-button>
   @if (isEdit) {
-    <sbb-transparent-button iconName="trash-small" sbb-dialog-close="delete" i18n="@@app_versions_dialog_button_delete">App Version löschen</sbb-transparent-button>
+    <sbb-transparent-button i18n="@@app_versions_dialog_button_delete" iconName="trash-small" sbb-dialog-close="delete">Blockierte App Version löschen</sbb-transparent-button>
   }
   <sbb-button [sbb-dialog-close]="formValue" [disabled]="versionForm.invalid" i18n="@@app_versions_dialog_button_save">
     Speichern

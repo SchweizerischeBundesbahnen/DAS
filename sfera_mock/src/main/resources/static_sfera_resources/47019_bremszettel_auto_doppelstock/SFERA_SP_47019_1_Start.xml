@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA.xsd"
                 SP_ID="47019_1_Start" SP_VersionMajor="1" SP_VersionMinor="1" SP_Length="800" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>

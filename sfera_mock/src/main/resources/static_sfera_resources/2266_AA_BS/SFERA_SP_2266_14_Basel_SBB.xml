@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
+                xsi:noNamespaceSchemaLocation="../../SFERA.xsd"
                 SP_ID="2266_14_Basel_SBB" SP_VersionMajor="1" SP_VersionMinor="2" SP_Length="4800" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
@@ -25,8 +25,8 @@
                 <teltsi_LocationPrimaryCode>10</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Basel SBB</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-			
-			<TAF_TAP_Location_NSP>
+
+            <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>stationSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlGraduatedSpeedInfo" value="
@@ -34,7 +34,7 @@
 						&lt;entry nSpeed=&quot;35&quot; roSpeed=&quot;35&quot; adSpeed=&quot;35&quot; text=&quot;Ein- und Ausfahrt von/nach Ost mit Fahrbegriff 2 oder &#10;Fahrbegriff 6 ab/bis Peter Merian-Brücke km 122.700 bzw. &#10;km 0.310&quot;/&gt;
                     &lt;/entries&gt;
                 "/>
-				<NetworkSpecificParameter name="xmlStationSpeed" value="
+                <NetworkSpecificParameter name="xmlStationSpeed" value="
 					&lt;stationSpeed&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;85-35&quot;/&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;85-35&quot;/&gt;
@@ -60,11 +60,11 @@
                 <NSP_GroupName>departureAuth</NSP_GroupName>
                 <NetworkSpecificParameter name="departureAuth" value="false"/>
             </TAF_TAP_Location_NSP>
-			
-		<TAF_TAP_Location_NSP>
-			 <teltsi_Company>0085</teltsi_Company>
-			 <NSP_GroupName>stationProperty</NSP_GroupName>
-			 <NetworkSpecificParameter name="xmlStationProperty" value="
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>stationProperty</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlStationProperty" value="
 				  &lt;stationProperties&gt;
 					   &lt;stationProperty text=&quot;&lt;b&gt;4&lt;/b&gt;&quot;&gt;
 							&lt;speeds&gt; 
@@ -87,13 +87,13 @@
 					   &lt;/stationProperty&gt;
 				  &lt;/stationProperties&gt;
 			  "/>
-			</TAF_TAP_Location_NSP>
+            </TAF_TAP_Location_NSP>
 
-			<TAF_TAP_Location_NSP>
-				 <teltsi_Company>0085</teltsi_Company>
-				 <NSP_GroupName>routeTableData</NSP_GroupName>
-				 <NetworkSpecificParameter name="stationSign1" value="P" />
-			</TAF_TAP_Location_NSP>
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>routeTableData</NSP_GroupName>
+                <NetworkSpecificParameter name="stationSign1" value="P"/>
+            </TAF_TAP_Location_NSP>
 
         </TAF_TAP_Location>
 
@@ -106,12 +106,12 @@
                 <OtherContactType contactIdentifier="1301"/>
             </Contact>
         </ContactList>
-		
-		<CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R"/>
+
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R"/>
 
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="0.0"/>
-        </KilometreReferencePoint> 
+        </KilometreReferencePoint>
 
     </SP_ContextInformation>
 

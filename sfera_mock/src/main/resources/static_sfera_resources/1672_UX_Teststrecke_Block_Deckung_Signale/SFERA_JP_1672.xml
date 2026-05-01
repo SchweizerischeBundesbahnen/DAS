@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 
-<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="7" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
+<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="7" xsi:noNamespaceSchemaLocation="../../SFERA.xsd">
     <TrainIdentification>
         <OTN_ID>
             <teltsi_Company>1285</teltsi_Company>
@@ -96,7 +96,8 @@
             </TimingPointReference>
         </TimingPointConstraints>
 
-        <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="10117" endLocation="10311" startTime="2025-01-15T12:00:00Z" endTime="2026-08-20T20:00:00Z">
+        <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="10117" endLocation="10311"
+                              startTime="2025-01-15T12:00:00Z" endTime="2026-08-20T20:00:00Z">
             <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="50"/>
             <TemporaryConstraintReason text="Umbau" language="DE"/>
             <TemporaryConstraintReason text="Renouvellement" language="FR"/>
@@ -105,9 +106,9 @@
 
         <!--ADL Graftal-->
         <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="AdvisedSpeed" startLocation="2170" endLocation="3350">
-                <AdvisedSpeed optimalSpeed="80" reasonCode="followTrain" adviceType="ConstantspeedAdvice">
-                    <ReasonText language="DE" text="ADL"/>
-                </AdvisedSpeed>
+            <AdvisedSpeed optimalSpeed="80" reasonCode="followTrain" adviceType="ConstantspeedAdvice">
+                <ReasonText language="DE" text="ADL"/>
+            </AdvisedSpeed>
         </TemporaryConstraints>
 
         <TrainCharacteristicsRef TC_ID="1672_1" TC_VersionMajor="1" TC_VersionMinor="2" location="0">

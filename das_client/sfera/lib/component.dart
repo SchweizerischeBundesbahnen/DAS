@@ -91,6 +91,7 @@ class SferaComponent {
     required SferaLocalRepo localRepo,
     required ConnectivityManager connectivityManager,
     required Authenticator authenticator,
+    required String sferaVersion,
   }) {
     final localDatabaseService = DriftSferaLocalDatabaseService.instance;
     return SferaRepoImpl(
@@ -101,6 +102,7 @@ class SferaComponent {
       connectivityManager: connectivityManager,
       deviceId: deviceId,
       authenticator: authenticator,
+      sferaVersion: sferaVersion,
     );
   }
 

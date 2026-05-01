@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 
-<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="6" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
+<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="6" xsi:noNamespaceSchemaLocation="../../SFERA.xsd">
     <TrainIdentification>
         <OTN_ID>
             <teltsi_Company>1285</teltsi_Company>
@@ -115,16 +115,16 @@
 
         <!--ADL nach Graftal-->
         <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="AdvisedSpeed" startLocation="2170" endLocation="3350">
-                <AdvisedSpeed optimalSpeed="80" reasonCode="followTrain" adviceType="ConstantspeedAdvice">
-                    <ReasonText language="DE" text="ADL"/>
-                </AdvisedSpeed>
+            <AdvisedSpeed optimalSpeed="80" reasonCode="followTrain" adviceType="ConstantspeedAdvice">
+                <ReasonText language="DE" text="ADL"/>
+            </AdvisedSpeed>
         </TemporaryConstraints>
 
         <!--ADL nach Twinn-->
         <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="AdvisedSpeed" startLocation="10120" endLocation="11310">
-                <AdvisedSpeed optimalSpeed="80" reasonCode="followTrain" adviceType="ConstantspeedAdvice">
-                    <ReasonText language="DE" text="ADL"/>
-                </AdvisedSpeed>
+            <AdvisedSpeed optimalSpeed="80" reasonCode="followTrain" adviceType="ConstantspeedAdvice">
+                <ReasonText language="DE" text="ADL"/>
+            </AdvisedSpeed>
         </TemporaryConstraints>
 
         <TrainCharacteristicsRef TC_ID="1671_1" TC_VersionMajor="1" TC_VersionMinor="2" location="0">

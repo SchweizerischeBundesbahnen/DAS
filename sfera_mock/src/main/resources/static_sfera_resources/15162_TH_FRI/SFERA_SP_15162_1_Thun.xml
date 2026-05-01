@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
+                xsi:noNamespaceSchemaLocation="../../SFERA.xsd"
                 SP_ID="15162_1_Thun" SP_VersionMajor="1" SP_VersionMinor="3" SP_Length="5900" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
@@ -39,32 +39,32 @@
             <SignalFunction>block</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="S428"/>
         </Signal>
-		
-		<Signal>
+
+        <Signal>
             <Signal_ID signal_ID_Physical="S426" location="2200"/>
             <SignalFunction>block</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="S426"/>
         </Signal>
-		
-		<Signal>
+
+        <Signal>
             <Signal_ID signal_ID_Physical="S424" location="3300"/>
             <SignalFunction>block</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="S424"/>
             <Signal_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>modification</NSP_GroupName>
-                <NetworkSpecificParameter name="lastModificationType" value="deleted" />
-                <NetworkSpecificParameter name="lastModificationDate" value="2050-01-01" />
+                <NetworkSpecificParameter name="lastModificationType" value="deleted"/>
+                <NetworkSpecificParameter name="lastModificationDate" value="2050-01-01"/>
             </Signal_NSPs>
         </Signal>
-		
-		<Signal>
+
+        <Signal>
             <Signal_ID signal_ID_Physical="22H" location="4700"/>
             <SignalFunction>entry</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="22H"/>
         </Signal>
 
-		<NetworkSpecificPoint location="900" identifier="ABD1BA9A818545C4B6C9B5F07943C06A">
+        <NetworkSpecificPoint location="900" identifier="ABD1BA9A818545C4B6C9B5F07943C06A">
             <teltsi_Company>0085</teltsi_Company>
             <NSP_GroupName>curvePoint</NSP_GroupName>
             <NetworkSpecificParameter name="curvePointType" value="begin"/>
@@ -164,8 +164,8 @@
                 <OtherContactType contactIdentifier="1306"/>
             </Contact>
         </ContactList>
-		
-		<CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R"/>
+
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R"/>
 
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="137.02"/>
@@ -182,16 +182,16 @@
         <KilometreReferencePoint location="900">
             <KM_Reference kmRef="136.1"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="1500">
+        <KilometreReferencePoint location="1500">
             <KM_Reference kmRef="135.5"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="2200">
+        <KilometreReferencePoint location="2200">
             <KM_Reference kmRef="134.8"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="3300">
+        <KilometreReferencePoint location="3300">
             <KM_Reference kmRef="133.7"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="4700">
+        <KilometreReferencePoint location="4700">
             <KM_Reference kmRef="132.322"/>
         </KilometreReferencePoint>
 
@@ -199,7 +199,7 @@
                               directionOfApplicationOnSP="Nominal"/>
         <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0"
                               gradientValue="0.0" gradientDirection="Uphill"
-                              directionOfApplicationOnSP="Nominal"/> 
+                              directionOfApplicationOnSP="Nominal"/>
 
     </SP_ContextInformation>
 

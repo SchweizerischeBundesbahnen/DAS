@@ -1,6 +1,6 @@
 package ch.sbb.sferamock.messages.sfera;
 
-import ch.sbb.sferamock.adapters.sfera.model.v0300.ObjectFactory;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.ObjectFactory;
 import jakarta.xml.bind.Marshaller;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -24,7 +24,7 @@ public class SferaMessagingConfig {
     public Jaxb2Marshaller jaxb2Marshaller() {
         var marshaller = new Jaxb2Marshaller();
         marshaller.setContextPath(ObjectFactory.class.getPackageName());
-        marshaller.setSchemas(new ClassPathResource("SFERA_v3.00.xsd"));
+        marshaller.setSchemas(new ClassPathResource("SFERA.xsd"));
         marshaller.setMarshallerProperties(Map.of(Marshaller.JAXB_FRAGMENT, true)); // suppress xml prolog
         return marshaller;
     }

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
+                xsi:noNamespaceSchemaLocation="../../SFERA.xsd"
                 SP_ID="15162_6_Rubigen" SP_VersionMajor="1" SP_VersionMinor="1" SP_Length="5000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
@@ -22,7 +22,7 @@
             <SignalPhysicalCharacteristics visualIdentifier="12C1"/>
         </Signal>
 
-		<Signal>
+        <Signal>
             <Signal_ID signal_ID_Physical="11H" location="2300"/>
             <SignalFunction>block</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="11H"/>
@@ -90,7 +90,7 @@
             </Contact>
         </ContactList>
 
-		<CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R"/>
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R"/>
 
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="119"/>
@@ -107,7 +107,7 @@
 
         <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="10.0" gradientDirection="Downhill"
                               directionOfApplicationOnSP="Nominal"/>
-		<DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="10.0" gradientDirection="Uphill"
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="10.0" gradientDirection="Uphill"
                               directionOfApplicationOnSP="Nominal"/>
 
     </SP_ContextInformation>

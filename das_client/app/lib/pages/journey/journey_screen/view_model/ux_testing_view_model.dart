@@ -43,46 +43,25 @@ class UxTestingViewModel {
 
   Future<bool> get isDepartureProcessFeatureEnabled => _ruFeatureProvider.isRuFeatureEnabled(.departureProcess);
 
+  void dispose() {
+    _rxKoaState.close();
+    _eventSubscription?.cancel();
+    _sferaStateSubscription?.cancel();
+  }
+
   void _init() {
     _eventSubscription = _sferaRepo.uxTestingEventStream.listen((data) async {
-      if (data != null) {
-        if (data.isKoa) {
-          final koaEnabled = await _ruFeatureProvider.isRuFeatureEnabled(.koa);
-          if (koaEnabled) {
-            _notificationViewModel.remove(type: .koaWait);
-            _notificationViewModel.remove(type: .koaWaitCancelled);
-            final koaState = KoaState.from(data.value);
-
-            if (koaState != .waitHide) {
-              final isWaitCancelled = koaState == .waitCancelled;
-              _notificationViewModel.insert(
-                type: isWaitCancelled ? .koaWaitCancelled : .koaWait,
-                callback: isWaitCancelled ? DI.get<DASSounds>().koa.play : null,
-              );
-            }
-
-            _rxKoaState.add(koaState);
-          }
-        }
-
-        if (data.isConnectivity) {
-          final connectivityDisplayStatus = _connectivityDisplayStatusFromUxTestingEvent(data.value);
-          _rxConnectivityDisplayStatus.add(connectivityDisplayStatus);
-        }
-
-        if (data.isFormation) {
-          final connectedTrain = _sferaRepo.connectedTrain;
-          if (connectedTrain != null) {
-            _formationRepository.reloadFormation(
-              connectedTrain.trainNumber,
-              connectedTrain.ru.companyCode,
-              connectedTrain.operatingDay ?? connectedTrain.date,
-            );
-          }
-        }
-
-        _rxUxTestingEvents.add(data);
+      if (data == null) {
+        return;
+      } else if (data.isKoa) {
+        _handleKoaEvent(data);
+      } else if (data.isConnectivity) {
+        _handleConnectivityEvent(data);
+      } else if (data.isFormation) {
+        _handleFormationEvent();
       }
+
+      _rxUxTestingEvents.add(data);
     });
     _sferaStateSubscription = _sferaRepo.stateStream.listen((state) {
       if (state == .disconnected) {
@@ -91,14 +70,42 @@ class UxTestingViewModel {
     });
   }
 
-  void dispose() {
-    _rxKoaState.close();
-    _eventSubscription?.cancel();
-    _sferaStateSubscription?.cancel();
+  void _handleConnectivityEvent(UxTestingEvent data) =>
+      _rxConnectivityDisplayStatus.add(data.toConnectivityDisplayStatus());
+
+  void _handleFormationEvent() {
+    final connectedTrain = _sferaRepo.connectedTrain;
+    if (connectedTrain != null) {
+      _formationRepository.reloadFormation(
+        connectedTrain.trainNumber,
+        connectedTrain.ru.companyCode,
+        connectedTrain.operatingDay ?? connectedTrain.date,
+      );
+    }
+  }
+
+  Future<void> _handleKoaEvent(UxTestingEvent data) async {
+    _notificationViewModel.remove(type: .koa);
+    final koaEnabled = await _ruFeatureProvider.isRuFeatureEnabled(.koa);
+    if (koaEnabled) {
+      final koaState = KoaState.from(data.value);
+
+      if (koaState != .waitHide) {
+        _notificationViewModel.insert(
+          type: .koa,
+          callback: koaState == .waitCancelled ? DI.get<DASSounds>().koa.play : null,
+        );
+      }
+
+      _rxKoaState.add(koaState);
+    }
   }
 }
 
-ConnectivityDisplayStatus? _connectivityDisplayStatusFromUxTestingEvent(String value) {
-  if (value == 'wifi') value = 'connectedWifi';
-  return ConnectivityDisplayStatus.values.firstWhereOrNull((c) => c.name == value);
+extension _UxTestingEventX on UxTestingEvent {
+  ConnectivityDisplayStatus? toConnectivityDisplayStatus() {
+    var valueToCheck = value;
+    if (valueToCheck == 'wifi') valueToCheck = 'connectedWifi';
+    return ConnectivityDisplayStatus.values.firstWhereOrNull((status) => status.name == valueToCheck);
+  }
 }

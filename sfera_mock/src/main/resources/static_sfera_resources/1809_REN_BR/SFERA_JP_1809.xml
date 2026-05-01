@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 
-<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="2" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
+<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="2" xsi:noNamespaceSchemaLocation="../../SFERA.xsd">
     <TrainIdentification>
         <OTN_ID>
             <teltsi_Company>1285</teltsi_Company>
@@ -73,7 +73,7 @@
             </TimingPointReference>
             <StoppingPointDepartureDetails departureTime="2035-05-17T05:48:00Z" plannedDepartureTime="2035-05-17T05:48:00Z"/>
         </TimingPointConstraints>
-        
+
         <JP_ContextInformation>
             <!-- VPro for Lausanne -->
             <JP_ContextInformation_NSPs>

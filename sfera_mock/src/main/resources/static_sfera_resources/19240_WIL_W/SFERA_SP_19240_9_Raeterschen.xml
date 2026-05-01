@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
+                xsi:noNamespaceSchemaLocation="../../SFERA.xsd"
                 SP_ID="19240_9_Raeterschen" SP_VersionMajor="1" SP_VersionMinor="1" SP_Length="2100" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
@@ -15,8 +15,8 @@
             </TAF_TAP_LocationReference>
             <TP_Name name="RAET"/>
         </TimingPoint>
-		
-		<Signal>
+
+        <Signal>
             <Signal_ID signal_ID_Physical="P331" location="200"/>
             <SignalFunction>block</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="P331"/>
@@ -76,13 +76,13 @@
                 <OtherContactType contactIdentifier="1306"/>
             </Contact>
         </ContactList>
-		
-		<CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R"/>
+
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R"/>
 
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="131.8"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="200">
+        <KilometreReferencePoint location="200">
             <KM_Reference kmRef="132"/>
         </KilometreReferencePoint>
 

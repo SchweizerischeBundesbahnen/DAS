@@ -50,6 +50,7 @@ class SferaRepoImpl implements SferaRepository {
     required SferaAuthProvider authProvider,
     required SferaLocalRepo localRepo,
     required ConnectivityManager connectivityManager,
+    required this.sferaVersion,
     required this.deviceId,
     required Authenticator authenticator,
   }) : _mqttService = mqttService,
@@ -62,6 +63,7 @@ class SferaRepoImpl implements SferaRepository {
   }
 
   final String deviceId;
+  final String sferaVersion;
   final MqttService _mqttService;
   final SferaLocalDatabaseService _localService;
   final SferaAuthProvider _authProvider;
@@ -234,7 +236,15 @@ class SferaRepoImpl implements SferaRepository {
   @override
   MessageHeaderDto messageHeader({required String sender}) {
     final timestamp = Format.sferaTimestamp(DateTime.now());
-    return MessageHeaderDto.create(const Uuid().v4(), timestamp, deviceId, 'TMS', sender, '0085');
+    return MessageHeaderDto.create(
+      messageId: const Uuid().v4(),
+      timestamp: timestamp,
+      sourceDevice: deviceId,
+      destinationDevice: 'TMS',
+      sender: sender,
+      recipient: '0085',
+      sferaVersion: sferaVersion,
+    );
   }
 
   void _initialize() {

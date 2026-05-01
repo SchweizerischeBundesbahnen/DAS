@@ -2,8 +2,7 @@
 enum NotificationType {
   reauthenticationRequired,
   illegalSegmentNoReplacement,
-  koaWait,
-  koaWaitCancelled,
+  koa,
   newBrakeLoadSlip,
   maneuverMode,
   disturbance,
