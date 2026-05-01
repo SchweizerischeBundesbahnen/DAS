@@ -18,6 +18,14 @@ class ReauthenticationRequiredViewModel {
     _init();
   }
 
+  final Authenticator _authenticator;
+  final NotificationPriorityQueueViewModel _notificationViewModel;
+  final ConnectivityManager _connectivityManager;
+  StreamSubscription? _authStreamSubscription;
+  StreamSubscription? _connectivityStreamSubscription;
+  bool? _lastConnectivityState;
+  bool? _lastReauthenticationRequiredState;
+
   void _init() {
     _authStreamSubscription = _authenticator.reauthenticationRequired.listen((state) {
       _lastReauthenticationRequiredState = state;
@@ -31,10 +39,8 @@ class ReauthenticationRequiredViewModel {
 
   void _updateNotification() {
     if (_lastReauthenticationRequiredState == true && _lastConnectivityState == true) {
-      _log.info('Showing reauthentication required notification');
       _notificationViewModel.insert(type: .reauthenticationRequired);
-    } else if (_notificationViewModel.contains(type: .reauthenticationRequired)) {
-      _log.info('Removing reauthentication required notification');
+    } else {
       _notificationViewModel.remove(type: .reauthenticationRequired);
     }
   }
@@ -46,14 +52,6 @@ class ReauthenticationRequiredViewModel {
       _log.warning('Reauthentication failed: $e');
     }
   }
-
-  final Authenticator _authenticator;
-  final NotificationPriorityQueueViewModel _notificationViewModel;
-  final ConnectivityManager _connectivityManager;
-  StreamSubscription? _authStreamSubscription;
-  StreamSubscription? _connectivityStreamSubscription;
-  bool? _lastConnectivityState;
-  bool? _lastReauthenticationRequiredState;
 
   void dispose() {
     _authStreamSubscription?.cancel();

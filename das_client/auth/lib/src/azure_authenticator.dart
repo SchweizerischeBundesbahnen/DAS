@@ -10,7 +10,7 @@ import 'package:sbb_oidc/sbb_oidc.dart';
 final _log = Logger('AzureAuthenticator');
 
 class AzureAuthenticator implements Authenticator {
-  static final _offlineTokenValidityDuration = const Duration(days: 1);
+  static const _offlineTokenValidityDuration = Duration(days: 1);
 
   AzureAuthenticator({
     required AuthenticatorConfig config,
@@ -42,10 +42,7 @@ class AzureAuthenticator implements Authenticator {
       );
       _isInitialized = true;
     } catch (e, s) {
-      final offlineToken = await _loadOfflineToken();
-      if (offlineToken == null) {
-        _log.severe('AzureAuthenticator Initialization failed', e, s);
-      }
+      _log.severe('AzureAuthenticator Initialization failed', e, s);
       rethrow;
     }
   }
@@ -74,13 +71,17 @@ class AzureAuthenticator implements Authenticator {
         scopes: tokenSpec.scopes,
         prompt: LoginPrompt.selectAccount,
       );
+      _validateToken(token);
       _updateReauthenticationRequiredState(false);
       _writeOfflineToken(token: token, tokenId: tokenId);
 
-      _validateToken(token);
-
       return token;
     } catch (e) {
+      if (!_isNetworkError(e)) {
+        _log.info('Failed to retrieve new token on login, reauthentication required', e);
+        _updateReauthenticationRequiredState(true);
+      }
+
       final token = await _loadOfflineToken(tokenId: tokenId);
       if (token != null) {
         _validateToken(token);
@@ -101,10 +102,10 @@ class AzureAuthenticator implements Authenticator {
       }
 
       final token = await _oidcClient.getToken(scopes: tokenSpec.scopes, forceRefresh: forceRefresh ?? false);
+      _validateToken(token);
       _updateReauthenticationRequiredState(false);
       _writeOfflineToken(token: token, tokenId: tokenId);
 
-      _validateToken(token);
       return token;
     } catch (e) {
       if (!_isNetworkError(e)) {
@@ -167,13 +168,14 @@ class AzureAuthenticator implements Authenticator {
   @override
   Future<void> logout() async {
     await _init();
-    _storage.deleteAll();
+    await _storage.deleteAll();
     return _oidcClient.logout();
   }
 
   @override
   Future<void> endSession() async {
     await _init();
+    await _storage.deleteAll();
     return _oidcClient.endSession();
   }
 
@@ -184,14 +186,18 @@ class AzureAuthenticator implements Authenticator {
     if (tokenPayload == null) return null;
 
     final oidcToken = OidcToken.fromJsonString(tokenPayload);
-    if (oidcToken.accessTokenExpirationDateTime == null ||
-        oidcToken.accessTokenExpirationDateTime!.isBefore(DateTime.now().subtract(_offlineTokenValidityDuration))) {
-      // Token is too old, delete it and return null
+    if (_isExpiredMoreThanOfflineValidityDuration(oidcToken)) {
+      // Offline token is too old, delete it and return null
       await _storage.delete(key: key);
       return null;
     }
 
     return oidcToken;
+  }
+
+  bool _isExpiredMoreThanOfflineValidityDuration(OidcToken oidcToken) {
+    return oidcToken.accessTokenExpirationDateTime == null ||
+        oidcToken.accessTokenExpirationDateTime!.isBefore(DateTime.now().subtract(_offlineTokenValidityDuration));
   }
 
   Future<void> _writeOfflineToken({required OidcToken token, String? tokenId}) {
