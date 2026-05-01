@@ -187,7 +187,6 @@ class AzureAuthenticator implements Authenticator {
 
     final oidcToken = OidcToken.fromJsonString(tokenPayload);
     if (_isExpiredMoreThanOfflineValidityDuration(oidcToken)) {
-      // Offline token is too old, delete it and return null
       await _storage.delete(key: key);
       return null;
     }

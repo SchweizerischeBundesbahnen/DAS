@@ -76,8 +76,6 @@ void main() {
       connectivityManagerSubject.add(true);
       await Future.delayed(Duration.zero);
 
-      when(notificationViewModel.contains(type: .reauthenticationRequired)).thenReturn(true);
-
       connectivityManagerSubject.add(false);
       await Future.delayed(Duration.zero);
 
