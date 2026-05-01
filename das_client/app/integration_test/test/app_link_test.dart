@@ -238,6 +238,34 @@ void main() {
 
       await disconnect(tester);
     });
+
+    testWidgets('appLink_whenAlreadyOnJourneyPageReceivingDeeplink_opensNewJourney', (tester) async {
+      await prepareAndStartApp(tester);
+      await loadJourney(tester, trainNumber: 'T9999');
+
+      // check that train is loaded
+      await waitUntilExists(tester, find.byKey(JourneyTable.loadedJourneyTableKey));
+      await tester.pumpAndSettle();
+      final trainIdentification = find.descendant(
+        of: find.byKey(JourneyIdentifier.journeyIdentifierKey),
+        matching: find.textContaining('T9999'),
+      );
+      expect(trainIdentification, findsOne);
+
+      final journeys = [_trainJourneyLinkData('T1')];
+      _pushTrainJourneyAppLink(journeys);
+
+      // wait until T1 opened
+      await waitUntilExists(
+        tester,
+        find.descendant(
+          of: find.byKey(JourneyIdentifier.journeyIdentifierKey),
+          matching: find.textContaining('T1'),
+        ),
+      );
+
+      await disconnect(tester);
+    });
   });
 }
 
