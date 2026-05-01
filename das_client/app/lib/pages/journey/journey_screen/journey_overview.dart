@@ -38,6 +38,7 @@ import 'package:app/pages/journey/view_model/disturbance_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
+import 'package:app/pages/journey/view_model/reauthentication_required_view_model.dart';
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:flutter/material.dart';
@@ -172,6 +173,18 @@ class _ProviderScope extends StatelessWidget {
           update: (_, notificationVM, prev) {
             if (prev != null) return prev;
             return DisturbanceViewModel(sferaRepo: DI.get(), notificationVM: notificationVM);
+          },
+          dispose: (_, vm) => vm.dispose(),
+        ),
+        ProxyProvider<NotificationPriorityQueueViewModel, ReauthenticationRequiredViewModel>(
+          lazy: false,
+          update: (_, notificationVM, prev) {
+            if (prev != null) return prev;
+            return ReauthenticationRequiredViewModel(
+              authenticator: DI.get(),
+              connectivityManager: DI.get(),
+              notificationViewModel: notificationVM,
+            );
           },
           dispose: (_, vm) => vm.dispose(),
         ),

@@ -171,6 +171,210 @@ void main() {
     expect(result, isFalse);
     verify(mockOidcClient.logout()).called(1);
   });
+
+  test('login_whenLoginSuccessful_thenShouldSaveToken', () async {
+    // GIVEN
+    final idToken = _createIdToken(sbbTenantId);
+    final mockToken = MockOidcToken();
+    when(mockToken.idToken).thenReturn(idToken);
+    when(
+      mockOidcClient.login(
+        scopes: anyNamed('scopes'),
+        prompt: anyNamed('prompt'),
+      ),
+    ).thenAnswer((_) async => mockToken);
+
+    // WHEN / THEN
+    final result = await authenticator.login();
+    expect(result, mockToken);
+    verify(mockFlutterSecureStorage.write(key: TokenSpec.defaultTokenId, value: anyNamed('value'))).called(1);
+  });
+
+  test('token_whenTokenSuccessful_thenShouldSaveToken', () async {
+    // GIVEN
+    final idToken = _createIdToken(sbbTenantId);
+    final mockToken = MockOidcToken();
+    when(mockToken.idToken).thenReturn(idToken);
+    when(
+      mockOidcClient.getToken(
+        scopes: anyNamed('scopes'),
+        forceRefresh: anyNamed('forceRefresh'),
+      ),
+    ).thenAnswer((_) async => mockToken);
+
+    // WHEN / THEN
+    final result = await authenticator.token();
+    expect(result, mockToken);
+    verify(mockFlutterSecureStorage.write(key: TokenSpec.defaultTokenId, value: anyNamed('value'))).called(1);
+  });
+
+  test('login_whenLoginFailed_thenShouldReadOfflineToken', () async {
+    // GIVEN
+    final idToken = _createIdToken(sbbTenantId);
+    final mockToken = OidcToken(
+      tokenType: 'Bearer',
+      accessToken: '',
+      idToken: idToken,
+      accessTokenExpirationDateTime: DateTime.now().add(const Duration(hours: 1)),
+    );
+    when(
+      mockOidcClient.login(
+        scopes: anyNamed('scopes'),
+        prompt: anyNamed('prompt'),
+      ),
+    ).thenThrow(NetworkException());
+    when(
+      mockFlutterSecureStorage.read(key: TokenSpec.defaultTokenId),
+    ).thenAnswer((_) async => mockToken.toJsonString());
+
+    // WHEN / THEN
+    final result = await authenticator.login();
+    expect(result, mockToken);
+    verify(mockFlutterSecureStorage.read(key: TokenSpec.defaultTokenId)).called(1);
+  });
+
+  test('token_whenLoginFailed_thenShouldReturnExpiredOfflineToken', () async {
+    // GIVEN
+    final idToken = _createIdToken(sbbTenantId);
+    final mockToken = OidcToken(
+      tokenType: 'Bearer',
+      accessToken: '',
+      idToken: idToken,
+      accessTokenExpirationDateTime: DateTime.now().subtract(const Duration(hours: 1)),
+    );
+    when(
+      mockOidcClient.getToken(
+        scopes: anyNamed('scopes'),
+        forceRefresh: anyNamed('forceRefresh'),
+      ),
+    ).thenThrow(NetworkException());
+
+    when(
+      mockFlutterSecureStorage.read(key: TokenSpec.defaultTokenId),
+    ).thenAnswer((_) async => mockToken.toJsonString());
+
+    // WHEN / THEN
+    final result = await authenticator.token();
+    expect(result, mockToken);
+    verify(mockFlutterSecureStorage.read(key: TokenSpec.defaultTokenId)).called(1);
+  });
+
+  test('token_whenLoginFailed_thenShouldNotReturnOfflineTokenOlderThen24Hours', () async {
+    // GIVEN
+    final idToken = _createIdToken(sbbTenantId);
+    final mockToken = OidcToken(
+      tokenType: 'Bearer',
+      accessToken: '',
+      idToken: idToken,
+      accessTokenExpirationDateTime: DateTime.now().subtract(const Duration(hours: 25)),
+    );
+    when(
+      mockOidcClient.getToken(
+        scopes: anyNamed('scopes'),
+        forceRefresh: anyNamed('forceRefresh'),
+      ),
+    ).thenThrow(NetworkException());
+
+    when(
+      mockFlutterSecureStorage.read(key: TokenSpec.defaultTokenId),
+    ).thenAnswer((_) async => mockToken.toJsonString());
+
+    // WHEN / THEN
+    expect(authenticator.token(), throwsException);
+    await Future.delayed(Duration.zero); // wait for async token loading
+    verify(mockFlutterSecureStorage.read(key: TokenSpec.defaultTokenId)).called(1);
+  });
+
+  test('reauthenticationRequired_whenLoginFailedWithNonNetworkException_emitTrue', () async {
+    // GIVEN
+    final idToken = _createIdToken(sbbTenantId);
+    final emittedValues = <bool>[];
+    authenticator.reauthenticationRequired.listen(emittedValues.add);
+
+    final mockToken = OidcToken(
+      tokenType: 'Bearer',
+      accessToken: '',
+      idToken: idToken,
+      accessTokenExpirationDateTime: DateTime.now().subtract(const Duration(hours: 1)),
+    );
+    when(
+      mockOidcClient.getToken(
+        scopes: anyNamed('scopes'),
+        forceRefresh: anyNamed('forceRefresh'),
+      ),
+    ).thenThrow(Exception());
+
+    when(
+      mockFlutterSecureStorage.read(key: TokenSpec.defaultTokenId),
+    ).thenAnswer((_) async => mockToken.toJsonString());
+
+    // WHEN / THEN
+    final result = await authenticator.token();
+    expect(result, mockToken);
+    expect(emittedValues, hasLength(2));
+    expect(emittedValues[0], isFalse);
+    expect(emittedValues[1], isTrue);
+  });
+
+  test('reauthenticationRequired_whenLoginFailedWithNetworkException_emitFalse', () async {
+    // GIVEN
+    final idToken = _createIdToken(sbbTenantId);
+    final emittedValues = <bool>[];
+    authenticator.reauthenticationRequired.listen(emittedValues.add);
+
+    final mockToken = OidcToken(
+      tokenType: 'Bearer',
+      accessToken: '',
+      idToken: idToken,
+      accessTokenExpirationDateTime: DateTime.now().subtract(const Duration(hours: 1)),
+    );
+    when(
+      mockOidcClient.getToken(
+        scopes: anyNamed('scopes'),
+        forceRefresh: anyNamed('forceRefresh'),
+      ),
+    ).thenThrow(NetworkException());
+
+    when(
+      mockFlutterSecureStorage.read(key: TokenSpec.defaultTokenId),
+    ).thenAnswer((_) async => mockToken.toJsonString());
+
+    // WHEN / THEN
+    final result = await authenticator.token();
+    expect(result, mockToken);
+    expect(emittedValues, hasLength(1));
+    expect(emittedValues[0], isFalse);
+  });
+
+  test('reauthenticationRequired_whenLoginFailedWithConnectionError_emitFalse', () async {
+    // GIVEN
+    final idToken = _createIdToken(sbbTenantId);
+    final emittedValues = <bool>[];
+    authenticator.reauthenticationRequired.listen(emittedValues.add);
+
+    final mockToken = OidcToken(
+      tokenType: 'Bearer',
+      accessToken: '',
+      idToken: idToken,
+      accessTokenExpirationDateTime: DateTime.now().subtract(const Duration(hours: 1)),
+    );
+    when(
+      mockOidcClient.getToken(
+        scopes: anyNamed('scopes'),
+        forceRefresh: anyNamed('forceRefresh'),
+      ),
+    ).thenThrow(Exception('Connection error'));
+
+    when(
+      mockFlutterSecureStorage.read(key: TokenSpec.defaultTokenId),
+    ).thenAnswer((_) async => mockToken.toJsonString());
+
+    // WHEN / THEN
+    final result = await authenticator.token();
+    expect(result, mockToken);
+    expect(emittedValues, hasLength(1));
+    expect(emittedValues[0], isFalse);
+  });
 }
 
 String _createIdToken(String tenantId) {

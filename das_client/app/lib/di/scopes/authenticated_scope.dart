@@ -109,6 +109,7 @@ extension AuthenticatedScopeExtension on GetIt {
         localRepo: DI.get(),
         connectivityManager: DI.get(),
         deviceId: deviceId,
+        authenticator: DI.get(),
       );
     }
 

@@ -1,7 +1,9 @@
 import 'package:auth/component.dart';
+import 'package:rxdart/rxdart.dart';
 
 class IntegrationTestAuthenticator implements Authenticator {
   bool _isAuthenticated = true;
+  final reauthenticationRequiredSubject = BehaviorSubject.seeded(false);
 
   set isAuthenticated(bool value) {
     _isAuthenticated = value;
@@ -34,5 +36,5 @@ class IntegrationTestAuthenticator implements Authenticator {
   OidcToken _token() => OidcToken(tokenType: '', accessToken: '', idToken: '');
 
   @override
-  Stream<bool> get reauthenticationRequired => Stream.value(false).asBroadcastStream();
+  Stream<bool> get reauthenticationRequired => reauthenticationRequiredSubject.distinct();
 }

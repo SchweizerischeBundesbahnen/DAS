@@ -74,7 +74,7 @@ class AzureAuthenticator implements Authenticator {
         scopes: tokenSpec.scopes,
         prompt: LoginPrompt.selectAccount,
       );
-      _reauthenticationRequiredSubject.add(false);
+      _updateReauthenticationRequiredState(false);
       _writeOfflineToken(token: token, tokenId: tokenId);
 
       _validateToken(token);
@@ -101,14 +101,15 @@ class AzureAuthenticator implements Authenticator {
       }
 
       final token = await _oidcClient.getToken(scopes: tokenSpec.scopes, forceRefresh: forceRefresh ?? false);
-      _reauthenticationRequiredSubject.add(false);
+      _updateReauthenticationRequiredState(false);
       _writeOfflineToken(token: token, tokenId: tokenId);
 
       _validateToken(token);
       return token;
     } catch (e) {
-      if (e is! NetworkException) {
-        _reauthenticationRequiredSubject.add(true);
+      if (!_isNetworkError(e)) {
+        _log.info('Failed to retrieve new token, reauthentication required', e);
+        _updateReauthenticationRequiredState(true);
       }
 
       final token = await _loadOfflineToken(tokenId: tokenId);
@@ -119,6 +120,15 @@ class AzureAuthenticator implements Authenticator {
       }
       rethrow;
     }
+  }
+
+  bool _isNetworkError(dynamic e) {
+    if (e is NetworkException) return true;
+
+    final message = e.toString();
+    if (message.contains('Connection error')) return true;
+
+    return false;
   }
 
   @override
@@ -145,6 +155,13 @@ class AzureAuthenticator implements Authenticator {
       displayName: displayName,
       tid: tid,
     );
+  }
+
+  void _updateReauthenticationRequiredState(bool state) {
+    if (_reauthenticationRequiredSubject.value != state) {
+      _log.info('Updating reauthentication required state to $state');
+      _reauthenticationRequiredSubject.add(state);
+    }
   }
 
   @override

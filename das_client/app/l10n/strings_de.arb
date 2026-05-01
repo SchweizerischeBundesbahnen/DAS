@@ -129,6 +129,8 @@
   "w_koa_notification_wait": "Warten eingelegt.",
   "w_koa_notification_wait_canceled": "Warten aufgehoben.",
   "w_koa_notification_departure_process": "Abfahrprozess anzeigen",
+  "w_reauthentication_required_notification_text": "Du bist wieder online. Melde dich an, um aktuelle Daten zu erhalten.",
+  "w_reauthentication_required_notification_button": "Anmelden",
   "w_no_customer_oriented_departure_checklist_button": "Abfahrprozess anzeigen",
   "w_replacement_series_notification_available_title": "Ersatzreihe von {fromStation} bis {toStation}",
   "@w_replacement_series_notification_available_title": {

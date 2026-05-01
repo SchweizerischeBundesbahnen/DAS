@@ -61,6 +61,8 @@ class NotificationPriorityQueueViewModel extends JourneyAwareViewModel {
     _callCallbacks();
   }
 
+  bool contains({required NotificationType type}) => _activeNotifications.contains(type);
+
   void remove({required NotificationType type}) {
     _activeNotifications.remove(type);
     _emitMaximumTwoPrioritizedNotifications();
