@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.43.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.42.0...das_client-v0.43.0) (2026-05-04)
+
+
+### Features
+
+* add new amazing appicon ([#1537](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1537)) ([#2091](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2091)) ([7eeeb19](https://github.com/SchweizerischeBundesbahnen/DAS/commit/7eeeb192703a336e0db5a3e517083a4312105d55))
+* implement offline capability and reauthentication ([#1320](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1320)) ([#2078](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2078)) ([0fc57a1](https://github.com/SchweizerischeBundesbahnen/DAS/commit/0fc57a1ada798ba416d0dd3e28565ef954847d5f))
+
+
+### Bug Fixes
+
+* deeplink no longer ignored when already on journey page ([#1852](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1852)) ([#2079](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2079)) ([9a23d4d](https://github.com/SchweizerischeBundesbahnen/DAS/commit/9a23d4d970966ceda45f8838904f6364a8ed6aa1))
+* login page with dark mode ([#2093](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2093)) ([52250ea](https://github.com/SchweizerischeBundesbahnen/DAS/commit/52250ea891a0b99c0796c2653ce95133a744858c))
+
 ## [0.42.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.41.0...das_client-v0.42.0) (2026-05-01)
 
 
