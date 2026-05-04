@@ -130,7 +130,7 @@ class _LoginDraggableBottomSheetState extends State<LoginDraggableBottomSheet> {
   Widget _header(BuildContext context) {
     return Container(
       padding: EdgeInsets.fromLTRB(56, SBBSpacing.large, SBBSpacing.xLarge, SBBSpacing.xLarge),
-      color: SBBColors.white,
+      color: ThemeUtil.getColor(context, SBBColors.white, SBBColors.charcoal),
       constraints: BoxConstraints(minHeight: LoginDraggableBottomSheet._minHeight),
       child: Row(
         children: [
