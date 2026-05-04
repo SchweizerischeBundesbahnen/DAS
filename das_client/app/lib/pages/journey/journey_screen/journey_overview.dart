@@ -165,12 +165,21 @@ class _ProviderScope extends StatelessWidget {
           create: (_) => ConnectivityViewModel(connectivityManager: DI.get()),
           dispose: (_, vm) => vm.dispose(),
         ),
-        Provider<CustomerOrientedDepartureViewModel>(
-          create: (_) => CustomerOrientedDepartureViewModel(repository: DI.get(), ruFeatureProvider: DI.get()),
-          dispose: (_, vm) => vm.dispose(),
-        ),
 
         // PROXY  PROVIDERS
+        ProxyProvider<NotificationPriorityQueueViewModel, CustomerOrientedDepartureViewModel>(
+          lazy: false,
+          update: (_, notificationVM, prev) {
+            if (prev != null) return prev;
+
+            return CustomerOrientedDepartureViewModel(
+              repository: DI.get(),
+              ruFeatureProvider: DI.get(),
+              notificationViewModel: notificationVM,
+            );
+          },
+          dispose: (_, vm) => vm.dispose(),
+        ),
         ProxyProvider<NotificationPriorityQueueViewModel, DisturbanceViewModel>(
           lazy: false,
           update: (_, notificationVM, prev) {
