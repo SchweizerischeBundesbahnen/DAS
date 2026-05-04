@@ -37,6 +37,7 @@ body:
       label: Betriebssystem
       description: Welches Betriebsystem wurde genutzt? Die Version kann über die Systemeinstellungen unter "Info" geprüft werden.
       options:
+        - iOS Version 26
         - iOS Version 18
         - iOS Version 17
         - Android Version 16
@@ -50,9 +51,9 @@ body:
       label: DAS Version
       description: Welche Version von DAS wurde genutzt?
       options:
+        - 0.42.0
         - 0.39.0
         - 0.37.0
-        - 0.34.0
       default: 0
     validations:
       required: true
