@@ -18,6 +18,7 @@ import 'package:app/pages/journey/journey_screen/view_model/arrival_departure_ti
 import 'package:app/pages/journey/journey_screen/view_model/calculated_speed_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/checklist_departure_process_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/customer_oriented_departure_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/departure_dispatch_notification_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/departure_process_warning_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
@@ -129,7 +130,6 @@ class _ProviderScope extends StatelessWidget {
         Provider<JourneyPositionViewModel>(
           create: (_) => DI.get<JourneyPositionViewModel>(),
         ),
-
         Provider<DepartureProcessWarningViewModel>(
           create: (_) => DI.get<DepartureProcessWarningViewModel>(),
         ),
@@ -157,12 +157,15 @@ class _ProviderScope extends StatelessWidget {
             sferaRepo: DI.get(),
             ruFeatureProvider: DI.get(),
             formationRepository: DI.get(),
-            notificationViewModel: DI.get(),
           ),
           dispose: (_, vm) => vm.dispose(),
         ),
         Provider<ConnectivityViewModel>(
           create: (_) => ConnectivityViewModel(connectivityManager: DI.get()),
+          dispose: (_, vm) => vm.dispose(),
+        ),
+        Provider<CustomerOrientedDepartureViewModel>(
+          create: (_) => CustomerOrientedDepartureViewModel(repository: DI.get(), ruFeatureProvider: DI.get()),
           dispose: (_, vm) => vm.dispose(),
         ),
 
@@ -207,16 +210,16 @@ class _ProviderScope extends StatelessWidget {
         ProxyProvider3<
           JourneyViewModel,
           JourneyPositionViewModel,
-          UxTestingViewModel,
+          CustomerOrientedDepartureViewModel,
           ChecklistDepartureProcessViewModel
         >(
-          update: (_, journeyVM, positionVM, uxTestingVM, prev) {
+          update: (_, journeyVM, positionVM, customerOrientedDepartureVM, prev) {
             if (prev != null) return prev;
             return ChecklistDepartureProcessViewModel(
               journeyViewModel: journeyVM,
               journeyPositionViewModel: positionVM,
               ruFeatureProvider: DI.get<RuFeatureProvider>(),
-              uxTestingViewModel: uxTestingVM,
+              customerOrientedDepartureViewModel: customerOrientedDepartureVM,
             );
           },
           dispose: (_, vm) => vm.dispose(),

@@ -1,10 +1,11 @@
 import 'package:app/pages/journey/journey_screen/view_model/checklist_departure_process_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/customer_oriented_departure_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/checklist_departure_process_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
-import 'package:app/pages/journey/journey_screen/view_model/ux_testing_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/provider/ru_feature_provider.dart';
+import 'package:customer_oriented_departure/component.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -19,7 +20,7 @@ import 'checklist_departure_process_view_model_test.mocks.dart';
   MockSpec<JourneyViewModel>(),
   MockSpec<JourneyPositionViewModel>(),
   MockSpec<RuFeatureProvider>(),
-  MockSpec<UxTestingViewModel>(),
+  MockSpec<CustomerOrientedDepartureViewModel>(),
 ])
 void main() {
   group('ChecklistDepartureProcessViewModel', () {
@@ -27,11 +28,11 @@ void main() {
     late MockJourneyViewModel mockJourneyViewModel;
     late MockJourneyPositionViewModel mockJourneyPositionViewModel;
     late MockRuFeatureProvider mockRuFeatureProvider;
-    late MockUxTestingViewModel mockUxTestingViewModel;
+    late MockCustomerOrientedDepartureViewModel mockCustomerOrientedDepartureViewModel;
 
     late BehaviorSubject<Journey?> journeySubject;
     late BehaviorSubject<JourneyPositionModel> journeyPositionSubject;
-    late BehaviorSubject<KoaState> koaStateSubject;
+    late BehaviorSubject<CustomerOrientedDepartureStatus> rxCustomerOrientedDepartureStatus;
 
     late List<ChecklistDepartureProcessModel> modelRegister;
     late FakeAsync testAsync;
@@ -64,7 +65,7 @@ void main() {
         testee = ChecklistDepartureProcessViewModel(
           journeyPositionViewModel: mockJourneyPositionViewModel,
           ruFeatureProvider: mockRuFeatureProvider,
-          uxTestingViewModel: mockUxTestingViewModel,
+          customerOrientedDepartureViewModel: mockCustomerOrientedDepartureViewModel,
           journeyViewModel: mockJourneyViewModel,
         );
 
@@ -78,16 +79,16 @@ void main() {
       mockJourneyViewModel = MockJourneyViewModel();
       mockJourneyPositionViewModel = MockJourneyPositionViewModel();
       mockRuFeatureProvider = MockRuFeatureProvider();
-      mockUxTestingViewModel = MockUxTestingViewModel();
+      mockCustomerOrientedDepartureViewModel = MockCustomerOrientedDepartureViewModel();
 
       journeySubject = BehaviorSubject<Journey?>.seeded(null);
       journeyPositionSubject = BehaviorSubject<JourneyPositionModel>.seeded(JourneyPositionModel());
-      koaStateSubject = BehaviorSubject<KoaState>.seeded(.waitHide);
+      rxCustomerOrientedDepartureStatus = BehaviorSubject<CustomerOrientedDepartureStatus>.seeded(.departure);
 
       when(mockJourneyViewModel.journey).thenAnswer((_) => journeySubject.stream);
       when(mockJourneyPositionViewModel.model).thenAnswer((_) => journeyPositionSubject.stream);
       when(mockRuFeatureProvider.isRuFeatureEnabled(.departureProcess)).thenAnswer((_) => Future.value(true));
-      when(mockUxTestingViewModel.koaState).thenAnswer((_) => koaStateSubject.stream);
+      when(mockCustomerOrientedDepartureViewModel.status).thenAnswer((_) => rxCustomerOrientedDepartureStatus.stream);
 
       setupTestee();
     });
@@ -96,7 +97,7 @@ void main() {
       testee.dispose();
       journeySubject.close();
       journeyPositionSubject.close();
-      koaStateSubject.close();
+      rxCustomerOrientedDepartureStatus.close();
     });
 
     test('model_whenCreated_emitsDisabled', () {
@@ -195,71 +196,83 @@ void main() {
       });
     });
 
-    test('whenKoaStateIsWait_emitsCustomerOrientedDeparture', () {
+    test('whenCustomerOrientedDepartureStatusIsWait_emitsCustomerOrientedDeparture', () {
       testAsync.run((_) {
         journeyPositionSubject.add(JourneyPositionModel(currentPosition: servicePointA));
       });
       processStreams(fakeAsync: testAsync);
       modelRegister.clear();
 
-      testAsync.run((_) => koaStateSubject.add(.wait));
+      testAsync.run((_) => rxCustomerOrientedDepartureStatus.add(.wait));
       processStreams(fakeAsync: testAsync);
 
       expect(modelRegister.last, isA<CustomerOrientedDepartureChecklist>());
-      expect((modelRegister.last as CustomerOrientedDepartureChecklist).koaState, KoaState.wait);
+      expect(
+        (modelRegister.last as CustomerOrientedDepartureChecklist).customerOrientedDepartureStatus,
+        CustomerOrientedDepartureStatus.wait,
+      );
     });
 
-    test('whenKoaStateIsCall_emitsCustomerOrientedDeparture', () {
+    test('whenCustomerOrientedDepartureStatusIsCall_emitsCustomerOrientedDeparture', () {
       testAsync.run((_) {
         journeyPositionSubject.add(JourneyPositionModel(currentPosition: servicePointA));
       });
       processStreams(fakeAsync: testAsync);
       modelRegister.clear();
 
-      testAsync.run((_) => koaStateSubject.add(.call));
+      testAsync.run((_) => rxCustomerOrientedDepartureStatus.add(.call));
       processStreams(fakeAsync: testAsync);
 
       expect(modelRegister.last, isA<CustomerOrientedDepartureChecklist>());
-      expect((modelRegister.last as CustomerOrientedDepartureChecklist).koaState, KoaState.call);
+      expect(
+        (modelRegister.last as CustomerOrientedDepartureChecklist).customerOrientedDepartureStatus,
+        CustomerOrientedDepartureStatus.call,
+      );
     });
 
-    test('whenKoaStateIsWaitCancelled_emitsCustomerOrientedDeparture', () {
+    test('whenCustomerOrientedDepartureStatusIsWaitCancelled_emitsCustomerOrientedDeparture', () {
       testAsync.run((_) {
         journeyPositionSubject.add(JourneyPositionModel(currentPosition: servicePointA));
       });
       processStreams(fakeAsync: testAsync);
       modelRegister.clear();
 
-      testAsync.run((_) => koaStateSubject.add(.waitCancelled));
+      testAsync.run((_) => rxCustomerOrientedDepartureStatus.add(.ready));
       processStreams(fakeAsync: testAsync);
 
       expect(modelRegister.last, isA<CustomerOrientedDepartureChecklist>());
-      expect((modelRegister.last as CustomerOrientedDepartureChecklist).koaState, KoaState.waitCancelled);
+      expect(
+        (modelRegister.last as CustomerOrientedDepartureChecklist).customerOrientedDepartureStatus,
+        CustomerOrientedDepartureStatus.ready,
+      );
     });
 
-    test('whenKoaStateIsWaitHide_emitsNoCustomerOrientedDeparture', () {
+    test('whenCustomerOrientedDepartureStatusIsDeparture_emitsNoCustomerOrientedDeparture', () {
       testAsync.run((_) {
         journeyPositionSubject.add(JourneyPositionModel(currentPosition: servicePointA));
-        koaStateSubject.add(.waitHide);
+        rxCustomerOrientedDepartureStatus.add(.departure);
       });
       processStreams(fakeAsync: testAsync);
 
       expect(modelRegister.last, isA<NoCustomerOrientedDepartureChecklist>());
     });
 
-    test('whenKoaStateChangesFromWaitToWaitHide_emitsCustomerOrientedDeparture_thenNoCustomerOrientedDeparture', () {
-      testAsync.run((_) {
-        journeyPositionSubject.add(JourneyPositionModel(currentPosition: servicePointA));
-        koaStateSubject.add(.wait);
-      });
-      processStreams(fakeAsync: testAsync);
-      modelRegister.clear();
+    test(
+      'whenCustomerOrientedDepartureStatusChangesFromWaitToDeparture_emitsCustomerOrientedDeparture_thenNoCustomerOrientedDeparture',
+      () {
+        testAsync.run((_) {
+          journeyPositionSubject.add(JourneyPositionModel(currentPosition: servicePointA));
+          rxCustomerOrientedDepartureStatus.add(.wait);
+        });
+        processStreams(fakeAsync: testAsync);
+        modelRegister.clear();
 
-      testAsync.run((_) => koaStateSubject.add(.waitHide));
-      processStreams(fakeAsync: testAsync);
+        testAsync.run((_) => rxCustomerOrientedDepartureStatus.add(.departure));
+        processStreams(fakeAsync: testAsync);
 
-      expect(modelRegister.last, isA<NoCustomerOrientedDepartureChecklist>());
-    });
+        expect(modelRegister.last, isA<NoCustomerOrientedDepartureChecklist>());
+      },
+    );
 
     group('nextStop – passed through in model', () {
       test('whenPositionHasNextStop_modelContainsNextStop', () {

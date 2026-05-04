@@ -1,7 +1,6 @@
 // implement the mock for authenticated_scope.dart
 
 import 'package:app/di/di.dart';
-import 'package:app/di/scopes/authenticated_scope.dart';
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:customer_oriented_departure/component.dart';
 import 'package:formation/component.dart';
@@ -31,18 +30,17 @@ class MockAuthenticatedScope extends AuthenticatedScope {
     getIt.registerMqttAuthProvider();
     getIt.registerMqttService();
     getIt.registerHttpClient();
-    getIt.registerSferaRemoteRepo();
+    getIt.registerSferaRemoteRepository();
     if (e2e) {
       getIt.registerSettingsRepository();
       getIt.registerRuFeatureProvider();
       getIt.registerFormationRepository();
-      getIt.registerCustomerOrientedDepartureRepository();
     } else {
       _registerMockRuFeaturesProvider();
       _registerMockFormationRepository();
-      _registerMockCustomerOrientedDepartureRepository();
     }
     getIt.registerAppExpirationViewModel();
+    _registerMockCustomerOrientedDepartureRepository();
 
     return getIt.allReady();
   }

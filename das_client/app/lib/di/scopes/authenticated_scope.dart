@@ -1,6 +1,7 @@
 import 'package:app/app_info/app_info.dart';
 import 'package:app/di/di.dart';
 import 'package:app/flavor.dart';
+import 'package:app/pages/journey/journey_screen/view_model/sfera_mock_customer_oriented_departure_repository_impl.dart';
 import 'package:app/pages/journey/view_model/app_expiration_view_model.dart';
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:app/provider/ru_feature_provider_impl.dart';
@@ -28,14 +29,17 @@ class AuthenticatedScope extends DIScope {
     _log.fine('Pushing scope $scopeName');
     getIt.pushNewScope(scopeName: scopeName);
 
+    final tmsScopeName = DI.get<TmsScope>().scopeName;
+    final inTmsScope = getIt.hasScope(tmsScopeName);
+
     getIt.registerAuthProvider();
     getIt.registerSferaAuthProvider();
     getIt.registerHttpClient();
     getIt.registerMqttAuthProvider();
     getIt.registerMqttService();
-    getIt.registerSferaRemoteRepo();
+    getIt.registerSferaRemoteRepository();
     getIt.registerSettingsRepository();
-    getIt.registerCustomerOrientedDepartureRepository();
+    getIt.registerCustomerOrientedDepartureRepository(inTmsScope: inTmsScope);
     getIt.registerAppExpirationViewModel();
     getIt.registerRuFeatureProvider();
     getIt.registerFormationRepository();
@@ -101,9 +105,9 @@ extension AuthenticatedScopeExtension on GetIt {
     registerLazySingleton<Client>(factoryFunc);
   }
 
-  void registerSferaRemoteRepo() {
+  void registerSferaRemoteRepository() {
     factoryFunc() async {
-      _log.fine('Register sfera remote repo');
+      _log.fine('Register sfera remote repository');
       final deviceId = await DeviceIdInfo.getDeviceId();
       return SferaComponent.createSferaRepository(
         mqttService: DI.get(),
@@ -148,24 +152,6 @@ extension AuthenticatedScopeExtension on GetIt {
     registerSingleton<AppExpirationViewModel>(vm, dispose: (vm) => vm.dispose());
   }
 
-  void registerCustomerOrientedDepartureRepository() {
-    factoryFunc() async {
-      _log.fine('Register customer oriented departure repository');
-      final flavor = DI.get<Flavor>();
-      final deviceId = await DeviceIdInfo.getDeviceId();
-      return CustomerOrientedDepartureComponent.createRepository(
-        baseUrl: flavor.backendUrl,
-        client: DI.get(),
-        deviceId: deviceId,
-      );
-    }
-
-    registerSingletonAsync<CustomerOrientedDepartureRepository>(
-      factoryFunc,
-      dispose: (repo) => repo.dispose(),
-    );
-  }
-
   void registerRuFeatureProvider() {
     factoryFunc() {
       return RuFeatureProviderImpl(sferaRepo: DI.get(), settingsRepository: DI.get());
@@ -179,6 +165,37 @@ extension AuthenticatedScopeExtension on GetIt {
     registerSingleton<FormationRepository>(
       FormationComponent.createRepository(baseUrl: flavor.backendUrl, client: DI.get()),
     );
+  }
+
+  void registerCustomerOrientedDepartureRepository({required bool inTmsScope}) {
+    if (inTmsScope) {
+      factoryFunc() async {
+        _log.fine('Register customer oriented departure repository');
+        final flavor = DI.get<Flavor>();
+        final deviceId = await DeviceIdInfo.getDeviceId();
+        return CustomerOrientedDepartureComponent.createRepository(
+          baseUrl: flavor.backendUrl,
+          client: DI.get(),
+          deviceId: deviceId,
+        );
+      }
+
+      registerSingletonAsync<CustomerOrientedDepartureRepository>(
+        factoryFunc,
+        dispose: (repo) => repo.dispose(),
+      );
+    } else {
+      _log.fine('Register sfera mock customer oriented departure repository');
+      final repository = SferaMockCustomerOrientedDepartureRepositoryImpl(
+        sferaRepo: DI.get(),
+        ruFeatureProvider: DI.get(),
+      );
+
+      registerSingleton<CustomerOrientedDepartureRepository>(
+        repository,
+        dispose: (repo) => repo.dispose(),
+      );
+    }
   }
 }
 

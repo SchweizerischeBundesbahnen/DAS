@@ -3,10 +3,10 @@ import 'package:app/pages/journey/journey_screen/journey_overview.dart';
 import 'package:app/pages/journey/journey_screen/notification/notification_type.dart';
 import 'package:app/pages/journey/journey_screen/notification/widgets/advised_speed_notification.dart';
 import 'package:app/pages/journey/journey_screen/notification/widgets/brake_load_slip_notification.dart';
+import 'package:app/pages/journey/journey_screen/notification/widgets/customer_oriented_departure_notification.dart';
 import 'package:app/pages/journey/journey_screen/notification/widgets/departure_dispatch_notification.dart';
 import 'package:app/pages/journey/journey_screen/notification/widgets/disturbance_notification.dart';
-import 'package:app/pages/journey/journey_screen/notification/widgets/koa_notification.dart';
-import 'package:app/pages/journey/journey_screen/notification/widgets/maneuver_notification.dart';
+9import 'package:app/pages/journey/journey_screen/notification/widgets/maneuver_notification.dart';
 import 'package:app/pages/journey/journey_screen/notification/widgets/replacement_series_notification.dart';
 import 'package:app/pages/journey/journey_screen/notification/widgets/suspicious_segment_notification.dart';
 import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
@@ -74,7 +74,7 @@ extension _WidgetNotificationTypeX on NotificationType {
   Widget toWidget() {
     return switch (this) {
       .illegalSegmentNoReplacement => ReplacementSeriesNotification(),
-      .koa => KoaNotification(),
+      .customerOrientedDeparture => CustomerOrientedDepartureNotification(),
       .newBrakeLoadSlip => BrakeLoadSlipNotification(),
       .maneuverMode => ManeuverNotification(),
       .disturbance => DisturbanceNotification(),

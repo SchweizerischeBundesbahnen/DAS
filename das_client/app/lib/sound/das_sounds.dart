@@ -1,8 +1,8 @@
 import 'package:app/sound/advised_speed_end_sound.dart';
 import 'package:app/sound/advised_speed_start_sound.dart';
 import 'package:app/sound/brake_slip_updated_sound.dart';
+import 'package:app/sound/customer_oriented_departure_sound.dart';
 import 'package:app/sound/grid_overload_sound.dart';
-import 'package:app/sound/koa_sound.dart';
 import 'package:app/sound/sound.dart';
 import 'package:app/sound/warn_app_sound.dart';
 
@@ -15,7 +15,7 @@ class DASSounds {
 
   Sound get departureDispatchNotification => AdvisedSpeedStartSound();
 
-  Sound get koa => KoaSound();
+  Sound get customerOrientedDeparture => CustomerOrientedDepartureSound();
 
   Sound get warnApp => WarnAppSound();
 

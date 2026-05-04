@@ -13,19 +13,13 @@ class ScopeHandlerImpl implements ScopeHandler {
   }
 
   @override
-  Future<bool> pop<T extends DIScope>() {
-    return _getScope<T>().pop();
-  }
+  Future<bool> pop<T extends DIScope>() => _getScope<T>().pop();
 
   @override
-  Future<bool> popAbove<T extends DIScope>() {
-    return _getScope<T>().popAbove();
-  }
+  Future<bool> popAbove<T extends DIScope>() => _getScope<T>().popAbove();
 
   @override
-  Future<void> push<T extends DIScope>() {
-    return _getScope<T>().push();
-  }
+  Future<void> push<T extends DIScope>() => _getScope<T>().push();
 
   @override
   bool isInStack<T extends DIScope>() {

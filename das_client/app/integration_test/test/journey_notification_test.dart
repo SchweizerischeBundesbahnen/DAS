@@ -11,7 +11,7 @@ import '../util/test_utils.dart';
 
 void main() {
   group('train journey notification test', () {
-    testWidgets('test koa notifications are displayed properly', (tester) async {
+    testWidgets('test customer oriented departure notifications are displayed properly', (tester) async {
       await prepareAndStartApp(tester);
       final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;
       featureProvider.enableFeature(.departureProcess);
@@ -20,13 +20,13 @@ void main() {
 
       await waitUntilExists(tester, find.byKey(FloatingDepartureChecklistButton.buttonKey));
 
-      await waitUntilExists(tester, find.text(l10n.w_koa_notification_wait));
+      await waitUntilExists(tester, find.text(l10n.w_customer_oriented_departure_notification_wait));
 
       await waitUntilNotExists(tester, find.byKey(FloatingDepartureChecklistButton.buttonKey));
 
-      await waitUntilExists(tester, find.text(l10n.w_koa_notification_wait_canceled));
+      await waitUntilExists(tester, find.text(l10n.w_customer_oriented_departure_notification_departure));
 
-      await waitUntilNotExists(tester, find.text(l10n.w_koa_notification_wait_canceled));
+      await waitUntilNotExists(tester, find.text(l10n.w_customer_oriented_departure_notification_departure));
 
       await disconnect(tester);
     });
@@ -38,16 +38,16 @@ void main() {
 
       await loadJourney(tester, trainNumber: 'T13');
 
-      await waitUntilExists(tester, find.text(l10n.w_koa_notification_wait));
+      await waitUntilExists(tester, find.text(l10n.w_customer_oriented_departure_notification_wait));
 
-      await tapElement(tester, find.text(l10n.w_koa_notification_departure_process));
+      await tapElement(tester, find.text(l10n.w_customer_oriented_departure_notification_departure_process));
 
       expect(find.text(l10n.w_departure_process_dialog_title), findsOneWidget);
       expect(find.text(l10n.w_departure_process_checklist_item_1), findsOneWidget);
-      expect(find.text(l10n.w_departure_process_checklist_item_3_koa), findsOneWidget);
+      expect(find.text(l10n.w_departure_process_checklist_item_3_customer_oriented_departure), findsOneWidget);
 
-      // find koa notification also within departure process dialog
-      await waitUntilExists(tester, find.text(l10n.w_koa_notification_wait));
+      // find customer oriented departure notification also within departure process dialog
+      await waitUntilExists(tester, find.text(l10n.w_customer_oriented_departure_notification_wait));
 
       await disconnect(tester);
     });
@@ -80,7 +80,7 @@ void main() {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T38');
 
-      await waitUntilExists(tester, find.text(l10n.w_koa_notification_wait));
+      await waitUntilExists(tester, find.text(l10n.w_customer_oriented_departure_notification_wait));
       await waitUntilExists(tester, find.text(l10n.w_departure_dispatch_notification_long));
       await waitUntilNotExists(tester, find.text(l10n.w_departure_dispatch_notification_long));
       await waitUntilExists(tester, find.byKey(DisturbanceNotification.disturbanceNotificationKey));
