@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/webapp-v0.9.0...webapp-v0.9.1) (2026-05-04)
+
+
+### Bug Fixes
+
+* update backend and mock to SFERA v4 ([#2000](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2000)) ([#2057](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2057)) ([fc89e30](https://github.com/SchweizerischeBundesbahnen/DAS/commit/fc89e302a2bc68114d8ef4342d062f4d95fae00f))
+
 ## [0.9.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/webapp-v0.8.0...webapp-v0.9.0) (2026-02-24)
 
 
