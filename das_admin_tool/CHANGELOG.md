@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das-admin-tool-v0.3.0...das-admin-tool-v0.3.1) (2026-05-04)
+
+
+### Bug Fixes
+
+* auth client environments ([#2094](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2094)) ([e3fef8e](https://github.com/SchweizerischeBundesbahnen/DAS/commit/e3fef8eaf939f726bc6d4703cee3480fb8f7085e))
+
 ## [0.3.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das-admin-tool-v0.2.0...das-admin-tool-v0.3.0) (2026-05-04)
 
 

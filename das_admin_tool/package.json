@@ -13,7 +13,7 @@
     "e2e:local:headed": "npx playwright test --config=e2e/playwright.local.config.ts --headed"
   },
   "name": "das-admin-tool",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "private": true,
   "dependencies": {
     "@angular/cdk": "21.2.3",
