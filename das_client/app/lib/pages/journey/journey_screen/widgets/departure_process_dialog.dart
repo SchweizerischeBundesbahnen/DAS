@@ -86,7 +86,7 @@ class DepartureProcessDialog extends StatelessWidget {
     );
   }
 
-9  List<Widget> _customerOrientedDepartureNotification() {
+  List<Widget> _customerOrientedDepartureNotification() {
     return [
       CustomerOrientedDepartureNotification(displayDepartureProcessButton: false),
       SizedBox(height: SBBSpacing.medium),
