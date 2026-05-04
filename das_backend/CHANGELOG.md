@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.11.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.10.0...backend-v0.11.0) (2026-05-04)
+
+
+### Features
+
+* import locations ([#238](https://github.com/SchweizerischeBundesbahnen/DAS/issues/238)) ([#1981](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1981)) ([70736ab](https://github.com/SchweizerischeBundesbahnen/DAS/commit/70736ab19cfb9677d8bba4e55e7bd114cb260de4))
+* manage app versions ([#1408](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1408)) ([#1937](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1937)) ([d24aaa9](https://github.com/SchweizerischeBundesbahnen/DAS/commit/d24aaa989a13010405e36a3adf86837b8199c297))
+
+
+### Bug Fixes
+
+* das_backend namespace renaming ([#2054](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2054)) ([a5dbe84](https://github.com/SchweizerischeBundesbahnen/DAS/commit/a5dbe84041e8769960ba7b69ff5f76fad9932d9c))
+* handle app versions conflicts ([#1966](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1966)) ([006ab49](https://github.com/SchweizerischeBundesbahnen/DAS/commit/006ab49eab815a52209abb631cde0476e58e5a45))
+* security config ([#1961](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1961)) ([1e634ef](https://github.com/SchweizerischeBundesbahnen/DAS/commit/1e634efc62f9c4873f377de10aeb0583561ddd43))
+* update backend and mock to SFERA v4 ([#2000](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2000)) ([#2057](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2057)) ([fc89e30](https://github.com/SchweizerischeBundesbahnen/DAS/commit/fc89e302a2bc68114d8ef4342d062f4d95fae00f))
+
 ## [0.10.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.9.0...backend-v0.10.0) (2026-03-23)
 
 
