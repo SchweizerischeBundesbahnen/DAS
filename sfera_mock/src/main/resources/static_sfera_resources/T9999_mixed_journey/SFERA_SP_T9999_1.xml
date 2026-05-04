@@ -94,6 +94,8 @@
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>routeTableData</NSP_GroupName>
                 <NetworkSpecificParameter name="betweenBrackets" value="true"/>
+                <NetworkSpecificParameter name="km1" value="0.19"/>
+                <NetworkSpecificParameter name="km2" value="2.0"/>
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
 

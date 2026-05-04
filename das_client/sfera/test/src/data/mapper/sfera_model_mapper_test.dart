@@ -134,7 +134,8 @@ void main() {
     expect(journey.data, hasLength(29));
 
     // segment 1
-    expect((journey.data[0] as JourneyPoint).kilometre[0], 0.2);
+    expect((journey.data[0] as JourneyPoint).kilometre[0], 0.19);
+    expect((journey.data[0] as JourneyPoint).kilometre[1], 2.0);
     expect((journey.data[1] as JourneyPoint).kilometre[0], 0.2);
     expect((journey.data[2] as JourneyPoint).kilometre[0], 0.35);
     expect((journey.data[3] as JourneyPoint).kilometre[0], 0.4);
@@ -166,7 +167,7 @@ void main() {
     expect((journey.data[23] as JourneyPoint).kilometre[0], 3.7);
     expect((journey.data[23] as JourneyPoint).kilometre[1], 0.0);
     expect((journey.data[24] as JourneyPoint).kilometre[0], 0.1);
-    expect((journey.data[25] as JourneyPoint).kilometre[0], 0.2);
+    expect((journey.data[25] as JourneyPoint).kilometre[0], 0.3);
 
     // segment 5
     expect((journey.data[26] as JourneyPoint).kilometre[0], 0.6);

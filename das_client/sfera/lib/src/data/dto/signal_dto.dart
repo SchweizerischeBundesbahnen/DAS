@@ -5,6 +5,7 @@ import 'package:sfera/src/data/dto/signal_function_dto.dart';
 import 'package:sfera/src/data/dto/signal_id_dto.dart';
 import 'package:sfera/src/data/dto/signal_nsp_dto.dart';
 import 'package:sfera/src/data/dto/signal_physical_characteristics_dto.dart';
+import 'package:sfera/src/data/parser/parse_utils.dart';
 
 class SignalDto extends SferaXmlElementDto {
   static const String elementType = 'Signal';
@@ -21,6 +22,14 @@ class SignalDto extends SferaXmlElementDto {
   Iterable<SignalNspDto> get nsps => children.whereType<SignalNspDto>();
 
   DateTime? get lastModificationDate => nsps.map((it) => it.lastModificationDate).nonNulls.firstOrNull;
+
+  double? get km => ParseUtils.tryParseDouble(
+    nsps
+        .where((it) => it.groupName == 'routeTableData')
+        .map((it) => it.parameters.where((param) => param.name == 'km').firstOrNull)
+        .firstOrNull
+        ?.nspValue,
+  );
 
   ModificationTypeDto? get lastModificationType => nsps.map((it) => it.lastModificationType).nonNulls.firstOrNull;
 
