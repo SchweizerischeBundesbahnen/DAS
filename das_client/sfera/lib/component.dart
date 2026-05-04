@@ -1,3 +1,4 @@
+import 'package:auth/component.dart';
 import 'package:connectivity_x/component.dart';
 import 'package:mqtt/component.dart';
 import 'package:sfera/src/data/local/drift_sfera_local_database_service.dart';
@@ -89,6 +90,7 @@ class SferaComponent {
     required String deviceId,
     required SferaLocalRepo localRepo,
     required ConnectivityManager connectivityManager,
+    required Authenticator authenticator,
     required String sferaVersion,
   }) {
     final localDatabaseService = DriftSferaLocalDatabaseService.instance;
@@ -99,6 +101,7 @@ class SferaComponent {
       localRepo: localRepo,
       connectivityManager: connectivityManager,
       deviceId: deviceId,
+      authenticator: authenticator,
       sferaVersion: sferaVersion,
     );
   }

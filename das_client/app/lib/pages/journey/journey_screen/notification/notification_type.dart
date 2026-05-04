@@ -9,4 +9,5 @@ enum NotificationType {
   departureDispatch,
   illegalSegmentWithReplacement,
   suspiciousSegment,
+  reauthenticationRequired,
 }

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:auth/component.dart';
 import 'package:connectivity_x/component.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -22,6 +23,7 @@ import 'sfera_repository_impl_test.mocks.dart';
   MockSpec<SferaAuthProvider>(),
   MockSpec<SferaLocalRepo>(),
   MockSpec<ConnectivityManager>(),
+  MockSpec<Authenticator>(),
 ])
 void main() {
   final TrainIdentification trainId = TrainIdentification(
@@ -35,6 +37,8 @@ void main() {
   late MockSferaAuthProvider mockSferaAuthProvider;
   late SferaLocalRepo sferaLocalRepo;
   late MockConnectivityManager mockConnectivityManager;
+  late MockAuthenticator mockAuthenticator;
+  late Subject<bool> reauthenticationRequiredSubject;
   late Subject<String> mqttSubject;
   late Subject<bool> connectivitySubject;
 
@@ -48,6 +52,9 @@ void main() {
     mockSferaAuthProvider = MockSferaAuthProvider();
     sferaLocalRepo = SferaLocalRepoImpl(localService: mockLocalDatabaseRepository);
     mockConnectivityManager = MockConnectivityManager();
+    mockAuthenticator = MockAuthenticator();
+    reauthenticationRequiredSubject = BehaviorSubject.seeded(false);
+    when(mockAuthenticator.reauthenticationRequired).thenAnswer((_) => reauthenticationRequiredSubject.stream);
     mqttSubject = BehaviorSubject<String>();
     connectivitySubject = BehaviorSubject.seeded(false);
 
@@ -61,6 +68,7 @@ void main() {
       localRepo: sferaLocalRepo,
       connectivityManager: mockConnectivityManager,
       deviceId: Uuid().v4(),
+      authenticator: mockAuthenticator,
       sferaVersion: '4.00',
     );
   });
@@ -969,5 +977,83 @@ void main() {
     ).called(1);
 
     expect(testee.lastError, equals(SferaError.invalid()));
+  });
+
+  test('should reconnect when offline and reauthentication required changes to false', () async {
+    // GIVEN
+    final spResponse = loadFile('test_resources/SFERA_G2B_Reply_SP_request_9315.xml');
+    final parsedSPResponse = SferaReplyParser.parse<SferaG2bReplyMessageDto>(spResponse);
+    final tcResponse = loadFile('test_resources/SFERA_G2B_Reply_TC_request_9315.xml');
+    final parsedTCResponse = SferaReplyParser.parse<SferaG2bReplyMessageDto>(tcResponse);
+    final jpResponse = loadFile('test_resources/SFERA_G2B_Reply_JP_request_9315.xml');
+    final parsedJPResponse = SferaReplyParser.parse<SferaG2bReplyMessageDto>(jpResponse);
+
+    when(mockMqttService.connect(any, any)).thenAnswer((_) async => false);
+    when(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).thenAnswer(
+      (_) => Future.value(
+        SegmentProfileTableData(
+          spId: '842-2',
+          majorVersion: '1',
+          minorVersion: '0',
+          xmlData: parsedSPResponse.payload!.segmentProfiles.first.toString(),
+        ),
+      ),
+    );
+    when(mockLocalDatabaseRepository.findTrainCharacteristics(any, any, any)).thenAnswer(
+      (_) => Future.value(
+        TrainCharacteristicsTableData(
+          tcId: 'T9135',
+          majorVersion: '1',
+          minorVersion: '0',
+          xmlData: parsedTCResponse.payload!.trainCharacteristics.first.toString(),
+        ),
+      ),
+    );
+    when(mockLocalDatabaseRepository.findJourneyProfile(any, any, any)).thenAnswer(
+      (_) => Future.value(
+        JourneyProfileTableData(
+          version: '1',
+          company: '1085',
+          operationalTrainNumber: '123',
+          xmlData: parsedJPResponse.payload!.journeyProfiles.first.toString(),
+          startDate: DateTime.now(),
+        ),
+      ),
+    );
+
+    // LATER THEN
+    expectLater(
+      testee.stateStream,
+      emitsInOrder(<SferaRemoteRepositoryState>[
+        .disconnected, // seeded state
+        .connecting,
+        .offlineData,
+      ]),
+    );
+    expectLater(
+      testee.journeyStream,
+      emitsInOrder([
+        isNull, // seeded state
+        isNotNull,
+      ]),
+    );
+
+    // WHEN
+    await testee.connect(trainId);
+    // Wait till async tasks are finished
+    await Future.delayed(Duration(milliseconds: 1));
+
+    reauthenticationRequiredSubject.add(true);
+    await Future.delayed(Duration.zero);
+    reauthenticationRequiredSubject.add(false);
+    await Future.delayed(Duration.zero);
+
+    // THEN
+    verify(mockMqttService.connect(any, any)).called(2);
+    verify(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).called(1);
+    verify(mockLocalDatabaseRepository.findTrainCharacteristics(any, any, any)).called(1);
+    verify(mockLocalDatabaseRepository.findJourneyProfile(any, any, any)).called(1);
+
+    testee.dispose();
   });
 }
