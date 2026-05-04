@@ -38,4 +38,7 @@ class E2EAuthenticator implements Authenticator {
     accessToken: const String.fromEnvironment(accessToken),
     idToken: const String.fromEnvironment(accessToken),
   );
+
+  @override
+  Stream<bool> get reauthenticationRequired => Stream.value(false).asBroadcastStream();
 }

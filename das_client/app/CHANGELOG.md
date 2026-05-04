@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.42.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.41.0...das_client-v0.42.0) (2026-05-01)
+
+
+### Features
+
+* add koa call notification and ui redesign ([#2015](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2015)) ([#2064](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2064)) ([1ae6585](https://github.com/SchweizerischeBundesbahnen/DAS/commit/1ae6585e663aab534e7496bb8d9bd97b8b3cc6d9))
+* support SFERA v4 for client ([#2001](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2001)) ([#2076](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2076)) ([6e3ef0d](https://github.com/SchweizerischeBundesbahnen/DAS/commit/6e3ef0d8af2575fdf8686779e2f80e9764156208))
+
+
+### Bug Fixes
+
+* departure process button is only shown after stop service points ([#627](https://github.com/SchweizerischeBundesbahnen/DAS/issues/627)) ([#2077](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2077)) ([dc6f4d3](https://github.com/SchweizerischeBundesbahnen/DAS/commit/dc6f4d3e84978ed3312d6690c585323153137099))
+
 ## [0.41.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.40.0...das_client-v0.41.0) (2026-04-28)
 
 

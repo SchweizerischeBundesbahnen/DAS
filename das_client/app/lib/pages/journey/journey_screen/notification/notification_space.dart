@@ -6,7 +6,8 @@ import 'package:app/pages/journey/journey_screen/notification/widgets/brake_load
 import 'package:app/pages/journey/journey_screen/notification/widgets/customer_oriented_departure_notification.dart';
 import 'package:app/pages/journey/journey_screen/notification/widgets/departure_dispatch_notification.dart';
 import 'package:app/pages/journey/journey_screen/notification/widgets/disturbance_notification.dart';
-9import 'package:app/pages/journey/journey_screen/notification/widgets/maneuver_notification.dart';
+import 'package:app/pages/journey/journey_screen/notification/widgets/maneuver_notification.dart';
+import 'package:app/pages/journey/journey_screen/notification/widgets/reauthentication_required_notification.dart';
 import 'package:app/pages/journey/journey_screen/notification/widgets/replacement_series_notification.dart';
 import 'package:app/pages/journey/journey_screen/notification/widgets/suspicious_segment_notification.dart';
 import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
@@ -82,6 +83,7 @@ extension _WidgetNotificationTypeX on NotificationType {
       .departureDispatch => DepartureDispatchNotification(),
       .illegalSegmentWithReplacement => ReplacementSeriesNotification(),
       .suspiciousSegment => SuspiciousSegmentNotification(),
+      .reauthenticationRequired => ReauthenticationRequiredNotification(),
     };
   }
 }

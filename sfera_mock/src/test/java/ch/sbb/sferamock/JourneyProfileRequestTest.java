@@ -9,7 +9,7 @@ import static ch.sbb.sferamock.IntegrationTestHelper.async;
 import static ch.sbb.sferamock.IntegrationTestHelper.registerClient;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.sferamock.adapters.sfera.model.v0300.SFERAG2BReplyMessage;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.SFERAG2BReplyMessage;
 import java.util.UUID;
 import lombok.val;
 import org.junit.jupiter.api.Test;
@@ -41,8 +41,8 @@ class JourneyProfileRequestTest {
         assertThat(sferaReply.getMessageHeader().getCorrelationID()).isEqualTo(REQUEST_MESSAGE_ID.toString());
         val messageHeader = sferaReply.getMessageHeader();
         assertThat(messageHeader.getMessageID()).isNotNull();
-        assertThat(sferaReply.getHandshakeReject()).isNull();
-        assertThat(sferaReply.getHandshakeAcknowledgement()).isNull();
+        assertThat(sferaReply.getDASHandshakeReject()).isNull();
+        assertThat(sferaReply.getDASHandshakeAcknowledgement()).isNull();
         val payload = sferaReply.getG2BReplyPayload();
         assertThat(payload.getJourneyProfile()).hasSize(1);
         assertThat(payload.getJourneyProfile().getFirst().getSegmentProfileReference().getFirst().getSPZone().getIMID())

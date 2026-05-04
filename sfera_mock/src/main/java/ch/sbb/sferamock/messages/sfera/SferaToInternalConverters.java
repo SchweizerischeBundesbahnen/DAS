@@ -1,8 +1,8 @@
 package ch.sbb.sferamock.messages.sfera;
 
-import ch.sbb.sferamock.adapters.sfera.model.v0300.DASModesComplexType;
-import ch.sbb.sferamock.adapters.sfera.model.v0300.ReportedDASDrivingMode;
-import ch.sbb.sferamock.adapters.sfera.model.v0300.UnavailableDASOperatingModes;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.DASModesComplexType;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.ReportedDASDrivingMode;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.UnavailableDASOperatingModes;
 import ch.sbb.sferamock.messages.model.OperationMode;
 import java.util.List;
 

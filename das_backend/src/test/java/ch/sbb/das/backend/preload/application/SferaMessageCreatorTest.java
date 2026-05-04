@@ -7,7 +7,7 @@ import ch.sbb.das.backend.preload.application.model.trainidentification.TrainIde
 import ch.sbb.das.backend.preload.domain.SegmentProfileIdentification;
 import ch.sbb.das.backend.preload.infrastructure.xml.SferaMessagingConfig;
 import ch.sbb.das.backend.preload.infrastructure.xml.XmlHelper;
-import ch.sbb.das.backend.preload.sfera.model.v0300.SFERAB2GRequestMessage;
+import ch.sbb.das.backend.preload.sfera.model.v0400.SFERAB2GRequestMessage;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Set;

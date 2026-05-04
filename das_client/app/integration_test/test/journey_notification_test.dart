@@ -3,9 +3,11 @@ import 'package:app/pages/journey/journey_screen/notification/widgets/departure_
 import 'package:app/pages/journey/journey_screen/notification/widgets/disturbance_notification.dart';
 import 'package:app/pages/journey/journey_screen/widgets/floating_departure_checklist_button.dart';
 import 'package:app/provider/ru_feature_provider.dart';
+import 'package:auth/component.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../app_test.dart';
+import '../auth/integrationtest_authenticator.dart';
 import '../mocks/mock_ru_feature_provider.dart';
 import '../util/test_utils.dart';
 
@@ -86,6 +88,22 @@ void main() {
       await waitUntilExists(tester, find.byKey(DisturbanceNotification.disturbanceNotificationKey));
       await waitUntilNotExists(tester, find.byKey(DisturbanceNotification.disturbanceNotificationKey));
       await waitUntilExists(tester, find.text(l10n.w_departure_dispatch_notification_middle));
+
+      await disconnect(tester);
+    });
+
+    testWidgets('test reauthentication notification shown', (tester) async {
+      await prepareAndStartApp(tester);
+      await loadJourney(tester, trainNumber: 'T9999');
+
+      expect(find.text(l10n.w_reauthentication_required_notification_text), findsNothing);
+
+      final authenticator = DI.get<Authenticator>() as IntegrationTestAuthenticator;
+      authenticator.reauthenticationRequiredSubject.add(true);
+
+      await tester.pumpAndSettle();
+
+      expect(find.text(l10n.w_reauthentication_required_notification_text), findsOne);
 
       await disconnect(tester);
     });

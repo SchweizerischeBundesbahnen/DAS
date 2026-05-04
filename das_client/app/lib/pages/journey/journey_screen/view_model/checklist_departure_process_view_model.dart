@@ -35,6 +35,7 @@ class ChecklistDepartureProcessViewModel extends JourneyAwareViewModel {
 
   JourneyPositionModel? _lastPositionModel;
   CustomerOrientedDepartureStatus _customerOrientedDepartureStatus = .departure;
+  bool _lastServicePointWasStop = false;
 
   Stream<ChecklistDepartureProcessModel> get model => _rxModel.distinct();
 
@@ -88,18 +89,25 @@ class ChecklistDepartureProcessViewModel extends JourneyAwareViewModel {
 
   bool _isEligiblePosition(JourneyPoint? currentPosition) {
     if (currentPosition == null && lastJourney?.metadata.journeyStart is ServicePoint) {
+      _lastServicePointWasStop = true;
       return true;
     }
 
-    return switch (currentPosition) {
-      final ServicePoint sP => sP.isStop,
-      final Signal s => s.functions.contains(SignalFunction.intermediate),
-      _ => false,
-    };
+    switch (currentPosition) {
+      case final ServicePoint sP:
+        _lastServicePointWasStop = sP.isStop;
+        return sP.isStop;
+      case final Signal s when s.functions.contains(SignalFunction.intermediate):
+        return _lastServicePointWasStop;
+      default:
+        _lastServicePointWasStop = false;
+        return false;
+    }
   }
 
   @override
   void journeyIdentificationChanged(Journey? journey) {
+    _lastServicePointWasStop = false;
     _emitModel(const ChecklistDepartureProcessDisabled());
   }
 
