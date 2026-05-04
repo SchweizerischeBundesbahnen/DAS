@@ -24,8 +24,8 @@ const authConfig: PassedInitialConfig = {
   config: {
     authority: 'https://login.microsoftonline.com/common/v2.0',
     redirectUrl: location.origin + location.pathname.substring(0, location.pathname.indexOf('/', 1) + 1),
-    clientId: 'ded405bf-22e0-478e-9963-2467ea1fd539',
-    scope: 'openid profile email offline_access api://8f16d52b-c6df-4a94-a132-da4956579a48/.default',
+    clientId: process.env.AUTH_CLIENT_ID,
+    scope: `openid profile email offline_access ${process.env.AUTH_SCOPE}`,
     strictIssuerValidationOnWellKnownRetrievalOff: true,
     responseType: 'code',
     silentRenew: true,
