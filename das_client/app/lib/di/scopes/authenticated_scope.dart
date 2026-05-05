@@ -39,10 +39,10 @@ class AuthenticatedScope extends DIScope {
     getIt.registerMqttService();
     getIt.registerSferaRemoteRepository();
     getIt.registerSettingsRepository();
-    getIt.registerCustomerOrientedDepartureRepository(inTmsScope: inTmsScope);
     getIt.registerAppExpirationViewModel();
     getIt.registerRuFeatureProvider();
     getIt.registerFormationRepository();
+    getIt.registerCustomerOrientedDepartureRepository(inTmsScope: inTmsScope);
 
     await getIt.allReady();
   }
@@ -188,14 +188,17 @@ extension AuthenticatedScopeExtension on GetIt {
         dispose: (repo) => repo.dispose(),
       );
     } else {
-      _log.fine('Register sfera mock customer oriented departure repository');
-      final repository = SferaMockCustomerOrientedDepartureRepositoryImpl(
-        sferaRepo: DI.get(),
-        ruFeatureProvider: DI.get(),
-      );
+      factoryFunc() async {
+        _log.fine('Register sfera mock customer oriented departure repository');
+        return SferaMockCustomerOrientedDepartureRepositoryImpl(
+          sferaRepo: DI.get(),
+          ruFeatureProvider: DI.get(),
+        );
+      }
 
-      registerSingleton<CustomerOrientedDepartureRepository>(
-        repository,
+      registerSingletonAsync<CustomerOrientedDepartureRepository>(
+        dependsOn: [SferaRepository],
+        factoryFunc,
         dispose: (repo) => repo.dispose(),
       );
     }
