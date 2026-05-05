@@ -1,3 +1,5 @@
+import 'package:app/di/di.dart';
+import 'package:app/di/scope_handler.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/selection/journey_selection_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
@@ -42,6 +44,8 @@ class _JourneyTrainNumberInputState extends State<JourneyTrainNumberInput> {
   }
 
   Widget _buildTrainNumberInput(BuildContext context, {Function(String)? onChanged, Function(String)? onSubmitted}) {
+    final connectedToMock = DI.getOrNull<ScopeHandler>()?.isInStack<SferaMockScope>() ?? true;
+
     return Padding(
       padding: widget.isModalVersion ? .zero : _inputPadding,
       child: SBBTextField(
@@ -50,7 +54,7 @@ class _JourneyTrainNumberInputState extends State<JourneyTrainNumberInput> {
         enabled: onChanged != null,
         onChanged: onChanged,
         controller: _controller,
-        keyboardType: .text,
+        keyboardType: connectedToMock ? .text : .number,
         onSubmitted: onSubmitted,
         isLastElement: true,
       ),
