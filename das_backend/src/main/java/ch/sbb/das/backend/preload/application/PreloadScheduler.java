@@ -4,9 +4,9 @@ import ch.sbb.das.backend.preload.application.model.trainidentification.TrainIde
 import ch.sbb.das.backend.preload.domain.PreloadResult;
 import ch.sbb.das.backend.preload.domain.SegmentProfileIdentification;
 import ch.sbb.das.backend.preload.domain.TrainCharacteristicsIdentification;
-import ch.sbb.das.backend.preload.sfera.model.v0300.JourneyProfile;
-import ch.sbb.das.backend.preload.sfera.model.v0300.SegmentProfile;
-import ch.sbb.das.backend.preload.sfera.model.v0300.TrainCharacteristics;
+import ch.sbb.das.backend.preload.sfera.model.v0400.JourneyProfile;
+import ch.sbb.das.backend.preload.sfera.model.v0400.SegmentProfile;
+import ch.sbb.das.backend.preload.sfera.model.v0400.TrainCharacteristics;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.List;

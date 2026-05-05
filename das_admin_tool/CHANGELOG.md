@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.3.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das-admin-tool-v0.3.0...das-admin-tool-v0.3.1) (2026-05-04)
+
+
+### Bug Fixes
+
+* auth client environments ([#2094](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2094)) ([e3fef8e](https://github.com/SchweizerischeBundesbahnen/DAS/commit/e3fef8eaf939f726bc6d4703cee3480fb8f7085e))
+
+## [0.3.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das-admin-tool-v0.2.0...das-admin-tool-v0.3.0) (2026-05-04)
+
+
+### Features
+
+* import locations ([#238](https://github.com/SchweizerischeBundesbahnen/DAS/issues/238)) ([#1981](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1981)) ([70736ab](https://github.com/SchweizerischeBundesbahnen/DAS/commit/70736ab19cfb9677d8bba4e55e7bd114cb260de4))
+* manage app versions ([#1408](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1408)) ([#1937](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1937)) ([d24aaa9](https://github.com/SchweizerischeBundesbahnen/DAS/commit/d24aaa989a13010405e36a3adf86837b8199c297))
+
+
+### Bug Fixes
+
+* handle app versions conflicts ([#1966](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1966)) ([006ab49](https://github.com/SchweizerischeBundesbahnen/DAS/commit/006ab49eab815a52209abb631cde0476e58e5a45))
+* update backend and mock to SFERA v4 ([#2000](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2000)) ([#2057](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2057)) ([fc89e30](https://github.com/SchweizerischeBundesbahnen/DAS/commit/fc89e302a2bc68114d8ef4342d062f4d95fae00f))
+
 ## [0.2.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das-admin-tool-v0.1.1...das-admin-tool-v0.2.0) (2026-02-24)
 
 

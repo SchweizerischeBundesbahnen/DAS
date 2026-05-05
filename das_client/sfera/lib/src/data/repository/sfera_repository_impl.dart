@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:core';
 import 'dart:ui';
 
+import 'package:auth/component.dart';
 import 'package:collection/collection.dart';
 import 'package:connectivity_x/component.dart';
 import 'package:logging/logging.dart';
@@ -49,24 +50,30 @@ class SferaRepoImpl implements SferaRepository {
     required SferaAuthProvider authProvider,
     required SferaLocalRepo localRepo,
     required ConnectivityManager connectivityManager,
+    required this.sferaVersion,
     required this.deviceId,
+    required Authenticator authenticator,
   }) : _mqttService = mqttService,
        _localService = localService,
        _authProvider = authProvider,
        _localRepo = localRepo,
-       _connectivityManager = connectivityManager {
+       _connectivityManager = connectivityManager,
+       _authenticator = authenticator {
     _initialize();
   }
 
   final String deviceId;
+  final String sferaVersion;
   final MqttService _mqttService;
   final SferaLocalDatabaseService _localService;
   final SferaAuthProvider _authProvider;
   final SferaLocalRepo _localRepo;
   final ConnectivityManager _connectivityManager;
+  final Authenticator _authenticator;
 
   StreamSubscription? _mqttStreamSubscription;
   StreamSubscription? _connectivitySubscription;
+  StreamSubscription? _authenticatorSubscription;
   final List<SferaTask> _tasks = [];
   final List<SferaEventMessageHandler> _eventMessageHandlers = [];
 
@@ -222,12 +229,22 @@ class SferaRepoImpl implements SferaRepository {
     _connectivitySubscription = null;
     _rxWarnappEvent.close();
     _rxDisturbanceEvent.close();
+    _authenticatorSubscription?.cancel();
+    _authenticatorSubscription = null;
   }
 
   @override
   MessageHeaderDto messageHeader({required String sender}) {
     final timestamp = Format.sferaTimestamp(DateTime.now());
-    return MessageHeaderDto.create(const Uuid().v4(), timestamp, deviceId, 'TMS', sender, '0085');
+    return MessageHeaderDto.create(
+      messageId: const Uuid().v4(),
+      timestamp: timestamp,
+      sourceDevice: deviceId,
+      destinationDevice: 'TMS',
+      sender: sender,
+      recipient: '0085',
+      sferaVersion: sferaVersion,
+    );
   }
 
   void _initialize() {
@@ -237,6 +254,14 @@ class SferaRepoImpl implements SferaRepository {
       if (connected && _rxState.value == .offlineData) {
         _log.info(
           'Connectivity changed to connected=$connected while in offline mode, trying to connect to MQTT broker...',
+        );
+        _tryMqttConnect();
+      }
+    });
+    _authenticatorSubscription = _authenticator.reauthenticationRequired.listen((state) {
+      if (state == false && _rxState.value == .offlineData) {
+        _log.info(
+          'Reauthentication state changed to $state while in offline mode, trying to connect to MQTT broker...',
         );
         _tryMqttConnect();
       }

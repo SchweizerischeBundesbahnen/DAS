@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:app/di/di.dart';
 import 'package:app/nav/app_router.dart';
+import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
 import 'package:app_links_x/component.dart';
@@ -43,7 +45,13 @@ class AppLinkNavigator {
     }
 
     final trainIdentifications = intent.journeys.map((journey) => journey.toTrainIdentification());
-    _router.replace(JourneyRoute(initialTrainIds: trainIdentifications.toList()));
+    if (_router.isRouteActive(JourneyRoute.name)) {
+      _log.info('Replacing journey navigation view model with new train identifications from deep-link');
+      DI.get<JourneyNavigationViewModel>().replaceWith(trainIdentifications.toList());
+    } else {
+      _log.info('Navigation to journey page with train identifications from deep-link');
+      _router.replace(JourneyRoute(initialTrainIds: trainIdentifications.toList()));
+    }
   }
 
   void dispose() {

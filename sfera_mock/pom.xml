@@ -4,12 +4,12 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.13</version>
+        <version>3.5.14</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>ch.sbb</groupId>
     <artifactId>sfera_mock</artifactId>
-    <version>0.14.1-SNAPSHOT</version>
+    <version>0.15.1-SNAPSHOT</version>
     <name>sfera_mock</name>
     <description>Backend to mock SFERA messages for end-to-end tests</description>
     <properties>
@@ -123,7 +123,7 @@
                 <version>4.1.0</version>
                 <configuration>
                     <sources>
-                        <source>${basedir}/src/main/resources/SFERA_v3.00.xsd</source>
+                        <source>${basedir}/src/main/resources/SFERA.xsd</source>
                     </sources>
                     <xjbSources>
                         <xjbSource>${basedir}/src/main/resources/jaxb-bindings.xjb</xjbSource>

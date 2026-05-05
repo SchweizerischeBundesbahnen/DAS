@@ -1,28 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.0.5</version>
+        <version>4.0.6</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>ch.sbb.das</groupId>
     <artifactId>das_backend</artifactId>
-    <version>0.10.1-SNAPSHOT</version>
+    <version>0.11.1-SNAPSHOT</version>
     <name>DAS-Backend</name>
     <description>DAS-Backend</description>
     <properties>
         <java.version>21</java.version>
-        <spring-modulith.version>2.0.5</spring-modulith.version>
+        <spring-modulith.version>2.0.6</spring-modulith.version>
         <archunit-junit5.version>1.4.2</archunit-junit5.version>
         <springdoc-openapi-starter-webmvc-ui.version>3.0.3</springdoc-openapi-starter-webmvc-ui.version>
         <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
         <kafka-json-schema-serializer.version>8.2.0</kafka-json-schema-serializer.version>
         <confluent.schema-registry-plugin.version>8.2.0</confluent.schema-registry-plugin.version>
         <jsonschema2pojo-maven-plugin.version>1.3.3</jsonschema2pojo-maven-plugin.version>
-        <aws.java.sdk.version>2.42.2</aws.java.sdk.version>
+        <aws.java.sdk.version>2.44.0</aws.java.sdk.version>
         <shedlock.version>7.7.0</shedlock.version>
         <xmlunit.version>2.11.0</xmlunit.version>
         <jaxb2-maven-plugin.version>4.1.0</jaxb2-maven-plugin.version>
@@ -337,7 +336,7 @@
                 <version>${jaxb2-maven-plugin.version}</version>
                 <configuration>
                     <sources>
-                        <source>${basedir}/src/main/resources/SFERA_v3.00.xsd</source>
+                        <source>${basedir}/src/main/resources/SFERA_4.00.xsd</source>
                     </sources>
                     <xjbSources>
                         <xjbSource>${basedir}/src/main/resources/jaxb-bindings.xjb</xjbSource>

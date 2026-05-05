@@ -49,7 +49,7 @@ formation:
     topic: "formation-test"
 
 sfera:
-  version: '3.00'
+  version: '4.00'
   source-device: 'TEST'
   recipient: '0033'
   broker-url: test

@@ -43,8 +43,9 @@ enum ReasonCodeDto implements XmlEnum {
   /// the reason previously communicated is not valid anymore.
   endOfReason(xmlValue: 'endOfReason'),
 
-  /// nationalUse1 is to be interpreted as ADL-fixedTime
-  advisedSpeedFixedTime(xmlValue: 'nationalUse1'),
+  /// fixed time for ADL
+  advisedSpeedFixedTime(xmlValue: 'fixedTime'),
+  nationalUse1(xmlValue: 'nationalUse1'),
   nationalUse2(xmlValue: 'nationalUse2'),
   nationalUse3(xmlValue: 'nationalUse3'),
   nationalUse4(xmlValue: 'nationalUse4'),

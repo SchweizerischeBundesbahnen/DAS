@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
+                xsi:noNamespaceSchemaLocation="../../SFERA.xsd"
                 SP_ID="15162_14_Bern_Europaplatz" SP_VersionMajor="1" SP_VersionMinor="2" SP_Length="1600" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
@@ -15,14 +15,14 @@
             </TAF_TAP_LocationReference>
             <TP_Name name="BNAS"/>
         </TimingPoint>
-		
-		<Signal>
+
+        <Signal>
             <Signal_ID signal_ID_Physical="S947" location="600"/>
             <SignalFunction>block</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="S947"/>
         </Signal>
-		
-		<Signal>
+
+        <Signal>
             <Signal_ID signal_ID_Physical="D946" location="1100"/>
             <SignalFunction>entry</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="D946"/>
@@ -66,16 +66,16 @@
                 <OtherContactType contactIdentifier="1312"/>
             </Contact>
         </ContactList>
-		
-		<CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R"/>
+
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R"/>
 
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="94.1"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="600">
+        <KilometreReferencePoint location="600">
             <KM_Reference kmRef="94"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="1100">
+        <KilometreReferencePoint location="1100">
             <KM_Reference kmRef="93.53"/>
         </KilometreReferencePoint>
 

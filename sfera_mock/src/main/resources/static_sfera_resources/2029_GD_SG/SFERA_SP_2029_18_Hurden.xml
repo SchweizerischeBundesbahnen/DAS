@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
+                xsi:noNamespaceSchemaLocation="../../SFERA.xsd"
                 SP_ID="2029_18_Hurden" SP_VersionMajor="1" SP_VersionMinor="1" SP_Length="1800" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
@@ -14,14 +14,14 @@
                 <teltsi_LocationPrimaryCode>3299</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
-		
-		<Signal>
+
+        <Signal>
             <Signal_ID signal_ID_Physical="A703" location="1134"/>
             <SignalFunction>entry</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="A703"/>
         </Signal>
-		
-		<NetworkSpecificPoint location="600">
+
+        <NetworkSpecificPoint location="600">
             <teltsi_Company>0085</teltsi_Company>
             <NSP_GroupName>protectionSection</NSP_GroupName>
             <NetworkSpecificParameter name="lengthType" value="short"/>
@@ -48,8 +48,8 @@
         </TAF_TAP_Location>
 
     </SP_Areas>
-	
-	<SP_Characteristics>
+
+    <SP_Characteristics>
         <CurrentLimitation>
             <CurrentLimitationStart maxCurValue="1023"/>
             <CurrentLimitationChange maxCurValue="0" location="600"/>
@@ -58,22 +58,22 @@
     </SP_Characteristics>
 
     <SP_ContextInformation>
-		
-		<ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
+
+        <ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
             <Contact mainContact="true">
                 <OtherContactType contactIdentifier="1303"/>
             </Contact>
         </ContactList>
-		
-		<CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R"/>
+
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R"/>
 
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="1.8"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="600">
+        <KilometreReferencePoint location="600">
             <KM_Reference kmRef="1.2"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="1134">
+        <KilometreReferencePoint location="1134">
             <KM_Reference kmRef="0.666"/>
         </KilometreReferencePoint>
 

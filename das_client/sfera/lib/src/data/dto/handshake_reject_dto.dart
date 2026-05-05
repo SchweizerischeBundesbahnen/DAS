@@ -4,7 +4,7 @@ import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 import 'package:sfera/src/data/dto/sp_zone_dto.dart';
 
 class HandshakeRejectDto extends SferaXmlElementDto {
-  static const String elementType = 'HandshakeReject';
+  static const String elementType = 'DAS_HandshakeReject';
 
   HandshakeRejectDto({super.type = elementType, super.attributes, super.children, super.value});
 

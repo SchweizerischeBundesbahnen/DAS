@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
-<G2B_EventPayload xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
+<G2B_EventPayload xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA.xsd">
 
-    <JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="5" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
+    <JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="5" xsi:noNamespaceSchemaLocation="../../SFERA.xsd">
         <TrainIdentification>
             <OTN_ID>
                 <teltsi_Company>1285</teltsi_Company>
@@ -162,7 +162,7 @@
                         &lt;/stop2PassOrPass2Stop&gt;
                     "/>
             </General_JP_Information_NSP>
-        </General_JP_Information>   
+        </General_JP_Information>
 
     </JourneyProfile>
 

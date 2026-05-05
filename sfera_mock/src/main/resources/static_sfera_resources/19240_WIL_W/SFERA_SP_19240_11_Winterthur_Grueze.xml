@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
+                xsi:noNamespaceSchemaLocation="../../SFERA.xsd"
                 SP_ID="19240_11_Winterthur_Grueze" SP_VersionMajor="1" SP_VersionMinor="2" SP_Length="1300" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
@@ -21,8 +21,8 @@
             <SignalFunction>exit</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="B6"/>
         </Signal>
-		
-		<Signal>
+
+        <Signal>
             <Signal_ID signal_ID_Physical="D336" location="900"/>
             <SignalFunction>entry</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="D336"/>
@@ -39,7 +39,7 @@
                 <teltsi_PrimaryLocationName>Winterthur Grüze</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
 
-			<TAF_TAP_Location_NSP>
+            <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>stationSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlStationSpeed" value="
@@ -63,10 +63,10 @@
 				"/>
             </TAF_TAP_Location_NSP>
 
-			<TAF_TAP_Location_NSP> 
-			<teltsi_Company>0085</teltsi_Company>
-            <NSP_GroupName>stationProperty</NSP_GroupName>
-			<NetworkSpecificParameter name="xmlStationProperty" value="
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>stationProperty</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlStationProperty" value="
 				&lt;stationProperties&gt; 
 					&lt;stationProperty&gt;
 						&lt;speeds&gt; 
@@ -90,8 +90,8 @@
 						&lt;/speeds&gt; 
 					&lt;/stationProperty&gt; 
 				&lt;/stationProperties&gt;
-			" />			
-			</TAF_TAP_Location_NSP>
+			"/>
+            </TAF_TAP_Location_NSP>
 
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
@@ -136,24 +136,24 @@
                 <OtherContactType contactIdentifier="1306"/>
             </Contact>
         </ContactList>
-		
-		<CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R"/>
+
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R"/>
 
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="135.2"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="300">
+        <KilometreReferencePoint location="300">
             <KM_Reference kmRef="135.5"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="900">
+        <KilometreReferencePoint location="900">
             <KM_Reference kmRef="136.1"/>
         </KilometreReferencePoint>
-		
-		<DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="5.0" gradientDirection="Downhill"
+
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="5.0" gradientDirection="Downhill"
                               directionOfApplicationOnSP="Nominal"/>
         <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0"
                               gradientValue="0.0" gradientDirection="Uphill"
-                              directionOfApplicationOnSP="Nominal"/> 
+                              directionOfApplicationOnSP="Nominal"/>
 
     </SP_ContextInformation>
 

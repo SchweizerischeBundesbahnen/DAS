@@ -1,11 +1,11 @@
 package ch.sbb.sferamock.messages.services;
 
-import ch.sbb.sferamock.adapters.sfera.model.v0300.HandshakeRejectReason;
-import ch.sbb.sferamock.adapters.sfera.model.v0300.JourneyProfile;
-import ch.sbb.sferamock.adapters.sfera.model.v0300.RelatedTrainInformation;
-import ch.sbb.sferamock.adapters.sfera.model.v0300.SPZoneComplexType;
-import ch.sbb.sferamock.adapters.sfera.model.v0300.SegmentProfile;
-import ch.sbb.sferamock.adapters.sfera.model.v0300.TrainCharacteristics;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.HandshakeRejectReason;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.JourneyProfile;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.RelatedTrainInformation;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.SPZoneComplexType;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.SegmentProfile;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.TrainCharacteristics;
 import ch.sbb.sferamock.messages.common.SferaErrorCodes;
 import ch.sbb.sferamock.messages.model.OperationMode;
 import ch.sbb.sferamock.messages.model.RequestContext;

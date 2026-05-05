@@ -82,7 +82,7 @@ void main() {
 
       journeySubject = BehaviorSubject<Journey?>.seeded(null);
       journeyPositionSubject = BehaviorSubject<JourneyPositionModel>.seeded(JourneyPositionModel());
-      koaStateSubject = BehaviorSubject<KoaState>.seeded(KoaState.waitHide);
+      koaStateSubject = BehaviorSubject<KoaState>.seeded(.waitHide);
 
       when(mockJourneyViewModel.journey).thenAnswer((_) => journeySubject.stream);
       when(mockJourneyPositionViewModel.model).thenAnswer((_) => journeyPositionSubject.stream);
@@ -139,13 +139,43 @@ void main() {
         );
       });
 
-      test('whenPositionIsIntermediateSignal_emitsNoCustomerOrientedDeparture', () {
+      test('whenPositionIsIntermediateSignal_withoutPriorStop_emitsDisabled', () {
         testAsync.run((_) {
           journeyPositionSubject.add(JourneyPositionModel(currentPosition: intermediateSignal));
         });
         processStreams(fakeAsync: testAsync);
 
+        expect(modelRegister.last, isA<ChecklistDepartureProcessDisabled>());
+      });
+
+      test('whenPositionIsIntermediateSignal_afterStopServicePoint_emitsNoCustomerOrientedDeparture', () {
+        testAsync.run((_) {
+          journeyPositionSubject.add(JourneyPositionModel(currentPosition: servicePointA));
+        });
+        processStreams(fakeAsync: testAsync);
+
+        testAsync.run((_) {
+          journeyPositionSubject.add(JourneyPositionModel(currentPosition: intermediateSignal));
+        });
+        processStreams(fakeAsync: testAsync);
+
+        // intermediate signal after stop preserves the enabled state
         expect(modelRegister.last, isA<NoCustomerOrientedDepartureChecklist>());
+      });
+
+      test('whenPositionIsIntermediateSignal_afterPassingServicePoint_emitsDisabled', () {
+        testAsync.run((_) {
+          journeyPositionSubject.add(JourneyPositionModel(currentPosition: passingPoint));
+        });
+        processStreams(fakeAsync: testAsync);
+
+        testAsync.run((_) {
+          journeyPositionSubject.add(JourneyPositionModel(currentPosition: intermediateSignal));
+        });
+        processStreams(fakeAsync: testAsync);
+
+        // intermediate signal after passing point stays disabled (no prior stop)
+        expect(modelRegister.last, isA<ChecklistDepartureProcessDisabled>());
       });
 
       test('whenPositionIsExitSignal_emitsDisabled', () {
@@ -202,13 +232,25 @@ void main() {
       processStreams(fakeAsync: testAsync);
       modelRegister.clear();
 
-      testAsync.run((_) {
-        koaStateSubject.add(KoaState.wait);
-      });
+      testAsync.run((_) => koaStateSubject.add(.wait));
       processStreams(fakeAsync: testAsync);
 
       expect(modelRegister.last, isA<CustomerOrientedDepartureChecklist>());
       expect((modelRegister.last as CustomerOrientedDepartureChecklist).koaState, KoaState.wait);
+    });
+
+    test('whenKoaStateIsCall_emitsCustomerOrientedDeparture', () {
+      testAsync.run((_) {
+        journeyPositionSubject.add(JourneyPositionModel(currentPosition: servicePointA));
+      });
+      processStreams(fakeAsync: testAsync);
+      modelRegister.clear();
+
+      testAsync.run((_) => koaStateSubject.add(.call));
+      processStreams(fakeAsync: testAsync);
+
+      expect(modelRegister.last, isA<CustomerOrientedDepartureChecklist>());
+      expect((modelRegister.last as CustomerOrientedDepartureChecklist).koaState, KoaState.call);
     });
 
     test('whenKoaStateIsWaitCancelled_emitsCustomerOrientedDeparture', () {
@@ -218,9 +260,7 @@ void main() {
       processStreams(fakeAsync: testAsync);
       modelRegister.clear();
 
-      testAsync.run((_) {
-        koaStateSubject.add(KoaState.waitCancelled);
-      });
+      testAsync.run((_) => koaStateSubject.add(.waitCancelled));
       processStreams(fakeAsync: testAsync);
 
       expect(modelRegister.last, isA<CustomerOrientedDepartureChecklist>());
@@ -230,7 +270,7 @@ void main() {
     test('whenKoaStateIsWaitHide_emitsNoCustomerOrientedDeparture', () {
       testAsync.run((_) {
         journeyPositionSubject.add(JourneyPositionModel(currentPosition: servicePointA));
-        koaStateSubject.add(KoaState.waitHide);
+        koaStateSubject.add(.waitHide);
       });
       processStreams(fakeAsync: testAsync);
 
@@ -240,14 +280,12 @@ void main() {
     test('whenKoaStateChangesFromWaitToWaitHide_emitsCustomerOrientedDeparture_thenNoCustomerOrientedDeparture', () {
       testAsync.run((_) {
         journeyPositionSubject.add(JourneyPositionModel(currentPosition: servicePointA));
-        koaStateSubject.add(KoaState.wait);
+        koaStateSubject.add(.wait);
       });
       processStreams(fakeAsync: testAsync);
       modelRegister.clear();
 
-      testAsync.run((_) {
-        koaStateSubject.add(KoaState.waitHide);
-      });
+      testAsync.run((_) => koaStateSubject.add(.waitHide));
       processStreams(fakeAsync: testAsync);
 
       expect(modelRegister.last, isA<NoCustomerOrientedDepartureChecklist>());

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T21_1" SP_VersionMajor="1"
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA.xsd" SP_ID="T21_1" SP_VersionMajor="1"
                 SP_VersionMinor="8" SP_Length="2000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
@@ -75,7 +75,7 @@
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>routeTableData</NSP_GroupName>
-                <NetworkSpecificParameter name="stationSign1" value="P" />
+                <NetworkSpecificParameter name="stationSign1" value="P"/>
             </TAF_TAP_Location_NSP>
 
             <TAF_TAP_Location_NSP>
@@ -124,8 +124,8 @@
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>routeTableData</NSP_GroupName>
-                <NetworkSpecificParameter name="stationSign1" value="O" />
-                <NetworkSpecificParameter name="stationSign2" value="M" />
+                <NetworkSpecificParameter name="stationSign1" value="O"/>
+                <NetworkSpecificParameter name="stationSign2" value="M"/>
             </TAF_TAP_Location_NSP>
 
             <TAF_TAP_Location_NSP>
@@ -154,8 +154,8 @@
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>routeTableData</NSP_GroupName>
-                <NetworkSpecificParameter name="stationSign1" value="Q" />
-                <NetworkSpecificParameter name="stationSign2" value="N" />
+                <NetworkSpecificParameter name="stationSign1" value="Q"/>
+                <NetworkSpecificParameter name="stationSign2" value="N"/>
             </TAF_TAP_Location_NSP>
 
             <TAF_TAP_Location_NSP>
@@ -185,7 +185,7 @@
 						&lt;/speeds&gt;
 					&lt;/stationProperty&gt;
 				&lt;/stationProperties&gt;
-			" />
+			"/>
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
 
@@ -200,7 +200,7 @@
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>routeTableData</NSP_GroupName>
-                <NetworkSpecificParameter name="stationSign1" value="C" />
+                <NetworkSpecificParameter name="stationSign1" value="C"/>
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
 
@@ -215,7 +215,7 @@
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>routeTableData</NSP_GroupName>
-                <NetworkSpecificParameter name="stationSign1" value="C" />
+                <NetworkSpecificParameter name="stationSign1" value="C"/>
             </TAF_TAP_Location_NSP>
 
             <TAF_TAP_Location_NSP>

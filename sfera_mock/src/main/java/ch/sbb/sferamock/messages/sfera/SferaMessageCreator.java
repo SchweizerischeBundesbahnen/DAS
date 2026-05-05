@@ -1,27 +1,27 @@
 package ch.sbb.sferamock.messages.sfera;
 
-import ch.sbb.sferamock.adapters.sfera.model.v0300.B2GMessageResponse.Result;
-import ch.sbb.sferamock.adapters.sfera.model.v0300.DASOperatingModeSelected;
-import ch.sbb.sferamock.adapters.sfera.model.v0300.G2BError;
-import ch.sbb.sferamock.adapters.sfera.model.v0300.G2BEventPayload;
-import ch.sbb.sferamock.adapters.sfera.model.v0300.G2BMessageResponse;
-import ch.sbb.sferamock.adapters.sfera.model.v0300.G2BReplyPayload;
-import ch.sbb.sferamock.adapters.sfera.model.v0300.HandshakeAcknowledgement;
-import ch.sbb.sferamock.adapters.sfera.model.v0300.HandshakeReject;
-import ch.sbb.sferamock.adapters.sfera.model.v0300.HandshakeRejectReason;
-import ch.sbb.sferamock.adapters.sfera.model.v0300.JourneyProfile;
-import ch.sbb.sferamock.adapters.sfera.model.v0300.MessageHeader;
-import ch.sbb.sferamock.adapters.sfera.model.v0300.MultilingualTextComplexType;
-import ch.sbb.sferamock.adapters.sfera.model.v0300.OTNIDComplexType;
-import ch.sbb.sferamock.adapters.sfera.model.v0300.Recipient;
-import ch.sbb.sferamock.adapters.sfera.model.v0300.RelatedTrainInformation;
-import ch.sbb.sferamock.adapters.sfera.model.v0300.SFERAG2BEventMessage;
-import ch.sbb.sferamock.adapters.sfera.model.v0300.SFERAG2BReplyMessage;
-import ch.sbb.sferamock.adapters.sfera.model.v0300.SegmentProfile;
-import ch.sbb.sferamock.adapters.sfera.model.v0300.Sender;
-import ch.sbb.sferamock.adapters.sfera.model.v0300.TrainCharacteristics;
-import ch.sbb.sferamock.adapters.sfera.model.v0300.TrainIdentificationComplexType;
-import ch.sbb.sferamock.adapters.sfera.model.v0300.UnavailableDASOperatingModes;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.B2GMessageResponse.Result;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.DASHandshakeAcknowledgement;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.DASHandshakeReject;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.DASOperatingModeSelected;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.G2BError;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.G2BEventPayload;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.G2BMessageResponse;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.G2BReplyPayload;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.HandshakeRejectReason;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.JourneyProfile;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.MessageHeader;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.MultilingualTextComplexType;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.OTNIDComplexType;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.Recipient;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.RelatedTrainInformation;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.SFERAG2BEventMessage;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.SFERAG2BReplyMessage;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.SegmentProfile;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.Sender;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.TrainCharacteristics;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.TrainIdentificationComplexType;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.UnavailableDASOperatingModes;
 import ch.sbb.sferamock.messages.common.XmlDateHelper;
 import ch.sbb.sferamock.messages.model.OperationMode;
 import ch.sbb.sferamock.messages.model.TrainIdentification;
@@ -89,8 +89,8 @@ public class SferaMessageCreator {
         return result;
     }
 
-    public HandshakeAcknowledgement createSferaHandshakeAcknowledgement(OperationMode.Connectivity dasConnectivity, OperationMode.Architecture architecture) {
-        var result = new HandshakeAcknowledgement();
+    public DASHandshakeAcknowledgement createSferaHandshakeAcknowledgement(OperationMode.Connectivity dasConnectivity, OperationMode.Architecture architecture) {
+        var result = new DASHandshakeAcknowledgement();
         DASOperatingModeSelected dasOperatingModeSelected = new DASOperatingModeSelected();
         dasOperatingModeSelected.setDASArchitecture(toSferaArchitecture(architecture));
         dasOperatingModeSelected.setDASConnectivity(toSferaConnectivity(dasConnectivity));
@@ -131,16 +131,16 @@ public class SferaMessageCreator {
         };
     }
 
-    public HandshakeReject createSferaHandshakeReject(HandshakeRejectReason rejectReason) {
-        var result = new HandshakeReject();
+    public DASHandshakeReject createSferaHandshakeReject(HandshakeRejectReason rejectReason) {
+        var result = new DASHandshakeReject();
         result.getHandshakeRejectReason().add(rejectReason);
         return result;
     }
 
-    public SFERAG2BReplyMessage createSferaReplyMessage(MessageHeader header, HandshakeAcknowledgement acknowledgement) {
+    public SFERAG2BReplyMessage createSferaReplyMessage(MessageHeader header, DASHandshakeAcknowledgement acknowledgement) {
         var result = new SFERAG2BReplyMessage();
         result.setMessageHeader(header);
-        result.setHandshakeAcknowledgement(acknowledgement);
+        result.setDASHandshakeAcknowledgement(acknowledgement);
         return result;
     }
 
@@ -170,10 +170,10 @@ public class SferaMessageCreator {
         return createSferaReplyErrorMessage(header, errorCode, Optional.empty());
     }
 
-    public SFERAG2BReplyMessage createSferaReplyMessage(MessageHeader messageHeader, HandshakeReject handshakeReject) {
+    public SFERAG2BReplyMessage createSferaReplyMessage(MessageHeader messageHeader, DASHandshakeReject handshakeReject) {
         var result = new SFERAG2BReplyMessage();
         result.setMessageHeader(messageHeader);
-        result.setHandshakeReject(handshakeReject);
+        result.setDASHandshakeReject(handshakeReject);
         return result;
     }
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 
-<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="5" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
+<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="5" xsi:noNamespaceSchemaLocation="../../SFERA.xsd">
     <TrainIdentification>
         <OTN_ID>
             <teltsi_Company>1285</teltsi_Company>
@@ -288,7 +288,7 @@
         <!-- fifth ADL - fixedTime - start is directly after fourth ADL -->
         <!-- will be canceled in JP update event -->
         <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="AdvisedSpeed" startLocation="500" endLocation="950">
-            <AdvisedSpeed optimalSpeed="80" reasonCode="nationalUse1" adviceType="ConstantspeedAdvice">
+            <AdvisedSpeed optimalSpeed="80" reasonCode="fixedTime" adviceType="ConstantspeedAdvice">
                 <ReasonText language="DE" text="ADL"/>
             </AdvisedSpeed>
         </TemporaryConstraints>

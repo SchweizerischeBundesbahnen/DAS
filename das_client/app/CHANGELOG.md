@@ -1,5 +1,32 @@
 # Changelog
 
+## [0.43.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.42.0...das_client-v0.43.0) (2026-05-04)
+
+
+### Features
+
+* add new amazing appicon ([#1537](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1537)) ([#2091](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2091)) ([7eeeb19](https://github.com/SchweizerischeBundesbahnen/DAS/commit/7eeeb192703a336e0db5a3e517083a4312105d55))
+* implement offline capability and reauthentication ([#1320](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1320)) ([#2078](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2078)) ([0fc57a1](https://github.com/SchweizerischeBundesbahnen/DAS/commit/0fc57a1ada798ba416d0dd3e28565ef954847d5f))
+
+
+### Bug Fixes
+
+* deeplink no longer ignored when already on journey page ([#1852](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1852)) ([#2079](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2079)) ([9a23d4d](https://github.com/SchweizerischeBundesbahnen/DAS/commit/9a23d4d970966ceda45f8838904f6364a8ed6aa1))
+* login page with dark mode ([#2093](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2093)) ([52250ea](https://github.com/SchweizerischeBundesbahnen/DAS/commit/52250ea891a0b99c0796c2653ce95133a744858c))
+
+## [0.42.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.41.0...das_client-v0.42.0) (2026-05-01)
+
+
+### Features
+
+* add koa call notification and ui redesign ([#2015](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2015)) ([#2064](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2064)) ([1ae6585](https://github.com/SchweizerischeBundesbahnen/DAS/commit/1ae6585e663aab534e7496bb8d9bd97b8b3cc6d9))
+* support SFERA v4 for client ([#2001](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2001)) ([#2076](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2076)) ([6e3ef0d](https://github.com/SchweizerischeBundesbahnen/DAS/commit/6e3ef0d8af2575fdf8686779e2f80e9764156208))
+
+
+### Bug Fixes
+
+* departure process button is only shown after stop service points ([#627](https://github.com/SchweizerischeBundesbahnen/DAS/issues/627)) ([#2077](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2077)) ([dc6f4d3](https://github.com/SchweizerischeBundesbahnen/DAS/commit/dc6f4d3e84978ed3312d6690c585323153137099))
+
 ## [0.41.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.40.0...das_client-v0.41.0) (2026-04-28)
 
 
