@@ -55,6 +55,7 @@ class CustomerOrientedDepartureViewModel extends JourneyAwareViewModel {
 
   @override
   void dispose() {
+    _repository.unsubscribe();
     _statusSubscription?.cancel();
     _statusSubscription = null;
     _rxStatus.close();
