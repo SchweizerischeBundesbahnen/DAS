@@ -19,7 +19,7 @@ import 'customer_oriented_departure_repository_impl_test.mocks.dart';
   MockSpec<SubscribeRequest>(),
 ])
 void main() {
-  late CustomerOrientedDepartureRepository testee;
+  late CustomerOrientedDepartureRepositoryImpl testee;
   late MockCustomerOrientedDepartureApiService mockApiService;
   late MockMessagingService mockMessagingService;
   late MockConfirmRequest mockConfirmRequest;
@@ -206,9 +206,36 @@ void main() {
     ).called(1);
   });
 
+  test('unsubscribe_whenNoPendingSubscription_thenReturnsTrueAndSkipsRequest', () async {
+    // ACT
+    final result = await testee.unsubscribe();
+
+    // VERIFY
+    expect(result, isTrue);
+    verifyNever(
+      mockSubscribeRequest.call(
+        type: SubscribeRequestType.deregister,
+        evu: anyNamed('evu'),
+        trainNumber: anyNamed('trainNumber'),
+        pushToken: anyNamed('pushToken'),
+        deviceId: anyNamed('deviceId'),
+        messageId: anyNamed('messageId'),
+        expiresAt: anyNamed('expiresAt'),
+        isDriver: anyNamed('isDriver'),
+      ),
+    );
+  });
+
   test('unsubscribe_whenNoTokenAvailable_thenReturnsFalseAndSkipsRequest', () async {
     // GIVEN
+    // create a pending subscription (no push token initially)
     when(mockMessagingService.tokenValue).thenReturn(null);
+    await testee.subscribe(
+      evu: '1080',
+      trainNumber: 'RE1234',
+      journeyEndTime: testJourneyEndTime,
+      isDriver: true,
+    );
 
     // ACT
     final result = await testee.unsubscribe();
@@ -220,6 +247,17 @@ void main() {
 
   test('unsubscribe_whenRequestThrows_thenReturnsFalse', () async {
     // GIVEN
+    // create a pending subscription (no push token initially)
+    when(mockMessagingService.tokenValue).thenReturn(null);
+    await testee.subscribe(
+      evu: '1080',
+      trainNumber: 'RE1234',
+      journeyEndTime: testJourneyEndTime,
+      isDriver: true,
+    );
+    // token is now available for the unsubscribe call but API throws
+    when(mockMessagingService.tokenValue).thenReturn(testPushToken);
+
     when(
       mockSubscribeRequest.call(
         type: anyNamed('type'),
