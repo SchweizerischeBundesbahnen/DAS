@@ -9,7 +9,6 @@ import 'package:app/pages/journey/journey_screen/header/widgets/departure_author
 import 'package:app/pages/journey/journey_screen/header/widgets/extended_menu.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/radio_channel.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/radio_contact.dart';
-import 'package:app/pages/journey/journey_screen/header/widgets/sim_identifier.dart';
 import 'package:app/pages/journey/journey_screen/notification/widgets/maneuver_notification.dart';
 import 'package:app/pages/journey/journey_screen/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_chevron.dart';
@@ -456,15 +455,6 @@ Future<void> main() async {
       final wankdorfGsmPIcon = find.descendant(of: header, matching: find.byKey(CommunicationNetworkIcon.gsmPKey));
       expect(wankdorfGsmPIcon, findsNothing);
 
-      // check network type for Burgdorf (SIM)
-      final locationOnEntryBeforeBurgdorf = find.descendant(
-        of: findDASTableRowByText('A2'),
-        matching: find.byKey(RouteChevron.chevronKey),
-      );
-      await waitUntilExists(tester, locationOnEntryBeforeBurgdorf);
-      final burgdorfSimKey = find.descendant(of: header, matching: find.byKey(SimIdentifier.simKey));
-      expect(burgdorfSimKey, findsOneWidget);
-
       // check network type for Olten
       final locationOnEntryBeforeOlten = find.descendant(
         of: findDASTableRowByText('A3'),
@@ -498,8 +488,6 @@ Future<void> main() async {
       expect(mainContactBern, findsNothing);
       final bernIndicator = find.descendant(of: radioChannel, matching: find.byKey(DotIndicator.indicatorKey));
       expect(bernIndicator, findsNothing);
-      final bernSim = find.descendant(of: radioChannel, matching: find.byKey(SimIdentifier.simKey));
-      expect(bernSim, findsNothing);
 
       // check mainContacts for Wankdorf (nextStop: Burgdorf)
       await waitUntilExists(tester, find.descendant(of: header, matching: find.text('Burgdorf')));
@@ -507,8 +495,6 @@ Future<void> main() async {
       await waitUntilExists(tester, mainContactWankdorf, maxWaitSeconds: 2);
       final wankdorfIndicator = find.descendant(of: radioChannel, matching: find.byKey(DotIndicator.indicatorKey));
       expect(wankdorfIndicator, findsNothing);
-      final wankdorfSim = find.descendant(of: radioChannel, matching: find.byKey(SimIdentifier.simKey));
-      expect(wankdorfSim, findsNothing);
 
       // check mainContacts for Burgdorf
       final locationOnEntryBeforeBurgdorf = find.descendant(
@@ -520,8 +506,6 @@ Future<void> main() async {
       await waitUntilExists(tester, mainContactsBurgdorf, maxWaitSeconds: 2);
       final burgdorfIndicator = find.descendant(of: radioChannel, matching: find.byKey(DotIndicator.indicatorKey));
       expect(burgdorfIndicator, findsOneWidget);
-      final burgdorfSim = find.descendant(of: radioChannel, matching: find.byKey(SimIdentifier.simKey));
-      expect(burgdorfSim, findsOneWidget);
 
       // check mainContacts for Olten
       final locationOnEntryBeforeOlten = find.descendant(
@@ -533,8 +517,6 @@ Future<void> main() async {
       await waitUntilExists(tester, mainContactsOlten, maxWaitSeconds: 2);
       final oltenIndicator = find.descendant(of: radioChannel, matching: find.byKey(DotIndicator.indicatorKey));
       expect(oltenIndicator, findsOneWidget);
-      final oltenSim = find.descendant(of: radioChannel, matching: find.byKey(SimIdentifier.simKey));
-      expect(oltenSim, findsNothing);
 
       await disconnect(tester);
     });
