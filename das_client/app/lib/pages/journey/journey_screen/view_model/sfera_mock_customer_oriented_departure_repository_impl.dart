@@ -30,19 +30,14 @@ class SferaMockCustomerOrientedDepartureRepositoryImpl implements CustomerOrient
   Future<bool> subscribe({
     required String evu,
     required String trainNumber,
-    required DateTime journeyEndTime,
+    required DateTime? journeyEndTime,
     required bool isDriver,
   }) async {
     return true; // unused
   }
 
   @override
-  Future<bool> unsubscribe({
-    required String evu,
-    required String trainNumber,
-    required DateTime journeyEndTime,
-    required bool isDriver,
-  }) async {
+  Future<bool> unsubscribe() async {
     return true; // unused
   }
 

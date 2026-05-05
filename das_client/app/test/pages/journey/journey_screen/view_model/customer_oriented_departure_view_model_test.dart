@@ -3,6 +3,7 @@ import 'package:app/pages/journey/journey_screen/view_model/notification_priorit
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:app/sound/das_sounds.dart';
 import 'package:app/sound/sound.dart';
+import 'package:auth/component.dart';
 import 'package:customer_oriented_departure/component.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -21,6 +22,7 @@ import 'customer_oriented_departure_view_model_test.mocks.dart';
   MockSpec<NotificationPriorityQueueViewModel>(),
   MockSpec<DASSounds>(),
   MockSpec<Sound>(),
+  MockSpec<Authenticator>(),
 ])
 void main() {
   group('CustomerOrientedDepartureViewModel', () {
@@ -28,6 +30,7 @@ void main() {
     late MockCustomerOrientedDepartureRepository mockRepository;
     late MockRuFeatureProvider mockRuFeatureProvider;
     late MockNotificationPriorityQueueViewModel mockNotificationViewModel;
+    late MockAuthenticator mockAuthenticator;
     late MockDASSounds mockDasSounds;
 
     late BehaviorSubject<CustomerOrientedDepartureStatus> rxStatus;
@@ -44,6 +47,7 @@ void main() {
           repository: mockRepository,
           ruFeatureProvider: mockRuFeatureProvider,
           notificationViewModel: mockNotificationViewModel,
+          authenticator: mockAuthenticator,
         );
 
         statusRegister = [];
@@ -57,6 +61,7 @@ void main() {
       mockRuFeatureProvider = MockRuFeatureProvider();
       mockNotificationViewModel = MockNotificationPriorityQueueViewModel();
       mockDasSounds = MockDASSounds();
+      mockAuthenticator = MockAuthenticator();
 
       rxStatus = BehaviorSubject<CustomerOrientedDepartureStatus>();
 
@@ -65,6 +70,7 @@ void main() {
         (_) => Future.value(true),
       );
       when(mockDasSounds.customerOrientedDeparture).thenReturn(mockSound);
+      when(mockAuthenticator.user()).thenAnswer((_) => Future.value(User(userId: 'userId', roles: [Role.driver])));
 
       GetIt.I.registerSingleton<DASSounds>(mockDasSounds);
 

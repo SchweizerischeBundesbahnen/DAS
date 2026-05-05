@@ -11,6 +11,9 @@ import 'package:uuid/uuid.dart';
 
 final _log = Logger('CustomerOrientedDepartureRepositoryImpl');
 
+// todo: check with GEMS
+final _defaultExpireDuration = Duration(hours: 2);
+
 class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartureRepository {
   CustomerOrientedDepartureRepositoryImpl({
     required this.apiService,
@@ -38,13 +41,14 @@ class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartu
   Future<bool> subscribe({
     required String evu,
     required String trainNumber,
-    required DateTime journeyEndTime,
+    required DateTime? journeyEndTime,
     required bool isDriver,
   }) async {
+    final expiresAt = journeyEndTime ?? DateTime.now().add(_defaultExpireDuration);
     final subscription = _Subscription(
       evu: evu,
       trainNumber: trainNumber,
-      journeyEndTime: journeyEndTime,
+      expiresAt: expiresAt,
       isDriver: isDriver,
       messageId: Uuid().v4(),
       pushToken: messagingService.tokenValue,
@@ -57,7 +61,7 @@ class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartu
       _log.info(
         'There is another open subscription for ${_pendingOrOpenSubscription!.evu} ${_pendingOrOpenSubscription!.trainNumber}.',
       );
-      await _sendDeregisterRequest(subscription: _pendingOrOpenSubscription!);
+      await unsubscribe();
     }
 
     if (subscription.pushToken == null) {
@@ -72,12 +76,14 @@ class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartu
   }
 
   @override
-  Future<bool> unsubscribe({
-    required String evu,
-    required String trainNumber,
-    required DateTime journeyEndTime,
-    required bool isDriver,
-  }) async {
+  Future<bool> unsubscribe() async {
+    if (_pendingOrOpenSubscription == null) {
+      _log.severe('No open subscription for unsubscribing.');
+      return true;
+    }
+
+    final evu = _pendingOrOpenSubscription!.evu;
+    final trainNumber = _pendingOrOpenSubscription!.trainNumber;
     final pushToken = messagingService.tokenValue;
     if (pushToken == null) {
       _log.severe('No push token available for subscribing to $evu $trainNumber');
@@ -92,8 +98,8 @@ class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartu
         pushToken: pushToken,
         deviceId: deviceId,
         messageId: Uuid().v4(),
-        expiresAt: journeyEndTime,
-        isDriver: isDriver,
+        expiresAt: _pendingOrOpenSubscription!.expiresAt,
+        isDriver: _pendingOrOpenSubscription!.isDriver,
       );
       _pendingOrOpenSubscription = null;
       _log.info('Successfully requested unsubscribe for $evu $trainNumber.');
@@ -115,15 +121,6 @@ class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartu
     }
   }
 
-  Future<bool> _sendDeregisterRequest({required _Subscription subscription}) async {
-    return unsubscribe(
-      evu: subscription.evu,
-      trainNumber: subscription.trainNumber,
-      journeyEndTime: subscription.journeyEndTime,
-      isDriver: subscription.isDriver,
-    );
-  }
-
   Future<bool> _sendRegisterRequest({required _Subscription subscription}) async {
     final evu = subscription.evu;
     final trainNumber = subscription.trainNumber;
@@ -135,7 +132,7 @@ class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartu
         pushToken: subscription.pushToken!,
         deviceId: deviceId,
         messageId: subscription.messageId,
-        expiresAt: subscription.journeyEndTime,
+        expiresAt: subscription.expiresAt,
         isDriver: subscription.isDriver,
       );
       _log.info('Successfully requested subscribe for $evu $trainNumber.');
@@ -189,7 +186,7 @@ class _Subscription {
   _Subscription({
     required this.evu,
     required this.trainNumber,
-    required this.journeyEndTime,
+    required this.expiresAt,
     required this.messageId,
     required this.isDriver,
     this.pushToken,
@@ -197,7 +194,7 @@ class _Subscription {
 
   final String evu;
   final String trainNumber;
-  final DateTime journeyEndTime;
+  final DateTime expiresAt;
   final bool isDriver;
   final String? pushToken;
 
@@ -207,7 +204,7 @@ class _Subscription {
   _Subscription withToken({required String token}) => _Subscription(
     evu: evu,
     trainNumber: trainNumber,
-    journeyEndTime: journeyEndTime,
+    expiresAt: expiresAt,
     isDriver: isDriver,
     messageId: messageId,
     pushToken: token,
@@ -220,10 +217,10 @@ class _Subscription {
           runtimeType == other.runtimeType &&
           evu == other.evu &&
           trainNumber == other.trainNumber &&
-          journeyEndTime == other.journeyEndTime &&
+          expiresAt == other.expiresAt &&
           isDriver == other.isDriver &&
           pushToken == other.pushToken;
 
   @override
-  int get hashCode => Object.hash(evu, trainNumber, journeyEndTime, isDriver, pushToken);
+  int get hashCode => Object.hash(evu, trainNumber, expiresAt, isDriver, pushToken);
 }

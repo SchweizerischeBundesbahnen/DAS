@@ -175,6 +175,7 @@ class _ProviderScope extends StatelessWidget {
             return CustomerOrientedDepartureViewModel(
               repository: DI.get(),
               ruFeatureProvider: DI.get(),
+              authenticator: DI.get(),
               notificationViewModel: notificationVM,
             );
           },

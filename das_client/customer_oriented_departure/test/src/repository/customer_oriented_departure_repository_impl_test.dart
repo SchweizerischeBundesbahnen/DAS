@@ -211,12 +211,7 @@ void main() {
     when(mockMessagingService.tokenValue).thenReturn(null);
 
     // ACT
-    final result = await testee.unsubscribe(
-      evu: '1080',
-      trainNumber: 'RE1234',
-      journeyEndTime: testJourneyEndTime,
-      isDriver: true,
-    );
+    final result = await testee.unsubscribe();
 
     // VERIFY
     expect(result, isFalse);
@@ -239,12 +234,7 @@ void main() {
     ).thenThrow(Exception('network error'));
 
     // ACT
-    final result = await testee.unsubscribe(
-      evu: '1080',
-      trainNumber: 'RE1234',
-      journeyEndTime: testJourneyEndTime,
-      isDriver: true,
-    );
+    final result = await testee.unsubscribe();
 
     // VERIFY
     expect(result, isFalse);
