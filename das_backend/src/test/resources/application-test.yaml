@@ -33,6 +33,11 @@ auth:
       jwk-set-uri: https://login.microsoftonline.com/3409e798-d567-49b1-9bae-f0be66427c54/discovery/v2.0/keys
       companies: [ '9999' ]
   admin-tenant-id: 2cda5d11-f0ac-46b3-967d-af1b2e1bd01a
+  company-codes:
+    MOCK_A: 1111
+    MOCK_B: 2222
+    MOCK_C: 3333
+    MOCK_OTHER: 9999
 logging:
   url: url
   token: token

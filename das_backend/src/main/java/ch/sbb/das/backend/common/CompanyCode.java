@@ -1,4 +1,4 @@
-package ch.sbb.das.backend.preload.application.model.trainidentification;
+package ch.sbb.das.backend.common;
 
 import lombok.NonNull;
 import lombok.Value;

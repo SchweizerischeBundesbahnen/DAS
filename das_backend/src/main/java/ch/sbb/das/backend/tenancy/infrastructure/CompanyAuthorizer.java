@@ -1,5 +1,6 @@
 package ch.sbb.das.backend.tenancy.infrastructure;
 
+import ch.sbb.das.backend.common.CompanyCode;
 import ch.sbb.das.backend.tenancy.domain.model.Tenant;
 import ch.sbb.das.backend.tenancy.domain.repository.TenantRepository;
 import java.net.URL;
@@ -17,19 +18,23 @@ public class CompanyAuthorizer {
         this.tenantRepository = tenantRepository;
     }
 
-    public boolean canEditCompany(Authentication authentication, Set<String> companies) {
+    public Set<CompanyCode> getCompanyCodes(Authentication authentication) {
+        Tenant tenant = getTenant(authentication);
+        if (tenant == null || tenant.companies() == null) {
+            return Set.of();
+        }
+        return tenant.companies();
+    }
+
+    public boolean canEditCompany(Authentication authentication, Set<CompanyCode> companies) {
         if (companies == null || companies.isEmpty()) {
             return false;
         }
-        Tenant tenant = getTenant(authentication);
-        if (tenant == null) {
+        Set<CompanyCode> tenantCompanies = getCompanyCodes(authentication);
+        if (tenantCompanies == null || tenantCompanies.isEmpty()) {
             return false;
         }
-        if (tenant.companies() == null || tenant.companies().isEmpty()) {
-            return false;
-        }
-
-        return tenant.companies().containsAll(companies);
+        return tenantCompanies.containsAll(companies);
     }
 
     public boolean isAdminTenant(Authentication authentication) {

@@ -7,6 +7,7 @@ import static ch.sbb.das.backend.admin.application.settings.AppVersionController
 import static ch.sbb.das.backend.admin.application.settings.SettingsController.API_SETTINGS;
 import static ch.sbb.das.backend.formation.api.v1.FormationController.API_FORMATIONS;
 import static ch.sbb.das.backend.proxy.CustomerOrientedDepartureController.API_CUSTOMER_ORIENTED_DEPARTURE;
+import static ch.sbb.das.backend.tenancy.application.CompanyController.API_COMPANIES;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 import ch.sbb.das.backend.common.security.UserRole;
@@ -38,7 +39,7 @@ public class WebSecurityConfig {
                 .requestMatchers("/actuator/health/**").permitAll()
                 .requestMatchers(API_SETTINGS, API_FORMATIONS, API_CUSTOMER_ORIENTED_DEPARTURE + "/**").hasAnyRole(UserRole.OBSERVER, UserRole.DRIVER)
                 .requestMatchers(API_SETTINGS_APP_VERSION + "/**", API_LOCATIONS).hasRole(UserRole.ADMIN)
-                .requestMatchers(API_NOTICE_TEMPLATES + "/**", API_HOLIDAYS + "/**").hasAnyRole(UserRole.ADMIN, UserRole.RU_ADMIN)
+                .requestMatchers(API_NOTICE_TEMPLATES + "/**", API_HOLIDAYS + "/**", API_COMPANIES).hasAnyRole(UserRole.ADMIN, UserRole.RU_ADMIN)
                 .anyRequest().authenticated()
             )
             .csrf(AbstractHttpConfigurer::disable)

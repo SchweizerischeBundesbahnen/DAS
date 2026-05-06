@@ -5,9 +5,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.waitAtMost;
 
 import ch.sbb.das.backend.IntegrationTest;
+import ch.sbb.das.backend.common.CompanyCode;
 import ch.sbb.das.backend.preload.application.TimetableService;
 import ch.sbb.das.backend.preload.application.TrainIdentificationService;
-import ch.sbb.das.backend.preload.application.model.trainidentification.CompanyCode;
 import ch.sbb.das.backend.preload.application.model.trainidentification.OperatingPeriod;
 import ch.sbb.das.backend.preload.application.model.trainidentification.TrainIdentification;
 import ch.sbb.das.backend.preload.infrastructure.TimetablePeriodRepository;

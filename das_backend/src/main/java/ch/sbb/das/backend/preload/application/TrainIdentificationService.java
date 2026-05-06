@@ -1,9 +1,11 @@
 package ch.sbb.das.backend.preload.application;
 
-import ch.sbb.das.backend.preload.application.model.trainidentification.CompanyCode;
+import ch.sbb.das.backend.common.CompanyCode;
+import ch.sbb.das.backend.common.CompanyShortName;
 import ch.sbb.das.backend.preload.application.model.trainidentification.TrainIdentification;
 import ch.sbb.das.backend.preload.infrastructure.TrainIdentificationRepository;
 import ch.sbb.das.backend.preload.infrastructure.model.entities.TrainIdentificationEntity;
+import ch.sbb.das.backend.tenancy.infrastructure.CompanyCodeRepository;
 import java.time.OffsetDateTime;
 import java.util.Comparator;
 import java.util.List;
@@ -17,11 +19,11 @@ public class TrainIdentificationService {
 
     private final TrainIdentificationRepository trainIdentificationRepository;
 
-    private final UicCompanyCodeProvider uicCompanyCodeProvider;
+    private final CompanyCodeRepository companyCodeRepository;
 
-    public TrainIdentificationService(TrainIdentificationRepository trainIdentificationRepository, UicCompanyCodeProvider uicCompanyCodeProvider) {
+    public TrainIdentificationService(TrainIdentificationRepository trainIdentificationRepository, CompanyCodeRepository companyCodeRepository) {
         this.trainIdentificationRepository = trainIdentificationRepository;
-        this.uicCompanyCodeProvider = uicCompanyCodeProvider;
+        this.companyCodeRepository = companyCodeRepository;
     }
 
     public List<TrainIdentification> getNewTrainIdentificationsBetween(OffsetDateTime after, OffsetDateTime before) {
@@ -40,7 +42,8 @@ public class TrainIdentificationService {
 
     private Set<CompanyCode> readCompanyCodes(String smsRus) {
         return Set.of(smsRus.split(",")).stream()
-            .map(uicCompanyCodeProvider::getUicCompanyCode)
+            .map(CompanyShortName::of)
+            .map(companyCodeRepository::findCompanyCode)
             .filter(Optional::isPresent)
             .map(Optional::get)
             .collect(Collectors.toSet());
