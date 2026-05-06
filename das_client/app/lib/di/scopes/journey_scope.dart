@@ -1,5 +1,6 @@
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_screen/journey_table_scroll_controller.dart';
+import 'package:app/pages/journey/journey_screen/view_model/customer_oriented_departure_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/departure_process_warning_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_table_advancement_view_model.dart';
@@ -40,6 +41,7 @@ class JourneyScope extends DIScope {
     getIt.registerJourneyTableAdvancementViewModel();
     getIt.registerWarnAppViewModel();
     getIt.registerLocalRegulationHtmlGenerator();
+    getIt.registerCustomerOrientedDepartureViewModel();
     await getIt.allReady();
   }
 }
@@ -170,6 +172,18 @@ extension JourneyScopeExtension on GetIt {
       DepartureProcessWarningViewModel(
         ruFeatureProvider: DI.get(),
         journeyViewModel: DI.get(),
+      ),
+      dispose: (vm) => vm.dispose(),
+    );
+  }
+
+  void registerCustomerOrientedDepartureViewModel() {
+    registerSingleton<CustomerOrientedDepartureViewModel>(
+      CustomerOrientedDepartureViewModel(
+        repository: DI.get(),
+        ruFeatureProvider: DI.get(),
+        authenticator: DI.get(),
+        notificationViewModel: DI.get(),
       ),
       dispose: (vm) => vm.dispose(),
     );

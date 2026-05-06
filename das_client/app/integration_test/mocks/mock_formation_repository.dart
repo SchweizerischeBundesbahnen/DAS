@@ -2,9 +2,7 @@ import 'package:formation/component.dart';
 import 'package:rxdart/rxdart.dart';
 
 class MockFormationRepository implements FormationRepository {
-  BehaviorSubject<Formation?> formationSubject = BehaviorSubject<Formation?>.seeded(null);
-
-  MockFormationRepository();
+  final _rxFormation = BehaviorSubject<Formation?>.seeded(null);
 
   @override
   Stream<Formation?> watchFormation({
@@ -12,11 +10,11 @@ class MockFormationRepository implements FormationRepository {
     required String company,
     required DateTime operationalDay,
   }) {
-    return formationSubject.stream;
+    return _rxFormation.stream;
   }
 
   void emitNull() {
-    formationSubject.add(null);
+    _rxFormation.add(null);
   }
 
   void emitT9999Formation() {
@@ -62,7 +60,7 @@ class MockFormationRepository implements FormationRepository {
         ),
       ],
     );
-    formationSubject.add(formation);
+    _rxFormation.add(formation);
   }
 
   void emitFormationWithAllChanges() {
@@ -148,7 +146,7 @@ class MockFormationRepository implements FormationRepository {
         ),
       ],
     );
-    formationSubject.add(formation);
+    _rxFormation.add(formation);
   }
 
   void emitT9999FormationUpdate() {
@@ -187,7 +185,7 @@ class MockFormationRepository implements FormationRepository {
         ),
       ],
     );
-    formationSubject.add(formation);
+    _rxFormation.add(formation);
   }
 
   FormationRun _generateFormationRun(
@@ -236,6 +234,6 @@ class MockFormationRepository implements FormationRepository {
 
   @override
   Future<Formation?> reloadFormation(String operationalTrainNumber, String company, DateTime operationalDay) async {
-    return formationSubject.value;
+    return _rxFormation.value;
   }
 }

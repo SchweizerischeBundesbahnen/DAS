@@ -3,6 +3,6 @@
     <NetworkSpecificEvent>
         <teltsi_Company>1085</teltsi_Company>
         <NSP_GroupName>uxTesting</NSP_GroupName>
-        <NetworkSpecificParameter name="koa" value="waitCancelled"/>
+        <NetworkSpecificParameter name="koa" value="call"/>
     </NetworkSpecificEvent>
 </G2B_EventPayload>

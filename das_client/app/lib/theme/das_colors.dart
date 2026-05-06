@@ -5,5 +5,5 @@ class DASColors {
   const DASColors._();
 
   static const Color simTrain = Color(0xFFA34A7B);
-  static const Color koaBlue = Color(0xFFAFEBEE);
+  static const Color customerOrientedDepartureBlue = Color(0xFFAFEBEE);
 }

@@ -122,9 +122,9 @@
   "w_maneuver_notification_text": "Tu es en mode manœuvre",
   "w_maneuver_notification_wara_action": "WaRa",
   "w_maneuver_notification_maneuver": "Mode manœuvre",
-  "w_koa_notification_title": "Départ orienté clientèle",
-  "w_koa_notification_wait_canceled": "Attente supprimée",
-  "w_koa_notification_departure_process": "Afficher le processus de départ",
+  "w_customer_oriented_departure_notification_title": "Départ orienté clientèle",
+  "w_customer_oriented_departure_notification_ready": "Attente supprimée",
+  "w_customer_oriented_departure_notification_departure_process": "Afficher le processus de départ",
   "w_replacement_series_notification_available_title": "Catégorie de remplacement de {fromStation} à {toStation}",
   "@w_replacement_series_notification_available_title": {
     "type": "text",

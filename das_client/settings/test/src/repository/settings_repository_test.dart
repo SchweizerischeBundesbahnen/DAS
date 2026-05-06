@@ -369,10 +369,12 @@ void main() {
     // ARRANGE
     when(apiService.settings).thenAnswer((_) => throw HttpException('Exception'));
     await initTestee();
-    when(settingsDatabaseService.findRuFeature('UNKNOWN', RuFeatureKeys.koa)).thenAnswer((_) => Future.value(null));
+    when(
+      settingsDatabaseService.findRuFeature('UNKNOWN', RuFeatureKeys.customerOrientedDeparture),
+    ).thenAnswer((_) => Future.value(null));
 
     // ACT
-    final result = await testee.isRuFeatureEnabled(RuFeatureKeys.koa, 'UNKNOWN');
+    final result = await testee.isRuFeatureEnabled(RuFeatureKeys.customerOrientedDeparture, 'UNKNOWN');
 
     // EXPECT
     expect(result, isFalse);
