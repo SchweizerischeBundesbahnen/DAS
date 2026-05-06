@@ -25,6 +25,6 @@ test.describe('app main test', () => {
 
     const userMenuPanel = page.locator(usermenuSelector);
     await expect(userMenuPanel).toContainText('Logout');
-    await expect(userMenuPanel).toContainText('Account wechseln');
+    await expect(userMenuPanel).toContainText('Account wechselnn');
   });
 });
