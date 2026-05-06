@@ -1,13 +1,18 @@
+import 'package:app/di/di.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_chevron.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/combined_foot_note_operational_indication_row.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/foot_note_accordion.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/uncoded_operational_indication_accordion.dart';
 import 'package:app/widgets/accordion/accordion.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:app/widgets/table/scrollable_align.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:formation/component.dart';
 import 'package:sfera/component.dart';
 
 import '../app_test.dart';
+import '../mocks/mock_formation_repository.dart';
 import '../util/test_utils.dart';
 
 void main() {
@@ -179,6 +184,74 @@ void main() {
 
     expect(find.textContaining(l10n.c_radn_type_decisive_gradient_down), findsOneWidget);
     expect(find.textContaining(l10n.c_radn_type_journey), findsAny);
+
+    await disconnect(tester);
+  });
+
+  testWidgets('simFootNote_whenNoBrakeLoadSlip_thenSimFootNoteIsCollapsed', (tester) async {
+    // ARRANGE - no formation emitted (MockFormationRepository seeded with null)
+    await prepareAndStartApp(tester);
+    await loadJourney(tester, trainNumber: 'T20M');
+
+    // scroll to the SIM foot note
+    await dragUntilTextInStickyHeader(tester, 'Reichenbach im Kandertal');
+
+    // EXPECT - SIM foot note accordion is collapsed
+    final simFootNoteAccordion = _findDASTableAccordionByContainsText(l10n.c_radn_sim, FootNoteAccordion);
+    _checkCollapsibleRow(isCollapsed: true, collapsibleRow: simFootNoteAccordion);
+
+    await disconnect(tester);
+  });
+
+  testWidgets('simFootNote_whenBrakeLoadSlipWithoutSimTrain_thenSimFootNoteIsCollapsed', (tester) async {
+    // ARRANGE - emit formation with simTrain: false
+    await prepareAndStartApp(tester);
+
+    final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
+    formationRepository.emitT20NonSimFormation();
+
+    await loadJourney(tester, trainNumber: 'T20M');
+    await tester.pumpAndSettle();
+
+    // scroll to the SIM foot note
+    await dragUntilTextInStickyHeader(tester, 'Reichenbach im Kandertal');
+
+    // EXPECT - SIM foot note accordion is collapsed
+    final simFootNoteAccordion = _findDASTableAccordionByContainsText(l10n.c_radn_sim, FootNoteAccordion);
+    _checkCollapsibleRow(isCollapsed: true, collapsibleRow: simFootNoteAccordion);
+
+    await disconnect(tester);
+  });
+
+  testWidgets('simFootNote_whenSimTrainFormation_thenSimFootNoteIsExpandedAndNotCollapsedWhenPassed', (tester) async {
+    // ARRANGE - emit formation with simTrain: true
+    await prepareAndStartApp(tester);
+
+    final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
+    formationRepository.emitT20SimFormation();
+
+    await loadJourney(tester, trainNumber: 'T20');
+    await tester.pumpAndSettle();
+
+    // scroll to the SIM foot note
+    await dragUntilTextInStickyHeader(tester, 'Reichenbach im Kandertal');
+
+    // EXPECT - SIM foot note is expanded
+    final simFootNoteAccordion = _findDASTableAccordionByContainsText(l10n.c_radn_sim, FootNoteAccordion);
+    _checkCollapsibleRow(isCollapsed: false, collapsibleRow: simFootNoteAccordion);
+
+    // ACT - wait for automatic position advancement to reach Kandergrund
+    await waitUntilExists(
+      tester,
+      find.descendant(of: findDASTableRowByText('Kandergrund'), matching: find.byKey(RouteChevron.chevronKey)),
+    );
+    await stopAutomaticAdvancement(tester);
+    final scrollableFinder = find.byType(AnimatedList);
+    await tester.dragUntilVisible(findDASTableRowByText('P111'), scrollableFinder, const Offset(0, 100));
+
+    // EXPECT - SIM foot note must still be expanded (not auto-collapsed)
+    final simFootNoteAccordionAfterPass = _findDASTableAccordionByContainsText(l10n.c_radn_sim, FootNoteAccordion);
+    _checkCollapsibleRow(isCollapsed: false, collapsibleRow: simFootNoteAccordionAfterPass);
 
     await disconnect(tester);
   });
