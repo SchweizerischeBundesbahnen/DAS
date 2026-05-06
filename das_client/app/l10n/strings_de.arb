@@ -128,7 +128,7 @@
   "w_customer_oriented_departure_notification_title": "Kundenorientierte Abfahrt",
   "w_customer_oriented_departure_notification_wait": "Warten Zugbegleiter aktiv",
   "w_customer_oriented_departure_notification_call": "Erwarte Anruf vom Zugchef",
-  "w_customer_oriented_departure_notification_departure": "Warten aufgehoben.",
+  "w_customer_oriented_departure_notification_ready": "Warten aufgehoben.",
   "w_customer_oriented_departure_notification_departure_process": "Abfahrprozess anzeigen",
   "w_reauthentication_required_notification_text": "Du bist wieder online. Melde dich an, um aktuelle Daten zu erhalten.",
   "w_reauthentication_required_notification_button": "Anmelden",

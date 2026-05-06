@@ -3,6 +3,7 @@ import 'package:integration_test/integration_test.dart';
 import 'package:logger/component.dart';
 import 'package:logging/logging.dart';
 
+import 'test/journey_customer_oriented_departure_test.dart' as journey_customer_oriented_departure_tests;
 import 'test/journey_header_test.dart' as journey_header_tests;
 import 'test/journey_notification_test.dart' as journey_notification_tests;
 
@@ -16,4 +17,5 @@ void main() {
 
   journey_header_tests.main();
   journey_notification_tests.main();
+  journey_customer_oriented_departure_tests.main();
 }

@@ -140,6 +140,9 @@ class _ProviderScope extends StatelessWidget {
         Provider<NotificationPriorityQueueViewModel>(
           create: (_) => DI.get<NotificationPriorityQueueViewModel>(),
         ),
+        Provider<CustomerOrientedDepartureViewModel>(
+          create: (_) => DI.get<CustomerOrientedDepartureViewModel>(),
+        ),
         Provider<AdditionalSpeedRestrictionModalViewModel>(
           create: (_) => AdditionalSpeedRestrictionModalViewModel(),
           dispose: (_, vm) => vm.dispose(),
@@ -167,20 +170,6 @@ class _ProviderScope extends StatelessWidget {
         ),
 
         // PROXY  PROVIDERS
-        ProxyProvider<NotificationPriorityQueueViewModel, CustomerOrientedDepartureViewModel>(
-          lazy: false,
-          update: (_, notificationVM, prev) {
-            if (prev != null) return prev;
-
-            return CustomerOrientedDepartureViewModel(
-              repository: DI.get(),
-              ruFeatureProvider: DI.get(),
-              authenticator: DI.get(),
-              notificationViewModel: notificationVM,
-            );
-          },
-          dispose: (_, vm) => vm.dispose(),
-        ),
         ProxyProvider<NotificationPriorityQueueViewModel, DisturbanceViewModel>(
           lazy: false,
           update: (_, notificationVM, prev) {
@@ -222,7 +211,6 @@ class _ProviderScope extends StatelessWidget {
           },
           dispose: (_, vm) => vm.dispose(),
         ),
-
         ProxyProvider<JourneyTableAdvancementViewModel, DetailModalViewModel>(
           update: (_, advancementVM, prev) {
             if (prev != null) return prev;

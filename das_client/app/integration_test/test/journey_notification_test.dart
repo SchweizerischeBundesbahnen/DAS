@@ -1,7 +1,6 @@
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_screen/notification/widgets/departure_dispatch_notification.dart';
 import 'package:app/pages/journey/journey_screen/notification/widgets/disturbance_notification.dart';
-import 'package:app/pages/journey/journey_screen/widgets/floating_departure_checklist_button.dart';
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:auth/component.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -13,26 +12,6 @@ import '../util/test_utils.dart';
 
 void main() {
   group('train journey notification test', () {
-    testWidgets('test customer oriented departure notifications are displayed properly', (tester) async {
-      await prepareAndStartApp(tester);
-      final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;
-      featureProvider.enableFeature(.departureProcess);
-
-      await loadJourney(tester, trainNumber: 'T13');
-
-      await waitUntilExists(tester, find.byKey(FloatingDepartureChecklistButton.buttonKey));
-
-      await waitUntilExists(tester, find.text(l10n.w_customer_oriented_departure_notification_wait));
-
-      await waitUntilNotExists(tester, find.byKey(FloatingDepartureChecklistButton.buttonKey));
-
-      await waitUntilExists(tester, find.text(l10n.w_customer_oriented_departure_notification_departure));
-
-      await waitUntilNotExists(tester, find.text(l10n.w_customer_oriented_departure_notification_departure));
-
-      await disconnect(tester);
-    });
-
     testWidgets('test departure process dialog is displayed', (tester) async {
       await prepareAndStartApp(tester);
       final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;

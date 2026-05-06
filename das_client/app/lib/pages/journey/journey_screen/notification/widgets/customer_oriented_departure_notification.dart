@@ -93,7 +93,7 @@ class _ReadyNotification extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = ThemeUtil.isDarkMode(context);
     return _BaseNotification(
-      title: context.l10n.w_customer_oriented_departure_notification_departure,
+      title: context.l10n.w_customer_oriented_departure_notification_ready,
       leading: Icon(SBBIcons.circle_tick_medium, color: SBBColors.black, size: 36.0),
       style: _promotionBoxStyle(
         context,

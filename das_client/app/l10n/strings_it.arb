@@ -131,7 +131,7 @@
   "w_maneuver_notification_wara_action": "WaRa",
   "w_maneuver_notification_maneuver": "Modalità di manovra",
   "w_customer_oriented_departure_notification_title": "Partenza orientata alla clientela",
-  "w_customer_oriented_departure_notification_departure": "Attesa disattivata.",
+  "w_customer_oriented_departure_notification_ready": "Attesa disattivata.",
   "w_customer_oriented_departure_notification_departure_process": "Mostra processo di partenza",
   "w_replacement_series_notification_available_title": "Categoria supplementare da {fromStation} a {toStation}",
   "@w_replacement_series_notification_available_title": {

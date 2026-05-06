@@ -44,7 +44,7 @@ class CustomerOrientedDepartureViewModel extends JourneyAwareViewModel {
   @override
   void journeyIdentificationChanged(Journey? journey) async {
     if (_lastJourney != null) {
-      await unsubscribe();
+      await _unsubscribe();
     }
 
     if (journey != null) {
@@ -80,7 +80,7 @@ class CustomerOrientedDepartureViewModel extends JourneyAwareViewModel {
     );
   }
 
-  Future<void> unsubscribe() async {
+  Future<void> _unsubscribe() async {
     _log.fine('Unsubscribing from open customer oriented departure updates.');
     await _repository.unsubscribe();
   }

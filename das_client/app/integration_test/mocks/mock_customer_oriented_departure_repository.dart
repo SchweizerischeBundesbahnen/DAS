@@ -1,9 +1,11 @@
 import 'package:customer_oriented_departure/component.dart';
 import 'package:rxdart/rxdart.dart';
 
-// TODO: Use Ux testing events instead?
 class MockCustomerOrientedDepartureRepository implements CustomerOrientedDepartureRepository {
-  final _rxStatus = BehaviorSubject<CustomerOrientedDepartureStatus>();
+  int unsubscribeCallCount = 0;
+  Set<String> subscribedTrainNumbers = {};
+
+  final _rxStatus = BehaviorSubject<CustomerOrientedDepartureStatus>.seeded(.departure);
 
   void emitStatus(CustomerOrientedDepartureStatus status) => _rxStatus.add(status);
 
@@ -17,18 +19,24 @@ class MockCustomerOrientedDepartureRepository implements CustomerOrientedDepartu
     required DateTime? journeyEndTime,
     required bool isDriver,
   }) async {
-    // unused
+    subscribedTrainNumbers.add(trainNumber);
     return true;
   }
 
   @override
   Future<bool> unsubscribe() async {
-    // unused
+    unsubscribeCallCount++;
     return true;
   }
 
   @override
   void dispose() {
     _rxStatus.close();
+  }
+
+  void reset() {
+    _rxStatus.add(.departure);
+    unsubscribeCallCount = 0;
+    subscribedTrainNumbers = {};
   }
 }
