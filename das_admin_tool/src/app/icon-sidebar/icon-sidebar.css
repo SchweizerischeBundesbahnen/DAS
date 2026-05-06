@@ -2,6 +2,8 @@ sbb-icon-sidebar-container {
   margin-block-start: var(--sbb-header-height);
 }
 
-sbb-sidebar-content {
-  padding: var(--sbb-spacing-fixed-4x);
+sbb-icon-sidebar-content {
+  padding-inline: var(--sbb-spacing-responsive-s);
+  padding-block-end: var(--sbb-spacing-responsive-s);
+  scroll-behavior: smooth;
 }

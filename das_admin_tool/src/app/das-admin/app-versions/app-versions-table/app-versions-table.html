@@ -9,7 +9,7 @@
       <th sbb-header-cell *sbbHeaderCellDef sbb-sort-header="minimalVersion" i18n="@@app_versions_table_column_minimal_version">Minimale Version
       </th>
       <td sbb-cell *sbbCellDef="let row">
-        <sbb-toggle-check disabled [checked]="row.minimalVersion" label-position="after">
+        <sbb-toggle-check [checked]="row.minimalVersion" disabled labelPosition="after">
           @if (row.minimalVersion) {
             <span i18n="@@app_versions_table_value_true">Ja</span>
           } @else {
@@ -28,7 +28,7 @@
     <ng-container sbbColumnDef="action">
       <th sbb-header-cell *sbbHeaderCellDef class="action"></th>
       <td sbb-cell *sbbCellDef="let appVersion" class="action">
-        <sbb-mini-button icon-name="chevron-small-right-small" (click)="edit(appVersion)"></sbb-mini-button>
+        <sbb-mini-button (click)="edit(appVersion)" iconName="pen-small"></sbb-mini-button>
       </td>
     </ng-container>
 

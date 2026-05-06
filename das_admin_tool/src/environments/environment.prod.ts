@@ -42,5 +42,6 @@ export const environment: Environment = {
   production: process.env.PRODUCTION !== 'false',
   stage: process.env.STAGE,
   backendUrl,
+  adminTenantId: process.env.ADMIN_TENANT_ID,
   authConfig,
 };
