@@ -2058,7 +2058,7 @@ void main() {
   });
 
   test('Test invalid sp is parsed as suspicious segment in T42 event', () {
-    final testJourneys = TestJourneyRepository.getFromClientTestResources('T42_invalid_sp').toList();
+    final testJourneys = TestJourneyRepository.getFromClientTestResources(filter: 'T42_invalid_sp').toList();
 
     expect(testJourneys, hasLength(2));
     final journey1 = testJourneys[0].journey;
@@ -2071,6 +2071,10 @@ void main() {
     final suspiciousSegments2 = journey2.metadata.suspiciousSegments;
     expect(suspiciousSegments2, hasLength(1));
     expect(suspiciousSegments2.first.startOrder, 100000);
+
+    // Check that all points after the suspicious segment are removed
+    expect(journey2.data, hasLength(11));
+    expect(journey2.data.last, isA<SuspiciousJourneyPoint>());
   });
 }
 

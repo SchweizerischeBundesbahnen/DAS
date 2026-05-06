@@ -40,7 +40,7 @@ class TestJourneyRepository {
 
   static Iterable<TestJourney> getFromStaticSferaResources() => fromRootDir(_sferaStaticResourcesDir);
 
-  static Iterable<TestJourney> getFromClientTestResources([String? filter]) =>
+  static Iterable<TestJourney> getFromClientTestResources({String? filter}) =>
       fromRootDir(_clientTestResourcesDir, filter);
 
   /// Loads journeys ignoring train characteristics and limiting the number of segment profiles considered.

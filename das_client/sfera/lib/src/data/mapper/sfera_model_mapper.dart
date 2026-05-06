@@ -775,9 +775,14 @@ class SferaModelMapper {
             _log.warning(
               'Received reference to segment profile with empty id. This segment will be marked as suspicious.',
             );
+
             return SuspiciousSegment(
               spId: segment.spId,
               startOrder: calculateOrder(index, 0),
+
+              /// endOrder null will make it apply (and remove) to all data after startOrder
+              /// see [_replaceAllInSuspiciousSegment] and [SuspiciousSegment.appliesToOrder]
+              endOrder: null,
             );
           }
 
