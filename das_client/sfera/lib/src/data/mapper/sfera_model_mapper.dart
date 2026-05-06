@@ -85,11 +85,14 @@ class SferaModelMapper {
 
     journeyData.sort();
 
-    final suspiciousSegments = _parseSuspiciousSegments(
-      journeyProfile.generalJpInformation,
-      segmentProfileReferences,
-      journeyData,
-    );
+    final suspiciousSegments = [
+      ..._parseSuspiciousSegments(
+        journeyProfile.generalJpInformation,
+        segmentProfileReferences,
+        journeyData,
+      ),
+      ..._parseInvalidSegments(segmentProfileReferences),
+    ];
     _replaceAllInSuspiciousSegment(journeyData, suspiciousSegments);
 
     journeyData.sort();
@@ -351,6 +354,8 @@ class SferaModelMapper {
     final changes = segmentProfileReferences
         .mapIndexed((index, reference) {
           final segmentProfile = segmentProfiles.firstMatch(reference);
+          if (segmentProfile == null) return null;
+
           final kilometreMap = parseKilometre(segmentProfile);
           final communicationNetworks = segmentProfile.contextInformation?.communicationNetworks;
 
@@ -385,6 +390,7 @@ class SferaModelMapper {
     return segmentProfileReferences
         .mapIndexed((index, reference) {
           final segmentProfile = segmentProfiles.firstMatch(reference);
+          if (segmentProfile == null) return null;
 
           final contactLists = segmentProfile.contextInformation?.contactLists;
           return contactLists?.map((contactList) {
@@ -476,6 +482,8 @@ class SferaModelMapper {
       final nonStandardIndication = reference.jpContextInformation?.nonStandardIndications.firstOrNull;
       if (nonStandardIndication?.trainRunType == .shuntingOnOpenTrack) {
         final segmentProfile = segmentProfiles.firstMatch(reference);
+        if (segmentProfile == null) continue;
+
         final segmentIndex = segmentProfiles.indexOf(segmentProfile);
 
         final constraint = nonStandardIndication!.constraint;
@@ -756,6 +764,32 @@ class SferaModelMapper {
       );
     }
     return result;
+  }
+
+  static List<SuspiciousSegment> _parseInvalidSegments(
+    List<SegmentProfileReferenceDto> segmentProfileReferences,
+  ) {
+    return segmentProfileReferences
+        .mapIndexed((index, segment) {
+          if (segment.spId == SegmentProfileMapper.invalidSpId) {
+            _log.warning(
+              'Received reference to segment profile with empty id. This segment will be marked as suspicious.',
+            );
+
+            return SuspiciousSegment(
+              spId: segment.spId,
+              startOrder: calculateOrder(index, 0),
+
+              /// endOrder null will make it apply (and remove) to all data after startOrder
+              /// see [_replaceAllInSuspiciousSegment] and [SuspiciousSegment.appliesToOrder]
+              endOrder: null,
+            );
+          }
+
+          return null;
+        })
+        .nonNulls
+        .toList();
   }
 
   static void _replaceAllInSuspiciousSegment(List<BaseData> journeyData, List<SuspiciousSegment> suspiciousSegments) {

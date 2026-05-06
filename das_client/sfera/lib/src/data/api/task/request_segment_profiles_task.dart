@@ -12,6 +12,7 @@ import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
 import 'package:sfera/src/data/dto/sp_request_dto.dart';
 import 'package:sfera/src/data/format.dart';
 import 'package:sfera/src/data/local/sfera_local_database_service.dart';
+import 'package:sfera/src/data/mapper/segment_profile_mapper.dart';
 import 'package:sfera/src/model/otn_id.dart';
 
 final _log = Logger('RequestSegmentProfilesTask');
@@ -118,6 +119,8 @@ class RequestSegmentProfilesTask extends SferaTask<List<SegmentProfileDto>> {
     final missingSps = <SegmentProfileReferenceDto>[];
 
     for (final segment in journeyProfile.segmentProfileReferences) {
+      if (segment.spId == SegmentProfileMapper.invalidSpId) continue;
+
       final existingProfile = await _sferaDatabaseRepository.findSegmentProfile(
         segment.spId,
         segment.versionMajor,

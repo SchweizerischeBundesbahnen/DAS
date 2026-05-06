@@ -91,6 +91,8 @@ class TrackEquipmentMapper {
     final trackEquipments = <_NonStandardTrackEquipment>[];
     for (int segmentIndex = 0; segmentIndex < segmentProfilesLists.length; segmentIndex++) {
       final segmentProfile = segmentProfiles.firstMatch(segmentProfilesLists.elementAt(segmentIndex));
+      if (segmentProfile == null) continue;
+
       final nonStandardTrackEquipments = segmentProfile.areas?.nonStandardTrackEquipments ?? [];
 
       final kilometreMap = parseKilometre(segmentProfile);

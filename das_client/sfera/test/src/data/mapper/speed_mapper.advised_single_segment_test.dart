@@ -34,6 +34,12 @@ void main() {
       mockJourneyProfile = MockJourneyProfileDto();
       mockSegmentProfile = MockSegmentProfileDto();
       mockSegmentProfileReference = MockSegmentProfileReferenceDto();
+      when(mockSegmentProfileReference.spId).thenReturn('id');
+      when(mockSegmentProfileReference.versionMajor).thenReturn('1');
+      when(mockSegmentProfileReference.versionMinor).thenReturn('0');
+      when(mockSegmentProfile.id).thenReturn('id');
+      when(mockSegmentProfile.versionMajor).thenReturn('1');
+      when(mockSegmentProfile.versionMinor).thenReturn('0');
       mockTemporaryConstraint = MockTemporaryConstraintsDto();
       mockAdvisedSpeed = MockAdvisedSpeedDto();
     });
@@ -61,8 +67,6 @@ void main() {
       test('whenNoAdvisedSpeedTemporaryConstraints_thenIsEmpty', () {
         // ARRANGE
         when(mockJourneyProfile.segmentProfileReferences).thenReturn([mockSegmentProfileReference]);
-        when(mockSegmentProfileReference.spId).thenReturn('id');
-        when(mockSegmentProfile.id).thenReturn('id');
         when(mockSegmentProfileReference.advisedSpeedTemporaryConstraints).thenReturn(List.empty());
 
         // ACT & EXPECT
@@ -76,8 +80,6 @@ void main() {
     group('invalid temporary constraints advised speed', () {
       setUp(() {
         when(mockJourneyProfile.segmentProfileReferences).thenReturn([mockSegmentProfileReference]);
-        when(mockSegmentProfileReference.spId).thenReturn('id');
-        when(mockSegmentProfile.id).thenReturn('id');
         when(mockSegmentProfileReference.advisedSpeedTemporaryConstraints).thenReturn([mockTemporaryConstraint]);
       });
 
@@ -164,9 +166,6 @@ void main() {
       final twoSignalJourney = SpeedMapperTestFixtures.twoSignalJourney;
       setUp(() {
         when(mockJourneyProfile.segmentProfileReferences).thenReturn([mockSegmentProfileReference]);
-        when(mockSegmentProfileReference.spId).thenReturn('id');
-        when(mockSegmentProfile.id).thenReturn('id');
-        when(mockSegmentProfile.length).thenReturn(100.0);
         when(mockSegmentProfileReference.advisedSpeedTemporaryConstraints).thenReturn([mockTemporaryConstraint]);
         when(mockTemporaryConstraint.advisedSpeed).thenReturn(mockAdvisedSpeed);
         when(mockTemporaryConstraint.startLocation).thenReturn(0.0);
