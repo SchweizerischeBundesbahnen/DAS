@@ -2,6 +2,7 @@ package ch.sbb.das.backend.common.config;
 
 import static ch.sbb.das.backend.admin.application.locations.TafTapLocationController.API_LOCATIONS;
 import static ch.sbb.das.backend.admin.application.notices.NoticeTemplateController.API_NOTICE_TEMPLATES;
+import static ch.sbb.das.backend.admin.application.notices.SpecialHolidayController.API_SPECIAL_HOLIDAYS;
 import static ch.sbb.das.backend.admin.application.settings.AppVersionController.API_SETTINGS_APP_VERSION;
 import static ch.sbb.das.backend.admin.application.settings.SettingsController.API_SETTINGS;
 import static ch.sbb.das.backend.formation.api.v1.FormationController.API_FORMATIONS;
@@ -37,7 +38,7 @@ public class WebSecurityConfig {
                 .requestMatchers("/actuator/health/**").permitAll()
                 .requestMatchers(API_SETTINGS, API_FORMATIONS, API_CUSTOMER_ORIENTED_DEPARTURE + "/**").hasAnyRole(UserRole.OBSERVER, UserRole.DRIVER)
                 .requestMatchers(API_SETTINGS_APP_VERSION + "/**", API_LOCATIONS).hasRole(UserRole.ADMIN)
-                .requestMatchers(API_NOTICE_TEMPLATES + "/**").hasAnyRole(UserRole.ADMIN, UserRole.RU_ADMIN)
+                .requestMatchers(API_NOTICE_TEMPLATES + "/**", API_SPECIAL_HOLIDAYS + "/**").hasAnyRole(UserRole.ADMIN, UserRole.RU_ADMIN)
                 .anyRequest().authenticated()
             )
             .csrf(AbstractHttpConfigurer::disable)
