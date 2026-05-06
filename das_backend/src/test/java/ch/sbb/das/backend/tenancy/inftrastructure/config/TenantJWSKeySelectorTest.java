@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import ch.sbb.das.backend.tenancy.domain.model.Tenant;
 import ch.sbb.das.backend.tenancy.infrastructure.ConfigTenantRepository;
-import ch.sbb.das.backend.tenancy.infrastructure.config.TenantConfig;
+import ch.sbb.das.backend.tenancy.infrastructure.config.ApplicationConfiguration;
 import ch.sbb.das.backend.tenancy.infrastructure.config.TenantJWSKeySelector;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
@@ -20,32 +20,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-@SpringBootTest(classes = TenantConfig.class)
+@SpringBootTest(classes = ApplicationConfiguration.class)
 @ActiveProfiles("test")
 class TenantJWSKeySelectorTest {
 
-    private final static JWSHeader JWS_HEADER = new JWSHeader(JWSAlgorithm.RS256);
+    private static final JWSHeader JWS_HEADER = new JWSHeader(JWSAlgorithm.RS256);
 
     @Autowired
-    private TenantConfig tenantConfig;
+    private ApplicationConfiguration applicationConfiguration;
 
     private TenantJWSKeySelector tenantJWSKeySelector;
 
     @BeforeEach
     void setUp() {
-        final ConfigTenantRepository tenantRepository = new ConfigTenantRepository(tenantConfig);
+        final ConfigTenantRepository tenantRepository = new ConfigTenantRepository(applicationConfiguration);
         tenantJWSKeySelector = new TenantJWSKeySelector(tenantRepository);
     }
 
     @Test
     void selectKeys_tenantSBB() throws KeySourceException {
-        final List<? extends Key> keys = tenantJWSKeySelector.selectKeys(JWS_HEADER, createDummyClaimsSet(tenantConfig.getTenants().getFirst()), null);
+        final List<? extends Key> keys = tenantJWSKeySelector.selectKeys(JWS_HEADER, createDummyClaimsSet(applicationConfiguration.getTenants().getFirst()), null);
         assertThat(keys).as("Issuer-Uri and JWT-set checked for found Tenant").hasSizeGreaterThan(0);
     }
 
     @Test
     void selectKeys_badTenantId() {
-        assertThatThrownBy(() -> tenantJWSKeySelector.selectKeys(JWS_HEADER, createDummyClaimsSet(tenantConfig.getTenants().get(1)), null))
+        assertThatThrownBy(() -> tenantJWSKeySelector.selectKeys(JWS_HEADER, createDummyClaimsSet(applicationConfiguration.getTenants().get(1)), null))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("Couldn't retrieve remote JWK set");
     }

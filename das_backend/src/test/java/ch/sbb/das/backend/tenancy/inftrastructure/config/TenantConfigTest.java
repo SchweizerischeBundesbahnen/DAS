@@ -3,23 +3,23 @@ package ch.sbb.das.backend.tenancy.inftrastructure.config;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.das.backend.tenancy.domain.model.Tenant;
-import ch.sbb.das.backend.tenancy.infrastructure.config.TenantConfig;
+import ch.sbb.das.backend.tenancy.infrastructure.config.ApplicationConfiguration;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-@SpringBootTest(classes = TenantConfig.class)
+@SpringBootTest(classes = ApplicationConfiguration.class)
 @ActiveProfiles("test")
 class TenantConfigTest {
 
     @Autowired
-    private TenantConfig tenantConfig;
+    private ApplicationConfiguration applicationConfiguration;
 
     @Test
     void should_load_tenants_from_configuration() {
-        List<Tenant> tenants = tenantConfig.getTenants();
+        List<Tenant> tenants = applicationConfiguration.getTenants();
         assertThat(tenants).isNotNull()
             .isNotEmpty()
             .hasSize(2);

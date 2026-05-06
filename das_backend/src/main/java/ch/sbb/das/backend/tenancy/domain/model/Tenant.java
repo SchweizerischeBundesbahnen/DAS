@@ -1,5 +1,6 @@
 package ch.sbb.das.backend.tenancy.domain.model;
 
+import ch.sbb.das.backend.common.CompanyCode;
 import java.util.Set;
 
 /**
@@ -12,7 +13,7 @@ public record Tenant(
     String name,
     String issuerUri,
     String jwkSetUri,
-    Set<String> companies
+    Set<CompanyCode> companies
 ) {
 
     public String getId() {

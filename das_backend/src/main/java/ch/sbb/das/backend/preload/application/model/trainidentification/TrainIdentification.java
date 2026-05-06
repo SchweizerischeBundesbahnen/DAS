@@ -1,5 +1,6 @@
 package ch.sbb.das.backend.preload.application.model.trainidentification;
 
+import ch.sbb.das.backend.common.CompanyCode;
 import ch.sbb.das.backend.preload.infrastructure.xml.XmlDateHelper;
 import ch.sbb.das.backend.preload.sfera.model.v0400.JPRequest;
 import ch.sbb.das.backend.preload.sfera.model.v0400.OTNID;

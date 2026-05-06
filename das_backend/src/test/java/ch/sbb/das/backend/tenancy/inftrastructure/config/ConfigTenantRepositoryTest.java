@@ -5,25 +5,25 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import ch.sbb.das.backend.tenancy.domain.model.Tenant;
 import ch.sbb.das.backend.tenancy.infrastructure.ConfigTenantRepository;
-import ch.sbb.das.backend.tenancy.infrastructure.config.TenantConfig;
+import ch.sbb.das.backend.tenancy.infrastructure.config.ApplicationConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-@SpringBootTest(classes = TenantConfig.class)
+@SpringBootTest(classes = ApplicationConfiguration.class)
 @ActiveProfiles("test")
 class ConfigTenantRepositoryTest {
 
     @Autowired
-    private TenantConfig tenantConfig;
+    private ApplicationConfiguration applicationConfiguration;
 
     private ConfigTenantRepository tenantRepository;
 
     @BeforeEach
     void setUp() {
-        tenantRepository = new ConfigTenantRepository(tenantConfig);
+        tenantRepository = new ConfigTenantRepository(applicationConfiguration);
     }
 
     /**
