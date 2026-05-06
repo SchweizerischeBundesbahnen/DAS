@@ -1430,7 +1430,7 @@ void main() {
 
     final radioContactLists = journey.metadata.radioContactLists.toList();
 
-    expect(radioContactLists.length, 8);
+    expect(radioContactLists.length, 6);
     expect(radioContactLists[0].mainContacts.length, 1);
     expect(radioContactLists[0].mainContacts.first.contactIdentifier, '1407');
     expect(radioContactLists[1].mainContacts.length, 3);
@@ -1446,15 +1446,16 @@ void main() {
     expect(radioContactLists[4].selectiveContacts.first.contactIdentifier, '1103');
     expect(radioContactLists[4].selectiveContacts.first.contactRole, 'Richtung Süd: Fahrdienstleiter');
     expect(radioContactLists[5].mainContacts.length, 1);
-    expect(radioContactLists[5].selectiveContacts.length, 3);
-    expect(radioContactLists[5].selectiveContacts.first.contactIdentifier, '1103');
-    expect(radioContactLists[5].selectiveContacts.first.contactRole, 'Richtung Süd: Fahrdienstleiter');
-    expect(radioContactLists[6].mainContacts.length, 1);
-    expect(radioContactLists[6].selectiveContacts.length, 3);
-    expect(radioContactLists[6].selectiveContacts.first.contactIdentifier, '1103');
-    expect(radioContactLists[6].selectiveContacts.first.contactRole, 'Richtung Süd: Fahrdienstleiter');
-    expect(radioContactLists[7].mainContacts.length, 1);
-    expect(radioContactLists[7].mainContacts.first.contactIdentifier, '1407');
+    expect(radioContactLists[5].mainContacts.first.contactIdentifier, '1407');
+
+    // sim corridor gets mapped to a track foot note
+    final trackFootNotes = journey.data.whereType<TrackFootNote>().toList();
+    expect(trackFootNotes, hasLength(4));
+    expect(trackFootNotes.every((it) => it.footNote.refText == 'SIM' && it.footNote.type == .contact), isTrue);
+    expect(trackFootNotes[0].footNote.text, isEmpty);
+    expect(trackFootNotes[1].footNote.text, isNotEmpty);
+    expect(trackFootNotes[2].footNote.text, isEmpty);
+    expect(trackFootNotes[3].footNote.text, isNotEmpty);
   });
 
   test('Test SIM ContactList T20 parsed correctly', () async {
@@ -1463,21 +1464,15 @@ void main() {
 
     final radioContactLists = journey.metadata.radioContactLists.toList();
 
-    expect(radioContactLists.length, 9);
+    expect(radioContactLists.length, 6);
     expect(radioContactLists[0].mainContacts.length, 1);
     expect(radioContactLists[0].mainContacts.first.contactIdentifier, '1305');
     expect(radioContactLists[0].isSimCorridor, false);
-    expect(radioContactLists[1].selectiveContacts.length, 1);
-    expect(radioContactLists[1].selectiveContacts.first.contactIdentifier, '1390');
-    expect(radioContactLists[1].selectiveContacts.first.contactRole, 'Frutigen - Kandergrund');
-    expect(radioContactLists[1].isSimCorridor, true);
+    expect(radioContactLists[1].isSimCorridor, false);
     expect(radioContactLists[2].isSimCorridor, false);
     expect(radioContactLists[3].isSimCorridor, false);
     expect(radioContactLists[4].isSimCorridor, false);
-    expect(radioContactLists[5].isSimCorridor, true);
-    expect(radioContactLists[6].isSimCorridor, false);
-    expect(radioContactLists[7].isSimCorridor, true);
-    expect(radioContactLists[8].isSimCorridor, false);
+    expect(radioContactLists[5].isSimCorridor, false);
   });
 
   test('Test DecisiveGradientArea parsed correctly', () {

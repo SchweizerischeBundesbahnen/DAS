@@ -200,16 +200,6 @@ class _ProviderScope extends StatelessWidget {
           },
           dispose: (_, vm) => vm.dispose(),
         ),
-        ProxyProvider<JourneyPositionViewModel, CollapsibleRowsViewModel>(
-          update: (_, journeyPositionVM, prev) {
-            if (prev != null) return prev;
-            return CollapsibleRowsViewModel(
-              journeyPositionStream: journeyPositionVM.model,
-            );
-          },
-          dispose: (_, vm) => vm.dispose(),
-        ),
-
         ProxyProvider<JourneyTableAdvancementViewModel, DetailModalViewModel>(
           update: (_, advancementVM, prev) {
             if (prev != null) return prev;
@@ -392,6 +382,16 @@ class _ProviderScope extends StatelessWidget {
               detailModalViewModel: detailModalVM,
               connectivityManager: DI.get(),
               checkForUpdates: true,
+            );
+          },
+          dispose: (_, vm) => vm.dispose(),
+        ),
+        ProxyProvider2<JourneyPositionViewModel, BrakeLoadSlipViewModel, CollapsibleRowsViewModel>(
+          update: (_, journeyPositionVM, brakeLoadSlipVM, prev) {
+            if (prev != null) return prev;
+            return CollapsibleRowsViewModel(
+              journeyPositionStream: journeyPositionVM.model,
+              formationRunStream: brakeLoadSlipVM.formationRun,
             );
           },
           dispose: (_, vm) => vm.dispose(),

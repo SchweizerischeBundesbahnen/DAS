@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 
-<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="1" xsi:noNamespaceSchemaLocation="../../SFERA.xsd">
+<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="2" xsi:noNamespaceSchemaLocation="../../SFERA.xsd">
     <TrainIdentification>
         <OTN_ID>
             <teltsi_Company>1285</teltsi_Company>
@@ -87,5 +87,12 @@
             <TC_RU_ID>1285</TC_RU_ID>
         </TrainCharacteristicsRef>
     </SegmentProfileReference>
+    <General_JP_Information>
+        <General_JP_Information_NSP>
+            <teltsi_Company>1285</teltsi_Company>
+            <NSP_GroupName>TMSData</NSP_GroupName>
+            <NetworkSpecificParameter name="operatingDay" value="2099-12-31"/>
+        </General_JP_Information_NSP>
+    </General_JP_Information>
 
 </JourneyProfile>

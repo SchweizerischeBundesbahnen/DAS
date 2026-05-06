@@ -1,4 +1,3 @@
-import 'package:app/pages/journey/journey_screen/header/widgets/sim_identifier.dart';
 import 'package:app/pages/journey/journey_screen/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cell_row_builder.dart';
 import 'package:app/theme/theme_util.dart';
@@ -45,23 +44,17 @@ class CommunicationNetworkChangeRow extends CellRowBuilder<CommunicationNetworkC
       alignment: .centerLeft,
       child: Row(
         children: [
-          if (networkType == .sim)
-            Flexible(
-              child: SimIdentifier(textStyle: sbbTextStyle.romanStyle.large),
-            )
-          else ...[
-            Flexible(
-              child: Text(
-                'GSM',
-                style: sbbTextStyle.romanStyle.large,
-                maxLines: 1,
-                softWrap: false,
-                overflow: .ellipsis,
-              ),
+          Flexible(
+            child: Text(
+              'GSM',
+              style: sbbTextStyle.romanStyle.large,
+              maxLines: 1,
+              softWrap: false,
+              overflow: .ellipsis,
             ),
-            const SizedBox(width: SBBSpacing.xSmall),
-            CommunicationNetworkIcon(networkType: networkType),
-          ],
+          ),
+          const SizedBox(width: SBBSpacing.xSmall),
+          CommunicationNetworkIcon(networkType: networkType),
         ],
       ),
     );

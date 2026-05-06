@@ -234,6 +234,36 @@ class MockFormationRepository implements FormationRepository {
     );
   }
 
+  void emitT20NonSimFormation() {
+    final formation = Formation(
+      operationalTrainNumber: 'T20',
+      company: '1285',
+      operationalDay: DateTime.now(),
+      formationRuns: [
+        _generateFormationRun('CH07480', 'CH01950', trainCategoryCode: 'R', brakedWeightPercentage: 100),
+      ],
+    );
+    formationSubject.add(formation);
+  }
+
+  void emitT20SimFormation() {
+    final formation = Formation(
+      operationalTrainNumber: 'T20',
+      company: '1285',
+      operationalDay: DateTime.now(),
+      formationRuns: [
+        _generateFormationRun(
+          'CH07480',
+          'CH01950',
+          trainCategoryCode: 'R',
+          brakedWeightPercentage: 100,
+          simTrain: true,
+        ),
+      ],
+    );
+    formationSubject.add(formation);
+  }
+
   @override
   Future<Formation?> reloadFormation(String operationalTrainNumber, String company, DateTime operationalDay) async {
     return formationSubject.value;

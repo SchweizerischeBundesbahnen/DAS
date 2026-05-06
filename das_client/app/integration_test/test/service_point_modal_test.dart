@@ -285,47 +285,6 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test SIM corridor information', (tester) async {
-      await prepareAndStartApp(tester);
-      await loadJourney(tester, trainNumber: 'T20M');
-
-      final scrollableFinder = find.byType(AnimatedList);
-      expect(scrollableFinder, findsOneWidget);
-
-      // check Reichenbach im Kandertal SIM information
-      await _openByTapOnCellWithText(tester, 'Reichenbach im Kandertal');
-      expect(find.byKey(DetailTabCommunication.simCorridorListKey), findsNothing);
-
-      // scroll down so that if Frutigen is in the stickyFooter it can be seen as a single row
-      final secondBlockSignal = find.text('P112');
-      await tester.drag(secondBlockSignal, const Offset(0, -100));
-      await tester.pumpAndSettle();
-
-      // check Frutigen for SIM information
-      final frutigenRow = find.text('Frutigen');
-      expect(frutigenRow, findsOneWidget);
-      await tester.tap(frutigenRow);
-      await tester.pumpAndSettle();
-      expect(find.byKey(DetailTabCommunication.simCorridorListKey), findsOneWidget);
-      expect(find.text('Frutigen - Kandergrund'), findsOneWidget);
-
-      // check Domodossola FM SIM information
-      await tester.dragUntilVisible(find.text('Domodossola FM'), scrollableFinder, const Offset(0, -50));
-      await tester.pumpAndSettle();
-
-      await _openByTapOnCellWithText(tester, 'Domodossola FM');
-      expect(find.byKey(DetailTabCommunication.simCorridorListKey), findsOneWidget);
-      expect(find.text('1392'), findsOneWidget);
-      expect(find.text('Domodossola - Preglia, linkes Gleis'), findsOneWidget);
-      expect(find.text('1393'), findsOneWidget);
-      expect(find.text('Domodossola - Preglia, rechtes Gleis'), findsOneWidget);
-
-      // check Footnote header
-      expect(find.text(l10n.c_radn_sim), findsAny);
-
-      await disconnect(tester);
-    });
-
     testWidgets('test departure authorization are displayed in modal', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T31M');

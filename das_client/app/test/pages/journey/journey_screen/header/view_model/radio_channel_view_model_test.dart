@@ -154,7 +154,7 @@ void main() {
       rxMockJourney.add(
         mockJourney(
           communicationNetworkChanges: [
-            CommunicationNetworkChange(communicationNetworkType: .sim, order: 0),
+            CommunicationNetworkChange(communicationNetworkType: .gsmP, order: 0),
           ],
         ),
       );
@@ -171,7 +171,7 @@ void main() {
       rxMockJourney.add(
         mockJourney(
           communicationNetworkChanges: [
-            CommunicationNetworkChange(communicationNetworkType: .sim, order: 10),
+            CommunicationNetworkChange(communicationNetworkType: .gsmP, order: 10),
           ],
         ),
       );
@@ -189,7 +189,7 @@ void main() {
         mockJourney(
           communicationNetworkChanges: [
             CommunicationNetworkChange(
-              communicationNetworkType: .sim,
+              communicationNetworkType: .gsmP,
               order: 10,
               kilometre: [0.0],
             ),
@@ -200,7 +200,7 @@ void main() {
 
       // EXPECT
       expect(emitRegister, hasLength(2));
-      expect(emitRegister.last, equals(RadioChannelModel(networkType: .sim)));
+      expect(emitRegister.last, equals(RadioChannelModel(networkType: .gsmP)));
     });
 
     test('model_whenJourneyWithTwoCommunicationNetworksAndCurrentPosition_thenHasNetworkType', () async {
@@ -210,7 +210,7 @@ void main() {
         mockJourney(
           communicationNetworkChanges: [
             CommunicationNetworkChange(
-              communicationNetworkType: .sim,
+              communicationNetworkType: .gsmR,
               order: 10,
               kilometre: [0.0],
             ),
@@ -241,7 +241,7 @@ void main() {
           data: [entrySignal, blocker, twentyOrderServicePoint],
           communicationNetworkChanges: [
             CommunicationNetworkChange(
-              communicationNetworkType: .sim,
+              communicationNetworkType: .gsmR,
               order: 10,
               kilometre: [0.0],
             ),
@@ -273,7 +273,7 @@ void main() {
           data: [entrySignal, twentyOrderServicePoint],
           communicationNetworkChanges: [
             CommunicationNetworkChange(
-              communicationNetworkType: .sim,
+              communicationNetworkType: .gsmR,
               order: 10,
               kilometre: [0.0],
             ),
@@ -286,7 +286,7 @@ void main() {
       expect(emitRegister, hasLength(2));
       expect(
         emitRegister.last,
-        equals(RadioChannelModel(networkType: .sim, lastServicePoint: twentyOrderServicePoint)),
+        equals(RadioChannelModel(networkType: .gsmR, lastServicePoint: twentyOrderServicePoint)),
       );
     });
 
@@ -299,7 +299,7 @@ void main() {
           data: [entrySignal, twentyOrderServicePoint],
           communicationNetworkChanges: [
             CommunicationNetworkChange(
-              communicationNetworkType: .sim,
+              communicationNetworkType: .gsmR,
               order: 10,
               kilometre: [0.0],
             ),

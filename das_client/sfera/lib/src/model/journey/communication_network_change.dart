@@ -33,7 +33,7 @@ class CommunicationNetworkChange extends JourneyPoint {
   }
 }
 
-enum CommunicationNetworkType { gsmR, gsmP, sim }
+enum CommunicationNetworkType { gsmR, gsmP }
 
 extension CommunicationNetworkChangeListExtension on Iterable<CommunicationNetworkChange> {
   /// Returns network type that returns last lower or equal to given [order].
@@ -44,7 +44,7 @@ extension CommunicationNetworkChangeListExtension on Iterable<CommunicationNetwo
 
   /// Return the network type that changes at given [order].
   CommunicationNetworkType? changeAtOrder(int order) {
-    final sortedList = where((it) => it.communicationNetworkType != .sim).toList()..sort();
+    final sortedList = toList()..sort();
     final change = sortedList.firstWhereOrNull((it) => it.order == order);
     if (change == null) return null;
     final index = sortedList.indexOf(change);
@@ -56,6 +56,4 @@ extension CommunicationNetworkChangeListExtension on Iterable<CommunicationNetwo
           : null;
     }
   }
-
-  Iterable<CommunicationNetworkChange> get whereNotSim => whereNot((change) => change.communicationNetworkType == .sim);
 }

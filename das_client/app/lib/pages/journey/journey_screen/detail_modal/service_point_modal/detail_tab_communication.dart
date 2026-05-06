@@ -10,7 +10,6 @@ import 'package:sfera/component.dart';
 class DetailTabCommunication extends StatelessWidget {
   static const communicationTabKey = Key('communicationTab');
   static const radioChannelListKey = Key('communicationTabRadioChannelList');
-  static const simCorridorListKey = Key('communicationTabSimCorridorList');
   static const departureAuthorizationKey = Key('communicationTabDepartureAuthorization');
 
   const DetailTabCommunication({super.key = communicationTabKey});
@@ -27,47 +26,8 @@ class DetailTabCommunication extends StatelessWidget {
             _communicationNetworkType(context),
             Text(context.l10n.w_service_point_modal_communication_radio_channel, style: sbbTextStyle.romanStyle.small),
             _contactList(context),
-            _simCorridor(context),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _simCorridor(BuildContext context) {
-    final viewModel = context.read<ServicePointModalViewModel>();
-    return StreamBuilder(
-      stream: viewModel.simCorridor,
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) return SizedBox.shrink();
-
-        final contactList = snapshot.requireData!;
-        final simContacts = [...contactList.mainContacts, ...contactList.selectiveContacts];
-        return ListView.builder(
-          key: simCorridorListKey,
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          itemCount: simContacts.length + 1,
-          itemBuilder: (context, index) => index == 0
-              ? Text(context.l10n.w_service_point_modal_communication_sim, style: sbbTextStyle.romanStyle.small)
-              : _simContactItem(simContacts.elementAt(index - 1)),
-        );
-      },
-    );
-  }
-
-  Widget _simContactItem(Contact contact) {
-    return Padding(
-      padding: const .symmetric(vertical: 4.0),
-      child: Row(
-        crossAxisAlignment: .start,
-        mainAxisAlignment: .start,
-        spacing: 4.0,
-        children: [
-          SizedBox(width: 60.0, child: Text(contact.contactIdentifier, style: sbbTextStyle.boldStyle.small)),
-          if (contact.contactRole != null)
-            Expanded(child: Text(contact.contactRole!, style: sbbTextStyle.romanStyle.small)),
-        ],
       ),
     );
   }
@@ -117,7 +77,7 @@ class DetailTabCommunication extends StatelessWidget {
     return StreamBuilder(
       stream: viewModel.communicationNetworkType,
       builder: (context, snapshot) {
-        if (!snapshot.hasData || snapshot.data == .sim) {
+        if (!snapshot.hasData) {
           return SizedBox.shrink();
         }
 
