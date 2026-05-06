@@ -77,7 +77,7 @@ class DetailTabCommunication extends StatelessWidget {
     return StreamBuilder(
       stream: viewModel.communicationNetworkType,
       builder: (context, snapshot) {
-        if (!snapshot.hasData || snapshot.data == .sim) {
+        if (!snapshot.hasData) {
           return SizedBox.shrink();
         }
 

@@ -362,12 +362,12 @@ class SferaModelMapper {
             }
             // Simple Inter Modal network changes are displayed as foot notes and ignored in metadata
             // https://github.com/SchweizerischeBundesbahnen/DAS/issues/1126
-            if (element.communicationNetworkType.communicationNetworkType == .sim) return null;
+            if (element.communicationNetworkType == .sim) return null;
 
             final order = calculateOrder(index, element.startLocation);
 
             return CommunicationNetworkChange(
-              communicationNetworkType: element.communicationNetworkType.communicationNetworkType,
+              communicationNetworkType: element.communicationNetworkType.communicationNetworkType!,
               order: order,
               isServicePoint: servicePointOrders.contains(order),
               kilometre: kilometreMap[element.startLocation] ?? const [],
@@ -392,7 +392,8 @@ class SferaModelMapper {
 
           final contactLists = segmentProfile.contextInformation?.contactLists;
 
-          // Simple Inter Modal network changes are displayed as foot notes and ignored in metadata
+          // Simple Inter Modal network changes are identified by having unequal start and end locations
+          // filter these, since they are displayed as foot notes and ignored in metadata
           // https://github.com/SchweizerischeBundesbahnen/DAS/issues/1126
           final relevantContactLists = contactLists?.whereNot((it) => it.startLocation != it.endLocation);
           return relevantContactLists?.map((contactList) {
