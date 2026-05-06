@@ -31,15 +31,10 @@ public record NoticeTemplateRequest(
         if (content == null) {
             return null;
         }
-        if (isBlank(content.title()) && isBlank(content.text())) {
+        if (StringUtils.isBlank(content.title()) && StringUtils.isBlank(content.text())) {
             return null;
         }
         return content;
     }
-
-    private static boolean isBlank(String value) {
-        return value == null || value.isBlank();
-    }
-
 }
 
