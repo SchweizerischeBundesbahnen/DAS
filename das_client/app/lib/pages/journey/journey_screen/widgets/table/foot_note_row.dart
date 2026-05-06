@@ -50,7 +50,7 @@ class FootNoteRow<T extends BaseFootNote> extends WidgetRowBuilder<T> {
             addTopMargin: addTopMargin,
             isExpanded: isExpanded,
             leftPadding: leftPadding,
-            highlightBorder: data._isSIMFootNote && hasSIMFormation,
+            highlightBorder: data.footNote.isSIM && hasSIMFormation,
           ),
         );
       },
@@ -80,7 +80,7 @@ extension FootNoteExtension on BaseFootNote {
   }
 
   String _defaultTitle(BuildContext context) {
-    if (_isSIMFootNote) return context.l10n.c_radn_sim;
+    if (footNote.isSIM) return context.l10n.c_radn_sim;
 
     return switch (footNote.type) {
       .trackSpeed => '${context.l10n.c_radn} ${context.l10n.c_radn_type_track_speed}',
@@ -92,6 +92,4 @@ extension FootNoteExtension on BaseFootNote {
       null => context.l10n.c_radn,
     };
   }
-
-  bool get _isSIMFootNote => footNote.refText == 'SIM';
 }
