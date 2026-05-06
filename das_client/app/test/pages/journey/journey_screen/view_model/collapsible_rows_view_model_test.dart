@@ -2,6 +2,7 @@ import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_vie
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:formation/component.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rxdart/rxdart.dart';
@@ -16,11 +17,16 @@ void main() {
   late MockJourneyViewModel mockJourneyViewModel;
   late BehaviorSubject<Journey?> journeySubject;
   late BehaviorSubject<JourneyPositionModel> journeyPositionSubject;
+  late BehaviorSubject<FormationRunChange?> formationRunSubject;
 
   final footNote = FootNote(text: 'Test footnote', identifier: 'FN1');
   final footNoteData = OpFootNote(order: 10, footNote: footNote);
   final footNote2 = FootNote(text: 'Second footnote', identifier: 'FN2');
   final footNoteData2 = OpFootNote(order: 20, footNote: footNote2);
+
+  // SIM footnote: type == contact, refText == 'SIM'
+  final simFootNote = FootNote(text: 'SIM note', identifier: 'SIM1', type: FootNoteType.contact, refText: 'SIM');
+  final simFootNoteData = OpFootNote(order: 8, footNote: simFootNote);
 
   final indicator = UncodedOperationalIndication(order: 15, texts: ['Some indication']);
   final indicator2 = UncodedOperationalIndication(order: 25, texts: ['Another indication']);
@@ -32,12 +38,13 @@ void main() {
   final signalBetween3And4 = Signal(order: 22, kilometre: []); // between footNoteData2(20) and indicator2(25)
   final signal2 = Signal(order: 30, kilometre: []);
 
-  // journey: signal1(5), footNoteData(10), signalBetween1And2(12), indicator(15),
+  // journey: signal1(5), simFootNoteData(8), footNoteData(10), signalBetween1And2(12), indicator(15),
   //          signalBetween2And3(17), footNoteData2(20), signalBetween3And4(22), indicator2(25), signal2(30)
   final baseJourney = Journey(
     metadata: Metadata(),
     data: [
       signal1,
+      simFootNoteData,
       footNoteData,
       signalBetween1And2,
       indicator,
@@ -55,9 +62,11 @@ void main() {
     when(mockJourneyViewModel.journey).thenAnswer((_) => journeySubject.stream);
 
     journeyPositionSubject = BehaviorSubject<JourneyPositionModel>.seeded(JourneyPositionModel());
+    formationRunSubject = BehaviorSubject<FormationRunChange?>.seeded(null);
 
     testee = CollapsibleRowsViewModel(
       journeyPositionStream: journeyPositionSubject.stream,
+      formationRunStream: formationRunSubject.stream,
       journeyViewModel: mockJourneyViewModel,
     );
   });
@@ -66,6 +75,7 @@ void main() {
     testee.dispose();
     journeySubject.close();
     journeyPositionSubject.close();
+    formationRunSubject.close();
   });
 
   group('toggleRow', () {
@@ -361,4 +371,190 @@ void main() {
       expect(testee.collapsedRowsValue, isEmpty);
     });
   });
+
+  group('simTrain', () {
+    test('simTrain_whenFormationRunIsSimTrain_thenSimFootNotesAreExpanded', () async {
+      // ARRANGE - SIM footnotes start collapsed (no formation run)
+      await processStreams();
+      expect(testee.collapsedRowsValue.stateOf(simFootNoteData), CollapsedState.collapsed);
+
+      // ACT
+      formationRunSubject.add(
+        FormationRunChange(
+          formationRun: _buildFormationRun(simTrain: true),
+          previousFormationRun: null,
+        ),
+      );
+      await processStreams();
+
+      // EXPECT
+      expect(testee.collapsedRowsValue.stateOf(simFootNoteData), CollapsedState.expanded);
+    });
+
+    test('simTrain_whenFormationRunIsNotSimTrain_thenSimFootNotesAreCollapsed', () async {
+      // ARRANGE - no SIM formation run
+
+      // ACT
+      formationRunSubject.add(
+        FormationRunChange(
+          formationRun: _buildFormationRun(simTrain: false),
+          previousFormationRun: null,
+        ),
+      );
+      await processStreams();
+
+      // EXPECT
+      expect(testee.collapsedRowsValue.stateOf(simFootNoteData), CollapsedState.collapsed);
+    });
+
+    test('simTrain_whenFormationRunChangesFromSimToNonSim_thenSimFootNotesAreCollapsed', () async {
+      // ARRANGE
+      formationRunSubject.add(
+        FormationRunChange(
+          formationRun: _buildFormationRun(simTrain: true),
+          previousFormationRun: null,
+        ),
+      );
+      await processStreams();
+      expect(testee.collapsedRowsValue.stateOf(simFootNoteData), CollapsedState.expanded);
+
+      // ACT
+      formationRunSubject.add(
+        FormationRunChange(
+          formationRun: _buildFormationRun(simTrain: false),
+          previousFormationRun: _buildFormationRun(simTrain: true),
+        ),
+      );
+      await processStreams();
+
+      // EXPECT
+      expect(testee.collapsedRowsValue.stateOf(simFootNoteData), CollapsedState.collapsed);
+    });
+
+    test('simTrain_whenFormationRunChangesFromNonSimToSim_thenSimFootNotesAreExpanded', () async {
+      // ARRANGE
+      formationRunSubject.add(
+        FormationRunChange(
+          formationRun: _buildFormationRun(simTrain: false),
+          previousFormationRun: null,
+        ),
+      );
+      await processStreams();
+      expect(testee.collapsedRowsValue.stateOf(simFootNoteData), CollapsedState.collapsed);
+
+      // ACT
+      formationRunSubject.add(
+        FormationRunChange(
+          formationRun: _buildFormationRun(simTrain: true),
+          previousFormationRun: _buildFormationRun(simTrain: false),
+        ),
+      );
+      await processStreams();
+
+      // EXPECT
+      expect(testee.collapsedRowsValue.stateOf(simFootNoteData), CollapsedState.expanded);
+    });
+
+    test('simTrain_whenFormationRunIsSimTrain_thenNonSimFootNotesAreUnaffected', () async {
+      // ARRANGE
+      final initialState = testee.collapsedRowsValue.stateOf(footNoteData);
+
+      // ACT
+      formationRunSubject.add(
+        FormationRunChange(
+          formationRun: _buildFormationRun(simTrain: true),
+          previousFormationRun: null,
+        ),
+      );
+      await processStreams();
+
+      // EXPECT
+      expect(testee.collapsedRowsValue.stateOf(footNoteData), initialState);
+    });
+
+    test('simTrain_whenSimTrainAndPositionPassesSimFootNote_thenSimFootNoteIsNotCollapsed', () async {
+      // ARRANGE
+      formationRunSubject.add(
+        FormationRunChange(
+          formationRun: _buildFormationRun(simTrain: true),
+          previousFormationRun: null,
+        ),
+      );
+      await processStreams();
+      expect(testee.collapsedRowsValue.stateOf(simFootNoteData), CollapsedState.expanded);
+
+      // ACT - advance position past simFootNoteData(8) and footNoteData(10)
+      journeyPositionSubject.add(
+        JourneyPositionModel(
+          lastPosition: signal1,
+          currentPosition: signalBetween1And2,
+        ),
+      );
+      await processStreams();
+
+      // EXPECT - SIM foot note must NOT be auto-collapsed
+      expect(testee.collapsedRowsValue.stateOf(simFootNoteData), CollapsedState.expanded);
+    });
+
+    test('simTrain_whenNoSimTrainAndPositionPassesSimFootNote_thenSimFootNoteRemainsCollapsed', () async {
+      // ARRANGE
+      formationRunSubject.add(
+        FormationRunChange(
+          formationRun: _buildFormationRun(simTrain: false),
+          previousFormationRun: null,
+        ),
+      );
+      await processStreams();
+      expect(testee.collapsedRowsValue.stateOf(simFootNoteData), CollapsedState.collapsed);
+
+      // ACT
+      journeyPositionSubject.add(
+        JourneyPositionModel(
+          lastPosition: signal1,
+          currentPosition: signalBetween1And2,
+        ),
+      );
+      await processStreams();
+
+      // EXPECT
+      expect(testee.collapsedRowsValue.stateOf(simFootNoteData), CollapsedState.collapsed);
+    });
+
+    test('simTrain_whenFormationRunIsNull_thenSimFootNotesAreCollapsed', () async {
+      // ARRANGE & ACT - formationRunSubject starts with null (seeded in setUp)
+      await processStreams();
+
+      // EXPECT - SIM foot note is collapsed when there is no formation run
+      expect(testee.collapsedRowsValue.stateOf(simFootNoteData), CollapsedState.collapsed);
+    });
+  });
+}
+
+FormationRun _buildFormationRun({required bool simTrain}) {
+  return FormationRun(
+    inspectionDateTime: DateTime(2026),
+    tafTapLocationReferenceStart: 'START',
+    tafTapLocationReferenceEnd: 'END',
+    tractionLengthInCm: 0,
+    hauledLoadLengthInCm: 0,
+    formationLengthInCm: 0,
+    tractionWeightInT: 0,
+    hauledLoadWeightInT: 0,
+    formationWeightInT: 0,
+    tractionBrakedWeightInT: 0,
+    hauledLoadBrakedWeightInT: 0,
+    formationBrakedWeightInT: 0,
+    tractionHoldingForceInHectoNewton: 0,
+    formationHoldingForceInHectoNewton: 0,
+    simTrain: simTrain,
+    carCarrierVehicle: false,
+    dangerousGoods: false,
+    vehiclesCount: 0,
+    vehiclesWithBrakeDesignLlAndKCount: 0,
+    vehiclesWithBrakeDesignDCount: 0,
+    vehiclesWithDisabledBrakesCount: 0,
+    axleLoadMaxInKg: 0,
+    gradientUphillMaxInPermille: 0,
+    gradientDownhillMaxInPermille: 0,
+  );
 }
