@@ -87,7 +87,7 @@ Future<dynamic> showAppExpiresSoonDialog(ExpirySoon model, BuildContext context)
 Future<dynamic> showAppExpiredDialog(Expired model, BuildContext context) {
   return showDialog(
     context: context,
-    barrierDismissible: true,
+    barrierDismissible: false,
     builder: (context) => AppExpirationDialog(model: model),
   );
 }
