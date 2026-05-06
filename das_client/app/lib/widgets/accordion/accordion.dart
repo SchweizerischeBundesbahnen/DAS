@@ -46,6 +46,7 @@ class Accordion extends StatelessWidget {
     this.margin,
     this.borderRadius,
     this.additionalPadding,
+    this.border,
   });
 
   final String title;
@@ -57,6 +58,7 @@ class Accordion extends StatelessWidget {
   final EdgeInsetsGeometry? additionalPadding;
   final EdgeInsetsGeometry? margin;
   final BorderRadiusGeometry? borderRadius;
+  final Border? border;
 
   @override
   Widget build(BuildContext context) {
@@ -79,6 +81,7 @@ class Accordion extends StatelessWidget {
               BorderRadius.all(
                 Radius.circular(isExpanded ? SBBSpacing.medium : SBBSpacing.xSmall),
               ),
+          border: border,
         ),
         padding: .symmetric(
           vertical: isExpanded ? _expandedVerticalPadding : _collapsedVerticalPadding,

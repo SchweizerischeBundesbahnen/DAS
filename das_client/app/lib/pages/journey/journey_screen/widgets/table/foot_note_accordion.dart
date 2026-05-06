@@ -1,5 +1,6 @@
 import 'package:app/pages/journey/journey_screen/journey_overview.dart';
 import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_view_model.dart';
+import 'package:app/theme/das_colors.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/text_util.dart';
 import 'package:app/widgets/accordion/accordion.dart';
@@ -16,6 +17,7 @@ class FootNoteAccordion extends StatelessWidget {
     required this.title,
     required this.addTopMargin,
     required this.isExpanded,
+    this.highlightBorder = false,
     this.leftPadding = 0,
     super.key,
   });
@@ -24,6 +26,7 @@ class FootNoteAccordion extends StatelessWidget {
   final String title;
   final bool addTopMargin;
   final bool isExpanded;
+  final bool highlightBorder;
 
   /// used to align content with information cell
   final double leftPadding;
@@ -43,6 +46,7 @@ class FootNoteAccordion extends StatelessWidget {
         top: addTopMargin ? _verticalMargin : 0.0,
       ),
       backgroundColor: ThemeUtil.getColor(context, SBBColors.white, SBBColors.charcoal),
+      border: highlightBorder ? Border.all(color: DASColors.simFootNoteBorder, width: 2.0) : null,
     );
   }
 

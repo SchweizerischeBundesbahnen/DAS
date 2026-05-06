@@ -1,9 +1,11 @@
 import 'package:app/i18n/i18n.dart';
+import 'package:app/pages/journey/brake_load_slip/brake_load_slip_view_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/foot_note_accordion.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/widget_row_builder.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/stickyheader/sticky_level.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
@@ -35,15 +37,23 @@ class FootNoteRow<T extends BaseFootNote> extends WidgetRowBuilder<T> {
 
   @override
   Widget buildRowWidget(BuildContext context) {
-    return Container(
-      color: ThemeUtil.getColor(context, SBBColors.milk, SBBColors.black),
-      child: FootNoteAccordion(
-        data: data,
-        title: data.title(context, metadata),
-        addTopMargin: addTopMargin,
-        isExpanded: isExpanded,
-        leftPadding: leftPadding,
-      ),
+    final brakeLoadSlipVM = context.read<BrakeLoadSlipViewModel>();
+    return StreamBuilder(
+      stream: brakeLoadSlipVM.formationRun,
+      builder: (context, asyncSnapshot) {
+        final hasSIMFormation = asyncSnapshot.data?.formationRun.simTrain ?? false;
+        return Container(
+          color: ThemeUtil.getColor(context, SBBColors.milk, SBBColors.black),
+          child: FootNoteAccordion(
+            data: data,
+            title: data.title(context, metadata),
+            addTopMargin: addTopMargin,
+            isExpanded: isExpanded,
+            leftPadding: leftPadding,
+            highlightBorder: data._isSIMFootNote && hasSIMFormation,
+          ),
+        );
+      },
     );
   }
 }
@@ -70,7 +80,7 @@ extension FootNoteExtension on BaseFootNote {
   }
 
   String _defaultTitle(BuildContext context) {
-    if (footNote.refText == 'SIM') return context.l10n.c_radn_sim;
+    if (_isSIMFootNote) return context.l10n.c_radn_sim;
 
     return switch (footNote.type) {
       .trackSpeed => '${context.l10n.c_radn} ${context.l10n.c_radn_type_track_speed}',
@@ -82,4 +92,6 @@ extension FootNoteExtension on BaseFootNote {
       null => context.l10n.c_radn,
     };
   }
+
+  bool get _isSIMFootNote => footNote.refText == 'SIM';
 }
