@@ -36,6 +36,7 @@ final _log = Logger('SegmentProfileMapper');
 class SegmentProfileMapper {
   SegmentProfileMapper._();
 
+  static const String invalidSpId = '';
   static const String _bracketStationNspName = 'bracketStation';
   static const String _bracketStationMainStationNspName = 'mainStation';
   static const String _bracketStationTextNspName = 'text';
@@ -49,7 +50,9 @@ class SegmentProfileMapper {
     int segmentIndex,
     List<SegmentProfileDto> segmentProfiles,
   ) {
-    final segmentProfile = segmentProfiles.firstMatch(segmentProfileReference);
+    if (segmentProfileReference.spId == invalidSpId) return [];
+
+    final segmentProfile = segmentProfiles.firstMatch(segmentProfileReference)!;
     final kilometreMap = parseKilometre(segmentProfile);
     final mapperData = _MapperData(segmentProfile, segmentIndex, kilometreMap);
 

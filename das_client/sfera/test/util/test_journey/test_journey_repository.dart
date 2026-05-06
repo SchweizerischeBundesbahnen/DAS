@@ -40,7 +40,8 @@ class TestJourneyRepository {
 
   static Iterable<TestJourney> getFromStaticSferaResources() => fromRootDir(_sferaStaticResourcesDir);
 
-  static Iterable<TestJourney> getFromClientTestResources() => fromRootDir(_clientTestResourcesDir);
+  static Iterable<TestJourney> getFromClientTestResources([String? filter]) =>
+      fromRootDir(_clientTestResourcesDir, filter);
 
   /// Loads journeys ignoring train characteristics and limiting the number of segment profiles considered.
   ///
@@ -60,10 +61,12 @@ class TestJourneyRepository {
     return baseSkeleton.toTestJourney();
   }
 
-  static Iterable<TestJourney> fromRootDir(Directory rootDir) sync* {
+  static Iterable<TestJourney> fromRootDir(Directory rootDir, [String? filter]) sync* {
     final subdirs = rootDir.listSync(recursive: true).whereType<Directory>();
 
     for (final dir in subdirs) {
+      if (filter != null && !dir.path.contains(filter)) continue;
+
       final testJourneySkeletons = _parseTestJourneyFilesToSkeletons(dir);
 
       yield* testJourneySkeletons.map((skeleton) => skeleton.toTestJourney());

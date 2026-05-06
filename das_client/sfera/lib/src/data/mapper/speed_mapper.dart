@@ -124,7 +124,8 @@ class SpeedMapper {
 
     for (int segmentIndex = 0; segmentIndex < segmentProfileReferences.length; segmentIndex++) {
       final segmentProfileReference = segmentProfileReferences[segmentIndex];
-      final segmentProfile = segmentProfiles.firstWhere((sP) => sP.id == segmentProfileReference.spId);
+      final segmentProfile = segmentProfiles.firstMatch(segmentProfileReference);
+      if (segmentProfile == null) continue;
 
       nextSegmentStartOrder = segmentIndex + 1 < segmentProfileReferences.length
           ? calculateOrder(segmentIndex + 1, 0)

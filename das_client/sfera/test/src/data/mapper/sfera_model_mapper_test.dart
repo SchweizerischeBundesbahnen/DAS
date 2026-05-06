@@ -2056,6 +2056,22 @@ void main() {
     );
     expect(dataInSuspiciousSegments, isEmpty);
   });
+
+  test('Test invalid sp is parsed as suspicious segment in T42 event', () {
+    final testJourneys = TestJourneyRepository.getFromClientTestResources('T42_invalid_sp').toList();
+
+    expect(testJourneys, hasLength(2));
+    final journey1 = testJourneys[0].journey;
+    expect(journey1.valid, isTrue);
+    final suspiciousSegments = journey1.metadata.suspiciousSegments;
+    expect(suspiciousSegments, hasLength(0));
+
+    final journey2 = testJourneys[1].journey;
+    expect(journey2.valid, isTrue);
+    final suspiciousSegments2 = journey2.metadata.suspiciousSegments;
+    expect(suspiciousSegments2, hasLength(1));
+    expect(suspiciousSegments2.first.startOrder, 100000);
+  });
 }
 
 void _checkTrainSeriesSpeed<T extends Speed>(
