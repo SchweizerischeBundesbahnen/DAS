@@ -169,7 +169,7 @@ class NoticeTemplateControllerTest {
                     }
                     """))
             .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.detail").value("Invalid request content. -> noticeTemplateRequest=At least one language content (de, fr or it) must be provided"));
+            .andExpect(jsonPath("$.detail").value("Invalid request content. -> noticeTemplateRequest=At least one language content (de, fr or it) must be provided."));
     }
 
     @Test
@@ -236,7 +236,7 @@ class NoticeTemplateControllerTest {
                     }
                     """))
             .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.detail").value("Invalid request content. -> noticeTemplateRequest=At least one language content (de, fr or it) must be provided"));
+            .andExpect(jsonPath("$.detail").value("Invalid request content. -> noticeTemplateRequest=At least one language content (de, fr or it) must be provided."));
     }
 
     @Test
