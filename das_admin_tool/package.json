@@ -16,7 +16,7 @@
   "version": "0.3.1",
   "private": true,
   "dependencies": {
-    "@angular/cdk": "21.2.3",
+    "@angular/cdk": "21.2.9",
     "@angular/common": "21.2.5",
     "@angular/compiler": "21.2.5",
     "@angular/core": "21.2.5",
