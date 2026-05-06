@@ -55,8 +55,7 @@ public class SettingsController {
     @ApiErrorResponses
     public ResponseEntity<? extends Response> getSettings(
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
-        // todo: make it required as soon as mobile implemented (#1407)
-        @RequestHeader(value = "X-App-Version", required = false) @Pattern(regexp = SEM_VERSION_PATTERN) String xAppVersion
+        @RequestHeader(value = "X-App-Version", required = true) @Pattern(regexp = SEM_VERSION_PATTERN) String xAppVersion
     ) {
         List<RuFeature> allFeatures = ruFeatureService.getAll().stream()
             .map(RuFeature::new)
