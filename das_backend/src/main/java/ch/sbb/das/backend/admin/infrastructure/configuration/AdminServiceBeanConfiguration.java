@@ -1,5 +1,8 @@
 package ch.sbb.das.backend.admin.infrastructure.configuration;
 
+import ch.sbb.das.backend.admin.domain.holidays.HolidayRepository;
+import ch.sbb.das.backend.admin.domain.holidays.HolidayService;
+import ch.sbb.das.backend.admin.domain.holidays.HolidayServiceImpl;
 import ch.sbb.das.backend.admin.domain.notices.NoticeTemplateRepository;
 import ch.sbb.das.backend.admin.domain.notices.NoticeTemplateService;
 import ch.sbb.das.backend.admin.domain.notices.NoticeTemplateServiceImpl;
@@ -28,5 +31,10 @@ public class AdminServiceBeanConfiguration {
     @Bean
     NoticeTemplateService noticeTemplateService(NoticeTemplateRepository noticeTemplateRepository) {
         return new NoticeTemplateServiceImpl(noticeTemplateRepository);
+    }
+
+    @Bean
+    HolidayService holidayService(HolidayRepository holidayRepository) {
+        return new HolidayServiceImpl(holidayRepository);
     }
 }

@@ -1,0 +1,3 @@
+TRUNCATE TABLE holiday CASCADE;
+
+ALTER SEQUENCE holiday_id_seq RESTART WITH 1;
