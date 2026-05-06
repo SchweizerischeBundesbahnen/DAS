@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 @Documented
 public @interface ValidTranslatedContent {
 
-    String message() default "At least one language content (de, fr or it) must be provided";
+    String message() default "At least one language content (de, fr or it) must be provided.";
 
     Class<?>[] groups() default {};
 
