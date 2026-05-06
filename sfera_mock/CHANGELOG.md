@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.16.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.15.0...sfera_mock-v0.16.0) (2026-05-06)
+
+
+### Features
+
+* add support for invalid sp updates ([#1967](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1967)) ([#2106](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2106)) ([17f88ae](https://github.com/SchweizerischeBundesbahnen/DAS/commit/17f88ae9bf9115cf06c43332e7dd0c79feb9f32d))
+* display all sim changes in foot notes ([#1126](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1126)) ([#2104](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2104)) ([4e7c4f3](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4e7c4f3c1ab07a6d01be29597871105828721350))
+
+
+### Bug Fixes
+
+* prioritize km nsp for signal and service point ([#1863](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1863)) ([#2081](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2081)) ([2fd1f50](https://github.com/SchweizerischeBundesbahnen/DAS/commit/2fd1f5042c8f8998aa70a00f04f1ff3bf7045691))
+
 ## [0.15.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.14.0...sfera_mock-v0.15.0) (2026-05-04)
 
 
