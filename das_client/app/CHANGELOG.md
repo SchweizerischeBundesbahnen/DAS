@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.44.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.43.0...das_client-v0.44.0) (2026-05-06)
+
+
+### Features
+
+* add support for invalid sp updates ([#1967](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1967)) ([#2106](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2106)) ([17f88ae](https://github.com/SchweizerischeBundesbahnen/DAS/commit/17f88ae9bf9115cf06c43332e7dd0c79feb9f32d))
+* display all sim changes in foot notes ([#1126](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1126)) ([#2104](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2104)) ([4e7c4f3](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4e7c4f3c1ab07a6d01be29597871105828721350))
+* use number keyboard when connected to TMS ([#547](https://github.com/SchweizerischeBundesbahnen/DAS/issues/547)) ([#2098](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2098)) ([852261b](https://github.com/SchweizerischeBundesbahnen/DAS/commit/852261b6df8a40045aef696442dfd8d16a35d63e))
+
+
+### Bug Fixes
+
+* app expiration dialog is not dismissible ([#1407](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1407)) ([#2096](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2096)) ([971aadc](https://github.com/SchweizerischeBundesbahnen/DAS/commit/971aadc2d3eaaad4d73fc87909f1f2a82a85a27a))
+
 ## [0.43.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.42.0...das_client-v0.43.0) (2026-05-04)
 
 
