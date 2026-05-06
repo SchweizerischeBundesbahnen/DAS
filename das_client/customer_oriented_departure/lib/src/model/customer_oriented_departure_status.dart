@@ -2,7 +2,29 @@ import 'package:logging/logging.dart';
 
 final _log = Logger('CustomerOrientedDepartureStatus');
 
-// TODO: Status not enough as we need to check for right train
+class CustomerOrientedDeparture {
+  CustomerOrientedDeparture({required this.trainNumber, required this.status});
+
+  final String trainNumber;
+  final CustomerOrientedDepartureStatus status;
+
+  @override
+  String toString() {
+    return 'CustomerOrientedDeparture{trainNumber: $trainNumber, status: $status}';
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is CustomerOrientedDeparture &&
+          runtimeType == other.runtimeType &&
+          trainNumber == other.trainNumber &&
+          status == other.status;
+
+  @override
+  int get hashCode => Object.hash(trainNumber, status);
+}
+
 enum CustomerOrientedDepartureStatus {
   wait,
   ready,

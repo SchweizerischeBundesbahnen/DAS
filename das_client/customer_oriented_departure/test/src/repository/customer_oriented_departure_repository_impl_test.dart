@@ -292,22 +292,22 @@ void main() {
 
   test('status_whenTrainStatusMessageReceived_thenEmitsStatusAndConfirmsMessage', () async {
     // GIVEN
-    final emittedStatuses = <CustomerOrientedDepartureStatus>[];
-    final subscription = testee.status.listen(emittedStatuses.add);
+    final emittedStatuses = <CustomerOrientedDeparture>[];
+    final subscription = testee.customerOrientedDeparture.listen(emittedStatuses.add);
 
     // ACT
     rxTrainStatusMessage
-      ..add(_createMessage(status: 'READY', messageId: 'message-1'))
-      ..add(_createMessage(status: 'abcd', messageId: 'message-2')) // should be ignored
-      ..add(_createMessage(status: 'departure', messageId: 'message-3'));
+      ..add(_createMessage(trainNumber: '1', status: 'READY', messageId: 'message-1'))
+      ..add(_createMessage(trainNumber: '2', status: 'abcd', messageId: 'message-2')) // should be ignored
+      ..add(_createMessage(trainNumber: '3', status: 'departure', messageId: 'message-3'));
     await Future.delayed(Duration.zero);
 
     // VERIFY
     expect(
       emittedStatuses,
       equals([
-        CustomerOrientedDepartureStatus.ready,
-        CustomerOrientedDepartureStatus.departure,
+        CustomerOrientedDeparture(trainNumber: '1', status: .ready),
+        CustomerOrientedDeparture(trainNumber: '3', status: .departure),
       ]),
     );
 
@@ -328,10 +328,14 @@ void main() {
   });
 }
 
-TrainStatusMessageDto _createMessage({required String status, String messageId = 'message-1'}) {
+TrainStatusMessageDto _createMessage({
+  required String trainNumber,
+  required String status,
+  String messageId = 'message-1',
+}) {
   return TrainStatusMessageDto(
     messageId: messageId,
-    zugnr: 'RE1234',
+    zugnr: trainNumber,
     bp: '1080',
     status: status,
   );

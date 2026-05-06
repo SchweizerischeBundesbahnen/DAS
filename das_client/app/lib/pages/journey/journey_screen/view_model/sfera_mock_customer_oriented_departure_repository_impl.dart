@@ -18,13 +18,12 @@ class SferaMockCustomerOrientedDepartureRepositoryImpl implements CustomerOrient
   final SferaRepository _sferaRepo;
   final RuFeatureProvider _ruFeatureProvider;
 
-  StreamSubscription? _eventSubscription;
-  StreamSubscription? _sferaStateSubscription;
-
-  final _rxCustomerOrientedDepartureStatus = BehaviorSubject<CustomerOrientedDepartureStatus>();
+  final _rxCustomerOrientedDepartureStatus = BehaviorSubject<CustomerOrientedDeparture>();
+  final _rxJourney = BehaviorSubject<Journey?>.seeded(null);
+  final _subscriptions = <StreamSubscription>[];
 
   @override
-  Stream<CustomerOrientedDepartureStatus> get status => _rxCustomerOrientedDepartureStatus.stream;
+  Stream<CustomerOrientedDeparture> get customerOrientedDeparture => _rxCustomerOrientedDepartureStatus.stream;
 
   @override
   Future<bool> subscribe({
@@ -43,37 +42,49 @@ class SferaMockCustomerOrientedDepartureRepositoryImpl implements CustomerOrient
 
   @override
   void dispose() {
-    _eventSubscription?.cancel();
-    _eventSubscription = null;
-    _sferaStateSubscription?.cancel();
-    _sferaStateSubscription = null;
+    for (final it in _subscriptions) {
+      it.cancel();
+    }
+    _subscriptions.clear();
     _rxCustomerOrientedDepartureStatus.close();
+    _rxJourney.close();
   }
 
   void _init() {
-    _eventSubscription = _sferaRepo.uxTestingEventStream.listen((data) async {
+    final eventSubscription = _sferaRepo.uxTestingEventStream.listen((data) async {
       if (data == null || !data.isKoa) return;
 
       final customerOrientedDepartureEnabled = await _ruFeatureProvider.isRuFeatureEnabled(.customerOrientedDeparture);
       if (customerOrientedDepartureEnabled) {
-        final koaState = KoaState.from(data.value);
-        _rxCustomerOrientedDepartureStatus.add(koaState.toCustomerOrientedDepartureStatus());
+        _emitStatus(KoaState.from(data.value));
       }
     });
+    _subscriptions.add(eventSubscription);
 
-    _sferaStateSubscription = _sferaRepo.stateStream.listen((state) {
+    final sferaStateSubscription = _sferaRepo.stateStream.listen((state) {
       if (state == .disconnected) {
-        _rxCustomerOrientedDepartureStatus.add(.departure);
+        _emitStatus(.waitHide);
       }
     });
+    _subscriptions.add(sferaStateSubscription);
+
+    final journeySubscription = _sferaRepo.journeyStream.listen(_rxJourney.add, onError: _rxJourney.addError);
+    _subscriptions.add(journeySubscription);
+  }
+
+  void _emitStatus(KoaState koaState) {
+    final currentTrain = _rxJourney.value?.metadata.trainIdentification?.trainNumber;
+    if (currentTrain != null) {
+      _rxCustomerOrientedDepartureStatus.add(koaState.toCustomerOrientedDepartureStatus(trainNumber: currentTrain));
+    }
   }
 }
 
 extension _KoaStateMapper on KoaState {
-  CustomerOrientedDepartureStatus toCustomerOrientedDepartureStatus() => switch (this) {
-    KoaState.wait => .wait,
-    KoaState.waitCancelled => .ready,
-    KoaState.waitHide => .departure,
-    KoaState.call => .call,
+  CustomerOrientedDeparture toCustomerOrientedDepartureStatus({required String trainNumber}) => switch (this) {
+    KoaState.wait => CustomerOrientedDeparture(trainNumber: trainNumber, status: .wait),
+    KoaState.waitCancelled => CustomerOrientedDeparture(trainNumber: trainNumber, status: .ready),
+    KoaState.waitHide => CustomerOrientedDeparture(trainNumber: trainNumber, status: .departure),
+    KoaState.call => CustomerOrientedDeparture(trainNumber: trainNumber, status: .call),
   };
 }

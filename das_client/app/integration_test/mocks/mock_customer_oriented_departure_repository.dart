@@ -5,12 +5,12 @@ class MockCustomerOrientedDepartureRepository implements CustomerOrientedDepartu
   int unsubscribeCallCount = 0;
   Set<String> subscribedTrainNumbers = {};
 
-  final _rxStatus = BehaviorSubject<CustomerOrientedDepartureStatus>.seeded(.departure);
+  final _rxStatus = BehaviorSubject<CustomerOrientedDeparture>();
 
-  void emitStatus(CustomerOrientedDepartureStatus status) => _rxStatus.add(status);
+  void emitStatus(CustomerOrientedDeparture status) => _rxStatus.add(status);
 
   @override
-  Stream<CustomerOrientedDepartureStatus> get status => _rxStatus.stream;
+  Stream<CustomerOrientedDeparture> get customerOrientedDeparture => _rxStatus.stream;
 
   @override
   Future<bool> subscribe({
@@ -35,7 +35,10 @@ class MockCustomerOrientedDepartureRepository implements CustomerOrientedDepartu
   }
 
   void reset() {
-    _rxStatus.add(.departure);
+    final previousTrainNumber = _rxStatus.valueOrNull?.trainNumber;
+    if (previousTrainNumber != null) {
+      _rxStatus.add(CustomerOrientedDeparture(trainNumber: previousTrainNumber, status: .departure));
+    }
     unsubscribeCallCount = 0;
     subscribedTrainNumbers = {};
   }

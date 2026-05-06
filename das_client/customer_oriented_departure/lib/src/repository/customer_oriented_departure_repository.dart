@@ -3,7 +3,7 @@ import 'package:customer_oriented_departure/component.dart';
 abstract class CustomerOrientedDepartureRepository {
   const CustomerOrientedDepartureRepository._();
 
-  Stream<CustomerOrientedDepartureStatus> get status;
+  Stream<CustomerOrientedDeparture> get customerOrientedDeparture;
 
   /// Subscribes to customer oriented departure updates for the given train.
   ///

@@ -21,25 +21,31 @@ void main() {
     final mockRepository = DI.get<CustomerOrientedDepartureRepository>() as MockCustomerOrientedDepartureRepository;
     mockRepository.reset();
 
-    await loadJourney(tester, trainNumber: 'T9999M');
+    final trainNumber = 'T9999M';
+    await loadJourney(tester, trainNumber: trainNumber);
 
     await waitUntilExists(tester, find.byKey(FloatingDepartureChecklistButton.buttonKey));
 
     expect(mockRepository.subscribedTrainNumbers, hasLength(1));
-    expect(mockRepository.subscribedTrainNumbers.elementAt(0), 'T9999M');
+    expect(mockRepository.subscribedTrainNumbers.elementAt(0), trainNumber);
     expect(mockRepository.unsubscribeCallCount, 0);
 
-    mockRepository.emitStatus(.wait);
+    mockRepository.emitStatus(CustomerOrientedDeparture(trainNumber: trainNumber, status: .wait));
     await waitUntilExists(tester, find.text(l10n.w_customer_oriented_departure_notification_wait));
     await waitUntilNotExists(tester, find.byKey(FloatingDepartureChecklistButton.buttonKey));
 
-    mockRepository.emitStatus(.call);
+    mockRepository.emitStatus(CustomerOrientedDeparture(trainNumber: trainNumber, status: .call));
     await waitUntilExists(tester, find.text(l10n.w_customer_oriented_departure_notification_call));
 
-    mockRepository.emitStatus(.ready);
+    // events for other train numbers should be ignored
+    mockRepository.emitStatus(CustomerOrientedDeparture(trainNumber: '1234', status: .ready));
+    await tester.pump(const Duration(milliseconds: 500));
+    expect(find.text(l10n.w_customer_oriented_departure_notification_ready), findsNothing);
+
+    mockRepository.emitStatus(CustomerOrientedDeparture(trainNumber: trainNumber, status: .ready));
     await waitUntilExists(tester, find.text(l10n.w_customer_oriented_departure_notification_ready));
 
-    mockRepository.emitStatus(.departure);
+    mockRepository.emitStatus(CustomerOrientedDeparture(trainNumber: trainNumber, status: .departure));
     await waitUntilNotExists(tester, find.text(l10n.w_customer_oriented_departure_notification_ready));
     await waitUntilExists(tester, find.byKey(FloatingDepartureChecklistButton.buttonKey));
 

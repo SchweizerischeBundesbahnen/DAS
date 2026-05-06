@@ -27,7 +27,7 @@ class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartu
   final MessagingService messagingService;
   final String deviceId;
 
-  final _rxCustomerOrientedDepartureStatus = BehaviorSubject<CustomerOrientedDepartureStatus>();
+  final _rxCustomerOrientedDeparture = BehaviorSubject<CustomerOrientedDeparture>();
   final _subscriptions = <StreamSubscription>[];
 
   _Subscription? _pendingOrOpenSubscription;
@@ -111,11 +111,11 @@ class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartu
   }
 
   @override
-  Stream<CustomerOrientedDepartureStatus> get status => _rxCustomerOrientedDepartureStatus.stream;
+  Stream<CustomerOrientedDeparture> get customerOrientedDeparture => _rxCustomerOrientedDeparture.stream;
 
   @override
   void dispose() {
-    _rxCustomerOrientedDepartureStatus.close();
+    _rxCustomerOrientedDeparture.close();
     for (final sub in _subscriptions) {
       sub.cancel();
     }
@@ -167,7 +167,8 @@ class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartu
     if (status == null) {
       _log.warning('Received message with unknown status: ${message.status}');
     } else {
-      _rxCustomerOrientedDepartureStatus.add(status);
+      final customerOrientedDeparture = CustomerOrientedDeparture(trainNumber: message.zugnr, status: status);
+      _rxCustomerOrientedDeparture.add(customerOrientedDeparture);
       _confirmMessageReceived(message.messageId);
     }
   }

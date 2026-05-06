@@ -91,18 +91,29 @@ class CustomerOrientedDepartureViewModel extends JourneyAwareViewModel {
   }
 
   void _init() {
-    _statusSubscription = _repository.status.listen((status) async {
+    _statusSubscription = _repository.customerOrientedDeparture.listen((event) async {
+      final currentTrain = _lastJourney?.metadata.trainIdentification;
+      if (currentTrain != null && currentTrain.trainNumber != event.trainNumber) {
+        _log.info(
+          'Got customer oriented departure event for ${event.trainNumber} that is not for the current train ${currentTrain.trainNumber}.',
+        );
+        return;
+      }
+
       _notificationViewModel.remove(type: .customerOrientedDeparture);
       final isEnabled = await _ruFeatureProvider.isRuFeatureEnabled(.customerOrientedDeparture);
       if (isEnabled) {
-        if (status != .departure) {
+        final customerOrientedDepartureStatus = event.status;
+        if (customerOrientedDepartureStatus != .departure) {
           _notificationViewModel.insert(
             type: .customerOrientedDeparture,
-            callback: status == .ready ? DI.get<DASSounds>().customerOrientedDeparture.play : null,
+            callback: customerOrientedDepartureStatus == .ready
+                ? DI.get<DASSounds>().customerOrientedDeparture.play
+                : null,
           );
         }
 
-        _rxStatus.add(status);
+        _rxStatus.add(customerOrientedDepartureStatus);
       }
     }, onError: _rxStatus.addError);
   }
