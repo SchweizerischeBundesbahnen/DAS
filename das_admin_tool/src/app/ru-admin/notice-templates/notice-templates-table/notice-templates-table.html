@@ -1,0 +1,90 @@
+<form [formGroup]="form" class="search-language-header">
+  <sbb-form-field>
+    <input formControlName="search" i18n-placeholder="@@notice_templates_table_search_placeholder" placeholder="Suchen" type="text"/>
+    <sbb-icon name="magnifying-glass-small" slot="suffix"></sbb-icon>
+  </sbb-form-field>
+  <sbb-form-field>
+    <sbb-icon name="globe-small" slot="prefix"></sbb-icon>
+    <label i18n="@@notice_templates_table_language_label">Sprache</label>
+    <sbb-select formControlName="language">
+      @for (language of languageProvider.allLanguages; track language.localeId) {
+       <sbb-option [value]="language.path">{{ language.label }}</sbb-option>
+      }
+    </sbb-select>
+  </sbb-form-field>
+</form>
+<sbb-table-wrapper>
+  <table [dataSource]="dataSource" sbb-table sbbSort
+         sbbSortDirection="asc">
+    <ng-container sbbColumnDef="select">
+      <th *sbbHeaderCellDef sbb-header-cell style="width: 36px">
+        <sbb-checkbox
+          (change)="$event ? parentToggle() : null"
+          [checked]="selection.hasValue() && isAllSelected()"
+          [indeterminate]="selection.hasValue() && !isAllSelected()"
+        >
+        </sbb-checkbox>
+      </th>
+      <td *sbbCellDef="let row" sbb-cell>
+        <sbb-checkbox
+          (change)="$event ? selection.toggle(row) : null"
+          (click)="$event.stopPropagation()"
+          [checked]="selection.isSelected(row)"
+        >
+        </sbb-checkbox>
+      </td>
+    </ng-container>
+    <ng-container sbbColumnDef="category">
+      <th *sbbHeaderCellDef i18n="@@notice_templates_table_column_category" sbb-header-cell
+          sbb-sort-header="category">Kategorie
+      </th>
+      <td *sbbCellDef="let row" sbb-cell>{{ row.category }}</td>
+    </ng-container>
+
+    <ng-container sbbColumnDef="title">
+      <th *sbbHeaderCellDef i18n="@@notice_templates_table_column_de" sbb-header-cell
+          sbb-sort-header="title">Titel
+      </th>
+      <td *sbbCellDef="let row" sbb-cell>{{  getValue(row, 'title') }}</td>
+    </ng-container>
+
+    <ng-container sbbColumnDef="text">
+      <th *sbbHeaderCellDef i18n="@@notice_templates_table_column_fr" sbb-header-cell
+          sbb-sort-header="text">Text
+      </th>
+      <td *sbbCellDef="let row" sbb-cell>{{ getValue(row, 'text') }}</td>
+    </ng-container>
+
+    <ng-container sbbColumnDef="lastModifiedBy">
+      <th *sbbHeaderCellDef i18n="@@notice_templates_table_column_it" sbb-header-cell
+          sbb-sort-header="lastModifiedBy">Bearbeitet von
+      </th>
+      <td *sbbCellDef="let row" sbb-cell>{{ row.lastModifiedBy }}</td>
+    </ng-container>
+
+    <ng-container sbbColumnDef="action">
+      <th *sbbHeaderCellDef class="action" sbb-header-cell></th>
+      <td *sbbCellDef="let noticeTemplate" class="action" sbb-cell>
+        <sbb-mini-button (click)="edit(noticeTemplate)" iconName="pen-small"></sbb-mini-button>
+      </td>
+    </ng-container>
+
+    <tr *sbbHeaderRowDef="columns" sbb-header-row></tr>
+    <tr *sbbRowDef="let row; columns: columns" sbb-row></tr>
+  </table>
+</sbb-table-wrapper>
+
+<div class="bottom">
+  <div class="left">
+    <sbb-compact-paginator [pageSize]="PAGE_SIZE"></sbb-compact-paginator>
+  </div>
+  <div class="right">
+    <sbb-secondary-button (click)="add()" i18n="@@notice_templates_button_create"
+                          iconName="plus-small">Neuen Eintrag erfassen
+    </sbb-secondary-button>
+    <sbb-transparent-button (click)="deleteSelected()" [disabled]="this.selection.isEmpty()"
+                            i18n="@@notice_templates_button_delete_selected"
+                            iconName="trash-small">Einträge löschen
+    </sbb-transparent-button>
+  </div>
+</div>
