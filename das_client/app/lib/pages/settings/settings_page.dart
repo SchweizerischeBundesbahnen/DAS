@@ -9,6 +9,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 @RoutePage()
 class SettingsPage extends StatefulWidget {
   static const Key decisiveGradientSwitchKey = Key('decisiveGradientSwitch');
+  static const Key stationSignalSwitchKey = Key('stationSignalSwitch');
 
   const SettingsPage({super.key});
 
@@ -57,8 +58,10 @@ class _SettingsPageState extends State<SettingsPage> {
       child: Column(
         crossAxisAlignment: .start,
         children: [
-          _settingTitle(context.l10n.p_settings_page_decisive_gradient_title),
+          _settingTitle(context.l10n.p_settings_page_decisive_gradient_title, isFirstElement: true),
           _decisiveGradientSettings(context),
+          _settingTitle(context.l10n.p_settings_page_signal_title),
+          _signalSettings(context),
         ],
       ),
     );
@@ -80,9 +83,27 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  Widget _settingTitle(String title) {
+  Widget _signalSettings(BuildContext context) {
+    return SBBContentBox(
+      padding: const .only(right: SBBSpacing.medium),
+      child: SBBListItem.custom(
+        title: context.l10n.p_settings_page_signal_station_setting,
+        onPressed: () => _updateSettings(.showStationSignals, !_userSettings.showStationSignals),
+        isLastElement: true,
+        trailingWidget: SBBSwitch(
+          key: SettingsPage.stationSignalSwitchKey,
+          value: _userSettings.showStationSignals,
+          onChanged: (value) => _updateSettings(.showStationSignals, value),
+        ),
+      ),
+    );
+  }
+
+  Widget _settingTitle(String title, {bool isFirstElement = false}) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: SBBSpacing.medium).copyWith(bottom: SBBSpacing.xSmall),
+      padding: const EdgeInsets.symmetric(
+        horizontal: SBBSpacing.medium,
+      ).copyWith(bottom: SBBSpacing.xSmall, top: isFirstElement ? 0 : SBBSpacing.medium),
       child: Text(title, style: sbbTextStyle.lightStyle.small),
     );
   }

@@ -35,7 +35,6 @@ import 'package:app/pages/journey/journey_screen/widgets/journey_navigation_butt
 import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
 import 'package:app/pages/journey/view_model/decisive_gradient_view_model.dart';
 import 'package:app/pages/journey/view_model/disturbance_view_model.dart';
-import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/pages/journey/view_model/reauthentication_required_view_model.dart';
@@ -407,7 +406,6 @@ class _ProviderScope extends StatelessWidget {
         >(
           update: (_, journeyVM, settingsVM, collapsibleRowsVM, positionVM, detailModalVM, decisiveGradientVM, prev) {
             if (prev != null) return prev;
-            final navigationVM = DI.get<JourneyNavigationViewModel>();
             return JourneyTableViewModel(
               journeyViewModel: journeyViewModel,
               settingsVM: settingsVM,
@@ -415,7 +413,8 @@ class _ProviderScope extends StatelessWidget {
               positionVM: positionVM,
               detailModalVM: detailModalVM,
               decisiveGradientVM: decisiveGradientVM,
-              navigationVM: navigationVM,
+              navigationVM: DI.get(),
+              userSettings: DI.get(),
             );
           },
           dispose: (_, vm) => vm.dispose(),

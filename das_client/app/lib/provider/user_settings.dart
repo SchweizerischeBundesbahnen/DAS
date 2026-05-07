@@ -38,6 +38,8 @@ class UserSettings {
 
   bool get showDecisiveGradient => get(.showDecisiveGradient, true);
 
+  bool get showStationSignals => get(.showStationSignals, true);
+
   List<RailwayUndertaking> get railwayUndertakings =>
       get(.railwayUndertakings, []).map((it) => RailwayUndertaking.values.byName(it)).toList();
 
@@ -47,4 +49,4 @@ class UserSettings {
   }
 }
 
-enum UserSettingKeys { showDecisiveGradient, railwayUndertakings, tourSystem }
+enum UserSettingKeys { showDecisiveGradient, railwayUndertakings, tourSystem, showStationSignals }

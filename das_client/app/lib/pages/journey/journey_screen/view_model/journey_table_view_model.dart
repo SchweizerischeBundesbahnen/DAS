@@ -12,6 +12,7 @@ import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart'
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/model/journey_navigation_model.dart';
 import 'package:app/pages/journey/view_model/model/journey_settings.dart';
+import 'package:app/provider/user_settings.dart';
 import 'package:collection/collection.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -28,12 +29,14 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
     required DetailModalViewModel detailModalVM,
     required DecisiveGradientViewModel decisiveGradientVM,
     required JourneyNavigationViewModel navigationVM,
+    required UserSettings userSettings,
   }) : _settingsVM = settingsVM,
        _collapsibleRowsVM = collapsibleRowsVM,
        _positionVM = positionVM,
        _detailModalVM = detailModalVM,
        _decisiveGradientVM = decisiveGradientVM,
-       _navigationVM = navigationVM {
+       _navigationVM = navigationVM,
+       _userSettings = userSettings {
     _init();
   }
 
@@ -43,6 +46,7 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
   final DetailModalViewModel _detailModalVM;
   final DecisiveGradientViewModel _decisiveGradientVM;
   final JourneyNavigationViewModel _navigationVM;
+  final UserSettings _userSettings;
 
   StreamSubscription? _streamSubscription;
 
@@ -112,6 +116,7 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
         .hideFootNotesForNotSelectedTrainSeries(settings.currentBrakeSeries?.trainSeries)
         .combineFootNoteAndOperationalIndication()
         .addTrainDriverTurnoverRows(navigationModel?.trainIdentification)
+        .hideSignals(_userSettings.showStationSignals)
         .sorted((a1, a2) => a1.compareTo(a2));
 
     _emitLoaded(

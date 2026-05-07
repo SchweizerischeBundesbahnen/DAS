@@ -31,4 +31,16 @@ extension BaseDataX on Iterable<BaseData> {
 
     return resultList;
   }
+
+  Iterable<BaseData> hideSignals(bool showStationSignals) {
+    if (showStationSignals) return this;
+
+    return where(
+      (data) =>
+          data is! Signal ||
+          !data.functions.every(
+            (it) => [SignalFunction.entry, SignalFunction.exit, SignalFunction.intermediate].contains(it),
+          ),
+    );
+  }
 }
