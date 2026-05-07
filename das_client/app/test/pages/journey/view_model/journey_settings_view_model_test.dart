@@ -59,60 +59,6 @@ void main() {
     expect(emitRegister, hasLength(1));
   });
 
-  test('registerOnBrakeSeriesUpdated_whenCalledLater_callbackIsInvoked', () {
-    // ARRANGE
-    final aBrakeSeries = BrakeSeries(trainSeries: TrainSeries.A, brakeSeries: 100);
-    void laterCallback() {
-      onBrakeSeriesUpdatedCalled = true;
-    }
-
-    // ACT
-    testee.registerOnBrakeSeriesUpdated(laterCallback);
-    testee.updateBrakeSeries(aBrakeSeries);
-    processStreams();
-
-    // EXPECT
-    expect(onBrakeSeriesUpdatedCalled, isTrue);
-  });
-
-  test('registerOnBrakeSeriesUpdated_whenMultipleCallbacksRegistered_allAreInvoked', () {
-    // ARRANGE
-    final aBrakeSeries = BrakeSeries(trainSeries: TrainSeries.A, brakeSeries: 100);
-    bool secondCallbackCalled = false;
-    bool thirdCallbackCalled = false;
-
-    // ACT
-    testee.registerOnBrakeSeriesUpdated(() => secondCallbackCalled = true);
-    testee.registerOnBrakeSeriesUpdated(() => thirdCallbackCalled = true);
-    testee.updateBrakeSeries(aBrakeSeries);
-    processStreams();
-
-    // EXPECT
-    expect(secondCallbackCalled, isTrue);
-    expect(thirdCallbackCalled, isTrue);
-  });
-
-  test('unregisterOnBrakeSeriesUpdated_whenCalled_isNotInvokedAnymore', () {
-    // ARRANGE
-    final aBrakeSeries = BrakeSeries(trainSeries: TrainSeries.A, brakeSeries: 100);
-    void laterCallback() {
-      onBrakeSeriesUpdatedCalled = !onBrakeSeriesUpdatedCalled;
-    }
-
-    testee.registerOnBrakeSeriesUpdated(laterCallback);
-    testee.updateBrakeSeries(aBrakeSeries);
-    processStreams();
-    expect(onBrakeSeriesUpdatedCalled, isTrue);
-
-    // ACT
-    testee.unregisterOnBrakeSeriesUpdated(laterCallback);
-    testee.updateBrakeSeries(aBrakeSeries);
-    processStreams();
-
-    // EXPECT
-    expect(onBrakeSeriesUpdatedCalled, isTrue);
-  });
-
   test('updateExpandedGroups_whenCalled_emitsCorrectExpandedGroups', () {
     // ARRANGE
     final aExpandedGroups = const [1, 2];

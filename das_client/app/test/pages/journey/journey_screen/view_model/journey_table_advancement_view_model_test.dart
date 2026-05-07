@@ -1,7 +1,9 @@
+import 'package:app/pages/journey/journey_screen/detail_modal/detail_modal_view_model.dart';
 import 'package:app/pages/journey/journey_screen/journey_table_scroll_controller.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_table_advancement_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/chevron_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_advancement_model.dart';
-import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
+import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:fake_async/fake_async.dart';
@@ -18,12 +20,15 @@ import 'journey_table_advancement_view_model_test.mocks.dart';
 @GenerateNiceMocks([
   MockSpec<JourneyTableScrollController>(),
   MockSpec<JourneyViewModel>(),
+  MockSpec<DetailModalViewModel>(),
 ])
 void main() {
   late JourneyTableAdvancementViewModel testee;
+  late JourneySettingsViewModel journeySettingsViewModel;
   late MockJourneyViewModel mockJourneyViewModel;
+  late MockDetailModalViewModel mockDetailModalViewModel;
   late BehaviorSubject<Journey?> journeySubject;
-  late BehaviorSubject<JourneyPositionModel> journeyPositionSubject;
+  late BehaviorSubject<ChevronPositionModel> chevronPositionlSubject;
   late JourneyTableScrollController mockScrollController;
   late FakeAsync testAsync;
   late List<JourneyAdvancementModel> modelRegister;
@@ -54,16 +59,22 @@ void main() {
 
     fakeAsync((fakeAsync) {
       mockJourneyViewModel = MockJourneyViewModel();
+      mockDetailModalViewModel = MockDetailModalViewModel();
+
+      journeySettingsViewModel = JourneySettingsViewModel(journeyViewModel: mockJourneyViewModel);
       journeySubject = BehaviorSubject<Journey?>.seeded(baseJourney);
       when(mockJourneyViewModel.journey).thenAnswer((_) => journeySubject.stream);
-      journeyPositionSubject = BehaviorSubject<JourneyPositionModel>.seeded(JourneyPositionModel());
+      chevronPositionlSubject = BehaviorSubject<ChevronPositionModel>.seeded(ChevronPositionModel());
       testee = JourneyTableAdvancementViewModel(
         journeyViewModel: mockJourneyViewModel,
-        positionStream: journeyPositionSubject.stream,
+        chevronPositionStream: chevronPositionlSubject.stream,
         scrollController: mockScrollController,
-        onAdvancementModeChanged: [],
+        journeySettingsViewModel: journeySettingsViewModel,
+        detailModalViewModel: mockDetailModalViewModel,
       );
-      testee.model.listen(modelRegister.add);
+      journeySettingsViewModel.model.listen((data) {
+        modelRegister.add(data.journeyAdvancementModel);
+      });
       testAsync = fakeAsync;
       processStreams(fakeAsync: testAsync);
     });
@@ -141,7 +152,7 @@ void main() {
   test('toggleAdvancementMode_whenPausedAndInManual_thenScrolls', () {
     // ARRANGE
     testAsync.run((_) {
-      journeyPositionSubject.add(JourneyPositionModel(currentPosition: firstServicePoint));
+      chevronPositionlSubject.add(ChevronPositionModel(currentPosition: firstServicePoint));
       testee.setAdvancementModeToManual();
       processStreams(fakeAsync: testAsync);
       testee.toggleAdvancementMode(); // toggle to Paused
@@ -164,7 +175,7 @@ void main() {
     testAsync.run((_) {
       testee.toggleAdvancementMode(); // toggle to Paused
       processStreams(fakeAsync: testAsync);
-      journeyPositionSubject.add(JourneyPositionModel(currentPosition: firstServicePoint));
+      chevronPositionlSubject.add(ChevronPositionModel(currentPosition: firstServicePoint));
       processStreams(fakeAsync: testAsync);
     });
 
@@ -182,7 +193,7 @@ void main() {
   test('setAdvancementModeToManual_whenAutomatic_thenEmitsManualAndDoesScroll', () {
     // ACT
     testAsync.run((_) {
-      journeyPositionSubject.add(JourneyPositionModel(currentPosition: firstServicePoint));
+      chevronPositionlSubject.add(ChevronPositionModel(currentPosition: firstServicePoint));
       processStreams(fakeAsync: testAsync);
       testee.setAdvancementModeToManual();
       processStreams(fakeAsync: testAsync);
@@ -222,7 +233,7 @@ void main() {
   test('journeyUpdate_whenCurrentPositionIsJourneyStart_thenDoesNotEmitAndDoesNotScroll', () {
     // ACT
     testAsync.run((_) {
-      journeyPositionSubject.add(JourneyPositionModel(currentPosition: journeyStart));
+      chevronPositionlSubject.add(ChevronPositionModel(currentPosition: journeyStart));
     });
     processStreams(fakeAsync: testAsync);
 
@@ -234,7 +245,7 @@ void main() {
   test('journeyUpdate_whenCurrentPositionIsBeforeFirstServicePoint_thenDoesNotEmitAndDoesNotScroll', () {
     // ACT
     testAsync.run((_) {
-      journeyPositionSubject.add(JourneyPositionModel(currentPosition: secondSignal));
+      chevronPositionlSubject.add(ChevronPositionModel(currentPosition: secondSignal));
     });
     processStreams(fakeAsync: testAsync);
 
@@ -246,7 +257,7 @@ void main() {
   test('journeyUpdate_whenCurrentPositionIsBehindFirstServicePoint_thenScrolls', () {
     // ACT
     testAsync.run((_) {
-      journeyPositionSubject.add(JourneyPositionModel(currentPosition: firstServicePoint));
+      chevronPositionlSubject.add(ChevronPositionModel(currentPosition: firstServicePoint));
     });
     processStreams(fakeAsync: testAsync);
 
@@ -258,7 +269,7 @@ void main() {
   test('journeyUpdate_whenIsInPausedManualAndSignaledPositionChanges_thenEmitsPausedWithAutomatic', () {
     // ARRANGE
     testAsync.run((_) {
-      journeyPositionSubject.add(JourneyPositionModel(currentPosition: firstServicePoint));
+      chevronPositionlSubject.add(ChevronPositionModel(currentPosition: firstServicePoint));
       processStreams(fakeAsync: testAsync);
       testee.setAdvancementModeToManual();
       processStreams(fakeAsync: testAsync);
@@ -280,7 +291,7 @@ void main() {
         ),
       );
       processStreams(fakeAsync: testAsync);
-      journeyPositionSubject.add(JourneyPositionModel(currentPosition: thirdSignal));
+      chevronPositionlSubject.add(ChevronPositionModel(currentPosition: thirdSignal));
       processStreams(fakeAsync: testAsync);
     });
 
@@ -292,7 +303,7 @@ void main() {
   test('journeyUpdate_whenIsInManualAndSignaledPositionChanges_thenEmitsAutomatic', () {
     // ARRANGE
     testAsync.run((_) {
-      journeyPositionSubject.add(JourneyPositionModel(currentPosition: firstServicePoint));
+      chevronPositionlSubject.add(ChevronPositionModel(currentPosition: firstServicePoint));
       processStreams(fakeAsync: testAsync);
       testee.setAdvancementModeToManual();
       processStreams(fakeAsync: testAsync);
@@ -309,7 +320,7 @@ void main() {
         ),
       );
       processStreams(fakeAsync: testAsync);
-      journeyPositionSubject.add(JourneyPositionModel(currentPosition: thirdSignal));
+      chevronPositionlSubject.add(ChevronPositionModel(currentPosition: thirdSignal));
       processStreams(fakeAsync: testAsync);
     });
 
@@ -330,7 +341,7 @@ void main() {
     // ARRANGE
     // ACT
     testAsync.run((_) {
-      journeyPositionSubject.add(JourneyPositionModel(currentPosition: firstServicePoint));
+      chevronPositionlSubject.add(ChevronPositionModel(currentPosition: firstServicePoint));
       testee.toggleAdvancementMode();
     });
     processStreams(fakeAsync: testAsync);
@@ -346,7 +357,7 @@ void main() {
   test('scrollToCurrentPositionIfNotPaused_whenHasCurrentPositionAndAutomatic_thenDoesScroll', () {
     // ACT
     testAsync.run((_) {
-      journeyPositionSubject.add(JourneyPositionModel(currentPosition: firstServicePoint));
+      chevronPositionlSubject.add(ChevronPositionModel(currentPosition: firstServicePoint));
     });
     processStreams(fakeAsync: testAsync);
     reset(mockScrollController);
@@ -364,7 +375,7 @@ void main() {
     test('automaticIdleScrollingAfterTimeout_whenPaused_doesNotScroll', () {
       // ARRANGE
       testAsync.run((_) {
-        journeyPositionSubject.add(JourneyPositionModel(currentPosition: firstServicePoint));
+        chevronPositionlSubject.add(ChevronPositionModel(currentPosition: firstServicePoint));
         testee.toggleAdvancementMode(); // to PAUSED
         processStreams(fakeAsync: testAsync);
       });
@@ -383,7 +394,7 @@ void main() {
     test('automaticIdleScrollingAfterTimeout_whenOutsideOfAutomaticScrollingZone_doesNotScroll', () {
       // ARRANGE
       testAsync.run((_) {
-        journeyPositionSubject.add(JourneyPositionModel(currentPosition: baseJourney.data[1] as JourneyPoint));
+        chevronPositionlSubject.add(ChevronPositionModel(currentPosition: baseJourney.data[1] as JourneyPoint));
         processStreams(fakeAsync: testAsync);
       });
 
@@ -401,7 +412,7 @@ void main() {
     test('automaticIdleScrollingAfterTimeout_whenAutomaticAndInScrollingZone_doesScroll', () {
       // ARRANGE
       testAsync.run((_) {
-        journeyPositionSubject.add(JourneyPositionModel(currentPosition: firstServicePoint));
+        chevronPositionlSubject.add(ChevronPositionModel(currentPosition: firstServicePoint));
         processStreams(fakeAsync: testAsync);
       });
       reset(mockScrollController);
@@ -420,7 +431,7 @@ void main() {
     test('automaticIdleScrollingAfterTimeout_whenManualAndInScrollingZone_doesScroll', () {
       // ARRANGE
       testAsync.run((_) {
-        journeyPositionSubject.add(JourneyPositionModel(currentPosition: firstServicePoint));
+        chevronPositionlSubject.add(ChevronPositionModel(currentPosition: firstServicePoint));
         testee.setAdvancementModeToManual(); // MANUAL
         processStreams(fakeAsync: testAsync);
       });
@@ -440,7 +451,7 @@ void main() {
     test('automaticIdleScrollingAfterTimeout_whenJourneyUpdateInIdleScrollTiming_doesNOTScroll', () {
       // ARRANGE
       testAsync.run((_) {
-        journeyPositionSubject.add(JourneyPositionModel(currentPosition: firstServicePoint));
+        chevronPositionlSubject.add(ChevronPositionModel(currentPosition: firstServicePoint));
         processStreams(fakeAsync: testAsync);
       });
       reset(mockScrollController);
@@ -448,7 +459,7 @@ void main() {
       // ACT
       testAsync.run((async) {
         testee.resetIdleScrollTimer();
-        journeyPositionSubject.add(JourneyPositionModel(currentPosition: baseJourney.data[3] as JourneyPoint));
+        chevronPositionlSubject.add(ChevronPositionModel(currentPosition: baseJourney.data[3] as JourneyPoint));
         processStreams(fakeAsync: testAsync);
       });
 
@@ -459,7 +470,7 @@ void main() {
     test('automaticIdleScrollingAfterTimeout_whenAdvancementModeToggledToAutomatic_doesScrollOnceAndCancelsTimer', () {
       // ARRANGE
       testAsync.run((_) {
-        journeyPositionSubject.add(JourneyPositionModel(currentPosition: firstServicePoint));
+        chevronPositionlSubject.add(ChevronPositionModel(currentPosition: firstServicePoint));
         testee.toggleAdvancementMode(); // PAUSED
         testee.resetIdleScrollTimer();
         processStreams(fakeAsync: testAsync);

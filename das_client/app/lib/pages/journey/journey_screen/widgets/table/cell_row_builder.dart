@@ -1,4 +1,5 @@
 import 'package:app/extension/short_term_change_extension.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/chevron_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/additional_speed_restriction_row.dart';
@@ -34,6 +35,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     required super.data,
     required super.rowIndex,
     required this.journeyPosition,
+    required this.chevronPosition,
     super.height = rowHeight,
     super.stickyLevel,
     super.key,
@@ -49,6 +51,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
   final Alignment defaultAlignment;
   final Metadata metadata;
   final JourneyPositionModel journeyPosition;
+  final ChevronPositionModel chevronPosition;
   final JourneyConfig config;
   final VoidCallback? onTap;
   final VoidCallback? onStartToEndDragReached;
@@ -127,11 +130,11 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
       alignment: null,
       clipBehavior: .none,
       child: RouteCellBody(
-        isCurrentPosition: isCurrentPosition,
+        isCurrentPosition: isCurrentChevronPosition,
         isRouteStart: metadata.journeyStart == data,
         isRouteEnd: metadata.journeyEnd == data,
         chevronAnimationData: config.chevronAnimationData,
-        chevronPosition: chevronPosition,
+        chevronPosition: calculatedChevronPosition,
         shortTermChangeData: routeCellShortTermChangeData,
       ),
     );
@@ -149,7 +152,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     );
   }
 
-  bool get isCurrentPosition => journeyPosition.currentPosition == data;
+  bool get isCurrentChevronPosition => chevronPosition.currentPosition == data;
 
   DASTableCell trackEquipment(BuildContext context) {
     if (config.trackEquipmentRenderData == null) {
@@ -304,7 +307,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     };
   }
 
-  double get chevronPosition => CellRowBuilder.calculateChevronPosition(data, height);
+  double get calculatedChevronPosition => CellRowBuilder.calculateChevronPosition(data, height);
 
   static double calculateChevronPosition(BaseData data, double height) {
     switch (data.dataType) {

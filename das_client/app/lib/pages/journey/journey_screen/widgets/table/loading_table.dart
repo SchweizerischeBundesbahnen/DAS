@@ -1,4 +1,5 @@
 import 'package:app/pages/journey/journey_screen/journey_overview.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/chevron_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cell_row_builder.dart';
 import 'package:app/widgets/table/das_table.dart';
@@ -38,6 +39,7 @@ class _EmptyLoadingRow extends CellRowBuilder<JourneyPoint> {
         metadata: Metadata(),
         data: CABSignaling(order: 0, kilometre: []),
         journeyPosition: JourneyPositionModel(),
+        chevronPosition: ChevronPositionModel(),
       );
 
   @override

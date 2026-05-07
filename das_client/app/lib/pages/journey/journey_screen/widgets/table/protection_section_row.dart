@@ -16,6 +16,7 @@ class ProtectionSectionRow extends CellRowBuilder<ProtectionSection> {
     required super.data,
     required super.rowIndex,
     required super.journeyPosition,
+    required super.chevronPosition,
     super.config,
   }) : super(decoration: DASTableRowDecoration(color: SBBColors.peach));
 

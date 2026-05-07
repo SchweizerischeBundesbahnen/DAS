@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
-import 'package:app/pages/journey/journey_screen/view_model/journey_table_advancement_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_advancement_model.dart';
 import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
@@ -12,15 +12,15 @@ final _log = Logger('TourSystemLinkVisibilityViewModel');
 
 class TourSystemLinkVisibilityViewModel extends JourneyAwareViewModel {
   TourSystemLinkVisibilityViewModel({
-    required JourneyTableAdvancementViewModel journeyTableAdvancementViewModel,
+    required JourneySettingsViewModel journeySettingsViewModel,
     required JourneyPositionViewModel journeyPositionViewModel,
     super.journeyViewModel,
-  }) : _journeyTableAdvancementViewModel = journeyTableAdvancementViewModel,
+  }) : _settingsViewModel = journeySettingsViewModel,
        _journeyPositionViewModel = journeyPositionViewModel {
     _initSubscription();
   }
 
-  final JourneyTableAdvancementViewModel _journeyTableAdvancementViewModel;
+  final JourneySettingsViewModel _settingsViewModel;
   final JourneyPositionViewModel _journeyPositionViewModel;
 
   final _rxModel = BehaviorSubject<bool>.seeded(false);
@@ -36,12 +36,12 @@ class TourSystemLinkVisibilityViewModel extends JourneyAwareViewModel {
     _subscription =
         CombineLatestStream.combine3(
           journeyViewModel.journey,
-          _journeyTableAdvancementViewModel.model,
+          _settingsViewModel.model,
           _journeyPositionViewModel.model,
           (a, b, c) => (a, b, c),
         ).listen((data) async {
           final journey = data.$1;
-          final advancement = data.$2;
+          final advancement = data.$2.journeyAdvancementModel;
           final position = data.$3;
 
           _departureTimer?.cancel();

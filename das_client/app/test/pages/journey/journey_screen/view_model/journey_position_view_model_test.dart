@@ -4,6 +4,7 @@ import 'package:app/pages/journey/journey_screen/view_model/journey_position_vie
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_advancement_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/punctuality_model.dart';
+import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:clock/clock.dart';
 import 'package:fake_async/fake_async.dart';
@@ -27,6 +28,7 @@ void main() {
     const twentySignal = Signal(order: 20, kilometre: []);
 
     late JourneyPositionViewModel testee;
+    late JourneySettingsViewModel journeySettingsViewModel;
     late MockJourneyViewModel mockJourneyViewModel;
     late BehaviorSubject<Journey?> rxMockJourney;
     late BehaviorSubject<PunctualityModel> rxMockPunctuality;
@@ -43,10 +45,12 @@ void main() {
           when(mockJourneyViewModel.journey).thenAnswer((_) => rxMockJourney.stream);
           rxMockJourney = BehaviorSubject<Journey?>.seeded(null);
           rxMockPunctuality = BehaviorSubject<PunctualityModel>.seeded(PunctualityModel.hidden());
+          journeySettingsViewModel = JourneySettingsViewModel(journeyViewModel: mockJourneyViewModel);
           testAsync = fakeAsync;
           testee = JourneyPositionViewModel(
             journeyViewModel: mockJourneyViewModel,
             punctualityStream: rxMockPunctuality,
+            journeySettingsViewModel: journeySettingsViewModel,
           );
           emitRegister = <dynamic>[];
           currentPositionSub = testee.model.listen(emitRegister.add);
@@ -144,7 +148,7 @@ void main() {
 
       // ACT
       testAsync.run((_) {
-        testee.onAdvancementModeChanged(Manual());
+        journeySettingsViewModel.updateJourneyAdvancement(Manual());
         testee.setManualPosition(zeroSignal);
         _processStreamInFakeAsync(testAsync);
       });
@@ -241,7 +245,7 @@ void main() {
           ),
         );
         _processStreamInFakeAsync(testAsync);
-        testee.onAdvancementModeChanged(Manual());
+        journeySettingsViewModel.updateJourneyAdvancement(Manual());
         testee.setManualPosition(aServicePoint);
       });
       _processStreamInFakeAsync(testAsync);
@@ -249,7 +253,7 @@ void main() {
 
       // ACT
       testAsync.run((_) {
-        testee.onAdvancementModeChanged(Automatic());
+        journeySettingsViewModel.updateJourneyAdvancement(Automatic());
         rxMockJourney.add(
           Journey(
             metadata: Metadata(signaledPosition: SignaledPosition(order: 25)),
@@ -923,7 +927,7 @@ void main() {
 
       // ACT
       testAsync.run((async) {
-        testee.onAdvancementModeChanged(Manual());
+        journeySettingsViewModel.updateJourneyAdvancement(Manual());
         testee.setManualPosition(aServicePoint);
         _processStreamInFakeAsync(async);
       });
@@ -964,7 +968,7 @@ void main() {
 
       // ACT
       testAsync.run((async) {
-        testee.onAdvancementModeChanged(Manual());
+        journeySettingsViewModel.updateJourneyAdvancement(Manual());
         testee.setManualPosition(aServicePoint);
         _processStreamInFakeAsync(async);
       });
@@ -1004,7 +1008,7 @@ void main() {
       expect(testee.modelValue.currentPosition, equals(bServicePoint));
 
       testAsync.run((async) {
-        testee.onAdvancementModeChanged(Manual());
+        journeySettingsViewModel.updateJourneyAdvancement(Manual());
         testee.setManualPosition(aServicePoint);
         _processStreamInFakeAsync(async);
       });

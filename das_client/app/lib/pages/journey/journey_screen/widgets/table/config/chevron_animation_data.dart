@@ -1,5 +1,5 @@
 import 'package:app/extension/journey_point_extension.dart';
-import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/chevron_position_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cell_row_builder.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_cell_body.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_chevron.dart';
@@ -21,14 +21,14 @@ class ChevronAnimationData {
 
   static ChevronAnimationData? from({
     required List<JourneyPoint> journeyPoints,
-    required JourneyPositionModel journeyPosition,
+    required ChevronPositionModel chevronPositionModel,
     required Metadata metadata,
     required BaseData rowData,
     required BrakeSeries? currentBrakeSeries,
     required List<int> expandedGroups,
   }) {
-    final currentPosition = journeyPosition.currentPosition;
-    final lastPosition = journeyPosition.lastPosition;
+    final currentPosition = chevronPositionModel.currentPosition;
+    final lastPosition = chevronPositionModel.lastPosition;
     if (currentPosition == null ||
         lastPosition == null ||
         lastPosition == currentPosition ||
@@ -105,6 +105,9 @@ class ChevronAnimationData {
       }
     }
 
+    print(
+      'Chevron animation from index $fromIndex to $toIndex with current index $currentIndex, startOffset: $startOffset, endOffset: $endOffset',
+    );
     return ChevronAnimationData(
       startOffset: startOffset,
       endOffset: endOffset,

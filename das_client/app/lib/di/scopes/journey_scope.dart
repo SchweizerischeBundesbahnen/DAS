@@ -2,7 +2,6 @@ import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_screen/journey_table_scroll_controller.dart';
 import 'package:app/pages/journey/journey_screen/view_model/departure_process_warning_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
-import 'package:app/pages/journey/journey_screen/view_model/journey_table_advancement_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/punctuality_view_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
@@ -27,17 +26,16 @@ class JourneyScope extends DIScope {
     _log.fine('Pushing scope $scopeName');
     getIt.pushNewScope(scopeName: scopeName);
 
-    getIt.registerViewModeViewModel();
     getIt.registerJourneyNavigationViewModel();
     getIt.registerJourneySelectionViewModel();
     getIt.registerJourneyViewModel();
-    getIt.registerNotificationPriorityViewModel();
     getIt.registerJourneySettingsViewModel();
+    getIt.registerViewModeViewModel();
+    getIt.registerNotificationPriorityViewModel();
     getIt.registerPunctualityViewModel();
     getIt.registerJourneyPositionViewModel();
     getIt.registerDepartureProcessWarningViewModel();
     getIt.registerJourneyTableScrollController();
-    getIt.registerJourneyTableAdvancementViewModel();
     getIt.registerWarnAppViewModel();
     getIt.registerLocalRegulationHtmlGenerator();
     await getIt.allReady();
@@ -48,7 +46,7 @@ extension JourneyScopeExtension on GetIt {
   void registerViewModeViewModel() {
     factoryFunc() {
       _log.fine('Register ViewModeViewModel');
-      return ViewModeViewModel();
+      return ViewModeViewModel(journeySettingsViewModel: DI.get());
     }
 
     registerLazySingleton<ViewModeViewModel>(
@@ -118,29 +116,9 @@ extension JourneyScopeExtension on GetIt {
     registerSingleton<JourneyPositionViewModel>(
       JourneyPositionViewModel(
         punctualityStream: get<PunctualityViewModel>().model,
+        journeySettingsViewModel: DI.get(),
       ),
       dispose: (vm) => vm.dispose(),
-    );
-  }
-
-  void registerJourneyTableAdvancementViewModel() {
-    final journeyVM = DI.get<JourneyViewModel>();
-    final settingsVM = DI.get<JourneySettingsViewModel>();
-    final positionVM = DI.get<JourneyPositionViewModel>();
-    final viewModeVM = DI.get<ViewModeViewModel>();
-    final vm = JourneyTableAdvancementViewModel(
-      journeyViewModel: journeyVM,
-      positionStream: positionVM.model,
-      scrollController: DI.get<JourneyTableScrollController>(),
-      onAdvancementModeChanged: [viewModeVM.updateZenViewMode, positionVM.onAdvancementModeChanged],
-    );
-    settingsVM.registerOnBrakeSeriesUpdated(vm.scrollToCurrentPositionIfNotPaused);
-    registerSingleton<JourneyTableAdvancementViewModel>(
-      vm,
-      dispose: (vm) {
-        DI.get<JourneySettingsViewModel>().unregisterOnBrakeSeriesUpdated(vm.scrollToCurrentPositionIfNotPaused);
-        vm.dispose();
-      },
     );
   }
 

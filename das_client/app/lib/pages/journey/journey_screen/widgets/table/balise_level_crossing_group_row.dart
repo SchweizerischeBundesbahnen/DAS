@@ -21,6 +21,7 @@ class BaliseLevelCrossingGroupRow extends CellRowBuilder<BaliseLevelCrossingGrou
     required super.data,
     required super.rowIndex,
     required super.journeyPosition,
+    required super.chevronPosition,
     required this.isExpanded,
     required BuildContext context,
     super.config,
@@ -55,9 +56,9 @@ class BaliseLevelCrossingGroupRow extends CellRowBuilder<BaliseLevelCrossingGrou
   }
 
   @override
-  bool get isCurrentPosition {
+  bool get isCurrentChevronPosition {
     final isGroupPosition = !isExpanded && data.groupedElements.contains(journeyPosition.currentPosition);
-    return super.isCurrentPosition || isGroupPosition;
+    return super.isCurrentChevronPosition || isGroupPosition;
   }
 
   DASTableCell _withBaliseCell(BuildContext context, Balise firstBalise) {

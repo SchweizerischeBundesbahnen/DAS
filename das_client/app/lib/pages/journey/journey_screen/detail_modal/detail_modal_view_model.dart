@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ui';
 
 import 'package:app/pages/journey/journey_screen/detail_modal/additional_speed_restriction_modal/additional_speed_restriction_modal_builder.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/brake_load_slip_modal/brake_load_slip_modal_builder.dart';
@@ -10,11 +9,9 @@ import 'package:rxdart/rxdart.dart';
 enum DetailModalType { servicePointModal, additionalSpeedRestriction, brakeSlip }
 
 class DetailModalViewModel {
-  DetailModalViewModel({required this.onDetailModalOpen}) {
+  DetailModalViewModel() {
     _init();
   }
-
-  final VoidCallback onDetailModalOpen;
 
   late DASModalSheetController controller;
 
@@ -38,7 +35,6 @@ class DetailModalViewModel {
   void _initController() {
     controller = DASModalSheetController(
       onClose: () => _rxOpenModalType.add(null),
-      onOpen: () => onDetailModalOpen.call(),
     );
   }
 
