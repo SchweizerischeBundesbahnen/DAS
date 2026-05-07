@@ -98,16 +98,28 @@ class ServicePointModalBuilder extends DASModalSheetBuilder {
         if (!snapshot.hasData) {
           return Skeletonizer(
             enabled: true,
-            child: SBBSegmentedButton(values: [BoneMock.title], selectedStateIndex: 0, selectedIndexChanged: (_) {}),
+            child: SBBSegmentedButton(
+              segments: [SBBButtonSegment(value: 0, labelText: BoneMock.title)],
+              selected: 0,
+              onSelectionChanged: (_) {},
+            ),
           );
         }
 
         final tabs = snapshot.requireData;
-        return SBBSegmentedButton.icon(
+        return SBBSegmentedButton<ServicePointModalTab>(
           key: segmentedButtonKey,
-          icons: {for (final tab in tabs) tab.icon: tab.localized(context)},
-          selectedStateIndex: tabs.indexOf(selectedTab),
-          selectedIndexChanged: (index) => viewModel.open(context, tab: tabs[index]),
+          segments: tabs
+              .map(
+                (tab) => SBBButtonSegment(
+                  value: tab,
+                  leadingIconData: tab.icon,
+                  labelText: tab.localized(context),
+                ),
+              )
+              .toList(),
+          selected: selectedTab,
+          onSelectionChanged: (tab) => viewModel.open(context, tab: tab),
         );
       },
     );
