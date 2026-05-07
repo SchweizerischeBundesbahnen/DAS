@@ -1,9 +1,10 @@
 import 'dart:async';
 
 import 'package:app/di/di.dart';
+import 'package:app/pages/journey/journey_screen/detail_modal/detail_modal_view_model.dart';
 import 'package:app/pages/journey/journey_screen/journey_table_scroll_controller.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/chevron_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_advancement_model.dart';
-import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/util/time_constants.dart';
@@ -26,13 +27,16 @@ typedef AdvancementModeChangedCallback = void Function(JourneyAdvancementModel);
 /// * manual (automatic idle scrolling is enabled)
 class JourneyTableAdvancementViewModel extends JourneyAwareViewModel {
   JourneyTableAdvancementViewModel({
-    required Stream<JourneyPositionModel> positionStream,
     required JourneyTableScrollController scrollController,
     required JourneySettingsViewModel journeySettingsViewModel,
+    required DetailModalViewModel detailModalViewModel,
+    required Stream<ChevronPositionModel> chevronPositionStream,
     super.journeyViewModel,
   }) : _scrollController = scrollController,
-       _journeySettingsViewModel = journeySettingsViewModel {
-    _initSubscription(journeyViewModel.journey, positionStream);
+       _journeySettingsViewModel = journeySettingsViewModel,
+       _detailModalViewModel = detailModalViewModel,
+       _chevronPositionStream = chevronPositionStream {
+    _initSubscription();
   }
 
   final List<StreamSubscription> _streamSubscription = [];
@@ -41,6 +45,8 @@ class JourneyTableAdvancementViewModel extends JourneyAwareViewModel {
 
   final JourneyTableScrollController _scrollController;
   final JourneySettingsViewModel _journeySettingsViewModel;
+  final DetailModalViewModel _detailModalViewModel;
+  final Stream<ChevronPositionModel> _chevronPositionStream;
 
   JourneyPoint? _currentPosition;
   JourneyPoint? _lastPosition;
@@ -114,14 +120,11 @@ class JourneyTableAdvancementViewModel extends JourneyAwareViewModel {
     super.dispose();
   }
 
-  void _initSubscription(
-    Stream<Journey?> journeyStream,
-    Stream<JourneyPositionModel> positionStream,
-  ) {
+  void _initSubscription() {
     _streamSubscription.add(
       CombineLatestStream.combine2(
-        journeyStream,
-        positionStream,
+        journeyViewModel.journey,
+        _chevronPositionStream.distinct(),
         (a, b) => (a, b),
       ).listen((data) async {
         final journey = data.$1;
@@ -150,6 +153,13 @@ class JourneyTableAdvancementViewModel extends JourneyAwareViewModel {
           scrollToCurrentPositionIfNotPaused();
         }
         latestBrakeSeries = data.currentBrakeSeries;
+      }),
+    );
+    _streamSubscription.add(
+      _detailModalViewModel.openModalType.listen((data) {
+        if (data == null) {
+          scrollToCurrentPositionIfNotPaused();
+        }
       }),
     );
   }

@@ -2,7 +2,6 @@ import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_screen/journey_table_scroll_controller.dart';
 import 'package:app/pages/journey/journey_screen/view_model/departure_process_warning_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
-import 'package:app/pages/journey/journey_screen/view_model/journey_table_advancement_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/punctuality_view_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
@@ -37,7 +36,6 @@ class JourneyScope extends DIScope {
     getIt.registerJourneyPositionViewModel();
     getIt.registerDepartureProcessWarningViewModel();
     getIt.registerJourneyTableScrollController();
-    getIt.registerJourneyTableAdvancementViewModel();
     getIt.registerWarnAppViewModel();
     getIt.registerLocalRegulationHtmlGenerator();
     await getIt.allReady();
@@ -122,19 +120,6 @@ extension JourneyScopeExtension on GetIt {
       ),
       dispose: (vm) => vm.dispose(),
     );
-  }
-
-  void registerJourneyTableAdvancementViewModel() {
-    final journeyVM = DI.get<JourneyViewModel>();
-    final settingsVM = DI.get<JourneySettingsViewModel>();
-    final positionVM = DI.get<JourneyPositionViewModel>();
-    final vm = JourneyTableAdvancementViewModel(
-      journeyViewModel: journeyVM,
-      positionStream: positionVM.model,
-      scrollController: DI.get<JourneyTableScrollController>(),
-      journeySettingsViewModel: settingsVM,
-    );
-    registerSingleton<JourneyTableAdvancementViewModel>(vm, dispose: (vm) => vm.dispose());
   }
 
   void registerJourneyTableScrollController() {
