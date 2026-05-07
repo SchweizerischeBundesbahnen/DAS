@@ -16,14 +16,12 @@ class SelectRailwayUndertakingInput extends StatefulWidget {
     super.key,
     this.isModalVersion = false,
     this.allowMultiSelect = false,
-    this.isLastElement = false,
   });
 
   final List<RailwayUndertaking> selectedRailwayUndertakings;
   final void Function(List<RailwayUndertaking>) updateRailwayUndertaking;
   final bool isModalVersion;
   final bool allowMultiSelect;
-  final bool isLastElement;
 
   @override
   State<SelectRailwayUndertakingInput> createState() => _RailwayUndertakingTextFieldState();
@@ -62,12 +60,13 @@ class _RailwayUndertakingTextFieldState extends State<SelectRailwayUndertakingIn
     return Padding(
       padding: widget.isModalVersion ? .zero : _inputPadding,
       child: GestureDetector(
-        child: SBBTextField(
+        child: SBBTextInput(
+          decoration: SBBInputDecoration(
+            labelText: widget.isModalVersion ? null : context.l10n.p_train_selection_ru_description,
+            placeholderText: widget.isModalVersion ? context.l10n.p_train_selection_ru_description : null,
+          ),
           enabled: false,
           controller: baseTextEditingController,
-          labelText: widget.isModalVersion ? null : context.l10n.p_train_selection_ru_description,
-          hintText: widget.isModalVersion ? context.l10n.p_train_selection_ru_description : null,
-          isLastElement: widget.isLastElement,
         ),
         onTap: () {
           showModalBottomSheet(
@@ -88,11 +87,7 @@ class _RailwayUndertakingTextFieldState extends State<SelectRailwayUndertakingIn
     );
   }
 
-  Color _modalBackgroundColor(BuildContext context) => ThemeUtil.getColor(
-    context,
-    SBBColors.cloud,
-    SBBColors.charcoal,
-  );
+  Color _modalBackgroundColor(BuildContext context) => ThemeUtil.getColor(context, SBBColors.cloud, SBBColors.charcoal);
 
   BoxConstraints get _modalConstraints => BoxConstraints(
     maxWidth: DeviceScreen.width - SBBSpacing.medium,

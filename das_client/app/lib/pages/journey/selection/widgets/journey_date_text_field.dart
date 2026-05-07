@@ -44,9 +44,11 @@ class _JourneyDateTextFieldState extends State<JourneyDateTextField> {
     onTap: widget.onTap,
     child: Padding(
       padding: widget.isModalVersion ? .zero : _inputPadding,
-      child: SBBTextField(
-        labelText: widget.isModalVersion ? null : context.l10n.p_train_selection_date_description,
-        hintText: widget.isModalVersion ? context.l10n.p_train_selection_date_description : null,
+      child: SBBTextInput(
+        decoration: SBBInputDecoration(
+          labelText: widget.isModalVersion ? null : context.l10n.p_train_selection_date_description,
+          placeholderText: widget.isModalVersion ? context.l10n.p_train_selection_date_description : null,
+        ),
         controller: _textController,
         enabled: false,
       ),

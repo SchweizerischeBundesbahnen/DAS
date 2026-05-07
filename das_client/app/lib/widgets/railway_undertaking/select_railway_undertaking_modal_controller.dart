@@ -11,7 +11,7 @@ final _log = Logger('JourneyRailwayUndertakingFilterController');
 /// This Controller is responsible for filtering **localized** names of railway undertakings.
 /// Thus it must access the AppLocalizations.
 ///
-/// To simplify, it exposes and listens to a TextController for the corresponding (filter) SBBTextField.
+/// To simplify, it exposes and listens to a TextController for the corresponding (filter) SBBTextInput.
 /// It has a setter for the currently selected RailwayUndertaking.
 /// It exposes a stream of available RailwayUndertakings
 /// based on the TextController text value (the filtering function).

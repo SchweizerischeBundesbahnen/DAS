@@ -36,10 +36,7 @@ class NavigationButtons extends StatelessWidget {
             iconData: SBBIcons.chevron_left_small,
             onPressed: onPreviousPressed,
           ),
-          SBBPagination(
-            numberPages: numberPages,
-            currentPage: currentPage,
-          ),
+          SBBPaginator(numberPages: numberPages, currentPage: currentPage),
           SBBTertiaryButton(
             key: navigationButtonNextKey,
             iconData: SBBIcons.chevron_right_small,

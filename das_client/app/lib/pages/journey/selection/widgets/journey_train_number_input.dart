@@ -48,15 +48,16 @@ class _JourneyTrainNumberInputState extends State<JourneyTrainNumberInput> {
 
     return Padding(
       padding: widget.isModalVersion ? .zero : _inputPadding,
-      child: SBBTextField(
-        labelText: widget.isModalVersion ? null : context.l10n.p_train_selection_trainnumber_description,
-        hintText: widget.isModalVersion ? context.l10n.p_train_selection_trainnumber_description : null,
+      child: SBBTextInput(
+        decoration: SBBInputDecoration(
+          labelText: widget.isModalVersion ? null : context.l10n.p_train_selection_trainnumber_description,
+          placeholderText: widget.isModalVersion ? context.l10n.p_train_selection_trainnumber_description : null,
+        ),
         enabled: onChanged != null,
         onChanged: onChanged,
         controller: _controller,
         keyboardType: connectedToMock ? .text : .number,
         onSubmitted: onSubmitted,
-        isLastElement: true,
       ),
     );
   }

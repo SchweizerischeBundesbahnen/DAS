@@ -36,7 +36,6 @@ class _UserRuSelectionState extends State<UserRuSelection> {
               },
               isModalVersion: true,
               allowMultiSelect: true,
-              isLastElement: true,
             ),
           ),
         ],

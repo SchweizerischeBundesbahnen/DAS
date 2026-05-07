@@ -77,7 +77,7 @@ void main() {
       expect(find.text(Format.date(DateTime.now())), findsOneWidget);
 
       // Verify that no train number is there
-      final trainNumberText = findTextFieldByLabel(l10n.p_train_selection_trainnumber_description);
+      final trainNumberText = findTextInputByLabel(l10n.p_train_selection_trainnumber_description);
       expect(trainNumberText, findsOneWidget);
 
       await enterText(tester, trainNumberText, '');
@@ -169,7 +169,7 @@ void main() {
       // Verify that today is preselected
       expect(find.text(Format.date(DateTime.now())), findsOneWidget);
 
-      final trainNumberText = findTextFieldByLabel(l10n.p_train_selection_trainnumber_description);
+      final trainNumberText = findTextInputByLabel(l10n.p_train_selection_trainnumber_description);
       expect(trainNumberText, findsOneWidget);
 
       await enterText(tester, trainNumberText, '1234');
@@ -187,7 +187,7 @@ void main() {
     testWidgets('test error is displayed if SFERA returns error', (tester) async {
       await prepareAndStartApp(tester);
 
-      final trainNumberText = findTextFieldByLabel(l10n.p_train_selection_trainnumber_description);
+      final trainNumberText = findTextInputByLabel(l10n.p_train_selection_trainnumber_description);
       expect(trainNumberText, findsOneWidget);
 
       await enterText(tester, trainNumberText, 'T34');

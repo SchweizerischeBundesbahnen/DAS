@@ -5,6 +5,7 @@ import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
+// TODO: Replace with new date picker
 class JourneyDatePicker extends StatelessWidget {
   static Key get datePickerKey => Key('JourneyDatePicker');
 
@@ -33,10 +34,10 @@ class JourneyDatePicker extends StatelessWidget {
 
   Widget _dateItem(BuildContext context, DateTime d) {
     final isSelected = d == selectedDate;
-    final unselectedTextStyle = SBBTextStyles.extraLargeLight.romanStyle.copyWith(
+    final unselectedTextStyle = SBBTextStyles.xLargeLight.romanStyle.copyWith(
       color: ThemeUtil.getColor(context, SBBColors.storm, SBBColors.graphite),
     );
-    final selectedTextStyle = SBBTextStyles.extraLargeLight.romanStyle.copyWith(
+    final selectedTextStyle = SBBTextStyles.xLargeLight.romanStyle.copyWith(
       color: ThemeUtil.getColor(context, SBBColors.black, SBBColors.white),
     );
     return GestureDetector(

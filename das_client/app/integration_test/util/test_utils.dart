@@ -50,14 +50,18 @@ Future<void> enterText(WidgetTester tester, FinderBase<Element> element, String 
   await tester.pumpAndSettle();
 }
 
-Finder findTextFieldByLabel(String label) {
-  final sbbTextField = find.byWidgetPredicate((widget) => widget is SBBTextField && widget.labelText == label);
-  return find.descendant(of: sbbTextField, matching: find.byType(TextField));
+Finder findTextInputByLabel(String label) {
+  final sbbTextInput = find.byWidgetPredicate(
+    (widget) => widget is SBBTextInput && widget.decoration?.labelText == label,
+  );
+  return find.descendant(of: sbbTextInput, matching: find.byType(TextField));
 }
 
-Finder findTextFieldByHint(String hint) {
-  final sbbTextField = find.byWidgetPredicate((widget) => widget is SBBTextField && widget.hintText == hint);
-  return find.descendant(of: sbbTextField, matching: find.byType(TextField));
+Finder findTextInputByPlaceholder(String placeholder) {
+  final sbbTextInput = find.byWidgetPredicate(
+    (widget) => widget is SBBTextInput && widget.decoration?.placeholderText == placeholder,
+  );
+  return find.descendant(of: sbbTextInput, matching: find.byType(TextField));
 }
 
 Finder findDASTableRowByText(String text) {
@@ -90,7 +94,7 @@ Future<void> loadJourney(WidgetTester tester, {required String trainNumber, Rail
     expect(find.text(l10n.c_ru_sbb_p), findsOneWidget);
   }
 
-  final trainNumberText = findTextFieldByLabel(l10n.p_train_selection_trainnumber_description);
+  final trainNumberText = findTextInputByLabel(l10n.p_train_selection_trainnumber_description);
   expect(trainNumberText, findsOneWidget);
 
   await enterText(tester, trainNumberText, trainNumber);

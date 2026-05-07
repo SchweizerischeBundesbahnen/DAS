@@ -119,17 +119,19 @@ class _SelectRailwayUndertakingModalState extends State<SelectRailwayUndertaking
           child: Row(
             children: [
               Expanded(
-                child: SBBTextField(
+                child: SBBTextInput(
+                  decoration: SBBInputDecoration(
+                    labelText: context.l10n.p_train_selection_ru_description,
+                    trailing: !widget.allowMultiSelect
+                        ? IconButton(
+                            icon: Icon(SBBIcons.cross_small),
+                            onPressed: () => controller?.textEditingController.clear(),
+                          )
+                        : null,
+                  ),
                   key: SelectRailwayUndertakingModal.filterFieldKey,
                   controller: controller?.textEditingController,
-                  labelText: context.l10n.p_train_selection_ru_description,
                   keyboardType: .text,
-                  suffixIcon: !widget.allowMultiSelect
-                      ? IconButton(
-                          icon: Icon(SBBIcons.cross_small),
-                          onPressed: () => controller?.textEditingController.clear(),
-                        )
-                      : null,
                   autofocus: true,
                 ),
               ),

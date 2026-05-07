@@ -61,7 +61,7 @@ void main() {
       expect(tester.widget<SBBPrimaryButton>(primaryButton).onPressed, isNull);
 
       // set input
-      final trainNumberText = findTextFieldByHint(l10n.p_train_selection_trainnumber_description);
+      final trainNumberText = findTextInputByPlaceholder(l10n.p_train_selection_trainnumber_description);
       expect(trainNumberText, findsOneWidget);
       await enterText(tester, trainNumberText, '123');
 
@@ -80,7 +80,7 @@ void main() {
       await _openJourneySearchOverlayByTap(tester);
 
       // set input
-      final trainNumberText = findTextFieldByHint(l10n.p_train_selection_trainnumber_description);
+      final trainNumberText = findTextInputByPlaceholder(l10n.p_train_selection_trainnumber_description);
       expect(trainNumberText, findsOneWidget);
       await enterText(tester, trainNumberText, 'T2');
 
