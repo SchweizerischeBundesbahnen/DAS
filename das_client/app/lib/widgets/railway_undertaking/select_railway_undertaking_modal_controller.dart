@@ -77,10 +77,8 @@ class SelectRailwayUndertakingModalController {
   }
 
   void _initRxAvailableRailwayUndertakings() {
-    _rxAvailableRailwayUndertakings = BehaviorSubject<List<RailwayUndertaking>>();
-    _rxAvailableRailwayUndertakings.add(
-      _localizedToRailwayUndertaking.sortedWithSelectedFirst(_selectedRailwayUndertaking),
-    );
+    final railwayUndertakings = _localizedToRailwayUndertaking.sortedWithSelectedFirst(_selectedRailwayUndertaking);
+    _rxAvailableRailwayUndertakings = BehaviorSubject<List<RailwayUndertaking>>.seeded(railwayUndertakings);
   }
 
   void _initFilter() {

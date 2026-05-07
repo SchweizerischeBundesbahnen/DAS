@@ -21,7 +21,7 @@ class GlobalErrorWidget extends StatelessWidget {
       home: Builder(
         builder: (context) {
           return Scaffold(
-            appBar: SBBHeader(titleText: context.l10n.c_app_name),
+            appBar: SBBHeaderSmall(titleText: context.l10n.c_app_name),
             body: SafeArea(
               child: Center(
                 child: _errorMessage(context),

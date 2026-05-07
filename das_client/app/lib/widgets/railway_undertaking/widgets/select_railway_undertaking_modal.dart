@@ -78,31 +78,35 @@ class _SelectRailwayUndertakingModalState extends State<SelectRailwayUndertaking
         final resolvedForegroundColor = ThemeUtil.getColor(context, SBBColors.milk, SBBColors.midnight);
         return Padding(
           padding: .only(bottom: bottom),
-          child: CustomScrollView(
-            key: SelectRailwayUndertakingModal.modalKey,
-            controller: scrollController,
-            physics: ClampingScrollPhysics(),
-            slivers: [
-              _sliverHeader(context, resolvedForegroundColor),
-              SliverPadding(
-                padding: const .symmetric(vertical: SBBSpacing.medium),
-                sliver: SliverList.list(
-                  // TODO: check
-                  children: SBBDivider.divideItems(
-                    items: localizedFilteredRus
-                        .map(
-                          (ru) => Material(
-                            color: resolvedForegroundColor,
-                            child: widget.allowMultiSelect
-                                ? _checkboxListItem(context, ru)
-                                : _radioListItem(context, ru),
-                          ),
-                        )
-                        .toList(),
+          // TODO: SBBRadioGroup currently doesn't support Slivers so it needs to be wrapped around whole list.
+          // Also see: https://github.com/flutter/flutter/issues/174753
+          child: SBBRadioGroup<RailwayUndertaking>(
+            groupValue: widget.selectedRailwayUndertaking.firstOrNull,
+            onChanged: (selectedRu) {
+              if (selectedRu != null) controller?.selectedRailwayUndertaking = [selectedRu];
+              context.router.pop(selectedRu);
+            },
+            child: CustomScrollView(
+              key: SelectRailwayUndertakingModal.modalKey,
+              controller: scrollController,
+              physics: ClampingScrollPhysics(),
+              slivers: [
+                _sliverHeader(context, resolvedForegroundColor),
+                SliverPadding(
+                  padding: const .symmetric(vertical: SBBSpacing.medium),
+                  sliver: SliverList.list(
+                    children: SBBDivider.divideItems(
+                      items: localizedFilteredRus
+                          .map(
+                            (ru) =>
+                                widget.allowMultiSelect ? _checkboxListItem(context, ru) : _radioListItem(context, ru),
+                          )
+                          .toList(),
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },
@@ -147,17 +151,11 @@ class _SelectRailwayUndertakingModalState extends State<SelectRailwayUndertaking
     );
   }
 
-  // TODO: migrate to construct with SBBRadioGroup
   SBBRadioListItem<RailwayUndertaking> _radioListItem(BuildContext context, RailwayUndertaking element) {
     return SBBRadioListItem<RailwayUndertaking>(
       key: ValueKey(element),
       value: element,
-      groupValue: widget.selectedRailwayUndertaking.firstOrNull,
       titleText: element.displayText(context),
-      onChanged: (selectedRu) {
-        if (selectedRu != null) controller?.selectedRailwayUndertaking = [selectedRu];
-        context.router.pop(selectedRu);
-      },
     );
   }
 

@@ -71,7 +71,7 @@ Future<void> main() async {
 
       await tapElement(tester, find.byKey(ConnectivityIcon.disconnectedKey));
       expect(find.text(l10n.w_modal_sheet_disconnected_message_title), findsOneWidget);
-      await findAndDismissModalSheet(tester);
+      await findAndDismissBottomSheet(tester);
 
       // simulate wifi active
       connectivityManager.wifiActive = true;
@@ -86,7 +86,7 @@ Future<void> main() async {
 
       await tapElement(tester, find.byKey(ConnectivityIcon.connectedWifiKey));
       expect(find.text(l10n.w_modal_sheet_disconnected_wifi_message_title), findsOneWidget);
-      await findAndDismissModalSheet(tester);
+      await findAndDismissBottomSheet(tester);
 
       // simulate connectivity restored
       connectivityManager.connectivitySubject.add(true);
@@ -220,7 +220,7 @@ Future<void> main() async {
 
       final context = tester.element(header);
 
-      final brightness = SBBBaseStyle.of(context).brightness;
+      final brightness = Theme.of(context).brightness;
 
       final searchedButtonLabel = brightness != .dark
           ? l10n.p_journey_header_button_dark_theme
@@ -235,7 +235,7 @@ Future<void> main() async {
 
       await tester.pumpAndSettle(Duration(milliseconds: 300));
 
-      expect(SBBBaseStyle.of(context).brightness != brightness, true);
+      expect(Theme.of(context).brightness != brightness, true);
     });
 
     testWidgets('test extended menu opening', (tester) async {
@@ -531,7 +531,7 @@ Future<void> main() async {
       final mockBrightnessManager = DI.get<BrightnessManager>() as MockBrightnessManager;
 
       // automatically opening modal sheet if write permissions not given (in tests hasWritePermissions is always false)
-      await findAndDismissModalSheet(tester);
+      await findAndDismissBottomSheet(tester);
 
       mockBrightnessManager.writeSettingsPermission = true;
 
@@ -563,7 +563,7 @@ Future<void> main() async {
       final mockBrightnessManager = DI.get<BrightnessManager>() as MockBrightnessManager;
 
       // automatically opening modal sheet if write permissions not given (in tests hasWritePermissions is always false)
-      await findAndDismissModalSheet(tester);
+      await findAndDismissBottomSheet(tester);
 
       mockBrightnessManager.writeSettingsPermission = true;
       mockBrightnessManager.currentBrightness = 0.5;
@@ -593,7 +593,7 @@ Future<void> main() async {
       final mockBrightnessManager = DI.get<BrightnessManager>() as MockBrightnessManager;
 
       // automatically opening modal sheet if write permissions not given (in tests hasWritePermissions is always false)
-      await findAndDismissModalSheet(tester);
+      await findAndDismissBottomSheet(tester);
 
       mockBrightnessManager.writeSettingsPermission = true;
       mockBrightnessManager.currentBrightness = 0.5;
@@ -701,13 +701,13 @@ Future<void> _toggleExtendedMenuManeuverMode(WidgetTester tester) async {
   await tapElement(tester, find.byKey(ExtendedMenu.maneuverSwitchKey));
 }
 
-Future<void> findAndDismissModalSheet(WidgetTester tester) async {
-  // find brightness modal sheet
-  final modalSheet = find.byType(SBBModalSheet);
-  expect(modalSheet, findsOneWidget);
+Future<void> findAndDismissBottomSheet(WidgetTester tester) async {
+  // find brightness bottom sheet
+  final sbbBottomSheet = find.byType(SBBBottomSheet);
+  expect(sbbBottomSheet, findsOneWidget);
 
   // find close button
-  final closeButton = find.descendant(of: modalSheet, matching: find.byType(SBBTertiaryButtonSmall));
+  final closeButton = find.descendant(of: sbbBottomSheet, matching: find.byType(SBBTertiaryButtonSmall));
   expect(closeButton, findsOneWidget);
 
   // tap close button

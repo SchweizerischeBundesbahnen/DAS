@@ -64,7 +64,7 @@ class _DASJourneyScaffoldState extends State<DASJourneyScaffold> with SingleTick
   PreferredSizeWidget? _appBar(BuildContext context) {
     return PreferredSize(
       preferredSize: Size.fromHeight(_toolbarHeight),
-      child: SBBHeader(
+      child: SBBHeaderSmall(
         titleText: widget.appBarTitle,
         actions: widget.appBarTrailingAction != null ? [widget.appBarTrailingAction!] : [],
       ),

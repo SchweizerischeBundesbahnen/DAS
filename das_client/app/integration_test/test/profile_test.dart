@@ -69,14 +69,14 @@ void main() {
     // check initial RU is empty
     expect(find.text(l10n.w_user_tour_system_selection_label), findsNWidgets(2));
 
-    await tapElement(tester, find.byWidgetPredicate((it) => it is SBBSelect));
+    await tapElement(tester, find.byWidgetPredicate((it) => it is SBBDropdown));
 
     // Select tour system
     await tapElement(tester, find.text(l10n.c_tour_system_rail_cube).first);
 
     expect(find.text(l10n.c_tour_system_rail_cube), findsOne);
 
-    await tapElement(tester, find.byWidgetPredicate((it) => it is SBBSelect));
+    await tapElement(tester, find.byWidgetPredicate((it) => it is SBBDropdown));
     await tapElement(tester, find.text(l10n.c_tour_system_bls_ivu).first);
 
     expect(find.text(l10n.c_tour_system_bls_ivu), findsOne);

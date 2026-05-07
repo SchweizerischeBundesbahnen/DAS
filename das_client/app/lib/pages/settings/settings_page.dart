@@ -28,7 +28,7 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  SBBHeader _appBar(BuildContext context) => SBBHeader(
+  SBBHeaderSmall _appBar(BuildContext context) => SBBHeaderSmall(
     titleText: context.l10n.c_app_name,
     actions: [], // hide SBB logo
   );

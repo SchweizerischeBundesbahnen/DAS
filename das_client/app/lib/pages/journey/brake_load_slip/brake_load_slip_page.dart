@@ -58,7 +58,7 @@ class BrakeLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
   }
 
   PreferredSizeWidget _appBar(BuildContext context) {
-    return SBBHeader(
+    return SBBHeaderSmall(
       titleText: context.l10n.p_brake_load_slip_page_title,
       leading: _DismissButton(),
       actions: [], // removes SBB logo
