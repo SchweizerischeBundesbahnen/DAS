@@ -85,18 +85,21 @@ class _SelectRailwayUndertakingModalState extends State<SelectRailwayUndertaking
             slivers: [
               _sliverHeader(context, resolvedForegroundColor),
               SliverPadding(
-                padding: EdgeInsetsGeometry.symmetric(vertical: SBBSpacing.medium),
+                padding: const .symmetric(vertical: SBBSpacing.medium),
                 sliver: SliverList.list(
-                  children: localizedFilteredRus
-                      .mapIndexed(
-                        (idx, e) => Material(
-                          color: resolvedForegroundColor,
-                          child: widget.allowMultiSelect
-                              ? _checkboxListItem(context, e, isLastElement: idx == localizedFilteredRus.length - 1)
-                              : _radioListItem(context, e, isLastElement: idx == localizedFilteredRus.length - 1),
-                        ),
-                      )
-                      .toList(),
+                  // TODO: check
+                  children: SBBDivider.divideItems(
+                    items: localizedFilteredRus
+                        .map(
+                          (ru) => Material(
+                            color: resolvedForegroundColor,
+                            child: widget.allowMultiSelect
+                                ? _checkboxListItem(context, ru)
+                                : _radioListItem(context, ru),
+                          ),
+                        )
+                        .toList(),
+                  ),
                 ),
               ),
             ],
@@ -142,17 +145,13 @@ class _SelectRailwayUndertakingModalState extends State<SelectRailwayUndertaking
     );
   }
 
-  SBBRadioListItem<RailwayUndertaking> _radioListItem(
-    BuildContext context,
-    RailwayUndertaking element, {
-    bool isLastElement = false,
-  }) {
+  // TODO: migrate to construct with SBBRadioGroup
+  SBBRadioListItem<RailwayUndertaking> _radioListItem(BuildContext context, RailwayUndertaking element) {
     return SBBRadioListItem<RailwayUndertaking>(
       key: ValueKey(element),
       value: element,
       groupValue: widget.selectedRailwayUndertaking.firstOrNull,
-      label: element.displayText(context),
-      isLastElement: isLastElement,
+      titleText: element.displayText(context),
       onChanged: (selectedRu) {
         if (selectedRu != null) controller?.selectedRailwayUndertaking = [selectedRu];
         context.router.pop(selectedRu);
@@ -160,16 +159,11 @@ class _SelectRailwayUndertakingModalState extends State<SelectRailwayUndertaking
     );
   }
 
-  SBBCheckboxListItem _checkboxListItem(
-    BuildContext context,
-    RailwayUndertaking element, {
-    bool isLastElement = false,
-  }) {
+  SBBCheckboxListItem _checkboxListItem(BuildContext context, RailwayUndertaking element) {
     return SBBCheckboxListItem(
       key: ValueKey(element),
       value: widget.selectedRailwayUndertaking.contains(element),
-      label: element.displayText(context),
-      isLastElement: isLastElement,
+      titleText: element.displayText(context),
       onChanged: (isSelected) {
         if (isSelected != null && isSelected) {
           widget.selectedRailwayUndertaking.add(element);

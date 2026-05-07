@@ -87,13 +87,10 @@ class _LoginDraggableBottomSheetState extends State<LoginDraggableBottomSheet> {
           initialData: vm.modelValue,
           builder: (context, asyncSnapshot) {
             final model = asyncSnapshot.requireData;
-            return SBBContentBox(
-              child: SBBSwitchListItem(
-                title: context.l10n.p_login_connect_to_tms,
-                value: model.connectToTmsVad,
-                onChanged: vm.setConnectToTmsVad,
-                isLastElement: true,
-              ),
+            return SBBSwitchListItemBoxed(
+              titleText: context.l10n.p_login_connect_to_tms,
+              value: model.connectToTmsVad,
+              onChanged: vm.setConnectToTmsVad,
             );
           },
         ),
