@@ -101,7 +101,7 @@ class ChronographHeaderBox extends StatelessWidget {
   Widget warningBody(BuildContext context) {
     return Container(
       key: warningKey,
-      color: ThemeUtil.getColor(context, SBBColors.red, SBBColors.redDark),
+      color: ThemeUtil.getColor(context, SBBColors.red, SBBColors.red85),
       child: Center(
         child: Text(
           context.l10n.w_chronograph_no_authorisation_warning,
