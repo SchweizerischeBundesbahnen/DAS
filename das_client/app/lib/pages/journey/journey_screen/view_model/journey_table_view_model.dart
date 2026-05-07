@@ -4,6 +4,7 @@ import 'package:app/extension/base_data_extension.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/detail_modal_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/chevron_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_table_model.dart';
 import 'package:app/pages/journey/view_model/decisive_gradient_view_model.dart';
@@ -119,6 +120,11 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
         .hideSignals(stationSignals: !_userSettings.showStationSignals)
         .sorted((a1, a2) => a1.compareTo(a2));
 
+    final chevronPosition = _calculateChevronPosition(
+      visibleJourneyPoints: rowData.whereType<JourneyPoint>(),
+      position: position,
+    );
+
     _emitLoaded(
       TableLoaded(
         journeyTableRowData: rowData,
@@ -126,10 +132,46 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
         journeySettings: settings,
         collapsedRows: collapsibleRows,
         journeyPosition: position,
+        chevronPosition: chevronPosition,
         showDecisiveGradient: showDecisiveGradient,
         detailModalType: detailModalType,
       ),
     );
+  }
+
+  ChevronPositionModel _calculateChevronPosition({
+    required Iterable<JourneyPoint> visibleJourneyPoints,
+    required JourneyPositionModel position,
+  }) {
+    final lastVisiblePosition = _positionOrLastVisibleBefore(visibleJourneyPoints, position.lastPosition);
+    final currentVisiblePosition = _positionOrLastVisibleBefore(
+      visibleJourneyPoints,
+      position.currentPosition,
+    );
+
+    if (lastVisiblePosition != position.lastPosition) {
+      _log.fine(
+        'Last position ${position.lastPosition} is not visible, using $lastVisiblePosition as last position for chevron animation.',
+      );
+    }
+
+    if (currentVisiblePosition != position.currentPosition) {
+      _log.fine(
+        'Current position ${position.currentPosition} is not visible, using $currentVisiblePosition as current position for chevron animation.',
+      );
+    }
+
+    return ChevronPositionModel(
+      currentPosition: currentVisiblePosition,
+      lastPosition: lastVisiblePosition,
+    );
+  }
+
+  JourneyPoint? _positionOrLastVisibleBefore(Iterable<JourneyPoint> visibleJourneyPoints, JourneyPoint? position) {
+    if (position == null) return null;
+    if (visibleJourneyPoints.contains(position)) return position;
+
+    return visibleJourneyPoints.lastWhere((it) => it.order <= position.order);
   }
 
   bool _isCurvePointWithoutSpeed(BaseData data, JourneySettings settings) {

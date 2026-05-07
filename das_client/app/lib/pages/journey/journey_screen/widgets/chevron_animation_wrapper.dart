@@ -1,16 +1,16 @@
 import 'package:app/pages/journey/journey_screen/chevron_animation_controller.dart';
-import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/chevron_position_model.dart';
 import 'package:flutter/material.dart';
 
 class ChevronAnimationWrapper extends StatefulWidget {
   const ChevronAnimationWrapper({
     required this.child,
-    required this.journeyPosition,
+    required this.chevronPosition,
     super.key,
   });
 
   final Widget child;
-  final JourneyPositionModel journeyPosition;
+  final ChevronPositionModel chevronPosition;
 
   @override
   State<ChevronAnimationWrapper> createState() => _ChevronAnimationWrapperState();
@@ -25,7 +25,7 @@ class _ChevronAnimationWrapperState extends State<ChevronAnimationWrapper> with 
   @override
   void initState() {
     _controller = ChevronAnimationController(this);
-    _controller.onPositionUpdate(widget.journeyPosition);
+    _controller.onPositionUpdate(widget.chevronPosition);
     super.initState();
   }
 
@@ -33,13 +33,13 @@ class _ChevronAnimationWrapperState extends State<ChevronAnimationWrapper> with 
   void didUpdateWidget(covariant ChevronAnimationWrapper oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (_relevantPositionUpdate(oldWidget)) {
-      _controller.onPositionUpdate(widget.journeyPosition);
+      _controller.onPositionUpdate(widget.chevronPosition);
     }
   }
 
   bool _relevantPositionUpdate(ChevronAnimationWrapper oldWidget) =>
-      oldWidget.journeyPosition.lastPosition != widget.journeyPosition.lastPosition ||
-      oldWidget.journeyPosition.currentPosition != widget.journeyPosition.currentPosition;
+      oldWidget.chevronPosition.lastPosition != widget.chevronPosition.lastPosition ||
+      oldWidget.chevronPosition.currentPosition != widget.chevronPosition.currentPosition;
 
   @override
   Widget build(BuildContext context) {

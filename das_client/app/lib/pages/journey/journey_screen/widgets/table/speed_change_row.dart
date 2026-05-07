@@ -16,6 +16,7 @@ class SpeedChangeRow extends CellRowBuilder<SpeedChange> {
     required super.data,
     required super.rowIndex,
     required super.journeyPosition,
+    required super.chevronPosition,
     super.config,
   });
 
