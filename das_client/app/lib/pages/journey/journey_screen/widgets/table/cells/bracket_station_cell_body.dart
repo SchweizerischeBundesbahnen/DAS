@@ -44,7 +44,7 @@ class BracketStationCellBody extends StatelessWidget {
                 child: Text(
                   stationAbbreviation ?? '',
                   style: sbbTextStyle.boldStyle.xSmall.copyWith(
-                    color: ThemeUtil.getFontColor(context),
+                    color: ThemeUtil.getColor(context, SBBColors.white, SBBColors.charcoal),
                     fontSize: _bracketStationFontSize,
                     height: _bracketStationWidth / _bracketStationFontSize,
                   ),

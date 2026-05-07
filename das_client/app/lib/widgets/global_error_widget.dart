@@ -1,5 +1,4 @@
 import 'package:app/i18n/i18n.dart';
-import 'package:app/theme/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -15,7 +14,7 @@ class GlobalErrorWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: DASTheme.light(),
+      theme: SBBTheme.light(themeContext: .safety),
       localizationsDelegates: localizationDelegates,
       supportedLocales: supportedLocales,
       localeResolutionCallback: defaultLocale,

@@ -8,13 +8,13 @@ import 'package:app/pages/journey/journey_screen/widgets/table/service_point_row
 import 'package:app/pages/journey/journey_screen/widgets/table/signal_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/tram_area_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/whistle_row.dart';
-import 'package:app/theme/themes.dart';
 import 'package:app/widgets/dot_indicator.dart';
 import 'package:app/widgets/speed_display.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 import '../app_test.dart';
 import '../util/test_utils.dart';
@@ -843,7 +843,7 @@ Future<void> _checkAdditionalServicePoint(WidgetTester tester, Finder scrollable
   // check all cells are colored
   final coloredCells = findColoredRowCells(
     of: servicePointRow,
-    color: DASTheme.light().scaffoldBackgroundColor,
+    color: SBBTheme.light(themeContext: .safety).scaffoldBackgroundColor,
   );
   expect(coloredCells, findsAtLeast(3));
 }
