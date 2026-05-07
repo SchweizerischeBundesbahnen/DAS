@@ -132,41 +132,32 @@ class DepartureProcessDialog extends StatelessWidget {
     return SBBContentBox(
       child: Column(
         mainAxisSize: .min,
-        children: [
-          SBBListItem.custom(
-            title: context.l10n.w_departure_process_checklist_item_1,
-            onPressed: null,
-            enabled: true,
-            trailingWidget: SizedBox.shrink(),
-          ),
-          SBBListItem.custom(
-            title: context.l10n.w_departure_process_checklist_item_2,
-            onPressed: null,
-            enabled: true,
-            trailingWidget: SizedBox.shrink(),
-          ),
-          SBBListItem.custom(
-            title: isCustomerOrientedDepartureActive
-                ? context.l10n.w_departure_process_checklist_item_3_koa
-                : context.l10n.w_departure_process_checklist_item_3,
-            onPressed: null,
-            enabled: true,
-            trailingWidget: SizedBox.shrink(),
-          ),
-          SBBListItem.custom(
-            title: context.l10n.w_departure_process_checklist_item_4,
-            onPressed: null,
-            enabled: true,
-            trailingWidget: SizedBox.shrink(),
-          ),
-          SBBListItem.custom(
-            title: context.l10n.w_departure_process_checklist_item_5,
-            onPressed: null,
-            enabled: true,
-            trailingWidget: SizedBox.shrink(),
-            isLastElement: true,
-          ),
-        ],
+        children: SBBDivider.divideItems(
+          items: [
+            SBBListItem(
+              titleText: context.l10n.w_departure_process_checklist_item_1,
+              onTap: null, // TODO: add back enabled flag?
+            ),
+            SBBListItem(
+              titleText: context.l10n.w_departure_process_checklist_item_2,
+              onTap: null, // TODO: add back enabled flag?
+            ),
+            SBBListItem(
+              titleText: isCustomerOrientedDepartureActive
+                  ? context.l10n.w_departure_process_checklist_item_3_koa
+                  : context.l10n.w_departure_process_checklist_item_3,
+              onTap: null, // TODO: add back enabled flag?
+            ),
+            SBBListItem(
+              titleText: context.l10n.w_departure_process_checklist_item_4,
+              onTap: null, // TODO: add back enabled flag?
+            ),
+            SBBListItem(
+              titleText: context.l10n.w_departure_process_checklist_item_5,
+              onTap: null, // TODO: add back enabled flag?
+            ),
+          ],
+        ),
       ),
     );
   }
