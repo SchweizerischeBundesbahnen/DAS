@@ -80,7 +80,7 @@ class JourneyTableAdvancementViewModel extends JourneyAwareViewModel {
     if (nextModel is! Paused) _scrollToCurrentPositionIfInAutoScrollingZone();
   }
 
-  void scrollToCurrentPositionIfNotPaused() {
+  void _scrollToCurrentPositionIfNotPaused() {
     if (_modelValue is! Paused) _scrollToCurrentPositionIfInAutoScrollingZone();
   }
 
@@ -150,7 +150,7 @@ class JourneyTableAdvancementViewModel extends JourneyAwareViewModel {
     _streamSubscription.add(
       _journeySettingsViewModel.model.listen((data) {
         if (data.currentBrakeSeries != latestBrakeSeries) {
-          scrollToCurrentPositionIfNotPaused();
+          _scrollToCurrentPositionIfNotPaused();
         }
         latestBrakeSeries = data.currentBrakeSeries;
       }),
@@ -158,7 +158,7 @@ class JourneyTableAdvancementViewModel extends JourneyAwareViewModel {
     _streamSubscription.add(
       _detailModalViewModel.openModalType.listen((data) {
         if (data == null) {
-          scrollToCurrentPositionIfNotPaused();
+          _scrollToCurrentPositionIfNotPaused();
         }
       }),
     );

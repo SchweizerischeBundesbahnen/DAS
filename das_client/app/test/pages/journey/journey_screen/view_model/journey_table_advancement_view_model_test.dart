@@ -29,6 +29,7 @@ void main() {
   late MockDetailModalViewModel mockDetailModalViewModel;
   late BehaviorSubject<Journey?> journeySubject;
   late BehaviorSubject<ChevronPositionModel> chevronPositionlSubject;
+  late BehaviorSubject<DetailModalType?> openModalTypeSubject;
   late JourneyTableScrollController mockScrollController;
   late FakeAsync testAsync;
   late List<JourneyAdvancementModel> modelRegister;
@@ -65,6 +66,8 @@ void main() {
       journeySubject = BehaviorSubject<Journey?>.seeded(baseJourney);
       when(mockJourneyViewModel.journey).thenAnswer((_) => journeySubject.stream);
       chevronPositionlSubject = BehaviorSubject<ChevronPositionModel>.seeded(ChevronPositionModel());
+      openModalTypeSubject = BehaviorSubject<DetailModalType?>.seeded(null);
+      when(mockDetailModalViewModel.openModalType).thenAnswer((_) => openModalTypeSubject.stream);
       testee = JourneyTableAdvancementViewModel(
         journeyViewModel: mockJourneyViewModel,
         chevronPositionStream: chevronPositionlSubject.stream,
@@ -329,17 +332,8 @@ void main() {
     expect(modelRegister, orderedEquals([Manual(), Automatic()]));
   });
 
-  test('scrollToCurrentPositionIfNotPaused_whenHasNoCurrentPosition_thenDoesNotScroll', () {
-    // ACT
-    testee.scrollToCurrentPositionIfNotPaused();
-
-    // EXPECT
-    verifyZeroInteractions(mockScrollController);
-  });
-
-  test('scrollToCurrentPositionIfNotPaused_whenHasCurrentPositionButPaused_thenDoesNotScroll', () {
+  test('brakeSeriesChange_whenHasCurrentPositionButPaused_thenDoesNotScroll', () {
     // ARRANGE
-    // ACT
     testAsync.run((_) {
       chevronPositionlSubject.add(ChevronPositionModel(currentPosition: firstServicePoint));
       testee.toggleAdvancementMode();
@@ -348,14 +342,17 @@ void main() {
     reset(mockScrollController);
 
     // ACT
-    testee.scrollToCurrentPositionIfNotPaused();
+    testAsync.run((_) {
+      journeySettingsViewModel.updateBrakeSeries(BrakeSeries(trainSeries: TrainSeries.R, brakeSeries: 150));
+    });
+    processStreams(fakeAsync: testAsync);
 
     // EXPECT
     verifyZeroInteractions(mockScrollController);
   });
 
-  test('scrollToCurrentPositionIfNotPaused_whenHasCurrentPositionAndAutomatic_thenDoesScroll', () {
-    // ACT
+  test('brakeSeriesChange_whenHasCurrentPosition_thenDoesScroll', () {
+    // ARRANGE
     testAsync.run((_) {
       chevronPositionlSubject.add(ChevronPositionModel(currentPosition: firstServicePoint));
     });
@@ -363,7 +360,49 @@ void main() {
     reset(mockScrollController);
 
     // ACT
-    testee.scrollToCurrentPositionIfNotPaused();
+    testAsync.run((_) {
+      journeySettingsViewModel.updateBrakeSeries(BrakeSeries(trainSeries: TrainSeries.R, brakeSeries: 150));
+    });
+    processStreams(fakeAsync: testAsync);
+
+    // EXPECT
+    verify(mockScrollController.scrollToJourneyPoint(firstServicePoint)).called(1);
+  });
+
+  test('detailModelCloses_whenHasCurrentPositionButPaused_thenDoesNotScroll', () {
+    // ARRANGE
+    testAsync.run((_) {
+      chevronPositionlSubject.add(ChevronPositionModel(currentPosition: firstServicePoint));
+      openModalTypeSubject.add(DetailModalType.servicePointModal);
+      testee.toggleAdvancementMode();
+    });
+    processStreams(fakeAsync: testAsync);
+    reset(mockScrollController);
+
+    // ACT
+    testAsync.run((_) {
+      openModalTypeSubject.add(null);
+    });
+    processStreams(fakeAsync: testAsync);
+
+    // EXPECT
+    verifyZeroInteractions(mockScrollController);
+  });
+
+  test('detailModelCloses_whenHasCurrentPosition_thenDoesScroll', () {
+    // ARRANGE
+    testAsync.run((_) {
+      chevronPositionlSubject.add(ChevronPositionModel(currentPosition: firstServicePoint));
+      openModalTypeSubject.add(DetailModalType.servicePointModal);
+    });
+    processStreams(fakeAsync: testAsync);
+    reset(mockScrollController);
+
+    // ACT
+    testAsync.run((_) {
+      openModalTypeSubject.add(null);
+    });
+    processStreams(fakeAsync: testAsync);
 
     // EXPECT
     verify(mockScrollController.scrollToJourneyPoint(firstServicePoint)).called(1);
