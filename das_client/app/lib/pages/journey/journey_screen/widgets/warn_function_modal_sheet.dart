@@ -56,7 +56,7 @@ class WarnFunctionModalSheet extends StatelessWidget {
             children: [
               Expanded(
                 child: SBBSecondaryButton(
-                  label: context.l10n.w_modal_sheet_warn_function_manoeuvre_button,
+                  labelText: context.l10n.w_modal_sheet_warn_function_manoeuvre_button,
                   onPressed: () {
                     onManeuverButtonPressed();
                     Navigator.of(context).pop();
@@ -65,7 +65,7 @@ class WarnFunctionModalSheet extends StatelessWidget {
               ),
               Expanded(
                 child: SBBSecondaryButton(
-                  label: context.l10n.w_modal_sheet_warn_function_confirm_button,
+                  labelText: context.l10n.w_modal_sheet_warn_function_confirm_button,
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ),

@@ -228,7 +228,7 @@ Future<void> main() async {
 
       final themeSwitchButton = find.descendant(
         of: header,
-        matching: find.widgetWithText(SBBTertiaryButtonLarge, searchedButtonLabel),
+        matching: find.widgetWithText(SBBTertiaryButton, searchedButtonLabel),
       );
       expect(themeSwitchButton, findsOneWidget);
       await tester.tap(themeSwitchButton);

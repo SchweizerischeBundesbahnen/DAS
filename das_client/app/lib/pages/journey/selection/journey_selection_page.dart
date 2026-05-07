@@ -192,15 +192,17 @@ class _ContentState extends State<_Content> {
 
         final buttonLabel = context.l10n.c_button_confirm;
         return switch (model) {
-          final Loading _ => wrapWithPadding(SBBPrimaryButton(label: buttonLabel, onPressed: null, isLoading: true)),
+          final Loading _ => wrapWithPadding(
+            SBBPrimaryButton(labelText: buttonLabel, onPressed: null, isLoading: true),
+          ),
           final Selecting s => Padding(
             padding: const .symmetric(vertical: SBBSpacing.medium, horizontal: SBBSpacing.xSmall),
             child: SBBPrimaryButton(
-              label: buttonLabel,
+              labelText: buttonLabel,
               onPressed: s.isInputComplete ? () => viewModel.loadJourney() : null,
             ),
           ),
-          _ => wrapWithPadding(SBBPrimaryButton(label: buttonLabel, onPressed: null)),
+          _ => wrapWithPadding(SBBPrimaryButton(labelText: buttonLabel, onPressed: null)),
         };
       },
     );

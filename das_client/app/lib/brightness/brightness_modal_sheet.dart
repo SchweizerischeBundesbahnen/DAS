@@ -38,7 +38,7 @@ class BrightnessModalSheet extends StatelessWidget {
         ),
         SizedBox(height: SBBSpacing.xLarge),
         SBBPrimaryButton(
-          label: context.l10n.w_modal_sheet_button_grant_permission,
+          labelText: context.l10n.w_modal_sheet_button_grant_permission,
           onPressed: () async {
             final brightnessManager = DI.get<BrightnessManager>();
             await brightnessManager.requestWriteSettings();

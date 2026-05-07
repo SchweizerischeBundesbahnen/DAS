@@ -120,10 +120,12 @@ class JourneySearchOverlay extends StatelessWidget {
 
         final buttonLabel = context.l10n.c_button_confirm;
         return switch (model) {
-          final Loading _ => wrapWithPadding(SBBPrimaryButton(label: buttonLabel, onPressed: null, isLoading: true)),
+          final Loading _ => wrapWithPadding(
+            SBBPrimaryButton(labelText: buttonLabel, onPressed: null, isLoading: true),
+          ),
           final Selecting s => wrapWithPadding(
             SBBPrimaryButton(
-              label: buttonLabel,
+              labelText: buttonLabel,
               onPressed: s.isInputComplete
                   ? () {
                       hideOverlay();
@@ -132,7 +134,7 @@ class JourneySearchOverlay extends StatelessWidget {
                   : null,
             ),
           ),
-          _ => wrapWithPadding(SBBPrimaryButton(label: buttonLabel, onPressed: null)),
+          _ => wrapWithPadding(SBBPrimaryButton(labelText: buttonLabel, onPressed: null)),
         };
       },
     );

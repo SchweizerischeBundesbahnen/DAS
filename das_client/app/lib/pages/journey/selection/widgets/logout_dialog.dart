@@ -37,12 +37,12 @@ class LogoutDialog extends StatelessWidget {
             Text(context.l10n.w_logout_dialog_subTitle, style: sbbTextStyle.small),
             SizedBox(height: SBBSpacing.large),
             SBBSecondaryButton(
-              label: context.l10n.w_logout_dialog_cancel_button_labelText,
+              labelText: context.l10n.w_logout_dialog_cancel_button_labelText,
               onPressed: () => context.router.pop<bool>(false),
             ),
             SizedBox(height: SBBSpacing.xSmall),
             SBBPrimaryButton(
-              label: context.l10n.w_logout_dialog_confirm_button_labelText,
+              labelText: context.l10n.w_logout_dialog_confirm_button_labelText,
               onPressed: () => context.router.pop<bool>(true),
             ),
           ],

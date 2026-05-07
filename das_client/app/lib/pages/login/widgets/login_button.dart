@@ -30,12 +30,10 @@ class LoginButton extends StatelessWidget {
     );
   }
 
-  // TODO: change to SBBSecondaryButton with custom label once v5.0.0 is released
-  // TODO: https://github.com/SchweizerischeBundesbahnen/design_system_flutter/pull/425
   Widget _loginButton(BuildContext context, {required VoidCallback? onPressed}) {
-    return OutlinedButton(
+    return SBBSecondaryButton(
       onPressed: onPressed,
-      child: Padding(
+      label: Padding(
         padding: const EdgeInsets.symmetric(horizontal: SBBSpacing.large),
         child: Text(context.l10n.p_login_login_button_text),
       ),

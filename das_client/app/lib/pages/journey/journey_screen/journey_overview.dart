@@ -104,8 +104,8 @@ class JourneyOverview extends StatelessWidget {
               side: BorderSide(color: ThemeUtil.getColor(context, SBBColors.cloud, SBBColors.iron), width: 4.0),
             ),
           ),
-          child: SBBTertiaryButtonLarge(
-            label: context.l10n.p_journey_overview_tour_button_text,
+          child: SBBTertiaryButton(
+            labelText: context.l10n.p_journey_overview_tour_button_text,
             onPressed: () => launcher.launchTourSystem(),
           ),
         );

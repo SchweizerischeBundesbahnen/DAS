@@ -3,6 +3,7 @@ import 'package:app/pages/journey/brake_load_slip/brake_load_slip_view_model.dar
 import 'package:app/util/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class BrakeLoadSlipReplaceBrakeSeriesButton extends StatelessWidget {
   const BrakeLoadSlipReplaceBrakeSeriesButton({super.key});
@@ -16,14 +17,12 @@ class BrakeLoadSlipReplaceBrakeSeriesButton extends StatelessWidget {
       builder: (context, asyncSnapshot) {
         Widget child = SizedBox.shrink();
 
-        // TODO: change to SBBSecondaryButton with custom label once v5.0.0 is released
-        // TODO: https://github.com/SchweizerischeBundesbahnen/design_system_flutter/pull/425
         if (viewModel.isActiveFormationRun) {
-          child = OutlinedButton(
+          child = SBBSecondaryButton(
             onPressed: viewModel.canApplyActiveFormationRunBrakeSeriesToJourney()
                 ? () => viewModel.updateJourneyBrakeSeriesFromActiveFormationRun()
                 : null,
-            child: Text(context.l10n.p_brake_load_slip_button_apply_train_series),
+            label: Text(context.l10n.p_brake_load_slip_button_apply_train_series), // TODO: Why is this needed?
           );
         }
 
