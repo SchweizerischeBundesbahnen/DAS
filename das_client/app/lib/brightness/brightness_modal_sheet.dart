@@ -12,10 +12,10 @@ class BrightnessModalSheet extends StatelessWidget {
     final hasPermission = await brightnessManager.hasWriteSettingsPermission();
 
     if (!hasPermission && context.mounted) {
-      await showSBBModalSheet(
+      await showSBBBottomSheet(
         context: context,
-        title: context.l10n.w_modal_sheet_permissions_title,
-        child: const BrightnessModalSheet(),
+        titleText: context.l10n.w_modal_sheet_permissions_title,
+        body: const BrightnessModalSheet(),
       );
     }
   }

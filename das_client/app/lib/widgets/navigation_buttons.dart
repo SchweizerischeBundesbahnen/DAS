@@ -31,18 +31,18 @@ class NavigationButtons extends StatelessWidget {
         mainAxisSize: .min,
         spacing: SBBSpacing.medium,
         children: [
-          SBBIconButtonLarge(
+          SBBTertiaryButton(
             key: navigationButtonPreviousKey,
-            icon: SBBIcons.chevron_left_small,
+            iconData: SBBIcons.chevron_left_small,
             onPressed: onPreviousPressed,
           ),
           SBBPagination(
             numberPages: numberPages,
             currentPage: currentPage,
           ),
-          SBBIconButtonLarge(
+          SBBTertiaryButton(
             key: navigationButtonNextKey,
-            icon: SBBIcons.chevron_right_small,
+            iconData: SBBIcons.chevron_right_small,
             onPressed: onNextPressed,
           ),
         ],

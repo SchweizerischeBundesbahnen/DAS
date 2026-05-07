@@ -67,12 +67,13 @@ class _BatteryStatusState extends State<BatteryStatus> {
   }
 
   void _openBatteryBottomSheet(BuildContext context) async {
-    await showSBBModalSheet(
+    await showSBBBottomSheet(
       context: context,
-      title: '',
-      constraints: BoxConstraints(minWidth: double.infinity),
-      child: Padding(
-        padding: const .all(SBBSpacing.medium),
+      style: SBBBottomSheetStyle(
+        constraints: BoxConstraints(minWidth: double.infinity), // TODO: Check
+      ),
+      body: Padding(
+        padding: const .all(SBBSpacing.medium), // todo: check
         child: SBBMessage(
           title: context.l10n.w_modal_sheet_battery_status_battery_almost_empty,
           description: context.l10n.w_modal_sheet_battery_status_plug_in_device,

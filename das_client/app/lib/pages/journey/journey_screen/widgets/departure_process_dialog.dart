@@ -79,7 +79,7 @@ class DepartureProcessDialog extends StatelessWidget {
         child: Row(
           children: [
             Expanded(child: Text(context.l10n.w_departure_process_dialog_title, style: SBBTextStyles.largeLight)),
-            SBBIconButtonSmall(icon: SBBIcons.cross_small, onPressed: context.router.pop),
+            SBBTertiaryButtonSmall(iconData: SBBIcons.cross_small, onPressed: context.router.pop),
           ],
         ),
       ),

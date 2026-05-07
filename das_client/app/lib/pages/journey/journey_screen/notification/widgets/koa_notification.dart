@@ -140,7 +140,7 @@ class _BaseNotification extends StatelessWidget {
         if (!snapshot.hasData || snapshot.data == false) return SizedBox.shrink();
 
         return SBBTertiaryButtonSmall(
-          label: context.l10n.w_koa_notification_departure_process,
+          labelText: context.l10n.w_koa_notification_departure_process,
           onPressed: () => showDepartureProcessDialog(context),
         );
       },

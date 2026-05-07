@@ -59,7 +59,7 @@ dependencies:
   rxdart: ^0.28.0
 
   # https://pub.dev/packages/sbb_design_system_mobile
-  sbb_design_system_mobile: ^4.11.0
+  sbb_design_system_mobile: ^5.0.0-dev.4
   # https://pub.dev/packages/volume_controller
   volume_controller: ^3.4.4
   # https://pub.dev/packages/wakelock_plus

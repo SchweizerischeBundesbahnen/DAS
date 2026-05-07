@@ -31,9 +31,8 @@ class PreloadPage extends StatelessWidget implements AutoRouteWrapper {
 
   SBBHeader _appBar(BuildContext context) {
     return SBBHeader(
-      title: context.l10n.p_preload_page_title,
-      systemOverlayStyle: .light,
-      actions: [Container()],
+      titleText: context.l10n.p_preload_page_title,
+      actions: [], // removes SBB logo
     );
   }
 

@@ -20,7 +20,7 @@ class DeviceIdText extends StatelessWidget {
           onTap: () async {
             await Clipboard.setData(ClipboardData(text: deviceId));
             if (context.mounted) {
-              SBBToast.of(context).show(title: 'Copied to Clipboard: $deviceId');
+              SBBToast.of(context).show(titleText: 'Copied to Clipboard: $deviceId');
             }
           },
           child: Column(

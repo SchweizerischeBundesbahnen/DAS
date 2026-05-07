@@ -39,7 +39,7 @@ class JourneyDateFieldOverlay extends StatelessWidget {
     return Row(
       children: [
         Expanded(child: Text(context.l10n.p_train_selection_choose_date, style: sbbTextStyle.lightStyle.large)),
-        SBBIconButtonSmall(icon: SBBIcons.cross_medium, onPressed: hideOverlay),
+        SBBTertiaryButtonSmall(iconData: SBBIcons.cross_medium, onPressed: hideOverlay),
       ],
     );
   }

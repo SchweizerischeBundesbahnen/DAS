@@ -21,8 +21,8 @@ class LoginButton extends StatelessWidget {
         return switch (model) {
           LoggedOut() || LoggedIn() => _loginButton(context, onPressed: () => vm.login()),
           Loading() => _loginButton(context, onPressed: null),
-          Error() => SBBIconButtonLarge(
-            icon: SBBIcons.arrow_circle_reset_medium,
+          Error() => SBBTertiaryButton(
+            iconData: SBBIcons.arrow_circle_reset_medium,
             onPressed: () => context.read<LoginViewModel>().login(),
           ),
         };

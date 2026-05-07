@@ -30,46 +30,19 @@ class HeaderIconButton extends StatelessWidget {
       builder: (context, snapshot) {
         final isDetailModalSheetOpen = snapshot.requireData;
 
-        ButtonStyle? buttonStyle;
-        if (invertColors) buttonStyle = _invertButtonStyle(context);
-
-        return isDetailModalSheetOpen ? _iconButton(buttonStyle) : _iconWithLabelButton(buttonStyle, context);
+        return SBBTertiaryButton(
+          key: headerIconWithLabelButtonKey,
+          labelText: isDetailModalSheetOpen ? null : label,
+          iconData: icon,
+          onPressed: onPressed,
+          style: invertColors ? _invertButtonStyle(context) : null,
+        );
       },
     );
   }
 
-  Widget _iconWithLabelButton(ButtonStyle? buttonStyle, BuildContext context) {
-    final button = SBBTertiaryButtonLarge(
-      key: headerIconWithLabelButtonKey,
-      label: label,
-      icon: icon,
-      onPressed: onPressed,
-    );
-    if (buttonStyle == null) return button;
-
-    final themeData = Theme.of(context);
-    return Theme(
-      data: themeData.copyWith(textButtonTheme: TextButtonThemeData(style: buttonStyle)),
-      child: button,
-    );
-  }
-
-  Widget _iconButton(ButtonStyle? buttonStyle) {
-    /// ThemeData & ButtonStyle is weirdly overwritten in Design System
-    /// Will be changed with https://github.com/SchweizerischeBundesbahnen/design_system_flutter/pull/425
-    /// and v5.0.0 is released
-    final iconStyle = buttonStyle?.copyWith(padding: WidgetStatePropertyAll(EdgeInsets.zero));
-    return SBBIconButtonLarge(
-      key: headerIconButtonKey,
-      icon: icon,
-      onPressed: onPressed,
-      buttonStyle: iconStyle,
-    );
-  }
-
-  ButtonStyle? _invertButtonStyle(BuildContext context) {
-    final baseStyle = Theme.of(context).textButtonTheme.style;
-    return baseStyle?.copyWith(
+  SBBButtonStyle? _invertButtonStyle(BuildContext context) {
+    return SBBButtonStyle(
       backgroundColor: WidgetStateProperty.fromMap(<WidgetStatesConstraint, Color>{
         WidgetState.pressed | WidgetState.focused: ThemeUtil.getColor(
           context,

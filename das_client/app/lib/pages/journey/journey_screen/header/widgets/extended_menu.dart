@@ -22,9 +22,9 @@ class ExtendedMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel = context.read<JourneyViewModel>();
     return AnchoredFullPageOverlay(
-      triggerBuilder: (_, showOverlay) => SBBIconButtonLarge(
+      triggerBuilder: (_, showOverlay) => SBBTertiaryButton(
         key: menuButtonKey,
-        icon: SBBIcons.context_menu_small,
+        iconData: SBBIcons.context_menu_small,
         onPressed: () => showOverlay(),
       ),
       contentBuilder: (_, hideOverlay) {
@@ -81,10 +81,10 @@ class ExtendedMenu extends StatelessWidget {
             style: sbbTextStyle.lightStyle.large,
           ),
         ),
-        SBBIconButtonSmall(
+        SBBTertiaryButtonSmall(
           key: menuButtonCloseKey,
           onPressed: () => hideOverlay(),
-          icon: SBBIcons.cross_small,
+          iconData: SBBIcons.cross_small,
         ),
       ],
     );

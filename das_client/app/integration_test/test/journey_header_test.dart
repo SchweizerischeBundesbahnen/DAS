@@ -707,7 +707,7 @@ Future<void> findAndDismissModalSheet(WidgetTester tester) async {
   expect(modalSheet, findsOneWidget);
 
   // find close button
-  final closeButton = find.descendant(of: modalSheet, matching: find.byType(SBBIconButtonSmall));
+  final closeButton = find.descendant(of: modalSheet, matching: find.byType(SBBTertiaryButtonSmall));
   expect(closeButton, findsOneWidget);
 
   // tap close button

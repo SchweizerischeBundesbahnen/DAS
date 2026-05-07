@@ -22,9 +22,8 @@ class ProfilePage extends StatelessWidget {
 
   SBBHeader _appBar(BuildContext context) {
     return SBBHeader(
-      title: context.l10n.w_navigation_drawer_profile_title,
-      systemOverlayStyle: .light,
-      actions: [Container()],
+      titleText: context.l10n.w_navigation_drawer_profile_title,
+      actions: [], // removes SBB logo
     );
   }
 

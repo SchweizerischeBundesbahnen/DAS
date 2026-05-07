@@ -65,9 +65,8 @@ class _DASJourneyScaffoldState extends State<DASJourneyScaffold> with SingleTick
     return PreferredSize(
       preferredSize: Size.fromHeight(_toolbarHeight),
       child: SBBHeader(
-        title: widget.appBarTitle,
-        actions: widget.appBarTrailingAction != null ? [widget.appBarTrailingAction!] : null,
-        systemOverlayStyle: .light,
+        titleText: widget.appBarTitle,
+        actions: widget.appBarTrailingAction != null ? [widget.appBarTrailingAction!] : [],
       ),
     );
   }

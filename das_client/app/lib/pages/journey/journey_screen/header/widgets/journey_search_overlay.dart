@@ -95,10 +95,10 @@ class JourneySearchOverlay extends StatelessWidget {
           stream: viewModel.model,
           builder: (context, snapshot) {
             final isLoading = snapshot.data is Loading;
-            return SBBIconButtonSmall(
+            return SBBTertiaryButtonSmall(
               key: JourneySearchOverlay.journeySearchCloseKey,
               onPressed: isLoading ? null : () => hideOverlay(),
-              icon: SBBIcons.cross_small,
+              iconData: SBBIcons.cross_small,
             );
           },
         ),

@@ -53,8 +53,8 @@ class AppExpirationDialog extends StatelessWidget {
           ),
         ),
         if (!isExpired)
-          SBBIconButtonSmall(
-            icon: SBBIcons.cross_small,
+          SBBTertiaryButtonSmall(
+            iconData: SBBIcons.cross_small,
             onPressed: () => context.router.pop<bool>(false),
           ),
       ],

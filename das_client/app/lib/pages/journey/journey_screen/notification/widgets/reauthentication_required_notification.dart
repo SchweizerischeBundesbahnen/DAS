@@ -14,7 +14,7 @@ class ReauthenticationRequiredNotification extends StatelessWidget {
       style: .information,
       title: context.l10n.w_reauthentication_required_notification_text,
       action: SBBTertiaryButtonSmall(
-        label: context.l10n.w_reauthentication_required_notification_button,
+        labelText: context.l10n.w_reauthentication_required_notification_button,
         onPressed: () => context.read<ReauthenticationRequiredViewModel>().reauthenticate(),
       ),
     );

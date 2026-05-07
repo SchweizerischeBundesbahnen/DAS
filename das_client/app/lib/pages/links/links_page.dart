@@ -19,9 +19,8 @@ class LinksPage extends StatelessWidget {
 
   SBBHeader _appBar(BuildContext context) {
     return SBBHeader(
-      title: context.l10n.c_app_name,
-      systemOverlayStyle: .light,
-      actions: [Container()],
+      titleText: context.l10n.c_app_name,
+      actions: [], // removes SBB logo
     );
   }
 

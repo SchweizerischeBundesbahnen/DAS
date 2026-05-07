@@ -27,8 +27,8 @@ class LogoutDialog extends StatelessWidget {
             Row(
               children: [
                 Expanded(child: Text(context.l10n.w_logout_dialog_title, style: sbbTextStyle.large)),
-                SBBIconButtonSmall(
-                  icon: SBBIcons.cross_small,
+                SBBTertiaryButtonSmall(
+                  iconData: SBBIcons.cross_small,
                   onPressed: () => context.router.pop<bool>(false),
                 ),
               ],

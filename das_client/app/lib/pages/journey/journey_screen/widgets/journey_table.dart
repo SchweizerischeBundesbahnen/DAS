@@ -504,11 +504,13 @@ class JourneyTable extends StatelessWidget {
   Future<void> _onBrakeSeriesTap(BuildContext context, Metadata? metadata, JourneySettings? settings) async {
     final viewModel = context.read<JourneySettingsViewModel>();
 
-    final selectedBrakeSeries = await showSBBModalSheet<BrakeSeries>(
+    final selectedBrakeSeries = await showSBBBottomSheet<BrakeSeries>(
       context: context,
-      title: context.l10n.p_journey_brake_series,
-      constraints: BoxConstraints(),
-      child: BrakeSeriesSelection(
+      titleText: context.l10n.p_journey_brake_series,
+      style: SBBBottomSheetStyle(
+        constraints: BoxConstraints(), // TODO: Check if scrollControlDisabledMaxHeightRatio: 1 needed,
+      ),
+      body: BrakeSeriesSelection(
         availableBrakeSeries: metadata?.availableBrakeSeries ?? {},
         selectedBrakeSeries: settings?.currentBrakeSeries,
       ),

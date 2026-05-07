@@ -21,7 +21,7 @@ void main() {
 
       // dialog displayed and dismissed
       expect(find.text(l10n.w_app_expires_soon_dialog_title), findsOne);
-      await tapElement(tester, find.byType(SBBIconButtonSmall));
+      await tapElement(tester, find.byType(SBBTertiaryButtonSmall));
       expect(find.text(l10n.w_app_expires_soon_dialog_title), findsNothing);
 
       // open journey
@@ -50,7 +50,7 @@ void main() {
 
       expect(find.text(l10n.w_app_expired_dialog_title), findsOne);
 
-      expect(find.byType(SBBIconButtonSmall), findsNothing);
+      expect(find.byType(SBBTertiaryButtonSmall), findsNothing);
 
       await disconnect(tester);
     });

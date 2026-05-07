@@ -42,12 +42,13 @@ class ConnectivityIcon extends StatelessWidget {
   }
 
   void _onConnectedWifiTap(BuildContext context) {
-    showSBBModalSheet(
+    showSBBBottomSheet(
       context: context,
-      title: '',
-      constraints: BoxConstraints(minWidth: double.infinity),
-      child: Padding(
-        padding: const .all(SBBSpacing.medium),
+      style: SBBBottomSheetStyle(
+        constraints: BoxConstraints(minWidth: double.infinity),
+      ),
+      body: Padding(
+        padding: const .all(SBBSpacing.medium), // todo: check if needed
         child: SBBMessage(
           title: context.l10n.w_modal_sheet_disconnected_wifi_message_title,
           description: context.l10n.w_modal_sheet_disconnected_wifi_message_text,
@@ -58,14 +59,15 @@ class ConnectivityIcon extends StatelessWidget {
   }
 
   void _onDisconnectedTap(BuildContext context) {
-    showSBBModalSheet(
+    showSBBBottomSheet(
       context: context,
-      title: '',
-      constraints: BoxConstraints(minWidth: double.infinity),
-      child: Padding(
-        padding: const .all(SBBSpacing.medium),
+      style: SBBBottomSheetStyle(
+        constraints: BoxConstraints(minWidth: double.infinity),
+      ),
+      body: Padding(
+        padding: const .all(SBBSpacing.medium), // TODO: check if needed
         child: SBBMessage(
-          title: context.l10n.w_modal_sheet_disconnected_message_title,
+          titleText: context.l10n.w_modal_sheet_disconnected_message_title,
           description: context.l10n.w_modal_sheet_disconnected_message_text,
           illustration: .Display,
         ),

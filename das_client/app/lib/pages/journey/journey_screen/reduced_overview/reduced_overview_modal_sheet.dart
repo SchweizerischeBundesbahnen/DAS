@@ -16,11 +16,13 @@ Future<void> showReducedOverviewModalSheet(BuildContext context) async {
   final trainIdentification = viewModel.journeyValue?.metadata.trainIdentification;
   if (trainIdentification == null) return;
 
-  return showSBBModalSheet(
+  return showSBBBottomSheet(
     context: context,
-    title: context.l10n.w_reduced_journey_table_title,
-    constraints: BoxConstraints(),
-    child: Provider(
+    titleText: context.l10n.w_reduced_journey_table_title,
+    style: SBBBottomSheetStyle(
+      constraints: BoxConstraints(),
+    ),
+    body: Provider(
       create: (_) => ReducedOverviewViewModel(
         sferaLocalService: DI.get(),
         trainIdentification: trainIdentification,

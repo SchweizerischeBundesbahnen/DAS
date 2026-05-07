@@ -53,8 +53,8 @@ class ManeuverNotification extends StatelessWidget {
           padding: const .only(right: SBBSpacing.medium),
           child: SBBTertiaryButtonSmall(
             key: openWaraAppButtonKey,
-            icon: DasIcons.appIconWarnfunktionRangier,
-            label: context.l10n.w_maneuver_notification_wara_action,
+            iconData: DasIcons.appIconWarnfunktionRangier,
+            labelText: context.l10n.w_maneuver_notification_wara_action,
             onPressed: () => viewModel.openWaraApp(),
           ),
         );

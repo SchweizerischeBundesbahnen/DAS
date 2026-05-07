@@ -22,10 +22,7 @@ class GlobalErrorWidget extends StatelessWidget {
       home: Builder(
         builder: (context) {
           return Scaffold(
-            appBar: SBBHeader(
-              title: context.l10n.c_app_name,
-              systemOverlayStyle: .light,
-            ),
+            appBar: SBBHeader(titleText: context.l10n.c_app_name),
             body: SafeArea(
               child: Center(
                 child: _errorMessage(context),
@@ -50,11 +47,14 @@ class GlobalErrorWidget extends StatelessWidget {
 
 Future<void> _showErrorDetailsModalSheet(BuildContext context, FlutterErrorDetails details) async {
   final errorDetails = details.toString(minLevel: .debug);
-  return showSBBModalSheet(
+  return showSBBBottomSheet(
     context: context,
-    title: details.exceptionAsString(),
-    constraints: BoxConstraints(),
-    child: SingleChildScrollView(
+    titleText: details.exceptionAsString(),
+    isScrollControlled: true,
+    style: SBBBottomSheetStyle(
+      constraints: BoxConstraints(), // TODO: Check if scrollControlDisabledMaxHeightRatio: 1 needed,
+    ),
+    body: SingleChildScrollView(
       child: Container(
         padding: .all(SBBSpacing.medium),
         width: double.maxFinite,

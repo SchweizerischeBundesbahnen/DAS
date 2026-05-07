@@ -28,12 +28,14 @@ class JourneyDateFieldBottomModal extends StatelessWidget {
   }
 
   VoidCallback _showBottomSheet(BuildContext context, DateTime selectedDate, List<DateTime> availableStartDates) =>
-      () => showSBBModalSheet(
+      () => showSBBBottomSheet(
         context: context,
-        title: context.l10n.p_train_selection_choose_date,
-        constraints: BoxConstraints(maxWidth: 350),
-        child: Padding(
-          padding: const .symmetric(horizontal: SBBSpacing.medium),
+        titleText: context.l10n.p_train_selection_choose_date,
+        style: SBBBottomSheetStyle(
+          constraints: BoxConstraints(maxWidth: 350),
+        ),
+        body: Padding(
+          padding: const .symmetric(horizontal: SBBSpacing.medium), // todo: check
           child: JourneyDatePicker(
             onChanged: (d) {
               onSelect?.call(d);
