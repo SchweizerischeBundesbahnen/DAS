@@ -2,6 +2,7 @@ import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/header_icon_button.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_table_advancement_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_advancement_model.dart';
+import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -15,14 +16,14 @@ class JourneyAdvancementButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final journeyTableAdvancementVM = context.read<JourneyTableAdvancementViewModel>();
+    final journeySettingsVM = context.read<JourneySettingsViewModel>();
     return StreamBuilder(
-      stream: journeyTableAdvancementVM.model,
-      initialData: journeyTableAdvancementVM.modelValue,
+      stream: journeySettingsVM.model,
+      initialData: journeySettingsVM.modelValue,
       builder: (context, asyncSnapshot) {
         final model = asyncSnapshot.requireData;
 
-        return switch (model) {
+        return switch (model.journeyAdvancementModel) {
           Paused(next: final next) => _button(
             next is Automatic ? startKey : manualKey,
             context.l10n.p_journey_header_button_start,

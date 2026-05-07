@@ -27,12 +27,12 @@ class JourneyScope extends DIScope {
     _log.fine('Pushing scope $scopeName');
     getIt.pushNewScope(scopeName: scopeName);
 
-    getIt.registerViewModeViewModel();
     getIt.registerJourneyNavigationViewModel();
     getIt.registerJourneySelectionViewModel();
     getIt.registerJourneyViewModel();
-    getIt.registerNotificationPriorityViewModel();
     getIt.registerJourneySettingsViewModel();
+    getIt.registerViewModeViewModel();
+    getIt.registerNotificationPriorityViewModel();
     getIt.registerPunctualityViewModel();
     getIt.registerJourneyPositionViewModel();
     getIt.registerDepartureProcessWarningViewModel();
@@ -48,7 +48,7 @@ extension JourneyScopeExtension on GetIt {
   void registerViewModeViewModel() {
     factoryFunc() {
       _log.fine('Register ViewModeViewModel');
-      return ViewModeViewModel();
+      return ViewModeViewModel(journeySettingsViewModel: DI.get());
     }
 
     registerLazySingleton<ViewModeViewModel>(
@@ -118,6 +118,7 @@ extension JourneyScopeExtension on GetIt {
     registerSingleton<JourneyPositionViewModel>(
       JourneyPositionViewModel(
         punctualityStream: get<PunctualityViewModel>().model,
+        journeySettingsViewModel: DI.get(),
       ),
       dispose: (vm) => vm.dispose(),
     );
@@ -127,21 +128,13 @@ extension JourneyScopeExtension on GetIt {
     final journeyVM = DI.get<JourneyViewModel>();
     final settingsVM = DI.get<JourneySettingsViewModel>();
     final positionVM = DI.get<JourneyPositionViewModel>();
-    final viewModeVM = DI.get<ViewModeViewModel>();
     final vm = JourneyTableAdvancementViewModel(
       journeyViewModel: journeyVM,
       positionStream: positionVM.model,
       scrollController: DI.get<JourneyTableScrollController>(),
-      onAdvancementModeChanged: [viewModeVM.updateZenViewMode, positionVM.onAdvancementModeChanged],
+      journeySettingsViewModel: settingsVM,
     );
-    settingsVM.registerOnBrakeSeriesUpdated(vm.scrollToCurrentPositionIfNotPaused);
-    registerSingleton<JourneyTableAdvancementViewModel>(
-      vm,
-      dispose: (vm) {
-        DI.get<JourneySettingsViewModel>().unregisterOnBrakeSeriesUpdated(vm.scrollToCurrentPositionIfNotPaused);
-        vm.dispose();
-      },
-    );
+    registerSingleton<JourneyTableAdvancementViewModel>(vm, dispose: (vm) => vm.dispose());
   }
 
   void registerJourneyTableScrollController() {

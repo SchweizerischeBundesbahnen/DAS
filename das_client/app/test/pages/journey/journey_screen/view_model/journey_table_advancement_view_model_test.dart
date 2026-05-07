@@ -2,6 +2,7 @@ import 'package:app/pages/journey/journey_screen/journey_table_scroll_controller
 import 'package:app/pages/journey/journey_screen/view_model/journey_table_advancement_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_advancement_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
+import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:fake_async/fake_async.dart';
@@ -21,6 +22,7 @@ import 'journey_table_advancement_view_model_test.mocks.dart';
 ])
 void main() {
   late JourneyTableAdvancementViewModel testee;
+  late JourneySettingsViewModel journeySettingsViewModel;
   late MockJourneyViewModel mockJourneyViewModel;
   late BehaviorSubject<Journey?> journeySubject;
   late BehaviorSubject<JourneyPositionModel> journeyPositionSubject;
@@ -54,6 +56,7 @@ void main() {
 
     fakeAsync((fakeAsync) {
       mockJourneyViewModel = MockJourneyViewModel();
+      journeySettingsViewModel = JourneySettingsViewModel(journeyViewModel: mockJourneyViewModel);
       journeySubject = BehaviorSubject<Journey?>.seeded(baseJourney);
       when(mockJourneyViewModel.journey).thenAnswer((_) => journeySubject.stream);
       journeyPositionSubject = BehaviorSubject<JourneyPositionModel>.seeded(JourneyPositionModel());
@@ -61,9 +64,11 @@ void main() {
         journeyViewModel: mockJourneyViewModel,
         positionStream: journeyPositionSubject.stream,
         scrollController: mockScrollController,
-        onAdvancementModeChanged: [],
+        journeySettingsViewModel: journeySettingsViewModel,
       );
-      testee.model.listen(modelRegister.add);
+      journeySettingsViewModel.model.listen((data) {
+        modelRegister.add(data.journeyAdvancementModel);
+      });
       testAsync = fakeAsync;
       processStreams(fakeAsync: testAsync);
     });

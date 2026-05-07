@@ -419,14 +419,14 @@ class _ProviderScope extends StatelessWidget {
           },
           dispose: (_, vm) => vm.dispose(),
         ),
-        ProxyProvider2<JourneyPositionViewModel, JourneyTableAdvancementViewModel, TourSystemLinkVisibilityViewModel>(
+        ProxyProvider2<JourneyPositionViewModel, JourneySettingsViewModel, TourSystemLinkVisibilityViewModel>(
           lazy: false,
-          update: (_, journeyPositionVM, journeyTableAdvancementVM, prev) {
+          update: (_, journeyPositionVM, journeySettingsVM, prev) {
             if (prev != null) return prev;
             return TourSystemLinkVisibilityViewModel(
               journeyViewModel: journeyViewModel,
               journeyPositionViewModel: journeyPositionVM,
-              journeyTableAdvancementViewModel: journeyTableAdvancementVM,
+              journeySettingsViewModel: journeySettingsVM,
             );
           },
           dispose: (_, vm) => vm.dispose(),
