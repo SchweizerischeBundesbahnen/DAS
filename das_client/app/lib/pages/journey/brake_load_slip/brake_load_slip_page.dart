@@ -127,9 +127,8 @@ class BrakeLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
   Widget _noDataAvailable(BuildContext context) {
     return Center(
       child: SBBMessage(
-        illustration: MessageIllustration.Display,
-        title: context.l10n.p_brake_load_slip_no_data_available,
-        description: '',
+        illustration: SBBIllustration.display(),
+        titleText: context.l10n.p_brake_load_slip_no_data_available,
       ),
     );
   }

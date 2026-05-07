@@ -50,9 +50,9 @@ class ConnectivityIcon extends StatelessWidget {
       body: Padding(
         padding: const .all(SBBSpacing.medium), // todo: check if needed
         child: SBBMessage(
-          title: context.l10n.w_modal_sheet_disconnected_wifi_message_title,
-          description: context.l10n.w_modal_sheet_disconnected_wifi_message_text,
-          illustration: MessageIllustration.Display,
+          titleText: context.l10n.w_modal_sheet_disconnected_wifi_message_title,
+          subtitleText: context.l10n.w_modal_sheet_disconnected_wifi_message_text,
+          illustration: SBBIllustration.display(),
         ),
       ),
     );
@@ -68,8 +68,8 @@ class ConnectivityIcon extends StatelessWidget {
         padding: const .all(SBBSpacing.medium), // TODO: check if needed
         child: SBBMessage(
           titleText: context.l10n.w_modal_sheet_disconnected_message_title,
-          description: context.l10n.w_modal_sheet_disconnected_message_text,
-          illustration: .Display,
+          subtitleText: context.l10n.w_modal_sheet_disconnected_message_text,
+          illustration: SBBIllustration.display(),
         ),
       ),
     );

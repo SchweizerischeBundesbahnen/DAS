@@ -63,16 +63,16 @@ class AppExpirationDialog extends StatelessWidget {
 
   Widget _body(bool isExpired, BuildContext context) {
     return SBBMessage(
-      title: isExpired
+      titleText: isExpired
           ? context.l10n.w_app_expired_dialog_body_title(model.currentAppVersion)
           : context.l10n.w_app_expires_soon_dialog_body_title(
               model.currentAppVersion,
               Format.date((model as ExpirySoon).expiryDate),
             ),
-      description: isExpired
+      subtitleText: isExpired
           ? context.l10n.w_app_expired_dialog_body_subTitle
           : context.l10n.w_app_expires_soon_dialog_body_subTitle,
-      illustration: .Display,
+      illustration: SBBIllustration.display(),
     );
   }
 }

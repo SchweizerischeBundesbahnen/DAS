@@ -53,6 +53,7 @@ class JourneySelectionPage extends StatelessWidget implements AutoRouteWrapper {
 
 class _Content extends StatefulWidget {
   const _Content({this.onAppExpiredDialogDismissed});
+
   final VoidCallback? onAppExpiredDialogDismissed;
 
   @override
@@ -167,10 +168,10 @@ class _ContentState extends State<_Content> {
           final Selecting _ || final Loaded _ => SizedBox.shrink(),
           final Loading _ => Center(child: CircularProgressIndicator()),
           final Error e => SBBMessage(
-            illustration: MessageIllustration.Display,
-            title: context.l10n.c_something_went_wrong,
-            description: e.errorCode.displayText(context),
-            messageCode: '${context.l10n.c_error_code}: ${e.errorCode.code.toString()}',
+            illustration: SBBIllustration.display(),
+            titleText: context.l10n.c_something_went_wrong,
+            subtitleText: e.errorCode.displayText(context),
+            errorText: '${context.l10n.c_error_code}: ${e.errorCode.code.toString()}',
           ),
         };
       },
