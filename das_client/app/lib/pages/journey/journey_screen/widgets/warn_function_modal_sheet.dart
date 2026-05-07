@@ -9,13 +9,14 @@ Future<void> showWarnFunctionModalSheet(
   BuildContext context, {
   required VoidCallback onManeuverButtonPressed,
 }) async {
-  await showCustomSBBModalSheet(
+  await showSBBBottomSheet(
     context: context,
-    backgroundColor: SBBColors.charcoal,
+    style: SBBBottomSheetStyle(
+      backgroundColor: SBBColors.charcoal,
+      constraints: const BoxConstraints(maxWidth: double.infinity),
+    ),
     showCloseButton: false,
-    header: SizedBox.shrink(),
-    constraints: const BoxConstraints(maxWidth: double.infinity),
-    child: WarnFunctionModalSheet(onManeuverButtonPressed: onManeuverButtonPressed),
+    body: WarnFunctionModalSheet(onManeuverButtonPressed: onManeuverButtonPressed),
   );
 
   Sound.stop();

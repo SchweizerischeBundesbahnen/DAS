@@ -28,25 +28,28 @@ class _UserTourSystemSelectionState extends State<UserTourSystemSelection> {
             child: Text(context.l10n.w_user_tour_system_selection_label, style: sbbTextStyle.lightStyle.small),
           ),
           SBBContentBox(
-            child: SBBSelect<TourSystem?>(
-              hint: context.l10n.w_user_tour_system_selection_label,
-              title: context.l10n.w_user_tour_system_selection_title,
-              value: _userSettings.tourSystem,
-              items:
-                  TourSystem.values.map((it) {
-                    return SelectMenuItem<TourSystem?>(value: it, label: it.localizedName(context));
-                  }).toList()..add(
-                    SelectMenuItem<TourSystem?>(value: null, label: context.l10n.w_user_tour_system_selection_none),
-                  ),
+            child: SBBDropdown<TourSystem?>(
+              triggerDecoration: SBBInputDecoration(
+                labelText: context.l10n.w_user_tour_system_selection_title,
+                placeholderText: context.l10n.w_user_tour_system_selection_label,
+              ),
+              selectedItem: _userSettings.tourSystem,
+              items: _tourSystemItems(context),
               onChanged: (selected) {
                 _userSettings.set(.tourSystem, selected?.name);
                 setState(() {});
               },
-              isLastElement: true,
             ),
           ),
         ],
       ),
     );
+  }
+
+  List<SBBDropdownItem<TourSystem?>> _tourSystemItems(BuildContext context) {
+    return TourSystem.values
+        .map((it) => SBBDropdownItem<TourSystem?>(value: it, label: it.localizedName(context)))
+        .toList()
+      ..add(SBBDropdownItem<TourSystem?>(value: null, label: context.l10n.w_user_tour_system_selection_none));
   }
 }
