@@ -116,7 +116,7 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
         .hideFootNotesForNotSelectedTrainSeries(settings.currentBrakeSeries?.trainSeries)
         .combineFootNoteAndOperationalIndication()
         .addTrainDriverTurnoverRows(navigationModel?.trainIdentification)
-        .hideSignals(_userSettings.showStationSignals)
+        .hideSignals(stationSignals: !_userSettings.showStationSignals)
         .sorted((a1, a2) => a1.compareTo(a2));
 
     _emitLoaded(

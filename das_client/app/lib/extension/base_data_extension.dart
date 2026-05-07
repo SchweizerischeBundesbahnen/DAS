@@ -32,8 +32,8 @@ extension BaseDataX on Iterable<BaseData> {
     return resultList;
   }
 
-  Iterable<BaseData> hideSignals(bool showStationSignals) {
-    if (showStationSignals) return this;
+  Iterable<BaseData> hideSignals({required bool stationSignals}) {
+    if (!stationSignals) return this;
 
     return where(
       (data) =>
