@@ -96,6 +96,7 @@ class _SelectRailwayUndertakingModalState extends State<SelectRailwayUndertaking
                   padding: const .symmetric(vertical: SBBSpacing.medium),
                   sliver: SliverList.list(
                     children: SBBDivider.divideItems(
+                      context: context,
                       items: localizedFilteredRus
                           .map(
                             (ru) =>

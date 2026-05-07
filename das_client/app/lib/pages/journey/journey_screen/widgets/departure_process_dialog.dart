@@ -132,6 +132,7 @@ class DepartureProcessDialog extends StatelessWidget {
         child: Column(
           mainAxisSize: .min,
           children: SBBDivider.divideItems(
+            context: context,
             items: [
               SBBListItem(titleText: context.l10n.w_departure_process_checklist_item_1),
               SBBListItem(titleText: context.l10n.w_departure_process_checklist_item_2),

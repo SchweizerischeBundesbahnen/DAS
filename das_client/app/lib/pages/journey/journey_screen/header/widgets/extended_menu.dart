@@ -40,6 +40,7 @@ class ExtendedMenu extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: .start,
                     children: SBBDivider.divideItems(
+                      context: context,
                       items: [
                         _transportDocumentItem(context),
                         _journeyOverviewItem(context, hideOverlay),
