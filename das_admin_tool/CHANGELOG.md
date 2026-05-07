@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das-admin-tool-v0.3.1...das-admin-tool-v0.4.0) (2026-05-06)
+
+
+### Features
+
+* admin notice templates ([#1626](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1626)) ([#2061](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2061)) ([3788ebb](https://github.com/SchweizerischeBundesbahnen/DAS/commit/3788ebbb47d8303d9b354de63229ea941ea94a43))
+
 ## [0.3.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das-admin-tool-v0.3.0...das-admin-tool-v0.3.1) (2026-05-04)
 
 
