@@ -44,9 +44,9 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Widget _settingsHeader(BuildContext context) {
-    return SBBHeaderbox(
-      title: context.l10n.w_navigation_drawer_settings_title,
-      secondaryLabel: context.l10n.p_settings_page_personalize,
+    return SBBHeaderBox(
+      titleText: context.l10n.w_navigation_drawer_settings_title,
+      subtitleText: context.l10n.p_settings_page_personalize,
     );
   }
 

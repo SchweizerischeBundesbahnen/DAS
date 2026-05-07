@@ -30,7 +30,7 @@ class BrakeLoadSlipHeaderBox extends StatelessWidget {
         _specialIndicatorBackground(context),
         Column(
           children: [
-            SBBHeaderbox.custom(child: _customHeaderboxContent(context)),
+            SBBHeaderBox(body: _customHeaderBoxContent(context)),
             _specialIndicators(context),
           ],
         ),
@@ -38,20 +38,20 @@ class BrakeLoadSlipHeaderBox extends StatelessWidget {
     );
   }
 
-  Widget _customHeaderboxContent(BuildContext context) {
+  Widget _customHeaderBoxContent(BuildContext context) {
     return ConstrainedBox(
       constraints: BoxConstraints(minHeight: minHeaderBoxContentHeight),
       child: Row(
         mainAxisAlignment: .spaceBetween,
         children: [
-          _headerboxTextContent(context),
+          _headerBoxTextContent(context),
           BrakeLoadSlipReplaceBrakeSeriesButton(),
         ],
       ),
     );
   }
 
-  Widget _headerboxTextContent(BuildContext context) {
+  Widget _headerBoxTextContent(BuildContext context) {
     final subtitleColor = ThemeUtil.getColor(context, SBBColors.granite, SBBColors.graphite);
     final dateChanged = formationRunChange.hasInspectionDateChanged();
     final timeChanged = formationRunChange.hasChanged(.inspectionDateTime);

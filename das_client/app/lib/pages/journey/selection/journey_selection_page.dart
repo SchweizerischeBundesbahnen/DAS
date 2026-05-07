@@ -133,15 +133,15 @@ class _ContentState extends State<_Content> {
       builder: (context, snapshot) {
         final model = snapshot.requireData;
 
-        return SBBHeaderbox.custom(
+        return SBBHeaderBox(
           padding: .zero,
           flap: !model.isStartDateSameAsToday
-              ? SBBHeaderboxFlap(
-                  title: context.l10n.p_train_selection_date_not_today_warning,
-                  leadingIcon: SBBIcons.circle_information_small,
+              ? SBBHeaderBoxFlap(
+                  labelText: context.l10n.p_train_selection_date_not_today_warning,
+                  leadingIconData: SBBIcons.circle_information_small,
                 )
               : null,
-          child: Column(
+          body: Column(
             children: [
               JourneyDateInput(),
               SelectRailwayUndertakingInput(

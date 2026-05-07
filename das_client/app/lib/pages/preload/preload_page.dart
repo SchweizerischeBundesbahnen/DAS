@@ -37,6 +37,6 @@ class PreloadPage extends StatelessWidget implements AutoRouteWrapper {
   }
 
   Widget _body(BuildContext context) {
-    return SBBHeaderbox.custom(child: PreloadStatusDisplay());
+    return SBBHeaderBox(body: PreloadStatusDisplay());
   }
 }
