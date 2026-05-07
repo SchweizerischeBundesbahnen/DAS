@@ -23,9 +23,9 @@ class _UserRuSelectionState extends State<UserRuSelection> {
         spacing: SBBSpacing.xSmall,
         crossAxisAlignment: .start,
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: SBBSpacing.medium),
-            child: Text(context.l10n.p_train_selection_ru_description, style: sbbTextStyle.lightStyle.small),
+          SBBListHeader(
+            context.l10n.p_train_selection_ru_description,
+            style: SBBListHeaderStyle(padding: .symmetric(horizontal: SBBSpacing.medium)),
           ),
           SBBContentBox(
             child: SelectRailwayUndertakingInput(

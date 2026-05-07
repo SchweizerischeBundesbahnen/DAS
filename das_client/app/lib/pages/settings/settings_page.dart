@@ -64,17 +64,11 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Widget _decisiveGradientSettings(BuildContext context) {
-    return SBBContentBox(
-      padding: const .only(right: SBBSpacing.medium),
-      child: SBBListItem(
-        titleText: context.l10n.p_settings_page_decisive_gradient_show_setting,
-        onTap: () => _updateSettings(.showDecisiveGradient, !_userSettings.showDecisiveGradient),
-        trailing: SBBSwitch(
-          key: SettingsPage.decisiveGradientSwitchKey,
-          value: _userSettings.showDecisiveGradient,
-          onChanged: (value) => _updateSettings(.showDecisiveGradient, value),
-        ),
-      ),
+    return SBBSwitchListItemBoxed(
+      key: SettingsPage.decisiveGradientSwitchKey,
+      value: _userSettings.showDecisiveGradient,
+      onChanged: (value) => _updateSettings(.showDecisiveGradient, value),
+      titleText: context.l10n.p_settings_page_decisive_gradient_show_setting,
     );
   }
 

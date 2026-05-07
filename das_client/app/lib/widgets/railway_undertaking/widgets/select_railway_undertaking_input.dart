@@ -28,46 +28,27 @@ class SelectRailwayUndertakingInput extends StatefulWidget {
 }
 
 class _RailwayUndertakingTextFieldState extends State<SelectRailwayUndertakingInput> {
-  // updates the disabled text field which is tapped to show modal
-  TextEditingController? baseTextEditingController;
+  String? selectedValues;
 
   @override
   void didUpdateWidget(covariant SelectRailwayUndertakingInput oldWidget) {
     if (widget.selectedRailwayUndertakings != oldWidget.selectedRailwayUndertakings) {
-      baseTextEditingController?.text = widget.selectedRailwayUndertakings
-          .map((it) => it.displayText(context))
-          .join(', ');
+      selectedValues = widget.selectedRailwayUndertakings.map((it) => it.displayText(context)).join(', ');
     }
     super.didUpdateWidget(oldWidget);
   }
 
   @override
   void didChangeDependencies() {
-    baseTextEditingController ??= TextEditingController(
-      text: widget.selectedRailwayUndertakings.map((it) => it.displayText(context)).join(', '),
-    );
+    selectedValues ??= widget.selectedRailwayUndertakings.map((it) => it.displayText(context)).join(', ');
     super.didChangeDependencies();
-  }
-
-  @override
-  void dispose() {
-    baseTextEditingController?.dispose();
-    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: widget.isModalVersion ? .zero : _inputPadding,
-      child: GestureDetector(
-        child: SBBTextInput(
-          decoration: SBBInputDecoration(
-            labelText: widget.isModalVersion ? null : context.l10n.p_train_selection_ru_description,
-            placeholderText: widget.isModalVersion ? context.l10n.p_train_selection_ru_description : null,
-          ),
-          enabled: false,
-          controller: baseTextEditingController,
-        ),
+      child: SBBDecoratedText(
         onTap: () {
           showModalBottomSheet(
             context: context,
@@ -83,6 +64,11 @@ class _RailwayUndertakingTextFieldState extends State<SelectRailwayUndertakingIn
             ),
           );
         },
+        decoration: SBBInputDecoration(
+          labelText: widget.isModalVersion ? null : context.l10n.p_train_selection_ru_description,
+          placeholderText: widget.isModalVersion ? context.l10n.p_train_selection_ru_description : null,
+        ),
+        value: selectedValues ?? '',
       ),
     );
   }

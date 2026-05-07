@@ -20,6 +20,8 @@ class DASNavigationDrawer extends StatelessWidget {
     final isJourneySelected = journeyNavigationViewModel?.modelValue != null;
     final launcher = DI.get<Launcher>();
     return Drawer(
+      // TODO: maybe remove when set by SBB again
+      backgroundColor: Theme.of(context).sbbBaseStyle.colorScheme.backgroundContent,
       child: Column(
         children: [
           Expanded(
@@ -57,9 +59,8 @@ class DASNavigationDrawer extends StatelessWidget {
                   route: const PreloadRoute(),
                 ),
                 if (launcher.hasTourSystemConfigured())
-                  _drawerTile(
-                    context,
-                    icon: _inactiveIcon(SBBIcons.link_external_small),
+                  ListTile(
+                    leading: _inactiveIcon(SBBIcons.link_external_small),
                     title: Text(
                       context.l10n.w_navigation_drawer_tour_system_title,
                       style: sbbTextStyle.lightStyle.medium,
@@ -83,9 +84,8 @@ class DASNavigationDrawer extends StatelessWidget {
   }) {
     final bool isActiveRoute = context.router.isRouteActive(route.routeName);
 
-    return _drawerTile(
-      context,
-      icon: isActiveRoute ? _activeIcon(icon) : _inactiveIcon(icon),
+    return ListTile(
+      leading: isActiveRoute ? _activeIcon(icon) : _inactiveIcon(icon),
       title: Text(title, style: isActiveRoute ? sbbTextStyle.boldStyle.medium : sbbTextStyle.lightStyle.medium),
       onTap: () {
         Navigator.pop(context);
@@ -94,49 +94,36 @@ class DASNavigationDrawer extends StatelessWidget {
     );
   }
 
-  Widget _drawerTile(
-    BuildContext context, {
-    required Widget icon,
-    required Widget title,
-    required GestureTapCallback onTap,
-  }) {
-    return ListTile(
-      leading: icon,
-      title: title,
-      onTap: onTap,
+  Widget _activeIcon(IconData icon) {
+    return CircleAvatar(
+      backgroundColor: SBBColors.black,
+      child: Icon(icon),
     );
   }
-}
 
-Widget _activeIcon(IconData icon) {
-  return CircleAvatar(
-    backgroundColor: SBBColors.black,
-    child: Icon(icon),
-  );
-}
+  Widget _inactiveIcon(IconData icon) {
+    return Padding(
+      padding: const .fromLTRB(SBBSpacing.xSmall, 0, SBBSpacing.xSmall, 0),
+      child: Icon(icon),
+    );
+  }
 
-Widget _inactiveIcon(IconData icon) {
-  return Padding(
-    padding: const .fromLTRB(SBBSpacing.xSmall, 0, SBBSpacing.xSmall, 0),
-    child: Icon(icon),
-  );
-}
-
-Widget _footer(BuildContext context) {
-  final textColor = ThemeUtil.getColor(context, SBBColors.granite, SBBColors.graphite);
-  return Align(
-    alignment: .bottomCenter,
-    child: Padding(
-      padding: .all(SBBSpacing.medium),
-      child: Column(
-        crossAxisAlignment: .start,
-        spacing: SBBSpacing.xSmall,
-        children: [
-          AppVersionText(color: textColor),
-          DeviceIdText(color: textColor),
-          MqttBrokerText(color: textColor),
-        ],
+  Widget _footer(BuildContext context) {
+    final textColor = ThemeUtil.getColor(context, SBBColors.granite, SBBColors.graphite);
+    return Align(
+      alignment: .bottomCenter,
+      child: Padding(
+        padding: .all(SBBSpacing.medium),
+        child: Column(
+          crossAxisAlignment: .start,
+          spacing: SBBSpacing.xSmall,
+          children: [
+            AppVersionText(color: textColor),
+            DeviceIdText(color: textColor),
+            MqttBrokerText(color: textColor),
+          ],
+        ),
       ),
-    ),
-  );
+    );
+  }
 }
