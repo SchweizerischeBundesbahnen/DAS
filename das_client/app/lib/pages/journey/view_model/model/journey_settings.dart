@@ -40,7 +40,7 @@ class JourneySettings {
           runtimeType == other.runtimeType &&
           initialBrakeSeries == other.initialBrakeSeries &&
           selectedBrakeSeries == other.selectedBrakeSeries &&
-          ListEquality().equals(expandedGroups, other.expandedGroups) &&
+          const ListEquality().equals(expandedGroups, other.expandedGroups) &&
           journeyAdvancementModel == other.journeyAdvancementModel;
 
   @override

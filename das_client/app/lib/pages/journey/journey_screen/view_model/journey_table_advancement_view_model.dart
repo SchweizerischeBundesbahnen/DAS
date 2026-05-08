@@ -71,8 +71,8 @@ class JourneyTableAdvancementViewModel extends JourneyAwareViewModel {
   void toggleAdvancementMode() {
     final nextModel = switch (_modelValue) {
       Paused(next: final next) => next,
-      Automatic() => Paused(next: Automatic()),
-      Manual() => Paused(next: Manual()),
+      Automatic() => Paused(next: const Automatic()),
+      Manual() => Paused(next: const Manual()),
     };
     _setModel(nextModel);
     _emitAutomaticIdleScrolling();
@@ -186,7 +186,7 @@ class JourneyTableAdvancementViewModel extends JourneyAwareViewModel {
   void _resetModel() {
     _isInAutomaticScrollingZone = false;
     _emitAutomaticIdleScrolling();
-    _setModel(Automatic());
+    _setModel(const Automatic());
   }
 
   void _setModel(JourneyAdvancementModel model) {
@@ -205,8 +205,8 @@ class JourneyTableAdvancementViewModel extends JourneyAwareViewModel {
 
   void _setAdvancementModelToNonManual() {
     final nextModel = switch (_modelValue) {
-      Paused() => Paused(next: Automatic()),
-      Manual() || Automatic() => Automatic(),
+      Paused() => Paused(next: const Automatic()),
+      Manual() || Automatic() => const Automatic(),
     };
     _setModel(nextModel);
   }

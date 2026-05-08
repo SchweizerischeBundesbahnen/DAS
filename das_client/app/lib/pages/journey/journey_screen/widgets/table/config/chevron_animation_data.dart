@@ -105,9 +105,6 @@ class ChevronAnimationData {
       }
     }
 
-    print(
-      'Chevron animation from index $fromIndex to $toIndex with current index $currentIndex, startOffset: $startOffset, endOffset: $endOffset',
-    );
     return ChevronAnimationData(
       startOffset: startOffset,
       endOffset: endOffset,
