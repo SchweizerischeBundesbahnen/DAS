@@ -55,12 +55,6 @@ class BaliseLevelCrossingGroupRow extends CellRowBuilder<BaliseLevelCrossingGrou
     );
   }
 
-  @override
-  bool get isCurrentChevronPosition {
-    final isGroupPosition = !isExpanded && data.groupedElements.contains(journeyPosition.currentPosition);
-    return super.isCurrentChevronPosition || isGroupPosition;
-  }
-
   DASTableCell _withBaliseCell(BuildContext context, Balise firstBalise) {
     final baliseGroup = metadata.levelCrossingGroups.whereType<SupervisedLevelCrossingGroup>().firstWhereOrNull(
       (element) => element.balise == firstBalise,
