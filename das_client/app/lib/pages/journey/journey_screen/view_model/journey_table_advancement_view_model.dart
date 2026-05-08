@@ -5,8 +5,8 @@ import 'package:app/pages/journey/journey_screen/detail_modal/detail_modal_view_
 import 'package:app/pages/journey/journey_screen/journey_table_scroll_controller.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/chevron_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_advancement_model.dart';
-import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -25,17 +25,18 @@ typedef AdvancementModeChangedCallback = void Function(JourneyAdvancementModel);
 /// * paused (automatic scrolling is disabled)
 /// * auto (automatic idle scrolling is enabled)
 /// * manual (automatic idle scrolling is enabled)
-class JourneyTableAdvancementViewModel extends JourneyAwareViewModel {
+class JourneyTableAdvancementViewModel {
   JourneyTableAdvancementViewModel({
     required JourneyTableScrollController scrollController,
     required JourneySettingsViewModel journeySettingsViewModel,
     required DetailModalViewModel detailModalViewModel,
     required Stream<ChevronPositionModel> chevronPositionStream,
-    super.journeyViewModel,
+    required JourneyViewModel journeyViewModel,
   }) : _scrollController = scrollController,
        _journeySettingsViewModel = journeySettingsViewModel,
        _detailModalViewModel = detailModalViewModel,
-       _chevronPositionStream = chevronPositionStream {
+       _chevronPositionStream = chevronPositionStream,
+       _journeyViewModel = journeyViewModel {
     _initSubscription();
   }
 
@@ -47,6 +48,7 @@ class JourneyTableAdvancementViewModel extends JourneyAwareViewModel {
   final JourneySettingsViewModel _journeySettingsViewModel;
   final DetailModalViewModel _detailModalViewModel;
   final Stream<ChevronPositionModel> _chevronPositionStream;
+  final JourneyViewModel _journeyViewModel;
 
   JourneyPoint? _currentPosition;
   JourneyPoint? _lastPosition;
@@ -109,7 +111,6 @@ class JourneyTableAdvancementViewModel extends JourneyAwareViewModel {
     }
   }
 
-  @override
   void dispose() {
     _isDisposed = true;
     for (final subscription in _streamSubscription) {
@@ -117,13 +118,12 @@ class JourneyTableAdvancementViewModel extends JourneyAwareViewModel {
     }
     _idleScrollTimer?.cancel();
     _idleScrollTimer = null;
-    super.dispose();
   }
 
   void _initSubscription() {
     _streamSubscription.add(
       CombineLatestStream.combine2(
-        journeyViewModel.journey,
+        _journeyViewModel.journey,
         _chevronPositionStream.distinct(),
         (a, b) => (a, b),
       ).listen((data) async {
@@ -183,12 +183,6 @@ class JourneyTableAdvancementViewModel extends JourneyAwareViewModel {
     if (_isInAutomaticScrollingZone) _scrollToCurrentPosition();
   }
 
-  void _resetModel() {
-    _isInAutomaticScrollingZone = false;
-    _emitAutomaticIdleScrolling();
-    _setModel(const Automatic());
-  }
-
   void _setModel(JourneyAdvancementModel model) {
     if (_modelValue != model) {
       _journeySettingsViewModel.updateJourneyAdvancement(model);
@@ -226,7 +220,4 @@ class JourneyTableAdvancementViewModel extends JourneyAwareViewModel {
     if (_currentPosition == null) return;
     _scrollController.scrollToJourneyPoint(_currentPosition);
   }
-
-  @override
-  void journeyIdentificationChanged(_) => _resetModel();
 }
