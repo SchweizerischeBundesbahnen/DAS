@@ -58,8 +58,9 @@ class AppVersionsApiTest extends RestAssuredCommand {
 
     @Disabled("TODO call by AdminTenant")
     void getAll_ok() {
-        final Mono<ResponseEntity<AppVersionsResponse>> responseAsync = backendApi.getAppVersionsApi().getAllWithHttpInfo(ServiceDoc.REQUEST_ID_VALUE_E2E_TEST);
-        final AppVersionsResponse appVersionResponse = getResponseBodyOrFail(responseAsync, null /*irrelevant for API*/, ServiceDoc.REQUEST_ID_VALUE_E2E_TEST, null);
+        final String requestId = getRequestId();
+        final Mono<ResponseEntity<AppVersionsResponse>> responseAsync = backendApi.getAppVersionsApi().getAllWithHttpInfo(requestId);
+        final AppVersionsResponse appVersionResponse = getResponseBodyOrFail(responseAsync, null /*irrelevant for API*/, requestId, null);
         log.debug("{} in {}", appVersionResponse, responseAsync);
 
         // TODO AssertionsApiClientModel.assertAppVersionResponse(appVersionResponse, endpointConfiguration.endpoint());
@@ -67,8 +68,9 @@ class AppVersionsApiTest extends RestAssuredCommand {
 
     @Disabled("TODO call by AdminTenant")
     void getById_ok() {
-        final Mono<ResponseEntity<AppVersionResponse>> responseAsync = backendApi.getAppVersionsApi().getByIdWithHttpInfo(1, ServiceDoc.REQUEST_ID_VALUE_E2E_TEST);
-        final AppVersionResponse appVersionResponse = getResponseBodyOrFail(responseAsync, null /*irrelevant for API*/, ServiceDoc.REQUEST_ID_VALUE_E2E_TEST, null);
+        final String requestId = getRequestId();
+        final Mono<ResponseEntity<AppVersionResponse>> responseAsync = backendApi.getAppVersionsApi().getByIdWithHttpInfo(1, requestId);
+        final AppVersionResponse appVersionResponse = getResponseBodyOrFail(responseAsync, null /*irrelevant for API*/, requestId, null);
         log.debug("{} in {}", appVersionResponse, responseAsync);
 
         // TODO AssertionsApiClientModel.assertAppVersionResponse(appVersionResponse, endpointConfiguration.endpoint());
@@ -76,8 +78,7 @@ class AppVersionsApiTest extends RestAssuredCommand {
 
     @Test
     void getById_ForbiddenNonAdminTenant() {
-        final String requestId = getRequestId();
-        final Response response = createRequestWithHeader(null, requestId)
+        final Response response = createRequestWithHeader(null, ServiceDoc.REQUEST_ID_VALUE_E2E_TEST)
             .param("id", "-1")
             .when()
             .get(getUrl(AppVersionsApiTest.ENDPOINT))
@@ -85,7 +86,7 @@ class AppVersionsApiTest extends RestAssuredCommand {
             .extract()
             .response();
 
-        assertThat(response.getStatusCode()).as("User credentials must not be Admin").isEqualTo(HttpStatus.SC_FORBIDDEN);
+        assertThat(response.getStatusCode()).as("User credentials must have Admin rights").isEqualTo(HttpStatus.SC_FORBIDDEN);
         final String body = toBodyString(response);
         assertThat(body).as("no hints desired for hackers").isEmpty();
         assertThat(response.getHeader(MonitoringConstants.HEADER_REQUEST_ID)).as("body block not reached").isNull();

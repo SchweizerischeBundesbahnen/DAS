@@ -72,7 +72,7 @@ class CustomerOrientedDepartureApiTest extends RestAssuredCommand {
             .extract()
             .response();
 
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.SC_OK);
+        assertThat(response.getStatusCode()).as(toBodyString(response)).isEqualTo(HttpStatus.SC_OK);
     }
 
     @Test
@@ -87,6 +87,6 @@ class CustomerOrientedDepartureApiTest extends RestAssuredCommand {
             .extract()
             .response();
 
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.SC_OK);
+        assertThat(response.getStatusCode()).as(toBodyString(response)).isEqualTo(HttpStatus.SC_OK);
     }
 }
