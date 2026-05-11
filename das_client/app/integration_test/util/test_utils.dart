@@ -54,14 +54,14 @@ Finder findTextInputByLabel(String label) {
   final sbbTextInput = find.byWidgetPredicate(
     (widget) => widget is SBBTextInput && widget.decoration?.labelText == label,
   );
-  return find.descendant(of: sbbTextInput, matching: find.byType(TextField));
+  return find.descendant(of: sbbTextInput, matching: find.byType(EditableText));
 }
 
 Finder findTextInputByPlaceholder(String placeholder) {
   final sbbTextInput = find.byWidgetPredicate(
     (widget) => widget is SBBTextInput && widget.decoration?.placeholderText == placeholder,
   );
-  return find.descendant(of: sbbTextInput, matching: find.byType(TextField));
+  return find.descendant(of: sbbTextInput, matching: find.byType(EditableText));
 }
 
 Finder findDASTableRowByText(String text) {
