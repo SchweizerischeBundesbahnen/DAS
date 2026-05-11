@@ -19,6 +19,7 @@ Future<void> showReducedOverviewModalSheet(BuildContext context) async {
   return showSBBBottomSheet(
     context: context,
     titleText: context.l10n.w_reduced_journey_table_title,
+    scrollControlDisabledMaxHeightRatio: 0.98,
     style: SBBBottomSheetStyle(
       constraints: BoxConstraints(),
     ),

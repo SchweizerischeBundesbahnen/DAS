@@ -31,44 +31,38 @@ class ConnectivityIcon extends StatelessWidget {
         if (snapshotData == .connected) return SizedBox.shrink();
 
         final isDisconnected = snapshotData == .disconnected;
-
-        final icon = isDisconnected ? AppAssets.iconWifiDisabled : AppAssets.iconWifi;
-        final onTap = isDisconnected ? () => _onDisconnectedTap(context) : () => _onConnectedWifiTap(context);
-        final key = isDisconnected ? disconnectedKey : connectedWifiKey;
-
-        return ExclamationIconButton(icon: icon, onTap: onTap, key: key);
+        return ExclamationIconButton(
+          key: isDisconnected ? disconnectedKey : connectedWifiKey,
+          icon: isDisconnected ? AppAssets.iconWifiDisabled : AppAssets.iconWifi,
+          onTap: isDisconnected ? () => _onDisconnectedTap(context) : () => _onConnectedWifiTap(context),
+        );
       },
     );
   }
 
-  void _onConnectedWifiTap(BuildContext context) {
-    showSBBBottomSheet(
-      context: context,
-      style: SBBBottomSheetStyle(
-        constraints: BoxConstraints(minWidth: double.infinity),
-      ),
-      body: Padding(
-        padding: const .all(SBBSpacing.medium), // todo: check if needed
-        child: SBBMessage(
-          titleText: context.l10n.w_modal_sheet_disconnected_wifi_message_title,
-          subtitleText: context.l10n.w_modal_sheet_disconnected_wifi_message_text,
-          illustration: SBBIllustration.display(),
-        ),
-      ),
-    );
-  }
+  void _onConnectedWifiTap(BuildContext context) => _showMessageSheet(
+    context,
+    title: context.l10n.w_modal_sheet_disconnected_wifi_message_title,
+    subtitle: context.l10n.w_modal_sheet_disconnected_wifi_message_text,
+  );
 
-  void _onDisconnectedTap(BuildContext context) {
+  void _onDisconnectedTap(BuildContext context) => _showMessageSheet(
+    context,
+    title: context.l10n.w_modal_sheet_disconnected_message_title,
+    subtitle: context.l10n.w_modal_sheet_disconnected_message_text,
+  );
+
+  void _showMessageSheet(BuildContext context, {required String title, required String subtitle}) {
     showSBBBottomSheet(
       context: context,
       style: SBBBottomSheetStyle(
         constraints: BoxConstraints(minWidth: double.infinity),
       ),
-      body: Padding(
-        padding: const .all(SBBSpacing.medium), // TODO: check if needed
+      body: Center(
+        heightFactor: 1,
         child: SBBMessage(
-          titleText: context.l10n.w_modal_sheet_disconnected_message_title,
-          subtitleText: context.l10n.w_modal_sheet_disconnected_message_text,
+          titleText: title,
+          subtitleText: subtitle,
           illustration: SBBIllustration.display(),
         ),
       ),

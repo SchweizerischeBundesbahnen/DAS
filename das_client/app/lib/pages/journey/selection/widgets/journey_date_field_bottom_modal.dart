@@ -34,16 +34,13 @@ class JourneyDateFieldBottomModal extends StatelessWidget {
         style: SBBBottomSheetStyle(
           constraints: BoxConstraints(maxWidth: 350),
         ),
-        body: Padding(
-          padding: const .symmetric(horizontal: SBBSpacing.medium), // todo: check
-          child: JourneyDatePicker(
-            onChanged: (d) {
-              onSelect?.call(d);
-              context.router.pop();
-            },
-            selectedDate: selectedDate,
-            availableStartDates: availableStartDates,
-          ),
+        body: JourneyDatePicker(
+          onChanged: (d) {
+            onSelect?.call(d);
+            context.router.pop();
+          },
+          selectedDate: selectedDate,
+          availableStartDates: availableStartDates,
         ),
       );
 }
