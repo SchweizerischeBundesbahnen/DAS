@@ -14,7 +14,7 @@ class BrakeLoadSlipReplaceBrakeSeriesButton extends StatelessWidget {
 
     return StreamBuilder(
       stream: viewModel.settings,
-      builder: (context, asyncSnapshot) {
+      builder: (context, snapshot) {
         Widget child = SizedBox.shrink();
 
         if (viewModel.isActiveFormationRun) {
@@ -22,7 +22,7 @@ class BrakeLoadSlipReplaceBrakeSeriesButton extends StatelessWidget {
             onPressed: viewModel.canApplyActiveFormationRunBrakeSeriesToJourney()
                 ? () => viewModel.updateJourneyBrakeSeriesFromActiveFormationRun()
                 : null,
-            label: Text(context.l10n.p_brake_load_slip_button_apply_train_series), // TODO: Why is this needed?
+            labelText: context.l10n.p_brake_load_slip_button_apply_train_series,
           );
         }
 
