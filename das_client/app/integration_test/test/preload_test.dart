@@ -76,7 +76,7 @@ void main() {
     // Check display with no preload details
     final startButton = find
         .byWidgetPredicate(
-          (widget) => widget is SBBTertiaryButtonSmall && widget.label == l10n.w_preload_status_start_preload,
+          (widget) => widget is SBBTertiaryButtonSmall && widget.labelText == l10n.w_preload_status_start_preload,
         )
         .first;
 

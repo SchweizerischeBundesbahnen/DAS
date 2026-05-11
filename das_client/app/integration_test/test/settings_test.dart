@@ -20,14 +20,14 @@ void main() {
     await tapElement(tester, find.text(l10n.w_navigation_drawer_settings_title));
 
     final gradientSwitchFinder = find.byKey(SettingsPage.decisiveGradientSwitchKey);
-    var gradientSwitch = tester.widget(gradientSwitchFinder) as SBBSwitch;
+    var gradientSwitch = tester.widget(gradientSwitchFinder) as SBBSwitchListItemBoxed;
     expect(gradientSwitch.value, true);
 
     // disable decisive gradient setting
     await tapElement(tester, find.text(l10n.p_settings_page_decisive_gradient_show_setting));
 
     // refresh switch
-    gradientSwitch = tester.widget(gradientSwitchFinder) as SBBSwitch;
+    gradientSwitch = tester.widget(gradientSwitchFinder) as SBBSwitchListItemBoxed;
     expect(gradientSwitch.value, false);
 
     // Navigate back to fahrtinfo page

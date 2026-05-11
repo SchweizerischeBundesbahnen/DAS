@@ -31,7 +31,7 @@ class HeaderIconButton extends StatelessWidget {
         final isDetailModalSheetOpen = snapshot.requireData;
 
         return SBBTertiaryButton(
-          key: headerIconWithLabelButtonKey,
+          key: isDetailModalSheetOpen ? headerIconButtonKey : headerIconWithLabelButtonKey,
           labelText: isDetailModalSheetOpen ? null : label,
           iconData: icon,
           onPressed: onPressed,
