@@ -307,7 +307,7 @@ Future<void> main() async {
 
       await openExtendedMenu(tester);
 
-      expect(find.byKey(ExtendedMenu.maneuverSwitchKey), findsNothing);
+      expect(find.byKey(ExtendedMenu.maneuverModeMenuItemKey), findsNothing);
 
       await dismissExtendedMenu(tester);
 
@@ -698,7 +698,7 @@ Future<void> _checkDepartureAuth(Finder header, {required String nextStopName, S
 Future<void> _toggleExtendedMenuManeuverMode(WidgetTester tester) async {
   await openExtendedMenu(tester);
   expect(find.byKey(ExtendedMenu.menuButtonCloseKey), findsAny);
-  await tapElement(tester, find.byKey(ExtendedMenu.maneuverSwitchKey));
+  await tapElement(tester, find.byKey(ExtendedMenu.maneuverModeMenuItemKey));
 }
 
 Future<void> findAndDismissBottomSheet(WidgetTester tester) async {

@@ -12,7 +12,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 class ExtendedMenu extends StatelessWidget {
   static const Key menuButtonKey = Key('extendedMenuButton');
   static const Key menuButtonCloseKey = Key('closeExtendedMenuButton');
-  static const Key maneuverSwitchKey = Key('maneuverSwitch');
+  static const Key maneuverModeMenuItemKey = Key('maneuverModeMenuItemKey');
   static const Key openWaraAppMenuItemKey = Key('openWaraAppMenuItem');
   static const Key openTourSystemItemKey = Key('openTourSystemItem');
 
@@ -140,31 +140,20 @@ class ExtendedMenu extends StatelessWidget {
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.data == false) return SizedBox.shrink();
 
-        return SBBListItem(
-          titleText: context.l10n.w_extended_menu_maneuver_mode,
-          onTap: () {
-            hideOverlay();
-            viewModel.toggleManeuverMode();
-          },
-          trailing: Padding(
-            padding: const .fromLTRB(0, 0, SBBSpacing.xSmall, 0), // TODO: check
-            child: StreamBuilder(
-              stream: viewModel.isManeuverModeEnabled,
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) return SizedBox.shrink();
-
-                final isManeuverModeEnabled = snapshot.requireData;
-                return SBBSwitch(
-                  key: maneuverSwitchKey,
-                  value: isManeuverModeEnabled,
-                  onChanged: (value) {
-                    hideOverlay();
-                    viewModel.setManeuverMode(value);
-                  },
-                );
+        return StreamBuilder(
+          stream: viewModel.isManeuverModeEnabled,
+          builder: (context, snapshot) {
+            final isManeuverModeEnabled = snapshot.requireData;
+            return SBBSwitchListItem(
+              key: maneuverModeMenuItemKey,
+              titleText: context.l10n.w_extended_menu_maneuver_mode,
+              value: isManeuverModeEnabled,
+              onChanged: (value) {
+                hideOverlay();
+                viewModel.setManeuverMode(value);
               },
-            ),
-          ),
+            );
+          },
         );
       },
     );

@@ -134,15 +134,16 @@ class DepartureProcessDialog extends StatelessWidget {
           children: SBBDivider.divideItems(
             context: context,
             items: [
-              SBBListItem(titleText: context.l10n.w_departure_process_checklist_item_1),
-              SBBListItem(titleText: context.l10n.w_departure_process_checklist_item_2),
+              SBBListItem(titleText: context.l10n.w_departure_process_checklist_item_1, onTap: () {}),
+              SBBListItem(titleText: context.l10n.w_departure_process_checklist_item_2, onTap: () {}),
               SBBListItem(
                 titleText: isCustomerOrientedDepartureActive
                     ? context.l10n.w_departure_process_checklist_item_3_koa
                     : context.l10n.w_departure_process_checklist_item_3,
+                onTap: () {},
               ),
-              SBBListItem(titleText: context.l10n.w_departure_process_checklist_item_4),
-              SBBListItem(titleText: context.l10n.w_departure_process_checklist_item_5),
+              SBBListItem(titleText: context.l10n.w_departure_process_checklist_item_4, onTap: () {}),
+              SBBListItem(titleText: context.l10n.w_departure_process_checklist_item_5, onTap: () {}),
             ],
           ),
         ),
