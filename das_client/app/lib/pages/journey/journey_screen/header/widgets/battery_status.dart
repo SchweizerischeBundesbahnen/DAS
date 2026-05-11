@@ -21,9 +21,9 @@ class BatteryStatus extends StatefulWidget {
 }
 
 class _BatteryStatusState extends State<BatteryStatus> {
-  final Battery _battery = DI.get<Battery>();
-
   static const Duration batteryCheckInterval = Duration(minutes: 1);
+
+  final Battery _battery = DI.get<Battery>();
   Timer? _batteryTimer;
   int? _batteryLevel;
 
@@ -52,10 +52,8 @@ class _BatteryStatusState extends State<BatteryStatus> {
 
   @override
   Widget build(BuildContext context) {
-    return _batteryLevel != null && _batteryLevel! <= 15 ? _batteryIcon() : SizedBox();
-  }
+    if (_batteryLevel == null || _batteryLevel! > 15) return SizedBox.shrink();
 
-  Widget _batteryIcon() {
     return Padding(
       padding: const .only(right: 20),
       child: ExclamationIconButton(
@@ -70,10 +68,10 @@ class _BatteryStatusState extends State<BatteryStatus> {
     await showSBBBottomSheet(
       context: context,
       style: SBBBottomSheetStyle(
-        constraints: BoxConstraints(minWidth: double.infinity), // TODO: Check
+        constraints: BoxConstraints(minWidth: double.infinity),
       ),
-      body: Padding(
-        padding: const .all(SBBSpacing.medium), // todo: check
+      body: Center(
+        heightFactor: 1,
         child: SBBMessage(
           titleText: context.l10n.w_modal_sheet_battery_status_battery_almost_empty,
           subtitleText: context.l10n.w_modal_sheet_battery_status_plug_in_device,

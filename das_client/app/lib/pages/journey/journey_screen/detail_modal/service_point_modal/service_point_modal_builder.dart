@@ -109,15 +109,7 @@ class ServicePointModalBuilder extends DASModalSheetBuilder {
         final tabs = snapshot.requireData;
         return SBBSegmentedButton<ServicePointModalTab>(
           key: segmentedButtonKey,
-          segments: tabs
-              .map(
-                (tab) => SBBButtonSegment(
-                  value: tab,
-                  leadingIconData: tab.icon,
-                  labelText: tab.localized(context),
-                ),
-              )
-              .toList(),
+          segments: tabs.map((tab) => SBBButtonSegment(value: tab, leadingIconData: tab.icon)).toList(),
           selected: selectedTab,
           onSelectionChanged: (tab) => viewModel.open(context, tab: tab),
         );
