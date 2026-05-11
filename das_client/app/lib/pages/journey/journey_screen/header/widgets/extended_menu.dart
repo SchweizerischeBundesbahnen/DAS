@@ -141,6 +141,7 @@ class ExtendedMenu extends StatelessWidget {
         if (!snapshot.hasData || snapshot.data == false) return SizedBox.shrink();
 
         return StreamBuilder(
+          initialData: viewModel.isManeuverModeEnabledValue,
           stream: viewModel.isManeuverModeEnabled,
           builder: (context, snapshot) {
             final isManeuverModeEnabled = snapshot.requireData;

@@ -148,8 +148,7 @@ class _BaseNotification extends StatelessWidget {
 
 SBBPromotionBoxStyle _promotionBoxStyle({required Color backgroundColor, Color? borderColor}) {
   return SBBPromotionBoxStyle(
-    backgroundGradientStops: null,
-    backgroundGradientColors: [backgroundColor],
+    backgroundGradientColors: List.filled(4, backgroundColor),
     borderColor: borderColor,
   );
 }

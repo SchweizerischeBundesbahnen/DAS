@@ -44,6 +44,8 @@ class WarnAppViewModel {
 
   Stream<bool> get isManeuverModeEnabled => _rxManeuverModeEnabled.distinct();
 
+  bool get isManeuverModeEnabledValue => _rxManeuverModeEnabled.value;
+
   final _rxWarnapp = PublishSubject<WarnappEvent>();
   final _rxManeuverModeEnabled = BehaviorSubject.seeded(false);
 
