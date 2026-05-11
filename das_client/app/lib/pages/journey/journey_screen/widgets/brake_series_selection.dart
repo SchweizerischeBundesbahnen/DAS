@@ -36,8 +36,7 @@ class _BrakeSeriesSelectionState extends State<BrakeSeriesSelection> {
       );
     }
 
-    return Padding(
-      padding: const .fromLTRB(SBBSpacing.medium, 0, SBBSpacing.medium, 21),
+    return SingleChildScrollView(
       child: SBBContentBox(
         padding: const .symmetric(horizontal: SBBSpacing.medium),
         child: SizedBox(

@@ -507,6 +507,7 @@ class JourneyTable extends StatelessWidget {
     final selectedBrakeSeries = await showSBBBottomSheet<BrakeSeries>(
       context: context,
       titleText: context.l10n.p_journey_brake_series,
+      isScrollControlled: true,
       style: SBBBottomSheetStyle(
         constraints: BoxConstraints(), // TODO: Check if scrollControlDisabledMaxHeightRatio: 1 needed,
       ),
