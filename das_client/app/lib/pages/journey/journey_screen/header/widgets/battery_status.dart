@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/widgets/assets.dart';
-import 'package:app/widgets/exlamation_icon_button.dart';
+import 'package:app/widgets/exclamation_icon_button.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
