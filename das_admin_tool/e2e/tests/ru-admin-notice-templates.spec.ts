@@ -26,8 +26,7 @@ test.describe('admin notice templates test', () => {
   }
 
   test.beforeEach(async ({page}) => {
-    await page.goto('ru-admin');
-    await page.getByText('Titel und Texte', {exact: true}).first().click();
+    await page.goto('ru-admin/notice-templates');
     await expect(page.locator('sbb-title[level="2"]')).toHaveText('Titel und Texte');
   });
 

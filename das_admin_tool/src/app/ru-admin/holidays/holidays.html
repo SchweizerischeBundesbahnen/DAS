@@ -1,0 +1,16 @@
+<sbb-title i18n="@@holidays_title" level="2">Spezielle Feiertage</sbb-title>
+
+@if (holidays.hasValue()) {
+  @if (holidays.value().data.length === 0) {
+    <p i18n="@@holidays_empty_state">Noch keine speziellen Feiertage erfasst.</p>
+    <sbb-secondary-button (click)="holidayService.add()" i18n="@@holidays_button_create" iconName="plus-small">Neuen Eintrag erfasse
+    </sbb-secondary-button>
+  } @else {
+    <app-holidays-table/>
+  }
+} @else if (holidays.error()) {
+  <p i18n="@@holidays_error_loading">Fehler beim Laden der Feiertage</p>
+} @else if (holidays.isLoading()) {
+  <sbb-loading-indicator-circle></sbb-loading-indicator-circle>
+}
+

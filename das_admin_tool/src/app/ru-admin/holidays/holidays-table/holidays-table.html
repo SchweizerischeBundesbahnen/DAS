@@ -1,0 +1,67 @@
+<sbb-table-wrapper>
+  <table [dataSource]="dataSource" sbb-table sbbSort sbbSortActive="validAt" sbbSortDirection="asc">
+    <ng-container sbbColumnDef="select">
+      <th *sbbHeaderCellDef sbb-header-cell style="width: 36px">
+        <sbb-checkbox
+          (change)="$event ? parentToggle() : null"
+          [checked]="selection.hasValue() && isAllSelected()"
+          [indeterminate]="selection.hasValue() && !isAllSelected()"
+        >
+        </sbb-checkbox>
+      </th>
+      <td *sbbCellDef="let row" sbb-cell>
+        <sbb-checkbox
+          (change)="$event ? selection.toggle(row) : null"
+          (click)="$event.stopPropagation()"
+          [checked]="selection.isSelected(row)"
+        >
+        </sbb-checkbox>
+      </td>
+    </ng-container>
+
+    <ng-container sbbColumnDef="name">
+      <th *sbbHeaderCellDef i18n="@@holidays_table_column_name" sbb-header-cell sbb-sort-header="name">Name des Feiertags</th>
+      <td *sbbCellDef="let row" sbb-cell>{{ row.name }}</td>
+    </ng-container>
+
+    <ng-container sbbColumnDef="validAt">
+      <th *sbbHeaderCellDef i18n="@@holidays_table_column_valid_at" sbb-header-cell sbb-sort-header="validAt">Gültig am</th>
+      <td *sbbCellDef="let row" sbb-cell>{{ row.validAt | date:'shortDate'}}</td>
+    </ng-container>
+
+    <ng-container sbbColumnDef="type">
+      <th *sbbHeaderCellDef i18n="@@holidays_table_column_type" sbb-header-cell sbb-sort-header="type">Gilt als</th>
+      <td *sbbCellDef="let row" sbb-cell>{{ typeLabel(row.type) }}</td>
+    </ng-container>
+
+    <ng-container sbbColumnDef="companies">
+      <th *sbbHeaderCellDef i18n="@@holidays_table_column_companies" sbb-header-cell sbb-sort-header="companies">Gültig für</th>
+      <td *sbbCellDef="let row" sbb-cell>{{ companiesValue(row.companies) }}</td>
+    </ng-container>
+
+    <ng-container sbbColumnDef="action">
+      <th *sbbHeaderCellDef class="action" sbb-header-cell></th>
+      <td *sbbCellDef="let holiday" class="action" sbb-cell>
+        <sbb-mini-button (click)="edit(holiday)" iconName="pen-small"></sbb-mini-button>
+      </td>
+    </ng-container>
+
+    <tr *sbbHeaderRowDef="columns" sbb-header-row></tr>
+    <tr *sbbRowDef="let row; columns: columns" sbb-row></tr>
+  </table>
+</sbb-table-wrapper>
+
+<div class="bottom">
+  <div class="left">
+    <sbb-compact-paginator [pageSize]="PAGE_SIZE"></sbb-compact-paginator>
+  </div>
+  <div class="right">
+    <sbb-secondary-button (click)="add()" i18n="@@holidays_button_create" iconName="plus-small">Neuen Eintrag erfassen
+    </sbb-secondary-button>
+    <sbb-transparent-button (click)="deleteSelected()" [disabled]="selection.isEmpty()"
+                            i18n="@@holidays_button_delete_selected"
+                            iconName="trash-small">Einträge löschen
+    </sbb-transparent-button>
+  </div>
+</div>
+
