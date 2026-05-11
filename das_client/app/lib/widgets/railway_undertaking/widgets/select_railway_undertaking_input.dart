@@ -46,6 +46,7 @@ class _RailwayUndertakingTextFieldState extends State<SelectRailwayUndertakingIn
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).sbbBaseStyle.colorScheme;
     return Padding(
       padding: widget.isModalVersion ? .zero : _inputPadding,
       child: SBBDecoratedText(
@@ -67,6 +68,12 @@ class _RailwayUndertakingTextFieldState extends State<SelectRailwayUndertakingIn
         decoration: SBBInputDecoration(
           labelText: widget.isModalVersion ? null : context.l10n.p_train_selection_ru_description,
           placeholderText: widget.isModalVersion ? context.l10n.p_train_selection_ru_description : null,
+          // TODO: maybe change in DSM so that border is still there even if not boxed or listed.
+          borderColor: WidgetStateProperty.fromMap(<WidgetStatesConstraint, Color?>{
+            WidgetState.error: colorScheme.error,
+            WidgetState.focused: colorScheme.strokePrimary,
+            WidgetState.any: colorScheme.strokeSeparator,
+          }),
         ),
         value: selectedValues ?? '',
       ),
