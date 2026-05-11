@@ -114,7 +114,6 @@ class _BaseNotification extends StatelessWidget {
         ? sbbTextStyle.boldStyle.large.copyWith(color: SBBColors.black)
         : sbbTextStyle.romanStyle.large.copyWith(color: SBBColors.black);
 
-    // TODO: check if leading is not needed?
     return SBBPromotionBox(
       title: Row(
         spacing: SBBSpacing.xSmall,

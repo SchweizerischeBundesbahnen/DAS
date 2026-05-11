@@ -5,7 +5,6 @@ import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
-// TODO: Replace with new date picker
 class JourneyDatePicker extends StatelessWidget {
   static Key get datePickerKey => Key('JourneyDatePicker');
 

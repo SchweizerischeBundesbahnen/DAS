@@ -35,6 +35,7 @@ class GlobalErrorWidget extends StatelessWidget {
 
   Widget _errorMessage(BuildContext context) {
     return SBBMessage(
+      illustration: SBBIllustration.display(),
       titleText: context.l10n.w_global_error_widget_title,
       subtitleText: context.l10n.w_global_error_widget_description,
       errorText: details.exceptionAsString(),
@@ -52,9 +53,7 @@ Future<void> _showErrorDetailsModalSheet(BuildContext context, FlutterErrorDetai
     context: context,
     titleText: details.exceptionAsString(),
     isScrollControlled: true,
-    style: SBBBottomSheetStyle(
-      constraints: BoxConstraints(), // TODO: Check if scrollControlDisabledMaxHeightRatio: 1 needed,
-    ),
+    style: SBBBottomSheetStyle(constraints: BoxConstraints()),
     body: SingleChildScrollView(
       child: Container(
         padding: .all(SBBSpacing.medium),
