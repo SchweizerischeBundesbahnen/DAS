@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface SpecialHolidayService {
 
-    List<SpecialHoliday> getFutureSpecialHolidays();
+    List<SpecialHoliday> getUpcoming();
 
     SpecialHoliday getById(Integer id);
 
@@ -14,8 +14,8 @@ public interface SpecialHolidayService {
 
     SpecialHoliday update(Integer id, SpecialHolidayRequest updateRequest);
 
-    void delete(Integer id);
+    void deleteByIds(Integer id);
 
-    void delete(List<Integer> ids);
+    void deleteByIds(List<Integer> ids);
 }
 

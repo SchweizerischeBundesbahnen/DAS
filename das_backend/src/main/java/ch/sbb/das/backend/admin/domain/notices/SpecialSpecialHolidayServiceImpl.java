@@ -20,8 +20,8 @@ public class SpecialSpecialHolidayServiceImpl implements SpecialHolidayService {
     }
 
     @Override
-    public List<SpecialHoliday> getFutureSpecialHolidays() {
-        return specialHolidayRepository.findFuture().stream()
+    public List<SpecialHoliday> getUpcoming() {
+        return specialHolidayRepository.findUpcoming().stream()
             .filter(holiday -> companyAuthorizationService.authorizedCompanies().containsAll(holiday.companies()))
             .toList();
     }
@@ -54,7 +54,7 @@ public class SpecialSpecialHolidayServiceImpl implements SpecialHolidayService {
     }
 
     @Override
-    public void delete(Integer id) {
+    public void deleteByIds(Integer id) {
         specialHolidayRepository.findById(id).ifPresent(holiday -> {
             companyAuthorizationService.requireCanAccessCompanies(holiday.companies());
             specialHolidayRepository.deleteById(id);
@@ -62,7 +62,7 @@ public class SpecialSpecialHolidayServiceImpl implements SpecialHolidayService {
     }
 
     @Override
-    public void delete(List<Integer> ids) {
+    public void deleteByIds(List<Integer> ids) {
         List<Integer> distinctIds = ids.stream().distinct().toList();
         Set<CompanyCode> companies = specialHolidayRepository.findAllById(distinctIds).stream().flatMap(holiday -> holiday.companies().stream()).collect(Collectors.toSet());
         companyAuthorizationService.requireCanAccessCompanies(companies);

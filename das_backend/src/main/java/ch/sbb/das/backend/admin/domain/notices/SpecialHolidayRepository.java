@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface SpecialHolidayRepository {
 
-    List<SpecialHoliday> findFuture();
+    List<SpecialHoliday> findUpcoming();
 
     Optional<SpecialHoliday> findById(Integer id);
 

@@ -19,7 +19,7 @@ class PersistenceSpecialHolidayRepository implements SpecialHolidayRepository {
     }
 
     @Override
-    public List<SpecialHoliday> findFuture() {
+    public List<SpecialHoliday> findUpcoming() {
         return specialHolidayRepository.findAllByDateAfterOrderByDate(LocalDate.now()).stream()
             .map(SpecialHolidayEntity::toSpecialHoliday)
             .toList();

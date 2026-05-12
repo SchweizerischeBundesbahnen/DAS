@@ -54,7 +54,7 @@ public class SpecialHolidayController {
     @ApiErrorResponses
     public ResponseEntity<? extends Response> getFutureSpecialHolidays(
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
-        List<SpecialHoliday> specialHolidays = specialHolidayService.getFutureSpecialHolidays();
+        List<SpecialHoliday> specialHolidays = specialHolidayService.getUpcoming();
         return ResponseEntityFactory.createOkResponse(new SpecialHolidaysResponse(specialHolidays), null, requestId);
     }
 
@@ -108,7 +108,7 @@ public class SpecialHolidayController {
     @ApiErrorResponses
     public ResponseEntity<Void> deleteSpecialHoliday(@PathVariable Integer id,
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
-        specialHolidayService.delete(id);
+        specialHolidayService.deleteByIds(id);
         return ResponseEntity.noContent().build();
     }
 
@@ -118,7 +118,7 @@ public class SpecialHolidayController {
     @ApiErrorResponses
     public ResponseEntity<Void> deleteSpecialHolidayByIds(@RequestBody @Valid SpecialHolidayByIdsDeleteRequest deleteRequest,
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
-        specialHolidayService.delete(deleteRequest.ids());
+        specialHolidayService.deleteByIds(deleteRequest.ids());
         return ResponseEntity.noContent().build();
     }
 }
