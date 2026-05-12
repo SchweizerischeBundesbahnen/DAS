@@ -78,7 +78,7 @@ public class SpecialHolidayController {
     @ApiResponse(responseCode = "201", description = "Special holiday created.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = SpecialHolidayResponse.class)))
     @ApiErrorResponses
-    @PreAuthorize("@companyAuthorizer.canAccessCompany(#createRequest.companies)")
+    @PreAuthorize("@companyAuthorizer.canAccessCompanies(#createRequest.companies)")
     public ResponseEntity<SpecialHolidayResponse> createSpecialHoliday(@RequestBody @Valid SpecialHolidayRequest createRequest,
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
         SpecialHoliday createdSpecialHoliday = specialHolidayService.create(createRequest);
@@ -92,7 +92,7 @@ public class SpecialHolidayController {
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = SpecialHolidayResponse.class)))
     @ApiResponse(responseCode = "404", description = "Special holiday not found.")
     @ApiErrorResponses
-    @PreAuthorize("@companyAuthorizer.canAccessCompany(#updateRequest.companies)")
+    @PreAuthorize("@companyAuthorizer.canAccessCompanies(#updateRequest.companies)")
     public ResponseEntity<? extends Response> updateSpecialHoliday(@PathVariable Integer id, @RequestBody @Valid SpecialHolidayRequest updateRequest,
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
         SpecialHoliday updatedSpecialHoliday = specialHolidayService.update(id, updateRequest);

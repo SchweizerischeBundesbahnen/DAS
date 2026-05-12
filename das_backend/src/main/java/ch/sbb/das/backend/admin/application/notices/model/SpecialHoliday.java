@@ -1,5 +1,6 @@
 package ch.sbb.das.backend.admin.application.notices.model;
 
+import ch.sbb.das.backend.common.CompanyCode;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
@@ -17,7 +18,7 @@ public record SpecialHoliday(
     @Schema(description = "Whether the holiday is treated like a Sunday or a Monday schedule.", requiredMode = RequiredMode.REQUIRED)
     ScheduleType scheduleType,
     @Schema(description = "The RICS company codes for which this holiday applies.", requiredMode = RequiredMode.REQUIRED)
-    Set<String> companies
+    Set<CompanyCode> companies
 ) {
 
 }

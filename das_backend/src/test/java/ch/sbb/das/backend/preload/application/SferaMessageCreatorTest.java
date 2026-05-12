@@ -2,7 +2,7 @@ package ch.sbb.das.backend.preload.application;
 
 import static org.xmlunit.assertj3.XmlAssert.assertThat;
 
-import ch.sbb.das.backend.preload.application.model.trainidentification.CompanyCode;
+import ch.sbb.das.backend.common.CompanyCode;
 import ch.sbb.das.backend.preload.application.model.trainidentification.TrainIdentification;
 import ch.sbb.das.backend.preload.domain.SegmentProfileIdentification;
 import ch.sbb.das.backend.preload.infrastructure.xml.SferaMessagingConfig;

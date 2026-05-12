@@ -2,6 +2,7 @@ package ch.sbb.das.backend.admin.domain.notices;
 
 import ch.sbb.das.backend.admin.application.notices.model.SpecialHoliday;
 import ch.sbb.das.backend.admin.application.notices.model.SpecialHolidayRequest;
+import ch.sbb.das.backend.common.CompanyCode;
 import ch.sbb.das.backend.tenancy.infrastructure.CompanyAuthorizer;
 import java.util.List;
 import java.util.Optional;
@@ -63,7 +64,7 @@ public class SpecialSpecialHolidayServiceImpl implements SpecialHolidayService {
     @Override
     public void delete(List<Integer> ids) {
         List<Integer> distinctIds = ids.stream().distinct().toList();
-        Set<String> companies = specialHolidayRepository.findAllById(distinctIds).stream().flatMap(holiday -> holiday.companies().stream()).collect(Collectors.toSet());
+        Set<CompanyCode> companies = specialHolidayRepository.findAllById(distinctIds).stream().flatMap(holiday -> holiday.companies().stream()).collect(Collectors.toSet());
         companyAuthorizationService.requireCanAccessCompanies(companies);
         specialHolidayRepository.deleteAllById(distinctIds);
     }

@@ -8,7 +8,7 @@ import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import ch.sbb.das.backend.preload.application.model.trainidentification.CompanyCode;
+import ch.sbb.das.backend.common.CompanyCode;
 import ch.sbb.das.backend.preload.application.model.trainidentification.TrainIdentification;
 import ch.sbb.das.backend.preload.domain.PreloadResult;
 import ch.sbb.das.backend.preload.infrastructure.PahoMqttClient;

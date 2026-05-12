@@ -1,11 +1,12 @@
 package ch.sbb.das.backend.admin.application.settings.model.response;
 
+import ch.sbb.das.backend.common.CompanyCode;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "RU specific feature toggle.")
 public record RuFeature(
     @Schema(description = "Relates to teltsi_CompanyCode (according to SFERA).", requiredMode = Schema.RequiredMode.REQUIRED)
-    String companyCodeRics,
+    CompanyCode companyCodeRics,
 
     @Schema(description = "The identifier of the feature.",
         examples = {"WARNAPP", "CUSTOMER_ORIENTED_DEPARTURE_PROCESS", "CHECKLIST_DEPARTURE_PROCESS"})
@@ -17,7 +18,7 @@ public record RuFeature(
 ) {
 
     public RuFeature(ch.sbb.das.backend.admin.domain.settings.model.RuFeature ruFeature) {
-        this(ruFeature.company().companyCodeRics(), ruFeature.key().name(), ruFeature.enabled());
+        this(ruFeature.company().code(), ruFeature.key().name(), ruFeature.enabled());
     }
 
 }

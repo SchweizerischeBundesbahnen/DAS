@@ -2,6 +2,7 @@ package ch.sbb.das.backend.tenancy.infrastructure.config;
 
 import ch.sbb.das.backend.tenancy.domain.model.Tenant;
 import java.util.List;
+import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -13,8 +14,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableConfigurationProperties
 @ConfigurationProperties(prefix = "auth")
-public class TenantConfig {
+public class ApplicationConfiguration {
 
     private List<Tenant> tenants;
     private String adminTenantId;
+    Map<String, String> companyCodes;
 }
