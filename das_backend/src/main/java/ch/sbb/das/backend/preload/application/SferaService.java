@@ -224,7 +224,7 @@ public class SferaService {
     }
 
     private String createTopic(String direction, TrainIdentification trainId) {
-        return String.format("%s90940/%s/%s/%s/%s_%s/%s", topicPrefix, sferaMajorVersion, direction, trainId.company().getValue(), trainId.operationalTrainNumber(),
+        return String.format("%s90940/%s/%s/%s/%s_%s/%s", topicPrefix, sferaMajorVersion, direction, trainId.company().value(), trainId.operationalTrainNumber(),
             trainId.startDateTime().toLocalDate(), CLIENT_ID);
     }
 

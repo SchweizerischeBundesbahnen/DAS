@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
@@ -134,6 +135,11 @@ public class TopLevelHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(AuthorizationDeniedException.class)
     ResponseEntity<Problem> handleAuthorizationDenied(AuthorizationDeniedException exception) {
+        return createProblemResponse(HttpStatus.FORBIDDEN, "Forbidden", "Not allowed!", exception);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    ResponseEntity<Problem> handleAccessDenied(AccessDeniedException exception) {
         return createProblemResponse(HttpStatus.FORBIDDEN, "Forbidden", "Not allowed!", exception);
     }
 
