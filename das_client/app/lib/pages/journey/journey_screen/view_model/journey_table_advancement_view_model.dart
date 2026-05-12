@@ -53,7 +53,7 @@ class JourneyTableAdvancementViewModel {
   JourneyPoint? _currentPosition;
   JourneyPoint? _lastPosition;
   SignaledPosition? _lastSignaledPosition;
-  BrakeSeries? latestBrakeSeries;
+  BrakeSeries? _latestBrakeSeries;
 
   final BehaviorSubject<bool> _rxAutomaticIdleScrollingActive = BehaviorSubject.seeded(false);
   Timer? _idleScrollTimer;
@@ -149,10 +149,10 @@ class JourneyTableAdvancementViewModel {
     );
     _streamSubscription.add(
       _journeySettingsViewModel.model.listen((data) {
-        if (data.currentBrakeSeries != latestBrakeSeries) {
+        if (data.currentBrakeSeries != _latestBrakeSeries) {
           _scrollToCurrentPositionIfNotPaused();
         }
-        latestBrakeSeries = data.currentBrakeSeries;
+        _latestBrakeSeries = data.currentBrakeSeries;
       }),
     );
     _streamSubscription.add(

@@ -39,7 +39,7 @@ extension BaseDataX on Iterable<BaseData> {
       (data) =>
           data is! Signal ||
           !data.functions.every(
-            (it) => [SignalFunction.entry, SignalFunction.exit, SignalFunction.intermediate].contains(it),
+            (it) => <SignalFunction>[.entry, .exit, .intermediate].contains(it),
           ),
     );
   }
