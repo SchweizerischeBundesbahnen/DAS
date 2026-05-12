@@ -2,6 +2,7 @@ import 'package:app/pages/journey/journey_screen/widgets/communication_network_i
 import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/bracket_station_cell_body.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_cell_body.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_chevron.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/curve_point_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/protection_section_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/service_point_row.dart';
@@ -162,7 +163,7 @@ void main() {
 
     testWidgets('test whistle and tram area', (tester) async {
       await prepareAndStartApp(tester);
-      await loadJourney(tester, trainNumber: 'T7');
+      await loadJourney(tester, trainNumber: 'T7M');
 
       final whistleRow = findDASTableRowByText('39.6');
       expect(whistleRow, findsOneWidget);
@@ -178,6 +179,28 @@ void main() {
 
       final tramAreaDescription = find.descendant(of: tramAreaRow, matching: find.text('6 TS'));
       expect(tramAreaDescription, findsAny);
+
+      await disconnect(tester);
+    });
+
+    testWidgets('test chevron position positioned correctly inside grouped items', (tester) async {
+      await prepareAndStartApp(tester);
+      await loadJourney(tester, trainNumber: 'T7');
+
+      // Chevron displayed at grouped row
+      await waitUntilExists(
+        tester,
+        find.descendant(of: findDASTableRowByText('41.6'), matching: find.byKey(RouteChevron.chevronKey)),
+      );
+
+      // Open up group
+      await tapElement(tester, findDASTableRowByText('41.6'));
+
+      // Chevron moved to correct row
+      expect(
+        find.descendant(of: findDASTableRowByText('40.401'), matching: find.byKey(RouteChevron.chevronKey)),
+        findsOne,
+      );
 
       await disconnect(tester);
     });

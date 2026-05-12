@@ -24,6 +24,8 @@ import 'package:app/pages/journey/journey_screen/view_model/journey_position_vie
 import 'package:app/pages/journey/journey_screen/view_model/journey_table_advancement_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_table_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/line_speed_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/chevron_position_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/journey_table_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/replacement_series_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/punctuality_view_model.dart';
@@ -35,7 +37,6 @@ import 'package:app/pages/journey/journey_screen/widgets/journey_navigation_butt
 import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
 import 'package:app/pages/journey/view_model/decisive_gradient_view_model.dart';
 import 'package:app/pages/journey/view_model/disturbance_view_model.dart';
-import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/pages/journey/view_model/reauthentication_required_view_model.dart';
@@ -134,9 +135,6 @@ class _ProviderScope extends StatelessWidget {
         Provider<DepartureProcessWarningViewModel>(
           create: (_) => DI.get<DepartureProcessWarningViewModel>(),
         ),
-        Provider<JourneyTableAdvancementViewModel>(
-          create: (_) => DI.get<JourneyTableAdvancementViewModel>(),
-        ),
         Provider<NotificationPriorityQueueViewModel>(
           create: (_) => DI.get<NotificationPriorityQueueViewModel>(),
         ),
@@ -164,6 +162,10 @@ class _ProviderScope extends StatelessWidget {
         ),
         Provider<ConnectivityViewModel>(
           create: (_) => ConnectivityViewModel(connectivityManager: DI.get()),
+          dispose: (_, vm) => vm.dispose(),
+        ),
+        Provider<DetailModalViewModel>(
+          create: (_) => DetailModalViewModel(),
           dispose: (_, vm) => vm.dispose(),
         ),
 
@@ -197,13 +199,6 @@ class _ProviderScope extends StatelessWidget {
               settingsVM: settingsVM,
               journeyViewModel: journeyVM,
             );
-          },
-          dispose: (_, vm) => vm.dispose(),
-        ),
-        ProxyProvider<JourneyTableAdvancementViewModel, DetailModalViewModel>(
-          update: (_, advancementVM, prev) {
-            if (prev != null) return prev;
-            return DetailModalViewModel(onDetailModalOpen: advancementVM.scrollToCurrentPositionIfNotPaused);
           },
           dispose: (_, vm) => vm.dispose(),
         ),
@@ -407,7 +402,6 @@ class _ProviderScope extends StatelessWidget {
         >(
           update: (_, journeyVM, settingsVM, collapsibleRowsVM, positionVM, detailModalVM, decisiveGradientVM, prev) {
             if (prev != null) return prev;
-            final navigationVM = DI.get<JourneyNavigationViewModel>();
             return JourneyTableViewModel(
               journeyViewModel: journeyViewModel,
               settingsVM: settingsVM,
@@ -415,19 +409,38 @@ class _ProviderScope extends StatelessWidget {
               positionVM: positionVM,
               detailModalVM: detailModalVM,
               decisiveGradientVM: decisiveGradientVM,
-              navigationVM: navigationVM,
+              navigationVM: DI.get(),
+              userSettings: DI.get(),
             );
           },
           dispose: (_, vm) => vm.dispose(),
         ),
-        ProxyProvider2<JourneyPositionViewModel, JourneyTableAdvancementViewModel, TourSystemLinkVisibilityViewModel>(
+        ProxyProvider2<JourneyPositionViewModel, JourneySettingsViewModel, TourSystemLinkVisibilityViewModel>(
           lazy: false,
-          update: (_, journeyPositionVM, journeyTableAdvancementVM, prev) {
+          update: (_, journeyPositionVM, journeySettingsVM, prev) {
             if (prev != null) return prev;
             return TourSystemLinkVisibilityViewModel(
               journeyViewModel: journeyViewModel,
               journeyPositionViewModel: journeyPositionVM,
-              journeyTableAdvancementViewModel: journeyTableAdvancementVM,
+              journeySettingsViewModel: journeySettingsVM,
+            );
+          },
+          dispose: (_, vm) => vm.dispose(),
+        ),
+        ProxyProvider2<JourneyTableViewModel, DetailModalViewModel, JourneyTableAdvancementViewModel>(
+          lazy: false,
+          update: (_, journeyTableVM, detailModalVM, prev) {
+            if (prev != null) return prev;
+            final chevronStream = journeyTableVM.model.map<ChevronPositionModel>(
+              (item) => item is TableLoaded ? item.chevronPosition : ChevronPositionModel(),
+            );
+
+            return JourneyTableAdvancementViewModel(
+              journeyViewModel: journeyViewModel,
+              chevronPositionStream: chevronStream,
+              scrollController: DI.get(),
+              journeySettingsViewModel: DI.get(),
+              detailModalViewModel: detailModalVM,
             );
           },
           dispose: (_, vm) => vm.dispose(),

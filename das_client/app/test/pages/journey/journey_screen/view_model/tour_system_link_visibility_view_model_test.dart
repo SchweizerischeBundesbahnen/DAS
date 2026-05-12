@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
-import 'package:app/pages/journey/journey_screen/view_model/journey_table_advancement_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_advancement_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/tour_system_link_visibility_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -19,7 +19,6 @@ import 'tour_system_link_visibility_view_model_test.mocks.dart';
 @GenerateNiceMocks([
   MockSpec<JourneyViewModel>(),
   MockSpec<JourneyPositionViewModel>(),
-  MockSpec<JourneyTableAdvancementViewModel>(),
 ])
 void main() {
   group('TourSystemLinkVisibilityViewModel', () {
@@ -29,11 +28,10 @@ void main() {
 
     late MockJourneyViewModel mockJourneyViewModel;
     late MockJourneyPositionViewModel mockJourneyPositionViewModel;
-    late MockJourneyTableAdvancementViewModel mockJourneyTableAdvancementViewModel;
+    late JourneySettingsViewModel journeySettingsViewModel;
 
     late BehaviorSubject<Journey?> journeySubject;
     late BehaviorSubject<JourneyPositionModel> journeyPositionSubject;
-    late BehaviorSubject<JourneyAdvancementModel> journeyAdvancementSubject;
 
     final journey = Journey(
       metadata: Metadata(),
@@ -47,21 +45,19 @@ void main() {
     setUp(() {
       mockJourneyViewModel = MockJourneyViewModel();
       mockJourneyPositionViewModel = MockJourneyPositionViewModel();
-      mockJourneyTableAdvancementViewModel = MockJourneyTableAdvancementViewModel();
+      journeySettingsViewModel = JourneySettingsViewModel(journeyViewModel: mockJourneyViewModel);
       journeySubject = BehaviorSubject<Journey?>.seeded(journey);
       journeyPositionSubject = BehaviorSubject<JourneyPositionModel>.seeded(
         JourneyPositionModel(currentPosition: journey.data.whereType<JourneyPoint>().first),
       );
-      journeyAdvancementSubject = BehaviorSubject<JourneyAdvancementModel>.seeded(Automatic());
 
       when(mockJourneyViewModel.journey).thenAnswer((_) => journeySubject.stream);
       when(mockJourneyPositionViewModel.model).thenAnswer((_) => journeyPositionSubject.stream);
-      when(mockJourneyTableAdvancementViewModel.model).thenAnswer((_) => journeyAdvancementSubject.stream);
 
       testee = TourSystemLinkVisibilityViewModel(
         journeyViewModel: mockJourneyViewModel,
         journeyPositionViewModel: mockJourneyPositionViewModel,
-        journeyTableAdvancementViewModel: mockJourneyTableAdvancementViewModel,
+        journeySettingsViewModel: journeySettingsViewModel,
       );
       emitRegister = <bool>[];
       sub = testee.model.listen(emitRegister.add);
@@ -72,7 +68,6 @@ void main() {
       testee.dispose();
       journeySubject.close();
       journeyPositionSubject.close();
-      journeyAdvancementSubject.close();
     });
 
     test('initialState_whenInstantiated_thenIsFalse', () async {
@@ -89,7 +84,7 @@ void main() {
       await processStreams();
 
       // ACT
-      journeyAdvancementSubject.add(Paused(next: Automatic()));
+      journeySettingsViewModel.updateJourneyAdvancement(Paused(next: Automatic()));
       await processStreams();
 
       // EXPECT
@@ -149,7 +144,7 @@ void main() {
         testee = TourSystemLinkVisibilityViewModel(
           journeyViewModel: mockJourneyViewModel,
           journeyPositionViewModel: mockJourneyPositionViewModel,
-          journeyTableAdvancementViewModel: mockJourneyTableAdvancementViewModel,
+          journeySettingsViewModel: journeySettingsViewModel,
         );
         testee.model.listen(emitRegister.add);
         fakeAsync.elapse(Duration(milliseconds: 0));

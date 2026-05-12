@@ -1,4 +1,5 @@
 import 'package:app/pages/journey/journey_screen/reduced_overview/widgets/cells/reduced_time_cell_body.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/chevron_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_cell_body.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/service_point_row.dart';
@@ -17,6 +18,7 @@ class ReducedServicePointRow extends ServicePointRow {
   }) : super(
          rowColor: ThemeUtil.getDASTableColor(context),
          journeyPosition: JourneyPositionModel(),
+         chevronPosition: ChevronPositionModel(),
          highlightNextStop: false,
        );
 
@@ -57,7 +59,7 @@ class ReducedServicePointRow extends ServicePointRow {
         isRouteStart: metadata.journeyStart == data,
         isRouteEnd: metadata.journeyEnd == data,
         isStopOnRequest: !data.mandatoryStop,
-        chevronPosition: chevronPosition,
+        chevronPosition: calculatedChevronPosition,
       ),
     );
   }

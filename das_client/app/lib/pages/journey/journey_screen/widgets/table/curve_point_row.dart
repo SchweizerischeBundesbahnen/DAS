@@ -17,6 +17,7 @@ class CurvePointRow extends CellRowBuilder<CurvePoint> {
     required super.data,
     required super.rowIndex,
     required super.journeyPosition,
+    required super.chevronPosition,
     super.config,
   });
 

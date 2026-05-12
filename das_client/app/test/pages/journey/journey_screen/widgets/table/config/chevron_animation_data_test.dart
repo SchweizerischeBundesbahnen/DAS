@@ -1,4 +1,4 @@
-import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/chevron_position_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/config/chevron_animation_data.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sfera/component.dart';
@@ -18,12 +18,12 @@ void main() {
     );
 
     final journeyPoints = journey.data.whereType<JourneyPoint>().toList();
-    final journeyPosition = JourneyPositionModel(currentPosition: journeyPoints[2], lastPosition: journeyPoints[0]);
+    final journeyPosition = ChevronPositionModel(currentPosition: journeyPoints[2], lastPosition: journeyPoints[0]);
 
     // WHEN
     final animationData1 = ChevronAnimationData.from(
       journeyPoints: journeyPoints,
-      journeyPosition: journeyPosition,
+      chevronPositionModel: journeyPosition,
       metadata: journey.metadata,
       rowData: journeyPoints[0],
       currentBrakeSeries: null,
@@ -31,7 +31,7 @@ void main() {
     );
     final animationData2 = ChevronAnimationData.from(
       journeyPoints: journeyPoints,
-      journeyPosition: journeyPosition,
+      chevronPositionModel: journeyPosition,
       metadata: journey.metadata,
       rowData: journeyPoints[1],
       currentBrakeSeries: null,
@@ -39,7 +39,7 @@ void main() {
     );
     final animationData3 = ChevronAnimationData.from(
       journeyPoints: journeyPoints,
-      journeyPosition: journeyPosition,
+      chevronPositionModel: journeyPosition,
       metadata: journey.metadata,
       rowData: journeyPoints[2],
       currentBrakeSeries: null,
@@ -47,7 +47,7 @@ void main() {
     );
     final animationData4 = ChevronAnimationData.from(
       journeyPoints: journeyPoints,
-      journeyPosition: journeyPosition,
+      chevronPositionModel: journeyPosition,
       metadata: journey.metadata,
       rowData: journeyPoints[3],
       currentBrakeSeries: null,
@@ -81,12 +81,12 @@ void main() {
     );
 
     final journeyPoints = journey.data.whereType<JourneyPoint>().toList();
-    final journeyPosition = JourneyPositionModel(currentPosition: journeyPoints[0], lastPosition: journeyPoints[2]);
+    final journeyPosition = ChevronPositionModel(currentPosition: journeyPoints[0], lastPosition: journeyPoints[2]);
 
     // WHEN
     final animationData1 = ChevronAnimationData.from(
       journeyPoints: journeyPoints,
-      journeyPosition: journeyPosition,
+      chevronPositionModel: journeyPosition,
       metadata: journey.metadata,
       rowData: journeyPoints[0],
       currentBrakeSeries: null,
@@ -94,7 +94,7 @@ void main() {
     );
     final animationData2 = ChevronAnimationData.from(
       journeyPoints: journeyPoints,
-      journeyPosition: journeyPosition,
+      chevronPositionModel: journeyPosition,
       metadata: journey.metadata,
       rowData: journeyPoints[1],
       currentBrakeSeries: null,
@@ -102,7 +102,7 @@ void main() {
     );
     final animationData3 = ChevronAnimationData.from(
       journeyPoints: journeyPoints,
-      journeyPosition: journeyPosition,
+      chevronPositionModel: journeyPosition,
       metadata: journey.metadata,
       rowData: journeyPoints[2],
       currentBrakeSeries: null,
@@ -110,7 +110,7 @@ void main() {
     );
     final animationData4 = ChevronAnimationData.from(
       journeyPoints: journeyPoints,
-      journeyPosition: journeyPosition,
+      chevronPositionModel: journeyPosition,
       metadata: journey.metadata,
       rowData: journeyPoints[3],
       currentBrakeSeries: null,
@@ -149,7 +149,7 @@ void main() {
     );
 
     final journeyPoints = journey.data.whereType<JourneyPoint>().toList();
-    final journeyPosition = JourneyPositionModel(
+    final journeyPosition = ChevronPositionModel(
       currentPosition: (journeyPoints[2] as BaliseLevelCrossingGroup).groupedElements[1],
       lastPosition: journeyPoints[0],
     );
@@ -157,7 +157,7 @@ void main() {
     // WHEN
     final animationData1 = ChevronAnimationData.from(
       journeyPoints: journeyPoints,
-      journeyPosition: journeyPosition,
+      chevronPositionModel: journeyPosition,
       metadata: journey.metadata,
       rowData: journeyPoints[0],
       currentBrakeSeries: null,
@@ -165,7 +165,7 @@ void main() {
     );
     final animationData2 = ChevronAnimationData.from(
       journeyPoints: journeyPoints,
-      journeyPosition: journeyPosition,
+      chevronPositionModel: journeyPosition,
       metadata: journey.metadata,
       rowData: journeyPoints[1],
       currentBrakeSeries: null,
@@ -173,7 +173,7 @@ void main() {
     );
     final animationData3 = ChevronAnimationData.from(
       journeyPoints: journeyPoints,
-      journeyPosition: journeyPosition,
+      chevronPositionModel: journeyPosition,
       metadata: journey.metadata,
       rowData: journeyPoints[2],
       currentBrakeSeries: null,
@@ -213,7 +213,7 @@ void main() {
     );
 
     final journeyPoints = journey.data.whereType<JourneyPoint>().toList();
-    final journeyPosition = JourneyPositionModel(
+    final journeyPosition = ChevronPositionModel(
       currentPosition: (journeyPoints[2] as BaliseLevelCrossingGroup).groupedElements[1],
       lastPosition: journeyPoints[0],
     );
@@ -221,7 +221,7 @@ void main() {
     // WHEN
     final animationData1 = ChevronAnimationData.from(
       journeyPoints: journeyPoints,
-      journeyPosition: journeyPosition,
+      chevronPositionModel: journeyPosition,
       metadata: journey.metadata,
       rowData: journeyPoints[0],
       currentBrakeSeries: null,
@@ -229,7 +229,7 @@ void main() {
     );
     final animationData2 = ChevronAnimationData.from(
       journeyPoints: journeyPoints,
-      journeyPosition: journeyPosition,
+      chevronPositionModel: journeyPosition,
       metadata: journey.metadata,
       rowData: journeyPoints[1],
       currentBrakeSeries: null,
@@ -237,7 +237,7 @@ void main() {
     );
     final animationData3 = ChevronAnimationData.from(
       journeyPoints: journeyPoints,
-      journeyPosition: journeyPosition,
+      chevronPositionModel: journeyPosition,
       metadata: journey.metadata,
       rowData: journeyPoints[2],
       currentBrakeSeries: null,
@@ -245,7 +245,7 @@ void main() {
     );
     final animationData4 = ChevronAnimationData.from(
       journeyPoints: journeyPoints,
-      journeyPosition: journeyPosition,
+      chevronPositionModel: journeyPosition,
       metadata: journey.metadata,
       rowData: journeyPoints[3],
       currentBrakeSeries: null,
@@ -253,7 +253,7 @@ void main() {
     );
     final animationData5 = ChevronAnimationData.from(
       journeyPoints: journeyPoints,
-      journeyPosition: journeyPosition,
+      chevronPositionModel: journeyPosition,
       metadata: journey.metadata,
       rowData: journeyPoints[4],
       currentBrakeSeries: null,
@@ -292,12 +292,12 @@ void main() {
     );
 
     final journeyPoints = journey.data.whereType<JourneyPoint>().toList();
-    final journeyPosition = JourneyPositionModel(currentPosition: journeyPoints[2], lastPosition: journeyPoints[2]);
+    final journeyPosition = ChevronPositionModel(currentPosition: journeyPoints[2], lastPosition: journeyPoints[2]);
 
     // WHEN
     final animationData1 = ChevronAnimationData.from(
       journeyPoints: journeyPoints,
-      journeyPosition: journeyPosition,
+      chevronPositionModel: journeyPosition,
       metadata: journey.metadata,
       rowData: journeyPoints[0],
       currentBrakeSeries: null,
@@ -305,7 +305,7 @@ void main() {
     );
     final animationData2 = ChevronAnimationData.from(
       journeyPoints: journeyPoints,
-      journeyPosition: journeyPosition,
+      chevronPositionModel: journeyPosition,
       metadata: journey.metadata,
       rowData: journeyPoints[1],
       currentBrakeSeries: null,
@@ -313,7 +313,7 @@ void main() {
     );
     final animationData3 = ChevronAnimationData.from(
       journeyPoints: journeyPoints,
-      journeyPosition: journeyPosition,
+      chevronPositionModel: journeyPosition,
       metadata: journey.metadata,
       rowData: journeyPoints[2],
       currentBrakeSeries: null,
@@ -321,7 +321,7 @@ void main() {
     );
     final animationData4 = ChevronAnimationData.from(
       journeyPoints: journeyPoints,
-      journeyPosition: journeyPosition,
+      chevronPositionModel: journeyPosition,
       metadata: journey.metadata,
       rowData: journeyPoints[3],
       currentBrakeSeries: null,
@@ -349,12 +349,12 @@ void main() {
     );
 
     final journeyPoints = journey.data.whereType<JourneyPoint>().toList();
-    final journeyPosition = JourneyPositionModel(currentPosition: journeyPoints[2], lastPosition: null);
+    final journeyPosition = ChevronPositionModel(currentPosition: journeyPoints[2], lastPosition: null);
 
     // WHEN
     final animationData1 = ChevronAnimationData.from(
       journeyPoints: journeyPoints,
-      journeyPosition: journeyPosition,
+      chevronPositionModel: journeyPosition,
       metadata: journey.metadata,
       rowData: journeyPoints[0],
       currentBrakeSeries: null,
@@ -362,7 +362,7 @@ void main() {
     );
     final animationData2 = ChevronAnimationData.from(
       journeyPoints: journeyPoints,
-      journeyPosition: journeyPosition,
+      chevronPositionModel: journeyPosition,
       metadata: journey.metadata,
       rowData: journeyPoints[1],
       currentBrakeSeries: null,
@@ -370,7 +370,7 @@ void main() {
     );
     final animationData3 = ChevronAnimationData.from(
       journeyPoints: journeyPoints,
-      journeyPosition: journeyPosition,
+      chevronPositionModel: journeyPosition,
       metadata: journey.metadata,
       rowData: journeyPoints[2],
       currentBrakeSeries: null,
@@ -378,7 +378,7 @@ void main() {
     );
     final animationData4 = ChevronAnimationData.from(
       journeyPoints: journeyPoints,
-      journeyPosition: journeyPosition,
+      chevronPositionModel: journeyPosition,
       metadata: journey.metadata,
       rowData: journeyPoints[3],
       currentBrakeSeries: null,

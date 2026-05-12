@@ -11,6 +11,7 @@ class ConnectionTrackRow extends CellRowBuilder<ConnectionTrack> {
     required super.data,
     required super.rowIndex,
     required super.journeyPosition,
+    required super.chevronPosition,
     super.config,
   });
 

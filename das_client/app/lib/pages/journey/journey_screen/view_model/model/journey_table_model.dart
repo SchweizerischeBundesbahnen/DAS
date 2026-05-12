@@ -1,5 +1,6 @@
 import 'package:app/pages/journey/journey_screen/detail_modal/detail_modal_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/chevron_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/view_model/model/journey_settings.dart';
 import 'package:sfera/component.dart';
@@ -24,6 +25,7 @@ class TableLoaded extends JourneyTableModel {
     required this.journeySettings,
     required this.collapsedRows,
     required this.journeyPosition,
+    required this.chevronPosition,
     this.detailModalType,
     this.showDecisiveGradient,
   }) : super._();
@@ -35,6 +37,7 @@ class TableLoaded extends JourneyTableModel {
         ', journeySettings: $journeySettings'
         ', collapsedRows: $collapsedRows'
         ', journeyPosition: $journeyPosition'
+        ', chevronPosition: $chevronPosition'
         ', detailModalType: $detailModalType'
         ', showDecisiveGradient: $showDecisiveGradient'
         '}';
@@ -45,6 +48,7 @@ class TableLoaded extends JourneyTableModel {
   final JourneySettings journeySettings;
   final Map<int, CollapsedState> collapsedRows;
   final JourneyPositionModel journeyPosition;
+  final ChevronPositionModel chevronPosition;
   final DetailModalType? detailModalType;
   final bool? showDecisiveGradient;
 
@@ -58,6 +62,7 @@ class TableLoaded extends JourneyTableModel {
           journeySettings == other.journeySettings &&
           collapsedRows == other.collapsedRows &&
           journeyPosition == other.journeyPosition &&
+          chevronPosition == other.chevronPosition &&
           detailModalType == other.detailModalType &&
           showDecisiveGradient == other.showDecisiveGradient;
 
@@ -68,6 +73,7 @@ class TableLoaded extends JourneyTableModel {
     journeySettings,
     collapsedRows,
     journeyPosition,
+    chevronPosition,
     detailModalType,
     showDecisiveGradient,
   );
