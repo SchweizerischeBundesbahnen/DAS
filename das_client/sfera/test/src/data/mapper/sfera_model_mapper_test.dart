@@ -2071,6 +2071,28 @@ void main() {
     expect(journey2.data, hasLength(11));
     expect(journey2.data.last, isA<SuspiciousJourneyPoint>());
   });
+
+  test('Test sequential additional speed restrictions are parsed correctly', () async {
+    final journey = getJourney('T43');
+    final speedRestrictions = journey.data
+        .where((it) => it.dataType == .additionalSpeedRestriction)
+        .cast<AdditionalSpeedRestrictionData>()
+        .toList();
+
+    expect(journey.valid, true);
+    expect(speedRestrictions, hasLength(6));
+
+    expect(speedRestrictions[0].restrictions, hasLength(2));
+    expect(speedRestrictions[1].restrictions, hasLength(1));
+    expect(speedRestrictions[2].restrictions, hasLength(2));
+    expect(speedRestrictions[3].restrictions, hasLength(1));
+    expect(speedRestrictions[4].restrictions, hasLength(1));
+    expect(speedRestrictions[5].restrictions, hasLength(1));
+
+    expect(speedRestrictions[0].speed, 80);
+    expect(speedRestrictions[0].kmFrom, 58.840);
+    expect(speedRestrictions[0].kmTo, 56.062);
+  });
 }
 
 void _checkTrainSeriesSpeed<T extends Speed>(

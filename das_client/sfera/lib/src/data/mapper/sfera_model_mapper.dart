@@ -172,6 +172,7 @@ class SferaModelMapper {
     final List<List<AdditionalSpeedRestriction>> grouped = [];
     var currentGroup = [restrictions.first];
 
+    // Parallel ASRs
     for (int i = 1; i < restrictions.length; i++) {
       final current = restrictions[i];
       final lastInGroup = currentGroup.getHighestByOrderTo;
@@ -184,6 +185,30 @@ class SferaModelMapper {
       }
     }
     grouped.add(currentGroup);
+
+    // Sequential ASRs
+    for (int i = 0; i < grouped.length; i++) {
+      final currentGroup = grouped[i];
+      // Don't group with other groups
+      if (currentGroup.isGrouped) continue;
+
+      for (int j = i + 1; j < grouped.length; j++) {
+        final nextGroup = grouped[j];
+        // Don't group with other groups
+        if (nextGroup.isGrouped) break;
+        if (currentGroup[0].speed != nextGroup[0].speed) break;
+
+        final currentGroupEnd = currentGroup.getHighestByOrderTo.orderTo;
+        final nextGroupStart = nextGroup.getLowestByOrderFrom.orderFrom;
+
+        final elementsBetween = journeyData.where((it) => it.order >= currentGroupEnd && it.order <= nextGroupStart);
+        if (elementsBetween.isNotEmpty) break;
+
+        currentGroup.addAll(nextGroup);
+        grouped.removeAt(j);
+        j--;
+      }
+    }
 
     final result = <AdditionalSpeedRestrictionData>[];
     for (final group in grouped) {
