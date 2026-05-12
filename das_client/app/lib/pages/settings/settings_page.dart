@@ -29,10 +29,9 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  SBBHeader _appBar(BuildContext context) => SBBHeader(
-    title: context.l10n.c_app_name,
-    systemOverlayStyle: .light,
-    actions: [Container()],
+  SBBHeaderSmall _appBar(BuildContext context) => SBBHeaderSmall(
+    titleText: context.l10n.c_app_name,
+    actions: const [], // removes SBB logo
   );
 
   Widget _body(BuildContext context) {
@@ -46,9 +45,9 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Widget _settingsHeader(BuildContext context) {
-    return SBBHeaderbox(
-      title: context.l10n.w_navigation_drawer_settings_title,
-      secondaryLabel: context.l10n.p_settings_page_personalize,
+    return SBBHeaderBox(
+      titleText: context.l10n.w_navigation_drawer_settings_title,
+      subtitleText: context.l10n.p_settings_page_personalize,
     );
   }
 
@@ -68,34 +67,20 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Widget _decisiveGradientSettings(BuildContext context) {
-    return SBBContentBox(
-      padding: const .only(right: SBBSpacing.medium),
-      child: SBBListItem.custom(
-        title: context.l10n.p_settings_page_decisive_gradient_show_setting,
-        onPressed: () => _updateSettings(.showDecisiveGradient, !_userSettings.showDecisiveGradient),
-        isLastElement: true,
-        trailingWidget: SBBSwitch(
-          key: SettingsPage.decisiveGradientSwitchKey,
-          value: _userSettings.showDecisiveGradient,
-          onChanged: (value) => _updateSettings(.showDecisiveGradient, value),
-        ),
-      ),
+    return SBBSwitchListItemBoxed(
+      key: SettingsPage.decisiveGradientSwitchKey,
+      titleText: context.l10n.p_settings_page_decisive_gradient_show_setting,
+      value: _userSettings.showDecisiveGradient,
+      onChanged: (value) => _updateSettings(.showDecisiveGradient, value),
     );
   }
 
   Widget _signalSettings(BuildContext context) {
-    return SBBContentBox(
-      padding: const .only(right: SBBSpacing.medium),
-      child: SBBListItem.custom(
-        title: context.l10n.p_settings_page_signal_station_setting,
-        onPressed: () => _updateSettings(.showStationSignals, !_userSettings.showStationSignals),
-        isLastElement: true,
-        trailingWidget: SBBSwitch(
-          key: SettingsPage.stationSignalSwitchKey,
-          value: _userSettings.showStationSignals,
-          onChanged: (value) => _updateSettings(.showStationSignals, value),
-        ),
-      ),
+    return SBBSwitchListItemBoxed(
+      key: SettingsPage.stationSignalSwitchKey,
+      titleText: context.l10n.p_settings_page_signal_station_setting,
+      value: _userSettings.showStationSignals,
+      onChanged: (value) => _updateSettings(.showStationSignals, value),
     );
   }
 

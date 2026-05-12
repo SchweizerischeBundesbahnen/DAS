@@ -12,7 +12,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 class ExtendedMenu extends StatelessWidget {
   static const Key menuButtonKey = Key('extendedMenuButton');
   static const Key menuButtonCloseKey = Key('closeExtendedMenuButton');
-  static const Key maneuverSwitchKey = Key('maneuverSwitch');
+  static const Key maneuverModeMenuItemKey = Key('maneuverModeMenuItem');
   static const Key openWaraAppMenuItemKey = Key('openWaraAppMenuItem');
   static const Key openTourSystemItemKey = Key('openTourSystemItem');
 
@@ -22,9 +22,9 @@ class ExtendedMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel = context.read<JourneyViewModel>();
     return AnchoredFullPageOverlay(
-      triggerBuilder: (_, showOverlay) => SBBIconButtonLarge(
+      triggerBuilder: (_, showOverlay) => SBBTertiaryButton(
         key: menuButtonKey,
-        icon: SBBIcons.context_menu_small,
+        iconData: SBBIcons.context_menu_small,
         onPressed: () => showOverlay(),
       ),
       contentBuilder: (_, hideOverlay) {
@@ -39,12 +39,15 @@ class ExtendedMenu extends StatelessWidget {
                 SBBContentBox(
                   child: Column(
                     crossAxisAlignment: .start,
-                    children: [
-                      _transportDocumentItem(context),
-                      _journeyOverviewItem(context, hideOverlay),
-                      _maneuverItem(context, hideOverlay),
-                      _waraItem(context, hideOverlay),
-                    ],
+                    children: SBBDivider.divideItems(
+                      context: context,
+                      items: [
+                        _transportDocumentItem(context),
+                        _journeyOverviewItem(context, hideOverlay),
+                        _maneuverItem(context, hideOverlay),
+                        _waraItem(context, hideOverlay),
+                      ],
+                    ),
                   ),
                 ),
                 _tourSystemContentBox(context),
@@ -60,14 +63,11 @@ class ExtendedMenu extends StatelessWidget {
     final launcher = DI.get<Launcher>();
     if (!launcher.hasTourSystemConfigured()) return SizedBox.shrink();
 
-    return SBBContentBox(
-      child: SBBListItem(
-        key: openTourSystemItemKey,
-        title: context.l10n.w_extended_menu_tour_action,
-        trailingIcon: SBBIcons.link_external_medium,
-        isLastElement: true,
-        onPressed: () => launcher.launchTourSystem(),
-      ),
+    return SBBListItemBoxed(
+      key: openTourSystemItemKey,
+      titleText: context.l10n.w_extended_menu_tour_action,
+      trailingIconData: SBBIcons.link_external_medium,
+      onTap: () => launcher.launchTourSystem(),
     );
   }
 
@@ -81,10 +81,10 @@ class ExtendedMenu extends StatelessWidget {
             style: sbbTextStyle.lightStyle.large,
           ),
         ),
-        SBBIconButtonSmall(
+        SBBTertiaryButtonSmall(
           key: menuButtonCloseKey,
           onPressed: () => hideOverlay(),
-          icon: SBBIcons.cross_small,
+          iconData: SBBIcons.cross_small,
         ),
       ],
     );
@@ -92,8 +92,8 @@ class ExtendedMenu extends StatelessWidget {
 
   Widget _transportDocumentItem(BuildContext context) {
     return SBBListItem(
-      title: context.l10n.w_extended_menu_transport_document_action,
-      onPressed: () {
+      titleText: context.l10n.w_extended_menu_transport_document_action,
+      onTap: () {
         // Placeholder
       },
     );
@@ -101,8 +101,8 @@ class ExtendedMenu extends StatelessWidget {
 
   Widget _journeyOverviewItem(BuildContext context, VoidCallback hideOverlay) {
     return SBBListItem(
-      title: context.l10n.w_extended_menu_journey_overview_action,
-      onPressed: () {
+      titleText: context.l10n.w_extended_menu_journey_overview_action,
+      onTap: () {
         hideOverlay();
         if (context.mounted) {
           showReducedOverviewModalSheet(context);
@@ -121,10 +121,9 @@ class ExtendedMenu extends StatelessWidget {
 
         return SBBListItem(
           key: openWaraAppMenuItemKey,
-          title: context.l10n.w_extended_menu_journey_wara_action,
-          trailingIcon: SBBIcons.link_external_medium,
-          isLastElement: true,
-          onPressed: () async {
+          titleText: context.l10n.w_extended_menu_journey_wara_action,
+          trailingIconData: SBBIcons.link_external_medium,
+          onTap: () async {
             await warnAppViewModel.openWaraApp();
             hideOverlay();
           },
@@ -138,34 +137,24 @@ class ExtendedMenu extends StatelessWidget {
 
     return FutureBuilder(
       future: viewModel.isWarnappFeatureEnabled,
-      builder: (context, asyncSnapshot) {
-        if (!asyncSnapshot.hasData || asyncSnapshot.data == false) return SizedBox.shrink();
+      builder: (context, snapshot) {
+        if (!snapshot.hasData || snapshot.data == false) return SizedBox.shrink();
 
-        return SBBListItem.custom(
-          title: context.l10n.w_extended_menu_maneuver_mode,
-          onPressed: () {
-            hideOverlay();
-            viewModel.toggleManeuverMode();
-          },
-          trailingWidget: Padding(
-            padding: const .fromLTRB(0, 0, SBBSpacing.xSmall, 0),
-            child: StreamBuilder(
-              stream: viewModel.isManeuverModeEnabled,
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) return SizedBox.shrink();
-
-                final isManeuverModeEnabled = snapshot.requireData;
-                return SBBSwitch(
-                  key: maneuverSwitchKey,
-                  value: isManeuverModeEnabled,
-                  onChanged: (value) {
-                    hideOverlay();
-                    viewModel.setManeuverMode(value);
-                  },
-                );
+        return StreamBuilder(
+          initialData: viewModel.isManeuverModeEnabledValue,
+          stream: viewModel.isManeuverModeEnabled,
+          builder: (context, snapshot) {
+            final isManeuverModeEnabled = snapshot.requireData;
+            return SBBSwitchListItem(
+              key: maneuverModeMenuItemKey,
+              titleText: context.l10n.w_extended_menu_maneuver_mode,
+              value: isManeuverModeEnabled,
+              onChanged: (value) {
+                hideOverlay();
+                viewModel.setManeuverMode(value);
               },
-            ),
-          ),
+            );
+          },
         );
       },
     );

@@ -53,6 +53,7 @@ class JourneySelectionPage extends StatelessWidget implements AutoRouteWrapper {
 
 class _Content extends StatefulWidget {
   const _Content({this.onAppExpiredDialogDismissed});
+
   final VoidCallback? onAppExpiredDialogDismissed;
 
   @override
@@ -132,15 +133,15 @@ class _ContentState extends State<_Content> {
       builder: (context, snapshot) {
         final model = snapshot.requireData;
 
-        return SBBHeaderbox.custom(
+        return SBBHeaderBox(
           padding: .zero,
           flap: !model.isStartDateSameAsToday
-              ? SBBHeaderboxFlap(
-                  title: context.l10n.p_train_selection_date_not_today_warning,
-                  leadingIcon: SBBIcons.circle_information_small,
+              ? SBBHeaderBoxFlap(
+                  labelText: context.l10n.p_train_selection_date_not_today_warning,
+                  leadingIconData: SBBIcons.circle_information_small,
                 )
               : null,
-          child: Column(
+          body: Column(
             children: [
               JourneyDateInput(),
               SelectRailwayUndertakingInput(
@@ -167,10 +168,10 @@ class _ContentState extends State<_Content> {
           final Selecting _ || final Loaded _ => SizedBox.shrink(),
           final Loading _ => Center(child: CircularProgressIndicator()),
           final Error e => SBBMessage(
-            illustration: MessageIllustration.Display,
-            title: context.l10n.c_something_went_wrong,
-            description: e.errorCode.displayText(context),
-            messageCode: '${context.l10n.c_error_code}: ${e.errorCode.code.toString()}',
+            illustration: SBBIllustration.display(),
+            titleText: context.l10n.c_something_went_wrong,
+            subtitleText: e.errorCode.displayText(context),
+            errorText: '${context.l10n.c_error_code}: ${e.errorCode.code.toString()}',
           ),
         };
       },
@@ -191,15 +192,17 @@ class _ContentState extends State<_Content> {
 
         final buttonLabel = context.l10n.c_button_confirm;
         return switch (model) {
-          final Loading _ => wrapWithPadding(SBBPrimaryButton(label: buttonLabel, onPressed: null, isLoading: true)),
+          final Loading _ => wrapWithPadding(
+            SBBPrimaryButton(labelText: buttonLabel, onPressed: null, isLoading: true),
+          ),
           final Selecting s => Padding(
             padding: const .symmetric(vertical: SBBSpacing.medium, horizontal: SBBSpacing.xSmall),
             child: SBBPrimaryButton(
-              label: buttonLabel,
+              labelText: buttonLabel,
               onPressed: s.isInputComplete ? () => viewModel.loadJourney() : null,
             ),
           ),
-          _ => wrapWithPadding(SBBPrimaryButton(label: buttonLabel, onPressed: null)),
+          _ => wrapWithPadding(SBBPrimaryButton(labelText: buttonLabel, onPressed: null)),
         };
       },
     );

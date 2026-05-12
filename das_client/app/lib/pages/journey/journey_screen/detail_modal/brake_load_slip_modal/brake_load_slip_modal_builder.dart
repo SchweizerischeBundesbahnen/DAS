@@ -48,10 +48,10 @@ class BrakeLoadSlipModalBuilder extends DASModalSheetBuilder {
               groupColor: ThemeUtil.getColor(context, SBBColors.milk, SBBColors.midnight),
               showChangeIndicator: false,
             ),
-            SBBTertiaryButtonLarge(
+            SBBTertiaryButton(
               key: buttonKey,
-              label: context.l10n.w_brake_load_slip_modal_open_brake_slip,
-              icon: SBBIcons.link_external_small,
+              labelText: context.l10n.w_brake_load_slip_modal_open_brake_slip,
+              iconData: SBBIcons.link_external_small,
               onPressed: () {
                 context.router.push(BrakeLoadSlipRoute());
               },

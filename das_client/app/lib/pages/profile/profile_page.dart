@@ -20,11 +20,10 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  SBBHeader _appBar(BuildContext context) {
-    return SBBHeader(
-      title: context.l10n.w_navigation_drawer_profile_title,
-      systemOverlayStyle: .light,
-      actions: [Container()],
+  SBBHeaderSmall _appBar(BuildContext context) {
+    return SBBHeaderSmall(
+      titleText: context.l10n.w_navigation_drawer_profile_title,
+      actions: const [], // removes SBB logo
     );
   }
 

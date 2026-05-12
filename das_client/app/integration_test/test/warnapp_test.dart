@@ -89,7 +89,7 @@ void main() {
       // activate maneuver mode
       await openExtendedMenu(tester);
       expect(find.byKey(ExtendedMenu.menuButtonCloseKey), findsAny);
-      await tapElement(tester, find.byKey(ExtendedMenu.maneuverSwitchKey));
+      await tapElement(tester, find.byKey(ExtendedMenu.maneuverModeMenuItemKey));
       expect(find.text(l10n.w_maneuver_notification_text), findsOneWidget);
 
       // check if warnapp has been disabled

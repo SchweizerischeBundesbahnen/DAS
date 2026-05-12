@@ -12,33 +12,26 @@ class BrightnessModalSheet extends StatelessWidget {
     final hasPermission = await brightnessManager.hasWriteSettingsPermission();
 
     if (!hasPermission && context.mounted) {
-      await showSBBModalSheet(
+      await showSBBBottomSheet(
         context: context,
-        title: context.l10n.w_modal_sheet_permissions_title,
-        child: const BrightnessModalSheet(),
+        titleText: context.l10n.w_modal_sheet_permissions_title,
+        body: const BrightnessModalSheet(),
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const .all(SBBSpacing.medium),
-      child: _body(context),
-    );
-  }
-
-  Widget _body(BuildContext context) {
     return Column(
       mainAxisSize: .min,
+      spacing: SBBSpacing.large,
       children: [
         Text(
           context.l10n.w_modal_sheet_permission_brightness,
           style: sbbTextStyle.romanStyle.medium,
         ),
-        SizedBox(height: SBBSpacing.xLarge),
         SBBPrimaryButton(
-          label: context.l10n.w_modal_sheet_button_grant_permission,
+          labelText: context.l10n.w_modal_sheet_button_grant_permission,
           onPressed: () async {
             final brightnessManager = DI.get<BrightnessManager>();
             await brightnessManager.requestWriteSettings();

@@ -33,10 +33,10 @@ class JourneyDatePicker extends StatelessWidget {
 
   Widget _dateItem(BuildContext context, DateTime d) {
     final isSelected = d == selectedDate;
-    final unselectedTextStyle = SBBTextStyles.extraLargeLight.romanStyle.copyWith(
+    final unselectedTextStyle = SBBTextStyles.xLargeLight.romanStyle.copyWith(
       color: ThemeUtil.getColor(context, SBBColors.storm, SBBColors.graphite),
     );
-    final selectedTextStyle = SBBTextStyles.extraLargeLight.romanStyle.copyWith(
+    final selectedTextStyle = SBBTextStyles.xLargeLight.romanStyle.copyWith(
       color: ThemeUtil.getColor(context, SBBColors.black, SBBColors.white),
     );
     return GestureDetector(

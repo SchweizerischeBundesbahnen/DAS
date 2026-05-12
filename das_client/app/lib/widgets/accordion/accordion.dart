@@ -70,12 +70,12 @@ class Accordion extends StatelessWidget {
   }
 
   Widget _accordion(BuildContext context) {
-    final style = SBBControlStyles.of(context);
+    final colorScheme = Theme.of(context).sbbBaseStyle.colorScheme;
     return InkWell(
       onTap: () => toggleCallback(),
       child: Container(
         decoration: BoxDecoration(
-          color: backgroundColor ?? style.accordionBackgroundColor,
+          color: backgroundColor ?? colorScheme.backgroundContent,
           borderRadius:
               borderRadius ??
               BorderRadius.all(

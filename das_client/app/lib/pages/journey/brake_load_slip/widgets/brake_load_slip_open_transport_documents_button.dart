@@ -7,9 +7,9 @@ class BrakeLoadSlipOpenTransportDocumentsButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SBBTertiaryButtonLarge(
-      label: context.l10n.p_brake_load_slip_button_transport_documents,
-      icon: SBBIcons.link_external_small,
+    return SBBTertiaryButton(
+      labelText: context.l10n.p_brake_load_slip_button_transport_documents,
+      iconData: SBBIcons.link_external_small,
       onPressed: () {},
     );
   }

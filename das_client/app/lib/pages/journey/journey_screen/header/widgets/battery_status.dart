@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/widgets/assets.dart';
-import 'package:app/widgets/exlamation_icon_button.dart';
+import 'package:app/widgets/exclamation_icon_button.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -21,9 +21,9 @@ class BatteryStatus extends StatefulWidget {
 }
 
 class _BatteryStatusState extends State<BatteryStatus> {
-  final Battery _battery = DI.get<Battery>();
-
   static const Duration batteryCheckInterval = Duration(minutes: 1);
+
+  final Battery _battery = DI.get<Battery>();
   Timer? _batteryTimer;
   int? _batteryLevel;
 
@@ -52,10 +52,8 @@ class _BatteryStatusState extends State<BatteryStatus> {
 
   @override
   Widget build(BuildContext context) {
-    return _batteryLevel != null && _batteryLevel! <= 15 ? _batteryIcon() : SizedBox();
-  }
+    if (_batteryLevel == null || _batteryLevel! > 15) return SizedBox.shrink();
 
-  Widget _batteryIcon() {
     return Padding(
       padding: const .only(right: 20),
       child: ExclamationIconButton(
@@ -67,16 +65,17 @@ class _BatteryStatusState extends State<BatteryStatus> {
   }
 
   void _openBatteryBottomSheet(BuildContext context) async {
-    await showSBBModalSheet(
+    await showSBBBottomSheet(
       context: context,
-      title: '',
-      constraints: BoxConstraints(minWidth: double.infinity),
-      child: Padding(
-        padding: const .all(SBBSpacing.medium),
+      style: const SBBBottomSheetStyle(
+        constraints: BoxConstraints(minWidth: double.infinity),
+      ),
+      body: Center(
+        heightFactor: 1,
         child: SBBMessage(
-          title: context.l10n.w_modal_sheet_battery_status_battery_almost_empty,
-          description: context.l10n.w_modal_sheet_battery_status_plug_in_device,
-          illustration: .Display,
+          titleText: context.l10n.w_modal_sheet_battery_status_battery_almost_empty,
+          subtitleText: context.l10n.w_modal_sheet_battery_status_plug_in_device,
+          illustration: SBBIllustration.display(),
         ),
       ),
     );
