@@ -89,4 +89,6 @@ extension T on Iterable<AdditionalSpeedRestriction> {
   int? get minSpeed => where(
     (restriction) => restriction.speed != null,
   ).reduce((current, next) => current.speed! < next.speed! ? current : next).speed;
+
+  bool get isGrouped => length > 1;
 }
