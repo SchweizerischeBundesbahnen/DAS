@@ -53,7 +53,7 @@ Future<void> _showErrorDetailsModalSheet(BuildContext context, FlutterErrorDetai
     context: context,
     titleText: details.exceptionAsString(),
     isScrollControlled: true,
-    style: SBBBottomSheetStyle(constraints: BoxConstraints()),
+    style: const SBBBottomSheetStyle(constraints: BoxConstraints()),
     body: SingleChildScrollView(
       child: Container(
         padding: .all(SBBSpacing.medium),

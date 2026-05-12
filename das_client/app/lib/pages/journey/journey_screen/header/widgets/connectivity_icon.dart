@@ -55,7 +55,7 @@ class ConnectivityIcon extends StatelessWidget {
   void _showMessageSheet(BuildContext context, {required String title, required String subtitle}) {
     showSBBBottomSheet(
       context: context,
-      style: SBBBottomSheetStyle(
+      style: const SBBBottomSheetStyle(
         constraints: BoxConstraints(minWidth: double.infinity),
       ),
       body: Center(

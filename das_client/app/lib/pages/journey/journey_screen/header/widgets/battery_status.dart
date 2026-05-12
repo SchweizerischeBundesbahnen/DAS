@@ -67,7 +67,7 @@ class _BatteryStatusState extends State<BatteryStatus> {
   void _openBatteryBottomSheet(BuildContext context) async {
     await showSBBBottomSheet(
       context: context,
-      style: SBBBottomSheetStyle(
+      style: const SBBBottomSheetStyle(
         constraints: BoxConstraints(minWidth: double.infinity),
       ),
       body: Center(

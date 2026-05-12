@@ -23,7 +23,7 @@ class JourneyDateTextField extends StatelessWidget {
         decoration: SBBInputDecoration(
           labelText: isModalVersion ? null : context.l10n.p_train_selection_date_description,
           placeholderText: isModalVersion ? context.l10n.p_train_selection_date_description : null,
-          // TODO: maybe change in DSM so that border is still there even if not boxed or listed.
+          // TODO: remove when DSM applies correct border to unlisted/unboxed elements
           borderColor: WidgetStateProperty.fromMap(<WidgetStatesConstraint, Color?>{
             WidgetState.error: colorScheme.error,
             WidgetState.focused: colorScheme.strokePrimary,

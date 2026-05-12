@@ -11,7 +11,7 @@ Future<void> showWarnFunctionModalSheet(
 }) async {
   await showSBBBottomSheet(
     context: context,
-    style: SBBBottomSheetStyle(
+    style: const SBBBottomSheetStyle(
       backgroundColor: SBBColors.charcoal,
       constraints: const BoxConstraints(maxWidth: double.infinity),
     ),

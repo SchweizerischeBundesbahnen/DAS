@@ -31,7 +31,7 @@ class JourneyDateFieldBottomModal extends StatelessWidget {
       () => showSBBBottomSheet(
         context: context,
         titleText: context.l10n.p_train_selection_choose_date,
-        style: SBBBottomSheetStyle(
+        style: const SBBBottomSheetStyle(
           constraints: BoxConstraints(maxWidth: 350),
         ),
         body: JourneyDatePicker(

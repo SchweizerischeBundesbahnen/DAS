@@ -508,7 +508,7 @@ class JourneyTable extends StatelessWidget {
       context: context,
       titleText: context.l10n.p_journey_brake_series,
       isScrollControlled: true,
-      style: SBBBottomSheetStyle(constraints: BoxConstraints()),
+      style: const SBBBottomSheetStyle(constraints: BoxConstraints()),
       body: BrakeSeriesSelection(
         availableBrakeSeries: metadata?.availableBrakeSeries ?? {},
         selectedBrakeSeries: settings?.currentBrakeSeries,

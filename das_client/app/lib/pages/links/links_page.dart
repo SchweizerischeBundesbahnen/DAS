@@ -20,7 +20,7 @@ class LinksPage extends StatelessWidget {
   SBBHeaderSmall _appBar(BuildContext context) {
     return SBBHeaderSmall(
       titleText: context.l10n.c_app_name,
-      actions: [], // removes SBB logo
+      actions: const [], // removes SBB logo
     );
   }
 
