@@ -31,7 +31,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   SBBHeaderSmall _appBar(BuildContext context) => SBBHeaderSmall(
     titleText: context.l10n.c_app_name,
-    actions: [], // hide SBB logo
+    actions: const [], // removes SBB logo
   );
 
   Widget _body(BuildContext context) {
@@ -69,25 +69,18 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget _decisiveGradientSettings(BuildContext context) {
     return SBBSwitchListItemBoxed(
       key: SettingsPage.decisiveGradientSwitchKey,
+      titleText: context.l10n.p_settings_page_decisive_gradient_show_setting,
       value: _userSettings.showDecisiveGradient,
       onChanged: (value) => _updateSettings(.showDecisiveGradient, value),
-      titleText: context.l10n.p_settings_page_decisive_gradient_show_setting,
     );
   }
 
   Widget _signalSettings(BuildContext context) {
-    return SBBContentBox(
-      padding: const .only(right: SBBSpacing.medium),
-      child: SBBListItem.custom(
-        title: context.l10n.p_settings_page_signal_station_setting,
-        onPressed: () => _updateSettings(.showStationSignals, !_userSettings.showStationSignals),
-        isLastElement: true,
-        trailingWidget: SBBSwitch(
-          key: SettingsPage.stationSignalSwitchKey,
-          value: _userSettings.showStationSignals,
-          onChanged: (value) => _updateSettings(.showStationSignals, value),
-        ),
-      ),
+    return SBBSwitchListItemBoxed(
+      key: SettingsPage.stationSignalSwitchKey,
+      titleText: context.l10n.p_settings_page_signal_station_setting,
+      value: _userSettings.showStationSignals,
+      onChanged: (value) => _updateSettings(.showStationSignals, value),
     );
   }
 
