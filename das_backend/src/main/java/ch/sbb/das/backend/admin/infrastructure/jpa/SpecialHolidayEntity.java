@@ -2,7 +2,8 @@ package ch.sbb.das.backend.admin.infrastructure.jpa;
 
 import ch.sbb.das.backend.admin.application.notices.model.ScheduleType;
 import ch.sbb.das.backend.admin.application.notices.model.SpecialHoliday;
-import ch.sbb.das.backend.common.StringListConverter;
+import ch.sbb.das.backend.common.CompanyCode;
+import ch.sbb.das.backend.common.CompanyCodeListConverter;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -44,8 +45,8 @@ public class SpecialHolidayEntity extends EntityBase {
     @Enumerated(EnumType.STRING)
     private ScheduleType scheduleType;
 
-    @Convert(converter = StringListConverter.class)
-    private List<String> companies;
+    @Convert(converter = CompanyCodeListConverter.class)
+    private List<CompanyCode> companies;
 
     public SpecialHoliday toSpecialHoliday() {
         return new SpecialHoliday(

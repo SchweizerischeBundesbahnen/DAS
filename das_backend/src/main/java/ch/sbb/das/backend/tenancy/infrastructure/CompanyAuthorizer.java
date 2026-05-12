@@ -1,5 +1,6 @@
 package ch.sbb.das.backend.tenancy.infrastructure;
 
+import ch.sbb.das.backend.common.CompanyCode;
 import ch.sbb.das.backend.tenancy.domain.model.Tenant;
 import ch.sbb.das.backend.tenancy.domain.repository.TenantRepository;
 import java.net.URL;
@@ -11,6 +12,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Component;
 
+/**
+ * Resolves the authenticated tenant and evaluates company-level access.
+ *
+ * <p>The tenant is derived from the JWT issuer in the current security context.
+ * Company authorization checks are based on whether the tenant's authorized
+ * company set contains all requested company codes.
+ */
 @org.springframework.modulith.NamedInterface("tenancy")
 @Component("companyAuthorizer")
 public class CompanyAuthorizer {
@@ -21,23 +29,40 @@ public class CompanyAuthorizer {
         this.tenantRepository = tenantRepository;
     }
 
-    public void requireCanAccessCompanies(Set<String> companies) {
-        if (!this.canAccessCompany(companies)) {
+    /**
+     * Requires access to all provided company codes.
+     *
+     * @param companies requested company codes
+     * @throws AccessDeniedException when access is not granted
+     */
+    public void requireCanAccessCompanies(Set<CompanyCode> companies) {
+        if (!this.canAccessCompanies(companies)) {
             throw new AccessDeniedException("Not allowed");
         }
     }
 
-    public boolean canAccessCompany(Set<String> companies) {
+    /**
+     * Checks whether the authenticated tenant can access all provided company codes.
+     *
+     * @param companies requested company codes
+     * @return {@code true} if all requested codes are authorized; otherwise {@code false}
+     */
+    public boolean canAccessCompanies(Set<CompanyCode> companies) {
         if (companies == null || companies.isEmpty()) {
             return false;
         }
-        Set<String> authorizedCompanies = authorizedCompanies();
+        Set<CompanyCode> authorizedCompanies = authorizedCompanies();
         if (authorizedCompanies.isEmpty()) {
             return false;
         }
         return authorizedCompanies.containsAll(companies);
     }
 
+    /**
+     * Checks whether the authenticated tenant is configured as an admin tenant.
+     *
+     * @return {@code true} for admin tenants, otherwise {@code false}
+     */
     public boolean isAdminTenant() {
         Tenant tenant = getTenant();
         if (tenant == null) {
@@ -46,7 +71,12 @@ public class CompanyAuthorizer {
         return tenantRepository.isAdminTenant(tenant);
     }
 
-    public Set<String> authorizedCompanies() {
+    /**
+     * Returns the company codes the authenticated tenant is authorized for.
+     *
+     * @return authorized company codes, or an empty set if no tenant can be resolved
+     */
+    public Set<CompanyCode> authorizedCompanies() {
         Tenant tenant = getTenant();
         if (tenant == null || tenant.companies() == null) {
             return Collections.emptySet();

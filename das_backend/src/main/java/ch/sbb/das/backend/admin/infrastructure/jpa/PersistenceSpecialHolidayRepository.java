@@ -2,6 +2,7 @@ package ch.sbb.das.backend.admin.infrastructure.jpa;
 
 import ch.sbb.das.backend.admin.application.notices.model.SpecialHoliday;
 import ch.sbb.das.backend.admin.domain.notices.SpecialHolidayRepository;
+import ch.sbb.das.backend.common.CompanyCode;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
@@ -42,7 +43,7 @@ class PersistenceSpecialHolidayRepository implements SpecialHolidayRepository {
         entity.setDate(specialHoliday.date());
         entity.setScheduleType(specialHoliday.scheduleType());
         entity.setCompanies(specialHoliday.companies().stream()
-            .sorted(Comparator.naturalOrder())
+            .sorted(Comparator.comparing(CompanyCode::value))
             .distinct()
             .toList());
         SpecialHolidayEntity saved = specialHolidayRepository.save(entity);
