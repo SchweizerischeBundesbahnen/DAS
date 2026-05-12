@@ -51,7 +51,7 @@
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>operationalIndication</NSP_GroupName>
                 <NetworkSpecificParameter name="type" value="uncoded"/>
-                <NetworkSpecificParameter name="uncodedText" value="Reihe N nur zugelassen für RABDe500, ETR610"/>
+                <NetworkSpecificParameter name="uncodedText" value="FVD 300m: Türsperre Zugschluss vor Halt auslösen"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
