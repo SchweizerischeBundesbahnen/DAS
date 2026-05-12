@@ -146,7 +146,7 @@ void main() {
     final scrollableFinder = find.byType(AnimatedList);
     expect(scrollableFinder, findsOneWidget);
 
-    final asrRows = findDASTableRowByText('km 68.840 - km 56.062');
+    final asrRows = findDASTableRowByText('km 58.840 - km 56.062');
     expect(asrRows, findsAtLeast(1));
 
     final asrRow = asrRows.first;
