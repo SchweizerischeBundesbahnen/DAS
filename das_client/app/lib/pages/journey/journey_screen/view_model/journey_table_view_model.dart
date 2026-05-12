@@ -4,6 +4,7 @@ import 'package:app/extension/base_data_extension.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/detail_modal_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/chevron_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_table_model.dart';
 import 'package:app/pages/journey/view_model/decisive_gradient_view_model.dart';
@@ -12,6 +13,7 @@ import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart'
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/model/journey_navigation_model.dart';
 import 'package:app/pages/journey/view_model/model/journey_settings.dart';
+import 'package:app/provider/user_settings.dart';
 import 'package:collection/collection.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -28,12 +30,14 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
     required DetailModalViewModel detailModalVM,
     required DecisiveGradientViewModel decisiveGradientVM,
     required JourneyNavigationViewModel navigationVM,
+    required UserSettings userSettings,
   }) : _settingsVM = settingsVM,
        _collapsibleRowsVM = collapsibleRowsVM,
        _positionVM = positionVM,
        _detailModalVM = detailModalVM,
        _decisiveGradientVM = decisiveGradientVM,
-       _navigationVM = navigationVM {
+       _navigationVM = navigationVM,
+       _userSettings = userSettings {
     _init();
   }
 
@@ -43,6 +47,7 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
   final DetailModalViewModel _detailModalVM;
   final DecisiveGradientViewModel _decisiveGradientVM;
   final JourneyNavigationViewModel _navigationVM;
+  final UserSettings _userSettings;
 
   StreamSubscription? _streamSubscription;
 
@@ -112,7 +117,13 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
         .hideFootNotesForNotSelectedTrainSeries(settings.currentBrakeSeries?.trainSeries)
         .combineFootNoteAndOperationalIndication()
         .addTrainDriverTurnoverRows(navigationModel?.trainIdentification)
+        .hideSignals(stationSignals: !_userSettings.showStationSignals)
         .sorted((a1, a2) => a1.compareTo(a2));
+
+    final chevronPosition = _calculateChevronPosition(
+      visibleJourneyPoints: rowData.whereType<JourneyPoint>(),
+      position: position,
+    );
 
     _emitLoaded(
       TableLoaded(
@@ -121,10 +132,46 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
         journeySettings: settings,
         collapsedRows: collapsibleRows,
         journeyPosition: position,
+        chevronPosition: chevronPosition,
         showDecisiveGradient: showDecisiveGradient,
         detailModalType: detailModalType,
       ),
     );
+  }
+
+  ChevronPositionModel _calculateChevronPosition({
+    required Iterable<JourneyPoint> visibleJourneyPoints,
+    required JourneyPositionModel position,
+  }) {
+    final lastVisiblePosition = _positionOrLastVisibleBefore(visibleJourneyPoints, position.lastPosition);
+    final currentVisiblePosition = _positionOrLastVisibleBefore(
+      visibleJourneyPoints,
+      position.currentPosition,
+    );
+
+    if (lastVisiblePosition != position.lastPosition) {
+      _log.fine(
+        'Last position ${position.lastPosition} is not visible, using $lastVisiblePosition as last position for chevron animation.',
+      );
+    }
+
+    if (currentVisiblePosition != position.currentPosition) {
+      _log.fine(
+        'Current position ${position.currentPosition} is not visible, using $currentVisiblePosition as current position for chevron animation.',
+      );
+    }
+
+    return ChevronPositionModel(
+      currentPosition: currentVisiblePosition,
+      lastPosition: lastVisiblePosition,
+    );
+  }
+
+  JourneyPoint? _positionOrLastVisibleBefore(Iterable<JourneyPoint> visibleJourneyPoints, JourneyPoint? position) {
+    if (position == null) return null;
+    if (visibleJourneyPoints.contains(position)) return position;
+
+    return visibleJourneyPoints.lastWhere((it) => it.order <= position.order);
   }
 
   bool _isCurvePointWithoutSpeed(BaseData data, JourneySettings settings) {

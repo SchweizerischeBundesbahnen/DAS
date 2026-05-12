@@ -11,6 +11,7 @@ import 'package:app/pages/journey/journey_screen/view_model/arrival_departure_ti
 import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_table_advancement_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_table_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/chevron_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_table_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/brake_series_selection.dart';
@@ -101,6 +102,7 @@ class JourneyTable extends StatelessWidget {
       settings: model.journeySettings,
       collapsedRows: model.collapsedRows,
       journeyPosition: model.journeyPosition,
+      chevronPosition: model.chevronPosition,
       leftOffsetToInformationCell: columns.leftOffsetTo(columnId: ColumnDefinition.informationCell.index),
     );
     final journeyTableScrollController = DI.get<JourneyTableScrollController>();
@@ -109,7 +111,7 @@ class JourneyTable extends StatelessWidget {
     return Padding(
       padding: const .symmetric(horizontal: JourneyOverview.horizontalPadding),
       child: ChevronAnimationWrapper(
-        journeyPosition: model.journeyPosition,
+        chevronPosition: model.chevronPosition,
         child: DASTable(
           key: journeyTableScrollController.tableKey,
           scrollController: journeyTableScrollController.scrollController,
@@ -128,6 +130,7 @@ class JourneyTable extends StatelessWidget {
     required JourneySettings settings,
     required Map<int, CollapsedState> collapsedRows,
     required JourneyPositionModel journeyPosition,
+    required ChevronPositionModel chevronPosition,
     required double leftOffsetToInformationCell,
   }) {
     final groupedRows = journeyTableRowData
@@ -150,7 +153,7 @@ class JourneyTable extends StatelessWidget {
         bracketStationRenderData: BracketStationRenderData.from(data: rowData, metadata: metadata),
         chevronAnimationData: ChevronAnimationData.from(
           journeyPoints: journeyTableRowData.whereType<JourneyPoint>().toList(),
-          journeyPosition: journeyPosition,
+          chevronPositionModel: chevronPosition,
           metadata: metadata,
           rowData: rowData,
           currentBrakeSeries: settings.currentBrakeSeries,
@@ -170,6 +173,7 @@ class JourneyTable extends StatelessWidget {
             metadata: metadata,
             data: rowData as ServicePoint,
             journeyPosition: journeyPosition,
+            chevronPosition: chevronPosition,
             config: journeyConfig,
             context: context,
             rowIndex: index,
@@ -179,6 +183,7 @@ class JourneyTable extends StatelessWidget {
             metadata: metadata,
             data: rowData as ProtectionSection,
             journeyPosition: journeyPosition,
+            chevronPosition: chevronPosition,
             config: journeyConfig,
             rowIndex: index,
           );
@@ -187,6 +192,7 @@ class JourneyTable extends StatelessWidget {
             metadata: metadata,
             data: rowData as CurvePoint,
             journeyPosition: journeyPosition,
+            chevronPosition: chevronPosition,
             config: journeyConfig,
             rowIndex: index,
           );
@@ -195,6 +201,7 @@ class JourneyTable extends StatelessWidget {
             metadata: metadata,
             data: rowData as Signal,
             journeyPosition: journeyPosition,
+            chevronPosition: chevronPosition,
             config: journeyConfig,
             rowIndex: index,
           );
@@ -203,6 +210,7 @@ class JourneyTable extends StatelessWidget {
             metadata: metadata,
             data: rowData as AdditionalSpeedRestrictionData,
             journeyPosition: journeyPosition,
+            chevronPosition: chevronPosition,
             config: journeyConfig,
             onTap: () => _onAdditionalSpeedRestrictionTap(context, rowData),
             rowIndex: index,
@@ -212,6 +220,7 @@ class JourneyTable extends StatelessWidget {
             metadata: metadata,
             data: rowData as ConnectionTrack,
             journeyPosition: journeyPosition,
+            chevronPosition: chevronPosition,
             config: journeyConfig,
             rowIndex: index,
           );
@@ -220,6 +229,7 @@ class JourneyTable extends StatelessWidget {
             metadata: metadata,
             data: rowData as SpeedChange,
             journeyPosition: journeyPosition,
+            chevronPosition: chevronPosition,
             config: journeyConfig,
             rowIndex: index,
           );
@@ -228,6 +238,7 @@ class JourneyTable extends StatelessWidget {
             metadata: metadata,
             data: rowData as CABSignaling,
             journeyPosition: journeyPosition,
+            chevronPosition: chevronPosition,
             config: journeyConfig,
             rowIndex: index,
           );
@@ -236,6 +247,7 @@ class JourneyTable extends StatelessWidget {
             metadata: metadata,
             data: rowData as Balise,
             journeyPosition: journeyPosition,
+            chevronPosition: chevronPosition,
             config: journeyConfig,
             isGrouped: groupedRows.contains(rowData),
             rowIndex: index,
@@ -245,6 +257,7 @@ class JourneyTable extends StatelessWidget {
             metadata: metadata,
             data: rowData as Whistle,
             journeyPosition: journeyPosition,
+            chevronPosition: chevronPosition,
             config: journeyConfig,
             rowIndex: index,
           );
@@ -253,6 +266,7 @@ class JourneyTable extends StatelessWidget {
             metadata: metadata,
             data: rowData as LevelCrossing,
             journeyPosition: journeyPosition,
+            chevronPosition: chevronPosition,
             config: journeyConfig,
             isGrouped: groupedRows.contains(rowData),
             rowIndex: index,
@@ -262,6 +276,7 @@ class JourneyTable extends StatelessWidget {
             metadata: metadata,
             data: rowData as TramArea,
             journeyPosition: journeyPosition,
+            chevronPosition: chevronPosition,
             config: journeyConfig,
             rowIndex: index,
           );
@@ -270,6 +285,7 @@ class JourneyTable extends StatelessWidget {
             metadata: metadata,
             data: rowData as BaliseLevelCrossingGroup,
             journeyPosition: journeyPosition,
+            chevronPosition: chevronPosition,
             config: journeyConfig,
             onTap: () => _onBaliseLevelCrossingGroupTap(context, rowData, settings),
             rowIndex: index,
@@ -309,6 +325,7 @@ class JourneyTable extends StatelessWidget {
             metadata: metadata,
             data: rowData as CommunicationNetworkChange,
             journeyPosition: journeyPosition,
+            chevronPosition: chevronPosition,
             config: journeyConfig,
             rowIndex: index,
             context: context,

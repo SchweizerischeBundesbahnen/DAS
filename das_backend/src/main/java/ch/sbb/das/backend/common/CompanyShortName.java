@@ -1,12 +1,12 @@
-package ch.sbb.das.backend.preload.application.model.trainidentification;
+package ch.sbb.das.backend.common;
 
 import lombok.NonNull;
 import lombok.Value;
 
 @Value(staticConstructor = "of")
-public class CompanyCode {
+public class CompanyShortName {
 
     @NonNull
     String value;
-
 }
+

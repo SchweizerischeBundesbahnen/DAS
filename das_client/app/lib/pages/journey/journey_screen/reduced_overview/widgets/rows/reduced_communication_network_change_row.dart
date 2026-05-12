@@ -1,4 +1,5 @@
 import 'package:app/i18n/i18n.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/chevron_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cell_row_builder.dart';
 import 'package:app/theme/theme_util.dart';
@@ -18,6 +19,7 @@ class ReducedCommunicationNetworkChangeRow extends CellRowBuilder<CommunicationN
   }) : super(
          decoration: DASTableRowDecoration(color: ThemeUtil.getDASTableColor(context)),
          journeyPosition: JourneyPositionModel(),
+         chevronPosition: ChevronPositionModel(),
        );
 
   @override

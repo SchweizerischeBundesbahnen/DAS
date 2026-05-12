@@ -18,6 +18,7 @@ class AdditionalSpeedRestrictionRow extends CellRowBuilder<AdditionalSpeedRestri
     required super.data,
     required super.rowIndex,
     required super.journeyPosition,
+    required super.chevronPosition,
     super.key,
     super.onTap,
     super.config,

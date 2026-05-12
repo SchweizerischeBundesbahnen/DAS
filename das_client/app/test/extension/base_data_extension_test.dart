@@ -118,4 +118,79 @@ void main() {
       expect(trainDriverTurnoverRows, hasLength(0));
     },
   );
+
+  test(
+    'hideSignals_whenStationsSignalsIsFalse_thenDoesNothing',
+    () {
+      // GIVEN
+      final baseData = <BaseData>[
+        Signal(order: 0, kilometre: [0.0], functions: [SignalFunction.entry]),
+        Signal(order: 1, kilometre: [1.0], functions: [SignalFunction.exit]),
+        Signal(order: 2, kilometre: [2.0], functions: [SignalFunction.intermediate]),
+        Signal(order: 3, kilometre: [3.0], functions: [SignalFunction.block]),
+        Signal(order: 4, kilometre: [4.0], functions: [SignalFunction.protection]),
+        Signal(order: 5, kilometre: [5.0], functions: [SignalFunction.laneChange]),
+        Signal(order: 6, kilometre: [6.0], functions: [SignalFunction.lockingOutSignal]),
+      ];
+
+      // WHEN
+      final resultList = baseData.hideSignals(stationSignals: false).toList();
+
+      // THEN
+      expect(resultList, hasLength(7));
+    },
+  );
+
+  test(
+    'hideSignals_whenStationsSignalsIsTrue_thenHidesStationSignalsOnly',
+    () {
+      // GIVEN
+      final baseData = <BaseData>[
+        Signal(order: 0, kilometre: [0.0], functions: [SignalFunction.entry]),
+        Signal(order: 1, kilometre: [1.0], functions: [SignalFunction.exit]),
+        Signal(order: 2, kilometre: [2.0], functions: [SignalFunction.intermediate]),
+        Signal(order: 3, kilometre: [3.0], functions: [SignalFunction.block]),
+        Signal(order: 4, kilometre: [4.0], functions: [SignalFunction.protection]),
+        Signal(order: 5, kilometre: [5.0], functions: [SignalFunction.laneChange]),
+        Signal(order: 6, kilometre: [6.0], functions: [SignalFunction.lockingOutSignal]),
+      ];
+
+      // WHEN
+      final resultList = baseData.hideSignals(stationSignals: true).toList();
+
+      // THEN
+      expect(resultList, hasLength(4));
+      expect(resultList[0], baseData[3]);
+      expect(resultList[1], baseData[4]);
+      expect(resultList[2], baseData[5]);
+      expect(resultList[3], baseData[6]);
+    },
+  );
+
+  test(
+    'hideSignals_whenStationsSignalsIsTrue_thenHidesStationSignalsOnlyIfAllFunctionsMatch',
+    () {
+      // GIVEN
+      final baseData = <BaseData>[
+        Signal(order: 0, kilometre: [0.0], functions: [SignalFunction.entry]),
+        Signal(order: 1, kilometre: [1.0], functions: [SignalFunction.exit, SignalFunction.block]),
+        Signal(order: 2, kilometre: [2.0], functions: [SignalFunction.intermediate]),
+        Signal(order: 3, kilometre: [3.0], functions: [SignalFunction.block]),
+        Signal(order: 4, kilometre: [4.0], functions: [SignalFunction.protection]),
+        Signal(order: 5, kilometre: [5.0], functions: [SignalFunction.laneChange]),
+        Signal(order: 6, kilometre: [6.0], functions: [SignalFunction.lockingOutSignal]),
+      ];
+
+      // WHEN
+      final resultList = baseData.hideSignals(stationSignals: true).toList();
+
+      // THEN
+      expect(resultList, hasLength(5));
+      expect(resultList[0], baseData[1]);
+      expect(resultList[1], baseData[3]);
+      expect(resultList[2], baseData[4]);
+      expect(resultList[3], baseData[5]);
+      expect(resultList[4], baseData[6]);
+    },
+  );
 }

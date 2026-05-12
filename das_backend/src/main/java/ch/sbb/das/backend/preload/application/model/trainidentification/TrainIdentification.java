@@ -1,5 +1,6 @@
 package ch.sbb.das.backend.preload.application.model.trainidentification;
 
+import ch.sbb.das.backend.common.CompanyCode;
 import ch.sbb.das.backend.preload.infrastructure.xml.XmlDateHelper;
 import ch.sbb.das.backend.preload.sfera.model.v0400.JPRequest;
 import ch.sbb.das.backend.preload.sfera.model.v0400.OTNID;
@@ -17,7 +18,7 @@ public record TrainIdentification(@NonNull Integer id, @NonNull String operation
         JPRequest jpRequest = new JPRequest();
         ch.sbb.das.backend.preload.sfera.model.v0400.TrainIdentification trainIdentification = new ch.sbb.das.backend.preload.sfera.model.v0400.TrainIdentification();
         OTNID otnid = new OTNID();
-        otnid.setTeltsiCompany(company().getValue());
+        otnid.setTeltsiCompany(company().value());
         otnid.setTeltsiOperationalTrainNumber(operationalTrainNumber);
         otnid.setTeltsiStartDate(XmlDateHelper.toGregorianCalender(startDateTime.toLocalDate()));
         trainIdentification.setOTNID(otnid);

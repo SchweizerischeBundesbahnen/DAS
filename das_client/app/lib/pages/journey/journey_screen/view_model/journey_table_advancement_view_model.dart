@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:app/di/di.dart';
+import 'package:app/pages/journey/journey_screen/detail_modal/detail_modal_view_model.dart';
 import 'package:app/pages/journey/journey_screen/journey_table_scroll_controller.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/chevron_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_advancement_model.dart';
-import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
-import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -23,29 +25,35 @@ typedef AdvancementModeChangedCallback = void Function(JourneyAdvancementModel);
 /// * paused (automatic scrolling is disabled)
 /// * auto (automatic idle scrolling is enabled)
 /// * manual (automatic idle scrolling is enabled)
-class JourneyTableAdvancementViewModel extends JourneyAwareViewModel {
+class JourneyTableAdvancementViewModel {
   JourneyTableAdvancementViewModel({
-    required Stream<JourneyPositionModel> positionStream,
     required JourneyTableScrollController scrollController,
-    required List<AdvancementModeChangedCallback> onAdvancementModeChanged,
-    super.journeyViewModel,
-  }) {
-    _scrollController = scrollController;
-    _onAdvancementModeChanged = onAdvancementModeChanged;
-    _initSubscription(journeyViewModel.journey, positionStream);
+    required JourneySettingsViewModel journeySettingsViewModel,
+    required DetailModalViewModel detailModalViewModel,
+    required Stream<ChevronPositionModel> chevronPositionStream,
+    required JourneyViewModel journeyViewModel,
+  }) : _scrollController = scrollController,
+       _journeySettingsViewModel = journeySettingsViewModel,
+       _detailModalViewModel = detailModalViewModel,
+       _chevronPositionStream = chevronPositionStream,
+       _journeyViewModel = journeyViewModel {
+    _initSubscription();
   }
 
-  StreamSubscription<(Journey?, JourneyPositionModel)>? _streamSubscription;
+  final List<StreamSubscription> _streamSubscription = [];
 
   final _idleTimeAutoScroll = Duration(seconds: DI.get<TimeConstants>().automaticAdvancementIdleTimeAutoScroll);
 
-  late JourneyTableScrollController _scrollController;
+  final JourneyTableScrollController _scrollController;
+  final JourneySettingsViewModel _journeySettingsViewModel;
+  final DetailModalViewModel _detailModalViewModel;
+  final Stream<ChevronPositionModel> _chevronPositionStream;
+  final JourneyViewModel _journeyViewModel;
 
-  late List<AdvancementModeChangedCallback> _onAdvancementModeChanged;
-  final _rxModel = BehaviorSubject<JourneyAdvancementModel>.seeded(Automatic());
   JourneyPoint? _currentPosition;
   JourneyPoint? _lastPosition;
   SignaledPosition? _lastSignaledPosition;
+  BrakeSeries? _latestBrakeSeries;
 
   final BehaviorSubject<bool> _rxAutomaticIdleScrollingActive = BehaviorSubject.seeded(false);
   Timer? _idleScrollTimer;
@@ -53,9 +61,7 @@ class JourneyTableAdvancementViewModel extends JourneyAwareViewModel {
 
   bool _isDisposed = false;
 
-  Stream<JourneyAdvancementModel> get model => _rxModel.distinct();
-
-  JourneyAdvancementModel get modelValue => _rxModel.value;
+  JourneyAdvancementModel get _modelValue => _journeySettingsViewModel.modelValue.journeyAdvancementModel;
 
   /// Toggles between [Paused], [Manual] and [Automatic].
   ///
@@ -65,23 +71,23 @@ class JourneyTableAdvancementViewModel extends JourneyAwareViewModel {
   /// If in manual mode and no new signaledPosition in the meantime
   /// toggles from [Paused] to [Manual]. Else toggles from [Paused] to [Automatic].
   void toggleAdvancementMode() {
-    final nextModel = switch (modelValue) {
+    final nextModel = switch (_modelValue) {
       Paused(next: final next) => next,
-      Automatic() => Paused(next: Automatic()),
-      Manual() => Paused(next: Manual()),
+      Automatic() => Paused(next: const Automatic()),
+      Manual() => Paused(next: const Manual()),
     };
     _setModel(nextModel);
     _emitAutomaticIdleScrolling();
 
-    if (_rxModel.value is! Paused) _scrollToCurrentPositionIfInAutoScrollingZone();
+    if (nextModel is! Paused) _scrollToCurrentPositionIfInAutoScrollingZone();
   }
 
-  void scrollToCurrentPositionIfNotPaused() {
-    if (_rxModel.value is! Paused) _scrollToCurrentPositionIfInAutoScrollingZone();
+  void _scrollToCurrentPositionIfNotPaused() {
+    if (_modelValue is! Paused) _scrollToCurrentPositionIfInAutoScrollingZone();
   }
 
   void setAdvancementModeToManual() {
-    final nextModel = switch (modelValue) {
+    final nextModel = switch (_modelValue) {
       Paused() => Paused(next: Manual()),
       Manual() || Automatic() => Manual(),
     };
@@ -105,42 +111,57 @@ class JourneyTableAdvancementViewModel extends JourneyAwareViewModel {
     }
   }
 
-  @override
   void dispose() {
     _isDisposed = true;
-    _streamSubscription?.cancel();
+    for (final subscription in _streamSubscription) {
+      subscription.cancel();
+    }
     _idleScrollTimer?.cancel();
     _idleScrollTimer = null;
-    _rxModel.close();
-    super.dispose();
   }
 
-  void _initSubscription(Stream<Journey?> journeyStream, Stream<JourneyPositionModel> positionStream) {
-    _streamSubscription =
-        CombineLatestStream.combine2(
-          journeyStream,
-          positionStream,
-          (a, b) => (a, b),
-        ).listen((data) async {
-          final journey = data.$1;
-          final position = data.$2;
+  void _initSubscription() {
+    _streamSubscription.add(
+      CombineLatestStream.combine2(
+        _journeyViewModel.journey,
+        _chevronPositionStream.distinct(),
+        (a, b) => (a, b),
+      ).listen((data) async {
+        final journey = data.$1;
+        final position = data.$2;
 
-          if (journey == null) {
-            return;
-          }
+        if (journey == null) {
+          return;
+        }
 
-          _currentPosition = position.currentPosition;
+        _currentPosition = position.currentPosition;
 
-          _setIsInAutomaticScrollingZone(journey);
+        _setIsInAutomaticScrollingZone(journey);
 
-          _emitAutomaticIdleScrolling();
+        _emitAutomaticIdleScrolling();
 
-          _onLastSignaledPositionChanged(journey.metadata.signaledPosition);
+        _onLastSignaledPositionChanged(journey.metadata.signaledPosition);
 
-          if (_idleScrollingActiveAndTimerInactive && _lastPositionHasChanged) {
-            _scrollToCurrentPosition();
-          }
-        });
+        if (_idleScrollingActiveAndTimerInactive && _lastPositionHasChanged) {
+          _scrollToCurrentPosition();
+        }
+      }),
+    );
+    _streamSubscription.add(
+      _journeySettingsViewModel.model.listen((data) {
+        if (data.currentBrakeSeries != _latestBrakeSeries) {
+          _scrollToCurrentPositionIfNotPaused();
+        }
+        _latestBrakeSeries = data.currentBrakeSeries;
+      }),
+    );
+    _streamSubscription.add(
+      _detailModalViewModel.openModalType.listen((data) {
+        if (data == null) {
+          _scrollToCurrentPositionIfNotPaused();
+        }
+      }),
+    );
   }
 
   void _onLastSignaledPositionChanged(SignaledPosition? signaledPosition) {
@@ -162,21 +183,14 @@ class JourneyTableAdvancementViewModel extends JourneyAwareViewModel {
     if (_isInAutomaticScrollingZone) _scrollToCurrentPosition();
   }
 
-  void _resetModel() {
-    _isInAutomaticScrollingZone = false;
-    _emitAutomaticIdleScrolling();
-    _setModel(Automatic());
-  }
-
   void _setModel(JourneyAdvancementModel model) {
-    _rxModel.add(model);
-    for (final callback in _onAdvancementModeChanged) {
-      callback.call(model);
+    if (_modelValue != model) {
+      _journeySettingsViewModel.updateJourneyAdvancement(model);
     }
   }
 
   void _emitAutomaticIdleScrolling() {
-    if (_isInAutomaticScrollingZone && modelValue is! Paused) {
+    if (_isInAutomaticScrollingZone && _modelValue is! Paused) {
       _rxAutomaticIdleScrollingActive.add(true);
     } else {
       _rxAutomaticIdleScrollingActive.add(false);
@@ -184,9 +198,9 @@ class JourneyTableAdvancementViewModel extends JourneyAwareViewModel {
   }
 
   void _setAdvancementModelToNonManual() {
-    final nextModel = switch (modelValue) {
-      Paused() => Paused(next: Automatic()),
-      Manual() || Automatic() => Automatic(),
+    final nextModel = switch (_modelValue) {
+      Paused() => Paused(next: const Automatic()),
+      Manual() || Automatic() => const Automatic(),
     };
     _setModel(nextModel);
   }
@@ -206,7 +220,4 @@ class JourneyTableAdvancementViewModel extends JourneyAwareViewModel {
     if (_currentPosition == null) return;
     _scrollController.scrollToJourneyPoint(_currentPosition);
   }
-
-  @override
-  void journeyIdentificationChanged(_) => _resetModel();
 }

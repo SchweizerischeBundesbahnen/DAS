@@ -5,6 +5,7 @@ import 'package:logging/logging.dart';
 
 import 'test/journey_table_collapsible_rows_test.dart' as journey_table_collapsible_rows_test;
 import 'test/journey_table_station_property_test.dart' as journey_table_station_property_test;
+import 'test/journey_table_track_equipment_test.dart' as journey_table_track_equipment_tests;
 import 'test/short_term_changes_test.dart' as short_term_changes_test;
 
 late AppLocalizations l10n;
@@ -18,4 +19,5 @@ void main() {
   journey_table_station_property_test.main();
   journey_table_collapsible_rows_test.main();
   short_term_changes_test.main();
+  journey_table_track_equipment_tests.main();
 }

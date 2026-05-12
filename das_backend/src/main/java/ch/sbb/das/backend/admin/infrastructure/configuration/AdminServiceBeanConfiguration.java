@@ -3,12 +3,16 @@ package ch.sbb.das.backend.admin.infrastructure.configuration;
 import ch.sbb.das.backend.admin.domain.notices.NoticeTemplateRepository;
 import ch.sbb.das.backend.admin.domain.notices.NoticeTemplateService;
 import ch.sbb.das.backend.admin.domain.notices.NoticeTemplateServiceImpl;
+import ch.sbb.das.backend.admin.domain.notices.SpecialHolidayRepository;
+import ch.sbb.das.backend.admin.domain.notices.SpecialHolidayService;
+import ch.sbb.das.backend.admin.domain.notices.SpecialSpecialHolidayServiceImpl;
 import ch.sbb.das.backend.admin.domain.settings.AppVersionRepository;
 import ch.sbb.das.backend.admin.domain.settings.AppVersionService;
 import ch.sbb.das.backend.admin.domain.settings.AppVersionServiceImpl;
 import ch.sbb.das.backend.admin.domain.settings.RuFeatureRepository;
 import ch.sbb.das.backend.admin.domain.settings.RuFeatureService;
 import ch.sbb.das.backend.admin.domain.settings.RuFeatureServiceImpl;
+import ch.sbb.das.backend.tenancy.infrastructure.CompanyAuthorizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -28,5 +32,10 @@ public class AdminServiceBeanConfiguration {
     @Bean
     NoticeTemplateService noticeTemplateService(NoticeTemplateRepository noticeTemplateRepository) {
         return new NoticeTemplateServiceImpl(noticeTemplateRepository);
+    }
+
+    @Bean
+    SpecialHolidayService holidayService(SpecialHolidayRepository specialHolidayRepository, CompanyAuthorizer companyAuthorizer) {
+        return new SpecialSpecialHolidayServiceImpl(specialHolidayRepository, companyAuthorizer);
     }
 }

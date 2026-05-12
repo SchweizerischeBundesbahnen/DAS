@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'dart:ui';
 
+import 'package:app/pages/journey/journey_screen/view_model/model/journey_advancement_model.dart';
 import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
 import 'package:app/pages/journey/view_model/model/journey_settings.dart';
 import 'package:rxdart/rxdart.dart';
@@ -8,16 +8,6 @@ import 'package:sfera/component.dart';
 
 class JourneySettingsViewModel extends JourneyAwareViewModel {
   JourneySettingsViewModel({super.journeyViewModel});
-
-  final List<VoidCallback> _onBrakeSeriesUpdatedCallbacks = [];
-
-  void registerOnBrakeSeriesUpdated(VoidCallback callback) {
-    _onBrakeSeriesUpdatedCallbacks.add(callback);
-  }
-
-  void unregisterOnBrakeSeriesUpdated(VoidCallback callback) {
-    _onBrakeSeriesUpdatedCallbacks.remove(callback);
-  }
 
   final _rxSettings = BehaviorSubject<JourneySettings>.seeded(JourneySettings());
 
@@ -27,13 +17,14 @@ class JourneySettingsViewModel extends JourneyAwareViewModel {
 
   void updateBrakeSeries(BrakeSeries selectedBrakeSeries) {
     _rxSettings.add(_rxSettings.value.copyWith(selectedBrakeSeries: selectedBrakeSeries));
-    for (final callback in _onBrakeSeriesUpdatedCallbacks) {
-      callback.call();
-    }
   }
 
   void updateExpandedGroups(List<int> expandedGroups) {
     _rxSettings.add(_rxSettings.value.copyWith(expandedGroups: expandedGroups));
+  }
+
+  void updateJourneyAdvancement(JourneyAdvancementModel journeyAdvancementModel) {
+    _rxSettings.add(_rxSettings.value.copyWith(journeyAdvancementModel: journeyAdvancementModel));
   }
 
   @override

@@ -1,19 +1,30 @@
 import 'dart:async';
 
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_advancement_model.dart';
+import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/pages/journey/view_model/view_mode_view_model.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
 
 import '../../../test_util.dart';
+import 'view_mode_view_model_test.mocks.dart';
 
+@GenerateNiceMocks([
+  MockSpec<JourneyViewModel>(),
+])
 void main() {
   group('ViewModeViewModel', () {
     late ViewModeViewModel testee;
     late List<dynamic> emitRegister;
     late StreamSubscription sub;
+    late MockJourneyViewModel mockJourneyViewModel;
 
     setUp(() {
-      testee = ViewModeViewModel();
+      mockJourneyViewModel = MockJourneyViewModel();
+      testee = ViewModeViewModel(
+        journeySettingsViewModel: JourneySettingsViewModel(journeyViewModel: mockJourneyViewModel),
+      );
       emitRegister = <dynamic>[];
       sub = testee.isZenViewMode.listen(emitRegister.add);
     });
@@ -49,7 +60,6 @@ void main() {
 
     test('updateZenViewMode_whenCalledWithAutomaticState_thenSetsTrue', () async {
       // ARRANGE
-      emitRegister.clear();
       final automaticState = Automatic();
 
       // ACT
@@ -63,7 +73,6 @@ void main() {
 
     test('updateZenViewMode_whenCalledWithManualState_thenSetsTrue', () async {
       // ARRANGE
-      emitRegister.clear();
       final manualState = Manual();
 
       // ACT
@@ -96,7 +105,7 @@ void main() {
       expect(emitRegister[2], isFalse);
     });
 
-    test('updateZenViewMode_whenCalledWithSameStateTwice_thenStillEmits', () async {
+    test('updateZenViewMode_whenCalledWithSameStateTwice_thenOnlyEmitsOnce', () async {
       // ARRANGE
       emitRegister.clear();
       final pausedState = Paused(next: Automatic());
@@ -108,9 +117,8 @@ void main() {
       await processStreams();
 
       // EXPECT
-      expect(emitRegister.length, 2);
+      expect(emitRegister.length, 1);
       expect(emitRegister[0], isFalse);
-      expect(emitRegister[1], isFalse);
     });
   });
 }

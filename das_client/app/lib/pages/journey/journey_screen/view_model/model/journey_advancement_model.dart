@@ -1,4 +1,6 @@
 sealed class JourneyAdvancementModel {
+  const JourneyAdvancementModel();
+
   @override
   bool operator ==(Object other) => identical(this, other) || runtimeType == other.runtimeType;
 
@@ -36,10 +38,14 @@ class Paused extends JourneyAdvancementModel {
 /// TMS VAD after an idle timeout without user interaction has passed.
 ///
 /// The SBBHeaderSmall in the JourneyPage will be hidden.
-class Automatic extends JourneyAdvancementModel {}
+class Automatic extends JourneyAdvancementModel {
+  const Automatic();
+}
 
 /// When JourneyAdvancement is manual, the JourneyTable will be scrolled immediately to user set position and from
 /// there on after an idle timeout without user interaction has passed.
 ///
 /// The SBBHeaderSmall in the JourneyPage will be hidden.
-class Manual extends JourneyAdvancementModel {}
+class Manual extends JourneyAdvancementModel {
+  const Manual();
+}

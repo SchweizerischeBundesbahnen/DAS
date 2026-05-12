@@ -13,6 +13,7 @@ class CommunicationNetworkChangeRow extends CellRowBuilder<CommunicationNetworkC
     required super.data,
     required super.rowIndex,
     required super.journeyPosition,
+    required super.chevronPosition,
     required BuildContext context,
     super.config,
   }) : super(decoration: DASTableRowDecoration(color: ThemeUtil.getColor(context, SBBColors.milk, SBBColors.black)));
