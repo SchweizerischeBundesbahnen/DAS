@@ -38,6 +38,7 @@ class CustomerOrientedDepartureApiTest extends RestAssuredCommand {
     @Test
     void postSubscribe_ok() {
         final Response response = createRequestWithHeader("en", MonitoringConstants.HEADER_REQUEST_ID)
+            .contentType("application/json")
             .body("""
                 {
                   "messageId": "M0002",
@@ -64,7 +65,7 @@ class CustomerOrientedDepartureApiTest extends RestAssuredCommand {
             .pathParam("messageId", "M0002")
             .pathParam("deviceId", "D0005")
             .when()
-            .post(getUrl(ENDPOINT + "/confirm"))
+            .post(getUrl(ENDPOINT + "/confirm/{messageId}/{deviceId}"))
             .then()
             .extract()
             .response();

@@ -5,9 +5,6 @@ import ch.sbb.sferamock.adapters.sfera.model.v0400.NetworkSpecificParameter;
 import ch.sbb.sferamock.messages.model.localregulations.DocumentNode;
 import ch.sbb.sferamock.messages.model.localregulations.DocumentRoot;
 import ch.sbb.sferamock.messages.model.localregulations.Version;
-import com.fasterxml.jackson.core.JsonFactoryBuilder;
-import com.fasterxml.jackson.core.StreamReadConstraints;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -23,13 +20,16 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
+import tools.jackson.core.StreamReadConstraints;
+import tools.jackson.core.json.JsonFactoryBuilder;
+import tools.jackson.databind.json.JsonMapper;
 
 @Service
 // needs to be run before segement repository
 @Order(1)
 public class LocalRegulationRepository implements ApplicationRunner {
 
-    private final ObjectMapper objectMapper;
+    private final JsonMapper objectMapper;
     private final Map<String, List<NSPListComplexType>> localRegulations = new HashMap<>();
 
     @Value("${localregulations.path}")
@@ -39,7 +39,7 @@ public class LocalRegulationRepository implements ApplicationRunner {
     private String tmsCompanyCode;
 
     public LocalRegulationRepository() {
-        this.objectMapper = new ObjectMapper(
+        this.objectMapper = new JsonMapper(
             new JsonFactoryBuilder()
                 .streamReadConstraints(StreamReadConstraints.builder().maxStringLength(30_000_000).build())
                 .build());

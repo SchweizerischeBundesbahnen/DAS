@@ -5,9 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.sbb.das.backend.restapi.helper.ObjectMapperFactory;
 import ch.sbb.das.backend.restapi.monitoring.MonitoringConstants;
 import ch.sbb.das.backend.restclient.v1.model.Problem;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.response.Response;
-import java.io.IOException;
 import java.util.Locale;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +17,7 @@ import org.hamcrest.MatcherAssert;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * Integration-Test utility for journey-service-client ApiClient based tests.
@@ -29,7 +28,7 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 @UtilityClass
 public final class AssertionsResponse {
 
-    private static final ObjectMapper MAPPER = ObjectMapperFactory.createMapper(true);
+    private static final JsonMapper MAPPER = ObjectMapperFactory.createMapper(true);
 
     public static boolean isNotFound(int responseHttpStatusCode, String responseBody, String responseContentType, String acceptLanguage, String responseContentLanguage, String responseRequestId,
         String requestRequestId) {
@@ -101,27 +100,22 @@ public final class AssertionsResponse {
         assertThat(responseBody).contains("\"type\":");
         assertThat(responseBody).contains("\"status\":");
 
-        try {
-            final Problem problem = MAPPER.readValue(responseBody, Problem.class);
-            if (StringUtils.isBlank(instance)) {
-                // generally failing instance is expected in error body
-                assertThat(responseBody.contains("\"instance\":\"/v1/")
-                    || responseBody.contains("\"instance\":\"/v1/toplevel-error" /*see TopLevelHandler*/)).isTrue();
+        final Problem problem = MAPPER.readValue(responseBody, Problem.class);
+        if (StringUtils.isBlank(instance)) {
+            // generally failing instance is expected in error body
+            assertThat(responseBody.contains("\"instance\":\"/v1/")
+                || responseBody.contains("\"instance\":\"/v1/toplevel-error" /*see TopLevelHandler*/)).isTrue();
+        } else {
+            // when url match not exact-path -> always different
+            if (instance.contains("/")) {
+                // case Service-API -> pathParams have ../{<concrete value} instead of param-name
+                assertThat(problem.getInstance()).as("Problem::instance expected").isNotNull();
+                MatcherAssert.assertThat("instance given in Error/Problem", problem.getInstance().toString(), CoreMatchers.containsString(instance.substring(0, instance.lastIndexOf("/"))));
             } else {
-                // when url match not exact-path -> always different
-                if (instance.contains("/")) {
-                    // case Service-API -> pathParams have ../{<concrete value} instead of param-name
-                    assertThat(problem.getInstance()).as("Problem::instance expected").isNotNull();
-                    MatcherAssert.assertThat("instance given in Error/Problem", problem.getInstance().toString(), CoreMatchers.containsString(instance.substring(0, instance.lastIndexOf("/"))));
-                } else {
-                    assertThat(problem.getInstance()).isEqualTo(instance);
-                }
+                assertThat(problem.getInstance()).isEqualTo(instance);
             }
-            return problem;
-        } catch (IOException e) {
-            Assertions.fail("body deserialization failed: " + e.getMessage());
-            return null;
         }
+        return problem;
     }
 
     static void assertHeaderNotFound(int responseHttpStatusCode, String responseBody, String responseContentType, String acceptLanguage, String responseContentLanguage,
