@@ -171,7 +171,6 @@
   "w_service_point_modal_communication_radio_channels_not_found": "Nessun canale radio disponibile",
   "w_service_point_modal_departure_authorization": "Permesso di partenza",
   "w_service_point_modal_communication_network": "Tipo di rete",
-  "w_service_point_modal_communication_sim": "SIM",
   "w_service_point_modal_graduated_speed_label": "Velocità graduate",
   "w_service_point_modal_graduated_speed_brake_series_title": "Categoria di treno",
   "w_service_point_modal_graduated_speed_no_information": "Nessuna informazione",

@@ -30,9 +30,9 @@ class FloatingDepartureChecklistButton extends StatelessWidget {
               side: BorderSide(color: ThemeUtil.getColor(context, SBBColors.cloud, SBBColors.iron), width: 4.0),
             ),
           ),
-          child: SBBTertiaryButtonLarge(
+          child: SBBTertiaryButton(
             key: buttonKey,
-            label: context.l10n.w_no_customer_oriented_departure_checklist_button,
+            labelText: context.l10n.w_no_customer_oriented_departure_checklist_button,
             onPressed: () => showDepartureProcessDialog(context),
           ),
         );

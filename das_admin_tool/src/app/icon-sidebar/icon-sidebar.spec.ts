@@ -1,11 +1,14 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {provideRouter} from '@angular/router';
 
 import {IconSidebar} from './icon-sidebar';
-import {AuthenticatedResult, OidcSecurityService} from 'angular-auth-oidc-client';
 import {signal} from '@angular/core';
+import {AuthService} from '../shared/auth-service';
 
-const mockOidc: Partial<OidcSecurityService> = {
-  authenticated: signal({isAuthenticated: true} as AuthenticatedResult),
+const mockAuthService: Partial<AuthService> = {
+  isAuthenticated: signal(true),
+  isAdmin: signal(true),
+  isRuAdmin: signal(true),
 };
 
 describe('IconSidebar', () => {
@@ -15,9 +18,12 @@ describe('IconSidebar', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [IconSidebar],
-      providers: [{
-        provide: OidcSecurityService, useValue: mockOidc
-      }]
+      providers: [
+        provideRouter([]),
+        {
+          provide: AuthService, useValue: mockAuthService
+        }
+      ]
     })
       .compileComponents();
 

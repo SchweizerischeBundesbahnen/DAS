@@ -36,6 +36,7 @@ final _log = Logger('SegmentProfileMapper');
 class SegmentProfileMapper {
   SegmentProfileMapper._();
 
+  static const String invalidSpId = '';
   static const String _bracketStationNspName = 'bracketStation';
   static const String _bracketStationMainStationNspName = 'mainStation';
   static const String _bracketStationTextNspName = 'text';
@@ -49,7 +50,9 @@ class SegmentProfileMapper {
     int segmentIndex,
     List<SegmentProfileDto> segmentProfiles,
   ) {
-    final segmentProfile = segmentProfiles.firstMatch(segmentProfileReference);
+    if (segmentProfileReference.spId == invalidSpId) return [];
+
+    final segmentProfile = segmentProfiles.firstMatch(segmentProfileReference)!;
     final kilometreMap = parseKilometre(segmentProfile);
     final mapperData = _MapperData(segmentProfile, segmentIndex, kilometreMap);
 
@@ -460,7 +463,7 @@ class SegmentProfileMapper {
 
   static Iterable<TrackFootNote> _parseTrackFootNotes(_MapperData mapperData) {
     final trackFootNotesNsp = mapperData.segmentProfile.points?.trackFootNotesNsp ?? [];
-    return trackFootNotesNsp.map((trackFootNoteNsp) {
+    final result = trackFootNotesNsp.map((trackFootNoteNsp) {
       final footNotes = _parseFootNotes(trackFootNoteNsp.xmlTrackFootNotes.element.footNotes);
       return footNotes.map(
         (note) => TrackFootNote(
@@ -469,6 +472,12 @@ class SegmentProfileMapper {
         ),
       );
     }).flattenedToList;
+
+    // Simplon Inter Modal network changes are interpreted in the same way as track foot notes with SIM refText, see
+    // https://github.com/SchweizerischeBundesbahnen/DAS/issues/1126
+    result.addAll(_parseSimNetworkChangesToTrackFootNotes(mapperData));
+
+    return result;
   }
 
   static Iterable<OpFootNote> _parseOpFootNotes(_MapperData mapperData) {
@@ -608,5 +617,28 @@ class SegmentProfileMapper {
     ];
 
     return DepartureAuthorization(types: authTypes, originalText: departureAuthNsp.departureAuthText);
+  }
+
+  static Iterable<TrackFootNote> _parseSimNetworkChangesToTrackFootNotes(_MapperData mapperData) {
+    final spContext = mapperData.segmentProfile.contextInformation;
+    if (spContext == null) return [];
+
+    final simCommunicationNetworks = spContext.communicationNetworks.where((it) => it.communicationNetworkType == .sim);
+    if (simCommunicationNetworks.isEmpty) return [];
+
+    final contactLists = spContext.contactLists;
+
+    return simCommunicationNetworks.map((e) {
+      final contacts = contactLists.firstWhereOrNull(
+        (it) => it.startLocation == e.startLocation && it.startLocation != it.endLocation,
+      );
+      final text =
+          contacts?.contacts.map((c) => '${c.contactRole}: ${c.otherContactType?.contactIdentifier}').join('\n') ?? '';
+
+      return TrackFootNote(
+        order: calculateOrder(mapperData.segmentIndex, e.startLocation),
+        footNote: FootNote(text: text, type: .contact, refText: 'SIM'),
+      );
+    });
   }
 }

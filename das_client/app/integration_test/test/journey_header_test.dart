@@ -9,7 +9,6 @@ import 'package:app/pages/journey/journey_screen/header/widgets/departure_author
 import 'package:app/pages/journey/journey_screen/header/widgets/extended_menu.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/radio_channel.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/radio_contact.dart';
-import 'package:app/pages/journey/journey_screen/header/widgets/sim_identifier.dart';
 import 'package:app/pages/journey/journey_screen/notification/widgets/maneuver_notification.dart';
 import 'package:app/pages/journey/journey_screen/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_chevron.dart';
@@ -72,7 +71,7 @@ Future<void> main() async {
 
       await tapElement(tester, find.byKey(ConnectivityIcon.disconnectedKey));
       expect(find.text(l10n.w_modal_sheet_disconnected_message_title), findsOneWidget);
-      await findAndDismissModalSheet(tester);
+      await findAndDismissBottomSheet(tester);
 
       // simulate wifi active
       connectivityManager.wifiActive = true;
@@ -87,7 +86,7 @@ Future<void> main() async {
 
       await tapElement(tester, find.byKey(ConnectivityIcon.connectedWifiKey));
       expect(find.text(l10n.w_modal_sheet_disconnected_wifi_message_title), findsOneWidget);
-      await findAndDismissModalSheet(tester);
+      await findAndDismissBottomSheet(tester);
 
       // simulate connectivity restored
       connectivityManager.connectivitySubject.add(true);
@@ -221,7 +220,7 @@ Future<void> main() async {
 
       final context = tester.element(header);
 
-      final brightness = SBBBaseStyle.of(context).brightness;
+      final brightness = Theme.of(context).brightness;
 
       final searchedButtonLabel = brightness != .dark
           ? l10n.p_journey_header_button_dark_theme
@@ -229,14 +228,14 @@ Future<void> main() async {
 
       final themeSwitchButton = find.descendant(
         of: header,
-        matching: find.widgetWithText(SBBTertiaryButtonLarge, searchedButtonLabel),
+        matching: find.widgetWithText(SBBTertiaryButton, searchedButtonLabel),
       );
       expect(themeSwitchButton, findsOneWidget);
       await tester.tap(themeSwitchButton);
 
       await tester.pumpAndSettle(Duration(milliseconds: 300));
 
-      expect(SBBBaseStyle.of(context).brightness != brightness, true);
+      expect(Theme.of(context).brightness != brightness, true);
     });
 
     testWidgets('test extended menu opening', (tester) async {
@@ -308,7 +307,7 @@ Future<void> main() async {
 
       await openExtendedMenu(tester);
 
-      expect(find.byKey(ExtendedMenu.maneuverSwitchKey), findsNothing);
+      expect(find.byKey(ExtendedMenu.maneuverModeMenuItemKey), findsNothing);
 
       await dismissExtendedMenu(tester);
 
@@ -456,15 +455,6 @@ Future<void> main() async {
       final wankdorfGsmPIcon = find.descendant(of: header, matching: find.byKey(CommunicationNetworkIcon.gsmPKey));
       expect(wankdorfGsmPIcon, findsNothing);
 
-      // check network type for Burgdorf (SIM)
-      final locationOnEntryBeforeBurgdorf = find.descendant(
-        of: findDASTableRowByText('A2'),
-        matching: find.byKey(RouteChevron.chevronKey),
-      );
-      await waitUntilExists(tester, locationOnEntryBeforeBurgdorf);
-      final burgdorfSimKey = find.descendant(of: header, matching: find.byKey(SimIdentifier.simKey));
-      expect(burgdorfSimKey, findsOneWidget);
-
       // check network type for Olten
       final locationOnEntryBeforeOlten = find.descendant(
         of: findDASTableRowByText('A3'),
@@ -498,8 +488,6 @@ Future<void> main() async {
       expect(mainContactBern, findsNothing);
       final bernIndicator = find.descendant(of: radioChannel, matching: find.byKey(DotIndicator.indicatorKey));
       expect(bernIndicator, findsNothing);
-      final bernSim = find.descendant(of: radioChannel, matching: find.byKey(SimIdentifier.simKey));
-      expect(bernSim, findsNothing);
 
       // check mainContacts for Wankdorf (nextStop: Burgdorf)
       await waitUntilExists(tester, find.descendant(of: header, matching: find.text('Burgdorf')));
@@ -507,8 +495,6 @@ Future<void> main() async {
       await waitUntilExists(tester, mainContactWankdorf, maxWaitSeconds: 2);
       final wankdorfIndicator = find.descendant(of: radioChannel, matching: find.byKey(DotIndicator.indicatorKey));
       expect(wankdorfIndicator, findsNothing);
-      final wankdorfSim = find.descendant(of: radioChannel, matching: find.byKey(SimIdentifier.simKey));
-      expect(wankdorfSim, findsNothing);
 
       // check mainContacts for Burgdorf
       final locationOnEntryBeforeBurgdorf = find.descendant(
@@ -520,8 +506,6 @@ Future<void> main() async {
       await waitUntilExists(tester, mainContactsBurgdorf, maxWaitSeconds: 2);
       final burgdorfIndicator = find.descendant(of: radioChannel, matching: find.byKey(DotIndicator.indicatorKey));
       expect(burgdorfIndicator, findsOneWidget);
-      final burgdorfSim = find.descendant(of: radioChannel, matching: find.byKey(SimIdentifier.simKey));
-      expect(burgdorfSim, findsOneWidget);
 
       // check mainContacts for Olten
       final locationOnEntryBeforeOlten = find.descendant(
@@ -533,8 +517,6 @@ Future<void> main() async {
       await waitUntilExists(tester, mainContactsOlten, maxWaitSeconds: 2);
       final oltenIndicator = find.descendant(of: radioChannel, matching: find.byKey(DotIndicator.indicatorKey));
       expect(oltenIndicator, findsOneWidget);
-      final oltenSim = find.descendant(of: radioChannel, matching: find.byKey(SimIdentifier.simKey));
-      expect(oltenSim, findsNothing);
 
       await disconnect(tester);
     });
@@ -549,7 +531,7 @@ Future<void> main() async {
       final mockBrightnessManager = DI.get<BrightnessManager>() as MockBrightnessManager;
 
       // automatically opening modal sheet if write permissions not given (in tests hasWritePermissions is always false)
-      await findAndDismissModalSheet(tester);
+      await findAndDismissBottomSheet(tester);
 
       mockBrightnessManager.writeSettingsPermission = true;
 
@@ -581,7 +563,7 @@ Future<void> main() async {
       final mockBrightnessManager = DI.get<BrightnessManager>() as MockBrightnessManager;
 
       // automatically opening modal sheet if write permissions not given (in tests hasWritePermissions is always false)
-      await findAndDismissModalSheet(tester);
+      await findAndDismissBottomSheet(tester);
 
       mockBrightnessManager.writeSettingsPermission = true;
       mockBrightnessManager.currentBrightness = 0.5;
@@ -611,7 +593,7 @@ Future<void> main() async {
       final mockBrightnessManager = DI.get<BrightnessManager>() as MockBrightnessManager;
 
       // automatically opening modal sheet if write permissions not given (in tests hasWritePermissions is always false)
-      await findAndDismissModalSheet(tester);
+      await findAndDismissBottomSheet(tester);
 
       mockBrightnessManager.writeSettingsPermission = true;
       mockBrightnessManager.currentBrightness = 0.5;
@@ -716,16 +698,16 @@ Future<void> _checkDepartureAuth(Finder header, {required String nextStopName, S
 Future<void> _toggleExtendedMenuManeuverMode(WidgetTester tester) async {
   await openExtendedMenu(tester);
   expect(find.byKey(ExtendedMenu.menuButtonCloseKey), findsAny);
-  await tapElement(tester, find.byKey(ExtendedMenu.maneuverSwitchKey));
+  await tapElement(tester, find.byKey(ExtendedMenu.maneuverModeMenuItemKey));
 }
 
-Future<void> findAndDismissModalSheet(WidgetTester tester) async {
-  // find brightness modal sheet
-  final modalSheet = find.byType(SBBModalSheet);
-  expect(modalSheet, findsOneWidget);
+Future<void> findAndDismissBottomSheet(WidgetTester tester) async {
+  // find brightness bottom sheet
+  final sbbBottomSheet = find.byType(SBBBottomSheet);
+  expect(sbbBottomSheet, findsOneWidget);
 
   // find close button
-  final closeButton = find.descendant(of: modalSheet, matching: find.byType(SBBIconButtonSmall));
+  final closeButton = find.descendant(of: sbbBottomSheet, matching: find.byType(SBBTertiaryButtonSmall));
   expect(closeButton, findsOneWidget);
 
   // tap close button

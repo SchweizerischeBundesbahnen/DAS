@@ -9,13 +9,14 @@ Future<void> showWarnFunctionModalSheet(
   BuildContext context, {
   required VoidCallback onManeuverButtonPressed,
 }) async {
-  await showCustomSBBModalSheet(
+  await showSBBBottomSheet(
     context: context,
-    backgroundColor: SBBColors.charcoal,
+    style: const SBBBottomSheetStyle(
+      backgroundColor: SBBColors.charcoal,
+      constraints: const BoxConstraints(maxWidth: double.infinity),
+    ),
     showCloseButton: false,
-    header: SizedBox.shrink(),
-    constraints: const BoxConstraints(maxWidth: double.infinity),
-    child: WarnFunctionModalSheet(onManeuverButtonPressed: onManeuverButtonPressed),
+    body: WarnFunctionModalSheet(onManeuverButtonPressed: onManeuverButtonPressed),
   );
 
   Sound.stop();
@@ -56,7 +57,7 @@ class WarnFunctionModalSheet extends StatelessWidget {
             children: [
               Expanded(
                 child: SBBSecondaryButton(
-                  label: context.l10n.w_modal_sheet_warn_function_manoeuvre_button,
+                  labelText: context.l10n.w_modal_sheet_warn_function_manoeuvre_button,
                   onPressed: () {
                     onManeuverButtonPressed();
                     Navigator.of(context).pop();
@@ -65,7 +66,7 @@ class WarnFunctionModalSheet extends StatelessWidget {
               ),
               Expanded(
                 child: SBBSecondaryButton(
-                  label: context.l10n.w_modal_sheet_warn_function_confirm_button,
+                  labelText: context.l10n.w_modal_sheet_warn_function_confirm_button,
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ),

@@ -11,8 +11,8 @@ test.describe('app main test', () => {
   test('home view', async ({page}) => {
     await page.goto('');
 
-    const titleBox = page.locator('sbb-title[level="2"]');
-    await expect(titleBox).toHaveText('Blockierte App Versionen');
+    const titleBox = page.locator('sbb-title').first();
+    await expect(titleBox).toHaveText('EVU Admin DAS');
   });
 
   test('user menu', async ({page}) => {

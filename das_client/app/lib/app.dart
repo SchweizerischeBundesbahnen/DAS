@@ -5,10 +5,10 @@ import 'package:app/nav/app_link_navigator.dart';
 import 'package:app/nav/app_router.dart';
 import 'package:app/nav/auth_guard.dart';
 import 'package:app/theme/theme_view_model.dart';
-import 'package:app/theme/themes.dart';
 import 'package:app/widgets/flavor_banner.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
 class App extends StatefulWidget {
@@ -53,13 +53,13 @@ class _AppState extends State<App> {
         return MaterialApp.router(
           builder: (context, child) {
             return MediaQuery(
-              data: MediaQuery.of(context).copyWith(textScaler: TextScaler.noScaling),
+              data: MediaQuery.of(context).copyWith(textScaler: .noScaling),
               child: child!,
             );
           },
           themeMode: themeMode,
-          theme: DASTheme.light(),
-          darkTheme: DASTheme.dark(),
+          theme: SBBTheme.light(themeContext: .safety),
+          darkTheme: SBBTheme.dark(themeContext: .safety),
           localizationsDelegates: localizationDelegates,
           supportedLocales: supportedLocales,
           localeResolutionCallback: defaultLocale,

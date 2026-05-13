@@ -1,3 +1,4 @@
+import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_chevron.dart';
 import 'package:app/pages/settings/settings_page.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -20,14 +21,14 @@ void main() {
     await tapElement(tester, find.text(l10n.w_navigation_drawer_settings_title));
 
     final gradientSwitchFinder = find.byKey(SettingsPage.decisiveGradientSwitchKey);
-    var gradientSwitch = tester.widget(gradientSwitchFinder) as SBBSwitch;
+    var gradientSwitch = tester.widget(gradientSwitchFinder) as SBBSwitchListItemBoxed;
     expect(gradientSwitch.value, true);
 
     // disable decisive gradient setting
     await tapElement(tester, find.text(l10n.p_settings_page_decisive_gradient_show_setting));
 
     // refresh switch
-    gradientSwitch = tester.widget(gradientSwitchFinder) as SBBSwitch;
+    gradientSwitch = tester.widget(gradientSwitchFinder) as SBBSwitchListItemBoxed;
     expect(gradientSwitch.value, false);
 
     // Navigate back to fahrtinfo page
@@ -100,6 +101,71 @@ void main() {
 
     // check revert back to km after delay
     await waitUntilExists(tester, find.text(l10n.p_journey_table_kilometre_label));
+
+    await disconnect(tester);
+  });
+
+  testWidgets('test hide station signal settings hides correct signals', (tester) async {
+    await prepareAndStartApp(tester);
+    await loadJourney(tester, trainNumber: 'T9999M');
+
+    await stopAutomaticAdvancement(tester);
+
+    // Check entry and exit signals are shown
+    expect(find.text(l10n.c_main_signal_function_entry), findsAny);
+    expect(find.text(l10n.c_main_signal_function_exit), findsAny);
+
+    // Navigate to settings page
+    await openDrawer(tester);
+    await tapElement(tester, find.text(l10n.w_navigation_drawer_settings_title));
+
+    // disable decisive gradient setting
+    await tapElement(tester, find.text(l10n.p_settings_page_signal_station_setting));
+
+    // Navigate back to fahrtinfo page
+    await openDrawer(tester);
+    await tapElement(tester, find.text(l10n.w_navigation_drawer_fahrtinfo_title));
+
+    // Check entry and exit signals no longer shown
+    expect(find.text(l10n.c_main_signal_function_entry), findsNothing);
+    expect(find.text(l10n.c_main_signal_function_exit), findsNothing);
+
+    await disconnect(tester);
+  });
+
+  testWidgets('test chevron position with hidden station signals', (tester) async {
+    await prepareAndStartApp(tester);
+
+    // Navigate to settings page
+    await openDrawer(tester);
+    await tapElement(tester, find.text(l10n.w_navigation_drawer_settings_title));
+
+    // disable decisive gradient setting
+    await tapElement(tester, find.text(l10n.p_settings_page_signal_station_setting));
+
+    // Navigate back to fahrtinfo page
+    await openDrawer(tester);
+    await tapElement(tester, find.text(l10n.w_navigation_drawer_fahrtinfo_title));
+
+    await loadJourney(tester, trainNumber: 'T9999');
+
+    // Check entry and exit signals no longer shown
+    expect(find.text(l10n.c_main_signal_function_entry), findsNothing);
+    expect(find.text(l10n.c_main_signal_function_exit), findsNothing);
+
+    // Check chevron is positioning correctly
+    await waitUntilExists(
+      tester,
+      find.descendant(of: findDASTableRowByText('0.5'), matching: find.byKey(RouteChevron.chevronKey)),
+    );
+    await waitUntilExists(
+      tester,
+      find.descendant(of: findDASTableRowByText('1.2'), matching: find.byKey(RouteChevron.chevronKey)),
+    );
+    await waitUntilExists(
+      tester,
+      find.descendant(of: findDASTableRowByText('2.4'), matching: find.byKey(RouteChevron.chevronKey)),
+    );
 
     await disconnect(tester);
   });

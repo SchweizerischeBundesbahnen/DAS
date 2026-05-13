@@ -48,11 +48,23 @@ void main() {
 
     setUp(() {
       when(mockSegmentProfileReferenceOne.spId).thenReturn('id1');
+      when(mockSegmentProfileReferenceOne.versionMajor).thenReturn('1');
+      when(mockSegmentProfileReferenceOne.versionMinor).thenReturn('0');
       when(mockSegmentProfileOne.id).thenReturn('id1');
+      when(mockSegmentProfileOne.versionMajor).thenReturn('1');
+      when(mockSegmentProfileOne.versionMinor).thenReturn('0');
       when(mockSegmentProfileReferenceTwo.spId).thenReturn('id2');
+      when(mockSegmentProfileReferenceTwo.versionMajor).thenReturn('1');
+      when(mockSegmentProfileReferenceTwo.versionMinor).thenReturn('0');
       when(mockSegmentProfileTwo.id).thenReturn('id2');
+      when(mockSegmentProfileTwo.versionMajor).thenReturn('1');
+      when(mockSegmentProfileTwo.versionMinor).thenReturn('0');
       when(mockSegmentProfileReferenceThree.spId).thenReturn('id3');
+      when(mockSegmentProfileReferenceThree.versionMajor).thenReturn('1');
+      when(mockSegmentProfileReferenceThree.versionMinor).thenReturn('0');
       when(mockSegmentProfileThree.id).thenReturn('id3');
+      when(mockSegmentProfileThree.versionMajor).thenReturn('1');
+      when(mockSegmentProfileThree.versionMinor).thenReturn('0');
 
       when(mockTemporaryConstraintA1.advisedSpeed).thenReturn(mockAdvisedSpeedA1);
       when(mockTemporaryConstraintA2.advisedSpeed).thenReturn(mockAdvisedSpeedA2);

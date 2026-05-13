@@ -2,19 +2,20 @@ import 'package:app/pages/journey/journey_screen/widgets/communication_network_i
 import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/bracket_station_cell_body.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_cell_body.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_chevron.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/curve_point_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/protection_section_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/service_point_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/signal_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/tram_area_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/whistle_row.dart';
-import 'package:app/theme/themes.dart';
 import 'package:app/widgets/dot_indicator.dart';
 import 'package:app/widgets/speed_display.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 import '../app_test.dart';
 import '../util/test_utils.dart';
@@ -162,7 +163,7 @@ void main() {
 
     testWidgets('test whistle and tram area', (tester) async {
       await prepareAndStartApp(tester);
-      await loadJourney(tester, trainNumber: 'T7');
+      await loadJourney(tester, trainNumber: 'T7M');
 
       final whistleRow = findDASTableRowByText('39.6');
       expect(whistleRow, findsOneWidget);
@@ -178,6 +179,28 @@ void main() {
 
       final tramAreaDescription = find.descendant(of: tramAreaRow, matching: find.text('6 TS'));
       expect(tramAreaDescription, findsAny);
+
+      await disconnect(tester);
+    });
+
+    testWidgets('test chevron position positioned correctly inside grouped items', (tester) async {
+      await prepareAndStartApp(tester);
+      await loadJourney(tester, trainNumber: 'T7');
+
+      // Chevron displayed at grouped row
+      await waitUntilExists(
+        tester,
+        find.descendant(of: findDASTableRowByText('41.6'), matching: find.byKey(RouteChevron.chevronKey)),
+      );
+
+      // Open up group
+      await tapElement(tester, findDASTableRowByText('41.6'));
+
+      // Chevron moved to correct row
+      expect(
+        find.descendant(of: findDASTableRowByText('40.401'), matching: find.byKey(RouteChevron.chevronKey)),
+        findsOne,
+      );
 
       await disconnect(tester);
     });
@@ -843,7 +866,7 @@ Future<void> _checkAdditionalServicePoint(WidgetTester tester, Finder scrollable
   // check all cells are colored
   final coloredCells = findColoredRowCells(
     of: servicePointRow,
-    color: DASTheme.light().scaffoldBackgroundColor,
+    color: SBBTheme.light(themeContext: .safety).scaffoldBackgroundColor,
   );
   expect(coloredCells, findsAtLeast(3));
 }

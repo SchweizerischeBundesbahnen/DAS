@@ -1,7 +1,6 @@
 import 'package:app/pages/journey/journey_screen/detail_modal/service_point_modal/service_point_modal_view_model.dart';
 import 'package:app/pages/journey/journey_screen/header/view_model/radio_channel_view_model.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/radio_contact.dart';
-import 'package:app/pages/journey/journey_screen/header/widgets/sim_identifier.dart';
 import 'package:app/pages/journey/journey_screen/widgets/communication_network_icon.dart';
 import 'package:app/widgets/dot_indicator.dart';
 import 'package:flutter/material.dart';
@@ -38,9 +37,7 @@ class RadioChannel extends StatelessWidget {
                 children: [
                   const Icon(SBBIcons.telephone_gsm_small),
                   Flexible(child: RadioContactChannels(mainContactIdentifiers: model.mainContactsIdentifier)),
-                  if (model.networkType == .sim) SimIdentifier(),
-                  if (model.networkType != null && model.networkType != .sim)
-                    CommunicationNetworkIcon(networkType: model.networkType!),
+                  if (model.networkType != null) CommunicationNetworkIcon(networkType: model.networkType!),
                 ],
               ),
             ),

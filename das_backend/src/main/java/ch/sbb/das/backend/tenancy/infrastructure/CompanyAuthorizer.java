@@ -1,13 +1,25 @@
 package ch.sbb.das.backend.tenancy.infrastructure;
 
+import ch.sbb.das.backend.common.CompanyCode;
 import ch.sbb.das.backend.tenancy.domain.model.Tenant;
 import ch.sbb.das.backend.tenancy.domain.repository.TenantRepository;
 import java.net.URL;
+import java.util.Collections;
 import java.util.Set;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Component;
 
+/**
+ * Resolves the authenticated tenant and evaluates company-level access.
+ *
+ * <p>The tenant is derived from the JWT issuer in the current security context.
+ * Company authorization checks are based on whether the tenant's authorized
+ * company set contains all requested company codes.
+ */
+@org.springframework.modulith.NamedInterface("tenancy")
 @Component("companyAuthorizer")
 public class CompanyAuthorizer {
 
@@ -17,30 +29,64 @@ public class CompanyAuthorizer {
         this.tenantRepository = tenantRepository;
     }
 
-    public boolean canEditCompany(Authentication authentication, Set<String> companies) {
+    /**
+     * Requires access to all provided company codes.
+     *
+     * @param companies requested company codes
+     * @throws AccessDeniedException when access is not granted
+     */
+    public void requireCanAccessCompanies(Set<CompanyCode> companies) {
+        if (!this.canAccessCompanies(companies)) {
+            throw new AccessDeniedException("Not allowed");
+        }
+    }
+
+    /**
+     * Checks whether the authenticated tenant can access all provided company codes.
+     *
+     * @param companies requested company codes
+     * @return {@code true} if all requested codes are authorized; otherwise {@code false}
+     */
+    public boolean canAccessCompanies(Set<CompanyCode> companies) {
         if (companies == null || companies.isEmpty()) {
             return false;
         }
-        Tenant tenant = getTenant(authentication);
-        if (tenant == null) {
+        Set<CompanyCode> authorizedCompanies = authorizedCompanies();
+        if (authorizedCompanies.isEmpty()) {
             return false;
         }
-        if (tenant.companies() == null || tenant.companies().isEmpty()) {
-            return false;
-        }
-
-        return tenant.companies().containsAll(companies);
+        return authorizedCompanies.containsAll(companies);
     }
 
-    public boolean isAdminTenant(Authentication authentication) {
-        Tenant tenant = getTenant(authentication);
+    /**
+     * Checks whether the authenticated tenant is configured as an admin tenant.
+     *
+     * @return {@code true} for admin tenants, otherwise {@code false}
+     */
+    public boolean isAdminTenant() {
+        Tenant tenant = getTenant();
         if (tenant == null) {
             return false;
         }
         return tenantRepository.isAdminTenant(tenant);
     }
 
-    private Tenant getTenant(Authentication authentication) {
+    /**
+     * Returns the company codes the authenticated tenant is authorized for.
+     *
+     * @return authorized company codes, or an empty set if no tenant can be resolved
+     */
+    public Set<CompanyCode> authorizedCompanies() {
+        Tenant tenant = getTenant();
+        if (tenant == null || tenant.companies() == null) {
+            return Collections.emptySet();
+        }
+
+        return tenant.companies();
+    }
+
+    private Tenant getTenant() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof JwtAuthenticationToken jwtAuth)) {
             return null;
         }
@@ -53,4 +99,3 @@ public class CompanyAuthorizer {
         return tenantRepository.getByIssuerUri(issuer.toString());
     }
 }
-

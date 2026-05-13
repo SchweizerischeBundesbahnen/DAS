@@ -10,13 +10,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Table(name = "app_version")
@@ -26,7 +23,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @AllArgsConstructor
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class AppVersionEntity {
+public class AppVersionEntity extends EntityBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "app_version_id_seq")
@@ -35,12 +32,6 @@ public class AppVersionEntity {
     private String version;
     private Boolean minimalVersion;
     private LocalDate expiryDate;
-
-    @LastModifiedDate
-    private LocalDateTime lastModifiedAt;
-
-    @LastModifiedBy
-    private String lastModifiedBy;
 
     public static AppVersionEntity from(AppVersionRequest createRequest) {
         AppVersionEntity entity = new AppVersionEntity();

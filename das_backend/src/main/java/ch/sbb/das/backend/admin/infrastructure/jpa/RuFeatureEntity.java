@@ -10,18 +10,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
-import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Getter
 @Setter
 @Entity(name = "ru_feature")
 @EntityListeners(AuditingEntityListener.class)
-public class RuFeatureEntity {
+public class RuFeatureEntity extends EntityBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ru_feature_id_seq")
@@ -35,12 +32,6 @@ public class RuFeatureEntity {
     private String keyValue;
 
     private boolean enabled;
-
-    @LastModifiedBy
-    private String lastModifiedBy;
-
-    @LastModifiedDate
-    private LocalDateTime lastModifiedAt;
 
     public RuFeature toRuFeature() {
         return new RuFeature(company.toCompany(), RuFeatureKey.valueOf(keyValue), enabled);

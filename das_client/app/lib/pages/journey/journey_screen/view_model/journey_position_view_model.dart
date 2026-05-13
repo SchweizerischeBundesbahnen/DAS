@@ -5,6 +5,7 @@ import 'package:app/pages/journey/journey_screen/view_model/model/journey_advanc
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/punctuality_model.dart';
 import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:clock/clock.dart';
 import 'package:collection/collection.dart';
 import 'package:logging/logging.dart';
@@ -16,10 +17,13 @@ final _log = Logger('JourneyPositionViewModel');
 class JourneyPositionViewModel extends JourneyAwareViewModel {
   JourneyPositionViewModel({
     required Stream<PunctualityModel> punctualityStream,
+    required JourneySettingsViewModel journeySettingsViewModel,
     super.journeyViewModel,
-  }) {
+  }) : _journeySettingsViewModel = journeySettingsViewModel {
     _initSubscription(journeyViewModel.journey, punctualityStream);
   }
+
+  final JourneySettingsViewModel _journeySettingsViewModel;
 
   StreamSubscription<PunctualityModel>? _punctualitySubscription;
   StreamSubscription<(Journey?, PunctualityModel, ServicePoint?, JourneyPoint?)>? _journeySubscription;
@@ -34,16 +38,12 @@ class JourneyPositionViewModel extends JourneyAwareViewModel {
 
   JourneyPositionModel get modelValue => _rxModel.value;
 
-  JourneyAdvancementModel? _currentAdvancementMode;
-
   void setManualPosition(JourneyPoint? manualPosition) {
     _log.info('Setting manual position to: $manualPosition');
     _rxManualPosition.add(manualPosition);
   }
 
-  void onAdvancementModeChanged(JourneyAdvancementModel journeyAdvancementModel) {
-    _currentAdvancementMode = journeyAdvancementModel;
-  }
+  JourneyAdvancementModel get _currentAdvancementMode => _journeySettingsViewModel.modelValue.journeyAdvancementModel;
 
   void _initSubscription(Stream<Journey?> journeyStream, Stream<PunctualityModel> punctualityStream) {
     _journeySubscription =
@@ -133,7 +133,7 @@ class JourneyPositionViewModel extends JourneyAwareViewModel {
     }
 
     final manualPosition = _rxManualPosition.value;
-    if (manualPosition != null && (_currentAdvancementMode?.isInManualCycle ?? false)) {
+    if (manualPosition != null && _currentAdvancementMode.isInManualCycle) {
       currentPosition = _rxManualPosition.value;
     }
 

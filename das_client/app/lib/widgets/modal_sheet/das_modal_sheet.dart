@@ -244,10 +244,10 @@ class _DASModalSheetState extends State<DasModalSheet> with TickerProviderStateM
           Expanded(
             child: widget.builder.header(context) ?? SizedBox(),
           ),
-          SBBIconButtonLarge(
+          SBBTertiaryButton(
             key: DasModalSheet.modalSheetCloseButtonKey,
             onPressed: () => widget.controller.close(),
-            icon: SBBIcons.cross_small,
+            iconData: SBBIcons.cross_small,
           ),
         ],
       ),

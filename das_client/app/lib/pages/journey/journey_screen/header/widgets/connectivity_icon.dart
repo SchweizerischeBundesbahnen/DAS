@@ -2,7 +2,7 @@ import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/header/view_model/connectivity_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/ux_testing_view_model.dart';
 import 'package:app/widgets/assets.dart';
-import 'package:app/widgets/exlamation_icon_button.dart';
+import 'package:app/widgets/exclamation_icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
@@ -31,43 +31,39 @@ class ConnectivityIcon extends StatelessWidget {
         if (snapshotData == .connected) return SizedBox.shrink();
 
         final isDisconnected = snapshotData == .disconnected;
-
-        final icon = isDisconnected ? AppAssets.iconWifiDisabled : AppAssets.iconWifi;
-        final onTap = isDisconnected ? () => _onDisconnectedTap(context) : () => _onConnectedWifiTap(context);
-        final key = isDisconnected ? disconnectedKey : connectedWifiKey;
-
-        return ExclamationIconButton(icon: icon, onTap: onTap, key: key);
+        return ExclamationIconButton(
+          key: isDisconnected ? disconnectedKey : connectedWifiKey,
+          icon: isDisconnected ? AppAssets.iconWifiDisabled : AppAssets.iconWifi,
+          onTap: isDisconnected ? () => _onDisconnectedTap(context) : () => _onConnectedWifiTap(context),
+        );
       },
     );
   }
 
-  void _onConnectedWifiTap(BuildContext context) {
-    showSBBModalSheet(
-      context: context,
-      title: '',
-      constraints: BoxConstraints(minWidth: double.infinity),
-      child: Padding(
-        padding: const .all(SBBSpacing.medium),
-        child: SBBMessage(
-          title: context.l10n.w_modal_sheet_disconnected_wifi_message_title,
-          description: context.l10n.w_modal_sheet_disconnected_wifi_message_text,
-          illustration: MessageIllustration.Display,
-        ),
-      ),
-    );
-  }
+  void _onConnectedWifiTap(BuildContext context) => _showMessageSheet(
+    context,
+    title: context.l10n.w_modal_sheet_disconnected_wifi_message_title,
+    subtitle: context.l10n.w_modal_sheet_disconnected_wifi_message_text,
+  );
 
-  void _onDisconnectedTap(BuildContext context) {
-    showSBBModalSheet(
+  void _onDisconnectedTap(BuildContext context) => _showMessageSheet(
+    context,
+    title: context.l10n.w_modal_sheet_disconnected_message_title,
+    subtitle: context.l10n.w_modal_sheet_disconnected_message_text,
+  );
+
+  void _showMessageSheet(BuildContext context, {required String title, required String subtitle}) {
+    showSBBBottomSheet(
       context: context,
-      title: '',
-      constraints: BoxConstraints(minWidth: double.infinity),
-      child: Padding(
-        padding: const .all(SBBSpacing.medium),
+      style: const SBBBottomSheetStyle(
+        constraints: BoxConstraints(minWidth: double.infinity),
+      ),
+      body: Center(
+        heightFactor: 1,
         child: SBBMessage(
-          title: context.l10n.w_modal_sheet_disconnected_message_title,
-          description: context.l10n.w_modal_sheet_disconnected_message_text,
-          illustration: .Display,
+          titleText: title,
+          subtitleText: subtitle,
+          illustration: SBBIllustration.display(),
         ),
       ),
     );

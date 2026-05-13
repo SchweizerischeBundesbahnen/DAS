@@ -1,0 +1,15 @@
+<sbb-title i18n="@@notice_templates_title" level="2">Titel und Texte</sbb-title>
+
+@if (noticeTemplates.hasValue()) {
+  @if (noticeTemplates.value().data.length === 0) {
+    <p i18n="@@notice_templates_empty_state">Noch keine Titel und Texte erfasst.</p>
+    <sbb-secondary-button (click)="noticeTemplatesService.add()" i18n="@@notice_templates_button_create" iconName="plus-small">Neuen Eintrag erstellen
+    </sbb-secondary-button>
+  } @else {
+    <app-notice-templates-table/>
+  }
+} @else if (noticeTemplates.error()) {
+  <p i18n="@@notice_templates_error_loading">Fehler beim Laden der Titel und Texte</p>
+} @else if (noticeTemplates.isLoading()) {
+  <sbb-loading-indicator-circle></sbb-loading-indicator-circle>
+}

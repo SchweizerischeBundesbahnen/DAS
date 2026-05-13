@@ -22,7 +22,7 @@ class BrakeSeriesSelectionButton extends StatelessWidget {
         ? ThemeUtil.getColor(context, SBBColors.granite, SBBColors.graphite)
         : ThemeUtil.getColor(context, SBBColors.cloud, SBBColors.iron);
     final labelColor = currentlySelected
-        ? ThemeUtil.getFontColor(context)
+        ? ThemeUtil.getColor(context, SBBColors.white, SBBColors.charcoal)
         : ThemeUtil.getColor(context, SBBColors.black, SBBColors.white);
     return InkWell(
       onTap: onTap,

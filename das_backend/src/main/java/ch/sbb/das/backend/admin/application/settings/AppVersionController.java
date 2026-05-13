@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Tag(name = "AppVersions", description = "API for app versions.")
-@PreAuthorize("@companyAuthorizer.isAdminTenant(authentication)")
+@PreAuthorize("@companyAuthorizer.isAdminTenant")
 public class AppVersionController {
 
     static final String PATH_SEGMENT_SETTINGS_APP_VERSION = PATH_SEGMENT_SETTINGS + "/app-version";

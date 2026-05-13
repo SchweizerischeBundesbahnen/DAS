@@ -99,7 +99,7 @@ public class SferaMessageCreator {
 
     private MessageHeader createMessageHeader(TrainIdentification trainIdentification) {
         Sender sender = new Sender();
-        sender.setValue(trainIdentification.company().getValue());
+        sender.setValue(trainIdentification.company().value());
         Recipient recipient = new Recipient();
         recipient.setValue(sferaRecipient);
         MessageHeader header = new MessageHeader();

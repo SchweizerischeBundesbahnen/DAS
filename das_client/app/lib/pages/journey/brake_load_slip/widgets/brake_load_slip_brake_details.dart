@@ -13,35 +13,31 @@ class BrakeLoadSlipBrakeDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SBBContentBox(
-      child: _brakeDetails(context),
-    );
-  }
-
-  Widget _brakeDetails(BuildContext context) {
-    return KeyValueTable(
-      rows: [
-        KeyValueTableDataRow.title(
-          context.l10n.p_brake_load_slip_brake_details_title,
-          hasChange: _hasChange(),
-        ),
-        SizedBox(height: SBBSpacing.xSmall),
-        KeyValueTableDataRow(
-          context.l10n.p_brake_load_slip_brake_details_brake_ratio_front,
-          formationRunChange.formationRun.gradientUphillMaxInPermille.toString(),
-          hasChange: formationRunChange.hasChanged(.gradientUphillMaxInPermille),
-        ),
-        KeyValueTableDataRow(
-          context.l10n.p_brake_load_slip_brake_details_brake_ratio_back,
-          formationRunChange.formationRun.gradientDownhillMaxInPermille.toString(),
-          hasChange: formationRunChange.hasChanged(.gradientDownhillMaxInPermille),
-        ),
-        KeyValueTableDataRow(
-          context.l10n.p_brake_load_slip_brake_details_min_holding_force,
-          formationRunChange.formationRun.slopeMaxForHoldingForceMinInPermille,
-          hasChange: formationRunChange.hasChanged(.slopeMaxForHoldingForceMinInPermille),
-        ),
-        KeyValueTableDataRow.empty(),
-      ],
+      child: KeyValueTable(
+        rows: [
+          KeyValueTableDataRow.title(
+            context.l10n.p_brake_load_slip_brake_details_title,
+            hasChange: _hasChange(),
+          ),
+          SizedBox(height: SBBSpacing.xSmall),
+          KeyValueTableDataRow(
+            context.l10n.p_brake_load_slip_brake_details_brake_ratio_front,
+            formationRunChange.formationRun.gradientUphillMaxInPermille.toString(),
+            hasChange: formationRunChange.hasChanged(.gradientUphillMaxInPermille),
+          ),
+          KeyValueTableDataRow(
+            context.l10n.p_brake_load_slip_brake_details_brake_ratio_back,
+            formationRunChange.formationRun.gradientDownhillMaxInPermille.toString(),
+            hasChange: formationRunChange.hasChanged(.gradientDownhillMaxInPermille),
+          ),
+          KeyValueTableDataRow(
+            context.l10n.p_brake_load_slip_brake_details_min_holding_force,
+            formationRunChange.formationRun.slopeMaxForHoldingForceMinInPermille,
+            hasChange: formationRunChange.hasChanged(.slopeMaxForHoldingForceMinInPermille),
+          ),
+          KeyValueTableDataRow.empty(),
+        ],
+      ),
     );
   }
 

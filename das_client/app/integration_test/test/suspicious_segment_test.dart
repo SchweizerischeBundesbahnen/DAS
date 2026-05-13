@@ -45,5 +45,20 @@ void main() {
 
       await disconnect(tester);
     });
+
+    testWidgets('T42 shows suspicious segment rows and notification after event', (tester) async {
+      await prepareAndStartApp(tester);
+      await loadJourney(tester, trainNumber: 'T42');
+
+      expect(find.byKey(SuspiciousSegmentNotification.suspiciousSegmentNotificationKey), findsNothing);
+
+      // journey update introduces invalid sp -> suspicious segments notification appears
+      await waitUntilExists(
+        tester,
+        find.byKey(SuspiciousSegmentNotification.suspiciousSegmentNotificationKey),
+      );
+
+      await disconnect(tester);
+    });
   });
 }

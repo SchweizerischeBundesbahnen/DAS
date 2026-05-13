@@ -85,11 +85,14 @@ class SferaModelMapper {
 
     journeyData.sort();
 
-    final suspiciousSegments = _parseSuspiciousSegments(
-      journeyProfile.generalJpInformation,
-      segmentProfileReferences,
-      journeyData,
-    );
+    final suspiciousSegments = [
+      ..._parseSuspiciousSegments(
+        journeyProfile.generalJpInformation,
+        segmentProfileReferences,
+        journeyData,
+      ),
+      ..._parseInvalidSegments(segmentProfileReferences),
+    ];
     _replaceAllInSuspiciousSegment(journeyData, suspiciousSegments);
 
     journeyData.sort();
@@ -169,6 +172,7 @@ class SferaModelMapper {
     final List<List<AdditionalSpeedRestriction>> grouped = [];
     var currentGroup = [restrictions.first];
 
+    // Parallel ASRs
     for (int i = 1; i < restrictions.length; i++) {
       final current = restrictions[i];
       final lastInGroup = currentGroup.getHighestByOrderTo;
@@ -181,6 +185,30 @@ class SferaModelMapper {
       }
     }
     grouped.add(currentGroup);
+
+    // Sequential ASRs
+    for (int i = 0; i < grouped.length; i++) {
+      final currentGroup = grouped[i];
+      // Don't group with other groups
+      if (currentGroup.isGrouped) continue;
+
+      for (int j = i + 1; j < grouped.length; j++) {
+        final nextGroup = grouped[j];
+        // Don't group with other groups
+        if (nextGroup.isGrouped) break;
+        if (currentGroup[0].speed != nextGroup[0].speed) break;
+
+        final currentGroupEnd = currentGroup.getHighestByOrderTo.orderTo;
+        final nextGroupStart = nextGroup.getLowestByOrderFrom.orderFrom;
+
+        final elementsBetween = journeyData.where((it) => it.order >= currentGroupEnd && it.order <= nextGroupStart);
+        if (elementsBetween.isNotEmpty) break;
+
+        currentGroup.addAll(nextGroup);
+        grouped.removeAt(j);
+        j--;
+      }
+    }
 
     final result = <AdditionalSpeedRestrictionData>[];
     for (final group in grouped) {
@@ -351,6 +379,8 @@ class SferaModelMapper {
     final changes = segmentProfileReferences
         .mapIndexed((index, reference) {
           final segmentProfile = segmentProfiles.firstMatch(reference);
+          if (segmentProfile == null) return null;
+
           final kilometreMap = parseKilometre(segmentProfile);
           final communicationNetworks = segmentProfile.contextInformation?.communicationNetworks;
 
@@ -360,10 +390,14 @@ class SferaModelMapper {
                 'CommunicationNetwork found without identical location (start=${element.startLocation} end=${element.endLocation}).',
               );
             }
+            // Simple Inter Modal network changes are displayed as foot notes and ignored in metadata
+            // https://github.com/SchweizerischeBundesbahnen/DAS/issues/1126
+            if (element.communicationNetworkType == .sim) return null;
+
             final order = calculateOrder(index, element.startLocation);
 
             return CommunicationNetworkChange(
-              communicationNetworkType: element.communicationNetworkType.communicationNetworkType,
+              communicationNetworkType: element.communicationNetworkType.communicationNetworkType!,
               order: order,
               isServicePoint: servicePointOrders.contains(order),
               kilometre: kilometreMap[element.startLocation] ?? const [],
@@ -385,9 +419,15 @@ class SferaModelMapper {
     return segmentProfileReferences
         .mapIndexed((index, reference) {
           final segmentProfile = segmentProfiles.firstMatch(reference);
+          if (segmentProfile == null) return null;
 
           final contactLists = segmentProfile.contextInformation?.contactLists;
-          return contactLists?.map((contactList) {
+
+          // Simple Inter Modal network changes are identified by having unequal start and end locations
+          // filter these, since they are displayed as foot notes and ignored in metadata
+          // https://github.com/SchweizerischeBundesbahnen/DAS/issues/1126
+          final relevantContactLists = contactLists?.whereNot((it) => it.startLocation != it.endLocation);
+          return relevantContactLists?.map((contactList) {
             final identifiableContacts = contactList.contacts.where(
               (c) => c.otherContactType != null && c.otherContactType!.contactIdentifier != null,
             );
@@ -476,6 +516,8 @@ class SferaModelMapper {
       final nonStandardIndication = reference.jpContextInformation?.nonStandardIndications.firstOrNull;
       if (nonStandardIndication?.trainRunType == .shuntingOnOpenTrack) {
         final segmentProfile = segmentProfiles.firstMatch(reference);
+        if (segmentProfile == null) continue;
+
         final segmentIndex = segmentProfiles.indexOf(segmentProfile);
 
         final constraint = nonStandardIndication!.constraint;
@@ -756,6 +798,32 @@ class SferaModelMapper {
       );
     }
     return result;
+  }
+
+  static List<SuspiciousSegment> _parseInvalidSegments(
+    List<SegmentProfileReferenceDto> segmentProfileReferences,
+  ) {
+    return segmentProfileReferences
+        .mapIndexed((index, segment) {
+          if (segment.spId == SegmentProfileMapper.invalidSpId) {
+            _log.warning(
+              'Received reference to segment profile with empty id. This segment will be marked as suspicious.',
+            );
+
+            return SuspiciousSegment(
+              spId: segment.spId,
+              startOrder: calculateOrder(index, 0),
+
+              /// endOrder null will make it apply (and remove) to all data after startOrder
+              /// see [_replaceAllInSuspiciousSegment] and [SuspiciousSegment.appliesToOrder]
+              endOrder: null,
+            );
+          }
+
+          return null;
+        })
+        .nonNulls
+        .toList();
   }
 
   static void _replaceAllInSuspiciousSegment(List<BaseData> journeyData, List<SuspiciousSegment> suspiciousSegments) {

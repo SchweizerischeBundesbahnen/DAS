@@ -4,31 +4,17 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 class ThemeUtil {
   const ThemeUtil._();
 
-  static Color getIconColor(BuildContext context) {
-    return SBBBaseStyle.of(context).themeValue(SBBColors.black, SBBColors.white);
-  }
-
   static Color getColor(BuildContext context, Color bright, Color dark) {
-    return SBBBaseStyle.of(context).themeValue(bright, dark);
+    return Theme.of(context).sbbBaseStyle.themeValue(bright, dark);
   }
 
-  static Color getDASTableColor(BuildContext context) {
-    return SBBBaseStyle.of(context).themeValue(SBBColors.white, SBBColors.charcoal);
-  }
+  static Color getIconColor(BuildContext context) => Theme.of(context).sbbBaseStyle.colorScheme.iconPrimary!;
 
-  static Color getDASTableBorderColor(BuildContext context) {
-    return SBBBaseStyle.of(context).themeValue(SBBColors.cloud, SBBColors.iron);
-  }
+  static Color getDASTableColor(BuildContext context) => getColor(context, SBBColors.white, SBBColors.charcoal);
 
-  static Color getFontColor(BuildContext context) {
-    return SBBBaseStyle.of(context).themeValue(SBBColors.white, SBBColors.charcoal);
-  }
+  static Color getDASTableBorderColor(BuildContext context) => getColor(context, SBBColors.cloud, SBBColors.iron);
 
-  static Color getBackgroundColor(BuildContext context) {
-    return Theme.of(context).scaffoldBackgroundColor;
-  }
+  static Color getBackgroundColor(BuildContext context) => Theme.of(context).scaffoldBackgroundColor;
 
-  static bool isDarkMode(BuildContext context) {
-    return SBBBaseStyle.of(context).brightness == .dark;
-  }
+  static bool isDarkMode(BuildContext context) => Theme.of(context).brightness == .dark;
 }

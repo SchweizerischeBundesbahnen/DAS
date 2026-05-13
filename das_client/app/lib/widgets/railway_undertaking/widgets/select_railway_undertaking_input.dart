@@ -16,59 +16,40 @@ class SelectRailwayUndertakingInput extends StatefulWidget {
     super.key,
     this.isModalVersion = false,
     this.allowMultiSelect = false,
-    this.isLastElement = false,
   });
 
   final List<RailwayUndertaking> selectedRailwayUndertakings;
   final void Function(List<RailwayUndertaking>) updateRailwayUndertaking;
   final bool isModalVersion;
   final bool allowMultiSelect;
-  final bool isLastElement;
 
   @override
   State<SelectRailwayUndertakingInput> createState() => _RailwayUndertakingTextFieldState();
 }
 
 class _RailwayUndertakingTextFieldState extends State<SelectRailwayUndertakingInput> {
-  // updates the disabled text field which is tapped to show modal
-  TextEditingController? baseTextEditingController;
+  String? selectedValues;
 
   @override
   void didUpdateWidget(covariant SelectRailwayUndertakingInput oldWidget) {
     if (widget.selectedRailwayUndertakings != oldWidget.selectedRailwayUndertakings) {
-      baseTextEditingController?.text = widget.selectedRailwayUndertakings
-          .map((it) => it.displayText(context))
-          .join(', ');
+      selectedValues = widget.selectedRailwayUndertakings.map((it) => it.displayText(context)).join(', ');
     }
     super.didUpdateWidget(oldWidget);
   }
 
   @override
   void didChangeDependencies() {
-    baseTextEditingController ??= TextEditingController(
-      text: widget.selectedRailwayUndertakings.map((it) => it.displayText(context)).join(', '),
-    );
+    selectedValues ??= widget.selectedRailwayUndertakings.map((it) => it.displayText(context)).join(', ');
     super.didChangeDependencies();
   }
 
   @override
-  void dispose() {
-    baseTextEditingController?.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).sbbBaseStyle.colorScheme;
     return Padding(
       padding: widget.isModalVersion ? .zero : _inputPadding,
-      child: GestureDetector(
-        child: SBBTextField(
-          enabled: false,
-          controller: baseTextEditingController,
-          labelText: widget.isModalVersion ? null : context.l10n.p_train_selection_ru_description,
-          hintText: widget.isModalVersion ? context.l10n.p_train_selection_ru_description : null,
-          isLastElement: widget.isLastElement,
-        ),
+      child: SBBDecoratedText(
         onTap: () {
           showModalBottomSheet(
             context: context,
@@ -84,15 +65,22 @@ class _RailwayUndertakingTextFieldState extends State<SelectRailwayUndertakingIn
             ),
           );
         },
+        decoration: SBBInputDecoration(
+          labelText: widget.isModalVersion ? null : context.l10n.p_train_selection_ru_description,
+          placeholderText: widget.isModalVersion ? context.l10n.p_train_selection_ru_description : null,
+          // TODO: remove when DSM applies correct border to unlisted/unboxed elements
+          borderColor: WidgetStateProperty.fromMap(<WidgetStatesConstraint, Color?>{
+            WidgetState.error: colorScheme.error,
+            WidgetState.focused: colorScheme.strokePrimary,
+            WidgetState.any: colorScheme.strokeSeparator,
+          }),
+        ),
+        value: selectedValues ?? '',
       ),
     );
   }
 
-  Color _modalBackgroundColor(BuildContext context) => ThemeUtil.getColor(
-    context,
-    SBBColors.cloud,
-    SBBColors.charcoal,
-  );
+  Color _modalBackgroundColor(BuildContext context) => ThemeUtil.getColor(context, SBBColors.cloud, SBBColors.charcoal);
 
   BoxConstraints get _modalConstraints => BoxConstraints(
     maxWidth: DeviceScreen.width - SBBSpacing.medium,

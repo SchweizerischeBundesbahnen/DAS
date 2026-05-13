@@ -14,8 +14,8 @@ class UserHeaderBox extends StatelessWidget {
       builder: (context, asyncSnapshot) {
         final subtitleColor = ThemeUtil.getColor(context, SBBColors.granite, SBBColors.graphite);
 
-        return SBBHeaderbox.custom(
-          child: Row(
+        return SBBHeaderBox(
+          title: Row(
             spacing: SBBSpacing.small,
             children: [
               const Icon(SBBIcons.user_small),

@@ -1,16 +1,26 @@
 <sbb-icon-sidebar-container>
-  @if (oidcSecurityService.authenticated().isAuthenticated) {
+  @if (authService.isAuthenticated()) {
     <sbb-icon-sidebar color="white">
-      <sbb-icon-sidebar-link sbb-tooltip="Menu 1" i18n-sbb-tooltip="@@sidebar_link_menu1_tooltip" icon-name="avatar-train-staff-das-small"></sbb-icon-sidebar-link>
-      <sbb-icon-sidebar-link sbb-tooltip="Admin EVU" i18n-sbb-tooltip="@@sidebar_link_admin_evu_tooltip" icon-name="platform-small"></sbb-icon-sidebar-link>
-      <sbb-icon-sidebar-button sbb-tooltip="Admin DAS" i18n-sbb-tooltip="@@sidebar_button_admin_das_tooltip" icon-name="gears-small" class="sbb-active"></sbb-icon-sidebar-button>
+      <sbb-icon-sidebar-link i18n-sbb-tooltip="@@sidebar_link_menu1_tooltip"
+                             iconName="avatar-train-staff-das-small"
+                             sbb-tooltip="Menu 1"></sbb-icon-sidebar-link>
+      @if (authService.isRuAdmin()) {
+        <sbb-icon-sidebar-link i18n-sbb-tooltip="@@sidebar_link_admin_evu_tooltip"
+                               iconName="platform-small"
+                               routerLink="ru-admin"
+                               routerLinkActive="sbb-active"
+                               sbb-tooltip="Admin EVU"></sbb-icon-sidebar-link>
+      }
+      @if (authService.isAdmin()) {
+        <sbb-icon-sidebar-link i18n-sbb-tooltip="@@sidebar_button_admin_das_tooltip"
+                               iconName="gears-small"
+                               routerLink="das-admin"
+                               routerLinkActive="sbb-active"
+                               sbb-tooltip="Admin DAS"></sbb-icon-sidebar-link>
+      }
     </sbb-icon-sidebar>
   }
-  <sbb-icon-sidebar-content>
-    <sbb-icon-sidebar-container>
-      <sbb-icon-sidebar-content>
-        <ng-content/>
-      </sbb-icon-sidebar-content>
-    </sbb-icon-sidebar-container>
+  <sbb-icon-sidebar-content id="content" role="main" sbb-header-scroll-origin>
+    <ng-content/>
   </sbb-icon-sidebar-content>
 </sbb-icon-sidebar-container>

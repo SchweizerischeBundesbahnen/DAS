@@ -1,0 +1,71 @@
+<sbb-dialog-title>{{ title }}</sbb-dialog-title>
+<sbb-dialog-content>
+  <form [formGroup]="noticeTemplateForm">
+    <div class="category">
+    <sbb-title i18n="@@notice_templates_form_category_title" visualLevel="5">Kategorie erstellen</sbb-title>
+    <sbb-form-field errorSpace="reserve">
+      <label for="category" i18n="@@notice_templates_form_category_label">Name der Kategorie eingeben</label>
+      <input formControlName="category" id="category" required/>
+      @if (noticeTemplateForm.touched) {
+        @if (noticeTemplateForm.get('category')?.hasError('required')) {
+          <sbb-error i18n="@@notice_templates_form_field_error_required">Feld darf nicht leer sein</sbb-error>
+        }
+      }
+    </sbb-form-field>
+    </div>
+     <sbb-tab-group>
+       <sbb-tab-label [iconName]="isLanguageEmpty('de') ? 'circle-dotted-small' : ''">DE</sbb-tab-label>
+       <sbb-tab formGroupName="de">
+         <sbb-form-field errorSpace="reserve">
+           <label for="deTitle" i18n="@@notice_templates_form_title_label">Titel</label>
+           <input formControlName="title" id="deTitle"/>
+           @if (noticeTemplateForm.get('de')?.hasError('titleRequired') && noticeTemplateForm.get('de.title')?.touched) {
+             <sbb-error i18n="@@notice_templates_form_field_error_required">Feld darf nicht leer sein</sbb-error>
+           }
+         </sbb-form-field>
+         <sbb-form-field>
+           <label for="deText" i18n="@@notice_templates_form_text_label">Text</label>
+           <textarea formControlName="text" id="deText"></textarea>
+         </sbb-form-field>
+       </sbb-tab>
+
+       <sbb-tab-label [iconName]="isLanguageEmpty('fr') ? 'circle-dotted-small' : ''">FR</sbb-tab-label>
+       <sbb-tab formGroupName="fr">
+         <sbb-form-field errorSpace="reserve">
+           <label for="frTitle" i18n="@@notice_templates_form_title_label">Titel</label>
+           <input formControlName="title" id="frTitle"/>
+           @if (noticeTemplateForm.get('fr')?.hasError('titleRequired') && noticeTemplateForm.get('fr.title')?.touched) {
+             <sbb-error i18n="@@notice_templates_form_field_error_required">Feld darf nicht leer sein</sbb-error>
+           }
+         </sbb-form-field>
+         <sbb-form-field>
+           <label for="frText" i18n="@@notice_templates_form_text_label">Text</label>
+           <textarea formControlName="text" id="frText"></textarea>
+         </sbb-form-field>
+       </sbb-tab>
+
+       <sbb-tab-label [iconName]="isLanguageEmpty('it') ? 'circle-dotted-small' : ''">IT</sbb-tab-label>
+       <sbb-tab formGroupName="it">
+         <sbb-form-field errorSpace="reserve">
+           <label for="itTitle" i18n="@@notice_templates_form_title_label">Titel</label>
+           <input formControlName="title" id="itTitle"/>
+           @if (noticeTemplateForm.get('it')?.hasError('titleRequired') && noticeTemplateForm.get('it.title')?.touched) {
+             <sbb-error i18n="@@notice_templates_form_field_error_required">Feld darf nicht leer sein</sbb-error>
+           }
+         </sbb-form-field>
+         <sbb-form-field>
+           <label for="itText" i18n="@@notice_templates_form_text_label">Text</label>
+           <textarea formControlName="text" id="itText"></textarea>
+         </sbb-form-field>
+       </sbb-tab>
+     </sbb-tab-group>
+
+  </form>
+</sbb-dialog-content>
+<sbb-dialog-actions alignGroup="stretch">
+  <sbb-secondary-button align-self="start" i18n="@@notice_templates_dialog_button_cancel" sbb-dialog-close>Abbrechen</sbb-secondary-button>
+  @if (isEdit) {
+    <sbb-transparent-button i18n="@@notice_templates_dialog_button_delete" iconName="trash-small" sbb-dialog-close="delete">Titel und Text löschen</sbb-transparent-button>
+  }
+  <sbb-button [disabled]="noticeTemplateForm.invalid" [sbb-dialog-close]="formValue" i18n="@@notice_templates_dialog_button_save">Speichern</sbb-button>
+</sbb-dialog-actions>

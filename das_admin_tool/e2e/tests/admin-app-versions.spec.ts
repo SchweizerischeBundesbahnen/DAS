@@ -15,7 +15,7 @@ test.describe('admin app versions test', () => {
   }
 
   test('create, edit and delete app version | tests: 1406', async ({page}) => {
-    await page.goto('');
+    await page.goto('das-admin');
     const addButton = page.getByText('App Version blockieren', {exact: true});
 
     await expect(addButton).toBeVisible();
@@ -39,7 +39,6 @@ test.describe('admin app versions test', () => {
     await expect(row.getByRole('cell', {name: TEST_VERSION, exact: true})).toBeVisible();
     await expect(row.locator('td').filter({hasText: 'Nein'})).toBeVisible();
     await expect(row.getByRole('cell', {name: TEST_DATE, exact: true})).toBeVisible();
-
 
     // edit
     await editButton.click();

@@ -45,12 +45,12 @@ class SegmentProfileDto extends SferaXmlElementDto {
 }
 
 extension SegmentProfileListExtension on Iterable<SegmentProfileDto> {
-  SegmentProfileDto firstMatch(SegmentProfileReferenceDto segmentProfileReference) {
+  SegmentProfileDto? firstMatch(SegmentProfileReferenceDto segmentProfileReference) {
     return where(
       (it) =>
           it.id == segmentProfileReference.spId &&
           it.versionMajor == segmentProfileReference.versionMajor &&
           it.versionMinor == segmentProfileReference.versionMinor,
-    ).first;
+    ).firstOrNull;
   }
 }

@@ -15,6 +15,9 @@ class FootNote {
   final String? identifier;
   final List<TrainSeries> trainSeries;
 
+  // Whether this foot note is for indication of networking in a Simplon Inter Modal corridor
+  bool get isSIM => type == .contact && refText == 'SIM';
+
   @override
   String toString() {
     return 'FootNote{text: $text, type: $type, refText: $refText, identifier: $identifier, trainSeries: $trainSeries}';

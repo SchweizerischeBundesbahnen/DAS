@@ -138,4 +138,25 @@ void main() {
 
     await disconnect(tester);
   });
+
+  testWidgets('test sequential additional speed restriction row is displayed correctly', (tester) async {
+    await prepareAndStartApp(tester);
+    await loadJourney(tester, trainNumber: 'T43');
+
+    final scrollableFinder = find.byType(AnimatedList);
+    expect(scrollableFinder, findsOneWidget);
+
+    final asrRows = findDASTableRowByText('km 58.840 - km 56.062');
+    expect(asrRows, findsAtLeast(1));
+
+    final asrRow = asrRows.first;
+
+    // check count badge
+    final asrCountBadge = find.descendant(of: asrRow, matching: find.byKey(LabeledBadge.labeledBadgeKey));
+    expect(asrCountBadge, findsOneWidget);
+    final countBadgeText = find.descendant(of: asrCountBadge, matching: find.text('2'));
+    expect(countBadgeText, findsOneWidget);
+
+    await disconnect(tester);
+  });
 }

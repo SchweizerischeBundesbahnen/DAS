@@ -24,59 +24,57 @@ class JourneySearchOverlay extends StatelessWidget {
     return AnchoredFullPageOverlay(
       targetAnchor: .bottomLeft,
       followerAnchor: .topLeft,
-      triggerBuilder: (_, showOverlay) {
-        return InkWell(
-          key: journeySearchWidgetKey,
-          borderRadius: BorderRadius.circular(SBBSpacing.xSmall),
-          child: child,
-          onTap: () {
-            viewModel.dismissSelection();
-            showOverlay();
+      triggerBuilder: (_, showOverlay) => InkWell(
+        key: journeySearchWidgetKey,
+        borderRadius: BorderRadius.circular(SBBSpacing.xSmall),
+        child: child,
+        onTap: () {
+          viewModel.dismissSelection();
+          showOverlay();
+        },
+      ),
+      contentBuilder: (_, hideOverlay) => Provider(
+        create: (_) => DI.get<JourneySelectionViewModel>(),
+        child: Builder(
+          builder: (context) {
+            return Column(
+              mainAxisAlignment: .start,
+              spacing: SBBSpacing.medium,
+              children: [
+                _header(context, hideOverlay),
+                _inputFields(context),
+                _loadJourneyButton(context, hideOverlay),
+              ],
+            );
           },
-        );
-      },
-      contentBuilder: (_, hideOverlay) {
-        return Provider(
-          create: (_) => DI.get<JourneySelectionViewModel>(),
-          child: Builder(
-            builder: (context) {
-              return Column(
-                mainAxisAlignment: .start,
-                children: [
-                  _header(context, hideOverlay),
-                  SizedBox(height: SBBSpacing.medium),
-                  SBBContentBox(child: _inputFields(context)),
-                  _loadJourneyButton(context, hideOverlay),
-                ],
-              );
-            },
-          ),
-        );
-      },
+        ),
+      ),
     );
   }
 
   Widget _inputFields(BuildContext context) {
     final vm = context.read<JourneySelectionViewModel>();
 
-    return Column(
-      crossAxisAlignment: .start,
-      children: [
-        JourneyDateInput(isModalVersion: true),
-        StreamBuilder(
-          stream: vm.model,
-          initialData: vm.modelValue,
-          builder: (context, asyncSnapshot) {
-            final model = asyncSnapshot.requireData;
-            return SelectRailwayUndertakingInput(
-              isModalVersion: true,
-              selectedRailwayUndertakings: [model.railwayUndertaking],
-              updateRailwayUndertaking: vm.updateRailwayUndertaking,
-            );
-          },
-        ),
-        JourneyTrainNumberInput(isModalVersion: true),
-      ],
+    return SBBContentBox(
+      child: Column(
+        crossAxisAlignment: .start,
+        children: [
+          JourneyDateInput(isModalVersion: true),
+          StreamBuilder(
+            stream: vm.model,
+            initialData: vm.modelValue,
+            builder: (context, snapshot) {
+              final model = snapshot.requireData;
+              return SelectRailwayUndertakingInput(
+                isModalVersion: true,
+                selectedRailwayUndertakings: [model.railwayUndertaking],
+                updateRailwayUndertaking: vm.updateRailwayUndertaking,
+              );
+            },
+          ),
+          JourneyTrainNumberInput(isModalVersion: true),
+        ],
+      ),
     );
   }
 
@@ -95,10 +93,10 @@ class JourneySearchOverlay extends StatelessWidget {
           stream: viewModel.model,
           builder: (context, snapshot) {
             final isLoading = snapshot.data is Loading;
-            return SBBIconButtonSmall(
+            return SBBTertiaryButtonSmall(
               key: JourneySearchOverlay.journeySearchCloseKey,
               onPressed: isLoading ? null : () => hideOverlay(),
-              icon: SBBIcons.cross_small,
+              iconData: SBBIcons.cross_small,
             );
           },
         ),
@@ -113,26 +111,19 @@ class JourneySearchOverlay extends StatelessWidget {
       builder: (context, snapshot) {
         final model = snapshot.data;
 
-        Widget wrapWithPadding(Widget child) => Padding(
-          padding: const .symmetric(vertical: SBBSpacing.medium, horizontal: SBBSpacing.xSmall),
-          child: child,
-        );
-
         final buttonLabel = context.l10n.c_button_confirm;
         return switch (model) {
-          final Loading _ => wrapWithPadding(SBBPrimaryButton(label: buttonLabel, onPressed: null, isLoading: true)),
-          final Selecting s => wrapWithPadding(
-            SBBPrimaryButton(
-              label: buttonLabel,
-              onPressed: s.isInputComplete
-                  ? () {
-                      hideOverlay();
-                      viewModel.loadJourney();
-                    }
-                  : null,
-            ),
+          final Loading _ => SBBPrimaryButton(labelText: buttonLabel, onPressed: null, isLoading: true),
+          final Selecting s => SBBPrimaryButton(
+            labelText: buttonLabel,
+            onPressed: s.isInputComplete
+                ? () {
+                    hideOverlay();
+                    viewModel.loadJourney();
+                  }
+                : null,
           ),
-          _ => wrapWithPadding(SBBPrimaryButton(label: buttonLabel, onPressed: null)),
+          _ => SBBPrimaryButton(labelText: buttonLabel, onPressed: null),
         };
       },
     );

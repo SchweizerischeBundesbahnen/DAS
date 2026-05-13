@@ -46,6 +46,7 @@ class Accordion extends StatelessWidget {
     this.margin,
     this.borderRadius,
     this.additionalPadding,
+    this.border,
   });
 
   final String title;
@@ -57,6 +58,7 @@ class Accordion extends StatelessWidget {
   final EdgeInsetsGeometry? additionalPadding;
   final EdgeInsetsGeometry? margin;
   final BorderRadiusGeometry? borderRadius;
+  final Border? border;
 
   @override
   Widget build(BuildContext context) {
@@ -68,17 +70,18 @@ class Accordion extends StatelessWidget {
   }
 
   Widget _accordion(BuildContext context) {
-    final style = SBBControlStyles.of(context);
+    final colorScheme = Theme.of(context).sbbBaseStyle.colorScheme;
     return InkWell(
       onTap: () => toggleCallback(),
       child: Container(
         decoration: BoxDecoration(
-          color: backgroundColor ?? style.accordionBackgroundColor,
+          color: backgroundColor ?? colorScheme.backgroundContent,
           borderRadius:
               borderRadius ??
               BorderRadius.all(
                 Radius.circular(isExpanded ? SBBSpacing.medium : SBBSpacing.xSmall),
               ),
+          border: border,
         ),
         padding: .symmetric(
           vertical: isExpanded ? _expandedVerticalPadding : _collapsedVerticalPadding,

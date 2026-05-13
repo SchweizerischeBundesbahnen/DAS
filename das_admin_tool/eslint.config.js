@@ -38,6 +38,9 @@ module.exports = tseslint.config(
       ...angular.configs.templateRecommended,
       ...angular.configs.templateAccessibility,
     ],
-    rules: {},
+    rules: {
+      // sbb-form-field handles label association internally
+      "@angular-eslint/template/label-has-associated-control": "off",
+    },
   }
 );

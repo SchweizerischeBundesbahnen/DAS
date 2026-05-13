@@ -35,9 +35,7 @@ class DepartureProcessDialog extends StatelessWidget {
 
   static const _maxWidth = 352.0;
 
-  const DepartureProcessDialog({
-    super.key,
-  });
+  const DepartureProcessDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +77,7 @@ class DepartureProcessDialog extends StatelessWidget {
         child: Row(
           children: [
             Expanded(child: Text(context.l10n.w_departure_process_dialog_title, style: SBBTextStyles.largeLight)),
-            SBBIconButtonSmall(icon: SBBIcons.cross_small, onPressed: context.router.pop),
+            SBBTertiaryButtonSmall(iconData: SBBIcons.cross_small, onPressed: context.router.pop),
           ],
         ),
       ),
@@ -130,43 +128,25 @@ class DepartureProcessDialog extends StatelessWidget {
   Widget _staticDepartureProcessChecklist(BuildContext context, ChecklistDepartureProcessModel model) {
     final isCustomerOrientedDepartureActive = model is CustomerOrientedDepartureChecklist;
     return SBBContentBox(
-      child: Column(
-        mainAxisSize: .min,
-        children: [
-          SBBListItem.custom(
-            title: context.l10n.w_departure_process_checklist_item_1,
-            onPressed: null,
-            enabled: true,
-            trailingWidget: SizedBox.shrink(),
+      child: IgnorePointer(
+        child: Column(
+          mainAxisSize: .min,
+          children: SBBDivider.divideItems(
+            context: context,
+            items: [
+              SBBListItem(titleText: context.l10n.w_departure_process_checklist_item_1, onTap: () {}),
+              SBBListItem(titleText: context.l10n.w_departure_process_checklist_item_2, onTap: () {}),
+              SBBListItem(
+                titleText: isCustomerOrientedDepartureActive
+                    ? context.l10n.w_departure_process_checklist_item_3_customer_oriented_departure
+                    : context.l10n.w_departure_process_checklist_item_3,
+                onTap: () {},
+              ),
+              SBBListItem(titleText: context.l10n.w_departure_process_checklist_item_4, onTap: () {}),
+              SBBListItem(titleText: context.l10n.w_departure_process_checklist_item_5, onTap: () {}),
+            ],
           ),
-          SBBListItem.custom(
-            title: context.l10n.w_departure_process_checklist_item_2,
-            onPressed: null,
-            enabled: true,
-            trailingWidget: SizedBox.shrink(),
-          ),
-          SBBListItem.custom(
-            title: isCustomerOrientedDepartureActive
-                ? context.l10n.w_departure_process_checklist_item_3_customer_oriented_departure
-                : context.l10n.w_departure_process_checklist_item_3,
-            onPressed: null,
-            enabled: true,
-            trailingWidget: SizedBox.shrink(),
-          ),
-          SBBListItem.custom(
-            title: context.l10n.w_departure_process_checklist_item_4,
-            onPressed: null,
-            enabled: true,
-            trailingWidget: SizedBox.shrink(),
-          ),
-          SBBListItem.custom(
-            title: context.l10n.w_departure_process_checklist_item_5,
-            onPressed: null,
-            enabled: true,
-            trailingWidget: SizedBox.shrink(),
-            isLastElement: true,
-          ),
-        ],
+        ),
       ),
     );
   }

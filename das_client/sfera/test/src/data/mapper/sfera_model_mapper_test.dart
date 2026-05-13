@@ -1430,7 +1430,7 @@ void main() {
 
     final radioContactLists = journey.metadata.radioContactLists.toList();
 
-    expect(radioContactLists.length, 8);
+    expect(radioContactLists.length, 6);
     expect(radioContactLists[0].mainContacts.length, 1);
     expect(radioContactLists[0].mainContacts.first.contactIdentifier, '1407');
     expect(radioContactLists[1].mainContacts.length, 3);
@@ -1446,15 +1446,16 @@ void main() {
     expect(radioContactLists[4].selectiveContacts.first.contactIdentifier, '1103');
     expect(radioContactLists[4].selectiveContacts.first.contactRole, 'Richtung Süd: Fahrdienstleiter');
     expect(radioContactLists[5].mainContacts.length, 1);
-    expect(radioContactLists[5].selectiveContacts.length, 3);
-    expect(radioContactLists[5].selectiveContacts.first.contactIdentifier, '1103');
-    expect(radioContactLists[5].selectiveContacts.first.contactRole, 'Richtung Süd: Fahrdienstleiter');
-    expect(radioContactLists[6].mainContacts.length, 1);
-    expect(radioContactLists[6].selectiveContacts.length, 3);
-    expect(radioContactLists[6].selectiveContacts.first.contactIdentifier, '1103');
-    expect(radioContactLists[6].selectiveContacts.first.contactRole, 'Richtung Süd: Fahrdienstleiter');
-    expect(radioContactLists[7].mainContacts.length, 1);
-    expect(radioContactLists[7].mainContacts.first.contactIdentifier, '1407');
+    expect(radioContactLists[5].mainContacts.first.contactIdentifier, '1407');
+
+    // sim corridor gets mapped to a track foot note
+    final trackFootNotes = journey.data.whereType<TrackFootNote>().toList();
+    expect(trackFootNotes, hasLength(4));
+    expect(trackFootNotes.every((it) => it.footNote.refText == 'SIM' && it.footNote.type == .contact), isTrue);
+    expect(trackFootNotes[0].footNote.text, isEmpty);
+    expect(trackFootNotes[1].footNote.text, isNotEmpty);
+    expect(trackFootNotes[2].footNote.text, isEmpty);
+    expect(trackFootNotes[3].footNote.text, isNotEmpty);
   });
 
   test('Test SIM ContactList T20 parsed correctly', () async {
@@ -1463,21 +1464,15 @@ void main() {
 
     final radioContactLists = journey.metadata.radioContactLists.toList();
 
-    expect(radioContactLists.length, 9);
+    expect(radioContactLists.length, 6);
     expect(radioContactLists[0].mainContacts.length, 1);
     expect(radioContactLists[0].mainContacts.first.contactIdentifier, '1305');
     expect(radioContactLists[0].isSimCorridor, false);
-    expect(radioContactLists[1].selectiveContacts.length, 1);
-    expect(radioContactLists[1].selectiveContacts.first.contactIdentifier, '1390');
-    expect(radioContactLists[1].selectiveContacts.first.contactRole, 'Frutigen - Kandergrund');
-    expect(radioContactLists[1].isSimCorridor, true);
+    expect(radioContactLists[1].isSimCorridor, false);
     expect(radioContactLists[2].isSimCorridor, false);
     expect(radioContactLists[3].isSimCorridor, false);
     expect(radioContactLists[4].isSimCorridor, false);
-    expect(radioContactLists[5].isSimCorridor, true);
-    expect(radioContactLists[6].isSimCorridor, false);
-    expect(radioContactLists[7].isSimCorridor, true);
-    expect(radioContactLists[8].isSimCorridor, false);
+    expect(radioContactLists[5].isSimCorridor, false);
   });
 
   test('Test DecisiveGradientArea parsed correctly', () {
@@ -2055,6 +2050,48 @@ void main() {
       (p) => p is! SuspiciousJourneyPoint && suspiciousSegments.any((s) => s.appliesToOrder(p.order)),
     );
     expect(dataInSuspiciousSegments, isEmpty);
+  });
+
+  test('Test invalid sp is parsed as suspicious segment in T42 event', () {
+    final testJourneys = TestJourneyRepository.getFromClientTestResources(filter: 'T42_invalid_sp').toList();
+
+    expect(testJourneys, hasLength(2));
+    final journey1 = testJourneys[0].journey;
+    expect(journey1.valid, isTrue);
+    final suspiciousSegments = journey1.metadata.suspiciousSegments;
+    expect(suspiciousSegments, hasLength(0));
+
+    final journey2 = testJourneys[1].journey;
+    expect(journey2.valid, isTrue);
+    final suspiciousSegments2 = journey2.metadata.suspiciousSegments;
+    expect(suspiciousSegments2, hasLength(1));
+    expect(suspiciousSegments2.first.startOrder, 100000);
+
+    // Check that all points after the suspicious segment are removed
+    expect(journey2.data, hasLength(11));
+    expect(journey2.data.last, isA<SuspiciousJourneyPoint>());
+  });
+
+  test('Test sequential additional speed restrictions are parsed correctly', () async {
+    final journey = getJourney('T43');
+    final speedRestrictions = journey.data
+        .where((it) => it.dataType == .additionalSpeedRestriction)
+        .cast<AdditionalSpeedRestrictionData>()
+        .toList();
+
+    expect(journey.valid, true);
+    expect(speedRestrictions, hasLength(6));
+
+    expect(speedRestrictions[0].restrictions, hasLength(2));
+    expect(speedRestrictions[1].restrictions, hasLength(1));
+    expect(speedRestrictions[2].restrictions, hasLength(2));
+    expect(speedRestrictions[3].restrictions, hasLength(1));
+    expect(speedRestrictions[4].restrictions, hasLength(1));
+    expect(speedRestrictions[5].restrictions, hasLength(1));
+
+    expect(speedRestrictions[0].speed, 80);
+    expect(speedRestrictions[0].kmFrom, 58.840);
+    expect(speedRestrictions[0].kmTo, 56.062);
   });
 }
 
