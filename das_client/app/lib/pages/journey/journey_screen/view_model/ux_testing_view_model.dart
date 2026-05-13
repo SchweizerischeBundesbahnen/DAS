@@ -41,8 +41,10 @@ class UxTestingViewModel {
 
   void _init() {
     _eventSubscription = _sferaRepo.uxTestingEventStream.listen((data) async {
-      // koa events are handled by [SferaMockCustomerOrientedDepartureRepositoryImpl]
       if (data == null) {
+        return;
+      } else if (data.isKoa) {
+        // koa events are handled by [SferaMockCustomerOrientedDepartureRepositoryImpl]
         return;
       } else if (data.isConnectivity) {
         _handleConnectivityEvent(data);

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:customer_oriented_departure/component.dart';
 import 'package:customer_oriented_departure/src/api/customer_oriented_departure_api_service.dart';
-import 'package:customer_oriented_departure/src/api/subscribe/request.dart';
 import 'package:customer_oriented_departure/src/messaging/firebase/dto/train_status_message_dto.dart';
 import 'package:customer_oriented_departure/src/messaging/messaging_service.dart';
 import 'package:logging/logging.dart';
@@ -11,10 +10,10 @@ import 'package:uuid/uuid.dart';
 
 final _log = Logger('CustomerOrientedDepartureRepositoryImpl');
 
-// todo: check with GEMS
-final _defaultExpireDuration = Duration(hours: 2);
-
 class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartureRepository {
+  // todo: check with GEMS
+  static const _defaultExpireDuration = Duration(hours: 2);
+
   CustomerOrientedDepartureRepositoryImpl({
     required this.apiService,
     required this.messagingService,
@@ -33,8 +32,8 @@ class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartu
   _Subscription? _pendingOrOpenSubscription;
 
   void _init() {
-    _initToken();
-    _initMessages();
+    _initTokenSubscription();
+    _initMessagesSubscription();
   }
 
   @override
@@ -72,7 +71,7 @@ class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartu
       return false;
     }
 
-    return _sendRegisterRequest(subscription: subscription);
+    return _sendSubscribeRequest(subscription: subscription);
   }
 
   @override
@@ -91,8 +90,7 @@ class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartu
     }
 
     try {
-      await apiService.subscribe(
-        type: SubscribeRequestType.deregister,
+      await apiService.unsubscribe(
         evu: evu,
         trainNumber: trainNumber,
         pushToken: pushToken,
@@ -121,12 +119,11 @@ class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartu
     }
   }
 
-  Future<bool> _sendRegisterRequest({required _Subscription subscription}) async {
+  Future<bool> _sendSubscribeRequest({required _Subscription subscription}) async {
     final evu = subscription.evu;
     final trainNumber = subscription.trainNumber;
     try {
       await apiService.subscribe(
-        type: SubscribeRequestType.register,
         evu: evu,
         trainNumber: trainNumber,
         pushToken: subscription.pushToken!,
@@ -143,17 +140,17 @@ class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartu
     }
   }
 
-  void _initToken() {
+  void _initTokenSubscription() {
     final sub = messagingService.token.listen((token) {
       if (token != null && _pendingOrOpenSubscription != null && _pendingOrOpenSubscription!.pushToken != token) {
         _log.info('Received new push token for open/pending subscription');
-        _sendRegisterRequest(subscription: _pendingOrOpenSubscription!.withToken(token: token));
+        _sendSubscribeRequest(subscription: _pendingOrOpenSubscription!.withToken(token: token));
       }
     });
     _subscriptions.add(sub);
   }
 
-  void _initMessages() {
+  void _initMessagesSubscription() {
     final sub = messagingService.message.listen((message) {
       if (message is TrainStatusMessageDto) {
         _handleTrainStatusMessage(message);

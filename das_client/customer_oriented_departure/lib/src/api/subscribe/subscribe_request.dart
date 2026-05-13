@@ -1,18 +1,18 @@
 import 'dart:io';
 
-import 'package:customer_oriented_departure/src/api/subscribe/request_body.dart';
+import 'package:customer_oriented_departure/src/api/subscribe/subscribe_request_body.dart';
 import 'package:http_x/component.dart';
 
 enum SubscribeRequestType { register, deregister }
 
 class SubscribeRequest {
-  const SubscribeRequest({required this.httpClient, required this.baseUrl});
+  const SubscribeRequest({required this.requestType, required this.httpClient, required this.baseUrl});
 
   final Client httpClient;
   final String baseUrl;
+  final SubscribeRequestType requestType;
 
   Future<SubscribeResponse> call({
-    required SubscribeRequestType type,
     required String evu,
     required String trainNumber,
     required String pushToken,
@@ -23,7 +23,7 @@ class SubscribeRequest {
   }) async {
     final url = Uri.https(baseUrl, 'v1/customer-oriented-departure/subscribe');
     final requestBody = SubscribeRequestBody(
-      type: type.name.toUpperCase(),
+      type: requestType.name.toUpperCase(),
       evu: evu,
       driver: isDriver,
       messageId: messageId,

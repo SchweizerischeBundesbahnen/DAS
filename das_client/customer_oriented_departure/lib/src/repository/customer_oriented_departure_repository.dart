@@ -7,7 +7,8 @@ abstract class CustomerOrientedDepartureRepository {
 
   /// Subscribes to customer oriented departure updates for the given train.
   ///
-  /// [journeyEndTime] is set to define the end of the subscription. If null, a default value is used.
+  /// [journeyEndTime] is set to define the end of the subscription.
+  /// If null, default value [CustomerOrientedDepartureRepositoryImpl._defaultExpireDuration] is used.
   Future<bool> subscribe({
     required String evu,
     required String trainNumber,

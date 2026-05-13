@@ -82,9 +82,9 @@ class SferaMockCustomerOrientedDepartureRepositoryImpl implements CustomerOrient
 
 extension _KoaStateMapper on KoaState {
   CustomerOrientedDeparture toCustomerOrientedDepartureStatus({required String trainNumber}) => switch (this) {
-    KoaState.wait => CustomerOrientedDeparture(trainNumber: trainNumber, status: .wait),
-    KoaState.waitCancelled => CustomerOrientedDeparture(trainNumber: trainNumber, status: .ready),
-    KoaState.waitHide => CustomerOrientedDeparture(trainNumber: trainNumber, status: .departure),
-    KoaState.call => CustomerOrientedDeparture(trainNumber: trainNumber, status: .call),
+    .wait => CustomerOrientedDeparture(trainNumber: trainNumber, status: .wait),
+    .waitCancelled => CustomerOrientedDeparture(trainNumber: trainNumber, status: .ready),
+    .waitHide => CustomerOrientedDeparture(trainNumber: trainNumber, status: .departure),
+    .call => CustomerOrientedDeparture(trainNumber: trainNumber, status: .call),
   };
 }

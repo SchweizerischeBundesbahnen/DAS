@@ -1,6 +1,6 @@
-import 'package:customer_oriented_departure/src/api/confirm/request.dart';
+import 'package:customer_oriented_departure/src/api/confirm/confirm_request.dart';
 import 'package:customer_oriented_departure/src/api/customer_oriented_departure_api_service.dart';
-import 'package:customer_oriented_departure/src/api/subscribe/request.dart';
+import 'package:customer_oriented_departure/src/api/subscribe/subscribe_request.dart';
 import 'package:http_x/component.dart';
 
 class CustomerOrientedDepartureApiServiceImpl implements CustomerOrientedDepartureApiService {
@@ -10,7 +10,12 @@ class CustomerOrientedDepartureApiServiceImpl implements CustomerOrientedDepartu
   final Client httpClient;
 
   @override
-  SubscribeRequest get subscribe => SubscribeRequest(httpClient: httpClient, baseUrl: baseUrl);
+  SubscribeRequest get subscribe =>
+      SubscribeRequest(requestType: SubscribeRequestType.register, httpClient: httpClient, baseUrl: baseUrl);
+
+  @override
+  SubscribeRequest get unsubscribe =>
+      SubscribeRequest(requestType: SubscribeRequestType.deregister, httpClient: httpClient, baseUrl: baseUrl);
 
   @override
   ConfirmRequest get confirm => ConfirmRequest(httpClient: httpClient, baseUrl: baseUrl);

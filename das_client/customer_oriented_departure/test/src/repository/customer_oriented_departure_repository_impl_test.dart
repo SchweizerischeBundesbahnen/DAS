@@ -1,7 +1,7 @@
 import 'package:customer_oriented_departure/component.dart';
-import 'package:customer_oriented_departure/src/api/confirm/request.dart';
+import 'package:customer_oriented_departure/src/api/confirm/confirm_request.dart';
 import 'package:customer_oriented_departure/src/api/customer_oriented_departure_api_service.dart';
-import 'package:customer_oriented_departure/src/api/subscribe/request.dart';
+import 'package:customer_oriented_departure/src/api/subscribe/subscribe_request.dart';
 import 'package:customer_oriented_departure/src/messaging/firebase/dto/train_status_message_dto.dart';
 import 'package:customer_oriented_departure/src/messaging/messaging_service.dart';
 import 'package:customer_oriented_departure/src/repository/customer_oriented_departure_repository_impl.dart';
@@ -24,6 +24,7 @@ void main() {
   late MockMessagingService mockMessagingService;
   late MockConfirmRequest mockConfirmRequest;
   late MockSubscribeRequest mockSubscribeRequest;
+  late MockSubscribeRequest mockUnsubscribeRequest;
   late BehaviorSubject<String?> rxToken;
   late BehaviorSubject<TrainStatusMessageDto> rxTrainStatusMessage;
 
@@ -35,9 +36,11 @@ void main() {
     mockMessagingService = MockMessagingService();
     mockConfirmRequest = MockConfirmRequest();
     mockSubscribeRequest = MockSubscribeRequest();
+    mockUnsubscribeRequest = MockSubscribeRequest();
     rxToken = BehaviorSubject();
     rxTrainStatusMessage = BehaviorSubject();
 
+    when(mockApiService.unsubscribe).thenReturn(mockUnsubscribeRequest);
     when(mockApiService.subscribe).thenReturn(mockSubscribeRequest);
     when(mockApiService.confirm).thenReturn(mockConfirmRequest);
     when(mockMessagingService.tokenValue).thenReturn(testPushToken);
@@ -46,7 +49,18 @@ void main() {
 
     when(
       mockSubscribeRequest.call(
-        type: anyNamed('type'),
+        evu: anyNamed('evu'),
+        trainNumber: anyNamed('trainNumber'),
+        pushToken: anyNamed('pushToken'),
+        deviceId: anyNamed('deviceId'),
+        messageId: anyNamed('messageId'),
+        expiresAt: anyNamed('expiresAt'),
+        isDriver: anyNamed('isDriver'),
+      ),
+    ).thenAnswer((_) => Future.value(const SubscribeResponse(headers: {})));
+
+    when(
+      mockUnsubscribeRequest.call(
         evu: anyNamed('evu'),
         trainNumber: anyNamed('trainNumber'),
         pushToken: anyNamed('pushToken'),
@@ -90,7 +104,6 @@ void main() {
     expect(result, isTrue);
     verify(
       mockSubscribeRequest.call(
-        type: SubscribeRequestType.register,
         evu: '1080',
         trainNumber: 'RE1234',
         pushToken: testPushToken,
@@ -141,8 +154,7 @@ void main() {
     // VERIFY
     expect(result, isTrue);
     verifyInOrder([
-      mockSubscribeRequest.call(
-        type: SubscribeRequestType.deregister,
+      mockUnsubscribeRequest.call(
         evu: '1080',
         trainNumber: 'RE1234',
         pushToken: 'new-token',
@@ -152,7 +164,6 @@ void main() {
         isDriver: true,
       ),
       mockSubscribeRequest.call(
-        type: SubscribeRequestType.register,
         evu: '1180',
         trainNumber: 'RB77',
         pushToken: 'new-token',
@@ -182,7 +193,6 @@ void main() {
     // VERIFY
     verifyNever(
       mockSubscribeRequest.call(
-        type: SubscribeRequestType.register,
         evu: '1080',
         trainNumber: 'RE1234',
         pushToken: null,
@@ -194,7 +204,6 @@ void main() {
     );
     verify(
       mockSubscribeRequest.call(
-        type: SubscribeRequestType.register,
         evu: '1080',
         trainNumber: 'RE1234',
         pushToken: 'refreshed-token',
@@ -213,8 +222,7 @@ void main() {
     // VERIFY
     expect(result, isTrue);
     verifyNever(
-      mockSubscribeRequest.call(
-        type: SubscribeRequestType.deregister,
+      mockUnsubscribeRequest.call(
         evu: anyNamed('evu'),
         trainNumber: anyNamed('trainNumber'),
         pushToken: anyNamed('pushToken'),
@@ -259,8 +267,7 @@ void main() {
     when(mockMessagingService.tokenValue).thenReturn(testPushToken);
 
     when(
-      mockSubscribeRequest.call(
-        type: anyNamed('type'),
+      mockUnsubscribeRequest.call(
         evu: anyNamed('evu'),
         trainNumber: anyNamed('trainNumber'),
         pushToken: anyNamed('pushToken'),
@@ -277,8 +284,7 @@ void main() {
     // VERIFY
     expect(result, isFalse);
     verify(
-      mockSubscribeRequest.call(
-        type: SubscribeRequestType.deregister,
+      mockUnsubscribeRequest.call(
         evu: '1080',
         trainNumber: 'RE1234',
         pushToken: testPushToken,

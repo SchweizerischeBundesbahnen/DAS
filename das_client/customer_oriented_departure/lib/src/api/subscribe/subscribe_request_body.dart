@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
 
-part 'request_body.g.dart';
+part 'subscribe_request_body.g.dart';
 
 @JsonSerializable()
 class SubscribeRequestBody {
