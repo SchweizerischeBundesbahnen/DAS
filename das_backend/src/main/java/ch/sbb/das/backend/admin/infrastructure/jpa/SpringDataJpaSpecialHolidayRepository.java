@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SpringDataJpaSpecialHolidayRepository extends ListCrudRepository<SpecialHolidayEntity, Integer> {
 
-    List<SpecialHolidayEntity> findAllByDateAfterOrderByDate(LocalDate dateAfter);
+    List<SpecialHolidayEntity> findAllByDateGreaterThanEqualOrderByDate(LocalDate dateAfter);
 }
 

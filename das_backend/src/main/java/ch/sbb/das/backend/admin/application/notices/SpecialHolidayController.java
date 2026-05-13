@@ -52,9 +52,9 @@ public class SpecialHolidayController {
     @ApiResponse(responseCode = "200", description = "Special holidays found.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = SpecialHolidaysResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getFutureSpecialHolidays(
+    public ResponseEntity<? extends Response> getAllUpcomingSpecialHolidays(
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
-        List<SpecialHoliday> specialHolidays = specialHolidayService.getUpcoming();
+        List<SpecialHoliday> specialHolidays = specialHolidayService.getAllUpcoming();
         return ResponseEntityFactory.createOkResponse(new SpecialHolidaysResponse(specialHolidays), null, requestId);
     }
 

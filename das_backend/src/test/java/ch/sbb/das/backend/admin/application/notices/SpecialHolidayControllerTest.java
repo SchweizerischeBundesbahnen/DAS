@@ -14,6 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.das.backend.IntegrationTest;
 import ch.sbb.das.backend.admin.application.settings.WithMockRole;
 import ch.sbb.das.backend.common.security.UserRole;
+import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
@@ -23,7 +24,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @IntegrationTest
 @Sql("classpath:emptySpecialHolidays.sql")
 @SqlMergeMode(MERGE)
-class SpecialSpecialHolidayControllerTest {
+class SpecialHolidayControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -31,7 +32,7 @@ class SpecialSpecialHolidayControllerTest {
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createSpecialHolidays.sql")
-    void getFutureSpecialHolidays_ok() throws Exception {
+    void getAllUpcomingSpecialHolidays_ok() throws Exception {
         mockMvc.perform(get(API_SPECIAL_HOLIDAYS))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data", hasSize(2)))
@@ -44,17 +45,43 @@ class SpecialSpecialHolidayControllerTest {
 
     @Test
     @WithMockRole(roles = UserRole.OBSERVER)
-    void getFutureSpecialHolidays_forbidden_role() throws Exception {
+    void getAllUpcomingSpecialHolidays_forbidden_role() throws Exception {
         mockMvc.perform(get(API_SPECIAL_HOLIDAYS))
             .andExpect(status().isForbidden());
     }
 
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
-    void getFutureSpecialHolidays_empty() throws Exception {
+    void getAllUpcomingSpecialHolidays_empty() throws Exception {
         mockMvc.perform(get(API_SPECIAL_HOLIDAYS))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data", hasSize(0)));
+    }
+
+    @Test
+    @WithMockRole(roles = UserRole.RU_ADMIN)
+    void getAllUpcomingSpecialHolidays_includesTodayBoundary() throws Exception {
+        String today = LocalDate.now().toString();
+
+        mockMvc.perform(post(API_SPECIAL_HOLIDAYS)
+                .contentType("application/json")
+                .content("""
+                    {
+                        "name": "Today Holiday",
+                        "date": "%s",
+                        "scheduleType": "SUNDAY_SCHEDULE",
+                        "companies": ["1111"]
+                    }
+                    """.formatted(today)))
+            .andExpect(status().isCreated());
+
+        mockMvc.perform(get(API_SPECIAL_HOLIDAYS))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data", hasSize(1)))
+            .andExpect(jsonPath("$.data[0].name").value("Today Holiday"))
+            .andExpect(jsonPath("$.data[0].date").value(today))
+            .andExpect(jsonPath("$.data[0].scheduleType").value("SUNDAY_SCHEDULE"))
+            .andExpect(jsonPath("$.data[0].companies", containsInAnyOrder("1111")));
     }
 
     @Test
