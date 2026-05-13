@@ -47,6 +47,7 @@
     "@angular/localize": "^21.2.3",
     "@eslint/js": "^10.0.1",
     "@types/jasmine": "~6.0.0",
+    "angular-eslint": "^21.4.0",
     "eslint": "^10.3.0",
     "eslint-config-prettier": "^10.1.8",
     "jasmine-core": "~6.2.0",
@@ -57,7 +58,7 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.2.0",
     "prettier": "^3.8.1",
-    "typescript": "~6.0.3",
+    "typescript": "^5.9.3",
     "typescript-eslint": "^8.59.3"
   }
 }
