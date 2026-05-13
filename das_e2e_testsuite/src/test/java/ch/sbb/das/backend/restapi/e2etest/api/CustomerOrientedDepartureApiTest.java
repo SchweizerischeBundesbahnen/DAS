@@ -17,6 +17,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.TestContextManager;
+import tools.jackson.databind.json.JsonMapper;
 
 @ApiClientTestProfile
 @Slf4j
@@ -24,13 +25,7 @@ class CustomerOrientedDepartureApiTest extends RestAssuredCommand {
 
     final static String ENDPOINT = "/v1/customer-oriented-departure";
 
-    final static ObjectMapper MAPPER = new ObjectMapper();
-
-    static {
-        MAPPER.registerModule(new JavaTimeModule());
-        MAPPER.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-        MAPPER.configure(SerializationFeature.WRITE_DATES_WITH_ZONE_ID, true);
-    }
+    final static JsonMapper MAPPER = new JsonMapper();
 
     // mock though keep the same for subscribe/confirm
     String deviceId = "D0005";
@@ -51,7 +46,7 @@ class CustomerOrientedDepartureApiTest extends RestAssuredCommand {
     }
 
     @Test
-    void postSubscribe_ok() throws JsonProcessingException {
+    void postSubscribe_ok() {
         SubscribeRequest request = new SubscribeRequest();
         request.messageId(messageId);
         request.zugnr("37829");
@@ -82,7 +77,7 @@ class CustomerOrientedDepartureApiTest extends RestAssuredCommand {
             .pathParam("messageId", messageId)
             .pathParam("deviceId", deviceId)
             .when()
-            .post(getUrl(ENDPOINT + "/confirm"))
+            .post(getUrl(ENDPOINT + "/confirm/{messageId}/{deviceId}"))
             .then()
             .extract()
             .response();
