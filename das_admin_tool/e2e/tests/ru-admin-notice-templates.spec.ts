@@ -1,6 +1,6 @@
 import test, {expect, Locator, Page} from '@playwright/test';
 
-test.describe('admin notice templates test', () => {
+test.describe('ru admin notice templates test', () => {
 
   const TEST_CATEGORY = 'E2E Test Category 9999';
   const TEST_TITLE_DE = 'E2E Titel DE';
@@ -26,8 +26,7 @@ test.describe('admin notice templates test', () => {
   }
 
   test.beforeEach(async ({page}) => {
-    await page.goto('ru-admin');
-    await page.getByText('Titel und Texte', {exact: true}).first().click();
+    await page.goto('ru-admin/notice-templates');
     await expect(page.locator('sbb-title[level="2"]')).toHaveText('Titel und Texte');
   });
 
@@ -48,7 +47,6 @@ test.describe('admin notice templates test', () => {
     await page.locator('#deTitle').fill(TEST_TITLE_DE);
     await page.locator('#deText').fill(TEST_TEXT_DE);
 
-    // const createResponse = page.waitForResponse((resp) => resp.request().method() === 'POST');
     await page.getByText('Speichern', {exact: true}).click();
 
     await expect(row).toBeVisible();
@@ -69,7 +67,6 @@ test.describe('admin notice templates test', () => {
   });
 
   test('delete selected notice templates | tests: 1626', async ({page}) => {
-    const addButton = page.getByText('Neuen Eintrag erfassen', {exact: true});
     const row = await findRow(page);
 
     if (await row.isVisible()) {
@@ -77,15 +74,14 @@ test.describe('admin notice templates test', () => {
     }
 
     // create one entry to select and bulk-delete
-    await addButton.click();
+    await page.getByText('Neuen Eintrag erfassen', {exact: true}).click();
+    await expect(page.locator('#category')).toBeVisible();
     await page.locator('#category').fill(TEST_CATEGORY);
     await page.locator('#deTitle').fill(TEST_TITLE_DE);
 
     await page.getByText('Speichern', {exact: true}).click();
 
     await expect(row).toBeVisible();
-
-    // select row via checkbox
     await row.locator('sbb-checkbox').click();
 
     await page.getByText('Einträge löschen', {exact: true}).click();
