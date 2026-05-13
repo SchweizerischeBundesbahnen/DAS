@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:noNamespaceSchemaLocation="../../SFERA.xsd"
-                SP_ID="15162_20_Flamatt" SP_VersionMajor="1" SP_VersionMinor="3" SP_Length="3700" SP_Status="Valid">
+                SP_ID="15162_20_Flamatt" SP_VersionMajor="1" SP_VersionMinor="4" SP_Length="3700" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
@@ -17,7 +17,7 @@
         </TimingPoint>
 
         <Signal>
-            <Signal_ID signal_ID_Physical="B3" location="0"/>
+            <Signal_ID signal_ID_Physical="B3" location="10"/>
             <SignalFunction>exit</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="B3"/>
         </Signal>
@@ -40,7 +40,7 @@
             <SignalPhysicalCharacteristics visualIdentifier="S956"/>
         </Signal>
 
-        <NetworkSpecificPoint location="0" identifier="BDD369E5B05947BC8695DB602CFA5BDB">
+        <NetworkSpecificPoint location="10" identifier="BDD369E5B05947BC8695DB602CFA5BDB">
             <teltsi_Company>0085</teltsi_Company>
             <NSP_GroupName>curvePoint</NSP_GroupName>
             <NetworkSpecificParameter name="curvePointType" value="begin"/>
@@ -143,6 +143,9 @@
         <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R"/>
 
         <KilometreReferencePoint location="0">
+            <KM_Reference kmRef="84"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="10">
             <KM_Reference kmRef="84"/>
         </KilometreReferencePoint>
         <KilometreReferencePoint location="900">

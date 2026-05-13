@@ -393,7 +393,7 @@
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>operationalIndication</NSP_GroupName>
                 <NetworkSpecificParameter name="type" value="uncoded"/>
-                <NetworkSpecificParameter name="uncodedText" value="An voraufgestellte Einheit anfahren"/>
+                <NetworkSpecificParameter name="uncodedText" value="FVD 300m: Türsperre Zugschluss vor Halt auslösen"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
@@ -533,7 +533,7 @@
         </JP_ContextInformation>
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="2017_24_Kaltbrunn" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="2017_24_Kaltbrunn" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -580,7 +580,7 @@
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>operationalIndication</NSP_GroupName>
                 <NetworkSpecificParameter name="type" value="uncoded"/>
-                <NetworkSpecificParameter name="uncodedText" value="Q-Einheit Überfuhrbetrieb einschalten"/>
+                <NetworkSpecificParameter name="uncodedText" value="Halteort halbe Wagenlänge nach Perronende"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
@@ -743,7 +743,7 @@
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>operationalIndication</NSP_GroupName>
                 <NetworkSpecificParameter name="type" value="uncoded"/>
-                <NetworkSpecificParameter name="uncodedText" value="Trennen 1/2"/>
+                <NetworkSpecificParameter name="uncodedText" value="FVD 300m: Türsperre Zugschluss vor Halt auslösen"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
