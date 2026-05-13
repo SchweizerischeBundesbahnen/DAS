@@ -1,6 +1,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {RuAdmin} from './ru-admin';
+import {provideRouter} from '@angular/router';
 
 describe('RuAdmin', () => {
   let component: RuAdmin;
@@ -9,7 +10,7 @@ describe('RuAdmin', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RuAdmin],
-
+      providers: [provideRouter([])]
     })
       .compileComponents();
 

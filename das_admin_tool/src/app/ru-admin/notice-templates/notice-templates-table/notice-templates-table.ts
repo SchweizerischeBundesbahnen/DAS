@@ -104,7 +104,8 @@ export class NoticeTemplatesTable {
   }
 
   protected async deleteSelected() {
-    await this.noticeTemplateService.deleteAll(this.selection.selected)
+    await this.noticeTemplateService.deleteAll(this.selection.selected);
+    this.selection.clear();
   }
 
   private searchFilter(filter: NoticeTemplateFilter, data: NoticeTemplate) {

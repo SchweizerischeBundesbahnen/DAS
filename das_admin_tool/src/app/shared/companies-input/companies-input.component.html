@@ -1,0 +1,27 @@
+<sbb-form-field errorSpace="reserve">
+  <label i18n="@@holidays_form_companies_label">{{ label() }}</label>
+  <sbb-chip-group (chipInputTokenEnd)="$event.preventDefault()" name="companies">
+    @for (company of selectedCompanies(); track company.code) {
+      <!-- todo: remove needs another eventEmitter from chip   -->
+      <sbb-chip (click)="remove(company)" [value]="company">{{ company.name }}</sbb-chip>
+    }
+    <input
+      (blur)="markAsTouched()"
+      [formControl]="inputControl"
+      [required]="showError()"
+      [sbbAutocomplete]="auto"
+    />
+  </sbb-chip-group>
+
+  <sbb-autocomplete #auto="sbbAutocomplete">
+    @for (company of filteredCompanies(); track company.code) {
+      <sbb-option (optionSelected)="selectOption(company)" [value]="company">
+        {{ company.name }}
+      </sbb-option>
+    }
+  </sbb-autocomplete>
+
+  @if (showError()) {
+    <sbb-error i18n="@@form_field_error_required">Feld darf nicht leer sein</sbb-error>
+  }
+</sbb-form-field>
