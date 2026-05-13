@@ -85,7 +85,7 @@ Future<void> _openJourneyOverSearchOverlay(WidgetTester tester, {required String
   await tapElement(tester, journeyIdentifier, warnIfMissed: false);
   await Future.delayed(const Duration(milliseconds: 250));
 
-  final trainNumberText = findTextFieldByHint(l10n.p_train_selection_trainnumber_description);
+  final trainNumberText = findTextInputByPlaceholder(l10n.p_train_selection_trainnumber_description);
   await enterText(tester, trainNumberText, trainNumber);
 
   // load Journey

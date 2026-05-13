@@ -241,7 +241,7 @@ class MockFormationRepository implements FormationRepository {
         _generateFormationRun('CH07480', 'CH01950', trainCategoryCode: 'R', brakedWeightPercentage: 100),
       ],
     );
-    formationSubject.add(formation);
+    _rxFormation.add(formation);
   }
 
   void emitT20SimFormation() {
@@ -259,7 +259,7 @@ class MockFormationRepository implements FormationRepository {
         ),
       ],
     );
-    formationSubject.add(formation);
+    _rxFormation.add(formation);
   }
 
   @override
