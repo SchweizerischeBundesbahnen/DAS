@@ -28,7 +28,7 @@ class JourneySettingsViewModel extends JourneyAwareViewModel {
   }
 
   @override
-  void journeyIdentificationChanged(Journey? journey) {
+  void onJourney(Journey? journey) {
     _rxSettings.add(
       JourneySettings(initialBrakeSeries: journey?.metadata.brakeSeries),
     );

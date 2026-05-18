@@ -1,7 +1,13 @@
 import 'package:app/app_info/app_info.dart';
 import 'package:app/di/di.dart';
 import 'package:app/flavor.dart';
+import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
+import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
 import 'package:app/pages/journey/view_model/app_expiration_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_view_model.dart';
+import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
+import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:app/provider/ru_feature_provider_impl.dart';
 import 'package:app/util/device_id_info.dart';
@@ -9,6 +15,7 @@ import 'package:auth/component.dart';
 import 'package:formation/component.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http_x/component.dart';
+import 'package:local_regulations/component.dart';
 import 'package:logger/component.dart';
 import 'package:logging/logging.dart';
 import 'package:mqtt/component.dart';
@@ -31,12 +38,19 @@ class AuthenticatedScope extends DIScope {
     getIt.registerSferaAuthProvider();
     getIt.registerHttpClient();
     getIt.registerMqttAuthProvider();
-    getIt.registerMqttService();
-    getIt.registerSferaRemoteRepo();
+    await getIt.registerMqttService();
+    await getIt.registerSferaRemoteRepo();
     getIt.registerSettingsRepository();
     getIt.registerAppExpirationViewModel();
     getIt.registerRuFeatureProvider();
     getIt.registerFormationRepository();
+
+    getIt.registerJourneyNavigationViewModel();
+    getIt.registerJourneySelectionViewModel();
+    getIt.registerJourneyViewModel();
+    getIt.registerNotificationPriorityViewModel();
+    getIt.registerWarnAppViewModel();
+    getIt.registerLocalRegulationHtmlGenerator();
 
     await getIt.allReady();
   }
@@ -73,21 +87,21 @@ extension AuthenticatedScopeExtension on GetIt {
     registerFactory<MqttAuthProvider>(factoryFunc);
   }
 
-  void registerMqttService() {
-    Future<MqttService> factoryFunc() async {
-      _log.fine('Register mqtt service');
-      final flavor = DI.get<Flavor>();
-      final deviceId = await DeviceIdInfo.getDeviceId();
-      return MqttComponent.createMqttService(
+  Future<void> registerMqttService() async {
+    _log.fine('Register mqtt service');
+    final flavor = DI.get<Flavor>();
+    final deviceId = await DeviceIdInfo.getDeviceId();
+
+    registerSingleton<MqttService>(
+      MqttComponent.createMqttService(
         mqttUrl: flavor.mqttUrl,
         mqttClientConnector: DI.get(),
         prefix: flavor.mqttTopicPrefix,
         deviceId: deviceId,
         sferaVersion: flavor.sferaVersion,
-      );
-    }
-
-    registerSingletonAsync(factoryFunc);
+      ),
+      dispose: (vm) => vm.dispose(),
+    );
   }
 
   void registerHttpClient() {
@@ -99,12 +113,13 @@ extension AuthenticatedScopeExtension on GetIt {
     registerLazySingleton<Client>(factoryFunc);
   }
 
-  void registerSferaRemoteRepo() {
-    factoryFunc() async {
-      _log.fine('Register sfera remote repo');
-      final flavor = DI.get<Flavor>();
-      final deviceId = await DeviceIdInfo.getDeviceId();
-      return SferaComponent.createSferaRepository(
+  Future<void> registerSferaRemoteRepo() async {
+    _log.fine('Register sfera remote repo');
+    final flavor = DI.get<Flavor>();
+    final deviceId = await DeviceIdInfo.getDeviceId();
+
+    registerSingleton<SferaRepository>(
+      SferaComponent.createSferaRepository(
         mqttService: DI.get(),
         sferaAuthProvider: DI.get(),
         localRepo: DI.get(),
@@ -112,13 +127,8 @@ extension AuthenticatedScopeExtension on GetIt {
         deviceId: deviceId,
         authenticator: DI.get(),
         sferaVersion: flavor.sferaVersion,
-      );
-    }
-
-    registerSingletonAsync<SferaRepository>(
-      factoryFunc,
+      ),
       dispose: (repo) => repo.dispose(),
-      dependsOn: [MqttService],
     );
   }
 
@@ -161,6 +171,66 @@ extension AuthenticatedScopeExtension on GetIt {
     registerSingleton<FormationRepository>(
       FormationComponent.createRepository(baseUrl: flavor.backendUrl, client: DI.get()),
     );
+  }
+
+  void registerJourneyNavigationViewModel() {
+    factoryFunc() {
+      _log.fine('Register JourneyNavigationViewModel');
+      return JourneyNavigationViewModel(sferaRepo: DI.get());
+    }
+
+    registerLazySingleton<JourneyNavigationViewModel>(
+      factoryFunc,
+      dispose: (vm) => vm.dispose(),
+    );
+  }
+
+  void registerJourneySelectionViewModel() {
+    factoryFunc() {
+      _log.fine('Register JourneySelectionViewModel');
+      return JourneySelectionViewModel(
+        sferaRepo: DI.get(),
+        onJourneySelected: (trainId) => DI.get<JourneyNavigationViewModel>().replaceWith([
+          ExtendedTrainIdentification(trainIdentification: trainId),
+        ]),
+      );
+    }
+
+    registerLazySingleton<JourneySelectionViewModel>(
+      factoryFunc,
+      dispose: (vm) => vm.dispose(),
+    );
+  }
+
+  void registerJourneyViewModel() {
+    registerSingleton(
+      JourneyViewModel(sferaRepository: DI.get()),
+      dispose: (vm) => vm.dispose(),
+    );
+  }
+
+  void registerNotificationPriorityViewModel() {
+    registerSingleton(
+      NotificationPriorityQueueViewModel(),
+      dispose: (vm) => vm.dispose(),
+    );
+  }
+
+  void registerWarnAppViewModel() {
+    registerSingleton(
+      WarnAppViewModel(
+        flavor: DI.get(),
+        sferaRepo: DI.get(),
+        warnappRepo: DI.get(),
+        ruFeatureProvider: DI.get(),
+        notificationViewModel: DI.get(),
+      ),
+      dispose: (vm) => vm.dispose(),
+    );
+  }
+
+  void registerLocalRegulationHtmlGenerator() {
+    registerSingleton(LocalRegulationComponent.createLocalRegulationHtmlGenerator());
   }
 }
 

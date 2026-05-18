@@ -56,7 +56,4 @@ class CalculatedSpeedViewModel extends JourneyAwareViewModel {
     final reducedDueToLineSpeed = calculatedSpeed.isLargerThan(resolvedLineSpeed?.speed);
     return (reducedDueToLineSpeed, reducedDueToLineSpeed ? resolvedLineSpeed!.speed as SingleSpeed : calculatedSpeed);
   }
-
-  @override
-  void journeyIdentificationChanged(_) {}
 }

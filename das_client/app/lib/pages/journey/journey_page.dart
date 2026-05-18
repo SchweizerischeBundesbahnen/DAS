@@ -111,7 +111,6 @@ class _JourneyPageState extends State<JourneyPage> {
     _errorCodeSubscription = journeyVM.errorCode.listen((error) async {
       if (error != null) {
         await DI.get<ScopeHandler>().pop<JourneyScope>();
-        await DI.get<ScopeHandler>().push<JourneyScope>();
         if (mounted) {
           context.router.replace(JourneySelectionRoute());
         }
@@ -122,8 +121,6 @@ class _JourneyPageState extends State<JourneyPage> {
 
   Future<void> _loadInitialTrains() async {
     if (widget.initialTrainIds != null && widget.initialTrainIds!.isNotEmpty) {
-      await DI.get<ScopeHandler>().pop<JourneyScope>();
-      await DI.get<ScopeHandler>().push<JourneyScope>();
       final journeyNavigationVM = DI.get<JourneyNavigationViewModel>();
       journeyNavigationVM.replaceWith(widget.initialTrainIds!);
     }
@@ -139,7 +136,6 @@ class _DismissJourneyButton extends StatelessWidget {
       DASTableRowBuilder.clearRowKeys();
 
       await DI.get<ScopeHandler>().pop<JourneyScope>();
-      await DI.get<ScopeHandler>().push<JourneyScope>();
       if (context.mounted) {
         context.router.replace(JourneySelectionRoute());
       }

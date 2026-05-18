@@ -58,7 +58,7 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
   JourneyTableModel get modelValue => _rxModel.value;
 
   @override
-  void journeyIdentificationChanged(Journey? journey) {
+  void onJourney(Journey? journey) {
     _emitLoading();
     _init();
   }

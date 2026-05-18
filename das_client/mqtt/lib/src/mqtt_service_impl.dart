@@ -142,6 +142,7 @@ class MqttServiceImpl implements MqttService {
     });
   }
 
+  @override
   void dispose() {
     _connectivitySubscription?.cancel();
     _updateSubscription?.cancel();

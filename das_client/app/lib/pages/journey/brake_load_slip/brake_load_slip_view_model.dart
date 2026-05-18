@@ -100,7 +100,7 @@ class BrakeLoadSlipViewModel extends JourneyAwareViewModel {
   }
 
   @override
-  void journeyUpdated(Journey? _) => _emitFormationRun();
+  void onJourneyUpdated(Journey? _) => _emitFormationRun();
 
   void _checkForFormationUpdates() {
     if (_skipFirstUpdate) {
@@ -300,7 +300,7 @@ class BrakeLoadSlipViewModel extends JourneyAwareViewModel {
   }
 
   @override
-  void journeyIdentificationChanged(Journey? journey) {
+  void onJourney(Journey? journey) {
     _latestPosition = null;
     _openFullscreen = true;
     _rxFormation.add(null);

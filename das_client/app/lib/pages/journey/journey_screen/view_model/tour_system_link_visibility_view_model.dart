@@ -2,26 +2,28 @@ import 'dart:async';
 
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_advancement_model.dart';
-import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
 final _log = Logger('TourSystemLinkVisibilityViewModel');
 
-class TourSystemLinkVisibilityViewModel extends JourneyAwareViewModel {
+class TourSystemLinkVisibilityViewModel {
   TourSystemLinkVisibilityViewModel({
     required JourneySettingsViewModel journeySettingsViewModel,
     required JourneyPositionViewModel journeyPositionViewModel,
-    super.journeyViewModel,
+    required JourneyViewModel journeyViewModel,
   }) : _settingsViewModel = journeySettingsViewModel,
-       _journeyPositionViewModel = journeyPositionViewModel {
+       _journeyPositionViewModel = journeyPositionViewModel,
+       _journeyViewModel = journeyViewModel {
     _initSubscription();
   }
 
   final JourneySettingsViewModel _settingsViewModel;
   final JourneyPositionViewModel _journeyPositionViewModel;
+  final JourneyViewModel _journeyViewModel;
 
   final _rxModel = BehaviorSubject<bool>.seeded(false);
 
@@ -35,7 +37,7 @@ class TourSystemLinkVisibilityViewModel extends JourneyAwareViewModel {
   void _initSubscription() {
     _subscription =
         CombineLatestStream.combine3(
-          journeyViewModel.journey,
+          _journeyViewModel.journey,
           _settingsViewModel.model,
           _journeyPositionViewModel.model,
           (a, b, c) => (a, b, c),
@@ -100,12 +102,7 @@ class TourSystemLinkVisibilityViewModel extends JourneyAwareViewModel {
     }
   }
 
-  @override
-  void journeyIdentificationChanged(Journey? journey) {}
-
-  @override
   void dispose() {
-    super.dispose();
     _rxModel.close();
     _subscription?.cancel();
     _departureTimer?.cancel();

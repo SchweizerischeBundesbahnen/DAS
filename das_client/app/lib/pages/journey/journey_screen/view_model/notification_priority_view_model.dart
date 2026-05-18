@@ -83,7 +83,7 @@ class NotificationPriorityQueueViewModel extends JourneyAwareViewModel {
   }
 
   @override
-  void journeyIdentificationChanged(Journey? journey) {
+  void onJourney(Journey? journey) {
     _activeNotifications.clear();
     _notificationTypeToCallback.clear();
     _rxNotifications.add(List.empty());
