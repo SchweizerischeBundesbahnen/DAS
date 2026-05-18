@@ -5,8 +5,10 @@ import 'package:app/pages/journey/journey_screen/view_model/notification_priorit
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
 import 'package:app/pages/journey/view_model/app_expiration_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
+import 'package:app/pages/journey/view_model/view_mode_view_model.dart';
 import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:app/provider/ru_feature_provider_impl.dart';
@@ -48,6 +50,8 @@ class AuthenticatedScope extends DIScope {
     getIt.registerJourneyNavigationViewModel();
     getIt.registerJourneySelectionViewModel();
     getIt.registerJourneyViewModel();
+    getIt.registerJourneySettingsViewModel();
+    getIt.registerViewModeViewModel();
     getIt.registerNotificationPriorityViewModel();
     getIt.registerWarnAppViewModel();
     getIt.registerLocalRegulationHtmlGenerator();
@@ -57,6 +61,14 @@ class AuthenticatedScope extends DIScope {
 }
 
 extension AuthenticatedScopeExtension on GetIt {
+  void registerViewModeViewModel() {
+    _log.fine('Register ViewModeViewModel');
+    registerSingleton<ViewModeViewModel>(
+      ViewModeViewModel(journeySettingsViewModel: DI.get()),
+      dispose: (vm) => vm.dispose(),
+    );
+  }
+
   void registerAuthProvider() {
     factoryFunc() {
       _log.fine('Register auth provider');
@@ -225,6 +237,13 @@ extension AuthenticatedScopeExtension on GetIt {
         ruFeatureProvider: DI.get(),
         notificationViewModel: DI.get(),
       ),
+      dispose: (vm) => vm.dispose(),
+    );
+  }
+
+  void registerJourneySettingsViewModel() {
+    registerSingleton<JourneySettingsViewModel>(
+      JourneySettingsViewModel(),
       dispose: (vm) => vm.dispose(),
     );
   }

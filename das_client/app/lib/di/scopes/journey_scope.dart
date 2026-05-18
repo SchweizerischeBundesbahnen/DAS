@@ -24,8 +24,6 @@ import 'package:app/pages/journey/journey_screen/view_model/replacement_series_v
 import 'package:app/pages/journey/journey_screen/view_model/ux_testing_view_model.dart';
 import 'package:app/pages/journey/view_model/decisive_gradient_view_model.dart';
 import 'package:app/pages/journey/view_model/disturbance_view_model.dart';
-import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
-import 'package:app/pages/journey/view_model/view_mode_view_model.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logging/logging.dart';
 
@@ -41,8 +39,6 @@ class JourneyScope extends DIScope {
     getIt.pushNewScope(scopeName: scopeName);
 
     getIt.registerUxTestingViewModel();
-    getIt.registerJourneySettingsViewModel();
-    getIt.registerViewModeViewModel();
     getIt.registerPunctualityViewModel();
     getIt.registerJourneyPositionViewModel();
     getIt.registerDepartureProcessWarningViewModel();
@@ -69,25 +65,6 @@ class JourneyScope extends DIScope {
 }
 
 extension JourneyScopeExtension on GetIt {
-  void registerViewModeViewModel() {
-    factoryFunc() {
-      _log.fine('Register ViewModeViewModel');
-      return ViewModeViewModel(journeySettingsViewModel: DI.get());
-    }
-
-    registerLazySingleton<ViewModeViewModel>(
-      factoryFunc,
-      dispose: (vm) => vm.dispose(),
-    );
-  }
-
-  void registerJourneySettingsViewModel() {
-    registerSingleton<JourneySettingsViewModel>(
-      JourneySettingsViewModel(),
-      dispose: (vm) => vm.dispose(),
-    );
-  }
-
   void registerPunctualityViewModel() {
     registerSingleton<PunctualityViewModel>(
       PunctualityViewModel(journeyViewModel: DI.get()),

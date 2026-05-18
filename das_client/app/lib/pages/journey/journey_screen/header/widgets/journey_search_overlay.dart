@@ -120,7 +120,6 @@ class JourneySearchOverlay extends StatelessWidget {
                 ? () async {
                     hideOverlay();
                     await viewModel.loadJourney();
-                    viewModel.dismissSelection();
                   }
                 : null,
           ),

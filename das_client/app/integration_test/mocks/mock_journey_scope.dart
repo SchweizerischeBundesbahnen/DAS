@@ -13,8 +13,6 @@ class MockJourneyScope extends JourneyScope {
     getIt.pushNewScope(scopeName: scopeName);
 
     getIt.registerUxTestingViewModel();
-    getIt.registerJourneySettingsViewModel();
-    getIt.registerViewModeViewModel();
     getIt.registerPunctualityViewModel();
     getIt.registerJourneyPositionViewModel();
     getIt.registerDepartureProcessWarningViewModel();

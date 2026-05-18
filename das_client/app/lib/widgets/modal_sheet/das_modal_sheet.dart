@@ -134,11 +134,12 @@ class DASModalSheetController {
     }
   }
 
-  /// will be called by [_DASModalSheetState.dispose()]
-  void _dispose() {
+  void dispose() {
     _idleTimer?.cancel();
-    _controller.dispose();
-    _fullWidthController.dispose();
+    if (_initialized) {
+      _controller.dispose();
+      _fullWidthController.dispose();
+    }
   }
 
   double get width => _widthAnimation.value;
@@ -199,12 +200,6 @@ class _DASModalSheetState extends State<DasModalSheet> with TickerProviderStateM
         Positioned(right: 0, top: 0, bottom: 0, child: _modalSheet(modalWidth)),
       ],
     );
-  }
-
-  @override
-  void dispose() {
-    widget.controller._dispose();
-    super.dispose();
   }
 
   Widget _modalSheet(double width) {

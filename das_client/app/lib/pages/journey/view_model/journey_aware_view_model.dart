@@ -35,7 +35,6 @@ abstract class JourneyAwareViewModel {
 
   @mustCallSuper
   void dispose() {
-    print('Disposing $runtimeType ${hashCode.toString()}');
     _journeySubscription?.cancel();
     _journeySubscription = null;
   }
