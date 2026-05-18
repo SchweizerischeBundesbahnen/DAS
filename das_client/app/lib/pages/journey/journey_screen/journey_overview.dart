@@ -187,14 +187,17 @@ class _ProviderScope extends StatelessWidget {
         Provider<AdditionalSpeedRestrictionModalViewModel>(
           create: (_) => AdditionalSpeedRestrictionModalViewModel(),
           dispose: (_, vm) => vm.dispose(),
+          lazy: false,
         ),
         Provider<ArrivalDepartureTimeViewModel>(
           create: (_) => ArrivalDepartureTimeViewModel(journeyViewModel: DI.get()),
           dispose: (_, vm) => vm.dispose(),
+          lazy: false,
         ),
         Provider<ConnectivityViewModel>(
           create: (_) => ConnectivityViewModel(connectivityManager: DI.get()),
           dispose: (_, vm) => vm.dispose(),
+          lazy: false,
         ),
         Provider<ReauthenticationRequiredViewModel>(
           create: (_) => ReauthenticationRequiredViewModel(
@@ -203,6 +206,7 @@ class _ProviderScope extends StatelessWidget {
             notificationViewModel: DI.get(),
           ),
           dispose: (_, vm) => vm.dispose(),
+          lazy: false,
         ),
         Provider<ServicePointModalViewModel>(
           create: (_) => ServicePointModalViewModel(
@@ -211,6 +215,7 @@ class _ProviderScope extends StatelessWidget {
             journeyViewModel: DI.get(),
           ),
           dispose: (_, vm) => vm.dispose(),
+          lazy: false,
         ),
         Provider<DepartureAuthorizationViewModel>(
           create: (_) => DepartureAuthorizationViewModel(
@@ -218,6 +223,7 @@ class _ProviderScope extends StatelessWidget {
             journeyViewModel: DI.get(),
           ),
           dispose: (_, vm) => vm.dispose(),
+          lazy: false,
         ),
         Provider<TourSystemLinkVisibilityViewModel>(
           create: (_) => TourSystemLinkVisibilityViewModel(
@@ -226,6 +232,7 @@ class _ProviderScope extends StatelessWidget {
             journeyViewModel: DI.get(),
           ),
           dispose: (_, vm) => vm.dispose(),
+          lazy: false,
         ),
       ],
       child: Builder(builder: builder),
