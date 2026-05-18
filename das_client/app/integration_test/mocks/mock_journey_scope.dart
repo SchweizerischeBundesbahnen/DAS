@@ -1,9 +1,5 @@
-import 'package:app/di/di.dart';
 import 'package:app/di/scopes/journey_scope.dart';
-import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
 import 'package:logging/logging.dart';
-
-import 'mock_warn_app_view_model.dart';
 
 final _log = Logger('MockJourneyScope');
 
@@ -16,32 +12,30 @@ class MockJourneyScope extends JourneyScope {
     _log.fine('Pushing mock scope $scopeName');
     getIt.pushNewScope(scopeName: scopeName);
 
-    getIt.registerViewModeViewModel();
-    getIt.registerJourneyNavigationViewModel();
-    getIt.registerJourneySelectionViewModel();
-    getIt.registerJourneyViewModel();
-    getIt.registerNotificationPriorityViewModel();
+    getIt.registerUxTestingViewModel();
     getIt.registerJourneySettingsViewModel();
+    getIt.registerViewModeViewModel();
     getIt.registerPunctualityViewModel();
     getIt.registerJourneyPositionViewModel();
     getIt.registerDepartureProcessWarningViewModel();
+    getIt.registerDecisiveGradientViewModel();
     getIt.registerJourneyTableScrollController();
-    getIt.registerLocalRegulationHtmlGenerator();
-    _registerMockWarnAppViewModel();
+    getIt.registerDisturbanceViewModel();
+    getIt.registerChecklistDepartureProcessViewModel();
+    getIt.registerReplacementSeriesViewModel();
+    getIt.registerDepartureDispatchNotificationViewModel();
+    getIt.registerShortTermChangeViewModel();
+    getIt.registerSuspiciousSegmentViewModel();
+    getIt.registerLineSpeedViewModel();
+    getIt.registerCalculatedSpeedViewModel();
+    getIt.registerAdvisedSpeedViewModel();
+    getIt.registerChronographViewModel();
+    getIt.registerDetailModalViewModel();
+    getIt.registerBrakeLoadSlipViewModel();
+    getIt.registerCollapsibleRowsViewModel();
+    getIt.registerJourneyTableViewModel();
+    getIt.registerJourneyTableAdvancementViewModel();
 
     return getIt.allReady();
-  }
-
-  void _registerMockWarnAppViewModel() {
-    getIt.registerSingleton<WarnAppViewModel>(
-      MockWarnAppViewModel(
-        flavor: DI.get(),
-        sferaRepo: DI.get(),
-        warnappRepo: DI.get(),
-        ruFeatureProvider: DI.get(),
-        notificationViewModel: DI.get(),
-      ),
-      dispose: (vm) => vm.dispose(),
-    );
   }
 }
