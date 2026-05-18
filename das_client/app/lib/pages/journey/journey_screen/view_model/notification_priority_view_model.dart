@@ -87,7 +87,6 @@ class NotificationPriorityQueueViewModel extends JourneyAwareViewModel {
     _activeNotifications.clear();
     _notificationTypeToCallback.clear();
     _rxNotifications.add(List.empty());
-    _cancelSubscriptions();
   }
 
   void _emitMaximumTwoPrioritizedNotifications() {

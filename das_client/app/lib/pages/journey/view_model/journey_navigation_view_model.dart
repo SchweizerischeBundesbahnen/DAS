@@ -76,6 +76,13 @@ class JourneyNavigationViewModel {
     _rxModel.close();
   }
 
+  void disconnect() {
+    _log.fine('Disconnecting JourneyNavigationViewModel');
+    _sferaRepo.disconnect();
+    _addToStream(null);
+    _trainIds.clear();
+  }
+
   Future<void> _establishConnection(ExtendedTrainIdentification trainId) async {
     _log.fine('Establish connection to $trainId');
     DASTableRowBuilder.clearRowKeys();

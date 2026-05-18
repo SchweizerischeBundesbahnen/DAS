@@ -136,6 +136,7 @@ class _DismissJourneyButton extends StatelessWidget {
     onPressed: () async {
       DASTableRowBuilder.clearRowKeys();
       DI.get<JourneySelectionViewModel>().dismissSelection();
+      DI.get<JourneyNavigationViewModel>().disconnect();
       await context.router.replace(JourneySelectionRoute());
       DI.get<ScopeHandler>().pop<JourneyScope>();
     },

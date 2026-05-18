@@ -124,7 +124,6 @@ class JourneySelectionViewModel {
   }
 
   void _emit(JourneySelectionModel newState) {
-    print(newState);
     _currentState = newState;
     _rxModel.add(newState);
   }
