@@ -18,4 +18,12 @@ class BaseMessageDto {
   }
 
   final String messageId;
+
+  Map<String, dynamic> toJson() => _$BaseMessageDtoToJson(this);
+
+  String toJsonString({bool pretty = false}) {
+    final json = toJson();
+    final encoder = pretty ? JsonEncoder.withIndent(' ' * 2) : JsonEncoder();
+    return encoder.convert(json);
+  }
 }

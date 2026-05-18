@@ -5,6 +5,11 @@ abstract class CustomerOrientedDepartureRepository {
 
   Stream<CustomerOrientedDeparture> get customerOrientedDeparture;
 
+  /// Checks if there was a new status received and publishes it over [customerOrientedDeparture]
+  ///
+  /// This can happen when the app is in the background and a message was received.
+  void requestLatestStatus();
+
   /// Subscribes to customer oriented departure updates for the given train.
   ///
   /// [journeyEndTime] is set to define the end of the subscription.

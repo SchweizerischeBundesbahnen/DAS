@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:customer_oriented_departure/src/messaging/firebase/dto/base_message_dto.dart';
 import 'package:customer_oriented_departure/src/messaging/firebase/dto/train_status_message_dto.dart';
+import 'package:customer_oriented_departure/src/messaging/firebase/local_message_storage.dart';
 import 'package:customer_oriented_departure/src/messaging/messaging_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:logging/logging.dart';
@@ -9,6 +10,9 @@ import 'package:rxdart/rxdart.dart';
 
 final _log = Logger('FirebaseMessagingService');
 
+// TODO: Initialize Firebase
+// TODO: Request permission
+// TODO: Add test for local storage handling
 class FirebaseMessagingService implements MessagingService {
   FirebaseMessagingService() {
     _init();
@@ -27,7 +31,12 @@ class FirebaseMessagingService implements MessagingService {
   @override
   Stream<BaseMessageDto> get message => _rxMessage.stream;
 
+  void addReplayMessage(BaseMessageDto message) {
+    _rxMessage.add(message);
+  }
+
   Future<void> _init() async {
+    await LocalMessageStorage.clear();
     await _initRxToken();
     await _initRxMessage();
   }
@@ -56,19 +65,8 @@ class FirebaseMessagingService implements MessagingService {
 
     final sub = stream.listen(_rxMessage.add, onError: _rxMessage.addError);
     _subscriptions.add(sub);
-  }
 
-  BaseMessageDto? _tryParseRemoteMessage(RemoteMessage message) {
-    try {
-      if (message.data.containsKey('status')) {
-        return TrainStatusMessageDto.fromJson(message.data);
-      }
-      // TODO: messageId part of body or message.messageId?
-      return BaseMessageDto.fromJson(message.data);
-    } catch (e) {
-      _log.severe('Failed to parse remote message ${message.messageId} with data: ${message.data}', e);
-      return null;
-    }
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   }
 
   @override
@@ -76,5 +74,36 @@ class FirebaseMessagingService implements MessagingService {
     for (final sub in _subscriptions) {
       sub.cancel();
     }
+  }
+
+  @override
+  Future<void> replayMessages() async {
+    final latestMessages = await LocalMessageStorage.getLatestMessages();
+    for (final message in latestMessages) {
+      _rxMessage.add(message);
+    }
+
+    await LocalMessageStorage.clear();
+  }
+}
+
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage remoteMessage) async {
+  _log.info('Remote message received in background.');
+  final message = _tryParseRemoteMessage(remoteMessage);
+  if (message != null) {
+    await LocalMessageStorage.addMessage(message);
+  }
+}
+
+BaseMessageDto? _tryParseRemoteMessage(RemoteMessage message) {
+  try {
+    if (message.data.containsKey('status')) {
+      return TrainStatusMessageDto.fromJson(message.data);
+    }
+    return BaseMessageDto.fromJson(message.data);
+  } catch (e) {
+    _log.severe('Failed to parse remote message ${message.messageId} with data: ${message.data}', e);
+    return null;
   }
 }

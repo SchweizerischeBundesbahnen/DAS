@@ -119,6 +119,11 @@ class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartu
     }
   }
 
+  @override
+  void requestLatestStatus() {
+    messagingService.replayMessages();
+  }
+
   Future<bool> _sendSubscribeRequest({required _Subscription subscription}) async {
     final evu = subscription.evu;
     final trainNumber = subscription.trainNumber;

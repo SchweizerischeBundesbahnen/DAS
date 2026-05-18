@@ -26,4 +26,7 @@ class TrainStatusMessageDto extends BaseMessageDto {
   final String zugnr;
   final String bp;
   final String status;
+
+  @override
+  Map<String, dynamic> toJson() => _$TrainStatusMessageDtoToJson(this);
 }

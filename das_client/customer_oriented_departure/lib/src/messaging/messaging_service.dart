@@ -9,5 +9,8 @@ abstract class MessagingService {
 
   Stream<BaseMessageDto> get message;
 
+  /// replays all messages that were received in background
+  Future<void> replayMessages();
+
   void dispose();
 }
