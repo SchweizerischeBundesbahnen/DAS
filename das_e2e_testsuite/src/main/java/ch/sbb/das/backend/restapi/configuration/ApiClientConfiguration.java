@@ -2,11 +2,6 @@ package ch.sbb.das.backend.restapi.configuration;
 
 import ch.sbb.das.backend.restapi.helper.ObjectMapperFactory;
 import ch.sbb.das.backend.restclient.v1.ApiClient;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.netty.channel.ChannelOption;
 import java.text.DateFormat;
 import java.time.Duration;
@@ -17,6 +12,7 @@ import org.springframework.security.oauth2.client.ReactiveOAuth2AuthorizedClient
 import org.springframework.security.oauth2.client.web.reactive.function.client.ServerOAuth2AuthorizedClientExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
+import tools.jackson.databind.json.JsonMapper;
 
 @Configuration
 public class ApiClientConfiguration {
@@ -39,7 +35,7 @@ public class ApiClientConfiguration {
 
     @Bean
     public ApiClient apiClient(ReactiveOAuth2AuthorizedClientManager authorizedClientManager) {
-        final ObjectMapper objectMapper = objectMapper(false);
+        final JsonMapper objectMapper = ObjectMapperFactory.createMapper(false);
         ServerOAuth2AuthorizedClientExchangeFilterFunction oauth2 = new ServerOAuth2AuthorizedClientExchangeFilterFunction(
             authorizedClientManager);
         oauth2.setDefaultClientRegistrationId(DasBackendEndpointConfiguration.AUTHORIZATION_PROVIDER);
@@ -54,22 +50,6 @@ public class ApiClientConfiguration {
             // UTC OffsetDateTime relevant
             DateFormat.getDateTimeInstance());
         apiClient.setBasePath(dasBackendEndpointConfiguration.getEndpointAndPort());
-        // do not transfer null properties in (POST) requests
-        apiClient.getObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_NULL);
         return apiClient;
-    }
-
-    private ObjectMapper objectMapper(boolean strict) {
-        final ObjectMapper mapper = ObjectMapperFactory.createMapper(strict);
-        mapper.configure(SerializationFeature.WRITE_DATES_WITH_ZONE_ID, false);
-        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-        mapper.configure(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE, false);
-        mapper.registerModule(new JavaTimeModule());
-        mapper.configure(SerializationFeature.FAIL_ON_SELF_REFERENCES, strict);
-        mapper.configure(SerializationFeature.FAIL_ON_UNWRAPPED_TYPE_IDENTIFIERS, strict);
-        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, strict);
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, strict);
-        mapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, strict);
-        return mapper;
     }
 }

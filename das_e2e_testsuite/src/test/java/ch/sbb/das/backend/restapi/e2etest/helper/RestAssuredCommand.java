@@ -10,7 +10,6 @@ import ch.sbb.das.backend.restapi.configuration.DasBackendEndpointConfiguration;
 import ch.sbb.das.backend.restapi.helper.ObjectMapperFactory;
 import ch.sbb.das.backend.restapi.monitoring.MonitoringConstants;
 import ch.sbb.das.backend.restclient.v1.model.Problem;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
 import io.restassured.config.HttpClientConfig;
 import io.restassured.config.ObjectMapperConfig;
@@ -38,6 +37,7 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.web.reactive.function.client.WebClientException;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.core.publisher.Mono;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * Encapsulate a Test-request as a command to RestAssured.io to invoke against a real backend instance.
@@ -59,7 +59,7 @@ public abstract class RestAssuredCommand {
     /**
      * Serialize Body
      */
-    protected static final ObjectMapper MAPPER = ObjectMapperFactory.createMapper(true);
+    protected static final JsonMapper MAPPER = ObjectMapperFactory.createMapper(true);
     private static final int WEBCLIENT_TIMEOUT = 30 * 1000;
 
     @RegisterExtension
@@ -91,7 +91,7 @@ public abstract class RestAssuredCommand {
                 // no backend generated headers!
                 // Rate Limit error, meaning the API tells the caller it has sent too many request.
                 // This can usually be solved by waiting a bit, and you might even have a "Retry-after" header in the response telling you how long you have to wait.
-                if (ex.getHeaders().containsKey("Retry-After")) {
+                if (ex.getHeaders().containsHeader("Retry-After")) {
                     log.info("Retry-After={}", ex.getHeaders().getFirst("Retry-After"));
                 }
 
@@ -110,7 +110,7 @@ public abstract class RestAssuredCommand {
         }
 
         assertThat(responseEntity).isNotNull();
-        assertThat(responseEntity.getHeaders()).containsKey(MonitoringConstants.HEADER_REQUEST_ID);
+        assertThat(responseEntity.getHeaders().containsHeader(MonitoringConstants.HEADER_REQUEST_ID)).isTrue();
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.SC_OK);
         // see assertOK();
         AssertionsResponse.assertApplicationJson(responseEntity.getHeaders().getFirst(HttpHeaders.CONTENT_TYPE));
@@ -265,7 +265,7 @@ public abstract class RestAssuredCommand {
 
         final String requestIdValue = StringUtils.startsWith(requestId, ServiceDoc.REQUEST_ID_VALUE_E2E_TEST) ? requestId : ServiceDoc.REQUEST_ID_VALUE_E2E_TEST + "_" + requestId;
         return RestAssured.given()
-            .config(RestAssured.config().objectMapperConfig(new ObjectMapperConfig().jackson2ObjectMapperFactory(
+            .config(RestAssured.config().objectMapperConfig(new ObjectMapperConfig().jackson3ObjectMapperFactory(
                 (type, s) -> MAPPER /* will set OffsetDateTime deserialization! */))
             )
             .urlEncodingEnabled(true) // necessary for params with Umlaut
