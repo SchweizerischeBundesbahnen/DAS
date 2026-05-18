@@ -78,7 +78,7 @@ public abstract class RestAssuredCommand {
     /**
      * @param responseAsync
      * @param <T>
-     * @return assumed response with T as body
+     * @return assumed response with T as body in OK case
      */
     protected static <T> ResponseEntity<T> blockBody(Mono<ResponseEntity<T>> responseAsync, String acceptLanguage, String requestId, String instance) {
         assertThat(responseAsync).as("Mono-object").isNotNull();

@@ -87,11 +87,9 @@ public final class AssertionsResponse {
 
     // check header and body in a Problem case
     static Problem assertProblemResponse(String responseBody, String contentType, String contentLanguage, String requestIdExpected, String responseRequestId, String instance) {
-        // handled by API code-block
-        assertThat(contentType).isEqualTo(MediaType.APPLICATION_PROBLEM_JSON_VALUE);
-
         assertLanguage(ServiceDoc.HEADER_CONTENT_LANGUAGE_ERROR_DETAIL_DEFAULT /*99%*/, contentLanguage);
         assertRequestId(requestIdExpected, responseRequestId);
+        assertThat(contentType).as("body block not reached or developer fault").isEqualTo(MediaType.APPLICATION_PROBLEM_JSON_VALUE);
         assertThat(responseBody).contains("\"title\":");
         assertThat(responseBody).contains("\"detail\":");
         if (instance != null) {
@@ -160,7 +158,7 @@ public final class AssertionsResponse {
     public static void assertRequestId(String requestIdExpected, String responseRequestId) {
         if (StringUtils.isBlank(responseRequestId)) {
             // always test with Request-ID header set
-            Assertions.fail(MonitoringConstants.HEADER_REQUEST_ID + " not given");
+            Assertions.fail(MonitoringConstants.HEADER_REQUEST_ID + " not given (body block not reached or developer fault)");
         }
 
         assertThat(responseRequestId).as("Developer bug: perhaps ApiClient test performed without a 'Request-ID'").isNotBlank();

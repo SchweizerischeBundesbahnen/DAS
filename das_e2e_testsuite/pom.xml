@@ -140,7 +140,7 @@
                             <apiPackage>ch.sbb.das.backend.restclient.v1.api</apiPackage>
                             <generateApis>true</generateApis>
                             <apisToGenerate>
-                                Settings,Formations,CustomerOrientedDeparture
+                                Settings,Formations,CustomerOrientedDeparture,AppVersions
                             </apisToGenerate>
                             <generateApiTests>false</generateApiTests>
                             <generateApiDocumentation>false</generateApiDocumentation>
