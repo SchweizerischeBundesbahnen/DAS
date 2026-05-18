@@ -58,7 +58,7 @@ class CalculatedSpeedCellBody extends StatelessWidget {
         return Text(
           key: nonEmptyKey,
           speed.value == '0' ? zeroSpeedContent : speed.value,
-          style: sbbTextStyle.lightStyle.large.copyWith(color: isSpeedReducedDueToLineSpeed ? reducedColor : color),
+          style: sbbTextStyle.romanStyle.large.copyWith(color: isSpeedReducedDueToLineSpeed ? reducedColor : color),
         );
       },
     );
