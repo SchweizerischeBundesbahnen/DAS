@@ -100,6 +100,7 @@ extension JourneyScopeExtension on GetIt {
       JourneyPositionViewModel(
         punctualityStream: get<PunctualityViewModel>().model,
         journeySettingsViewModel: DI.get(),
+        journeyViewModel: DI.get(),
       ),
       dispose: (vm) => vm.dispose(),
     );
@@ -145,7 +146,11 @@ extension JourneyScopeExtension on GetIt {
   }
 
   void registerReplacementSeriesViewModel() {
-    final vm = ReplacementSeriesViewModel(journeyPositionViewModel: DI.get(), journeySettingsViewModel: DI.get());
+    final vm = ReplacementSeriesViewModel(
+      journeyPositionViewModel: DI.get(),
+      journeySettingsViewModel: DI.get(),
+      journeyViewModel: DI.get(),
+    );
     final notificationVM = DI.get<NotificationPriorityQueueViewModel>();
     notificationVM.addStream(
       type: .illegalSegmentNoReplacement,
