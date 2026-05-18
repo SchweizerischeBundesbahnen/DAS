@@ -118,6 +118,7 @@ class _ProviderScope extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        // Stateful VMs
         Provider<PunctualityViewModel>(
           create: (_) => DI.get<PunctualityViewModel>(),
         ),
@@ -130,24 +131,11 @@ class _ProviderScope extends StatelessWidget {
         Provider<NotificationPriorityQueueViewModel>(
           create: (_) => DI.get<NotificationPriorityQueueViewModel>(),
         ),
-        Provider<AdditionalSpeedRestrictionModalViewModel>(
-          create: (_) => AdditionalSpeedRestrictionModalViewModel(),
-          dispose: (_, vm) => vm.dispose(),
-        ),
-        Provider<ArrivalDepartureTimeViewModel>(
-          create: (_) => ArrivalDepartureTimeViewModel(journeyViewModel: DI.get()),
-          dispose: (_, vm) => vm.dispose(),
+        Provider<UxTestingViewModel>(
+          create: (_) => DI.get(),
         ),
         Provider<DecisiveGradientViewModel>(
           create: (_) => DI.get(),
-        ),
-        Provider<UxTestingViewModel>(
-          create: (_) => DI.get(),
-          dispose: (_, vm) => vm.dispose(),
-        ),
-        Provider<ConnectivityViewModel>(
-          create: (_) => ConnectivityViewModel(connectivityManager: DI.get()),
-          dispose: (_, vm) => vm.dispose(),
         ),
         Provider<DetailModalViewModel>(
           create: (_) => DI.get<DetailModalViewModel>(),
@@ -188,6 +176,26 @@ class _ProviderScope extends StatelessWidget {
         Provider<BrakeLoadSlipViewModel>(
           create: (_) => DI.get<BrakeLoadSlipViewModel>(),
         ),
+        Provider<JourneyTableViewModel>(
+          create: (_) => DI.get(),
+        ),
+        Provider<JourneyTableAdvancementViewModel>(
+          create: (_) => DI.get(),
+        ),
+
+        // Stateless VMs
+        Provider<AdditionalSpeedRestrictionModalViewModel>(
+          create: (_) => AdditionalSpeedRestrictionModalViewModel(),
+          dispose: (_, vm) => vm.dispose(),
+        ),
+        Provider<ArrivalDepartureTimeViewModel>(
+          create: (_) => ArrivalDepartureTimeViewModel(journeyViewModel: DI.get()),
+          dispose: (_, vm) => vm.dispose(),
+        ),
+        Provider<ConnectivityViewModel>(
+          create: (_) => ConnectivityViewModel(connectivityManager: DI.get()),
+          dispose: (_, vm) => vm.dispose(),
+        ),
         Provider<ReauthenticationRequiredViewModel>(
           create: (_) => ReauthenticationRequiredViewModel(
             authenticator: DI.get(),
@@ -218,12 +226,6 @@ class _ProviderScope extends StatelessWidget {
             journeyViewModel: DI.get(),
           ),
           dispose: (_, vm) => vm.dispose(),
-        ),
-        Provider<JourneyTableViewModel>(
-          create: (_) => DI.get(),
-        ),
-        Provider<JourneyTableAdvancementViewModel>(
-          create: (_) => DI.get(),
         ),
       ],
       child: Builder(builder: builder),
