@@ -193,7 +193,7 @@ class ServicePointModalViewModel extends JourneyAwareViewModel {
   }
 
   @override
-  void onJourney(Journey? journey) {
+  void onJourneyChanged(Journey? journey) {
     if (journey != null) _rxMetadata.add(journey.metadata);
     if (lastJourney != null) {
       _cancelSubscriptions();

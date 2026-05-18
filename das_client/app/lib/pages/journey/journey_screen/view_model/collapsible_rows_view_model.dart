@@ -131,7 +131,7 @@ class CollapsibleRowsViewModel extends JourneyAwareViewModel {
   }
 
   @override
-  void onJourney(_) {
+  void onJourneyChanged(_) {
     _isSimTrain = false;
     _rxCollapsedRows.add({});
   }

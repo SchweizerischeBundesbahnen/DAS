@@ -300,7 +300,7 @@ class BrakeLoadSlipViewModel extends JourneyAwareViewModel {
   }
 
   @override
-  void onJourney(Journey? journey) {
+  void onJourneyChanged(Journey? journey) {
     _latestPosition = null;
     _openFullscreen = true;
     _rxFormation.add(null);

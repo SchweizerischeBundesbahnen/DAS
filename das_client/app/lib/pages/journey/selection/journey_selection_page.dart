@@ -68,7 +68,7 @@ class _ContentState extends State<_Content> {
   void initState() {
     super.initState();
     final viewModel = context.read<JourneySelectionViewModel>();
-    _subscription = viewModel.model.listen((model) async {
+    _subscription = viewModel.model.listen((model) {
       if (model is Loaded && mounted) {
         context.router.replace(JourneyRoute());
       }

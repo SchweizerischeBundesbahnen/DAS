@@ -96,7 +96,7 @@ class ChronographViewModel extends JourneyAwareViewModel {
   void onJourneyUpdated(Journey? _) => _emitState();
 
   @override
-  void onJourney(_) {
+  void onJourneyChanged(_) {
     _punctualityModel = PunctualityModel.hidden();
     _rxModel.add(_punctualityModel);
     _isAdvisedSpeedActive = false;

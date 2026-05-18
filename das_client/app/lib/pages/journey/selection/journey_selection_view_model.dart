@@ -90,6 +90,8 @@ class JourneySelectionViewModel {
             _ => null,
           };
         case .disconnected:
+          if (_sferaRepo.lastError == null) return;
+
           return switch (_currentState) {
             final Loading l => _emit(
               JourneySelectionModel.error(

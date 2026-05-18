@@ -19,7 +19,7 @@ abstract class JourneyAwareViewModel {
     _journeySubscription = journeyViewModel.journey.listen((journey) {
       final currentTrainIdentification = journey?.metadata.trainIdentification;
       if (currentTrainIdentification != lastJourney?.metadata.trainIdentification) {
-        onJourney(journey);
+        onJourneyChanged(journey);
       } else {
         onJourneyUpdated(journey);
       }
@@ -27,11 +27,11 @@ abstract class JourneyAwareViewModel {
     });
   }
 
-  // Called when a journey is updated
+  /// Called when a journey is updated
   void onJourneyUpdated(Journey? journey) {}
 
-  // Called when a new journey is emitted the first time
-  void onJourney(Journey? journey) {}
+  /// Called when a new journey is emitted the first time
+  void onJourneyChanged(Journey? journey) {}
 
   @mustCallSuper
   void dispose() {

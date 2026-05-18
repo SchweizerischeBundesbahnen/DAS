@@ -36,7 +36,7 @@ class DepartureProcessWarningViewModel extends JourneyAwareViewModel {
   }
 
   @override
-  void onJourney(Journey? journey) {
+  void onJourneyChanged(Journey? journey) {
     _ruFeatureProvider.isRuFeatureEnabled(.departureProcess).then((enabled) {
       _isDepartureProcessFeatureEnabled = enabled;
       if (_rxShowChronographWarning.isClosed) return;
