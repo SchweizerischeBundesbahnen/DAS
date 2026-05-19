@@ -60,9 +60,7 @@ class CollapsibleRowsViewModel extends JourneyAwareViewModel {
   }
 
   void _onFormationRunChanged(FormationRunChange? formationRunChange) {
-    final isSimTrain = formationRunChange?.formationRun.simTrain ?? false;
-    _isSimTrain = isSimTrain;
-
+    _isSimTrain = formationRunChange?.formationRun.simTrain ?? false;
     _updateSimFootNotes(lastJourney, _isSimTrain);
   }
 
