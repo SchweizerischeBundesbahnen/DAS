@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:customer_oriented_departure/component.dart';
 import 'package:customer_oriented_departure/src/api/customer_oriented_departure_api_service.dart';
@@ -71,6 +72,8 @@ class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartu
       return false;
     }
 
+    _pendingOrOpenSubscription = subscription;
+
     return _sendSubscribeRequest(subscription: subscription);
   }
 
@@ -137,7 +140,8 @@ class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartu
     final sub = messagingService.token.listen((token) {
       if (token != null && _pendingOrOpenSubscription != null && _pendingOrOpenSubscription!.pushToken != token) {
         _log.fine('Received new push token for open/pending subscription');
-        _sendSubscribeRequest(subscription: _pendingOrOpenSubscription!.withToken(token: token));
+        _pendingOrOpenSubscription = _pendingOrOpenSubscription!.withToken(token: token);
+        _sendSubscribeRequest(subscription: _pendingOrOpenSubscription!);
       }
     });
     _subscriptions.add(sub);
@@ -186,8 +190,8 @@ class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartu
   }
 
   void _scheduleSubscriptionRetry(_Subscription subscription) {
-    // 5 * 2^attempt for exponential backoff: 5s, 10s, 20s, 40s, etc.
-    final delaySeconds = 5 * (1 << _subscriptionRetryAttempt);
+    // 5 * 2^attempt for exponential backoff. Capped at 2^6 (~5min)
+    final delaySeconds = 5 * (1 << min(_subscriptionRetryAttempt, 6));
 
     _log.fine(
       'Scheduling subscription retry for messageId: ${subscription.messageId}, attempt: ${_subscriptionRetryAttempt + 1}, delay: ${delaySeconds}s',

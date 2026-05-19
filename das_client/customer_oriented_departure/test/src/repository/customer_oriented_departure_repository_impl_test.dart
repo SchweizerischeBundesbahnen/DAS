@@ -6,6 +6,7 @@ import 'package:customer_oriented_departure/src/messaging/firebase/dto/base_mess
 import 'package:customer_oriented_departure/src/messaging/firebase/dto/train_status_message_dto.dart';
 import 'package:customer_oriented_departure/src/messaging/messaging_service.dart';
 import 'package:customer_oriented_departure/src/repository/customer_oriented_departure_repository_impl.dart';
+import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -217,6 +218,128 @@ void main() {
         isDriver: true,
       ),
     ).called(1);
+  });
+
+  test('subscribe_whenNoConfirmation_thenRetriesWithExponentialBackoff', () {
+    fakeAsync((async) {
+      // ACT
+      testee.subscribe(
+        evu: '1080',
+        trainNumber: 'RE1234',
+        journeyEndTime: testJourneyEndTime,
+        isDriver: true,
+      );
+      async.flushMicrotasks();
+
+      // VERIFY
+
+      final firstCall = verify(
+        mockSubscribeRequest.call(
+          evu: '1080',
+          trainNumber: 'RE1234',
+          pushToken: testPushToken,
+          deviceId: 'device-1',
+          messageId: captureAnyNamed('messageId'),
+          expiresAt: testJourneyEndTimeWithBuffer,
+          isDriver: true,
+        ),
+      );
+      firstCall.called(1);
+      final messageId = firstCall.captured.single as String;
+
+      // 1st retry after 5 seconds
+      async.elapse(const Duration(seconds: 5));
+      async.flushMicrotasks();
+      verify(
+        mockSubscribeRequest.call(
+          evu: '1080',
+          trainNumber: 'RE1234',
+          pushToken: testPushToken,
+          deviceId: 'device-1',
+          messageId: messageId,
+          expiresAt: testJourneyEndTimeWithBuffer,
+          isDriver: true,
+        ),
+      ).called(1);
+
+      // 2nd retry after 10 seconds (exponential backoff)
+      async.elapse(const Duration(seconds: 10));
+      async.flushMicrotasks();
+      verify(
+        mockSubscribeRequest.call(
+          evu: '1080',
+          trainNumber: 'RE1234',
+          pushToken: testPushToken,
+          deviceId: 'device-1',
+          messageId: messageId,
+          expiresAt: testJourneyEndTimeWithBuffer,
+          isDriver: true,
+        ),
+      ).called(1);
+
+      // check further retries are done without confirmation
+      async.elapse(const Duration(hours: 1));
+      async.flushMicrotasks();
+      final callCount = verify(mockApiService.subscribe).callCount;
+      expect(callCount, greaterThan(10));
+    });
+  });
+
+  test('subscribe_whenConfirmationReceived_thenStopsRetrying', () {
+    fakeAsync((async) {
+      // ACT
+      testee.subscribe(
+        evu: '1080',
+        trainNumber: 'RE1234',
+        journeyEndTime: testJourneyEndTime,
+        isDriver: true,
+      );
+      async.flushMicrotasks();
+
+      // VERIFY
+
+      final initialSubscribeCall = verify(
+        mockSubscribeRequest.call(
+          evu: '1080',
+          trainNumber: 'RE1234',
+          pushToken: testPushToken,
+          deviceId: 'device-1',
+          messageId: captureAnyNamed('messageId'),
+          expiresAt: testJourneyEndTimeWithBuffer,
+          isDriver: true,
+        ),
+      );
+      initialSubscribeCall.called(1);
+      final messageId = initialSubscribeCall.captured.single as String;
+
+      // confirmation message with wrong message id should not cancel retry
+      rxMessage.add(BaseMessageDto(messageId: 'random-message-id'));
+      async.flushMicrotasks();
+
+      // check first retry that should happen after 5s
+      async.elapse(const Duration(seconds: 6));
+      async.flushMicrotasks();
+      verify(
+        mockSubscribeRequest.call(
+          evu: '1080',
+          trainNumber: 'RE1234',
+          pushToken: testPushToken,
+          deviceId: 'device-1',
+          messageId: messageId,
+          expiresAt: testJourneyEndTimeWithBuffer,
+          isDriver: true,
+        ),
+      ).called(1);
+
+      // confirmation message with correct message id should cancel retry
+      rxMessage.add(BaseMessageDto(messageId: messageId));
+      async.flushMicrotasks();
+
+      // verify that no more retries are tried
+      async.elapse(const Duration(minutes: 2));
+      async.flushMicrotasks();
+      verifyNoMoreInteractions(mockSubscribeRequest);
+    });
   });
 
   test('unsubscribe_whenNoPendingSubscription_thenReturnsTrueAndSkipsRequest', () async {
