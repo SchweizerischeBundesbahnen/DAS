@@ -1,12 +1,15 @@
 package ch.sbb.das.backend.admin.domain.notices;
 
 import ch.sbb.das.backend.admin.application.notices.model.SpecialHoliday;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 public interface SpecialHolidayRepository {
 
     List<SpecialHoliday> getAllUpcoming();
+
+    List<SpecialHoliday> findAllByDate(LocalDate date);
 
     Optional<SpecialHoliday> findById(Integer id);
 

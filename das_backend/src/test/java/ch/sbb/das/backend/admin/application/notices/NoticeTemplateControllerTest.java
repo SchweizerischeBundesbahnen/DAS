@@ -280,7 +280,7 @@ class NoticeTemplateControllerTest {
     @Test
     @WithMockUser(authorities = "ROLE_ru_admin")
     @Sql("classpath:createNoticeTemplates.sql")
-    void deleteBatch_ok() throws Exception {
+    void deleteNoticeTemplateByIds_ok() throws Exception {
         mockMvc.perform(delete(API_NOTICE_TEMPLATES)
                 .contentType("application/json")
                 .content("""
@@ -305,7 +305,7 @@ class NoticeTemplateControllerTest {
 
     @Test
     @WithMockUser(authorities = "ROLE_ru_admin")
-    void deleteBatch_invalid_body() throws Exception {
+    void deleteNoticeTemplateByIds_invalid_body() throws Exception {
         mockMvc.perform(delete(API_NOTICE_TEMPLATES)
                 .contentType("application/json")
                 .content("""

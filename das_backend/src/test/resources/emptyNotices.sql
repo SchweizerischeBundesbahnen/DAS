@@ -1,0 +1,4 @@
+TRUNCATE TABLE notice;
+
+ALTER SEQUENCE notice_id_seq RESTART WITH 1;
+
