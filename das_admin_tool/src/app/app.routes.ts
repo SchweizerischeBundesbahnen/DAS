@@ -31,7 +31,7 @@ export const routes: Routes = [
       {
         path: 'ru-admin',
         canActivate: [isRuAdmin],
-        loadComponent: () => import('./ru-admin/ru-admin').then(m => m.RuAdmin)
+        loadChildren: () => import('./ru-admin/ru-admin.routes').then((m) => m.routes)
       },
       {
         path: 'locations',

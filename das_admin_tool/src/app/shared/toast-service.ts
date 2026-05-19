@@ -4,12 +4,14 @@ import {SbbToast, SbbToastService} from '@sbb-esta/lyne-angular/toast';
 const TOAST_CONFIG_SUCCESS = {
   setupContainer: (toast: SbbToast) => {
     toast.iconName = 'circle-tick-small';
+    toast.timeout = 20_000;
   },
 };
 
 const TOAST_CONFIG_ERROR = {
   setupContainer: (toast: SbbToast) => {
     toast.iconName = 'circle-cross-small';
+    toast.timeout = 20_000;
   },
 };
 

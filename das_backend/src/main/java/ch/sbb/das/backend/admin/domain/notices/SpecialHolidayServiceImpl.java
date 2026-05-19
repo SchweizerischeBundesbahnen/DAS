@@ -9,19 +9,19 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class SpecialSpecialHolidayServiceImpl implements SpecialHolidayService {
+public class SpecialHolidayServiceImpl implements SpecialHolidayService {
 
     private final SpecialHolidayRepository specialHolidayRepository;
     private final CompanyAuthorizer companyAuthorizationService;
 
-    public SpecialSpecialHolidayServiceImpl(SpecialHolidayRepository specialHolidayRepository, CompanyAuthorizer companyAuthorizationService) {
+    public SpecialHolidayServiceImpl(SpecialHolidayRepository specialHolidayRepository, CompanyAuthorizer companyAuthorizationService) {
         this.specialHolidayRepository = specialHolidayRepository;
         this.companyAuthorizationService = companyAuthorizationService;
     }
 
     @Override
-    public List<SpecialHoliday> getUpcoming() {
-        return specialHolidayRepository.findUpcoming().stream()
+    public List<SpecialHoliday> getAllUpcoming() {
+        return specialHolidayRepository.getAllUpcoming().stream()
             .filter(holiday -> companyAuthorizationService.authorizedCompanies().containsAll(holiday.companies()))
             .toList();
     }

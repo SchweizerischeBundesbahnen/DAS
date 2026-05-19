@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface SpecialHolidayService {
 
-    List<SpecialHoliday> getUpcoming();
+    List<SpecialHoliday> getAllUpcoming();
 
     SpecialHoliday getById(Integer id);
 
