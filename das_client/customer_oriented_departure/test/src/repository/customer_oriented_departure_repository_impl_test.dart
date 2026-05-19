@@ -2,6 +2,7 @@ import 'package:customer_oriented_departure/component.dart';
 import 'package:customer_oriented_departure/src/api/confirm/confirm_request.dart';
 import 'package:customer_oriented_departure/src/api/customer_oriented_departure_api_service.dart';
 import 'package:customer_oriented_departure/src/api/subscribe/subscribe_request.dart';
+import 'package:customer_oriented_departure/src/messaging/firebase/dto/base_message_dto.dart';
 import 'package:customer_oriented_departure/src/messaging/firebase/dto/train_status_message_dto.dart';
 import 'package:customer_oriented_departure/src/messaging/messaging_service.dart';
 import 'package:customer_oriented_departure/src/repository/customer_oriented_departure_repository_impl.dart';
@@ -26,10 +27,11 @@ void main() {
   late MockSubscribeRequest mockSubscribeRequest;
   late MockSubscribeRequest mockUnsubscribeRequest;
   late BehaviorSubject<String?> rxToken;
-  late BehaviorSubject<TrainStatusMessageDto> rxTrainStatusMessage;
+  late BehaviorSubject<BaseMessageDto> rxMessage;
 
   const String testPushToken = 'push-token';
   final testJourneyEndTime = DateTime.now();
+  final testJourneyEndTimeWithBuffer = testJourneyEndTime.add(CustomerOrientedDepartureRepositoryImpl.expireAtBuffer);
 
   setUp(() {
     mockApiService = MockCustomerOrientedDepartureApiService();
@@ -38,14 +40,16 @@ void main() {
     mockSubscribeRequest = MockSubscribeRequest();
     mockUnsubscribeRequest = MockSubscribeRequest();
     rxToken = BehaviorSubject();
-    rxTrainStatusMessage = BehaviorSubject();
+    rxMessage = BehaviorSubject();
 
     when(mockApiService.unsubscribe).thenReturn(mockUnsubscribeRequest);
     when(mockApiService.subscribe).thenReturn(mockSubscribeRequest);
     when(mockApiService.confirm).thenReturn(mockConfirmRequest);
+
     when(mockMessagingService.tokenValue).thenReturn(testPushToken);
     when(mockMessagingService.token).thenAnswer((_) => rxToken.stream);
-    when(mockMessagingService.message).thenAnswer((_) => rxTrainStatusMessage.stream);
+    when(mockMessagingService.message).thenAnswer((_) => rxMessage.stream);
+    when(mockMessagingService.replayMessages()).thenAnswer((_) => Future.value());
 
     when(
       mockSubscribeRequest.call(
@@ -88,7 +92,7 @@ void main() {
   tearDown(() async {
     testee.dispose();
     await rxToken.close();
-    await rxTrainStatusMessage.close();
+    await rxMessage.close();
   });
 
   test('subscribe_whenTokenAvailable_thenCallsRegisterRequest', () async {
@@ -109,7 +113,7 @@ void main() {
         pushToken: testPushToken,
         deviceId: 'device-1',
         messageId: anyNamed('messageId'),
-        expiresAt: testJourneyEndTime,
+        expiresAt: testJourneyEndTimeWithBuffer,
         isDriver: true,
       ),
     ).called(1);
@@ -160,7 +164,7 @@ void main() {
         pushToken: 'new-token',
         deviceId: 'device-1',
         messageId: anyNamed('messageId'),
-        expiresAt: testJourneyEndTime,
+        expiresAt: testJourneyEndTimeWithBuffer,
         isDriver: true,
       ),
       mockSubscribeRequest.call(
@@ -169,7 +173,7 @@ void main() {
         pushToken: 'new-token',
         deviceId: 'device-1',
         messageId: anyNamed('messageId'),
-        expiresAt: testJourneyEndTime,
+        expiresAt: testJourneyEndTimeWithBuffer,
         isDriver: false,
       ),
     ]);
@@ -198,7 +202,7 @@ void main() {
         pushToken: null,
         deviceId: 'device-1',
         messageId: anyNamed('messageId'),
-        expiresAt: testJourneyEndTime,
+        expiresAt: testJourneyEndTimeWithBuffer,
         isDriver: true,
       ),
     );
@@ -209,7 +213,7 @@ void main() {
         pushToken: 'refreshed-token',
         deviceId: 'device-1',
         messageId: anyNamed('messageId'),
-        expiresAt: testJourneyEndTime,
+        expiresAt: testJourneyEndTimeWithBuffer,
         isDriver: true,
       ),
     ).called(1);
@@ -290,7 +294,7 @@ void main() {
         pushToken: testPushToken,
         deviceId: 'device-1',
         messageId: anyNamed('messageId'),
-        expiresAt: testJourneyEndTime,
+        expiresAt: testJourneyEndTimeWithBuffer,
         isDriver: true,
       ),
     ).called(1);
@@ -302,10 +306,10 @@ void main() {
     final subscription = testee.customerOrientedDeparture.listen(emittedStatuses.add);
 
     // ACT
-    rxTrainStatusMessage
-      ..add(_createMessage(trainNumber: '1', status: 'READY', messageId: 'message-1'))
-      ..add(_createMessage(trainNumber: '2', status: 'abcd', messageId: 'message-2')) // should be ignored
-      ..add(_createMessage(trainNumber: '3', status: 'departure', messageId: 'message-3'));
+    rxMessage
+      ..add(_createTrainStatusMessage(trainNumber: '1', status: 'READY', messageId: 'message-1'))
+      ..add(_createTrainStatusMessage(trainNumber: '2', status: 'abcd', messageId: 'message-2')) // should be ignored
+      ..add(_createTrainStatusMessage(trainNumber: '3', status: 'departure', messageId: 'message-3'));
     await Future.delayed(Duration.zero);
 
     // VERIFY
@@ -332,9 +336,17 @@ void main() {
 
     await subscription.cancel();
   });
+
+  test('requestLatestStatus_thenCallsReplayMessages', () async {
+    // ACT
+    testee.requestLatestStatus();
+
+    // VERIFY
+    verify(mockMessagingService.replayMessages()).called(1);
+  });
 }
 
-TrainStatusMessageDto _createMessage({
+TrainStatusMessageDto _createTrainStatusMessage({
   required String trainNumber,
   required String status,
   String messageId = 'message-1',

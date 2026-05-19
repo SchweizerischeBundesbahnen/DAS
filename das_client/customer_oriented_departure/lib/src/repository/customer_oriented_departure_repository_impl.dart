@@ -13,10 +13,10 @@ final _log = Logger('CustomerOrientedDepartureRepositoryImpl');
 
 class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartureRepository {
   /// buffer duration used on journey end time for possible delays
-  static const _expireAtBuffer = Duration(hours: 1);
+  static const expireAtBuffer = Duration(hours: 1);
 
   /// default expire at time for subscription. This value is currently used by LEA in production.
-  static const _defaultExpireAtDuration = Duration(hours: 6);
+  static const defaultExpireAtDuration = Duration(hours: 6);
 
   CustomerOrientedDepartureRepositoryImpl({
     required this.apiService,
@@ -155,8 +155,10 @@ class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartu
   }
 
   DateTime _calculateExpiresAt(DateTime? journeyEndTime) {
-    if (journeyEndTime != null) journeyEndTime.add(_expireAtBuffer);
-    return DateTime.now().add(_defaultExpireAtDuration);
+    if (journeyEndTime != null) {
+      return journeyEndTime.add(expireAtBuffer);
+    }
+    return DateTime.now().add(defaultExpireAtDuration);
   }
 
   Future<bool> _sendSubscribeRequest({required _Subscription subscription}) async {
