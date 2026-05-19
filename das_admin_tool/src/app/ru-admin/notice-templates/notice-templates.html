@@ -3,7 +3,7 @@
 @if (noticeTemplates.hasValue()) {
   @if (noticeTemplates.value().data.length === 0) {
     <p i18n="@@notice_templates_empty_state">Noch keine Titel und Texte erfasst.</p>
-    <sbb-secondary-button (click)="noticeTemplatesService.add()" i18n="@@notice_templates_button_create" iconName="plus-small">Neuen Eintrag erfassen
+    <sbb-secondary-button (click)="noticeTemplatesService.add()" i18n="@@button_create_entry" iconName="plus-small">Neuen Eintrag erfassen
     </sbb-secondary-button>
   } @else {
     <app-notice-templates-table/>
