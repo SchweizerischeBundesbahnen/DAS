@@ -2,16 +2,21 @@ import 'dart:async';
 
 import 'package:app/di/di.dart';
 import 'package:app/extension/datetime_extension.dart';
-import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:clock/clock.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
-class ArrivalDepartureTimeViewModel extends JourneyAwareViewModel {
+class ArrivalDepartureTimeViewModel {
   final _resetToOperationalAfterSeconds = DI.get<TimeConstants>().arrivalDepartureOperationalResetSeconds;
 
-  ArrivalDepartureTimeViewModel({super.journeyViewModel});
+  ArrivalDepartureTimeViewModel({required JourneyViewModel journeyViewModel}) : _journeyViewModel = journeyViewModel {
+    _journeySubscription = _journeyViewModel.journey.listen(_journeyUpdated);
+  }
+
+  final JourneyViewModel _journeyViewModel;
+  StreamSubscription? _journeySubscription;
 
   Stream<bool> get showOperationalTime => _rxShowOperationalTimes;
 
@@ -54,23 +59,9 @@ class ArrivalDepartureTimeViewModel extends JourneyAwareViewModel {
     }
   }
 
-  @override
-  void journeyUpdated(Journey? journey) {
-    _journeyUpdated(journey);
-  }
-
-  @override
-  void journeyIdentificationChanged(Journey? journey) {
-    _rxShowOperationalTimes.add(true);
-    _hasJourneyOperationalTimes = null;
-    _timer?.cancel();
-    _journeyUpdated(journey);
-  }
-
-  @override
   void dispose() {
-    super.dispose();
     _timer?.cancel();
     _rxShowOperationalTimes.close();
+    _journeySubscription?.cancel();
   }
 }

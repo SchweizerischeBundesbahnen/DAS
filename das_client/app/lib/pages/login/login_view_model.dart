@@ -1,6 +1,5 @@
 import 'package:app/di/di.dart';
 import 'package:app/di/scope_handler.dart';
-import 'package:app/di/scopes/journey_scope.dart';
 import 'package:app/pages/login/login_model.dart';
 import 'package:auth/component.dart';
 import 'package:logging/logging.dart';
@@ -35,7 +34,6 @@ class LoginViewModel {
     try {
       await authenticator.login();
       await DI.get<ScopeHandler>().push<AuthenticatedScope>();
-      await DI.get<ScopeHandler>().push<JourneyScope>();
       _rxModel.add(LoggedIn(connectToTmsVad: modelValue.connectToTmsVad));
     } catch (e) {
       _log.severe('Login failed', e);

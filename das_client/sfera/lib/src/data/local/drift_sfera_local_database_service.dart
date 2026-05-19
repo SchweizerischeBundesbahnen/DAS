@@ -108,6 +108,8 @@ class DriftSferaLocalDatabaseService extends _$DriftSferaLocalDatabaseService im
     DateTime startDate,
   ) => _jpManager
       .filter((f) => f.company(company) & f.operationalTrainNumber(operationalTrainNumber) & f.startDate(startDate))
+      .orderBy((o) => o.version.desc())
+      .limit(1)
       .watchSingleOrNull();
 
   @override

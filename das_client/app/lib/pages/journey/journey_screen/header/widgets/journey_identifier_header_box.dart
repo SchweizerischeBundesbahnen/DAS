@@ -24,6 +24,7 @@ class JourneyIdentifierHeaderBox extends StatelessWidget {
     return Provider(
       create: (_) => RadioChannelViewModel(
         journeyPositionStream: journeyPositionViewModel.model,
+        journeyViewModel: journeyViewModel,
       ),
       dispose: (_, vm) => vm.dispose(),
       child: StreamBuilder(

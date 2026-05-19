@@ -45,14 +45,14 @@ class SuspiciousSegmentViewModel extends JourneyAwareViewModel {
   }
 
   @override
-  void journeyIdentificationChanged(Journey? journey) {
+  void onJourneyChanged(Journey? journey) {
     _lastCurrentPosition = null;
     _dismissed = false;
     _calculateAndEmitModel(journey: journey, currentPosition: null);
   }
 
   @override
-  void journeyUpdated(Journey? journey) {
+  void onJourneyUpdated(Journey? journey) {
     final currentSegments = journey?.metadata.suspiciousSegments ?? [];
     final lastSegments = lastJourney?.metadata.suspiciousSegments ?? [];
 

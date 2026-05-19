@@ -1,7 +1,15 @@
 import 'package:app/app_info/app_info.dart';
 import 'package:app/di/di.dart';
 import 'package:app/flavor.dart';
+import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
+import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
 import 'package:app/pages/journey/view_model/app_expiration_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_view_model.dart';
+import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
+import 'package:app/pages/journey/view_model/view_mode_view_model.dart';
+import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:app/provider/ru_feature_provider_impl.dart';
 import 'package:app/util/device_id_info.dart';
@@ -9,6 +17,7 @@ import 'package:auth/component.dart';
 import 'package:formation/component.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http_x/component.dart';
+import 'package:local_regulations/component.dart';
 import 'package:logger/component.dart';
 import 'package:logging/logging.dart';
 import 'package:mqtt/component.dart';
@@ -38,14 +47,30 @@ class AuthenticatedScope extends DIScope {
     getIt.registerRuFeatureProvider();
     getIt.registerFormationRepository();
 
+    getIt.registerJourneyNavigationViewModel();
+    getIt.registerJourneySelectionViewModel();
+    getIt.registerJourneyViewModel();
+    getIt.registerJourneySettingsViewModel();
+    getIt.registerViewModeViewModel();
+    getIt.registerNotificationPriorityViewModel();
+    getIt.registerWarnAppViewModel();
+    getIt.registerLocalRegulationHtmlGenerator();
+
     await getIt.allReady();
   }
 }
 
 extension AuthenticatedScopeExtension on GetIt {
+  void registerViewModeViewModel() {
+    registerSingletonAsync<ViewModeViewModel>(
+      () async => ViewModeViewModel(journeySettingsViewModel: DI.get()),
+      dependsOn: [JourneySettingsViewModel],
+      dispose: (vm) => vm.dispose(),
+    );
+  }
+
   void registerAuthProvider() {
     factoryFunc() {
-      _log.fine('Register auth provider');
       return _AuthProvider(authenticator: DI.get());
     }
 
@@ -54,7 +79,6 @@ extension AuthenticatedScopeExtension on GetIt {
 
   void registerSferaAuthProvider() {
     factoryFunc() {
-      _log.fine('Register sfera auth provider');
       return _SferaAuthProvider(authenticator: DI.get());
     }
 
@@ -63,7 +87,6 @@ extension AuthenticatedScopeExtension on GetIt {
 
   void registerMqttAuthProvider() {
     factoryFunc() {
-      _log.fine('Register mqtt auth provider');
       return _MqttAuthProvider(
         authenticator: DI.get(),
         oauthProfile: DI.get<Flavor>().mqttOauthProfile,
@@ -74,51 +97,43 @@ extension AuthenticatedScopeExtension on GetIt {
   }
 
   void registerMqttService() {
-    Future<MqttService> factoryFunc() async {
-      _log.fine('Register mqtt service');
-      final flavor = DI.get<Flavor>();
-      final deviceId = await DeviceIdInfo.getDeviceId();
-      return MqttComponent.createMqttService(
+    final flavor = DI.get<Flavor>();
+
+    registerSingletonAsync<MqttService>(
+      () async => MqttComponent.createMqttService(
         mqttUrl: flavor.mqttUrl,
         mqttClientConnector: DI.get(),
         prefix: flavor.mqttTopicPrefix,
-        deviceId: deviceId,
+        deviceId: await DeviceIdInfo.getDeviceId(),
         sferaVersion: flavor.sferaVersion,
-      );
-    }
-
-    registerSingletonAsync(factoryFunc);
+      ),
+      dispose: (vm) => vm.dispose(),
+    );
   }
 
   void registerHttpClient() {
     factoryFunc() {
-      _log.fine('Register http client');
       return HttpXComponent.createHttpClient(authProvider: DI.get());
     }
 
     registerLazySingleton<Client>(factoryFunc);
   }
 
-  void registerSferaRemoteRepo() {
-    factoryFunc() async {
-      _log.fine('Register sfera remote repo');
-      final flavor = DI.get<Flavor>();
-      final deviceId = await DeviceIdInfo.getDeviceId();
-      return SferaComponent.createSferaRepository(
+  Future<void> registerSferaRemoteRepo() async {
+    final flavor = DI.get<Flavor>();
+
+    registerSingletonAsync<SferaRepository>(
+      () async => SferaComponent.createSferaRepository(
         mqttService: DI.get(),
         sferaAuthProvider: DI.get(),
         localRepo: DI.get(),
         connectivityManager: DI.get(),
-        deviceId: deviceId,
+        deviceId: await DeviceIdInfo.getDeviceId(),
         authenticator: DI.get(),
         sferaVersion: flavor.sferaVersion,
-      );
-    }
-
-    registerSingletonAsync<SferaRepository>(
-      factoryFunc,
-      dispose: (repo) => repo.dispose(),
+      ),
       dependsOn: [MqttService],
+      dispose: (repo) => repo.dispose(),
     );
   }
 
@@ -149,11 +164,13 @@ extension AuthenticatedScopeExtension on GetIt {
   }
 
   void registerRuFeatureProvider() {
-    factoryFunc() {
-      return RuFeatureProviderImpl(sferaRepo: DI.get(), settingsRepository: DI.get());
-    }
-
-    registerLazySingleton<RuFeatureProvider>(factoryFunc);
+    registerSingletonAsync<RuFeatureProvider>(
+      () async => RuFeatureProviderImpl(
+        sferaRepo: DI.get(),
+        settingsRepository: DI.get(),
+      ),
+      dependsOn: [SferaRepository],
+    );
   }
 
   void registerFormationRepository() {
@@ -161,6 +178,77 @@ extension AuthenticatedScopeExtension on GetIt {
     registerSingleton<FormationRepository>(
       FormationComponent.createRepository(baseUrl: flavor.backendUrl, client: DI.get()),
     );
+  }
+
+  void registerJourneyNavigationViewModel() {
+    registerSingletonAsync<JourneyNavigationViewModel>(
+      () async => JourneyNavigationViewModel(sferaRepo: DI.get()),
+      dependsOn: [SferaRepository],
+      dispose: (vm) => vm.dispose(),
+    );
+  }
+
+  void registerJourneySelectionViewModel() {
+    factoryFunc() async {
+      return JourneySelectionViewModel(
+        sferaRepo: DI.get(),
+        onJourneySelected: (trainId) => DI.get<JourneyNavigationViewModel>().replaceWith([
+          ExtendedTrainIdentification(trainIdentification: trainId),
+        ]),
+      );
+    }
+
+    registerSingletonAsync<JourneySelectionViewModel>(
+      factoryFunc,
+      dependsOn: [SferaRepository, JourneyNavigationViewModel],
+      dispose: (vm) => vm.dispose(),
+    );
+  }
+
+  void registerJourneyViewModel() {
+    registerSingletonAsync(
+      () async => JourneyViewModel(sferaRepository: DI.get()),
+      dependsOn: [SferaRepository],
+      dispose: (vm) => vm.dispose(),
+    );
+  }
+
+  void registerNotificationPriorityViewModel() {
+    registerSingletonAsync(
+      () async => NotificationPriorityQueueViewModel(),
+      dependsOn: [JourneyViewModel],
+      dispose: (vm) => vm.dispose(),
+    );
+  }
+
+  void registerWarnAppViewModel() {
+    registerSingletonAsync(
+      () async => WarnAppViewModel(
+        flavor: DI.get(),
+        sferaRepo: DI.get(),
+        warnappRepo: DI.get(),
+        ruFeatureProvider: DI.get(),
+        notificationViewModel: DI.get(),
+      ),
+      dependsOn: [
+        SferaRepository,
+        RuFeatureProvider,
+        NotificationPriorityQueueViewModel,
+      ],
+      dispose: (vm) => vm.dispose(),
+    );
+  }
+
+  void registerJourneySettingsViewModel() {
+    registerSingletonAsync<JourneySettingsViewModel>(
+      () async => JourneySettingsViewModel(),
+      dependsOn: [JourneyViewModel],
+      dispose: (vm) => vm.dispose(),
+    );
+  }
+
+  void registerLocalRegulationHtmlGenerator() {
+    registerSingleton(LocalRegulationComponent.createLocalRegulationHtmlGenerator());
   }
 }
 

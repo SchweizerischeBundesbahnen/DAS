@@ -1,5 +1,6 @@
 import 'package:app/model/tour_system.dart';
 import 'package:collection/collection.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -9,6 +10,9 @@ class UserSettings {
   }
 
   late SharedPreferences _prefs;
+  final _rxModel = BehaviorSubject<UserSettingKeys?>.seeded(null);
+
+  Stream<UserSettingKeys?> get model => _rxModel.stream;
 
   void _init() async {
     _prefs = await SharedPreferences.getInstance();
@@ -34,6 +38,7 @@ class UserSettings {
     } else {
       throw ArgumentError('Unsupported type for user setting: ${value.runtimeType}');
     }
+    _rxModel.add(key);
   }
 
   bool get showDecisiveGradient => get(.showDecisiveGradient, true);

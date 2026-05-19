@@ -306,50 +306,6 @@ void main() {
       });
     });
 
-    group('journeyIdentificationChanged – new train identification', () {
-      test('whenTrainIdentificationChanges_modelEmitsDisabled', () {
-        testAsync.run((_) {
-          journeyPositionSubject.add(JourneyPositionModel(currentPosition: servicePointA));
-        });
-        processStreams(fakeAsync: testAsync);
-        expect(modelRegister.last, isA<NoCustomerOrientedDepartureChecklist>());
-        modelRegister.clear();
-
-        final trainId1 = TrainIdentification(
-          ru: RailwayUndertaking.sbbP,
-          trainNumber: '1111',
-          date: DateTime(2026, 3, 24),
-        );
-        final trainId2 = TrainIdentification(
-          ru: RailwayUndertaking.sbbP,
-          trainNumber: '2222',
-          date: DateTime(2026, 3, 24),
-        );
-
-        testAsync.run((_) {
-          journeySubject.add(
-            Journey(
-              metadata: Metadata(trainIdentification: trainId1),
-              data: [],
-            ),
-          );
-        });
-        processStreams(fakeAsync: testAsync);
-
-        testAsync.run((_) {
-          journeySubject.add(
-            Journey(
-              metadata: Metadata(trainIdentification: trainId2),
-              data: [],
-            ),
-          );
-        });
-        processStreams(fakeAsync: testAsync);
-
-        expect(modelRegister, contains(isA<ChecklistDepartureProcessDisabled>()));
-      });
-    });
-
     test('whenFeatureDisabled_onCreation_emitsDisabled', () {
       when(mockRuFeatureProvider.isRuFeatureEnabled(.departureProcess)).thenAnswer((_) => Future.value(false));
 

@@ -26,7 +26,7 @@ void main() {
 
   testWidgets('test balise and level crossing groups expand / collapse', (tester) async {
     await prepareAndStartApp(tester);
-    await loadJourney(tester, trainNumber: 'T7');
+    await loadJourney(tester, trainNumber: 'T7M');
 
     final groupOf5BaliseRow = findDASTableRowByText('41.6');
     expect(groupOf5BaliseRow, findsOneWidget);

@@ -115,6 +115,11 @@ class Selecting extends JourneySelectionModel {
       isInputComplete: isInputComplete ?? this.isInputComplete,
     );
   }
+
+  @override
+  String toString() {
+    return 'Selecting{startDate: $startDate, availableStartDates: $availableStartDates, railwayUndertaking: $railwayUndertaking, trainNumber: $trainNumber, isInputComplete: $isInputComplete}';
+  }
 }
 
 class Loading extends JourneySelectionModel {
@@ -131,6 +136,11 @@ class Loading extends JourneySelectionModel {
 
   @override
   int get hashCode => Object.hash(runtimeType, trainIdentification);
+
+  @override
+  String toString() {
+    return 'Loading{trainIdentification: $trainIdentification}';
+  }
 }
 
 class Loaded extends JourneySelectionModel {
@@ -147,6 +157,11 @@ class Loaded extends JourneySelectionModel {
 
   @override
   int get hashCode => Object.hash(runtimeType, trainIdentification);
+
+  @override
+  String toString() {
+    return 'Loaded{trainIdentification: $trainIdentification}';
+  }
 }
 
 class Error extends JourneySelectionModel {
@@ -176,4 +191,9 @@ class Error extends JourneySelectionModel {
     errorCode,
     availableStartDates,
   );
+
+  @override
+  String toString() {
+    return 'Error{trainIdentification: $trainIdentification, availableStartDates: $availableStartDates, errorCode: $errorCode}';
+  }
 }

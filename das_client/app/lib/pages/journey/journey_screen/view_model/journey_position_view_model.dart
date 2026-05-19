@@ -4,8 +4,8 @@ import 'package:app/extension/datetime_extension.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_advancement_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/punctuality_model.dart';
-import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:clock/clock.dart';
 import 'package:collection/collection.dart';
 import 'package:logging/logging.dart';
@@ -14,11 +14,11 @@ import 'package:sfera/component.dart';
 
 final _log = Logger('JourneyPositionViewModel');
 
-class JourneyPositionViewModel extends JourneyAwareViewModel {
+class JourneyPositionViewModel {
   JourneyPositionViewModel({
     required Stream<PunctualityModel> punctualityStream,
     required JourneySettingsViewModel journeySettingsViewModel,
-    super.journeyViewModel,
+    required JourneyViewModel journeyViewModel,
   }) : _journeySettingsViewModel = journeySettingsViewModel {
     _initSubscription(journeyViewModel.journey, punctualityStream);
   }
@@ -226,17 +226,7 @@ class JourneyPositionViewModel extends JourneyAwareViewModel {
     }
   }
 
-  @override
-  void journeyIdentificationChanged(_) {
-    // Reset manual and timed if journey changes
-    _rxTimedServicePointReached.add(null);
-    _rxManualPosition.add(null);
-    _rxModel.add(JourneyPositionModel());
-  }
-
-  @override
   void dispose() {
-    super.dispose();
     _journeySubscription?.cancel();
     _rxModel.close();
     _rxTimedServicePointReached.close();

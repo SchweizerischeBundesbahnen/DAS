@@ -117,9 +117,9 @@ class JourneySearchOverlay extends StatelessWidget {
           final Selecting s => SBBPrimaryButton(
             labelText: buttonLabel,
             onPressed: s.isInputComplete
-                ? () {
+                ? () async {
                     hideOverlay();
-                    viewModel.loadJourney();
+                    await viewModel.loadJourney();
                   }
                 : null,
           ),

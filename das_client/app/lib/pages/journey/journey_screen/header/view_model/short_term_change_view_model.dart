@@ -38,14 +38,14 @@ class ShortTermChangeViewModel extends JourneyAwareViewModel {
   ShortTermChangeModel get modelValue => _rxSubject.value;
 
   @override
-  void journeyUpdated(Journey? journey) {
+  void onJourneyUpdated(Journey? journey) {
     if (!_hasNewShortTermChanges(journey)) return;
     _displayNewShortTermChanges = true;
     _calculateAndEmitModel(journey: journey, currentPosition: _lastCurrentPosition);
   }
 
   @override
-  void journeyIdentificationChanged(Journey? journey) {
+  void onJourneyChanged(Journey? journey) {
     _lastCurrentPosition = null;
     _rxSubject.add(NoShortTermChanges());
 

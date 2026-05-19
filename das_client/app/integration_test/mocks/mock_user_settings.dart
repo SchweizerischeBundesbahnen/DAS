@@ -1,7 +1,13 @@
 import 'package:app/provider/user_settings.dart';
+import 'package:rxdart/rxdart.dart';
 
 class MockUserSettings extends UserSettings {
   final Map<String, Object> _settingsMap = {};
+
+  final _rxModel = BehaviorSubject<UserSettingKeys?>.seeded(null);
+
+  @override
+  Stream<UserSettingKeys?> get model => _rxModel.stream;
 
   @override
   T get<T>(UserSettingKeys key, T defaultValue) {
@@ -15,5 +21,6 @@ class MockUserSettings extends UserSettings {
   @override
   Future<void> set<T>(UserSettingKeys key, T value) async {
     _settingsMap[key.name] = value as Object;
+    _rxModel.add(key);
   }
 }

@@ -100,12 +100,6 @@ class ChecklistDepartureProcessViewModel extends JourneyAwareViewModel {
   }
 
   @override
-  void journeyIdentificationChanged(Journey? journey) {
-    _lastServicePointWasStop = false;
-    _emitModel(const ChecklistDepartureProcessDisabled());
-  }
-
-  @override
   void dispose() {
     super.dispose();
     _subscription?.cancel();

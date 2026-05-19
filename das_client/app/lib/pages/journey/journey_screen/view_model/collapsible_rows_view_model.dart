@@ -60,10 +60,11 @@ class CollapsibleRowsViewModel extends JourneyAwareViewModel {
   }
 
   void _onFormationRunChanged(FormationRunChange? formationRunChange) {
-    final isSimTrain = formationRunChange?.formationRun.simTrain ?? false;
-    _isSimTrain = isSimTrain;
+    _isSimTrain = formationRunChange?.formationRun.simTrain ?? false;
+    _updateSimFootNotes(lastJourney, _isSimTrain);
+  }
 
-    final journey = lastJourney;
+  void _updateSimFootNotes(Journey? journey, bool isSimTrain) {
     if (journey == null) return;
 
     final simFootNotes = journey.data.whereType<BaseFootNote>().where((fn) => fn.footNote.isSIM).toList();
@@ -131,9 +132,10 @@ class CollapsibleRowsViewModel extends JourneyAwareViewModel {
   }
 
   @override
-  void journeyIdentificationChanged(_) {
+  void onJourneyChanged(journey) {
     _isSimTrain = false;
     _rxCollapsedRows.add({});
+    _updateSimFootNotes(journey, _isSimTrain);
   }
 }
 

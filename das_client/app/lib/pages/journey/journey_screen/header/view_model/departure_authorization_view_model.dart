@@ -2,15 +2,15 @@ import 'dart:async';
 
 import 'package:app/pages/journey/journey_screen/header/view_model/model/departure_authorization_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
-import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:collection/collection.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
-class DepartureAuthorizationViewModel extends JourneyAwareViewModel {
+class DepartureAuthorizationViewModel {
   DepartureAuthorizationViewModel({
     required Stream<JourneyPositionModel> journeyPositionStream,
-    super.journeyViewModel,
+    required JourneyViewModel journeyViewModel,
   }) {
     _initSubscriptions(journeyViewModel.journey, journeyPositionStream);
   }
@@ -53,12 +53,7 @@ class DepartureAuthorizationViewModel extends JourneyAwareViewModel {
     });
   }
 
-  @override
-  void journeyIdentificationChanged(_) => _rxModel.add(null);
-
-  @override
   void dispose() {
-    super.dispose();
     _subscription.cancel();
     _rxModel.close();
   }
