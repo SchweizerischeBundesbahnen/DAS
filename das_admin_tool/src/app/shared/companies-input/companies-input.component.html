@@ -1,5 +1,5 @@
 <sbb-form-field errorSpace="reserve">
-  <label i18n="@@form_companies_label">{{ label() }}</label>
+  <label for="companies" i18n="@@form_companies_label">{{ label() }}</label>
   <sbb-chip-group [displayWith]="codeToName" [formControl]="control()" [separatorKeys]="[]" name="companies">
     <input
       [formControl]="inputControl"

@@ -1,6 +1,6 @@
-import {Component, computed, effect, forwardRef, inject, input, signal} from '@angular/core';
+import {Component, computed, effect, inject, input, signal} from '@angular/core';
 import {toSignal} from '@angular/core/rxjs-interop';
-import {FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule} from '@angular/forms';
+import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {SbbAutocompleteModule} from '@sbb-esta/lyne-angular/autocomplete';
 import {SbbChipModule} from '@sbb-esta/lyne-angular/chip';
 import {SbbFormFieldModule} from '@sbb-esta/lyne-angular/form-field';
@@ -9,11 +9,6 @@ import {CompaniesApi, Company} from './companies-api.service';
 
 @Component({
   selector: 'app-companies-input',
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => CompaniesInputComponent),
-    multi: true,
-  }],
   imports: [
     SbbOptionModule,
     SbbAutocompleteModule,

@@ -20,22 +20,30 @@
     </ng-container>
 
     <ng-container sbbColumnDef="name">
-      <th *sbbHeaderCellDef i18n="@@special_holidays_table_column_name" sbb-header-cell sbb-sort-header="name">Name des Feiertags</th>
+      <th *sbbHeaderCellDef i18n="@@special_holidays_table_column_name" sbb-header-cell
+          sbb-sort-header="name">Name des Feiertags
+      </th>
       <td *sbbCellDef="let row" sbb-cell>{{ row.name }}</td>
     </ng-container>
 
     <ng-container sbbColumnDef="date">
-      <th *sbbHeaderCellDef i18n="@@special_holidays_table_column_date" sbb-header-cell sbb-sort-header="date">Gültig am</th>
-      <td *sbbCellDef="let row" sbb-cell>{{ row.date | date:'shortDate'}}</td>
+      <th *sbbHeaderCellDef i18n="@@special_holidays_table_column_date" sbb-header-cell
+          sbb-sort-header="date">Gültig am
+      </th>
+      <td *sbbCellDef="let row" sbb-cell>{{ row.date | date:'shortDate' }}</td>
     </ng-container>
 
     <ng-container sbbColumnDef="scheduleType">
-      <th *sbbHeaderCellDef i18n="@@special_holidays_table_column_schedule_type" sbb-header-cell sbb-sort-header="scheduleType">Gilt als</th>
+      <th *sbbHeaderCellDef i18n="@@special_holidays_table_column_schedule_type" sbb-header-cell
+          sbb-sort-header="scheduleType">Gilt als
+      </th>
       <td *sbbCellDef="let row" sbb-cell>{{ scheduleTypeLabel(row.scheduleType) }}</td>
     </ng-container>
 
     <ng-container sbbColumnDef="companies">
-      <th *sbbHeaderCellDef i18n="@@special_holidays_table_column_companies" sbb-header-cell sbb-sort-header="companies">Gültig für</th>
+      <th *sbbHeaderCellDef i18n="@@special_holidays_table_column_companies" sbb-header-cell
+          sbb-sort-header="companies">Gültig für
+      </th>
       <td *sbbCellDef="let row" sbb-cell>{{ companiesValue(row.companies) }}</td>
     </ng-container>
 
@@ -58,9 +66,13 @@
   <div class="right">
     <sbb-secondary-button (click)="add()" i18n="@@special_holidays_button_create" iconName="plus-small">Neuen Eintrag erfassen
     </sbb-secondary-button>
-    <sbb-transparent-button (click)="deleteSelected()" [disabled]="selection.isEmpty()"
+    <sbb-transparent-button (click)="deleteSelected()" [disabled]="selection.isEmpty()" [loading]="isDeleting"
                             i18n="@@special_holidays_button_delete_selected"
-                            iconName="trash-small">Einträge löschen
+                            iconName="trash-small">
+      {selection.selected.length, plural,
+        =0 {Einträge löschen}
+        one {Eintrag löschen}
+        other {# Einträge löschen}}
     </sbb-transparent-button>
   </div>
 </div>

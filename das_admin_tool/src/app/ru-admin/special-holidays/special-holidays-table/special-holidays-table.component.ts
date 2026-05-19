@@ -36,6 +36,7 @@ export class SpecialHolidaysTable {
   protected columns = ['select', 'name', 'date', 'scheduleType', 'companies', 'action'];
   protected selection = new SelectionModel<SpecialHoliday>(true, []);
   protected readonly PAGE_SIZE = 20;
+  protected isDeleting = false;
 
   private readonly holidayService = inject(SpecialHolidayService);
   private readonly companiesApi = inject(CompaniesApi);
@@ -82,8 +83,14 @@ export class SpecialHolidaysTable {
   }
 
   protected async deleteSelected(): Promise<void> {
-    await this.holidayService.deleteAll(this.selection.selected);
-    this.selection.clear();
+    if(this.isDeleting) return;
+    this.isDeleting = true;
+    try {
+      await this.holidayService.deleteAll(this.selection.selected);
+      this.selection.clear();
+    } finally {
+      this.isDeleting = false;
+    }
   }
 
   protected scheduleTypeLabel(type: ScheduleType) {
@@ -91,6 +98,9 @@ export class SpecialHolidaysTable {
   }
 
   protected companiesValue(companyCodes: string[]) {
-    return companyCodes.map((companyCode) => this.companyNamesByCode().get(companyCode) ?? companyCode).sort().join(', ');
+    return companyCodes
+      .map((companyCode) => this.companyNamesByCode().get(companyCode) ?? companyCode)
+      .sort((a,b) => a.localeCompare(b))
+      .join(', ');
   }
 }

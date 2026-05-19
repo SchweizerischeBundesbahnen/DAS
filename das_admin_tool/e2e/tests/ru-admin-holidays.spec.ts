@@ -114,7 +114,7 @@ test.describe('ru admin special holidays test', () => {
     const deleteResponse = page.waitForResponse((resp) =>
       resp.request().method() === 'DELETE' && /\/v1\/special-holidays$/.test(resp.url()),
     );
-    await page.getByText('Einträge löschen', {exact: true}).click();
+    await page.getByText('Eintrag löschen', {exact: true}).click();
     await deleteResponse;
 
     await expect(row).not.toBeVisible();

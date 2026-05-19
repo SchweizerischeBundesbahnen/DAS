@@ -2,7 +2,7 @@ import {inject, Injectable} from '@angular/core';
 import {HttpClient, httpResource} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {Observable} from 'rxjs';
-import {ApiResponse} from '../shared/locations-input/api-response';
+import {ApiResponse} from '../shared/api-response';
 
 export interface NoticeTemplateContent {
   title: string;
@@ -63,8 +63,6 @@ export class RuAdminApi {
   readonly noticeTemplates = httpResource<NoticeTemplateApiResponse>(() => this.noticeTemplatesUrl);
   private readonly specialHolidaysUrl = `${environment.backendUrl}/v1/special-holidays`;
   readonly specialHolidays = httpResource<SpecialHolidayApiResponse>(() => this.specialHolidaysUrl);
-  private readonly companiesUrl = `${environment.backendUrl}/v1/companies`;
-  readonly companies = httpResource<CompanyApiResponse>(() => this.companiesUrl);
 
   postNoticeTemplate(noticeTemplate: NoticeTemplate): Observable<NoticeTemplateApiResponse> {
     return this.httpClient.post<NoticeTemplateApiResponse>(this.noticeTemplatesUrl, noticeTemplate);

@@ -148,7 +148,7 @@ test.describe('ru admin notice templates test', () => {
     const deleteAllResponse = page.waitForResponse((resp) =>
       resp.request().method() === 'DELETE' && /\/v1\/notice-templates$/.test(resp.url()),
     );
-    await page.getByText('Einträge löschen', {exact: true}).click();
+    await page.getByText('Eintrag löschen', {exact: true}).click();
     await deleteAllResponse;
 
     await expect(row).not.toBeVisible();

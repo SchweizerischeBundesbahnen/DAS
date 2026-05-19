@@ -51,6 +51,7 @@ export class NoticeTemplatesTable {
     search: new FormControl('', {nonNullable: true}),
     language: new FormControl(this.languageProvider.currentLanguage?.path, {nonNullable: true})
   });
+  protected isDeleting = false;
   protected readonly PAGE_SIZE = 20;
   private readonly noticeTemplateService = inject(NoticeTemplateService);
   private readonly paginator = viewChild.required<SbbCompactPaginator>(SbbCompactPaginator);
@@ -104,8 +105,14 @@ export class NoticeTemplatesTable {
   }
 
   protected async deleteSelected() {
-    await this.noticeTemplateService.deleteAll(this.selection.selected);
-    this.selection.clear();
+    if(this.isDeleting) return;
+    this.isDeleting = true;
+    try {
+      await this.noticeTemplateService.deleteAll(this.selection.selected);
+      this.selection.clear();
+    } finally {
+      this.isDeleting = false;
+    }
   }
 
   private searchFilter(filter: NoticeTemplateFilter, data: NoticeTemplate) {

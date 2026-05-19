@@ -2,7 +2,7 @@ import {inject, Injectable} from '@angular/core';
 import {HttpClient, httpResource} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {Observable} from 'rxjs';
-import {ApiResponse} from '../shared/locations-input/api-response';
+import {ApiResponse} from '../shared/api-response';
 
 export interface AppVersion {
   id?: number;

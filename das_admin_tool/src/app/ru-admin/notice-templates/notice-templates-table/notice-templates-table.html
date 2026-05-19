@@ -82,9 +82,13 @@
     <sbb-secondary-button (click)="add()" i18n="@@notice_templates_button_create"
                           iconName="plus-small">Neuen Eintrag erfassen
     </sbb-secondary-button>
-    <sbb-transparent-button (click)="deleteSelected()" [disabled]="this.selection.isEmpty()"
+    <sbb-transparent-button (click)="deleteSelected()" [disabled]="this.selection.isEmpty()" [loading]="isDeleting"
                             i18n="@@notice_templates_button_delete_selected"
-                            iconName="trash-small">Einträge löschen
+                            iconName="trash-small">
+      {selection.selected.length, plural,
+        =0 {Einträge löschen}
+        one {Eintrag löschen}
+        other {# Einträge löschen}}
     </sbb-transparent-button>
   </div>
 </div>

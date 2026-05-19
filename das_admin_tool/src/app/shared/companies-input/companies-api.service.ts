@@ -1,7 +1,7 @@
 import {httpResource} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {environment} from '../../../environments/environment';
-import {ApiResponse} from '../locations-input/api-response';
+import {ApiResponse} from '../api-response';
 
 export interface Company {
   code: string;
