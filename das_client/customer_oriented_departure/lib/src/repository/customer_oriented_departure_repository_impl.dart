@@ -55,7 +55,7 @@ class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartu
       pushToken: messagingService.tokenValue,
     );
 
-    if (subscription == _pendingOrOpenSubscription) {
+    if (_pendingOrOpenSubscription != null && subscription.hasChanged(_pendingOrOpenSubscription!)) {
       _log.info('Already subscribed to $evu $trainNumber with given token');
       return true;
     } else if (_pendingOrOpenSubscription != null) {
@@ -207,8 +207,6 @@ class _Subscription {
   final DateTime expiresAt;
   final bool isDriver;
   final String? pushToken;
-
-  // should not be part of equality check
   final String messageId;
 
   _Subscription withToken({required String token}) => _Subscription(
@@ -220,17 +218,11 @@ class _Subscription {
     pushToken: token,
   );
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is _Subscription &&
-          runtimeType == other.runtimeType &&
-          evu == other.evu &&
-          trainNumber == other.trainNumber &&
-          expiresAt == other.expiresAt &&
-          isDriver == other.isDriver &&
-          pushToken == other.pushToken;
-
-  @override
-  int get hashCode => Object.hash(evu, trainNumber, expiresAt, isDriver, pushToken);
+  bool hasChanged(_Subscription other) {
+    return evu != other.evu ||
+        trainNumber != other.trainNumber ||
+        expiresAt != other.expiresAt ||
+        isDriver != other.isDriver ||
+        pushToken != other.pushToken;
+  }
 }
