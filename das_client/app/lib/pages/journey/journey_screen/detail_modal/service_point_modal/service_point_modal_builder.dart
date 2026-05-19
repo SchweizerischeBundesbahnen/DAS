@@ -107,13 +107,47 @@ class ServicePointModalBuilder extends DASModalSheetBuilder {
         }
 
         final tabs = snapshot.requireData;
-        return SBBSegmentedButton<ServicePointModalTab>(
-          key: segmentedButtonKey,
-          segments: tabs.map((tab) => SBBButtonSegment(value: tab, leadingIconData: tab.icon)).toList(),
-          selected: selectedTab,
-          onSelectionChanged: (tab) => viewModel.open(context, tab: tab),
-        );
+
+        if (tabs.length == 1) {
+          return SizedBox(
+            width: double.infinity,
+            child: SBBTertiaryButton(
+              iconData: tabs[0].icon,
+              onPressed: null,
+              style: _tertiaryButtonWithOnlyDefaultStyle(context),
+            ),
+          );
+        } else {
+          return SBBSegmentedButton<ServicePointModalTab>(
+            key: segmentedButtonKey,
+            segments: tabs.map((tab) => SBBButtonSegment(value: tab, leadingIconData: tab.icon)).toList(),
+            selected: selectedTab,
+            onSelectionChanged: (tab) => viewModel.open(context, tab: tab),
+          );
+        }
       },
+    );
+  }
+
+  SBBButtonStyle? _tertiaryButtonWithOnlyDefaultStyle(BuildContext context) {
+    final baseStyle = Theme.of(context).sbbTertiaryButtonTheme.style;
+    if (baseStyle == null) return null;
+
+    resolveDefaultColor(WidgetStateProperty<Color?>? p) {
+      final color = p?.resolve({});
+      return color != null
+          ? WidgetStateProperty.fromMap(<WidgetStatesConstraint, Color?>{
+              WidgetState.any: color,
+            })
+          : null;
+    }
+
+    return baseStyle.copyWith(
+      iconColor: resolveDefaultColor(baseStyle.iconColor),
+      foregroundColor: resolveDefaultColor(baseStyle.foregroundColor),
+      backgroundColor: resolveDefaultColor(baseStyle.backgroundColor),
+      overlayColor: resolveDefaultColor(baseStyle.overlayColor),
+      borderColor: resolveDefaultColor(baseStyle.borderColor),
     );
   }
 
