@@ -1,5 +1,6 @@
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_chevron.dart';
 import 'package:app/pages/settings/settings_page.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -111,8 +112,13 @@ void main() {
 
     await stopAutomaticAdvancement(tester);
 
+    final scrollableFinder = find.byType(AnimatedList);
+    expect(scrollableFinder, findsOneWidget);
+
     // Check entry and exit signals are shown
+    await tester.dragUntilVisible(find.text(l10n.c_main_signal_function_entry), scrollableFinder, const Offset(0, 50));
     expect(find.text(l10n.c_main_signal_function_entry), findsAny);
+    await tester.dragUntilVisible(find.text(l10n.c_main_signal_function_exit), scrollableFinder, const Offset(0, 50));
     expect(find.text(l10n.c_main_signal_function_exit), findsAny);
 
     // Navigate to settings page

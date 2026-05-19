@@ -129,7 +129,7 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
     _emitLoaded(
       TableLoaded(
         journeyTableRowData: rowData,
-        journeyMetadata: journey.metadata,
+        journeyMetadata: journey.metadata.copyWith(journeyEnd: rowData.whereType<JourneyPoint>().lastOrNull),
         journeySettings: settings,
         collapsedRows: collapsibleRows,
         journeyPosition: position,
