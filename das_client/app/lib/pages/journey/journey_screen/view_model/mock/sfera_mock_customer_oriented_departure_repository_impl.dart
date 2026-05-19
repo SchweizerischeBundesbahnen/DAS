@@ -5,7 +5,6 @@ import 'package:customer_oriented_departure/component.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
-// TODO: Move to better location out of view model directory
 class SferaMockCustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartureRepository {
   SferaMockCustomerOrientedDepartureRepositoryImpl({
     required SferaRepository sferaRepo,
@@ -38,6 +37,11 @@ class SferaMockCustomerOrientedDepartureRepositoryImpl implements CustomerOrient
   @override
   Future<bool> unsubscribe() async {
     return true; // unused
+  }
+
+  @override
+  void requestLatestStatus() {
+    // unused
   }
 
   @override

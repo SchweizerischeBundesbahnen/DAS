@@ -10,8 +10,6 @@ import 'package:rxdart/rxdart.dart';
 
 final _log = Logger('FirebaseMessagingService');
 
-// TODO: Initialize Firebase
-// TODO: Request permission
 // TODO: Add test for local storage handling
 class FirebaseMessagingService implements MessagingService {
   FirebaseMessagingService() {
@@ -31,8 +29,21 @@ class FirebaseMessagingService implements MessagingService {
   @override
   Stream<BaseMessageDto> get message => _rxMessage.stream;
 
-  void addReplayMessage(BaseMessageDto message) {
-    _rxMessage.add(message);
+  @override
+  Future<void> replayMessages() async {
+    final latestMessages = await LocalMessageStorage.getLatestMessages();
+    for (final message in latestMessages) {
+      _rxMessage.add(message);
+    }
+
+    await LocalMessageStorage.clear();
+  }
+
+  @override
+  void dispose() {
+    for (final sub in _subscriptions) {
+      sub.cancel();
+    }
   }
 
   Future<void> _init() async {
@@ -67,23 +78,6 @@ class FirebaseMessagingService implements MessagingService {
     _subscriptions.add(sub);
 
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  }
-
-  @override
-  void dispose() {
-    for (final sub in _subscriptions) {
-      sub.cancel();
-    }
-  }
-
-  @override
-  Future<void> replayMessages() async {
-    final latestMessages = await LocalMessageStorage.getLatestMessages();
-    for (final message in latestMessages) {
-      _rxMessage.add(message);
-    }
-
-    await LocalMessageStorage.clear();
   }
 }
 

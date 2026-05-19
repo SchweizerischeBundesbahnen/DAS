@@ -11,8 +11,11 @@ import 'package:uuid/uuid.dart';
 final _log = Logger('CustomerOrientedDepartureRepositoryImpl');
 
 class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartureRepository {
-  // todo: check with GEMS
-  static const _defaultExpireDuration = Duration(hours: 2);
+  /// buffer duration used on journey end time for possible delays
+  static const _expireAtBuffer = Duration(hours: 1);
+
+  /// default expire at time for subscription. This value is currently used by LEA in production.
+  static const _defaultExpireAtDuration = Duration(hours: 6);
 
   CustomerOrientedDepartureRepositoryImpl({
     required this.apiService,
@@ -43,11 +46,10 @@ class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartu
     required DateTime? journeyEndTime,
     required bool isDriver,
   }) async {
-    final expiresAt = journeyEndTime ?? DateTime.now().add(_defaultExpireDuration);
     final subscription = _Subscription(
       evu: evu,
       trainNumber: trainNumber,
-      expiresAt: expiresAt,
+      expiresAt: _calculateExpiresAt(journeyEndTime),
       isDriver: isDriver,
       messageId: Uuid().v4(),
       pushToken: messagingService.tokenValue,
@@ -122,6 +124,11 @@ class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartu
   @override
   void requestLatestStatus() {
     messagingService.replayMessages();
+  }
+
+  DateTime _calculateExpiresAt(DateTime? journeyEndTime) {
+    if (journeyEndTime != null) journeyEndTime.add(_expireAtBuffer);
+    return DateTime.now().add(_defaultExpireAtDuration);
   }
 
   Future<bool> _sendSubscribeRequest({required _Subscription subscription}) async {

@@ -2,6 +2,7 @@ import 'package:customer_oriented_departure/src/api/customer_oriented_departure_
 import 'package:customer_oriented_departure/src/messaging/firebase/firebase_messaging_service.dart';
 import 'package:customer_oriented_departure/src/repository/customer_oriented_departure_repository.dart';
 import 'package:customer_oriented_departure/src/repository/customer_oriented_departure_repository_impl.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:http_x/component.dart';
 
 export 'package:customer_oriented_departure/src/model/customer_oriented_departure.dart';
@@ -21,5 +22,9 @@ class CustomerOrientedDepartureComponent {
       messagingService: FirebaseMessagingService(),
       deviceId: deviceId,
     );
+  }
+
+  static Future<void> initializeMessaging() async {
+    await Firebase.initializeApp();
   }
 }

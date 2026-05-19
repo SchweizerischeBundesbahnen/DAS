@@ -30,6 +30,11 @@ class MockCustomerOrientedDepartureRepository implements CustomerOrientedDepartu
   }
 
   @override
+  void requestLatestStatus() {
+    // unused
+  }
+
+  @override
   void dispose() {
     _rxStatus.close();
   }
