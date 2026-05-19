@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {httpResource} from '@angular/common/http';
-import {ApiResponse} from './api-response';
+import {ApiResponse} from '../api-response';
 import {environment} from '../../../environments/environment';
 
 export type LocationApiResponse = ApiResponse<Location[]>;

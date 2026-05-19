@@ -1,8 +1,11 @@
 import 'dart:async';
 
+import 'package:app/di/scope_handler.dart';
+import 'package:app/di/scopes/journey_scope.dart';
 import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rxdart/rxdart.dart';
@@ -11,7 +14,7 @@ import 'package:sfera/component.dart';
 import '../../../test_util.dart';
 import 'journey_navigation_view_model_test.mocks.dart';
 
-@GenerateNiceMocks([MockSpec<SferaRepository>()])
+@GenerateNiceMocks([MockSpec<SferaRepository>(), MockSpec<ScopeHandler>()])
 void main() {
   group('JourneyNavigationViewModel', () {
     late JourneyNavigationViewModel testee;
@@ -19,6 +22,7 @@ void main() {
     late StreamSubscription sub;
     late MockSferaRepository mockSferaRepo;
     late BehaviorSubject<SferaRemoteRepositoryState> mockStream;
+    late MockScopeHandler mockScopeHandler;
 
     final now = DateTime(1970, 1, 1);
     final tomorrow = now.add(Duration(days: 1));
@@ -34,6 +38,8 @@ void main() {
     );
 
     setUp(() {
+      mockScopeHandler = MockScopeHandler();
+      GetIt.I.registerSingleton<ScopeHandler>(mockScopeHandler);
       mockSferaRepo = MockSferaRepository();
       mockStream = BehaviorSubject<SferaRemoteRepositoryState>.seeded(.disconnected);
       when(mockSferaRepo.stateStream).thenAnswer((_) => mockStream.stream);
@@ -45,6 +51,7 @@ void main() {
     tearDown(() {
       sub.cancel();
       if (testee.modelValue != null) testee.dispose();
+      GetIt.I.reset();
     });
 
     test('initialState_whenInstantiated_thenIsEmpty', () {
@@ -310,6 +317,25 @@ void main() {
 
       // EXPECT
       expect(emitRegister.where((e) => e != null).length, 2);
+    });
+
+    test('push_whenTrainChanges_popsAndPushesJourneyScope', () async {
+      await testee.push(trainId1);
+      await testee.push(trainId2);
+      await processStreams();
+
+      // EXPECT
+      verify(mockScopeHandler.push<JourneyScope>()).called(2);
+      verify(mockScopeHandler.pop<JourneyScope>()).called(2);
+    });
+
+    test('replaceWith_whenTrainChanges_popsAndPushesJourneyScope', () async {
+      await testee.replaceWith([trainId1]);
+      await processStreams();
+
+      // EXPECT
+      verify(mockScopeHandler.push<JourneyScope>()).called(1);
+      verify(mockScopeHandler.pop<JourneyScope>()).called(1);
     });
   });
 }

@@ -32,7 +32,6 @@ export class App implements OnInit {
     this.router.events
       .subscribe(event => {
         if (event instanceof NavigationEnd && typeof ineum !== 'undefined') {
-          console.log('Set page to', event.url)
           ineum('page', event.url);
         }
       });

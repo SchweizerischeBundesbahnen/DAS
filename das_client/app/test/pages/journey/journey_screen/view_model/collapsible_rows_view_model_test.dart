@@ -347,31 +347,6 @@ void main() {
     });
   });
 
-  group('journeyIdentificationChanged', () {
-    test('journeyIdentificationChanged_whenJourneyChanges_thenCollapsedRowsAreReset', () async {
-      // ARRANGE
-      testee.toggleRow(footNoteData);
-      await processStreams();
-      expect(testee.collapsedRowsValue.stateOf(footNoteData), CollapsedState.collapsed);
-
-      // ACT
-      final newTrainId = TrainIdentification(
-        ru: RailwayUndertaking.sbbP,
-        trainNumber: '999',
-        date: DateTime(2026),
-      );
-      final newJourney = Journey(
-        metadata: Metadata(trainIdentification: newTrainId),
-        data: baseJourney.data,
-      );
-      journeySubject.add(newJourney);
-      await processStreams();
-
-      // EXPECT
-      expect(testee.collapsedRowsValue, isEmpty);
-    });
-  });
-
   group('simTrain', () {
     test('simTrain_whenFormationRunIsSimTrain_thenSimFootNotesAreExpanded', () async {
       // ARRANGE - SIM footnotes start collapsed (no formation run)

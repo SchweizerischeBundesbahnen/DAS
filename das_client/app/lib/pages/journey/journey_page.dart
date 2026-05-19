@@ -6,6 +6,7 @@ import 'package:app/di/scopes/journey_scope.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/app_router.dart';
 import 'package:app/pages/journey/journey_screen/journey_overview.dart';
+import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
@@ -112,7 +113,6 @@ class _JourneyPageState extends State<JourneyPage> {
     _errorCodeSubscription = journeyVM.errorCode.listen((error) async {
       if (error != null) {
         await DI.get<ScopeHandler>().pop<JourneyScope>();
-        await DI.get<ScopeHandler>().push<JourneyScope>();
         if (mounted) {
           context.router.replace(JourneySelectionRoute());
         }
@@ -123,8 +123,6 @@ class _JourneyPageState extends State<JourneyPage> {
 
   Future<void> _loadInitialTrains() async {
     if (widget.initialTrainIds != null && widget.initialTrainIds!.isNotEmpty) {
-      await DI.get<ScopeHandler>().pop<JourneyScope>();
-      await DI.get<ScopeHandler>().push<JourneyScope>();
       final journeyNavigationVM = DI.get<JourneyNavigationViewModel>();
       journeyNavigationVM.replaceWith(widget.initialTrainIds!);
     }
@@ -140,11 +138,10 @@ class _DismissJourneyButton extends StatelessWidget {
       DASTableRowBuilder.clearRowKeys();
       DI.get<CustomerOrientedDepartureRepository>().unsubscribe();
 
-      await DI.get<ScopeHandler>().pop<JourneyScope>();
-      await DI.get<ScopeHandler>().push<JourneyScope>();
-      if (context.mounted) {
-        context.router.replace(JourneySelectionRoute());
-      }
+      DI.get<JourneySelectionViewModel>().dismissSelection();
+      DI.get<JourneyNavigationViewModel>().disconnect();
+      await context.router.replace(JourneySelectionRoute());
+      DI.get<ScopeHandler>().pop<JourneyScope>();
     },
   );
 }

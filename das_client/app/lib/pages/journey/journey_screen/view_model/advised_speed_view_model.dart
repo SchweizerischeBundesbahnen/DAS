@@ -6,7 +6,7 @@ import 'package:app/pages/journey/journey_screen/view_model/line_speed_view_mode
 import 'package:app/pages/journey/journey_screen/view_model/model/advised_speed_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
-import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/sound/das_sounds.dart';
 import 'package:app/sound/sound.dart';
 import 'package:app/util/time_constants.dart';
@@ -17,12 +17,12 @@ import 'package:sfera/component.dart';
 
 final _log = Logger('AdvisedSpeedViewModel');
 
-class AdvisedSpeedViewModel extends JourneyAwareViewModel {
+class AdvisedSpeedViewModel {
   AdvisedSpeedViewModel({
     required Stream<JourneyPositionModel> journeyPositionStream,
     required NotificationPriorityQueueViewModel notificationVM,
     required LineSpeedViewModel lineSpeedViewModel,
-    super.journeyViewModel,
+    required JourneyViewModel journeyViewModel,
   }) : _notificationVM = notificationVM,
        _lineSpeedViewModel = lineSpeedViewModel {
     _initJourneyStreamSubscription(journeyViewModel.journey, journeyPositionStream);
@@ -159,15 +159,7 @@ class AdvisedSpeedViewModel extends JourneyAwareViewModel {
     });
   }
 
-  @override
-  void journeyIdentificationChanged(_) {
-    _rxModel.add(AdvisedSpeedModel.inactive());
-    _setToInactiveTimer?.cancel();
-  }
-
-  @override
   void dispose() {
-    super.dispose();
     _setToInactiveTimer?.cancel();
     _journeySubscription?.cancel();
     _rxModel.close();

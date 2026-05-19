@@ -25,14 +25,15 @@ class JourneySelectionViewModel {
 
   StreamSubscription? _sferaRepoSubscription;
 
-  final _state = BehaviorSubject<JourneySelectionModel>();
+  late JourneySelectionModel _currentState;
+  final _rxModel = PublishSubject<JourneySelectionModel>();
 
-  Stream<JourneySelectionModel> get model => _state.stream;
+  Stream<JourneySelectionModel> get model => _rxModel.stream;
 
-  JourneySelectionModel get modelValue => _state.value;
+  JourneySelectionModel get modelValue => _currentState;
 
   Future<void> loadJourney() async {
-    final currentState = _state.value;
+    final currentState = _currentState;
     switch (currentState) {
       case Loading() || Loaded() || Error():
         break;
@@ -46,22 +47,22 @@ class JourneySelectionViewModel {
   }
 
   void updateDate(DateTime date) {
-    _ifInSelectingOrErrorEmitSelectingWith((model) {
+    _ifInSelectingErrorOrLoadedEmitSelectingWith((model) {
       if (!model.availableStartDates.contains(date)) return model;
       return model.copyWith(startDate: date);
     });
   }
 
   void updateTrainNumber(String? trainNumber) {
-    _ifInSelectingOrErrorEmitSelectingWith((model) => model.copyWith(operationalTrainNumber: trainNumber));
+    _ifInSelectingErrorOrLoadedEmitSelectingWith((model) => model.copyWith(operationalTrainNumber: trainNumber));
   }
 
   void updateRailwayUndertaking(List<RailwayUndertaking> ru) {
-    _ifInSelectingOrErrorEmitSelectingWith((model) => model.copyWith(railwayUndertaking: ru.firstOrNull));
+    _ifInSelectingErrorOrLoadedEmitSelectingWith((model) => model.copyWith(railwayUndertaking: ru.firstOrNull));
   }
 
   void dismissSelection() {
-    final currentState = _state.value;
+    final currentState = _currentState;
     if (currentState is Loading) return;
 
     _emitSelectingWithDefaults();
@@ -69,7 +70,7 @@ class JourneySelectionViewModel {
 
   void dispose() {
     _sferaRepoSubscription?.cancel();
-    _state.close();
+    _rxModel.close();
   }
 
   void _initSferaRepoSubscription() {
@@ -77,27 +78,29 @@ class JourneySelectionViewModel {
       switch (state) {
         case .offlineData:
         case .connected:
-          final currentState = _state.value;
+          final currentState = _currentState;
           if (currentState is! Loading) return;
 
-          return _state.add(JourneySelectionModel.loaded(trainIdentification: currentState.trainIdentification));
+          return _emit(JourneySelectionModel.loaded(trainIdentification: currentState.trainIdentification));
         case .connecting:
-          final currentState = _state.value;
-          if (currentState is! Selecting) return;
-
-          return _state.add(JourneySelectionModel.loading(trainIdentification: _trainIdFrom(currentState)));
+          final currentState = _currentState;
+          return switch (currentState) {
+            final Loaded l => _emit(JourneySelectionModel.loading(trainIdentification: l.trainIdentification)),
+            final Selecting s => _emit(JourneySelectionModel.loading(trainIdentification: _trainIdFrom(s))),
+            _ => null,
+          };
         case .disconnected:
           if (_sferaRepo.lastError == null) return;
 
-          return switch (_state.value) {
-            final Loading l => _state.add(
+          return switch (_currentState) {
+            final Loading l => _emit(
               JourneySelectionModel.error(
                 trainIdentification: l.trainIdentification,
                 errorCode: .fromSfera(error: _sferaRepo.lastError!),
                 availableStartDates: _availableStartDates(),
               ),
             ),
-            final Selecting s => _state.add(
+            final Selecting s => _emit(
               JourneySelectionModel.error(
                 trainIdentification: _trainIdFrom(s),
                 errorCode: .fromSfera(error: _sferaRepo.lastError!),
@@ -111,7 +114,7 @@ class JourneySelectionViewModel {
   }
 
   void _emitSelectingWithDefaults() {
-    _state.add(
+    _emit(
       JourneySelectionModel.selecting(
         startDate: _midnightToday(),
         railwayUndertaking: .sbbP,
@@ -120,12 +123,17 @@ class JourneySelectionViewModel {
     );
   }
 
-  void _ifInSelectingOrErrorEmitSelectingWith(Selecting Function(Selecting model) updateFunc) {
+  void _emit(JourneySelectionModel newState) {
+    _currentState = newState;
+    _rxModel.add(newState);
+  }
+
+  void _ifInSelectingErrorOrLoadedEmitSelectingWith(Selecting Function(Selecting model) updateFunc) {
     switch (modelValue) {
       case final Selecting s:
         final updatedModel = updateFunc(s);
         final isInputComplete = _validateInput(updatedModel);
-        _state.add(updatedModel.copyWith(isInputComplete: isInputComplete));
+        _emit(updatedModel.copyWith(isInputComplete: isInputComplete));
         break;
       case final Error e:
         final updatedModel = updateFunc(
@@ -136,7 +144,17 @@ class JourneySelectionViewModel {
             availableStartDates: e.availableStartDates,
           ),
         );
-        _state.add(updatedModel.copyWith(isInputComplete: _validateInput(updatedModel)));
+        _emit(updatedModel.copyWith(isInputComplete: _validateInput(updatedModel)));
+      case final Loaded l:
+        final updatedModel = updateFunc(
+          Selecting(
+            startDate: l.startDate,
+            railwayUndertaking: l.railwayUndertaking,
+            trainNumber: l.operationalTrainNumber,
+            availableStartDates: l.availableStartDates,
+          ),
+        );
+        _emit(updatedModel.copyWith(isInputComplete: _validateInput(updatedModel)));
       default:
         break;
     }

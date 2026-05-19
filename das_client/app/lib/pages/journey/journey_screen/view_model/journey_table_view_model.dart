@@ -58,7 +58,7 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
   JourneyTableModel get modelValue => _rxModel.value;
 
   @override
-  void journeyIdentificationChanged(Journey? journey) {
+  void onJourneyChanged(Journey? journey) {
     _emitLoading();
     _init();
   }
@@ -66,7 +66,7 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
   void _init() {
     _streamSubscription?.cancel();
     _streamSubscription =
-        CombineLatestStream.combine7(
+        CombineLatestStream.combine8(
           journeyViewModel.journey,
           _settingsVM.model,
           _collapsibleRowsVM.collapsedRows,
@@ -74,7 +74,8 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
           _detailModalVM.openModalType,
           _decisiveGradientVM.showDecisiveGradient,
           _navigationVM.model,
-          (a, b, c, d, e, f, g) => (a, b, c, d, e, f, g),
+          _userSettings.model,
+          (a, b, c, d, e, f, g, h) => (a, b, c, d, e, f, g, h),
         ).listen(
           (data) => _handleDataChanged(
             journey: data.$1,

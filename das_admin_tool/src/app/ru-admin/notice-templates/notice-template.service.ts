@@ -20,7 +20,6 @@ export class NoticeTemplateService {
 
   async edit(noticeTemplate: NoticeTemplate) {
     const event = await firstValueFrom(this.dialogService.open<NoticeTemplateDialog, NoticeTemplateDialogEditResult>(NoticeTemplateDialog, {data: noticeTemplate}).afterClosed);
-    console.log(event);
     if (event.result === 'delete') {
       await this.runMutation(
         this.ruAdminApi.deleteNoticeTemplate(noticeTemplate.id!),

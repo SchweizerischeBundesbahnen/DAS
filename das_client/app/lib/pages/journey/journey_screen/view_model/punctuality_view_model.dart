@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/punctuality_model.dart';
-import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -10,10 +10,13 @@ import 'package:sfera/component.dart';
 
 final _log = Logger('PunctualityViewModel');
 
-class PunctualityViewModel extends JourneyAwareViewModel {
-  PunctualityViewModel({super.journeyViewModel}) {
+class PunctualityViewModel {
+  PunctualityViewModel({required JourneyViewModel journeyViewModel}) {
     _initTimers();
+    _journeySubscription = journeyViewModel.journey.listen(_journeyUpdated);
   }
+
+  StreamSubscription? _journeySubscription;
 
   final TimeConstants _timeConstants = DI.get<TimeConstants>();
 
@@ -40,16 +43,6 @@ class PunctualityViewModel extends JourneyAwareViewModel {
       _isHiddenDueToNoUpdates = true;
       _emitState();
     });
-  }
-
-  @override
-  void journeyUpdated(Journey? journey) {
-    _journeyUpdated(journey);
-  }
-
-  @override
-  void journeyIdentificationChanged(Journey? journey) {
-    _journeyUpdated(journey);
   }
 
   void _journeyUpdated(Journey? journey) {
@@ -85,11 +78,10 @@ class PunctualityViewModel extends JourneyAwareViewModel {
     _initTimers();
   }
 
-  @override
   void dispose() {
-    super.dispose();
     _rxModel.close();
     _hiddenTimer?.cancel();
     _staleTimer?.cancel();
+    _journeySubscription?.cancel();
   }
 }

@@ -1,14 +1,18 @@
 // implement the mock for authenticated_scope.dart
 
 import 'package:app/di/di.dart';
+import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
+import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:customer_oriented_departure/component.dart';
 import 'package:formation/component.dart';
 import 'package:logging/logging.dart';
+import 'package:sfera/component.dart';
 
 import 'mock_customer_oriented_departure_repository.dart';
 import 'mock_formation_repository.dart';
 import 'mock_ru_feature_provider.dart';
+import 'mock_warn_app_view_model.dart';
 
 final _log = Logger('MockAuthenticatedScope');
 
@@ -27,10 +31,11 @@ class MockAuthenticatedScope extends AuthenticatedScope {
 
     getIt.registerAuthProvider();
     getIt.registerSferaAuthProvider();
+    getIt.registerHttpClient();
     getIt.registerMqttAuthProvider();
     getIt.registerMqttService();
-    getIt.registerHttpClient();
-    getIt.registerSferaRemoteRepository();
+    getIt.registerSferaRemoteRepo();
+    getIt.registerAppExpirationViewModel();
     if (e2e) {
       getIt.registerSettingsRepository();
       getIt.registerRuFeatureProvider();
@@ -39,18 +44,44 @@ class MockAuthenticatedScope extends AuthenticatedScope {
       _registerMockRuFeaturesProvider();
       _registerMockFormationRepository();
     }
-    getIt.registerAppExpirationViewModel();
+
+    getIt.registerJourneyNavigationViewModel();
+    getIt.registerJourneySelectionViewModel();
+    getIt.registerJourneyViewModel();
+    getIt.registerJourneySettingsViewModel();
+    getIt.registerViewModeViewModel();
+    getIt.registerNotificationPriorityViewModel();
+    _registerMockWarnAppViewModel();
+    getIt.registerLocalRegulationHtmlGenerator();
     _registerMockCustomerOrientedDepartureRepository();
 
     return getIt.allReady();
   }
 
   void _registerMockRuFeaturesProvider() {
-    getIt.registerSingleton<RuFeatureProvider>(MockRuFeatureProvider());
+    getIt.registerSingletonAsync<RuFeatureProvider>(() async => MockRuFeatureProvider());
   }
 
   void _registerMockFormationRepository() {
     getIt.registerSingleton<FormationRepository>(MockFormationRepository());
+  }
+
+  void _registerMockWarnAppViewModel() {
+    getIt.registerSingletonAsync<WarnAppViewModel>(
+      () async => MockWarnAppViewModel(
+        flavor: DI.get(),
+        sferaRepo: DI.get(),
+        warnappRepo: DI.get(),
+        ruFeatureProvider: DI.get(),
+        notificationViewModel: DI.get(),
+      ),
+      dependsOn: [
+        SferaRepository,
+        RuFeatureProvider,
+        NotificationPriorityQueueViewModel,
+      ],
+      dispose: (vm) => vm.dispose(),
+    );
   }
 
   void _registerMockCustomerOrientedDepartureRepository() {

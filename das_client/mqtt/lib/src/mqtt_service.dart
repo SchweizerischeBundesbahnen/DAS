@@ -10,4 +10,6 @@ abstract class MqttService {
   Future<bool> connect(String company, String train);
 
   bool publishMessage(String company, String train, String message);
+
+  void dispose();
 }

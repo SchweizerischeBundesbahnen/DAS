@@ -1,5 +1,8 @@
 import 'dart:async';
 
+import 'package:app/di/di.dart';
+import 'package:app/di/scope_handler.dart';
+import 'package:app/di/scopes/journey_scope.dart';
 import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
 import 'package:app/pages/journey/view_model/model/journey_navigation_model.dart';
 import 'package:app/widgets/table/row/das_table_row_builder.dart';
@@ -73,9 +76,18 @@ class JourneyNavigationViewModel {
     _rxModel.close();
   }
 
+  void disconnect() {
+    _log.fine('Disconnecting JourneyNavigationViewModel');
+    _sferaRepo.disconnect();
+    _addToStream(null);
+    _trainIds.clear();
+  }
+
   Future<void> _establishConnection(ExtendedTrainIdentification trainId) async {
     _log.fine('Establish connection to $trainId');
     DASTableRowBuilder.clearRowKeys();
+    await DI.get<ScopeHandler>().pop<JourneyScope>();
+    await DI.get<ScopeHandler>().push<JourneyScope>();
     await _sferaRepo.connect(trainId.trainIdentification);
     _addToStream(trainId);
   }

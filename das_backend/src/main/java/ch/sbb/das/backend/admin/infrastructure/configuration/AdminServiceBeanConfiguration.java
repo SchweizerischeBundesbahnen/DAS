@@ -5,7 +5,7 @@ import ch.sbb.das.backend.admin.domain.notices.NoticeTemplateService;
 import ch.sbb.das.backend.admin.domain.notices.NoticeTemplateServiceImpl;
 import ch.sbb.das.backend.admin.domain.notices.SpecialHolidayRepository;
 import ch.sbb.das.backend.admin.domain.notices.SpecialHolidayService;
-import ch.sbb.das.backend.admin.domain.notices.SpecialSpecialHolidayServiceImpl;
+import ch.sbb.das.backend.admin.domain.notices.SpecialHolidayServiceImpl;
 import ch.sbb.das.backend.admin.domain.settings.AppVersionRepository;
 import ch.sbb.das.backend.admin.domain.settings.AppVersionService;
 import ch.sbb.das.backend.admin.domain.settings.AppVersionServiceImpl;
@@ -35,7 +35,7 @@ public class AdminServiceBeanConfiguration {
     }
 
     @Bean
-    SpecialHolidayService holidayService(SpecialHolidayRepository specialHolidayRepository, CompanyAuthorizer companyAuthorizer) {
-        return new SpecialSpecialHolidayServiceImpl(specialHolidayRepository, companyAuthorizer);
+    SpecialHolidayService specialHolidayService(SpecialHolidayRepository specialHolidayRepository, CompanyAuthorizer companyAuthorizer) {
+        return new SpecialHolidayServiceImpl(specialHolidayRepository, companyAuthorizer);
     }
 }

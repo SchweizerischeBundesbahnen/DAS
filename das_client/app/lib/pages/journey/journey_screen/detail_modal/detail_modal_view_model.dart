@@ -62,6 +62,7 @@ class DetailModalViewModel {
   }
 
   void dispose() {
+    controller.dispose();
     _rxOpenModalType.close();
     _rxContentBuilder.close();
   }

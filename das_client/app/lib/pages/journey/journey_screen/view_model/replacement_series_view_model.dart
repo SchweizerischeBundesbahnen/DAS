@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/illegal_speed_segment.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/replacement_series_model.dart';
-import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:collection/collection.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -12,15 +12,16 @@ import 'package:sfera/component.dart';
 
 final _log = Logger('ReplacementSeriesViewModel');
 
-class ReplacementSeriesViewModel extends JourneyAwareViewModel {
+class ReplacementSeriesViewModel {
   ReplacementSeriesViewModel({
     required JourneyPositionViewModel journeyPositionViewModel,
     required JourneySettingsViewModel journeySettingsViewModel,
-    super.journeyViewModel,
+    required JourneyViewModel journeyViewModel,
   }) : _journeyPositionViewModel = journeyPositionViewModel,
        _journeySettingsViewModel = journeySettingsViewModel {
     _initJourneyPositionSubscription();
     _initSettingsSubscription();
+    _subscriptions.add(journeyViewModel.journey.listen(_journeyUpdated));
   }
 
   final JourneyPositionViewModel _journeyPositionViewModel;
@@ -200,21 +201,7 @@ class ReplacementSeriesViewModel extends JourneyAwareViewModel {
     return validReplacementSeries.firstWhereOrNull((it) => !_hasIllegalSpeedForAny(speeds, it));
   }
 
-  @override
-  void journeyUpdated(Journey? journey) {
-    _journeyUpdated(journey);
-  }
-
-  @override
-  void journeyIdentificationChanged(Journey? journey) {
-    _illegalSpeedSegments = [];
-    _rxModel.add(null);
-    _journeyUpdated(journey);
-  }
-
-  @override
   void dispose() {
-    super.dispose();
     for (final it in _subscriptions) {
       it.cancel();
     }

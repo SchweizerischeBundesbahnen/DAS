@@ -41,10 +41,10 @@ class SettingsApiTest extends RestAssuredCommand {
     @Test
     void getSettings_okByOpenApiClient() {
         final Mono<ResponseEntity<SettingsResponse>> responseAsync = backendApi.getSettingsApi().getSettingsWithHttpInfo(ServiceDoc.REQUEST_ID_VALUE_E2E_TEST, /*TODO config */ "9999.0.0");
-            final SettingsResponse settingsResponse = getResponseBodyOrFail(responseAsync, null /*irrelevant for API*/, ServiceDoc.REQUEST_ID_VALUE_E2E_TEST, null);
-            log.debug("{} in {}", settingsResponse, responseAsync);
+        final SettingsResponse settingsResponse = getResponseBodyOrFail(responseAsync, null /*irrelevant for API*/, ServiceDoc.REQUEST_ID_VALUE_E2E_TEST, null);
+        log.debug("{} in {}", settingsResponse, responseAsync);
 
-            AssertionsApiClientModel.assertSettingsResponse(settingsResponse, endpointConfiguration.endpoint());
+        AssertionsApiClientModel.assertSettingsResponse(settingsResponse, endpointConfiguration.endpoint());
     }
 
     @Test
@@ -52,6 +52,7 @@ class SettingsApiTest extends RestAssuredCommand {
         final String requestId = getRequestId();
         final Response response = createRequestWithHeader("en", requestId)
             .param("dummy", "VALUE")
+            .header("X-App-Version", "0.1.0")
             .when()
             .get(getUrl(SettingsApiTest.ENDPOINT))
             .then()

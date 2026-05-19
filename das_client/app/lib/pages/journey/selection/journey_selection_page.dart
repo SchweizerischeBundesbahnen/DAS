@@ -182,6 +182,7 @@ class _ContentState extends State<_Content> {
     final viewModel = context.read<JourneySelectionViewModel>();
     return StreamBuilder(
       stream: viewModel.model,
+      initialData: viewModel.modelValue,
       builder: (context, snapshot) {
         final model = snapshot.data;
 

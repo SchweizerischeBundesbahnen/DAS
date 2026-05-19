@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@Tag(name = "Location", description = "API for TAF/TAP locations.")
+@Tag(name = "Locations", description = "API for TAF/TAP locations.")
 public class TafTapLocationController {
 
     static final String PATH_SEGMENT_LOCATIONS = "/locations";

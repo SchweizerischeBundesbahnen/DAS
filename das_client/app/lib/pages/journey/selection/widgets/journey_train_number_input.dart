@@ -32,7 +32,7 @@ class _JourneyTrainNumberInputState extends State<JourneyTrainNumberInput> {
         _controller.text = model.operationalTrainNumber;
 
         return switch (model) {
-          final Selecting _ || final Error _ => _buildTrainNumberInput(
+          final Selecting _ || Loaded _ || final Error _ => _buildTrainNumberInput(
             context,
             onChanged: (value) => viewModel.updateTrainNumber(value),
             onSubmitted: (_) => viewModel.loadJourney(),

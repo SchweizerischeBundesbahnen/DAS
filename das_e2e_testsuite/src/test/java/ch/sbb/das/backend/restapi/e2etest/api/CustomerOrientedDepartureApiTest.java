@@ -6,20 +6,30 @@ import ch.sbb.das.backend.restapi.configuration.DasBackendApi;
 import ch.sbb.das.backend.restapi.configuration.DasBackendEndpointConfiguration;
 import ch.sbb.das.backend.restapi.e2etest.configuration.ApiClientTestProfile;
 import ch.sbb.das.backend.restapi.e2etest.helper.RestAssuredCommand;
-import ch.sbb.das.backend.restapi.monitoring.MonitoringConstants;
+import ch.sbb.das.backend.restclient.v1.model.SubscribeRequest;
 import io.restassured.response.Response;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.TestContextManager;
+import tools.jackson.databind.json.JsonMapper;
 
 @ApiClientTestProfile
 @Slf4j
 class CustomerOrientedDepartureApiTest extends RestAssuredCommand {
 
     final static String ENDPOINT = "/v1/customer-oriented-departure";
+
+    final static JsonMapper MAPPER = new JsonMapper();
+
+    // mock though keep the same for subscribe/confirm
+    String deviceId = "D0005";
+    String messageId = "M0002";
 
     @Autowired
     DasBackendApi dasBackendApi;
@@ -37,38 +47,41 @@ class CustomerOrientedDepartureApiTest extends RestAssuredCommand {
 
     @Test
     void postSubscribe_ok() {
-        final Response response = createRequestWithHeader("en", MonitoringConstants.HEADER_REQUEST_ID)
-            .body("""
-                {
-                  "messageId": "M0002",
-                  "zugnr": "37829",
-                  "deviceId": "D0005",
-                  "pushToken": "t",
-                  "expired": "2026-04-15T08:00:00Z",
-                  "evu": "EVU1",
-                  "type": "REGISTER"
-                }
-                """)
+        SubscribeRequest request = new SubscribeRequest();
+        request.messageId(messageId);
+        request.zugnr("37829");
+        request.deviceId(deviceId);
+        request.pushToken("t");
+        request.expiresAt(OffsetDateTime.now(ZoneId.of("UTC")).truncatedTo(ChronoUnit.MINUTES));
+        request.evu("EVU1" /* avoid traffic relevant KoA by this integration-test */);
+        request.type("REGISTER");
+        request.driver(true);
+
+        final String requestId = getRequestId();
+        final Response response = createRequestWithHeader("en", requestId)
+            .contentType("application/json")
+            .body(MAPPER.writeValueAsString(request))
             .when()
             .post(getUrl(ENDPOINT + "/subscribe"))
             .then()
             .extract()
             .response();
 
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.SC_OK);
+        assertThat(response.getStatusCode()).as(toBodyString(response)).isEqualTo(HttpStatus.SC_OK);
     }
 
     @Test
     void postConfirm_ok() {
-        final Response response = createRequestWithHeader("en", MonitoringConstants.HEADER_REQUEST_ID)
-            .pathParam("messageId", "M0002")
-            .pathParam("deviceId", "D0005")
+        final String requestId = getRequestId();
+        final Response response = createRequestWithHeader("en", requestId)
+            .pathParam("messageId", messageId)
+            .pathParam("deviceId", deviceId)
             .when()
-            .post(getUrl(ENDPOINT + "/confirm"))
+            .post(getUrl(ENDPOINT + "/confirm/{messageId}/{deviceId}"))
             .then()
             .extract()
             .response();
 
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.SC_OK);
+        assertThat(response.getStatusCode()).as(toBodyString(response)).isEqualTo(HttpStatus.SC_OK);
     }
 }

@@ -24,7 +24,7 @@ import org.springframework.web.client.RestClientResponseException;
  * de: KOA
  */
 @RestController
-@Tag(name = "CustomerOrientedDeparture", description = "Customer oriented departure proxy")
+@Tag(name = "CustomerOrientedDeparture", description = "Customer oriented departure proxy.")
 public class CustomerOrientedDepartureController {
 
     static final String PATH_SEGMENT_CUSTOMER_ORIENTED_DEPARTURE = "/customer-oriented-departure";

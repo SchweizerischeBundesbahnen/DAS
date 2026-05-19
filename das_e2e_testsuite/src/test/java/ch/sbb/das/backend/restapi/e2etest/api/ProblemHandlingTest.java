@@ -45,7 +45,6 @@ public class ProblemHandlingTest extends RestAssuredCommand {
         if (isAccessibleWithoutApim()) {
             assertThat(toBodyString(response)).as("SettingsController not reached -> no 'Problem' object").isEmpty();
         } else {
-            // TODO adapt when > v0.7.1 is deployed on DEV acc. to APIM response
             assertThat(toBodyString(response)).isEqualTo("Access not allowed: Token is expired or invalid");
         }
     }
@@ -62,10 +61,10 @@ public class ProblemHandlingTest extends RestAssuredCommand {
             .extract()
             .response();
 
+        final String body = toBodyString(response);
         if (isAccessibleWithoutApim()) {
             // see TopLevelHandler::handleExceptionInternal
             assertThat(response.getStatusCode()).as("must match Problem::status").isEqualTo(HttpStatus.SC_NOT_FOUND);
-            final String body = toBodyString(response);
             assertThat(body).as("spring.mvc.problemdetails not properly configured").doesNotContain("\"timestamp\":");
             assertThat(body).as("Problem::status").contains("\"status\":404");
             assertThat(body).as("Problem::title").contains("\"title\":\"Not Found\"");
@@ -73,7 +72,8 @@ public class ProblemHandlingTest extends RestAssuredCommand {
             assertThat(body).as("Problem::instance").contains("\"instance\":\"/v1/bad_api\"");
             assertThat(body).as("Problem::type").doesNotContain("\type\"");
         } else {
-            // TODO adapt when > v0.7.1 is deployed on DEV acc. to APIM response
+            assertThat(response.getStatusCode()).isEqualTo(HttpStatus.SC_FORBIDDEN);
+            assertThat(body).isEqualTo("Access not allowed: forbidden");
         }
     }
 }
