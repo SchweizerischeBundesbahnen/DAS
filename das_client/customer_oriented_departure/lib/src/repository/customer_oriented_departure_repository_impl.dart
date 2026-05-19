@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:customer_oriented_departure/component.dart';
 import 'package:customer_oriented_departure/src/api/customer_oriented_departure_api_service.dart';
+import 'package:customer_oriented_departure/src/messaging/firebase/dto/base_message_dto.dart';
 import 'package:customer_oriented_departure/src/messaging/firebase/dto/train_status_message_dto.dart';
 import 'package:customer_oriented_departure/src/messaging/messaging_service.dart';
 import 'package:logging/logging.dart';
@@ -33,11 +34,8 @@ class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartu
   final _subscriptions = <StreamSubscription>[];
 
   _Subscription? _pendingOrOpenSubscription;
-
-  void _init() {
-    _initTokenSubscription();
-    _initMessagesSubscription();
-  }
+  Timer? _subscriptionRetryTimer;
+  int _subscriptionRetryAttempt = 0;
 
   @override
   Future<bool> subscribe({
@@ -55,7 +53,7 @@ class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartu
       pushToken: messagingService.tokenValue,
     );
 
-    if (_pendingOrOpenSubscription != null && subscription.hasChanged(_pendingOrOpenSubscription!)) {
+    if (_pendingOrOpenSubscription != null && !subscription.hasChanged(_pendingOrOpenSubscription!)) {
       _log.info('Already subscribed to $evu $trainNumber with given token');
       return true;
     } else if (_pendingOrOpenSubscription != null) {
@@ -82,6 +80,8 @@ class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartu
       _log.severe('No open subscription for unsubscribing.');
       return true;
     }
+
+    _cancelSubscriptionRetry();
 
     final evu = _pendingOrOpenSubscription!.evu;
     final trainNumber = _pendingOrOpenSubscription!.trainNumber;
@@ -114,16 +114,44 @@ class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartu
   Stream<CustomerOrientedDeparture> get customerOrientedDeparture => _rxCustomerOrientedDeparture.stream;
 
   @override
+  void requestLatestStatus() {
+    messagingService.replayMessages();
+  }
+
+  @override
   void dispose() {
+    _subscriptionRetryTimer?.cancel();
+    _subscriptionRetryTimer = null;
     _rxCustomerOrientedDeparture.close();
     for (final sub in _subscriptions) {
       sub.cancel();
     }
   }
 
-  @override
-  void requestLatestStatus() {
-    messagingService.replayMessages();
+  void _init() {
+    _initTokenSubscription();
+    _initMessagesSubscription();
+  }
+
+  void _initTokenSubscription() {
+    final sub = messagingService.token.listen((token) {
+      if (token != null && _pendingOrOpenSubscription != null && _pendingOrOpenSubscription!.pushToken != token) {
+        _log.fine('Received new push token for open/pending subscription');
+        _sendSubscribeRequest(subscription: _pendingOrOpenSubscription!.withToken(token: token));
+      }
+    });
+    _subscriptions.add(sub);
+  }
+
+  void _initMessagesSubscription() {
+    final sub = messagingService.message.listen((message) {
+      if (message is TrainStatusMessageDto) {
+        _handleTrainStatusMessage(message);
+      } else {
+        _handleSubscriptionConfirmation(message);
+      }
+    });
+    _subscriptions.add(sub);
   }
 
   DateTime _calculateExpiresAt(DateTime? journeyEndTime) {
@@ -134,6 +162,7 @@ class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartu
   Future<bool> _sendSubscribeRequest({required _Subscription subscription}) async {
     final evu = subscription.evu;
     final trainNumber = subscription.trainNumber;
+
     try {
       await apiService.subscribe(
         evu: evu,
@@ -149,26 +178,39 @@ class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartu
     } catch (e) {
       _log.severe('Error while requesting subscribe for $evu $trainNumber', e);
       return false;
+    } finally {
+      _scheduleSubscriptionRetry(subscription);
     }
   }
 
-  void _initTokenSubscription() {
-    final sub = messagingService.token.listen((token) {
-      if (token != null && _pendingOrOpenSubscription != null && _pendingOrOpenSubscription!.pushToken != token) {
-        _log.info('Received new push token for open/pending subscription');
-        _sendSubscribeRequest(subscription: _pendingOrOpenSubscription!.withToken(token: token));
+  void _scheduleSubscriptionRetry(_Subscription subscription) {
+    // 5 * 2^attempt for exponential backoff: 5s, 10s, 20s, 40s, etc.
+    final delaySeconds = 5 * (1 << _subscriptionRetryAttempt);
+
+    _log.fine(
+      'Scheduling subscription retry for messageId: ${subscription.messageId}, attempt: ${_subscriptionRetryAttempt + 1}, delay: ${delaySeconds}s',
+    );
+
+    _subscriptionRetryTimer?.cancel();
+    _subscriptionRetryTimer = Timer(Duration(seconds: delaySeconds), () async {
+      if (_pendingOrOpenSubscription?.messageId == subscription.messageId) {
+        _subscriptionRetryAttempt++;
+        await _sendSubscribeRequest(subscription: _pendingOrOpenSubscription!);
       }
     });
-    _subscriptions.add(sub);
   }
 
-  void _initMessagesSubscription() {
-    final sub = messagingService.message.listen((message) {
-      if (message is TrainStatusMessageDto) {
-        _handleTrainStatusMessage(message);
-      }
-    });
-    _subscriptions.add(sub);
+  void _cancelSubscriptionRetry() {
+    _subscriptionRetryTimer?.cancel();
+    _subscriptionRetryTimer = null;
+    _subscriptionRetryAttempt = 0;
+  }
+
+  void _handleSubscriptionConfirmation(BaseMessageDto message) {
+    if (_pendingOrOpenSubscription?.messageId == message.messageId) {
+      _log.info('Subscription confirmed for messageId: ${message.messageId}');
+      _cancelSubscriptionRetry();
+    }
   }
 
   void _handleTrainStatusMessage(TrainStatusMessageDto message) {
@@ -178,11 +220,11 @@ class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartu
     } else {
       final customerOrientedDeparture = CustomerOrientedDeparture(trainNumber: message.zugnr, status: status);
       _rxCustomerOrientedDeparture.add(customerOrientedDeparture);
-      _confirmMessageReceived(message.messageId);
+      _sendConfirmMessageRequest(message.messageId);
     }
   }
 
-  Future<void> _confirmMessageReceived(String messageId) async {
+  Future<void> _sendConfirmMessageRequest(String messageId) async {
     try {
       await apiService.confirm(deviceId: deviceId, messageId: messageId);
       _log.fine('Successfully sent confirm for message $messageId.');
@@ -221,7 +263,6 @@ class _Subscription {
   bool hasChanged(_Subscription other) {
     return evu != other.evu ||
         trainNumber != other.trainNumber ||
-        expiresAt != other.expiresAt ||
         isDriver != other.isDriver ||
         pushToken != other.pushToken;
   }
