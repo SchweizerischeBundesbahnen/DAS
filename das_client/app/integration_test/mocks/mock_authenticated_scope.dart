@@ -1,10 +1,12 @@
 // implement the mock for authenticated_scope.dart
 
 import 'package:app/di/di.dart';
+import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
 import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:formation/component.dart';
 import 'package:logging/logging.dart';
+import 'package:sfera/component.dart';
 
 import 'mock_formation_repository.dart';
 import 'mock_ru_feature_provider.dart';
@@ -29,8 +31,8 @@ class MockAuthenticatedScope extends AuthenticatedScope {
     getIt.registerSferaAuthProvider();
     getIt.registerHttpClient();
     getIt.registerMqttAuthProvider();
-    await getIt.registerMqttService();
-    await getIt.registerSferaRemoteRepo();
+    getIt.registerMqttService();
+    getIt.registerSferaRemoteRepo();
     getIt.registerAppExpirationViewModel();
     if (e2e) {
       getIt.registerSettingsRepository();
@@ -54,7 +56,7 @@ class MockAuthenticatedScope extends AuthenticatedScope {
   }
 
   void _registerMockRuFeaturesProvider() {
-    getIt.registerSingleton<RuFeatureProvider>(MockRuFeatureProvider());
+    getIt.registerSingletonAsync<RuFeatureProvider>(() async => MockRuFeatureProvider());
   }
 
   void _registerMockFormationRepository() {
@@ -62,14 +64,19 @@ class MockAuthenticatedScope extends AuthenticatedScope {
   }
 
   void _registerMockWarnAppViewModel() {
-    getIt.registerSingleton<WarnAppViewModel>(
-      MockWarnAppViewModel(
+    getIt.registerSingletonAsync<WarnAppViewModel>(
+      () async => MockWarnAppViewModel(
         flavor: DI.get(),
         sferaRepo: DI.get(),
         warnappRepo: DI.get(),
         ruFeatureProvider: DI.get(),
         notificationViewModel: DI.get(),
       ),
+      dependsOn: [
+        SferaRepository,
+        RuFeatureProvider,
+        NotificationPriorityQueueViewModel,
+      ],
       dispose: (vm) => vm.dispose(),
     );
   }
