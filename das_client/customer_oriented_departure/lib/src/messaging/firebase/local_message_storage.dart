@@ -15,6 +15,10 @@ class LocalMessageStorage {
   /// Gets latest messages saved to local storage
   static Future<List<BaseMessageDto>> getLatestMessages() async {
     final prefs = await SharedPreferences.getInstance();
+
+    // reload needed as each isolate (used on background message) has its own memory
+    await prefs.reload();
+
     final latestMessages = prefs.getStringList(_latestMessagesKey) ?? <String>[];
     return latestMessages.map(_tryParseMessage).nonNulls.toList();
   }

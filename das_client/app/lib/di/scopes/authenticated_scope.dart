@@ -1,16 +1,25 @@
 import 'package:app/app_info/app_info.dart';
 import 'package:app/di/di.dart';
 import 'package:app/flavor.dart';
+import 'package:app/pages/journey/journey_screen/view_model/mock/sfera_mock_customer_oriented_departure_repository_impl.dart';
+import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
+import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
 import 'package:app/pages/journey/view_model/app_expiration_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_view_model.dart';
+import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
 import 'package:app/pages/journey/view_model/view_mode_view_model.dart';
+import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:app/provider/ru_feature_provider_impl.dart';
 import 'package:app/util/device_id_info.dart';
 import 'package:auth/component.dart';
+import 'package:customer_oriented_departure/component.dart';
 import 'package:formation/component.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http_x/component.dart';
+import 'package:local_regulations/component.dart';
 import 'package:logger/component.dart';
 import 'package:logging/logging.dart';
 import 'package:mqtt/component.dart';
@@ -67,30 +76,20 @@ extension AuthenticatedScopeExtension on GetIt {
   }
 
   void registerAuthProvider() {
-    factoryFunc() {
-      return _AuthProvider(authenticator: DI.get());
-    }
-
-    registerFactory<AuthProvider>(factoryFunc);
+    registerSingleton<AuthProvider>(_AuthProvider(authenticator: DI.get()));
   }
 
   void registerSferaAuthProvider() {
-    factoryFunc() {
-      return _SferaAuthProvider(authenticator: DI.get());
-    }
-
-    registerFactory<SferaAuthProvider>(factoryFunc);
+    registerSingleton<SferaAuthProvider>(_SferaAuthProvider(authenticator: DI.get()));
   }
 
   void registerMqttAuthProvider() {
-    factoryFunc() {
-      return _MqttAuthProvider(
+    registerSingleton<MqttAuthProvider>(
+      _MqttAuthProvider(
         authenticator: DI.get(),
         oauthProfile: DI.get<Flavor>().mqttOauthProfile,
-      );
-    }
-
-    registerFactory<MqttAuthProvider>(factoryFunc);
+      ),
+    );
   }
 
   void registerMqttService() {
@@ -275,7 +274,7 @@ extension AuthenticatedScopeExtension on GetIt {
       }
 
       registerSingletonAsync<CustomerOrientedDepartureRepository>(
-        dependsOn: [SferaRepository],
+        dependsOn: [SferaRepository, RuFeatureProvider],
         factoryFunc,
         dispose: (repo) => repo.dispose(),
       );

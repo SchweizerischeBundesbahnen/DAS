@@ -118,7 +118,7 @@ extension JourneyScopeExtension on GetIt {
       ChecklistDepartureProcessViewModel(
         journeyPositionViewModel: DI.get(),
         ruFeatureProvider: DI.get(),
-        uxTestingViewModel: DI.get(),
+        customerOrientedDepartureViewModel: DI.get(),
       ),
       dispose: (vm) => vm.dispose(),
     );
@@ -264,7 +264,6 @@ extension JourneyScopeExtension on GetIt {
         sferaRepo: DI.get(),
         ruFeatureProvider: DI.get(),
         formationRepository: DI.get(),
-        notificationViewModel: DI.get(),
       ),
       dispose: (vm) => vm.dispose(),
     );

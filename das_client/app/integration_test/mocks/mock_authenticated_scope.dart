@@ -34,7 +34,7 @@ class MockAuthenticatedScope extends AuthenticatedScope {
     getIt.registerHttpClient();
     getIt.registerMqttAuthProvider();
     getIt.registerMqttService();
-    getIt.registerSferaRemoteRepo();
+    getIt.registerSferaRemoteRepository();
     getIt.registerAppExpirationViewModel();
     if (e2e) {
       getIt.registerSettingsRepository();
@@ -51,8 +51,8 @@ class MockAuthenticatedScope extends AuthenticatedScope {
     getIt.registerJourneySettingsViewModel();
     getIt.registerViewModeViewModel();
     getIt.registerNotificationPriorityViewModel();
-    _registerMockWarnAppViewModel();
     getIt.registerLocalRegulationHtmlGenerator();
+    _registerMockWarnAppViewModel();
     _registerMockCustomerOrientedDepartureRepository();
 
     return getIt.allReady();
