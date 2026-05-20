@@ -139,6 +139,8 @@ class JourneyTable extends StatelessWidget {
         .expand((it) => it)
         .toList();
 
+    final journeyTableVM = context.read<JourneyTableViewModel>();
+
     return List.generate(journeyTableRowData.length, (index) {
       final rowData = journeyTableRowData[index];
 
@@ -158,6 +160,7 @@ class JourneyTable extends StatelessWidget {
           rowData: rowData,
           currentBrakeSeries: settings.currentBrakeSeries,
           expandedGroups: settings.expandedGroups,
+          journeyEnd: journeyTableVM.journeyEnd,
         ),
       );
 

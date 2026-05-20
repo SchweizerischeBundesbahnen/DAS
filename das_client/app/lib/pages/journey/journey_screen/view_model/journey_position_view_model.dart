@@ -92,7 +92,8 @@ class JourneyPositionViewModel {
   JourneyPoint? _calculateLastPosition(Journey? journey, JourneyPoint? updatedPosition) {
     final previousModel = _rxModel.valueOrNull;
     final previousPosition = previousModel?.currentPosition;
-    if (journey == null || previousPosition == null || journey.metadata.journeyStart == updatedPosition) return null;
+    final journeyStart = journey?.data.whereType<JourneyPoint>().firstOrNull;
+    if (journey == null || previousPosition == null || journeyStart == updatedPosition) return null;
 
     final previousJourneyPointIndex = journey.journeyPoints.indexOf(previousPosition);
     if (previousJourneyPointIndex != -1) {

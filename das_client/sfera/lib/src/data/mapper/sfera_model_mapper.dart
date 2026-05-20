@@ -110,8 +110,6 @@ class SferaModelMapper {
         ),
         signaledPosition: _signaledPosition(relatedTrainInformation, segmentProfileReferences),
         additionalSpeedRestrictions: additionalSpeedRestrictions,
-        journeyStart: journeyPoints.firstOrNull,
-        journeyEnd: journeyPoints.lastOrNull,
         delay: _parseDelay(relatedTrainInformation),
         anyOperationalArrivalDepartureTimes: servicePoints.any(
           (sP) => sP.arrivalDepartureTime?.hasAnyOperationalTime ?? false,

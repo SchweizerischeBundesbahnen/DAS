@@ -78,7 +78,7 @@ void main() {
     testAsync.run((fakeAsync) {
       rxMockJourney.add(
         Journey(
-          metadata: Metadata(journeyStart: signalA),
+          metadata: Metadata(),
           data: [signalA, stopA, stopB, stopC, stopD],
         ),
       );
@@ -95,7 +95,6 @@ void main() {
       rxMockJourney.add(
         Journey(
           metadata: Metadata(
-            journeyStart: signalA,
             suspiciousSegments: [suspiciousSegmentAB],
           ),
           data: [signalA, stopA, stopB, stopC, stopD],
@@ -116,7 +115,6 @@ void main() {
       rxMockJourney.add(
         Journey(
           metadata: Metadata(
-            journeyStart: signalA,
             suspiciousSegments: [suspiciousSegmentAB],
           ),
           data: [signalA, stopA, stopB, stopC, stopD],
@@ -134,7 +132,6 @@ void main() {
       rxMockJourney.add(
         Journey(
           metadata: Metadata(
-            journeyStart: signalA,
             suspiciousSegments: [suspiciousSegmentAB],
           ),
           data: [signalA, stopA, stopB, stopC, stopD],
@@ -155,7 +152,6 @@ void main() {
       rxMockJourney.add(
         Journey(
           metadata: Metadata(
-            journeyStart: signalA,
             suspiciousSegments: [suspiciousSegmentAB],
           ),
           data: [signalA, stopA, stopB, stopC, stopD],
@@ -173,7 +169,6 @@ void main() {
       rxMockJourney.add(
         Journey(
           metadata: Metadata(
-            journeyStart: signalA,
             suspiciousSegments: [suspiciousSegmentAB],
           ),
           data: [signalA, stopA, stopB, stopC, stopD],
@@ -192,7 +187,6 @@ void main() {
       rxMockJourney.add(
         Journey(
           metadata: Metadata(
-            journeyStart: signalA,
             suspiciousSegments: [suspiciousSegmentAB, suspiciousSegmentCD],
           ),
           data: [signalA, stopA, stopB, stopC, stopD],
@@ -212,7 +206,6 @@ void main() {
       rxMockJourney.add(
         Journey(
           metadata: Metadata(
-            journeyStart: signalA,
             suspiciousSegments: [suspiciousSegmentAB, suspiciousSegmentCD],
           ),
           data: [signalA, stopA, stopB, stopC, stopD],
@@ -231,7 +224,6 @@ void main() {
       rxMockJourney.add(
         Journey(
           metadata: Metadata(
-            journeyStart: signalA,
             suspiciousSegments: [suspiciousSegmentAB],
           ),
           data: [signalA, stopA, stopB, stopC, stopD],
@@ -247,7 +239,6 @@ void main() {
       rxMockJourney.add(
         Journey(
           metadata: Metadata(
-            journeyStart: signalA,
             suspiciousSegments: [],
           ),
           data: [signalA, stopA, stopB, stopC, stopD],
@@ -267,7 +258,6 @@ void main() {
       rxMockJourney.add(
         Journey(
           metadata: Metadata(
-            journeyStart: signalA,
             suspiciousSegments: [suspiciousSegmentAB],
           ),
           data: [signalA, stopA, stopB, stopC, stopD],
@@ -294,7 +284,6 @@ void main() {
       rxMockJourney.add(
         Journey(
           metadata: Metadata(
-            journeyStart: signalA,
             suspiciousSegments: [suspiciousSegmentAB],
           ),
           data: [signalA, stopA, stopB, stopC, stopD],
@@ -321,7 +310,6 @@ void main() {
       rxMockJourney.add(
         Journey(
           metadata: Metadata(
-            journeyStart: signalA,
             suspiciousSegments: [],
           ),
           data: [signalA, stopA, stopB, stopC, stopD],
@@ -337,7 +325,6 @@ void main() {
       rxMockJourney.add(
         Journey(
           metadata: Metadata(
-            journeyStart: signalA,
             suspiciousSegments: [suspiciousSegmentCD],
           ),
           data: [signalA, stopA, stopB, stopC, stopD],
@@ -356,7 +343,6 @@ void main() {
       rxMockJourney.add(
         Journey(
           metadata: Metadata(
-            journeyStart: signalA,
             suspiciousSegments: [suspiciousSegmentAB],
           ),
           data: [signalA, stopA, stopB, stopC, stopD],
@@ -373,7 +359,6 @@ void main() {
       rxMockJourney.add(
         Journey(
           metadata: Metadata(
-            journeyStart: signalA,
             suspiciousSegments: [suspiciousSegmentAB, suspiciousSegmentCD],
           ),
           data: [signalA, stopA, stopB, stopC, stopD],
@@ -391,7 +376,6 @@ void main() {
         Journey(
           metadata: Metadata(
             trainIdentification: TrainIdentification(ru: .blsI, trainNumber: '1111', date: DateTime(2026)),
-            journeyStart: signalA,
             suspiciousSegments: [suspiciousSegmentAB],
           ),
           data: [signalA, stopA, stopB, stopC, stopD],
@@ -412,7 +396,6 @@ void main() {
         Journey(
           metadata: Metadata(
             trainIdentification: TrainIdentification(ru: .blsC, trainNumber: '1111', date: DateTime(2026)),
-            journeyStart: signalA,
             suspiciousSegments: [suspiciousSegmentAB],
           ),
           data: [signalA, stopA, stopB, stopC, stopD],
@@ -430,7 +413,6 @@ void main() {
       rxMockJourney.add(
         Journey(
           metadata: Metadata(
-            journeyStart: signalA,
             suspiciousSegments: [suspiciousSegmentAB],
           ),
           data: [signalA, stopA, stopB, stopC, stopD],
@@ -443,7 +425,6 @@ void main() {
       rxMockJourney.add(
         Journey(
           metadata: Metadata(
-            journeyStart: signalA,
             suspiciousSegments: [],
           ),
           data: [signalA, stopA, stopB, stopC, stopD],

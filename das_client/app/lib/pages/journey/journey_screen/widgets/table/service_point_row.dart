@@ -8,6 +8,7 @@ import 'package:app/pages/journey/journey_screen/detail_modal/service_point_moda
 import 'package:app/pages/journey/journey_screen/view_model/arrival_departure_time_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_table_advancement_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/journey_table_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cell_row_builder.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_cell_body.dart';
@@ -175,6 +176,8 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
 
   @override
   DASTableCell routeCell(BuildContext context) {
+    final vm = context.read<JourneyTableViewModel>();
+
     return DASTableCell(
       decoration: DASTableCellDecoration(color: specialCellColor),
       padding: .all(0.0),
@@ -183,8 +186,8 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
       child: RouteCellBody(
         isStop: data.isStop,
         isCurrentPosition: isCurrentChevronPosition,
-        isRouteStart: metadata.journeyStart == data,
-        isRouteEnd: metadata.journeyEnd == data,
+        isRouteStart: vm.journeyStart == data,
+        isRouteEnd: vm.journeyEnd == data,
         isStopOnRequest: !data.mandatoryStop,
         chevronAnimationData: config.chevronAnimationData,
         chevronPosition: calculatedChevronPosition,

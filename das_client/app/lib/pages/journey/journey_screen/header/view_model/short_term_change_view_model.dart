@@ -82,7 +82,7 @@ class ShortTermChangeViewModel extends JourneyAwareViewModel {
       return;
     }
 
-    if (currentPosition == null || currentPosition == journey?.metadata.journeyStart) {
+    if (currentPosition == null || currentPosition == journey?.data.whereType<JourneyPoint>().firstOrNull) {
       // journey has not started yet
       _emitLasting(shortTermChanges);
       return;

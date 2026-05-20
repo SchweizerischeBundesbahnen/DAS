@@ -82,7 +82,8 @@ class ChecklistDepartureProcessViewModel extends JourneyAwareViewModel {
   }
 
   bool _isEligiblePosition(JourneyPoint? currentPosition) {
-    if (currentPosition == null && lastJourney?.metadata.journeyStart is ServicePoint) {
+    final journeyStart = lastJourney?.data.whereType<JourneyPoint>().firstOrNull;
+    if (currentPosition == null && journeyStart is ServicePoint) {
       _lastServicePointWasStop = true;
       return true;
     }

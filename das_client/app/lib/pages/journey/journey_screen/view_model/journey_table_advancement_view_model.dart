@@ -175,8 +175,8 @@ class JourneyTableAdvancementViewModel {
     final firstServicePointOrder = firstServicePoint?.order ?? 0;
     final currentPositionOrder = _currentPosition?.order ?? 0;
 
-    _isInAutomaticScrollingZone =
-        _currentPosition != journey.metadata.journeyStart && currentPositionOrder >= firstServicePointOrder;
+    final journeyStart = journey.data.whereType<JourneyPoint>().firstOrNull;
+    _isInAutomaticScrollingZone = _currentPosition != journeyStart && currentPositionOrder >= firstServicePointOrder;
   }
 
   void _scrollToCurrentPositionIfInAutoScrollingZone() {
