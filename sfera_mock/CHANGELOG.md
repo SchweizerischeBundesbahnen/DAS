@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.16.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.15.0...sfera_mock-v0.16.0) (2026-05-20)
+
+
+### Features
+
+* add option to hide station signals ([#811](https://github.com/SchweizerischeBundesbahnen/DAS/issues/811)) ([#2111](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2111)) ([1b0e8fd](https://github.com/SchweizerischeBundesbahnen/DAS/commit/1b0e8fda90d0b1e5bdb532d7377646d8fcf6494a))
+* add support for invalid sp updates ([#1967](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1967)) ([#2106](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2106)) ([17f88ae](https://github.com/SchweizerischeBundesbahnen/DAS/commit/17f88ae9bf9115cf06c43332e7dd0c79feb9f32d))
+* consolidate sequential additional speed restrictions ([#566](https://github.com/SchweizerischeBundesbahnen/DAS/issues/566)) ([#2123](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2123)) ([8fc9a2f](https://github.com/SchweizerischeBundesbahnen/DAS/commit/8fc9a2f171503ff1d7154d8c72c3edd54cfa6135))
+* display all sim changes in foot notes ([#1126](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1126)) ([#2104](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2104)) ([4e7c4f3](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4e7c4f3c1ab07a6d01be29597871105828721350))
+
+
+### Bug Fixes
+
+* prioritize km nsp for signal and service point ([#1863](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1863)) ([#2081](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2081)) ([2fd1f50](https://github.com/SchweizerischeBundesbahnen/DAS/commit/2fd1f5042c8f8998aa70a00f04f1ff3bf7045691))
+
+
+### Documentation
+
+* lightweight usertests improve testdata ([#2124](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2124)) ([649f739](https://github.com/SchweizerischeBundesbahnen/DAS/commit/649f739deeeb18c02b200911dbc705e515a1f848))
+
 ## [0.15.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.14.0...sfera_mock-v0.15.0) (2026-05-04)
 
 
