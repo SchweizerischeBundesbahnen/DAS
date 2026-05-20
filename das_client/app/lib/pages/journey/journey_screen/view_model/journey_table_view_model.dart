@@ -190,6 +190,8 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
   }
 
   void _emitLoading() {
+    _journeyStart = null;
+    _journeyEnd = null;
     _log.fine('Emitting TableLoading.');
     _rxModel.add(TableLoading());
   }
