@@ -13,21 +13,8 @@ class DepartureAuthorizationDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      spacing: SBBSpacing.xSmall,
-      children: [
-        Icon(
-          key: departureAuthorizationIconKey,
-          SBBIcons.hand_clock_small,
-          color: ThemeUtil.getIconColor(context),
-        ),
-        _departureAuthorization(context),
-      ],
-    );
-  }
-
-  Widget _departureAuthorization(BuildContext context) {
     final viewModel = context.read<DepartureAuthorizationViewModel>();
+
     return StreamBuilder(
       stream: viewModel.model,
       builder: (context, snapshot) {
@@ -35,9 +22,20 @@ class DepartureAuthorizationDisplay extends StatelessWidget {
         if (departureAuthText == null) return SizedBox.shrink();
 
         final parsed = TextUtil.parseHtmlText(departureAuthText, sbbTextStyle.romanStyle.large);
-        return Text.rich(
-          key: departureAuthorizationTextKey,
-          _replaceAsteriskWithStyle(parsed, sbbTextStyle.boldStyle.xxLarge),
+
+        return Row(
+          spacing: SBBSpacing.xSmall,
+          children: [
+            Icon(
+              key: departureAuthorizationIconKey,
+              SBBIcons.hand_clock_small,
+              color: ThemeUtil.getIconColor(context),
+            ),
+            Text.rich(
+              key: departureAuthorizationTextKey,
+              _replaceAsteriskWithStyle(parsed, sbbTextStyle.boldStyle.xxLarge),
+            ),
+          ],
         );
       },
     );

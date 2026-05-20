@@ -687,12 +687,12 @@ Future<void> _checkDepartureAuth(Finder header, {required String nextStopName, S
     expect(departureAuthText, findsOne);
   }
 
-  // icon is always shown
+  // icon is only shown when there is a text
   final departureAuthIcon = find.descendant(
     of: departureAuthorization,
     matching: find.byKey(DepartureAuthorizationDisplay.departureAuthorizationIconKey),
   );
-  expect(departureAuthIcon, findsOne);
+  expect(departureAuthIcon, text != null ? findsOne : findsNothing);
 }
 
 Future<void> _toggleExtendedMenuManeuverMode(WidgetTester tester) async {

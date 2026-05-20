@@ -80,8 +80,8 @@ void main() {
     testAsync.run((fakeAsync) {
       rxMockJourney.add(
         Journey(
-          metadata: Metadata(journeyStart: signalA),
-          data: [],
+          metadata: Metadata(),
+          data: [signalA],
         ),
       );
       processStreams(fakeAsync: fakeAsync);
@@ -95,7 +95,6 @@ void main() {
       rxMockJourney.add(
         Journey(
           metadata: Metadata(
-            journeyStart: signalA,
             shortTermChanges: [StopToPassChange(startOrder: 0, endOrder: 0, startData: stopA)],
           ),
           data: [signalA, stopA, stopB, pointC, stopD],
@@ -118,7 +117,6 @@ void main() {
       rxMockJourney.add(
         Journey(
           metadata: Metadata(
-            journeyStart: signalA,
             shortTermChanges: [
               StopToPassChange(startOrder: stopA.order, endOrder: stopA.order, startData: stopA),
               PassToStopChange(startOrder: stopD.order, endOrder: stopD.order, startData: stopD),
@@ -141,7 +139,6 @@ void main() {
     testAsync.run((fakeAsync) {
       final journey = Journey(
         metadata: Metadata(
-          journeyStart: signalA,
           shortTermChanges: [
             StopToPassChange(startOrder: stopA.order, endOrder: stopA.order, startData: stopA),
           ],
@@ -169,7 +166,6 @@ void main() {
       rxMockJourney.add(
         Journey(
           metadata: Metadata(
-            journeyStart: signalA,
             shortTermChanges: [
               StopToPassChange(startOrder: stopA.order, endOrder: stopA.order, startData: stopA),
               PassToStopChange(startOrder: stopD.order, endOrder: stopD.order, startData: stopD),
@@ -200,7 +196,6 @@ void main() {
       rxMockJourney.add(
         Journey(
           metadata: Metadata(
-            journeyStart: signalA,
             shortTermChanges: [
               StopToPassChange(startOrder: stopA.order, endOrder: stopA.order, startData: stopA),
               PassToStopChange(
@@ -231,7 +226,6 @@ void main() {
       rxMockJourney.add(
         Journey(
           metadata: Metadata(
-            journeyStart: signalA,
             shortTermChanges: [
               PassToStopChange(startOrder: stopB.order, endOrder: stopB.order, startData: stopB),
               StopToPassChange(startOrder: pointC.order, endOrder: pointC.order, startData: pointC),
@@ -258,7 +252,6 @@ void main() {
       rxMockJourney.add(
         Journey(
           metadata: Metadata(
-            journeyStart: signalA,
             shortTermChanges: [
               EndDestinationChange(startOrder: stopB.order, endOrder: stopB.order, startData: stopB),
               TrainRunReroutingChange(startOrder: stopA.order, endOrder: pointC.order, startData: stopA),
@@ -285,7 +278,6 @@ void main() {
       rxMockJourney.add(
         Journey(
           metadata: Metadata(
-            journeyStart: signalA,
             shortTermChanges: [
               EndDestinationChange(startOrder: stopA.order, endOrder: stopA.order, startData: stopA),
               PassToStopChange(startOrder: stopA.order, endOrder: stopA.order, startData: stopA),
@@ -312,7 +304,6 @@ void main() {
       rxMockJourney.add(
         Journey(
           metadata: Metadata(
-            journeyStart: signalA,
             shortTermChanges: [StopToPassChange(startOrder: stopD.order, endOrder: stopD.order, startData: stopD)],
           ),
           data: [signalA, stopA, stopB, pointC, stopD],
@@ -345,7 +336,6 @@ void main() {
       rxMockJourney.add(
         Journey(
           metadata: Metadata(
-            journeyStart: signalA,
             shortTermChanges: [
               StopToPassChange(startOrder: pointC.order, endOrder: pointC.order, startData: pointC),
             ],
@@ -367,7 +357,6 @@ void main() {
       rxMockJourney.add(
         Journey(
           metadata: Metadata(
-            journeyStart: signalA,
             shortTermChanges: [
               StopToPassChange(startOrder: pointC.order, endOrder: pointC.order, startData: pointC),
               StopToPassChange(startOrder: stopD.order, endOrder: stopD.order, startData: stopD),

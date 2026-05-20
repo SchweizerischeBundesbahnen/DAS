@@ -13,13 +13,17 @@ class UTurnIndicator extends DotIndicator {
     super.size,
     super.isNextStop,
     super.key,
+    this.foregroundColor,
   });
+
+  final Color? foregroundColor;
 
   @override
   Widget indicator(BuildContext context) {
     return SvgPicture.asset(
       AppAssets.iconUturnTurquoise,
       key: indicatorKey,
+      colorFilter: foregroundColor != null ? ColorFilter.mode(foregroundColor!, BlendMode.srcIn) : null,
     );
   }
 }

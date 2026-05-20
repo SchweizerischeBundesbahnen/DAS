@@ -1,4 +1,5 @@
 import 'package:app/extension/short_term_change_extension.dart';
+import 'package:app/pages/journey/journey_screen/view_model/journey_table_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/chevron_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/communication_network_icon.dart';
@@ -24,6 +25,7 @@ import 'package:app/widgets/table/row/das_table_row_builder.dart';
 import 'package:app/widgets/table/row/das_table_row_decoration.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
@@ -124,6 +126,8 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
   }
 
   DASTableCell routeCell(BuildContext context) {
+    final vm = context.read<JourneyTableViewModel>();
+
     return DASTableCell(
       decoration: DASTableCellDecoration(color: specialCellColor),
       padding: .all(0.0),
@@ -131,8 +135,8 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
       clipBehavior: .none,
       child: RouteCellBody(
         isCurrentPosition: isCurrentChevronPosition,
-        isRouteStart: metadata.journeyStart == data,
-        isRouteEnd: metadata.journeyEnd == data,
+        isRouteStart: vm.journeyStart == data,
+        isRouteEnd: vm.journeyEnd == data,
         chevronAnimationData: config.chevronAnimationData,
         chevronPosition: calculatedChevronPosition,
         shortTermChangeData: routeCellShortTermChangeData,

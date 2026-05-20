@@ -57,6 +57,13 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
 
   JourneyTableModel get modelValue => _rxModel.value;
 
+  JourneyPoint? _journeyStart;
+  JourneyPoint? _journeyEnd;
+
+  JourneyPoint? get journeyStart => _journeyStart;
+
+  JourneyPoint? get journeyEnd => _journeyEnd;
+
   @override
   void onJourneyChanged(Journey? journey) {
     _emitLoading();
@@ -121,10 +128,10 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
         .hideSignals(stationSignals: !_userSettings.showStationSignals)
         .sorted((a1, a2) => a1.compareTo(a2));
 
-    final chevronPosition = _calculateChevronPosition(
-      visibleJourneyPoints: rowData.whereType<JourneyPoint>(),
-      position: position,
-    );
+    final journeyPoints = rowData.whereType<JourneyPoint>();
+    final chevronPosition = _calculateChevronPosition(visibleJourneyPoints: journeyPoints, position: position);
+    _journeyStart = journeyPoints.firstOrNull;
+    _journeyEnd = journeyPoints.lastOrNull;
 
     _emitLoaded(
       TableLoaded(
@@ -183,6 +190,8 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
   }
 
   void _emitLoading() {
+    _journeyStart = null;
+    _journeyEnd = null;
     _log.fine('Emitting TableLoading.');
     _rxModel.add(TableLoading());
   }

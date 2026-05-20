@@ -7,7 +7,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class RouteChevron extends StatefulWidget {
   static const Key chevronKey = Key('chevronCell');
-  static const double chevronHeight = 8.0;
+  static const double chevronHeight = 12.0;
 
   const RouteChevron({
     required this.chevronWidth,
@@ -100,7 +100,7 @@ class _ChevronPainter extends CustomPainter {
     final paint = Paint()
       ..color = color
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 4;
+      ..strokeWidth = 6;
 
     final path = Path()
       ..moveTo(0, 0)

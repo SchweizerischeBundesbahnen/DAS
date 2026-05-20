@@ -24,7 +24,7 @@ class RouteCellBody extends StatelessWidget {
   const RouteCellBody({
     required this.chevronPosition,
     super.key,
-    this.chevronWidth = 16.0,
+    this.chevronWidth = 24.0,
     this.lineThickness = 2.0,
     this.isStop = false,
     this.isStopOnRequest = false,

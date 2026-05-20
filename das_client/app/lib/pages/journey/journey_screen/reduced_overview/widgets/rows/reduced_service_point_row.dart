@@ -1,4 +1,5 @@
 import 'package:app/pages/journey/journey_screen/reduced_overview/widgets/cells/reduced_time_cell_body.dart';
+import 'package:app/pages/journey/journey_screen/view_model/journey_table_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/chevron_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_cell_body.dart';
@@ -6,6 +7,7 @@ import 'package:app/pages/journey/journey_screen/widgets/table/service_point_row
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ReducedServicePointRow extends ServicePointRow {
   ReducedServicePointRow({
@@ -48,6 +50,8 @@ class ReducedServicePointRow extends ServicePointRow {
 
   @override
   DASTableCell routeCell(BuildContext context) {
+    final vm = context.read<JourneyTableViewModel>();
+
     return DASTableCell(
       decoration: DASTableCellDecoration(color: specialCellColor),
       padding: .all(0.0),
@@ -56,8 +60,8 @@ class ReducedServicePointRow extends ServicePointRow {
       child: RouteCellBody(
         isStop: data.isStop,
         isCurrentPosition: false,
-        isRouteStart: metadata.journeyStart == data,
-        isRouteEnd: metadata.journeyEnd == data,
+        isRouteStart: vm.journeyStart == data,
+        isRouteEnd: vm.journeyEnd == data,
         isStopOnRequest: !data.mandatoryStop,
         chevronPosition: calculatedChevronPosition,
       ),

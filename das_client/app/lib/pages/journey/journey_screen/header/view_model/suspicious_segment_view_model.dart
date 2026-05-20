@@ -127,7 +127,7 @@ class SuspiciousSegmentViewModel extends JourneyAwareViewModel {
     Journey? journey,
   ) {
     if (currentPosition == null) return false;
-    if (currentPosition == journey?.metadata.journeyStart) return false;
+    if (currentPosition == journey?.data.whereType<JourneyPoint>().firstOrNull) return false;
 
     final maxEndOrder = suspiciousSegments.map((s) => s.endOrder).nonNulls.maxOrNull;
 

@@ -9,8 +9,6 @@ class Metadata {
   Metadata({
     this.trainIdentification,
     this.signaledPosition,
-    this.journeyStart,
-    this.journeyEnd,
     this.delay,
     this.brakeSeries,
     this.additionalSpeedRestrictions = const [],
@@ -38,8 +36,6 @@ class Metadata {
 
   /// The position received by TMS VAD within a related train information event.
   final SignaledPosition? signaledPosition;
-  final JourneyPoint? journeyStart;
-  final JourneyPoint? journeyEnd;
   final Delay? delay;
   final List<AdditionalSpeedRestriction> additionalSpeedRestrictions;
   final bool anyOperationalArrivalDepartureTimes;
