@@ -5,11 +5,10 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
-@Schema(description = "Batch delete notice templates payload.")
-public record NoticeTemplateBatchDeleteRequest(
+@Schema(description = "Delete request of notice template by ids.")
+public record NoticeTemplateByIdsDeleteRequest(
     @Schema(description = "Notice template ids to delete.", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotEmpty List<@NotNull Integer> ids
 ) {
 
 }
-

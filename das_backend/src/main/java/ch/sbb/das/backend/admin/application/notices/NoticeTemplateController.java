@@ -1,7 +1,7 @@
 package ch.sbb.das.backend.admin.application.notices;
 
 import ch.sbb.das.backend.admin.application.notices.model.NoticeTemplate;
-import ch.sbb.das.backend.admin.application.notices.model.NoticeTemplateBatchDeleteRequest;
+import ch.sbb.das.backend.admin.application.notices.model.NoticeTemplateByIdsDeleteRequest;
 import ch.sbb.das.backend.admin.application.notices.model.NoticeTemplateRequest;
 import ch.sbb.das.backend.admin.application.notices.model.NoticeTemplateResponse;
 import ch.sbb.das.backend.admin.application.notices.model.NoticeTemplatesResponse;
@@ -112,7 +112,7 @@ public class NoticeTemplateController {
     @Operation(summary = "Delete notice templates by ids.", description = "Delete multiple notice templates in a single request.")
     @ApiResponse(responseCode = "204", description = "Notice templates deleted.")
     @ApiErrorResponses
-    public ResponseEntity<Void> deleteBatch(@RequestBody @Valid NoticeTemplateBatchDeleteRequest deleteRequest,
+    public ResponseEntity<Void> deleteNoticeTemplateByIds(@RequestBody @Valid NoticeTemplateByIdsDeleteRequest deleteRequest,
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
         noticeTemplateService.delete(deleteRequest.ids());
         return ResponseEntity.noContent().build();

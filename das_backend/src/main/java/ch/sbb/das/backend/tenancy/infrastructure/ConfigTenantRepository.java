@@ -20,12 +20,10 @@ public class ConfigTenantRepository implements TenantRepository {
 
     @Override
     public Tenant getByIssuerUri(@NonNull String issuerUri) {
-        Tenant tenant = applicationConfiguration.getTenants().stream()
+        return applicationConfiguration.getTenants().stream()
             .filter(t -> issuerUri.equals(t.issuerUri()))
             .findAny()
             .orElseThrow(() -> new IllegalArgumentException("unknown tenant"));
-        log.info("Tenant::name={}", tenant.name());
-        return tenant;
     }
 
     @Override

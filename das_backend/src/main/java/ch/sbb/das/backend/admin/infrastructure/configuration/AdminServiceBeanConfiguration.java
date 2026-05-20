@@ -1,5 +1,10 @@
 package ch.sbb.das.backend.admin.infrastructure.configuration;
 
+import ch.sbb.das.backend.admin.domain.notices.NoticeMatchService;
+import ch.sbb.das.backend.admin.domain.notices.NoticeMatchServiceImpl;
+import ch.sbb.das.backend.admin.domain.notices.NoticeRepository;
+import ch.sbb.das.backend.admin.domain.notices.NoticeService;
+import ch.sbb.das.backend.admin.domain.notices.NoticeServiceImpl;
 import ch.sbb.das.backend.admin.domain.notices.NoticeTemplateRepository;
 import ch.sbb.das.backend.admin.domain.notices.NoticeTemplateService;
 import ch.sbb.das.backend.admin.domain.notices.NoticeTemplateServiceImpl;
@@ -37,5 +42,15 @@ public class AdminServiceBeanConfiguration {
     @Bean
     SpecialHolidayService specialHolidayService(SpecialHolidayRepository specialHolidayRepository, CompanyAuthorizer companyAuthorizer) {
         return new SpecialHolidayServiceImpl(specialHolidayRepository, companyAuthorizer);
+    }
+
+    @Bean
+    NoticeService noticeService(NoticeRepository noticeRepository, CompanyAuthorizer companyAuthorizer) {
+        return new NoticeServiceImpl(noticeRepository, companyAuthorizer);
+    }
+
+    @Bean
+    NoticeMatchService noticeMatchService(NoticeRepository noticeRepository, SpecialHolidayRepository specialHolidayRepository) {
+        return new NoticeMatchServiceImpl(noticeRepository, specialHolidayRepository);
     }
 }

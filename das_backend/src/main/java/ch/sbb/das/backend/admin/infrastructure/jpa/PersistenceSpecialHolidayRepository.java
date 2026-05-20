@@ -26,6 +26,13 @@ class PersistenceSpecialHolidayRepository implements SpecialHolidayRepository {
     }
 
     @Override
+    public List<SpecialHoliday> findAllByDate(LocalDate date) {
+        return specialHolidayRepository.findAllByDate(date).stream()
+            .map(SpecialHolidayEntity::toSpecialHoliday)
+            .toList();
+    }
+
+    @Override
     public Optional<SpecialHoliday> findById(Integer id) {
         return specialHolidayRepository.findById(id).map(SpecialHolidayEntity::toSpecialHoliday);
     }
