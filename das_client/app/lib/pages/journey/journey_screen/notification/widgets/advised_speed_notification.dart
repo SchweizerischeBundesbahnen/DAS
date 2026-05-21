@@ -3,6 +3,7 @@ import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/notification/widgets/advised_speed_notification_hints.dart';
 import 'package:app/pages/journey/journey_screen/view_model/advised_speed_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/advised_speed_model.dart';
+import 'package:app/theme/das_colors.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:collection/collection.dart';
@@ -82,7 +83,11 @@ class AdvisedSpeedNotification extends StatelessWidget {
   }
 
   Widget _notificationBar(BuildContext context, String title, {String? suffix, Widget? icon}) {
-    final resolvedBackgroundColor = ThemeUtil.getColor(context, SBBColors.iron, SBBColors.platinum);
+    final resolvedBackgroundColor = ThemeUtil.getColor(
+      context,
+      DASColors.advisedSpeedBackgroundBright,
+      DASColors.advisedSpeedBackgroundDark,
+    );
     final resolvedForegroundColor = ThemeUtil.getColor(context, SBBColors.white, SBBColors.black);
 
     return Container(
