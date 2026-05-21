@@ -1,6 +1,7 @@
 import 'package:app/extension/single_speed_extension.dart';
 import 'package:app/pages/journey/journey_screen/view_model/line_speed_view_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/show_speed_behaviour.dart';
+import 'package:app/theme/das_colors.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:app/widgets/table/das_table_theme.dart';
@@ -66,7 +67,11 @@ class AdvisedSpeedCellBody extends StatelessWidget {
   Widget _backgroundStack(BuildContext context, Widget child) {
     final horizontalBorderWidth =
         DASTableTheme.of(context)?.data.tableBorder?.horizontalInside.width ?? SBBSpacing.medium;
-    final resolvedBackgroundColor = ThemeUtil.getColor(context, SBBColors.iron, SBBColors.platinum);
+    final resolvedBackgroundColor = ThemeUtil.getColor(
+      context,
+      DASColors.advisedSpeedBackgroundBright,
+      DASColors.advisedSpeedBackgroundDark,
+    );
 
     return Stack(
       clipBehavior: .none,

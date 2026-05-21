@@ -9,6 +9,7 @@ import 'package:app/pages/journey/journey_screen/widgets/table/service_point_row
 import 'package:app/pages/journey/journey_screen/widgets/table/signal_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/tram_area_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/whistle_row.dart';
+import 'package:app/theme/das_colors.dart';
 import 'package:app/widgets/dot_indicator.dart';
 import 'package:app/widgets/speed_display.dart';
 import 'package:app/widgets/table/das_table.dart';
@@ -855,6 +856,39 @@ void main() {
 
       await disconnect(tester);
     });
+
+    testWidgets('test correct color priority', (tester) async {
+      // https://github.com/SchweizerischeBundesbahnen/DAS/issues/1125
+      // ADL > NextStop > ASR > Protection Section
+
+      await prepareAndStartApp(tester);
+      await loadJourney(tester, trainNumber: 'T44');
+
+      await _checkRowColors(tester, 'Bahnhof A', {DASColors.advisedSpeedBackgroundBright: 1});
+      await _checkRowColors(tester, '58.8', {
+        DASColors.advisedSpeedBackgroundBright: 1,
+        DASColors.additionalSpeedRestriction: 14,
+      });
+      await _checkRowColors(tester, 'Block', {
+        DASColors.advisedSpeedBackgroundBright: 1,
+        DASColors.additionalSpeedRestriction: 6,
+      });
+      await _checkRowColors(tester, 'km 54.0', {
+        DASColors.advisedSpeedBackgroundBright: 1,
+        DASColors.additionalSpeedRestriction: 6,
+        DASColors.protectionSectionBackground: 8,
+      });
+      await _checkRowColors(tester, 'Bahnhof B', {
+        DASColors.advisedSpeedBackgroundBright: 1,
+        DASColors.nextStopBackgroundBright: 14,
+      });
+      await _checkRowColors(tester, 'Bahnhof C', {
+        DASColors.advisedSpeedBackgroundBright: 1,
+        DASColors.additionalSpeedRestriction: 6,
+      });
+
+      await disconnect(tester);
+    });
   });
 }
 
@@ -869,4 +903,17 @@ Future<void> _checkAdditionalServicePoint(WidgetTester tester, Finder scrollable
     color: SBBTheme.light(themeContext: .safety).scaffoldBackgroundColor,
   );
   expect(coloredCells, findsAtLeast(3));
+}
+
+Future<void> _checkRowColors(WidgetTester tester, String rowText, Map<Color, int> expectedColors) async {
+  final rowFinder = findDASTableRowByText(rowText);
+  expect(rowFinder, findsOneWidget);
+
+  for (final entry in expectedColors.entries) {
+    final color = entry.key;
+    final count = entry.value;
+
+    final coloredCells = findColoredRowCells(of: rowFinder, color: color);
+    expect(coloredCells, findsNWidgets(count));
+  }
 }

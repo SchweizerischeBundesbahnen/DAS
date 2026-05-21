@@ -68,6 +68,7 @@ class TimeCellBody extends StatelessWidget {
                 text: departureTime,
                 style: sbbTextStyle.boldStyle.large.copyWith(
                   decoration: isDepartureUnderlined ? TextDecoration.underline : TextDecoration.none,
+                  decorationColor: fontColor,
                   color: fontColor,
                 ),
               ),
