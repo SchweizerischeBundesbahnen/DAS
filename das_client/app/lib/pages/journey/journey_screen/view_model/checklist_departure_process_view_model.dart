@@ -14,13 +14,11 @@ final _log = Logger('ChecklistDepartureProcessViewModel');
 
 class ChecklistDepartureProcessViewModel extends JourneyAwareViewModel {
   ChecklistDepartureProcessViewModel({
-    required JourneyPositionViewModel journeyPositionViewModel,
-    required RuFeatureProvider ruFeatureProvider,
-    required UxTestingViewModel uxTestingViewModel,
+    required this._journeyPositionViewModel,
+    required this._ruFeatureProvider,
+    required this._uxTestingViewModel,
     super.journeyViewModel,
-  }) : _journeyPositionViewModel = journeyPositionViewModel,
-       _ruFeatureProvider = ruFeatureProvider,
-       _uxTestingViewModel = uxTestingViewModel {
+  }) {
     _initSubscription();
   }
 

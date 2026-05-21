@@ -11,10 +11,9 @@ final _logger = Logger('DisturbanceViewModel');
 
 class DisturbanceViewModel {
   DisturbanceViewModel({
-    required SferaRepository sferaRepo,
-    required NotificationPriorityQueueViewModel notificationVM,
-  }) : _sferaRepo = sferaRepo,
-       _notificationVM = notificationVM {
+    required this._sferaRepo,
+    required this._notificationVM,
+  }) {
     _init();
   }
 

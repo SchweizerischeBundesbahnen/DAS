@@ -12,14 +12,11 @@ import 'package:sfera/component.dart';
 
 class UxTestingViewModel {
   UxTestingViewModel({
-    required SferaRepository sferaRepo,
-    required RuFeatureProvider ruFeatureProvider,
-    required FormationRepository formationRepository,
-    required NotificationPriorityQueueViewModel notificationViewModel,
-  }) : _sferaRepo = sferaRepo,
-       _ruFeatureProvider = ruFeatureProvider,
-       _formationRepository = formationRepository,
-       _notificationViewModel = notificationViewModel {
+    required this._sferaRepo,
+    required this._ruFeatureProvider,
+    required this._formationRepository,
+    required this._notificationViewModel,
+  }) {
     _init();
   }
 

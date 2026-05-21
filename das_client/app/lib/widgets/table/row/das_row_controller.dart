@@ -5,9 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
 class DASRowController {
-  DASRowController({required bool isAlwaysSticky, required GlobalKey rowKey, this.stickyController})
-    : _rowKey = rowKey,
-      _isAlwaysSticky = isAlwaysSticky {
+  DASRowController({required this._isAlwaysSticky, required this._rowKey, this.stickyController}) {
     _rxRowState = BehaviorSubject<DASRowState>.seeded(isAlwaysSticky ? .sticky : .visible);
     _initListener();
   }

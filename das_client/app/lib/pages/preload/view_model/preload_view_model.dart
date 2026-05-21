@@ -1,7 +1,7 @@
 import 'package:preload/component.dart';
 
 class PreloadViewModel {
-  PreloadViewModel({required PreloadRepository preloadRepository}) : _preloadRepository = preloadRepository;
+  PreloadViewModel({required this._preloadRepository});
 
   final PreloadRepository _preloadRepository;
 

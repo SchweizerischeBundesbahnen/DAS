@@ -9,7 +9,7 @@ import 'package:url_launcher/url_launcher.dart';
 final _log = Logger('LauncherImpl');
 
 class LauncherImpl implements Launcher {
-  LauncherImpl({required UserSettings userSettings, required this.flavor}) : _userSettings = userSettings;
+  LauncherImpl({required this._userSettings, required this.flavor});
 
   final Flavor flavor;
   final UserSettings _userSettings;

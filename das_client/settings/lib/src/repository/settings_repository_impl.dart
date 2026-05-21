@@ -11,8 +11,8 @@ class SettingsRepositoryImpl implements SettingsRepository {
   SettingsRepositoryImpl({
     required this.apiService,
     required this.databaseService,
-    AwsCredentialsChanged? onAwsCredentialsChanged,
-  }) : _onAwsCredentialsChanged = onAwsCredentialsChanged {
+    this._onAwsCredentialsChanged,
+  }) {
     _init();
   }
 

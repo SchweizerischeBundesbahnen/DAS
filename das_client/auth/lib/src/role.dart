@@ -4,8 +4,7 @@ enum Role {
   admin('admin'),
   ruAdmin('ru_admin'),
   observer('observer'),
-  driver('driver')
-  ;
+  driver('driver');
 
   final String name;
 

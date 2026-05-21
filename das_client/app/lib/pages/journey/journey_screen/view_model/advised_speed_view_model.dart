@@ -20,11 +20,10 @@ final _log = Logger('AdvisedSpeedViewModel');
 class AdvisedSpeedViewModel {
   AdvisedSpeedViewModel({
     required Stream<JourneyPositionModel> journeyPositionStream,
-    required NotificationPriorityQueueViewModel notificationVM,
-    required LineSpeedViewModel lineSpeedViewModel,
+    required this._notificationVM,
+    required this._lineSpeedViewModel,
     required JourneyViewModel journeyViewModel,
-  }) : _notificationVM = notificationVM,
-       _lineSpeedViewModel = lineSpeedViewModel {
+  }) {
     _initJourneyStreamSubscription(journeyViewModel.journey, journeyPositionStream);
   }
 

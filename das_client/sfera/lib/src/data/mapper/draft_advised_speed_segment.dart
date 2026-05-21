@@ -5,17 +5,13 @@ import 'package:sfera/component.dart';
 class DraftAdvisedSpeedSegment implements Comparable<DraftAdvisedSpeedSegment> {
   DraftAdvisedSpeedSegment({
     required this.type,
-    required int previousSegmentEndOrder,
-    required int nextSegmentStartOrder,
+    required this._previousSegmentEndOrder,
+    required this._nextSegmentStartOrder,
     this.speed,
-    int? startOrder,
-    int? endOrder,
+    this._startOrder,
+    this._endOrder,
     Set<AdvisedSpeedSegmentHint> additionalHints = const <AdvisedSpeedSegmentHint>{},
-  }) : _startOrder = startOrder,
-       _endOrder = endOrder,
-       _nextSegmentStartOrder = nextSegmentStartOrder,
-       _previousSegmentEndOrder = previousSegmentEndOrder,
-       additionalHints = {...additionalHints};
+  }) : additionalHints = {...additionalHints};
 
   int? _startOrder;
   int? _endOrder;

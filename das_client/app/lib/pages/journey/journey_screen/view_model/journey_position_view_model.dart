@@ -17,9 +17,9 @@ final _log = Logger('JourneyPositionViewModel');
 class JourneyPositionViewModel {
   JourneyPositionViewModel({
     required Stream<PunctualityModel> punctualityStream,
-    required JourneySettingsViewModel journeySettingsViewModel,
     required JourneyViewModel journeyViewModel,
-  }) : _journeySettingsViewModel = journeySettingsViewModel {
+    required this._journeySettingsViewModel,
+  }) {
     _initSubscription(journeyViewModel.journey, punctualityStream);
   }
 

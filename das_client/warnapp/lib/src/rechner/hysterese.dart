@@ -5,8 +5,8 @@ class Hysterese {
     required this.schwellePositiv,
     required this.anzahlNegativ,
     required this.schwelleNegativ,
-    bool absolut = false,
-  }) : _absolut = absolut {
+    this._absolut = false,
+  }) {
     if (schwelleNegativ > schwellePositiv) {
       throw ArgumentError('schwelleNegativ > schwellePositiv');
     }

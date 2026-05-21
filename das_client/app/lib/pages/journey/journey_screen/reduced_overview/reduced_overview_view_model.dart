@@ -6,8 +6,8 @@ import 'package:sfera/component.dart';
 class ReducedOverviewViewModel {
   ReducedOverviewViewModel({
     required this.trainIdentification,
-    required SferaLocalRepo sferaLocalService,
-  }) : _sferaLocalService = sferaLocalService {
+    required this._sferaLocalService,
+  }) {
     _init();
   }
 
