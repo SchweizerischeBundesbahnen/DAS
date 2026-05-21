@@ -21,8 +21,7 @@ enum DepartureDispatchNotificationTypeDto implements XmlEnum {
   departureProvisionWithdrawn(
     xmlValue: 'DEPARTURE_PROVISION_WITHDRAWN',
     type: .departureProvisionWithdrawn,
-  )
-  ;
+  );
 
   const DepartureDispatchNotificationTypeDto({
     required this.xmlValue,

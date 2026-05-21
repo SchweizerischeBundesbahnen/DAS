@@ -46,8 +46,7 @@ enum SignalFunction {
   protection,
   laneChange,
   lockingOutSignal, // from NSP
-  unknown
-  ;
+  unknown;
 
   factory SignalFunction.from(String value) {
     return values.firstWhere(

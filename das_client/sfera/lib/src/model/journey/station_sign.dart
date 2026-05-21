@@ -8,8 +8,7 @@ enum StationSign {
   noEntrySignal('O'),
   noExitSignal('P'),
   openLevelCrossingBeforeExitSignal('C'),
-  unknown('UNKNOWN')
-  ;
+  unknown('UNKNOWN');
 
   final String? value;
 

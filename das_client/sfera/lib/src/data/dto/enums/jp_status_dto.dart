@@ -5,8 +5,7 @@ enum JpStatusDto implements XmlEnum {
   invalid(xmlValue: 'Invalid'),
   unavailable(xmlValue: 'Unavailable'),
   update(xmlValue: 'Update'),
-  overwrite(xmlValue: 'Overwrite')
-  ;
+  overwrite(xmlValue: 'Overwrite');
 
   const JpStatusDto({
     required this.xmlValue,

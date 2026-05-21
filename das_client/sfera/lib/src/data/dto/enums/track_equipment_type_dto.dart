@@ -21,8 +21,7 @@ enum SferaTrackEquipmentTypeDto implements XmlEnum {
   etcsL2ExtSpeedReversingImpossible(
     xmlValue: 'ETCS-L2-extSpeedReversingImpossible',
     trackEquipmentType: .etcsL2ExtSpeedReversingImpossible,
-  )
-  ;
+  );
 
   const SferaTrackEquipmentTypeDto({
     required this.xmlValue,
