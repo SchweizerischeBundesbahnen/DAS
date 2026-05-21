@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.45.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.44.0...das_client-v0.45.0) (2026-05-21)
+
+
+### Features
+
+* implemented color priority for journey table ([#1125](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1125)) ([#2150](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2150)) ([935cc44](https://github.com/SchweizerischeBundesbahnen/DAS/commit/935cc44990a18a1e60144e5bba3f97244aa0794f))
+
+
+### Bug Fixes
+
+* modal sheet broken when navigating while open ([#2143](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2143)) ([f3fcba8](https://github.com/SchweizerischeBundesbahnen/DAS/commit/f3fcba85aac900c95126c187616f2839984d878e))
+
 ## [0.44.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.43.0...das_client-v0.44.0) (2026-05-20)
 
 

@@ -3,6 +3,7 @@ import 'package:app/pages/journey/journey_screen/notification/widgets/koa_notifi
 import 'package:app/pages/journey/journey_screen/view_model/checklist_departure_process_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/checklist_departure_process_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/ux_testing_view_model.dart';
+import 'package:app/theme/das_colors.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:auto_route/auto_route.dart';
@@ -95,7 +96,7 @@ class DepartureProcessDialog extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: .all(.circular(SBBSpacing.medium)),
-        color: ThemeUtil.getColor(context, SBBColors.night, SBBColors.nightDark),
+        color: ThemeUtil.getColor(context, DASColors.nextStopBackgroundBright, DASColors.nextStopBackgroundDark),
       ),
       width: .infinity,
       height: 44.0,

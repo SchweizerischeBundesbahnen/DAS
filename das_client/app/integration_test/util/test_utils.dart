@@ -79,7 +79,9 @@ Finder findColoredRowCells({required FinderBase<Element> of, required Color colo
   return find.descendant(
     of: of,
     matching: find.byWidgetPredicate(
-      (it) => it is Container && it.decoration is BoxDecoration && (it.decoration as BoxDecoration).color == color,
+      (it) =>
+          it is Container &&
+          ((it.decoration is BoxDecoration && (it.decoration as BoxDecoration).color == color) || it.color == color),
     ),
   );
 }

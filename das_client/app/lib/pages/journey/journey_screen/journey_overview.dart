@@ -182,6 +182,9 @@ class _ProviderScope extends StatelessWidget {
         Provider<JourneyTableAdvancementViewModel>(
           create: (_) => DI.get(),
         ),
+        Provider<ServicePointModalViewModel>(
+          create: (_) => DI.get(),
+        ),
 
         // Stateless VMs
         Provider<AdditionalSpeedRestrictionModalViewModel>(
@@ -204,15 +207,6 @@ class _ProviderScope extends StatelessWidget {
             authenticator: DI.get(),
             connectivityManager: DI.get(),
             notificationViewModel: DI.get(),
-          ),
-          dispose: (_, vm) => vm.dispose(),
-          lazy: false,
-        ),
-        Provider<ServicePointModalViewModel>(
-          create: (_) => ServicePointModalViewModel(
-            localRegulationHtmlGenerator: DI.get(),
-            settingsVM: DI.get(),
-            journeyViewModel: DI.get(),
           ),
           dispose: (_, vm) => vm.dispose(),
           lazy: false,
