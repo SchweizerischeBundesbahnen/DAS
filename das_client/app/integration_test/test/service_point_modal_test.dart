@@ -395,6 +395,31 @@ void main() {
 
     await disconnect(tester);
   });
+
+  testWidgets('test modal sheet still displayed after navigation', (tester) async {
+    await prepareAndStartApp(tester);
+    await loadJourney(tester, trainNumber: 'T8');
+
+    await stopAutomaticAdvancement(tester);
+
+    // open modal with tap on service point name
+    await _openByTapOnCellWithText(tester, 'Bern');
+    await _checkOpenModalSheet(tester, DetailTabCommunication.communicationTabKey, 'Bern');
+
+    // Navigate to other page and back
+    await openDrawer(tester);
+    await tapElement(tester, find.text(l10n.w_navigation_drawer_settings_title));
+    await openDrawer(tester);
+    await tapElement(tester, find.text(l10n.w_navigation_drawer_fahrtinfo_title));
+
+    await _checkOpenModalSheet(tester, DetailTabCommunication.communicationTabKey, 'Bern');
+    await _closeModalSheet(tester);
+
+    // Should find column again when modal sheet is closed
+    expect(findDASTableColumnByText(l10n.p_journey_table_kilometre_label), findsOne);
+
+    await disconnect(tester);
+  });
 }
 
 Future<void> _openAndCheckDepartureAuth(WidgetTester tester, String servicePoint, String departureAuthText) async {
