@@ -9,7 +9,8 @@ import 'package:sfera/component.dart';
 enum CollapsedState {
   collapsed,
   expandedWithCollapsedContent,
-  expanded;
+  expanded
+  ;
 
   static CollapsedState defaultOf(BaseData data) =>
       data is OperationalIndication ? .expandedWithCollapsedContent : .expanded;
