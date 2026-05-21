@@ -319,13 +319,13 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
         if (servicePoint.isStop) {
           return RouteCellBody.routeCirclePosition - RouteChevron.chevronHeight;
         } else {
-          return RouteCellBody.routeCirclePosition + RouteChevron.chevronHeight;
+          return RouteCellBody.routeCirclePosition;
         }
       case .baliseLevelCrossingGroup:
         return height * 0.5;
       default:
-        // additional -1.5 because line overdraws a bit from rotation
-        return height - RouteChevron.chevronHeight - 1.5;
+        // additional -2.5 because line overdraws a bit from rotation
+        return height - RouteChevron.chevronHeight - 2.5;
     }
   }
 
