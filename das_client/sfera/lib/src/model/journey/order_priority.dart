@@ -7,7 +7,7 @@ enum OrderPriority {
   servicePoint,
   signal,
   baseData,
-  uncodedOperationalIndication,
+  operationalIndication,
   trainDriverTurnoverEnd,
   lineFootNotes,
   opFootNote,

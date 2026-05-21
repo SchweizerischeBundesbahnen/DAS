@@ -1,13 +1,13 @@
 import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_view_model.dart';
-import 'package:app/pages/journey/journey_screen/widgets/table/uncoded_operational_indication_accordion.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/operational_indication_accordion.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/widget_row_builder.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
-class UncodedOperationalIndicationRow extends WidgetRowBuilder<UncodedOperationalIndication> {
-  UncodedOperationalIndicationRow({
+class OperationalIndicationRow extends WidgetRowBuilder<OperationalIndication> {
+  OperationalIndicationRow({
     required super.rowIndex,
     required super.metadata,
     required super.data,
@@ -17,7 +17,7 @@ class UncodedOperationalIndicationRow extends WidgetRowBuilder<UncodedOperationa
     super.identifier,
   }) : super(
          stickyLevel: .second,
-         height: UncodedOperationalIndicationAccordion.calculateHeight(
+         height: OperationalIndicationAccordion.calculateHeight(
            data.combinedText,
            collapsedState: collapsedState,
            leftPadding: leftPadding,
@@ -31,7 +31,7 @@ class UncodedOperationalIndicationRow extends WidgetRowBuilder<UncodedOperationa
   Widget buildRowWidget(BuildContext context) {
     return Container(
       color: ThemeUtil.getColor(context, SBBColors.milk, SBBColors.black),
-      child: UncodedOperationalIndicationAccordion(
+      child: OperationalIndicationAccordion(
         collapsedState: collapsedState,
         leftPadding: leftPadding,
         data: data,

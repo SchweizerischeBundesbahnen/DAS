@@ -282,7 +282,7 @@
   "c_radn_type_contact": "Sélection abrégée canal radio",
   "c_radn_type_network_type": "Type de réseau",
   "c_radn_type_journey": "Informations sur la ligne",
-  "c_uncoded_operational_indication": "Instruction de travail",
+  "c_indication": "Instruction de travail",
   "c_show_more": "Afficher plus",
   "w_modal_sheet_warn_function_stop_message": "Arrêt!",
   "w_modal_sheet_warn_function_manoeuvre_button": "Manœuvrer",

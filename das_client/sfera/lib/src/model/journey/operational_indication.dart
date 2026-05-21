@@ -2,11 +2,11 @@ import 'package:collection/collection.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/model/journey/order_priority.dart';
 
-class UncodedOperationalIndication extends JourneyAnnotation {
-  const UncodedOperationalIndication({
+class OperationalIndication extends JourneyAnnotation {
+  const OperationalIndication({
     required super.order,
     required this.texts,
-  }) : super(dataType: .uncodedOperationalIndication);
+  }) : super(dataType: .operationalIndication);
 
   final List<String> texts;
 
@@ -15,7 +15,7 @@ class UncodedOperationalIndication extends JourneyAnnotation {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is UncodedOperationalIndication &&
+      other is OperationalIndication &&
           runtimeType == other.runtimeType &&
           const ListEquality().equals(texts, other.texts) &&
           order == other.order;
@@ -24,18 +24,18 @@ class UncodedOperationalIndication extends JourneyAnnotation {
   int get hashCode => Object.hash(dataType, order, const ListEquality().hash(texts));
 
   @override
-  OrderPriority get orderPriority => .uncodedOperationalIndication;
+  OrderPriority get orderPriority => .operationalIndication;
 
   @override
   String toString() {
-    return 'UncodedOperationalIndication{order: $order, texts: $texts}';
+    return 'OperationalIndication{order: $order, texts: $texts}';
   }
 }
 
-extension UncodedOperationalIndicationIterableExtension on Iterable<UncodedOperationalIndication> {
-  Iterable<UncodedOperationalIndication> mergeOnSameLocation() =>
-      groupFoldBy<int, UncodedOperationalIndication>((i) => i.order, (previous, next) {
-        return UncodedOperationalIndication(
+extension OperationalIndicationIterableExtension on Iterable<OperationalIndication> {
+  Iterable<OperationalIndication> mergeOnSameLocation() =>
+      groupFoldBy<int, OperationalIndication>((i) => i.order, (previous, next) {
+        return OperationalIndication(
           order: next.order,
           texts: next.texts..addAll(previous?.texts ?? []),
         );
