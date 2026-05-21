@@ -100,7 +100,7 @@ extension BaseScopeExtension on GetIt {
   }
 
   void registerMotionDataService() {
-    _log.fine('Register MotionDataServce');
+    _log.fine('Register MotionDataService');
     registerSingleton(WarnappComponent.createDeviceMotionDataService());
   }
 

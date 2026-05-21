@@ -9,6 +9,7 @@ import 'package:app/pages/journey/journey_screen/view_model/advised_speed_view_m
 import 'package:app/pages/journey/journey_screen/view_model/calculated_speed_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/checklist_departure_process_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/customer_oriented_departure_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/departure_dispatch_notification_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/departure_process_warning_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
@@ -59,6 +60,7 @@ class JourneyScope extends DIScope {
     getIt.registerCollapsibleRowsViewModel();
     getIt.registerJourneyTableViewModel();
     getIt.registerJourneyTableAdvancementViewModel();
+    getIt.registerCustomerOrientedDepartureViewModel();
 
     await getIt.allReady();
   }
@@ -116,7 +118,7 @@ extension JourneyScopeExtension on GetIt {
       ChecklistDepartureProcessViewModel(
         journeyPositionViewModel: DI.get(),
         ruFeatureProvider: DI.get(),
-        uxTestingViewModel: DI.get(),
+        customerOrientedDepartureViewModel: DI.get(),
       ),
       dispose: (vm) => vm.dispose(),
     );
@@ -262,7 +264,6 @@ extension JourneyScopeExtension on GetIt {
         sferaRepo: DI.get(),
         ruFeatureProvider: DI.get(),
         formationRepository: DI.get(),
-        notificationViewModel: DI.get(),
       ),
       dispose: (vm) => vm.dispose(),
     );
@@ -296,6 +297,18 @@ extension JourneyScopeExtension on GetIt {
         scrollController: DI.get(),
         journeySettingsViewModel: DI.get(),
         detailModalViewModel: DI.get(),
+      ),
+      dispose: (vm) => vm.dispose(),
+    );
+  }
+
+  void registerCustomerOrientedDepartureViewModel() {
+    registerSingleton<CustomerOrientedDepartureViewModel>(
+      CustomerOrientedDepartureViewModel(
+        repository: DI.get(),
+        ruFeatureProvider: DI.get(),
+        authenticator: DI.get(),
+        notificationViewModel: DI.get(),
       ),
       dispose: (vm) => vm.dispose(),
     );

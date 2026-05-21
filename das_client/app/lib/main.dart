@@ -6,6 +6,7 @@ import 'package:app/di/scope_handler.dart';
 import 'package:app/flavor.dart';
 import 'package:app/util/device_id_info.dart';
 import 'package:app/widgets/global_error_widget.dart';
+import 'package:customer_oriented_departure/component.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -19,6 +20,7 @@ Future<void> start(Flavor flavor) async {
     () async {
       WidgetsFlutterBinding.ensureInitialized();
       final dasLogger = await _initDASLogging(flavor);
+      await _initMessaging();
       await _initDependencyInjection(flavor, dasLogger);
       _setupFlutterErrorHandling();
       runDasApp();
@@ -56,6 +58,8 @@ Future<void> _initDependencyInjection(Flavor flavor, DASLogger? dasLogger) async
   // This is necessary to ensure that an authenticator is available for the SplashPage
   await scopeHandler.push<SferaMockScope>();
 }
+
+Future<void> _initMessaging() => CustomerOrientedDepartureComponent.initializeMessaging();
 
 void _setupFlutterErrorHandling() {
   if (!kDebugMode) {

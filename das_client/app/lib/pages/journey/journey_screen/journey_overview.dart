@@ -18,6 +18,7 @@ import 'package:app/pages/journey/journey_screen/view_model/arrival_departure_ti
 import 'package:app/pages/journey/journey_screen/view_model/calculated_speed_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/checklist_departure_process_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/customer_oriented_departure_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/departure_dispatch_notification_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/departure_process_warning_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
@@ -130,6 +131,9 @@ class _ProviderScope extends StatelessWidget {
         ),
         Provider<NotificationPriorityQueueViewModel>(
           create: (_) => DI.get<NotificationPriorityQueueViewModel>(),
+        ),
+        Provider<CustomerOrientedDepartureViewModel>(
+          create: (_) => DI.get<CustomerOrientedDepartureViewModel>(),
         ),
         Provider<UxTestingViewModel>(
           create: (_) => DI.get(),

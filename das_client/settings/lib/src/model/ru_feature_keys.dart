@@ -1,6 +1,6 @@
 enum RuFeatureKeys {
   warnapp('WARNAPP'),
-  koa('CUSTOMER_ORIENTED_DEPARTURE_PROCESS'),
+  customerOrientedDeparture('CUSTOMER_ORIENTED_DEPARTURE_PROCESS'),
   departureProcess('CHECKLIST_DEPARTURE_PROCESS')
   ;
 

@@ -1,36 +1,37 @@
 import 'package:app/i18n/i18n.dart';
+import 'package:app/pages/journey/journey_screen/view_model/customer_oriented_departure_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/ux_testing_view_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/departure_process_dialog.dart';
 import 'package:app/theme/das_colors.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/assets.dart';
+import 'package:customer_oriented_departure/component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
-import 'package:sfera/component.dart';
 
-class KoaNotification extends StatelessWidget {
-  const KoaNotification({super.key, this.displayDepartureProcessButton = true});
+class CustomerOrientedDepartureNotification extends StatelessWidget {
+  const CustomerOrientedDepartureNotification({super.key, this.displayDepartureProcessButton = true});
 
   final bool displayDepartureProcessButton;
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.read<UxTestingViewModel>();
+    final viewModel = context.read<CustomerOrientedDepartureViewModel>();
 
-    return StreamBuilder<KoaState>(
-      stream: viewModel.koaState,
+    return StreamBuilder<CustomerOrientedDepartureStatus>(
+      stream: viewModel.status,
       builder: (context, snapshot) {
         if (!snapshot.hasData) return SizedBox.shrink();
 
         return switch (snapshot.data!) {
-          KoaState.wait => _WaitNotification(displayDepartureProcessButton: displayDepartureProcessButton),
-          KoaState.waitCancelled => _WaitCancelledNotification(
+          .wait => _WaitNotification(displayDepartureProcessButton: displayDepartureProcessButton),
+          .ready => _ReadyNotification(
             displayDepartureProcessButton: displayDepartureProcessButton,
           ),
-          KoaState.call => _CallNotification(displayDepartureProcessButton: displayDepartureProcessButton),
-          KoaState.waitHide => SizedBox.shrink(),
+          .call => _CallNotification(displayDepartureProcessButton: displayDepartureProcessButton),
+          .departure => SizedBox.shrink(),
         };
       },
     );
@@ -45,12 +46,12 @@ class _WaitNotification extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _BaseNotification(
-      title: context.l10n.w_koa_notification_wait,
+      title: context.l10n.w_customer_oriented_departure_notification_wait,
       leading: SvgPicture.asset(
-        AppAssets.iconKoaWait,
+        AppAssets.iconCustomerOrientedDepartureWait,
         colorFilter: ColorFilter.mode(SBBColors.black, BlendMode.srcIn),
       ),
-      style: _promotionBoxStyle(backgroundColor: DASColors.koaBlue),
+      style: _promotionBoxStyle(backgroundColor: DASColors.customerOrientedDepartureBlue),
       displayDepartureProcessButton: displayDepartureProcessButton,
     );
   }
@@ -64,19 +65,19 @@ class _CallNotification extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _BaseNotification(
-      title: context.l10n.w_koa_notification_call,
+      title: context.l10n.w_customer_oriented_departure_notification_call,
       leading: SvgPicture.asset(
         AppAssets.iconExclamationPointLine,
         colorFilter: ColorFilter.mode(SBBColors.black, BlendMode.srcIn),
       ),
-      style: _promotionBoxStyle(backgroundColor: DASColors.koaBlue),
+      style: _promotionBoxStyle(backgroundColor: DASColors.customerOrientedDepartureBlue),
       displayDepartureProcessButton: displayDepartureProcessButton,
     );
   }
 }
 
-class _WaitCancelledNotification extends StatelessWidget {
-  const _WaitCancelledNotification({required this.displayDepartureProcessButton});
+class _ReadyNotification extends StatelessWidget {
+  const _ReadyNotification({required this.displayDepartureProcessButton});
 
   final bool displayDepartureProcessButton;
 
@@ -84,7 +85,7 @@ class _WaitCancelledNotification extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = ThemeUtil.isDarkMode(context);
     return _BaseNotification(
-      title: context.l10n.w_koa_notification_wait_canceled,
+      title: context.l10n.w_customer_oriented_departure_notification_ready,
       leading: Icon(SBBIcons.circle_tick_medium, color: SBBColors.black, size: 36.0),
       style: _promotionBoxStyle(
         borderColor: isDark ? SBBColors.royalDark : SBBColors.royal,
@@ -122,7 +123,7 @@ class _BaseNotification extends StatelessWidget {
           Text(title, style: resolvedTextStyle),
         ],
       ),
-      badgeText: context.l10n.w_koa_notification_title,
+      badgeText: context.l10n.w_customer_oriented_departure_notification_title,
       trailing: displayDepartureProcessButton ? _departureProcessButton(context) : null,
       style: style,
       badgeStyle: SBBPromotionBoxBadgeStyle(borderColor: SBBColors.white),
@@ -137,7 +138,7 @@ class _BaseNotification extends StatelessWidget {
         if (!snapshot.hasData || snapshot.data == false) return SizedBox.shrink();
 
         return SBBTertiaryButtonSmall(
-          labelText: context.l10n.w_koa_notification_departure_process,
+          labelText: context.l10n.w_customer_oriented_departure_notification_departure_process,
           onPressed: () => showDepartureProcessDialog(context),
         );
       },

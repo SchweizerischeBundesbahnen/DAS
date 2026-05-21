@@ -1,5 +1,5 @@
 import 'package:app/i18n/src/build_context_x.dart';
-import 'package:app/pages/journey/journey_screen/notification/widgets/koa_notification.dart';
+import 'package:app/pages/journey/journey_screen/notification/widgets/customer_oriented_departure_notification.dart';
 import 'package:app/pages/journey/journey_screen/view_model/checklist_departure_process_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/checklist_departure_process_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/ux_testing_view_model.dart';
@@ -58,7 +58,7 @@ class DepartureProcessDialog extends StatelessWidget {
               mainAxisSize: .min,
               children: [
                 _titleRow(context),
-                if (data is CustomerOrientedDepartureChecklist) ..._koaNotification(),
+                if (data is CustomerOrientedDepartureChecklist) ..._customerOrientedDepartureNotification(),
                 _nextStop(context, data),
                 _staticDepartureProcessChecklist(context, data),
               ],
@@ -84,9 +84,9 @@ class DepartureProcessDialog extends StatelessWidget {
     );
   }
 
-  List<Widget> _koaNotification() {
+  List<Widget> _customerOrientedDepartureNotification() {
     return [
-      KoaNotification(displayDepartureProcessButton: false),
+      CustomerOrientedDepartureNotification(displayDepartureProcessButton: false),
       SizedBox(height: SBBSpacing.medium),
     ];
   }
@@ -138,7 +138,7 @@ class DepartureProcessDialog extends StatelessWidget {
               SBBListItem(titleText: context.l10n.w_departure_process_checklist_item_2, onTap: () {}),
               SBBListItem(
                 titleText: isCustomerOrientedDepartureActive
-                    ? context.l10n.w_departure_process_checklist_item_3_koa
+                    ? context.l10n.w_departure_process_checklist_item_3_customer_oriented_departure
                     : context.l10n.w_departure_process_checklist_item_3,
                 onTap: () {},
               ),
