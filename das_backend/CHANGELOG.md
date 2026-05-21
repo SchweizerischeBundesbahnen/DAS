@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.12.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.11.0...backend-v0.12.0) (2026-05-21)
+
+
+### Features
+
+* admin notice templates ([#1626](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1626)) ([#2061](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2061)) ([3788ebb](https://github.com/SchweizerischeBundesbahnen/DAS/commit/3788ebbb47d8303d9b354de63229ea941ea94a43))
+* app version is required in header ([#2092](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2092)) ([#2105](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2105)) ([19b3579](https://github.com/SchweizerischeBundesbahnen/DAS/commit/19b3579fa525f1a10ad69b831bc4bae7f326b4fa))
+* manage special holidays web ([#1656](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1656)) ([#2126](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2126)) ([716869e](https://github.com/SchweizerischeBundesbahnen/DAS/commit/716869e34802261a77ca9a8a92aa70d153839575))
+* notice special holiday and company api backend ([#1656](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1656)) ([#2102](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2102)) ([8f68ac4](https://github.com/SchweizerischeBundesbahnen/DAS/commit/8f68ac43b02619602cad457ab4bfd5e82974e33b))
+
+
+### Bug Fixes
+
+* e2e-tests ([#245](https://github.com/SchweizerischeBundesbahnen/DAS/issues/245)) ([#2115](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2115)) ([1070f67](https://github.com/SchweizerischeBundesbahnen/DAS/commit/1070f6760e83d46c1bdc922e2c3d0e707e39ccb1))
+
 ## [0.11.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.10.0...backend-v0.11.0) (2026-05-04)
 
 
