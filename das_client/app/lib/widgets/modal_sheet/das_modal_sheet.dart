@@ -55,7 +55,6 @@ class DASModalSheetController {
 
   /// will be called by [DasModalSheet] to get [TickerProvider]
   void _initialize({required TickerProvider vsync, VoidCallback? onUpdate}) {
-    print('Initializing DASModalSheetController with state $_state $hashCode');
     _controller = AnimationController(
       vsync: vsync,
       duration: openAnimationDuration,
@@ -132,9 +131,6 @@ class DASModalSheetController {
     _idleTimer?.cancel();
     if (isOpen) {
       _idleTimer = Timer(Duration(seconds: _automaticCloseAfterSeconds), () {
-        print(
-          'Auto closing DASModalSheet after $_automaticCloseAfterSeconds seconds of inactivity. Current state: $_state',
-        );
         if (isOpen) {
           _log.fine(
             'Screen idle time of $_automaticCloseAfterSeconds seconds reached. Closing DAS modal sheet.',
