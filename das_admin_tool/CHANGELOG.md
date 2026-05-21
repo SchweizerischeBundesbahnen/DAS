@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das-admin-tool-v0.3.1...das-admin-tool-v0.4.0) (2026-05-21)
+
+
+### Features
+
+* admin notice templates ([#1626](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1626)) ([#2061](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2061)) ([3788ebb](https://github.com/SchweizerischeBundesbahnen/DAS/commit/3788ebbb47d8303d9b354de63229ea941ea94a43))
+* manage special holidays web ([#1656](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1656)) ([#2126](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2126)) ([716869e](https://github.com/SchweizerischeBundesbahnen/DAS/commit/716869e34802261a77ca9a8a92aa70d153839575))
+
 ## [0.3.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das-admin-tool-v0.3.0...das-admin-tool-v0.3.1) (2026-05-04)
 
 
