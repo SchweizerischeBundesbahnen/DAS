@@ -1,6 +1,8 @@
 import 'package:app/util/time_constants.dart';
 
 class TestTimeConstants extends TimeConstants {
+  int modalSheetAutomaticCloseAfterSecondsValue = 2;
+
   @override
   int get punctualityStaleSeconds => 2;
 
@@ -11,7 +13,7 @@ class TestTimeConstants extends TimeConstants {
   int get automaticAdvancementIdleTimeAutoScroll => 2;
 
   @override
-  int get modalSheetAutomaticCloseAfterSeconds => 2;
+  int get modalSheetAutomaticCloseAfterSeconds => modalSheetAutomaticCloseAfterSecondsValue;
 
   @override
   int get arrivalDepartureOperationalResetSeconds => 2;

@@ -33,6 +33,7 @@ class MockJourneyScope extends JourneyScope {
     getIt.registerCollapsibleRowsViewModel();
     getIt.registerJourneyTableViewModel();
     getIt.registerJourneyTableAdvancementViewModel();
+    getIt.registerServicePointModalViewModel();
 
     return getIt.allReady();
   }
