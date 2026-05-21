@@ -15,10 +15,9 @@ final _log = Logger('AppLinkNavigator');
 /// Handles navigation from app links provided by [AppLinksManager.onAppLinkIntent]
 class AppLinkNavigator {
   AppLinkNavigator({
-    required AppLinksManager appLinksManager,
-    required AppRouter router,
-  }) : _appLinksManager = appLinksManager,
-       _router = router;
+    required this._appLinksManager,
+    required this._router,
+  });
 
   final AppLinksManager _appLinksManager;
   final AppRouter _router;

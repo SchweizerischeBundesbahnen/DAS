@@ -3,9 +3,9 @@ import 'package:sfera/component.dart';
 class RadioChannelModel {
   RadioChannelModel({
     this.networkType,
-    RadioContactList? radioContacts,
+    this._radioContacts,
     this.lastServicePoint,
-  }) : _radioContacts = radioContacts;
+  });
 
   final CommunicationNetworkType? networkType;
   final ServicePoint? lastServicePoint;

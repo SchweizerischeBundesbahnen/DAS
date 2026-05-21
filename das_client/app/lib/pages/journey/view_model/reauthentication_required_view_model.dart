@@ -9,12 +9,10 @@ final _log = Logger('ReauthenticationRequiredViewModel');
 
 class ReauthenticationRequiredViewModel {
   ReauthenticationRequiredViewModel({
-    required Authenticator authenticator,
-    required NotificationPriorityQueueViewModel notificationViewModel,
-    required ConnectivityManager connectivityManager,
-  }) : _authenticator = authenticator,
-       _notificationViewModel = notificationViewModel,
-       _connectivityManager = connectivityManager {
+    required this._authenticator,
+    required this._notificationViewModel,
+    required this._connectivityManager,
+  }) {
     _init();
   }
 

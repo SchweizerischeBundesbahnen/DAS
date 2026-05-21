@@ -8,9 +8,9 @@ final _log = Logger('DepartureProcessWarningViewModel');
 
 class DepartureProcessWarningViewModel extends JourneyAwareViewModel {
   DepartureProcessWarningViewModel({
-    required RuFeatureProvider ruFeatureProvider,
+    required this._ruFeatureProvider,
     super.journeyViewModel,
-  }) : _ruFeatureProvider = ruFeatureProvider;
+  });
 
   final RuFeatureProvider _ruFeatureProvider;
 

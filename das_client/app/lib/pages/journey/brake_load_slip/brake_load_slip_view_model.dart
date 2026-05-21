@@ -28,21 +28,15 @@ class BrakeLoadSlipViewModel extends JourneyAwareViewModel {
   static const initialNotificationDelay = Duration(seconds: 2);
 
   BrakeLoadSlipViewModel({
-    required FormationRepository formationRepository,
-    required JourneyPositionViewModel journeyPositionViewModel,
-    required JourneySettingsViewModel journeySettingsViewModel,
-    required NotificationPriorityQueueViewModel notificationViewModel,
-    DetailModalViewModel? detailModalViewModel,
-    ConnectivityManager? connectivityManager,
-    bool checkForUpdates = false,
+    required this._formationRepository,
+    required this._journeyPositionViewModel,
+    required this._journeySettingsViewModel,
+    required this._notificationViewModel,
+    this._detailModalViewModel,
+    this._connectivityManager,
+    this._checkForUpdates = false,
     super.journeyViewModel,
-  }) : _formationRepository = formationRepository,
-       _journeyPositionViewModel = journeyPositionViewModel,
-       _journeySettingsViewModel = journeySettingsViewModel,
-       _notificationViewModel = notificationViewModel,
-       _detailModalViewModel = detailModalViewModel,
-       _connectivityManager = connectivityManager,
-       _checkForUpdates = checkForUpdates {
+  }) {
     _init();
   }
 

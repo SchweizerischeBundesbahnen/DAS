@@ -45,20 +45,15 @@ const int _missingSegmentProfilesMaxRetryCount = 3;
 
 class SferaRepoImpl implements SferaRepository {
   SferaRepoImpl({
-    required MqttService mqttService,
-    required SferaLocalDatabaseService localService,
-    required SferaAuthProvider authProvider,
-    required SferaLocalRepo localRepo,
-    required ConnectivityManager connectivityManager,
+    required this._mqttService,
+    required this._localService,
+    required this._authProvider,
+    required this._localRepo,
+    required this._connectivityManager,
     required this.sferaVersion,
     required this.deviceId,
-    required Authenticator authenticator,
-  }) : _mqttService = mqttService,
-       _localService = localService,
-       _authProvider = authProvider,
-       _localRepo = localRepo,
-       _connectivityManager = connectivityManager,
-       _authenticator = authenticator {
+    required this._authenticator,
+  }) {
     _initialize();
   }
 
@@ -593,8 +588,7 @@ enum SferaRemoteRepositoryInternalState {
   loadingJourney,
   loadingAdditionalData,
   connected,
-  offlineData
-  ;
+  offlineData;
 
   SferaRemoteRepositoryState toExternalState() => switch (this) {
     .disconnected => .disconnected,

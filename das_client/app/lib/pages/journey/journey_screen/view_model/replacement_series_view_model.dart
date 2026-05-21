@@ -14,11 +14,10 @@ final _log = Logger('ReplacementSeriesViewModel');
 
 class ReplacementSeriesViewModel {
   ReplacementSeriesViewModel({
-    required JourneyPositionViewModel journeyPositionViewModel,
-    required JourneySettingsViewModel journeySettingsViewModel,
+    required this._journeyPositionViewModel,
+    required this._journeySettingsViewModel,
     required JourneyViewModel journeyViewModel,
-  }) : _journeyPositionViewModel = journeyPositionViewModel,
-       _journeySettingsViewModel = journeySettingsViewModel {
+  }) {
     _initJourneyPositionSubscription();
     _initSettingsSubscription();
     _subscriptions.add(journeyViewModel.journey.listen(_journeyUpdated));

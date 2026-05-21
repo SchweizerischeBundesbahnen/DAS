@@ -15,11 +15,6 @@ final _log = Logger('AppLinksManagerImpl');
 class AppLinksManagerImpl implements AppLinksManager {
   static const _expectedHost = 'driveradvisorysystem.app.sbb.ch';
 
-  final AppLinks _appLinks;
-
-  final _rxAppLinkIntent = BehaviorSubject<AppLinkIntent>();
-  StreamSubscription<Uri>? _linkSubscription;
-
   AppLinksManagerImpl({AppLinks? appLinks}) : _appLinks = appLinks ?? AppLinks() {
     _linkSubscription = _appLinks.uriLinkStream.listen(
       (uri) => _handleUri(uri),
@@ -27,6 +22,11 @@ class AppLinksManagerImpl implements AppLinksManager {
       cancelOnError: false,
     );
   }
+
+  final AppLinks _appLinks;
+
+  final _rxAppLinkIntent = BehaviorSubject<AppLinkIntent>();
+  StreamSubscription<Uri>? _linkSubscription;
 
   @override
   Stream<AppLinkIntent> get onAppLinkIntent => _rxAppLinkIntent.stream;

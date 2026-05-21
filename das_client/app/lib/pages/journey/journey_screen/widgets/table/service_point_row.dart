@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:app/extension/short_term_change_extension.dart';
 import 'package:app/extension/station_sign_extension.dart';
 import 'package:app/i18n/i18n.dart';

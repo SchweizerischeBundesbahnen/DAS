@@ -8,9 +8,7 @@ import 'package:logging/logging.dart';
 final _log = Logger('AuthGuard');
 
 class AuthGuard extends AutoRouteGuard {
-  AuthGuard({
-    required Authenticator authenticator,
-  }) : _authenticator = authenticator;
+  AuthGuard({required this._authenticator});
 
   final Authenticator _authenticator;
 

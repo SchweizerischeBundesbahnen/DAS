@@ -18,15 +18,13 @@ final _log = Logger('RequestTrainCharacteristicsTask');
 
 class RequestTrainCharacteristicsTask extends SferaTask<List<TrainCharacteristicsDto>> {
   RequestTrainCharacteristicsTask({
-    required MqttService mqttService,
-    required SferaRepository sferaRepo,
-    required SferaLocalDatabaseService sferaDatabaseRepository,
+    required this._mqttService,
+    required this._sferaRepo,
+    required this._sferaDatabaseRepository,
     required this.otnId,
     required this.journeyProfile,
     super.timeout,
-  }) : _mqttService = mqttService,
-       _sferaDatabaseRepository = sferaDatabaseRepository,
-       _sferaRepo = sferaRepo;
+  });
 
   final MqttService _mqttService;
   final OtnId otnId;

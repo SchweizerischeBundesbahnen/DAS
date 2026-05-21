@@ -8,8 +8,8 @@ enum DepartureAuthorizationType { sms, dispatcher }
 class DepartureAuthorization {
   const DepartureAuthorization({
     required this.types,
-    String? originalText,
-  }) : _originalText = originalText;
+    this._originalText,
+  });
 
   final List<DepartureAuthorizationType> types;
   final String? _originalText;

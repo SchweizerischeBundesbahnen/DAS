@@ -7,9 +7,9 @@ class S3ClientOverriddenPreloadRepository extends PreloadRepositoryImpl {
     required super.preloadZipProcessor,
     required super.databaseService,
     required super.sferaLocalRepo,
-    required S3Client s3Client,
+    required this._s3Client,
     super.disablePreload = false,
-  }) : _s3Client = s3Client;
+  });
 
   final S3Client _s3Client;
 

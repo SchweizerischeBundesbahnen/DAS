@@ -1,20 +1,20 @@
+import 'dart:async';
 import 'dart:convert';
 
-import 'package:http_interceptor/models/interceptor_contract.dart';
-import 'package:http_x/component.dart';
+import 'package:http_interceptor/http_interceptor.dart';
 import 'package:logging/logging.dart';
 
 final _log = Logger('LoggingInterceptor');
 
 /// A HTTP interceptor that logs requests and responses.
-class LoggingInterceptor implements InterceptorContract {
+class LoggingInterceptor implements HttpInterceptor {
   const LoggingInterceptor({this.enabled = true, this.obfuscateSecrets = true});
 
   final bool enabled;
   final bool obfuscateSecrets;
 
   @override
-  Future<bool> shouldInterceptRequest() async => enabled;
+  FutureOr<bool> shouldInterceptRequest({required BaseRequest request}) async => enabled;
 
   @override
   Future<BaseRequest> interceptRequest({required BaseRequest request}) async {
@@ -24,14 +24,14 @@ class LoggingInterceptor implements InterceptorContract {
   }
 
   @override
-  Future<bool> shouldInterceptResponse() async => enabled;
-
-  @override
   Future<BaseResponse> interceptResponse({required BaseResponse response}) async {
     final jsonString = response.toJsonString();
     _log.finer('Response $jsonString');
     return response;
   }
+
+  @override
+  FutureOr<bool> shouldInterceptResponse({required BaseResponse response}) async => enabled;
 }
 
 extension _BaseRequestX on BaseRequest {

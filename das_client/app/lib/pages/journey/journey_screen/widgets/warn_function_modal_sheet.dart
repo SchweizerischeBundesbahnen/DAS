@@ -13,7 +13,7 @@ Future<void> showWarnFunctionModalSheet(
     context: context,
     style: const SBBBottomSheetStyle(
       backgroundColor: SBBColors.charcoal,
-      constraints: const BoxConstraints(maxWidth: double.infinity),
+      constraints: BoxConstraints(maxWidth: double.infinity),
     ),
     showCloseButton: false,
     body: WarnFunctionModalSheet(onManeuverButtonPressed: onManeuverButtonPressed),

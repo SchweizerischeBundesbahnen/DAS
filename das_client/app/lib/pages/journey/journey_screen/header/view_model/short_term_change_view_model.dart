@@ -17,8 +17,8 @@ final _logger = Logger('ShortTermChangeViewModel');
 class ShortTermChangeViewModel extends JourneyAwareViewModel {
   ShortTermChangeViewModel({
     required super.journeyViewModel,
-    required JourneyPositionViewModel journeyPositionViewModel,
-  }) : _journeyPositionViewModel = journeyPositionViewModel {
+    required this._journeyPositionViewModel,
+  }) {
     _initJourneyPositionSubscription();
   }
 
