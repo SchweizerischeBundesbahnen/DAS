@@ -18,6 +18,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 import '../app_test.dart';
+import '../util/test_time_constants.dart';
 import '../util/test_utils.dart';
 
 void main() {
@@ -398,6 +399,9 @@ void main() {
 
   testWidgets('test modal sheet still displayed after navigation', (tester) async {
     await prepareAndStartApp(tester);
+    final timeConstants = DI.get<TimeConstants>() as TestTimeConstants;
+    timeConstants.modalSheetAutomaticCloseAfterSecondsValue = 5;
+
     await loadJourney(tester, trainNumber: 'T8');
 
     await stopAutomaticAdvancement(tester);
@@ -411,6 +415,7 @@ void main() {
     await tapElement(tester, find.text(l10n.w_navigation_drawer_settings_title));
     await openDrawer(tester);
     await tapElement(tester, find.text(l10n.w_navigation_drawer_fahrtinfo_title));
+    await tester.pumpAndSettle(Duration(milliseconds: 200));
 
     await _checkOpenModalSheet(tester, DetailTabCommunication.communicationTabKey, 'Bern');
     await _closeModalSheet(tester);
