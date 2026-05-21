@@ -3,9 +3,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sfera/component.dart';
 
 void main() {
-  test('test texts of UncodedOperationalIndication are combined correctly', () {
+  test('test texts of OperationalIndication are combined correctly', () {
     // GIVEN
-    final indication = UncodedOperationalIndication(order: 100, texts: ['Text A', 'Text B']);
+    final indication = OperationalIndication(order: 100, texts: ['Text A', 'Text B']);
 
     // WHEN
     final combinedText = indication.combinedText;
@@ -14,11 +14,11 @@ void main() {
     expect(combinedText, 'Text A\nText B');
   });
 
-  test('test UncodedOperationalIndication on same location are merged', () {
+  test('test OperationalIndication on same location are merged', () {
     // GIVEN
-    final sameLocationA = UncodedOperationalIndication(order: 100, texts: ['Text A']);
-    final sameLocationB = UncodedOperationalIndication(order: 100, texts: ['Text B']);
-    final otherLocation = UncodedOperationalIndication(order: 200, texts: ['Text C']);
+    final sameLocationA = OperationalIndication(order: 100, texts: ['Text A']);
+    final sameLocationB = OperationalIndication(order: 100, texts: ['Text B']);
+    final otherLocation = OperationalIndication(order: 200, texts: ['Text C']);
     final indications = [sameLocationA, sameLocationB, otherLocation];
 
     // WHEN

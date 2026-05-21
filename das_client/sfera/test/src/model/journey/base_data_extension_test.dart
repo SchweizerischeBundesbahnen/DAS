@@ -451,14 +451,14 @@ void main() {
     expect(filteredRows[0].order, 606);
   });
 
-  test('Test combine of UncodedOperationalIndication and FootNote on same location', () {
+  test('Test combine of OperationalIndication and FootNote on same location', () {
     // GIVEN
     final footNoteToBeCombined = LineFootNote(
       order: 100,
       footNote: FootNote(text: 'Test A'),
       locationName: 'Location A',
     );
-    final operationalIndicationToBeCombined = UncodedOperationalIndication(order: 100, texts: ['Test B']);
+    final operationalIndicationToBeCombined = OperationalIndication(order: 100, texts: ['Test B']);
     final baseData = <BaseData>[
       footNoteToBeCombined,
       operationalIndicationToBeCombined,
@@ -467,7 +467,7 @@ void main() {
         footNote: FootNote(text: 'Test C'),
         locationName: 'Location C',
       ),
-      UncodedOperationalIndication(order: 400, texts: ['Test D']),
+      OperationalIndication(order: 400, texts: ['Test D']),
     ];
 
     // WHEN
