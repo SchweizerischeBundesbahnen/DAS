@@ -48,6 +48,7 @@ final class ArchUnitTest {
             "org.slf4j..",
             "org.jetbrains.annotations..",
             "lombok..",
+            "com.fasterxml.jackson..",
             "org.springframework.util"
         )
         .because("domain core should be independent of frameworks");
