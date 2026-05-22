@@ -42,7 +42,7 @@ void main() {
     final tableFinder = find.byType(DASTable);
     expect(tableFinder, findsOneWidget);
 
-    final testRows = ['Genève', 'km 32.2', 'Lengnau', 'WANZ'];
+    final testRows = ['Gland', 'km 32.2', 'Lengnau', 'WANZ'];
 
     // Scroll to the table and search inside it
     for (final rowText in testRows) {
