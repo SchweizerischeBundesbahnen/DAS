@@ -290,7 +290,7 @@
   "c_radn_type_contact": "Selezione diretta canale radio",
   "c_radn_type_network_type": "Tipo di rete",
   "c_radn_type_journey": "Informazione sulla tratta",
-  "c_uncoded_operational_indication": "Istruzione di lavoro",
+  "c_indication": "Istruzione di lavoro",
   "c_show_more": "Mostra di più",
   "w_modal_sheet_warn_function_stop_message": "Fermata!",
   "w_modal_sheet_warn_function_manoeuvre_button": "Manovra",

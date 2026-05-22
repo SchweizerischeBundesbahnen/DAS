@@ -28,8 +28,8 @@ void main() {
   final simFootNote = FootNote(text: 'SIM note', identifier: 'SIM1', type: FootNoteType.contact, refText: 'SIM');
   final simFootNoteData = OpFootNote(order: 8, footNote: simFootNote);
 
-  final indicator = UncodedOperationalIndication(order: 15, texts: ['Some indication']);
-  final indicator2 = UncodedOperationalIndication(order: 25, texts: ['Another indication']);
+  final indicator = OperationalIndication(order: 15, texts: ['Some indication']);
+  final indicator2 = OperationalIndication(order: 25, texts: ['Another indication']);
 
   // JourneyPoints used as position markers (currentPosition/lastPosition must be JourneyPoint)
   final signal1 = Signal(order: 5, kilometre: []);
@@ -105,13 +105,13 @@ void main() {
       expect(testee.collapsedRowsValue.stateOf(footNoteData), CollapsedState.expanded);
     });
 
-    test('toggleRow_whenUncodedOperationalIndicationDefault_thenIsExpandedWithCollapsedContent', () async {
+    test('toggleRow_whenOperationalIndicationDefault_thenIsExpandedWithCollapsedContent', () async {
       // EXPECT
       expect(testee.collapsedRowsValue.stateOf(indicator), CollapsedState.expandedWithCollapsedContent);
     });
 
     test(
-      'toggleRow_whenUncodedOperationalIndicationIsExpandedWithCollapsedContentAndContentExpandable_thenExpands',
+      'toggleRow_whenOperationalIndicationIsExpandedWithCollapsedContentAndContentExpandable_thenExpands',
       () async {
         // ARRANGE
         expect(testee.collapsedRowsValue.stateOf(indicator), CollapsedState.expandedWithCollapsedContent);
@@ -126,7 +126,7 @@ void main() {
     );
 
     test(
-      'toggleRow_whenUncodedOperationalIndicationIsExpandedWithCollapsedContentAndContentNotExpandable_thenCollapses',
+      'toggleRow_whenOperationalIndicationIsExpandedWithCollapsedContentAndContentNotExpandable_thenCollapses',
       () async {
         // ARRANGE
         expect(testee.collapsedRowsValue.stateOf(indicator), CollapsedState.expandedWithCollapsedContent);
@@ -140,7 +140,7 @@ void main() {
       },
     );
 
-    test('toggleRow_whenUncodedOperationalIndicationIsExpanded_thenCollapses', () async {
+    test('toggleRow_whenOperationalIndicationIsExpanded_thenCollapses', () async {
       // ARRANGE
       testee.toggleRow(indicator, isContentExpandable: true);
       await processStreams();
@@ -154,7 +154,7 @@ void main() {
       expect(testee.collapsedRowsValue.stateOf(indicator), CollapsedState.collapsed);
     });
 
-    test('toggleRow_whenUncodedOperationalIndicationIsCollapsed_thenExpandsToExpandedWithCollapsedContent', () async {
+    test('toggleRow_whenOperationalIndicationIsCollapsed_thenExpandsToExpandedWithCollapsedContent', () async {
       // ARRANGE
       testee.toggleRow(indicator);
       await processStreams();
@@ -218,7 +218,7 @@ void main() {
     });
 
     test(
-      'collapsePassedAccordionRows_whenPositionAdvancesPastUncodedOperationalIndication_thenIndicatorIsCollapsed',
+      'collapsePassedAccordionRows_whenPositionAdvancesPastOperationalIndication_thenIndicatorIsCollapsed',
       () async {
         // ARRANGE
 

@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
-class UncodedOperationalIndicationAccordion extends StatelessWidget {
+class OperationalIndicationAccordion extends StatelessWidget {
   static const Key showMoreTextKey = Key('operationalIndicationShowMoreText');
   static const Key expandedContentKey = Key('operationalIndicationExpandedContent');
   static const Key collapsedContentKey = Key('operationalIndicationCollapsedContent');
@@ -24,14 +24,14 @@ class UncodedOperationalIndicationAccordion extends StatelessWidget {
     fontFamily: SBBFontFamily.sbbFontRoman,
   );
 
-  const UncodedOperationalIndicationAccordion({
+  const OperationalIndicationAccordion({
     required this.collapsedState,
     required this.data,
     this.leftPadding = 0,
     super.key,
   });
 
-  final UncodedOperationalIndication data;
+  final OperationalIndication data;
   final CollapsedState collapsedState;
 
   /// used to align content with information cell
@@ -43,7 +43,7 @@ class UncodedOperationalIndicationAccordion extends StatelessWidget {
     final borderRadius = Radius.circular(isExpanded ? SBBSpacing.medium : SBBSpacing.xSmall);
     return Accordion(
       key: ObjectKey(data.hashCode),
-      title: context.l10n.c_uncoded_operational_indication,
+      title: context.l10n.c_indication,
       body: _body(context),
       isExpanded: isExpanded,
       toggleCallback: () =>

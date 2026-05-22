@@ -1380,25 +1380,25 @@ void main() {
     final journey = getJourney('T22');
     expect(journey.valid, true);
 
-    final uncodedOperationalIndications = journey.data.whereType<UncodedOperationalIndication>().toList();
-    expect(uncodedOperationalIndications, hasLength(3));
+    final operationalIndications = journey.data.whereType<OperationalIndication>().toList();
+    expect(operationalIndications, hasLength(3));
 
-    expect(uncodedOperationalIndications[0].order, 0);
-    expect(uncodedOperationalIndications[0].texts, hasLength(1));
-    expect(uncodedOperationalIndications[0].texts[0], 'Renens VD: Halt an Halteort 3');
-    expect(uncodedOperationalIndications[1].order, 100000);
-    expect(uncodedOperationalIndications[1].texts, hasLength(2));
-    expect(uncodedOperationalIndications[1].texts, contains('Lausanne: Halt an Halteort 2'));
+    expect(operationalIndications[0].order, 0);
+    expect(operationalIndications[0].texts, hasLength(1));
+    expect(operationalIndications[0].texts[0], 'Renens VD: Halt an Halteort 3');
+    expect(operationalIndications[1].order, 100000);
+    expect(operationalIndications[1].texts, hasLength(2));
+    expect(operationalIndications[1].texts, contains('Lausanne: Halt an Halteort 2'));
     expect(
-      uncodedOperationalIndications[1].texts,
+      operationalIndications[1].texts,
       contains(
         'Strecke INN - MR: Bahnübergangsanlagen ohne Balisenüberwachung<br/>Straba. = Strassenbahnbereich<br/>E Straba. = Ende Strassenbahnbanbereich<br/>K Ende = Kurvenende<br/>F Fake = FakingIt',
       ),
     );
-    expect(uncodedOperationalIndications[2].order, 200000);
-    expect(uncodedOperationalIndications[2].texts, hasLength(1));
+    expect(operationalIndications[2].order, 200000);
+    expect(operationalIndications[2].texts, hasLength(1));
     expect(
-      uncodedOperationalIndications[2].texts[0],
+      operationalIndications[2].texts[0],
       contains(
         'Pully: Vorziehen bis Ende Perron. Das ist ein sehr langer einzeiliger Text um zu prüfen, ob die Anzeige korrekt damit umgehen kann.',
       ),

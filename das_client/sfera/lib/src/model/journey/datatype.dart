@@ -15,7 +15,7 @@ enum Datatype {
   opFootNote,
   trackFootNote,
   lineFootNote,
-  uncodedOperationalIndication,
+  operationalIndication,
   combinedFootNoteOperationalIndication,
   communicationNetworkChannel,
   shuntingMovement,

@@ -11,10 +11,10 @@ class CombinedFootNoteOperationalIndication extends JourneyAnnotation {
   }) : super(dataType: .combinedFootNoteOperationalIndication, order: operationalIndication.order);
 
   final BaseFootNote footNote;
-  final UncodedOperationalIndication operationalIndication;
+  final OperationalIndication operationalIndication;
 
   @override
-  OrderPriority get orderPriority => .uncodedOperationalIndication;
+  OrderPriority get orderPriority => .operationalIndication;
 
   @override
   String toString() {

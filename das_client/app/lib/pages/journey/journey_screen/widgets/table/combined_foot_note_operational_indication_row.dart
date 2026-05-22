@@ -1,7 +1,7 @@
 import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_view_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/foot_note_accordion.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/foot_note_row.dart';
-import 'package:app/pages/journey/journey_screen/widgets/table/uncoded_operational_indication_accordion.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/operational_indication_accordion.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/widget_row_builder.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +23,7 @@ class CombinedFootNoteOperationalIndicationRow extends WidgetRowBuilder<Combined
   }) : super(
          stickyLevel: .second,
          height:
-             UncodedOperationalIndicationAccordion.calculateHeight(
+             OperationalIndicationAccordion.calculateHeight(
                data.operationalIndication.combinedText,
                collapsedState: operationIndicationState,
                leftPadding: leftPadding,
@@ -49,7 +49,7 @@ class CombinedFootNoteOperationalIndicationRow extends WidgetRowBuilder<Combined
       color: ThemeUtil.getColor(context, SBBColors.milk, SBBColors.black),
       child: Column(
         children: [
-          UncodedOperationalIndicationAccordion(
+          OperationalIndicationAccordion(
             collapsedState: operationIndicationState,
             data: data.operationalIndication,
             leftPadding: leftPadding,

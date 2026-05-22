@@ -33,6 +33,7 @@ import 'package:app/pages/journey/journey_screen/widgets/table/curve_point_row.d
 import 'package:app/pages/journey/journey_screen/widgets/table/foot_note_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/level_crossing_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/loading_table.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/operational_indication_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/protection_section_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/service_point_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/shunting_movement_row.dart';
@@ -41,7 +42,6 @@ import 'package:app/pages/journey/journey_screen/widgets/table/speed_change_row.
 import 'package:app/pages/journey/journey_screen/widgets/table/suspicious_journey_point_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/train_driver_turnover_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/tram_area_row.dart';
-import 'package:app/pages/journey/journey_screen/widgets/table/uncoded_operational_indication_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/whistle_row.dart';
 import 'package:app/pages/journey/view_model/decisive_gradient_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
@@ -305,10 +305,10 @@ class JourneyTable extends StatelessWidget {
             rowIndex: index,
             leftPadding: leftOffsetToInformationCell - Accordion.contentPadding,
           );
-        case .uncodedOperationalIndication:
-          return UncodedOperationalIndicationRow(
+        case .operationalIndication:
+          return OperationalIndicationRow(
             metadata: metadata,
-            data: rowData as UncodedOperationalIndication,
+            data: rowData as OperationalIndication,
             config: journeyConfig,
             collapsedState: collapsedRows.stateOf(rowData),
             rowIndex: index,

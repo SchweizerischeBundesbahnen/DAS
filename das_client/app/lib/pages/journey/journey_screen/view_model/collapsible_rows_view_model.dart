@@ -12,7 +12,7 @@ enum CollapsedState {
   expanded;
 
   static CollapsedState defaultOf(BaseData data) =>
-      data is UncodedOperationalIndication ? .expandedWithCollapsedContent : .expanded;
+      data is OperationalIndication ? .expandedWithCollapsedContent : .expanded;
 }
 
 class CollapsibleRowsViewModel extends JourneyAwareViewModel {
@@ -139,7 +139,7 @@ class CollapsibleRowsViewModel extends JourneyAwareViewModel {
 }
 
 extension BaseDataExtension on BaseData {
-  bool get isCollapsible => this is BaseFootNote || this is UncodedOperationalIndication;
+  bool get isCollapsible => this is BaseFootNote || this is OperationalIndication;
 }
 
 extension CollapsedStateMap on Map<int, CollapsedState> {
