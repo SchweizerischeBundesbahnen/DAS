@@ -15,10 +15,9 @@ final _logger = Logger('SuspiciousSegmentViewModel');
 class SuspiciousSegmentViewModel extends JourneyAwareViewModel {
   SuspiciousSegmentViewModel({
     required super.journeyViewModel,
-    required JourneyPositionViewModel journeyPositionViewModel,
-    required NotificationPriorityQueueViewModel notificationVM,
-  }) : _journeyPositionViewModel = journeyPositionViewModel,
-       _notificationVM = notificationVM {
+    required this._journeyPositionViewModel,
+    required this._notificationVM,
+  }) {
     _initJourneyPositionSubscription();
   }
 

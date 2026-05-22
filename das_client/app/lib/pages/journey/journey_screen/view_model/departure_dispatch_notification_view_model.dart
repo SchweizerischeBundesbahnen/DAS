@@ -9,11 +9,10 @@ import 'package:sfera/component.dart';
 
 class DepartureDispatchNotificationViewModel {
   DepartureDispatchNotificationViewModel({
-    required SferaRepository sferaRepo,
     required Stream<JourneyPositionModel> journeyPositionStream,
-    required NotificationPriorityQueueViewModel notificationVM,
-  }) : _sferaRepo = sferaRepo,
-       _notificationVM = notificationVM {
+    required this._sferaRepo,
+    required this._notificationVM,
+  }) {
     _init(journeyPositionStream);
   }
 

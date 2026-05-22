@@ -13,7 +13,7 @@ import 'package:sfera/component.dart';
 final _log = Logger('JourneyNavigationViewModel');
 
 class JourneyNavigationViewModel {
-  JourneyNavigationViewModel({required SferaRepository sferaRepo}) : _sferaRepo = sferaRepo {
+  JourneyNavigationViewModel({required this._sferaRepo}) {
     _initSferaRemoteStateSubscription();
   }
 

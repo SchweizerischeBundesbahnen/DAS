@@ -14,11 +14,10 @@ import 'package:sfera/component.dart';
 
 class ServicePointModalViewModel extends JourneyAwareViewModel {
   ServicePointModalViewModel({
-    required LocalRegulationHtmlGenerator localRegulationHtmlGenerator,
-    required JourneySettingsViewModel settingsVM,
+    required this._localRegulationHtmlGenerator,
+    required this._settingsVM,
     required super.journeyViewModel,
-  }) : _localRegulationHtmlGenerator = localRegulationHtmlGenerator,
-       _settingsVM = settingsVM {
+  }) {
     _init();
   }
 

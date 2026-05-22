@@ -4,14 +4,11 @@ import 'package:meta/meta.dart';
 @immutable
 class ArrivalDepartureTime {
   const ArrivalDepartureTime({
-    DateTime? ambiguousDepartureTime,
-    DateTime? plannedDepartureTime,
-    DateTime? ambiguousArrivalTime,
-    DateTime? plannedArrivalTime,
-  }) : _ambiguousDepartureTime = ambiguousDepartureTime,
-       _ambiguousArrivalTime = ambiguousArrivalTime,
-       _plannedArrivalTime = plannedArrivalTime,
-       _plannedDepartureTime = plannedDepartureTime;
+    this._ambiguousDepartureTime,
+    this._plannedDepartureTime,
+    this._ambiguousArrivalTime,
+    this._plannedArrivalTime,
+  });
 
   /// these are private since the logic of figuring out whether a time is planned or operational from the
   /// ambiguous times are handled in here

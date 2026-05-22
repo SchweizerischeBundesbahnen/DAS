@@ -4,8 +4,7 @@ import 'package:sfera/src/model/journey/communication_network_change.dart';
 enum SferaCommunicationNetworkTypeDto implements XmlEnum {
   gsmR(xmlValue: 'GSM-R', communicationNetworkType: .gsmR),
   gsmP(xmlValue: 'GSM-P', communicationNetworkType: .gsmP),
-  sim(xmlValue: 'SIM')
-  ;
+  sim(xmlValue: 'SIM');
 
   const SferaCommunicationNetworkTypeDto({
     required this.xmlValue,

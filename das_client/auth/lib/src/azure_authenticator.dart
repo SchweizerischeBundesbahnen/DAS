@@ -13,15 +13,13 @@ class AzureAuthenticator implements Authenticator {
   static const _offlineTokenValidityDuration = Duration(days: 1);
 
   AzureAuthenticator({
-    required AuthenticatorConfig config,
-    OidcClientFactory oidcClientFactory = const SBBOidcClientFactory(),
-    FlutterSecureStorage storage = const FlutterSecureStorage(
+    required this._config,
+    this._oidcClientFactory = const SBBOidcClientFactory(),
+    this._storage = const FlutterSecureStorage(
       iOptions: IOSOptions(accountName: 'auth'),
-      aOptions: AndroidOptions(sharedPreferencesName: 'auth'),
+      aOptions: AndroidOptions(storageNamespace: 'auth'),
     ),
-  }) : _config = config,
-       _oidcClientFactory = oidcClientFactory,
-       _storage = storage;
+  });
 
   final AuthenticatorConfig _config;
   final OidcClientFactory _oidcClientFactory;

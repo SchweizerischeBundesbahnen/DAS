@@ -10,7 +10,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 final _log = Logger('DasLoggerImpl');
 
 class DASLoggerImpl extends DASLogger {
-  DASLoggerImpl({required LoggerRepo loggerRepo, required this.deviceId}) : _loggerRepo = loggerRepo {
+  DASLoggerImpl({required this._loggerRepo, required this.deviceId}) {
     _initialized = _init();
   }
 

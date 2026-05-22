@@ -19,8 +19,7 @@ class G2bMessageResponseDto extends SferaXmlElementDto {
 
 enum G2bMessageResponseResult implements XmlEnum {
   ok(xmlValue: 'OK'),
-  error(xmlValue: 'ERROR')
-  ;
+  error(xmlValue: 'ERROR');
 
   const G2bMessageResponseResult({required this.xmlValue});
 

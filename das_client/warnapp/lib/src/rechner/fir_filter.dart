@@ -3,11 +3,10 @@ import 'dart:math';
 import 'package:warnapp/src/rechner/vector.dart';
 
 class FIRFilter {
-  FIRFilter(this.length, {bool resetOnFirstUpdate = false})
+  FIRFilter(this.length, {this._resetOnFirstUpdate = false})
     : assert(length > 0, 'length must be greater than zero'),
       _x = List<double>.filled(length, 0.0),
-      _firCoef = List<double>.filled(length, 0.0),
-      _resetOnFirstUpdate = resetOnFirstUpdate {
+      _firCoef = List<double>.filled(length, 0.0) {
     var summe = 0.0;
     for (int i = 0; i < length; i++) {
       _x[i] = 0;

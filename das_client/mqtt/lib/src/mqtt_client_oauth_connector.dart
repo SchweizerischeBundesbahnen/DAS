@@ -6,7 +6,7 @@ import 'package:mqtt_client/mqtt_client.dart';
 final _log = Logger('MqttClientOauthConnector');
 
 class MqttClientOauthConnector implements MqttClientConnector {
-  MqttClientOauthConnector({required MqttAuthProvider mqttAuthProvider}) : _mqttAuthProvider = mqttAuthProvider;
+  MqttClientOauthConnector({required this._mqttAuthProvider});
 
   final MqttAuthProvider _mqttAuthProvider;
 

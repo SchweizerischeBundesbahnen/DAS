@@ -24,20 +24,14 @@ final _log = Logger('JourneyTableViewModel');
 class JourneyTableViewModel extends JourneyAwareViewModel {
   JourneyTableViewModel({
     required super.journeyViewModel,
-    required JourneySettingsViewModel settingsVM,
-    required CollapsibleRowsViewModel collapsibleRowsVM,
-    required JourneyPositionViewModel positionVM,
-    required DetailModalViewModel detailModalVM,
-    required DecisiveGradientViewModel decisiveGradientVM,
-    required JourneyNavigationViewModel navigationVM,
-    required UserSettings userSettings,
-  }) : _settingsVM = settingsVM,
-       _collapsibleRowsVM = collapsibleRowsVM,
-       _positionVM = positionVM,
-       _detailModalVM = detailModalVM,
-       _decisiveGradientVM = decisiveGradientVM,
-       _navigationVM = navigationVM,
-       _userSettings = userSettings {
+    required this._settingsVM,
+    required this._collapsibleRowsVM,
+    required this._positionVM,
+    required this._detailModalVM,
+    required this._decisiveGradientVM,
+    required this._navigationVM,
+    required this._userSettings,
+  }) {
     _init();
   }
 
