@@ -32,7 +32,7 @@ class RuIndicationControllerTest {
 
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
-    void getAll_empty() throws Exception {
+    void getAll_RuIndications_empty() throws Exception {
         mockMvc.perform(get(API_RU_INDICATIONS))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data", hasSize(0)));
@@ -41,7 +41,7 @@ class RuIndicationControllerTest {
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createRuIndications.sql")
-    void getAll_ok() throws Exception {
+    void getAll_RuIndications_ok() throws Exception {
         mockMvc.perform(get(API_RU_INDICATIONS))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data", hasSize(2)))
@@ -62,7 +62,7 @@ class RuIndicationControllerTest {
 
     @Test
     @WithMockRole(roles = UserRole.OBSERVER)
-    void getAll_forbidden_role() throws Exception {
+    void getAll_RuIndications_forbidden_role() throws Exception {
         mockMvc.perform(get(API_RU_INDICATIONS))
             .andExpect(status().isForbidden());
     }
@@ -70,7 +70,7 @@ class RuIndicationControllerTest {
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createRuIndications.sql")
-    void getById_ok() throws Exception {
+    void getRuIndicationById_ok() throws Exception {
         mockMvc.perform(get(API_RU_INDICATIONS + "/1"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data[0].id").value(1))
@@ -81,14 +81,14 @@ class RuIndicationControllerTest {
 
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
-    void getById_notFound() throws Exception {
+    void getRuIndicationById_notFound() throws Exception {
         mockMvc.perform(get(API_RU_INDICATIONS + "/99"))
             .andExpect(status().isNotFound());
     }
 
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
-    void create_ok() throws Exception {
+    void create_RuIndication_ok() throws Exception {
         mockMvc.perform(post(API_RU_INDICATIONS)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
@@ -120,7 +120,7 @@ class RuIndicationControllerTest {
 
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
-    void create_invalid_missingContent() throws Exception {
+    void create_RuIndication_invalid_missingContent() throws Exception {
         mockMvc.perform(post(API_RU_INDICATIONS)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
@@ -140,7 +140,7 @@ class RuIndicationControllerTest {
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createRuIndications.sql")
-    void update_ok() throws Exception {
+    void update_RuIndication_ok() throws Exception {
         mockMvc.perform(put(API_RU_INDICATIONS + "/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
@@ -171,7 +171,7 @@ class RuIndicationControllerTest {
 
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
-    void update_notFound() throws Exception {
+    void update_RuIndication_notFound() throws Exception {
         mockMvc.perform(put(API_RU_INDICATIONS + "/99")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
@@ -221,7 +221,7 @@ class RuIndicationControllerTest {
     @Test
     @WithMockRole(roles = UserRole.OBSERVER)
     @Sql("classpath:createRuIndications.sql")
-    void findMatches_ok_withMatchingRuIndications() throws Exception {
+    void findRuIndicationMatches_ok_withMatchingRuIndications() throws Exception {
         mockMvc.perform(post(API_RU_INDICATIONS_MATCHES)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
@@ -243,7 +243,7 @@ class RuIndicationControllerTest {
     @Test
     @WithMockRole(roles = UserRole.OBSERVER)
     @Sql("classpath:createRuIndications.sql")
-    void findMatches_ok_withAcceptLanguageFr() throws Exception {
+    void findRuIndicationMatches_ok_withAcceptLanguageFr() throws Exception {
         mockMvc.perform(post(API_RU_INDICATIONS_MATCHES)
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.ACCEPT_LANGUAGE, "fr")
@@ -263,7 +263,7 @@ class RuIndicationControllerTest {
     @Test
     @WithMockRole(roles = UserRole.OBSERVER)
     @Sql("classpath:createRuIndications.sql")
-    void findMatches_ok_noMatches() throws Exception {
+    void findMatches_ok_noRuIndicationMatches() throws Exception {
         mockMvc.perform(post(API_RU_INDICATIONS_MATCHES)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
@@ -280,7 +280,7 @@ class RuIndicationControllerTest {
 
     @Test
     @WithMockRole(roles = UserRole.OBSERVER)
-    void findMatches_invalid_missingFields() throws Exception {
+    void findRuIndicationMatches_invalid_missingFields() throws Exception {
         mockMvc.perform(post(API_RU_INDICATIONS_MATCHES)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""

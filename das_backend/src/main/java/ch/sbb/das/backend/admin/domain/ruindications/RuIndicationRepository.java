@@ -13,9 +13,7 @@ public interface RuIndicationRepository {
     List<RuIndication> findAllById(Iterable<Integer> ids);
 
     RuIndication save(RuIndication ruIndication);
-
-    void deleteById(Integer id);
-
+    
     void deleteAllById(Iterable<Integer> ids);
 }
 

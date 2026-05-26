@@ -54,14 +54,6 @@ public class SpecialHolidayServiceImpl implements SpecialHolidayService {
     }
 
     @Override
-    public void deleteByIds(Integer id) {
-        specialHolidayRepository.findById(id).ifPresent(holiday -> {
-            companyAuthorizationService.requireCanAccessCompanies(holiday.companies());
-            specialHolidayRepository.deleteById(id);
-        });
-    }
-
-    @Override
     public void deleteByIds(List<Integer> ids) {
         List<Integer> distinctIds = ids.stream().distinct().toList();
         Set<CompanyCode> companies = specialHolidayRepository.findAllById(distinctIds).stream().flatMap(holiday -> holiday.companies().stream()).collect(Collectors.toSet());

@@ -56,14 +56,6 @@ public class RuIndicationServiceImpl implements RuIndicationService {
     }
 
     @Override
-    public void delete(Integer id) {
-        ruIndicationRepository.findById(id).ifPresent(ruIndication -> {
-            companyAuthorizationService.requireCanAccessCompanies(ruIndication.scope().companies());
-            ruIndicationRepository.deleteById(id);
-        });
-    }
-
-    @Override
     public void delete(List<Integer> ids) {
         List<Integer> distinctIds = ids.stream().distinct().toList();
         Set<CompanyCode> companies = ruIndicationRepository.findAllById(distinctIds).stream()

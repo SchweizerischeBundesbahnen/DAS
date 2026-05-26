@@ -227,26 +227,6 @@ class SpecialHolidayControllerTest {
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createSpecialHolidays.sql")
-    void deleteSpecialHolidayById_ok() throws Exception {
-        mockMvc.perform(delete(API_SPECIAL_HOLIDAYS + "/1"))
-            .andExpect(status().isNoContent());
-
-        mockMvc.perform(get(API_SPECIAL_HOLIDAYS + "/1"))
-            .andExpect(status().isNotFound());
-    }
-
-    @Test
-    @WithMockRole(roles = UserRole.RU_ADMIN)
-    @Sql("classpath:createSpecialHolidays.sql")
-    void deleteSpecialHolidayById_forbidden_existingCompanyNotAuthorized() throws Exception {
-        mockMvc.perform(delete(API_SPECIAL_HOLIDAYS + "/3"))
-            .andExpect(status().isForbidden())
-            .andExpect(jsonPath("$.detail").value("Not allowed!"));
-    }
-
-    @Test
-    @WithMockRole(roles = UserRole.RU_ADMIN)
-    @Sql("classpath:createSpecialHolidays.sql")
     void deleteSpecialHolidayBatch_ok() throws Exception {
         mockMvc.perform(delete(API_SPECIAL_HOLIDAYS)
                 .contentType("application/json")

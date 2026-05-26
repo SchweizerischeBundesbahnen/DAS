@@ -2,7 +2,6 @@ package ch.sbb.das.backend.admin.domain.ruindications;
 
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationTemplate;
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationTemplateRequest;
-import ch.sbb.das.backend.admin.infrastructure.jpa.RuIndicationTemplateEntity;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,8 +26,8 @@ public class RuIndicationTemplateServiceImpl implements RuIndicationTemplateServ
 
     @Override
     public RuIndicationTemplate create(RuIndicationTemplateRequest createRequest) {
-        RuIndicationTemplateEntity entity = RuIndicationTemplateEntity.from(createRequest);
-        return ruIndicationTemplateRepository.save(entity.toRuIndicationTemplate());
+        RuIndicationTemplate ruIndicationTemplate = new RuIndicationTemplate(null, createRequest.category(), createRequest.de(), createRequest.fr(), createRequest.it());
+        return ruIndicationTemplateRepository.save(ruIndicationTemplate);
     }
 
     @Override
@@ -46,11 +45,6 @@ public class RuIndicationTemplateServiceImpl implements RuIndicationTemplateServ
             updateRequest.it()
         );
         return ruIndicationTemplateRepository.save(updated);
-    }
-
-    @Override
-    public void delete(Integer id) {
-        ruIndicationTemplateRepository.deleteById(id);
     }
 
     @Override

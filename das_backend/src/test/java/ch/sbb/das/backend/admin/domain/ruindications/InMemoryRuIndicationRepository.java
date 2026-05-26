@@ -44,11 +44,6 @@ class InMemoryRuIndicationRepository implements RuIndicationRepository {
     }
 
     @Override
-    public void deleteById(Integer id) {
-        ruIndications.remove(id);
-    }
-
-    @Override
     public void deleteAllById(Iterable<Integer> ids) {
         for (Integer id : ids) {
             ruIndications.remove(id);

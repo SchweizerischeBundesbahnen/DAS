@@ -13,8 +13,6 @@ public interface RuIndicationTemplateService {
     RuIndicationTemplate update(Integer id, RuIndicationTemplateRequest updateRequest);
 
     RuIndicationTemplate create(RuIndicationTemplateRequest createRequest);
-
-    void delete(Integer id);
-
+    
     void delete(List<Integer> ids);
 }

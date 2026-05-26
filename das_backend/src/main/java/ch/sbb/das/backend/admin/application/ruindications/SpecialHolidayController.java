@@ -23,7 +23,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -78,7 +77,6 @@ public class SpecialHolidayController {
     @ApiResponse(responseCode = "201", description = "Special holiday created.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = SpecialHolidayResponse.class)))
     @ApiErrorResponses
-    @PreAuthorize("@companyAuthorizer.canAccessCompanies(#createRequest.companies)")
     public ResponseEntity<SpecialHolidayResponse> createSpecialHoliday(@RequestBody @Valid SpecialHolidayRequest createRequest,
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
         SpecialHoliday createdSpecialHoliday = specialHolidayService.create(createRequest);
@@ -92,7 +90,6 @@ public class SpecialHolidayController {
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = SpecialHolidayResponse.class)))
     @ApiResponse(responseCode = "404", description = "Special holiday not found.")
     @ApiErrorResponses
-    @PreAuthorize("@companyAuthorizer.canAccessCompanies(#updateRequest.companies)")
     public ResponseEntity<? extends Response> updateSpecialHoliday(@PathVariable Integer id, @RequestBody @Valid SpecialHolidayRequest updateRequest,
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
         SpecialHoliday updatedSpecialHoliday = specialHolidayService.update(id, updateRequest);
@@ -100,16 +97,6 @@ public class SpecialHolidayController {
             return ResponseEntityFactory.createNotFoundResponse(requestId, null);
         }
         return ResponseEntityFactory.createOkResponse(new SpecialHolidayResponse(updatedSpecialHoliday), null, requestId);
-    }
-
-    @DeleteMapping(API_SPECIAL_HOLIDAYS_ID)
-    @Operation(summary = "Delete special holiday by id.", description = "Delete a single special holiday by its id.")
-    @ApiResponse(responseCode = "204", description = "Special holiday deleted.")
-    @ApiErrorResponses
-    public ResponseEntity<Void> deleteSpecialHoliday(@PathVariable Integer id,
-        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
-        specialHolidayService.deleteByIds(id);
-        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping(API_SPECIAL_HOLIDAYS)

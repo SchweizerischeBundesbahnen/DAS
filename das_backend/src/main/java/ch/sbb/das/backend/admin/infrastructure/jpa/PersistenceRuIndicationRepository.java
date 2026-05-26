@@ -34,12 +34,7 @@ class PersistenceRuIndicationRepository implements RuIndicationRepository {
     public RuIndication save(RuIndication ruIndication) {
         return ruIndicationRepository.save(RuIndicationEntity.from(ruIndication)).toRuIndication();
     }
-
-    @Override
-    public void deleteById(Integer id) {
-        ruIndicationRepository.deleteById(id);
-    }
-
+    
     @Override
     public void deleteAllById(Iterable<Integer> ids) {
         ruIndicationRepository.deleteAllById(ids);

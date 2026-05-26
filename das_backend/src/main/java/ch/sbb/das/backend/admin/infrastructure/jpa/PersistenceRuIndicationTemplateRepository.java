@@ -47,11 +47,6 @@ class PersistenceRuIndicationTemplateRepository implements RuIndicationTemplateR
     }
 
     @Override
-    public void deleteById(Integer id) {
-        ruIndicationTemplateRepository.deleteById(id);
-    }
-
-    @Override
     public void deleteAllById(Iterable<Integer> ids) {
         ruIndicationTemplateRepository.deleteAllById(ids);
     }

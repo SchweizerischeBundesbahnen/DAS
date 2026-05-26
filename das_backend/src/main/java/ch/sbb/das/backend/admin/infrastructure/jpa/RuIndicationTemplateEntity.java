@@ -2,7 +2,6 @@ package ch.sbb.das.backend.admin.infrastructure.jpa;
 
 import ch.sbb.das.backend.admin.application.ruindications.model.Content;
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationTemplate;
-import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationTemplateRequest;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
@@ -43,24 +42,6 @@ public class RuIndicationTemplateEntity extends EntityBase {
     private String titleIt;
 
     private String textIt;
-
-    public static RuIndicationTemplateEntity from(RuIndicationTemplateRequest createRequest) {
-        RuIndicationTemplateEntity entity = new RuIndicationTemplateEntity();
-        entity.setCategory(createRequest.category());
-        if (createRequest.de() != null) {
-            entity.setTitleDe(createRequest.de().title());
-            entity.setTextDe(createRequest.de().text());
-        }
-        if (createRequest.fr() != null) {
-            entity.setTitleFr(createRequest.fr().title());
-            entity.setTextFr(createRequest.fr().text());
-        }
-        if (createRequest.it() != null) {
-            entity.setTitleIt(createRequest.it().title());
-            entity.setTextIt(createRequest.it().text());
-        }
-        return entity;
-    }
 
     public RuIndicationTemplate toRuIndicationTemplate() {
         return new RuIndicationTemplate(id, category, new Content(titleDe, textDe), new Content(titleFr, textFr), new Content(titleIt, textIt),

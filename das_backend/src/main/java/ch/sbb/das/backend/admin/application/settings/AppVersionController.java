@@ -54,7 +54,7 @@ public class AppVersionController {
     @ApiResponse(responseCode = "200", description = "App versions resp. its managed state.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = AppVersionsResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getAll(
+    public ResponseEntity<? extends Response> getAllAppVersions(
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
         List<AppVersion> versions = appVersionService.getAll();
         return ResponseEntityFactory.createOkResponse(new AppVersionsResponse(versions), null, requestId);
@@ -66,7 +66,7 @@ public class AppVersionController {
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = AppVersionResponse.class)))
     @ApiResponse(responseCode = "404", description = "App version not found.")
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getById(@PathVariable Integer id,
+    public ResponseEntity<? extends Response> getAppVersionById(@PathVariable Integer id,
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
         AppVersion version = appVersionService.getById(id);
         if (version == null) {
@@ -80,7 +80,7 @@ public class AppVersionController {
     @ApiResponse(responseCode = "201", description = "App version created.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = AppVersionResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<AppVersionResponse> create(@RequestBody @Valid AppVersionRequest createRequest,
+    public ResponseEntity<AppVersionResponse> createAppVersion(@RequestBody @Valid AppVersionRequest createRequest,
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
         AppVersion createdVersion = appVersionService.create(createRequest);
         HttpHeaders headers = ResponseEntityFactory.createOkHeaders(requestId);
@@ -93,7 +93,7 @@ public class AppVersionController {
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = AppVersionResponse.class)))
     @ApiResponse(responseCode = "404", description = "App version not found.")
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> update(@PathVariable Integer id, @RequestBody @Valid AppVersionRequest updateRequest,
+    public ResponseEntity<? extends Response> updateAppVersion(@PathVariable Integer id, @RequestBody @Valid AppVersionRequest updateRequest,
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
         AppVersion updatedVersion = appVersionService.update(id, updateRequest);
         if (updatedVersion == null) {
@@ -106,7 +106,7 @@ public class AppVersionController {
     @Operation(summary = "Delete app version by id.", description = "Delete a single app version by its id.")
     @ApiResponse(responseCode = "204", description = "App version deleted.")
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> delete(@PathVariable Integer id,
+    public ResponseEntity<? extends Response> deleteAppVersionById(@PathVariable Integer id,
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
         appVersionService.delete(id);
         return ResponseEntity.noContent().build();

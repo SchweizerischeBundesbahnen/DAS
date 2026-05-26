@@ -51,7 +51,7 @@ public class RuIndicationTemplateController {
     @ApiResponse(responseCode = "200", description = "RU indication templates found.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = RuIndicationTemplatesResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getAll(
+    public ResponseEntity<? extends Response> getAllRuIndicationTemplates(
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
         List<RuIndicationTemplate> ruIndicationTemplates = ruIndicationTemplateService.getAll();
         return ResponseEntityFactory.createOkResponse(new RuIndicationTemplatesResponse(ruIndicationTemplates), null, requestId);
@@ -63,7 +63,7 @@ public class RuIndicationTemplateController {
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = RuIndicationTemplateResponse.class)))
     @ApiResponse(responseCode = "404", description = "RU indication template not found.")
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getById(@PathVariable Integer id,
+    public ResponseEntity<? extends Response> getRuIndicationTemplateById(@PathVariable Integer id,
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
         RuIndicationTemplate ruIndicationTemplate = ruIndicationTemplateService.getById(id);
         if (ruIndicationTemplate == null) {
@@ -77,7 +77,7 @@ public class RuIndicationTemplateController {
     @ApiResponse(responseCode = "201", description = "RU indication template created.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = RuIndicationTemplateResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<RuIndicationTemplateResponse> create(@RequestBody @Valid RuIndicationTemplateRequest createRequest,
+    public ResponseEntity<RuIndicationTemplateResponse> createRuIndicationTemplate(@RequestBody @Valid RuIndicationTemplateRequest createRequest,
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
         RuIndicationTemplate createdRuIndicationTemplate = ruIndicationTemplateService.create(createRequest);
         HttpHeaders headers = ResponseEntityFactory.createOkHeaders(requestId);
@@ -90,7 +90,7 @@ public class RuIndicationTemplateController {
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = RuIndicationTemplateResponse.class)))
     @ApiResponse(responseCode = "404", description = "RU indication template not found.")
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> update(@PathVariable Integer id, @RequestBody @Valid RuIndicationTemplateRequest updateRequest,
+    public ResponseEntity<? extends Response> updateRuIndicationTemplate(@PathVariable Integer id, @RequestBody @Valid RuIndicationTemplateRequest updateRequest,
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
         RuIndicationTemplate ruIndicationTemplate = ruIndicationTemplateService.update(id, updateRequest);
         if (ruIndicationTemplate == null) {

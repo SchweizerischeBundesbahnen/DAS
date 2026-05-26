@@ -26,7 +26,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -58,7 +57,7 @@ public class RuIndicationController {
     @ApiResponse(responseCode = "200", description = "RU indications found.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = RuIndicationResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getAll(
+    public ResponseEntity<? extends Response> getAllRuIndications(
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
         List<RuIndication> ruIndications = ruIndicationService.getAll();
         return ResponseEntityFactory.createOkResponse(new RuIndicationResponse(ruIndications), null, requestId);
@@ -70,7 +69,7 @@ public class RuIndicationController {
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = RuIndicationResponse.class)))
     @ApiResponse(responseCode = "404", description = "RU indication not found.")
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getById(@PathVariable Integer id,
+    public ResponseEntity<? extends Response> getRuIndicationById(@PathVariable Integer id,
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
         RuIndication ruIndication = ruIndicationService.getById(id);
         if (ruIndication == null) {
@@ -84,8 +83,7 @@ public class RuIndicationController {
     @ApiResponse(responseCode = "201", description = "RU indication created.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = RuIndicationResponse.class)))
     @ApiErrorResponses
-    @PreAuthorize("@companyAuthorizer.canAccessCompanies(#createRequest.scope.companies)")
-    public ResponseEntity<RuIndicationResponse> create(@RequestBody @Valid RuIndicationRequest createRequest,
+    public ResponseEntity<RuIndicationResponse> createRuIndication(@RequestBody @Valid RuIndicationRequest createRequest,
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
         RuIndication createdRuIndication = ruIndicationService.create(createRequest);
         HttpHeaders headers = ResponseEntityFactory.createOkHeaders(requestId);
@@ -100,7 +98,7 @@ public class RuIndicationController {
     @ApiResponse(responseCode = "200", description = "RU indication matches found.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = RuIndicationMatchesResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> findMatches(@RequestBody @Valid RuIndicationMatchesRequest filterRequest,
+    public ResponseEntity<? extends Response> findRuIndicationMatches(@RequestBody @Valid RuIndicationMatchesRequest filterRequest,
         @RequestHeader(value = HttpHeaders.ACCEPT_LANGUAGE, required = false) String acceptLanguage,
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
         List<RuIndicationMatch> ruIndicationMatches = ruIndicationMatchService.findMatches(filterRequest, acceptLanguage);
@@ -113,8 +111,7 @@ public class RuIndicationController {
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = RuIndicationResponse.class)))
     @ApiResponse(responseCode = "404", description = "RU indication not found.")
     @ApiErrorResponses
-    @PreAuthorize("@companyAuthorizer.canAccessCompanies(#updateRequest.scope.companies)")
-    public ResponseEntity<? extends Response> update(@PathVariable Integer id, @RequestBody @Valid RuIndicationRequest updateRequest,
+    public ResponseEntity<? extends Response> updateRuIndication(@PathVariable Integer id, @RequestBody @Valid RuIndicationRequest updateRequest,
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
         RuIndication updatedRuIndication = ruIndicationService.update(id, updateRequest);
         if (updatedRuIndication == null) {

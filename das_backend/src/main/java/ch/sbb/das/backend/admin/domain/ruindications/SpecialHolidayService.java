@@ -14,8 +14,6 @@ public interface SpecialHolidayService {
 
     SpecialHoliday update(Integer id, SpecialHolidayRequest updateRequest);
 
-    void deleteByIds(Integer id);
-
     void deleteByIds(List<Integer> ids);
 }
 

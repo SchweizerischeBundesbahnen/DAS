@@ -29,7 +29,7 @@ class RuIndicationTemplateControllerTest {
     @Test
     @WithMockUser(authorities = "ROLE_ru_admin")
     @Sql("classpath:createRuIndicationTemplates.sql")
-    void getAll_ok() throws Exception {
+    void getAll_RuIndicationTemplates_ok() throws Exception {
         mockMvc.perform(get(API_RU_INDICATION_TEMPLATES))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data", hasSize(3)))
@@ -45,14 +45,14 @@ class RuIndicationTemplateControllerTest {
 
     @Test
     @WithMockUser(authorities = "ROLE_observer")
-    void getAll_forbidden_role() throws Exception {
+    void getAll_RuIndicationTemplates_forbidden_role() throws Exception {
         mockMvc.perform(get(API_RU_INDICATION_TEMPLATES))
             .andExpect(status().isForbidden());
     }
 
     @Test
     @WithMockUser(authorities = "ROLE_ru_admin")
-    void getAll_empty() throws Exception {
+    void getAll_RuIndicationTemplates_empty() throws Exception {
         mockMvc.perform(get(API_RU_INDICATION_TEMPLATES))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data", hasSize(0)));
@@ -61,7 +61,7 @@ class RuIndicationTemplateControllerTest {
     @Test
     @WithMockUser(authorities = "ROLE_ru_admin")
     @Sql("classpath:createRuIndicationTemplates.sql")
-    void getById_ok() throws Exception {
+    void getRuIndicationTemplateById_ok() throws Exception {
         mockMvc.perform(get(API_RU_INDICATION_TEMPLATES + "/2"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data[0].id").value(2))
@@ -76,14 +76,14 @@ class RuIndicationTemplateControllerTest {
 
     @Test
     @WithMockUser(authorities = "ROLE_ru_admin")
-    void getById_notFound() throws Exception {
+    void getRuIndicationTemplateById_notFound() throws Exception {
         mockMvc.perform(get(API_RU_INDICATION_TEMPLATES + "/99"))
             .andExpect(status().isNotFound());
     }
 
     @Test
     @WithMockUser(authorities = "ROLE_ru_admin")
-    void create_ok_allLanguages() throws Exception {
+    void create_RuIndicationTemplate_ok_allLanguages() throws Exception {
         mockMvc.perform(post(API_RU_INDICATION_TEMPLATES)
                 .contentType("application/json")
                 .content("""
@@ -107,7 +107,7 @@ class RuIndicationTemplateControllerTest {
 
     @Test
     @WithMockUser(authorities = "ROLE_ru_admin")
-    void create_ok_singleLanguage() throws Exception {
+    void create_RuIndicationTemplate_ok_singleLanguage() throws Exception {
         mockMvc.perform(post(API_RU_INDICATION_TEMPLATES)
                 .contentType("application/json")
                 .content("""
@@ -123,7 +123,7 @@ class RuIndicationTemplateControllerTest {
 
     @Test
     @WithMockUser(authorities = "ROLE_ru_admin")
-    void create_ok_ignores_empty_language_placeholders() throws Exception {
+    void create_RuIndicationTemplate_ok_ignores_empty_language_placeholders() throws Exception {
         mockMvc.perform(post(API_RU_INDICATION_TEMPLATES)
                 .contentType("application/json")
                 .content("""
@@ -146,7 +146,7 @@ class RuIndicationTemplateControllerTest {
 
     @Test
     @WithMockUser(authorities = "ROLE_ru_admin")
-    void create_invalid_noCategory() throws Exception {
+    void create_RuIndicationTemplate_invalid_noCategory() throws Exception {
         mockMvc.perform(post(API_RU_INDICATION_TEMPLATES)
                 .contentType("application/json")
                 .content("""
@@ -160,7 +160,7 @@ class RuIndicationTemplateControllerTest {
 
     @Test
     @WithMockUser(authorities = "ROLE_ru_admin")
-    void create_invalid_noLanguageContent() throws Exception {
+    void create_RuIndicationTemplate_invalid_noLanguageContent() throws Exception {
         mockMvc.perform(post(API_RU_INDICATION_TEMPLATES)
                 .contentType("application/json")
                 .content("""
@@ -174,7 +174,7 @@ class RuIndicationTemplateControllerTest {
 
     @Test
     @WithMockUser(authorities = "ROLE_ru_admin")
-    void create_invalid_blankTitle() throws Exception {
+    void create_RuIndicationTemplate_invalid_blankTitle() throws Exception {
         mockMvc.perform(post(API_RU_INDICATION_TEMPLATES)
                 .contentType("application/json")
                 .content("""
@@ -190,7 +190,7 @@ class RuIndicationTemplateControllerTest {
     @Test
     @WithMockUser(authorities = "ROLE_ru_admin")
     @Sql("classpath:createRuIndicationTemplates.sql")
-    void update_ok() throws Exception {
+    void update_RuIndicationTemplate_ok() throws Exception {
         mockMvc.perform(put(API_RU_INDICATION_TEMPLATES + "/1")
                 .contentType("application/json")
                 .content("""
@@ -213,7 +213,7 @@ class RuIndicationTemplateControllerTest {
 
     @Test
     @WithMockUser(authorities = "ROLE_ru_admin")
-    void update_notFound() throws Exception {
+    void update_RuIndicationTemplate_notFound() throws Exception {
         mockMvc.perform(put(API_RU_INDICATION_TEMPLATES + "/99")
                 .contentType("application/json")
                 .content("""
@@ -227,7 +227,7 @@ class RuIndicationTemplateControllerTest {
 
     @Test
     @WithMockUser(authorities = "ROLE_ru_admin")
-    void update_invalid_noLanguageContent() throws Exception {
+    void update_RuIndicationTemplate_invalid_noLanguageContent() throws Exception {
         mockMvc.perform(put(API_RU_INDICATION_TEMPLATES + "/1")
                 .contentType("application/json")
                 .content("""
@@ -241,7 +241,7 @@ class RuIndicationTemplateControllerTest {
 
     @Test
     @WithMockUser(authorities = "ROLE_ru_admin")
-    void update_invalid_blankTitle() throws Exception {
+    void update_RuIndicationTemplate_invalid_blankTitle() throws Exception {
         mockMvc.perform(put(API_RU_INDICATION_TEMPLATES + "/1")
                 .contentType("application/json")
                 .content("""
