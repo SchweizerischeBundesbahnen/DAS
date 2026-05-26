@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 @Schema(description = "RU indication content. At least one language object (de, fr, or it) must be provided.")
 @ValidTranslatedContent
 public record RuIndicationContent(
+    @Schema(description = "RU indication category.", requiredMode = RequiredMode.NOT_REQUIRED)
     String category,
     @Schema(description = "German RU indication content.", requiredMode = RequiredMode.NOT_REQUIRED)
     @Valid
