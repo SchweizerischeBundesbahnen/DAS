@@ -44,8 +44,7 @@ enum RailwayUndertaking {
   vdbb(companyCode: '9076'),
   wrsch(companyCode: '3466'),
   zb(companyCode: '9083'),
-  unknown(companyCode: '-1')
-  ;
+  unknown(companyCode: '-1');
 
   const RailwayUndertaking({
     required this.companyCode,

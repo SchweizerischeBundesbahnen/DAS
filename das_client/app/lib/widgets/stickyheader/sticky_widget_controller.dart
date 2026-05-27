@@ -9,8 +9,8 @@ class StickyWidgetController with ChangeNotifier {
   StickyWidgetController({
     required this.stickyHeaderKey,
     required this.scrollController,
-    required List<DASTableRow> rows,
-  }) : _rows = rows {
+    required this._rows,
+  }) {
     scrollController.addListener(scrollListener);
     _initialize();
   }

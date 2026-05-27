@@ -26,6 +26,7 @@ class ChevronAnimationData {
     required BaseData rowData,
     required BrakeSeries? currentBrakeSeries,
     required List<int> expandedGroups,
+    JourneyPoint? journeyEnd,
   }) {
     final currentPosition = chevronPositionModel.currentPosition;
     final lastPosition = chevronPositionModel.lastPosition;
@@ -85,7 +86,8 @@ class ChevronAnimationData {
     // Last row cell start to chevron position
     final endRow = journeyPoints[toIndex];
     final endRowHeight = CellRowBuilder.rowHeightForData(endRow, currentBrakeSeries);
-    final chevronPosition = metadata.journeyEnd == endRow
+
+    final chevronPosition = journeyEnd == endRow
         ? RouteCellBody.routeCirclePosition - RouteChevron.chevronHeight
         : CellRowBuilder.calculateChevronPosition(endRow, endRowHeight);
     endOffset += chevronPosition;

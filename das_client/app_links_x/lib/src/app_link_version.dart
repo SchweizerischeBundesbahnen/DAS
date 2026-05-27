@@ -1,7 +1,6 @@
 enum AppLinkVersion {
   v1,
-  unknown
-  ;
+  unknown;
 
   /// Parses version in format like "v1", "v2", "v3".
   /// Returns [AppLinkVersion.unknown] if parsing fails or version unknown

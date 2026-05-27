@@ -6,9 +6,9 @@ import 'package:sfera/component.dart';
 
 class CalculatedSpeedViewModel extends JourneyAwareViewModel {
   CalculatedSpeedViewModel({
-    required LineSpeedViewModel lineSpeedViewModel,
+    required this._lineSpeedViewModel,
     super.journeyViewModel,
-  }) : _lineSpeedViewModel = lineSpeedViewModel;
+  });
 
   final LineSpeedViewModel _lineSpeedViewModel;
 

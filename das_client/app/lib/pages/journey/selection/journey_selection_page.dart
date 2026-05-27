@@ -21,8 +21,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 @RoutePage()
 class JourneySelectionPage extends StatelessWidget implements AutoRouteWrapper {
-  const JourneySelectionPage({super.key, VoidCallback? onAppExpiredDialogDismissed})
-    : _onAppExpiredDialogDismissed = onAppExpiredDialogDismissed;
+  const JourneySelectionPage({super.key, this._onAppExpiredDialogDismissed});
 
   final VoidCallback? _onAppExpiredDialogDismissed;
 

@@ -3,6 +3,7 @@ import 'package:app/extension/journey_extension.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/reduced_overview_view_model.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/widgets/reduced_journey_table.dart';
+import 'package:app/pages/journey/journey_screen/view_model/journey_table_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/format.dart';
@@ -23,13 +24,20 @@ Future<void> showReducedOverviewModalSheet(BuildContext context) async {
     style: const SBBBottomSheetStyle(
       constraints: BoxConstraints(),
     ),
-    body: Provider(
-      create: (_) => ReducedOverviewViewModel(
-        sferaLocalService: DI.get(),
-        trainIdentification: trainIdentification,
-      ),
-      dispose: (context, vm) => vm.dispose(),
-      builder: (context, child) => _ReducedOverviewModalSheet(),
+    body: MultiProvider(
+      providers: [
+        Provider<JourneyTableViewModel>(
+          create: (_) => DI.get(),
+        ),
+        Provider(
+          create: (_) => ReducedOverviewViewModel(
+            sferaLocalService: DI.get(),
+            trainIdentification: trainIdentification,
+          ),
+          dispose: (context, vm) => vm.dispose(),
+        ),
+      ],
+      child: _ReducedOverviewModalSheet(),
     ),
   );
 }

@@ -71,7 +71,11 @@ class ServicePointInformationCellTitle extends StatelessWidget {
 
   Widget wrapWithIndicator(Widget textTitle) {
     return shortTermChange is EndDestinationChange
-        ? UTurnIndicator(offset: Offset(4, -28), child: textTitle)
+        ? UTurnIndicator(
+            offset: Offset(4, -28),
+            foregroundColor: foregroundColor,
+            child: textTitle,
+          )
         : GeneralShortTermChangeIndicator(offset: Offset(-8, -22), child: textTitle);
   }
 }

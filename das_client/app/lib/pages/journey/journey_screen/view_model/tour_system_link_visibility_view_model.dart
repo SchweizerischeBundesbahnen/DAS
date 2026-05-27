@@ -12,16 +12,14 @@ final _log = Logger('TourSystemLinkVisibilityViewModel');
 
 class TourSystemLinkVisibilityViewModel {
   TourSystemLinkVisibilityViewModel({
-    required JourneySettingsViewModel journeySettingsViewModel,
-    required JourneyPositionViewModel journeyPositionViewModel,
-    required JourneyViewModel journeyViewModel,
-  }) : _settingsViewModel = journeySettingsViewModel,
-       _journeyPositionViewModel = journeyPositionViewModel,
-       _journeyViewModel = journeyViewModel {
+    required this._journeySettingsViewModel,
+    required this._journeyPositionViewModel,
+    required this._journeyViewModel,
+  }) {
     _initSubscription();
   }
 
-  final JourneySettingsViewModel _settingsViewModel;
+  final JourneySettingsViewModel _journeySettingsViewModel;
   final JourneyPositionViewModel _journeyPositionViewModel;
   final JourneyViewModel _journeyViewModel;
 
@@ -38,7 +36,7 @@ class TourSystemLinkVisibilityViewModel {
     _subscription =
         CombineLatestStream.combine3(
           _journeyViewModel.journey,
-          _settingsViewModel.model,
+          _journeySettingsViewModel.model,
           _journeyPositionViewModel.model,
           (a, b, c) => (a, b, c),
         ).listen((data) async {

@@ -7,8 +7,7 @@ enum HandshakeRejectReasonDto implements XmlEnum {
   dasInChargeUnknown(xmlValue: 'DAS-TS/ATO-TS in charge unknown'),
   architectureNotSupported(xmlValue: 'Architecture not supported'),
   connectivityNotSupported(xmlValue: 'Connectivity not supported'),
-  archAndConnNotSupported(xmlValue: 'Architecture and connectivity not supported')
-  ;
+  archAndConnNotSupported(xmlValue: 'Architecture and connectivity not supported');
 
   const HandshakeRejectReasonDto({
     required this.xmlValue,

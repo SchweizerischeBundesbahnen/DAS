@@ -32,8 +32,7 @@ enum TrackEquipmentType {
   etcsL1lsSingleTrackNoBlock,
   etcsL2ConvSpeedReversingImpossible,
   etcsL2ExtSpeedReversingPossible,
-  etcsL2ExtSpeedReversingImpossible
-  ;
+  etcsL2ExtSpeedReversingImpossible;
 
   bool get isEtcsL2 => <TrackEquipmentType>[
     .etcsL2ConvSpeedReversingImpossible,

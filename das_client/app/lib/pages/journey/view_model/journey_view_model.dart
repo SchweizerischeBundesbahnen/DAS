@@ -6,9 +6,7 @@ import 'package:sfera/component.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
 class JourneyViewModel {
-  JourneyViewModel({
-    required SferaRepository sferaRepository,
-  }) : _sferaRepository = sferaRepository {
+  JourneyViewModel({required this._sferaRepository}) {
     _init();
   }
 

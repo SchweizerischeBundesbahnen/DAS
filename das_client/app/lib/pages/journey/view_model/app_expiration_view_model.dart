@@ -5,9 +5,8 @@ import 'package:rxdart/rxdart.dart';
 import 'package:settings/component.dart';
 
 class AppExpirationViewModel {
-  AppExpirationViewModel({required SettingsRepository settingsRepository, required String currentAppVersion})
-    : _settingsRepository = settingsRepository,
-      _currentAppVersion = currentAppVersion,
+  AppExpirationViewModel({required this._settingsRepository, required String currentAppVersion})
+    : _currentAppVersion = currentAppVersion,
       _rxSubject = BehaviorSubject<AppExpirationModel>.seeded(Valid(currentAppVersion: currentAppVersion)) {
     checkIsAppExpired();
   }

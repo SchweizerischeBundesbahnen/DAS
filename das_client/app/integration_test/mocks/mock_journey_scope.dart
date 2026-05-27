@@ -34,6 +34,7 @@ class MockJourneyScope extends JourneyScope {
     getIt.registerJourneyTableViewModel();
     getIt.registerJourneyTableAdvancementViewModel();
     getIt.registerCustomerOrientedDepartureViewModel();
+    getIt.registerServicePointModalViewModel();
 
     return getIt.allReady();
   }

@@ -27,16 +27,12 @@ typedef AdvancementModeChangedCallback = void Function(JourneyAdvancementModel);
 /// * manual (automatic idle scrolling is enabled)
 class JourneyTableAdvancementViewModel {
   JourneyTableAdvancementViewModel({
-    required JourneyTableScrollController scrollController,
-    required JourneySettingsViewModel journeySettingsViewModel,
-    required DetailModalViewModel detailModalViewModel,
-    required Stream<ChevronPositionModel> chevronPositionStream,
-    required JourneyViewModel journeyViewModel,
-  }) : _scrollController = scrollController,
-       _journeySettingsViewModel = journeySettingsViewModel,
-       _detailModalViewModel = detailModalViewModel,
-       _chevronPositionStream = chevronPositionStream,
-       _journeyViewModel = journeyViewModel {
+    required this._scrollController,
+    required this._journeySettingsViewModel,
+    required this._detailModalViewModel,
+    required this._chevronPositionStream,
+    required this._journeyViewModel,
+  }) {
     _initSubscription();
   }
 
@@ -175,8 +171,8 @@ class JourneyTableAdvancementViewModel {
     final firstServicePointOrder = firstServicePoint?.order ?? 0;
     final currentPositionOrder = _currentPosition?.order ?? 0;
 
-    _isInAutomaticScrollingZone =
-        _currentPosition != journey.metadata.journeyStart && currentPositionOrder >= firstServicePointOrder;
+    final journeyStart = journey.data.whereType<JourneyPoint>().firstOrNull;
+    _isInAutomaticScrollingZone = _currentPosition != journeyStart && currentPositionOrder >= firstServicePointOrder;
   }
 
   void _scrollToCurrentPositionIfInAutoScrollingZone() {

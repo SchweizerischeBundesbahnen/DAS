@@ -4,8 +4,7 @@ enum StartEndQualifierDto implements XmlEnum {
   starts(xmlValue: 'Starts'),
   ends(xmlValue: 'Ends'),
   startsEnds(xmlValue: 'StartsEnds'),
-  wholeSp(xmlValue: 'WholeSP')
-  ;
+  wholeSp(xmlValue: 'WholeSP');
 
   const StartEndQualifierDto({
     required this.xmlValue,

@@ -3,9 +3,7 @@ import 'dart:async';
 import 'package:aws_common/aws_common.dart';
 
 class InMemoryCredentialProvider implements AWSCredentialsProvider {
-  InMemoryCredentialProvider({required String accessKey, required String secretKey})
-    : _accessKey = accessKey,
-      _secretKey = secretKey;
+  InMemoryCredentialProvider({required this._accessKey, required this._secretKey});
 
   final String _accessKey;
   final String _secretKey;

@@ -1,7 +1,7 @@
 import 'package:auth/component.dart';
 
 class SplashViewModel {
-  SplashViewModel({required Authenticator authenticator}) : _authenticator = authenticator;
+  SplashViewModel({required this._authenticator});
 
   final Authenticator _authenticator;
 

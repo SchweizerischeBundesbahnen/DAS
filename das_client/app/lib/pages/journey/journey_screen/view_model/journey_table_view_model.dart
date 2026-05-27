@@ -24,20 +24,14 @@ final _log = Logger('JourneyTableViewModel');
 class JourneyTableViewModel extends JourneyAwareViewModel {
   JourneyTableViewModel({
     required super.journeyViewModel,
-    required JourneySettingsViewModel settingsVM,
-    required CollapsibleRowsViewModel collapsibleRowsVM,
-    required JourneyPositionViewModel positionVM,
-    required DetailModalViewModel detailModalVM,
-    required DecisiveGradientViewModel decisiveGradientVM,
-    required JourneyNavigationViewModel navigationVM,
-    required UserSettings userSettings,
-  }) : _settingsVM = settingsVM,
-       _collapsibleRowsVM = collapsibleRowsVM,
-       _positionVM = positionVM,
-       _detailModalVM = detailModalVM,
-       _decisiveGradientVM = decisiveGradientVM,
-       _navigationVM = navigationVM,
-       _userSettings = userSettings {
+    required this._settingsVM,
+    required this._collapsibleRowsVM,
+    required this._positionVM,
+    required this._detailModalVM,
+    required this._decisiveGradientVM,
+    required this._navigationVM,
+    required this._userSettings,
+  }) {
     _init();
   }
 
@@ -56,6 +50,13 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
   Stream<JourneyTableModel> get model => _rxModel.stream;
 
   JourneyTableModel get modelValue => _rxModel.value;
+
+  JourneyPoint? _journeyStart;
+  JourneyPoint? _journeyEnd;
+
+  JourneyPoint? get journeyStart => _journeyStart;
+
+  JourneyPoint? get journeyEnd => _journeyEnd;
 
   @override
   void onJourneyChanged(Journey? journey) {
@@ -121,10 +122,10 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
         .hideSignals(stationSignals: !_userSettings.showStationSignals)
         .sorted((a1, a2) => a1.compareTo(a2));
 
-    final chevronPosition = _calculateChevronPosition(
-      visibleJourneyPoints: rowData.whereType<JourneyPoint>(),
-      position: position,
-    );
+    final journeyPoints = rowData.whereType<JourneyPoint>();
+    final chevronPosition = _calculateChevronPosition(visibleJourneyPoints: journeyPoints, position: position);
+    _journeyStart = journeyPoints.firstOrNull;
+    _journeyEnd = journeyPoints.lastOrNull;
 
     _emitLoaded(
       TableLoaded(
@@ -183,6 +184,8 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
   }
 
   void _emitLoading() {
+    _journeyStart = null;
+    _journeyEnd = null;
     _log.fine('Emitting TableLoading.');
     _rxModel.add(TableLoading());
   }

@@ -153,10 +153,10 @@ extension BaseDataExtension on Iterable<BaseData> {
     );
   }
 
-  /// Combines [BaseFootNote] and [UncodedOperationalIndication] that are on same location (technically always on a service point)
+  /// Combines [BaseFootNote] and [OperationalIndication] that are on same location (technically always on a service point)
   Iterable<BaseData> combineFootNoteAndOperationalIndication() {
     final groupedMap = where(
-      (it) => it is BaseFootNote || it is UncodedOperationalIndication,
+      (it) => it is BaseFootNote || it is OperationalIndication,
     ).groupListsBy((i) => i.order);
 
     final dataToBeRemoved = <BaseData>[];
@@ -164,7 +164,7 @@ extension BaseDataExtension on Iterable<BaseData> {
         .map((group) {
           final footNote = group.firstWhereOrNull((it) => it is BaseFootNote) as BaseFootNote?;
           final operationalIndication =
-              group.firstWhereOrNull((it) => it is UncodedOperationalIndication) as UncodedOperationalIndication?;
+              group.firstWhereOrNull((it) => it is OperationalIndication) as OperationalIndication?;
           if (footNote == null || operationalIndication == null) {
             return null;
           }

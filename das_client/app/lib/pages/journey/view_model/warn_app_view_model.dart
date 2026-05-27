@@ -15,15 +15,11 @@ final _log = Logger('WarnAppViewModel');
 class WarnAppViewModel {
   WarnAppViewModel({
     required this.flavor,
-    required SferaRepository sferaRepo,
-    required WarnappRepository warnappRepo,
-    required RuFeatureProvider ruFeatureProvider,
-    required NotificationPriorityQueueViewModel notificationViewModel,
-  }) : _sferaRepo = sferaRepo,
-       _warnappRepo = warnappRepo,
-       _ruFeatureProvider = ruFeatureProvider,
-       _notificationViewModel = notificationViewModel,
-       _appCheck = AppCheck() {
+    required this._sferaRepo,
+    required this._warnappRepo,
+    required this._ruFeatureProvider,
+    required this._notificationViewModel,
+  }) : _appCheck = AppCheck() {
     _init();
   }
 

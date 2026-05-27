@@ -73,6 +73,13 @@ class DASModalSheetController {
     _fullWidthAnimation = Tween<double>(begin: 0, end: 1).animate(_fullWidthController.toEmphasizedEasingAnimation())
       ..addListener(() => onUpdate?.call());
 
+    if (_state != .closed) {
+      _controller.value = 1.0;
+      if (_state == .maximized) {
+        _fullWidthController.value = 1.0;
+      }
+    }
+
     _initialized = true;
   }
 
@@ -184,7 +191,12 @@ class _DASModalSheetState extends State<DasModalSheet> with TickerProviderStateM
   @override
   void initState() {
     super.initState();
-    widget.controller._initialize(vsync: this, onUpdate: () => setState(() {}));
+    widget.controller._initialize(
+      vsync: this,
+      onUpdate: () {
+        if (mounted) setState(() {});
+      },
+    );
   }
 
   @override

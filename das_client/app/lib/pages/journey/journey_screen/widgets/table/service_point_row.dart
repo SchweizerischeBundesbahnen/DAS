@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:app/extension/short_term_change_extension.dart';
 import 'package:app/extension/station_sign_extension.dart';
 import 'package:app/i18n/i18n.dart';
@@ -8,6 +6,7 @@ import 'package:app/pages/journey/journey_screen/detail_modal/service_point_moda
 import 'package:app/pages/journey/journey_screen/view_model/arrival_departure_time_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_table_advancement_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/journey_table_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cell_row_builder.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_cell_body.dart';
@@ -15,6 +14,7 @@ import 'package:app/pages/journey/journey_screen/widgets/table/cells/service_poi
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/show_speed_behaviour.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/time_cell_body.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/track_equipment_cell_body.dart';
+import 'package:app/theme/das_colors.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/animation.dart';
 import 'package:app/util/text_util.dart';
@@ -45,7 +45,9 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
   }
 
   static Color _resolveRowColor(BuildContext context, JourneyPositionModel position, ServicePoint data) {
-    if (position.nextStop == data) return ThemeUtil.getColor(context, SBBColors.night, SBBColors.nightDark);
+    if (position.nextStop == data) {
+      return ThemeUtil.getColor(context, DASColors.nextStopBackgroundBright, DASColors.nextStopBackgroundDark);
+    }
     return data.isAdditional ? ThemeUtil.getBackgroundColor(context) : ThemeUtil.getDASTableColor(context);
   }
 
@@ -175,6 +177,8 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
 
   @override
   DASTableCell routeCell(BuildContext context) {
+    final vm = context.read<JourneyTableViewModel>();
+
     return DASTableCell(
       decoration: DASTableCellDecoration(color: specialCellColor),
       padding: .all(0.0),
@@ -183,8 +187,8 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
       child: RouteCellBody(
         isStop: data.isStop,
         isCurrentPosition: isCurrentChevronPosition,
-        isRouteStart: metadata.journeyStart == data,
-        isRouteEnd: metadata.journeyEnd == data,
+        isRouteStart: vm.journeyStart == data,
+        isRouteEnd: vm.journeyEnd == data,
         isStopOnRequest: !data.mandatoryStop,
         chevronAnimationData: config.chevronAnimationData,
         chevronPosition: calculatedChevronPosition,
@@ -374,4 +378,10 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
   }
 
   bool get _isNextStop => journeyPosition.nextStop == data;
+
+  @override
+  Color? get specialCellColor {
+    if (_isNextStop) return null;
+    return super.specialCellColor;
+  }
 }

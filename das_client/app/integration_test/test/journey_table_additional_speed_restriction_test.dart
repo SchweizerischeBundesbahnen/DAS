@@ -1,4 +1,5 @@
 import 'package:app/pages/journey/journey_screen/widgets/table/additional_speed_restriction_row.dart';
+import 'package:app/theme/das_colors.dart';
 import 'package:app/widgets/labeled_badge.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,7 @@ void main() {
     // check all cells are colored
     final coloredCells = findColoredRowCells(
       of: asrRow,
-      color: AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor,
+      color: DASColors.additionalSpeedRestriction,
     );
     expect(coloredCells, findsNWidgets(14));
 
@@ -41,7 +42,7 @@ void main() {
     final tableFinder = find.byType(DASTable);
     expect(tableFinder, findsOneWidget);
 
-    final testRows = ['Genève', 'km 32.2', 'Lengnau', 'WANZ'];
+    final testRows = ['Gland', 'km 32.2', 'Lengnau', 'WANZ'];
 
     // Scroll to the table and search inside it
     for (final rowText in testRows) {
@@ -54,7 +55,7 @@ void main() {
       // check first 3 cells are colored
       final coloredCells = findColoredRowCells(
         of: testRow,
-        color: AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor,
+        color: DASColors.additionalSpeedRestriction,
       );
       expect(coloredCells, findsNWidgets(6));
     }

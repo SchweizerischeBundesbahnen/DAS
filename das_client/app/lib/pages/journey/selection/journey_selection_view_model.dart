@@ -11,10 +11,9 @@ final _log = Logger('JourneySelectionViewModel');
 
 class JourneySelectionViewModel {
   JourneySelectionViewModel({
-    required SferaRepository sferaRepo,
-    required Future<void> Function(TrainIdentification) onJourneySelected,
-  }) : _sferaRepo = sferaRepo,
-       _onJourneySelected = onJourneySelected {
+    required this._sferaRepo,
+    required this._onJourneySelected,
+  }) {
     _emitSelectingWithDefaults();
     _initSferaRepoSubscription();
   }

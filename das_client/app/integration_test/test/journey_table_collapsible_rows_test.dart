@@ -2,7 +2,7 @@ import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_chevron.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/combined_foot_note_operational_indication_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/foot_note_accordion.dart';
-import 'package:app/pages/journey/journey_screen/widgets/table/uncoded_operational_indication_accordion.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/operational_indication_accordion.dart';
 import 'package:app/widgets/accordion/accordion.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:app/widgets/table/scrollable_align.dart';
@@ -20,7 +20,7 @@ void main() {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T22M');
 
-    final dataToTest = UncodedOperationalIndication(order: 0, texts: ['Renens VD: Halt an Halteort 3']);
+    final dataToTest = OperationalIndication(order: 0, texts: ['Renens VD: Halt an Halteort 3']);
     final identifier = dataToTest.hashCode;
     await _checkCollapsible(identifier, tester);
 
@@ -51,18 +51,18 @@ void main() {
     await dragUntilTextInStickyHeader(tester, 'Pully');
 
     // should not be collapsed by default
-    final accordion = _findDASTableAccordionByContainsText(textToSearch, UncodedOperationalIndicationAccordion);
+    final accordion = _findDASTableAccordionByContainsText(textToSearch, OperationalIndicationAccordion);
     _checkCollapsibleRow(isCollapsed: false, collapsibleRow: accordion);
 
     // should have show more button and collapsed content
     final collapsedContent = find.descendant(
       of: accordion,
-      matching: find.byKey(UncodedOperationalIndicationAccordion.collapsedContentKey),
+      matching: find.byKey(OperationalIndicationAccordion.collapsedContentKey),
     );
     expect(collapsedContent, findsOneWidget);
     var showMoreButton = find.descendant(
       of: accordion,
-      matching: find.byKey(UncodedOperationalIndicationAccordion.showMoreTextKey),
+      matching: find.byKey(OperationalIndicationAccordion.showMoreTextKey),
     );
     expect(showMoreButton, findsOneWidget);
 
@@ -72,12 +72,12 @@ void main() {
 
     final rowWithExpandedText = _findDASTableAccordionByContainsText(
       'Lorem ipsum dolor sit amet, consetetur sadipscing elitr',
-      UncodedOperationalIndicationAccordion,
+      OperationalIndicationAccordion,
     );
     expect(rowWithExpandedText, findsOneWidget);
     showMoreButton = find.descendant(
       of: rowWithExpandedText,
-      matching: find.byKey(UncodedOperationalIndicationAccordion.showMoreTextKey),
+      matching: find.byKey(OperationalIndicationAccordion.showMoreTextKey),
     );
     expect(showMoreButton, findsNothing);
 
@@ -93,16 +93,16 @@ void main() {
     // should have show more button and collapsed content with " ;" delimiter
     final accordion = _findDASTableAccordionByContainsText(
       'Strecke INN - MR: Bahnübergangsanlagen ohne Balisenüberwachung; Straba. = Strassenbahnbereich;',
-      UncodedOperationalIndicationAccordion,
+      OperationalIndicationAccordion,
     );
     final collapsedContent = find.descendant(
       of: accordion,
-      matching: find.byKey(UncodedOperationalIndicationAccordion.collapsedContentKey),
+      matching: find.byKey(OperationalIndicationAccordion.collapsedContentKey),
     );
     expect(collapsedContent, findsOneWidget);
     final showMoreButton = find.descendant(
       of: accordion,
-      matching: find.byKey(UncodedOperationalIndicationAccordion.showMoreTextKey),
+      matching: find.byKey(OperationalIndicationAccordion.showMoreTextKey),
     );
     expect(showMoreButton, findsOneWidget);
 
@@ -110,7 +110,7 @@ void main() {
     await tapElement(tester, accordion);
     final expandedRow = _findDASTableAccordionByContainsText(
       'Strecke INN - MR: Bahnübergangsanlagen ohne Balisenüberwachung\nStraba. = Strassenbahnbereich',
-      UncodedOperationalIndicationAccordion,
+      OperationalIndicationAccordion,
     );
     expect(expandedRow, findsOneWidget);
 
@@ -139,7 +139,7 @@ void main() {
 
     final operationalIndicationRow = find.descendant(
       of: combinedRow,
-      matching: find.textContaining(l10n.c_uncoded_operational_indication),
+      matching: find.textContaining(l10n.c_indication),
     );
     expect(operationalIndicationRow, findsOneWidget);
 
@@ -155,7 +155,7 @@ void main() {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T22');
 
-    final dataToTest = UncodedOperationalIndication(order: 0, texts: ['Renens VD: Halt an Halteort 3']);
+    final dataToTest = OperationalIndication(order: 0, texts: ['Renens VD: Halt an Halteort 3']);
     final identifier = dataToTest.hashCode;
     await _checkCollapsedWhenPassed(identifier, tester);
 

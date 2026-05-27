@@ -4,10 +4,9 @@ import 'package:sfera/component.dart';
 
 class RuFeatureProviderImpl implements RuFeatureProvider {
   RuFeatureProviderImpl({
-    required SferaRepository sferaRepo,
-    required SettingsRepository settingsRepository,
-  }) : _sferaRepo = sferaRepo,
-       _settingsRepository = settingsRepository;
+    required this._sferaRepo,
+    required this._settingsRepository,
+  });
 
   final SferaRepository _sferaRepo;
   final SettingsRepository _settingsRepository;

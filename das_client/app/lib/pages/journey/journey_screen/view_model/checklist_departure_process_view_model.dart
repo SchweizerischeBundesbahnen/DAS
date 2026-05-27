@@ -15,13 +15,12 @@ final _log = Logger('ChecklistDepartureProcessViewModel');
 
 class ChecklistDepartureProcessViewModel extends JourneyAwareViewModel {
   ChecklistDepartureProcessViewModel({
-    required JourneyPositionViewModel journeyPositionViewModel,
-    required RuFeatureProvider ruFeatureProvider,
+    required this._journeyPositionViewModel,
+    required this._ruFeatureProvider,
+    required this._uxTestingViewModel,
     required CustomerOrientedDepartureViewModel customerOrientedDepartureViewModel,
     super.journeyViewModel,
-  }) : _journeyPositionViewModel = journeyPositionViewModel,
-       _ruFeatureProvider = ruFeatureProvider,
-       _customerOrientedDepartureViewModel = customerOrientedDepartureViewModel {
+  }) : _customerOrientedDepartureViewModel = customerOrientedDepartureViewModel {
     _initSubscription();
   }
 
@@ -88,7 +87,8 @@ class ChecklistDepartureProcessViewModel extends JourneyAwareViewModel {
   }
 
   bool _isEligiblePosition(JourneyPoint? currentPosition) {
-    if (currentPosition == null && lastJourney?.metadata.journeyStart is ServicePoint) {
+    final journeyStart = lastJourney?.data.whereType<JourneyPoint>().firstOrNull;
+    if (currentPosition == null && journeyStart is ServicePoint) {
       _lastServicePointWasStop = true;
       return true;
     }

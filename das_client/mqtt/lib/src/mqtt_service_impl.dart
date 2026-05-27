@@ -16,13 +16,12 @@ class MqttServiceImpl implements MqttService {
   static const _keepAlivePeriodSeconds = 15;
 
   MqttServiceImpl({
-    required String mqttUrl,
-    required MqttClientConnector mqttClientConnector,
+    required this._mqttUrl,
+    required this._mqttClientConnector,
     required this.deviceId,
     required this.prefix,
     required this.sferaVersion,
-  }) : _mqttUrl = mqttUrl,
-       _mqttClientConnector = mqttClientConnector {
+  }) {
     _init();
   }
 

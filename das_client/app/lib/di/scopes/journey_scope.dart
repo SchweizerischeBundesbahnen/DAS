@@ -1,6 +1,7 @@
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/brake_load_slip/brake_load_slip_view_model.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/detail_modal_view_model.dart';
+import 'package:app/pages/journey/journey_screen/detail_modal/service_point_modal/service_point_modal_view_model.dart';
 import 'package:app/pages/journey/journey_screen/header/view_model/chronograph_view_model.dart';
 import 'package:app/pages/journey/journey_screen/header/view_model/short_term_change_view_model.dart';
 import 'package:app/pages/journey/journey_screen/header/view_model/suspicious_segment_view_model.dart';
@@ -60,6 +61,7 @@ class JourneyScope extends DIScope {
     getIt.registerCollapsibleRowsViewModel();
     getIt.registerJourneyTableViewModel();
     getIt.registerJourneyTableAdvancementViewModel();
+    getIt.registerServicePointModalViewModel();
     getIt.registerCustomerOrientedDepartureViewModel();
 
     await getIt.allReady();
@@ -297,6 +299,17 @@ extension JourneyScopeExtension on GetIt {
         scrollController: DI.get(),
         journeySettingsViewModel: DI.get(),
         detailModalViewModel: DI.get(),
+      ),
+      dispose: (vm) => vm.dispose(),
+    );
+  }
+
+  void registerServicePointModalViewModel() {
+    registerSingleton<ServicePointModalViewModel>(
+      ServicePointModalViewModel(
+        journeyViewModel: DI.get(),
+        localRegulationHtmlGenerator: DI.get(),
+        settingsVM: DI.get(),
       ),
       dispose: (vm) => vm.dispose(),
     );

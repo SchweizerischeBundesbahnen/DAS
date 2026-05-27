@@ -7,10 +7,9 @@ final _log = Logger('MqttClientTMSOauthConnector');
 
 class MqttClientTMSOpenIdConnector implements MqttClientConnector {
   MqttClientTMSOpenIdConnector({
-    required MqttAuthProvider mqttAuthProvider,
-    required Map<String, String> openIdProfileMap,
-  }) : _mqttAuthProvider = mqttAuthProvider,
-       _openIdProfileMap = openIdProfileMap;
+    required this._mqttAuthProvider,
+    required this._openIdProfileMap,
+  });
 
   final MqttAuthProvider _mqttAuthProvider;
   final Map<String, String> _openIdProfileMap;

@@ -111,7 +111,7 @@ class DASNavigationDrawer extends StatelessWidget {
   Widget _footer(BuildContext context) {
     final textColor = ThemeUtil.getColor(context, SBBColors.granite, SBBColors.graphite);
     return Align(
-      alignment: .bottomCenter,
+      alignment: .bottomLeft,
       child: Padding(
         padding: .all(SBBSpacing.medium),
         child: Column(

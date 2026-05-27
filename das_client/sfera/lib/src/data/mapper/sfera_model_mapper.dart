@@ -76,7 +76,7 @@ class SferaModelMapper {
     journeyData.addAll(_cabSignalingStart(trackEquipmentSegments));
     journeyData.addAll(_cabSignalingEnd(trackEquipmentSegments, journeyData));
     journeyData.addAll(_consolidateAdditionalSpeedRestrictions(journeyData, displayedSpeedRestrictions));
-    journeyData.addAll(_parseUncodedOperationalIndications(segmentProfileReferences));
+    journeyData.addAll(_parseOperationalIndications(segmentProfileReferences));
     journeyData.addAll(_parseTramAreas(segmentProfiles));
     journeyData.addAll(_parseShuntingMovements(segmentProfileReferences, segmentProfiles));
 
@@ -110,8 +110,6 @@ class SferaModelMapper {
         ),
         signaledPosition: _signaledPosition(relatedTrainInformation, segmentProfileReferences),
         additionalSpeedRestrictions: additionalSpeedRestrictions,
-        journeyStart: journeyPoints.firstOrNull,
-        journeyEnd: journeyPoints.lastOrNull,
         delay: _parseDelay(relatedTrainInformation),
         anyOperationalArrivalDepartureTimes: servicePoints.any(
           (sP) => sP.arrivalDepartureTime?.hasAnyOperationalTime ?? false,
@@ -477,12 +475,12 @@ class SferaModelMapper {
     return trainCharacteristics.firstWhereGivenOrNull(firstTrainRef);
   }
 
-  static List<UncodedOperationalIndication> _parseUncodedOperationalIndications(
+  static List<OperationalIndication> _parseOperationalIndications(
     Iterable<SegmentProfileReferenceDto> segmentProfileReferences,
   ) {
     return segmentProfileReferences.mapIndexed((index, reference) {
       final indications = reference.jpContextInformation?.operationalIndications;
-      if (indications == null) return <UncodedOperationalIndication>[];
+      if (indications == null) return <OperationalIndication>[];
 
       mapToModel(OperationalIndicationNspDto uncoded) {
         final startLocation = uncoded.constraint?.startLocation;
@@ -490,7 +488,7 @@ class SferaModelMapper {
           _log.warning('Uncoded operational indication without location found: $uncoded');
           return null;
         }
-        return UncodedOperationalIndication(
+        return OperationalIndication(
           order: calculateOrder(index, startLocation),
           texts: [uncoded.uncodedText],
         );

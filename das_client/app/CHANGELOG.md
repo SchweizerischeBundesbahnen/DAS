@@ -1,5 +1,37 @@
 # Changelog
 
+## [0.45.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.44.0...das_client-v0.45.0) (2026-05-21)
+
+
+### Features
+
+* implemented color priority for journey table ([#1125](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1125)) ([#2150](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2150)) ([935cc44](https://github.com/SchweizerischeBundesbahnen/DAS/commit/935cc44990a18a1e60144e5bba3f97244aa0794f))
+
+
+### Bug Fixes
+
+* modal sheet broken when navigating while open ([#2143](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2143)) ([f3fcba8](https://github.com/SchweizerischeBundesbahnen/DAS/commit/f3fcba85aac900c95126c187616f2839984d878e))
+
+## [0.44.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.43.0...das_client-v0.44.0) (2026-05-20)
+
+
+### Features
+
+* add option to hide station signals ([#811](https://github.com/SchweizerischeBundesbahnen/DAS/issues/811)) ([#2111](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2111)) ([1b0e8fd](https://github.com/SchweizerischeBundesbahnen/DAS/commit/1b0e8fda90d0b1e5bdb532d7377646d8fcf6494a))
+* add support for invalid sp updates ([#1967](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1967)) ([#2106](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2106)) ([17f88ae](https://github.com/SchweizerischeBundesbahnen/DAS/commit/17f88ae9bf9115cf06c43332e7dd0c79feb9f32d))
+* consolidate sequential additional speed restrictions ([#566](https://github.com/SchweizerischeBundesbahnen/DAS/issues/566)) ([#2123](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2123)) ([8fc9a2f](https://github.com/SchweizerischeBundesbahnen/DAS/commit/8fc9a2f171503ff1d7154d8c72c3edd54cfa6135))
+* display all sim changes in foot notes ([#1126](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1126)) ([#2104](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2104)) ([4e7c4f3](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4e7c4f3c1ab07a6d01be29597871105828721350))
+* use number keyboard when connected to TMS ([#547](https://github.com/SchweizerischeBundesbahnen/DAS/issues/547)) ([#2098](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2098)) ([852261b](https://github.com/SchweizerischeBundesbahnen/DAS/commit/852261b6df8a40045aef696442dfd8d16a35d63e))
+
+
+### Bug Fixes
+
+* app expiration dialog is not dismissible ([#1407](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1407)) ([#2096](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2096)) ([971aadc](https://github.com/SchweizerischeBundesbahnen/DAS/commit/971aadc2d3eaaad4d73fc87909f1f2a82a85a27a))
+* hauled load displayed correctly ([#2125](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2125)) ([#2137](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2137)) ([7276fca](https://github.com/SchweizerischeBundesbahnen/DAS/commit/7276fca62adf323b6c988f9bac483e62ce170f17))
+* state management refactoring ([#1557](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1557)) ([#2135](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2135)) ([76d6add](https://github.com/SchweizerischeBundesbahnen/DAS/commit/76d6add1bb7a945033b2fb7142a63444786636ac))
+* text style on calculated speeds ([#2131](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2131)) ([2969a8c](https://github.com/SchweizerischeBundesbahnen/DAS/commit/2969a8cf49b7fa27dcdf5d47e579c5d13ba5788f))
+* various usability improvements ([#2134](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2134)) ([#2138](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2138)) ([81d53a9](https://github.com/SchweizerischeBundesbahnen/DAS/commit/81d53a9aaf0eed95f8ff4a084816471f4c034b1f))
+
 ## [0.43.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.42.0...das_client-v0.43.0) (2026-05-04)
 
 
