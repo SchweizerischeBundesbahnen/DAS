@@ -15,15 +15,12 @@ final _log = Logger('CustomerOrientedDepartureViewModel');
 
 class CustomerOrientedDepartureViewModel extends JourneyAwareViewModel {
   CustomerOrientedDepartureViewModel({
-    required CustomerOrientedDepartureRepository repository,
-    required RuFeatureProvider ruFeatureProvider,
-    required NotificationPriorityQueueViewModel notificationViewModel,
-    required Authenticator authenticator,
+    required this._repository,
+    required this._ruFeatureProvider,
+    required this._notificationViewModel,
+    required this._authenticator,
     super.journeyViewModel,
-  }) : _repository = repository,
-       _ruFeatureProvider = ruFeatureProvider,
-       _notificationViewModel = notificationViewModel,
-       _authenticator = authenticator {
+  }) {
     _init();
   }
 
@@ -42,7 +39,7 @@ class CustomerOrientedDepartureViewModel extends JourneyAwareViewModel {
   Future<bool> get isDepartureProcessFeatureEnabled => _ruFeatureProvider.isRuFeatureEnabled(.departureProcess);
 
   @override
-  void journeyIdentificationChanged(Journey? journey) async {
+  void onJourneyChanged(Journey? journey) async {
     if (_lastJourney != null) {
       await _unsubscribe();
     }

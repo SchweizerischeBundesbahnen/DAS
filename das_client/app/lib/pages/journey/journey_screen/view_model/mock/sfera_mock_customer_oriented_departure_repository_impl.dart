@@ -7,10 +7,9 @@ import 'package:sfera/component.dart';
 
 class SferaMockCustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartureRepository {
   SferaMockCustomerOrientedDepartureRepositoryImpl({
-    required SferaRepository sferaRepo,
-    required RuFeatureProvider ruFeatureProvider,
-  }) : _sferaRepo = sferaRepo,
-       _ruFeatureProvider = ruFeatureProvider {
+    required this._sferaRepo,
+    required this._ruFeatureProvider,
+  }) {
     _init();
   }
 

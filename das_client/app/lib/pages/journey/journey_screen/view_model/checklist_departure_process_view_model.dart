@@ -17,10 +17,9 @@ class ChecklistDepartureProcessViewModel extends JourneyAwareViewModel {
   ChecklistDepartureProcessViewModel({
     required this._journeyPositionViewModel,
     required this._ruFeatureProvider,
-    required this._uxTestingViewModel,
-    required CustomerOrientedDepartureViewModel customerOrientedDepartureViewModel,
+    required this._customerOrientedDepartureViewModel,
     super.journeyViewModel,
-  }) : _customerOrientedDepartureViewModel = customerOrientedDepartureViewModel {
+  }) {
     _initSubscription();
   }
 
