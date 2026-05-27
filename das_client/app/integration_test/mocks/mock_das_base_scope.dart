@@ -51,6 +51,7 @@ class MockDASBaseScope extends DASBaseScope {
     _registerMockAppLinksManager();
     _registerMockLauncher();
     getIt.registerSferaLocalRepo();
+    getIt.registerAppLifecycleViewModel();
 
     if (e2e) {
       getIt.registerPreloadRepository();

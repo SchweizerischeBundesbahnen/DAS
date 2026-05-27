@@ -291,6 +291,7 @@ extension AuthenticatedScopeExtension on GetIt {
         ruFeatureProvider: DI.get(),
         authenticator: DI.get(),
         notificationViewModel: DI.get(),
+        appLifecycleViewModel: DI.get(),
       );
     }
 

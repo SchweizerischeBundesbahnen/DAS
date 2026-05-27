@@ -4,6 +4,7 @@ import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:app/sound/das_sounds.dart';
 import 'package:app/sound/sound.dart';
+import 'package:app/util/app_lifecycle_view_model.dart';
 import 'package:auth/component.dart';
 import 'package:customer_oriented_departure/component.dart';
 import 'package:fake_async/fake_async.dart';
@@ -26,6 +27,7 @@ import 'customer_oriented_departure_view_model_test.mocks.dart';
   MockSpec<Sound>(),
   MockSpec<Authenticator>(),
   MockSpec<JourneyViewModel>(),
+  MockSpec<AppLifecycleViewModel>(),
 ])
 void main() {
   group('CustomerOrientedDepartureViewModel', () {
@@ -36,9 +38,11 @@ void main() {
     late MockAuthenticator mockAuthenticator;
     late MockDASSounds mockDasSounds;
     late MockJourneyViewModel mockJourneyViewModel;
+    late MockAppLifecycleViewModel mockAppLifecycleViewModel;
 
     late BehaviorSubject<CustomerOrientedDeparture> rxCustomerOrientedDeparture;
     late BehaviorSubject<Journey?> rxJourney;
+    late PublishSubject<void> rxOnResumed;
     late List<CustomerOrientedDepartureStatus> statusRegister;
     late FakeAsync testAsync;
 
@@ -61,6 +65,7 @@ void main() {
           notificationViewModel: mockNotificationViewModel,
           authenticator: mockAuthenticator,
           journeyViewModel: mockJourneyViewModel,
+          appLifecycleViewModel: mockAppLifecycleViewModel,
         );
 
         statusRegister = [];
@@ -76,12 +81,15 @@ void main() {
       mockDasSounds = MockDASSounds();
       mockAuthenticator = MockAuthenticator();
       mockJourneyViewModel = MockJourneyViewModel();
+      mockAppLifecycleViewModel = MockAppLifecycleViewModel();
 
       rxCustomerOrientedDeparture = BehaviorSubject<CustomerOrientedDeparture>();
       rxJourney = BehaviorSubject<Journey?>.seeded(initialJourney);
+      rxOnResumed = PublishSubject<void>();
 
       when(mockRepository.customerOrientedDeparture).thenAnswer((_) => rxCustomerOrientedDeparture.stream);
       when(mockJourneyViewModel.journey).thenAnswer((_) => rxJourney.stream);
+      when(mockAppLifecycleViewModel.onResumed).thenAnswer((_) => rxOnResumed.stream);
       when(mockRuFeatureProvider.isRuFeatureEnabled(RuFeatureKeys.customerOrientedDeparture)).thenAnswer(
         (_) => Future.value(true),
       );
@@ -97,7 +105,17 @@ void main() {
       testee.dispose();
       rxCustomerOrientedDeparture.close();
       rxJourney.close();
+      rxOnResumed.close();
       GetIt.I.reset();
+    });
+
+    test('onResumed_requestsLatestStatus', () {
+      // ACT
+      testAsync.run((_) => rxOnResumed.add(null));
+      processStreams(fakeAsync: testAsync);
+
+      // VERIFY
+      verify(mockRepository.requestLatestStatus()).called(1);
     });
 
     test('status_whenWaitAndFeatureEnabled_emitsAndInsertsNotificationWithoutSound', () {
@@ -182,7 +200,7 @@ void main() {
       verifyNever(mockNotificationViewModel.insert(type: .customerOrientedDeparture, callback: anyNamed('callback')));
     });
 
-    test('journeyIdentificationChanged_whenJourneyWithTrainId_thenSubscribesWithCorrectParameters', () async {
+    test('onJourneyChanged_whenJourneyWithTrainId_thenSubscribesWithCorrectParameters', () async {
       // WHEN
       final journeyEndTime = DateTime.now();
       final journey = _createJourney(trainNumber: '9999', journeyEndTime: journeyEndTime, ru: RailwayUndertaking.sbbP);
@@ -202,7 +220,7 @@ void main() {
       ).called(1);
     });
 
-    test('journeyIdentificationChanged_whenJourneyWithoutTrainId_doesNotSubscribe', () async {
+    test('onJourneyChanged_whenJourneyWithoutTrainId_doesNotSubscribe', () async {
       // WHEN
       final journey = _createJourney(trainNumber: '9999', hasTrainId: false);
 
@@ -221,7 +239,7 @@ void main() {
       );
     });
 
-    test('journeyIdentificationChanged_whenJourneyChanges_unsubscribesBeforeResubscribing', () async {
+    test('onJourneyChanged_whenJourneyChanges_unsubscribesBeforeResubscribing', () async {
       // WHEN
       final journey1 = _createJourney(trainNumber: '1111');
       final journey2 = _createJourney(trainNumber: '2222');
@@ -251,7 +269,7 @@ void main() {
       ]);
     });
 
-    test('journeyIdentificationChanged_whenNullJourney_doesNotSubscribeButUnsubscribesIfPreviousExists', () async {
+    test('onJourneyChanged_whenNullJourney_doesNotSubscribeButUnsubscribesIfPreviousExists', () async {
       // WHEN
       final journey = _createJourney(trainNumber: '3333');
 
@@ -274,7 +292,7 @@ void main() {
       ).called(1);
     });
 
-    test('journeyIdentificationChanged_whenUserIsNotDriver_subscribesWithIsDriverFalse', () async {
+    test('onJourneyChanged_whenUserIsNotDriver_subscribesWithIsDriverFalse', () async {
       // WHEN
       when(mockAuthenticator.user()).thenAnswer((_) => Future.value(User(userId: 'userId', roles: [Role.observer])));
       final journey = _createJourney(trainNumber: '4444');

@@ -5,6 +5,7 @@ import 'package:app/pages/journey/journey_screen/view_model/notification_priorit
 import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:app/sound/das_sounds.dart';
+import 'package:app/util/app_lifecycle_view_model.dart';
 import 'package:auth/component.dart';
 import 'package:customer_oriented_departure/component.dart';
 import 'package:logging/logging.dart';
@@ -19,6 +20,7 @@ class CustomerOrientedDepartureViewModel extends JourneyAwareViewModel {
     required this._ruFeatureProvider,
     required this._notificationViewModel,
     required this._authenticator,
+    required this._appLifecycleViewModel,
     super.journeyViewModel,
   }) {
     _init();
@@ -27,10 +29,11 @@ class CustomerOrientedDepartureViewModel extends JourneyAwareViewModel {
   final CustomerOrientedDepartureRepository _repository;
   final RuFeatureProvider _ruFeatureProvider;
   final NotificationPriorityQueueViewModel _notificationViewModel;
+  final AppLifecycleViewModel _appLifecycleViewModel;
   final Authenticator _authenticator;
 
   final _rxStatus = BehaviorSubject<CustomerOrientedDepartureStatus>();
-  StreamSubscription? _statusSubscription;
+  final _subscriptions = <StreamSubscription>[];
 
   Journey? _lastJourney;
 
@@ -53,9 +56,11 @@ class CustomerOrientedDepartureViewModel extends JourneyAwareViewModel {
   @override
   void dispose() {
     _repository.unsubscribe();
-    _statusSubscription?.cancel();
-    _statusSubscription = null;
+    _subscriptions.clear();
     _rxStatus.close();
+    for (final sub in _subscriptions) {
+      sub.cancel();
+    }
     super.dispose();
   }
 
@@ -91,7 +96,20 @@ class CustomerOrientedDepartureViewModel extends JourneyAwareViewModel {
   }
 
   void _init() {
-    _statusSubscription = _repository.customerOrientedDeparture.listen((event) async {
+    _initCustomerOrientedDeparture();
+    _initOnResumed();
+  }
+
+  void _initOnResumed() {
+    final subscription = _appLifecycleViewModel.onResumed.listen((_) {
+      _log.fine('App resumed from background. Request latest status');
+      _repository.requestLatestStatus();
+    });
+    _subscriptions.add(subscription);
+  }
+
+  void _initCustomerOrientedDeparture() {
+    final subscription = _repository.customerOrientedDeparture.listen((event) async {
       final currentTrain = _lastJourney?.metadata.trainIdentification;
       if (currentTrain != null && currentTrain.trainNumber != event.trainNumber) {
         _log.info(
@@ -114,5 +132,7 @@ class CustomerOrientedDepartureViewModel extends JourneyAwareViewModel {
         _rxStatus.add(status);
       }
     }, onError: _rxStatus.addError);
+
+    _subscriptions.add(subscription);
   }
 }

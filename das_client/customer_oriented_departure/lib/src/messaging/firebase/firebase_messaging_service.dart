@@ -31,6 +31,7 @@ class FirebaseMessagingService implements MessagingService {
 
   @override
   Future<void> replayMessages() async {
+    _log.fine('Replaying messages from local storage');
     final latestMessages = await LocalMessageStorage.getLatestMessages();
     for (final message in latestMessages) {
       _rxMessage.add(message);

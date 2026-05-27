@@ -8,6 +8,7 @@ import 'package:app/launcher/launcher_impl.dart';
 import 'package:app/pages/login/login_view_model.dart';
 import 'package:app/provider/user_settings.dart';
 import 'package:app/sound/das_sounds.dart';
+import 'package:app/util/app_lifecycle_view_model.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:app_links_x/component.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -49,6 +50,7 @@ class DASBaseScope extends DIScope {
     getIt.registerLauncher();
     getIt.registerSferaLocalRepo();
     getIt.registerPreloadRepository();
+    getIt.registerAppLifecycleViewModel();
 
     await getIt.allReady();
   }
@@ -162,6 +164,14 @@ extension BaseScopeExtension on GetIt {
         disablePreload: DI.get<Flavor>().disablePreload,
       ),
       dispose: (repo) => repo.dispose(),
+    );
+  }
+
+  void registerAppLifecycleViewModel() {
+    _log.fine('Register Launcher');
+    registerSingleton<AppLifecycleViewModel>(
+      AppLifecycleViewModel(),
+      dispose: (vm) => vm.dispose(),
     );
   }
 }
