@@ -60,6 +60,9 @@ class CustomerOrientedDepartureViewModel extends JourneyAwareViewModel {
   }
 
   Future<void> _subscribe(Journey journey) async {
+    final isEnabled = await _ruFeatureProvider.isRuFeatureEnabled(.customerOrientedDeparture);
+    if (!isEnabled) return;
+
     final trainIdentification = journey.metadata.trainIdentification;
     if (trainIdentification == null) {
       _log.warning('Subscribe canceled as journey without train identification was provided');
@@ -100,17 +103,15 @@ class CustomerOrientedDepartureViewModel extends JourneyAwareViewModel {
       _notificationViewModel.remove(type: .customerOrientedDeparture);
       final isEnabled = await _ruFeatureProvider.isRuFeatureEnabled(.customerOrientedDeparture);
       if (isEnabled) {
-        final customerOrientedDepartureStatus = event.status;
-        if (customerOrientedDepartureStatus != .departure) {
+        final status = event.status;
+        if (status != .departure) {
           _notificationViewModel.insert(
             type: .customerOrientedDeparture,
-            callback: customerOrientedDepartureStatus == .ready
-                ? DI.get<DASSounds>().customerOrientedDeparture.play
-                : null,
+            callback: status == .ready ? DI.get<DASSounds>().customerOrientedDeparture.play : null,
           );
         }
 
-        _rxStatus.add(customerOrientedDepartureStatus);
+        _rxStatus.add(status);
       }
     }, onError: _rxStatus.addError);
   }

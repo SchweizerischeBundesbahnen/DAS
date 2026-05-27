@@ -6,8 +6,7 @@ enum CustomerOrientedDepartureStatus {
   wait,
   ready,
   departure,
-  call,
-  ;
+  call;
 
   static CustomerOrientedDepartureStatus? from(String value) {
     final status = values.where((status) => status.name.toLowerCase() == value.toLowerCase()).firstOrNull;

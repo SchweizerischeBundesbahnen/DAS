@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -54,9 +54,6 @@
 		29D73629EF347BDCE35E65A5 /* Pods-IntegrationTests.release-inte.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IntegrationTests.release-inte.xcconfig"; path = "Target Support Files/Pods-IntegrationTests/Pods-IntegrationTests.release-inte.xcconfig"; sourceTree = "<group>"; };
 		2C1436C8A0C94E7212D4F96A /* Pods_RunnerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RunnerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
-		428DBDEF2FB4A2BA00839A1A /* GoogleService-Info-PROD.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info-PROD.plist"; sourceTree = "<group>"; };
-		428DBDF12FB4A2DF00839A1A /* GoogleService-Info-INTE.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info-INTE.plist"; sourceTree = "<group>"; };
-		428DBDF32FB4A2F200839A1A /* GoogleService-Info-DEV.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info-DEV.plist"; sourceTree = "<group>"; };
 		44489285EAA0BF513C9EC634 /* Pods-RunnerTests.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.debug-prod.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.debug-prod.xcconfig"; sourceTree = "<group>"; };
 		4F3883BB8575F09F62385C0D /* Pods-RunnerTests.release-inte.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.release-inte.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.release-inte.xcconfig"; sourceTree = "<group>"; };
 		59B6AF7FE1256BB99158C3AB /* Pods-IntegrationTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IntegrationTests.debug.xcconfig"; path = "Target Support Files/Pods-IntegrationTests/Pods-IntegrationTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -177,9 +174,6 @@
 				1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */,
 				74858FAE1ED2DC5600515810 /* AppDelegate.swift */,
 				74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */,
-				428DBDEF2FB4A2BA00839A1A /* GoogleService-Info-PROD.plist */,
-				428DBDF12FB4A2DF00839A1A /* GoogleService-Info-INTE.plist */,
-				428DBDF32FB4A2F200839A1A /* GoogleService-Info-DEV.plist */,
 			);
 			path = Runner;
 			sourceTree = "<group>";
@@ -267,7 +261,6 @@
 				97C146EA1CF9000F007C117D /* Sources */,
 				97C146EB1CF9000F007C117D /* Frameworks */,
 				97C146EC1CF9000F007C117D /* Resources */,
-				84E52E612CC65B7C001FA0B7 /* Copy Firebase Config */,
 				9705A1C41CF9048500538489 /* Embed Frameworks */,
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
 				5E9053D39D7020833ED3A6E4 /* [CP] Embed Pods Frameworks */,
@@ -372,9 +365,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -395,24 +392,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build";
-		};
-		84E52E612CC65B7C001FA0B7 /* Copy Firebase Config */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PROJECT_DIR}/Runner/GoogleService-Info-DEV.plist",
-				"${PROJECT_DIR}/Runner/GoogleService-Info-INTE.plist",
-				"${PROJECT_DIR}/Runner/GoogleService-Info-PROD.plist",
-			);
-			name = "Copy Firebase Config";
-			outputPaths = (
-				"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "CONFIG_SUFFIX=$(echo \"${CONFIGURATION}\" | awk -F- '{print toupper($NF)}')\ncase \"${CONFIG_SUFFIX}\" in\n  DEV|INTE|PROD) ;;\n  *) CONFIG_SUFFIX=PROD ;;\nesac\n\nSOURCE_PLIST=\"${PROJECT_DIR}/Runner/GoogleService-Info-${CONFIG_SUFFIX}.plist\"\nDEST_PLIST=\"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\"\n\nif [ ! -f \"${SOURCE_PLIST}\" ]; then\n  echo \"error: Missing Firebase plist at ${SOURCE_PLIST}\" >&2\n  exit 1\nfi\n\ncp \"${SOURCE_PLIST}\" \"${DEST_PLIST}\"\n";
 		};
 		A5B066E9F1265209A4CC875B /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;

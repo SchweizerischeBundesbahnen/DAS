@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:app/model/tour_system.dart';
 import 'package:auth/component.dart';
+import 'package:customer_oriented_departure/component.dart';
 import 'package:logging/logging.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -18,6 +19,7 @@ sealed class Flavor {
     required this.disablePreload,
     required this.tourSystemUrls,
     required this.sferaVersion,
+    required this.customerOrientedDepartureEnvironment,
     this.color = SBBColors.transparent,
     this.showBanner = false,
     this.isTmsEnabledForFlavor = false,
@@ -41,6 +43,7 @@ sealed class Flavor {
   final String waraIOSUrlScheme;
   final bool disablePreload;
   final Map<TourSystem, String> tourSystemUrls;
+  final CustomerOrientedDepartureEnvironment customerOrientedDepartureEnvironment;
 
   factory Flavor.dev() = _DevFlavor;
 
@@ -118,6 +121,7 @@ class _DevFlavor extends Flavor {
          waraAndroidPackageName: 'ch.sbb.tms.iad.shas_mobile',
          waraIOSUrlScheme: 'ch.sbb.tms.iad.shasmobile',
          tourSystemUrls: Map.from(_prodTourSystemUrls)..update(.tip, (_) => 'tip3test://tours'),
+         customerOrientedDepartureEnvironment: .dev,
        );
 }
 
@@ -138,6 +142,7 @@ class _InteFlavor extends Flavor {
          waraAndroidPackageName: 'ch.sbb.tms.iad.shas_mobile',
          waraIOSUrlScheme: 'ch.sbb.tms.iad.shasmobile',
          tourSystemUrls: Map.from(_prodTourSystemUrls)..update(.tip, (_) => 'tip3test://tours'),
+         customerOrientedDepartureEnvironment: .int,
        );
 }
 
@@ -158,6 +163,7 @@ class _ProdFlavor extends Flavor {
          waraAndroidPackageName: 'ch.sbb.tms.iad.shas_mobile',
          waraIOSUrlScheme: 'ch.sbb.tms.iad.shasmobile',
          tourSystemUrls: _prodTourSystemUrls,
+         customerOrientedDepartureEnvironment: .prod,
        );
 }
 

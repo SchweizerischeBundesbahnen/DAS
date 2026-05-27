@@ -10,7 +10,6 @@ import 'package:app/pages/journey/journey_screen/view_model/advised_speed_view_m
 import 'package:app/pages/journey/journey_screen/view_model/calculated_speed_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/checklist_departure_process_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_view_model.dart';
-import 'package:app/pages/journey/journey_screen/view_model/customer_oriented_departure_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/departure_dispatch_notification_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/departure_process_warning_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
@@ -62,7 +61,6 @@ class JourneyScope extends DIScope {
     getIt.registerJourneyTableViewModel();
     getIt.registerJourneyTableAdvancementViewModel();
     getIt.registerServicePointModalViewModel();
-    getIt.registerCustomerOrientedDepartureViewModel();
 
     await getIt.allReady();
   }
@@ -310,18 +308,6 @@ extension JourneyScopeExtension on GetIt {
         journeyViewModel: DI.get(),
         localRegulationHtmlGenerator: DI.get(),
         settingsVM: DI.get(),
-      ),
-      dispose: (vm) => vm.dispose(),
-    );
-  }
-
-  void registerCustomerOrientedDepartureViewModel() {
-    registerSingleton<CustomerOrientedDepartureViewModel>(
-      CustomerOrientedDepartureViewModel(
-        repository: DI.get(),
-        ruFeatureProvider: DI.get(),
-        authenticator: DI.get(),
-        notificationViewModel: DI.get(),
       ),
       dispose: (vm) => vm.dispose(),
     );

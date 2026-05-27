@@ -20,7 +20,7 @@ Future<void> start(Flavor flavor) async {
     () async {
       WidgetsFlutterBinding.ensureInitialized();
       final dasLogger = await _initDASLogging(flavor);
-      await _initMessaging();
+      await _initMessaging(flavor);
       await _initDependencyInjection(flavor, dasLogger);
       _setupFlutterErrorHandling();
       runDasApp();
@@ -59,7 +59,10 @@ Future<void> _initDependencyInjection(Flavor flavor, DASLogger? dasLogger) async
   await scopeHandler.push<SferaMockScope>();
 }
 
-Future<void> _initMessaging() => CustomerOrientedDepartureComponent.initializeMessaging();
+Future<void> _initMessaging(Flavor flavor) async {
+  final environment = flavor.customerOrientedDepartureEnvironment;
+  await CustomerOrientedDepartureComponent.initializeMessaging(connectTo: environment);
+}
 
 void _setupFlutterErrorHandling() {
   if (!kDebugMode) {

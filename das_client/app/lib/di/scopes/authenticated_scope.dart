@@ -1,6 +1,7 @@
 import 'package:app/app_info/app_info.dart';
 import 'package:app/di/di.dart';
 import 'package:app/flavor.dart';
+import 'package:app/pages/journey/journey_screen/view_model/customer_oriented_departure_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/mock/sfera_mock_customer_oriented_departure_repository_impl.dart';
 import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
@@ -53,12 +54,13 @@ class AuthenticatedScope extends DIScope {
     getIt.registerFormationRepository();
     getIt.registerCustomerOrientedDepartureRepository(inTmsScope: inTmsScope);
 
+    getIt.registerJourneyViewModel();
     getIt.registerJourneyNavigationViewModel();
     getIt.registerJourneySelectionViewModel();
-    getIt.registerJourneyViewModel();
+    getIt.registerNotificationPriorityViewModel();
+    getIt.registerCustomerOrientedDepartureViewModel();
     getIt.registerJourneySettingsViewModel();
     getIt.registerViewModeViewModel();
-    getIt.registerNotificationPriorityViewModel();
     getIt.registerWarnAppViewModel();
     getIt.registerLocalRegulationHtmlGenerator();
 
@@ -279,6 +281,30 @@ extension AuthenticatedScopeExtension on GetIt {
         dispose: (repo) => repo.dispose(),
       );
     }
+  }
+
+  void registerCustomerOrientedDepartureViewModel() {
+    factoryFunc() async {
+      _log.fine('Register CustomerOrientedDepartureViewModel');
+      return CustomerOrientedDepartureViewModel(
+        repository: DI.get(),
+        ruFeatureProvider: DI.get(),
+        authenticator: DI.get(),
+        notificationViewModel: DI.get(),
+      );
+    }
+
+    registerSingletonAsync<CustomerOrientedDepartureViewModel>(
+      factoryFunc,
+      dependsOn: [
+        JourneyViewModel,
+        CustomerOrientedDepartureRepository,
+        SferaRepository,
+        RuFeatureProvider,
+        NotificationPriorityQueueViewModel,
+      ],
+      dispose: (vm) => vm.dispose(),
+    );
   }
 }
 
