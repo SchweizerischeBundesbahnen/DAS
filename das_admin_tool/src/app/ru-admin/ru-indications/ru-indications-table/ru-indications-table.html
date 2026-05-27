@@ -1,0 +1,169 @@
+<form [formGroup]="form" >
+  <div class="search-language-header">
+
+  <sbb-form-field>
+    <input formControlName="search" i18n-placeholder="@@ru_indications_table_search_placeholder" placeholder="Suchen" type="text"/>
+    <sbb-icon name="magnifying-glass-small" slot="suffix"></sbb-icon>
+  </sbb-form-field>
+  <sbb-form-field>
+    <sbb-icon name="globe-small" slot="prefix"></sbb-icon>
+    <label i18n="@@ru_indications_table_language_label">Sprache</label>
+    <sbb-select formControlName="language">
+      @for (language of languageProvider.allLanguages; track language.localeId) {
+        <sbb-option [value]="language.path">{{ language.label }}</sbb-option>
+      }
+    </sbb-select>
+  </sbb-form-field>
+  </div>
+
+<sbb-table-wrapper>
+  <table [dataSource]="dataSource" sbb-table sbbSort sbbSortDirection="asc" fixedLayout class="table-truncated">
+    <ng-container sbbColumnDef="select">
+      <th *sbbHeaderCellDef sbb-header-cell style="width: 36px">
+        <sbb-checkbox
+          (change)="$event ? parentToggle() : null"
+          [checked]="selection.hasValue() && isAllSelected()"
+          [indeterminate]="selection.hasValue() && !isAllSelected()"
+        >
+        </sbb-checkbox>
+      </th>
+      <td *sbbCellDef="let row" sbb-cell>
+        <sbb-checkbox
+          (change)="$event ? selection.toggle(row) : null"
+          (click)="$event.stopPropagation()"
+          [checked]="selection.isSelected(row)"
+        >
+        </sbb-checkbox>
+      </td>
+    </ng-container>
+
+    <ng-container sbbColumnDef="title" >
+      <th *sbbHeaderCellDef i18n="@@ru_indications_table_column_title" sbb-header-cell sbb-sort-header="title">Titel</th>
+      <td *sbbCellDef="let row" sbb-cell><span>{{ titleValue(row) }}</span></td>
+    </ng-container>
+
+    <ng-container sbbColumnDef="text">
+      <th *sbbHeaderCellDef i18n="@@ru_indications_table_column_text" sbb-header-cell sbb-sort-header="text">Text</th>
+      <td *sbbCellDef="let row" sbb-cell><span>{{ textValue(row) }}</span></td>
+    </ng-container>
+
+    <ng-container sbbColumnDef="category">
+      <th *sbbHeaderCellDef i18n="@@ru_indications_table_column_category" sbb-header-cell sbb-sort-header="category">Kategorie</th>
+      <td *sbbCellDef="let row" sbb-cell><span>{{ row.content.category }}</span></td>
+    </ng-container>
+
+    <ng-container sbbColumnDef="status">
+      <th *sbbHeaderCellDef i18n="@@ru_indications_table_column_status" sbb-header-cell sbb-sort-header="status">Status</th>
+      <td *sbbCellDef="let row" sbb-cell class="cell-nowrap">{{ statusValue(row) }}</td>
+    </ng-container>
+
+    <ng-container sbbColumnDef="companies">
+      <th *sbbHeaderCellDef i18n="@@ru_indications_table_column_companies" sbb-header-cell sbb-sort-header="companies">EVU</th>
+      <td *sbbCellDef="let row" sbb-cell ><span>{{ companiesValue(row) }}</span></td>
+    </ng-container>
+
+    <ng-container sbbColumnDef="trainNumbers">
+      <th *sbbHeaderCellDef i18n="@@ru_indications_table_column_train_numbers" sbb-header-cell sbb-sort-header="trainNumbers">Zugnummer</th>
+      <td *sbbCellDef="let row" sbb-cell><span>{{ trainNumbersValue(row) }}</span></td>
+    </ng-container>
+
+    <ng-container sbbColumnDef="locations">
+      <th *sbbHeaderCellDef i18n="@@ru_indications_table_column_locations" sbb-header-cell sbb-sort-header="locations">Betriebspunkt</th>
+      <td *sbbCellDef="let row" sbb-cell><span>{{ locationsValue(row) }}</span></td>
+    </ng-container>
+
+    <ng-container sbbColumnDef="periods">
+      <th *sbbHeaderCellDef i18n="@@ru_indications_table_column_periods" sbb-header-cell sbb-sort-header="periods">Zeitraum</th>
+      <td *sbbCellDef="let row" sbb-cell><span>{{ periodsValue(row) }}</span></td>
+    </ng-container>
+
+    <ng-container sbbColumnDef="lastModifiedAt">
+      <th *sbbHeaderCellDef i18n="@@ru_indications_table_column_last_modified_at" sbb-header-cell sbb-sort-header="lastModifiedAt">
+        Bearbeitet am
+      </th>
+      <td *sbbCellDef="let row" sbb-cell class="cell-nowrap">{{ row.lastModifiedAt | date: 'short'}}</td>
+    </ng-container>
+
+    <ng-container sbbColumnDef="lastModifiedBy">
+      <th *sbbHeaderCellDef i18n="@@ru_indications_table_column_last_modified_by" sbb-header-cell sbb-sort-header="lastModifiedBy">
+        Bearbeitet von
+      </th>
+      <td *sbbCellDef="let row" sbb-cell class="cell-nowrap">{{ row.lastModifiedBy }}</td>
+    </ng-container>
+
+    <ng-container sbbColumnDef="filter-category">
+      <th sbb-header-cell *sbbHeaderCellDef class="sbb-table-filter">
+        <sbb-form-field width="collapse">
+          <input formControlName="category" />
+        </sbb-form-field>
+      </th>
+    </ng-container>
+
+    <ng-container sbbColumnDef="filter-companies">
+      <th sbb-header-cell *sbbHeaderCellDef class="sbb-table-filter">
+        <sbb-form-field width="collapse">
+          <input formControlName="companies" />
+        </sbb-form-field>
+      </th>
+    </ng-container>
+
+    <ng-container sbbColumnDef="filter-train-numbers">
+      <th sbb-header-cell *sbbHeaderCellDef class="sbb-table-filter">
+        <sbb-form-field width="collapse">
+          <input formControlName="trainNumbers" />
+        </sbb-form-field>
+      </th>
+    </ng-container>
+
+    <ng-container sbbColumnDef="filter-locations">
+      <th sbb-header-cell *sbbHeaderCellDef class="sbb-table-filter">
+        <sbb-form-field width="collapse">
+          <input formControlName="locations" />
+        </sbb-form-field>
+      </th>
+    </ng-container>
+
+    <ng-container sbbColumnDef="filter-periods">
+      <th sbb-header-cell *sbbHeaderCellDef class="sbb-table-filter">
+        <sbb-form-field width="collapse">
+          <input formControlName="periods" />
+        </sbb-form-field>
+      </th>
+    </ng-container>
+
+    <ng-container sbbColumnDef="action">
+      <th *sbbHeaderCellDef class="action" sbb-header-cell></th>
+      <td *sbbCellDef="let ruIndication" class="action" sbb-cell>
+        <sbb-mini-button (click)="edit(ruIndication)" iconName="pen-small"></sbb-mini-button>
+      </td>
+    </ng-container>
+
+    <ng-container sbbColumnDef="empty">
+      <th sbb-header-cell *sbbHeaderCellDef></th>
+    </ng-container>
+
+    <tr *sbbHeaderRowDef="columns" sbb-header-row></tr>
+    <tr sbb-header-row *sbbHeaderRowDef="filterColumns"></tr>
+    <tr *sbbRowDef="let row; columns: columns" sbb-row></tr>
+  </table>
+</sbb-table-wrapper>
+</form>
+<div class="bottom">
+  <div class="left">
+    <sbb-compact-paginator [pageSize]="PAGE_SIZE"></sbb-compact-paginator>
+  </div>
+  <div class="right">
+    <sbb-secondary-button (click)="add()" i18n="@@button_create_entry" iconName="plus-small">
+      Neuen Hinweis erfassen
+    </sbb-secondary-button>
+    <sbb-transparent-button (click)="deleteSelected()" [disabled]="this.selection.isEmpty()" [loading]="isDeleting"
+                            i18n="@@button_delete_selected"
+                            iconName="trash-small">
+      {selection.selected.length, plural,
+        =0 {Einträge löschen}
+        one {Eintrag löschen}
+        other {# Einträge löschen}}
+    </sbb-transparent-button>
+  </div>
+</div>
+

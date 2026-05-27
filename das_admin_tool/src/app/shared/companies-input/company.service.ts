@@ -1,0 +1,76 @@
+import { httpResource } from '@angular/common/http';
+import { computed, Injectable } from '@angular/core';
+import { environment } from '../../../environments/environment';
+import { ApiResponse } from '../api-response';
+
+type CompanyApiResponse = ApiResponse<Company[]>;
+
+export interface Company {
+  code: string;
+  name: string;
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class CompanyService {
+  private readonly url = `${environment.backendUrl}/v1/companies`;
+
+  private readonly companiesRessource = httpResource<CompanyApiResponse>(() => this.url);
+  private readonly companies = computed(() => {
+    if (this.companiesRessource.hasValue()) {
+      return this.companiesRessource.value().data
+    }
+    return [];
+  });
+
+  public getName(code: string): string | undefined {
+    return this.companies().find((company) => company.code === code)?.name;
+  }
+
+  filterCompanies(query: string, excludedCodes: string[] = []): Company[] {
+    const allCompanies = this.companies().filter((company) => !excludedCodes.includes(company.code));
+    const q = query.trim().toLowerCase();
+    if (!q) {
+      return allCompanies;
+    }
+    const matching = allCompanies.filter((company) => {
+      const code = company.code.toLowerCase();
+      const name = company.name.toLowerCase();
+      return code.includes(query) || name.includes(query);
+    });
+
+    return this.sortByRelevance(matching, query);
+  }
+
+  private sortByRelevance(candidates: Company[], query: string): Company[] {
+    return [...candidates].sort((a, b) => {
+      const aCode = a.code.toLowerCase();
+      const bCode = b.code.toLowerCase();
+      const aName = a.name.toLowerCase();
+      const bName = b.name.toLowerCase();
+
+      const aRank = Math.min(this.rank(query, aCode), this.rank(query, aName));
+      const bRank = Math.min(this.rank(query, bCode), this.rank(query, bName));
+
+      if (aRank !== bRank) {
+        return aRank - bRank;
+      }
+
+      return aName.localeCompare(bName);
+    });
+  }
+
+  private rank(query: string, candidate: string): number {
+    if (candidate === query) {
+      return 0;
+    }
+    if (candidate.startsWith(query)) {
+      return 1;
+    }
+    if (candidate.includes(query)) {
+      return 2;
+    }
+    return 3;
+  }
+}

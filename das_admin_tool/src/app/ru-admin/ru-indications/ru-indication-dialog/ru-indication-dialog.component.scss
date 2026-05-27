@@ -1,0 +1,27 @@
+@use '@sbb-esta/lyne-elements' as sbb;
+
+sbb-title {
+  margin-top: 0;
+}
+
+sbb-form-field {
+  width: 100%;
+}
+
+.entry {
+  margin-bottom: var(--sbb-spacing-responsive-xxxs);
+
+  &:first-of-type {
+    margin-top: var(--sbb-spacing-fixed-2x);
+  }
+
+  p:first-of-type {
+    @include sbb.text-xs--regular;
+    margin: 0;
+  }
+
+  p:last-of-type {
+    @include sbb.text-m--regular;
+    margin: 0;
+  }
+}

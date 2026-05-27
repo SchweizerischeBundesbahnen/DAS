@@ -2,7 +2,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {HttpResourceRef} from '@angular/common/http';
 import {FormControl} from '@angular/forms';
 import {CompaniesInputComponent} from './companies-input.component';
-import {CompaniesApi} from './companies-api.service';
+import {CompanyService} from './company.service';
 
 const companies = [
   {code: '1085', name: 'SBB'},
@@ -23,7 +23,7 @@ describe('CompaniesInputComponent', () => {
     await TestBed.configureTestingModule({
       imports: [CompaniesInputComponent],
       providers: [
-        {provide: CompaniesApi, useValue: {companies: companiesResource}},
+        {provide: CompanyService, useValue: {companies: companiesResource}},
       ],
     }).compileComponents();
 

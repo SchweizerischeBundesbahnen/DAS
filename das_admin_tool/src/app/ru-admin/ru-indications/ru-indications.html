@@ -1,0 +1,16 @@
+<sbb-title i18n="@@ru_indications_title" level="2">Hinweise</sbb-title>
+
+@if (ruIndicationsRessource.hasValue()) {
+  @if (ruIndicationsRessource.value().data.length === 0) {
+    <p i18n="@@ru_indications_empty_state">Noch keine Hinweise erfasst.</p>
+    <sbb-secondary-button (click)="ruIndicationService.add()" i18n="@@ru_indications_button_create" iconName="plus-small">
+      Neuen Hinweis erfassen
+    </sbb-secondary-button>
+  } @else {
+    <app-ru-indications-table/>
+  }
+} @else if (ruIndicationsRessource.error()) {
+  <p i18n="@@ru_indications_error_loading">Fehler beim Laden der Hinweise</p>
+} @else if (ruIndicationsRessource.isLoading()) {
+  <sbb-loading-indicator-circle></sbb-loading-indicator-circle>
+}

@@ -42,8 +42,8 @@
     Abbrechen
   </sbb-secondary-button>
   @if (isEdit) {
-    <sbb-transparent-button i18n="@@special_holidays_dialog_button_delete" iconName="trash-small"
-                            sbb-dialog-close="delete">Feiertag löschen
+    <sbb-transparent-button i18n="@@dialog_button_delete" iconName="trash-small"
+                            sbb-dialog-close="delete">Eintrag löschen
     </sbb-transparent-button>
   }
   <sbb-button [disabled]="specialHolidayForm.invalid" [sbb-dialog-close]="formValue"

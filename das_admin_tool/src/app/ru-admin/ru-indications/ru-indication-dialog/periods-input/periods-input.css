@@ -1,0 +1,17 @@
+.date-inputs {
+  display: flex;
+  gap: var(--sbb-spacing-fixed-4x);
+  margin-bottom: var(--sbb-spacing-responsive-xxxs);
+}
+
+sbb-toggle-check {
+  margin-bottom: var(--sbb-spacing-responsive-xxxs);
+}
+
+sbb-chip-group {
+  margin-bottom: var(--sbb-spacing-responsive-xxxs);
+}
+
+sbb-checkbox-group {
+  margin-bottom: var(--sbb-spacing-responsive-xxxs);
+}
