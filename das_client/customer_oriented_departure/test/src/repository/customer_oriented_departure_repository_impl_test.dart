@@ -247,8 +247,8 @@ void main() {
       firstCall.called(1);
       final messageId = firstCall.captured.single as String;
 
-      // 1st retry after 5 seconds
-      async.elapse(const Duration(seconds: 5));
+      // 1st retry after 10 seconds
+      async.elapse(const Duration(seconds: 10));
       async.flushMicrotasks();
       verify(
         mockSubscribeRequest.call(
@@ -262,8 +262,8 @@ void main() {
         ),
       ).called(1);
 
-      // 2nd retry after 10 seconds (exponential backoff)
-      async.elapse(const Duration(seconds: 10));
+      // 2nd retry after 20 seconds (exponential backoff)
+      async.elapse(const Duration(seconds: 20));
       async.flushMicrotasks();
       verify(
         mockSubscribeRequest.call(
@@ -281,7 +281,7 @@ void main() {
       async.elapse(const Duration(hours: 1));
       async.flushMicrotasks();
       final callCount = verify(mockApiService.subscribe).callCount;
-      expect(callCount, greaterThan(10));
+      expect(callCount, greaterThan(8));
     });
   });
 
@@ -316,8 +316,8 @@ void main() {
       rxMessage.add(BaseMessageDto(messageId: 'random-message-id'));
       async.flushMicrotasks();
 
-      // check first retry that should happen after 5s
-      async.elapse(const Duration(seconds: 6));
+      // check first retry that should happen after 10s
+      async.elapse(const Duration(seconds: 11));
       async.flushMicrotasks();
       verify(
         mockSubscribeRequest.call(

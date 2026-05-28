@@ -190,8 +190,8 @@ class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartu
   }
 
   void _scheduleSubscriptionRetry(_Subscription subscription) {
-    // 5 * 2^attempt for exponential backoff. Capped at 2^6 (~5min)
-    final delaySeconds = 5 * (1 << min(_subscriptionRetryAttempt, 6));
+    // 10 * 2^attempt for exponential backoff. Capped at 2^7 (~21min)
+    final delaySeconds = 10 * (1 << min(_subscriptionRetryAttempt, 7));
 
     _log.fine(
       'Scheduling subscription retry for messageId: ${subscription.messageId}, attempt: ${_subscriptionRetryAttempt + 1}, delay: ${delaySeconds}s',
