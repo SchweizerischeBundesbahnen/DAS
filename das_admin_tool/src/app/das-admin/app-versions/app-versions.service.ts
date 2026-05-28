@@ -4,6 +4,7 @@ import { AppVersionDialog, VersionDialogEditResult } from './app-version-dialog/
 import { firstValueFrom } from 'rxjs';
 import { SbbDialogService } from '@sbb-esta/lyne-angular/dialog';
 import { BaseDialogService } from '../../ru-admin/base-dialog.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -31,5 +32,13 @@ export class AppVersionsService extends BaseDialogService {
 
   protected override reload(): void {
     this.dasAdminApi.appVersions.reload()
+  }
+
+  protected override handleApiError(e: unknown) {
+    if (e instanceof HttpErrorResponse && e.error.status === 409) {
+      this.toastService.error($localize`:@@app_versions_toast_conflict_error:Diese App Version existiert bereits.`);
+    } else {
+      super.handleApiError(e)
+    }
   }
 }

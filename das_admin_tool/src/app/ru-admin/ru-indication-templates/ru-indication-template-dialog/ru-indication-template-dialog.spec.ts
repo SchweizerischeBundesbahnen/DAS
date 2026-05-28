@@ -19,31 +19,31 @@ describe('RuIndicationTemplateDialog', () => {
   describe('oneLanguageRequired validator', () => {
     it('should be invalid when all language titles are empty', () => {
       const dialog = createDialog();
-      expect(dialog['ruIndicationTemplateForm'].errors).toEqual({oneLanguageRequired: true});
+      expect(dialog['ruIndicationTemplateForm'].get('content')!.errors).toEqual({oneLanguageRequired: true});
     });
 
     it('should be valid when at least de title is filled', () => {
       const dialog = createDialog();
       dialog['ruIndicationTemplateForm'].get('content.de.title')!.setValue('Titel');
-      expect(dialog['ruIndicationTemplateForm'].errors).toBeNull();
+      expect(dialog['ruIndicationTemplateForm'].get('content')!.errors).toBeNull();
     });
 
     it('should be valid when only fr title is filled', () => {
       const dialog = createDialog();
       dialog['ruIndicationTemplateForm'].get('content.fr.title')!.setValue('Titre');
-      expect(dialog['ruIndicationTemplateForm'].errors).toBeNull();
+      expect(dialog['ruIndicationTemplateForm'].get('content')!.errors).toBeNull();
     });
 
     it('should be valid when only it title is filled', () => {
       const dialog = createDialog();
       dialog['ruIndicationTemplateForm'].get('content.it.title')!.setValue('Titolo');
-      expect(dialog['ruIndicationTemplateForm'].errors).toBeNull();
+      expect(dialog['ruIndicationTemplateForm'].get('content')!.errors).toBeNull();
     });
 
     it('should be invalid when titles contain only whitespace', () => {
       const dialog = createDialog();
       dialog['ruIndicationTemplateForm'].get('content.de.title')!.setValue('   ');
-      expect(dialog['ruIndicationTemplateForm'].errors).toEqual({oneLanguageRequired: true});
+      expect(dialog['ruIndicationTemplateForm'].get('content')!.errors).toEqual({oneLanguageRequired: true});
     });
   });
 

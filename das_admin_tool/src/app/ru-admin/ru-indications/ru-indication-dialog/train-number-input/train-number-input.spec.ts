@@ -17,7 +17,6 @@ describe('TrainNumberInput', () => {
     fixture = TestBed.createComponent(TrainNumberInput);
     component = fixture.componentInstance;
     control = new FormControl<RuIndicationTrainNumberFilter[]>([], {nonNullable: true});
-    // Wrap in a parent FormGroup so parent?.valueChanges fires (mirrors the real ru indication form)
     parentForm = new FormGroup({
       operationalTrainNumberFilters: control,
       companies: new FormControl<string[]>([], {nonNullable: true}),
@@ -58,7 +57,6 @@ describe('TrainNumberInput', () => {
     component['trainFilterModeControl'].setValue('filtered');
     expect(control.hasError('required')).toBe(true);
 
-    // Simulate user changing the company — triggers parent valueChanges
     parentForm.controls['companies'].setValue(['1085']);
 
     expect(control.hasError('required')).toBe(true);
@@ -87,5 +85,30 @@ describe('TrainNumberInput', () => {
     await prefilledFixture.whenStable();
 
     expect(prefilledFixture.componentInstance['trainFilterModeControl'].value).toBe('filtered');
+  });
+
+  it('train number validator: should mark invalid formats and ranges', () => {
+    const tnForm = component['trainNumberFilterForm'];
+    tnForm.controls.trainNumber.setValue('abc');
+    expect(tnForm.controls.trainNumber.errors).toEqual({invalidFormat: true});
+
+    tnForm.controls.trainNumber.setValue('10-5');
+    expect(tnForm.controls.trainNumber.errors).toEqual({rangeInvalid: true});
+
+    tnForm.controls.trainNumber.setValue('100');
+    expect(tnForm.controls.trainNumber.errors).toBeNull();
+
+    tnForm.controls.trainNumber.setValue('100-200');
+    expect(tnForm.controls.trainNumber.errors).toBeNull();
+  });
+
+  it('displayTrainNumberFilter should include parity label when set', async () => {
+    const { displayTrainNumberFilter } = await import('./train-number-input');
+    const even = displayTrainNumberFilter({expression: '100', parity: 'EVEN'} as RuIndicationTrainNumberFilter);
+    const odd = displayTrainNumberFilter({expression: '100', parity: 'ODD'} as RuIndicationTrainNumberFilter);
+
+    expect(even).toContain('100');
+    expect(even).toContain('Gerade');
+    expect(odd).toContain('Ungerade');
   });
 });

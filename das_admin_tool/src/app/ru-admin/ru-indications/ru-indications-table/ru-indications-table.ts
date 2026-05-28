@@ -27,7 +27,7 @@ import { SbbCheckbox } from '@sbb-esta/lyne-angular/checkbox';
 import { SelectionModel } from '@angular/cdk/collections';
 import { SbbTransparentButton } from '@sbb-esta/lyne-angular/button/transparent-button';
 
-interface RuIndicationFilter extends SbbTableFilter {
+export interface RuIndicationFilter extends SbbTableFilter {
   search: string;
   language: LanguageCode;
   category: string;
@@ -197,6 +197,7 @@ export class RuIndicationsTable {
   }
 
   private searchFilter(filter: RuIndicationFilter, data: RuIndication) {
+    console.log('search filter', filter, data)
     return (this.filterGlobally(filter, data) && this.filterProperties(filter, data)) ?? false;
   }
 

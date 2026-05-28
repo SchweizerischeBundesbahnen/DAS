@@ -1,8 +1,8 @@
-import {TestBed} from '@angular/core/testing';
-import {SpecialHolidaysTable} from './special-holidays-table.component';
-import {SpecialHolidayService} from '../special-holiday.service';
-import {SpecialHoliday, SpecialHolidayApiResponse} from '../../ru-admin-api';
-import {HttpResourceRef} from '@angular/common/http';
+import { TestBed } from '@angular/core/testing';
+import { SpecialHolidaysTable } from './special-holidays-table.component';
+import { SpecialHolidayService } from '../special-holiday.service';
+import { SpecialHoliday } from '../../ru-admin-api';
+import { vi } from 'vitest';
 
 const holidays: SpecialHoliday[] = [
   {
@@ -21,15 +21,11 @@ const holidays: SpecialHoliday[] = [
   },
 ];
 
-const mockHolidayService: Partial<SpecialHolidayService> = {
+const mockHolidayService = {
   edit: vi.fn(),
   add: vi.fn(),
   deleteAll: vi.fn(),
-  specialHolidaysResource: {
-    hasValue: () => false,
-    value: () => ({data: []} as SpecialHolidayApiResponse),
-    reload: () => true,
-  } as unknown as HttpResourceRef<SpecialHolidayApiResponse | undefined>,
+  specialHolidaysResource: new Proxy({}, {get: () => vi.fn()})
 };
 
 function createComponent(): SpecialHolidaysTable {

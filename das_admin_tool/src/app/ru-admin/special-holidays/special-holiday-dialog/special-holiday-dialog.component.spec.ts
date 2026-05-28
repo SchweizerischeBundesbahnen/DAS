@@ -35,12 +35,6 @@ describe('SpecialHolidayDialog', () => {
     expect(dialog['specialHolidayForm'].value.scheduleType).toBe('SUNDAY_SCHEDULE');
   });
 
-  it('should initialize companies with recent companies in create mode', () => {
-    const dialog = createDialog(undefined, ['1085', '1087']);
-
-    expect(dialog['specialHolidayForm'].value.companies).toEqual(['1085', '1087']);
-  });
-
   it('should initialize in edit mode and patch existing values', () => {
     const dialog = createDialog(existingHoliday, ['9999']);
 

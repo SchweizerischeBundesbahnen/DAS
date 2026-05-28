@@ -4,10 +4,7 @@ import {SpecialHolidays} from './special-holidays.component';
 import {SpecialHolidayService} from './special-holiday.service';
 
 const specialHolidayServiceMock = {
-  specialHolidaysResource: {
-    hasValue: () => true,
-    value: () => ({data: []}),
-  },
+  specialHolidaysResource: new Proxy({}, { get: () => vi.fn() })
 };
 
 describe('SpecialHolidays', () => {

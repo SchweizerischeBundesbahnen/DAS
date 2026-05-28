@@ -1,9 +1,9 @@
-import {TestBed} from '@angular/core/testing';
-import {RuIndicationTemplatesTable} from './ru-indication-templates-table';
-import {RuIndicationTemplateService} from '../ru-indication-template.service';
-import {LOCALE_ID} from '@angular/core';
-import {RuIndicationTemplate, RuIndicationTemplateApiResponse} from '../../ru-admin-api';
-import {HttpResourceRef} from '@angular/common/http';
+import { TestBed } from '@angular/core/testing';
+import { RuIndicationTemplatesTable } from './ru-indication-templates-table';
+import { RuIndicationTemplateService } from '../ru-indication-template.service';
+import { LOCALE_ID } from '@angular/core';
+import { RuIndicationTemplate } from '../../ru-admin-api';
+import { vi } from 'vitest';
 
 const templates: RuIndicationTemplate[] = [
   {
@@ -22,15 +22,11 @@ const templates: RuIndicationTemplate[] = [
   },
 ];
 
-const mockRuIndicationTemplateService: Partial<RuIndicationTemplateService> = {
+const mockRuIndicationTemplateService = {
   edit: vi.fn(),
   add: vi.fn(),
   deleteAll: vi.fn(),
-  ruIndicationTemplatesResource: {
-    hasValue: () => false,
-    value: () => ({data: []} as RuIndicationTemplateApiResponse),
-    reload: () => true,
-  } as unknown as HttpResourceRef<RuIndicationTemplateApiResponse | undefined>,
+  ruIndicationTemplatesResource: new Proxy({}, {get: () => vi.fn()})
 };
 
 function createComponent(): RuIndicationTemplatesTable {

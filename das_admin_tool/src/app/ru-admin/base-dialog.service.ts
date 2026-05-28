@@ -1,9 +1,8 @@
-import {inject, Injectable} from '@angular/core';
-import {ToastService} from '../shared/toast-service';
-import {RecentCompaniesStore} from '../shared/recent-companies.store';
-import {firstValueFrom, Observable} from 'rxjs';
+import { inject } from '@angular/core';
+import { ToastService } from '../shared/toast-service';
+import { RecentCompaniesStore } from '../shared/recent-companies.store';
+import { firstValueFrom, Observable } from 'rxjs';
 
-@Injectable()
 export abstract class BaseDialogService {
   protected readonly toastService = inject(ToastService);
   protected readonly recentCompaniesStore = inject(RecentCompaniesStore);
@@ -29,7 +28,12 @@ export abstract class BaseDialogService {
         this.toastService.success(successMessage);
         this.reload();
       })
-      .catch(() =>  this.toastService.error($localize`:@@dialog_service_error:Beim Speichern ist ein Fehler aufgetreten.`));
+      .catch(e => this.handleApiError(e));
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  protected handleApiError(_: unknown) {
+    this.toastService.error($localize`:@@dialog_service_error:Beim Speichern ist ein Fehler aufgetreten.`)
   }
 }
 

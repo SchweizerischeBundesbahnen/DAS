@@ -25,7 +25,7 @@ export function displayTrainNumberFilter(value: RuIndicationTrainNumberFilter): 
     parity = $localize`:@@ru_indication_form_parity_odd_value:Ungerade`;
   }
   return value.expression + (parity ? ` (${parity})` : '');
-};
+}
 
 function numberRangeValidator(control: AbstractControl): ValidationErrors | null {
   if (!control.value) {
@@ -70,6 +70,7 @@ export class TrainNumberInput implements OnInit {
     }),
     parity: new FormControl<TrainNumberParity>('ANY', {nonNullable: true})
   })
+  protected readonly displayTrainNumberFilter = displayTrainNumberFilter;
 
   ngOnInit(): void {
     this.initializeTrainFilterMode();
@@ -92,8 +93,6 @@ export class TrainNumberInput implements OnInit {
     this.trainNumberFilterForm.valueChanges.subscribe(() => this.updateValidationState());
     this.updateValidationState();
   }
-
-
 
   protected isTrainNumberRange(): boolean {
     return this.trainNumberFilterForm.valid && this.trainNumberFilterForm.controls.trainNumber.value.includes('-');
@@ -141,6 +140,4 @@ export class TrainNumberInput implements OnInit {
     if (hasDraftValue) errors['draftInvalid'] = true;
     this.control().setErrors(Object.keys(errors).length > 0 ? errors : null);
   }
-
-  protected readonly displayTrainNumberFilter = displayTrainNumberFilter;
 }

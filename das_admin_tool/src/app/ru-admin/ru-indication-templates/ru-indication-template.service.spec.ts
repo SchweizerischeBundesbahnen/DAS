@@ -1,13 +1,16 @@
-import {TestBed} from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 
-import {RuIndicationTemplateService} from './ru-indication-template.service';
-import {RuIndicationTemplate, RuIndicationTemplateApiResponse, RuAdminApi} from '../ru-admin-api';
-import {SbbDialogService} from '@sbb-esta/lyne-angular/dialog';
-import {ToastService} from '../../shared/toast-service';
-import {HttpResourceRef} from '@angular/common/http';
-import {of, throwError} from 'rxjs';
-import {RuIndicationTemplateDialogEditResult} from './ru-indication-template-dialog/ru-indication-template-dialog';
-import {SbbOverlayCloseEvent} from '@sbb-esta/lyne-elements/overlay.js';
+import { RuIndicationTemplateService } from './ru-indication-template.service';
+import { RuAdminApi, RuIndicationTemplate, RuIndicationTemplateApiResponse } from '../ru-admin-api';
+import { SbbDialogService } from '@sbb-esta/lyne-angular/dialog';
+import { ToastService } from '../../shared/toast-service';
+import { HttpResourceRef } from '@angular/common/http';
+import { of, throwError } from 'rxjs';
+import {
+  RuIndicationTemplateDialogEditResult
+} from './ru-indication-template-dialog/ru-indication-template-dialog';
+import { SbbOverlayCloseEvent } from '@sbb-esta/lyne-elements/overlay.js';
+import { RecentCompaniesStore } from '../../shared/recent-companies.store';
 
 const ruIndicationTemplate: RuIndicationTemplate = {
   id: 1,
@@ -49,6 +52,7 @@ describe('RuIndicationTemplateService', () => {
         {provide: RuAdminApi, useValue: mockRuAdminApi},
         {provide: SbbDialogService, useValue: mockSbbDialogService},
         {provide: ToastService, useValue: mockToastService},
+        {provide: RecentCompaniesStore, useValue: {}}
       ],
     });
 
@@ -85,7 +89,7 @@ describe('RuIndicationTemplateService', () => {
     await service.edit(ruIndicationTemplate);
 
     expect(successToastSpy).toHaveBeenCalled();
-    expect(apiDeleteSpy).toHaveBeenCalledWith(ruIndicationTemplate.id);
+    expect(apiDeleteSpy).toHaveBeenCalledWith([ruIndicationTemplate.id]);
   });
 
   it('edit with dialog close should do nothing', async () => {

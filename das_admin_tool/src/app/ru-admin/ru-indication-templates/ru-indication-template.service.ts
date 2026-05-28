@@ -21,7 +21,7 @@ export class RuIndicationTemplateService extends BaseDialogService {
     const event = await firstValueFrom(this.dialogService.open<RuIndicationTemplateDialog, RuIndicationTemplateDialogEditResult>(RuIndicationTemplateDialog, {data: ruIndicationTemplate}).afterClosed);
     if (event.result === 'delete') {
       await this.runMutation(
-        this.ruAdminApi.deleteRuIndicationTemplate(ruIndicationTemplate.id!),
+        this.ruAdminApi.deleteAllRuIndicationTemplate([ruIndicationTemplate.id!]),
         $localize`:@@ru_indication_templates_toast_delete_success:Der Titel & Text wurde erfolgreich gelöscht.`,
       );
     } else if (event.result && ruIndicationTemplate.id) {
