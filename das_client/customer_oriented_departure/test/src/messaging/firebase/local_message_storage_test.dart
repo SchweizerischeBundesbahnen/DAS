@@ -5,8 +5,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
+  late LocalMessageStorage testee;
+
   setUp(() {
     SharedPreferences.setMockInitialValues(<String, Object>{});
+    testee = LocalMessageStorage();
   });
 
   test('addMessage_whenMessageAdded_thenCanBeLoadedAgain', () async {
@@ -14,8 +17,8 @@ void main() {
     final message = BaseMessageDto(messageId: 'message-1');
 
     // ACT
-    await LocalMessageStorage.addMessage(message);
-    final storedMessages = await LocalMessageStorage.getLatestMessages();
+    await testee.addMessage(message);
+    final storedMessages = await testee.getLatestMessages();
 
     // VERIFY
     expect(storedMessages, hasLength(1));
@@ -26,19 +29,19 @@ void main() {
   test('getLatestMessages_whenMessagesAdded_thenReturnsOrdered', () async {
     // GIVEN
     final message1 = BaseMessageDto(messageId: 'message-1');
-    await LocalMessageStorage.addMessage(message1);
+    await testee.addMessage(message1);
     final message2 = BaseMessageDto(messageId: 'message-2');
-    await LocalMessageStorage.addMessage(message2);
+    await testee.addMessage(message2);
     final message3 = TrainStatusMessageDto(
       messageId: 'message-3',
       zugnr: 'RE1',
       bp: 'Bern',
       status: 'READY',
     );
-    await LocalMessageStorage.addMessage(message3);
+    await testee.addMessage(message3);
 
     // ACT
-    final storedMessages = await LocalMessageStorage.getLatestMessages();
+    final storedMessages = await testee.getLatestMessages();
 
     // VERIFY
     expect(storedMessages, hasLength(3));
@@ -59,11 +62,11 @@ void main() {
 
   test('clear_whenMessagesStored_thenRemovesAllMessages', () async {
     // GIVEN
-    await LocalMessageStorage.addMessage(BaseMessageDto(messageId: 'message-1'));
+    await testee.addMessage(BaseMessageDto(messageId: 'message-1'));
 
     // ACT
-    await LocalMessageStorage.clear();
-    final storedMessages = await LocalMessageStorage.getLatestMessages();
+    await testee.clear();
+    final storedMessages = await testee.getLatestMessages();
 
     // VERIFY
     expect(storedMessages, isEmpty);

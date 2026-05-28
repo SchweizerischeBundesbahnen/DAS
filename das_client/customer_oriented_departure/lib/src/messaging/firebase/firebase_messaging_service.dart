@@ -10,12 +10,19 @@ import 'package:rxdart/rxdart.dart';
 
 final _log = Logger('FirebaseMessagingService');
 
-// TODO: Add test for local storage handling
 class FirebaseMessagingService implements MessagingService {
-  FirebaseMessagingService() {
+  FirebaseMessagingService({
+    this._localMessageStorage = const LocalMessageStorage(),
+    this._handleBackgroundMessages = true,
+    FirebaseMessaging? firebaseMessaging,
+  }) : _firebaseMessaging = firebaseMessaging ?? FirebaseMessaging.instance {
     _init();
   }
 
+  final LocalMessageStorage _localMessageStorage;
+  final FirebaseMessaging _firebaseMessaging;
+
+  final _handleBackgroundMessages;
   final _rxToken = BehaviorSubject<String?>();
   final _rxMessage = BehaviorSubject<BaseMessageDto>();
   final _subscriptions = <StreamSubscription>[];
@@ -32,12 +39,12 @@ class FirebaseMessagingService implements MessagingService {
   @override
   Future<void> replayMessages() async {
     _log.fine('Replaying messages from local storage');
-    final latestMessages = await LocalMessageStorage.getLatestMessages();
+    final latestMessages = await _localMessageStorage.getLatestMessages();
     for (final message in latestMessages) {
       _rxMessage.add(message);
     }
 
-    await LocalMessageStorage.clear();
+    await _localMessageStorage.clear();
   }
 
   @override
@@ -48,16 +55,16 @@ class FirebaseMessagingService implements MessagingService {
   }
 
   Future<void> _init() async {
-    await LocalMessageStorage.clear();
+    await _localMessageStorage.clear();
     await _initRxToken();
     await _initRxMessage();
   }
 
   Future<void> _initRxToken() async {
-    final token = await FirebaseMessaging.instance.getToken();
+    final token = await _firebaseMessaging.getToken();
     _rxToken.add(token);
 
-    final sub = FirebaseMessaging.instance.onTokenRefresh.listen(_rxToken.add, onError: _rxToken.addError);
+    final sub = _firebaseMessaging.onTokenRefresh.listen(_rxToken.add, onError: _rxToken.addError);
 
     _subscriptions.add(sub);
   }
@@ -78,7 +85,9 @@ class FirebaseMessagingService implements MessagingService {
     final sub = stream.listen(_rxMessage.add, onError: _rxMessage.addError);
     _subscriptions.add(sub);
 
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    if (_handleBackgroundMessages) {
+      FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    }
   }
 }
 
@@ -87,7 +96,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage remoteMessage) as
   _log.info('Remote message received in background.');
   final message = _tryParseRemoteMessage(remoteMessage);
   if (message != null) {
-    await LocalMessageStorage.addMessage(message);
+    await LocalMessageStorage().addMessage(message);
   }
 }
 

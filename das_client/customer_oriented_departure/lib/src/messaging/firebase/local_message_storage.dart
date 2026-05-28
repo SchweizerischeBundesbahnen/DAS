@@ -10,10 +10,10 @@ final _log = Logger('LocalMessageStorage');
 class LocalMessageStorage {
   static const String _latestMessagesKey = 'latestDepartureOrientedDepartureMessages';
 
-  LocalMessageStorage._();
+  const LocalMessageStorage();
 
   /// Gets latest messages saved to local storage
-  static Future<List<BaseMessageDto>> getLatestMessages() async {
+  Future<List<BaseMessageDto>> getLatestMessages() async {
     final prefs = await SharedPreferences.getInstance();
 
     // reload needed as each isolate (used on background message) has its own memory
@@ -24,7 +24,7 @@ class LocalMessageStorage {
   }
 
   /// Adds message to local storage
-  static Future<void> addMessage(BaseMessageDto message) async {
+  Future<void> addMessage(BaseMessageDto message) async {
     final prefs = await SharedPreferences.getInstance();
     final latestMessages = prefs.getStringList(_latestMessagesKey) ?? <String>[];
     latestMessages.add(message.toJsonString());
@@ -32,7 +32,7 @@ class LocalMessageStorage {
   }
 
   /// Clears local storage used by customer oriented departure
-  static Future<void> clear() async {
+  Future<void> clear() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_latestMessagesKey);
   }
