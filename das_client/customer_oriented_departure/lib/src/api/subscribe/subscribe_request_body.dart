@@ -33,6 +33,8 @@ class SubscribeRequestBody {
   final String zugnr;
   final String deviceId;
   final String pushToken;
+
+  @JsonKey(toJson: _dateTimeToUtcIso8601)
   final DateTime expiresAt;
 
   Map<String, dynamic> toJson() => _$SubscribeRequestBodyToJson(this);
@@ -49,3 +51,5 @@ class SubscribeRequestBody {
     return 'SubscribeRequestBody $jsonString';
   }
 }
+
+String _dateTimeToUtcIso8601(DateTime dateTime) => dateTime.toUtc().toIso8601String();

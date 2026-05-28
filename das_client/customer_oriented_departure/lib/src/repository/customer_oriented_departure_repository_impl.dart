@@ -166,7 +166,7 @@ class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartu
   }
 
   Future<bool> _sendSubscribeRequest({required _Subscription subscription}) async {
-    final evu = subscription.evu;
+    final evu = subscription.evu; // TODO: check with GEMS if need to change to hardcoded SBB
     final trainNumber = subscription.trainNumber;
 
     try {

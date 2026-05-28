@@ -11,7 +11,7 @@ class ConfirmRequest {
     required String deviceId,
   }) async {
     final url = Uri.https(baseUrl, 'v1/customer-oriented-departure/confirm/$messageId/$deviceId');
-    final response = await httpClient.get(url);
+    final response = await httpClient.post(url);
 
     return ConfirmResponse.fromHttpResponse(response);
   }

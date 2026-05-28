@@ -22,7 +22,7 @@ class FirebaseMessagingService implements MessagingService {
   final LocalMessageStorage _localMessageStorage;
   final FirebaseMessaging _firebaseMessaging;
 
-  final _handleBackgroundMessages;
+  final bool _handleBackgroundMessages;
   final _rxToken = BehaviorSubject<String?>();
   final _rxMessage = BehaviorSubject<BaseMessageDto>();
   final _subscriptions = <StreamSubscription>[];
