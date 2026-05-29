@@ -11,12 +11,12 @@ abstract class DIScope {
   Future<void> push();
 
   Future<bool> pop() async {
-    _log.fine('Popping scope $scopeName');
+    _log.info('Popping scope $scopeName');
     return GetIt.I.popScopesTill(scopeName);
   }
 
   Future<bool> popAbove() async {
-    _log.fine('Popping scope above $scopeName');
+    _log.info('Popping scope above $scopeName');
     return GetIt.I.popScopesTill(scopeName, inclusive: false);
   }
 }

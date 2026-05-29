@@ -21,13 +21,13 @@ class AuthGuard extends AutoRouteGuard {
         return;
       }
 
-      _log.fine('Not authenticated. Navigating to login...');
+      _log.info('Not authenticated. Navigating to login...');
       final loginModel = DI.get<LoginViewModel>().modelValue;
       DI.resetToUnauthenticatedScope(useTms: loginModel.connectToTmsVad);
       router.push(
         LoginRoute(
           onSuccess: () {
-            _log.fine('Login successful. Navigating to ${resolver.route}');
+            _log.info('Login successful. Navigating to ${resolver.route}');
             resolver.next(true);
           },
         ),
