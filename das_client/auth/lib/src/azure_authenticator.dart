@@ -16,8 +16,13 @@ class AzureAuthenticator implements Authenticator {
     required this._config,
     this._oidcClientFactory = const SBBOidcClientFactory(),
     this._storage = const FlutterSecureStorage(
-      iOptions: IOSOptions(accountName: 'auth'),
-      aOptions: AndroidOptions(storageNamespace: 'auth'),
+      iOptions: IOSOptions(
+        accountName: 'auth',
+        accessibility: KeychainAccessibility.first_unlock_this_device,
+      ),
+      aOptions: AndroidOptions(
+        storageNamespace: 'auth',
+      ),
     ),
   });
 
