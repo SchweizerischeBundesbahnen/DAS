@@ -40,6 +40,7 @@ body:
         - iOS Version 26
         - iOS Version 18
         - iOS Version 17
+        - Android Version 17
         - Android Version 16
         - Android Version 15
         - Android Version 14
@@ -51,10 +52,10 @@ body:
       label: DAS Version
       description: Welche Version von DAS wurde genutzt?
       options:
+        - 0.45.0
         - 0.43.0
         - 0.42.0
         - 0.39.0
-        - 0.37.0
       default: 0
     validations:
       required: true
