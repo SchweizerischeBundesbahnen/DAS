@@ -6,8 +6,11 @@ import ch.sbb.das.backend.common.CompanyCode;
 import ch.sbb.das.backend.common.DateTimeUtil;
 import java.time.LocalDate;
 import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Component;
 
 @Component
@@ -52,8 +55,7 @@ class PersistenceSpecialHolidayRepository implements SpecialHolidayRepository {
         entity.setScheduleType(specialHoliday.scheduleType());
         entity.setCompanies(specialHoliday.companies().stream()
             .sorted(Comparator.comparing(CompanyCode::value))
-            .distinct()
-            .toList());
+            .collect(Collectors.toCollection(LinkedHashSet::new)));
         SpecialHolidayEntity saved = specialHolidayRepository.save(entity);
         return saved.toSpecialHoliday();
     }

@@ -1,7 +1,7 @@
 package ch.sbb.das.backend.admin.application.ruindications.model;
 
-import static ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationEntry.normalizeIfEmpty;
-
+import ch.sbb.das.backend.admin.application.common.TranslatedContentRequest;
+import ch.sbb.das.backend.admin.application.common.ValidTranslatedContent;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import jakarta.validation.Valid;
@@ -20,11 +20,16 @@ public record RuIndicationContent(
     @Schema(description = "Italian RU indication entry.", requiredMode = RequiredMode.NOT_REQUIRED)
     @Valid
     RuIndicationEntry it
-) implements TranslatedContentRequest {
+) implements TranslatedContentRequest<RuIndicationEntry> {
 
     public RuIndicationContent {
-        de = normalizeIfEmpty(de);
-        fr = normalizeIfEmpty(fr);
-        it = normalizeIfEmpty(it);
+        de = normalize(de);
+        fr = normalize(fr);
+        it = normalize(it);
+    }
+
+    @Override
+    public RuIndicationEntry normalize(RuIndicationEntry entry) {
+        return RuIndicationEntry.normalize(entry);
     }
 }

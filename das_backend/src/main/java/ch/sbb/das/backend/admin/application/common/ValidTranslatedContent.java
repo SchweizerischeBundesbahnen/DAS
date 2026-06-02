@@ -1,4 +1,4 @@
-package ch.sbb.das.backend.admin.application.ruindications.model;
+package ch.sbb.das.backend.admin.application.common;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
@@ -20,4 +20,3 @@ public @interface ValidTranslatedContent {
 
     Class<? extends Payload>[] payload() default {};
 }
-

@@ -1,7 +1,7 @@
 package ch.sbb.das.backend.admin.application.ruindications.model;
 
-import static ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationEntry.normalizeIfEmpty;
-
+import ch.sbb.das.backend.admin.application.common.TranslatedContentRequest;
+import ch.sbb.das.backend.admin.application.common.ValidTranslatedContent;
 import ch.sbb.das.backend.common.CompanyCode;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
@@ -26,11 +26,16 @@ public record RuIndicationTemplateRequest(
     RuIndicationEntry it,
     @Schema(description = "The RICS company codes for which this template is provided.", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotEmpty Set<CompanyCode> companies
-) implements TranslatedContentRequest {
+) implements TranslatedContentRequest<RuIndicationEntry> {
 
     public RuIndicationTemplateRequest {
-        de = normalizeIfEmpty(de);
-        fr = normalizeIfEmpty(fr);
-        it = normalizeIfEmpty(it);
+        de = normalize(de);
+        fr = normalize(fr);
+        it = normalize(it);
+    }
+
+    @Override
+    public RuIndicationEntry normalize(RuIndicationEntry entry) {
+        return RuIndicationEntry.normalize(entry);
     }
 }

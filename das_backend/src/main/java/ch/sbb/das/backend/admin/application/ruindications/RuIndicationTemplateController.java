@@ -1,7 +1,7 @@
 package ch.sbb.das.backend.admin.application.ruindications;
 
+import ch.sbb.das.backend.admin.application.common.DeleteByIdsRequest;
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationTemplate;
-import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationTemplateByIdsDeleteRequest;
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationTemplateRequest;
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationTemplateResponse;
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationTemplatesResponse;
@@ -19,8 +19,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -54,7 +52,7 @@ public class RuIndicationTemplateController {
     public ResponseEntity<? extends Response> getAllRuIndicationTemplates(
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
         List<RuIndicationTemplate> ruIndicationTemplates = ruIndicationTemplateService.getAll();
-        return ResponseEntityFactory.createOkResponse(new RuIndicationTemplatesResponse(ruIndicationTemplates), null, requestId);
+        return ResponseEntityFactory.createOkResponse(new RuIndicationTemplatesResponse(ruIndicationTemplates), requestId);
     }
 
     @GetMapping(API_RU_INDICATION_TEMPLATES_ID)
@@ -63,13 +61,14 @@ public class RuIndicationTemplateController {
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = RuIndicationTemplateResponse.class)))
     @ApiResponse(responseCode = "404", description = "RU indication template not found.")
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getRuIndicationTemplateById(@PathVariable Integer id,
-        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
+    public ResponseEntity<? extends Response> getRuIndicationTemplateById(
+        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
+        @PathVariable Integer id) {
         RuIndicationTemplate ruIndicationTemplate = ruIndicationTemplateService.getById(id);
         if (ruIndicationTemplate == null) {
             return ResponseEntityFactory.createNotFoundResponse(requestId, null);
         }
-        return ResponseEntityFactory.createOkResponse(new RuIndicationTemplateResponse(ruIndicationTemplate), null, requestId);
+        return ResponseEntityFactory.createOkResponse(new RuIndicationTemplateResponse(ruIndicationTemplate), requestId);
     }
 
     @PostMapping(API_RU_INDICATION_TEMPLATES)
@@ -77,11 +76,11 @@ public class RuIndicationTemplateController {
     @ApiResponse(responseCode = "201", description = "RU indication template created.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = RuIndicationTemplateResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<RuIndicationTemplateResponse> createRuIndicationTemplate(@RequestBody @Valid RuIndicationTemplateRequest createRequest,
-        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
+    public ResponseEntity<RuIndicationTemplateResponse> createRuIndicationTemplate(
+        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
+        @RequestBody @Valid RuIndicationTemplateRequest createRequest) {
         RuIndicationTemplate createdRuIndicationTemplate = ruIndicationTemplateService.create(createRequest);
-        HttpHeaders headers = ResponseEntityFactory.createOkHeaders(requestId);
-        return new ResponseEntity<>(new RuIndicationTemplateResponse(createdRuIndicationTemplate), headers, HttpStatus.CREATED);
+        return ResponseEntityFactory.createCreatedResponse(new RuIndicationTemplateResponse(createdRuIndicationTemplate), requestId);
     }
 
     @PutMapping(API_RU_INDICATION_TEMPLATES_ID)
@@ -90,21 +89,24 @@ public class RuIndicationTemplateController {
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = RuIndicationTemplateResponse.class)))
     @ApiResponse(responseCode = "404", description = "RU indication template not found.")
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> updateRuIndicationTemplate(@PathVariable Integer id, @RequestBody @Valid RuIndicationTemplateRequest updateRequest,
-        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
+    public ResponseEntity<? extends Response> updateRuIndicationTemplate(
+        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
+        @RequestBody @Valid RuIndicationTemplateRequest updateRequest,
+        @PathVariable Integer id) {
         RuIndicationTemplate ruIndicationTemplate = ruIndicationTemplateService.update(id, updateRequest);
         if (ruIndicationTemplate == null) {
             return ResponseEntityFactory.createNotFoundResponse(requestId, null);
         }
-        return ResponseEntityFactory.createOkResponse(new RuIndicationTemplatesResponse(List.of(ruIndicationTemplate)), null, requestId);
+        return ResponseEntityFactory.createOkResponse(new RuIndicationTemplatesResponse(List.of(ruIndicationTemplate)), requestId);
     }
 
     @DeleteMapping(API_RU_INDICATION_TEMPLATES)
     @Operation(summary = "Delete RU indication templates by ids.", description = "Delete multiple RU indication templates in a single request.")
     @ApiResponse(responseCode = "204", description = "RU indication templates deleted.")
     @ApiErrorResponses
-    public ResponseEntity<Void> deleteRuIndicationTemplateByIds(@RequestBody @Valid RuIndicationTemplateByIdsDeleteRequest deleteRequest,
-        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
+    public ResponseEntity<Void> deleteRuIndicationTemplateByIds(
+        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
+        @RequestBody @Valid DeleteByIdsRequest deleteRequest) {
         ruIndicationTemplateService.delete(deleteRequest.ids());
         return ResponseEntity.noContent().build();
     }

@@ -56,7 +56,7 @@ class CleanUpSchedulerIntegrationTest {
         entity.setCategory("TEST");
         entity.setTitleDe("Test Indication");
         entity.setTextDe("Test text");
-        entity.setCompanies(List.of(new CompanyCode("1111")));
+        entity.setCompanies(Set.of(new CompanyCode("1111")));
         entity.setOperationalTrainNumberFilters(List.of());
         entity.setTafTapLocationReferences(List.of(TafTapLocationReference.of("CH00001")));
         entity.setPeriods(periods);
@@ -67,7 +67,7 @@ class CleanUpSchedulerIntegrationTest {
         SpecialHolidayEntity entity = new SpecialHolidayEntity();
         entity.setName(name);
         entity.setDate(date);
-        entity.setCompanies(List.of(new CompanyCode("1111")));
+        entity.setCompanies(Set.of(new CompanyCode("1111")));
         entity.setScheduleType(ScheduleType.MONDAY_SCHEDULE);
         return entity;
     }
@@ -184,14 +184,3 @@ class CleanUpSchedulerIntegrationTest {
         assertThat(ruIndicationRepository.findAll()).isEmpty();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
