@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.17.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.16.0...sfera_mock-v0.17.0) (2026-05-29)
+
+
+### Features
+
+* implemented color priority for journey table ([#1125](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1125)) ([#2150](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2150)) ([935cc44](https://github.com/SchweizerischeBundesbahnen/DAS/commit/935cc44990a18a1e60144e5bba3f97244aa0794f))
+
 ## [0.16.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.15.0...sfera_mock-v0.16.0) (2026-05-20)
 
 

@@ -9,7 +9,13 @@ final _log = Logger('AppExpirationGuard');
 class AppExpirationGuard extends AutoRouteGuard {
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) async {
-    final appExpirationVM = DI.get<AppExpirationViewModel>();
+    final appExpirationVM = DI.getOrNull<AppExpirationViewModel>();
+    if (appExpirationVM == null) {
+      _log.warning('AppExpirationViewModel not found in DI. Navigating to ${resolver.route} without expiration check.');
+      resolver.next(true);
+      return;
+    }
+
     try {
       await appExpirationVM.checkIsAppExpired().timeout(
         const Duration(seconds: 1),

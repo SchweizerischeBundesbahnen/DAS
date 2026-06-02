@@ -24,6 +24,7 @@ class SBBOidcClientFactory implements OidcClientFactory {
       clientId: clientId,
       redirectUrl: redirectUrl,
       postLogoutRedirectUrl: postLogoutRedirectUrl,
+      tokenAccessibility: TokenAccessibility.afterFirstUnlockThisDeviceOnly,
     );
   }
 }
