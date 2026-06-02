@@ -50,15 +50,14 @@ class InMemorySpecialHolidayRepository implements SpecialHolidayRepository {
     }
 
     @Override
-    public void deleteById(Integer id) {
-        holidays.remove(id);
-    }
-
-    @Override
     public void deleteAllById(Iterable<Integer> ids) {
         for (Integer id : ids) {
             holidays.remove(id);
         }
     }
-}
 
+    @Override
+    public void deleteAllBefore(LocalDate date) {
+        throw new UnsupportedOperationException();
+    }
+}

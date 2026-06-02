@@ -69,8 +69,9 @@ public class RuIndicationController {
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = RuIndicationResponse.class)))
     @ApiResponse(responseCode = "404", description = "RU indication not found.")
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getRuIndicationById(@PathVariable Integer id,
-        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
+    public ResponseEntity<? extends Response> getRuIndicationById(
+        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
+        @PathVariable Integer id) {
         RuIndication ruIndication = ruIndicationService.getById(id);
         if (ruIndication == null) {
             return ResponseEntityFactory.createNotFoundResponse(requestId, null);
@@ -83,8 +84,9 @@ public class RuIndicationController {
     @ApiResponse(responseCode = "201", description = "RU indication created.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = RuIndicationResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<RuIndicationResponse> createRuIndication(@RequestBody @Valid RuIndicationRequest createRequest,
-        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
+    public ResponseEntity<RuIndicationResponse> createRuIndication(
+        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
+        @RequestBody @Valid RuIndicationRequest createRequest) {
         RuIndication createdRuIndication = ruIndicationService.create(createRequest);
         HttpHeaders headers = ResponseEntityFactory.createOkHeaders(requestId);
         return new ResponseEntity<>(new RuIndicationResponse(createdRuIndication), headers, HttpStatus.CREATED);
@@ -98,9 +100,10 @@ public class RuIndicationController {
     @ApiResponse(responseCode = "200", description = "RU indication matches found.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = RuIndicationMatchesResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> findRuIndicationMatches(@RequestBody @Valid RuIndicationMatchesRequest filterRequest,
+    public ResponseEntity<? extends Response> findRuIndicationMatches(
+        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
         @RequestHeader(value = HttpHeaders.ACCEPT_LANGUAGE, required = false) String acceptLanguage,
-        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
+        @RequestBody @Valid RuIndicationMatchesRequest filterRequest) {
         List<RuIndicationMatch> ruIndicationMatches = ruIndicationMatchService.findMatches(filterRequest, acceptLanguage);
         return ResponseEntityFactory.createOkResponse(new RuIndicationMatchesResponse(ruIndicationMatches), null, requestId);
     }
@@ -111,8 +114,9 @@ public class RuIndicationController {
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = RuIndicationResponse.class)))
     @ApiResponse(responseCode = "404", description = "RU indication not found.")
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> updateRuIndication(@PathVariable Integer id, @RequestBody @Valid RuIndicationRequest updateRequest,
-        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
+    public ResponseEntity<? extends Response> updateRuIndication(
+        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
+        @PathVariable Integer id, @RequestBody @Valid RuIndicationRequest updateRequest) {
         RuIndication updatedRuIndication = ruIndicationService.update(id, updateRequest);
         if (updatedRuIndication == null) {
             return ResponseEntityFactory.createNotFoundResponse(requestId, null);
@@ -124,8 +128,9 @@ public class RuIndicationController {
     @Operation(summary = "Delete RU indications by ids.", description = "Deletes multiple RU indications in a single request.")
     @ApiResponse(responseCode = "204", description = "RU indications deleted.")
     @ApiErrorResponses
-    public ResponseEntity<Void> deleteRuIndicationByIds(@RequestBody @Valid RuIndicationByIdsDeleteRequest deleteRequest,
-        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
+    public ResponseEntity<Void> deleteRuIndicationByIds(
+        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
+        @RequestBody @Valid RuIndicationByIdsDeleteRequest deleteRequest) {
         ruIndicationService.delete(deleteRequest.ids());
         return ResponseEntity.noContent().build();
     }

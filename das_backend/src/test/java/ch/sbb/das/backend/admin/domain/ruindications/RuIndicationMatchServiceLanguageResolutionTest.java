@@ -4,9 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.das.backend.admin.application.ruindications.model.Content;
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndication;
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationContent;
+import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationEntry;
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationMatch;
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationMatchesRequest;
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationPeriod;
@@ -27,7 +27,7 @@ class RuIndicationMatchServiceLanguageResolutionTest {
 
         RuIndication ruIndication = new RuIndication(
             1,
-            new RuIndicationContent(null, null, new Content("Avis FR", "Texte FR"), new Content("Avviso IT", "Testo IT")),
+            new RuIndicationContent(null, null, new RuIndicationEntry("Avis FR", "Texte FR"), new RuIndicationEntry("Avviso IT", "Testo IT")),
             new RuIndicationScope(
                 Set.of(new CompanyCode("1111")),
                 List.of(),
@@ -53,7 +53,7 @@ class RuIndicationMatchServiceLanguageResolutionTest {
         // RFC7231 format with region and q-values -> extract first 'fr' correctly
         List<RuIndicationMatch> rfc7231Format = underTest.findMatches(request, "fr-CH,fr;q=0.9,en;q=0.8");
         assertThat(rfc7231Format.getFirst().ruIndicationContents())
-            .containsExactly(new Content("Avis FR", "Texte FR"));
+            .containsExactly(new RuIndicationEntry("Avis FR", "Texte FR"));
     }
 
     @Test
@@ -63,7 +63,7 @@ class RuIndicationMatchServiceLanguageResolutionTest {
 
         RuIndication ruIndication = new RuIndication(
             1,
-            new RuIndicationContent(null, new Content("Hinweis DE", "Text DE"), null, new Content("Avviso IT", "Testo IT")),
+            new RuIndicationContent(null, new RuIndicationEntry("Hinweis DE", "Text DE"), null, new RuIndicationEntry("Avviso IT", "Testo IT")),
             new RuIndicationScope(
                 Set.of(new CompanyCode("1111")),
                 List.of(),
@@ -91,7 +91,7 @@ class RuIndicationMatchServiceLanguageResolutionTest {
 
         assertThat(result).hasSize(1);
         assertThat(result.getFirst().ruIndicationContents())
-            .containsExactly(new Content("Hinweis DE", "Text DE"));
+            .containsExactly(new RuIndicationEntry("Hinweis DE", "Text DE"));
     }
 
     @Test
@@ -102,9 +102,9 @@ class RuIndicationMatchServiceLanguageResolutionTest {
         RuIndication ruIndication = new RuIndication(
             1,
             new RuIndicationContent(null,
-                new Content("Hinweis DE", "Text DE"),
-                new Content("Avis FR", "Texte FR"),
-                new Content("Avviso IT", "Testo IT")
+                new RuIndicationEntry("Hinweis DE", "Text DE"),
+                new RuIndicationEntry("Avis FR", "Texte FR"),
+                new RuIndicationEntry("Avviso IT", "Testo IT")
             ),
             new RuIndicationScope(
                 Set.of(new CompanyCode("1111")),
@@ -131,11 +131,11 @@ class RuIndicationMatchServiceLanguageResolutionTest {
         // All three languages available -> use the one requested
         List<RuIndicationMatch> italianResult = underTest.findMatches(request, "it-IT");
         assertThat(italianResult.getFirst().ruIndicationContents())
-            .containsExactly(new Content("Avviso IT", "Testo IT"));
+            .containsExactly(new RuIndicationEntry("Avviso IT", "Testo IT"));
 
         List<RuIndicationMatch> frenchResult = underTest.findMatches(request, "fr");
         assertThat(frenchResult.getFirst().ruIndicationContents())
-            .containsExactly(new Content("Avis FR", "Texte FR"));
+            .containsExactly(new RuIndicationEntry("Avis FR", "Texte FR"));
     }
 
     @Test
@@ -145,7 +145,7 @@ class RuIndicationMatchServiceLanguageResolutionTest {
 
         RuIndication ruIndication = new RuIndication(
             1,
-            new RuIndicationContent(null, null, new Content("Avis FR", "Texte FR"), new Content("Avviso IT", "Testo IT")),
+            new RuIndicationContent(null, null, new RuIndicationEntry("Avis FR", "Texte FR"), new RuIndicationEntry("Avviso IT", "Testo IT")),
             new RuIndicationScope(
                 Set.of(new CompanyCode("1111")),
                 List.of(),
@@ -172,7 +172,7 @@ class RuIndicationMatchServiceLanguageResolutionTest {
         List<RuIndicationMatch> result = underTest.findMatches(request, null);
         assertThat(result).hasSize(1);
         assertThat(result.getFirst().ruIndicationContents())
-            .containsExactly(new Content("Avis FR", "Texte FR"));
+            .containsExactly(new RuIndicationEntry("Avis FR", "Texte FR"));
     }
 }
 

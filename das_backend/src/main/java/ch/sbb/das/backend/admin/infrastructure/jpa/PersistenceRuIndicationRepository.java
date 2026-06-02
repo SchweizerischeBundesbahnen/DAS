@@ -2,6 +2,7 @@ package ch.sbb.das.backend.admin.infrastructure.jpa;
 
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndication;
 import ch.sbb.das.backend.admin.domain.ruindications.RuIndicationRepository;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Component;
@@ -38,6 +39,11 @@ class PersistenceRuIndicationRepository implements RuIndicationRepository {
     @Override
     public void deleteAllById(Iterable<Integer> ids) {
         ruIndicationRepository.deleteAllById(ids);
+    }
+
+    @Override
+    public void deleteAllBefore(LocalDate localDate) {
+        ruIndicationRepository.deleteAllByLastPeriodBefore(localDate);
     }
 }
 

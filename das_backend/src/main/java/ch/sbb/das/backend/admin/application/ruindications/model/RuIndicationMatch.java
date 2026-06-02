@@ -10,7 +10,7 @@ public record RuIndicationMatch(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     TafTapLocationReference tafTapLocationReference,
     @ArraySchema(arraySchema = @Schema(requiredMode = Schema.RequiredMode.REQUIRED))
-    List<Content> ruIndicationContents
+    List<RuIndicationEntry> ruIndicationContents
 ) {
 
 }

@@ -11,5 +11,7 @@ public interface SpringDataJpaSpecialHolidayRepository extends ListCrudRepositor
     List<SpecialHolidayEntity> findAllByDateGreaterThanEqualOrderByDate(LocalDate dateAfter);
 
     List<SpecialHolidayEntity> findAllByDate(LocalDate date);
+
+    void deleteAllByDateLessThan(LocalDate date);
 }
 

@@ -17,8 +17,8 @@ public interface SpecialHolidayRepository {
 
     SpecialHoliday save(SpecialHoliday specialHoliday);
 
-    void deleteById(Integer id);
-
     void deleteAllById(Iterable<Integer> ids);
+
+    void deleteAllBefore(LocalDate date);
 }
 

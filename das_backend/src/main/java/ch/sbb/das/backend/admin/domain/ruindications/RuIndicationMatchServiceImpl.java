@@ -1,8 +1,8 @@
 package ch.sbb.das.backend.admin.domain.ruindications;
 
-import ch.sbb.das.backend.admin.application.ruindications.model.Content;
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndication;
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationContent;
+import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationEntry;
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationMatch;
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationMatchesRequest;
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationPeriod;
@@ -166,13 +166,13 @@ public class RuIndicationMatchServiceImpl implements RuIndicationMatchService {
         return languageWithoutParams.toLowerCase().substring(0, 2);
     }
 
-    private static Content selectRuIndicationContent(RuIndicationContent ruIndicationContent, List<String> languagePreferenceOrder) {
+    private static RuIndicationEntry selectRuIndicationContent(RuIndicationContent ruIndicationContent, List<String> languagePreferenceOrder) {
         if (ruIndicationContent == null) {
             return null;
         }
 
         for (String language : languagePreferenceOrder) {
-            Content selectedContent = switch (language) {
+            RuIndicationEntry selectedContent = switch (language) {
                 case "de" -> ruIndicationContent.de();
                 case "fr" -> ruIndicationContent.fr();
                 case "it" -> ruIndicationContent.it();
@@ -202,7 +202,7 @@ public class RuIndicationMatchServiceImpl implements RuIndicationMatchService {
     public List<RuIndicationMatch> findMatches(RuIndicationMatchesRequest filterRequest, String acceptLanguage) {
         List<String> languagePreferenceOrder = resolveLanguagePreferenceOrder(acceptLanguage);
         Set<ScheduleType> holidayScheduleTypes = resolveHolidayScheduleTypes(filterRequest.company(), filterRequest.startDate());
-        Map<TafTapLocationReference, List<Content>> contentsByLocation = new LinkedHashMap<>();
+        Map<TafTapLocationReference, List<RuIndicationEntry>> contentsByLocation = new LinkedHashMap<>();
 
         ruIndicationRepository.findAll().stream()
             .sorted(Comparator.comparing(RuIndication::id))
@@ -210,7 +210,7 @@ public class RuIndicationMatchServiceImpl implements RuIndicationMatchService {
             .filter(ruIndication -> matchesTrainNumber(ruIndication.scope(), filterRequest.operationalTrainNumber()))
             .filter(ruIndication -> matchesDate(ruIndication.periods(), filterRequest.startDate(), holidayScheduleTypes))
             .forEach(ruIndication -> {
-                Content selectedContent = selectRuIndicationContent(ruIndication.content(), languagePreferenceOrder);
+                RuIndicationEntry selectedContent = selectRuIndicationContent(ruIndication.content(), languagePreferenceOrder);
                 if (selectedContent == null) {
                     return;
                 }

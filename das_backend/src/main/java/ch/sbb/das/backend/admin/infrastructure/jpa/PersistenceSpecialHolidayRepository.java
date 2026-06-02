@@ -58,12 +58,12 @@ class PersistenceSpecialHolidayRepository implements SpecialHolidayRepository {
     }
 
     @Override
-    public void deleteById(Integer id) {
-        specialHolidayRepository.deleteById(id);
+    public void deleteAllById(Iterable<Integer> ids) {
+        specialHolidayRepository.deleteAllById(ids);
     }
 
     @Override
-    public void deleteAllById(Iterable<Integer> ids) {
-        specialHolidayRepository.deleteAllById(ids);
+    public void deleteAllBefore(LocalDate date) {
+        specialHolidayRepository.deleteAllByDateLessThan(date);
     }
 }

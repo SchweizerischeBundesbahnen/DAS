@@ -4,6 +4,7 @@ import ch.sbb.das.backend.admin.application.ruindications.model.RuIndication;
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationRequest;
 import ch.sbb.das.backend.common.CompanyCode;
 import ch.sbb.das.backend.tenancy.infrastructure.CompanyAuthorizer;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -63,5 +64,10 @@ public class RuIndicationServiceImpl implements RuIndicationService {
             .collect(Collectors.toSet());
         companyAuthorizationService.requireCanAccessCompanies(companies);
         ruIndicationRepository.deleteAllById(distinctIds);
+    }
+
+    @Override
+    public void deleteAllBefore(LocalDate localDate) {
+        ruIndicationRepository.deleteAllBefore(localDate);
     }
 }

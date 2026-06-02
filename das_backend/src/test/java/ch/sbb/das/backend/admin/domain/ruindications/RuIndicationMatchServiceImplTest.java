@@ -2,9 +2,9 @@ package ch.sbb.das.backend.admin.domain.ruindications;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.das.backend.admin.application.ruindications.model.Content;
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndication;
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationContent;
+import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationEntry;
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationMatch;
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationMatchesRequest;
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationPeriod;
@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test;
 
 class RuIndicationMatchServiceImplTest {
 
-    private static final Content DEFAULT_DE_CONTENT = new Content("Hinweis", "Text");
+    private static final RuIndicationEntry DEFAULT_DE_CONTENT = new RuIndicationEntry("Hinweis", "Text");
 
     private RuIndicationMatchServiceImpl underTest;
 
@@ -31,7 +31,7 @@ class RuIndicationMatchServiceImplTest {
     void findMatches_matchesAllCriteria_andGroupsRuIndicationContentsByLocation() {
         RuIndicationRepository ruIndicationRepository = new InMemoryRuIndicationRepository();
         ruIndicationRepository.save(new RuIndication(null,
-            new RuIndicationContent(null, new Content("Hinweis 1", "Text 1"), null, null),
+            new RuIndicationContent(null, new RuIndicationEntry("Hinweis 1", "Text 1"), null, null),
             new RuIndicationScope(
                 Set.of(new CompanyCode("1111")),
                 List.of(new TrainNumberFilterRequest("100-200", TrainNumberParity.ANY)),
@@ -41,7 +41,7 @@ class RuIndicationMatchServiceImplTest {
         ));
 
         ruIndicationRepository.save(new RuIndication(null,
-            new RuIndicationContent(null, new Content("Irrelevant", "Irrelevant"), null, null),
+            new RuIndicationContent(null, new RuIndicationEntry("Irrelevant", "Irrelevant"), null, null),
             new RuIndicationScope(
                 Set.of(new CompanyCode("2222")),
                 List.of(new TrainNumberFilterRequest("100-200", TrainNumberParity.ANY)),
@@ -51,7 +51,7 @@ class RuIndicationMatchServiceImplTest {
         ));
 
         ruIndicationRepository.save(new RuIndication(null,
-            new RuIndicationContent(null, new Content("Hinweis 2", "Text 2"), null, null),
+            new RuIndicationContent(null, new RuIndicationEntry("Hinweis 2", "Text 2"), null, null),
             new RuIndicationScope(
                 Set.of(new CompanyCode("1111")),
                 List.of(),
@@ -76,13 +76,13 @@ class RuIndicationMatchServiceImplTest {
             .anySatisfy(relevantRuIndication -> {
                 assertThat(relevantRuIndication.tafTapLocationReference()).isEqualTo(TafTapLocationReference.of("CH00002"));
                 assertThat(relevantRuIndication.ruIndicationContents()).containsExactly(
-                    new Content("Hinweis 1", "Text 1"),
-                    new Content("Hinweis 2", "Text 2")
+                    new RuIndicationEntry("Hinweis 1", "Text 1"),
+                    new RuIndicationEntry("Hinweis 2", "Text 2")
                 );
             })
             .anySatisfy(relevantRuIndication -> {
                 assertThat(relevantRuIndication.tafTapLocationReference()).isEqualTo(TafTapLocationReference.of("CH00003"));
-                assertThat(relevantRuIndication.ruIndicationContents()).containsExactly(new Content("Hinweis 2", "Text 2"));
+                assertThat(relevantRuIndication.ruIndicationContents()).containsExactly(new RuIndicationEntry("Hinweis 2", "Text 2"));
             });
     }
 
@@ -183,7 +183,7 @@ class RuIndicationMatchServiceImplTest {
             List.of(new RuIndicationPeriod(LocalDate.of(2026, 1, 1), LocalDate.of(2026, 12, 31), Set.of()))
         ));
         ruIndicationRepository.save(new RuIndication(null,
-            new RuIndicationContent(null, new Content("Hinweis Shadow", "Text Shadow"), null, null),
+            new RuIndicationContent(null, new RuIndicationEntry("Hinweis Shadow", "Text Shadow"), null, null),
             new RuIndicationScope(
                 Set.of(new CompanyCode("1111")),
                 List.of(new TrainNumberFilterRequest("70160", TrainNumberParity.ANY)),
@@ -257,7 +257,7 @@ class RuIndicationMatchServiceImplTest {
             List.of(new RuIndicationPeriod(LocalDate.of(2026, 1, 1), LocalDate.of(2026, 12, 31), Set.of()))
         ));
         ruIndicationRepository.save(new RuIndication(null,
-            new RuIndicationContent(null, new Content("No normalize high", "No normalize high"), null, null),
+            new RuIndicationContent(null, new RuIndicationEntry("No normalize high", "No normalize high"), null, null),
             new RuIndicationScope(
                 Set.of(new CompanyCode("1111")),
                 List.of(new TrainNumberFilterRequest("25999", TrainNumberParity.ANY)),

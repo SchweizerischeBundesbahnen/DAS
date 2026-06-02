@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import org.springframework.util.CollectionUtils;
 
 public record RuIndication(
     @Schema(description = "The unique identifier of the RU indication.", requiredMode = RequiredMode.REQUIRED, accessMode = AccessMode.READ_ONLY)
@@ -30,7 +31,7 @@ public record RuIndication(
     @JsonProperty
     @Schema(description = "Status of RU indication", requiredMode = RequiredMode.REQUIRED, accessMode = AccessMode.READ_ONLY)
     public PeriodStatus status() {
-        if (periods == null || periods.isEmpty()) {
+        if (CollectionUtils.isEmpty(periods)) {
             return PeriodStatus.ACTIVE;
         }
         LocalDate today = LocalDate.now();

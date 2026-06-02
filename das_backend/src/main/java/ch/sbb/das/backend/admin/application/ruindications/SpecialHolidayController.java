@@ -77,8 +77,9 @@ public class SpecialHolidayController {
     @ApiResponse(responseCode = "201", description = "Special holiday created.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = SpecialHolidayResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<SpecialHolidayResponse> createSpecialHoliday(@RequestBody @Valid SpecialHolidayRequest createRequest,
-        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
+    public ResponseEntity<SpecialHolidayResponse> createSpecialHoliday(
+        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
+        @RequestBody @Valid SpecialHolidayRequest createRequest) {
         SpecialHoliday createdSpecialHoliday = specialHolidayService.create(createRequest);
         HttpHeaders headers = ResponseEntityFactory.createOkHeaders(requestId);
         return new ResponseEntity<>(new SpecialHolidayResponse(createdSpecialHoliday), headers, HttpStatus.CREATED);
@@ -90,8 +91,9 @@ public class SpecialHolidayController {
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = SpecialHolidayResponse.class)))
     @ApiResponse(responseCode = "404", description = "Special holiday not found.")
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> updateSpecialHoliday(@PathVariable Integer id, @RequestBody @Valid SpecialHolidayRequest updateRequest,
-        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
+    public ResponseEntity<? extends Response> updateSpecialHoliday(
+        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
+        @PathVariable Integer id, @RequestBody @Valid SpecialHolidayRequest updateRequest) {
         SpecialHoliday updatedSpecialHoliday = specialHolidayService.update(id, updateRequest);
         if (updatedSpecialHoliday == null) {
             return ResponseEntityFactory.createNotFoundResponse(requestId, null);
@@ -103,8 +105,9 @@ public class SpecialHolidayController {
     @Operation(summary = "Delete special holiday by ids.", description = "Delete multiple special holiday entries in a single request.")
     @ApiResponse(responseCode = "204", description = "Special holidays deleted.")
     @ApiErrorResponses
-    public ResponseEntity<Void> deleteSpecialHolidayByIds(@RequestBody @Valid SpecialHolidayByIdsDeleteRequest deleteRequest,
-        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
+    public ResponseEntity<Void> deleteSpecialHolidayByIds(
+        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
+        @RequestBody @Valid SpecialHolidayByIdsDeleteRequest deleteRequest) {
         specialHolidayService.deleteByIds(deleteRequest.ids());
         return ResponseEntity.noContent().build();
     }

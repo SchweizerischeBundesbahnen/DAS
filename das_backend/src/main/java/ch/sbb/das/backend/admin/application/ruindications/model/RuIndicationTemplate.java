@@ -11,16 +11,16 @@ public record RuIndicationTemplate(
     @Schema(description = "The category of the RU indication template.", requiredMode = RequiredMode.REQUIRED)
     String category,
     @Schema(description = "The german RU indication template.", requiredMode = RequiredMode.NOT_REQUIRED)
-    Content de,
+    RuIndicationEntry de,
     @Schema(description = "The french RU indication template.", requiredMode = RequiredMode.NOT_REQUIRED)
-    Content fr,
+    RuIndicationEntry fr,
     @Schema(description = "The italian RU indication template.", requiredMode = RequiredMode.NOT_REQUIRED)
-    Content it,
+    RuIndicationEntry it,
     @Schema(description = "The user who created or last updated the RU indication template.", requiredMode = RequiredMode.REQUIRED, accessMode = AccessMode.READ_ONLY)
     String lastModifiedBy
 ) {
 
-    public RuIndicationTemplate(Integer id, String category, Content de, Content fr, Content it) {
+    public RuIndicationTemplate(Integer id, String category, RuIndicationEntry de, RuIndicationEntry fr, RuIndicationEntry it) {
         this(id, category, de, fr, it, null);
     }
 

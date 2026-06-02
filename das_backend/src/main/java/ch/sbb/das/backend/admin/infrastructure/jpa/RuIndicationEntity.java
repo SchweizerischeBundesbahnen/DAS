@@ -1,8 +1,8 @@
 package ch.sbb.das.backend.admin.infrastructure.jpa;
 
-import ch.sbb.das.backend.admin.application.ruindications.model.Content;
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndication;
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationContent;
+import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationEntry;
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationPeriod;
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationScope;
 import ch.sbb.das.backend.admin.application.ruindications.model.TrainNumberFilterRequest;
@@ -98,11 +98,11 @@ public class RuIndicationEntity extends EntityBase {
         return entity;
     }
 
-    private static Content toTemplateContent(String title, String text) {
+    private static RuIndicationEntry toTemplateContent(String title, String text) {
         if (title == null && text == null) {
             return null;
         }
-        return new Content(title, text);
+        return new RuIndicationEntry(title, text);
     }
 
     public RuIndication toRuIndication() {

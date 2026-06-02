@@ -1,6 +1,7 @@
 package ch.sbb.das.backend.admin.domain.ruindications;
 
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndication;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -49,5 +50,9 @@ class InMemoryRuIndicationRepository implements RuIndicationRepository {
             ruIndications.remove(id);
         }
     }
-}
 
+    @Override
+    public void deleteAllBefore(LocalDate localDate) {
+        throw new UnsupportedOperationException();
+    }
+}

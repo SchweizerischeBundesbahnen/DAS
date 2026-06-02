@@ -4,6 +4,7 @@ import ch.sbb.das.backend.admin.application.ruindications.model.SpecialHoliday;
 import ch.sbb.das.backend.admin.application.ruindications.model.SpecialHolidayRequest;
 import ch.sbb.das.backend.common.CompanyCode;
 import ch.sbb.das.backend.tenancy.infrastructure.CompanyAuthorizer;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -48,6 +49,7 @@ public class SpecialHolidayServiceImpl implements SpecialHolidayService {
         if (optionalHoliday.isEmpty()) {
             return null;
         }
+        companyAuthorizationService.requireCanAccessCompanies(updateRequest.companies());
         companyAuthorizationService.requireCanAccessCompanies(optionalHoliday.get().companies());
         SpecialHoliday updatedSpecialHoliday = new SpecialHoliday(id, updateRequest.name(), updateRequest.date(), updateRequest.scheduleType(), updateRequest.companies());
         return specialHolidayRepository.save(updatedSpecialHoliday);
@@ -59,5 +61,10 @@ public class SpecialHolidayServiceImpl implements SpecialHolidayService {
         Set<CompanyCode> companies = specialHolidayRepository.findAllById(distinctIds).stream().flatMap(holiday -> holiday.companies().stream()).collect(Collectors.toSet());
         companyAuthorizationService.requireCanAccessCompanies(companies);
         specialHolidayRepository.deleteAllById(distinctIds);
+    }
+
+    @Override
+    public void deleteAllBefore(LocalDate localDate) {
+        specialHolidayRepository.deleteAllBefore(localDate);
     }
 }
