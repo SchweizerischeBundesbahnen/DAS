@@ -44,17 +44,17 @@ class MockAuthenticatedScope extends AuthenticatedScope {
       _registerMockRuFeaturesProvider();
       _registerMockFormationRepository();
     }
-
     _registerMockCustomerOrientedDepartureRepository();
-    getIt.registerCustomerOrientedDepartureViewModel();
+
+    getIt.registerJourneyViewModel();
     getIt.registerJourneyNavigationViewModel();
     getIt.registerJourneySelectionViewModel();
-    getIt.registerJourneyViewModel();
+    getIt.registerNotificationPriorityViewModel();
+    getIt.registerCustomerOrientedDepartureViewModel();
     getIt.registerJourneySettingsViewModel();
     getIt.registerViewModeViewModel();
-    getIt.registerNotificationPriorityViewModel();
-    getIt.registerLocalRegulationHtmlGenerator();
     _registerMockWarnAppViewModel();
+    getIt.registerLocalRegulationHtmlGenerator();
 
     return getIt.allReady();
   }
@@ -86,6 +86,9 @@ class MockAuthenticatedScope extends AuthenticatedScope {
   }
 
   void _registerMockCustomerOrientedDepartureRepository() {
-    getIt.registerSingleton<CustomerOrientedDepartureRepository>(MockCustomerOrientedDepartureRepository());
+    getIt.registerSingletonAsync<CustomerOrientedDepartureRepository>(
+      () async => MockCustomerOrientedDepartureRepository(),
+      dispose: (repo) => repo.dispose(),
+    );
   }
 }
