@@ -127,7 +127,7 @@ void main() {
       processStreams(fakeAsync: testAsync);
 
       // VERIFY
-      expect(statusRegister, orderedEquals([CustomerOrientedDepartureStatus.wait]));
+      expect(statusRegister, orderedEquals(<CustomerOrientedDepartureStatus>[.departure, .wait]));
       verifyInOrder([
         mockNotificationViewModel.remove(type: .customerOrientedDeparture),
         mockNotificationViewModel.insert(type: .customerOrientedDeparture, callback: null),
@@ -143,7 +143,7 @@ void main() {
       processStreams(fakeAsync: testAsync);
 
       // VERIFY
-      expect(statusRegister, orderedEquals([CustomerOrientedDepartureStatus.ready]));
+      expect(statusRegister, orderedEquals(<CustomerOrientedDepartureStatus>[.departure, .ready]));
       verifyInOrder([
         mockNotificationViewModel.remove(type: .customerOrientedDeparture),
         mockNotificationViewModel.insert(type: .customerOrientedDeparture, callback: mockSound.play),
@@ -162,7 +162,7 @@ void main() {
       processStreams(fakeAsync: testAsync);
 
       // VERIFY
-      expect(statusRegister, orderedEquals([CustomerOrientedDepartureStatus.departure]));
+      expect(statusRegister, orderedEquals(<CustomerOrientedDepartureStatus>[.departure, .departure]));
       verify(mockNotificationViewModel.remove(type: .customerOrientedDeparture)).called(1);
       verifyNever(mockNotificationViewModel.insert(type: .customerOrientedDeparture, callback: anyNamed('callback')));
     });
@@ -181,7 +181,7 @@ void main() {
       processStreams(fakeAsync: testAsync);
 
       // VERIFY
-      expect(statusRegister, isEmpty);
+      expect(statusRegister, orderedEquals(<CustomerOrientedDepartureStatus>[.departure])); // initial value
       verify(mockNotificationViewModel.remove(type: .customerOrientedDeparture)).called(1);
       verifyNever(mockNotificationViewModel.insert(type: .customerOrientedDeparture, callback: anyNamed('callback')));
     });
@@ -195,7 +195,7 @@ void main() {
       processStreams(fakeAsync: testAsync);
 
       // VERIFY
-      expect(statusRegister, isEmpty);
+      expect(statusRegister, orderedEquals(<CustomerOrientedDepartureStatus>[.departure])); // initial value
       verifyNever(mockNotificationViewModel.remove(type: .customerOrientedDeparture));
       verifyNever(mockNotificationViewModel.insert(type: .customerOrientedDeparture, callback: anyNamed('callback')));
     });
