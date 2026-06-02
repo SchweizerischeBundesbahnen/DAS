@@ -1,38 +1,30 @@
-import test, {expect, Locator, Page} from '@playwright/test';
+import test, { expect } from '@playwright/test';
+import { deleteEntryDialog, findRow } from '../utils/admin-test-helpers';
 
-test.describe('admin app versions test', () => {
+test.describe('app versions test', () => {
 
   const TEST_VERSION = '9999999999.0.0';
   const TEST_DATE = '22.03.39';
-
-  async function deleteAppVersion(page: Page, row: Locator, editButton: Locator) {
-    await editButton.click();
-
-    const deleteResponse = page.waitForResponse((resp) => resp.request().method() === 'DELETE');
-    await page.getByText('Blockierte App Version löschen', {exact: true}).click();
-    await deleteResponse;
-    await expect(row).not.toBeVisible();
-  }
 
   test('create, edit and delete app version | tests: 1406', async ({page}) => {
     await page.goto('das-admin');
     const addButton = page.getByText('App Version blockieren', {exact: true});
 
     await expect(addButton).toBeVisible();
-    const row = page.locator('tr[sbb-row]').filter({
-      has: page.getByRole('cell', {name: TEST_VERSION, exact: true}),
-    });
+    const row = findRow(page, TEST_VERSION);
     const editButton = row.getByRole('cell').last();
 
     if (await row.isVisible()) {
-      await deleteAppVersion(page, row, editButton);
+      await deleteEntryDialog(page, row);
     }
 
     // create
     await addButton.click();
-    const versionInput = page.getByRole('textbox', {name: 'App Version'});
+    const dialog = page.locator('sbb-dialog-content');
+    const versionInput = dialog.getByRole('textbox', {name: 'App Version'});
     await versionInput.fill(TEST_VERSION);
-    await page.locator('#expiryDate').fill(TEST_DATE);
+    const dateInput = dialog.locator('sbb-form-field').filter({hasText: 'Gültig ab'}).locator('sbb-date-input');
+    await dateInput.fill(TEST_DATE);
     await page.getByText('Speichern', {exact: true}).click();
 
     await expect(row).toBeVisible();
@@ -46,6 +38,6 @@ test.describe('admin app versions test', () => {
     await page.getByText('Speichern', {exact: true}).click();
     await expect(row.locator('td').filter({hasText: 'Ja'})).toBeVisible();
 
-    await deleteAppVersion(page, row, editButton);
+    await deleteEntryDialog(page, row);
   });
 });

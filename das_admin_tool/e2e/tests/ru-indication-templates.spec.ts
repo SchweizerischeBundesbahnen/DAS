@@ -1,23 +1,12 @@
-import test, {expect, Locator, Page} from '@playwright/test';
+import test, { expect, Locator, Page } from '@playwright/test';
+import { findRow, openEditDialog } from '../utils/admin-test-helpers';
 
-test.describe('ru admin indication templates test', () => {
+test.describe('ru indication templates test', () => {
 
   const TEST_CATEGORY = 'E2E Test Category 9999';
   const TEST_TITLE_DE = 'E2E Titel DE';
   const TEST_TEXT_DE = 'E2E Text DE';
   const TEST_TITLE_DE_UPDATED = 'E2E Titel DE aktualisiert';
-
-  function findRow(page: Page, title: string): Locator {
-    return page.locator('tr[sbb-row]').filter({
-      has: page.getByRole('cell', {name: TEST_CATEGORY, exact: true}),
-    }).filter({
-      has: page.getByRole('cell', {name: title, exact: true}),
-    }).first();
-  }
-
-  async function openEditDialog(row: Locator) {
-    await row.locator('sbb-mini-button').click();
-  }
 
   async function saveRuIndicationTemplate(page: Page, options: {
     method: 'POST' | 'PUT',
@@ -25,11 +14,11 @@ test.describe('ru admin indication templates test', () => {
     dialogTitle: string,
   }) {
     const reloadResponse = page.waitForResponse((resp) =>
-      resp.request().method() === 'GET' && /\/v1\/indication-templates(\?|$)/.test(resp.url()),
+      resp.request().method() === 'GET' && /\/v1\/ruindication-templates(\?|$)/.test(resp.url()),
     );
     const saveResponse = page.waitForResponse((resp) =>
       resp.request().method() === options.method
-      && /\/v1\/indication-templates/.test(resp.url()),
+      && /\/v1\/ruindication-templates/.test(resp.url()),
     );
     await page.getByText('Speichern', {exact: true}).click();
     await saveResponse;
@@ -38,29 +27,32 @@ test.describe('ru admin indication templates test', () => {
     await expect(page.getByText(options.dialogTitle, {exact: true})).not.toBeVisible();
   }
 
-  async function fillRuIndicationTemplateDialog(page: Page, values: { category?: string; title: string; text?: string }) {
+  async function fillRuIndicationTemplateDialog(page: Page, values: {
+    category?: string;
+    title: string;
+    text?: string
+  }) {
+    const categoryInput = page.getByRole('textbox', {name: 'Name der Kategorie eingeben'});
     if (values.category !== undefined) {
-      await expect(page.locator('#category')).toBeVisible();
-      await page.locator('#category').fill(values.category);
+      await expect(categoryInput).toBeVisible();
+      await categoryInput.fill(values.category);
     }
-    await page.locator('#deTitle').fill(values.title);
+    await page.getByRole('textbox', {name: 'Titel'}).fill(values.title);
     if (values.text !== undefined) {
-      await page.locator('#deText').fill(values.text);
+      await page.getByRole('textbox', {name: 'Text'}).fill(values.text)
     }
   }
 
   async function deleteRuIndicationTemplate(page: Page, row: Locator) {
     await openEditDialog(row);
-    const deleteResponse = page.waitForResponse((resp) =>
-      resp.request().method() === 'DELETE' && resp.url().includes('/v1/indication-templates/'),
-    );
-    await page.getByText('Titel und Text löschen', {exact: true}).click();
+    const deleteResponse = page.waitForResponse((resp) => resp.request().method() === 'DELETE');
+    await page.getByText('Eintrag löschen', {exact: true}).click();
     await deleteResponse;
     await expect(row).not.toBeVisible();
   }
 
   test.beforeEach(async ({page}) => {
-    await page.goto('ru-admin/indication-templates');
+    await page.goto('ru-admin/templates');
     await expect(page.locator('sbb-title[level="2"]')).toHaveText('Titel und Texte');
   });
 
@@ -99,7 +91,7 @@ test.describe('ru admin indication templates test', () => {
 
     // edit
     await openEditDialog(row);
-    const deTitleInput = page.locator('#deTitle');
+    const deTitleInput = page.getByRole('textbox', {name: 'Titel'});
     await expect(deTitleInput).toHaveValue(TEST_TITLE_DE);
     await deTitleInput.fill(TEST_TITLE_DE_UPDATED);
     await expect(deTitleInput).toHaveValue(TEST_TITLE_DE_UPDATED);
@@ -111,7 +103,10 @@ test.describe('ru admin indication templates test', () => {
     });
 
     await expect(updatedRow).toBeVisible({timeout: 15_000});
-    await expect(updatedRow.getByRole('cell', {name: TEST_TITLE_DE_UPDATED, exact: true})).toBeVisible();
+    await expect(updatedRow.getByRole('cell', {
+      name: TEST_TITLE_DE_UPDATED,
+      exact: true
+    })).toBeVisible();
 
     // delete
     await deleteRuIndicationTemplate(page, updatedRow);
@@ -145,9 +140,7 @@ test.describe('ru admin indication templates test', () => {
     await expect(row).toBeVisible();
     await row.locator('sbb-checkbox').click();
 
-    const deleteAllResponse = page.waitForResponse((resp) =>
-      resp.request().method() === 'DELETE' && /\/v1\/indication-templates$/.test(resp.url()),
-    );
+    const deleteAllResponse = page.waitForResponse((resp) => resp.request().method() === 'DELETE');
     await page.getByText('Eintrag löschen', {exact: true}).click();
     await deleteAllResponse;
 
