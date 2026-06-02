@@ -24,6 +24,6 @@ export class Header {
   protected readonly version = packageJson.version;
 
   protected languageIconName(language: Language) {
-    return language.localeId === this.languageProvider.currentLanguage?.localeId ? 'tick-small' : '';
+    return language.localeId === this.languageProvider.currentLanguage.localeId ? 'tick-small' : '';
   }
 }

@@ -2,11 +2,15 @@ import { inject } from '@angular/core';
 import { ToastService } from '../shared/toast-service';
 import { RecentCompaniesStore } from '../shared/recent-companies.store';
 import { firstValueFrom, Observable } from 'rxjs';
+import { SbbDialogService } from '@sbb-esta/lyne-angular/dialog';
 
 export abstract class BaseDialogService {
+  protected readonly dialogService = inject(SbbDialogService);
   protected readonly toastService = inject(ToastService);
   protected readonly recentCompaniesStore = inject(RecentCompaniesStore);
 
+  public abstract edit(edit: unknown): Promise<void>;
+  public abstract add(): Promise<void>;
   protected abstract reload(): void;
 
   /**

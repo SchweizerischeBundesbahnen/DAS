@@ -12,6 +12,7 @@ import {
   createContentFormGroup,
   RuIndicationContentForm
 } from '../../ru-indication-content-form/ru-indication-content-form.component';
+import { SbbActionGroup } from '@sbb-esta/lyne-angular/action-group';
 
 export type RuIndicationTemplateDialogEditResult = RuIndicationTemplate | 'delete';
 
@@ -26,6 +27,7 @@ export type RuIndicationTemplateDialogEditResult = RuIndicationTemplate | 'delet
     SbbTitleModule,
     SbbTabsModule,
     RuIndicationContentForm,
+    SbbActionGroup,
   ],
   templateUrl: './ru-indication-template-dialog.html',
   styleUrl: './ru-indication-template-dialog.css',

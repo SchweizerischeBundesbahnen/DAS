@@ -1,5 +1,4 @@
 import {inject, Injectable} from '@angular/core';
-import {SbbDialogService} from '@sbb-esta/lyne-angular/dialog';
 import {firstValueFrom} from 'rxjs';
 import {RuAdminApi, SpecialHoliday} from '../ru-admin-api';
 import {
@@ -14,7 +13,6 @@ import {BaseDialogService} from '../base-dialog.service';
 export class SpecialHolidayService extends BaseDialogService {
   private readonly ruAdminApi = inject(RuAdminApi);
   readonly specialHolidaysResource = this.ruAdminApi.specialHolidays;
-  private readonly dialogService = inject(SbbDialogService);
 
   async edit(specialHoliday: SpecialHoliday): Promise<void> {
     const event = await firstValueFrom(this.dialogService.open<SpecialHolidayDialog, SpecialHolidayDialogEditResult>(SpecialHolidayDialog, {data: specialHoliday}).afterClosed);

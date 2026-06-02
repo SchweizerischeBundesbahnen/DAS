@@ -19,7 +19,7 @@ test.describe('ru indications test', () => {
   });
 
   test('create, edit and delete ru indication | tests: 144', async ({page}) => {
-    const addButton = page.getByText('Neuen Hinweis erfassen', {exact: true});
+    const addButton = page.getByText('Neuen Eintrag erfassen', {exact: true});
     await expect(addButton).toBeVisible();
 
     const row = findRow(page, TEST_TITLE_DE);
@@ -111,7 +111,7 @@ test.describe('ru indications test', () => {
     }
 
     // create one entry to select and bulk-delete
-    await page.getByText('Neuen Hinweis erfassen', {exact: true}).click();
+    await page.getByText('Neuen Eintrag erfassen', {exact: true}).click();
     const dialog = page.locator('sbb-dialog');
     await expect(dialog.getByRole('textbox', {name: 'Titel'})).toBeVisible();
     await dialog.getByRole('textbox', {name: 'Titel'}).fill(TEST_TITLE_DE);

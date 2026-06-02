@@ -90,7 +90,7 @@ export class PeriodsInput {
     isRange: new FormControl(false, {nonNullable: true}),
   }, {validators: periodFormValidator});
   protected readonly weekdays = weekdays;
-  private readonly localeId = inject(LanguageProvider).currentLanguage?.localeId;
+  private readonly localeId = inject(LanguageProvider).currentLanguage.localeId;
 
   constructor() {
     this.applyRangeState(this.periodForm.controls.isRange.value);

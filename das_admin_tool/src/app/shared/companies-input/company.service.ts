@@ -3,7 +3,7 @@ import { computed, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { ApiResponse } from '../api-response';
 
-type CompanyApiResponse = ApiResponse<Company[]>;
+type CompanyApiResponse = ApiResponse<Company>;
 
 export interface Company {
   code: string;
@@ -23,17 +23,17 @@ export class CompanyService {
     return this.companies().find((company) => company.code === code)?.name;
   }
 
-  filterCompanies(query: string, excludedCodes: string[] = []): Company[] {
+  public filterCompanies(query: string, excludedCodes: string[] = []): Company[] {
     const allCompanies = this.companies().filter((company) => !excludedCodes.includes(company.code));
-    const q = query.trim().toLowerCase();
-    if (!q) {
+
+    const caseInsensitiveQuery = query.trim().toLowerCase();
+    if (!caseInsensitiveQuery) {
       return allCompanies;
     }
-    const matching = allCompanies.filter((company) => {
-      const code = company.code.toLowerCase();
-      const name = company.name.toLowerCase();
-      return code.includes(query) || name.includes(query);
-    });
+
+    const matching = allCompanies.filter(
+      ({ code, name }) => code.toLowerCase().includes(query) || name.toLowerCase().includes(query),
+    );
 
     return this.sortByRelevance(matching, query);
   }

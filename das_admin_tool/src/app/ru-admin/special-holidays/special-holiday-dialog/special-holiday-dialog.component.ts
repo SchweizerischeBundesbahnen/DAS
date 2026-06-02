@@ -13,6 +13,7 @@ import {SbbDatepickerModule} from '@sbb-esta/lyne-angular/datepicker';
 import {SbbRadioButtonModule} from '@sbb-esta/lyne-angular/radio-button';
 import {CompaniesInputComponent} from '../../../shared/companies-input/companies-input.component';
 import {toUtcDateOnly} from '../../../shared/date-util';
+import { SbbActionGroup } from '@sbb-esta/lyne-angular/action-group';
 
 export type SpecialHolidayDialogEditResult = SpecialHoliday | 'delete';
 
@@ -30,6 +31,7 @@ export type SpecialHolidayDialogEditResult = SpecialHoliday | 'delete';
     SbbDatepickerModule,
     SbbRadioButtonModule,
     CompaniesInputComponent,
+    SbbActionGroup,
   ],
   templateUrl: './special-holiday-dialog.component.html',
   styleUrl: './special-holiday-dialog.component.css',

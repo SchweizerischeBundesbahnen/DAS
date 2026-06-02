@@ -2,7 +2,6 @@ import { inject, Injectable } from '@angular/core';
 import { AppVersion, DasAdminApi } from '../das-admin-api';
 import { AppVersionDialog, VersionDialogEditResult } from './app-version-dialog/app-version-dialog';
 import { firstValueFrom } from 'rxjs';
-import { SbbDialogService } from '@sbb-esta/lyne-angular/dialog';
 import { BaseDialogService } from '../../ru-admin/base-dialog.service';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -12,7 +11,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class AppVersionsService extends BaseDialogService {
   private readonly dasAdminApi = inject(DasAdminApi);
   readonly appVersionsResource = this.dasAdminApi.appVersions;
-  private readonly dialogService = inject(SbbDialogService);
 
   async edit(appVersion: AppVersion) {
     const event = await firstValueFrom(this.dialogService.open<AppVersionDialog, VersionDialogEditResult>(AppVersionDialog, {data: appVersion}).afterClosed);

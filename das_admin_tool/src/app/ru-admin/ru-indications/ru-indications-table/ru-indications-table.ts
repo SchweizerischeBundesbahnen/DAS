@@ -65,7 +65,7 @@ export class RuIndicationsTable {
   protected selection = new SelectionModel<RuIndication>(true, []);
   protected form = new FormGroup({
     search: new FormControl('', {nonNullable: true}),
-    language: new FormControl(this.languageProvider.currentLanguage?.path, {nonNullable: true}),
+    language: new FormControl(this.languageProvider.currentLanguage.path, {nonNullable: true}),
     category: new FormControl('', {nonNullable: true}),
     companies: new FormControl('', {nonNullable: true}),
     trainNumbers: new FormControl('', {nonNullable: true}),
@@ -130,7 +130,7 @@ export class RuIndicationsTable {
 
   protected periodsValue(row: RuIndication): string {
     return row.periods
-      .map(period => displayPeriod(period, this.languageProvider.currentLanguage?.localeId))
+      .map(period => displayPeriod(period, this.languageProvider.currentLanguage.localeId))
       .join(', ');
   }
 

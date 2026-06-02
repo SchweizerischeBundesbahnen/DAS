@@ -11,7 +11,7 @@ export interface AppVersion {
   expiryDate?: Date;
 }
 
-export type AppVersionApiResponse = ApiResponse<AppVersion[]>;
+export type AppVersionApiResponse = ApiResponse<AppVersion>;
 
 @Injectable({
   providedIn: 'root',

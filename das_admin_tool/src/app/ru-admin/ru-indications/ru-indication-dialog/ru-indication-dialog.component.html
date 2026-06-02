@@ -1,4 +1,5 @@
 <sbb-dialog-title>{{ title }}</sbb-dialog-title>
+<sbb-dialog-close-button></sbb-dialog-close-button>
 <sbb-dialog-content>
   <form [formGroup]="ruIndicationForm">
     <sbb-stepper (stepchange)="stepchange.set($event)" linear>
@@ -52,26 +53,25 @@
     </sbb-stepper>
   </form>
 </sbb-dialog-content>
-
-<sbb-dialog-actions alignGroup="stretch">
-  <sbb-secondary-button align-self="start" i18n="@@ru_indications_dialog_button_cancel"
-                        sbb-dialog-close>
-    Abbrechen
+<sbb-dialog-actions alignGroup="stretch" orientation="vertical">
+  <sbb-secondary-button i18n="@@dialog_action_cancel" sbb-dialog-close>Abbrechen
   </sbb-secondary-button>
-  @if (isEdit) {
-    <sbb-transparent-button i18n="@@dialog_button_delete" iconName="trash-small"
-                            sbb-dialog-close="delete">Eintrag löschen
-    </sbb-transparent-button>
-  }
-  @if (!isLastStep()) {
-    <sbb-button (click)="next()" [disabled]="isStepDisabled()"
-                i18n="@@ru_indications_dialog_button_next">
-      Weiter
-    </sbb-button>
-  } @else {
-    <sbb-button [disabled]="ruIndicationForm.invalid" [sbb-dialog-close]="formValue"
-                i18n="@@ru_indications_dialog_button_save">
-      Speichern
-    </sbb-button>
-  }
+  <sbb-action-group alignGroup="stretch" orientation="vertical">
+    @if (isEdit) {
+      <sbb-transparent-button i18n="@@dialog_action_delete" iconName="trash-small"
+                              sbb-dialog-close="delete">Eintrag löschen
+      </sbb-transparent-button>
+    }
+    @if (!isLastStep()) {
+      <sbb-button (click)="next()" [disabled]="isStepDisabled()"
+                  i18n="@@dialog_action_next">
+        Weiter
+      </sbb-button>
+    } @else {
+      <sbb-button [disabled]="ruIndicationForm.invalid || ruIndicationForm.pristine"
+                  [sbb-dialog-close]="formValue"
+                  i18n="@@dialog_action_save">Speichern
+      </sbb-button>
+    }
+  </sbb-action-group>
 </sbb-dialog-actions>
