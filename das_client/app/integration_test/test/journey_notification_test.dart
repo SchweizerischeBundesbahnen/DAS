@@ -3,10 +3,12 @@ import 'package:app/pages/journey/journey_screen/notification/widgets/departure_
 import 'package:app/pages/journey/journey_screen/notification/widgets/disturbance_notification.dart';
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:auth/component.dart';
+import 'package:customer_oriented_departure/component.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../app_test.dart';
 import '../auth/integrationtest_authenticator.dart';
+import '../mocks/mock_customer_oriented_departure_repository.dart';
 import '../mocks/mock_ru_feature_provider.dart';
 import '../util/test_utils.dart';
 
@@ -17,7 +19,13 @@ void main() {
       final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;
       featureProvider.enableFeature(.departureProcess);
 
-      await loadJourney(tester, trainNumber: 'T13');
+      final mockRepository = DI.get<CustomerOrientedDepartureRepository>() as MockCustomerOrientedDepartureRepository;
+      mockRepository.reset();
+
+      final trainNumber = 'T9999M';
+      await loadJourney(tester, trainNumber: trainNumber);
+
+      mockRepository.emitStatus(CustomerOrientedDeparture(trainNumber: trainNumber, status: .wait));
 
       await waitUntilExists(tester, find.text(l10n.w_customer_oriented_departure_notification_wait));
 
@@ -59,7 +67,14 @@ void main() {
 
     testWidgets('test prioritization of notifications are correct', (tester) async {
       await prepareAndStartApp(tester);
-      await loadJourney(tester, trainNumber: 'T38');
+
+      final mockRepository = DI.get<CustomerOrientedDepartureRepository>() as MockCustomerOrientedDepartureRepository;
+      mockRepository.reset();
+
+      final trainNumber = 'T38';
+      await loadJourney(tester, trainNumber: trainNumber);
+
+      mockRepository.emitStatus(CustomerOrientedDeparture(trainNumber: trainNumber, status: .wait));
 
       await waitUntilExists(tester, find.text(l10n.w_customer_oriented_departure_notification_wait));
       await waitUntilExists(tester, find.text(l10n.w_departure_dispatch_notification_long));

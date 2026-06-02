@@ -32,7 +32,7 @@ class CustomerOrientedDepartureViewModel extends JourneyAwareViewModel {
   final AppLifecycleViewModel _appLifecycleViewModel;
   final Authenticator _authenticator;
 
-  final _rxStatus = BehaviorSubject<CustomerOrientedDepartureStatus>();
+  final _rxStatus = BehaviorSubject<CustomerOrientedDepartureStatus>.seeded(.departure);
   final _subscriptions = <StreamSubscription>[];
 
   Journey? _lastJourney;

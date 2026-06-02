@@ -27,9 +27,7 @@ class CustomerOrientedDepartureNotification extends StatelessWidget {
 
         return switch (snapshot.data!) {
           .wait => _WaitNotification(displayDepartureProcessButton: displayDepartureProcessButton),
-          .ready => _ReadyNotification(
-            displayDepartureProcessButton: displayDepartureProcessButton,
-          ),
+          .ready => _ReadyNotification(displayDepartureProcessButton: displayDepartureProcessButton),
           .call => _CallNotification(displayDepartureProcessButton: displayDepartureProcessButton),
           .departure => SizedBox.shrink(),
         };

@@ -1,8 +1,8 @@
 import 'package:app/i18n/src/build_context_x.dart';
 import 'package:app/pages/journey/journey_screen/notification/widgets/customer_oriented_departure_notification.dart';
 import 'package:app/pages/journey/journey_screen/view_model/checklist_departure_process_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/customer_oriented_departure_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/checklist_departure_process_model.dart';
-import 'package:app/pages/journey/journey_screen/view_model/ux_testing_view_model.dart';
 import 'package:app/theme/das_colors.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/assets.dart';
@@ -13,15 +13,15 @@ import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 Future<void> showDepartureProcessDialog(BuildContext context) {
-  final uxTestingVM = context.read<UxTestingViewModel>();
   final departureProcessChecklistVM = context.read<ChecklistDepartureProcessViewModel>();
+  final customerOrientedDepartureVM = context.read<CustomerOrientedDepartureViewModel>();
 
   return showDialog<void>(
     useRootNavigator: false,
     context: context,
     builder: (context) {
       return Provider.value(
-        value: uxTestingVM,
+        value: customerOrientedDepartureVM,
         child: Provider.value(
           value: departureProcessChecklistVM,
           child: DepartureProcessDialog(),
