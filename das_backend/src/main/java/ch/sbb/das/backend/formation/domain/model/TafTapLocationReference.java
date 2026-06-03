@@ -1,5 +1,8 @@
 package ch.sbb.das.backend.formation.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonCreator.Mode;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.AllArgsConstructor;
@@ -106,9 +109,15 @@ public class TafTapLocationReference {
         return countryCode;
     }
 
+    @JsonCreator(mode = Mode.DELEGATING)
+    public static TafTapLocationReference of(String value) {
+        return new TafTapLocationReference(value.substring(0, 2), Integer.parseInt(value.substring(2)));
+    }
+
     /**
      * @return proprietary short, speaking format within this project. Related to SLOID.
      */
+    @JsonValue
     public String toLocationCode() {
         if (countryCodeIso == null || uicCode == null) {
             throw new UnexpectedProviderData("countryCodeUic or uicCode is null");
@@ -118,5 +127,4 @@ public class TafTapLocationReference {
         }
         return countryCodeIso + String.format("%05d", uicCode);
     }
-
 }

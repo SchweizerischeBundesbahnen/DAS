@@ -11,6 +11,7 @@ import ch.sbb.das.backend.admin.infrastructure.jpa.RuFeatureEntity;
 import ch.sbb.das.backend.admin.infrastructure.jpa.SpringDataJpaRuFeatureRepository;
 import java.time.LocalDateTime;
 import java.util.List;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jpa.test.autoconfigure.TestEntityManager;
@@ -23,6 +24,7 @@ import org.springframework.test.context.jdbc.Sql;
 @PersistenceH2TestProfile
 @Import({JpaAuditingConfiguration.class})
 @Sql("classpath:createRuFeatureH2.sql")
+@Disabled("Disabled because PostgreSQL features are not supported by H2 and these are duplicated tests")
 class SpringDataJpaRuFeatureRepositoryH2Test {
 
     @Autowired

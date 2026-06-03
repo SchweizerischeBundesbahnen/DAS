@@ -1,7 +1,7 @@
 package ch.sbb.das.backend.admin.infrastructure.jpa;
 
-import ch.sbb.das.backend.admin.application.notices.model.SpecialHoliday;
-import ch.sbb.das.backend.admin.domain.notices.SpecialHolidayRepository;
+import ch.sbb.das.backend.admin.application.ruindications.model.SpecialHoliday;
+import ch.sbb.das.backend.admin.domain.ruindications.SpecialHolidayRepository;
 import ch.sbb.das.backend.common.CompanyCode;
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -21,6 +21,13 @@ class PersistenceSpecialHolidayRepository implements SpecialHolidayRepository {
     @Override
     public List<SpecialHoliday> getAllUpcoming() {
         return specialHolidayRepository.findAllByDateGreaterThanEqualOrderByDate(LocalDate.now()).stream()
+            .map(SpecialHolidayEntity::toSpecialHoliday)
+            .toList();
+    }
+
+    @Override
+    public List<SpecialHoliday> findAllByDate(LocalDate date) {
+        return specialHolidayRepository.findAllByDate(date).stream()
             .map(SpecialHolidayEntity::toSpecialHoliday)
             .toList();
     }
@@ -51,12 +58,12 @@ class PersistenceSpecialHolidayRepository implements SpecialHolidayRepository {
     }
 
     @Override
-    public void deleteById(Integer id) {
-        specialHolidayRepository.deleteById(id);
+    public void deleteAllById(Iterable<Integer> ids) {
+        specialHolidayRepository.deleteAllById(ids);
     }
 
     @Override
-    public void deleteAllById(Iterable<Integer> ids) {
-        specialHolidayRepository.deleteAllById(ids);
+    public void deleteAllBefore(LocalDate date) {
+        specialHolidayRepository.deleteAllByDateLessThan(date);
     }
 }
