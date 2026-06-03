@@ -1,6 +1,6 @@
 package ch.sbb.das.backend.preload.infrastructure;
 
-import ch.sbb.das.backend.preload.application.converter.DateTimeConverter;
+import ch.sbb.das.backend.common.DateUtil;
 import ch.sbb.das.backend.preload.application.model.trainidentification.Train;
 import ch.sbb.das.backend.preload.application.model.trainidentification.TrainRun;
 import ch.sbb.das.backend.preload.application.model.trainidentification.TrainRunDate;
@@ -70,7 +70,7 @@ public class TrainRunDAO {
     }
 
     private OffsetDateTime toStartDateTime(TrainRunDate trainRunDate, TrainRun trainRun) {
-        return DateTimeConverter.convertDateTime(trainRunDate.getOperatingDay(), trainRun.getFirstDepartureTime());
+        return DateUtil.convertDateTime(trainRunDate.getOperatingDay(), trainRun.getFirstDepartureTime());
     }
 
     public void deleteAllOlderThan(LocalDate date) {

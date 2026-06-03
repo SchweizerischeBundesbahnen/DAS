@@ -1,7 +1,6 @@
 package ch.sbb.das.backend.preload.application.converter;
 
-import static ch.sbb.das.backend.preload.application.converter.DateTimeConverter.SWISS_ZONE;
-
+import ch.sbb.das.backend.common.DateUtil;
 import ch.sbb.das.backend.preload.application.BitSetUtil;
 import ch.sbb.das.backend.preload.application.model.trainidentification.TrainRun;
 import ch.sbb.das.backend.preload.application.model.trainidentification.TrainRunDate;
@@ -97,7 +96,7 @@ public class TrainRunConverter {
         ZonedDateTime dateTime = ZonedDateTime.of(
             operationalDate.getYear(), operationalDate.getMonth().getValue(), operationalDate.getDayOfMonth(),
             0, 0, 0, 0,
-            SWISS_ZONE);
+            DateUtil.SWISS_ZONE);
         return dateTime.plusSeconds(departureTime).toOffsetDateTime();
     }
 

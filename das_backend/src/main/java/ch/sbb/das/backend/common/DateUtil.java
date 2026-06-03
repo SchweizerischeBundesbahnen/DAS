@@ -1,4 +1,4 @@
-package ch.sbb.das.backend.preload.application.converter;
+package ch.sbb.das.backend.common;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
@@ -6,14 +6,18 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import lombok.experimental.UtilityClass;
 
-/**
- * See <a href="https://confluence.sbb.ch/x/DcxSww">Umrechnen von Planzeiten</a>
- */
 @UtilityClass
-public class DateTimeConverter {
+public class DateUtil {
 
     public static final ZoneId SWISS_ZONE = ZoneId.of("Europe/Zurich");
 
+    public static LocalDate today() {
+        return LocalDate.now(SWISS_ZONE);
+    }
+
+    /**
+     * See <a href="https://confluence.sbb.ch/x/DcxSww">Umrechnen von Planzeiten</a>
+     */
     public OffsetDateTime convertDateTime(LocalDate localDate, Integer secondsToAdd) {
         if (secondsToAdd == null) {
             return null;

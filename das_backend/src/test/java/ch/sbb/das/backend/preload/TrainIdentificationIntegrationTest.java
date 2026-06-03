@@ -1,6 +1,6 @@
 package ch.sbb.das.backend.preload;
 
-import static ch.sbb.das.backend.preload.application.converter.DateTimeConverter.SWISS_ZONE;
+import static ch.sbb.das.backend.common.DateUtil.SWISS_ZONE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.waitAtMost;
 

@@ -3,7 +3,7 @@ package ch.sbb.das.backend.admin.infrastructure.atlas;
 import static ch.sbb.das.backend.admin.infrastructure.atlas.RestClientConfig.OAUTH2_CLIENT_REGISTRATION_ID;
 import static org.springframework.security.oauth2.client.web.client.RequestAttributeClientRegistrationIdResolver.clientRegistrationId;
 
-import java.time.LocalDate;
+import ch.sbb.das.backend.common.DateUtil;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Component;
@@ -45,7 +45,7 @@ public class ServicePointApiClient {
                 .queryParam("meansOfTransport", "TRAIN")
                 .queryParam("statusRestrictions", "VALIDATED")
                 .queryParam("countries", "SWITZERLAND", "ITALY", "FRANCE", "GERMANY")
-                .queryParam("validToFromDate", LocalDate.now().toString())
+                .queryParam("validToFromDate", DateUtil.today().toString())
                 .queryParam("page", page)
                 .queryParam("size", MAX_PAGE_SIZE)
                 .build()

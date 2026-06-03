@@ -6,6 +6,7 @@ import ch.sbb.das.backend.admin.application.settings.model.response.CurrentAppVe
 import ch.sbb.das.backend.admin.domain.settings.model.SemanticVersion;
 import ch.sbb.das.backend.admin.infrastructure.jpa.AppVersionEntity;
 import ch.sbb.das.backend.common.ConflictException;
+import ch.sbb.das.backend.common.DateUtil;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
@@ -42,7 +43,7 @@ public class AppVersionServiceImpl implements AppVersionService {
         LocalDate expiryDate = relevantVersions.stream()
             .map(AppVersion::expiryDate)
             .filter(Objects::nonNull)
-            .filter(date -> date.isAfter(LocalDate.now()))
+            .filter(date -> date.isAfter(DateUtil.today()))
             .min(Comparator.naturalOrder())
             .orElse(null);
 
@@ -52,7 +53,7 @@ public class AppVersionServiceImpl implements AppVersionService {
     @Override
     public boolean isExpired(AppVersion appVersion) {
         LocalDate expiryDate = appVersion.expiryDate();
-        return expiryDate == null || expiryDate.isBefore(LocalDate.now());
+        return expiryDate == null || expiryDate.isBefore(DateUtil.today());
     }
 
     @Override

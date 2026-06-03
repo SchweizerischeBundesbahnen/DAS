@@ -1,6 +1,6 @@
 package ch.sbb.das.backend.preload.application;
 
-import java.time.LocalDate;
+import ch.sbb.das.backend.common.DateUtil;
 import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -21,6 +21,6 @@ public class TrainCleanUpJobScheduler {
     @Scheduled(cron = "${preload.trainCleanUp.cronExpression}")
     @SchedulerLock(name = "trainCleanUp", lockAtLeastFor = "10m")
     void cleanUpPreload() {
-        timetableService.deleteAllBefore(LocalDate.now().minusDays(days));
+        timetableService.deleteAllBefore(DateUtil.today().minusDays(days));
     }
 }
