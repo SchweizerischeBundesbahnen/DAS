@@ -1,20 +1,14 @@
 sbb-form-field {
   width: 100%;
-  margin-bottom: var(--sbb-spacing-responsive-xxxs);
-}
-
-.train-filter-mode {
-  margin-bottom: var(--sbb-spacing-responsive-xxxs);
-}
-
-.parity {
-  margin-bottom: var(--sbb-spacing-responsive-xxxs);
-}
-
-sbb-chip-group {
-  margin-bottom: var(--sbb-spacing-responsive-xxxs);
 }
 
 form {
+  display: grid;
+  gap: var(--sbb-spacing-responsive-xxxs);
+  justify-items: start;
   margin-bottom: var(--sbb-spacing-responsive-xs);
+
+  sbb-error {
+    margin-top: calc(-1 * var(--sbb-spacing-responsive-xxxs));
+  }
 }

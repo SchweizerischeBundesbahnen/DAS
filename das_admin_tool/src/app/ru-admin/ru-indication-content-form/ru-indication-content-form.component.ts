@@ -1,8 +1,9 @@
-import { Component, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
   FormGroup,
+  NonNullableFormBuilder,
   ReactiveFormsModule,
   ValidationErrors
 } from "@angular/forms";
@@ -10,8 +11,9 @@ import { SbbError, SbbFormField } from "@sbb-esta/lyne-angular/form-field";
 import { SbbMiniButton } from "@sbb-esta/lyne-angular/button";
 import { SbbTab, SbbTabGroup, SbbTabLabel } from "@sbb-esta/lyne-angular/tabs";
 import { SbbTooltipDirective } from "@sbb-esta/lyne-angular/tooltip";
-import { LanguageCode } from '../../shared/language-provider';
+import { LanguageCode, LanguageProvider } from '../../shared/language-provider';
 import { RuIndication, RuIndicationContent, RuIndicationLanguageContent } from '../ru-admin-api';
+import { UpperCasePipe } from '@angular/common';
 
 interface LanguageContentForm {
   title: FormControl<string>;
@@ -59,13 +61,16 @@ function titleRequired(control: AbstractControl): ValidationErrors | null {
     SbbTab,
     SbbTabGroup,
     SbbTabLabel,
-    SbbTooltipDirective
+    SbbTooltipDirective,
+    UpperCasePipe
   ],
   templateUrl: './ru-indication-content-form.component.html',
   styleUrl: './ru-indication-content-form.component.css',
 })
 export class RuIndicationContentForm {
   form = input.required<FormGroup>();
+  protected readonly languageProvider = inject(LanguageProvider);
+  private readonly formBuilder = inject(NonNullableFormBuilder);
 
   public get formValue(): Partial<RuIndicationContent> {
     const mapLanguage = (language: keyof RuIndication['content']): RuIndicationLanguageContent | undefined => {
@@ -108,7 +113,7 @@ export class RuIndicationContentForm {
     textControl.markAsTouched();
 
     // keep focus and preselect link
-    queueMicrotask(() => {
+    globalThis.queueMicrotask(() => {
       const cursorPosition = selectionStart + 1;
       textarea.focus();
       textarea.setSelectionRange(cursorPosition, cursorPosition);

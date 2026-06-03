@@ -4,8 +4,11 @@ import { RuIndicationDialog } from './ru-indication-dialog.component';
 import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core/overlay';
 import { RecentCompaniesStore } from '../../../shared/recent-companies.store';
 import { RuIndicationDialogData } from '../ru-indication.service';
+import { CompanyService } from '../../../shared/companies-input/company.service';
 
 const mockRecentCompaniesStore = {get: () => []};
+
+const mockCompanyService = {filterCompanies: vi.fn()};
 
 const dialogData: RuIndicationDialogData = {ruIndication: undefined, templates: []};
 
@@ -18,6 +21,7 @@ describe('RuIndicationDialog', () => {
       imports: [RuIndicationDialog],
       providers: [
         {provide: SBB_OVERLAY_DATA, useValue: dialogData},
+        {provide: CompanyService, useValue: mockCompanyService},
         {provide: RecentCompaniesStore, useValue: mockRecentCompaniesStore}
       ]
     })

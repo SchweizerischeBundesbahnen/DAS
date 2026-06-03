@@ -1,66 +1,29 @@
 <sbb-tab-group [formGroup]="form()">
-  <sbb-tab-label [iconName]="isLanguageEmpty('de') ? 'circle-dotted-small' : ''">DE
-  </sbb-tab-label>
-  <sbb-tab formGroupName="de">
-    <sbb-form-field errorSpace="reserve">
-      <label for="deTitle" i18n="@@ru_indications_form_title_label">Titel</label>
-      <input formControlName="title"/>
-      @if (form().get('de')?.hasError('titleRequired') && form().get('de.title')?.touched) {
-        <sbb-error i18n="@@ru_indications_form_field_error_required">Feld darf nicht leer sein
-        </sbb-error>
-      }
-    </sbb-form-field>
-    <sbb-form-field>
-      <label for="deText" i18n="@@ru_indications_form_text_label">Text</label>
-      <textarea #deText formControlName="text"></textarea>
-      <sbb-mini-button
-        (click)="insertLink('de', deText)"
-        iconName="link-small"
-        sbb-tooltip="Link"/>
-    </sbb-form-field>
-  </sbb-tab>
-
-  <sbb-tab-label [iconName]="isLanguageEmpty('fr') ? 'circle-dotted-small' : ''">FR
-  </sbb-tab-label>
-  <sbb-tab formGroupName="fr">
-    <sbb-form-field errorSpace="reserve">
-      <label for="frTitle" i18n="@@ru_indications_form_title_label">Titel</label>
-      <input formControlName="title"/>
-      @if (form().get('fr')?.hasError('titleRequired') && form().get('fr.title')?.touched) {
-        <sbb-error i18n="@@ru_indications_form_field_error_required">Feld darf nicht leer sein
-        </sbb-error>
-      }
-    </sbb-form-field>
-    <sbb-form-field>
-      <label for="frText" i18n="@@ru_indications_form_text_label">Text</label>
-      <textarea #frText formControlName="text"></textarea>
-      <sbb-mini-button
-        (click)="insertLink('fr', frText)"
-        iconName="link-small"
-        sbb-tooltip="Link"/>
-    </sbb-form-field>
-  </sbb-tab>
-
-  <sbb-tab-label [iconName]="isLanguageEmpty('it') ? 'circle-dotted-small' : ''">IT
-  </sbb-tab-label>
-  <sbb-tab formGroupName="it">
-    <sbb-form-field errorSpace="reserve">
-      <label for="itTitle" i18n="@@ru_indications_form_title_label">Titel</label>
-      <input formControlName="title"/>
-      @if (form().get('it')?.hasError('titleRequired') && form().get('it.title')?.touched) {
-        <sbb-error i18n="@@ru_indications_form_field_error_required">Feld darf nicht leer sein
-        </sbb-error>
-      }
-    </sbb-form-field>
-    <sbb-form-field>
-      <label for="itText" i18n="@@ru_indications_form_text_label">Text</label>
-      <textarea #itText formControlName="text"></textarea>
-      <sbb-mini-button
-        (click)="insertLink('it', itText)"
-        iconName="link-small"
-        sbb-tooltip="Link"/>
-    </sbb-form-field>
-  </sbb-tab>
+  @for (language of languageProvider.allLanguages; track language.localeId) {
+    <sbb-tab-label [iconName]="isLanguageEmpty(language.path) ? 'circle-dotted-small' : ''">{{
+        language.path | uppercase
+      }}
+    </sbb-tab-label>
+    <sbb-tab [formGroupName]="language.path">
+      <sbb-form-field errorSpace="reserve">
+        <label i18n="@@ru_indications_form_title_label">Titel</label>
+        <input formControlName="title"/>
+        @let titleField = form().get(`${language.path}.title`);
+        @if (form().touched && titleField?.hasError('titleRequired')) {
+          <sbb-error i18n="@@form_field_error_required">Feld darf nicht leer sein
+          </sbb-error>
+        }
+      </sbb-form-field>
+      <sbb-form-field>
+        <label i18n="@@ru_indications_form_text_label">Text</label>
+        <textarea #text formControlName="text"></textarea>
+        <sbb-mini-button
+          (click)="insertLink(language.path, text)"
+          iconName="link-small"
+          sbb-tooltip="Link"/>
+      </sbb-form-field>
+    </sbb-tab>
+  }
 </sbb-tab-group>
 
 @if (form().hasError('oneLanguageRequired') && form().touched) {

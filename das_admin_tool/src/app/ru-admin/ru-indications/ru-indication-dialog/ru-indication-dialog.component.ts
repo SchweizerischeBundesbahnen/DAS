@@ -45,7 +45,7 @@ import { CategoryContentForm } from './content-form/category-content-form';
     CategoryContentForm,
   ],
   templateUrl: './ru-indication-dialog.component.html',
-  styleUrl: './ru-indication-dialog.component.scss',
+  styleUrl: './ru-indication-dialog.component.css',
 })
 export class RuIndicationDialog {
   protected readonly title: string;

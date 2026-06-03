@@ -1,7 +1,7 @@
-import {Component, inject} from '@angular/core';
-import {  SbbTitleModule } from '@sbb-esta/lyne-angular/title';
-import {RuIndicationService} from './ru-indication.service';
-import {RuIndicationsTable} from './ru-indications-table/ru-indications-table';
+import { Component, inject } from '@angular/core';
+import { SbbTitleModule } from '@sbb-esta/lyne-angular/title';
+import { RuIndicationService } from './ru-indication.service';
+import { RuIndicationsTable } from './ru-indications-table/ru-indications-table';
 import { SbbButtonModule } from '@sbb-esta/lyne-angular/button';
 import { SbbLoadingIndicatorCircleModule } from '@sbb-esta/lyne-angular/loading-indicator-circle';
 
@@ -18,5 +18,5 @@ import { SbbLoadingIndicatorCircleModule } from '@sbb-esta/lyne-angular/loading-
 })
 export class RuIndications {
   protected readonly ruIndicationService = inject(RuIndicationService);
-  protected readonly ruIndicationsRessource = this.ruIndicationService.ruIndicationsResource;
+  protected readonly ruIndicationsResource = this.ruIndicationService.ruIndicationsResource;
 }

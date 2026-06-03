@@ -6,7 +6,8 @@
       <sbb-step>
         <sbb-title i18n="@@ru_indications_form_train_numbers_title" visualLevel="5">Titel und Text
         </sbb-title>
-        <app-category-content-form [form]="ruIndicationForm.controls.content" [dialogData]="dialogData"></app-category-content-form>
+        <app-category-content-form [dialogData]="dialogData"
+                                   [form]="ruIndicationForm.controls.content"></app-category-content-form>
       </sbb-step>
 
       <sbb-step-label i18n="@@ru_indications_step_scope">Anwendungsbereich</sbb-step-label>
@@ -15,33 +16,37 @@
         <app-companies-input
           [control]="ruIndicationForm.controls.scope.controls.companies"></app-companies-input>
 
-        <sbb-title i18n="@@ru_indications_form_train_numbers_title" visualLevel="5">Zugnummer</sbb-title>
+        <sbb-title i18n="@@ru_indications_form_train_numbers_title" visualLevel="5">Zugnummer
+        </sbb-title>
         <app-train-number-input
           [control]="ruIndicationForm.controls.scope.controls.operationalTrainNumberFilters"></app-train-number-input>
 
-        <sbb-title i18n="@@ru_indications_form_location_title" visualLevel="5">Betriebspunkt</sbb-title>
+        <sbb-title i18n="@@ru_indications_form_location_title" visualLevel="5">Betriebspunkt
+        </sbb-title>
         <app-locations-input
           [control]="ruIndicationForm.controls.scope.controls.tafTapLocationReferences"></app-locations-input>
       </sbb-step>
 
       <sbb-step-label i18n="@@ru_indications_step_periods">Zeitraum</sbb-step-label>
       <sbb-step>
-        <sbb-title i18n="@@ru_indications_form_periods_title" visualLevel="5">Zeitraum der Gültigkeit
+        <sbb-title i18n="@@ru_indications_form_periods_title" visualLevel="5">Zeitraum der
+          Gültigkeit
         </sbb-title>
         <app-periods-input [control]="ruIndicationForm.controls.periods"></app-periods-input>
       </sbb-step>
       @if (isEdit) {
         <sbb-step-label disabled i18n="@@ru_indications_step_history">Stammdaten</sbb-step-label>
         <sbb-step>
-          <sbb-title i18n="@@ru_indications_form_history_title" visualLevel="5">Stammdaten</sbb-title>
-            <div class="entry">
-              <p>Zuletzt bearbeitet von</p>
-              <p>{{ dialogData.ruIndication?.lastModifiedBy }}</p>
-            </div>
-            <div class="entry">
-              <p>Bearbeitet am</p>
-              <p>{{ dialogData.ruIndication?.lastModifiedAt | date: 'short' }}</p>
-            </div>
+          <sbb-title i18n="@@ru_indications_form_history_title" visualLevel="5">Stammdaten
+          </sbb-title>
+          <div class="entry">
+            <p class="sbb-text-xs">Zuletzt bearbeitet von</p>
+            <p class="sbb-text-m">{{ dialogData.ruIndication?.lastModifiedBy }}</p>
+          </div>
+          <div class="entry">
+            <p class="sbb-text-xs">Bearbeitet am</p>
+            <p class="sbb-text-m">{{ dialogData.ruIndication?.lastModifiedAt | date: 'short' }}</p>
+          </div>
         </sbb-step>
       }
     </sbb-stepper>
@@ -49,7 +54,8 @@
 </sbb-dialog-content>
 
 <sbb-dialog-actions alignGroup="stretch">
-  <sbb-secondary-button align-self="start" i18n="@@ru_indications_dialog_button_cancel" sbb-dialog-close>
+  <sbb-secondary-button align-self="start" i18n="@@ru_indications_dialog_button_cancel"
+                        sbb-dialog-close>
     Abbrechen
   </sbb-secondary-button>
   @if (isEdit) {
@@ -58,7 +64,8 @@
     </sbb-transparent-button>
   }
   @if (!isLastStep()) {
-    <sbb-button (click)="next()" [disabled]="isStepDisabled()" i18n="@@ru_indications_dialog_button_next">
+    <sbb-button (click)="next()" [disabled]="isStepDisabled()"
+                i18n="@@ru_indications_dialog_button_next">
       Weiter
     </sbb-button>
   } @else {

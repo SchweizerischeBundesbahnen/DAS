@@ -3,7 +3,6 @@ import { RuIndicationTemplatesTable } from './ru-indication-templates-table';
 import { RuIndicationTemplateService } from '../ru-indication-template.service';
 import { LOCALE_ID } from '@angular/core';
 import { RuIndicationTemplate } from '../../ru-admin-api';
-import { vi } from 'vitest';
 
 const templates: RuIndicationTemplate[] = [
   {

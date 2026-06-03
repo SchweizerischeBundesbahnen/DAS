@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { RuIndicationFilter, RuIndicationsTable } from './ru-indications-table';
-import { vi } from 'vitest';
 import { RuIndicationService } from '../ru-indication.service';
 import { LanguageProvider } from '../../../shared/language-provider';
 import { CompanyService } from '../../../shared/companies-input/company.service';
@@ -126,9 +125,9 @@ describe('RuIndicationsTable', () => {
         search: 'general',
       }, sample)).toBe(true);
       expect(comp['searchFilter']({
-          ...filter,
-          search: 'aktiv',
-        }, sample)).toBe(true);
+        ...filter,
+        search: 'aktiv',
+      }, sample)).toBe(true);
       expect(comp['searchFilter']({
         ...filter,
         search: 'tester',

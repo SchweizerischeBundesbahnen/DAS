@@ -9,12 +9,8 @@
         <label for="category" i18n="@@ru_indication_templates_form_category_label">Name der
           Kategorie eingeben</label>
         <input formControlName="category" required/>
-        @if (ruIndicationTemplateForm.touched) {
-          @if (ruIndicationTemplateForm.get('category')?.hasError('required')) {
-            <sbb-error i18n="@@ru_indication_templates_form_field_error_required">Feld darf nicht
-              leer sein
-            </sbb-error>
-          }
+        @if (ruIndicationTemplateForm.touched && ruIndicationTemplateForm.get('category')?.hasError('required')) {
+          <sbb-error i18n="@@form_field_error_required">Feld darf nicht leer sein</sbb-error>
         }
       </sbb-form-field>
     </div>

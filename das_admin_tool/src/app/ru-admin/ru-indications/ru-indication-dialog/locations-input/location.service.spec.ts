@@ -21,8 +21,8 @@ describe('LocationService', () => {
     service = TestBed.inject(LocationService);
 
     ((service as unknown) as {
-      locationsRessource: { hasValue: () => boolean; value: () => { data: Location[] } }
-    }).locationsRessource = {hasValue: () => true, value: () => ({data: locations})};
+      locationsResource: { hasValue: () => boolean; value: () => { data: Location[] } }
+    }).locationsResource = {hasValue: () => true, value: () => ({data: locations})};
   });
 
   it('should be created', () => {

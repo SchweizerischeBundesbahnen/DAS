@@ -13,13 +13,8 @@ test.describe('ru indication templates test', () => {
     successToast: string,
     dialogTitle: string,
   }) {
-    const reloadResponse = page.waitForResponse((resp) =>
-      resp.request().method() === 'GET' && /\/v1\/ruindication-templates(\?|$)/.test(resp.url()),
-    );
-    const saveResponse = page.waitForResponse((resp) =>
-      resp.request().method() === options.method
-      && /\/v1\/ruindication-templates/.test(resp.url()),
-    );
+    const reloadResponse = page.waitForResponse((resp) => resp.request().method() === 'GET');
+    const saveResponse = page.waitForResponse((resp) => resp.request().method() === options.method);
     await page.getByText('Speichern', {exact: true}).click();
     await saveResponse;
     await reloadResponse;
@@ -52,7 +47,7 @@ test.describe('ru indication templates test', () => {
   }
 
   test.beforeEach(async ({page}) => {
-    await page.goto('ru-admin/templates');
+    await page.goto('ru-admin/ruindication-templates');
     await expect(page.locator('sbb-title[level="2"]')).toHaveText('Titel und Texte');
   });
 

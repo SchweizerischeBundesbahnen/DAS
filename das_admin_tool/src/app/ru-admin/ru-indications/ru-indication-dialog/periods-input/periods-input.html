@@ -1,40 +1,41 @@
 <form [formGroup]="periodForm">
-<div class="date-inputs">
-  <sbb-form-field>
-    <label i18n="@@ru_indications_form_period_valid_from">Von</label>
-    <sbb-datepicker-previous-day></sbb-datepicker-previous-day>
-    <sbb-date-input formControlName="validFrom" required></sbb-date-input>
-    <sbb-datepicker-toggle></sbb-datepicker-toggle>
-    <sbb-datepicker-next-day></sbb-datepicker-next-day>
-    <sbb-datepicker></sbb-datepicker>
-  </sbb-form-field>
-  <sbb-form-field>
-    <label i18n="@@ru_indications_form_period_valid_to">Bis</label>
-    <sbb-datepicker-previous-day></sbb-datepicker-previous-day>
-    <sbb-date-input formControlName="validTo" required></sbb-date-input>
-    <sbb-datepicker-toggle></sbb-datepicker-toggle>
-    <sbb-datepicker-next-day></sbb-datepicker-next-day>
-    <sbb-datepicker></sbb-datepicker>
-  </sbb-form-field>
-</div>
+  <div class="date-inputs">
+    <sbb-form-field>
+      <label i18n="@@ru_indications_form_period_valid_from">Von</label>
+      <sbb-datepicker-previous-day></sbb-datepicker-previous-day>
+      <sbb-date-input formControlName="validFrom" required></sbb-date-input>
+      <sbb-datepicker-toggle></sbb-datepicker-toggle>
+      <sbb-datepicker-next-day></sbb-datepicker-next-day>
+      <sbb-datepicker></sbb-datepicker>
+    </sbb-form-field>
+    <sbb-form-field>
+      <label i18n="@@ru_indications_form_period_valid_to">Bis</label>
+      <sbb-datepicker-previous-day></sbb-datepicker-previous-day>
+      <sbb-date-input formControlName="validTo" required></sbb-date-input>
+      <sbb-datepicker-toggle></sbb-datepicker-toggle>
+      <sbb-datepicker-next-day></sbb-datepicker-next-day>
+      <sbb-datepicker></sbb-datepicker>
+    </sbb-form-field>
+  </div>
 
   <sbb-toggle-check formControlName="isRange" i18n="@@ru_indications_form_period_range_toggle">
     Zeitspanne
   </sbb-toggle-check>
 
-    <sbb-checkbox-group [disabled]="periodForm.controls.weekdays.disabled">
-      @for(weekday of weekdays; track weekday.value) {
-        <sbb-checkbox
-          (change)="onWeekdayChange(weekday.value, $event)"
-          [checked]="isWeekdaySelected(weekday.value)">
-          {{ weekday.label }}
-        </sbb-checkbox>
-      }
-    </sbb-checkbox-group>
+  <sbb-checkbox-group [disabled]="periodForm.controls.weekdays.disabled">
+    @for (weekday of weekdays; track weekday.value) {
+      <sbb-checkbox
+        (change)="onWeekdayChange(weekday.value, $event)"
+        [checked]="isWeekdaySelected(weekday.value)">
+        {{ weekday.label }}
+      </sbb-checkbox>
+    }
+  </sbb-checkbox-group>
 
   <sbb-chip-group [displayWith]="displayPeriod" [formControl]="control()"/>
 
-  <sbb-secondary-button (click)="addPeriod()" [disabled]="periodForm.invalid" i18n="@@ru_indications_form_period_add" iconName="plus-small">
+  <sbb-secondary-button (click)="addPeriod()" [disabled]="periodForm.invalid"
+                        i18n="@@ru_indications_form_period_add" iconName="plus-small">
     Auswahl hinzufügen
   </sbb-secondary-button>
 

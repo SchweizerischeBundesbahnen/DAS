@@ -1,11 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AppVersionsTable } from './app-versions-table';
-import { vi } from 'vitest';
 import { AppVersionsService } from '../app-versions.service';
 
 const mockAppVersionsService = {
-  appVersionsResource: new Proxy({}, { get: () => vi.fn() })
+  appVersionsResource: new Proxy({}, {get: () => vi.fn()})
 };
 
 describe('AppVersionsTable', () => {
@@ -17,7 +16,7 @@ describe('AppVersionsTable', () => {
       imports: [AppVersionsTable],
       providers: [{provide: AppVersionsService, useValue: mockAppVersionsService}],
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(AppVersionsTable);
     component = fixture.componentInstance;

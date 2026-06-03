@@ -14,7 +14,7 @@ test.describe('ru indications test', () => {
   const TEST_VALID_DATE = '01.01.2040';
 
   test.beforeEach(async ({page}) => {
-    await page.goto('ru-admin/indications');
+    await page.goto('ru-admin/ruindications');
     await expect(page.locator('sbb-title[level="2"]')).toHaveText('Hinweise');
   });
 

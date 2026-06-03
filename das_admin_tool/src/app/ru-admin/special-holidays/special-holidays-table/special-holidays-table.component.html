@@ -1,5 +1,6 @@
 <sbb-table-wrapper>
-  <table [dataSource]="dataSource" sbb-table sbbSort sbbSortActive="date" sbbSortDirection="asc" fixedLayout class="table-truncated">
+  <table [dataSource]="dataSource" class="table-truncated" fixedLayout sbb-table sbbSort
+         sbbSortActive="date" sbbSortDirection="asc">
     <ng-container sbbColumnDef="select">
       <th *sbbHeaderCellDef sbb-header-cell style="width: 36px">
         <sbb-checkbox
@@ -30,14 +31,16 @@
       <th *sbbHeaderCellDef i18n="@@special_holidays_table_column_date" sbb-header-cell
           sbb-sort-header="date">Gültig am
       </th>
-      <td *sbbCellDef="let row" sbb-cell class="cell-nowrap">{{ row.date | date:'shortDate' }}</td>
+      <td *sbbCellDef="let row" class="cell-nowrap" sbb-cell>{{ row.date | date:'shortDate' }}</td>
     </ng-container>
 
     <ng-container sbbColumnDef="scheduleType">
       <th *sbbHeaderCellDef i18n="@@special_holidays_table_column_schedule_type" sbb-header-cell
           sbb-sort-header="scheduleType">Gilt als
       </th>
-      <td *sbbCellDef="let row" sbb-cell class="cell-nowrap">{{ scheduleTypeLabel(row.scheduleType) }}</td>
+      <td *sbbCellDef="let row" class="cell-nowrap"
+          sbb-cell>{{ scheduleTypeLabel(row.scheduleType) }}
+      </td>
     </ng-container>
 
     <ng-container sbbColumnDef="companies">
@@ -64,15 +67,17 @@
     <sbb-compact-paginator [pageSize]="PAGE_SIZE"></sbb-compact-paginator>
   </div>
   <div class="right">
-    <sbb-secondary-button (click)="add()" i18n="@@button_create_entry" iconName="plus-small">Neuen Eintrag erfassen
+    <sbb-secondary-button (click)="add()" i18n="@@button_create_entry" iconName="plus-small">Neuen
+      Eintrag erfassen
     </sbb-secondary-button>
-    <sbb-transparent-button (click)="deleteSelected()" [disabled]="selection.isEmpty()" [loading]="isDeleting"
+    <sbb-transparent-button (click)="deleteSelected()" [disabled]="selection.isEmpty()"
+                            [loading]="isDeleting"
                             i18n="@@special_holidays_button_delete_selected"
                             iconName="trash-small">
       {selection.selected.length, plural,
         =0 {Einträge löschen}
         one {Eintrag löschen}
-        other {# Einträge löschen}}
+        other {{{ selection.selected.length }} Einträge löschen}}
     </sbb-transparent-button>
   </div>
 </div>

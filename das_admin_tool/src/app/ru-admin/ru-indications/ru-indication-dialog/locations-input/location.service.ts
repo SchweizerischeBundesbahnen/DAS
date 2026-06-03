@@ -18,13 +18,8 @@ export interface Location {
 export class LocationService {
   private readonly url = `${environment.backendUrl}/v1/locations`;
 
-  private readonly locationsRessource = httpResource<LocationApiResponse>(() => this.url);
-  private readonly locations = computed(() => {
-    if (this.locationsRessource.hasValue()) {
-      return this.locationsRessource.value().data;
-    }
-    return [];
-  });
+  private readonly locationsResource = httpResource<LocationApiResponse>(() => this.url);
+  private readonly locations = computed(() => this.locationsResource.value()?.data ?? []);
 
   public getLocation(reference: string) {
     return this.locations().find(location => location.locationReference === reference);

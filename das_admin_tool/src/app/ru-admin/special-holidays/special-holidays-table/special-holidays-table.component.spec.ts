@@ -2,7 +2,6 @@ import { TestBed } from '@angular/core/testing';
 import { SpecialHolidaysTable } from './special-holidays-table.component';
 import { SpecialHolidayService } from '../special-holiday.service';
 import { SpecialHoliday } from '../../ru-admin-api';
-import { vi } from 'vitest';
 
 const holidays: SpecialHoliday[] = [
   {

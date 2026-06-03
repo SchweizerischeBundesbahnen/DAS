@@ -31,8 +31,8 @@ describe('CompaniesInputComponent', () => {
     companyService = TestBed.inject(CompanyService);
 
     ((companyService as unknown) as {
-      companiesRessource: { hasValue: () => boolean; value: () => { data: Company[] } }
-    }).companiesRessource = {hasValue: () => true, value: () => ({data: companies})};
+      companiesResource: { hasValue: () => boolean; value: () => { data: Company[] } }
+    }).companiesResource = {hasValue: () => true, value: () => ({data: companies})};
 
     fixture = TestBed.createComponent(CompaniesInputComponent);
     component = fixture.componentInstance;

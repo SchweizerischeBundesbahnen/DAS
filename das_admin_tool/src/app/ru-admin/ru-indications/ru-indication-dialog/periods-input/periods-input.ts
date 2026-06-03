@@ -1,4 +1,4 @@
-import { Component, inject, input, OnInit } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -81,7 +81,7 @@ function periodFormValidator(control: AbstractControl): ValidationErrors | null 
   templateUrl: './periods-input.html',
   styleUrl: './periods-input.css',
 })
-export class PeriodsInput implements OnInit {
+export class PeriodsInput {
   control = input.required<FormControl<RuIndicationPeriod[]>>();
   protected periodForm = new FormGroup({
     validFrom: new FormControl<Date | null>(null, {validators: [Validators.required]}),
@@ -92,16 +92,14 @@ export class PeriodsInput implements OnInit {
   protected readonly weekdays = weekdays;
   private readonly localeId = inject(LanguageProvider).currentLanguage?.localeId;
 
-  ngOnInit(): void {
+  constructor() {
     this.applyRangeState(this.periodForm.controls.isRange.value);
-
     this.periodForm.controls.validFrom.valueChanges.subscribe((validFrom) => {
       if (!this.periodForm.controls.isRange.value) {
         this.periodForm.controls.validTo.setValue(validFrom, {emitEvent: false});
       }
       this.updateValidationState();
     });
-
     this.periodForm.controls.isRange.valueChanges.subscribe((isRange) => {
       const wasRange = this.periodForm.controls.validTo.enabled;
       if (isRange && !wasRange) {
@@ -115,8 +113,6 @@ export class PeriodsInput implements OnInit {
     });
 
     this.periodForm.valueChanges.subscribe(() => this.updateValidationState());
-
-    this.updateValidationState();
   }
 
   protected addPeriod(): void {

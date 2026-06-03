@@ -16,13 +16,8 @@ export interface Company {
 export class CompanyService {
   private readonly url = `${environment.backendUrl}/v1/companies`;
 
-  private readonly companiesRessource = httpResource<CompanyApiResponse>(() => this.url);
-  private readonly companies = computed(() => {
-    if (this.companiesRessource.hasValue()) {
-      return this.companiesRessource.value().data
-    }
-    return [];
-  });
+  private readonly companiesResource = httpResource<CompanyApiResponse>(() => this.url);
+  private readonly companies = computed(() => this.companiesResource.value()?.data ?? []);
 
   public getName(code: string): string | undefined {
     return this.companies().find((company) => company.code === code)?.name;
