@@ -1,8 +1,8 @@
-import {inject, Injectable} from '@angular/core';
-import {HttpClient, httpResource} from '@angular/common/http';
-import {environment} from '../../environments/environment';
-import {Observable} from 'rxjs';
-import {ApiResponse} from '../shared/api-response';
+import { inject, Injectable } from '@angular/core';
+import { HttpClient, httpResource } from '@angular/common/http';
+import { environment } from '../../environments/environment';
+import { Observable } from 'rxjs';
+import { ApiResponse } from '../shared/api-response';
 
 export interface RuIndicationLanguageContent {
   title: string;
@@ -18,8 +18,9 @@ export interface RuIndicationTemplate {
   fr?: RuIndicationLanguageContent;
   it?: RuIndicationLanguageContent;
   lastModifiedBy?: string;
+  lastModifiedAt?: Date;
 
-  [key: string]: string | number | RuIndicationLanguageContent | undefined;
+  [key: string]: string | number | Date | RuIndicationLanguageContent | undefined;
 }
 
 export type TrainNumberParity = 'ANY' | 'EVEN' | 'ODD';
@@ -67,9 +68,9 @@ export interface RuIndication {
   lastModifiedAt?: Date;
 }
 
-export type RuIndicationStatus =  'INACTIVE' | 'ACTIVE' | 'EXPIRED';
+export type RuIndicationStatus = 'INACTIVE' | 'ACTIVE' | 'EXPIRED';
 
-export const RU_INDICATION_STATUS_LABELS : {value : RuIndicationStatus, label : string}[] = [
+export const RU_INDICATION_STATUS_LABELS: { value: RuIndicationStatus, label: string }[] = [
   {value: 'ACTIVE', label: $localize`:@@ru_indication_status_label_active:Aktiv`},
   {value: 'INACTIVE', label: $localize`:@@ru_indication_status_label_inactive:Inaktiv`},
   {value: 'EXPIRED', label: $localize`:@@ru_indication_status_label_expired:Abgelaufen`},
@@ -98,6 +99,8 @@ export interface SpecialHoliday {
   date: Date;
   scheduleType: ScheduleType;
   companies: string[];
+  lastModifiedBy?: string;
+  lastModifiedAt?: Date;
 }
 
 export type SpecialHolidayApiResponse = ApiResponse<SpecialHoliday>;

@@ -57,6 +57,17 @@
       <td *sbbCellDef="let row" sbb-cell><span>{{ getValue(row, 'text') }}</span></td>
     </ng-container>
 
+    <ng-container sbbColumnDef="lastModifiedAt">
+      <th *sbbHeaderCellDef i18n="@@ru_indication_templates_table_column_last_modified_at"
+          sbb-header-cell
+          sbb-sort-header="lastModifiedAt">
+        Bearbeitet am
+      </th>
+      <td *sbbCellDef="let row" class="cell-nowrap"
+          sbb-cell>{{ row.lastModifiedAt | date: 'short' }}
+      </td>
+    </ng-container>
+
     <ng-container sbbColumnDef="lastModifiedBy">
       <th *sbbHeaderCellDef i18n="@@ru_indication_templates_table_column_last_modified_by" sbb-header-cell
           sbb-sort-header="lastModifiedBy">Bearbeitet von

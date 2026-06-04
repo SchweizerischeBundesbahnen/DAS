@@ -1,24 +1,25 @@
-import {Component, effect, inject, viewChild} from '@angular/core';
+import { Component, effect, inject, viewChild } from '@angular/core';
 import {
   SbbSort,
   SbbTableDataSource,
   SbbTableFilter,
   SbbTableModule
 } from '@sbb-esta/lyne-angular/table';
-import {SbbSecondaryButton} from '@sbb-esta/lyne-angular/button/secondary-button';
-import {RuIndicationTemplate} from '../../ru-admin-api';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {SbbCompactPaginator} from '@sbb-esta/lyne-angular/paginator/compact-paginator';
-import {RuIndicationTemplateService} from '../ru-indication-template.service';
-import {SbbMiniButton} from '@sbb-esta/lyne-angular/button/mini-button';
-import {SelectionModel} from '@angular/cdk/collections';
-import {SbbCheckboxModule} from '@sbb-esta/lyne-angular/checkbox';
-import {SbbFormFieldModule} from '@sbb-esta/lyne-angular/form-field';
-import {SbbIconModule} from '@sbb-esta/lyne-angular/icon';
-import {SbbSelectModule} from '@sbb-esta/lyne-angular/select';
-import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {SbbTransparentButton} from '@sbb-esta/lyne-angular/button/transparent-button';
-import {LanguageCode, LanguageProvider} from '../../../shared/language-provider';
+import { SbbSecondaryButton } from '@sbb-esta/lyne-angular/button/secondary-button';
+import { RuIndicationTemplate } from '../../ru-admin-api';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { SbbCompactPaginator } from '@sbb-esta/lyne-angular/paginator/compact-paginator';
+import { RuIndicationTemplateService } from '../ru-indication-template.service';
+import { SbbMiniButton } from '@sbb-esta/lyne-angular/button/mini-button';
+import { SelectionModel } from '@angular/cdk/collections';
+import { SbbCheckboxModule } from '@sbb-esta/lyne-angular/checkbox';
+import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
+import { SbbIconModule } from '@sbb-esta/lyne-angular/icon';
+import { SbbSelectModule } from '@sbb-esta/lyne-angular/select';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { SbbTransparentButton } from '@sbb-esta/lyne-angular/button/transparent-button';
+import { LanguageCode, LanguageProvider } from '../../../shared/language-provider';
+import { DatePipe } from '@angular/common';
 
 interface RuIndicationTemplateFilter extends SbbTableFilter {
   search: string;
@@ -37,7 +38,8 @@ interface RuIndicationTemplateFilter extends SbbTableFilter {
     SbbFormFieldModule,
     SbbIconModule,
     SbbSelectModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    DatePipe
   ],
   templateUrl: './ru-indication-templates-table.html',
   styleUrl: './ru-indication-templates-table.css',
@@ -45,7 +47,7 @@ interface RuIndicationTemplateFilter extends SbbTableFilter {
 export class RuIndicationTemplatesTable {
   protected readonly languageProvider = inject(LanguageProvider);
   protected dataSource = new SbbTableDataSource<RuIndicationTemplate, RuIndicationTemplateFilter>();
-  protected columns = ['select', 'category', 'title', 'text', 'lastModifiedBy', 'action'];
+  protected columns = ['select', 'category', 'title', 'text', 'lastModifiedAt', 'lastModifiedBy', 'action'];
   protected selection = new SelectionModel<RuIndicationTemplate>(true, []);
   protected form = new FormGroup({
     search: new FormControl('', {nonNullable: true}),
@@ -105,7 +107,7 @@ export class RuIndicationTemplatesTable {
   }
 
   protected async deleteSelected() {
-    if(this.isDeleting) return;
+    if (this.isDeleting) return;
     this.isDeleting = true;
     try {
       await this.ruIndicationTemplateService.deleteAll(this.selection.selected);
