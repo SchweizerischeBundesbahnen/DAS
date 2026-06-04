@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:noNamespaceSchemaLocation="../../SFERA.xsd" SP_ID="43527_1_Start" SP_VersionMajor="1"
-                SP_VersionMinor="1" SP_Length="800" SP_Status="Valid">
+                SP_VersionMinor="2" SP_Length="800" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
@@ -61,6 +61,20 @@
                 <teltsi_LocationPrimaryCode>00042</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Basel SBB RB Gr A</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>oPFootNotes</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlOPFootNotes" value="
+				&lt;oPFootNotes&gt; 
+					&lt;footNote type=&quot;contact&quot; refText=&quot;SIM&quot;&gt; 
+						&lt;text&gt;Korridor linkes Gleis: Anmeldenummer 1392
+Korridor rechtes Gleis: Anmeldenummer 1393&lt;/text&gt; 
+					&lt;/footNote&gt; 
+				&lt;/oPFootNotes&gt;
+				"/>
+            </TAF_TAP_Location_NSP>
+
         </TAF_TAP_Location>
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="700" endLocation="700"
                           TAF_TAP_location_abbreviation="ED" TAF_TAP_location_type="station">
