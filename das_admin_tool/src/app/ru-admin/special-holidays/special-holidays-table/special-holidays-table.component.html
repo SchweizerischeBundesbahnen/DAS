@@ -50,6 +50,25 @@
       <td *sbbCellDef="let row" sbb-cell><span>{{ companiesValue(row.companies) }}</span></td>
     </ng-container>
 
+    <ng-container sbbColumnDef="lastModifiedAt">
+      <th *sbbHeaderCellDef i18n="@@special_holidays_table_column_last_modified_at"
+          sbb-header-cell
+          sbb-sort-header="lastModifiedAt">
+        Bearbeitet am
+      </th>
+      <td *sbbCellDef="let row" class="cell-nowrap"
+          sbb-cell>{{ row.lastModifiedAt | date: 'short' }}
+      </td>
+    </ng-container>
+
+    <ng-container sbbColumnDef="lastModifiedBy">
+      <th *sbbHeaderCellDef i18n="@@special_holidays_table_column_last_modified_by"
+          sbb-header-cell
+          sbb-sort-header="lastModifiedBy">Bearbeitet von
+      </th>
+      <td *sbbCellDef="let row" class="cell-nowrap" sbb-cell>{{ row.lastModifiedBy }}</td>
+    </ng-container>
+
     <ng-container sbbColumnDef="action">
       <th *sbbHeaderCellDef class="action" sbb-header-cell></th>
       <td *sbbCellDef="let holiday" class="action" sbb-cell>

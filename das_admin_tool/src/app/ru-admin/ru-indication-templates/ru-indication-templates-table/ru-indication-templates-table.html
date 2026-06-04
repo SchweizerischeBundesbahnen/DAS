@@ -44,21 +44,33 @@
     </ng-container>
 
     <ng-container sbbColumnDef="title">
-      <th *sbbHeaderCellDef i18n="@@ru_indication_templates_table_column_de" sbb-header-cell
+      <th *sbbHeaderCellDef i18n="@@ru_indication_templates_table_column_title" sbb-header-cell
           sbb-sort-header="title">Titel
       </th>
       <td *sbbCellDef="let row" sbb-cell><span>{{ getValue(row, 'title') }}</span></td>
     </ng-container>
 
     <ng-container sbbColumnDef="text">
-      <th *sbbHeaderCellDef i18n="@@ru_indication_templates_table_column_fr" sbb-header-cell
+      <th *sbbHeaderCellDef i18n="@@ru_indication_templates_table_column_text" sbb-header-cell
           sbb-sort-header="text">Text
       </th>
       <td *sbbCellDef="let row" sbb-cell><span>{{ getValue(row, 'text') }}</span></td>
     </ng-container>
 
+    <ng-container sbbColumnDef="lastModifiedAt">
+      <th *sbbHeaderCellDef i18n="@@ru_indication_templates_table_column_last_modified_at"
+          sbb-header-cell
+          sbb-sort-header="lastModifiedAt">
+        Bearbeitet am
+      </th>
+      <td *sbbCellDef="let row" class="cell-nowrap"
+          sbb-cell>{{ row.lastModifiedAt | date: 'short' }}
+      </td>
+    </ng-container>
+
     <ng-container sbbColumnDef="lastModifiedBy">
-      <th *sbbHeaderCellDef i18n="@@ru_indication_templates_table_column_it" sbb-header-cell
+      <th *sbbHeaderCellDef i18n="@@ru_indication_templates_table_column_last_modified_by"
+          sbb-header-cell
           sbb-sort-header="lastModifiedBy">Bearbeitet von
       </th>
       <td *sbbCellDef="let row" class="cell-nowrap" sbb-cell>{{ row.lastModifiedBy }}</td>

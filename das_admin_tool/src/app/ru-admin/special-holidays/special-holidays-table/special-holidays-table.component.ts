@@ -33,7 +33,7 @@ import { CompanyService } from '../../../shared/companies-input/company.service'
 })
 export class SpecialHolidaysTable {
   protected dataSource = new SbbTableDataSource<SpecialHoliday>();
-  protected columns = ['select', 'name', 'date', 'scheduleType', 'companies', 'action'];
+  protected columns = ['select', 'name', 'date', 'scheduleType', 'companies', 'lastModifiedAt', 'lastModifiedBy', 'action'];
   protected selection = new SelectionModel<SpecialHoliday>(true, []);
   protected readonly PAGE_SIZE = 20;
   protected isDeleting = false;
