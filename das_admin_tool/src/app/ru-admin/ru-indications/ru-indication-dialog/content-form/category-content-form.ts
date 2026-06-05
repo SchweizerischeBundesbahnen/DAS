@@ -1,6 +1,7 @@
-import { Component, computed, effect, input, signal, viewChild } from '@angular/core';
+import { Component, computed, effect, input, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms";
 import {
+  contentFormValue,
   RuIndicationContentForm
 } from "../../../ru-indication-content-form/ru-indication-content-form.component";
 import { SbbAutocompleteModule } from "@sbb-esta/lyne-angular/autocomplete";
@@ -28,7 +29,6 @@ export class CategoryContentForm {
 
   protected templateControl = new FormControl<RuIndicationTemplate | null>(null);
   protected searchTerm = signal<string>('');
-  private readonly contentFormComponent = viewChild.required(RuIndicationContentForm);
   private readonly templateValue = toSignal(this.templateControl.valueChanges, {initialValue: null});
   protected filteredTemplates = computed(() => {
     const searchTerm = this.searchTerm();
@@ -54,7 +54,7 @@ export class CategoryContentForm {
   get formValue(): RuIndicationContent {
     return {
       category: this.templateControl.value?.category,
-      ...this.contentFormComponent().formValue
+      ...contentFormValue(this.form())
     }
   }
 

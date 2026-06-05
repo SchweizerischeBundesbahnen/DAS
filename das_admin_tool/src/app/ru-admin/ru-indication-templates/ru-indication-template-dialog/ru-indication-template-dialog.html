@@ -1,6 +1,7 @@
-<sbb-dialog-title>{{ title }}</sbb-dialog-title>
-<sbb-dialog-close-button></sbb-dialog-close-button>
-<sbb-dialog-content>
+<app-base-dialog [data]="dialogData" [dialogClose]="formValue"
+                 [dialogTitle]="title" [saveDisabled]="ruIndicationTemplateForm.invalid"
+                 i18n-stepLabel="@@ru_indication_templates_dialog_step_label"
+                 stepLabel="Titel und Text">
   <form [formGroup]="ruIndicationTemplateForm">
     <div class="category">
       <sbb-title i18n="@@ru_indication_templates_form_category_title" visualLevel="5">Kategorie
@@ -17,19 +18,4 @@
     </div>
     <app-ru-indication-content-form [form]="ruIndicationTemplateForm.controls.content"/>
   </form>
-</sbb-dialog-content>
-<sbb-dialog-actions alignGroup="stretch" orientation="vertical">
-  <sbb-secondary-button i18n="@@dialog_action_cancel" sbb-dialog-close>Abbrechen
-  </sbb-secondary-button>
-  <sbb-action-group alignGroup="stretch" orientation="vertical">
-    @if (isEdit) {
-      <sbb-transparent-button i18n="@@dialog_action_delete" iconName="trash-small"
-                              sbb-dialog-close="delete">Eintrag löschen
-      </sbb-transparent-button>
-    }
-    <sbb-button [disabled]="ruIndicationTemplateForm.invalid || ruIndicationTemplateForm.pristine"
-                [sbb-dialog-close]="formValue"
-                i18n="@@dialog_action_save">Speichern
-    </sbb-button>
-  </sbb-action-group>
-</sbb-dialog-actions>
+</app-base-dialog>

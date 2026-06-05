@@ -3,14 +3,13 @@ import { HttpClient, httpResource } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { ApiResponse } from '../shared/api-response';
+import { Auditable } from '../shared/audit/auditable';
 
-export interface AppVersion {
+export interface AppVersion extends Auditable {
   id?: number;
   version: string;
   minimalVersion: boolean;
   expiryDate?: Date;
-  lastModifiedAt?: Date;
-  lastModifiedBy?: string;
 }
 
 export type AppVersionApiResponse = ApiResponse<AppVersion>;

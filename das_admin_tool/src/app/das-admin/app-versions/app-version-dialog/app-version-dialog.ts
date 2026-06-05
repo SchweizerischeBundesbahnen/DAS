@@ -1,20 +1,17 @@
-import {Component, inject} from '@angular/core';
-import {SbbButton} from '@sbb-esta/lyne-angular/button/button';
-import {SbbSecondaryButton} from '@sbb-esta/lyne-angular/button/secondary-button';
-import {SbbToggleCheckModule} from '@sbb-esta/lyne-angular/toggle-check';
-import {SbbDatepickerModule} from '@sbb-esta/lyne-angular/datepicker';
-import {SbbDateInputModule} from '@sbb-esta/lyne-angular/date-input';
-import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {AppVersion} from '../../das-admin-api';
-import {SBB_OVERLAY_DATA} from '@sbb-esta/lyne-angular/core/overlay';
-import {SbbTransparentButton} from '@sbb-esta/lyne-angular/button/transparent-button';
-import {SbbPopoverModule} from '@sbb-esta/lyne-angular/popover';
-import {SbbTitleModule} from '@sbb-esta/lyne-angular/title';
-import {SbbMiniButton} from '@sbb-esta/lyne-angular/button/mini-button';
-import {toUtcDateOnly} from '../../../shared/date-util';
-import {SbbDialogModule} from '@sbb-esta/lyne-angular/dialog';
-import {SbbFormFieldModule} from '@sbb-esta/lyne-angular/form-field';
-import {SbbActionGroup} from '@sbb-esta/lyne-angular/action-group';
+import { Component, inject } from '@angular/core';
+import { SbbToggleCheckModule } from '@sbb-esta/lyne-angular/toggle-check';
+import { SbbDatepickerModule } from '@sbb-esta/lyne-angular/datepicker';
+import { SbbDateInputModule } from '@sbb-esta/lyne-angular/date-input';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AppVersion } from '../../das-admin-api';
+import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core/overlay';
+import { SbbPopoverModule } from '@sbb-esta/lyne-angular/popover';
+import { SbbTitleModule } from '@sbb-esta/lyne-angular/title';
+import { SbbMiniButton } from '@sbb-esta/lyne-angular/button/mini-button';
+import { toUtcDateOnly } from '../../../shared/date-util';
+import { SbbDialogModule } from '@sbb-esta/lyne-angular/dialog';
+import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
+import { BaseDialog } from '../../../shared/base-dialog/base-dialog.component';
 
 export type VersionDialogEditResult = AppVersion | 'delete';
 
@@ -22,18 +19,15 @@ export type VersionDialogEditResult = AppVersion | 'delete';
   selector: 'app-app-version-dialog',
   imports: [
     SbbDialogModule,
-    SbbButton,
-    SbbSecondaryButton,
     SbbFormFieldModule,
     SbbToggleCheckModule,
     SbbDateInputModule,
     SbbDatepickerModule,
     ReactiveFormsModule,
-    SbbTransparentButton,
     SbbPopoverModule,
     SbbTitleModule,
     SbbMiniButton,
-    SbbActionGroup
+    BaseDialog
   ],
   templateUrl: './app-version-dialog.html',
   styleUrl: './app-version-dialog.css',
@@ -53,7 +47,7 @@ export class AppVersionDialog {
     expiryDate: new FormControl<Date | null>(null)
   });
   protected minDate = new Date();
-  private readonly dialogData = inject<AppVersion>(SBB_OVERLAY_DATA, {optional: true}) ?? null;
+  protected readonly dialogData = inject<AppVersion>(SBB_OVERLAY_DATA, {optional: true}) ?? undefined;
 
   constructor() {
     this.isEdit = this.dialogData?.id != null;

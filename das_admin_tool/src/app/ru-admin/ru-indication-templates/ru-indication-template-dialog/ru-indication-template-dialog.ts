@@ -1,4 +1,4 @@
-import { Component, inject, viewChild } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RuIndicationTemplate } from '../../ru-admin-api';
 import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core/overlay';
@@ -9,10 +9,11 @@ import { SbbTabsModule } from '@sbb-esta/lyne-angular/tabs';
 import { SbbButtonModule } from '@sbb-esta/lyne-angular/button';
 import { SbbTooltipModule } from '@sbb-esta/lyne-angular/tooltip';
 import {
+  contentFormValue,
   createContentFormGroup,
   RuIndicationContentForm
 } from '../../ru-indication-content-form/ru-indication-content-form.component';
-import { SbbActionGroup } from '@sbb-esta/lyne-angular/action-group';
+import { BaseDialog } from '../../../shared/base-dialog/base-dialog.component';
 
 export type RuIndicationTemplateDialogEditResult = RuIndicationTemplate | 'delete';
 
@@ -27,7 +28,7 @@ export type RuIndicationTemplateDialogEditResult = RuIndicationTemplate | 'delet
     SbbTitleModule,
     SbbTabsModule,
     RuIndicationContentForm,
-    SbbActionGroup,
+    BaseDialog,
   ],
   templateUrl: './ru-indication-template-dialog.html',
   styleUrl: './ru-indication-template-dialog.css',
@@ -39,8 +40,7 @@ export class RuIndicationTemplateDialog {
     category: new FormControl('', {nonNullable: true, validators: [Validators.required]}),
     content: createContentFormGroup(),
   });
-  private readonly dialogData = inject<RuIndicationTemplate>(SBB_OVERLAY_DATA, {optional: true}) ?? null;
-  private readonly contentInputComponent = viewChild.required(RuIndicationContentForm);
+  protected readonly dialogData = inject<RuIndicationTemplate>(SBB_OVERLAY_DATA, {optional: true}) ?? undefined;
 
   constructor() {
     this.isEdit = this.dialogData?.id != null;
@@ -72,7 +72,7 @@ export class RuIndicationTemplateDialog {
   get formValue(): RuIndicationTemplate {
     return {
       category: this.ruIndicationTemplateForm.value.category ?? '',
-      ...this.contentInputComponent().formValue
+      ...contentFormValue(this.ruIndicationTemplateForm.controls.content)
     };
   }
 }
