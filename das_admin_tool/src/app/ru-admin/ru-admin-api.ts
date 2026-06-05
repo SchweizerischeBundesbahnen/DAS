@@ -3,6 +3,7 @@ import { HttpClient, httpResource } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { ApiResponse } from '../shared/api-response';
+import { Auditable } from '../shared/audit/auditable';
 
 export interface RuIndicationLanguageContent {
   title: string;
@@ -11,14 +12,12 @@ export interface RuIndicationLanguageContent {
   [key: string]: string | undefined;
 }
 
-export interface RuIndicationTemplate {
+export interface RuIndicationTemplate extends Auditable {
   id?: number;
   category: string;
   de?: RuIndicationLanguageContent;
   fr?: RuIndicationLanguageContent;
   it?: RuIndicationLanguageContent;
-  lastModifiedBy?: string;
-  lastModifiedAt?: Date;
 
   [key: string]: string | number | Date | RuIndicationLanguageContent | undefined;
 }
@@ -58,14 +57,12 @@ export interface RuIndicationContent {
   it?: RuIndicationLanguageContent;
 }
 
-export interface RuIndication {
+export interface RuIndication extends Auditable {
   id?: number;
   status?: RuIndicationStatus;
   content: RuIndicationContent;
   scope: RuIndicationScope;
   periods: RuIndicationPeriod[];
-  lastModifiedBy?: string;
-  lastModifiedAt?: Date;
 }
 
 export type RuIndicationStatus = 'INACTIVE' | 'ACTIVE' | 'EXPIRED';
@@ -93,14 +90,12 @@ export const SCHEDULE_TYPE_LABELS: { value: ScheduleType, label: string } [] = [
   }];
 
 
-export interface SpecialHoliday {
+export interface SpecialHoliday extends Auditable {
   id?: number;
   name: string;
   date: Date;
   scheduleType: ScheduleType;
   companies: string[];
-  lastModifiedBy?: string;
-  lastModifiedAt?: Date;
 }
 
 export type SpecialHolidayApiResponse = ApiResponse<SpecialHoliday[]>;

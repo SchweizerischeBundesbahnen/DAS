@@ -35,18 +35,9 @@
         <app-periods-input [control]="ruIndicationForm.controls.periods"></app-periods-input>
       </sbb-step>
       @if (isEdit) {
-        <sbb-step-label disabled i18n="@@ru_indications_step_history">Stammdaten</sbb-step-label>
+        <sbb-step-label disabled i18n="@@dialog_step_label_audit">Stammdaten</sbb-step-label>
         <sbb-step>
-          <sbb-title i18n="@@ru_indications_form_history_title" visualLevel="5">Stammdaten
-          </sbb-title>
-          <div class="entry">
-            <p class="sbb-text-xs">Zuletzt bearbeitet von</p>
-            <p class="sbb-text-m">{{ dialogData.ruIndication?.lastModifiedBy }}</p>
-          </div>
-          <div class="entry">
-            <p class="sbb-text-xs">Bearbeitet am</p>
-            <p class="sbb-text-m">{{ dialogData.ruIndication?.lastModifiedAt | date: 'short' }}</p>
-          </div>
+          <app-audit [data]="dialogData.ruIndication"/>
         </sbb-step>
       }
     </sbb-stepper>

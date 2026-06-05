@@ -1,5 +1,6 @@
-<sbb-dialog-title>{{ title }}</sbb-dialog-title>
-<sbb-dialog-content>
+<app-base-dialog [data]="dialogData" [dialogClose]="formValue" [dialogTitle]="title"
+                 [saveDisabled]="specialHolidayForm.invalid"
+                 i18n-stepLabel="@@special_holidays_dialog_step_label" stepLabel="Feiertag">
   <form [formGroup]="specialHolidayForm">
     <sbb-form-field errorSpace="reserve">
       <label i18n="@@special_holidays_form_name_label">Name des Feiertags</label>
@@ -38,20 +39,4 @@
 
     <app-companies-input [control]="specialHolidayForm.controls.companies"></app-companies-input>
   </form>
-</sbb-dialog-content>
-
-<sbb-dialog-actions alignGroup="stretch">
-  <sbb-secondary-button align-self="start" i18n="@@special_holidays_dialog_button_cancel"
-                        sbb-dialog-close>
-    Abbrechen
-  </sbb-secondary-button>
-  @if (isEdit) {
-    <sbb-transparent-button i18n="@@dialog_button_delete" iconName="trash-small"
-                            sbb-dialog-close="delete">Eintrag löschen
-    </sbb-transparent-button>
-  }
-  <sbb-button [disabled]="specialHolidayForm.invalid" [sbb-dialog-close]="formValue"
-              i18n="@@special_holidays_dialog_button_save">Speichern
-  </sbb-button>
-</sbb-dialog-actions>
-
+</app-base-dialog>
