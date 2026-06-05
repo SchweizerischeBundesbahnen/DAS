@@ -22,7 +22,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        file-nr: [1,2,3,4,5,6,7,8]
+        file-nr: [1]
 
     runs-on: macos-26
     steps:
@@ -61,7 +61,7 @@ jobs:
         MQTT_USERNAME: ${{ secrets.MQTT_USERNAME }}
         MQTT_PASSWORD: ${{ secrets.MQTT_PASSWORD }}
       run: |
-        flutter build ios --flavor dev --release --no-codesign -t integration_test/app_test_ios_${{ matrix.file-nr }}.dart --no-tree-shake-icons --dart-define=MQTT_USERNAME=$MQTT_USERNAME --dart-define=MQTT_PASSWORD=$MQTT_PASSWORD
+        flutter build ios --flavor dev --release --no-codesign -t integration_test/app_test.dart --no-tree-shake-icons --dart-define=MQTT_USERNAME=$MQTT_USERNAME --dart-define=MQTT_PASSWORD=$MQTT_PASSWORD
         pushd ios
         xcodebuild -workspace Runner.xcworkspace -scheme dev -config Flutter/Release.xcconfig -derivedDataPath ../build/ios_integration -sdk iphoneos build-for-testing CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
         popd
