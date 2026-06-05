@@ -1,0 +1,32 @@
+<sbb-dialog-title>{{ title }}</sbb-dialog-title>
+<sbb-dialog-content>
+  <form [formGroup]="ruIndicationTemplateForm">
+    <div class="category">
+      <sbb-title i18n="@@ru_indication_templates_form_category_title" visualLevel="5">Kategorie
+        erstellen
+      </sbb-title>
+      <sbb-form-field errorSpace="reserve">
+        <label for="category" i18n="@@ru_indication_templates_form_category_label">Name der
+          Kategorie eingeben</label>
+        <input formControlName="category" required/>
+        @if (ruIndicationTemplateForm.touched && ruIndicationTemplateForm.get('category')?.hasError('required')) {
+          <sbb-error i18n="@@form_field_error_required">Feld darf nicht leer sein</sbb-error>
+        }
+      </sbb-form-field>
+    </div>
+    <app-ru-indication-content-form [form]="ruIndicationTemplateForm.controls.content"/>
+  </form>
+</sbb-dialog-content>
+<sbb-dialog-actions alignGroup="stretch">
+  <sbb-secondary-button align-self="start" i18n="@@ru_indication_templates_dialog_button_cancel"
+                        sbb-dialog-close>Abbrechen
+  </sbb-secondary-button>
+  @if (isEdit) {
+    <sbb-transparent-button i18n="@@dialog_button_delete" iconName="trash-small"
+                            sbb-dialog-close="delete">Eintrag löschen
+    </sbb-transparent-button>
+  }
+  <sbb-button [disabled]="ruIndicationTemplateForm.invalid" [sbb-dialog-close]="formValue"
+              i18n="@@ru_indication_templates_dialog_button_save">Speichern
+  </sbb-button>
+</sbb-dialog-actions>

@@ -13,7 +13,6 @@ import {SbbDatepickerModule} from '@sbb-esta/lyne-angular/datepicker';
 import {SbbRadioButtonModule} from '@sbb-esta/lyne-angular/radio-button';
 import {CompaniesInputComponent} from '../../../shared/companies-input/companies-input.component';
 import {toUtcDateOnly} from '../../../shared/date-util';
-import {RecentCompaniesStore} from '../../../shared/recent-companies.store';
 
 export type SpecialHolidayDialogEditResult = SpecialHoliday | 'delete';
 
@@ -55,7 +54,6 @@ export class SpecialHolidayDialog {
   });
   protected readonly scheduleTypes = SCHEDULE_TYPE_LABELS;
   private readonly dialogData = inject<SpecialHoliday>(SBB_OVERLAY_DATA, {optional: true}) ?? null;
-  private readonly recentCompaniesStore = inject(RecentCompaniesStore);
 
   constructor() {
     this.isEdit = this.dialogData?.id != null;
@@ -70,8 +68,6 @@ export class SpecialHolidayDialog {
         scheduleType: this.dialogData.scheduleType,
         companies: this.dialogData.companies,
       });
-    } else {
-      this.specialHolidayForm.patchValue({companies: this.recentCompaniesStore.get()})
     }
   }
 

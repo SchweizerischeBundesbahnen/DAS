@@ -1,18 +1,18 @@
-import {Component, computed, effect, inject, viewChild} from '@angular/core';
-import {SbbSort, SbbTableDataSource, SbbTableModule} from '@sbb-esta/lyne-angular/table';
-import {SbbSecondaryButton} from '@sbb-esta/lyne-angular/button/secondary-button';
-import {SbbCompactPaginator} from '@sbb-esta/lyne-angular/paginator/compact-paginator';
-import {SbbMiniButton} from '@sbb-esta/lyne-angular/button/mini-button';
-import {SelectionModel} from '@angular/cdk/collections';
-import {SbbCheckboxModule} from '@sbb-esta/lyne-angular/checkbox';
-import {SbbFormFieldModule} from '@sbb-esta/lyne-angular/form-field';
-import {SbbIconModule} from '@sbb-esta/lyne-angular/icon';
-import {ReactiveFormsModule} from '@angular/forms';
-import {SbbTransparentButton} from '@sbb-esta/lyne-angular/button/transparent-button';
-import {SCHEDULE_TYPE_LABELS, ScheduleType, SpecialHoliday} from '../../ru-admin-api';
-import {SpecialHolidayService} from '../special-holiday.service';
-import {DatePipe} from '@angular/common';
-import {CompaniesApi} from '../../../shared/companies-input/companies-api.service';
+import { Component, effect, inject, viewChild } from '@angular/core';
+import { SbbSort, SbbTableDataSource, SbbTableModule } from '@sbb-esta/lyne-angular/table';
+import { SbbSecondaryButton } from '@sbb-esta/lyne-angular/button/secondary-button';
+import { SbbCompactPaginator } from '@sbb-esta/lyne-angular/paginator/compact-paginator';
+import { SbbMiniButton } from '@sbb-esta/lyne-angular/button/mini-button';
+import { SelectionModel } from '@angular/cdk/collections';
+import { SbbCheckboxModule } from '@sbb-esta/lyne-angular/checkbox';
+import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
+import { SbbIconModule } from '@sbb-esta/lyne-angular/icon';
+import { ReactiveFormsModule } from '@angular/forms';
+import { SbbTransparentButton } from '@sbb-esta/lyne-angular/button/transparent-button';
+import { SCHEDULE_TYPE_LABELS, ScheduleType, SpecialHoliday } from '../../ru-admin-api';
+import { SpecialHolidayService } from '../special-holiday.service';
+import { DatePipe } from '@angular/common';
+import { CompanyService } from '../../../shared/companies-input/company.service';
 
 @Component({
   selector: 'app-special-holidays-table',
@@ -38,22 +38,16 @@ export class SpecialHolidaysTable {
   protected readonly PAGE_SIZE = 20;
   protected isDeleting = false;
 
-  private readonly holidayService = inject(SpecialHolidayService);
-  private readonly companiesApi = inject(CompaniesApi);
-  private readonly companyNamesByCode = computed(() => {
-    if (!this.companiesApi.companies.hasValue()) {
-      return new Map<string, string>();
-    }
+  private readonly specialHolidayService = inject(SpecialHolidayService);
+  private readonly companyService = inject(CompanyService);
 
-    return new Map(this.companiesApi.companies.value().data.map((company) => [company.code, company.name]));
-  });
   private readonly paginator = viewChild.required<SbbCompactPaginator>(SbbCompactPaginator);
   private readonly sort = viewChild.required<SbbSort>(SbbSort);
 
   constructor() {
     effect(() => {
-      if (this.holidayService.specialHolidaysResource.hasValue()) {
-        this.dataSource.data = this.holidayService.specialHolidaysResource.value().data;
+      if (this.specialHolidayService.specialHolidaysResource.hasValue()) {
+        this.dataSource.data = this.specialHolidayService.specialHolidaysResource.value().data;
       }
       this.dataSource.paginator = this.paginator();
       this.dataSource.sort = this.sort();
@@ -61,11 +55,11 @@ export class SpecialHolidaysTable {
   }
 
   protected async edit(holiday: SpecialHoliday): Promise<void> {
-    await this.holidayService.edit(holiday);
+    await this.specialHolidayService.edit(holiday);
   }
 
   protected async add(): Promise<void> {
-    await this.holidayService.add();
+    await this.specialHolidayService.add();
   }
 
   protected isAllSelected() {
@@ -83,10 +77,10 @@ export class SpecialHolidaysTable {
   }
 
   protected async deleteSelected(): Promise<void> {
-    if(this.isDeleting) return;
+    if (this.isDeleting) return;
     this.isDeleting = true;
     try {
-      await this.holidayService.deleteAll(this.selection.selected);
+      await this.specialHolidayService.deleteAll(this.selection.selected);
       this.selection.clear();
     } finally {
       this.isDeleting = false;
@@ -99,8 +93,8 @@ export class SpecialHolidaysTable {
 
   protected companiesValue(companyCodes: string[]) {
     return companyCodes
-      .map((companyCode) => this.companyNamesByCode().get(companyCode) ?? companyCode)
-      .sort((a,b) => a.localeCompare(b))
+      .map((companyCode) => this.companyService.getName(companyCode) ?? companyCode)
+      .sort((a, b) => a.localeCompare(b))
       .join(', ');
   }
 }

@@ -1,0 +1,11 @@
+<sbb-form-field errorSpace="reserve">
+  <label i18n="@@ru_indications_form_category_label">Kategorie</label>
+  <input [formControl]="templateControl" [sbbAutocomplete]="auto"
+         i18n-placeholder="@@ru_indications_form_category_placeholder" placeholder="Wählen" (input)="onType($event)"/>
+  <sbb-autocomplete #auto="sbbAutocomplete" [displayWith]="displayWith" requireSelection >
+    @for (value of filteredTemplates(); track value) {
+      <sbb-option [value]="value">{{ value.category }}</sbb-option>
+    }
+  </sbb-autocomplete>
+</sbb-form-field>
+<app-ru-indication-content-form [form]="form()"/>

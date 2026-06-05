@@ -9,6 +9,7 @@ import {toUtcDateOnly} from '../../shared/date-util';
 import {HttpErrorResponse, HttpResourceRef} from '@angular/common/http';
 import {VersionDialogEditResult} from './app-version-dialog/app-version-dialog';
 import {SbbOverlayCloseEvent} from '@sbb-esta/lyne-elements/overlay.js';
+import { RecentCompaniesStore } from '../../shared/recent-companies.store';
 
 const appVersion: AppVersion = {
   id: 1,
@@ -50,6 +51,7 @@ describe('AppVersionsService', () => {
         {provide: DasAdminApi, useValue: mockDasAdminApi},
         {provide: SbbDialogService, useValue: mockSbbDialogService},
         {provide: ToastService, useValue: mockToastService},
+        {provide: RecentCompaniesStore, useValue: {}},
       ],
     });
 

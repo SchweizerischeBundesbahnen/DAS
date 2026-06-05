@@ -4,25 +4,80 @@ import {environment} from '../../environments/environment';
 import {Observable} from 'rxjs';
 import {ApiResponse} from '../shared/api-response';
 
-export interface NoticeTemplateContent {
+export interface RuIndicationLanguageContent {
   title: string;
   text?: string;
 
   [key: string]: string | undefined;
 }
 
-export interface NoticeTemplate {
+export interface RuIndicationTemplate {
   id?: number;
   category: string;
-  de?: NoticeTemplateContent;
-  fr?: NoticeTemplateContent;
-  it?: NoticeTemplateContent;
+  de?: RuIndicationLanguageContent;
+  fr?: RuIndicationLanguageContent;
+  it?: RuIndicationLanguageContent;
   lastModifiedBy?: string;
 
-  [key: string]: string | number | NoticeTemplateContent | undefined;
+  [key: string]: string | number | RuIndicationLanguageContent | undefined;
 }
 
-export type NoticeTemplateApiResponse = ApiResponse<NoticeTemplate[]>;
+export type TrainNumberParity = 'ANY' | 'EVEN' | 'ODD';
+
+export interface RuIndicationTrainNumberFilter {
+  expression: string;
+  parity: TrainNumberParity;
+}
+
+export type DayOfWeek =
+  | 'MONDAY'
+  | 'TUESDAY'
+  | 'WEDNESDAY'
+  | 'THURSDAY'
+  | 'FRIDAY'
+  | 'SATURDAY'
+  | 'SUNDAY';
+
+export interface RuIndicationPeriod {
+  validFrom: Date | string;
+  validTo: Date | string;
+  weekdays?: DayOfWeek[];
+}
+
+export interface RuIndicationScope {
+  companies: string[];
+  operationalTrainNumberFilters?: RuIndicationTrainNumberFilter[];
+  tafTapLocationReferences?: string[];
+}
+
+export interface RuIndicationContent {
+  category?: string;
+  de?: RuIndicationLanguageContent;
+  fr?: RuIndicationLanguageContent;
+  it?: RuIndicationLanguageContent;
+}
+
+export interface RuIndication {
+  id?: number;
+  status?: RuIndicationStatus;
+  content: RuIndicationContent;
+  scope: RuIndicationScope;
+  periods: RuIndicationPeriod[];
+  lastModifiedBy?: string;
+  lastModifiedAt?: Date;
+}
+
+export type RuIndicationStatus =  'INACTIVE' | 'ACTIVE' | 'EXPIRED';
+
+export const RU_INDICATION_STATUS_LABELS : {value : RuIndicationStatus, label : string}[] = [
+  {value: 'ACTIVE', label: $localize`:@@ru_indication_status_label_active:Aktiv`},
+  {value: 'INACTIVE', label: $localize`:@@ru_indication_status_label_inactive:Inaktiv`},
+  {value: 'EXPIRED', label: $localize`:@@ru_indication_status_label_expired:Abgelaufen`},
+
+]
+export type RuIndicationApiResponse = ApiResponse<RuIndication[]>;
+
+export type RuIndicationTemplateApiResponse = ApiResponse<RuIndicationTemplate[]>;
 
 export type ScheduleType = 'SUNDAY_SCHEDULE' | 'MONDAY_SCHEDULE';
 
@@ -47,37 +102,28 @@ export interface SpecialHoliday {
 
 export type SpecialHolidayApiResponse = ApiResponse<SpecialHoliday[]>;
 
-export interface Company {
-  name: string;
-  code: string;
-}
-
-export type CompanyApiResponse = ApiResponse<Company[]>;
-
 @Injectable({
   providedIn: 'root',
 })
 export class RuAdminApi {
   private readonly httpClient = inject(HttpClient);
-  private readonly noticeTemplatesUrl = `${environment.backendUrl}/v1/notice-templates`;
-  readonly noticeTemplates = httpResource<NoticeTemplateApiResponse>(() => this.noticeTemplatesUrl);
+  private readonly ruIndicationsUrl = `${environment.backendUrl}/v1/ruindications`;
+  readonly ruIndications = httpResource<RuIndicationApiResponse>(() => this.ruIndicationsUrl);
+  private readonly ruIndicationTemplatesUrl = `${environment.backendUrl}/v1/ruindication-templates`;
+  readonly ruIndicationTemplates = httpResource<RuIndicationTemplateApiResponse>(() => this.ruIndicationTemplatesUrl);
   private readonly specialHolidaysUrl = `${environment.backendUrl}/v1/special-holidays`;
   readonly specialHolidays = httpResource<SpecialHolidayApiResponse>(() => this.specialHolidaysUrl);
 
-  postNoticeTemplate(noticeTemplate: NoticeTemplate): Observable<NoticeTemplateApiResponse> {
-    return this.httpClient.post<NoticeTemplateApiResponse>(this.noticeTemplatesUrl, noticeTemplate);
+  postRuIndicationTemplate(ruIndicationTemplate: RuIndicationTemplate): Observable<RuIndicationTemplateApiResponse> {
+    return this.httpClient.post<RuIndicationTemplateApiResponse>(this.ruIndicationTemplatesUrl, ruIndicationTemplate);
   }
 
-  putNoticeTemplate(id: number, noticeTemplate: NoticeTemplate): Observable<NoticeTemplateApiResponse> {
-    return this.httpClient.put<NoticeTemplateApiResponse>(`${this.noticeTemplatesUrl}/${id}`, noticeTemplate);
+  putRuIndicationTemplate(id: number, ruIndicationTemplate: RuIndicationTemplate): Observable<RuIndicationTemplateApiResponse> {
+    return this.httpClient.put<RuIndicationTemplateApiResponse>(`${this.ruIndicationTemplatesUrl}/${id}`, ruIndicationTemplate);
   }
 
-  deleteNoticeTemplate(id: number): Observable<void> {
-    return this.httpClient.delete<void>(`${this.noticeTemplatesUrl}/${id}`);
-  }
-
-  deleteAllNoticeTemplate(ids: number[]): Observable<void> {
-    return this.httpClient.delete<void>(this.noticeTemplatesUrl, {body: {ids}});
+  deleteAllRuIndicationTemplate(ids: number[]): Observable<void> {
+    return this.httpClient.delete<void>(this.ruIndicationTemplatesUrl, {body: {ids}});
   }
 
   postSpecialHoliday(specialHoliday: SpecialHoliday): Observable<SpecialHolidayApiResponse> {
@@ -88,11 +134,21 @@ export class RuAdminApi {
     return this.httpClient.put<SpecialHolidayApiResponse>(`${this.specialHolidaysUrl}/${id}`, specialHoliday);
   }
 
-  deleteSpecialHoliday(id: number): Observable<void> {
-    return this.httpClient.delete<void>(`${this.specialHolidaysUrl}/${id}`);
-  }
-
   deleteAllSpecialHolidays(ids: number[]): Observable<void> {
     return this.httpClient.delete<void>(this.specialHolidaysUrl, {body: {ids}});
   }
+
+  postRuIndication(ruIndication: RuIndication): Observable<RuIndicationApiResponse> {
+    return this.httpClient.post<RuIndicationApiResponse>(this.ruIndicationsUrl, ruIndication);
+  }
+
+  putRuIndication(id: number, ruIndication: RuIndication): Observable<RuIndicationApiResponse> {
+    return this.httpClient.put<RuIndicationApiResponse>(`${this.ruIndicationsUrl}/${id}`, ruIndication);
+  }
+
+  deleteAllRuIndications(ids: number[]) {
+    return this.httpClient.delete<void>(this.ruIndicationsUrl, {body: {ids}});
+  }
+
+
 }

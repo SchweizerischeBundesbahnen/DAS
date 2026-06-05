@@ -1,4 +1,4 @@
-import {Routes} from '@angular/router';
+import { Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
@@ -7,12 +7,16 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'notice-templates',
+        redirectTo: 'ruindications',
         pathMatch: 'full',
       },
       {
-        path: 'notice-templates',
-        loadComponent: () => import('./notice-templates/notice-templates').then((m) => m.NoticeTemplates),
+        path: 'ruindications',
+        loadComponent: () => import('./ru-indications/ru-indications').then((m) => m.RuIndications),
+      },
+      {
+        path: 'ruindication-templates',
+        loadComponent: () => import('./ru-indication-templates/ru-indication-templates').then((m) => m.RuIndicationTemplates),
       },
       {
         path: 'special-holidays',
