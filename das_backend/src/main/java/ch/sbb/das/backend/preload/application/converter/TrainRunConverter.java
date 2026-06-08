@@ -93,11 +93,9 @@ public class TrainRunConverter {
     }
 
     private OffsetDateTime plusSeconds(LocalDate operationalDate, int departureTime) {
-        ZonedDateTime dateTime = ZonedDateTime.of(
-            operationalDate.getYear(), operationalDate.getMonth().getValue(), operationalDate.getDayOfMonth(),
-            0, 0, 0, 0,
-            DateUtil.SWISS_ZONE);
-        return dateTime.plusSeconds(departureTime).toOffsetDateTime();
+        ZonedDateTime dateTime = ZonedDateTime.of(operationalDate.getYear(), operationalDate.getMonth().getValue(), operationalDate.getDayOfMonth(),
+            0, 0, departureTime, 0, DateUtil.SWISS_ZONE);
+        return dateTime.toOffsetDateTime();
     }
 
     private Set<String> collectCompanies(List<Zuglauf> zuglaeufe) {

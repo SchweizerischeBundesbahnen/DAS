@@ -1,11 +1,13 @@
 package ch.sbb.das.backend.preload.infrastructure;
 
-import ch.sbb.das.backend.common.DateUtil;
+import static ch.sbb.das.backend.common.DateUtil.SWISS_ZONE;
+
 import ch.sbb.das.backend.preload.application.model.trainidentification.Train;
 import ch.sbb.das.backend.preload.application.model.trainidentification.TrainRun;
 import ch.sbb.das.backend.preload.application.model.trainidentification.TrainRunDate;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -69,8 +71,17 @@ public class TrainRunDAO {
         log.debug("{} rows of table train updated", Arrays.stream(rowsUpdated).sum());
     }
 
+    /**
+     * See <a href="https://confluence.sbb.ch/x/DcxSww">Umrechnen von Planzeiten</a>
+     */
     private OffsetDateTime toStartDateTime(TrainRunDate trainRunDate, TrainRun trainRun) {
-        return DateUtil.convertDateTime(trainRunDate.getOperatingDay(), trainRun.getFirstDepartureTime());
+        ZonedDateTime dateTime = ZonedDateTime.of(trainRunDate.getOperatingDay().getYear(), trainRunDate.getOperatingDay().getMonth().getValue(), trainRunDate.getOperatingDay().getDayOfMonth(), 0, 0,
+            0, 0, SWISS_ZONE);
+        long offsetT0 = dateTime.getOffset().getTotalSeconds();
+        dateTime = dateTime.plusSeconds(trainRun.getFirstDepartureTime());
+        long offsetT1 = dateTime.getOffset().getTotalSeconds();
+        dateTime = dateTime.plusSeconds(offsetT0 - offsetT1);
+        return dateTime.toOffsetDateTime();
     }
 
     public void deleteAllOlderThan(LocalDate date) {
