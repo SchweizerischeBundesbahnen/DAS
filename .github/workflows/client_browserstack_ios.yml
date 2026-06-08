@@ -19,11 +19,6 @@ on:
 
 jobs:
   build:
-    strategy:
-      fail-fast: false
-      matrix:
-        file-nr: [1]
-
     runs-on: macos-26
     steps:
 
@@ -66,7 +61,7 @@ jobs:
         xcodebuild -workspace Runner.xcworkspace -scheme dev -config Flutter/Release.xcconfig -derivedDataPath ../build/ios_integration -sdk iphoneos build-for-testing CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
         popd
         pushd build/ios_integration/Build/Products
-        zip -r app-integrationtest-release-${{ matrix.file-nr }}.zip Release-iphoneos dev_dev_iphoneos*-arm64.xctestrun
+        zip -r app-integrationtest-release.zip Release-iphoneos dev_dev_iphoneos*-arm64.xctestrun
         popd
       working-directory: das_client/app
 
@@ -78,5 +73,5 @@ jobs:
         project: das_client
         customId: das_client_ios
         buildTag: ${{ steps.extract_branch.outputs.branch }}
-        testPackagePath: ${{ github.workspace }}/das_client/app/build/ios_integration/Build/Products/app-integrationtest-release-${{ matrix.file-nr }}.zip
+        testPackagePath: ${{ github.workspace }}/das_client/app/build/ios_integration/Build/Products/app-integrationtest-release.zip
         devices: iPad 9th-18
