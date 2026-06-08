@@ -57,6 +57,13 @@
       <td *sbbCellDef="let row" sbb-cell><span>{{ getValue(row, 'text') }}</span></td>
     </ng-container>
 
+    <ng-container sbbColumnDef="companies">
+      <th *sbbHeaderCellDef i18n="@@ru_indication_templates_table_column_companies" sbb-header-cell
+          sbb-sort-header="companies">EVU
+      </th>
+      <td *sbbCellDef="let row" sbb-cell><span>{{ companiesValue(row.companies) }}</span></td>
+    </ng-container>
+
     <ng-container sbbColumnDef="lastModifiedAt">
       <th *sbbHeaderCellDef i18n="@@ru_indication_templates_table_column_last_modified_at"
           sbb-header-cell

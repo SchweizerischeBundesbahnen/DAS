@@ -16,6 +16,7 @@ const ruIndicationTemplate: RuIndicationTemplate = {
   id: 1,
   category: 'General',
   de: {title: 'Titel', text: 'Text'},
+  companies: ['COMPA']
 };
 
 const mockRuAdminApi: Partial<RuAdminApi> = {
@@ -78,6 +79,7 @@ describe('RuIndicationTemplateService', () => {
       id: 1,
       category: 'Updated',
       de: {title: 'Titel', text: 'Text'},
+      companies: ['COMPA']
     });
   });
 
@@ -119,6 +121,7 @@ describe('RuIndicationTemplateService', () => {
     const templateToCreate: RuIndicationTemplate = {
       category: 'New',
       de: {title: 'Neu', text: 'Inhalt'},
+      companies: ['COMPB']
     };
     mockDialogResult(templateToCreate);
 
@@ -142,7 +145,8 @@ describe('RuIndicationTemplateService', () => {
     const successToastSpy = vi.spyOn(mockToastService, 'success');
     const templates: RuIndicationTemplate[] = [
       ruIndicationTemplate,
-      {id: 2, category: 'Other', de: {title: 'Andere', text: 'Text'}},
+      {id: 2, category: 'Other', de: {title: 'Andere', text: 'Text'}, companies: ['COMPA']},
+
     ];
 
     await service.deleteAll(templates);

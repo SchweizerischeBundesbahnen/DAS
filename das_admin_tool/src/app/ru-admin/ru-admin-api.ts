@@ -18,8 +18,9 @@ export interface RuIndicationTemplate extends Auditable {
   de?: RuIndicationLanguageContent;
   fr?: RuIndicationLanguageContent;
   it?: RuIndicationLanguageContent;
+  companies: string[];
 
-  [key: string]: string | number | Date | RuIndicationLanguageContent | undefined;
+  [key: string]: string | string[] | number | Date | RuIndicationLanguageContent | undefined;
 }
 
 export type TrainNumberParity = 'ANY' | 'EVEN' | 'ODD';
