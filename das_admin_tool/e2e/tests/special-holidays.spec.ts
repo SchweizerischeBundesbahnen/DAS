@@ -56,6 +56,7 @@ test.describe('special holidays test', () => {
     await openEditDialog(row);
     await page.locator('.radio-button-group').getByText('Montag', {exact: true}).click();
 
+    await page.getByText('Weiter', {exact: true}).click();
     await page.getByText('Speichern', {exact: true}).click();
 
     await expect(row.getByRole('cell', {name: 'Montag', exact: true})).toBeVisible();

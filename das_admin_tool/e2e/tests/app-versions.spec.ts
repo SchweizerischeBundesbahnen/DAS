@@ -35,6 +35,7 @@ test.describe('app versions test', () => {
     // edit
     await editButton.click();
     await page.locator('sbb-toggle-check').filter({hasText: 'Minimale Version'}).click();
+    await page.getByText('Weiter', {exact: true}).click();
     await page.getByText('Speichern', {exact: true}).click();
     await expect(row.locator('td').filter({hasText: 'Ja'})).toBeVisible();
 

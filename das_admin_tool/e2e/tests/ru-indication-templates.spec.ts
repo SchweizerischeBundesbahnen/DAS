@@ -1,5 +1,5 @@
 import test, { expect, Locator, Page } from '@playwright/test';
-import { findRow, openEditDialog } from '../utils/admin-test-helpers';
+import { findRow, openEditDialog, selectAnyOption } from '../utils/admin-test-helpers';
 
 test.describe('ru indication templates test', () => {
 
@@ -15,6 +15,9 @@ test.describe('ru indication templates test', () => {
   }) {
     const reloadResponse = page.waitForResponse((resp) => resp.request().method() === 'GET');
     const saveResponse = page.waitForResponse((resp) => resp.request().method() === options.method);
+    if (options.method === 'PUT') {
+      await page.getByText('Weiter', {exact: true}).click();
+    }
     await page.getByText('Speichern', {exact: true}).click();
     await saveResponse;
     await reloadResponse;
@@ -36,6 +39,8 @@ test.describe('ru indication templates test', () => {
     if (values.text !== undefined) {
       await page.getByRole('textbox', {name: 'Text'}).fill(values.text)
     }
+    const companyInput = page.locator('app-companies-input [role="combobox"]').last();
+    await selectAnyOption(page, companyInput);
   }
 
   async function deleteRuIndicationTemplate(page: Page, row: Locator) {
