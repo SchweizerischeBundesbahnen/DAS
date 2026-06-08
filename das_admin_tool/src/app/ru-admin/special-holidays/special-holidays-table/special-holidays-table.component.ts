@@ -92,9 +92,6 @@ export class SpecialHolidaysTable {
   }
 
   protected companiesValue(companyCodes: string[]) {
-    return companyCodes
-      .map((companyCode) => this.companyService.getName(companyCode) ?? companyCode)
-      .sort((a, b) => a.localeCompare(b))
-      .join(', ');
+    return this.companyService.formatCompanies(companyCodes);
   }
 }

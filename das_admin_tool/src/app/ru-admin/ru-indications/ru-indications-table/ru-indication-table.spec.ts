@@ -38,7 +38,7 @@ const mockLanguageProvider: Partial<LanguageProvider> = {
 };
 
 const mockCompanyService: Partial<CompanyService> = {
-  getName: (code: string) => ({'1085': 'SBB', '1087': 'BLS'})[code]
+  formatCompanies: () => ('SBB, BLS')
 };
 
 const mockLocationService: Partial<LocationService> = {
@@ -80,12 +80,6 @@ describe('RuIndicationsTable', () => {
     const comp = createComponent();
     const label = comp['statusValue'](sample);
     expect(label).toBeTruthy();
-  });
-
-  it('companiesValue should map and sort company names', () => {
-    const comp = createComponent();
-    const value = comp['companiesValue'](sample);
-    expect(value).toBe('BLS, SBB');
   });
 
   it('locationsValue should map location abbreviations', () => {

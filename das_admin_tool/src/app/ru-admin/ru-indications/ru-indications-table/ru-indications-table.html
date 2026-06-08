@@ -71,7 +71,8 @@
         <th *sbbHeaderCellDef i18n="@@ru_indications_table_column_companies" sbb-header-cell
             sbb-sort-header="companies">EVU
         </th>
-        <td *sbbCellDef="let row" sbb-cell><span>{{ companiesValue(row) }}</span></td>
+        <td *sbbCellDef="let row" sbb-cell><span>{{ companiesValue(row.scope.companies) }}</span>
+        </td>
       </ng-container>
 
       <ng-container sbbColumnDef="trainNumbers">

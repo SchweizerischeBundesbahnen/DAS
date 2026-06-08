@@ -7,9 +7,13 @@ import {
 import { SbbAutocompleteModule } from "@sbb-esta/lyne-angular/autocomplete";
 import { SbbFormFieldModule } from "@sbb-esta/lyne-angular/form-field";
 import { SbbOptionModule } from "@sbb-esta/lyne-angular/option";
-import { RuIndicationContent, RuIndicationTemplate } from '../../../ru-admin-api';
+import { RuIndicationContent, } from '../../../ru-admin-api';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RuIndicationDialogData } from '../../ru-indication.service';
+
+interface CategoryContent {
+  category: string;
+}
 
 @Component({
   selector: 'app-category-content-form',
@@ -27,7 +31,7 @@ export class CategoryContentForm {
   form = input.required<FormGroup>();
   dialogData = input.required<RuIndicationDialogData>();
 
-  protected templateControl = new FormControl<RuIndicationTemplate | null>(null);
+  protected templateControl = new FormControl<CategoryContent | null>(null);
   protected searchTerm = signal<string>('');
   private readonly templateValue = toSignal(this.templateControl.valueChanges, {initialValue: null});
   protected filteredTemplates = computed(() => {
@@ -58,7 +62,7 @@ export class CategoryContentForm {
     }
   }
 
-  protected displayWith: (value: RuIndicationTemplate | undefined) => string = (value) => value?.category ?? '';
+  protected displayWith: (value: CategoryContent | undefined) => string = (value) => value?.category ?? '';
 
   protected onType(event: Event) {
     const input = event.target as HTMLInputElement;
