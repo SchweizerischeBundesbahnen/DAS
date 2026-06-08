@@ -53,24 +53,24 @@ public class TrainRunConverter {
 
         Optional<Integer> firstDepartureTime = findFirstDepartureTime(zuglaufPunkte);
         if (firstDepartureTime.isEmpty()) {
+            // ignore train runs not running on any swiss train run point
             return null;
         }
         List<TrainRunDate> trainRunDates = new ArrayList<>();
 
         operatingDays.forEach(
             operatingDay -> {
-                OffsetDateTime startDate = convertToStartDate(operatingDay, firstDepartureTime);
-                if (startDate.isAfter(OffsetDateTime.now().minusDays(3))) {
+                OffsetDateTime startDateDateTime = convertToStartDateTime(operatingDay, firstDepartureTime.get());
+                if (startDateDateTime.isAfter(OffsetDateTime.now(SWISS_ZONE).minusDays(3))) {
                     trainRunDates.add(TrainRunDate.builder()
                         .operatingDay(operatingDay)
-                        .startDateTime(startDate)
+                        .startDateTime(startDateDateTime)
                         .vehicleModes(zuglauf.getZugkategorien())
                         .build());
                 }
             });
 
         return TrainRun.builder()
-            .firstDepartureTime(firstDepartureTime.get())
             .companies(collectCompanies(zuglaeufe))
             .trainRunDates(trainRunDates)
             .build();
@@ -89,14 +89,17 @@ public class TrainRunConverter {
             .findFirst();
     }
 
-    private OffsetDateTime convertToStartDate(LocalDate operationalDate, Optional<Integer> firstSwissOperationalDepartureTime) {
-        return plusSeconds(operationalDate, firstSwissOperationalDepartureTime.orElse(0));
-    }
-
-    private OffsetDateTime plusSeconds(LocalDate operationalDate, int departureTime) {
+    /**
+     * See <a href="https://confluence.sbb.ch/x/DcxSww">Umrechnen von Planzeiten</a>
+     */
+    private OffsetDateTime convertToStartDateTime(LocalDate operationalDate, Integer secondsToAdd) {
         ZonedDateTime dateTime = ZonedDateTime.of(operationalDate.getYear(), operationalDate.getMonth().getValue(), operationalDate.getDayOfMonth(),
             0, 0, 0, 0, SWISS_ZONE);
-        return dateTime.plusSeconds(departureTime).toOffsetDateTime();
+        long offsetT0 = dateTime.getOffset().getTotalSeconds();
+        dateTime = dateTime.plusSeconds(secondsToAdd);
+        long offsetT1 = dateTime.getOffset().getTotalSeconds();
+        dateTime = dateTime.plusSeconds(offsetT0 - offsetT1);
+        return dateTime.toOffsetDateTime();
     }
 
     private Set<String> collectCompanies(List<Zuglauf> zuglaeufe) {

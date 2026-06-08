@@ -1,5 +1,7 @@
 package ch.sbb.das.backend.preload.application;
 
+import static ch.sbb.das.backend.common.DateUtil.SWISS_ZONE;
+
 import ch.sbb.das.backend.preload.infrastructure.S3Service;
 import ch.sbb.das.backend.preload.infrastructure.xml.XmlHelper;
 import ch.sbb.das.backend.preload.sfera.model.v0400.JourneyProfile;
@@ -60,7 +62,7 @@ public class StorageService {
     }
 
     private String buildZipName() {
-        OffsetDateTime nowOffset = OffsetDateTime.now();
+        OffsetDateTime nowOffset = OffsetDateTime.now(SWISS_ZONE);
         return FILENAME_FORMATTER.format(nowOffset.toInstant().atZone(ZoneOffset.UTC)) + ZIP_FILE_ENDING;
     }
 

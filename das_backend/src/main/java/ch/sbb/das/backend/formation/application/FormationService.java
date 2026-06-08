@@ -1,5 +1,7 @@
 package ch.sbb.das.backend.formation.application;
 
+import static ch.sbb.das.backend.common.DateUtil.SWISS_ZONE;
+
 import ch.sbb.das.backend.formation.infrastructure.TrainFormationRunRepository;
 import ch.sbb.das.backend.formation.infrastructure.model.TrainFormationRunEntity;
 import java.time.LocalDate;
@@ -51,7 +53,7 @@ public class FormationService {
     @SchedulerLock(name = "cleanUpFormations", lockAtLeastFor = "10m")
     void cleanUpFormations() {
         LockAssert.assertLocked();
-        OffsetDateTime cleanUpBefore = OffsetDateTime.now().minusDays(cleanUpOlderThanDays);
+        OffsetDateTime cleanUpBefore = OffsetDateTime.now(SWISS_ZONE).minusDays(cleanUpOlderThanDays);
         trainFormationRunRepository.deleteByInspectionDateTimeBefore(cleanUpBefore);
         log.info("Cleaned up formations with inspection before {}", cleanUpBefore);
     }

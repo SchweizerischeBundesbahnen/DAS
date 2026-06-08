@@ -1,5 +1,7 @@
 package ch.sbb.das.backend.preload.application;
 
+import static ch.sbb.das.backend.common.DateUtil.SWISS_ZONE;
+
 import ch.sbb.das.backend.common.CompanyCode;
 import ch.sbb.das.backend.common.CompanyShortName;
 import ch.sbb.das.backend.preload.application.model.trainidentification.TrainIdentification;
@@ -50,6 +52,6 @@ public class TrainIdentificationService {
     }
 
     public int savePreloadedTrains(Set<TrainIdentification> trainIdentifications) {
-        return trainIdentificationRepository.updatePreloadedAtByIds(OffsetDateTime.now(), trainIdentifications.stream().map(TrainIdentification::id).collect(Collectors.toSet()));
+        return trainIdentificationRepository.updatePreloadedAtByIds(OffsetDateTime.now(SWISS_ZONE), trainIdentifications.stream().map(TrainIdentification::id).collect(Collectors.toSet()));
     }
 }

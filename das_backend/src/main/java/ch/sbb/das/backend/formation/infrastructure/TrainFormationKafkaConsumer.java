@@ -1,11 +1,13 @@
 package ch.sbb.das.backend.formation.infrastructure;
 
+import static ch.sbb.das.backend.common.DateUtil.SWISS_ZONE;
+
 import ch.sbb.das.backend.formation.application.FormationService;
 import ch.sbb.das.backend.formation.domain.model.Formation;
 import ch.sbb.das.backend.formation.infrastructure.model.TrainFormationRunEntity;
 import ch.sbb.zis.trainformation.api.model.DailyFormationTrain;
 import ch.sbb.zis.trainformation.api.model.DailyFormationTrainKey;
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -24,7 +26,7 @@ public class TrainFormationKafkaConsumer {
 
     @KafkaListener(topics = "${formation.kafka.topic}", groupId = "${formation.kafka.group-id}", autoStartup = "${formation.kafka.enabled:true}", containerFactory = "trainFormationListenerContainerFactory")
     void receive(ConsumerRecord<DailyFormationTrainKey, DailyFormationTrain> message) {
-        long lagInS = (Instant.now().toEpochMilli() - message.timestamp()) / 1000;
+        long lagInS = (OffsetDateTime.now(SWISS_ZONE).toInstant().toEpochMilli() - message.timestamp()) / 1000;
         log.trace("lagInS={} partition={} offset={}", lagInS, message.partition(), message.offset());
         try {
             Formation formation = FormationFactory.create(message);

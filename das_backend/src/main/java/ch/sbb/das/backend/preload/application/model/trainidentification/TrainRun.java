@@ -14,9 +14,6 @@ public class TrainRun {
     List<TrainRunDate> trainRunDates;
 
     @NonNull
-    Integer firstDepartureTime;
-
-    @NonNull
     @Builder.Default
     Set<String> companies = Set.of();
 }
