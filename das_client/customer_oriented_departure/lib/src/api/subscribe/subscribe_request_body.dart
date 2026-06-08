@@ -47,8 +47,7 @@ class SubscribeRequestBody {
 
   @override
   String toString() {
-    final jsonString = toJsonString(pretty: true);
-    return 'SubscribeRequestBody $jsonString';
+    return 'SubscribeRequestBody{type: $type, evu: $evu, driver: $driver, messageId: $messageId, zugnr: $zugnr, deviceId: $deviceId, pushToken: $pushToken, expiresAt: $expiresAt}';
   }
 }
 

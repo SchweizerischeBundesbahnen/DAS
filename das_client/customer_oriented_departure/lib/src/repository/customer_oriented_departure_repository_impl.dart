@@ -90,7 +90,7 @@ class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartu
     final trainNumber = _pendingOrOpenSubscription!.trainNumber;
     final pushToken = messagingService.tokenValue;
     if (pushToken == null) {
-      _log.severe('No push token available for subscribing to $evu $trainNumber');
+      _log.severe('No push token available for unsubscribing from $evu $trainNumber');
       return false;
     }
 
@@ -138,6 +138,7 @@ class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartu
 
   void _initTokenSubscription() {
     final sub = messagingService.token.listen((token) {
+      _log.severe('TOKEN: $token');
       if (token != null && _pendingOrOpenSubscription != null && _pendingOrOpenSubscription!.pushToken != token) {
         _log.fine('Received new push token for open/pending subscription');
         _pendingOrOpenSubscription = _pendingOrOpenSubscription!.withToken(token: token);
@@ -179,7 +180,7 @@ class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartu
         expiresAt: subscription.expiresAt,
         isDriver: subscription.isDriver,
       );
-      _log.info('Successfully requested subscribe for $evu $trainNumber.');
+      _log.info('Successfully requested subscribe for $evu $trainNumber with messageId ${subscription.messageId}.');
       return true;
     } catch (e) {
       _log.severe('Error while requesting subscribe for $evu $trainNumber', e);
@@ -222,7 +223,7 @@ class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartu
   void _handleTrainStatusMessage(TrainStatusMessageDto message) {
     final status = CustomerOrientedDepartureStatus.from(message.status);
     if (status == null) {
-      _log.warning('Received message with unknown status: ${message.status}');
+      _log.warning('Received message (messageId: ${message.messageId}) with unknown status: ${message.status}.');
     } else {
       final customerOrientedDeparture = CustomerOrientedDeparture(trainNumber: message.zugnr, status: status);
       _rxCustomerOrientedDeparture.add(customerOrientedDeparture);
@@ -233,7 +234,7 @@ class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartu
   Future<void> _sendConfirmMessageRequest(String messageId) async {
     try {
       await apiService.confirm(deviceId: deviceId, messageId: messageId);
-      _log.fine('Successfully sent confirm for message $messageId.');
+      _log.info('Successfully sent confirm for message $messageId.');
     } catch (e) {
       _log.severe('Error while sending confirm for message $messageId', e);
     }

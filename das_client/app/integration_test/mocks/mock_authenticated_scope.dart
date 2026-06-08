@@ -50,7 +50,6 @@ class MockAuthenticatedScope extends AuthenticatedScope {
     getIt.registerJourneyNavigationViewModel();
     getIt.registerJourneySelectionViewModel();
     getIt.registerNotificationPriorityViewModel();
-    getIt.registerCustomerOrientedDepartureViewModel();
     getIt.registerJourneySettingsViewModel();
     getIt.registerViewModeViewModel();
     _registerMockWarnAppViewModel();
