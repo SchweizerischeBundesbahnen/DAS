@@ -2,31 +2,43 @@ package ch.sbb.das.backend.admin.domain.ruindications;
 
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationTemplate;
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationTemplateRequest;
+import ch.sbb.das.backend.common.CompanyCode;
+import ch.sbb.das.backend.tenancy.infrastructure.CompanyAuthorizer;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class RuIndicationTemplateServiceImpl implements RuIndicationTemplateService {
 
     private final RuIndicationTemplateRepository ruIndicationTemplateRepository;
+    private final CompanyAuthorizer companyAuthorizationService;
 
-    public RuIndicationTemplateServiceImpl(RuIndicationTemplateRepository ruIndicationTemplateRepository) {
+    public RuIndicationTemplateServiceImpl(RuIndicationTemplateRepository ruIndicationTemplateRepository, CompanyAuthorizer companyAuthorizationService) {
         this.ruIndicationTemplateRepository = ruIndicationTemplateRepository;
+        this.companyAuthorizationService = companyAuthorizationService;
     }
 
     @Override
     public List<RuIndicationTemplate> getAll() {
-        return ruIndicationTemplateRepository.findAll();
+        return ruIndicationTemplateRepository.findAll().stream()
+            .filter(ruIndicationTemplate -> companyAuthorizationService.authorizedCompanies().containsAll(ruIndicationTemplate.companies()))
+            .toList();
     }
 
     @Override
     public RuIndicationTemplate getById(Integer id) {
         Optional<RuIndicationTemplate> optionalRuIndicationTemplate = ruIndicationTemplateRepository.findById(id);
-        return optionalRuIndicationTemplate.orElse(null);
+        return optionalRuIndicationTemplate.map(ruIndicationTemplate -> {
+            companyAuthorizationService.requireCanAccessCompanies(ruIndicationTemplate.companies());
+            return ruIndicationTemplate;
+        }).orElse(null);
     }
 
     @Override
     public RuIndicationTemplate create(RuIndicationTemplateRequest createRequest) {
-        RuIndicationTemplate ruIndicationTemplate = new RuIndicationTemplate(null, createRequest.category(), createRequest.de(), createRequest.fr(), createRequest.it());
+        companyAuthorizationService.requireCanAccessCompanies(createRequest.companies());
+        RuIndicationTemplate ruIndicationTemplate = new RuIndicationTemplate(null, createRequest.category(), createRequest.de(), createRequest.fr(), createRequest.it(), createRequest.companies());
         return ruIndicationTemplateRepository.save(ruIndicationTemplate);
     }
 
@@ -36,19 +48,26 @@ public class RuIndicationTemplateServiceImpl implements RuIndicationTemplateServ
         if (optional.isEmpty()) {
             return null;
         }
+        companyAuthorizationService.requireCanAccessCompanies(updateRequest.companies());
+        companyAuthorizationService.requireCanAccessCompanies(optional.get().companies());
         RuIndicationTemplate old = optional.get();
         RuIndicationTemplate updated = new RuIndicationTemplate(
             old.id(),
             updateRequest.category(),
             updateRequest.de(),
             updateRequest.fr(),
-            updateRequest.it()
+            updateRequest.it(),
+            updateRequest.companies()
         );
         return ruIndicationTemplateRepository.save(updated);
     }
 
     @Override
     public void delete(List<Integer> ids) {
-        ruIndicationTemplateRepository.deleteAllById(ids.stream().distinct().toList());
+        List<Integer> distinctIds = ids.stream().distinct().toList();
+        Set<CompanyCode> companies = ruIndicationTemplateRepository.findAllById(distinctIds).stream().flatMap(ruIndicationTemplate -> ruIndicationTemplate.companies().stream())
+            .collect(Collectors.toSet());
+        companyAuthorizationService.requireCanAccessCompanies(companies);
+        ruIndicationTemplateRepository.deleteAllById(distinctIds);
     }
 }

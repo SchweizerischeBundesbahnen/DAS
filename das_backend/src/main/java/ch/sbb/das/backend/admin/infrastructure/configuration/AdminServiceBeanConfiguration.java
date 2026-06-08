@@ -35,8 +35,8 @@ public class AdminServiceBeanConfiguration {
     }
 
     @Bean
-    RuIndicationTemplateService ruIndicationTemplateService(RuIndicationTemplateRepository ruIndicationTemplateRepository) {
-        return new RuIndicationTemplateServiceImpl(ruIndicationTemplateRepository);
+    RuIndicationTemplateService ruIndicationTemplateService(RuIndicationTemplateRepository ruIndicationTemplateRepository, CompanyAuthorizer companyAuthorizer) {
+        return new RuIndicationTemplateServiceImpl(ruIndicationTemplateRepository, companyAuthorizer);
     }
 
     @Bean

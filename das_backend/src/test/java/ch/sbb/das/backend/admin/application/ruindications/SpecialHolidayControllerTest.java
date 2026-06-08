@@ -40,7 +40,9 @@ class SpecialHolidayControllerTest {
             .andExpect(jsonPath("$.data[0].name").value("Berchtoldstag"))
             .andExpect(jsonPath("$.data[0].date").value("2099-01-02"))
             .andExpect(jsonPath("$.data[0].scheduleType").value("MONDAY_SCHEDULE"))
-            .andExpect(jsonPath("$.data[0].companies", containsInAnyOrder("3333")));
+            .andExpect(jsonPath("$.data[0].companies", containsInAnyOrder("3333")))
+            .andExpect(jsonPath("$.data[0].lastModifiedAt").isNotEmpty())
+            .andExpect(jsonPath("$.data[0].lastModifiedBy").value("unit_test"));
     }
 
     @Test
@@ -81,7 +83,9 @@ class SpecialHolidayControllerTest {
             .andExpect(jsonPath("$.data[0].name").value("Today Holiday"))
             .andExpect(jsonPath("$.data[0].date").value(today))
             .andExpect(jsonPath("$.data[0].scheduleType").value("SUNDAY_SCHEDULE"))
-            .andExpect(jsonPath("$.data[0].companies", containsInAnyOrder("1111")));
+            .andExpect(jsonPath("$.data[0].companies", containsInAnyOrder("1111")))
+            .andExpect(jsonPath("$.data[0].lastModifiedAt").isNotEmpty())
+            .andExpect(jsonPath("$.data[0].lastModifiedBy").value("test-user"));
     }
 
     @Test
@@ -94,7 +98,9 @@ class SpecialHolidayControllerTest {
             .andExpect(jsonPath("$.data[0].name").value("National Day"))
             .andExpect(jsonPath("$.data[0].date").value("2099-08-01"))
             .andExpect(jsonPath("$.data[0].scheduleType").value("SUNDAY_SCHEDULE"))
-            .andExpect(jsonPath("$.data[0].companies", containsInAnyOrder("1111", "2222")));
+            .andExpect(jsonPath("$.data[0].companies", containsInAnyOrder("1111", "2222")))
+            .andExpect(jsonPath("$.data[0].lastModifiedAt").isNotEmpty())
+            .andExpect(jsonPath("$.data[0].lastModifiedBy").value("unit_test"));
     }
 
     @Test
@@ -131,7 +137,9 @@ class SpecialHolidayControllerTest {
             .andExpect(jsonPath("$.data[0].name").value("Sechseläuten"))
             .andExpect(jsonPath("$.data[0].date").value("2026-04-20"))
             .andExpect(jsonPath("$.data[0].scheduleType").value("MONDAY_SCHEDULE"))
-            .andExpect(jsonPath("$.data[0].companies", containsInAnyOrder("1111", "2222")));
+            .andExpect(jsonPath("$.data[0].companies", containsInAnyOrder("1111", "2222")))
+            .andExpect(jsonPath("$.data[0].lastModifiedAt").isNotEmpty())
+            .andExpect(jsonPath("$.data[0].lastModifiedBy").value("test-user"));
     }
 
     @Test
@@ -187,7 +195,9 @@ class SpecialHolidayControllerTest {
             .andExpect(jsonPath("$.data[0].name").value("Updated Holiday"))
             .andExpect(jsonPath("$.data[0].date").value("2026-12-12"))
             .andExpect(jsonPath("$.data[0].scheduleType").value("MONDAY_SCHEDULE"))
-            .andExpect(jsonPath("$.data[0].companies", containsInAnyOrder("3333", "1111")));
+            .andExpect(jsonPath("$.data[0].companies", containsInAnyOrder("3333", "1111")))
+            .andExpect(jsonPath("$.data[0].lastModifiedAt").isNotEmpty())
+            .andExpect(jsonPath("$.data[0].lastModifiedBy").value("test-user"));
     }
 
     @Test

@@ -11,7 +11,9 @@ public interface RuIndicationTemplateRepository {
     Optional<RuIndicationTemplate> findById(Integer id);
 
     RuIndicationTemplate save(RuIndicationTemplate appVersion);
-    
+
     void deleteAllById(Iterable<Integer> ids);
+
+    List<RuIndicationTemplate> findAllById(Iterable<Integer> ids);
 
 }
