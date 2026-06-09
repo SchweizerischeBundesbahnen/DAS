@@ -43,7 +43,7 @@ public class TrainIdentificationService {
     private Set<CompanyCode> readCompanyCodes(String companies) {
         return Set.of(companies.split(",")).stream()
             .map(CompanyShortName::new)
-            .map(companyService::findCompanyCodeByCompanyShortName)
+            .map(companyService::findCompanyCodeByShortName)
             .filter(Optional::isPresent)
             .map(Optional::get)
             .collect(Collectors.toSet());
