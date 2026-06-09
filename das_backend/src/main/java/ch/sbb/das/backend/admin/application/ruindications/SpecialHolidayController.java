@@ -1,7 +1,7 @@
 package ch.sbb.das.backend.admin.application.ruindications;
 
+import ch.sbb.das.backend.admin.application.common.DeleteByIdsRequest;
 import ch.sbb.das.backend.admin.application.ruindications.model.SpecialHoliday;
-import ch.sbb.das.backend.admin.application.ruindications.model.SpecialHolidayByIdsDeleteRequest;
 import ch.sbb.das.backend.admin.application.ruindications.model.SpecialHolidayRequest;
 import ch.sbb.das.backend.admin.application.ruindications.model.SpecialHolidayResponse;
 import ch.sbb.das.backend.admin.application.ruindications.model.SpecialHolidaysResponse;
@@ -19,8 +19,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -54,7 +52,7 @@ public class SpecialHolidayController {
     public ResponseEntity<? extends Response> getAllUpcomingSpecialHolidays(
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
         List<SpecialHoliday> specialHolidays = specialHolidayService.getAllUpcoming();
-        return ResponseEntityFactory.createOkResponse(new SpecialHolidaysResponse(specialHolidays), null, requestId);
+        return ResponseEntityFactory.createOkResponse(new SpecialHolidaysResponse(specialHolidays), requestId);
     }
 
     @GetMapping(API_SPECIAL_HOLIDAYS_ID)
@@ -69,7 +67,7 @@ public class SpecialHolidayController {
         if (specialHoliday == null) {
             return ResponseEntityFactory.createNotFoundResponse(requestId, null);
         }
-        return ResponseEntityFactory.createOkResponse(new SpecialHolidayResponse(specialHoliday), null, requestId);
+        return ResponseEntityFactory.createOkResponse(new SpecialHolidayResponse(specialHoliday), requestId);
     }
 
     @PostMapping(API_SPECIAL_HOLIDAYS)
@@ -81,8 +79,7 @@ public class SpecialHolidayController {
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
         @RequestBody @Valid SpecialHolidayRequest createRequest) {
         SpecialHoliday createdSpecialHoliday = specialHolidayService.create(createRequest);
-        HttpHeaders headers = ResponseEntityFactory.createOkHeaders(requestId);
-        return new ResponseEntity<>(new SpecialHolidayResponse(createdSpecialHoliday), headers, HttpStatus.CREATED);
+        return ResponseEntityFactory.createCreatedResponse(new SpecialHolidayResponse(createdSpecialHoliday), requestId);
     }
 
     @PutMapping(API_SPECIAL_HOLIDAYS_ID)
@@ -98,7 +95,7 @@ public class SpecialHolidayController {
         if (updatedSpecialHoliday == null) {
             return ResponseEntityFactory.createNotFoundResponse(requestId, null);
         }
-        return ResponseEntityFactory.createOkResponse(new SpecialHolidayResponse(updatedSpecialHoliday), null, requestId);
+        return ResponseEntityFactory.createOkResponse(new SpecialHolidayResponse(updatedSpecialHoliday), requestId);
     }
 
     @DeleteMapping(API_SPECIAL_HOLIDAYS)
@@ -107,7 +104,7 @@ public class SpecialHolidayController {
     @ApiErrorResponses
     public ResponseEntity<Void> deleteSpecialHolidayByIds(
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
-        @RequestBody @Valid SpecialHolidayByIdsDeleteRequest deleteRequest) {
+        @RequestBody @Valid DeleteByIdsRequest deleteRequest) {
         specialHolidayService.deleteByIds(deleteRequest.ids());
         return ResponseEntity.noContent().build();
     }

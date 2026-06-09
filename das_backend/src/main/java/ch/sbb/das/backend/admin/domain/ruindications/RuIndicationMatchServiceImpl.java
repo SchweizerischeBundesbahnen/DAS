@@ -13,6 +13,7 @@ import ch.sbb.das.backend.admin.application.ruindications.model.TrainNumberFilte
 import ch.sbb.das.backend.admin.application.ruindications.model.TrainNumberParity;
 import ch.sbb.das.backend.common.CompanyCode;
 import ch.sbb.das.backend.formation.domain.model.TafTapLocationReference;
+import org.springframework.util.CollectionUtils;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ public class RuIndicationMatchServiceImpl implements RuIndicationMatchService {
     }
 
     private static boolean matchesTrainNumber(RuIndicationScope scope, Integer trainNumber) {
-        if (scope == null || scope.operationalTrainNumberFilters() == null || scope.operationalTrainNumberFilters().isEmpty()) {
+        if (scope == null || CollectionUtils.isEmpty(scope.operationalTrainNumberFilters())) {
             return true;
         }
 
@@ -87,7 +88,7 @@ public class RuIndicationMatchServiceImpl implements RuIndicationMatchService {
     }
 
     private static boolean matchesDate(List<RuIndicationPeriod> periods, LocalDate scheduleDate, Set<ScheduleType> holidayScheduleTypes) {
-        if (scheduleDate == null || periods == null || periods.isEmpty()) {
+        if (scheduleDate == null || CollectionUtils.isEmpty(periods)) {
             return true;
         }
 
@@ -107,7 +108,7 @@ public class RuIndicationMatchServiceImpl implements RuIndicationMatchService {
             return true;
         }
 
-        if (period.weekdays() == null || period.weekdays().isEmpty()) {
+        if (CollectionUtils.isEmpty(period.weekdays())) {
             return true;
         }
 
@@ -128,7 +129,7 @@ public class RuIndicationMatchServiceImpl implements RuIndicationMatchService {
 
     private static List<TafTapLocationReference> findMatchingLocations(RuIndication ruIndication, Set<TafTapLocationReference> requestedLocations) {
         Set<TafTapLocationReference> configuredLocations = ruIndication.scope() == null ? null : ruIndication.scope().tafTapLocationReferences();
-        if (configuredLocations == null || configuredLocations.isEmpty() || requestedLocations == null || requestedLocations.isEmpty()) {
+        if (CollectionUtils.isEmpty(configuredLocations) || CollectionUtils.isEmpty(requestedLocations)) {
             return List.of();
         }
 
@@ -225,5 +226,3 @@ public class RuIndicationMatchServiceImpl implements RuIndicationMatchService {
             .toList();
     }
 }
-
-

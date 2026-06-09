@@ -4,6 +4,7 @@ import static java.util.Collections.emptyList;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
+import org.springframework.util.CollectionUtils;
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,7 +15,7 @@ public class StringListConverter implements AttributeConverter<List<String>, Str
 
     @Override
     public String convertToDatabaseColumn(List<String> stringList) {
-        return stringList != null && !stringList.isEmpty() ? String.join(DELIMITER, stringList) : null;
+        return CollectionUtils.isEmpty(stringList) ? null : String.join(DELIMITER, stringList);
     }
 
     @Override

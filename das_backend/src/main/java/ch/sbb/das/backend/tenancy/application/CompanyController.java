@@ -54,6 +54,6 @@ public class CompanyController {
             .map(code -> new Company(code.value(), uicMap.get(code).getValue()))
             .sorted(Comparator.comparing(Company::name))
             .toList();
-        return ResponseEntityFactory.createOkResponse(new CompaniesResponse(companies), null, requestId);
+        return ResponseEntityFactory.createOkResponse(new CompaniesResponse(companies), requestId);
     }
 }

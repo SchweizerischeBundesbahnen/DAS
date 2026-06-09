@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 /**
  * Resolves the authenticated tenant and evaluates company-level access.
@@ -48,7 +49,7 @@ public class CompanyAuthorizer {
      * @return {@code true} if all requested codes are authorized; otherwise {@code false}
      */
     public boolean canAccessCompanies(Set<CompanyCode> companies) {
-        if (companies == null || companies.isEmpty()) {
+        if (CollectionUtils.isEmpty(companies)) {
             return false;
         }
         Set<CompanyCode> authorizedCompanies = authorizedCompanies();

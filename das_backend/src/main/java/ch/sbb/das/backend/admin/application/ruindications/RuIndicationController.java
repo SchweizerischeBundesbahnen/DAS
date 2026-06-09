@@ -1,7 +1,7 @@
 package ch.sbb.das.backend.admin.application.ruindications;
 
+import ch.sbb.das.backend.admin.application.common.DeleteByIdsRequest;
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndication;
-import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationByIdsDeleteRequest;
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationMatch;
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationMatchesRequest;
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationMatchesResponse;
@@ -23,7 +23,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -60,7 +59,7 @@ public class RuIndicationController {
     public ResponseEntity<? extends Response> getAllRuIndications(
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
         List<RuIndication> ruIndications = ruIndicationService.getAll();
-        return ResponseEntityFactory.createOkResponse(new RuIndicationResponse(ruIndications), null, requestId);
+        return ResponseEntityFactory.createOkResponse(new RuIndicationResponse(ruIndications), requestId);
     }
 
     @GetMapping(API_RU_INDICATIONS_ID)
@@ -76,7 +75,7 @@ public class RuIndicationController {
         if (ruIndication == null) {
             return ResponseEntityFactory.createNotFoundResponse(requestId, null);
         }
-        return ResponseEntityFactory.createOkResponse(new RuIndicationResponse(ruIndication), null, requestId);
+        return ResponseEntityFactory.createOkResponse(new RuIndicationResponse(ruIndication), requestId);
     }
 
     @PostMapping(API_RU_INDICATIONS)
@@ -88,8 +87,7 @@ public class RuIndicationController {
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
         @RequestBody @Valid RuIndicationRequest createRequest) {
         RuIndication createdRuIndication = ruIndicationService.create(createRequest);
-        HttpHeaders headers = ResponseEntityFactory.createOkHeaders(requestId);
-        return new ResponseEntity<>(new RuIndicationResponse(createdRuIndication), headers, HttpStatus.CREATED);
+        return ResponseEntityFactory.createCreatedResponse(new RuIndicationResponse(createdRuIndication), requestId);
     }
 
     @PostMapping(API_RU_INDICATIONS_MATCHES)
@@ -105,7 +103,7 @@ public class RuIndicationController {
         @RequestHeader(value = HttpHeaders.ACCEPT_LANGUAGE, required = false) String acceptLanguage,
         @RequestBody @Valid RuIndicationMatchesRequest filterRequest) {
         List<RuIndicationMatch> ruIndicationMatches = ruIndicationMatchService.findMatches(filterRequest, acceptLanguage);
-        return ResponseEntityFactory.createOkResponse(new RuIndicationMatchesResponse(ruIndicationMatches), null, requestId);
+        return ResponseEntityFactory.createOkResponse(new RuIndicationMatchesResponse(ruIndicationMatches), requestId);
     }
 
     @PutMapping(API_RU_INDICATIONS_ID)
@@ -116,12 +114,13 @@ public class RuIndicationController {
     @ApiErrorResponses
     public ResponseEntity<? extends Response> updateRuIndication(
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
-        @PathVariable Integer id, @RequestBody @Valid RuIndicationRequest updateRequest) {
+        @RequestBody @Valid RuIndicationRequest updateRequest,
+        @PathVariable Integer id) {
         RuIndication updatedRuIndication = ruIndicationService.update(id, updateRequest);
         if (updatedRuIndication == null) {
             return ResponseEntityFactory.createNotFoundResponse(requestId, null);
         }
-        return ResponseEntityFactory.createOkResponse(new RuIndicationResponse(updatedRuIndication), null, requestId);
+        return ResponseEntityFactory.createOkResponse(new RuIndicationResponse(updatedRuIndication), requestId);
     }
 
     @DeleteMapping(API_RU_INDICATIONS)
@@ -130,7 +129,7 @@ public class RuIndicationController {
     @ApiErrorResponses
     public ResponseEntity<Void> deleteRuIndicationByIds(
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
-        @RequestBody @Valid RuIndicationByIdsDeleteRequest deleteRequest) {
+        @RequestBody @Valid DeleteByIdsRequest deleteRequest) {
         ruIndicationService.delete(deleteRequest.ids());
         return ResponseEntity.noContent().build();
     }

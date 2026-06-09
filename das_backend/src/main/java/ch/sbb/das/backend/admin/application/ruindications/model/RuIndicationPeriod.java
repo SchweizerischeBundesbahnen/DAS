@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.util.CollectionUtils;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.Set;
@@ -38,7 +39,7 @@ public record RuIndicationPeriod(
             return true;
         }
         boolean singleDay = validFrom.isEqual(validTo);
-        boolean hasWeekdays = weekdays != null && !weekdays.isEmpty();
+        boolean hasWeekdays = !CollectionUtils.isEmpty(weekdays);
         return !singleDay || !hasWeekdays;
     }
 
@@ -59,4 +60,3 @@ public record RuIndicationPeriod(
         return date.isEqual(validFrom) && date.isEqual(validTo);
     }
 }
-

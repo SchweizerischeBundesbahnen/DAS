@@ -4,8 +4,11 @@ import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationTemp
 import ch.sbb.das.backend.admin.domain.ruindications.RuIndicationTemplateRepository;
 import ch.sbb.das.backend.common.CompanyCode;
 import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Component;
 
 @Component
@@ -46,8 +49,7 @@ class PersistenceRuIndicationTemplateRepository implements RuIndicationTemplateR
         }
         entity.setCompanies(ruIndicationTemplate.companies().stream()
             .sorted(Comparator.comparing(CompanyCode::value))
-            .distinct()
-            .toList());
+            .collect(Collectors.toCollection(LinkedHashSet::new)));
         RuIndicationTemplateEntity saved = ruIndicationTemplateRepository.save(entity);
         return saved.toRuIndicationTemplate();
     }

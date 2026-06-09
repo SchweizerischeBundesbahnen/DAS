@@ -12,8 +12,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -50,10 +48,10 @@ public class RuIndicationTemplateEntity extends EntityBase {
     private String textIt;
 
     @Convert(converter = CompanyCodeListConverter.class)
-    private List<CompanyCode> companies;
+    private Set<CompanyCode> companies;
 
     public RuIndicationTemplate toRuIndicationTemplate() {
         return new RuIndicationTemplate(id, category, new RuIndicationEntry(titleDe, textDe), new RuIndicationEntry(titleFr, textFr), new RuIndicationEntry(titleIt, textIt),
-            companies == null ? Set.of() : new HashSet<>(companies), getLastModifiedAt(), getLastModifiedBy());
+            companies, getLastModifiedAt(), getLastModifiedBy());
     }
 }

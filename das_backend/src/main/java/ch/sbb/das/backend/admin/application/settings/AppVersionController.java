@@ -20,8 +20,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -57,7 +55,7 @@ public class AppVersionController {
     public ResponseEntity<? extends Response> getAllAppVersions(
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
         List<AppVersion> versions = appVersionService.getAll();
-        return ResponseEntityFactory.createOkResponse(new AppVersionsResponse(versions), null, requestId);
+        return ResponseEntityFactory.createOkResponse(new AppVersionsResponse(versions), requestId);
     }
 
     @GetMapping(API_SETTINGS_APP_VERSION_ID)
@@ -72,7 +70,7 @@ public class AppVersionController {
         if (version == null) {
             return ResponseEntityFactory.createNotFoundResponse(requestId, null);
         }
-        return ResponseEntityFactory.createOkResponse(new AppVersionResponse(version), null, requestId);
+        return ResponseEntityFactory.createOkResponse(new AppVersionResponse(version), requestId);
     }
 
     @PostMapping(API_SETTINGS_APP_VERSION)
@@ -83,8 +81,7 @@ public class AppVersionController {
     public ResponseEntity<AppVersionResponse> createAppVersion(@RequestBody @Valid AppVersionRequest createRequest,
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
         AppVersion createdVersion = appVersionService.create(createRequest);
-        HttpHeaders headers = ResponseEntityFactory.createOkHeaders(requestId);
-        return new ResponseEntity<>(new AppVersionResponse(List.of(createdVersion)), headers, HttpStatus.CREATED);
+        return ResponseEntityFactory.createCreatedResponse(new AppVersionResponse(List.of(createdVersion)), requestId);
     }
 
     @PutMapping(API_SETTINGS_APP_VERSION_ID)
@@ -99,7 +96,7 @@ public class AppVersionController {
         if (updatedVersion == null) {
             return ResponseEntityFactory.createNotFoundResponse(requestId, null);
         }
-        return ResponseEntityFactory.createOkResponse(new AppVersionResponse(List.of(updatedVersion)), null, requestId);
+        return ResponseEntityFactory.createOkResponse(new AppVersionResponse(List.of(updatedVersion)), requestId);
     }
 
     @DeleteMapping(API_SETTINGS_APP_VERSION_ID)

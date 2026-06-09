@@ -12,11 +12,8 @@ public record RuIndicationEntry(
     String text
 ) {
 
-    public static RuIndicationEntry normalizeIfEmpty(RuIndicationEntry entry) {
-        if (entry == null) {
-            return null;
-        }
-        if (StringUtils.isBlank(entry.title()) && StringUtils.isBlank(entry.text())) {
+    public static RuIndicationEntry normalize(RuIndicationEntry entry) {
+        if (entry == null || (StringUtils.isBlank(entry.title()) && StringUtils.isBlank(entry.text()))) {
             return null;
         }
         return entry;

@@ -66,7 +66,6 @@ public class SettingsController {
         CurrentAppVersion currentAppVersion = appVersionService.getCurrent(xAppVersion);
 
         return ResponseEntityFactory.createOkResponse(new SettingsResponse(List.of(new Settings(allFeatures, logging, preload, currentAppVersion))),
-            null,
             requestId);
     }
 }

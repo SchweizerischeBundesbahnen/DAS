@@ -58,7 +58,7 @@ public class RuIndicationEntity extends EntityBase {
     private String textIt;
 
     @Convert(converter = CompanyCodeListConverter.class)
-    private List<CompanyCode> companies;
+    private Set<CompanyCode> companies;
 
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "jsonb")
@@ -90,7 +90,7 @@ public class RuIndicationEntity extends EntityBase {
             }
         }
         if (ruIndication.scope() != null) {
-            entity.setCompanies(ruIndication.scope().companies() == null ? List.of() : ruIndication.scope().companies().stream().distinct().toList());
+            entity.setCompanies(ruIndication.scope().companies());
             entity.setOperationalTrainNumberFilters(ruIndication.scope().operationalTrainNumberFilters() == null ? List.of() : ruIndication.scope().operationalTrainNumberFilters());
             entity.setTafTapLocationReferences(ruIndication.scope().tafTapLocationReferences() == null ? List.of() : ruIndication.scope().tafTapLocationReferences().stream().distinct().toList());
         }
@@ -114,7 +114,7 @@ public class RuIndicationEntity extends EntityBase {
         );
 
         RuIndicationScope scope = new RuIndicationScope(
-            companies == null ? Set.of() : new HashSet<>(companies),
+            companies,
             operationalTrainNumberFilters == null ? List.of() : operationalTrainNumberFilters,
             tafTapLocationReferences == null ? Set.of() : new HashSet<>(tafTapLocationReferences)
         );

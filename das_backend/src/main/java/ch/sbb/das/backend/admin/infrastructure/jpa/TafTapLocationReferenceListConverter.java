@@ -5,6 +5,7 @@ import static java.util.Collections.emptyList;
 import ch.sbb.das.backend.formation.domain.model.TafTapLocationReference;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
+import org.springframework.util.CollectionUtils;
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class TafTapLocationReferenceListConverter implements AttributeConverter<
 
     @Override
     public String convertToDatabaseColumn(List<TafTapLocationReference> references) {
-        if (references == null || references.isEmpty()) {
+        if (CollectionUtils.isEmpty(references)) {
             return null;
         }
         return references.stream().map(TafTapLocationReference::toLocationCode).distinct().sorted().reduce((a, b) -> a + DELIMITER + b).orElse(null);
@@ -28,4 +29,3 @@ public class TafTapLocationReferenceListConverter implements AttributeConverter<
             : Arrays.stream(value.split(DELIMITER)).map(TafTapLocationReference::of).toList();
     }
 }
-
