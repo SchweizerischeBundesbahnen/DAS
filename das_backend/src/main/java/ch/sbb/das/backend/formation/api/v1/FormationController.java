@@ -4,7 +4,7 @@ import ch.sbb.das.backend.common.ApiDocumentation;
 import ch.sbb.das.backend.common.ApiErrorResponses;
 import ch.sbb.das.backend.common.ApiParametersDefault;
 import ch.sbb.das.backend.common.ApiParametersDefault.ParamRequestId;
-import ch.sbb.das.backend.common.DateUtil;
+import ch.sbb.das.backend.common.DateTimeUtil;
 import ch.sbb.das.backend.common.Problem;
 import ch.sbb.das.backend.common.Response;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
@@ -83,7 +83,7 @@ public class FormationController {
             // TODO hardoded: replace by generic RequestContext
             final String instance = API_FORMATIONS + "/" + operationalTrainNumber + "/" + operationalDay + "/" + company;
 
-            final LocalDate today = DateUtil.today();
+            final LocalDate today = DateTimeUtil.today();
             if (operationalDay.isBefore(today) || operationalDay.isAfter(today)) {
                 return ResponseEntityFactory.createNotFoundResponse(
                     ResponseEntityFactory.TITLE_NOT_FOUND, "operationalDay='" + operationalDay + "' -> data may not be available at all if not TODAY.",

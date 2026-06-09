@@ -1,11 +1,12 @@
 package ch.sbb.das.backend.preload;
 
-import static ch.sbb.das.backend.common.DateUtil.SWISS_ZONE;
+import static ch.sbb.das.backend.common.DateTimeUtil.SWISS_ZONE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.waitAtMost;
 
 import ch.sbb.das.backend.IntegrationTest;
 import ch.sbb.das.backend.common.CompanyCode;
+import ch.sbb.das.backend.common.DateTimeUtil;
 import ch.sbb.das.backend.preload.application.TimetableService;
 import ch.sbb.das.backend.preload.application.TrainIdentificationService;
 import ch.sbb.das.backend.preload.application.model.trainidentification.OperatingPeriod;
@@ -20,6 +21,7 @@ import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.Month;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
@@ -78,8 +80,8 @@ class TrainIdentificationIntegrationTest {
                         .usingRecursiveComparison()
                         .isEqualTo(OperatingPeriod.builder()
                             .year(testYear)
-                            .startDate(LocalDate.of(testYear, 1, 1))
-                            .endDate(LocalDate.of(testYear, 1, 1 + TEST_PERIOD_NUMBER_OF_DAYS))
+                            .startDate(LocalDate.of(testYear, Month.JANUARY, 1))
+                            .endDate(LocalDate.of(testYear, Month.JANUARY, 1 + TEST_PERIOD_NUMBER_OF_DAYS))
                             .build())
                 ));
     }
@@ -124,7 +126,7 @@ class TrainIdentificationIntegrationTest {
         // Then
         waitAtMost(10, TimeUnit.SECONDS)
             .untilAsserted(() -> {
-                List<TrainIdentification> trainIds = trainIdentificationService.getNewTrainIdentificationsBetween(OffsetDateTime.now(),
+                List<TrainIdentification> trainIds = trainIdentificationService.getNewTrainIdentificationsBetween(DateTimeUtil.now(),
                     OffsetDateTime.of(startDate.plusDays(1), LocalTime.now(), ZoneOffset.UTC));
                 assertThat(trainIds).hasSize(1);
                 TrainIdentification trainId = trainIds.getFirst();
@@ -139,7 +141,7 @@ class TrainIdentificationIntegrationTest {
         // Then
         waitAtMost(10, TimeUnit.SECONDS)
             .untilAsserted(() -> {
-                List<TrainIdentification> trainIds = trainIdentificationService.getNewTrainIdentificationsBetween(OffsetDateTime.now(),
+                List<TrainIdentification> trainIds = trainIdentificationService.getNewTrainIdentificationsBetween(DateTimeUtil.now(),
                     OffsetDateTime.of(startDate.plusDays(1), LocalTime.now(), ZoneOffset.UTC));
                 assertThat(trainIds).isEmpty();
             });

@@ -1,7 +1,6 @@
 package ch.sbb.das.backend.preload.application;
 
-import static ch.sbb.das.backend.common.DateUtil.SWISS_ZONE;
-
+import ch.sbb.das.backend.common.DateTimeUtil;
 import ch.sbb.das.backend.preload.application.model.trainidentification.TrainIdentification;
 import ch.sbb.das.backend.preload.domain.SegmentProfileIdentification;
 import ch.sbb.das.backend.preload.domain.TrainCharacteristicsIdentification;
@@ -21,7 +20,6 @@ import ch.sbb.das.backend.preload.sfera.model.v0400.SPRequest;
 import ch.sbb.das.backend.preload.sfera.model.v0400.Sender;
 import ch.sbb.das.backend.preload.sfera.model.v0400.SessionTermination;
 import ch.sbb.das.backend.preload.sfera.model.v0400.TCRequest;
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -110,7 +108,7 @@ public class SferaMessageCreator {
         header.setMessageID(UUID.randomUUID().toString());
         header.setSender(sender);
         header.setRecipient(recipient);
-        header.setTimestamp(XmlDateHelper.toGregorianCalender(OffsetDateTime.now(SWISS_ZONE)));
+        header.setTimestamp(XmlDateHelper.toGregorianCalender(DateTimeUtil.now()));
         return header;
     }
 

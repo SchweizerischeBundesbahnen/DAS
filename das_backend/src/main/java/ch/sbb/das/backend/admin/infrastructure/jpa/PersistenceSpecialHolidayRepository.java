@@ -3,7 +3,7 @@ package ch.sbb.das.backend.admin.infrastructure.jpa;
 import ch.sbb.das.backend.admin.application.ruindications.model.SpecialHoliday;
 import ch.sbb.das.backend.admin.domain.ruindications.SpecialHolidayRepository;
 import ch.sbb.das.backend.common.CompanyCode;
-import ch.sbb.das.backend.common.DateUtil;
+import ch.sbb.das.backend.common.DateTimeUtil;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
@@ -21,7 +21,7 @@ class PersistenceSpecialHolidayRepository implements SpecialHolidayRepository {
 
     @Override
     public List<SpecialHoliday> getAllUpcoming() {
-        return specialHolidayRepository.findAllByDateGreaterThanEqualOrderByDate(DateUtil.today()).stream()
+        return specialHolidayRepository.findAllByDateGreaterThanEqualOrderByDate(DateTimeUtil.today()).stream()
             .map(SpecialHolidayEntity::toSpecialHoliday)
             .toList();
     }

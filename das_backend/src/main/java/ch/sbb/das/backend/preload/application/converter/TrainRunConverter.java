@@ -1,7 +1,8 @@
 package ch.sbb.das.backend.preload.application.converter;
 
-import static ch.sbb.das.backend.common.DateUtil.SWISS_ZONE;
+import static ch.sbb.das.backend.common.DateTimeUtil.SWISS_ZONE;
 
+import ch.sbb.das.backend.common.DateTimeUtil;
 import ch.sbb.das.backend.preload.application.BitSetUtil;
 import ch.sbb.das.backend.preload.application.model.trainidentification.TrainRun;
 import ch.sbb.das.backend.preload.application.model.trainidentification.TrainRunDate;
@@ -25,6 +26,7 @@ import org.springframework.stereotype.Component;
 public class TrainRunConverter {
 
     static final int UIC_COUNTRY_CODE_CH = 85;
+    public static final int LOOKBACK_DAYS = 3;
 
     List<TrainRun> convertTrainRuns(List<Zuglauf> zuglaeufe, LocalDate periodStartDate) {
         return zuglaeufe.stream()
@@ -60,11 +62,11 @@ public class TrainRunConverter {
 
         operatingDays.forEach(
             operatingDay -> {
-                OffsetDateTime startDateDateTime = convertToStartDateTime(operatingDay, firstDepartureTime.get());
-                if (startDateDateTime.isAfter(OffsetDateTime.now(SWISS_ZONE).minusDays(3))) {
+                OffsetDateTime startDateTime = convertToStartDateTime(operatingDay, firstDepartureTime.get());
+                if (startDateTime.isAfter(DateTimeUtil.now().minusDays(LOOKBACK_DAYS))) {
                     trainRunDates.add(TrainRunDate.builder()
                         .operatingDay(operatingDay)
-                        .startDateTime(startDateDateTime)
+                        .startDateTime(startDateTime)
                         .vehicleModes(zuglauf.getZugkategorien())
                         .build());
                 }
@@ -90,7 +92,7 @@ public class TrainRunConverter {
     }
 
     /**
-     * See <a href="https://confluence.sbb.ch/x/DcxSww">Umrechnen von Planzeiten</a>
+     * @see <a href="https://confluence.sbb.ch/x/DcxSww">Umrechnen von Planzeiten</a>
      */
     private OffsetDateTime convertToStartDateTime(LocalDate operationalDate, Integer secondsToAdd) {
         ZonedDateTime dateTime = ZonedDateTime.of(operationalDate.getYear(), operationalDate.getMonth().getValue(), operationalDate.getDayOfMonth(),

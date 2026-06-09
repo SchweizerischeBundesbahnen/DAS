@@ -1,6 +1,6 @@
 package ch.sbb.das.backend.admin.application.ruindications.model;
 
-import ch.sbb.das.backend.common.DateUtil;
+import ch.sbb.das.backend.common.DateTimeUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
@@ -35,7 +35,7 @@ public record RuIndication(
         if (CollectionUtils.isEmpty(periods)) {
             return PeriodStatus.ACTIVE;
         }
-        LocalDate today = DateUtil.today();
+        LocalDate today = DateTimeUtil.today();
         if (periods.stream().anyMatch(period -> period.status(today) == PeriodStatus.ACTIVE)) {
             return PeriodStatus.ACTIVE;
         }
