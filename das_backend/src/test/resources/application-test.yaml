@@ -1,6 +1,8 @@
 spring:
   datasource:
     url: jdbc
+    hikari:
+      connection-timeout: 2000
   jpa:
     hibernate:
       ddl-auto: validate
