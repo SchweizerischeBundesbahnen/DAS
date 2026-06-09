@@ -18,7 +18,7 @@ public class URLValidator implements ConstraintValidator<ValidURL, String> {
         URI uri;
         try {
             uri = new URI(request);
-        } catch (Exception e) {
+        } catch (Exception _) {
             return false;
         }
 

@@ -27,11 +27,10 @@ public class ExternalLinkServiceImpl implements ExternalLinkService {
                             && companyAuthorizationService.authorizedCompanies().containsAll(externalLink.companies())
                     ).toList();
         }
-        companyAuthorizationService.requireCanAccessCompanies(companies);
         return externalLinks.stream()
                 .filter(externalLink ->
                         externalLink.companies() != null
-                        && companies.stream().anyMatch((company) -> externalLink.companies().contains(company))
+                        && companies.stream().anyMatch(company -> externalLink.companies().contains(company))
                 ).toList();
     }
 

@@ -12,15 +12,19 @@ import ch.sbb.das.backend.common.ApiParametersDefault.ParamRequestId;
 import ch.sbb.das.backend.common.CompanyCode;
 import ch.sbb.das.backend.common.Response;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
+import ch.sbb.das.backend.common.security.UserRole;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,15 +47,24 @@ public class ExternalLinkController {
     private final ExternalLinkService externalLinkService;
 
     @GetMapping(API_EXTERNAL_LINKS)
-    @Operation(summary = "Get all external links.", description = "Returns all external links.")
+    @Operation(
+            summary = "Get external links optionally filtered by companies.",
+            description = "Returns all external links visible for the authorized companies or filterd by companies."
+    )
     @ApiResponse(responseCode = "200", description = "External links found.",
             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ExternalLinkResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getAllExternalLinks(
+    public ResponseEntity<? extends Response> getAllExternalLinksByCompanies(
             @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false)
             String requestId,
+            @Parameter(description = CompanyCode.DESCRIPTION, example = "1033")
             @RequestParam(required = false)
             Set<CompanyCode> companies) {
+        if (CollectionUtils.isEmpty(companies)
+                ? UserRole.hasRole(UserRole.OBSERVER, UserRole.DRIVER)
+                : UserRole.hasRole(UserRole.ADMIN, UserRole.RU_ADMIN)) {
+            return ResponseEntityFactory.createProblemResponse(HttpStatus.FORBIDDEN, "Forbidden", "Not allowed!", null, requestId, null);
+        }
         return ResponseEntityFactory.createOkResponse(new ExternalLinkResponse(externalLinkService.getAllByCompanies(companies)), requestId);
     }
 

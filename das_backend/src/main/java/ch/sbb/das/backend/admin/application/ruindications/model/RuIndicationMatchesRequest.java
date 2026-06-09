@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.Set;
 
 public record RuIndicationMatchesRequest(
-    @Schema(description = CompanyCode.description, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = CompanyCode.DESCRIPTION, requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull
     CompanyCode company,
     @Schema(description = "Relates to `teltsi_OperationalTrainNumber` (according to SFERA).", requiredMode = Schema.RequiredMode.REQUIRED)

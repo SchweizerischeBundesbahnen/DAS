@@ -17,6 +17,7 @@ import ch.sbb.das.backend.common.security.UserRole;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -42,6 +43,8 @@ public class WebSecurityConfig {
                 .requestMatchers("/actuator/health/**").permitAll()
                 .requestMatchers(API_SETTINGS, API_FORMATIONS, API_CUSTOMER_ORIENTED_DEPARTURE + "/**", API_RU_INDICATIONS_MATCHES)
                     .hasAnyRole(UserRole.OBSERVER, UserRole.DRIVER)
+                .requestMatchers(HttpMethod.GET, API_EXTERNAL_LINKS)
+                    .hasAnyRole(UserRole.OBSERVER, UserRole.DRIVER, UserRole.ADMIN, UserRole.RU_ADMIN)
                 .requestMatchers(API_SETTINGS_APP_VERSION + "/**", API_LOCATIONS)
                     .hasRole(UserRole.ADMIN)
                 .requestMatchers(API_RU_INDICATION_TEMPLATES + "/**", API_SPECIAL_HOLIDAYS + "/**", API_RU_INDICATIONS + "/**", API_EXTERNAL_LINKS + "/**", API_COMPANIES)

@@ -24,7 +24,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @IntegrationTest
 @Sql("classpath:emptyExternalLinks.sql")
 @SqlMergeMode(MERGE)
-public class ExternalLinkControllerTest {
+class ExternalLinkControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
@@ -46,9 +46,9 @@ public class ExternalLinkControllerTest {
     }
 
     @Test
-    @WithMockRole(roles = UserRole.RU_ADMIN)
+    @WithMockRole(roles = UserRole.OBSERVER)
     @Sql("classpath:createExternalLinks.sql")
-    void getAllExternalLinks_by_companies_ok() throws Exception {
+    void getAllExternalLinksByCompanies_ok() throws Exception {
         mockMvc.perform(get(API_EXTERNAL_LINKS).param("companies", "1111"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data", hasSize(2)));
@@ -56,27 +56,31 @@ public class ExternalLinkControllerTest {
         mockMvc.perform(get(API_EXTERNAL_LINKS).param("companies", "1111", "2222", "3333"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data", hasSize(3)));
-    }
 
-    @Test
-    @WithMockRole(roles = UserRole.RU_ADMIN)
-    @Sql("classpath:createExternalLinks.sql")
-    void getAllExternalLinks_by_companies_forbidden_existingCompanyNotAuthorized() throws Exception {
         mockMvc.perform(get(API_EXTERNAL_LINKS).param("companies", "9999"))
-                .andExpect(status().isForbidden())
-                .andExpect(jsonPath("$.detail").value("Not allowed!"));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data", hasSize(1)));
     }
 
     @Test
     @WithMockRole(roles = UserRole.OBSERVER)
     void getAllExternalLinks_forbidden_role() throws Exception {
         mockMvc.perform(get(API_EXTERNAL_LINKS))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$.detail").value("Not allowed!"));
     }
 
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
-    void getAllExternalLinks_empty() throws Exception {
+    void getAllExternalLinksByCompanies_forbidden_role() throws Exception {
+        mockMvc.perform(get(API_EXTERNAL_LINKS).param("companies", "1111"))
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$.detail").value("Not allowed!"));
+    }
+
+    @Test
+    @WithMockRole(roles = UserRole.RU_ADMIN)
+    void getAllExternalLinksByCompanies_empty() throws Exception {
         mockMvc.perform(get(API_EXTERNAL_LINKS))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data", hasSize(0)));
