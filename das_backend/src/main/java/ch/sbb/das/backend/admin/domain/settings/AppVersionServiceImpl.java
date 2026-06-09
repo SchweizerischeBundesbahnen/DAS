@@ -4,7 +4,6 @@ import ch.sbb.das.backend.admin.application.settings.model.request.AppVersionReq
 import ch.sbb.das.backend.admin.application.settings.model.response.AppVersion;
 import ch.sbb.das.backend.admin.application.settings.model.response.CurrentAppVersion;
 import ch.sbb.das.backend.admin.domain.settings.model.SemanticVersion;
-import ch.sbb.das.backend.admin.infrastructure.jpa.AppVersionEntity;
 import ch.sbb.das.backend.common.ConflictException;
 import ch.sbb.das.backend.common.DateTimeUtil;
 import java.time.LocalDate;
@@ -33,19 +32,12 @@ public class AppVersionServiceImpl implements AppVersionService {
         }
         SemanticVersion currentVersion = new SemanticVersion(appVersion);
 
-        List<AppVersion> relevantVersions = appVersionRepository.findAll().stream()
-            .filter(entity -> isBlockedVersion(entity, currentVersion) || isMinimalVersionGreater(entity, currentVersion))
+        List<AppVersion> relevantVersions = appVersionRepository.findAll().stream().filter(entity -> isBlockedVersion(entity, currentVersion) || isMinimalVersionGreater(entity, currentVersion))
             .toList();
 
-        boolean expired = relevantVersions.stream()
-            .anyMatch(this::isExpired);
+        boolean expired = relevantVersions.stream().anyMatch(this::isExpired);
 
-        LocalDate expiryDate = relevantVersions.stream()
-            .map(AppVersion::expiryDate)
-            .filter(Objects::nonNull)
-            .filter(date -> date.isAfter(DateTimeUtil.today()))
-            .min(Comparator.naturalOrder())
-            .orElse(null);
+        LocalDate expiryDate = relevantVersions.stream().map(AppVersion::expiryDate).filter(Objects::nonNull).filter(date -> date.isAfter(DateTimeUtil.today())).min(Comparator.naturalOrder()).orElse(null);
 
         return new CurrentAppVersion(expired, expiryDate);
     }
@@ -65,8 +57,8 @@ public class AppVersionServiceImpl implements AppVersionService {
     @Override
     public AppVersion create(AppVersionRequest createRequest) {
         checkUniqueVersion(createRequest.version(), null);
-        AppVersionEntity entity = AppVersionEntity.from(createRequest);
-        return appVersionRepository.save(entity.toAppVersion());
+        AppVersion appVersion = new AppVersion(null, createRequest.version(), createRequest.minimalVersion(), createRequest.expiryDate());
+        return appVersionRepository.save(appVersion);
     }
 
     @Override
@@ -77,14 +69,8 @@ public class AppVersionServiceImpl implements AppVersionService {
         }
         checkUniqueVersion(updateRequest.version(), id);
         AppVersion old = optional.get();
-        AppVersion updated = new AppVersion(
-            old.id(),
-            updateRequest.version(),
-            updateRequest.minimalVersion(),
-            updateRequest.expiryDate()
-        );
-        appVersionRepository.save(updated);
-        return updated;
+        AppVersion updated = new AppVersion(old.id(), updateRequest.version(), updateRequest.minimalVersion(), updateRequest.expiryDate());
+        return appVersionRepository.save(updated);
     }
 
     @Override

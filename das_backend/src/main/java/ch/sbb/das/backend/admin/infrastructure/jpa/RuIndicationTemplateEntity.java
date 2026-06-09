@@ -2,6 +2,9 @@ package ch.sbb.das.backend.admin.infrastructure.jpa;
 
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationEntry;
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationTemplate;
+import ch.sbb.das.backend.common.CompanyCode;
+import ch.sbb.das.backend.common.CompanyCodeListConverter;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
@@ -9,6 +12,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -43,8 +49,11 @@ public class RuIndicationTemplateEntity extends EntityBase {
 
     private String textIt;
 
+    @Convert(converter = CompanyCodeListConverter.class)
+    private List<CompanyCode> companies;
+
     public RuIndicationTemplate toRuIndicationTemplate() {
         return new RuIndicationTemplate(id, category, new RuIndicationEntry(titleDe, textDe), new RuIndicationEntry(titleFr, textFr), new RuIndicationEntry(titleIt, textIt),
-            getLastModifiedBy());
+            companies == null ? Set.of() : new HashSet<>(companies), getLastModifiedAt(), getLastModifiedBy());
     }
 }

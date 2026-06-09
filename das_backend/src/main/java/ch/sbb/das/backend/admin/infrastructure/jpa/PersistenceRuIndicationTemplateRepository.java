@@ -2,6 +2,8 @@ package ch.sbb.das.backend.admin.infrastructure.jpa;
 
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationTemplate;
 import ch.sbb.das.backend.admin.domain.ruindications.RuIndicationTemplateRepository;
+import ch.sbb.das.backend.common.CompanyCode;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Component;
@@ -42,6 +44,10 @@ class PersistenceRuIndicationTemplateRepository implements RuIndicationTemplateR
             entity.setTitleIt(ruIndicationTemplate.it().title());
             entity.setTextIt(ruIndicationTemplate.it().text());
         }
+        entity.setCompanies(ruIndicationTemplate.companies().stream()
+            .sorted(Comparator.comparing(CompanyCode::value))
+            .distinct()
+            .toList());
         RuIndicationTemplateEntity saved = ruIndicationTemplateRepository.save(entity);
         return saved.toRuIndicationTemplate();
     }
@@ -51,4 +57,8 @@ class PersistenceRuIndicationTemplateRepository implements RuIndicationTemplateR
         ruIndicationTemplateRepository.deleteAllById(ids);
     }
 
+    @Override
+    public List<RuIndicationTemplate> findAllById(Iterable<Integer> ids) {
+        return ruIndicationTemplateRepository.findAllById(ids).stream().map(RuIndicationTemplateEntity::toRuIndicationTemplate).toList();
+    }
 }

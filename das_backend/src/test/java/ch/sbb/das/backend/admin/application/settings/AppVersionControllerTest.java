@@ -53,7 +53,9 @@ class AppVersionControllerTest {
             .andExpect(jsonPath("$.data[0].id").value(1))
             .andExpect(jsonPath("$.data[0].version").value("2.4.1"))
             .andExpect(jsonPath("$.data[0].minimalVersion").value(false))
-            .andExpect(jsonPath("$.data[0].expiryDate").value("2026-12-31"));
+            .andExpect(jsonPath("$.data[0].expiryDate").value("2026-12-31"))
+            .andExpect(jsonPath("$.data[0].lastModifiedAt").isNotEmpty())
+            .andExpect(jsonPath("$.data[0].lastModifiedBy").value("unit_test"));
     }
 
     @Test
@@ -73,7 +75,10 @@ class AppVersionControllerTest {
             .andExpect(jsonPath("$.data[0].id").isNumber())
             .andExpect(jsonPath("$.data[0].version").value("1.6.3"))
             .andExpect(jsonPath("$.data[0].minimalVersion").value(true))
-            .andExpect(jsonPath("$.data[0].expiryDate").isEmpty()).andReturn().getResponse().getContentAsString();
+            .andExpect(jsonPath("$.data[0].expiryDate").isEmpty())
+            .andExpect(jsonPath("$.data[0].lastModifiedAt").isNotEmpty())
+            .andExpect(jsonPath("$.data[0].lastModifiedBy").value("test-user"))
+            .andReturn().getResponse().getContentAsString();
 
         int id = JsonPath.read(jsonResult, "$.data[0].id");
 
@@ -83,7 +88,9 @@ class AppVersionControllerTest {
             .andExpect(jsonPath("$.data[0].id").isNumber())
             .andExpect(jsonPath("$.data[0].version").value("1.6.3"))
             .andExpect(jsonPath("$.data[0].minimalVersion").value(true))
-            .andExpect(jsonPath("$.data[0].expiryDate").isEmpty());
+            .andExpect(jsonPath("$.data[0].expiryDate").isEmpty())
+            .andExpect(jsonPath("$.data[0].lastModifiedAt").isNotEmpty())
+            .andExpect(jsonPath("$.data[0].lastModifiedBy").value("test-user"));
     }
 
     @Test
@@ -136,7 +143,9 @@ class AppVersionControllerTest {
             .andExpect(jsonPath("$.data[0].id").value(1))
             .andExpect(jsonPath("$.data[0].version").value("2.5.0"))
             .andExpect(jsonPath("$.data[0].minimalVersion").value(true))
-            .andExpect(jsonPath("$.data[0].expiryDate").value("2026-01-01"));
+            .andExpect(jsonPath("$.data[0].expiryDate").value("2026-01-01"))
+            .andExpect(jsonPath("$.data[0].lastModifiedAt").isNotEmpty())
+            .andExpect(jsonPath("$.data[0].lastModifiedBy").value("test-user"));
 
         mockMvc.perform(get(API_SETTINGS_APP_VERSION + "/1"))
             .andExpect(status().isOk())
@@ -144,7 +153,9 @@ class AppVersionControllerTest {
             .andExpect(jsonPath("$.data[0].id").value(1))
             .andExpect(jsonPath("$.data[0].version").value("2.5.0"))
             .andExpect(jsonPath("$.data[0].minimalVersion").value(true))
-            .andExpect(jsonPath("$.data[0].expiryDate").value("2026-01-01"));
+            .andExpect(jsonPath("$.data[0].expiryDate").value("2026-01-01"))
+            .andExpect(jsonPath("$.data[0].lastModifiedAt").isNotEmpty())
+            .andExpect(jsonPath("$.data[0].lastModifiedBy").value("test-user"));
     }
 
     @Test

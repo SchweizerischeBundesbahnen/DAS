@@ -1,8 +1,10 @@
 package ch.sbb.das.backend.admin.application.settings.model.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public record AppVersion(
     @Schema(description = "The unique identifier for the app version entry.", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -12,7 +14,14 @@ public record AppVersion(
     @Schema(description = "App versions below minimalVersion are outdated and must be blocked for DAS-Client usage.", requiredMode = Schema.RequiredMode.REQUIRED)
     Boolean minimalVersion,
     @Schema(description = "App versions after the expiration date must be blocked from further usage.", requiredMode = RequiredMode.NOT_REQUIRED)
-    LocalDate expiryDate
+    LocalDate expiryDate,
+    @Schema(description = "The timestamp of the last update to the app version.", requiredMode = RequiredMode.REQUIRED, accessMode = AccessMode.READ_ONLY)
+    LocalDateTime lastModifiedAt,
+    @Schema(description = "The user who created or last updated the app version.", requiredMode = RequiredMode.REQUIRED, accessMode = AccessMode.READ_ONLY)
+    String lastModifiedBy
 ) {
 
+    public AppVersion(Integer id, String version, Boolean minimalVersion, LocalDate expiryDate) {
+        this(id, version, minimalVersion, expiryDate, null, null);
+    }
 }

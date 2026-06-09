@@ -54,8 +54,9 @@ public class SpecialHolidayEntity extends EntityBase {
             name,
             date,
             scheduleType,
-            companies == null ? Set.of() : new HashSet<>(companies)
+            companies == null ? Set.of() : new HashSet<>(companies),
+            getLastModifiedAt(),
+            getLastModifiedBy()
         );
     }
 }
-
