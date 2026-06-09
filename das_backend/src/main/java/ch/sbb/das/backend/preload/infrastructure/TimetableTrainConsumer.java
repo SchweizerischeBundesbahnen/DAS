@@ -1,11 +1,11 @@
 package ch.sbb.das.backend.preload.infrastructure;
 
+import ch.sbb.das.backend.common.DateTimeUtil;
 import ch.sbb.das.backend.preload.application.TimetableService;
 import ch.sbb.das.backend.preload.infrastructure.model.train.TimetableTrainKey;
 import ch.sbb.das.backend.preload.infrastructure.model.train.TimetableTrainValue;
 import ch.sbb.das.backend.preload.infrastructure.util.KafkaDeserializer;
 import ch.sbb.das.backend.preload.infrastructure.util.ListUtil;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
@@ -62,7 +62,7 @@ public class TimetableTrainConsumer {
         return consumerRecords.stream()
             .map(deserializer::deserializeRecord)
             .filter(rec -> validTrain(rec.value()))
-            .filter(rec -> rec.value().getFahrplanperiode() >= LocalDate.now().getYear())
+            .filter(rec -> rec.value().getFahrplanperiode() >= DateTimeUtil.today().getYear())
             .toList();
     }
 

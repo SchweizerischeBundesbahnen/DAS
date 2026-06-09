@@ -2,6 +2,7 @@ package ch.sbb.das.backend.preload.application;
 
 import ch.sbb.das.backend.common.CompanyCode;
 import ch.sbb.das.backend.common.CompanyShortName;
+import ch.sbb.das.backend.common.DateTimeUtil;
 import ch.sbb.das.backend.preload.application.model.trainidentification.TrainIdentification;
 import ch.sbb.das.backend.preload.infrastructure.TrainIdentificationRepository;
 import ch.sbb.das.backend.preload.infrastructure.model.entities.TrainIdentificationEntity;
@@ -50,6 +51,6 @@ public class TrainIdentificationService {
     }
 
     public int savePreloadedTrains(Set<TrainIdentification> trainIdentifications) {
-        return trainIdentificationRepository.updatePreloadedAtByIds(OffsetDateTime.now(), trainIdentifications.stream().map(TrainIdentification::id).collect(Collectors.toSet()));
+        return trainIdentificationRepository.updatePreloadedAtByIds(DateTimeUtil.now(), trainIdentifications.stream().map(TrainIdentification::id).collect(Collectors.toSet()));
     }
 }

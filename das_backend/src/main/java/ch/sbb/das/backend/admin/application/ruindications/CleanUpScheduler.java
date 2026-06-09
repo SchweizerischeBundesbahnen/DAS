@@ -2,7 +2,7 @@ package ch.sbb.das.backend.admin.application.ruindications;
 
 import ch.sbb.das.backend.admin.domain.ruindications.RuIndicationService;
 import ch.sbb.das.backend.admin.domain.ruindications.SpecialHolidayService;
-import java.time.LocalDate;
+import ch.sbb.das.backend.common.DateTimeUtil;
 import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -25,7 +25,7 @@ public class CleanUpScheduler {
     @Scheduled(cron = "${admin.clean-up.cron}")
     @SchedulerLock(name = "adminCleanUp", lockAtLeastFor = "10m")
     public void cleanUp() {
-        ruIndicationService.deleteAllBefore(LocalDate.now().minusDays(cleanUpOlderThanDays));
-        specialHolidayService.deleteAllBefore(LocalDate.now().minusDays(cleanUpOlderThanDays));
+        ruIndicationService.deleteAllBefore(DateTimeUtil.today().minusDays(cleanUpOlderThanDays));
+        specialHolidayService.deleteAllBefore(DateTimeUtil.today().minusDays(cleanUpOlderThanDays));
     }
 }
