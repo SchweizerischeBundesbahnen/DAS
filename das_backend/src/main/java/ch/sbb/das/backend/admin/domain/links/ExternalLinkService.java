@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Set;
 
 public interface ExternalLinkService {
+    List<ExternalLink> getAll();
+
     List<ExternalLink> getAllByCompanies(Set<CompanyCode> companies);
 
     ExternalLink getById(Integer id);

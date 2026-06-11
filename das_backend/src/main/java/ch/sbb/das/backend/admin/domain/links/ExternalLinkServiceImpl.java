@@ -5,7 +5,6 @@ import ch.sbb.das.backend.admin.application.links.model.ExternalLinkRequest;
 import ch.sbb.das.backend.common.CompanyCode;
 import ch.sbb.das.backend.tenancy.infrastructure.CompanyAuthorizer;
 import lombok.RequiredArgsConstructor;
-import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,16 +17,17 @@ public class ExternalLinkServiceImpl implements ExternalLinkService {
     private final CompanyAuthorizer companyAuthorizationService;
 
     @Override
+    public List<ExternalLink> getAll() {
+        return externalLinkRepository.findAll().stream()
+                .filter(externalLink ->
+                        externalLink.companies() != null
+                        && companyAuthorizationService.authorizedCompanies().containsAll(externalLink.companies())
+                ).toList();
+    }
+
+    @Override
     public List<ExternalLink> getAllByCompanies(Set<CompanyCode> companies) {
-        List<ExternalLink> externalLinks = externalLinkRepository.findAll();
-        if (CollectionUtils.isEmpty(companies)) {
-            return externalLinks.stream()
-                    .filter(externalLink ->
-                            externalLink.companies() != null
-                            && companyAuthorizationService.authorizedCompanies().containsAll(externalLink.companies())
-                    ).toList();
-        }
-        return externalLinks.stream()
+        return externalLinkRepository.findAll().stream()
                 .filter(externalLink ->
                         externalLink.companies() != null
                         && companies.stream().anyMatch(company -> externalLink.companies().contains(company))
