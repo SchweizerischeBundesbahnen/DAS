@@ -8,6 +8,10 @@ import { LanguageProvider } from '../../../shared/language-provider';
 import { DatePipe, formatDate } from '@angular/common';
 import { ExternalLink } from '../../ru-admin-api';
 import { SbbButtonModule } from '@sbb-esta/lyne-angular/button';
+import { SbbSelectModule } from '@sbb-esta/lyne-angular/select';
+import { SbbIcon } from '@sbb-esta/lyne-angular/icon';
+import { SbbFormField } from '@sbb-esta/lyne-angular/form-field';
+import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-external-links-table',
@@ -17,6 +21,10 @@ import { SbbButtonModule } from '@sbb-esta/lyne-angular/button';
     SbbButtonModule,
     SbbCompactPaginator,
     DatePipe,
+    SbbSelectModule,
+    SbbIcon,
+    SbbFormField,
+    ReactiveFormsModule,
   ],
   templateUrl: './external-links-table.html',
   styleUrl: './external-links-table.css',
@@ -25,6 +33,11 @@ export class ExternalLinksTable {
   protected readonly languageProvider = inject(LanguageProvider);
   private readonly externalLinksService = inject(ExternalLinksService);
   private readonly localeId = inject(LOCALE_ID);
+  private readonly formBuilder = inject(NonNullableFormBuilder);
+
+  protected form = this.formBuilder.group({
+    language: [this.languageProvider.currentLanguage.path],
+  });
 
   private readonly externalLinksResource = this.externalLinksService.externalLinksResource;
 
@@ -67,7 +80,7 @@ export class ExternalLinksTable {
   }
 
   protected currentLanguage(externalLink: ExternalLink) {
-    return externalLink[this.languageProvider.currentLanguage.path];
+    return externalLink[this.form.get('language')!.value];
   }
 
   protected edit(externalLink: ExternalLink): void {

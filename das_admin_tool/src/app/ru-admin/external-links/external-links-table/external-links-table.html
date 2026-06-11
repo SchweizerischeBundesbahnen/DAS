@@ -1,3 +1,14 @@
+<form [formGroup]="form" class="search-language-header">
+  <sbb-form-field>
+    <sbb-icon name="globe-small" slot="prefix"></sbb-icon>
+    <label i18n="@@form_field_language_label">Sprache</label>
+    <sbb-select formControlName="language">
+      @for (language of languageProvider.allLanguages; track language.localeId) {
+        <sbb-option [value]="language.path">{{ language.label }}</sbb-option>
+      }
+    </sbb-select>
+  </sbb-form-field>
+</form>
 <sbb-table-wrapper>
   <table [dataSource]="dataSource" sbb-table sbbSort sbbSortActive="title" sbbSortDirection="asc">
     <ng-container sbbColumnDef="select">

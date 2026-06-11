@@ -7,7 +7,7 @@
   </sbb-form-field>
   <sbb-form-field>
     <sbb-icon name="globe-small" slot="prefix"></sbb-icon>
-    <label i18n="@@ru_indication_templates_table_language_label">Sprache</label>
+    <label i18n="@@form_field_language_label">Sprache</label>
     <sbb-select formControlName="language">
       @for (language of languageProvider.allLanguages; track language.localeId) {
         <sbb-option [value]="language.path">{{ language.label }}</sbb-option>
