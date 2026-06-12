@@ -20,11 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.TestContextManager;
 import tools.jackson.databind.json.JsonMapper;
 
-/**
- * @see <a href="https://github.com/SchweizerischeBundesbahnen/DAS/issues/148">Parent User-Story #148 (GitHub)</a>
- * @see <a href="https://github.com/SchweizerischeBundesbahnen/DAS/issues/1538">Concrete Sub-Story #1538 AK 2</a>
- * @see <a href="https://trace.sbb.ch/polarion/#/project/RUDAS/workitem?id=RUDAS-1529">Functional System Requirment KoA RUDAS-1529 (Polarion)</a>
- */
 @ApiClientTestProfile
 @Slf4j
 class CustomerOrientedDepartureApiTest extends RestAssuredCommand {
