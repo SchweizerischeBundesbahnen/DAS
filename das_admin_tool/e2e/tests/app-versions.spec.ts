@@ -1,5 +1,5 @@
 import test, { expect } from '@playwright/test';
-import { deleteEntryDialog, findRow } from '../utils/admin-test-helpers';
+import { deleteEntryViaDialog, findRow } from '../utils/admin-test-helpers';
 
 test.describe('app versions test', () => {
 
@@ -15,7 +15,7 @@ test.describe('app versions test', () => {
     const editButton = row.getByRole('cell').last();
 
     if (await row.isVisible()) {
-      await deleteEntryDialog(page, row);
+      await deleteEntryViaDialog(page, row);
     }
 
     // create
@@ -38,6 +38,6 @@ test.describe('app versions test', () => {
     await page.getByText('Speichern', {exact: true}).click();
     await expect(row.locator('td').filter({hasText: 'Ja'})).toBeVisible();
 
-    await deleteEntryDialog(page, row);
+    await deleteEntryViaDialog(page, row);
   });
 });
