@@ -14,11 +14,17 @@ import java.time.temporal.ChronoUnit;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.TestContextManager;
 import tools.jackson.databind.json.JsonMapper;
 
+/**
+ * @see <a href="https://github.com/SchweizerischeBundesbahnen/DAS/issues/148">Parent User-Story #148 (GitHub)</a>
+ * @see <a href="https://github.com/SchweizerischeBundesbahnen/DAS/issues/1538">Concrete Sub-Story #1538 AK 2</a>
+ * @see <a href="https://trace.sbb.ch/polarion/#/project/RUDAS/workitem?id=RUDAS-1529">Functional System Requirment KoA RUDAS-1529 (Polarion)</a>
+ */
 @ApiClientTestProfile
 @Slf4j
 class CustomerOrientedDepartureApiTest extends RestAssuredCommand {
@@ -45,6 +51,7 @@ class CustomerOrientedDepartureApiTest extends RestAssuredCommand {
         testContextManager.prepareTestInstance(this);
     }
 
+    @DisplayName("DAS-Backend proxy->GEMS::subscribe|tests: 1538(2)")
     @Test
     void postSubscribe_ok() {
         SubscribeRequest request = new SubscribeRequest();
@@ -70,6 +77,7 @@ class CustomerOrientedDepartureApiTest extends RestAssuredCommand {
         assertThat(response.getStatusCode()).as(toBodyString(response)).isEqualTo(HttpStatus.SC_OK);
     }
 
+    @DisplayName("DAS-Backend proxy->GEMS::confirm|tests: 1538(2)")
     @Test
     void postConfirm_ok() {
         final String requestId = getRequestId();
