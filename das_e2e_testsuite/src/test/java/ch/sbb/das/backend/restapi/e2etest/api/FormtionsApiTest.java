@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -27,6 +28,9 @@ import org.springframework.web.reactive.function.client.WebClientException;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.core.publisher.Mono;
 
+/**
+ * @see <a href="https://github.com/SchweizerischeBundesbahnen/DAS/issues/541">User-Story #541</a>
+ */
 @ApiClientTestProfile
 @Slf4j
 class FormtionsApiTest extends RestAssuredCommand {
@@ -47,6 +51,7 @@ class FormtionsApiTest extends RestAssuredCommand {
         testContextManager.prepareTestInstance(this);
     }
 
+    @DisplayName("/formations&operationaDay=<PAST> non-existing|tests: 541(1)")
     @Test
     void getFormations_operationalDayNonExisting() {
         final Response response = createRequestWithHeader("en", ServiceDoc.REQUEST_ID_VALUE_E2E_TEST)
@@ -70,6 +75,7 @@ class FormtionsApiTest extends RestAssuredCommand {
         assertThat(body).as("Problem::type").doesNotContain("\type\"");
     }
 
+    @DisplayName("/formations&operationaDay=<FUTURE> non-existing|tests: 541(1)")
     @Test
     void getFormations_operationalDayNotNow() {
         final String operationalDay = LocalDate.now().plusDays(10).toString();
@@ -95,6 +101,7 @@ class FormtionsApiTest extends RestAssuredCommand {
         assertThat(response.getHeaders().get(MonitoringConstants.HEADER_REQUEST_ID).getValue()).isEqualTo(requestId);
     }
 
+    @DisplayName("/formations&company=<BAD FORMAT> non-existing|tests: 541(1)")
     @Test
     void getFormations_companyBadFormat() {
         final LocalDate today = LocalDate.now();
@@ -120,6 +127,7 @@ class FormtionsApiTest extends RestAssuredCommand {
         }
     }
 
+    @DisplayName("/formations&operationalTrainNumber=<BAD> non-existing|tests: 541(1)")
     @Test
     void getFormations_operationTrainNumberBad() {
         final LocalDate today = LocalDate.now();
