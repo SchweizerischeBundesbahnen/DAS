@@ -2,6 +2,8 @@ import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/launcher/launcher.dart';
 import 'package:app/nav/app_router.dart';
+import 'package:app/nav/view_model/model/navigation_drawer_weather_model.dart';
+import 'package:app/nav/view_model/navigation_drawer_weather_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/app_version_text.dart';
@@ -11,6 +13,7 @@ import 'package:app/widgets/weather_text.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+import 'package:weather/component.dart';
 
 class DASNavigationDrawer extends StatelessWidget {
   const DASNavigationDrawer({super.key});
@@ -19,6 +22,7 @@ class DASNavigationDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final journeyNavigationViewModel = DI.getOrNull<JourneyNavigationViewModel>();
     final isJourneySelected = journeyNavigationViewModel?.modelValue != null;
+    final weatherViewModel = DI.getOrNull<NavigationDrawerWeatherViewModel>();
     final launcher = DI.get<Launcher>();
     return Drawer(
       // TODO: remove when set by SBB again
@@ -68,6 +72,7 @@ class DASNavigationDrawer extends StatelessWidget {
                     ),
                     onTap: () => launcher.launchTourSystem(),
                   ),
+                if (weatherViewModel != null) _weatherTile(context, weatherViewModel),
               ],
             ),
           ),
@@ -127,5 +132,67 @@ class DASNavigationDrawer extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget _weatherTile(BuildContext context, NavigationDrawerWeatherViewModel viewModel) {
+    return ListTile(
+      leading: _inactiveIcon(_iconForCondition(null)),
+      title: Text(
+        context.l10n.w_navigation_drawer_weather_title,
+        style: sbbTextStyle.lightStyle.medium,
+      ),
+      subtitle: StreamBuilder<NavigationDrawerWeatherModel>(
+        stream: viewModel.model,
+        initialData: viewModel.modelValue,
+        builder: (context, snap) {
+          final model = snap.requireData;
+          final weatherText = switch (model) {
+            NavigationDrawerWeatherLoading() => context.l10n.w_navigation_drawer_weather_loading,
+            NavigationDrawerWeatherError() => context.l10n.w_navigation_drawer_weather_unavailable,
+            NavigationDrawerWeatherData() =>
+              '${model.temperatureCelsius.round()}°C - ${_conditionLabel(context, model.condition)}',
+          };
+
+          return Row(
+            children: [
+              Icon(_iconForCondition(model)),
+              const SizedBox(width: SBBSpacing.xSmall),
+              Expanded(child: Text(weatherText)),
+            ],
+          );
+        },
+      ),
+      onTap: () => viewModel.refresh(),
+    );
+  }
+
+  IconData _iconForCondition(NavigationDrawerWeatherModel? model) {
+    if (model case NavigationDrawerWeatherData(condition: final condition)) {
+      return switch (condition) {
+        WeatherCondition.clear => Icons.wb_sunny_outlined,
+        WeatherCondition.partlyCloudy || WeatherCondition.overcast => Icons.cloud_outlined,
+        WeatherCondition.fog => Icons.dehaze,
+        WeatherCondition.drizzle || WeatherCondition.rain => Icons.water_drop_outlined,
+        WeatherCondition.snow => Icons.ac_unit,
+        WeatherCondition.thunderstorm => Icons.thunderstorm_outlined,
+        WeatherCondition.unknown => Icons.thermostat_outlined,
+      };
+    }
+
+    return Icons.thermostat_outlined;
+  }
+
+  String _conditionLabel(BuildContext context, WeatherCondition condition) {
+    return switch (condition) {
+      WeatherCondition.clear => context.l10n.w_navigation_drawer_weather_condition_clear,
+      WeatherCondition.partlyCloudy => context.l10n.w_navigation_drawer_weather_condition_partly_cloudy,
+      WeatherCondition.overcast => context.l10n.w_navigation_drawer_weather_condition_overcast,
+      WeatherCondition.fog => context.l10n.w_navigation_drawer_weather_condition_fog,
+      WeatherCondition.drizzle => context.l10n.w_navigation_drawer_weather_condition_drizzle,
+      WeatherCondition.rain => context.l10n.w_navigation_drawer_weather_condition_rain,
+      WeatherCondition.snow => context.l10n.w_navigation_drawer_weather_condition_snow,
+      WeatherCondition.thunderstorm => context.l10n.w_navigation_drawer_weather_condition_thunderstorm,
+      WeatherCondition.unknown => context.l10n.w_navigation_drawer_weather_condition_unknown,
+    };
   }
 }

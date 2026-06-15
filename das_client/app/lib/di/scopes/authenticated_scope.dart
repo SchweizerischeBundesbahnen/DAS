@@ -1,6 +1,7 @@
 import 'package:app/app_info/app_info.dart';
 import 'package:app/di/di.dart';
 import 'package:app/flavor.dart';
+import 'package:app/nav/view_model/navigation_drawer_weather_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
 import 'package:app/pages/journey/view_model/app_expiration_view_model.dart';
@@ -24,6 +25,7 @@ import 'package:mqtt/component.dart';
 import 'package:preload/component.dart';
 import 'package:settings/component.dart';
 import 'package:sfera/component.dart';
+import 'package:weather/component.dart';
 
 final _log = Logger('AuthenticatedScope');
 
@@ -41,6 +43,7 @@ class AuthenticatedScope extends DIScope {
     getIt.registerHttpClient();
     getIt.registerMqttAuthProvider();
     getIt.registerMqttService();
+    getIt.registerWeatherRepository();
     getIt.registerSferaRemoteRepo();
     getIt.registerSettingsRepository();
     getIt.registerAppExpirationViewModel();
@@ -48,6 +51,7 @@ class AuthenticatedScope extends DIScope {
     getIt.registerFormationRepository();
 
     getIt.registerJourneyNavigationViewModel();
+    getIt.registerNavigationDrawerWeatherViewModel();
     getIt.registerJourneySelectionViewModel();
     getIt.registerJourneyViewModel();
     getIt.registerJourneySettingsViewModel();
@@ -108,6 +112,17 @@ extension AuthenticatedScopeExtension on GetIt {
         sferaVersion: flavor.sferaVersion,
       ),
       dispose: (vm) => vm.dispose(),
+    );
+  }
+
+  void registerWeatherRepository() {
+    registerSingleton<WeatherRepository>(
+      WeatherComponent.createRepository(
+        latitude: 47.3769,
+        longitude: 8.5417,
+        client: Client(),
+      ),
+      dispose: (repo) => repo.dispose(),
     );
   }
 
@@ -184,6 +199,13 @@ extension AuthenticatedScopeExtension on GetIt {
     registerSingletonAsync<JourneyNavigationViewModel>(
       () async => JourneyNavigationViewModel(sferaRepo: DI.get()),
       dependsOn: [SferaRepository],
+      dispose: (vm) => vm.dispose(),
+    );
+  }
+
+  void registerNavigationDrawerWeatherViewModel() {
+    registerSingleton<NavigationDrawerWeatherViewModel>(
+      NavigationDrawerWeatherViewModel(weatherRepository: DI.get()),
       dispose: (vm) => vm.dispose(),
     );
   }
