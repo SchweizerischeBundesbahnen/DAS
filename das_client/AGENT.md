@@ -59,5 +59,3 @@ Three languages: German (default), French, Italian. Key format: `<PREFIX>_<CONTE
 ## Code Generation
 Models use `build_runner`. After editing annotated files run `melos generate`. Generated files (`*.g.dart`, `*.gr.dart`) must not be edited manually.
 
-## AI Agent Skills
-Check `.agent/skills` for specific Agent skills.
