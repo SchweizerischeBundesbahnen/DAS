@@ -49,7 +49,7 @@ export class RuIndicationTemplatesTable {
   protected selection = new SelectionModel<RuIndicationTemplate>(true, []);
   protected form = new FormGroup({
     search: new FormControl('', {nonNullable: true}),
-    language: new FormControl(this.languageProvider.currentLanguage?.path, {nonNullable: true})
+    language: new FormControl(this.languageProvider.currentLanguage.path, {nonNullable: true})
   });
   protected isDeleting = false;
   protected readonly PAGE_SIZE = 20;

@@ -14,6 +14,7 @@ import {SbbMiniButton} from '@sbb-esta/lyne-angular/button/mini-button';
 import {toUtcDateOnly} from '../../../shared/date-util';
 import {SbbDialogModule} from '@sbb-esta/lyne-angular/dialog';
 import {SbbFormFieldModule} from '@sbb-esta/lyne-angular/form-field';
+import {SbbActionGroup} from '@sbb-esta/lyne-angular/action-group';
 
 export type VersionDialogEditResult = AppVersion | 'delete';
 
@@ -31,7 +32,8 @@ export type VersionDialogEditResult = AppVersion | 'delete';
     SbbTransparentButton,
     SbbPopoverModule,
     SbbTitleModule,
-    SbbMiniButton
+    SbbMiniButton,
+    SbbActionGroup
   ],
   templateUrl: './app-version-dialog.html',
   styleUrl: './app-version-dialog.css',

@@ -12,7 +12,6 @@ import ch.sbb.das.backend.common.ApiParametersDefault.ParamRequestId;
 import ch.sbb.das.backend.common.CompanyCode;
 import ch.sbb.das.backend.common.Response;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
-import ch.sbb.das.backend.common.security.UserRole;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -21,10 +20,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,14 +39,29 @@ import java.util.Set;
 public class ExternalLinkController {
     static final String PATH_SEGMEMT_EXTERNAL_LINKS = "/external-links";
     public static final String API_EXTERNAL_LINKS = ApiDocumentation.VERSION_URI_V1 + PATH_SEGMEMT_EXTERNAL_LINKS;
+    public static final String API_MOBILE_EXTERNAL_LINKS = ApiDocumentation.VERSION_URI_V1 + "/mobile" + PATH_SEGMEMT_EXTERNAL_LINKS;
     static final String API_EXTERNAL_LINKS_ID = API_EXTERNAL_LINKS + "/{id}";
 
     private final ExternalLinkService externalLinkService;
 
     @GetMapping(API_EXTERNAL_LINKS)
     @Operation(
-            summary = "Get external links optionally filtered by companies.",
-            description = "Returns all external links visible for the authorized companies or filterd by companies."
+            summary = "Get external links.",
+            description = "Returns all external links visible for the authorized companies."
+    )
+    @ApiResponse(responseCode = "200", description = "External links found.",
+            content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ExternalLinkResponse.class)))
+    @ApiErrorResponses
+    public ResponseEntity<? extends Response> getAllExternalLinks(
+            @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false)
+            String requestId) {
+        return ResponseEntityFactory.createOkResponse(new ExternalLinkResponse(externalLinkService.getAll()), requestId);
+    }
+
+    @GetMapping(API_MOBILE_EXTERNAL_LINKS)
+    @Operation(
+            summary = "Get external links filtered by companies.",
+            description = "Returns all external links filterd by companies."
     )
     @ApiResponse(responseCode = "200", description = "External links found.",
             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ExternalLinkResponse.class)))
@@ -58,13 +70,8 @@ public class ExternalLinkController {
             @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false)
             String requestId,
             @Parameter(description = CompanyCode.DESCRIPTION, example = "1033")
-            @RequestParam(required = false)
+            @RequestParam
             Set<CompanyCode> companies) {
-        if (CollectionUtils.isEmpty(companies)
-                ? UserRole.hasRole(UserRole.OBSERVER, UserRole.DRIVER)
-                : UserRole.hasRole(UserRole.ADMIN, UserRole.RU_ADMIN)) {
-            return ResponseEntityFactory.createProblemResponse(HttpStatus.FORBIDDEN, "Forbidden", "Not allowed!", null, requestId, null);
-        }
         return ResponseEntityFactory.createOkResponse(new ExternalLinkResponse(externalLinkService.getAllByCompanies(companies)), requestId);
     }
 

@@ -6,7 +6,6 @@ import { SbbMiniButton } from '@sbb-esta/lyne-angular/button/mini-button';
 import { SelectionModel } from '@angular/cdk/collections';
 import { SbbCheckboxModule } from '@sbb-esta/lyne-angular/checkbox';
 import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
-import { SbbIconModule } from '@sbb-esta/lyne-angular/icon';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SbbTransparentButton } from '@sbb-esta/lyne-angular/button/transparent-button';
 import { SCHEDULE_TYPE_LABELS, ScheduleType, SpecialHoliday } from '../../ru-admin-api';
@@ -24,7 +23,6 @@ import { CompanyService } from '../../../shared/companies-input/company.service'
     SbbMiniButton,
     SbbCheckboxModule,
     SbbFormFieldModule,
-    SbbIconModule,
     ReactiveFormsModule,
     DatePipe,
   ],

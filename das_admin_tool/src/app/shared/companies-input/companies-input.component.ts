@@ -4,14 +4,12 @@ import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {SbbAutocompleteModule} from '@sbb-esta/lyne-angular/autocomplete';
 import {SbbChipModule} from '@sbb-esta/lyne-angular/chip';
 import {SbbFormFieldModule} from '@sbb-esta/lyne-angular/form-field';
-import {SbbOptionModule} from '@sbb-esta/lyne-angular/option';
 import {CompanyService} from './company.service';
 import {RecentCompaniesStore} from '../recent-companies.store';
 
 @Component({
   selector: 'app-companies-input',
   imports: [
-    SbbOptionModule,
     SbbAutocompleteModule,
     SbbChipModule,
     SbbFormFieldModule,
@@ -24,11 +22,13 @@ export class CompaniesInputComponent {
   label = input<string>($localize`:@@companies_form_label:EVU`);
   control = input.required<FormControl<string[]>>();
 
-  inputControl = new FormControl('', {nonNullable: true});
+  protected inputControl = new FormControl('', {nonNullable: true});
+  private readonly inputValue = toSignal(this.inputControl.valueChanges, {initialValue: ''});
+
   private readonly companyService = inject(CompanyService);
   private readonly recentCompaniesStore = inject(RecentCompaniesStore);
-  private readonly inputValue = toSignal(this.inputControl.valueChanges, {initialValue: ''});
-  filteredCompanies = computed(() => {
+
+  protected filteredCompanies = computed(() => {
     return this.companyService.filterCompanies(this.inputValue(), this.control().value);
   });
 

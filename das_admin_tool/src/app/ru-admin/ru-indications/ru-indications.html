@@ -3,9 +3,9 @@
 @if (ruIndicationsResource.hasValue()) {
   @if (ruIndicationsResource.value().data.length === 0) {
     <p i18n="@@ru_indications_empty_state">Noch keine Hinweise erfasst.</p>
-    <sbb-secondary-button (click)="ruIndicationService.add()" i18n="@@ru_indications_button_create"
+    <sbb-secondary-button (click)="ruIndicationService.add()" i18n="@@button_create_entry"
                           iconName="plus-small">
-      Neuen Hinweis erfassen
+      Neuen Eintrag erfassen
     </sbb-secondary-button>
   } @else {
     <app-ru-indications-table/>

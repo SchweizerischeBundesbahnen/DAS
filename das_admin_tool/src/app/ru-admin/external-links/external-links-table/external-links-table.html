@@ -1,0 +1,117 @@
+<form [formGroup]="form" class="search-language-header">
+  <sbb-form-field>
+    <sbb-icon name="globe-small" slot="prefix"></sbb-icon>
+    <label i18n="@@form_field_language_label">Sprache</label>
+    <sbb-select formControlName="language">
+      @for (language of languageProvider.allLanguages; track language.localeId) {
+        <sbb-option [value]="language.path">{{ language.label }}</sbb-option>
+      }
+    </sbb-select>
+  </sbb-form-field>
+</form>
+<sbb-table-wrapper>
+  <table [dataSource]="dataSource" sbb-table sbbSort sbbSortActive="title" sbbSortDirection="asc">
+    <ng-container sbbColumnDef="select">
+      <th *sbbHeaderCellDef sbb-header-cell class="select-column">
+        <sbb-checkbox
+          (change)="$event ? parentToggle() : null"
+          [checked]="selection.hasValue() && isAllSelected()"
+          [indeterminate]="selection.hasValue() && !isAllSelected()"
+        >
+        </sbb-checkbox>
+      </th>
+      <td *sbbCellDef="let row" sbb-cell class="select-column">
+        <sbb-checkbox
+          (change)="$event ? selection.toggle(row) : null"
+          (click)="$event.stopPropagation()"
+          [checked]="selection.isSelected(row)"
+        >
+        </sbb-checkbox>
+      </td>
+    </ng-container>
+
+    <ng-container sbbColumnDef="title">
+      <th
+        *sbbHeaderCellDef
+        i18n="@@external_links_table_column_title"
+        sbb-header-cell
+        sbb-sort-header="title"
+      >
+        Titel
+      </th>
+      <td *sbbCellDef="let row" sbb-cell>{{ currentLanguage(row)?.title }}</td>
+    </ng-container>
+
+    <ng-container sbbColumnDef="link">
+      <th
+        *sbbHeaderCellDef
+        i18n="@@external_links_table_column_link"
+        sbb-header-cell
+        sbb-sort-header="link"
+      >
+        URL
+      </th>
+      <td *sbbCellDef="let row" sbb-cell>{{ currentLanguage(row)?.link }}</td>
+    </ng-container>
+
+    <ng-container sbbColumnDef="lastModifiedAt">
+      <th
+        *sbbHeaderCellDef
+        i18n="@@external_links_table_column_last_modified_at"
+        sbb-header-cell
+        sbb-sort-header="lastModifiedAt"
+      >
+        Bearbeitet am
+      </th>
+      <td *sbbCellDef="let row" sbb-cell class="cell-nowrap">
+        {{ row.lastModifiedAt | date: 'short' }}
+      </td>
+    </ng-container>
+
+    <ng-container sbbColumnDef="lastModifiedBy">
+      <th
+        *sbbHeaderCellDef
+        i18n="@@external_links_table_column_last_modified_by"
+        sbb-header-cell
+        sbb-sort-header="lastModifiedBy"
+      >
+        Bearbeitet von
+      </th>
+      <td *sbbCellDef="let row" sbb-cell>{{ row.lastModifiedBy }}</td>
+    </ng-container>
+
+    <ng-container sbbColumnDef="action">
+      <th *sbbHeaderCellDef class="action-column" sbb-header-cell></th>
+      <td *sbbCellDef="let externalLink" class="action-column" sbb-cell>
+        <sbb-mini-button (click)="edit(externalLink)" iconName="pen-small"></sbb-mini-button>
+      </td>
+    </ng-container>
+
+    <tr *sbbHeaderRowDef="columns" sbb-header-row></tr>
+    <tr *sbbRowDef="let row; columns: columns" sbb-row></tr>
+  </table>
+</sbb-table-wrapper>
+
+<div class="bottom">
+  <div class="left">
+    <sbb-compact-paginator [pageSize]="PAGE_SIZE"></sbb-compact-paginator>
+  </div>
+  <div class="right">
+    <sbb-secondary-button (click)="add()" i18n="@@button_create_entry" iconName="plus-small"
+      >Neuen Eintrag erfassen
+    </sbb-secondary-button>
+    <sbb-transparent-button
+      (click)="deleteSelected()"
+      [disabled]="selection.isEmpty()"
+      [loading]="isDeleting"
+      i18n="@@button_delete_selected_entries"
+      iconName="trash-small"
+    >
+      {selection.selected.length, plural,
+        =0 {Einträge löschen}
+        one {Eintrag löschen}
+        other {{{selection.selected.length}} Einträge löschen}
+      }
+    </sbb-transparent-button>
+  </div>
+</div>

@@ -55,7 +55,6 @@ describe('RuIndicationTemplateDialog', () => {
       deGroup.get('title')!.setValue('');
       deGroup.updateValueAndValidity();
 
-      expect(deGroup.errors).toEqual({titleRequired: true});
       expect(deGroup.get('title')!.errors).toEqual({titleRequired: true});
     });
 

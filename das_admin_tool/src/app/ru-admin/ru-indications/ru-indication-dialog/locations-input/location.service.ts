@@ -3,7 +3,7 @@ import { httpResource } from '@angular/common/http';
 import { ApiResponse } from '../../../../shared/api-response';
 import { environment } from '../../../../../environments/environment';
 
-export type LocationApiResponse = ApiResponse<Location[]>;
+export type LocationApiResponse = ApiResponse<Location>;
 
 export interface Location {
   locationReference: string;

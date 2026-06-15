@@ -8,7 +8,7 @@
     </sbb-form-field>
     <sbb-form-field>
       <sbb-icon name="globe-small" slot="prefix"></sbb-icon>
-      <label i18n="@@ru_indications_table_language_label">Sprache</label>
+      <label i18n="@@form_field_language_label">Sprache</label>
       <sbb-select formControlName="language">
         @for (language of languageProvider.allLanguages; track language.localeId) {
           <sbb-option [value]="language.path">{{ language.label }}</sbb-option>
@@ -176,11 +176,11 @@
   </div>
   <div class="right">
     <sbb-secondary-button (click)="add()" i18n="@@button_create_entry" iconName="plus-small">
-      Neuen Hinweis erfassen
+      Neuen Eintrag erfassen
     </sbb-secondary-button>
     <sbb-transparent-button (click)="deleteSelected()" [disabled]="this.selection.isEmpty()"
                             [loading]="isDeleting"
-                            i18n="@@button_delete_selected"
+                            i18n="@@button_delete_selected_entries"
                             iconName="trash-small">
       {selection.selected.length, plural,
         =0 {Einträge löschen}

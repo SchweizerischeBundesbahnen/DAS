@@ -18,7 +18,7 @@ export class LanguageProvider {
     {localeId: 'it-CH', path: 'it', label: 'Italiano'}
   ];
   private readonly localeId = inject(LOCALE_ID);
-  public readonly currentLanguage = this.allLanguages.find(lang => lang.localeId === this.localeId);
+  public readonly currentLanguage = this.allLanguages.find(lang => lang.localeId === this.localeId)!;
 
   public switch(language: Language) {
     const languagePath = language.path;

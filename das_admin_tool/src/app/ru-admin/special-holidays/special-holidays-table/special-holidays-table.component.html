@@ -72,7 +72,7 @@
     </sbb-secondary-button>
     <sbb-transparent-button (click)="deleteSelected()" [disabled]="selection.isEmpty()"
                             [loading]="isDeleting"
-                            i18n="@@special_holidays_button_delete_selected"
+                            i18n="@@button_delete_selected_entries"
                             iconName="trash-small">
       {selection.selected.length, plural,
         =0 {Einträge löschen}

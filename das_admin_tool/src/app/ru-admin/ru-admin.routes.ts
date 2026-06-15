@@ -22,6 +22,10 @@ export const routes: Routes = [
         path: 'special-holidays',
         loadComponent: () => import('./special-holidays/special-holidays.component').then((m) => m.SpecialHolidays),
       },
+      {
+        path: 'external-links',
+        loadComponent: () => import('./external-links/external-links').then((m) => m.ExternalLinks),
+      },
     ],
   },
 ];

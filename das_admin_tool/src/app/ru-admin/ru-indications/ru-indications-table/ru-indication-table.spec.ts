@@ -33,9 +33,9 @@ const mockRuIndicationService: Partial<RuIndicationService> = {
   deleteAll: vi.fn(() => Promise.resolve())
 };
 
-const mockLanguageProvider: Partial<LanguageProvider> = {
+const mockLanguageProvider = {
   currentLanguage: {localeId: 'de-CH', path: 'de', label: 'Deutsch'}
-};
+} satisfies Partial<LanguageProvider>;
 
 const mockCompanyService: Partial<CompanyService> = {
   getName: (code: string) => ({'1085': 'SBB', '1087': 'BLS'})[code]
@@ -102,7 +102,7 @@ describe('RuIndicationsTable', () => {
 
   it('periodsValue should format periods using displayPeriod', () => {
     const comp = createComponent();
-    const expected = displayPeriod(sample.periods[0], mockLanguageProvider.currentLanguage!.localeId);
+    const expected = displayPeriod(sample.periods[0], mockLanguageProvider.currentLanguage.localeId);
     expect(comp['periodsValue'](sample)).toBe(expected);
   });
 

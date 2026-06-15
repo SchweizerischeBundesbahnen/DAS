@@ -1,4 +1,5 @@
 <sbb-dialog-title>{{ title }}</sbb-dialog-title>
+<sbb-dialog-close-button></sbb-dialog-close-button>
 <sbb-dialog-content>
   <form [formGroup]="versionForm" class="form">
     <sbb-form-field>
@@ -39,17 +40,18 @@
     </sbb-form-field>
   </form>
 </sbb-dialog-content>
-<sbb-dialog-actions alignGroup="stretch">
-  <sbb-secondary-button align-self="start" i18n="@@app_versions_dialog_button_cancel"
-                        sbb-dialog-close>Abbrechen
+<sbb-dialog-actions alignGroup="stretch" orientation="vertical">
+  <sbb-secondary-button i18n="@@dialog_action_cancel" sbb-dialog-close>Abbrechen
   </sbb-secondary-button>
-  @if (isEdit) {
-    <sbb-transparent-button i18n="@@app_versions_dialog_button_delete" iconName="trash-small"
-                            sbb-dialog-close="delete">Blockierte App Version löschen
-    </sbb-transparent-button>
-  }
-  <sbb-button [disabled]="versionForm.invalid" [sbb-dialog-close]="formValue"
-              i18n="@@app_versions_dialog_button_save">
-    Speichern
-  </sbb-button>
+  <sbb-action-group alignGroup="stretch" orientation="vertical">
+    @if (isEdit) {
+      <sbb-transparent-button i18n="@@dialog_action_delete" iconName="trash-small"
+                              sbb-dialog-close="delete">Eintrag löschen
+      </sbb-transparent-button>
+    }
+    <sbb-button [disabled]="versionForm.invalid || versionForm.pristine"
+                [sbb-dialog-close]="formValue"
+                i18n="@@dialog_action_save">Speichern
+    </sbb-button>
+  </sbb-action-group>
 </sbb-dialog-actions>

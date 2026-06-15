@@ -34,7 +34,7 @@
   }
 
   <sbb-header-button iconName="globe-small" id="language-menu-trigger" class="last-element">
-    {{ languageProvider.currentLanguage?.label }}
+    {{ languageProvider.currentLanguage.label }}
   </sbb-header-button>
   <sbb-menu trigger="language-menu-trigger">
     @for (language of languageProvider.allLanguages; track language.localeId) {

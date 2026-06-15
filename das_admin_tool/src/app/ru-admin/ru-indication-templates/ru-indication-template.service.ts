@@ -1,5 +1,4 @@
 import { inject, Injectable } from '@angular/core';
-import { SbbDialogService } from '@sbb-esta/lyne-angular/dialog';
 import { firstValueFrom } from 'rxjs';
 import {
   RuIndicationTemplateDialog,
@@ -15,7 +14,6 @@ export class RuIndicationTemplateService extends BaseDialogService {
 
   private readonly ruAdminApi = inject(RuAdminApi);
   readonly ruIndicationTemplatesResource = this.ruAdminApi.ruIndicationTemplates;
-  private readonly dialogService = inject(SbbDialogService);
 
   async edit(ruIndicationTemplate: RuIndicationTemplate) {
     const event = await firstValueFrom(this.dialogService.open<RuIndicationTemplateDialog, RuIndicationTemplateDialogEditResult>(RuIndicationTemplateDialog, {data: ruIndicationTemplate}).afterClosed);

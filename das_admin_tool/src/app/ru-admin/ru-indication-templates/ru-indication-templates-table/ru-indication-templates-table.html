@@ -7,7 +7,7 @@
   </sbb-form-field>
   <sbb-form-field>
     <sbb-icon name="globe-small" slot="prefix"></sbb-icon>
-    <label i18n="@@ru_indication_templates_table_language_label">Sprache</label>
+    <label i18n="@@form_field_language_label">Sprache</label>
     <sbb-select formControlName="language">
       @for (language of languageProvider.allLanguages; track language.localeId) {
         <sbb-option [value]="language.path">{{ language.label }}</sbb-option>
@@ -44,21 +44,21 @@
     </ng-container>
 
     <ng-container sbbColumnDef="title">
-      <th *sbbHeaderCellDef i18n="@@ru_indication_templates_table_column_de" sbb-header-cell
+      <th *sbbHeaderCellDef i18n="@@ru_indication_templates_table_column_title" sbb-header-cell
           sbb-sort-header="title">Titel
       </th>
       <td *sbbCellDef="let row" sbb-cell><span>{{ getValue(row, 'title') }}</span></td>
     </ng-container>
 
     <ng-container sbbColumnDef="text">
-      <th *sbbHeaderCellDef i18n="@@ru_indication_templates_table_column_fr" sbb-header-cell
+      <th *sbbHeaderCellDef i18n="@@ru_indication_templates_table_column_text" sbb-header-cell
           sbb-sort-header="text">Text
       </th>
       <td *sbbCellDef="let row" sbb-cell><span>{{ getValue(row, 'text') }}</span></td>
     </ng-container>
 
     <ng-container sbbColumnDef="lastModifiedBy">
-      <th *sbbHeaderCellDef i18n="@@ru_indication_templates_table_column_it" sbb-header-cell
+      <th *sbbHeaderCellDef i18n="@@ru_indication_templates_table_column_last_modified_by" sbb-header-cell
           sbb-sort-header="lastModifiedBy">Bearbeitet von
       </th>
       <td *sbbCellDef="let row" class="cell-nowrap" sbb-cell>{{ row.lastModifiedBy }}</td>
@@ -87,7 +87,7 @@
     </sbb-secondary-button>
     <sbb-transparent-button (click)="deleteSelected()" [disabled]="this.selection.isEmpty()"
                             [loading]="isDeleting"
-                            i18n="@@button_delete_selected"
+                            i18n="@@button_delete_selected_entries"
                             iconName="trash-small">
       {selection.selected.length, plural,
         =0 {Einträge löschen}
