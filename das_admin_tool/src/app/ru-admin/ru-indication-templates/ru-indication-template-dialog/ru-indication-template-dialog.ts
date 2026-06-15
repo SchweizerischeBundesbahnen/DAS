@@ -3,11 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { RuIndicationTemplate } from '../../ru-admin-api';
 import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core/overlay';
 import { SbbTitleModule } from '@sbb-esta/lyne-angular/title';
-import { SbbDialogModule } from '@sbb-esta/lyne-angular/dialog';
 import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
-import { SbbTabsModule } from '@sbb-esta/lyne-angular/tabs';
-import { SbbButtonModule } from '@sbb-esta/lyne-angular/button';
-import { SbbTooltipModule } from '@sbb-esta/lyne-angular/tooltip';
 import {
   contentFormValue,
   createContentFormGroup,
@@ -22,14 +18,10 @@ export type RuIndicationTemplateDialogEditResult = RuIndicationTemplate | 'delet
   selector: 'app-ru-indication-template-dialog',
   imports: [
     ReactiveFormsModule,
-    SbbDialogModule,
-    SbbButtonModule,
-    SbbTooltipModule,
     SbbFormFieldModule,
     SbbTitleModule,
-    SbbTabsModule,
-    RuIndicationContentForm,
     BaseDialog,
+    RuIndicationContentForm,
     CompaniesInputComponent,
   ],
   templateUrl: './ru-indication-template-dialog.html',
@@ -37,7 +29,6 @@ export type RuIndicationTemplateDialogEditResult = RuIndicationTemplate | 'delet
 })
 export class RuIndicationTemplateDialog {
   protected readonly title: string;
-  protected readonly isEdit: boolean;
   protected ruIndicationTemplateForm = new FormGroup({
     category: new FormControl('', {nonNullable: true, validators: [Validators.required]}),
     content: createContentFormGroup(),
@@ -49,12 +40,12 @@ export class RuIndicationTemplateDialog {
   protected readonly dialogData = inject<RuIndicationTemplate>(SBB_OVERLAY_DATA, {optional: true}) ?? undefined;
 
   constructor() {
-    this.isEdit = this.dialogData?.id != null;
-    this.title = this.isEdit
+    const isEdit = this.dialogData?.id != null;
+    this.title = isEdit
       ? $localize`:@@ru_indication_templates_dialog_title_edit:Titel und Text bearbeiten`
       : $localize`:@@ru_indication_templates_dialog_title_create:Titel und Text erfassen`;
 
-    if (this.isEdit && this.dialogData) {
+    if (isEdit && this.dialogData) {
       this.ruIndicationTemplateForm.patchValue({
         category: this.dialogData.category,
         content: {

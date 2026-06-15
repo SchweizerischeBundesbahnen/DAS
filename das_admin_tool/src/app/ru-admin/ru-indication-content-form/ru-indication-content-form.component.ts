@@ -1,11 +1,5 @@
 import { Component, inject, input } from '@angular/core';
-import {
-  AbstractControl,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  ValidationErrors
-} from "@angular/forms";
+import { FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms";
 import { SbbError, SbbFormField } from "@sbb-esta/lyne-angular/form-field";
 import { SbbMiniButton } from "@sbb-esta/lyne-angular/button";
 import { SbbTab, SbbTabGroup, SbbTabLabel } from "@sbb-esta/lyne-angular/tabs";
@@ -13,6 +7,7 @@ import { SbbTooltipDirective } from "@sbb-esta/lyne-angular/tooltip";
 import { LanguageCode, LanguageProvider } from '../../shared/language-provider';
 import { UpperCasePipe } from '@angular/common';
 import { RuIndication, RuIndicationContent, RuIndicationLanguageContent } from '../ru-admin-api';
+import { oneLanguageRequired, titleRequired } from '../../shared/form-validators.util';
 
 interface LanguageContentForm {
   title: FormControl<string>;
@@ -49,22 +44,6 @@ function createLanguageGroup(): FormGroup<LanguageContentForm> {
     title: new FormControl('', {nonNullable: true}),
     text: new FormControl('', {nonNullable: true}),
   }, {validators: titleRequired('text')});
-}
-
-function oneLanguageRequired(control: AbstractControl): ValidationErrors | null {
-  const de = control.get('de.title')?.value?.trim();
-  const fr = control.get('fr.title')?.value?.trim();
-  const it = control.get('it.title')?.value?.trim();
-  return de || fr || it ? null : {oneLanguageRequired: true};
-}
-
-function titleRequired(control: AbstractControl): ValidationErrors | null {
-  const titleControl = control.get('title');
-  const title = titleControl?.value?.trim();
-  const text = control.get('text')?.value?.trim();
-  const error = text && !title ? {titleRequired: true} : null;
-  titleControl?.setErrors(error);
-  return error;
 }
 
 @Component({

@@ -25,6 +25,7 @@ import {
 } from '../../ru-indication-content-form/ru-indication-content-form.component';
 import { CategoryContentForm } from './content-form/category-content-form';
 import { Audit } from '../../../shared/audit/audit';
+import { SbbActionGroupModule } from '@sbb-esta/lyne-angular/action-group';
 
 @Component({
   selector: 'app-ru-indication-dialog',
@@ -37,6 +38,7 @@ import { Audit } from '../../../shared/audit/audit';
     SbbButtonModule,
     SbbAutocompleteModule,
     SbbStepperModule,
+    SbbActionGroupModule,
     LocationsInput,
     TrainNumberInput,
     PeriodsInput,

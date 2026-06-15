@@ -9,7 +9,6 @@ import { SbbPopoverModule } from '@sbb-esta/lyne-angular/popover';
 import { SbbTitleModule } from '@sbb-esta/lyne-angular/title';
 import { SbbMiniButton } from '@sbb-esta/lyne-angular/button/mini-button';
 import { toUtcDateOnly } from '../../../shared/date-util';
-import { SbbDialogModule } from '@sbb-esta/lyne-angular/dialog';
 import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
 import { BaseDialog } from '../../../shared/base-dialog/base-dialog.component';
 
@@ -18,12 +17,11 @@ export type VersionDialogEditResult = AppVersion | 'delete';
 @Component({
   selector: 'app-app-version-dialog',
   imports: [
-    SbbDialogModule,
+    ReactiveFormsModule,
     SbbFormFieldModule,
     SbbToggleCheckModule,
     SbbDateInputModule,
     SbbDatepickerModule,
-    ReactiveFormsModule,
     SbbPopoverModule,
     SbbTitleModule,
     SbbMiniButton,

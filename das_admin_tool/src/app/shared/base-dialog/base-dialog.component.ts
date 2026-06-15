@@ -8,6 +8,7 @@ import { SbbDialogModule } from '@sbb-esta/lyne-angular/dialog';
 import { SbbButtonModule } from '@sbb-esta/lyne-angular/button';
 import { Audit } from '../audit/audit';
 import { Auditable } from '../audit/auditable';
+import { SbbActionGroup } from '@sbb-esta/lyne-angular/action-group';
 
 @Component({
   selector: 'app-base-dialog',
@@ -19,6 +20,7 @@ import { Auditable } from '../audit/auditable';
     ReactiveFormsModule,
     SbbButtonModule,
     SbbDialogModule,
+    SbbActionGroup,
     Audit
   ],
   templateUrl: './base-dialog.component.html',

@@ -1,33 +1,27 @@
 import { Component, inject } from '@angular/core';
 import { SbbTitleModule } from '@sbb-esta/lyne-angular/title';
-import { SbbDialogModule } from '@sbb-esta/lyne-angular/dialog';
 import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
 import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core/overlay';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators, } from '@angular/forms';
 import { SCHEDULE_TYPE_LABELS, ScheduleType, SpecialHoliday } from '../../ru-admin-api';
-import { SbbSelectModule } from '@sbb-esta/lyne-angular/select';
 import { SbbDatepickerModule } from '@sbb-esta/lyne-angular/datepicker';
 import { SbbRadioButtonModule } from '@sbb-esta/lyne-angular/radio-button';
 import { CompaniesInputComponent } from '../../../shared/companies-input/companies-input.component';
 import { toUtcDateOnly } from '../../../shared/date-util';
 import { BaseDialog } from '../../../shared/base-dialog/base-dialog.component';
-import { SbbButtonModule } from '@sbb-esta/lyne-angular/button';
 
 export type SpecialHolidayDialogEditResult = SpecialHoliday | 'delete';
 
 @Component({
   selector: 'app-special-holiday-dialog',
   imports: [
-    SbbDialogModule,
+    ReactiveFormsModule,
     SbbTitleModule,
     SbbFormFieldModule,
-    SbbSelectModule,
-    ReactiveFormsModule,
     SbbDatepickerModule,
     SbbRadioButtonModule,
-    SbbButtonModule,
-    CompaniesInputComponent,
     BaseDialog,
+    CompaniesInputComponent,
   ],
   templateUrl: './special-holiday-dialog.component.html',
   styleUrl: './special-holiday-dialog.component.css',

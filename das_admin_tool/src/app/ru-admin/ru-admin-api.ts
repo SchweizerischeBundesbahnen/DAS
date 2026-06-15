@@ -106,14 +106,12 @@ interface ExternalLinkContent {
   link: string;
 }
 
-export interface ExternalLink {
+export interface ExternalLink extends Auditable {
   id?: number;
   companies: string[];
   de?: ExternalLinkContent;
   fr?: ExternalLinkContent;
   it?: ExternalLinkContent;
-  lastModifiedBy?: string;
-  lastModifiedAt?: Date;
 }
 
 export type ExternalLinkApiResponse = ApiResponse<ExternalLink>;
