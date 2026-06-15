@@ -9,11 +9,13 @@ import 'package:app/pages/login/login_view_model.dart';
 import 'package:app/provider/user_settings.dart';
 import 'package:app/sound/das_sounds.dart';
 import 'package:app/util/time_constants.dart';
+import 'package:app/weather/weather_service.dart';
 import 'package:app_links_x/component.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:connectivity_x/component.dart';
 import 'package:get_it/get_it.dart';
+import 'package:http_x/component.dart';
 import 'package:logger/component.dart';
 import 'package:logging/logging.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -49,6 +51,7 @@ class DASBaseScope extends DIScope {
     getIt.registerLauncher();
     getIt.registerSferaLocalRepo();
     getIt.registerPreloadRepository();
+    getIt.registerWeatherService();
 
     await getIt.allReady();
   }
@@ -155,13 +158,22 @@ extension BaseScopeExtension on GetIt {
     registerLazySingleton<SferaLocalRepo>(factoryFunc);
   }
 
-  void registerPreloadRepository() {
-    registerSingleton<PreloadRepository>(
-      PreloadComponent.createPreloadRepository(
-        sferaLocalRepo: DI.get(),
-        disablePreload: DI.get<Flavor>().disablePreload,
-      ),
-      dispose: (repo) => repo.dispose(),
-    );
-  }
+   void registerPreloadRepository() {
+     registerSingleton<PreloadRepository>(
+       PreloadComponent.createPreloadRepository(
+         sferaLocalRepo: DI.get(),
+         disablePreload: DI.get<Flavor>().disablePreload,
+       ),
+       dispose: (repo) => repo.dispose(),
+     );
+   }
+
+   void registerWeatherService() {
+     _log.fine('Register WeatherService');
+     registerSingleton<WeatherService>(
+       WeatherService(
+         httpClient: HttpXComponent.createHttpClient(),
+       ),
+     );
+   }
 }
