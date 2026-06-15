@@ -35,17 +35,20 @@ public class AppVersionServiceImpl implements AppVersionService {
         List<AppVersion> relevantVersions = appVersionRepository.findAll().stream().filter(entity -> isBlockedVersion(entity, currentVersion) || isMinimalVersionGreater(entity, currentVersion))
             .toList();
 
-        boolean expired = relevantVersions.stream().anyMatch(this::isExpired);
+        boolean expired = relevantVersions.stream().anyMatch(relevantVersion -> this.isExpired(relevantVersion.expiryDate()));
 
-        LocalDate expiryDate = relevantVersions.stream().map(AppVersion::expiryDate).filter(Objects::nonNull).filter(date -> date.isAfter(DateTimeUtil.today())).min(Comparator.naturalOrder()).orElse(null);
+        LocalDate expiryDate = relevantVersions.stream()
+            .map(AppVersion::expiryDate)
+            .filter(Objects::nonNull)
+            .filter(date -> !this.isExpired(date))
+            .min(Comparator.naturalOrder())
+            .orElse(null);
 
         return new CurrentAppVersion(expired, expiryDate);
     }
 
-    @Override
-    public boolean isExpired(AppVersion appVersion) {
-        LocalDate expiryDate = appVersion.expiryDate();
-        return expiryDate == null || expiryDate.isBefore(DateTimeUtil.today());
+    private boolean isExpired(LocalDate expiryDate) {
+        return expiryDate == null || !expiryDate.isAfter(DateTimeUtil.today());
     }
 
     @Override
