@@ -4,7 +4,7 @@
 Flutter mobile app (Driver Advisory System) for train drivers. Tablet-only (≥11"), Android & iOS.
 
 ## Monorepo
-Dart workspace managed with **Melos** (`fvm dart run melos <script>`). Each subdirectory is a separate package. Key packages:
+Dart workspace managed with **Melos** (`fvm dart run melos <script>`). Each subdirectory represents a component as a separate package.
 
 | Package             | Purpose                                                                  |
 |---------------------|--------------------------------------------------------------------------|

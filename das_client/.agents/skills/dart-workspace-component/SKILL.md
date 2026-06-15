@@ -1,21 +1,21 @@
 ---
 name: dart-workspace-component
-description: 'Generate a new Dart workspace module in this monorepo. Use when asked to scaffold a module, add a new component.'
+description: 'Generate a new Dart workspace component in this monorepo. Use when asked to create or refactor a module or component or when larger pure-dart functionality that can be encapsulated in a component'
 ---
 
-# Create Dart Workspace Module
+# Create Dart Workspace Component
 
 ## When to Use This Skill
 
 Use this skill when you need to:
 - Add a new reusable Dart/Flutter package, module, component to the workspace
-- Add larger pure-dart functionality that can be encapsulated in a module
+- Add larger pure-dart functionality that can be encapsulated in a component
 
 ## Prerequisites
 
-- Module name in `snake_case` (example: `customer_oriented_departure`)
+- Component name in `snake_case` (example: `customer_oriented_departure`)
 - Public API name in `PascalCase` (example: `CustomerOrientedDeparture`)
-- Decision whether `app` consumes this module directly
+- Decision whether `app` consumes this component directly
 
 ## Step-by-Step Workflow
 
@@ -38,7 +38,7 @@ Check existing components if unsure how to structure component.
   test/
 ```
 
-### 2) Create `pubspec.yaml` for the module
+### 2) Create `pubspec.yaml` for the component
 
 Follow workspace package conventions and add only required dependencies:
 
@@ -66,7 +66,7 @@ dev_dependencies:
 
 ### 3) Create `lib/component.dart`
 
-Expose only the module's public API and models and a creation entrypoint:
+Expose only the component's public API and models and a creation entrypoint:
 
 ```dart
 import 'package:<component_name>/src/repository/example_repository.dart';
