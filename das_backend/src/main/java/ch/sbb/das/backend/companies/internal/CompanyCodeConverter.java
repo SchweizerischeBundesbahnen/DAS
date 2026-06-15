@@ -1,6 +1,6 @@
-package ch.sbb.das.backend.tenancy.infrastructure.config;
+package ch.sbb.das.backend.companies.internal;
 
-import ch.sbb.das.backend.common.CompanyCode;
+import ch.sbb.das.backend.companies.CompanyCode;
 import org.jspecify.annotations.NonNull;
 import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
 import org.springframework.core.convert.converter.Converter;
@@ -24,7 +24,7 @@ class CompanyCodeConverter {
 
         @Override
         public CompanyCode convert(@NonNull String source) {
-            return CompanyCode.of(source);
+            return new CompanyCode(source);
         }
     }
 
@@ -34,7 +34,7 @@ class CompanyCodeConverter {
 
         @Override
         public CompanyCode convert(Integer source) {
-            return CompanyCode.of(source.toString());
+            return new CompanyCode(source.toString());
         }
     }
 }

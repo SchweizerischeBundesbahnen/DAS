@@ -3,19 +3,19 @@ package ch.sbb.das.backend.admin.infrastructure.jpa;
 import ch.sbb.das.backend.admin.application.links.model.ExternalLink;
 import ch.sbb.das.backend.admin.application.links.model.ExternalLinkRequest;
 import ch.sbb.das.backend.admin.domain.links.ExternalLinkRepository;
-import ch.sbb.das.backend.common.CompanyCode;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
-
+import ch.sbb.das.backend.companies.CompanyCode;
 import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
 class PersistenceExternalLinkRepository implements ExternalLinkRepository {
+
     private final ExternalLinkEntityRepository externalLinkEntityRepository;
 
     @Override
@@ -38,8 +38,8 @@ class PersistenceExternalLinkRepository implements ExternalLinkRepository {
         ExternalLinkEntity entity = new ExternalLinkEntity();
         entity.setId(id);
         entity.setCompanies(externalLinkRequest.companies().stream()
-                .sorted(Comparator.comparing(CompanyCode::value))
-                .collect(Collectors.toCollection(LinkedHashSet::new)));
+            .sorted(Comparator.comparing(CompanyCode::value))
+            .collect(Collectors.toCollection(LinkedHashSet::new)));
         if (externalLinkRequest.de() != null) {
             entity.setTitleDe(externalLinkRequest.de().title());
             entity.setLinkDe(externalLinkRequest.de().link());

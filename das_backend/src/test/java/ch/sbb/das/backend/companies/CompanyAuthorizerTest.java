@@ -1,4 +1,4 @@
-package ch.sbb.das.backend.tenancy.infrastructure;
+package ch.sbb.das.backend.companies;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
@@ -7,9 +7,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.das.backend.common.CompanyCode;
-import ch.sbb.das.backend.tenancy.domain.model.Tenant;
-import ch.sbb.das.backend.tenancy.domain.repository.TenantRepository;
 import java.time.Instant;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
@@ -26,17 +23,16 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 
 class CompanyAuthorizerTest {
 
-    private TenantRepository tenantRepository;
+    private static final CompanyCode COMPANY_A = new CompanyCode("2185");
     private CompanyAuthorizer underTest;
-
-    private static final CompanyCode COMPANY_A = CompanyCode.of("2185");
-    private static final CompanyCode COMPANY_B = CompanyCode.of("2585");
+    private static final CompanyCode COMPANY_B = new CompanyCode("2585");
+    private CompanyService companyService;
     private static final String EXAMPLE_ISSUER_URL = "https://issuer.example/v2.0";
 
     @BeforeEach
     void setUp() {
-        tenantRepository = Mockito.mock(TenantRepository.class);
-        underTest = new CompanyAuthorizer(tenantRepository);
+        companyService = Mockito.mock(CompanyService.class);
+        underTest = new CompanyAuthorizer(companyService);
     }
 
     private static void mockSecurityContxt(Authentication auth) {
@@ -72,14 +68,16 @@ class CompanyAuthorizerTest {
         mockSecurityContxt(mockJwt());
         Tenant tenant = tenantWithCompanies("t1", Set.of(COMPANY_A, COMPANY_B));
 
-        when(tenantRepository.getByIssuerUri(EXAMPLE_ISSUER_URL)).thenReturn(tenant);
+        when(companyService.getTenantByIssuerUri(EXAMPLE_ISSUER_URL)).thenReturn(tenant);
 
         assertThatCode(() -> underTest.requireCanAccessCompanies(Set.of(COMPANY_A))).doesNotThrowAnyException();
     }
 
     @Test
     void requireCanAccessCompanies_throws() {
-        assertThatThrownBy(() -> underTest.requireCanAccessCompanies(Set.of(COMPANY_A)))
+        Set<CompanyCode> companies = Set.of(COMPANY_A);
+
+        assertThatThrownBy(() -> underTest.requireCanAccessCompanies(companies))
             .isInstanceOf(AccessDeniedException.class)
             .hasMessageContaining("Not allowed");
     }
@@ -89,7 +87,7 @@ class CompanyAuthorizerTest {
         boolean result = underTest.canAccessCompanies(Set.of());
 
         assertThat(result).isFalse();
-        verifyNoInteractions(tenantRepository);
+        verifyNoInteractions(companyService);
     }
 
     @Test
@@ -97,7 +95,7 @@ class CompanyAuthorizerTest {
         boolean result = underTest.canAccessCompanies(null);
 
         assertThat(result).isFalse();
-        verifyNoInteractions(tenantRepository);
+        verifyNoInteractions(companyService);
     }
 
     @Test
@@ -105,7 +103,7 @@ class CompanyAuthorizerTest {
         mockSecurityContxt(mockJwt());
         Tenant tenant = tenantWithCompanies("t1", null);
 
-        when(tenantRepository.getByIssuerUri(EXAMPLE_ISSUER_URL)).thenReturn(tenant);
+        when(companyService.getTenantByIssuerUri(EXAMPLE_ISSUER_URL)).thenReturn(tenant);
 
         boolean result = underTest.canAccessCompanies(Set.of(COMPANY_A));
 
@@ -117,7 +115,7 @@ class CompanyAuthorizerTest {
         mockSecurityContxt(mockJwt());
         Tenant tenant = tenantWithCompanies("t1", Set.of());
 
-        when(tenantRepository.getByIssuerUri(EXAMPLE_ISSUER_URL)).thenReturn(tenant);
+        when(companyService.getTenantByIssuerUri(EXAMPLE_ISSUER_URL)).thenReturn(tenant);
 
         boolean result = underTest.canAccessCompanies(Set.of(COMPANY_A));
 
@@ -127,14 +125,15 @@ class CompanyAuthorizerTest {
     @Test
     void canAccessCompanies_throws_whenTenantRepositoryDoesNotKnowIssuer() {
         mockSecurityContxt(mockJwt());
-        when(tenantRepository.getByIssuerUri(EXAMPLE_ISSUER_URL))
+        when(companyService.getTenantByIssuerUri(EXAMPLE_ISSUER_URL))
             .thenThrow(new IllegalArgumentException("unknown tenant"));
 
-        assertThatThrownBy(() -> underTest.canAccessCompanies(Set.of(COMPANY_A)))
+        Set<CompanyCode> companies = Set.of(COMPANY_A);
+        assertThatThrownBy(() -> underTest.canAccessCompanies(companies))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("unknown tenant");
 
-        verify(tenantRepository).getByIssuerUri(EXAMPLE_ISSUER_URL);
+        verify(companyService).getTenantByIssuerUri(EXAMPLE_ISSUER_URL);
     }
 
     @Test
@@ -142,7 +141,7 @@ class CompanyAuthorizerTest {
         boolean result = underTest.isAdminTenant();
 
         assertThat(result).isFalse();
-        verifyNoInteractions(tenantRepository);
+        verifyNoInteractions(companyService);
     }
 
     @Test
@@ -151,7 +150,7 @@ class CompanyAuthorizerTest {
         boolean result = underTest.isAdminTenant();
 
         assertThat(result).isFalse();
-        verifyNoInteractions(tenantRepository);
+        verifyNoInteractions(companyService);
     }
 
     @Test
@@ -159,7 +158,7 @@ class CompanyAuthorizerTest {
         mockSecurityContxt(mockJwt());
         Tenant tenant = tenantWithCompanies("t1", Set.of(COMPANY_A, COMPANY_B));
 
-        when(tenantRepository.getByIssuerUri(EXAMPLE_ISSUER_URL)).thenReturn(tenant);
+        when(companyService.getTenantByIssuerUri(EXAMPLE_ISSUER_URL)).thenReturn(tenant);
 
         boolean result = underTest.canAccessCompanies(Set.of(COMPANY_A));
 
@@ -171,7 +170,7 @@ class CompanyAuthorizerTest {
         mockSecurityContxt(mockJwt());
         Tenant tenant = tenantWithCompanies("t1", Set.of(COMPANY_A));
 
-        when(tenantRepository.getByIssuerUri(EXAMPLE_ISSUER_URL)).thenReturn(tenant);
+        when(companyService.getTenantByIssuerUri(EXAMPLE_ISSUER_URL)).thenReturn(tenant);
 
         boolean result = underTest.canAccessCompanies(Set.of(COMPANY_A, COMPANY_B));
 
@@ -181,16 +180,16 @@ class CompanyAuthorizerTest {
     @Test
     void isAdmin_returnsFalse_whenTenantIsNotAdminTenant() {
         mockSecurityContxt(mockJwt());
-        Tenant tenant = tenantWithCompanies("sob", Set.of(CompanyCode.of("9058")));
+        Tenant tenant = tenantWithCompanies("sob", Set.of(new CompanyCode("9058")));
 
-        when(tenantRepository.getByIssuerUri(EXAMPLE_ISSUER_URL)).thenReturn(tenant);
-        when(tenantRepository.isAdminTenant(tenant)).thenReturn(false);
+        when(companyService.getTenantByIssuerUri(EXAMPLE_ISSUER_URL)).thenReturn(tenant);
+        when(companyService.isAdminTenant(tenant)).thenReturn(false);
 
         boolean result = underTest.isAdminTenant();
 
         assertThat(result).isFalse();
-        verify(tenantRepository).getByIssuerUri(EXAMPLE_ISSUER_URL);
-        verify(tenantRepository).isAdminTenant(tenant);
+        verify(companyService).getTenantByIssuerUri(EXAMPLE_ISSUER_URL);
+        verify(companyService).isAdminTenant(tenant);
     }
 
     @Test
@@ -198,26 +197,26 @@ class CompanyAuthorizerTest {
         mockSecurityContxt(mockJwt());
         Tenant tenant = tenantWithCompanies("sbb", Set.of(COMPANY_A));
 
-        when(tenantRepository.getByIssuerUri(EXAMPLE_ISSUER_URL)).thenReturn(tenant);
-        when(tenantRepository.isAdminTenant(tenant)).thenReturn(true);
+        when(companyService.getTenantByIssuerUri(EXAMPLE_ISSUER_URL)).thenReturn(tenant);
+        when(companyService.isAdminTenant(tenant)).thenReturn(true);
 
         boolean result = underTest.isAdminTenant();
 
         assertThat(result).isTrue();
-        verify(tenantRepository).getByIssuerUri(EXAMPLE_ISSUER_URL);
-        verify(tenantRepository).isAdminTenant(tenant);
+        verify(companyService).getTenantByIssuerUri(EXAMPLE_ISSUER_URL);
+        verify(companyService).isAdminTenant(tenant);
     }
 
     @Test
     void isAdmin_throws_whenTenantRepositoryDoesNotKnowIssuer() {
         mockSecurityContxt(mockJwt());
-        when(tenantRepository.getByIssuerUri(EXAMPLE_ISSUER_URL))
+        when(companyService.getTenantByIssuerUri(EXAMPLE_ISSUER_URL))
             .thenThrow(new IllegalArgumentException("unknown tenant"));
 
         assertThatThrownBy(() -> underTest.isAdminTenant())
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("unknown tenant");
 
-        verify(tenantRepository).getByIssuerUri(EXAMPLE_ISSUER_URL);
+        verify(companyService).getTenantByIssuerUri(EXAMPLE_ISSUER_URL);
     }
 }

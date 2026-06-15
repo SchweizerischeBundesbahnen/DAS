@@ -2,8 +2,8 @@ package ch.sbb.das.backend.admin.infrastructure.jpa;
 
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationEntry;
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationTemplate;
-import ch.sbb.das.backend.common.CompanyCode;
-import ch.sbb.das.backend.common.CompanyCodeListConverter;
+import ch.sbb.das.backend.companies.CompanyCode;
+import ch.sbb.das.backend.companies.CompanyCodeListConverter;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;

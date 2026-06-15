@@ -1,6 +1,5 @@
-package ch.sbb.das.backend.tenancy.domain.model;
+package ch.sbb.das.backend.companies;
 
-import ch.sbb.das.backend.common.CompanyCode;
 import java.util.Set;
 
 /**

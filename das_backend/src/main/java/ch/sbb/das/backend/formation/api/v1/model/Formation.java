@@ -3,7 +3,7 @@ package ch.sbb.das.backend.formation.api.v1.model;
 import static ch.sbb.das.backend.formation.api.v1.FormationController.OPERATIONAL_DAY_DESCRIPTION;
 import static ch.sbb.das.backend.formation.api.v1.FormationController.OPERATIONAL_TRAIN_NUMBER_DESCRIPTION;
 
-import ch.sbb.das.backend.common.CompanyCode;
+import ch.sbb.das.backend.companies.CompanyCode;
 import ch.sbb.das.backend.formation.infrastructure.model.TrainFormationRunEntity;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;

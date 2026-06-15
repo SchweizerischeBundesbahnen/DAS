@@ -1,9 +1,8 @@
-package ch.sbb.das.backend.tenancy.inftrastructure.config;
+package ch.sbb.das.backend.companies.internal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.das.backend.tenancy.domain.model.Tenant;
-import ch.sbb.das.backend.tenancy.infrastructure.config.ApplicationConfiguration;
+import ch.sbb.das.backend.companies.Tenant;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,14 +11,14 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest(classes = ApplicationConfiguration.class)
 @ActiveProfiles("test")
-class TenantConfigTest {
+class ApplicationConfigurationTest {
 
     @Autowired
-    private ApplicationConfiguration applicationConfiguration;
+    private ApplicationConfiguration underTest;
 
     @Test
     void should_load_tenants_from_configuration() {
-        List<Tenant> tenants = applicationConfiguration.getTenants();
+        List<Tenant> tenants = underTest.getTenants();
         assertThat(tenants).isNotNull()
             .isNotEmpty()
             .hasSize(2);

@@ -1,7 +1,5 @@
-package ch.sbb.das.backend.common;
+package ch.sbb.das.backend.companies;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.regex.Pattern;
 import lombok.NonNull;
@@ -23,11 +21,6 @@ public record CompanyCode(@NonNull String value) {
         if (!COMPANY_CODE_PATTERN.matcher(value).matches()) {
             throw new IllegalArgumentException("CompanyCode must match [0-9A-Z]{4}");
         }
-    }
-
-    @JsonCreator(mode = Mode.DELEGATING)
-    public static CompanyCode of(String value) {
-        return new CompanyCode(value);
     }
 
     @JsonValue

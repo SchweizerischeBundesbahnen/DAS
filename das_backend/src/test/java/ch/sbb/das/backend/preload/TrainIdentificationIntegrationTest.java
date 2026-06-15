@@ -5,8 +5,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.waitAtMost;
 
 import ch.sbb.das.backend.IntegrationTest;
-import ch.sbb.das.backend.common.CompanyCode;
 import ch.sbb.das.backend.common.DateTimeUtil;
+import ch.sbb.das.backend.companies.CompanyCode;
 import ch.sbb.das.backend.preload.application.TimetableService;
 import ch.sbb.das.backend.preload.application.TrainIdentificationService;
 import ch.sbb.das.backend.preload.application.model.trainidentification.OperatingPeriod;
@@ -37,7 +37,7 @@ import tools.jackson.databind.json.JsonMapper;
 class TrainIdentificationIntegrationTest {
 
     private static final int TEST_PERIOD_NUMBER_OF_DAYS = 10;
-    private static final CompanyCode COMPANY_CODE_SOB = CompanyCode.of("9058");
+    private static final CompanyCode COMPANY_CODE_SOB = new CompanyCode("9058");
 
     @Autowired
     private JsonMapper jsonMapper;

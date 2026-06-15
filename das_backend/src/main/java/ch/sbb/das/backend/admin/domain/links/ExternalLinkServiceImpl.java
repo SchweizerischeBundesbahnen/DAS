@@ -2,14 +2,13 @@ package ch.sbb.das.backend.admin.domain.links;
 
 import ch.sbb.das.backend.admin.application.links.model.ExternalLink;
 import ch.sbb.das.backend.admin.application.links.model.ExternalLinkRequest;
-import ch.sbb.das.backend.common.CompanyCode;
-import ch.sbb.das.backend.tenancy.infrastructure.CompanyAuthorizer;
-import lombok.RequiredArgsConstructor;
-
+import ch.sbb.das.backend.companies.CompanyAuthorizer;
+import ch.sbb.das.backend.companies.CompanyCode;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class ExternalLinkServiceImpl implements ExternalLinkService {

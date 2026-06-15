@@ -1,6 +1,6 @@
 package ch.sbb.das.backend.admin.application.ruindications.model;
 
-import ch.sbb.das.backend.common.CompanyCode;
+import ch.sbb.das.backend.companies.CompanyCode;
 import ch.sbb.das.backend.formation.domain.model.TafTapLocationReference;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;

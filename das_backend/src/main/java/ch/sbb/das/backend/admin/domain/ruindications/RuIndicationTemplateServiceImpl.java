@@ -2,8 +2,8 @@ package ch.sbb.das.backend.admin.domain.ruindications;
 
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationTemplate;
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationTemplateRequest;
-import ch.sbb.das.backend.common.CompanyCode;
-import ch.sbb.das.backend.tenancy.infrastructure.CompanyAuthorizer;
+import ch.sbb.das.backend.companies.CompanyAuthorizer;
+import ch.sbb.das.backend.companies.CompanyCode;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;

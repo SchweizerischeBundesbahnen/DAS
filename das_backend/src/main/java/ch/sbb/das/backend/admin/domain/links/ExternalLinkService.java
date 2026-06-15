@@ -2,7 +2,7 @@ package ch.sbb.das.backend.admin.domain.links;
 
 import ch.sbb.das.backend.admin.application.links.model.ExternalLink;
 import ch.sbb.das.backend.admin.application.links.model.ExternalLinkRequest;
-import ch.sbb.das.backend.common.CompanyCode;
+import ch.sbb.das.backend.companies.CompanyCode;
 
 import java.util.List;
 import java.util.Set;

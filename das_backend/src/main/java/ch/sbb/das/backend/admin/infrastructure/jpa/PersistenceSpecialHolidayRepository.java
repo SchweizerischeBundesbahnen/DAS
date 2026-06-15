@@ -2,15 +2,14 @@ package ch.sbb.das.backend.admin.infrastructure.jpa;
 
 import ch.sbb.das.backend.admin.application.ruindications.model.SpecialHoliday;
 import ch.sbb.das.backend.admin.domain.ruindications.SpecialHolidayRepository;
-import ch.sbb.das.backend.common.CompanyCode;
 import ch.sbb.das.backend.common.DateTimeUtil;
+import ch.sbb.das.backend.companies.CompanyCode;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 import org.springframework.stereotype.Component;
 
 @Component

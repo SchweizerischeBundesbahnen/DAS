@@ -1,8 +1,5 @@
-package ch.sbb.das.backend.tenancy.infrastructure;
+package ch.sbb.das.backend.companies;
 
-import ch.sbb.das.backend.common.CompanyCode;
-import ch.sbb.das.backend.tenancy.domain.model.Tenant;
-import ch.sbb.das.backend.tenancy.domain.repository.TenantRepository;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Set;
@@ -17,17 +14,15 @@ import org.springframework.util.CollectionUtils;
  * Resolves the authenticated tenant and evaluates company-level access.
  *
  * <p>The tenant is derived from the JWT issuer in the current security context.
- * Company authorization checks are based on whether the tenant's authorized
- * company set contains all requested company codes.
+ * Company authorization checks are based on whether the tenant's authorized company set contains all requested company codes.
  */
-@org.springframework.modulith.NamedInterface("tenancy")
 @Component("companyAuthorizer")
 public class CompanyAuthorizer {
 
-    private final TenantRepository tenantRepository;
+    private final CompanyService companyService;
 
-    public CompanyAuthorizer(TenantRepository tenantRepository) {
-        this.tenantRepository = tenantRepository;
+    public CompanyAuthorizer(CompanyService companyService) {
+        this.companyService = companyService;
     }
 
     /**
@@ -69,7 +64,7 @@ public class CompanyAuthorizer {
         if (tenant == null) {
             return false;
         }
-        return tenantRepository.isAdminTenant(tenant);
+        return companyService.isAdminTenant(tenant);
     }
 
     /**
@@ -97,6 +92,6 @@ public class CompanyAuthorizer {
             return null;
         }
 
-        return tenantRepository.getByIssuerUri(issuer.toString());
+        return companyService.getTenantByIssuerUri(issuer.toString());
     }
 }

@@ -1,4 +1,4 @@
-package ch.sbb.das.backend.tenancy.application.model;
+package ch.sbb.das.backend.companies.internal;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 

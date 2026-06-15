@@ -11,9 +11,8 @@ import ch.sbb.das.backend.admin.application.ruindications.model.ScheduleType;
 import ch.sbb.das.backend.admin.application.ruindications.model.SpecialHoliday;
 import ch.sbb.das.backend.admin.application.ruindications.model.TrainNumberFilterRequest;
 import ch.sbb.das.backend.admin.application.ruindications.model.TrainNumberParity;
-import ch.sbb.das.backend.common.CompanyCode;
+import ch.sbb.das.backend.companies.CompanyCode;
 import ch.sbb.das.backend.formation.domain.model.TafTapLocationReference;
-import org.springframework.util.CollectionUtils;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -25,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.springframework.util.CollectionUtils;
 
 public class RuIndicationMatchServiceImpl implements RuIndicationMatchService {
 

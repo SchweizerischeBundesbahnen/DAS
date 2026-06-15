@@ -1,6 +1,6 @@
 package ch.sbb.das.backend.admin.infrastructure.jpa;
 
-import ch.sbb.das.backend.admin.domain.settings.model.Company;
+import ch.sbb.das.backend.companies.Company;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

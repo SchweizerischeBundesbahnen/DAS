@@ -7,6 +7,8 @@ import org.springframework.http.HttpHeaders;
 public final class ApiDocumentation {
 
     public static final String VERSION_URI_V1 = "/v1";
+    public static final String DRIVER_URI = "/driver";
+    public static final String ADMIN_URI = "/admin";
 
     public static final String STATUS_304 = "Resource was not modified since last request by the client.";
     public static final String STATUS_400 = "Bad request";

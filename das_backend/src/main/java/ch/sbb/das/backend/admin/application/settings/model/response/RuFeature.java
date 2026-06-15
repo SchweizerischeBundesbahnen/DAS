@@ -1,6 +1,6 @@
 package ch.sbb.das.backend.admin.application.settings.model.response;
 
-import ch.sbb.das.backend.common.CompanyCode;
+import ch.sbb.das.backend.companies.CompanyCode;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "RU specific feature toggle.")

@@ -1,17 +1,15 @@
-package ch.sbb.das.backend.tenancy.application;
+package ch.sbb.das.backend.companies.internal;
 
 import ch.sbb.das.backend.common.ApiDocumentation;
 import ch.sbb.das.backend.common.ApiErrorResponses;
 import ch.sbb.das.backend.common.ApiParametersDefault;
 import ch.sbb.das.backend.common.ApiParametersDefault.ParamRequestId;
-import ch.sbb.das.backend.common.CompanyCode;
-import ch.sbb.das.backend.common.CompanyShortName;
 import ch.sbb.das.backend.common.Response;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
-import ch.sbb.das.backend.tenancy.application.model.CompaniesResponse;
-import ch.sbb.das.backend.tenancy.application.model.Company;
-import ch.sbb.das.backend.tenancy.infrastructure.CompanyAuthorizer;
-import ch.sbb.das.backend.tenancy.infrastructure.CompanyCodeRepository;
+import ch.sbb.das.backend.companies.CompanyAuthorizer;
+import ch.sbb.das.backend.companies.CompanyCode;
+import ch.sbb.das.backend.companies.CompanyService;
+import ch.sbb.das.backend.companies.CompanyShortName;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -30,14 +28,14 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Companies", description = "API for companies available to the authenticated user.")
 public class CompanyController {
 
-    static final String PATH_SEGMENT_COMPANIES = "/companies";
-    public static final String API_COMPANIES = ApiDocumentation.VERSION_URI_V1 + PATH_SEGMENT_COMPANIES;
+    private static final String PATH_SEGMENT_COMPANIES = "/companies";
+    protected static final String API_COMPANIES = ApiDocumentation.DRIVER_URI + PATH_SEGMENT_COMPANIES;
 
-    private final CompanyCodeRepository companyCodeRepository;
+    private final CompanyService companyService;
     private final CompanyAuthorizer companyAuthorizer;
 
-    public CompanyController(CompanyCodeRepository companyCodeRepository, CompanyAuthorizer companyAuthorizer) {
-        this.companyCodeRepository = companyCodeRepository;
+    public CompanyController(CompanyService companyService, CompanyAuthorizer companyAuthorizer) {
+        this.companyService = companyService;
         this.companyAuthorizer = companyAuthorizer;
     }
 
@@ -48,10 +46,10 @@ public class CompanyController {
     @ApiErrorResponses
     public ResponseEntity<? extends Response> getAll(
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
-        Map<CompanyCode, CompanyShortName> uicMap = companyCodeRepository.getAll();
+        Map<CompanyCode, CompanyShortName> uicMap = companyService.getAllCompanies();
         List<Company> companies = companyAuthorizer.authorizedCompanies().stream()
             .filter(uicMap::containsKey)
-            .map(code -> new Company(code.value(), uicMap.get(code).getValue()))
+            .map(code -> new Company(code.value(), uicMap.get(code).value()))
             .sorted(Comparator.comparing(Company::name))
             .toList();
         return ResponseEntityFactory.createOkResponse(new CompaniesResponse(companies), requestId);

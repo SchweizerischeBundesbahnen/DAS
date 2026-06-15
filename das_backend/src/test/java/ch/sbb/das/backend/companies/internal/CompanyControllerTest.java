@@ -1,6 +1,6 @@
-package ch.sbb.das.backend.tenancy.application;
+package ch.sbb.das.backend.companies.internal;
 
-import static ch.sbb.das.backend.tenancy.application.CompanyController.API_COMPANIES;
+import static ch.sbb.das.backend.companies.internal.CompanyController.API_COMPANIES;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

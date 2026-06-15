@@ -6,8 +6,8 @@ import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationEntr
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationPeriod;
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationScope;
 import ch.sbb.das.backend.admin.application.ruindications.model.TrainNumberFilterRequest;
-import ch.sbb.das.backend.common.CompanyCode;
-import ch.sbb.das.backend.common.CompanyCodeListConverter;
+import ch.sbb.das.backend.companies.CompanyCode;
+import ch.sbb.das.backend.companies.CompanyCodeListConverter;
 import ch.sbb.das.backend.formation.domain.model.TafTapLocationReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;

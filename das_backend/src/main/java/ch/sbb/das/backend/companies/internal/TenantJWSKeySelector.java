@@ -1,7 +1,7 @@
-package ch.sbb.das.backend.tenancy.infrastructure.config;
+package ch.sbb.das.backend.companies.internal;
 
-import ch.sbb.das.backend.tenancy.domain.model.Tenant;
-import ch.sbb.das.backend.tenancy.domain.repository.TenantRepository;
+import ch.sbb.das.backend.companies.CompanyService;
+import ch.sbb.das.backend.companies.Tenant;
 import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jose.KeySourceException;
 import com.nimbusds.jose.proc.JWSAlgorithmFamilyJWSKeySelector;
@@ -26,11 +26,11 @@ import org.springframework.stereotype.Component;
 public class TenantJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<SecurityContext> {
 
     public static final String ISSUER_CLAIM = "iss";
-    private final TenantRepository tenantRepository;
+    private final CompanyService companyService;
     private final Map<String, JWSKeySelector<SecurityContext>> selectors = new ConcurrentHashMap<>();
 
-    public TenantJWSKeySelector(TenantRepository tenantRepository) {
-        this.tenantRepository = tenantRepository;
+    public TenantJWSKeySelector(CompanyService companyService) {
+        this.companyService = companyService;
     }
 
     @Override
@@ -44,7 +44,7 @@ public class TenantJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<Sec
     }
 
     private JWSKeySelector<SecurityContext> fromTenant(String issuerUri) {
-        Tenant tenant = tenantRepository.getByIssuerUri(issuerUri);
+        Tenant tenant = companyService.getTenantByIssuerUri(issuerUri);
         return fromUri(tenant.jwkSetUri());
     }
 
@@ -56,4 +56,3 @@ public class TenantJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<Sec
         }
     }
 }
-

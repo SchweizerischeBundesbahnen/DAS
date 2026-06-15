@@ -2,7 +2,7 @@ package ch.sbb.das.backend.preload.application;
 
 import static org.xmlunit.assertj3.XmlAssert.assertThat;
 
-import ch.sbb.das.backend.common.CompanyCode;
+import ch.sbb.das.backend.companies.CompanyCode;
 import ch.sbb.das.backend.preload.application.model.trainidentification.TrainIdentification;
 import ch.sbb.das.backend.preload.domain.SegmentProfileIdentification;
 import ch.sbb.das.backend.preload.infrastructure.xml.SferaMessagingConfig;
@@ -31,7 +31,7 @@ class SferaMessageCreatorTest {
         return !localName.equals("timestamp") && !localName.equals("message_ID");
     };
     public static final DefaultNodeMatcher SP_ID_NODE_MATCHER = new DefaultNodeMatcher(ElementSelectors.byNameAndAttributes("SP_Request", "SP_ID"));
-    private final TrainIdentification trainId = new TrainIdentification(1, "51", OffsetDateTime.of(2025, 10, 6, 16, 38, 12, 0, ZoneOffset.ofHours(2)), Set.of(CompanyCode.of("1111")));
+    private final TrainIdentification trainId = new TrainIdentification(1, "51", OffsetDateTime.of(2025, 10, 6, 16, 38, 12, 0, ZoneOffset.ofHours(2)), Set.of(new CompanyCode("1111")));
 
     @Autowired
     SferaMessageCreator sferaMessageCreator;

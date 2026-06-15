@@ -8,7 +8,7 @@ import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import ch.sbb.das.backend.common.CompanyCode;
+import ch.sbb.das.backend.companies.CompanyCode;
 import ch.sbb.das.backend.preload.application.model.trainidentification.TrainIdentification;
 import ch.sbb.das.backend.preload.domain.PreloadResult;
 import ch.sbb.das.backend.preload.infrastructure.PahoMqttClient;
@@ -93,7 +93,7 @@ class SferaServiceTest {
                 0,
                 "12345",
                 OffsetDateTime.now(),
-                Set.of(CompanyCode.of("1285")));
+                Set.of(new CompanyCode("1285")));
 
         PreloadResult result = underTest.preload(trainId);
         assertThat(result).isInstanceOf(PreloadResult.Success.class);
@@ -140,7 +140,7 @@ class SferaServiceTest {
                 0,
                 "12345",
                 OffsetDateTime.now(),
-                Set.of(CompanyCode.of("1285")));
+                Set.of(new CompanyCode("1285")));
 
         assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() -> underTest.preload(trainId)).withMessage("Handshake request G2B error: 51, 54");
     }

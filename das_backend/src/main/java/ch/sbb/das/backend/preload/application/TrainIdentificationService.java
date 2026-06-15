@@ -1,12 +1,12 @@
 package ch.sbb.das.backend.preload.application;
 
-import ch.sbb.das.backend.common.CompanyCode;
-import ch.sbb.das.backend.common.CompanyShortName;
 import ch.sbb.das.backend.common.DateTimeUtil;
+import ch.sbb.das.backend.companies.CompanyCode;
+import ch.sbb.das.backend.companies.CompanyService;
+import ch.sbb.das.backend.companies.CompanyShortName;
 import ch.sbb.das.backend.preload.application.model.trainidentification.TrainIdentification;
 import ch.sbb.das.backend.preload.infrastructure.TrainIdentificationRepository;
 import ch.sbb.das.backend.preload.infrastructure.model.entities.TrainIdentificationEntity;
-import ch.sbb.das.backend.tenancy.infrastructure.CompanyCodeRepository;
 import java.time.OffsetDateTime;
 import java.util.Comparator;
 import java.util.List;
@@ -20,11 +20,11 @@ public class TrainIdentificationService {
 
     private final TrainIdentificationRepository trainIdentificationRepository;
 
-    private final CompanyCodeRepository companyCodeRepository;
+    private final CompanyService companyService;
 
-    public TrainIdentificationService(TrainIdentificationRepository trainIdentificationRepository, CompanyCodeRepository companyCodeRepository) {
+    public TrainIdentificationService(TrainIdentificationRepository trainIdentificationRepository, CompanyService companyService) {
         this.trainIdentificationRepository = trainIdentificationRepository;
-        this.companyCodeRepository = companyCodeRepository;
+        this.companyService = companyService;
     }
 
     public List<TrainIdentification> getNewTrainIdentificationsBetween(OffsetDateTime after, OffsetDateTime before) {
@@ -43,8 +43,8 @@ public class TrainIdentificationService {
 
     private Set<CompanyCode> readCompanyCodes(String companies) {
         return Set.of(companies.split(",")).stream()
-            .map(CompanyShortName::of)
-            .map(companyCodeRepository::findCompanyCode)
+            .map(CompanyShortName::new)
+            .map(companyService::findCompanyCodeByCompanyShortName)
             .filter(Optional::isPresent)
             .map(Optional::get)
             .collect(Collectors.toSet());

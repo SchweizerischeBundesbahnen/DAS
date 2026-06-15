@@ -4,9 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.das.backend.admin.domain.settings.model.Company;
 import ch.sbb.das.backend.admin.domain.settings.model.RuFeature;
 import ch.sbb.das.backend.admin.domain.settings.model.RuFeatureKey;
+import ch.sbb.das.backend.companies.Company;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

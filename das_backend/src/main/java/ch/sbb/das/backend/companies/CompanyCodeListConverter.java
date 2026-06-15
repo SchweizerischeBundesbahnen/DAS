@@ -1,11 +1,11 @@
-package ch.sbb.das.backend.common;
+package ch.sbb.das.backend.companies;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
-import org.springframework.util.CollectionUtils;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.springframework.util.CollectionUtils;
 
 @Converter
 public class CompanyCodeListConverter implements AttributeConverter<Set<CompanyCode>, String> {

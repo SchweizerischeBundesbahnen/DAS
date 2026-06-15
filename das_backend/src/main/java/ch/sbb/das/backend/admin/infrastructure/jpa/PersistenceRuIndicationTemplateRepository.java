@@ -2,7 +2,7 @@ package ch.sbb.das.backend.admin.infrastructure.jpa;
 
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationTemplate;
 import ch.sbb.das.backend.admin.domain.ruindications.RuIndicationTemplateRepository;
-import ch.sbb.das.backend.common.CompanyCode;
+import ch.sbb.das.backend.companies.CompanyCode;
 import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.List;

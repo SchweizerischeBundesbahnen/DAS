@@ -1,6 +1,6 @@
-package ch.sbb.das.backend.tenancy.infrastructure.config;
+package ch.sbb.das.backend.companies.internal;
 
-import ch.sbb.das.backend.tenancy.domain.model.Tenant;
+import ch.sbb.das.backend.companies.Tenant;
 import java.util.List;
 import java.util.Map;
 import lombok.Getter;

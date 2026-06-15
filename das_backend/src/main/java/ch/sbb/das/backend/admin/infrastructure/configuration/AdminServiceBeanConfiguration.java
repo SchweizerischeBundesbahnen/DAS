@@ -20,7 +20,7 @@ import ch.sbb.das.backend.admin.domain.settings.AppVersionServiceImpl;
 import ch.sbb.das.backend.admin.domain.settings.RuFeatureRepository;
 import ch.sbb.das.backend.admin.domain.settings.RuFeatureService;
 import ch.sbb.das.backend.admin.domain.settings.RuFeatureServiceImpl;
-import ch.sbb.das.backend.tenancy.infrastructure.CompanyAuthorizer;
+import ch.sbb.das.backend.companies.CompanyAuthorizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

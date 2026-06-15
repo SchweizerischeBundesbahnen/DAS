@@ -11,7 +11,7 @@ import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationMatc
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationMatchesRequest;
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationPeriod;
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationScope;
-import ch.sbb.das.backend.common.CompanyCode;
+import ch.sbb.das.backend.companies.CompanyCode;
 import ch.sbb.das.backend.formation.domain.model.TafTapLocationReference;
 import java.time.LocalDate;
 import java.util.List;

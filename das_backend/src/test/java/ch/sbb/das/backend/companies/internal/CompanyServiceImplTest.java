@@ -1,11 +1,9 @@
-package ch.sbb.das.backend.tenancy.inftrastructure.config;
+package ch.sbb.das.backend.companies.internal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import ch.sbb.das.backend.tenancy.domain.model.Tenant;
-import ch.sbb.das.backend.tenancy.infrastructure.ConfigTenantRepository;
-import ch.sbb.das.backend.tenancy.infrastructure.config.ApplicationConfiguration;
+import ch.sbb.das.backend.companies.Tenant;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,35 +12,35 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest(classes = ApplicationConfiguration.class)
 @ActiveProfiles("test")
-class ConfigTenantRepositoryTest {
+class CompanyServiceImplTest {
 
     @Autowired
     private ApplicationConfiguration applicationConfiguration;
 
-    private ConfigTenantRepository tenantRepository;
+    private CompanyServiceImpl underTest;
 
     @BeforeEach
     void setUp() {
-        tenantRepository = new ConfigTenantRepository(applicationConfiguration);
+        underTest = new CompanyServiceImpl(applicationConfiguration);
     }
 
     /**
-     * @see TenantConfigTest
+     * @see ApplicationConfigurationTest
      */
     @Test
-    void getByIssuerUri() {
-        Tenant tenant = tenantRepository.getByIssuerUri("https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0");
+    void getTenantByIssuerUri() {
+        Tenant tenant = underTest.getTenantByIssuerUri("https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0");
         assertThat(tenant).isNotNull();
         assertThat(tenant.name()).isEqualTo("sbb");
 
-        tenant = tenantRepository.getByIssuerUri("https://login.microsoftonline.com/3409e798-d567-49b1-9bae-f0be66427c54/v2.0");
+        tenant = underTest.getTenantByIssuerUri("https://login.microsoftonline.com/3409e798-d567-49b1-9bae-f0be66427c54/v2.0");
         assertThat(tenant).isNotNull();
         assertThat(tenant.name()).isEqualTo("unknown-tenant");
     }
 
     @Test
-    void getByIssuerUri_badUri() {
-        assertThatThrownBy(() -> tenantRepository.getByIssuerUri("https://bad.issuer"))
+    void getTenantByIssuerUri_badUri() {
+        assertThatThrownBy(() -> underTest.getTenantByIssuerUri("https://bad.issuer"))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("unknown tenant");
     }
