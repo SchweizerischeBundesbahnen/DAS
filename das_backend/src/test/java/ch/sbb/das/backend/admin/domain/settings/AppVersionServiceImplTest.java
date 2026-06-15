@@ -33,8 +33,9 @@ class AppVersionServiceImplTest {
         AppVersionEntity version110 = new AppVersionEntity(2, "1.1.0", false, LocalDate.now().plusDays(10));
         AppVersionEntity version1101 = new AppVersionEntity(3, "0.10.1", true, LocalDate.now().minusDays(10));
         AppVersionEntity version150 = new AppVersionEntity(4, "1.5.0", true, LocalDate.now().plusDays(100));
+        AppVersionEntity version200 = new AppVersionEntity(5, "2.0.0", false, LocalDate.now());
         when(appVersionRepository.findAll()).thenReturn(
-            List.of(version100.toAppVersion(), version103.toAppVersion(), version110.toAppVersion(), version1101.toAppVersion(), version150.toAppVersion()));
+            List.of(version100.toAppVersion(), version103.toAppVersion(), version110.toAppVersion(), version1101.toAppVersion(), version150.toAppVersion(), version200.toAppVersion()));
     }
 
     @Test
@@ -70,6 +71,15 @@ class AppVersionServiceImplTest {
         assertThat(result).isNotNull();
         assertThat(result.expired()).isFalse();
         assertThat(result.expiryDate()).isEqualTo(LocalDate.now().plusDays(10));
+    }
+
+    @Test
+    void getCurrent_expiryDateByExactVersionTodayBoundary() {
+        CurrentAppVersion result = underTest.getCurrent("2.0.0");
+
+        assertThat(result).isNotNull();
+        assertThat(result.expired()).isTrue();
+        assertThat(result.expiryDate()).isNull();
     }
 
     @Test
@@ -123,4 +133,5 @@ class AppVersionServiceImplTest {
         verify(appVersionRepository).existsByVersion("1.5.0", 42);
         verify(appVersionRepository, never()).save(any());
     }
+
 }
