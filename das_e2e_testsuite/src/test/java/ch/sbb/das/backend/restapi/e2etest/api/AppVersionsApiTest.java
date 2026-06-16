@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -76,6 +77,7 @@ class AppVersionsApiTest extends RestAssuredCommand {
         // TODO AssertionsApiClientModel.assertAppVersionResponse(appVersionResponse, endpointConfiguration.endpoint());
     }
 
+    @DisplayName("/app-versions illegal access|tests: 1406(2)")
     @Test
     void getById_ForbiddenNonAdminTenant() {
         final Response response = createRequestWithHeader(null, ServiceDoc.REQUEST_ID_VALUE_E2E_TEST)

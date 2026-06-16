@@ -12,6 +12,7 @@ import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +39,7 @@ class SettingsApiTest extends RestAssuredCommand {
         testContextManager.prepareTestInstance(this);
     }
 
+    @DisplayName("/settings&xAppVersion=INFINITE OK|tests: 1006(2),1602(2),713,1406(2)")
     @Test
     void getSettings_okByOpenApiClient() {
         final Mono<ResponseEntity<SettingsResponse>> responseAsync = backendApi.getSettingsApi().getSettingsWithHttpInfo(ServiceDoc.REQUEST_ID_VALUE_E2E_TEST, /*TODO config */ "9999.0.0");
@@ -47,6 +49,7 @@ class SettingsApiTest extends RestAssuredCommand {
         AssertionsApiClientModel.assertSettingsResponse(settingsResponse, endpointConfiguration.endpoint());
     }
 
+    @DisplayName("/settings&xAppVersion=0.1.0 OK|tests: 1006(2),1602(2),713,1406(2)")
     @Test
     void settings_okByRestAssured() {
         final String requestId = getRequestId();
