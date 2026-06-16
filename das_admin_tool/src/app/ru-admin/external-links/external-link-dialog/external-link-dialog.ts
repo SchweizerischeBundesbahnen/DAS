@@ -1,16 +1,20 @@
 import { Component, inject } from '@angular/core';
-import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
 import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core/overlay';
 import { LanguageCode, LanguageProvider } from '../../../shared/language-provider';
-import { SbbDialogModule } from '@sbb-esta/lyne-angular/dialog';
-import { SbbFormField, SbbError } from '@sbb-esta/lyne-angular/form-field';
-import { SbbTabsModule } from '@sbb-esta/lyne-angular/tabs';
+import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
 import { CompaniesInputComponent } from '../../../shared/companies-input/companies-input.component';
 import { UpperCasePipe } from '@angular/common';
 import { languageRequired, oneLanguageRequired, url } from '../../../shared/form-validators.util';
-import { SbbActionGroup } from '@sbb-esta/lyne-angular/action-group';
 import { ExternalLink } from '../../ru-admin-api';
-import { SbbButtonModule } from '@sbb-esta/lyne-angular/button';
+import { BaseDialog } from '../../../shared/base-dialog/base-dialog.component';
+import { SbbTabsModule } from '@sbb-esta/lyne-angular/tabs';
 
 interface FormGroupExternalLinkContent {
   title: FormControl<string>;
@@ -29,55 +33,47 @@ export type ExternalLinkDialogEditResult = ExternalLink | 'delete';
 @Component({
   selector: 'app-external-link-dialog',
   imports: [
-    SbbDialogModule,
-    SbbFormField,
-    SbbTabsModule,
-    CompaniesInputComponent,
-    UpperCasePipe,
     ReactiveFormsModule,
-    SbbButtonModule,
-    SbbError,
-    SbbActionGroup,
+    UpperCasePipe,
+    SbbFormFieldModule,
+    SbbTabsModule,
+    BaseDialog,
+    CompaniesInputComponent,
   ],
   templateUrl: './external-link-dialog.html',
   styleUrl: './external-link-dialog.css',
 })
 export class ExternalLinkDialog {
   protected readonly languageProvider = inject(LanguageProvider);
-  private readonly formBuilder = inject(NonNullableFormBuilder);
-
   protected readonly dialogTitle: string;
-
-  protected readonly isEdit: boolean;
-
-  private readonly dialogData = inject<ExternalLink>(SBB_OVERLAY_DATA, { optional: true });
-
+  protected readonly dialogData = inject<ExternalLink>(SBB_OVERLAY_DATA, {optional: true}) || undefined;
+  private readonly formBuilder = inject(NonNullableFormBuilder);
   protected externalLinkForm = this.formBuilder.group<FormGroupExternalLink>(
     {
       companies: this.formBuilder.control<string[]>([], Validators.required),
       de: this.formBuilder.group(
-        { title: '', link: ['', { validators: url }] },
-        { validators: languageRequired },
+        {title: '', link: ['', {validators: url}]},
+        {validators: languageRequired},
       ),
       fr: this.formBuilder.group(
-        { title: '', link: ['', { validators: url }] },
-        { validators: languageRequired },
+        {title: '', link: ['', {validators: url}]},
+        {validators: languageRequired},
       ),
       it: this.formBuilder.group(
-        { title: '', link: ['', { validators: url }] },
-        { validators: languageRequired },
+        {title: '', link: ['', {validators: url}]},
+        {validators: languageRequired},
       ),
     },
-    { validators: oneLanguageRequired },
+    {validators: oneLanguageRequired},
   );
 
   constructor() {
-    this.isEdit = this.dialogData?.id !== undefined;
-    this.dialogTitle = this.isEdit
+    const isEdit = this.dialogData?.id !== undefined;
+    this.dialogTitle = isEdit
       ? $localize`:@@external_links_dialog_title_edit:Externen Absprung bearbeiten`
       : $localize`:@@external_links_dialog_title_create:Externen Absprung erfassen`;
 
-    if (this.isEdit && this.dialogData) {
+    if (isEdit && this.dialogData) {
       this.externalLinkForm.patchValue(this.dialogData);
     }
   }

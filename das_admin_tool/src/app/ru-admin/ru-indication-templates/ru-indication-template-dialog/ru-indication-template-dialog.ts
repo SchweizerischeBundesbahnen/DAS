@@ -1,18 +1,16 @@
-import { Component, inject, viewChild } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RuIndicationTemplate } from '../../ru-admin-api';
 import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core/overlay';
 import { SbbTitleModule } from '@sbb-esta/lyne-angular/title';
-import { SbbDialogModule } from '@sbb-esta/lyne-angular/dialog';
 import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
-import { SbbTabsModule } from '@sbb-esta/lyne-angular/tabs';
-import { SbbButtonModule } from '@sbb-esta/lyne-angular/button';
-import { SbbTooltipModule } from '@sbb-esta/lyne-angular/tooltip';
 import {
+  contentFormValue,
   createContentFormGroup,
   RuIndicationContentForm
 } from '../../ru-indication-content-form/ru-indication-content-form.component';
-import { SbbActionGroup } from '@sbb-esta/lyne-angular/action-group';
+import { BaseDialog } from '../../../shared/base-dialog/base-dialog.component';
+import { CompaniesInputComponent } from '../../../shared/companies-input/companies-input.component';
 
 export type RuIndicationTemplateDialogEditResult = RuIndicationTemplate | 'delete';
 
@@ -20,35 +18,34 @@ export type RuIndicationTemplateDialogEditResult = RuIndicationTemplate | 'delet
   selector: 'app-ru-indication-template-dialog',
   imports: [
     ReactiveFormsModule,
-    SbbDialogModule,
-    SbbButtonModule,
-    SbbTooltipModule,
     SbbFormFieldModule,
     SbbTitleModule,
-    SbbTabsModule,
+    BaseDialog,
     RuIndicationContentForm,
-    SbbActionGroup,
+    CompaniesInputComponent,
   ],
   templateUrl: './ru-indication-template-dialog.html',
   styleUrl: './ru-indication-template-dialog.css',
 })
 export class RuIndicationTemplateDialog {
   protected readonly title: string;
-  protected readonly isEdit: boolean;
   protected ruIndicationTemplateForm = new FormGroup({
     category: new FormControl('', {nonNullable: true, validators: [Validators.required]}),
     content: createContentFormGroup(),
+    companies: new FormControl<string[]>([], {
+      nonNullable: true,
+      validators: [Validators.required]
+    }),
   });
-  private readonly dialogData = inject<RuIndicationTemplate>(SBB_OVERLAY_DATA, {optional: true}) ?? null;
-  private readonly contentInputComponent = viewChild.required(RuIndicationContentForm);
+  protected readonly dialogData = inject<RuIndicationTemplate>(SBB_OVERLAY_DATA, {optional: true}) ?? undefined;
 
   constructor() {
-    this.isEdit = this.dialogData?.id != null;
-    this.title = this.isEdit
+    const isEdit = this.dialogData?.id != null;
+    this.title = isEdit
       ? $localize`:@@ru_indication_templates_dialog_title_edit:Titel und Text bearbeiten`
       : $localize`:@@ru_indication_templates_dialog_title_create:Titel und Text erfassen`;
 
-    if (this.isEdit && this.dialogData) {
+    if (isEdit && this.dialogData) {
       this.ruIndicationTemplateForm.patchValue({
         category: this.dialogData.category,
         content: {
@@ -64,15 +61,20 @@ export class RuIndicationTemplateDialog {
             title: this.dialogData.it?.title ?? '',
             text: this.dialogData.it?.text ?? '',
           }
-        }
+        },
+        companies: this.dialogData.companies
       });
     }
   }
 
   get formValue(): RuIndicationTemplate {
+    const companies = this.ruIndicationTemplateForm.controls.companies.value
+      .map((company) => company.trim())
+      .filter((company) => company.length > 0);
     return {
       category: this.ruIndicationTemplateForm.value.category ?? '',
-      ...this.contentInputComponent().formValue
+      ...contentFormValue(this.ruIndicationTemplateForm.controls.content),
+      companies
     };
   }
 }

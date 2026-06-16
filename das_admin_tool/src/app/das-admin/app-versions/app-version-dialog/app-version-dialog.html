@@ -1,6 +1,7 @@
-<sbb-dialog-title>{{ title }}</sbb-dialog-title>
-<sbb-dialog-close-button></sbb-dialog-close-button>
-<sbb-dialog-content>
+<app-base-dialog [data]="dialogData" [dialogClose]="formValue"
+                 [dialogTitle]="title" [saveDisabled]="versionForm.invalid"
+                 i18n-stepLabel="@@app_version_dialog_step_label"
+                 stepLabel="App Version">
   <form [formGroup]="versionForm" class="form">
     <sbb-form-field>
       <label for="version" i18n="@@app_versions_form_version_label">App Version</label>
@@ -39,19 +40,4 @@
       <sbb-datepicker-next-day></sbb-datepicker-next-day>
     </sbb-form-field>
   </form>
-</sbb-dialog-content>
-<sbb-dialog-actions alignGroup="stretch" orientation="vertical">
-  <sbb-secondary-button i18n="@@dialog_action_cancel" sbb-dialog-close>Abbrechen
-  </sbb-secondary-button>
-  <sbb-action-group alignGroup="stretch" orientation="vertical">
-    @if (isEdit) {
-      <sbb-transparent-button i18n="@@dialog_action_delete" iconName="trash-small"
-                              sbb-dialog-close="delete">Eintrag löschen
-      </sbb-transparent-button>
-    }
-    <sbb-button [disabled]="versionForm.invalid || versionForm.pristine"
-                [sbb-dialog-close]="formValue"
-                i18n="@@dialog_action_save">Speichern
-    </sbb-button>
-  </sbb-action-group>
-</sbb-dialog-actions>
+</app-base-dialog>

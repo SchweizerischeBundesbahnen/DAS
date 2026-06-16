@@ -1,0 +1,15 @@
+sbb-title {
+  margin-top: 0;
+}
+
+.entry {
+  margin-bottom: var(--sbb-spacing-responsive-xxxs);
+
+  &:first-of-type {
+    margin-top: var(--sbb-spacing-fixed-2x);
+  }
+
+  p {
+    margin: 0;
+  }
+}

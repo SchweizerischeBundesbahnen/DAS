@@ -5,15 +5,3 @@ sbb-title {
 sbb-form-field {
   width: 100%;
 }
-
-.entry {
-  margin-bottom: var(--sbb-spacing-responsive-xxxs);
-
-  &:first-of-type {
-    margin-top: var(--sbb-spacing-fixed-2x);
-  }
-
-  p {
-    margin: 0;
-  }
-}

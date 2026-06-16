@@ -1,14 +1,19 @@
-import { Component, computed, effect, input, signal, viewChild } from '@angular/core';
+import { Component, computed, effect, input, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms";
 import {
+  contentFormValue,
   RuIndicationContentForm
 } from "../../../ru-indication-content-form/ru-indication-content-form.component";
 import { SbbAutocompleteModule } from "@sbb-esta/lyne-angular/autocomplete";
 import { SbbFormFieldModule } from "@sbb-esta/lyne-angular/form-field";
 import { SbbOptionModule } from "@sbb-esta/lyne-angular/option";
-import { RuIndicationContent, RuIndicationTemplate } from '../../../ru-admin-api';
+import { RuIndicationContent, } from '../../../ru-admin-api';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RuIndicationDialogData } from '../../ru-indication.service';
+
+interface CategoryContent {
+  category: string;
+}
 
 @Component({
   selector: 'app-category-content-form',
@@ -26,9 +31,8 @@ export class CategoryContentForm {
   form = input.required<FormGroup>();
   dialogData = input.required<RuIndicationDialogData>();
 
-  protected templateControl = new FormControl<RuIndicationTemplate | null>(null);
+  protected templateControl = new FormControl<CategoryContent | null>(null);
   protected searchTerm = signal<string>('');
-  private readonly contentFormComponent = viewChild.required(RuIndicationContentForm);
   private readonly templateValue = toSignal(this.templateControl.valueChanges, {initialValue: null});
   protected filteredTemplates = computed(() => {
     const searchTerm = this.searchTerm();
@@ -54,11 +58,11 @@ export class CategoryContentForm {
   get formValue(): RuIndicationContent {
     return {
       category: this.templateControl.value?.category,
-      ...this.contentFormComponent().formValue
+      ...contentFormValue(this.form())
     }
   }
 
-  protected displayWith: (value: RuIndicationTemplate | undefined) => string = (value) => value?.category ?? '';
+  protected displayWith: (value: CategoryContent | undefined) => string = (value) => value?.category ?? '';
 
   protected onType(event: Event) {
     const input = event.target as HTMLInputElement;

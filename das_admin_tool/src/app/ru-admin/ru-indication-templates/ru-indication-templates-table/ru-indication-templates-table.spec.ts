@@ -11,13 +11,17 @@ const templates: RuIndicationTemplate[] = [
     de: {title: 'Titel DE', text: 'Text DE'},
     fr: {title: 'Titre FR', text: 'Texte FR'},
     it: {title: 'Titolo IT', text: 'Testo IT'},
+    companies: ['COMPA'],
     lastModifiedBy: 'user1',
+    lastModifiedAt: new Date()
   },
   {
     id: 2,
     category: 'Safety',
     de: {title: 'Sicherheit', text: 'Inhalt'},
+    companies: ['COMPA', 'COMPB'],
     lastModifiedBy: 'user2',
+    lastModifiedAt: new Date()
   },
 ];
 
