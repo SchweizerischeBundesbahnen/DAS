@@ -5,8 +5,8 @@ import { SbbMiniButton } from "@sbb-esta/lyne-angular/button";
 import { SbbTab, SbbTabGroup, SbbTabLabel } from "@sbb-esta/lyne-angular/tabs";
 import { SbbTooltipDirective } from "@sbb-esta/lyne-angular/tooltip";
 import { LanguageCode, LanguageProvider } from '../../shared/language-provider';
-import { RuIndication, RuIndicationContent, RuIndicationLanguageContent } from '../ru-admin-api';
 import { UpperCasePipe } from '@angular/common';
+import { RuIndication, RuIndicationContent, RuIndicationLanguageContent } from '../ru-admin-api';
 import { oneLanguageRequired, titleRequired } from '../../shared/form-validators.util';
 
 interface LanguageContentForm {
@@ -20,6 +20,23 @@ export function createContentFormGroup() {
     fr: createLanguageGroup(),
     it: createLanguageGroup(),
   }, {validators: oneLanguageRequired})
+}
+
+export function contentFormValue(form: FormGroup): Partial<RuIndicationContent> {
+  const mapLanguage = (language: keyof RuIndication['content']): RuIndicationLanguageContent | undefined => {
+    const title = form.get(language)?.get('title')?.value?.trim() ?? '';
+    const text = form.get(language)?.get('text')?.value?.trim() ?? '';
+    if (!title && !text) {
+      return undefined;
+    }
+    return {title, text: text || undefined};
+  };
+
+  return {
+    de: mapLanguage('de'),
+    fr: mapLanguage('fr'),
+    it: mapLanguage('it'),
+  };
 }
 
 function createLanguageGroup(): FormGroup<LanguageContentForm> {
@@ -48,23 +65,6 @@ function createLanguageGroup(): FormGroup<LanguageContentForm> {
 export class RuIndicationContentForm {
   form = input.required<FormGroup>();
   protected readonly languageProvider = inject(LanguageProvider);
-
-  public get formValue(): Partial<RuIndicationContent> {
-    const mapLanguage = (language: keyof RuIndication['content']): RuIndicationLanguageContent | undefined => {
-      const title = this.form().get(language)?.get('title')?.value?.trim() ?? '';
-      const text = this.form().get(language)?.get('text')?.value?.trim() ?? '';
-      if (!title && !text) {
-        return undefined;
-      }
-      return {title, text: text || undefined};
-    };
-
-    return {
-      de: mapLanguage('de'),
-      fr: mapLanguage('fr'),
-      it: mapLanguage('it'),
-    };
-  }
 
   protected isLanguageEmpty(language: LanguageCode): boolean {
     const titleValue = this.form().get(language)?.get('title')?.value ?? '';

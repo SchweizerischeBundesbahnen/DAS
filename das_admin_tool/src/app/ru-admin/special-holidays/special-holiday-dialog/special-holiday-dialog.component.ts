@@ -1,44 +1,33 @@
-import {Component, inject} from '@angular/core';
-import {SbbButton} from '@sbb-esta/lyne-angular/button/button';
-import {SbbSecondaryButton} from '@sbb-esta/lyne-angular/button/secondary-button';
-import {SbbTransparentButton} from '@sbb-esta/lyne-angular/button/transparent-button';
-import {SbbTitleModule} from '@sbb-esta/lyne-angular/title';
-import {SbbDialogModule} from '@sbb-esta/lyne-angular/dialog';
-import {SbbFormFieldModule} from '@sbb-esta/lyne-angular/form-field';
-import {SBB_OVERLAY_DATA} from '@sbb-esta/lyne-angular/core/overlay';
-import {FormControl, FormGroup, ReactiveFormsModule, Validators,} from '@angular/forms';
-import {SCHEDULE_TYPE_LABELS, ScheduleType, SpecialHoliday} from '../../ru-admin-api';
-import {SbbSelectModule} from '@sbb-esta/lyne-angular/select';
-import {SbbDatepickerModule} from '@sbb-esta/lyne-angular/datepicker';
-import {SbbRadioButtonModule} from '@sbb-esta/lyne-angular/radio-button';
-import {CompaniesInputComponent} from '../../../shared/companies-input/companies-input.component';
-import {toUtcDateOnly} from '../../../shared/date-util';
-import { SbbActionGroup } from '@sbb-esta/lyne-angular/action-group';
+import { Component, inject } from '@angular/core';
+import { SbbTitleModule } from '@sbb-esta/lyne-angular/title';
+import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
+import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core/overlay';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators, } from '@angular/forms';
+import { SCHEDULE_TYPE_LABELS, ScheduleType, SpecialHoliday } from '../../ru-admin-api';
+import { SbbDatepickerModule } from '@sbb-esta/lyne-angular/datepicker';
+import { SbbRadioButtonModule } from '@sbb-esta/lyne-angular/radio-button';
+import { CompaniesInputComponent } from '../../../shared/companies-input/companies-input.component';
+import { toUtcDateOnly } from '../../../shared/date-util';
+import { BaseDialog } from '../../../shared/base-dialog/base-dialog.component';
 
 export type SpecialHolidayDialogEditResult = SpecialHoliday | 'delete';
 
 @Component({
   selector: 'app-special-holiday-dialog',
   imports: [
-    SbbDialogModule,
-    SbbButton,
-    SbbSecondaryButton,
-    SbbTransparentButton,
+    ReactiveFormsModule,
     SbbTitleModule,
     SbbFormFieldModule,
-    SbbSelectModule,
-    ReactiveFormsModule,
     SbbDatepickerModule,
     SbbRadioButtonModule,
+    BaseDialog,
     CompaniesInputComponent,
-    SbbActionGroup,
   ],
   templateUrl: './special-holiday-dialog.component.html',
   styleUrl: './special-holiday-dialog.component.css',
 })
 export class SpecialHolidayDialog {
   protected readonly title: string;
-  protected readonly isEdit: boolean;
 
   protected specialHolidayForm = new FormGroup({
     name: new FormControl('', {nonNullable: true, validators: [Validators.required]}),
@@ -55,15 +44,15 @@ export class SpecialHolidayDialog {
     }),
   });
   protected readonly scheduleTypes = SCHEDULE_TYPE_LABELS;
-  private readonly dialogData = inject<SpecialHoliday>(SBB_OVERLAY_DATA, {optional: true}) ?? null;
+  protected readonly dialogData = inject<SpecialHoliday>(SBB_OVERLAY_DATA, {optional: true}) ?? undefined;
 
   constructor() {
-    this.isEdit = this.dialogData?.id != null;
-    this.title = this.isEdit
+    const isEdit = this.dialogData?.id != null;
+    this.title = isEdit
       ? $localize`:@@special_holidays_dialog_title_edit:Speziellen Feiertag bearbeiten`
       : $localize`:@@special_holidays_dialog_title_create:Speziellen Feiertag erfassen`;
 
-    if (this.isEdit && this.dialogData) {
+    if (isEdit && this.dialogData) {
       this.specialHolidayForm.patchValue({
         name: this.dialogData.name,
         date: new Date(this.dialogData.date),

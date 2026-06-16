@@ -1,8 +1,9 @@
-import {inject, Injectable} from '@angular/core';
-import {HttpClient, httpResource} from '@angular/common/http';
-import {environment} from '../../environments/environment';
-import {Observable} from 'rxjs';
-import {ApiResponse} from '../shared/api-response';
+import { inject, Injectable } from '@angular/core';
+import { HttpClient, httpResource } from '@angular/common/http';
+import { environment } from '../../environments/environment';
+import { Observable } from 'rxjs';
+import { ApiResponse } from '../shared/api-response';
+import { Auditable } from '../shared/audit/auditable';
 
 export interface RuIndicationLanguageContent {
   title: string;
@@ -11,15 +12,15 @@ export interface RuIndicationLanguageContent {
   [key: string]: string | undefined;
 }
 
-export interface RuIndicationTemplate {
+export interface RuIndicationTemplate extends Auditable {
   id?: number;
   category: string;
   de?: RuIndicationLanguageContent;
   fr?: RuIndicationLanguageContent;
   it?: RuIndicationLanguageContent;
-  lastModifiedBy?: string;
+  companies: string[];
 
-  [key: string]: string | number | RuIndicationLanguageContent | undefined;
+  [key: string]: string | string[] | number | Date | RuIndicationLanguageContent | undefined;
 }
 
 export type TrainNumberParity = 'ANY' | 'EVEN' | 'ODD';
@@ -57,19 +58,17 @@ export interface RuIndicationContent {
   it?: RuIndicationLanguageContent;
 }
 
-export interface RuIndication {
+export interface RuIndication extends Auditable {
   id?: number;
   status?: RuIndicationStatus;
   content: RuIndicationContent;
   scope: RuIndicationScope;
   periods: RuIndicationPeriod[];
-  lastModifiedBy?: string;
-  lastModifiedAt?: Date;
 }
 
-export type RuIndicationStatus =  'INACTIVE' | 'ACTIVE' | 'EXPIRED';
+export type RuIndicationStatus = 'INACTIVE' | 'ACTIVE' | 'EXPIRED';
 
-export const RU_INDICATION_STATUS_LABELS : {value : RuIndicationStatus, label : string}[] = [
+export const RU_INDICATION_STATUS_LABELS: { value: RuIndicationStatus, label: string }[] = [
   {value: 'ACTIVE', label: $localize`:@@ru_indication_status_label_active:Aktiv`},
   {value: 'INACTIVE', label: $localize`:@@ru_indication_status_label_inactive:Inaktiv`},
   {value: 'EXPIRED', label: $localize`:@@ru_indication_status_label_expired:Abgelaufen`},
@@ -92,7 +91,7 @@ export const SCHEDULE_TYPE_LABELS: { value: ScheduleType, label: string } [] = [
   }];
 
 
-export interface SpecialHoliday {
+export interface SpecialHoliday extends Auditable {
   id?: number;
   name: string;
   date: Date;
@@ -107,14 +106,12 @@ interface ExternalLinkContent {
   link: string;
 }
 
-export interface ExternalLink {
+export interface ExternalLink extends Auditable {
   id?: number;
   companies: string[];
   de?: ExternalLinkContent;
   fr?: ExternalLinkContent;
   it?: ExternalLinkContent;
-  lastModifiedBy?: string;
-  lastModifiedAt?: Date;
 }
 
 export type ExternalLinkApiResponse = ApiResponse<ExternalLink>;

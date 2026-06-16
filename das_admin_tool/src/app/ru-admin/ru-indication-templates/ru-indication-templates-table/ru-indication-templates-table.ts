@@ -1,24 +1,26 @@
-import {Component, effect, inject, viewChild} from '@angular/core';
+import { Component, effect, inject, viewChild } from '@angular/core';
 import {
   SbbSort,
   SbbTableDataSource,
   SbbTableFilter,
   SbbTableModule
 } from '@sbb-esta/lyne-angular/table';
-import {SbbSecondaryButton} from '@sbb-esta/lyne-angular/button/secondary-button';
-import {RuIndicationTemplate} from '../../ru-admin-api';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {SbbCompactPaginator} from '@sbb-esta/lyne-angular/paginator/compact-paginator';
-import {RuIndicationTemplateService} from '../ru-indication-template.service';
-import {SbbMiniButton} from '@sbb-esta/lyne-angular/button/mini-button';
-import {SelectionModel} from '@angular/cdk/collections';
-import {SbbCheckboxModule} from '@sbb-esta/lyne-angular/checkbox';
-import {SbbFormFieldModule} from '@sbb-esta/lyne-angular/form-field';
-import {SbbIconModule} from '@sbb-esta/lyne-angular/icon';
-import {SbbSelectModule} from '@sbb-esta/lyne-angular/select';
-import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {SbbTransparentButton} from '@sbb-esta/lyne-angular/button/transparent-button';
-import {LanguageCode, LanguageProvider} from '../../../shared/language-provider';
+import { SbbSecondaryButton } from '@sbb-esta/lyne-angular/button/secondary-button';
+import { RuIndicationTemplate } from '../../ru-admin-api';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { SbbCompactPaginator } from '@sbb-esta/lyne-angular/paginator/compact-paginator';
+import { RuIndicationTemplateService } from '../ru-indication-template.service';
+import { SbbMiniButton } from '@sbb-esta/lyne-angular/button/mini-button';
+import { SelectionModel } from '@angular/cdk/collections';
+import { SbbCheckboxModule } from '@sbb-esta/lyne-angular/checkbox';
+import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
+import { SbbIconModule } from '@sbb-esta/lyne-angular/icon';
+import { SbbSelectModule } from '@sbb-esta/lyne-angular/select';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { SbbTransparentButton } from '@sbb-esta/lyne-angular/button/transparent-button';
+import { LanguageCode, LanguageProvider } from '../../../shared/language-provider';
+import { DatePipe } from '@angular/common';
+import { CompanyService } from '../../../shared/companies-input/company.service';
 
 interface RuIndicationTemplateFilter extends SbbTableFilter {
   search: string;
@@ -37,15 +39,17 @@ interface RuIndicationTemplateFilter extends SbbTableFilter {
     SbbFormFieldModule,
     SbbIconModule,
     SbbSelectModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    DatePipe
   ],
   templateUrl: './ru-indication-templates-table.html',
   styleUrl: './ru-indication-templates-table.css',
 })
 export class RuIndicationTemplatesTable {
   protected readonly languageProvider = inject(LanguageProvider);
+  protected readonly companyService = inject(CompanyService);
   protected dataSource = new SbbTableDataSource<RuIndicationTemplate, RuIndicationTemplateFilter>();
-  protected columns = ['select', 'category', 'title', 'text', 'lastModifiedBy', 'action'];
+  protected columns = ['select', 'category', 'title', 'text', 'companies', 'lastModifiedAt', 'lastModifiedBy', 'action'];
   protected selection = new SelectionModel<RuIndicationTemplate>(true, []);
   protected form = new FormGroup({
     search: new FormControl('', {nonNullable: true}),
@@ -79,6 +83,9 @@ export class RuIndicationTemplatesTable {
     if (['title', 'text'].includes(column) && language) {
       return row[language]?.[column];
     }
+    if (column === 'companies') {
+      return this.companiesValue(row.companies);
+    }
     return row[column] as string;
   }
 
@@ -105,7 +112,7 @@ export class RuIndicationTemplatesTable {
   }
 
   protected async deleteSelected() {
-    if(this.isDeleting) return;
+    if (this.isDeleting) return;
     this.isDeleting = true;
     try {
       await this.ruIndicationTemplateService.deleteAll(this.selection.selected);
@@ -115,13 +122,19 @@ export class RuIndicationTemplatesTable {
     }
   }
 
+  protected companiesValue(companies: string[]) {
+    return this.companyService.formatCompanies(companies)
+  }
+
   private searchFilter(filter: RuIndicationTemplateFilter, data: RuIndicationTemplate) {
     const search = filter.search.toLowerCase();
     return (
       this.getValue(data, 'title')?.toLowerCase().includes(search) ||
       this.getValue(data, 'text')?.toLowerCase().includes(search) ||
+      this.companiesValue(data.companies).toLowerCase().includes(search) ||
       data.category.toLowerCase().includes(search) ||
-      data.lastModifiedBy?.toLowerCase().includes(search)
+      data.lastModifiedBy?.toLowerCase().includes(search) ||
+      data.lastModifiedAt?.toString().toLowerCase().includes(search)
     ) ?? true;
   }
 }
