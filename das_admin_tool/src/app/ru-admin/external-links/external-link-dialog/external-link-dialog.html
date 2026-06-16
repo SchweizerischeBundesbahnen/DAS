@@ -1,7 +1,7 @@
 <app-base-dialog [data]="dialogData" [dialogClose]="externalLinkForm.value"
                  [dialogTitle]="dialogTitle"
                  [saveDisabled]="externalLinkForm.invalid"
-                 i18n-stepLabel="@@special_holidays_dialog_step_label" stepLabel="Feiertag">
+                 i18n-stepLabel="@@external_links_dialog_step_label" stepLabel="Externer Absprung">
   <form [formGroup]="externalLinkForm">
     <app-companies-input
       [control]="externalLinkForm.controls.companies"
