@@ -16,12 +16,14 @@ class SelectRailwayUndertakingInput extends StatefulWidget {
     super.key,
     this.isModalVersion = false,
     this.allowMultiSelect = false,
+    this.borderType = .boxedOrListed,
   });
 
   final List<RailwayUndertaking> selectedRailwayUndertakings;
   final void Function(List<RailwayUndertaking>) updateRailwayUndertaking;
   final bool isModalVersion;
   final bool allowMultiSelect;
+  final SBBInputBorderType borderType;
 
   @override
   State<SelectRailwayUndertakingInput> createState() => _RailwayUndertakingTextFieldState();
@@ -46,7 +48,6 @@ class _RailwayUndertakingTextFieldState extends State<SelectRailwayUndertakingIn
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).sbbBaseStyle.colorScheme;
     return Padding(
       padding: widget.isModalVersion ? .zero : _inputPadding,
       child: SBBDecoratedText(
@@ -66,14 +67,9 @@ class _RailwayUndertakingTextFieldState extends State<SelectRailwayUndertakingIn
           );
         },
         decoration: SBBInputDecoration(
+          borderType: widget.borderType,
           labelText: widget.isModalVersion ? null : context.l10n.p_train_selection_ru_description,
           placeholderText: widget.isModalVersion ? context.l10n.p_train_selection_ru_description : null,
-          // TODO: remove when DSM applies correct border to unlisted/unboxed elements
-          borderColor: WidgetStateProperty.fromMap(<WidgetStatesConstraint, Color?>{
-            WidgetState.error: colorScheme.error,
-            WidgetState.focused: colorScheme.strokePrimary,
-            WidgetState.any: colorScheme.strokeSeparator,
-          }),
         ),
         value: selectedValues ?? '',
       ),

@@ -20,8 +20,6 @@ class DASNavigationDrawer extends StatelessWidget {
     final isJourneySelected = journeyNavigationViewModel?.modelValue != null;
     final launcher = DI.get<Launcher>();
     return Drawer(
-      // TODO: remove when set by SBB again
-      backgroundColor: Theme.of(context).sbbBaseStyle.colorScheme.backgroundContent,
       child: Column(
         children: [
           Expanded(

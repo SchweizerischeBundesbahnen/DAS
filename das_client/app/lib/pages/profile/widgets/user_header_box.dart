@@ -1,7 +1,6 @@
 import 'package:app/di/di.dart';
-import 'package:app/theme/theme_util.dart';
 import 'package:auth/component.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class UserHeaderBox extends StatelessWidget {
@@ -12,7 +11,7 @@ class UserHeaderBox extends StatelessWidget {
     return FutureBuilder(
       future: DI.get<Authenticator>().user(),
       builder: (context, asyncSnapshot) {
-        final subtitleColor = ThemeUtil.getColor(context, SBBColors.granite, SBBColors.graphite);
+        final headerBoxStyle = Theme.of(context).sbbHeaderBoxTheme.style;
 
         return SBBHeaderBox(
           title: Row(
@@ -23,10 +22,10 @@ class UserHeaderBox extends StatelessWidget {
                 mainAxisSize: .min,
                 crossAxisAlignment: .start,
                 children: [
-                  Text(asyncSnapshot.data?.displayName ?? '', style: SBBTextStyles.mediumBold),
+                  Text(asyncSnapshot.data?.displayName ?? '', style: headerBoxStyle?.titleTextStyle),
                   Text(
                     asyncSnapshot.data?.userId ?? '',
-                    style: SBBTextStyles.smallLight.copyWith(color: subtitleColor),
+                    style: headerBoxStyle?.subtitleTextStyle?.copyWith(color: headerBoxStyle.subtitleForegroundColor),
                   ),
                 ],
               ),

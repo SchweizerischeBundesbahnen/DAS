@@ -20,7 +20,7 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  SBBHeaderSmall _appBar(BuildContext context) {
+  PreferredSizeWidget _appBar(BuildContext context) {
     return SBBHeaderSmall(
       titleText: context.l10n.w_navigation_drawer_profile_title,
       actions: const [], // removes SBB logo
