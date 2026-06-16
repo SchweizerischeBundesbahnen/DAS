@@ -8,7 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.das.backend.IntegrationTest;
-import ch.sbb.das.backend.admin.application.settings.WithMockRole;
+import ch.sbb.das.backend.WithMockRole;
 import ch.sbb.das.backend.common.security.UserRole;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package ch.sbb.das.backend.admin.infrastructure.jpa;
+package ch.sbb.das.backend.common;
 
 import jakarta.persistence.Embedded;
 import jakarta.persistence.EntityListeners;
@@ -21,3 +21,5 @@ public abstract class EntityBase {
         return audit.getLastModifiedBy();
     }
 }
+
+

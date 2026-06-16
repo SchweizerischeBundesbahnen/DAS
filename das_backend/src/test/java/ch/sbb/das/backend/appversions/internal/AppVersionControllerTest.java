@@ -1,6 +1,6 @@
-package ch.sbb.das.backend.admin.application.settings;
+package ch.sbb.das.backend.appversions.internal;
 
-import static ch.sbb.das.backend.admin.application.settings.AppVersionController.API_SETTINGS_APP_VERSION;
+import static ch.sbb.das.backend.appversions.internal.AppVersionController.API_APP_VERSIONS;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.context.jdbc.SqlMergeMode.MergeMode.MERGE;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.das.backend.IntegrationTest;
+import ch.sbb.das.backend.WithMockRole;
 import ch.sbb.das.backend.common.security.UserRole;
 import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.Test;
@@ -30,7 +31,7 @@ class AppVersionControllerTest {
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     void getAll_AppVersions_empty() throws Exception {
-        mockMvc.perform(get(API_SETTINGS_APP_VERSION))
+        mockMvc.perform(get(API_APP_VERSIONS))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data", hasSize(0)));
     }
@@ -39,7 +40,7 @@ class AppVersionControllerTest {
     @WithMockRole(roles = UserRole.ADMIN)
     void getAppVersionById_not_found() throws Exception {
         int nonExistingId = Integer.MAX_VALUE;
-        mockMvc.perform(get(API_SETTINGS_APP_VERSION + "/" + nonExistingId))
+        mockMvc.perform(get(API_APP_VERSIONS + "/" + nonExistingId))
             .andExpect(status().isNotFound());
     }
 
@@ -47,7 +48,7 @@ class AppVersionControllerTest {
     @WithMockRole(roles = UserRole.ADMIN)
     @Sql("classpath:createAppVersions.sql")
     void getById_AppVersion_by_id() throws Exception {
-        mockMvc.perform(get(API_SETTINGS_APP_VERSION + "/1"))
+        mockMvc.perform(get(API_APP_VERSIONS + "/1"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data", hasSize(1)))
             .andExpect(jsonPath("$.data[0].id").value(1))
@@ -61,7 +62,7 @@ class AppVersionControllerTest {
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     void create_AppVersion_ok() throws Exception {
-        String jsonResult = mockMvc.perform(post(API_SETTINGS_APP_VERSION)
+        String jsonResult = mockMvc.perform(post(API_APP_VERSIONS)
                 .contentType("application/json")
                 .content("""
                     {
@@ -82,7 +83,7 @@ class AppVersionControllerTest {
 
         int id = JsonPath.read(jsonResult, "$.data[0].id");
 
-        mockMvc.perform(get(API_SETTINGS_APP_VERSION + "/" + id))
+        mockMvc.perform(get(API_APP_VERSIONS + "/" + id))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data", hasSize(1)))
             .andExpect(jsonPath("$.data[0].id").isNumber())
@@ -96,7 +97,7 @@ class AppVersionControllerTest {
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     void create_AppVersion_invalid_body() throws Exception {
-        mockMvc.perform(post(API_SETTINGS_APP_VERSION)
+        mockMvc.perform(post(API_APP_VERSIONS)
                 .contentType("application/json")
                 .content("""
                     {
@@ -110,9 +111,25 @@ class AppVersionControllerTest {
 
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
+    void create_AppVersion_invalid_version_pattern() throws Exception {
+        mockMvc.perform(post(API_APP_VERSIONS)
+                .contentType("application/json")
+                .content("""
+                    {
+                        "version": "invalid",
+                        "minimalVersion": false,
+                        "expiryDate": null
+                    }
+                    """))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.detail").value("Invalid request content. -> version=must match \"(\\d+)\\.(\\d+)\\.(\\d+)\""));
+    }
+
+    @Test
+    @WithMockRole(roles = UserRole.ADMIN)
     @Sql("classpath:createAppVersions.sql")
     void create_AppVersion_conflict_version() throws Exception {
-        mockMvc.perform(post(API_SETTINGS_APP_VERSION)
+        mockMvc.perform(post(API_APP_VERSIONS)
                 .contentType("application/json")
                 .content("""
                     {
@@ -129,7 +146,7 @@ class AppVersionControllerTest {
     @WithMockRole(roles = UserRole.ADMIN)
     @Sql("classpath:createAppVersions.sql")
     void update_AppVersion_ok() throws Exception {
-        mockMvc.perform(put(API_SETTINGS_APP_VERSION + "/1")
+        mockMvc.perform(put(API_APP_VERSIONS + "/1")
                 .contentType("application/json")
                 .content("""
                         {
@@ -147,7 +164,7 @@ class AppVersionControllerTest {
             .andExpect(jsonPath("$.data[0].lastModifiedAt").isNotEmpty())
             .andExpect(jsonPath("$.data[0].lastModifiedBy").value("test-user"));
 
-        mockMvc.perform(get(API_SETTINGS_APP_VERSION + "/1"))
+        mockMvc.perform(get(API_APP_VERSIONS + "/1"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data", hasSize(1)))
             .andExpect(jsonPath("$.data[0].id").value(1))
@@ -162,17 +179,17 @@ class AppVersionControllerTest {
     @WithMockRole(roles = UserRole.ADMIN)
     @Sql("classpath:createAppVersions.sql")
     void delete_AppVersionById_ok() throws Exception {
-        mockMvc.perform(delete(API_SETTINGS_APP_VERSION + "/1"))
+        mockMvc.perform(delete(API_APP_VERSIONS + "/1"))
             .andExpect(status().isNoContent());
 
-        mockMvc.perform(get(API_SETTINGS_APP_VERSION + "/1"))
+        mockMvc.perform(get(API_APP_VERSIONS + "/1"))
             .andExpect(status().isNotFound());
     }
 
     @Test
     @WithMockRole(roles = UserRole.ADMIN, adminTenant = false)
     void create_AppVersion_forbidden() throws Exception {
-        mockMvc.perform(post(API_SETTINGS_APP_VERSION)
+        mockMvc.perform(post(API_APP_VERSIONS)
                 .contentType("application/json")
                 .content("""
                     {

@@ -1,11 +1,11 @@
-package ch.sbb.das.backend.admin.domain.settings.model;
+package ch.sbb.das.backend.appversions.internal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import org.junit.jupiter.api.Test;
 
-class SemVersionTest {
+class SemanticVersionTest {
 
     @Test
     void versionGreaterThan() {

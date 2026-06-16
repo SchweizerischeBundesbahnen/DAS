@@ -1,15 +1,15 @@
 package ch.sbb.das.backend.common.config;
 
-import static ch.sbb.das.backend.admin.application.links.ExternalLinkController.API_MOBILE_EXTERNAL_LINKS;
 import static ch.sbb.das.backend.admin.application.links.ExternalLinkController.API_EXTERNAL_LINKS;
+import static ch.sbb.das.backend.admin.application.links.ExternalLinkController.API_MOBILE_EXTERNAL_LINKS;
 import static ch.sbb.das.backend.admin.application.locations.TafTapLocationController.API_LOCATIONS;
 import static ch.sbb.das.backend.admin.application.ruindications.RuIndicationController.API_RU_INDICATIONS;
 import static ch.sbb.das.backend.admin.application.ruindications.RuIndicationController.API_RU_INDICATIONS_MATCHES;
 import static ch.sbb.das.backend.admin.application.ruindications.RuIndicationTemplateController.API_RU_INDICATION_TEMPLATES;
 import static ch.sbb.das.backend.admin.application.ruindications.SpecialHolidayController.API_SPECIAL_HOLIDAYS;
-import static ch.sbb.das.backend.admin.application.settings.AppVersionController.API_SETTINGS_APP_VERSION;
 import static ch.sbb.das.backend.admin.application.settings.SettingsController.API_SETTINGS;
-import static ch.sbb.das.backend.common.ApiDocumentation.DRIVER_URI;
+import static ch.sbb.das.backend.appversions.internal.AppVersionController.API_APP_VERSIONS;
+import static ch.sbb.das.backend.companies.internal.CompanyController.API_COMPANIES;
 import static ch.sbb.das.backend.formation.api.v1.FormationController.API_FORMATIONS;
 import static ch.sbb.das.backend.proxy.CustomerOrientedDepartureController.API_CUSTOMER_ORIENTED_DEPARTURE;
 import static org.springframework.security.config.Customizer.withDefaults;
@@ -42,10 +42,10 @@ public class WebSecurityConfig {
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .requestMatchers("/actuator/health/**").permitAll()
                 .requestMatchers(API_SETTINGS, API_FORMATIONS, API_CUSTOMER_ORIENTED_DEPARTURE + "/**", API_RU_INDICATIONS_MATCHES, API_MOBILE_EXTERNAL_LINKS)
-                    .hasAnyRole(UserRole.OBSERVER, UserRole.DRIVER)
-                .requestMatchers(API_SETTINGS_APP_VERSION + "/**", API_LOCATIONS)
+                .hasAnyRole(UserRole.OBSERVER, UserRole.DRIVER)
+                .requestMatchers(API_APP_VERSIONS + "/**", API_LOCATIONS)
                 .hasRole(UserRole.ADMIN)
-                .requestMatchers(API_RU_INDICATION_TEMPLATES + "/**", API_SPECIAL_HOLIDAYS + "/**", API_RU_INDICATIONS + "/**", API_EXTERNAL_LINKS + "/**", DRIVER_URI + "/**")
+                .requestMatchers(API_RU_INDICATION_TEMPLATES + "/**", API_SPECIAL_HOLIDAYS + "/**", API_RU_INDICATIONS + "/**", API_EXTERNAL_LINKS + "/**", API_COMPANIES)
                 .hasAnyRole(UserRole.ADMIN, UserRole.RU_ADMIN)
                 .anyRequest().authenticated()
             )

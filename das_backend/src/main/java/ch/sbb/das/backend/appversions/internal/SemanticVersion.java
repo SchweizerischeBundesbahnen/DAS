@@ -1,4 +1,4 @@
-package ch.sbb.das.backend.admin.domain.settings.model;
+package ch.sbb.das.backend.appversions.internal;
 
 import java.util.Objects;
 import java.util.regex.Matcher;

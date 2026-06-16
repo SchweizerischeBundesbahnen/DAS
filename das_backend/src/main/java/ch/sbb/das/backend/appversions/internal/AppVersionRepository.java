@@ -1,10 +1,10 @@
-package ch.sbb.das.backend.admin.infrastructure.jpa;
+package ch.sbb.das.backend.appversions.internal;
 
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface SpringDataJpaAppVersionRepository extends ListCrudRepository<AppVersionEntity, Integer> {
+public interface AppVersionRepository extends ListCrudRepository<AppVersionEntity, Integer> {
 
     boolean existsByVersionAndIdNot(String version, Integer id);
 }

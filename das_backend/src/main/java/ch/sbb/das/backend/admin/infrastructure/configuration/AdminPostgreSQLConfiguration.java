@@ -1,7 +1,6 @@
 package ch.sbb.das.backend.admin.infrastructure.configuration;
 
 import ch.sbb.das.backend.admin.infrastructure.jpa.ExternalLinkEntityRepository;
-import ch.sbb.das.backend.admin.infrastructure.jpa.SpringDataJpaAppVersionRepository;
 import ch.sbb.das.backend.admin.infrastructure.jpa.SpringDataJpaRuFeatureRepository;
 import ch.sbb.das.backend.admin.infrastructure.jpa.SpringDataJpaRuIndicationRepository;
 import ch.sbb.das.backend.admin.infrastructure.jpa.SpringDataJpaRuIndicationTemplateRepository;
@@ -16,12 +15,11 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @Configuration
 @EnableJpaAuditing(auditorAwareRef = "auditorProvider")
 @EnableJpaRepositories(basePackageClasses = {
-        SpringDataJpaRuFeatureRepository.class,
-        SpringDataJpaAppVersionRepository.class,
-        SpringDataJpaTafTapLocationRepository.class,
-        SpringDataJpaRuIndicationTemplateRepository.class,
-        SpringDataJpaRuIndicationRepository.class,
-        ExternalLinkEntityRepository.class
+    SpringDataJpaRuFeatureRepository.class,
+    SpringDataJpaTafTapLocationRepository.class,
+    SpringDataJpaRuIndicationTemplateRepository.class,
+    SpringDataJpaRuIndicationRepository.class,
+    ExternalLinkEntityRepository.class
 })
 public class AdminPostgreSQLConfiguration {
 

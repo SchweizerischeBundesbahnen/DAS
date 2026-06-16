@@ -1,6 +1,6 @@
-package ch.sbb.das.backend.admin.application.settings.model.request;
+package ch.sbb.das.backend.appversions.internal;
 
-import static ch.sbb.das.backend.admin.domain.settings.model.SemanticVersion.SEM_VERSION_PATTERN;
+import static ch.sbb.das.backend.appversions.internal.SemanticVersion.SEM_VERSION_PATTERN;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
