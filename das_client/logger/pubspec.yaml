@@ -18,13 +18,13 @@ dependencies:
   # https://pub.dev/packages/ansicolor
   ansicolor: ^2.0.3
   # https://pub.dev/packages/path_provider
-  path_provider: ^2.1.5
+  path_provider: ^2.1.6
   # https://pub.dev/packages/synchronized
-  synchronized: ^3.4.0+1
+  synchronized: ^3.4.1
   # https://pub.dev/packages/device_info_plus
-  device_info_plus: ^12.4.0
+  device_info_plus: ^13.1.0
   # https://pub.dev/packages/package_info_plus
-  package_info_plus: ^9.0.1
+  package_info_plus: ^10.1.0
   # https://pub.dev/packages/clock
   clock: ^1.1.2
   # https://pub.dev/packages/path

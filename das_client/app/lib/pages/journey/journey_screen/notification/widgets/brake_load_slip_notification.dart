@@ -20,13 +20,11 @@ class BrakeLoadSlipNotification extends StatelessWidget {
         final isFormationChanged = snapshot.data ?? false;
         if (!isFormationChanged) return SizedBox.shrink();
 
-        return Container(
+        return SBBNotificationBox.information(
           key: brakeLoadSlipNotificationKey,
-          child: SBBNotificationBox.information(
-            text: context.l10n.w_brake_load_slip_notification_text,
-            onTap: () => viewModel.open(context),
-            isCloseable: false,
-          ),
+          contentText: context.l10n.w_brake_load_slip_notification_text,
+          onTap: () => viewModel.open(context),
+          isDismissable: false,
         );
       },
     );

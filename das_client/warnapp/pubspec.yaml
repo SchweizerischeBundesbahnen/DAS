@@ -13,11 +13,11 @@ dependencies:
   # https://pub.dev/packages/sensors_plus
   sensors_plus: ^7.0.0
   # https://pub.dev/packages/geolocator
-  geolocator: ^14.0.2
+  geolocator: ^14.0.3
   # https://pub.dev/packages/logging
   logging: ^1.3.0
   # https://pub.dev/packages/path_provider
-  path_provider: ^2.1.5
+  path_provider: ^2.1.6
   # https://pub.dev/packages/rxdart
   rxdart: ^0.28.0
 
