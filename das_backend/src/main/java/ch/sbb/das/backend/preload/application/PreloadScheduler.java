@@ -1,5 +1,6 @@
 package ch.sbb.das.backend.preload.application;
 
+import ch.sbb.das.backend.common.DateTimeUtil;
 import ch.sbb.das.backend.preload.application.model.trainidentification.TrainIdentification;
 import ch.sbb.das.backend.preload.domain.PreloadResult;
 import ch.sbb.das.backend.preload.domain.SegmentProfileIdentification;
@@ -7,7 +8,6 @@ import ch.sbb.das.backend.preload.domain.TrainCharacteristicsIdentification;
 import ch.sbb.das.backend.preload.sfera.model.v0400.JourneyProfile;
 import ch.sbb.das.backend.preload.sfera.model.v0400.SegmentProfile;
 import ch.sbb.das.backend.preload.sfera.model.v0400.TrainCharacteristics;
-import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,8 +50,8 @@ public class PreloadScheduler {
         Map<TrainIdentification, JourneyProfile> mapJourneyProfiles = new HashMap<>();
         Map<SegmentProfileIdentification, SegmentProfile> mapSegmentProfiles = new HashMap<>();
         Map<TrainCharacteristicsIdentification, TrainCharacteristics> mapTrainCharacteristics = new HashMap<>();
-        List<TrainIdentification> trainIdentifications = trainIdentificationsService.getNewTrainIdentificationsBetween(OffsetDateTime.now().minusHours(PRELOAD_HOURS_BEFORE_DEPARTURE),
-            OffsetDateTime.now().plusHours(PRELOAD_HOURS_BEFORE_DEPARTURE));
+        List<TrainIdentification> trainIdentifications = trainIdentificationsService.getNewTrainIdentificationsBetween(DateTimeUtil.now().minusHours(PRELOAD_HOURS_BEFORE_DEPARTURE),
+            DateTimeUtil.now().plusHours(PRELOAD_HOURS_BEFORE_DEPARTURE));
         sferaService.connect();
         for (TrainIdentification trainId : trainIdentifications) {
             PreloadResult preloadResult = sferaService.preload(trainId);
@@ -68,7 +68,7 @@ public class PreloadScheduler {
         }
         sferaService.disconnect();
         storageService.save(mapJourneyProfiles.values(), mapSegmentProfiles.values(), mapTrainCharacteristics.values());
-        storageService.deleteAllBefore(OffsetDateTime.now().minusHours(cleanUpHours));
+        storageService.deleteAllBefore(DateTimeUtil.now().minusHours(cleanUpHours));
         trainIdentificationsService.savePreloadedTrains(mapJourneyProfiles.keySet());
         log.info("Preload with {} JPs of requested {} JPs ended in {} ms", mapJourneyProfiles.size(), trainIdentifications.size(), System.currentTimeMillis() - startTime);
 

@@ -22,7 +22,6 @@ const specialHoliday: SpecialHoliday = {
 
 const mockRuAdminApi: Partial<RuAdminApi> = {
   putSpecialHoliday: () => of({} as SpecialHolidayApiResponse),
-  deleteSpecialHoliday: () => of(undefined),
   postSpecialHoliday: () => of({} as SpecialHolidayApiResponse),
   deleteAllSpecialHolidays: () => of(undefined),
   specialHolidays: {reload: () => true} as HttpResourceRef<SpecialHolidayApiResponse | undefined>,
@@ -90,7 +89,7 @@ describe('SpecialHolidayService', () => {
   });
 
   it('edit with delete should delete holiday', async () => {
-    const apiDeleteSpy = vi.spyOn(mockRuAdminApi, 'deleteSpecialHoliday');
+    const apiDeleteSpy = vi.spyOn(mockRuAdminApi, 'deleteAllSpecialHolidays');
     const successToastSpy = vi.spyOn(mockToastService, 'success');
     const recentCompaniesSaveSpy = vi.spyOn(mockRecentCompaniesStore, 'save');
     mockDialogResult('delete');
@@ -98,7 +97,7 @@ describe('SpecialHolidayService', () => {
     await service.edit(specialHoliday);
 
     expect(successToastSpy).toHaveBeenCalled();
-    expect(apiDeleteSpy).toHaveBeenCalledWith(specialHoliday.id);
+    expect(apiDeleteSpy).toHaveBeenCalledWith([specialHoliday.id]);
     expect(recentCompaniesSaveSpy).not.toHaveBeenCalled();
   });
 

@@ -1,7 +1,8 @@
 package ch.sbb.das.backend.preload.application.converter;
 
-import static ch.sbb.das.backend.preload.application.converter.DateTimeConverter.SWISS_ZONE;
+import static ch.sbb.das.backend.common.DateTimeUtil.SWISS_ZONE;
 
+import ch.sbb.das.backend.common.DateTimeUtil;
 import ch.sbb.das.backend.preload.application.BitSetUtil;
 import ch.sbb.das.backend.preload.application.model.trainidentification.TrainRun;
 import ch.sbb.das.backend.preload.application.model.trainidentification.TrainRunDate;
@@ -25,6 +26,7 @@ import org.springframework.stereotype.Component;
 public class TrainRunConverter {
 
     static final int UIC_COUNTRY_CODE_CH = 85;
+    public static final int LOOKBACK_DAYS = 3;
 
     List<TrainRun> convertTrainRuns(List<Zuglauf> zuglaeufe, LocalDate periodStartDate) {
         return zuglaeufe.stream()
@@ -53,24 +55,24 @@ public class TrainRunConverter {
 
         Optional<Integer> firstDepartureTime = findFirstDepartureTime(zuglaufPunkte);
         if (firstDepartureTime.isEmpty()) {
+            // ignore train runs not running on any swiss train run point
             return null;
         }
         List<TrainRunDate> trainRunDates = new ArrayList<>();
 
         operatingDays.forEach(
             operatingDay -> {
-                OffsetDateTime startDate = convertToStartDate(operatingDay, firstDepartureTime);
-                if (startDate.isAfter(OffsetDateTime.now().minusDays(3))) {
+                OffsetDateTime startDateTime = convertToStartDateTime(operatingDay, firstDepartureTime.get());
+                if (startDateTime.isAfter(DateTimeUtil.now().minusDays(LOOKBACK_DAYS))) {
                     trainRunDates.add(TrainRunDate.builder()
                         .operatingDay(operatingDay)
-                        .startDateTime(startDate)
+                        .startDateTime(startDateTime)
                         .vehicleModes(zuglauf.getZugkategorien())
                         .build());
                 }
             });
 
         return TrainRun.builder()
-            .firstDepartureTime(firstDepartureTime.get())
             .companies(collectCompanies(zuglaeufe))
             .trainRunDates(trainRunDates)
             .build();
@@ -89,16 +91,17 @@ public class TrainRunConverter {
             .findFirst();
     }
 
-    private OffsetDateTime convertToStartDate(LocalDate operationalDate, Optional<Integer> firstSwissOperationalDepartureTime) {
-        return plusSeconds(operationalDate, firstSwissOperationalDepartureTime.orElse(0));
-    }
-
-    private OffsetDateTime plusSeconds(LocalDate operationalDate, int departureTime) {
-        ZonedDateTime dateTime = ZonedDateTime.of(
-            operationalDate.getYear(), operationalDate.getMonth().getValue(), operationalDate.getDayOfMonth(),
-            0, 0, 0, 0,
-            SWISS_ZONE);
-        return dateTime.plusSeconds(departureTime).toOffsetDateTime();
+    /**
+     * @see <a href="https://confluence.sbb.ch/x/DcxSww">Umrechnen von Planzeiten</a>
+     */
+    private OffsetDateTime convertToStartDateTime(LocalDate operationalDate, Integer secondsToAdd) {
+        ZonedDateTime dateTime = ZonedDateTime.of(operationalDate.getYear(), operationalDate.getMonth().getValue(), operationalDate.getDayOfMonth(),
+            0, 0, 0, 0, SWISS_ZONE);
+        long offsetT0 = dateTime.getOffset().getTotalSeconds();
+        dateTime = dateTime.plusSeconds(secondsToAdd);
+        long offsetT1 = dateTime.getOffset().getTotalSeconds();
+        dateTime = dateTime.plusSeconds(offsetT0 - offsetT1);
+        return dateTime.toOffsetDateTime();
     }
 
     private Set<String> collectCompanies(List<Zuglauf> zuglaeufe) {

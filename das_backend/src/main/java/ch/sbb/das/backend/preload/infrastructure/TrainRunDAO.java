@@ -1,11 +1,9 @@
 package ch.sbb.das.backend.preload.infrastructure;
 
-import ch.sbb.das.backend.preload.application.converter.DateTimeConverter;
 import ch.sbb.das.backend.preload.application.model.trainidentification.Train;
 import ch.sbb.das.backend.preload.application.model.trainidentification.TrainRun;
 import ch.sbb.das.backend.preload.application.model.trainidentification.TrainRunDate;
 import java.time.LocalDate;
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -56,7 +54,7 @@ public class TrainRunDAO {
                     paramValues.addValue("period", train.getOperatingPeriod());
                     paramValues.addValue("operationalTrainNumber", train.getOperationalTrainNumber());
                     paramValues.addValue("companies", String.join(",", trainRun.getCompanies()));
-                    paramValues.addValue("startDateTime", toStartDateTime(trainRunDate, trainRun));
+                    paramValues.addValue("startDateTime", trainRunDate.getStartDateTime());
                     paramValues.addValue("operationalDay", trainRunDate.getOperatingDay());
                     paramValues.addValue("line", train.getLine());
                     paramValues.addValue("vehicleModes", String.join(",", trainRunDate.getVehicleModes()));
@@ -67,10 +65,6 @@ public class TrainRunDAO {
         MapSqlParameterSource[] sqlParams = params.toArray(MapSqlParameterSource[]::new);
         int[] rowsUpdated = namedParameterJdbcTemplate.batchUpdate(sql, sqlParams);
         log.debug("{} rows of table train updated", Arrays.stream(rowsUpdated).sum());
-    }
-
-    private OffsetDateTime toStartDateTime(TrainRunDate trainRunDate, TrainRun trainRun) {
-        return DateTimeConverter.convertDateTime(trainRunDate.getOperatingDay(), trainRun.getFirstDepartureTime());
     }
 
     public void deleteAllOlderThan(LocalDate date) {

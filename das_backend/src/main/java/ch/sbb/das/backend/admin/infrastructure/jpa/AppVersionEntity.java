@@ -1,6 +1,5 @@
 package ch.sbb.das.backend.admin.infrastructure.jpa;
 
-import ch.sbb.das.backend.admin.application.settings.model.request.AppVersionRequest;
 import ch.sbb.das.backend.admin.application.settings.model.response.AppVersion;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -33,15 +32,16 @@ public class AppVersionEntity extends EntityBase {
     private Boolean minimalVersion;
     private LocalDate expiryDate;
 
-    public static AppVersionEntity from(AppVersionRequest createRequest) {
+    public static AppVersionEntity from(AppVersion appVersion) {
         AppVersionEntity entity = new AppVersionEntity();
-        entity.setVersion(createRequest.version());
-        entity.setMinimalVersion(createRequest.minimalVersion());
-        entity.setExpiryDate(createRequest.expiryDate());
+        entity.setId(appVersion.id());
+        entity.setVersion(appVersion.version());
+        entity.setMinimalVersion(appVersion.minimalVersion());
+        entity.setExpiryDate(appVersion.expiryDate());
         return entity;
     }
 
     public AppVersion toAppVersion() {
-        return new AppVersion(id, version, minimalVersion, expiryDate);
+        return new AppVersion(id, version, minimalVersion, expiryDate, getLastModifiedAt(), getLastModifiedBy());
     }
 }

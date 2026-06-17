@@ -29,7 +29,7 @@ class AppVersionControllerTest {
 
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
-    void getAll_empty() throws Exception {
+    void getAll_AppVersions_empty() throws Exception {
         mockMvc.perform(get(API_SETTINGS_APP_VERSION))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data", hasSize(0)));
@@ -37,7 +37,7 @@ class AppVersionControllerTest {
 
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
-    void getById_not_found() throws Exception {
+    void getAppVersionById_not_found() throws Exception {
         int nonExistingId = Integer.MAX_VALUE;
         mockMvc.perform(get(API_SETTINGS_APP_VERSION + "/" + nonExistingId))
             .andExpect(status().isNotFound());
@@ -46,19 +46,21 @@ class AppVersionControllerTest {
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     @Sql("classpath:createAppVersions.sql")
-    void getById_by_id() throws Exception {
+    void getById_AppVersion_by_id() throws Exception {
         mockMvc.perform(get(API_SETTINGS_APP_VERSION + "/1"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data", hasSize(1)))
             .andExpect(jsonPath("$.data[0].id").value(1))
             .andExpect(jsonPath("$.data[0].version").value("2.4.1"))
             .andExpect(jsonPath("$.data[0].minimalVersion").value(false))
-            .andExpect(jsonPath("$.data[0].expiryDate").value("2026-12-31"));
+            .andExpect(jsonPath("$.data[0].expiryDate").value("2026-12-31"))
+            .andExpect(jsonPath("$.data[0].lastModifiedAt").isNotEmpty())
+            .andExpect(jsonPath("$.data[0].lastModifiedBy").value("unit_test"));
     }
 
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
-    void create_ok() throws Exception {
+    void create_AppVersion_ok() throws Exception {
         String jsonResult = mockMvc.perform(post(API_SETTINGS_APP_VERSION)
                 .contentType("application/json")
                 .content("""
@@ -73,7 +75,10 @@ class AppVersionControllerTest {
             .andExpect(jsonPath("$.data[0].id").isNumber())
             .andExpect(jsonPath("$.data[0].version").value("1.6.3"))
             .andExpect(jsonPath("$.data[0].minimalVersion").value(true))
-            .andExpect(jsonPath("$.data[0].expiryDate").isEmpty()).andReturn().getResponse().getContentAsString();
+            .andExpect(jsonPath("$.data[0].expiryDate").isEmpty())
+            .andExpect(jsonPath("$.data[0].lastModifiedAt").isNotEmpty())
+            .andExpect(jsonPath("$.data[0].lastModifiedBy").value("test-user"))
+            .andReturn().getResponse().getContentAsString();
 
         int id = JsonPath.read(jsonResult, "$.data[0].id");
 
@@ -83,12 +88,14 @@ class AppVersionControllerTest {
             .andExpect(jsonPath("$.data[0].id").isNumber())
             .andExpect(jsonPath("$.data[0].version").value("1.6.3"))
             .andExpect(jsonPath("$.data[0].minimalVersion").value(true))
-            .andExpect(jsonPath("$.data[0].expiryDate").isEmpty());
+            .andExpect(jsonPath("$.data[0].expiryDate").isEmpty())
+            .andExpect(jsonPath("$.data[0].lastModifiedAt").isNotEmpty())
+            .andExpect(jsonPath("$.data[0].lastModifiedBy").value("test-user"));
     }
 
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
-    void create_invalid_body() throws Exception {
+    void create_AppVersion_invalid_body() throws Exception {
         mockMvc.perform(post(API_SETTINGS_APP_VERSION)
                 .contentType("application/json")
                 .content("""
@@ -104,7 +111,7 @@ class AppVersionControllerTest {
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     @Sql("classpath:createAppVersions.sql")
-    void create_conflict_version() throws Exception {
+    void create_AppVersion_conflict_version() throws Exception {
         mockMvc.perform(post(API_SETTINGS_APP_VERSION)
                 .contentType("application/json")
                 .content("""
@@ -121,7 +128,7 @@ class AppVersionControllerTest {
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     @Sql("classpath:createAppVersions.sql")
-    void update_ok() throws Exception {
+    void update_AppVersion_ok() throws Exception {
         mockMvc.perform(put(API_SETTINGS_APP_VERSION + "/1")
                 .contentType("application/json")
                 .content("""
@@ -136,7 +143,9 @@ class AppVersionControllerTest {
             .andExpect(jsonPath("$.data[0].id").value(1))
             .andExpect(jsonPath("$.data[0].version").value("2.5.0"))
             .andExpect(jsonPath("$.data[0].minimalVersion").value(true))
-            .andExpect(jsonPath("$.data[0].expiryDate").value("2026-01-01"));
+            .andExpect(jsonPath("$.data[0].expiryDate").value("2026-01-01"))
+            .andExpect(jsonPath("$.data[0].lastModifiedAt").isNotEmpty())
+            .andExpect(jsonPath("$.data[0].lastModifiedBy").value("test-user"));
 
         mockMvc.perform(get(API_SETTINGS_APP_VERSION + "/1"))
             .andExpect(status().isOk())
@@ -144,13 +153,15 @@ class AppVersionControllerTest {
             .andExpect(jsonPath("$.data[0].id").value(1))
             .andExpect(jsonPath("$.data[0].version").value("2.5.0"))
             .andExpect(jsonPath("$.data[0].minimalVersion").value(true))
-            .andExpect(jsonPath("$.data[0].expiryDate").value("2026-01-01"));
+            .andExpect(jsonPath("$.data[0].expiryDate").value("2026-01-01"))
+            .andExpect(jsonPath("$.data[0].lastModifiedAt").isNotEmpty())
+            .andExpect(jsonPath("$.data[0].lastModifiedBy").value("test-user"));
     }
 
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     @Sql("classpath:createAppVersions.sql")
-    void delete_ok() throws Exception {
+    void delete_AppVersionById_ok() throws Exception {
         mockMvc.perform(delete(API_SETTINGS_APP_VERSION + "/1"))
             .andExpect(status().isNoContent());
 
@@ -160,7 +171,7 @@ class AppVersionControllerTest {
 
     @Test
     @WithMockRole(roles = UserRole.ADMIN, adminTenant = false)
-    void create_forbidden() throws Exception {
+    void create_AppVersion_forbidden() throws Exception {
         mockMvc.perform(post(API_SETTINGS_APP_VERSION)
                 .contentType("application/json")
                 .content("""

@@ -1,23 +1,26 @@
-<sbb-dialog-title>{{ title }}</sbb-dialog-title>
-<sbb-dialog-content>
+<app-base-dialog [data]="dialogData" [dialogClose]="formValue" [dialogTitle]="title"
+                 [saveDisabled]="specialHolidayForm.invalid"
+                 i18n-stepLabel="@@special_holidays_dialog_step_label" stepLabel="Feiertag">
   <form [formGroup]="specialHolidayForm">
     <sbb-form-field errorSpace="reserve">
-      <label for="holidayName" i18n="@@special_holidays_form_name_label">Name des Feiertags</label>
-      <input formControlName="name" id="holidayName" placeholder="z.B. Güdeismontag" required/>
+      <label i18n="@@special_holidays_form_name_label">Name des Feiertags</label>
+      <input formControlName="name" placeholder="z.B. Güdeismontag" required/>
       @if (specialHolidayForm.get('name')?.touched && specialHolidayForm.get('name')?.hasError('required')) {
-        <sbb-error i18n="@@special_holidays_form_field_error_required">Feld darf nicht leer sein</sbb-error>
+        <sbb-error i18n="@@special_holidays_form_field_error_required">Feld darf nicht leer sein
+        </sbb-error>
       }
     </sbb-form-field>
 
     <sbb-form-field errorSpace="reserve">
-      <label for="date" i18n="@@special_holidays_form_date_label">Gültig am</label>
+      <label i18n="@@special_holidays_form_date_label">Gültig am</label>
       <sbb-datepicker-previous-day></sbb-datepicker-previous-day>
-      <sbb-date-input formControlName="date" id="date" required></sbb-date-input>
+      <sbb-date-input formControlName="date" required></sbb-date-input>
       <sbb-datepicker-toggle></sbb-datepicker-toggle>
       <sbb-datepicker-next-day></sbb-datepicker-next-day>
       <sbb-datepicker></sbb-datepicker>
       @if (specialHolidayForm.get('date')?.touched && specialHolidayForm.get('date')?.hasError('required')) {
-        <sbb-error i18n="@@special_holidays_form_field_error_required">Feld darf nicht leer sein</sbb-error>
+        <sbb-error i18n="@@special_holidays_form_field_error_required">Feld darf nicht leer sein
+        </sbb-error>
       }
     </sbb-form-field>
 
@@ -29,25 +32,11 @@
         }
       </sbb-radio-button-group>
       @if (specialHolidayForm.get('scheduleType')?.touched && specialHolidayForm.get('scheduleType')?.hasError('required')) {
-        <sbb-error i18n="@@special_holidays_form_field_error_required">Feld darf nicht leer sein</sbb-error>
+        <sbb-error i18n="@@special_holidays_form_field_error_required">Feld darf nicht leer sein
+        </sbb-error>
       }
     </div>
 
     <app-companies-input [control]="specialHolidayForm.controls.companies"></app-companies-input>
   </form>
-</sbb-dialog-content>
-
-<sbb-dialog-actions alignGroup="stretch">
-  <sbb-secondary-button align-self="start" i18n="@@special_holidays_dialog_button_cancel" sbb-dialog-close>
-    Abbrechen
-  </sbb-secondary-button>
-  @if (isEdit) {
-    <sbb-transparent-button i18n="@@special_holidays_dialog_button_delete" iconName="trash-small"
-                            sbb-dialog-close="delete">Feiertag löschen
-    </sbb-transparent-button>
-  }
-  <sbb-button [disabled]="specialHolidayForm.invalid" [sbb-dialog-close]="formValue"
-              i18n="@@special_holidays_dialog_button_save">Speichern
-  </sbb-button>
-</sbb-dialog-actions>
-
+</app-base-dialog>

@@ -1,20 +1,15 @@
-import {inject, Injectable} from '@angular/core';
-import {AppVersion, DasAdminApi} from '../das-admin-api';
-import {AppVersionDialog, VersionDialogEditResult} from './app-version-dialog/app-version-dialog';
-import {firstValueFrom, Observable} from 'rxjs';
-import {SbbDialogService} from '@sbb-esta/lyne-angular/dialog';
-import {ToastService} from '../../shared/toast-service';
-import {HttpErrorResponse} from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { AppVersion, DasAdminApi } from '../das-admin-api';
+import { AppVersionDialog, VersionDialogEditResult } from './app-version-dialog/app-version-dialog';
+import { firstValueFrom } from 'rxjs';
+import { BaseDialogService } from '../../ru-admin/base-dialog.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AppVersionsService {
-
+export class AppVersionsService extends BaseDialogService {
   private readonly dasAdminApi = inject(DasAdminApi);
-  private readonly dialogService = inject(SbbDialogService);
-  private readonly toastService = inject(ToastService);
-
   readonly appVersionsResource = this.dasAdminApi.appVersions;
 
   async edit(appVersion: AppVersion) {
@@ -33,24 +28,15 @@ export class AppVersionsService {
     }
   }
 
-  private reloadAppVersions() {
+  protected override reload(): void {
     this.dasAdminApi.appVersions.reload()
   }
 
-  private async runMutation(request: Observable<unknown>, successMessage: string): Promise<void> {
-    await firstValueFrom(request)
-      .then(() => {
-        this.toastService.success(successMessage);
-        this.reloadAppVersions();
-      })
-      .catch(e => this.handleApiError(e));
-  }
-
-  private handleApiError(e: unknown) {
+  protected override handleApiError(e: unknown) {
     if (e instanceof HttpErrorResponse && e.error.status === 409) {
       this.toastService.error($localize`:@@app_versions_toast_conflict_error:Diese App Version existiert bereits.`);
     } else {
-      this.toastService.error($localize`:@@app_versions_toast_error:Beim Speichern ist ein Fehler aufgetreten.`)
+      super.handleApiError(e)
     }
   }
 }

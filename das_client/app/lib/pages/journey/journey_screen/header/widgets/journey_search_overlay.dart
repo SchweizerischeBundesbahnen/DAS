@@ -69,6 +69,7 @@ class JourneySearchOverlay extends StatelessWidget {
                 isModalVersion: true,
                 selectedRailwayUndertakings: [model.railwayUndertaking],
                 updateRailwayUndertaking: vm.updateRailwayUndertaking,
+                borderType: .standalone,
               );
             },
           ),

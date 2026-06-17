@@ -4,6 +4,8 @@ import ch.sbb.das.backend.common.ApiDocumentation;
 import ch.sbb.das.backend.common.ApiErrorResponses;
 import ch.sbb.das.backend.common.ApiParametersDefault;
 import ch.sbb.das.backend.common.ApiParametersDefault.ParamRequestId;
+import ch.sbb.das.backend.common.CompanyCode;
+import ch.sbb.das.backend.common.DateTimeUtil;
 import ch.sbb.das.backend.common.Problem;
 import ch.sbb.das.backend.common.Response;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
@@ -41,7 +43,6 @@ public class FormationController {
 
     public static final String OPERATIONAL_TRAIN_NUMBER_DESCRIPTION = "Relates to `teltsi_OperationalTrainNumber` (according to SFERA). In CH unique on a specific `operationalDay`.";
     public static final String OPERATIONAL_DAY_DESCRIPTION = "Operational day (underlying journey-planner specific, be aware of confusion with stop-times after midnight within a journey the day before).";
-    public static final String COMPANY_DESCRIPTION = "Relates to teltsi_CompanyCode (according to SFERA a [RICS-code](https://uic.org/support-activities/it/rics)).";
     private static final String PATH_SEGMENT_FORMATIONS = "/formations";
     public static final String API_FORMATIONS = ApiDocumentation.VERSION_URI_V1 + PATH_SEGMENT_FORMATIONS;
 
@@ -74,7 +75,7 @@ public class FormationController {
         @Parameter(description = OPERATIONAL_DAY_DESCRIPTION, required = true, example = "2026-01-22")
         @SFERA(nsp = true) @RequestParam @NotNull LocalDate operationalDay,
 
-        @Parameter(description = COMPANY_DESCRIPTION, example = "1033")
+        @Parameter(description = CompanyCode.DESCRIPTION, example = "1033")
         @SFERA @TelTsi @RequestParam @Pattern(regexp = "\\d{4}") String company) {
 
         final List<TrainFormationRunEntity> entities = formationService.findByTrainIdentifier(operationalTrainNumber, operationalDay, company);
@@ -82,7 +83,7 @@ public class FormationController {
             // TODO hardoded: replace by generic RequestContext
             final String instance = API_FORMATIONS + "/" + operationalTrainNumber + "/" + operationalDay + "/" + company;
 
-            final LocalDate today = LocalDate.now();
+            final LocalDate today = DateTimeUtil.today();
             if (operationalDay.isBefore(today) || operationalDay.isAfter(today)) {
                 return ResponseEntityFactory.createNotFoundResponse(
                     ResponseEntityFactory.TITLE_NOT_FOUND, "operationalDay='" + operationalDay + "' -> data may not be available at all if not TODAY.",

@@ -10,7 +10,7 @@ import org.springframework.retry.annotation.EnableRetry;
 @EnableRetry
 public class DASBackendApplication {
 
-    public static void main(String[] args) {
+    static void main(String[] args) {
         SpringApplication.run(DASBackendApplication.class, args);
     }
 

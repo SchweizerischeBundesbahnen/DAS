@@ -1,9 +1,9 @@
 package ch.sbb.das.backend.formation.api.v1.model;
 
-import static ch.sbb.das.backend.formation.api.v1.FormationController.COMPANY_DESCRIPTION;
 import static ch.sbb.das.backend.formation.api.v1.FormationController.OPERATIONAL_DAY_DESCRIPTION;
 import static ch.sbb.das.backend.formation.api.v1.FormationController.OPERATIONAL_TRAIN_NUMBER_DESCRIPTION;
 
+import ch.sbb.das.backend.common.CompanyCode;
 import ch.sbb.das.backend.formation.infrastructure.model.TrainFormationRunEntity;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -22,7 +22,7 @@ public record Formation(
     @Schema(description = OPERATIONAL_DAY_DESCRIPTION, requiredMode = Schema.RequiredMode.REQUIRED)
     LocalDate operationalDay,
 
-    @Schema(description = COMPANY_DESCRIPTION, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = CompanyCode.DESCRIPTION, requiredMode = Schema.RequiredMode.REQUIRED)
     String company,
 
     @ArraySchema(arraySchema = @Schema(requiredMode = Schema.RequiredMode.REQUIRED, description = "The order of items match the actual run order."), minItems = 1)

@@ -32,11 +32,6 @@ export const routes: Routes = [
         path: 'ru-admin',
         canActivate: [isRuAdmin],
         loadChildren: () => import('./ru-admin/ru-admin.routes').then((m) => m.routes)
-      },
-      {
-        path: 'locations',
-        canActivate: [isAdmin],
-        loadComponent: () => import('./shared/locations-input/locations-input.component').then(m => m.LocationsInput)
       }
     ]
   },

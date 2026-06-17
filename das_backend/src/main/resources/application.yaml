@@ -198,3 +198,8 @@ proxy:
 atlas:
   base-url: ${ATLAS_BASE_URL}
   import-cron: 0 0 3 * * ?  # every day at 3
+
+admin:
+  clean-up:
+    cron: 0 0 3 * * ?  # every day at 3
+    older-than-days: 90

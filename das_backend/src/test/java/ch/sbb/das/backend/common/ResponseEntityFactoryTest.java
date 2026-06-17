@@ -19,7 +19,7 @@ class ResponseEntityFactoryTest {
         final DummyResponse response = new DummyResponse();
         response.getData().add(entry);
 
-        ResponseEntity<DummyResponse> responseEntity = ResponseEntityFactory.createOkResponse(response, null, null);
+        ResponseEntity<DummyResponse> responseEntity = ResponseEntityFactory.createOkResponse(response, null);
         assertThat(responseEntity.getBody()).isEqualTo(response);
         assertThat(responseEntity.getHeaders().getContentType()).isEqualTo(MediaType.APPLICATION_JSON);
         assertThat(responseEntity.getHeaders().getContentLanguage()).isNull();

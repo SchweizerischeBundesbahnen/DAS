@@ -7,6 +7,8 @@ import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchRule;
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
 
 @AnalyzeClasses(packages = "ch.sbb.das.backend", importOptions = ImportOption.DoNotIncludeTests.class)
 final class ArchUnitTest {
@@ -48,7 +50,16 @@ final class ArchUnitTest {
             "org.slf4j..",
             "org.jetbrains.annotations..",
             "lombok..",
+            "com.fasterxml.jackson..",
             "org.springframework.util"
         )
         .because("domain core should be independent of frameworks");
+
+    @ArchTest
+    static final ArchRule USE_DATE_TIME_UTIL = noClasses()
+        .should()
+        .callMethod(LocalDate.class, "now")
+        .orShould()
+        .callMethod(OffsetDateTime.class, "now")
+        .because("Use DateTimeUtil with provided zone information");
 }

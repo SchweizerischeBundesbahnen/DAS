@@ -15,6 +15,8 @@ import lombok.NonNull;
  */
 public record CompanyCode(@NonNull String value) {
 
+    public static final String DESCRIPTION = "Relates to teltsi_CompanyCode (according to SFERA a [RICS-code](https://uic.org/support-activities/it/rics)).";
+
     private static final Pattern COMPANY_CODE_PATTERN = Pattern.compile("[0-9A-Z]{4}");
 
     public CompanyCode {

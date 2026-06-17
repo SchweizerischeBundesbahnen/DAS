@@ -1,6 +1,6 @@
 package ch.sbb.das.backend.preload.infrastructure;
 
-import java.time.Instant;
+import ch.sbb.das.backend.common.DateTimeUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.client.OAuth2AuthorizeRequest;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
@@ -25,7 +25,7 @@ public class SferaAuthService {
     }
 
     private static boolean isTokenValid(OAuth2AccessToken token) {
-        return token != null && token.getExpiresAt() != null && token.getExpiresAt().minusSeconds(TOKEN_REFRESH_MARGIN_SECONDS).isAfter(Instant.now());
+        return token != null && token.getExpiresAt() != null && token.getExpiresAt().minusSeconds(TOKEN_REFRESH_MARGIN_SECONDS).isAfter(DateTimeUtil.now().toInstant());
     }
 
     public OAuth2AccessToken getAccessToken() {

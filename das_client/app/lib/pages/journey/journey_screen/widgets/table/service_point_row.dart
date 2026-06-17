@@ -208,8 +208,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
         padding: .symmetric(vertical: SBBSpacing.xSmall, horizontal: 2),
         child: Padding(
           padding: config.bracketStationRenderData != null ? const .only(right: SBBSpacing.large) : .zero,
-          child: Row(
-            mainAxisSize: .min,
+          child: Wrap(
             spacing: 2,
             children: [
               if (data.stationSign2 != null)

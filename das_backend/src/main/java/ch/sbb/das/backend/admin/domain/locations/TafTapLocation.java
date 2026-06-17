@@ -1,5 +1,6 @@
 package ch.sbb.das.backend.admin.domain.locations;
 
+import ch.sbb.das.backend.common.DateTimeUtil;
 import ch.sbb.das.backend.formation.domain.model.TafTapLocationReference;
 import java.time.LocalDate;
 
@@ -8,11 +9,11 @@ public record TafTapLocation(TafTapLocationReference locationReference, String p
     private static final int YEARS_IN_FUTURE = 1;
 
     public boolean valid() {
-        return validFrom.isBefore(LocalDate.now().plusYears(YEARS_IN_FUTURE));
+        return validFrom.isBefore(DateTimeUtil.today().plusYears(YEARS_IN_FUTURE));
     }
 
     public LocalDate futureValidFrom() {
-        if (validFrom().isAfter(LocalDate.now())) {
+        if (validFrom().isAfter(DateTimeUtil.today())) {
             return validFrom;
         }
         return null;

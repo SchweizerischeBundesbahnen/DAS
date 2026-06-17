@@ -1,7 +1,7 @@
 package ch.sbb.das.backend.admin.infrastructure.jpa;
 
-import ch.sbb.das.backend.admin.application.notices.model.ScheduleType;
-import ch.sbb.das.backend.admin.application.notices.model.SpecialHoliday;
+import ch.sbb.das.backend.admin.application.ruindications.model.ScheduleType;
+import ch.sbb.das.backend.admin.application.ruindications.model.SpecialHoliday;
 import ch.sbb.das.backend.common.CompanyCode;
 import ch.sbb.das.backend.common.CompanyCodeListConverter;
 import jakarta.persistence.Convert;
@@ -15,8 +15,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -46,7 +44,7 @@ public class SpecialHolidayEntity extends EntityBase {
     private ScheduleType scheduleType;
 
     @Convert(converter = CompanyCodeListConverter.class)
-    private List<CompanyCode> companies;
+    private Set<CompanyCode> companies;
 
     public SpecialHoliday toSpecialHoliday() {
         return new SpecialHoliday(
@@ -54,8 +52,9 @@ public class SpecialHolidayEntity extends EntityBase {
             name,
             date,
             scheduleType,
-            companies == null ? Set.of() : new HashSet<>(companies)
+            companies,
+            getLastModifiedAt(),
+            getLastModifiedBy()
         );
     }
 }
-

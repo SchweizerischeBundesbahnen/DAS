@@ -27,13 +27,7 @@ class PersistenceAppVersionRepository implements AppVersionRepository {
 
     @Override
     public AppVersion save(AppVersion appVersion) {
-        AppVersionEntity entity = new AppVersionEntity();
-        entity.setId(appVersion.id());
-        entity.setVersion(appVersion.version());
-        entity.setMinimalVersion(appVersion.minimalVersion());
-        entity.setExpiryDate(appVersion.expiryDate());
-        AppVersionEntity saved = appVersionRepository.save(entity);
-        return saved.toAppVersion();
+        return appVersionRepository.save(AppVersionEntity.from(appVersion)).toAppVersion();
     }
 
     @Override

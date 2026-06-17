@@ -49,7 +49,7 @@ public class TafTapLocationController {
     @ApiErrorResponses
     @Parameter(name = HttpHeaders.IF_NONE_MATCH, schema = @Schema(type = "string", example = ApiDocumentation.SAMPLE_CACHE_ETAG), description = ApiDocumentation.HEADER_CACHE_IF_NONE_MATCH_DESCRIPTION,
         in = ParameterIn.HEADER)
-    public ResponseEntity<? extends Response> getAll(
+    public ResponseEntity<? extends Response> getAllLocations(
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
         List<TafTapLocation> locations = locationService.findAll();
         final HttpHeaders headers = ResponseEntityFactory.createOkHeaders(requestId);

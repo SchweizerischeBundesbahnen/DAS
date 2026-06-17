@@ -5,7 +5,6 @@ import {AppVersionsTable} from './app-versions-table/app-versions-table';
 import {AppVersionsService} from './app-versions.service';
 import {SbbLoadingIndicatorCircleModule} from '@sbb-esta/lyne-angular/loading-indicator-circle';
 
-
 @Component({
   selector: 'app-app-versions',
   imports: [
