@@ -146,6 +146,7 @@ class _ContentState extends State<_Content> {
               SelectRailwayUndertakingInput(
                 selectedRailwayUndertakings: [model.railwayUndertaking],
                 updateRailwayUndertaking: viewModel.updateRailwayUndertaking,
+                borderType: .standalone,
               ),
               JourneyTrainNumberInput(),
             ],
