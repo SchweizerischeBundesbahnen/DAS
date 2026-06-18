@@ -23,7 +23,7 @@
     "@angular/forms": "21.2.14",
     "@angular/platform-browser": "21.2.14",
     "@angular/router": "21.2.14",
-    "@sbb-esta/lyne-angular": "21.7.0",
+    "@sbb-esta/lyne-angular": "22.0.2",
     "@sbb-esta/lyne-elements": "4.13.0",
     "angular-auth-oidc-client": "21.0.2",
     "angular-server-side-configuration": "21.0.4",
