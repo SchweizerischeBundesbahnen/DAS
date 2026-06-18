@@ -117,9 +117,7 @@ class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartu
   Stream<CustomerOrientedDeparture> get customerOrientedDeparture => _rxCustomerOrientedDeparture.stream;
 
   @override
-  void requestLatestStatus() {
-    messagingService.replayMessages();
-  }
+  void requestLatestStatus() => messagingService.replayMessages();
 
   @override
   void dispose() {
@@ -138,7 +136,6 @@ class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartu
 
   void _initTokenSubscription() {
     final sub = messagingService.token.listen((token) {
-      _log.severe('TOKEN: $token');
       if (token != null && _pendingOrOpenSubscription != null && _pendingOrOpenSubscription!.pushToken != token) {
         _log.fine('Received new push token for open/pending subscription');
         _pendingOrOpenSubscription = _pendingOrOpenSubscription!.withToken(token: token);
@@ -160,16 +157,19 @@ class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartu
   }
 
   DateTime _calculateExpiresAt(DateTime? journeyEndTime) {
-    if (journeyEndTime != null) {
-      return journeyEndTime.add(expireAtBuffer);
+    final defaultExpireAt = DateTime.now().add(defaultExpireAtDuration);
+    if (journeyEndTime == null) return defaultExpireAt;
+
+    final expireAtFromJourney = journeyEndTime.add(expireAtBuffer);
+    if (expireAtFromJourney.isBefore(DateTime.now())) {
+      return defaultExpireAt;
     }
-    return DateTime.now().add(defaultExpireAtDuration);
+    return expireAtFromJourney;
   }
 
   Future<bool> _sendSubscribeRequest({required _Subscription subscription}) async {
-    final evu = subscription.evu; // TODO: check with GEMS if need to change to hardcoded SBB
+    final evu = subscription.evu;
     final trainNumber = subscription.trainNumber;
-
     try {
       await apiService.subscribe(
         evu: evu,
@@ -225,6 +225,7 @@ class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartu
     if (status == null) {
       _log.warning('Received message (messageId: ${message.messageId}) with unknown status: ${message.status}.');
     } else {
+      _log.info('Received message (messageId: ${message.messageId}) with status: $status.');
       final customerOrientedDeparture = CustomerOrientedDeparture(trainNumber: message.zugnr, status: status);
       _rxCustomerOrientedDeparture.add(customerOrientedDeparture);
       _sendConfirmMessageRequest(message.messageId);

@@ -10,8 +10,8 @@ class TrainStatusMessageDto extends BaseMessageDto {
   TrainStatusMessageDto({
     required super.messageId,
     required this.zugnr,
-    required this.bp,
     required this.status,
+    this.bp,
   });
 
   factory TrainStatusMessageDto.fromJson(Map<String, dynamic> json) {
@@ -24,8 +24,8 @@ class TrainStatusMessageDto extends BaseMessageDto {
   }
 
   final String zugnr;
-  final String bp;
   final String status;
+  final String? bp;
 
   @override
   Map<String, dynamic> toJson() => _$TrainStatusMessageDtoToJson(this);

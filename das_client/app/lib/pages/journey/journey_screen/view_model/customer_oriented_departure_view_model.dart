@@ -78,7 +78,7 @@ class CustomerOrientedDepartureViewModel extends JourneyAwareViewModel {
     final endServicePoint = journey.journeyPoints.whereType<ServicePoint>().last;
     final arrivalDepartureTime = endServicePoint.arrivalDepartureTime;
     _repository.subscribe(
-      evu: trainIdentification.ru.companyCode,
+      evu: trainIdentification.ru.name.toUpperCase(),
       trainNumber: trainIdentification.trainNumber,
       journeyEndTime: arrivalDepartureTime?.operationalArrivalTime ?? arrivalDepartureTime?.plannedArrivalTime,
       isDriver: await _isDriver,

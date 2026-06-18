@@ -137,6 +137,41 @@ void main() {
     verifyNever(mockApiService.subscribe);
   });
 
+  test('subscribe_whenJourneyEndTimeIsInThePast_thenUsesDefaultExpireAt', () async {
+    // GIVEN
+    final pastJourneyEndTime = DateTime.now().subtract(const Duration(hours: 4));
+    final defaultExpireAt = DateTime.now().add(CustomerOrientedDepartureRepositoryImpl.defaultExpireAtDuration);
+
+    // ACT
+    final result = await testee.subscribe(
+      evu: '1080',
+      trainNumber: 'RE1234',
+      journeyEndTime: pastJourneyEndTime,
+      isDriver: true,
+    );
+
+    // VERIFY
+    expect(result, isTrue);
+    final verification = verify(
+      mockSubscribeRequest.call(
+        evu: '1080',
+        trainNumber: 'RE1234',
+        pushToken: testPushToken,
+        deviceId: 'device-1',
+        messageId: anyNamed('messageId'),
+        expiresAt: captureAnyNamed('expiresAt'),
+        isDriver: true,
+      ),
+    );
+    verification.called(1);
+
+    final capturedExpiresAt = verification.captured.single as DateTime;
+    expect(
+      capturedExpiresAt.difference(defaultExpireAt).abs().inMilliseconds,
+      lessThan(1000),
+    );
+  });
+
   test('subscribe_whenPendingSubscriptionExists_thenDeregistersBeforeRegister', () async {
     // GIVEN
     when(mockMessagingService.tokenValue).thenReturn(null);
