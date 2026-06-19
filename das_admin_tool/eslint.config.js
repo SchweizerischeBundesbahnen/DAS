@@ -33,14 +33,12 @@ export default defineConfig(
   },
   {
     files: ['**/*.html'],
-    extends: [
-      ...angular.configs.templateRecommended,
-      ...angular.configs.templateAccessibility,
-      prettierRecommended,
-    ],
+    extends: [...angular.configs.templateAll, prettierRecommended],
     rules: {
-      // sbb-form-field handles label association internally
-      '@angular-eslint/template/label-has-associated-control': 'off',
+      // Disabled because sbb-component attributes get reported
+      '@angular-eslint/template/i18n': 'off',
+      // Disabled because signals get reported
+      '@angular-eslint/template/no-call-expression': 'off',
     },
   },
   { files: ['**/*.css'], language: 'css/css', plugins: { css }, extends: [prettierRecommended] },

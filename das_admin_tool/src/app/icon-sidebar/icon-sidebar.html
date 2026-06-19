@@ -5,7 +5,7 @@
         i18n-sbb-tooltip="@@sidebar_link_menu1_tooltip"
         iconName="avatar-train-staff-das-small"
         sbb-tooltip="Menu 1"
-      ></sbb-icon-sidebar-link>
+      />
       @if (authService.isRuAdmin()) {
         <sbb-icon-sidebar-link
           i18n-sbb-tooltip="@@sidebar_link_admin_evu_tooltip"
@@ -13,7 +13,7 @@
           routerLink="ru-admin"
           routerLinkActive="sbb-active"
           sbb-tooltip="Admin EVU"
-        ></sbb-icon-sidebar-link>
+        />
       }
       @if (authService.isAdmin()) {
         <sbb-icon-sidebar-link
@@ -22,7 +22,7 @@
           routerLink="das-admin"
           routerLinkActive="sbb-active"
           sbb-tooltip="Admin DAS"
-        ></sbb-icon-sidebar-link>
+        />
       }
     </sbb-icon-sidebar>
   }

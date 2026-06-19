@@ -1,14 +1,14 @@
 <app-base-dialog
+  i18n-stepLabel="@@special_holidays_dialog_step_label"
+  stepLabel="Feiertag"
   [data]="dialogData"
   [dialogClose]="formValue"
   [dialogTitle]="title"
   [saveDisabled]="specialHolidayForm.invalid"
-  i18n-stepLabel="@@special_holidays_dialog_step_label"
-  stepLabel="Feiertag"
 >
   <form [formGroup]="specialHolidayForm">
     <sbb-form-field errorSpace="reserve">
-      <label i18n="@@special_holidays_form_name_label">Name des Feiertags</label>
+      <label for="name" i18n="@@special_holidays_form_name_label">Name des Feiertags</label>
       <input formControlName="name" placeholder="z.B. Güdeismontag" required />
       @if (
         specialHolidayForm.get('name')?.touched
@@ -21,12 +21,12 @@
     </sbb-form-field>
 
     <sbb-form-field errorSpace="reserve">
-      <label i18n="@@special_holidays_form_date_label">Gültig am</label>
-      <sbb-datepicker-previous-day></sbb-datepicker-previous-day>
-      <sbb-date-input [min]="minDate" formControlName="date" required></sbb-date-input>
-      <sbb-datepicker-toggle></sbb-datepicker-toggle>
-      <sbb-datepicker-next-day></sbb-datepicker-next-day>
-      <sbb-datepicker></sbb-datepicker>
+      <label for="date" i18n="@@special_holidays_form_date_label">Gültig am</label>
+      <sbb-datepicker-previous-day />
+      <sbb-date-input formControlName="date" required [min]="minDate" />
+      <sbb-datepicker-toggle />
+      <sbb-datepicker-next-day />
+      <sbb-datepicker />
       @if (
         specialHolidayForm.get('date')?.touched
         && specialHolidayForm.get('date')?.hasError('required')
@@ -54,6 +54,6 @@
       }
     </div>
 
-    <app-companies-input [control]="specialHolidayForm.controls.companies"></app-companies-input>
+    <app-companies-input [control]="specialHolidayForm.controls.companies" />
   </form>
 </app-base-dialog>

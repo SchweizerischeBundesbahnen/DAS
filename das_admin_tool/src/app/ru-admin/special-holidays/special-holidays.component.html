@@ -4,9 +4,9 @@
   @if (specialHolidays.value().data.length === 0) {
     <p i18n="@@special_holidays_empty_state">Noch keine speziellen Feiertage erfasst.</p>
     <sbb-secondary-button
-      (click)="specialHolidayService.add()"
       i18n="@@button_create_entry"
       iconName="plus-small"
+      (click)="specialHolidayService.add()"
       >Neuen Eintrag erfassen</sbb-secondary-button
     >
   } @else {
@@ -15,5 +15,5 @@
 } @else if (specialHolidays.error()) {
   <p i18n="@@special_holidays_error_loading">Fehler beim Laden der Feiertage</p>
 } @else if (specialHolidays.isLoading()) {
-  <sbb-loading-indicator-circle></sbb-loading-indicator-circle>
+  <sbb-loading-indicator-circle />
 }

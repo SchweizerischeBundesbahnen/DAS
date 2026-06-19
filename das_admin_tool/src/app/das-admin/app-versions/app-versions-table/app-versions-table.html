@@ -1,12 +1,12 @@
 <sbb-table-wrapper>
   <table
-    [dataSource]="dataSource"
     class="table-truncated"
     fixedLayout
     sbb-table
     sbbSort
     sbbSortActive="version"
     sbbSortDirection="desc"
+    [dataSource]="dataSource"
   >
     <ng-container sbbColumnDef="version">
       <th
@@ -28,7 +28,7 @@
         >Minimale Version</th
       >
       <td *sbbCellDef="let row" sbb-cell>
-        <sbb-toggle-check [checked]="row.minimalVersion" disabled labelPosition="after">
+        <sbb-toggle-check disabled labelPosition="after" [checked]="row.minimalVersion">
           @if (row.minimalVersion) {
             <span i18n="@@app_versions_table_value_true">Ja</span>
           } @else {
@@ -76,7 +76,7 @@
     <ng-container sbbColumnDef="action">
       <th *sbbHeaderCellDef class="action" sbb-header-cell></th>
       <td *sbbCellDef="let appVersion" class="action" sbb-cell>
-        <sbb-mini-button (click)="edit(appVersion)" iconName="pen-small"></sbb-mini-button>
+        <sbb-mini-button iconName="pen-small" (click)="edit(appVersion)" />
       </td>
     </ng-container>
 
@@ -86,8 +86,8 @@
 </sbb-table-wrapper>
 
 <div class="bottom">
-  <sbb-compact-paginator [pageSize]="PAGE_SIZE"></sbb-compact-paginator>
-  <sbb-secondary-button (click)="add()" i18n="@@app_versions_button_create" iconName="plus-small"
+  <sbb-compact-paginator [pageSize]="PAGE_SIZE" />
+  <sbb-secondary-button i18n="@@app_versions_button_create" iconName="plus-small" (click)="add()"
     >App Version blockieren</sbb-secondary-button
   >
 </div>

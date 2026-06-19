@@ -1,4 +1,4 @@
-<form [formGroup]="form" class="search-language-header">
+<form class="search-language-header" [formGroup]="form">
   <sbb-form-field>
     <input
       formControlName="search"
@@ -6,11 +6,11 @@
       placeholder="Suchen"
       type="text"
     />
-    <sbb-icon name="magnifying-glass-small" slot="suffix"></sbb-icon>
+    <sbb-icon name="magnifying-glass-small" slot="suffix" />
   </sbb-form-field>
   <sbb-form-field>
-    <sbb-icon name="globe-small" slot="prefix"></sbb-icon>
-    <label i18n="@@form_field_language_label">Sprache</label>
+    <sbb-icon name="globe-small" slot="prefix" />
+    <label for="language" i18n="@@form_field_language_label">Sprache</label>
     <sbb-select formControlName="language">
       @for (language of languageProvider.allLanguages; track language.localeId) {
         <sbb-option [value]="language.path">{{ language.label }}</sbb-option>
@@ -20,27 +20,27 @@
 </form>
 <sbb-table-wrapper>
   <table
-    [dataSource]="dataSource"
     class="table-truncated"
     fixedLayout
     sbb-table
     sbbSort
     sbbSortDirection="asc"
+    [dataSource]="dataSource"
   >
     <ng-container sbbColumnDef="select">
-      <th *sbbHeaderCellDef sbb-header-cell style="width: 36px">
+      <th *sbbHeaderCellDef class="select-col" sbb-header-cell>
         <sbb-checkbox
-          (change)="$event ? parentToggle() : null"
           [checked]="selection.hasValue() && isAllSelected()"
           [indeterminate]="selection.hasValue() && !isAllSelected()"
-        ></sbb-checkbox>
+          (change)="$event ? parentToggle() : null"
+        />
       </th>
-      <td *sbbCellDef="let row" sbb-cell>
+      <td *sbbCellDef="let row" class="select-col" sbb-cell>
         <sbb-checkbox
+          [checked]="selection.isSelected(row)"
           (change)="$event ? selection.toggle(row) : null"
           (click)="$event.stopPropagation()"
-          [checked]="selection.isSelected(row)"
-        ></sbb-checkbox>
+        />
       </td>
     </ng-container>
     <ng-container sbbColumnDef="category">
@@ -120,12 +120,9 @@
     </ng-container>
 
     <ng-container sbbColumnDef="action">
-      <th *sbbHeaderCellDef class="action" sbb-header-cell></th>
-      <td *sbbCellDef="let ruIndicationTemplate" class="action" sbb-cell>
-        <sbb-mini-button
-          (click)="edit(ruIndicationTemplate)"
-          iconName="pen-small"
-        ></sbb-mini-button>
+      <th *sbbHeaderCellDef class="action-col" sbb-header-cell></th>
+      <td *sbbCellDef="let ruIndicationTemplate" class="action-col" sbb-cell>
+        <sbb-mini-button iconName="pen-small" (click)="edit(ruIndicationTemplate)" />
       </td>
     </ng-container>
 
@@ -136,18 +133,18 @@
 
 <div class="bottom">
   <div class="left">
-    <sbb-compact-paginator [pageSize]="PAGE_SIZE"></sbb-compact-paginator>
+    <sbb-compact-paginator [pageSize]="PAGE_SIZE" />
   </div>
   <div class="right">
-    <sbb-secondary-button (click)="add()" i18n="@@button_create_entry" iconName="plus-small"
+    <sbb-secondary-button i18n="@@button_create_entry" iconName="plus-small" (click)="add()"
       >Neuen Eintrag erfassen</sbb-secondary-button
     >
     <sbb-transparent-button
-      (click)="deleteSelected()"
-      [disabled]="this.selection.isEmpty()"
-      [loading]="isDeleting"
       i18n="@@button_delete_selected_entries"
       iconName="trash-small"
+      [disabled]="this.selection.isEmpty()"
+      [loading]="isDeleting"
+      (click)="deleteSelected()"
       >{selection.selected.length, plural,
         =0 {Einträge löschen}
         one {Eintrag löschen}

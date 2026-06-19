@@ -1,10 +1,10 @@
 <sbb-form-field errorSpace="reserve">
   <label for="companies" i18n="@@form_companies_label">{{ label() }}</label>
   <sbb-chip-group
+    name="companies"
     [displayWith]="codeToName"
     [formControl]="control()"
     [separatorKeys]="[]"
-    name="companies"
   >
     <!-- stopPropagation because chip-group would get marked dirty otherwise -->
     <input

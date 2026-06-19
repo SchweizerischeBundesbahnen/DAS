@@ -1,8 +1,8 @@
 <sbb-dialog-title>{{ title }}</sbb-dialog-title>
-<sbb-dialog-close-button></sbb-dialog-close-button>
+<sbb-dialog-close-button />
 <sbb-dialog-content>
   <form [formGroup]="ruIndicationForm">
-    <sbb-stepper (stepchange)="stepchange.set($event)" linear>
+    <sbb-stepper linear (stepchange)="stepchange.set($event)">
       <sbb-step-label i18n="@@ru_indications_step_content">Titel und Text</sbb-step-label>
       <sbb-step>
         <sbb-title i18n="@@ru_indications_form_train_numbers_title" visualLevel="5"
@@ -11,29 +11,27 @@
         <app-category-content-form
           [dialogData]="dialogData"
           [form]="ruIndicationForm.controls.content"
-        ></app-category-content-form>
+        />
       </sbb-step>
 
       <sbb-step-label i18n="@@ru_indications_step_scope">Anwendungsbereich</sbb-step-label>
       <sbb-step formGroupName="scope">
         <sbb-title i18n="@@ru_indications_form_company_title" visualLevel="5">EVU</sbb-title>
-        <app-companies-input
-          [control]="ruIndicationForm.controls.scope.controls.companies"
-        ></app-companies-input>
+        <app-companies-input [control]="ruIndicationForm.controls.scope.controls.companies" />
 
         <sbb-title i18n="@@ru_indications_form_train_numbers_title" visualLevel="5"
           >Zugnummer</sbb-title
         >
         <app-train-number-input
           [control]="ruIndicationForm.controls.scope.controls.operationalTrainNumberFilters"
-        ></app-train-number-input>
+        />
 
         <sbb-title i18n="@@ru_indications_form_location_title" visualLevel="5"
           >Betriebspunkt</sbb-title
         >
         <app-locations-input
           [control]="ruIndicationForm.controls.scope.controls.tafTapLocationReferences"
-        ></app-locations-input>
+        />
       </sbb-step>
 
       <sbb-step-label i18n="@@ru_indications_step_periods">Zeitraum</sbb-step-label>
@@ -41,7 +39,7 @@
         <sbb-title i18n="@@ru_indications_form_periods_title" visualLevel="5"
           >Zeitraum der Gültigkeit</sbb-title
         >
-        <app-periods-input [control]="ruIndicationForm.controls.periods"></app-periods-input>
+        <app-periods-input [control]="ruIndicationForm.controls.periods" />
       </sbb-step>
       @if (isEdit) {
         <sbb-step-label disabled i18n="@@dialog_step_label_audit">Stammdaten</sbb-step-label>
@@ -66,14 +64,14 @@
       >
     }
     @if (!isLastStep()) {
-      <sbb-button (click)="next()" [disabled]="isStepDisabled()" i18n="@@dialog_action_next"
+      <sbb-button i18n="@@dialog_action_next" [disabled]="isStepDisabled()" (click)="next()"
         >Weiter</sbb-button
       >
     } @else {
       <sbb-button
+        i18n="@@dialog_action_save"
         [disabled]="ruIndicationForm.invalid || ruIndicationForm.pristine"
         [sbb-dialog-close]="formValue"
-        i18n="@@dialog_action_save"
         >Speichern</sbb-button
       >
     }

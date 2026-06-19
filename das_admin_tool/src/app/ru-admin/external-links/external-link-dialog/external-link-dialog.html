@@ -1,17 +1,17 @@
 <app-base-dialog
+  i18n-stepLabel="@@external_links_dialog_step_label"
+  stepLabel="Externer Absprung"
   [data]="dialogData"
   [dialogClose]="externalLinkForm.value"
   [dialogTitle]="dialogTitle"
   [saveDisabled]="externalLinkForm.invalid"
-  i18n-stepLabel="@@external_links_dialog_step_label"
-  stepLabel="Externer Absprung"
 >
   <form [formGroup]="externalLinkForm">
     <app-companies-input
-      [control]="externalLinkForm.controls.companies"
       i18n-label="@@external_links_form_companies_label"
       label="Betroffene EVU"
-    ></app-companies-input>
+      [control]="externalLinkForm.controls.companies"
+    />
     <sbb-tab-group>
       @for (language of languageProvider.allLanguages; track language.localeId) {
         <sbb-tab-label [iconName]="isLanguageEmpty(language.path) ? 'circle-dotted-small' : ''">{{
@@ -19,7 +19,7 @@
         }}</sbb-tab-label>
         <sbb-tab [formGroupName]="language.path">
           <sbb-form-field errorSpace="reserve">
-            <label i18n="@@external_links_form_title_label">Titel</label>
+            <label for="title" i18n="@@external_links_form_title_label">Titel</label>
             <input formControlName="title" />
             @let titleField = externalLinkForm.get(`${language.path}.title`);
             @if (externalLinkForm.touched && titleField?.hasError('languageRequired')) {
@@ -29,7 +29,7 @@
             }
           </sbb-form-field>
           <sbb-form-field errorSpace="reserve">
-            <label i18n="@@external_links_form_link_label">Webadresse (URL)</label>
+            <label for="link" i18n="@@external_links_form_link_label">Webadresse (URL)</label>
             <input formControlName="link" />
             @let linkField = externalLinkForm.get(`${language.path}.link`);
             @if (externalLinkForm.touched && linkField?.hasError('languageRequired')) {

@@ -1,12 +1,16 @@
 :host {
   display: block;
 
-  .select-column {
+  .select-col {
     width: 2rem;
   }
 
-  .action-column {
+  .action-col {
     width: 2rem;
+
+    sbb-mini-button {
+      vertical-align: middle;
+    }
   }
 
   .bottom {

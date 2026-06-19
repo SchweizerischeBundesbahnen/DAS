@@ -1,5 +1,5 @@
 <form [formGroup]="trainNumberFilterForm">
-  <sbb-radio-button-group [formControl]="trainFilterModeControl" class="train-filter-mode">
+  <sbb-radio-button-group class="train-filter-mode" [formControl]="trainFilterModeControl">
     <sbb-radio-button i18n="@@ru_indications_form_train_filter_mode_all" value="all"
       >Alle</sbb-radio-button
     >
@@ -9,7 +9,9 @@
   </sbb-radio-button-group>
   @if (trainFilterModeControl.value === 'filtered') {
     <sbb-form-field>
-      <label i18n="@@ru_indications_form_train_number_input_label">Zugnummer</label>
+      <label for="trainNumber" i18n="@@ru_indications_form_train_number_input_label"
+        >Zugnummer</label
+      >
       <input formControlName="trainNumber" placeholder="z.B. 1-6, 300-400" />
       <sbb-mini-button
         i18n-sbb-tooltip="@@ru_indication_form_train_number_tooltip"
@@ -34,10 +36,10 @@
     <sbb-chip-group [displayWith]="displayTrainNumberFilter" [formControl]="control()" />
 
     <sbb-secondary-button
-      (click)="addTrainNumberFilter()"
-      [disabled]="trainNumberFilterForm.invalid"
       i18n="@@ru_indications_form_train_number_add"
       iconName="plus-small"
+      [disabled]="trainNumberFilterForm.invalid"
+      (click)="addTrainNumberFilter()"
       >Auswahl hinzufügen</sbb-secondary-button
     >
     @if (control().hasError('required') && control().touched) {

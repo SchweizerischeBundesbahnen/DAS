@@ -1,8 +1,10 @@
-th.action {
+.select-col {
   width: 2rem;
 }
 
-td.action {
+.action-col {
+  width: 2rem;
+
   sbb-mini-button {
     vertical-align: middle;
   }
