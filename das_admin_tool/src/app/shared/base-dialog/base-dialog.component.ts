@@ -1,19 +1,19 @@
+import { NgTemplateOutlet } from '@angular/common';
 import { Component, computed, input, signal, viewChild, viewChildren } from '@angular/core';
-import { SbbStep, SbbStepper, SbbStepperModule } from '@sbb-esta/lyne-angular/stepper';
-import { CommonModule } from '@angular/common';
-import { SbbStepChangeEvent } from '@sbb-esta/lyne-elements/stepper.js';
-import { SbbTitleModule } from '@sbb-esta/lyne-angular/title';
 import { ReactiveFormsModule } from '@angular/forms';
-import { SbbDialogModule } from '@sbb-esta/lyne-angular/dialog';
+import { SbbActionGroup } from '@sbb-esta/lyne-angular/action-group';
 import { SbbButtonModule } from '@sbb-esta/lyne-angular/button';
+import { SbbDialogModule } from '@sbb-esta/lyne-angular/dialog';
+import { SbbStep, SbbStepper, SbbStepperModule } from '@sbb-esta/lyne-angular/stepper';
+import { SbbTitleModule } from '@sbb-esta/lyne-angular/title';
+import { SbbStepChangeEvent } from '@sbb-esta/lyne-elements/stepper.js';
 import { Audit } from '../audit/audit';
 import { Auditable } from '../audit/auditable';
-import { SbbActionGroup } from '@sbb-esta/lyne-angular/action-group';
 
 @Component({
   selector: 'app-base-dialog',
   imports: [
-    CommonModule,
+    NgTemplateOutlet,
     SbbStepperModule,
     SbbTitleModule,
     ReactiveFormsModule,

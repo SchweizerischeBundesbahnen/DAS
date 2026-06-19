@@ -1,12 +1,12 @@
+import { DatePipe } from '@angular/common';
 import { Component, computed, inject, input } from '@angular/core';
-import { SbbOptionModule } from '@sbb-esta/lyne-angular/option';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { SbbAutocompleteModule } from '@sbb-esta/lyne-angular/autocomplete';
 import { SbbChipModule } from '@sbb-esta/lyne-angular/chip';
 import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { SbbOptionModule } from '@sbb-esta/lyne-angular/option';
 import { LocationService } from './location.service';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-locations-input',

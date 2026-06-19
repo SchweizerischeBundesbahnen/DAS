@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { RuFeatureToggles } from './ru-feature-toggles.component';
 import { RuFeatureService } from './ru-feature.service';
 

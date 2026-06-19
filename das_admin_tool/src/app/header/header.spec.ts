@@ -1,10 +1,9 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import packageJson from '../../../package.json';
-
-import { Header } from './header';
 import { signal } from '@angular/core';
-import { AuthenticatedResult, OidcSecurityService, UserDataResult } from 'angular-auth-oidc-client';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
+import { AuthenticatedResult, OidcSecurityService, UserDataResult } from 'angular-auth-oidc-client';
+import packageJson from '~package.json';
+import { Header } from './header';
 
 const mockOidc: Partial<OidcSecurityService> = {
   userData: signal({

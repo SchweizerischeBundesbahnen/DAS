@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
-import { SpecialHolidayDialog } from './special-holiday-dialog.component';
 import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core/overlay';
-import { SpecialHoliday } from '../../ru-admin-api';
-import { RecentCompaniesStore } from '../../../shared/recent-companies.store';
+import { SpecialHoliday } from '~ru-admin/ru-admin-api';
+import { RecentCompaniesStore } from '~shared/recent-companies.store';
+import { SpecialHolidayDialog } from './special-holiday-dialog.component';
 
 function createDialog(data?: SpecialHoliday, recentCompanies: string[] = []): SpecialHolidayDialog {
   const recentCompaniesStoreMock = { get: vi.fn(() => recentCompanies) };

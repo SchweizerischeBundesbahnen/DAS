@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
-import { CompaniesInputComponent } from './companies-input.component';
-import { Company, CompanyService } from './company.service';
 import { RecentCompaniesStore } from '../recent-companies.store';
 import { ToastService } from '../toast-service';
+import { CompaniesInputComponent } from './companies-input.component';
+import { Company, CompanyService } from './company.service';
 
 const companies = [
   { code: '1085', shortName: 'SBB' },

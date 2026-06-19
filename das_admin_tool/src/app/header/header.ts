@@ -1,11 +1,11 @@
 import { Component, inject } from '@angular/core';
+import { SbbDividerModule } from '@sbb-esta/lyne-angular/divider';
 import { SbbHeaderModule } from '@sbb-esta/lyne-angular/header';
 import { SbbMenuModule } from '@sbb-esta/lyne-angular/menu';
-import { environment } from '../../environments/environment';
-import packageJson from '../../../package.json';
-import { SbbDividerModule } from '@sbb-esta/lyne-angular/divider';
-import { AuthService } from '../shared/auth-service';
-import { Language, LanguageProvider } from '../shared/language-provider';
+import packageJson from '~package.json';
+import { AuthService } from '~shared/auth-service';
+import { Language, LanguageProvider } from '~shared/language-provider';
+import { environment } from '~src/environments/environment';
 
 @Component({
   selector: 'app-header',

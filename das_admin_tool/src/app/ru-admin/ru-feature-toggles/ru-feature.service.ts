@@ -1,12 +1,12 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
+import { BaseDialogService } from '../base-dialog.service';
 import { RuAdminApi, RuFeature } from '../ru-admin-api';
 import {
   RuFeatureDialogEditResult,
   RuFeatureToggleDialog,
 } from './ru-feature-toggle-dialog/ru-feature-toggle-dialog.component';
-import { BaseDialogService } from '../base-dialog.service';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',

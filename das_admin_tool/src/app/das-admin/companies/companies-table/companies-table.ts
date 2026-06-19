@@ -1,11 +1,11 @@
+import { DatePipe } from '@angular/common';
 import { Component, effect, inject, viewChild } from '@angular/core';
 import { SbbMiniButton } from '@sbb-esta/lyne-angular/button';
 import { SbbSort, SbbTableDataSource, SbbTableModule } from '@sbb-esta/lyne-angular/table';
-import { TableBottomBar } from '../../../shared/table-bottom-bar/table-bottom-bar';
-import { InternalCompany } from '../../das-admin-api';
-import { CompanyService } from '../company.service';
-import { DatePipe } from '@angular/common';
+import { InternalCompany } from '~app/das-admin/das-admin-api';
+import { TableBottomBar } from '~shared/table-bottom-bar/table-bottom-bar';
 import { TenantService } from '../company-dialog/tenant.service';
+import { CompanyService } from '../company.service';
 
 @Component({
   selector: 'app-companies-table',

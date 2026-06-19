@@ -1,5 +1,5 @@
-import { Environment } from './environment.model';
 import { PassedInitialConfig } from 'angular-auth-oidc-client';
+import { Environment } from './environment.model';
 
 const backendUrl = 'https://das-dev-int.api.sbb.ch/admin';
 const adminTenantId = '2cda5d11-f0ac-46b3-967d-af1b2e1bd01a';

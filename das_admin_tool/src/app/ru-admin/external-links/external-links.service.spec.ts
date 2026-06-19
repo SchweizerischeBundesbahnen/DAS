@@ -1,14 +1,13 @@
-import { TestBed } from '@angular/core/testing';
-
-import { ExternalLink, ExternalLinkApiResponse, RuAdminApi } from '../ru-admin-api';
-import { SbbDialogService } from '@sbb-esta/lyne-angular/dialog';
-import { ToastService } from '../../shared/toast-service';
 import { HttpResourceRef } from '@angular/common/http';
-import { of, throwError } from 'rxjs';
+import { TestBed } from '@angular/core/testing';
+import { SbbDialogService } from '@sbb-esta/lyne-angular/dialog';
 import { SbbOverlayCloseEvent } from '@sbb-esta/lyne-elements/overlay.js';
-import { ExternalLinksService } from './external-links.service';
+import { of, throwError } from 'rxjs';
+import { RecentCompaniesStore } from '~shared/recent-companies.store';
+import { ToastService } from '~shared/toast-service';
+import { ExternalLink, ExternalLinkApiResponse, RuAdminApi } from '../ru-admin-api';
 import { ExternalLinkDialogEditResult } from './external-link-dialog/external-link-dialog';
-import { RecentCompaniesStore } from '../../shared/recent-companies.store';
+import { ExternalLinksService } from './external-links.service';
 
 const externalLink: ExternalLink = {
   id: 1,

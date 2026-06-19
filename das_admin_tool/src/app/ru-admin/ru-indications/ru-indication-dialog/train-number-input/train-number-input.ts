@@ -7,12 +7,12 @@ import {
   ValidationErrors,
   Validators,
 } from '@angular/forms';
-import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
-import { SbbRadioButtonModule } from '@sbb-esta/lyne-angular/radio-button';
 import { SbbButtonModule } from '@sbb-esta/lyne-angular/button';
 import { SbbChipModule } from '@sbb-esta/lyne-angular/chip';
-import { RuIndicationTrainNumberFilter, TrainNumberParity } from '../../../ru-admin-api';
+import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
+import { SbbRadioButtonModule } from '@sbb-esta/lyne-angular/radio-button';
 import { SbbTooltipModule } from '@sbb-esta/lyne-angular/tooltip';
+import { RuIndicationTrainNumberFilter, TrainNumberParity } from '~ru-admin/ru-admin-api';
 
 type TrainFilterMode = 'all' | 'filtered';
 

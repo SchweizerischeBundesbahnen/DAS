@@ -1,6 +1,6 @@
 import { httpResource } from '@angular/common/http';
 import { computed, effect, inject, Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment';
+import { environment } from '~src/environments/environment';
 import { ApiResponse } from '../api-response';
 import { ToastService } from '../toast-service';
 

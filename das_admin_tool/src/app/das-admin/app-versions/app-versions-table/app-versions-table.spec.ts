@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
-import { AppVersionsTable } from './app-versions-table';
+import { AppVersion } from '~app/das-admin/das-admin-api';
 import { AppVersionsService } from '../app-versions.service';
-import { AppVersion } from '../../das-admin-api';
+import { AppVersionsTable } from './app-versions-table';
 
 const mockAppVersionsService = {
   edit: vi.fn(),

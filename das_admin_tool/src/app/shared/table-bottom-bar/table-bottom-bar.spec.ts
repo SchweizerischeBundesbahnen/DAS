@@ -1,6 +1,6 @@
+import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TableBottomBar } from './table-bottom-bar';
-import { ComponentRef } from '@angular/core';
 
 describe('TableBottomBar', () => {
   let component: TableBottomBar;

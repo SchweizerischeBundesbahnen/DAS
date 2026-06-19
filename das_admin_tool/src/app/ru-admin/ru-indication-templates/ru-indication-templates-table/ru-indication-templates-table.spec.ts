@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RuIndicationTemplatesTable } from './ru-indication-templates-table';
-import { RuIndicationTemplateService } from '../ru-indication-template.service';
 import { LOCALE_ID } from '@angular/core';
-import { RuIndicationTemplate } from '../../ru-admin-api';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RuIndicationTemplate } from '~ru-admin/ru-admin-api';
+import { RuIndicationTemplateService } from '../ru-indication-template.service';
+import { RuIndicationTemplatesTable } from './ru-indication-templates-table';
 
 const templates: RuIndicationTemplate[] = [
   {

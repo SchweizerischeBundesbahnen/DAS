@@ -1,12 +1,12 @@
 import { Component, inject } from '@angular/core';
-import { SbbTitleModule } from '@sbb-esta/lyne-angular/title';
-import { SbbRadioButtonModule } from '@sbb-esta/lyne-angular/radio-button';
-import { SbbToggleCheckModule } from '@sbb-esta/lyne-angular/toggle-check';
-import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core/overlay';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RU_FEATURE_KEY_LABELS, RuFeature, RuFeatureKey } from '../../ru-admin-api';
-import { BaseDialog } from '../../../shared/base-dialog/base-dialog.component';
-import { CompaniesInputComponent } from '../../../shared/companies-input/companies-input.component';
+import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core/overlay';
+import { SbbRadioButtonModule } from '@sbb-esta/lyne-angular/radio-button';
+import { SbbTitleModule } from '@sbb-esta/lyne-angular/title';
+import { SbbToggleCheckModule } from '@sbb-esta/lyne-angular/toggle-check';
+import { RU_FEATURE_KEY_LABELS, RuFeature, RuFeatureKey } from '~ru-admin/ru-admin-api';
+import { BaseDialog } from '~shared/base-dialog/base-dialog.component';
+import { CompaniesInputComponent } from '~shared/companies-input/companies-input.component';
 
 export type RuFeatureDialogEditResult = RuFeature | 'delete';
 

@@ -1,22 +1,22 @@
+import { SelectionModel } from '@angular/cdk/collections';
+import { DatePipe } from '@angular/common';
 import { Component, effect, inject, viewChild } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormControl, FormGroup } from '@angular/forms';
+import { SbbMiniButton } from '@sbb-esta/lyne-angular/button/mini-button';
+import { SbbCheckbox } from '@sbb-esta/lyne-angular/checkbox';
 import {
   SbbSort,
   SbbTableDataSource,
   SbbTableFilter,
   SbbTableModule,
 } from '@sbb-esta/lyne-angular/table';
-import { SbbCheckbox } from '@sbb-esta/lyne-angular/checkbox';
-import { ExternalLinksService } from '../external-links.service';
-import { SelectionModel } from '@angular/cdk/collections';
-import { LanguageCode, LanguageProvider } from '../../../shared/language-provider';
-import { DatePipe } from '@angular/common';
-import { ExternalLink } from '../../ru-admin-api';
-import { FormControl, FormGroup } from '@angular/forms';
-import { SbbMiniButton } from '@sbb-esta/lyne-angular/button/mini-button';
-import { TableBottomBar } from '../../../shared/table-bottom-bar/table-bottom-bar';
-import { TableSearchHeader } from '../../../shared/table-search-header/table-search-header';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { startWith } from 'rxjs';
+import { ExternalLink } from '~ru-admin/ru-admin-api';
+import { LanguageCode, LanguageProvider } from '~shared/language-provider';
+import { TableBottomBar } from '~shared/table-bottom-bar/table-bottom-bar';
+import { TableSearchHeader } from '~shared/table-search-header/table-search-header';
+import { ExternalLinksService } from '../external-links.service';
 
 interface ExternalLinkFilter extends SbbTableFilter {
   search: string;

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
+import { RuIndicationTrainNumberFilter } from '~ru-admin/ru-admin-api';
 import { TrainNumberInput } from './train-number-input';
-import { RuIndicationTrainNumberFilter } from '../../../ru-admin-api';
 
 describe('TrainNumberInput', () => {
   let component: TrainNumberInput;

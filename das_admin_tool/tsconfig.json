@@ -3,6 +3,14 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "rootDir": ".",
+    "paths": {
+      "~ru-admin/*": ["./src/app/ru-admin/*"],
+      "~shared/*": ["./src/app/shared/*"],
+      "~app/*": ["./src/app/*"],
+      "~src/*": ["./src/*"],
+      "~*": ["./*"]
+    },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
@@ -15,6 +23,7 @@
     "sourceMap": true,
     "experimentalDecorators": true,
     "importHelpers": true,
+    "allowJs": true,
     "target": "ES2022",
     "module": "preserve"
   },

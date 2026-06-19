@@ -1,9 +1,9 @@
-import { inject, Injectable } from '@angular/core';
-import { InternalCompany, DasAdminApi } from '../das-admin-api';
-import { BaseDialogService } from '../../ru-admin/base-dialog.service';
-import { firstValueFrom } from 'rxjs';
-import { CompanyDialog, CompanyDialogEditResult } from './company-dialog/company-dialog';
 import { HttpErrorResponse } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
+import { BaseDialogService } from '~ru-admin/base-dialog.service';
+import { DasAdminApi, InternalCompany } from '../das-admin-api';
+import { CompanyDialog, CompanyDialogEditResult } from './company-dialog/company-dialog';
 
 @Injectable({ providedIn: 'root' })
 export class CompanyService extends BaseDialogService {

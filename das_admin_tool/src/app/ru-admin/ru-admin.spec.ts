@@ -1,8 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { RuAdmin } from './ru-admin';
 import { provideRouter } from '@angular/router';
-import { CompanyService } from '../shared/companies-input/company.service';
+import { CompanyService } from '~shared/companies-input/company.service';
+import { RuAdmin } from './ru-admin';
 import { LocationService } from './ru-indications/ru-indication-dialog/locations-input/location.service';
 
 describe('RuAdmin', () => {

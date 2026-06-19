@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
-import { RuFeatureToggleDialog } from './ru-feature-toggle-dialog.component';
 import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core/overlay';
-import { RuFeature } from '../../ru-admin-api';
-import { Company, CompanyService } from '../../../shared/companies-input/company.service';
+import { RuFeature } from '~ru-admin/ru-admin-api';
+import { Company, CompanyService } from '~shared/companies-input/company.service';
+import { RuFeatureToggleDialog } from './ru-feature-toggle-dialog.component';
 
 const companies: Company[] = [
   { code: '1085', shortName: 'SBB' },

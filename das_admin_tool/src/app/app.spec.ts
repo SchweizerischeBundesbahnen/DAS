@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-import { App } from './app';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
+import { App } from './app';
 
 // Mock ineum function
 globalThis.ineum = () => undefined;

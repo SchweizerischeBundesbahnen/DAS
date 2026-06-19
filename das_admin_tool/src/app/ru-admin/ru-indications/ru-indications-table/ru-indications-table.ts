@@ -1,27 +1,27 @@
+import { SelectionModel } from '@angular/cdk/collections';
+import { DatePipe } from '@angular/common';
 import { Component, effect, inject, viewChild } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { SbbMiniButton } from '@sbb-esta/lyne-angular/button/mini-button';
+import { SbbCheckbox } from '@sbb-esta/lyne-angular/checkbox';
+import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
 import {
   SbbSort,
   SbbTableDataSource,
   SbbTableFilter,
   SbbTableModule,
 } from '@sbb-esta/lyne-angular/table';
-import { SbbMiniButton } from '@sbb-esta/lyne-angular/button/mini-button';
-import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { RuIndicationService } from '../ru-indication.service';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { startWith } from 'rxjs';
-import { LanguageCode, LanguageProvider } from '../../../shared/language-provider';
-import { CompanyService } from '../../../shared/companies-input/company.service';
+import { RU_INDICATION_STATUS_LABELS, RuIndication } from '~ru-admin/ru-admin-api';
+import { CompanyService } from '~shared/companies-input/company.service';
+import { LanguageCode, LanguageProvider } from '~shared/language-provider';
+import { TableBottomBar } from '~shared/table-bottom-bar/table-bottom-bar';
+import { TableSearchHeader } from '~shared/table-search-header/table-search-header';
 import { LocationService } from '../ru-indication-dialog/locations-input/location.service';
-import { displayTrainNumberFilter } from '../ru-indication-dialog/train-number-input/train-number-input';
-import { DatePipe } from '@angular/common';
 import { displayPeriod } from '../ru-indication-dialog/periods-input/periods-input';
-import { RU_INDICATION_STATUS_LABELS, RuIndication } from '../../ru-admin-api';
-import { SbbCheckbox } from '@sbb-esta/lyne-angular/checkbox';
-import { SelectionModel } from '@angular/cdk/collections';
-import { TableBottomBar } from '../../../shared/table-bottom-bar/table-bottom-bar';
-import { TableSearchHeader } from '../../../shared/table-search-header/table-search-header';
+import { displayTrainNumberFilter } from '../ru-indication-dialog/train-number-input/train-number-input';
+import { RuIndicationService } from '../ru-indication.service';
 
 export interface RuIndicationFilter extends SbbTableFilter {
   search: string;

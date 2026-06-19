@@ -1,14 +1,13 @@
-import { TestBed } from '@angular/core/testing';
-
-import { CompanyService } from './company.service';
-import { DasAdminApi, InternalCompany, InternalCompanyApiResponse } from '../das-admin-api';
-import { of, throwError } from 'rxjs';
 import { HttpResourceRef } from '@angular/common/http';
-import { ToastService } from '../../shared/toast-service';
-import { CompanyDialogEditResult } from './company-dialog/company-dialog';
-import { SbbOverlayCloseEvent } from '@sbb-esta/lyne-elements/overlay.pure.js';
-import { RecentCompaniesStore } from '../../shared/recent-companies.store';
+import { TestBed } from '@angular/core/testing';
 import { SbbDialogService } from '@sbb-esta/lyne-angular/dialog';
+import { SbbOverlayCloseEvent } from '@sbb-esta/lyne-elements/overlay.pure.js';
+import { of, throwError } from 'rxjs';
+import { RecentCompaniesStore } from '~shared/recent-companies.store';
+import { ToastService } from '~shared/toast-service';
+import { DasAdminApi, InternalCompany, InternalCompanyApiResponse } from '../das-admin-api';
+import { CompanyDialogEditResult } from './company-dialog/company-dialog';
+import { CompanyService } from './company.service';
 
 const company: InternalCompany = {
   id: 1,

@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-
+import { ToastService } from '~shared/toast-service';
 import { Location, LocationService } from './location.service';
-import { ToastService } from '../../../../shared/toast-service';
 
 const locations: Location[] = [
   { primaryLocationName: 'Bern', locationAbbreviation: 'BN', locationReference: 'CH00001' },

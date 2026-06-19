@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { CompanyDialog } from './company-dialog';
 import { TenantService } from './tenant.service';
 

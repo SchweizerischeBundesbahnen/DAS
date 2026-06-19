@@ -1,8 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { createContentFormGroup } from '~ru-admin/ru-indication-content-form/ru-indication-content-form.component';
+import { RuIndicationDialogData } from '~ru-admin/ru-indications/ru-indication.service';
 import { CategoryContentForm } from './category-content-form';
-import { createContentFormGroup } from '../../../ru-indication-content-form/ru-indication-content-form.component';
-import { RuIndicationDialogData } from '../../ru-indication.service';
 
 describe('CategoryContentForm', () => {
   let component: CategoryContentForm;

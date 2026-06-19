@@ -1,14 +1,13 @@
-import { TestBed } from '@angular/core/testing';
-
-import { RuFeatureService } from './ru-feature.service';
-import { RuAdminApi, RuFeature, RuFeatureApiResponse } from '../ru-admin-api';
-import { SbbDialogService } from '@sbb-esta/lyne-angular/dialog';
-import { ToastService } from '../../shared/toast-service';
 import { HttpResourceRef } from '@angular/common/http';
-import { of, throwError } from 'rxjs';
-import { RuFeatureDialogEditResult } from './ru-feature-toggle-dialog/ru-feature-toggle-dialog.component';
+import { TestBed } from '@angular/core/testing';
+import { SbbDialogService } from '@sbb-esta/lyne-angular/dialog';
 import { SbbOverlayCloseEvent } from '@sbb-esta/lyne-elements/overlay.js';
-import { RecentCompaniesStore } from '../../shared/recent-companies.store';
+import { of, throwError } from 'rxjs';
+import { RecentCompaniesStore } from '~shared/recent-companies.store';
+import { ToastService } from '~shared/toast-service';
+import { RuAdminApi, RuFeature, RuFeatureApiResponse } from '../ru-admin-api';
+import { RuFeatureDialogEditResult } from './ru-feature-toggle-dialog/ru-feature-toggle-dialog.component';
+import { RuFeatureService } from './ru-feature.service';
 
 const ruFeature: RuFeature = {
   id: 1,

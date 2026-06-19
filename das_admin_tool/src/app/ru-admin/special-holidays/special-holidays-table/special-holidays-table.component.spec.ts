@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
-import { SpecialHolidaysTable } from './special-holidays-table.component';
+import { SpecialHoliday } from '~ru-admin/ru-admin-api';
+import { CompanyService } from '~shared/companies-input/company.service';
 import { SpecialHolidayService } from '../special-holiday.service';
-import { SpecialHoliday } from '../../ru-admin-api';
-import { CompanyService } from '../../../shared/companies-input/company.service';
+import { SpecialHolidaysTable } from './special-holidays-table.component';
 
 const holidays: SpecialHoliday[] = [
   {

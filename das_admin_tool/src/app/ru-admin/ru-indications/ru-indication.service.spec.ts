@@ -1,6 +1,10 @@
+import { HttpResourceRef } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
+import { SbbDialogService } from '@sbb-esta/lyne-angular/dialog';
+import { SbbOverlayCloseEvent } from '@sbb-esta/lyne-elements/overlay.js';
 import { of, throwError } from 'rxjs';
-import { RuIndicationDialogEditResult, RuIndicationService } from './ru-indication.service';
+import { RecentCompaniesStore } from '~shared/recent-companies.store';
+import { ToastService } from '~shared/toast-service';
 import {
   RuAdminApi,
   RuIndication,
@@ -8,11 +12,7 @@ import {
   RuIndicationTemplate,
   RuIndicationTemplateApiResponse,
 } from '../ru-admin-api';
-import { SbbDialogService } from '@sbb-esta/lyne-angular/dialog';
-import { ToastService } from '../../shared/toast-service';
-import { RecentCompaniesStore } from '../../shared/recent-companies.store';
-import { HttpResourceRef } from '@angular/common/http';
-import { SbbOverlayCloseEvent } from '@sbb-esta/lyne-elements/overlay.js';
+import { RuIndicationDialogEditResult, RuIndicationService } from './ru-indication.service';
 
 const ruIndicationSample: RuIndication = {
   id: 1,

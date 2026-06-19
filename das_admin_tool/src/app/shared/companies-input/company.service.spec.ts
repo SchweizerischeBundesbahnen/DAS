@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-
-import { Company, CompanyService } from './company.service';
 import { ToastService } from '../toast-service';
+import { Company, CompanyService } from './company.service';
 
 function mockCompanies(service: CompanyService, companies: Company[]) {
   (

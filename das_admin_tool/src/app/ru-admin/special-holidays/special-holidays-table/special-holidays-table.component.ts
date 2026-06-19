@@ -1,22 +1,22 @@
+import { SelectionModel } from '@angular/cdk/collections';
+import { DatePipe } from '@angular/common';
 import { Component, effect, inject, viewChild } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormControl } from '@angular/forms';
+import { SbbMiniButton } from '@sbb-esta/lyne-angular/button/mini-button';
+import { SbbCheckboxModule } from '@sbb-esta/lyne-angular/checkbox';
 import {
   SbbSort,
   SbbTableDataSource,
   SbbTableFilter,
   SbbTableModule,
 } from '@sbb-esta/lyne-angular/table';
-import { SbbMiniButton } from '@sbb-esta/lyne-angular/button/mini-button';
-import { SbbCheckboxModule } from '@sbb-esta/lyne-angular/checkbox';
-import { SelectionModel } from '@angular/cdk/collections';
-import { SCHEDULE_TYPE_LABELS, ScheduleType, SpecialHoliday } from '../../ru-admin-api';
-import { SpecialHolidayService } from '../special-holiday.service';
-import { DatePipe } from '@angular/common';
-import { CompanyService } from '../../../shared/companies-input/company.service';
-import { TableBottomBar } from '../../../shared/table-bottom-bar/table-bottom-bar';
-import { TableSearchHeader } from '../../../shared/table-search-header/table-search-header';
-import { FormControl } from '@angular/forms';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { startWith } from 'rxjs';
+import { SCHEDULE_TYPE_LABELS, ScheduleType, SpecialHoliday } from '~ru-admin/ru-admin-api';
+import { CompanyService } from '~shared/companies-input/company.service';
+import { TableBottomBar } from '~shared/table-bottom-bar/table-bottom-bar';
+import { TableSearchHeader } from '~shared/table-search-header/table-search-header';
+import { SpecialHolidayService } from '../special-holiday.service';
 
 interface SpecialHolidayFilter extends SbbTableFilter {
   search: string;

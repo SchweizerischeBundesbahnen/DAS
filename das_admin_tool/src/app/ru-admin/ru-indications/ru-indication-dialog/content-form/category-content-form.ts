@@ -1,16 +1,16 @@
 import { Component, computed, effect, input, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { SbbAutocompleteModule } from '@sbb-esta/lyne-angular/autocomplete';
+import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
+import { SbbOptionModule } from '@sbb-esta/lyne-angular/option';
+import { RuIndicationContent } from '~ru-admin/ru-admin-api';
 import {
   contentFormValue,
   LanguageContentForm,
   RuIndicationContentForm,
-} from '../../../ru-indication-content-form/ru-indication-content-form.component';
-import { SbbAutocompleteModule } from '@sbb-esta/lyne-angular/autocomplete';
-import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
-import { SbbOptionModule } from '@sbb-esta/lyne-angular/option';
-import { RuIndicationContent } from '../../../ru-admin-api';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { RuIndicationDialogData } from '../../ru-indication.service';
+} from '~ru-admin/ru-indication-content-form/ru-indication-content-form.component';
+import { RuIndicationDialogData } from '~ru-admin/ru-indications/ru-indication.service';
 
 export interface CategoryContentFormGroup extends LanguageContentForm {
   category: FormControl<string>;

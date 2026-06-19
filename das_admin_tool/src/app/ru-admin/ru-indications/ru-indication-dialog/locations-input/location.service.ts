@@ -1,8 +1,8 @@
-import { computed, effect, inject, Injectable } from '@angular/core';
 import { httpResource } from '@angular/common/http';
-import { ApiResponse } from '../../../../shared/api-response';
-import { environment } from '../../../../../environments/environment';
-import { ToastService } from '../../../../shared/toast-service';
+import { computed, effect, inject, Injectable } from '@angular/core';
+import { ApiResponse } from '~shared/api-response';
+import { ToastService } from '~shared/toast-service';
+import { environment } from '~src/environments/environment';
 
 export type LocationApiResponse = ApiResponse<Location>;
 

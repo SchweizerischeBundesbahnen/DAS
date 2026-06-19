@@ -1,8 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
-
-import { LocationsInput } from './locations-input.component';
 import { Location, LocationService } from './location.service';
+import { LocationsInput } from './locations-input.component';
 
 const mockLocations: Location[] = [
   { locationReference: 'LOC1', primaryLocationName: 'Bern', locationAbbreviation: 'BRN' },

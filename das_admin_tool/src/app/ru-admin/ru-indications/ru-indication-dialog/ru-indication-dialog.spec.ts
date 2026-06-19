@@ -1,10 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { RuIndicationDialog } from './ru-indication-dialog.component';
 import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core/overlay';
-import { RecentCompaniesStore } from '../../../shared/recent-companies.store';
+import { CompanyService } from '~shared/companies-input/company.service';
+import { RecentCompaniesStore } from '~shared/recent-companies.store';
 import { RuIndicationDialogData } from '../ru-indication.service';
-import { CompanyService } from '../../../shared/companies-input/company.service';
+import { RuIndicationDialog } from './ru-indication-dialog.component';
 
 const mockRecentCompaniesStore = { get: () => [] };
 

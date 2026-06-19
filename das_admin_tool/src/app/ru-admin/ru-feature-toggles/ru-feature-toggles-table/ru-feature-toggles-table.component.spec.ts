@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
-import { RuFeatureTogglesTable } from './ru-feature-toggles-table.component';
+import { RuFeature } from '~ru-admin/ru-admin-api';
+import { CompanyService } from '~shared/companies-input/company.service';
 import { RuFeatureService } from '../ru-feature.service';
-import { RuFeature } from '../../ru-admin-api';
-import { CompanyService } from '../../../shared/companies-input/company.service';
+import { RuFeatureTogglesTable } from './ru-feature-toggles-table.component';
 
 const ruFeatures: RuFeature[] = [
   {

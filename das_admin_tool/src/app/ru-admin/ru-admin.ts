@@ -1,9 +1,9 @@
 import { Component, computed, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { SbbTitleModule } from '@sbb-esta/lyne-angular/title';
-import { SbbTabsModule } from '@sbb-esta/lyne-angular/tabs';
 import { SbbLoadingIndicatorCircleModule } from '@sbb-esta/lyne-angular/loading-indicator-circle';
-import { CompanyService } from '../shared/companies-input/company.service';
+import { SbbTabsModule } from '@sbb-esta/lyne-angular/tabs';
+import { SbbTitleModule } from '@sbb-esta/lyne-angular/title';
+import { CompanyService } from '~shared/companies-input/company.service';
 import { LocationService } from './ru-indications/ru-indication-dialog/locations-input/location.service';
 
 @Component({

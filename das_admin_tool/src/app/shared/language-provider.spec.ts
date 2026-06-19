@@ -1,6 +1,5 @@
 import { LOCALE_ID } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-
 import { LanguageProvider } from './language-provider';
 
 describe('LanguageProvider', () => {

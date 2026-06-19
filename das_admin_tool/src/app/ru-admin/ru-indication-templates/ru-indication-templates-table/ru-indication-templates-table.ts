@@ -1,22 +1,22 @@
+import { SelectionModel } from '@angular/cdk/collections';
+import { DatePipe } from '@angular/common';
 import { Component, effect, inject, viewChild } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormControl, FormGroup } from '@angular/forms';
+import { SbbMiniButton } from '@sbb-esta/lyne-angular/button/mini-button';
+import { SbbCheckboxModule } from '@sbb-esta/lyne-angular/checkbox';
 import {
   SbbSort,
   SbbTableDataSource,
   SbbTableFilter,
   SbbTableModule,
 } from '@sbb-esta/lyne-angular/table';
-import { RuIndicationTemplate } from '../../ru-admin-api';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { startWith } from 'rxjs';
+import { RuIndicationTemplate } from '~ru-admin/ru-admin-api';
+import { LanguageCode, LanguageProvider } from '~shared/language-provider';
+import { TableBottomBar } from '~shared/table-bottom-bar/table-bottom-bar';
+import { TableSearchHeader } from '~shared/table-search-header/table-search-header';
 import { RuIndicationTemplateService } from '../ru-indication-template.service';
-import { SbbMiniButton } from '@sbb-esta/lyne-angular/button/mini-button';
-import { SbbCheckboxModule } from '@sbb-esta/lyne-angular/checkbox';
-import { SelectionModel } from '@angular/cdk/collections';
-import { FormControl, FormGroup } from '@angular/forms';
-import { LanguageCode, LanguageProvider } from '../../../shared/language-provider';
-import { DatePipe } from '@angular/common';
-import { TableBottomBar } from '../../../shared/table-bottom-bar/table-bottom-bar';
-import { TableSearchHeader } from '../../../shared/table-search-header/table-search-header';
 
 interface RuIndicationTemplateFilter extends SbbTableFilter {
   search: string;

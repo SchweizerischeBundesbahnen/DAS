@@ -1,15 +1,14 @@
-import { TestBed } from '@angular/core/testing';
-
-import { AppVersionsService } from './app-versions.service';
-import { AppVersion, AppVersionApiResponse, DasAdminApi } from '../das-admin-api';
-import { of, throwError } from 'rxjs';
-import { SbbDialogService } from '@sbb-esta/lyne-angular/dialog';
-import { ToastService } from '../../shared/toast-service';
-import { toUtcDateOnly } from '../../shared/date-util';
 import { HttpErrorResponse, HttpResourceRef } from '@angular/common/http';
-import { VersionDialogEditResult } from './app-version-dialog/app-version-dialog';
+import { TestBed } from '@angular/core/testing';
+import { SbbDialogService } from '@sbb-esta/lyne-angular/dialog';
 import { SbbOverlayCloseEvent } from '@sbb-esta/lyne-elements/overlay.js';
-import { RecentCompaniesStore } from '../../shared/recent-companies.store';
+import { of, throwError } from 'rxjs';
+import { toUtcDateOnly } from '~shared/date-util';
+import { RecentCompaniesStore } from '~shared/recent-companies.store';
+import { ToastService } from '~shared/toast-service';
+import { AppVersion, AppVersionApiResponse, DasAdminApi } from '../das-admin-api';
+import { VersionDialogEditResult } from './app-version-dialog/app-version-dialog';
+import { AppVersionsService } from './app-versions.service';
 
 const appVersion: AppVersion = {
   id: 1,

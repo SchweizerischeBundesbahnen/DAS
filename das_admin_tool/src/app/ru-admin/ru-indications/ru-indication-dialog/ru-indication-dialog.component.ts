@@ -1,29 +1,29 @@
 import { Component, computed, inject, signal, viewChild, viewChildren } from '@angular/core';
-import { SbbDialogModule } from '@sbb-esta/lyne-angular/dialog';
-import { SbbTitleModule } from '@sbb-esta/lyne-angular/title';
-import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { SbbActionGroupModule } from '@sbb-esta/lyne-angular/action-group';
+import { SbbAutocompleteModule } from '@sbb-esta/lyne-angular/autocomplete';
+import { SbbButtonModule } from '@sbb-esta/lyne-angular/button';
+import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core/overlay';
+import { SbbDialogModule } from '@sbb-esta/lyne-angular/dialog';
+import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
+import { SbbStep, SbbStepper, SbbStepperModule } from '@sbb-esta/lyne-angular/stepper';
 import { SbbTabsModule } from '@sbb-esta/lyne-angular/tabs';
+import { SbbTitleModule } from '@sbb-esta/lyne-angular/title';
+import { SbbStepChangeEvent } from '@sbb-esta/lyne-elements/stepper.js';
 import {
   RuIndication,
   RuIndicationPeriod,
   RuIndicationTrainNumberFilter,
-} from '../../ru-admin-api';
-import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core/overlay';
-import { CompaniesInputComponent } from '../../../shared/companies-input/companies-input.component';
-import { LocationsInput } from './locations-input/locations-input.component';
-import { SbbStep, SbbStepper, SbbStepperModule } from '@sbb-esta/lyne-angular/stepper';
-import { SbbAutocompleteModule } from '@sbb-esta/lyne-angular/autocomplete';
+} from '~ru-admin/ru-admin-api';
+import { createContentFormGroup } from '~ru-admin/ru-indication-content-form/ru-indication-content-form.component';
+import { Audit } from '~shared/audit/audit';
+import { CompaniesInputComponent } from '~shared/companies-input/companies-input.component';
 import { RuIndicationDialogData } from '../ru-indication.service';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { SbbStepChangeEvent } from '@sbb-esta/lyne-elements/stepper.js';
-import { TrainNumberInput } from './train-number-input/train-number-input';
-import { SbbButtonModule } from '@sbb-esta/lyne-angular/button';
-import { PeriodsInput } from './periods-input/periods-input';
-import { createContentFormGroup } from '../../ru-indication-content-form/ru-indication-content-form.component';
 import { CategoryContentForm } from './content-form/category-content-form';
-import { Audit } from '../../../shared/audit/audit';
-import { SbbActionGroupModule } from '@sbb-esta/lyne-angular/action-group';
+import { LocationsInput } from './locations-input/locations-input.component';
+import { PeriodsInput } from './periods-input/periods-input';
+import { TrainNumberInput } from './train-number-input/train-number-input';
 
 @Component({
   selector: 'app-ru-indication-dialog',
