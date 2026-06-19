@@ -4,7 +4,7 @@ import { AuthService } from './auth-service';
 @Injectable({ providedIn: 'root' })
 export class RecentCompaniesStore {
   private readonly authService = inject(AuthService);
-  private readonly storageKey = 'recent_companies_' + this.authService.oid();
+  private readonly storageKey = `recent_companies_${this.authService.oid()}`;
 
   get(): string[] {
     const raw = localStorage.getItem(this.storageKey);

@@ -35,7 +35,7 @@ export class RuIndicationTemplateDialog {
     inject<RuIndicationTemplate>(SBB_OVERLAY_DATA, { optional: true }) ?? undefined;
 
   constructor() {
-    const isEdit = this.dialogData?.id != null;
+    const isEdit = this.dialogData?.id !== undefined;
     this.title = isEdit
       ? $localize`:@@ru_indication_templates_dialog_title_edit:Titel und Text bearbeiten`
       : $localize`:@@ru_indication_templates_dialog_title_create:Titel und Text erfassen`;

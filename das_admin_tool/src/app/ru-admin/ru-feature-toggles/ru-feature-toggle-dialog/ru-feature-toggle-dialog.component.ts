@@ -39,7 +39,7 @@ export class RuFeatureToggleDialog {
     inject<RuFeature>(SBB_OVERLAY_DATA, { optional: true }) ?? undefined;
 
   constructor() {
-    const isEdit = this.dialogData?.id != null;
+    const isEdit = this.dialogData?.id !== undefined;
     this.title = isEdit
       ? $localize`:@@ru_feature_toggles_dialog_title_edit:DAS Mobile App Feature bearbeiten`
       : $localize`:@@ru_feature_toggles_dialog_title_create:DAS Mobile App Feature erfassen`;

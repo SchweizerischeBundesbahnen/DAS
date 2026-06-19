@@ -49,7 +49,7 @@ export class AppVersionDialog {
     inject<AppVersion>(SBB_OVERLAY_DATA, { optional: true }) ?? undefined;
 
   constructor() {
-    this.isEdit = this.dialogData?.id != null;
+    this.isEdit = this.dialogData?.id !== undefined;
     this.title = this.isEdit
       ? $localize`:@@app_versions_dialog_title_edit:Blockierte App Version bearbeiten`
       : $localize`:@@app_versions_dialog_title_create:App Version blockieren`;

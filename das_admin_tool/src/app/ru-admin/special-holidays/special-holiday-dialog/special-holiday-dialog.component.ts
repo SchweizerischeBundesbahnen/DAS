@@ -47,7 +47,7 @@ export class SpecialHolidayDialog {
     inject<SpecialHoliday>(SBB_OVERLAY_DATA, { optional: true }) ?? undefined;
 
   constructor() {
-    const isEdit = this.dialogData?.id != null;
+    const isEdit = this.dialogData?.id !== undefined;
     this.title = isEdit
       ? $localize`:@@special_holidays_dialog_title_edit:Speziellen Feiertag bearbeiten`
       : $localize`:@@special_holidays_dialog_title_create:Speziellen Feiertag erfassen`;

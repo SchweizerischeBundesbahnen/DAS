@@ -27,6 +27,6 @@ export class LanguageProvider {
       return;
     }
     segments[0] = languagePath;
-    window.location.href = '/' + segments.join('/') + window.location.search + window.location.hash;
+    window.location.href = `/${segments.join('/')}${window.location.search}${window.location.hash}`;
   }
 }
