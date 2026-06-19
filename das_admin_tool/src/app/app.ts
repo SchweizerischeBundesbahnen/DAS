@@ -1,12 +1,12 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { SbbLink } from '@sbb-esta/lyne-angular/link/link';
+import { SbbNotificationModule } from '@sbb-esta/lyne-angular/notification';
+import { SbbTitleModule } from '@sbb-esta/lyne-angular/title';
+import packageJson from '~package.json';
+import { AuthService } from '~shared/auth-service';
 import { Header } from './header/header';
 import { IconSidebar } from './icon-sidebar/icon-sidebar';
-import packageJson from '../../package.json';
-import { AuthService } from './shared/auth-service';
-import { SbbTitleModule } from '@sbb-esta/lyne-angular/title';
-import { SbbNotificationModule } from '@sbb-esta/lyne-angular/notification';
-import { SbbLink } from '@sbb-esta/lyne-angular/link/link';
 
 @Component({
   selector: 'app-root',

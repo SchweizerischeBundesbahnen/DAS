@@ -1,5 +1,5 @@
-import { Component, input } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import { Component, input } from '@angular/core';
 import { SbbStepperModule } from '@sbb-esta/lyne-angular/stepper';
 import { SbbTitleModule } from '@sbb-esta/lyne-angular/title';
 import { Auditable } from './auditable';

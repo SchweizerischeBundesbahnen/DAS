@@ -1,12 +1,12 @@
-import { Component, effect, inject, viewChild } from '@angular/core';
-import { SbbSort, SbbTableDataSource, SbbTableModule } from '@sbb-esta/lyne-angular/table';
-import { SbbSecondaryButton } from '@sbb-esta/lyne-angular/button/secondary-button';
-import { AppVersion } from '../../das-admin-api';
-import { SbbCompactPaginator } from '@sbb-esta/lyne-angular/paginator/compact-paginator';
 import { DatePipe } from '@angular/common';
-import { SbbToggleCheckModule } from '@sbb-esta/lyne-angular/toggle-check';
-import { AppVersionsService } from '../app-versions.service';
+import { Component, effect, inject, viewChild } from '@angular/core';
 import { SbbMiniButton } from '@sbb-esta/lyne-angular/button/mini-button';
+import { SbbSecondaryButton } from '@sbb-esta/lyne-angular/button/secondary-button';
+import { SbbCompactPaginator } from '@sbb-esta/lyne-angular/paginator/compact-paginator';
+import { SbbSort, SbbTableDataSource, SbbTableModule } from '@sbb-esta/lyne-angular/table';
+import { SbbToggleCheckModule } from '@sbb-esta/lyne-angular/toggle-check';
+import { AppVersion } from '~app/das-admin/das-admin-api';
+import { AppVersionsService } from '../app-versions.service';
 
 @Component({
   selector: 'app-app-versions-table',

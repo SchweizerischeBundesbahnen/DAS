@@ -1,3 +1,4 @@
+import { formatDate } from '@angular/common';
 import { Component, inject, input } from '@angular/core';
 import {
   AbstractControl,
@@ -7,16 +8,15 @@ import {
   ValidationErrors,
   Validators,
 } from '@angular/forms';
-import { SbbDatepickerModule } from '@sbb-esta/lyne-angular/datepicker';
-import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
-import { DayOfWeek, RuIndicationPeriod } from '../../../ru-admin-api';
-import { SbbToggleCheckModule } from '@sbb-esta/lyne-angular/toggle-check';
+import { SbbButtonModule } from '@sbb-esta/lyne-angular/button';
 import { SbbCheckboxModule } from '@sbb-esta/lyne-angular/checkbox';
 import { SbbChipModule } from '@sbb-esta/lyne-angular/chip';
-import { SbbButtonModule } from '@sbb-esta/lyne-angular/button';
-import { toUtcDateOnly } from '../../../../shared/date-util';
-import { formatDate } from '@angular/common';
-import { LanguageProvider } from '../../../../shared/language-provider';
+import { SbbDatepickerModule } from '@sbb-esta/lyne-angular/datepicker';
+import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
+import { SbbToggleCheckModule } from '@sbb-esta/lyne-angular/toggle-check';
+import { DayOfWeek, RuIndicationPeriod } from '~ru-admin/ru-admin-api';
+import { toUtcDateOnly } from '~shared/date-util';
+import { LanguageProvider } from '~shared/language-provider';
 
 export function displayPeriod(period: RuIndicationPeriod, localeId = 'de-CH'): string {
   const from = formatDate(period.validFrom, 'shortDate', localeId);

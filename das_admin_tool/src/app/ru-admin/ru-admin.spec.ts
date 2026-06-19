@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { RuAdmin } from './ru-admin';
 import { provideRouter } from '@angular/router';
+import { RuAdmin } from './ru-admin';
 
 describe('RuAdmin', () => {
   let component: RuAdmin;

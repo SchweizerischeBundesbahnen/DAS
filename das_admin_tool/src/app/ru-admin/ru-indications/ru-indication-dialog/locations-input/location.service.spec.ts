@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-
 import { Location, LocationService } from './location.service';
 
 const locations: Location[] = [

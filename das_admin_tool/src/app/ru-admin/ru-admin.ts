@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { SbbTitleModule } from '@sbb-esta/lyne-angular/title';
 import { SbbTabsModule } from '@sbb-esta/lyne-angular/tabs';
+import { SbbTitleModule } from '@sbb-esta/lyne-angular/title';
 
 @Component({
   selector: 'app-ru-admin',

@@ -1,10 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import {
-  RuIndicationContentForm,
-  createContentFormGroup,
-} from './ru-indication-content-form.component';
 import { FormControl, FormGroup } from '@angular/forms';
+import {
+  createContentFormGroup,
+  RuIndicationContentForm,
+} from './ru-indication-content-form.component';
 
 describe('RuIndicationContentForm', () => {
   let component: RuIndicationContentForm;

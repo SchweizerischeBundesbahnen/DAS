@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
+import { RecentCompaniesStore } from '../recent-companies.store';
 import { CompaniesInputComponent } from './companies-input.component';
 import { Company, CompanyService } from './company.service';
-import { RecentCompaniesStore } from '../recent-companies.store';
 
 const companies = [
   { code: '1085', name: 'SBB' },

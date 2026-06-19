@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-import { RecentCompaniesStore } from './recent-companies.store';
 import { AuthService } from './auth-service';
+import { RecentCompaniesStore } from './recent-companies.store';
 
 describe('RecentCompaniesStore', () => {
   let store: RecentCompaniesStore;

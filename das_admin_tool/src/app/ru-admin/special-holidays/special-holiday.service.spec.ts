@@ -1,14 +1,13 @@
-import { TestBed } from '@angular/core/testing';
-
-import { SpecialHolidayService } from './special-holiday.service';
-import { RuAdminApi, SpecialHoliday, SpecialHolidayApiResponse } from '../ru-admin-api';
-import { SbbDialogService } from '@sbb-esta/lyne-angular/dialog';
-import { ToastService } from '../../shared/toast-service';
 import { HttpResourceRef } from '@angular/common/http';
-import { of, throwError } from 'rxjs';
-import { SpecialHolidayDialogEditResult } from './special-holiday-dialog/special-holiday-dialog.component';
+import { TestBed } from '@angular/core/testing';
+import { SbbDialogService } from '@sbb-esta/lyne-angular/dialog';
 import { SbbOverlayCloseEvent } from '@sbb-esta/lyne-elements/overlay.js';
-import { RecentCompaniesStore } from '../../shared/recent-companies.store';
+import { of, throwError } from 'rxjs';
+import { RecentCompaniesStore } from '~shared/recent-companies.store';
+import { ToastService } from '~shared/toast-service';
+import { RuAdminApi, SpecialHoliday, SpecialHolidayApiResponse } from '../ru-admin-api';
+import { SpecialHolidayDialogEditResult } from './special-holiday-dialog/special-holiday-dialog.component';
+import { SpecialHolidayService } from './special-holiday.service';
 
 const specialHoliday: SpecialHoliday = {
   id: 1,

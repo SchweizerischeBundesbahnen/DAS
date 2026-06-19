@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
-import { RuIndicationPeriod } from '../../../ru-admin-api';
+import { RuIndicationPeriod } from '~ru-admin/ru-admin-api';
 import { PeriodsInput } from './periods-input';
 
 describe('PeriodsInput', () => {

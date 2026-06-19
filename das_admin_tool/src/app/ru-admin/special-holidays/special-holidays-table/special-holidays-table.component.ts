@@ -1,17 +1,17 @@
-import { Component, effect, inject, viewChild } from '@angular/core';
-import { SbbSort, SbbTableDataSource, SbbTableModule } from '@sbb-esta/lyne-angular/table';
-import { SbbSecondaryButton } from '@sbb-esta/lyne-angular/button/secondary-button';
-import { SbbCompactPaginator } from '@sbb-esta/lyne-angular/paginator/compact-paginator';
-import { SbbMiniButton } from '@sbb-esta/lyne-angular/button/mini-button';
 import { SelectionModel } from '@angular/cdk/collections';
+import { DatePipe } from '@angular/common';
+import { Component, effect, inject, viewChild } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { SbbMiniButton } from '@sbb-esta/lyne-angular/button/mini-button';
+import { SbbSecondaryButton } from '@sbb-esta/lyne-angular/button/secondary-button';
+import { SbbTransparentButton } from '@sbb-esta/lyne-angular/button/transparent-button';
 import { SbbCheckboxModule } from '@sbb-esta/lyne-angular/checkbox';
 import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
-import { ReactiveFormsModule } from '@angular/forms';
-import { SbbTransparentButton } from '@sbb-esta/lyne-angular/button/transparent-button';
-import { SCHEDULE_TYPE_LABELS, ScheduleType, SpecialHoliday } from '../../ru-admin-api';
+import { SbbCompactPaginator } from '@sbb-esta/lyne-angular/paginator/compact-paginator';
+import { SbbSort, SbbTableDataSource, SbbTableModule } from '@sbb-esta/lyne-angular/table';
+import { SCHEDULE_TYPE_LABELS, ScheduleType, SpecialHoliday } from '~ru-admin/ru-admin-api';
+import { CompanyService } from '~shared/companies-input/company.service';
 import { SpecialHolidayService } from '../special-holiday.service';
-import { DatePipe } from '@angular/common';
-import { CompanyService } from '../../../shared/companies-input/company.service';
 
 @Component({
   selector: 'app-special-holidays-table',

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { SbbTitleModule } from '@sbb-esta/lyne-angular/title';
 import { SbbTabsModule } from '@sbb-esta/lyne-angular/tabs';
+import { SbbTitleModule } from '@sbb-esta/lyne-angular/title';
 import { AppVersions } from './app-versions/app-versions';
 
 @Component({

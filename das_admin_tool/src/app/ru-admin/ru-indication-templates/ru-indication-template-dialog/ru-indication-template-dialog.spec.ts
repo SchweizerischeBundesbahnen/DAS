@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
-import { RuIndicationTemplateDialog } from './ru-indication-template-dialog';
 import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core/overlay';
-import { RuIndicationTemplate } from '../../ru-admin-api';
+import { RuIndicationTemplate } from '~ru-admin/ru-admin-api';
+import { RuIndicationTemplateDialog } from './ru-indication-template-dialog';
 
 function createDialog(data?: RuIndicationTemplate): RuIndicationTemplateDialog {
   TestBed.configureTestingModule({

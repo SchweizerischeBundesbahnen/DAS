@@ -1,13 +1,13 @@
+import { UpperCasePipe } from '@angular/common';
 import { Component, inject, input } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { SbbError, SbbFormField } from '@sbb-esta/lyne-angular/form-field';
 import { SbbMiniButton } from '@sbb-esta/lyne-angular/button';
+import { SbbError, SbbFormField } from '@sbb-esta/lyne-angular/form-field';
 import { SbbTab, SbbTabGroup, SbbTabLabel } from '@sbb-esta/lyne-angular/tabs';
 import { SbbTooltipDirective } from '@sbb-esta/lyne-angular/tooltip';
-import { LanguageCode, LanguageProvider } from '../../shared/language-provider';
-import { UpperCasePipe } from '@angular/common';
+import { oneLanguageRequired, titleRequired } from '~shared/form-validators.util';
+import { LanguageCode, LanguageProvider } from '~shared/language-provider';
 import { RuIndicationContent, RuIndicationLanguageContent } from '../ru-admin-api';
-import { oneLanguageRequired, titleRequired } from '../../shared/form-validators.util';
 
 export interface LanguageContentForm {
   de: FormGroup<ContentForm>;

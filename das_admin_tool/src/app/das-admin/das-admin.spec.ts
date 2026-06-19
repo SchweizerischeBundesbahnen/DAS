@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { DasAdmin } from './das-admin';
 import { AppVersionsService } from './app-versions/app-versions.service';
+import { DasAdmin } from './das-admin';
 
 const mockAppVersionsService = { appVersionsResource: new Proxy({}, { get: () => vi.fn() }) };
 

@@ -1,7 +1,7 @@
 import 'angular-server-side-configuration/process';
 
-import { Environment } from './environment.model';
 import { PassedInitialConfig } from 'angular-auth-oidc-client';
+import { Environment } from './environment.model';
 
 /**
  * How to use angular-server-side-configuration:

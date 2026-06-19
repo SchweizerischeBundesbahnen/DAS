@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { AppVersions } from './app-versions';
 import { AppVersionsService } from './app-versions.service';
 

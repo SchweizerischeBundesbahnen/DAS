@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { AppVersionsTable } from './app-versions-table';
 import { AppVersionsService } from '../app-versions.service';
+import { AppVersionsTable } from './app-versions-table';
 
 const mockAppVersionsService = { appVersionsResource: new Proxy({}, { get: () => vi.fn() }) };
 

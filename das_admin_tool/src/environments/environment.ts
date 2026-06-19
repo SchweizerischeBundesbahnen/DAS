@@ -1,5 +1,5 @@
-import { Environment } from './environment.model';
 import { PassedInitialConfig } from 'angular-auth-oidc-client';
+import { Environment } from './environment.model';
 
 const backendUrl = 'http://localhost:8080';
 

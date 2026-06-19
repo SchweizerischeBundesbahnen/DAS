@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { SpecialHolidays } from './special-holidays.component';
 import { SpecialHolidayService } from './special-holiday.service';
+import { SpecialHolidays } from './special-holidays.component';
 
 const specialHolidayServiceMock = {
   specialHolidaysResource: new Proxy({}, { get: () => vi.fn() }),

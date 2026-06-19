@@ -4,8 +4,8 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { SbbAutocompleteModule } from '@sbb-esta/lyne-angular/autocomplete';
 import { SbbChipModule } from '@sbb-esta/lyne-angular/chip';
 import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
-import { CompanyService } from './company.service';
 import { RecentCompaniesStore } from '../recent-companies.store';
+import { CompanyService } from './company.service';
 
 @Component({
   selector: 'app-companies-input',

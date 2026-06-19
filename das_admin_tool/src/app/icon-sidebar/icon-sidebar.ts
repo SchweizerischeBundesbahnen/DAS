@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
-import { AuthService } from '../shared/auth-service';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { SbbIconSidebarModule } from '@sbb-esta/lyne-angular/icon-sidebar';
 import { SbbTooltipModule } from '@sbb-esta/lyne-angular/tooltip';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { AuthService } from '~shared/auth-service';
 
 @Component({
   selector: 'app-icon-sidebar',

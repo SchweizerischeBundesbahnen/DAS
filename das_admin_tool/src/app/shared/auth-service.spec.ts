@@ -1,9 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
-
+import { environment } from '~src/environments/environment';
 import { AuthService } from './auth-service';
-import { environment } from '../../environments/environment';
 
 describe('AuthService', () => {
   let service: AuthService;

@@ -1,7 +1,7 @@
-import { computed, Injectable } from '@angular/core';
 import { httpResource } from '@angular/common/http';
-import { ApiResponse } from '../../../../shared/api-response';
-import { environment } from '../../../../../environments/environment';
+import { computed, Injectable } from '@angular/core';
+import { ApiResponse } from '~shared/api-response';
+import { environment } from '~src/environments/environment';
 
 export type LocationApiResponse = ApiResponse<Location>;
 

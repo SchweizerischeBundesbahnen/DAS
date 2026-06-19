@@ -1,17 +1,17 @@
-import { Component, effect, inject, LOCALE_ID, viewChild } from '@angular/core';
-import { SbbSort, SbbTableDataSource, SbbTableModule } from '@sbb-esta/lyne-angular/table';
-import { SbbCheckbox } from '@sbb-esta/lyne-angular/checkbox';
-import { ExternalLinksService } from '../external-links.service';
 import { SelectionModel } from '@angular/cdk/collections';
-import { SbbCompactPaginator } from '@sbb-esta/lyne-angular/paginator/compact-paginator';
-import { LanguageProvider } from '../../../shared/language-provider';
 import { DatePipe, formatDate } from '@angular/common';
-import { ExternalLink } from '../../ru-admin-api';
-import { SbbButtonModule } from '@sbb-esta/lyne-angular/button';
-import { SbbSelectModule } from '@sbb-esta/lyne-angular/select';
-import { SbbIcon } from '@sbb-esta/lyne-angular/icon';
-import { SbbFormField } from '@sbb-esta/lyne-angular/form-field';
+import { Component, effect, inject, LOCALE_ID, viewChild } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { SbbButtonModule } from '@sbb-esta/lyne-angular/button';
+import { SbbCheckbox } from '@sbb-esta/lyne-angular/checkbox';
+import { SbbFormField } from '@sbb-esta/lyne-angular/form-field';
+import { SbbIcon } from '@sbb-esta/lyne-angular/icon';
+import { SbbCompactPaginator } from '@sbb-esta/lyne-angular/paginator/compact-paginator';
+import { SbbSelectModule } from '@sbb-esta/lyne-angular/select';
+import { SbbSort, SbbTableDataSource, SbbTableModule } from '@sbb-esta/lyne-angular/table';
+import { ExternalLink } from '~ru-admin/ru-admin-api';
+import { LanguageProvider } from '~shared/language-provider';
+import { ExternalLinksService } from '../external-links.service';
 
 @Component({
   selector: 'app-external-links-table',

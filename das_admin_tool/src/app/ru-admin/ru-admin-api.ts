@@ -1,9 +1,9 @@
-import { inject, Injectable } from '@angular/core';
 import { HttpClient, httpResource } from '@angular/common/http';
-import { environment } from '../../environments/environment';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ApiResponse } from '../shared/api-response';
-import { Auditable } from '../shared/audit/auditable';
+import { ApiResponse } from '~shared/api-response';
+import { Auditable } from '~shared/audit/auditable';
+import { environment } from '~src/environments/environment';
 
 export interface RuIndicationLanguageContent {
   title: string;

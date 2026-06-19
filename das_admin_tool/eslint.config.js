@@ -1,12 +1,13 @@
 // @ts-check
 
-import { defineConfig } from 'eslint/config';
 import css from '@eslint/css';
 import js from '@eslint/js';
 import json from '@eslint/json';
-import * as ts from 'typescript-eslint';
 import * as angular from 'angular-eslint';
+import { defineConfig } from 'eslint/config';
+import * as importX from 'eslint-plugin-import-x';
 import prettierRecommended from 'eslint-plugin-prettier/recommended';
+import * as ts from 'typescript-eslint';
 
 export default defineConfig(
   {
@@ -16,11 +17,35 @@ export default defineConfig(
       ...ts.configs.recommendedTypeChecked,
       ...ts.configs.stylisticTypeChecked,
       ...angular.configs.tsAll,
+      importX.flatConfigs.recommended,
+      importX.flatConfigs.typescript,
       prettierRecommended,
     ],
     processor: angular.processInlineTemplates,
     languageOptions: { parserOptions: { projectService: true } },
     rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['~src/app/ru-admin/*', '~app/ru-admin/*', '../ru-admin/*', './ru-admin/*'],
+              message: "Please use '~ru-admin/*'",
+            },
+            {
+              group: ['~src/app/shared/*', '~app/shared/*', '../shared/*', './shared/*'],
+              message: "Please use '~shared/*'",
+            },
+            { group: ['~src/app/*', '../app/*', './app/*'], message: "Please use '~app/*'" },
+            { group: ['../../*'], message: 'Please use an absolute path' },
+            {
+              group: ['@angular/common'],
+              importNames: ['CommonModule'],
+              message: 'Please use more granular imports!',
+            },
+          ],
+        },
+      ],
       '@typescript-eslint/dot-notation': [
         'error',
         // Allowed for tests and environment variables
@@ -63,6 +88,24 @@ export default defineConfig(
       '@angular-eslint/no-experimental': 'off',
       // Disabled because not ready yet
       '@angular-eslint/prefer-on-push-component-change-detection': 'off',
+      'import-x/order': [
+        'error',
+        {
+          groups: [
+            'builtin',
+            'external',
+            'internal',
+            'parent',
+            'sibling',
+            'index',
+            'object',
+            'type',
+          ],
+          'newlines-between': 'never',
+          alphabetize: { order: 'asc', caseInsensitive: true },
+          named: true,
+        },
+      ],
     },
   },
   {

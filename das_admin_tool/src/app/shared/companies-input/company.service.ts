@@ -1,6 +1,6 @@
 import { httpResource } from '@angular/common/http';
 import { computed, Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment';
+import { environment } from '~src/environments/environment';
 import { ApiResponse } from '../api-response';
 
 type CompanyApiResponse = ApiResponse<Company>;

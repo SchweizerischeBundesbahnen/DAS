@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RuIndications } from './ru-indications';
 import { RuIndicationService } from './ru-indication.service';
+import { RuIndications } from './ru-indications';
 
 const mockRuIndicationService = { ruIndicationsResource: new Proxy({}, { get: () => vi.fn() }) };
 

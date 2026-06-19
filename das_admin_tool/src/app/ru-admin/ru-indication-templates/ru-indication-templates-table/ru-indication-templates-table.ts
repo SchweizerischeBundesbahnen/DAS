@@ -1,26 +1,26 @@
+import { SelectionModel } from '@angular/cdk/collections';
+import { DatePipe } from '@angular/common';
 import { Component, effect, inject, viewChild } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { SbbMiniButton } from '@sbb-esta/lyne-angular/button/mini-button';
+import { SbbSecondaryButton } from '@sbb-esta/lyne-angular/button/secondary-button';
+import { SbbTransparentButton } from '@sbb-esta/lyne-angular/button/transparent-button';
+import { SbbCheckboxModule } from '@sbb-esta/lyne-angular/checkbox';
+import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
+import { SbbIconModule } from '@sbb-esta/lyne-angular/icon';
+import { SbbCompactPaginator } from '@sbb-esta/lyne-angular/paginator/compact-paginator';
+import { SbbSelectModule } from '@sbb-esta/lyne-angular/select';
 import {
   SbbSort,
   SbbTableDataSource,
   SbbTableFilter,
   SbbTableModule,
 } from '@sbb-esta/lyne-angular/table';
-import { SbbSecondaryButton } from '@sbb-esta/lyne-angular/button/secondary-button';
-import { RuIndicationTemplate } from '../../ru-admin-api';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { SbbCompactPaginator } from '@sbb-esta/lyne-angular/paginator/compact-paginator';
+import { RuIndicationTemplate } from '~ru-admin/ru-admin-api';
+import { CompanyService } from '~shared/companies-input/company.service';
+import { LanguageCode, LanguageProvider } from '~shared/language-provider';
 import { RuIndicationTemplateService } from '../ru-indication-template.service';
-import { SbbMiniButton } from '@sbb-esta/lyne-angular/button/mini-button';
-import { SelectionModel } from '@angular/cdk/collections';
-import { SbbCheckboxModule } from '@sbb-esta/lyne-angular/checkbox';
-import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
-import { SbbIconModule } from '@sbb-esta/lyne-angular/icon';
-import { SbbSelectModule } from '@sbb-esta/lyne-angular/select';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { SbbTransparentButton } from '@sbb-esta/lyne-angular/button/transparent-button';
-import { LanguageCode, LanguageProvider } from '../../../shared/language-provider';
-import { DatePipe } from '@angular/common';
-import { CompanyService } from '../../../shared/companies-input/company.service';
 
 interface RuIndicationTemplateFilter extends SbbTableFilter {
   search: string;

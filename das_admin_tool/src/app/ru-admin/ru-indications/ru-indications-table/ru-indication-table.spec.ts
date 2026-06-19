@@ -1,12 +1,12 @@
-import { TestBed } from '@angular/core/testing';
-import { RuIndicationFilter, RuIndicationsTable } from './ru-indications-table';
-import { RuIndicationService } from '../ru-indication.service';
-import { LanguageProvider } from '../../../shared/language-provider';
-import { CompanyService } from '../../../shared/companies-input/company.service';
-import { LocationService } from '../ru-indication-dialog/locations-input/location.service';
-import { RuIndication, RuIndicationApiResponse } from '../../ru-admin-api';
-import { displayPeriod } from '../ru-indication-dialog/periods-input/periods-input';
 import { HttpResourceRef } from '@angular/common/http';
+import { TestBed } from '@angular/core/testing';
+import { RuIndication, RuIndicationApiResponse } from '~ru-admin/ru-admin-api';
+import { CompanyService } from '~shared/companies-input/company.service';
+import { LanguageProvider } from '~shared/language-provider';
+import { LocationService } from '../ru-indication-dialog/locations-input/location.service';
+import { displayPeriod } from '../ru-indication-dialog/periods-input/periods-input';
+import { RuIndicationService } from '../ru-indication.service';
+import { RuIndicationFilter, RuIndicationsTable } from './ru-indications-table';
 
 const sample: RuIndication = {
   id: 1,

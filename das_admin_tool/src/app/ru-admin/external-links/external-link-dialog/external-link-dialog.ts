@@ -1,3 +1,4 @@
+import { UpperCasePipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import {
   FormControl,
@@ -7,14 +8,13 @@ import {
   Validators,
 } from '@angular/forms';
 import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core/overlay';
-import { LanguageCode, LanguageProvider } from '../../../shared/language-provider';
 import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
-import { CompaniesInputComponent } from '../../../shared/companies-input/companies-input.component';
-import { UpperCasePipe } from '@angular/common';
-import { languageRequired, oneLanguageRequired, url } from '../../../shared/form-validators.util';
-import { ExternalLink } from '../../ru-admin-api';
-import { BaseDialog } from '../../../shared/base-dialog/base-dialog.component';
 import { SbbTabsModule } from '@sbb-esta/lyne-angular/tabs';
+import { ExternalLink } from '~ru-admin/ru-admin-api';
+import { BaseDialog } from '~shared/base-dialog/base-dialog.component';
+import { CompaniesInputComponent } from '~shared/companies-input/companies-input.component';
+import { languageRequired, oneLanguageRequired, url } from '~shared/form-validators.util';
+import { LanguageCode, LanguageProvider } from '~shared/language-provider';
 
 interface FormGroupExternalLinkContent {
   title: FormControl<string>;

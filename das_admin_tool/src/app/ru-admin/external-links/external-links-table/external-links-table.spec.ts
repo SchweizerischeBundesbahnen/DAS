@@ -1,9 +1,9 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { LOCALE_ID } from '@angular/core';
 import { HttpResourceRef } from '@angular/common/http';
+import { LOCALE_ID } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ExternalLink, ExternalLinkApiResponse } from '~ru-admin/ru-admin-api';
 import { ExternalLinksService } from '../external-links.service';
 import { ExternalLinksTable } from './external-links-table';
-import { ExternalLink, ExternalLinkApiResponse } from '../../ru-admin-api';
 
 const externalLinks: ExternalLink[] = [
   {

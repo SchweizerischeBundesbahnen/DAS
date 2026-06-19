@@ -1,7 +1,7 @@
 import { computed, inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
-import { environment } from '../../environments/environment';
+import { environment } from '~src/environments/environment';
 
 export enum UserRole {
   ADMIN = 'admin',
