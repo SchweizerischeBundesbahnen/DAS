@@ -25,6 +25,11 @@ class ExternalLinksRepositoryImpl implements ExternalLinksRepository {
       final externalLinks = response.body.data.map((dto) => dto.toModel()).toList();
 
       await databaseService.saveExternalLinks(externalLinks);
+
+      // Cleanup
+      final fetchedIds = externalLinks.map((link) => link.id).toList();
+      await databaseService.deleteExternalLinksNotIn(fetchedIds);
+
       _log.info('External links loaded successfully. Count: ${externalLinks.length}');
     } catch (e) {
       _log.severe('Error while loading external links', e);

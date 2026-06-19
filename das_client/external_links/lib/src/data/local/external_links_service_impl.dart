@@ -29,4 +29,7 @@ class ExternalLinksServiceImpl implements ExternalLinksService {
   @override
   Stream<List<ExternalLink>> watchExternalLinksByCompanies(List<String> companies) =>
       _database.watchExternalLinksByCompanies(companies);
+
+  @override
+  Future<void> deleteExternalLinksNotIn(List<int> keepIds) => _database.deleteExternalLinksNotIn(keepIds);
 }

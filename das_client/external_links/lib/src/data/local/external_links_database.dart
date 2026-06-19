@@ -61,6 +61,13 @@ class ExternalLinksDatabase extends _$ExternalLinksDatabase {
           .toList();
     });
   }
+
+  Future<void> deleteExternalLinksNotIn(List<int> keepIds) async {
+    if (keepIds.isEmpty) {
+      return deleteExternalLinks();
+    }
+    await (delete(externalLinksTable)..where((tbl) => tbl.id.isNotIn(keepIds))).go();
+  }
 }
 
 extension ExternalLinksDatabaseExtension on ExternalLinksTableData {

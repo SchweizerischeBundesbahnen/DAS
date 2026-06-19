@@ -8,4 +8,6 @@ abstract class ExternalLinksService {
   Future<List<ExternalLink>> findExternalLinksByCompanies(List<String> companies);
 
   Stream<List<ExternalLink>> watchExternalLinksByCompanies(List<String> companies);
+
+  Future<void> deleteExternalLinksNotIn(List<int> keepIds);
 }
