@@ -24,14 +24,14 @@ const mockHolidayService = {
   edit: vi.fn(),
   add: vi.fn(),
   deleteAll: vi.fn(),
-  specialHolidaysResource: new Proxy({}, {get: () => vi.fn()})
+  specialHolidaysResource: new Proxy({}, { get: () => vi.fn() }),
 };
 
 function createComponent(): SpecialHolidaysTable {
   TestBed.configureTestingModule({
     providers: [
       SpecialHolidaysTable,
-      {provide: SpecialHolidayService, useValue: mockHolidayService},
+      { provide: SpecialHolidayService, useValue: mockHolidayService },
     ],
   });
   return TestBed.inject(SpecialHolidaysTable);

@@ -12,51 +12,51 @@ const sample: RuIndication = {
   id: 1,
   content: {
     category: 'General',
-    de: {title: 'Titel DE', text: 'Text DE'},
-    fr: {title: 'Titre FR', text: 'Texte FR'}
+    de: { title: 'Titel DE', text: 'Text DE' },
+    fr: { title: 'Titre FR', text: 'Texte FR' },
   },
   scope: {
     companies: ['1085', '1087'],
-    operationalTrainNumberFilters: [{expression: '100', parity: 'ANY'}],
-    tafTapLocationReferences: ['LOC1']
+    operationalTrainNumberFilters: [{ expression: '100', parity: 'ANY' }],
+    tafTapLocationReferences: ['LOC1'],
   },
-  periods: [{validFrom: new Date('2026-01-10'), validTo: new Date('2026-01-10')}],
+  periods: [{ validFrom: new Date('2026-01-10'), validTo: new Date('2026-01-10') }],
   status: 'ACTIVE',
   lastModifiedBy: 'tester',
-  lastModifiedAt: new Date('2026-01-01')
+  lastModifiedAt: new Date('2026-01-01'),
 };
 
 const mockRuIndicationService: Partial<RuIndicationService> = {
-  ruIndicationsResource: new Proxy({}, {get: () => vi.fn()}) as HttpResourceRef<RuIndicationApiResponse | undefined>,
+  ruIndicationsResource: new Proxy({}, { get: () => vi.fn() }) as HttpResourceRef<
+    RuIndicationApiResponse | undefined
+  >,
   edit: vi.fn(),
   add: vi.fn(),
-  deleteAll: vi.fn(() => Promise.resolve())
+  deleteAll: vi.fn(() => Promise.resolve()),
 };
 
 const mockLanguageProvider = {
-  currentLanguage: {localeId: 'de-CH', path: 'de', label: 'Deutsch'}
+  currentLanguage: { localeId: 'de-CH', path: 'de', label: 'Deutsch' },
 } satisfies Partial<LanguageProvider>;
 
-const mockCompanyService: Partial<CompanyService> = {
-  formatCompanies: () => ('SBB, BLS')
-};
+const mockCompanyService: Partial<CompanyService> = { formatCompanies: () => 'SBB, BLS' };
 
 const mockLocationService: Partial<LocationService> = {
   getLocation: (ref: string) => ({
     locationReference: ref,
     primaryLocationName: 'X',
-    locationAbbreviation: 'XAB'
-  })
+    locationAbbreviation: 'XAB',
+  }),
 };
 
 function createComponent(): RuIndicationsTable {
   TestBed.configureTestingModule({
     providers: [
       RuIndicationsTable,
-      {provide: RuIndicationService, useValue: mockRuIndicationService},
-      {provide: LanguageProvider, useValue: mockLanguageProvider},
-      {provide: CompanyService, useValue: mockCompanyService},
-      {provide: LocationService, useValue: mockLocationService},
+      { provide: RuIndicationService, useValue: mockRuIndicationService },
+      { provide: LanguageProvider, useValue: mockLanguageProvider },
+      { provide: CompanyService, useValue: mockCompanyService },
+      { provide: LocationService, useValue: mockLocationService },
     ],
   });
   return TestBed.inject(RuIndicationsTable);
@@ -67,11 +67,11 @@ describe('RuIndicationsTable', () => {
 
   it('titleValue/textValue should return language specific values', () => {
     const comp = createComponent();
-    comp['form'].patchValue({language: 'de'});
+    comp['form'].patchValue({ language: 'de' });
     expect(comp['titleValue'](sample)).toBe('Titel DE');
     expect(comp['textValue'](sample)).toBe('Text DE');
 
-    comp['form'].patchValue({language: 'fr'});
+    comp['form'].patchValue({ language: 'fr' });
     expect(comp['titleValue'](sample)).toBe('Titre FR');
     expect(comp['textValue'](sample)).toBe('Texte FR');
   });
@@ -96,7 +96,10 @@ describe('RuIndicationsTable', () => {
 
   it('periodsValue should format periods using displayPeriod', () => {
     const comp = createComponent();
-    const expected = displayPeriod(sample.periods[0], mockLanguageProvider.currentLanguage.localeId);
+    const expected = displayPeriod(
+      sample.periods[0],
+      mockLanguageProvider.currentLanguage.localeId,
+    );
     expect(comp['periodsValue'](sample)).toBe(expected);
   });
 
@@ -110,22 +113,13 @@ describe('RuIndicationsTable', () => {
         trainNumbers: '',
         search: 'general',
         language: 'de',
-        category: ''
+        category: '',
       };
       expect(comp['searchFilter'](filter, sample)).toBe(true);
 
-      expect(comp['searchFilter']({
-        ...filter,
-        search: 'general',
-      }, sample)).toBe(true);
-      expect(comp['searchFilter']({
-        ...filter,
-        search: 'aktiv',
-      }, sample)).toBe(true);
-      expect(comp['searchFilter']({
-        ...filter,
-        search: 'tester',
-      }, sample)).toBe(true);
+      expect(comp['searchFilter']({ ...filter, search: 'general' }, sample)).toBe(true);
+      expect(comp['searchFilter']({ ...filter, search: 'aktiv' }, sample)).toBe(true);
+      expect(comp['searchFilter']({ ...filter, search: 'tester' }, sample)).toBe(true);
     });
 
     it('filterProperties should respect individual property filters', () => {
@@ -137,7 +131,7 @@ describe('RuIndicationsTable', () => {
         companies: 'sbb',
         trainNumbers: '100',
         locations: 'xab',
-        periods: ''
+        periods: '',
       };
       expect(comp['searchFilter'](filter, sample)).toBe(true);
     });

@@ -6,13 +6,13 @@ import { expect, Locator, Page } from '@playwright/test';
 export function findRow(page: Page, ...cellTexts: string[]): Locator {
   let loc: Locator = page.locator('tr[sbb-row]');
   for (const txt of cellTexts) {
-    loc = loc.filter({has: page.getByRole('cell', {name: txt, exact: true})});
+    loc = loc.filter({ has: page.getByRole('cell', { name: txt, exact: true }) });
   }
   return loc.first();
 }
 
 export async function clickAddButton(page: Page) {
-  const addButton = page.getByText('Neuen Eintrag erfassen', {exact: true});
+  const addButton = page.getByText('Neuen Eintrag erfassen', { exact: true });
   await expect(addButton).toBeVisible();
   await addButton.click();
 }
@@ -31,13 +31,13 @@ export async function saveEntryDialog(
   const saveResponse = page.waitForResponse((resp) => resp.request().method() === options.method);
   const reloadResponse = page.waitForResponse((resp) => resp.request().method() === 'GET');
   if (options.method === 'PUT') {
-    await page.getByText('Weiter', {exact: true}).click();
+    await page.getByText('Weiter', { exact: true }).click();
   }
-  await page.getByText('Speichern', {exact: true}).click();
+  await page.getByText('Speichern', { exact: true }).click();
   await saveResponse;
   await reloadResponse;
-  await expect(page.getByText(options.successToast, {exact: true})).toBeVisible();
-  await expect(page.getByText(options.dialogTitle, {exact: true})).not.toBeVisible();
+  await expect(page.getByText(options.successToast, { exact: true })).toBeVisible();
+  await expect(page.getByText(options.dialogTitle, { exact: true })).not.toBeVisible();
 
   await expect(row).toBeVisible();
 }
@@ -52,7 +52,7 @@ export async function deleteEntryViaDialog(page: Page, row: Locator) {
   const dialog = await openEditEntryDialog(page, row);
 
   const deleteResponse = page.waitForResponse((resp) => resp.request().method() === 'DELETE');
-  const deleteBtn = dialog.getByText('Eintrag löschen', {exact: true});
+  const deleteBtn = dialog.getByText('Eintrag löschen', { exact: true });
   await expect(deleteBtn).toBeVisible();
   await deleteBtn.click();
   await deleteResponse;

@@ -1,9 +1,12 @@
 <form [formGroup]="form">
   <div class="search-language-header">
-
     <sbb-form-field>
-      <input formControlName="search" i18n-placeholder="@@ru_indications_table_search_placeholder"
-             placeholder="Suchen" type="text"/>
+      <input
+        formControlName="search"
+        i18n-placeholder="@@ru_indications_table_search_placeholder"
+        placeholder="Suchen"
+        type="text"
+      />
       <sbb-icon name="magnifying-glass-small" slot="suffix"></sbb-icon>
     </sbb-form-field>
     <sbb-form-field>
@@ -18,106 +21,161 @@
   </div>
 
   <sbb-table-wrapper>
-    <table [dataSource]="dataSource" class="table-truncated" fixedLayout sbb-table sbbSort
-           sbbSortDirection="asc">
+    <table
+      [dataSource]="dataSource"
+      class="table-truncated"
+      fixedLayout
+      sbb-table
+      sbbSort
+      sbbSortDirection="asc"
+    >
       <ng-container sbbColumnDef="select">
         <th *sbbHeaderCellDef sbb-header-cell style="width: 36px">
           <sbb-checkbox
             (change)="$event ? parentToggle() : null"
             [checked]="selection.hasValue() && isAllSelected()"
             [indeterminate]="selection.hasValue() && !isAllSelected()"
-          >
-          </sbb-checkbox>
+          ></sbb-checkbox>
         </th>
         <td *sbbCellDef="let row" sbb-cell>
           <sbb-checkbox
             (change)="$event ? selection.toggle(row) : null"
             (click)="$event.stopPropagation()"
             [checked]="selection.isSelected(row)"
-          >
-          </sbb-checkbox>
+          ></sbb-checkbox>
         </td>
       </ng-container>
 
       <ng-container sbbColumnDef="title">
-        <th *sbbHeaderCellDef i18n="@@ru_indications_table_column_title" sbb-header-cell
-            sbb-sort-header="title">Titel
-        </th>
-        <td *sbbCellDef="let row" sbb-cell><span>{{ titleValue(row) }}</span></td>
+        <th
+          *sbbHeaderCellDef
+          i18n="@@ru_indications_table_column_title"
+          sbb-header-cell
+          sbb-sort-header="title"
+          >Titel</th
+        >
+        <td *sbbCellDef="let row" sbb-cell>
+          <span>{{ titleValue(row) }}</span>
+        </td>
       </ng-container>
 
       <ng-container sbbColumnDef="text">
-        <th *sbbHeaderCellDef i18n="@@ru_indications_table_column_text" sbb-header-cell
-            sbb-sort-header="text">Text
-        </th>
-        <td *sbbCellDef="let row" sbb-cell><span>{{ textValue(row) }}</span></td>
+        <th
+          *sbbHeaderCellDef
+          i18n="@@ru_indications_table_column_text"
+          sbb-header-cell
+          sbb-sort-header="text"
+          >Text</th
+        >
+        <td *sbbCellDef="let row" sbb-cell>
+          <span>{{ textValue(row) }}</span>
+        </td>
       </ng-container>
 
       <ng-container sbbColumnDef="category">
-        <th *sbbHeaderCellDef i18n="@@ru_indications_table_column_category" sbb-header-cell
-            sbb-sort-header="category">Kategorie
-        </th>
-        <td *sbbCellDef="let row" sbb-cell><span>{{ row.content.category }}</span></td>
+        <th
+          *sbbHeaderCellDef
+          i18n="@@ru_indications_table_column_category"
+          sbb-header-cell
+          sbb-sort-header="category"
+          >Kategorie</th
+        >
+        <td *sbbCellDef="let row" sbb-cell>
+          <span>{{ row.content.category }}</span>
+        </td>
       </ng-container>
 
       <ng-container sbbColumnDef="status">
-        <th *sbbHeaderCellDef i18n="@@ru_indications_table_column_status" sbb-header-cell
-            sbb-sort-header="status">Status
-        </th>
+        <th
+          *sbbHeaderCellDef
+          i18n="@@ru_indications_table_column_status"
+          sbb-header-cell
+          sbb-sort-header="status"
+          >Status</th
+        >
         <td *sbbCellDef="let row" class="cell-nowrap" sbb-cell>{{ statusValue(row) }}</td>
       </ng-container>
 
       <ng-container sbbColumnDef="companies">
-        <th *sbbHeaderCellDef i18n="@@ru_indications_table_column_companies" sbb-header-cell
-            sbb-sort-header="companies">EVU
-        </th>
-        <td *sbbCellDef="let row" sbb-cell><span>{{ companiesValue(row.scope.companies) }}</span>
+        <th
+          *sbbHeaderCellDef
+          i18n="@@ru_indications_table_column_companies"
+          sbb-header-cell
+          sbb-sort-header="companies"
+          >EVU</th
+        >
+        <td *sbbCellDef="let row" sbb-cell>
+          <span>{{ companiesValue(row.scope.companies) }}</span>
         </td>
       </ng-container>
 
       <ng-container sbbColumnDef="trainNumbers">
-        <th *sbbHeaderCellDef i18n="@@ru_indications_table_column_train_numbers" sbb-header-cell
-            sbb-sort-header="trainNumbers">Zugnummer
-        </th>
-        <td *sbbCellDef="let row" sbb-cell><span>{{ trainNumbersValue(row) }}</span></td>
-      </ng-container>
-
-      <ng-container sbbColumnDef="locations">
-        <th *sbbHeaderCellDef i18n="@@ru_indications_table_column_locations" sbb-header-cell
-            sbb-sort-header="locations">Betriebspunkt
-        </th>
-        <td *sbbCellDef="let row" sbb-cell><span>{{ locationsValue(row) }}</span></td>
-      </ng-container>
-
-      <ng-container sbbColumnDef="periods">
-        <th *sbbHeaderCellDef i18n="@@ru_indications_table_column_periods" sbb-header-cell
-            sbb-sort-header="periods">Zeitraum
-        </th>
-        <td *sbbCellDef="let row" sbb-cell><span>{{ periodsValue(row) }}</span></td>
-      </ng-container>
-
-      <ng-container sbbColumnDef="lastModifiedAt">
-        <th *sbbHeaderCellDef i18n="@@ru_indications_table_column_last_modified_at" sbb-header-cell
-            sbb-sort-header="lastModifiedAt">
-          Bearbeitet am
-        </th>
-        <td *sbbCellDef="let row" class="cell-nowrap"
-            sbb-cell>{{ row.lastModifiedAt | date: 'short' }}
+        <th
+          *sbbHeaderCellDef
+          i18n="@@ru_indications_table_column_train_numbers"
+          sbb-header-cell
+          sbb-sort-header="trainNumbers"
+          >Zugnummer</th
+        >
+        <td *sbbCellDef="let row" sbb-cell>
+          <span>{{ trainNumbersValue(row) }}</span>
         </td>
       </ng-container>
 
+      <ng-container sbbColumnDef="locations">
+        <th
+          *sbbHeaderCellDef
+          i18n="@@ru_indications_table_column_locations"
+          sbb-header-cell
+          sbb-sort-header="locations"
+          >Betriebspunkt</th
+        >
+        <td *sbbCellDef="let row" sbb-cell>
+          <span>{{ locationsValue(row) }}</span>
+        </td>
+      </ng-container>
+
+      <ng-container sbbColumnDef="periods">
+        <th
+          *sbbHeaderCellDef
+          i18n="@@ru_indications_table_column_periods"
+          sbb-header-cell
+          sbb-sort-header="periods"
+          >Zeitraum</th
+        >
+        <td *sbbCellDef="let row" sbb-cell>
+          <span>{{ periodsValue(row) }}</span>
+        </td>
+      </ng-container>
+
+      <ng-container sbbColumnDef="lastModifiedAt">
+        <th
+          *sbbHeaderCellDef
+          i18n="@@ru_indications_table_column_last_modified_at"
+          sbb-header-cell
+          sbb-sort-header="lastModifiedAt"
+          >Bearbeitet am</th
+        >
+        <td *sbbCellDef="let row" class="cell-nowrap" sbb-cell>{{
+          row.lastModifiedAt | date: 'short'
+        }}</td>
+      </ng-container>
+
       <ng-container sbbColumnDef="lastModifiedBy">
-        <th *sbbHeaderCellDef i18n="@@ru_indications_table_column_last_modified_by" sbb-header-cell
-            sbb-sort-header="lastModifiedBy">
-          Bearbeitet von
-        </th>
+        <th
+          *sbbHeaderCellDef
+          i18n="@@ru_indications_table_column_last_modified_by"
+          sbb-header-cell
+          sbb-sort-header="lastModifiedBy"
+          >Bearbeitet von</th
+        >
         <td *sbbCellDef="let row" class="cell-nowrap" sbb-cell>{{ row.lastModifiedBy }}</td>
       </ng-container>
 
       <ng-container sbbColumnDef="filter-category">
         <th *sbbHeaderCellDef class="sbb-table-filter" sbb-header-cell>
           <sbb-form-field width="collapse">
-            <input formControlName="category"/>
+            <input formControlName="category" />
           </sbb-form-field>
         </th>
       </ng-container>
@@ -125,7 +183,7 @@
       <ng-container sbbColumnDef="filter-companies">
         <th *sbbHeaderCellDef class="sbb-table-filter" sbb-header-cell>
           <sbb-form-field width="collapse">
-            <input formControlName="companies"/>
+            <input formControlName="companies" />
           </sbb-form-field>
         </th>
       </ng-container>
@@ -133,7 +191,7 @@
       <ng-container sbbColumnDef="filter-train-numbers">
         <th *sbbHeaderCellDef class="sbb-table-filter" sbb-header-cell>
           <sbb-form-field width="collapse">
-            <input formControlName="trainNumbers"/>
+            <input formControlName="trainNumbers" />
           </sbb-form-field>
         </th>
       </ng-container>
@@ -141,7 +199,7 @@
       <ng-container sbbColumnDef="filter-locations">
         <th *sbbHeaderCellDef class="sbb-table-filter" sbb-header-cell>
           <sbb-form-field width="collapse">
-            <input formControlName="locations"/>
+            <input formControlName="locations" />
           </sbb-form-field>
         </th>
       </ng-container>
@@ -149,7 +207,7 @@
       <ng-container sbbColumnDef="filter-periods">
         <th *sbbHeaderCellDef class="sbb-table-filter" sbb-header-cell>
           <sbb-form-field width="collapse">
-            <input formControlName="periods"/>
+            <input formControlName="periods" />
           </sbb-form-field>
         </th>
       </ng-container>
@@ -176,18 +234,20 @@
     <sbb-compact-paginator [pageSize]="PAGE_SIZE"></sbb-compact-paginator>
   </div>
   <div class="right">
-    <sbb-secondary-button (click)="add()" i18n="@@button_create_entry" iconName="plus-small">
-      Neuen Eintrag erfassen
-    </sbb-secondary-button>
-    <sbb-transparent-button (click)="deleteSelected()" [disabled]="this.selection.isEmpty()"
-                            [loading]="isDeleting"
-                            i18n="@@button_delete_selected_entries"
-                            iconName="trash-small">
-      {selection.selected.length, plural,
+    <sbb-secondary-button (click)="add()" i18n="@@button_create_entry" iconName="plus-small"
+      >Neuen Eintrag erfassen</sbb-secondary-button
+    >
+    <sbb-transparent-button
+      (click)="deleteSelected()"
+      [disabled]="this.selection.isEmpty()"
+      [loading]="isDeleting"
+      i18n="@@button_delete_selected_entries"
+      iconName="trash-small"
+      >{selection.selected.length, plural,
         =0 {Einträge löschen}
         one {Eintrag löschen}
-        other {{{ selection.selected.length }} Einträge löschen}}
-    </sbb-transparent-button>
+        other {{{ selection.selected.length }} Einträge löschen}
+      }</sbb-transparent-button
+    >
   </div>
 </div>
-

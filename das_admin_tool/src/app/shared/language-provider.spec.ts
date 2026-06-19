@@ -1,13 +1,11 @@
-import {LOCALE_ID} from '@angular/core';
-import {TestBed} from '@angular/core/testing';
+import { LOCALE_ID } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
 
-import {LanguageProvider} from './language-provider';
+import { LanguageProvider } from './language-provider';
 
 describe('LanguageProvider', () => {
   const setup = (localeId = 'de-CH') => {
-    TestBed.configureTestingModule({
-      providers: [{provide: LOCALE_ID, useValue: localeId}],
-    });
+    TestBed.configureTestingModule({ providers: [{ provide: LOCALE_ID, useValue: localeId }] });
 
     return TestBed.inject(LanguageProvider);
   };
@@ -26,7 +24,7 @@ describe('LanguageProvider', () => {
   it('resolves currentLanguage from LOCALE_ID', () => {
     const service = setup('fr-CH');
 
-    expect(service.currentLanguage).toEqual({localeId: 'fr-CH', path: 'fr', label: 'Français'});
+    expect(service.currentLanguage).toEqual({ localeId: 'fr-CH', path: 'fr', label: 'Français' });
   });
 
   it('returns undefined currentLanguage for unsupported locale', () => {

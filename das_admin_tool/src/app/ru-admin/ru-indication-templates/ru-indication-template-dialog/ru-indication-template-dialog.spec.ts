@@ -1,14 +1,11 @@
-import {TestBed} from '@angular/core/testing';
-import {RuIndicationTemplateDialog} from './ru-indication-template-dialog';
-import {SBB_OVERLAY_DATA} from '@sbb-esta/lyne-angular/core/overlay';
-import {RuIndicationTemplate} from '../../ru-admin-api';
+import { TestBed } from '@angular/core/testing';
+import { RuIndicationTemplateDialog } from './ru-indication-template-dialog';
+import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core/overlay';
+import { RuIndicationTemplate } from '../../ru-admin-api';
 
 function createDialog(data?: RuIndicationTemplate): RuIndicationTemplateDialog {
   TestBed.configureTestingModule({
-    providers: [
-      RuIndicationTemplateDialog,
-      {provide: SBB_OVERLAY_DATA, useValue: data ?? null},
-    ],
+    providers: [RuIndicationTemplateDialog, { provide: SBB_OVERLAY_DATA, useValue: data ?? null }],
   });
   return TestBed.inject(RuIndicationTemplateDialog);
 }
@@ -19,7 +16,9 @@ describe('RuIndicationTemplateDialog', () => {
   describe('oneLanguageRequired validator', () => {
     it('should be invalid when all language titles are empty', () => {
       const dialog = createDialog();
-      expect(dialog['ruIndicationTemplateForm'].get('content')!.errors).toEqual({oneLanguageRequired: true});
+      expect(dialog['ruIndicationTemplateForm'].get('content')!.errors).toEqual({
+        oneLanguageRequired: true,
+      });
     });
 
     it('should be valid when at least de title is filled', () => {
@@ -43,7 +42,9 @@ describe('RuIndicationTemplateDialog', () => {
     it('should be invalid when titles contain only whitespace', () => {
       const dialog = createDialog();
       dialog['ruIndicationTemplateForm'].get('content.de.title')!.setValue('   ');
-      expect(dialog['ruIndicationTemplateForm'].get('content')!.errors).toEqual({oneLanguageRequired: true});
+      expect(dialog['ruIndicationTemplateForm'].get('content')!.errors).toEqual({
+        oneLanguageRequired: true,
+      });
     });
   });
 
@@ -55,7 +56,7 @@ describe('RuIndicationTemplateDialog', () => {
       deGroup.get('title')!.setValue('');
       deGroup.updateValueAndValidity();
 
-      expect(deGroup.get('title')!.errors).toEqual({titleRequired: true});
+      expect(deGroup.get('title')!.errors).toEqual({ titleRequired: true });
     });
 
     it('should be valid when both title and text are set', () => {
@@ -78,7 +79,4 @@ describe('RuIndicationTemplateDialog', () => {
       expect(deGroup.errors).toBeNull();
     });
   });
-
 });
-
-

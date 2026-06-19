@@ -4,7 +4,7 @@ import {
   FormGroup,
   NonNullableFormBuilder,
   ReactiveFormsModule,
-  Validators
+  Validators,
 } from '@angular/forms';
 import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core/overlay';
 import { LanguageCode, LanguageProvider } from '../../../shared/language-provider';
@@ -46,25 +46,26 @@ export type ExternalLinkDialogEditResult = ExternalLink | 'delete';
 export class ExternalLinkDialog {
   protected readonly languageProvider = inject(LanguageProvider);
   protected readonly dialogTitle: string;
-  protected readonly dialogData = inject<ExternalLink>(SBB_OVERLAY_DATA, {optional: true}) || undefined;
+  protected readonly dialogData =
+    inject<ExternalLink>(SBB_OVERLAY_DATA, { optional: true }) || undefined;
   private readonly formBuilder = inject(NonNullableFormBuilder);
   protected externalLinkForm = this.formBuilder.group<FormGroupExternalLink>(
     {
       companies: this.formBuilder.control<string[]>([], Validators.required),
       de: this.formBuilder.group(
-        {title: '', link: ['', {validators: url}]},
-        {validators: languageRequired},
+        { title: '', link: ['', { validators: url }] },
+        { validators: languageRequired },
       ),
       fr: this.formBuilder.group(
-        {title: '', link: ['', {validators: url}]},
-        {validators: languageRequired},
+        { title: '', link: ['', { validators: url }] },
+        { validators: languageRequired },
       ),
       it: this.formBuilder.group(
-        {title: '', link: ['', {validators: url}]},
-        {validators: languageRequired},
+        { title: '', link: ['', { validators: url }] },
+        { validators: languageRequired },
       ),
     },
-    {validators: oneLanguageRequired},
+    { validators: oneLanguageRequired },
   );
 
   constructor() {

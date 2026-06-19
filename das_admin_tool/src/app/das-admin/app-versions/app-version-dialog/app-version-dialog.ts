@@ -25,7 +25,7 @@ export type VersionDialogEditResult = AppVersion | 'delete';
     SbbPopoverModule,
     SbbTitleModule,
     SbbMiniButton,
-    BaseDialog
+    BaseDialog,
   ],
   templateUrl: './app-version-dialog.html',
   styleUrl: './app-version-dialog.css',
@@ -39,17 +39,20 @@ export class AppVersionDialog {
   protected versionForm = new FormGroup({
     version: new FormControl('', {
       nonNullable: true,
-      validators: [Validators.required, Validators.pattern(AppVersionDialog.VERSION_REGEX)]
+      validators: [Validators.required, Validators.pattern(AppVersionDialog.VERSION_REGEX)],
     }),
-    minimalVersion: new FormControl(false, {nonNullable: true}),
-    expiryDate: new FormControl<Date | null>(null)
+    minimalVersion: new FormControl(false, { nonNullable: true }),
+    expiryDate: new FormControl<Date | null>(null),
   });
   protected minDate = new Date();
-  protected readonly dialogData = inject<AppVersion>(SBB_OVERLAY_DATA, {optional: true}) ?? undefined;
+  protected readonly dialogData =
+    inject<AppVersion>(SBB_OVERLAY_DATA, { optional: true }) ?? undefined;
 
   constructor() {
     this.isEdit = this.dialogData?.id != null;
-    this.title = this.isEdit ? $localize`:@@app_versions_dialog_title_edit:Blockierte App Version bearbeiten` : $localize`:@@app_versions_dialog_title_create:App Version blockieren`;
+    this.title = this.isEdit
+      ? $localize`:@@app_versions_dialog_title_edit:Blockierte App Version bearbeiten`
+      : $localize`:@@app_versions_dialog_title_create:App Version blockieren`;
 
     if (this.isEdit && this.dialogData) {
       this.versionForm.patchValue({
@@ -64,7 +67,7 @@ export class AppVersionDialog {
     const formValue = this.versionForm.value;
     return {
       ...formValue,
-      expiryDate: formValue.expiryDate ? toUtcDateOnly(formValue.expiryDate) : undefined
+      expiryDate: formValue.expiryDate ? toUtcDateOnly(formValue.expiryDate) : undefined,
     } as AppVersion;
   }
 }

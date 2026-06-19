@@ -10,24 +10,29 @@
   </sbb-form-field>
 </form>
 <sbb-table-wrapper>
-  <table [dataSource]="dataSource" class="table-truncated" fixedLayout sbb-table sbbSort
-         sbbSortActive="title" sbbSortDirection="asc">
+  <table
+    [dataSource]="dataSource"
+    class="table-truncated"
+    fixedLayout
+    sbb-table
+    sbbSort
+    sbbSortActive="title"
+    sbbSortDirection="asc"
+  >
     <ng-container sbbColumnDef="select">
       <th *sbbHeaderCellDef class="select-column" sbb-header-cell>
         <sbb-checkbox
           (change)="$event ? parentToggle() : null"
           [checked]="selection.hasValue() && isAllSelected()"
           [indeterminate]="selection.hasValue() && !isAllSelected()"
-        >
-        </sbb-checkbox>
+        ></sbb-checkbox>
       </th>
       <td *sbbCellDef="let row" class="select-column" sbb-cell>
         <sbb-checkbox
           (change)="$event ? selection.toggle(row) : null"
           (click)="$event.stopPropagation()"
           [checked]="selection.isSelected(row)"
-        >
-        </sbb-checkbox>
+        ></sbb-checkbox>
       </td>
     </ng-container>
 
@@ -37,10 +42,11 @@
         i18n="@@external_links_table_column_title"
         sbb-header-cell
         sbb-sort-header="title"
+        >Titel</th
       >
-        Titel
-      </th>
-      <td *sbbCellDef="let row" sbb-cell><span>{{ currentLanguage(row)?.title }}</span></td>
+      <td *sbbCellDef="let row" sbb-cell>
+        <span>{{ currentLanguage(row)?.title }}</span>
+      </td>
     </ng-container>
 
     <ng-container sbbColumnDef="link">
@@ -49,10 +55,11 @@
         i18n="@@external_links_table_column_link"
         sbb-header-cell
         sbb-sort-header="link"
+        >URL</th
       >
-        URL
-      </th>
-      <td *sbbCellDef="let row" sbb-cell><span>{{ currentLanguage(row)?.link }}</span></td>
+      <td *sbbCellDef="let row" sbb-cell>
+        <span>{{ currentLanguage(row)?.link }}</span>
+      </td>
     </ng-container>
 
     <ng-container sbbColumnDef="lastModifiedAt">
@@ -61,12 +68,11 @@
         i18n="@@external_links_table_column_last_modified_at"
         sbb-header-cell
         sbb-sort-header="lastModifiedAt"
+        >Bearbeitet am</th
       >
-        Bearbeitet am
-      </th>
-      <td *sbbCellDef="let row" class="cell-nowrap" sbb-cell>
-        {{ row.lastModifiedAt | date: 'short' }}
-      </td>
+      <td *sbbCellDef="let row" class="cell-nowrap" sbb-cell>{{
+        row.lastModifiedAt | date: 'short'
+      }}</td>
     </ng-container>
 
     <ng-container sbbColumnDef="lastModifiedBy">
@@ -75,9 +81,8 @@
         i18n="@@external_links_table_column_last_modified_by"
         sbb-header-cell
         sbb-sort-header="lastModifiedBy"
+        >Bearbeitet von</th
       >
-        Bearbeitet von
-      </th>
       <td *sbbCellDef="let row" class="cell-nowrap" sbb-cell>{{ row.lastModifiedBy }}</td>
     </ng-container>
 
@@ -98,21 +103,20 @@
     <sbb-compact-paginator [pageSize]="PAGE_SIZE"></sbb-compact-paginator>
   </div>
   <div class="right">
-    <sbb-secondary-button (click)="add()" i18n="@@button_create_entry" iconName="plus-small">
-      Neuen Eintrag erfassen
-    </sbb-secondary-button>
+    <sbb-secondary-button (click)="add()" i18n="@@button_create_entry" iconName="plus-small"
+      >Neuen Eintrag erfassen</sbb-secondary-button
+    >
     <sbb-transparent-button
       (click)="deleteSelected()"
       [disabled]="selection.isEmpty()"
       [loading]="isDeleting"
       i18n="@@button_delete_selected_entries"
       iconName="trash-small"
-    >
-      {selection.selected.length, plural,
+      >{selection.selected.length, plural,
         =0 {Einträge löschen}
         one {Eintrag löschen}
         other {{{ selection.selected.length }} Einträge löschen}
-        }
-    </sbb-transparent-button>
+      }</sbb-transparent-button
+    >
   </div>
 </div>

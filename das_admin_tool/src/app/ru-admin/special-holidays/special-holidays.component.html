@@ -3,10 +3,14 @@
 @if (specialHolidays.hasValue()) {
   @if (specialHolidays.value().data.length === 0) {
     <p i18n="@@special_holidays_empty_state">Noch keine speziellen Feiertage erfasst.</p>
-    <sbb-secondary-button (click)="specialHolidayService.add()" i18n="@@button_create_entry" iconName="plus-small">Neuen Eintrag erfassen
-    </sbb-secondary-button>
+    <sbb-secondary-button
+      (click)="specialHolidayService.add()"
+      i18n="@@button_create_entry"
+      iconName="plus-small"
+      >Neuen Eintrag erfassen</sbb-secondary-button
+    >
   } @else {
-    <app-special-holidays-table/>
+    <app-special-holidays-table />
   }
 } @else if (specialHolidays.error()) {
   <p i18n="@@special_holidays_error_loading">Fehler beim Laden der Feiertage</p>

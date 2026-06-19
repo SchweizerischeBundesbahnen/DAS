@@ -7,7 +7,7 @@ import {
   getEntryDialog,
   openEditEntryDialog,
   saveEntryDialog,
-  selectAnyOption
+  selectAnyOption,
 } from '../utils/admin-test-helpers';
 
 test.describe('ru indication templates test', () => {
@@ -29,11 +29,11 @@ test.describe('ru indication templates test', () => {
 
     const dialog = await getEntryDialog(page);
 
-    await dialog.getByRole('textbox', {name: 'Name der Kategorie eingeben'}).fill(category);
+    await dialog.getByRole('textbox', { name: 'Name der Kategorie eingeben' }).fill(category);
 
-    await dialog.getByRole('textbox', {name: 'Titel'}).fill(title);
+    await dialog.getByRole('textbox', { name: 'Titel' }).fill(title);
 
-    await dialog.getByRole('textbox', {name: 'Text'}).fill(text);
+    await dialog.getByRole('textbox', { name: 'Text' }).fill(text);
 
     const companyInput = page.locator('app-companies-input [role="combobox"]').last();
     await selectAnyOption(dialog, companyInput);
@@ -44,11 +44,11 @@ test.describe('ru indication templates test', () => {
       dialogTitle: 'Titel und Text erfassen',
     });
 
-    await expect(row.getByRole('cell', {name: category, exact: true})).toBeVisible();
-    await expect(row.getByRole('cell', {name: title, exact: true})).toBeVisible();
+    await expect(row.getByRole('cell', { name: category, exact: true })).toBeVisible();
+    await expect(row.getByRole('cell', { name: title, exact: true })).toBeVisible();
   }
 
-  test.beforeEach(async ({page}) => {
+  test.beforeEach(async ({ page }) => {
     await page.goto('ru-admin/ruindication-templates');
     await expect(page.locator('sbb-title[level="2"]')).toHaveText('Titel und Texte');
 
@@ -64,13 +64,13 @@ test.describe('ru indication templates test', () => {
     }
   });
 
-  test('create, edit and delete ru indication template | tests: 1626', async ({page}) => {
+  test('create, edit and delete ru indication template | tests: 1626', async ({ page }) => {
     // create
     await createRuIndicationTemplate(page, TEST_CATEGORY, TEST_TITLE_DE, TEST_TEXT_DE);
 
     // edit
     const dialog = await openEditEntryDialog(page, row);
-    const deTitleInput = dialog.getByRole('textbox', {name: 'Titel'});
+    const deTitleInput = dialog.getByRole('textbox', { name: 'Titel' });
     await expect(deTitleInput).toHaveValue(TEST_TITLE_DE);
     await deTitleInput.fill(TEST_TITLE_DE_UPDATED);
     await expect(deTitleInput).toHaveValue(TEST_TITLE_DE_UPDATED);
@@ -82,14 +82,14 @@ test.describe('ru indication templates test', () => {
     });
 
     await expect(
-      updatedRow.getByRole('cell', {name: TEST_TITLE_DE_UPDATED, exact: true}),
+      updatedRow.getByRole('cell', { name: TEST_TITLE_DE_UPDATED, exact: true }),
     ).toBeVisible();
 
     // delete
     await deleteEntryViaDialog(page, updatedRow);
   });
 
-  test('delete selected ru indication templates | tests: 1626', async ({page}) => {
+  test('delete selected ru indication templates | tests: 1626', async ({ page }) => {
     // create one entry to select and bulk-delete
     await createRuIndicationTemplate(page, TEST_CATEGORY, TEST_TITLE_DE, TEST_TEXT_DE);
 

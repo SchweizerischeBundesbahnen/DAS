@@ -3,26 +3,26 @@ import { TestBed } from '@angular/core/testing';
 import { Location, LocationService } from './location.service';
 
 const locations: Location[] = [
-  {primaryLocationName: 'Bern', locationAbbreviation: 'BN', locationReference: 'CH00001'},
-  {primaryLocationName: 'Bernau', locationAbbreviation: 'BAU', locationReference: 'DE00002'},
-  {primaryLocationName: 'Bernried', locationAbbreviation: 'BRD', locationReference: 'DE00003'},
-  {primaryLocationName: 'Zürich', locationAbbreviation: 'ZH', locationReference: 'CH00004'},
-  {primaryLocationName: 'Winterthur', locationAbbreviation: 'WT', locationReference: 'CH00005'},
-  {primaryLocationName: 'Luzern', locationAbbreviation: 'LU', locationReference: 'CH00007'},
+  { primaryLocationName: 'Bern', locationAbbreviation: 'BN', locationReference: 'CH00001' },
+  { primaryLocationName: 'Bernau', locationAbbreviation: 'BAU', locationReference: 'DE00002' },
+  { primaryLocationName: 'Bernried', locationAbbreviation: 'BRD', locationReference: 'DE00003' },
+  { primaryLocationName: 'Zürich', locationAbbreviation: 'ZH', locationReference: 'CH00004' },
+  { primaryLocationName: 'Winterthur', locationAbbreviation: 'WT', locationReference: 'CH00005' },
+  { primaryLocationName: 'Luzern', locationAbbreviation: 'LU', locationReference: 'CH00007' },
 ];
 
 describe('LocationService', () => {
   let service: LocationService;
   beforeEach(async () => {
-    TestBed.configureTestingModule({
-      providers: [LocationService]
-    });
+    TestBed.configureTestingModule({ providers: [LocationService] });
 
     service = TestBed.inject(LocationService);
 
-    ((service as unknown) as {
-      locationsResource: { hasValue: () => boolean; value: () => { data: Location[] } }
-    }).locationsResource = {hasValue: () => true, value: () => ({data: locations})};
+    (
+      service as unknown as {
+        locationsResource: { hasValue: () => boolean; value: () => { data: Location[] } };
+      }
+    ).locationsResource = { hasValue: () => true, value: () => ({ data: locations }) };
   });
 
   it('should be created', () => {
@@ -45,13 +45,13 @@ describe('LocationService', () => {
   it('filterLocations should prioritize exact, then prefix, then substring', () => {
     const filtered = service.filterLocations('ber');
     expect(filtered[0].primaryLocationName.toLowerCase()).toBe('bern');
-    expect(filtered.map(l => l.primaryLocationName)).toContain('Bernried');
-    expect(filtered.map(l => l.primaryLocationName)).toContain('Bernau');
-    expect(filtered.map(l => l.primaryLocationName)).not.toContain('Zürich');
+    expect(filtered.map((l) => l.primaryLocationName)).toContain('Bernried');
+    expect(filtered.map((l) => l.primaryLocationName)).toContain('Bernau');
+    expect(filtered.map((l) => l.primaryLocationName)).not.toContain('Zürich');
   });
 
   it('filterLocations should match abbreviation', () => {
     const filtered = service.filterLocations('bn');
-    expect(filtered.some(l => l.locationAbbreviation?.toLowerCase() === 'bn')).toBeTruthy();
+    expect(filtered.some((l) => l.locationAbbreviation?.toLowerCase() === 'bn')).toBeTruthy();
   });
 });

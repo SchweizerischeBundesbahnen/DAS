@@ -2,9 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ExternalLinks } from './external-links';
 import { ExternalLinksService } from './external-links.service';
 
-const mockExternalLinksService = {
-  externalLinksResource: new Proxy({}, {get: () => vi.fn()}),
-};
+const mockExternalLinksService = { externalLinksResource: new Proxy({}, { get: () => vi.fn() }) };
 
 describe('ExternalLinks', () => {
   let component: ExternalLinks;

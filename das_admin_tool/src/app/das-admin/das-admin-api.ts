@@ -14,9 +14,7 @@ export interface AppVersion extends Auditable {
 
 export type AppVersionApiResponse = ApiResponse<AppVersion>;
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class DasAdminApi {
   private readonly httpClient = inject(HttpClient);
   private readonly url = `${environment.backendUrl}/v1/settings/app-version`;

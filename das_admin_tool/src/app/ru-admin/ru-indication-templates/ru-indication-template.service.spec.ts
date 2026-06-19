@@ -6,39 +6,34 @@ import { SbbDialogService } from '@sbb-esta/lyne-angular/dialog';
 import { ToastService } from '../../shared/toast-service';
 import { HttpResourceRef } from '@angular/common/http';
 import { of, throwError } from 'rxjs';
-import {
-  RuIndicationTemplateDialogEditResult
-} from './ru-indication-template-dialog/ru-indication-template-dialog';
+import { RuIndicationTemplateDialogEditResult } from './ru-indication-template-dialog/ru-indication-template-dialog';
 import { SbbOverlayCloseEvent } from '@sbb-esta/lyne-elements/overlay.js';
 import { RecentCompaniesStore } from '../../shared/recent-companies.store';
 
 const ruIndicationTemplate: RuIndicationTemplate = {
   id: 1,
   category: 'General',
-  de: {title: 'Titel', text: 'Text'},
-  companies: ['COMPA']
+  de: { title: 'Titel', text: 'Text' },
+  companies: ['COMPA'],
 };
 
 const mockRuAdminApi: Partial<RuAdminApi> = {
   putRuIndicationTemplate: () => of({} as RuIndicationTemplateApiResponse),
   postRuIndicationTemplate: () => of({} as RuIndicationTemplateApiResponse),
   deleteAllRuIndicationTemplate: () => of(undefined),
-  ruIndicationTemplates: {reload: () => true} as HttpResourceRef<RuIndicationTemplateApiResponse | undefined>,
+  ruIndicationTemplates: { reload: () => true } as HttpResourceRef<
+    RuIndicationTemplateApiResponse | undefined
+  >,
 };
 
-const mockToastService: Partial<ToastService> = {
-  success: vi.fn(),
-  error: vi.fn()
-};
+const mockToastService: Partial<ToastService> = { success: vi.fn(), error: vi.fn() };
 
 const openSpy = vi.fn();
 
-const mockSbbDialogService: Partial<SbbDialogService> = {open: openSpy};
+const mockSbbDialogService: Partial<SbbDialogService> = { open: openSpy };
 
 function mockDialogResult(result: RuIndicationTemplateDialogEditResult | null): void {
-  openSpy.mockReturnValue({
-    afterClosed: of({result} as SbbOverlayCloseEvent)
-  });
+  openSpy.mockReturnValue({ afterClosed: of({ result } as SbbOverlayCloseEvent) });
 }
 
 describe('RuIndicationTemplateService', () => {
@@ -50,10 +45,10 @@ describe('RuIndicationTemplateService', () => {
     TestBed.configureTestingModule({
       providers: [
         RuIndicationTemplateService,
-        {provide: RuAdminApi, useValue: mockRuAdminApi},
-        {provide: SbbDialogService, useValue: mockSbbDialogService},
-        {provide: ToastService, useValue: mockToastService},
-        {provide: RecentCompaniesStore, useValue: {}}
+        { provide: RuAdminApi, useValue: mockRuAdminApi },
+        { provide: SbbDialogService, useValue: mockSbbDialogService },
+        { provide: ToastService, useValue: mockToastService },
+        { provide: RecentCompaniesStore, useValue: {} },
       ],
     });
 
@@ -67,10 +62,7 @@ describe('RuIndicationTemplateService', () => {
   it('edit should update ru indication template', async () => {
     const apiSpy = vi.spyOn(mockRuAdminApi, 'putRuIndicationTemplate');
     const toastSpy = vi.spyOn(mockToastService, 'success');
-    mockDialogResult({
-      ...ruIndicationTemplate,
-      category: 'Updated',
-    });
+    mockDialogResult({ ...ruIndicationTemplate, category: 'Updated' });
 
     await service.edit(ruIndicationTemplate);
 
@@ -78,8 +70,8 @@ describe('RuIndicationTemplateService', () => {
     expect(apiSpy).toHaveBeenCalledWith(1, {
       id: 1,
       category: 'Updated',
-      de: {title: 'Titel', text: 'Text'},
-      companies: ['COMPA']
+      de: { title: 'Titel', text: 'Text' },
+      companies: ['COMPA'],
     });
   });
 
@@ -106,9 +98,11 @@ describe('RuIndicationTemplateService', () => {
   });
 
   it('edit failed should show error toast', async () => {
-    vi.spyOn(mockRuAdminApi, 'putRuIndicationTemplate').mockReturnValueOnce(throwError(() => new Error('API error')));
+    vi.spyOn(mockRuAdminApi, 'putRuIndicationTemplate').mockReturnValueOnce(
+      throwError(() => new Error('API error')),
+    );
     const errorToastSpy = vi.spyOn(mockToastService, 'error');
-    mockDialogResult({...ruIndicationTemplate, category: 'Updated'});
+    mockDialogResult({ ...ruIndicationTemplate, category: 'Updated' });
 
     await service.edit(ruIndicationTemplate);
 
@@ -120,8 +114,8 @@ describe('RuIndicationTemplateService', () => {
     const successToastSpy = vi.spyOn(mockToastService, 'success');
     const templateToCreate: RuIndicationTemplate = {
       category: 'New',
-      de: {title: 'Neu', text: 'Inhalt'},
-      companies: ['COMPB']
+      de: { title: 'Neu', text: 'Inhalt' },
+      companies: ['COMPB'],
     };
     mockDialogResult(templateToCreate);
 
@@ -145,8 +139,7 @@ describe('RuIndicationTemplateService', () => {
     const successToastSpy = vi.spyOn(mockToastService, 'success');
     const templates: RuIndicationTemplate[] = [
       ruIndicationTemplate,
-      {id: 2, category: 'Other', de: {title: 'Andere', text: 'Text'}, companies: ['COMPA']},
-
+      { id: 2, category: 'Other', de: { title: 'Andere', text: 'Text' }, companies: ['COMPA'] },
     ];
 
     await service.deleteAll(templates);
@@ -156,7 +149,9 @@ describe('RuIndicationTemplateService', () => {
   });
 
   it('deleteAll failed should show error toast', async () => {
-    vi.spyOn(mockRuAdminApi, 'deleteAllRuIndicationTemplate').mockReturnValueOnce(throwError(() => new Error('API error')));
+    vi.spyOn(mockRuAdminApi, 'deleteAllRuIndicationTemplate').mockReturnValueOnce(
+      throwError(() => new Error('API error')),
+    );
     const errorToastSpy = vi.spyOn(mockToastService, 'error');
 
     await service.deleteAll([ruIndicationTemplate]);

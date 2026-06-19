@@ -12,9 +12,7 @@ export interface Location {
   validFrom?: Date;
 }
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class LocationService {
   private readonly url = `${environment.backendUrl}/v1/locations`;
 
@@ -22,18 +20,19 @@ export class LocationService {
   private readonly locations = computed(() => this.locationsResource.value()?.data ?? []);
 
   public getLocation(reference: string) {
-    return this.locations().find(location => location.locationReference === reference);
+    return this.locations().find((location) => location.locationReference === reference);
   }
 
   public filterLocations(query: string, excludedReferences: string[] = []) {
     const q = query.trim().toLowerCase();
     if (q.length < 2) {
-      return []
+      return [];
     }
-    const includesQuery = this.locations().filter(loc =>
-      ((loc.primaryLocationName?.toLowerCase().includes(q)) ||
-        (loc.locationAbbreviation?.toLowerCase().includes(q))) &&
-      !excludedReferences.includes(loc.locationReference)
+    const includesQuery = this.locations().filter(
+      (loc) =>
+        (loc.primaryLocationName?.toLowerCase().includes(q)
+          || loc.locationAbbreviation?.toLowerCase().includes(q))
+        && !excludedReferences.includes(loc.locationReference),
     );
     return this.sortByRelevance(includesQuery, q);
   }

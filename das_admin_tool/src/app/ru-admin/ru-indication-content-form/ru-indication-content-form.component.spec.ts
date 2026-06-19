@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RuIndicationContentForm, createContentFormGroup } from './ru-indication-content-form.component';
+import {
+  RuIndicationContentForm,
+  createContentFormGroup,
+} from './ru-indication-content-form.component';
 import { FormControl, FormGroup } from '@angular/forms';
 
 describe('RuIndicationContentForm', () => {
@@ -9,9 +12,8 @@ describe('RuIndicationContentForm', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RuIndicationContentForm]
-    })
-    .compileComponents();
+      imports: [RuIndicationContentForm],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(RuIndicationContentForm);
     component = fixture.componentInstance;
@@ -29,7 +31,10 @@ describe('RuIndicationContentForm', () => {
     });
 
     it('should return true when title is only whitespace', () => {
-      fixture.componentRef.setInput('form', new FormGroup({ de: new FormGroup({ title: new FormControl('   ')})}))
+      fixture.componentRef.setInput(
+        'form',
+        new FormGroup({ de: new FormGroup({ title: new FormControl('   ') }) }),
+      );
       expect(component['isLanguageEmpty']('de')).toBe(true);
     });
 
@@ -40,5 +45,4 @@ describe('RuIndicationContentForm', () => {
       expect(component['isLanguageEmpty']('de')).toBe(false);
     });
   });
-
 });

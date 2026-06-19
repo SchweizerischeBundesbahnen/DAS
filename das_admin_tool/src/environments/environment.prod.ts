@@ -1,7 +1,7 @@
 import 'angular-server-side-configuration/process';
 
-import {Environment} from './environment.model';
-import {PassedInitialConfig} from 'angular-auth-oidc-client';
+import { Environment } from './environment.model';
+import { PassedInitialConfig } from 'angular-auth-oidc-client';
 
 /**
  * How to use angular-server-side-configuration:
@@ -23,7 +23,8 @@ const backendUrl = process.env.BACKEND_URL;
 const authConfig: PassedInitialConfig = {
   config: {
     authority: 'https://login.microsoftonline.com/common/v2.0',
-    redirectUrl: location.origin + location.pathname.substring(0, location.pathname.indexOf('/', 1) + 1),
+    redirectUrl:
+      location.origin + location.pathname.substring(0, location.pathname.indexOf('/', 1) + 1),
     clientId: process.env.AUTH_CLIENT_ID,
     scope: `openid profile email offline_access ${process.env.AUTH_SCOPE}`,
     strictIssuerValidationOnWellKnownRetrievalOff: true,
@@ -35,8 +36,8 @@ const authConfig: PassedInitialConfig = {
     secureRoutes: [backendUrl],
     issValidationOff: true,
     autoUserInfo: false,
-  }
-}
+  },
+};
 
 export const environment: Environment = {
   production: process.env.PRODUCTION !== 'false',

@@ -36,10 +36,7 @@ export class BrowserWindow {
    */
   async waitUntilVisible(selector: string, timeout = 10000): Promise<void> {
     //console.debug('Waiting for element to be visible ' + selector);
-    const elem = await this.page.waitForSelector(selector, {
-      state: 'visible',
-      timeout: timeout,
-    });
+    const elem = await this.page.waitForSelector(selector, { state: 'visible', timeout: timeout });
     console.debug("Element: '%s' is visible", (await elem.innerText()).trim());
   }
 

@@ -6,11 +6,11 @@ import { RecentCompaniesStore } from '../../../shared/recent-companies.store';
 import { RuIndicationDialogData } from '../ru-indication.service';
 import { CompanyService } from '../../../shared/companies-input/company.service';
 
-const mockRecentCompaniesStore = {get: () => []};
+const mockRecentCompaniesStore = { get: () => [] };
 
-const mockCompanyService = {filterCompanies: vi.fn()};
+const mockCompanyService = { filterCompanies: vi.fn() };
 
-const dialogData: RuIndicationDialogData = {ruIndication: undefined, templates: []};
+const dialogData: RuIndicationDialogData = { ruIndication: undefined, templates: [] };
 
 describe('RuIndicationDialog', () => {
   let component: RuIndicationDialog;
@@ -20,12 +20,11 @@ describe('RuIndicationDialog', () => {
     await TestBed.configureTestingModule({
       imports: [RuIndicationDialog],
       providers: [
-        {provide: SBB_OVERLAY_DATA, useValue: dialogData},
-        {provide: CompanyService, useValue: mockCompanyService},
-        {provide: RecentCompaniesStore, useValue: mockRecentCompaniesStore}
-      ]
-    })
-      .compileComponents();
+        { provide: SBB_OVERLAY_DATA, useValue: dialogData },
+        { provide: CompanyService, useValue: mockCompanyService },
+        { provide: RecentCompaniesStore, useValue: mockRecentCompaniesStore },
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(RuIndicationDialog);
     component = fixture.componentInstance;

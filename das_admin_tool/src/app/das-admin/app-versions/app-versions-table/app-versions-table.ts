@@ -1,6 +1,6 @@
 import { Component, effect, inject, viewChild } from '@angular/core';
-import { SbbSort, SbbTableDataSource, SbbTableModule } from "@sbb-esta/lyne-angular/table";
-import { SbbSecondaryButton } from "@sbb-esta/lyne-angular/button/secondary-button";
+import { SbbSort, SbbTableDataSource, SbbTableModule } from '@sbb-esta/lyne-angular/table';
+import { SbbSecondaryButton } from '@sbb-esta/lyne-angular/button/secondary-button';
 import { AppVersion } from '../../das-admin-api';
 import { SbbCompactPaginator } from '@sbb-esta/lyne-angular/paginator/compact-paginator';
 import { DatePipe } from '@angular/common';
@@ -16,7 +16,7 @@ import { SbbMiniButton } from '@sbb-esta/lyne-angular/button/mini-button';
     SbbCompactPaginator,
     DatePipe,
     SbbToggleCheckModule,
-    SbbMiniButton
+    SbbMiniButton,
   ],
   templateUrl: './app-versions-table.html',
   styleUrl: './app-versions-table.css',
@@ -25,7 +25,14 @@ export class AppVersionsTable {
   protected readonly PAGE_SIZE = 20;
 
   protected dataSource = new SbbTableDataSource<AppVersion>();
-  protected columns = ['version', 'minimalVersion', 'expiryDate', 'lastModifiedAt', 'lastModifiedBy', 'action'];
+  protected columns = [
+    'version',
+    'minimalVersion',
+    'expiryDate',
+    'lastModifiedAt',
+    'lastModifiedBy',
+    'action',
+  ];
   private readonly appVersionsService = inject(AppVersionsService);
 
   private readonly paginator = viewChild.required<SbbCompactPaginator>(SbbCompactPaginator);

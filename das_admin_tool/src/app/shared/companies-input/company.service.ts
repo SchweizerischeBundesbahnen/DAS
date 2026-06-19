@@ -10,9 +10,7 @@ export interface Company {
   name: string;
 }
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class CompanyService {
   private readonly url = `${environment.backendUrl}/v1/companies`;
 
@@ -31,7 +29,9 @@ export class CompanyService {
   }
 
   public filterCompanies(query: string, excludedCodes: string[] = []): Company[] {
-    const allCompanies = this.companies().filter((company) => !excludedCodes.includes(company.code));
+    const allCompanies = this.companies().filter(
+      (company) => !excludedCodes.includes(company.code),
+    );
 
     const caseInsensitiveQuery = query.trim().toLowerCase();
     if (!caseInsensitiveQuery) {

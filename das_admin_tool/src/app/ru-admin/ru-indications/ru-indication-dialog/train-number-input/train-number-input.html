@@ -1,15 +1,16 @@
 <form [formGroup]="trainNumberFilterForm">
   <sbb-radio-button-group [formControl]="trainFilterModeControl" class="train-filter-mode">
-    <sbb-radio-button i18n="@@ru_indications_form_train_filter_mode_all" value="all">Alle
-    </sbb-radio-button>
-    <sbb-radio-button i18n="@@ru_indications_form_train_filter_mode_range" value="filtered">
-      Benutzerdefinierter Bereich
-    </sbb-radio-button>
+    <sbb-radio-button i18n="@@ru_indications_form_train_filter_mode_all" value="all"
+      >Alle</sbb-radio-button
+    >
+    <sbb-radio-button i18n="@@ru_indications_form_train_filter_mode_range" value="filtered"
+      >Benutzerdefinierter Bereich</sbb-radio-button
+    >
   </sbb-radio-button-group>
   @if (trainFilterModeControl.value === 'filtered') {
     <sbb-form-field>
       <label i18n="@@ru_indications_form_train_number_input_label">Zugnummer</label>
-      <input formControlName="trainNumber" placeholder="z.B. 1-6, 300-400"/>
+      <input formControlName="trainNumber" placeholder="z.B. 1-6, 300-400" />
       <sbb-mini-button
         i18n-sbb-tooltip="@@ru_indication_form_train_number_tooltip"
         iconName="circle-information-small"
@@ -19,33 +20,35 @@
     </sbb-form-field>
     @if (isTrainNumberRange()) {
       <sbb-radio-button-group class="parity" formControlName="parity">
-        <sbb-radio-button i18n="@@ru_indication_form_parity_any_label" value="ANY">Alle Nummern im
-          Bereich
-        </sbb-radio-button>
-        <sbb-radio-button i18n="@@ru_indication_form_parity_even_label" value="EVEN">Nur gerade
-          Nummern
-        </sbb-radio-button>
-        <sbb-radio-button i18n="@@ru_indication_form_parity_odd_label" value="ODD">Nur ungerade
-          Nummern
-        </sbb-radio-button>
+        <sbb-radio-button i18n="@@ru_indication_form_parity_any_label" value="ANY"
+          >Alle Nummern im Bereich</sbb-radio-button
+        >
+        <sbb-radio-button i18n="@@ru_indication_form_parity_even_label" value="EVEN"
+          >Nur gerade Nummern</sbb-radio-button
+        >
+        <sbb-radio-button i18n="@@ru_indication_form_parity_odd_label" value="ODD"
+          >Nur ungerade Nummern</sbb-radio-button
+        >
       </sbb-radio-button-group>
     }
-    <sbb-chip-group [displayWith]="displayTrainNumberFilter" [formControl]="control()"/>
+    <sbb-chip-group [displayWith]="displayTrainNumberFilter" [formControl]="control()" />
 
-    <sbb-secondary-button (click)="addTrainNumberFilter()"
-                          [disabled]="trainNumberFilterForm.invalid"
-                          i18n="@@ru_indications_form_train_number_add" iconName="plus-small">
-      Auswahl hinzufügen
-    </sbb-secondary-button>
+    <sbb-secondary-button
+      (click)="addTrainNumberFilter()"
+      [disabled]="trainNumberFilterForm.invalid"
+      i18n="@@ru_indications_form_train_number_add"
+      iconName="plus-small"
+      >Auswahl hinzufügen</sbb-secondary-button
+    >
     @if (control().hasError('required') && control().touched) {
-      <sbb-error i18n="@@ru_indications_form_train_filter_required_error">Mindestens eine Zugnummer
-        bzw. Bereich muss hinzugefügt werden
-      </sbb-error>
+      <sbb-error i18n="@@ru_indications_form_train_filter_required_error"
+        >Mindestens eine Zugnummer bzw. Bereich muss hinzugefügt werden</sbb-error
+      >
     }
     @if (control().hasError('draftInvalid') && control().touched) {
-      <sbb-error i18n="@@ru_indications_form_train_filter_draft_error">Nicht gespeicherte Eingabe –
-        bitte zur Auswahl hinzufügen oder leeren
-      </sbb-error>
+      <sbb-error i18n="@@ru_indications_form_train_filter_draft_error"
+        >Nicht gespeicherte Eingabe – bitte zur Auswahl hinzufügen oder leeren</sbb-error
+      >
     }
   }
 </form>

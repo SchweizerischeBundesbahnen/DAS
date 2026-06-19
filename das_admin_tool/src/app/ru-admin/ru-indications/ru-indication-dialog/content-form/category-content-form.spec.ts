@@ -1,9 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CategoryContentForm } from './category-content-form';
-import {
-  createContentFormGroup
-} from '../../../ru-indication-content-form/ru-indication-content-form.component';
+import { createContentFormGroup } from '../../../ru-indication-content-form/ru-indication-content-form.component';
 import { RuIndicationDialogData } from '../../ru-indication.service';
 
 describe('CategoryContentForm', () => {
@@ -11,14 +9,11 @@ describe('CategoryContentForm', () => {
   let fixture: ComponentFixture<CategoryContentForm>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [CategoryContentForm]
-    })
-      .compileComponents();
+    await TestBed.configureTestingModule({ imports: [CategoryContentForm] }).compileComponents();
 
     fixture = TestBed.createComponent(CategoryContentForm);
     component = fixture.componentInstance;
-    const dialogData: RuIndicationDialogData = {templates: []};
+    const dialogData: RuIndicationDialogData = { templates: [] };
     fixture.componentRef.setInput('form', createContentFormGroup());
     fixture.componentRef.setInput('dialogData', dialogData);
     fixture.detectChanges();

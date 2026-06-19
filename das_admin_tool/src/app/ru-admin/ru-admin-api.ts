@@ -68,28 +68,21 @@ export interface RuIndication extends Auditable {
 
 export type RuIndicationStatus = 'INACTIVE' | 'ACTIVE' | 'EXPIRED';
 
-export const RU_INDICATION_STATUS_LABELS: { value: RuIndicationStatus, label: string }[] = [
-  {value: 'ACTIVE', label: $localize`:@@ru_indication_status_label_active:Aktiv`},
-  {value: 'INACTIVE', label: $localize`:@@ru_indication_status_label_inactive:Inaktiv`},
-  {value: 'EXPIRED', label: $localize`:@@ru_indication_status_label_expired:Abgelaufen`},
-
-]
+export const RU_INDICATION_STATUS_LABELS: { value: RuIndicationStatus; label: string }[] = [
+  { value: 'ACTIVE', label: $localize`:@@ru_indication_status_label_active:Aktiv` },
+  { value: 'INACTIVE', label: $localize`:@@ru_indication_status_label_inactive:Inaktiv` },
+  { value: 'EXPIRED', label: $localize`:@@ru_indication_status_label_expired:Abgelaufen` },
+];
 export type RuIndicationApiResponse = ApiResponse<RuIndication>;
 
 export type RuIndicationTemplateApiResponse = ApiResponse<RuIndicationTemplate>;
 
 export type ScheduleType = 'SUNDAY_SCHEDULE' | 'MONDAY_SCHEDULE';
 
-export const SCHEDULE_TYPE_LABELS: { value: ScheduleType, label: string } [] = [
-  {
-    value: 'SUNDAY_SCHEDULE',
-    label: $localize`:@@special_holidays_schedule_type_sunday:Sonntag`
-  },
-  {
-    value: 'MONDAY_SCHEDULE',
-    label: $localize`:@@special_holidays_schedule_type_monday:Montag`
-  }];
-
+export const SCHEDULE_TYPE_LABELS: { value: ScheduleType; label: string }[] = [
+  { value: 'SUNDAY_SCHEDULE', label: $localize`:@@special_holidays_schedule_type_sunday:Sonntag` },
+  { value: 'MONDAY_SCHEDULE', label: $localize`:@@special_holidays_schedule_type_monday:Montag` },
+];
 
 export interface SpecialHoliday extends Auditable {
   id?: number;
@@ -116,42 +109,59 @@ export interface ExternalLink extends Auditable {
 
 export type ExternalLinkApiResponse = ApiResponse<ExternalLink>;
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class RuAdminApi {
   private readonly httpClient = inject(HttpClient);
   private readonly ruIndicationsUrl = `${environment.backendUrl}/v1/ruindications`;
   readonly ruIndications = httpResource<RuIndicationApiResponse>(() => this.ruIndicationsUrl);
   private readonly ruIndicationTemplatesUrl = `${environment.backendUrl}/v1/ruindication-templates`;
-  readonly ruIndicationTemplates = httpResource<RuIndicationTemplateApiResponse>(() => this.ruIndicationTemplatesUrl);
+  readonly ruIndicationTemplates = httpResource<RuIndicationTemplateApiResponse>(
+    () => this.ruIndicationTemplatesUrl,
+  );
   private readonly specialHolidaysUrl = `${environment.backendUrl}/v1/special-holidays`;
   readonly specialHolidays = httpResource<SpecialHolidayApiResponse>(() => this.specialHolidaysUrl);
   private readonly externalLinksUrl = `${environment.backendUrl}/v1/external-links`;
   readonly externalLinks = httpResource<ExternalLinkApiResponse>(() => this.externalLinksUrl);
 
-  postRuIndicationTemplate(ruIndicationTemplate: RuIndicationTemplate): Observable<RuIndicationTemplateApiResponse> {
-    return this.httpClient.post<RuIndicationTemplateApiResponse>(this.ruIndicationTemplatesUrl, ruIndicationTemplate);
+  postRuIndicationTemplate(
+    ruIndicationTemplate: RuIndicationTemplate,
+  ): Observable<RuIndicationTemplateApiResponse> {
+    return this.httpClient.post<RuIndicationTemplateApiResponse>(
+      this.ruIndicationTemplatesUrl,
+      ruIndicationTemplate,
+    );
   }
 
-  putRuIndicationTemplate(id: number, ruIndicationTemplate: RuIndicationTemplate): Observable<RuIndicationTemplateApiResponse> {
-    return this.httpClient.put<RuIndicationTemplateApiResponse>(`${this.ruIndicationTemplatesUrl}/${id}`, ruIndicationTemplate);
+  putRuIndicationTemplate(
+    id: number,
+    ruIndicationTemplate: RuIndicationTemplate,
+  ): Observable<RuIndicationTemplateApiResponse> {
+    return this.httpClient.put<RuIndicationTemplateApiResponse>(
+      `${this.ruIndicationTemplatesUrl}/${id}`,
+      ruIndicationTemplate,
+    );
   }
 
   deleteAllRuIndicationTemplate(ids: number[]): Observable<void> {
-    return this.httpClient.delete<void>(this.ruIndicationTemplatesUrl, {body: {ids}});
+    return this.httpClient.delete<void>(this.ruIndicationTemplatesUrl, { body: { ids } });
   }
 
   postSpecialHoliday(specialHoliday: SpecialHoliday): Observable<SpecialHolidayApiResponse> {
     return this.httpClient.post<SpecialHolidayApiResponse>(this.specialHolidaysUrl, specialHoliday);
   }
 
-  putSpecialHoliday(id: number, specialHoliday: SpecialHoliday): Observable<SpecialHolidayApiResponse> {
-    return this.httpClient.put<SpecialHolidayApiResponse>(`${this.specialHolidaysUrl}/${id}`, specialHoliday);
+  putSpecialHoliday(
+    id: number,
+    specialHoliday: SpecialHoliday,
+  ): Observable<SpecialHolidayApiResponse> {
+    return this.httpClient.put<SpecialHolidayApiResponse>(
+      `${this.specialHolidaysUrl}/${id}`,
+      specialHoliday,
+    );
   }
 
   deleteAllSpecialHolidays(ids: number[]): Observable<void> {
-    return this.httpClient.delete<void>(this.specialHolidaysUrl, {body: {ids}});
+    return this.httpClient.delete<void>(this.specialHolidaysUrl, { body: { ids } });
   }
 
   postRuIndication(ruIndication: RuIndication): Observable<RuIndicationApiResponse> {
@@ -159,11 +169,14 @@ export class RuAdminApi {
   }
 
   putRuIndication(id: number, ruIndication: RuIndication): Observable<RuIndicationApiResponse> {
-    return this.httpClient.put<RuIndicationApiResponse>(`${this.ruIndicationsUrl}/${id}`, ruIndication);
+    return this.httpClient.put<RuIndicationApiResponse>(
+      `${this.ruIndicationsUrl}/${id}`,
+      ruIndication,
+    );
   }
 
   deleteAllRuIndications(ids: number[]) {
-    return this.httpClient.delete<void>(this.ruIndicationsUrl, {body: {ids}});
+    return this.httpClient.delete<void>(this.ruIndicationsUrl, { body: { ids } });
   }
 
   postExternalLink(externalLink: ExternalLink): Observable<ExternalLinkApiResponse> {
@@ -171,10 +184,13 @@ export class RuAdminApi {
   }
 
   putExternalLink(id: number, externalLink: ExternalLink): Observable<ExternalLinkApiResponse> {
-    return this.httpClient.put<ExternalLinkApiResponse>(`${this.externalLinksUrl}/${id}`, externalLink);
+    return this.httpClient.put<ExternalLinkApiResponse>(
+      `${this.externalLinksUrl}/${id}`,
+      externalLink,
+    );
   }
 
   deleteExternalLinksByIds(ids: number[]): Observable<void> {
-    return this.httpClient.delete<void>(this.externalLinksUrl, {body: {ids}});
+    return this.httpClient.delete<void>(this.externalLinksUrl, { body: { ids } });
   }
 }

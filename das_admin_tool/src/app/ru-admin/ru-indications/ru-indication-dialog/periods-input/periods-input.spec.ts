@@ -9,13 +9,11 @@ describe('PeriodsInput', () => {
   let control: FormControl<RuIndicationPeriod[]>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [PeriodsInput]
-    }).compileComponents();
+    await TestBed.configureTestingModule({ imports: [PeriodsInput] }).compileComponents();
 
     fixture = TestBed.createComponent(PeriodsInput);
     component = fixture.componentInstance;
-    control = new FormControl<RuIndicationPeriod[]>([], {nonNullable: true});
+    control = new FormControl<RuIndicationPeriod[]>([], { nonNullable: true });
     fixture.componentRef.setInput('control', control);
     fixture.detectChanges();
     await fixture.whenStable();
@@ -38,7 +36,7 @@ describe('PeriodsInput', () => {
     pf.controls.validTo.setValue(null);
     pf.updateValueAndValidity();
 
-    expect(pf.errors).toEqual({validToRequired: true});
+    expect(pf.errors).toEqual({ validToRequired: true });
   });
 
   it('periodFormValidator: should report dateRangeInvalid when validFrom >= validTo', () => {
@@ -48,7 +46,7 @@ describe('PeriodsInput', () => {
     pf.controls.validTo.setValue(new Date('2026-01-09'));
     pf.updateValueAndValidity();
 
-    expect(pf.errors).toEqual({dateRangeInvalid: true});
+    expect(pf.errors).toEqual({ dateRangeInvalid: true });
   });
 
   it('periodFormValidator: should be valid when isRange is false even if validTo is missing', () => {

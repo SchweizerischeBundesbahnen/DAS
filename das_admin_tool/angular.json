@@ -10,19 +10,10 @@
       "sourceRoot": "src",
       "prefix": "app",
       "i18n": {
-        "sourceLocale": {
-          "code": "de-CH",
-          "subPath": "de"
-        },
+        "sourceLocale": { "code": "de-CH", "subPath": "de" },
         "locales": {
-          "fr-CH": {
-            "translation": "src/i18n/messages.fr-CH.json",
-            "subPath": "fr"
-          },
-          "it-CH": {
-            "translation": "src/i18n/messages.it-CH.json",
-            "subPath": "it"
-          }
+          "fr-CH": { "translation": "src/i18n/messages.fr-CH.json", "subPath": "fr" },
+          "it-CH": { "translation": "src/i18n/messages.it-CH.json", "subPath": "it" }
         }
       },
       "architect": {
@@ -31,40 +22,21 @@
           "options": {
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
-            ],
+            "assets": [{ "glob": "**/*", "input": "public" }],
             "styles": [
               "src/styles.scss",
               "node_modules/@sbb-esta/lyne-elements/off-brand-theme.css"
             ],
-            "polyfills": [
-              "@angular/localize/init"
-            ],
-            "localize": [
-              "de-CH"
-            ]
+            "polyfills": ["@angular/localize/init"],
+            "localize": ["de-CH"]
           },
           "configurations": {
             "production": {
-              "outputPath": {
-                "base": "dist/das_admin_tool"
-              },
+              "outputPath": { "base": "dist/das_admin_tool" },
               "localize": true,
               "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
-                }
+                { "type": "initial", "maximumWarning": "500kB", "maximumError": "1MB" },
+                { "type": "anyComponentStyle", "maximumWarning": "4kB", "maximumError": "8kB" }
               ],
               "fileReplacements": [
                 {
@@ -74,11 +46,7 @@
               ],
               "outputHashing": "all"
             },
-            "development": {
-              "optimization": false,
-              "extractLicenses": false,
-              "sourceMap": true
-            },
+            "development": { "optimization": false, "extractLicenses": false, "sourceMap": true },
             "e2e": {
               "fileReplacements": [
                 {
@@ -93,40 +61,22 @@
         "serve": {
           "builder": "@angular/build:dev-server",
           "configurations": {
-            "production": {
-              "buildTarget": "das_admin_tool:build:production"
-            },
-            "development": {
-              "buildTarget": "das_admin_tool:build:development"
-            },
-            "e2e": {
-              "buildTarget": "das_admin_tool:build:e2e"
-            }
+            "production": { "buildTarget": "das_admin_tool:build:production" },
+            "development": { "buildTarget": "das_admin_tool:build:development" },
+            "e2e": { "buildTarget": "das_admin_tool:build:e2e" }
           },
           "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular/build:extract-i18n",
-          "options": {
-            "format": "json",
-            "outputPath": "src/i18n"
-          }
+          "options": { "format": "json", "outputPath": "src/i18n" }
         },
         "test": {
           "builder": "@angular/build:unit-test",
-          "options": {
-            "browsers": [
-              "chromium"
-            ],
-            "setupFiles": [
-              "src/testing/test-setup.ts"
-            ]
-          },
+          "options": { "browsers": ["chromium"], "setupFiles": ["src/testing/test-setup.ts"] },
           "configurations": {
             "ci": {
-              "browsers": [
-                "chromiumHeadless"
-              ],
+              "browsers": ["chromiumHeadless"],
               "coverage": true,
               "progress": false,
               "watch": false,
@@ -134,41 +84,24 @@
                 "dot",
                 [
                   "vitest-sonar-reporter",
-                  {
-                    "outputFile": "./coverage/das_admin_tool/sonarqube.xml",
-                    "silent": true
-                  }
+                  { "outputFile": "./coverage/das_admin_tool/sonarqube.xml", "silent": true }
                 ]
               ],
-              "coverageReporters": [
-                "html",
-                "lcovonly"
-              ]
+              "coverageReporters": ["html", "lcovonly"]
             }
           }
         },
         "ngsscbuild": {
           "builder": "angular-server-side-configuration:ngsscbuild",
           "options": {
-            "additionalEnvironmentVariables": [
-              "INSTANA_KEY"
-            ],
+            "additionalEnvironmentVariables": ["INSTANA_KEY"],
             "buildTarget": "das_admin_tool:build"
           },
-          "configurations": {
-            "production": {
-              "buildTarget": "das_admin_tool:build:production"
-            }
-          }
+          "configurations": { "production": { "buildTarget": "das_admin_tool:build:production" } }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
-          "options": {
-            "lintFilePatterns": [
-              "src/**/*.ts",
-              "src/**/*.html"
-            ]
-          }
+          "options": { "lintFilePatterns": ["*.json", "src/**/*.*"] }
         }
       }
     },
@@ -178,19 +111,10 @@
       "architect": {
         "lint": {
           "builder": "@angular-eslint/builder:lint",
-          "options": {
-            "lintFilePatterns": [
-              "*.ts",
-              "**/*.ts"
-            ]
-          }
+          "options": { "lintFilePatterns": ["*.ts", "**/*.ts"] }
         }
       }
     }
   },
-  "cli": {
-    "schematicCollections": [
-      "angular-eslint"
-    ]
-  }
+  "cli": { "schematicCollections": ["angular-eslint"] }
 }

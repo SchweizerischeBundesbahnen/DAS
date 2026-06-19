@@ -31,7 +31,16 @@ import { CompanyService } from '../../../shared/companies-input/company.service'
 })
 export class SpecialHolidaysTable {
   protected dataSource = new SbbTableDataSource<SpecialHoliday>();
-  protected columns = ['select', 'name', 'date', 'scheduleType', 'companies', 'lastModifiedAt', 'lastModifiedBy', 'action'];
+  protected columns = [
+    'select',
+    'name',
+    'date',
+    'scheduleType',
+    'companies',
+    'lastModifiedAt',
+    'lastModifiedBy',
+    'action',
+  ];
   protected selection = new SelectionModel<SpecialHoliday>(true, []);
   protected readonly PAGE_SIZE = 20;
   protected isDeleting = false;
@@ -86,7 +95,7 @@ export class SpecialHolidaysTable {
   }
 
   protected scheduleTypeLabel(type: ScheduleType) {
-    return SCHEDULE_TYPE_LABELS.find((label) => label.value === type)?.label ?? ''
+    return SCHEDULE_TYPE_LABELS.find((label) => label.value === type)?.label ?? '';
   }
 
   protected companiesValue(companyCodes: string[]) {

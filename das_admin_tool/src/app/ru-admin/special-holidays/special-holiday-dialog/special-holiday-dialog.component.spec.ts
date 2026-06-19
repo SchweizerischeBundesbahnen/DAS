@@ -5,12 +5,12 @@ import { SpecialHoliday } from '../../ru-admin-api';
 import { RecentCompaniesStore } from '../../../shared/recent-companies.store';
 
 function createDialog(data?: SpecialHoliday, recentCompanies: string[] = []): SpecialHolidayDialog {
-  const recentCompaniesStoreMock = {get: vi.fn(() => recentCompanies)};
+  const recentCompaniesStoreMock = { get: vi.fn(() => recentCompanies) };
   TestBed.configureTestingModule({
     providers: [
       SpecialHolidayDialog,
-      {provide: SBB_OVERLAY_DATA, useValue: data ?? null},
-      {provide: RecentCompaniesStore, useValue: recentCompaniesStoreMock},
+      { provide: SBB_OVERLAY_DATA, useValue: data ?? null },
+      { provide: RecentCompaniesStore, useValue: recentCompaniesStoreMock },
     ],
   });
   return TestBed.inject(SpecialHolidayDialog);
@@ -52,7 +52,6 @@ describe('SpecialHolidayDialog', () => {
 
     dialog['specialHolidayForm'].get('companies')!.setValue([]);
 
-    expect(dialog['specialHolidayForm'].get('companies')!.errors).toEqual({required: true});
+    expect(dialog['specialHolidayForm'].get('companies')!.errors).toEqual({ required: true });
   });
 });
-

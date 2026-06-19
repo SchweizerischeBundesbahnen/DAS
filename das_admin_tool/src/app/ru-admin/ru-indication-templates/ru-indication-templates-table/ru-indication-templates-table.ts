@@ -3,7 +3,7 @@ import {
   SbbSort,
   SbbTableDataSource,
   SbbTableFilter,
-  SbbTableModule
+  SbbTableModule,
 } from '@sbb-esta/lyne-angular/table';
 import { SbbSecondaryButton } from '@sbb-esta/lyne-angular/button/secondary-button';
 import { RuIndicationTemplate } from '../../ru-admin-api';
@@ -40,7 +40,7 @@ interface RuIndicationTemplateFilter extends SbbTableFilter {
     SbbIconModule,
     SbbSelectModule,
     ReactiveFormsModule,
-    DatePipe
+    DatePipe,
   ],
   templateUrl: './ru-indication-templates-table.html',
   styleUrl: './ru-indication-templates-table.css',
@@ -49,11 +49,20 @@ export class RuIndicationTemplatesTable {
   protected readonly languageProvider = inject(LanguageProvider);
   protected readonly companyService = inject(CompanyService);
   protected dataSource = new SbbTableDataSource<RuIndicationTemplate, RuIndicationTemplateFilter>();
-  protected columns = ['select', 'category', 'title', 'text', 'companies', 'lastModifiedAt', 'lastModifiedBy', 'action'];
+  protected columns = [
+    'select',
+    'category',
+    'title',
+    'text',
+    'companies',
+    'lastModifiedAt',
+    'lastModifiedBy',
+    'action',
+  ];
   protected selection = new SelectionModel<RuIndicationTemplate>(true, []);
   protected form = new FormGroup({
-    search: new FormControl('', {nonNullable: true}),
-    language: new FormControl(this.languageProvider.currentLanguage.path, {nonNullable: true})
+    search: new FormControl('', { nonNullable: true }),
+    language: new FormControl(this.languageProvider.currentLanguage.path, { nonNullable: true }),
   });
   protected isDeleting = false;
   protected readonly PAGE_SIZE = 20;
@@ -64,18 +73,20 @@ export class RuIndicationTemplatesTable {
   constructor() {
     effect(() => {
       if (this.ruIndicationTemplateService.ruIndicationTemplatesResource.hasValue()) {
-        this.dataSource.data = this.ruIndicationTemplateService.ruIndicationTemplatesResource.value().data;
+        this.dataSource.data =
+          this.ruIndicationTemplateService.ruIndicationTemplatesResource.value().data;
       }
       this.dataSource.paginator = this.paginator();
       this.dataSource.sort = this.sort();
     });
-    this.dataSource.filterPredicate = (data: RuIndicationTemplate, filter: RuIndicationTemplateFilter) => this.searchFilter(filter, data);
+    this.dataSource.filterPredicate = (
+      data: RuIndicationTemplate,
+      filter: RuIndicationTemplateFilter,
+    ) => this.searchFilter(filter, data);
     this.dataSource.sortingDataAccessor = (data, col) => this.getValue(data, col) ?? '';
-    this.form.valueChanges
-      .pipe(takeUntilDestroyed())
-      .subscribe((form) => {
-        this.dataSource.filter = form as RuIndicationTemplateFilter;
-      });
+    this.form.valueChanges.pipe(takeUntilDestroyed()).subscribe((form) => {
+      this.dataSource.filter = form as RuIndicationTemplateFilter;
+    });
   }
 
   protected getValue(row: RuIndicationTemplate, column: string) {
@@ -123,18 +134,19 @@ export class RuIndicationTemplatesTable {
   }
 
   protected companiesValue(companies: string[]) {
-    return this.companyService.formatCompanies(companies)
+    return this.companyService.formatCompanies(companies);
   }
 
   private searchFilter(filter: RuIndicationTemplateFilter, data: RuIndicationTemplate) {
     const search = filter.search.toLowerCase();
     return (
-      this.getValue(data, 'title')?.toLowerCase().includes(search) ||
-      this.getValue(data, 'text')?.toLowerCase().includes(search) ||
-      this.companiesValue(data.companies).toLowerCase().includes(search) ||
-      data.category.toLowerCase().includes(search) ||
-      data.lastModifiedBy?.toLowerCase().includes(search) ||
-      data.lastModifiedAt?.toString().toLowerCase().includes(search)
-    ) ?? true;
+      (this.getValue(data, 'title')?.toLowerCase().includes(search)
+        || this.getValue(data, 'text')?.toLowerCase().includes(search)
+        || this.companiesValue(data.companies).toLowerCase().includes(search)
+        || data.category.toLowerCase().includes(search)
+        || data.lastModifiedBy?.toLowerCase().includes(search)
+        || data.lastModifiedAt?.toString().toLowerCase().includes(search))
+      ?? true
+    );
   }
 }

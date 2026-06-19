@@ -1,9 +1,9 @@
 import { Component, inject, input } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms";
-import { SbbError, SbbFormField } from "@sbb-esta/lyne-angular/form-field";
-import { SbbMiniButton } from "@sbb-esta/lyne-angular/button";
-import { SbbTab, SbbTabGroup, SbbTabLabel } from "@sbb-esta/lyne-angular/tabs";
-import { SbbTooltipDirective } from "@sbb-esta/lyne-angular/tooltip";
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { SbbError, SbbFormField } from '@sbb-esta/lyne-angular/form-field';
+import { SbbMiniButton } from '@sbb-esta/lyne-angular/button';
+import { SbbTab, SbbTabGroup, SbbTabLabel } from '@sbb-esta/lyne-angular/tabs';
+import { SbbTooltipDirective } from '@sbb-esta/lyne-angular/tooltip';
 import { LanguageCode, LanguageProvider } from '../../shared/language-provider';
 import { UpperCasePipe } from '@angular/common';
 import { RuIndication, RuIndicationContent, RuIndicationLanguageContent } from '../ru-admin-api';
@@ -15,35 +15,35 @@ interface LanguageContentForm {
 }
 
 export function createContentFormGroup() {
-  return new FormGroup({
-    de: createLanguageGroup(),
-    fr: createLanguageGroup(),
-    it: createLanguageGroup(),
-  }, {validators: oneLanguageRequired})
+  return new FormGroup(
+    { de: createLanguageGroup(), fr: createLanguageGroup(), it: createLanguageGroup() },
+    { validators: oneLanguageRequired },
+  );
 }
 
 export function contentFormValue(form: FormGroup): Partial<RuIndicationContent> {
-  const mapLanguage = (language: keyof RuIndication['content']): RuIndicationLanguageContent | undefined => {
+  const mapLanguage = (
+    language: keyof RuIndication['content'],
+  ): RuIndicationLanguageContent | undefined => {
     const title = form.get(language)?.get('title')?.value?.trim() ?? '';
     const text = form.get(language)?.get('text')?.value?.trim() ?? '';
     if (!title && !text) {
       return undefined;
     }
-    return {title, text: text || undefined};
+    return { title, text: text || undefined };
   };
 
-  return {
-    de: mapLanguage('de'),
-    fr: mapLanguage('fr'),
-    it: mapLanguage('it'),
-  };
+  return { de: mapLanguage('de'), fr: mapLanguage('fr'), it: mapLanguage('it') };
 }
 
 function createLanguageGroup(): FormGroup<LanguageContentForm> {
-  return new FormGroup({
-    title: new FormControl('', {nonNullable: true}),
-    text: new FormControl('', {nonNullable: true}),
-  }, {validators: titleRequired('text')});
+  return new FormGroup(
+    {
+      title: new FormControl('', { nonNullable: true }),
+      text: new FormControl('', { nonNullable: true }),
+    },
+    { validators: titleRequired('text') },
+  );
 }
 
 @Component({
@@ -57,7 +57,7 @@ function createLanguageGroup(): FormGroup<LanguageContentForm> {
     SbbTabGroup,
     SbbTabLabel,
     SbbTooltipDirective,
-    UpperCasePipe
+    UpperCasePipe,
   ],
   templateUrl: './ru-indication-content-form.component.html',
   styleUrl: './ru-indication-content-form.component.css',

@@ -1,6 +1,6 @@
-import {TestBed} from '@angular/core/testing';
-import {App} from './app';
-import {OidcSecurityService} from 'angular-auth-oidc-client';
+import { TestBed } from '@angular/core/testing';
+import { App } from './app';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 // Mock ineum function
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -12,10 +12,7 @@ describe('App', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [App],
-      providers: [{
-        provide: OidcSecurityService,
-        useValue: authServiceMock
-      }],
+      providers: [{ provide: OidcSecurityService, useValue: authServiceMock }],
     }).compileComponents();
   });
 
@@ -24,5 +21,4 @@ describe('App', () => {
     const app = fixture.componentInstance;
     expect(app).toBeTruthy();
   });
-
 });

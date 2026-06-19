@@ -16,5 +16,5 @@ td.action {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding-block-start: var(--sbb-spacing-fixed-2x)
+  padding-block-start: var(--sbb-spacing-fixed-2x);
 }

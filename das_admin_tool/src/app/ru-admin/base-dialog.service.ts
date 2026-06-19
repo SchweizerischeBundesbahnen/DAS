@@ -22,7 +22,7 @@ export abstract class BaseDialogService {
   protected async runMutation(
     request: Observable<unknown>,
     successMessage: string,
-    companies?: string[]
+    companies?: string[],
   ): Promise<void> {
     await firstValueFrom(request)
       .then(() => {
@@ -32,12 +32,13 @@ export abstract class BaseDialogService {
         this.toastService.success(successMessage);
         this.reload();
       })
-      .catch(e => this.handleApiError(e));
+      .catch((e) => this.handleApiError(e));
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected handleApiError(_: unknown) {
-    this.toastService.error($localize`:@@dialog_service_error:Beim Speichern ist ein Fehler aufgetreten.`)
+    this.toastService.error(
+      $localize`:@@dialog_service_error:Beim Speichern ist ein Fehler aufgetreten.`,
+    );
   }
 }
-

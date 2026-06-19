@@ -5,10 +5,7 @@ import { ExternalLink } from '../../ru-admin-api';
 
 function createDialog(data?: ExternalLink): ExternalLinkDialog {
   TestBed.configureTestingModule({
-    providers: [
-      ExternalLinkDialog,
-      { provide: SBB_OVERLAY_DATA, useValue: data ?? null },
-    ],
+    providers: [ExternalLinkDialog, { provide: SBB_OVERLAY_DATA, useValue: data ?? null }],
   });
   return TestBed.inject(ExternalLinkDialog);
 }

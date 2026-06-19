@@ -1,9 +1,7 @@
-import {inject, Injectable} from '@angular/core';
-import {AuthService} from './auth-service';
+import { inject, Injectable } from '@angular/core';
+import { AuthService } from './auth-service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class RecentCompaniesStore {
   private readonly authService = inject(AuthService);
   private readonly storageKey = 'recent_companies_' + this.authService.oid();
@@ -28,4 +26,3 @@ export class RecentCompaniesStore {
     localStorage.setItem(this.storageKey, JSON.stringify(companyCodes));
   }
 }
-

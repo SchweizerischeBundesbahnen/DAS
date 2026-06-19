@@ -9,19 +9,13 @@ import { Router } from '@angular/router';
 
 const mockOidc: Partial<OidcSecurityService> = {
   userData: signal({
-    userData: {
-      name: 'User',
-      preferred_username: 'user@example.com',
-      roles: ['ru_admin']
-    }
+    userData: { name: 'User', preferred_username: 'user@example.com', roles: ['ru_admin'] },
   } as UserDataResult),
-  authenticated: signal({isAuthenticated: true} as AuthenticatedResult),
+  authenticated: signal({ isAuthenticated: true } as AuthenticatedResult),
   logoffLocalMultiple: () => Promise.resolve(true),
 };
 
-const mockRouter = {
-  navigate: vi.fn().mockResolvedValue(true),
-};
+const mockRouter = { navigate: vi.fn().mockResolvedValue(true) };
 
 describe('Header', () => {
   let component: Header;
@@ -31,11 +25,10 @@ describe('Header', () => {
     await TestBed.configureTestingModule({
       imports: [Header],
       providers: [
-        {provide: OidcSecurityService, useValue: mockOidc},
-        {provide: Router, useValue: mockRouter}
+        { provide: OidcSecurityService, useValue: mockOidc },
+        { provide: Router, useValue: mockRouter },
       ],
-    })
-      .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(Header);
     component = fixture.componentInstance;
@@ -52,11 +45,13 @@ describe('Header', () => {
     const compiled = fixture.nativeElement as HTMLElement;
     const headerInfo = compiled.querySelector('.sbb-header-info');
     expect(headerInfo?.querySelector('strong')?.textContent).toContain('DAS Admin-Tool');
-    expect(headerInfo?.querySelector("span")?.textContent).toContain(`V. ${packageJson.version}`);
+    expect(headerInfo?.querySelector('span')?.textContent).toContain(`V. ${packageJson.version}`);
   });
 
   it('should render name', () => {
-    expect(fixture.nativeElement.querySelector('sbb-header-button:nth-last-of-type(2)').textContent).toContain('User');
+    expect(
+      fixture.nativeElement.querySelector('sbb-header-button:nth-last-of-type(2)').textContent,
+    ).toContain('User');
   });
 
   it('shoud render email and roles', () => {

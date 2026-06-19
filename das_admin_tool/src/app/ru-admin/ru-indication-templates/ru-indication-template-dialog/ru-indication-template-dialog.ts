@@ -7,7 +7,7 @@ import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
 import {
   contentFormValue,
   createContentFormGroup,
-  RuIndicationContentForm
+  RuIndicationContentForm,
 } from '../../ru-indication-content-form/ru-indication-content-form.component';
 import { BaseDialog } from '../../../shared/base-dialog/base-dialog.component';
 import { CompaniesInputComponent } from '../../../shared/companies-input/companies-input.component';
@@ -30,14 +30,15 @@ export type RuIndicationTemplateDialogEditResult = RuIndicationTemplate | 'delet
 export class RuIndicationTemplateDialog {
   protected readonly title: string;
   protected ruIndicationTemplateForm = new FormGroup({
-    category: new FormControl('', {nonNullable: true, validators: [Validators.required]}),
+    category: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     content: createContentFormGroup(),
     companies: new FormControl<string[]>([], {
       nonNullable: true,
-      validators: [Validators.required]
+      validators: [Validators.required],
     }),
   });
-  protected readonly dialogData = inject<RuIndicationTemplate>(SBB_OVERLAY_DATA, {optional: true}) ?? undefined;
+  protected readonly dialogData =
+    inject<RuIndicationTemplate>(SBB_OVERLAY_DATA, { optional: true }) ?? undefined;
 
   constructor() {
     const isEdit = this.dialogData?.id != null;
@@ -49,20 +50,11 @@ export class RuIndicationTemplateDialog {
       this.ruIndicationTemplateForm.patchValue({
         category: this.dialogData.category,
         content: {
-          de: {
-            title: this.dialogData.de?.title ?? '',
-            text: this.dialogData.de?.text ?? '',
-          },
-          fr: {
-            title: this.dialogData.fr?.title ?? '',
-            text: this.dialogData.fr?.text ?? '',
-          },
-          it: {
-            title: this.dialogData.it?.title ?? '',
-            text: this.dialogData.it?.text ?? '',
-          }
+          de: { title: this.dialogData.de?.title ?? '', text: this.dialogData.de?.text ?? '' },
+          fr: { title: this.dialogData.fr?.title ?? '', text: this.dialogData.fr?.text ?? '' },
+          it: { title: this.dialogData.it?.title ?? '', text: this.dialogData.it?.text ?? '' },
         },
-        companies: this.dialogData.companies
+        companies: this.dialogData.companies,
       });
     }
   }
@@ -74,7 +66,7 @@ export class RuIndicationTemplateDialog {
     return {
       category: this.ruIndicationTemplateForm.value.category ?? '',
       ...contentFormValue(this.ruIndicationTemplateForm.controls.content),
-      companies
+      companies,
     };
   }
 }

@@ -1,7 +1,7 @@
-import {inject, Injectable} from '@angular/core';
-import {firstValueFrom} from 'rxjs';
+import { inject, Injectable } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 import { RuIndication, RuIndicationTemplate, RuAdminApi } from '../ru-admin-api';
-import {RuIndicationDialog} from './ru-indication-dialog/ru-indication-dialog.component';
+import { RuIndicationDialog } from './ru-indication-dialog/ru-indication-dialog.component';
 import { BaseDialogService } from '../base-dialog.service';
 
 export type RuIndicationDialogEditResult = RuIndication | 'delete';
@@ -11,22 +11,24 @@ export interface RuIndicationDialogData {
   templates: RuIndicationTemplate[];
 }
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class RuIndicationService extends BaseDialogService {
-
   private readonly ruAdminApi = inject(RuAdminApi);
   readonly ruIndicationsResource = this.ruAdminApi.ruIndications;
   private readonly ruIndicationTemplatesResource = this.ruAdminApi.ruIndicationTemplates;
 
   async edit(ruIndication: RuIndication): Promise<void> {
-    const event = await firstValueFrom(this.dialogService.open<RuIndicationDialog, RuIndicationDialogEditResult>(RuIndicationDialog, {
-      data: {
-        ruIndication: ruIndication,
-        templates: this.ruIndicationTemplatesResource.value()?.data
-      }
-    }).afterClosed);
+    const event = await firstValueFrom(
+      this.dialogService.open<RuIndicationDialog, RuIndicationDialogEditResult>(
+        RuIndicationDialog,
+        {
+          data: {
+            ruIndication: ruIndication,
+            templates: this.ruIndicationTemplatesResource.value()?.data,
+          },
+        },
+      ).afterClosed,
+    );
     if (event.result === 'delete') {
       await this.runMutation(
         this.ruAdminApi.deleteAllRuIndications([ruIndication.id!]),
@@ -42,7 +44,11 @@ export class RuIndicationService extends BaseDialogService {
   }
 
   async add(): Promise<void> {
-    const event = await firstValueFrom(this.dialogService.open<RuIndicationDialog, RuIndication>(RuIndicationDialog, {data: {templates: this.ruIndicationTemplatesResource.value()?.data}}).afterClosed);
+    const event = await firstValueFrom(
+      this.dialogService.open<RuIndicationDialog, RuIndication>(RuIndicationDialog, {
+        data: { templates: this.ruIndicationTemplatesResource.value()?.data },
+      }).afterClosed,
+    );
     if (event.result) {
       await this.runMutation(
         this.ruAdminApi.postRuIndication(event.result),
@@ -63,4 +69,3 @@ export class RuIndicationService extends BaseDialogService {
     this.ruAdminApi.ruIndications.reload();
   }
 }
-
