@@ -70,7 +70,7 @@ export class RuIndicationDialog {
     }),
     periods: new FormControl<RuIndicationPeriod[]>([], { nonNullable: true }),
   });
-  protected stepchange = signal<SbbStepChangeEvent | undefined>(undefined);
+  protected readonly stepchange = signal<SbbStepChangeEvent | undefined>(undefined);
   protected readonly dialogData = inject<RuIndicationDialogData>(SBB_OVERLAY_DATA);
   private readonly stepper = viewChild.required(SbbStepper);
   private readonly contentComponent = viewChild.required(CategoryContentForm);

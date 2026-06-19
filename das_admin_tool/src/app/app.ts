@@ -15,7 +15,7 @@ import { SbbLink } from '@sbb-esta/lyne-angular/link/link';
   styleUrl: './app.css',
 })
 export class App implements OnInit {
-  protected isAdBlockerDetected = signal(this.isInstanaBlockedByAdBlocker);
+  protected readonly isAdBlockerDetected = signal(this.isInstanaBlockedByAdBlocker);
   private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
 

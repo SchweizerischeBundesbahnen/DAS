@@ -14,8 +14,8 @@ import { RecentCompaniesStore } from '../recent-companies.store';
   styleUrl: './companies-input.component.css',
 })
 export class CompaniesInputComponent {
-  label = input<string>($localize`:@@companies_form_label:EVU`);
-  control = input.required<FormControl<string[]>>();
+  readonly label = input<string>($localize`:@@companies_form_label:EVU`);
+  readonly control = input.required<FormControl<string[]>>();
 
   protected inputControl = new FormControl('', { nonNullable: true });
   private readonly inputValue = toSignal(this.inputControl.valueChanges, { initialValue: '' });
@@ -23,7 +23,7 @@ export class CompaniesInputComponent {
   private readonly companyService = inject(CompanyService);
   private readonly recentCompaniesStore = inject(RecentCompaniesStore);
 
-  protected filteredCompanies = computed(() => {
+  protected readonly filteredCompanies = computed(() => {
     return this.companyService.filterCompanies(this.inputValue(), this.control().value);
   });
 

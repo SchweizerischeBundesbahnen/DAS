@@ -130,7 +130,7 @@ export class RuIndicationsTable {
   }
 
   protected statusValue(row: RuIndication): string {
-    return RU_INDICATION_STATUS_LABELS.find((label) => label.value === row.status)?.label ?? '';
+    return RU_INDICATION_STATUS_LABELS().find((label) => label.value === row.status)?.label ?? '';
   }
 
   protected companiesValue(companyCodes: string[]) {

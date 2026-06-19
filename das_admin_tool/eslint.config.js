@@ -15,7 +15,7 @@ export default defineConfig(
       js.configs.recommended,
       ...ts.configs.recommendedTypeChecked,
       ...ts.configs.stylisticTypeChecked,
-      ...angular.configs.tsRecommended,
+      ...angular.configs.tsAll,
       prettierRecommended,
     ],
     processor: angular.processInlineTemplates,
@@ -49,6 +49,8 @@ export default defineConfig(
           ignoreStatic: true,
         },
       ],
+      // Disabled because of new style guide
+      '@angular-eslint/component-class-suffix': 'off',
       '@angular-eslint/component-selector': [
         'error',
         { type: 'element', prefix: 'app', style: 'kebab-case' },
@@ -57,6 +59,10 @@ export default defineConfig(
         'error',
         { type: 'attribute', prefix: 'app', style: 'camelCase' },
       ],
+      // Disabled because http-resource is used
+      '@angular-eslint/no-experimental': 'off',
+      // Disabled because not ready yet
+      '@angular-eslint/prefer-on-push-component-change-detection': 'off',
     },
   },
   {

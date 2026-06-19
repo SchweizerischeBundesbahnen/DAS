@@ -42,7 +42,7 @@ export class SpecialHolidayDialog {
       validators: [Validators.required],
     }),
   });
-  protected readonly scheduleTypes = SCHEDULE_TYPE_LABELS;
+  protected readonly scheduleTypes = SCHEDULE_TYPE_LABELS();
   protected readonly dialogData =
     inject<SpecialHoliday>(SBB_OVERLAY_DATA, { optional: true }) ?? undefined;
 

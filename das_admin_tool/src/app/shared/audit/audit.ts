@@ -11,5 +11,5 @@ import { Auditable } from './auditable';
   styleUrl: './audit.css',
 })
 export class Audit {
-  data = input<Auditable>();
+  readonly data = input<Auditable>();
 }
