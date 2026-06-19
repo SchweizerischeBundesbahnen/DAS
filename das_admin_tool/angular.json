@@ -41,12 +41,8 @@
               "src/styles.scss",
               "node_modules/@sbb-esta/lyne-elements/off-brand-theme.css"
             ],
-            "polyfills": [
-              "@angular/localize/init"
-            ],
-            "localize": [
-              "de-CH"
-            ]
+            "polyfills": ["@angular/localize/init"],
+            "localize": ["de-CH"]
           },
           "configurations": {
             "production": {
@@ -115,18 +111,12 @@
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
-            "browsers": [
-              "chromium"
-            ],
-            "setupFiles": [
-              "src/testing/test-setup.ts"
-            ]
+            "browsers": ["chromium"],
+            "setupFiles": ["src/testing/test-setup.ts"]
           },
           "configurations": {
             "ci": {
-              "browsers": [
-                "chromiumHeadless"
-              ],
+              "browsers": ["chromiumHeadless"],
               "coverage": true,
               "progress": false,
               "watch": false,
@@ -140,19 +130,14 @@
                   }
                 ]
               ],
-              "coverageReporters": [
-                "html",
-                "lcovonly"
-              ]
+              "coverageReporters": ["html", "lcovonly"]
             }
           }
         },
         "ngsscbuild": {
           "builder": "angular-server-side-configuration:ngsscbuild",
           "options": {
-            "additionalEnvironmentVariables": [
-              "INSTANA_KEY"
-            ],
+            "additionalEnvironmentVariables": ["INSTANA_KEY"],
             "buildTarget": "das_admin_tool:build"
           },
           "configurations": {
@@ -164,10 +149,7 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": [
-              "src/**/*.ts",
-              "src/**/*.html"
-            ]
+            "lintFilePatterns": ["*.js", "*.ts", "*.json", "src/**/*.*"]
           }
         }
       }
@@ -179,18 +161,13 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": [
-              "*.ts",
-              "**/*.ts"
-            ]
+            "lintFilePatterns": ["*.js", "*.ts", "*.json", "e2e/**/*.*"]
           }
         }
       }
     }
   },
   "cli": {
-    "schematicCollections": [
-      "angular-eslint"
-    ]
+    "schematicCollections": ["angular-eslint"]
   }
 }

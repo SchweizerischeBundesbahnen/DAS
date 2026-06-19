@@ -23,7 +23,10 @@ const mockRuAdminApi: Partial<RuAdminApi> = {
   externalLinks: { reload: () => true } as HttpResourceRef<ExternalLinkApiResponse | undefined>,
 };
 
-const mockToastService: Partial<ToastService> = { success: vi.fn(), error: vi.fn() };
+const mockToastService: Partial<ToastService> = {
+  success: vi.fn(),
+  error: vi.fn(),
+};
 
 const openSpy = vi.fn();
 
@@ -32,7 +35,9 @@ const mockSbbDialogService: Partial<SbbDialogService> = { open: openSpy };
 const mockRecentCompaniesStore: Partial<RecentCompaniesStore> = { save: vi.fn() };
 
 function mockDialogResult(result: ExternalLinkDialogEditResult | null): void {
-  openSpy.mockReturnValue({ afterClosed: of({ result } as SbbOverlayCloseEvent) });
+  openSpy.mockReturnValue({
+    afterClosed: of({ result } as SbbOverlayCloseEvent),
+  });
 }
 
 describe('ExternalLinksService', () => {

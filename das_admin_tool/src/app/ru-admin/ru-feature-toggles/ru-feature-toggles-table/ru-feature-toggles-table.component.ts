@@ -1,16 +1,21 @@
-import {Component, effect, inject, viewChild} from '@angular/core';
-import {SbbSort, SbbTableDataSource, SbbTableFilter, SbbTableModule} from '@sbb-esta/lyne-angular/table';
-import {SbbToggleCheckModule} from '@sbb-esta/lyne-angular/toggle-check';
-import {RU_FEATURE_KEY_LABELS, RuFeature, RuFeatureKey} from '../../ru-admin-api';
-import {RuFeatureService} from '../ru-feature.service';
-import {DatePipe} from '@angular/common';
-import {CompanyService} from '../../../shared/companies-input/company.service';
-import {TableBottomBar} from '../../../shared/table-bottom-bar/table-bottom-bar';
-import {TableSearchHeader} from '../../../shared/table-search-header/table-search-header';
-import {FormControl} from '@angular/forms';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {startWith} from 'rxjs';
-import {SbbButtonModule} from '@sbb-esta/lyne-angular/button';
+import { Component, effect, inject, viewChild } from '@angular/core';
+import {
+  SbbSort,
+  SbbTableDataSource,
+  SbbTableFilter,
+  SbbTableModule,
+} from '@sbb-esta/lyne-angular/table';
+import { SbbToggleCheckModule } from '@sbb-esta/lyne-angular/toggle-check';
+import { RU_FEATURE_KEY_LABELS, RuFeature, RuFeatureKey } from '../../ru-admin-api';
+import { RuFeatureService } from '../ru-feature.service';
+import { DatePipe } from '@angular/common';
+import { CompanyService } from '../../../shared/companies-input/company.service';
+import { TableBottomBar } from '../../../shared/table-bottom-bar/table-bottom-bar';
+import { TableSearchHeader } from '../../../shared/table-search-header/table-search-header';
+import { FormControl } from '@angular/forms';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { startWith } from 'rxjs';
+import { SbbButtonModule } from '@sbb-esta/lyne-angular/button';
 
 interface RuFeatureFilter extends SbbTableFilter {
   search: string;
@@ -31,8 +36,15 @@ interface RuFeatureFilter extends SbbTableFilter {
 })
 export class RuFeatureTogglesTable {
   protected dataSource = new SbbTableDataSource<RuFeature, RuFeatureFilter>();
-  protected columns = ['companyCode', 'key', 'enabled', 'lastModifiedAt', 'lastModifiedBy', 'action'];
-  protected readonly searchControl = new FormControl('', {nonNullable: true});
+  protected columns = [
+    'companyCode',
+    'key',
+    'enabled',
+    'lastModifiedAt',
+    'lastModifiedBy',
+    'action',
+  ];
+  protected readonly searchControl = new FormControl('', { nonNullable: true });
 
   private readonly ruFeatureService = inject(RuFeatureService);
   private readonly companyService = inject(CompanyService);
@@ -48,11 +60,12 @@ export class RuFeatureTogglesTable {
       this.dataSource.paginator = this.bottomBar().paginator();
       this.dataSource.sort = this.sort();
     });
-    this.dataSource.filterPredicate = (data: RuFeature, filter: RuFeatureFilter) => this.searchFilter(filter, data);
+    this.dataSource.filterPredicate = (data: RuFeature, filter: RuFeatureFilter) =>
+      this.searchFilter(filter, data);
     this.searchControl.valueChanges
       .pipe(startWith(this.searchControl.value), takeUntilDestroyed())
       .subscribe((search) => {
-        this.dataSource.filter = {search} as RuFeatureFilter;
+        this.dataSource.filter = { search } as RuFeatureFilter;
       });
   }
 
@@ -76,11 +89,12 @@ export class RuFeatureTogglesTable {
     const search = filter.search.toLowerCase();
     if (!search) return true;
     return (
-      this.companyName(data.companyCode).toLowerCase().includes(search) ||
-      data.companyCode.toLowerCase().includes(search) ||
-      this.featureKeyLabel(data.key).toLowerCase().includes(search) ||
-      data.lastModifiedBy?.toLowerCase().includes(search) ||
-      data.lastModifiedAt?.toString().toLowerCase().includes(search)
-    ) ?? false;
+      (this.companyName(data.companyCode).toLowerCase().includes(search)
+        || data.companyCode.toLowerCase().includes(search)
+        || this.featureKeyLabel(data.key).toLowerCase().includes(search)
+        || data.lastModifiedBy?.toLowerCase().includes(search)
+        || data.lastModifiedAt?.toString().toLowerCase().includes(search))
+      ?? false
+    );
   }
 }

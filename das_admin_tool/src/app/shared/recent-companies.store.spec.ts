@@ -1,6 +1,6 @@
-import {TestBed} from '@angular/core/testing';
-import {RecentCompaniesStore} from './recent-companies.store';
-import {AuthService} from './auth-service';
+import { TestBed } from '@angular/core/testing';
+import { RecentCompaniesStore } from './recent-companies.store';
+import { AuthService } from './auth-service';
 
 describe('RecentCompaniesStore', () => {
   let store: RecentCompaniesStore;
@@ -11,7 +11,7 @@ describe('RecentCompaniesStore', () => {
     TestBed.configureTestingModule({
       providers: [
         RecentCompaniesStore,
-        {provide: AuthService, useValue: {oid: () => 'test-oid'}},
+        { provide: AuthService, useValue: { oid: () => 'test-oid' } },
       ],
     });
 
@@ -28,7 +28,6 @@ describe('RecentCompaniesStore', () => {
     expect(store.get()).toEqual(['1085', '1087']);
   });
 
-
   it('should override latest selected companies', () => {
     store.save(['1085', '1087']);
     store.save(['1265', '8925']);
@@ -36,4 +35,3 @@ describe('RecentCompaniesStore', () => {
     expect(store.get()).toEqual(['1265', '8925']);
   });
 });
-

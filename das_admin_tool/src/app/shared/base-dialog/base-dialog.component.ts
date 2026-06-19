@@ -21,7 +21,7 @@ import { SbbActionGroup } from '@sbb-esta/lyne-angular/action-group';
     SbbButtonModule,
     SbbDialogModule,
     SbbActionGroup,
-    Audit
+    Audit,
   ],
   templateUrl: './base-dialog.component.html',
   styleUrl: './base-dialog.component.css',
@@ -37,8 +37,7 @@ export class BaseDialog {
   protected stepchange = signal<SbbStepChangeEvent | undefined>(undefined);
   protected readonly isLastStep = computed(() => {
     const selectedIndex = this.stepchange()?.selectedIndex;
-    if (selectedIndex === undefined)
-      return true;
+    if (selectedIndex === undefined) return true;
     const lastStep = this.steps().length - 1;
     return selectedIndex === lastStep;
   });

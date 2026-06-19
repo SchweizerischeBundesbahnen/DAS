@@ -1,10 +1,10 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {SpecialHolidays} from './special-holidays.component';
-import {SpecialHolidayService} from './special-holiday.service';
+import { SpecialHolidays } from './special-holidays.component';
+import { SpecialHolidayService } from './special-holiday.service';
 
 const specialHolidayServiceMock = {
-  specialHolidaysResource: new Proxy({}, { get: () => vi.fn() })
+  specialHolidaysResource: new Proxy({}, { get: () => vi.fn() }),
 };
 
 describe('SpecialHolidays', () => {
@@ -14,11 +14,8 @@ describe('SpecialHolidays', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [SpecialHolidays],
-      providers: [
-        {provide: SpecialHolidayService, useValue: specialHolidayServiceMock},
-      ],
-    })
-      .compileComponents();
+      providers: [{ provide: SpecialHolidayService, useValue: specialHolidayServiceMock }],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(SpecialHolidays);
     component = fixture.componentInstance;
@@ -29,4 +26,3 @@ describe('SpecialHolidays', () => {
     expect(component).toBeTruthy();
   });
 });
-

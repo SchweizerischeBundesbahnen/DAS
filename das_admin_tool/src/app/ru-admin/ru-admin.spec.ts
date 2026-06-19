@@ -1,11 +1,9 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {RuAdmin} from './ru-admin';
-import {provideRouter} from '@angular/router';
-import {CompanyService} from '../shared/companies-input/company.service';
-import {
-  LocationService
-} from './ru-indications/ru-indication-dialog/locations-input/location.service';
+import { RuAdmin } from './ru-admin';
+import { provideRouter } from '@angular/router';
+import { CompanyService } from '../shared/companies-input/company.service';
+import { LocationService } from './ru-indications/ru-indication-dialog/locations-input/location.service';
 
 describe('RuAdmin', () => {
   let component: RuAdmin;
@@ -16,11 +14,10 @@ describe('RuAdmin', () => {
       imports: [RuAdmin],
       providers: [
         provideRouter([]),
-        {provide: CompanyService, useValue: {loaded: () => true}},
-        {provide: LocationService, useValue: {loaded: () => true}},
-      ]
-    })
-      .compileComponents();
+        { provide: CompanyService, useValue: { loaded: () => true } },
+        { provide: LocationService, useValue: { loaded: () => true } },
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(RuAdmin);
     component = fixture.componentInstance;

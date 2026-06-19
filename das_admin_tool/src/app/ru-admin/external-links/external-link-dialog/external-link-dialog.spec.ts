@@ -1,14 +1,11 @@
-import {TestBed} from '@angular/core/testing';
-import {ExternalLinkDialog} from './external-link-dialog';
-import {SBB_OVERLAY_DATA} from '@sbb-esta/lyne-angular/core/overlay';
-import {ExternalLink} from '../../ru-admin-api';
+import { TestBed } from '@angular/core/testing';
+import { ExternalLinkDialog } from './external-link-dialog';
+import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core/overlay';
+import { ExternalLink } from '../../ru-admin-api';
 
 function createDialog(data?: ExternalLink): ExternalLinkDialog {
   TestBed.configureTestingModule({
-    providers: [
-      ExternalLinkDialog,
-      {provide: SBB_OVERLAY_DATA, useValue: data ?? null},
-    ],
+    providers: [ExternalLinkDialog, { provide: SBB_OVERLAY_DATA, useValue: data ?? null }],
   });
   return TestBed.inject(ExternalLinkDialog);
 }
@@ -16,7 +13,7 @@ function createDialog(data?: ExternalLink): ExternalLinkDialog {
 const existingExternalLink: ExternalLink = {
   id: 1,
   companies: ['2185'],
-  de: {title: 'Titel', link: 'https://sbb.ch'},
+  de: { title: 'Titel', link: 'https://sbb.ch' },
 };
 
 describe('ExternalLinkDialog', () => {
@@ -26,7 +23,7 @@ describe('ExternalLinkDialog', () => {
     it('should be invalid when all language fields are empty', () => {
       const dialog = createDialog();
 
-      expect(dialog['externalLinkForm'].errors).toEqual({oneLanguageRequired: true});
+      expect(dialog['externalLinkForm'].errors).toEqual({ oneLanguageRequired: true });
     });
 
     it('should be valid when de title and link are filled', () => {
@@ -59,7 +56,9 @@ describe('ExternalLinkDialog', () => {
       dialog['externalLinkForm'].get('de.link')!.setValue('https://sbb.ch');
 
       expect(dialog['externalLinkForm'].errors).toBeNull();
-      expect(dialog['externalLinkForm'].get('de.title')!.errors).toEqual({languageRequired: true});
+      expect(dialog['externalLinkForm'].get('de.title')!.errors).toEqual({
+        languageRequired: true,
+      });
     });
   });
 
@@ -69,7 +68,7 @@ describe('ExternalLinkDialog', () => {
       const deGroup = dialog['externalLinkForm'].get('de')!;
       deGroup.get('link')!.setValue('https://sbb.ch');
 
-      expect(deGroup.get('title')!.errors).toEqual({languageRequired: true});
+      expect(deGroup.get('title')!.errors).toEqual({ languageRequired: true });
     });
 
     it('should be invalid for a language group when title is set but link is empty', () => {
@@ -77,7 +76,7 @@ describe('ExternalLinkDialog', () => {
       const deGroup = dialog['externalLinkForm'].get('de')!;
       deGroup.get('title')!.setValue('Titel');
 
-      expect(deGroup.get('link')!.errors).toEqual({languageRequired: true});
+      expect(deGroup.get('link')!.errors).toEqual({ languageRequired: true });
     });
 
     it('should be valid when both title and link are set', () => {

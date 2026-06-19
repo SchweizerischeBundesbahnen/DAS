@@ -1,13 +1,22 @@
-<app-base-dialog [data]="dialogData" [dialogClose]="formValue" [dialogTitle]="title"
-  [saveDisabled]="specialHolidayForm.invalid" i18n-stepLabel="@@special_holidays_dialog_step_label"
-  stepLabel="Feiertag">
+<app-base-dialog
+  [data]="dialogData"
+  [dialogClose]="formValue"
+  [dialogTitle]="title"
+  [saveDisabled]="specialHolidayForm.invalid"
+  i18n-stepLabel="@@special_holidays_dialog_step_label"
+  stepLabel="Feiertag"
+>
   <form [formGroup]="specialHolidayForm">
     <sbb-form-field errorSpace="reserve" class="full-width">
       <label i18n="@@special_holidays_form_name_label">Name des Feiertags</label>
       <input formControlName="name" placeholder="z.B. Güdeismontag" required />
-      @if (specialHolidayForm.get('name')?.touched && specialHolidayForm.get('name')?.hasError('required')) {
-      <sbb-error i18n="@@special_holidays_form_field_error_required">Feld darf nicht leer sein
-      </sbb-error>
+      @if (
+        specialHolidayForm.get('name')?.touched
+        && specialHolidayForm.get('name')?.hasError('required')
+      ) {
+        <sbb-error i18n="@@special_holidays_form_field_error_required"
+          >Feld darf nicht leer sein</sbb-error
+        >
       }
     </sbb-form-field>
 
@@ -18,9 +27,13 @@
       <sbb-datepicker-toggle></sbb-datepicker-toggle>
       <sbb-datepicker-next-day></sbb-datepicker-next-day>
       <sbb-datepicker></sbb-datepicker>
-      @if (specialHolidayForm.get('date')?.touched && specialHolidayForm.get('date')?.hasError('required')) {
-      <sbb-error i18n="@@special_holidays_form_field_error_required">Feld darf nicht leer sein
-      </sbb-error>
+      @if (
+        specialHolidayForm.get('date')?.touched
+        && specialHolidayForm.get('date')?.hasError('required')
+      ) {
+        <sbb-error i18n="@@special_holidays_form_field_error_required"
+          >Feld darf nicht leer sein</sbb-error
+        >
       }
     </sbb-form-field>
 
@@ -28,13 +41,16 @@
       <label for="scheduleType" i18n="@@special_holidays_form_schedule_type_label">Gilt als</label>
       <sbb-radio-button-group formControlName="scheduleType">
         @for (type of scheduleTypes; track type.value) {
-        <sbb-radio-button [value]="type.value">{{ type.label }}</sbb-radio-button>
+          <sbb-radio-button [value]="type.value">{{ type.label }}</sbb-radio-button>
         }
       </sbb-radio-button-group>
-      @if (specialHolidayForm.get('scheduleType')?.touched &&
-      specialHolidayForm.get('scheduleType')?.hasError('required')) {
-      <sbb-error i18n="@@special_holidays_form_field_error_required">Feld darf nicht leer sein
-      </sbb-error>
+      @if (
+        specialHolidayForm.get('scheduleType')?.touched
+        && specialHolidayForm.get('scheduleType')?.hasError('required')
+      ) {
+        <sbb-error i18n="@@special_holidays_form_field_error_required"
+          >Feld darf nicht leer sein</sbb-error
+        >
       }
     </div>
 

@@ -47,9 +47,11 @@ export class CompanyService extends BaseDialogService {
 
   protected override handleApiError(e: unknown) {
     if (e instanceof HttpErrorResponse && e.error.status === 409) {
-      this.toastService.error($localize`:@@companies_toast_conflict_error:Diese EVU existiert bereits.`);
+      this.toastService.error(
+        $localize`:@@companies_toast_conflict_error:Diese EVU existiert bereits.`,
+      );
     } else {
-      super.handleApiError(e)
+      super.handleApiError(e);
     }
   }
 }

@@ -1,20 +1,15 @@
-import {Component, computed, effect, inject, input, signal} from '@angular/core';
-import {toSignal} from '@angular/core/rxjs-interop';
-import {FormControl, ReactiveFormsModule} from '@angular/forms';
-import {SbbAutocompleteModule} from '@sbb-esta/lyne-angular/autocomplete';
-import {SbbChipModule} from '@sbb-esta/lyne-angular/chip';
-import {SbbFormFieldModule} from '@sbb-esta/lyne-angular/form-field';
-import {CompanyService} from './company.service';
-import {RecentCompaniesStore} from '../recent-companies.store';
+import { Component, computed, effect, inject, input, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { SbbAutocompleteModule } from '@sbb-esta/lyne-angular/autocomplete';
+import { SbbChipModule } from '@sbb-esta/lyne-angular/chip';
+import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
+import { CompanyService } from './company.service';
+import { RecentCompaniesStore } from '../recent-companies.store';
 
 @Component({
   selector: 'app-companies-input',
-  imports: [
-    SbbAutocompleteModule,
-    SbbChipModule,
-    SbbFormFieldModule,
-    ReactiveFormsModule,
-  ],
+  imports: [SbbAutocompleteModule, SbbChipModule, SbbFormFieldModule, ReactiveFormsModule],
   templateUrl: './companies-input.component.html',
   styleUrl: './companies-input.component.css',
 })
@@ -23,8 +18,8 @@ export class CompaniesInputComponent {
   control = input.required<FormControl<string[]> | FormControl<string>>();
   multiselect = input<boolean>(true);
 
-  protected inputControl = new FormControl('', {nonNullable: true});
-  private readonly inputValue = toSignal(this.inputControl.valueChanges, {initialValue: ''});
+  protected inputControl = new FormControl('', { nonNullable: true });
+  private readonly inputValue = toSignal(this.inputControl.valueChanges, { initialValue: '' });
   private readonly searchTerm = signal<string>('');
 
   private readonly companyService = inject(CompanyService);
@@ -41,18 +36,21 @@ export class CompaniesInputComponent {
   });
 
   constructor() {
-    effect(() => {
-      if (!this.multiselect()) {
-        return;
-      }
-      const controlValue = this.multiControl().value;
-      if (controlValue.length === 0) {
-        const recent = this.recentCompaniesStore.get();
-        if (recent.length > 0) {
-          this.multiControl().patchValue(recent, {emitEvent: false});
+    effect(
+      () => {
+        if (!this.multiselect()) {
+          return;
         }
-      }
-    }, {allowSignalWrites: true});
+        const controlValue = this.multiControl().value;
+        if (controlValue.length === 0) {
+          const recent = this.recentCompaniesStore.get();
+          if (recent.length > 0) {
+            this.multiControl().patchValue(recent, { emitEvent: false });
+          }
+        }
+      },
+      { allowSignalWrites: true },
+    );
   }
 
   protected codeToName = (code: string) => {

@@ -7,7 +7,7 @@ import { SbbTabsModule } from '@sbb-esta/lyne-angular/tabs';
 import {
   RuIndication,
   RuIndicationPeriod,
-  RuIndicationTrainNumberFilter
+  RuIndicationTrainNumberFilter,
 } from '../../ru-admin-api';
 import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core/overlay';
 import { CompaniesInputComponent } from '../../../shared/companies-input/companies-input.component';
@@ -20,9 +20,7 @@ import { SbbStepChangeEvent } from '@sbb-esta/lyne-elements/stepper.js';
 import { TrainNumberInput } from './train-number-input/train-number-input';
 import { SbbButtonModule } from '@sbb-esta/lyne-angular/button';
 import { PeriodsInput } from './periods-input/periods-input';
-import {
-  createContentFormGroup
-} from '../../ru-indication-content-form/ru-indication-content-form.component';
+import { createContentFormGroup } from '../../ru-indication-content-form/ru-indication-content-form.component';
 import { CategoryContentForm } from './content-form/category-content-form';
 import { Audit } from '../../../shared/audit/audit';
 import { SbbActionGroupModule } from '@sbb-esta/lyne-angular/action-group';
@@ -57,15 +55,17 @@ export class RuIndicationDialog {
     scope: new FormGroup({
       companies: new FormControl<string[]>([], {
         nonNullable: true,
-        validators: [Validators.required]
+        validators: [Validators.required],
       }),
-      operationalTrainNumberFilters: new FormControl<RuIndicationTrainNumberFilter[]>([], {nonNullable: true}),
+      operationalTrainNumberFilters: new FormControl<RuIndicationTrainNumberFilter[]>([], {
+        nonNullable: true,
+      }),
       tafTapLocationReferences: new FormControl<string[]>([], {
         nonNullable: true,
-        validators: [Validators.required]
+        validators: [Validators.required],
       }),
     }),
-    periods: new FormControl<RuIndicationPeriod[]>([], {nonNullable: true}),
+    periods: new FormControl<RuIndicationPeriod[]>([], { nonNullable: true }),
   });
   protected stepchange = signal<SbbStepChangeEvent | undefined>(undefined);
   protected readonly dialogData = inject<RuIndicationDialogData>(SBB_OVERLAY_DATA);
@@ -77,7 +77,9 @@ export class RuIndicationDialog {
     const lastStep = this.steps().length - 1;
     return selectedIndex === lastStep;
   });
-  private readonly contentFormStatus = toSignal(this.ruIndicationForm.controls.content.statusChanges);
+  private readonly contentFormStatus = toSignal(
+    this.ruIndicationForm.controls.content.statusChanges,
+  );
   private readonly scopeFormStatus = toSignal(this.ruIndicationForm.controls.scope.statusChanges);
   protected readonly isStepDisabled = computed(() => {
     const step = this.stepchange()?.selectedIndex;
@@ -105,8 +107,10 @@ export class RuIndicationDialog {
       content: this.contentComponent().formValue,
       scope: {
         companies: this.ruIndicationForm.controls.scope.controls.companies.value,
-        operationalTrainNumberFilters: this.ruIndicationForm.controls.scope.controls.operationalTrainNumberFilters.value,
-        tafTapLocationReferences: this.ruIndicationForm.controls.scope.controls.tafTapLocationReferences.value,
+        operationalTrainNumberFilters:
+          this.ruIndicationForm.controls.scope.controls.operationalTrainNumberFilters.value,
+        tafTapLocationReferences:
+          this.ruIndicationForm.controls.scope.controls.tafTapLocationReferences.value,
       },
       periods: this.ruIndicationForm.controls.periods.value,
     };

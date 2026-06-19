@@ -29,22 +29,22 @@ export const routes: Routes = [
       {
         path: '',
         redirectTo: 'ru-admin',
-        pathMatch: 'full'
+        pathMatch: 'full',
       },
       {
         path: 'das-admin',
         canActivate: [isAdmin],
-        loadChildren: () => import('./das-admin/das-admin.routes').then((m) => m.routes)
+        loadChildren: () => import('./das-admin/das-admin.routes').then((m) => m.routes),
       },
       {
         path: 'ru-admin',
         canActivate: [isRuAdmin],
-        loadChildren: () => import('./ru-admin/ru-admin.routes').then((m) => m.routes)
-      }
-    ]
+        loadChildren: () => import('./ru-admin/ru-admin.routes').then((m) => m.routes),
+      },
+    ],
   },
   {
     path: 'unauthorized',
-    loadComponent: () => import('./unauthorized/unauthorized').then(m => m.Unauthorized)
-  }
+    loadComponent: () => import('./unauthorized/unauthorized').then((m) => m.Unauthorized),
+  },
 ];

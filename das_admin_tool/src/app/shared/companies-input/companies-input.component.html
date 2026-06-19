@@ -1,7 +1,12 @@
 <sbb-form-field errorSpace="reserve" class="full-width">
   <label for="companies" i18n="@@form_companies_label">{{ label() }}</label>
   @if (multiselect()) {
-    <sbb-chip-group [displayWith]="codeToName" [formControl]="multiControl()" [separatorKeys]="[]" name="companies">
+    <sbb-chip-group
+      [displayWith]="codeToName"
+      [formControl]="multiControl()"
+      [separatorKeys]="[]"
+      name="companies"
+    >
       <!-- stopPropagation because chip-group would get marked dirty otherwise -->
       <input
         [formControl]="inputControl"
@@ -17,11 +22,13 @@
     />
   }
 
-  <sbb-autocomplete #auto="sbbAutocomplete" [displayWith]="multiselect() ? null : codeToName" [requireSelection]="!multiselect()">
+  <sbb-autocomplete
+    #auto="sbbAutocomplete"
+    [displayWith]="multiselect() ? null : codeToName"
+    [requireSelection]="!multiselect()"
+  >
     @for (company of filteredCompanies(); track company.code) {
-      <sbb-option [value]="company.code">
-        {{ company.shortName }}
-      </sbb-option>
+      <sbb-option [value]="company.code">{{ company.shortName }}</sbb-option>
     }
   </sbb-autocomplete>
   @if (control().hasError('required') && control().touched) {

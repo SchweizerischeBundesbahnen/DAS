@@ -1,22 +1,22 @@
-import {Component, effect, inject, viewChild} from '@angular/core';
+import { Component, effect, inject, viewChild } from '@angular/core';
 import {
   SbbSort,
   SbbTableDataSource,
   SbbTableFilter,
-  SbbTableModule
+  SbbTableModule,
 } from '@sbb-esta/lyne-angular/table';
-import {RuIndicationTemplate} from '../../ru-admin-api';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {startWith} from 'rxjs';
-import {RuIndicationTemplateService} from '../ru-indication-template.service';
-import {SbbMiniButton} from '@sbb-esta/lyne-angular/button/mini-button';
-import {SbbCheckboxModule} from '@sbb-esta/lyne-angular/checkbox';
-import {SelectionModel} from '@angular/cdk/collections';
-import {FormControl, FormGroup} from '@angular/forms';
-import {LanguageCode, LanguageProvider} from '../../../shared/language-provider';
-import {DatePipe} from '@angular/common';
-import {TableBottomBar} from '../../../shared/table-bottom-bar/table-bottom-bar';
-import {TableSearchHeader} from '../../../shared/table-search-header/table-search-header';
+import { RuIndicationTemplate } from '../../ru-admin-api';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { startWith } from 'rxjs';
+import { RuIndicationTemplateService } from '../ru-indication-template.service';
+import { SbbMiniButton } from '@sbb-esta/lyne-angular/button/mini-button';
+import { SbbCheckboxModule } from '@sbb-esta/lyne-angular/checkbox';
+import { SelectionModel } from '@angular/cdk/collections';
+import { FormControl, FormGroup } from '@angular/forms';
+import { LanguageCode, LanguageProvider } from '../../../shared/language-provider';
+import { DatePipe } from '@angular/common';
+import { TableBottomBar } from '../../../shared/table-bottom-bar/table-bottom-bar';
+import { TableSearchHeader } from '../../../shared/table-search-header/table-search-header';
 
 interface RuIndicationTemplateFilter extends SbbTableFilter {
   search: string;
@@ -38,13 +38,21 @@ interface RuIndicationTemplateFilter extends SbbTableFilter {
 })
 export class RuIndicationTemplatesTable {
   protected dataSource = new SbbTableDataSource<RuIndicationTemplate, RuIndicationTemplateFilter>();
-  protected columns = ['select', 'category', 'title', 'text', 'lastModifiedAt', 'lastModifiedBy', 'action'];
+  protected columns = [
+    'select',
+    'category',
+    'title',
+    'text',
+    'lastModifiedAt',
+    'lastModifiedBy',
+    'action',
+  ];
   protected selection = new SelectionModel<RuIndicationTemplate>(true, []);
   protected isDeleting = false;
   private readonly languageProvider = inject(LanguageProvider);
   protected form = new FormGroup({
-    search: new FormControl('', {nonNullable: true}),
-    language: new FormControl(this.languageProvider.currentLanguage.path, {nonNullable: true})
+    search: new FormControl('', { nonNullable: true }),
+    language: new FormControl(this.languageProvider.currentLanguage.path, { nonNullable: true }),
   });
   private readonly ruIndicationTemplateService = inject(RuIndicationTemplateService);
   private readonly bottomBar = viewChild.required(TableBottomBar);
@@ -53,12 +61,16 @@ export class RuIndicationTemplatesTable {
   constructor() {
     effect(() => {
       if (this.ruIndicationTemplateService.ruIndicationTemplatesResource.hasValue()) {
-        this.dataSource.data = this.ruIndicationTemplateService.ruIndicationTemplatesResource.value().data;
+        this.dataSource.data =
+          this.ruIndicationTemplateService.ruIndicationTemplatesResource.value().data;
       }
       this.dataSource.paginator = this.bottomBar().paginator();
       this.dataSource.sort = this.sort();
     });
-    this.dataSource.filterPredicate = (data: RuIndicationTemplate, filter: RuIndicationTemplateFilter) => this.searchFilter(filter, data);
+    this.dataSource.filterPredicate = (
+      data: RuIndicationTemplate,
+      filter: RuIndicationTemplateFilter,
+    ) => this.searchFilter(filter, data);
     this.dataSource.sortingDataAccessor = (data: RuIndicationTemplate, column: string) => {
       if (column === 'title' || column === 'text') {
         return this.currentLanguage(data)?.[column] ?? '';
@@ -115,11 +127,12 @@ export class RuIndicationTemplatesTable {
     const search = filter.search.toLowerCase();
     if (!search) return true;
     return (
-      this.currentLanguage(data)?.title?.toLowerCase().includes(search) ||
-      this.currentLanguage(data)?.text?.toLowerCase().includes(search) ||
-      data.category.toLowerCase().includes(search) ||
-      data.lastModifiedBy?.toLowerCase().includes(search) ||
-      data.lastModifiedAt?.toString().toLowerCase().includes(search)
-    ) ?? true;
+      (this.currentLanguage(data)?.title?.toLowerCase().includes(search)
+        || this.currentLanguage(data)?.text?.toLowerCase().includes(search)
+        || data.category.toLowerCase().includes(search)
+        || data.lastModifiedBy?.toLowerCase().includes(search)
+        || data.lastModifiedAt?.toString().toLowerCase().includes(search))
+      ?? true
+    );
   }
 }

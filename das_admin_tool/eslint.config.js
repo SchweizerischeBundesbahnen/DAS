@@ -1,46 +1,53 @@
 // @ts-check
-const eslint = require("@eslint/js");
-const tseslint = require("typescript-eslint");
-const angular = require("angular-eslint");
 
-module.exports = tseslint.config(
+import { defineConfig } from 'eslint/config';
+import css from '@eslint/css';
+import js from '@eslint/js';
+import json from '@eslint/json';
+import * as ts from 'typescript-eslint';
+import * as angular from 'angular-eslint';
+import prettierRecommended from 'eslint-plugin-prettier/recommended';
+
+export default defineConfig(
   {
-    files: ["**/*.ts"],
+    files: ['**/*.ts'],
     extends: [
-      eslint.configs.recommended,
-      ...tseslint.configs.recommended,
-      ...tseslint.configs.stylistic,
+      js.configs.recommended,
+      ...ts.configs.recommended,
+      ...ts.configs.stylistic,
       ...angular.configs.tsRecommended,
+      prettierRecommended,
     ],
     processor: angular.processInlineTemplates,
+    languageOptions: { parserOptions: { projectService: true } },
     rules: {
-      "@angular-eslint/directive-selector": [
-        "error",
-        {
-          type: "attribute",
-          prefix: "app",
-          style: "camelCase",
-        },
+      '@angular-eslint/component-selector': [
+        'error',
+        { type: 'element', prefix: 'app', style: 'kebab-case' },
       ],
-      "@angular-eslint/component-selector": [
-        "error",
-        {
-          type: "element",
-          prefix: "app",
-          style: "kebab-case",
-        },
+      '@angular-eslint/directive-selector': [
+        'error',
+        { type: 'attribute', prefix: 'app', style: 'camelCase' },
       ],
     },
   },
   {
-    files: ["**/*.html"],
+    files: ['**/*.html'],
     extends: [
       ...angular.configs.templateRecommended,
       ...angular.configs.templateAccessibility,
+      prettierRecommended,
     ],
     rules: {
       // sbb-form-field handles label association internally
-      "@angular-eslint/template/label-has-associated-control": "off",
+      '@angular-eslint/template/label-has-associated-control': 'off',
     },
-  }
+  },
+  { files: ['**/*.css'], language: 'css/css', plugins: { css }, extends: [prettierRecommended] },
+  {
+    files: ['**/*.json'],
+    language: 'json/jsonc',
+    plugins: { json },
+    extends: [prettierRecommended],
+  },
 );

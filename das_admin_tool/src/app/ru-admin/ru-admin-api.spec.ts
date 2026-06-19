@@ -1,6 +1,6 @@
-import {TestBed} from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 
-import {RuAdminApi} from './ru-admin-api';
+import { RuAdminApi } from './ru-admin-api';
 
 describe('DasAdminApi', () => {
   let service: RuAdminApi;

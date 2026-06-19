@@ -1,12 +1,12 @@
-import {TestBed} from '@angular/core/testing';
-import {AppVersionsTable} from './app-versions-table';
-import {AppVersionsService} from '../app-versions.service';
-import {AppVersion} from '../../das-admin-api';
+import { TestBed } from '@angular/core/testing';
+import { AppVersionsTable } from './app-versions-table';
+import { AppVersionsService } from '../app-versions.service';
+import { AppVersion } from '../../das-admin-api';
 
 const mockAppVersionsService = {
   edit: vi.fn(),
   add: vi.fn(),
-  appVersionsResource: new Proxy({}, {get: () => vi.fn()}),
+  appVersionsResource: new Proxy({}, { get: () => vi.fn() }),
 };
 
 const appVersion: AppVersion = {
@@ -20,7 +20,7 @@ function createComponent(): AppVersionsTable {
   TestBed.configureTestingModule({
     providers: [
       AppVersionsTable,
-      {provide: AppVersionsService, useValue: mockAppVersionsService},
+      { provide: AppVersionsService, useValue: mockAppVersionsService },
     ],
   });
   return TestBed.inject(AppVersionsTable);

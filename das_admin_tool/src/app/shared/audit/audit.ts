@@ -6,11 +6,7 @@ import { Auditable } from './auditable';
 
 @Component({
   selector: 'app-audit',
-  imports: [
-    SbbTitleModule,
-    SbbStepperModule,
-    DatePipe,
-  ],
+  imports: [SbbTitleModule, SbbStepperModule, DatePipe],
   templateUrl: './audit.html',
   styleUrl: './audit.css',
 })

@@ -8,12 +8,12 @@ export enum UserRole {
   RU_ADMIN = 'ru_admin',
 }
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly oidcSecurityService = inject(OidcSecurityService);
-  public readonly isAuthenticated = computed(() => this.oidcSecurityService.authenticated().isAuthenticated);
+  public readonly isAuthenticated = computed(
+    () => this.oidcSecurityService.authenticated().isAuthenticated,
+  );
   private readonly router = inject(Router);
   private readonly userData = computed(() => this.oidcSecurityService.userData().userData);
   public readonly name = computed(() => this.userData().name);
@@ -23,12 +23,19 @@ export class AuthService {
     const tid = this.userData()?.tid;
     return !!tid && environment.allowedTenantIds.includes(tid);
   });
-  public readonly isAdmin = computed(() =>
-    this.isAllowedTenant() && this.hasAnyRole(UserRole.ADMIN) && this.userData()?.tid === environment.adminTenantId);
-  public readonly isRuAdmin = computed(() => this.isAllowedTenant() && (this.isAdmin() || this.hasAnyRole(UserRole.RU_ADMIN)));
+  public readonly isAdmin = computed(
+    () =>
+      this.isAllowedTenant()
+      && this.hasAnyRole(UserRole.ADMIN)
+      && this.userData()?.tid === environment.adminTenantId,
+  );
+  public readonly isRuAdmin = computed(
+    () => this.isAllowedTenant() && (this.isAdmin() || this.hasAnyRole(UserRole.RU_ADMIN)),
+  );
   private readonly roles = computed(() =>
-    (this.userData()?.roles ?? [])
-      .filter((role: string): role is UserRole => Object.values(UserRole).includes(role as UserRole))
+    (this.userData()?.roles ?? []).filter((role: string): role is UserRole =>
+      Object.values(UserRole).includes(role as UserRole),
+    ),
   );
 
   public login() {
@@ -41,7 +48,7 @@ export class AuthService {
   }
 
   public switchLogin() {
-    this.oidcSecurityService.authorize(undefined, {customParams: {prompt: 'select_account'}});
+    this.oidcSecurityService.authorize(undefined, { customParams: { prompt: 'select_account' } });
   }
 
   public navigateToUnauthorized() {
@@ -50,6 +57,6 @@ export class AuthService {
 
   private hasAnyRole(...roles: UserRole[]) {
     const userRoles = this.roles();
-    return roles.some(role => userRoles.includes(role));
+    return roles.some((role) => userRoles.includes(role));
   }
 }

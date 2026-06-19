@@ -5,7 +5,7 @@ import {
   FormGroup,
   ReactiveFormsModule,
   ValidationErrors,
-  Validators
+  Validators,
 } from '@angular/forms';
 import { SbbDatepickerModule } from '@sbb-esta/lyne-angular/datepicker';
 import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
@@ -34,13 +34,13 @@ export function displayPeriod(period: RuIndicationPeriod, localeId = 'de-CH'): s
 }
 
 const weekdays: { value: DayOfWeek; label: string }[] = [
-  {value: 'MONDAY', label: $localize`:@@weekday_monday:Mo`},
-  {value: 'TUESDAY', label: $localize`:@@weekday_tuesday:Di`},
-  {value: 'WEDNESDAY', label: $localize`:@@weekday_wednesday:Mi`},
-  {value: 'THURSDAY', label: $localize`:@@weekday_thursday:Do`},
-  {value: 'FRIDAY', label: $localize`:@@weekday_friday:Fr`},
-  {value: 'SATURDAY', label: $localize`:@@weekday_saturday:Sa`},
-  {value: 'SUNDAY', label: $localize`:@@weekday_sunday:So`},
+  { value: 'MONDAY', label: $localize`:@@weekday_monday:Mo` },
+  { value: 'TUESDAY', label: $localize`:@@weekday_tuesday:Di` },
+  { value: 'WEDNESDAY', label: $localize`:@@weekday_wednesday:Mi` },
+  { value: 'THURSDAY', label: $localize`:@@weekday_thursday:Do` },
+  { value: 'FRIDAY', label: $localize`:@@weekday_friday:Fr` },
+  { value: 'SATURDAY', label: $localize`:@@weekday_saturday:Sa` },
+  { value: 'SUNDAY', label: $localize`:@@weekday_sunday:So` },
 ];
 
 function periodFormValidator(control: AbstractControl): ValidationErrors | null {
@@ -53,7 +53,7 @@ function periodFormValidator(control: AbstractControl): ValidationErrors | null 
   }
 
   if (!validTo) {
-    return {validToRequired: true};
+    return { validToRequired: true };
   }
 
   if (!validFrom) {
@@ -61,7 +61,7 @@ function periodFormValidator(control: AbstractControl): ValidationErrors | null 
   }
 
   if (new Date(validFrom) >= new Date(validTo)) {
-    return {dateRangeInvalid: true};
+    return { dateRangeInvalid: true };
   }
 
   return null;
@@ -83,12 +83,15 @@ function periodFormValidator(control: AbstractControl): ValidationErrors | null 
 })
 export class PeriodsInput {
   control = input.required<FormControl<RuIndicationPeriod[]>>();
-  protected periodForm = new FormGroup({
-    validFrom: new FormControl<Date | null>(null, {validators: [Validators.required]}),
-    validTo: new FormControl<Date | null>(null),
-    weekdays: new FormControl<DayOfWeek[]>([], {nonNullable: true}),
-    isRange: new FormControl(false, {nonNullable: true}),
-  }, {validators: periodFormValidator});
+  protected periodForm = new FormGroup(
+    {
+      validFrom: new FormControl<Date | null>(null, { validators: [Validators.required] }),
+      validTo: new FormControl<Date | null>(null),
+      weekdays: new FormControl<DayOfWeek[]>([], { nonNullable: true }),
+      isRange: new FormControl(false, { nonNullable: true }),
+    },
+    { validators: periodFormValidator },
+  );
   protected readonly weekdays = weekdays;
   private readonly localeId = inject(LanguageProvider).currentLanguage.localeId;
 
@@ -96,17 +99,20 @@ export class PeriodsInput {
     this.applyRangeState(this.periodForm.controls.isRange.value);
     this.periodForm.controls.validFrom.valueChanges.subscribe((validFrom) => {
       if (!this.periodForm.controls.isRange.value) {
-        this.periodForm.controls.validTo.setValue(validFrom, {emitEvent: false});
+        this.periodForm.controls.validTo.setValue(validFrom, { emitEvent: false });
       }
       this.updateValidationState();
     });
     this.periodForm.controls.isRange.valueChanges.subscribe((isRange) => {
       const wasRange = this.periodForm.controls.validTo.enabled;
       if (isRange && !wasRange) {
-        this.periodForm.patchValue({
-          validTo: null,
-          weekdays: [],
-        }, {emitEvent: false});
+        this.periodForm.patchValue(
+          {
+            validTo: null,
+            weekdays: [],
+          },
+          { emitEvent: false },
+        );
       }
       this.applyRangeState(isRange);
       this.updateValidationState();
@@ -161,7 +167,8 @@ export class PeriodsInput {
   }
 
   protected onWeekdayChange(weekday: DayOfWeek, event: Event): void {
-    const checked = (event.target as HTMLInputElement | null)?.checked ?? !this.isWeekdaySelected(weekday);
+    const checked =
+      (event.target as HTMLInputElement | null)?.checked ?? !this.isWeekdaySelected(weekday);
     const current = this.periodForm.controls.weekdays.value;
     const next = checked
       ? Array.from(new Set([...current, weekday]))
@@ -171,26 +178,29 @@ export class PeriodsInput {
     this.periodForm.controls.weekdays.markAsTouched();
   }
 
-  protected readonly displayPeriod = (period: RuIndicationPeriod) => displayPeriod(period, this.localeId);
+  protected readonly displayPeriod = (period: RuIndicationPeriod) =>
+    displayPeriod(period, this.localeId);
 
   private applyRangeState(isRange: boolean): void {
     if (isRange) {
-      this.periodForm.controls.validTo.enable({emitEvent: false});
-      this.periodForm.controls.weekdays.enable({emitEvent: false});
+      this.periodForm.controls.validTo.enable({ emitEvent: false });
+      this.periodForm.controls.weekdays.enable({ emitEvent: false });
       return;
     }
 
-    this.periodForm.controls.validTo.setValue(this.periodForm.controls.validFrom.value, {emitEvent: false});
-    this.periodForm.controls.weekdays.setValue([], {emitEvent: false});
-    this.periodForm.controls.validTo.disable({emitEvent: false});
-    this.periodForm.controls.weekdays.disable({emitEvent: false});
+    this.periodForm.controls.validTo.setValue(this.periodForm.controls.validFrom.value, {
+      emitEvent: false,
+    });
+    this.periodForm.controls.weekdays.setValue([], { emitEvent: false });
+    this.periodForm.controls.validTo.disable({ emitEvent: false });
+    this.periodForm.controls.weekdays.disable({ emitEvent: false });
   }
 
   private updateValidationState(): void {
     const control = this.control();
-    control.updateValueAndValidity({onlySelf: true, emitEvent: false});
+    control.updateValueAndValidity({ onlySelf: true, emitEvent: false });
 
-    const errors: ValidationErrors = control.errors ? {...control.errors} : {};
+    const errors: ValidationErrors = control.errors ? { ...control.errors } : {};
     if (this.hasDraftValue()) {
       errors['draftInvalid'] = true;
     } else {
@@ -202,9 +212,11 @@ export class PeriodsInput {
   }
 
   private hasDraftValue(): boolean {
-    const {validFrom, validTo, weekdays, isRange} = this.periodForm.controls;
-    return validFrom.value !== null
+    const { validFrom, validTo, weekdays, isRange } = this.periodForm.controls;
+    return (
+      validFrom.value !== null
       || (isRange.value && validTo.value !== null)
-      || weekdays.value.length > 0;
+      || weekdays.value.length > 0
+    );
   }
 }

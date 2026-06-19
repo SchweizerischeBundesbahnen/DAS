@@ -1,22 +1,24 @@
-import {TestBed} from '@angular/core/testing';
-import {RuFeatureToggleDialog} from './ru-feature-toggle-dialog.component';
-import {SBB_OVERLAY_DATA} from '@sbb-esta/lyne-angular/core/overlay';
-import {RuFeature} from '../../ru-admin-api';
-import {Company, CompanyService} from '../../../shared/companies-input/company.service';
+import { TestBed } from '@angular/core/testing';
+import { RuFeatureToggleDialog } from './ru-feature-toggle-dialog.component';
+import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core/overlay';
+import { RuFeature } from '../../ru-admin-api';
+import { Company, CompanyService } from '../../../shared/companies-input/company.service';
 
 const companies: Company[] = [
-  {code: '1085', shortName: 'SBB'},
-  {code: '1087', shortName: 'BLS'},
+  { code: '1085', shortName: 'SBB' },
+  { code: '1087', shortName: 'BLS' },
 ];
 
 function createDialog(data?: RuFeature): RuFeatureToggleDialog {
   TestBed.configureTestingModule({
-    providers: [RuFeatureToggleDialog, {provide: SBB_OVERLAY_DATA, useValue: data ?? null}],
+    providers: [RuFeatureToggleDialog, { provide: SBB_OVERLAY_DATA, useValue: data ?? null }],
   });
   const companyService = TestBed.inject(CompanyService);
-  ((companyService as unknown) as {
-    companiesResource: { hasValue: () => boolean; value: () => { data: Company[] } };
-  }).companiesResource = {hasValue: () => true, value: () => ({data: companies})};
+  (
+    companyService as unknown as {
+      companiesResource: { hasValue: () => boolean; value: () => { data: Company[] } };
+    }
+  ).companiesResource = { hasValue: () => true, value: () => ({ data: companies }) };
   return TestBed.inject(RuFeatureToggleDialog);
 }
 
@@ -56,7 +58,7 @@ describe('RuFeatureToggleDialog', () => {
     dialog['ruFeatureForm'].get('companyCode')!.setValue('');
     dialog['ruFeatureForm'].get('companyCode')!.markAsTouched();
 
-    expect(dialog['ruFeatureForm'].get('companyCode')!.errors).toEqual({required: true});
+    expect(dialog['ruFeatureForm'].get('companyCode')!.errors).toEqual({ required: true });
   });
 
   it('companyCode should be valid when it matches a known company', () => {

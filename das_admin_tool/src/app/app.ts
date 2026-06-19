@@ -1,18 +1,18 @@
-import {Component, inject, OnInit, signal} from '@angular/core';
-import {NavigationEnd, Router, RouterOutlet} from '@angular/router';
-import {Header} from './header/header';
-import {IconSidebar} from './icon-sidebar/icon-sidebar';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { Header } from './header/header';
+import { IconSidebar } from './icon-sidebar/icon-sidebar';
 import packageJson from '../../package.json';
-import {AuthService} from './shared/auth-service';
-import {SbbTitleModule} from '@sbb-esta/lyne-angular/title';
-import {SbbNotificationModule} from '@sbb-esta/lyne-angular/notification';
-import {SbbLink} from '@sbb-esta/lyne-angular/link/link';
+import { AuthService } from './shared/auth-service';
+import { SbbTitleModule } from '@sbb-esta/lyne-angular/title';
+import { SbbNotificationModule } from '@sbb-esta/lyne-angular/notification';
+import { SbbLink } from '@sbb-esta/lyne-angular/link/link';
 
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, Header, IconSidebar, SbbTitleModule, SbbNotificationModule, SbbLink],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrl: './app.css',
 })
 export class App implements OnInit {
   protected isAdBlockerDetected = signal(this.isInstanaBlockedByAdBlocker);
@@ -29,11 +29,10 @@ export class App implements OnInit {
     if (this.authService.isAuthenticated()) {
       ineum('user', this.authService.oid());
     }
-    this.router.events
-      .subscribe(event => {
-        if (event instanceof NavigationEnd && typeof ineum !== 'undefined') {
-          ineum('page', event.url);
-        }
-      });
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd && typeof ineum !== 'undefined') {
+        ineum('page', event.url);
+      }
+    });
   }
 }

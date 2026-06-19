@@ -1,15 +1,11 @@
-import {Component, input, output, viewChild} from '@angular/core';
-import {SbbSecondaryButton} from '@sbb-esta/lyne-angular/button/secondary-button';
-import {SbbTransparentButton} from '@sbb-esta/lyne-angular/button/transparent-button';
-import {SbbCompactPaginator} from '@sbb-esta/lyne-angular/paginator/compact-paginator';
+import { Component, input, output, viewChild } from '@angular/core';
+import { SbbSecondaryButton } from '@sbb-esta/lyne-angular/button/secondary-button';
+import { SbbTransparentButton } from '@sbb-esta/lyne-angular/button/transparent-button';
+import { SbbCompactPaginator } from '@sbb-esta/lyne-angular/paginator/compact-paginator';
 
 @Component({
   selector: 'app-table-bottom-bar',
-  imports: [
-    SbbCompactPaginator,
-    SbbSecondaryButton,
-    SbbTransparentButton,
-  ],
+  imports: [SbbCompactPaginator, SbbSecondaryButton, SbbTransparentButton],
   templateUrl: './table-bottom-bar.html',
   styleUrl: './table-bottom-bar.css',
 })

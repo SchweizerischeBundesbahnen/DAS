@@ -7,12 +7,7 @@ import { SbbLoadingIndicatorCircleModule } from '@sbb-esta/lyne-angular/loading-
 
 @Component({
   selector: 'app-ru-indications',
-  imports: [
-    SbbTitleModule,
-    SbbButtonModule,
-    SbbLoadingIndicatorCircleModule,
-    RuIndicationsTable,
-  ],
+  imports: [SbbTitleModule, SbbButtonModule, SbbLoadingIndicatorCircleModule, RuIndicationsTable],
   templateUrl: './ru-indications.html',
   styleUrl: './ru-indications.css',
 })

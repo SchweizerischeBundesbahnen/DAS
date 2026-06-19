@@ -14,9 +14,9 @@ const mockOidc: Partial<OidcSecurityService> = {
       preferred_username: 'user@example.com',
       roles: ['ru_admin'],
       tid: '2cda5d11-f0ac-46b3-967d-af1b2e1bd01a',
-    }
+    },
   } as UserDataResult),
-  authenticated: signal({isAuthenticated: true} as AuthenticatedResult),
+  authenticated: signal({ isAuthenticated: true } as AuthenticatedResult),
   logoffLocalMultiple: () => Promise.resolve(true),
 };
 
@@ -32,11 +32,10 @@ describe('Header', () => {
     await TestBed.configureTestingModule({
       imports: [Header],
       providers: [
-        {provide: OidcSecurityService, useValue: mockOidc},
-        {provide: Router, useValue: mockRouter}
+        { provide: OidcSecurityService, useValue: mockOidc },
+        { provide: Router, useValue: mockRouter },
       ],
-    })
-      .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(Header);
     component = fixture.componentInstance;
@@ -53,11 +52,13 @@ describe('Header', () => {
     const compiled = fixture.nativeElement as HTMLElement;
     const headerInfo = compiled.querySelector('.sbb-header-info');
     expect(headerInfo?.querySelector('strong')?.textContent).toContain('DAS Admin-Tool');
-    expect(headerInfo?.querySelector("span")?.textContent).toContain(`V. ${packageJson.version}`);
+    expect(headerInfo?.querySelector('span')?.textContent).toContain(`V. ${packageJson.version}`);
   });
 
   it('should render name', () => {
-    expect(fixture.nativeElement.querySelector('sbb-header-button:nth-last-of-type(2)').textContent).toContain('User');
+    expect(
+      fixture.nativeElement.querySelector('sbb-header-button:nth-last-of-type(2)').textContent,
+    ).toContain('User');
   });
 
   it('shoud render email and roles', () => {

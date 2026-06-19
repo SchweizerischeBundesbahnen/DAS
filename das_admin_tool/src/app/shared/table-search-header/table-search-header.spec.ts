@@ -1,15 +1,15 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {ComponentRef} from '@angular/core';
-import {FormControl} from '@angular/forms';
-import {TableSearchHeader} from './table-search-header';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentRef } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { TableSearchHeader } from './table-search-header';
 
 describe('TableSearchHeader', () => {
   let component: TableSearchHeader;
   let componentRef: ComponentRef<TableSearchHeader>;
   let fixture: ComponentFixture<TableSearchHeader>;
 
-  const searchControl = new FormControl('', {nonNullable: true});
-  const languageControl = new FormControl('de', {nonNullable: true});
+  const searchControl = new FormControl('', { nonNullable: true });
+  const languageControl = new FormControl('de', { nonNullable: true });
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

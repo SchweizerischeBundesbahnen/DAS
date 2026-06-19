@@ -5,38 +5,53 @@ import { firstValueFrom } from 'rxjs';
 import { BaseDialogService } from '../../ru-admin/base-dialog.service';
 import { HttpErrorResponse } from '@angular/common/http';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class AppVersionsService extends BaseDialogService {
   private readonly dasAdminApi = inject(DasAdminApi);
   readonly appVersionsResource = this.dasAdminApi.appVersions;
 
   async edit(appVersion: AppVersion) {
-    const event = await firstValueFrom(this.dialogService.open<AppVersionDialog, VersionDialogEditResult>(AppVersionDialog, {data: appVersion}).afterClosed);
+    const event = await firstValueFrom(
+      this.dialogService.open<AppVersionDialog, VersionDialogEditResult>(AppVersionDialog, {
+        data: appVersion,
+      }).afterClosed,
+    );
     if (event.result === 'delete') {
-      await this.runMutation(this.dasAdminApi.deleteAppVersion(appVersion.id!), $localize`:@@app_versions_toast_delete_success:Die blockierte App Version wurde erfolgreich gelöscht.`)
+      await this.runMutation(
+        this.dasAdminApi.deleteAppVersion(appVersion.id!),
+        $localize`:@@app_versions_toast_delete_success:Die blockierte App Version wurde erfolgreich gelöscht.`,
+      );
     } else if (event.result && appVersion.id) {
-      await this.runMutation(this.dasAdminApi.putAppVersion(appVersion.id, event.result), $localize`:@@app_versions_toast_edit_success:Die blockierte App Version wurde erfolgreich gespeichert.`);
+      await this.runMutation(
+        this.dasAdminApi.putAppVersion(appVersion.id, event.result),
+        $localize`:@@app_versions_toast_edit_success:Die blockierte App Version wurde erfolgreich gespeichert.`,
+      );
     }
   }
 
   async add() {
-    const event = await firstValueFrom(this.dialogService.open<AppVersionDialog, AppVersion>(AppVersionDialog).afterClosed);
+    const event = await firstValueFrom(
+      this.dialogService.open<AppVersionDialog, AppVersion>(AppVersionDialog).afterClosed,
+    );
     if (event.result) {
-      await this.runMutation(this.dasAdminApi.postAppVersion(event.result), $localize`:@@app_versions_toast_create_success:Die blockierte App Version wurde erfolgreich erstellt.`);
+      await this.runMutation(
+        this.dasAdminApi.postAppVersion(event.result),
+        $localize`:@@app_versions_toast_create_success:Die blockierte App Version wurde erfolgreich erstellt.`,
+      );
     }
   }
 
   protected override reload(): void {
-    this.dasAdminApi.appVersions.reload()
+    this.dasAdminApi.appVersions.reload();
   }
 
   protected override handleApiError(e: unknown) {
     if (e instanceof HttpErrorResponse && e.error.status === 409) {
-      this.toastService.error($localize`:@@app_versions_toast_conflict_error:Diese App Version existiert bereits.`);
+      this.toastService.error(
+        $localize`:@@app_versions_toast_conflict_error:Diese App Version existiert bereits.`,
+      );
     } else {
-      super.handleApiError(e)
+      super.handleApiError(e);
     }
   }
 }
