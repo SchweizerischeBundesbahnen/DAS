@@ -21,7 +21,7 @@ export class App implements OnInit {
 
   private get isInstanaBlockedByAdBlocker(): boolean {
     const pageLoadId = ineum('getPageLoadId');
-    return pageLoadId == null;
+    return pageLoadId === undefined;
   }
 
   ngOnInit(): void {

@@ -24,6 +24,8 @@ export default defineConfig(
     processor: angular.processInlineTemplates,
     languageOptions: { parserOptions: { projectService: true } },
     rules: {
+      eqeqeq: 'error',
+      'max-depth': 'error',
       'no-restricted-imports': [
         'error',
         {
@@ -46,6 +48,7 @@ export default defineConfig(
           ],
         },
       ],
+      'prefer-template': 'error',
       '@typescript-eslint/dot-notation': [
         'error',
         // Allowed for tests and environment variables

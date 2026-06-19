@@ -96,7 +96,7 @@ export class RuIndicationDialog {
   });
 
   constructor() {
-    this.isEdit = this.dialogData.ruIndication?.id != null;
+    this.isEdit = this.dialogData.ruIndication?.id !== undefined;
     this.title = this.isEdit
       ? $localize`:@@ru_indications_dialog_title_edit:Hinweis bearbeiten`
       : $localize`:@@ru_indications_dialog_title_create:Hinweis erfassen`;
