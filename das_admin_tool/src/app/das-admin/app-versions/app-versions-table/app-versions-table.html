@@ -1,12 +1,12 @@
 <sbb-table-wrapper>
   <table
-    [dataSource]="dataSource"
     class="table-truncated"
     fixedLayout
     sbb-table
     sbbSort
     sbbSortActive="version"
     sbbSortDirection="desc"
+    [dataSource]="dataSource"
   >
     <ng-container sbbColumnDef="version">
       <th
@@ -28,7 +28,7 @@
         >Minimale Version</th
       >
       <td *sbbCellDef="let row" sbb-cell>
-        <sbb-toggle-check [checked]="row.minimalVersion" disabled labelPosition="after">
+        <sbb-toggle-check disabled labelPosition="after" [checked]="row.minimalVersion">
           @if (row.minimalVersion) {
             <span i18n="@@app_versions_table_value_true">Ja</span>
           } @else {
@@ -74,7 +74,7 @@
     <ng-container sbbColumnDef="action">
       <th *sbbHeaderCellDef sbb-header-cell></th>
       <td *sbbCellDef="let appVersion" sbb-cell>
-        <sbb-mini-button (click)="edit(appVersion)" iconName="pen-small"></sbb-mini-button>
+        <sbb-mini-button iconName="pen-small" (click)="edit(appVersion)" />
       </td>
     </ng-container>
 
@@ -83,4 +83,4 @@
   </table>
 </sbb-table-wrapper>
 
-<app-table-bottom-bar (addClicked)="add()" [addLabel]="addLabel" [showDelete]="false" />
+<app-table-bottom-bar [addLabel]="addLabel" [showDelete]="false" (addClicked)="add()" />

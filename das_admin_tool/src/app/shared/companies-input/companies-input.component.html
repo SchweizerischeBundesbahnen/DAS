@@ -2,10 +2,10 @@
   <label for="companies" i18n="@@form_companies_label">{{ label() }}</label>
   @if (multiselect()) {
     <sbb-chip-group
+      name="companies"
       [displayWith]="codeToName"
       [formControl]="multiControl()"
       [separatorKeys]="[]"
-      name="companies"
     >
       <!-- stopPropagation because chip-group would get marked dirty otherwise -->
       <input

@@ -1,15 +1,16 @@
 <app-base-dialog
+  i18n-stepLabel="@@company_dialog_step_label"
+  stepLabel="EVU"
   [data]="dialogData"
   [dialogClose]="companyForm.value"
   [dialogTitle]="dialogTitle"
   [saveDisabled]="companyForm.invalid"
-  i18n-stepLabel="@@company_dialog_step_label"
-  stepLabel="EVU"
 >
   <form [formGroup]="companyForm">
     <sbb-form-field errorSpace="reserve" class="full-width">
-      <label i18n="@@company_form_code_label">Code</label>
+      <label for="code" i18n="@@company_form_code_label">Code</label>
       <input formControlName="code" />
+      <!-- eslint-disable-next-line @angular-eslint/template/no-non-null-assertion -->
       @let codeField = companyForm.get('code')!;
       @if (codeField.touched && codeField.hasError('required')) {
         <sbb-error i18n="@@company_form_field_error_required">Feld darf nicht leer sein</sbb-error>
@@ -21,15 +22,16 @@
       }
     </sbb-form-field>
     <sbb-form-field errorSpace="reserve" class="full-width">
-      <label i18n="@@company_form_short_name_label">Kurzname (NeTS)</label>
+      <label for="shortName" i18n="@@company_form_short_name_label">Kurzname (NeTS)</label>
       <input formControlName="shortName" />
+      <!-- eslint-disable-next-line @angular-eslint/template/no-non-null-assertion -->
       @let shortNameField = companyForm.get('shortName')!;
       @if (shortNameField.touched && shortNameField.hasError('required')) {
         <sbb-error i18n="@@company_form_field_error_required">Feld darf nicht leer sein</sbb-error>
       }
     </sbb-form-field>
     <sbb-form-field errorSpace="reserve" class="full-width">
-      <label i18n="@@company_form_tenant_id_label">Tenant Id</label>
+      <label for="tenantId" i18n="@@company_form_tenant_id_label">Tenant Id</label>
       <sbb-select formControlName="tenantId">
         @for (tenant of tenants(); track tenant.tenantId) {
           <sbb-option [value]="tenant.tenantId">{{
@@ -37,6 +39,7 @@
           }}</sbb-option>
         }
       </sbb-select>
+      <!-- eslint-disable-next-line @angular-eslint/template/no-non-null-assertion -->
       @let tenantIdField = companyForm.get('tenantId')!;
       @if (tenantIdField.touched && tenantIdField.hasError('required')) {
         <sbb-error i18n="@@company_form_field_error_required">Feld darf nicht leer sein</sbb-error>

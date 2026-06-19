@@ -1,21 +1,19 @@
 <sbb-dialog-title>{{ dialogTitle() }}</sbb-dialog-title>
-<sbb-dialog-close-button></sbb-dialog-close-button>
+<sbb-dialog-close-button />
 <sbb-dialog-content>
   @if (isEdit()) {
-    <sbb-stepper (stepchange)="stepchange.set($event)" linear>
+    <sbb-stepper linear (stepchange)="stepchange.set($event)">
       <sbb-step-label>{{ stepLabel() }}</sbb-step-label>
       <sbb-step>
-        <ng-container *ngTemplateOutlet="content"></ng-container>
+        <ng-container *ngTemplateOutlet="content" />
       </sbb-step>
       <sbb-step-label disabled i18n="@@dialog_step_label_audit">Stammdaten</sbb-step-label>
       <sbb-step>
         <app-audit [data]="data()" />
       </sbb-step>
     </sbb-stepper>
-  }
-
-  @if (!isEdit()) {
-    <ng-container *ngTemplateOutlet="content"></ng-container>
+  } @else {
+    <ng-container *ngTemplateOutlet="content" />
   }
 </sbb-dialog-content>
 
@@ -37,14 +35,14 @@
       >
     }
     @if (!isLastStep()) {
-      <sbb-button (click)="next()" [disabled]="isStepDisabled()" i18n="@@dialog_button_next"
+      <sbb-button i18n="@@dialog_button_next" [disabled]="isStepDisabled()" (click)="next()"
         >Weiter</sbb-button
       >
     } @else {
       <sbb-button
+        i18n="@@dialog_button_save"
         [disabled]="saveDisabled()"
         [sbb-dialog-close]="dialogClose()"
-        i18n="@@dialog_button_save"
         >Speichern</sbb-button
       >
     }

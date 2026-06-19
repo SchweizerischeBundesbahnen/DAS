@@ -5,8 +5,8 @@
     <p i18n="@@app_versions_empty_state">Noch keine blockierten App Versionen erfasst.</p>
     <sbb-secondary-button
       iconName="plus-small"
-      (click)="appVersionsService.add()"
       i18n="@@app_versions_button_create"
+      (click)="appVersionsService.add()"
       >App Version blockieren</sbb-secondary-button
     >
   } @else {
@@ -15,5 +15,5 @@
 } @else if (appVersions.error()) {
   <p i18n="@@app_versions_error_loading">Fehler beim Laden der App Versionen</p>
 } @else if (appVersions.isLoading()) {
-  <sbb-loading-indicator-circle></sbb-loading-indicator-circle>
+  <sbb-loading-indicator-circle />
 }

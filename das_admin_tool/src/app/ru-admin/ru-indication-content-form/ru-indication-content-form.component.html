@@ -5,7 +5,7 @@
     }}</sbb-tab-label>
     <sbb-tab [formGroupName]="language.path">
       <sbb-form-field errorSpace="reserve" class="full-width">
-        <label i18n="@@ru_indications_form_title_label">Titel</label>
+        <label for="title" i18n="@@ru_indications_form_title_label">Titel</label>
         <input formControlName="title" />
         @let titleField = form().get(`${language.path}.title`);
         @if (
@@ -16,12 +16,12 @@
         }
       </sbb-form-field>
       <sbb-form-field errorSpace="reserve" class="full-width">
-        <label i18n="@@ru_indications_form_text_label">Text</label>
+        <label for="text" i18n="@@ru_indications_form_text_label">Text</label>
         <textarea #text formControlName="text"></textarea>
         <sbb-mini-button
-          (click)="insertLink(language.path, text)"
           iconName="link-small"
           sbb-tooltip="Link"
+          (click)="insertLink(language.path, text)"
         />
         @let textField = form().get(`${language.path}.text`);
         @if (form().touched && textField?.hasError('languageRequired')) {

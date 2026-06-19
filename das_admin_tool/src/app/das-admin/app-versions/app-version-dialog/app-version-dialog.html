@@ -1,12 +1,12 @@
 <app-base-dialog
+  i18n-stepLabel="@@app_version_dialog_step_label"
+  stepLabel="App Version"
   [data]="dialogData"
   [dialogClose]="formValue"
   [dialogTitle]="title"
   [saveDisabled]="versionForm.invalid"
-  i18n-stepLabel="@@app_version_dialog_step_label"
-  stepLabel="App Version"
 >
-  <form [formGroup]="versionForm" class="form">
+  <form class="form" [formGroup]="versionForm">
     <sbb-form-field errorSpace="reserve">
       <label for="version" i18n="@@app_versions_form_version_label">App Version</label>
       <input formControlName="version" placeholder="0.0.0" required />
@@ -29,7 +29,7 @@
         i18n="@@app_versions_form_minimal_version_label"
         >Minimale Version</sbb-toggle-check
       >
-      <sbb-mini-button iconName="circle-information-small" id="popover-trigger"></sbb-mini-button>
+      <sbb-mini-button iconName="circle-information-small" id="popover-trigger" />
       <sbb-popover hideCloseButton="true" hoverTrigger="true" trigger="popover-trigger">
         <sbb-title i18n="@@app_versions_form_minimal_version_title" level="2" visualLevel="6"
           >Minimale Version</sbb-title
@@ -41,11 +41,11 @@
     </div>
     <sbb-form-field optional>
       <label for="expiryDate" i18n="@@app_versions_form_expiry_date_label">Gültig ab</label>
-      <sbb-datepicker-previous-day></sbb-datepicker-previous-day>
-      <sbb-date-input [min]="minDate" formControlName="expiryDate"></sbb-date-input>
-      <sbb-datepicker></sbb-datepicker>
-      <sbb-datepicker-toggle></sbb-datepicker-toggle>
-      <sbb-datepicker-next-day></sbb-datepicker-next-day>
+      <sbb-datepicker-previous-day />
+      <sbb-date-input formControlName="expiryDate" [min]="minDate" />
+      <sbb-datepicker />
+      <sbb-datepicker-toggle />
+      <sbb-datepicker-next-day />
     </sbb-form-field>
   </form>
 </app-base-dialog>

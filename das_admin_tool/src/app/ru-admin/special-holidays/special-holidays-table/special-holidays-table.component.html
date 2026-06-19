@@ -1,28 +1,28 @@
 <app-table-search-header [searchControl]="searchControl" />
 <sbb-table-wrapper>
   <table
-    [dataSource]="dataSource"
     class="table-truncated"
     fixedLayout
     sbb-table
     sbbSort
     sbbSortActive="date"
     sbbSortDirection="asc"
+    [dataSource]="dataSource"
   >
     <ng-container sbbColumnDef="select">
       <th *sbbHeaderCellDef sbb-header-cell>
         <sbb-checkbox
-          (change)="$event ? parentToggle() : null"
           [checked]="selection.hasValue() && isAllSelected()"
           [indeterminate]="selection.hasValue() && !isAllSelected()"
-        ></sbb-checkbox>
+          (change)="$event ? parentToggle() : null"
+        />
       </th>
       <td *sbbCellDef="let row" sbb-cell>
         <sbb-checkbox
+          [checked]="selection.isSelected(row)"
           (change)="$event ? selection.toggle(row) : null"
           (click)="$event.stopPropagation()"
-          [checked]="selection.isSelected(row)"
-        ></sbb-checkbox>
+        />
       </td>
     </ng-container>
 
@@ -99,7 +99,7 @@
     <ng-container sbbColumnDef="action">
       <th *sbbHeaderCellDef sbb-header-cell></th>
       <td *sbbCellDef="let holiday" sbb-cell>
-        <sbb-mini-button (click)="edit(holiday)" iconName="pen-small"></sbb-mini-button>
+        <sbb-mini-button iconName="pen-small" (click)="edit(holiday)" />
       </td>
     </ng-container>
 
@@ -109,9 +109,9 @@
 </sbb-table-wrapper>
 
 <app-table-bottom-bar
-  (addClicked)="add()"
-  (deleteClicked)="deleteSelected()"
   [deleteDisabled]="selection.isEmpty()"
   [deleting]="isDeleting"
   [selectedCount]="selection.selected.length"
+  (addClicked)="add()"
+  (deleteClicked)="deleteSelected()"
 />

@@ -1,10 +1,10 @@
 <app-base-dialog
+  i18n-stepLabel="@@ru_indication_templates_dialog_step_label"
+  stepLabel="Titel und Text"
   [data]="dialogData"
   [dialogClose]="formValue"
   [dialogTitle]="title"
   [saveDisabled]="ruIndicationTemplateForm.invalid"
-  i18n-stepLabel="@@ru_indication_templates_dialog_step_label"
-  stepLabel="Titel und Text"
 >
   <form [formGroup]="ruIndicationTemplateForm">
     <div class="category">
