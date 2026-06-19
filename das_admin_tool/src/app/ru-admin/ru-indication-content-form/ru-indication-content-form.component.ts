@@ -6,14 +6,20 @@ import { SbbTab, SbbTabGroup, SbbTabLabel } from '@sbb-esta/lyne-angular/tabs';
 import { SbbTooltipDirective } from '@sbb-esta/lyne-angular/tooltip';
 import { LanguageCode, LanguageProvider } from '../../shared/language-provider';
 import { UpperCasePipe } from '@angular/common';
-import { RuIndication, RuIndicationContent, RuIndicationLanguageContent } from '../ru-admin-api';
+import { RuIndicationContent, RuIndicationLanguageContent } from '../ru-admin-api';
 import {
   languageRequired,
   oneLanguageRequired,
   titleRequired,
 } from '../../shared/form-validators.util';
 
-interface LanguageContentForm {
+export interface LanguageContentForm {
+  de: FormGroup<ContentForm>;
+  fr: FormGroup<ContentForm>;
+  it: FormGroup<ContentForm>;
+}
+
+interface ContentForm {
   title: FormControl<string>;
   text: FormControl<string>;
 }
@@ -22,7 +28,9 @@ interface ContentFormOptions {
   textRequired?: boolean;
 }
 
-export function createContentFormGroup(options: ContentFormOptions = {}) {
+export function createContentFormGroup(
+  options: ContentFormOptions = {},
+): FormGroup<LanguageContentForm> {
   const { textRequired = true } = options;
   return new FormGroup(
     {
@@ -34,12 +42,12 @@ export function createContentFormGroup(options: ContentFormOptions = {}) {
   );
 }
 
-export function contentFormValue(form: FormGroup): Partial<RuIndicationContent> {
-  const mapLanguage = (
-    language: keyof RuIndication['content'],
-  ): RuIndicationLanguageContent | undefined => {
-    const title = form.get(language)?.get('title')?.value?.trim() ?? '';
-    const text = form.get(language)?.get('text')?.value?.trim() ?? '';
+export function contentFormValue(
+  form: FormGroup<LanguageContentForm>,
+): Partial<RuIndicationContent> {
+  const mapLanguage = (language: LanguageCode): RuIndicationLanguageContent | undefined => {
+    const title = form.get(`${language}.title`)!.value.trim() ?? '';
+    const text = form.get(`${language}.text`)!.value.trim() ?? '';
     if (!title && !text) {
       return undefined;
     }
@@ -53,7 +61,7 @@ export function contentFormValue(form: FormGroup): Partial<RuIndicationContent> 
   };
 }
 
-function createLanguageGroup(textRequired: boolean): FormGroup<LanguageContentForm> {
+function createLanguageGroup(textRequired: boolean): FormGroup<ContentForm> {
   return new FormGroup(
     {
       title: new FormControl('', { nonNullable: true }),
@@ -80,16 +88,16 @@ function createLanguageGroup(textRequired: boolean): FormGroup<LanguageContentFo
   styleUrl: './ru-indication-content-form.component.css',
 })
 export class RuIndicationContentForm {
-  form = input.required<FormGroup>();
+  form = input.required<FormGroup<LanguageContentForm>>();
   protected readonly languageProvider = inject(LanguageProvider);
 
   protected isLanguageEmpty(language: LanguageCode): boolean {
-    const titleValue = this.form().get(language)?.get('title')?.value ?? '';
+    const titleValue = this.form().get(`${language}.title`)!.value ?? '';
     return !titleValue.trim();
   }
 
   protected insertLink(language: LanguageCode, textarea: HTMLTextAreaElement): void {
-    const textControl = this.form().get(`${language}.text`) as FormControl<string> | null;
+    const textControl = this.form().get(`${language}.text`);
     if (!textControl) {
       return;
     }

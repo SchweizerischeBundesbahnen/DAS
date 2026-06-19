@@ -29,7 +29,7 @@ export type CompanyDialogEditResult = InternalCompany | 'delete';
 export class CompanyDialog {
   protected readonly dialogTitle: string;
   protected readonly dialogData =
-    inject<InternalCompany>(SBB_OVERLAY_DATA, { optional: true }) || undefined;
+    inject<InternalCompany>(SBB_OVERLAY_DATA, { optional: true }) ?? undefined;
 
   private readonly formBuilder = inject(NonNullableFormBuilder);
   protected companyForm = this.formBuilder.group<FormGroupCompany>({

@@ -18,7 +18,7 @@ export class CompanyService extends BaseDialogService {
     );
     if (result === 'delete') {
       await this.runMutation(
-        this.dasAdminApi.deleteCompanyById(company.id!),
+        this.dasAdminApi.deleteCompanyById(company.id),
         $localize`:@@companies_toast_delete_success:Die EVU wurde erfolgreich gelöscht.`,
       );
     } else if (result && company.id) {
@@ -46,7 +46,7 @@ export class CompanyService extends BaseDialogService {
   }
 
   protected override handleApiError(e: unknown) {
-    if (e instanceof HttpErrorResponse && e.error.status === 409) {
+    if (e instanceof HttpErrorResponse && e.status === 409) {
       this.toastService.error(
         $localize`:@@companies_toast_conflict_error:Diese EVU existiert bereits.`,
       );

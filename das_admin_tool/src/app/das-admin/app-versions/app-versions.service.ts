@@ -46,7 +46,7 @@ export class AppVersionsService extends BaseDialogService {
   }
 
   protected override handleApiError(e: unknown) {
-    if (e instanceof HttpErrorResponse && e.error.status === 409) {
+    if (e instanceof HttpErrorResponse && e.status === 409) {
       this.toastService.error(
         $localize`:@@app_versions_toast_conflict_error:Diese App Version existiert bereits.`,
       );

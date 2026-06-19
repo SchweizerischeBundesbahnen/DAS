@@ -28,16 +28,17 @@ export function displayTrainNumberFilter(value: RuIndicationTrainNumberFilter): 
 }
 
 function numberRangeValidator(control: AbstractControl): ValidationErrors | null {
-  if (!control.value) {
+  const value = (control as FormControl<string>).value;
+  if (!value) {
     return null;
   }
 
   const regex = /^\d+(-\d+)?$/;
-  if (!regex.test(control.value)) {
+  if (!regex.test(value)) {
     return { invalidFormat: true };
   }
 
-  const [first, second] = control.value.split('-').map(Number);
+  const [first, second] = value.split('-').map(Number);
 
   if (first >= second) {
     return { rangeInvalid: true };

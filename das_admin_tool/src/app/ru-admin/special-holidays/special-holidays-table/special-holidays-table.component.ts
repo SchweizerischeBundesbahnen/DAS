@@ -70,7 +70,7 @@ export class SpecialHolidaysTable {
     this.searchControl.valueChanges
       .pipe(startWith(this.searchControl.value), takeUntilDestroyed())
       .subscribe((search) => {
-        this.dataSource.filter = { search } as SpecialHolidayFilter;
+        this.dataSource.filter = { search };
       });
   }
 
@@ -121,8 +121,8 @@ export class SpecialHolidaysTable {
         || data.date?.toString().toLowerCase().includes(search)
         || this.scheduleTypeLabel(data.scheduleType).toLowerCase().includes(search)
         || this.companiesValue(data.companies).toLowerCase().includes(search)
-        || data.lastModifiedBy?.toLowerCase().includes(search)
-        || data.lastModifiedAt?.toString().toLowerCase().includes(search))
+        || (data.lastModifiedBy ?? '').toLowerCase().includes(search)
+        || (data.lastModifiedAt ?? '').toString().toLowerCase().includes(search))
       ?? false
     );
   }

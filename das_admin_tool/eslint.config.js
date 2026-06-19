@@ -13,14 +13,42 @@ export default defineConfig(
     files: ['**/*.ts'],
     extends: [
       js.configs.recommended,
-      ...ts.configs.recommended,
-      ...ts.configs.stylistic,
+      ...ts.configs.recommendedTypeChecked,
+      ...ts.configs.stylisticTypeChecked,
       ...angular.configs.tsRecommended,
       prettierRecommended,
     ],
     processor: angular.processInlineTemplates,
     languageOptions: { parserOptions: { projectService: true } },
     rules: {
+      '@typescript-eslint/dot-notation': [
+        'error',
+        // Allowed for tests and environment variables
+        {
+          allowPrivateClassPropertyAccess: true,
+          allowProtectedClassPropertyAccess: true,
+          allowIndexSignaturePropertyAccess: true,
+        },
+      ],
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        // Allowed for underline variables
+        {
+          vars: 'all',
+          varsIgnorePattern: '^_',
+          args: 'all',
+          argsIgnorePattern: '^_',
+          caughtErrors: 'all',
+          caughtErrorsIgnorePattern: '^_',
+        },
+      ],
+      '@typescript-eslint/unbound-method': [
+        'error',
+        {
+          // Ignored because form validators get reported
+          ignoreStatic: true,
+        },
+      ],
       '@angular-eslint/component-selector': [
         'error',
         { type: 'element', prefix: 'app', style: 'kebab-case' },

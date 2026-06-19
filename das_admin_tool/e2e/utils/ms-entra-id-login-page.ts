@@ -5,8 +5,8 @@ const INPUT_PASSWORD = '[type=password]';
 const BUTTON_SIGN_IN = 'input:has-text("Sign in")';
 const BUTTON_NEXT = 'text=Next';
 const MAX_LOGIN_TIME = 120000;
-const LOGIN_USERNAME = process.env.E2E_LOGIN_USERNAME || '';
-const LOGIN_PASSWORD = process.env.E2E_LOGIN_PASSWORD || '';
+const LOGIN_USERNAME = process.env['E2E_LOGIN_USERNAME'] ?? '';
+const LOGIN_PASSWORD = process.env['E2E_LOGIN_PASSWORD'] ?? '';
 
 /**
  * Page Object Model for an Entra ID login page
@@ -27,8 +27,7 @@ export class MsEntraIdLoginPage {
     try {
       // Check if automatically redirected
       await this.browser.getPage().waitForURL(this.baseURL, { timeout: 2000 });
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (err: unknown) {
+    } catch (_: unknown) {
       await this.checkPasswordError(interactive);
       await this.check2ndFactorAuth();
       await this.browser.getPage().waitForURL(this.baseURL);

@@ -2,6 +2,7 @@ import { Component, computed, effect, input, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import {
   contentFormValue,
+  LanguageContentForm,
   RuIndicationContentForm,
 } from '../../../ru-indication-content-form/ru-indication-content-form.component';
 import { SbbAutocompleteModule } from '@sbb-esta/lyne-angular/autocomplete';
@@ -10,6 +11,10 @@ import { SbbOptionModule } from '@sbb-esta/lyne-angular/option';
 import { RuIndicationContent } from '../../../ru-admin-api';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RuIndicationDialogData } from '../../ru-indication.service';
+
+export interface CategoryContentFormGroup extends LanguageContentForm {
+  category: FormControl<string>;
+}
 
 interface CategoryContent {
   category: string;
@@ -28,7 +33,7 @@ interface CategoryContent {
   styleUrl: './category-content-form.css',
 })
 export class CategoryContentForm {
-  form = input.required<FormGroup>();
+  form = input.required<FormGroup<CategoryContentFormGroup>>();
   dialogData = input.required<RuIndicationDialogData>();
 
   protected templateControl = new FormControl<CategoryContent | null>(null);
@@ -62,8 +67,16 @@ export class CategoryContentForm {
   get formValue(): RuIndicationContent {
     return {
       category: this.templateControl.value?.category,
-      ...contentFormValue(this.form()),
+      ...contentFormValue(this.languageContentForm),
     };
+  }
+
+  protected get languageContentForm(): FormGroup<LanguageContentForm> {
+    return new FormGroup({
+      de: this.form().controls.de,
+      fr: this.form().controls.fr,
+      it: this.form().controls.it,
+    });
   }
 
   protected displayWith: (value: CategoryContent | undefined) => string = (value) =>

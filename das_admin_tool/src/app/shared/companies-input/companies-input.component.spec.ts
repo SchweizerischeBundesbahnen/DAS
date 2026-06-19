@@ -110,6 +110,7 @@ describe('CompaniesInputComponent (single-select)', () => {
   let fixture: ComponentFixture<CompaniesInputComponent>;
   let singleControl: FormControl<string>;
   let companyService: CompanyService;
+  let element: HTMLElement;
 
   async function createSingle(initialValue: string): Promise<HTMLInputElement> {
     await TestBed.configureTestingModule({
@@ -136,13 +137,14 @@ describe('CompaniesInputComponent (single-select)', () => {
     };
 
     fixture = TestBed.createComponent(CompaniesInputComponent);
+    element = fixture.nativeElement as HTMLElement;
     singleControl = new FormControl<string>(initialValue, { nonNullable: true });
     fixture.componentRef.setInput('control', singleControl);
     fixture.componentRef.setInput('multiselect', false);
     fixture.detectChanges();
     await fixture.whenStable();
 
-    return fixture.nativeElement.querySelector('input') as HTMLInputElement;
+    return element.querySelector('input')!;
   }
 
   it('should filter companies by search term', async () => {

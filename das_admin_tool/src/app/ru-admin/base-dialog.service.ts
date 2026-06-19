@@ -35,7 +35,6 @@ export abstract class BaseDialogService {
       .catch((e) => this.handleApiError(e));
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected handleApiError(_: unknown) {
     this.toastService.error(
       $localize`:@@dialog_service_error:Beim Speichern ist ein Fehler aufgetreten.`,

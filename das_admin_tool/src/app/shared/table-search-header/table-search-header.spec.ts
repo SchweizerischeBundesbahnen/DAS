@@ -7,6 +7,7 @@ describe('TableSearchHeader', () => {
   let component: TableSearchHeader;
   let componentRef: ComponentRef<TableSearchHeader>;
   let fixture: ComponentFixture<TableSearchHeader>;
+  let element: HTMLElement;
 
   const searchControl = new FormControl('', { nonNullable: true });
   const languageControl = new FormControl('de', { nonNullable: true });
@@ -18,6 +19,7 @@ describe('TableSearchHeader', () => {
 
     fixture = TestBed.createComponent(TableSearchHeader);
     component = fixture.componentInstance;
+    element = fixture.nativeElement as HTMLElement;
     componentRef = fixture.componentRef;
     componentRef.setInput('searchControl', searchControl);
     componentRef.setInput('languageControl', languageControl);
@@ -29,12 +31,12 @@ describe('TableSearchHeader', () => {
   });
 
   it('should render search field by default', () => {
-    const searchInput = fixture.nativeElement.querySelector('input[type="text"]');
+    const searchInput = element.querySelector('input[type="text"]');
     expect(searchInput).toBeTruthy();
   });
 
   it('should render language select by default', () => {
-    const select = fixture.nativeElement.querySelector('sbb-select');
+    const select = element.querySelector('sbb-select');
     expect(select).toBeTruthy();
   });
 
@@ -42,7 +44,7 @@ describe('TableSearchHeader', () => {
     componentRef.setInput('languageControl', undefined);
     fixture.detectChanges();
 
-    const select = fixture.nativeElement.querySelector('sbb-select');
+    const select = element.querySelector('sbb-select');
     expect(select).toBeFalsy();
   });
 
@@ -50,7 +52,7 @@ describe('TableSearchHeader', () => {
     searchControl.setValue('test');
     fixture.detectChanges();
 
-    const searchInput = fixture.nativeElement.querySelector('input[type="text"]');
+    const searchInput = element.querySelector<HTMLInputElement>('input[type="text"]')!;
     expect(searchInput.value).toBe('test');
   });
 });

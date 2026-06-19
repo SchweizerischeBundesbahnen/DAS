@@ -65,7 +65,7 @@ export class RuFeatureTogglesTable {
     this.searchControl.valueChanges
       .pipe(startWith(this.searchControl.value), takeUntilDestroyed())
       .subscribe((search) => {
-        this.dataSource.filter = { search } as RuFeatureFilter;
+        this.dataSource.filter = { search };
       });
   }
 
@@ -92,8 +92,8 @@ export class RuFeatureTogglesTable {
       (this.companyName(data.companyCode).toLowerCase().includes(search)
         || data.companyCode.toLowerCase().includes(search)
         || this.featureKeyLabel(data.key).toLowerCase().includes(search)
-        || data.lastModifiedBy?.toLowerCase().includes(search)
-        || data.lastModifiedAt?.toString().toLowerCase().includes(search))
+        || (data.lastModifiedBy ?? '').toLowerCase().includes(search)
+        || (data.lastModifiedAt ?? '').toString().toLowerCase().includes(search))
       ?? false
     );
   }

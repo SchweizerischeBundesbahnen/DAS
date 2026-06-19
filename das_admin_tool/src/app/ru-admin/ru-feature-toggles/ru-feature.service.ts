@@ -54,7 +54,7 @@ export class RuFeatureService extends BaseDialogService {
   }
 
   protected override handleApiError(e: unknown) {
-    if (e instanceof HttpErrorResponse && e.error.status === 409) {
+    if (e instanceof HttpErrorResponse && e.status === 409) {
       this.toastService.error(
         $localize`:@@ru_feature_toggles_toast_conflict_error:Dieses Feature für diese EVU existiert bereits.`,
       );

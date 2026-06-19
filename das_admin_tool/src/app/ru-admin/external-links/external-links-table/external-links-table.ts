@@ -79,12 +79,12 @@ export class ExternalLinksTable {
     return externalLink[this.form.controls.language.value];
   }
 
-  protected edit(externalLink: ExternalLink): void {
-    this.externalLinksService.edit(externalLink);
+  protected async edit(externalLink: ExternalLink): Promise<void> {
+    await this.externalLinksService.edit(externalLink);
   }
 
-  protected add(): void {
-    this.externalLinksService.add();
+  protected async add(): Promise<void> {
+    await this.externalLinksService.add();
   }
 
   protected isAllSelected() {
@@ -103,7 +103,9 @@ export class ExternalLinksTable {
     if (this.isDeleting) return;
     this.isDeleting = true;
     try {
-      this.externalLinksService.deleteAllByIds(this.selection.selected.map((el) => el.id!));
+      await this.externalLinksService.deleteAllByIds(
+        this.selection.selected.map((externalLink) => externalLink.id!),
+      );
       this.selection.clear();
     } finally {
       this.isDeleting = false;
@@ -118,10 +120,10 @@ export class ExternalLinksTable {
     const search = filter.search.toLowerCase();
     if (!search) return true;
     return (
-      (this.currentLanguage(data)?.title?.toLowerCase().includes(search)
-        || this.currentLanguage(data)?.link?.toLowerCase().includes(search)
-        || data.lastModifiedBy?.toLowerCase().includes(search)
-        || data.lastModifiedAt?.toString().toLowerCase().includes(search))
+      ((this.currentLanguage(data)?.title ?? '').toLowerCase().includes(search)
+        || (this.currentLanguage(data)?.link ?? '').toLowerCase().includes(search)
+        || (data.lastModifiedBy ?? '').toLowerCase().includes(search)
+        || (data.lastModifiedAt ?? '').toString().toLowerCase().includes(search))
       ?? false
     );
   }

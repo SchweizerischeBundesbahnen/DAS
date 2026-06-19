@@ -127,11 +127,11 @@ export class RuIndicationTemplatesTable {
     const search = filter.search.toLowerCase();
     if (!search) return true;
     return (
-      (this.currentLanguage(data)?.title?.toLowerCase().includes(search)
-        || this.currentLanguage(data)?.text?.toLowerCase().includes(search)
+      ((this.currentLanguage(data)?.title ?? '').toLowerCase().includes(search)
+        || (this.currentLanguage(data)?.text ?? '').toLowerCase().includes(search)
         || data.category.toLowerCase().includes(search)
-        || data.lastModifiedBy?.toLowerCase().includes(search)
-        || data.lastModifiedAt?.toString().toLowerCase().includes(search))
+        || (data.lastModifiedBy ?? '').toLowerCase().includes(search)
+        || (data.lastModifiedAt ?? '').toString().toLowerCase().includes(search))
       ?? true
     );
   }

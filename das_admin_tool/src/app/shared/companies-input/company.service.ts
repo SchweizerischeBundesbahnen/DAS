@@ -20,7 +20,7 @@ export class CompanyService {
   );
   private readonly toastService = inject(ToastService);
   private readonly companies = computed(() =>
-    this.companiesResource.hasValue() ? this.companiesResource.value()!.data : [],
+    this.companiesResource.hasValue() ? this.companiesResource.value().data : [],
   );
 
   constructor() {

@@ -22,7 +22,7 @@ export class LocationService {
   );
   private readonly toastService = inject(ToastService);
   private readonly locations = computed(() =>
-    this.locationsResource.hasValue() ? this.locationsResource.value()!.data : [],
+    this.locationsResource.hasValue() ? this.locationsResource.value().data : [],
   );
 
   constructor() {

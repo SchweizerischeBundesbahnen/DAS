@@ -1,4 +1,4 @@
-import { AbstractControl, FormGroup, ValidationErrors } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidationErrors } from '@angular/forms';
 
 function hasValue(value: unknown): boolean {
   return typeof value === 'string' ? value.trim().length > 0 : !!value;
@@ -100,5 +100,7 @@ export function titleRequired(control: AbstractControl): ValidationErrors | null
  *
  */
 export function url(control: AbstractControl): ValidationErrors | null {
-  return !control.value || URL.canParse(control.value) ? null : { url: true };
+  return !control.value || URL.canParse((control as FormControl<string>).value)
+    ? null
+    : { url: true };
 }

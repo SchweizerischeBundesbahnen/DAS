@@ -8,6 +8,14 @@ export enum UserRole {
   RU_ADMIN = 'ru_admin',
 }
 
+interface UserData {
+  tid: string;
+  name: string;
+  preferred_username: string;
+  oid: string;
+  roles: string[];
+}
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly oidcSecurityService = inject(OidcSecurityService);
@@ -15,25 +23,27 @@ export class AuthService {
     () => this.oidcSecurityService.authenticated().isAuthenticated,
   );
   private readonly router = inject(Router);
-  private readonly userData = computed(() => this.oidcSecurityService.userData().userData);
+  private readonly userData = computed(
+    () => this.oidcSecurityService.userData().userData as UserData,
+  );
   public readonly name = computed(() => this.userData().name);
   public readonly email = computed(() => this.userData().preferred_username);
   public readonly oid = computed(() => this.userData().oid);
   public readonly isAllowedTenant = computed(() => {
-    const tid = this.userData()?.tid;
+    const tid = this.userData().tid;
     return !!tid && environment.allowedTenantIds.includes(tid);
   });
   public readonly isAdmin = computed(
     () =>
       this.isAllowedTenant()
       && this.hasAnyRole(UserRole.ADMIN)
-      && this.userData()?.tid === environment.adminTenantId,
+      && this.userData().tid === environment.adminTenantId,
   );
   public readonly isRuAdmin = computed(
     () => this.isAllowedTenant() && (this.isAdmin() || this.hasAnyRole(UserRole.RU_ADMIN)),
   );
   private readonly roles = computed(() =>
-    (this.userData()?.roles ?? []).filter((role: string): role is UserRole =>
+    (this.userData().roles ?? []).filter((role: string): role is UserRole =>
       Object.values(UserRole).includes(role as UserRole),
     ),
   );

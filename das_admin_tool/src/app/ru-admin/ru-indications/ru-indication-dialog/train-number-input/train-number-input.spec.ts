@@ -104,14 +104,8 @@ describe('TrainNumberInput', () => {
 
   it('displayTrainNumberFilter should include parity label when set', async () => {
     const { displayTrainNumberFilter } = await import('./train-number-input');
-    const even = displayTrainNumberFilter({
-      expression: '100',
-      parity: 'EVEN',
-    } as RuIndicationTrainNumberFilter);
-    const odd = displayTrainNumberFilter({
-      expression: '100',
-      parity: 'ODD',
-    } as RuIndicationTrainNumberFilter);
+    const even = displayTrainNumberFilter({ expression: '100', parity: 'EVEN' });
+    const odd = displayTrainNumberFilter({ expression: '100', parity: 'ODD' });
 
     expect(even).toContain('100');
     expect(even).toContain('Gerade');
