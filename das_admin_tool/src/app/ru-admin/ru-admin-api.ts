@@ -97,6 +97,8 @@ export type SpecialHolidayApiResponse = ApiResponse<SpecialHoliday>;
 interface ExternalLinkContent {
   title: string;
   link: string;
+
+  [key: string]: string;
 }
 
 export interface ExternalLink extends Auditable {

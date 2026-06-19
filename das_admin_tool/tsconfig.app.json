@@ -2,7 +2,7 @@
 /* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
 {
   "extends": "./tsconfig.json",
-  "compilerOptions": { "outDir": "./out-tsc/app", "types": ["@angular/localize", "ineum"] },
+  "compilerOptions": { "outDir": "./out-tsc/app", "types": ["@angular/localize", "node", "ineum"] },
   "include": ["src/**/*.ts"],
   "exclude": ["src/**/*.spec.ts"]
 }

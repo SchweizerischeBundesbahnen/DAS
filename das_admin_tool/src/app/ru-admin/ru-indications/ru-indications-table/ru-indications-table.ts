@@ -193,32 +193,34 @@ export class RuIndicationsTable {
   }
 
   private getSortValue(row: RuIndication, column: string): string {
-    if (column === 'title') {
-      return this.titleValue(row);
+    switch (column) {
+      case 'title':
+        return this.titleValue(row);
+
+      case 'text':
+        return this.textValue(row);
+
+      case 'category':
+        return row.content.category ?? '';
+
+      case 'status':
+        return this.statusValue(row);
+
+      case 'companies':
+        return this.companiesValue(row.scope.companies);
+
+      case 'trainNumbers':
+        return this.trainNumbersValue(row);
+
+      case 'locations':
+        return this.locationsValue(row);
+
+      case 'periods':
+        return this.periodsValue(row);
+
+      default:
+        return row[column as keyof RuIndication] as string;
     }
-    if (column === 'text') {
-      return this.textValue(row);
-    }
-    if (column === 'category') {
-      return row.content.category ?? '';
-    }
-    if (column === 'status') {
-      return this.statusValue(row);
-    }
-    if (column === 'companies') {
-      return this.companiesValue(row.scope.companies);
-    }
-    if (column === 'trainNumbers') {
-      return this.trainNumbersValue(row);
-    }
-    if (column === 'locations') {
-      return this.locationsValue(row);
-    }
-    if (column === 'periods') {
-      return this.periodsValue(row);
-    }
-    // @ts-expect-error - for dynamic access to other plain properties
-    return row[column] ?? '';
   }
 
   private searchFilter(filter: RuIndicationFilter, data: RuIndication) {
@@ -230,16 +232,16 @@ export class RuIndicationsTable {
     const search = filter.search.toLowerCase();
 
     return (
-      this.titleValue(data).toLowerCase().includes(search)
-      || this.textValue(data).toLowerCase().includes(search)
-      || data.content.category?.toLowerCase().includes(search)
-      || this.statusValue(data).toLowerCase().includes(search)
-      || this.companiesValue(data.scope.companies).toLowerCase().includes(search)
-      || this.trainNumbersValue(data).toLowerCase().includes(search)
-      || this.locationsValue(data).toLowerCase().includes(search)
-      || this.periodsValue(data).toLowerCase().includes(search)
-      || data.lastModifiedAt?.toString().toLowerCase().includes(search)
-      || data.lastModifiedBy?.toLowerCase().includes(search)
+      (((this.titleValue(data).toLowerCase().includes(search)
+        || this.textValue(data).toLowerCase().includes(search)
+        || data.content.category?.toLowerCase().includes(search))
+        ?? this.statusValue(data).toLowerCase().includes(search))
+        || this.companiesValue(data.scope.companies).toLowerCase().includes(search)
+        || this.trainNumbersValue(data).toLowerCase().includes(search)
+        || this.locationsValue(data).toLowerCase().includes(search)
+        || this.periodsValue(data).toLowerCase().includes(search)
+        || data.lastModifiedAt?.toString().toLowerCase().includes(search))
+      ?? data.lastModifiedBy?.toLowerCase().includes(search)
     );
   }
 

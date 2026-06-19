@@ -19,6 +19,8 @@ import { SbbTabsModule } from '@sbb-esta/lyne-angular/tabs';
 interface FormGroupExternalLinkContent {
   title: FormControl<string>;
   link: FormControl<string>;
+
+  [key: string]: FormControl<string>;
 }
 
 export interface FormGroupExternalLink {
@@ -47,7 +49,7 @@ export class ExternalLinkDialog {
   protected readonly languageProvider = inject(LanguageProvider);
   protected readonly dialogTitle: string;
   protected readonly dialogData =
-    inject<ExternalLink>(SBB_OVERLAY_DATA, { optional: true }) || undefined;
+    inject<ExternalLink>(SBB_OVERLAY_DATA, { optional: true }) ?? undefined;
   private readonly formBuilder = inject(NonNullableFormBuilder);
   protected externalLinkForm = this.formBuilder.group<FormGroupExternalLink>(
     {
@@ -80,7 +82,9 @@ export class ExternalLinkDialog {
   }
 
   protected isLanguageEmpty(language: LanguageCode): boolean {
-    const controls = Object.values((this.externalLinkForm.get(language) as FormGroup)?.controls);
-    return controls.every((control) => !control.value?.trim());
+    const controls = Object.values(
+      (this.externalLinkForm.get(language) as FormGroup<FormGroupExternalLinkContent>).controls,
+    );
+    return controls.every((control) => !control.value.trim());
   }
 }

@@ -13,7 +13,7 @@ const locations: Location[] = [
 
 describe('LocationService', () => {
   let service: LocationService;
-  beforeEach(async () => {
+  beforeEach(() => {
     TestBed.configureTestingModule({ providers: [LocationService] });
 
     service = TestBed.inject(LocationService);

@@ -3,7 +3,7 @@ import { AppVersion, DasAdminApi } from '../das-admin-api';
 import { AppVersionDialog, VersionDialogEditResult } from './app-version-dialog/app-version-dialog';
 import { firstValueFrom } from 'rxjs';
 import { BaseDialogService } from '../../ru-admin/base-dialog.service';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
 export class AppVersionsService extends BaseDialogService {
@@ -46,7 +46,7 @@ export class AppVersionsService extends BaseDialogService {
   }
 
   protected override handleApiError(e: unknown) {
-    if (e instanceof HttpErrorResponse && e.error.status === 409) {
+    if (e instanceof HttpErrorResponse && e.status === HttpStatusCode.Conflict.valueOf()) {
       this.toastService.error(
         $localize`:@@app_versions_toast_conflict_error:Diese App Version existiert bereits.`,
       );

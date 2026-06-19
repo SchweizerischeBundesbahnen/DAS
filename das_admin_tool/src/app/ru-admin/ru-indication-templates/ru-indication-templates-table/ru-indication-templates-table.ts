@@ -90,14 +90,17 @@ export class RuIndicationTemplatesTable {
   }
 
   protected getValue(row: RuIndicationTemplate, column: string) {
-    const language = this.form.value.language;
-    if (['title', 'text'].includes(column) && language) {
-      return row[language]?.[column];
+    switch (column) {
+      case 'title':
+      case 'text':
+        return row[this.form.get('language')!.value]?.[column] ?? '';
+
+      case 'companies':
+        return this.companiesValue(row.companies);
+
+      default:
+        return row[column as keyof RuIndicationTemplate] as string;
     }
-    if (column === 'companies') {
-      return this.companiesValue(row.companies);
-    }
-    return row[column] as string;
   }
 
   protected async edit(ruIndicationTemplate: RuIndicationTemplate) {
@@ -144,8 +147,8 @@ export class RuIndicationTemplatesTable {
         || this.getValue(data, 'text')?.toLowerCase().includes(search)
         || this.companiesValue(data.companies).toLowerCase().includes(search)
         || data.category.toLowerCase().includes(search)
-        || data.lastModifiedBy?.toLowerCase().includes(search)
-        || data.lastModifiedAt?.toString().toLowerCase().includes(search))
+        || data.lastModifiedBy?.toLowerCase().includes(search))
+      ?? data.lastModifiedAt?.toString().toLowerCase().includes(search)
       ?? true
     );
   }

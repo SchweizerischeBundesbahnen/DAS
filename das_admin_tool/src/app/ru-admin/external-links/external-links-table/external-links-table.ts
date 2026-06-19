@@ -60,22 +60,17 @@ export class ExternalLinksTable {
       this.dataSource.sort = this.sort();
     });
     this.dataSource.sortingDataAccessor = (data: ExternalLink, column: string) => {
-      let value: string;
       switch (column) {
         case 'title':
         case 'link':
-          value = this.currentLanguage(data)?.[column] ?? '';
-          break;
+          return this.currentLanguage(data)?.[column] ?? '';
 
         case 'lastModifiedAt':
-          value = formatDate(data[column]!, 'short', this.localeId);
-          break;
+          return formatDate(data[column]!, 'short', this.localeId);
 
         default:
-          value = data[column as keyof ExternalLink] as string;
-          break;
+          return data[column as keyof ExternalLink] as string;
       }
-      return value;
     };
   }
 
@@ -83,12 +78,12 @@ export class ExternalLinksTable {
     return externalLink[this.form.get('language')!.value];
   }
 
-  protected edit(externalLink: ExternalLink): void {
-    this.externalLinksService.edit(externalLink);
+  protected async edit(externalLink: ExternalLink): Promise<void> {
+    await this.externalLinksService.edit(externalLink);
   }
 
-  protected add(): void {
-    this.externalLinksService.add();
+  protected async add(): Promise<void> {
+    await this.externalLinksService.add();
   }
 
   protected isAllSelected() {
@@ -109,7 +104,7 @@ export class ExternalLinksTable {
     if (this.isDeleting) return;
     this.isDeleting = true;
     try {
-      this.externalLinksService.deleteAllByIds(
+      await this.externalLinksService.deleteAllByIds(
         this.selection.selected.map((externalLink) => externalLink.id!),
       );
       this.selection.clear();

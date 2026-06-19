@@ -1,10 +1,10 @@
 import test, { expect, Locator, Page } from '@playwright/test';
 import {
   clickAddButton,
-  getEntryDialog,
-  deleteEntryViaSelection,
   deleteEntryViaDialog,
+  deleteEntryViaSelection,
   findRow,
+  getEntryDialog,
   openEditEntryDialog,
   saveEntryDialog,
   selectAnyOption,

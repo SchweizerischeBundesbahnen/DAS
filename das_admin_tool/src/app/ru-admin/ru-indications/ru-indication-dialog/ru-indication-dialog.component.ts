@@ -51,7 +51,10 @@ export class RuIndicationDialog {
   protected readonly title: string;
   protected readonly isEdit: boolean;
   protected ruIndicationForm = new FormGroup({
-    content: createContentFormGroup(),
+    content: new FormGroup({
+      category: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+      ...createContentFormGroup().controls,
+    }),
     scope: new FormGroup({
       companies: new FormControl<string[]>([], {
         nonNullable: true,

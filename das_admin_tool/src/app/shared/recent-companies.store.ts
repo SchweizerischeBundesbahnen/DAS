@@ -13,7 +13,7 @@ export class RecentCompaniesStore {
     }
 
     try {
-      const parsed = JSON.parse(raw);
+      const parsed: unknown = JSON.parse(raw);
       return Array.isArray(parsed)
         ? parsed.filter((value): value is string => typeof value === 'string')
         : [];

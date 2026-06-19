@@ -20,9 +20,9 @@
           (n.l = 1 * new Date()));
       })(window, 'InstanaEumObject', 'ineum');
 
-      if (process === 'object' && process.env && process.env.INSTANA_KEY) {
+      if (process === 'object' && process.env && process.env['INSTANA_KEY']) {
         ineum('reportingUrl', 'https://eum-green-saas.instana.io');
-        ineum('key', process.env.INSTANA_KEY);
+        ineum('key', process.env['INSTANA_KEY']);
         ineum('trackSessions');
         ineum('allowedOrigins', [/.*\.api\.sbb\.ch/i]);
       }

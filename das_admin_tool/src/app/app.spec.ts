@@ -3,8 +3,7 @@ import { App } from './app';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 // Mock ineum function
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-(globalThis as any).ineum = () => null;
+globalThis.ineum = () => undefined;
 
 const authServiceMock: Partial<OidcSecurityService> = {};
 

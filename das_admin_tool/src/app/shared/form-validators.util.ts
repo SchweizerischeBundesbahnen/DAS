@@ -1,4 +1,10 @@
-import { AbstractControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+} from '@angular/forms';
 
 function addError(control: AbstractControl, key: string) {
   const errors = control.errors ?? {};
@@ -12,6 +18,9 @@ function removeError(control: AbstractControl, key: string) {
   control.setErrors(Object.keys(errors).length > 0 ? errors : null);
 }
 
+type StringFormControl = FormControl<string>;
+type RecordFormGroup = FormGroup<Record<string, StringFormControl>>;
+
 /**
  * @description
  * Validator that requires all controls of a group to have a value if one of them has a value.
@@ -23,11 +32,11 @@ function removeError(control: AbstractControl, key: string) {
  *
  */
 export function languageRequired(control: AbstractControl): ValidationErrors | null {
-  const controls = Object.values((control as FormGroup).controls);
-  const values = controls.map((control) => !!control.value?.trim());
+  const controls = Object.values((control as RecordFormGroup).controls);
+  const values = controls.map((control) => !!control.value.trim());
   for (const control of controls) {
     if (values.some((value) => value)) {
-      if (control.value?.trim()) {
+      if (control.value.trim()) {
         removeError(control, 'languageRequired');
       } else {
         addError(control, 'languageRequired');
@@ -48,12 +57,12 @@ export function languageRequired(control: AbstractControl): ValidationErrors | n
  *
  */
 export function oneLanguageRequired(control: AbstractControl): ValidationErrors | null {
-  const deControls = Object.values((control.get('de') as FormGroup).controls);
-  const deEmpty = deControls.every((control) => !control.value?.trim());
-  const frControls = Object.values((control.get('fr') as FormGroup).controls);
-  const frEmpty = frControls.every((control) => !control.value?.trim());
-  const itControls = Object.values((control.get('it') as FormGroup).controls);
-  const itEmpty = itControls.every((control) => !control.value?.trim());
+  const deControls = Object.values((control.get('de') as RecordFormGroup).controls);
+  const deEmpty = deControls.every((control) => !control.value.trim());
+  const frControls = Object.values((control.get('fr') as RecordFormGroup).controls);
+  const frEmpty = frControls.every((control) => !control.value.trim());
+  const itControls = Object.values((control.get('it') as RecordFormGroup).controls);
+  const itEmpty = itControls.every((control) => !control.value.trim());
   return deEmpty && frEmpty && itEmpty ? { oneLanguageRequired: true } : null;
 }
 
@@ -70,9 +79,9 @@ export function oneLanguageRequired(control: AbstractControl): ValidationErrors 
  */
 export function titleRequired(...fields: string[]): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
-    const titleControl = control.get('title')!;
-    const title = titleControl.value?.trim();
-    const values = fields.map((field) => !!control.get(field)?.value?.trim());
+    const titleControl = control.get('title') as StringFormControl;
+    const title = titleControl.value.trim();
+    const values = fields.map((field) => !!(control.get(field) as StringFormControl).value.trim());
     if (values.some((value) => value) && !title) {
       addError(titleControl, 'titleRequired');
     } else {
@@ -91,5 +100,7 @@ export function titleRequired(...fields: string[]): ValidatorFn {
  *
  */
 export function url(control: AbstractControl): ValidationErrors | null {
-  return !control.value || URL.canParse(control.value) ? null : { url: true };
+  return !control.value || URL.canParse((control as StringFormControl).value)
+    ? null
+    : { url: true };
 }
