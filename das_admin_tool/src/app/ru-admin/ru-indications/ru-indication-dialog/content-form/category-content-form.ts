@@ -33,15 +33,15 @@ interface CategoryContent {
   styleUrl: './category-content-form.css',
 })
 export class CategoryContentForm {
-  form = input.required<FormGroup<CategoryContentFormGroup>>();
-  dialogData = input.required<RuIndicationDialogData>();
+  readonly form = input.required<FormGroup<CategoryContentFormGroup>>();
+  readonly dialogData = input.required<RuIndicationDialogData>();
 
   protected templateControl = new FormControl<CategoryContent | null>(null);
-  protected searchTerm = signal<string>('');
+  protected readonly searchTerm = signal<string>('');
   private readonly templateValue = toSignal(this.templateControl.valueChanges, {
     initialValue: null,
   });
-  protected filteredTemplates = computed(() => {
+  protected readonly filteredTemplates = computed(() => {
     const searchTerm = this.searchTerm();
     const selected = this.templateValue();
     if (selected) {

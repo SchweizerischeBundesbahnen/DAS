@@ -12,7 +12,6 @@ import { SbbActionGroup } from '@sbb-esta/lyne-angular/action-group';
 
 @Component({
   selector: 'app-base-dialog',
-  standalone: true,
   imports: [
     CommonModule,
     SbbStepperModule,
@@ -27,14 +26,14 @@ import { SbbActionGroup } from '@sbb-esta/lyne-angular/action-group';
   styleUrl: './base-dialog.component.css',
 })
 export class BaseDialog {
-  dialogTitle = input.required<string>();
-  stepLabel = input.required<string>();
-  data = input<Auditable>();
-  saveDisabled = input.required<boolean>();
-  dialogClose = input.required();
-  isEdit = computed(() => !!this.data());
-  steps = viewChildren(SbbStep);
-  protected stepchange = signal<SbbStepChangeEvent | undefined>(undefined);
+  readonly dialogTitle = input.required<string>();
+  readonly stepLabel = input.required<string>();
+  readonly data = input<Auditable>();
+  readonly saveDisabled = input.required<boolean>();
+  readonly dialogClose = input.required();
+  readonly isEdit = computed(() => !!this.data());
+  readonly steps = viewChildren(SbbStep);
+  protected readonly stepchange = signal<SbbStepChangeEvent | undefined>(undefined);
   protected readonly isLastStep = computed(() => {
     const selectedIndex = this.stepchange()?.selectedIndex;
     if (selectedIndex === undefined) return true;

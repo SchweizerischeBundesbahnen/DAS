@@ -61,7 +61,7 @@ function numberRangeValidator(control: AbstractControl): ValidationErrors | null
   styleUrl: './train-number-input.css',
 })
 export class TrainNumberInput implements OnInit {
-  control = input.required<FormControl<RuIndicationTrainNumberFilter[]>>();
+  readonly control = input.required<FormControl<RuIndicationTrainNumberFilter[]>>();
 
   protected trainFilterModeControl = new FormControl<TrainFilterMode>('all', { nonNullable: true });
   protected trainNumberFilterForm = new FormGroup({

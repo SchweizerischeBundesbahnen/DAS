@@ -82,7 +82,7 @@ export class RuFeatureTogglesTable {
   }
 
   protected featureKeyLabel(key: RuFeatureKey): string {
-    return RU_FEATURE_KEY_LABELS.find((label) => label.value === key)?.label ?? key;
+    return RU_FEATURE_KEY_LABELS().find((label) => label.value === key)?.label ?? key;
   }
 
   private searchFilter(filter: RuFeatureFilter, data: RuFeature): boolean {

@@ -14,9 +14,9 @@ import { RecentCompaniesStore } from '../recent-companies.store';
   styleUrl: './companies-input.component.css',
 })
 export class CompaniesInputComponent {
-  label = input<string>($localize`:@@companies_form_label:EVU`);
-  control = input.required<FormControl<string[]> | FormControl<string>>();
-  multiselect = input<boolean>(true);
+  readonly label = input<string>($localize`:@@companies_form_label:EVU`);
+  readonly control = input.required<FormControl<string[]> | FormControl<string>>();
+  readonly multiselect = input<boolean>(true);
 
   protected inputControl = new FormControl('', { nonNullable: true });
   private readonly inputValue = toSignal(this.inputControl.valueChanges, { initialValue: '' });
@@ -25,10 +25,10 @@ export class CompaniesInputComponent {
   private readonly companyService = inject(CompanyService);
   private readonly recentCompaniesStore = inject(RecentCompaniesStore);
 
-  protected multiControl = computed(() => this.control() as FormControl<string[]>);
-  protected singleControl = computed(() => this.control() as FormControl<string>);
+  protected readonly multiControl = computed(() => this.control() as FormControl<string[]>);
+  protected readonly singleControl = computed(() => this.control() as FormControl<string>);
 
-  protected filteredCompanies = computed(() => {
+  protected readonly filteredCompanies = computed(() => {
     if (this.multiselect()) {
       return this.companyService.filterCompanies(this.inputValue(), this.multiControl().value);
     }

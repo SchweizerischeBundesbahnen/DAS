@@ -34,7 +34,7 @@ export class RuFeatureToggleDialog {
     }),
     enabled: new FormControl(false, { nonNullable: true }),
   });
-  protected readonly featureKeys = RU_FEATURE_KEY_LABELS;
+  protected readonly featureKeys = RU_FEATURE_KEY_LABELS();
   protected readonly dialogData =
     inject<RuFeature>(SBB_OVERLAY_DATA, { optional: true }) ?? undefined;
 

@@ -27,13 +27,13 @@ export function displayPeriod(period: RuIndicationPeriod, localeId = 'de-CH'): s
   }
 
   const weekdayLabels = days
-    .map((weekday) => weekdays.find((candidate) => candidate.value === weekday)?.label ?? weekday)
+    .map((weekday) => weekdays().find((candidate) => candidate.value === weekday)?.label ?? weekday)
     .join(', ');
 
   return weekdayLabels ? `${from} - ${to} (${weekdayLabels})` : `${from} - ${to}`;
 }
 
-const weekdays: { value: DayOfWeek; label: string }[] = [
+const weekdays = (): { value: DayOfWeek; label: string }[] => [
   { value: 'MONDAY', label: $localize`:@@weekday_monday:Mo` },
   { value: 'TUESDAY', label: $localize`:@@weekday_tuesday:Di` },
   { value: 'WEDNESDAY', label: $localize`:@@weekday_wednesday:Mi` },
@@ -82,7 +82,7 @@ function periodFormValidator(control: AbstractControl): ValidationErrors | null 
   styleUrl: './periods-input.css',
 })
 export class PeriodsInput {
-  control = input.required<FormControl<RuIndicationPeriod[]>>();
+  readonly control = input.required<FormControl<RuIndicationPeriod[]>>();
   protected periodForm = new FormGroup(
     {
       validFrom: new FormControl<Date | null>(null, { validators: [Validators.required] }),
@@ -92,7 +92,7 @@ export class PeriodsInput {
     },
     { validators: periodFormValidator },
   );
-  protected readonly weekdays = weekdays;
+  protected readonly weekdays = weekdays();
   private readonly localeId = inject(LanguageProvider).currentLanguage.localeId;
 
   constructor() {

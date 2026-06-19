@@ -57,7 +57,7 @@ export interface RuIndication extends Auditable {
 
 export type RuIndicationStatus = 'INACTIVE' | 'ACTIVE' | 'EXPIRED';
 
-export const RU_INDICATION_STATUS_LABELS: { value: RuIndicationStatus; label: string }[] = [
+export const RU_INDICATION_STATUS_LABELS = (): { value: RuIndicationStatus; label: string }[] => [
   {
     value: 'ACTIVE',
     label: $localize`:@@ru_indication_status_label_active:Aktiv`,
@@ -77,7 +77,7 @@ export type RuIndicationTemplateApiResponse = ApiResponse<RuIndicationTemplate>;
 
 export type ScheduleType = 'SUNDAY_SCHEDULE' | 'MONDAY_SCHEDULE';
 
-export const SCHEDULE_TYPE_LABELS: { value: ScheduleType; label: string }[] = [
+export const SCHEDULE_TYPE_LABELS = (): { value: ScheduleType; label: string }[] => [
   { value: 'SUNDAY_SCHEDULE', label: $localize`:@@special_holidays_schedule_type_sunday:Sonntag` },
   { value: 'MONDAY_SCHEDULE', label: $localize`:@@special_holidays_schedule_type_monday:Montag` },
 ];
@@ -113,7 +113,7 @@ export type RuFeatureKey =
   | 'CHECKLIST_DEPARTURE_PROCESS'
   | 'DISPLAY_PLANNED_TIME_DEVIATION';
 
-export const RU_FEATURE_KEY_LABELS: { value: RuFeatureKey; label: string }[] = [
+export const RU_FEATURE_KEY_LABELS = (): { value: RuFeatureKey; label: string }[] => [
   { value: 'WARNAPP', label: $localize`:@@ru_feature_toggles_key_label_warnapp:WarnApp` },
   {
     value: 'CUSTOMER_ORIENTED_DEPARTURE_PROCESS',

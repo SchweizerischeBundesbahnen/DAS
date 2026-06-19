@@ -106,7 +106,7 @@ export class SpecialHolidaysTable {
   }
 
   protected scheduleTypeLabel(type: ScheduleType) {
-    return SCHEDULE_TYPE_LABELS.find((label) => label.value === type)?.label ?? '';
+    return SCHEDULE_TYPE_LABELS().find((label) => label.value === type)?.label ?? '';
   }
 
   protected companiesValue(companyCodes: string[]) {

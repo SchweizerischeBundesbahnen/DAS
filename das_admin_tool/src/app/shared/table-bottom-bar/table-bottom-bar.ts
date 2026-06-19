@@ -10,13 +10,13 @@ import { SbbCompactPaginator } from '@sbb-esta/lyne-angular/paginator/compact-pa
   styleUrl: './table-bottom-bar.css',
 })
 export class TableBottomBar {
-  showDelete = input(true);
-  deleteDisabled = input(true);
-  deleting = input(false);
-  selectedCount = input(0);
-  addLabel = input($localize`:@@button_create_entry:Neuen Eintrag erfassen`);
-  addClicked = output<void>();
-  deleteClicked = output<void>();
+  readonly showDelete = input(true);
+  readonly deleteDisabled = input(true);
+  readonly deleting = input(false);
+  readonly selectedCount = input(0);
+  readonly addLabel = input($localize`:@@button_create_entry:Neuen Eintrag erfassen`);
+  readonly addClicked = output<void>();
+  readonly deleteClicked = output<void>();
   readonly paginator = viewChild.required<SbbCompactPaginator>(SbbCompactPaginator);
   protected readonly PAGE_SIZE = 20;
 }
