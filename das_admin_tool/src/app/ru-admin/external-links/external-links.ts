@@ -6,11 +6,11 @@ import { ExternalLinksTable } from './external-links-table/external-links-table'
 import { ExternalLinksService } from './external-links.service';
 
 @Component({
-  selector: 'app-external-links',
-  imports: [SbbTitle, SbbSecondaryButton, ExternalLinksTable, SbbLoadingIndicatorCircle],
-  templateUrl: './external-links.html',
-  styleUrl: './external-links.css',
+	selector: 'app-external-links',
+	imports: [SbbTitle, SbbSecondaryButton, ExternalLinksTable, SbbLoadingIndicatorCircle],
+	templateUrl: './external-links.html',
+	styleUrl: './external-links.css',
 })
 export class ExternalLinks {
-  protected readonly externalLinksService = inject(ExternalLinksService);
+	protected readonly externalLinksService = inject(ExternalLinksService);
 }

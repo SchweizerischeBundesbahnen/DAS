@@ -5,11 +5,11 @@ import { SbbTooltipModule } from '@sbb-esta/lyne-angular/tooltip';
 import { AuthService } from '~shared/auth-service';
 
 @Component({
-  selector: 'app-icon-sidebar',
-  imports: [SbbIconSidebarModule, SbbTooltipModule, RouterLinkActive, RouterLink],
-  templateUrl: './icon-sidebar.html',
-  styleUrl: './icon-sidebar.css',
+	selector: 'app-icon-sidebar',
+	imports: [SbbIconSidebarModule, SbbTooltipModule, RouterLinkActive, RouterLink],
+	templateUrl: './icon-sidebar.html',
+	styleUrl: './icon-sidebar.css',
 })
 export class IconSidebar {
-  protected authService = inject(AuthService);
+	protected authService = inject(AuthService);
 }

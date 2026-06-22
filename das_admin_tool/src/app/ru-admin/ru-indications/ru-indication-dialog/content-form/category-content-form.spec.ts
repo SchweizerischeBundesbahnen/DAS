@@ -4,22 +4,22 @@ import { RuIndicationDialogData } from '~ru-admin/ru-indications/ru-indication.s
 import { CategoryContentForm } from './category-content-form';
 
 describe('CategoryContentForm', () => {
-  let component: CategoryContentForm;
-  let fixture: ComponentFixture<CategoryContentForm>;
+	let component: CategoryContentForm;
+	let fixture: ComponentFixture<CategoryContentForm>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({ imports: [CategoryContentForm] }).compileComponents();
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({ imports: [CategoryContentForm] }).compileComponents();
 
-    fixture = TestBed.createComponent(CategoryContentForm);
-    component = fixture.componentInstance;
-    const dialogData: RuIndicationDialogData = { templates: [] };
-    fixture.componentRef.setInput('form', createContentFormGroup());
-    fixture.componentRef.setInput('dialogData', dialogData);
-    fixture.detectChanges();
-    await fixture.whenStable();
-  });
+		fixture = TestBed.createComponent(CategoryContentForm);
+		component = fixture.componentInstance;
+		const dialogData: RuIndicationDialogData = { templates: [] };
+		fixture.componentRef.setInput('form', createContentFormGroup());
+		fixture.componentRef.setInput('dialogData', dialogData);
+		fixture.detectChanges();
+		await fixture.whenStable();
+	});
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
 });

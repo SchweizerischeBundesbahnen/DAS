@@ -5,21 +5,21 @@ import { RuIndications } from './ru-indications';
 const mockRuIndicationService = { ruIndicationsResource: new Proxy({}, { get: () => vi.fn() }) };
 
 describe('RuIndications', () => {
-  let component: RuIndications;
-  let fixture: ComponentFixture<RuIndications>;
+	let component: RuIndications;
+	let fixture: ComponentFixture<RuIndications>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [RuIndications],
-      providers: [{ provide: RuIndicationService, useValue: mockRuIndicationService }],
-    }).compileComponents();
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			imports: [RuIndications],
+			providers: [{ provide: RuIndicationService, useValue: mockRuIndicationService }],
+		}).compileComponents();
 
-    fixture = TestBed.createComponent(RuIndications);
-    component = fixture.componentInstance;
-    await fixture.whenStable();
-  });
+		fixture = TestBed.createComponent(RuIndications);
+		component = fixture.componentInstance;
+		await fixture.whenStable();
+	});
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
 });

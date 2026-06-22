@@ -9,16 +9,16 @@ globalThis.ineum = vi.fn();
 const authServiceMock: Partial<OidcSecurityService> = {};
 
 describe('App', () => {
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [App],
-      providers: [{ provide: OidcSecurityService, useValue: authServiceMock }],
-    }).compileComponents();
-  });
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			imports: [App],
+			providers: [{ provide: OidcSecurityService, useValue: authServiceMock }],
+		}).compileComponents();
+	});
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(App);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
-  });
+	it('should create the app', () => {
+		const fixture = TestBed.createComponent(App);
+		const app = fixture.componentInstance;
+		expect(app).toBeTruthy();
+	});
 });

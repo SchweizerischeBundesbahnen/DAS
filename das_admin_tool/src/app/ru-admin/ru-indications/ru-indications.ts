@@ -6,12 +6,12 @@ import { RuIndicationService } from './ru-indication.service';
 import { RuIndicationsTable } from './ru-indications-table/ru-indications-table';
 
 @Component({
-  selector: 'app-ru-indications',
-  imports: [SbbTitleModule, SbbButtonModule, SbbLoadingIndicatorCircleModule, RuIndicationsTable],
-  templateUrl: './ru-indications.html',
-  styleUrl: './ru-indications.css',
+	selector: 'app-ru-indications',
+	imports: [SbbTitleModule, SbbButtonModule, SbbLoadingIndicatorCircleModule, RuIndicationsTable],
+	templateUrl: './ru-indications.html',
+	styleUrl: './ru-indications.css',
 })
 export class RuIndications {
-  protected readonly ruIndicationService = inject(RuIndicationService);
-  protected readonly ruIndicationsResource = this.ruIndicationService.ruIndicationsResource;
+	protected readonly ruIndicationService = inject(RuIndicationService);
+	protected readonly ruIndicationsResource = this.ruIndicationService.ruIndicationsResource;
 }

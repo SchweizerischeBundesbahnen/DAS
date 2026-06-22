@@ -5,11 +5,11 @@ import { SbbTitleModule } from '@sbb-esta/lyne-angular/title';
 import { Auditable } from './auditable';
 
 @Component({
-  selector: 'app-audit',
-  imports: [SbbTitleModule, SbbStepperModule, DatePipe],
-  templateUrl: './audit.html',
-  styleUrl: './audit.css',
+	selector: 'app-audit',
+	imports: [SbbTitleModule, SbbStepperModule, DatePipe],
+	templateUrl: './audit.html',
+	styleUrl: './audit.css',
 })
 export class Audit {
-  readonly data = input<Auditable>();
+	readonly data = input<Auditable>();
 }

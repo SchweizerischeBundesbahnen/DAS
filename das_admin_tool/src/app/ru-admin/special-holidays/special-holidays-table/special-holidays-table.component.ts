@@ -14,91 +14,91 @@ import { CompanyService } from '~shared/companies-input/company.service';
 import { SpecialHolidayService } from '../special-holiday.service';
 
 @Component({
-  selector: 'app-special-holidays-table',
-  imports: [
-    SbbTableModule,
-    SbbSecondaryButton,
-    SbbTransparentButton,
-    SbbCompactPaginator,
-    SbbMiniButton,
-    SbbCheckboxModule,
-    SbbFormFieldModule,
-    ReactiveFormsModule,
-    DatePipe,
-  ],
-  templateUrl: './special-holidays-table.component.html',
-  styleUrl: './special-holidays-table.component.css',
+	selector: 'app-special-holidays-table',
+	imports: [
+		SbbTableModule,
+		SbbSecondaryButton,
+		SbbTransparentButton,
+		SbbCompactPaginator,
+		SbbMiniButton,
+		SbbCheckboxModule,
+		SbbFormFieldModule,
+		ReactiveFormsModule,
+		DatePipe,
+	],
+	templateUrl: './special-holidays-table.component.html',
+	styleUrl: './special-holidays-table.component.css',
 })
 export class SpecialHolidaysTable {
-  protected dataSource = new SbbTableDataSource<SpecialHoliday>();
-  protected columns = [
-    'select',
-    'name',
-    'date',
-    'scheduleType',
-    'companies',
-    'lastModifiedAt',
-    'lastModifiedBy',
-    'action',
-  ];
-  protected selection = new SelectionModel<SpecialHoliday>(true, []);
-  protected readonly PAGE_SIZE = 20;
-  protected isDeleting = false;
+	protected dataSource = new SbbTableDataSource<SpecialHoliday>();
+	protected columns = [
+		'select',
+		'name',
+		'date',
+		'scheduleType',
+		'companies',
+		'lastModifiedAt',
+		'lastModifiedBy',
+		'action',
+	];
+	protected selection = new SelectionModel<SpecialHoliday>(true, []);
+	protected readonly PAGE_SIZE = 20;
+	protected isDeleting = false;
 
-  private readonly specialHolidayService = inject(SpecialHolidayService);
-  private readonly companyService = inject(CompanyService);
+	private readonly specialHolidayService = inject(SpecialHolidayService);
+	private readonly companyService = inject(CompanyService);
 
-  private readonly paginator = viewChild.required<SbbCompactPaginator>(SbbCompactPaginator);
-  private readonly sort = viewChild.required<SbbSort>(SbbSort);
+	private readonly paginator = viewChild.required<SbbCompactPaginator>(SbbCompactPaginator);
+	private readonly sort = viewChild.required<SbbSort>(SbbSort);
 
-  constructor() {
-    effect(() => {
-      if (this.specialHolidayService.specialHolidaysResource.hasValue()) {
-        this.dataSource.data = this.specialHolidayService.specialHolidaysResource.value().data;
-      }
-      this.dataSource.paginator = this.paginator();
-      this.dataSource.sort = this.sort();
-    });
-  }
+	constructor() {
+		effect(() => {
+			if (this.specialHolidayService.specialHolidaysResource.hasValue()) {
+				this.dataSource.data = this.specialHolidayService.specialHolidaysResource.value().data;
+			}
+			this.dataSource.paginator = this.paginator();
+			this.dataSource.sort = this.sort();
+		});
+	}
 
-  protected async edit(holiday: SpecialHoliday): Promise<void> {
-    await this.specialHolidayService.edit(holiday);
-  }
+	protected async edit(holiday: SpecialHoliday): Promise<void> {
+		await this.specialHolidayService.edit(holiday);
+	}
 
-  protected async add(): Promise<void> {
-    await this.specialHolidayService.add();
-  }
+	protected async add(): Promise<void> {
+		await this.specialHolidayService.add();
+	}
 
-  protected isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.filteredData.length;
-    return numSelected === numRows;
-  }
+	protected isAllSelected() {
+		const numSelected = this.selection.selected.length;
+		const numRows = this.dataSource.filteredData.length;
+		return numSelected === numRows;
+	}
 
-  protected parentToggle() {
-    if (this.isAllSelected()) {
-      this.selection.clear();
-    } else {
-      for (const row of this.dataSource.filteredData) this.selection.select(row);
-    }
-  }
+	protected parentToggle() {
+		if (this.isAllSelected()) {
+			this.selection.clear();
+		} else {
+			for (const row of this.dataSource.filteredData) this.selection.select(row);
+		}
+	}
 
-  protected async deleteSelected(): Promise<void> {
-    if (this.isDeleting) return;
-    this.isDeleting = true;
-    try {
-      await this.specialHolidayService.deleteAll(this.selection.selected);
-      this.selection.clear();
-    } finally {
-      this.isDeleting = false;
-    }
-  }
+	protected async deleteSelected(): Promise<void> {
+		if (this.isDeleting) return;
+		this.isDeleting = true;
+		try {
+			await this.specialHolidayService.deleteAll(this.selection.selected);
+			this.selection.clear();
+		} finally {
+			this.isDeleting = false;
+		}
+	}
 
-  protected scheduleTypeLabel(type: ScheduleType) {
-    return SCHEDULE_TYPE_LABELS().find((label) => label.value === type)?.label ?? '';
-  }
+	protected scheduleTypeLabel(type: ScheduleType) {
+		return SCHEDULE_TYPE_LABELS().find((label) => label.value === type)?.label ?? '';
+	}
 
-  protected companiesValue(companyCodes: string[]) {
-    return this.companyService.formatCompanies(companyCodes);
-  }
+	protected companiesValue(companyCodes: string[]) {
+		return this.companyService.formatCompanies(companyCodes);
+	}
 }

@@ -1,28 +1,28 @@
 .select-col {
-  width: 2rem;
+	width: 2rem;
 }
 
 .action-col {
-  width: 2rem;
+	width: 2rem;
 
-  sbb-mini-button {
-    vertical-align: middle;
-  }
+	sbb-mini-button {
+		vertical-align: middle;
+	}
 }
 
 .bottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-direction: row;
-  padding-block-start: var(--sbb-spacing-fixed-2x);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-direction: row;
+	padding-block-start: var(--sbb-spacing-fixed-2x);
 
-  .left {
-    flex: 1;
-  }
+	.left {
+		flex: 1;
+	}
 
-  .right {
-    display: flex;
-    gap: var(--sbb-spacing-fixed-4x);
-  }
+	.right {
+		display: flex;
+		gap: var(--sbb-spacing-fixed-4x);
+	}
 }

@@ -1,32 +1,32 @@
 <app-base-dialog
-  i18n-stepLabel="@@ru_indication_templates_dialog_step_label"
-  stepLabel="Titel und Text"
-  [data]="dialogData"
-  [dialogClose]="formValue"
-  [dialogTitle]="title"
-  [saveDisabled]="ruIndicationTemplateForm.invalid"
+	i18n-stepLabel="@@ru_indication_templates_dialog_step_label"
+	stepLabel="Titel und Text"
+	[data]="dialogData"
+	[dialogClose]="formValue"
+	[dialogTitle]="title"
+	[saveDisabled]="ruIndicationTemplateForm.invalid"
 >
-  <form [formGroup]="ruIndicationTemplateForm">
-    <div class="category">
-      <sbb-title i18n="@@ru_indication_templates_form_category_title" visualLevel="5"
-        >Kategorie erstellen</sbb-title
-      >
-      <sbb-form-field errorSpace="reserve">
-        <label for="category" i18n="@@ru_indication_templates_form_category_label"
-          >Name der Kategorie eingeben</label
-        >
-        <input formControlName="category" required />
-        @if (
-          ruIndicationTemplateForm.touched
-          && ruIndicationTemplateForm.get('category')?.hasError('required')
-        ) {
-          <sbb-error i18n="@@form_field_error_required">Feld darf nicht leer sein</sbb-error>
-        }
-      </sbb-form-field>
-    </div>
-    <app-ru-indication-content-form [form]="ruIndicationTemplateForm.controls.content" />
+	<form [formGroup]="ruIndicationTemplateForm">
+		<div class="category">
+			<sbb-title i18n="@@ru_indication_templates_form_category_title" visualLevel="5"
+				>Kategorie erstellen</sbb-title
+			>
+			<sbb-form-field errorSpace="reserve">
+				<label for="category" i18n="@@ru_indication_templates_form_category_label"
+					>Name der Kategorie eingeben</label
+				>
+				<input formControlName="category" required />
+				@if (
+					ruIndicationTemplateForm.touched
+					&& ruIndicationTemplateForm.get('category')?.hasError('required')
+				) {
+					<sbb-error i18n="@@form_field_error_required">Feld darf nicht leer sein</sbb-error>
+				}
+			</sbb-form-field>
+		</div>
+		<app-ru-indication-content-form [form]="ruIndicationTemplateForm.controls.content" />
 
-    <sbb-title i18n="@@ru_indication_templates_form_company_title" visualLevel="5">EVU</sbb-title>
-    <app-companies-input [control]="ruIndicationTemplateForm.controls.companies" />
-  </form>
+		<sbb-title i18n="@@ru_indication_templates_form_company_title" visualLevel="5">EVU</sbb-title>
+		<app-companies-input [control]="ruIndicationTemplateForm.controls.companies" />
+	</form>
 </app-base-dialog>

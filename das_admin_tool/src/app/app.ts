@@ -9,30 +9,30 @@ import { Header } from './header/header';
 import { IconSidebar } from './icon-sidebar/icon-sidebar';
 
 @Component({
-  selector: 'app-root',
-  imports: [RouterOutlet, Header, IconSidebar, SbbTitleModule, SbbNotificationModule, SbbLink],
-  templateUrl: './app.html',
-  styleUrl: './app.css',
+	selector: 'app-root',
+	imports: [RouterOutlet, Header, IconSidebar, SbbTitleModule, SbbNotificationModule, SbbLink],
+	templateUrl: './app.html',
+	styleUrl: './app.css',
 })
 export class App implements OnInit {
-  protected readonly isAdBlockerDetected = signal(this.isInstanaBlockedByAdBlocker);
-  private readonly router = inject(Router);
-  private readonly authService = inject(AuthService);
+	protected readonly isAdBlockerDetected = signal(this.isInstanaBlockedByAdBlocker);
+	private readonly router = inject(Router);
+	private readonly authService = inject(AuthService);
 
-  private get isInstanaBlockedByAdBlocker(): boolean {
-    const pageLoadId = ineum('getPageLoadId');
-    return pageLoadId === undefined;
-  }
+	private get isInstanaBlockedByAdBlocker(): boolean {
+		const pageLoadId = ineum('getPageLoadId');
+		return pageLoadId === undefined;
+	}
 
-  ngOnInit(): void {
-    ineum('meta', 'version', packageJson.version);
-    if (this.authService.isAuthenticated()) {
-      ineum('user', this.authService.oid());
-    }
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd && typeof ineum !== 'undefined') {
-        ineum('page', event.url);
-      }
-    });
-  }
+	ngOnInit(): void {
+		ineum('meta', 'version', packageJson.version);
+		if (this.authService.isAuthenticated()) {
+			ineum('user', this.authService.oid());
+		}
+		this.router.events.subscribe((event) => {
+			if (event instanceof NavigationEnd && typeof ineum !== 'undefined') {
+				ineum('page', event.url);
+			}
+		});
+	}
 }

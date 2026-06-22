@@ -5,21 +5,21 @@ import { DasAdmin } from './das-admin';
 const mockAppVersionsService = { appVersionsResource: new Proxy({}, { get: () => vi.fn() }) };
 
 describe('DasAdmin', () => {
-  let component: DasAdmin;
-  let fixture: ComponentFixture<DasAdmin>;
+	let component: DasAdmin;
+	let fixture: ComponentFixture<DasAdmin>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [DasAdmin],
-      providers: [{ provide: AppVersionsService, useValue: mockAppVersionsService }],
-    }).compileComponents();
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			imports: [DasAdmin],
+			providers: [{ provide: AppVersionsService, useValue: mockAppVersionsService }],
+		}).compileComponents();
 
-    fixture = TestBed.createComponent(DasAdmin);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+		fixture = TestBed.createComponent(DasAdmin);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
 });

@@ -9,50 +9,50 @@ import { AppVersion } from '~app/das-admin/das-admin-api';
 import { AppVersionsService } from '../app-versions.service';
 
 @Component({
-  selector: 'app-app-versions-table',
-  imports: [
-    SbbTableModule,
-    SbbSecondaryButton,
-    SbbCompactPaginator,
-    DatePipe,
-    SbbToggleCheckModule,
-    SbbMiniButton,
-  ],
-  templateUrl: './app-versions-table.html',
-  styleUrl: './app-versions-table.css',
+	selector: 'app-app-versions-table',
+	imports: [
+		SbbTableModule,
+		SbbSecondaryButton,
+		SbbCompactPaginator,
+		DatePipe,
+		SbbToggleCheckModule,
+		SbbMiniButton,
+	],
+	templateUrl: './app-versions-table.html',
+	styleUrl: './app-versions-table.css',
 })
 export class AppVersionsTable {
-  protected readonly PAGE_SIZE = 20;
+	protected readonly PAGE_SIZE = 20;
 
-  protected dataSource = new SbbTableDataSource<AppVersion>();
-  protected columns = [
-    'version',
-    'minimalVersion',
-    'expiryDate',
-    'lastModifiedAt',
-    'lastModifiedBy',
-    'action',
-  ];
-  private readonly appVersionsService = inject(AppVersionsService);
+	protected dataSource = new SbbTableDataSource<AppVersion>();
+	protected columns = [
+		'version',
+		'minimalVersion',
+		'expiryDate',
+		'lastModifiedAt',
+		'lastModifiedBy',
+		'action',
+	];
+	private readonly appVersionsService = inject(AppVersionsService);
 
-  private readonly paginator = viewChild.required<SbbCompactPaginator>(SbbCompactPaginator);
-  private readonly sort = viewChild.required<SbbSort>(SbbSort);
+	private readonly paginator = viewChild.required<SbbCompactPaginator>(SbbCompactPaginator);
+	private readonly sort = viewChild.required<SbbSort>(SbbSort);
 
-  constructor() {
-    effect(() => {
-      if (this.appVersionsService.appVersionsResource.hasValue()) {
-        this.dataSource.data = this.appVersionsService.appVersionsResource.value().data;
-      }
-      this.dataSource.paginator = this.paginator();
-      this.dataSource.sort = this.sort();
-    });
-  }
+	constructor() {
+		effect(() => {
+			if (this.appVersionsService.appVersionsResource.hasValue()) {
+				this.dataSource.data = this.appVersionsService.appVersionsResource.value().data;
+			}
+			this.dataSource.paginator = this.paginator();
+			this.dataSource.sort = this.sort();
+		});
+	}
 
-  protected async edit(appVersion: AppVersion) {
-    await this.appVersionsService.edit(appVersion);
-  }
+	protected async edit(appVersion: AppVersion) {
+		await this.appVersionsService.edit(appVersion);
+	}
 
-  protected async add() {
-    await this.appVersionsService.add();
-  }
+	protected async add() {
+		await this.appVersionsService.add();
+	}
 }

@@ -1,31 +1,31 @@
 <sbb-form-field errorSpace="reserve">
-  <label for="locations" i18n="@@form_locations_label">{{ label() }}</label>
-  <sbb-chip-group
-    name="locations"
-    [displayWith]="locationToName"
-    [formControl]="control()"
-    [separatorKeys]="[]"
-  >
-    <input [formControl]="inputControl" [sbbAutocomplete]="auto" />
-  </sbb-chip-group>
-  <sbb-autocomplete #auto="sbbAutocomplete">
-    @for (loc of filteredLocations(); track loc.locationReference) {
-      <sbb-option [class.future]="loc.validFrom" [value]="loc.locationReference">
-        @if (loc.validFrom) {
-          ab: {{ loc.validFrom | date: 'shortDate' }}
-          <span>&nbsp;&nbsp;</span>
-        }
-        {{ loc.locationReference }}
-        <span>&nbsp;&nbsp;</span>
-        {{ loc.primaryLocationName }}
-        @if (loc.locationAbbreviation) {
-          <span>&nbsp;&nbsp;</span>
-          {{ loc.locationAbbreviation }}
-        }
-      </sbb-option>
-    }
-  </sbb-autocomplete>
-  @if (control().hasError('required') && control().touched) {
-    <sbb-error i18n="@@form_field_error_required">Feld darf nicht leer sein</sbb-error>
-  }
+	<label for="locations" i18n="@@form_locations_label">{{ label() }}</label>
+	<sbb-chip-group
+		name="locations"
+		[displayWith]="locationToName"
+		[formControl]="control()"
+		[separatorKeys]="[]"
+	>
+		<input [formControl]="inputControl" [sbbAutocomplete]="auto" />
+	</sbb-chip-group>
+	<sbb-autocomplete #auto="sbbAutocomplete">
+		@for (loc of filteredLocations(); track loc.locationReference) {
+			<sbb-option [class.future]="loc.validFrom" [value]="loc.locationReference">
+				@if (loc.validFrom) {
+					ab: {{ loc.validFrom | date: 'shortDate' }}
+					<span>&nbsp;&nbsp;</span>
+				}
+				{{ loc.locationReference }}
+				<span>&nbsp;&nbsp;</span>
+				{{ loc.primaryLocationName }}
+				@if (loc.locationAbbreviation) {
+					<span>&nbsp;&nbsp;</span>
+					{{ loc.locationAbbreviation }}
+				}
+			</sbb-option>
+		}
+	</sbb-autocomplete>
+	@if (control().hasError('required') && control().touched) {
+		<sbb-error i18n="@@form_field_error_required">Feld darf nicht leer sein</sbb-error>
+	}
 </sbb-form-field>

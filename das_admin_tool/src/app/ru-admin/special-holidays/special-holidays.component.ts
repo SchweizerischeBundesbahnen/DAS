@@ -6,12 +6,12 @@ import { SpecialHolidayService } from './special-holiday.service';
 import { SpecialHolidaysTable } from './special-holidays-table/special-holidays-table.component';
 
 @Component({
-  selector: 'app-special-holidays',
-  imports: [SpecialHolidaysTable, SbbLoadingIndicatorCircle, SbbSecondaryButton, SbbTitle],
-  templateUrl: './special-holidays.component.html',
-  styleUrl: './special-holidays.component.css',
+	selector: 'app-special-holidays',
+	imports: [SpecialHolidaysTable, SbbLoadingIndicatorCircle, SbbSecondaryButton, SbbTitle],
+	templateUrl: './special-holidays.component.html',
+	styleUrl: './special-holidays.component.css',
 })
 export class SpecialHolidays {
-  protected readonly specialHolidayService = inject(SpecialHolidayService);
-  protected readonly specialHolidays = this.specialHolidayService.specialHolidaysResource;
+	protected readonly specialHolidayService = inject(SpecialHolidayService);
+	protected readonly specialHolidays = this.specialHolidayService.specialHolidaysResource;
 }

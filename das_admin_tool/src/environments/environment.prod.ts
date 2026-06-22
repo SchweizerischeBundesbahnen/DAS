@@ -23,29 +23,29 @@ import { Environment } from './environment.model';
 const backendUrl = process.env['BACKEND_URL']!;
 
 const authConfig: PassedInitialConfig = {
-  config: {
-    authority: 'https://login.microsoftonline.com/common/v2.0',
-    redirectUrl:
-      globalThis.location.origin
-      + globalThis.location.pathname.slice(0, globalThis.location.pathname.indexOf('/', 1) + 1),
-    clientId: process.env['AUTH_CLIENT_ID'],
-    scope: `openid profile email offline_access ${process.env['AUTH_SCOPE']}`,
-    strictIssuerValidationOnWellKnownRetrievalOff: true,
-    responseType: 'code',
-    silentRenew: true,
-    useRefreshToken: true,
-    maxIdTokenIatOffsetAllowedInSeconds: 600,
-    ignoreNonceAfterRefresh: true, // see https://github.com/damienbod/angular-auth-oidc-client/issues/1947
-    secureRoutes: [backendUrl],
-    issValidationOff: true,
-    autoUserInfo: false,
-  },
+	config: {
+		authority: 'https://login.microsoftonline.com/common/v2.0',
+		redirectUrl:
+			globalThis.location.origin
+			+ globalThis.location.pathname.slice(0, globalThis.location.pathname.indexOf('/', 1) + 1),
+		clientId: process.env['AUTH_CLIENT_ID'],
+		scope: `openid profile email offline_access ${process.env['AUTH_SCOPE']}`,
+		strictIssuerValidationOnWellKnownRetrievalOff: true,
+		responseType: 'code',
+		silentRenew: true,
+		useRefreshToken: true,
+		maxIdTokenIatOffsetAllowedInSeconds: 600,
+		ignoreNonceAfterRefresh: true, // see https://github.com/damienbod/angular-auth-oidc-client/issues/1947
+		secureRoutes: [backendUrl],
+		issValidationOff: true,
+		autoUserInfo: false,
+	},
 };
 
 export const environment: Environment = {
-  production: process.env['PRODUCTION'] !== 'false',
-  stage: process.env['STAGE']!,
-  backendUrl,
-  adminTenantId: process.env['ADMIN_TENANT_ID']!,
-  authConfig,
+	production: process.env['PRODUCTION'] !== 'false',
+	stage: process.env['STAGE']!,
+	backendUrl,
+	adminTenantId: process.env['ADMIN_TENANT_ID']!,
+	authConfig,
 };

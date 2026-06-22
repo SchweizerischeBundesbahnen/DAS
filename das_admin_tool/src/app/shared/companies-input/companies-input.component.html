@@ -1,25 +1,25 @@
 <sbb-form-field errorSpace="reserve">
-  <label for="companies" i18n="@@form_companies_label">{{ label() }}</label>
-  <sbb-chip-group
-    name="companies"
-    [displayWith]="codeToName"
-    [formControl]="control()"
-    [separatorKeys]="[]"
-  >
-    <!-- stopPropagation because chip-group would get marked dirty otherwise -->
-    <input
-      [formControl]="inputControl"
-      [sbbAutocomplete]="auto"
-      (change)="$event.stopPropagation()"
-    />
-  </sbb-chip-group>
+	<label for="companies" i18n="@@form_companies_label">{{ label() }}</label>
+	<sbb-chip-group
+		name="companies"
+		[displayWith]="codeToName"
+		[formControl]="control()"
+		[separatorKeys]="[]"
+	>
+		<!-- stopPropagation because chip-group would get marked dirty otherwise -->
+		<input
+			[formControl]="inputControl"
+			[sbbAutocomplete]="auto"
+			(change)="$event.stopPropagation()"
+		/>
+	</sbb-chip-group>
 
-  <sbb-autocomplete #auto="sbbAutocomplete">
-    @for (company of filteredCompanies(); track company.code) {
-      <sbb-option [value]="company.code">{{ company.name }}</sbb-option>
-    }
-  </sbb-autocomplete>
-  @if (control().hasError('required') && control().touched) {
-    <sbb-error i18n="@@form_field_error_required">Feld darf nicht leer sein</sbb-error>
-  }
+	<sbb-autocomplete #auto="sbbAutocomplete">
+		@for (company of filteredCompanies(); track company.code) {
+			<sbb-option [value]="company.code">{{ company.name }}</sbb-option>
+		}
+	</sbb-autocomplete>
+	@if (control().hasError('required') && control().touched) {
+		<sbb-error i18n="@@form_field_error_required">Feld darf nicht leer sein</sbb-error>
+	}
 </sbb-form-field>
