@@ -62,14 +62,15 @@ export class ExternalLinksTable {
     this.dataSource.sortingDataAccessor = (data: ExternalLink, column: string) => {
       switch (column) {
         case 'title':
-        case 'link':
+        case 'link': {
           return this.currentLanguage(data)?.[column] ?? '';
-
-        case 'lastModifiedAt':
+        }
+        case 'lastModifiedAt': {
           return formatDate(data[column]!, 'short', this.localeId);
-
-        default:
+        }
+        default: {
           return data[column as keyof ExternalLink] as string;
+        }
       }
     };
   }
@@ -96,7 +97,7 @@ export class ExternalLinksTable {
     if (this.isAllSelected()) {
       this.selection.clear();
     } else {
-      this.dataSource.filteredData.forEach((row) => this.selection.select(row));
+      for (const row of this.dataSource.filteredData) this.selection.select(row);
     }
   }
 

@@ -38,7 +38,7 @@ export class LocationService {
   }
 
   private sortByRelevance(includesQuery: Location[], q: string) {
-    return includesQuery.sort((a, b) => {
+    return includesQuery.toSorted((a, b) => {
       const aName = a.primaryLocationName?.toLowerCase() ?? '';
       const bName = b.primaryLocationName?.toLowerCase() ?? '';
       const aAbbr = a.locationAbbreviation?.toLowerCase() ?? '';

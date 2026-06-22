@@ -4,7 +4,7 @@ const INPUT_MAIL = '[type=email]';
 const INPUT_PASSWORD = '[type=password]';
 const BUTTON_SIGN_IN = 'input:has-text("Sign in")';
 const BUTTON_NEXT = 'text=Next';
-const MAX_LOGIN_TIME = 120000;
+const MAX_LOGIN_TIME = 120_000;
 const LOGIN_USERNAME = process.env['E2E_LOGIN_USERNAME'] ?? '';
 const LOGIN_PASSWORD = process.env['E2E_LOGIN_PASSWORD'] ?? '';
 
@@ -27,7 +27,7 @@ export class MsEntraIdLoginPage {
     try {
       // Check if automatically redirected
       await this.browser.getPage().waitForURL(this.baseURL, { timeout: 2000 });
-    } catch (_: unknown) {
+    } catch {
       await this.checkPasswordError(interactive);
       await this.check2ndFactorAuth();
       await this.browser.getPage().waitForURL(this.baseURL);
@@ -51,10 +51,12 @@ export class MsEntraIdLoginPage {
   }
 
   async check2ndFactorAuth(): Promise<void> {
-    if (await this.browser.getElement('text=Approve sign-in request')) {
-      console.info('*** Approve sign-in request with your 2nd factor ***');
-      console.info('*** Run playwright with --headed for an interactive login process ***');
-      this.browser.getPage().setDefaultTimeout(MAX_LOGIN_TIME);
+    if (!(await this.browser.getElement('text=Approve sign-in request'))) {
+      return;
     }
+
+    console.info('*** Approve sign-in request with your 2nd factor ***');
+    console.info('*** Run playwright with --headed for an interactive login process ***');
+    this.browser.getPage().setDefaultTimeout(MAX_LOGIN_TIME);
   }
 }

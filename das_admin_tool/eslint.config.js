@@ -6,6 +6,8 @@ import json from '@eslint/json';
 import * as angular from 'angular-eslint';
 import { defineConfig } from 'eslint/config';
 import * as importX from 'eslint-plugin-import-x';
+import * as sonarjs from 'eslint-plugin-sonarjs';
+import unicorn from 'eslint-plugin-unicorn';
 import prettierRecommended from 'eslint-plugin-prettier/recommended';
 import * as ts from 'typescript-eslint';
 
@@ -19,6 +21,8 @@ export default defineConfig(
       ...angular.configs.tsAll,
       importX.flatConfigs.recommended,
       importX.flatConfigs.typescript,
+      sonarjs.configs.recommended,
+      unicorn.configs.recommended,
       prettierRecommended,
     ],
     processor: angular.processInlineTemplates,
@@ -70,6 +74,7 @@ export default defineConfig(
           caughtErrorsIgnorePattern: '^_',
         },
       ],
+      '@typescript-eslint/prefer-for-of': 'error',
       '@typescript-eslint/unbound-method': [
         'error',
         {
@@ -109,6 +114,36 @@ export default defineConfig(
           named: true,
         },
       ],
+      // Disabled because handled by sonarjs/cognitive-complexity
+      'sonarjs/no-nested-conditional': 'off',
+      // Disabled because this is opinionated
+      'unicorn/catch-error-name': 'off',
+      // Disabled because this is opinionated
+      'unicorn/consistent-boolean-name': 'off',
+      // Disabled because this is opinionated
+      'unicorn/consistent-class-member-order': 'off',
+      // Disabled because this is opinionated
+      'unicorn/import-style': 'off',
+      // Disabled because handled by sonarjs/cognitive-complexity
+      'unicorn/max-nested-calls': 'off',
+      // Disabled because this is opinionated
+      'unicorn/name-replacements': 'off',
+      // Disabled because this is opinionated
+      'unicorn/no-await-expression-member': 'off',
+      // Disabled because this is opinionated
+      'unicorn/no-non-function-verb-prefix': 'off',
+      // Disabled because this is opinionated
+      'unicorn/no-null': 'off',
+      // Disabled because used in angular
+      'unicorn/prefer-await': 'off',
+      // Disabled because this is opinionated
+      'unicorn/prefer-export-from': 'off',
+      // Disabled because this is opinionated
+      'unicorn/prefer-node-protocol': 'off',
+      // Disabled because this is opinionated
+      'unicorn/prefer-set-has': 'off',
+      // Disabled because used in angular
+      'unicorn/prefer-top-level-await': 'off',
     },
   },
   {

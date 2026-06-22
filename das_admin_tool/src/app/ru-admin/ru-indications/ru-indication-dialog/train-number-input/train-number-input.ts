@@ -20,8 +20,7 @@ export function displayTrainNumberFilter(value: RuIndicationTrainNumberFilter): 
   let parity;
   if (value.parity === 'EVEN') {
     parity = $localize`:@@ru_indication_form_parity_even_value:Gerade`;
-  }
-  if (value.parity === 'ODD') {
+  } else if (value.parity === 'ODD') {
     parity = $localize`:@@ru_indication_form_parity_odd_value:Ungerade`;
   }
   return value.expression + (parity ? ` (${parity})` : '');

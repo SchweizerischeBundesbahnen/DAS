@@ -8,7 +8,7 @@ import {
 } from 'angular-auth-oidc-client';
 import { environment } from '~src/environments/environment';
 import { routes } from './app.routes';
-import { ReportToInstanaErrorHandler } from './errorHandler';
+import { ReportToInstanaErrorHandler } from './error-handler';
 
 export const appConfig: ApplicationConfig = {
   providers: [

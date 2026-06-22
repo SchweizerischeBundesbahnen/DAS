@@ -2,13 +2,13 @@ import { LOCALE_ID } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { LanguageProvider } from './language-provider';
 
+function setup(localeId = 'de-CH') {
+  TestBed.configureTestingModule({ providers: [{ provide: LOCALE_ID, useValue: localeId }] });
+
+  return TestBed.inject(LanguageProvider);
+}
+
 describe('LanguageProvider', () => {
-  const setup = (localeId = 'de-CH') => {
-    TestBed.configureTestingModule({ providers: [{ provide: LOCALE_ID, useValue: localeId }] });
-
-    return TestBed.inject(LanguageProvider);
-  };
-
   it('should be created', () => {
     const service = setup();
     expect(service).toBeTruthy();

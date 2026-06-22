@@ -49,7 +49,7 @@ describe('ExternalLinkDialog', () => {
 
     it('should be invalid when titles contain only whitespace', () => {
       const dialog = createDialog();
-      dialog['externalLinkForm'].get('de.title')!.setValue('   ');
+      dialog['externalLinkForm'].get('de.title')!.setValue(' ');
 
       expect(dialog['externalLinkForm'].errors).toEqual({ oneLanguageRequired: true });
     });
@@ -115,7 +115,7 @@ describe('ExternalLinkDialog', () => {
 
     it('should return true when title is only whitespace', () => {
       const dialog = createDialog();
-      dialog['externalLinkForm'].get('de.title')!.setValue('   ');
+      dialog['externalLinkForm'].get('de.title')!.setValue(' ');
 
       expect(dialog['isLanguageEmpty']('de')).toBe(true);
     });

@@ -41,7 +41,7 @@ describe('RuIndicationTemplateDialog', () => {
 
     it('should be invalid when titles contain only whitespace', () => {
       const dialog = createDialog();
-      dialog['ruIndicationTemplateForm'].get('content.de.title')!.setValue('   ');
+      dialog['ruIndicationTemplateForm'].get('content.de.title')!.setValue(' ');
       expect(dialog['ruIndicationTemplateForm'].get('content')!.errors).toEqual({
         oneLanguageRequired: true,
       });

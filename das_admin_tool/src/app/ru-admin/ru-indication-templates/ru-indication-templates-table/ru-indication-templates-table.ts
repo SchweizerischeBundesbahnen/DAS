@@ -92,14 +92,15 @@ export class RuIndicationTemplatesTable {
   protected getValue(row: RuIndicationTemplate, column: string) {
     switch (column) {
       case 'title':
-      case 'text':
+      case 'text': {
         return row[this.form.get('language')!.value]?.[column] ?? '';
-
-      case 'companies':
+      }
+      case 'companies': {
         return this.companiesValue(row.companies);
-
-      default:
+      }
+      default: {
         return row[column as keyof RuIndicationTemplate] as string;
+      }
     }
   }
 
@@ -121,7 +122,7 @@ export class RuIndicationTemplatesTable {
     if (this.isAllSelected()) {
       this.selection.clear();
     } else {
-      this.dataSource.filteredData.forEach((row) => this.selection.select(row));
+      for (const row of this.dataSource.filteredData) this.selection.select(row);
     }
   }
 

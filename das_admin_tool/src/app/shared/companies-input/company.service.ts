@@ -20,7 +20,7 @@ export class CompanyService {
   public formatCompanies(companies: string[]): string {
     return companies
       .map((companyCode) => this.getName(companyCode) ?? companyCode)
-      .sort((a, b) => a.localeCompare(b))
+      .toSorted((a, b) => a.localeCompare(b))
       .join(', ');
   }
 
@@ -46,7 +46,7 @@ export class CompanyService {
   }
 
   private sortByRelevance(candidates: Company[], query: string): Company[] {
-    return [...candidates].sort((a, b) => {
+    return candidates.toSorted((a, b) => {
       const aCode = a.code.toLowerCase();
       const bCode = b.code.toLowerCase();
       const aName = a.name.toLowerCase();

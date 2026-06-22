@@ -79,7 +79,7 @@ export class SpecialHolidaysTable {
     if (this.isAllSelected()) {
       this.selection.clear();
     } else {
-      this.dataSource.filteredData.forEach((row) => this.selection.select(row));
+      for (const row of this.dataSource.filteredData) this.selection.select(row);
     }
   }
 

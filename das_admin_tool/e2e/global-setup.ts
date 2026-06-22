@@ -8,7 +8,11 @@ export default async function globalSetup(config: FullConfig) {
   const { baseURL, storageState, defaultBrowserType } = config.projects[0].use;
   const storageStatePath = resolve(storageState as string);
 
-  if (!existsSync(storageStatePath)) {
+  if (existsSync(storageStatePath)) {
+    console.log(
+      `Use existing state from ${storageStatePath}. If you get authentication errors delete this file.`,
+    );
+  } else {
     const engine = defaultBrowserType === 'firefox' ? firefox : chromium;
     const headless = !process.argv.includes('--headed');
     const browser = await engine.launch({ headless });
@@ -18,9 +22,5 @@ export default async function globalSetup(config: FullConfig) {
     await new MsEntraIdLoginPage(BrowserWindow.init(page), baseURL!).login(!headless);
     await page.context().storageState({ path: storageState as string });
     await browser.close();
-  } else {
-    console.log(
-      `Use existing state from ${storageStatePath}. If you get authentication errors delete this file.`,
-    );
   }
 }

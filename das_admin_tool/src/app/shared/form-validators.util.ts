@@ -35,7 +35,7 @@ export function languageRequired(control: AbstractControl): ValidationErrors | n
   const controls = Object.values((control as RecordFormGroup).controls);
   const values = controls.map((control) => !!control.value.trim());
   for (const control of controls) {
-    if (values.some((value) => value)) {
+    if (values.includes(true)) {
       if (control.value.trim()) {
         removeError(control, 'languageRequired');
       } else {
@@ -82,7 +82,7 @@ export function titleRequired(...fields: string[]): ValidatorFn {
     const titleControl = control.get('title') as StringFormControl;
     const title = titleControl.value.trim();
     const values = fields.map((field) => !!(control.get(field) as StringFormControl).value.trim());
-    if (values.some((value) => value) && !title) {
+    if (values.includes(true) && !title) {
       addError(titleControl, 'titleRequired');
     } else {
       removeError(titleControl, 'titleRequired');

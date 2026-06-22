@@ -21,11 +21,11 @@ import { LanguageProvider } from '~shared/language-provider';
 export function displayPeriod(period: RuIndicationPeriod, localeId = 'de-CH'): string {
   const from = formatDate(period.validFrom, 'shortDate', localeId);
   const to = formatDate(period.validTo, 'shortDate', localeId);
-  const days = period.weekdays ?? [];
   if (from === to) {
     return from;
   }
 
+  const days = period.weekdays ?? [];
   const weekdayLabels = days
     .map((weekday) => weekdays().find((candidate) => candidate.value === weekday)?.label ?? weekday)
     .join(', ');
@@ -45,17 +45,16 @@ const weekdays = (): { value: DayOfWeek; label: string }[] => [
 
 function periodFormValidator(control: AbstractControl): ValidationErrors | null {
   const isRange = control.get('isRange')?.value === true;
-  const validFrom = control.get('validFrom')?.value as Date | null;
-  const validTo = control.get('validTo')?.value as Date | null;
-
   if (!isRange) {
     return null;
   }
 
+  const validTo = control.get('validTo')?.value as Date | null;
   if (!validTo) {
     return { validToRequired: true };
   }
 
+  const validFrom = control.get('validFrom')?.value as Date | null;
   if (!validFrom) {
     return null;
   }
@@ -124,12 +123,12 @@ export class PeriodsInput {
     }
 
     const validFrom = this.periodForm.controls.validFrom.value;
-    const validToDraft = this.periodForm.controls.validTo.value;
-    const isRange = this.periodForm.controls.isRange.value;
     if (!validFrom) {
       return;
     }
 
+    const isRange = this.periodForm.controls.isRange.value;
+    const validToDraft = this.periodForm.controls.validTo.value;
     const validTo = isRange && validToDraft ? validToDraft : validFrom;
     const weekdays = isRange ? this.periodForm.controls.weekdays.value : [];
 
@@ -160,7 +159,7 @@ export class PeriodsInput {
       (event.target as HTMLInputElement | null)?.checked ?? !this.isWeekdaySelected(weekday);
     const current = this.periodForm.controls.weekdays.value;
     const next = checked
-      ? Array.from(new Set([...current, weekday]))
+      ? [...new Set([...current, weekday])]
       : current.filter((value) => value !== weekday);
 
     this.periodForm.controls.weekdays.setValue(next);

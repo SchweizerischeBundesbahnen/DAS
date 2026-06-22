@@ -157,7 +157,7 @@ describe('RuIndicationTemplatesTable', () => {
       comp['dataSource'].data = templates;
       comp['selection'].select(templates[0]);
       comp['parentToggle']();
-      expect(comp['selection'].selected.length).toBe(templates.length);
+      expect(comp['selection'].selected).toHaveLength(templates.length);
     });
 
     it('should clear selection when all rows are already selected', () => {

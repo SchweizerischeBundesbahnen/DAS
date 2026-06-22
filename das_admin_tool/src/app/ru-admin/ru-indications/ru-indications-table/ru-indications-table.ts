@@ -144,13 +144,17 @@ export class RuIndicationsTable {
           (locationCode) =>
             this.locationService.getLocation(locationCode)?.locationAbbreviation ?? locationCode,
         )
-        .sort((a, b) => a.localeCompare(b))
+        .toSorted((a, b) => a.localeCompare(b))
         .join(', ') ?? ''
     );
   }
 
   protected trainNumbersValue(row: RuIndication): string {
-    return row.scope.operationalTrainNumberFilters?.map(displayTrainNumberFilter).join(', ') ?? '';
+    return (
+      row.scope.operationalTrainNumberFilters
+        ?.map((filter) => displayTrainNumberFilter(filter))
+        .join(', ') ?? ''
+    );
   }
 
   protected periodsValue(row: RuIndication): string {
@@ -177,7 +181,7 @@ export class RuIndicationsTable {
     if (this.isAllSelected()) {
       this.selection.clear();
     } else {
-      this.dataSource.filteredData.forEach((row) => this.selection.select(row));
+      for (const row of this.dataSource.filteredData) this.selection.select(row);
     }
   }
 
@@ -194,32 +198,33 @@ export class RuIndicationsTable {
 
   private getSortValue(row: RuIndication, column: string): string {
     switch (column) {
-      case 'title':
+      case 'title': {
         return this.titleValue(row);
-
-      case 'text':
+      }
+      case 'text': {
         return this.textValue(row);
-
-      case 'category':
+      }
+      case 'category': {
         return row.content.category ?? '';
-
-      case 'status':
+      }
+      case 'status': {
         return this.statusValue(row);
-
-      case 'companies':
+      }
+      case 'companies': {
         return this.companiesValue(row.scope.companies);
-
-      case 'trainNumbers':
+      }
+      case 'trainNumbers': {
         return this.trainNumbersValue(row);
-
-      case 'locations':
+      }
+      case 'locations': {
         return this.locationsValue(row);
-
-      case 'periods':
+      }
+      case 'periods': {
         return this.periodsValue(row);
-
-      default:
+      }
+      default: {
         return row[column as keyof RuIndication] as string;
+      }
     }
   }
 

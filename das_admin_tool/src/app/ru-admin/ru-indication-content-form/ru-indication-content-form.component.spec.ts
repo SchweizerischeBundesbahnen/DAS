@@ -32,7 +32,7 @@ describe('RuIndicationContentForm', () => {
     it('should return true when title is only whitespace', () => {
       fixture.componentRef.setInput(
         'form',
-        new FormGroup({ de: new FormGroup({ title: new FormControl('   ') }) }),
+        new FormGroup({ de: new FormGroup({ title: new FormControl(' ') }) }),
       );
       expect(component['isLanguageEmpty']('de')).toBe(true);
     });

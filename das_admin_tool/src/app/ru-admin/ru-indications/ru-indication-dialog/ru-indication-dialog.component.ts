@@ -86,13 +86,11 @@ export class RuIndicationDialog {
   private readonly scopeFormStatus = toSignal(this.ruIndicationForm.controls.scope.statusChanges);
   protected readonly isStepDisabled = computed(() => {
     const step = this.stepchange()?.selectedIndex;
-    if (step === 0) {
-      return this.contentFormStatus() === 'INVALID';
-    } else if (step === 1) {
-      return this.scopeFormStatus() === 'INVALID';
-    } else {
-      return false;
-    }
+    return step === 0
+      ? this.contentFormStatus() === 'INVALID'
+      : step === 1
+        ? this.scopeFormStatus() === 'INVALID'
+        : false;
   });
 
   constructor() {
