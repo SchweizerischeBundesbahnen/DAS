@@ -31,9 +31,9 @@ class ExternalLinkDto {
 
   final int id;
   final List<String> companies;
-  final ExternalLinkTranslationDto de;
-  final ExternalLinkTranslationDto fr;
-  final ExternalLinkTranslationDto it;
+  final ExternalLinkTranslationDto? de;
+  final ExternalLinkTranslationDto? fr;
+  final ExternalLinkTranslationDto? it;
   final DateTime lastModifiedAt;
   final String lastModifiedBy;
 
@@ -42,14 +42,14 @@ class ExternalLinkDto {
       id: id,
       companies: companies,
       title: LocalizedString(
-        de: de.title,
-        fr: fr.title,
-        it: it.title,
+        de: de?.title,
+        fr: fr?.title,
+        it: it?.title,
       ),
       link: LocalizedString(
-        de: de.link,
-        fr: fr.link,
-        it: it.link,
+        de: de?.link,
+        fr: fr?.link,
+        it: it?.link,
       ),
       lastModifiedAt: lastModifiedAt,
       lastModifiedBy: lastModifiedBy,
@@ -65,8 +65,8 @@ class ExternalLinkTranslationDto {
 
   factory ExternalLinkTranslationDto.fromJson(Map<String, dynamic> json) => _$ExternalLinkTranslationDtoFromJson(json);
 
-  final String title;
-  final String link;
+  final String? title;
+  final String? link;
 
   Map<String, dynamic> toJson() => _$ExternalLinkTranslationDtoToJson(this);
 }
