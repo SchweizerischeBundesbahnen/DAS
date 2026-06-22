@@ -33,21 +33,3 @@ class ExternalLink {
   @override
   int get hashCode => Object.hash(id, ListEquality().hash(companies), title, link, lastModifiedAt, lastModifiedBy);
 }
-
-class ExternalLinkTranslation {
-  ExternalLinkTranslation({required this.title, required this.link});
-
-  final String title;
-  final String link;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is ExternalLinkTranslation &&
-          runtimeType == other.runtimeType &&
-          title == other.title &&
-          link == other.link;
-
-  @override
-  int get hashCode => Object.hash(title, link);
-}

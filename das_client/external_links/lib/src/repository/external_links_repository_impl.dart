@@ -1,5 +1,5 @@
 import 'package:external_links/src/api/external_links_api_service.dart';
-import 'package:external_links/src/data/local/exernal_links_service.dart';
+import 'package:external_links/src/data/local/external_links_database_service.dart';
 import 'package:external_links/src/model/external_link.dart';
 import 'package:external_links/src/repository/external_links_repository.dart';
 import 'package:logging/logging.dart';
@@ -7,28 +7,28 @@ import 'package:logging/logging.dart';
 final _log = Logger('ExternalLinksRepositoryImpl');
 
 class ExternalLinksRepositoryImpl implements ExternalLinksRepository {
-  ExternalLinksRepositoryImpl({required this.apiService, required this.databaseService});
+  ExternalLinksRepositoryImpl({required this._apiService, required this._databaseService});
 
-  final ExternalLinksApiService apiService;
-  final ExternalLinksService databaseService;
+  final ExternalLinksApiService _apiService;
+  final ExternalLinksDatabaseService _databaseService;
 
   @override
   Future<List<ExternalLink>> reloadExternalLinksByCompanies(List<String> companies) async {
     await _loadExternalLinksAndUpdateDatabase(companies);
-    return databaseService.findExternalLinksByCompanies(companies);
+    return _databaseService.findExternalLinksByCompanies(companies);
   }
 
   Future<void> _loadExternalLinksAndUpdateDatabase(List<String> companies) async {
     _log.info('Loading external links for companies: $companies');
     try {
-      final response = await apiService.externalLinks(companies).call();
+      final response = await _apiService.externalLinks(companies).call();
       final externalLinks = response.body.data.map((dto) => dto.toModel()).toList();
 
-      await databaseService.saveExternalLinks(externalLinks);
+      await _databaseService.saveExternalLinks(externalLinks);
 
       // Cleanup
       final fetchedIds = externalLinks.map((link) => link.id).toList();
-      await databaseService.deleteExternalLinksNotIn(fetchedIds);
+      await _databaseService.deleteExternalLinksNotIn(fetchedIds);
 
       _log.info('External links loaded successfully. Count: ${externalLinks.length}');
     } catch (e) {
@@ -40,13 +40,6 @@ class ExternalLinksRepositoryImpl implements ExternalLinksRepository {
   Stream<List<ExternalLink>> watchExternalLinksByCompanies(List<String> companies) {
     reloadExternalLinksByCompanies(companies);
 
-    return databaseService
-        .watchExternalLinksByCompanies(companies)
-        .distinct((links1, links2) => _listsEqual(links1, links2));
-  }
-
-  bool _listsEqual(List<ExternalLink> list1, List<ExternalLink> list2) {
-    if (list1.length != list2.length) return false;
-    return list1.asMap().entries.every((e) => e.value == list2[e.key]);
+    return _databaseService.watchExternalLinksByCompanies(companies);
   }
 }

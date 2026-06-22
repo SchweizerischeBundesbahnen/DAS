@@ -96,23 +96,4 @@ void main() {
       expect(link.link.de, equals('https://example.de'));
     });
   });
-
-  group('ExternalLinkTranslation', () {
-    test('should create translation with title and link', () {
-      final translation = ExternalLinkTranslation(
-        title: 'Test Title',
-        link: 'https://example.com',
-      );
-
-      expect(translation.title, equals('Test Title'));
-      expect(translation.link, equals('https://example.com'));
-    });
-
-    test('should have correct equality', () {
-      final translation1 = ExternalLinkTranslation(title: 'Title', link: 'https://example.com');
-      final translation2 = ExternalLinkTranslation(title: 'Title', link: 'https://example.com');
-
-      expect(translation1, equals(translation2));
-    });
-  });
 }

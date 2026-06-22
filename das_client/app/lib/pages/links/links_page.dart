@@ -64,15 +64,13 @@ class LinksPage extends StatelessWidget implements AutoRouteWrapper {
       child: Column(
         spacing: SBBSpacing.xSmall,
         children: links.map((link) {
-          return SBBContentBox(
-            child: SBBListItem(
-              title: Text(link.title.localized, style: SBBTextStyles.mediumLight),
-              trailingIconButton: SBBTertiaryButtonSmall(
-                onPressed: () => _openLink(context, link),
-                iconData: SBBIcons.link_external_medium,
-              ),
-              onTap: () => _openLink(context, link),
+          return SBBListItemBoxed(
+            title: Text(link.title.localized, style: SBBTextStyles.mediumLight),
+            trailingIconButton: SBBTertiaryButtonSmall(
+              onPressed: () => _openLink(context, link),
+              iconData: SBBIcons.link_external_medium,
             ),
+            onTap: () => _openLink(context, link),
           );
         }).toList(),
       ),
@@ -83,9 +81,7 @@ class LinksPage extends StatelessWidget implements AutoRouteWrapper {
     final viewModel = context.read<LinksViewModel>();
     final isOpened = await viewModel.openExternalLink(link.link.localized);
     if (!isOpened && context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(context.l10n.c_something_went_wrong)),
-      );
+      SBBToast.of(context).show(titleText: context.l10n.c_something_went_wrong);
     }
   }
 }

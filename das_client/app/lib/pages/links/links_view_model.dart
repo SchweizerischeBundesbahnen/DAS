@@ -21,26 +21,22 @@ class LinksViewModel {
   final UserSettings _userSettings;
   final Launcher _launcher;
 
-  final BehaviorSubject<List<ExternalLink>> _rxState = BehaviorSubject<List<ExternalLink>>.seeded(const []);
+  final BehaviorSubject<List<ExternalLink>> _rxExternalLinks = BehaviorSubject<List<ExternalLink>>.seeded(const []);
 
   StreamSubscription<List<ExternalLink>>? _externalLinksSubscription;
 
-  Stream<List<ExternalLink>> get links => _rxState.stream;
+  Stream<List<ExternalLink>> get links => _rxExternalLinks.stream;
 
-  List<ExternalLink> get linksValue => _rxState.value;
+  List<ExternalLink> get linksValue => _rxExternalLinks.value;
 
   Future<bool> openExternalLink(String url) => _launcher.launch(url);
 
   void dispose() {
     _externalLinksSubscription?.cancel();
-    _rxState.close();
+    _rxExternalLinks.close();
   }
 
   void _init() {
-    _watchLinksForCurrentSettings();
-  }
-
-  void _watchLinksForCurrentSettings() {
     final companyCodes = _userSettings.railwayUndertakings.map((undertaking) => undertaking.companyCode).toList();
     _watchLinksForCompanies(companyCodes);
   }
@@ -49,17 +45,17 @@ class LinksViewModel {
     _externalLinksSubscription?.cancel();
 
     if (companyCodes.isEmpty) {
-      _rxState.add(const []);
+      _rxExternalLinks.add(const []);
       return;
     }
 
     _externalLinksSubscription = _externalLinksRepository
         .watchExternalLinksByCompanies(companyCodes)
         .listen(
-          (links) => _rxState.add(_deduplicateLinks(links)),
+          (links) => _rxExternalLinks.add(_deduplicateLinks(links)),
           onError: (Object error, StackTrace stackTrace) {
             _log.severe('Unable to load external links', error, stackTrace);
-            _rxState.add(const []);
+            _rxExternalLinks.add(const []);
           },
         );
   }

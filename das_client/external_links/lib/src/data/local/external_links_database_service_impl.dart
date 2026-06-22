@@ -1,14 +1,14 @@
 import 'package:drift_flutter/drift_flutter.dart';
-import 'package:external_links/src/data/local/exernal_links_service.dart';
 import 'package:external_links/src/data/local/external_links_database.dart';
+import 'package:external_links/src/data/local/external_links_database_service.dart';
 import 'package:external_links/src/model/external_link.dart';
 
-class ExternalLinksServiceImpl implements ExternalLinksService {
-  ExternalLinksServiceImpl._() : _database = _createDatabase();
+class ExternalLinksDatabaseServiceImpl implements ExternalLinksDatabaseService {
+  ExternalLinksDatabaseServiceImpl._() : _database = _createDatabase();
 
-  static final ExternalLinksServiceImpl _instance = ExternalLinksServiceImpl._();
+  static final ExternalLinksDatabaseServiceImpl _instance = ExternalLinksDatabaseServiceImpl._();
 
-  static ExternalLinksServiceImpl get instance => _instance;
+  static ExternalLinksDatabaseServiceImpl get instance => _instance;
 
   final ExternalLinksDatabase _database;
 

@@ -1,7 +1,6 @@
 import 'package:drift/drift.dart';
 import 'package:external_links/src/data/local/tables/external_links_table.dart';
 import 'package:external_links/src/model/external_link.dart';
-import 'package:external_links/src/model/localized_string.dart';
 
 part 'external_links_database.g.dart';
 
@@ -13,28 +12,10 @@ class ExternalLinksDatabase extends _$ExternalLinksDatabase {
   int get schemaVersion => 1;
 
   Future<void> saveExternalLinks(List<ExternalLink> externalLinks) async {
-    await batch((batch) {
-      batch.insertAll(
-        externalLinksTable,
-        externalLinks
-            .map(
-              (link) => ExternalLinksTableCompanion(
-                id: Value(link.id),
-                companies: Value(link.companies.join(',')),
-                titleDe: Value(link.title.de ?? ''),
-                titleFr: Value(link.title.fr ?? ''),
-                titleIt: Value(link.title.it ?? ''),
-                linkDe: Value(link.link.de ?? ''),
-                linkFr: Value(link.link.fr ?? ''),
-                linkIt: Value(link.link.it ?? ''),
-                lastModifiedAt: Value(link.lastModifiedAt),
-                lastModifiedBy: Value(link.lastModifiedBy),
-              ),
-            )
-            .toList(),
-        mode: InsertMode.insertOrReplace,
-      );
-    });
+    await managers.externalLinksTable.bulkCreate(
+      (_) => externalLinks.map((it) => it.toCompanion()),
+      mode: .insertOrReplace,
+    );
   }
 
   Future<void> deleteExternalLinks() => delete(externalLinksTable).go();
@@ -46,7 +27,7 @@ class ExternalLinksDatabase extends _$ExternalLinksDatabase {
           final rowCompanies = row.companies.split(',');
           return rowCompanies.any((c) => companies.contains(c));
         })
-        .map((row) => row.toModel())
+        .map((row) => row.toDomain())
         .toList();
   }
 
@@ -57,7 +38,7 @@ class ExternalLinksDatabase extends _$ExternalLinksDatabase {
             final rowCompanies = row.companies.split(',');
             return rowCompanies.any((c) => companies.contains(c));
           })
-          .map((row) => row.toModel())
+          .map((row) => row.toDomain())
           .toList();
     });
   }
@@ -67,26 +48,5 @@ class ExternalLinksDatabase extends _$ExternalLinksDatabase {
       return deleteExternalLinks();
     }
     await (delete(externalLinksTable)..where((tbl) => tbl.id.isNotIn(keepIds))).go();
-  }
-}
-
-extension ExternalLinksDatabaseExtension on ExternalLinksTableData {
-  ExternalLink toModel() {
-    return ExternalLink(
-      id: id,
-      companies: companies.split(','),
-      title: LocalizedString(
-        de: titleDe,
-        fr: titleFr,
-        it: titleIt,
-      ),
-      link: LocalizedString(
-        de: linkDe,
-        fr: linkFr,
-        it: linkIt,
-      ),
-      lastModifiedAt: lastModifiedAt,
-      lastModifiedBy: lastModifiedBy,
-    );
   }
 }

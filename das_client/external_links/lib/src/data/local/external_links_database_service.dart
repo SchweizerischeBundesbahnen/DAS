@@ -1,6 +1,6 @@
 import 'package:external_links/src/model/external_link.dart';
 
-abstract class ExternalLinksService {
+abstract class ExternalLinksDatabaseService {
   Future<void> saveExternalLinks(List<ExternalLink> externalLinks);
 
   Future<void> deleteExternalLinks();

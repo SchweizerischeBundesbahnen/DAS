@@ -1,7 +1,9 @@
+import 'package:external_links/src/api/dto/external_link_dto.dart';
+import 'package:external_links/src/api/dto/external_link_translation_dto.dart';
 import 'package:external_links/src/api/dto/external_links_response_dto.dart';
 import 'package:external_links/src/api/endpoint/external_links.dart';
 import 'package:external_links/src/api/external_links_api_service.dart';
-import 'package:external_links/src/data/local/external_links_service_impl.dart';
+import 'package:external_links/src/data/local/external_links_database_service_impl.dart';
 import 'package:external_links/src/model/external_link.dart';
 import 'package:external_links/src/model/localized_string.dart';
 import 'package:external_links/src/repository/external_links_repository.dart';
@@ -12,17 +14,17 @@ import 'package:mockito/mockito.dart';
 
 import 'external_links_repository_test.mocks.dart';
 
-@GenerateMocks([ExternalLinksApiService, ExternalLinksServiceImpl, ExternalLinksRequest])
+@GenerateMocks([ExternalLinksApiService, ExternalLinksDatabaseServiceImpl, ExternalLinksRequest])
 void main() {
   group('ExternalLinksRepository', () {
     late ExternalLinksRepository repository;
     late MockExternalLinksApiService mockApiService;
-    late MockExternalLinksServiceImpl mockDatabaseService;
+    late MockExternalLinksDatabaseServiceImpl mockDatabaseService;
     late MockExternalLinksRequest mockRequest;
 
     setUp(() {
       mockApiService = MockExternalLinksApiService();
-      mockDatabaseService = MockExternalLinksServiceImpl();
+      mockDatabaseService = MockExternalLinksDatabaseServiceImpl();
       mockRequest = MockExternalLinksRequest();
 
       when(mockDatabaseService.saveExternalLinks(any)).thenAnswer((_) async {});
