@@ -1,67 +1,70 @@
 import 'dart:async';
 
 import 'package:app/launcher/launcher.dart';
-import 'package:app/model/tour_system.dart';
 import 'package:app/pages/links/links_view_model.dart';
 import 'package:app/provider/user_settings.dart';
 import 'package:external_links/component.dart';
 import 'package:external_links/src/model/localized_string.dart' as external_links;
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
 import 'package:sfera/component.dart';
 
 import '../../test_util.dart';
+import 'links_view_model_test.mocks.dart';
 
+@GenerateNiceMocks([MockSpec<ExternalLinksRepository>(), MockSpec<UserSettings>(), MockSpec<Launcher>()])
 void main() {
   late LinksViewModel testee;
-  late _FakeExternalLinksRepository externalLinksRepository;
-  late _FakeUserSettings userSettings;
-  late _FakeLauncher launcher;
+  late MockExternalLinksRepository mockExternalLinksRepository;
+  late MockUserSettings mockUserSettings;
+  late MockLauncher mockLauncher;
+  late StreamController<List<ExternalLink>> linksController;
 
   late StreamSubscription<List<ExternalLink>> subscription;
   final states = <List<ExternalLink>>[];
 
   LinksViewModel createViewModel() {
     return LinksViewModel(
-      externalLinksRepository: externalLinksRepository,
-      userSettings: userSettings,
-      launcher: launcher,
+      externalLinksRepository: mockExternalLinksRepository,
+      userSettings: mockUserSettings,
+      launcher: mockLauncher,
     );
   }
 
   setUp(() async {
-    externalLinksRepository = _FakeExternalLinksRepository();
-    userSettings = _FakeUserSettings();
-    launcher = _FakeLauncher();
+    mockExternalLinksRepository = MockExternalLinksRepository();
+    mockUserSettings = MockUserSettings();
+    mockLauncher = MockLauncher();
+    linksController = StreamController<List<ExternalLink>>.broadcast();
 
-    testee = createViewModel();
-
-    subscription = testee.links.listen(states.add);
-    await processStreams();
+    when(mockUserSettings.railwayUndertakings).thenReturn(const []);
+    when(mockExternalLinksRepository.watchExternalLinksByCompanies(any)).thenAnswer((_) => linksController.stream);
   });
 
   tearDown(() async {
     await subscription.cancel();
     testee.dispose();
-    await externalLinksRepository.dispose();
+    await linksController.close();
     states.clear();
   });
 
-  test('state_whenNoConnectedTrain_thenEmpty', () {
-    expect(states, [isEmpty]);
-  });
-
-  test('state_whenCompanyAndLinksAvailable_thenLoaded', () async {
-    // Recreate with pre-set undertakings
-    await subscription.cancel();
-    testee.dispose();
-    states.clear();
-
-    userSettings.railwayUndertakings = [RailwayUndertaking.sbbCH];
+  test('state_whenNoRailwayUndertakings_thenEmpty', () async {
     testee = createViewModel();
     subscription = testee.links.listen(states.add);
     await processStreams();
 
-    externalLinksRepository.emitLinks([
+    expect(states, [isEmpty]);
+  });
+
+  test('state_whenCompanyAndLinksAvailable_thenLoaded', () async {
+    when(mockUserSettings.railwayUndertakings).thenReturn([RailwayUndertaking.sbbCH]);
+
+    testee = createViewModel();
+    subscription = testee.links.listen(states.add);
+    await processStreams();
+
+    linksController.add([
       ExternalLink(
         id: 1,
         companies: const ['2185'],
@@ -79,16 +82,13 @@ void main() {
   });
 
   test('state_whenRailwayUndertakingsConfigured_thenEmitsMatchingCompanyLinks', () async {
-    await subscription.cancel();
-    testee.dispose();
-    states.clear();
+    when(mockUserSettings.railwayUndertakings).thenReturn([RailwayUndertaking.db]);
 
-    userSettings.railwayUndertakings = [RailwayUndertaking.db];
     testee = createViewModel();
     subscription = testee.links.listen(states.add);
     await processStreams();
 
-    externalLinksRepository.emitLinks([
+    linksController.add([
       ExternalLink(
         id: 2,
         companies: const ['1080'],
@@ -104,25 +104,26 @@ void main() {
   });
 
   test('openExternalLink_whenCalled_thenDelegatesToLauncher', () async {
-    launcher.result = true;
+    when(mockLauncher.launch(any)).thenAnswer((_) async => true);
 
-    final result = await testee.openExternalLink('https://www.sbb.ch');
-
-    expect(result, isTrue);
-    expect(launcher.lastUrl, 'https://www.sbb.ch');
-  });
-
-  test('state_whenDuplicateLinksWithSameTitleAndLink_thenDeduplicates', () async {
-    await subscription.cancel();
-    testee.dispose();
-    states.clear();
-
-    userSettings.railwayUndertakings = [RailwayUndertaking.sbbCH];
     testee = createViewModel();
     subscription = testee.links.listen(states.add);
     await processStreams();
 
-    externalLinksRepository.emitLinks([
+    final result = await testee.openExternalLink('https://www.sbb.ch');
+
+    expect(result, isTrue);
+    verify(mockLauncher.launch('https://www.sbb.ch')).called(1);
+  });
+
+  test('state_whenDuplicateLinksWithSameTitleAndLink_thenDeduplicates', () async {
+    when(mockUserSettings.railwayUndertakings).thenReturn([RailwayUndertaking.sbbCH]);
+
+    testee = createViewModel();
+    subscription = testee.links.listen(states.add);
+    await processStreams();
+
+    linksController.add([
       ExternalLink(
         id: 1,
         companies: const ['2185'],
@@ -147,16 +148,13 @@ void main() {
   });
 
   test('state_whenLinksWithSameTitleButDifferentLink_thenKeepsBoth', () async {
-    await subscription.cancel();
-    testee.dispose();
-    states.clear();
+    when(mockUserSettings.railwayUndertakings).thenReturn([RailwayUndertaking.sbbCH]);
 
-    userSettings.railwayUndertakings = [RailwayUndertaking.sbbCH];
     testee = createViewModel();
     subscription = testee.links.listen(states.add);
     await processStreams();
 
-    externalLinksRepository.emitLinks([
+    linksController.add([
       ExternalLink(
         id: 1,
         companies: const ['2185'],
@@ -180,16 +178,13 @@ void main() {
   });
 
   test('state_whenLinksWithSameLinkButDifferentTitle_thenKeepsBoth', () async {
-    await subscription.cancel();
-    testee.dispose();
-    states.clear();
+    when(mockUserSettings.railwayUndertakings).thenReturn([RailwayUndertaking.sbbCH]);
 
-    userSettings.railwayUndertakings = [RailwayUndertaking.sbbCH];
     testee = createViewModel();
     subscription = testee.links.listen(states.add);
     await processStreams();
 
-    externalLinksRepository.emitLinks([
+    linksController.add([
       ExternalLink(
         id: 1,
         companies: const ['2185'],
@@ -213,16 +208,13 @@ void main() {
   });
 
   test('state_whenMultipleDuplicates_thenKeepsFirstOccurrence', () async {
-    await subscription.cancel();
-    testee.dispose();
-    states.clear();
+    when(mockUserSettings.railwayUndertakings).thenReturn([RailwayUndertaking.sbbCH]);
 
-    userSettings.railwayUndertakings = [RailwayUndertaking.sbbCH];
     testee = createViewModel();
     subscription = testee.links.listen(states.add);
     await processStreams();
 
-    externalLinksRepository.emitLinks([
+    linksController.add([
       ExternalLink(
         id: 1,
         companies: const ['2185'],
@@ -262,61 +254,4 @@ void main() {
     expect(states.last[0].id, 1);
     expect(states.last[1].id, 2);
   });
-}
-
-class _FakeLauncher implements Launcher {
-  String? lastUrl;
-  bool result = false;
-
-  @override
-  bool hasTourSystemConfigured() => false;
-
-  @override
-  Future<bool> launch(String url) async {
-    lastUrl = url;
-    return result;
-  }
-
-  @override
-  Future<bool> launchTourSystem() async => false;
-}
-
-class _FakeExternalLinksRepository implements ExternalLinksRepository {
-  final _controller = StreamController<List<ExternalLink>>.broadcast();
-
-  void emitLinks(List<ExternalLink> links) => _controller.add(links);
-
-  Future<void> dispose() => _controller.close();
-
-  @override
-  Future<List<ExternalLink>> reloadExternalLinksByCompanies(List<String> companies) async => const [];
-
-  @override
-  Stream<List<ExternalLink>> watchExternalLinksByCompanies(List<String> companies) => _controller.stream;
-}
-
-class _FakeUserSettings implements UserSettings {
-  final _controller = StreamController<UserSettingKeys?>.broadcast();
-
-  List<RailwayUndertaking> railwayUndertakings = const [];
-
-  @override
-  Stream<UserSettingKeys?> get model => _controller.stream;
-
-  @override
-  bool get showDecisiveGradient => true;
-
-  @override
-  bool get showStationSignals => true;
-
-  @override
-  TourSystem? get tourSystem => null;
-
-  void emitRailwayUndertakings(List<RailwayUndertaking> value) {
-    railwayUndertakings = value;
-    _controller.add(UserSettingKeys.railwayUndertakings);
-  }
-
-  @override
-  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
