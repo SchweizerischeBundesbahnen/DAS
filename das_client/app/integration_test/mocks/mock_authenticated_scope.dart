@@ -5,11 +5,13 @@ import 'package:app/pages/journey/journey_screen/view_model/notification_priorit
 import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:customer_oriented_departure/component.dart';
+import 'package:external_links/component.dart';
 import 'package:formation/component.dart';
 import 'package:logging/logging.dart';
 import 'package:sfera/component.dart';
 
 import 'mock_customer_oriented_departure_repository.dart';
+import 'mock_external_links_repository.dart';
 import 'mock_formation_repository.dart';
 import 'mock_ru_feature_provider.dart';
 import 'mock_warn_app_view_model.dart';
@@ -53,6 +55,7 @@ class MockAuthenticatedScope extends AuthenticatedScope {
     getIt.registerJourneySettingsViewModel();
     getIt.registerViewModeViewModel();
     _registerMockWarnAppViewModel();
+    _registerMockExternalLinksRepository();
     getIt.registerLocalRegulationHtmlGenerator();
 
     return getIt.allReady();
@@ -64,6 +67,10 @@ class MockAuthenticatedScope extends AuthenticatedScope {
 
   void _registerMockFormationRepository() {
     getIt.registerSingleton<FormationRepository>(MockFormationRepository());
+  }
+
+  void _registerMockExternalLinksRepository() {
+    getIt.registerSingleton<ExternalLinksRepository>(MockExternalLinksRepository());
   }
 
   void _registerMockWarnAppViewModel() {

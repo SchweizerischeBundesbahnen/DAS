@@ -13,8 +13,10 @@ import 'package:app/pages/journey/view_model/view_mode_view_model.dart';
 import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:app/provider/ru_feature_provider_impl.dart';
+import 'package:app/provider/user_settings.dart';
 import 'package:app/util/device_id_info.dart';
 import 'package:auth/component.dart';
+import 'package:external_links/component.dart';
 import 'package:customer_oriented_departure/component.dart';
 import 'package:formation/component.dart';
 import 'package:get_it/get_it.dart';
@@ -52,6 +54,7 @@ class AuthenticatedScope extends DIScope {
     getIt.registerRuFeatureProvider();
     getIt.registerFormationRepository();
     getIt.registerCustomerOrientedDepartureRepository(inTmsScope: inTmsScope);
+    getIt.registerExternalLinksRepository();
 
     getIt.registerJourneyViewModel();
     getIt.registerJourneyNavigationViewModel();
@@ -174,6 +177,19 @@ extension AuthenticatedScopeExtension on GetIt {
     registerSingleton<FormationRepository>(
       FormationComponent.createRepository(baseUrl: flavor.backendUrl, client: DI.get()),
     );
+  }
+
+  void registerExternalLinksRepository() {
+    final flavor = DI.get<Flavor>();
+    final repo = ExternalLinksComponent.createRepository(baseUrl: flavor.backendUrl, client: DI.get());
+    registerSingleton<ExternalLinksRepository>(repo);
+
+    final companyCodes = DI
+        .get<UserSettings>()
+        .railwayUndertakings
+        .map((undertaking) => undertaking.companyCode)
+        .toList();
+    repo.reloadExternalLinksByCompanies(companyCodes);
   }
 
   void registerJourneyNavigationViewModel() {
