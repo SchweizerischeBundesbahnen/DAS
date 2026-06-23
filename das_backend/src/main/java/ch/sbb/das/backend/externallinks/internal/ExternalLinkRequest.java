@@ -1,7 +1,7 @@
-package ch.sbb.das.backend.admin.application.links.model;
+package ch.sbb.das.backend.externallinks.internal;
 
-import ch.sbb.das.backend.admin.application.common.TranslatedContentRequest;
-import ch.sbb.das.backend.admin.application.common.ValidTranslatedContent;
+import ch.sbb.das.backend.common.TranslatedContentRequest;
+import ch.sbb.das.backend.common.ValidTranslatedContent;
 import ch.sbb.das.backend.companies.CompanyCode;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;

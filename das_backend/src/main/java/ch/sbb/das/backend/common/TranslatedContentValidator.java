@@ -1,4 +1,4 @@
-package ch.sbb.das.backend.admin.application.common;
+package ch.sbb.das.backend.common;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

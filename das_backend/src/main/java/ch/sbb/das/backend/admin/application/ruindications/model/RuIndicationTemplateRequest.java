@@ -1,7 +1,7 @@
 package ch.sbb.das.backend.admin.application.ruindications.model;
 
-import ch.sbb.das.backend.admin.application.common.TranslatedContentRequest;
-import ch.sbb.das.backend.admin.application.common.ValidTranslatedContent;
+import ch.sbb.das.backend.common.TranslatedContentRequest;
+import ch.sbb.das.backend.common.ValidTranslatedContent;
 import ch.sbb.das.backend.companies.CompanyCode;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;

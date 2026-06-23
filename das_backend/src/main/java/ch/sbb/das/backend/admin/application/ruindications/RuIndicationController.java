@@ -1,6 +1,5 @@
 package ch.sbb.das.backend.admin.application.ruindications;
 
-import ch.sbb.das.backend.admin.application.common.DeleteByIdsRequest;
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndication;
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationMatch;
 import ch.sbb.das.backend.admin.application.ruindications.model.RuIndicationMatchesRequest;
@@ -13,6 +12,7 @@ import ch.sbb.das.backend.common.ApiDocumentation;
 import ch.sbb.das.backend.common.ApiErrorResponses;
 import ch.sbb.das.backend.common.ApiParametersDefault;
 import ch.sbb.das.backend.common.ApiParametersDefault.ParamRequestId;
+import ch.sbb.das.backend.common.DeleteByIdsRequest;
 import ch.sbb.das.backend.common.Response;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
 import io.swagger.v3.oas.annotations.Operation;

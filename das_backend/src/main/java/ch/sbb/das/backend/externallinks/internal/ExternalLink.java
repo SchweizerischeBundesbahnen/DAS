@@ -1,4 +1,4 @@
-package ch.sbb.das.backend.admin.application.links.model;
+package ch.sbb.das.backend.externallinks.internal;
 
 import ch.sbb.das.backend.companies.CompanyCode;
 import io.swagger.v3.oas.annotations.media.Schema;

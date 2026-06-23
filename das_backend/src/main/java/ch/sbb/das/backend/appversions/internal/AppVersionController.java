@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AppVersionController {
 
     static final String PATH_SEGMENT_APP_VERSIONS = "/app-versions";
-    public static final String API_APP_VERSIONS = ApiDocumentation.DRIVER_URI + PATH_SEGMENT_APP_VERSIONS;
+    public static final String API_APP_VERSIONS = ApiDocumentation.ADMIN_URI + PATH_SEGMENT_APP_VERSIONS;
     static final String API_APP_VERSIONS_ID = API_APP_VERSIONS + "/{id}";
 
     private final AppVersionServiceImpl appVersionServiceImpl;
