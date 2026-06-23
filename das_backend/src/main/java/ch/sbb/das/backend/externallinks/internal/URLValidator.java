@@ -1,4 +1,4 @@
-package ch.sbb.das.backend.admin.application.common;
+package ch.sbb.das.backend.externallinks.internal;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
@@ -10,7 +10,8 @@ import java.util.regex.Pattern;
  * Validator for checking that a String is a valid URL.
  */
 public class URLValidator implements ConstraintValidator<ValidURL, String> {
-    private static final String SCHEME_REGEX = "^\\p{Alpha}[\\p{Alnum}\\+\\-\\.]*";
+
+    private static final String SCHEME_REGEX = "^\\p{Alpha}[\\p{Alnum}+\\-.]*";
     private static final Pattern SCHEME_PATTERN = Pattern.compile(SCHEME_REGEX);
 
     @Override

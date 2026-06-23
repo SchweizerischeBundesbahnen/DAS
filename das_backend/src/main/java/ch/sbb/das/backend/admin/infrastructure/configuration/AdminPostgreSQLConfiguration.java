@@ -1,6 +1,5 @@
 package ch.sbb.das.backend.admin.infrastructure.configuration;
 
-import ch.sbb.das.backend.admin.infrastructure.jpa.ExternalLinkEntityRepository;
 import ch.sbb.das.backend.admin.infrastructure.jpa.SpringDataJpaRuFeatureRepository;
 import ch.sbb.das.backend.admin.infrastructure.jpa.SpringDataJpaRuIndicationRepository;
 import ch.sbb.das.backend.admin.infrastructure.jpa.SpringDataJpaRuIndicationTemplateRepository;
@@ -19,7 +18,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
     SpringDataJpaTafTapLocationRepository.class,
     SpringDataJpaRuIndicationTemplateRepository.class,
     SpringDataJpaRuIndicationRepository.class,
-    ExternalLinkEntityRepository.class
 })
 public class AdminPostgreSQLConfiguration {
 

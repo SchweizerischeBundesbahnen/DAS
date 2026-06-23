@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class CompanyController {
 
     private static final String PATH_SEGMENT_COMPANIES = "/companies";
-    public static final String API_COMPANIES = ApiDocumentation.DRIVER_URI + PATH_SEGMENT_COMPANIES;
+    public static final String API_COMPANIES = ApiDocumentation.ADMIN_URI + PATH_SEGMENT_COMPANIES;
 
     private final CompanyService companyService;
     private final CompanyAuthorizer companyAuthorizer;

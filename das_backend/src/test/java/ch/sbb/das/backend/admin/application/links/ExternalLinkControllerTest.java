@@ -1,7 +1,7 @@
 package ch.sbb.das.backend.admin.application.links;
 
-import static ch.sbb.das.backend.admin.application.links.ExternalLinkController.API_EXTERNAL_LINKS;
-import static ch.sbb.das.backend.admin.application.links.ExternalLinkController.API_MOBILE_EXTERNAL_LINKS;
+import static ch.sbb.das.backend.externallinks.internal.ExternalLinkController.API_ADMIN_EXTERNAL_LINKS;
+import static ch.sbb.das.backend.externallinks.internal.ExternalLinkController.API_DRIVER_EXTERNAL_LINKS;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.context.jdbc.SqlMergeMode.MergeMode.MERGE;
@@ -34,7 +34,7 @@ class ExternalLinkControllerTest {
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createExternalLinks.sql")
     void getAllExternalLinks_ok() throws Exception {
-        mockMvc.perform(get(API_EXTERNAL_LINKS))
+        mockMvc.perform(get(API_ADMIN_EXTERNAL_LINKS))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data", hasSize(3)))
             .andExpect(jsonPath("$.data[0].id").value(1))
@@ -51,15 +51,15 @@ class ExternalLinkControllerTest {
     @WithMockRole(roles = UserRole.OBSERVER)
     @Sql("classpath:createExternalLinks.sql")
     void getAllExternalLinksByCompanies_ok() throws Exception {
-        mockMvc.perform(get(API_MOBILE_EXTERNAL_LINKS).param("companies", "1111"))
+        mockMvc.perform(get(API_DRIVER_EXTERNAL_LINKS).param("companies", "1111"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data", hasSize(2)));
 
-        mockMvc.perform(get(API_MOBILE_EXTERNAL_LINKS).param("companies", "1111", "2222", "3333"))
+        mockMvc.perform(get(API_DRIVER_EXTERNAL_LINKS).param("companies", "1111", "2222", "3333"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data", hasSize(3)));
 
-        mockMvc.perform(get(API_MOBILE_EXTERNAL_LINKS).param("companies", "9999"))
+        mockMvc.perform(get(API_DRIVER_EXTERNAL_LINKS).param("companies", "9999"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data", hasSize(1)));
     }
@@ -67,14 +67,14 @@ class ExternalLinkControllerTest {
     @Test
     @WithMockRole(roles = UserRole.OBSERVER)
     void getAllExternalLinks_forbidden_role() throws Exception {
-        mockMvc.perform(get(API_EXTERNAL_LINKS))
+        mockMvc.perform(get(API_ADMIN_EXTERNAL_LINKS))
             .andExpect(status().isForbidden());
     }
 
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void getAllExternalLinksByCompanies_forbidden_role() throws Exception {
-        mockMvc.perform(get(API_MOBILE_EXTERNAL_LINKS).param("companies", "1111"))
+        mockMvc.perform(get(API_DRIVER_EXTERNAL_LINKS).param("companies", "1111"))
             .andExpect(status().isForbidden());
     }
 
@@ -82,7 +82,7 @@ class ExternalLinkControllerTest {
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createExternalLinks.sql")
     void getExternalLinkById_ok() throws Exception {
-        mockMvc.perform(get(API_EXTERNAL_LINKS + "/2"))
+        mockMvc.perform(get(API_ADMIN_EXTERNAL_LINKS + "/2"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data[0].id").value(2))
             .andExpect(jsonPath("$.data[0].companies", containsInAnyOrder("3333")))
@@ -97,7 +97,7 @@ class ExternalLinkControllerTest {
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void getExternalLinkById_notFound() throws Exception {
-        mockMvc.perform(get(API_EXTERNAL_LINKS + "/99"))
+        mockMvc.perform(get(API_ADMIN_EXTERNAL_LINKS + "/99"))
             .andExpect(status().isNotFound());
     }
 
@@ -105,7 +105,7 @@ class ExternalLinkControllerTest {
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createExternalLinks.sql")
     void getExternalLinkById_forbidden_existingCompanyNotAuthorized() throws Exception {
-        mockMvc.perform(get(API_EXTERNAL_LINKS + "/4"))
+        mockMvc.perform(get(API_ADMIN_EXTERNAL_LINKS + "/4"))
             .andExpect(status().isForbidden())
             .andExpect(jsonPath("$.detail").value("Not allowed!"));
     }
@@ -113,7 +113,7 @@ class ExternalLinkControllerTest {
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void createExternalLink_ok() throws Exception {
-        mockMvc.perform(post(API_EXTERNAL_LINKS)
+        mockMvc.perform(post(API_ADMIN_EXTERNAL_LINKS)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
                     {
@@ -137,7 +137,7 @@ class ExternalLinkControllerTest {
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void createExternalLink_ok_singleLanguage() throws Exception {
-        mockMvc.perform(post(API_EXTERNAL_LINKS)
+        mockMvc.perform(post(API_ADMIN_EXTERNAL_LINKS)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
                     {
@@ -155,7 +155,7 @@ class ExternalLinkControllerTest {
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void createExternalLink_ok_ignores_empty_language_placeholders() throws Exception {
-        mockMvc.perform(post(API_EXTERNAL_LINKS)
+        mockMvc.perform(post(API_ADMIN_EXTERNAL_LINKS)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
                     {
@@ -179,7 +179,7 @@ class ExternalLinkControllerTest {
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void createExternalLink_invalid_no_companies() throws Exception {
-        mockMvc.perform(post(API_EXTERNAL_LINKS)
+        mockMvc.perform(post(API_ADMIN_EXTERNAL_LINKS)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
                     {
@@ -193,7 +193,7 @@ class ExternalLinkControllerTest {
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void createExternalLink_invalid_noLanguageContent() throws Exception {
-        mockMvc.perform(post(API_EXTERNAL_LINKS)
+        mockMvc.perform(post(API_ADMIN_EXTERNAL_LINKS)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
                     {
@@ -207,7 +207,7 @@ class ExternalLinkControllerTest {
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void createExternalLink_invalid_blankTitle() throws Exception {
-        mockMvc.perform(post(API_EXTERNAL_LINKS)
+        mockMvc.perform(post(API_ADMIN_EXTERNAL_LINKS)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
                     {
@@ -222,7 +222,7 @@ class ExternalLinkControllerTest {
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void createExternalLink_invalid_link() throws Exception {
-        mockMvc.perform(post(API_EXTERNAL_LINKS)
+        mockMvc.perform(post(API_ADMIN_EXTERNAL_LINKS)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
                     {
@@ -238,7 +238,7 @@ class ExternalLinkControllerTest {
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createExternalLinks.sql")
     void updateExternalLink_ok() throws Exception {
-        mockMvc.perform(put(API_EXTERNAL_LINKS + "/1")
+        mockMvc.perform(put(API_ADMIN_EXTERNAL_LINKS + "/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
                     {
@@ -261,7 +261,7 @@ class ExternalLinkControllerTest {
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void updateExternalLink_notFound() throws Exception {
-        mockMvc.perform(put(API_EXTERNAL_LINKS + "/99")
+        mockMvc.perform(put(API_ADMIN_EXTERNAL_LINKS + "/99")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
                     {
@@ -276,7 +276,7 @@ class ExternalLinkControllerTest {
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void updateExternalLink_invalid_noLanguageContent() throws Exception {
-        mockMvc.perform(put(API_EXTERNAL_LINKS + "/1")
+        mockMvc.perform(put(API_ADMIN_EXTERNAL_LINKS + "/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
                     {
@@ -290,7 +290,7 @@ class ExternalLinkControllerTest {
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void updateExternalLink_invalid_blankTitle() throws Exception {
-        mockMvc.perform(put(API_EXTERNAL_LINKS + "/1")
+        mockMvc.perform(put(API_ADMIN_EXTERNAL_LINKS + "/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
                     {
@@ -306,7 +306,7 @@ class ExternalLinkControllerTest {
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createExternalLinks.sql")
     void updateExternalLink_forbidden_existingCompanyNotAuthorized() throws Exception {
-        mockMvc.perform(put(API_EXTERNAL_LINKS + "/4")
+        mockMvc.perform(put(API_ADMIN_EXTERNAL_LINKS + "/4")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
                     {
@@ -323,7 +323,7 @@ class ExternalLinkControllerTest {
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createExternalLinks.sql")
     void deleteExternalLinkByIds_ok() throws Exception {
-        mockMvc.perform(delete(API_EXTERNAL_LINKS)
+        mockMvc.perform(delete(API_ADMIN_EXTERNAL_LINKS)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
                     {
@@ -332,21 +332,21 @@ class ExternalLinkControllerTest {
                     """))
             .andExpect(status().isNoContent());
 
-        mockMvc.perform(get(API_EXTERNAL_LINKS))
+        mockMvc.perform(get(API_ADMIN_EXTERNAL_LINKS))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data", hasSize(1)));
 
-        mockMvc.perform(get(API_EXTERNAL_LINKS + "/1"))
+        mockMvc.perform(get(API_ADMIN_EXTERNAL_LINKS + "/1"))
             .andExpect(status().isNotFound());
 
-        mockMvc.perform(get(API_EXTERNAL_LINKS + "/2"))
+        mockMvc.perform(get(API_ADMIN_EXTERNAL_LINKS + "/2"))
             .andExpect(status().isNotFound());
     }
 
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void deleteExternalLinkByIds_invalid_body() throws Exception {
-        mockMvc.perform(delete(API_EXTERNAL_LINKS)
+        mockMvc.perform(delete(API_ADMIN_EXTERNAL_LINKS)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
                     {
@@ -361,7 +361,7 @@ class ExternalLinkControllerTest {
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createExternalLinks.sql")
     void deleteExternalLinkByIds_forbidden_existingCompanyNotAuthorized() throws Exception {
-        mockMvc.perform(delete(API_EXTERNAL_LINKS)
+        mockMvc.perform(delete(API_ADMIN_EXTERNAL_LINKS)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
                     {
