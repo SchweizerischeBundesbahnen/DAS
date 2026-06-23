@@ -1,4 +1,5 @@
 import 'package:app/di/di.dart';
+import 'package:app/pages/journey/journey_page.dart';
 import 'package:app/pages/journey/journey_screen/header/header.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/journey_identifier.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/journey_search_overlay.dart';
@@ -50,7 +51,6 @@ void main() {
     await waitUntilExists(tester, find.byKey(FloatingDepartureChecklistButton.buttonKey));
 
     await disconnect(tester);
-    expect(mockRepository.unsubscribeCallCount, 1);
   });
 
   testWidgets('test customer oriented departure subscription changes when changing journey', (tester) async {
@@ -71,8 +71,13 @@ void main() {
     expect(mockRepository.subscribedTrainNumbers.elementAt(1), 'T1M');
     expect(mockRepository.unsubscribeCallCount, 1);
 
-    await disconnect(tester);
+    // check that unsubscribe is called after journey close
+    await stopAutomaticAdvancement(tester);
+    await tapElement(tester, find.byKey(JourneyPage.disconnectButtonKey));
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
     expect(mockRepository.unsubscribeCallCount, 2);
+
+    await disconnect(tester);
   });
 }
 

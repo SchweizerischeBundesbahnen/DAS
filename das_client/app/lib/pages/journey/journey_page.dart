@@ -138,7 +138,8 @@ class _DismissJourneyButton extends StatelessWidget {
 
       DI.get<JourneySelectionViewModel>().dismissSelection();
       DI.get<JourneyNavigationViewModel>().disconnect();
-      await context.router.replace(JourneySelectionRoute());
+      context.router.replace(JourneySelectionRoute());
+      await Future.delayed(Duration(milliseconds: 100));
       DI.get<ScopeHandler>().pop<JourneyScope>();
     },
   );
