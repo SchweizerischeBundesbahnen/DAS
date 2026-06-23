@@ -2093,6 +2093,24 @@ void main() {
     expect(speedRestrictions[0].kmFrom, 58.840);
     expect(speedRestrictions[0].kmTo, 56.062);
   });
+
+  test('Test nsp signals', () async {
+    final journey = getJourney('T45');
+    expect(journey.valid, true);
+
+    final signals = journey.data.whereType<Signal>().toList();
+    expect(signals, hasLength(9));
+
+    expect(signals[0].functions[0], SignalFunction.exit);
+    expect(signals[1].functions[0], SignalFunction.block);
+    expect(signals[2].functions[0], SignalFunction.intermediate);
+    expect(signals[3].functions[0], SignalFunction.entry);
+    expect(signals[4].functions[0], SignalFunction.etcsStopSign);
+    expect(signals[5].functions[0], SignalFunction.etcsStopSign);
+    expect(signals[6].functions[0], SignalFunction.intermediate);
+    expect(signals[7].functions[0], SignalFunction.etcsStopSign);
+    expect(signals[8].functions[0], SignalFunction.trackEndSignal);
+  });
 }
 
 void _checkTrainSeriesSpeed<T extends Speed>(

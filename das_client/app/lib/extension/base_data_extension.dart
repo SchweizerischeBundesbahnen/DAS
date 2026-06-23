@@ -32,15 +32,30 @@ extension BaseDataX on Iterable<BaseData> {
     return resultList;
   }
 
-  Iterable<BaseData> hideSignals({required bool stationSignals}) {
-    if (!stationSignals) return this;
+  Iterable<BaseData> hideSignals({
+    required bool stationSignals,
+    required bool conventionalSpeedSignals,
+    required bool extendedSpeedSignals,
+    required List<NonStandardTrackEquipmentSegment> nonStandardTrackEquipmentSegments,
+  }) {
+    return where((data) {
+      if (data is! Signal) return true;
 
-    return where(
-      (data) =>
-          data is! Signal ||
-          !data.functions.every(
-            (it) => <SignalFunction>[.entry, .exit, .intermediate].contains(it),
-          ),
-    );
+      final ignoreEtcsStopSignForChecks =
+          (conventionalSpeedSignals &&
+              nonStandardTrackEquipmentSegments.isInEtcsLevel2ConventionalSpeedSegment(data.order)) ||
+          (extendedSpeedSignals && nonStandardTrackEquipmentSegments.isInEtcsLevel2ExtendedSpeedSegment(data.order));
+
+      final signalFunctions = ignoreEtcsStopSignForChecks
+          ? data.functions.whereNot((it) => it == SignalFunction.etcsStopSign)
+          : data.functions;
+
+      if (signalFunctions.isEmpty) return false;
+      if (!stationSignals) return true;
+
+      return !signalFunctions.every(
+        (it) => <SignalFunction>[.entry, .exit, .intermediate, .trackEndSignal].contains(it),
+      );
+    });
   }
 }

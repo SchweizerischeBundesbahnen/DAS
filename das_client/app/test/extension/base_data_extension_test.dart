@@ -131,13 +131,21 @@ void main() {
         Signal(order: 4, kilometre: [4.0], functions: [SignalFunction.protection]),
         Signal(order: 5, kilometre: [5.0], functions: [SignalFunction.laneChange]),
         Signal(order: 6, kilometre: [6.0], functions: [SignalFunction.lockingOutSignal]),
+        Signal(order: 7, kilometre: [7.0], functions: [SignalFunction.trackEndSignal]),
       ];
 
       // WHEN
-      final resultList = baseData.hideSignals(stationSignals: false).toList();
+      final resultList = baseData
+          .hideSignals(
+            stationSignals: false,
+            conventionalSpeedSignals: false,
+            extendedSpeedSignals: false,
+            nonStandardTrackEquipmentSegments: const [],
+          )
+          .toList();
 
       // THEN
-      expect(resultList, hasLength(7));
+      expect(resultList, hasLength(8));
     },
   );
 
@@ -153,10 +161,18 @@ void main() {
         Signal(order: 4, kilometre: [4.0], functions: [SignalFunction.protection]),
         Signal(order: 5, kilometre: [5.0], functions: [SignalFunction.laneChange]),
         Signal(order: 6, kilometre: [6.0], functions: [SignalFunction.lockingOutSignal]),
+        Signal(order: 7, kilometre: [7.0], functions: [SignalFunction.trackEndSignal]),
       ];
 
       // WHEN
-      final resultList = baseData.hideSignals(stationSignals: true).toList();
+      final resultList = baseData
+          .hideSignals(
+            stationSignals: true,
+            conventionalSpeedSignals: false,
+            extendedSpeedSignals: false,
+            nonStandardTrackEquipmentSegments: const [],
+          )
+          .toList();
 
       // THEN
       expect(resultList, hasLength(4));
@@ -182,7 +198,14 @@ void main() {
       ];
 
       // WHEN
-      final resultList = baseData.hideSignals(stationSignals: true).toList();
+      final resultList = baseData
+          .hideSignals(
+            stationSignals: true,
+            conventionalSpeedSignals: false,
+            extendedSpeedSignals: false,
+            nonStandardTrackEquipmentSegments: const [],
+          )
+          .toList();
 
       // THEN
       expect(resultList, hasLength(5));
@@ -191,6 +214,164 @@ void main() {
       expect(resultList[2], baseData[4]);
       expect(resultList[3], baseData[5]);
       expect(resultList[4], baseData[6]);
+    },
+  );
+
+  test(
+    'hideSignals_whenConventionalSpeedSignalsIsTrue_thenFiltersSignals',
+    () {
+      // GIVEN
+      final baseData = <BaseData>[
+        Signal(order: 2, kilometre: [2.0], functions: [SignalFunction.etcsStopSign]),
+        Signal(order: 3, kilometre: [3.0], functions: [SignalFunction.entry]),
+      ];
+      const segment = NonStandardTrackEquipmentSegment(
+        startKm: [0.0],
+        endKm: [4.0],
+        startOrder: 1,
+        endOrder: 4,
+        type: TrackEquipmentType.etcsL2ConvSpeedReversingImpossible,
+      );
+
+      // WHEN
+      final resultList = baseData
+          .hideSignals(
+            stationSignals: false,
+            conventionalSpeedSignals: true,
+            extendedSpeedSignals: false,
+            nonStandardTrackEquipmentSegments: const [segment],
+          )
+          .toList();
+
+      // THEN
+      expect(resultList, hasLength(1));
+      expect((resultList.single as Signal).order, 3);
+    },
+  );
+
+  test(
+    'hideSignals_whenConventionalSpeedSignalsIsFalse_thenKeepsSignalWithEtcsStopSignInConventionalSegment',
+    () {
+      // GIVEN
+      final baseData = <BaseData>[
+        Signal(order: 2, kilometre: [2.0], functions: [SignalFunction.etcsStopSign]),
+      ];
+      const segment = NonStandardTrackEquipmentSegment(
+        startKm: [0.0],
+        endKm: [3.0],
+        startOrder: 1,
+        endOrder: 3,
+        type: TrackEquipmentType.etcsL2ConvSpeedReversingImpossible,
+      );
+
+      // WHEN
+      final resultList = baseData
+          .hideSignals(
+            stationSignals: true,
+            conventionalSpeedSignals: false,
+            extendedSpeedSignals: false,
+            nonStandardTrackEquipmentSegments: const [segment],
+          )
+          .toList();
+
+      // THEN
+      expect(resultList, hasLength(1));
+      expect((resultList.single as Signal).order, 2);
+    },
+  );
+
+  test(
+    'hideSignals_whenExtendedSpeedSignalsIsTrue_thenFiltersSignals',
+    () {
+      // GIVEN
+      final baseData = <BaseData>[
+        Signal(order: 5, kilometre: [5.0], functions: [SignalFunction.etcsStopSign]),
+        Signal(order: 9, kilometre: [9.0], functions: [SignalFunction.etcsStopSign]),
+      ];
+      const segment = NonStandardTrackEquipmentSegment(
+        startKm: [4.0],
+        endKm: [6.0],
+        startOrder: 4,
+        endOrder: 6,
+        type: TrackEquipmentType.etcsL2ExtSpeedReversingPossible,
+      );
+
+      // WHEN
+      final resultList = baseData
+          .hideSignals(
+            stationSignals: true,
+            conventionalSpeedSignals: false,
+            extendedSpeedSignals: true,
+            nonStandardTrackEquipmentSegments: const [segment],
+          )
+          .toList();
+
+      // THEN
+      expect(resultList, hasLength(1));
+      expect((resultList.single as Signal).order, 9);
+    },
+  );
+
+  test(
+    'hideSignals_whenExtendedSpeedSignalsIsFalse_thenKeepsSignalWithEtcsStopSignInExtendedSegment',
+    () {
+      // GIVEN
+      final baseData = <BaseData>[
+        Signal(order: 2, kilometre: [2.0], functions: [SignalFunction.etcsStopSign]),
+      ];
+      const segment = NonStandardTrackEquipmentSegment(
+        startKm: [0.0],
+        endKm: [3.0],
+        startOrder: 1,
+        endOrder: 3,
+        type: TrackEquipmentType.etcsL2ExtSpeedReversingPossible,
+      );
+
+      // WHEN
+      final resultList = baseData
+          .hideSignals(
+            stationSignals: true,
+            conventionalSpeedSignals: false,
+            extendedSpeedSignals: false,
+            nonStandardTrackEquipmentSegments: const [segment],
+          )
+          .toList();
+
+      // THEN
+      expect(resultList, hasLength(1));
+      expect((resultList.single as Signal).order, 2);
+    },
+  );
+
+  test(
+    'hideSignals_whenSignalHasMultipleFunctions_thenOnlyHideWhenAllFunctionsAreHidden',
+    () {
+      // GIVEN
+      final baseData = <BaseData>[
+        Signal(order: 2, kilometre: [2.0], functions: [SignalFunction.entry, SignalFunction.etcsStopSign]),
+        Signal(order: 3, kilometre: [3.0], functions: [SignalFunction.block, SignalFunction.etcsStopSign]),
+      ];
+      const segment = NonStandardTrackEquipmentSegment(
+        startKm: [0.0],
+        endKm: [4.0],
+        startOrder: 1,
+        endOrder: 4,
+        type: TrackEquipmentType.etcsL2ExtSpeedReversingPossible,
+      );
+
+      // WHEN
+      final resultList = baseData
+          .hideSignals(
+            stationSignals: true,
+            conventionalSpeedSignals: false,
+            extendedSpeedSignals: true,
+            nonStandardTrackEquipmentSegments: const [segment],
+          )
+          .toList();
+
+      // THEN
+      expect(resultList, hasLength(1));
+      expect((resultList.single as Signal).order, 3);
     },
   );
 }

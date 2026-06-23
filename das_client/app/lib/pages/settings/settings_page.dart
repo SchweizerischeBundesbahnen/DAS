@@ -10,6 +10,8 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 class SettingsPage extends StatefulWidget {
   static const Key decisiveGradientSwitchKey = Key('decisiveGradientSwitch');
   static const Key stationSignalSwitchKey = Key('stationSignalSwitch');
+  static const Key ectsConventionalSpeedSignalSwitchKey = Key('ectsConventionalSpeedSignalSwitch');
+  static const Key ectsExtendedSpeedSignalSwitchKey = Key('ectsExtendedSpeedSignalSwitch');
 
   const SettingsPage({super.key});
 
@@ -57,6 +59,21 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
+  Widget _signalSettings(BuildContext context) {
+    return SBBContentBox(
+      child: Column(
+        children: SBBDivider.divideItems(
+          context: context,
+          items: [
+            _stationSignalSettings(context),
+            _ectsConventionalSpeedSignalSettings(context),
+            _ectsExtendedSpeedSignalSettings(context),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _decisiveGradientSettings(BuildContext context) {
     return SBBSwitchListItemBoxed(
       key: SettingsPage.decisiveGradientSwitchKey,
@@ -66,12 +83,30 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  Widget _signalSettings(BuildContext context) {
-    return SBBSwitchListItemBoxed(
+  Widget _stationSignalSettings(BuildContext context) {
+    return SBBSwitchListItem(
       key: SettingsPage.stationSignalSwitchKey,
       titleText: context.l10n.p_settings_page_signal_station_setting,
       value: _userSettings.showStationSignals,
       onChanged: (value) => _updateSettings(.showStationSignals, value),
+    );
+  }
+
+  Widget _ectsConventionalSpeedSignalSettings(BuildContext context) {
+    return SBBSwitchListItem(
+      key: SettingsPage.ectsConventionalSpeedSignalSwitchKey,
+      titleText: context.l10n.p_settings_page_ects_conventional_speed_signal_setting,
+      value: _userSettings.showEctsConventionalSpeedSignals,
+      onChanged: (value) => _updateSettings(.showEctsConventionalSpeedSignals, value),
+    );
+  }
+
+  Widget _ectsExtendedSpeedSignalSettings(BuildContext context) {
+    return SBBSwitchListItemBoxed(
+      key: SettingsPage.ectsExtendedSpeedSignalSwitchKey,
+      titleText: context.l10n.p_settings_page_ects_extended_speed_signal_setting,
+      value: _userSettings.showEctsExtendedSpeedSignals,
+      onChanged: (value) => _updateSettings(.showEctsExtendedSpeedSignals, value),
     );
   }
 
