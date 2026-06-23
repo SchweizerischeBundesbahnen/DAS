@@ -1,4 +1,4 @@
-package ch.sbb.das.backend.admin.application.settings;
+package ch.sbb.das.backend;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

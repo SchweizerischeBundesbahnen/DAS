@@ -2,6 +2,7 @@ package ch.sbb.das.backend.admin.infrastructure.jpa;
 
 import ch.sbb.das.backend.admin.application.links.model.ExternalLink;
 import ch.sbb.das.backend.admin.application.links.model.ExternalLinkContent;
+import ch.sbb.das.backend.common.EntityBase;
 import ch.sbb.das.backend.companies.CompanyCode;
 import ch.sbb.das.backend.companies.CompanyCodeListConverter;
 import jakarta.persistence.Convert;

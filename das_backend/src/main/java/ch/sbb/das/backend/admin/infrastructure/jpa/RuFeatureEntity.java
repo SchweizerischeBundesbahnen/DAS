@@ -2,6 +2,7 @@ package ch.sbb.das.backend.admin.infrastructure.jpa;
 
 import ch.sbb.das.backend.admin.domain.settings.model.RuFeature;
 import ch.sbb.das.backend.admin.domain.settings.model.RuFeatureKey;
+import ch.sbb.das.backend.common.EntityBase;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;

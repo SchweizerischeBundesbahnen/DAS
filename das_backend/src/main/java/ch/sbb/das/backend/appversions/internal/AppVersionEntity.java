@@ -1,6 +1,6 @@
-package ch.sbb.das.backend.admin.infrastructure.jpa;
+package ch.sbb.das.backend.appversions.internal;
 
-import ch.sbb.das.backend.admin.application.settings.model.response.AppVersion;
+import ch.sbb.das.backend.common.EntityBase;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;

@@ -1,4 +1,4 @@
-package ch.sbb.das.backend.admin.application.settings.model.response;
+package ch.sbb.das.backend.appversions;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;

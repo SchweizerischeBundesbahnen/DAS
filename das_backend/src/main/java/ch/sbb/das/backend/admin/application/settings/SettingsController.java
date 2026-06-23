@@ -1,15 +1,15 @@
 package ch.sbb.das.backend.admin.application.settings;
 
-import static ch.sbb.das.backend.admin.domain.settings.model.SemanticVersion.SEM_VERSION_PATTERN;
+import static ch.sbb.das.backend.appversions.internal.SemanticVersion.SEM_VERSION_PATTERN;
 
-import ch.sbb.das.backend.admin.application.settings.model.response.CurrentAppVersion;
 import ch.sbb.das.backend.admin.application.settings.model.response.Logging;
 import ch.sbb.das.backend.admin.application.settings.model.response.Preload;
 import ch.sbb.das.backend.admin.application.settings.model.response.RuFeature;
 import ch.sbb.das.backend.admin.application.settings.model.response.Settings;
 import ch.sbb.das.backend.admin.application.settings.model.response.SettingsResponse;
-import ch.sbb.das.backend.admin.domain.settings.AppVersionService;
 import ch.sbb.das.backend.admin.domain.settings.RuFeatureService;
+import ch.sbb.das.backend.appversions.AppVersionService;
+import ch.sbb.das.backend.appversions.CurrentAppVersion;
 import ch.sbb.das.backend.common.ApiDocumentation;
 import ch.sbb.das.backend.common.ApiErrorResponses;
 import ch.sbb.das.backend.common.ApiParametersDefault;
@@ -55,7 +55,7 @@ public class SettingsController {
     @ApiErrorResponses
     public ResponseEntity<? extends Response> getSettings(
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
-        @RequestHeader(value = "X-App-Version", required = true) @Pattern(regexp = SEM_VERSION_PATTERN) String xAppVersion
+        @RequestHeader(value = "X-App-Version") @Pattern(regexp = SEM_VERSION_PATTERN) String xAppVersion
     ) {
         List<RuFeature> allFeatures = ruFeatureService.getAll().stream()
             .map(RuFeature::new)

@@ -1,4 +1,4 @@
-package ch.sbb.das.backend.admin.infrastructure.jpa;
+package ch.sbb.das.backend.common;
 
 import jakarta.persistence.Embeddable;
 import java.time.LocalDateTime;

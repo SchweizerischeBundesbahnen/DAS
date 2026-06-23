@@ -14,9 +14,6 @@ import ch.sbb.das.backend.admin.domain.ruindications.RuIndicationTemplateService
 import ch.sbb.das.backend.admin.domain.ruindications.SpecialHolidayRepository;
 import ch.sbb.das.backend.admin.domain.ruindications.SpecialHolidayService;
 import ch.sbb.das.backend.admin.domain.ruindications.SpecialHolidayServiceImpl;
-import ch.sbb.das.backend.admin.domain.settings.AppVersionRepository;
-import ch.sbb.das.backend.admin.domain.settings.AppVersionService;
-import ch.sbb.das.backend.admin.domain.settings.AppVersionServiceImpl;
 import ch.sbb.das.backend.admin.domain.settings.RuFeatureRepository;
 import ch.sbb.das.backend.admin.domain.settings.RuFeatureService;
 import ch.sbb.das.backend.admin.domain.settings.RuFeatureServiceImpl;
@@ -30,11 +27,6 @@ public class AdminServiceBeanConfiguration {
     @Bean
     RuFeatureService ruFeatureService(RuFeatureRepository ruFeatureRepository) {
         return new RuFeatureServiceImpl(ruFeatureRepository);
-    }
-
-    @Bean
-    AppVersionService appVersionService(AppVersionRepository appVersionRepository) {
-        return new AppVersionServiceImpl(appVersionRepository);
     }
 
     @Bean

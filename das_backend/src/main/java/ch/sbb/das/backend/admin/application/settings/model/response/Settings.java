@@ -1,5 +1,6 @@
 package ch.sbb.das.backend.admin.application.settings.model.response;
 
+import ch.sbb.das.backend.appversions.CurrentAppVersion;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
