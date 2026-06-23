@@ -212,7 +212,7 @@ void main() {
       // VERIFY
       verify(
         mockRepository.subscribe(
-          evu: RailwayUndertaking.sbbP.companyCode,
+          evu: RailwayUndertaking.sbbP.name.toUpperCase(),
           trainNumber: '9999',
           journeyEndTime: journeyEndTime,
           isDriver: true,
