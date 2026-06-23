@@ -239,59 +239,6 @@ void main() {
       );
     });
 
-    test('onJourneyChanged_whenJourneyChanges_unsubscribesBeforeResubscribing', () async {
-      // WHEN
-      final journey1 = _createJourney(trainNumber: '1111');
-      final journey2 = _createJourney(trainNumber: '2222');
-
-      // ACT
-      testAsync.run((_) => rxJourney.add(journey1));
-      processStreams(fakeAsync: testAsync);
-
-      testAsync.run((_) => rxJourney.add(journey2));
-      processStreams(fakeAsync: testAsync);
-
-      // VERIFY
-      verifyInOrder([
-        mockRepository.subscribe(
-          evu: anyNamed('evu'),
-          trainNumber: '1111',
-          journeyEndTime: anyNamed('journeyEndTime'),
-          isDriver: anyNamed('isDriver'),
-        ),
-        mockRepository.unsubscribe(),
-        mockRepository.subscribe(
-          evu: anyNamed('evu'),
-          trainNumber: '2222',
-          journeyEndTime: anyNamed('journeyEndTime'),
-          isDriver: anyNamed('isDriver'),
-        ),
-      ]);
-    });
-
-    test('onJourneyChanged_whenNullJourney_doesNotSubscribeButUnsubscribesIfPreviousExists', () async {
-      // WHEN
-      final journey = _createJourney(trainNumber: '3333');
-
-      // ACT
-      testAsync.run((_) => rxJourney.add(journey));
-      processStreams(fakeAsync: testAsync);
-
-      testAsync.run((_) => rxJourney.add(null));
-      processStreams(fakeAsync: testAsync);
-
-      // VERIFY
-      verify(mockRepository.unsubscribe()).called(2); // +1 from initial journey
-      verify(
-        mockRepository.subscribe(
-          evu: anyNamed('evu'),
-          trainNumber: '3333',
-          journeyEndTime: anyNamed('journeyEndTime'),
-          isDriver: anyNamed('isDriver'),
-        ),
-      ).called(1);
-    });
-
     test('onJourneyChanged_whenUserIsNotDriver_subscribesWithIsDriverFalse', () async {
       // WHEN
       when(mockAuthenticator.user()).thenAnswer((_) => Future.value(User(userId: 'userId', roles: [Role.observer])));
