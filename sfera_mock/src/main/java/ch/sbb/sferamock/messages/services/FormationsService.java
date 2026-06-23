@@ -27,12 +27,6 @@ public class FormationsService {
     @Value("${db.password}")
     private String password;
 
-    @FunctionalInterface
-    private interface StatementParameters {
-
-        void set(PreparedStatement stmt) throws SQLException;
-    }
-
     private int executeSql(String sqlFile, StatementParameters parameters) throws IOException {
         File resource = new ClassPathResource("sql/" + sqlFile).getFile();
         String sql = new String(Files.readAllBytes(resource.toPath()));
@@ -77,6 +71,14 @@ public class FormationsService {
             stmt.setString(7, operationalTrainNumber);
             stmt.setDate(8, Date.valueOf(operationalDay));
             stmt.setString(9, companyCode);
+            // 4nd formation
+            stmt.setString(10, operationalTrainNumber);
+            stmt.setDate(11, Date.valueOf(operationalDay));
+            stmt.setString(12, companyCode);
+            // 5nd formation
+            stmt.setString(13, operationalTrainNumber);
+            stmt.setDate(14, Date.valueOf(operationalDay));
+            stmt.setString(15, companyCode);
         });
         log.info("Created {} rows", affectedRows);
     }
@@ -88,5 +90,11 @@ public class FormationsService {
             stmt.setString(3, companyCode);
         });
         log.info("Updated {} rows", affectedRows);
+    }
+
+    @FunctionalInterface
+    private interface StatementParameters {
+
+        void set(PreparedStatement stmt) throws SQLException;
     }
 }
