@@ -47,7 +47,7 @@ extension BaseDataX on Iterable<BaseData> {
           (extendedSpeedSignals && nonStandardTrackEquipmentSegments.isInEtcsLevel2ExtendedSpeedSegment(data.order));
 
       final signalFunctions = ignoreEtcsStopSignForChecks
-          ? data.functions.whereNot((it) => it == SignalFunction.etcsStopSign)
+          ? data.functions.whereNot((it) => it == .etcsStopSign)
           : data.functions;
 
       if (signalFunctions.isEmpty) return false;

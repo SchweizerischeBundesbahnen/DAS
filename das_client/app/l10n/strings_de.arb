@@ -311,7 +311,7 @@
   "c_main_signal_function_etcs_stop_sign": "EHS / ESS",
   "c_main_signal_function_etcs_stop_sign_short": "EHS / ESS",
   "c_main_signal_function_track_end": "Gleisabschlusssignal",
-  "c_main_signal_function_track_end_short": "Gleisabschlusssignal",
+  "c_main_signal_function_track_end_short": "Gleisa.Sig.",
   "c_error_code": "Fehlercode",
   "c_something_went_wrong": "Da ist was schiefgegangen.",
   "c_error_connection_failed": "Verbindung fehlgeschlagen",
