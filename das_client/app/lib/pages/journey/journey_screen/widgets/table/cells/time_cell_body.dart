@@ -42,9 +42,10 @@ class TimeCellBody extends StatelessWidget {
         final showOperationalTime = snapshot.requireData.$1;
         final currentTime = snapshot.requireData.$2;
 
-        final (departureTime, arrivalTime) = times.formattedTimes(
+        final (departureTime, arrivalTime, isDepartureUnderlined) = times.formattedTimes(
           showOperationalTime: showOperationalTime,
           showTimesInBrackets: showTimesInBrackets,
+          currentTime: currentTime,
         );
 
         if (departureTime.isEmpty && arrivalTime.isEmpty && mandatoryStop) {
@@ -52,7 +53,6 @@ class TimeCellBody extends StatelessWidget {
         }
 
         final isArrivalBold = departureTime.isEmpty && !showOperationalTime;
-        final isDepartureUnderlined = currentTime.isAfterOrSameToTheMinute(times?.plannedDepartureTime);
 
         final timeTexts = Text.rich(
           key: timeCellKey,
