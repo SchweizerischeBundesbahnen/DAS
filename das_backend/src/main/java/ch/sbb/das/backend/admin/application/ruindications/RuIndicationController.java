@@ -39,7 +39,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class RuIndicationController {
 
     static final String PATH_SEGMENT_RU_INDICATIONS = "/ruindications";
-    public static final String API_RU_INDICATIONS = ApiDocumentation.VERSION_URI_V1 + PATH_SEGMENT_RU_INDICATIONS;
+    public static final String API_RU_INDICATIONS = ApiDocumentation.DRIVER_VERSION_URI_V1 + PATH_SEGMENT_RU_INDICATIONS;
     public static final String API_RU_INDICATIONS_MATCHES = API_RU_INDICATIONS + "/matches";
     static final String API_RU_INDICATIONS_ID = API_RU_INDICATIONS + "/{id}";
 

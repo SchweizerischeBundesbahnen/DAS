@@ -3,6 +3,8 @@ package ch.sbb.das.backend.formation.domain.model;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
+import ch.sbb.das.backend.common.UnexpectedProviderData;
+import ch.sbb.das.backend.locations.TafTapLocationReference;
 import org.junit.jupiter.api.Test;
 
 class TafTapLocationReferenceTest {

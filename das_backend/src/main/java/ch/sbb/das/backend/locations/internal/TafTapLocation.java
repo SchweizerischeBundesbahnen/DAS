@@ -1,11 +1,10 @@
-package ch.sbb.das.backend.admin.application.locations;
+package ch.sbb.das.backend.locations.internal;
 
-import ch.sbb.das.backend.admin.domain.locations.TafTapLocation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import java.time.LocalDate;
 
-public record TafTapLocationDto(
+public record TafTapLocation(
     @Schema(description = "TAF/TAP location reference", requiredMode = RequiredMode.REQUIRED, example = "CH07000")
     String locationReference,
     @Schema(description = "Primary location name also called official designation", requiredMode = RequiredMode.REQUIRED, example = "Bern")
@@ -16,7 +15,4 @@ public record TafTapLocationDto(
     LocalDate validFrom
 ) {
 
-    static TafTapLocationDto from(TafTapLocation location) {
-        return new TafTapLocationDto(location.locationReference().toLocationCode(), location.primaryLocationName(), location.locationAbbreviation(), location.futureValidFrom());
-    }
 }

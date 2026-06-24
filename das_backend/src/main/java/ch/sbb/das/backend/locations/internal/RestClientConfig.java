@@ -1,4 +1,4 @@
-package ch.sbb.das.backend.admin.infrastructure.atlas;
+package ch.sbb.das.backend.locations.internal;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

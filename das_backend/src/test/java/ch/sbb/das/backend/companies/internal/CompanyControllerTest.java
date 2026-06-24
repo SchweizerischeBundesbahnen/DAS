@@ -27,7 +27,7 @@ class CompanyControllerTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data", hasSize(3)))
             .andExpect(jsonPath("$.data[*].code", containsInAnyOrder("1111", "2222", "3333")))
-            .andExpect(jsonPath("$.data[*].name", containsInAnyOrder("MOCK_A", "MOCK_B", "MOCK_C")));
+            .andExpect(jsonPath("$.data[*].shortName", containsInAnyOrder("MOCK_A", "MOCK_B", "MOCK_C")));
     }
 
     @Test
@@ -37,7 +37,7 @@ class CompanyControllerTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data", hasSize(1)))
             .andExpect(jsonPath("$.data[0].code").value("9999"))
-            .andExpect(jsonPath("$.data[0].name").value("MOCK_OTHER"));
+            .andExpect(jsonPath("$.data[0].shortName").value("MOCK_OTHER"));
     }
 
     @Test

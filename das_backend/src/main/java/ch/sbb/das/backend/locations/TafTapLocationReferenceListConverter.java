@@ -1,13 +1,12 @@
-package ch.sbb.das.backend.admin.infrastructure.jpa;
+package ch.sbb.das.backend.locations;
 
 import static java.util.Collections.emptyList;
 
-import ch.sbb.das.backend.formation.domain.model.TafTapLocationReference;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
-import org.springframework.util.CollectionUtils;
 import java.util.Arrays;
 import java.util.List;
+import org.springframework.util.CollectionUtils;
 
 @Converter
 public class TafTapLocationReferenceListConverter implements AttributeConverter<List<TafTapLocationReference>, String> {

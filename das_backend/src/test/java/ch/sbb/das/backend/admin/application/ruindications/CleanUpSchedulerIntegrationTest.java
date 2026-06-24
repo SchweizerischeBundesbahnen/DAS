@@ -12,7 +12,7 @@ import ch.sbb.das.backend.admin.infrastructure.jpa.SpecialHolidayEntity;
 import ch.sbb.das.backend.admin.infrastructure.jpa.SpringDataJpaRuIndicationRepository;
 import ch.sbb.das.backend.admin.infrastructure.jpa.SpringDataJpaSpecialHolidayRepository;
 import ch.sbb.das.backend.companies.CompanyCode;
-import ch.sbb.das.backend.formation.domain.model.TafTapLocationReference;
+import ch.sbb.das.backend.locations.TafTapLocationReference;
 import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;

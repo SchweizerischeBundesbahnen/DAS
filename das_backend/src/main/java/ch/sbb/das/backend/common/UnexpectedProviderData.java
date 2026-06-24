@@ -1,4 +1,4 @@
-package ch.sbb.das.backend.formation.domain.model;
+package ch.sbb.das.backend.common;
 
 public class UnexpectedProviderData extends IllegalStateException {
 

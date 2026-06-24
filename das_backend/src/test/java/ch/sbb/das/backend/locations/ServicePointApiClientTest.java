@@ -1,9 +1,12 @@
-package ch.sbb.das.backend.admin.infrastructure.atlas;
+package ch.sbb.das.backend.locations;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
+import ch.sbb.das.backend.locations.internal.ServicePoint;
+import ch.sbb.das.backend.locations.internal.ServicePointApiClient;
+import ch.sbb.das.backend.locations.internal.ServicePointResponse;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;

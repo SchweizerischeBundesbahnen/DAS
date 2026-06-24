@@ -9,7 +9,8 @@ import ch.sbb.das.backend.admin.application.ruindications.model.TrainNumberFilte
 import ch.sbb.das.backend.common.EntityBase;
 import ch.sbb.das.backend.companies.CompanyCode;
 import ch.sbb.das.backend.companies.CompanyCodeListConverter;
-import ch.sbb.das.backend.formation.domain.model.TafTapLocationReference;
+import ch.sbb.das.backend.locations.TafTapLocationReference;
+import ch.sbb.das.backend.locations.TafTapLocationReferenceListConverter;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;

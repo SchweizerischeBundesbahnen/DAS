@@ -12,7 +12,7 @@ import ch.sbb.das.backend.admin.application.ruindications.model.SpecialHoliday;
 import ch.sbb.das.backend.admin.application.ruindications.model.TrainNumberFilterRequest;
 import ch.sbb.das.backend.admin.application.ruindications.model.TrainNumberParity;
 import ch.sbb.das.backend.companies.CompanyCode;
-import ch.sbb.das.backend.formation.domain.model.TafTapLocationReference;
+import ch.sbb.das.backend.locations.TafTapLocationReference;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;

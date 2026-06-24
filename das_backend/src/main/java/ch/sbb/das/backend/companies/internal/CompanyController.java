@@ -6,6 +6,7 @@ import ch.sbb.das.backend.common.ApiParametersDefault;
 import ch.sbb.das.backend.common.ApiParametersDefault.ParamRequestId;
 import ch.sbb.das.backend.common.Response;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
+import ch.sbb.das.backend.companies.Company;
 import ch.sbb.das.backend.companies.CompanyAuthorizer;
 import ch.sbb.das.backend.companies.CompanyCode;
 import ch.sbb.das.backend.companies.CompanyService;
@@ -50,7 +51,7 @@ public class CompanyController {
         List<Company> companies = companyAuthorizer.authorizedCompanies().stream()
             .filter(uicMap::containsKey)
             .map(code -> new Company(code.value(), uicMap.get(code).value()))
-            .sorted(Comparator.comparing(Company::name))
+            .sorted(Comparator.comparing(Company::shortName))
             .toList();
         return ResponseEntityFactory.createOkResponse(new CompaniesResponse(companies), requestId);
     }

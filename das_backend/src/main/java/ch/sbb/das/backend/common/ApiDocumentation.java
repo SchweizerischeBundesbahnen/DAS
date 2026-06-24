@@ -6,7 +6,7 @@ import org.springframework.http.HttpHeaders;
 @UtilityClass
 public final class ApiDocumentation {
 
-    public static final String VERSION_URI_V1 = "/v1";
+    public static final String DRIVER_VERSION_URI_V1 = "/v1";
     public static final String DRIVER_URI = "/driver";
     public static final String ADMIN_URI = "/admin";
 
