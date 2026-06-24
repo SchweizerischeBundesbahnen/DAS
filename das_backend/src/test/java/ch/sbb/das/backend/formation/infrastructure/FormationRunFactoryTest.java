@@ -3,7 +3,7 @@ package ch.sbb.das.backend.formation.infrastructure;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.das.backend.formation.domain.model.FormationRun;
-import ch.sbb.das.backend.formation.domain.model.TafTapLocationReference;
+import ch.sbb.das.backend.locations.TafTapLocationReference;
 import ch.sbb.zis.trainformation.api.model.BrakeCalculationResult;
 import ch.sbb.zis.trainformation.api.model.ConsolidatedBrakingInformation;
 import ch.sbb.zis.trainformation.api.model.FormationRunInspection;

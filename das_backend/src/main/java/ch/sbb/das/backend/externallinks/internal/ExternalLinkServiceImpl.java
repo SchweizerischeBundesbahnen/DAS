@@ -2,8 +2,6 @@ package ch.sbb.das.backend.externallinks.internal;
 
 import ch.sbb.das.backend.companies.CompanyAuthorizer;
 import ch.sbb.das.backend.companies.CompanyCode;
-import java.util.Comparator;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -17,18 +15,19 @@ public class ExternalLinkServiceImpl {
 
     private final ExternalLinkRepository externalLinkRepository;
     private final CompanyAuthorizer companyAuthorizationService;
+    private final ExternalLinkMapper externalLinkMapper;
 
     List<ExternalLink> getAll() {
         return externalLinkRepository.findAll().stream()
             .filter(externalLink -> externalLink.getCompanies() != null && companyAuthorizationService.authorizedCompanies().containsAll(externalLink.getCompanies()))
-            .map(ExternalLinkEntity::toExternalLink)
+            .map(externalLinkMapper::toResponse)
             .toList();
     }
 
     List<ExternalLink> getAllByCompanies(Set<CompanyCode> companies) {
         return externalLinkRepository.findAll().stream()
             .filter(externalLink -> externalLink.getCompanies() != null && companies.stream().anyMatch(company -> externalLink.getCompanies().contains(company)))
-            .map(ExternalLinkEntity::toExternalLink)
+            .map(externalLinkMapper::toResponse)
             .toList();
     }
 
@@ -38,13 +37,14 @@ public class ExternalLinkServiceImpl {
                 companyAuthorizationService.requireCanAccessCompanies(externalLink.getCompanies());
                 return externalLink;
             })
-            .map(ExternalLinkEntity::toExternalLink)
+            .map(externalLinkMapper::toResponse)
             .orElse(null);
     }
 
     ExternalLink create(ExternalLinkRequest externalLinkRequest) {
         companyAuthorizationService.requireCanAccessCompanies(externalLinkRequest.companies());
-        return externalLinkRepository.save(map(null, externalLinkRequest)).toExternalLink();
+        ExternalLinkEntity entity = externalLinkMapper.toEntityFromRequest(null, externalLinkRequest);
+        return externalLinkMapper.toResponse(externalLinkRepository.save(entity));
     }
 
     ExternalLink update(Integer id, ExternalLinkRequest externalLinkRequest) {
@@ -52,9 +52,11 @@ public class ExternalLinkServiceImpl {
         if (externalLink.isEmpty()) {
             return null;
         }
-        companyAuthorizationService.requireCanAccessCompanies(externalLink.get().getCompanies());
+        ExternalLinkEntity entity = externalLink.get();
+        companyAuthorizationService.requireCanAccessCompanies(entity.getCompanies());
         companyAuthorizationService.requireCanAccessCompanies(externalLinkRequest.companies());
-        return externalLinkRepository.save(map(id, externalLinkRequest)).toExternalLink();
+        externalLinkMapper.updateEntityFromRequest(entity, externalLinkRequest);
+        return externalLinkMapper.toResponse(externalLinkRepository.save(entity));
     }
 
     void deleteAllById(List<Integer> ids) {
@@ -63,26 +65,5 @@ public class ExternalLinkServiceImpl {
             .collect(Collectors.toSet());
         companyAuthorizationService.requireCanAccessCompanies(companies);
         externalLinkRepository.deleteAllById(ids);
-    }
-
-    private ExternalLinkEntity map(Integer id, ExternalLinkRequest externalLinkRequest) {
-        ExternalLinkEntity entity = new ExternalLinkEntity();
-        entity.setId(id);
-        entity.setCompanies(externalLinkRequest.companies().stream()
-            .sorted(Comparator.comparing(CompanyCode::value))
-            .collect(Collectors.toCollection(LinkedHashSet::new)));
-        if (externalLinkRequest.de() != null) {
-            entity.setTitleDe(externalLinkRequest.de().title());
-            entity.setLinkDe(externalLinkRequest.de().link());
-        }
-        if (externalLinkRequest.fr() != null) {
-            entity.setTitleFr(externalLinkRequest.fr().title());
-            entity.setLinkFr(externalLinkRequest.fr().link());
-        }
-        if (externalLinkRequest.it() != null) {
-            entity.setTitleIt(externalLinkRequest.it().title());
-            entity.setLinkIt(externalLinkRequest.it().link());
-        }
-        return entity;
     }
 }

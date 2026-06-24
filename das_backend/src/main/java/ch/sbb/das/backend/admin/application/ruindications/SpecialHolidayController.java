@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class SpecialHolidayController {
 
     static final String PATH_SEGMENT_SPECIAL_HOLIDAYS = "/special-holidays";
-    public static final String API_SPECIAL_HOLIDAYS = ApiDocumentation.VERSION_URI_V1 + PATH_SEGMENT_SPECIAL_HOLIDAYS;
+    public static final String API_SPECIAL_HOLIDAYS = ApiDocumentation.DRIVER_VERSION_URI_V1 + PATH_SEGMENT_SPECIAL_HOLIDAYS;
     static final String API_SPECIAL_HOLIDAYS_ID = API_SPECIAL_HOLIDAYS + "/{id}";
 
     private final SpecialHolidayService specialHolidayService;

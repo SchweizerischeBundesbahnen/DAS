@@ -1,5 +1,6 @@
-package ch.sbb.das.backend.admin.application.locations;
+package ch.sbb.das.backend.locations;
 
+import static ch.sbb.das.backend.locations.internal.TafTapLocationController.API_LOCATIONS;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.when;
@@ -8,8 +9,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.das.backend.IntegrationTest;
-import ch.sbb.das.backend.admin.infrastructure.atlas.ServicePoint;
-import ch.sbb.das.backend.admin.infrastructure.atlas.ServicePointApiClient;
+import ch.sbb.das.backend.locations.internal.ServicePoint;
+import ch.sbb.das.backend.locations.internal.ServicePointApiClient;
+import ch.sbb.das.backend.locations.internal.TafTapLocationsImportService;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -39,7 +41,7 @@ class TafTapLocationImportIntegrationTest {
         ServicePoint sp4 = new ServicePoint("More Future Service Point 4", "SP4", LocalDate.now().plusYears(2), validTo, new ServicePoint.ServicePointNumber(11111, 32));
         when(servicePointApiClient.getAll()).thenReturn(List.of(sp1, sp2, sp3, sp4));
         tafTapLocationsImportService.importLocations();
-        mockMvc.perform(get("/v1/locations"))
+        mockMvc.perform(get(API_LOCATIONS))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data", hasSize(3)))
             .andExpect(jsonPath("$.data[*].locationReference", containsInAnyOrder("LB12345", "NO56789", "CZ00555")))
@@ -53,7 +55,7 @@ class TafTapLocationImportIntegrationTest {
         ServicePoint sp2v2 = new ServicePoint("Service Point 2", "SP2", sp2v2ValidFrom, validTo, new ServicePoint.ServicePointNumber(56789, 76));
         when(servicePointApiClient.getAll()).thenReturn(List.of(sp1, sp2v1, sp2v2, sp3));
         tafTapLocationsImportService.importLocations();
-        mockMvc.perform(get("/v1/locations"))
+        mockMvc.perform(get(API_LOCATIONS))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data", hasSize(4)))
             .andExpect(jsonPath("$.data[*].locationReference", containsInAnyOrder("LB12345", "NO56789", "NO56789", "CZ00555")))

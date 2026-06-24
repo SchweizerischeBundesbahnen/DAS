@@ -1,5 +1,6 @@
 package ch.sbb.das.backend.formation.domain.model;
 
+import ch.sbb.das.backend.common.UnexpectedProviderData;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

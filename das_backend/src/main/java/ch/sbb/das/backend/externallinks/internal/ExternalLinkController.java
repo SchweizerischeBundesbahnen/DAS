@@ -37,7 +37,7 @@ public class ExternalLinkController {
     static final String PATH_SEGMEMT_EXTERNAL_LINKS = "/external-links";
     public static final String API_ADMIN_EXTERNAL_LINKS = ApiDocumentation.ADMIN_URI + PATH_SEGMEMT_EXTERNAL_LINKS;
     static final String API_EXTERNAL_LINKS_ID = API_ADMIN_EXTERNAL_LINKS + "/{id}";
-    public static final String API_DRIVER_EXTERNAL_LINKS = ApiDocumentation.DRIVER_URI + ApiDocumentation.VERSION_URI_V1 + PATH_SEGMEMT_EXTERNAL_LINKS;
+    public static final String API_DRIVER_EXTERNAL_LINKS = ApiDocumentation.DRIVER_URI + ApiDocumentation.DRIVER_VERSION_URI_V1 + PATH_SEGMEMT_EXTERNAL_LINKS;
     private final ExternalLinkServiceImpl externalLinkService;
 
     @GetMapping(API_ADMIN_EXTERNAL_LINKS)

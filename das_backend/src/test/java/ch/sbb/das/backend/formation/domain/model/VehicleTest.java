@@ -10,6 +10,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 
+import ch.sbb.das.backend.common.UnexpectedProviderData;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;

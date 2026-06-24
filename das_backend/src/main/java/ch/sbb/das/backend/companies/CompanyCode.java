@@ -11,7 +11,7 @@ import lombok.NonNull;
  * <p>
  * JSON representation is a plain string.
  */
-public record CompanyCode(@NonNull String value) {
+public record CompanyCode(@JsonValue @NonNull String value) {
 
     public static final String DESCRIPTION = "Relates to teltsi_CompanyCode (according to SFERA a [RICS-code](https://uic.org/support-activities/it/rics)).";
 
@@ -21,10 +21,5 @@ public record CompanyCode(@NonNull String value) {
         if (!COMPANY_CODE_PATTERN.matcher(value).matches()) {
             throw new IllegalArgumentException("CompanyCode must match [0-9A-Z]{4}");
         }
-    }
-
-    @JsonValue
-    public String toJson() {
-        return value;
     }
 }

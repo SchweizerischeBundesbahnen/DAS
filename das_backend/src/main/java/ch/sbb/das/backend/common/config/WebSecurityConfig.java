@@ -1,6 +1,5 @@
 package ch.sbb.das.backend.common.config;
 
-import static ch.sbb.das.backend.admin.application.locations.TafTapLocationController.API_LOCATIONS;
 import static ch.sbb.das.backend.admin.application.ruindications.RuIndicationController.API_RU_INDICATIONS;
 import static ch.sbb.das.backend.admin.application.ruindications.RuIndicationController.API_RU_INDICATIONS_MATCHES;
 import static ch.sbb.das.backend.admin.application.ruindications.RuIndicationTemplateController.API_RU_INDICATION_TEMPLATES;
@@ -11,6 +10,7 @@ import static ch.sbb.das.backend.companies.internal.CompanyController.API_COMPAN
 import static ch.sbb.das.backend.externallinks.internal.ExternalLinkController.API_ADMIN_EXTERNAL_LINKS;
 import static ch.sbb.das.backend.externallinks.internal.ExternalLinkController.API_DRIVER_EXTERNAL_LINKS;
 import static ch.sbb.das.backend.formation.api.v1.FormationController.API_FORMATIONS;
+import static ch.sbb.das.backend.locations.internal.TafTapLocationController.API_LOCATIONS;
 import static ch.sbb.das.backend.proxy.CustomerOrientedDepartureController.API_CUSTOMER_ORIENTED_DEPARTURE;
 import static org.springframework.security.config.Customizer.withDefaults;
 

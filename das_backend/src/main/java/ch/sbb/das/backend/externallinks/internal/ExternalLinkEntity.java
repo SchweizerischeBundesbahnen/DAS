@@ -47,15 +47,4 @@ public class ExternalLinkEntity extends EntityBase {
 
     private String linkIt;
 
-    public ExternalLink toExternalLink() {
-        return new ExternalLink(
-            id,
-            companies,
-            new ExternalLinkContent(titleDe, linkDe),
-            new ExternalLinkContent(titleFr, linkFr),
-            new ExternalLinkContent(titleIt, linkIt),
-            getLastModifiedAt(),
-            getLastModifiedBy()
-        );
-    }
 }

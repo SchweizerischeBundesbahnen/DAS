@@ -1,5 +1,7 @@
 package ch.sbb.das.backend.formation.domain.model;
 
+import ch.sbb.das.backend.common.UnexpectedProviderData;
+import ch.sbb.das.backend.locations.TafTapLocationReference;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;

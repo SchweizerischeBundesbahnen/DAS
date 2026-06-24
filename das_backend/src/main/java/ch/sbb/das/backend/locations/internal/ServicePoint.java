@@ -1,4 +1,4 @@
-package ch.sbb.das.backend.admin.infrastructure.atlas;
+package ch.sbb.das.backend.locations.internal;
 
 import java.time.LocalDate;
 

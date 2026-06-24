@@ -1,6 +1,6 @@
 package ch.sbb.das.backend.admin.application.ruindications.model;
 
-import ch.sbb.das.backend.formation.domain.model.TafTapLocationReference;
+import ch.sbb.das.backend.locations.TafTapLocationReference;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;

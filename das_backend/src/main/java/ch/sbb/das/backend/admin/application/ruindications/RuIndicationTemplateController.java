@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class RuIndicationTemplateController {
 
     static final String PATH_SEGMENT_RU_INDICATION_TEMPLATES = "/ruindication-templates";
-    public static final String API_RU_INDICATION_TEMPLATES = ApiDocumentation.VERSION_URI_V1 + PATH_SEGMENT_RU_INDICATION_TEMPLATES;
+    public static final String API_RU_INDICATION_TEMPLATES = ApiDocumentation.DRIVER_VERSION_URI_V1 + PATH_SEGMENT_RU_INDICATION_TEMPLATES;
     static final String API_RU_INDICATION_TEMPLATES_ID = API_RU_INDICATION_TEMPLATES + "/{id}";
 
     private final RuIndicationTemplateService ruIndicationTemplateService;

@@ -1,5 +1,6 @@
-package ch.sbb.das.backend.formation.domain.model;
+package ch.sbb.das.backend.locations;
 
+import ch.sbb.das.backend.common.UnexpectedProviderData;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 import com.fasterxml.jackson.annotation.JsonValue;

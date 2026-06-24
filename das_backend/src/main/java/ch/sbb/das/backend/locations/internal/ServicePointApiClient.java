@@ -1,6 +1,6 @@
-package ch.sbb.das.backend.admin.infrastructure.atlas;
+package ch.sbb.das.backend.locations.internal;
 
-import static ch.sbb.das.backend.admin.infrastructure.atlas.RestClientConfig.OAUTH2_CLIENT_REGISTRATION_ID;
+import static ch.sbb.das.backend.locations.internal.RestClientConfig.OAUTH2_CLIENT_REGISTRATION_ID;
 import static org.springframework.security.oauth2.client.web.client.RequestAttributeClientRegistrationIdResolver.clientRegistrationId;
 
 import ch.sbb.das.backend.common.DateTimeUtil;

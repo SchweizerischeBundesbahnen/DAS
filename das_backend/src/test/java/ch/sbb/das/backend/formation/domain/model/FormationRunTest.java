@@ -7,6 +7,8 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
 
+import ch.sbb.das.backend.common.UnexpectedProviderData;
+import ch.sbb.das.backend.locations.TafTapLocationReference;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
