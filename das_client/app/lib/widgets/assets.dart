@@ -24,7 +24,7 @@ class AppAssets {
   static const iconWhistle = '$_iconsDir/icon_whistle.svg';
   static const iconTramArea = '$_iconsDir/icon_tram_area.svg';
   static const iconBatteryStatusLow = '$_iconsDir/icon_battery_status_low.svg';
-  static const iconKoaWait = '$_iconsDir/icon_koa_wait.svg';
+  static const iconCustomerOrientedDepartureWait = '$_iconsDir/icon_customer_oriented_departure_wait.svg';
   static const iconDeadendStation = '$_iconsDir/icon_deadend_station.svg';
   static const iconEntryOccupiedTrack = '$_iconsDir/icon_entry_occupied_track.svg';
   static const iconEntryStationWithoutRailfreeAccess = '$_iconsDir/icon_entry_station_without_railfree_access.svg';
@@ -58,7 +58,7 @@ class AppAssets {
   static const stationSignBhf = '$_othersDir/station_sign_bhf.svg';
 
   // audio
-  static const soundKoaWaitCanceled = '$_soundsDir/koa_wait_canceled.mp3';
+  static const soundCustomerOrientedDepartureDeparture = '$_soundsDir/customer_oriented_departure_departure.mp3';
   static const soundWarnappWarn = '$_soundsDir/warnapp_warn.wav';
   static const soundAdvisedSpeedStart = '$_soundsDir/advised_speed_start.wav';
   static const soundAdvisedSpeedEnd = '$_soundsDir/advised_speed_end.wav';

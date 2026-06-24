@@ -6,7 +6,7 @@ class DASColors {
   const DASColors._();
 
   static const Color simTrain = Color(0xFFA34A7B);
-  static const Color koaBlue = Color(0xFFAFEBEE);
+  static const Color customerOrientedDepartureBlue = Color(0xFFAFEBEE);
   static const Color simFootNoteBorder = Color(0xFFAA3344);
   static const Color advisedSpeedBackgroundBright = SBBColors.iron;
   static const Color advisedSpeedBackgroundDark = SBBColors.platinum;
