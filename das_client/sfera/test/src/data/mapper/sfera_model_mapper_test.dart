@@ -2093,6 +2093,39 @@ void main() {
     expect(speedRestrictions[0].kmFrom, 58.840);
     expect(speedRestrictions[0].kmTo, 56.062);
   });
+
+  test('Test nsp signals', () async {
+    final journey = getJourney('T45');
+    expect(journey.valid, true);
+
+    final signals = journey.data.whereType<Signal>().toList();
+    expect(signals, hasLength(9));
+
+    expect(signals[0].functions[0], SignalFunction.exit);
+    expect(signals[1].functions[0], SignalFunction.block);
+    expect(signals[2].functions[0], SignalFunction.intermediate);
+    expect(signals[3].functions[0], SignalFunction.entry);
+    expect(signals[4].functions[0], SignalFunction.etcsStopSign);
+    expect(signals[5].functions[0], SignalFunction.etcsStopSign);
+    expect(signals[6].functions[0], SignalFunction.intermediate);
+    expect(signals[7].functions[0], SignalFunction.etcsStopSign);
+    expect(signals[8].functions[0], SignalFunction.trackEndSignal);
+
+    // Ensure NSP track equipment segments are classified per ETCS stop sign so UI filters can rely on them.
+    final nonStandardSegments = journey.metadata.nonStandardTrackEquipmentSegments;
+    final ess1 = signals[4];
+    final ess2 = signals[5];
+    final ess3 = signals[7];
+
+    expect(nonStandardSegments.isInEtcsLevel2ConventionalSpeedSegment(ess1.order), isTrue);
+    expect(nonStandardSegments.isInEtcsLevel2ExtendedSpeedSegment(ess1.order), isFalse);
+
+    expect(nonStandardSegments.isInEtcsLevel2ConventionalSpeedSegment(ess2.order), isFalse);
+    expect(nonStandardSegments.isInEtcsLevel2ExtendedSpeedSegment(ess2.order), isTrue);
+
+    expect(nonStandardSegments.isInEtcsLevel2ConventionalSpeedSegment(ess3.order), isFalse);
+    expect(nonStandardSegments.isInEtcsLevel2ExtendedSpeedSegment(ess3.order), isTrue);
+  });
 }
 
 void _checkTrainSeriesSpeed<T extends Speed>(

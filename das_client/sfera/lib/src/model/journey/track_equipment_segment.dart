@@ -59,6 +59,12 @@ extension BaseDataListSegmentExtension on Iterable<BaseData> {
 extension NonStandardTrackEquipmentSegmentsExtension on Iterable<NonStandardTrackEquipmentSegment> {
   bool isInEtcsLevel2Segment(int order) => where((segment) => segment.type.isEtcsL2).appliesToOrder(order).isNotEmpty;
 
+  bool isInEtcsLevel2ConventionalSpeedSegment(int order) =>
+      where((segment) => segment.type.isConventionalSpeed).appliesToOrder(order).isNotEmpty;
+
+  bool isInEtcsLevel2ExtendedSpeedSegment(int order) =>
+      where((segment) => segment.type.isExtendedSpeed).appliesToOrder(order).isNotEmpty;
+
   /// Returns all [NonStandardTrackEquipmentSegment] of this list that mark the start of a ETCS level 2 segment
   Iterable<NonStandardTrackEquipmentSegment> get withCABSignalingStart {
     final etcsL2Segments = where((segment) => segment.type.isEtcsL2).toList();
