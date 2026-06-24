@@ -84,6 +84,9 @@ The app is separated into the following components:
 | **app_links_x**                 | Processes all deep-links used to open the DAS app.                                     | 
 | **preload**                     | Handles pre-loading journey data for offline usage.                                    | 
 | **customer_oriented_departure** | Handles communication for customer oriented departure (KoA)                            | 
+| **external_links**              | Provides external links defined by RUs                                                 | 
+| **ru_indications**              | Provides RU specific indications                                                       | 
+
 
 ### Component Naming
 

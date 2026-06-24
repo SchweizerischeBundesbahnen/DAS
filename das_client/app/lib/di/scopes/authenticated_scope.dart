@@ -18,6 +18,7 @@ import 'package:app/util/device_id_info.dart';
 import 'package:auth/component.dart';
 import 'package:external_links/component.dart';
 import 'package:customer_oriented_departure/component.dart';
+import 'package:ru_indications/component.dart';
 import 'package:formation/component.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http_x/component.dart';
@@ -55,6 +56,7 @@ class AuthenticatedScope extends DIScope {
     getIt.registerFormationRepository();
     getIt.registerCustomerOrientedDepartureRepository(inTmsScope: inTmsScope);
     getIt.registerExternalLinksRepository();
+    getIt.registerRuIndicationsRepository();
 
     getIt.registerJourneyViewModel();
     getIt.registerJourneyNavigationViewModel();
@@ -190,6 +192,13 @@ extension AuthenticatedScopeExtension on GetIt {
         .map((undertaking) => undertaking.companyCode)
         .toList();
     repo.reloadExternalLinksByCompanies(companyCodes);
+  }
+
+  void registerRuIndicationsRepository() {
+    final flavor = DI.get<Flavor>();
+    registerSingleton<RuIndicationsRepository>(
+      RuIndicationsComponent.createRepository(baseUrl: flavor.backendUrl, client: DI.get()),
+    );
   }
 
   void registerJourneyNavigationViewModel() {

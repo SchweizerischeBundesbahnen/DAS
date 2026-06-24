@@ -6,21 +6,24 @@ Flutter mobile app (Driver Advisory System) for train drivers. Tablet-only (≥1
 ## Monorepo
 Dart workspace managed with **Melos** (`fvm dart run melos <script>`). Each subdirectory represents a component as a separate package.
 
-| Package             | Purpose                                                                  |
-|---------------------|--------------------------------------------------------------------------|
-| `app`               | Flutter UI, routing (auto_route), DI (get_it), state (provider + rxdart) |
-| `sfera`             | SFERA XML API integration + local DB cache                               |
-| `auth`              | Authentication & state                                                   |
-| `mqtt`              | MQTT client                                                              |
-| `settings`          | Feature flags / RU settings                                              |
-| `formation`         | Train formation & brake data                                             |
-| `warnapp`           | Train start/stop detection                                               |
-| `preload`           | Offline journey data preloading                                          |
-| `logger`            | Log caching & remote rollover                                            |
-| `local_regulations` | Local regulation HTML generation                                         |
-| `http_x`            | HTTP extension (auth + logging)                                          |
-| `connectivity_x`    | Network connectivity                                                     |
-| `app_links_x`       | Deep-link handling                                                       |
+| Package                       | Purpose                                                                  |
+|-------------------------------|--------------------------------------------------------------------------|
+| `app`                         | Flutter UI, routing (auto_route), DI (get_it), state (provider + rxdart) |
+| `sfera`                       | SFERA XML API integration + local DB cache                               |
+| `auth`                        | Authentication & state                                                   |
+| `mqtt`                        | MQTT client                                                              |
+| `settings`                    | Feature flags / RU settings                                              |
+| `formation`                   | Train formation & brake data                                             |
+| `warnapp`                     | Train start/stop detection                                               |
+| `preload`                     | Offline journey data preloading                                          |
+| `logger`                      | Log caching & remote rollover                                            |
+| `local_regulations`           | Local regulation HTML generation                                         |
+| `http_x`                      | HTTP extension (auth + logging)                                          |
+| `connectivity_x`              | Network connectivity                                                     |
+| `app_links_x`                 | Deep-link handling                                                       |
+| `customer_oriented_departure` | Integration of customer oriented departure states                        |
+| `ru_indications`              | RU specific indications                                                  |
+| `external_links`              | External links provided by RUs                                           |
 
 ## Flavors
 `dev`, `inte`, `prod` — entry points: `lib/main_dev.dart`, `lib/main_inte.dart`, `lib/main_prod.dart`
