@@ -95,17 +95,18 @@ class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartu
     }
 
     try {
+      final messageId = Uuid().v4();
       await apiService.unsubscribe(
         evu: evu,
         trainNumber: trainNumber,
         pushToken: pushToken,
         deviceId: deviceId,
-        messageId: Uuid().v4(),
+        messageId: messageId,
         expiresAt: _pendingOrOpenSubscription!.expiresAt,
         isDriver: _pendingOrOpenSubscription!.isDriver,
       );
       _pendingOrOpenSubscription = null;
-      _log.info('Successfully requested unsubscribe for $evu $trainNumber.');
+      _log.info('Successfully requested unsubscribe for $evu $trainNumber with messageId $messageId.');
       return true;
     } catch (e) {
       _log.severe('Error while requesting unsubscribe for $evu $trainNumber', e);

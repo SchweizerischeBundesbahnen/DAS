@@ -35,8 +35,6 @@ class CustomerOrientedDepartureViewModel extends JourneyAwareViewModel {
   final _rxStatus = BehaviorSubject<CustomerOrientedDepartureStatus>.seeded(.departure);
   final _subscriptions = <StreamSubscription>[];
 
-  Journey? _lastJourney;
-
   Stream<CustomerOrientedDepartureStatus> get status => _rxStatus.stream;
 
   Future<bool> get isDepartureProcessFeatureEnabled => _ruFeatureProvider.isRuFeatureEnabled(.departureProcess);
@@ -46,7 +44,6 @@ class CustomerOrientedDepartureViewModel extends JourneyAwareViewModel {
     if (journey != null) {
       await _subscribe(journey);
     }
-    _lastJourney = journey;
   }
 
   @override
@@ -101,7 +98,7 @@ class CustomerOrientedDepartureViewModel extends JourneyAwareViewModel {
 
   void _initCustomerOrientedDeparture() {
     final subscription = _repository.customerOrientedDeparture.listen((event) async {
-      final currentTrain = _lastJourney?.metadata.trainIdentification;
+      final currentTrain = lastJourney?.metadata.trainIdentification;
       if (currentTrain != null && currentTrain.trainNumber != event.trainNumber) {
         _log.info(
           'Got customer oriented departure event for ${event.trainNumber} that is not for the current train ${currentTrain.trainNumber}.',
