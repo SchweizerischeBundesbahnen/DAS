@@ -46,6 +46,8 @@ enum SignalFunction {
   protection,
   laneChange,
   lockingOutSignal, // from NSP
+  etcsStopSign, // from NSP
+  trackEndSignal, // from NSP
   unknown;
 
   factory SignalFunction.from(String value) {
