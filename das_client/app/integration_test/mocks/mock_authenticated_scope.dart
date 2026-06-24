@@ -4,11 +4,13 @@ import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
 import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
 import 'package:app/provider/ru_feature_provider.dart';
+import 'package:customer_oriented_departure/component.dart';
 import 'package:external_links/component.dart';
 import 'package:formation/component.dart';
 import 'package:logging/logging.dart';
 import 'package:sfera/component.dart';
 
+import 'mock_customer_oriented_departure_repository.dart';
 import 'mock_external_links_repository.dart';
 import 'mock_formation_repository.dart';
 import 'mock_ru_feature_provider.dart';
@@ -34,7 +36,7 @@ class MockAuthenticatedScope extends AuthenticatedScope {
     getIt.registerHttpClient();
     getIt.registerMqttAuthProvider();
     getIt.registerMqttService();
-    getIt.registerSferaRemoteRepo();
+    getIt.registerSferaRemoteRepository();
     getIt.registerAppExpirationViewModel();
     if (e2e) {
       getIt.registerSettingsRepository();
@@ -44,13 +46,14 @@ class MockAuthenticatedScope extends AuthenticatedScope {
       _registerMockRuFeaturesProvider();
       _registerMockFormationRepository();
     }
+    _registerMockCustomerOrientedDepartureRepository();
 
+    getIt.registerJourneyViewModel();
     getIt.registerJourneyNavigationViewModel();
     getIt.registerJourneySelectionViewModel();
-    getIt.registerJourneyViewModel();
+    getIt.registerNotificationPriorityViewModel();
     getIt.registerJourneySettingsViewModel();
     getIt.registerViewModeViewModel();
-    getIt.registerNotificationPriorityViewModel();
     _registerMockWarnAppViewModel();
     _registerMockExternalLinksRepository();
     getIt.registerLocalRegulationHtmlGenerator();
@@ -85,6 +88,13 @@ class MockAuthenticatedScope extends AuthenticatedScope {
         NotificationPriorityQueueViewModel,
       ],
       dispose: (vm) => vm.dispose(),
+    );
+  }
+
+  void _registerMockCustomerOrientedDepartureRepository() {
+    getIt.registerSingletonAsync<CustomerOrientedDepartureRepository>(
+      () async => MockCustomerOrientedDepartureRepository(),
+      dispose: (repo) => repo.dispose(),
     );
   }
 }

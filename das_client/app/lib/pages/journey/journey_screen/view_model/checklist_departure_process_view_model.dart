@@ -1,11 +1,12 @@
 import 'dart:async';
 
+import 'package:app/pages/journey/journey_screen/view_model/customer_oriented_departure_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/checklist_departure_process_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
-import 'package:app/pages/journey/journey_screen/view_model/ux_testing_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
 import 'package:app/provider/ru_feature_provider.dart';
+import 'package:customer_oriented_departure/component.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
@@ -16,7 +17,7 @@ class ChecklistDepartureProcessViewModel extends JourneyAwareViewModel {
   ChecklistDepartureProcessViewModel({
     required this._journeyPositionViewModel,
     required this._ruFeatureProvider,
-    required this._uxTestingViewModel,
+    required this._customerOrientedDepartureViewModel,
     super.journeyViewModel,
   }) {
     _initSubscription();
@@ -24,14 +25,14 @@ class ChecklistDepartureProcessViewModel extends JourneyAwareViewModel {
 
   final JourneyPositionViewModel _journeyPositionViewModel;
   final RuFeatureProvider _ruFeatureProvider;
-  final UxTestingViewModel _uxTestingViewModel;
+  final CustomerOrientedDepartureViewModel _customerOrientedDepartureViewModel;
 
   final _rxModel = BehaviorSubject<ChecklistDepartureProcessModel>.seeded(const ChecklistDepartureProcessDisabled());
 
-  StreamSubscription<(JourneyPositionModel, KoaState)>? _subscription;
+  StreamSubscription<(JourneyPositionModel, CustomerOrientedDepartureStatus)>? _subscription;
 
   JourneyPositionModel? _lastPositionModel;
-  KoaState _lastKoaState = KoaState.waitHide;
+  CustomerOrientedDepartureStatus _customerOrientedDepartureStatus = .departure;
   bool _lastServicePointWasStop = false;
 
   Stream<ChecklistDepartureProcessModel> get model => _rxModel.distinct();
@@ -42,11 +43,11 @@ class ChecklistDepartureProcessViewModel extends JourneyAwareViewModel {
     _subscription =
         CombineLatestStream.combine2(
           _journeyPositionViewModel.model,
-          _uxTestingViewModel.koaState,
+          _customerOrientedDepartureViewModel.status,
           (a, b) => (a, b),
         ).listen((data) async {
           _lastPositionModel = data.$1;
-          _lastKoaState = data.$2;
+          _customerOrientedDepartureStatus = data.$2;
           await _updateModel();
         });
   }
@@ -67,10 +68,15 @@ class ChecklistDepartureProcessViewModel extends JourneyAwareViewModel {
     }
 
     final nextStop = positionModel?.nextStop;
-    if (_lastKoaState == KoaState.waitHide) {
+    if (_customerOrientedDepartureStatus == .departure) {
       _emitModel(NoCustomerOrientedDepartureChecklist(nextStop: nextStop));
     } else {
-      _emitModel(CustomerOrientedDepartureChecklist(nextStop: nextStop, koaState: _lastKoaState));
+      _emitModel(
+        CustomerOrientedDepartureChecklist(
+          nextStop: nextStop,
+          customerOrientedDepartureStatus: _customerOrientedDepartureStatus,
+        ),
+      );
     }
   }
 

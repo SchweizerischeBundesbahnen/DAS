@@ -3,8 +3,8 @@ import 'package:app/sound/sound.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:audioplayers/audioplayers.dart';
 
-class KoaSound extends Sound {
-  const KoaSound();
+class CustomerOrientedDepartureSound extends Sound {
+  const CustomerOrientedDepartureSound();
 
   static const _volume = 1.0;
 
@@ -13,6 +13,6 @@ class KoaSound extends Sound {
     await Sound.volumeController.setVolume(_volume);
     final audioPlayer = DI.get<AudioPlayer>();
     await audioPlayer.stop();
-    await audioPlayer.play(AssetSource(AppAssets.soundKoaWaitCanceled));
+    await audioPlayer.play(AssetSource(AppAssets.soundCustomerOrientedDepartureDeparture));
   }
 }

@@ -5,6 +5,7 @@ import 'package:app/nav/app_link_navigator.dart';
 import 'package:app/nav/app_router.dart';
 import 'package:app/nav/auth_guard.dart';
 import 'package:app/theme/theme_view_model.dart';
+import 'package:app/util/app_lifecycle_view_model.dart';
 import 'package:app/widgets/flavor_banner.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +19,7 @@ class App extends StatefulWidget {
   State<App> createState() => _AppState();
 }
 
-class _AppState extends State<App> {
+class _AppState extends State<App> with WidgetsBindingObserver {
   final _appRouter = AppRouter(
     authGuard: AuthGuard(authenticator: DI.get()),
     appExpirationGuard: AppExpirationGuard(),
@@ -29,6 +30,20 @@ class _AppState extends State<App> {
   void initState() {
     super.initState();
     _appLinkNavigator = AppLinkNavigator(appLinksManager: DI.get(), router: _appRouter)..observe();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    DI.get<AppLifecycleViewModel>().updateState(state);
+  }
+
+  @override
+  void dispose() {
+    _appLinkNavigator.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 
   @override
@@ -68,11 +83,5 @@ class _AppState extends State<App> {
         );
       },
     );
-  }
-
-  @override
-  void dispose() {
-    _appLinkNavigator.dispose();
-    super.dispose();
   }
 }

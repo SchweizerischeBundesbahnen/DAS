@@ -17,6 +17,7 @@ component connectivity_plus #4DB1FF
 component app_links #4DB1FF
 component app_links_x
 component preload
+component customer_oriented_departure
 
 app --> auth
 app --> sfera
@@ -28,13 +29,17 @@ app --> warnapp
 app --> logger
 app --> http_x
 app --> formation
-app --> app_links
+app --> app_links_x
 app --> preload
+app --> customer_oriented_departure
 
 settings --> http_x
 settings --> logger
 
 formation --> http_x
+
+customer_oriented_departure --> http_x
+customer_oriented_departure --> logger
 
 logger --> http_x
 
