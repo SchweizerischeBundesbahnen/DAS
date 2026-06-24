@@ -23,7 +23,11 @@ extension ArrivalDepartureTimeX on ArrivalDepartureTime? {
     var isDepartureUnderlined = currentTime?.isAfterOrSameToTheMinute(this?.plannedDepartureTime) ?? false;
 
     if (departureTime.isEmpty && this?.plannedReleasedTime != null) {
-      departureTime = Format.plannedTime(this?.plannedReleasedTime);
+      if (showOperationalTime) {
+        departureTime = Format.operationalTime(this?.plannedReleasedTime);
+      } else {
+        departureTime = Format.plannedTime(this?.plannedReleasedTime);
+      }
 
       // plannedReleaseTime is always shown in brackets and never underlined
       showTimesInBrackets = true;

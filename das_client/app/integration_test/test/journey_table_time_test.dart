@@ -95,7 +95,7 @@ void main() {
 
     final expectedTimeVevey =
         '(${Format.operationalTime(DateTime.parse('2025-05-12T17:28:56Z'))})\n'
-        '(${Format.plannedTime(DateTime.parse('2025-05-12T16:29:00Z'))})';
+        '(${Format.operationalTime(DateTime.parse('2025-05-12T16:29:00Z'))})';
     expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: vevey), findsOneWidget);
     expect(_findTextInDASTableRowByText(innerText: expectedTimeVevey, rowText: vevey), findsOneWidget);
 
