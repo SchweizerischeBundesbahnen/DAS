@@ -1,26 +1,24 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:http_interceptor/http_interceptor.dart';
-import 'package:http_x/component.dart';
 import 'package:logging/logging.dart';
 
-final _log = Logger('AuthorizationInterceptor');
+final _log = Logger('AcceptLanguageInterceptor');
 
-class AuthorizationInterceptor implements HttpInterceptor {
-  const AuthorizationInterceptor(this.authProvider);
-
-  final AuthProvider? authProvider;
+class AcceptLanguageInterceptor implements HttpInterceptor {
+  const AcceptLanguageInterceptor();
 
   @override
-  FutureOr<bool> shouldInterceptRequest({required BaseRequest request}) async => authProvider != null;
+  FutureOr<bool> shouldInterceptRequest({required BaseRequest request}) async => true;
 
   @override
   FutureOr<BaseRequest> interceptRequest({required BaseRequest request}) async {
     try {
-      final value = await authProvider!();
-      request.headers['authorization'] = value;
+      final deviceLocale = Platform.localeName;
+      request.headers['Accept-Language'] = deviceLocale;
     } catch (e, s) {
-      _log.severe('Set authorization header failed', e, s);
+      _log.severe('Set accept-language header failed', e, s);
     }
     return request;
   }
