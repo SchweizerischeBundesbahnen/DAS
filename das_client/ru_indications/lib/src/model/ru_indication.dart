@@ -1,28 +1,24 @@
-import 'package:collection/collection.dart';
-import 'package:ru_indications/src/model/ru_indication_content.dart';
+import 'package:core_data/component.dart';
 
-class RuIndication {
+class RuIndication extends JourneyAnnotation {
   const RuIndication({
-    required this.tafTapLocationReference,
-    required this.ruIndicationContents,
-  });
+    required this.title,
+    required this.text,
+    required super.order,
+  }) : super(dataType: .lineFootNote); // TODO: add ruIndication datatype
 
-  final String tafTapLocationReference;
-  final List<RuIndicationContent> ruIndicationContents;
-
-  @override
-  String toString() {
-    return 'RuIndication{tafTapLocationReference: $tafTapLocationReference, ruIndicationContents: $ruIndicationContents}';
-  }
+  final String title;
+  final String text;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is RuIndication &&
           runtimeType == other.runtimeType &&
-          tafTapLocationReference == other.tafTapLocationReference &&
-          ListEquality().equals(ruIndicationContents, other.ruIndicationContents);
+          title == other.title &&
+          text == other.text &&
+          order == other.order;
 
   @override
-  int get hashCode => Object.hash(tafTapLocationReference, ruIndicationContents);
+  int get hashCode => Object.hash(title, text, order);
 }

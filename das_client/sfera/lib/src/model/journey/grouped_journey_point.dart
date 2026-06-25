@@ -1,6 +1,6 @@
 import 'package:collection/collection.dart';
+import 'package:core_data/component.dart';
 import 'package:sfera/component.dart';
-import 'package:sfera/src/model/journey/order_priority.dart';
 
 class GroupedJourneyPoint extends JourneyPoint {
   const GroupedJourneyPoint({
@@ -23,11 +23,11 @@ class GroupedJourneyPoint extends JourneyPoint {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is GroupedJourneyPoint &&
-          runtimeType == other.runtimeType &&
-          order == other.order &&
-          ListEquality().equals(kilometre, other.kilometre) &&
-          ListEquality().equals(groupedElements, other.groupedElements);
+          other is GroupedJourneyPoint &&
+              runtimeType == other.runtimeType &&
+              order == other.order &&
+              ListEquality().equals(kilometre, other.kilometre) &&
+              ListEquality().equals(groupedElements, other.groupedElements);
 
   @override
   int get hashCode =>

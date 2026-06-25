@@ -15,6 +15,7 @@ import 'package:app/pages/journey/view_model/model/journey_navigation_model.dart
 import 'package:app/pages/journey/view_model/model/journey_settings.dart';
 import 'package:app/provider/user_settings.dart';
 import 'package:collection/collection.dart';
+import 'package:core_data/component.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';

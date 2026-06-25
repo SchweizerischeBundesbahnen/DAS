@@ -1,5 +1,5 @@
+import 'package:core_data/component.dart';
 import 'package:sfera/component.dart';
-import 'package:sfera/src/model/journey/order_priority.dart';
 
 /// This class is used to combine foot notes and operational indication on the same service point.
 /// This is needed to simplify the sticky behavior. Otherwise a third StickyLevel would be needed.
@@ -24,10 +24,10 @@ class CombinedFootNoteOperationalIndication extends JourneyAnnotation {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is CombinedFootNoteOperationalIndication &&
-          footNote == other.footNote &&
-          operationalIndication == other.operationalIndication &&
-          order == other.order);
+          (other is CombinedFootNoteOperationalIndication &&
+              footNote == other.footNote &&
+              operationalIndication == other.operationalIndication &&
+              order == other.order);
 
   @override
   int get hashCode => Object.hash(dataType, order, footNote, operationalIndication);

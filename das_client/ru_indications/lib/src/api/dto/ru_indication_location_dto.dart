@@ -20,8 +20,8 @@ class RuIndicationLocationDto {
 }
 
 extension RuIndicationLocationDtoX on RuIndicationLocationDto {
-  RuIndication toDomain() => RuIndication(
-    tafTapLocationReference: tafTapLocationReference,
-    ruIndicationContents: ruIndicationContents.map((e) => e.toDomain()).toList(),
-  );
+  Iterable<RuIndication> toRuIndications() => ruIndicationContents.map((content) {
+    final order = 100; // TODO: add mapping from reference to order
+    return RuIndication(title: content.title, text: content.text, order: order);
+  });
 }

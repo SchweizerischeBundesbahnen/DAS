@@ -1,8 +1,7 @@
+import 'package:core_data/component.dart';
 import 'package:meta/meta.dart';
-import 'package:sfera/src/model/journey/base_data.dart';
 import 'package:sfera/src/model/journey/segment.dart';
 import 'package:sfera/src/model/journey/track_equipment_segment.dart';
-import 'package:sfera/src/model/localized_string.dart';
 
 @sealed
 @immutable

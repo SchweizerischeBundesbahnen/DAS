@@ -1,6 +1,6 @@
+import 'package:core_data/component.dart';
 import 'package:external_links/src/api/dto/external_link_translation_dto.dart';
 import 'package:external_links/src/model/external_link.dart';
-import 'package:external_links/src/model/localized_string.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'external_link_dto.g.dart';

@@ -10,6 +10,7 @@ resolution: workspace
 dependencies:
   # workspaces
   http_x: 1.0.0
+  core_data: 1.0.0
 
   # https://pub.dev/packages/logging
   logging: ^1.3.0

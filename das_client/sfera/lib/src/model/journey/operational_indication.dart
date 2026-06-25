@@ -1,6 +1,5 @@
 import 'package:collection/collection.dart';
-import 'package:sfera/component.dart';
-import 'package:sfera/src/model/journey/order_priority.dart';
+import 'package:core_data/component.dart';
 
 class OperationalIndication extends JourneyAnnotation {
   const OperationalIndication({
@@ -15,10 +14,10 @@ class OperationalIndication extends JourneyAnnotation {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is OperationalIndication &&
-          runtimeType == other.runtimeType &&
-          const ListEquality().equals(texts, other.texts) &&
-          order == other.order;
+          other is OperationalIndication &&
+              runtimeType == other.runtimeType &&
+              const ListEquality().equals(texts, other.texts) &&
+              order == other.order;
 
   @override
   int get hashCode => Object.hash(dataType, order, const ListEquality().hash(texts));

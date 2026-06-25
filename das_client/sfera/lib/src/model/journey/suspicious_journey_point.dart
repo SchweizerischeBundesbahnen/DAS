@@ -1,5 +1,5 @@
+import 'package:core_data/component.dart';
 import 'package:sfera/component.dart';
-import 'package:sfera/src/model/journey/order_priority.dart';
 
 /// A journey point that belongs to a suspicious segment profile.
 ///
@@ -12,7 +12,7 @@ class SuspiciousJourneyPoint extends JourneyPoint {
     required super.order,
     required super.kilometre,
     required this.spId,
-  }) : super(dataType: Datatype.suspiciousJourneyPoint);
+  }) : super(dataType: .suspiciousJourneyPoint);
 
   final String spId;
 

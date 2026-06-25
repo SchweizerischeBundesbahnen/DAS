@@ -24,6 +24,7 @@ Dart workspace managed with **Melos** (`fvm dart run melos <script>`). Each subd
 | `customer_oriented_departure` | Integration of customer oriented departure states                        |
 | `ru_indications`              | RU specific indications                                                  |
 | `external_links`              | External links provided by RUs                                           |
+| `core_data`                   | Data types that are shared over multiple components.                     |
 
 ## Flavors
 `dev`, `inte`, `prod` — entry points: `lib/main_dev.dart`, `lib/main_inte.dart`, `lib/main_prod.dart`

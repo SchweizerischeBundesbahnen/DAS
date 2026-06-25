@@ -1,5 +1,5 @@
+import 'package:core_data/component.dart';
 import 'package:sfera/src/model/journey/base_foot_note.dart';
-import 'package:sfera/src/model/journey/order_priority.dart';
 
 class LineFootNote extends BaseFootNote {
   const LineFootNote({

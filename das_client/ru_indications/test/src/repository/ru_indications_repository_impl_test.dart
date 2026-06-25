@@ -7,7 +7,6 @@ import 'package:ru_indications/src/api/dto/ru_indication_matches_response_dto.da
 import 'package:ru_indications/src/api/matches/matches_request.dart';
 import 'package:ru_indications/src/api/ru_indications_api_service.dart';
 import 'package:ru_indications/src/model/ru_indication.dart';
-import 'package:ru_indications/src/model/ru_indication_content.dart';
 import 'package:ru_indications/src/repository/ru_indications_repository_impl.dart';
 
 import 'ru_indications_repository_impl_test.mocks.dart';
@@ -112,26 +111,19 @@ RuIndicationMatchesResponseDto _matchesResponseDto() {
 List<RuIndication> _expectedDomainResult() {
   return const [
     RuIndication(
-      tafTapLocationReference: '8503000',
-      ruIndicationContents: [
-        RuIndicationContent(
-          title: 'Title A',
-          text: 'Text A',
-        ),
-        RuIndicationContent(
-          title: 'Title B',
-          text: 'Text B',
-        ),
-      ],
+      order: 1000, // TODO:
+      title: 'Title A',
+      text: 'Text A',
     ),
     RuIndication(
-      tafTapLocationReference: '8507000',
-      ruIndicationContents: [
-        RuIndicationContent(
-          title: 'Title C',
-          text: 'Text C',
-        ),
-      ],
+      order: 1000, // TODO:
+      title: 'Title B',
+      text: 'Text B',
+    ),
+    RuIndication(
+      order: 1000, // TODO:
+      title: 'Title C',
+      text: 'Text C',
     ),
   ];
 }

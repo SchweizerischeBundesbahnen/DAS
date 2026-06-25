@@ -1,3 +1,4 @@
+import 'package:core_data/component.dart';
 import 'package:external_links/component.dart';
 import 'package:rxdart/rxdart.dart';
 

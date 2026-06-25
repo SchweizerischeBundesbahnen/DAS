@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
+import 'package:core_data/component.dart';
 import 'package:formation/component.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';

@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:logging/logging.dart';
 import 'package:ru_indications/src/api/dto/ru_indication_location_dto.dart';
 import 'package:ru_indications/src/api/ru_indications_api_service.dart';
@@ -25,7 +26,7 @@ class RuIndicationsRepositoryImpl implements RuIndicationsRepository {
         startDate: startDate,
         tafTapLocationReferences: tafTapLocationReferences,
       );
-      final ruIndications = response.body.data.map((dto) => dto.toDomain());
+      final ruIndications = response.body.data.map((dto) => dto.toRuIndications()).flattened;
       _log.info(
         'Successfully fetched ${ruIndications.length} RU indications for $trainNumber ($company) on $startDate.',
       );

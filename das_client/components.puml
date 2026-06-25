@@ -20,6 +20,7 @@ component preload
 component customer_oriented_departure
 component ru_indications
 component external_links
+component core_data
 
 app --> auth
 app --> sfera
@@ -36,6 +37,7 @@ app --> preload
 app --> customer_oriented_departure
 app --> ru_indications
 app --> external_links
+app --> core_data
 
 settings --> http_x
 settings --> logger
@@ -49,8 +51,10 @@ logger --> http_x
 
 sfera --> mqtt
 sfera --> http_x
+sfera --> core_data
 
 local_regulations --> sfera
+local_regulations --> core_data
 
 http_x *-- http
 
@@ -67,5 +71,6 @@ preload --> sfera
 ru_indications --> http_x
 
 external_links --> http_x
+external_links --> core_data
 
 @enduml

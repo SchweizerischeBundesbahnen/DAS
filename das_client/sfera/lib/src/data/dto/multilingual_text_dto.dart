@@ -1,5 +1,5 @@
+import 'package:core_data/component.dart';
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
-import 'package:sfera/src/model/localized_string.dart';
 
 class MultilingualTextDto extends SferaXmlElementDto {
   static const String elementType = 'MultilingualText';

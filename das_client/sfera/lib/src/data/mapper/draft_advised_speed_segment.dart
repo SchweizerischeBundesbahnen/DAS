@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:core_data/component.dart';
 import 'package:sfera/component.dart';
 
 class DraftAdvisedSpeedSegment implements Comparable<DraftAdvisedSpeedSegment> {
@@ -96,37 +97,41 @@ class DraftAdvisedSpeedSegment implements Comparable<DraftAdvisedSpeedSegment> {
   AdvisedSpeedSegment toAdvisedSegment() {
     if (endData == null) throw FormatException('Cannot map to advisedSegment without having endData set!');
     return switch (type) {
-      .velocityMax => VelocityMaxAdvisedSpeedSegment(
-        startOrder: startOrder,
-        endOrder: endOrder,
-        endData: endData!,
-        isEndDataCalculated: isEndAmended,
-        additionalHints: additionalHints,
-      ),
-      .followTrain => FollowTrainAdvisedSpeedSegment(
-        startOrder: startOrder,
-        endOrder: endOrder,
-        speed: speed!,
-        endData: endData!,
-        isEndDataCalculated: isEndAmended,
-        additionalHints: additionalHints,
-      ),
-      .trainFollowing => TrainFollowingAdvisedSpeedSegment(
-        startOrder: startOrder,
-        endOrder: endOrder,
-        speed: speed!,
-        endData: endData!,
-        isEndDataCalculated: isEndAmended,
-        additionalHints: additionalHints,
-      ),
-      .fixedTime => FixedTimeAdvisedSpeedSegment(
-        startOrder: startOrder,
-        endOrder: endOrder,
-        speed: speed!,
-        endData: endData!,
-        isEndDataCalculated: isEndAmended,
-        additionalHints: additionalHints,
-      ),
+          .velocityMax =>
+          VelocityMaxAdvisedSpeedSegment(
+            startOrder: startOrder,
+            endOrder: endOrder,
+            endData: endData!,
+            isEndDataCalculated: isEndAmended,
+            additionalHints: additionalHints,
+          ),
+          .followTrain =>
+          FollowTrainAdvisedSpeedSegment(
+            startOrder: startOrder,
+            endOrder: endOrder,
+            speed: speed!,
+            endData: endData!,
+            isEndDataCalculated: isEndAmended,
+            additionalHints: additionalHints,
+          ),
+          .trainFollowing =>
+          TrainFollowingAdvisedSpeedSegment(
+            startOrder: startOrder,
+            endOrder: endOrder,
+            speed: speed!,
+            endData: endData!,
+            isEndDataCalculated: isEndAmended,
+            additionalHints: additionalHints,
+          ),
+          .fixedTime =>
+          FixedTimeAdvisedSpeedSegment(
+            startOrder: startOrder,
+            endOrder: endOrder,
+            speed: speed!,
+            endData: endData!,
+            isEndDataCalculated: isEndAmended,
+            additionalHints: additionalHints,
+          ),
     };
   }
 }

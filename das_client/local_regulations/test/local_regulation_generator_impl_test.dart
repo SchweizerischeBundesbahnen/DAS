@@ -1,3 +1,4 @@
+import 'package:core_data/component.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:local_regulations/src/local_regulation_generator_impl.dart';
 import 'package:sfera/component.dart';
