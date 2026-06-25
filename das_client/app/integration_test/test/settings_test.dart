@@ -228,7 +228,9 @@ void main() {
 
       // ESS1 lives inside the conventional speed segment (1500m-2500m) → hidden.
       expect(find.text('ESS1'), findsNothing);
+      await tester.dragUntilVisible(find.text('ESS2'), scrollableFinder, const Offset(0, -50));
       expect(find.text('ESS2'), findsAny);
+      await tester.dragUntilVisible(find.text('ESS3'), scrollableFinder, const Offset(0, -50));
       expect(find.text('ESS3'), findsAny);
 
       // Station signals are unaffected.

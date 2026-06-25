@@ -8,6 +8,7 @@ class ArrivalDepartureTime {
     this._plannedDepartureTime,
     this._ambiguousArrivalTime,
     this._plannedArrivalTime,
+    this.plannedReleasedTime,
   });
 
   /// these are private since the logic of figuring out whether a time is planned or operational from the
@@ -17,11 +18,14 @@ class ArrivalDepartureTime {
   final DateTime? _plannedDepartureTime;
   final DateTime? _plannedArrivalTime;
 
+  final DateTime? plannedReleasedTime;
+
   bool get hasAnyTime =>
       operationalArrivalTime != null ||
       plannedArrivalTime != null ||
       operationalDepartureTime != null ||
-      plannedDepartureTime != null;
+      plannedDepartureTime != null ||
+      plannedReleasedTime != null;
 
   DateTime? get plannedDepartureTime =>
       _isDepartureTimeCalculated ? _plannedDepartureTime : _ambiguousDepartureTime ?? _plannedDepartureTime;
@@ -47,7 +51,8 @@ class ArrivalDepartureTime {
         'operationalDepartureTime: $operationalDepartureTime, '
         'plannedDepartureTime: $plannedDepartureTime, '
         'operationalArrivalTime: $operationalArrivalTime, '
-        'plannedArrivalTime: $plannedArrivalTime'
+        'plannedArrivalTime: $plannedArrivalTime, '
+        'plannedReleaseTime: $plannedReleasedTime'
         '}';
   }
 
@@ -59,12 +64,14 @@ class ArrivalDepartureTime {
           _ambiguousDepartureTime == other._ambiguousDepartureTime &&
           _ambiguousArrivalTime == other._ambiguousArrivalTime &&
           _plannedDepartureTime == other._plannedDepartureTime &&
-          _plannedArrivalTime == other._plannedArrivalTime;
+          _plannedArrivalTime == other._plannedArrivalTime &&
+          plannedReleasedTime == other.plannedReleasedTime;
 
   @override
   int get hashCode =>
       _ambiguousDepartureTime.hashCode ^
       _ambiguousArrivalTime.hashCode ^
       _plannedDepartureTime.hashCode ^
-      _plannedArrivalTime.hashCode;
+      _plannedArrivalTime.hashCode ^
+      plannedReleasedTime.hashCode;
 }
