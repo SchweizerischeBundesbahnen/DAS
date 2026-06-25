@@ -234,6 +234,7 @@ void main() {
       expect(find.text('ESS3'), findsAny);
 
       // Station signals are unaffected.
+      await tester.dragUntilVisible(find.text('E1'), scrollableFinder, const Offset(0, 50));
       expect(find.text('E1'), findsAny);
 
       await disconnect(tester);
