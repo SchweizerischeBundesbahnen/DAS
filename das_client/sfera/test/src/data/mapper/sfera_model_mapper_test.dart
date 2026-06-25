@@ -1545,6 +1545,7 @@ void main() {
     expect(vevey.arrivalDepartureTime!.operationalArrivalTime, DateTime.parse('2025-05-12T17:28:56Z'));
     expect(vevey.arrivalDepartureTime!.plannedArrivalTime, DateTime.parse('2025-05-12T16:28:12Z'));
     expect(vevey.arrivalDepartureTime!.hasAnyOperationalTime, isTrue);
+    expect(vevey.arrivalDepartureTime!.plannedReleasedTime, DateTime.parse('2025-05-12T16:29:00Z'));
     // all times
     final montreux = servicePoints[6];
     expect(montreux.arrivalDepartureTime, isNotNull);

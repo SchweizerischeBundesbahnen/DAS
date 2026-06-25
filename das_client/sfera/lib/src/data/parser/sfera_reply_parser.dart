@@ -88,6 +88,7 @@ import 'package:sfera/src/data/dto/temporary_constraints_complex_dto.dart';
 import 'package:sfera/src/data/dto/temporary_constraints_dto.dart';
 import 'package:sfera/src/data/dto/text_dto.dart';
 import 'package:sfera/src/data/dto/timing_point_constraints_dto.dart';
+import 'package:sfera/src/data/dto/timing_point_constraints_nsp_dto.dart';
 import 'package:sfera/src/data/dto/timing_point_dto.dart';
 import 'package:sfera/src/data/dto/timing_point_reference_dto.dart';
 import 'package:sfera/src/data/dto/tp_id_reference_dto.dart';
@@ -161,6 +162,8 @@ class SferaReplyParser {
         return SpZoneDto(type: type, attributes: attributes, children: children, value: value);
       case TimingPointConstraintsDto.elementType:
         return TimingPointConstraintsDto(type: type, attributes: attributes, children: children, value: value);
+      case TimingPointConstraintsNspDto.elementType:
+        return TimingPointConstraintsNspDto.from(attributes: attributes, children: children, value: value);
       case TimingPointReferenceDto.elementType:
         return TimingPointReferenceDto(type: type, attributes: attributes, children: children, value: value);
       case TpIdReferenceDto.elementType:

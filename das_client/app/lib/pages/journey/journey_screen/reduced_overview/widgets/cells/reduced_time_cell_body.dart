@@ -24,7 +24,7 @@ class ReducedTimeCellBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final (departureTime, arrivalTime) = times.formattedTimes(
+    final (departureTime, arrivalTime, _) = times.formattedTimes(
       showOperationalTime: false,
       showTimesInBrackets: showTimesInBrackets,
     );
