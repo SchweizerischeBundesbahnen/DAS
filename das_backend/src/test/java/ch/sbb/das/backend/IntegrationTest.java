@@ -1,6 +1,5 @@
 package ch.sbb.das.backend;
 
-import ch.sbb.das.backend.config.TestKafkaConsumerConfig;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;

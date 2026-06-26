@@ -1,8 +1,8 @@
 package ch.sbb.das.backend.common.config;
 
-import static ch.sbb.das.backend.admin.application.settings.SettingsController.API_SETTINGS;
 import static ch.sbb.das.backend.appversions.internal.AppVersionController.API_APP_VERSIONS;
 import static ch.sbb.das.backend.companies.internal.CompanyController.API_COMPANIES;
+import static ch.sbb.das.backend.driversettings.internal.SettingsController.API_SETTINGS;
 import static ch.sbb.das.backend.externallinks.internal.ExternalLinkController.API_ADMIN_EXTERNAL_LINKS;
 import static ch.sbb.das.backend.externallinks.internal.ExternalLinkController.API_DRIVER_EXTERNAL_LINKS;
 import static ch.sbb.das.backend.formation.api.v1.FormationController.API_FORMATIONS;

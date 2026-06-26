@@ -37,4 +37,4 @@ This repository is designed as a **Structured Modular Monolith** using [Spring M
 * `trainjourneypreloader` — preloader, streaming & IO responsibilities (MQTT, buffering, S3 artifacts)
 * `config`
 * `personalsettings`
-* `driver-facade` (API-only) — facade module that implements the mobile-facing driver API surface
+* `driversettings` (API-only) — facade module that implements the mobile-facing driver settings API 
