@@ -1,4 +1,4 @@
-package ch.sbb.das.backend.proxy.model.request;
+package ch.sbb.das.backend.departure.internal;
 
 import java.time.Instant;
 

@@ -1,5 +1,6 @@
-package ch.sbb.das.backend.proxy.api.v1;
+package ch.sbb.das.backend.departure.api.v1;
 
+import static ch.sbb.das.backend.departure.internal.DepartureController.API_CUSTOMER_ORIENTED_DEPARTURE;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -7,8 +8,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.das.backend.proxy.CustomerOrientedDepartureController;
-import ch.sbb.das.backend.proxy.ProxyClient;
+import ch.sbb.das.backend.departure.internal.DepartureController;
+import ch.sbb.das.backend.departure.internal.DepartureRestClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
@@ -18,21 +19,21 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.client.RestClientResponseException;
 
-@WebMvcTest(CustomerOrientedDepartureController.class)
+@WebMvcTest(DepartureController.class)
 @AutoConfigureMockMvc(addFilters = false)
-class CustomerOrientedDepartureControllerTest {
+class DepartureControllerTest {
 
     @Autowired
     MockMvc mvc;
 
     @MockitoBean
-    ProxyClient proxyClient;
+    DepartureRestClient departureRestClient;
 
     @Test
     void subscribe_delegatesToClient() throws Exception {
-        when(proxyClient.subscribe(any())).thenReturn(ResponseEntity.noContent().build());
+        when(departureRestClient.subscribe(any())).thenReturn(ResponseEntity.noContent().build());
 
-        mvc.perform(post("/v1/customer-oriented-departure/subscribe")
+        mvc.perform(post(API_CUSTOMER_ORIENTED_DEPARTURE + "/subscribe")
                 .contentType("application/json")
                 .content("""
                     {
@@ -48,28 +49,28 @@ class CustomerOrientedDepartureControllerTest {
                     """))
             .andExpect(status().isNoContent());
 
-        verify(proxyClient).subscribe(any());
+        verify(departureRestClient).subscribe(any());
     }
 
     @Test
     void confirm_delegatesToClient() throws Exception {
-        when(proxyClient.confirm("m1", "d1")).thenReturn(ResponseEntity.noContent().build());
+        when(departureRestClient.confirm("m1", "d1")).thenReturn(ResponseEntity.noContent().build());
 
-        mvc.perform(post("/v1/customer-oriented-departure/confirm/m1/d1"))
+        mvc.perform(post(API_CUSTOMER_ORIENTED_DEPARTURE + "/confirm/m1/d1"))
             .andExpect(status().isNoContent());
 
-        verify(proxyClient).confirm("m1", "d1");
+        verify(departureRestClient).confirm("m1", "d1");
     }
 
     @Test
     void confirm_error502() throws Exception {
-        when(proxyClient.confirm("m1", "d1")).thenThrow(new RestClientResponseException("Message", 400, "Bad request", null, "Validation error".getBytes(), null));
+        when(departureRestClient.confirm("m1", "d1")).thenThrow(new RestClientResponseException("Message", 400, "Bad request", null, "Validation error".getBytes(), null));
 
-        mvc.perform(post("/v1/customer-oriented-departure/confirm/m1/d1"))
+        mvc.perform(post(API_CUSTOMER_ORIENTED_DEPARTURE + "/confirm/m1/d1"))
             .andExpect(status().isBadGateway())
             .andExpect(jsonPath("$.title").value("Downstream Service Error"))
             .andExpect(jsonPath("$.detail").value("400: Validation error"));
 
-        verify(proxyClient).confirm("m1", "d1");
+        verify(departureRestClient).confirm("m1", "d1");
     }
 }

@@ -1,25 +1,23 @@
-package ch.sbb.das.backend.proxy;
+package ch.sbb.das.backend.departure.internal;
 
-import ch.sbb.das.backend.proxy.model.request.SubscribeRequest;
 import java.util.Base64;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestClient;
 
 @Component
-public class ProxyClient {
+public class DepartureRestClient {
 
-    private final RestClient restClient;
+    private final org.springframework.web.client.RestClient restClient;
 
-    public ProxyClient(
+    public DepartureRestClient(
         @Value("${proxy.base-url}") String baseUrl,
         @Value("${proxy.basic-auth}") String auth
     ) {
         String encodedAuth = "Basic " + Base64.getEncoder().encodeToString(auth.getBytes());
 
-        this.restClient = RestClient.builder()
+        this.restClient = org.springframework.web.client.RestClient.builder()
             .baseUrl(baseUrl)
             .defaultHeaders(h -> h.set(HttpHeaders.AUTHORIZATION, encodedAuth))
             .build();
