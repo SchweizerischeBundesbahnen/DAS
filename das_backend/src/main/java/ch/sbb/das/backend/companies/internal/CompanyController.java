@@ -43,7 +43,7 @@ public class CompanyController {
     @GetMapping(API_COMPANIES)
     @Operation(summary = "Get companies.", description = "Returns the companies available to the authenticated user.")
     @ApiResponse(responseCode = "200", description = "Companies found.",
-        content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = CompaniesResponse.class)))
+        content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = CompanyResponse.class)))
     @ApiErrorResponses
     public ResponseEntity<? extends Response> getAll(
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
@@ -53,6 +53,6 @@ public class CompanyController {
             .map(code -> new Company(code.value(), uicMap.get(code).value()))
             .sorted(Comparator.comparing(Company::shortName))
             .toList();
-        return ResponseEntityFactory.createOkResponse(new CompaniesResponse(companies), requestId);
+        return ResponseEntityFactory.createOkResponse(new CompanyResponse(companies), requestId);
     }
 }
