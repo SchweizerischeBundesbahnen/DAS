@@ -4,22 +4,16 @@ import ch.sbb.das.backend.companies.CompanyCode;
 import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ExternalLinkMapper {
 
-    public ExternalLink toResponse(ExternalLinkEntity entity) {
-        return new ExternalLink(
-            entity.getId(),
-            entity.getCompanies(),
-            new ExternalLinkContent(entity.getTitleDe(), entity.getLinkDe()),
-            new ExternalLinkContent(entity.getTitleFr(), entity.getLinkFr()),
-            new ExternalLinkContent(entity.getTitleIt(), entity.getLinkIt()),
-            entity.getLastModifiedAt(),
-            entity.getLastModifiedBy()
-        );
+    private static void setLanguageFields(ExternalLinkContent content, Consumer<String> setTitle, Consumer<String> setLink) {
+        setTitle.accept(content != null ? content.title() : null);
+        setLink.accept(content != null ? content.link() : null);
     }
 
     public ExternalLinkEntity toEntityFromRequest(Integer id, ExternalLinkRequest request) {
@@ -39,16 +33,30 @@ public class ExternalLinkMapper {
             .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
+    private static ExternalLinkContent toLinkContent(String title, String link) {
+        if (title == null && link == null) {
+            return null;
+        }
+        return new ExternalLinkContent(title, link);
+    }
+
+    public ExternalLink toResponse(ExternalLinkEntity entity) {
+        return new ExternalLink(
+            entity.getId(),
+            entity.getCompanies(),
+            toLinkContent(entity.getTitleDe(), entity.getLinkDe()),
+            toLinkContent(entity.getTitleFr(), entity.getLinkFr()),
+            toLinkContent(entity.getTitleIt(), entity.getLinkIt()),
+            entity.getLastModifiedAt(),
+            entity.getLastModifiedBy()
+        );
+    }
+
     private void applyRequestToEntity(ExternalLinkEntity entity, ExternalLinkRequest request) {
         entity.setCompanies(normalizeCompanies(request.companies()));
 
-        entity.setTitleDe(request.de() != null ? request.de().title() : null);
-        entity.setLinkDe(request.de() != null ? request.de().link() : null);
-
-        entity.setTitleFr(request.fr() != null ? request.fr().title() : null);
-        entity.setLinkFr(request.fr() != null ? request.fr().link() : null);
-
-        entity.setTitleIt(request.it() != null ? request.it().title() : null);
-        entity.setLinkIt(request.it() != null ? request.it().link() : null);
+        setLanguageFields(request.de(), entity::setTitleDe, entity::setLinkDe);
+        setLanguageFields(request.fr(), entity::setTitleFr, entity::setLinkFr);
+        setLanguageFields(request.it(), entity::setTitleIt, entity::setLinkIt);
     }
 }
