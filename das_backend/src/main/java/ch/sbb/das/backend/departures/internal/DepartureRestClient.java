@@ -1,6 +1,5 @@
-package ch.sbb.das.backend.proxy;
+package ch.sbb.das.backend.departures.internal;
 
-import ch.sbb.das.backend.proxy.model.request.SubscribeRequest;
 import java.util.Base64;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -9,11 +8,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
 @Component
-public class ProxyClient {
+public class DepartureRestClient {
 
     private final RestClient restClient;
 
-    public ProxyClient(
+    public DepartureRestClient(
         @Value("${proxy.base-url}") String baseUrl,
         @Value("${proxy.basic-auth}") String auth
     ) {
