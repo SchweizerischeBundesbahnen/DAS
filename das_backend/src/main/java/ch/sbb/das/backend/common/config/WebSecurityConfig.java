@@ -1,12 +1,12 @@
 package ch.sbb.das.backend.common.config;
 
 import static ch.sbb.das.backend.appversions.internal.AppVersionController.API_APP_VERSIONS;
+import static ch.sbb.das.backend.cargo.api.v1.FormationController.API_FORMATIONS;
 import static ch.sbb.das.backend.companies.internal.CompanyController.API_COMPANIES;
 import static ch.sbb.das.backend.departure.internal.DepartureController.API_CUSTOMER_ORIENTED_DEPARTURE;
 import static ch.sbb.das.backend.driversettings.internal.SettingsController.API_SETTINGS;
 import static ch.sbb.das.backend.externallinks.internal.ExternalLinkController.API_ADMIN_EXTERNAL_LINKS;
 import static ch.sbb.das.backend.externallinks.internal.ExternalLinkController.API_DRIVER_EXTERNAL_LINKS;
-import static ch.sbb.das.backend.formation.api.v1.FormationController.API_FORMATIONS;
 import static ch.sbb.das.backend.indications.internal.RuIndicationController.API_DRIVER_RU_INDICATIONS;
 import static ch.sbb.das.backend.indications.internal.RuIndicationController.API_RU_INDICATIONS;
 import static ch.sbb.das.backend.indications.internal.RuIndicationTemplateController.API_RU_INDICATION_TEMPLATES;
