@@ -31,7 +31,7 @@ This repository is designed as a **Structured Modular Monolith** using [Spring M
 * `features`
 * `indications` — RU indications, templates, holiday handling
 * `externallinks`
-* `departure`
+* `departures`
 * `cargo`
 * `trainjourneyplan` — timetable to train identifications
 * `trainjourneypreloader` — preloader, streaming & IO responsibilities (MQTT, buffering, S3 artifacts)
