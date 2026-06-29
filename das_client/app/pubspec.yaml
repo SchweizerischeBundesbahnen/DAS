@@ -1,6 +1,6 @@
 name: app
 publish_to: 'none'
-version: 0.45.0+87
+version: 0.46.0+88
 
 environment:
   sdk: ^3.12.0
@@ -17,6 +17,7 @@ dependencies:
   app_links_x: 1.0.0
   auth: 1.0.0
   connectivity_x: 1.0.0
+  external_links: 1.0.0
   formation: 1.0.0
   http_x: 1.0.0
   local_regulations: 1.0.0
@@ -26,9 +27,10 @@ dependencies:
   settings: 1.0.0
   sfera: 1.0.0
   warnapp: 1.0.0
+  customer_oriented_departure: 1.0.0
 
   # https://pub.dev/packages/audioplayers
-  audioplayers: ^6.6.0
+  audioplayers: ^6.7.1
   # https://pub.dev/packages/android_id
   android_id: ^0.5.1
   # https://pub.dev/packages/auto_route
@@ -40,7 +42,7 @@ dependencies:
   # https://pub.dev/packages/clock
   clock: ^1.1.2
   # https://pub.dev/packages/device_info_plus
-  device_info_plus: ^12.4.0
+  device_info_plus: ^13.1.0
   # https://pub.dev/packages/extra_hittest_area
   extra_hittest_area: ^1.0.0
   # https://pub.dev/packages/logging
@@ -52,30 +54,30 @@ dependencies:
   # https://pub.dev/packages/intl
   intl: ^0.20.2
   # https://pub.dev/packages/meta
-  meta: ^1.17.0
+  meta: ^1.18.0
   # https://pub.dev/packages/provider
   provider: ^6.1.5+1
   # https://pub.dev/packages/rxdart
   rxdart: ^0.28.0
 
   # https://pub.dev/packages/sbb_design_system_mobile
-  sbb_design_system_mobile: ^5.0.0-dev.4
+  sbb_design_system_mobile: ^5.0.0-dev.7
   # https://pub.dev/packages/volume_controller
-  volume_controller: ^3.5.0
+  volume_controller: ^3.6.0
   # https://pub.dev/packages/wakelock_plus
-  wakelock_plus: ^1.5.1
+  wakelock_plus: ^1.6.1
   # https://pub.dev/packages/screen_brightness/
-  screen_brightness: ^2.1.8
+  screen_brightness: ^2.1.11
   # https://pub.dev/packages/android_intent_plus
   android_intent_plus: ^6.0.0
   # https://pub.dev/packages/uuid
   uuid: ^4.5.3
   # https://pub.dev/packages/package_info_plus
-  package_info_plus: ^9.0.1
+  package_info_plus: ^10.1.0
   # https://pub.dev/packages/shared_preferences
   shared_preferences: ^2.5.5
   # https://pub.dev/packages/webview_flutter
-  webview_flutter: ^4.13.1
+  webview_flutter: ^4.14.0
   # https://pub.dev/packages/skeletonizer
   skeletonizer: ^2.1.3
   # https://pub.dev/packages/appcheck

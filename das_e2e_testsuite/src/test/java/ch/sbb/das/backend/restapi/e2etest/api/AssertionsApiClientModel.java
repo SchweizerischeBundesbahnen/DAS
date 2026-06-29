@@ -3,6 +3,7 @@ package ch.sbb.das.backend.restapi.e2etest.api;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.das.backend.restapi.configuration.DasBackendEndpoint;
+import ch.sbb.das.backend.restclient.v1.model.CurrentAppVersion;
 import ch.sbb.das.backend.restclient.v1.model.FormationResponse;
 import ch.sbb.das.backend.restclient.v1.model.Logging;
 import ch.sbb.das.backend.restclient.v1.model.Preload;
@@ -38,6 +39,12 @@ public final class AssertionsApiClientModel {
         if (!backendEndpoint.isLocalHost()) {
             assertThat(preload.getAccessKey()).isNotBlank();
             assertThat(preload.getAccessKey()).isNotBlank();
+        }
+
+        final CurrentAppVersion currentAppVersion = settings.getCurrentAppVersion();
+        assertThat(currentAppVersion).isNotNull();
+        if (currentAppVersion.isExpired()) {
+            assertThat(currentAppVersion.getExpiryDate()).isNotNull();
         }
 
         return settings;

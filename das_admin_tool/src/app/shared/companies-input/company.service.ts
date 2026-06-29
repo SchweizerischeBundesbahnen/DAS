@@ -19,6 +19,13 @@ export class CompanyService {
   private readonly companiesResource = httpResource<CompanyApiResponse>(() => this.url);
   private readonly companies = computed(() => this.companiesResource.value()?.data ?? []);
 
+  public formatCompanies(companies: string[]): string {
+    return companies
+      .map((companyCode) => this.getName(companyCode) ?? companyCode)
+      .sort((a, b) => a.localeCompare(b))
+      .join(', ');
+  }
+
   public getName(code: string): string | undefined {
     return this.companies().find((company) => company.code === code)?.name;
   }

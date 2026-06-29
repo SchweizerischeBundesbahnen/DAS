@@ -10,6 +10,8 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 class SettingsPage extends StatefulWidget {
   static const Key decisiveGradientSwitchKey = Key('decisiveGradientSwitch');
   static const Key stationSignalSwitchKey = Key('stationSignalSwitch');
+  static const Key ectsConventionalSpeedSignalSwitchKey = Key('ectsConventionalSpeedSignalSwitch');
+  static const Key ectsExtendedSpeedSignalSwitchKey = Key('ectsExtendedSpeedSignalSwitch');
 
   const SettingsPage({super.key});
 
@@ -32,36 +34,42 @@ class _SettingsPageState extends State<SettingsPage> {
   SBBHeaderSmall _appBar(BuildContext context) => SBBHeaderSmall(
     titleText: context.l10n.c_app_name,
     actions: const [], // removes SBB logo
+    bottom: SBBHeaderBoxPreferredSize(
+      titleText: context.l10n.w_navigation_drawer_settings_title,
+      subtitleText: context.l10n.p_settings_page_personalize,
+      textScaler: MediaQuery.textScalerOf(context),
+    ),
   );
 
   Widget _body(BuildContext context) {
-    return Column(
-      spacing: SBBSpacing.medium,
-      children: [
-        _settingsHeader(context),
-        _settingsBody(context),
-      ],
-    );
-  }
-
-  Widget _settingsHeader(BuildContext context) {
-    return SBBHeaderBox(
-      titleText: context.l10n.w_navigation_drawer_settings_title,
-      subtitleText: context.l10n.p_settings_page_personalize,
-    );
-  }
-
-  Widget _settingsBody(BuildContext context) {
     return SingleChildScrollView(
       padding: const .symmetric(horizontal: SBBSpacing.xSmall),
+      child: Padding(
+        padding: const .only(top: SBBSpacing.medium),
+        child: Column(
+          crossAxisAlignment: .start,
+          children: [
+            _settingTitle(context.l10n.p_settings_page_decisive_gradient_title, isFirstElement: true),
+            _decisiveGradientSettings(context),
+            _settingTitle(context.l10n.p_settings_page_signal_title),
+            _signalSettings(context),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _signalSettings(BuildContext context) {
+    return SBBContentBox(
       child: Column(
-        crossAxisAlignment: .start,
-        children: [
-          _settingTitle(context.l10n.p_settings_page_decisive_gradient_title, isFirstElement: true),
-          _decisiveGradientSettings(context),
-          _settingTitle(context.l10n.p_settings_page_signal_title),
-          _signalSettings(context),
-        ],
+        children: SBBDivider.divideItems(
+          context: context,
+          items: [
+            _stationSignalSettings(context),
+            _ectsConventionalSpeedSignalSettings(context),
+            _ectsExtendedSpeedSignalSettings(context),
+          ],
+        ),
       ),
     );
   }
@@ -75,12 +83,30 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  Widget _signalSettings(BuildContext context) {
-    return SBBSwitchListItemBoxed(
+  Widget _stationSignalSettings(BuildContext context) {
+    return SBBSwitchListItem(
       key: SettingsPage.stationSignalSwitchKey,
       titleText: context.l10n.p_settings_page_signal_station_setting,
       value: _userSettings.showStationSignals,
       onChanged: (value) => _updateSettings(.showStationSignals, value),
+    );
+  }
+
+  Widget _ectsConventionalSpeedSignalSettings(BuildContext context) {
+    return SBBSwitchListItem(
+      key: SettingsPage.ectsConventionalSpeedSignalSwitchKey,
+      titleText: context.l10n.p_settings_page_ects_conventional_speed_signal_setting,
+      value: _userSettings.showEctsConventionalSpeedSignals,
+      onChanged: (value) => _updateSettings(.showEctsConventionalSpeedSignals, value),
+    );
+  }
+
+  Widget _ectsExtendedSpeedSignalSettings(BuildContext context) {
+    return SBBSwitchListItemBoxed(
+      key: SettingsPage.ectsExtendedSpeedSignalSwitchKey,
+      titleText: context.l10n.p_settings_page_ects_extended_speed_signal_setting,
+      value: _userSettings.showEctsExtendedSpeedSignals,
+      onChanged: (value) => _updateSettings(.showEctsExtendedSpeedSignals, value),
     );
   }
 

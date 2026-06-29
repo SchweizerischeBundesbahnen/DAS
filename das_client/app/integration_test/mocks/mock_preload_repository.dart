@@ -3,8 +3,6 @@ import 'package:rxdart/rxdart.dart';
 import 'package:settings/component.dart';
 
 class MockPreloadRepository implements PreloadRepository {
-  MockPreloadRepository();
-
   final preloadDetailsSubject = BehaviorSubject<PreloadDetails>();
 
   @override

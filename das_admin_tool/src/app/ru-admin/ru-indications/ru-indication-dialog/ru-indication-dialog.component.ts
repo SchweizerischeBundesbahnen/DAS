@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal, viewChild } from '@angular/core';
+import { Component, computed, inject, signal, viewChild, viewChildren } from '@angular/core';
 import { SbbDialogModule } from '@sbb-esta/lyne-angular/dialog';
 import { SbbTitleModule } from '@sbb-esta/lyne-angular/title';
 import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
@@ -12,7 +12,7 @@ import {
 import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core/overlay';
 import { CompaniesInputComponent } from '../../../shared/companies-input/companies-input.component';
 import { LocationsInput } from './locations-input/locations-input.component';
-import { SbbStepper, SbbStepperModule } from '@sbb-esta/lyne-angular/stepper';
+import { SbbStep, SbbStepper, SbbStepperModule } from '@sbb-esta/lyne-angular/stepper';
 import { SbbAutocompleteModule } from '@sbb-esta/lyne-angular/autocomplete';
 import { RuIndicationDialogData } from '../ru-indication.service';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -20,18 +20,17 @@ import { SbbStepChangeEvent } from '@sbb-esta/lyne-elements/stepper.js';
 import { TrainNumberInput } from './train-number-input/train-number-input';
 import { SbbButtonModule } from '@sbb-esta/lyne-angular/button';
 import { PeriodsInput } from './periods-input/periods-input';
-import { DatePipe } from '@angular/common';
 import {
   createContentFormGroup
 } from '../../ru-indication-content-form/ru-indication-content-form.component';
 import { CategoryContentForm } from './content-form/category-content-form';
-import { SbbActionGroup } from '@sbb-esta/lyne-angular/action-group';
+import { Audit } from '../../../shared/audit/audit';
+import { SbbActionGroupModule } from '@sbb-esta/lyne-angular/action-group';
 
 @Component({
   selector: 'app-ru-indication-dialog',
   imports: [
     ReactiveFormsModule,
-    DatePipe,
     SbbDialogModule,
     SbbFormFieldModule,
     SbbTitleModule,
@@ -39,12 +38,13 @@ import { SbbActionGroup } from '@sbb-esta/lyne-angular/action-group';
     SbbButtonModule,
     SbbAutocompleteModule,
     SbbStepperModule,
+    SbbActionGroupModule,
     LocationsInput,
     TrainNumberInput,
     PeriodsInput,
     CompaniesInputComponent,
     CategoryContentForm,
-    SbbActionGroup,
+    Audit,
   ],
   templateUrl: './ru-indication-dialog.component.html',
   styleUrl: './ru-indication-dialog.component.css',
@@ -69,15 +69,14 @@ export class RuIndicationDialog {
   });
   protected stepchange = signal<SbbStepChangeEvent | undefined>(undefined);
   protected readonly dialogData = inject<RuIndicationDialogData>(SBB_OVERLAY_DATA);
-
-  protected readonly isLastStep = computed(() => {
-    const selectedIndex = this.stepchange()?.selectedIndex;
-    const lastIndex = this.isEdit ? 3 : 2;
-    return selectedIndex === lastIndex;
-  });
   private readonly stepper = viewChild.required(SbbStepper);
   private readonly contentComponent = viewChild.required(CategoryContentForm);
-
+  private readonly steps = viewChildren(SbbStep);
+  protected readonly isLastStep = computed(() => {
+    const selectedIndex = this.stepchange()?.selectedIndex;
+    const lastStep = this.steps().length - 1;
+    return selectedIndex === lastStep;
+  });
   private readonly contentFormStatus = toSignal(this.ruIndicationForm.controls.content.statusChanges);
   private readonly scopeFormStatus = toSignal(this.ruIndicationForm.controls.scope.statusChanges);
   protected readonly isStepDisabled = computed(() => {

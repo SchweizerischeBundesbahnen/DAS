@@ -84,6 +84,8 @@ extension _SignalFunctionExtension on SignalFunction {
       .intermediate => context.l10n.c_main_signal_function_intermediate,
       .protection => context.l10n.c_main_signal_function_protection,
       .lockingOutSignal => context.l10n.c_main_signal_function_locking_out,
+      .etcsStopSign => context.l10n.c_main_signal_function_etcs_stop_sign,
+      .trackEndSignal => context.l10n.c_main_signal_function_track_end,
       .unknown => context.l10n.c_unknown,
     };
   }
@@ -97,6 +99,8 @@ extension _SignalFunctionExtension on SignalFunction {
       .intermediate => context.l10n.c_main_signal_function_intermediate_short,
       .protection => context.l10n.c_main_signal_function_protection_short,
       .lockingOutSignal => context.l10n.c_main_signal_function_locking_out_short,
+      .etcsStopSign => context.l10n.c_main_signal_function_etcs_stop_sign_short,
+      .trackEndSignal => context.l10n.c_main_signal_function_track_end_short,
       .unknown => context.l10n.c_unknown,
     };
   }

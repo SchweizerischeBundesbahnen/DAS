@@ -20,6 +20,8 @@ import 'test/app_link_test.dart' as app_link_tests;
 import 'test/automatic_advancement_test.dart' as automatic_advancement_tests;
 import 'test/brake_load_slip_test.dart' as brake_load_slip_tests;
 import 'test/departure_process_test.dart' as departure_process_tests;
+import 'test/journey_customer_oriented_departure_test.dart' as journey_customer_oriented_departure_tests;
+import 'test/external_links_test.dart' as external_links_tests;
 import 'test/journey_header_test.dart' as journey_header_tests;
 import 'test/journey_notification_test.dart' as journey_notification_tests;
 import 'test/journey_replacement_series_test.dart' as journey_replacement_series_tests;
@@ -71,6 +73,7 @@ void main() {
   app_link_tests.main();
   brake_load_slip_tests.main();
   departure_process_tests.main();
+  journey_customer_oriented_departure_tests.main();
   journey_header_tests.main();
   journey_notification_tests.main();
   journey_table_additional_speed_restriction_tests.main();
@@ -98,6 +101,7 @@ void main() {
   profile_tests.main();
   preload_tests.main();
   tour_system_link_test.main();
+  external_links_tests.main();
 }
 
 Future<void> prepareAndStartApp(WidgetTester tester, {VoidCallback? onBeforeRun, bool e2e = false}) async {

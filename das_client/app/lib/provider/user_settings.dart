@@ -45,6 +45,10 @@ class UserSettings {
 
   bool get showStationSignals => get(.showStationSignals, true);
 
+  bool get showEctsConventionalSpeedSignals => get(.showEctsConventionalSpeedSignals, true);
+
+  bool get showEctsExtendedSpeedSignals => get(.showEctsExtendedSpeedSignals, true);
+
   List<RailwayUndertaking> get railwayUndertakings =>
       get(.railwayUndertakings, []).map((it) => RailwayUndertaking.values.byName(it)).toList();
 
@@ -54,4 +58,11 @@ class UserSettings {
   }
 }
 
-enum UserSettingKeys { showDecisiveGradient, railwayUndertakings, tourSystem, showStationSignals }
+enum UserSettingKeys {
+  showDecisiveGradient,
+  railwayUndertakings,
+  tourSystem,
+  showStationSignals,
+  showEctsConventionalSpeedSignals,
+  showEctsExtendedSpeedSignals,
+}

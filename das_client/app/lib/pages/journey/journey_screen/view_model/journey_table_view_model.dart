@@ -119,7 +119,12 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
         .hideFootNotesForNotSelectedTrainSeries(settings.currentBrakeSeries?.trainSeries)
         .combineFootNoteAndOperationalIndication()
         .addTrainDriverTurnoverRows(navigationModel?.trainIdentification)
-        .hideSignals(stationSignals: !_userSettings.showStationSignals)
+        .hideSignals(
+          stationSignals: !_userSettings.showStationSignals,
+          conventionalSpeedSignals: !_userSettings.showEctsConventionalSpeedSignals,
+          extendedSpeedSignals: !_userSettings.showEctsExtendedSpeedSignals,
+          nonStandardTrackEquipmentSegments: journey.metadata.nonStandardTrackEquipmentSegments,
+        )
         .sorted((a1, a2) => a1.compareTo(a2));
 
     final journeyPoints = rowData.whereType<JourneyPoint>();
@@ -173,7 +178,7 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
     if (position == null) return null;
     if (visibleJourneyPoints.contains(position)) return position;
 
-    return visibleJourneyPoints.lastWhere((it) => it.order <= position.order);
+    return visibleJourneyPoints.lastWhereOrNull((it) => it.order <= position.order);
   }
 
   bool _isCurvePointWithoutSpeed(BaseData data, JourneySettings settings) {

@@ -110,11 +110,8 @@ export class RuIndicationsTable {
     return RU_INDICATION_STATUS_LABELS.find((label) => label.value === row.status)?.label ?? ''
   }
 
-  protected companiesValue(ruIndication: RuIndication) {
-    return ruIndication.scope.companies
-      .map((companyCode) => this.companyService.getName(companyCode) ?? companyCode)
-      .sort((a, b) => a.localeCompare(b))
-      .join(', ');
+  protected companiesValue(companyCodes: string[]) {
+    return this.companyService.formatCompanies(companyCodes);
   }
 
   protected locationsValue(row: RuIndication): string {
@@ -181,7 +178,7 @@ export class RuIndicationsTable {
       return this.statusValue(row);
     }
     if (column === 'companies') {
-      return this.companiesValue(row);
+      return this.companiesValue(row.scope.companies);
     }
     if (column === 'trainNumbers') {
       return this.trainNumbersValue(row);
@@ -208,7 +205,7 @@ export class RuIndicationsTable {
       this.textValue(data).toLowerCase().includes(search) ||
       data.content.category?.toLowerCase().includes(search) ||
       this.statusValue(data).toLowerCase().includes(search) ||
-      this.companiesValue(data).toLowerCase().includes(search) ||
+      this.companiesValue(data.scope.companies).toLowerCase().includes(search) ||
       this.trainNumbersValue(data).toLowerCase().includes(search) ||
       this.locationsValue(data).toLowerCase().includes(search) ||
       this.periodsValue(data).toLowerCase().includes(search) ||
@@ -224,7 +221,7 @@ export class RuIndicationsTable {
     const periods = filter.periods.toLowerCase();
 
     return data.content.category?.toLowerCase().includes(category)
-      && this.companiesValue(data).toLowerCase().includes(companies)
+      && this.companiesValue(data.scope.companies).toLowerCase().includes(companies)
       && this.trainNumbersValue(data).toLowerCase().includes(trainNumbers)
       && this.locationsValue(data).toLowerCase().includes(locations)
       && this.periodsValue(data).toLowerCase().includes(periods)

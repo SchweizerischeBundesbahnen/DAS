@@ -1,3 +1,4 @@
+import 'package:customer_oriented_departure/component.dart';
 import 'package:sfera/component.dart';
 
 sealed class ChecklistDepartureProcessModel {
@@ -35,17 +36,20 @@ class NoCustomerOrientedDepartureChecklist extends ChecklistDepartureProcessMode
 }
 
 class CustomerOrientedDepartureChecklist extends ChecklistDepartureProcessModel {
-  const CustomerOrientedDepartureChecklist({required this.nextStop, required this.koaState}) : super._();
+  const CustomerOrientedDepartureChecklist({required this.nextStop, required this.customerOrientedDepartureStatus})
+    : super._();
 
   @override
   final ServicePoint? nextStop;
-  final KoaState koaState;
+  final CustomerOrientedDepartureStatus customerOrientedDepartureStatus;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is CustomerOrientedDepartureChecklist && nextStop == other.nextStop && koaState == other.koaState;
+      other is CustomerOrientedDepartureChecklist &&
+          nextStop == other.nextStop &&
+          customerOrientedDepartureStatus == other.customerOrientedDepartureStatus;
 
   @override
-  int get hashCode => Object.hash(nextStop, koaState);
+  int get hashCode => Object.hash(nextStop, customerOrientedDepartureStatus);
 }

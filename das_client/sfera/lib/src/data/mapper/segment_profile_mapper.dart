@@ -580,6 +580,7 @@ class SegmentProfileMapper {
       plannedDepartureTime: departureDetails?.plannedDepartureTime,
       ambiguousArrivalTime: operationalArrivalTime,
       plannedArrivalTime: plannedArrivalTime,
+      plannedReleasedTime: timingPointConstraint.plannedReleasedTime,
     );
   }
 

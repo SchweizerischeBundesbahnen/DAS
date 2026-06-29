@@ -135,9 +135,11 @@ class _DismissJourneyButton extends StatelessWidget {
     icon: const Icon(SBBIcons.train_small),
     onPressed: () async {
       DASTableRowBuilder.clearRowKeys();
+
       DI.get<JourneySelectionViewModel>().dismissSelection();
       DI.get<JourneyNavigationViewModel>().disconnect();
-      await context.router.replace(JourneySelectionRoute());
+      context.router.replace(JourneySelectionRoute());
+      await Future.delayed(Duration(milliseconds: 100));
       DI.get<ScopeHandler>().pop<JourneyScope>();
     },
   );

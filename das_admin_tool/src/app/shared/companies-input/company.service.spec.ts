@@ -48,4 +48,22 @@ describe('CompanyService', () => {
     const result = service.filterCompanies('1085').map(c => c.code);
     expect(result.indexOf('1085')).toBeLessThan(result.indexOf('1231085'));
   });
+
+  it('formatCompanies maps known codes to names and sorts by name', () => {
+    const input = ['9090', '1085'];
+    const result = service.formatCompanies(input);
+
+    expect(result).toBe('RhB, SBB');
+  });
+
+  it('formatCompanies preserves unknown codes and includes them in the sorted output', () => {
+    const input = ['1085', 'UNKNOWN'];
+    const result = service.formatCompanies(input);
+
+    expect(result).toBe('SBB, UNKNOWN');
+  });
+
+  it('formatCompanies returns empty string for empty input', () => {
+    expect(service.formatCompanies([])).toBe('');
+  });
 });

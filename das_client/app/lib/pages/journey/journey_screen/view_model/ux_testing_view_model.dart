@@ -1,10 +1,7 @@
 import 'dart:async';
 
-import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_screen/header/view_model/connectivity_view_model.dart';
-import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
 import 'package:app/provider/ru_feature_provider.dart';
-import 'package:app/sound/das_sounds.dart';
 import 'package:collection/collection.dart';
 import 'package:formation/component.dart';
 import 'package:rxdart/rxdart.dart';
@@ -15,7 +12,6 @@ class UxTestingViewModel {
     required this._sferaRepo,
     required this._ruFeatureProvider,
     required this._formationRepository,
-    required this._notificationViewModel,
   }) {
     _init();
   }
@@ -23,16 +19,12 @@ class UxTestingViewModel {
   final SferaRepository _sferaRepo;
   final RuFeatureProvider _ruFeatureProvider;
   final FormationRepository _formationRepository;
-  final NotificationPriorityQueueViewModel _notificationViewModel;
 
   StreamSubscription? _eventSubscription;
   StreamSubscription? _sferaStateSubscription;
 
   final _rxUxTestingEvents = BehaviorSubject<UxTestingEvent>();
-  final _rxKoaState = BehaviorSubject<KoaState>.seeded(.waitHide);
   final _rxConnectivityDisplayStatus = BehaviorSubject<ConnectivityDisplayStatus?>.seeded(null);
-
-  Stream<KoaState> get koaState => _rxKoaState.distinct();
 
   Stream<ConnectivityDisplayStatus?> get connectivityDisplayStatus => _rxConnectivityDisplayStatus.stream;
 
@@ -41,7 +33,6 @@ class UxTestingViewModel {
   Future<bool> get isDepartureProcessFeatureEnabled => _ruFeatureProvider.isRuFeatureEnabled(.departureProcess);
 
   void dispose() {
-    _rxKoaState.close();
     _eventSubscription?.cancel();
     _sferaStateSubscription?.cancel();
   }
@@ -51,7 +42,8 @@ class UxTestingViewModel {
       if (data == null) {
         return;
       } else if (data.isKoa) {
-        _handleKoaEvent(data);
+        // koa events are handled by [SferaMockCustomerOrientedDepartureRepositoryImpl]
+        return;
       } else if (data.isConnectivity) {
         _handleConnectivityEvent(data);
       } else if (data.isFormation) {
@@ -59,11 +51,6 @@ class UxTestingViewModel {
       }
 
       _rxUxTestingEvents.add(data);
-    });
-    _sferaStateSubscription = _sferaRepo.stateStream.listen((state) {
-      if (state == .disconnected) {
-        _rxKoaState.add(.waitHide);
-      }
     });
   }
 
@@ -78,23 +65,6 @@ class UxTestingViewModel {
         connectedTrain.ru.companyCode,
         connectedTrain.operatingDay ?? connectedTrain.date,
       );
-    }
-  }
-
-  Future<void> _handleKoaEvent(UxTestingEvent data) async {
-    _notificationViewModel.remove(type: .koa);
-    final koaEnabled = await _ruFeatureProvider.isRuFeatureEnabled(.koa);
-    if (koaEnabled) {
-      final koaState = KoaState.from(data.value);
-
-      if (koaState != .waitHide) {
-        _notificationViewModel.insert(
-          type: .koa,
-          callback: koaState == .waitCancelled ? DI.get<DASSounds>().koa.play : null,
-        );
-      }
-
-      _rxKoaState.add(koaState);
     }
   }
 }

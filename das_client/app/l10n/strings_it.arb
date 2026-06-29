@@ -25,12 +25,14 @@
   "p_journey_table_level_crossing": "Pl",
   "p_journey_table_tram_area": "TS",
   "p_journey_appbar_text": "Informazioni sulla corsa",
+  "p_journey_overview_tour_button_text": "Torna al turno",
   "w_reduced_journey_table_title": "Panoramica della corsa",
   "w_navigation_drawer_fahrtinfo_title": "Informazioni sulla corsa",
   "w_navigation_drawer_links_title": "Link",
   "w_navigation_drawer_settings_title": "Impostazioni",
   "w_navigation_drawer_profile_title": "Profilo",
   "w_navigation_drawer_preload_title": "Precarica",
+  "w_navigation_drawer_tour_system_title": "Vai al sistema dei turni",
   "p_login_connect_to_tms": "Collegamento a TMS",
   "p_login_bottom_sheet_title": "Ti diamo il benvenuto in DAS",
   "p_login_bottom_sheet_subtitle": "Esegui il login per iniziare.",
@@ -38,12 +40,12 @@
   "p_login_bottom_sheet_subtitle_failed": "Errore",
   "p_login_login_button_text": "Login",
   "p_brake_load_slip_page_title": "Bollettino di frenatura",
-  "p_brake_load_slip_header_title": "Categoria di treno e di freno: {trainSeries} {brakeSeries}%",
-  "@p_brake_load_slip_header_title": {
-    "type": "text",
-    "placeholders": {
-      "trainSeries": {},
-      "brakeSeries": {}
+  "p_brake_load_slip_header_title": "Categoria di treno e di freno {trainSeries} {brakeSeries}%",
+  "@p_brake_load_slip_header_title":	 {
+    "type":	 "text",
+    "placeholders":	 {
+      "trainSeries":	 {},
+      "brakeSeries":	 {}
     }
   },
   "p_brake_load_slip_header_subtitle": "Creato il ",
@@ -95,14 +97,14 @@
   "w_advised_speed_end": "ADL END",
   "w_advised_speed_drive_until": " fino a {endLocation}",
   "@w_advised_speed_drive_until": {
-    "type": "text",
+    "type":	 "text",
     "placeholders": {
       "endLocation": {
         "type": "String"
       }
     }
   },
-  "w_advised_speed_vopt": "ADL VOpt: {speed}km/h",
+  "w_advised_speed_vopt": "ADL VOpt {speed}km/h",
   "@w_advised_speed_vopt": {
     "type": "text",
     "placeholders": {
@@ -113,26 +115,24 @@
   },
   "w_advised_speed_vmax": "ADL Vmax",
   "w_advised_speed_dist": "ADL DIST",
-  "w_reduced_journey_table_title": "Panoramica della corsa",
-  "w_navigation_drawer_fahrtinfo_title": "Informazioni sulla corsa",
-  "w_navigation_drawer_links_title": "Link",
-  "w_navigation_drawer_settings_title": "Impostazioni",
-  "w_navigation_drawer_profile_title": "Profilo",
-  "p_login_connect_to_tms": "Collegamento a TMS",
-  "p_login_login_button_text": "Login",
-  "w_advised_speed_notification_title": "Annuncio ADL",
   "w_extended_menu_title": "Altre funzionalità",
   "w_extended_menu_maneuver_mode": "Modalità di manovra",
   "w_extended_menu_brake_slip_action": "Apri il bollettino di frenatura",
   "w_extended_menu_transport_document_action": "Apri il documento di trasporto",
   "w_extended_menu_journey_overview_action": "Apri la panoramica della corsa",
   "w_extended_menu_journey_wara_action": "Apri WaRa",
+  "w_extended_menu_tour_action": "Vai al turno",
   "w_maneuver_notification_text": "Ti trovi in modalità di manovra.",
   "w_maneuver_notification_wara_action": "WaRa",
   "w_maneuver_notification_maneuver": "Modalità di manovra",
-  "w_koa_notification_title": "Partenza orientata alla clientela",
-  "w_koa_notification_wait_canceled": "Attesa disattivata.",
-  "w_koa_notification_departure_process": "Mostra processo di partenza",
+  "w_customer_oriented_departure_notification_title": "Partenza orientata alla clientela",
+  "w_customer_oriented_departure_notification_wait": "Attesa AC attivata",
+  "w_customer_oriented_departure_notification_call": "Attendi chiamata dal capo AC",
+  "w_customer_oriented_departure_notification_ready": "Attesa disattivata.",
+  "w_customer_oriented_departure_notification_departure_process": "Mostra processo di partenza",
+  "w_reauthentication_required_notification_text": "Sei di nuovo online. Fai il login per ricevere i dati aggiornati.",
+  "w_reauthentication_required_notification_button": "Login",
+  "w_no_customer_oriented_departure_checklist_button": "Mostra processo di partenza",
   "w_replacement_series_notification_available_title": "Categoria supplementare da {fromStation} a {toStation}",
   "@w_replacement_series_notification_available_title": {
     "type": "text",
@@ -157,15 +157,22 @@
     }
   },
   "w_replacement_series_notification_none_title": "La categoria di treno e di freno non è consentita da {fromStation}",
-  "@w_replacement_series_notification_none_title": {
-    "type": "text",
+  "@w_replacement_series_notification_none_title":	{
+    "type":	"text",
     "placeholders": {
       "fromStation": {}
     }
   },
   "w_replacement_series_notification_none_text": "Una parte della tratta non può essere percorsa con la categoria di treno e di freno selezionata.",
-  "w_departure_process_modal_sheet_title": "Checklist processo di partenza.",
-  "w_departure_process_modal_sheet_content": "1. Consenso\n2. Controllo della marcia dei treni\n3. Orario di partenza\n4. Blocco delle porte\n5. Consenso",
+  "w_departure_process_dialog_title": "Processo di partenza",
+  "w_departure_process_next_stop": "Prossima fermata",
+  "w_departure_process_checklist_item_1": "1. Verificare il consenso",
+  "w_departure_process_checklist_item_2": "2. Osservare il controllo della marcia dei treni",
+  "w_departure_process_checklist_item_3": "3. Osservare permesso di partenza/orario di partenza",
+  "w_departure_process_checklist_item_3_koa": "3. Osservare KoA/orario di partenza",
+  "w_departure_process_checklist_item_4": "4. Controllare il blocco delle porte",
+  "w_departure_process_checklist_item_5": "5. Verificare nuovamente il consenso",
+  "w_chronograph_no_authorisation_warning": "NESSUN\nCONSENSO",
   "w_service_point_modal_communication_label": "Tipo di rete e canale radio",
   "w_service_point_modal_communication_radio_channel": "Canale radio",
   "w_service_point_modal_communication_radio_channels_not_found": "Nessun canale radio disponibile",
@@ -209,6 +216,35 @@
   "w_brake_load_slip_modal_title": "Bollettino di frenatura",
   "w_brake_load_slip_modal_overview_title": "Treno intero",
   "w_brake_load_slip_modal_open_brake_slip": "Bollettino di frenatura",
+  "w_logout_dialog_title": "Logout",
+  "w_logout_dialog_subTitle": "Vuoi davvero effettuare il logout?",
+  "w_logout_dialog_cancel_button_labelText": "Annulla",
+  "w_logout_dialog_confirm_button_labelText": "Logout",
+  "w_app_expired_dialog_title": "La versione è scaduta",
+  "w_app_expires_soon_dialog_title": "La versione sta per scadere",
+  "w_app_expired_dialog_body_title": "La versione {appVersion} di DAS è scaduta.",
+  "@w_app_expired_dialog_body_title": {
+    "type": "text",
+    "placeholders": {
+      "appVersion": {
+        "type": "String"
+      }
+    }
+  },
+  "w_app_expires_soon_dialog_body_title": "La versione {appVersion} di DAS scadrà il {appVersionExpirationDate}.",
+  "@w_app_expires_soon_dialog_body_title": {
+    "type": "text",
+    "placeholders": {
+      "appVersion": {
+        "type": "String"
+      },
+      "appVersionExpirationDate": {
+        "type": "String"
+      }
+    }
+  },
+  "w_app_expired_dialog_body_subTitle": "Aggiorna l’applicazione per poter continuare a utilizzarla.",
+  "w_app_expires_soon_dialog_body_subTitle": "Aggiorna l’applicazione al più presto per poter continuare a utilizzare DAS anche dopo la data di scadenza.",
   "c_yes": "Si",
   "c_no": "No",
   "c_ru_bls_c": "BLSC",
@@ -271,6 +307,10 @@
   "c_main_signal_function_laneChange_short": "Cambio",
   "c_main_signal_function_locking_out": "Segnale di sbarramento",
   "c_main_signal_function_locking_out_short": "S.Sbarr.",
+  "c_main_signal_function_etcs_stop_sign": "SFE / SPE",
+  "c_main_signal_function_etcs_stop_sign_short": "SFE / SPE",
+  "c_main_signal_function_track_end": "Segnale di fine del binario",
+  "c_main_signal_function_track_end_short": "S.fine bin.",
   "c_error_code": "Codice di errore",
   "c_something_went_wrong": "Qualcosa non ha funzionato.",
   "c_error_connection_failed": "Connessione non riuscita",
@@ -308,6 +348,7 @@
   "p_settings_page_personalize": "Personalizza",
   "p_settings_page_decisive_gradient_title": "Pendenza determinante",
   "p_settings_page_decisive_gradient_show_setting": "Mostra pendenza",
+  "p_settings_page_signal_title": "Rappresentazione dei segnali principali",
   "w_global_error_widget_title": "Errore imprevisto",
   "w_global_error_widget_description": "Si è verificato un errore imprevisto. Il messaggio di errore verrà inviato agli sviluppatori. Prova a riavviare l’app.",
   "w_shunting_movement_start": "Corsa di manovra {trainNumber}",
@@ -326,9 +367,9 @@
   },
   "w_brake_load_slip_notification_text": "È disponibile una nuova versione del bollettino di frenatura.",
   "w_disturbance_notification_text": "Insufficiente alimentazione con corrente di trazione",
-  "w_departure_dispatch_notification_long": "Partenza prevista fra: >30 Min",
-  "w_departure_dispatch_notification_middle": "Partenza prevista fra: 15 - 30 Min",
-  "w_departure_dispatch_notification_short": "Partenza prevista fra: < 15 Min",
+  "w_departure_dispatch_notification_long": "Partenza prevista fra >30 Min",
+  "w_departure_dispatch_notification_middle": "Partenza prevista fra 15 - 30 Min",
+  "w_departure_dispatch_notification_short": "Partenza prevista fra < 15 Min",
   "w_departure_dispatch_notification_prepare": "Prepararsi alla partenza",
   "w_departure_dispatch_notification_withdrawn": "La disposizione di partenza è stata annullata. Il proseguimento della corsa viene comunicato di nuovo.",
   "c_tour_system_tip": "TIP",
@@ -338,19 +379,22 @@
   "c_tour_system_rail_cube": "RailCube",
   "w_user_tour_system_selection_label": "Sistema dei turni",
   "w_user_tour_system_selection_title": "Seleziona il sistema del turno",
+  "w_user_tour_system_selection_none": "Nessuno",
   "p_preload_page_title": "Precarica",
   "w_preload_status_title": "Precarica",
   "w_preload_status_downloaded": "Scaricato",
   "w_preload_status_initial": "In sospeso",
   "w_preload_status_error": "Errato",
-  "w_preload_status_metric_jp": "Orari di marcia:",
+  "w_preload_status_metric_jp": "Orari di marcia",
   "w_preload_status_metric_sp": "Segmenti:",
-  "w_preload_status_metric_tc": "Informazioni sul treno:",
+  "w_preload_status_metric_tc":	"Informazioni sul treno:",
   "w_preload_status_state_text": "Stato: ",
   "w_preload_status_idle": "Pronto",
   "w_preload_status_running": "Sincronizza...",
   "w_preload_status_missing_configuration": "Offline",
   "w_preload_status_last_update": "Stato dei dati",
   "w_preload_status_start_preload": "Avvia",
-  "w_train_driver_turnover_row_title": "Cambio del personale di locomotiva"
+  "w_train_driver_turnover_row_title": "Cambio del personale di locomotiva",
+  "w_suspicious_journey_point_warning": "Utilizza soluzione di ripiego",
+  "w_suspicious_segment_notification_text": "L’immagine di guida contiene informazioni incomplete."
 }

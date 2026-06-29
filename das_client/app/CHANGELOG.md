@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.46.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.45.0...das_client-v0.46.0) (2026-06-25)
+
+
+### Features
+
+* add customer oriented departure ([#148](https://github.com/SchweizerischeBundesbahnen/DAS/issues/148)) ([#2108](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2108)) ([f01d747](https://github.com/SchweizerischeBundesbahnen/DAS/commit/f01d7477d4851b425000fb1f391a499878bb8a5a))
+* add ECTS and track end signals ([#1628](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1628)) ([#1484](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1484)) ([#2323](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2323)) ([dac3e20](https://github.com/SchweizerischeBundesbahnen/DAS/commit/dac3e20311fc0ef0ef2c33107e0f7cc17eba4a4e))
+* add planned release time as departure time on stopping points ([#1339](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1339)) ([#2325](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2325)) ([b7b2496](https://github.com/SchweizerischeBundesbahnen/DAS/commit/b7b2496d8010b1ff2c595f798174866b3a4c420b))
+* implement ru specific links display ([#147](https://github.com/SchweizerischeBundesbahnen/DAS/issues/147)) ([#2313](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2313)) ([6cf4a0c](https://github.com/SchweizerischeBundesbahnen/DAS/commit/6cf4a0ceaac101a73f1557867dda2e84075dd9b3))
+
+
+### Bug Fixes
+
+* allow token read in background ([#2038](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2038)) ([#2171](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2171)) ([00bc18d](https://github.com/SchweizerischeBundesbahnen/DAS/commit/00bc18daf1631940f0fae5c694643bb81c78ae9d))
+* change screen orientation to sensorLandscape ([#2209](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2209)) ([#2333](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2333)) ([64ba412](https://github.com/SchweizerischeBundesbahnen/DAS/commit/64ba4122e78f00328c1cb197283dcdbeada775ed))
+* handle DI Exceptions ([#2037](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2037)) ([#2168](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2168)) ([bfc3431](https://github.com/SchweizerischeBundesbahnen/DAS/commit/bfc343126f2c5517ea3fdf1e5fc3b56fb1e8526d))
+* station sign layout with bracket station ([#2289](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2289)) ([669d1c7](https://github.com/SchweizerischeBundesbahnen/DAS/commit/669d1c75a6ea5f698aa688785337f85a94e2b07b))
+* update IT and FR translations ([#2303](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2303)) ([3629a54](https://github.com/SchweizerischeBundesbahnen/DAS/commit/3629a549e5eddaf49a128a2a68e10ccd175c9aeb))
+
 ## [0.45.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.44.0...das_client-v0.45.0) (2026-05-21)
 
 

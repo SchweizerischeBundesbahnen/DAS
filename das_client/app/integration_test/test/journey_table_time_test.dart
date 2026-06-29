@@ -93,7 +93,9 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    final expectedTimeVevey = '(${Format.operationalTime(DateTime.parse('2025-05-12T17:28:56Z'))})\n';
+    final expectedTimeVevey =
+        '(${Format.operationalTime(DateTime.parse('2025-05-12T17:28:56Z'))})\n'
+        '(${Format.operationalTime(DateTime.parse('2025-05-12T16:29:00Z'))})';
     expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: vevey), findsOneWidget);
     expect(_findTextInDASTableRowByText(innerText: expectedTimeVevey, rowText: vevey), findsOneWidget);
 
