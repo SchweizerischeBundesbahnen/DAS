@@ -63,6 +63,7 @@ extension BaseDataExtension on Iterable<BaseData> {
           } else {
             // Finish group, if we can't group with the previous, or are not directly after
             addBaliseLevelCrossingGroup();
+            baliseGroups.add(group);
           }
         }
       } else {

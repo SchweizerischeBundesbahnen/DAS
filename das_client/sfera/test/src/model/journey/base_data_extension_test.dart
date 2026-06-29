@@ -66,20 +66,23 @@ void main() {
 
     final groupedRowsNotExpanded = originalRows.groupBaliseAndLevelCrossings([], metadata).toList();
 
-    expect(groupedRowsNotExpanded, hasLength(2));
+    expect(groupedRowsNotExpanded, hasLength(3));
     expect(groupedRowsNotExpanded[0], isA<BaliseLevelCrossingGroup>());
-    expect((groupedRowsNotExpanded[0] as BaliseLevelCrossingGroup).groupedElements, hasLength(4));
+    expect((groupedRowsNotExpanded[0] as BaliseLevelCrossingGroup).groupedElements, hasLength(2));
+    expect(groupedRowsNotExpanded[1], isA<BaliseLevelCrossingGroup>());
+    expect((groupedRowsNotExpanded[1] as BaliseLevelCrossingGroup).groupedElements, hasLength(2));
 
-    final groupedRowsExpanded = originalRows.groupBaliseAndLevelCrossings([100], metadata).toList();
+    final groupedRowsExpanded = originalRows.groupBaliseAndLevelCrossings([100, 200], metadata).toList();
 
-    expect(groupedRowsExpanded, hasLength(6));
+    expect(groupedRowsExpanded, hasLength(7));
     expect(groupedRowsExpanded[0], isA<BaliseLevelCrossingGroup>());
-    expect((groupedRowsExpanded[0] as BaliseLevelCrossingGroup).groupedElements, hasLength(4));
+    expect((groupedRowsExpanded[0] as BaliseLevelCrossingGroup).groupedElements, hasLength(2));
     expect(groupedRowsExpanded[1], isA<Balise>());
     expect(groupedRowsExpanded[2], isA<LevelCrossing>());
-    expect(groupedRowsExpanded[3], isA<Balise>());
-    expect(groupedRowsExpanded[4], isA<LevelCrossing>());
-    expect(groupedRowsExpanded[5], isA<Signal>());
+    expect(groupedRowsExpanded[3], isA<BaliseLevelCrossingGroup>());
+    expect(groupedRowsExpanded[4], isA<Balise>());
+    expect(groupedRowsExpanded[5], isA<LevelCrossing>());
+    expect(groupedRowsExpanded[6], isA<Signal>());
   });
 
   test('Test balise and level crossing not grouping after item between', () {
