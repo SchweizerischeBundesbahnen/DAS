@@ -14,14 +14,16 @@ formation:
   kafka:
     # disable kafka per default
     enabled: false
-preload:
+trainjourneyplan:
   kafka:
     # disable kafka per default
     enabled: false
-    timetablePeriodTopic: nets-p.timetable
-    timetableTrainTopic: fps.prod.infra.zug
-  trainCleanUp:
-    cronExpression: "0 0 0 * * *"
+    timetable-period-topic: nets-p.timetable
+    timetable-train-topic: fps.prod.infra.zug
+  train-clean-up:
+    cron-expression: "0 0 0 * * *"
     days: 2
-  storageCleanUp:
+
+trainjourneypreloader:
+  storage-clean-up:
     hours: 24
