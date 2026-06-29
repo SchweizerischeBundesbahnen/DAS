@@ -1,6 +1,6 @@
 package ch.sbb.das.backend;
 
-import static ch.sbb.das.backend.preload.infrastructure.configuration.CustomKafkaConsumerConfig.AUTO_OFFSET_RESET_EARLIEST;
+import static ch.sbb.das.backend.trainjourneyplan.infrastructure.configuration.CustomKafkaConsumerConfig.AUTO_OFFSET_RESET_EARLIEST;
 
 import java.util.Map;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
