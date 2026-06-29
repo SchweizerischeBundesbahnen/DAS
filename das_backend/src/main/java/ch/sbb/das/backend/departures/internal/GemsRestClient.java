@@ -7,12 +7,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
+/**
+ * REST client that integrates DAS-Client with GEMS (subscription system for customer oriented departure), with DAS-Backend acting as the proxy layer.
+ */
 @Component
-public class DepartureRestClient {
+public class GemsRestClient {
 
     private final RestClient restClient;
 
-    public DepartureRestClient(
+    public GemsRestClient(
         @Value("${proxy.base-url}") String baseUrl,
         @Value("${proxy.basic-auth}") String auth
     ) {
@@ -39,3 +42,7 @@ public class DepartureRestClient {
             .toEntity(String.class);
     }
 }
+
+
+
+
