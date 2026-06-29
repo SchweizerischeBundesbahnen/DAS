@@ -265,19 +265,19 @@ class StorageServiceTest {
 
     @Test
     void cleanupSegments_removesStaleSegmentsAndCompactsZips() throws Exception {
-        // Stale segments: 1001 in file 1, 1 in file 2 -> triggers cleanup (> MAX_SEGMENTS_PER_ZIP=1000)
-        when(preloadedSegmentProfileRepository.countByLastSeenBefore(any(OffsetDateTime.class))).thenReturn(1002L);
+        // Stale segments: 1000 in file 1, 1 in file 2 -> triggers cleanup (> MAX_SEGMENTS_PER_ZIP=1000)
+        when(preloadedSegmentProfileRepository.countByLastSeenBefore(any(OffsetDateTime.class))).thenReturn(1001L);
 
         List<PreloadedSegmentProfileEntity> stale = new ArrayList<>();
-        for (int i = 0; i < 1001; i++) {
+        for (int i = 0; i < 1000; i++) {
             stale.add(PreloadedSegmentProfileEntity.builder().id("STALE1_" + i + "_1_0").file(1).build());
         }
         stale.add(PreloadedSegmentProfileEntity.builder().id("STALE2_0_1_0").file(2).build());
         when(preloadedSegmentProfileRepository.findAllByLastSeenBefore(any(OffsetDateTime.class))).thenReturn(stale);
 
-        // File 1 had stale + still keeps no survivors (all 1001 stale here). After rewrite => empty -> deleted.
-        String[] file1Entries = new String[1001];
-        for (int i = 0; i < 1001; i++) {
+        // File 1 had stale + still keeps no survivors (all 1000 stale here). After rewrite => empty -> deleted.
+        String[] file1Entries = new String[1000];
+        for (int i = 0; i < 1000; i++) {
             file1Entries[i] = "sp/SP_STALE1_" + i + "_1_0.xml";
         }
         when(s3Service.downloadZip("Segments_1.zip"))
