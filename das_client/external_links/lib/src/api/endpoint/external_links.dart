@@ -11,7 +11,7 @@ class ExternalLinksRequest {
   final List<String> companies;
 
   Future<ExternalLinksResponse> call() async {
-    final url = Uri.https(baseUrl, '/v1/mobile/external-links', {'companies': companies.join(',')});
+    final url = Uri.https(baseUrl, '/driver/v1/external-links', {'companies': companies.join(',')});
 
     final response = await httpClient.get(url);
     return ExternalLinksResponse.fromHttpResponse(response);
