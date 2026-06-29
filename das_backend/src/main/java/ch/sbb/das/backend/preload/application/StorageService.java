@@ -354,18 +354,9 @@ public class StorageService {
         try (ZipOutputStream zos = new ZipOutputStream(baos, StandardCharsets.UTF_8)) {
             copyExistingEntries(existing, zos);
             for (Map.Entry<String, byte[]> e : entriesToAdd.entrySet()) {
-                try {
-                    zos.putNextEntry(new ZipEntry(e.getKey()));
-                    zos.write(e.getValue());
-                    zos.closeEntry();
-                } catch (ZipException ze) {
-                    if (ze.getMessage() != null && ze.getMessage().contains(DUPLICATE_ENTRY_KEY)) {
-                        log.warn("Duplicate file {} in zip file skipped while compacting", e.getKey());
-                        zos.closeEntry();
-                        continue;
-                    }
-                    throw ze;
-                }
+                zos.putNextEntry(new ZipEntry(e.getKey()));
+                zos.write(e.getValue());
+                zos.closeEntry();
             }
         }
         s3Service.uploadZip(key, baos.toByteArray());
