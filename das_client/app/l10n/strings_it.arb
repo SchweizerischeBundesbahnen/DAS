@@ -310,6 +310,7 @@
   "c_main_signal_function_etcs_stop_sign": "SFE / SPE",
   "c_main_signal_function_etcs_stop_sign_short": "SFE / SPE",
   "c_main_signal_function_track_end": "Segnale di fine del binario",
+  "c_main_signal_function_track_end_short": "S.fine bin.",
   "c_error_code": "Codice di errore",
   "c_something_went_wrong": "Qualcosa non ha funzionato.",
   "c_error_connection_failed": "Connessione non riuscita",
