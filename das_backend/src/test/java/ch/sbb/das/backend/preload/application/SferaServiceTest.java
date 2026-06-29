@@ -12,6 +12,7 @@ import ch.sbb.das.backend.common.CompanyCode;
 import ch.sbb.das.backend.preload.application.model.trainidentification.TrainIdentification;
 import ch.sbb.das.backend.preload.domain.PreloadResult;
 import ch.sbb.das.backend.preload.infrastructure.PahoMqttClient;
+import ch.sbb.das.backend.preload.infrastructure.PreloadedSegmentProfileRepository;
 import ch.sbb.das.backend.preload.infrastructure.xml.SferaMessagingConfig;
 import ch.sbb.das.backend.preload.infrastructure.xml.XmlHelper;
 import ch.sbb.das.backend.preload.sfera.model.v0400.SFERAB2GRequestMessage;
@@ -39,6 +40,9 @@ class SferaServiceTest {
 
     @MockitoBean
     private PahoMqttClient mqttClient;
+
+    @MockitoBean
+    private PreloadedSegmentProfileRepository preloadedSegmentProfileRepository;
 
     @Autowired
     private XmlHelper xmlHelper;
