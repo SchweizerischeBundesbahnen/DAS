@@ -867,6 +867,22 @@ void main() {
     expect(levelCrossings[11].order, 1602);
   });
 
+  test('Test balise-levelCrossing groups are correct', () async {
+    final journey = getJourney('T7');
+    expect(journey.valid, true);
+
+    final levelCrossingGroups = journey.metadata.levelCrossingGroups;
+    expect(levelCrossingGroups, hasLength(10));
+    expect(levelCrossingGroups[0], isA<SupervisedLevelCrossingGroup>());
+    expect(levelCrossingGroups[0].levelCrossings, hasLength(1));
+    expect(levelCrossingGroups[6], isA<SupervisedLevelCrossingGroup>());
+    expect(levelCrossingGroups[6].levelCrossings, hasLength(2));
+    expect(levelCrossingGroups[7], isA<UnsupervisedLevelCrossingGroup>());
+    expect(levelCrossingGroups[7].levelCrossings, hasLength(2));
+    expect(levelCrossingGroups[9], isA<UnsupervisedLevelCrossingGroup>());
+    expect(levelCrossingGroups[9].levelCrossings, hasLength(3));
+  });
+
   test('Test station speeds are parsed correctly', () async {
     final journey = getJourney('T8');
     expect(journey.valid, true);

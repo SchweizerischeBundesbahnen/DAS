@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:noNamespaceSchemaLocation="../../SFERA.xsd"
-                SP_ID="2017_14_Wollerau" SP_VersionMajor="1" SP_VersionMinor="1" SP_Length="800" SP_Status="Valid">
+                SP_ID="2017_14_Wollerau" SP_VersionMajor="1" SP_VersionMinor="3" SP_Length="800" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
@@ -22,7 +22,7 @@
         </Signal>
 
         <BaliseGroup>
-            <Balise location="427" levelCrossingGuarding="true" amountLevelCrossings="2"/>
+            <Balise location="427" levelCrossingGuarding="true" amountLevelCrossings="2" identifier="LXE_1"/>
         </BaliseGroup>
 
     </SP_Points>
@@ -71,7 +71,7 @@
 
     <SP_ContextInformation>
 
-        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="678" endLocation="678"/>
+        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="678" endLocation="678" identifier="LXE_1"/>
 
         <ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
             <Contact mainContact="true">

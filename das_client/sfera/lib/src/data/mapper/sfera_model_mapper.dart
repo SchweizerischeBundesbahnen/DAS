@@ -698,36 +698,49 @@ class SferaModelMapper {
     for (int i = 0; i < journeyPoints.length; i++) {
       final currentElement = journeyPoints[i];
       if (currentElement is Balise) {
-        final levelCrossings = <LevelCrossing>[];
-        final otherPoints = <JourneyPoint>[];
+        if (currentElement.identifier == null) {
+          _log.warning('Balise without identifier found: $currentElement, unable to group with level crossings.');
 
-        for (int j = i + 1; j < journeyPoints.length; j++) {
-          final nextElement = journeyPoints[j];
-          if (nextElement is LevelCrossing) {
-            levelCrossings.add(nextElement);
+          result.add(
+            SupervisedLevelCrossingGroup(
+              balise: currentElement,
+              levelCrossings: [],
+              pointsBetween: [],
+            ),
+          );
+        } else {
+          final levelCrossings = journeyPoints
+              .whereType<LevelCrossing>()
+              .where(
+                (it) => it.identifier == currentElement.identifier,
+              )
+              .toList();
+          final otherPoints = <JourneyPoint>[];
 
-            if (levelCrossings.length >= currentElement.amountLevelCrossings) {
-              i = j;
-              break;
-            }
-          } else if (nextElement is Balise) {
+          if (levelCrossings.length < currentElement.amountLevelCrossings) {
             _log.warning(
-              'Failed to find the amount of level crossings (${levelCrossings.length}/${currentElement.localSpeeds}) expected for balise.',
+              'Failed to find the amount of level crossings (${levelCrossings.length}/${currentElement.amountLevelCrossings}) expected for balise.',
             );
-            i = j - 1;
-            break;
-          } else {
-            otherPoints.add(nextElement);
           }
-        }
 
-        result.add(
-          SupervisedLevelCrossingGroup(
-            balise: currentElement,
-            levelCrossings: levelCrossings,
-            pointsBetween: otherPoints,
-          ),
-        );
+          if (levelCrossings.isNotEmpty) {
+            final lastLevelCrossingIndex = journeyPoints.indexOf(levelCrossings.last);
+            for (int j = i + 1; j < lastLevelCrossingIndex; j++) {
+              final nextElement = journeyPoints[j];
+              if (!levelCrossings.contains(nextElement)) {
+                otherPoints.add(nextElement);
+              }
+            }
+          }
+
+          result.add(
+            SupervisedLevelCrossingGroup(
+              balise: currentElement,
+              levelCrossings: levelCrossings,
+              pointsBetween: otherPoints,
+            ),
+          );
+        }
       }
       if (currentElement is LevelCrossing) {
         final levelCrossings = [currentElement];

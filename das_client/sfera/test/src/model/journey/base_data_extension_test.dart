@@ -4,10 +4,10 @@ import 'package:sfera/component.dart';
 void main() {
   test('Test balise and level crossing grouping', () {
     final originalRows = <BaseData>[
-      Balise(order: 100, kilometre: [0.1], amountLevelCrossings: 1),
-      LevelCrossing(order: 101, kilometre: [0.11]),
-      Balise(order: 200, kilometre: [0.2], amountLevelCrossings: 1),
-      LevelCrossing(order: 202, kilometre: [0.22]),
+      Balise(order: 100, kilometre: [0.1], amountLevelCrossings: 1, identifier: 'A1'),
+      LevelCrossing(order: 101, kilometre: [0.11], identifier: 'A1'),
+      Balise(order: 200, kilometre: [0.2], amountLevelCrossings: 1, identifier: 'A2'),
+      LevelCrossing(order: 202, kilometre: [0.22], identifier: 'A2'),
     ];
     final metadata = Metadata(
       levelCrossingGroups: [
@@ -43,11 +43,11 @@ void main() {
 
   test('Test balise and level crossing grouping with element between balise and level Crossing', () {
     final originalRows = <JourneyPoint>[
-      Balise(order: 100, kilometre: [0.1], amountLevelCrossings: 1),
-      LevelCrossing(order: 101, kilometre: [0.11]),
-      Balise(order: 200, kilometre: [0.2], amountLevelCrossings: 1),
+      Balise(order: 100, kilometre: [0.1], amountLevelCrossings: 1, identifier: 'A1'),
+      LevelCrossing(order: 101, kilometre: [0.11], identifier: 'A1'),
+      Balise(order: 200, kilometre: [0.2], amountLevelCrossings: 1, identifier: 'A2'),
       Signal(order: 201, kilometre: [0.22]),
-      LevelCrossing(order: 202, kilometre: [0.22]),
+      LevelCrossing(order: 202, kilometre: [0.22], identifier: 'A2'),
     ];
     final metadata = Metadata(
       levelCrossingGroups: [
@@ -84,11 +84,11 @@ void main() {
 
   test('Test balise and level crossing not grouping after item between', () {
     final originalRows = <JourneyPoint>[
-      Balise(order: 100, kilometre: [0.1], amountLevelCrossings: 1),
+      Balise(order: 100, kilometre: [0.1], amountLevelCrossings: 1, identifier: 'A1'),
       Signal(order: 101, kilometre: [0.22]),
-      LevelCrossing(order: 102, kilometre: [0.11]),
-      Balise(order: 200, kilometre: [0.2], amountLevelCrossings: 1),
-      LevelCrossing(order: 202, kilometre: [0.22]),
+      LevelCrossing(order: 102, kilometre: [0.11], identifier: 'A1'),
+      Balise(order: 200, kilometre: [0.2], amountLevelCrossings: 1, identifier: 'A2'),
+      LevelCrossing(order: 202, kilometre: [0.22], identifier: 'A2'),
     ];
     final metadata = Metadata(
       levelCrossingGroups: [
@@ -117,11 +117,11 @@ void main() {
 
   test('Test balise and level crossing grouping with different amounts', () {
     final originalRows = <BaseData>[
-      Balise(order: 100, kilometre: [0.1], amountLevelCrossings: 1),
-      LevelCrossing(order: 101, kilometre: [0.11]),
-      Balise(order: 200, kilometre: [0.2], amountLevelCrossings: 2),
-      LevelCrossing(order: 202, kilometre: [0.22]),
-      LevelCrossing(order: 203, kilometre: [0.23]),
+      Balise(order: 100, kilometre: [0.1], amountLevelCrossings: 1, identifier: 'A1'),
+      LevelCrossing(order: 101, kilometre: [0.11], identifier: 'A1'),
+      Balise(order: 200, kilometre: [0.2], amountLevelCrossings: 2, identifier: 'A2'),
+      LevelCrossing(order: 202, kilometre: [0.22], identifier: 'A2'),
+      LevelCrossing(order: 203, kilometre: [0.23], identifier: 'A2'),
     ];
     final metadata = Metadata(
       levelCrossingGroups: [
@@ -160,11 +160,11 @@ void main() {
 
   test('Test balise and level crossing grouping with elements between', () {
     final originalRows = <BaseData>[
-      Balise(order: 100, kilometre: [0.1], amountLevelCrossings: 1),
-      LevelCrossing(order: 101, kilometre: [0.11]),
+      Balise(order: 100, kilometre: [0.1], amountLevelCrossings: 1, identifier: 'A1'),
+      LevelCrossing(order: 101, kilometre: [0.11], identifier: 'A1'),
       Whistle(order: 155, kilometre: [0.22]),
-      Balise(order: 200, kilometre: [0.2], amountLevelCrossings: 1),
-      LevelCrossing(order: 202, kilometre: [0.22]),
+      Balise(order: 200, kilometre: [0.2], amountLevelCrossings: 1, identifier: 'A2'),
+      LevelCrossing(order: 202, kilometre: [0.22], identifier: 'A1'),
     ];
     final metadata = Metadata(
       levelCrossingGroups: [
