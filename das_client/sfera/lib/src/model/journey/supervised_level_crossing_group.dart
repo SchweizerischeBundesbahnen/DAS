@@ -17,9 +17,10 @@ class SupervisedLevelCrossingGroup extends LevelCrossingGroup {
   bool canGroupWith(SupervisedLevelCrossingGroup other) {
     return balise.amountLevelCrossings == 1 &&
         levelCrossings.isNotEmpty &&
-        pointsBetween.isEmpty &&
+        pointsBetween.where((it) => it is! Balise && it is! LevelCrossing).isEmpty &&
         other.balise.amountLevelCrossings == 1 &&
-        other.levelCrossings.isNotEmpty;
+        other.levelCrossings.isNotEmpty &&
+        other.pointsBetween.where((it) => it is! Balise && it is! LevelCrossing).isEmpty;
   }
 
   bool shouldShowBaliseIconForLevelCrossing(LevelCrossing levelCrossing) {

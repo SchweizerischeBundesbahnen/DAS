@@ -826,8 +826,8 @@ void main() {
     expect(balises[0].order, 600);
     expect(balises[0].kilometre[0], 41.552);
     expect(balises[0].amountLevelCrossings, 1);
-    expect(balises[1].order, 602);
-    expect(balises[1].kilometre[0], 41.190);
+    expect(balises[1].order, 601);
+    expect(balises[1].kilometre[0], 41.492);
     expect(balises[1].amountLevelCrossings, 1);
 
     expect(balises[2].order, 604);
@@ -851,8 +851,8 @@ void main() {
 
     final levelCrossings = journey.data.where((it) => it.dataType == .levelCrossing).cast<LevelCrossing>().toList();
     expect(levelCrossings, hasLength(12));
-    expect(levelCrossings[0].order, 601);
-    expect(levelCrossings[0].kilometre[0], 41.492);
+    expect(levelCrossings[0].order, 602);
+    expect(levelCrossings[0].kilometre[0], 41.190);
     expect(levelCrossings[1].order, 603);
     expect(levelCrossings[1].kilometre[0], 41.155);
     expect(levelCrossings[2].order, 605);
@@ -865,6 +865,26 @@ void main() {
     expect(levelCrossings[9].order, 1600);
     expect(levelCrossings[10].order, 1601);
     expect(levelCrossings[11].order, 1602);
+  });
+
+  test('Test balise-levelCrossing groups are correct', () async {
+    final journey = getJourney('T7');
+    expect(journey.valid, true);
+
+    final levelCrossingGroups = journey.metadata.levelCrossingGroups;
+    expect(levelCrossingGroups, hasLength(9));
+    expect(levelCrossingGroups[0], isA<SupervisedLevelCrossingGroup>());
+    expect((levelCrossingGroups[0] as SupervisedLevelCrossingGroup).balise.identifier, 'LXA_1');
+    expect(levelCrossingGroups[0].levelCrossings, hasLength(1));
+    expect(levelCrossingGroups[0].levelCrossings[0].kilometre[0], 41.190);
+    expect(levelCrossingGroups[1], isA<SupervisedLevelCrossingGroup>());
+    expect((levelCrossingGroups[1] as SupervisedLevelCrossingGroup).balise.identifier, 'LXA_2');
+    expect(levelCrossingGroups[1].levelCrossings, hasLength(1));
+    expect(levelCrossingGroups[1].levelCrossings[0].kilometre[0], 41.155);
+    expect(levelCrossingGroups[6], isA<SupervisedLevelCrossingGroup>());
+    expect(levelCrossingGroups[6].levelCrossings, hasLength(2));
+    expect(levelCrossingGroups[8], isA<UnsupervisedLevelCrossingGroup>());
+    expect(levelCrossingGroups[8].levelCrossings, hasLength(3));
   });
 
   test('Test station speeds are parsed correctly', () async {

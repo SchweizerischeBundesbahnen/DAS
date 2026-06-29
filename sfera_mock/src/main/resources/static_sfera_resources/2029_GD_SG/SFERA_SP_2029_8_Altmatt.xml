@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:noNamespaceSchemaLocation="../../SFERA.xsd"
-                SP_ID="2029_8_Altmatt" SP_VersionMajor="1" SP_VersionMinor="3" SP_Length="3900" SP_Status="Valid">
+                SP_ID="2029_8_Altmatt" SP_VersionMajor="1" SP_VersionMinor="4" SP_Length="3900" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
@@ -28,15 +28,15 @@
         </Signal>
 
         <BaliseGroup>
-            <Balise location="1146" levelCrossingGuarding="true" amountLevelCrossings="1"/>
+            <Balise location="1146" levelCrossingGuarding="true" amountLevelCrossings="1" identifier="LXC_1"/>
         </BaliseGroup>
 
         <BaliseGroup>
-            <Balise location="2365" levelCrossingGuarding="true" amountLevelCrossings="1"/>
+            <Balise location="2365" levelCrossingGuarding="true" amountLevelCrossings="1" identifier="LXC_2"/>
         </BaliseGroup>
 
         <BaliseGroup>
-            <Balise location="2837" levelCrossingGuarding="true" amountLevelCrossings="1"/>
+            <Balise location="2837" levelCrossingGuarding="true" amountLevelCrossings="1" identifier="LXC_3"/>
         </BaliseGroup>
 
         <NetworkSpecificPoint location="1000">
@@ -155,11 +155,11 @@
 
     <SP_ContextInformation>
 
-        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="1446" endLocation="1446"/>
+        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="1446" endLocation="1446" identifier="LXC_1"/>
 
-        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="2665" endLocation="2665"/>
+        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="2665" endLocation="2665" identifier="LXC_2"/>
 
-        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="3137" endLocation="3137"/>
+        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="3137" endLocation="3137" identifier="LXC_3"/>
 
         <ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
             <Contact mainContact="true">
