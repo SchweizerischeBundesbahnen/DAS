@@ -40,10 +40,8 @@ public class RuIndicationController {
 
     static final String PATH_SEGMENT_RU_INDICATIONS = "/ruindications";
     public static final String API_RU_INDICATIONS = ApiDocumentation.ADMIN_URI + PATH_SEGMENT_RU_INDICATIONS;
-
-    public static final String API_DRIVER_RU_INDICATIONS = ApiDocumentation.DRIVER_URI + ApiDocumentation.DRIVER_VERSION_URI_V1 + PATH_SEGMENT_RU_INDICATIONS + "/matches";
     static final String API_RU_INDICATIONS_ID = API_RU_INDICATIONS + "/{id}";
-
+    public static final String API_DRIVER_RU_INDICATION_MATCHES = ApiDocumentation.DRIVER_URI + ApiDocumentation.DRIVER_VERSION_URI_V1 + PATH_SEGMENT_RU_INDICATIONS + "/matches";
     private final RuIndicationServiceImpl ruIndicationService;
     private final RuIndicationMatchServiceImpl ruIndicationMatchService;
 
@@ -86,8 +84,8 @@ public class RuIndicationController {
         return ResponseEntityFactory.createCreatedResponse(new RuIndicationResponse(createdRuIndication), requestId);
     }
 
-    @PostMapping(API_DRIVER_RU_INDICATIONS)
-    @Operation(summary = "Get RU indication matches.",
+    @PostMapping(API_DRIVER_RU_INDICATION_MATCHES)
+    @Operation(summary = ApiDocumentation.HINT_GET_BY_POST + " Get RU indication matches.",
         description =
             "Filters RU indications for one company, train number and start date, and returns requested TAF/TAP location references with their matched RU indication contents in one resolved language. "
                 + "If the request train number is a shadow train, train filtering also checks the corresponding original train number (-70'000). Date filtering considers special holiday schedule mapping.")

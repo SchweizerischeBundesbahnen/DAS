@@ -1,6 +1,6 @@
 package ch.sbb.das.backend.indications.internal;
 
-import static ch.sbb.das.backend.indications.internal.RuIndicationController.API_DRIVER_RU_INDICATIONS;
+import static ch.sbb.das.backend.indications.internal.RuIndicationController.API_DRIVER_RU_INDICATION_MATCHES;
 import static ch.sbb.das.backend.indications.internal.RuIndicationController.API_RU_INDICATIONS;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.context.jdbc.SqlMergeMode.MergeMode.MERGE;
@@ -222,7 +222,7 @@ class RuIndicationControllerTest {
     @WithMockRole(roles = UserRole.OBSERVER)
     @Sql("classpath:createRuIndications.sql")
     void findRuIndicationMatches_ok_withMatchingRuIndications() throws Exception {
-        mockMvc.perform(post(API_DRIVER_RU_INDICATIONS)
+        mockMvc.perform(post(API_DRIVER_RU_INDICATION_MATCHES)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
                     {
@@ -244,7 +244,7 @@ class RuIndicationControllerTest {
     @WithMockRole(roles = UserRole.OBSERVER)
     @Sql("classpath:createRuIndications.sql")
     void findRuIndicationMatches_ok_withAcceptLanguageFr() throws Exception {
-        mockMvc.perform(post(API_DRIVER_RU_INDICATIONS)
+        mockMvc.perform(post(API_DRIVER_RU_INDICATION_MATCHES)
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.ACCEPT_LANGUAGE, "fr")
                 .content("""
@@ -264,7 +264,7 @@ class RuIndicationControllerTest {
     @WithMockRole(roles = UserRole.OBSERVER)
     @Sql("classpath:createRuIndications.sql")
     void findMatches_ok_noRuIndicationMatches() throws Exception {
-        mockMvc.perform(post(API_DRIVER_RU_INDICATIONS)
+        mockMvc.perform(post(API_DRIVER_RU_INDICATION_MATCHES)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
                     {
@@ -281,7 +281,7 @@ class RuIndicationControllerTest {
     @Test
     @WithMockRole(roles = UserRole.OBSERVER)
     void findRuIndicationMatches_invalid_missingFields() throws Exception {
-        mockMvc.perform(post(API_DRIVER_RU_INDICATIONS)
+        mockMvc.perform(post(API_DRIVER_RU_INDICATION_MATCHES)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
                     {
