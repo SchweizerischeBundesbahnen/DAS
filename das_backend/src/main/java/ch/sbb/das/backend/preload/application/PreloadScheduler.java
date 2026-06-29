@@ -70,6 +70,7 @@ public class PreloadScheduler {
         sferaService.disconnect();
         storageService.save(mapJourneyProfiles.values(), mapSegmentProfiles.values(), mapTrainCharacteristics.values());
         storageService.deleteAllBefore(DateTimeUtil.now().minusHours(cleanUpHours));
+        storageService.cleanupSegments();
         trainIdentificationsService.savePreloadedTrains(mapJourneyProfiles.keySet());
         log.info("Preload with {} JPs of requested {} JPs ended in {} ms", mapJourneyProfiles.size(), trainIdentifications.size(), System.currentTimeMillis() - startTime);
     }

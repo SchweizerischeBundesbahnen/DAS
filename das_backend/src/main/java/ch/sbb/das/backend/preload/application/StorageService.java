@@ -21,6 +21,7 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipInputStream;
@@ -38,6 +39,7 @@ public class StorageService {
     private static final String DUPLICATE_ENTRY_KEY = "duplicate entry";
     private static final int MAX_SEGMENTS_PER_ZIP = 1000;
     private static final String SEGMENT_PREFIX = "Segments";
+    private static final int STALE_SEGMENTS_DAYS = 30;
 
     private final XmlHelper xmlHelper;
     private final S3Service s3Service;
@@ -123,16 +125,7 @@ public class StorageService {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try (ZipOutputStream zos = new ZipOutputStream(baos, StandardCharsets.UTF_8)) {
-            if (existing.isPresent()) {
-                try (ZipInputStream zis = new ZipInputStream(new ByteArrayInputStream(existing.get()), StandardCharsets.UTF_8)) {
-                    ZipEntry entry;
-                    while ((entry = zis.getNextEntry()) != null) {
-                        zos.putNextEntry(new ZipEntry(entry.getName()));
-                        zis.transferTo(zos);
-                        zos.closeEntry();
-                    }
-                }
-            }
+            copyExistingEntries(existing, zos);
             writeSps(segmentProfiles, zos);
         }
 
@@ -217,5 +210,185 @@ public class StorageService {
         if (!keysToDelete.isEmpty()) {
             s3Service.deleteObjects(keysToDelete);
         }
+    }
+
+    /**
+     * Removes segments that have not been registered (lastSeen updated) for more than {@link #STALE_SEGMENTS_DAYS} days
+     * from their segment zip files, and compacts the remaining segments so that the zip files are filled up to
+     * {@link #MAX_SEGMENTS_PER_ZIP} entries again. The cleanup only runs once the number of stale segments exceeds
+     * {@link #MAX_SEGMENTS_PER_ZIP}, so that at least one full zip can be freed.
+     */
+    public void cleanupSegments() {
+        OffsetDateTime cutoff = DateTimeUtil.now().minusDays(STALE_SEGMENTS_DAYS);
+        long staleCount = preloadedSegmentProfileRepository.countByLastSeenBefore(cutoff);
+        if (staleCount <= MAX_SEGMENTS_PER_ZIP) {
+            log.debug("Segment cleanup skipped: only {} stale segments (threshold {})", staleCount, MAX_SEGMENTS_PER_ZIP);
+            return;
+        }
+        log.info("Segment cleanup started. staleCount={}", staleCount);
+
+        try {
+            List<PreloadedSegmentProfileEntity> stale = preloadedSegmentProfileRepository.findAllByLastSeenBefore(cutoff);
+
+            // 1) Remove stale segments from their respective zip files
+            Map<Integer, List<PreloadedSegmentProfileEntity>> staleByFile = stale.stream()
+                    .filter(e -> e.getFile() != null)
+                    .collect(Collectors.groupingBy(PreloadedSegmentProfileEntity::getFile));
+
+            for (Map.Entry<Integer, List<PreloadedSegmentProfileEntity>> entry : staleByFile.entrySet()) {
+                Set<String> entryNamesToRemove = entry.getValue().stream()
+                        .map(e -> buildSegmentEntryName(e.getId()))
+                        .collect(Collectors.toSet());
+                rewriteZipExcluding(entry.getKey(), entryNamesToRemove);
+            }
+            preloadedSegmentProfileRepository.deleteAll(stale);
+
+            // 2) Compact: fill lower zip files with segments pulled from the highest zip files
+            compactSegmentZips();
+
+            log.info("Segment cleanup finished. removed={}", stale.size());
+        } catch (IOException e) {
+            throw new RuntimeException("Segment cleanup failed", e);
+        }
+    }
+
+    private void compactSegmentZips() throws IOException {
+        int maxFile = preloadedSegmentProfileRepository.findFirstByOrderByFileDesc()
+                .map(PreloadedSegmentProfileEntity::getFile)
+                .orElse(0);
+
+        for (int target = 1; target < maxFile; target++) {
+            int targetCount = preloadedSegmentProfileRepository.countByFile(target);
+            while (targetCount < MAX_SEGMENTS_PER_ZIP && target < maxFile) {
+                int sourceCount = preloadedSegmentProfileRepository.countByFile(maxFile);
+                if (sourceCount == 0) {
+                    deleteSegmentZip(maxFile);
+                    maxFile--;
+                    continue;
+                }
+
+                int needed = MAX_SEGMENTS_PER_ZIP - targetCount;
+                int moveCount = Math.min(needed, sourceCount);
+                List<PreloadedSegmentProfileEntity> moving = preloadedSegmentProfileRepository.findAllByFile(maxFile)
+                        .stream()
+                        .limit(moveCount)
+                        .toList();
+                Set<String> movingEntryNames = moving.stream()
+                        .map(e -> buildSegmentEntryName(e.getId()))
+                        .collect(Collectors.toSet());
+
+                Map<String, byte[]> movedBytes = extractEntries(maxFile, movingEntryNames);
+
+                rewriteZipExcluding(maxFile, movingEntryNames);
+                appendEntries(target, movedBytes);
+
+                final int targetFile = target;
+                moving.forEach(e -> e.setFile(targetFile));
+                preloadedSegmentProfileRepository.saveAll(moving);
+
+                targetCount += moving.size();
+
+                if (preloadedSegmentProfileRepository.countByFile(maxFile) == 0) {
+                    deleteSegmentZip(maxFile);
+                    maxFile--;
+                }
+            }
+        }
+    }
+
+    private void rewriteZipExcluding(int fileIndex, Set<String> entryNamesToRemove) throws IOException {
+        String key = buildSegmentZipName(fileIndex);
+        Optional<byte[]> existing = s3Service.downloadZip(key);
+        if (existing.isEmpty()) {
+            return;
+        }
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        int keptEntries = 0;
+        try (ZipOutputStream zos = new ZipOutputStream(baos, StandardCharsets.UTF_8);
+             ZipInputStream zis = new ZipInputStream(new ByteArrayInputStream(existing.get()), StandardCharsets.UTF_8)) {
+            ZipEntry entry;
+            while ((entry = zis.getNextEntry()) != null) {
+                if (entryNamesToRemove.contains(entry.getName())) {
+                    continue;
+                }
+                zos.putNextEntry(new ZipEntry(entry.getName()));
+                zis.transferTo(zos);
+                zos.closeEntry();
+                keptEntries++;
+            }
+        }
+
+        if (keptEntries == 0) {
+            deleteSegmentZip(fileIndex);
+        } else {
+            s3Service.uploadZip(key, baos.toByteArray());
+        }
+    }
+
+    private Map<String, byte[]> extractEntries(int fileIndex, Set<String> entryNames) throws IOException {
+        Map<String, byte[]> result = new HashMap<>();
+        Optional<byte[]> existing = s3Service.downloadZip(buildSegmentZipName(fileIndex));
+        if (existing.isEmpty()) {
+            return result;
+        }
+        try (ZipInputStream zis = new ZipInputStream(new ByteArrayInputStream(existing.get()), StandardCharsets.UTF_8)) {
+            ZipEntry entry;
+            while ((entry = zis.getNextEntry()) != null) {
+                if (entryNames.contains(entry.getName())) {
+                    result.put(entry.getName(), zis.readAllBytes());
+                }
+            }
+        }
+        return result;
+    }
+
+    private void appendEntries(int fileIndex, Map<String, byte[]> entriesToAdd) throws IOException {
+        if (entriesToAdd.isEmpty()) {
+            return;
+        }
+        String key = buildSegmentZipName(fileIndex);
+        Optional<byte[]> existing = s3Service.downloadZip(key);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try (ZipOutputStream zos = new ZipOutputStream(baos, StandardCharsets.UTF_8)) {
+            copyExistingEntries(existing, zos);
+            for (Map.Entry<String, byte[]> e : entriesToAdd.entrySet()) {
+                try {
+                    zos.putNextEntry(new ZipEntry(e.getKey()));
+                    zos.write(e.getValue());
+                    zos.closeEntry();
+                } catch (ZipException ze) {
+                    if (ze.getMessage() != null && ze.getMessage().contains(DUPLICATE_ENTRY_KEY)) {
+                        log.warn("Duplicate file {} in zip file skipped while compacting", e.getKey());
+                        zos.closeEntry();
+                        continue;
+                    }
+                    throw ze;
+                }
+            }
+        }
+        s3Service.uploadZip(key, baos.toByteArray());
+    }
+
+    private void copyExistingEntries(Optional<byte[]> existing, ZipOutputStream zos) throws IOException {
+        if (existing.isPresent()) {
+            try (ZipInputStream zis = new ZipInputStream(new ByteArrayInputStream(existing.get()), StandardCharsets.UTF_8)) {
+                ZipEntry entry;
+                while ((entry = zis.getNextEntry()) != null) {
+                    zos.putNextEntry(new ZipEntry(entry.getName()));
+                    zis.transferTo(zos);
+                    zos.closeEntry();
+                }
+            }
+        }
+    }
+
+    private void deleteSegmentZip(int fileIndex) {
+        s3Service.deleteObjects(List.of(buildSegmentZipName(fileIndex)));
+    }
+
+    private String buildSegmentEntryName(String id) {
+        return DIR_SP + "SP_" + id + ".xml";
     }
 }

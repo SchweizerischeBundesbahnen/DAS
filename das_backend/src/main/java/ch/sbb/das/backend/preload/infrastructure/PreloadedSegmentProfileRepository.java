@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -23,4 +24,10 @@ public interface PreloadedSegmentProfileRepository extends JpaRepository<Preload
     Optional<PreloadedSegmentProfileEntity> findFirstByOrderByFileDesc();
 
     int countByFile(int file);
+
+    long countByLastSeenBefore(OffsetDateTime cutoff);
+
+    List<PreloadedSegmentProfileEntity> findAllByLastSeenBefore(OffsetDateTime cutoff);
+
+    List<PreloadedSegmentProfileEntity> findAllByFile(int file);
 }
