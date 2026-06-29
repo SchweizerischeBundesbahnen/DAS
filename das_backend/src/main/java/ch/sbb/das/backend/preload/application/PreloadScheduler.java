@@ -5,6 +5,7 @@ import ch.sbb.das.backend.preload.application.model.trainidentification.TrainIde
 import ch.sbb.das.backend.preload.domain.PreloadResult;
 import ch.sbb.das.backend.preload.domain.SegmentProfileIdentification;
 import ch.sbb.das.backend.preload.domain.TrainCharacteristicsIdentification;
+import ch.sbb.das.backend.preload.infrastructure.PreloadedSegmentProfileRepository;
 import ch.sbb.das.backend.preload.sfera.model.v0400.JourneyProfile;
 import ch.sbb.das.backend.preload.sfera.model.v0400.SegmentProfile;
 import ch.sbb.das.backend.preload.sfera.model.v0400.TrainCharacteristics;
@@ -71,7 +72,5 @@ public class PreloadScheduler {
         storageService.deleteAllBefore(DateTimeUtil.now().minusHours(cleanUpHours));
         trainIdentificationsService.savePreloadedTrains(mapJourneyProfiles.keySet());
         log.info("Preload with {} JPs of requested {} JPs ended in {} ms", mapJourneyProfiles.size(), trainIdentifications.size(), System.currentTimeMillis() - startTime);
-
     }
-
 }

@@ -1,12 +1,18 @@
 package ch.sbb.das.backend.preload.application;
 
 import ch.sbb.das.backend.common.DateTimeUtil;
+import ch.sbb.das.backend.preload.infrastructure.PreloadedSegmentProfileRepository;
 import ch.sbb.das.backend.preload.infrastructure.S3Service;
+import ch.sbb.das.backend.preload.infrastructure.model.entities.PreloadedSegmentProfileEntity;
 import ch.sbb.das.backend.preload.infrastructure.xml.XmlHelper;
 import ch.sbb.das.backend.preload.sfera.model.v0400.JourneyProfile;
 import ch.sbb.das.backend.preload.sfera.model.v0400.OTNID;
 import ch.sbb.das.backend.preload.sfera.model.v0400.SegmentProfile;
 import ch.sbb.das.backend.preload.sfera.model.v0400.TrainCharacteristics;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -14,13 +20,11 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
+import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
@@ -32,24 +36,28 @@ public class StorageService {
     private static final String ZIP_FILE_ENDING = ".zip";
     private static final DateTimeFormatter FILENAME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH-mm-ssX");
     private static final String DUPLICATE_ENTRY_KEY = "duplicate entry";
+    private static final int MAX_SEGMENTS_PER_ZIP = 1000;
+    private static final String SEGMENT_PREFIX = "Segments";
 
     private final XmlHelper xmlHelper;
     private final S3Service s3Service;
+    private final PreloadedSegmentProfileRepository preloadedSegmentProfileRepository;
 
-    public StorageService(XmlHelper xmlHelper, S3Service s3Service) {
+    public StorageService(XmlHelper xmlHelper, S3Service s3Service, PreloadedSegmentProfileRepository preloadedSegmentProfileRepository) {
         this.xmlHelper = xmlHelper;
         this.s3Service = s3Service;
+        this.preloadedSegmentProfileRepository = preloadedSegmentProfileRepository;
     }
 
     public void save(Collection<JourneyProfile> journeyProfiles, Collection<SegmentProfile> segmentProfiles, Collection<TrainCharacteristics> trainCharacteristics) {
         try {
-            String zipName = buildZipName();
+            saveSegments(segmentProfiles);
 
+            String zipName = buildZipName();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             try (ZipOutputStream zos = new ZipOutputStream(baos, StandardCharsets.UTF_8)) {
 
                 writeJps(journeyProfiles, zos);
-                writeSps(segmentProfiles, zos);
                 writeTcs(trainCharacteristics, zos);
             }
 
@@ -60,6 +68,81 @@ public class StorageService {
         }
     }
 
+    private void saveSegments(Collection<SegmentProfile> segmentProfiles) {
+        if (segmentProfiles == null || segmentProfiles.isEmpty()) {
+            return;
+        }
+        try {
+            int fileIndex = 1;
+            int fileCount = 0;
+            Optional<PreloadedSegmentProfileEntity> latestFile = preloadedSegmentProfileRepository.findFirstByOrderByFileDesc();
+            if (latestFile.isPresent()) {
+                fileIndex = latestFile.get().getFile();
+                fileCount = preloadedSegmentProfileRepository.countByFile(fileIndex);
+            }
+
+            List<SegmentProfile> remaining = new ArrayList<>(segmentProfiles);
+            OffsetDateTime now = DateTimeUtil.now();
+            int index = 0;
+
+            while (index < remaining.size()) {
+                List<PreloadedSegmentProfileEntity> toSave = new ArrayList<>();
+
+                if (fileCount >= MAX_SEGMENTS_PER_ZIP) {
+                    fileIndex++;
+                    fileCount = 0;
+                }
+                int spaceLeft = MAX_SEGMENTS_PER_ZIP - fileCount;
+                int end = Math.min(index + spaceLeft, remaining.size());
+                List<SegmentProfile> batch = remaining.subList(index, end);
+
+                writeSegmentsToZip(fileIndex, batch);
+
+                for (SegmentProfile sp : batch) {
+                    toSave.add(PreloadedSegmentProfileEntity.builder()
+                            .id(String.format("%s_%s_%s", sp.getSPID(), sp.getSPVersionMajor(), sp.getSPVersionMinor()))
+                            .lastSeen(now)
+                            .file(fileIndex)
+                            .build());
+                }
+
+                fileCount += batch.size();
+                index = end;
+
+                preloadedSegmentProfileRepository.saveAll(toSave);
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException("Preload saveSegments failed", e);
+        }
+    }
+
+    private void writeSegmentsToZip(int fileIndex, Collection<SegmentProfile> segmentProfiles) throws IOException {
+        String key = buildSegmentZipName(fileIndex);
+        Optional<byte[]> existing = s3Service.downloadZip(key);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try (ZipOutputStream zos = new ZipOutputStream(baos, StandardCharsets.UTF_8)) {
+            if (existing.isPresent()) {
+                try (ZipInputStream zis = new ZipInputStream(new ByteArrayInputStream(existing.get()), StandardCharsets.UTF_8)) {
+                    ZipEntry entry;
+                    while ((entry = zis.getNextEntry()) != null) {
+                        zos.putNextEntry(new ZipEntry(entry.getName()));
+                        zis.transferTo(zos);
+                        zos.closeEntry();
+                    }
+                }
+            }
+            writeSps(segmentProfiles, zos);
+        }
+
+        s3Service.uploadZip(key, baos.toByteArray());
+    }
+
+    private String buildSegmentZipName(Integer index) {
+        return String.format("%s_%d.zip", SEGMENT_PREFIX, index);
+    }
+
     private String buildZipName() {
         return FILENAME_FORMATTER.format(DateTimeUtil.now().toInstant().atZone(ZoneOffset.UTC)) + ZIP_FILE_ENDING;
     }
@@ -68,10 +151,10 @@ public class StorageService {
         for (JourneyProfile jp : jps) {
             OTNID otnid = jp.getTrainIdentification().getOTNID();
             String filename = String.format("JP_%s_%s_%s_%s.xml",
-                otnid.getTeltsiCompany(),
-                otnid.getTeltsiOperationalTrainNumber(),
-                otnid.getTeltsiStartDate(),
-                jp.getJPVersion());
+                    otnid.getTeltsiCompany(),
+                    otnid.getTeltsiOperationalTrainNumber(),
+                    otnid.getTeltsiStartDate(),
+                    jp.getJPVersion());
             writeXmlEntry(zos, DIR_JP + filename, jp);
         }
     }
@@ -79,9 +162,9 @@ public class StorageService {
     private void writeSps(Collection<SegmentProfile> sps, ZipOutputStream zos) throws IOException {
         for (SegmentProfile sp : sps) {
             String filename = String.format("SP_%s_%s_%s.xml",
-                sp.getSPID(),
-                sp.getSPVersionMajor(),
-                sp.getSPVersionMinor());
+                    sp.getSPID(),
+                    sp.getSPVersionMajor(),
+                    sp.getSPVersionMinor());
             writeXmlEntry(zos, DIR_SP + filename, sp);
         }
     }
@@ -89,9 +172,9 @@ public class StorageService {
     private void writeTcs(Collection<TrainCharacteristics> tcs, ZipOutputStream zos) throws IOException {
         for (TrainCharacteristics tc : tcs) {
             String filename = String.format("TC_%s_%s_%s.xml",
-                tc.getTCID(),
-                tc.getTCVersionMajor(),
-                tc.getTCVersionMinor());
+                    tc.getTCID(),
+                    tc.getTCVersionMajor(),
+                    tc.getTCVersionMinor());
             writeXmlEntry(zos, DIR_TC + filename, tc);
         }
     }
@@ -118,18 +201,18 @@ public class StorageService {
 
     void deleteAllBefore(OffsetDateTime cutoffDate) {
         List<String> keysToDelete = s3Service.listObjects().stream()
-            .filter(k -> k != null && k.endsWith(ZIP_FILE_ENDING))
-            .filter(k -> {
-                try {
-                    String base = k.substring(0, k.length() - ZIP_FILE_ENDING.length());
-                    OffsetDateTime ts = OffsetDateTime.parse(base, FILENAME_FORMATTER);
-                    return ts.isBefore(cutoffDate);
-                } catch (DateTimeParseException e) {
-                    log.warn("Unexpected zip file name while preload cleanup. name={} was not deleted", k);
-                    return false;
-                }
-            })
-            .toList();
+                .filter(k -> k != null && k.endsWith(ZIP_FILE_ENDING) && !k.contains(SEGMENT_PREFIX))
+                .filter(k -> {
+                    try {
+                        String base = k.substring(0, k.length() - ZIP_FILE_ENDING.length());
+                        OffsetDateTime ts = OffsetDateTime.parse(base, FILENAME_FORMATTER);
+                        return ts.isBefore(cutoffDate);
+                    } catch (DateTimeParseException e) {
+                        log.warn("Unexpected zip file name while preload cleanup. name={} was not deleted", k);
+                        return false;
+                    }
+                })
+                .toList();
 
         if (!keysToDelete.isEmpty()) {
             s3Service.deleteObjects(keysToDelete);
