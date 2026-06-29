@@ -310,6 +310,7 @@
   "c_main_signal_function_etcs_stop_sign": "SAE / SPE",
   "c_main_signal_function_etcs_stop_sign_short": "SAE / SPE",
   "c_main_signal_function_track_end": "Signal d'extrémité de voie",
+  "c_main_signal_function_track_end_short": "S.extrémité",
   "c_error_code": "Code d’erreur",
   "c_something_went_wrong": "Un problème est survenu.",
   "c_error_connection_failed": "Échec de la connexion",
