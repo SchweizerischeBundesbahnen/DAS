@@ -54,13 +54,16 @@ extension BaseDataExtension on Iterable<BaseData> {
         } else {
           final previousBaliseGroup = baliseGroups.last;
 
-          if (!previousBaliseGroup.canGroupWith(group) ||
-              resultList.indexOf(previousBaliseGroup.levelCrossings.last) + 1 != resultList.indexOf(group.balise)) {
+          if (previousBaliseGroup.canGroupWith(group) &&
+              (previousBaliseGroup.pointsBetween.contains(group.balise) ||
+                  resultList.indexOf(previousBaliseGroup.levelCrossings.last) + 1 ==
+                      resultList.indexOf(group.balise))) {
+            // Add to existing group if we can group with the previous and are directly after
+            baliseGroups.add(group);
+          } else {
             // Finish group, if we can't group with the previous, or are not directly after
             addBaliseLevelCrossingGroup();
           }
-
-          baliseGroups.add(group);
         }
       } else {
         _handleLevelCrossingGroups(resultList, expandedGroups, group);

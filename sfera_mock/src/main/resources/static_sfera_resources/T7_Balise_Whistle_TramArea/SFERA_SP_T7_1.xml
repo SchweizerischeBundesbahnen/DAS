@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA.xsd" SP_ID="T7_1" SP_VersionMajor="2"
-                SP_VersionMinor="2" SP_Length="2000" SP_Status="Valid">
+                SP_VersionMinor="4" SP_Length="2000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
     </SP_Zone>
@@ -37,7 +37,7 @@
             <Balise location="600" levelCrossingGuarding="true" amountLevelCrossings="1" identifier="LXA_1"/>
         </BaliseGroup>
         <BaliseGroup>
-            <Balise location="602" levelCrossingGuarding="true" amountLevelCrossings="1" identifier="LXA_2"/>
+            <Balise location="601" levelCrossingGuarding="true" amountLevelCrossings="1" identifier="LXA_2"/>
         </BaliseGroup>
         <BaliseGroup>
             <Balise location="604" levelCrossingGuarding="true" amountLevelCrossings="1" identifier="LXA_3"/>
@@ -116,7 +116,7 @@
     </SP_Areas>
 
     <SP_ContextInformation>
-        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="601" endLocation="601" identifier="LXA_1"/>
+        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="602" endLocation="602" identifier="LXA_1"/>
         <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="603" endLocation="603" identifier="LXA_2"/>
         <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="605" endLocation="605" identifier="LXA_3"/>
         <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="607" endLocation="607" identifier="LXA_4"/>

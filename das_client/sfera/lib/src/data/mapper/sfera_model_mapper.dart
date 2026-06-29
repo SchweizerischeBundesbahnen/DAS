@@ -694,6 +694,7 @@ class SferaModelMapper {
 
   static List<LevelCrossingGroup> _parseLevelCrossingAndBaliseGroups(List<JourneyPoint> journeyPoints) {
     final List<LevelCrossingGroup> result = [];
+    final Set<LevelCrossing> matchedLevelCrossings = {};
 
     for (int i = 0; i < journeyPoints.length; i++) {
       final currentElement = journeyPoints[i];
@@ -704,8 +705,8 @@ class SferaModelMapper {
           result.add(
             SupervisedLevelCrossingGroup(
               balise: currentElement,
-              levelCrossings: [],
-              pointsBetween: [],
+              levelCrossings: const [],
+              pointsBetween: const [],
             ),
           );
         } else {
@@ -716,6 +717,7 @@ class SferaModelMapper {
               )
               .toList();
           final otherPoints = <JourneyPoint>[];
+          matchedLevelCrossings.addAll(levelCrossings);
 
           if (levelCrossings.length < currentElement.amountLevelCrossings) {
             _log.warning(
@@ -742,7 +744,8 @@ class SferaModelMapper {
           );
         }
       }
-      if (currentElement is LevelCrossing) {
+
+      if (currentElement is LevelCrossing && !matchedLevelCrossings.contains(currentElement)) {
         final levelCrossings = [currentElement];
         for (int j = i + 1; j < journeyPoints.length; j++) {
           final nextElement = journeyPoints[j];

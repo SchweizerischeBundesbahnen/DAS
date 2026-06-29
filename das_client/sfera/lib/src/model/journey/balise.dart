@@ -24,7 +24,7 @@ class Balise extends JourneyPoint {
           runtimeType == other.runtimeType &&
           order == other.order &&
           amountLevelCrossings == other.amountLevelCrossings &&
-          ListEquality().equals(kilometre, other.kilometre) &&
+          const ListEquality().equals(kilometre, other.kilometre) &&
           identifier == other.identifier;
 
   @override
