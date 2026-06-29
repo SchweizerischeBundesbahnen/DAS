@@ -42,7 +42,7 @@ public class S3Service {
                 .build();
             ResponseBytes<GetObjectResponse> response = s3Client.getObjectAsBytes(get);
             return Optional.of(response.asByteArray());
-        } catch (NoSuchKeyException e) {
+        } catch (NoSuchKeyException _) {
             return Optional.empty();
         }
     }

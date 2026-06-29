@@ -191,7 +191,7 @@ public class SferaService {
             if (sferaStore.getSp(spId) != null || sferaStore.hasPreloadedSegmentProfile(spId)) {
                 missingSps.remove(spId);
                 return;
-            };
+            }
 
             Optional<PreloadedSegmentProfileEntity> preloadedSegmentProfile = preloadedSegmentProfileRepository.findById(String.format("%s_%s_%s", spId.spid(), spId.spVersionMajor(), spId.spVersionMinor()));
             if (preloadedSegmentProfile.isPresent()) {
