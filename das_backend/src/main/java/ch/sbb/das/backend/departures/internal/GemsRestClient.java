@@ -37,7 +37,7 @@ public class GemsRestClient {
 
     public ResponseEntity<?> confirm(String messageId, String deviceId) {
         return restClient.post()
-            .uri("/rest/das/confirm/" + messageId + "/" + deviceId)
+            .uri("/rest/das/confirm/{messageId}/{deviceId}", messageId, deviceId)
             .retrieve()
             .toEntity(String.class);
     }
