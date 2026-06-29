@@ -6,7 +6,7 @@ import static ch.sbb.das.backend.companies.internal.CompanyController.API_COMPAN
 import static ch.sbb.das.backend.externallinks.internal.ExternalLinkController.API_ADMIN_EXTERNAL_LINKS;
 import static ch.sbb.das.backend.externallinks.internal.ExternalLinkController.API_DRIVER_EXTERNAL_LINKS;
 import static ch.sbb.das.backend.formation.api.v1.FormationController.API_FORMATIONS;
-import static ch.sbb.das.backend.indications.internal.RuIndicationController.API_DRIVER_RU_INDICATIONS;
+import static ch.sbb.das.backend.indications.internal.RuIndicationController.API_DRIVER_RU_INDICATION_MATCHES;
 import static ch.sbb.das.backend.indications.internal.RuIndicationController.API_RU_INDICATIONS;
 import static ch.sbb.das.backend.indications.internal.RuIndicationTemplateController.API_RU_INDICATION_TEMPLATES;
 import static ch.sbb.das.backend.indications.internal.SpecialHolidayController.API_SPECIAL_HOLIDAYS;
@@ -41,7 +41,7 @@ public class WebSecurityConfig {
         http.authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .requestMatchers("/actuator/health/**").permitAll()
-                .requestMatchers(API_SETTINGS, API_FORMATIONS, API_CUSTOMER_ORIENTED_DEPARTURE + "/**", API_DRIVER_RU_INDICATIONS, API_DRIVER_EXTERNAL_LINKS)
+                .requestMatchers(API_SETTINGS, API_FORMATIONS, API_CUSTOMER_ORIENTED_DEPARTURE + "/**", API_DRIVER_RU_INDICATION_MATCHES, API_DRIVER_EXTERNAL_LINKS)
                 .hasAnyRole(UserRole.OBSERVER, UserRole.DRIVER)
                 .requestMatchers(API_APP_VERSIONS + "/**", API_LOCATIONS)
                 .hasRole(UserRole.ADMIN)
