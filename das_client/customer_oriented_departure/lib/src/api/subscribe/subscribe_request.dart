@@ -21,7 +21,7 @@ class SubscribeRequest {
     required DateTime expiresAt,
     required bool isDriver,
   }) async {
-    final url = Uri.https(baseUrl, 'v1/customer-oriented-departure/subscribe');
+    final url = Uri.https(baseUrl, 'driver/v1/departures/subscribe');
     final requestBody = SubscribeRequestBody(
       type: requestType.name.toUpperCase(),
       evu: evu,
