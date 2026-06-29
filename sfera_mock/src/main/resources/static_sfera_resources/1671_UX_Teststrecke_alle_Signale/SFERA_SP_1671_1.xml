@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA.xsd" SP_ID="1671_1"
-                SP_VersionMajor="3" SP_VersionMinor="7" SP_Length="36000" SP_Status="Valid">
+                SP_VersionMajor="3" SP_VersionMinor="8" SP_Length="36000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
@@ -218,28 +218,28 @@
 
 
         <BaliseGroup>
-            <Balise location="10190" levelCrossingGuarding="true" amountLevelCrossings="3"/>
+            <Balise location="10190" levelCrossingGuarding="true" amountLevelCrossings="3" identifier="LXA_1"/>
         </BaliseGroup>
         <BaliseGroup>
-            <Balise location="10870" levelCrossingGuarding="true" amountLevelCrossings="1"/>
+            <Balise location="10870" levelCrossingGuarding="true" amountLevelCrossings="1" identifier="LXA_2"/>
         </BaliseGroup>
         <BaliseGroup>
-            <Balise location="20510" levelCrossingGuarding="true" amountLevelCrossings="1"/>
+            <Balise location="20510" levelCrossingGuarding="true" amountLevelCrossings="1" identifier="LXA_3"/>
         </BaliseGroup>
         <BaliseGroup>
-            <Balise location="20610" levelCrossingGuarding="true" amountLevelCrossings="1"/>
+            <Balise location="20610" levelCrossingGuarding="true" amountLevelCrossings="1" identifier="LXA_4"/>
         </BaliseGroup>
         <BaliseGroup>
-            <Balise location="25140" levelCrossingGuarding="true" amountLevelCrossings="1"/>
+            <Balise location="25140" levelCrossingGuarding="true" amountLevelCrossings="1" identifier="LXA_5"/>
         </BaliseGroup>
         <BaliseGroup>
-            <Balise location="28590" levelCrossingGuarding="true" amountLevelCrossings="1"/>
+            <Balise location="28590" levelCrossingGuarding="true" amountLevelCrossings="1" identifier="LXA_6"/>
         </BaliseGroup>
         <BaliseGroup>
-            <Balise location="32100" levelCrossingGuarding="true" amountLevelCrossings="1"/>
+            <Balise location="32100" levelCrossingGuarding="true" amountLevelCrossings="1" identifier="LXA_7"/>
         </BaliseGroup>
         <BaliseGroup>
-            <Balise location="33420" levelCrossingGuarding="true" amountLevelCrossings="1"/>
+            <Balise location="33420" levelCrossingGuarding="true" amountLevelCrossings="1" identifier="LXA_8"/>
         </BaliseGroup>
 
 
@@ -746,15 +746,15 @@
 
     <SP_ContextInformation>
 
-        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="10200" endLocation="10200"/>
-        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="10290" endLocation="10290"/>
-        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="10880" endLocation="10880"/>
-        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="20520" endLocation="20520"/>
-        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="20620" endLocation="20620"/>
-        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="25145" endLocation="25145"/>
-        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="28600" endLocation="28600"/>
-        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="32110" endLocation="32110"/>
-        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="33430" endLocation="33430"/>
+        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="10200" endLocation="10200" identifier="LXA_1"/>
+        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="10290" endLocation="10290" identifier="LXA_1"/>
+        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="10880" endLocation="10880" identifier="LXA_1"/>
+        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="20520" endLocation="20520" identifier="LXA_2"/>
+        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="20620" endLocation="20620" identifier="LXA_3"/>
+        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="25145" endLocation="25145" identifier="LXA_4"/>
+        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="28600" endLocation="28600" identifier="LXA_5"/>
+        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="32110" endLocation="32110" identifier="LXA_6"/>
+        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="33430" endLocation="33430" identifier="LXA_7"/>
 
         <ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
             <Contact mainContact="true">

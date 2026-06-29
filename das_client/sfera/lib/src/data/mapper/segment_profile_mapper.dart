@@ -437,6 +437,7 @@ class SegmentProfileMapper {
         order: calculateOrder(mapperData.segmentIndex, balise.location),
         kilometre: mapperData.kilometreMap[balise.location] ?? [],
         amountLevelCrossings: balise.amountLevelCrossings,
+        identifier: balise.identifier,
       );
     });
   }
@@ -457,6 +458,7 @@ class SegmentProfileMapper {
       return LevelCrossing(
         order: calculateOrder(mapperData.segmentIndex, levelCrossing.startLocation),
         kilometre: mapperData.kilometreMap[levelCrossing.startLocation] ?? [],
+        identifier: levelCrossing.identifier,
       );
     });
   }

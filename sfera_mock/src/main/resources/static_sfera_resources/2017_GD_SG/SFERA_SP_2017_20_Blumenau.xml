@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:noNamespaceSchemaLocation="../../SFERA.xsd"
-                SP_ID="2017_20_Blumenau" SP_VersionMajor="1" SP_VersionMinor="1" SP_Length="2900" SP_Status="Valid">
+                SP_ID="2017_20_Blumenau" SP_VersionMajor="1" SP_VersionMinor="2" SP_Length="2900" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
@@ -28,7 +28,7 @@
         </Signal>
 
         <BaliseGroup>
-            <Balise location="962" levelCrossingGuarding="true" amountLevelCrossings="1"/>
+            <Balise location="962" levelCrossingGuarding="true" amountLevelCrossings="1" identifier="LXG_1"/>
         </BaliseGroup>
 
         <NetworkSpecificPoint location="1900" identifier="2820BC1BC70A4DDF91D5CDA2331EB55C">
@@ -95,7 +95,7 @@
 
     <SP_ContextInformation>
 
-        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="1792" endLocation="1792"/>
+        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="1792" endLocation="1792" identifier="LXG_1"/>
 
         <ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
             <Contact mainContact="true">

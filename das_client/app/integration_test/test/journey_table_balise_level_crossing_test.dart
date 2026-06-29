@@ -48,7 +48,7 @@ void main() {
     expect(levelCrossingIcon, findsNothing);
 
     var detailRowBalise = findDASTableRowByText('41.552');
-    var detailRowLevelCrossing = findDASTableRowByText('41.492');
+    var detailRowLevelCrossing = findDASTableRowByText('41.190');
 
     expect(detailRowLevelCrossing, findsNothing);
     expect(detailRowBalise, findsNothing);
@@ -57,7 +57,7 @@ void main() {
     await tapElement(tester, groupOf5BaliseRow);
 
     detailRowBalise = findDASTableRowByText('41.552');
-    detailRowLevelCrossing = findDASTableRowByText('41.492');
+    detailRowLevelCrossing = findDASTableRowByText('41.190');
 
     expect(detailRowLevelCrossing, findsOneWidget);
     expect(detailRowBalise, findsOneWidget);
