@@ -31,7 +31,7 @@ public class DepartureController {
     private static final String PATH_SEGMENT_DEPARTURES = "/departures";
     public static final String API_DEPARTURES = ApiDocumentation.DRIVER_URI + ApiDocumentation.DRIVER_VERSION_URI_V1 + PATH_SEGMENT_DEPARTURES;
 
-    private final DepartureRestClient departureRestClient;
+    private final GemsRestClient gemsRestClient;
 
     @PostMapping(API_DEPARTURES + "/subscribe")
     @ApiResponse(responseCode = "200", description = "OK")
@@ -42,7 +42,7 @@ public class DepartureController {
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
         @RequestBody SubscribeRequest request) {
         try {
-            return departureRestClient.subscribe(request);
+            return gemsRestClient.subscribe(request);
         } catch (RestClientResponseException ex) {
             throw new ProxyClientException(ex.getStatusCode(), ex.getResponseBodyAsString());
         }
@@ -59,7 +59,7 @@ public class DepartureController {
         @PathVariable String deviceId
     ) {
         try {
-            return departureRestClient.confirm(messageId, deviceId);
+            return gemsRestClient.confirm(messageId, deviceId);
         } catch (RestClientResponseException ex) {
             throw new ProxyClientException(ex.getStatusCode(), ex.getResponseBodyAsString());
         }

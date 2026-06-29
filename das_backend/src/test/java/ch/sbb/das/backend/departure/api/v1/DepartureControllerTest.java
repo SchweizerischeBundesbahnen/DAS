@@ -9,7 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.das.backend.departures.internal.DepartureController;
-import ch.sbb.das.backend.departures.internal.DepartureRestClient;
+import ch.sbb.das.backend.departures.internal.GemsRestClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
@@ -27,11 +27,11 @@ class DepartureControllerTest {
     MockMvc mvc;
 
     @MockitoBean
-    DepartureRestClient departureRestClient;
+    GemsRestClient gemsRestClient;
 
     @Test
     void subscribe_delegatesToClient() throws Exception {
-        when(departureRestClient.subscribe(any())).thenReturn(ResponseEntity.noContent().build());
+        when(gemsRestClient.subscribe(any())).thenReturn(ResponseEntity.noContent().build());
 
         mvc.perform(post(API_DEPARTURES + "/subscribe")
                 .contentType("application/json")
@@ -49,28 +49,28 @@ class DepartureControllerTest {
                     """))
             .andExpect(status().isNoContent());
 
-        verify(departureRestClient).subscribe(any());
+        verify(gemsRestClient).subscribe(any());
     }
 
     @Test
     void confirm_delegatesToClient() throws Exception {
-        when(departureRestClient.confirm("m1", "d1")).thenReturn(ResponseEntity.noContent().build());
+        when(gemsRestClient.confirm("m1", "d1")).thenReturn(ResponseEntity.noContent().build());
 
         mvc.perform(post(API_DEPARTURES + "/confirm/m1/d1"))
             .andExpect(status().isNoContent());
 
-        verify(departureRestClient).confirm("m1", "d1");
+        verify(gemsRestClient).confirm("m1", "d1");
     }
 
     @Test
     void confirm_error502() throws Exception {
-        when(departureRestClient.confirm("m1", "d1")).thenThrow(new RestClientResponseException("Message", 400, "Bad request", null, "Validation error".getBytes(), null));
+        when(gemsRestClient.confirm("m1", "d1")).thenThrow(new RestClientResponseException("Message", 400, "Bad request", null, "Validation error".getBytes(), null));
 
         mvc.perform(post(API_DEPARTURES + "/confirm/m1/d1"))
             .andExpect(status().isBadGateway())
             .andExpect(jsonPath("$.title").value("Downstream Service Error"))
             .andExpect(jsonPath("$.detail").value("400: Validation error"));
 
-        verify(departureRestClient).confirm("m1", "d1");
+        verify(gemsRestClient).confirm("m1", "d1");
     }
 }
