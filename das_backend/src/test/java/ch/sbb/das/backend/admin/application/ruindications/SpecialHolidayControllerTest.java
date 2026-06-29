@@ -29,6 +29,10 @@ class SpecialHolidayControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    private static String futureDate(int daysInFuture) {
+        return LocalDate.now().plusDays(daysInFuture).toString();
+    }
+
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createSpecialHolidays.sql")
@@ -122,20 +126,22 @@ class SpecialHolidayControllerTest {
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void create_SpecialHoliday_ok() throws Exception {
+        String date = futureDate(30);
+
         mockMvc.perform(post(API_SPECIAL_HOLIDAYS)
                 .contentType("application/json")
                 .content("""
                     {
                         "name": "Sechseläuten",
-                        "date": "2026-04-20",
+                        "date": "%s",
                         "scheduleType": "MONDAY_SCHEDULE",
                         "companies": ["1111", "2222"]
                     }
-                    """))
+                    """.formatted(date)))
             .andExpect(status().isCreated())
             .andExpect(jsonPath("$.data[0].id").value(1))
             .andExpect(jsonPath("$.data[0].name").value("Sechseläuten"))
-            .andExpect(jsonPath("$.data[0].date").value("2026-04-20"))
+            .andExpect(jsonPath("$.data[0].date").value(date))
             .andExpect(jsonPath("$.data[0].scheduleType").value("MONDAY_SCHEDULE"))
             .andExpect(jsonPath("$.data[0].companies", containsInAnyOrder("1111", "2222")))
             .andExpect(jsonPath("$.data[0].lastModifiedAt").isNotEmpty())
@@ -145,16 +151,18 @@ class SpecialHolidayControllerTest {
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void create_SpecialHoliday_invalid_unknownCompany() throws Exception {
+        String date = futureDate(30);
+
         mockMvc.perform(post(API_SPECIAL_HOLIDAYS)
                 .contentType("application/json")
                 .content("""
                     {
                         "name": "Invalid Holiday",
-                        "date": "2026-04-20",
+                        "date": "%s",
                         "scheduleType": "SUNDAY_SCHEDULE",
                         "companies": ["1234"]
                     }
-                    """))
+                    """.formatted(date)))
             .andExpect(status().isForbidden())
             .andExpect(jsonPath("$.detail").value("Not allowed!"));
     }
@@ -162,16 +170,18 @@ class SpecialHolidayControllerTest {
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void create_SpecialHoliday_invalid_emptyCompanies() throws Exception {
+        String date = futureDate(30);
+
         mockMvc.perform(post(API_SPECIAL_HOLIDAYS)
                 .contentType("application/json")
                 .content("""
                     {
                         "name": "Invalid Holiday",
-                        "date": "2026-04-20",
+                        "date": "%s",
                         "scheduleType": "SUNDAY_SCHEDULE",
                         "companies": []
                     }
-                    """))
+                    """.formatted(date)))
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("$.detail").value("Invalid request content. -> companies=must not be empty"));
     }
@@ -180,20 +190,22 @@ class SpecialHolidayControllerTest {
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createSpecialHolidays.sql")
     void update_SpecialHoliday_ok() throws Exception {
+        String date = futureDate(60);
+
         mockMvc.perform(put(API_SPECIAL_HOLIDAYS + "/1")
                 .contentType("application/json")
                 .content("""
                     {
                         "name": "Updated Holiday",
-                        "date": "2026-12-12",
+                        "date": "%s",
                         "scheduleType": "MONDAY_SCHEDULE",
                         "companies": [ "3333", "1111" ]
                     }
-                    """))
+                    """.formatted(date)))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data[0].id").value(1))
             .andExpect(jsonPath("$.data[0].name").value("Updated Holiday"))
-            .andExpect(jsonPath("$.data[0].date").value("2026-12-12"))
+            .andExpect(jsonPath("$.data[0].date").value(date))
             .andExpect(jsonPath("$.data[0].scheduleType").value("MONDAY_SCHEDULE"))
             .andExpect(jsonPath("$.data[0].companies", containsInAnyOrder("3333", "1111")))
             .andExpect(jsonPath("$.data[0].lastModifiedAt").isNotEmpty())
@@ -203,16 +215,18 @@ class SpecialHolidayControllerTest {
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void update_SpecialHoliday_notFound() throws Exception {
+        String date = futureDate(60);
+
         mockMvc.perform(put(API_SPECIAL_HOLIDAYS + "/99")
                 .contentType("application/json")
                 .content("""
                     {
                         "name": "Updated Holiday",
-                        "date": "2026-12-12",
+                        "date": "%s",
                         "scheduleType": "MONDAY_SCHEDULE",
                         "companies": ["1111"]
                     }
-                    """))
+                    """.formatted(date)))
             .andExpect(status().isNotFound());
     }
 
@@ -220,16 +234,18 @@ class SpecialHolidayControllerTest {
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createSpecialHolidays.sql")
     void update_SpecialHoliday_forbidden_existingCompanyNotAuthorized() throws Exception {
+        String date = futureDate(60);
+
         mockMvc.perform(put(API_SPECIAL_HOLIDAYS + "/3")
                 .contentType("application/json")
                 .content("""
                     {
                         "name": "Updated Holiday",
-                        "date": "2026-12-12",
+                        "date": "%s",
                         "scheduleType": "MONDAY_SCHEDULE",
                         "companies": ["1111"]
                     }
-                    """))
+                    """.formatted(date)))
             .andExpect(status().isForbidden())
             .andExpect(jsonPath("$.detail").value("Not allowed!"));
     }

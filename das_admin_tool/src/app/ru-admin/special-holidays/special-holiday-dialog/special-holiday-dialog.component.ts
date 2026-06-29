@@ -1,14 +1,14 @@
-import { Component, inject } from '@angular/core';
-import { SbbTitleModule } from '@sbb-esta/lyne-angular/title';
-import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
-import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core/overlay';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators, } from '@angular/forms';
-import { SCHEDULE_TYPE_LABELS, ScheduleType, SpecialHoliday } from '../../ru-admin-api';
-import { SbbDatepickerModule } from '@sbb-esta/lyne-angular/datepicker';
-import { SbbRadioButtonModule } from '@sbb-esta/lyne-angular/radio-button';
-import { CompaniesInputComponent } from '../../../shared/companies-input/companies-input.component';
-import { toUtcDateOnly } from '../../../shared/date-util';
-import { BaseDialog } from '../../../shared/base-dialog/base-dialog.component';
+import {Component, inject} from '@angular/core';
+import {SbbTitleModule} from '@sbb-esta/lyne-angular/title';
+import {SbbFormFieldModule} from '@sbb-esta/lyne-angular/form-field';
+import {SBB_OVERLAY_DATA} from '@sbb-esta/lyne-angular/core/overlay';
+import {FormControl, FormGroup, ReactiveFormsModule, Validators,} from '@angular/forms';
+import {SCHEDULE_TYPE_LABELS, ScheduleType, SpecialHoliday} from '../../ru-admin-api';
+import {SbbDatepickerModule} from '@sbb-esta/lyne-angular/datepicker';
+import {SbbRadioButtonModule} from '@sbb-esta/lyne-angular/radio-button';
+import {CompaniesInputComponent} from '../../../shared/companies-input/companies-input.component';
+import {toUtcDateOnly} from '../../../shared/date-util';
+import {BaseDialog} from '../../../shared/base-dialog/base-dialog.component';
 
 export type SpecialHolidayDialogEditResult = SpecialHoliday | 'delete';
 
@@ -28,6 +28,7 @@ export type SpecialHolidayDialogEditResult = SpecialHoliday | 'delete';
 })
 export class SpecialHolidayDialog {
   protected readonly title: string;
+  protected readonly minDate = new Date();
 
   protected specialHolidayForm = new FormGroup({
     name: new FormControl('', {nonNullable: true, validators: [Validators.required]}),
