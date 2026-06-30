@@ -1,15 +1,17 @@
 package ch.sbb.das.backend.preload.infrastructure.model.entities;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import java.time.OffsetDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.OffsetDateTime;
 
 @Entity
 @Table(name = "preloaded_segment_profile")
@@ -21,9 +23,13 @@ import java.time.OffsetDateTime;
 public class PreloadedSegmentProfileEntity {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "preloaded_segment_id_seq")
+    @SequenceGenerator(name = "preloaded_segment_id_seq", allocationSize = 1)
+    private Integer id;
+
+    private String spIdVersion;
 
     private OffsetDateTime lastSeen;
 
-    private Integer file;
+    private Integer fileId;
 }

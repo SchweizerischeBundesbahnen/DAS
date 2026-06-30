@@ -9,9 +9,6 @@ import ch.sbb.das.backend.preload.sfera.model.v0400.JourneyProfile;
 import ch.sbb.das.backend.preload.sfera.model.v0400.OTNID;
 import ch.sbb.das.backend.preload.sfera.model.v0400.SegmentProfile;
 import ch.sbb.das.backend.preload.sfera.model.v0400.TrainCharacteristics;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -20,12 +17,20 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
@@ -75,12 +80,12 @@ public class StorageService {
             return;
         }
         try {
-            int fileIndex = 1;
+            int fileId = 1;
             int fileCount = 0;
-            Optional<PreloadedSegmentProfileEntity> latestFile = preloadedSegmentProfileRepository.findFirstByOrderByFileDesc();
+            Optional<PreloadedSegmentProfileEntity> latestFile = preloadedSegmentProfileRepository.findFirstByOrderByFileIdDesc();
             if (latestFile.isPresent()) {
-                fileIndex = latestFile.get().getFile();
-                fileCount = preloadedSegmentProfileRepository.countByFile(fileIndex);
+                fileId = latestFile.get().getFileId();
+                fileCount = preloadedSegmentProfileRepository.countByFileId(fileId);
             }
 
             List<SegmentProfile> remaining = new ArrayList<>(segmentProfiles);
@@ -91,21 +96,21 @@ public class StorageService {
                 List<PreloadedSegmentProfileEntity> toSave = new ArrayList<>();
 
                 if (fileCount >= MAX_SEGMENTS_PER_ZIP) {
-                    fileIndex++;
+                    fileId++;
                     fileCount = 0;
                 }
                 int spaceLeft = MAX_SEGMENTS_PER_ZIP - fileCount;
                 int end = Math.min(index + spaceLeft, remaining.size());
                 List<SegmentProfile> batch = remaining.subList(index, end);
 
-                writeSegmentsToZip(fileIndex, batch);
+                writeSegmentsToZip(fileId, batch);
 
                 for (SegmentProfile sp : batch) {
                     toSave.add(PreloadedSegmentProfileEntity.builder()
-                            .id(String.format("%s_%s_%s", sp.getSPID(), sp.getSPVersionMajor(), sp.getSPVersionMinor()))
-                            .lastSeen(now)
-                            .file(fileIndex)
-                            .build());
+                        .spIdVersion(String.format("%s_%s_%s", sp.getSPID(), sp.getSPVersionMajor(), sp.getSPVersionMinor()))
+                        .lastSeen(now)
+                        .fileId(fileId)
+                        .build());
                 }
 
                 fileCount += batch.size();
@@ -144,10 +149,10 @@ public class StorageService {
         for (JourneyProfile jp : jps) {
             OTNID otnid = jp.getTrainIdentification().getOTNID();
             String filename = String.format("JP_%s_%s_%s_%s.xml",
-                    otnid.getTeltsiCompany(),
-                    otnid.getTeltsiOperationalTrainNumber(),
-                    otnid.getTeltsiStartDate(),
-                    jp.getJPVersion());
+                otnid.getTeltsiCompany(),
+                otnid.getTeltsiOperationalTrainNumber(),
+                otnid.getTeltsiStartDate(),
+                jp.getJPVersion());
             writeXmlEntry(zos, DIR_JP + filename, jp);
         }
     }
@@ -155,9 +160,9 @@ public class StorageService {
     private void writeSps(Collection<SegmentProfile> sps, ZipOutputStream zos) throws IOException {
         for (SegmentProfile sp : sps) {
             String filename = String.format("SP_%s_%s_%s.xml",
-                    sp.getSPID(),
-                    sp.getSPVersionMajor(),
-                    sp.getSPVersionMinor());
+                sp.getSPID(),
+                sp.getSPVersionMajor(),
+                sp.getSPVersionMinor());
             writeXmlEntry(zos, DIR_SP + filename, sp);
         }
     }
@@ -165,9 +170,9 @@ public class StorageService {
     private void writeTcs(Collection<TrainCharacteristics> tcs, ZipOutputStream zos) throws IOException {
         for (TrainCharacteristics tc : tcs) {
             String filename = String.format("TC_%s_%s_%s.xml",
-                    tc.getTCID(),
-                    tc.getTCVersionMajor(),
-                    tc.getTCVersionMinor());
+                tc.getTCID(),
+                tc.getTCVersionMajor(),
+                tc.getTCVersionMinor());
             writeXmlEntry(zos, DIR_TC + filename, tc);
         }
     }
@@ -194,18 +199,18 @@ public class StorageService {
 
     void deleteAllBefore(OffsetDateTime cutoffDate) {
         List<String> keysToDelete = s3Service.listObjects().stream()
-                .filter(k -> k != null && k.endsWith(ZIP_FILE_ENDING) && !k.contains(SEGMENT_PREFIX))
-                .filter(k -> {
-                    try {
-                        String base = k.substring(0, k.length() - ZIP_FILE_ENDING.length());
-                        OffsetDateTime ts = OffsetDateTime.parse(base, FILENAME_FORMATTER);
-                        return ts.isBefore(cutoffDate);
-                    } catch (DateTimeParseException e) {
-                        log.warn("Unexpected zip file name while preload cleanup. name={} was not deleted", k);
-                        return false;
-                    }
-                })
-                .toList();
+            .filter(k -> k != null && k.endsWith(ZIP_FILE_ENDING) && !k.contains(SEGMENT_PREFIX))
+            .filter(k -> {
+                try {
+                    String base = k.substring(0, k.length() - ZIP_FILE_ENDING.length());
+                    OffsetDateTime ts = OffsetDateTime.parse(base, FILENAME_FORMATTER);
+                    return ts.isBefore(cutoffDate);
+                } catch (DateTimeParseException e) {
+                    log.warn("Unexpected zip file name while preload cleanup. name={} was not deleted", k);
+                    return false;
+                }
+            })
+            .toList();
 
         if (!keysToDelete.isEmpty()) {
             s3Service.deleteObjects(keysToDelete);
@@ -213,10 +218,9 @@ public class StorageService {
     }
 
     /**
-     * Removes segments that have not been registered (lastSeen updated) for more than {@link #STALE_SEGMENTS_DAYS} days
-     * from their segment zip files, and compacts the remaining segments so that the zip files are filled up to
-     * {@link #MAX_SEGMENTS_PER_ZIP} entries again. The cleanup only runs once the number of stale segments exceeds
-     * {@link #MAX_SEGMENTS_PER_ZIP}, so that at least one full zip can be freed.
+     * Removes segments that have not been registered (lastSeen updated) for more than {@link #STALE_SEGMENTS_DAYS} days from their segment zip files, and compacts the remaining segments so that the
+     * zip files are filled up to {@link #MAX_SEGMENTS_PER_ZIP} entries again. The cleanup only runs once the number of stale segments exceeds {@link #MAX_SEGMENTS_PER_ZIP}, so that at least one full
+     * zip can be freed.
      */
     public void cleanupSegments() {
         OffsetDateTime cutoff = DateTimeUtil.now().minusDays(STALE_SEGMENTS_DAYS);
@@ -232,13 +236,13 @@ public class StorageService {
 
             // 1) Remove stale segments from their respective zip files
             Map<Integer, List<PreloadedSegmentProfileEntity>> staleByFile = stale.stream()
-                    .filter(e -> e.getFile() != null)
-                    .collect(Collectors.groupingBy(PreloadedSegmentProfileEntity::getFile));
+                .filter(e -> e.getFileId() != null)
+                .collect(Collectors.groupingBy(PreloadedSegmentProfileEntity::getFileId));
 
             for (Map.Entry<Integer, List<PreloadedSegmentProfileEntity>> entry : staleByFile.entrySet()) {
                 Set<String> entryNamesToRemove = entry.getValue().stream()
-                        .map(e -> buildSegmentEntryName(e.getId()))
-                        .collect(Collectors.toSet());
+                    .map(e -> buildSegmentEntryName(e.getSpIdVersion()))
+                    .collect(Collectors.toSet());
                 rewriteZipExcluding(entry.getKey(), entryNamesToRemove);
             }
             preloadedSegmentProfileRepository.deleteAll(stale);
@@ -253,14 +257,14 @@ public class StorageService {
     }
 
     private void compactSegmentZips() throws IOException {
-        int maxFile = preloadedSegmentProfileRepository.findFirstByOrderByFileDesc()
-                .map(PreloadedSegmentProfileEntity::getFile)
-                .orElse(0);
+        int maxFile = preloadedSegmentProfileRepository.findFirstByOrderByFileIdDesc()
+            .map(PreloadedSegmentProfileEntity::getFileId)
+            .orElse(0);
 
         for (int target = 1; target < maxFile; target++) {
-            int targetCount = preloadedSegmentProfileRepository.countByFile(target);
+            int targetCount = preloadedSegmentProfileRepository.countByFileId(target);
             while (targetCount < MAX_SEGMENTS_PER_ZIP && target < maxFile) {
-                int sourceCount = preloadedSegmentProfileRepository.countByFile(maxFile);
+                int sourceCount = preloadedSegmentProfileRepository.countByFileId(maxFile);
                 if (sourceCount == 0) {
                     deleteSegmentZip(maxFile);
                     maxFile--;
@@ -269,13 +273,13 @@ public class StorageService {
 
                 int needed = MAX_SEGMENTS_PER_ZIP - targetCount;
                 int moveCount = Math.min(needed, sourceCount);
-                List<PreloadedSegmentProfileEntity> moving = preloadedSegmentProfileRepository.findAllByFile(maxFile)
-                        .stream()
-                        .limit(moveCount)
-                        .toList();
+                List<PreloadedSegmentProfileEntity> moving = preloadedSegmentProfileRepository.findAllByFileId(maxFile)
+                    .stream()
+                    .limit(moveCount)
+                    .toList();
                 Set<String> movingEntryNames = moving.stream()
-                        .map(e -> buildSegmentEntryName(e.getId()))
-                        .collect(Collectors.toSet());
+                    .map(e -> buildSegmentEntryName(e.getSpIdVersion()))
+                    .collect(Collectors.toSet());
 
                 Map<String, byte[]> movedBytes = extractEntries(maxFile, movingEntryNames);
 
@@ -283,12 +287,12 @@ public class StorageService {
                 appendEntries(target, movedBytes);
 
                 final int targetFile = target;
-                moving.forEach(e -> e.setFile(targetFile));
+                moving.forEach(e -> e.setFileId(targetFile));
                 preloadedSegmentProfileRepository.saveAll(moving);
 
                 targetCount += moving.size();
 
-                if (preloadedSegmentProfileRepository.countByFile(maxFile) == 0) {
+                if (preloadedSegmentProfileRepository.countByFileId(maxFile) == 0) {
                     deleteSegmentZip(maxFile);
                     maxFile--;
                 }
@@ -306,7 +310,7 @@ public class StorageService {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         int keptEntries = 0;
         try (ZipOutputStream zos = new ZipOutputStream(baos, StandardCharsets.UTF_8);
-             ZipInputStream zis = new ZipInputStream(new ByteArrayInputStream(existing.get()), StandardCharsets.UTF_8)) {
+            ZipInputStream zis = new ZipInputStream(new ByteArrayInputStream(existing.get()), StandardCharsets.UTF_8)) {
             ZipEntry entry;
             while ((entry = zis.getNextEntry()) != null) {
                 if (entryNamesToRemove.contains(entry.getName())) {

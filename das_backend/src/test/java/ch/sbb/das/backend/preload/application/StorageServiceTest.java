@@ -3,7 +3,10 @@ package ch.sbb.das.backend.preload.application;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import ch.sbb.das.backend.preload.infrastructure.PreloadedSegmentProfileRepository;
 import ch.sbb.das.backend.preload.infrastructure.S3Service;
@@ -147,7 +150,7 @@ class StorageServiceTest {
 
     @Test
     void save_savesSegmentsToNewZipWhenNoPreviousFile() throws Exception {
-        when(preloadedSegmentProfileRepository.findFirstByOrderByFileDesc()).thenReturn(Optional.empty());
+        when(preloadedSegmentProfileRepository.findFirstByOrderByFileIdDesc()).thenReturn(Optional.empty());
 
         underTest.save(Set.of(), List.of(createSp("SP-1")), Set.of());
 
@@ -178,8 +181,8 @@ class StorageServiceTest {
     void save_extendsExistingZipFromS3() throws Exception {
         PreloadedSegmentProfileEntity latest = PreloadedSegmentProfileEntity.builder()
             .id("OLD_1_0").file(2).lastSeen(OffsetDateTime.now()).build();
-        when(preloadedSegmentProfileRepository.findFirstByOrderByFileDesc()).thenReturn(Optional.of(latest));
-        when(preloadedSegmentProfileRepository.countByFile(2)).thenReturn(5);
+        when(preloadedSegmentProfileRepository.findFirstByOrderByFileIdDesc()).thenReturn(Optional.of(latest));
+        when(preloadedSegmentProfileRepository.countByFileId(2)).thenReturn(5);
 
         byte[] existingZip = buildZipWith("sp/SP_OLD_1_0.xml");
         when(s3Service.downloadZip("Segments_2.zip")).thenReturn(Optional.of(existingZip));
@@ -197,8 +200,8 @@ class StorageServiceTest {
     void save_splitsSegmentsAcrossZipsWhenLimitReached() throws Exception {
         PreloadedSegmentProfileEntity latest = PreloadedSegmentProfileEntity.builder()
             .id("X_1_0").file(2).lastSeen(OffsetDateTime.now()).build();
-        when(preloadedSegmentProfileRepository.findFirstByOrderByFileDesc()).thenReturn(Optional.of(latest));
-        when(preloadedSegmentProfileRepository.countByFile(2)).thenReturn(999);
+        when(preloadedSegmentProfileRepository.findFirstByOrderByFileIdDesc()).thenReturn(Optional.of(latest));
+        when(preloadedSegmentProfileRepository.countByFileId(2)).thenReturn(999);
         when(s3Service.downloadZip(any())).thenReturn(Optional.empty());
 
         underTest.save(Set.of(), List.of(createSp("A"), createSp("B"), createSp("C")), Set.of());
@@ -289,11 +292,11 @@ class StorageServiceTest {
             buildZipWith("sp/SP_STALE2_0_1_0.xml", "sp/SP_FRESH_A_1_0.xml", "sp/SP_FRESH_B_1_0.xml")));
 
         // After deleting stale, file 1 has 0, file 2 has 2 survivors
-        when(preloadedSegmentProfileRepository.findFirstByOrderByFileDesc()).thenReturn(
-            Optional.of(PreloadedSegmentProfileEntity.builder().file(2).build()));
-        when(preloadedSegmentProfileRepository.countByFile(1)).thenReturn(0).thenReturn(2);
-        when(preloadedSegmentProfileRepository.countByFile(2)).thenReturn(2).thenReturn(0);
-        when(preloadedSegmentProfileRepository.findAllByFile(2)).thenReturn(List.of(
+        when(preloadedSegmentProfileRepository.findFirstByOrderByFileIdDesc()).thenReturn(
+            Optional.of(PreloadedSegmentProfileEntity.builder().fileId(2).build()));
+        when(preloadedSegmentProfileRepository.countByFileId(1)).thenReturn(0).thenReturn(2);
+        when(preloadedSegmentProfileRepository.countByFileId(2)).thenReturn(2).thenReturn(0);
+        when(preloadedSegmentProfileRepository.findAllByFileId(2)).thenReturn(List.of(
             PreloadedSegmentProfileEntity.builder().id("FRESH_A_1_0").file(2).build(),
             PreloadedSegmentProfileEntity.builder().id("FRESH_B_1_0").file(2).build()));
 

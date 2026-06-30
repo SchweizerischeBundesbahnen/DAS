@@ -13,8 +13,30 @@ import ch.sbb.das.backend.preload.infrastructure.SegmentProfileMissingException;
 import ch.sbb.das.backend.preload.infrastructure.model.entities.PreloadedSegmentProfileEntity;
 import ch.sbb.das.backend.preload.infrastructure.xml.XmlHelper;
 import ch.sbb.das.backend.preload.sfera.model.v0400.B2GMessageResponse.Result;
-import ch.sbb.das.backend.preload.sfera.model.v0400.*;
+import ch.sbb.das.backend.preload.sfera.model.v0400.ErrorComplexType;
+import ch.sbb.das.backend.preload.sfera.model.v0400.G2BReplyPayload;
+import ch.sbb.das.backend.preload.sfera.model.v0400.JourneyProfile;
 import ch.sbb.das.backend.preload.sfera.model.v0400.JourneyProfile.JPStatus;
+import ch.sbb.das.backend.preload.sfera.model.v0400.SFERAB2GEventMessage;
+import ch.sbb.das.backend.preload.sfera.model.v0400.SFERAB2GRequestMessage;
+import ch.sbb.das.backend.preload.sfera.model.v0400.SFERAG2BReplyMessage;
+import ch.sbb.das.backend.preload.sfera.model.v0400.SegmentProfile;
+import ch.sbb.das.backend.preload.sfera.model.v0400.TrainCharacteristics;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.paho.mqttv5.common.MqttException;
 import org.eclipse.paho.mqttv5.common.MqttMessage;
@@ -23,11 +45,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.retry.annotation.Recover;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
-
-import java.time.OffsetDateTime;
-import java.util.*;
-import java.util.concurrent.*;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -101,7 +118,6 @@ public class SferaService {
 
         Set<SegmentProfileIdentification> spIds = jp.getSegmentProfileReferences().stream().map(SegmentProfileIdentification::from).collect(Collectors.toSet());
 
-
         List<SegmentProfile> segmentProfiles;
         try {
             segmentProfiles = requestSpsUntilComplete(trainId, spIds);
@@ -110,9 +126,9 @@ public class SferaService {
         }
 
         Set<TrainCharacteristicsIdentification> tcIds = jp.getSegmentProfileReferences().stream()
-                .flatMap(spRef -> spRef.getTrainCharacteristicsReves().stream())
-                .map(TrainCharacteristicsIdentification::from)
-                .collect(Collectors.toSet());
+            .flatMap(spRef -> spRef.getTrainCharacteristicsReves().stream())
+            .map(TrainCharacteristicsIdentification::from)
+            .collect(Collectors.toSet());
 
         List<TrainCharacteristics> trainCharacteristics = requestTcs(trainId, tcIds).get();
         if (trainCharacteristics.size() != tcIds.size()) {
@@ -128,9 +144,12 @@ public class SferaService {
         return result;
     }
 
-    private List<SegmentProfile> requestSpsUntilComplete(TrainIdentification trainId, Set<SegmentProfileIdentification> spIds) throws ExecutionException, InterruptedException, MqttException, SegmentProfileMissingException {
+    private List<SegmentProfile> requestSpsUntilComplete(TrainIdentification trainId, Set<SegmentProfileIdentification> spIds)
+        throws ExecutionException, InterruptedException, MqttException, SegmentProfileMissingException {
+
         List<SegmentProfile> allSegmentProfiles = new ArrayList<>();
-        Set<SegmentProfileIdentification> missingSps = new HashSet<>(spIds);
+        Set<SegmentProfileIdentification> missingSps = calculateMissingSegmentProfiles(spIds);
+
         int lastMissingCount = missingSps.size();
         int noNewResultsCounter = 0;
         while (!missingSps.isEmpty() && noNewResultsCounter < MAX_RETRIES) {
@@ -155,55 +174,35 @@ public class SferaService {
     }
 
     private CompletableFuture<Set<SegmentProfile>> requestSps(TrainIdentification trainId, Set<SegmentProfileIdentification> missingSps) throws MqttException {
-        Set<PreloadedSegmentProfileEntity> preloadedSegmentProfiles = new HashSet<>();
-        Set<SegmentProfileIdentification> segmentProfilesToFetch = calculateSegmentProfilesToFetch(missingSps, preloadedSegmentProfiles);
-
-        preloadedSegmentProfileRepository.updateLastSeenByIds(DateTimeUtil.now(), preloadedSegmentProfiles.stream().map(PreloadedSegmentProfileEntity::getId).collect(Collectors.toSet()));
-
         Set<SegmentProfile> segmentProfiles = new HashSet<>();
 
-        if (!segmentProfilesToFetch.isEmpty()) {
-            return sendRequest(trainId, sferaMessageCreator.createSpRequestMessage(trainId, segmentProfilesToFetch))
-                    .thenApply(reply -> {
-                        if (reply.getG2BReplyPayload() == null || reply.getG2BReplyPayload().getSegmentProfiles() == null) {
-                            if (isG2bError(reply.getG2BReplyPayload())) {
-                                String errors = extractG2bError(reply.getG2BReplyPayload());
-                                throw new IllegalStateException("SP request G2B error: " + errors);
-                            }
-                            throw new IllegalStateException("No SP(s) received!");
+        if (!missingSps.isEmpty()) {
+            return sendRequest(trainId, sferaMessageCreator.createSpRequestMessage(trainId, missingSps))
+                .thenApply(reply -> {
+                    if (reply.getG2BReplyPayload() == null || reply.getG2BReplyPayload().getSegmentProfiles() == null) {
+                        if (isG2bError(reply.getG2BReplyPayload())) {
+                            String errors = extractG2bError(reply.getG2BReplyPayload());
+                            throw new IllegalStateException("SP request G2B error: " + errors);
                         }
-                        List<SegmentProfile> fetched = reply.getG2BReplyPayload().getSegmentProfiles();
-                        sferaStore.addSps(fetched);
-                        segmentProfiles.addAll(fetched);
-                        return segmentProfiles;
-                    });
+                        throw new IllegalStateException("No SP(s) received!");
+                    }
+                    List<SegmentProfile> fetched = reply.getG2BReplyPayload().getSegmentProfiles();
+                    segmentProfiles.addAll(fetched);
+                    return segmentProfiles;
+                });
         } else {
             return CompletableFuture.completedFuture(segmentProfiles);
         }
     }
 
     @NotNull
-    private Set<SegmentProfileIdentification> calculateSegmentProfilesToFetch(Set<SegmentProfileIdentification> missingSps, Set<PreloadedSegmentProfileEntity> preloadedSegmentProfiles) {
-        Set<SegmentProfileIdentification> segmentProfilesToFetch = new HashSet<>();
-        Set<SegmentProfileIdentification> spIds = new HashSet<>(missingSps);
+    private Set<SegmentProfileIdentification> calculateMissingSegmentProfiles(Set<SegmentProfileIdentification> spIds) {
+        Set<String> spIdVersionSet = spIds.stream().map(SegmentProfileIdentification::toIdVersionString).collect(Collectors.toSet());
+        Set<String> preloadedSpIdVersionSet = preloadedSegmentProfileRepository.findAllBySpIdVersionIn(spIdVersionSet).stream().map(PreloadedSegmentProfileEntity::getSpIdVersion)
+            .collect(Collectors.toSet());
+        preloadedSegmentProfileRepository.updateLastSeenBySpIdVersion(DateTimeUtil.now(), preloadedSpIdVersionSet);
 
-        spIds.forEach(spId -> {
-            if (sferaStore.getSp(spId) != null || sferaStore.hasPreloadedSegmentProfile(spId)) {
-                missingSps.remove(spId);
-                return;
-            }
-
-            Optional<PreloadedSegmentProfileEntity> preloadedSegmentProfile = preloadedSegmentProfileRepository.findById(String.format("%s_%s_%s", spId.spid(), spId.spVersionMajor(), spId.spVersionMinor()));
-            if (preloadedSegmentProfile.isPresent()) {
-                PreloadedSegmentProfileEntity preloadedSegmentProfileEntity = preloadedSegmentProfile.get();
-                preloadedSegmentProfiles.add(preloadedSegmentProfileEntity);
-                sferaStore.addPreloadedSegmentProfile(preloadedSegmentProfileEntity);
-                missingSps.remove(spId);
-            } else {
-                segmentProfilesToFetch.add(spId);
-            }
-        });
-        return segmentProfilesToFetch;
+        return spIds.stream().filter(spId -> !preloadedSpIdVersionSet.contains(spId.toIdVersionString())).collect(Collectors.toSet());
     }
 
     private CompletableFuture<List<TrainCharacteristics>> requestTcs(TrainIdentification trainId, Set<TrainCharacteristicsIdentification> tcIds) throws MqttException {
@@ -221,19 +220,19 @@ public class SferaService {
 
         if (!trainCharacteristicsToFetch.isEmpty()) {
             return sendRequest(trainId, sferaMessageCreator.createTcRequest(trainId, trainCharacteristicsToFetch))
-                    .thenApply(reply -> {
-                        if (reply.getG2BReplyPayload() == null || reply.getG2BReplyPayload().getTrainCharacteristics() == null) {
-                            if (isG2bError(reply.getG2BReplyPayload())) {
-                                String errors = extractG2bError(reply.getG2BReplyPayload());
-                                throw new IllegalStateException("TC request G2B error: " + errors);
-                            }
-                            throw new IllegalStateException("No Train Characteristics received!");
+                .thenApply(reply -> {
+                    if (reply.getG2BReplyPayload() == null || reply.getG2BReplyPayload().getTrainCharacteristics() == null) {
+                        if (isG2bError(reply.getG2BReplyPayload())) {
+                            String errors = extractG2bError(reply.getG2BReplyPayload());
+                            throw new IllegalStateException("TC request G2B error: " + errors);
                         }
-                        List<TrainCharacteristics> fetched = reply.getG2BReplyPayload().getTrainCharacteristics();
-                        sferaStore.addTcs(fetched);
-                        trainCharacteristics.addAll(fetched);
-                        return trainCharacteristics;
-                    });
+                        throw new IllegalStateException("No Train Characteristics received!");
+                    }
+                    List<TrainCharacteristics> fetched = reply.getG2BReplyPayload().getTrainCharacteristics();
+                    sferaStore.addTcs(fetched);
+                    trainCharacteristics.addAll(fetched);
+                    return trainCharacteristics;
+                });
         } else {
             return CompletableFuture.completedFuture(trainCharacteristics);
         }
@@ -241,7 +240,7 @@ public class SferaService {
 
     private String createTopic(String direction, TrainIdentification trainId) {
         return String.format("%s90940/%s/%s/%s/%s_%s/%s", topicPrefix, sferaMajorVersion, direction, trainId.company().value(), trainId.operationalTrainNumber(),
-                trainId.startDateTime().toLocalDate(), CLIENT_ID);
+            trainId.startDateTime().toLocalDate(), CLIENT_ID);
     }
 
     private void receive(MqttMessage mqttMessage) {
@@ -285,8 +284,8 @@ public class SferaService {
     private String extractG2bError(G2BReplyPayload g2bReplyPayload) {
         if (isG2bError(g2bReplyPayload) && g2bReplyPayload.getG2BMessageResponse().getG2BErrors() != null) {
             return g2bReplyPayload.getG2BMessageResponse().getG2BErrors().stream()
-                    .map(ErrorComplexType::getErrorCode)
-                    .collect(Collectors.joining(", "));
+                .map(ErrorComplexType::getErrorCode)
+                .collect(Collectors.joining(", "));
         } else {
             return "";
         }
