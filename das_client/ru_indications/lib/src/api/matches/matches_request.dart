@@ -16,7 +16,7 @@ class MatchesRequest {
 
   Future<MatchesResponse> call({
     required String company,
-    required int operationalTrainNumber,
+    required String operationalTrainNumber,
     required DateTime startDate,
     required List<String> tafTapLocationReferences,
   }) async {

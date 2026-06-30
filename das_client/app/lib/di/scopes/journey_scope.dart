@@ -282,6 +282,7 @@ extension JourneyScopeExtension on GetIt {
         decisiveGradientVM: DI.get(),
         navigationVM: DI.get(),
         userSettings: DI.get(),
+        ruIndicationsRepository: DI.get(),
       ),
       dispose: (vm) => vm.dispose(),
     );

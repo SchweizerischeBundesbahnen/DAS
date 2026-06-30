@@ -8,7 +8,7 @@ abstract class RuIndicationsRepository {
   /// [locationReferences] consists of key: locationCode, value: order in journey
   Future<List<RuIndication>> fetchRuIndications({
     required String company,
-    required int trainNumber,
+    required String trainNumber,
     required DateTime startDate,
     required Map<String, int> locationReferences,
   });

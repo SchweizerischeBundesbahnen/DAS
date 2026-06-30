@@ -15,7 +15,7 @@ class RuIndicationsRepositoryImpl implements RuIndicationsRepository {
   @override
   Future<List<RuIndication>> fetchRuIndications({
     required String company,
-    required int trainNumber,
+    required String trainNumber,
     required DateTime startDate,
     required Map<String, int> locationReferences,
   }) async {
