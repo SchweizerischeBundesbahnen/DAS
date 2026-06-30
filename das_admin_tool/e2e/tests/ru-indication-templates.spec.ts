@@ -7,8 +7,7 @@ import {
   findRow,
   getEntryDialog,
   openEditEntryDialog,
-  saveEntryDialog,
-  selectAnyOption
+  saveEntryDialog
 } from '../utils/admin-test-helpers';
 
 test.describe('ru indication templates test', () => {
@@ -35,9 +34,6 @@ test.describe('ru indication templates test', () => {
     await dialog.getByRole('textbox', {name: 'Titel'}).fill(title);
 
     await dialog.getByRole('textbox', {name: 'Text'}).fill(text);
-
-    const companyInput = page.locator('app-companies-input [role="combobox"]').last();
-    await selectAnyOption(dialog, companyInput);
 
     await saveEntryDialog(page, row, {
       method: 'POST',

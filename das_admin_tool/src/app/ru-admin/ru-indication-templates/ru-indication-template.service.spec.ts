@@ -1,22 +1,21 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { RuIndicationTemplateService } from './ru-indication-template.service';
-import { RuAdminApi, RuIndicationTemplate, RuIndicationTemplateApiResponse } from '../ru-admin-api';
-import { SbbDialogService } from '@sbb-esta/lyne-angular/dialog';
-import { ToastService } from '../../shared/toast-service';
-import { HttpResourceRef } from '@angular/common/http';
-import { of, throwError } from 'rxjs';
+import {RuIndicationTemplateService} from './ru-indication-template.service';
+import {RuAdminApi, RuIndicationTemplate, RuIndicationTemplateApiResponse} from '../ru-admin-api';
+import {SbbDialogService} from '@sbb-esta/lyne-angular/dialog';
+import {ToastService} from '../../shared/toast-service';
+import {HttpResourceRef} from '@angular/common/http';
+import {of, throwError} from 'rxjs';
 import {
   RuIndicationTemplateDialogEditResult
 } from './ru-indication-template-dialog/ru-indication-template-dialog';
-import { SbbOverlayCloseEvent } from '@sbb-esta/lyne-elements/overlay.js';
-import { RecentCompaniesStore } from '../../shared/recent-companies.store';
+import {SbbOverlayCloseEvent} from '@sbb-esta/lyne-elements/overlay.js';
+import {RecentCompaniesStore} from '../../shared/recent-companies.store';
 
 const ruIndicationTemplate: RuIndicationTemplate = {
   id: 1,
   category: 'General',
   de: {title: 'Titel', text: 'Text'},
-  companies: ['COMPA']
 };
 
 const mockRuAdminApi: Partial<RuAdminApi> = {
@@ -79,7 +78,6 @@ describe('RuIndicationTemplateService', () => {
       id: 1,
       category: 'Updated',
       de: {title: 'Titel', text: 'Text'},
-      companies: ['COMPA']
     });
   });
 
@@ -121,7 +119,6 @@ describe('RuIndicationTemplateService', () => {
     const templateToCreate: RuIndicationTemplate = {
       category: 'New',
       de: {title: 'Neu', text: 'Inhalt'},
-      companies: ['COMPB']
     };
     mockDialogResult(templateToCreate);
 
@@ -145,7 +142,7 @@ describe('RuIndicationTemplateService', () => {
     const successToastSpy = vi.spyOn(mockToastService, 'success');
     const templates: RuIndicationTemplate[] = [
       ruIndicationTemplate,
-      {id: 2, category: 'Other', de: {title: 'Andere', text: 'Text'}, companies: ['COMPA']},
+      {id: 2, category: 'Other', de: {title: 'Andere', text: 'Text'}},
 
     ];
 

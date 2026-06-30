@@ -1,9 +1,9 @@
-import { inject, Injectable } from '@angular/core';
-import { HttpClient, httpResource } from '@angular/common/http';
-import { environment } from '../../environments/environment';
-import { Observable } from 'rxjs';
-import { ApiResponse } from '../shared/api-response';
-import { Auditable } from '../shared/audit/auditable';
+import {inject, Injectable} from '@angular/core';
+import {HttpClient, httpResource} from '@angular/common/http';
+import {environment} from '../../environments/environment';
+import {Observable} from 'rxjs';
+import {ApiResponse} from '../shared/api-response';
+import {Auditable} from '../shared/audit/auditable';
 
 export interface RuIndicationLanguageContent {
   title: string;
@@ -18,9 +18,8 @@ export interface RuIndicationTemplate extends Auditable {
   de?: RuIndicationLanguageContent;
   fr?: RuIndicationLanguageContent;
   it?: RuIndicationLanguageContent;
-  companies: string[];
 
-  [key: string]: string | string[] | number | Date | RuIndicationLanguageContent | undefined;
+  [key: string]: string | number | Date | RuIndicationLanguageContent | undefined;
 }
 
 export type TrainNumberParity = 'ANY' | 'EVEN' | 'ODD';
