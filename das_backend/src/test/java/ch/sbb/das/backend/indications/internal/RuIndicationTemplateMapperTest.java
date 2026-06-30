@@ -3,8 +3,8 @@ package ch.sbb.das.backend.indications.internal;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.das.backend.companies.CompanyCode;
-import ch.sbb.das.backend.indications.internal.model.RuIndicationEntry;
 import ch.sbb.das.backend.indications.internal.model.RuIndicationTemplate;
+import ch.sbb.das.backend.indications.internal.model.RuIndicationTemplateEntry;
 import ch.sbb.das.backend.indications.internal.model.RuIndicationTemplateRequest;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
@@ -30,7 +30,7 @@ class RuIndicationTemplateMapperTest {
 
         assertThat(response.id()).isEqualTo(7);
         assertThat(response.category()).isEqualTo("INFO");
-        assertThat(response.de()).isEqualTo(new RuIndicationEntry("Titel DE", "Text DE"));
+        assertThat(response.de()).isEqualTo(new RuIndicationTemplateEntry("Titel DE", "Text DE"));
         assertThat(response.fr()).isNull();
         assertThat(response.it()).isNull();
         assertThat(response.companies()).containsExactly(company("1111"));
@@ -40,9 +40,9 @@ class RuIndicationTemplateMapperTest {
     void toEntityFromRequest_sets_id_and_maps_languages() {
         RuIndicationTemplateRequest request = new RuIndicationTemplateRequest(
             "SAFETY",
-            new RuIndicationEntry("DE", "Text DE"),
+            new RuIndicationTemplateEntry("DE", "Text DE"),
             null,
-            new RuIndicationEntry("IT", "Text IT"),
+            new RuIndicationTemplateEntry("IT", "Text IT"),
             Set.of(company("1111"), company("2222"))
         );
 
@@ -70,7 +70,7 @@ class RuIndicationTemplateMapperTest {
         RuIndicationTemplateRequest request = new RuIndicationTemplateRequest(
             "UPDATED",
             null,
-            new RuIndicationEntry("FR", "Text FR"),
+            new RuIndicationTemplateEntry("FR", "Text FR"),
             null,
             Set.of(company("1111"))
         );

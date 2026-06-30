@@ -139,6 +139,52 @@ class RuIndicationControllerTest {
 
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
+    void create_RuIndication_invalid_missingTitle() throws Exception {
+        mockMvc.perform(post(API_RU_INDICATIONS)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                    {
+                        "content": {
+                            "de": { "text": "Text DE" }
+                        },
+                        "scope": {
+                            "companies": ["1111"],
+                            "tafTapLocationReferences": ["CH00001"]
+                        },
+                        "periods": [
+                            { "validFrom": "2026-01-01", "validTo": "2026-12-31", "weekdays": [] }
+                        ]
+                    }
+                    """))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.detail").value("Invalid request content. -> content.de.title=must not be blank"));
+    }
+
+    @Test
+    @WithMockRole(roles = UserRole.RU_ADMIN)
+    void create_RuIndication_invalid_missingText() throws Exception {
+        mockMvc.perform(post(API_RU_INDICATIONS)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                    {
+                        "content": {
+                            "de": { "title": "Hinweis" }
+                        },
+                        "scope": {
+                            "companies": ["1111"],
+                            "tafTapLocationReferences": ["CH00001"]
+                        },
+                        "periods": [
+                            { "validFrom": "2026-01-01", "validTo": "2026-12-31", "weekdays": [] }
+                        ]
+                    }
+                    """))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.detail").value("Invalid request content. -> content.de.text=must not be blank"));
+    }
+
+    @Test
+    @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createRuIndications.sql")
     void update_RuIndication_ok() throws Exception {
         mockMvc.perform(put(API_RU_INDICATIONS + "/1")

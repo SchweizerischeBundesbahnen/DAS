@@ -1,16 +1,16 @@
-import { Component, inject } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RuIndicationTemplate } from '../../ru-admin-api';
-import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core/overlay';
-import { SbbTitleModule } from '@sbb-esta/lyne-angular/title';
-import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
+import {Component, inject} from '@angular/core';
+import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {RuIndicationTemplate} from '../../ru-admin-api';
+import {SBB_OVERLAY_DATA} from '@sbb-esta/lyne-angular/core/overlay';
+import {SbbTitleModule} from '@sbb-esta/lyne-angular/title';
+import {SbbFormFieldModule} from '@sbb-esta/lyne-angular/form-field';
 import {
   contentFormValue,
   createContentFormGroup,
   RuIndicationContentForm
 } from '../../ru-indication-content-form/ru-indication-content-form.component';
-import { BaseDialog } from '../../../shared/base-dialog/base-dialog.component';
-import { CompaniesInputComponent } from '../../../shared/companies-input/companies-input.component';
+import {BaseDialog} from '../../../shared/base-dialog/base-dialog.component';
+import {CompaniesInputComponent} from '../../../shared/companies-input/companies-input.component';
 
 export type RuIndicationTemplateDialogEditResult = RuIndicationTemplate | 'delete';
 
@@ -31,7 +31,7 @@ export class RuIndicationTemplateDialog {
   protected readonly title: string;
   protected ruIndicationTemplateForm = new FormGroup({
     category: new FormControl('', {nonNullable: true, validators: [Validators.required]}),
-    content: createContentFormGroup(),
+    content: createContentFormGroup({textRequired: false}),
     companies: new FormControl<string[]>([], {
       nonNullable: true,
       validators: [Validators.required]

@@ -17,16 +17,16 @@ public record RuIndicationTemplateRequest(
     @NotBlank String category,
     @Schema(description = "German RU indication template content.", requiredMode = RequiredMode.NOT_REQUIRED)
     @Valid
-    RuIndicationEntry de,
+    RuIndicationTemplateEntry de,
     @Schema(description = "French RU indication template content.", requiredMode = RequiredMode.NOT_REQUIRED)
     @Valid
-    RuIndicationEntry fr,
+    RuIndicationTemplateEntry fr,
     @Schema(description = "Italian RU indication template content.", requiredMode = RequiredMode.NOT_REQUIRED)
     @Valid
-    RuIndicationEntry it,
+    RuIndicationTemplateEntry it,
     @Schema(description = "The RICS company codes for which this template is provided.", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotEmpty Set<CompanyCode> companies
-) implements TranslatedContentRequest<RuIndicationEntry> {
+) implements TranslatedContentRequest<RuIndicationTemplateEntry> {
 
     public RuIndicationTemplateRequest {
         de = normalize(de);
@@ -35,7 +35,7 @@ public record RuIndicationTemplateRequest(
     }
 
     @Override
-    public RuIndicationEntry normalize(RuIndicationEntry entry) {
-        return RuIndicationEntry.normalize(entry);
+    public RuIndicationTemplateEntry normalize(RuIndicationTemplateEntry entry) {
+        return RuIndicationTemplateEntry.normalize(entry);
     }
 }
