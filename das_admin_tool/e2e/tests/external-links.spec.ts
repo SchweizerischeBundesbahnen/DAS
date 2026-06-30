@@ -1,10 +1,11 @@
-import test, { expect, Locator, Page } from '@playwright/test';
+import test, {expect, Locator, Page} from '@playwright/test';
 import {
   clickAddButton,
-  getEntryDialog,
-  deleteEntryViaSelection,
+  deleteEntryIfExists,
   deleteEntryViaDialog,
+  deleteEntryViaSelection,
   findRow,
+  getEntryDialog,
   openEditEntryDialog,
   saveEntryDialog,
   selectAnyOption,
@@ -23,8 +24,8 @@ test.describe('external links test', () => {
 
     const dialog = await getEntryDialog(page);
 
-    await dialog.getByRole('textbox', { name: 'Titel' }).fill(title);
-    await dialog.getByRole('textbox', { name: 'Webadresse (URL)' }).fill(link);
+    await dialog.getByRole('textbox', {name: 'Titel'}).fill(title);
+    await dialog.getByRole('textbox', {name: 'Webadresse (URL)'}).fill(link);
 
     const companyInput = dialog.locator('app-companies-input [role="combobox"]').last();
     await selectAnyOption(dialog, companyInput);
@@ -35,10 +36,10 @@ test.describe('external links test', () => {
       dialogTitle: 'Externen Absprung erfassen',
     });
 
-    await expect(row.getByRole('cell', { name: title, exact: true })).toBeVisible();
+    await expect(row.getByRole('cell', {name: title, exact: true})).toBeVisible();
   }
 
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({page}) => {
     await page.goto('ru-admin/external-links');
     await expect(page.locator('sbb-title[level="2"]')).toHaveText('Externe Absprünge');
 
@@ -46,21 +47,17 @@ test.describe('external links test', () => {
     updatedRow = findRow(page, TEST_TITLE_DE_UPDATED);
 
     // clean up leftover from previous run if present
-    if (await row.isVisible()) {
-      await deleteEntryViaDialog(page, row);
-    }
-    if (await updatedRow.isVisible()) {
-      await deleteEntryViaDialog(page, updatedRow);
-    }
+    await deleteEntryIfExists(page, row);
+    await deleteEntryIfExists(page, updatedRow);
   });
 
-  test('create, edit and delete external link | tests: 246', async ({ page }) => {
+  test('create, edit and delete external link | tests: 246', async ({page}) => {
     // create
     await createExternalLink(page, TEST_TITLE_DE, TEST_LINK_DE);
 
     // edit
     const dialog = await openEditEntryDialog(page, row);
-    const deTitleInput = dialog.getByRole('textbox', { name: 'Titel' });
+    const deTitleInput = dialog.getByRole('textbox', {name: 'Titel'});
     await expect(deTitleInput).toHaveValue(TEST_TITLE_DE);
     await deTitleInput.fill(TEST_TITLE_DE_UPDATED);
     await expect(deTitleInput).toHaveValue(TEST_TITLE_DE_UPDATED);
@@ -72,14 +69,14 @@ test.describe('external links test', () => {
     });
 
     await expect(
-      updatedRow.getByRole('cell', { name: TEST_TITLE_DE_UPDATED, exact: true }),
+      updatedRow.getByRole('cell', {name: TEST_TITLE_DE_UPDATED, exact: true}),
     ).toBeVisible();
 
     // delete
     await deleteEntryViaDialog(page, updatedRow);
   });
 
-  test('delete selected external links via checkbox | tests: 246', async ({ page }) => {
+  test('delete selected external links via checkbox | tests: 246', async ({page}) => {
     // create one entry to select and bulk-delete
     await createExternalLink(page, TEST_TITLE_DE, TEST_LINK_DE);
 
