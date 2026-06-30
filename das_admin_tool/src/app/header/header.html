@@ -1,47 +1,57 @@
 <sbb-header expanded scrollOrigin="content">
-  <span class="sbb-header-info">
-    <strong i18n="@@header_nav_app_name">DAS Admin-Tool</strong>
-    <span>V. {{ version }}</span>
-  </span>
-  <div class="sbb-header-spacer"></div>
-  @if (authService.isAuthenticated()) {
-    <sbb-header-button iconName="user-small" class="sbb-header-shrinkable" id="user-menu-trigger">
-      {{ authService.name() }}
-    </sbb-header-button>
-    <sbb-menu trigger="user-menu-trigger">
-      <div class="email">{{ authService.email() }}</div>
-      @if (authService.isAdmin()) {
-        <span class="role" i18n="@@header_role_admin">Admin</span>
-      }
-      @if (authService.isRuAdmin()) {
-        <span class="role" i18n="@@header_role_ru_admin">EVU Admin</span>
-      }
-      <sbb-divider></sbb-divider>
-      <sbb-menu-button (click)="authService.switchLogin()" iconName="user-plus-small"
-                       i18n="@@header_nav_account_switch_button">Account wechseln
-      </sbb-menu-button>
-      <sbb-divider></sbb-divider>
-      <sbb-menu-button (click)="authService.logout()" i18n="@@header_nav_logout_button"
-                       iconName="exit-small">
-        Logout
-      </sbb-menu-button>
-    </sbb-menu>
-  } @else {
-    <sbb-header-button iconName="user-small" class="sbb-header-shrinkable"
-                       (click)="authService.login()" i18n="@@header_nav_login_button">
-      Login
-    </sbb-header-button>
-  }
+	<span class="sbb-header-info">
+		<strong i18n="@@header_nav_app_name">DAS Admin-Tool</strong>
+		<span>V. {{ version }}</span>
+	</span>
+	<div class="sbb-header-spacer"></div>
+	@if (authService.isAuthenticated()) {
+		<sbb-header-button iconName="user-small" class="sbb-header-shrinkable" id="user-menu-trigger">{{
+			authService.name()
+		}}</sbb-header-button>
+		<sbb-menu trigger="user-menu-trigger">
+			<div class="email">{{ authService.email() }}</div>
+			@if (authService.isAdmin()) {
+				<span class="role" i18n="@@header_role_admin">Admin</span>
+			}
+			@if (authService.isRuAdmin()) {
+				<span class="role" i18n="@@header_role_ru_admin">EVU Admin</span>
+			}
+			<sbb-divider />
+			<sbb-menu-button
+				iconName="user-plus-small"
+				i18n="@@header_nav_account_switch_button"
+				(click)="authService.switchLogin()"
+				>Account wechseln</sbb-menu-button
+			>
+			<sbb-divider />
+			<sbb-menu-button
+				i18n="@@header_nav_logout_button"
+				iconName="exit-small"
+				(click)="authService.logout()"
+				>Logout</sbb-menu-button
+			>
+		</sbb-menu>
+	} @else {
+		<sbb-header-button
+			iconName="user-small"
+			class="sbb-header-shrinkable"
+			i18n="@@header_nav_login_button"
+			(click)="authService.login()"
+			>Login</sbb-header-button
+		>
+	}
 
-  <sbb-header-button iconName="globe-small" id="language-menu-trigger" class="last-element">
-    {{ languageProvider.currentLanguage.label }}
-  </sbb-header-button>
-  <sbb-menu trigger="language-menu-trigger">
-    @for (language of languageProvider.allLanguages; track language.localeId) {
-      <sbb-menu-link (click)="languageProvider.switch(language)"
-                     [iconName]="languageIconName(language)">{{ language.label }}
-      </sbb-menu-link>
-    }
-  </sbb-menu>
-  <sbb-header-environment>{{ stage !== 'prod' ? stage : '' }}</sbb-header-environment>
+	<sbb-header-button iconName="globe-small" id="language-menu-trigger" class="last-element">{{
+		languageProvider.currentLanguage.label
+	}}</sbb-header-button>
+	<sbb-menu trigger="language-menu-trigger">
+		@for (language of languageProvider.allLanguages; track language.localeId) {
+			<sbb-menu-link
+				[iconName]="languageIconName(language)"
+				(click)="languageProvider.switch(language)"
+				>{{ language.label }}</sbb-menu-link
+			>
+		}
+	</sbb-menu>
+	<sbb-header-environment>{{ stage !== 'prod' ? stage : '' }}</sbb-header-environment>
 </sbb-header>

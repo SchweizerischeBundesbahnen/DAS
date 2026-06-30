@@ -1,10 +1,10 @@
 form {
-  display: grid;
-  gap: var(--sbb-spacing-responsive-xxxs);
-  justify-items: start;
+	display: grid;
+	gap: var(--sbb-spacing-responsive-xxxs);
+	justify-items: start;
 }
 
 .date-inputs {
-  display: flex;
-  gap: var(--sbb-spacing-fixed-4x);
+	display: flex;
+	gap: var(--sbb-spacing-fixed-4x);
 }

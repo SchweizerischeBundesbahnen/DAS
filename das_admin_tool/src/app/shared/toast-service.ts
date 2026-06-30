@@ -1,31 +1,29 @@
-import {inject, Injectable} from '@angular/core';
-import {SbbToast, SbbToastService} from '@sbb-esta/lyne-angular/toast';
+import { inject, Injectable } from '@angular/core';
+import { SbbToast, SbbToastService } from '@sbb-esta/lyne-angular/toast';
 
 const TOAST_CONFIG_SUCCESS = {
-  setupContainer: (toast: SbbToast) => {
-    toast.iconName = 'circle-tick-small';
-    toast.timeout = 20_000;
-  },
+	setupContainer: (toast: SbbToast) => {
+		toast.iconName = 'circle-tick-small';
+		toast.timeout = 20_000;
+	},
 };
 
 const TOAST_CONFIG_ERROR = {
-  setupContainer: (toast: SbbToast) => {
-    toast.iconName = 'circle-cross-small';
-    toast.timeout = 20_000;
-  },
+	setupContainer: (toast: SbbToast) => {
+		toast.iconName = 'circle-cross-small';
+		toast.timeout = 20_000;
+	},
 };
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class ToastService {
-  private readonly toastService = inject(SbbToastService);
+	private readonly toastService = inject(SbbToastService);
 
-  success(message: string) {
-    this.toastService.open(message, TOAST_CONFIG_SUCCESS);
-  }
+	success(message: string) {
+		this.toastService.open(message, TOAST_CONFIG_SUCCESS);
+	}
 
-  error(message: string) {
-    this.toastService.open(message, TOAST_CONFIG_ERROR);
-  }
+	error(message: string) {
+		this.toastService.open(message, TOAST_CONFIG_ERROR);
+	}
 }

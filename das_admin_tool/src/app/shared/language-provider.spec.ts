@@ -1,37 +1,34 @@
-import {LOCALE_ID} from '@angular/core';
-import {TestBed} from '@angular/core/testing';
+import { LOCALE_ID } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
+import { LanguageProvider } from './language-provider';
 
-import {LanguageProvider} from './language-provider';
+function setup(localeId = 'de-CH') {
+	TestBed.configureTestingModule({ providers: [{ provide: LOCALE_ID, useValue: localeId }] });
+
+	return TestBed.inject(LanguageProvider);
+}
 
 describe('LanguageProvider', () => {
-  const setup = (localeId = 'de-CH') => {
-    TestBed.configureTestingModule({
-      providers: [{provide: LOCALE_ID, useValue: localeId}],
-    });
+	it('should be created', () => {
+		const service = setup();
+		expect(service).toBeTruthy();
+	});
 
-    return TestBed.inject(LanguageProvider);
-  };
+	it('exposes 3 supported languages', () => {
+		const service = setup();
 
-  it('should be created', () => {
-    const service = setup();
-    expect(service).toBeTruthy();
-  });
+		expect(service.allLanguages).toHaveLength(3);
+	});
 
-  it('exposes 3 supported languages', () => {
-    const service = setup();
+	it('resolves currentLanguage from LOCALE_ID', () => {
+		const service = setup('fr-CH');
 
-    expect(service.allLanguages).toHaveLength(3);
-  });
+		expect(service.currentLanguage).toEqual({ localeId: 'fr-CH', path: 'fr', label: 'Français' });
+	});
 
-  it('resolves currentLanguage from LOCALE_ID', () => {
-    const service = setup('fr-CH');
+	it('returns undefined currentLanguage for unsupported locale', () => {
+		const service = setup('en-US');
 
-    expect(service.currentLanguage).toEqual({localeId: 'fr-CH', path: 'fr', label: 'Français'});
-  });
-
-  it('returns undefined currentLanguage for unsupported locale', () => {
-    const service = setup('en-US');
-
-    expect(service.currentLanguage).toBeUndefined();
-  });
+		expect(service.currentLanguage).toBeUndefined();
+	});
 });

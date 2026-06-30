@@ -1,10 +1,10 @@
 .email {
-  font-weight: bold;
-  font-size: var(--sbb-font-size-text-xs);
-  margin-top: var(--sbb-spacing-fixed-1x);
+	font-weight: bold;
+	font-size: var(--sbb-font-size-text-xs);
+	margin-top: var(--sbb-spacing-fixed-1x);
 }
 
 .role {
-  color: light-dark(var(--sbb-color-graphite), var(--sbb-color-smoke));
-  font-size: var(--sbb-font-size-text-xxs);
+	color: light-dark(var(--sbb-color-graphite), var(--sbb-color-smoke));
+	font-size: var(--sbb-font-size-text-xxs);
 }

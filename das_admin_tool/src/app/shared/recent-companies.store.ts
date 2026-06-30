@@ -1,31 +1,28 @@
-import {inject, Injectable} from '@angular/core';
-import {AuthService} from './auth-service';
+import { inject, Injectable } from '@angular/core';
+import { AuthService } from './auth-service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class RecentCompaniesStore {
-  private readonly authService = inject(AuthService);
-  private readonly storageKey = 'recent_companies_' + this.authService.oid();
+	private readonly authService = inject(AuthService);
+	private readonly storageKey = `recent_companies_${this.authService.oid()}`;
 
-  get(): string[] {
-    const raw = localStorage.getItem(this.storageKey);
-    if (!raw) {
-      return [];
-    }
+	get(): string[] {
+		const raw = localStorage.getItem(this.storageKey);
+		if (!raw) {
+			return [];
+		}
 
-    try {
-      const parsed = JSON.parse(raw);
-      return Array.isArray(parsed)
-        ? parsed.filter((value): value is string => typeof value === 'string')
-        : [];
-    } catch {
-      return [];
-    }
-  }
+		try {
+			const parsed: unknown = JSON.parse(raw);
+			return Array.isArray(parsed)
+				? parsed.filter((value): value is string => typeof value === 'string')
+				: [];
+		} catch {
+			return [];
+		}
+	}
 
-  save(companyCodes: string[]): void {
-    localStorage.setItem(this.storageKey, JSON.stringify(companyCodes));
-  }
+	save(companyCodes: string[]): void {
+		localStorage.setItem(this.storageKey, JSON.stringify(companyCodes));
+	}
 }
-

@@ -1,15 +1,19 @@
 <sbb-title i18n="@@ru_indication_templates_title" level="2">Titel und Texte</sbb-title>
 
 @if (ruIndicationTemplates.hasValue()) {
-  @if (ruIndicationTemplates.value().data.length === 0) {
-    <p i18n="@@ru_indication_templates_empty_state">Noch keine Titel und Texte erfasst.</p>
-    <sbb-secondary-button (click)="ruIndicationTemplatesService.add()" i18n="@@button_create_entry" iconName="plus-small">Neuen Eintrag erfassen
-    </sbb-secondary-button>
-  } @else {
-    <app-ru-indication-templates-table/>
-  }
+	@if (ruIndicationTemplates.value().data.length === 0) {
+		<p i18n="@@ru_indication_templates_empty_state">Noch keine Titel und Texte erfasst.</p>
+		<sbb-secondary-button
+			i18n="@@button_create_entry"
+			iconName="plus-small"
+			(click)="ruIndicationTemplatesService.add()"
+			>Neuen Eintrag erfassen</sbb-secondary-button
+		>
+	} @else {
+		<app-ru-indication-templates-table />
+	}
 } @else if (ruIndicationTemplates.error()) {
-  <p i18n="@@ru_indication_templates_error_loading">Fehler beim Laden der Titel und Texte</p>
+	<p i18n="@@ru_indication_templates_error_loading">Fehler beim Laden der Titel und Texte</p>
 } @else if (ruIndicationTemplates.isLoading()) {
-  <sbb-loading-indicator-circle></sbb-loading-indicator-circle>
+	<sbb-loading-indicator-circle />
 }

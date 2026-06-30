@@ -1,4 +1,4 @@
 export interface Auditable {
-  lastModifiedBy?: string;
-  lastModifiedAt?: Date;
+	lastModifiedBy?: string;
+	lastModifiedAt?: Date;
 }

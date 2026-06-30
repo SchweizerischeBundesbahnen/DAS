@@ -1,9 +1,9 @@
 sbb-form-field {
-  width: 100%;
+	width: 100%;
 }
 
 .category {
-  sbb-title {
-    margin-top: 0;
-  }
+	sbb-title {
+		margin-top: 0;
+	}
 }

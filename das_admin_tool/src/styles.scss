@@ -2,16 +2,16 @@
 
 // Table class for max two lines truncated (needs a span)
 .table-truncated td[sbb-cell]:not(.cell-nowrap) span {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: normal;
-  word-break: break-word;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: normal;
+	word-break: break-word;
 }
 
 // Table class to not wrap the cell content
 .table-truncated td[sbb-cell].cell-nowrap {
-  white-space: nowrap;
+	white-space: nowrap;
 }
