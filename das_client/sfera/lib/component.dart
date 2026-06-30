@@ -8,6 +8,7 @@ import 'package:sfera/src/data/repository/sfera_repository.dart';
 import 'package:sfera/src/data/repository/sfera_repository_impl.dart';
 import 'package:sfera/src/provider/sfera_auth_provider.dart';
 
+export 'package:app/pages/journey/journey_screen/widgets/table/combined_foot_note_and_indications.dart';
 export 'package:sfera/src/data/api/sfera_error.dart';
 export 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 export 'package:sfera/src/data/parser/sfera_reply_parser.dart';
@@ -25,7 +26,6 @@ export 'package:sfera/src/model/journey/base_foot_note.dart';
 export 'package:sfera/src/model/journey/bracket_station_segment.dart';
 export 'package:sfera/src/model/journey/brake_series.dart';
 export 'package:sfera/src/model/journey/cab_signaling.dart';
-export 'package:sfera/src/model/journey/combined_foot_note_operational_indication.dart';
 export 'package:sfera/src/model/journey/communication_network_change.dart';
 export 'package:sfera/src/model/journey/connection_track.dart';
 export 'package:sfera/src/model/journey/contact.dart';

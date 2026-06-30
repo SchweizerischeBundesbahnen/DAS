@@ -16,9 +16,10 @@ enum Datatype {
   trackFootNote,
   lineFootNote,
   operationalIndication,
-  combinedFootNoteOperationalIndication,
+  combinedFootNoteAndIndications,
   communicationNetworkChannel,
   shuntingMovement,
   trainDriverTurnover,
   suspiciousJourneyPoint,
+  ruIndication,
 }

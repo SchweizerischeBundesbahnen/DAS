@@ -154,36 +154,6 @@ extension BaseDataExtension on Iterable<BaseData> {
     );
   }
 
-  /// Combines [BaseFootNote] and [OperationalIndication] that are on same location (technically always on a service point)
-  Iterable<BaseData> combineFootNoteAndOperationalIndication() {
-    final groupedMap = where(
-      (it) => it is BaseFootNote || it is OperationalIndication,
-    ).groupListsBy((i) => i.order);
-
-    final dataToBeRemoved = <BaseData>[];
-    final combinedData = groupedMap.values
-        .map((group) {
-          final footNote = group.firstWhereOrNull((it) => it is BaseFootNote) as BaseFootNote?;
-          final operationalIndication =
-              group.firstWhereOrNull((it) => it is OperationalIndication) as OperationalIndication?;
-          if (footNote == null || operationalIndication == null) {
-            return null;
-          }
-
-          dataToBeRemoved.addAll([footNote, operationalIndication]);
-          return CombinedFootNoteOperationalIndication(
-            footNote: footNote,
-            operationalIndication: operationalIndication,
-          );
-        })
-        .nonNulls
-        .toList(); // force non-lazy map
-
-    return List.of(this)
-      ..removeWhere((it) => dataToBeRemoved.contains(it))
-      ..addAll(combinedData);
-  }
-
   Iterable<BaseData> hideCommunicationNetworkChangesWithSameTypeAsPreviousOrIsServicePoint() {
     final List<BaseData> resultList = toList();
     CommunicationNetworkChange? previousChange;

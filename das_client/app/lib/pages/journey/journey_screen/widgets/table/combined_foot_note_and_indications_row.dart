@@ -1,33 +1,38 @@
 import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_view_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/foot_note_accordion.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/foot_note_row.dart';
-import 'package:app/pages/journey/journey_screen/widgets/table/operational_indication_accordion.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/indication_accordion.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/widget_row_builder.dart';
 import 'package:app/theme/theme_util.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
-class CombinedFootNoteOperationalIndicationRow extends WidgetRowBuilder<CombinedFootNoteOperationalIndication> {
-  static const Key rowKey = Key('combinedFootNoteOperationalIndicationRow');
+class CombinedFootNoteAndIndicationsRow extends WidgetRowBuilder<CombinedFootNoteAndIndications> {
+  static const Key rowKey = Key('combinedFootNoteAndIndicationsRow');
 
-  CombinedFootNoteOperationalIndicationRow({
+  CombinedFootNoteAndIndicationsRow({
     required super.rowIndex,
     required super.metadata,
     required super.data,
     required this.footNoteState,
-    required this.operationIndicationState,
+    required this.indicationStates,
     super.config,
     super.identifier,
     this.leftPadding = 0,
   }) : super(
          stickyLevel: .second,
          height:
-             OperationalIndicationAccordion.calculateHeight(
-               data.operationalIndication.combinedText,
-               collapsedState: operationIndicationState,
-               leftPadding: leftPadding,
-             ) +
+             data.indications
+                 .map(
+                   (indication) => IndicationAccordion.calculateHeight(
+                     indication,
+                     collapsedState: indicationStates.stateOf(indication),
+                     leftPadding: leftPadding,
+                   ),
+                 )
+                 .sum +
              FootNoteAccordion.calculateHeight(
                data: data.footNote,
                isExpanded: footNoteState != .collapsed,
@@ -37,7 +42,7 @@ class CombinedFootNoteOperationalIndicationRow extends WidgetRowBuilder<Combined
        );
 
   final CollapsedState footNoteState;
-  final CollapsedState operationIndicationState;
+  final Map<int, CollapsedState> indicationStates;
 
   /// used to align content with information cell
   final double leftPadding;
@@ -49,10 +54,12 @@ class CombinedFootNoteOperationalIndicationRow extends WidgetRowBuilder<Combined
       color: ThemeUtil.getColor(context, SBBColors.milk, SBBColors.black),
       child: Column(
         children: [
-          OperationalIndicationAccordion(
-            collapsedState: operationIndicationState,
-            data: data.operationalIndication,
-            leftPadding: leftPadding,
+          ...data.indications.map(
+            (indication) => IndicationAccordion(
+              collapsedState: indicationStates.stateOf(indication),
+              data: indication,
+              leftPadding: leftPadding,
+            ),
           ),
           FootNoteAccordion(
             title: data.footNote.title(context, metadata),

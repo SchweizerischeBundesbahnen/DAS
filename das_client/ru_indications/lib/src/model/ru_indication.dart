@@ -5,7 +5,7 @@ class RuIndication extends JourneyAnnotation {
     required this.title,
     required this.text,
     required super.order,
-  }) : super(dataType: .lineFootNote); // TODO: add ruIndication datatype
+  }) : super(dataType: .ruIndication);
 
   final String title;
   final String text;
@@ -21,4 +21,9 @@ class RuIndication extends JourneyAnnotation {
 
   @override
   int get hashCode => Object.hash(title, text, order);
+
+  @override
+  String toString() {
+    return 'RuIndication{order: $order, title: $title, text: $text}';
+  }
 }

@@ -22,7 +22,7 @@ import 'package:app/pages/journey/journey_screen/widgets/table/balise_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cab_signaling_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cell_row_builder.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/column_definition.dart';
-import 'package:app/pages/journey/journey_screen/widgets/table/combined_foot_note_operational_indication_row.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/combined_foot_note_and_indications_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/communication_network_change_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/config/bracket_station_render_data.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/config/chevron_animation_data.dart';
@@ -31,9 +31,9 @@ import 'package:app/pages/journey/journey_screen/widgets/table/config/track_equi
 import 'package:app/pages/journey/journey_screen/widgets/table/connection_track_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/curve_point_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/foot_note_row.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/indication_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/level_crossing_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/loading_table.dart';
-import 'package:app/pages/journey/journey_screen/widgets/table/operational_indication_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/protection_section_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/service_point_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/shunting_movement_row.dart';
@@ -58,6 +58,7 @@ import 'package:core_data/component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:ru_indications/component.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
@@ -306,8 +307,17 @@ class JourneyTable extends StatelessWidget {
             rowIndex: index,
             leftPadding: leftOffsetToInformationCell - Accordion.contentPadding,
           );
+        case .ruIndication:
+          return IndicationRow(
+            metadata: metadata,
+            data: rowData as RuIndication,
+            config: journeyConfig,
+            collapsedState: collapsedRows.stateOf(rowData),
+            rowIndex: index,
+            leftPadding: leftOffsetToInformationCell - Accordion.contentPadding,
+          );
         case .operationalIndication:
-          return OperationalIndicationRow(
+          return IndicationRow(
             metadata: metadata,
             data: rowData as OperationalIndication,
             config: journeyConfig,
@@ -315,13 +325,13 @@ class JourneyTable extends StatelessWidget {
             rowIndex: index,
             leftPadding: leftOffsetToInformationCell - Accordion.contentPadding,
           );
-        case .combinedFootNoteOperationalIndication:
-          return CombinedFootNoteOperationalIndicationRow(
+        case .combinedFootNoteAndIndications:
+          return CombinedFootNoteAndIndicationsRow(
             rowIndex: index,
             metadata: metadata,
-            data: rowData as CombinedFootNoteOperationalIndication,
+            data: rowData as CombinedFootNoteAndIndications,
             footNoteState: collapsedRows.stateOf(rowData.footNote),
-            operationIndicationState: collapsedRows.stateOf(rowData.operationalIndication),
+            indicationStates: collapsedRows.whereContains(rowData.indications),
             leftPadding: leftOffsetToInformationCell - Accordion.contentPadding,
           );
         case .communicationNetworkChannel:

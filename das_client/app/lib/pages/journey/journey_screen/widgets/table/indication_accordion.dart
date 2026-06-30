@@ -4,12 +4,14 @@ import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_vie
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/text_util.dart';
 import 'package:app/widgets/accordion/accordion.dart';
+import 'package:core_data/component.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:ru_indications/component.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
-class OperationalIndicationAccordion extends StatelessWidget {
+class IndicationAccordion extends StatelessWidget {
   static const Key showMoreTextKey = Key('operationalIndicationShowMoreText');
   static const Key expandedContentKey = Key('operationalIndicationExpandedContent');
   static const Key collapsedContentKey = Key('operationalIndicationCollapsedContent');
@@ -24,14 +26,14 @@ class OperationalIndicationAccordion extends StatelessWidget {
     fontFamily: SBBFontFamily.sbbFontRoman,
   );
 
-  const OperationalIndicationAccordion({
+  const IndicationAccordion({
     required this.collapsedState,
     required this.data,
     this.leftPadding = 0,
     super.key,
-  });
+  }) : assert(data is RuIndication || data is OperationalIndication, 'Unsupported data type for indication');
 
-  final OperationalIndication data;
+  final JourneyAnnotation data;
   final CollapsedState collapsedState;
 
   /// used to align content with information cell
@@ -43,7 +45,7 @@ class OperationalIndicationAccordion extends StatelessWidget {
     final borderRadius = Radius.circular(isExpanded ? SBBSpacing.medium : SBBSpacing.xSmall);
     return Accordion(
       key: ObjectKey(data.hashCode),
-      title: context.l10n.c_indication,
+      title: data.title ?? context.l10n.c_indication,
       body: _body(context),
       isExpanded: isExpanded,
       toggleCallback: () =>
@@ -58,7 +60,7 @@ class OperationalIndicationAccordion extends StatelessWidget {
 
   Widget _body(BuildContext context) {
     if (collapsedState == .expandedWithCollapsedContent && _hasTextOverflow) {
-      final textWithoutLineBreaks = TextUtil.replaceLineBreaks(data.combinedText);
+      final textWithoutLineBreaks = TextUtil.replaceLineBreaks(data.text);
       return Row(
         children: [
           Expanded(child: _contentText(textWithoutLineBreaks, maxLines: 1)),
@@ -66,7 +68,7 @@ class OperationalIndicationAccordion extends StatelessWidget {
         ],
       );
     }
-    return _contentText(data.combinedText);
+    return _contentText(data.text);
   }
 
   Widget _showMoreText(BuildContext context) {
@@ -81,11 +83,12 @@ class OperationalIndicationAccordion extends StatelessWidget {
   }
 
   bool get _hasTextOverflow {
-    final textWithoutLineBreak = TextUtil.replaceLineBreaks(data.combinedText);
+    final textWithoutLineBreak = TextUtil.replaceLineBreaks(data.text);
     return TextUtil.hasTextOverflow(textWithoutLineBreak, _accordionContentWidth(leftPadding: leftPadding), _textStyle);
   }
 
   static Text _contentText(String text, {int? maxLines}) {
+    // TODO: parse link format [link](https://example.com)
     return Text.rich(
       key: maxLines == null ? expandedContentKey : collapsedContentKey,
       TextUtil.parseHtmlText(text, _textStyle),
@@ -95,7 +98,7 @@ class OperationalIndicationAccordion extends StatelessWidget {
   }
 
   static double calculateHeight(
-    String text, {
+    JourneyAnnotation data, {
     required CollapsedState collapsedState,
     required double leftPadding,
   }) {
@@ -104,7 +107,7 @@ class OperationalIndicationAccordion extends StatelessWidget {
       return Accordion.defaultCollapsedHeight + margin;
     }
 
-    final content = _contentText(text);
+    final content = _contentText(data.text);
     final maxLines = collapsedState == .expandedWithCollapsedContent ? 1 : null;
     final tp = TextPainter(text: content.textSpan, textDirection: .ltr, maxLines: maxLines)
       ..layout(maxWidth: _accordionContentWidth(leftPadding: leftPadding));
@@ -113,4 +116,20 @@ class OperationalIndicationAccordion extends StatelessWidget {
 
   static double _accordionContentWidth({required double leftPadding}) =>
       Accordion.contentWidth(margin: JourneyOverview.horizontalPadding, additionalPadding: leftPadding);
+}
+
+extension JourneyAnnotationIndicationX on JourneyAnnotation {
+  String? get title {
+    if (this is RuIndication) return (this as RuIndication).title;
+    return null; // TODO:
+  }
+
+  String get text {
+    if (this is RuIndication) {
+      return (this as RuIndication).text;
+    } else if (this is OperationalIndication) {
+      return (this as OperationalIndication).combinedText;
+    }
+    return ''; // TODO:
+  }
 }

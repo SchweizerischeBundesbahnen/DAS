@@ -118,7 +118,7 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
         .hideCommunicationNetworkChangesWithSameTypeAsPreviousOrIsServicePoint()
         .hideRepeatedLineFootNotes(position.currentPosition)
         .hideFootNotesForNotSelectedTrainSeries(settings.currentBrakeSeries?.trainSeries)
-        .combineFootNoteAndOperationalIndication()
+        .combineFootNoteAndIndications()
         .addTrainDriverTurnoverRows(navigationModel?.trainIdentification)
         .hideSignals(
           stationSignals: !_userSettings.showStationSignals,

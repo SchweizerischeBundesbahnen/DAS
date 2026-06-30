@@ -4,10 +4,12 @@ abstract class RuIndicationsRepository {
   const RuIndicationsRepository._();
 
   /// Fetches RU indication matches for the given parameters.
+  ///
+  /// [locationReferences] consists of key: locationCode, value: order in journey
   Future<List<RuIndication>> fetchRuIndications({
     required String company,
     required int trainNumber,
     required DateTime startDate,
-    required List<String> tafTapLocationReferences,
+    required Map<String, int> locationReferences,
   });
 }

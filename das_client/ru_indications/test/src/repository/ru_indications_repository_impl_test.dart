@@ -22,8 +22,11 @@ void main() {
 
   const company = 'SBB';
   const trainNumber = 12345;
-  final startDate = DateTime(2026, 1, 15, 10, 0);
-  const tafTapLocationReferences = <String>['8503000', '8507000'];
+  final startDate = DateTime(2026, 1, 15, 10);
+  const Map<String, int> locationReferences = {
+    'CH003001': 1000,
+    'CH003002': 2000,
+  };
 
   setUp(() {
     mockRuIndicationsApiService = MockRuIndicationsApiService();
@@ -39,7 +42,7 @@ void main() {
         company: company,
         operationalTrainNumber: trainNumber,
         startDate: startDate,
-        tafTapLocationReferences: tafTapLocationReferences,
+        tafTapLocationReferences: locationReferences.keys.toList(),
       ),
     ).thenAnswer((_) async => MatchesResponse(headers: <String, String>{}, body: _matchesResponseDto()));
 
@@ -48,7 +51,7 @@ void main() {
       company: company,
       trainNumber: trainNumber,
       startDate: startDate,
-      tafTapLocationReferences: tafTapLocationReferences,
+      locationReferences: locationReferences,
     );
 
     // EXPECT
@@ -62,7 +65,7 @@ void main() {
         company: company,
         operationalTrainNumber: trainNumber,
         startDate: startDate,
-        tafTapLocationReferences: tafTapLocationReferences,
+        tafTapLocationReferences: locationReferences.keys.toList(),
       ),
     ).thenThrow(Exception('Failed'));
 
@@ -71,7 +74,7 @@ void main() {
       company: company,
       trainNumber: trainNumber,
       startDate: startDate,
-      tafTapLocationReferences: tafTapLocationReferences,
+      locationReferences: locationReferences,
     );
 
     // EXPECT
@@ -83,7 +86,7 @@ RuIndicationMatchesResponseDto _matchesResponseDto() {
   return RuIndicationMatchesResponseDto(
     data: [
       RuIndicationLocationDto(
-        tafTapLocationReference: '8503000',
+        tafTapLocationReference: 'CH003001',
         ruIndicationContents: [
           RuIndicationContentDto(
             title: 'Title A',
@@ -96,7 +99,7 @@ RuIndicationMatchesResponseDto _matchesResponseDto() {
         ],
       ),
       RuIndicationLocationDto(
-        tafTapLocationReference: '8507000',
+        tafTapLocationReference: 'CH003002',
         ruIndicationContents: [
           RuIndicationContentDto(
             title: 'Title C',
@@ -111,17 +114,17 @@ RuIndicationMatchesResponseDto _matchesResponseDto() {
 List<RuIndication> _expectedDomainResult() {
   return const [
     RuIndication(
-      order: 1000, // TODO:
+      order: 1000,
       title: 'Title A',
       text: 'Text A',
     ),
     RuIndication(
-      order: 1000, // TODO:
+      order: 1000,
       title: 'Title B',
       text: 'Text B',
     ),
     RuIndication(
-      order: 1000, // TODO:
+      order: 2000,
       title: 'Title C',
       text: 'Text C',
     ),

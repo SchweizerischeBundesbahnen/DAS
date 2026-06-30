@@ -17,16 +17,16 @@ class RuIndicationsRepositoryImpl implements RuIndicationsRepository {
     required String company,
     required int trainNumber,
     required DateTime startDate,
-    required List<String> tafTapLocationReferences,
+    required Map<String, int> locationReferences,
   }) async {
     try {
       final response = await _apiService.matches(
         company: company,
         operationalTrainNumber: trainNumber,
         startDate: startDate,
-        tafTapLocationReferences: tafTapLocationReferences,
+        tafTapLocationReferences: locationReferences.keys.toList(),
       );
-      final ruIndications = response.body.data.map((dto) => dto.toRuIndications()).flattened;
+      final ruIndications = response.body.data.map((dto) => dto.toRuIndications(locationReferences)).flattened;
       _log.info(
         'Successfully fetched ${ruIndications.length} RU indications for $trainNumber ($company) on $startDate.',
       );

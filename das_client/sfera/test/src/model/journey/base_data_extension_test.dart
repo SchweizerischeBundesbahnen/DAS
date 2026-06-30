@@ -452,38 +452,6 @@ void main() {
     expect(filteredRows[0].order, 606);
   });
 
-  test('Test combine of OperationalIndication and FootNote on same location', () {
-    // GIVEN
-    final footNoteToBeCombined = LineFootNote(
-      order: 100,
-      footNote: FootNote(text: 'Test A'),
-      locationName: 'Location A',
-    );
-    final operationalIndicationToBeCombined = OperationalIndication(order: 100, texts: ['Test B']);
-    final baseData = <BaseData>[
-      footNoteToBeCombined,
-      operationalIndicationToBeCombined,
-      LineFootNote(
-        order: 300,
-        footNote: FootNote(text: 'Test C'),
-        locationName: 'Location C',
-      ),
-      OperationalIndication(order: 400, texts: ['Test D']),
-    ];
-
-    // WHEN
-    final combinedDataList = baseData.combineFootNoteAndOperationalIndication();
-
-    // THEN
-    expect(combinedDataList, hasLength(3));
-    final combinedData = combinedDataList.whereType<CombinedFootNoteOperationalIndication>().toList();
-    expect(combinedData, hasLength(1));
-    expect(combinedData[0].footNote, footNoteToBeCombined);
-    expect(combinedData[0].operationalIndication, operationalIndicationToBeCombined);
-    expect(combinedDataList, isNot(contains(footNoteToBeCombined)));
-    expect(combinedDataList, isNot(contains(operationalIndicationToBeCombined)));
-  });
-
   test('Test hide repeated network changes with same type', () {
     // GIVEN
     final baseData = <BaseData>[
