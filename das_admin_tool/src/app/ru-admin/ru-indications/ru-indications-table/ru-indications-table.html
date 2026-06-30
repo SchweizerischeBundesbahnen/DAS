@@ -64,7 +64,7 @@
         <th *sbbHeaderCellDef i18n="@@ru_indications_table_column_status" sbb-header-cell
             sbb-sort-header="status">Status
         </th>
-        <td *sbbCellDef="let row" class="cell-nowrap" sbb-cell>{{ statusValue(row) }}</td>
+        <td *sbbCellDef="let row" sbb-cell>{{ statusValue(row) }}</td>
       </ng-container>
 
       <ng-container sbbColumnDef="companies">
@@ -101,9 +101,7 @@
             sbb-sort-header="lastModifiedAt">
           Bearbeitet am
         </th>
-        <td *sbbCellDef="let row" class="cell-nowrap"
-            sbb-cell>{{ row.lastModifiedAt | date: 'short' }}
-        </td>
+        <td *sbbCellDef="let row" sbb-cell>{{ row.lastModifiedAt | date: 'short' }}</td>
       </ng-container>
 
       <ng-container sbbColumnDef="lastModifiedBy">
@@ -111,7 +109,7 @@
             sbb-sort-header="lastModifiedBy">
           Bearbeitet von
         </th>
-        <td *sbbCellDef="let row" class="cell-nowrap" sbb-cell>{{ row.lastModifiedBy }}</td>
+        <td *sbbCellDef="let row" sbb-cell>{{ row.lastModifiedBy }}</td>
       </ng-container>
 
       <ng-container sbbColumnDef="filter-category">

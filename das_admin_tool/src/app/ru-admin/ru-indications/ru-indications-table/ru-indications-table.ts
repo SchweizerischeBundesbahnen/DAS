@@ -1,31 +1,31 @@
-import { Component, effect, inject, viewChild } from '@angular/core';
+import {Component, effect, inject, viewChild} from '@angular/core';
 import {
   SbbSort,
   SbbTableDataSource,
   SbbTableFilter,
   SbbTableModule
 } from '@sbb-esta/lyne-angular/table';
-import { SbbSecondaryButton } from '@sbb-esta/lyne-angular/button/secondary-button';
-import { SbbCompactPaginator } from '@sbb-esta/lyne-angular/paginator/compact-paginator';
-import { SbbMiniButton } from '@sbb-esta/lyne-angular/button/mini-button';
-import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
-import { SbbIconModule } from '@sbb-esta/lyne-angular/icon';
-import { SbbSelectModule } from '@sbb-esta/lyne-angular/select';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { RuIndicationService } from '../ru-indication.service';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { LanguageCode, LanguageProvider } from '../../../shared/language-provider';
-import { CompanyService } from '../../../shared/companies-input/company.service';
-import { LocationService } from '../ru-indication-dialog/locations-input/location.service';
+import {SbbSecondaryButton} from '@sbb-esta/lyne-angular/button/secondary-button';
+import {SbbCompactPaginator} from '@sbb-esta/lyne-angular/paginator/compact-paginator';
+import {SbbMiniButton} from '@sbb-esta/lyne-angular/button/mini-button';
+import {SbbFormFieldModule} from '@sbb-esta/lyne-angular/form-field';
+import {SbbIconModule} from '@sbb-esta/lyne-angular/icon';
+import {SbbSelectModule} from '@sbb-esta/lyne-angular/select';
+import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {RuIndicationService} from '../ru-indication.service';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {LanguageCode, LanguageProvider} from '../../../shared/language-provider';
+import {CompanyService} from '../../../shared/companies-input/company.service';
+import {LocationService} from '../ru-indication-dialog/locations-input/location.service';
 import {
   displayTrainNumberFilter
 } from '../ru-indication-dialog/train-number-input/train-number-input';
-import { DatePipe } from '@angular/common';
-import { displayPeriod } from '../ru-indication-dialog/periods-input/periods-input';
-import { RU_INDICATION_STATUS_LABELS, RuIndication } from '../../ru-admin-api';
-import { SbbCheckbox } from '@sbb-esta/lyne-angular/checkbox';
-import { SelectionModel } from '@angular/cdk/collections';
-import { SbbTransparentButton } from '@sbb-esta/lyne-angular/button/transparent-button';
+import {DatePipe} from '@angular/common';
+import {displayPeriod} from '../ru-indication-dialog/periods-input/periods-input';
+import {RU_INDICATION_STATUS_LABELS, RuIndication} from '../../ru-admin-api';
+import {SbbCheckbox} from '@sbb-esta/lyne-angular/checkbox';
+import {SelectionModel} from '@angular/cdk/collections';
+import {SbbTransparentButton} from '@sbb-esta/lyne-angular/button/transparent-button';
 
 export interface RuIndicationFilter extends SbbTableFilter {
   search: string;
@@ -194,7 +194,6 @@ export class RuIndicationsTable {
   }
 
   private searchFilter(filter: RuIndicationFilter, data: RuIndication) {
-    console.log('search filter', filter, data)
     return (this.filterGlobally(filter, data) && this.filterProperties(filter, data)) ?? false;
   }
 

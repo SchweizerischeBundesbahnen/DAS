@@ -37,8 +37,7 @@
           sbb-sort-header="lastModifiedAt">
         Bearbeitet am
       </th>
-      <td *sbbCellDef="let row" class="cell-nowrap"
-          sbb-cell>{{ row.lastModifiedAt | date: 'short' }}
+      <td *sbbCellDef="let row" sbb-cell>{{ row.lastModifiedAt | date: 'short' }}
       </td>
     </ng-container>
 
@@ -47,7 +46,7 @@
           sbb-header-cell
           sbb-sort-header="lastModifiedBy">Bearbeitet von
       </th>
-      <td *sbbCellDef="let row" class="cell-nowrap" sbb-cell>{{ row.lastModifiedBy }}</td>
+      <td *sbbCellDef="let row" sbb-cell>{{ row.lastModifiedBy }}</td>
     </ng-container>
 
 

@@ -1,17 +1,41 @@
 @use '@sbb-esta/lyne-elements' as styles;
 
+// Override SBB's table-layout: auto with fixed to prevent column width shifts on sort/filter
 // Table class for max two lines truncated (needs a span)
-.table-truncated td[sbb-cell]:not(.cell-nowrap) span {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: normal;
-  word-break: break-word;
-}
+.table-truncated {
+  &[fixedLayout] {
+    table-layout: fixed;
+  }
 
-// Table class to not wrap the cell content
-.table-truncated td[sbb-cell].cell-nowrap {
-  white-space: nowrap;
+  td[sbb-cell] span {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    word-break: break-word;
+  }
+
+  .sbb-column-select {
+    width: 2.5rem;
+  }
+
+  .sbb-column-action {
+    width: 2.5rem;
+  }
+
+  .sbb-column-lastModifiedAt {
+    width: 8rem;
+  }
+
+  .sbb-column-lastModifiedBy {
+    width: 12rem;
+  }
+
+  td.action {
+    sbb-mini-button {
+      vertical-align: middle;
+    }
+  }
 }

@@ -31,15 +31,14 @@
       <th *sbbHeaderCellDef i18n="@@special_holidays_table_column_date" sbb-header-cell
           sbb-sort-header="date">Gültig am
       </th>
-      <td *sbbCellDef="let row" class="cell-nowrap" sbb-cell>{{ row.date | date:'shortDate' }}</td>
+      <td *sbbCellDef="let row" sbb-cell>{{ row.date | date:'shortDate' }}</td>
     </ng-container>
 
     <ng-container sbbColumnDef="scheduleType">
       <th *sbbHeaderCellDef i18n="@@special_holidays_table_column_schedule_type" sbb-header-cell
           sbb-sort-header="scheduleType">Gilt als
       </th>
-      <td *sbbCellDef="let row" class="cell-nowrap"
-          sbb-cell>{{ scheduleTypeLabel(row.scheduleType) }}
+      <td *sbbCellDef="let row" sbb-cell>{{ scheduleTypeLabel(row.scheduleType) }}
       </td>
     </ng-container>
 
@@ -56,8 +55,7 @@
           sbb-sort-header="lastModifiedAt">
         Bearbeitet am
       </th>
-      <td *sbbCellDef="let row" class="cell-nowrap"
-          sbb-cell>{{ row.lastModifiedAt | date: 'short' }}
+      <td *sbbCellDef="let row" sbb-cell>{{ row.lastModifiedAt | date: 'short' }}
       </td>
     </ng-container>
 
@@ -66,7 +64,7 @@
           sbb-header-cell
           sbb-sort-header="lastModifiedBy">Bearbeitet von
       </th>
-      <td *sbbCellDef="let row" class="cell-nowrap" sbb-cell>{{ row.lastModifiedBy }}</td>
+      <td *sbbCellDef="let row" sbb-cell>{{ row.lastModifiedBy }}</td>
     </ng-container>
 
     <ng-container sbbColumnDef="action">
