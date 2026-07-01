@@ -66,23 +66,27 @@ sfera:
   topic-prefix: test/
 
 preload:
-  fetch-cron: '-'
   bucket:
     bucketUrl: bucketUrl
     accessKey: accessKey
     accessSecret: accessSecret
-  trainCleanUp:
+
+trainjourneyplan:
+  train-clean-up:
     days: 2
-    cronExpression: "-"
-  storageCleanUp:
-    hours: 24
+    cron-expression: "-"
   kafka:
     bootstrap-server: ''
     group-id: ''
     username: ''
     password: ''
-    timetablePeriodTopic: period
-    timetableTrainTopic: train
+    timetable-period-topic: period
+    timetable-train-topic: train
+
+trainjourneypreloader:
+  fetch-cron: '-'
+  storage-clean-up:
+    hours: 24
 
 proxy:
   base-url: ''

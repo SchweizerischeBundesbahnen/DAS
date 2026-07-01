@@ -13,7 +13,7 @@ class SettingsRequest {
   final Map<String, String>? headers;
 
   Future<SettingsResponse> call() async {
-    final url = Uri.https(baseUrl, 'v1/settings');
+    final url = Uri.https(baseUrl, 'driver/v1/settings');
     final response = await httpClient.get(url, headers: headers);
     return SettingsResponse.fromHttpResponse(response);
   }

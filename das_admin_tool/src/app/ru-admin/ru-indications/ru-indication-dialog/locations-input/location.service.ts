@@ -16,7 +16,7 @@ export interface Location {
   providedIn: 'root',
 })
 export class LocationService {
-  private readonly url = `${environment.backendUrl}/v1/locations`;
+  private readonly url = `${environment.backendUrl}/locations`;
 
   private readonly locationsResource = httpResource<LocationApiResponse>(() => this.url);
   private readonly locations = computed(() => this.locationsResource.value()?.data ?? []);

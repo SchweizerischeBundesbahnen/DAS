@@ -172,23 +172,27 @@ sfera:
   topic-prefix: ${SFERA_BROKER_TOPIC_PREFIX}
 
 preload:
-  # adapt corresponding lockAtLeastFor time in @SchedulerLock
-  fetch-cron: ${PRELOAD_FETCH_CRON}
   bucket:
     bucketUrl: ${PRELOAD_BUCKET_URL}
     accessKey: ${PRELOAD_BUCKET_KEY}
     accessSecret: ${PRELOAD_BUCKET_SECRET}
+
+trainjourneyplan:
   kafka:
     bootstrap-server: ${PRELOAD_KAFKA_BOOTSTRAP_SERVER}
     group-id: ${PRELOAD_KAFKA_GROUP_ID}
     username: ${PRELOAD_KAFKA_API_KEY}
     password: ${PRELOAD_KAFKA_API_SECRET}
-    timetablePeriodTopic: ${PRELOAD_KAFKA_TIMETABLE_PERIOD_TOPIC}
-    timetableTrainTopic: ${PRELOAD_KAFKA_TIMETABLE_TRAIN_TOPIC}
-  trainCleanUp:
+    timetable-period-topic: ${PRELOAD_KAFKA_TIMETABLE_PERIOD_TOPIC}
+    timetable-train-topic: ${PRELOAD_KAFKA_TIMETABLE_TRAIN_TOPIC}
+  train-clean-up:
     days: ${PRELOAD_CLEANUP_DAYS}
-    cronExpression: ${PRELOAD_CLEANUP_CRON}
-  storageCleanUp:
+    cron-expression: ${PRELOAD_CLEANUP_CRON}
+
+trainjourneypreloader:
+  # adapt corresponding lockAtLeastFor time in @SchedulerLock
+  fetch-cron: ${PRELOAD_FETCH_CRON}
+  storage-clean-up:
     hours: ${PRELOAD_CLEANUP_HOURS}
 
 proxy:

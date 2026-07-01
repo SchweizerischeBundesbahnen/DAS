@@ -12,6 +12,7 @@ SpringBoot application (needs PostgreSQL DB dockerized, s. [Database handling](D
    - either by run configuration
    - or a {MODULE_WORKING_DIR}\.env file
    - Add `Maven-Settings -> Runner` -> `Environment variables` (missing URLs/secrets as in .env)
+     or run maven with `-DskipSchemaDownload`
 3. Run `DASBackendApplication`
 
 Hints for Windows-Users:

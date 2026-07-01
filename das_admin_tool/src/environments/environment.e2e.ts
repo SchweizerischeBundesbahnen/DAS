@@ -1,7 +1,7 @@
-import {Environment} from './environment.model';
-import {PassedInitialConfig} from 'angular-auth-oidc-client';
+import { Environment } from './environment.model';
+import { PassedInitialConfig } from 'angular-auth-oidc-client';
 
-const backendUrl = 'https://das-dev-int.api.sbb.ch';
+const backendUrl = 'https://das-dev-int.api.sbb.ch/admin';
 
 const authConfig: PassedInitialConfig = {
   config: {
