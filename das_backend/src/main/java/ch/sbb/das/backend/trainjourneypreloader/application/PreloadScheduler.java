@@ -34,6 +34,7 @@ public class PreloadScheduler {
     private final SferaService sferaService;
     private final TrainIdentificationService trainIdentificationsService;
     private final StorageService storageService;
+    private final CleanupStorageService cleanupStorageService;
     private final ApplicationEventPublisher eventPublisher;
     @Value("${trainjourneypreloader.storage-clean-up.hours}")
     private int cleanUpHours;
@@ -42,11 +43,13 @@ public class PreloadScheduler {
         SferaService sferaService,
         TrainIdentificationService trainIdentificationsService,
         StorageService storageService,
+        CleanupStorageService cleanupStorageService,
         ApplicationEventPublisher eventPublisher
     ) {
         this.sferaService = sferaService;
         this.trainIdentificationsService = trainIdentificationsService;
         this.storageService = storageService;
+        this.cleanupStorageService = cleanupStorageService;
         this.eventPublisher = eventPublisher;
     }
 
@@ -62,7 +65,7 @@ public class PreloadScheduler {
             DateTimeUtil.now().plusHours(PRELOAD_HOURS_BEFORE_DEPARTURE));
         sferaService.connect();
         for (TrainIdentification trainId : trainIdentifications) {
-            PreloadResult preloadResult = sferaService.preload(trainId);
+            PreloadResult preloadResult = sferaService.preload(trainId, mapSegmentProfiles);
             switch (preloadResult) {
                 case PreloadResult.Success(var successJp, var successSps, var successTcs) -> {
                     mapJourneyProfiles.put(trainId, successJp);
@@ -76,12 +79,14 @@ public class PreloadScheduler {
         }
         sferaService.disconnect();
         storageService.save(mapJourneyProfiles.values(), mapSegmentProfiles.values(), mapTrainCharacteristics.values());
-        storageService.deleteAllBefore(DateTimeUtil.now().minusHours(cleanUpHours));
+
         if (!mapJourneyProfiles.isEmpty()) {
             eventPublisher.publishEvent(new TrainPreloadCompletedEvent(mapJourneyProfiles.keySet().stream().map(TrainIdentification::id).collect(Collectors.toSet())));
         }
         log.info("Preload with {} JPs of requested {} JPs ended in {} ms", mapJourneyProfiles.size(), trainIdentifications.size(), System.currentTimeMillis() - startTime);
 
+        cleanupStorageService.deleteAllBefore(DateTimeUtil.now().minusHours(cleanUpHours));
+        cleanupStorageService.cleanupSegments();
     }
 
 }

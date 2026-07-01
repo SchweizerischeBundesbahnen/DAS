@@ -1,17 +1,14 @@
 package ch.sbb.das.backend.trainjourneypreloader.infrastructure;
 
 import java.util.List;
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import software.amazon.awssdk.core.ResponseBytes;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.DeleteObjectsRequest;
-import software.amazon.awssdk.services.s3.model.ListObjectsV2Request;
-import software.amazon.awssdk.services.s3.model.ObjectIdentifier;
-import software.amazon.awssdk.services.s3.model.PutObjectRequest;
-import software.amazon.awssdk.services.s3.model.S3Error;
-import software.amazon.awssdk.services.s3.model.S3Object;
+import software.amazon.awssdk.services.s3.model.*;
 
 @Service
 @Slf4j
@@ -35,6 +32,19 @@ public class S3Service {
             .contentType(CONTENT_TYPE_ZIP)
             .build();
         s3Client.putObject(put, RequestBody.fromBytes(data));
+    }
+
+    public Optional<byte[]> downloadZip(String key) {
+        try {
+            GetObjectRequest get = GetObjectRequest.builder()
+                .bucket(bucketName)
+                .key(key)
+                .build();
+            ResponseBytes<GetObjectResponse> response = s3Client.getObjectAsBytes(get);
+            return Optional.of(response.asByteArray());
+        } catch (NoSuchKeyException _) {
+            return Optional.empty();
+        }
     }
 
     public List<String> listObjects() {

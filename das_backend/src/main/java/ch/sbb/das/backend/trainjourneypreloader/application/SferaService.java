@@ -1,5 +1,6 @@
 package ch.sbb.das.backend.trainjourneypreloader.application;
 
+import ch.sbb.das.backend.common.DateTimeUtil;
 import ch.sbb.das.backend.trainjourneyplan.TrainIdentification;
 import ch.sbb.das.backend.trainjourneypreloader.domain.PreloadResult;
 import ch.sbb.das.backend.trainjourneypreloader.domain.PreloadResult.Unavailable;
@@ -7,6 +8,9 @@ import ch.sbb.das.backend.trainjourneypreloader.domain.SegmentProfileIdentificat
 import ch.sbb.das.backend.trainjourneypreloader.domain.SferaStore;
 import ch.sbb.das.backend.trainjourneypreloader.domain.TrainCharacteristicsIdentification;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.PahoMqttClient;
+import ch.sbb.das.backend.trainjourneypreloader.infrastructure.PreloadedSegmentProfileRepository;
+import ch.sbb.das.backend.trainjourneypreloader.infrastructure.SegmentProfileMissingException;
+import ch.sbb.das.backend.trainjourneypreloader.infrastructure.model.entities.PreloadedSegmentProfileEntity;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.xml.XmlHelper;
 import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.B2GMessageResponse.Result;
 import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.ErrorComplexType;
@@ -18,9 +22,11 @@ import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.SFERAB2GReques
 import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.SFERAG2BReplyMessage;
 import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.SegmentProfile;
 import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.TrainCharacteristics;
+import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -56,6 +62,7 @@ public class SferaService {
     private final XmlHelper xmlHelper;
     private final ConcurrentMap<String, CompletableFuture<SFERAG2BReplyMessage>> pending = new ConcurrentHashMap<>();
     private final SferaStore sferaStore;
+    private final PreloadedSegmentProfileRepository preloadedSegmentProfileRepository;
 
     @Value("${sfera.major-version}")
     private String sferaMajorVersion;
@@ -63,11 +70,12 @@ public class SferaService {
     @Value("${sfera.topic-prefix}")
     private String topicPrefix;
 
-    public SferaService(PahoMqttClient mqttClient, SferaMessageCreator sferaMessageCreator, XmlHelper xmlHelper) {
+    public SferaService(PahoMqttClient mqttClient, SferaMessageCreator sferaMessageCreator, XmlHelper xmlHelper, PreloadedSegmentProfileRepository preloadedSegmentProfileRepository) {
         this.mqttClient = mqttClient;
         this.sferaMessageCreator = sferaMessageCreator;
         this.xmlHelper = xmlHelper;
         this.sferaStore = new SferaStore();
+        this.preloadedSegmentProfileRepository = preloadedSegmentProfileRepository;
     }
 
     @Recover
@@ -80,7 +88,7 @@ public class SferaService {
     }
 
     @Retryable(maxAttempts = MAX_RETRIES, retryFor = {ExecutionException.class, InterruptedException.class, MqttException.class}, listeners = "customRetryListener")
-    PreloadResult preload(TrainIdentification trainId) throws ExecutionException, InterruptedException, MqttException {
+    PreloadResult preload(TrainIdentification trainId, Map<SegmentProfileIdentification, SegmentProfile> segmentProfilesMap) throws ExecutionException, InterruptedException, MqttException {
         mqttClient.subscribe(createTopic(G2B, trainId), (topic, message) -> receive(message));
 
         SFERAG2BReplyMessage handshakeReply = sendRequest(trainId, sferaMessageCreator.createHandshakeRequestMessage(trainId)).get();
@@ -110,10 +118,13 @@ public class SferaService {
         }
 
         Set<SegmentProfileIdentification> spIds = jp.getSegmentProfileReferences().stream().map(SegmentProfileIdentification::from).collect(Collectors.toSet());
+        spIds.removeIf(segmentProfilesMap::containsKey);
 
-        List<SegmentProfile> segmentProfiles = requestSpsUntilComplete(trainId, spIds);
-        if (segmentProfiles.size() != spIds.size()) {
-            return terminateSessionWithResult(trainId, new PreloadResult.Error("Not all Segment Profiles could be fetched"));
+        List<SegmentProfile> segmentProfiles;
+        try {
+            segmentProfiles = requestSpsUntilComplete(trainId, spIds);
+        } catch (SegmentProfileMissingException e) {
+            return terminateSessionWithResult(trainId, new PreloadResult.Error(e.getMessage()));
         }
 
         Set<TrainCharacteristicsIdentification> tcIds = jp.getSegmentProfileReferences().stream()
@@ -135,9 +146,12 @@ public class SferaService {
         return result;
     }
 
-    private List<SegmentProfile> requestSpsUntilComplete(TrainIdentification trainId, Set<SegmentProfileIdentification> spIds) throws ExecutionException, InterruptedException, MqttException {
+    private List<SegmentProfile> requestSpsUntilComplete(TrainIdentification trainId, Set<SegmentProfileIdentification> spIds)
+        throws ExecutionException, InterruptedException, MqttException, SegmentProfileMissingException {
+
         List<SegmentProfile> allSegmentProfiles = new ArrayList<>();
-        Set<SegmentProfileIdentification> missingSps = new HashSet<>(spIds);
+        Set<SegmentProfileIdentification> missingSps = calculateMissingSegmentProfiles(spIds);
+
         int lastMissingCount = missingSps.size();
         int noNewResultsCounter = 0;
         while (!missingSps.isEmpty() && noNewResultsCounter < MAX_RETRIES) {
@@ -150,6 +164,10 @@ public class SferaService {
             }
             lastMissingCount = missingSps.size();
         }
+
+        if (!missingSps.isEmpty()) {
+            throw new SegmentProfileMissingException("Not all Segment Profiles could be fetched after " + MAX_RETRIES + " attempts. Missing: " + missingSps);
+        }
         return allSegmentProfiles;
     }
 
@@ -157,21 +175,11 @@ public class SferaService {
         mqttClient.connect(CLIENT_ID);
     }
 
-    private CompletableFuture<Set<SegmentProfile>> requestSps(TrainIdentification trainId, Set<SegmentProfileIdentification> spIds) throws MqttException {
+    private CompletableFuture<Set<SegmentProfile>> requestSps(TrainIdentification trainId, Set<SegmentProfileIdentification> missingSps) throws MqttException {
         Set<SegmentProfile> segmentProfiles = new HashSet<>();
-        Set<SegmentProfileIdentification> segmentProfilesToFetch = new HashSet<>();
 
-        spIds.forEach(spId -> {
-            SegmentProfile segmentProfile = sferaStore.getSp(spId);
-            if (segmentProfile != null) {
-                segmentProfiles.add(segmentProfile);
-            } else {
-                segmentProfilesToFetch.add(spId);
-            }
-        });
-
-        if (!segmentProfilesToFetch.isEmpty()) {
-            return sendRequest(trainId, sferaMessageCreator.createSpRequestMessage(trainId, segmentProfilesToFetch))
+        if (!missingSps.isEmpty()) {
+            return sendRequest(trainId, sferaMessageCreator.createSpRequestMessage(trainId, missingSps))
                 .thenApply(reply -> {
                     if (reply.getG2BReplyPayload() == null || reply.getG2BReplyPayload().getSegmentProfiles() == null) {
                         if (isG2bError(reply.getG2BReplyPayload())) {
@@ -181,13 +189,22 @@ public class SferaService {
                         throw new IllegalStateException("No SP(s) received!");
                     }
                     List<SegmentProfile> fetched = reply.getG2BReplyPayload().getSegmentProfiles();
-                    sferaStore.addSps(fetched);
                     segmentProfiles.addAll(fetched);
                     return segmentProfiles;
                 });
         } else {
             return CompletableFuture.completedFuture(segmentProfiles);
         }
+    }
+
+    @NotNull
+    private Set<SegmentProfileIdentification> calculateMissingSegmentProfiles(Set<SegmentProfileIdentification> spIds) {
+        Set<String> spIdVersionSet = spIds.stream().map(SegmentProfileIdentification::toIdVersionString).collect(Collectors.toSet());
+        Set<String> preloadedSpIdVersionSet = preloadedSegmentProfileRepository.findAllBySpIdVersionIn(spIdVersionSet).stream().map(PreloadedSegmentProfileEntity::getSpIdVersion)
+            .collect(Collectors.toSet());
+        preloadedSegmentProfileRepository.updateLastSeenBySpIdVersion(DateTimeUtil.now(), preloadedSpIdVersionSet);
+
+        return spIds.stream().filter(spId -> !preloadedSpIdVersionSet.contains(spId.toIdVersionString())).collect(Collectors.toSet());
     }
 
     private CompletableFuture<List<TrainCharacteristics>> requestTcs(TrainIdentification trainId, Set<TrainCharacteristicsIdentification> tcIds) throws MqttException {

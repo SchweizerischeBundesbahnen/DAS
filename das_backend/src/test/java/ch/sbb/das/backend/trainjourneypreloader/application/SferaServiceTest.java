@@ -12,6 +12,7 @@ import ch.sbb.das.backend.companies.CompanyCode;
 import ch.sbb.das.backend.trainjourneyplan.TrainIdentification;
 import ch.sbb.das.backend.trainjourneypreloader.domain.PreloadResult;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.PahoMqttClient;
+import ch.sbb.das.backend.trainjourneypreloader.infrastructure.PreloadedSegmentProfileRepository;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.xml.SferaMessagingConfig;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.xml.XmlHelper;
 import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.SFERAB2GRequestMessage;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.OffsetDateTime;
+import java.util.HashMap;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -39,6 +41,9 @@ class SferaServiceTest {
 
     @MockitoBean
     private PahoMqttClient mqttClient;
+
+    @MockitoBean
+    private PreloadedSegmentProfileRepository preloadedSegmentProfileRepository;
 
     @Autowired
     private XmlHelper xmlHelper;
@@ -99,7 +104,7 @@ class SferaServiceTest {
                 OffsetDateTime.now(),
                 Set.of(new CompanyCode("1285")));
 
-        PreloadResult result = underTest.preload(trainId);
+        PreloadResult result = underTest.preload(trainId, new HashMap<>());
         assertThat(result).isInstanceOf(PreloadResult.Success.class);
 
         PreloadResult.Success success = (PreloadResult.Success) result;
@@ -146,6 +151,6 @@ class SferaServiceTest {
                 OffsetDateTime.now(),
                 Set.of(new CompanyCode("1285")));
 
-        assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() -> underTest.preload(trainId)).withMessage("Handshake request G2B error: 51, 54");
+        assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() -> underTest.preload(trainId, new HashMap<>())).withMessage("Handshake request G2B error: 51, 54");
     }
 }
