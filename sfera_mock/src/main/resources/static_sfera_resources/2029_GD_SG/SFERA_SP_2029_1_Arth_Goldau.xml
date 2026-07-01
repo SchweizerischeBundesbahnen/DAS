@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:noNamespaceSchemaLocation="../../SFERA.xsd"
-                SP_ID="2029_1_Arth_Goldau" SP_VersionMajor="1" SP_VersionMinor="2" SP_Length="1900" SP_Status="Valid">
+                SP_ID="2029_1_Arth_Goldau" SP_VersionMajor="1" SP_VersionMinor="3" SP_Length="1900" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
@@ -28,7 +28,7 @@
         </Signal>
 
         <BaliseGroup>
-            <Balise location="1000" levelCrossingGuarding="true" amountLevelCrossings="1"/>
+            <Balise location="1000" levelCrossingGuarding="true" amountLevelCrossings="1" identifier="LXA_1"/>
         </BaliseGroup>
 
         <NetworkSpecificPoint location="1500" identifier="B6159819D9D442C6B1B4A45B765996CE">

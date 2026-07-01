@@ -1,7 +1,7 @@
-import {Environment} from './environment.model';
-import {PassedInitialConfig} from 'angular-auth-oidc-client';
+import { Environment } from './environment.model';
+import { PassedInitialConfig } from 'angular-auth-oidc-client';
 
-const backendUrl = 'http://localhost:8080';
+const backendUrl = 'http://localhost:8080/admin';
 
 const authConfig: PassedInitialConfig = {
   config: {
