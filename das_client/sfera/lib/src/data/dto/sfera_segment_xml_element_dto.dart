@@ -13,6 +13,8 @@ class SferaSegmentXmlElementDto extends SferaXmlElementDto {
 
   double? get endLocation => ParseUtils.tryParseDouble(attributes['endLocation']);
 
+  String? get identifier => attributes['identifier'];
+
   @override
   bool validate() {
     return validateHasAttribute('startEndQualifier') && super.validate();

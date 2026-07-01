@@ -14,7 +14,7 @@ export interface Company {
   providedIn: 'root',
 })
 export class CompanyService {
-  private readonly url = `${environment.backendUrl}/v1/companies`;
+  private readonly url = `${environment.backendUrl}/companies`;
 
   private readonly companiesResource = httpResource<CompanyApiResponse>(() => this.url);
   private readonly companies = computed(() => this.companiesResource.value()?.data ?? []);
@@ -39,7 +39,7 @@ export class CompanyService {
     }
 
     const matching = allCompanies.filter(
-      ({ code, name }) => code.toLowerCase().includes(query) || name.toLowerCase().includes(query),
+      ({code, name}) => code.toLowerCase().includes(query) || name.toLowerCase().includes(query),
     );
 
     return this.sortByRelevance(matching, query);

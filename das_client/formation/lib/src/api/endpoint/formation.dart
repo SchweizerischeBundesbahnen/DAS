@@ -25,7 +25,7 @@ class FormationRequest {
   Future<FormationResponse> call() async {
     final url = Uri.https(
       baseUrl,
-      'v1/formations',
+      'driver/v1/formations',
       {
         'operationalTrainNumber': operationalTrainNumber,
         'company': company,

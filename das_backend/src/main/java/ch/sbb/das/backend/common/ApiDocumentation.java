@@ -6,7 +6,9 @@ import org.springframework.http.HttpHeaders;
 @UtilityClass
 public final class ApiDocumentation {
 
-    public static final String VERSION_URI_V1 = "/v1";
+    public static final String DRIVER_VERSION_URI_V1 = "/v1";
+    public static final String DRIVER_URI = "/driver";
+    public static final String ADMIN_URI = "/admin";
 
     public static final String STATUS_304 = "Resource was not modified since last request by the client.";
     public static final String STATUS_400 = "Bad request";
@@ -32,6 +34,18 @@ public final class ApiDocumentation {
         + "' will support traceability (monitoring by Instana and logging by Splunk). The given value will be returned by the appropriate response as well (see [SBB Instana](https://confluence.sbb.ch/display/MON/Instana+-+HTTP+Header+Whitelist)).";
 
     public static final String HEADER_CONTENT_LANGUAGE_ERROR_DETAIL_DEFAULT = "en";
+
+    /**
+     * Generally: {@code POST} should be used for scenarios that cannot be covered by other methods
+     * sufficiently. In such cases, document explicitly that {@code POST} is used as a workaround
+     * for GET-with-body style filtering.
+     *
+     * @see <a href="https://schweizerischebundesbahnen.github.io/api-principles/restful/principles/#get-with-body">SBB Principles, RESTful Best Practices</a>
+     * @see <a href="https://schweizerischebundesbahnen.github.io/api-principles/restful/best-practices/#consider-to-design-post-and-patch-idempotent">POST idempotent</a>
+     * @see <a href="https://opensource.zalando.com/restful-api-guidelines/#get-with-body">Zalando rules</a>
+     * @see <a href="https://app.swaggerhub.com/apis-docs/schlpbch/uic-90918_10_osdm">OSDM declares an idempotency key, but this API does not change state.</a>
+     */
+    public static final String HINT_GET_BY_POST = "{Idempotent: GET with body payload}";
 
     /**
      * @see <a href="https://tools.ietf.org/html/rfc7807">Obsoletes RFC7807</a>

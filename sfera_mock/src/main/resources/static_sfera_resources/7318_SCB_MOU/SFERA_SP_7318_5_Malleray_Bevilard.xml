@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:noNamespaceSchemaLocation="../../SFERA.xsd"
-                SP_ID="7318_5_Malleray_Bevilard" SP_VersionMajor="1" SP_VersionMinor="1" SP_Length="5200" SP_Status="Valid">
+                SP_ID="7318_5_Malleray_Bevilard" SP_VersionMajor="1" SP_VersionMinor="2" SP_Length="5200" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
@@ -22,7 +22,7 @@
         </Signal>
 
         <BaliseGroup>
-            <Balise location="2300" levelCrossingGuarding="true" amountLevelCrossings="1"/>
+            <Balise location="2300" levelCrossingGuarding="true" amountLevelCrossings="1" identifier="LXB_1"/>
         </BaliseGroup>
 
     </SP_Points>
@@ -72,7 +72,7 @@
 
     <SP_ContextInformation>
 
-        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="3050" endLocation="3050"/>
+        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="3050" endLocation="3050" identifier="LXB_1"/>
 
         <ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
             <Contact mainContact="true">

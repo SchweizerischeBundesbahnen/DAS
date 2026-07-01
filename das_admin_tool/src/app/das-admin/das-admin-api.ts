@@ -19,7 +19,7 @@ export type AppVersionApiResponse = ApiResponse<AppVersion>;
 })
 export class DasAdminApi {
   private readonly httpClient = inject(HttpClient);
-  private readonly url = `${environment.backendUrl}/v1/settings/app-version`;
+  private readonly url = `${environment.backendUrl}/app-versions`;
 
   appVersions = httpResource<AppVersionApiResponse>(() => this.url);
 

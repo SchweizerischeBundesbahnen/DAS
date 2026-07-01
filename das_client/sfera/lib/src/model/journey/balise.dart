@@ -3,20 +3,18 @@ import 'package:core_data/component.dart';
 import 'package:sfera/component.dart';
 
 class Balise extends JourneyPoint {
-  const Balise({
-    required super.order,
-    required super.kilometre,
-    required this.amountLevelCrossings,
-  }) : super(dataType: .balise);
+  const Balise({required super.order, required super.kilometre, required this.amountLevelCrossings, this.identifier})
+    : super(dataType: .balise);
 
   final int amountLevelCrossings;
+  final String? identifier;
 
   @override
   OrderPriority get orderPriority => .balise;
 
   @override
   String toString() {
-    return 'Balise{order: $order, kilometre: $kilometre, amountLevelCrossings: $amountLevelCrossings}';
+    return 'Balise{order: $order, kilometre: $kilometre, amountLevelCrossings: $amountLevelCrossings, identifier: $identifier}';
   }
 
   @override
@@ -26,8 +24,9 @@ class Balise extends JourneyPoint {
           runtimeType == other.runtimeType &&
           order == other.order &&
           amountLevelCrossings == other.amountLevelCrossings &&
-          ListEquality().equals(kilometre, other.kilometre);
+          const ListEquality().equals(kilometre, other.kilometre) &&
+          identifier == other.identifier;
 
   @override
-  int get hashCode => dataType.hashCode ^ order.hashCode ^ Object.hashAll(kilometre) ^ amountLevelCrossings.hashCode;
+  int get hashCode => Object.hash(dataType, order, Object.hashAll(kilometre), amountLevelCrossings, identifier);
 }

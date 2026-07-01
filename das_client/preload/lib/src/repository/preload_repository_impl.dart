@@ -17,6 +17,7 @@ final _log = Logger('PreloadRepositoryImpl');
 
 class PreloadRepositoryImpl implements PreloadRepository {
   static const syncInterval = Duration(minutes: 5);
+  static const segmentPrefix = 'Segment';
 
   PreloadRepositoryImpl({
     required this.preloadZipProcessor,
@@ -157,6 +158,10 @@ class PreloadRepositoryImpl implements PreloadRepository {
 
   Future<void> _processAllFiles() async {
     final filesToProcess = await databaseService.findAll();
+    final prioritizedFiles = [
+      ...filesToProcess.where((file) => file.name.startsWith(segmentPrefix)),
+      ...filesToProcess.where((file) => !file.name.startsWith(segmentPrefix)),
+    ];
     _log.info(
       'Processing files from local database (initial: ${filesToProcess.whereStatus(.initial).length}, '
       'error: ${filesToProcess.whereStatus(.error).length}, '
@@ -167,7 +172,7 @@ class PreloadRepositoryImpl implements PreloadRepository {
     final processingFutures = <Future>[];
     try {
       final preloadDirectory = await preloadZipProcessor.preloadDirectory();
-      for (final file in filesToProcess) {
+      for (final file in prioritizedFiles) {
         if (file.status == .initial || file.status == .error) {
           _log.info('Processing file ${file.name} with status ${file.status.name}.');
           try {

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:noNamespaceSchemaLocation="../../SFERA.xsd"
-                SP_ID="2017_3_Steinerberg" SP_VersionMajor="1" SP_VersionMinor="1" SP_Length="4800" SP_Status="Valid">
+                SP_ID="2017_3_Steinerberg" SP_VersionMajor="1" SP_VersionMinor="2" SP_Length="4800" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
@@ -34,7 +34,7 @@
         </Signal>
 
         <BaliseGroup>
-            <Balise location="2800" levelCrossingGuarding="true" amountLevelCrossings="1"/>
+            <Balise location="2800" levelCrossingGuarding="true" amountLevelCrossings="1" identifier="LXB_1"/>
         </BaliseGroup>
 
         <NetworkSpecificPoint location="0" identifier="EC72626695A04051B4F3AC4C57010203">
@@ -129,7 +129,7 @@
 
     <SP_ContextInformation>
 
-        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="2962" endLocation="2962"/>
+        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="2962" endLocation="2962" identifier="LXB_1"/>
 
         <ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
             <Contact mainContact="true">

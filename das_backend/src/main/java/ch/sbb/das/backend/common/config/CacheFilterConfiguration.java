@@ -1,6 +1,6 @@
 package ch.sbb.das.backend.common.config;
 
-import ch.sbb.das.backend.formation.api.v1.FormationController;
+import ch.sbb.das.backend.cargo.api.v1.FormationController;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

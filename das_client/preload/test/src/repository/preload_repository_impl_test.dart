@@ -232,6 +232,55 @@ void main() {
     expect((capturedDb[2] as S3File).name, '2026-02-10T14-35-35Z.zip');
     expect((capturedDb[2] as S3File).status, S3FileSyncStatus.downloaded);
   });
+
+  test('preload_whenTriggered_prioritizesSegmentFiles', () async {
+    // WHEN
+    when(mockDatabaseService.findAll()).thenAnswer(
+      (_) => Future.value([
+        S3File(name: '2026-02-10T17-35-35Z.zip', eTag: '1', size: 100, status: .initial),
+        S3File(name: 'Segment_2026-02-10T16-35-35Z.zip', eTag: '2', size: 100, status: .initial),
+        S3File(name: '2026-02-10T14-35-35Z.zip', eTag: '3', size: 100, status: .error),
+        S3File(name: 'Segment_2026-02-10T13-35-35Z.zip', eTag: '4', size: 100, status: .error),
+        S3File(name: '2026-02-10T12-35-35Z.zip', eTag: '5', size: 100, status: .downloaded),
+      ]),
+    );
+
+    final zipSegmentB = File('segment_b.zip');
+    final zipSegmentD = File('segment_d.zip');
+    final zipOtherA = File('other_a.zip');
+    final zipOtherC = File('other_c.zip');
+
+    when(mockS3Client.downloadFile('Segment_2026-02-10T16-35-35Z.zip', saveTo: anyNamed('saveTo'))).thenAnswer(
+      (_) => Future.value(zipSegmentB),
+    );
+    when(mockS3Client.downloadFile('Segment_2026-02-10T13-35-35Z.zip', saveTo: anyNamed('saveTo'))).thenAnswer(
+      (_) => Future.value(zipSegmentD),
+    );
+    when(mockS3Client.downloadFile('2026-02-10T17-35-35Z.zip', saveTo: anyNamed('saveTo'))).thenAnswer(
+      (_) => Future.value(zipOtherA),
+    );
+    when(mockS3Client.downloadFile('2026-02-10T14-35-35Z.zip', saveTo: anyNamed('saveTo'))).thenAnswer(
+      (_) => Future.value(zipOtherC),
+    );
+
+    when(mockPreloadZipProcessor.extractToLocalDatabase(zipSegmentB)).thenAnswer((_) => Future.value(.downloaded));
+    when(mockPreloadZipProcessor.extractToLocalDatabase(zipSegmentD)).thenAnswer((_) => Future.value(.downloaded));
+    when(mockPreloadZipProcessor.extractToLocalDatabase(zipOtherA)).thenAnswer((_) => Future.value(.downloaded));
+    when(mockPreloadZipProcessor.extractToLocalDatabase(zipOtherC)).thenAnswer((_) => Future.value(.downloaded));
+
+    // ACT
+    await Future.delayed(const Duration(milliseconds: 1));
+    testee.updateConfiguration(AwsConfiguration(bucketUrl: 'https://www.dummy.ch', accessKey: '', accessSecret: ''));
+    await Future.delayed(const Duration(milliseconds: 1));
+
+    // VERIFY
+    final captured = verify(mockS3Client.downloadFile(captureAny, saveTo: anyNamed('saveTo'))).captured;
+    expect(captured, hasLength(4));
+    expect(captured[0], 'Segment_2026-02-10T16-35-35Z.zip');
+    expect(captured[1], 'Segment_2026-02-10T13-35-35Z.zip');
+    expect(captured[2], '2026-02-10T17-35-35Z.zip');
+    expect(captured[3], '2026-02-10T14-35-35Z.zip');
+  });
 }
 
 MockContentsDto _createMockContentsDto({required String name, required String etag, required int size}) {
