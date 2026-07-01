@@ -171,8 +171,8 @@ class StorageServiceTest {
         assertThat(entityCaptor.getValue())
             .singleElement()
             .satisfies(e -> {
-                assertThat(e.getId()).isEqualTo("SP-1_1_0");
-                assertThat(e.getFile()).isEqualTo(1);
+                assertThat(e.getSpIdVersion()).isEqualTo("SP-1_1_0");
+                assertThat(e.getFileId()).isEqualTo(1);
                 assertThat(e.getLastSeen()).isNotNull();
             });
     }
@@ -180,7 +180,7 @@ class StorageServiceTest {
     @Test
     void save_extendsExistingZipFromS3() throws Exception {
         PreloadedSegmentProfileEntity latest = PreloadedSegmentProfileEntity.builder()
-            .id("OLD_1_0").file(2).lastSeen(OffsetDateTime.now()).build();
+            .spIdVersion("OLD_1_0").fileId(2).lastSeen(OffsetDateTime.now()).build();
         when(preloadedSegmentProfileRepository.findFirstByOrderByFileIdDesc()).thenReturn(Optional.of(latest));
         when(preloadedSegmentProfileRepository.countByFileId(2)).thenReturn(5);
 
@@ -199,7 +199,7 @@ class StorageServiceTest {
     @Test
     void save_splitsSegmentsAcrossZipsWhenLimitReached() throws Exception {
         PreloadedSegmentProfileEntity latest = PreloadedSegmentProfileEntity.builder()
-            .id("X_1_0").file(2).lastSeen(OffsetDateTime.now()).build();
+            .spIdVersion("X_1_0").fileId(2).lastSeen(OffsetDateTime.now()).build();
         when(preloadedSegmentProfileRepository.findFirstByOrderByFileIdDesc()).thenReturn(Optional.of(latest));
         when(preloadedSegmentProfileRepository.countByFileId(2)).thenReturn(999);
         when(s3Service.downloadZip(any())).thenReturn(Optional.empty());
@@ -225,8 +225,8 @@ class StorageServiceTest {
         verify(preloadedSegmentProfileRepository, times(2)).saveAll(entityCaptor.capture());
 
         List<List<PreloadedSegmentProfileEntity>> savedBatches = entityCaptor.getAllValues();
-        assertThat(savedBatches.get(0)).hasSize(1).allSatisfy(e -> assertThat(e.getFile()).isEqualTo(2));
-        assertThat(savedBatches.get(1)).hasSize(2).allSatisfy(e -> assertThat(e.getFile()).isEqualTo(3));
+        assertThat(savedBatches.get(0)).hasSize(1).allSatisfy(e -> assertThat(e.getFileId()).isEqualTo(2));
+        assertThat(savedBatches.get(1)).hasSize(2).allSatisfy(e -> assertThat(e.getFileId()).isEqualTo(3));
     }
 
     @Test
@@ -258,7 +258,7 @@ class StorageServiceTest {
 
     @Test
     void cleanupSegments_skipsWhenStaleCountBelowThreshold() {
-        when(preloadedSegmentProfileRepository.countByLastSeenBefore(any(OffsetDateTime.class))).thenReturn(500L);
+        when(preloadedSegmentProfileRepository.countByLastSeenBefore(any(OffsetDateTime.class))).thenReturn(500);
 
         underTest.cleanupSegments();
 
@@ -267,70 +267,54 @@ class StorageServiceTest {
     }
 
     @Test
-    void cleanupSegments_removesStaleSegmentsAndCompactsZips() throws Exception {
-        // Stale segments: 1000 in file 1, 1 in file 2 -> triggers cleanup (> MAX_SEGMENTS_PER_ZIP=1000)
-        when(preloadedSegmentProfileRepository.countByLastSeenBefore(any(OffsetDateTime.class))).thenReturn(1001L);
+    void cleanupSegments_removesStaleSegmentsAndReplacesWithFillers() throws Exception {
+        when(preloadedSegmentProfileRepository.countByLastSeenBefore(any(OffsetDateTime.class))).thenReturn(1001);
 
-        List<PreloadedSegmentProfileEntity> stale = new ArrayList<>();
-        for (int i = 0; i < 1000; i++) {
-            stale.add(PreloadedSegmentProfileEntity.builder().id("STALE1_" + i + "_1_0").file(1).build());
-        }
-        stale.add(PreloadedSegmentProfileEntity.builder().id("STALE2_0_1_0").file(2).build());
+        // 2 stale segments in file 1
+        List<PreloadedSegmentProfileEntity> stale = List.of(
+            PreloadedSegmentProfileEntity.builder().spIdVersion("STALE_A_1_0").fileId(1).build(),
+            PreloadedSegmentProfileEntity.builder().spIdVersion("STALE_B_1_0").fileId(1).build()
+        );
         when(preloadedSegmentProfileRepository.findAllByLastSeenBefore(any(OffsetDateTime.class))).thenReturn(stale);
 
-        // File 1 had stale + still keeps no survivors (all 1000 stale here). After rewrite => empty -> deleted.
-        String[] file1Entries = new String[1000];
-        for (int i = 0; i < 1000; i++) {
-            file1Entries[i] = "sp/SP_STALE1_" + i + "_1_0.xml";
-        }
-        when(s3Service.downloadZip("Segments_1.zip"))
-            .thenReturn(Optional.of(buildZipWith(file1Entries)))
-            .thenReturn(Optional.empty()); // after rewrite -> deleted
+        // 2 filler segments from file 2
+        PreloadedSegmentProfileEntity fillerA = PreloadedSegmentProfileEntity.builder().spIdVersion("FRESH_A_1_0").fileId(2).build();
+        PreloadedSegmentProfileEntity fillerB = PreloadedSegmentProfileEntity.builder().spIdVersion("FRESH_B_1_0").fileId(2).build();
+        when(preloadedSegmentProfileRepository.findByLastSeenAfterOrderByFileIdDesc(any(OffsetDateTime.class), any()))
+            .thenReturn(List.of(fillerA, fillerB));
 
-        // File 2 had 1 stale + 2 survivors that should be moved into file 1 after stale removal
+        // File 1 zip contains the 2 stale entries + 1 fresh entry that stays
+        when(s3Service.downloadZip("Segments_1.zip")).thenReturn(Optional.of(
+            buildZipWith("sp/SP_STALE_A_1_0.xml", "sp/SP_STALE_B_1_0.xml", "sp/SP_KEEP_1_0.xml")));
+
+        // File 2 zip contains the 2 filler entries
         when(s3Service.downloadZip("Segments_2.zip")).thenReturn(Optional.of(
-            buildZipWith("sp/SP_STALE2_0_1_0.xml", "sp/SP_FRESH_A_1_0.xml", "sp/SP_FRESH_B_1_0.xml")));
-
-        // After deleting stale, file 1 has 0, file 2 has 2 survivors
-        when(preloadedSegmentProfileRepository.findFirstByOrderByFileIdDesc()).thenReturn(
-            Optional.of(PreloadedSegmentProfileEntity.builder().fileId(2).build()));
-        when(preloadedSegmentProfileRepository.countByFileId(1)).thenReturn(0).thenReturn(2);
-        when(preloadedSegmentProfileRepository.countByFileId(2)).thenReturn(2).thenReturn(0);
-        when(preloadedSegmentProfileRepository.findAllByFileId(2)).thenReturn(List.of(
-            PreloadedSegmentProfileEntity.builder().id("FRESH_A_1_0").file(2).build(),
-            PreloadedSegmentProfileEntity.builder().id("FRESH_B_1_0").file(2).build()));
+            buildZipWith("sp/SP_FRESH_A_1_0.xml", "sp/SP_FRESH_B_1_0.xml")));
 
         underTest.cleanupSegments();
 
-        // Stale entities deleted
-        verify(preloadedSegmentProfileRepository, times(1)).deleteAll(stale);
+        // Verify stale entities deleted from DB
+        verify(preloadedSegmentProfileRepository).deleteAll(stale);
 
-        // Survivors moved from file 2 to file 1
+        // Verify fillers were saved with updated fileId
         @SuppressWarnings("unchecked")
-        ArgumentCaptor<List<PreloadedSegmentProfileEntity>> moveCaptor = ArgumentCaptor.forClass(List.class);
-        verify(preloadedSegmentProfileRepository, times(1)).saveAll(moveCaptor.capture());
-        assertThat(moveCaptor.getValue()).hasSize(2)
-            .allSatisfy(e -> assertThat(e.getFile()).isEqualTo(1));
+        ArgumentCaptor<List<PreloadedSegmentProfileEntity>> saveCaptor = ArgumentCaptor.forClass(List.class);
+        verify(preloadedSegmentProfileRepository).saveAll(saveCaptor.capture());
+        assertThat(saveCaptor.getValue()).hasSize(2)
+            .allSatisfy(e -> assertThat(e.getFileId()).isEqualTo(1));
 
-        // Empty zips were deleted
-        verify(s3Service).deleteObjects(List.of("Segments_1.zip"));
-        verify(s3Service).deleteObjects(List.of("Segments_2.zip"));
-
-        // Survivors landed in Segments_1.zip
+        // Verify file 1 was rewritten: stale removed, fillers added, existing kept
         ArgumentCaptor<String> keyCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<byte[]> dataCaptor = ArgumentCaptor.forClass(byte[].class);
         verify(s3Service, atLeastOnce()).uploadZip(keyCaptor.capture(), dataCaptor.capture());
 
-        int idxNewFile1 = -1;
-        for (int i = keyCaptor.getAllValues().size() - 1; i >= 0; i--) {
-            if (keyCaptor.getAllValues().get(i).equals("Segments_1.zip")) {
-                idxNewFile1 = i;
-                break;
-            }
-        }
-        assertThat(idxNewFile1).isGreaterThanOrEqualTo(0);
-        assertThat(listZipEntries(dataCaptor.getAllValues().get(idxNewFile1)))
-            .containsExactlyInAnyOrder("sp/SP_FRESH_A_1_0.xml", "sp/SP_FRESH_B_1_0.xml");
+        int idxFile1 = keyCaptor.getAllValues().indexOf("Segments_1.zip");
+        assertThat(idxFile1).isGreaterThanOrEqualTo(0);
+        assertThat(listZipEntries(dataCaptor.getAllValues().get(idxFile1)))
+            .containsExactlyInAnyOrder("sp/SP_KEEP_1_0.xml", "sp/SP_FRESH_A_1_0.xml", "sp/SP_FRESH_B_1_0.xml");
+
+        // Verify file 2 becomes empty after fillers removed -> deleted
+        verify(s3Service).deleteObjects(List.of("Segments_2.zip"));
     }
 }
 

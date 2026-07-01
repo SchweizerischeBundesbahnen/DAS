@@ -25,6 +25,7 @@ import ch.sbb.das.backend.preload.sfera.model.v0400.TrainCharacteristics;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -87,7 +88,7 @@ public class SferaService {
     }
 
     @Retryable(maxAttempts = MAX_RETRIES, retryFor = {ExecutionException.class, InterruptedException.class, MqttException.class}, listeners = "customRetryListener")
-    PreloadResult preload(TrainIdentification trainId) throws ExecutionException, InterruptedException, MqttException {
+    PreloadResult preload(TrainIdentification trainId, Map<SegmentProfileIdentification, SegmentProfile> segmentProfilesMap) throws ExecutionException, InterruptedException, MqttException {
         mqttClient.subscribe(createTopic(G2B, trainId), (topic, message) -> receive(message));
 
         SFERAG2BReplyMessage handshakeReply = sendRequest(trainId, sferaMessageCreator.createHandshakeRequestMessage(trainId)).get();
@@ -117,6 +118,7 @@ public class SferaService {
         }
 
         Set<SegmentProfileIdentification> spIds = jp.getSegmentProfileReferences().stream().map(SegmentProfileIdentification::from).collect(Collectors.toSet());
+        spIds.removeIf(segmentProfilesMap::containsKey);
 
         List<SegmentProfile> segmentProfiles;
         try {

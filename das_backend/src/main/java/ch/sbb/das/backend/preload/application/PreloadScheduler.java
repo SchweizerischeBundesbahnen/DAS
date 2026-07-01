@@ -8,18 +8,17 @@ import ch.sbb.das.backend.preload.domain.TrainCharacteristicsIdentification;
 import ch.sbb.das.backend.preload.sfera.model.v0400.JourneyProfile;
 import ch.sbb.das.backend.preload.sfera.model.v0400.SegmentProfile;
 import ch.sbb.das.backend.preload.sfera.model.v0400.TrainCharacteristics;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 import org.eclipse.paho.mqttv5.common.MqttException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -52,10 +51,10 @@ public class PreloadScheduler {
         Map<SegmentProfileIdentification, SegmentProfile> mapSegmentProfiles = new HashMap<>();
         Map<TrainCharacteristicsIdentification, TrainCharacteristics> mapTrainCharacteristics = new HashMap<>();
         List<TrainIdentification> trainIdentifications = trainIdentificationsService.getNewTrainIdentificationsBetween(DateTimeUtil.now().minusHours(PRELOAD_HOURS_BEFORE_DEPARTURE),
-                DateTimeUtil.now().plusHours(PRELOAD_HOURS_BEFORE_DEPARTURE));
+            DateTimeUtil.now().plusHours(PRELOAD_HOURS_BEFORE_DEPARTURE));
         sferaService.connect();
         for (TrainIdentification trainId : trainIdentifications) {
-            PreloadResult preloadResult = sferaService.preload(trainId);
+            PreloadResult preloadResult = sferaService.preload(trainId, mapSegmentProfiles);
             switch (preloadResult) {
                 case PreloadResult.Success(var successJp, var successSps, var successTcs) -> {
                     mapJourneyProfiles.put(trainId, successJp);
@@ -64,15 +63,14 @@ public class PreloadScheduler {
                     log.info("Preload for train {} succeeded with {} sps and {} tcs", trainId, successSps.size(), successTcs.size());
                 }
                 case PreloadResult.Unavailable() -> log.info("Preload for train {} unavailable for now", trainId);
-                case PreloadResult.Error(var message, Throwable ex) ->
-                        log.error("Preload for train {} failed with message: {}", trainId, message, ex);
+                case PreloadResult.Error(var message, Throwable ex) -> log.error("Preload for train {} failed with message: {}", trainId, message, ex);
             }
         }
         sferaService.disconnect();
         storageService.save(mapJourneyProfiles.values(), mapSegmentProfiles.values(), mapTrainCharacteristics.values());
         storageService.deleteAllBefore(DateTimeUtil.now().minusHours(cleanUpHours));
-        storageService.cleanupSegments();
         trainIdentificationsService.savePreloadedTrains(mapJourneyProfiles.keySet());
+        storageService.cleanupSegments();
         log.info("Preload with {} JPs of requested {} JPs ended in {} ms", mapJourneyProfiles.size(), trainIdentifications.size(), System.currentTimeMillis() - startTime);
     }
 }

@@ -23,13 +23,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Limit;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -42,8 +42,9 @@ public class StorageService {
     private static final String ZIP_FILE_ENDING = ".zip";
     private static final DateTimeFormatter FILENAME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH-mm-ssX");
     private static final String DUPLICATE_ENTRY_KEY = "duplicate entry";
-    private static final int MAX_SEGMENTS_PER_ZIP = 1000;
     private static final String SEGMENT_PREFIX = "Segments";
+    private static final int MAX_SEGMENTS_PER_ZIP = 1000;
+    private static final int STALE_SEGMENTS_THRESHOLD = 1000;
     private static final int STALE_SEGMENTS_DAYS = 30;
 
     private final XmlHelper xmlHelper;
@@ -57,6 +58,7 @@ public class StorageService {
     }
 
     public void save(Collection<JourneyProfile> journeyProfiles, Collection<SegmentProfile> segmentProfiles, Collection<TrainCharacteristics> trainCharacteristics) {
+        log.info("Saving journeyProfiles={}, segmentProfiles={}, trainCharacteristics={}...", journeyProfiles.size(), segmentProfiles.size(), trainCharacteristics.size());
         try {
             saveSegments(segmentProfiles);
 
@@ -106,10 +108,7 @@ public class StorageService {
                 writeSegmentsToZip(fileId, batch);
 
                 for (SegmentProfile sp : batch) {
-                    toSave.add(PreloadedSegmentProfileEntity.builder()
-                        .spIdVersion(String.format("%s_%s_%s", sp.getSPID(), sp.getSPVersionMajor(), sp.getSPVersionMinor()))
-                        .lastSeen(now)
-                        .fileId(fileId)
+                    toSave.add(PreloadedSegmentProfileEntity.builder().spIdVersion(String.format("%s_%s_%s", sp.getSPID(), sp.getSPVersionMajor(), sp.getSPVersionMinor())).lastSeen(now).fileId(fileId)
                         .build());
                 }
 
@@ -130,7 +129,7 @@ public class StorageService {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try (ZipOutputStream zos = new ZipOutputStream(baos, StandardCharsets.UTF_8)) {
-            copyExistingEntries(existing, zos);
+            transferExistingEntries(existing, zos);
             writeSps(segmentProfiles, zos);
         }
 
@@ -148,31 +147,21 @@ public class StorageService {
     private void writeJps(Collection<JourneyProfile> jps, ZipOutputStream zos) throws IOException {
         for (JourneyProfile jp : jps) {
             OTNID otnid = jp.getTrainIdentification().getOTNID();
-            String filename = String.format("JP_%s_%s_%s_%s.xml",
-                otnid.getTeltsiCompany(),
-                otnid.getTeltsiOperationalTrainNumber(),
-                otnid.getTeltsiStartDate(),
-                jp.getJPVersion());
+            String filename = String.format("JP_%s_%s_%s_%s.xml", otnid.getTeltsiCompany(), otnid.getTeltsiOperationalTrainNumber(), otnid.getTeltsiStartDate(), jp.getJPVersion());
             writeXmlEntry(zos, DIR_JP + filename, jp);
         }
     }
 
     private void writeSps(Collection<SegmentProfile> sps, ZipOutputStream zos) throws IOException {
         for (SegmentProfile sp : sps) {
-            String filename = String.format("SP_%s_%s_%s.xml",
-                sp.getSPID(),
-                sp.getSPVersionMajor(),
-                sp.getSPVersionMinor());
+            String filename = String.format("SP_%s_%s_%s.xml", sp.getSPID(), sp.getSPVersionMajor(), sp.getSPVersionMinor());
             writeXmlEntry(zos, DIR_SP + filename, sp);
         }
     }
 
     private void writeTcs(Collection<TrainCharacteristics> tcs, ZipOutputStream zos) throws IOException {
         for (TrainCharacteristics tc : tcs) {
-            String filename = String.format("TC_%s_%s_%s.xml",
-                tc.getTCID(),
-                tc.getTCVersionMajor(),
-                tc.getTCVersionMinor());
+            String filename = String.format("TC_%s_%s_%s.xml", tc.getTCID(), tc.getTCVersionMajor(), tc.getTCVersionMinor());
             writeXmlEntry(zos, DIR_TC + filename, tc);
         }
     }
@@ -198,19 +187,16 @@ public class StorageService {
     }
 
     void deleteAllBefore(OffsetDateTime cutoffDate) {
-        List<String> keysToDelete = s3Service.listObjects().stream()
-            .filter(k -> k != null && k.endsWith(ZIP_FILE_ENDING) && !k.contains(SEGMENT_PREFIX))
-            .filter(k -> {
-                try {
-                    String base = k.substring(0, k.length() - ZIP_FILE_ENDING.length());
-                    OffsetDateTime ts = OffsetDateTime.parse(base, FILENAME_FORMATTER);
-                    return ts.isBefore(cutoffDate);
-                } catch (DateTimeParseException e) {
-                    log.warn("Unexpected zip file name while preload cleanup. name={} was not deleted", k);
-                    return false;
-                }
-            })
-            .toList();
+        List<String> keysToDelete = s3Service.listObjects().stream().filter(k -> k != null && k.endsWith(ZIP_FILE_ENDING) && !k.contains(SEGMENT_PREFIX)).filter(k -> {
+            try {
+                String base = k.substring(0, k.length() - ZIP_FILE_ENDING.length());
+                OffsetDateTime ts = OffsetDateTime.parse(base, FILENAME_FORMATTER);
+                return ts.isBefore(cutoffDate);
+            } catch (DateTimeParseException e) {
+                log.warn("Unexpected zip file name while preload cleanup. name={} was not deleted", k);
+                return false;
+            }
+        }).toList();
 
         if (!keysToDelete.isEmpty()) {
             s3Service.deleteObjects(keysToDelete);
@@ -219,154 +205,186 @@ public class StorageService {
 
     /**
      * Removes segments that have not been registered (lastSeen updated) for more than {@link #STALE_SEGMENTS_DAYS} days from their segment zip files, and compacts the remaining segments so that the
-     * zip files are filled up to {@link #MAX_SEGMENTS_PER_ZIP} entries again. The cleanup only runs once the number of stale segments exceeds {@link #MAX_SEGMENTS_PER_ZIP}, so that at least one full
-     * zip can be freed.
+     * zip files are filled up to {@link #MAX_SEGMENTS_PER_ZIP} entries again. The cleanup only runs once the number of stale segments exceeds {@link #STALE_SEGMENTS_THRESHOLD}, so that at least one
+     * full zip can be freed.
      */
     public void cleanupSegments() {
         OffsetDateTime cutoff = DateTimeUtil.now().minusDays(STALE_SEGMENTS_DAYS);
-        long staleCount = preloadedSegmentProfileRepository.countByLastSeenBefore(cutoff);
-        if (staleCount <= MAX_SEGMENTS_PER_ZIP) {
-            log.debug("Segment cleanup skipped: only {} stale segments (threshold {})", staleCount, MAX_SEGMENTS_PER_ZIP);
+        int staleCount = preloadedSegmentProfileRepository.countByLastSeenBefore(cutoff);
+        if (staleCount <= STALE_SEGMENTS_THRESHOLD) {
+            log.debug("Segment cleanup skipped: only {} stale segments (threshold {})", staleCount, STALE_SEGMENTS_THRESHOLD);
             return;
         }
         log.info("Segment cleanup started. staleCount={}", staleCount);
 
+        Map<Integer, List<PreloadedSegmentProfileEntity>> stalePreloadedSegments = findStalePreloadedSegments(cutoff);
+
+        List<PreloadedSegmentProfileEntity> fillerPreloadedSegments = preloadedSegmentProfileRepository.findByLastSeenAfterOrderByFileIdDesc(cutoff, Limit.of(staleCount));
+        Map<Integer, List<PreloadedSegmentProfileEntity>> fillersByOriginalFile = fillerPreloadedSegments.stream()
+            .filter(e -> e.getFileId() != null)
+            .collect(Collectors.groupingBy(PreloadedSegmentProfileEntity::getFileId));
+        
+        Map<String, PreloadedSegmentProfileEntity> staleEntryNames = buildEntryNameLookup(stalePreloadedSegments.values().stream().flatMap(Collection::stream).toList());
+
         try {
-            List<PreloadedSegmentProfileEntity> stale = preloadedSegmentProfileRepository.findAllByLastSeenBefore(cutoff);
+            Map<PreloadedSegmentProfileEntity, byte[]> fillerSegments = loadFillerSegments(fillerPreloadedSegments);
 
-            // 1) Remove stale segments from their respective zip files
-            Map<Integer, List<PreloadedSegmentProfileEntity>> staleByFile = stale.stream()
-                .filter(e -> e.getFileId() != null)
-                .collect(Collectors.groupingBy(PreloadedSegmentProfileEntity::getFileId));
+            Map<Integer, List<PreloadedSegmentProfileEntity>> fillersPerTargetFile = assignFillersToTargetFiles(stalePreloadedSegments, fillerSegments);
 
-            for (Map.Entry<Integer, List<PreloadedSegmentProfileEntity>> entry : staleByFile.entrySet()) {
-                Set<String> entryNamesToRemove = entry.getValue().stream()
-                    .map(e -> buildSegmentEntryName(e.getSpIdVersion()))
-                    .collect(Collectors.toSet());
-                rewriteZipExcluding(entry.getKey(), entryNamesToRemove);
-            }
-            preloadedSegmentProfileRepository.deleteAll(stale);
+            replaceStaleWithFillers(stalePreloadedSegments, staleEntryNames, fillersPerTargetFile, fillerSegments);
 
-            // 2) Compact: fill lower zip files with segments pulled from the highest zip files
-            compactSegmentZips();
+            removeFillerEntriesFromOriginalZips(fillersByOriginalFile);
 
-            log.info("Segment cleanup finished. removed={}", stale.size());
+            int relocated = fillersPerTargetFile.values().stream().mapToInt(List::size).sum();
+            log.info("Segment cleanup completed. removed={}, relocated={}", staleEntryNames.size(), relocated);
+
         } catch (IOException e) {
             throw new RuntimeException("Segment cleanup failed", e);
         }
     }
 
-    private void compactSegmentZips() throws IOException {
-        int maxFile = preloadedSegmentProfileRepository.findFirstByOrderByFileIdDesc()
-            .map(PreloadedSegmentProfileEntity::getFileId)
-            .orElse(0);
+    private Map<String, PreloadedSegmentProfileEntity> buildEntryNameLookup(List<PreloadedSegmentProfileEntity> entities) {
+        return entities.stream().collect(Collectors.toMap(e -> buildSegmentEntryName(e.getSpIdVersion()), e -> e));
+    }
 
-        for (int target = 1; target < maxFile; target++) {
-            int targetCount = preloadedSegmentProfileRepository.countByFileId(target);
-            while (targetCount < MAX_SEGMENTS_PER_ZIP && target < maxFile) {
-                int sourceCount = preloadedSegmentProfileRepository.countByFileId(maxFile);
-                if (sourceCount == 0) {
-                    deleteSegmentZip(maxFile);
-                    maxFile--;
-                    continue;
-                }
+    private Map<Integer, List<PreloadedSegmentProfileEntity>> assignFillersToTargetFiles(Map<Integer, List<PreloadedSegmentProfileEntity>> stalePreloadedSegments,
+        Map<PreloadedSegmentProfileEntity, byte[]> fillerSegments) {
 
-                int needed = MAX_SEGMENTS_PER_ZIP - targetCount;
-                int moveCount = Math.min(needed, sourceCount);
-                List<PreloadedSegmentProfileEntity> moving = preloadedSegmentProfileRepository.findAllByFileId(maxFile)
-                    .stream()
-                    .limit(moveCount)
-                    .toList();
-                Set<String> movingEntryNames = moving.stream()
-                    .map(e -> buildSegmentEntryName(e.getSpIdVersion()))
-                    .collect(Collectors.toSet());
+        List<PreloadedSegmentProfileEntity> fillerList = new ArrayList<>(fillerSegments.keySet());
+        Map<Integer, List<PreloadedSegmentProfileEntity>> fillersPerTargetFile = new HashMap<>();
+        int fillerIndex = 0;
 
-                Map<String, byte[]> movedBytes = extractEntries(maxFile, movingEntryNames);
+        for (Map.Entry<Integer, List<PreloadedSegmentProfileEntity>> entry : stalePreloadedSegments.entrySet()) {
+            int fillersNeeded = Math.min(entry.getValue().size(), fillerList.size() - fillerIndex);
+            List<PreloadedSegmentProfileEntity> assignedFillers = fillerList.subList(fillerIndex, fillerIndex + fillersNeeded);
+            fillersPerTargetFile.put(entry.getKey(), new ArrayList<>(assignedFillers));
+            fillerIndex += fillersNeeded;
+        }
 
-                rewriteZipExcluding(maxFile, movingEntryNames);
-                appendEntries(target, movedBytes);
+        return fillersPerTargetFile;
+    }
 
-                final int targetFile = target;
-                moving.forEach(e -> e.setFileId(targetFile));
-                preloadedSegmentProfileRepository.saveAll(moving);
+    private void replaceStaleWithFillers(Map<Integer, List<PreloadedSegmentProfileEntity>> stalePreloadedSegments, Map<String, PreloadedSegmentProfileEntity> staleEntryNames,
+        Map<Integer, List<PreloadedSegmentProfileEntity>> fillersPerTargetFile, Map<PreloadedSegmentProfileEntity, byte[]> fillerSegments) throws IOException {
 
-                targetCount += moving.size();
-
-                if (preloadedSegmentProfileRepository.countByFileId(maxFile) == 0) {
-                    deleteSegmentZip(maxFile);
-                    maxFile--;
-                }
+        for (Map.Entry<Integer, List<PreloadedSegmentProfileEntity>> entry : stalePreloadedSegments.entrySet()) {
+            int fileId = entry.getKey();
+            String zipName = buildSegmentZipName(fileId);
+            Optional<byte[]> existing = s3Service.downloadZip(zipName);
+            if (existing.isEmpty()) {
+                log.warn("Segment zip {} not found on S3, skipping", zipName);
+                continue;
             }
+
+            List<PreloadedSegmentProfileEntity> fillers = fillersPerTargetFile.get(fileId);
+            byte[] rewrittenZip = rewriteZipReplacingEntries(existing.get(), staleEntryNames, fillers, fillerSegments);
+            s3Service.uploadZip(zipName, rewrittenZip);
+
+            for (PreloadedSegmentProfileEntity filler : fillers) {
+                filler.setFileId(fileId);
+            }
+            preloadedSegmentProfileRepository.saveAll(fillers);
+            preloadedSegmentProfileRepository.deleteAll(entry.getValue());
         }
     }
 
-    private void rewriteZipExcluding(int fileIndex, Set<String> entryNamesToRemove) throws IOException {
-        String key = buildSegmentZipName(fileIndex);
-        Optional<byte[]> existing = s3Service.downloadZip(key);
-        if (existing.isEmpty()) {
-            return;
-        }
-
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        int keptEntries = 0;
-        try (ZipOutputStream zos = new ZipOutputStream(baos, StandardCharsets.UTF_8);
-            ZipInputStream zis = new ZipInputStream(new ByteArrayInputStream(existing.get()), StandardCharsets.UTF_8)) {
-            ZipEntry entry;
-            while ((entry = zis.getNextEntry()) != null) {
-                if (entryNamesToRemove.contains(entry.getName())) {
-                    continue;
-                }
-                zos.putNextEntry(new ZipEntry(entry.getName()));
-                zis.transferTo(zos);
-                zos.closeEntry();
-                keptEntries++;
-            }
-        }
-
-        if (keptEntries == 0) {
-            deleteSegmentZip(fileIndex);
-        } else {
-            s3Service.uploadZip(key, baos.toByteArray());
-        }
-    }
-
-    private Map<String, byte[]> extractEntries(int fileIndex, Set<String> entryNames) throws IOException {
-        Map<String, byte[]> result = new HashMap<>();
-        Optional<byte[]> existing = s3Service.downloadZip(buildSegmentZipName(fileIndex));
-        if (existing.isEmpty()) {
-            return result;
-        }
-        try (ZipInputStream zis = new ZipInputStream(new ByteArrayInputStream(existing.get()), StandardCharsets.UTF_8)) {
-            ZipEntry entry;
-            while ((entry = zis.getNextEntry()) != null) {
-                if (entryNames.contains(entry.getName())) {
-                    result.put(entry.getName(), zis.readAllBytes());
-                }
-            }
-        }
-        return result;
-    }
-
-    private void appendEntries(int fileIndex, Map<String, byte[]> entriesToAdd) throws IOException {
-        if (entriesToAdd.isEmpty()) {
-            return;
-        }
-        String key = buildSegmentZipName(fileIndex);
-        Optional<byte[]> existing = s3Service.downloadZip(key);
+    private byte[] rewriteZipReplacingEntries(byte[] existingZip, Map<String, PreloadedSegmentProfileEntity> entriesToRemove, List<PreloadedSegmentProfileEntity> entriesToAdd,
+        Map<PreloadedSegmentProfileEntity, byte[]> entryData) throws IOException {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try (ZipOutputStream zos = new ZipOutputStream(baos, StandardCharsets.UTF_8)) {
-            copyExistingEntries(existing, zos);
-            for (Map.Entry<String, byte[]> e : entriesToAdd.entrySet()) {
-                zos.putNextEntry(new ZipEntry(e.getKey()));
-                zos.write(e.getValue());
+            removeEntries(existingZip, entriesToRemove, zos);
+            for (PreloadedSegmentProfileEntity entry : entriesToAdd) {
+                String entryName = buildSegmentEntryName(entry.getSpIdVersion());
+                zos.putNextEntry(new ZipEntry(entryName));
+                zos.write(entryData.get(entry));
                 zos.closeEntry();
             }
         }
-        s3Service.uploadZip(key, baos.toByteArray());
+        return baos.toByteArray();
     }
 
-    private void copyExistingEntries(Optional<byte[]> existing, ZipOutputStream zos) throws IOException {
+    private void removeEntries(byte[] existingZip, Map<String, PreloadedSegmentProfileEntity> entriesToRemove, ZipOutputStream zos) throws IOException {
+        try (ZipInputStream zis = new ZipInputStream(new ByteArrayInputStream(existingZip), StandardCharsets.UTF_8)) {
+            ZipEntry zipEntry;
+            while ((zipEntry = zis.getNextEntry()) != null) {
+                if (!entriesToRemove.containsKey(zipEntry.getName())) {
+                    zos.putNextEntry(new ZipEntry(zipEntry.getName()));
+                    zis.transferTo(zos);
+                    zos.closeEntry();
+                }
+            }
+        }
+    }
+
+    private void removeFillerEntriesFromOriginalZips(Map<Integer, List<PreloadedSegmentProfileEntity>> fillersByOriginalFile) throws IOException {
+        for (Map.Entry<Integer, List<PreloadedSegmentProfileEntity>> fileEntry : fillersByOriginalFile.entrySet()) {
+            int fileId = fileEntry.getKey();
+            String key = buildSegmentZipName(fileId);
+            Optional<byte[]> existing = s3Service.downloadZip(key);
+            if (existing.isEmpty()) {
+                continue;
+            }
+
+            Map<String, PreloadedSegmentProfileEntity> fillerNamesInFile = buildEntryNameLookup(fileEntry.getValue());
+            byte[] rewrittenZip = rewriteZipRemovingEntries(existing.get(), fillerNamesInFile);
+
+            if (hasZipEntries(rewrittenZip)) {
+                s3Service.uploadZip(key, rewrittenZip);
+            } else {
+                s3Service.deleteObjects(List.of(key));
+            }
+        }
+    }
+
+    private boolean hasZipEntries(byte[] zipBytes) throws IOException {
+        try (ZipInputStream zis = new ZipInputStream(new ByteArrayInputStream(zipBytes), StandardCharsets.UTF_8)) {
+            return zis.getNextEntry() != null;
+        }
+    }
+
+    private byte[] rewriteZipRemovingEntries(byte[] existingZip, Map<String, PreloadedSegmentProfileEntity> entriesToRemove) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try (ZipOutputStream zos = new ZipOutputStream(baos, StandardCharsets.UTF_8)) {
+            removeEntries(existingZip, entriesToRemove, zos);
+        }
+        return baos.toByteArray();
+    }
+
+    private Map<PreloadedSegmentProfileEntity, byte[]> loadFillerSegments(List<PreloadedSegmentProfileEntity> fillerPreloadedSegments) throws IOException {
+        Map<PreloadedSegmentProfileEntity, byte[]> result = new HashMap<>();
+
+        Map<Integer, List<PreloadedSegmentProfileEntity>> fillerByFile = fillerPreloadedSegments.stream().filter(e -> e.getFileId() != null)
+            .collect(Collectors.groupingBy(PreloadedSegmentProfileEntity::getFileId));
+
+        for (Map.Entry<Integer, List<PreloadedSegmentProfileEntity>> fileEntry : fillerByFile.entrySet()) {
+            Map<String, PreloadedSegmentProfileEntity> entryNames = fileEntry.getValue().stream().collect(Collectors.toMap(e -> buildSegmentEntryName(e.getSpIdVersion()), e -> e));
+
+            Optional<byte[]> existing = s3Service.downloadZip(buildSegmentZipName(fileEntry.getKey()));
+            if (existing.isEmpty()) {
+                throw new IOException("Failed to download segment zip with index " + fileEntry.getKey());
+            }
+
+            try (ZipInputStream zis = new ZipInputStream(new ByteArrayInputStream(existing.get()), StandardCharsets.UTF_8)) {
+                ZipEntry entry;
+                while ((entry = zis.getNextEntry()) != null) {
+                    if (entryNames.containsKey(entry.getName())) {
+                        result.put(entryNames.get(entry.getName()), zis.readAllBytes());
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
+
+    private Map<Integer, List<PreloadedSegmentProfileEntity>> findStalePreloadedSegments(OffsetDateTime cutoff) {
+        List<PreloadedSegmentProfileEntity> stale = preloadedSegmentProfileRepository.findAllByLastSeenBefore(cutoff);
+
+        return stale.stream().filter(e -> e.getFileId() != null).collect(Collectors.groupingBy(PreloadedSegmentProfileEntity::getFileId));
+    }
+
+    private void transferExistingEntries(Optional<byte[]> existing, ZipOutputStream zos) throws IOException {
         if (existing.isPresent()) {
             try (ZipInputStream zis = new ZipInputStream(new ByteArrayInputStream(existing.get()), StandardCharsets.UTF_8)) {
                 ZipEntry entry;
@@ -377,10 +395,6 @@ public class StorageService {
                 }
             }
         }
-    }
-
-    private void deleteSegmentZip(int fileIndex) {
-        s3Service.deleteObjects(List.of(buildSegmentZipName(fileIndex)));
     }
 
     private String buildSegmentEntryName(String id) {

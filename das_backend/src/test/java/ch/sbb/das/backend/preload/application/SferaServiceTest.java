@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.OffsetDateTime;
+import java.util.HashMap;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -99,7 +100,7 @@ class SferaServiceTest {
                 OffsetDateTime.now(),
                 Set.of(CompanyCode.of("1285")));
 
-        PreloadResult result = underTest.preload(trainId);
+        PreloadResult result = underTest.preload(trainId, new HashMap<>());
         assertThat(result).isInstanceOf(PreloadResult.Success.class);
 
         PreloadResult.Success success = (PreloadResult.Success) result;
@@ -146,7 +147,7 @@ class SferaServiceTest {
                 OffsetDateTime.now(),
                 Set.of(CompanyCode.of("1285")));
 
-        assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() -> underTest.preload(trainId)).withMessage("Handshake request G2B error: 51, 54");
+        assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() -> underTest.preload(trainId, new HashMap<>())).withMessage("Handshake request G2B error: 51, 54");
     }
 
     private static String sferaReply(String filename, String correlationId) throws IOException {

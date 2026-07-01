@@ -6,6 +6,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import org.springframework.data.domain.Limit;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -26,9 +27,12 @@ public interface PreloadedSegmentProfileRepository extends JpaRepository<Preload
 
     int countByFileId(int file);
 
-    long countByLastSeenBefore(OffsetDateTime cutoff);
+    int countByLastSeenBefore(OffsetDateTime cutoff);
 
     List<PreloadedSegmentProfileEntity> findAllByLastSeenBefore(OffsetDateTime cutoff);
 
     List<PreloadedSegmentProfileEntity> findAllByFileId(int file);
+
+    List<PreloadedSegmentProfileEntity> findByLastSeenAfterOrderByFileIdDesc(OffsetDateTime cutoff, Limit limit);
+
 }
