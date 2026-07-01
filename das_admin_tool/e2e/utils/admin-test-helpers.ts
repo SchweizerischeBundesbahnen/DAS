@@ -16,7 +16,7 @@ export function findRow(page: Page, ...cellTexts: string[]): Locator {
  * Navigate through paginator pages until the row is visible or no more pages.
  * Returns true if the row was found visible.
  */
-export async function navigateToRow(page: Page, row: Locator): Promise<boolean> {
+async function navigateToRow(page: Page, row: Locator): Promise<boolean> {
   if (await row.isVisible()) {
     return true;
   }
@@ -99,15 +99,14 @@ export async function saveEntryDialog(
   row: Locator,
   options: { method: 'POST' | 'PUT'; successToast: string; dialogTitle: string },
 ) {
-  const saveResponse = page.waitForResponse((resp) => {
-    const req = resp.request();
-    return req.method() === options.method && (req.resourceType() === 'xhr' || req.resourceType() === 'fetch') && resp.ok();
-  });
+  const saveResponse = waitForResponse(page, options.method);
+  const reloadResponse = waitForResponse(page, "GET");
   if (options.method === 'PUT') {
     await page.getByText('Weiter', {exact: true}).click();
   }
   await page.getByText('Speichern', {exact: true}).click();
   await saveResponse;
+  await reloadResponse;
   await expect(page.getByText(options.successToast, {exact: true})).toBeVisible();
   await expect(page.getByText(options.dialogTitle, {exact: true})).not.toBeVisible();
 
@@ -124,14 +123,13 @@ export async function openEditEntryDialog(page: Page, row: Locator) {
 export async function deleteEntryViaDialog(page: Page, row: Locator) {
   const dialog = await openEditEntryDialog(page, row);
 
-  const deleteResponse = page.waitForResponse((resp) => {
-    const req = resp.request();
-    return req.method() === 'DELETE' && (req.resourceType() === 'xhr' || req.resourceType() === 'fetch') && resp.ok();
-  });
+  const deleteResponse = waitForResponse(page, 'DELETE');
+  const reloadResponse = waitForResponse(page, "GET");
   const deleteBtn = dialog.getByText('Eintrag löschen', {exact: true});
   await expect(deleteBtn).toBeVisible();
   await deleteBtn.click();
   await deleteResponse;
+  await reloadResponse;
   await expectRowAbsent(page, row);
 }
 
@@ -154,12 +152,11 @@ export async function deleteEntryViaSelection(page: Page, ...rows: Locator[]) {
       await row.locator('sbb-checkbox').click();
     }
   }
-  const deleteResponse = page.waitForResponse((resp) => {
-    const req = resp.request();
-    return req.method() === 'DELETE' && (req.resourceType() === 'xhr' || req.resourceType() === 'fetch') && resp.ok();
-  });
+  const deleteResponse = waitForResponse(page, 'DELETE');
+  const reloadResponse = waitForResponse(page, "GET");
   await page.getByText('löschen').click();
   await deleteResponse;
+  await reloadResponse;
   for (const row of rows) {
     await expectRowAbsent(page, row);
   }
@@ -173,4 +170,11 @@ export async function selectAnyOption(dialog: Locator, inputLocator: Locator, qu
   const firstVisibleOption = dialog.locator('sbb-option:visible').first();
   await expect(firstVisibleOption).toBeVisible();
   await firstVisibleOption.click();
+}
+
+async function waitForResponse(page: Page, method: 'POST' | 'PUT' | 'DELETE' | 'GET') {
+  return page.waitForResponse((resp) => {
+    const req = resp.request();
+    return req.method() === method && ['xhr', 'fetch'].includes(req.resourceType()) && resp.ok();
+  });
 }
