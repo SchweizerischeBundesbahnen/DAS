@@ -316,5 +316,93 @@ class StorageServiceTest {
         // Verify file 2 becomes empty after fillers removed -> deleted
         verify(s3Service).deleteObjects(List.of("Segments_2.zip"));
     }
+
+    @Test
+    void cleanupSegments_compactsEightZipsIntoSeven() throws Exception {
+        // Setup: 8 zip files, each with 3 entries (2 fresh + 1 stale), except file 8 which has 3 fresh only.
+        // Total stale = 7 (one per file 1-7). Total fresh = 17 (2 per file 1-7 + 3 in file 8).
+        // Fillers are taken from file 8 (highest fileId first) to replace stale in files 1-7.
+        // After cleanup: files 1-7 keep their fresh entries + get fillers from file 8.
+        // File 8 becomes empty and gets deleted.
+
+        int totalStale = 1001; // triggers cleanup
+        when(preloadedSegmentProfileRepository.countByLastSeenBefore(any(OffsetDateTime.class))).thenReturn(totalStale);
+
+        // 1 stale per file (files 1-7)
+        List<PreloadedSegmentProfileEntity> stale = new ArrayList<>();
+        for (int f = 1; f <= 7; f++) {
+            stale.add(PreloadedSegmentProfileEntity.builder().spIdVersion("STALE_F" + f + "_1_0").fileId(f).build());
+        }
+        when(preloadedSegmentProfileRepository.findAllByLastSeenBefore(any(OffsetDateTime.class))).thenReturn(stale);
+
+        // Fillers: 7 segments from file 8 (enough to replace the 7 stale entries)
+        List<PreloadedSegmentProfileEntity> fillers = new ArrayList<>();
+        for (int i = 1; i <= 7; i++) {
+            fillers.add(PreloadedSegmentProfileEntity.builder().spIdVersion("FILLER_" + i + "_1_0").fileId(8).build());
+        }
+        when(preloadedSegmentProfileRepository.findByLastSeenAfterOrderByFileIdDesc(any(OffsetDateTime.class), any()))
+            .thenReturn(fillers);
+
+        // Each file 1-7 has: 1 stale entry + 2 fresh entries that stay
+        for (int f = 1; f <= 7; f++) {
+            when(s3Service.downloadZip("Segments_" + f + ".zip")).thenReturn(Optional.of(
+                buildZipWith(
+                    "sp/SP_STALE_F" + f + "_1_0.xml",
+                    "sp/SP_KEEP_" + f + "A_1_0.xml",
+                    "sp/SP_KEEP_" + f + "B_1_0.xml"
+                )));
+        }
+
+        // File 8 has all 7 filler entries
+        String[] file8Entries = new String[7];
+        for (int i = 1; i <= 7; i++) {
+            file8Entries[i - 1] = "sp/SP_FILLER_" + i + "_1_0.xml";
+        }
+        when(s3Service.downloadZip("Segments_8.zip")).thenReturn(Optional.of(buildZipWith(file8Entries)));
+
+        underTest.cleanupSegments();
+
+        // Verify all stale entries deleted from DB (one deleteAll call per file)
+        @SuppressWarnings("unchecked")
+        ArgumentCaptor<List<PreloadedSegmentProfileEntity>> deleteCaptor = ArgumentCaptor.forClass(List.class);
+        verify(preloadedSegmentProfileRepository, times(7)).deleteAll(deleteCaptor.capture());
+        List<PreloadedSegmentProfileEntity> allDeleted = deleteCaptor.getAllValues().stream()
+            .flatMap(List::stream).toList();
+        assertThat(allDeleted).containsExactlyInAnyOrderElementsOf(stale);
+
+        // Verify uploads: files 1-7 should be rewritten (stale removed, filler added)
+        ArgumentCaptor<String> keyCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<byte[]> dataCaptor = ArgumentCaptor.forClass(byte[].class);
+        verify(s3Service, atLeastOnce()).uploadZip(keyCaptor.capture(), dataCaptor.capture());
+
+        for (int f = 1; f <= 7; f++) {
+            String expectedKey = "Segments_" + f + ".zip";
+            int idx = keyCaptor.getAllValues().indexOf(expectedKey);
+            assertThat(idx).as("Expected upload for " + expectedKey).isGreaterThanOrEqualTo(0);
+
+            List<String> entries = listZipEntries(dataCaptor.getAllValues().get(idx));
+            // Should contain the 2 fresh entries that were kept + 1 filler that was moved in
+            assertThat(entries).as("Entries in " + expectedKey)
+                .contains("sp/SP_KEEP_" + f + "A_1_0.xml", "sp/SP_KEEP_" + f + "B_1_0.xml")
+                .hasSize(3)
+                .doesNotContain("sp/SP_STALE_F" + f + "_1_0.xml");
+        }
+
+        // File 8 should be deleted (all fillers removed, zip is empty)
+        verify(s3Service).deleteObjects(List.of("Segments_8.zip"));
+
+        // Verify fillers were saved with updated fileIds (distributed across files 1-7)
+        @SuppressWarnings("unchecked")
+        ArgumentCaptor<List<PreloadedSegmentProfileEntity>> saveCaptor = ArgumentCaptor.forClass(List.class);
+        verify(preloadedSegmentProfileRepository, times(7)).saveAll(saveCaptor.capture());
+        List<PreloadedSegmentProfileEntity> allSaved = saveCaptor.getAllValues().stream()
+            .flatMap(List::stream).toList();
+        assertThat(allSaved).hasSize(7);
+
+        // Each filler should be assigned to one of files 1-7
+        for (PreloadedSegmentProfileEntity saved : allSaved) {
+            assertThat(saved.getFileId()).isBetween(1, 7);
+        }
+    }
 }
 
