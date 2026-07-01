@@ -5,10 +5,9 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 
-public record SpecialHolidaysResponse(
+public record RuIndicationMatchResponse(
     @ArraySchema(arraySchema = @Schema(requiredMode = Schema.RequiredMode.REQUIRED))
-    List<SpecialHoliday> data
-) implements ApiResponse<SpecialHoliday> {
+    List<RuIndicationMatch> data
+) implements ApiResponse<RuIndicationMatch> {
 
 }
-

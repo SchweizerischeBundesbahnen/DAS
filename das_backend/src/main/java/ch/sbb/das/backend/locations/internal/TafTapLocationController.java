@@ -37,7 +37,7 @@ public class TafTapLocationController {
     @GetMapping(API_LOCATIONS)
     @Operation(summary = "Fetch all locations.")
     @ApiResponse(responseCode = "200", description = "Locations successfully fetched.",
-        content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = TafTapLocationsResponse.class)), headers = {
+        content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = TafTapLocationResponse.class)), headers = {
         @Header(name = ApiDocumentation.HEADER_CACHE_CONTROL, description = ApiDocumentation.HEADER_CACHE_CONTROL_RESPONSE_DESCRIPTION, schema = @Schema(type = "string")),
         @Header(name = ApiDocumentation.HEADER_CACHE_ETAG, description = ApiDocumentation.HEADER_CACHE_ETAG_RESPONSE_DESCRIPTION, schema = @Schema(type = "string", example = ApiDocumentation.SAMPLE_CACHE_ETAG))
     })
@@ -49,6 +49,6 @@ public class TafTapLocationController {
         List<TafTapLocation> locations = locationService.findAll();
         final HttpHeaders headers = ResponseEntityFactory.createOkHeaders(requestId);
         headers.add(HttpHeaders.CACHE_CONTROL, "public, max-age=86400");
-        return ResponseEntityFactory.createOkResponse(headers, new TafTapLocationsResponse(locations));
+        return ResponseEntityFactory.createOkResponse(headers, new TafTapLocationResponse(locations));
     }
 }

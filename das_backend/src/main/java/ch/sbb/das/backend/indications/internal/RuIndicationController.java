@@ -9,8 +9,8 @@ import ch.sbb.das.backend.common.Response;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
 import ch.sbb.das.backend.indications.internal.model.RuIndication;
 import ch.sbb.das.backend.indications.internal.model.RuIndicationMatch;
+import ch.sbb.das.backend.indications.internal.model.RuIndicationMatchResponse;
 import ch.sbb.das.backend.indications.internal.model.RuIndicationMatchesRequest;
-import ch.sbb.das.backend.indications.internal.model.RuIndicationMatchesResponse;
 import ch.sbb.das.backend.indications.internal.model.RuIndicationRequest;
 import ch.sbb.das.backend.indications.internal.model.RuIndicationResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -90,14 +90,14 @@ public class RuIndicationController {
             "Filters RU indications for one company, train number and start date, and returns requested TAF/TAP location references with their matched RU indication contents in one resolved language. "
                 + "If the request train number is a shadow train, train filtering also checks the corresponding original train number (-70'000). Date filtering considers special holiday schedule mapping.")
     @ApiResponse(responseCode = "200", description = "RU indication matches found.",
-        content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = RuIndicationMatchesResponse.class)))
+        content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = RuIndicationMatchResponse.class)))
     @ApiErrorResponses
     public ResponseEntity<? extends Response> findRuIndicationMatches(
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
         @RequestHeader(value = HttpHeaders.ACCEPT_LANGUAGE, required = false) String acceptLanguage,
         @RequestBody @Valid RuIndicationMatchesRequest filterRequest) {
         List<RuIndicationMatch> ruIndicationMatches = ruIndicationMatchService.findMatches(filterRequest, acceptLanguage);
-        return ResponseEntityFactory.createOkResponse(new RuIndicationMatchesResponse(ruIndicationMatches), requestId);
+        return ResponseEntityFactory.createOkResponse(new RuIndicationMatchResponse(ruIndicationMatches), requestId);
     }
 
     @PutMapping(API_RU_INDICATIONS_ID)

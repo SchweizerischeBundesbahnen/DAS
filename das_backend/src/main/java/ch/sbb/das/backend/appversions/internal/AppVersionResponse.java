@@ -5,11 +5,11 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 
-public record AppVersionsResponse(
+public record AppVersionResponse(
     @ArraySchema(arraySchema = @Schema(requiredMode = Schema.RequiredMode.REQUIRED)) List<AppVersion> data)
     implements ApiResponse<AppVersion> {
 
-    public AppVersionsResponse(AppVersion appVersion) {
+    public AppVersionResponse(AppVersion appVersion) {
         this(List.of(appVersion));
     }
 

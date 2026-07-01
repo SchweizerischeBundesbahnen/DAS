@@ -10,7 +10,6 @@ import ch.sbb.das.backend.common.ResponseEntityFactory;
 import ch.sbb.das.backend.indications.internal.model.RuIndicationTemplate;
 import ch.sbb.das.backend.indications.internal.model.RuIndicationTemplateRequest;
 import ch.sbb.das.backend.indications.internal.model.RuIndicationTemplateResponse;
-import ch.sbb.das.backend.indications.internal.model.RuIndicationTemplatesResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -44,12 +43,12 @@ public class RuIndicationTemplateController {
     @GetMapping(API_RU_INDICATION_TEMPLATES)
     @Operation(summary = "Get all RU indication templates.", description = "Returns all RU indication templates.")
     @ApiResponse(responseCode = "200", description = "RU indication templates found.",
-        content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = RuIndicationTemplatesResponse.class)))
+        content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = RuIndicationTemplateResponse.class)))
     @ApiErrorResponses
     public ResponseEntity<? extends Response> getAllRuIndicationTemplates(
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
         List<RuIndicationTemplate> ruIndicationTemplates = ruIndicationTemplateService.getAll();
-        return ResponseEntityFactory.createOkResponse(new RuIndicationTemplatesResponse(ruIndicationTemplates), requestId);
+        return ResponseEntityFactory.createOkResponse(new RuIndicationTemplateResponse(ruIndicationTemplates), requestId);
     }
 
     @GetMapping(API_RU_INDICATION_TEMPLATES_ID)
@@ -94,7 +93,7 @@ public class RuIndicationTemplateController {
         if (ruIndicationTemplate == null) {
             return ResponseEntityFactory.createNotFoundResponse(requestId, null);
         }
-        return ResponseEntityFactory.createOkResponse(new RuIndicationTemplatesResponse(List.of(ruIndicationTemplate)), requestId);
+        return ResponseEntityFactory.createOkResponse(new RuIndicationTemplateResponse(ruIndicationTemplate), requestId);
     }
 
     @DeleteMapping(API_RU_INDICATION_TEMPLATES)

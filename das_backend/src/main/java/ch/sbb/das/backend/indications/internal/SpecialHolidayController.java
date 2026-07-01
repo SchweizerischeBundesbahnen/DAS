@@ -10,7 +10,6 @@ import ch.sbb.das.backend.common.ResponseEntityFactory;
 import ch.sbb.das.backend.indications.internal.model.SpecialHoliday;
 import ch.sbb.das.backend.indications.internal.model.SpecialHolidayRequest;
 import ch.sbb.das.backend.indications.internal.model.SpecialHolidayResponse;
-import ch.sbb.das.backend.indications.internal.model.SpecialHolidaysResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -44,12 +43,12 @@ public class SpecialHolidayController {
     @GetMapping(API_SPECIAL_HOLIDAYS)
     @Operation(summary = "Get all special holidays.", description = "Returns all special holidays.")
     @ApiResponse(responseCode = "200", description = "Special holidays found.",
-        content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = SpecialHolidaysResponse.class)))
+        content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = SpecialHolidayResponse.class)))
     @ApiErrorResponses
     public ResponseEntity<? extends Response> getAllUpcomingSpecialHolidays(
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
         List<SpecialHoliday> specialHolidays = specialHolidayService.getAllUpcoming();
-        return ResponseEntityFactory.createOkResponse(new SpecialHolidaysResponse(specialHolidays), requestId);
+        return ResponseEntityFactory.createOkResponse(new SpecialHolidayResponse(specialHolidays), requestId);
     }
 
     @GetMapping(API_SPECIAL_HOLIDAYS_ID)
