@@ -16,9 +16,8 @@ import 'package:app/provider/ru_feature_provider_impl.dart';
 import 'package:app/provider/user_settings.dart';
 import 'package:app/util/device_id_info.dart';
 import 'package:auth/component.dart';
-import 'package:external_links/component.dart';
 import 'package:customer_oriented_departure/component.dart';
-import 'package:ru_indications/component.dart';
+import 'package:external_links/component.dart';
 import 'package:formation/component.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http_x/component.dart';
@@ -27,6 +26,7 @@ import 'package:logger/component.dart';
 import 'package:logging/logging.dart';
 import 'package:mqtt/component.dart';
 import 'package:preload/component.dart';
+import 'package:ru_indications/component.dart';
 import 'package:settings/component.dart';
 import 'package:sfera/component.dart';
 
@@ -197,7 +197,8 @@ extension AuthenticatedScopeExtension on GetIt {
   void registerRuIndicationsRepository() {
     final flavor = DI.get<Flavor>();
     registerSingleton<RuIndicationsRepository>(
-      RuIndicationsComponent.createRepository(baseUrl: flavor.backendUrl, client: DI.get()),
+      //RuIndicationsComponent.createRepository(baseUrl: flavor.backendUrl, client: DI.get()),
+      TestRuIndicationsRepository(),
     );
   }
 
@@ -356,5 +357,30 @@ class _MqttAuthProvider implements MqttAuthProvider {
   Future<String> userId() async {
     final user = await authenticator.user();
     return user.userId;
+  }
+}
+
+final _smallText = 'This is a short mock RU indication description.';
+final _longTextWithLink =
+    'This is a long mock RU indication description containing a [link](https://example.com). Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.';
+
+// TODO: Remove
+class TestRuIndicationsRepository implements RuIndicationsRepository {
+  /// Returns two mocked RU indications for first location and one for last location.
+  @override
+  Future<List<RuIndication>> fetchRuIndications({
+    required String company,
+    required String trainNumber,
+    required DateTime startDate,
+    required Map<String, int> locationReferences,
+  }) async {
+    if (!trainNumber.contains('T22') || locationReferences.isEmpty) return const [];
+
+    final entries = locationReferences.entries;
+    return [
+      RuIndication(title: entries.first.key, text: _smallText, order: entries.first.value),
+      RuIndication(title: entries.first.key, text: _longTextWithLink, order: entries.first.value),
+      RuIndication(title: entries.last.key, text: _smallText, order: entries.last.value),
+    ];
   }
 }

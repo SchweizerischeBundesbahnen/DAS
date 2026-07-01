@@ -7,6 +7,7 @@ import 'package:app/pages/journey/journey_screen/view_model/journey_position_vie
 import 'package:app/pages/journey/journey_screen/view_model/model/chevron_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_table_model.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/combined_foot_note_and_indications.dart';
 import 'package:app/pages/journey/view_model/decisive_gradient_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
@@ -82,7 +83,7 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
       final ruIndications = await _ruIndicationsRepository.fetchRuIndications(
         company: trainIdentification.ru.companyCode,
         trainNumber: trainIdentification.trainNumber,
-        startDate: trainIdentification.operatingDay ?? DateTime.now(), // TODO: What to do when operatingDay not given?
+        startDate: trainIdentification.operatingDay ?? trainIdentification.date,
         locationReferences: locationReferences,
       );
       _rxRuIndications.add(ruIndications);

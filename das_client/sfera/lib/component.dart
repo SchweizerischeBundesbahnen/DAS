@@ -8,7 +8,6 @@ import 'package:sfera/src/data/repository/sfera_repository.dart';
 import 'package:sfera/src/data/repository/sfera_repository_impl.dart';
 import 'package:sfera/src/provider/sfera_auth_provider.dart';
 
-export 'package:app/pages/journey/journey_screen/widgets/table/combined_foot_note_and_indications.dart';
 export 'package:sfera/src/data/api/sfera_error.dart';
 export 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 export 'package:sfera/src/data/parser/sfera_reply_parser.dart';

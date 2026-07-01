@@ -17,13 +17,13 @@ abstract class JourneyAwareViewModel {
 
   void _init() {
     _journeySubscription = journeyViewModel.journey.listen((journey) {
-      final currentTrainIdentification = journey?.metadata.trainIdentification;
-      if (currentTrainIdentification != lastJourney?.metadata.trainIdentification) {
+      final lastTrainIdentification = lastJourney?.metadata.trainIdentification;
+      lastJourney = journey;
+      if (journey?.metadata.trainIdentification != lastTrainIdentification) {
         onJourneyChanged(journey);
       } else {
         onJourneyUpdated(journey);
       }
-      lastJourney = journey;
     });
   }
 

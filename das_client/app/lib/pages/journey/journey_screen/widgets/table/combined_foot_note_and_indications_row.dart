@@ -1,4 +1,5 @@
 import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_view_model.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/combined_foot_note_and_indications.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/foot_note_accordion.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/foot_note_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/indication_accordion.dart';
@@ -7,7 +8,6 @@ import 'package:app/theme/theme_util.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
-import 'package:sfera/component.dart';
 
 class CombinedFootNoteAndIndicationsRow extends WidgetRowBuilder<CombinedFootNoteAndIndications> {
   static const Key rowKey = Key('combinedFootNoteAndIndicationsRow');

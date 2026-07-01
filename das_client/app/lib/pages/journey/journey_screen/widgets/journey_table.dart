@@ -22,6 +22,7 @@ import 'package:app/pages/journey/journey_screen/widgets/table/balise_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cab_signaling_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cell_row_builder.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/column_definition.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/combined_foot_note_and_indications.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/combined_foot_note_and_indications_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/communication_network_change_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/config/bracket_station_render_data.dart';
