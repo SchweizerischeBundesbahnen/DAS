@@ -34,7 +34,7 @@ public class PreloadScheduler {
     private final SferaService sferaService;
     private final TrainIdentificationService trainIdentificationsService;
     private final StorageService storageService;
-    private final ch.sbb.das.backend.preload.application.CleanupStorageService cleanupStorageService;
+    private final CleanupStorageService cleanupStorageService;
     private final ApplicationEventPublisher eventPublisher;
     @Value("${trainjourneypreloader.storage-clean-up.hours}")
     private int cleanUpHours;
@@ -79,15 +79,14 @@ public class PreloadScheduler {
         }
         sferaService.disconnect();
         storageService.save(mapJourneyProfiles.values(), mapSegmentProfiles.values(), mapTrainCharacteristics.values());
-        trainIdentificationsService.savePreloadedTrains(mapJourneyProfiles.keySet());
-        cleanupStorageService.deleteAllBefore(DateTimeUtil.now().minusHours(cleanUpHours));
-        cleanupStorageService.cleanupSegments();
-        storageService.deleteAllBefore(DateTimeUtil.now().minusHours(cleanUpHours));
+
         if (!mapJourneyProfiles.isEmpty()) {
             eventPublisher.publishEvent(new TrainPreloadCompletedEvent(mapJourneyProfiles.keySet().stream().map(TrainIdentification::id).collect(Collectors.toSet())));
         }
         log.info("Preload with {} JPs of requested {} JPs ended in {} ms", mapJourneyProfiles.size(), trainIdentifications.size(), System.currentTimeMillis() - startTime);
 
+        cleanupStorageService.deleteAllBefore(DateTimeUtil.now().minusHours(cleanUpHours));
+        cleanupStorageService.cleanupSegments();
     }
 
 }

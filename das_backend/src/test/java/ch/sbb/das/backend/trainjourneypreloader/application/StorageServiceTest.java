@@ -7,19 +7,16 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-<<<<<<< HEAD:das_backend/src/test/java/ch/sbb/das/backend/preload/application/StorageServiceTest.java
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.PreloadedSegmentProfileRepository;
-import ch.sbb.das.backend.preload.infrastructure.S3Service;
+import ch.sbb.das.backend.trainjourneypreloader.infrastructure.S3Service;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.model.entities.PreloadedSegmentProfileEntity;
-import ch.sbb.das.backend.preload.infrastructure.xml.SferaMessagingConfig;
-import ch.sbb.das.backend.preload.infrastructure.xml.XmlDateHelper;
-import ch.sbb.das.backend.preload.infrastructure.xml.XmlHelper;
-import ch.sbb.das.backend.preload.sfera.model.v0400.JourneyProfile;
-import ch.sbb.das.backend.preload.sfera.model.v0400.OTNID;
-import ch.sbb.das.backend.preload.sfera.model.v0400.SegmentProfile;
-import ch.sbb.das.backend.preload.sfera.model.v0400.TrainIdentification;
-=======
->>>>>>> main:das_backend/src/test/java/ch/sbb/das/backend/trainjourneypreloader/application/StorageServiceTest.java
+import ch.sbb.das.backend.trainjourneypreloader.infrastructure.xml.SferaMessagingConfig;
+import ch.sbb.das.backend.trainjourneypreloader.infrastructure.xml.XmlDateHelper;
+import ch.sbb.das.backend.trainjourneypreloader.infrastructure.xml.XmlHelper;
+import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.JourneyProfile;
+import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.OTNID;
+import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.SegmentProfile;
+import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.TrainIdentification;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
