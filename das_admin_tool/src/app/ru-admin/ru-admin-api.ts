@@ -121,13 +121,13 @@ export type ExternalLinkApiResponse = ApiResponse<ExternalLink>;
 })
 export class RuAdminApi {
   private readonly httpClient = inject(HttpClient);
-  private readonly ruIndicationsUrl = `${environment.backendUrl}/v1/ruindications`;
+  private readonly ruIndicationsUrl = `${environment.backendUrl}/ruindications`;
   readonly ruIndications = httpResource<RuIndicationApiResponse>(() => this.ruIndicationsUrl);
-  private readonly ruIndicationTemplatesUrl = `${environment.backendUrl}/v1/ruindication-templates`;
+  private readonly ruIndicationTemplatesUrl = `${environment.backendUrl}/ruindication-templates`;
   readonly ruIndicationTemplates = httpResource<RuIndicationTemplateApiResponse>(() => this.ruIndicationTemplatesUrl);
-  private readonly specialHolidaysUrl = `${environment.backendUrl}/v1/special-holidays`;
+  private readonly specialHolidaysUrl = `${environment.backendUrl}/special-holidays`;
   readonly specialHolidays = httpResource<SpecialHolidayApiResponse>(() => this.specialHolidaysUrl);
-  private readonly externalLinksUrl = `${environment.backendUrl}/v1/external-links`;
+  private readonly externalLinksUrl = `${environment.backendUrl}/external-links`;
   readonly externalLinks = httpResource<ExternalLinkApiResponse>(() => this.externalLinksUrl);
 
   postRuIndicationTemplate(ruIndicationTemplate: RuIndicationTemplate): Observable<RuIndicationTemplateApiResponse> {
