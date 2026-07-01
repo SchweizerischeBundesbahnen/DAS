@@ -153,8 +153,8 @@
       </ng-container>
 
       <ng-container sbbColumnDef="action">
-        <th *sbbHeaderCellDef class="action" sbb-header-cell></th>
-        <td *sbbCellDef="let ruIndication" class="action" sbb-cell>
+        <th *sbbHeaderCellDef sbb-header-cell></th>
+        <td *sbbCellDef="let ruIndication" sbb-cell>
           <sbb-mini-button (click)="edit(ruIndication)" iconName="pen-small"></sbb-mini-button>
         </td>
       </ng-container>

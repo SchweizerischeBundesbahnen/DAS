@@ -23,6 +23,10 @@
 
   .sbb-column-action {
     width: 2.5rem;
+
+    sbb-mini-button {
+      vertical-align: middle;
+    }
   }
 
   .sbb-column-lastModifiedAt {
@@ -31,11 +35,5 @@
 
   .sbb-column-lastModifiedBy {
     width: 12rem;
-  }
-
-  td.action {
-    sbb-mini-button {
-      vertical-align: middle;
-    }
   }
 }

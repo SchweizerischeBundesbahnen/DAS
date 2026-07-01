@@ -51,8 +51,8 @@
 
 
     <ng-container sbbColumnDef="action">
-      <th *sbbHeaderCellDef class="action" sbb-header-cell></th>
-      <td *sbbCellDef="let appVersion" class="action" sbb-cell>
+      <th *sbbHeaderCellDef sbb-header-cell></th>
+      <td *sbbCellDef="let appVersion" sbb-cell>
         <sbb-mini-button (click)="edit(appVersion)" iconName="pen-small"></sbb-mini-button>
       </td>
     </ng-container>
