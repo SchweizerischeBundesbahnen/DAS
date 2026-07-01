@@ -23,7 +23,8 @@ public interface PreloadedSegmentProfileRepository extends JpaRepository<Preload
 
     List<PreloadedSegmentProfileEntity> findAllBySpIdVersionIn(Set<String> ids);
 
-    Optional<PreloadedSegmentProfileEntity> findFirstByOrderByFileIdDesc();
+    @Query("SELECT MAX(p.fileId) FROM PreloadedSegmentProfileEntity p")
+    Optional<Integer> findMaxFileId();
 
     int countByFileId(int file);
 

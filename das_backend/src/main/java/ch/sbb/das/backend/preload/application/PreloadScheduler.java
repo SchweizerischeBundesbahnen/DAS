@@ -35,11 +35,13 @@ public class PreloadScheduler {
     private final SferaService sferaService;
     private final TrainIdentificationService trainIdentificationsService;
     private final StorageService storageService;
+    private final CleanupStorageService cleanupStorageService;
 
-    public PreloadScheduler(SferaService sferaService, TrainIdentificationService trainIdentificationsService, StorageService storageService) {
+    public PreloadScheduler(SferaService sferaService, TrainIdentificationService trainIdentificationsService, StorageService storageService, CleanupStorageService cleanupStorageService) {
         this.sferaService = sferaService;
         this.trainIdentificationsService = trainIdentificationsService;
         this.storageService = storageService;
+        this.cleanupStorageService = cleanupStorageService;
     }
 
     @Scheduled(cron = "${preload.fetch-cron}")
@@ -68,9 +70,9 @@ public class PreloadScheduler {
         }
         sferaService.disconnect();
         storageService.save(mapJourneyProfiles.values(), mapSegmentProfiles.values(), mapTrainCharacteristics.values());
-        storageService.deleteAllBefore(DateTimeUtil.now().minusHours(cleanUpHours));
         trainIdentificationsService.savePreloadedTrains(mapJourneyProfiles.keySet());
-        storageService.cleanupSegments();
+        cleanupStorageService.deleteAllBefore(DateTimeUtil.now().minusHours(cleanUpHours));
+        cleanupStorageService.cleanupSegments();
         log.info("Preload with {} JPs of requested {} JPs ended in {} ms", mapJourneyProfiles.size(), trainIdentifications.size(), System.currentTimeMillis() - startTime);
     }
 }

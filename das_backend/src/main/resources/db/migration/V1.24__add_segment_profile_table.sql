@@ -1,9 +1,9 @@
 CREATE TABLE preloaded_segment_profile
 (
-    id               INTEGER    NOT NULL,
-    sp_id_version    TEXT       NOT NULL,
-    last_seen        TIMESTAMP  NOT NULL,
-    file_id          INTEGER    NOT NULL
+    id               INTEGER                  NOT NULL,
+    sp_id_version    TEXT                     NOT NULL,
+    last_seen        TIMESTAMP WITH TIME ZONE NOT NULL,
+    file_id          INTEGER                  NOT NULL
 );
 
 ALTER TABLE IF EXISTS preloaded_segment_profile
