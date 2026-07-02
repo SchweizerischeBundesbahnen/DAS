@@ -30,6 +30,7 @@ class CombinedFootNoteAndIndicationsRow extends WidgetRowBuilder<CombinedFootNot
                      indication,
                      collapsedState: indicationStates.stateOf(indication),
                      leftPadding: leftPadding,
+                     isLastElement: data.indications.last == indication && data.footNote == null,
                    ),
                  )
                  .sum +
@@ -61,6 +62,7 @@ class CombinedFootNoteAndIndicationsRow extends WidgetRowBuilder<CombinedFootNot
               collapsedState: indicationStates.stateOf(indication),
               data: indication,
               leftPadding: leftPadding,
+              isLastElement: data.indications.last == indication && data.footNote == null,
             ),
           ),
           if (data.footNote != null)

@@ -34,6 +34,7 @@ class IndicationAccordion extends StatelessWidget {
     required this.collapsedState,
     required this.data,
     this.leftPadding = 0,
+    this.isLastElement = true,
     super.key,
   }) : assert(data is RuIndication || data is OperationalIndication, 'Unsupported data type for indication');
 
@@ -42,6 +43,7 @@ class IndicationAccordion extends StatelessWidget {
 
   /// used to align content with information cell
   final double leftPadding;
+  final bool isLastElement;
 
   @override
   Widget build(BuildContext context) {
@@ -55,10 +57,15 @@ class IndicationAccordion extends StatelessWidget {
       toggleCallback: () =>
           context.read<CollapsibleRowsViewModel>().toggleRow(data, isContentExpandable: _hasTextOverflow),
       icon: SBBIcons.list_small,
-      margin: .only(bottom: _verticalMargin),
+      margin: isLastElement ? .only(bottom: _verticalMargin) : .zero,
       additionalPadding: .only(left: leftPadding),
       backgroundColor: ThemeUtil.getColor(context, SBBColors.cloud, SBBColors.midnight),
-      borderRadius: BorderRadius.only(bottomLeft: borderRadius, bottomRight: borderRadius),
+      border: !isLastElement
+          ? Border(bottom: BorderSide(color: ThemeUtil.getColor(context, SBBColors.graphite, SBBColors.granite)))
+          : null,
+      borderRadius: isLastElement
+          ? BorderRadius.only(bottomLeft: borderRadius, bottomRight: borderRadius)
+          : BorderRadius.all(Radius.zero),
     );
   }
 
@@ -115,8 +122,9 @@ class IndicationAccordion extends StatelessWidget {
     JourneyAnnotation data, {
     required CollapsedState collapsedState,
     required double leftPadding,
+    bool isLastElement = true,
   }) {
-    final margin = _verticalMargin;
+    final margin = isLastElement ? _verticalMargin : 0.0;
     if (collapsedState == .collapsed) {
       return Accordion.defaultCollapsedHeight + margin;
     }
