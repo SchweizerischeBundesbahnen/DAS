@@ -14,4 +14,3 @@ class RuIndicationMatchesResponseDto {
 
   Map<String, dynamic> toJson() => _$RuIndicationMatchesResponseDtoToJson(this);
 }
-
