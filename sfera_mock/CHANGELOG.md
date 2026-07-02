@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.18.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.17.0...sfera_mock-v0.18.0) (2026-07-02)
+
+
+### Features
+
+* add customer oriented departure ([#148](https://github.com/SchweizerischeBundesbahnen/DAS/issues/148)) ([#2108](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2108)) ([f01d747](https://github.com/SchweizerischeBundesbahnen/DAS/commit/f01d7477d4851b425000fb1f391a499878bb8a5a))
+* add ECTS and track end signals ([#1628](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1628)) ([#1484](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1484)) ([#2323](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2323)) ([dac3e20](https://github.com/SchweizerischeBundesbahnen/DAS/commit/dac3e20311fc0ef0ef2c33107e0f7cc17eba4a4e))
+* add planned release time as departure time on stopping points ([#1339](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1339)) ([#2325](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2325)) ([b7b2496](https://github.com/SchweizerischeBundesbahnen/DAS/commit/b7b2496d8010b1ff2c595f798174866b3a4c420b))
+
+
+### Bug Fixes
+
+* add identifier to balise and levelcrossing ([#2109](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2109)) ([#2349](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2349)) ([1a33986](https://github.com/SchweizerischeBundesbahnen/DAS/commit/1a33986e6364582d86da0bd339c014794d8884f6))
+
+
+### Documentation
+
+* add more break sheet variations ([#2294](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2294)) ([310518f](https://github.com/SchweizerischeBundesbahnen/DAS/commit/310518fe87fefa0b30907e203f5eb66a424a008d))
+* add sim footnotes ([#2202](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2202)) ([8e7cc35](https://github.com/SchweizerischeBundesbahnen/DAS/commit/8e7cc3508fd68b2664bc608ee40b5318b32a0d16))
+
 ## [0.17.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.16.0...sfera_mock-v0.17.0) (2026-05-29)
 
 
