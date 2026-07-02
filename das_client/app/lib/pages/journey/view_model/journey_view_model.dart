@@ -1,12 +1,16 @@
 import 'dart:async';
 
+import 'package:app/di/di.dart';
 import 'package:app/pages/journey/view_model/sfera_journey_view_model.dart';
+import 'package:app/util/time_constants.dart';
 import 'package:collection/collection.dart';
 import 'package:ru_indications/component.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
 class JourneyViewModel {
+  final _retryDelay = DI.get<TimeConstants>().httpRequestRetryDelaySeconds;
+
   JourneyViewModel({
     required this._sferaJourneyViewModel,
     required this._ruIndicationsRepository,
@@ -23,12 +27,14 @@ class JourneyViewModel {
 
   final _rxJourney = BehaviorSubject<Journey?>.seeded(null);
   final _ruIndications = <RuIndication>[];
+  Timer? _retryTimer;
 
   StreamSubscription? _journeySubscription;
 
   void dispose() {
     _rxJourney.close();
     _journeySubscription?.cancel();
+    _retryTimer?.cancel();
   }
 
   void _init() {
@@ -65,6 +71,7 @@ class JourneyViewModel {
   }
 
   Future<void> _loadRuIndications(Journey? journey) async {
+    _retryTimer?.cancel();
     final trainIdentification = journey?.metadata.trainIdentification;
     if (trainIdentification != null) {
       final servicePoints = journey!.data.whereType<ServicePoint>();
@@ -80,6 +87,12 @@ class JourneyViewModel {
             _ruIndications.clear();
             _ruIndications.addAll(value);
             _emit();
+          })
+          .onError((error, stackTrace) {
+            _retryTimer?.cancel();
+            _retryTimer = Timer(Duration(seconds: _retryDelay), () {
+              _loadRuIndications(_sferaJourneyViewModel.journeyValue);
+            });
           });
     }
   }
@@ -87,11 +100,17 @@ class JourneyViewModel {
   void _emit([Journey? sferaJourney]) {
     final journey = sferaJourney ?? _sferaJourneyViewModel.journeyValue;
     if (journey == null) {
-      _rxJourney.add(null);
+      _emitValue(null);
     } else {
       final mergedData = [...journey.data, ..._ruIndications].sorted((a1, a2) => a1.compareTo(a2));
       final mergedJourney = Journey(metadata: journey.metadata, data: mergedData, valid: journey.valid);
-      _rxJourney.add(mergedJourney);
+      _emitValue(mergedJourney);
+    }
+  }
+
+  void _emitValue(Journey? journey) {
+    if (!_rxJourney.isClosed) {
+      _rxJourney.add(journey);
     }
   }
 }
