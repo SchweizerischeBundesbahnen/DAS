@@ -22,19 +22,19 @@ jobs:
 
     steps:
 
-      - uses: maxim-lobanov/setup-xcode@v1
+      - uses: maxim-lobanov/setup-xcode@v1.7.0
         with:
           xcode-version: ~26.4
 
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v7.0.0
 
-      - uses: subosito/flutter-action@v2
+      - uses: subosito/flutter-action@v2.23.0
         with:
           flutter-version: '3.44.x'
           cache: true
 
       - name: Setup melos
-        uses: bluefireteam/melos-action@v3
+        uses: bluefireteam/melos-action@v3.8.0
         with:
           melos-version: '^7.4.0'
           run-bootstrap: 'false'
@@ -46,7 +46,7 @@ jobs:
         run: melos generate
 
       - name: Upload generated srcs  # saves around 40 sec
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@v7.0.1
         with:
           name: gen_srcs_ios
           path: |
@@ -80,13 +80,13 @@ jobs:
 
     steps:
 
-      - uses: maxim-lobanov/setup-xcode@v1
+      - uses: maxim-lobanov/setup-xcode@v1.7.0
         with:
           xcode-version: ~26.4
 
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v7.0.0
 
-      - uses: subosito/flutter-action@v2
+      - uses: subosito/flutter-action@v2.23.0
         with:
           flutter-version: '3.44.x'
           cache: true
@@ -95,7 +95,7 @@ jobs:
         run: flutter pub get
 
       - name: Download gen srcs
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@v8.0.1
         with:
           name: gen_srcs_ios
 
@@ -126,7 +126,7 @@ jobs:
           security list-keychain -d user -s $KEYCHAIN_PATH
 
       - name: Download Provisioning Profiles
-        uses: apple-actions/download-provisioning-profiles@v6
+        uses: apple-actions/download-provisioning-profiles@v6.0.0
         with:
           bundle-id: ${{ matrix.bundle-id }}
           issuer-id: ${{ secrets.APPSTORE_CONNECT_ISSUER_ID }}
