@@ -1,13 +1,13 @@
-import { httpResource } from '@angular/common/http';
-import { computed, Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment';
-import { ApiResponse } from '../api-response';
+import {httpResource} from '@angular/common/http';
+import {computed, Injectable} from '@angular/core';
+import {environment} from '../../../environments/environment';
+import {ApiResponse} from '../api-response';
 
 type CompanyApiResponse = ApiResponse<Company>;
 
 export interface Company {
   code: string;
-  name: string;
+  shortName: string;
 }
 
 @Injectable({
@@ -27,7 +27,7 @@ export class CompanyService {
   }
 
   public getName(code: string): string | undefined {
-    return this.companies().find((company) => company.code === code)?.name;
+    return this.companies().find((company) => company.code === code)?.shortName;
   }
 
   public filterCompanies(query: string, excludedCodes: string[] = []): Company[] {
@@ -39,7 +39,10 @@ export class CompanyService {
     }
 
     const matching = allCompanies.filter(
-      ({code, name}) => code.toLowerCase().includes(query) || name.toLowerCase().includes(query),
+      ({
+         code,
+         shortName
+       }) => code.toLowerCase().includes(query) || shortName.toLowerCase().includes(query),
     );
 
     return this.sortByRelevance(matching, query);
@@ -49,8 +52,8 @@ export class CompanyService {
     return [...candidates].sort((a, b) => {
       const aCode = a.code.toLowerCase();
       const bCode = b.code.toLowerCase();
-      const aName = a.name.toLowerCase();
-      const bName = b.name.toLowerCase();
+      const aName = a.shortName.toLowerCase();
+      const bName = b.shortName.toLowerCase();
 
       const aRank = Math.min(this.rank(query, aCode), this.rank(query, aName));
       const bRank = Math.min(this.rank(query, bCode), this.rank(query, bName));
