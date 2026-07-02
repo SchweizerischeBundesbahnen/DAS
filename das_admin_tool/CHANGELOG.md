@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.5.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das-admin-tool-v0.4.0...das-admin-tool-v0.5.0) (2026-07-02)
+
+
+### Features
+
+* add audit and companies to tables and columns ([#144](https://github.com/SchweizerischeBundesbahnen/DAS/issues/144)) ([#2205](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2205)) ([28c7aed](https://github.com/SchweizerischeBundesbahnen/DAS/commit/28c7aed5e2da928a62995a6ab17d805e8940da92))
+* external links web ([#246](https://github.com/SchweizerischeBundesbahnen/DAS/issues/246)) ([#2190](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2190)) ([755560e](https://github.com/SchweizerischeBundesbahnen/DAS/commit/755560e789fe5836fffc5ef902bcf266085a5508))
+* ru indication web ([#144](https://github.com/SchweizerischeBundesbahnen/DAS/issues/144)) ([#2163](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2163)) ([f838f25](https://github.com/SchweizerischeBundesbahnen/DAS/commit/f838f2571db2ecd34fcc71e80ff77c691595e57b))
+
+
+### Bug Fixes
+
+* companies api property ([#2366](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2366)) ([86948ea](https://github.com/SchweizerischeBundesbahnen/DAS/commit/86948eae3d79ca5cf88cf2c86d696af705d9f3cd))
+* **dialog:** added close-button ([#246](https://github.com/SchweizerischeBundesbahnen/DAS/issues/246)) ([#2353](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2353)) ([54938b3](https://github.com/SchweizerischeBundesbahnen/DAS/commit/54938b39df0b263ebaef419cd66abac6dc40be72))
+* paginate e2e tests ([#2354](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2354)) ([4886b75](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4886b759650c7e536a35fd42892712b2f4f213a0))
+* require text in ru indications ([#2347](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2347)) ([1d8b6c3](https://github.com/SchweizerischeBundesbahnen/DAS/commit/1d8b6c3e28ae5bdc805981e06c42e099f24c0cd9))
+* ru indication templates by tenant instead of companies ([#2355](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2355)) ([c53c04c](https://github.com/SchweizerischeBundesbahnen/DAS/commit/c53c04c65126202e538813ea797ed510d86e8cf9))
+* special holidays min date ([#2344](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2344)) ([bedcfd6](https://github.com/SchweizerischeBundesbahnen/DAS/commit/bedcfd69372be019ce33d89b18f974ad7e2d90b9))
+* table column fixed width ([#2357](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2357)) ([95ed379](https://github.com/SchweizerischeBundesbahnen/DAS/commit/95ed37948b86cfda2713472f021e9625c5801164))
+
 ## [0.4.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das-admin-tool-v0.3.1...das-admin-tool-v0.4.0) (2026-06-01)
 
 
