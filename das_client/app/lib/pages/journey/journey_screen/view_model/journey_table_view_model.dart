@@ -34,7 +34,6 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
     required this._decisiveGradientVM,
     required this._navigationVM,
     required this._userSettings,
-    required this._ruIndicationsRepository,
   }) {
     _init();
   }
@@ -46,7 +45,6 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
   final DecisiveGradientViewModel _decisiveGradientVM;
   final JourneyNavigationViewModel _navigationVM;
   final UserSettings _userSettings;
-  final RuIndicationsRepository _ruIndicationsRepository;
 
   StreamSubscription? _streamSubscription;
 
@@ -72,11 +70,11 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
 
   void _init() {
     _initRxModel();
-    _initRxRuIndications();
   }
 
-  Future<void> _initRxRuIndications() async {
-    final trainIdentification = lastJourney?.metadata.trainIdentification;
+  /* Future<void> _initRxRuIndications(Journey? journey) async {
+    _rxRuIndications.add([]);
+    final trainIdentification = journey?.metadata.trainIdentification;
     if (trainIdentification != null) {
       final servicePoints = lastJourney!.data.whereType<ServicePoint>();
       final locationReferences = {for (final it in servicePoints) it.locationCode: it.order};
@@ -89,6 +87,8 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
       _rxRuIndications.add(ruIndications);
     }
   }
+
+   */
 
   void _initRxModel() {
     _streamSubscription?.cancel();
@@ -139,23 +139,23 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
       _emitLoading();
       return;
     }
-    final rowData = journey.data
-      ..addAll(ruIndications)
-      ..whereNot((it) => _isCurvePointWithoutSpeed(it, settings))
-          .hideJourneyPointsThatShouldNotBeDisplayed()
-          .groupBaliseAndLevelCrossings(settings.expandedGroups, journey.metadata)
-          .hideCommunicationNetworkChangesWithSameTypeAsPreviousOrIsServicePoint()
-          .hideRepeatedLineFootNotes(position.currentPosition)
-          .hideFootNotesForNotSelectedTrainSeries(settings.currentBrakeSeries?.trainSeries)
-          .combineFootNoteAndIndications()
-          .addTrainDriverTurnoverRows(navigationModel?.trainIdentification)
-          .hideSignals(
-            stationSignals: !_userSettings.showStationSignals,
-            conventionalSpeedSignals: !_userSettings.showEctsConventionalSpeedSignals,
-            extendedSpeedSignals: !_userSettings.showEctsExtendedSpeedSignals,
-            nonStandardTrackEquipmentSegments: journey.metadata.nonStandardTrackEquipmentSegments,
-          )
-          .sorted((a1, a2) => a1.compareTo(a2));
+
+    final rowData = [...journey.data, ...ruIndications]
+        .whereNot((it) => _isCurvePointWithoutSpeed(it, settings))
+        .hideJourneyPointsThatShouldNotBeDisplayed()
+        .groupBaliseAndLevelCrossings(settings.expandedGroups, journey.metadata)
+        .hideCommunicationNetworkChangesWithSameTypeAsPreviousOrIsServicePoint()
+        .hideRepeatedLineFootNotes(position.currentPosition)
+        .hideFootNotesForNotSelectedTrainSeries(settings.currentBrakeSeries?.trainSeries)
+        .combineFootNoteAndIndications()
+        .addTrainDriverTurnoverRows(navigationModel?.trainIdentification)
+        .hideSignals(
+          stationSignals: !_userSettings.showStationSignals,
+          conventionalSpeedSignals: !_userSettings.showEctsConventionalSpeedSignals,
+          extendedSpeedSignals: !_userSettings.showEctsExtendedSpeedSignals,
+          nonStandardTrackEquipmentSegments: journey.metadata.nonStandardTrackEquipmentSegments,
+        )
+        .sorted((a1, a2) => a1.compareTo(a2));
 
     final journeyPoints = rowData.whereType<JourneyPoint>();
     final chevronPosition = _calculateChevronPosition(visibleJourneyPoints: journeyPoints, position: position);

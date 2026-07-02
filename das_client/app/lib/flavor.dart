@@ -107,7 +107,7 @@ class _DevFlavor extends Flavor {
     super.mqttUrl = '',
     super.mqttTopicPrefix = 'dev/',
     super.authenticatorConfig = _emptyAuthenticatorConfig,
-    super.disablePreload = true,
+    super.disablePreload = false,
     super.sferaVersion = '4.00',
     super.mqttOpenIdProfileMap,
   }) : super(

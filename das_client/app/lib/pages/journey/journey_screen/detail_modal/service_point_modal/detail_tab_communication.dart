@@ -110,7 +110,9 @@ class DetailTabCommunication extends StatelessWidget {
             Text(context.l10n.w_service_point_modal_departure_authorization, style: sbbTextStyle.romanStyle.small),
             Padding(
               padding: const .symmetric(vertical: 10.0, horizontal: SBBSpacing.medium),
-              child: Text.rich(TextUtil.parseHtmlText(departureAuthText, sbbTextStyle.romanStyle.medium)),
+              child: Text.rich(
+                TextUtil.parseHtmlTextWithMarkdownLinks(departureAuthText, sbbTextStyle.romanStyle.medium),
+              ),
             ),
           ],
         );

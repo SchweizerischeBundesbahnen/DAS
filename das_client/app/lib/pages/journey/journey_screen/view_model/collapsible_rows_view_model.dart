@@ -14,7 +14,7 @@ enum CollapsedState {
   expanded;
 
   static CollapsedState defaultOf(BaseData data) =>
-      data is OperationalIndication ? .expandedWithCollapsedContent : .expanded;
+      data is OperationalIndication || data is RuIndication ? .expandedWithCollapsedContent : .expanded;
 }
 
 class CollapsibleRowsViewModel extends JourneyAwareViewModel {

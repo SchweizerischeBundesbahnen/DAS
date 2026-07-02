@@ -17,7 +17,7 @@ class MatchesRequestBody {
   factory MatchesRequestBody.fromJson(Map<String, dynamic> json) => _$MatchesRequestBodyFromJson(json);
 
   final String company;
-  final String operationalTrainNumber;
+  final int operationalTrainNumber;
 
   @JsonKey(toJson: _dateToString)
   final DateTime startDate;

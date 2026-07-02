@@ -20,20 +20,26 @@ class RuIndicationsRepositoryImpl implements RuIndicationsRepository {
     required Map<String, int> locationReferences,
   }) async {
     try {
+      final sanitizedTrainNumber = _sanitizeTrainNumber(trainNumber);
       final response = await _apiService.matches(
         company: company,
-        operationalTrainNumber: trainNumber,
+        operationalTrainNumber: sanitizedTrainNumber,
         startDate: startDate,
         tafTapLocationReferences: locationReferences.keys.toList(),
       );
       final ruIndications = response.body.data.map((dto) => dto.toRuIndications(locationReferences)).flattened;
       _log.info(
-        'Successfully fetched ${ruIndications.length} RU indications for $trainNumber ($company) on $startDate.',
+        'Successfully fetched ${ruIndications.length} RU indications for $sanitizedTrainNumber ($company) on $startDate.',
       );
       return ruIndications.toList();
     } catch (e) {
       _log.severe('Failed to load RU indications for $trainNumber ($company) on $startDate.', e);
       return [];
     }
+  }
+
+  int _sanitizeTrainNumber(String trainNumber) {
+    final digitsOnly = trainNumber.replaceAll(RegExp(r'[^0-9]'), '');
+    return int.parse(digitsOnly);
   }
 }

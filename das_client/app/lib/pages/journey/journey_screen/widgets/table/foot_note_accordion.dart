@@ -53,7 +53,7 @@ class FootNoteAccordion extends StatelessWidget {
   Text contentText(BaseFootNote data) => _contentText(data);
 
   static Text _contentText(BaseFootNote data) {
-    return Text.rich(TextUtil.parseHtmlText(data.footNote.text, sbbTextStyle.romanStyle.large));
+    return Text.rich(TextUtil.parseHtmlTextWithMarkdownLinks(data.footNote.text, sbbTextStyle.romanStyle.large));
   }
 
   static double calculateHeight({

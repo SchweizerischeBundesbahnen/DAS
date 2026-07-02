@@ -52,7 +52,7 @@ class MockAuthenticatedScope extends AuthenticatedScope {
     }
     _registerMockCustomerOrientedDepartureRepository();
 
-    getIt.registerJourneyViewModel();
+    getIt.registerSferaJourneyViewModel();
     getIt.registerJourneyNavigationViewModel();
     getIt.registerJourneySelectionViewModel();
     getIt.registerNotificationPriorityViewModel();

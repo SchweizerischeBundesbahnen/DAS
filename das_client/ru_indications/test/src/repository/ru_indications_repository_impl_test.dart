@@ -21,7 +21,7 @@ void main() {
   late MockMatchesRequest mockMatchesRequest;
 
   const company = 'SBB';
-  const trainNumber = '12345';
+  const trainNumber = 12345;
   final startDate = DateTime(2026, 1, 15, 10);
   const Map<String, int> locationReferences = {
     'CH003001': 1000,
@@ -49,7 +49,7 @@ void main() {
     // ACT
     final result = await testee.fetchRuIndications(
       company: company,
-      trainNumber: trainNumber,
+      trainNumber: trainNumber.toString(),
       startDate: startDate,
       locationReferences: locationReferences,
     );
@@ -72,7 +72,7 @@ void main() {
     // ACT
     final result = await testee.fetchRuIndications(
       company: company,
-      trainNumber: trainNumber,
+      trainNumber: trainNumber.toString(),
       startDate: startDate,
       locationReferences: locationReferences,
     );

@@ -16,9 +16,7 @@ import 'package:sfera/component.dart';
 
 import 'journey_position_view_model_test.mocks.dart';
 
-@GenerateNiceMocks([
-  MockSpec<JourneyViewModel>(),
-])
+@GenerateNiceMocks([MockSpec<JourneyViewModel>()])
 void main() {
   group('JourneyPositionViewModel unit test', () {
     const zeroSignal = Signal(order: 0, kilometre: []);

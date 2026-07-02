@@ -9,6 +9,7 @@ import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart'
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
+import 'package:app/pages/journey/view_model/sfera_journey_view_model.dart';
 import 'package:app/pages/journey/view_model/view_mode_view_model.dart';
 import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
 import 'package:app/provider/ru_feature_provider.dart';
@@ -58,6 +59,7 @@ class AuthenticatedScope extends DIScope {
     getIt.registerExternalLinksRepository();
     getIt.registerRuIndicationsRepository();
 
+    getIt.registerSferaJourneyViewModel();
     getIt.registerJourneyViewModel();
     getIt.registerJourneyNavigationViewModel();
     getIt.registerJourneySelectionViewModel();
@@ -229,7 +231,18 @@ extension AuthenticatedScopeExtension on GetIt {
 
   void registerJourneyViewModel() {
     registerSingletonAsync(
-      () async => JourneyViewModel(sferaRepository: DI.get()),
+      () async => JourneyViewModel(
+        sferaJourneyViewModel: DI.get(),
+        ruIndicationsRepository: DI.get(),
+      ),
+      dependsOn: [SferaJourneyViewModel],
+      dispose: (vm) => vm.dispose(),
+    );
+  }
+
+  void registerSferaJourneyViewModel() {
+    registerSingletonAsync<SferaJourneyViewModel>(
+      () async => SferaJourneyViewModel(sferaRepository: DI.get()),
       dependsOn: [SferaRepository],
       dispose: (vm) => vm.dispose(),
     );

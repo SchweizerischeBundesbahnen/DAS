@@ -10,9 +10,7 @@ import 'package:mockito/annotations.dart';
 import '../../../test_util.dart';
 import 'view_mode_view_model_test.mocks.dart';
 
-@GenerateNiceMocks([
-  MockSpec<JourneyViewModel>(),
-])
+@GenerateNiceMocks([MockSpec<JourneyViewModel>()])
 void main() {
   group('ViewModeViewModel', () {
     late ViewModeViewModel testee;

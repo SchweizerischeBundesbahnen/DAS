@@ -1,4 +1,8 @@
+import 'dart:async';
+
+import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
+import 'package:app/launcher/launcher.dart';
 import 'package:app/pages/journey/journey_screen/journey_overview.dart';
 import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_view_model.dart';
 import 'package:app/theme/theme_util.dart';
@@ -63,12 +67,12 @@ class IndicationAccordion extends StatelessWidget {
       final textWithoutLineBreaks = TextUtil.replaceLineBreaks(data.text);
       return Row(
         children: [
-          Expanded(child: _contentText(textWithoutLineBreaks, maxLines: 1)),
+          Expanded(child: _contentText(context, textWithoutLineBreaks, maxLines: 1)),
           _showMoreText(context),
         ],
       );
     }
-    return _contentText(data.text);
+    return _contentText(context, data.text);
   }
 
   Widget _showMoreText(BuildContext context) {
@@ -87,14 +91,24 @@ class IndicationAccordion extends StatelessWidget {
     return TextUtil.hasTextOverflow(textWithoutLineBreak, _accordionContentWidth(leftPadding: leftPadding), _textStyle);
   }
 
-  static Text _contentText(String text, {int? maxLines}) {
-    // TODO: parse link format [link](https://example.com)
+  Text _contentText(BuildContext context, String text, {int? maxLines}) {
     return Text.rich(
       key: maxLines == null ? expandedContentKey : collapsedContentKey,
-      TextUtil.parseHtmlText(text, _textStyle),
+      TextUtil.parseHtmlTextWithMarkdownLinks(
+        text,
+        _textStyle,
+        onLinkTap: (url) => _openLink(context, url),
+      ),
       maxLines: maxLines,
       overflow: maxLines != null ? TextOverflow.ellipsis : null,
     );
+  }
+
+  Future<void> _openLink(BuildContext context, String url) async {
+    final isOpened = await DI.get<Launcher>().launch(url);
+    if (!isOpened && context.mounted) {
+      SBBToast.of(context).show(titleText: context.l10n.c_something_went_wrong);
+    }
   }
 
   static double calculateHeight(
@@ -107,7 +121,7 @@ class IndicationAccordion extends StatelessWidget {
       return Accordion.defaultCollapsedHeight + margin;
     }
 
-    final content = _contentText(data.text);
+    final content = Text.rich(TextUtil.parseHtmlTextWithMarkdownLinks(data.text, _textStyle));
     final maxLines = collapsedState == .expandedWithCollapsedContent ? 1 : null;
     final tp = TextPainter(text: content.textSpan, textDirection: .ltr, maxLines: maxLines)
       ..layout(maxWidth: _accordionContentWidth(leftPadding: leftPadding));
@@ -121,7 +135,7 @@ class IndicationAccordion extends StatelessWidget {
 extension JourneyAnnotationIndicationX on JourneyAnnotation {
   String? get title {
     if (this is RuIndication) return (this as RuIndication).title;
-    return null; // TODO:
+    return null;
   }
 
   String get text {
@@ -129,7 +143,8 @@ extension JourneyAnnotationIndicationX on JourneyAnnotation {
       return (this as RuIndication).text;
     } else if (this is OperationalIndication) {
       return (this as OperationalIndication).combinedText;
+    } else {
+      return '';
     }
-    return ''; // TODO:
   }
 }
