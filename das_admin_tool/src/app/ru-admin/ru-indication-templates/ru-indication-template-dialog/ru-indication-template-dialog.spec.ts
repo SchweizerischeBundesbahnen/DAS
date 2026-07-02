@@ -17,37 +17,40 @@ describe('RuIndicationTemplateDialog', () => {
   beforeEach(() => vi.clearAllMocks());
 
   describe('oneLanguageRequired validator', () => {
-    it('should be invalid when all language titles are empty', () => {
+    it('should be invalid when all language titles and texts are empty', () => {
       const dialog = createDialog();
       expect(dialog['ruIndicationTemplateForm'].get('content')!.errors).toEqual({oneLanguageRequired: true});
     });
 
-    it('should be valid when at least de title is filled', () => {
+    it('should be valid when de title is filled', () => {
       const dialog = createDialog();
       dialog['ruIndicationTemplateForm'].get('content.de.title')!.setValue('Titel');
       expect(dialog['ruIndicationTemplateForm'].get('content')!.errors).toBeNull();
     });
 
-    it('should be valid when only fr title is filled', () => {
+    it('should be valid when fr title is filled', () => {
       const dialog = createDialog();
       dialog['ruIndicationTemplateForm'].get('content.fr.title')!.setValue('Titre');
       expect(dialog['ruIndicationTemplateForm'].get('content')!.errors).toBeNull();
     });
 
-    it('should be valid when only it title is filled', () => {
+    it('should be valid when it title is filled', () => {
       const dialog = createDialog();
       dialog['ruIndicationTemplateForm'].get('content.it.title')!.setValue('Titolo');
       expect(dialog['ruIndicationTemplateForm'].get('content')!.errors).toBeNull();
     });
 
-    it('should be invalid when titles contain only whitespace', () => {
+    it('should be invalid when a title contains only whitespace', () => {
       const dialog = createDialog();
+      const deGroup = dialog['ruIndicationTemplateForm'].get('content.de')!;
       dialog['ruIndicationTemplateForm'].get('content.de.title')!.setValue('   ');
-      expect(dialog['ruIndicationTemplateForm'].get('content')!.errors).toEqual({oneLanguageRequired: true});
+      dialog['ruIndicationTemplateForm'].get('content.de.text')!.setValue('Text');
+      expect(dialog['ruIndicationTemplateForm'].get('content')!.errors).toBeNull();
+      expect(deGroup.get('title')!.errors).toEqual({titleRequired: true});
     });
   });
 
-  describe('titleRequired validator', () => {
+  describe('languageRequired validator', () => {
     it('should be invalid for a language group when text is set but title is empty', () => {
       const dialog = createDialog();
       const deGroup = dialog['ruIndicationTemplateForm'].get('content.de')!;
@@ -56,6 +59,16 @@ describe('RuIndicationTemplateDialog', () => {
       deGroup.updateValueAndValidity();
 
       expect(deGroup.get('title')!.errors).toEqual({titleRequired: true});
+    });
+
+    it('should be valid for a language group when title is set but text is empty', () => {
+      const dialog = createDialog();
+      const deGroup = dialog['ruIndicationTemplateForm'].get('content.de')!;
+      deGroup.get('title')!.setValue('Titel');
+      deGroup.get('text')!.setValue('');
+      deGroup.updateValueAndValidity();
+
+      expect(deGroup.errors).toBeNull();
     });
 
     it('should be valid when both title and text are set', () => {

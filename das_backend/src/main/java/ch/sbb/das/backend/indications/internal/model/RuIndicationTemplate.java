@@ -14,11 +14,11 @@ public record RuIndicationTemplate(
     @Schema(description = "The category of the RU indication template.", requiredMode = RequiredMode.REQUIRED)
     String category,
     @Schema(description = "The german RU indication template.", requiredMode = RequiredMode.NOT_REQUIRED)
-    RuIndicationEntry de,
+    RuIndicationTemplateEntry de,
     @Schema(description = "The french RU indication template.", requiredMode = RequiredMode.NOT_REQUIRED)
-    RuIndicationEntry fr,
+    RuIndicationTemplateEntry fr,
     @Schema(description = "The italian RU indication template.", requiredMode = RequiredMode.NOT_REQUIRED)
-    RuIndicationEntry it,
+    RuIndicationTemplateEntry it,
     @Schema(description = "The RICS company codes for which this template is provided.", requiredMode = RequiredMode.REQUIRED)
     Set<CompanyCode> companies,
     @Schema(description = "The timestamp of the last update to the RU indication template.", requiredMode = RequiredMode.REQUIRED, accessMode = AccessMode.READ_ONLY)
@@ -27,7 +27,7 @@ public record RuIndicationTemplate(
     String lastModifiedBy
 ) {
 
-    public RuIndicationTemplate(Integer id, String category, RuIndicationEntry de, RuIndicationEntry fr, RuIndicationEntry it, Set<CompanyCode> companies) {
+    public RuIndicationTemplate(Integer id, String category, RuIndicationTemplateEntry de, RuIndicationTemplateEntry fr, RuIndicationTemplateEntry it, Set<CompanyCode> companies) {
         this(id, category, de, fr, it, companies, null, null);
     }
 }

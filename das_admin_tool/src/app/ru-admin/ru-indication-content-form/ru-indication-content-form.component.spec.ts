@@ -1,7 +1,10 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { RuIndicationContentForm, createContentFormGroup } from './ru-indication-content-form.component';
-import { FormControl, FormGroup } from '@angular/forms';
+import {
+  createContentFormGroup,
+  RuIndicationContentForm
+} from './ru-indication-content-form.component';
+import {FormControl, FormGroup} from '@angular/forms';
 
 describe('RuIndicationContentForm', () => {
   let component: RuIndicationContentForm;
@@ -11,7 +14,7 @@ describe('RuIndicationContentForm', () => {
     await TestBed.configureTestingModule({
       imports: [RuIndicationContentForm]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(RuIndicationContentForm);
     component = fixture.componentInstance;
@@ -29,7 +32,7 @@ describe('RuIndicationContentForm', () => {
     });
 
     it('should return true when title is only whitespace', () => {
-      fixture.componentRef.setInput('form', new FormGroup({ de: new FormGroup({ title: new FormControl('   ')})}))
+      fixture.componentRef.setInput('form', new FormGroup({de: new FormGroup({title: new FormControl('   ')})}))
       expect(component['isLanguageEmpty']('de')).toBe(true);
     });
 
@@ -38,6 +41,18 @@ describe('RuIndicationContentForm', () => {
       form.get('de')!.get('title')!.setValue('Titel');
       fixture.componentRef.setInput('form', form);
       expect(component['isLanguageEmpty']('de')).toBe(false);
+    });
+  });
+
+  describe('validators', () => {
+    it('should require text when title is set for RU indications', () => {
+      const form = createContentFormGroup();
+      const deGroup = form.get('de') as FormGroup;
+      deGroup.get('title')!.setValue('Titel');
+      deGroup.get('text')!.setValue('');
+      deGroup.updateValueAndValidity();
+
+      expect(deGroup.get('text')!.errors).toEqual({languageRequired: true});
     });
   });
 

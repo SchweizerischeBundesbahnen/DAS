@@ -9,7 +9,7 @@
         <label i18n="@@ru_indications_form_title_label">Titel</label>
         <input formControlName="title"/>
         @let titleField = form().get(`${language.path}.title`);
-        @if (form().touched && titleField?.hasError('titleRequired')) {
+        @if (form().touched && (titleField?.hasError('languageRequired') || titleField?.hasError('titleRequired'))) {
           <sbb-error i18n="@@form_field_error_required">Feld darf nicht leer sein
           </sbb-error>
         }
@@ -21,6 +21,11 @@
           (click)="insertLink(language.path, text)"
           iconName="link-small"
           sbb-tooltip="Link"/>
+        @let textField = form().get(`${language.path}.text`);
+        @if (form().touched && textField?.hasError('languageRequired')) {
+          <sbb-error i18n="@@form_field_error_required">Feld darf nicht leer sein
+          </sbb-error>
+        }
       </sbb-form-field>
     </sbb-tab>
   }

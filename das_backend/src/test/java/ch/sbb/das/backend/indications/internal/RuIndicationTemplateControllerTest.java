@@ -222,6 +222,24 @@ class RuIndicationTemplateControllerTest {
 
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
+    void create_RuIndicationTemplate_ok_onlyTitleProvided() throws Exception {
+        mockMvc.perform(post(API_RU_INDICATION_TEMPLATES)
+                .contentType("application/json")
+                .content("""
+                    {
+                        "category": "INFO",
+                        "de": { "title": "Hinweis" },
+                        "companies": ["1111"]
+                    }
+                    """))
+            .andExpect(status().isCreated())
+            .andExpect(jsonPath("$.data[0].category").value("INFO"))
+            .andExpect(jsonPath("$.data[0].de.title").value("Hinweis"))
+            .andExpect(jsonPath("$.data[0].de.text").isEmpty());
+    }
+
+    @Test
+    @WithMockRole(roles = UserRole.RU_ADMIN)
     void create_RuIndicationTemplate_invalid_emptyCompanies() throws Exception {
         mockMvc.perform(post(API_RU_INDICATION_TEMPLATES)
                 .contentType("application/json")

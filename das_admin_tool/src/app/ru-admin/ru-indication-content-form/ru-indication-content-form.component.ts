@@ -1,24 +1,33 @@
-import { Component, inject, input } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms";
-import { SbbError, SbbFormField } from "@sbb-esta/lyne-angular/form-field";
-import { SbbMiniButton } from "@sbb-esta/lyne-angular/button";
-import { SbbTab, SbbTabGroup, SbbTabLabel } from "@sbb-esta/lyne-angular/tabs";
-import { SbbTooltipDirective } from "@sbb-esta/lyne-angular/tooltip";
-import { LanguageCode, LanguageProvider } from '../../shared/language-provider';
-import { UpperCasePipe } from '@angular/common';
-import { RuIndication, RuIndicationContent, RuIndicationLanguageContent } from '../ru-admin-api';
-import { oneLanguageRequired, titleRequired } from '../../shared/form-validators.util';
+import {Component, inject, input} from '@angular/core';
+import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
+import {SbbError, SbbFormField} from "@sbb-esta/lyne-angular/form-field";
+import {SbbMiniButton} from "@sbb-esta/lyne-angular/button";
+import {SbbTab, SbbTabGroup, SbbTabLabel} from "@sbb-esta/lyne-angular/tabs";
+import {SbbTooltipDirective} from "@sbb-esta/lyne-angular/tooltip";
+import {LanguageCode, LanguageProvider} from '../../shared/language-provider';
+import {UpperCasePipe} from '@angular/common';
+import {RuIndication, RuIndicationContent, RuIndicationLanguageContent} from '../ru-admin-api';
+import {
+  languageRequired,
+  oneLanguageRequired,
+  titleRequired
+} from '../../shared/form-validators.util';
 
 interface LanguageContentForm {
   title: FormControl<string>;
   text: FormControl<string>;
 }
 
-export function createContentFormGroup() {
+interface ContentFormOptions {
+  textRequired?: boolean;
+}
+
+export function createContentFormGroup(options: ContentFormOptions = {}) {
+  const {textRequired = true} = options;
   return new FormGroup({
-    de: createLanguageGroup(),
-    fr: createLanguageGroup(),
-    it: createLanguageGroup(),
+    de: createLanguageGroup(textRequired),
+    fr: createLanguageGroup(textRequired),
+    it: createLanguageGroup(textRequired),
   }, {validators: oneLanguageRequired})
 }
 
@@ -39,11 +48,11 @@ export function contentFormValue(form: FormGroup): Partial<RuIndicationContent> 
   };
 }
 
-function createLanguageGroup(): FormGroup<LanguageContentForm> {
+function createLanguageGroup(textRequired: boolean): FormGroup<LanguageContentForm> {
   return new FormGroup({
     title: new FormControl('', {nonNullable: true}),
     text: new FormControl('', {nonNullable: true}),
-  }, {validators: titleRequired('text')});
+  }, {validators: textRequired ? languageRequired : titleRequired});
 }
 
 @Component({
