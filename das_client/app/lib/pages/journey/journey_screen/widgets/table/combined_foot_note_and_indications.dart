@@ -7,12 +7,13 @@ import 'package:sfera/component.dart';
 /// This is needed to simplify the sticky behavior. Otherwise additional StickyLevels would be needed.
 /// This is seen as a workaround and a more robust/extendable solution is needed.
 class CombinedFootNoteAndIndications extends JourneyAnnotation {
-  CombinedFootNoteAndIndications({
-    required this.footNote,
+  const CombinedFootNoteAndIndications({
     required this.indications,
-  }) : super(dataType: .combinedFootNoteAndIndications, order: footNote.order);
+    required super.order,
+    this.footNote,
+  }) : super(dataType: .combinedFootNoteAndIndications);
 
-  final BaseFootNote footNote;
+  final BaseFootNote? footNote;
   final List<JourneyAnnotation> indications;
 
   // TODO: Which oder priority?
@@ -46,17 +47,20 @@ extension CombineFootNoteAndIndicationsExtension on Iterable<BaseData> {
     final dataToBeRemoved = <BaseData>[];
     final combinedData = groupedMap.values
         .map((group) {
-          final footNote = group.firstWhereOrNull((it) => it is BaseFootNote) as BaseFootNote?;
-          final operationalIndication =
-              group.firstWhereOrNull((it) => it is OperationalIndication) as OperationalIndication?;
-          final ruIndications = group.whereType<RuIndication>();
-          if (footNote == null || (operationalIndication == null && ruIndications.isEmpty)) {
+          if (group.length < 2) {
             return null;
           }
 
-          final indications = [operationalIndication, ...ruIndications].nonNulls;
-          dataToBeRemoved.addAll([footNote, ...indications]);
-          return CombinedFootNoteAndIndications(footNote: footNote, indications: indications.toList());
+          final footNote = group.firstWhereOrNull((it) => it is BaseFootNote) as BaseFootNote?;
+          final indications = group.where((it) => it is! BaseFootNote).whereType<JourneyAnnotation>();
+          final allData = [?footNote, ...indications];
+          dataToBeRemoved.addAll(allData);
+
+          return CombinedFootNoteAndIndications(
+            footNote: footNote,
+            indications: indications.toList(),
+            order: allData.first.order,
+          );
         })
         .nonNulls
         .toList(); // force non-lazy map

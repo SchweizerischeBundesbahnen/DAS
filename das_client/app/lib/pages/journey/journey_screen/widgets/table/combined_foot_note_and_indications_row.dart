@@ -33,12 +33,14 @@ class CombinedFootNoteAndIndicationsRow extends WidgetRowBuilder<CombinedFootNot
                    ),
                  )
                  .sum +
-             FootNoteAccordion.calculateHeight(
-               data: data.footNote,
-               isExpanded: footNoteState != .collapsed,
-               addTopMargin: false,
-               leftPadding: leftPadding,
-             ),
+             (data.footNote != null
+                 ? FootNoteAccordion.calculateHeight(
+                     data: data.footNote!,
+                     isExpanded: footNoteState != .collapsed,
+                     addTopMargin: false,
+                     leftPadding: leftPadding,
+                   )
+                 : 0),
        );
 
   final CollapsedState footNoteState;
@@ -61,13 +63,14 @@ class CombinedFootNoteAndIndicationsRow extends WidgetRowBuilder<CombinedFootNot
               leftPadding: leftPadding,
             ),
           ),
-          FootNoteAccordion(
-            title: data.footNote.title(context, metadata),
-            isExpanded: footNoteState != .collapsed,
-            addTopMargin: false,
-            data: data.footNote,
-            leftPadding: leftPadding,
-          ),
+          if (data.footNote != null)
+            FootNoteAccordion(
+              title: data.footNote!.title(context, metadata),
+              isExpanded: footNoteState != .collapsed,
+              addTopMargin: false,
+              data: data.footNote!,
+              leftPadding: leftPadding,
+            ),
         ],
       ),
     );

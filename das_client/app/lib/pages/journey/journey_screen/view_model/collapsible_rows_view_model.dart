@@ -13,7 +13,7 @@ enum CollapsedState {
   expandedWithCollapsedContent,
   expanded;
 
-  static CollapsedState defaultOf(BaseData data) =>
+  static CollapsedState defaultOf(BaseData? data) =>
       data is OperationalIndication || data is RuIndication ? .expandedWithCollapsedContent : .expanded;
 }
 
@@ -145,7 +145,7 @@ extension BaseDataX on BaseData {
 }
 
 extension CollapsedStateMapX on Map<int, CollapsedState> {
-  CollapsedState stateOf(BaseData data) => this[data.hashCode] ?? .defaultOf(data);
+  CollapsedState stateOf(BaseData? data) => this[data.hashCode] ?? .defaultOf(data);
 
   Map<int, CollapsedState> whereContains(Iterable<BaseData> data) {
     final hashCodes = data.map((d) => d.hashCode).toSet();

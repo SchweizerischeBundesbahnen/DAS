@@ -134,7 +134,9 @@ class IndicationAccordion extends StatelessWidget {
 
 extension JourneyAnnotationIndicationX on JourneyAnnotation {
   String? get title {
-    if (this is RuIndication) return (this as RuIndication).title;
+    if (this is RuIndication) {
+      return (this as RuIndication).title;
+    }
     return null;
   }
 
