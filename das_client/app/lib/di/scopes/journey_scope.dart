@@ -23,6 +23,7 @@ import 'package:app/pages/journey/journey_screen/view_model/model/replacement_se
 import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/punctuality_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/replacement_series_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/sim_train_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/ux_testing_view_model.dart';
 import 'package:app/pages/journey/view_model/decisive_gradient_view_model.dart';
 import 'package:app/pages/journey/view_model/disturbance_view_model.dart';
@@ -59,6 +60,7 @@ class JourneyScope extends DIScope {
     getIt.registerChronographViewModel();
     getIt.registerDetailModalViewModel();
     getIt.registerBrakeLoadSlipViewModel();
+    getIt.registerSimTrainViewModel();
     getIt.registerCollapsibleRowsViewModel();
     getIt.registerJourneyTableViewModel();
     getIt.registerJourneyTableAdvancementViewModel();
@@ -249,11 +251,18 @@ extension JourneyScopeExtension on GetIt {
     );
   }
 
+  void registerSimTrainViewModel() {
+    registerSingleton<SimTrainViewModel>(
+      SimTrainViewModel(journeyViewModel: DI.get()),
+      dispose: (vm) => vm.dispose(),
+    );
+  }
+
   void registerCollapsibleRowsViewModel() {
     registerSingleton<CollapsibleRowsViewModel>(
       CollapsibleRowsViewModel(
         journeyViewModel: DI.get(),
-        formationRunStream: DI.get<BrakeLoadSlipViewModel>().formationRun,
+        simTrainViewModel: DI.get(),
         journeyPositionStream: DI.get<JourneyPositionViewModel>().model,
       ),
       dispose: (vm) => vm.dispose(),
