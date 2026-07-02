@@ -28,6 +28,7 @@ import 'package:app/pages/journey/journey_screen/view_model/line_speed_view_mode
 import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/punctuality_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/replacement_series_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/sim_train_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/tour_system_link_visibility_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/ux_testing_view_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/floating_departure_checklist_button.dart';
@@ -187,6 +188,9 @@ class _ProviderScope extends StatelessWidget {
           create: (_) => DI.get(),
         ),
         Provider<ServicePointModalViewModel>(
+          create: (_) => DI.get(),
+        ),
+        Provider<SimTrainViewModel>(
           create: (_) => DI.get(),
         ),
 
