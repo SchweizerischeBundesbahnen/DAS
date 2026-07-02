@@ -1,13 +1,10 @@
 package ch.sbb.das.backend.indications.internal;
 
 import ch.sbb.das.backend.companies.CompanyAuthorizer;
-import ch.sbb.das.backend.companies.CompanyCode;
 import ch.sbb.das.backend.indications.internal.model.RuIndicationTemplate;
 import ch.sbb.das.backend.indications.internal.model.RuIndicationTemplateRequest;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +17,9 @@ public class RuIndicationTemplateServiceImpl {
     private final RuIndicationTemplateMapper ruIndicationTemplateMapper;
 
     public List<RuIndicationTemplate> getAll() {
+        String currentTenant = companyAuthorizationService.requireCurrentTenant();
         return ruIndicationTemplateRepository.findAll().stream()
-            .filter(entity -> companyAuthorizationService.authorizedCompanies().containsAll(entity.getCompanies()))
+            .filter(ruIndicationTemplate -> currentTenant.equals(ruIndicationTemplate.getTenant()))
             .map(ruIndicationTemplateMapper::toResponse)
             .toList();
     }
@@ -29,14 +27,14 @@ public class RuIndicationTemplateServiceImpl {
     public RuIndicationTemplate getById(Integer id) {
         Optional<RuIndicationTemplateEntity> optionalRuIndicationTemplate = ruIndicationTemplateRepository.findById(id);
         return optionalRuIndicationTemplate.map(entity -> {
-            companyAuthorizationService.requireCanAccessCompanies(entity.getCompanies());
+            companyAuthorizationService.requireCanAccessTenant(entity.getTenant());
             return ruIndicationTemplateMapper.toResponse(entity);
         }).orElse(null);
     }
 
     public RuIndicationTemplate create(RuIndicationTemplateRequest createRequest) {
-        companyAuthorizationService.requireCanAccessCompanies(createRequest.companies());
-        RuIndicationTemplateEntity entity = ruIndicationTemplateMapper.toEntityFromRequest(null, createRequest);
+        String currentTenant = companyAuthorizationService.requireCurrentTenant();
+        RuIndicationTemplateEntity entity = ruIndicationTemplateMapper.toEntityFromRequest(null, createRequest, currentTenant);
         return ruIndicationTemplateMapper.toResponse(ruIndicationTemplateRepository.save(entity));
     }
 
@@ -45,17 +43,16 @@ public class RuIndicationTemplateServiceImpl {
         if (optional.isEmpty()) {
             return null;
         }
-        companyAuthorizationService.requireCanAccessCompanies(updateRequest.companies());
-        companyAuthorizationService.requireCanAccessCompanies(optional.get().getCompanies());
-        RuIndicationTemplateEntity updatedEntity = ruIndicationTemplateMapper.updateEntityFromRequest(optional.get(), updateRequest);
+        RuIndicationTemplateEntity old = optional.get();
+        companyAuthorizationService.requireCanAccessTenant(old.getTenant());
+        RuIndicationTemplateEntity updatedEntity = ruIndicationTemplateMapper.updateEntityFromRequest(old, updateRequest, old.getTenant());
         return ruIndicationTemplateMapper.toResponse(ruIndicationTemplateRepository.save(updatedEntity));
     }
 
     public void delete(List<Integer> ids) {
         List<Integer> distinctIds = ids.stream().distinct().toList();
-        Set<CompanyCode> companies = ruIndicationTemplateRepository.findAllById(distinctIds).stream().flatMap(entity -> entity.getCompanies().stream())
-            .collect(Collectors.toSet());
-        companyAuthorizationService.requireCanAccessCompanies(companies);
+        ruIndicationTemplateRepository.findAllById(distinctIds)
+            .forEach(ruIndicationTemplate -> companyAuthorizationService.requireCanAccessTenant(ruIndicationTemplate.getTenant()));
         ruIndicationTemplateRepository.deleteAllById(distinctIds);
     }
 }

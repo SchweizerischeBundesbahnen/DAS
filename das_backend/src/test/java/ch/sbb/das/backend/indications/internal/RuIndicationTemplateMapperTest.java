@@ -2,20 +2,14 @@ package ch.sbb.das.backend.indications.internal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.das.backend.companies.CompanyCode;
 import ch.sbb.das.backend.indications.internal.model.RuIndicationTemplate;
 import ch.sbb.das.backend.indications.internal.model.RuIndicationTemplateEntry;
 import ch.sbb.das.backend.indications.internal.model.RuIndicationTemplateRequest;
-import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class RuIndicationTemplateMapperTest {
 
     private final RuIndicationTemplateMapper mapper = new RuIndicationTemplateMapper();
-
-    private static CompanyCode company(String value) {
-        return new CompanyCode(value);
-    }
 
     @Test
     void toResponse_returns_null_language_when_title_and_text_are_missing() {
@@ -24,7 +18,7 @@ class RuIndicationTemplateMapperTest {
         entity.setCategory("INFO");
         entity.setTitleDe("Titel DE");
         entity.setTextDe("Text DE");
-        entity.setCompanies(Set.of(company("1111")));
+        entity.setTenant("tenant1");
 
         RuIndicationTemplate response = mapper.toResponse(entity);
 
@@ -33,7 +27,7 @@ class RuIndicationTemplateMapperTest {
         assertThat(response.de()).isEqualTo(new RuIndicationTemplateEntry("Titel DE", "Text DE"));
         assertThat(response.fr()).isNull();
         assertThat(response.it()).isNull();
-        assertThat(response.companies()).containsExactly(company("1111"));
+        assertThat(response.tenant()).isEqualTo("tenant1");
     }
 
     @Test
@@ -42,11 +36,10 @@ class RuIndicationTemplateMapperTest {
             "SAFETY",
             new RuIndicationTemplateEntry("DE", "Text DE"),
             null,
-            new RuIndicationTemplateEntry("IT", "Text IT"),
-            Set.of(company("1111"), company("2222"))
+            new RuIndicationTemplateEntry("IT", "Text IT")
         );
 
-        RuIndicationTemplateEntity entity = mapper.toEntityFromRequest(99, request);
+        RuIndicationTemplateEntity entity = mapper.toEntityFromRequest(99, request, "tenant2");
 
         assertThat(entity.getId()).isEqualTo(99);
         assertThat(entity.getCategory()).isEqualTo("SAFETY");
@@ -56,7 +49,7 @@ class RuIndicationTemplateMapperTest {
         assertThat(entity.getTextFr()).isNull();
         assertThat(entity.getTitleIt()).isEqualTo("IT");
         assertThat(entity.getTextIt()).isEqualTo("Text IT");
-        assertThat(entity.getCompanies()).containsExactlyInAnyOrder(company("1111"), company("2222"));
+        assertThat(entity.getTenant()).isEqualTo("tenant2");
     }
 
     @Test
@@ -66,16 +59,16 @@ class RuIndicationTemplateMapperTest {
         entity.setTextDe("old de text");
         entity.setTitleFr("old fr");
         entity.setTextFr("old fr text");
+        entity.setTenant("never");
 
         RuIndicationTemplateRequest request = new RuIndicationTemplateRequest(
             "UPDATED",
             null,
             new RuIndicationTemplateEntry("FR", "Text FR"),
-            null,
-            Set.of(company("1111"))
+            null
         );
 
-        mapper.updateEntityFromRequest(entity, request);
+        mapper.updateEntityFromRequest(entity, request, "tenant1");
 
         assertThat(entity.getCategory()).isEqualTo("UPDATED");
         assertThat(entity.getTitleDe()).isNull();
@@ -84,6 +77,7 @@ class RuIndicationTemplateMapperTest {
         assertThat(entity.getTextFr()).isEqualTo("Text FR");
         assertThat(entity.getTitleIt()).isNull();
         assertThat(entity.getTextIt()).isNull();
+        assertThat(entity.getTenant()).isEqualTo("tenant1");
     }
 }
 

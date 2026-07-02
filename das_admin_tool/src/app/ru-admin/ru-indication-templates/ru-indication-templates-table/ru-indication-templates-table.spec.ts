@@ -1,8 +1,8 @@
-import { TestBed } from '@angular/core/testing';
-import { RuIndicationTemplatesTable } from './ru-indication-templates-table';
-import { RuIndicationTemplateService } from '../ru-indication-template.service';
-import { LOCALE_ID } from '@angular/core';
-import { RuIndicationTemplate } from '../../ru-admin-api';
+import {TestBed} from '@angular/core/testing';
+import {RuIndicationTemplatesTable} from './ru-indication-templates-table';
+import {RuIndicationTemplateService} from '../ru-indication-template.service';
+import {LOCALE_ID} from '@angular/core';
+import {RuIndicationTemplate} from '../../ru-admin-api';
 
 const templates: RuIndicationTemplate[] = [
   {
@@ -11,7 +11,6 @@ const templates: RuIndicationTemplate[] = [
     de: {title: 'Titel DE', text: 'Text DE'},
     fr: {title: 'Titre FR', text: 'Texte FR'},
     it: {title: 'Titolo IT', text: 'Testo IT'},
-    companies: ['COMPA'],
     lastModifiedBy: 'user1',
     lastModifiedAt: new Date()
   },
@@ -19,7 +18,6 @@ const templates: RuIndicationTemplate[] = [
     id: 2,
     category: 'Safety',
     de: {title: 'Sicherheit', text: 'Inhalt'},
-    companies: ['COMPA', 'COMPB'],
     lastModifiedBy: 'user2',
     lastModifiedAt: new Date()
   },

@@ -2,6 +2,7 @@ package ch.sbb.das.backend.companies;
 
 import java.net.URL;
 import java.util.Collections;
+import java.util.Objects;
 import java.util.Set;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
@@ -65,6 +66,42 @@ public class CompanyAuthorizer {
             return false;
         }
         return companyService.isAdminTenant(tenant);
+    }
+
+    /**
+     * Returns the name of the authenticated tenant.
+     *
+     * @return current tenant name, or {@code null} when no tenant can be resolved
+     */
+    public String currentTenantName() {
+        Tenant tenant = getTenant();
+        return tenant == null ? null : tenant.name();
+    }
+
+    /**
+     * Returns the name of the authenticated tenant and fails when none can be resolved.
+     *
+     * @return current tenant name
+     * @throws AccessDeniedException when no tenant can be resolved from the current security context
+     */
+    public String requireCurrentTenant() {
+        String tenantName = currentTenantName();
+        if (tenantName == null) {
+            throw new AccessDeniedException("Not allowed");
+        }
+        return tenantName;
+    }
+
+    /**
+     * Requires the authenticated tenant to match the provided tenant name.
+     *
+     * @param tenantName tenant name to check against the authenticated tenant
+     * @throws AccessDeniedException when access is not granted
+     */
+    public void requireCanAccessTenant(String tenantName) {
+        if (!Objects.equals(requireCurrentTenant(), tenantName)) {
+            throw new AccessDeniedException("Not allowed");
+        }
     }
 
     /**
