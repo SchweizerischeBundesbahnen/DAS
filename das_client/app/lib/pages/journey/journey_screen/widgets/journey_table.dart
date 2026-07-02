@@ -167,10 +167,11 @@ class JourneyTable extends StatelessWidget {
         ),
       );
 
-      var hasPreviousAnnotation = false;
+      var attachAnnotationToPrevious = false;
       if (index > 0) {
         final previous = journeyTableRowData[index - 1];
-        hasPreviousAnnotation = previous is JourneyAnnotation;
+        attachAnnotationToPrevious =
+            previous is JourneyAnnotation || (previous is ServicePoint && previous.order == rowData.order);
       }
 
       switch (rowData.dataType) {
@@ -304,7 +305,7 @@ class JourneyTable extends StatelessWidget {
             data: rowData as BaseFootNote,
             config: journeyConfig,
             isExpanded: collapsedRows.stateOf(rowData) != .collapsed,
-            addTopMargin: !hasPreviousAnnotation,
+            addTopMargin: !attachAnnotationToPrevious,
             rowIndex: index,
             leftPadding: leftOffsetToInformationCell - Accordion.contentPadding,
           );

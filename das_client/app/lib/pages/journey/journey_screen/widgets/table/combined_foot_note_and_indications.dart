@@ -16,7 +16,6 @@ class CombinedFootNoteAndIndications extends JourneyAnnotation {
   final BaseFootNote? footNote;
   final List<JourneyAnnotation> indications;
 
-  // TODO: Which oder priority?
   @override
   OrderPriority get orderPriority => .operationalIndication;
 

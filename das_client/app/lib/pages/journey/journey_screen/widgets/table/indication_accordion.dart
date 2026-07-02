@@ -61,7 +61,7 @@ class IndicationAccordion extends StatelessWidget {
       additionalPadding: .only(left: leftPadding),
       backgroundColor: ThemeUtil.getColor(context, SBBColors.cloud, SBBColors.midnight),
       border: !isLastElement
-          ? Border(bottom: BorderSide(color: ThemeUtil.getColor(context, SBBColors.graphite, SBBColors.granite)))
+          ? Border(bottom: BorderSide(color: ThemeUtil.getColor(context, SBBColors.platinum, SBBColors.iron)))
           : null,
       borderRadius: isLastElement
           ? BorderRadius.only(bottomLeft: borderRadius, bottomRight: borderRadius)

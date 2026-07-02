@@ -20,7 +20,7 @@ class MatchesRequest {
     required DateTime startDate,
     required List<String> tafTapLocationReferences,
   }) async {
-    final url = Uri.https(baseUrl, 'v1/ruindications/matches');
+    final url = Uri.https(baseUrl, 'driver/v1/ruindications/matches');
     final requestBody = MatchesRequestBody(
       company: company,
       operationalTrainNumber: operationalTrainNumber,
