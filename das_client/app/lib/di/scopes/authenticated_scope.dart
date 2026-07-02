@@ -9,6 +9,7 @@ import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart'
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
+import 'package:app/pages/journey/view_model/sfera_journey_view_model.dart';
 import 'package:app/pages/journey/view_model/view_mode_view_model.dart';
 import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
 import 'package:app/provider/ru_feature_provider.dart';
@@ -16,8 +17,8 @@ import 'package:app/provider/ru_feature_provider_impl.dart';
 import 'package:app/provider/user_settings.dart';
 import 'package:app/util/device_id_info.dart';
 import 'package:auth/component.dart';
-import 'package:external_links/component.dart';
 import 'package:customer_oriented_departure/component.dart';
+import 'package:external_links/component.dart';
 import 'package:formation/component.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http_x/component.dart';
@@ -26,6 +27,7 @@ import 'package:logger/component.dart';
 import 'package:logging/logging.dart';
 import 'package:mqtt/component.dart';
 import 'package:preload/component.dart';
+import 'package:ru_indications/component.dart';
 import 'package:settings/component.dart';
 import 'package:sfera/component.dart';
 
@@ -55,7 +57,9 @@ class AuthenticatedScope extends DIScope {
     getIt.registerFormationRepository();
     getIt.registerCustomerOrientedDepartureRepository(inTmsScope: inTmsScope);
     getIt.registerExternalLinksRepository();
+    getIt.registerRuIndicationsRepository();
 
+    getIt.registerSferaJourneyViewModel();
     getIt.registerJourneyViewModel();
     getIt.registerJourneyNavigationViewModel();
     getIt.registerJourneySelectionViewModel();
@@ -192,6 +196,13 @@ extension AuthenticatedScopeExtension on GetIt {
     repo.reloadExternalLinksByCompanies(companyCodes);
   }
 
+  void registerRuIndicationsRepository() {
+    final flavor = DI.get<Flavor>();
+    registerSingleton<RuIndicationsRepository>(
+      RuIndicationsComponent.createRepository(baseUrl: flavor.backendUrl, client: DI.get()),
+    );
+  }
+
   void registerJourneyNavigationViewModel() {
     registerSingletonAsync<JourneyNavigationViewModel>(
       () async => JourneyNavigationViewModel(sferaRepo: DI.get()),
@@ -219,7 +230,18 @@ extension AuthenticatedScopeExtension on GetIt {
 
   void registerJourneyViewModel() {
     registerSingletonAsync(
-      () async => JourneyViewModel(sferaRepository: DI.get()),
+      () async => JourneyViewModel(
+        sferaJourneyViewModel: DI.get(),
+        ruIndicationsRepository: DI.get(),
+      ),
+      dependsOn: [SferaJourneyViewModel],
+      dispose: (vm) => vm.dispose(),
+    );
+  }
+
+  void registerSferaJourneyViewModel() {
+    registerSingletonAsync<SferaJourneyViewModel>(
+      () async => SferaJourneyViewModel(sferaRepository: DI.get()),
       dependsOn: [SferaRepository],
       dispose: (vm) => vm.dispose(),
     );

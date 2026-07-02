@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:app/di/di.dart';
 import 'package:app/nav/app_router.dart';
 import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
-import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
+import 'package:app/pages/journey/view_model/sfera_journey_view_model.dart';
 import 'package:app_links_x/component.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logging/logging.dart';
@@ -37,7 +37,7 @@ class AppLinkNavigator {
   }
 
   Future<void> _handleTrainJourneyIntent(TrainJourneyIntent intent) async {
-    if (!GetIt.I.isRegistered<JourneyViewModel>()) {
+    if (!GetIt.I.isRegistered<SferaJourneyViewModel>()) {
       _log.info('Waiting for App to be ready');
       // If the App was not running when opening a deeplink, we need to give DI some time to register everything
       await Future.delayed(Duration(milliseconds: 500));

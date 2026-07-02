@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:core_data/component.dart';
 import 'package:logging/logging.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/dto/graduated_speed_info_dto.dart';

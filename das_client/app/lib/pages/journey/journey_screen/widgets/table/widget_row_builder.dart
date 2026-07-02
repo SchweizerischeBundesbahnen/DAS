@@ -1,6 +1,7 @@
 import 'package:app/pages/journey/journey_screen/widgets/table/config/journey_config.dart';
 import 'package:app/widgets/table/row/das_table_row.dart';
 import 'package:app/widgets/table/row/das_table_row_builder.dart';
+import 'package:core_data/component.dart';
 import 'package:flutter/material.dart';
 import 'package:sfera/component.dart';
 

@@ -1,13 +1,15 @@
 import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_view_model.dart';
-import 'package:app/pages/journey/journey_screen/widgets/table/operational_indication_accordion.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/indication_accordion.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/widget_row_builder.dart';
 import 'package:app/theme/theme_util.dart';
+import 'package:core_data/component.dart';
 import 'package:flutter/material.dart';
+import 'package:ru_indications/component.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
-class OperationalIndicationRow extends WidgetRowBuilder<OperationalIndication> {
-  OperationalIndicationRow({
+class IndicationRow extends WidgetRowBuilder<JourneyAnnotation> {
+  IndicationRow({
     required super.rowIndex,
     required super.metadata,
     required super.data,
@@ -15,10 +17,11 @@ class OperationalIndicationRow extends WidgetRowBuilder<OperationalIndication> {
     this.leftPadding = 0,
     super.config,
     super.identifier,
-  }) : super(
+  }) : assert(data is RuIndication || data is OperationalIndication, 'Unsupported data type for indication'),
+       super(
          stickyLevel: .second,
-         height: OperationalIndicationAccordion.calculateHeight(
-           data.combinedText,
+         height: IndicationAccordion.calculateHeight(
+           data,
            collapsedState: collapsedState,
            leftPadding: leftPadding,
          ),
@@ -31,7 +34,7 @@ class OperationalIndicationRow extends WidgetRowBuilder<OperationalIndication> {
   Widget buildRowWidget(BuildContext context) {
     return Container(
       color: ThemeUtil.getColor(context, SBBColors.milk, SBBColors.black),
-      child: OperationalIndicationAccordion(
+      child: IndicationAccordion(
         collapsedState: collapsedState,
         leftPadding: leftPadding,
         data: data,

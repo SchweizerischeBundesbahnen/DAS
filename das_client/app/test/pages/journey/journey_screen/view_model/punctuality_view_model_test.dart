@@ -15,9 +15,7 @@ import 'package:sfera/component.dart';
 
 import 'punctuality_view_model_test.mocks.dart';
 
-@GenerateNiceMocks([
-  MockSpec<JourneyViewModel>(),
-])
+@GenerateNiceMocks([MockSpec<JourneyViewModel>()])
 void main() {
   const timeConstants = TimeConstants();
   const testDelay = Delay(value: Duration(seconds: 10), location: 'Bern');

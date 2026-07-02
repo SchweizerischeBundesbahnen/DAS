@@ -4,6 +4,7 @@ import 'package:app/pages/journey/journey_screen/header/view_model/model/departu
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:collection/collection.dart';
+import 'package:core_data/component.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 

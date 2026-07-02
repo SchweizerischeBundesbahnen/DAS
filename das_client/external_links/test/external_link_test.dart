@@ -1,5 +1,5 @@
+import 'package:core_data/component.dart';
 import 'package:external_links/src/model/external_link.dart';
-import 'package:external_links/src/model/localized_string.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

@@ -15,9 +15,7 @@ import 'package:sfera/src/model/journey/metadata.dart';
 
 import 'arrival_departure_time_view_model_test.mocks.dart';
 
-@GenerateNiceMocks([
-  MockSpec<JourneyViewModel>(),
-])
+@GenerateNiceMocks([MockSpec<JourneyViewModel>()])
 void main() {
   late ArrivalDepartureTimeViewModel testee;
   late StreamController<Journey?> journeyStreamController;

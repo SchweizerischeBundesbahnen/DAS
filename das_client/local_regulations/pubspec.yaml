@@ -9,6 +9,7 @@ resolution: workspace
 
 dependencies:
   # workspaces
+  core_data: 1.0.0
   sfera: 1.0.0
 
   # https://pub.dev/packages/collection

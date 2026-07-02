@@ -1,5 +1,6 @@
 import 'package:app/extension/base_data_extension.dart';
 import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
+import 'package:core_data/component.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sfera/component.dart';
 

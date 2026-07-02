@@ -1,0 +1,18 @@
+name: core_data
+publish_to: 'none'
+version: 1.0.0
+
+environment:
+  sdk: ^3.12.0
+
+resolution: workspace
+
+dependencies:
+  # https://pub.dev/packages/meta
+  meta: ^1.18.0
+
+dev_dependencies:
+  # https://pub.dev/packages/flutter_lints
+  flutter_lints: ^6.0.0
+  # https://pub.dev/packages/flutter_prunekit
+  # flutter_prunekit: ^2.4.0 TODO: add back when analyzer >=10.0.0 is supported

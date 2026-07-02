@@ -1,5 +1,5 @@
 import 'package:collection/collection.dart';
-import 'package:external_links/src/model/localized_string.dart';
+import 'package:core_data/component.dart';
 
 class ExternalLink {
   ExternalLink({

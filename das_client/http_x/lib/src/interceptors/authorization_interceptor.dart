@@ -15,7 +15,7 @@ class AuthorizationInterceptor implements HttpInterceptor {
   FutureOr<bool> shouldInterceptRequest({required BaseRequest request}) async => authProvider != null;
 
   @override
-  Future<BaseRequest> interceptRequest({required BaseRequest request}) async {
+  FutureOr<BaseRequest> interceptRequest({required BaseRequest request}) async {
     try {
       final value = await authProvider!();
       request.headers['authorization'] = value;
@@ -29,7 +29,5 @@ class AuthorizationInterceptor implements HttpInterceptor {
   FutureOr<bool> shouldInterceptResponse({required BaseResponse response}) async => false;
 
   @override
-  Future<BaseResponse> interceptResponse({required BaseResponse response}) {
-    return Future.value(response);
-  }
+  FutureOr<BaseResponse> interceptResponse({required BaseResponse response}) async => response;
 }

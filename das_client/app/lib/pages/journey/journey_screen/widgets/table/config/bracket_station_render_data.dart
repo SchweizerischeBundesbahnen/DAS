@@ -1,3 +1,4 @@
+import 'package:core_data/component.dart';
 import 'package:sfera/component.dart';
 
 /// Data class to hold all the information to visualize bracket stations.

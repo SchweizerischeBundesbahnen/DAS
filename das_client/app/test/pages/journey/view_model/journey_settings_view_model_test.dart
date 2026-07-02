@@ -12,9 +12,7 @@ import 'package:sfera/component.dart';
 import '../../../test_util.dart';
 import 'journey_settings_view_model_test.mocks.dart';
 
-@GenerateNiceMocks([
-  MockSpec<JourneyViewModel>(),
-])
+@GenerateNiceMocks([MockSpec<JourneyViewModel>()])
 void main() {
   late JourneySettingsViewModel testee;
   late MockJourneyViewModel mockJourneyViewModel;

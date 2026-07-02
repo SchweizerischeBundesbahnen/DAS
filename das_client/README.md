@@ -73,6 +73,7 @@ The app is separated into the following components:
 | **app**                         | UI implementation with Flutter components                                              |
 | **auth**                        | User authentication and authentication state management.                               |
 | **connectivity_x**              | Provides device connectivity handling                                                  |
+| **core_data**                   | Data types that are shared over multiple components.                                   |
 | **http_x**                      | Extension for http package that supports authorization and log requests and responses. |
 | **local_regulations**           | Handles generation of HTML for local regulations                                       |
 | **logger**                      | Handles app logs caching and rollover to remote for monitoring                         |
@@ -84,6 +85,9 @@ The app is separated into the following components:
 | **app_links_x**                 | Processes all deep-links used to open the DAS app.                                     | 
 | **preload**                     | Handles pre-loading journey data for offline usage.                                    | 
 | **customer_oriented_departure** | Handles communication for customer oriented departure (KoA)                            | 
+| **external_links**              | Provides external links defined by RUs                                                 | 
+| **ru_indications**              | Provides RU specific indications                                                       | 
+
 
 ### Component Naming
 

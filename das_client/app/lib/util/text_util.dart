@@ -1,9 +1,21 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
+final _log = Logger('TextUtil');
+
 class TextUtil {
-  static TextSpan parseHtmlText(String text, TextStyle baseTextStyle) {
-    return _parseHtmlTextTags(balanceHtmlTags(replaceHtmlLineBreaks(text)), baseTextStyle);
+  static TextSpan parseHtmlTextWithMarkdownLinks(
+    String text,
+    TextStyle baseTextStyle, {
+    void Function(String url)? onLinkTap,
+  }) {
+    return _parseHtmlTextTagsWithMarkdownLinks(
+      balanceHtmlTags(replaceHtmlLineBreaks(text)),
+      baseTextStyle,
+      onLinkTap: onLinkTap,
+    );
   }
 
   static String replaceHtmlLineBreaks(String text) {
@@ -56,8 +68,12 @@ class TextUtil {
     return input.replaceAll(pattern, delimiter);
   }
 
-  static TextSpan _parseHtmlTextTags(String text, TextStyle baseTextStyle) {
-    final regex = RegExp(r'<(b|i)>(.*?)<\/\1>', caseSensitive: false);
+  static TextSpan _parseHtmlTextTagsWithMarkdownLinks(
+    String text,
+    TextStyle baseTextStyle, {
+    void Function(String url)? onLinkTap,
+  }) {
+    final regex = RegExp(r'<(b|i)>(.*?)<\/\1>|\[([^\]]+)\]\(([^\s)]+)\)', caseSensitive: false);
 
     final spans = <TextSpan>[];
     int lastMatchEnd = 0;
@@ -67,13 +83,43 @@ class TextUtil {
         spans.add(TextSpan(text: text.substring(lastMatchEnd, match.start), style: baseTextStyle));
       }
 
-      final tag = match.group(1)!;
-      final content = match.group(2)!;
-
-      if (tag.toLowerCase() == 'b') {
-        spans.add(_parseHtmlTextTags(content, baseTextStyle.boldStyle));
-      } else if (tag.toLowerCase() == 'i') {
-        spans.add(_parseHtmlTextTags(content, baseTextStyle.italic));
+      final tag = match.group(1);
+      if (tag != null) {
+        final content = match.group(2)!;
+        if (tag.toLowerCase() == 'b') {
+          spans.add(
+            _parseHtmlTextTagsWithMarkdownLinks(
+              content,
+              baseTextStyle.boldStyle,
+              onLinkTap: onLinkTap,
+            ),
+          );
+        } else if (tag.toLowerCase() == 'i') {
+          spans.add(
+            _parseHtmlTextTagsWithMarkdownLinks(
+              content,
+              baseTextStyle.italic,
+              onLinkTap: onLinkTap,
+            ),
+          );
+        }
+      } else {
+        final linkLabel = match.group(3)!;
+        final url = match.group(4)!;
+        spans.add(
+          TextSpan(
+            text: linkLabel,
+            style: baseTextStyle.copyWith(decoration: TextDecoration.underline),
+            recognizer: (TapGestureRecognizer()
+              ..onTap = () {
+                if (onLinkTap != null) {
+                  onLinkTap(url);
+                } else {
+                  _log.warning('No onLinkTap callback provided for url ($url) in text $text');
+                }
+              }),
+          ),
+        );
       }
 
       lastMatchEnd = match.end;

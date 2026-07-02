@@ -1,4 +1,5 @@
 import 'package:app/util/text_util.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -80,7 +81,7 @@ void main() {
     final input = 'Renens - Lausanne <i>via saut-de-mouton</i>';
 
     // WHEN
-    final result = TextUtil.parseHtmlText(input, sbbTextStyle.romanStyle.small);
+    final result = TextUtil.parseHtmlTextWithMarkdownLinks(input, sbbTextStyle.romanStyle.small);
 
     // THEN
     expect((result.children![0] as TextSpan).text, 'Renens - Lausanne ');
@@ -93,7 +94,7 @@ void main() {
     final input = 'Renens - Lausanne <b>via saut-de-mouton</b>';
 
     // WHEN
-    final result = TextUtil.parseHtmlText(input, sbbTextStyle.romanStyle.small);
+    final result = TextUtil.parseHtmlTextWithMarkdownLinks(input, sbbTextStyle.romanStyle.small);
 
     // THEN
     expect((result.children![0] as TextSpan).text, 'Renens - Lausanne ');
@@ -106,7 +107,7 @@ void main() {
     final input = 'Renens - Lausanne <i><b>via saut-de-mouton</b></i>';
 
     // WHEN
-    final result = TextUtil.parseHtmlText(input, sbbTextStyle.romanStyle.small);
+    final result = TextUtil.parseHtmlTextWithMarkdownLinks(input, sbbTextStyle.romanStyle.small);
 
     // THEN
     expect((result.children![0] as TextSpan).text, 'Renens - Lausanne ');
@@ -118,5 +119,39 @@ void main() {
       (((result.children![1] as TextSpan).children![0] as TextSpan).children![0] as TextSpan).style,
       sbbTextStyle.romanStyle.small.italic.boldStyle,
     );
+  });
+
+  test('textUtil_parseHtmlText_parsesMarkdownLink', () {
+    // GIVEN
+    final input = 'Read [documentation](https://example.com) now';
+
+    // WHEN
+    final result = TextUtil.parseHtmlTextWithMarkdownLinks(input, sbbTextStyle.romanStyle.small, onLinkTap: (link) {});
+
+    // THEN
+    expect((result.children![0] as TextSpan).text, 'Read ');
+    expect((result.children![1] as TextSpan).text, 'documentation');
+    expect((result.children![2] as TextSpan).text, ' now');
+    expect((result.children![1] as TextSpan).style?.decoration, TextDecoration.underline);
+  });
+
+  test('textUtil_parseHtmlText_linkIsClickable', () {
+    // GIVEN
+    final input = '[example](https://example.com)';
+    String? openedUrl;
+
+    // WHEN
+    final result = TextUtil.parseHtmlTextWithMarkdownLinks(
+      input,
+      sbbTextStyle.romanStyle.small,
+      onLinkTap: (url) => openedUrl = url,
+    );
+    final linkSpan = result.children![0] as TextSpan;
+    final recognizer = linkSpan.recognizer as TapGestureRecognizer;
+    recognizer.onTap?.call();
+
+    // THEN
+    expect(openedUrl, 'https://example.com');
+    recognizer.dispose();
   });
 }

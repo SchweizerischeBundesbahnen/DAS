@@ -2,6 +2,7 @@ library;
 
 import 'package:http_interceptor/http_interceptor.dart';
 import 'package:http_x/component.dart';
+import 'package:http_x/src/interceptors/accept_language_interceptor.dart';
 import 'package:http_x/src/interceptors/authorization_interceptor.dart';
 import 'package:http_x/src/interceptors/logging_interceptor.dart';
 
@@ -25,6 +26,7 @@ class HttpXComponent {
       interceptors: [
         AuthorizationInterceptor(authProvider),
         const LoggingInterceptor(obfuscateSecrets: true),
+        const AcceptLanguageInterceptor(),
       ],
     );
   }

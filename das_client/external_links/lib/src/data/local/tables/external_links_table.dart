@@ -1,7 +1,7 @@
+import 'package:core_data/component.dart';
 import 'package:drift/drift.dart';
 import 'package:external_links/src/data/local/external_links_database.dart';
 import 'package:external_links/src/model/external_link.dart';
-import 'package:external_links/src/model/localized_string.dart';
 
 class ExternalLinksTable extends Table {
   IntColumn get id => integer()();

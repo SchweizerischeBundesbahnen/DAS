@@ -17,14 +17,14 @@ class LoggingInterceptor implements HttpInterceptor {
   FutureOr<bool> shouldInterceptRequest({required BaseRequest request}) async => enabled;
 
   @override
-  Future<BaseRequest> interceptRequest({required BaseRequest request}) async {
+  FutureOr<BaseRequest> interceptRequest({required BaseRequest request}) async {
     final jsonString = request.toJsonString(obfuscateSecrets);
     _log.finer('Request $jsonString');
     return request;
   }
 
   @override
-  Future<BaseResponse> interceptResponse({required BaseResponse response}) async {
+  FutureOr<BaseResponse> interceptResponse({required BaseResponse response}) async {
     final jsonString = response.toJsonString();
     _log.finer('Response $jsonString');
     return response;
