@@ -13,7 +13,7 @@
   <table [dataSource]="dataSource" class="table-truncated" fixedLayout sbb-table sbbSort
          sbbSortActive="title" sbbSortDirection="asc">
     <ng-container sbbColumnDef="select">
-      <th *sbbHeaderCellDef class="select-column" sbb-header-cell>
+      <th *sbbHeaderCellDef sbb-header-cell>
         <sbb-checkbox
           (change)="$event ? parentToggle() : null"
           [checked]="selection.hasValue() && isAllSelected()"
@@ -21,7 +21,7 @@
         >
         </sbb-checkbox>
       </th>
-      <td *sbbCellDef="let row" class="select-column" sbb-cell>
+      <td *sbbCellDef="let row" sbb-cell>
         <sbb-checkbox
           (change)="$event ? selection.toggle(row) : null"
           (click)="$event.stopPropagation()"
@@ -64,7 +64,7 @@
       >
         Bearbeitet am
       </th>
-      <td *sbbCellDef="let row" class="cell-nowrap" sbb-cell>
+      <td *sbbCellDef="let row" sbb-cell>
         {{ row.lastModifiedAt | date: 'short' }}
       </td>
     </ng-container>
@@ -78,12 +78,12 @@
       >
         Bearbeitet von
       </th>
-      <td *sbbCellDef="let row" class="cell-nowrap" sbb-cell>{{ row.lastModifiedBy }}</td>
+      <td *sbbCellDef="let row" sbb-cell>{{ row.lastModifiedBy }}</td>
     </ng-container>
 
     <ng-container sbbColumnDef="action">
-      <th *sbbHeaderCellDef class="action-column" sbb-header-cell></th>
-      <td *sbbCellDef="let externalLink" class="action-column" sbb-cell>
+      <th *sbbHeaderCellDef sbb-header-cell></th>
+      <td *sbbCellDef="let externalLink" sbb-cell>
         <sbb-mini-button (click)="edit(externalLink)" iconName="pen-small"></sbb-mini-button>
       </td>
     </ng-container>
