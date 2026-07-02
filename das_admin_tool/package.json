@@ -45,7 +45,7 @@
     "eslint": "10.4.0",
     "gzipper": "^8.2.1",
     "typescript": "5.9.3",
-    "typescript-eslint": "8.59.3",
+    "typescript-eslint": "8.62.0",
     "vitest": "^4.1.6",
     "vitest-sonar-reporter": "^3.0.0"
   }
