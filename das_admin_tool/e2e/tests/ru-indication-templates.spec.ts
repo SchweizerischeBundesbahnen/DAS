@@ -1,6 +1,7 @@
-import test, { expect, Locator, Page } from '@playwright/test';
+import test, {expect, Locator, Page} from '@playwright/test';
 import {
   clickAddButton,
+  deleteEntryIfExists,
   deleteEntryViaDialog,
   deleteEntryViaSelection,
   findRow,
@@ -56,12 +57,8 @@ test.describe('ru indication templates test', () => {
     updatedRow = findRow(page, TEST_TITLE_DE_UPDATED);
 
     // clean up leftover from previous run if present
-    if (await row.isVisible()) {
-      await deleteEntryViaDialog(page, row);
-    }
-    if (await updatedRow.isVisible()) {
-      await deleteEntryViaDialog(page, updatedRow);
-    }
+    await deleteEntryIfExists(page, row);
+    await deleteEntryIfExists(page, updatedRow);
   });
 
   test('create, edit and delete ru indication template | tests: 1626', async ({page}) => {

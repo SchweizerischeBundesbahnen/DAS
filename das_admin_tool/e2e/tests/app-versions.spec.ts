@@ -1,5 +1,5 @@
-import test, { expect } from '@playwright/test';
-import { deleteEntryViaDialog, findRow } from '../utils/admin-test-helpers';
+import test, {expect} from '@playwright/test';
+import {deleteEntryIfExists, deleteEntryViaDialog, findRow} from '../utils/admin-test-helpers';
 
 test.describe('app versions test', () => {
 
@@ -14,9 +14,7 @@ test.describe('app versions test', () => {
     const row = findRow(page, TEST_VERSION);
     const editButton = row.getByRole('cell').last();
 
-    if (await row.isVisible()) {
-      await deleteEntryViaDialog(page, row);
-    }
+    await deleteEntryIfExists(page, row);
 
     // create
     await addButton.click();
