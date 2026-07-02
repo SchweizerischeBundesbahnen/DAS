@@ -18,7 +18,6 @@ import 'package:app/provider/user_settings.dart';
 import 'package:collection/collection.dart';
 import 'package:core_data/component.dart';
 import 'package:logging/logging.dart';
-import 'package:ru_indications/component.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
@@ -48,7 +47,6 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
 
   StreamSubscription? _streamSubscription;
 
-  final _rxRuIndications = BehaviorSubject<List<RuIndication>>.seeded([]);
   final _rxModel = BehaviorSubject<JourneyTableModel>.seeded(TableLoading());
 
   Stream<JourneyTableModel> get model => _rxModel.stream;
@@ -72,28 +70,10 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
     _initRxModel();
   }
 
-  /* Future<void> _initRxRuIndications(Journey? journey) async {
-    _rxRuIndications.add([]);
-    final trainIdentification = journey?.metadata.trainIdentification;
-    if (trainIdentification != null) {
-      final servicePoints = lastJourney!.data.whereType<ServicePoint>();
-      final locationReferences = {for (final it in servicePoints) it.locationCode: it.order};
-      final ruIndications = await _ruIndicationsRepository.fetchRuIndications(
-        company: trainIdentification.ru.companyCode,
-        trainNumber: trainIdentification.trainNumber,
-        startDate: trainIdentification.operatingDay ?? trainIdentification.date,
-        locationReferences: locationReferences,
-      );
-      _rxRuIndications.add(ruIndications);
-    }
-  }
-
-   */
-
   void _initRxModel() {
     _streamSubscription?.cancel();
     _streamSubscription =
-        CombineLatestStream.combine9(
+        CombineLatestStream.combine8(
           journeyViewModel.journey,
           _settingsVM.model,
           _collapsibleRowsVM.collapsedRows,
@@ -102,8 +82,7 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
           _decisiveGradientVM.showDecisiveGradient,
           _navigationVM.model,
           _userSettings.model,
-          _rxRuIndications,
-          (a, b, c, d, e, f, g, h, i) => (a, b, c, d, e, f, g, h, i),
+          (a, b, c, d, e, f, g, h) => (a, b, c, d, e, f, g, h),
         ).listen(
           (data) => _handleDataChanged(
             journey: data.$1,
@@ -113,7 +92,6 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
             detailModalType: data.$5,
             showDecisiveGradient: data.$6,
             navigationModel: data.$7,
-            ruIndications: data.$9,
           ),
         );
   }
@@ -130,7 +108,6 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
     required Map<int, CollapsedState> collapsibleRows,
     required JourneyPositionModel position,
     required bool showDecisiveGradient,
-    required List<RuIndication> ruIndications,
     JourneyNavigationModel? navigationModel,
     DetailModalType? detailModalType,
     Journey? journey,
@@ -140,7 +117,7 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
       return;
     }
 
-    final rowData = [...journey.data, ...ruIndications]
+    final rowData = journey.data
         .whereNot((it) => _isCurvePointWithoutSpeed(it, settings))
         .hideJourneyPointsThatShouldNotBeDisplayed()
         .groupBaliseAndLevelCrossings(settings.expandedGroups, journey.metadata)

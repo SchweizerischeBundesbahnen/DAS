@@ -17,7 +17,8 @@ abstract class JourneyAwareViewModel {
 
   void _init() {
     _journeySubscription = journeyViewModel.journey.listen((journey) {
-      if (journey?.metadata.trainIdentification != lastJourney?.metadata.trainIdentification) {
+      final currentTrainIdentification = journey?.metadata.trainIdentification;
+      if (currentTrainIdentification != lastJourney?.metadata.trainIdentification) {
         onJourneyChanged(journey);
       } else {
         onJourneyUpdated(journey);

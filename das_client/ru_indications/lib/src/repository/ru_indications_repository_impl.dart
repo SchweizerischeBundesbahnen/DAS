@@ -34,7 +34,7 @@ class RuIndicationsRepositoryImpl implements RuIndicationsRepository {
       return ruIndications.toList();
     } catch (e) {
       _log.severe('Failed to load RU indications for $trainNumber ($company) on $startDate.', e);
-      return [];
+      rethrow;
     }
   }
 

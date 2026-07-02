@@ -68,7 +68,7 @@ class _JourneyPageState extends State<JourneyPage> {
 
   @override
   Widget build(BuildContext context) {
-    final journeyVM = DI.get<SferaJourneyViewModel>();
+    final journeyVM = DI.get<JourneyViewModel>();
 
     return FutureBuilder<void>(
       future: _initFuture,

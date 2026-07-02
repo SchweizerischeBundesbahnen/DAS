@@ -64,16 +64,10 @@ extension FootNoteExtension on BaseFootNote {
     _ => .none,
   };
 
-  String title(BuildContext? context, Metadata? metadata) {
-    if (context == null || metadata == null) {
-      return _defaultTitle(context!);
-    }
-
-    return switch (this) {
-      final LineFootNote lineFootNote => _resolveTitle(context, lineFootNote, metadata),
-      _ => _defaultTitle(context),
-    };
-  }
+  String title(BuildContext context, Metadata metadata) => switch (this) {
+    final LineFootNote lineFootNote => _resolveTitle(context, lineFootNote, metadata),
+    _ => _defaultTitle(context),
+  };
 
   String _resolveTitle(BuildContext context, LineFootNote lineFootNote, Metadata metadata) {
     final identifier = lineFootNote.footNote.identifier;

@@ -17,7 +17,10 @@ import 'package:sfera/component.dart';
 import '../../../../../test_util.dart';
 import 'short_term_change_view_model_test.mocks.dart';
 
-@GenerateNiceMocks([MockSpec<JourneyPositionViewModel>(), MockSpec<JourneyViewModel>()])
+@GenerateNiceMocks([
+  MockSpec<JourneyPositionViewModel>(),
+  MockSpec<JourneyViewModel>(),
+])
 void main() {
   late BehaviorSubject<Journey?> rxMockJourney;
   late BehaviorSubject<JourneyPositionModel> rxMockJourneyPosition;
