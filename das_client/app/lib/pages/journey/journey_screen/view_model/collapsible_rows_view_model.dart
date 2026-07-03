@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/sim_train_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
-import 'package:formation/component.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
@@ -18,27 +18,25 @@ enum CollapsedState {
 class CollapsibleRowsViewModel extends JourneyAwareViewModel {
   CollapsibleRowsViewModel({
     required Stream<JourneyPositionModel> journeyPositionStream,
-    Stream<FormationRunChange?>? formationRunStream,
+    required this._simTrainViewModel,
     super.journeyViewModel,
   }) {
-    _init(journeyViewModel.journey, journeyPositionStream, formationRunStream);
+    _init(journeyViewModel.journey, journeyPositionStream);
   }
 
   Stream<Map<int, CollapsedState>> get collapsedRows => _rxCollapsedRows.stream;
 
   Map<int, CollapsedState> get collapsedRowsValue => _rxCollapsedRows.value;
 
-  bool _isSimTrain = false;
-
+  final SimTrainViewModel _simTrainViewModel;
   final _rxCollapsedRows = BehaviorSubject<Map<int, CollapsedState>>.seeded({});
 
   StreamSubscription<(Journey?, JourneyPositionModel)>? _journeySubscription;
-  StreamSubscription<FormationRunChange?>? _formationRunSubscription;
+  StreamSubscription<bool>? _simTrainSubscription;
 
   void _init(
     Stream<Journey?> journeyStream,
     Stream<JourneyPositionModel> journeyPositionStream,
-    Stream<FormationRunChange?>? formationRunStream,
   ) {
     _journeySubscription?.cancel();
     _journeySubscription =
@@ -52,23 +50,19 @@ class CollapsibleRowsViewModel extends JourneyAwareViewModel {
           }
         });
 
-    _formationRunSubscription?.cancel();
-    if (formationRunStream != null) {
-      _formationRunSubscription = formationRunStream.listen(_onFormationRunChanged);
-    }
+    _simTrainSubscription?.cancel();
+    _simTrainSubscription = _simTrainViewModel.isSimTrain.listen((_) {
+      _updateSimFootNotes(lastJourney);
+    });
   }
 
-  void _onFormationRunChanged(FormationRunChange? formationRunChange) {
-    _isSimTrain = formationRunChange?.formationRun.simTrain ?? false;
-    _updateSimFootNotes(lastJourney, _isSimTrain);
-  }
-
-  void _updateSimFootNotes(Journey? journey, bool isSimTrain) {
+  void _updateSimFootNotes(Journey? journey) {
     if (journey == null) return;
 
     final simFootNotes = journey.data.whereType<BaseFootNote>().where((fn) => fn.footNote.isSIM).toList();
     if (simFootNotes.isEmpty) return;
 
+    final isSimTrain = _simTrainViewModel.isSimTrainValue;
     final newMap = Map<int, CollapsedState>.from(_rxCollapsedRows.value);
     for (final fn in simFootNotes) {
       newMap[fn.hashCode] = isSimTrain ? CollapsedState.expanded : CollapsedState.collapsed;
@@ -103,14 +97,15 @@ class CollapsibleRowsViewModel extends JourneyAwareViewModel {
 
     final passedCollapsibleData = journey.data.sublist(fromIndex, toIndex).where((data) => data.isCollapsible);
 
+    final isSimTrain = _simTrainViewModel.isSimTrainValue;
     final collapsedRows = _rxCollapsedRows.value;
     final newMap = Map.of(collapsedRows);
     for (final data in passedCollapsibleData) {
       final current = collapsedRows[data.hashCode];
       if (current != null && current == .collapsed) continue;
 
-      // Do not auto-collapse SIM foot notes when there is an active SIM train formation run
-      if (_isSimTrain && data is BaseFootNote && data.footNote.isSIM) continue;
+      // Do not auto-collapse SIM foot notes when this is a SIM train
+      if (isSimTrain && data is BaseFootNote && data.footNote.isSIM) continue;
 
       if (journey.data.lastIndexWhere((it) => it.isCollapsible && it.hashCode == data.hashCode) <= toIndex) {
         newMap[data.hashCode] = .collapsed;
@@ -126,15 +121,14 @@ class CollapsibleRowsViewModel extends JourneyAwareViewModel {
   void dispose() {
     super.dispose();
     _journeySubscription?.cancel();
-    _formationRunSubscription?.cancel();
+    _simTrainSubscription?.cancel();
     _rxCollapsedRows.close();
   }
 
   @override
   void onJourneyChanged(journey) {
-    _isSimTrain = false;
     _rxCollapsedRows.add({});
-    _updateSimFootNotes(journey, _isSimTrain);
+    _updateSimFootNotes(journey);
   }
 }
 

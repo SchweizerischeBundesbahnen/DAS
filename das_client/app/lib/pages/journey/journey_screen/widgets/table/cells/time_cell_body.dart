@@ -1,5 +1,4 @@
 import 'package:app/extension/arrival_departure_time_extension.dart';
-import 'package:app/extension/datetime_extension.dart';
 import 'package:app/pages/journey/journey_screen/view_model/arrival_departure_time_view_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/service_point_row.dart';
 import 'package:app/theme/theme_util.dart';
@@ -103,13 +102,4 @@ class TimeCellBody extends StatelessWidget {
       ),
     );
   }
-}
-
-extension _DateTimeExtension on DateTime {
-  bool isAfterOrSameToTheMinute(DateTime? other) {
-    if (other == null) return false;
-    return roundDownToMinute.isAfterOrSame(other.roundDownToMinute);
-  }
-
-  bool isAfterOrSame(DateTime other) => isAtSameMomentAs(other) || isAfter(other);
 }
