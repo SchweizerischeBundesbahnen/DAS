@@ -39,7 +39,10 @@ class RuIndicationsRepositoryImpl implements RuIndicationsRepository {
   }
 
   int _sanitizeTrainNumber(String trainNumber) {
-    final digitsOnly = trainNumber.replaceAll(RegExp(r'[^0-9]'), '');
-    return int.parse(digitsOnly);
+    final firstNumberMatch = RegExp(r'\d+').firstMatch(trainNumber);
+    if (firstNumberMatch == null) {
+      throw const FormatException('Train number does not contain digits.');
+    }
+    return int.parse(firstNumberMatch.group(0)!);
   }
 }

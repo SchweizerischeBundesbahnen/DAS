@@ -58,7 +58,63 @@ void main() {
     expect(result, equals(_expectedDomainResult()));
   });
 
-  test('fetchRuIndications_whenApiCallThrows_thenReturnsEmptyList', () async {
+  test('fetchRuIndications_whenTrainNumberContainsNonDigits_thenSanitizesTrainNumber', () async {
+    // ARRANGE
+    const unsanitizedTrainNumber = 'T${trainNumber}M-S19';
+    when(
+      mockMatchesRequest.call(
+        company: company,
+        operationalTrainNumber: trainNumber,
+        startDate: startDate,
+        tafTapLocationReferences: locationReferences.keys.toList(),
+      ),
+    ).thenAnswer((_) async => MatchesResponse(headers: <String, String>{}, body: _matchesResponseDto()));
+
+    // ACT
+    await testee.fetchRuIndications(
+      company: company,
+      trainNumber: unsanitizedTrainNumber,
+      startDate: startDate,
+      locationReferences: locationReferences,
+    );
+
+    // EXPECT
+    verify(
+      mockMatchesRequest.call(
+        company: company,
+        operationalTrainNumber: trainNumber,
+        startDate: startDate,
+        tafTapLocationReferences: locationReferences.keys.toList(),
+      ),
+    ).called(1);
+  });
+
+  test('fetchRuIndications_whenTrainNumberHasNoDigits_thenThrowsFormatException', () async {
+    // ARRANGE
+    const invalidTrainNumber = 'IC-ABCD';
+
+    // ACT & EXPECT
+    await expectLater(
+      () => testee.fetchRuIndications(
+        company: company,
+        trainNumber: invalidTrainNumber,
+        startDate: startDate,
+        locationReferences: locationReferences,
+      ),
+      throwsA(isA<FormatException>()),
+    );
+
+    verifyNever(
+      mockMatchesRequest.call(
+        company: anyNamed('company'),
+        operationalTrainNumber: anyNamed('operationalTrainNumber'),
+        startDate: anyNamed('startDate'),
+        tafTapLocationReferences: anyNamed('tafTapLocationReferences'),
+      ),
+    );
+  });
+
+  test('fetchRuIndications_whenApiCallThrows_thenRethrows', () async {
     // ARRANGE
     when(
       mockMatchesRequest.call(
@@ -69,16 +125,16 @@ void main() {
       ),
     ).thenThrow(Exception('Failed'));
 
-    // ACT
-    final result = await testee.fetchRuIndications(
-      company: company,
-      trainNumber: trainNumber.toString(),
-      startDate: startDate,
-      locationReferences: locationReferences,
+    // ACT & EXPECT
+    await expectLater(
+      () => testee.fetchRuIndications(
+        company: company,
+        trainNumber: trainNumber.toString(),
+        startDate: startDate,
+        locationReferences: locationReferences,
+      ),
+      throwsException,
     );
-
-    // EXPECT
-    expect(result, isEmpty);
   });
 }
 

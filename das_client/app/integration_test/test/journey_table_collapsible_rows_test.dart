@@ -293,10 +293,7 @@ void _checkCollapsibleRow({required bool isCollapsed, Object? identifier, Finder
 }
 
 Finder _findDASTableAccordionRowByKey(Object identifier) {
-  return find.descendant(
-    of: find.byKey(DASTable.tableKey),
-    matching: find.ancestor(of: find.byKey(ObjectKey(identifier)), matching: find.byKey(DASTable.rowKey)),
-  );
+  return find.descendant(of: find.byKey(DASTable.tableKey), matching: find.byKey(ObjectKey(identifier)));
 }
 
 Finder _findDASTableAccordionByContainsText(String text, Type accordion) {
