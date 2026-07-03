@@ -21,7 +21,11 @@ void main() {
     final shortTextAccordion = _findIndicationAccordionByText('This is a short mock RU indication description.');
     expect(shortTextAccordion, findsWidgets);
 
+    // Check title
+    expect(find.text('CH01118'), findsAny);
+
     final firstAccordion = shortTextAccordion.first;
+
     final expandedContent = find.descendant(
       of: firstAccordion,
       matching: find.byKey(IndicationAccordion.expandedContentKey),
