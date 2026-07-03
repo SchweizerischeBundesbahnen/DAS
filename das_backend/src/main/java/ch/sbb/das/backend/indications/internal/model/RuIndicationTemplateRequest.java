@@ -7,8 +7,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import java.util.Set;
 
 @Schema(description = "RU indication template payload. At least one language object (de, fr, or it) must be provided.")
 @ValidTranslatedContent
@@ -17,16 +15,14 @@ public record RuIndicationTemplateRequest(
     @NotBlank String category,
     @Schema(description = "German RU indication template content.", requiredMode = RequiredMode.NOT_REQUIRED)
     @Valid
-    RuIndicationEntry de,
+    RuIndicationTemplateEntry de,
     @Schema(description = "French RU indication template content.", requiredMode = RequiredMode.NOT_REQUIRED)
     @Valid
-    RuIndicationEntry fr,
+    RuIndicationTemplateEntry fr,
     @Schema(description = "Italian RU indication template content.", requiredMode = RequiredMode.NOT_REQUIRED)
     @Valid
-    RuIndicationEntry it,
-    @Schema(description = "The RICS company codes for which this template is provided.", requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotEmpty Set<CompanyCode> companies
-) implements TranslatedContentRequest<RuIndicationEntry> {
+    RuIndicationTemplateEntry it
+) implements TranslatedContentRequest<RuIndicationTemplateEntry> {
 
     public RuIndicationTemplateRequest {
         de = normalize(de);
@@ -35,7 +31,7 @@ public record RuIndicationTemplateRequest(
     }
 
     @Override
-    public RuIndicationEntry normalize(RuIndicationEntry entry) {
-        return RuIndicationEntry.normalize(entry);
+    public RuIndicationTemplateEntry normalize(RuIndicationTemplateEntry entry) {
+        return RuIndicationTemplateEntry.normalize(entry);
     }
 }

@@ -1,11 +1,5 @@
-th.action {
-  width: 2rem;
-}
-
-td.action {
-  sbb-mini-button {
-    vertical-align: middle;
-  }
+.table-truncated .sbb-column-status {
+  width: 6rem;
 }
 
 .bottom {

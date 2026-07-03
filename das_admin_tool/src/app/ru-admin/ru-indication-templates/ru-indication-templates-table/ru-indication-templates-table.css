@@ -1,12 +1,3 @@
-th.action {
-  width: 2rem;
-}
-
-td.action {
-  sbb-mini-button {
-    vertical-align: middle;
-  }
-}
 
 .bottom {
   display: flex;

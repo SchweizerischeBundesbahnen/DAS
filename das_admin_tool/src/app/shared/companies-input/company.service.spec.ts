@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { Company, CompanyService } from './company.service';
+import {Company, CompanyService} from './company.service';
 
 function mockCompanies(service: CompanyService, companies: Company[]) {
   ((service as unknown) as {
@@ -11,9 +11,9 @@ function mockCompanies(service: CompanyService, companies: Company[]) {
 describe('CompanyService', () => {
   let service: CompanyService;
   const companies = [
-    {code: '1085', name: 'SBB'},
-    {code: '1087', name: 'BLS'},
-    {code: '9090', name: 'RhB'},
+    {code: '1085', shortName: 'SBB'},
+    {code: '1087', shortName: 'BLS'},
+    {code: '9090', shortName: 'RhB'},
   ];
 
   beforeEach(() => {
@@ -42,14 +42,14 @@ describe('CompanyService', () => {
   });
 
   it('filterCompanies ranks exact and prefix matches before contains matches', () => {
-    const extended = [...companies, {code: '1231085', name: 'Other'}];
+    const extended = [...companies, {code: '1231085', shortName: 'Other'}];
     mockCompanies(service, extended);
 
     const result = service.filterCompanies('1085').map(c => c.code);
     expect(result.indexOf('1085')).toBeLessThan(result.indexOf('1231085'));
   });
 
-  it('formatCompanies maps known codes to names and sorts by name', () => {
+  it('formatCompanies maps known codes to shortNames and sorts by shortName', () => {
     const input = ['9090', '1085'];
     const result = service.formatCompanies(input);
 

@@ -1,4 +1,5 @@
 import 'package:app/di/di.dart';
+import 'package:app/pages/journey/journey_screen/view_model/sim_train_view_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_chevron.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/combined_foot_note_and_indications_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/foot_note_accordion.dart';
@@ -8,11 +9,10 @@ import 'package:app/widgets/table/das_table.dart';
 import 'package:app/widgets/table/scrollable_align.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:formation/component.dart';
 import 'package:sfera/component.dart';
 
 import '../app_test.dart';
-import '../mocks/mock_formation_repository.dart';
+import '../mocks/mock_sim_train_view_model.dart';
 import '../util/test_utils.dart';
 
 void main() {
@@ -188,9 +188,13 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('simFootNote_whenNoBrakeLoadSlip_thenSimFootNoteIsCollapsed', (tester) async {
-    // ARRANGE - no formation emitted (MockFormationRepository seeded with null)
+  testWidgets('simFootNote_whenNonSimTrain_thenSimFootNoteIsCollapsed', (tester) async {
+    // ARRANGE - mock non-SIM train
     await prepareAndStartApp(tester);
+
+    final simTrainVM = DI.get<SimTrainViewModel>() as MockSimTrainViewModel;
+    simTrainVM.setIsSimTrain(false);
+
     await loadJourney(tester, trainNumber: 'T20M');
 
     // scroll to the SIM foot note
@@ -203,32 +207,12 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('simFootNote_whenBrakeLoadSlipWithoutSimTrain_thenSimFootNoteIsCollapsed', (tester) async {
-    // ARRANGE - emit formation with simTrain: false
+  testWidgets('simFootNote_whenSimTrain_thenSimFootNoteIsExpandedAndNotCollapsedWhenPassed', (tester) async {
+    // ARRANGE - mock SIM train
     await prepareAndStartApp(tester);
 
-    final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
-    formationRepository.emitT20NonSimFormation();
-
-    await loadJourney(tester, trainNumber: 'T20M');
-    await tester.pumpAndSettle();
-
-    // scroll to the SIM foot note
-    await dragUntilTextInStickyHeader(tester, 'Reichenbach im Kandertal');
-
-    // EXPECT - SIM foot note accordion is collapsed
-    final simFootNoteAccordion = _findDASTableAccordionByContainsText(l10n.c_radn_sim, FootNoteAccordion);
-    _checkCollapsibleRow(isCollapsed: true, collapsibleRow: simFootNoteAccordion);
-
-    await disconnect(tester);
-  });
-
-  testWidgets('simFootNote_whenSimTrainFormation_thenSimFootNoteIsExpandedAndNotCollapsedWhenPassed', (tester) async {
-    // ARRANGE - emit formation with simTrain: true
-    await prepareAndStartApp(tester);
-
-    final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
-    formationRepository.emitT20SimFormation();
+    final simTrainVM = DI.get<SimTrainViewModel>() as MockSimTrainViewModel;
+    simTrainVM.setIsSimTrain(true);
 
     await loadJourney(tester, trainNumber: 'T20');
     await tester.pumpAndSettle();

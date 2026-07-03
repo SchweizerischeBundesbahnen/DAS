@@ -1,13 +1,13 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormControl } from '@angular/forms';
-import { CompaniesInputComponent } from './companies-input.component';
-import { Company, CompanyService } from './company.service';
-import { RecentCompaniesStore } from '../recent-companies.store';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {FormControl} from '@angular/forms';
+import {CompaniesInputComponent} from './companies-input.component';
+import {Company, CompanyService} from './company.service';
+import {RecentCompaniesStore} from '../recent-companies.store';
 
 const companies = [
-  {code: '1085', name: 'SBB'},
-  {code: '1087', name: 'BLS'},
-  {code: '9090', name: 'RhB'},
+  {code: '1085', shortName: 'SBB'},
+  {code: '1087', shortName: 'BLS'},
+  {code: '9090', shortName: 'RhB'},
 ];
 
 const mockRecentCompaniesStore: Partial<RecentCompaniesStore> = {

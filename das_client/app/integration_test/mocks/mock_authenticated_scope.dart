@@ -2,6 +2,8 @@
 
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/sim_train_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:customer_oriented_departure/component.dart';
@@ -16,6 +18,7 @@ import 'mock_external_links_repository.dart';
 import 'mock_formation_repository.dart';
 import 'mock_ru_feature_provider.dart';
 import 'mock_ru_indications_repository.dart';
+import 'mock_sim_train_view_model.dart';
 import 'mock_warn_app_view_model.dart';
 
 final _log = Logger('MockAuthenticatedScope');
@@ -61,6 +64,8 @@ class MockAuthenticatedScope extends AuthenticatedScope {
     getIt.registerViewModeViewModel();
     _registerMockWarnAppViewModel();
     _registerMockExternalLinksRepository();
+    _registerMockSimTrainViewModel();
+
     getIt.registerLocalRegulationHtmlGenerator();
 
     return getIt.allReady();
@@ -104,6 +109,16 @@ class MockAuthenticatedScope extends AuthenticatedScope {
     getIt.registerSingletonAsync<CustomerOrientedDepartureRepository>(
       () async => MockCustomerOrientedDepartureRepository(),
       dispose: (repo) => repo.dispose(),
+    );
+  }
+
+  void _registerMockSimTrainViewModel() {
+    getIt.registerSingletonAsync<SimTrainViewModel>(
+      () async => MockSimTrainViewModel(),
+      dependsOn: [JourneyViewModel],
+      dispose: (vm) {
+        if (vm is MockSimTrainViewModel) vm.closeMock();
+      },
     );
   }
 }

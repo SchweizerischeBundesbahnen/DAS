@@ -11,7 +11,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,6 +45,5 @@ public class RuIndicationTemplateEntity extends EntityBase {
 
     private String textIt;
 
-    @Convert(converter = CompanyCodeListConverter.class)
-    private Set<CompanyCode> companies;
+    private String tenant;
 }

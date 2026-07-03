@@ -57,34 +57,25 @@
       <td *sbbCellDef="let row" sbb-cell><span>{{ getValue(row, 'text') }}</span></td>
     </ng-container>
 
-    <ng-container sbbColumnDef="companies">
-      <th *sbbHeaderCellDef i18n="@@ru_indication_templates_table_column_companies" sbb-header-cell
-          sbb-sort-header="companies">EVU
-      </th>
-      <td *sbbCellDef="let row" sbb-cell><span>{{ companiesValue(row.companies) }}</span></td>
-    </ng-container>
-
     <ng-container sbbColumnDef="lastModifiedAt">
       <th *sbbHeaderCellDef i18n="@@ru_indication_templates_table_column_last_modified_at"
           sbb-header-cell
           sbb-sort-header="lastModifiedAt">
         Bearbeitet am
       </th>
-      <td *sbbCellDef="let row" class="cell-nowrap"
-          sbb-cell>{{ row.lastModifiedAt | date: 'short' }}
-      </td>
+      <td *sbbCellDef="let row" sbb-cell>{{ row.lastModifiedAt | date: 'short' }}</td>
     </ng-container>
 
     <ng-container sbbColumnDef="lastModifiedBy">
       <th *sbbHeaderCellDef i18n="@@ru_indication_templates_table_column_last_modified_by" sbb-header-cell
           sbb-sort-header="lastModifiedBy">Bearbeitet von
       </th>
-      <td *sbbCellDef="let row" class="cell-nowrap" sbb-cell>{{ row.lastModifiedBy }}</td>
+      <td *sbbCellDef="let row" sbb-cell>{{ row.lastModifiedBy }}</td>
     </ng-container>
 
     <ng-container sbbColumnDef="action">
-      <th *sbbHeaderCellDef class="action" sbb-header-cell></th>
-      <td *sbbCellDef="let ruIndicationTemplate" class="action" sbb-cell>
+      <th *sbbHeaderCellDef sbb-header-cell></th>
+      <td *sbbCellDef="let ruIndicationTemplate" sbb-cell>
         <sbb-mini-button (click)="edit(ruIndicationTemplate)"
                          iconName="pen-small"></sbb-mini-button>
       </td>

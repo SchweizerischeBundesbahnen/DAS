@@ -12,7 +12,7 @@
   <sbb-autocomplete #auto="sbbAutocomplete">
     @for (company of filteredCompanies(); track company.code) {
       <sbb-option [value]="company.code">
-        {{ company.name }}
+        {{ company.shortName }}
       </sbb-option>
     }
   </sbb-autocomplete>

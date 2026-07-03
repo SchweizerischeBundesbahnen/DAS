@@ -1,5 +1,5 @@
 import 'package:app/i18n/i18n.dart';
-import 'package:app/pages/journey/brake_load_slip/brake_load_slip_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/sim_train_view_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/foot_note_accordion.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/widget_row_builder.dart';
 import 'package:app/theme/theme_util.dart';
@@ -37,11 +37,11 @@ class FootNoteRow<T extends BaseFootNote> extends WidgetRowBuilder<T> {
 
   @override
   Widget buildRowWidget(BuildContext context) {
-    final brakeLoadSlipVM = context.read<BrakeLoadSlipViewModel>();
-    return StreamBuilder(
-      stream: brakeLoadSlipVM.formationRun,
-      builder: (context, asyncSnapshot) {
-        final hasSIMFormation = asyncSnapshot.data?.formationRun.simTrain ?? false;
+    final simTrainVM = context.read<SimTrainViewModel>();
+    return StreamBuilder<bool>(
+      stream: simTrainVM.isSimTrain,
+      builder: (context, snapshot) {
+        final isSimTrain = snapshot.data ?? false;
         return Container(
           color: ThemeUtil.getColor(context, SBBColors.milk, SBBColors.black),
           child: FootNoteAccordion(
@@ -50,7 +50,7 @@ class FootNoteRow<T extends BaseFootNote> extends WidgetRowBuilder<T> {
             addTopMargin: addTopMargin,
             isExpanded: isExpanded,
             leftPadding: leftPadding,
-            highlightBorder: data.footNote.isSIM && hasSIMFormation,
+            highlightBorder: data.footNote.isSIM && isSimTrain,
           ),
         );
       },

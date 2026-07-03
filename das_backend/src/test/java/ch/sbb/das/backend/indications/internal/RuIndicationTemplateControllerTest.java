@@ -43,7 +43,7 @@ class RuIndicationTemplateControllerTest {
             .andExpect(jsonPath("$.data[0].fr.text").value("Texte 1 FR"))
             .andExpect(jsonPath("$.data[0].it.title").value("Avviso 1"))
             .andExpect(jsonPath("$.data[0].it.text").value("Testo 1 IT"))
-            .andExpect(jsonPath("$.data[0].companies").value(containsInAnyOrder("1111")))
+            .andExpect(jsonPath("$.data[0].tenant").doesNotExist())
             .andExpect(jsonPath("$.data[0].lastModifiedAt").isNotEmpty())
             .andExpect(jsonPath("$.data[0].lastModifiedBy").value("unit_test"));
     }
@@ -64,6 +64,18 @@ class RuIndicationTemplateControllerTest {
     }
 
     @Test
+    @WithMockRole(roles = UserRole.RU_ADMIN, adminTenant = false)
+    @Sql("classpath:createRuIndicationTemplates.sql")
+    void getAll_RuIndicationTemplates_otherTenant_returnsOnlyOwnTenantTemplates() throws Exception {
+        mockMvc.perform(get(API_RU_INDICATION_TEMPLATES))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data", hasSize(1)))
+            .andExpect(jsonPath("$.data[0].id").value(4))
+            .andExpect(jsonPath("$.data[0].category").value("OPERATIONS"))
+            .andExpect(jsonPath("$.data[0].tenant").doesNotExist());
+    }
+
+    @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createRuIndicationTemplates.sql")
     void getRuIndicationTemplateById_ok() throws Exception {
@@ -77,7 +89,7 @@ class RuIndicationTemplateControllerTest {
             .andExpect(jsonPath("$.data[0].fr.text").value("Texte 2 FR"))
             .andExpect(jsonPath("$.data[0].it.title").value("Avviso 2"))
             .andExpect(jsonPath("$.data[0].it.text").value("Testo 2 IT"))
-            .andExpect(jsonPath("$.data[0].companies").value(containsInAnyOrder("1111")))
+            .andExpect(jsonPath("$.data[0].tenant").doesNotExist())
             .andExpect(jsonPath("$.data[0].lastModifiedAt").isNotEmpty())
             .andExpect(jsonPath("$.data[0].lastModifiedBy").value("unit_test"));
     }
@@ -93,7 +105,7 @@ class RuIndicationTemplateControllerTest {
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createRuIndicationTemplates.sql")
-    void getRuIndicationTemplateById_forbidden_company() throws Exception {
+    void getRuIndicationTemplateById_forbidden_tenant() throws Exception {
         mockMvc.perform(get(API_RU_INDICATION_TEMPLATES + "/4"))
             .andExpect(status().isForbidden())
             .andExpect(jsonPath("$.detail").value("Not allowed!"));
@@ -109,8 +121,7 @@ class RuIndicationTemplateControllerTest {
                         "category": "SAFETY",
                         "de": { "title": "Hinweis", "text": "Text DE" },
                         "fr": { "title": "Avis", "text": "Texte FR" },
-                        "it": { "title": "Avviso", "text": "Testo IT" },
-                        "companies": ["1111"]
+                        "it": { "title": "Avviso", "text": "Testo IT" }
                     }
                     """))
             .andExpect(status().isCreated())
@@ -122,30 +133,35 @@ class RuIndicationTemplateControllerTest {
             .andExpect(jsonPath("$.data[0].fr.text").value("Texte FR"))
             .andExpect(jsonPath("$.data[0].it.title").value("Avviso"))
             .andExpect(jsonPath("$.data[0].it.text").value("Testo IT"))
-            .andExpect(jsonPath("$.data[0].companies").value(containsInAnyOrder("1111")))
+            .andExpect(jsonPath("$.data[0].tenant").doesNotExist())
             .andExpect(jsonPath("$.data[0].lastModifiedAt").isNotEmpty())
             .andExpect(jsonPath("$.data[0].lastModifiedBy").value("test-user"));
 
     }
 
     @Test
-    @WithMockRole(roles = UserRole.RU_ADMIN)
-    void create_RuIndicationTemplate_ok_singleLanguage() throws Exception {
+    @WithMockRole(roles = UserRole.RU_ADMIN, adminTenant = false)
+    void create_RuIndicationTemplate_ok_singleLanguage_assignsCurrentTenant() throws Exception {
         mockMvc.perform(post(API_RU_INDICATION_TEMPLATES)
                 .contentType("application/json")
                 .content("""
                     {
                         "category": "INFO",
-                        "de": { "title": "Nur Deutsch", "text": "Nur Deutsch Text" },
-                        "companies": ["1111"]
+                        "de": { "title": "Nur Deutsch", "text": "Nur Deutsch Text" }
                     }
                     """))
             .andExpect(status().isCreated())
             .andExpect(jsonPath("$.data[0].category").value("INFO"))
             .andExpect(jsonPath("$.data[0].de.title").value("Nur Deutsch"))
-            .andExpect(jsonPath("$.data[0].companies").value(containsInAnyOrder("1111")))
+            .andExpect(jsonPath("$.data[0].tenant").doesNotExist())
             .andExpect(jsonPath("$.data[0].lastModifiedAt").isNotEmpty())
             .andExpect(jsonPath("$.data[0].lastModifiedBy").value("test-user"));
+
+        mockMvc.perform(get(API_RU_INDICATION_TEMPLATES))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data", hasSize(1)))
+            .andExpect(jsonPath("$.data[0].id").value(1))
+            .andExpect(jsonPath("$.data[0].category").value("INFO"));
     }
 
     @Test
@@ -158,8 +174,7 @@ class RuIndicationTemplateControllerTest {
                         "category": "Testkat",
                         "de": { "title": "", "text": "" },
                         "fr": { "title": "hellou fr", "text": "min text" },
-                        "it": { "title": "", "text": "" },
-                        "companies": ["1111"]
+                        "it": { "title": "", "text": "" }
                     }
                     """))
             .andExpect(status().isCreated())
@@ -168,7 +183,6 @@ class RuIndicationTemplateControllerTest {
             .andExpect(jsonPath("$.data[0].fr.title").value("hellou fr"))
             .andExpect(jsonPath("$.data[0].fr.text").value("min text"))
             .andExpect(jsonPath("$.data[0].it").isEmpty())
-            .andExpect(jsonPath("$.data[0].companies").value(containsInAnyOrder("1111")))
             .andExpect(jsonPath("$.data[0].lastModifiedAt").isNotEmpty())
             .andExpect(jsonPath("$.data[0].lastModifiedBy").value("test-user"));
 
@@ -181,8 +195,7 @@ class RuIndicationTemplateControllerTest {
                 .contentType("application/json")
                 .content("""
                     {
-                        "de": { "title": "Hinweis", "text": "Text DE" },
-                        "companies": ["1111"]
+                        "de": { "title": "Hinweis", "text": "Text DE" }
                     }
                     """))
             .andExpect(status().isBadRequest())
@@ -196,8 +209,7 @@ class RuIndicationTemplateControllerTest {
                 .contentType("application/json")
                 .content("""
                     {
-                        "category": "INFO",
-                        "companies": ["1111"]
+                        "category": "INFO"
                     }
                     """))
             .andExpect(status().isBadRequest())
@@ -212,8 +224,7 @@ class RuIndicationTemplateControllerTest {
                 .content("""
                     {
                         "category": "INFO",
-                        "de": { "title": "", "text": "Text DE" },
-                        "companies": ["1111"]
+                        "de": { "title": "", "text": "Text DE" }
                     }
                     """))
             .andExpect(status().isBadRequest())
@@ -222,34 +233,19 @@ class RuIndicationTemplateControllerTest {
 
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
-    void create_RuIndicationTemplate_invalid_emptyCompanies() throws Exception {
+    void create_RuIndicationTemplate_ok_onlyTitleProvided() throws Exception {
         mockMvc.perform(post(API_RU_INDICATION_TEMPLATES)
                 .contentType("application/json")
                 .content("""
                     {
                         "category": "INFO",
-                        "de": { "title": "Titel DE", "text": "Text DE" },
-                        "companies": []
+                        "de": { "title": "Hinweis" }
                     }
                     """))
-            .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.detail").value("Invalid request content. -> companies=must not be empty"));
-    }
-
-    @Test
-    @WithMockRole(roles = UserRole.RU_ADMIN)
-    void create_RuIndicationTemplate_invalid_notAllowedCompanies() throws Exception {
-        mockMvc.perform(post(API_RU_INDICATION_TEMPLATES)
-                .contentType("application/json")
-                .content("""
-                    {
-                        "category": "INFO",
-                        "de": { "title": "Titel DE", "text": "Text DE" },
-                        "companies": ["9999"]
-                    }
-                    """))
-            .andExpect(status().isForbidden())
-            .andExpect(jsonPath("$.detail").value("Not allowed!"));
+            .andExpect(status().isCreated())
+            .andExpect(jsonPath("$.data[0].category").value("INFO"))
+            .andExpect(jsonPath("$.data[0].de.title").value("Hinweis"))
+            .andExpect(jsonPath("$.data[0].de.text").isEmpty());
     }
 
     @Test
@@ -262,8 +258,7 @@ class RuIndicationTemplateControllerTest {
                     {
                         "category": "UPDATED",
                         "de": { "title": "Geändert", "text": "Neuer Text DE" },
-                        "fr": { "title": "Modifié", "text": "Nouveau texte FR" },
-                        "companies": ["1111", "2222"]
+                        "fr": { "title": "Modifié", "text": "Nouveau texte FR" }
                     }
                     """))
             .andExpect(status().isOk())
@@ -276,7 +271,6 @@ class RuIndicationTemplateControllerTest {
             .andExpect(jsonPath("$.data[0].it").isEmpty())
             .andExpect(jsonPath("$.data[0].it.title").doesNotExist())
             .andExpect(jsonPath("$.data[0].it.text").doesNotExist())
-            .andExpect(jsonPath("$.data[0].companies").value(containsInAnyOrder("1111", "2222")))
             .andExpect(jsonPath("$.data[0].lastModifiedAt").isNotEmpty())
             .andExpect(jsonPath("$.data[0].lastModifiedBy").value("test-user"));
     }
@@ -289,8 +283,7 @@ class RuIndicationTemplateControllerTest {
                 .content("""
                     {
                         "category": "INFO",
-                        "de": { "title": "Hinweis", "text": "Text DE" },
-                        "companies": ["1111"]
+                        "de": { "title": "Hinweis", "text": "Text DE" }
                     }
                     """))
             .andExpect(status().isNotFound());
@@ -303,8 +296,7 @@ class RuIndicationTemplateControllerTest {
                 .contentType("application/json")
                 .content("""
                     {
-                        "category": "INFO",
-                        "companies": ["1111"]
+                        "category": "INFO"
                     }
                     """))
             .andExpect(status().isBadRequest())
@@ -319,8 +311,7 @@ class RuIndicationTemplateControllerTest {
                 .content("""
                     {
                         "category": "INFO",
-                        "fr": { "title": " ", "text": "Texte FR" },
-                        "companies": ["1111"]
+                        "fr": { "title": " ", "text": "Texte FR" }
                     }
                     """))
             .andExpect(status().isBadRequest())
@@ -330,32 +321,13 @@ class RuIndicationTemplateControllerTest {
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createRuIndicationTemplates.sql")
-    void update_RuIndicationTemplate_forbidden_withNotAllowedCompanies() throws Exception {
-        mockMvc.perform(put(API_RU_INDICATION_TEMPLATES + "/1")
-                .contentType("application/json")
-                .content("""
-                    {
-                        "category": "UPDATED",
-                        "de": { "title": "Geändert", "text": "Neuer Text DE" },
-                        "fr": { "title": "Modifié", "text": "Nouveau texte FR" },
-                        "companies": ["1111", "9999"]
-                    }
-                    """))
-            .andExpect(status().isForbidden())
-            .andExpect(jsonPath("$.detail").value("Not allowed!"));
-    }
-
-    @Test
-    @WithMockRole(roles = UserRole.RU_ADMIN)
-    @Sql("classpath:createRuIndicationTemplates.sql")
-    void update_RuIndicationTemplate_forbidden_whenExistingCompaniesNotAllowed() throws Exception {
+    void update_RuIndicationTemplate_forbidden_whenExistingTenantDoesNotMatch() throws Exception {
         mockMvc.perform(put(API_RU_INDICATION_TEMPLATES + "/4")
                 .contentType("application/json")
                 .content("""
                     {
                         "category": "UPDATED",
-                        "de": { "title": "Geändert", "text": "Neuer Text DE" },
-                        "companies": ["1111"]
+                        "de": { "title": "Geändert", "text": "Neuer Text DE" }
                     }
                     """))
             .andExpect(status().isForbidden())
@@ -405,7 +377,7 @@ class RuIndicationTemplateControllerTest {
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createRuIndicationTemplates.sql")
-    void deleteRuIndicationTemplateByIds_forbidden_whenNotAllowedCompanies() throws Exception {
+    void deleteRuIndicationTemplateByIds_forbidden_whenTemplateBelongsToOtherTenant() throws Exception {
         mockMvc.perform(delete(API_RU_INDICATION_TEMPLATES)
                 .contentType("application/json")
                 .content("""
