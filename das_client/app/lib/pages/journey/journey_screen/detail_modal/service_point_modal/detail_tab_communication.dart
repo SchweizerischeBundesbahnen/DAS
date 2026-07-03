@@ -1,4 +1,6 @@
+import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
+import 'package:app/launcher/launcher.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/service_point_modal/service_point_modal_view_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/communication_network_icon.dart';
 import 'package:app/util/text_util.dart';
@@ -26,6 +28,7 @@ class DetailTabCommunication extends StatelessWidget {
             _communicationNetworkType(context),
             Text(context.l10n.w_service_point_modal_communication_radio_channel, style: sbbTextStyle.romanStyle.small),
             _contactList(context),
+            _servicePointPortalButton(context),
           ],
         ),
       ),
@@ -113,6 +116,23 @@ class DetailTabCommunication extends StatelessWidget {
               child: Text.rich(TextUtil.parseHtmlText(departureAuthText, sbbTextStyle.romanStyle.medium)),
             ),
           ],
+        );
+      },
+    );
+  }
+
+  Widget _servicePointPortalButton(BuildContext context) {
+    final viewModel = context.read<ServicePointModalViewModel>();
+    return StreamBuilder(
+      stream: viewModel.servicePoint,
+      builder: (context, snapshot) {
+        final servicePoint = snapshot.data;
+        if (servicePoint == null) return SizedBox.shrink();
+
+        return SBBTertiaryButton(
+          onPressed: () => DI.get<Launcher>().launchServicePointPortal(servicePoint),
+          iconData: SBBIcons.link_external_small,
+          labelText: context.l10n.w_service_point_modal_portal_label,
         );
       },
     );
