@@ -14,7 +14,7 @@ class DepartureProcessWarningViewModel extends JourneyAwareViewModel {
 
   final RuFeatureProvider _ruFeatureProvider;
 
-  final _rxShowChronographWarning = BehaviorSubject<bool>.seeded(true);
+  final _rxShowChronographWarning = BehaviorSubject<bool>.seeded(false);
 
   bool _isDepartureProcessFeatureEnabled = false;
 
