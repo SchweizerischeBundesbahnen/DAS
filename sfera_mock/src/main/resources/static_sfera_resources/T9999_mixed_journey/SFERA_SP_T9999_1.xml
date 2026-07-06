@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA.xsd" SP_ID="T9999_1" SP_VersionMajor="10"
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA.xsd" SP_ID="T9999_1" SP_VersionMajor="11"
                 SP_VersionMinor="0" SP_Length="1000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
@@ -64,7 +64,7 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>9991</teltsi_LocationPrimaryCode>
-                <teltsi_PrimaryLocationName>Bahnhof A</teltsi_PrimaryLocationName>
+                <teltsi_PrimaryLocationName>B A</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
@@ -96,6 +96,7 @@
                 <NetworkSpecificParameter name="betweenBrackets" value="true"/>
                 <NetworkSpecificParameter name="km1" value="0.19"/>
                 <NetworkSpecificParameter name="km2" value="2.0"/>
+                <NetworkSpecificParameter name="routeTableDataText" value="Bahnhof A"/>
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
 
