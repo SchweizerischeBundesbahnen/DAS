@@ -50,6 +50,7 @@ class MockAuthenticatedScope extends AuthenticatedScope {
       _registerMockFormationRepository();
     }
     _registerMockCustomerOrientedDepartureRepository();
+    getIt.registerTimedRouteProvider();
 
     getIt.registerJourneyViewModel();
     getIt.registerJourneyNavigationViewModel();
