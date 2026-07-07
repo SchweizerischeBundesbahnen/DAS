@@ -5,7 +5,7 @@ See [compose.yaml](compose.yaml) to startup a DB-instance on local docker contai
 [naming-strategy of flyway](https://flywaydb.org/documentation/concepts/migrations#naming-1)  
 Version the database with the current version of the service (easy to recognize in which version the migration was injected).
 
-To make database model changes **`Flyway` MUST be used** as a migration tool (no manual changes!):
+To make changes to the database model, [Flyway](https://flywaydb.org/) **MUST** be used (no manual changes!):
 * Add **SQL DDL** (and/or SQL DML if data changes are involved too) scripts to [resources/db/migration](src/main/resources/db/migration)
 * See [versioned migrations](https://documentation.red-gate.com/fd/versioned-migrations-273973333.html)
 
@@ -15,16 +15,16 @@ IMPORTANT:
 
 ## SQL conventions
 Remarks:
-* Write SQL statements in a broader dialect (there are plenty of specialisations since SQL 98 for each DB provider and product migration is always foreseeable):
+* Write SQL statements in a broad dialect:
     * PostgreSQL (currently used by this project)
     * H2 (might come in handy for in-memory Unit-Tests)
 
 ### SQL DDL
 * all SQL DDL code is written as UPPERCASE
-* model code (table- and property-names) is written as lowercase (use '_' instead of CamelCase, mapping to Entity classes is made by JPA)
+* model code (table- and property-names) is written as lowercase (use '_' instead of CamelCase, mapping to entity classes is made by JPA)
 * each table has a technical, numeric `id` as PRIMARY KEY
-* **CONSTRAINT names must be always specified explicitely** (DB products auto-create their own generic names and might turn into a mess to DROP them later):
-    * to reduce naming conflicts and missunderstandings start all contraint-names prefixed with table-name
+* **CONSTRAINT names must always be specified explicitly** (DB products auto-create their own generic names and might turn into a mess to DROP them later):
+    * prefix all constraint-names with table-name to reduce naming conflicts and misunderstandings 
     * **PRIMARY KEY**: ```ALTER TABLE IF EXISTS <table> ADD CONSTRAINT <table>_id_pk PRIMARY KEY(id);```
     * derived **FOREIGN KEYs**: ```ALTER TABLE IF EXISTS <table> ADD CONSTRAINT <table>_<property>_fk FOREIGN KEY (<property>) REFERENCES <table primary>(id);```
     * **INDEX**:
