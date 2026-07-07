@@ -6,6 +6,7 @@ import ch.sbb.das.backend.companies.CompanyService;
 import ch.sbb.das.backend.companies.CompanyShortName;
 import ch.sbb.das.backend.trainjourneyplan.infrastructure.TrainIdentificationRepository;
 import ch.sbb.das.backend.trainjourneyplan.infrastructure.model.entities.TrainIdentificationEntity;
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.Comparator;
 import java.util.List;
@@ -33,6 +34,18 @@ public class TrainIdentificationService {
             .map(this::readEntity)
             .filter(tid -> !tid.companies().isEmpty())
             .toList();
+    }
+
+    public Set<CompanyCode> findCompanyCodesByStartDateAndTrainNumber(LocalDate startDate, String operationalTrainNumber) {
+        OffsetDateTime startFrom = startDate.atStartOfDay(DateTimeUtil.SWISS_ZONE).toOffsetDateTime();
+        OffsetDateTime startTo = startDate.plusDays(1).atStartOfDay(DateTimeUtil.SWISS_ZONE).toOffsetDateTime();
+        List<TrainIdentificationEntity> entities = trainIdentificationRepository
+            .findAllByStartDateTimeBetweenAndOperationalTrainNumber(startFrom, startTo, operationalTrainNumber);
+        return entities.stream()
+            .map(TrainIdentificationEntity::getCompanies)
+            .map(this::readCompanyCodes)
+            .flatMap(Set::stream)
+            .collect(Collectors.toSet());
     }
 
     private TrainIdentification readEntity(TrainIdentificationEntity trainRunEntity) {
