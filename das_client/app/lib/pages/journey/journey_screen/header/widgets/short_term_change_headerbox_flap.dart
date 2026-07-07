@@ -18,9 +18,7 @@ class ShortTermChangeHeaderBoxFlap extends StatelessWidget {
 
   static const Key multipleShortTermChangeKey = Key('flapMultipleShortTermChangeKey');
 
-  const ShortTermChangeHeaderBoxFlap({required this.child, super.key});
-
-  final Widget child;
+  const ShortTermChangeHeaderBoxFlap({super.key});
 
   @override
   Widget build(BuildContext context) {

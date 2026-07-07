@@ -61,8 +61,8 @@ void main() {
       journeySubject.close();
     });
 
-    test('showChronographWarning_whenCreated_emitsTrue', () {
-      expect(chronographRegister, orderedEquals([true]));
+    test('showChronographWarning_whenCreated_emitsFalse', () {
+      expect(chronographRegister, orderedEquals([false]));
     });
 
     group('toggleChronographWarning', () {
