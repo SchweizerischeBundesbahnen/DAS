@@ -224,7 +224,7 @@ void main() {
       });
 
       test(
-        'calculateNextTimedServicePoint_whenCalculating_thenReturnsTimeDifferenceAndNextPoint',
+        'calculateNextTimedServicePoint_whenNextServicePointWithTimeExists_thenReturnsTimeDifferenceAndNextPoint',
         () {
           final plannedArrivalTime = DateTime(2024, 7, 6, 10, 30, 0);
           final currentPoint = ServicePoint(
@@ -253,8 +253,7 @@ void main() {
 
             expect(result, isNotNull);
             expect(result?.$2, equals(nextPoint));
-            // 30 minutes = 1800 seconds
-            expect(result?.$1.inSeconds, equals(30 * 60));
+            expect(result?.$1.inMinutes, equals(30));
           });
         },
       );
@@ -290,7 +289,7 @@ void main() {
             expect(result, isNotNull);
             expect(result?.$2, equals(nextPoint));
             // Time is in the past (30 minutes)
-            expect(result?.$1.inSeconds, equals(-30 * 60));
+            expect(result?.$1.inMinutes, equals(-30));
           });
         },
       );
@@ -365,8 +364,7 @@ void main() {
 
             expect(result, isNotNull);
             expect(result?.$2, equals(point3));
-            // 45 minutes = 45 * 60
-            expect(result?.$1.inSeconds, equals(45 * 60));
+            expect(result?.$1.inMinutes, equals(45));
           });
         },
       );
@@ -401,8 +399,7 @@ void main() {
 
             expect(result, isNotNull);
             expect(result?.$2, equals(point2));
-            // 20 minutes = 20 * 60 milliseconds
-            expect(result?.$1.inSeconds, equals(20 * 60));
+            expect(result?.$1.inMinutes, equals(20));
           });
         },
       );

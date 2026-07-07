@@ -188,6 +188,7 @@ class JourneyPositionViewModel {
     PunctualityModel punctuality,
   ) {
     if (_timedRouteProvider.isInTimedAdvancementRoute(updatedPosition, journeyPoints)) {
+      _log.info('Journey is in timed advancement route');
       _handleTimedRoute(updatedPosition!, journeyPoints);
     } else {
       _handleSignaledRoute(updatedPosition, journeyPoints, punctuality);
@@ -231,7 +232,6 @@ class JourneyPositionViewModel {
   }
 
   void _handleTimedRoute(JourneyPoint updatedPosition, List<JourneyPoint> journeyPoints) {
-    _log.info('Journey is in timed advancement route');
     final nextTimedServicePoint = _timedRouteProvider.calculateNextTimedServicePoint(updatedPosition, journeyPoints);
     if (nextTimedServicePoint != null) {
       final (secondsUntilNextServicePoint, nextServicePoint) = nextTimedServicePoint;

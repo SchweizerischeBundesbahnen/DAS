@@ -4,6 +4,7 @@ import 'package:collection/collection.dart';
 import 'package:sfera/component.dart';
 
 class TimedRouteProviderImpl implements TimedRouteProvider {
+  /// See https://github.com/SchweizerischeBundesbahnen/DAS/issues/1419 for the definition of timed advancement routes
   static const _timedRoutes = [
     // Iselle -> Varzo -> Preglia -> Domodossola (bif) -> Domodossola (I)
     ['CH01952', 'CH01951', 'CH01950', 'CH01611', 'IT01003'],
@@ -11,8 +12,6 @@ class TimedRouteProviderImpl implements TimedRouteProvider {
     // Pino Confine -> PINT -> Maccagno -> Colmegna -> Luino (I)
     ['CH15419', 'CH05862', 'CH05861', 'CH05874', 'IT01113'],
   ];
-
-  TimedRouteProviderImpl();
 
   @override
   bool isInTimedAdvancementRoute(JourneyPoint? updatedPosition, List<JourneyPoint> journeyPoints) {
