@@ -6,6 +6,7 @@ import 'package:app/pages/journey/journey_screen/view_model/model/journey_positi
 import 'package:app/pages/journey/journey_screen/view_model/model/punctuality_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
+import 'package:app/provider/timed_route_provider.dart';
 import 'package:clock/clock.dart';
 import 'package:collection/collection.dart';
 import 'package:logging/logging.dart';
@@ -19,11 +20,13 @@ class JourneyPositionViewModel {
     required Stream<PunctualityModel> punctualityStream,
     required JourneyViewModel journeyViewModel,
     required this._journeySettingsViewModel,
+    required this._timedRouteProvider,
   }) {
     _initSubscription(journeyViewModel.journey, punctualityStream);
   }
 
   final JourneySettingsViewModel _journeySettingsViewModel;
+  final TimedRouteProvider _timedRouteProvider;
 
   StreamSubscription<PunctualityModel>? _punctualitySubscription;
   StreamSubscription<(Journey?, PunctualityModel, ServicePoint?, JourneyPoint?)>? _journeySubscription;
@@ -67,7 +70,7 @@ class JourneyPositionViewModel {
 
           final updatedPosition = _calculateCurrentPosition(journey.metadata.signaledPosition, journey.journeyPoints);
 
-          _setTimedServicePoint(updatedPosition, journey.journeyPoints, punctuality);
+          _calculateAndSetTimedServicePoint(updatedPosition, journey.journeyPoints, punctuality);
 
           final calculatedLastPosition = _calculateLastPosition(journey, updatedPosition);
           final lastPosition = calculatedLastPosition == updatedPosition
@@ -179,7 +182,20 @@ class JourneyPositionViewModel {
     );
   }
 
-  void _setTimedServicePoint(
+  void _calculateAndSetTimedServicePoint(
+    JourneyPoint? updatedPosition,
+    List<JourneyPoint> journeyPoints,
+    PunctualityModel punctuality,
+  ) {
+    if (_timedRouteProvider.isInTimedAdvancementRoute(updatedPosition, journeyPoints)) {
+      _log.info('Journey is in timed advancement route');
+      _handleTimedRoute(updatedPosition!, journeyPoints);
+    } else {
+      _handleSignaledRoute(updatedPosition, journeyPoints, punctuality);
+    }
+  }
+
+  void _handleSignaledRoute(
     JourneyPoint? updatedPosition,
     List<JourneyPoint> journeyPoints,
     PunctualityModel punctuality,
@@ -211,14 +227,28 @@ class JourneyPositionViewModel {
     final arrivalTimeWithDelay = operationalArrivalTime.add((punctuality as Visible).delay.value);
 
     final now = clock.now();
+    final untilNextServicePoint = arrivalTimeWithDelay.add(Duration(milliseconds: 100)).difference(now);
+    _setTimedServicePoint(untilNextServicePoint, nextServicePoint);
+  }
 
-    if (now.isAfter(arrivalTimeWithDelay)) {
+  void _handleTimedRoute(JourneyPoint updatedPosition, List<JourneyPoint> journeyPoints) {
+    final nextTimedServicePoint = _timedRouteProvider.calculateNextTimedServicePoint(updatedPosition, journeyPoints);
+    if (nextTimedServicePoint != null) {
+      final (secondsUntilNextServicePoint, nextServicePoint) = nextTimedServicePoint;
+      _setTimedServicePoint(secondsUntilNextServicePoint, nextServicePoint);
+    }
+  }
+
+  void _setTimedServicePoint(Duration nextServicePointDuration, ServicePoint nextServicePoint) {
+    final now = clock.now();
+    if (nextServicePointDuration.inMilliseconds <= 0) {
       _log.info('Setting timed service point immediately to ${nextServicePoint.name}');
       _rxTimedServicePointReached.add(nextServicePoint);
     } else {
-      _log.info('Scheduling timed service point for ${nextServicePoint.name} at $arrivalTimeWithDelay');
+      final arrivalTime = now.add(nextServicePointDuration);
+      _log.info('Scheduling timed service point for ${nextServicePoint.name} at $arrivalTime');
       _servicePointReachedTimer = Timer(
-        arrivalTimeWithDelay.add(Duration(milliseconds: 100)).difference(now),
+        nextServicePointDuration,
         () {
           _log.info('Setting timed service point to ${nextServicePoint.name}');
           _rxTimedServicePointReached.add(nextServicePoint);

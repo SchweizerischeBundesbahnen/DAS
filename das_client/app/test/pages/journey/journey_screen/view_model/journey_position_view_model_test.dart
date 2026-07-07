@@ -6,6 +6,7 @@ import 'package:app/pages/journey/journey_screen/view_model/model/journey_positi
 import 'package:app/pages/journey/journey_screen/view_model/model/punctuality_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
+import 'package:app/provider/timed_route_provider_impl.dart';
 import 'package:clock/clock.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -49,6 +50,7 @@ void main() {
             journeyViewModel: mockJourneyViewModel,
             punctualityStream: rxMockPunctuality,
             journeySettingsViewModel: journeySettingsViewModel,
+            timedRouteProvider: TimedRouteProviderImpl(),
           );
           emitRegister = <dynamic>[];
           currentPositionSub = testee.model.listen(emitRegister.add);
@@ -1022,6 +1024,153 @@ void main() {
 
       expect(testee.modelValue.currentPosition, equals(bServicePoint));
       expect(testee.modelValue.lastPosition, equals(aServicePoint));
+    });
+
+    group('timed route advancement (Iselle -> Domodossola)', () {
+      test('handleTimedRoute_whenInTimedRouteWithPlannedArrivalTime_thenAdvancesToNextServicePointAfterTimer', () {
+        // ARRANGE - Set up timed route: Iselle (CH01952) -> Varzo (CH01951)
+        final point1 = ServicePoint(
+          name: 'Iselle',
+          abbreviation: 'ISL',
+          locationCode: 'CH01952',
+          order: 11,
+          kilometre: [0.0],
+        );
+        final point2 = ServicePoint(
+          name: 'Varzo',
+          abbreviation: 'VRZ',
+          locationCode: 'CH01951',
+          order: 15,
+          kilometre: [5.0],
+          arrivalDepartureTime: ArrivalDepartureTime(
+            plannedArrivalTime: now.now().add(Duration(seconds: 40)),
+          ),
+        );
+        final point3 = ServicePoint(
+          name: 'Preglia',
+          abbreviation: 'PRG',
+          locationCode: 'CH01950',
+          order: 20,
+          kilometre: [10.0],
+        );
+
+        testAsync.run((_) {
+          rxMockJourney.add(
+            Journey(
+              metadata: Metadata(signaledPosition: SignaledPosition(order: 11)),
+              data: [tenSignal, point1, point2, point3],
+            ),
+          );
+        });
+        _processStreamInFakeAsync(testAsync);
+
+        expect(testee.modelValue.currentPosition, equals(point1));
+        expect(emitRegister, hasLength(1));
+        emitRegister.clear();
+
+        // ACT - Elapse time until service point should be reached
+        testAsync.elapse(Duration(seconds: 41));
+        _processStreamInFakeAsync(testAsync);
+
+        // EXPECT - Position should now be at the next timed service point
+        expect(
+          testee.modelValue.currentPosition,
+          equals(point2),
+        );
+        expect(
+          emitRegister,
+          orderedEquals([
+            JourneyPositionModel(
+              currentPosition: point2,
+              previousServicePoint: point2,
+              nextServicePoint: point3,
+              lastPosition: point1,
+            ),
+          ]),
+        );
+      });
+
+      test('handleTimedRoute_whenInSecondTimedRoute_thenAdvancesToCorrectServicePoint', () {
+        // ARRANGE - Set up second timed route: Pino Confine (CH15419) -> PINT (CH05862)
+        final point1 = ServicePoint(
+          name: 'Pino Confine',
+          abbreviation: 'PIN',
+          locationCode: 'CH15419',
+          order: 11,
+          kilometre: [0.0],
+        );
+        final point2 = ServicePoint(
+          name: 'PINT',
+          abbreviation: 'PNT',
+          locationCode: 'CH05862',
+          order: 15,
+          kilometre: [5.0],
+          arrivalDepartureTime: ArrivalDepartureTime(
+            plannedArrivalTime: now.now().add(Duration(seconds: 35)),
+          ),
+        );
+
+        testAsync.run((_) {
+          rxMockJourney.add(
+            Journey(
+              metadata: Metadata(signaledPosition: SignaledPosition(order: 11)),
+              data: [tenSignal, point1, point2],
+            ),
+          );
+        });
+        _processStreamInFakeAsync(testAsync);
+
+        expect(testee.modelValue.currentPosition, equals(point1));
+        emitRegister.clear();
+
+        // ACT - Elapse time until service point should be reached
+        testAsync.elapse(Duration(seconds: 36));
+        _processStreamInFakeAsync(testAsync);
+
+        // EXPECT - Position should advance to second timed service point
+        expect(
+          testee.modelValue.currentPosition,
+          equals(point2),
+        );
+      });
+
+      test('handleTimedRoute_whenTimedPointReachedWithNegativeTime_thenAdvancesImmediately', () {
+        // ARRANGE - Create a timed route where the service point should already be reached
+        final point1 = ServicePoint(
+          name: 'Iselle',
+          abbreviation: 'ISL',
+          locationCode: 'CH01952',
+          order: 11,
+          kilometre: [0.0],
+        );
+        final point2 = ServicePoint(
+          name: 'Varzo',
+          abbreviation: 'VRZ',
+          locationCode: 'CH01951',
+          order: 15,
+          kilometre: [5.0],
+          arrivalDepartureTime: ArrivalDepartureTime(
+            plannedArrivalTime: now.now().subtract(Duration(seconds: 5)),
+          ),
+        );
+
+        testAsync.run((_) {
+          rxMockJourney.add(
+            Journey(
+              metadata: Metadata(signaledPosition: SignaledPosition(order: 11)),
+              data: [tenSignal, point1, point2],
+            ),
+          );
+        });
+        _processStreamInFakeAsync(testAsync);
+
+        // EXPECT - Position is set to service point immediately
+        expect(
+          testee.modelValue.currentPosition,
+          equals(point2),
+        );
+        expect(emitRegister, hasLength(2));
+      });
     });
   });
 }

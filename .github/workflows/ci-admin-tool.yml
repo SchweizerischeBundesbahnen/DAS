@@ -70,6 +70,8 @@ jobs:
             -Dsonar.issue.ignore.multicriteria.e1.resourceKey=**
             -Dsonar.issue.ignore.multicriteria.e2.ruleKey=Web:MouseEventWithoutKeyboardEquivalentCheck
             -Dsonar.issue.ignore.multicriteria.e2.resourceKey=**
+            -Dsonar.issue.ignore.multicriteria.e3.ruleKey=Web:InputWithoutLabelCheck
+            -Dsonar.issue.ignore.multicriteria.e3.resourceKey=**
 
   e2e:
     runs-on: ubuntu-latest

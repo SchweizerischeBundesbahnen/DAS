@@ -141,7 +141,10 @@ class SegmentProfileMapper {
 
       servicePoints.add(
         ServicePoint(
-          name: tafTapLocation.locationIdent.primaryLocationName?.value ?? '',
+          name:
+              tafTapLocation.routeTableDataNsp?.routeTableDataText ??
+              tafTapLocation.locationIdent.primaryLocationName?.value ??
+              '',
           abbreviation: tafTapLocation.abbreviation,
           order: calculateOrder(mapperData.segmentIndex, timingPoint.location),
           mandatoryStop: tpConstraint.stoppingPointInformation?.stopType?.mandatoryStop ?? true,

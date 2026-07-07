@@ -1,4 +1,5 @@
 import 'package:app/di/di.dart';
+import 'package:app/launcher/launcher.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/service_point_modal/detail_tab_communication.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/service_point_modal/detail_tab_graduated_speeds.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/service_point_modal/detail_tab_local_regulations.dart';
@@ -18,11 +19,32 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 import '../app_test.dart';
+import '../mocks/mock_launcher.dart';
 import '../util/test_time_constants.dart';
 import '../util/test_utils.dart';
 
 void main() {
   group('general service point modal sheet tests', () {
+    testWidgets('test bahnhofportal link opens expected URL for T9999M service point', (tester) async {
+      await prepareAndStartApp(tester);
+      await loadJourney(tester, trainNumber: 'T9999M');
+
+      final scrollableFinder = find.byType(AnimatedList);
+      await tester.dragUntilVisible(findDASTableRowByText('(Bahnhof A)'), scrollableFinder, const Offset(0, 50));
+      await tester.pumpAndSettle();
+
+      await _openByTapOnCellWithText(tester, '(Bahnhof A)');
+      await _checkOpenModalSheet(tester, DetailTabCommunication.communicationTabKey, 'Bahnhof A');
+
+      await tapElement(tester, find.text(l10n.w_service_point_modal_portal_label));
+
+      final launcher = DI.get<Launcher>() as MockLauncher;
+      expect(launcher.launchedUrls, hasLength(1));
+      expect(launcher.launchedUrls.single, contains('sbb.sharepoint.com/sites/app-bahnhofportal#/Betriebspunkt/'));
+
+      await disconnect(tester);
+    });
+
     testWidgets('test displayed columns on open service point modal', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T8');

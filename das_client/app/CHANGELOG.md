@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.47.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.46.0...das_client-v0.47.0) (2026-07-03)
+
+
+### Features
+
+* sim train is identified by train number ([#1126](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1126)) ([#2363](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2363)) ([f6fdd58](https://github.com/SchweizerischeBundesbahnen/DAS/commit/f6fdd58c849c81878e2cb7c9dfbbfb0a10c3331a))
+
+
+### Bug Fixes
+
+* add identifier to balise and levelcrossing ([#2109](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2109)) ([#2349](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2349)) ([1a33986](https://github.com/SchweizerischeBundesbahnen/DAS/commit/1a33986e6364582d86da0bd339c014794d8884f6))
+* fix signal filters causing crash ([#2346](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2346)) ([0a66ba3](https://github.com/SchweizerischeBundesbahnen/DAS/commit/0a66ba3483c2e06a33941a0875175bd05825f706))
+
 ## [0.46.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.45.0...das_client-v0.46.0) (2026-06-25)
 
 

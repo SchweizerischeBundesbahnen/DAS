@@ -63,7 +63,7 @@ class _HeaderState extends State<Header> {
                     final model = asyncSnapshot.requireData;
                     return AnimatedMainHeaderBox(
                       showFlap: model is! NoShortTermChanges,
-                      flap: ShortTermChangeHeaderBoxFlap(child: Text('Hello')),
+                      flap: ShortTermChangeHeaderBoxFlap(),
                       mainContent: MainHeaderBox(),
                       mainContentHeight: MainHeaderBox.height,
                       flapHeight: ShortTermChangeHeaderBoxFlap.height,

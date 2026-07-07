@@ -3,7 +3,6 @@ package ch.sbb.das.backend.trainjourneypreloader.application;
 import ch.sbb.das.backend.common.DateTimeUtil;
 import ch.sbb.das.backend.trainjourneyplan.TrainIdentification;
 import ch.sbb.das.backend.trainjourneyplan.TrainIdentificationService;
-import ch.sbb.das.backend.trainjourneyplan.TrainPreloadCompletedEvent;
 import ch.sbb.das.backend.trainjourneypreloader.domain.PreloadResult;
 import ch.sbb.das.backend.trainjourneypreloader.domain.SegmentProfileIdentification;
 import ch.sbb.das.backend.trainjourneypreloader.domain.TrainCharacteristicsIdentification;
@@ -19,7 +18,6 @@ import lombok.extern.slf4j.Slf4j;
 import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 import org.eclipse.paho.mqttv5.common.MqttException;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -35,7 +33,6 @@ public class PreloadScheduler {
     private final TrainIdentificationService trainIdentificationsService;
     private final StorageService storageService;
     private final CleanupStorageService cleanupStorageService;
-    private final ApplicationEventPublisher eventPublisher;
     @Value("${trainjourneypreloader.storage-clean-up.hours}")
     private int cleanUpHours;
 
@@ -43,14 +40,12 @@ public class PreloadScheduler {
         SferaService sferaService,
         TrainIdentificationService trainIdentificationsService,
         StorageService storageService,
-        CleanupStorageService cleanupStorageService,
-        ApplicationEventPublisher eventPublisher
+        CleanupStorageService cleanupStorageService
     ) {
         this.sferaService = sferaService;
         this.trainIdentificationsService = trainIdentificationsService;
         this.storageService = storageService;
         this.cleanupStorageService = cleanupStorageService;
-        this.eventPublisher = eventPublisher;
     }
 
     @Scheduled(cron = "${trainjourneypreloader.fetch-cron}")
@@ -80,9 +75,7 @@ public class PreloadScheduler {
         sferaService.disconnect();
         storageService.save(mapJourneyProfiles.values(), mapSegmentProfiles.values(), mapTrainCharacteristics.values());
 
-        if (!mapJourneyProfiles.isEmpty()) {
-            eventPublisher.publishEvent(new TrainPreloadCompletedEvent(mapJourneyProfiles.keySet().stream().map(TrainIdentification::id).collect(Collectors.toSet())));
-        }
+        trainIdentificationsService.savePreloadedTrainIds(mapJourneyProfiles.keySet().stream().map(TrainIdentification::id).collect(Collectors.toSet()));
         log.info("Preload with {} JPs of requested {} JPs ended in {} ms", mapJourneyProfiles.size(), trainIdentifications.size(), System.currentTimeMillis() - startTime);
 
         cleanupStorageService.deleteAllBefore(DateTimeUtil.now().minusHours(cleanUpHours));
