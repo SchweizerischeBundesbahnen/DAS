@@ -25,4 +25,6 @@ class TafTapRouteTableDataNspDto extends TafTapLocationNspDto {
   double? get km1 => ParseUtils.tryParseDouble(children.whereNspWithName('km1').map((it) => it.nspValue).firstOrNull);
 
   double? get km2 => ParseUtils.tryParseDouble(children.whereNspWithName('km2').map((it) => it.nspValue).firstOrNull);
+
+  String? get routeTableDataText => children.whereNspWithName('routeTableDataText').firstOrNull?.nspValue;
 }
