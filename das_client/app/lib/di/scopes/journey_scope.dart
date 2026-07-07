@@ -84,6 +84,7 @@ extension JourneyScopeExtension on GetIt {
         punctualityStream: get<PunctualityViewModel>().model,
         journeySettingsViewModel: DI.get(),
         journeyViewModel: DI.get(),
+        timedRouteProvider: DI.get(),
       ),
       dispose: (vm) => vm.dispose(),
     );

@@ -133,4 +133,29 @@ void main() {
       await disconnect(tester);
     });
   });
+
+  group('timed advancement tests', () {
+    testWidgets('check if timed Advancement is advancing correctly', (tester) async {
+      await prepareAndStartApp(tester);
+      await loadJourney(tester, trainNumber: 'T46M');
+
+      // Check chevron at start
+      expect(
+        find.descendant(of: findDASTableRowByText('Iselle'), matching: find.byKey(RouteChevron.chevronKey)),
+        findsAny,
+      );
+
+      // Preglia is skipped, because Domodossola (bif) time is before Preglia
+      final locations = ['Varzo', 'Domodossola (bif)', 'Domodossola (I)'];
+
+      for (final location in locations) {
+        await waitUntilExists(
+          tester,
+          find.descendant(of: findDASTableRowByText(location), matching: find.byKey(RouteChevron.chevronKey)),
+        );
+      }
+
+      await disconnect(tester);
+    });
+  });
 }
