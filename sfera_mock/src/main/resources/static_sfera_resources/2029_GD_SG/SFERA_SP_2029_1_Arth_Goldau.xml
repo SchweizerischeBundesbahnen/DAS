@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:noNamespaceSchemaLocation="../../SFERA.xsd"
-                SP_ID="2029_1_Arth_Goldau" SP_VersionMajor="1" SP_VersionMinor="3" SP_Length="1900" SP_Status="Valid">
+                SP_ID="2029_1_Arth_Goldau" SP_VersionMajor="1" SP_VersionMinor="4" SP_Length="1900" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
@@ -102,7 +102,7 @@
 
     <SP_ContextInformation>
 
-        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="1248" endLocation="1248"/>
+        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="1248" endLocation="1248" identifier="LXA_1"/>
 
 
         <ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
