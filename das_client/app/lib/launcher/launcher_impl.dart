@@ -1,9 +1,11 @@
 import 'package:app/di/di.dart';
 import 'package:app/flavor.dart';
 import 'package:app/launcher/launcher.dart';
+import 'package:app/launcher/service_point_portal.dart';
 import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
 import 'package:app/provider/user_settings.dart';
 import 'package:logging/logging.dart';
+import 'package:sfera/component.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 final _log = Logger('LauncherImpl');
@@ -38,5 +40,16 @@ class LauncherImpl implements Launcher {
     final journeyNavigationViewModel = DI.getOrNull<JourneyNavigationViewModel>();
     final returnUrl = journeyNavigationViewModel?.modelValue?.trainIdentification.returnUrl;
     return returnUrl ?? flavor.tourSystemUrls[_userSettings.tourSystem];
+  }
+
+  @override
+  Future<bool> launchServicePointPortal(ServicePoint servicePoint) {
+    final rus = _userSettings.railwayUndertakings;
+    if (rus.isNotEmpty &&
+        rus.every((it) => [RailwayUndertaking.blsC, RailwayUndertaking.blsI, RailwayUndertaking.blsP].contains(it))) {
+      return launch(ServicePointPortal.bls.urlFor(servicePoint));
+    } else {
+      return launch(ServicePointPortal.sbb.urlFor(servicePoint));
+    }
   }
 }
