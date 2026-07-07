@@ -8,6 +8,8 @@ import 'package:sfera/src/data/repository/sfera_repository.dart';
 import 'package:sfera/src/data/repository/sfera_repository_impl.dart';
 import 'package:sfera/src/provider/sfera_auth_provider.dart';
 
+export 'package:core_data/src/ru.dart';
+export 'package:core_data/src/train_identification.dart';
 export 'package:sfera/src/data/api/sfera_error.dart';
 export 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 export 'package:sfera/src/data/parser/sfera_reply_parser.dart';
@@ -71,9 +73,7 @@ export 'package:sfera/src/model/journey/unsupervised_level_crossing_group.dart';
 export 'package:sfera/src/model/journey/ux_testing_event.dart';
 export 'package:sfera/src/model/journey/warnapp_event.dart';
 export 'package:sfera/src/model/journey/whistles.dart';
-export 'package:sfera/src/model/ru.dart';
 export 'package:sfera/src/model/sfera_db_metrics.dart';
-export 'package:sfera/src/model/train_identification.dart';
 export 'package:sfera/src/provider/sfera_auth_provider.dart';
 
 class SferaComponent {

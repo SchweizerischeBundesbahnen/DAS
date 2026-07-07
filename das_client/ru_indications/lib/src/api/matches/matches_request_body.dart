@@ -19,7 +19,7 @@ class MatchesRequestBody {
   final String company;
   final int operationalTrainNumber;
 
-  @JsonKey(toJson: _dateToString)
+  @JsonKey(toJson: _formatDateOnly)
   final DateTime startDate;
 
   final List<String> tafTapLocationReferences;
@@ -39,4 +39,4 @@ class MatchesRequestBody {
 }
 
 /// Converts a [DateTime] to a date-only string in yyyy-MM-dd format.
-String _dateToString(DateTime date) => DateFormat('yyyy-MM-dd').format(date);
+String _formatDateOnly(DateTime date) => DateFormat('yyyy-MM-dd').format(date);

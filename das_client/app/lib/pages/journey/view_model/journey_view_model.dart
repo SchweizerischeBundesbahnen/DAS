@@ -78,9 +78,7 @@ class JourneyViewModel {
       final locationReferences = {for (final it in servicePoints) it.locationCode: it.order};
       _ruIndicationsRepository
           .fetchRuIndications(
-            company: trainIdentification.ru.companyCode,
-            trainNumber: trainIdentification.trainNumber,
-            startDate: trainIdentification.operatingDay ?? trainIdentification.date,
+            trainIdentification: trainIdentification,
             locationReferences: locationReferences,
           )
           .then((value) {

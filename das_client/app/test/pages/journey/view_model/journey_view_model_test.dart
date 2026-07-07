@@ -66,9 +66,7 @@ void main() {
 
       when(
         mockRuIndicationsRepository.fetchRuIndications(
-          company: sferaJourney.metadata.trainIdentification!.ru.companyCode,
-          trainNumber: '12345',
-          startDate: DateTime(2026, 1, 2),
+          trainIdentification: sferaJourney.metadata.trainIdentification!,
           locationReferences: const {'CH001': 1000, 'CH002': 2000},
         ),
       ).thenAnswer((_) async => ruIndications);
@@ -82,9 +80,7 @@ void main() {
       // EXPECT
       verify(
         mockRuIndicationsRepository.fetchRuIndications(
-          company: sferaJourney.metadata.trainIdentification!.ru.companyCode,
-          trainNumber: '12345',
-          startDate: DateTime(2026, 1, 2),
+          trainIdentification: sferaJourney.metadata.trainIdentification!,
           locationReferences: const {'CH001': 1000, 'CH002': 2000},
         ),
       ).called(1);
@@ -111,17 +107,13 @@ void main() {
 
       when(
         mockRuIndicationsRepository.fetchRuIndications(
-          company: firstJourney.metadata.trainIdentification!.ru.companyCode,
-          trainNumber: '100',
-          startDate: DateTime(2026, 1, 2),
+          trainIdentification: firstJourney.metadata.trainIdentification!,
           locationReferences: const {'CH001': 1000},
         ),
       ).thenAnswer((_) async => [const RuIndication(order: 1100, title: 'RU old', text: 'Old text')]);
       when(
         mockRuIndicationsRepository.fetchRuIndications(
-          company: secondJourney.metadata.trainIdentification!.ru.companyCode,
-          trainNumber: '200',
-          startDate: DateTime(2026, 1, 2),
+          trainIdentification: secondJourney.metadata.trainIdentification!,
           locationReferences: const {'CH002': 1000},
         ),
       ).thenAnswer((_) async => [const RuIndication(order: 1100, title: 'RU old', text: 'Old text')]);
@@ -152,9 +144,7 @@ void main() {
 
       when(
         mockRuIndicationsRepository.fetchRuIndications(
-          company: sferaJourney.metadata.trainIdentification!.ru.companyCode,
-          trainNumber: '12345',
-          startDate: DateTime(2026, 1, 2),
+          trainIdentification: sferaJourney.metadata.trainIdentification!,
           locationReferences: const {'CH001': 1000},
         ),
       ).thenAnswer((_) async {

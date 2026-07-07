@@ -1,3 +1,4 @@
+import 'package:core_data/component.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -20,9 +21,9 @@ void main() {
   late MockRuIndicationsApiService mockRuIndicationsApiService;
   late MockMatchesRequest mockMatchesRequest;
 
-  const company = 'SBB';
+  const company = RailwayUndertaking.sbbP;
   const trainNumber = 12345;
-  final startDate = DateTime(2026, 1, 15, 10);
+  final startDate = DateTime(2026, 1, 15);
   const Map<String, int> locationReferences = {
     'CH003001': 1000,
     'CH003002': 2000,
@@ -39,7 +40,7 @@ void main() {
     // ARRANGE
     when(
       mockMatchesRequest.call(
-        company: company,
+        company: company.companyCode,
         operationalTrainNumber: trainNumber,
         startDate: startDate,
         tafTapLocationReferences: locationReferences.keys.toList(),
@@ -48,9 +49,7 @@ void main() {
 
     // ACT
     final result = await testee.fetchRuIndications(
-      company: company,
-      trainNumber: trainNumber.toString(),
-      startDate: startDate,
+      trainIdentification: TrainIdentification(ru: company, trainNumber: trainNumber.toString(), date: startDate),
       locationReferences: locationReferences,
     );
 
@@ -63,7 +62,7 @@ void main() {
     const unsanitizedTrainNumber = 'T${trainNumber}M-S19';
     when(
       mockMatchesRequest.call(
-        company: company,
+        company: company.companyCode,
         operationalTrainNumber: trainNumber,
         startDate: startDate,
         tafTapLocationReferences: locationReferences.keys.toList(),
@@ -72,18 +71,50 @@ void main() {
 
     // ACT
     await testee.fetchRuIndications(
-      company: company,
-      trainNumber: unsanitizedTrainNumber,
-      startDate: startDate,
+      trainIdentification: TrainIdentification(ru: company, trainNumber: unsanitizedTrainNumber, date: startDate),
       locationReferences: locationReferences,
     );
 
     // EXPECT
     verify(
       mockMatchesRequest.call(
-        company: company,
+        company: company.companyCode,
         operationalTrainNumber: trainNumber,
         startDate: startDate,
+        tafTapLocationReferences: locationReferences.keys.toList(),
+      ),
+    ).called(1);
+  });
+
+  test('fetchRuIndications_whenOperatingDayIsSet_thenUsesOperatingDayInsteadOfDate', () async {
+    // ARRANGE
+    final operatingDay = DateTime(2026, 1, 16, 13, 37);
+    when(
+      mockMatchesRequest.call(
+        company: company.companyCode,
+        operationalTrainNumber: trainNumber,
+        startDate: operatingDay,
+        tafTapLocationReferences: locationReferences.keys.toList(),
+      ),
+    ).thenAnswer((_) async => MatchesResponse(headers: <String, String>{}, body: _matchesResponseDto()));
+
+    // ACT
+    await testee.fetchRuIndications(
+      trainIdentification: TrainIdentification(
+        ru: company,
+        trainNumber: trainNumber.toString(),
+        date: startDate,
+        operatingDay: operatingDay,
+      ),
+      locationReferences: locationReferences,
+    );
+
+    // EXPECT
+    verify(
+      mockMatchesRequest.call(
+        company: company.companyCode,
+        operationalTrainNumber: trainNumber,
+        startDate: operatingDay,
         tafTapLocationReferences: locationReferences.keys.toList(),
       ),
     ).called(1);
@@ -96,9 +127,7 @@ void main() {
     // ACT & EXPECT
     await expectLater(
       () => testee.fetchRuIndications(
-        company: company,
-        trainNumber: invalidTrainNumber,
-        startDate: startDate,
+        trainIdentification: TrainIdentification(ru: company, trainNumber: invalidTrainNumber, date: startDate),
         locationReferences: locationReferences,
       ),
       throwsA(isA<FormatException>()),
@@ -118,7 +147,7 @@ void main() {
     // ARRANGE
     when(
       mockMatchesRequest.call(
-        company: company,
+        company: company.companyCode,
         operationalTrainNumber: trainNumber,
         startDate: startDate,
         tafTapLocationReferences: locationReferences.keys.toList(),
@@ -128,9 +157,7 @@ void main() {
     // ACT & EXPECT
     await expectLater(
       () => testee.fetchRuIndications(
-        company: company,
-        trainNumber: trainNumber.toString(),
-        startDate: startDate,
+        trainIdentification: TrainIdentification(ru: company, trainNumber: trainNumber.toString(), date: startDate),
         locationReferences: locationReferences,
       ),
       throwsException,

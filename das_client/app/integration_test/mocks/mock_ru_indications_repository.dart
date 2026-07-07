@@ -1,3 +1,4 @@
+import 'package:core_data/component.dart';
 import 'package:ru_indications/component.dart';
 
 final _smallText = 'This is a short mock RU indication description.';
@@ -10,9 +11,7 @@ class MockRuIndicationsRepository implements RuIndicationsRepository {
   /// Returns two mocked RU indications for first location and one for last location.
   @override
   Future<List<RuIndication>> fetchRuIndications({
-    required String company,
-    required String trainNumber,
-    required DateTime startDate,
+    required TrainIdentification trainIdentification,
     required Map<String, int> locationReferences,
   }) async {
     if (!shouldReturnMockData || locationReferences.isEmpty) {

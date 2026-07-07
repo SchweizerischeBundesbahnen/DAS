@@ -1,5 +1,5 @@
+import 'package:core_data/src/ru.dart';
 import 'package:meta/meta.dart';
-import 'package:sfera/src/model/ru.dart';
 
 @sealed
 @immutable
@@ -15,6 +15,14 @@ class TrainIdentification {
   final String trainNumber;
   final DateTime date;
   final DateTime? operatingDay;
+
+  int get sanitizedTrainNumber {
+    final firstNumberMatch = RegExp(r'\d+').firstMatch(trainNumber);
+    if (firstNumberMatch == null) {
+      throw const FormatException('Train number does not contain digits.');
+    }
+    return int.parse(firstNumberMatch.group(0)!);
+  }
 
   @override
   String toString() {

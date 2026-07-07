@@ -76,7 +76,7 @@ void main() {
     expect(result, expectedOutput);
   });
 
-  test('textUtil_parseHtmlText_italic', () {
+  test('textUtil_parseHtmlTextWithMarkdownLinks_italic', () {
     // GIVEN
     final input = 'Renens - Lausanne <i>via saut-de-mouton</i>';
 
@@ -89,7 +89,7 @@ void main() {
     expect(((result.children![1] as TextSpan).children![0] as TextSpan).style, sbbTextStyle.romanStyle.small.italic);
   });
 
-  test('textUtil_parseHtmlText_bold', () {
+  test('textUtil_parseHtmlTextWithMarkdownLinks_bold', () {
     // GIVEN
     final input = 'Renens - Lausanne <b>via saut-de-mouton</b>';
 
@@ -102,7 +102,7 @@ void main() {
     expect(((result.children![1] as TextSpan).children![0] as TextSpan).style, sbbTextStyle.romanStyle.small.boldStyle);
   });
 
-  test('textUtil_parseHtmlText_bold_italic', () {
+  test('textUtil_parseHtmlTextWithMarkdownLinks_bold_italic', () {
     // GIVEN
     final input = 'Renens - Lausanne <i><b>via saut-de-mouton</b></i>';
 
@@ -121,7 +121,7 @@ void main() {
     );
   });
 
-  test('textUtil_parseHtmlText_parsesMarkdownLink', () {
+  test('textUtil_parseHtmlTextWithMarkdownLinks_parsesMarkdownLink', () {
     // GIVEN
     final input = 'Read [documentation](https://example.com) now';
 
@@ -135,7 +135,7 @@ void main() {
     expect((result.children![1] as TextSpan).style?.decoration, TextDecoration.underline);
   });
 
-  test('textUtil_parseHtmlText_linkIsClickable', () {
+  test('textUtil_parseHtmlTextWithMarkdownLinks_linkIsClickable', () {
     // GIVEN
     final input = '[example](https://example.com)';
     String? openedUrl;

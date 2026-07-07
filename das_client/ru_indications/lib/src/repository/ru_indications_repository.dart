@@ -1,3 +1,4 @@
+import 'package:core_data/component.dart';
 import 'package:ru_indications/src/model/ru_indication.dart';
 
 abstract class RuIndicationsRepository {
@@ -7,9 +8,7 @@ abstract class RuIndicationsRepository {
   ///
   /// [locationReferences] consists of key: locationCode, value: order in journey
   Future<List<RuIndication>> fetchRuIndications({
-    required String company,
-    required String trainNumber,
-    required DateTime startDate,
+    required TrainIdentification trainIdentification,
     required Map<String, int> locationReferences,
   });
 }

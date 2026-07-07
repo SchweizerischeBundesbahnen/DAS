@@ -8,7 +8,6 @@ import 'package:external_links/component.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:sfera/component.dart';
 
 import '../../test_util.dart';
 import 'links_view_model_test.mocks.dart';
