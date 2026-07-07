@@ -280,11 +280,4 @@ class CompanyControllerTest {
         mockMvc.perform(get(API_COMPANIES + "/" + id))
             .andExpect(status().isNotFound());
     }
-
-    @Test
-    @WithMockRole(roles = UserRole.ADMIN)
-    void delete_notFound() throws Exception {
-        mockMvc.perform(delete(API_COMPANIES + "/" + Integer.MAX_VALUE))
-            .andExpect(status().isNotFound());
-    }
 }

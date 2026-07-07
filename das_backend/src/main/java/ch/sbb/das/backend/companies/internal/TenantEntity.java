@@ -1,6 +1,5 @@
 package ch.sbb.das.backend.companies.internal;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -33,6 +32,6 @@ public class TenantEntity {
 
     private boolean isAdmin;
 
-    @OneToMany(mappedBy = "tenant", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "tenant", fetch = FetchType.EAGER)
     private List<CompanyEntity> companies = new ArrayList<>();
 }
