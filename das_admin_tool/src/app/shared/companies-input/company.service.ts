@@ -14,7 +14,7 @@ export interface Company {
   providedIn: 'root',
 })
 export class CompanyService {
-  private readonly url = `${environment.backendUrl}/companies`;
+  private readonly url = `${environment.backendUrl}/companies/authorized`;
 
   private readonly companiesResource = httpResource<CompanyApiResponse>(() => this.url);
   private readonly companies = computed(() => this.companiesResource.value()?.data ?? []);
