@@ -62,9 +62,8 @@
   </table>
 </sbb-table-wrapper>
 
-<div class="bottom">
-  <sbb-compact-paginator [pageSize]="PAGE_SIZE"></sbb-compact-paginator>
-  <sbb-secondary-button (click)="add()" i18n="@@app_versions_button_create" iconName="plus-small">
-    App Version blockieren
-  </sbb-secondary-button>
-</div>
+<app-table-bottom-bar
+  (addClicked)="add()"
+  [addLabel]="addLabel"
+  [showDelete]="false"
+/>

@@ -1,0 +1,16 @@
+.table-bottom-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  padding-block-start: var(--sbb-spacing-responsive-xs);
+
+  .left {
+    flex: 1;
+  }
+
+  .right {
+    display: flex;
+    gap: var(--sbb-spacing-fixed-4x);
+  }
+}

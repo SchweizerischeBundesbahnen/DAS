@@ -1,14 +1,7 @@
-<form [formGroup]="form" class="search-language-header">
-  <sbb-form-field>
-    <sbb-icon name="globe-small" slot="prefix"></sbb-icon>
-    <label i18n="@@form_field_language_label">Sprache</label>
-    <sbb-select formControlName="language">
-      @for (language of languageProvider.allLanguages; track language.localeId) {
-        <sbb-option [value]="language.path">{{ language.label }}</sbb-option>
-      }
-    </sbb-select>
-  </sbb-form-field>
-</form>
+<app-table-search-header
+  [languageControl]="form.controls.language"
+  [searchControl]="form.controls.search"
+/>
 <sbb-table-wrapper>
   <table [dataSource]="dataSource" class="table-truncated" fixedLayout sbb-table sbbSort
          sbbSortActive="title" sbbSortDirection="asc">
@@ -93,26 +86,10 @@
   </table>
 </sbb-table-wrapper>
 
-<div class="bottom">
-  <div class="left">
-    <sbb-compact-paginator [pageSize]="PAGE_SIZE"></sbb-compact-paginator>
-  </div>
-  <div class="right">
-    <sbb-secondary-button (click)="add()" i18n="@@button_create_entry" iconName="plus-small">
-      Neuen Eintrag erfassen
-    </sbb-secondary-button>
-    <sbb-transparent-button
-      (click)="deleteSelected()"
-      [disabled]="selection.isEmpty()"
-      [loading]="isDeleting"
-      i18n="@@button_delete_selected_entries"
-      iconName="trash-small"
-    >
-      {selection.selected.length, plural,
-        =0 {Einträge löschen}
-        one {Eintrag löschen}
-        other {{{ selection.selected.length }} Einträge löschen}
-        }
-    </sbb-transparent-button>
-  </div>
-</div>
+<app-table-bottom-bar
+  (addClicked)="add()"
+  (deleteClicked)="deleteSelected()"
+  [deleteDisabled]="selection.isEmpty()"
+  [deleting]="isDeleting"
+  [selectedCount]="selection.selected.length"
+/>
