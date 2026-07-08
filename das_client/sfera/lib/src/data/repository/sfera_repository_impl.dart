@@ -20,7 +20,6 @@ import 'package:sfera/src/data/api/task/request_train_characteristics_task.dart'
 import 'package:sfera/src/data/api/task/sfera_task.dart';
 import 'package:sfera/src/data/dto/departure_dispatch_notification_event_dto.dart';
 import 'package:sfera/src/data/dto/disturbance_msg_event_dto.dart';
-import 'package:sfera/src/data/dto/enums/das_driving_mode_dto.dart';
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
 import 'package:sfera/src/data/dto/message_header_dto.dart';
 import 'package:sfera/src/data/dto/network_specific_event_dto.dart';
@@ -302,13 +301,12 @@ class SferaRepoImpl implements SferaRepository {
   Future<void> _initiateHandshake(OtnId otnId) async {
     _rxState.add(.handshaking);
     final isDriver = await _authProvider.isDriver();
-    final DasDrivingModeDto drivingMode = isDriver ? .dasNotConnected : .readOnly;
 
     final handshakeTask = HandshakeTask(
       mqttService: _mqttService,
       sferaRepo: this,
       otnId: otnId,
-      dasDrivingMode: drivingMode,
+      isDriver: isDriver,
     );
     _tasks.add(handshakeTask);
     handshakeTask.execute(_onTaskCompleted, _onTaskFailed);
