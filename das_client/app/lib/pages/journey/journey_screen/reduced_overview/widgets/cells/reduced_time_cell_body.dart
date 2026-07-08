@@ -24,10 +24,12 @@ class ReducedTimeCellBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final (departureTime, arrivalTime, _) = times.formattedTimes(
+    final formattedTimes = times.formattedTimes(
       showOperationalTime: false,
       showTimesInBrackets: showTimesInBrackets,
     );
+    final departureTime = formattedTimes.departureTime;
+    final arrivalTime = formattedTimes.arrivalTime;
 
     if (departureTime.isEmpty && arrivalTime.isEmpty && mandatoryStop) {
       return SizedBox.shrink(key: DASTableCell.emptyCellKey);
