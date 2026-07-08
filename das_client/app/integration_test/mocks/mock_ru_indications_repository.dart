@@ -10,19 +10,19 @@ class MockRuIndicationsRepository implements RuIndicationsRepository {
 
   /// Returns two mocked RU indications for first location and one for last location.
   @override
-  Future<List<RuIndication>> fetchRuIndications({
+  Stream<List<RuIndication>> fetchRuIndications({
     required TrainIdentification trainIdentification,
     required Map<String, int> locationReferences,
-  }) async {
+  }) {
     if (!shouldReturnMockData || locationReferences.isEmpty) {
-      return const [];
+      return const Stream.empty();
     }
 
     final entries = locationReferences.entries;
-    return [
+    return Stream.value([
       RuIndication(title: entries.first.key, text: _smallText, order: entries.first.value),
       RuIndication(title: entries.first.key, text: _longTextWithLink, order: entries.first.value),
       RuIndication(title: entries.last.key, text: _smallText, order: entries.last.value),
-    ];
+    ]);
   }
 }

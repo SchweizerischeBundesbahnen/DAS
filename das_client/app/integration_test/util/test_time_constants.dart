@@ -29,7 +29,4 @@ class TestTimeConstants extends TimeConstants {
 
   @override
   int get newShortTermChangesDisplaySeconds => 2;
-
-  @override
-  int get httpRequestRetryDelaySeconds => 2;
 }

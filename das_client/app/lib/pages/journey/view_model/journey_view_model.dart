@@ -1,16 +1,12 @@
 import 'dart:async';
 
-import 'package:app/di/di.dart';
 import 'package:app/pages/journey/view_model/sfera_journey_view_model.dart';
-import 'package:app/util/time_constants.dart';
 import 'package:collection/collection.dart';
 import 'package:ru_indications/component.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
 class JourneyViewModel {
-  final _retryDelay = DI.get<TimeConstants>().httpRequestRetryDelaySeconds;
-
   JourneyViewModel({
     required this._sferaJourneyViewModel,
     required this._ruIndicationsRepository,
@@ -27,14 +23,14 @@ class JourneyViewModel {
 
   final _rxJourney = BehaviorSubject<Journey?>.seeded(null);
   final _ruIndications = <RuIndication>[];
-  Timer? _retryTimer;
 
   StreamSubscription? _journeySubscription;
+  StreamSubscription<List<RuIndication>>? _ruIndicationsSubscription;
 
   void dispose() {
     _rxJourney.close();
     _journeySubscription?.cancel();
-    _retryTimer?.cancel();
+    _ruIndicationsSubscription?.cancel();
   }
 
   void _init() {
@@ -65,32 +61,27 @@ class JourneyViewModel {
       return true;
     }
     final locationReferences = [for (final it in journey.data.whereType<ServicePoint>()) it.locationCode];
-    final lastLocationReferences = [for (final it in journey.data.whereType<ServicePoint>()) it.locationCode];
+    final lastLocationReferences = [for (final it in lastJourney.data.whereType<ServicePoint>()) it.locationCode];
 
     return const ListEquality().equals(locationReferences, lastLocationReferences) == false;
   }
 
-  Future<void> _loadRuIndications(Journey? journey) async {
-    _retryTimer?.cancel();
+  void _loadRuIndications(Journey? journey) {
     final trainIdentification = journey?.metadata.trainIdentification;
     if (trainIdentification != null) {
       final servicePoints = journey!.data.whereType<ServicePoint>();
       final locationReferences = {for (final it in servicePoints) it.locationCode: it.order};
-      _ruIndicationsRepository
+
+      _ruIndicationsSubscription?.cancel();
+      _ruIndicationsSubscription = _ruIndicationsRepository
           .fetchRuIndications(
             trainIdentification: trainIdentification,
             locationReferences: locationReferences,
           )
-          .then((value) {
+          .listen((ruIndications) {
             _ruIndications.clear();
-            _ruIndications.addAll(value);
+            _ruIndications.addAll(ruIndications);
             _emit();
-          })
-          .onError((error, stackTrace) {
-            _retryTimer?.cancel();
-            _retryTimer = Timer(Duration(seconds: _retryDelay), () {
-              _loadRuIndications(_sferaJourneyViewModel.journeyValue);
-            });
           });
     }
   }

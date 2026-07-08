@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:collection/collection.dart';
 import 'package:core_data/component.dart';
 import 'package:logging/logging.dart';
@@ -9,12 +11,39 @@ import 'package:ru_indications/src/repository/ru_indications_repository.dart';
 final _log = Logger('RuIndicationsRepositoryImpl');
 
 class RuIndicationsRepositoryImpl implements RuIndicationsRepository {
-  RuIndicationsRepositoryImpl({required this._apiService});
+  static const _defaultRetryDelaySeconds = 30;
+
+  RuIndicationsRepositoryImpl({
+    required this._apiService,
+    this._retryDelaySeconds = _defaultRetryDelaySeconds,
+  });
 
   final RuIndicationsApiService _apiService;
+  final int _retryDelaySeconds;
 
   @override
-  Future<List<RuIndication>> fetchRuIndications({
+  Stream<List<RuIndication>> fetchRuIndications({
+    required TrainIdentification trainIdentification,
+    required Map<String, int> locationReferences,
+  }) {
+    final controller = StreamController<List<RuIndication>>();
+
+    // Stop retrying when the subscriber unsubscribes
+    controller.onCancel = () {
+      if (!controller.isClosed) controller.close();
+    };
+
+    _fetchWithRetry(
+      controller: controller,
+      trainIdentification: trainIdentification,
+      locationReferences: locationReferences,
+    );
+
+    return controller.stream;
+  }
+
+  Future<void> _fetchWithRetry({
+    required StreamController<List<RuIndication>> controller,
     required TrainIdentification trainIdentification,
     required Map<String, int> locationReferences,
   }) async {
@@ -22,21 +51,37 @@ class RuIndicationsRepositoryImpl implements RuIndicationsRepository {
     final trainNumber = trainIdentification.sanitizedTrainNumber;
     final startDate = trainIdentification.operatingDay ?? trainIdentification.date;
 
-    try {
-      final response = await _apiService.matches(
-        company: company,
-        operationalTrainNumber: trainNumber,
-        startDate: startDate,
-        tafTapLocationReferences: locationReferences.keys.toList(),
-      );
-      final ruIndications = response.body.data.map((dto) => dto.toRuIndications(locationReferences)).flattened;
-      _log.info(
-        'Successfully fetched ${ruIndications.length} RU indications for $trainNumber ($company) on $startDate.',
-      );
-      return ruIndications.toList();
-    } catch (e) {
-      _log.severe('Failed to load RU indications for $trainNumber ($company) on $startDate.', e);
-      rethrow;
+    while (!controller.isClosed) {
+      try {
+        final response = await _apiService.matches(
+          company: company,
+          operationalTrainNumber: trainNumber,
+          startDate: startDate,
+          tafTapLocationReferences: locationReferences.keys.toList(),
+        );
+
+        if (controller.isClosed) return;
+
+        final ruIndications = response.body.data.map((dto) => dto.toRuIndications(locationReferences)).flattened;
+        _log.info(
+          'Successfully fetched ${ruIndications.length} RU indications for $trainNumber ($company) on $startDate.',
+        );
+        controller.add(ruIndications.toList());
+        controller.close();
+        return;
+      } catch (e) {
+        if (controller.isClosed) {
+          _log.info('Request cancelled for $trainNumber, aborting retry');
+          return;
+        }
+
+        _log.warning(
+          'Failed to load RU indications for $trainNumber ($company) on $startDate. Retrying in ${_retryDelaySeconds}s...',
+          e,
+        );
+
+        await Future.delayed(Duration(seconds: _retryDelaySeconds));
+      }
     }
   }
 }

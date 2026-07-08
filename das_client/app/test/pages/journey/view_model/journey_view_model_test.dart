@@ -1,8 +1,8 @@
+import 'dart:async';
+
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/pages/journey/view_model/sfera_journey_view_model.dart';
-import 'package:app/util/time_constants.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:ru_indications/component.dart';
@@ -33,11 +33,6 @@ void main() {
       when(mockSferaJourneyViewModel.journey).thenAnswer((_) => sferaJourneySubject.stream);
       when(mockSferaJourneyViewModel.journeyValue).thenAnswer((_) => currentJourney);
 
-      if (GetIt.I.isRegistered<TimeConstants>()) {
-        GetIt.I.unregister<TimeConstants>();
-      }
-      GetIt.I.registerSingleton<TimeConstants>(const _TestTimeConstants());
-
       testee = JourneyViewModel(
         sferaJourneyViewModel: mockSferaJourneyViewModel,
         ruIndicationsRepository: mockRuIndicationsRepository,
@@ -47,7 +42,6 @@ void main() {
     tearDown(() async {
       testee.dispose();
       await sferaJourneySubject.close();
-      await GetIt.I.reset();
     });
 
     test('journey_whenSferaJourneyChanges_thenLoadsAndMergesRuIndications', () async {
@@ -69,7 +63,7 @@ void main() {
           trainIdentification: sferaJourney.metadata.trainIdentification!,
           locationReferences: const {'CH001': 1000, 'CH002': 2000},
         ),
-      ).thenAnswer((_) async => ruIndications);
+      ).thenAnswer((_) => Stream.value(ruIndications));
 
       // ACT
       currentJourney = sferaJourney;
@@ -104,25 +98,29 @@ void main() {
         trainNumber: '200',
         servicePoints: [_servicePoint(order: 1000, locationCode: 'CH002')],
       );
+      final secondJourneyController = StreamController<List<RuIndication>>();
+      addTearDown(secondJourneyController.close);
 
       when(
         mockRuIndicationsRepository.fetchRuIndications(
           trainIdentification: firstJourney.metadata.trainIdentification!,
           locationReferences: const {'CH001': 1000},
         ),
-      ).thenAnswer((_) async => [const RuIndication(order: 1100, title: 'RU old', text: 'Old text')]);
+      ).thenAnswer((_) => Stream.value([const RuIndication(order: 1100, title: 'RU old', text: 'Old text')]));
       when(
         mockRuIndicationsRepository.fetchRuIndications(
           trainIdentification: secondJourney.metadata.trainIdentification!,
           locationReferences: const {'CH002': 1000},
         ),
-      ).thenAnswer((_) async => [const RuIndication(order: 1100, title: 'RU old', text: 'Old text')]);
+      ).thenAnswer((_) => secondJourneyController.stream);
 
       // ACT
       currentJourney = firstJourney;
       sferaJourneySubject.add(firstJourney);
       await processStreams();
       await processStreams();
+
+      expect(testee.journeyValue!.data.whereType<RuIndication>(), isNotEmpty);
 
       currentJourney = secondJourney;
       sferaJourneySubject.add(secondJourney);
@@ -132,48 +130,12 @@ void main() {
       final journeyAfterTrainChange = testee.journeyValue;
       expect(journeyAfterTrainChange, isNotNull);
       expect(journeyAfterTrainChange!.data.whereType<RuIndication>(), isEmpty);
-    });
 
-    test('journey_whenRuIndicationsLoadingFails_thenRetries', () async {
-      // ARRANGE
-      final sferaJourney = _journey(
-        trainNumber: '12345',
-        servicePoints: [_servicePoint(order: 1000, locationCode: 'CH001')],
-      );
-      var callCount = 0;
-
-      when(
-        mockRuIndicationsRepository.fetchRuIndications(
-          trainIdentification: sferaJourney.metadata.trainIdentification!,
-          locationReferences: const {'CH001': 1000},
-        ),
-      ).thenAnswer((_) async {
-        callCount++;
-        if (callCount == 1) {
-          throw Exception('Temporary failure');
-        }
-        return [const RuIndication(order: 1100, title: 'RU retry', text: 'Retry text')];
-      });
-
-      // ACT
-      currentJourney = sferaJourney;
-      sferaJourneySubject.add(sferaJourney);
-      await Future<void>.delayed(const Duration(milliseconds: 20));
+      secondJourneyController.add(const [RuIndication(order: 1100, title: 'RU new', text: 'New text')]);
       await processStreams();
-      await processStreams();
-
-      // EXPECT
-      expect(callCount, greaterThanOrEqualTo(2));
-      expect(testee.journeyValue?.data.whereType<RuIndication>().single.title, 'RU retry');
+      expect(testee.journeyValue!.data.whereType<RuIndication>(), isNotEmpty);
     });
   });
-}
-
-class _TestTimeConstants extends TimeConstants {
-  const _TestTimeConstants();
-
-  @override
-  int get httpRequestRetryDelaySeconds => 0;
 }
 
 Journey _journey({required String trainNumber, required List<ServicePoint> servicePoints}) {

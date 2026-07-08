@@ -33,7 +33,10 @@ void main() {
     mockRuIndicationsApiService = MockRuIndicationsApiService();
     mockMatchesRequest = MockMatchesRequest();
     when(mockRuIndicationsApiService.matches).thenReturn(mockMatchesRequest);
-    testee = RuIndicationsRepositoryImpl(apiService: mockRuIndicationsApiService);
+    testee = RuIndicationsRepositoryImpl(
+      apiService: mockRuIndicationsApiService,
+      retryDelaySeconds: 0, // Use 0 seconds for tests
+    );
   });
 
   test('fetchRuIndications_whenApiCallSucceeds_thenReturnsMappedDomainModels', () async {
@@ -48,10 +51,12 @@ void main() {
     ).thenAnswer((_) async => MatchesResponse(headers: <String, String>{}, body: _matchesResponseDto()));
 
     // ACT
-    final result = await testee.fetchRuIndications(
-      trainIdentification: TrainIdentification(ru: company, trainNumber: trainNumber.toString(), date: startDate),
-      locationReferences: locationReferences,
-    );
+    final result = await testee
+        .fetchRuIndications(
+          trainIdentification: TrainIdentification(ru: company, trainNumber: trainNumber.toString(), date: startDate),
+          locationReferences: locationReferences,
+        )
+        .first;
 
     // EXPECT
     expect(result, equals(_expectedDomainResult()));
@@ -70,10 +75,12 @@ void main() {
     ).thenAnswer((_) async => MatchesResponse(headers: <String, String>{}, body: _matchesResponseDto()));
 
     // ACT
-    await testee.fetchRuIndications(
-      trainIdentification: TrainIdentification(ru: company, trainNumber: unsanitizedTrainNumber, date: startDate),
-      locationReferences: locationReferences,
-    );
+    await testee
+        .fetchRuIndications(
+          trainIdentification: TrainIdentification(ru: company, trainNumber: unsanitizedTrainNumber, date: startDate),
+          locationReferences: locationReferences,
+        )
+        .first;
 
     // EXPECT
     verify(
@@ -99,15 +106,17 @@ void main() {
     ).thenAnswer((_) async => MatchesResponse(headers: <String, String>{}, body: _matchesResponseDto()));
 
     // ACT
-    await testee.fetchRuIndications(
-      trainIdentification: TrainIdentification(
-        ru: company,
-        trainNumber: trainNumber.toString(),
-        date: startDate,
-        operatingDay: operatingDay,
-      ),
-      locationReferences: locationReferences,
-    );
+    await testee
+        .fetchRuIndications(
+          trainIdentification: TrainIdentification(
+            ru: company,
+            trainNumber: trainNumber.toString(),
+            date: startDate,
+            operatingDay: operatingDay,
+          ),
+          locationReferences: locationReferences,
+        )
+        .first;
 
     // EXPECT
     verify(
@@ -126,10 +135,12 @@ void main() {
 
     // ACT & EXPECT
     await expectLater(
-      () => testee.fetchRuIndications(
-        trainIdentification: TrainIdentification(ru: company, trainNumber: invalidTrainNumber, date: startDate),
-        locationReferences: locationReferences,
-      ),
+      () => testee
+          .fetchRuIndications(
+            trainIdentification: TrainIdentification(ru: company, trainNumber: invalidTrainNumber, date: startDate),
+            locationReferences: locationReferences,
+          )
+          .first,
       throwsA(isA<FormatException>()),
     );
 
@@ -143,8 +154,9 @@ void main() {
     );
   });
 
-  test('fetchRuIndications_whenApiCallThrows_thenRethrows', () async {
+  test('fetchRuIndications_whenApiCallThrows_thenRetriesIndefinitely', () async {
     // ARRANGE
+    var callCount = 0;
     when(
       mockMatchesRequest.call(
         company: company.companyCode,
@@ -152,16 +164,92 @@ void main() {
         startDate: startDate,
         tafTapLocationReferences: locationReferences.keys.toList(),
       ),
-    ).thenThrow(Exception('Failed'));
+    ).thenAnswer((_) async {
+      callCount++;
+      throw Exception('Failed');
+    });
 
-    // ACT & EXPECT
-    await expectLater(
-      () => testee.fetchRuIndications(
-        trainIdentification: TrainIdentification(ru: company, trainNumber: trainNumber.toString(), date: startDate),
-        locationReferences: locationReferences,
+    // ACT - Subscribe to the stream but don't complete (it retries indefinitely)
+    final subscription = testee
+        .fetchRuIndications(
+          trainIdentification: TrainIdentification(ru: company, trainNumber: trainNumber.toString(), date: startDate),
+          locationReferences: locationReferences,
+        )
+        .listen((_) {});
+
+    // Wait for multiple retries to happen
+    await Future<void>.delayed(const Duration(milliseconds: 50));
+
+    // EXPECT - Should have been called multiple times due to retries
+    expect(callCount, greaterThan(1));
+
+    // Cancel subscription - this stops retrying via onCancel
+    await subscription.cancel();
+  });
+
+  test('fetchRuIndications_whenApiFailsFirstTimeThenSucceeds_thenReturnsDataAfterRetry', () async {
+    // ARRANGE
+    var callCount = 0;
+    when(
+      mockMatchesRequest.call(
+        company: company.companyCode,
+        operationalTrainNumber: trainNumber,
+        startDate: startDate,
+        tafTapLocationReferences: locationReferences.keys.toList(),
       ),
-      throwsException,
-    );
+    ).thenAnswer((_) async {
+      callCount++;
+      if (callCount == 1) {
+        throw Exception('Temporary failure');
+      }
+      return MatchesResponse(headers: <String, String>{}, body: _matchesResponseDto());
+    });
+
+    // ACT
+    final result = await testee
+        .fetchRuIndications(
+          trainIdentification: TrainIdentification(ru: company, trainNumber: trainNumber.toString(), date: startDate),
+          locationReferences: locationReferences,
+        )
+        .first;
+
+    // EXPECT
+    expect(callCount, 2);
+    expect(result, equals(_expectedDomainResult()));
+  });
+
+  test('fetchRuIndications_whenSubscriberCancels_thenRetryStops', () async {
+    // ARRANGE
+    var callCount = 0;
+    when(
+      mockMatchesRequest.call(
+        company: company.companyCode,
+        operationalTrainNumber: trainNumber,
+        startDate: startDate,
+        tafTapLocationReferences: locationReferences.keys.toList(),
+      ),
+    ).thenAnswer((_) async {
+      callCount++;
+      throw Exception('Failed');
+    });
+
+    // ACT - Subscribe then cancel
+    final subscription = testee
+        .fetchRuIndications(
+          trainIdentification: TrainIdentification(ru: company, trainNumber: trainNumber.toString(), date: startDate),
+          locationReferences: locationReferences,
+        )
+        .listen((_) {});
+
+    await Future<void>.delayed(const Duration(milliseconds: 20));
+    final countAtCancel = callCount;
+    await subscription.cancel();
+
+    // Wait to confirm no more retries happen after cancel
+    await Future<void>.delayed(const Duration(milliseconds: 30));
+
+    // EXPECT - no further calls after cancel
+    expect(callCount, equals(countAtCancel));
   });
 }
 

@@ -18,6 +18,4 @@ class TimeConstants {
   int get connectivityLostNotificationDelay => 60;
 
   int get newShortTermChangesDisplaySeconds => 15;
-
-  int get httpRequestRetryDelaySeconds => 30;
 }
