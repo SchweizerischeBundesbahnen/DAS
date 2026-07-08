@@ -54,12 +54,6 @@ sealed class JourneySelectionModel {
     final Loaded l => l.trainIdentification.ru,
     final Error e => e.trainIdentification.ru,
   };
-
-  @override
-  bool operator ==(Object other) => runtimeType == other.runtimeType;
-
-  @override
-  int get hashCode => runtimeType.hashCode;
 }
 
 class Selecting extends JourneySelectionModel {

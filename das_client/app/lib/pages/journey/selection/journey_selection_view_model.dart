@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:app/pages/journey/selection/journey_selection_model.dart';
 import 'package:clock/clock.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -25,7 +26,7 @@ class JourneySelectionViewModel {
   StreamSubscription? _sferaRepoSubscription;
 
   late JourneySelectionModel _currentState;
-  final _rxModel = PublishSubject<JourneySelectionModel>();
+  final _rxModel = BehaviorSubject<JourneySelectionModel>();
 
   Stream<JourneySelectionModel> get model => _rxModel.stream;
 
@@ -58,6 +59,37 @@ class JourneySelectionViewModel {
 
   void updateRailwayUndertaking(List<RailwayUndertaking> ru) {
     _ifInSelectingErrorOrLoadedEmitSelectingWith((model) => model.copyWith(railwayUndertaking: ru.firstOrNull));
+  }
+
+  void refreshDatesIfDayChanged() {
+    if (!_availableDaysChanged) return;
+
+    final currentState = _currentState;
+    final newAvailableDates = _availableStartDates();
+
+    switch (currentState) {
+      case final Selecting s:
+        DateTime updatedSelectedDate = s.startDate;
+        if (!newAvailableDates.contains(updatedSelectedDate)) {
+          updatedSelectedDate = _midnightToday();
+        }
+        _emit(currentState.copyWith(startDate: updatedSelectedDate, availableStartDates: newAvailableDates));
+      case final Error e:
+        DateTime updatedSelectedDate = e.startDate;
+        if (!newAvailableDates.contains(updatedSelectedDate)) {
+          updatedSelectedDate = _midnightToday();
+        }
+        _emit(
+          JourneySelectionModel.selecting(
+            startDate: updatedSelectedDate,
+            railwayUndertaking: e.railwayUndertaking,
+            trainNumber: e.operationalTrainNumber,
+            availableStartDates: newAvailableDates,
+          ),
+        );
+      default:
+        break;
+    }
   }
 
   void dismissSelection() {
@@ -140,7 +172,7 @@ class JourneySelectionViewModel {
             startDate: e.startDate,
             railwayUndertaking: e.railwayUndertaking,
             trainNumber: e.operationalTrainNumber,
-            availableStartDates: e.availableStartDates,
+            availableStartDates: _availableStartDates(),
           ),
         );
         _emit(updatedModel.copyWith(isInputComplete: _validateInput(updatedModel)));
@@ -150,7 +182,7 @@ class JourneySelectionViewModel {
             startDate: l.startDate,
             railwayUndertaking: l.railwayUndertaking,
             trainNumber: l.operationalTrainNumber,
-            availableStartDates: l.availableStartDates,
+            availableStartDates: _availableStartDates(),
           ),
         );
         _emit(updatedModel.copyWith(isInputComplete: _validateInput(updatedModel)));
@@ -185,5 +217,11 @@ class JourneySelectionViewModel {
   DateTime _midnightToday() {
     final now = clock.now().toLocal();
     return DateTime.utc(now.year, now.month, now.day);
+  }
+
+  bool get _availableDaysChanged {
+    final currentAvailableDays = _currentState.availableStartDates;
+    final updatedAvailableDays = _availableStartDates();
+    return !ListEquality().equals(currentAvailableDays, updatedAvailableDays);
   }
 }
