@@ -48,15 +48,15 @@ class TimeCellBody extends StatelessWidget {
         );
         final departureTime = formattedTimes.departureTime;
         final arrivalTime = formattedTimes.arrivalTime;
-        final isDepartureUnderlined = formattedTimes.isDepartureUnderlined;
-        final isDepartureBold = formattedTimes.isDepartureBold;
 
         if (departureTime.isEmpty && arrivalTime.isEmpty && mandatoryStop) {
           return SizedBox.shrink(key: DASTableCell.emptyCellKey);
         }
 
         final isArrivalBold = departureTime.isEmpty && !showOperationalTime;
-        final departureStyle = isDepartureBold ? sbbTextStyle.boldStyle.large : sbbTextStyle.romanStyle.large;
+        final departureStyle = formattedTimes.isDepartureBold
+            ? sbbTextStyle.boldStyle.large
+            : sbbTextStyle.romanStyle.large;
 
         final timeTexts = Text.rich(
           key: timeCellKey,
@@ -71,7 +71,7 @@ class TimeCellBody extends StatelessWidget {
               TextSpan(
                 text: departureTime,
                 style: departureStyle.copyWith(
-                  decoration: isDepartureUnderlined ? TextDecoration.underline : TextDecoration.none,
+                  decoration: formattedTimes.isDepartureUnderlined ? TextDecoration.underline : TextDecoration.none,
                   decorationColor: fontColor,
                   color: fontColor,
                 ),
