@@ -2,8 +2,22 @@ import 'package:app/extension/datetime_extension.dart';
 import 'package:app/util/format.dart' show Format;
 import 'package:sfera/component.dart';
 
+class FormattedArrivalDepartureTimes {
+  const FormattedArrivalDepartureTimes({
+    required this.departureTime,
+    required this.arrivalTime,
+    required this.isDepartureUnderlined,
+    required this.isDepartureBold,
+  });
+
+  final String departureTime;
+  final String arrivalTime;
+  final bool isDepartureUnderlined;
+  final bool isDepartureBold;
+}
+
 extension ArrivalDepartureTimeX on ArrivalDepartureTime? {
-  (String, String, bool, bool) formattedTimes({
+  FormattedArrivalDepartureTimes formattedTimes({
     required bool showOperationalTime,
     required bool showTimesInBrackets,
     DateTime? currentTime,
@@ -11,7 +25,14 @@ extension ArrivalDepartureTimeX on ArrivalDepartureTime? {
     String departureTime = '';
     String arrivalTime = '';
     bool isDepartureBold = true;
-    if (this == null) return (departureTime, arrivalTime, false, isDepartureBold);
+    if (this == null) {
+      return FormattedArrivalDepartureTimes(
+        departureTime: departureTime,
+        arrivalTime: arrivalTime,
+        isDepartureUnderlined: false,
+        isDepartureBold: isDepartureBold,
+      );
+    }
 
     if (showOperationalTime) {
       departureTime = Format.operationalTime(this?.operationalDepartureTime);
@@ -43,7 +64,12 @@ extension ArrivalDepartureTimeX on ArrivalDepartureTime? {
 
     arrivalTime = arrivalTime.isNotEmpty ? '$arrivalTime\n' : arrivalTime;
 
-    return (departureTime, arrivalTime, isDepartureUnderlined, isDepartureBold);
+    return FormattedArrivalDepartureTimes(
+      departureTime: departureTime,
+      arrivalTime: arrivalTime,
+      isDepartureUnderlined: isDepartureUnderlined,
+      isDepartureBold: isDepartureBold,
+    );
   }
 }
 

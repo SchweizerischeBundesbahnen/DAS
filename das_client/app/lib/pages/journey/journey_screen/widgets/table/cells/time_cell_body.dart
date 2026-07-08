@@ -41,11 +41,15 @@ class TimeCellBody extends StatelessWidget {
         final showOperationalTime = snapshot.requireData.$1;
         final currentTime = snapshot.requireData.$2;
 
-        final (departureTime, arrivalTime, isDepartureUnderlined, isDepartureBold) = times.formattedTimes(
+        final formattedTimes = times.formattedTimes(
           showOperationalTime: showOperationalTime,
           showTimesInBrackets: showTimesInBrackets,
           currentTime: currentTime,
         );
+        final departureTime = formattedTimes.departureTime;
+        final arrivalTime = formattedTimes.arrivalTime;
+        final isDepartureUnderlined = formattedTimes.isDepartureUnderlined;
+        final isDepartureBold = formattedTimes.isDepartureBold;
 
         if (departureTime.isEmpty && arrivalTime.isEmpty && mandatoryStop) {
           return SizedBox.shrink(key: DASTableCell.emptyCellKey);

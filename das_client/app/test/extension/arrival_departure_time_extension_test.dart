@@ -15,7 +15,10 @@ void main() {
     );
 
     // THEN
-    expect(formatted, ('', '', false, true));
+    expect(formatted.departureTime, '');
+    expect(formatted.arrivalTime, '');
+    expect(formatted.isDepartureUnderlined, isFalse);
+    expect(formatted.isDepartureBold, isTrue);
   });
 
   test('formattedTimes_whenPlannedTimesAreShown_thenFormatsPlannedTimesAndUnderlinesDeparture', () {
@@ -35,10 +38,10 @@ void main() {
     );
 
     // THEN
-    expect(formatted.$1, Format.plannedTime(plannedDeparture));
-    expect(formatted.$2, '${Format.plannedTime(plannedArrival)}\n');
-    expect(formatted.$3, isTrue);
-    expect(formatted.$4, isTrue);
+    expect(formatted.departureTime, Format.plannedTime(plannedDeparture));
+    expect(formatted.arrivalTime, '${Format.plannedTime(plannedArrival)}\n');
+    expect(formatted.isDepartureUnderlined, isTrue);
+    expect(formatted.isDepartureBold, isTrue);
   });
 
   test('formattedTimes_whenOperationalTimesAreShown_thenFormatsOperationalTimes', () {
@@ -62,10 +65,10 @@ void main() {
     );
 
     // THEN
-    expect(formatted.$1, Format.operationalTime(operationalDeparture));
-    expect(formatted.$2, '${Format.operationalTime(operationalArrival)}\n');
-    expect(formatted.$3, isTrue);
-    expect(formatted.$4, isTrue);
+    expect(formatted.departureTime, Format.operationalTime(operationalDeparture));
+    expect(formatted.arrivalTime, '${Format.operationalTime(operationalArrival)}\n');
+    expect(formatted.isDepartureUnderlined, isTrue);
+    expect(formatted.isDepartureBold, isTrue);
   });
 
   test('formattedTimes_whenTimesInBracketsIsTrue_thenWrapsDisplayedTimesInBrackets', () {
@@ -85,10 +88,10 @@ void main() {
     );
 
     // THEN
-    expect(formatted.$1, '(${Format.plannedTime(plannedDeparture)})');
-    expect(formatted.$2, '(${Format.plannedTime(plannedArrival)})\n');
-    expect(formatted.$3, isFalse);
-    expect(formatted.$4, isTrue);
+    expect(formatted.departureTime, '(${Format.plannedTime(plannedDeparture)})');
+    expect(formatted.arrivalTime, '(${Format.plannedTime(plannedArrival)})\n');
+    expect(formatted.isDepartureUnderlined, isFalse);
+    expect(formatted.isDepartureBold, isTrue);
   });
 
   test('formattedTimes_whenOnlyPlannedReleaseTimeExists_thenForcesBracketAndNotStyledAsBold', () {
@@ -108,9 +111,9 @@ void main() {
     );
 
     // THEN
-    expect(formatted.$1, '(${Format.plannedTime(plannedReleasedTime)})');
-    expect(formatted.$2, '(${Format.plannedTime(plannedArrival)})\n');
-    expect(formatted.$3, isFalse);
-    expect(formatted.$4, isFalse);
+    expect(formatted.departureTime, '(${Format.plannedTime(plannedReleasedTime)})');
+    expect(formatted.arrivalTime, '(${Format.plannedTime(plannedArrival)})\n');
+    expect(formatted.isDepartureUnderlined, isFalse);
+    expect(formatted.isDepartureBold, isFalse);
   });
 }
