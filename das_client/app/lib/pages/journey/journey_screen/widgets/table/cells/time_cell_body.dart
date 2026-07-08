@@ -41,7 +41,7 @@ class TimeCellBody extends StatelessWidget {
         final showOperationalTime = snapshot.requireData.$1;
         final currentTime = snapshot.requireData.$2;
 
-        final (departureTime, arrivalTime, isDepartureUnderlined) = times.formattedTimes(
+        final (departureTime, arrivalTime, isDepartureUnderlined, isDepartureBold) = times.formattedTimes(
           showOperationalTime: showOperationalTime,
           showTimesInBrackets: showTimesInBrackets,
           currentTime: currentTime,
@@ -52,6 +52,7 @@ class TimeCellBody extends StatelessWidget {
         }
 
         final isArrivalBold = departureTime.isEmpty && !showOperationalTime;
+        final departureStyle = isDepartureBold ? sbbTextStyle.boldStyle.large : sbbTextStyle.romanStyle.large;
 
         final timeTexts = Text.rich(
           key: timeCellKey,
@@ -65,7 +66,7 @@ class TimeCellBody extends StatelessWidget {
               ),
               TextSpan(
                 text: departureTime,
-                style: sbbTextStyle.boldStyle.large.copyWith(
+                style: departureStyle.copyWith(
                   decoration: isDepartureUnderlined ? TextDecoration.underline : TextDecoration.none,
                   decorationColor: fontColor,
                   color: fontColor,

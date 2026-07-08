@@ -3,14 +3,15 @@ import 'package:app/util/format.dart' show Format;
 import 'package:sfera/component.dart';
 
 extension ArrivalDepartureTimeX on ArrivalDepartureTime? {
-  (String, String, bool) formattedTimes({
+  (String, String, bool, bool) formattedTimes({
     required bool showOperationalTime,
     required bool showTimesInBrackets,
     DateTime? currentTime,
   }) {
     String departureTime = '';
     String arrivalTime = '';
-    if (this == null) return (departureTime, arrivalTime, false);
+    bool isDepartureBold = true;
+    if (this == null) return (departureTime, arrivalTime, false, isDepartureBold);
 
     if (showOperationalTime) {
       departureTime = Format.operationalTime(this?.operationalDepartureTime);
@@ -29,9 +30,10 @@ extension ArrivalDepartureTimeX on ArrivalDepartureTime? {
         departureTime = Format.plannedTime(this?.plannedReleasedTime);
       }
 
-      // plannedReleaseTime is always shown in brackets and never underlined
+      // plannedReleaseTime is always shown in brackets and never underlined and never bold
       showTimesInBrackets = true;
       isDepartureUnderlined = false;
+      isDepartureBold = false;
     }
 
     if (showTimesInBrackets) {
@@ -41,7 +43,7 @@ extension ArrivalDepartureTimeX on ArrivalDepartureTime? {
 
     arrivalTime = arrivalTime.isNotEmpty ? '$arrivalTime\n' : arrivalTime;
 
-    return (departureTime, arrivalTime, isDepartureUnderlined);
+    return (departureTime, arrivalTime, isDepartureUnderlined, isDepartureBold);
   }
 }
 
