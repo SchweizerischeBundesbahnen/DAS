@@ -18,14 +18,14 @@ class HandshakeTask extends SferaTask {
     required this._mqttService,
     required this._sferaRepo,
     required this.otnId,
-    required this.dasDrivingMode,
+    required this.isDriver,
     super.timeout,
   });
 
   final SferaRepository _sferaRepo;
   final MqttService _mqttService;
   final OtnId otnId;
-  final DasDrivingModeDto dasDrivingMode;
+  final bool isDriver;
 
   late TaskCompleted _taskCompletedCallback;
   late TaskFailed _taskFailedCallback;
@@ -42,12 +42,19 @@ class HandshakeTask extends SferaTask {
   void _sendHandshakeRequest() {
     final sferaTrain = Format.sferaTrain(otnId.operationalTrainNumber, otnId.startDate);
 
-    _log.info('Sending handshake request for company=${otnId.company} train=$sferaTrain');
-    final operationMode = DasOperatingModesSupportedDto.create(dasDrivingMode, .boardAdviceCalculation, .connected);
+    _log.info('Sending handshake request for company=${otnId.company} train=$sferaTrain isDriver=$isDriver');
+    final operationModes = [
+      DasOperatingModesSupportedDto.create(DasDrivingModeDto.readOnly, .boardAdviceCalculation, .connected),
+    ];
+    if (isDriver) {
+      operationModes.add(
+        DasOperatingModesSupportedDto.create(DasDrivingModeDto.dasNotConnected, .boardAdviceCalculation, .connected),
+      );
+    }
     final handshakeRequest = HandshakeRequestDto.create(
-      [operationMode],
+      operationModes,
       relatedTrainRequestType: .ownTrainAndRelatedTrains,
-      statusReportsEnabled: false,
+      statusReportsEnabled: isDriver,
     );
 
     final messageHeader = _sferaRepo.messageHeader(sender: otnId.company);

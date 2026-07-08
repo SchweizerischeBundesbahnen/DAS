@@ -4,6 +4,7 @@ import 'package:app/di/di.dart';
 import 'package:app/di/scope_handler.dart';
 import 'package:app/di/scopes/journey_scope.dart';
 import 'package:app/i18n/i18n.dart';
+import 'package:app/nav/app_expiration_guard.dart';
 import 'package:app/nav/app_router.dart';
 import 'package:app/pages/journey/journey_screen/journey_overview.dart';
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
@@ -140,7 +141,11 @@ class _DismissJourneyButton extends StatelessWidget {
       DI.get<JourneySelectionViewModel>().dismissSelection();
       DI.get<JourneyNavigationViewModel>().disconnect();
       context.router.replace(JourneySelectionRoute());
-      await Future.delayed(Duration(milliseconds: 100));
+
+      /// [AppExpirationGuard] can delay navigation up to 1 second.
+      /// We need to wait to ensure that the scope is popped after navigation.
+      /// Otherwise we will get some DI not registered errors
+      await Future.delayed(Duration(milliseconds: AppExpirationGuard.timeout.inMilliseconds + 50));
       DI.get<ScopeHandler>().pop<JourneyScope>();
     },
   );

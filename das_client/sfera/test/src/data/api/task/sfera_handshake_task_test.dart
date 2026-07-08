@@ -6,6 +6,7 @@ import 'package:mockito/mockito.dart';
 import 'package:mqtt/component.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/api/task/handshake_task.dart';
+import 'package:sfera/src/data/dto/enums/das_driving_mode_dto.dart';
 import 'package:sfera/src/data/dto/message_header_dto.dart';
 import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
 import 'package:sfera/src/model/otn_id.dart';
@@ -35,7 +36,7 @@ void main() {
       sferaRepo: mockSferaRepo,
       mqttService: mqttService,
       otnId: otnId,
-      dasDrivingMode: .readOnly,
+      isDriver: false,
     );
 
     await handshakeTask.execute(
@@ -55,6 +56,28 @@ void main() {
     expect(result, true);
   });
 
+  test('execute_whenDriverIsTrue_thenHandshakeContainsReadOnlyAndDasNotConnected', () async {
+    when(mqttService.publishMessage(any, any, any)).thenReturn(true);
+
+    final handshakeTask = HandshakeTask(
+      sferaRepo: mockSferaRepo,
+      mqttService: mqttService,
+      otnId: otnId,
+      isDriver: true,
+    );
+
+    await handshakeTask.execute(
+      (task, data) => fail('Task should not complete during request verification'),
+      (task, error) => fail('Task should not fail during request verification: $error'),
+    );
+
+    final publishedMessage = verify(mqttService.publishMessage(any, any, captureAny)).captured.single as String;
+
+    expect(publishedMessage, contains(DasDrivingModeDto.readOnly.xmlValue));
+    expect(publishedMessage, contains(DasDrivingModeDto.dasNotConnected.xmlValue));
+    expect(RegExp('DAS_OperatingModesSupported').allMatches(publishedMessage), hasLength(2));
+  });
+
   test('execute_whenHandshakeRejected_thenReturnsTrueWithHandshakeRejectedError', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
@@ -62,7 +85,7 @@ void main() {
       sferaRepo: mockSferaRepo,
       mqttService: mqttService,
       otnId: otnId,
-      dasDrivingMode: .readOnly,
+      isDriver: false,
     );
 
     await handshakeTask.execute(
@@ -86,7 +109,7 @@ void main() {
       sferaRepo: mockSferaRepo,
       mqttService: mqttService,
       otnId: otnId,
-      dasDrivingMode: .readOnly,
+      isDriver: false,
     );
 
     await handshakeTask.execute(
@@ -110,7 +133,7 @@ void main() {
       sferaRepo: mockSferaRepo,
       mqttService: mqttService,
       otnId: otnId,
-      dasDrivingMode: .readOnly,
+      isDriver: false,
       timeout: const Duration(seconds: 1),
     );
 
@@ -136,7 +159,7 @@ void main() {
       sferaRepo: mockSferaRepo,
       mqttService: mqttService,
       otnId: otnId,
-      dasDrivingMode: .readOnly,
+      isDriver: false,
       timeout: const Duration(seconds: 1),
     );
 
