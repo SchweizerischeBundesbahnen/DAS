@@ -7,6 +7,8 @@ import 'package:logging/logging.dart';
 final _log = Logger('AppExpirationGuard');
 
 class AppExpirationGuard extends AutoRouteGuard {
+  static final timeout = const Duration(seconds: 1);
+
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) async {
     final appExpirationVM = DI.getOrNull<AppExpirationViewModel>();
@@ -18,9 +20,9 @@ class AppExpirationGuard extends AutoRouteGuard {
 
     try {
       await appExpirationVM.checkIsAppExpired().timeout(
-        const Duration(seconds: 1),
+        timeout,
         onTimeout: () {
-          _log.warning('AppExpiration check timed out after 5 seconds. Resolving with next(true).');
+          _log.warning('AppExpiration check timed out after 1 seconds. Resolving with next(true).');
           resolver.next(true);
         },
       );

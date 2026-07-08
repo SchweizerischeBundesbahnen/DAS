@@ -42,7 +42,7 @@ class HandshakeTask extends SferaTask {
   void _sendHandshakeRequest() {
     final sferaTrain = Format.sferaTrain(otnId.operationalTrainNumber, otnId.startDate);
 
-    _log.info('Sending handshake request for company=${otnId.company} train=$sferaTrain');
+    _log.info('Sending handshake request for company=${otnId.company} train=$sferaTrain isDriver=$isDriver');
     final operationModes = [
       DasOperatingModesSupportedDto.create(DasDrivingModeDto.readOnly, .boardAdviceCalculation, .connected),
     ];
