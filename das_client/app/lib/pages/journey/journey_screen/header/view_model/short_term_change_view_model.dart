@@ -193,7 +193,18 @@ class ShortTermChangeViewModel extends JourneyAwareViewModel {
     Iterable<ShortTermChange> shortTermChanges,
     bool Function(ShortTermChange change) test,
   ) {
-    final shortTermChangesInSight = shortTermChanges.where(test).sortedBy((c) => c.startOrder!);
+    final currentOrder = _lastCurrentPosition?.order;
+    final shortTermChangesInSight = shortTermChanges.where(test).sorted((a, b) {
+      // sort by startOrder, but if one starts before current position and the other after, the one after is prioritized
+      if (currentOrder != null) {
+        final aStartsOnOrAfterCurrent = a.startOrder! >= currentOrder;
+        final bStartsOnOrAfterCurrent = b.startOrder! >= currentOrder;
+        if (aStartsOnOrAfterCurrent != bStartsOnOrAfterCurrent) {
+          return aStartsOnOrAfterCurrent ? -1 : 1;
+        }
+      }
+      return a.startOrder!.compareTo(b.startOrder!);
+    });
     final firstChangeOrder = shortTermChangesInSight.firstOrNull?.startOrder;
     if (firstChangeOrder == null) return null;
     return shortTermChangesInSight.where((change) => change.startOrder == firstChangeOrder).getHighestPriority;
