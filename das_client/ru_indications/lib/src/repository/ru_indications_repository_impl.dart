@@ -51,23 +51,14 @@ class RuIndicationsRepositoryImpl implements RuIndicationsRepository {
     final trainNumber = trainIdentification.sanitizedTrainNumber;
     final startDate = trainIdentification.operatingDay ?? trainIdentification.date;
 
+    if (trainNumber == null) {
+      controller.addError(Exception('Invalid train number: ${trainIdentification.trainNumber}'));
+      return;
+    }
+
     while (!controller.isClosed) {
       try {
-        final response = await _apiService.matches(
-          company: company,
-          operationalTrainNumber: trainNumber,
-          startDate: startDate,
-          tafTapLocationReferences: locationReferences.keys.toList(),
-        );
-
-        if (controller.isClosed) return;
-
-        final ruIndications = response.body.data.map((dto) => dto.toRuIndications(locationReferences)).flattened;
-        _log.info(
-          'Successfully fetched ${ruIndications.length} RU indications for $trainNumber ($company) on $startDate.',
-        );
-        controller.add(ruIndications.toList());
-        controller.close();
+        await _tryFetchRuIndications(company, trainNumber, startDate, locationReferences, controller);
         return;
       } catch (e) {
         if (controller.isClosed) {
@@ -83,5 +74,27 @@ class RuIndicationsRepositoryImpl implements RuIndicationsRepository {
         await Future.delayed(Duration(seconds: _retryDelaySeconds));
       }
     }
+  }
+
+  Future<void> _tryFetchRuIndications(
+    String company,
+    int trainNumber,
+    DateTime startDate,
+    Map<String, int> locationReferences,
+    StreamController<List<RuIndication>> controller,
+  ) async {
+    final response = await _apiService.matches(
+      company: company,
+      operationalTrainNumber: trainNumber,
+      startDate: startDate,
+      tafTapLocationReferences: locationReferences.keys.toList(),
+    );
+
+    final ruIndications = response.body.data.map((dto) => dto.toRuIndications(locationReferences)).flattened;
+    _log.info(
+      'Successfully fetched ${ruIndications.length} RU indications for $trainNumber ($company) on $startDate.',
+    );
+    controller.add(ruIndications.toList());
+    controller.close();
   }
 }

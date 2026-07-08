@@ -16,12 +16,10 @@ class TrainIdentification {
   final DateTime date;
   final DateTime? operatingDay;
 
-  int get sanitizedTrainNumber {
+  int? get sanitizedTrainNumber {
     final firstNumberMatch = RegExp(r'\d+').firstMatch(trainNumber);
-    if (firstNumberMatch == null) {
-      throw const FormatException('Train number does not contain digits.');
-    }
-    return int.parse(firstNumberMatch.group(0)!);
+    if (firstNumberMatch == null) return null;
+    return int.tryParse(firstNumberMatch.group(0)!);
   }
 
   @override

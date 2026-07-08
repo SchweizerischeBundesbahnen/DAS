@@ -141,7 +141,7 @@ void main() {
             locationReferences: locationReferences,
           )
           .first,
-      throwsA(isA<FormatException>()),
+      throwsA(isA<Exception>()),
     );
 
     verifyNever(
