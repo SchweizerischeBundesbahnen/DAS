@@ -7,6 +7,7 @@ import 'package:app/pages/journey/journey_screen/view_model/journey_position_vie
 import 'package:app/pages/journey/journey_screen/view_model/model/chevron_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_table_model.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/combined_foot_note_and_indications.dart';
 import 'package:app/pages/journey/view_model/decisive_gradient_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
@@ -15,6 +16,7 @@ import 'package:app/pages/journey/view_model/model/journey_navigation_model.dart
 import 'package:app/pages/journey/view_model/model/journey_settings.dart';
 import 'package:app/provider/user_settings.dart';
 import 'package:collection/collection.dart';
+import 'package:core_data/component.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
@@ -65,6 +67,10 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
   }
 
   void _init() {
+    _initRxModel();
+  }
+
+  void _initRxModel() {
     _streamSubscription?.cancel();
     _streamSubscription =
         CombineLatestStream.combine8(
@@ -110,6 +116,7 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
       _emitLoading();
       return;
     }
+
     final rowData = journey.data
         .whereNot((it) => _isCurvePointWithoutSpeed(it, settings))
         .hideJourneyPointsThatShouldNotBeDisplayed()
@@ -117,7 +124,7 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
         .hideCommunicationNetworkChangesWithSameTypeAsPreviousOrIsServicePoint()
         .hideRepeatedLineFootNotes(position.currentPosition)
         .hideFootNotesForNotSelectedTrainSeries(settings.currentBrakeSeries?.trainSeries)
-        .combineFootNoteAndOperationalIndication()
+        .combineFootNoteAndIndications()
         .addTrainDriverTurnoverRows(navigationModel?.trainIdentification)
         .hideSignals(
           stationSignals: !_userSettings.showStationSignals,

@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:core_data/component.dart';
 import 'package:sfera/component.dart';
 
 enum AdvisedSpeedSegmentHint {

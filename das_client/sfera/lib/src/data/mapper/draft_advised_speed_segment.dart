@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:core_data/component.dart';
 import 'package:sfera/component.dart';
 
 class DraftAdvisedSpeedSegment implements Comparable<DraftAdvisedSpeedSegment> {

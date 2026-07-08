@@ -1,9 +1,9 @@
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_screen/view_model/sim_train_view_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_chevron.dart';
-import 'package:app/pages/journey/journey_screen/widgets/table/combined_foot_note_operational_indication_row.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/combined_foot_note_and_indications_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/foot_note_accordion.dart';
-import 'package:app/pages/journey/journey_screen/widgets/table/operational_indication_accordion.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/indication_accordion.dart';
 import 'package:app/widgets/accordion/accordion.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:app/widgets/table/scrollable_align.dart';
@@ -51,18 +51,18 @@ void main() {
     await dragUntilTextInStickyHeader(tester, 'Pully');
 
     // should not be collapsed by default
-    final accordion = _findDASTableAccordionByContainsText(textToSearch, OperationalIndicationAccordion);
+    final accordion = _findDASTableAccordionByContainsText(textToSearch, IndicationAccordion);
     _checkCollapsibleRow(isCollapsed: false, collapsibleRow: accordion);
 
     // should have show more button and collapsed content
     final collapsedContent = find.descendant(
       of: accordion,
-      matching: find.byKey(OperationalIndicationAccordion.collapsedContentKey),
+      matching: find.byKey(IndicationAccordion.collapsedContentKey),
     );
     expect(collapsedContent, findsOneWidget);
     var showMoreButton = find.descendant(
       of: accordion,
-      matching: find.byKey(OperationalIndicationAccordion.showMoreTextKey),
+      matching: find.byKey(IndicationAccordion.showMoreTextKey),
     );
     expect(showMoreButton, findsOneWidget);
 
@@ -72,12 +72,12 @@ void main() {
 
     final rowWithExpandedText = _findDASTableAccordionByContainsText(
       'Lorem ipsum dolor sit amet, consetetur sadipscing elitr',
-      OperationalIndicationAccordion,
+      IndicationAccordion,
     );
     expect(rowWithExpandedText, findsOneWidget);
     showMoreButton = find.descendant(
       of: rowWithExpandedText,
-      matching: find.byKey(OperationalIndicationAccordion.showMoreTextKey),
+      matching: find.byKey(IndicationAccordion.showMoreTextKey),
     );
     expect(showMoreButton, findsNothing);
 
@@ -93,16 +93,16 @@ void main() {
     // should have show more button and collapsed content with " ;" delimiter
     final accordion = _findDASTableAccordionByContainsText(
       'Strecke INN - MR: Bahnübergangsanlagen ohne Balisenüberwachung; Straba. = Strassenbahnbereich;',
-      OperationalIndicationAccordion,
+      IndicationAccordion,
     );
     final collapsedContent = find.descendant(
       of: accordion,
-      matching: find.byKey(OperationalIndicationAccordion.collapsedContentKey),
+      matching: find.byKey(IndicationAccordion.collapsedContentKey),
     );
     expect(collapsedContent, findsOneWidget);
     final showMoreButton = find.descendant(
       of: accordion,
-      matching: find.byKey(OperationalIndicationAccordion.showMoreTextKey),
+      matching: find.byKey(IndicationAccordion.showMoreTextKey),
     );
     expect(showMoreButton, findsOneWidget);
 
@@ -110,7 +110,7 @@ void main() {
     await tapElement(tester, accordion);
     final expandedRow = _findDASTableAccordionByContainsText(
       'Strecke INN - MR: Bahnübergangsanlagen ohne Balisenüberwachung\nStraba. = Strassenbahnbereich',
-      OperationalIndicationAccordion,
+      IndicationAccordion,
     );
     expect(expandedRow, findsOneWidget);
 
@@ -129,12 +129,12 @@ void main() {
 
     final scrollableFinder = find.byType(AnimatedList);
     await tester.dragUntilVisible(
-      find.byKey(CombinedFootNoteOperationalIndicationRow.rowKey),
+      find.byKey(CombinedFootNoteAndIndicationsRow.rowKey),
       scrollableFinder,
       const Offset(0, -100),
     );
 
-    final combinedRow = find.byKey(CombinedFootNoteOperationalIndicationRow.rowKey);
+    final combinedRow = find.byKey(CombinedFootNoteAndIndicationsRow.rowKey);
     expect(combinedRow, findsOneWidget);
 
     final operationalIndicationRow = find.descendant(
@@ -277,10 +277,7 @@ void _checkCollapsibleRow({required bool isCollapsed, Object? identifier, Finder
 }
 
 Finder _findDASTableAccordionRowByKey(Object identifier) {
-  return find.descendant(
-    of: find.byKey(DASTable.tableKey),
-    matching: find.ancestor(of: find.byKey(ObjectKey(identifier)), matching: find.byKey(DASTable.rowKey)),
-  );
+  return find.descendant(of: find.byKey(DASTable.tableKey), matching: find.byKey(ObjectKey(identifier)));
 }
 
 Finder _findDASTableAccordionByContainsText(String text, Type accordion) {

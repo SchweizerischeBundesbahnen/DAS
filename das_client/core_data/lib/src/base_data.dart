@@ -1,8 +1,6 @@
+import 'package:core_data/component.dart';
 import 'package:meta/meta.dart';
-import 'package:sfera/component.dart';
-import 'package:sfera/src/model/journey/order_priority.dart';
 
-@sealed
 @immutable
 abstract class BaseData implements Comparable {
   const BaseData({

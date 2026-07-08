@@ -1,4 +1,4 @@
-import 'package:sfera/src/model/journey/base_data.dart';
+import 'package:core_data/component.dart';
 import 'package:sfera/src/model/journey/segment.dart';
 
 /// Represents a segment with non standard track equipment. Standard is bidirectional ETCS L1LS.

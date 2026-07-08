@@ -1,5 +1,5 @@
+import 'package:core_data/src/train_identification.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sfera/src/model/train_identification.dart';
 
 void main() {
   group('TrainIdentification', () {

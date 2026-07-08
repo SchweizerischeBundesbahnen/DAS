@@ -333,7 +333,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
               if (property.sign != null) _icon(context, property.sign!.iconAsset(), Key(property.sign!.name)),
               if (property.text != null)
                 Text.rich(
-                  TextUtil.parseHtmlText(
+                  TextUtil.parseHtmlTextWithMarkdownLinks(
                     property.text!,
                     _isNextStop && highlightNextStop
                         ? sbbTextStyle.romanStyle.medium.copyWith(color: SBBColors.white)

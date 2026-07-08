@@ -1,6 +1,6 @@
 import 'package:collection/collection.dart';
+import 'package:core_data/component.dart';
 import 'package:sfera/component.dart';
-import 'package:sfera/src/model/journey/order_priority.dart';
 
 class Balise extends JourneyPoint {
   const Balise({required super.order, required super.kilometre, required this.amountLevelCrossings, this.identifier})

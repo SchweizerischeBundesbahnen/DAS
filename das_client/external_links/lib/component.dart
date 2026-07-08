@@ -5,7 +5,6 @@ import 'package:external_links/src/repository/external_links_repository_impl.dar
 import 'package:http_x/component.dart';
 
 export 'package:external_links/src/model/external_link.dart';
-export 'package:external_links/src/model/localized_string.dart';
 export 'package:external_links/src/repository/external_links_repository.dart';
 
 class ExternalLinksComponent {

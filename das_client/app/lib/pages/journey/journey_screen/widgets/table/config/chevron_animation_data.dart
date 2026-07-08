@@ -3,6 +3,7 @@ import 'package:app/pages/journey/journey_screen/view_model/model/chevron_positi
 import 'package:app/pages/journey/journey_screen/widgets/table/cell_row_builder.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_cell_body.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_chevron.dart';
+import 'package:core_data/component.dart';
 import 'package:sfera/component.dart';
 
 /// Data class to hold all the information to chevron animation.

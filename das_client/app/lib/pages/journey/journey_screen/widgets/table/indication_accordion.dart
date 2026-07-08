@@ -1,15 +1,21 @@
+import 'dart:async';
+
+import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
+import 'package:app/launcher/launcher.dart';
 import 'package:app/pages/journey/journey_screen/journey_overview.dart';
 import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_view_model.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/text_util.dart';
 import 'package:app/widgets/accordion/accordion.dart';
+import 'package:core_data/component.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:ru_indications/component.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
-class OperationalIndicationAccordion extends StatelessWidget {
+class IndicationAccordion extends StatelessWidget {
   static const Key showMoreTextKey = Key('operationalIndicationShowMoreText');
   static const Key expandedContentKey = Key('operationalIndicationExpandedContent');
   static const Key collapsedContentKey = Key('operationalIndicationCollapsedContent');
@@ -24,18 +30,20 @@ class OperationalIndicationAccordion extends StatelessWidget {
     fontFamily: SBBFontFamily.sbbFontRoman,
   );
 
-  const OperationalIndicationAccordion({
+  const IndicationAccordion({
     required this.collapsedState,
     required this.data,
     this.leftPadding = 0,
+    this.isLastElement = true,
     super.key,
-  });
+  }) : assert(data is RuIndication || data is OperationalIndication, 'Unsupported data type for indication');
 
-  final OperationalIndication data;
+  final JourneyAnnotation data;
   final CollapsedState collapsedState;
 
   /// used to align content with information cell
   final double leftPadding;
+  final bool isLastElement;
 
   @override
   Widget build(BuildContext context) {
@@ -43,30 +51,35 @@ class OperationalIndicationAccordion extends StatelessWidget {
     final borderRadius = Radius.circular(isExpanded ? SBBSpacing.medium : SBBSpacing.xSmall);
     return Accordion(
       key: ObjectKey(data.hashCode),
-      title: context.l10n.c_indication,
+      title: data.title ?? context.l10n.c_indication,
       body: _body(context),
       isExpanded: isExpanded,
       toggleCallback: () =>
           context.read<CollapsibleRowsViewModel>().toggleRow(data, isContentExpandable: _hasTextOverflow),
       icon: SBBIcons.list_small,
-      margin: .only(bottom: _verticalMargin),
+      margin: isLastElement ? .only(bottom: _verticalMargin) : .zero,
       additionalPadding: .only(left: leftPadding),
       backgroundColor: ThemeUtil.getColor(context, SBBColors.cloud, SBBColors.midnight),
-      borderRadius: BorderRadius.only(bottomLeft: borderRadius, bottomRight: borderRadius),
+      border: !isLastElement
+          ? Border(bottom: BorderSide(color: ThemeUtil.getColor(context, SBBColors.platinum, SBBColors.iron)))
+          : null,
+      borderRadius: isLastElement
+          ? BorderRadius.only(bottomLeft: borderRadius, bottomRight: borderRadius)
+          : BorderRadius.all(Radius.zero),
     );
   }
 
   Widget _body(BuildContext context) {
     if (collapsedState == .expandedWithCollapsedContent && _hasTextOverflow) {
-      final textWithoutLineBreaks = TextUtil.replaceLineBreaks(data.combinedText);
+      final textWithoutLineBreaks = TextUtil.replaceLineBreaks(data.text);
       return Row(
         children: [
-          Expanded(child: _contentText(textWithoutLineBreaks, maxLines: 1)),
+          Expanded(child: _contentText(context, textWithoutLineBreaks, maxLines: 1)),
           _showMoreText(context),
         ],
       );
     }
-    return _contentText(data.combinedText);
+    return _contentText(context, data.text);
   }
 
   Widget _showMoreText(BuildContext context) {
@@ -81,30 +94,42 @@ class OperationalIndicationAccordion extends StatelessWidget {
   }
 
   bool get _hasTextOverflow {
-    final textWithoutLineBreak = TextUtil.replaceLineBreaks(data.combinedText);
+    final textWithoutLineBreak = TextUtil.replaceLineBreaks(data.text);
     return TextUtil.hasTextOverflow(textWithoutLineBreak, _accordionContentWidth(leftPadding: leftPadding), _textStyle);
   }
 
-  static Text _contentText(String text, {int? maxLines}) {
+  Text _contentText(BuildContext context, String text, {int? maxLines}) {
     return Text.rich(
       key: maxLines == null ? expandedContentKey : collapsedContentKey,
-      TextUtil.parseHtmlText(text, _textStyle),
+      TextUtil.parseHtmlTextWithMarkdownLinks(
+        text,
+        _textStyle,
+        onLinkTap: (url) => _openLink(context, url),
+      ),
       maxLines: maxLines,
       overflow: maxLines != null ? TextOverflow.ellipsis : null,
     );
   }
 
+  Future<void> _openLink(BuildContext context, String url) async {
+    final isOpened = await DI.get<Launcher>().launch(url);
+    if (!isOpened && context.mounted) {
+      SBBToast.of(context).show(titleText: context.l10n.c_something_went_wrong);
+    }
+  }
+
   static double calculateHeight(
-    String text, {
+    JourneyAnnotation data, {
     required CollapsedState collapsedState,
     required double leftPadding,
+    bool isLastElement = true,
   }) {
-    final margin = _verticalMargin;
+    final margin = isLastElement ? _verticalMargin : 0.0;
     if (collapsedState == .collapsed) {
       return Accordion.defaultCollapsedHeight + margin;
     }
 
-    final content = _contentText(text);
+    final content = Text.rich(TextUtil.parseHtmlTextWithMarkdownLinks(data.text, _textStyle));
     final maxLines = collapsedState == .expandedWithCollapsedContent ? 1 : null;
     final tp = TextPainter(text: content.textSpan, textDirection: .ltr, maxLines: maxLines)
       ..layout(maxWidth: _accordionContentWidth(leftPadding: leftPadding));
@@ -113,4 +138,23 @@ class OperationalIndicationAccordion extends StatelessWidget {
 
   static double _accordionContentWidth({required double leftPadding}) =>
       Accordion.contentWidth(margin: JourneyOverview.horizontalPadding, additionalPadding: leftPadding);
+}
+
+extension JourneyAnnotationIndicationX on JourneyAnnotation {
+  String? get title {
+    if (this is RuIndication) {
+      return (this as RuIndication).title;
+    }
+    return null;
+  }
+
+  String get text {
+    if (this is RuIndication) {
+      return (this as RuIndication).text;
+    } else if (this is OperationalIndication) {
+      return (this as OperationalIndication).combinedText;
+    } else {
+      return '';
+    }
+  }
 }

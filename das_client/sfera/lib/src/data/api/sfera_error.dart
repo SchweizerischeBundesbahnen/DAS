@@ -1,5 +1,5 @@
 import 'package:collection/collection.dart';
-import 'package:sfera/component.dart';
+import 'package:core_data/component.dart';
 
 /// This class represents SFERA errors that can occur e.g. during connection, validation and returned by protocol itself [ProtocolErrors].
 ///

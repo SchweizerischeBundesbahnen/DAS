@@ -1,5 +1,6 @@
 import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
 import 'package:collection/collection.dart';
+import 'package:core_data/component.dart';
 import 'package:sfera/component.dart';
 
 extension BaseDataX on Iterable<BaseData> {

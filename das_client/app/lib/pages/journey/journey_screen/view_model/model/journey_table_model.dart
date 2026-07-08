@@ -3,6 +3,7 @@ import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_vie
 import 'package:app/pages/journey/journey_screen/view_model/model/chevron_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/view_model/model/journey_settings.dart';
+import 'package:core_data/component.dart';
 import 'package:sfera/component.dart';
 
 sealed class JourneyTableModel {

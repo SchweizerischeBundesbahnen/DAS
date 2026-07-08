@@ -10,12 +10,14 @@ import 'package:customer_oriented_departure/component.dart';
 import 'package:external_links/component.dart';
 import 'package:formation/component.dart';
 import 'package:logging/logging.dart';
+import 'package:ru_indications/component.dart';
 import 'package:sfera/component.dart';
 
 import 'mock_customer_oriented_departure_repository.dart';
 import 'mock_external_links_repository.dart';
 import 'mock_formation_repository.dart';
 import 'mock_ru_feature_provider.dart';
+import 'mock_ru_indications_repository.dart';
 import 'mock_sim_train_view_model.dart';
 import 'mock_warn_app_view_model.dart';
 
@@ -45,13 +47,16 @@ class MockAuthenticatedScope extends AuthenticatedScope {
       getIt.registerSettingsRepository();
       getIt.registerRuFeatureProvider();
       getIt.registerFormationRepository();
+      getIt.registerRuIndicationsRepository();
     } else {
       _registerMockRuFeaturesProvider();
       _registerMockFormationRepository();
+      _registerMockRuIndicationsRepository();
     }
     _registerMockCustomerOrientedDepartureRepository();
     getIt.registerTimedRouteProvider();
 
+    getIt.registerSferaJourneyViewModel();
     getIt.registerJourneyViewModel();
     getIt.registerJourneyNavigationViewModel();
     getIt.registerJourneySelectionViewModel();
@@ -73,6 +78,10 @@ class MockAuthenticatedScope extends AuthenticatedScope {
 
   void _registerMockFormationRepository() {
     getIt.registerSingleton<FormationRepository>(MockFormationRepository());
+  }
+
+  void _registerMockRuIndicationsRepository() {
+    getIt.registerSingleton<RuIndicationsRepository>(MockRuIndicationsRepository());
   }
 
   void _registerMockExternalLinksRepository() {

@@ -1,5 +1,5 @@
+import 'package:core_data/src/ru.dart';
 import 'package:meta/meta.dart';
-import 'package:sfera/src/model/ru.dart';
 
 @sealed
 @immutable
@@ -15,6 +15,12 @@ class TrainIdentification {
   final String trainNumber;
   final DateTime date;
   final DateTime? operatingDay;
+
+  int? get sanitizedTrainNumber {
+    final firstNumberMatch = RegExp(r'\d+').firstMatch(trainNumber);
+    if (firstNumberMatch == null) return null;
+    return int.tryParse(firstNumberMatch.group(0)!);
+  }
 
   @override
   String toString() {

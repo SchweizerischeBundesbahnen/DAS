@@ -28,6 +28,8 @@ dependencies:
   sfera: 1.0.0
   warnapp: 1.0.0
   customer_oriented_departure: 1.0.0
+  ru_indications: 1.0.0
+  core_data: 1.0.0
 
   # https://pub.dev/packages/audioplayers
   audioplayers: ^6.7.1
@@ -61,7 +63,7 @@ dependencies:
   rxdart: ^0.28.0
 
   # https://pub.dev/packages/sbb_design_system_mobile
-  sbb_design_system_mobile: ^5.0.0-dev.7
+  sbb_design_system_mobile: ^5.0.0
   # https://pub.dev/packages/volume_controller
   volume_controller: ^3.6.0
   # https://pub.dev/packages/wakelock_plus

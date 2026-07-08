@@ -1,5 +1,4 @@
-import 'package:sfera/component.dart';
-import 'package:sfera/src/model/journey/order_priority.dart';
+import 'package:core_data/component.dart';
 
 class ShuntingMovement extends JourneyAnnotation {
   const ShuntingMovement({

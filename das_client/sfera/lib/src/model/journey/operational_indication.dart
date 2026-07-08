@@ -1,6 +1,5 @@
 import 'package:collection/collection.dart';
-import 'package:sfera/component.dart';
-import 'package:sfera/src/model/journey/order_priority.dart';
+import 'package:core_data/component.dart';
 
 class OperationalIndication extends JourneyAnnotation {
   const OperationalIndication({

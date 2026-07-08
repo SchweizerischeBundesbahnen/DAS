@@ -1,3 +1,4 @@
+import 'package:core_data/component.dart';
 import 'package:external_links/src/api/dto/external_link_dto.dart';
 import 'package:external_links/src/api/dto/external_link_translation_dto.dart';
 import 'package:external_links/src/api/dto/external_links_response_dto.dart';
@@ -5,7 +6,6 @@ import 'package:external_links/src/api/endpoint/external_links.dart';
 import 'package:external_links/src/api/external_links_api_service.dart';
 import 'package:external_links/src/data/local/external_links_database_service_impl.dart';
 import 'package:external_links/src/model/external_link.dart';
-import 'package:external_links/src/model/localized_string.dart';
 import 'package:external_links/src/repository/external_links_repository.dart';
 import 'package:external_links/src/repository/external_links_repository_impl.dart';
 import 'package:flutter_test/flutter_test.dart';

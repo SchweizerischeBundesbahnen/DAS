@@ -21,7 +21,7 @@ class DepartureAuthorizationDisplay extends StatelessWidget {
         final departureAuthText = snapshot.data?.departureAuthText;
         if (departureAuthText == null) return SizedBox.shrink();
 
-        final parsed = TextUtil.parseHtmlText(departureAuthText, sbbTextStyle.romanStyle.large);
+        final parsed = TextUtil.parseHtmlTextWithMarkdownLinks(departureAuthText, sbbTextStyle.romanStyle.large);
 
         return Row(
           spacing: SBBSpacing.xSmall,

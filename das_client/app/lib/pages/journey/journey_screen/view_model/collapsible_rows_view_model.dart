@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/sim_train_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
+import 'package:core_data/component.dart';
+import 'package:ru_indications/component.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
@@ -11,8 +13,8 @@ enum CollapsedState {
   expandedWithCollapsedContent,
   expanded;
 
-  static CollapsedState defaultOf(BaseData data) =>
-      data is OperationalIndication ? .expandedWithCollapsedContent : .expanded;
+  static CollapsedState defaultOf(BaseData? data) =>
+      data is OperationalIndication || data is RuIndication ? .expandedWithCollapsedContent : .expanded;
 }
 
 class CollapsibleRowsViewModel extends JourneyAwareViewModel {
@@ -24,15 +26,29 @@ class CollapsibleRowsViewModel extends JourneyAwareViewModel {
     _init(journeyViewModel.journey, journeyPositionStream);
   }
 
-  Stream<Map<int, CollapsedState>> get collapsedRows => _rxCollapsedRows.stream;
-
-  Map<int, CollapsedState> get collapsedRowsValue => _rxCollapsedRows.value;
-
   final SimTrainViewModel _simTrainViewModel;
   final _rxCollapsedRows = BehaviorSubject<Map<int, CollapsedState>>.seeded({});
 
   StreamSubscription<(Journey?, JourneyPositionModel)>? _journeySubscription;
   StreamSubscription<bool>? _simTrainSubscription;
+
+  Stream<Map<int, CollapsedState>> get collapsedRows => _rxCollapsedRows.stream;
+
+  Map<int, CollapsedState> get collapsedRowsValue => _rxCollapsedRows.value;
+
+  void toggleRow(BaseData data, {bool isContentExpandable = false}) {
+    final newMap = Map<int, CollapsedState>.from(_rxCollapsedRows.value);
+    final currentState = newMap.stateOf(data);
+    if (currentState == .collapsed) {
+      newMap[data.hashCode] = .defaultOf(data);
+    } else if (currentState == .expandedWithCollapsedContent && isContentExpandable) {
+      newMap[data.hashCode] = .expanded;
+    } else {
+      newMap[data.hashCode] = .collapsed;
+    }
+
+    _rxCollapsedRows.add(newMap);
+  }
 
   void _init(
     Stream<Journey?> journeyStream,
@@ -67,20 +83,6 @@ class CollapsibleRowsViewModel extends JourneyAwareViewModel {
     for (final fn in simFootNotes) {
       newMap[fn.hashCode] = isSimTrain ? CollapsedState.expanded : CollapsedState.collapsed;
     }
-    _rxCollapsedRows.add(newMap);
-  }
-
-  void toggleRow(BaseData data, {bool isContentExpandable = false}) {
-    final newMap = Map<int, CollapsedState>.from(_rxCollapsedRows.value);
-    final currentState = newMap.stateOf(data);
-    if (currentState == .collapsed) {
-      newMap[data.hashCode] = .defaultOf(data);
-    } else if (currentState == .expandedWithCollapsedContent && isContentExpandable) {
-      newMap[data.hashCode] = .expanded;
-    } else {
-      newMap[data.hashCode] = .collapsed;
-    }
-
     _rxCollapsedRows.add(newMap);
   }
 
@@ -132,10 +134,15 @@ class CollapsibleRowsViewModel extends JourneyAwareViewModel {
   }
 }
 
-extension BaseDataExtension on BaseData {
-  bool get isCollapsible => this is BaseFootNote || this is OperationalIndication;
+extension BaseDataX on BaseData {
+  bool get isCollapsible => this is BaseFootNote || this is OperationalIndication || this is RuIndication;
 }
 
-extension CollapsedStateMap on Map<int, CollapsedState> {
-  CollapsedState stateOf(BaseData data) => this[data.hashCode] ?? .defaultOf(data);
+extension CollapsedStateMapX on Map<int, CollapsedState> {
+  CollapsedState stateOf(BaseData? data) => this[data.hashCode] ?? .defaultOf(data);
+
+  Map<int, CollapsedState> whereContains(Iterable<BaseData> data) {
+    final hashCodes = data.map((d) => d.hashCode).toSet();
+    return Map<int, CollapsedState>.fromEntries(entries.where((entry) => hashCodes.contains(entry.key)));
+  }
 }

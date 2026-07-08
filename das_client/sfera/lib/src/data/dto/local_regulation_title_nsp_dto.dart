@@ -1,5 +1,5 @@
+import 'package:core_data/component.dart';
 import 'package:sfera/src/data/dto/network_specific_parameter_dto.dart';
-import 'package:sfera/src/model/localized_string.dart';
 
 class LocalRegulationTitleNspDto extends NetworkSpecificParameterDto {
   static bool matchesElementName(String name) => RegExp(r'^title_(de|fr|it)$').hasMatch(name);

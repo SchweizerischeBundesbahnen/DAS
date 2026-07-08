@@ -33,6 +33,8 @@ class FootNoteAccordion extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final borderRadius = Radius.circular(isExpanded ? SBBSpacing.medium : SBBSpacing.xSmall);
+
     return Accordion(
       key: ObjectKey(data.hashCode),
       title: title,
@@ -47,13 +49,14 @@ class FootNoteAccordion extends StatelessWidget {
       ),
       backgroundColor: ThemeUtil.getColor(context, SBBColors.white, SBBColors.charcoal),
       border: highlightBorder ? Border.all(color: DASColors.simFootNoteBorder, width: 2.0) : null,
+      borderRadius: !addTopMargin ? BorderRadius.only(bottomLeft: borderRadius, bottomRight: borderRadius) : null,
     );
   }
 
   Text contentText(BaseFootNote data) => _contentText(data);
 
   static Text _contentText(BaseFootNote data) {
-    return Text.rich(TextUtil.parseHtmlText(data.footNote.text, sbbTextStyle.romanStyle.large));
+    return Text.rich(TextUtil.parseHtmlTextWithMarkdownLinks(data.footNote.text, sbbTextStyle.romanStyle.large));
   }
 
   static double calculateHeight({

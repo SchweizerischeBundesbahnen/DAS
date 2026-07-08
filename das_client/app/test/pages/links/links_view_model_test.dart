@@ -3,12 +3,11 @@ import 'dart:async';
 import 'package:app/launcher/launcher.dart';
 import 'package:app/pages/links/links_view_model.dart';
 import 'package:app/provider/user_settings.dart';
+import 'package:core_data/component.dart';
 import 'package:external_links/component.dart';
-import 'package:external_links/src/model/localized_string.dart' as external_links;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:sfera/component.dart';
 
 import '../../test_util.dart';
 import 'links_view_model_test.mocks.dart';
@@ -68,8 +67,8 @@ void main() {
       ExternalLink(
         id: 1,
         companies: const ['2185'],
-        title: const external_links.LocalizedString(de: 'SBB'),
-        link: const external_links.LocalizedString(de: 'https://www.sbb.ch'),
+        title: const LocalizedString(de: 'SBB'),
+        link: const LocalizedString(de: 'https://www.sbb.ch'),
         lastModifiedAt: DateTime(2026, 1, 1),
         lastModifiedBy: 'test',
       ),
@@ -92,8 +91,8 @@ void main() {
       ExternalLink(
         id: 2,
         companies: const ['1080'],
-        title: const external_links.LocalizedString(de: 'DB'),
-        link: const external_links.LocalizedString(de: 'https://www.deutschebahn.com'),
+        title: const LocalizedString(de: 'DB'),
+        link: const LocalizedString(de: 'https://www.deutschebahn.com'),
         lastModifiedAt: DateTime(2026, 1, 1),
         lastModifiedBy: 'test',
       ),
@@ -127,16 +126,16 @@ void main() {
       ExternalLink(
         id: 1,
         companies: const ['2185'],
-        title: const external_links.LocalizedString(de: 'Bahnhofportal'),
-        link: const external_links.LocalizedString(de: 'https://www.bahnhofportal.ch'),
+        title: const LocalizedString(de: 'Bahnhofportal'),
+        link: const LocalizedString(de: 'https://www.bahnhofportal.ch'),
         lastModifiedAt: DateTime(2026, 1, 1),
         lastModifiedBy: 'user1',
       ),
       ExternalLink(
         id: 2,
         companies: const ['2185', '1080'],
-        title: const external_links.LocalizedString(de: 'Bahnhofportal'),
-        link: const external_links.LocalizedString(de: 'https://www.bahnhofportal.ch'),
+        title: const LocalizedString(de: 'Bahnhofportal'),
+        link: const LocalizedString(de: 'https://www.bahnhofportal.ch'),
         lastModifiedAt: DateTime(2026, 2, 1),
         lastModifiedBy: 'user2',
       ),
@@ -158,16 +157,16 @@ void main() {
       ExternalLink(
         id: 1,
         companies: const ['2185'],
-        title: const external_links.LocalizedString(de: 'Portal'),
-        link: const external_links.LocalizedString(de: 'https://www.portal-a.ch'),
+        title: const LocalizedString(de: 'Portal'),
+        link: const LocalizedString(de: 'https://www.portal-a.ch'),
         lastModifiedAt: DateTime(2026, 1, 1),
         lastModifiedBy: 'test',
       ),
       ExternalLink(
         id: 2,
         companies: const ['2185'],
-        title: const external_links.LocalizedString(de: 'Portal'),
-        link: const external_links.LocalizedString(de: 'https://www.portal-b.ch'),
+        title: const LocalizedString(de: 'Portal'),
+        link: const LocalizedString(de: 'https://www.portal-b.ch'),
         lastModifiedAt: DateTime(2026, 1, 1),
         lastModifiedBy: 'test',
       ),
@@ -188,16 +187,16 @@ void main() {
       ExternalLink(
         id: 1,
         companies: const ['2185'],
-        title: const external_links.LocalizedString(de: 'SBB Portal'),
-        link: const external_links.LocalizedString(de: 'https://www.sbb.ch'),
+        title: const LocalizedString(de: 'SBB Portal'),
+        link: const LocalizedString(de: 'https://www.sbb.ch'),
         lastModifiedAt: DateTime(2026, 1, 1),
         lastModifiedBy: 'test',
       ),
       ExternalLink(
         id: 2,
         companies: const ['2185'],
-        title: const external_links.LocalizedString(de: 'SBB Webseite'),
-        link: const external_links.LocalizedString(de: 'https://www.sbb.ch'),
+        title: const LocalizedString(de: 'SBB Webseite'),
+        link: const LocalizedString(de: 'https://www.sbb.ch'),
         lastModifiedAt: DateTime(2026, 1, 1),
         lastModifiedBy: 'test',
       ),
@@ -218,32 +217,32 @@ void main() {
       ExternalLink(
         id: 1,
         companies: const ['2185'],
-        title: const external_links.LocalizedString(de: 'ESQ'),
-        link: const external_links.LocalizedString(de: 'https://www.esq.ch'),
+        title: const LocalizedString(de: 'ESQ'),
+        link: const LocalizedString(de: 'https://www.esq.ch'),
         lastModifiedAt: DateTime(2026, 1, 1),
         lastModifiedBy: 'test',
       ),
       ExternalLink(
         id: 2,
         companies: const ['2185'],
-        title: const external_links.LocalizedString(de: 'V-APP'),
-        link: const external_links.LocalizedString(de: 'https://www.v-app.ch'),
+        title: const LocalizedString(de: 'V-APP'),
+        link: const LocalizedString(de: 'https://www.v-app.ch'),
         lastModifiedAt: DateTime(2026, 1, 1),
         lastModifiedBy: 'test',
       ),
       ExternalLink(
         id: 3,
         companies: const ['1080'],
-        title: const external_links.LocalizedString(de: 'ESQ'),
-        link: const external_links.LocalizedString(de: 'https://www.esq.ch'),
+        title: const LocalizedString(de: 'ESQ'),
+        link: const LocalizedString(de: 'https://www.esq.ch'),
         lastModifiedAt: DateTime(2026, 2, 1),
         lastModifiedBy: 'test',
       ),
       ExternalLink(
         id: 4,
         companies: const ['1080'],
-        title: const external_links.LocalizedString(de: 'V-APP'),
-        link: const external_links.LocalizedString(de: 'https://www.v-app.ch'),
+        title: const LocalizedString(de: 'V-APP'),
+        link: const LocalizedString(de: 'https://www.v-app.ch'),
         lastModifiedAt: DateTime(2026, 2, 1),
         lastModifiedBy: 'test',
       ),

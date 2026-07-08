@@ -11,6 +11,7 @@ import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart'
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
+import 'package:app/pages/journey/view_model/sfera_journey_view_model.dart';
 import 'package:app/pages/journey/view_model/view_mode_view_model.dart';
 import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
 import 'package:app/pages/journey/widgets/das_journey_scaffold.dart';
@@ -107,7 +108,7 @@ class _JourneyPageState extends State<JourneyPage> {
   Future<void> _initState() async {
     await _loadInitialTrains();
 
-    final journeyVM = DI.get<JourneyViewModel>();
+    final journeyVM = DI.get<SferaJourneyViewModel>();
     final viewModeVM = DI.get<ViewModeViewModel>();
     _errorCodeSubscription = journeyVM.errorCode.listen((error) async {
       if (error != null) {
