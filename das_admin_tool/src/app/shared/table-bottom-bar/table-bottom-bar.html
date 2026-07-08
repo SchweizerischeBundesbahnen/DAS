@@ -1,0 +1,22 @@
+<div class="table-bottom-bar">
+  <div class="left">
+    <sbb-compact-paginator [pageSize]="PAGE_SIZE"></sbb-compact-paginator>
+  </div>
+  <div class="right">
+    <sbb-secondary-button (click)="addClicked.emit()" iconName="plus-small">
+      {{ addLabel() }}
+    </sbb-secondary-button>
+    @if (showDelete()) {
+      <sbb-transparent-button (click)="deleteClicked.emit()"
+                              [disabled]="deleteDisabled()"
+                              [loading]="deleting()"
+                              i18n="@@button_delete_selected_entries"
+                              iconName="trash-small">
+        {selectedCount(), plural,
+          =0 {Einträge löschen}
+          one {Eintrag löschen}
+          other {{{ selectedCount() }} Einträge löschen}}
+      </sbb-transparent-button>
+    }
+  </div>
+</div>

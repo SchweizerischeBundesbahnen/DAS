@@ -5,15 +5,12 @@ import {
   SbbTableFilter,
   SbbTableModule
 } from '@sbb-esta/lyne-angular/table';
-import {SbbSecondaryButton} from '@sbb-esta/lyne-angular/button/secondary-button';
-import {SbbCompactPaginator} from '@sbb-esta/lyne-angular/paginator/compact-paginator';
 import {SbbMiniButton} from '@sbb-esta/lyne-angular/button/mini-button';
 import {SbbFormFieldModule} from '@sbb-esta/lyne-angular/form-field';
-import {SbbIconModule} from '@sbb-esta/lyne-angular/icon';
-import {SbbSelectModule} from '@sbb-esta/lyne-angular/select';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {RuIndicationService} from '../ru-indication.service';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {startWith} from 'rxjs';
 import {LanguageCode, LanguageProvider} from '../../../shared/language-provider';
 import {CompanyService} from '../../../shared/companies-input/company.service';
 import {LocationService} from '../ru-indication-dialog/locations-input/location.service';
@@ -25,7 +22,8 @@ import {displayPeriod} from '../ru-indication-dialog/periods-input/periods-input
 import {RU_INDICATION_STATUS_LABELS, RuIndication} from '../../ru-admin-api';
 import {SbbCheckbox} from '@sbb-esta/lyne-angular/checkbox';
 import {SelectionModel} from '@angular/cdk/collections';
-import {SbbTransparentButton} from '@sbb-esta/lyne-angular/button/transparent-button';
+import {TableBottomBar} from '../../../shared/table-bottom-bar/table-bottom-bar';
+import {TableSearchHeader} from '../../../shared/table-search-header/table-search-header';
 
 export interface RuIndicationFilter extends SbbTableFilter {
   search: string;
@@ -41,28 +39,26 @@ export interface RuIndicationFilter extends SbbTableFilter {
   selector: 'app-ru-indications-table',
   imports: [
     SbbTableModule,
-    SbbSecondaryButton,
-    SbbCompactPaginator,
     SbbMiniButton,
     SbbFormFieldModule,
-    SbbIconModule,
-    SbbSelectModule,
     ReactiveFormsModule,
     DatePipe,
     SbbCheckbox,
-    SbbTransparentButton,
+    TableBottomBar,
+    TableSearchHeader,
   ],
   templateUrl: './ru-indications-table.html',
   styleUrl: './ru-indications-table.css',
 })
 export class RuIndicationsTable {
-  protected readonly languageProvider = inject(LanguageProvider);
   protected readonly companyService = inject(CompanyService);
   protected readonly locationService = inject(LocationService);
   protected dataSource = new SbbTableDataSource<RuIndication, RuIndicationFilter>();
   protected columns = ['select', 'title', 'text', 'category', 'status', 'companies', 'trainNumbers', 'locations', 'periods', 'lastModifiedAt', 'lastModifiedBy', 'action'];
   protected filterColumns = ['empty', 'empty', 'empty', 'filter-category', 'empty', 'filter-companies', 'filter-train-numbers', 'filter-locations', 'filter-periods', 'empty', 'empty', 'empty'];
-  protected selection = new SelectionModel<RuIndication>(true, []);
+  protected readonly selection = new SelectionModel<RuIndication>(true, []);
+  protected isDeleting = false;
+  private readonly languageProvider = inject(LanguageProvider);
   protected form = new FormGroup({
     search: new FormControl('', {nonNullable: true}),
     language: new FormControl(this.languageProvider.currentLanguage.path, {nonNullable: true}),
@@ -72,11 +68,8 @@ export class RuIndicationsTable {
     locations: new FormControl('', {nonNullable: true}),
     periods: new FormControl('', {nonNullable: true})
   });
-  protected isDeleting = false;
-  protected readonly PAGE_SIZE = 20;
-
   private readonly ruIndicationService = inject(RuIndicationService);
-  private readonly paginator = viewChild.required<SbbCompactPaginator>(SbbCompactPaginator);
+  private readonly bottomBar = viewChild.required(TableBottomBar);
   private readonly sort = viewChild.required<SbbSort>(SbbSort);
 
   constructor() {
@@ -84,13 +77,13 @@ export class RuIndicationsTable {
       if (this.ruIndicationService.ruIndicationsResource.hasValue()) {
         this.dataSource.data = this.ruIndicationService.ruIndicationsResource.value().data;
       }
-      this.dataSource.paginator = this.paginator();
+      this.dataSource.paginator = this.bottomBar().paginator();
       this.dataSource.sort = this.sort();
     });
     this.dataSource.filterPredicate = (data: RuIndication, filter: RuIndicationFilter) => this.searchFilter(filter, data);
     this.dataSource.sortingDataAccessor = (data, col) => this.getSortValue(data, col);
     this.form.valueChanges
-      .pipe(takeUntilDestroyed())
+      .pipe(startWith(this.form.value), takeUntilDestroyed())
       .subscribe((form) => {
         this.dataSource.filter = form as RuIndicationFilter;
       });
@@ -107,7 +100,7 @@ export class RuIndicationsTable {
   }
 
   protected statusValue(row: RuIndication): string {
-    return RU_INDICATION_STATUS_LABELS.find((label) => label.value === row.status)?.label ?? ''
+    return RU_INDICATION_STATUS_LABELS.find((label) => label.value === row.status)?.label ?? '';
   }
 
   protected companiesValue(companyCodes: string[]) {
@@ -140,9 +133,7 @@ export class RuIndicationsTable {
   }
 
   protected isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.filteredData.length;
-    return numSelected === numRows;
+    return this.selection.selected.length === this.dataSource.filteredData.length;
   }
 
   protected parentToggle() {
@@ -194,6 +185,10 @@ export class RuIndicationsTable {
   }
 
   private searchFilter(filter: RuIndicationFilter, data: RuIndication) {
+    const language = filter.language;
+    if (language && !data.content?.[language]?.title) {
+      return false;
+    }
     return (this.filterGlobally(filter, data) && this.filterProperties(filter, data)) ?? false;
   }
 
@@ -223,6 +218,6 @@ export class RuIndicationsTable {
       && this.companiesValue(data.scope.companies).toLowerCase().includes(companies)
       && this.trainNumbersValue(data).toLowerCase().includes(trainNumbers)
       && this.locationsValue(data).toLowerCase().includes(locations)
-      && this.periodsValue(data).toLowerCase().includes(periods)
+      && this.periodsValue(data).toLowerCase().includes(periods);
   }
 }

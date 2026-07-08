@@ -7,14 +7,22 @@
     table-layout: fixed;
   }
 
-  td[sbb-cell] span {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: normal;
-    word-break: break-word;
+  td[sbb-cell] {
+    vertical-align: top;
+
+    span {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: normal;
+      word-break: break-word;
+    }
+  }
+
+  &.table-uniform-2lines td[sbb-cell] span {
+    min-height: calc(2 * 1lh);
   }
 
   .sbb-column-select {
@@ -27,13 +35,5 @@
     sbb-mini-button {
       vertical-align: middle;
     }
-  }
-
-  .sbb-column-lastModifiedAt {
-    width: 8rem;
-  }
-
-  .sbb-column-lastModifiedBy {
-    width: 12rem;
   }
 }
