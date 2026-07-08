@@ -30,7 +30,7 @@ public class TenantEntity {
 
     private String tenantId;
 
-    private boolean isAdmin;
+    private boolean isAdminRoleAllowed;
 
     @OneToMany(mappedBy = "tenant", fetch = FetchType.EAGER)
     private List<CompanyEntity> companies = new ArrayList<>();

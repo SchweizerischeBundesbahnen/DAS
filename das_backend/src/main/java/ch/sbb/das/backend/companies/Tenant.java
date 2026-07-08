@@ -7,13 +7,13 @@ import java.util.Set;
  *
  * @param name Display name
  * @param tenantId The Entra tenant ID
- * @param isAdmin Whether this is the admin tenant
+ * @param isAdminRoleAllowed Whether this tenant allows the admin role.
  * @param companies Concrete railway undertakings (RU) managed by this organisation given as RICS codes.
  */
 public record Tenant(
     String name,
     String tenantId,
-    boolean isAdmin,
+    boolean isAdminRoleAllowed,
     Set<CompanyCode> companies
 ) {
 

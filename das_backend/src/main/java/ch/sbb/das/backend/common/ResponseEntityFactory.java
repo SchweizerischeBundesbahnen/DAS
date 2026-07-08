@@ -40,12 +40,16 @@ public class ResponseEntityFactory {
         return new ResponseEntity<>(body, headers, HttpStatus.CREATED);
     }
 
-    public ResponseEntity<Problem> createNotFoundResponse(String requestId, String instance) {
+    public static ResponseEntity<? extends Response> createNotFoundResponse(String requestId, String instance) {
         return createNotFoundResponse(TITLE_NOT_FOUND, "Refine your query parameters.", null, requestId, instance);
     }
 
     public static ResponseEntity<Problem> createNotFoundResponse(@NonNull String title, @NonNull String detail, Locale locale, String requestId, String instance) {
         return createProblemResponse(HttpStatus.NOT_FOUND, title, detail, locale == null ? ApiDocumentation.HEADER_CONTENT_LANGUAGE_ERROR_DETAIL_DEFAULT : locale.getLanguage(), requestId, instance);
+    }
+
+    public static ResponseEntity<Void> createNoContentResponse(String requestId) {
+        return ResponseEntity.noContent().headers(createHeaders(requestId)).build();
     }
 
     public static ResponseEntity<Problem> createProblemResponse(HttpStatus status, String title, String detail, String language, String requestId, String instance) {

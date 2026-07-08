@@ -82,4 +82,16 @@ class CompanyMapperTest {
         assertThat(entity.getShortName()).isEqualTo("BLS");
         assertThat(entity.getTenant()).isSameAs(newTenant);
     }
+
+    @Test
+    void toTenantDto_maps_entity_to_dto() {
+        TenantEntity entity = new TenantEntity();
+        entity.setName("sbb");
+        entity.setTenantId("2cda5d11-f0ac-46b3-967d-af1b2e1bd01a");
+
+        TenantDto result = mapper.toTenantDto(entity);
+
+        assertThat(result.name()).isEqualTo("sbb");
+        assertThat(result.tenantId()).isEqualTo("2cda5d11-f0ac-46b3-967d-af1b2e1bd01a");
+    }
 }

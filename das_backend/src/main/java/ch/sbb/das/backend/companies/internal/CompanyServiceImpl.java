@@ -58,31 +58,38 @@ public class CompanyServiceImpl implements CompanyService {
             .toList();
     }
 
-    AdminCompany getById(Integer id) {
+    Optional<AdminCompany> getById(Integer id) {
         return companyRepository.findById(id)
-            .map(companyMapper::toAdminCompany)
-            .orElse(null);
+            .map(companyMapper::toAdminCompany);
     }
 
     AdminCompany create(CompanyRequest request) {
         TenantEntity tenant = findTenantOrThrow(request.tenantId());
-        checkUniqueCode(request.code().value(), null);
-        checkUniqueShortName(request.shortName().value(), null);
+        if (companyRepository.existsByCode(request.code().value())) {
+            throw new ConflictException("Company code already exists: " + request.code().value());
+        }
+        if (companyRepository.existsByShortName(request.shortName().value())) {
+            throw new ConflictException("Company short name already exists: " + request.shortName().value());
+        }
         CompanyEntity entity = companyMapper.toEntity(request, tenant);
         return companyMapper.toAdminCompany(companyRepository.save(entity));
     }
 
-    AdminCompany update(Integer id, CompanyRequest request) {
+    Optional<AdminCompany> update(Integer id, CompanyRequest request) {
         Optional<CompanyEntity> optional = companyRepository.findById(id);
         if (optional.isEmpty()) {
-            return null;
+            return Optional.empty();
         }
         TenantEntity tenant = findTenantOrThrow(request.tenantId());
-        checkUniqueCode(request.code().value(), id);
-        checkUniqueShortName(request.shortName().value(), id);
+        if (companyRepository.existsByCodeAndIdNot(request.code().value(), id)) {
+            throw new ConflictException("Company code already exists: " + request.code().value());
+        }
+        if (companyRepository.existsByShortNameAndIdNot(request.shortName().value(), id)) {
+            throw new ConflictException("Company short name already exists: " + request.shortName().value());
+        }
         CompanyEntity entity = optional.get();
         companyMapper.updateEntity(entity, request, tenant);
-        return companyMapper.toAdminCompany(companyRepository.save(entity));
+        return Optional.of(companyMapper.toAdminCompany(companyRepository.save(entity)));
     }
 
     void delete(Integer id) {
@@ -91,7 +98,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     List<TenantDto> getAllTenants() {
         return tenantRepository.findAll().stream()
-            .map(e -> new TenantDto(e.getName(), e.getTenantId()))
+            .map(companyMapper::toTenantDto)
             .toList();
     }
 
@@ -100,15 +107,4 @@ public class CompanyServiceImpl implements CompanyService {
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Tenant not found: " + tenantId));
     }
 
-    private void checkUniqueCode(String code, Integer selfId) {
-        if (companyRepository.existsByCodeAndIdNot(code, selfId != null ? selfId : -1)) {
-            throw new ConflictException("Company code already exists: " + code);
-        }
-    }
-
-    private void checkUniqueShortName(String shortName, Integer selfId) {
-        if (companyRepository.existsByShortNameAndIdNot(shortName, selfId != null ? selfId : -1)) {
-            throw new ConflictException("Company short name already exists: " + shortName);
-        }
-    }
 }

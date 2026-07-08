@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import ch.sbb.das.backend.PostgresTestContainerConfiguration;
+import ch.sbb.das.backend.common.ConflictException;
 import ch.sbb.das.backend.companies.Company;
 import ch.sbb.das.backend.companies.CompanyCode;
 import ch.sbb.das.backend.companies.CompanyShortName;
@@ -23,6 +24,8 @@ import org.springframework.test.context.jdbc.Sql;
 @Sql("classpath:createCompaniesAndTenants.sql")
 class CompanyServiceImplTest {
 
+    private static final String VALID_TENANT_ID = "2cda5d11-f0ac-46b3-967d-af1b2e1bd01a";
+
     @Autowired
     private CompanyServiceImpl underTest;
 
@@ -32,8 +35,8 @@ class CompanyServiceImplTest {
             .getTenantByIssuerUri("https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0");
         assertThat(tenant).isNotNull();
         assertThat(tenant.name()).isEqualTo("sbb");
-        assertThat(tenant.isAdmin()).isTrue();
-        assertThat(tenant.companies()).containsExactlyInAnyOrder(
+        assertThat(tenant.isAdminRoleAllowed()).isTrue();
+        assertThat(tenant.companies()).contains(
             new CompanyCode("1111"), new CompanyCode("2222"), new CompanyCode("3333"));
     }
 
@@ -59,8 +62,61 @@ class CompanyServiceImplTest {
     @Test
     void getAllCompanies() {
         List<Company> companies = underTest.getAllCompanies();
-        assertThat(companies).hasSize(4);
-        assertThat(companies).anyMatch(
-            c -> c.code().equals(new CompanyCode("1111")) && c.shortName().equals(new CompanyShortName("MOCK_A")));
+        assertThat(companies).hasSize(8);
+    }
+
+    @Test
+    void getAllTenants() {
+        List<TenantDto> tenants = underTest.getAllTenants();
+        assertThat(tenants).hasSize(2);
+        assertThat(tenants).anyMatch(t -> t.name().equals("sbb") && t.tenantId().equals("2cda5d11-f0ac-46b3-967d-af1b2e1bd01a"));
+        assertThat(tenants).anyMatch(t -> t.name().equals("unknown-tenant") && t.tenantId().equals("3409e798-d567-49b1-9bae-f0be66427c54"));
+    }
+
+    @Test
+    void create_conflict_duplicateCode() {
+        CompanyRequest request = new CompanyRequest(new CompanyCode("1111"), new CompanyShortName("UNIQUE"), VALID_TENANT_ID);
+        assertThatThrownBy(() -> underTest.create(request))
+            .isInstanceOf(ConflictException.class)
+            .hasMessageContaining("Company code already exists");
+    }
+
+    @Test
+    void create_conflict_duplicateShortName() {
+        CompanyRequest request = new CompanyRequest(new CompanyCode("NEW1"), new CompanyShortName("MOCK_A"), VALID_TENANT_ID);
+        assertThatThrownBy(() -> underTest.create(request))
+            .isInstanceOf(ConflictException.class)
+            .hasMessageContaining("Company short name already exists");
+    }
+
+    @Test
+    void update_conflict_duplicateCode() {
+        CompanyRequest request = new CompanyRequest(new CompanyCode("1111"), new CompanyShortName("UPD1"), VALID_TENANT_ID);
+        assertThatThrownBy(() -> underTest.update(900, request))
+            .isInstanceOf(ConflictException.class)
+            .hasMessageContaining("Company code already exists");
+    }
+
+    @Test
+    void update_conflict_duplicateShortName() {
+        CompanyRequest request = new CompanyRequest(new CompanyCode("8881"), new CompanyShortName("MOCK_A"), VALID_TENANT_ID);
+        assertThatThrownBy(() -> underTest.update(900, request))
+            .isInstanceOf(ConflictException.class)
+            .hasMessageContaining("Company short name already exists");
+    }
+
+    @Test
+    void update_allowsSameCodeForSameEntity() {
+        CompanyRequest request = new CompanyRequest(new CompanyCode("8881"), new CompanyShortName("RENAMED"), VALID_TENANT_ID);
+        Optional<AdminCompany> result = underTest.update(900, request);
+        assertThat(result).isPresent();
+        assertThat(result.get().shortName()).isEqualTo(new CompanyShortName("RENAMED"));
+    }
+
+    @Test
+    void update_notFound() {
+        CompanyRequest request = new CompanyRequest(new CompanyCode("XXXX"), new CompanyShortName("XXXX"), VALID_TENANT_ID);
+        Optional<AdminCompany> result = underTest.update(Integer.MAX_VALUE, request);
+        assertThat(result).isEmpty();
     }
 }

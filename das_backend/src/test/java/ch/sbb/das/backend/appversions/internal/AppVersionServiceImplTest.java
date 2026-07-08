@@ -106,13 +106,13 @@ class AppVersionServiceImplTest {
     @Test
     void create_checkUnique_throwsConflictExceptionWhenVersionExists() {
         AppVersionRequest request = new AppVersionRequest("1.5.0", true, LocalDate.now().plusDays(5));
-        when(appVersionRepository.existsByVersionAndIdNot("1.5.0", null)).thenReturn(true);
+        when(appVersionRepository.existsByVersion("1.5.0")).thenReturn(true);
 
         assertThatExceptionOfType(ConflictException.class)
             .isThrownBy(() -> underTest.create(request))
             .withMessage("Version already exists");
 
-        verify(appVersionRepository).existsByVersionAndIdNot("1.5.0", null);
+        verify(appVersionRepository).existsByVersion("1.5.0");
         verify(appVersionRepository, never()).save(any());
     }
 

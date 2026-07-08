@@ -9,7 +9,11 @@ interface CompanyRepository extends ListCrudRepository<CompanyEntity, Integer> {
 
     Optional<CompanyEntity> findByShortName(String shortName);
 
+    boolean existsByCode(String code);
+
     boolean existsByCodeAndIdNot(String code, Integer id);
+
+    boolean existsByShortName(String shortName);
 
     boolean existsByShortNameAndIdNot(String shortName, Integer id);
 

@@ -1,4 +1,4 @@
-INSERT INTO tenant(id, name, tenant_id, is_admin)
+INSERT INTO tenant(id, name, tenant_id, is_admin_role_allowed)
 VALUES (nextval('tenant_id_seq'), 'sbb', '2cda5d11-f0ac-46b3-967d-af1b2e1bd01a', TRUE),
        (nextval('tenant_id_seq'), 'sob', 'd653d01f-17a4-48a1-9aab-b780b61b4273', FALSE),
        (nextval('tenant_id_seq'), 'bls', 'a64ce5df-4ad8-40b9-91ee-54bac2bb8326', FALSE)

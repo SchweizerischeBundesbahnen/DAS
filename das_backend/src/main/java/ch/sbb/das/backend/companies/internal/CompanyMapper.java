@@ -22,9 +22,7 @@ class CompanyMapper {
 
     CompanyEntity toEntity(CompanyRequest request, TenantEntity tenant) {
         CompanyEntity entity = new CompanyEntity();
-        entity.setCode(request.code().value());
-        entity.setShortName(request.shortName().value());
-        entity.setTenant(tenant);
+        updateEntity(entity, request, tenant);
         return entity;
     }
 
@@ -42,8 +40,11 @@ class CompanyMapper {
         return new Tenant(
             entity.getName(),
             entity.getTenantId(),
-            entity.isAdmin(),
+            entity.isAdminRoleAllowed(),
             companies);
+    }
 
+    TenantDto toTenantDto(TenantEntity entity) {
+        return new TenantDto(entity.getName(), entity.getTenantId());
     }
 }

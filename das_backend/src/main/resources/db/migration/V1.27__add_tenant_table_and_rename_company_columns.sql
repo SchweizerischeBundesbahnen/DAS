@@ -1,9 +1,9 @@
 CREATE TABLE IF NOT EXISTS tenant
 (
-    id        INTEGER NOT NULL,
-    name      TEXT    NOT NULL,
-    tenant_id TEXT    NOT NULL,
-    is_admin  BOOLEAN NOT NULL DEFAULT FALSE
+    id                    INTEGER NOT NULL,
+    name                  TEXT    NOT NULL,
+    tenant_id             TEXT    NOT NULL,
+    is_admin_role_allowed BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 ALTER TABLE IF EXISTS tenant
