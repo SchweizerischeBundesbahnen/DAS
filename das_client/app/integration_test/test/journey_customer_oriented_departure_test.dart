@@ -71,9 +71,13 @@ void main() {
     expect(mockRepository.subscribedTrainNumbers.elementAt(1), 'T1M');
     expect(mockRepository.unsubscribeCallCount, 1);
 
-    // check that unsubscribe is called after journey close
+    // close journey
     await stopAutomaticAdvancement(tester);
     await tapElement(tester, find.byKey(JourneyPage.disconnectButtonKey));
+
+    // wait for unsubscribe to be called (it is called after the scope is popped, which is delayed by AppExpirationGuard)
+    await Future.delayed(Duration(seconds: 2));
+
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
     expect(mockRepository.unsubscribeCallCount, 2);
 

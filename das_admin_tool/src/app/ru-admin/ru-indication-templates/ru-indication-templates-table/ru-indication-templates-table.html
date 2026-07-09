@@ -1,22 +1,9 @@
-<form [formGroup]="form" class="search-language-header">
-  <sbb-form-field>
-    <input formControlName="search"
-           i18n-placeholder="@@ru_indication_templates_table_search_placeholder"
-           placeholder="Suchen" type="text"/>
-    <sbb-icon name="magnifying-glass-small" slot="suffix"></sbb-icon>
-  </sbb-form-field>
-  <sbb-form-field>
-    <sbb-icon name="globe-small" slot="prefix"></sbb-icon>
-    <label i18n="@@form_field_language_label">Sprache</label>
-    <sbb-select formControlName="language">
-      @for (language of languageProvider.allLanguages; track language.localeId) {
-        <sbb-option [value]="language.path">{{ language.label }}</sbb-option>
-      }
-    </sbb-select>
-  </sbb-form-field>
-</form>
+<app-table-search-header
+  [languageControl]="form.controls.language"
+  [searchControl]="form.controls.search"
+/>
 <sbb-table-wrapper>
-  <table [dataSource]="dataSource" class="table-truncated" fixedLayout sbb-table sbbSort
+  <table [dataSource]="dataSource" class="table-truncated table-uniform-2lines" fixedLayout sbb-table sbbSort
          sbbSortDirection="asc">
     <ng-container sbbColumnDef="select">
       <th *sbbHeaderCellDef sbb-header-cell style="width: 36px">
@@ -86,22 +73,10 @@
   </table>
 </sbb-table-wrapper>
 
-<div class="bottom">
-  <div class="left">
-    <sbb-compact-paginator [pageSize]="PAGE_SIZE"></sbb-compact-paginator>
-  </div>
-  <div class="right">
-    <sbb-secondary-button (click)="add()" i18n="@@button_create_entry"
-                          iconName="plus-small">Neuen Eintrag erfassen
-    </sbb-secondary-button>
-    <sbb-transparent-button (click)="deleteSelected()" [disabled]="this.selection.isEmpty()"
-                            [loading]="isDeleting"
-                            i18n="@@button_delete_selected_entries"
-                            iconName="trash-small">
-      {selection.selected.length, plural,
-        =0 {Einträge löschen}
-        one {Eintrag löschen}
-        other {{{ selection.selected.length }} Einträge löschen}}
-    </sbb-transparent-button>
-  </div>
-</div>
+<app-table-bottom-bar
+  (addClicked)="add()"
+  (deleteClicked)="deleteSelected()"
+  [deleteDisabled]="selection.isEmpty()"
+  [deleting]="isDeleting"
+  [selectedCount]="selection.selected.length"
+/>

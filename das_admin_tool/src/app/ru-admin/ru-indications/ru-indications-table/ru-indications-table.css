@@ -1,34 +1,13 @@
-.table-truncated .sbb-column-status {
-  width: 6rem;
-}
-
-.bottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-direction: row;
-  padding-block-start: var(--sbb-spacing-fixed-2x);
-
-  .left {
-    flex: 1;
+.table-truncated {
+  .sbb-column-status {
+    width: 6rem;
   }
 
-  .right {
-    display: flex;
-    gap: var(--sbb-spacing-fixed-4x);
-  }
-}
-
-.search-language-header {
-  display: flex;
-  gap: var(--sbb-spacing-fixed-8x);
-  padding-bottom: var(--sbb-spacing-fixed-8x);
-
-  sbb-form-field:first-child {
-    flex: 6;
+  .sbb-column-lastModifiedAt {
+    width: 8rem;
   }
 
-  sbb-form-field:last-child {
-    flex: 1;
+  .sbb-column-lastModifiedBy {
+    width: 12rem;
   }
 }

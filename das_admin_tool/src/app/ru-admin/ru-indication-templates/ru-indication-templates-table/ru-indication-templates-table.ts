@@ -5,21 +5,18 @@ import {
   SbbTableFilter,
   SbbTableModule
 } from '@sbb-esta/lyne-angular/table';
-import {SbbSecondaryButton} from '@sbb-esta/lyne-angular/button/secondary-button';
 import {RuIndicationTemplate} from '../../ru-admin-api';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {SbbCompactPaginator} from '@sbb-esta/lyne-angular/paginator/compact-paginator';
+import {startWith} from 'rxjs';
 import {RuIndicationTemplateService} from '../ru-indication-template.service';
 import {SbbMiniButton} from '@sbb-esta/lyne-angular/button/mini-button';
-import {SelectionModel} from '@angular/cdk/collections';
 import {SbbCheckboxModule} from '@sbb-esta/lyne-angular/checkbox';
-import {SbbFormFieldModule} from '@sbb-esta/lyne-angular/form-field';
-import {SbbIconModule} from '@sbb-esta/lyne-angular/icon';
-import {SbbSelectModule} from '@sbb-esta/lyne-angular/select';
-import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {SbbTransparentButton} from '@sbb-esta/lyne-angular/button/transparent-button';
+import {SelectionModel} from '@angular/cdk/collections';
+import {FormControl, FormGroup} from '@angular/forms';
 import {LanguageCode, LanguageProvider} from '../../../shared/language-provider';
 import {DatePipe} from '@angular/common';
+import {TableBottomBar} from '../../../shared/table-bottom-bar/table-bottom-bar';
+import {TableSearchHeader} from '../../../shared/table-search-header/table-search-header';
 
 interface RuIndicationTemplateFilter extends SbbTableFilter {
   search: string;
@@ -30,33 +27,27 @@ interface RuIndicationTemplateFilter extends SbbTableFilter {
   selector: 'app-ru-indication-templates-table',
   imports: [
     SbbTableModule,
-    SbbSecondaryButton,
-    SbbTransparentButton,
-    SbbCompactPaginator,
     SbbMiniButton,
     SbbCheckboxModule,
-    SbbFormFieldModule,
-    SbbIconModule,
-    SbbSelectModule,
-    ReactiveFormsModule,
-    DatePipe
+    DatePipe,
+    TableBottomBar,
+    TableSearchHeader,
   ],
   templateUrl: './ru-indication-templates-table.html',
   styleUrl: './ru-indication-templates-table.css',
 })
 export class RuIndicationTemplatesTable {
-  protected readonly languageProvider = inject(LanguageProvider);
   protected dataSource = new SbbTableDataSource<RuIndicationTemplate, RuIndicationTemplateFilter>();
   protected columns = ['select', 'category', 'title', 'text', 'lastModifiedAt', 'lastModifiedBy', 'action'];
   protected selection = new SelectionModel<RuIndicationTemplate>(true, []);
+  protected isDeleting = false;
+  private readonly languageProvider = inject(LanguageProvider);
   protected form = new FormGroup({
     search: new FormControl('', {nonNullable: true}),
     language: new FormControl(this.languageProvider.currentLanguage.path, {nonNullable: true})
   });
-  protected isDeleting = false;
-  protected readonly PAGE_SIZE = 20;
   private readonly ruIndicationTemplateService = inject(RuIndicationTemplateService);
-  private readonly paginator = viewChild.required<SbbCompactPaginator>(SbbCompactPaginator);
+  private readonly bottomBar = viewChild.required(TableBottomBar);
   private readonly sort = viewChild.required<SbbSort>(SbbSort);
 
   constructor() {
@@ -64,13 +55,13 @@ export class RuIndicationTemplatesTable {
       if (this.ruIndicationTemplateService.ruIndicationTemplatesResource.hasValue()) {
         this.dataSource.data = this.ruIndicationTemplateService.ruIndicationTemplatesResource.value().data;
       }
-      this.dataSource.paginator = this.paginator();
+      this.dataSource.paginator = this.bottomBar().paginator();
       this.dataSource.sort = this.sort();
     });
     this.dataSource.filterPredicate = (data: RuIndicationTemplate, filter: RuIndicationTemplateFilter) => this.searchFilter(filter, data);
     this.dataSource.sortingDataAccessor = (data, col) => this.getValue(data, col) ?? '';
     this.form.valueChanges
-      .pipe(takeUntilDestroyed())
+      .pipe(startWith(this.form.value), takeUntilDestroyed())
       .subscribe((form) => {
         this.dataSource.filter = form as RuIndicationTemplateFilter;
       });
@@ -93,9 +84,7 @@ export class RuIndicationTemplatesTable {
   }
 
   protected isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.filteredData.length;
-    return numSelected === numRows;
+    return this.selection.selected.length === this.dataSource.filteredData.length;
   }
 
   protected parentToggle() {
@@ -118,7 +107,12 @@ export class RuIndicationTemplatesTable {
   }
 
   private searchFilter(filter: RuIndicationTemplateFilter, data: RuIndicationTemplate) {
+    const language = filter.language;
+    if (language && !data[language]?.title) {
+      return false;
+    }
     const search = filter.search.toLowerCase();
+    if (!search) return true;
     return (
       this.getValue(data, 'title')?.toLowerCase().includes(search) ||
       this.getValue(data, 'text')?.toLowerCase().includes(search) ||

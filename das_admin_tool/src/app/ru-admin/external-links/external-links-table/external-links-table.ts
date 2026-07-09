@@ -1,54 +1,56 @@
-import { Component, effect, inject, LOCALE_ID, viewChild } from '@angular/core';
-import { SbbSort, SbbTableDataSource, SbbTableModule } from '@sbb-esta/lyne-angular/table';
-import { SbbCheckbox } from '@sbb-esta/lyne-angular/checkbox';
-import { ExternalLinksService } from '../external-links.service';
-import { SelectionModel } from '@angular/cdk/collections';
-import { SbbCompactPaginator } from '@sbb-esta/lyne-angular/paginator/compact-paginator';
-import { LanguageProvider } from '../../../shared/language-provider';
-import { DatePipe, formatDate } from '@angular/common';
-import { ExternalLink } from '../../ru-admin-api';
-import { SbbButtonModule } from '@sbb-esta/lyne-angular/button';
-import { SbbSelectModule } from '@sbb-esta/lyne-angular/select';
-import { SbbIcon } from '@sbb-esta/lyne-angular/icon';
-import { SbbFormField } from '@sbb-esta/lyne-angular/form-field';
-import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
+import {Component, effect, inject, LOCALE_ID, viewChild} from '@angular/core';
+import {
+  SbbSort,
+  SbbTableDataSource,
+  SbbTableFilter,
+  SbbTableModule
+} from '@sbb-esta/lyne-angular/table';
+import {SbbCheckbox} from '@sbb-esta/lyne-angular/checkbox';
+import {ExternalLinksService} from '../external-links.service';
+import {SelectionModel} from '@angular/cdk/collections';
+import {LanguageCode, LanguageProvider} from '../../../shared/language-provider';
+import {DatePipe, formatDate} from '@angular/common';
+import {ExternalLink} from '../../ru-admin-api';
+import {FormControl, FormGroup} from '@angular/forms';
+import {SbbMiniButton} from '@sbb-esta/lyne-angular/button/mini-button';
+import {TableBottomBar} from '../../../shared/table-bottom-bar/table-bottom-bar';
+import {TableSearchHeader} from '../../../shared/table-search-header/table-search-header';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {startWith} from 'rxjs';
+
+interface ExternalLinkFilter extends SbbTableFilter {
+  search: string;
+  language: LanguageCode;
+}
 
 @Component({
   selector: 'app-external-links-table',
   imports: [
     SbbTableModule,
     SbbCheckbox,
-    SbbButtonModule,
-    SbbCompactPaginator,
+    SbbMiniButton,
     DatePipe,
-    SbbSelectModule,
-    SbbIcon,
-    SbbFormField,
-    ReactiveFormsModule,
+    TableBottomBar,
+    TableSearchHeader,
   ],
   templateUrl: './external-links-table.html',
   styleUrl: './external-links-table.css',
 })
 export class ExternalLinksTable {
-  protected readonly languageProvider = inject(LanguageProvider);
-  private readonly externalLinksService = inject(ExternalLinksService);
-  private readonly localeId = inject(LOCALE_ID);
-  private readonly formBuilder = inject(NonNullableFormBuilder);
-
-  protected form = this.formBuilder.group({
-    language: [this.languageProvider.currentLanguage.path],
-  });
-
-  private readonly externalLinksResource = this.externalLinksService.externalLinksResource;
-
-  private readonly paginator = viewChild.required<SbbCompactPaginator>(SbbCompactPaginator);
-  private readonly sort = viewChild.required<SbbSort>(SbbSort);
-
-  protected dataSource = new SbbTableDataSource<ExternalLink>();
+  protected dataSource = new SbbTableDataSource<ExternalLink, ExternalLinkFilter>();
   protected columns = ['select', 'title', 'link', 'lastModifiedAt', 'lastModifiedBy', 'action'];
   protected selection = new SelectionModel<ExternalLink>(true, []);
-  protected readonly PAGE_SIZE = 20;
   protected isDeleting = false;
+  private readonly externalLinksService = inject(ExternalLinksService);
+  private readonly localeId = inject(LOCALE_ID);
+  private readonly languageProvider = inject(LanguageProvider);
+  protected form = new FormGroup({
+    search: new FormControl('', {nonNullable: true}),
+    language: new FormControl(this.languageProvider.currentLanguage.path, {nonNullable: true}),
+  });
+  private readonly externalLinksResource = this.externalLinksService.externalLinksResource;
+  private readonly sort = viewChild.required<SbbSort>(SbbSort);
+  private readonly bottomBar = viewChild.required(TableBottomBar);
 
   constructor() {
     effect(() => {
@@ -56,9 +58,10 @@ export class ExternalLinksTable {
         this.dataSource.data = this.externalLinksResource.value().data;
       }
 
-      this.dataSource.paginator = this.paginator();
+      this.dataSource.paginator = this.bottomBar().paginator();
       this.dataSource.sort = this.sort();
     });
+    this.dataSource.filterPredicate = (data: ExternalLink, filter: ExternalLinkFilter) => this.searchFilter(filter, data);
     this.dataSource.sortingDataAccessor = (data: ExternalLink, column: string) => {
       let value: string;
       switch (column) {
@@ -77,10 +80,15 @@ export class ExternalLinksTable {
       }
       return value;
     };
+    this.form.valueChanges
+      .pipe(startWith(this.form.value), takeUntilDestroyed())
+      .subscribe((form) => {
+        this.dataSource.filter = form as ExternalLinkFilter;
+      });
   }
 
   protected currentLanguage(externalLink: ExternalLink) {
-    return externalLink[this.form.get('language')!.value];
+    return externalLink[this.form.controls.language.value];
   }
 
   protected edit(externalLink: ExternalLink): void {
@@ -92,9 +100,7 @@ export class ExternalLinksTable {
   }
 
   protected isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.filteredData.length;
-    return numSelected === numRows;
+    return this.selection.selected.length === this.dataSource.filteredData.length;
   }
 
   protected parentToggle() {
@@ -109,12 +115,25 @@ export class ExternalLinksTable {
     if (this.isDeleting) return;
     this.isDeleting = true;
     try {
-      this.externalLinksService.deleteAllByIds(
-        this.selection.selected.map((externalLink) => externalLink.id!),
-      );
+      this.externalLinksService.deleteAllByIds(this.selection.selected.map((el) => el.id!));
       this.selection.clear();
     } finally {
       this.isDeleting = false;
     }
+  }
+
+  private searchFilter(filter: ExternalLinkFilter, data: ExternalLink): boolean {
+    const language = filter.language;
+    if (language && !data[language]?.title) {
+      return false;
+    }
+    const search = filter.search.toLowerCase();
+    if (!search) return true;
+    return (
+      this.currentLanguage(data)?.title?.toLowerCase().includes(search) ||
+      this.currentLanguage(data)?.link?.toLowerCase().includes(search) ||
+      data.lastModifiedBy?.toLowerCase().includes(search) ||
+      data.lastModifiedAt?.toString().toLowerCase().includes(search)
+    ) ?? false;
   }
 }

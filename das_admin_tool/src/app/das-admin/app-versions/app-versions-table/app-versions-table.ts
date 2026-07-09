@@ -1,34 +1,32 @@
-import { Component, effect, inject, viewChild } from '@angular/core';
-import { SbbSort, SbbTableDataSource, SbbTableModule } from "@sbb-esta/lyne-angular/table";
-import { SbbSecondaryButton } from "@sbb-esta/lyne-angular/button/secondary-button";
-import { AppVersion } from '../../das-admin-api';
-import { SbbCompactPaginator } from '@sbb-esta/lyne-angular/paginator/compact-paginator';
-import { DatePipe } from '@angular/common';
-import { SbbToggleCheckModule } from '@sbb-esta/lyne-angular/toggle-check';
-import { AppVersionsService } from '../app-versions.service';
-import { SbbMiniButton } from '@sbb-esta/lyne-angular/button/mini-button';
+import {Component, effect, inject, viewChild} from '@angular/core';
+import {SbbSort, SbbTableDataSource, SbbTableModule} from '@sbb-esta/lyne-angular/table';
+import {AppVersion} from '../../das-admin-api';
+import {DatePipe} from '@angular/common';
+import {SbbToggleCheckModule} from '@sbb-esta/lyne-angular/toggle-check';
+import {AppVersionsService} from '../app-versions.service';
+import {SbbMiniButton} from '@sbb-esta/lyne-angular/button/mini-button';
+import {TableBottomBar} from '../../../shared/table-bottom-bar/table-bottom-bar';
 
 @Component({
   selector: 'app-app-versions-table',
   imports: [
     SbbTableModule,
-    SbbSecondaryButton,
-    SbbCompactPaginator,
     DatePipe,
     SbbToggleCheckModule,
-    SbbMiniButton
+    SbbMiniButton,
+    TableBottomBar,
   ],
   templateUrl: './app-versions-table.html',
   styleUrl: './app-versions-table.css',
 })
 export class AppVersionsTable {
-  protected readonly PAGE_SIZE = 20;
+  protected readonly addLabel = $localize`:@@app_versions_button_create:App Version blockieren`;
 
   protected dataSource = new SbbTableDataSource<AppVersion>();
   protected columns = ['version', 'minimalVersion', 'expiryDate', 'lastModifiedAt', 'lastModifiedBy', 'action'];
   private readonly appVersionsService = inject(AppVersionsService);
 
-  private readonly paginator = viewChild.required<SbbCompactPaginator>(SbbCompactPaginator);
+  private readonly bottomBar = viewChild.required(TableBottomBar);
   private readonly sort = viewChild.required<SbbSort>(SbbSort);
 
   constructor() {
@@ -36,7 +34,7 @@ export class AppVersionsTable {
       if (this.appVersionsService.appVersionsResource.hasValue()) {
         this.dataSource.data = this.appVersionsService.appVersionsResource.value().data;
       }
-      this.dataSource.paginator = this.paginator();
+      this.dataSource.paginator = this.bottomBar().paginator();
       this.dataSource.sort = this.sort();
     });
   }
