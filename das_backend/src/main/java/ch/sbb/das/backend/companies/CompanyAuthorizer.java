@@ -65,7 +65,7 @@ public class CompanyAuthorizer {
         if (tenant == null) {
             return false;
         }
-        return tenant.isAdmin();
+        return companyService.isAdminTenant(tenant);
     }
 
     /**

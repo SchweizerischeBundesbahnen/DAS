@@ -35,7 +35,7 @@ import tools.jackson.databind.json.JsonMapper;
 class TrainIdentificationIntegrationTest {
 
     private static final int TEST_PERIOD_NUMBER_OF_DAYS = 10;
-    private static final CompanyCode COMPANY_CODE_MOCK_B = new CompanyCode("2222");
+    private static final CompanyCode COMPANY_CODE_SOB = new CompanyCode("9058");
 
     @Autowired
     private JsonMapper jsonMapper;
@@ -130,7 +130,7 @@ class TrainIdentificationIntegrationTest {
                 TrainIdentification trainId = trainIds.getFirst();
                 assertThat(trainId.startDateTime().atZoneSameInstant(SWISS_ZONE).toLocalDate()).isEqualTo(startDate);
                 assertThat(trainId.operationalTrainNumber()).isEqualTo("728");
-                assertThat(trainId.companies()).containsExactly(COMPANY_CODE_MOCK_B);
+                assertThat(trainId.companies()).containsExactly(COMPANY_CODE_SOB);
             });
 
         // When

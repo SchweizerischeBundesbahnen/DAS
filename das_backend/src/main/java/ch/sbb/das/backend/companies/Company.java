@@ -10,4 +10,7 @@ public record Company(
     CompanyShortName shortName
 ) {
 
+    public Company(String code, String shortName) {
+        this(new CompanyCode(code), new CompanyShortName(shortName));
+    }
 }
