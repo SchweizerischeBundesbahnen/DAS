@@ -80,7 +80,7 @@ jobs:
       working-directory: das_client/app/android
 
     - name: Upload and Run on Browserstack
-      uses: Grodien/browserstack-flutter-action@v1.5
+      uses: Grodien/browserstack-flutter-action@v1.6
       with:
         browserstackUsername: ${{ secrets.BROWSERSTACK_USERNAME }}
         browserstackAccessKey: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
