@@ -29,12 +29,8 @@ class JourneySelectionPage extends StatelessWidget implements AutoRouteWrapper {
   Widget wrappedRoute(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider<AppExpirationViewModel>(
-          create: (_) => DI.get<AppExpirationViewModel>(),
-        ),
-        Provider<JourneySelectionViewModel>(
-          create: (_) => DI.get<JourneySelectionViewModel>(),
-        ),
+        Provider<AppExpirationViewModel>.value(value: DI.get<AppExpirationViewModel>()),
+        Provider<JourneySelectionViewModel>.value(value: DI.get<JourneySelectionViewModel>()),
       ],
       child: this,
     );
@@ -59,13 +55,15 @@ class _Content extends StatefulWidget {
   State<_Content> createState() => _ContentState();
 }
 
-class _ContentState extends State<_Content> {
+class _ContentState extends State<_Content> with WidgetsBindingObserver {
   late StreamSubscription<JourneySelectionModel?> _subscription;
   late StreamSubscription<AppExpirationModel> _appExpirationSubscription;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+
     final viewModel = context.read<JourneySelectionViewModel>();
     _subscription = viewModel.model.listen((model) {
       if (model is Loaded && mounted) {
@@ -119,9 +117,19 @@ class _ContentState extends State<_Content> {
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _subscription.cancel();
     _appExpirationSubscription.cancel();
     super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      if (mounted) {
+        context.read<JourneySelectionViewModel>().refreshDatesIfDayChanged();
+      }
+    }
   }
 
   Widget _header(BuildContext context) {
