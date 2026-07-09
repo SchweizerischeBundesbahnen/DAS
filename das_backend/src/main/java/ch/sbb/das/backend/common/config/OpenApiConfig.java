@@ -34,9 +34,8 @@ public class OpenApiConfig {
 
     @Bean
     public OpenAPI openApiConfiguration() {
-        final String scope = getScope();
         return new OpenAPI().components(
-            new Components().addSecuritySchemes(OAUTH_2, addOAuthSecurityScheme(scope))
+            new Components().addSecuritySchemes(OAUTH_2, addOAuthSecurityScheme())
                 .addSchemas("ErrorResponse",
                     new Schema<Map<String, Object>>()
                         .addProperty("timestamp", new DateTimeSchema())
@@ -44,11 +43,7 @@ public class OpenApiConfig {
                         .addProperty("error", new StringSchema())
                         .addProperty("path", new StringSchema()))
 
-        ).security(List.of(new SecurityRequirement().addList(OAUTH_2, List.of(scope)))).info(apiInfo());
-    }
-
-    private String getScope() {
-        return "api://" + serviceName + "/.default";
+        ).security(List.of(new SecurityRequirement().addList(OAUTH_2))).info(apiInfo());
     }
 
     private Info apiInfo() {
@@ -56,9 +51,9 @@ public class OpenApiConfig {
         return new Info().title("DAS Backend API").version(versionInformation).contact(new Contact().name("DAS").url("https://github.com/SchweizerischeBundesbahnen/DAS"));
     }
 
-    private SecurityScheme addOAuthSecurityScheme(String scope) {
-        final Scopes scopes = new Scopes().addString(scope, "Global access");
-
+    private SecurityScheme addOAuthSecurityScheme() {
+        final Scopes scopes = new Scopes().addString("api://" + serviceName + "/.default", "Global access");
+        
         final OAuthFlows flowAuthorizationCode = new OAuthFlows()
             .authorizationCode(new OAuthFlow().authorizationUrl(authorizationUrl + "/authorize").tokenUrl(authorizationUrl + "/token").scopes(scopes))
             .clientCredentials(new OAuthFlow().tokenUrl(authorizationUrl + "/token").scopes(scopes));

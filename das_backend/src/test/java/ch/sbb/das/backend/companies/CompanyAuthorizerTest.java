@@ -24,15 +24,26 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 class CompanyAuthorizerTest {
 
     private static final CompanyCode COMPANY_A = new CompanyCode("2185");
-    private static final CompanyCode COMPANY_B = new CompanyCode("2585");
-    private static final String EXAMPLE_ISSUER_URL = "https://issuer.example/v2.0";
     private CompanyAuthorizer underTest;
+    private static final CompanyCode COMPANY_B = new CompanyCode("2585");
     private CompanyService companyService;
+    private static final String EXAMPLE_ISSUER_URL = "https://issuer.example/v2.0";
+
+    @BeforeEach
+    void setUp() {
+        companyService = Mockito.mock(CompanyService.class);
+        underTest = new CompanyAuthorizer(companyService);
+    }
 
     private static void mockSecurityContxt(Authentication auth) {
         SecurityContext securityContext = Mockito.mock(SecurityContext.class);
         Mockito.when(securityContext.getAuthentication()).thenReturn(auth);
         SecurityContextHolder.setContext(securityContext);
+    }
+
+    @AfterEach
+    void tearDown() {
+        SecurityContextHolder.clearContext();
     }
 
     private static JwtAuthenticationToken mockJwt() {
@@ -48,23 +59,8 @@ class CompanyAuthorizerTest {
         return new JwtAuthenticationToken(jwt);
     }
 
-    private static Tenant adminTenantWithCompanies(String name, Set<CompanyCode> companies) {
-        return new Tenant(name, "a0000000-0000-0000-0000-000000000000", true, companies);
-    }
-
     private static Tenant tenantWithCompanies(String name, Set<CompanyCode> companies) {
-        return new Tenant(name, "a0000000-0000-0000-0000-000000000000", false, companies);
-    }
-
-    @BeforeEach
-    void setUp() {
-        companyService = Mockito.mock(CompanyService.class);
-        underTest = new CompanyAuthorizer(companyService);
-    }
-
-    @AfterEach
-    void tearDown() {
-        SecurityContextHolder.clearContext();
+        return new Tenant(name, EXAMPLE_ISSUER_URL, "", companies);
     }
 
     @Test
@@ -187,24 +183,28 @@ class CompanyAuthorizerTest {
         Tenant tenant = tenantWithCompanies("sob", Set.of(new CompanyCode("9058")));
 
         when(companyService.getTenantByIssuerUri(EXAMPLE_ISSUER_URL)).thenReturn(tenant);
+        when(companyService.isAdminTenant(tenant)).thenReturn(false);
 
         boolean result = underTest.isAdminTenant();
 
         assertThat(result).isFalse();
         verify(companyService).getTenantByIssuerUri(EXAMPLE_ISSUER_URL);
+        verify(companyService).isAdminTenant(tenant);
     }
 
     @Test
     void isAdmin_returnsTrue_whenTenantIsAdminTenant() {
         mockSecurityContxt(mockJwt());
-        Tenant tenant = adminTenantWithCompanies("sbb", Set.of(COMPANY_A));
+        Tenant tenant = tenantWithCompanies("sbb", Set.of(COMPANY_A));
 
         when(companyService.getTenantByIssuerUri(EXAMPLE_ISSUER_URL)).thenReturn(tenant);
+        when(companyService.isAdminTenant(tenant)).thenReturn(true);
 
         boolean result = underTest.isAdminTenant();
 
         assertThat(result).isTrue();
         verify(companyService).getTenantByIssuerUri(EXAMPLE_ISSUER_URL);
+        verify(companyService).isAdminTenant(tenant);
     }
 
     @Test

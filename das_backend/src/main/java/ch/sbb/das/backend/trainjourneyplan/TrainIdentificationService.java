@@ -6,7 +6,6 @@ import ch.sbb.das.backend.companies.CompanyService;
 import ch.sbb.das.backend.companies.CompanyShortName;
 import ch.sbb.das.backend.trainjourneyplan.infrastructure.TrainIdentificationRepository;
 import ch.sbb.das.backend.trainjourneyplan.infrastructure.model.entities.TrainIdentificationEntity;
-import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.Comparator;
 import java.util.List;
@@ -36,18 +35,6 @@ public class TrainIdentificationService {
             .toList();
     }
 
-    public Set<CompanyCode> findCompanyCodesByStartDateAndTrainNumber(LocalDate startDate, String operationalTrainNumber) {
-        OffsetDateTime startFrom = startDate.atStartOfDay(DateTimeUtil.SWISS_ZONE).toOffsetDateTime();
-        OffsetDateTime startTo = startDate.plusDays(1).atStartOfDay(DateTimeUtil.SWISS_ZONE).toOffsetDateTime();
-        List<TrainIdentificationEntity> entities = trainIdentificationRepository
-            .findAllByStartDateTimeBetweenAndOperationalTrainNumber(startFrom, startTo, operationalTrainNumber);
-        return entities.stream()
-            .map(TrainIdentificationEntity::getCompanies)
-            .map(this::readCompanyCodes)
-            .flatMap(Set::stream)
-            .collect(Collectors.toSet());
-    }
-
     private TrainIdentification readEntity(TrainIdentificationEntity trainRunEntity) {
         return new TrainIdentification(trainRunEntity.getId(), trainRunEntity.getOperationalTrainNumber(), trainRunEntity.getStartDateTime(),
             readCompanyCodes(trainRunEntity.getCompanies()));
@@ -56,7 +43,7 @@ public class TrainIdentificationService {
     private Set<CompanyCode> readCompanyCodes(String companies) {
         return Set.of(companies.split(",")).stream()
             .map(CompanyShortName::new)
-            .map(companyService::findCompanyCodeByShortName)
+            .map(companyService::findCompanyCodeByCompanyShortName)
             .filter(Optional::isPresent)
             .map(Optional::get)
             .collect(Collectors.toSet());

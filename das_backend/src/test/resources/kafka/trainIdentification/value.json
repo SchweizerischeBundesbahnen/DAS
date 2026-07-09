@@ -25,7 +25,7 @@
           },
           "betr_zeit_an": 60,
           "betr_zeit_ab": 120,
-          "sms_evu": "MOCK_B",
+          "sms_evu": "SOB",
           "halt": {
             "haltezwecke": [
               "14"

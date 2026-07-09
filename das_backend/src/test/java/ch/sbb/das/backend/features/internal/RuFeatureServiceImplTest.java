@@ -25,8 +25,11 @@ class RuFeatureServiceImplTest {
 
     @Test
     void shouldGetAllRuFeatures() {
+        CompanyEntity companyEntity = new CompanyEntity();
+        companyEntity.setCodeRics("4444");
+
         RuFeatureEntity ruFeatureEntity = new RuFeatureEntity();
-        ruFeatureEntity.setCompanyCode(new CompanyCode("4444"));
+        ruFeatureEntity.setCompany(companyEntity);
         ruFeatureEntity.setKeyValue("CUSTOMER_ORIENTED_DEPARTURE_PROCESS");
         ruFeatureEntity.setEnabled(true);
 
