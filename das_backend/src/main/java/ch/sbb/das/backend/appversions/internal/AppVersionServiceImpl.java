@@ -52,7 +52,9 @@ public class AppVersionServiceImpl implements AppVersionService {
     }
 
     AppVersion create(AppVersionRequest createRequest) {
-        checkUniqueVersion(createRequest.version(), null);
+        if (appVersionRepository.existsByVersion(createRequest.version())) {
+            throw new ConflictException("Version already exists");
+        }
         AppVersion appVersion = new AppVersion(null, createRequest.version(), createRequest.minimalVersion(), createRequest.expiryDate());
         return appVersionRepository.save(AppVersionEntity.from(appVersion)).toAppVersion();
     }
@@ -62,7 +64,9 @@ public class AppVersionServiceImpl implements AppVersionService {
         if (optional.isEmpty()) {
             return null;
         }
-        checkUniqueVersion(updateRequest.version(), id);
+        if (appVersionRepository.existsByVersionAndIdNot(updateRequest.version(), id)) {
+            throw new ConflictException("Version already exists");
+        }
         AppVersion old = optional.get();
         AppVersion updated = new AppVersion(old.id(), updateRequest.version(), updateRequest.minimalVersion(), updateRequest.expiryDate());
         return appVersionRepository.save(AppVersionEntity.from(updated)).toAppVersion();
@@ -84,11 +88,6 @@ public class AppVersionServiceImpl implements AppVersionService {
         return appVersion.getMinimalVersion() && currentVersion.isLowerThan(new SemanticVersion(appVersion.getVersion()));
     }
 
-    private void checkUniqueVersion(String version, Integer selfId) {
-        if (appVersionRepository.existsByVersionAndIdNot(version, selfId)) {
-            throw new ConflictException("Version already exists");
-        }
-    }
 }
 
 

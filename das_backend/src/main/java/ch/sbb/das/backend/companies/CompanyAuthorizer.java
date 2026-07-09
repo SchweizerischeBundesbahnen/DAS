@@ -56,16 +56,16 @@ public class CompanyAuthorizer {
     }
 
     /**
-     * Checks whether the authenticated tenant is configured as an admin tenant.
+     * Checks whether the authenticated tenant is configured as an admin tenant and allows the admin role.
      *
      * @return {@code true} for admin tenants, otherwise {@code false}
      */
-    public boolean isAdminTenant() {
+    public boolean isAdminRoleAllowed() {
         Tenant tenant = getTenant();
         if (tenant == null) {
             return false;
         }
-        return companyService.isAdminTenant(tenant);
+        return tenant.isAdminRoleAllowed();
     }
 
     /**

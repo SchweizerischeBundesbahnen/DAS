@@ -132,6 +132,6 @@ public class ExternalLinkController {
         @RequestBody @Valid
         DeleteByIdsRequest deleteRequest) {
         externalLinkService.deleteAllById(deleteRequest.ids());
-        return ResponseEntity.noContent().build();
+        return ResponseEntityFactory.createNoContentResponse(requestId);
     }
 }

@@ -1,6 +1,6 @@
 package ch.sbb.das.backend.companies;
 
-import java.util.Map;
+import java.util.List;
 import java.util.Optional;
 import lombok.NonNull;
 
@@ -8,9 +8,8 @@ public interface CompanyService {
 
     Tenant getTenantByIssuerUri(@NonNull String issuerUri);
 
-    Optional<CompanyCode> findCompanyCodeByCompanyShortName(CompanyShortName shortName);
+    Optional<CompanyCode> findCompanyCodeByShortName(CompanyShortName shortName);
 
-    Map<CompanyCode, CompanyShortName> getAllCompanies();
+    List<Company> getAllCompanies();
 
-    boolean isAdminTenant(Tenant tenant);
 }
