@@ -7,7 +7,7 @@ import java.util.Set;
  *
  * @param name Display name
  * @param tenantId The Entra tenant ID
- * @param isAdminRoleAllowed Whether this tenant allows the admin role.
+ * @param isAdminRoleAllowed Whether users of this tenant are effectively allowed to perform admin operations.
  * @param companies Concrete railway undertakings (RU) managed by this organisation given as RICS codes.
  */
 public record Tenant(

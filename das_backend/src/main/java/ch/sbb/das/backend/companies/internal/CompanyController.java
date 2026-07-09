@@ -48,12 +48,12 @@ public class CompanyController {
 
     @GetMapping(API_COMPANIES)
     @Operation(summary = "Get all companies.", description = "Returns all companies (admin only).")
-    @ApiResponse(responseCode = "200", description = "Companies found.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = AdminCompanyResponse.class)))
+    @ApiResponse(responseCode = "200", description = "Companies found.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = InternalCompanyResponse.class)))
     @ApiErrorResponses
     public ResponseEntity<? extends Response> getAllCompanies(
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
-        List<AdminCompany> companies = companyService.getAllAdminCompanies();
-        return ResponseEntityFactory.createOkResponse(new AdminCompanyResponse(companies), requestId);
+        List<InternalCompany> companies = companyService.getAllAdminCompanies();
+        return ResponseEntityFactory.createOkResponse(new InternalCompanyResponse(companies), requestId);
     }
 
     @GetMapping(API_COMPANIES_AUTHORIZED)
@@ -72,42 +72,42 @@ public class CompanyController {
 
     @GetMapping(API_COMPANIES_ID)
     @Operation(summary = "Get company by id.", description = "Returns a single company by its id.")
-    @ApiResponse(responseCode = "200", description = "Company found.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = AdminCompanyResponse.class)))
+    @ApiResponse(responseCode = "200", description = "Company found.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = InternalCompanyResponse.class)))
     @ApiResponse(responseCode = "404", description = "Company not found.")
     @ApiErrorResponses
     public ResponseEntity<? extends Response> getCompanyById(
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
         @PathVariable Integer id) {
-        Optional<AdminCompany> company = companyService.getById(id);
+        Optional<InternalCompany> company = companyService.getById(id);
         if (company.isPresent()) {
-            return ResponseEntityFactory.createOkResponse(new AdminCompanyResponse(company.get()), requestId);
+            return ResponseEntityFactory.createOkResponse(new InternalCompanyResponse(company.get()), requestId);
         }
         return ResponseEntityFactory.createNotFoundResponse(requestId, null);
     }
 
     @PostMapping(API_COMPANIES)
     @Operation(summary = "Create a new company.", description = "Creates a new company entry assigned to a tenant.")
-    @ApiResponse(responseCode = "201", description = "Company created.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = AdminCompanyResponse.class)))
+    @ApiResponse(responseCode = "201", description = "Company created.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = InternalCompanyResponse.class)))
     @ApiErrorResponses
     public ResponseEntity<? extends Response> createCompany(
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
         @RequestBody @Valid CompanyRequest createRequest) {
-        AdminCompany company = companyService.create(createRequest);
-        return ResponseEntityFactory.createCreatedResponse(new AdminCompanyResponse(company), requestId);
+        InternalCompany company = companyService.create(createRequest);
+        return ResponseEntityFactory.createCreatedResponse(new InternalCompanyResponse(company), requestId);
     }
 
     @PutMapping(API_COMPANIES_ID)
     @Operation(summary = "Update company by id.", description = "Updates a company by its id.")
-    @ApiResponse(responseCode = "200", description = "Company updated.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = AdminCompanyResponse.class)))
+    @ApiResponse(responseCode = "200", description = "Company updated.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = InternalCompanyResponse.class)))
     @ApiResponse(responseCode = "404", description = "Company not found.")
     @ApiErrorResponses
     public ResponseEntity<? extends Response> updateCompany(
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
         @PathVariable Integer id,
         @RequestBody @Valid CompanyRequest updateRequest) {
-        Optional<AdminCompany> company = companyService.update(id, updateRequest);
+        Optional<InternalCompany> company = companyService.update(id, updateRequest);
         if (company.isPresent()) {
-            return ResponseEntityFactory.createOkResponse(new AdminCompanyResponse(company.orElse(null)), requestId);
+            return ResponseEntityFactory.createOkResponse(new InternalCompanyResponse(company.orElse(null)), requestId);
         }
         return ResponseEntityFactory.createNotFoundResponse(requestId, null);
     }

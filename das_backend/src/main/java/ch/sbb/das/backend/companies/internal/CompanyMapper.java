@@ -15,8 +15,8 @@ class CompanyMapper {
         return new Company(new CompanyCode(entity.getCode()), new CompanyShortName(entity.getShortName()));
     }
 
-    AdminCompany toAdminCompany(CompanyEntity entity) {
-        return new AdminCompany(entity.getId(), new CompanyCode(entity.getCode()),
+    InternalCompany toAdminCompany(CompanyEntity entity) {
+        return new InternalCompany(entity.getId(), new CompanyCode(entity.getCode()),
             new CompanyShortName(entity.getShortName()));
     }
 

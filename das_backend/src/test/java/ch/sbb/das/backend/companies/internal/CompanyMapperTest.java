@@ -30,7 +30,7 @@ class CompanyMapperTest {
         entity.setCode("1185");
         entity.setShortName("BLS");
 
-        AdminCompany result = mapper.toAdminCompany(entity);
+        InternalCompany result = mapper.toAdminCompany(entity);
 
         assertThat(result.id()).isEqualTo(42);
         assertThat(result.code()).isEqualTo(new CompanyCode("1185"));

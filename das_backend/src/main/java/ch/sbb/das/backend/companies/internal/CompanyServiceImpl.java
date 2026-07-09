@@ -52,18 +52,18 @@ public class CompanyServiceImpl implements CompanyService {
             .orElseThrow(() -> new IllegalArgumentException("unknown tenant"));
     }
 
-    List<AdminCompany> getAllAdminCompanies() {
+    List<InternalCompany> getAllAdminCompanies() {
         return companyRepository.findAll().stream()
             .map(companyMapper::toAdminCompany)
             .toList();
     }
 
-    Optional<AdminCompany> getById(Integer id) {
+    Optional<InternalCompany> getById(Integer id) {
         return companyRepository.findById(id)
             .map(companyMapper::toAdminCompany);
     }
 
-    AdminCompany create(CompanyRequest request) {
+    InternalCompany create(CompanyRequest request) {
         TenantEntity tenant = findTenantOrThrow(request.tenantId());
         if (companyRepository.existsByCode(request.code().value())) {
             throw new ConflictException("Company code already exists: " + request.code().value());
@@ -75,7 +75,7 @@ public class CompanyServiceImpl implements CompanyService {
         return companyMapper.toAdminCompany(companyRepository.save(entity));
     }
 
-    Optional<AdminCompany> update(Integer id, CompanyRequest request) {
+    Optional<InternalCompany> update(Integer id, CompanyRequest request) {
         Optional<CompanyEntity> optional = companyRepository.findById(id);
         if (optional.isEmpty()) {
             return Optional.empty();

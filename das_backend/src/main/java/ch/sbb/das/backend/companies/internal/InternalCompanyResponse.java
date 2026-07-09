@@ -5,11 +5,11 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 
-public record AdminCompanyResponse(
-    @ArraySchema(arraySchema = @Schema(requiredMode = Schema.RequiredMode.REQUIRED)) List<AdminCompany> data)
-    implements ApiResponse<AdminCompany> {
+public record InternalCompanyResponse(
+    @ArraySchema(arraySchema = @Schema(requiredMode = Schema.RequiredMode.REQUIRED)) List<InternalCompany> data)
+    implements ApiResponse<InternalCompany> {
 
-    public AdminCompanyResponse(AdminCompany single) {
+    public InternalCompanyResponse(InternalCompany single) {
         this(List.of(single));
     }
 }
