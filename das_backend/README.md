@@ -13,7 +13,8 @@ SpringBoot application (needs PostgreSQL DB dockerized, s. [Database handling](D
    - or a {MODULE_WORKING_DIR}\.env file
    - Add `Maven-Settings -> Runner` -> `Environment variables` (missing URLs/secrets as in .env)
      or run maven with `-DskipSchemaDownload`
-3. Run `DASBackendApplication`
+3. Start a local DB via `podman compose up` or `docker-compose up` (alternatively, this can be configured a pre launch task in IntelliJ with Podman as server configured)
+4. Run `DASBackendApplication`
 
 Hints for Windows-Users:
 
