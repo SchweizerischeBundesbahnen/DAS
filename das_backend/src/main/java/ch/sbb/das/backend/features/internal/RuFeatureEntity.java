@@ -1,21 +1,24 @@
 package ch.sbb.das.backend.features.internal;
 
 import ch.sbb.das.backend.common.EntityBase;
+import ch.sbb.das.backend.companies.CompanyCode;
+import ch.sbb.das.backend.companies.CompanyCodeConverter;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Getter
 @Setter
-@Entity(name = "ru_feature")
+@Entity
+@Table(name = "ru_feature")
 @EntityListeners(AuditingEntityListener.class)
 public class RuFeatureEntity extends EntityBase {
 
@@ -24,9 +27,8 @@ public class RuFeatureEntity extends EntityBase {
     @SequenceGenerator(name = "ru_feature_id_seq", allocationSize = 1)
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "company_id")
-    private CompanyEntity company;
+    @Convert(converter = CompanyCodeConverter.class)
+    private CompanyCode companyCode;
 
     private String keyValue;
 

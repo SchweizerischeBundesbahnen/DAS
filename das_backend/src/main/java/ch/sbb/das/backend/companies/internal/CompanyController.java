@@ -9,50 +9,126 @@ import ch.sbb.das.backend.common.ResponseEntityFactory;
 import ch.sbb.das.backend.companies.Company;
 import ch.sbb.das.backend.companies.CompanyAuthorizer;
 import ch.sbb.das.backend.companies.CompanyCode;
-import ch.sbb.das.backend.companies.CompanyService;
-import ch.sbb.das.backend.companies.CompanyShortName;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@Tag(name = "Companies", description = "API for companies available to the authenticated user.")
+@RequiredArgsConstructor
+@Tag(name = "Companies", description = "Admin API for managing companies.")
 public class CompanyController {
 
     private static final String PATH_SEGMENT_COMPANIES = "/companies";
     public static final String API_COMPANIES = ApiDocumentation.ADMIN_URI + PATH_SEGMENT_COMPANIES;
+    static final String API_COMPANIES_ID = API_COMPANIES + "/{id}";
+    static final String API_COMPANIES_AUTHORIZED = API_COMPANIES + "/authorized";
+    private static final String PATH_SEGMENT_TENANTS = "/tenants";
+    public static final String API_TENANTS = ApiDocumentation.ADMIN_URI + PATH_SEGMENT_TENANTS;
 
-    private final CompanyService companyService;
+    private final CompanyServiceImpl companyService;
     private final CompanyAuthorizer companyAuthorizer;
 
-    public CompanyController(CompanyService companyService, CompanyAuthorizer companyAuthorizer) {
-        this.companyService = companyService;
-        this.companyAuthorizer = companyAuthorizer;
-    }
-
     @GetMapping(API_COMPANIES)
-    @Operation(summary = "Get companies.", description = "Returns the companies available to the authenticated user.")
-    @ApiResponse(responseCode = "200", description = "Companies found.",
-        content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = CompanyResponse.class)))
+    @Operation(summary = "Get all companies.", description = "Returns all companies (admin only).")
+    @ApiResponse(responseCode = "200", description = "Companies found.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = AdminCompanyResponse.class)))
     @ApiErrorResponses
     public ResponseEntity<? extends Response> getAll(
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
-        Map<CompanyCode, CompanyShortName> uicMap = companyService.getAllCompanies();
-        List<Company> companies = companyAuthorizer.authorizedCompanies().stream()
-            .filter(uicMap::containsKey)
-            .map(code -> new Company(code.value(), uicMap.get(code).value()))
+        List<AdminCompany> companies = companyService.getAllAdminCompanies();
+        return ResponseEntityFactory.createOkResponse(new AdminCompanyResponse(companies), requestId);
+    }
+
+    @GetMapping(API_COMPANIES_AUTHORIZED)
+    @Operation(summary = "Get authorized companies.", description = "Returns the companies the authenticated tenant is authorized for.")
+    @ApiResponse(responseCode = "200", description = "Companies found.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = CompanyResponse.class)))
+    @ApiErrorResponses
+    public ResponseEntity<? extends Response> getAuthorized(
+        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
+        Set<CompanyCode> authorizedCodes = companyAuthorizer.authorizedCompanies();
+        List<Company> companies = companyService.getAllCompanies().stream()
+            .filter(company -> authorizedCodes.contains(company.code()))
             .sorted(Comparator.comparing(Company::shortName))
             .toList();
         return ResponseEntityFactory.createOkResponse(new CompanyResponse(companies), requestId);
+    }
+
+    @GetMapping(API_COMPANIES_ID)
+    @Operation(summary = "Get company by id.", description = "Returns a single company by its id.")
+    @ApiResponse(responseCode = "200", description = "Company found.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = AdminCompanyResponse.class)))
+    @ApiResponse(responseCode = "404", description = "Company not found.")
+    @ApiErrorResponses
+    public ResponseEntity<? extends Response> getById(
+        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
+        @PathVariable Integer id) {
+        AdminCompany company = companyService.getById(id);
+        if (company == null) {
+            return ResponseEntityFactory.createNotFoundResponse(requestId, null);
+        }
+        return ResponseEntityFactory.createOkResponse(new AdminCompanyResponse(company), requestId);
+    }
+
+    @PostMapping(API_COMPANIES)
+    @Operation(summary = "Create a new company.", description = "Creates a new company entry assigned to a tenant.")
+    @ApiResponse(responseCode = "201", description = "Company created.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = AdminCompanyResponse.class)))
+    @ApiErrorResponses
+    public ResponseEntity<AdminCompanyResponse> create(
+        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
+        @RequestBody @Valid CompanyRequest createRequest) {
+        AdminCompany company = companyService.create(createRequest);
+        return ResponseEntityFactory.createCreatedResponse(new AdminCompanyResponse(company), requestId);
+    }
+
+    @PutMapping(API_COMPANIES_ID)
+    @Operation(summary = "Update company by id.", description = "Updates a company by its id.")
+    @ApiResponse(responseCode = "200", description = "Company updated.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = AdminCompanyResponse.class)))
+    @ApiResponse(responseCode = "404", description = "Company not found.")
+    @ApiErrorResponses
+    public ResponseEntity<? extends Response> update(
+        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
+        @PathVariable Integer id,
+        @RequestBody @Valid CompanyRequest updateRequest) {
+        AdminCompany company = companyService.update(id, updateRequest);
+        if (company == null) {
+            return ResponseEntityFactory.createNotFoundResponse(requestId, null);
+        }
+        return ResponseEntityFactory.createOkResponse(new AdminCompanyResponse(company), requestId);
+    }
+
+    @DeleteMapping(API_COMPANIES_ID)
+    @Operation(summary = "Delete company by id.", description = "Deletes a company by its id.")
+    @ApiResponse(responseCode = "204", description = "Company deleted.")
+    @ApiResponse(responseCode = "404", description = "Company not found.")
+    @ApiErrorResponses
+    public ResponseEntity<? extends Response> delete(
+        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
+        @PathVariable Integer id) {
+        companyService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping(API_TENANTS)
+    @Operation(summary = "Get tenants.", description = "Returns all available tenants for selection.")
+    @ApiResponse(responseCode = "200", description = "Tenants found.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = TenantResponse.class)))
+    @ApiErrorResponses
+    public ResponseEntity<? extends Response> getAllTenants(
+        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
+        return ResponseEntityFactory.createOkResponse(new TenantResponse(companyService.getAllTenants()), requestId);
     }
 }

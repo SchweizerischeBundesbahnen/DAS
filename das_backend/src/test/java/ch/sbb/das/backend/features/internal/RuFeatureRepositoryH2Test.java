@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.sbb.das.backend.AuditorAwareTestImpl;
 import ch.sbb.das.backend.JpaAuditingConfiguration;
 import ch.sbb.das.backend.PersistenceH2TestProfile;
+import ch.sbb.das.backend.companies.CompanyCode;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.Disabled;
@@ -34,8 +35,7 @@ class RuFeatureRepositoryH2Test {
         RuFeatureEntity entity = underTest.findAll().getFirst();
         assertThat(entity).isNotNull();
         assertThat(entity.getId()).isEqualTo(1);
-        assertThat(entity.getCompany().getCodeRics()).isEqualTo("1111");
-        assertThat(entity.getCompany().getShortNameZis()).isEqualTo("SHORT1");
+        assertThat(entity.getCompanyCode()).isEqualTo(new CompanyCode("1111"));
         assertThat(entity.getKeyValue()).isEqualTo(RuFeatureKey.CHECKLIST_DEPARTURE_PROCESS.name());
         assertThat(entity.isEnabled()).isTrue();
         assertThat(entity.getLastModifiedBy()).as("JpaAuditing introduced").isEqualTo(AuditorAwareTestImpl.LAST_MODIFIED_BY);
@@ -52,9 +52,7 @@ class RuFeatureRepositoryH2Test {
         RuFeatureEntity entity = entityManager.find(RuFeatureEntity.class, 1);
         assertThat(entity).isNotNull();
         assertThat(entity.getId()).isEqualTo(1);
-        assertThat(entity.getCompany().getCodeRics()).isEqualTo("1111");
-        assertThat(entity.getCompany().getShortNameZis()).isEqualTo("SHORT1");
-
+        assertThat(entity.getCompanyCode()).isEqualTo(new CompanyCode("1111"));
         assertThat(entity.getKeyValue()).isEqualTo(RuFeatureKey.CHECKLIST_DEPARTURE_PROCESS.name());
         assertThat(entity.isEnabled()).isFalse();
         assertThat(entity.getLastModifiedBy()).as("JpaAuditing introduced").isEqualTo(AuditorAwareTestImpl.LAST_MODIFIED_BY);
@@ -63,10 +61,8 @@ class RuFeatureRepositoryH2Test {
 
     @Test
     void ruFeaturesCanBeCreated() {
-        CompanyEntity company = entityManager.find(CompanyEntity.class, 2);
-
         RuFeatureEntity entityToCreate = new RuFeatureEntity();
-        entityToCreate.setCompany(company);
+        entityToCreate.setCompanyCode(new CompanyCode("2222"));
         entityToCreate.setKeyValue("FEATURE2");
         entityToCreate.setEnabled(true);
         underTest.save(entityToCreate);
@@ -75,9 +71,7 @@ class RuFeatureRepositoryH2Test {
         RuFeatureEntity entity = entityManager.find(RuFeatureEntity.class, 2);
         assertThat(entity).isNotNull();
         assertThat(entity.getId()).as("next free sequence").isEqualTo(2);
-        assertThat(entity.getCompany().getId()).as("sequence").isEqualTo(2);
-        assertThat(entity.getCompany().getCodeRics()).isEqualTo("2222");
-        assertThat(entity.getCompany().getShortNameZis()).isEqualTo("SHORT2");
+        assertThat(entity.getCompanyCode()).isEqualTo(new CompanyCode("2222"));
         assertThat(entity.getKeyValue()).isEqualTo("FEATURE2");
         assertThat(entity.isEnabled()).isTrue();
         assertThat(entity.getLastModifiedBy()).as("JpaAuditing introduced").isEqualTo(AuditorAwareTestImpl.LAST_MODIFIED_BY);
