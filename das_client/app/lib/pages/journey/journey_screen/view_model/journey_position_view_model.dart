@@ -53,7 +53,7 @@ class JourneyPositionViewModel {
         CombineLatestStream.combine4(
           journeyStream,
           punctualityStream,
-          _rxTimedServicePointReached,
+          _rxTimedServicePointReached.distinct(),
           _rxManualPosition,
           (a, b, c, d) => (a, b, c, d),
         ).listen((data) async {
