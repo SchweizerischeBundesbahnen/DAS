@@ -30,6 +30,7 @@ import 'package:logging/logging.dart';
 import 'package:mqtt/component.dart';
 import 'package:preload/component.dart';
 import 'package:ru_indications/component.dart';
+import 'package:train_identification/component.dart';
 import 'package:settings/component.dart';
 import 'package:sfera/component.dart';
 
@@ -60,6 +61,7 @@ class AuthenticatedScope extends DIScope {
     getIt.registerCustomerOrientedDepartureRepository(inTmsScope: inTmsScope);
     getIt.registerExternalLinksRepository();
     getIt.registerRuIndicationsRepository();
+    getIt.registerTrainIdentificationRepository();
     getIt.registerTimedRouteProvider();
 
     getIt.registerSferaJourneyViewModel();
@@ -203,6 +205,13 @@ extension AuthenticatedScopeExtension on GetIt {
     final flavor = DI.get<Flavor>();
     registerSingleton<RuIndicationsRepository>(
       RuIndicationsComponent.createRepository(baseUrl: flavor.backendUrl, client: DI.get()),
+    );
+  }
+
+  void registerTrainIdentificationRepository() {
+    final flavor = DI.get<Flavor>();
+    registerSingleton<TrainIdentificationRepository>(
+      TrainIdentificationComponent.createRepository(baseUrl: flavor.backendUrl, client: DI.get()),
     );
   }
 
