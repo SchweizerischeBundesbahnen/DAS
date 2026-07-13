@@ -2,7 +2,7 @@ package ch.sbb.das.backend.trainjourneyplan.application;
 
 import ch.sbb.das.backend.trainjourneyplan.application.converter.TimetableConverter;
 import ch.sbb.das.backend.trainjourneyplan.application.model.trainidentification.Train;
-import ch.sbb.das.backend.trainjourneyplan.infrastructure.TrainRunDAO;
+import ch.sbb.das.backend.trainjourneyplan.infrastructure.TrainIdentificationBatchWriter;
 import ch.sbb.das.backend.trainjourneyplan.infrastructure.model.train.TimetableTrainKey;
 import ch.sbb.das.backend.trainjourneyplan.infrastructure.model.train.TimetableTrainValue;
 import java.time.LocalDate;
@@ -19,11 +19,11 @@ public class TimetableService {
     public static final String UPDATE_EVENT_TYPE = "UPDATE";
     public static final String DELETE_EVENT_TYPE = "DELETE";
 
-    private final TrainRunDAO trainRunDao;
+    private final TrainIdentificationBatchWriter trainIdentificationBatchWriter;
     private final TimetableConverter timetableConverter;
 
-    public TimetableService(TrainRunDAO trainRunDao, TimetableConverter timetableConverter) {
-        this.trainRunDao = trainRunDao;
+    public TimetableService(TrainIdentificationBatchWriter trainIdentificationBatchWriter, TimetableConverter timetableConverter) {
+        this.trainIdentificationBatchWriter = trainIdentificationBatchWriter;
         this.timetableConverter = timetableConverter;
     }
 
@@ -42,12 +42,12 @@ public class TimetableService {
             .filter(it -> it.getEventType().equals(UPDATE_EVENT_TYPE))
             .toList();
 
-        trainRunDao.deleteAll(trainsToDelete);
-        trainRunDao.upsertAllTrains(trainsToUpdate);
+        trainIdentificationBatchWriter.deleteAll(trainsToDelete);
+        trainIdentificationBatchWriter.upsertAllTrains(trainsToUpdate);
     }
 
     @Transactional
     public void deleteAllBefore(LocalDate cutoffDate) {
-        trainRunDao.deleteAllOlderThan(cutoffDate);
+        trainIdentificationBatchWriter.deleteAllOlderThan(cutoffDate);
     }
 }

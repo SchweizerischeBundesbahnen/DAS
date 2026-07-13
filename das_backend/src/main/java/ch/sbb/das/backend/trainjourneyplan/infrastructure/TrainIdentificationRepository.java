@@ -11,6 +11,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+/**
+ * JPA repository for reading and querying the {@code train_identification} table.
+ *
+ * <p>Also provides targeted field updates such as marking entries as preloaded
+ * ({@link #updatePreloadedAtByIds}).
+ *
+ * <p>For high-throughput batch writes (upserts and bulk deletes), see {@link TrainIdentificationBatchWriter}.
+ */
 @Repository
 public interface TrainIdentificationRepository extends JpaRepository<TrainIdentificationEntity, Long> {
 
