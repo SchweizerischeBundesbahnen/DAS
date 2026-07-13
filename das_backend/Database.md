@@ -29,9 +29,7 @@ of an applied breaking change are possible but tricky — avoid needing them in 
 
 ## SQL conventions
 
-Write SQL in a dialect broad enough to run on both engines this project targets:
-* **PostgreSQL** — the real runtime database.
-* **H2** — an in-memory database used only for unit tests.
+Write SQL in a broad dialect to avert vendor lock in.
 
 ### SQL DDL
 
@@ -40,7 +38,7 @@ Write SQL in a dialect broad enough to run on both engines this project targets:
 * Every table has a numeric `id` column as its PRIMARY KEY.
 * **Every constraint is named explicitly**, prefixed with the table name. Relying on
   auto-generated names makes them painful to find and `DROP` later.
-* Timestamp columns use `TIMESTAMP WITH TIME ZONE` and store values in UTC, named with an `_at`
+* Optional: Timestamp columns use `TIMESTAMP WITH TIME ZONE` and store values in UTC, named with an `_at`
   suffix (e.g. `created_at`, `updated_at`). This avoids ambiguity once data crosses time zones —
   relevant for a system that talks to Swiss railway infrastructure over SFERA.
 * A table only ever belongs to the [module](ARCHITECTURE.md) that owns it. Per the
