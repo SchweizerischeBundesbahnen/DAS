@@ -5,9 +5,9 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 
-record TrainIdentificationCompanyResponse(
+record CompanyMatchResponse(
     @ArraySchema(arraySchema = @Schema(requiredMode = Schema.RequiredMode.REQUIRED))
-    List<TrainIdentificationCompany> data
-) implements ApiResponse<TrainIdentificationCompany> {
+    List<CompanyMatch> data
+) implements ApiResponse<CompanyMatch> {
 
 }

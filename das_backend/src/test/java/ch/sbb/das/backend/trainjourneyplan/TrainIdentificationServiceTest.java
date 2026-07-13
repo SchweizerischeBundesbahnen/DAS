@@ -11,7 +11,7 @@ import ch.sbb.das.backend.companies.Company;
 import ch.sbb.das.backend.companies.CompanyCode;
 import ch.sbb.das.backend.companies.CompanyService;
 import ch.sbb.das.backend.companies.CompanyShortName;
-import ch.sbb.das.backend.trainjourneyplan.infrastructure.TrainIdentificationCompany;
+import ch.sbb.das.backend.trainjourneyplan.infrastructure.CompanyMatch;
 import ch.sbb.das.backend.trainjourneyplan.infrastructure.TrainIdentificationRepository;
 import ch.sbb.das.backend.trainjourneyplan.infrastructure.model.entities.TrainIdentificationEntity;
 import java.time.LocalDate;
@@ -65,7 +65,7 @@ class TrainIdentificationServiceTest {
         when(companyService.getAllCompanies()).thenReturn(List.of(companyA, companyB));
 
         // When
-        List<TrainIdentificationCompany> result = underTest
+        List<CompanyMatch> result = underTest
             .findCompaniesByStartDatesAndTrainNumber(startDates, trainNumber);
 
         // Then
@@ -108,7 +108,7 @@ class TrainIdentificationServiceTest {
         when(companyService.getAllCompanies()).thenReturn(List.of(companyA, companyB));
 
         // When
-        List<TrainIdentificationCompany> result = underTest
+        List<CompanyMatch> result = underTest
             .findCompaniesByStartDatesAndTrainNumber(startDates, trainNumber);
 
         // Then
@@ -144,7 +144,7 @@ class TrainIdentificationServiceTest {
         when(companyService.getAllCompanies()).thenReturn(List.of(companyA));
 
         // When
-        List<TrainIdentificationCompany> result = underTest
+        List<CompanyMatch> result = underTest
             .findCompaniesByStartDatesAndTrainNumber(startDates, trainNumber);
 
         // Then
@@ -177,7 +177,7 @@ class TrainIdentificationServiceTest {
         when(companyService.getAllCompanies()).thenReturn(List.of());
 
         // When
-        List<TrainIdentificationCompany> result = underTest
+        List<CompanyMatch> result = underTest
             .findCompaniesByStartDatesAndTrainNumber(startDates, trainNumber);
 
         // Then
@@ -298,7 +298,7 @@ class TrainIdentificationServiceTest {
         when(companyService.getAllCompanies()).thenReturn(List.of());
 
         // When
-        List<TrainIdentificationCompany> result = underTest
+        List<CompanyMatch> result = underTest
             .findCompaniesByStartDatesAndTrainNumber(startDates, trainNumber);
 
         // Then

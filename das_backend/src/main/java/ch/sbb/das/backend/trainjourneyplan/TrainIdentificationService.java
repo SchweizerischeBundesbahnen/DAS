@@ -5,7 +5,7 @@ import ch.sbb.das.backend.companies.Company;
 import ch.sbb.das.backend.companies.CompanyCode;
 import ch.sbb.das.backend.companies.CompanyService;
 import ch.sbb.das.backend.companies.CompanyShortName;
-import ch.sbb.das.backend.trainjourneyplan.infrastructure.TrainIdentificationCompany;
+import ch.sbb.das.backend.trainjourneyplan.infrastructure.CompanyMatch;
 import ch.sbb.das.backend.trainjourneyplan.infrastructure.TrainIdentificationRepository;
 import ch.sbb.das.backend.trainjourneyplan.infrastructure.model.entities.TrainIdentificationEntity;
 import java.time.LocalDate;
@@ -37,7 +37,7 @@ public class TrainIdentificationService {
             .toList();
     }
 
-    public List<TrainIdentificationCompany> findCompaniesByStartDatesAndTrainNumber(List<LocalDate> startDates, String operationalTrainNumber) {
+    public List<CompanyMatch> findCompaniesByStartDatesAndTrainNumber(List<LocalDate> startDates, String operationalTrainNumber) {
         List<TrainIdentificationEntity> entities = trainIdentificationRepository
             .findAllByStartDatesAndOperationalTrainNumber(startDates, operationalTrainNumber);
 
@@ -48,8 +48,8 @@ public class TrainIdentificationService {
             .flatMap(entity -> readCompanyCodes(entity.getCompanies()).stream()
                 .map(companiesByCode::get)
                 .filter(Objects::nonNull) // defensive: guards against timing mismatch between readCompanyCodes and getAllCompanies
-                .map(company -> new TrainIdentificationCompany(company, entity.getStartDateTime().atZoneSameInstant(DateTimeUtil.SWISS_ZONE).toLocalDate())))
-            .sorted(Comparator.comparing(TrainIdentificationCompany::startDate)
+                .map(company -> new CompanyMatch(company, entity.getStartDateTime().atZoneSameInstant(DateTimeUtil.SWISS_ZONE).toLocalDate())))
+            .sorted(Comparator.comparing(CompanyMatch::startDate)
                 .thenComparing(item -> item.company().shortName()))
             .toList();
     }

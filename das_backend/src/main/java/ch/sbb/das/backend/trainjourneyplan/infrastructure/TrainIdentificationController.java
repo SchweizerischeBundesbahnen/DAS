@@ -38,19 +38,19 @@ public class TrainIdentificationController {
     @GetMapping(API_DRIVER_TRAIN_IDENTIFICATION_COMPANIES)
     @Operation(summary = "Resolve companies by train identification.", description = "Returns companies associated with a train identification for given operational start dates and train number.")
     @ApiResponse(responseCode = "200", description = "Companies found.",
-        content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = TrainIdentificationCompanyResponse.class)))
+        content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = CompanyMatchResponse.class)))
     @ApiResponse(responseCode = "404", description = "No train identification found for the given parameters.")
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getCompaniesByTrainIdentification(
+    public ResponseEntity<? extends Response> matchCompanies(
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
-        @Parameter(description = "The start date. Can be specified multiple times.", required = true, example = "2026-07-10") @RequestParam @NotEmpty List<LocalDate> startDate,
+        @Parameter(description = "The start date of the train journey. Can be specified multiple times.", required = true, example = "2026-07-10") @RequestParam @NotEmpty List<LocalDate> startDate,
         @Parameter(description = "The operational train number.", required = true) @RequestParam @NotBlank String operationalTrainNumber) {
 
-        List<TrainIdentificationCompany> companies = trainIdentificationService.findCompaniesByStartDatesAndTrainNumber(startDate, operationalTrainNumber);
+        List<CompanyMatch> companies = trainIdentificationService.findCompaniesByStartDatesAndTrainNumber(startDate, operationalTrainNumber);
 
         if (companies.isEmpty()) {
             return ResponseEntityFactory.createNotFoundResponse(requestId, null);
         }
-        return ResponseEntityFactory.createOkResponse(new TrainIdentificationCompanyResponse(companies), requestId);
+        return ResponseEntityFactory.createOkResponse(new CompanyMatchResponse(companies), requestId);
     }
 }
