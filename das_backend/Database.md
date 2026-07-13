@@ -1,49 +1,96 @@
-# Handling the database
-See [compose.yaml](compose.yaml) to startup a DB-instance on local docker container.
+# Database handling
+
+This page explains how das_backend manages its PostgreSQL database: how to run one locally, how
+schema changes are made, and the SQL conventions every migration must follow.
+
+New here? Start with [README.md](README.md) — it walks through starting a local DB (`podman compose up`,
+see [compose.yaml](compose.yaml)) and running `DASBackendApplication`. This page picks up from there
+and covers everything database-specific.
 
 ## Flyway
-[naming-strategy of flyway](https://flywaydb.org/documentation/concepts/migrations#naming-1)  
-Version the database with the current version of the service (easy to recognize in which version the migration was injected).
 
-To make changes to the database model, [Flyway](https://flywaydb.org/) **MUST** be used (no manual changes!):
-* Add **SQL DDL** (and/or SQL DML if data changes are involved too) scripts to [resources/db/migration](src/main/resources/db/migration)
-* See [versioned migrations](https://documentation.red-gate.com/fd/versioned-migrations-273973333.html)
+Every schema change **must** go through [Flyway](https://flywaydb.org/) — manual changes to the
+database are not allowed. Flyway keeps the schema versioned alongside the service, so it's always
+obvious which application version introduced which change.
 
-IMPORTANT:
-* first execution deploys the DB-changes and writes flyway_schema_history::checksum !! Further changes will not update the checksum!
-* Once the flyway changes are made to DB, **repair or * [rollbacks](https://flywaydb.org/documentation/tutorials/undoFlyway) might be tricky** in case of breaking changes!
+To make a change:
+1. Add a SQL script (DDL, and DML if you're changing data too) under
+   [`src/main/resources/db/migration`](src/main/resources/db/migration).
+2. Name it following Flyway's
+   [versioned migration](https://documentation.red-gate.com/fd/versioned-migrations-273973333.html)
+   convention, e.g. `V1.15__add_train_category.sql`. See also the
+   [Flyway naming strategy](https://flywaydb.org/documentation/concepts/migrations#naming-1).
+
+⚠️ **Once a migration has run, don't touch it.** Flyway checksums each script the first time it
+executes and records it in `flyway_schema_history`. Editing an already-applied script afterwards
+does not update that checksum and will break future deployments. If you need to fix something,
+write a new migration instead. [Repairs or rollbacks](https://flywaydb.org/documentation/tutorials/undoFlyway)
+of an applied breaking change are possible but tricky — avoid needing them in the first place.
 
 ## SQL conventions
-Remarks:
-* Write SQL statements in a broad dialect:
-    * PostgreSQL (currently used by this project)
-    * H2 (might come in handy for in-memory Unit-Tests)
+
+Write SQL in a dialect broad enough to run on both engines this project targets:
+* **PostgreSQL** — the real runtime database.
+* **H2** — an in-memory database used only for unit tests.
 
 ### SQL DDL
-* all SQL DDL code is written as UPPERCASE
-* model code (table- and property-names) is written as lowercase (use '_' instead of CamelCase, mapping to entity classes is made by JPA)
-* each table has a technical, numeric `id` as PRIMARY KEY
-* **CONSTRAINT names must always be specified explicitly** (DB products auto-create their own generic names and might turn into a mess to DROP them later):
-    * prefix all constraint-names with table-name to reduce naming conflicts and misunderstandings 
-    * **PRIMARY KEY**: ```ALTER TABLE IF EXISTS <table> ADD CONSTRAINT <table>_id_pk PRIMARY KEY(id);```
-    * derived **FOREIGN KEYs**: ```ALTER TABLE IF EXISTS <table> ADD CONSTRAINT <table>_<property>_fk FOREIGN KEY (<property>) REFERENCES <table primary>(id);```
-    * **INDEX**:
-        * ```ALTER TABLE <table> ADD CONSTRAINT <table>_<property OR speaking name>_unique UNIQUE (<property>, ..);```
-        * ```CREATE INDEX IF NOT EXISTS <table>_<property OR speaking name>_idx ON <table> (<property>, ..);```
 
-Do not save dummy values (like "UNKNOWN") for e.g. as company::name -> make it NULLable instead (reader might change to default value if wanted).
+* All DDL keywords are UPPERCASE; table and column names are lowercase `snake_case` (JPA maps these
+  to the CamelCase entity fields for you).
+* Every table has a numeric `id` column as its PRIMARY KEY.
+* **Every constraint is named explicitly**, prefixed with the table name. Relying on
+  auto-generated names makes them painful to find and `DROP` later.
+* Timestamp columns use `TIMESTAMP WITH TIME ZONE` and store values in UTC, named with an `_at`
+  suffix (e.g. `created_at`, `updated_at`). This avoids ambiguity once data crosses time zones —
+  relevant for a system that talks to Swiss railway infrastructure over SFERA.
+* A table only ever belongs to the [module](ARCHITECTURE.md) that owns it. Per the
+  **No Shared Database Storage** rule, a module must never query or join another module's tables —
+  cross-module reads go through that module's public Java interface instead.
+
+A minimal example putting the naming and constraint rules together:
+
+```sql
+CREATE TABLE IF NOT EXISTS train_category
+(
+    id         INTEGER                  NOT NULL,
+    code       TEXT                     NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL
+);
+
+ALTER TABLE IF EXISTS train_category
+    ADD CONSTRAINT train_category_id_pk PRIMARY KEY (id);
+
+ALTER TABLE IF EXISTS train_category
+    ADD CONSTRAINT train_category_code_unique UNIQUE (code);
+
+CREATE INDEX IF NOT EXISTS train_category_created_at_idx
+    ON train_category (created_at);
+```
+
+Constraint naming patterns used above, generalized:
+* **PRIMARY KEY**: `ALTER TABLE IF EXISTS <table> ADD CONSTRAINT <table>_id_pk PRIMARY KEY(id);`
+* **FOREIGN KEY**: `ALTER TABLE IF EXISTS <table> ADD CONSTRAINT <table>_<property>_fk FOREIGN KEY (<property>) REFERENCES <referenced_table>(id);`
+* **UNIQUE**: `ALTER TABLE <table> ADD CONSTRAINT <table>_<property_or_name>_unique UNIQUE (<property>, ..);`
+* **INDEX**: `CREATE INDEX IF NOT EXISTS <table>_<property_or_name>_idx ON <table> (<property>, ..);`
+
+Don't store sentinel/dummy values (e.g. `"UNKNOWN"` as a `company.name`) — make the column
+`NULL`-able instead. Readers can then decide how to handle the absence of a value, rather than
+having a magic string baked into the data.
 
 ## DB roles
-[Wikipedia - Principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege) Make sure production rights are as restricted as possible, for e.g.:
-* do not develop with Admin or Write enabled users
-* declare READ-ONLY users for DAS-Client requests
 
-## DB Tools
-Some recommendations:
-* __IntelliJ ultimate__ edition provides in "Database" panel SQL-Query Console, table opening, graphical schema
-* [pgAdmin](https://www.pgadmin.org/) for PostgreSQL allows complete DB-mgmt such as GRANTs, etc.
-* [SqlDeveloper](https://www.oracle.com/database/sqldeveloper/) from Oracle works on Postgres with a dedicated plug-in and is user-friendly (installed by SBB EAIO).
+Follow the [principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege):
+* Don't develop against an Admin or Write-enabled user.
+* Use dedicated READ-ONLY users for DAS-Client requests.
+
+## DB tools
+
+* **IntelliJ Ultimate** — the "Database" panel gives you a SQL console, table browser, and a
+  graphical schema view.
+* [pgAdmin](https://www.pgadmin.org/) — full PostgreSQL management (GRANTs, etc.).
+* [SQL Developer](https://www.oracle.com/database/sqldeveloper/) — Oracle's tool, works with
+  Postgres via a plugin; user-friendly and pre-installed by SBB EAIO.
 
 ## Mapping DB to Java
-See:
-* [Spring Data JPA](https://spring.io/projects/spring-data-jpa)
+
+Entities are mapped with [Spring Data JPA](https://spring.io/projects/spring-data-jpa).
