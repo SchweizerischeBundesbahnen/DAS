@@ -9,4 +9,16 @@ public class RuFeatureMapper {
     public RuFeature toResponse(RuFeatureEntity entity) {
         return new RuFeature(entity.getCompanyCode(), entity.getKeyValue(), entity.isEnabled());
     }
+
+    RuFeatureEntity toEntity(RuFeatureRequest request) {
+        RuFeatureEntity entity = new RuFeatureEntity();
+        updateEntity(entity, request);
+        return entity;
+    }
+
+    void updateEntity(RuFeatureEntity entity, RuFeatureRequest request) {
+        entity.setCompanyCode(request.companyCode());
+        entity.setKeyValue(request.key().name());
+        entity.setEnabled(request.enabled());
+    }
 }
