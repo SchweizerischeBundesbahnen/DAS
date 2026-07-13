@@ -36,7 +36,7 @@
           "carCarrierVehicle": false,
           "dangerousGoods": true,
           "vehiclesCount": 11,
-          "vehiclesWithBrakeDesignLlAndKCount": 6,
+          "vehiclesWithBrakeDesignLAndLlAndKCount": 6,
           "vehiclesWithBrakeDesignDCount": 2,
           "vehiclesWithDisabledBrakesCount": 3,
           "europeanVehicleNumberFirst": "338522222225",

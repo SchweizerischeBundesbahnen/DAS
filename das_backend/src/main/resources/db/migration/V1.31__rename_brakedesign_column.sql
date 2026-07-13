@@ -1,0 +1,2 @@
+ALTER TABLE IF EXISTS train_formation_run
+    RENAME COLUMN vehicles_with_brake_design_ll_and_k_count TO vehicles_with_brake_design_l_and_ll_and_k_count;
