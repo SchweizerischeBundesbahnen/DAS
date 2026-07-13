@@ -61,7 +61,7 @@ class RuFeatureServiceImplTest {
     @Test
     void shouldGetAllRuFeatures() {
         RuFeatureEntity ruFeatureEntity = entity(1, COMPANY_1111, "CUSTOMER_ORIENTED_DEPARTURE_PROCESS", true);
-        RuFeature expectedRuFeature = new RuFeature(COMPANY_1111, "CUSTOMER_ORIENTED_DEPARTURE_PROCESS", true);
+        RuFeature expectedRuFeature = new RuFeature(1, COMPANY_1111, "CUSTOMER_ORIENTED_DEPARTURE_PROCESS", true, null, null);
 
         when(ruFeatureRepository.findAll()).thenReturn(List.of(ruFeatureEntity));
         when(ruFeatureMapper.toResponse(ruFeatureEntity)).thenReturn(expectedRuFeature);
@@ -74,7 +74,7 @@ class RuFeatureServiceImplTest {
     void getAllForAdmin_filtersByAuthorizedCompanies() {
         RuFeatureEntity ownEntity = entity(1, COMPANY_1111, "WARNAPP", true);
         RuFeatureEntity otherEntity = entity(2, COMPANY_9999, "WARNAPP", true);
-        RuFeature ownFeature = new RuFeature(COMPANY_1111, "WARNAPP", true);
+        RuFeature ownFeature = new RuFeature(1, COMPANY_1111, "WARNAPP", true, null, null);
 
         when(ruFeatureRepository.findAll()).thenReturn(List.of(ownEntity, otherEntity));
         when(companyAuthorizer.authorizedCompanies()).thenReturn(Set.of(COMPANY_1111));
@@ -88,7 +88,7 @@ class RuFeatureServiceImplTest {
     @Test
     void getById_ok() {
         RuFeatureEntity entity = entity(1, COMPANY_1111, "WARNAPP", true);
-        RuFeature expected = new RuFeature(COMPANY_1111, "WARNAPP", true);
+        RuFeature expected = new RuFeature(1, COMPANY_1111, "WARNAPP", true, null, null);
         when(ruFeatureRepository.findById(1)).thenReturn(Optional.of(entity));
         when(ruFeatureMapper.toResponse(entity)).thenReturn(expected);
 
@@ -119,7 +119,7 @@ class RuFeatureServiceImplTest {
         RuFeatureRequest request = new RuFeatureRequest(COMPANY_1111, RuFeatureKey.WARNAPP, true);
         RuFeatureEntity newEntity = entity(null, COMPANY_1111, "WARNAPP", true);
         RuFeatureEntity savedEntity = entity(10, COMPANY_1111, "WARNAPP", true);
-        RuFeature expected = new RuFeature(COMPANY_1111, "WARNAPP", true);
+        RuFeature expected = new RuFeature(10, COMPANY_1111, "WARNAPP", true, null, null);
 
         when(ruFeatureRepository.existsByCompanyCodeAndKeyValue(COMPANY_1111, "WARNAPP")).thenReturn(false);
         when(ruFeatureMapper.toEntity(request)).thenReturn(newEntity);
@@ -169,7 +169,7 @@ class RuFeatureServiceImplTest {
     void update_ok() {
         RuFeatureEntity existingEntity = entity(1, COMPANY_1111, "WARNAPP", false);
         RuFeatureRequest request = new RuFeatureRequest(COMPANY_1111, RuFeatureKey.WARNAPP, true);
-        RuFeature expected = new RuFeature(COMPANY_1111, "WARNAPP", true);
+        RuFeature expected = new RuFeature(1, COMPANY_1111, "WARNAPP", true, null, null);
 
         when(ruFeatureRepository.findById(1)).thenReturn(Optional.of(existingEntity));
         when(ruFeatureRepository.existsByCompanyCodeAndKeyValueAndIdNot(COMPANY_1111, "WARNAPP", 1)).thenReturn(false);

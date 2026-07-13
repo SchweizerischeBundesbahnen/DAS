@@ -13,12 +13,14 @@ class RuFeatureMapperTest {
     @Test
     void toResponse_maps_entity_to_ruFeature() {
         RuFeatureEntity entity = new RuFeatureEntity();
+        entity.setId(10);
         entity.setCompanyCode(new CompanyCode("2185"));
         entity.setKeyValue("WARNAPP");
         entity.setEnabled(true);
 
         RuFeature result = mapper.toResponse(entity);
 
+        assertThat(result.id()).isEqualTo(10);
         assertThat(result.companyCode()).isEqualTo(new CompanyCode("2185"));
         assertThat(result.key()).isEqualTo("WARNAPP");
         assertThat(result.enabled()).isTrue();

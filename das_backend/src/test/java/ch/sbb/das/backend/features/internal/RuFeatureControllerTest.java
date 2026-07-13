@@ -64,9 +64,12 @@ class RuFeatureControllerTest {
     void getRuFeatureById_ok() throws Exception {
         mockMvc.perform(get(API_RU_FEATURES + "/" + FEATURE_ID_OWN_1))
             .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data[0].id").value(FEATURE_ID_OWN_1))
             .andExpect(jsonPath("$.data[0].companyCode").value("1111"))
             .andExpect(jsonPath("$.data[0].key").value("WARNAPP"))
-            .andExpect(jsonPath("$.data[0].enabled").value(true));
+            .andExpect(jsonPath("$.data[0].enabled").value(true))
+            .andExpect(jsonPath("$.data[0].lastModifiedAt").exists())
+            .andExpect(jsonPath("$.data[0].lastModifiedBy").value("unit_test"));
     }
 
     @Test
@@ -93,9 +96,12 @@ class RuFeatureControllerTest {
                     { "companyCode": "2222", "key": "WARNAPP", "enabled": true }
                     """))
             .andExpect(status().isCreated())
+            .andExpect(jsonPath("$.data[0].id").exists())
             .andExpect(jsonPath("$.data[0].companyCode").value("2222"))
             .andExpect(jsonPath("$.data[0].key").value("WARNAPP"))
-            .andExpect(jsonPath("$.data[0].enabled").value(true));
+            .andExpect(jsonPath("$.data[0].enabled").value(true))
+            .andExpect(jsonPath("$.data[0].lastModifiedAt").exists())
+            .andExpect(jsonPath("$.data[0].lastModifiedBy").exists());
     }
 
     @Test
@@ -155,7 +161,10 @@ class RuFeatureControllerTest {
                     { "companyCode": "1111", "key": "WARNAPP", "enabled": false }
                     """))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.data[0].enabled").value(false));
+            .andExpect(jsonPath("$.data[0].id").value(FEATURE_ID_OWN_1))
+            .andExpect(jsonPath("$.data[0].enabled").value(false))
+            .andExpect(jsonPath("$.data[0].lastModifiedAt").exists())
+            .andExpect(jsonPath("$.data[0].lastModifiedBy").exists());
     }
 
     @Test

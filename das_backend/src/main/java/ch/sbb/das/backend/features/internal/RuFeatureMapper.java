@@ -7,7 +7,8 @@ import org.springframework.stereotype.Component;
 public class RuFeatureMapper {
 
     public RuFeature toResponse(RuFeatureEntity entity) {
-        return new RuFeature(entity.getCompanyCode(), entity.getKeyValue(), entity.isEnabled());
+        return new RuFeature(entity.getId(), entity.getCompanyCode(), entity.getKeyValue(), entity.isEnabled(),
+            entity.getLastModifiedAt(), entity.getLastModifiedBy());
     }
 
     RuFeatureEntity toEntity(RuFeatureRequest request) {
