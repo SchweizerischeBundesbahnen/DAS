@@ -1,5 +1,33 @@
 # Changelog
 
+## [0.13.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.12.0...backend-v0.13.0) (2026-07-13)
+
+
+### Features
+
+* add audit and companies ([#144](https://github.com/SchweizerischeBundesbahnen/DAS/issues/144)) ([#2211](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2211)) ([95c6045](https://github.com/SchweizerischeBundesbahnen/DAS/commit/95c6045ac381721022b7ed2c45e0496cffe390cf))
+* add ru feature key for planned time deviation display ([#2192](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2192)) ([#2385](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2385)) ([83622c4](https://github.com/SchweizerischeBundesbahnen/DAS/commit/83622c490d0465280840217306da3e90740476ff))
+* add train identification companies endpoint ([#2136](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2136)) ([#2384](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2384)) ([fea7763](https://github.com/SchweizerischeBundesbahnen/DAS/commit/fea7763933812b4a7d435dad8c8973be183fd3f2))
+* external links backend ([#246](https://github.com/SchweizerischeBundesbahnen/DAS/issues/246)) ([#2189](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2189)) ([4686395](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4686395b241ded6717d518f5759bcab0e32c7375))
+* external links web ([#246](https://github.com/SchweizerischeBundesbahnen/DAS/issues/246)) ([#2190](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2190)) ([755560e](https://github.com/SchweizerischeBundesbahnen/DAS/commit/755560e789fe5836fffc5ef902bcf266085a5508))
+* manage companies ([#2121](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2121)) ([#2383](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2383)) ([898520e](https://github.com/SchweizerischeBundesbahnen/DAS/commit/898520ed80790bb258e69bce1c36a3c55db41992))
+* refactor preload to make it more efficient ([#2266](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2266)) ([#2345](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2345)) ([186a098](https://github.com/SchweizerischeBundesbahnen/DAS/commit/186a098525b80377ef3e9caf419c07ff55d266d9))
+* ru indication backend ([#144](https://github.com/SchweizerischeBundesbahnen/DAS/issues/144)) ([#2155](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2155)) ([d0d821b](https://github.com/SchweizerischeBundesbahnen/DAS/commit/d0d821bd8ebe9e3794f75329882466fc2d26c866))
+
+
+### Bug Fixes
+
+* blocked app version date inclusive ([#2254](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2254)) ([7fbccd6](https://github.com/SchweizerischeBundesbahnen/DAS/commit/7fbccd68deae81732a444f81b94defeceaefaa78))
+* require text in ru indications ([#2347](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2347)) ([1d8b6c3](https://github.com/SchweizerischeBundesbahnen/DAS/commit/1d8b6c3e28ae5bdc805981e06c42e099f24c0cd9))
+* ru indication templates by tenant instead of companies ([#2355](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2355)) ([c53c04c](https://github.com/SchweizerischeBundesbahnen/DAS/commit/c53c04c65126202e538813ea797ed510d86e8cf9))
+* save preloaded trains via service call instead of application event listener ([#2371](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2371)) ([00bc417](https://github.com/SchweizerischeBundesbahnen/DAS/commit/00bc41704f7bf22dd38ab4a7eed1287c0be6b466))
+* special holidays min date ([#2344](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2344)) ([bedcfd6](https://github.com/SchweizerischeBundesbahnen/DAS/commit/bedcfd69372be019ce33d89b18f974ad7e2d90b9))
+
+
+### Documentation
+
+* make doc on db setup more concise ([#2382](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2382)) ([289a698](https://github.com/SchweizerischeBundesbahnen/DAS/commit/289a698dcef31ca977ca56f32fb75ae1be910e85))
+
 ## [0.12.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.11.0...backend-v0.12.0) (2026-06-01)
 
 
