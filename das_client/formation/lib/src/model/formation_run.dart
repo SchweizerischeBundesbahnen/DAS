@@ -25,7 +25,7 @@ class FormationRun {
     required this.carCarrierVehicle,
     required this.dangerousGoods,
     required this.vehiclesCount,
-    required this.vehiclesWithBrakeDesignLlAndKCount,
+    required this.vehiclesWithBrakeDesignLAndLlAndKCount,
     required this.vehiclesWithBrakeDesignDCount,
     required this.vehiclesWithDisabledBrakesCount,
     required this.axleLoadMaxInKg,
@@ -80,7 +80,7 @@ class FormationRun {
   final bool carCarrierVehicle;
   final bool dangerousGoods;
   final int vehiclesCount;
-  final int vehiclesWithBrakeDesignLlAndKCount;
+  final int vehiclesWithBrakeDesignLAndLlAndKCount;
   final int vehiclesWithBrakeDesignDCount;
   final int vehiclesWithDisabledBrakesCount;
   final String? europeanVehicleNumberFirst;
@@ -126,7 +126,7 @@ class FormationRun {
           carCarrierVehicle == other.carCarrierVehicle &&
           dangerousGoods == other.dangerousGoods &&
           vehiclesCount == other.vehiclesCount &&
-          vehiclesWithBrakeDesignLlAndKCount == other.vehiclesWithBrakeDesignLlAndKCount &&
+          vehiclesWithBrakeDesignLAndLlAndKCount == other.vehiclesWithBrakeDesignLAndLlAndKCount &&
           vehiclesWithBrakeDesignDCount == other.vehiclesWithBrakeDesignDCount &&
           vehiclesWithDisabledBrakesCount == other.vehiclesWithDisabledBrakesCount &&
           europeanVehicleNumberFirst == other.europeanVehicleNumberFirst &&
@@ -167,7 +167,7 @@ class FormationRun {
     carCarrierVehicle,
     dangerousGoods,
     vehiclesCount,
-    vehiclesWithBrakeDesignLlAndKCount,
+    vehiclesWithBrakeDesignLAndLlAndKCount,
     vehiclesWithBrakeDesignDCount,
     vehiclesWithDisabledBrakesCount,
     europeanVehicleNumberFirst,
@@ -181,7 +181,44 @@ class FormationRun {
 
   @override
   String toString() {
-    return 'FormationRun{tafTapLocationReferenceStart: $tafTapLocationReferenceStart, tafTapLocationReferenceEnd: $tafTapLocationReferenceEnd}';
+    return 'FormationRun{inspectionDateTime: $inspectionDateTime, '
+        'tafTapLocationReferenceStart: $tafTapLocationReferenceStart, '
+        'tafTapLocationReferenceEnd: $tafTapLocationReferenceEnd, '
+        'trainCategoryCode: $trainCategoryCode, '
+        'brakedWeightPercentage: $brakedWeightPercentage, '
+        'tractionMaxSpeedInKmh: $tractionMaxSpeedInKmh, '
+        'hauledLoadMaxSpeedInKmh: $hauledLoadMaxSpeedInKmh, '
+        'formationMaxSpeedInKmh: $formationMaxSpeedInKmh, '
+        'tractionLengthInCm: $tractionLengthInCm, '
+        'hauledLoadLengthInCm: $hauledLoadLengthInCm, '
+        'formationLengthInCm: $formationLengthInCm, '
+        'tractionWeightInT: $tractionWeightInT, '
+        'hauledLoadWeightInT: $hauledLoadWeightInT, '
+        'formationWeightInT: $formationWeightInT, '
+        'tractionBrakedWeightInT: $tractionBrakedWeightInT, '
+        'hauledLoadBrakedWeightInT: $hauledLoadBrakedWeightInT, '
+        'formationBrakedWeightInT: $formationBrakedWeightInT, '
+        'tractionHoldingForceInHectoNewton: $tractionHoldingForceInHectoNewton, '
+        'hauledLoadHoldingForceInHectoNewton: $hauledLoadHoldingForceInHectoNewton, '
+        'formationHoldingForceInHectoNewton: $formationHoldingForceInHectoNewton, '
+        'brakePositionGForLeadingTraction: $brakePositionGForLeadingTraction, '
+        'brakePositionGForBrakeUnit1to5: $brakePositionGForBrakeUnit1to5, '
+        'brakePositionGForLoadHauled: $brakePositionGForLoadHauled, '
+        'simTrain: $simTrain, '
+        'additionalTractions: $additionalTractions, '
+        'carCarrierVehicle: $carCarrierVehicle, '
+        'dangerousGoods: $dangerousGoods, '
+        'vehiclesCount: $vehiclesCount, '
+        'vehiclesWithBrakeDesignLAndLlAndKCount: $vehiclesWithBrakeDesignLAndLlAndKCount, '
+        'vehiclesWithBrakeDesignDCount: $vehiclesWithBrakeDesignDCount, '
+        'vehiclesWithDisabledBrakesCount: $vehiclesWithDisabledBrakesCount, '
+        'europeanVehicleNumberFirst: $europeanVehicleNumberFirst, '
+        'europeanVehicleNumberLast: $europeanVehicleNumberLast, '
+        'axleLoadMaxInKg: $axleLoadMaxInKg, '
+        'routeClass: $routeClass, '
+        'gradientUphillMaxInPermille: $gradientUphillMaxInPermille, '
+        'gradientDownhillMaxInPermille: $gradientDownhillMaxInPermille, '
+        'slopeMaxForHoldingForceMinInPermille: $slopeMaxForHoldingForceMinInPermille,}';
   }
 }
 
@@ -214,7 +251,7 @@ enum FormationRunFields {
   carCarrierVehicle('carCarrierVehicle'),
   dangerousGoods('dangerousGoods'),
   vehiclesCount('vehiclesCount'),
-  vehiclesWithBrakeDesignLlAndKCount('vehiclesWithBrakeDesignLlAndKCount'),
+  vehiclesWithBrakeDesignLAndLlAndKCount('vehiclesWithBrakeDesignLAndLlAndKCount'),
   vehiclesWithBrakeDesignDCount('vehiclesWithBrakeDesignDCount'),
   vehiclesWithDisabledBrakesCount('vehiclesWithDisabledBrakesCount'),
   europeanVehicleNumberFirst('europeanVehicleNumberFirst'),
