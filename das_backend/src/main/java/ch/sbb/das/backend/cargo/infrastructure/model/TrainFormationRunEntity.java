@@ -120,8 +120,8 @@ public class TrainFormationRunEntity {
 
     private Integer vehiclesCount;
 
-    @Column(name = "vehicles_with_brake_design_ll_and_k_count")
-    private Integer vehiclesWithBrakeDesignLlAndKCount;
+    @Column(name = "vehicles_with_brake_design_l_and_ll_and_k_count")
+    private Integer vehiclesWithBrakeDesignLAndLlAndKCount;
 
     @Column(name = "vehicles_with_brake_design_d_count")
     private Integer vehiclesWithBrakeDesignDCount;
@@ -189,8 +189,10 @@ public class TrainFormationRunEntity {
             .carCarrierVehicle(formationRun.getCarCarrierVehicle())
             .dangerousGoods(formationRun.hasDangerousGoods())
             .vehiclesCount(formationRun.hauledLoadVehiclesCount())
-            .vehiclesWithBrakeDesignLlAndKCount(formationRun.vehiclesWithBrakeDesignCount(BrakeDesign.LL_KUNSTSTOFF_LEISE_LEISE, BrakeDesign.KUNSTSTOFF_BREMSKLOETZE))
-            .vehiclesWithBrakeDesignDCount(formationRun.vehiclesWithBrakeDesignCount(BrakeDesign.NORMALE_BREMSAUSRUESTUNG_KEINE_MERKMALE))
+            .vehiclesWithBrakeDesignLAndLlAndKCount(
+                formationRun.vehiclesWithBrakeDesignCount(BrakeDesign.L_KUNSTSTOFF_LEISE, BrakeDesign.LL_KUNSTSTOFF_LEISE_LEISE, BrakeDesign.KUNSTSTOFF_BREMSKLOETZE,
+                    BrakeDesign.EINLOESIGE_BREMSE_MIT_KUNSTSTOFF_BREMSKLOETZEN))
+            .vehiclesWithBrakeDesignDCount(formationRun.vehiclesWithBrakeDesignCount(BrakeDesign.SCHEIBENBREMSEN))
             .vehiclesWithDisabledBrakesCount(formationRun.vehiclesWithDisabledBrakeCount())
             .europeanVehicleNumberFirst(formationRun.getEuropeanVehicleNumberFirst())
             .europeanVehicleNumberLast(formationRun.getEuropeanVehicleNumberLast())

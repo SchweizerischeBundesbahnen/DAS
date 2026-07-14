@@ -5,7 +5,6 @@ import ch.sbb.das.backend.companies.CompanyCode;
 import ch.sbb.das.backend.companies.CompanyCodeConverter;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -13,13 +12,11 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "ru_feature")
-@EntityListeners(AuditingEntityListener.class)
 public class RuFeatureEntity extends EntityBase {
 
     @Id

@@ -10,7 +10,6 @@ import ch.sbb.das.backend.locations.TafTapLocationReferenceListConverter;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -24,7 +23,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Table(name = "ru_indication")
 @Entity
@@ -32,7 +30,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
 public class RuIndicationEntity extends EntityBase {
 
     @Id
