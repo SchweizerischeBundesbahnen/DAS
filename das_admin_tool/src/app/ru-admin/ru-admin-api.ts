@@ -218,7 +218,7 @@ export class RuAdminApi {
     return this.httpClient.put<RuFeatureApiResponse>(`${this.ruFeaturesUrl}/${id}`, ruFeature);
   }
 
-  deleteRuFeature(id: number): Observable<void> {
-    return this.httpClient.delete<void>(`${this.ruFeaturesUrl}/${id}`);
+  deleteRuFeaturesByIds(ids: number[]): Observable<void> {
+    return this.httpClient.delete<void>(this.ruFeaturesUrl, {body: {ids}});
   }
 }

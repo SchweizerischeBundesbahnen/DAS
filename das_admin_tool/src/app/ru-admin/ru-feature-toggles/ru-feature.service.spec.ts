@@ -20,7 +20,7 @@ const ruFeature: RuFeature = {
 const mockRuAdminApi: Partial<RuAdminApi> = {
   putRuFeature: () => of({} as RuFeatureApiResponse),
   postRuFeature: () => of({} as RuFeatureApiResponse),
-  deleteRuFeature: () => of(undefined),
+  deleteRuFeaturesByIds: () => of(undefined),
   ruFeatures: {reload: () => true} as HttpResourceRef<RuFeatureApiResponse | undefined>,
 };
 
@@ -85,7 +85,7 @@ describe('RuFeatureService', () => {
   });
 
   it('edit with delete should delete ru feature by id', async () => {
-    const apiDeleteSpy = vi.spyOn(mockRuAdminApi, 'deleteRuFeature');
+    const apiDeleteSpy = vi.spyOn(mockRuAdminApi, 'deleteRuFeaturesByIds');
     const successToastSpy = vi.spyOn(mockToastService, 'success');
     const recentCompaniesSaveSpy = vi.spyOn(mockRecentCompaniesStore, 'save');
     mockDialogResult('delete');
@@ -93,7 +93,7 @@ describe('RuFeatureService', () => {
     await service.edit(ruFeature);
 
     expect(successToastSpy).toHaveBeenCalled();
-    expect(apiDeleteSpy).toHaveBeenCalledWith(1);
+    expect(apiDeleteSpy).toHaveBeenCalledWith([1]);
     expect(recentCompaniesSaveSpy).not.toHaveBeenCalled();
   });
 

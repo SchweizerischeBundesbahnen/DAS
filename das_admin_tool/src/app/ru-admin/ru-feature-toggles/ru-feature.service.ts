@@ -18,7 +18,7 @@ export class RuFeatureService extends BaseDialogService {
     const event = await firstValueFrom(this.dialogService.open<RuFeatureToggleDialog, RuFeatureDialogEditResult>(RuFeatureToggleDialog, {data: ruFeature}).afterClosed);
     if (event.result === 'delete') {
       await this.runMutation(
-        this.ruAdminApi.deleteRuFeature(ruFeature.id!),
+        this.ruAdminApi.deleteRuFeaturesByIds([ruFeature.id!]),
         $localize`:@@toast_delete_success:Der Eintrag wurde erfolgreich gelöscht.`,
       );
     } else if (event.result && ruFeature.id) {
