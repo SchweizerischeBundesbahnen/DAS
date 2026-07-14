@@ -6,7 +6,14 @@ import {SbbOptionModule} from '@sbb-esta/lyne-angular/option';
 import {SbbRadioButtonModule} from '@sbb-esta/lyne-angular/radio-button';
 import {SbbToggleCheckModule} from '@sbb-esta/lyne-angular/toggle-check';
 import {SBB_OVERLAY_DATA} from '@sbb-esta/lyne-angular/core/overlay';
-import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  ValidationErrors,
+  Validators
+} from '@angular/forms';
 import {RU_FEATURE_KEY_LABELS, RuFeature, RuFeatureKey} from '../../ru-admin-api';
 import {BaseDialog} from '../../../shared/base-dialog/base-dialog.component';
 import {CompanyService} from '../../../shared/companies-input/company.service';
@@ -30,16 +37,19 @@ export type RuFeatureDialogEditResult = RuFeature | 'delete';
 })
 export class RuFeatureToggleDialog {
   protected readonly title: string;
+  private readonly companyService = inject(CompanyService);
 
   protected ruFeatureForm = new FormGroup({
-    companyCode: new FormControl('', {nonNullable: true, validators: [Validators.required]}),
+    companyCode: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, (control) => this.companyCodeExistsValidator(control)],
+    }),
     key: new FormControl<RuFeatureKey>('WARNAPP', {nonNullable: true, validators: [Validators.required]}),
     enabled: new FormControl(false, {nonNullable: true}),
   });
   protected readonly featureKeys = RU_FEATURE_KEY_LABELS;
   protected readonly dialogData = inject<RuFeature>(SBB_OVERLAY_DATA, {optional: true}) ?? undefined;
 
-  private readonly companyService = inject(CompanyService);
   protected readonly searchTerm = signal<string>('');
   protected filteredCompanies = computed(() => {
     const term = this.searchTerm();
@@ -74,8 +84,26 @@ export class RuFeatureToggleDialog {
     this.searchTerm.set(input.value);
   }
 
+  // Deliberately not using the autocomplete's built-in `requireSelection`: its 'change'
+  // handling reads the DOM's displayWith-formatted text (not the real value) and pushes it
+  // back into the form control, corrupting patchValue()'d edit data.
+  // This reimplements the same "must pick a real company" UX without that bug.
+  protected onCompanyCodeBlur(): void {
+    const control = this.ruFeatureForm.controls.companyCode;
+    if (control.value && !this.companyService.getName(control.value)) {
+      control.setValue('');
+    }
+  }
+
   protected companyDisplayWith = (code: string | undefined): string => {
     if (!code) return '';
     return this.companyService.getName(code) ?? code;
   };
+
+  private companyCodeExistsValidator(control: AbstractControl<string>): ValidationErrors | null {
+    if (!control.value) {
+      return null;
+    }
+    return this.companyService.getName(control.value) ? null : {unknownCompany: true};
+  }
 }

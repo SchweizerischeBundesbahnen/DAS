@@ -4,7 +4,8 @@
   <form [formGroup]="ruFeatureForm">
     <sbb-form-field errorSpace="reserve">
       <label i18n="@@ru_feature_toggles_form_company_label">EVU</label>
-      <input (input)="onCompanyCodeInput($event)" [sbbAutocomplete]="auto" formControlName="companyCode" required/>
+      <input (blur)="onCompanyCodeBlur()" (input)="onCompanyCodeInput($event)" [sbbAutocomplete]="auto"
+             formControlName="companyCode" required/>
       <sbb-autocomplete #auto="sbbAutocomplete" [displayWith]="companyDisplayWith">
         @for (company of filteredCompanies(); track company.code) {
           <sbb-option [value]="company.code">{{ company.shortName }}</sbb-option>
@@ -12,6 +13,10 @@
       </sbb-autocomplete>
       @if (ruFeatureForm.get('companyCode')?.touched && ruFeatureForm.get('companyCode')?.hasError('required')) {
         <sbb-error i18n="@@form_field_error_required">Feld darf nicht leer sein
+        </sbb-error>
+      }
+      @if (ruFeatureForm.get('companyCode')?.touched && ruFeatureForm.get('companyCode')?.hasError('unknownCompany')) {
+        <sbb-error i18n="@@ru_feature_toggles_form_company_error_unknown">Bitte eine gültige EVU aus der Liste auswählen
         </sbb-error>
       }
     </sbb-form-field>
