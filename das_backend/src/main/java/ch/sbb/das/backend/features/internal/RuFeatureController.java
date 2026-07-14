@@ -79,17 +79,6 @@ public class RuFeatureController {
         return ResponseEntityFactory.createNotFoundResponse(requestId, null);
     }
 
-    @DeleteMapping(API_RU_FEATURES_ID)
-    @Operation(summary = "Delete RU feature by id.", description = "Deletes a single RU feature toggle by its id.")
-    @ApiResponse(responseCode = "204", description = "RU feature deleted.")
-    @ApiErrorResponses
-    public ResponseEntity<Void> deleteRuFeature(
-        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
-        @PathVariable Integer id) {
-        ruFeatureService.delete(id);
-        return ResponseEntityFactory.createNoContentResponse(requestId);
-    }
-
     @DeleteMapping(API_RU_FEATURES)
     @Operation(summary = "Delete RU features by ids.", description = "Deletes multiple RU feature toggles in a single request.")
     @ApiResponse(responseCode = "204", description = "RU features deleted.")

@@ -76,13 +76,6 @@ public class RuFeatureServiceImpl implements RuFeatureService {
         return Optional.of(ruFeatureMapper.toInternalRuFeature(ruFeatureRepository.save(entity)));
     }
 
-    void delete(Integer id) {
-        ruFeatureRepository.findById(id).ifPresent(entity -> {
-            companyAuthorizer.requireCanAccessCompanies(Set.of(entity.getCompanyCode()));
-            ruFeatureRepository.deleteById(id);
-        });
-    }
-
     void deleteAllByIds(List<Integer> ids) {
         List<Integer> distinctIds = ids.stream().distinct().toList();
         Set<CompanyCode> companies = ruFeatureRepository.findAllById(distinctIds).stream()
