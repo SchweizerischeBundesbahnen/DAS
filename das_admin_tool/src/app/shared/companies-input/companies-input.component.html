@@ -1,15 +1,23 @@
 <sbb-form-field errorSpace="reserve">
   <label for="companies" i18n="@@form_companies_label">{{ label() }}</label>
-  <sbb-chip-group [displayWith]="codeToName" [formControl]="control()" [separatorKeys]="[]" name="companies">
-    <!-- stopPropagation because chip-group would get marked dirty otherwise -->
+  @if (multiselect()) {
+    <sbb-chip-group [displayWith]="codeToName" [formControl]="multiControl()" [separatorKeys]="[]" name="companies">
+      <!-- stopPropagation because chip-group would get marked dirty otherwise -->
+      <input
+        [formControl]="inputControl"
+        [sbbAutocomplete]="auto"
+        (change)="$event.stopPropagation()"
+      />
+    </sbb-chip-group>
+  } @else {
     <input
-      [formControl]="inputControl"
+      [formControl]="singleControl()"
       [sbbAutocomplete]="auto"
-      (change)="$event.stopPropagation()"
+      (input)="onSearchInput($event)"
     />
-  </sbb-chip-group>
+  }
 
-  <sbb-autocomplete #auto="sbbAutocomplete">
+  <sbb-autocomplete #auto="sbbAutocomplete" [displayWith]="multiselect() ? null : codeToName" [requireSelection]="!multiselect()">
     @for (company of filteredCompanies(); track company.code) {
       <sbb-option [value]="company.code">
         {{ company.shortName }}

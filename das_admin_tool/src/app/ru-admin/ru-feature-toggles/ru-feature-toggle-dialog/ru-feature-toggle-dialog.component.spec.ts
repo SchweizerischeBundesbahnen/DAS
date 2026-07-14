@@ -59,47 +59,12 @@ describe('RuFeatureToggleDialog', () => {
     expect(dialog['ruFeatureForm'].get('companyCode')!.errors).toEqual({required: true});
   });
 
-  it('companyCode should be invalid when it does not match a known company', () => {
-    const dialog = createDialog();
-
-    dialog['ruFeatureForm'].get('companyCode')!.setValue('9999');
-    dialog['ruFeatureForm'].get('companyCode')!.markAsTouched();
-
-    expect(dialog['ruFeatureForm'].get('companyCode')!.errors).toEqual({unknownCompany: true});
-  });
-
   it('companyCode should be valid when it matches a known company', () => {
     const dialog = createDialog();
 
     dialog['ruFeatureForm'].get('companyCode')!.setValue('1085');
 
     expect(dialog['ruFeatureForm'].get('companyCode')!.errors).toBeNull();
-  });
-
-  it('onCompanyCodeBlur should clear a company code that does not match a known company', () => {
-    const dialog = createDialog();
-    dialog['ruFeatureForm'].get('companyCode')!.setValue('not-a-real-code');
-
-    dialog['onCompanyCodeBlur']();
-
-    expect(dialog['ruFeatureForm'].get('companyCode')!.value).toBe('');
-  });
-
-  it('onCompanyCodeBlur should keep a company code that matches a known company', () => {
-    const dialog = createDialog();
-    dialog['ruFeatureForm'].get('companyCode')!.setValue('1085');
-
-    dialog['onCompanyCodeBlur']();
-
-    expect(dialog['ruFeatureForm'].get('companyCode')!.value).toBe('1085');
-  });
-
-  it('should filter companies by search term', () => {
-    const dialog = createDialog();
-
-    dialog['searchTerm'].set('sbb');
-
-    expect(dialog['filteredCompanies']().map((company) => company.code)).toEqual(['1085']);
   });
 
   it('formValue should reflect the current form state', () => {
@@ -116,13 +81,5 @@ describe('RuFeatureToggleDialog', () => {
       key: 'CHECKLIST_DEPARTURE_PROCESS',
       enabled: true,
     });
-  });
-
-  it('companyDisplayWith should resolve a code to the company name', () => {
-    const dialog = createDialog();
-
-    expect(dialog['companyDisplayWith']('1085')).toBe('SBB');
-    expect(dialog['companyDisplayWith']('9999')).toBe('9999');
-    expect(dialog['companyDisplayWith'](undefined)).toBe('');
   });
 });

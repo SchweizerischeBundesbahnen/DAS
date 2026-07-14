@@ -1,4 +1,4 @@
-import {Component, computed, effect, inject, input} from '@angular/core';
+import {Component, computed, effect, inject, input, signal} from '@angular/core';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {SbbAutocompleteModule} from '@sbb-esta/lyne-angular/autocomplete';
@@ -20,25 +20,36 @@ import {RecentCompaniesStore} from '../recent-companies.store';
 })
 export class CompaniesInputComponent {
   label = input<string>($localize`:@@companies_form_label:EVU`);
-  control = input.required<FormControl<string[]>>();
+  control = input.required<FormControl<string[]> | FormControl<string>>();
+  multiselect = input<boolean>(true);
 
   protected inputControl = new FormControl('', {nonNullable: true});
   private readonly inputValue = toSignal(this.inputControl.valueChanges, {initialValue: ''});
+  private readonly searchTerm = signal<string>('');
 
   private readonly companyService = inject(CompanyService);
   private readonly recentCompaniesStore = inject(RecentCompaniesStore);
 
+  protected multiControl = computed(() => this.control() as FormControl<string[]>);
+  protected singleControl = computed(() => this.control() as FormControl<string>);
+
   protected filteredCompanies = computed(() => {
-    return this.companyService.filterCompanies(this.inputValue(), this.control().value);
+    if (this.multiselect()) {
+      return this.companyService.filterCompanies(this.inputValue(), this.multiControl().value);
+    }
+    return this.companyService.filterCompanies(this.searchTerm());
   });
 
   constructor() {
     effect(() => {
-      const controlValue = this.control().value;
+      if (!this.multiselect()) {
+        return;
+      }
+      const controlValue = this.multiControl().value;
       if (controlValue.length === 0) {
         const recent = this.recentCompaniesStore.get();
         if (recent.length > 0) {
-          this.control().patchValue(recent, {emitEvent: false});
+          this.multiControl().patchValue(recent, {emitEvent: false});
         }
       }
     }, {allowSignalWrites: true});
@@ -47,4 +58,8 @@ export class CompaniesInputComponent {
   protected codeToName = (code: string) => {
     return this.companyService.getName(code) ?? code;
   };
+
+  protected onSearchInput(event: Event): void {
+    this.searchTerm.set((event.target as HTMLInputElement).value);
+  }
 }
