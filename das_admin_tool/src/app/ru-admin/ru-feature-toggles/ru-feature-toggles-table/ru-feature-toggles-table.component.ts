@@ -1,11 +1,5 @@
 import {Component, effect, inject, viewChild} from '@angular/core';
-import {
-  SbbSort,
-  SbbTableDataSource,
-  SbbTableFilter,
-  SbbTableModule
-} from '@sbb-esta/lyne-angular/table';
-import {SbbMiniButton} from '@sbb-esta/lyne-angular/button/mini-button';
+import {SbbSort, SbbTableDataSource, SbbTableFilter, SbbTableModule} from '@sbb-esta/lyne-angular/table';
 import {SbbToggleCheckModule} from '@sbb-esta/lyne-angular/toggle-check';
 import {RU_FEATURE_KEY_LABELS, RuFeature, RuFeatureKey} from '../../ru-admin-api';
 import {RuFeatureService} from '../ru-feature.service';
@@ -16,6 +10,7 @@ import {TableSearchHeader} from '../../../shared/table-search-header/table-searc
 import {FormControl} from '@angular/forms';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {startWith} from 'rxjs';
+import {SbbButtonModule} from '@sbb-esta/lyne-angular/button';
 
 interface RuFeatureFilter extends SbbTableFilter {
   search: string;
@@ -25,7 +20,7 @@ interface RuFeatureFilter extends SbbTableFilter {
   selector: 'app-ru-feature-toggles-table',
   imports: [
     SbbTableModule,
-    SbbMiniButton,
+    SbbButtonModule,
     SbbToggleCheckModule,
     DatePipe,
     TableBottomBar,
