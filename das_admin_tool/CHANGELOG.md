@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das-admin-tool-v0.5.0...das-admin-tool-v0.5.1) (2026-07-14)
+
+
+### Bug Fixes
+
+* indications filtered when no category set ([#2420](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2420)) ([dc83841](https://github.com/SchweizerischeBundesbahnen/DAS/commit/dc838416aaab4c560c1003e6138c0b4cd4d5a166))
+
 ## [0.5.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das-admin-tool-v0.4.0...das-admin-tool-v0.5.0) (2026-07-13)
 
 
