@@ -1,24 +1,39 @@
 package ch.sbb.das.backend.features.internal;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.das.backend.companies.CompanyCode;
 import ch.sbb.das.backend.features.RuFeature;
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class RuFeatureMapperTest {
 
     private final RuFeatureMapper mapper = new RuFeatureMapper();
 
     @Test
-    void toResponse_maps_entity_to_ruFeature() {
+    void toRuFeature_maps_entity_to_ruFeature() {
         RuFeatureEntity entity = new RuFeatureEntity();
         entity.setId(10);
         entity.setCompanyCode(new CompanyCode("2185"));
         entity.setKeyValue("WARNAPP");
         entity.setEnabled(true);
 
-        RuFeature result = mapper.toResponse(entity);
+        RuFeature result = mapper.toRuFeature(entity);
+
+        assertThat(result.companyCode()).isEqualTo(new CompanyCode("2185"));
+        assertThat(result.key()).isEqualTo("WARNAPP");
+        assertThat(result.enabled()).isTrue();
+    }
+
+    @Test
+    void toInternalRuFeature_maps_entity_to_internalRuFeature_with_id() {
+        RuFeatureEntity entity = new RuFeatureEntity();
+        entity.setId(10);
+        entity.setCompanyCode(new CompanyCode("2185"));
+        entity.setKeyValue("WARNAPP");
+        entity.setEnabled(true);
+
+        InternalRuFeature result = mapper.toInternalRuFeature(entity);
 
         assertThat(result.id()).isEqualTo(10);
         assertThat(result.companyCode()).isEqualTo(new CompanyCode("2185"));
