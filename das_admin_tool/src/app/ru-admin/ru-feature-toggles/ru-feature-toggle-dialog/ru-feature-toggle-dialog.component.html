@@ -1,0 +1,32 @@
+<app-base-dialog [data]="dialogData" [dialogClose]="formValue" [dialogTitle]="title"
+                 [saveDisabled]="ruFeatureForm.invalid" i18n-stepLabel="@@ru_feature_toggles_dialog_step_label"
+                 stepLabel="Feature">
+  <form [formGroup]="ruFeatureForm">
+    <sbb-form-field errorSpace="reserve">
+      <label i18n="@@ru_feature_toggles_form_company_label">EVU</label>
+      <input (input)="onCompanyCodeInput($event)" [sbbAutocomplete]="auto" formControlName="companyCode" required/>
+      <sbb-autocomplete #auto="sbbAutocomplete" [displayWith]="companyDisplayWith">
+        @for (company of filteredCompanies(); track company.code) {
+          <sbb-option [value]="company.code">{{ company.shortName }}</sbb-option>
+        }
+      </sbb-autocomplete>
+      @if (ruFeatureForm.get('companyCode')?.touched && ruFeatureForm.get('companyCode')?.hasError('required')) {
+        <sbb-error i18n="@@form_field_error_required">Feld darf nicht leer sein
+        </sbb-error>
+      }
+    </sbb-form-field>
+
+    <div class="radio-button-group">
+      <label i18n="@@ru_feature_toggles_form_key_label">Feature</label>
+      <sbb-radio-button-group formControlName="key">
+        @for (featureKey of featureKeys; track featureKey.value) {
+          <sbb-radio-button [value]="featureKey.value">{{ featureKey.label }}</sbb-radio-button>
+        }
+      </sbb-radio-button-group>
+    </div>
+
+    <sbb-toggle-check formControlName="enabled" i18n="@@ru_feature_toggles_form_enabled_label">
+      Aktiviert
+    </sbb-toggle-check>
+  </form>
+</app-base-dialog>

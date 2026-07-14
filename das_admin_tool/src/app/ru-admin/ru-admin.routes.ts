@@ -26,6 +26,10 @@ export const routes: Routes = [
         path: 'external-links',
         loadComponent: () => import('./external-links/external-links').then((m) => m.ExternalLinks),
       },
+      {
+        path: 'ru-features',
+        loadComponent: () => import('./ru-feature-toggles/ru-feature-toggles.component').then((m) => m.RuFeatureToggles),
+      },
     ],
   },
 ];
