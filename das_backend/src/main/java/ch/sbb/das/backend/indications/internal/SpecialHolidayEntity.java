@@ -6,7 +6,6 @@ import ch.sbb.das.backend.companies.CompanyCodeListConverter;
 import ch.sbb.das.backend.indications.internal.model.ScheduleType;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
@@ -20,7 +19,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Table(name = "special_holiday")
 @Entity
@@ -28,7 +26,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
 public class SpecialHolidayEntity extends EntityBase {
 
     @Id

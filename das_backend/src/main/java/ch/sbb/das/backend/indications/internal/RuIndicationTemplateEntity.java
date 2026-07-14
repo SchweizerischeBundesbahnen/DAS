@@ -1,11 +1,7 @@
 package ch.sbb.das.backend.indications.internal;
 
 import ch.sbb.das.backend.common.EntityBase;
-import ch.sbb.das.backend.companies.CompanyCode;
-import ch.sbb.das.backend.companies.CompanyCodeListConverter;
-import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -15,7 +11,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Table(name = "ru_indication_template")
 @Entity
@@ -23,7 +18,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
 public class RuIndicationTemplateEntity extends EntityBase {
 
     @Id
