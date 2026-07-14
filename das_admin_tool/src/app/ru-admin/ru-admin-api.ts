@@ -133,7 +133,7 @@ export const RU_FEATURE_KEY_LABELS: { value: RuFeatureKey, label: string }[] = [
   },
   {
     value: 'DISPLAY_PLANNED_TIME_DEVIATION',
-    label: $localize`:@@ru_feature_toggles_key_label_display_planned_time_deviation:Anzeige Planzeitabweichung`
+    label: $localize`:@@ru_feature_toggles_key_label_display_planned_time_deviation:Planzeitabweichung`
   },
 ];
 
