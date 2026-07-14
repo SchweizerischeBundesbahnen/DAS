@@ -8,6 +8,7 @@ import static ch.sbb.das.backend.departures.internal.DepartureController.API_DEP
 import static ch.sbb.das.backend.driversettings.internal.SettingsController.API_SETTINGS;
 import static ch.sbb.das.backend.externallinks.internal.ExternalLinkController.API_ADMIN_EXTERNAL_LINKS;
 import static ch.sbb.das.backend.externallinks.internal.ExternalLinkController.API_DRIVER_EXTERNAL_LINKS;
+import static ch.sbb.das.backend.features.internal.RuFeatureController.API_RU_FEATURES;
 import static ch.sbb.das.backend.indications.internal.RuIndicationController.API_DRIVER_RU_INDICATION_MATCHES;
 import static ch.sbb.das.backend.indications.internal.RuIndicationController.API_RU_INDICATIONS;
 import static ch.sbb.das.backend.indications.internal.RuIndicationTemplateController.API_RU_INDICATION_TEMPLATES;
@@ -45,7 +46,7 @@ public class WebSecurityConfig {
                 .requestMatchers("/actuator/health/**").permitAll()
                 .requestMatchers(API_SETTINGS, API_FORMATIONS, API_DEPARTURES + "/**", API_DRIVER_RU_INDICATION_MATCHES, API_DRIVER_EXTERNAL_LINKS, API_DRIVER_TRAIN_IDENTIFICATION_COMPANIES)
                 .hasAnyRole(UserRole.OBSERVER, UserRole.DRIVER)
-                .requestMatchers(API_RU_INDICATION_TEMPLATES + "/**", API_SPECIAL_HOLIDAYS + "/**", API_RU_INDICATIONS + "/**", API_ADMIN_EXTERNAL_LINKS + "/**", API_COMPANIES + "/authorized")
+                .requestMatchers(API_RU_INDICATION_TEMPLATES + "/**", API_SPECIAL_HOLIDAYS + "/**", API_RU_INDICATIONS + "/**", API_ADMIN_EXTERNAL_LINKS + "/**", API_COMPANIES + "/authorized", API_RU_FEATURES + "/**")
                 .hasAnyRole(UserRole.ADMIN, UserRole.RU_ADMIN)
                 .requestMatchers(API_APP_VERSIONS + "/**", API_LOCATIONS, API_TENANTS, API_COMPANIES + "/**")
                 .hasRole(UserRole.ADMIN)
