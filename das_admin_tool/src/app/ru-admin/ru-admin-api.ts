@@ -121,12 +121,20 @@ export type RuFeatureKey =
   | 'CHECKLIST_DEPARTURE_PROCESS'
   | 'DISPLAY_PLANNED_TIME_DEVIATION';
 
-// TODO: placeholder labels - no verified German product copy exists yet for these keys.
 export const RU_FEATURE_KEY_LABELS: { value: RuFeatureKey, label: string }[] = [
-  {value: 'WARNAPP', label: 'WARNAPP'},
-  {value: 'CUSTOMER_ORIENTED_DEPARTURE_PROCESS', label: 'CUSTOMER_ORIENTED_DEPARTURE_PROCESS'},
-  {value: 'CHECKLIST_DEPARTURE_PROCESS', label: 'CHECKLIST_DEPARTURE_PROCESS'},
-  {value: 'DISPLAY_PLANNED_TIME_DEVIATION', label: 'DISPLAY_PLANNED_TIME_DEVIATION'},
+  {value: 'WARNAPP', label: $localize`:@@ru_feature_toggles_key_label_warnapp:WarnApp`},
+  {
+    value: 'CUSTOMER_ORIENTED_DEPARTURE_PROCESS',
+    label: $localize`:@@ru_feature_toggles_key_label_customer_oriented_departure_process:Kundenorientierter Abfahrprozess (KoA)`
+  },
+  {
+    value: 'CHECKLIST_DEPARTURE_PROCESS',
+    label: $localize`:@@ru_feature_toggles_key_label_checklist_departure_process:Checkliste Abfahrprozess`
+  },
+  {
+    value: 'DISPLAY_PLANNED_TIME_DEVIATION',
+    label: $localize`:@@ru_feature_toggles_key_label_display_planned_time_deviation:Anzeige Planzeitabweichung`
+  },
 ];
 
 export interface RuFeature extends Auditable {
