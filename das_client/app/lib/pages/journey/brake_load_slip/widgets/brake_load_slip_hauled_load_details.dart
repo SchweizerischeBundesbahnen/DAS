@@ -27,8 +27,8 @@ class BrakeLoadSlipHauledLoadDetails extends StatelessWidget {
           ),
           KeyValueTableDataRow(
             context.l10n.p_brake_load_slip_hauled_load_total_vehicles_LL_K,
-            formationRunChange.formationRun.vehiclesWithBrakeDesignLlAndKCount.toString(),
-            hasChange: formationRunChange.hasChanged(.vehiclesWithBrakeDesignLlAndKCount),
+            formationRunChange.formationRun.vehiclesWithBrakeDesignLAndLlAndKCount.toString(),
+            hasChange: formationRunChange.hasChanged(.vehiclesWithBrakeDesignLAndLlAndKCount),
           ),
           KeyValueTableDataRow(
             context.l10n.p_brake_load_slip_hauled_load_total_vehicles_D,
@@ -62,7 +62,7 @@ class BrakeLoadSlipHauledLoadDetails extends StatelessWidget {
 
   bool _hasChange() {
     return formationRunChange.hasChanged(.vehiclesCount) ||
-        formationRunChange.hasChanged(.vehiclesWithBrakeDesignLlAndKCount) ||
+        formationRunChange.hasChanged(.vehiclesWithBrakeDesignLAndLlAndKCount) ||
         formationRunChange.hasChanged(.vehiclesWithBrakeDesignDCount) ||
         formationRunChange.hasChanged(.vehiclesWithDisabledBrakesCount) ||
         formationRunChange.hasChanged(.europeanVehicleNumberFirst) ||
