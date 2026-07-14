@@ -79,7 +79,7 @@
   "p_brake_load_slip_brake_details_holding_force": "Forza di ritenuta [kN]",
   "p_brake_load_slip_hauled_load_title": "Peso rimorchiato",
   "p_brake_load_slip_hauled_load_total_vehicles": "Carri in totale",
-  "p_brake_load_slip_hauled_load_total_vehicles_LL_K": "N° carri con LL e K",
+  "p_brake_load_slip_hauled_load_total_vehicles_L_LL_K": "N° carri con L, LL e K",
   "p_brake_load_slip_hauled_load_total_vehicles_D": "N° carri con D",
   "p_brake_load_slip_hauled_load_total_vehicles_disabled_brakes": "Freni disinseriti",
   "p_brake_load_slip_hauled_load_first_vehicle_evn": "EVN primo veicolo",

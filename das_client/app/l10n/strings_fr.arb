@@ -79,7 +79,7 @@
   "p_brake_load_slip_brake_details_holding_force": "Effort de retenue [kN]",
   "p_brake_load_slip_hauled_load_title": "Charge remorquée",
   "p_brake_load_slip_hauled_load_total_vehicles": "Total wagons",
-  "p_brake_load_slip_hauled_load_total_vehicles_LL_K": "Nombre de wagons avec LL et K",
+  "p_brake_load_slip_hauled_load_total_vehicles_L_LL_K": "Nombre de wagons avec L, LL et K",
   "p_brake_load_slip_hauled_load_total_vehicles_D": "Nombre de wagons avec D",
   "p_brake_load_slip_hauled_load_total_vehicles_disabled_brakes": "Freins paralysés",
   "p_brake_load_slip_hauled_load_first_vehicle_evn": "EVN premier wagon",

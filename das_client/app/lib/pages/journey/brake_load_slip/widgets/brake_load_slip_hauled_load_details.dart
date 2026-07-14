@@ -26,7 +26,7 @@ class BrakeLoadSlipHauledLoadDetails extends StatelessWidget {
             hasChange: formationRunChange.hasChanged(.vehiclesCount),
           ),
           KeyValueTableDataRow(
-            context.l10n.p_brake_load_slip_hauled_load_total_vehicles_LL_K,
+            context.l10n.p_brake_load_slip_hauled_load_total_vehicles_L_LL_K,
             formationRunChange.formationRun.vehiclesWithBrakeDesignLAndLlAndKCount.toString(),
             hasChange: formationRunChange.hasChanged(.vehiclesWithBrakeDesignLAndLlAndKCount),
           ),
