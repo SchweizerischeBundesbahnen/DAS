@@ -82,7 +82,7 @@ class TrainFormationRunEntityTest {
             .slopeMaxForHoldingForceMinInPermille("40.2")
             .vehicles(List.of(new Vehicle(TractionMode.UEBERFUEHRUNG, "CATE", List.of(
                 VehicleUnit.builder()
-                    .brakeDesign(BrakeDesign.L_KUNSTSTOFF_LEISE)
+                    .brakeDesign(BrakeDesign.NORMALE_BREMSAUSRUESTUNG_KEINE_MERKMALE)
                     .brakeStatus(new BrakeStatus(3))
                     .technicalHoldingForceInHectoNewton(302)
                     .effectiveOperationalHoldingForceInHectoNewton(893)
@@ -131,7 +131,7 @@ class TrainFormationRunEntityTest {
         assertThat(result.getCarCarrierVehicle()).isFalse();
         assertThat(result.getDangerousGoods()).isFalse();
         assertThat(result.getVehiclesCount()).isEqualTo(1);
-        assertThat(result.getVehiclesWithBrakeDesignLlAndKCount()).isZero();
+        assertThat(result.getVehiclesWithBrakeDesignLAndLlAndKCount()).isZero();
         assertThat(result.getVehiclesWithBrakeDesignDCount()).isZero();
         assertThat(result.getVehiclesWithDisabledBrakesCount()).isZero();
         assertThat(result.getEuropeanVehicleNumberFirst()).isEqualTo("5623789313");
