@@ -159,7 +159,7 @@ export class RuAdminApi {
   readonly specialHolidays = httpResource<SpecialHolidayApiResponse>(() => this.specialHolidaysUrl);
   private readonly externalLinksUrl = `${environment.backendUrl}/external-links`;
   readonly externalLinks = httpResource<ExternalLinkApiResponse>(() => this.externalLinksUrl);
-  private readonly ruFeaturesUrl = `${environment.backendUrl}/ru-features`;
+  private readonly ruFeaturesUrl = `${environment.backendUrl}/rufeatures`;
   readonly ruFeatures = httpResource<RuFeatureApiResponse>(() => this.ruFeaturesUrl);
 
   postRuIndicationTemplate(ruIndicationTemplate: RuIndicationTemplate): Observable<RuIndicationTemplateApiResponse> {
