@@ -21,7 +21,7 @@ import java.util.Optional;
 @Tag(name = "RU features", description = "Admin API for managing RU feature toggles.")
 public class RuFeatureController {
 
-    private static final String PATH_SEGMENT_RU_FEATURES = "/ru-features";
+    private static final String PATH_SEGMENT_RU_FEATURES = "/rufeatures";
     public static final String API_RU_FEATURES = ApiDocumentation.ADMIN_URI + PATH_SEGMENT_RU_FEATURES;
     static final String API_RU_FEATURES_ID = API_RU_FEATURES + "/{id}";
 
