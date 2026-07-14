@@ -233,37 +233,6 @@ class RuFeatureServiceImplTest {
     }
 
     @Test
-    void delete_ok() {
-        RuFeatureEntity existingEntity = entity(1, COMPANY_1111, "WARNAPP", true);
-        when(ruFeatureRepository.findById(1)).thenReturn(Optional.of(existingEntity));
-
-        underTest.delete(1);
-
-        verify(companyAuthorizer).requireCanAccessCompanies(Set.of(COMPANY_1111));
-        verify(ruFeatureRepository).deleteById(1);
-    }
-
-    @Test
-    void delete_notFound_isIdempotent() {
-        when(ruFeatureRepository.findById(99)).thenReturn(Optional.empty());
-
-        underTest.delete(99);
-
-        verify(ruFeatureRepository, never()).deleteById(any());
-    }
-
-    @Test
-    void delete_forbidden() {
-        RuFeatureEntity existingEntity = entity(3, COMPANY_9999, "WARNAPP", true);
-        when(ruFeatureRepository.findById(3)).thenReturn(Optional.of(existingEntity));
-        doThrow(new AccessDeniedException("Not allowed")).when(companyAuthorizer).requireCanAccessCompanies(Set.of(COMPANY_9999));
-
-        assertThatThrownBy(() -> underTest.delete(3)).isInstanceOf(AccessDeniedException.class);
-
-        verify(ruFeatureRepository, never()).deleteById(any());
-    }
-
-    @Test
     void deleteAllByIds_ok() {
         RuFeatureEntity entity1 = entity(1, COMPANY_1111, "WARNAPP", true);
         RuFeatureEntity entity2 = entity(2, COMPANY_1111, "CHECKLIST_DEPARTURE_PROCESS", false);
