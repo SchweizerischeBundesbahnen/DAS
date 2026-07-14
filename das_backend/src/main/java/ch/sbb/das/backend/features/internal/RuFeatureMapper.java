@@ -12,7 +12,7 @@ public class RuFeatureMapper {
 
     InternalRuFeature toInternalRuFeature(RuFeatureEntity entity) {
         return new InternalRuFeature(entity.getId(), entity.getCompanyCode(), entity.getKeyValue(), entity.isEnabled(),
-                entity.getLastModifiedAt(), entity.getLastModifiedBy());
+            entity.getLastModifiedAt(), entity.getLastModifiedBy());
     }
 
     RuFeatureEntity toEntity(RuFeatureRequest request) {

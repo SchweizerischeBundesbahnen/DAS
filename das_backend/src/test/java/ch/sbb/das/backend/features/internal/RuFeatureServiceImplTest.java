@@ -38,8 +38,8 @@ class RuFeatureServiceImplTest {
         underTest = new RuFeatureServiceImpl(ruFeatureRepository, ruFeatureMapper, companyAuthorizer, companyService);
 
         when(companyService.getAllCompanies()).thenReturn(List.of(
-                new Company(COMPANY_1111, new CompanyShortName("MOCK_A")),
-                new Company(COMPANY_9999, new CompanyShortName("MOCK_OTHER"))));
+            new Company(COMPANY_1111, new CompanyShortName("MOCK_A")),
+            new Company(COMPANY_9999, new CompanyShortName("MOCK_OTHER"))));
     }
 
     private RuFeatureEntity entity(Integer id, CompanyCode companyCode, String key, boolean enabled) {
@@ -130,8 +130,8 @@ class RuFeatureServiceImplTest {
         RuFeatureRequest request = new RuFeatureRequest(new CompanyCode("ZZZZ"), RuFeatureKey.WARNAPP, true);
 
         assertThatThrownBy(() -> underTest.create(request))
-                .isInstanceOf(ResponseStatusException.class)
-                .hasMessageContaining("Company not found");
+            .isInstanceOf(ResponseStatusException.class)
+            .hasMessageContaining("Company not found");
 
         verify(ruFeatureRepository, never()).save(any());
     }
@@ -152,8 +152,8 @@ class RuFeatureServiceImplTest {
         when(ruFeatureRepository.existsByCompanyCodeAndKeyValue(COMPANY_1111, "WARNAPP")).thenReturn(true);
 
         assertThatThrownBy(() -> underTest.create(request))
-                .isInstanceOf(ConflictException.class)
-                .hasMessageContaining("already exists");
+            .isInstanceOf(ConflictException.class)
+            .hasMessageContaining("already exists");
 
         verify(ruFeatureRepository, never()).save(any());
     }
@@ -190,7 +190,7 @@ class RuFeatureServiceImplTest {
         doThrow(new AccessDeniedException("Not allowed")).when(companyAuthorizer).requireCanAccessCompanies(Set.of(COMPANY_9999));
 
         assertThatThrownBy(() -> underTest.update(3, new RuFeatureRequest(COMPANY_9999, RuFeatureKey.WARNAPP, true)))
-                .isInstanceOf(AccessDeniedException.class);
+            .isInstanceOf(AccessDeniedException.class);
 
         verify(ruFeatureRepository, never()).save(any());
     }
@@ -202,7 +202,7 @@ class RuFeatureServiceImplTest {
         doThrow(new AccessDeniedException("Not allowed")).when(companyAuthorizer).requireCanAccessCompanies(eq(Set.of(COMPANY_9999)));
 
         assertThatThrownBy(() -> underTest.update(1, new RuFeatureRequest(COMPANY_9999, RuFeatureKey.WARNAPP, true)))
-                .isInstanceOf(AccessDeniedException.class);
+            .isInstanceOf(AccessDeniedException.class);
 
         verify(ruFeatureRepository, never()).save(any());
     }
@@ -213,8 +213,8 @@ class RuFeatureServiceImplTest {
         when(ruFeatureRepository.findById(1)).thenReturn(Optional.of(existingEntity));
 
         assertThatThrownBy(() -> underTest.update(1, new RuFeatureRequest(new CompanyCode("ZZZZ"), RuFeatureKey.WARNAPP, true)))
-                .isInstanceOf(ResponseStatusException.class)
-                .hasMessageContaining("Company not found");
+            .isInstanceOf(ResponseStatusException.class)
+            .hasMessageContaining("Company not found");
 
         verify(ruFeatureRepository, never()).save(any());
     }
@@ -226,8 +226,8 @@ class RuFeatureServiceImplTest {
         when(ruFeatureRepository.existsByCompanyCodeAndKeyValueAndIdNot(COMPANY_1111, "CHECKLIST_DEPARTURE_PROCESS", 1)).thenReturn(true);
 
         assertThatThrownBy(() -> underTest.update(1, new RuFeatureRequest(COMPANY_1111, RuFeatureKey.CHECKLIST_DEPARTURE_PROCESS, true)))
-                .isInstanceOf(ConflictException.class)
-                .hasMessageContaining("already exists");
+            .isInstanceOf(ConflictException.class)
+            .hasMessageContaining("already exists");
 
         verify(ruFeatureRepository, never()).save(any());
     }

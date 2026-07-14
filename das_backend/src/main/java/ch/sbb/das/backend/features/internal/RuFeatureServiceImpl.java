@@ -29,25 +29,25 @@ public class RuFeatureServiceImpl implements RuFeatureService {
     @Override
     public List<RuFeature> getAll() {
         return ruFeatureRepository.findAll().stream()
-                .map(ruFeatureMapper::toRuFeature)
-                .toList();
+            .map(ruFeatureMapper::toRuFeature)
+            .toList();
     }
 
     List<InternalRuFeature> getAllForAdmin() {
         Set<CompanyCode> authorizedCompanies = companyAuthorizer.authorizedCompanies();
         return ruFeatureRepository.findAll().stream()
-                .filter(entity -> authorizedCompanies.contains(entity.getCompanyCode()))
-                .map(ruFeatureMapper::toInternalRuFeature)
-                .toList();
+            .filter(entity -> authorizedCompanies.contains(entity.getCompanyCode()))
+            .map(ruFeatureMapper::toInternalRuFeature)
+            .toList();
     }
 
     Optional<InternalRuFeature> getById(Integer id) {
         return ruFeatureRepository.findById(id)
-                .map(entity -> {
-                    companyAuthorizer.requireCanAccessCompanies(Set.of(entity.getCompanyCode()));
-                    return entity;
-                })
-                .map(ruFeatureMapper::toInternalRuFeature);
+            .map(entity -> {
+                companyAuthorizer.requireCanAccessCompanies(Set.of(entity.getCompanyCode()));
+                return entity;
+            })
+            .map(ruFeatureMapper::toInternalRuFeature);
     }
 
     InternalRuFeature create(RuFeatureRequest request) {
@@ -86,16 +86,16 @@ public class RuFeatureServiceImpl implements RuFeatureService {
     void deleteAllByIds(List<Integer> ids) {
         List<Integer> distinctIds = ids.stream().distinct().toList();
         Set<CompanyCode> companies = ruFeatureRepository.findAllById(distinctIds).stream()
-                .map(RuFeatureEntity::getCompanyCode)
-                .collect(Collectors.toSet());
+            .map(RuFeatureEntity::getCompanyCode)
+            .collect(Collectors.toSet());
         companyAuthorizer.requireCanAccessCompanies(companies);
         ruFeatureRepository.deleteAllById(distinctIds);
     }
 
     private void requireCompanyExists(CompanyCode companyCode) {
         boolean exists = companyService.getAllCompanies().stream()
-                .map(Company::code)
-                .anyMatch(companyCode::equals);
+            .map(Company::code)
+            .anyMatch(companyCode::equals);
         if (!exists) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Company not found: " + companyCode.value());
         }
