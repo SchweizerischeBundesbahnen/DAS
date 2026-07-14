@@ -1,7 +1,7 @@
 import 'angular-server-side-configuration/process';
 
-import {Environment} from './environment.model';
-import {PassedInitialConfig} from 'angular-auth-oidc-client';
+import { Environment } from './environment.model';
+import { PassedInitialConfig } from 'angular-auth-oidc-client';
 
 /**
  * How to use angular-server-side-configuration:
@@ -43,5 +43,6 @@ export const environment: Environment = {
   stage: process.env.STAGE,
   backendUrl,
   adminTenantId: process.env.ADMIN_TENANT_ID,
+  allowedTenantIds: process.env.ALLOWED_TENANT_IDS.split(','),
   authConfig,
 };

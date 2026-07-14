@@ -1,22 +1,30 @@
-import {Routes} from '@angular/router';
-import {autoLoginPartialRoutesGuard} from 'angular-auth-oidc-client';
-import {inject} from '@angular/core';
-import {AuthService} from './shared/auth-service';
+import { Routes } from '@angular/router';
+import { autoLoginPartialRoutesGuard } from 'angular-auth-oidc-client';
+import { inject } from '@angular/core';
+import { AuthService } from './shared/auth-service';
+
+const isTenantAllowed = () => {
+  const authService = inject(AuthService);
+  if (!authService.isAuthenticated()) return true;
+  return authService.isAllowedTenant() || authService.navigateToUnauthorized();
+};
 
 const isAdmin = () => {
   const authService = inject(AuthService);
-  return authService.isAdmin() ?? authService.navigateToUnauthorized();
+  if (!authService.isAuthenticated()) return true;
+  return authService.isAdmin() || authService.navigateToUnauthorized();
 };
 
 const isRuAdmin = () => {
   const authService = inject(AuthService);
-  return authService.isRuAdmin() ?? authService.navigateToUnauthorized();
+  if (!authService.isAuthenticated()) return true;
+  return authService.isRuAdmin() || authService.navigateToUnauthorized();
 };
 
 export const routes: Routes = [
   {
     path: '',
-    canActivateChild: [autoLoginPartialRoutesGuard, isRuAdmin],
+    canActivateChild: [autoLoginPartialRoutesGuard, isTenantAllowed, isRuAdmin],
     children: [
       {
         path: '',
