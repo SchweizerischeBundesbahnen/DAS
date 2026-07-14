@@ -115,6 +115,29 @@ export interface ExternalLink extends Auditable {
 
 export type ExternalLinkApiResponse = ApiResponse<ExternalLink>;
 
+export type RuFeatureKey =
+  | 'WARNAPP'
+  | 'CUSTOMER_ORIENTED_DEPARTURE_PROCESS'
+  | 'CHECKLIST_DEPARTURE_PROCESS'
+  | 'DISPLAY_PLANNED_TIME_DEVIATION';
+
+// TODO: placeholder labels - no verified German product copy exists yet for these keys.
+export const RU_FEATURE_KEY_LABELS: { value: RuFeatureKey, label: string }[] = [
+  {value: 'WARNAPP', label: 'WARNAPP'},
+  {value: 'CUSTOMER_ORIENTED_DEPARTURE_PROCESS', label: 'CUSTOMER_ORIENTED_DEPARTURE_PROCESS'},
+  {value: 'CHECKLIST_DEPARTURE_PROCESS', label: 'CHECKLIST_DEPARTURE_PROCESS'},
+  {value: 'DISPLAY_PLANNED_TIME_DEVIATION', label: 'DISPLAY_PLANNED_TIME_DEVIATION'},
+];
+
+export interface RuFeature extends Auditable {
+  id?: number;
+  companyCode: string;
+  key: RuFeatureKey;
+  enabled: boolean;
+}
+
+export type RuFeatureApiResponse = ApiResponse<RuFeature>;
+
 @Injectable({
   providedIn: 'root',
 })
@@ -128,6 +151,8 @@ export class RuAdminApi {
   readonly specialHolidays = httpResource<SpecialHolidayApiResponse>(() => this.specialHolidaysUrl);
   private readonly externalLinksUrl = `${environment.backendUrl}/external-links`;
   readonly externalLinks = httpResource<ExternalLinkApiResponse>(() => this.externalLinksUrl);
+  private readonly ruFeaturesUrl = `${environment.backendUrl}/ru-features`;
+  readonly ruFeatures = httpResource<RuFeatureApiResponse>(() => this.ruFeaturesUrl);
 
   postRuIndicationTemplate(ruIndicationTemplate: RuIndicationTemplate): Observable<RuIndicationTemplateApiResponse> {
     return this.httpClient.post<RuIndicationTemplateApiResponse>(this.ruIndicationTemplatesUrl, ruIndicationTemplate);
@@ -175,5 +200,17 @@ export class RuAdminApi {
 
   deleteExternalLinksByIds(ids: number[]): Observable<void> {
     return this.httpClient.delete<void>(this.externalLinksUrl, {body: {ids}});
+  }
+
+  postRuFeature(ruFeature: RuFeature): Observable<RuFeatureApiResponse> {
+    return this.httpClient.post<RuFeatureApiResponse>(this.ruFeaturesUrl, ruFeature);
+  }
+
+  putRuFeature(id: number, ruFeature: RuFeature): Observable<RuFeatureApiResponse> {
+    return this.httpClient.put<RuFeatureApiResponse>(`${this.ruFeaturesUrl}/${id}`, ruFeature);
+  }
+
+  deleteRuFeature(id: number): Observable<void> {
+    return this.httpClient.delete<void>(`${this.ruFeaturesUrl}/${id}`);
   }
 }
