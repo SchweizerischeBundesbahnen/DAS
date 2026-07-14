@@ -6,6 +6,7 @@ import {
   RuFeatureToggleDialog
 } from './ru-feature-toggle-dialog/ru-feature-toggle-dialog.component';
 import {BaseDialogService} from '../base-dialog.service';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -43,5 +44,13 @@ export class RuFeatureService extends BaseDialogService {
 
   protected override reload(): void {
     this.ruAdminApi.ruFeatures.reload();
+  }
+
+  protected override handleApiError(e: unknown) {
+    if (e instanceof HttpErrorResponse && e.error.status === 409) {
+      this.toastService.error($localize`:@@ru_feature_toggles_toast_conflict_error:Dieses Feature für diese EVU existiert bereits.`);
+    } else {
+      super.handleApiError(e)
+    }
   }
 }
