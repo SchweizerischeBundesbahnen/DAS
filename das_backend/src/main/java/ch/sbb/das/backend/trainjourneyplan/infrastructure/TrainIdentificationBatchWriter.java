@@ -13,13 +13,24 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 
+/**
+ * Write-optimized persistence for the {@code train_identification} table.
+ *
+ * <p>Handles high-throughput batch writes originating from the Kafka timetable ingestion pipeline.
+ * Uses raw JDBC ({@link NamedParameterJdbcTemplate}) rather than JPA to support efficient
+ * batch upserts (MERGE) and bulk deletes that are difficult to express idiomatically with
+ * Spring Data.
+ *
+ * <p>For read access and targeted field updates (e.g. marking entries as preloaded),
+ * see {@link TrainIdentificationRepository}.
+ */
 @Service
 @Slf4j
-public class TrainRunDAO {
+public class TrainIdentificationBatchWriter {
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public TrainRunDAO(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+    public TrainIdentificationBatchWriter(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
