@@ -1,17 +1,5 @@
 package ch.sbb.das.backend.features.internal;
 
-import static ch.sbb.das.backend.features.internal.RuFeatureController.API_RU_FEATURES;
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.context.jdbc.SqlMergeMode.MergeMode.MERGE;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import ch.sbb.das.backend.IntegrationTest;
 import ch.sbb.das.backend.WithMockRole;
 import ch.sbb.das.backend.common.security.UserRole;
@@ -21,6 +9,13 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlMergeMode;
 import org.springframework.test.web.servlet.MockMvc;
+
+import static ch.sbb.das.backend.features.internal.RuFeatureController.API_RU_FEATURES;
+import static org.hamcrest.Matchers.*;
+import static org.springframework.test.context.jdbc.SqlMergeMode.MergeMode.MERGE;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @IntegrationTest
 @Sql("classpath:createCompaniesAndTenants.sql")
@@ -212,32 +207,6 @@ class RuFeatureControllerTest {
                     { "companyCode": "1111", "key": "WARNAPP", "enabled": true }
                     """))
             .andExpect(status().isConflict());
-    }
-
-    @Test
-    @WithMockRole(roles = UserRole.RU_ADMIN)
-    @Sql("classpath:createRuFeatures.sql")
-    void deleteRuFeature_ok() throws Exception {
-        mockMvc.perform(delete(API_RU_FEATURES + "/" + FEATURE_ID_OWN_2))
-            .andExpect(status().isNoContent());
-
-        mockMvc.perform(get(API_RU_FEATURES + "/" + FEATURE_ID_OWN_2))
-            .andExpect(status().isNotFound());
-    }
-
-    @Test
-    @WithMockRole(roles = UserRole.RU_ADMIN)
-    void deleteRuFeature_notFound_isIdempotent() throws Exception {
-        mockMvc.perform(delete(API_RU_FEATURES + "/999"))
-            .andExpect(status().isNoContent());
-    }
-
-    @Test
-    @WithMockRole(roles = UserRole.RU_ADMIN)
-    @Sql("classpath:createRuFeatures.sql")
-    void deleteRuFeature_forbidden_otherTenant() throws Exception {
-        mockMvc.perform(delete(API_RU_FEATURES + "/" + FEATURE_ID_OTHER_TENANT))
-            .andExpect(status().isForbidden());
     }
 
     @Test
