@@ -42,10 +42,10 @@ export class CompanyService {
       ({
          code,
          shortName
-       }) => code.toLowerCase().includes(query) || shortName.toLowerCase().includes(query),
+       }) => code.toLowerCase().includes(caseInsensitiveQuery) || shortName.toLowerCase().includes(caseInsensitiveQuery),
     );
 
-    return this.sortByRelevance(matching, query);
+    return this.sortByRelevance(matching, caseInsensitiveQuery);
   }
 
   private sortByRelevance(candidates: Company[], query: string): Company[] {

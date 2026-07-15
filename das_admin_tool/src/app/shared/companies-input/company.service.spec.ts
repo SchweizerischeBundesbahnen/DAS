@@ -41,6 +41,12 @@ describe('CompanyService', () => {
     expect(service.filterCompanies('1087').map(c => c.code)).toEqual(['1087']);
   });
 
+  it('filterCompanies matches an uppercase or mixed-case query against uppercase-stored names', () => {
+    expect(service.filterCompanies('SBB').map(c => c.code)).toEqual(['1085']);
+    expect(service.filterCompanies('Sb').map(c => c.code)).toEqual(['1085']);
+    expect(service.filterCompanies('S').map(c => c.code)).toEqual(['1085', '1087']);
+  });
+
   it('filterCompanies ranks exact and prefix matches before contains matches', () => {
     const extended = [...companies, {code: '1231085', shortName: 'Other'}];
     mockCompanies(service, extended);
