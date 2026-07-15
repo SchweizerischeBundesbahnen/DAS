@@ -2,6 +2,8 @@ import { Environment } from './environment.model';
 import { PassedInitialConfig } from 'angular-auth-oidc-client';
 
 const backendUrl = 'http://localhost:8080/admin';
+const adminTenantId = '2cda5d11-f0ac-46b3-967d-af1b2e1bd01a';
+const allowedTenantIds = [adminTenantId];
 
 const authConfig: PassedInitialConfig = {
   config: {
@@ -25,7 +27,8 @@ export const environment: Environment = {
   production: false,
   stage: 'loc',
   backendUrl,
-  adminTenantId: '2cda5d11-f0ac-46b3-967d-af1b2e1bd01a',
+  adminTenantId,
+  allowedTenantIds,
   authConfig
 };
 
