@@ -1,5 +1,13 @@
 # DAS-Backend
 
+Provides additional services for the [DAS-Client](das_client/README.md) which are not covered by
+SFERA (for e.g. additional Cargo data).
+Some configuration and master data may be configured by [DAS-Admin-Tool](das_admin_tool/README.md).
+
+Important:
+
+* This component is not a **RU DAS-TS** implementation, but offers additional related services.
+
 ## Introduction
 SpringBoot application backing the DAS ecosystem. It needs a PostgreSQL database — see
 [Database handling](Database.md) for how schema changes are made and which SQL conventions to
@@ -16,7 +24,7 @@ follow once you start writing migrations.
    - Add `Maven-Settings -> Runner` -> `Environment variables` (missing URLs/secrets as in .env)
      or run maven with `-DskipSchemaDownload`
 3. Start a local DB via `podman compose up` or `docker-compose up` (alternatively, this can be
-   configured as a pre launch task in IntelliJ with Podman as server configured) — see
+   configured as a pre-launch task in IntelliJ with Podman as server configured) — see
    [Database handling](Database.md) for how schema changes and migrations work once the DB is up
 4. Run `DASBackendApplication`
 

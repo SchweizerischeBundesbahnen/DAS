@@ -1,6 +1,7 @@
 # DAS-Client
 
-DAS (Driver Advisory System) is a mobile application that provides all the required journey data to the train driver.
+DAS-Client (aka `DAS On-Board`, `DAS OB`) is a mobile application that provides all the required
+journey data to the train driver.
 
 ## Supported platforms
 
