@@ -5,14 +5,14 @@
 ## Normative scope
 
 This project covers mainly the **DAS On-Board** (aka **DAS**, **DAS OB**) railway undertaking (RU)
-component
-according to [UIC IRS 90940:Ed2](https://uic.org/events/uic-irs-90940-edition-2-sfera-protocol),
+component (see [mobile App](#Mobile-App)) according
+to [UIC IRS 90940:Ed3](https://uic.org/com/enews/article/3rd-edition-of-the-sfera-protocol-available-now-including-all-on-board-devices),
 also
 see [high-level system architecture](./docs/content/architecture/05_building_block_view/01_whitebox_view.md).
 
 Out of Scope:
 
-* The Traffic Management System **IM DAS-TS** is not part of this project.
+* The Traffic Management System **IM DAS-TS** (aka IM DAS-Trackside) is not part of this project.
 * Operating aspects to national data-sources involved (for e.g. the Swiss IM DAS-TS instance
   TMS-VAD).
 
@@ -35,19 +35,13 @@ specific extensions (NSPs).
 This repository is structured into several key modules, each dedicated to a specific aspect of the
 system.
 
-### Mobile App
-
-DAS-OB (aka **DAS-Client** within this project)
+### Mobile App (aka **DAS-Client** within this project)
 
 - [das_client](das_client/README.md)
     - [Dart](https://dart.dev/)
     - [Flutter](https://flutter.dev/)
 
 ### Backend (aka **DAS-Backend** within this project)
-
-Important:
-
-* This component is not a **RU DAS-TS** implementation, but offers additional related services.
 
 - [das_backend](das_backend/README.md)
     - [Java](https://www.java.com/de/), [openJDK](https://openjdk.org/)
@@ -56,7 +50,7 @@ Important:
 
 ![business_context.drawio.svg](docs/content/architecture/03_context/business_context.drawio.svg)
 
-### Admin-Tool
+### Admin-Tool (aka **DAS-Admin-Tool** within this project)
 
 - [das_admin_tool](das_admin_tool/README.md)
     - [TypeScript](https://www.typescriptlang.org/)
@@ -64,7 +58,7 @@ Important:
 
 ### Tools
 
-#### SFERA Mock
+#### SFERA-Mock
 
 Mock IM DAS-TS
 
@@ -73,7 +67,7 @@ Mock IM DAS-TS
     - [Spring Framework](https://spring.io/projects/spring-framework)
       with [Spring Boot](https://spring.io/projects/spring-boot)
 
-#### Playground
+#### Playground (aka **DAS-Playground** within this project)
 
 - [das_playground](das_playground/README.md)
     - [TypeScript](https://www.typescriptlang.org/)

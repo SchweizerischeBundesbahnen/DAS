@@ -10,7 +10,9 @@ prev: /architecture/11_risks
 Terminology, abbreviations and its translations.
 {{< /callout >}}
 
-Most relevant terms are specified by the [SFERA 3](https://www.uic.org/projects-99/article/sfera-smart-communications-for-efficient-rail-activities) protocol (especially UIC "IRSE90940 Ed.2" Specification).
+Most relevant terms are specified by
+the [SFERA 3](https://uic.org/com/enews/article/3rd-edition-of-the-sfera-protocol-available-now-including-all-on-board-devices)
+protocol.
 
 Be aware, the project deals heavily with SFERA 3 object translations in german, french and italian for locomotive personnel (mainly engine drivers) and its represenation to a Tablet user-interface. 
 Therefore, this page contains only a very small subset of expressions.

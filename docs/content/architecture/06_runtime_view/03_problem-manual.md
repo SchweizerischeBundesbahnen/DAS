@@ -36,4 +36,8 @@ Example:
 
 ## DAS-Client
 
+Hints are given within the App.
+
 ## DAS-Admin-Tool
+
+Hints are given within the Web-App.

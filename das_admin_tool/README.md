@@ -1,6 +1,8 @@
-# DAS Admin-Tool
+# DAS-Admin-Tool
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.2.
+The DAS-Admin-Tool allows administrator roles to maintain configuration and master data (for e.g. RU specific settings).
+
+This project was generated using [Angular CLI](https://github.com/angular/angular-cli).
 
 ## Development server
 
