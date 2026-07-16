@@ -3,6 +3,7 @@ import {FormControl} from '@angular/forms';
 import {CompaniesInputComponent} from './companies-input.component';
 import {Company, CompanyService} from './company.service';
 import {RecentCompaniesStore} from '../recent-companies.store';
+import {ToastService} from '../toast-service';
 
 const companies = [
   {code: '1085', shortName: 'SBB'},
@@ -25,14 +26,15 @@ describe('CompaniesInputComponent', () => {
       imports: [CompaniesInputComponent],
       providers: [
         {provide: RecentCompaniesStore, useValue: mockRecentCompaniesStore},
+        {provide: ToastService, useValue: {error: vi.fn()}},
       ],
     }).compileComponents();
 
     companyService = TestBed.inject(CompanyService);
 
     ((companyService as unknown) as {
-      companiesResource: { hasValue: () => boolean; value: () => { data: Company[] } }
-    }).companiesResource = {hasValue: () => true, value: () => ({data: companies})};
+      companiesResource: { hasValue: () => boolean; value: () => { data: Company[] }; error: () => unknown }
+    }).companiesResource = {hasValue: () => true, value: () => ({data: companies}), error: () => undefined};
 
     fixture = TestBed.createComponent(CompaniesInputComponent);
     component = fixture.componentInstance;
@@ -100,13 +102,13 @@ describe('CompaniesInputComponent (single-select)', () => {
   async function createSingle(initialValue: string): Promise<HTMLInputElement> {
     await TestBed.configureTestingModule({
       imports: [CompaniesInputComponent],
-      providers: [{provide: RecentCompaniesStore, useValue: mockRecentCompaniesStore}],
+      providers: [{provide: RecentCompaniesStore, useValue: mockRecentCompaniesStore}, {provide: ToastService, useValue: {error: vi.fn()}}],
     }).compileComponents();
 
     companyService = TestBed.inject(CompanyService);
     ((companyService as unknown) as {
-      companiesResource: { hasValue: () => boolean; value: () => { data: Company[] } }
-    }).companiesResource = {hasValue: () => true, value: () => ({data: companies})};
+      companiesResource: { hasValue: () => boolean; value: () => { data: Company[] }; error: () => unknown }
+    }).companiesResource = {hasValue: () => true, value: () => ({data: companies}), error: () => undefined};
 
     fixture = TestBed.createComponent(CompaniesInputComponent);
     singleControl = new FormControl<string>(initialValue, {nonNullable: true});

@@ -1,11 +1,12 @@
 import {TestBed} from '@angular/core/testing';
 
 import {Company, CompanyService} from './company.service';
+import {ToastService} from '../toast-service';
 
 function mockCompanies(service: CompanyService, companies: Company[]) {
   ((service as unknown) as {
-    companiesResource: { hasValue: () => boolean; value: () => { data: Company[] } }
-  }).companiesResource = {hasValue: () => true, value: () => ({data: companies})};
+    companiesResource: { hasValue: () => boolean; value: () => { data: Company[] }; error: () => unknown }
+  }).companiesResource = {hasValue: () => true, value: () => ({data: companies}), error: () => undefined};
 }
 
 describe('CompanyService', () => {
@@ -17,7 +18,9 @@ describe('CompanyService', () => {
   ];
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [{provide: ToastService, useValue: {error: vi.fn()}}],
+    });
     service = TestBed.inject(CompanyService);
     mockCompanies(service, companies)
   });
@@ -71,5 +74,23 @@ describe('CompanyService', () => {
 
   it('formatCompanies returns empty string for empty input', () => {
     expect(service.formatCompanies([])).toBe('');
+  });
+
+  it('loaded should return true when companiesResource has value', () => {
+    expect(service.loaded()).toBe(true);
+  });
+
+  it('loaded should return true when companiesResource has error', () => {
+    ((service as unknown) as {
+      companiesResource: { hasValue: () => boolean; value: () => { data: Company[] }; error: () => unknown }
+    }).companiesResource = {hasValue: () => false, value: () => ({data: []}), error: () => new Error('fail')};
+    expect(service.loaded()).toBe(true);
+  });
+
+  it('loaded should return false when companiesResource is still loading', () => {
+    ((service as unknown) as {
+      companiesResource: { hasValue: () => boolean; value: () => { data: Company[] }; error: () => unknown }
+    }).companiesResource = {hasValue: () => false, value: () => ({data: []}), error: () => undefined};
+    expect(service.loaded()).toBe(false);
   });
 });
