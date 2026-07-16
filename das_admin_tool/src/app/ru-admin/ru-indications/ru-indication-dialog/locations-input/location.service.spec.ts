@@ -1,6 +1,7 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { Location, LocationService } from './location.service';
+import {Location, LocationService} from './location.service';
+import {ToastService} from '../../../../shared/toast-service';
 
 const locations: Location[] = [
   {primaryLocationName: 'Bern', locationAbbreviation: 'BN', locationReference: 'CH00001'},
@@ -15,14 +16,25 @@ describe('LocationService', () => {
   let service: LocationService;
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      providers: [LocationService]
+      providers: [
+        LocationService,
+        {provide: ToastService, useValue: {error: vi.fn()}},
+      ]
     });
 
     service = TestBed.inject(LocationService);
 
     ((service as unknown) as {
-      locationsResource: { hasValue: () => boolean; value: () => { data: Location[] } }
-    }).locationsResource = {hasValue: () => true, value: () => ({data: locations})};
+      locationsResource: {
+        hasValue: () => boolean;
+        value: () => { data: Location[] };
+        error: () => unknown
+      }
+    }).locationsResource = {
+      hasValue: () => true,
+      value: () => ({data: locations}),
+      error: () => undefined
+    };
   });
 
   it('should be created', () => {
@@ -53,5 +65,36 @@ describe('LocationService', () => {
   it('filterLocations should match abbreviation', () => {
     const filtered = service.filterLocations('bn');
     expect(filtered.some(l => l.locationAbbreviation?.toLowerCase() === 'bn')).toBeTruthy();
+  });
+
+  it('filterLocations should exclude specified references', () => {
+    const filtered = service.filterLocations('ber', ['CH00001']);
+    expect(filtered.map(l => l.locationReference)).not.toContain('CH00001');
+    expect(filtered.map(l => l.primaryLocationName)).toContain('Bernau');
+  });
+
+  it('filterLocations should return empty for query shorter than 2 chars', () => {
+    expect(service.filterLocations('b')).toEqual([]);
+    expect(service.filterLocations('')).toEqual([]);
+  });
+
+  it('getLocation should return location by reference', () => {
+    expect(service.getLocation('CH00001')?.primaryLocationName).toBe('Bern');
+    expect(service.getLocation('CH00004')?.primaryLocationName).toBe('Zürich');
+  });
+
+  it('getLocation should return undefined for unknown reference', () => {
+    expect(service.getLocation('UNKNOWN')).toBeUndefined();
+  });
+
+  it('loaded should return true when locationsResource has value', () => {
+    expect(service.loaded()).toBe(true);
+  });
+
+  it('loaded should return true when locationsResource has error', () => {
+    ((service as unknown) as {
+      locationsResource: { hasValue: () => boolean; value: () => { data: Location[] }; error: () => unknown }
+    }).locationsResource = {hasValue: () => false, value: () => ({data: []}), error: () => new Error('fail')};
+    expect(service.loaded()).toBe(true);
   });
 });
