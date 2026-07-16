@@ -59,7 +59,16 @@ export class RuIndicationTemplatesTable {
       this.dataSource.sort = this.sort();
     });
     this.dataSource.filterPredicate = (data: RuIndicationTemplate, filter: RuIndicationTemplateFilter) => this.searchFilter(filter, data);
-    this.dataSource.sortingDataAccessor = (data, col) => this.getValue(data, col) ?? '';
+    this.dataSource.sortingDataAccessor = (data: RuIndicationTemplate, column: string) => {
+      switch (column) {
+        case 'title':
+        case 'text':
+          return this.currentLanguage(data)?.[column] ?? '';
+
+        default:
+          return data[column as keyof RuIndicationTemplate] as string;
+      }
+    };
     this.form.valueChanges
       .pipe(startWith(this.form.value), takeUntilDestroyed())
       .subscribe((form) => {
@@ -67,12 +76,8 @@ export class RuIndicationTemplatesTable {
       });
   }
 
-  protected getValue(row: RuIndicationTemplate, column: string) {
-    const language = this.form.value.language;
-    if (['title', 'text'].includes(column) && language) {
-      return row[language]?.[column];
-    }
-    return row[column] as string;
+  protected currentLanguage(ruIndicationTemplate: RuIndicationTemplate) {
+    return ruIndicationTemplate[this.form.controls.language.value];
   }
 
   protected async edit(ruIndicationTemplate: RuIndicationTemplate) {
@@ -114,8 +119,8 @@ export class RuIndicationTemplatesTable {
     const search = filter.search.toLowerCase();
     if (!search) return true;
     return (
-      this.getValue(data, 'title')?.toLowerCase().includes(search) ||
-      this.getValue(data, 'text')?.toLowerCase().includes(search) ||
+      this.currentLanguage(data)?.title?.toLowerCase().includes(search) ||
+      this.currentLanguage(data)?.text?.toLowerCase().includes(search) ||
       data.category.toLowerCase().includes(search) ||
       data.lastModifiedBy?.toLowerCase().includes(search) ||
       data.lastModifiedAt?.toString().toLowerCase().includes(search)

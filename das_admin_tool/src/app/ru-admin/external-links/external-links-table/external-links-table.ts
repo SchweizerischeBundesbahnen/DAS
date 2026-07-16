@@ -63,22 +63,17 @@ export class ExternalLinksTable {
     });
     this.dataSource.filterPredicate = (data: ExternalLink, filter: ExternalLinkFilter) => this.searchFilter(filter, data);
     this.dataSource.sortingDataAccessor = (data: ExternalLink, column: string) => {
-      let value: string;
       switch (column) {
         case 'title':
         case 'link':
-          value = this.currentLanguage(data)?.[column] ?? '';
-          break;
+          return this.currentLanguage(data)?.[column] ?? '';
 
         case 'lastModifiedAt':
-          value = formatDate(data[column]!, 'short', this.localeId);
-          break;
+          return formatDate(data[column]!, 'short', this.localeId);
 
         default:
-          value = data[column as keyof ExternalLink] as string;
-          break;
+          return data[column as keyof ExternalLink] as string;
       }
-      return value;
     };
     this.form.valueChanges
       .pipe(startWith(this.form.value), takeUntilDestroyed())

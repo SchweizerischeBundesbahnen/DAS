@@ -1,0 +1,31 @@
+<app-base-dialog
+  [data]="dialogData"
+  [dialogClose]="companyForm.value"
+  [dialogTitle]="dialogTitle"
+  [saveDisabled]="companyForm.invalid"
+  i18n-stepLabel="@@company_dialog_step_label"
+  stepLabel="EVU"
+>
+  <form [formGroup]="companyForm">
+    <sbb-form-field errorSpace="reserve" class="full-width">
+      <label i18n="@@company_form_code_label">Code</label>
+      <input formControlName="code" />
+      @let codeField = companyForm.get('code')!;
+      @if (codeField.touched && codeField.hasError('required')) {
+        <sbb-error i18n="@@company_form_field_error_required">Feld darf nicht leer sein</sbb-error>
+      }
+      @if (codeField.touched && codeField.hasError('pattern')) {
+        <sbb-error i18n="@@company_form_field_error_pattern">Feld muss eine vierstellige Zahl beinhalten</sbb-error>
+      }
+    </sbb-form-field>
+    <sbb-form-field errorSpace="reserve" class="full-width">
+      <label i18n="@@company_form_short_name_label">Kurzname</label>
+      <input formControlName="shortName" />
+      @let shortNameField = companyForm.get('shortName')!;
+      @if (shortNameField.touched && shortNameField.hasError('required')) {
+        <sbb-error i18n="@@company_form_field_error_required">Feld darf nicht leer sein</sbb-error>
+      }
+    </sbb-form-field>
+    <app-tenant-input [control]="companyForm.controls.tenantId"></app-tenant-input>
+  </form>
+</app-base-dialog>

@@ -1,4 +1,5 @@
-import { AbstractControl, FormGroup, ValidationErrors } from '@angular/forms';
+import { AbstractControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { Tenant } from '../das-admin/companies/company-dialog/tenant-input/tenant.service';
 
 function hasValue(value: unknown): boolean {
   return typeof value === 'string' ? value.trim().length > 0 : !!value;
@@ -58,7 +59,7 @@ export function oneLanguageRequired(control: AbstractControl): ValidationErrors 
     Object.values(languageGroup.controls).some((childControl) => hasValue(childControl.value)),
   );
 
-  return hasAnyLanguageValue ? null : {oneLanguageRequired: true};
+  return hasAnyLanguageValue ? null : { oneLanguageRequired: true };
 }
 
 /**
@@ -75,8 +76,9 @@ export function oneLanguageRequired(control: AbstractControl): ValidationErrors 
 export function titleRequired(control: AbstractControl): ValidationErrors | null {
   const formGroup = control as FormGroup;
   const titleControl = formGroup.get('title');
-  const hasOtherValue = Object.entries(formGroup.controls)
-    .some(([key, childControl]) => key !== 'title' && hasValue(childControl.value));
+  const hasOtherValue = Object.entries(formGroup.controls).some(
+    ([key, childControl]) => key !== 'title' && hasValue(childControl.value),
+  );
   const isMissingTitle = !!titleControl && hasOtherValue && !hasValue(titleControl.value);
 
   if (titleControl) {
@@ -99,5 +101,22 @@ export function titleRequired(control: AbstractControl): ValidationErrors | null
  *
  */
 export function url(control: AbstractControl): ValidationErrors | null {
-  return !control.value || URL.canParse(control.value) ? null : {url: true};
+  return !control.value || URL.canParse(control.value) ? null : { url: true };
+}
+
+/**
+ * @description
+ * Validator that requires the control to be a tenant.
+ *
+ * @returns An error map with the `tenant` property set to `true`
+ * if the validation check fails, otherwise `null`.
+ *
+ */
+export function tenant(tenants: Tenant[]): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    return !control.value
+      || tenants.some((tenant) => tenant.tenantId === control.value)
+      ? null
+      : { tenant: true };
+  };
 }

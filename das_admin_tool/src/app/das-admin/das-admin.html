@@ -1,8 +1,18 @@
 <sbb-title i18n="@@admin_title">Admin DAS</sbb-title>
 
-<sbb-tab-group>
-  <sbb-tab-label i18n="@@admin_tab_app_versions">App Versionen</sbb-tab-label>
-  <sbb-tab>
-    <app-app-versions></app-app-versions>
-  </sbb-tab>
-</sbb-tab-group>
+<sbb-tab-nav-bar>
+  <a
+    i18n="@@admin_tab_app_versions"
+    routerLink="app-versions"
+    routerLinkActive="sbb-active">
+    App Versionen
+  </a>
+  <a
+    i18n="@@admin_tab_companies"
+    routerLink="companies"
+    routerLinkActive="sbb-active">
+    EVUs
+  </a>
+</sbb-tab-nav-bar>
+
+<router-outlet></router-outlet>

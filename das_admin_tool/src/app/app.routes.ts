@@ -34,7 +34,7 @@ export const routes: Routes = [
       {
         path: 'das-admin',
         canActivate: [isAdmin],
-        loadComponent: () => import('./das-admin/das-admin').then(m => m.DasAdmin)
+        loadChildren: () => import('./das-admin/das-admin.routes').then((m) => m.routes)
       },
       {
         path: 'ru-admin',
