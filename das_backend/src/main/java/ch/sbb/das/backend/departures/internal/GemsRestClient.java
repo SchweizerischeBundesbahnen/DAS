@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
 /**
- * REST client that integrates DAS-Client with GEMS (subscription system for customer oriented departure), with DAS-Backend acting as the proxy layer.
+ * REST client that integrates DAS-Client with GEMS (subscription system for customer oriented departure), with DAS-Backend acting as the proxy layer. Datasource: GEMS
  */
 @Component
 public class GemsRestClient {

@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.das.backend.IntegrationTest;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -27,6 +28,7 @@ class FormationControllerTest {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @DisplayName("Should respond formation|tests:541")
     @Test
     @WithMockUser(authorities = "ROLE_observer")
     void should_respond_formation() throws Exception {
@@ -37,6 +39,7 @@ class FormationControllerTest {
             .andExpect(content().json(expectedJson, JsonCompareMode.STRICT));
     }
 
+    @DisplayName("Should respond not modified - when nothing changed since etag|tests:541")
     @Test
     @WithMockUser(authorities = "ROLE_observer")
     void should_respond_not_modified_when_nothing_changed_since_etag() throws Exception {
@@ -47,6 +50,7 @@ class FormationControllerTest {
             .andExpect(status().isNotModified());
     }
 
+    @DisplayName("Should respond formation - when changed since etag|tests:541")
     @Test
     @WithMockUser(authorities = "ROLE_observer")
     void should_respond_formation_when_changed_since_etag() throws Exception {
@@ -63,6 +67,7 @@ class FormationControllerTest {
             .andExpect(content().json(expectedJson, JsonCompareMode.STRICT));
     }
 
+    @DisplayName("Should respond latest formation|tests:541")
     @Test
     @WithMockUser(authorities = "ROLE_observer")
     void should_respond_latest_formation() throws Exception {
@@ -72,6 +77,7 @@ class FormationControllerTest {
             .andExpect(content().json(expectedJson, JsonCompareMode.STRICT));
     }
 
+    @DisplayName("Should respond not found|tests:541")
     @Test
     @WithMockUser(authorities = "ROLE_observer")
     void should_respond_not_found() throws Exception {
@@ -79,6 +85,7 @@ class FormationControllerTest {
             .andExpect(status().isNotFound());
     }
 
+    @DisplayName("Should respond bad request|tests:541")
     @Test
     @WithMockUser(authorities = "ROLE_observer")
     void should_respond_bad_request() throws Exception {

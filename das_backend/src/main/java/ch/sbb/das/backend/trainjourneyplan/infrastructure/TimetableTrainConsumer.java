@@ -15,6 +15,11 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 import tools.jackson.databind.json.JsonMapper;
 
+/**
+ * Datasource: NeTS-FPS
+ *
+ * @see <a href="https://developer.sbb.ch/apis/fps-prod-aws/information">Fahrplanservice (FPS)</a>
+ */
 @Component
 @Slf4j
 public class TimetableTrainConsumer {

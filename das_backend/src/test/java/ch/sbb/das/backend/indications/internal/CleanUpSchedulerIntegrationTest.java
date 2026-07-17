@@ -17,6 +17,7 @@ import java.util.Set;
 import net.javacrumbs.shedlock.core.LockProvider;
 import net.javacrumbs.shedlock.core.SimpleLock;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,6 +78,7 @@ class CleanUpSchedulerIntegrationTest {
         when(lockProvider.lock(any())).thenReturn(Optional.of(dummyLock));
     }
 
+    @DisplayName("Clean up - deletes old RU indications and special holidays|tests:1657(9),1656")
     @Test
     @Transactional
     @WithMockUser(authorities = "ROLE_admin")
@@ -131,6 +133,7 @@ class CleanUpSchedulerIntegrationTest {
             .allMatch(entity -> entity.getId() != null);
     }
 
+    @DisplayName("Clean up - preserves indications with multiple periods if latest period is active|tests:1657(9)")
     @Test
     @Transactional
     @WithMockUser(authorities = "ROLE_admin")
@@ -156,6 +159,7 @@ class CleanUpSchedulerIntegrationTest {
         assertThat(ruIndicationRepository.findAll()).hasSize(1);
     }
 
+    @DisplayName("Clean up - deletes indications with all periods older than cutoff|tests:1657(9)")
     @Test
     @Transactional
     @WithMockUser(authorities = "ROLE_admin")

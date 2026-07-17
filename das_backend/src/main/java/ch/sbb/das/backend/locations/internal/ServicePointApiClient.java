@@ -9,6 +9,11 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
+/**
+ * Datasource: atlas
+ *
+ * @see <a href="https://developer.sbb.ch/apis/atlas/information">atlas API</a>
+ */
 @Component
 public class ServicePointApiClient {
 
