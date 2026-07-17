@@ -32,7 +32,7 @@ class FormationControllerTest {
     @Test
     @WithMockUser(authorities = "ROLE_observer")
     void should_respond_formation() throws Exception {
-        String expectedJson = Files.readString(Paths.get("src/test/resources/formations/54233.json"));
+        String expectedJson = Files.readString(Paths.get("src/test/resources/cargo/54233/expected.json"));
 
         mockMvc.perform(get(API_FORMATIONS).param("operationalTrainNumber", "54233").param("operationalDay", "2025-07-25").param("company", "2185"))
             .andExpect(status().isOk())
@@ -60,7 +60,7 @@ class FormationControllerTest {
         String sql = Files.readString(Paths.get("src/test/resources/updateFormation54233.sql"));
         jdbcTemplate.execute(sql);
 
-        String expectedJson = Files.readString(Paths.get("src/test/resources/formations/54233_2.json"));
+        String expectedJson = Files.readString(Paths.get("src/test/resources/cargo/54233/expected_update.json"));
 
         mockMvc.perform(get(API_FORMATIONS).param("operationalTrainNumber", "54233").param("operationalDay", "2025-07-25").param("company", "2185").header(HttpHeaders.IF_NONE_MATCH, etagHeader))
             .andExpect(status().isOk())
@@ -71,7 +71,7 @@ class FormationControllerTest {
     @Test
     @WithMockUser(authorities = "ROLE_observer")
     void should_respond_latest_formation() throws Exception {
-        String expectedJson = Files.readString(Paths.get("src/test/resources/formations/739.json"));
+        String expectedJson = Files.readString(Paths.get("src/test/resources/cargo/739/expected.json"));
         mockMvc.perform(get(API_FORMATIONS).param("operationalTrainNumber", "739").param("operationalDay", "2025-07-20").param("company", "3211"))
             .andExpect(status().isOk())
             .andExpect(content().json(expectedJson, JsonCompareMode.STRICT));
