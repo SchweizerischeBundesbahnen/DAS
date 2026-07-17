@@ -1,11 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DasAdmin } from './das-admin';
-import { AppVersionsService } from './app-versions/app-versions.service';
-
-const mockAppVersionsService = {
-  appVersionsResource: new Proxy({}, {get: () => vi.fn()})
-};
+import { provideRouter } from '@angular/router';
 
 describe('DasAdmin', () => {
   let component: DasAdmin;
@@ -14,13 +10,12 @@ describe('DasAdmin', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [DasAdmin],
-      providers: [{provide: AppVersionsService, useValue: mockAppVersionsService}],
-    })
-      .compileComponents();
+      providers: [provideRouter([])],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(DasAdmin);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    await fixture.whenStable();
   });
 
   it('should create', () => {

@@ -7,7 +7,7 @@ test.describe('app versions test', () => {
   const TEST_DATE = '22.03.39';
 
   test('create, edit and delete app version | tests: 1406', async ({page}) => {
-    await page.goto('das-admin');
+    await page.goto('das-admin/app-versions');
     const addButton = page.getByText('App Version blockieren', {exact: true});
 
     await expect(addButton).toBeVisible();

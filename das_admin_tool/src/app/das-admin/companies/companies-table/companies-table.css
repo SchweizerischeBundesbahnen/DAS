@@ -1,0 +1,9 @@
+.table-truncated {
+  .sbb-column-code {
+    width: 4.5rem;
+  }
+
+  .sbb-column-shortName {
+    width: 9.5rem;
+  }
+}

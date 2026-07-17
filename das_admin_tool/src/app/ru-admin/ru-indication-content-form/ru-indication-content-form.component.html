@@ -5,7 +5,7 @@
       }}
     </sbb-tab-label>
     <sbb-tab [formGroupName]="language.path">
-      <sbb-form-field errorSpace="reserve">
+      <sbb-form-field errorSpace="reserve" class="full-width">
         <label i18n="@@ru_indications_form_title_label">Titel</label>
         <input formControlName="title"/>
         @let titleField = form().get(`${language.path}.title`);
@@ -14,7 +14,7 @@
           </sbb-error>
         }
       </sbb-form-field>
-      <sbb-form-field>
+      <sbb-form-field errorSpace="reserve" class="full-width">
         <label i18n="@@ru_indications_form_text_label">Text</label>
         <textarea #text formControlName="text"></textarea>
         <sbb-mini-button
@@ -26,13 +26,12 @@
           <sbb-error i18n="@@form_field_error_required">Feld darf nicht leer sein
           </sbb-error>
         }
+        @if (form().hasError('oneLanguageRequired') && form().touched) {
+          <sbb-error i18n="@@ru_indications_form_one_language_error"
+            >Mindestens eine Sprache muss erfasst werden
+          </sbb-error>
+        }
       </sbb-form-field>
     </sbb-tab>
   }
 </sbb-tab-group>
-
-@if (form().hasError('oneLanguageRequired') && form().touched) {
-  <sbb-error i18n="@@ru_indications_form_one_language_error">Mindestens eine Sprache muss erfasst
-    werden
-  </sbb-error>
-}

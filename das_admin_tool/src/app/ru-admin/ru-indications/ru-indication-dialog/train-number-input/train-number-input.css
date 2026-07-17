@@ -1,7 +1,3 @@
-sbb-form-field {
-  width: 100%;
-}
-
 form {
   display: grid;
   gap: var(--sbb-spacing-responsive-xxxs);

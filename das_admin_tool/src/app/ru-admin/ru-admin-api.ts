@@ -8,8 +8,6 @@ import {Auditable} from '../shared/audit/auditable';
 export interface RuIndicationLanguageContent {
   title: string;
   text?: string;
-
-  [key: string]: string | undefined;
 }
 
 export interface RuIndicationTemplate extends Auditable {
@@ -18,8 +16,6 @@ export interface RuIndicationTemplate extends Auditable {
   de?: RuIndicationLanguageContent;
   fr?: RuIndicationLanguageContent;
   it?: RuIndicationLanguageContent;
-
-  [key: string]: string | number | Date | RuIndicationLanguageContent | undefined;
 }
 
 export type TrainNumberParity = 'ANY' | 'EVEN' | 'ODD';

@@ -2,7 +2,7 @@
   [saveDisabled]="specialHolidayForm.invalid" i18n-stepLabel="@@special_holidays_dialog_step_label"
   stepLabel="Feiertag">
   <form [formGroup]="specialHolidayForm">
-    <sbb-form-field errorSpace="reserve">
+    <sbb-form-field errorSpace="reserve" class="full-width">
       <label i18n="@@special_holidays_form_name_label">Name des Feiertags</label>
       <input formControlName="name" placeholder="z.B. Güdeismontag" required />
       @if (specialHolidayForm.get('name')?.touched && specialHolidayForm.get('name')?.hasError('required')) {
@@ -11,7 +11,7 @@
       }
     </sbb-form-field>
 
-    <sbb-form-field errorSpace="reserve">
+    <sbb-form-field errorSpace="reserve" class="full-width">
       <label i18n="@@special_holidays_form_date_label">Gültig am</label>
       <sbb-datepicker-previous-day></sbb-datepicker-previous-day>
       <sbb-date-input [min]="minDate" formControlName="date" required></sbb-date-input>

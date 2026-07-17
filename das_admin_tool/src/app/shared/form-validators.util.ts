@@ -58,7 +58,7 @@ export function oneLanguageRequired(control: AbstractControl): ValidationErrors 
     Object.values(languageGroup.controls).some((childControl) => hasValue(childControl.value)),
   );
 
-  return hasAnyLanguageValue ? null : {oneLanguageRequired: true};
+  return hasAnyLanguageValue ? null : { oneLanguageRequired: true };
 }
 
 /**
@@ -75,8 +75,9 @@ export function oneLanguageRequired(control: AbstractControl): ValidationErrors 
 export function titleRequired(control: AbstractControl): ValidationErrors | null {
   const formGroup = control as FormGroup;
   const titleControl = formGroup.get('title');
-  const hasOtherValue = Object.entries(formGroup.controls)
-    .some(([key, childControl]) => key !== 'title' && hasValue(childControl.value));
+  const hasOtherValue = Object.entries(formGroup.controls).some(
+    ([key, childControl]) => key !== 'title' && hasValue(childControl.value),
+  );
   const isMissingTitle = !!titleControl && hasOtherValue && !hasValue(titleControl.value);
 
   if (titleControl) {
@@ -99,5 +100,5 @@ export function titleRequired(control: AbstractControl): ValidationErrors | null
  *
  */
 export function url(control: AbstractControl): ValidationErrors | null {
-  return !control.value || URL.canParse(control.value) ? null : {url: true};
+  return !control.value || URL.canParse(control.value) ? null : { url: true };
 }

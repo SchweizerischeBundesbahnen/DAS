@@ -16,8 +16,14 @@ class CompanyMapper {
     }
 
     InternalCompany toAdminCompany(CompanyEntity entity) {
-        return new InternalCompany(entity.getId(), new CompanyCode(entity.getCode()),
-            new CompanyShortName(entity.getShortName()));
+        return new InternalCompany(
+            entity.getId(),
+            new CompanyCode(entity.getCode()),
+            new CompanyShortName(entity.getShortName()),
+            entity.getTenant().getTenantId(),
+            entity.getLastModifiedAt(),
+            entity.getLastModifiedBy()
+        );
     }
 
     CompanyEntity toEntity(CompanyRequest request, TenantEntity tenant) {
