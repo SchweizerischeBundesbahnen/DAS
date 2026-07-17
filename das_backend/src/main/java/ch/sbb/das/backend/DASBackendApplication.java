@@ -3,11 +3,9 @@ package ch.sbb.das.backend;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.server.servlet.context.ServletComponentScan;
-import org.springframework.retry.annotation.EnableRetry;
 
 @ServletComponentScan
 @SpringBootApplication
-@EnableRetry
 public class DASBackendApplication {
 
     static void main(String[] args) {

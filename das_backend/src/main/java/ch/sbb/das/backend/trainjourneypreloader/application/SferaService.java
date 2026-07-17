@@ -43,8 +43,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.eclipse.paho.mqttv5.common.MqttException;
 import org.eclipse.paho.mqttv5.common.MqttMessage;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.retry.annotation.Recover;
-import org.springframework.retry.annotation.Retryable;
+import org.springframework.core.retry.RetryException;
+import org.springframework.core.retry.RetryPolicy;
+import org.springframework.core.retry.RetryTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -78,8 +79,21 @@ public class SferaService {
         this.preloadedSegmentProfileRepository = preloadedSegmentProfileRepository;
     }
 
-    @Recover
-    private PreloadResult recoverPreload(Exception ex, TrainIdentification trainId) {
+    private static final RetryTemplate RETRY_TEMPLATE = new RetryTemplate(RetryPolicy.builder()
+        .maxRetries(MAX_RETRIES)
+        .includes(ExecutionException.class, InterruptedException.class, MqttException.class)
+        .excludes(IllegalStateException.class)
+        .build());
+
+    PreloadResult preload(TrainIdentification trainId, Map<SegmentProfileIdentification, SegmentProfile> segmentProfilesMap) {
+        try {
+            return RETRY_TEMPLATE.execute(() -> doPreload(trainId, segmentProfilesMap));
+        } catch (RetryException e) {
+            return recoverPreload(e.getLastException(), trainId);
+        }
+    }
+
+    private PreloadResult recoverPreload(Throwable ex, TrainIdentification trainId) {
         try {
             return terminateSessionWithResult(trainId, new PreloadResult.Error("Preload failed after " + MAX_RETRIES + " attempts", ex));
         } catch (InterruptedException | ExecutionException | MqttException e) {
@@ -87,8 +101,7 @@ public class SferaService {
         }
     }
 
-    @Retryable(maxAttempts = MAX_RETRIES, retryFor = {ExecutionException.class, InterruptedException.class, MqttException.class}, listeners = "customRetryListener")
-    PreloadResult preload(TrainIdentification trainId, Map<SegmentProfileIdentification, SegmentProfile> segmentProfilesMap) throws ExecutionException, InterruptedException, MqttException {
+    private PreloadResult doPreload(TrainIdentification trainId, Map<SegmentProfileIdentification, SegmentProfile> segmentProfilesMap) throws ExecutionException, InterruptedException, MqttException {
         mqttClient.subscribe(createTopic(G2B, trainId), (topic, message) -> receive(message));
 
         SFERAG2BReplyMessage handshakeReply = sendRequest(trainId, sferaMessageCreator.createHandshakeRequestMessage(trainId)).get();
