@@ -63,8 +63,8 @@ class TrainIdentificationIntegrationTest {
 
     @Test
     void publishNetsPeriod__timetablePeriodSaved() {
-        TimetablePeriodKey key = jsonMapper.readValue(new File("src/test/resources/kafka/period/key.json"), TimetablePeriodKey.class);
-        TimetablePeriodValue value = jsonMapper.readValue(new File("src/test/resources/kafka/period/value.json"), TimetablePeriodValue.class);
+        TimetablePeriodKey key = jsonMapper.readValue(new File("src/test/resources/trainjourneyplan/period_key.json"), TimetablePeriodKey.class);
+        TimetablePeriodValue value = jsonMapper.readValue(new File("src/test/resources/trainjourneyplan/period_value.json"), TimetablePeriodValue.class);
         int testYear = 2025;
 
         // When
@@ -93,8 +93,8 @@ class TrainIdentificationIntegrationTest {
         // When
 
         // period starts Jan 1st
-        TimetablePeriodKey periodKey = jsonMapper.readValue(new File("src/test/resources/kafka/period/key_future.json"), TimetablePeriodKey.class);
-        TimetablePeriodValue periodValue = jsonMapper.readValue(new File("src/test/resources/kafka/period/value_future.json"), TimetablePeriodValue.class);
+        TimetablePeriodKey periodKey = jsonMapper.readValue(new File("src/test/resources/trainjourneyplan/period_key_future.json"), TimetablePeriodKey.class);
+        TimetablePeriodValue periodValue = jsonMapper.readValue(new File("src/test/resources/trainjourneyplan/period_value_future.json"), TimetablePeriodValue.class);
         int testYear = 2099;
 
         kafkaTemplate.send(timetablePeriodTopic, periodKey, periodValue);
@@ -113,8 +113,8 @@ class TrainIdentificationIntegrationTest {
                 ));
 
         // When
-        TimetableTrainKey fpsKey = jsonMapper.readValue(new File("src/test/resources/kafka/trainIdentification/key.json"), TimetableTrainKey.class);
-        TimetableTrainValue fpsTrain = jsonMapper.readValue(new File("src/test/resources/kafka/trainIdentification/value.json"), TimetableTrainValue.class);
+        TimetableTrainKey fpsKey = jsonMapper.readValue(new File("src/test/resources/trainjourneyplan/timetable_key.json"), TimetableTrainKey.class);
+        TimetableTrainValue fpsTrain = jsonMapper.readValue(new File("src/test/resources/trainjourneyplan/timetable_value.json"), TimetableTrainValue.class);
 
         // When
         sendRecord(fpsKey, fpsTrain);

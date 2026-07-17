@@ -12,6 +12,11 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
+/**
+ * Datasource: ZIS-Formation
+ *
+ * @see <a href="https://developer.sbb.ch/apis/zis-prod-trafo-internal-aws/information">TrainFormation data products async API</a>
+ */
 @Service
 @Slf4j
 public class TrainFormationKafkaConsumer {

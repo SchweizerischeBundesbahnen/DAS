@@ -21,6 +21,11 @@ import org.springframework.kafka.annotation.PartitionOffset;
 import org.springframework.stereotype.Component;
 import tools.jackson.databind.json.JsonMapper;
 
+/**
+ * Datasource: NeTS
+ *
+ * @see <a href="https://developer.sbb.ch/apis/nets-prod-aws/information">NeTS Stammdaten API</a>
+ */
 @Component
 @Slf4j
 public class TimetablePeriodConsumer {
