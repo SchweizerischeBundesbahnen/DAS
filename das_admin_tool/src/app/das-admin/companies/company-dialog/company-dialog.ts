@@ -9,9 +9,8 @@ import {
 import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
 import { BaseDialog } from '../../../shared/base-dialog/base-dialog.component';
 import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core/overlay';
-import { TenantInput } from './tenant-input/tenant-input';
-import { tenant } from '../../../shared/form-validators.util';
-import { TenantService } from './tenant-input/tenant.service';
+import { TenantService } from './tenant.service';
+import { SbbSelectModule } from '@sbb-esta/lyne-angular/select';
 
 export interface FormGroupCompany {
   code: FormControl<string>;
@@ -23,7 +22,7 @@ export type CompanyDialogEditResult = InternalCompany | 'delete';
 
 @Component({
   selector: 'app-company-dialog',
-  imports: [ReactiveFormsModule, SbbFormFieldModule, BaseDialog, TenantInput],
+  imports: [ReactiveFormsModule, SbbFormFieldModule, SbbSelectModule, BaseDialog],
   templateUrl: './company-dialog.html',
   styleUrl: './company-dialog.css',
 })
@@ -36,8 +35,11 @@ export class CompanyDialog {
   protected companyForm = this.formBuilder.group<FormGroupCompany>({
     code: this.formBuilder.control('', [Validators.required, Validators.pattern(/^\d{4}$/)]),
     shortName: this.formBuilder.control('', Validators.required),
-    tenantId: this.formBuilder.control('', [Validators.required, tenant(inject(TenantService).tenants())]),
+    tenantId: this.formBuilder.control('', Validators.required),
   });
+
+  private readonly tenantService = inject(TenantService);
+  protected readonly tenants = this.tenantService.tenants;
 
   constructor() {
     const isEdit = this.dialogData?.id !== undefined;

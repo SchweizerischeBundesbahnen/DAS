@@ -60,14 +60,10 @@ export class RuIndicationTemplatesTable {
     });
     this.dataSource.filterPredicate = (data: RuIndicationTemplate, filter: RuIndicationTemplateFilter) => this.searchFilter(filter, data);
     this.dataSource.sortingDataAccessor = (data: RuIndicationTemplate, column: string) => {
-      switch (column) {
-        case 'title':
-        case 'text':
-          return this.currentLanguage(data)?.[column] ?? '';
-
-        default:
-          return data[column as keyof RuIndicationTemplate] as string;
+      if (column === 'title' || column === 'text') {
+        return this.currentLanguage(data)?.[column] ?? '';
       }
+      return data[column as keyof RuIndicationTemplate] as string;
     };
     this.form.valueChanges
       .pipe(startWith(this.form.value), takeUntilDestroyed())

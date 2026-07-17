@@ -7,6 +7,7 @@ import {
   getEntryDialog,
   openEditEntryDialog,
   saveEntryDialog,
+  selectAnyOption,
 } from '../utils/admin-test-helpers';
 
 test.describe('companies test', () => {
@@ -32,8 +33,9 @@ test.describe('companies test', () => {
     const dialog = await getEntryDialog(page);
 
     await dialog.getByRole('textbox', { name: 'Code' }).fill(TEST_CODE);
-    await dialog.getByRole('textbox', { name: 'Kurzname' }).fill(TEST_SHORT_NAME);
-    await dialog.getByRole('textbox', { name: 'Tenant Id' }).fill(TEST_TENANT_ID);
+    await dialog.getByRole('textbox', { name: 'Kurzname (NeTS)' }).fill(TEST_SHORT_NAME);
+    const select = dialog.locator('sbb-select');
+    await selectAnyOption(dialog, select, null);
 
     await saveEntryDialog(page, row, {
       method: 'POST',
@@ -43,11 +45,11 @@ test.describe('companies test', () => {
 
     await expect(row.getByRole('cell', { name: TEST_CODE, exact: true })).toBeVisible();
     await expect(row.getByRole('cell', { name: TEST_SHORT_NAME, exact: true })).toBeVisible();
-    await expect(row.getByRole('cell', { name: TEST_TENANT_ID, exact: true })).toBeVisible();
+    await expect(row.getByRole('cell', { name: `${TEST_TENANT_ID} - sbb`, exact: true })).toBeVisible();
 
     // edit
     const editDialog = await openEditEntryDialog(page, row);
-    const shortNameInput = editDialog.getByRole('textbox', { name: 'Kurzname' });
+    const shortNameInput = editDialog.getByRole('textbox', { name: 'Kurzname (NeTS)' });
     await expect(shortNameInput).toHaveValue(TEST_SHORT_NAME);
     await shortNameInput.fill(TEST_SHORT_NAME_UPDATED);
     await expect(shortNameInput).toHaveValue(TEST_SHORT_NAME_UPDATED);

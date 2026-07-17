@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CompaniesTable } from './companies-table';
 import { CompanyService } from '../company.service';
-import { TenantService } from '../company-dialog/tenant-input/tenant.service';
+import { TenantService } from '../company-dialog/tenant.service';
 
 const mockCompanyService = { companiesResource: new Proxy({}, { get: () => vi.fn() }) };
 

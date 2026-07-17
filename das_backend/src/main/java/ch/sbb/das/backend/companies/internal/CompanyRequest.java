@@ -10,7 +10,7 @@ import jakarta.validation.constraints.NotNull;
 public record CompanyRequest(
     @Schema(description = "The RICS company code.", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull CompanyCode code,
-    @Schema(description = "The human-readable short name.", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "The human-readable short name (NeTS).", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull CompanyShortName shortName,
     @Schema(description = "The tenant ID this company belongs to.", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank String tenantId) {

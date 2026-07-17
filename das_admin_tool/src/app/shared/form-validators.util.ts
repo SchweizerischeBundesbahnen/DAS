@@ -1,5 +1,4 @@
-import { AbstractControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
-import { Tenant } from '../das-admin/companies/company-dialog/tenant-input/tenant.service';
+import { AbstractControl, FormGroup, ValidationErrors } from '@angular/forms';
 
 function hasValue(value: unknown): boolean {
   return typeof value === 'string' ? value.trim().length > 0 : !!value;
@@ -102,21 +101,4 @@ export function titleRequired(control: AbstractControl): ValidationErrors | null
  */
 export function url(control: AbstractControl): ValidationErrors | null {
   return !control.value || URL.canParse(control.value) ? null : { url: true };
-}
-
-/**
- * @description
- * Validator that requires the control to be a tenant.
- *
- * @returns An error map with the `tenant` property set to `true`
- * if the validation check fails, otherwise `null`.
- *
- */
-export function tenant(tenants: Tenant[]): ValidatorFn {
-  return (control: AbstractControl): ValidationErrors | null => {
-    return !control.value
-      || tenants.some((tenant) => tenant.tenantId === control.value)
-      ? null
-      : { tenant: true };
-  };
 }

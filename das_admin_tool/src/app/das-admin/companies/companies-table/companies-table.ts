@@ -5,7 +5,7 @@ import { TableBottomBar } from '../../../shared/table-bottom-bar/table-bottom-ba
 import { InternalCompany } from '../../das-admin-api';
 import { CompanyService } from '../company.service';
 import { DatePipe } from '@angular/common';
-import { TenantService } from '../company-dialog/tenant-input/tenant.service';
+import { TenantService } from '../company-dialog/tenant.service';
 
 @Component({
   selector: 'app-companies-table',
@@ -18,7 +18,14 @@ export class CompaniesTable {
   private readonly tenantService = inject(TenantService);
 
   protected dataSource = new SbbTableDataSource<InternalCompany>();
-  protected columns = ['code', 'shortName', 'tenantId', 'lastModifiedAt', 'lastModifiedBy', 'action'];
+  protected columns = [
+    'code',
+    'shortName',
+    'tenantId',
+    'lastModifiedAt',
+    'lastModifiedBy',
+    'action',
+  ];
   protected isDeleting = false;
 
   private readonly sort = viewChild.required<SbbSort>(SbbSort);
@@ -34,9 +41,6 @@ export class CompaniesTable {
       this.dataSource.paginator = this.bottomBar().paginator();
       this.dataSource.sort = this.sort();
     });
-    this.dataSource.sortingDataAccessor = (data: InternalCompany, column: string) => {
-      return data[column as keyof InternalCompany] as string;
-    };
   }
 
   protected tenant(tenantId: string) {

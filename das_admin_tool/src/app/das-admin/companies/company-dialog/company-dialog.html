@@ -15,17 +15,32 @@
         <sbb-error i18n="@@company_form_field_error_required">Feld darf nicht leer sein</sbb-error>
       }
       @if (codeField.touched && codeField.hasError('pattern')) {
-        <sbb-error i18n="@@company_form_field_error_pattern">Feld muss eine vierstellige Zahl beinhalten</sbb-error>
+        <sbb-error i18n="@@company_form_field_error_pattern"
+          >Feld muss eine vierstellige Zahl beinhalten</sbb-error
+        >
       }
     </sbb-form-field>
     <sbb-form-field errorSpace="reserve" class="full-width">
-      <label i18n="@@company_form_short_name_label">Kurzname</label>
+      <label i18n="@@company_form_short_name_label">Kurzname (NeTS)</label>
       <input formControlName="shortName" />
       @let shortNameField = companyForm.get('shortName')!;
       @if (shortNameField.touched && shortNameField.hasError('required')) {
         <sbb-error i18n="@@company_form_field_error_required">Feld darf nicht leer sein</sbb-error>
       }
     </sbb-form-field>
-    <app-tenant-input [control]="companyForm.controls.tenantId"></app-tenant-input>
+    <sbb-form-field errorSpace="reserve" class="full-width">
+      <label i18n="@@company_form_tenant_id_label">Tenant Id</label>
+      <sbb-select formControlName="tenantId">
+        @for (tenant of tenants(); track tenant.tenantId) {
+          <sbb-option [value]="tenant.tenantId">{{
+            `${tenant.tenantId} - ${tenant.name}`
+          }}</sbb-option>
+        }
+      </sbb-select>
+      @let tenantIdField = companyForm.get('tenantId')!;
+      @if (tenantIdField.touched && tenantIdField.hasError('required')) {
+        <sbb-error i18n="@@company_form_field_error_required">Feld darf nicht leer sein</sbb-error>
+      }
+    </sbb-form-field>
   </form>
 </app-base-dialog>

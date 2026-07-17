@@ -31,7 +31,9 @@ export class DasAdminApi {
   public readonly appVersions = httpResource<AppVersionApiResponse>(() => this.appVersionsUrl);
 
   private readonly companiesUrl = `${environment.backendUrl}/companies`;
-  public readonly companiesResource = httpResource<InternalCompanyApiResponse>(() => this.companiesUrl);
+  public readonly companiesResource = httpResource<InternalCompanyApiResponse>(
+    () => this.companiesUrl,
+  );
 
   postAppVersion(version: AppVersion): Observable<AppVersionApiResponse> {
     return this.httpClient.post<AppVersionApiResponse>(this.appVersionsUrl, version);

@@ -12,7 +12,7 @@ record InternalCompany(
     Integer id,
     @Schema(description = "The RICS company code.", requiredMode = Schema.RequiredMode.REQUIRED)
     CompanyCode code,
-    @Schema(description = "The human-readable short name.", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "The human-readable short name (NeTS).", requiredMode = Schema.RequiredMode.REQUIRED)
     CompanyShortName shortName,
     @Schema(description = "The tenant ID this company belongs to.", requiredMode = Schema.RequiredMode.REQUIRED)
     String tenantId,

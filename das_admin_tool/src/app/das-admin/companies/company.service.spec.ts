@@ -7,6 +7,8 @@ import { HttpResourceRef } from '@angular/common/http';
 import { ToastService } from '../../shared/toast-service';
 import { CompanyDialogEditResult } from './company-dialog/company-dialog';
 import { SbbOverlayCloseEvent } from '@sbb-esta/lyne-elements/overlay.pure.js';
+import { RecentCompaniesStore } from '../../shared/recent-companies.store';
+import { SbbDialogService } from '@sbb-esta/lyne-angular/dialog';
 
 const company: InternalCompany = {
   id: 1,
@@ -26,7 +28,11 @@ const mockDasAdminApi: Partial<DasAdminApi> = {
 
 const mockToastService: Partial<ToastService> = { success: vi.fn(), error: vi.fn() };
 
+const mockRecentCompaniesStore: Partial<RecentCompaniesStore> = { save: vi.fn() };
+
 const openSpy = vi.fn();
+
+const mockSbbDialogService: Partial<SbbDialogService> = { open: openSpy };
 
 function mockDialogResult(result: CompanyDialogEditResult) {
   openSpy.mockReturnValue({ afterClosed: of({ result } as SbbOverlayCloseEvent) });
@@ -41,7 +47,9 @@ describe('CompanyService', () => {
     TestBed.configureTestingModule({
       providers: [
         { provide: DasAdminApi, useValue: mockDasAdminApi },
+        { provide: SbbDialogService, useValue: mockSbbDialogService },
         { provide: ToastService, useValue: mockToastService },
+        { provide: RecentCompaniesStore, useValue: mockRecentCompaniesStore },
       ],
     });
     service = TestBed.inject(CompanyService);

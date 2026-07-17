@@ -3,6 +3,7 @@ import { InternalCompany, DasAdminApi } from '../das-admin-api';
 import { BaseDialogService } from '../../ru-admin/base-dialog.service';
 import { firstValueFrom } from 'rxjs';
 import { CompanyDialog, CompanyDialogEditResult } from './company-dialog/company-dialog';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
 export class CompanyService extends BaseDialogService {
@@ -42,5 +43,13 @@ export class CompanyService extends BaseDialogService {
 
   protected override reload(): void {
     this.companiesResource.reload();
+  }
+
+  protected override handleApiError(e: unknown) {
+    if (e instanceof HttpErrorResponse && e.error.status === 409) {
+      this.toastService.error($localize`:@@companies_toast_conflict_error:Diese EVU existiert bereits.`);
+    } else {
+      super.handleApiError(e)
+    }
   }
 }

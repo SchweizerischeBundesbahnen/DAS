@@ -2,4 +2,12 @@
   .sbb-column-status {
     width: 6rem;
   }
+
+  .sbb-column-lastModifiedAt {
+    width: 8rem;
+  }
+
+  .sbb-column-lastModifiedBy {
+    width: 12rem;
+  }
 }

@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 
 class CompanyMapperTest {
 
+    private static final String VALID_TENANT_ID = "2cda5d11-f0ac-46b3-967d-af1b2e1bd01a";
+
     private final CompanyMapper mapper = new CompanyMapper();
 
     @Test
@@ -25,10 +27,17 @@ class CompanyMapperTest {
 
     @Test
     void toDto_maps_entity_to_admin_company_with_id() {
+        TenantEntity tenant = new TenantEntity();
+        tenant.setId(1);
+        tenant.setName("sbb");
+        tenant.setTenantId(VALID_TENANT_ID);
+        tenant.setAdminRoleAllowed(true);
+
         CompanyEntity entity = new CompanyEntity();
         entity.setId(42);
         entity.setCode("1185");
         entity.setShortName("BLS");
+        entity.setTenant(tenant);
 
         InternalCompany result = mapper.toAdminCompany(entity);
 
