@@ -44,7 +44,7 @@ trainjourneypreloader:
 preload:
   bucket:
     accessKey:
-    secretKey:
+    accessSecret:
 
 proxy:
   basic-auth: username:password
