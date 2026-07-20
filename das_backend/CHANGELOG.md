@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.14.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.13.0...backend-v0.14.0) (2026-07-20)
+
+
+### Features
+
+* add ru feature create update and delete for ru admins ([#723](https://github.com/SchweizerischeBundesbahnen/DAS/issues/723)) ([#2412](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2412)) ([24c3fe4](https://github.com/SchweizerischeBundesbahnen/DAS/commit/24c3fe4e516acd4047d723807de36ad0954dfacb))
+* add train identification companies endpoint ([#2136](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2136)) ([#2404](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2404)) ([8a0d558](https://github.com/SchweizerischeBundesbahnen/DAS/commit/8a0d5583336a2ec0ba78d5faa086ccfe341ca28c))
+* manage companies ([#2224](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2224)) ([#2437](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2437)) ([27a7c0d](https://github.com/SchweizerischeBundesbahnen/DAS/commit/27a7c0d1595081a4cc07822c95d5b4f799f6a3a8))
+
+
+### Bug Fixes
+
+* cargo brake design counts ([#2302](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2302)) ([#2414](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2414)) ([eed1e11](https://github.com/SchweizerischeBundesbahnen/DAS/commit/eed1e113dec3d967975e9c426c135aa1e07cd33c))
+* make formations and settings api backward compatible ([#2444](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2444)) ([9b50eae](https://github.com/SchweizerischeBundesbahnen/DAS/commit/9b50eae3a1885cf48f9609eb6316fd02f0263757))
+* update locations API rule to ru admin ([#2442](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2442)) ([e5dcf3a](https://github.com/SchweizerischeBundesbahnen/DAS/commit/e5dcf3a9e9284dbb5894c5d1172a368b673376ed))
+
+
+### Documentation
+
+* project info update ([#657](https://github.com/SchweizerischeBundesbahnen/DAS/issues/657)) ([#2425](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2425)) ([15d8569](https://github.com/SchweizerischeBundesbahnen/DAS/commit/15d85690adeae0db80ae4d28e3a9cfed807047ed))
+
 ## [0.13.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.12.0...backend-v0.13.0) (2026-07-13)
 
 
