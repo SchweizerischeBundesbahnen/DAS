@@ -18,7 +18,7 @@ class RuFeaturesTable extends Table {
 extension RuFeaturesMapperX on RuFeatureDto {
   RuFeaturesTableCompanion toCompanion() {
     return RuFeaturesTableCompanion.insert(
-      companyCodeRics: companyCodeRics,
+      companyCodeRics: companyCode,
       key: key,
       enabled: enabled,
     );
@@ -27,6 +27,6 @@ extension RuFeaturesMapperX on RuFeatureDto {
 
 extension RuFeaturesTableDataX on RuFeaturesTableData {
   RuFeatureDto toDomain() {
-    return RuFeatureDto(companyCodeRics: companyCodeRics, key: key, enabled: enabled);
+    return RuFeatureDto(companyCode: companyCodeRics, key: key, enabled: enabled);
   }
 }

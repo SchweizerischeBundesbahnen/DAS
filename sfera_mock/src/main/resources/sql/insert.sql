@@ -24,7 +24,7 @@ insert into driver_advisory_system.train_formation_run (id, position, inspection
                                                         brake_position_g_for_load_hauled, sim_train,
                                                         additional_tractions, car_carrier_vehicle,
                                                         dangerous_goods, vehicles_count,
-                                                        vehicles_with_brake_design_ll_and_k_count,
+                                                        vehicles_with_brake_design_l_and_ll_and_k_count,
                                                         vehicles_with_brake_design_d_count,
                                                         vehicles_with_disabled_brakes_count,
                                                         european_vehicle_number_first,
@@ -69,7 +69,7 @@ values
      false, -- car_carrier_vehicle
      false, -- dangerous_goods
      12, -- vehicles_count
-     12, -- vehicles_with_brake_design_ll_and_k_count
+     12, -- vehicles_with_brake_design_l_and_ll_and_k_count
      0, -- vehicles_with_brake_design_d_count
      0, -- vehicles_with_disabled_brakes_count
      378045644663, -- european_vehicle_number_first
@@ -115,7 +115,7 @@ values
      false, -- car_carrier_vehicle
      true, -- dangerous_goods
      16, -- vehicles_count
-     16, -- vehicles_with_brake_design_ll_and_k_count
+     16, -- vehicles_with_brake_design_l_and_ll_and_k_count
      0, -- vehicles_with_brake_design_d_count
      0, -- vehicles_with_disabled_brakes_count
      378045644663, -- european_vehicle_number_first
@@ -161,7 +161,7 @@ values
      false, -- car_carrier_vehicle
      false, -- dangerous_goods
      13, -- vehicles_count
-     13, -- vehicles_with_brake_design_ll_and_k_count
+     13, -- vehicles_with_brake_design_l_and_ll_and_k_count
      0, -- vehicles_with_brake_design_d_count
      0, -- vehicles_with_disabled_brakes_count
      378045644663, -- european_vehicle_number_first
@@ -207,7 +207,7 @@ values
      true, -- car_carrier_vehicle
      true, -- dangerous_goods
      13, -- vehicles_count
-     13, -- vehicles_with_brake_design_ll_and_k_count
+     13, -- vehicles_with_brake_design_l_and_ll_and_k_count
      0, -- vehicles_with_brake_design_d_count
      0, -- vehicles_with_disabled_brakes_count
      378045644663, -- european_vehicle_number_first
@@ -254,7 +254,7 @@ values
      true, -- car_carrier_vehicle
      true, -- dangerous_goods
      13, -- vehicles_count
-     13, -- vehicles_with_brake_design_ll_and_k_count
+     13, -- vehicles_with_brake_design_l_and_ll_and_k_count
      0, -- vehicles_with_brake_design_d_count
      0, -- vehicles_with_disabled_brakes_count
      378045644663, -- european_vehicle_number_first
