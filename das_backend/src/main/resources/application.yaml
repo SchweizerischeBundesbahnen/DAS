@@ -71,10 +71,15 @@ spring:
       ddl-auto: validate
   cloud:
     vault:
-      uri: ${OPENBAO_URI}
+      uri: ${VAULT_URI}
       kv:
         backend: kv/DSO-BPS/driver-advisory-system
         default-context:
+      authentication: KUBERNETES
+      kubernetes:
+        role: ${VAULT_SA_ROLE_ID}
+        kubernetes-path: ${VAULT_CLUSTERNAME}
+        service-account-token-file: /var/run/secrets/openbao/token
 management:
   endpoint:
     health:
