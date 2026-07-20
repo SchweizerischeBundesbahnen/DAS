@@ -118,6 +118,11 @@
             <artifactId>shedlock-provider-jdbc-template</artifactId>
             <version>${shedlock.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-vault-config</artifactId>
+            <version>5.0.2</version>
+        </dependency>
         <!-- todo remove as soon as spring resilience supports recover-->
         <dependency>
             <groupId>org.springframework.retry</groupId>
