@@ -160,7 +160,7 @@ void main() {
   test('whenSettingsLoadedSuccessfully_savesRuFeaturesToDatabase', () async {
     // ARRANGE
     final ruFeatures = [
-      RuFeatureDto(companyCodeRics: 'SBB', key: RuFeatureKeys.warnapp.key, enabled: true),
+      RuFeatureDto(companyCode: 'SBB', key: RuFeatureKeys.warnapp.key, enabled: true),
     ];
     when(mockSettingsRequest.call()).thenAnswer((_) => Future.value(buildSettingsResponse(ruFeatures: ruFeatures)));
 
@@ -340,7 +340,7 @@ void main() {
     when(apiService.settings).thenAnswer((_) => throw HttpException('Exception'));
     await initTestee();
     when(settingsDatabaseService.findRuFeature('SBB', RuFeatureKeys.warnapp)).thenAnswer(
-      (_) => Future.value(RuFeatureDto(companyCodeRics: 'SBB', key: RuFeatureKeys.warnapp.key, enabled: true)),
+      (_) => Future.value(RuFeatureDto(companyCode: 'SBB', key: RuFeatureKeys.warnapp.key, enabled: true)),
     );
 
     // ACT
@@ -355,7 +355,7 @@ void main() {
     when(apiService.settings).thenAnswer((_) => throw HttpException('Exception'));
     await initTestee();
     when(settingsDatabaseService.findRuFeature('SBB', RuFeatureKeys.warnapp)).thenAnswer(
-      (_) => Future.value(RuFeatureDto(companyCodeRics: 'SBB', key: RuFeatureKeys.warnapp.key, enabled: false)),
+      (_) => Future.value(RuFeatureDto(companyCode: 'SBB', key: RuFeatureKeys.warnapp.key, enabled: false)),
     );
 
     // ACT
