@@ -6,22 +6,55 @@ SpringBoot application backing the DAS ecosystem. It needs a PostgreSQL database
 follow once you start writing migrations.
 
 ## Getting-Started
+
 ### Run on localhost
 
-1. Run a Docker Daemon (for e.g. by Windows: [Podman Desktop](https://podman-desktop.io/) which
-   needs [WSL](https://learn.microsoft.com/en-us/windows/wsl/install))
-2. Add environment variables (according to [application.yaml](src/main/resources/application.yaml) coming from values by API registries or vault) and specify concrete values
-   - either by run configuration
-   - or a {MODULE_WORKING_DIR}\.env file
-   - Add `Maven-Settings -> Runner` -> `Environment variables` (missing URLs/secrets as in .env)
-     or run maven with `-DskipSchemaDownload`
-3. Start a local DB via `podman compose up` or `docker-compose up` (alternatively, this can be
-   configured as a pre launch task in IntelliJ with Podman as server configured) — see
-   [Database handling](Database.md) for how schema changes and migrations work once the DB is up
-4. Run `DASBackendApplication`
+Follow the steps below before running `DASBackendApplication`.
 
-Hints for Windows-Users:
+#### Accessing secrets and sensitive information using OpenBao
+
+Secrets and sensitive information is stored in the SBB hosted
+[OpenBao](https://openbao.org/) instance.
+
+Take these steps to make this information locally available:
+
+1. Install the OpenBao CLI by following the official 
+   [Installing OpenBao](https://openbao.org/docs/install/) guide
+2. Make sure the installed binary is on your PATH. 
+   Check that running `bao --version` succeeds in your shell
+3. Set the `BAO_ADDR` variable in your shell to `https://vault-nonprod.sbb.ch`:
+   * Windows: `$env:BAO_ADDR="https://vault-nonprod.sbb.ch"`
+   * Unix: `$ export BAO_ADDR="https://vault-nonprod.sbb.ch"`
+4. Authenticate to the vault by running `bao login -method=oidc` - this will open a 
+   SSO session in your default browser
+5. Make sure a token is fetched by running `bao token lookup` - the token should 
+   have the necessary policies attached to access the secrets
+
+#### Maven Schema Download
+
+Some of the schemas for maven for source generation are protected. To make them accessible,
+you need to:
+
+1. Make sure you have a bao token by following the steps from above
+2. Run `bao kv get kv/DSO-BPS/driver-advisory-system/backend/maven`
+3. Make the displayed secrets available to maven via environment variables
+   * IntelliJ: `Maven-Settings -> Runner` -> `Environment variables`
+
+#### Local Database
+
+A local database is required to run the backend. We recommend running it as a containerized
+application. The setup uses [Podman](https://podman.io/get-started) to get running.
+
+1. Run a container engine (for e.g. by Windows: [Podman Desktop](https://podman-desktop.io/) which
+   needs [WSL](https://learn.microsoft.com/en-us/windows/wsl/install))
+2. Start a local DB via `podman compose up` (alternatively, this can be
+   configured as a pre-launch task in IntelliJ with Podman as server configured)
+3. see [Database handling](Database.md) for how schema changes and migrations work once the DB is up
+
+Hints for Windows:
 
 * Enable podman-compose during installation
 * If "docker compose" is not found:
   `Set-Alias -Name docker -Value "C:\Program Files\RedHat\Podman\podman.exe"`
+
+With all these steps completed, you are ready to run `DASBackendApplication`.
