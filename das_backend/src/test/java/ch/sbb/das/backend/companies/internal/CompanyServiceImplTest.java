@@ -196,7 +196,14 @@ class CompanyServiceImplTest {
         savedEntity.setTenant(sbbTenant);
         when(companyRepository.save(newEntity)).thenReturn(savedEntity);
 
-        InternalCompany expectedResult = new InternalCompany(200, new CompanyCode("9999"), new CompanyShortName("NEW_CO"));
+        InternalCompany expectedResult = new InternalCompany(
+            200,
+            new CompanyCode("9999"),
+            new CompanyShortName("NEW_CO"),
+            sbbTenant.getTenantId(),
+            savedEntity.getLastModifiedAt(),
+            savedEntity.getLastModifiedBy()
+        );
         when(companyMapper.toAdminCompany(savedEntity)).thenReturn(expectedResult);
 
         CompanyRequest request = new CompanyRequest(new CompanyCode("9999"), new CompanyShortName("NEW_CO"), VALID_TENANT_ID);
@@ -265,7 +272,14 @@ class CompanyServiceImplTest {
         when(companyRepository.existsByShortNameAndIdNot("RENAMED", 900)).thenReturn(false);
         when(companyRepository.save(existingEntity)).thenReturn(existingEntity);
 
-        InternalCompany expectedResult = new InternalCompany(900, new CompanyCode("8881"), new CompanyShortName("RENAMED"));
+        InternalCompany expectedResult = new InternalCompany(
+                900,
+                new CompanyCode("8881"),
+                new CompanyShortName("RENAMED"),
+                sbbTenant.getTenantId(),
+                existingEntity.getLastModifiedAt(),
+                existingEntity.getLastModifiedBy()
+        );
         when(companyMapper.toAdminCompany(existingEntity)).thenReturn(expectedResult);
 
         CompanyRequest request = new CompanyRequest(new CompanyCode("8881"), new CompanyShortName("RENAMED"), VALID_TENANT_ID);

@@ -1,4 +1,4 @@
-import {Component, effect, inject, LOCALE_ID, viewChild} from '@angular/core';
+import {Component, effect, inject, viewChild} from '@angular/core';
 import {
   SbbSort,
   SbbTableDataSource,
@@ -9,7 +9,7 @@ import {SbbCheckbox} from '@sbb-esta/lyne-angular/checkbox';
 import {ExternalLinksService} from '../external-links.service';
 import {SelectionModel} from '@angular/cdk/collections';
 import {LanguageCode, LanguageProvider} from '../../../shared/language-provider';
-import {DatePipe, formatDate} from '@angular/common';
+import {DatePipe} from '@angular/common';
 import {ExternalLink} from '../../ru-admin-api';
 import {FormControl, FormGroup} from '@angular/forms';
 import {SbbMiniButton} from '@sbb-esta/lyne-angular/button/mini-button';
@@ -42,7 +42,6 @@ export class ExternalLinksTable {
   protected selection = new SelectionModel<ExternalLink>(true, []);
   protected isDeleting = false;
   private readonly externalLinksService = inject(ExternalLinksService);
-  private readonly localeId = inject(LOCALE_ID);
   private readonly languageProvider = inject(LanguageProvider);
   protected form = new FormGroup({
     search: new FormControl('', {nonNullable: true}),
@@ -63,22 +62,10 @@ export class ExternalLinksTable {
     });
     this.dataSource.filterPredicate = (data: ExternalLink, filter: ExternalLinkFilter) => this.searchFilter(filter, data);
     this.dataSource.sortingDataAccessor = (data: ExternalLink, column: string) => {
-      let value: string;
-      switch (column) {
-        case 'title':
-        case 'link':
-          value = this.currentLanguage(data)?.[column] ?? '';
-          break;
-
-        case 'lastModifiedAt':
-          value = formatDate(data[column]!, 'short', this.localeId);
-          break;
-
-        default:
-          value = data[column as keyof ExternalLink] as string;
-          break;
+      if (column === 'title' || column === 'link') {
+        return this.currentLanguage(data)?.[column] ?? '';
       }
-      return value;
+      return data[column as keyof ExternalLink] as string;
     };
     this.form.valueChanges
       .pipe(startWith(this.form.value), takeUntilDestroyed())

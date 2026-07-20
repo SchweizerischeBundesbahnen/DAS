@@ -8,7 +8,7 @@
     <table [dataSource]="dataSource" class="table-truncated table-uniform-2lines" fixedLayout sbb-table sbbSort
            sbbSortDirection="asc">
       <ng-container sbbColumnDef="select">
-        <th *sbbHeaderCellDef sbb-header-cell style="width: 36px">
+        <th *sbbHeaderCellDef sbb-header-cell>
           <sbb-checkbox
             (change)="$event ? parentToggle() : null"
             [checked]="selection.hasValue() && isAllSelected()"

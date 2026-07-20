@@ -1,9 +1,18 @@
 # DAS-Backend
 
+Provides additional services for the [DAS-Client](das_client/README.md) which are not covered by
+SFERA (for e.g. additional Cargo data).
+Some configuration and master data may be configured by [DAS-Admin-Tool](das_admin_tool/README.md).
+
+Important:
+
+* This component is not a **RU DAS-TS** implementation, but offers additional related services.
+
 ## Introduction
+
 SpringBoot application backing the DAS ecosystem. It needs a PostgreSQL database — see
-[Database handling](Database.md) for how schema changes are made and which SQL conventions to
-follow once you start writing migrations.
+[Database handling](Database.md) for how schema changes are made and which SQL conventions to follow once you start
+writing migrations.
 
 ## Getting-Started
 

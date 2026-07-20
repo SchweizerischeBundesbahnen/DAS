@@ -14,24 +14,48 @@ export interface AppVersion extends Auditable {
 
 export type AppVersionApiResponse = ApiResponse<AppVersion>;
 
-@Injectable({
-  providedIn: 'root',
-})
+export interface InternalCompany extends Auditable {
+  id: number;
+  code: string;
+  shortName: string;
+  tenantId: string;
+}
+
+export type InternalCompanyApiResponse = ApiResponse<InternalCompany>;
+
+@Injectable({ providedIn: 'root' })
 export class DasAdminApi {
   private readonly httpClient = inject(HttpClient);
-  private readonly url = `${environment.backendUrl}/app-versions`;
 
-  appVersions = httpResource<AppVersionApiResponse>(() => this.url);
+  private readonly appVersionsUrl = `${environment.backendUrl}/app-versions`;
+  public readonly appVersions = httpResource<AppVersionApiResponse>(() => this.appVersionsUrl);
+
+  private readonly companiesUrl = `${environment.backendUrl}/companies`;
+  public readonly companiesResource = httpResource<InternalCompanyApiResponse>(
+    () => this.companiesUrl,
+  );
 
   postAppVersion(version: AppVersion): Observable<AppVersionApiResponse> {
-    return this.httpClient.post<AppVersionApiResponse>(this.url, version);
+    return this.httpClient.post<AppVersionApiResponse>(this.appVersionsUrl, version);
   }
 
   putAppVersion(id: number, version: AppVersion): Observable<AppVersionApiResponse> {
-    return this.httpClient.put<AppVersionApiResponse>(`${this.url}/${id}`, version);
+    return this.httpClient.put<AppVersionApiResponse>(`${this.appVersionsUrl}/${id}`, version);
   }
 
   deleteAppVersion(id: number): Observable<void> {
-    return this.httpClient.delete<void>(`${this.url}/${id}`);
+    return this.httpClient.delete<void>(`${this.appVersionsUrl}/${id}`);
+  }
+
+  postCompany(company: InternalCompany): Observable<InternalCompanyApiResponse> {
+    return this.httpClient.post<InternalCompanyApiResponse>(this.companiesUrl, company);
+  }
+
+  putCompany(id: number, company: InternalCompany): Observable<InternalCompanyApiResponse> {
+    return this.httpClient.put<InternalCompanyApiResponse>(`${this.companiesUrl}/${id}`, company);
+  }
+
+  deleteCompanyById(id: number): Observable<void> {
+    return this.httpClient.delete<void>(`${this.companiesUrl}/${id}`);
   }
 }

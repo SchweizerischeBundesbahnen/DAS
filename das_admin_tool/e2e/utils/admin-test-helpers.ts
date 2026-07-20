@@ -162,10 +162,14 @@ export async function deleteEntryViaSelection(page: Page, ...rows: Locator[]) {
   }
 }
 
-export async function selectAnyOption(dialog: Locator, inputLocator: Locator, query = '') {
+export async function selectAnyOption(
+  dialog: Locator, inputLocator: Locator, query: string | null = ''
+) {
   await inputLocator.click();
 
-  await inputLocator.fill(query);
+  if (query) {
+    await inputLocator.fill(query);
+  }
 
   const firstVisibleOption = dialog.locator('sbb-option:visible').first();
   await expect(firstVisibleOption).toBeVisible();

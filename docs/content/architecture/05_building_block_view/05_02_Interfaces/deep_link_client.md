@@ -22,7 +22,7 @@ The versioning follows a semantic versioning scheme with v1 / v2 etc. prepended 
 
 We use one authority for all flavors, as they can be distinguished in the path. The authority is
 driveradvisorysystem.sbb.ch. This name may still change due to a project renaming in the near future, please make sure
-to use the latest one when implementing deep linking to DAS.
+to use the latest one when implementing deep linking to DAS-Client.
 
 #### Flavors
 
@@ -42,7 +42,9 @@ The (http) schemes that resolve from the above points are:
 
 Opening up https://driveradvisorysystem.sbb.ch/dev/v1/ on a device with DAS installed will simply open up the (DEV) app
 on the home screen (currently the train selection screen). To make use of deep linking and open up direct train journeys
-on the device, one needs to add at least the following path and query parameters. These are derived from specification [SFERA UIC IRS 90940 Ed.2](https://uic.org/events/uic-irs-90940-edition-2-sfera-protocol).
+on the device, one needs to add at least the following path and query parameters. These are derived
+from
+specification [UIC IRS 90940:Ed3](https://uic.org/com/enews/article/3rd-edition-of-the-sfera-protocol-available-now-including-all-on-board-devices).
 
 | Route (Page)  | MUST Params                                                                  | RECOMMENDED Params                                                                                                                                                                                                                                                                                                                                                            |
 |---------------|------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

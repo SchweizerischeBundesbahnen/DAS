@@ -1,5 +1,6 @@
 package ch.sbb.das.backend.companies.internal;
 
+import ch.sbb.das.backend.common.EntityBase;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,7 +19,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class CompanyEntity {
+public class CompanyEntity extends EntityBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "company_id_seq")

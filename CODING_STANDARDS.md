@@ -9,7 +9,7 @@ or for [IntelliJ](https://www.jetbrains.com/help/idea/eslint.html).
 
 ## Mobile
 
-Checkout separate [CODING_STANDARDS](das_client/CODING_STANDARDS.md) in DAS Client.
+Checkout separate [CODING_STANDARDS](das_client/CODING_STANDARDS.md) in DAS-Client.
 
 ## Mock XML Files
 

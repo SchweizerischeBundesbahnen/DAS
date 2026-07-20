@@ -15,6 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.das.backend.IntegrationTest;
 import ch.sbb.das.backend.WithMockRole;
 import ch.sbb.das.backend.common.security.UserRole;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -30,6 +31,7 @@ class ExternalLinkControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @DisplayName("Get all external links - ok|tests:246")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createExternalLinks.sql")
@@ -47,6 +49,7 @@ class ExternalLinkControllerTest {
             .andExpect(jsonPath("$.data[0].it.link").value("https://sbb.ch"));
     }
 
+    @DisplayName("Get all external links by companies - ok|tests:246")
     @Test
     @WithMockRole(roles = UserRole.OBSERVER)
     @Sql("classpath:createExternalLinks.sql")
@@ -64,6 +67,7 @@ class ExternalLinkControllerTest {
             .andExpect(jsonPath("$.data", hasSize(1)));
     }
 
+    @DisplayName("Get all external links - forbidden role|tests:246")
     @Test
     @WithMockRole(roles = UserRole.OBSERVER)
     void getAllExternalLinks_forbidden_role() throws Exception {
@@ -71,6 +75,7 @@ class ExternalLinkControllerTest {
             .andExpect(status().isForbidden());
     }
 
+    @DisplayName("Get all external links by companies - forbidden role|tests:246")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void getAllExternalLinksByCompanies_forbidden_role() throws Exception {
@@ -78,6 +83,7 @@ class ExternalLinkControllerTest {
             .andExpect(status().isForbidden());
     }
 
+    @DisplayName("Get external link by id - ok|tests:246")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createExternalLinks.sql")
@@ -94,6 +100,7 @@ class ExternalLinkControllerTest {
             .andExpect(jsonPath("$.data[0].it.link").value("https://sbb.ch"));
     }
 
+    @DisplayName("Get external link by id - not found|tests:246")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void getExternalLinkById_notFound() throws Exception {
@@ -101,6 +108,7 @@ class ExternalLinkControllerTest {
             .andExpect(status().isNotFound());
     }
 
+    @DisplayName("Get external link by id - forbidden existing company not authorized|tests:246")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createExternalLinks.sql")
@@ -110,6 +118,7 @@ class ExternalLinkControllerTest {
             .andExpect(jsonPath("$.detail").value("Not allowed!"));
     }
 
+    @DisplayName("Create external link - ok|tests:246")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void createExternalLink_ok() throws Exception {
@@ -134,6 +143,7 @@ class ExternalLinkControllerTest {
             .andExpect(jsonPath("$.data[0].it.link").value("mailto:test.user@sbb.ch"));
     }
 
+    @DisplayName("Create external link - ok single language|tests:246")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void createExternalLink_ok_singleLanguage() throws Exception {
@@ -152,6 +162,7 @@ class ExternalLinkControllerTest {
             .andExpect(jsonPath("$.data[0].de.link").value("https://sbb.ch"));
     }
 
+    @DisplayName("Create external link - ok ignores empty language placeholders|tests:246")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void createExternalLink_ok_ignores_empty_language_placeholders() throws Exception {
@@ -174,6 +185,7 @@ class ExternalLinkControllerTest {
             .andExpect(jsonPath("$.data[0].it").isEmpty());
     }
 
+    @DisplayName("Create external link - invalid no companies|tests:246")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void createExternalLink_invalid_no_companies() throws Exception {
@@ -188,6 +200,7 @@ class ExternalLinkControllerTest {
             .andExpect(jsonPath("$.detail").value("Invalid request content. -> companies=must not be empty"));
     }
 
+    @DisplayName("Create external link - invalid no language content|tests:246")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void createExternalLink_invalid_noLanguageContent() throws Exception {
@@ -202,6 +215,7 @@ class ExternalLinkControllerTest {
             .andExpect(jsonPath("$.detail").value("Invalid request content. -> externalLinkRequest=At least one language content (de, fr or it) must be provided."));
     }
 
+    @DisplayName("Create external link - invalid blank title|tests:246")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void createExternalLink_invalid_blankTitle() throws Exception {
@@ -217,6 +231,7 @@ class ExternalLinkControllerTest {
             .andExpect(jsonPath("$.detail").value("Invalid request content. -> de.title=must not be blank"));
     }
 
+    @DisplayName("Create external link - invalid link|tests:246")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void createExternalLink_invalid_link() throws Exception {
@@ -232,6 +247,7 @@ class ExternalLinkControllerTest {
             .andExpect(jsonPath("$.detail").value("Invalid request content. -> de.link=must be a valid URL"));
     }
 
+    @DisplayName("Update external link - ok|tests:246")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createExternalLinks.sql")
@@ -255,6 +271,7 @@ class ExternalLinkControllerTest {
             .andExpect(jsonPath("$.data[0].it").isEmpty());
     }
 
+    @DisplayName("Update external link - not found|tests:246")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void updateExternalLink_notFound() throws Exception {
@@ -270,6 +287,7 @@ class ExternalLinkControllerTest {
             .andExpect(status().isNotFound());
     }
 
+    @DisplayName("Update external link - invalid no language content|tests:246")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void updateExternalLink_invalid_noLanguageContent() throws Exception {
@@ -284,6 +302,7 @@ class ExternalLinkControllerTest {
             .andExpect(jsonPath("$.detail").value("Invalid request content. -> externalLinkRequest=At least one language content (de, fr or it) must be provided."));
     }
 
+    @DisplayName("Update external link - invalid blank title|tests:246")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void updateExternalLink_invalid_blankTitle() throws Exception {
@@ -299,6 +318,7 @@ class ExternalLinkControllerTest {
             .andExpect(jsonPath("$.detail").value("Invalid request content. -> fr.title=must not be blank"));
     }
 
+    @DisplayName("Update external link - forbidden existing company not authorized|tests:246")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createExternalLinks.sql")
@@ -316,6 +336,7 @@ class ExternalLinkControllerTest {
             .andExpect(jsonPath("$.detail").value("Not allowed!"));
     }
 
+    @DisplayName("Delete external link by ids - ok|tests:246")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createExternalLinks.sql")
@@ -340,6 +361,7 @@ class ExternalLinkControllerTest {
             .andExpect(status().isNotFound());
     }
 
+    @DisplayName("Delete external link by ids - invalid body|tests:246")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void deleteExternalLinkByIds_invalid_body() throws Exception {
@@ -354,6 +376,7 @@ class ExternalLinkControllerTest {
             .andExpect(jsonPath("$.detail").value("Invalid request content. -> ids=must not be empty"));
     }
 
+    @DisplayName("Delete external link by ids - forbidden existing company not authorized|tests:246")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createExternalLinks.sql")

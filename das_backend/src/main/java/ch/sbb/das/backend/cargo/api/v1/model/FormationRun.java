@@ -70,6 +70,10 @@ public record FormationRun(
     Boolean dangerousGoods,
     @Schema(requiredMode = RequiredMode.REQUIRED)
     Integer vehiclesCount,
+    // todo: delete as soon as das_client v 0.49.0 released
+    @Deprecated(forRemoval = true)
+    @Schema(requiredMode = RequiredMode.REQUIRED, deprecated = true)
+    Integer vehiclesWithBrakeDesignLlAndKCount,
     @Schema(requiredMode = RequiredMode.REQUIRED)
     Integer vehiclesWithBrakeDesignLAndLlAndKCount,
     @Schema(requiredMode = RequiredMode.REQUIRED)
@@ -123,6 +127,7 @@ public record FormationRun(
             .carCarrierVehicle(trainFormationRunEntity.getCarCarrierVehicle())
             .dangerousGoods(trainFormationRunEntity.getDangerousGoods())
             .vehiclesCount(trainFormationRunEntity.getVehiclesCount())
+            .vehiclesWithBrakeDesignLlAndKCount(trainFormationRunEntity.getVehiclesWithBrakeDesignLAndLlAndKCount()) // todo: delete as soon as das_client v 0.49.0 released
             .vehiclesWithBrakeDesignLAndLlAndKCount(trainFormationRunEntity.getVehiclesWithBrakeDesignLAndLlAndKCount())
             .vehiclesWithBrakeDesignDCount(trainFormationRunEntity.getVehiclesWithBrakeDesignDCount())
             .vehiclesWithDisabledBrakesCount(trainFormationRunEntity.getVehiclesWithDisabledBrakesCount())

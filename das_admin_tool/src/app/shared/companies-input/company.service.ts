@@ -1,7 +1,8 @@
 import {httpResource} from '@angular/common/http';
-import {computed, Injectable} from '@angular/core';
+import {computed, effect, inject, Injectable} from '@angular/core';
 import {environment} from '../../../environments/environment';
 import {ApiResponse} from '../api-response';
+import {ToastService} from '../toast-service';
 
 type CompanyApiResponse = ApiResponse<Company>;
 
@@ -15,9 +16,18 @@ export interface Company {
 })
 export class CompanyService {
   private readonly url = `${environment.backendUrl}/companies/authorized`;
-
   private readonly companiesResource = httpResource<CompanyApiResponse>(() => this.url);
-  private readonly companies = computed(() => this.companiesResource.value()?.data ?? []);
+  readonly loaded = computed(() => this.companiesResource.hasValue() || !!this.companiesResource.error());
+  private readonly toastService = inject(ToastService);
+  private readonly companies = computed(() => this.companiesResource.hasValue() ? this.companiesResource.value()!.data : []);
+
+  constructor() {
+    effect(() => {
+      if (this.companiesResource.error()) {
+        this.toastService.error($localize`:@@company_service_error_loading:Fehler beim Laden der EVUs`);
+      }
+    });
+  }
 
   public formatCompanies(companies: string[]): string {
     return companies
@@ -42,10 +52,10 @@ export class CompanyService {
       ({
          code,
          shortName
-       }) => code.toLowerCase().includes(query) || shortName.toLowerCase().includes(query),
+       }) => code.toLowerCase().includes(caseInsensitiveQuery) || shortName.toLowerCase().includes(caseInsensitiveQuery),
     );
 
-    return this.sortByRelevance(matching, query);
+    return this.sortByRelevance(matching, caseInsensitiveQuery);
   }
 
   private sortByRelevance(candidates: Company[], query: string): Company[] {

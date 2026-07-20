@@ -15,7 +15,7 @@
           }}
         </sbb-tab-label>
         <sbb-tab [formGroupName]="language.path">
-          <sbb-form-field errorSpace="reserve">
+          <sbb-form-field errorSpace="reserve" class="full-width">
             <label i18n="@@external_links_form_title_label">Titel</label>
             <input formControlName="title"/>
             @let titleField = externalLinkForm.get(`${language.path}.title`);
@@ -26,7 +26,7 @@
               >
             }
           </sbb-form-field>
-          <sbb-form-field errorSpace="reserve">
+          <sbb-form-field errorSpace="reserve" class="full-width">
             <label i18n="@@external_links_form_link_label">Webadresse (URL)</label>
             <input formControlName="link"/>
             @let linkField = externalLinkForm.get(`${language.path}.link`);
