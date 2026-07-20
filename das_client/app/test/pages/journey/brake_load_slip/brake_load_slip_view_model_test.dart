@@ -582,7 +582,7 @@ FormationRun _generateFormationRun(
     carCarrierVehicle: false,
     dangerousGoods: false,
     vehiclesCount: 0,
-    vehiclesWithBrakeDesignLlAndKCount: 0,
+    vehiclesWithBrakeDesignLAndLlAndKCount: 0,
     vehiclesWithBrakeDesignDCount: 0,
     vehiclesWithDisabledBrakesCount: 0,
     axleLoadMaxInKg: 0,

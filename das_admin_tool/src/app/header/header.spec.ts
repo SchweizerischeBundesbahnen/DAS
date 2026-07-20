@@ -12,7 +12,8 @@ const mockOidc: Partial<OidcSecurityService> = {
     userData: {
       name: 'User',
       preferred_username: 'user@example.com',
-      roles: ['ru_admin']
+      roles: ['ru_admin'],
+      tid: '2cda5d11-f0ac-46b3-967d-af1b2e1bd01a',
     }
   } as UserDataResult),
   authenticated: signal({isAuthenticated: true} as AuthenticatedResult),

@@ -1,0 +1,38 @@
+{
+  "zugnummer": "728",
+  "fahrplanperiode": 2099,
+  "trassenID": "728-001",
+  "sicht": "VT",
+  "verstaendigungs_status": "VERSTAENDIGT",
+  "infrastrukturnetz": "default",
+  "bestell_evu": "SOB",
+  "liniennummer": "427",
+  "zuglaeufe": [
+    {
+      "solltage_vp": {
+        "tage": "001"
+      },
+      "verkehrt": true,
+      "zugkategorien": [
+        "TR"
+      ],
+      "zuglaufpunkte": [
+        {
+          "betriebspunkt": {
+            "bp_abkuerzung": "BN",
+            "bp_uic_code": 1001,
+            "bp_uic_laendercode": 85
+          },
+          "betr_zeit_an": 60,
+          "betr_zeit_ab": 120,
+          "sms_evu": "MOCK_B",
+          "halt": {
+            "haltezwecke": [
+              "14"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

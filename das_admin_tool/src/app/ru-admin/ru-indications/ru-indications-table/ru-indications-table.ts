@@ -214,7 +214,7 @@ export class RuIndicationsTable {
     const locations = filter.locations.toLowerCase();
     const periods = filter.periods.toLowerCase();
 
-    return data.content.category?.toLowerCase().includes(category)
+    return (data.content.category ?? '').toLowerCase().includes(category)
       && this.companiesValue(data.scope.companies).toLowerCase().includes(companies)
       && this.trainNumbersValue(data).toLowerCase().includes(trainNumbers)
       && this.locationsValue(data).toLowerCase().includes(locations)

@@ -1,6 +1,7 @@
 package ch.sbb.das.backend.driversettings.internal;
 
 import static ch.sbb.das.backend.driversettings.internal.SettingsController.API_SETTINGS;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -26,9 +27,11 @@ class SettingsControllerTest {
     void should_respond_with_settings() throws Exception {
         mockMvc.perform(get(API_SETTINGS).header("X-App-Version", "2.4.1"))
             .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data[0].companies", hasSize(4)))
+            .andExpect(jsonPath("$.data[0].companies[*].code", containsInAnyOrder("1111", "2222", "3333", "9999")))
             .andExpect(jsonPath("$.data[0].ruFeatures", hasSize(1)))
             .andExpect(jsonPath("$.data[0].ruFeatures.[0].key").value(RuFeatureKey.CHECKLIST_DEPARTURE_PROCESS.name()))
-            .andExpect(jsonPath("$.data[0].ruFeatures.[0].companyCodeRics").value("1111"))
+            .andExpect(jsonPath("$.data[0].ruFeatures.[0].companyCode").value("1111"))
             .andExpect(jsonPath("$.data[0].ruFeatures.[0].enabled").value(true))
             .andExpect(jsonPath("$.data[0].logging.url").value("url"))
             .andExpect(jsonPath("$.data[0].logging.token").value("token"))

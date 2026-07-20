@@ -102,6 +102,6 @@ public class SpecialHolidayController {
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
         @RequestBody @Valid DeleteByIdsRequest deleteRequest) {
         specialHolidayService.deleteByIds(deleteRequest.ids());
-        return ResponseEntity.noContent().build();
+        return ResponseEntityFactory.createNoContentResponse(requestId);
     }
 }

@@ -3,6 +3,7 @@ package ch.sbb.das.backend.companies;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
@@ -12,7 +13,6 @@ import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -24,26 +24,15 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 class CompanyAuthorizerTest {
 
     private static final CompanyCode COMPANY_A = new CompanyCode("2185");
-    private CompanyAuthorizer underTest;
     private static final CompanyCode COMPANY_B = new CompanyCode("2585");
-    private CompanyService companyService;
     private static final String EXAMPLE_ISSUER_URL = "https://issuer.example/v2.0";
-
-    @BeforeEach
-    void setUp() {
-        companyService = Mockito.mock(CompanyService.class);
-        underTest = new CompanyAuthorizer(companyService);
-    }
+    private CompanyAuthorizer underTest;
+    private CompanyService companyService;
 
     private static void mockSecurityContxt(Authentication auth) {
-        SecurityContext securityContext = Mockito.mock(SecurityContext.class);
-        Mockito.when(securityContext.getAuthentication()).thenReturn(auth);
+        SecurityContext securityContext = mock(SecurityContext.class);
+        when(securityContext.getAuthentication()).thenReturn(auth);
         SecurityContextHolder.setContext(securityContext);
-    }
-
-    @AfterEach
-    void tearDown() {
-        SecurityContextHolder.clearContext();
     }
 
     private static JwtAuthenticationToken mockJwt() {
@@ -59,8 +48,23 @@ class CompanyAuthorizerTest {
         return new JwtAuthenticationToken(jwt);
     }
 
+    private static Tenant adminTenantWithCompanies(String name, Set<CompanyCode> companies) {
+        return new Tenant(name, "a0000000-0000-0000-0000-000000000000", true, companies);
+    }
+
     private static Tenant tenantWithCompanies(String name, Set<CompanyCode> companies) {
-        return new Tenant(name, EXAMPLE_ISSUER_URL, "", companies);
+        return new Tenant(name, "a0000000-0000-0000-0000-000000000000", false, companies);
+    }
+
+    @BeforeEach
+    void setUp() {
+        companyService = mock(CompanyService.class);
+        underTest = new CompanyAuthorizer(companyService);
+    }
+
+    @AfterEach
+    void tearDown() {
+        SecurityContextHolder.clearContext();
     }
 
     @Test
@@ -138,7 +142,7 @@ class CompanyAuthorizerTest {
 
     @Test
     void isAdmin_returnsFalse_whenAuthenticationIsNull() {
-        boolean result = underTest.isAdminTenant();
+        boolean result = underTest.isAdminRoleAllowed();
 
         assertThat(result).isFalse();
         verifyNoInteractions(companyService);
@@ -147,7 +151,7 @@ class CompanyAuthorizerTest {
     @Test
     void isAdmin_returnsFalse_whenAuthenticationIsNotJwt() {
         mockSecurityContxt(UsernamePasswordAuthenticationToken.authenticated("test", "credentials", Set.of()));
-        boolean result = underTest.isAdminTenant();
+        boolean result = underTest.isAdminRoleAllowed();
 
         assertThat(result).isFalse();
         verifyNoInteractions(companyService);
@@ -183,28 +187,24 @@ class CompanyAuthorizerTest {
         Tenant tenant = tenantWithCompanies("sob", Set.of(new CompanyCode("9058")));
 
         when(companyService.getTenantByIssuerUri(EXAMPLE_ISSUER_URL)).thenReturn(tenant);
-        when(companyService.isAdminTenant(tenant)).thenReturn(false);
 
-        boolean result = underTest.isAdminTenant();
+        boolean result = underTest.isAdminRoleAllowed();
 
         assertThat(result).isFalse();
         verify(companyService).getTenantByIssuerUri(EXAMPLE_ISSUER_URL);
-        verify(companyService).isAdminTenant(tenant);
     }
 
     @Test
-    void isAdmin_returnsTrue_whenTenantIsAdminTenant() {
+    void isAdmin_returnsTrue_whenTenantIsAdminRoleAllowed() {
         mockSecurityContxt(mockJwt());
-        Tenant tenant = tenantWithCompanies("sbb", Set.of(COMPANY_A));
+        Tenant tenant = adminTenantWithCompanies("sbb", Set.of(COMPANY_A));
 
         when(companyService.getTenantByIssuerUri(EXAMPLE_ISSUER_URL)).thenReturn(tenant);
-        when(companyService.isAdminTenant(tenant)).thenReturn(true);
 
-        boolean result = underTest.isAdminTenant();
+        boolean result = underTest.isAdminRoleAllowed();
 
         assertThat(result).isTrue();
         verify(companyService).getTenantByIssuerUri(EXAMPLE_ISSUER_URL);
-        verify(companyService).isAdminTenant(tenant);
     }
 
     @Test
@@ -213,7 +213,7 @@ class CompanyAuthorizerTest {
         when(companyService.getTenantByIssuerUri(EXAMPLE_ISSUER_URL))
             .thenThrow(new IllegalArgumentException("unknown tenant"));
 
-        assertThatThrownBy(() -> underTest.isAdminTenant())
+        assertThatThrownBy(() -> underTest.isAdminRoleAllowed())
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("unknown tenant");
 

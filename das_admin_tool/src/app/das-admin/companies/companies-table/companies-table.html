@@ -1,0 +1,88 @@
+<sbb-table-wrapper>
+  <table
+    [dataSource]="dataSource"
+    class="table-truncated"
+    fixedLayout
+    sbb-table
+    sbbSort
+    sbbSortActive="shortName"
+    sbbSortDirection="asc"
+  >
+    <ng-container sbbColumnDef="code">
+      <th
+        *sbbHeaderCellDef
+        i18n="@@companies_table_column_code"
+        sbb-header-cell
+        sbb-sort-header="code"
+      >
+        Code
+      </th>
+      <td *sbbCellDef="let row" sbb-cell>
+        <span>{{ row.code }}</span>
+      </td>
+    </ng-container>
+
+    <ng-container sbbColumnDef="shortName">
+      <th
+        *sbbHeaderCellDef
+        i18n="@@companies_table_column_short_name"
+        sbb-header-cell
+        sbb-sort-header="shortName"
+      >
+        Kurzname (NeTS)
+      </th>
+      <td *sbbCellDef="let row" sbb-cell>
+        <span>{{ row.shortName }}</span>
+      </td>
+    </ng-container>
+
+    <ng-container sbbColumnDef="tenantId">
+      <th
+        *sbbHeaderCellDef
+        i18n="@@companies_table_column_tenant_id"
+        sbb-header-cell
+        sbb-sort-header="tenantId"
+      >
+        Tenant Id
+      </th>
+      <td *sbbCellDef="let row" sbb-cell>
+        <span>{{ tenant(row.tenantId) }}</span>
+      </td>
+    </ng-container>
+
+    <ng-container sbbColumnDef="lastModifiedAt">
+      <th
+        *sbbHeaderCellDef
+        i18n="@@companies_table_column_last_modified_at"
+        sbb-header-cell
+        sbb-sort-header="lastModifiedAt"
+      >
+        Bearbeitet am
+      </th>
+      <td *sbbCellDef="let row" sbb-cell>{{ row.lastModifiedAt | date: 'short' }} </td>
+    </ng-container>
+
+    <ng-container sbbColumnDef="lastModifiedBy">
+      <th
+        *sbbHeaderCellDef
+        i18n="@@companies_table_column_last_modified_by"
+        sbb-header-cell
+        sbb-sort-header="lastModifiedBy"
+        >Bearbeitet von
+      </th>
+      <td *sbbCellDef="let row" sbb-cell>{{ row.lastModifiedBy }}</td>
+    </ng-container>
+
+    <ng-container sbbColumnDef="action">
+      <th *sbbHeaderCellDef sbb-header-cell></th>
+      <td *sbbCellDef="let company" sbb-cell>
+        <sbb-mini-button (click)="edit(company)" iconName="pen-small"></sbb-mini-button>
+      </td>
+    </ng-container>
+
+    <tr *sbbHeaderRowDef="columns" sbb-header-row></tr>
+    <tr *sbbRowDef="let row; columns: columns" sbb-row></tr>
+  </table>
+</sbb-table-wrapper>
+
+<app-table-bottom-bar (addClicked)="add()" [showDelete]="false" [deleting]="isDeleting" />

@@ -1,7 +1,8 @@
-import { computed, Injectable } from '@angular/core';
-import { httpResource } from '@angular/common/http';
-import { ApiResponse } from '../../../../shared/api-response';
-import { environment } from '../../../../../environments/environment';
+import {computed, effect, inject, Injectable} from '@angular/core';
+import {httpResource} from '@angular/common/http';
+import {ApiResponse} from '../../../../shared/api-response';
+import {environment} from '../../../../../environments/environment';
+import {ToastService} from '../../../../shared/toast-service';
 
 export type LocationApiResponse = ApiResponse<Location>;
 
@@ -17,9 +18,18 @@ export interface Location {
 })
 export class LocationService {
   private readonly url = `${environment.backendUrl}/locations`;
-
   private readonly locationsResource = httpResource<LocationApiResponse>(() => this.url);
-  private readonly locations = computed(() => this.locationsResource.value()?.data ?? []);
+  readonly loaded = computed(() => this.locationsResource.hasValue() || !!this.locationsResource.error());
+  private readonly toastService = inject(ToastService);
+  private readonly locations = computed(() => this.locationsResource.hasValue() ? this.locationsResource.value()!.data : []);
+
+  constructor() {
+    effect(() => {
+      if (this.locationsResource.error()) {
+        this.toastService.error($localize`:@@location_service_error_loading:Fehler beim Laden der Betriebspunkte`);
+      }
+    });
+  }
 
   public getLocation(reference: string) {
     return this.locations().find(location => location.locationReference === reference);

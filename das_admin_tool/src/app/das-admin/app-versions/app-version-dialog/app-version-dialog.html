@@ -3,7 +3,7 @@
                  i18n-stepLabel="@@app_version_dialog_step_label"
                  stepLabel="App Version">
   <form [formGroup]="versionForm" class="form">
-    <sbb-form-field>
+    <sbb-form-field errorSpace="reserve">
       <label for="version" i18n="@@app_versions_form_version_label">App Version</label>
       <input formControlName="version" placeholder="0.0.0" required/>
       @if (versionForm.touched) {

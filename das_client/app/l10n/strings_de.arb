@@ -79,7 +79,7 @@
   "p_brake_load_slip_brake_details_holding_force": "Festhaltekraft [kN]",
   "p_brake_load_slip_hauled_load_title": "Anhängelast",
   "p_brake_load_slip_hauled_load_total_vehicles": "Wagen Total",
-  "p_brake_load_slip_hauled_load_total_vehicles_LL_K": "Anzahl Wagen mit LL und K",
+  "p_brake_load_slip_hauled_load_total_vehicles_L_LL_K": "Anzahl Wagen mit L, LL und K",
   "p_brake_load_slip_hauled_load_total_vehicles_D": "Anzahl Wagen mit D",
   "p_brake_load_slip_hauled_load_total_vehicles_disabled_brakes": "Ausgeschaltete Bremsen",
   "p_brake_load_slip_hauled_load_first_vehicle_evn": "Erster Wagen EVN",

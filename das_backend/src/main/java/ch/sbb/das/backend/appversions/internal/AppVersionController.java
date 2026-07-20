@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Tag(name = "AppVersions", description = "API for app versions.")
-@PreAuthorize("@companyAuthorizer.isAdminTenant")
+@PreAuthorize("@companyAuthorizer.isAdminRoleAllowed")
 public class AppVersionController {
 
     static final String PATH_SEGMENT_APP_VERSIONS = "/app-versions";
@@ -96,9 +96,9 @@ public class AppVersionController {
     @Operation(summary = "Delete app version by id.", description = "Delete a single app version by its id.")
     @ApiResponse(responseCode = "204", description = "App version deleted.")
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> deleteAppVersionById(@PathVariable Integer id,
+    public ResponseEntity<Void> deleteAppVersionById(@PathVariable Integer id,
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
         appVersionServiceImpl.delete(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntityFactory.createNoContentResponse(requestId);
     }
 }

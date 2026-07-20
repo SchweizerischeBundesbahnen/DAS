@@ -35,7 +35,7 @@ import tools.jackson.databind.json.JsonMapper;
 class TrainIdentificationIntegrationTest {
 
     private static final int TEST_PERIOD_NUMBER_OF_DAYS = 10;
-    private static final CompanyCode COMPANY_CODE_SOB = new CompanyCode("9058");
+    private static final CompanyCode COMPANY_CODE_MOCK_B = new CompanyCode("2222");
 
     @Autowired
     private JsonMapper jsonMapper;
@@ -63,8 +63,8 @@ class TrainIdentificationIntegrationTest {
 
     @Test
     void publishNetsPeriod__timetablePeriodSaved() {
-        TimetablePeriodKey key = jsonMapper.readValue(new File("src/test/resources/kafka/period/key.json"), TimetablePeriodKey.class);
-        TimetablePeriodValue value = jsonMapper.readValue(new File("src/test/resources/kafka/period/value.json"), TimetablePeriodValue.class);
+        TimetablePeriodKey key = jsonMapper.readValue(new File("src/test/resources/trainjourneyplan/period_key.json"), TimetablePeriodKey.class);
+        TimetablePeriodValue value = jsonMapper.readValue(new File("src/test/resources/trainjourneyplan/period_value.json"), TimetablePeriodValue.class);
         int testYear = 2025;
 
         // When
@@ -93,8 +93,8 @@ class TrainIdentificationIntegrationTest {
         // When
 
         // period starts Jan 1st
-        TimetablePeriodKey periodKey = jsonMapper.readValue(new File("src/test/resources/kafka/period/key_future.json"), TimetablePeriodKey.class);
-        TimetablePeriodValue periodValue = jsonMapper.readValue(new File("src/test/resources/kafka/period/value_future.json"), TimetablePeriodValue.class);
+        TimetablePeriodKey periodKey = jsonMapper.readValue(new File("src/test/resources/trainjourneyplan/period_key_future.json"), TimetablePeriodKey.class);
+        TimetablePeriodValue periodValue = jsonMapper.readValue(new File("src/test/resources/trainjourneyplan/period_value_future.json"), TimetablePeriodValue.class);
         int testYear = 2099;
 
         kafkaTemplate.send(timetablePeriodTopic, periodKey, periodValue);
@@ -113,8 +113,8 @@ class TrainIdentificationIntegrationTest {
                 ));
 
         // When
-        TimetableTrainKey fpsKey = jsonMapper.readValue(new File("src/test/resources/kafka/trainIdentification/key.json"), TimetableTrainKey.class);
-        TimetableTrainValue fpsTrain = jsonMapper.readValue(new File("src/test/resources/kafka/trainIdentification/value.json"), TimetableTrainValue.class);
+        TimetableTrainKey fpsKey = jsonMapper.readValue(new File("src/test/resources/trainjourneyplan/timetable_key.json"), TimetableTrainKey.class);
+        TimetableTrainValue fpsTrain = jsonMapper.readValue(new File("src/test/resources/trainjourneyplan/timetable_value.json"), TimetableTrainValue.class);
 
         // When
         sendRecord(fpsKey, fpsTrain);
@@ -130,7 +130,7 @@ class TrainIdentificationIntegrationTest {
                 TrainIdentification trainId = trainIds.getFirst();
                 assertThat(trainId.startDateTime().atZoneSameInstant(SWISS_ZONE).toLocalDate()).isEqualTo(startDate);
                 assertThat(trainId.operationalTrainNumber()).isEqualTo("728");
-                assertThat(trainId.companies()).containsExactly(COMPANY_CODE_SOB);
+                assertThat(trainId.companies()).containsExactly(COMPANY_CODE_MOCK_B);
             });
 
         // When

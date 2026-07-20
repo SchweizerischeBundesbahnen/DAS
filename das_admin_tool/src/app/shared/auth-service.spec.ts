@@ -77,14 +77,27 @@ describe('AuthService', () => {
     expect(service.isAdmin()).toBe(false);
   });
 
-  it('isRuAdmin is true for ru_admin role', () => {
+  it('isRuAdmin is true for ru_admin role with allowed tenant', () => {
     setup({
       userData: {
         roles: ['ru_admin'],
+        tid: environment.allowedTenantIds[0],
       },
     });
 
     expect(service.isRuAdmin()).toBe(true);
+  });
+
+  it('isAllowedTenant is false for disallowed tenant', () => {
+    setup({
+      userData: {
+        roles: ['ru_admin'],
+        tid: 'unknown-tenant-id',
+      },
+    });
+
+    expect(service.isAllowedTenant()).toBe(false);
+    expect(service.isRuAdmin()).toBe(false);
   });
 
   it('isRuAdmin ignores non-enum admin-like roles', () => {

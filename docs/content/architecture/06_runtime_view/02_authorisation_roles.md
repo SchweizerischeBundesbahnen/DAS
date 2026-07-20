@@ -9,8 +9,7 @@ Remarks:
 * Every RU has its own Authentication (IAM) system and is therefore not controlled by one specific RU (like SBB) or the DAS devOps Team.
 * The RU Device-Management system (MDM) may depend on IAM rights/roles (for e.g. Mobile-App distribution per trusted user).
 
-## Roles
-For users using the DAS-Client App.
+## Roles for DAS-Client App users
 
 ### Driver
 de: Lokpersonal
@@ -18,13 +17,18 @@ de: Lokpersonal
 Train/engine driver with permission to perform a vehicle-journey, including staff in education.
 
 ### Observer
-Any DAS App user without permission to perform a vehicle-journey (for e.g. de:Fahrdienstleiter (FDL)).
 
+Any App user without permission to perform a vehicle-journey (for e.g. de:Fahrdienstleiter (FDL)).
+
+## Roles for DAS-Admin-Tool users
 ### RU Admin
-Administrators at a Railway Undertaking (de:EVU) managing their users/roles for DAS by its own Authentication (and MDM) system.
+
+Administrators at a Railway Undertaking (de:EVU) managing their users/roles for DAS-Client by its
+own Authentication (and MDM) system.
 
 ### Admin
-DAS Administrator with global rights for `DAS-Admin` (DAS own admin-tool) settings.
+
+DAS Administrator with global rights for `DAS-Admin-Tool` settings.
 
 ## DAS Role comparison to TMS-VAD Roles
 Roles within DAS remain consistent over all vehicle-journeys. However, per train instance the currently active driver is needed additionally:

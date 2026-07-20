@@ -5,7 +5,7 @@ cascade:
   type: docs
 ---
 
-## Blueprint by UIC "IRS-90940:2022 Ed.2" Specification
+## Blueprint by UIC "UIC IRS 90940:Ed3](https://uic.org/com/enews/article/3rd-edition-of-the-sfera-protocol-available-now-including-all-on-board-devices) Specification
 Some abbreviations from the Specification:
 * C-DAS-O: Connected DAS with OnBoard intelligence
 * S-DAS: Standalone DAS

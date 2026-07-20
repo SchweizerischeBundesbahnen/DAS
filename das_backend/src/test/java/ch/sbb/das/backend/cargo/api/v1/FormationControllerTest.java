@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.das.backend.IntegrationTest;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -27,16 +28,18 @@ class FormationControllerTest {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @DisplayName("Should respond formation|tests:541")
     @Test
     @WithMockUser(authorities = "ROLE_observer")
     void should_respond_formation() throws Exception {
-        String expectedJson = Files.readString(Paths.get("src/test/resources/formations/54233.json"));
+        String expectedJson = Files.readString(Paths.get("src/test/resources/cargo/54233/expected.json"));
 
         mockMvc.perform(get(API_FORMATIONS).param("operationalTrainNumber", "54233").param("operationalDay", "2025-07-25").param("company", "2185"))
             .andExpect(status().isOk())
             .andExpect(content().json(expectedJson, JsonCompareMode.STRICT));
     }
 
+    @DisplayName("Should respond not modified - when nothing changed since etag|tests:541")
     @Test
     @WithMockUser(authorities = "ROLE_observer")
     void should_respond_not_modified_when_nothing_changed_since_etag() throws Exception {
@@ -47,6 +50,7 @@ class FormationControllerTest {
             .andExpect(status().isNotModified());
     }
 
+    @DisplayName("Should respond formation - when changed since etag|tests:541")
     @Test
     @WithMockUser(authorities = "ROLE_observer")
     void should_respond_formation_when_changed_since_etag() throws Exception {
@@ -56,22 +60,24 @@ class FormationControllerTest {
         String sql = Files.readString(Paths.get("src/test/resources/updateFormation54233.sql"));
         jdbcTemplate.execute(sql);
 
-        String expectedJson = Files.readString(Paths.get("src/test/resources/formations/54233_2.json"));
+        String expectedJson = Files.readString(Paths.get("src/test/resources/cargo/54233/expected_update.json"));
 
         mockMvc.perform(get(API_FORMATIONS).param("operationalTrainNumber", "54233").param("operationalDay", "2025-07-25").param("company", "2185").header(HttpHeaders.IF_NONE_MATCH, etagHeader))
             .andExpect(status().isOk())
             .andExpect(content().json(expectedJson, JsonCompareMode.STRICT));
     }
 
+    @DisplayName("Should respond latest formation|tests:541")
     @Test
     @WithMockUser(authorities = "ROLE_observer")
     void should_respond_latest_formation() throws Exception {
-        String expectedJson = Files.readString(Paths.get("src/test/resources/formations/739.json"));
+        String expectedJson = Files.readString(Paths.get("src/test/resources/cargo/739/expected.json"));
         mockMvc.perform(get(API_FORMATIONS).param("operationalTrainNumber", "739").param("operationalDay", "2025-07-20").param("company", "3211"))
             .andExpect(status().isOk())
             .andExpect(content().json(expectedJson, JsonCompareMode.STRICT));
     }
 
+    @DisplayName("Should respond not found|tests:541")
     @Test
     @WithMockUser(authorities = "ROLE_observer")
     void should_respond_not_found() throws Exception {
@@ -79,6 +85,7 @@ class FormationControllerTest {
             .andExpect(status().isNotFound());
     }
 
+    @DisplayName("Should respond bad request|tests:541")
     @Test
     @WithMockUser(authorities = "ROLE_observer")
     void should_respond_bad_request() throws Exception {

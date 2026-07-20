@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import {Routes} from '@angular/router';
 
 export const routes: Routes = [
   {
@@ -25,6 +25,10 @@ export const routes: Routes = [
       {
         path: 'external-links',
         loadComponent: () => import('./external-links/external-links').then((m) => m.ExternalLinks),
+      },
+      {
+        path: 'rufeatures',
+        loadComponent: () => import('./ru-feature-toggles/ru-feature-toggles.component').then((m) => m.RuFeatureToggles),
       },
     ],
   },

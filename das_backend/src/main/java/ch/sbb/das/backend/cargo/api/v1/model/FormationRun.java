@@ -71,7 +71,7 @@ public record FormationRun(
     @Schema(requiredMode = RequiredMode.REQUIRED)
     Integer vehiclesCount,
     @Schema(requiredMode = RequiredMode.REQUIRED)
-    Integer vehiclesWithBrakeDesignLlAndKCount,
+    Integer vehiclesWithBrakeDesignLAndLlAndKCount,
     @Schema(requiredMode = RequiredMode.REQUIRED)
     Integer vehiclesWithBrakeDesignDCount,
     @Schema(requiredMode = RequiredMode.REQUIRED)
@@ -123,7 +123,7 @@ public record FormationRun(
             .carCarrierVehicle(trainFormationRunEntity.getCarCarrierVehicle())
             .dangerousGoods(trainFormationRunEntity.getDangerousGoods())
             .vehiclesCount(trainFormationRunEntity.getVehiclesCount())
-            .vehiclesWithBrakeDesignLlAndKCount(trainFormationRunEntity.getVehiclesWithBrakeDesignLlAndKCount())
+            .vehiclesWithBrakeDesignLAndLlAndKCount(trainFormationRunEntity.getVehiclesWithBrakeDesignLAndLlAndKCount())
             .vehiclesWithBrakeDesignDCount(trainFormationRunEntity.getVehiclesWithBrakeDesignDCount())
             .vehiclesWithDisabledBrakesCount(trainFormationRunEntity.getVehiclesWithDisabledBrakesCount())
             .europeanVehicleNumberFirst(trainFormationRunEntity.getEuropeanVehicleNumberFirst())

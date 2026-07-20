@@ -10,6 +10,8 @@ import ch.sbb.das.backend.common.ApiParametersDefault;
 import ch.sbb.das.backend.common.ApiParametersDefault.ParamRequestId;
 import ch.sbb.das.backend.common.Response;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
+import ch.sbb.das.backend.companies.Company;
+import ch.sbb.das.backend.companies.CompanyService;
 import ch.sbb.das.backend.config.ConfigService;
 import ch.sbb.das.backend.config.Logging;
 import ch.sbb.das.backend.config.Preload;
@@ -39,7 +41,7 @@ public class SettingsController {
     public static final String API_SETTINGS = ApiDocumentation.DRIVER_URI + ApiDocumentation.DRIVER_VERSION_URI_V1 + PATH_SEGMENT_SETTINGS;
 
     private final RuFeatureService ruFeatureService;
-
+    private final CompanyService companyService;
     private final ConfigService configService;
     private final AppVersionService appVersionService;
 
@@ -48,18 +50,14 @@ public class SettingsController {
     @ApiResponse(responseCode = "200", description = "Settings relevant for DAS-Client.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = SettingsResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getSettings(
-        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
-        @RequestHeader(value = "X-App-Version") @Pattern(regexp = SEM_VERSION_PATTERN) String xAppVersion
-    ) {
-        List<RuFeature> allFeatures = ruFeatureService.getAll().stream()
-            .toList();
-
+    public ResponseEntity<? extends Response> getSettings(@ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
+        @RequestHeader(value = "X-App-Version") @Pattern(regexp = SEM_VERSION_PATTERN) String xAppVersion) {
+        List<Company> companies = companyService.getAllCompanies();
+        List<RuFeature> allFeatures = ruFeatureService.getAll();
         Logging logging = configService.getLogging();
         Preload preload = configService.getPreload();
         CurrentAppVersion currentAppVersion = appVersionService.getCurrent(xAppVersion);
 
-        return ResponseEntityFactory.createOkResponse(new SettingsResponse(List.of(new Settings(allFeatures, logging, preload, currentAppVersion))),
-            requestId);
+        return ResponseEntityFactory.createOkResponse(new SettingsResponse(List.of(new Settings(companies, allFeatures, logging, preload, currentAppVersion))), requestId);
     }
 }

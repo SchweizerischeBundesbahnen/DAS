@@ -6,7 +6,7 @@
   <table [dataSource]="dataSource" class="table-truncated table-uniform-2lines" fixedLayout sbb-table sbbSort
          sbbSortDirection="asc">
     <ng-container sbbColumnDef="select">
-      <th *sbbHeaderCellDef sbb-header-cell style="width: 36px">
+      <th *sbbHeaderCellDef sbb-header-cell>
         <sbb-checkbox
           (change)="$event ? parentToggle() : null"
           [checked]="selection.hasValue() && isAllSelected()"
@@ -34,14 +34,14 @@
       <th *sbbHeaderCellDef i18n="@@ru_indication_templates_table_column_title" sbb-header-cell
           sbb-sort-header="title">Titel
       </th>
-      <td *sbbCellDef="let row" sbb-cell><span>{{ getValue(row, 'title') }}</span></td>
+      <td *sbbCellDef="let row" sbb-cell><span>{{ currentLanguage(row)?.title }}</span></td>
     </ng-container>
 
     <ng-container sbbColumnDef="text">
       <th *sbbHeaderCellDef i18n="@@ru_indication_templates_table_column_text" sbb-header-cell
           sbb-sort-header="text">Text
       </th>
-      <td *sbbCellDef="let row" sbb-cell><span>{{ getValue(row, 'text') }}</span></td>
+      <td *sbbCellDef="let row" sbb-cell><span>{{ currentLanguage(row)?.text }}</span></td>
     </ng-container>
 
     <ng-container sbbColumnDef="lastModifiedAt">

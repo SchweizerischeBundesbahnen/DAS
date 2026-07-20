@@ -9,7 +9,7 @@ All configuration files for [Release Please] are found in the `./ci` directory.
 
 Version is given in [release-please-manifest](./ci/.release-please-manifest.json), s. [CONTRIBUTING.md](CONTRIBUTING.md) for feature conventional commit.
 
-### DAS Client
+### DAS-Client
 
 The release please PRs will carry the additional label `autorelease:das_client`. 
 Merging this PR will trigger two workflows:

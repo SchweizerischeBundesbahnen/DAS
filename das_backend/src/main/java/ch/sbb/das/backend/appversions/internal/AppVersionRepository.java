@@ -6,5 +6,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AppVersionRepository extends ListCrudRepository<AppVersionEntity, Integer> {
 
+    boolean existsByVersion(String version);
+
     boolean existsByVersionAndIdNot(String version, Integer id);
 }

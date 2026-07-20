@@ -44,7 +44,7 @@ class SferaMessageCreatorTest {
         SFERAB2GRequestMessage message = sferaMessageCreator.createJpRequestMessage(trainId);
         String result = xmlHelper.toString(message);
 
-        assertThat(result).and(Input.fromFile("src/test/resources/sfera/jprequest.xml"))
+        assertThat(result).and(Input.fromFile("src/test/resources/trainjourneypreloader/jprequest.xml"))
             .ignoreWhitespace()
             .withAttributeFilter(MESSAGE_HEADER_ATTR_FILTER)
             .areIdentical();
@@ -56,7 +56,7 @@ class SferaMessageCreatorTest {
             Set.of(new SegmentProfileIdentification("234", "3", "2", "1200", null), new SegmentProfileIdentification("41", "1", "0", "1300", (short) 810)));
         String result = xmlHelper.toString(message);
 
-        assertThat(result).and(Input.fromFile("src/test/resources/sfera/sprequest.xml"))
+        assertThat(result).and(Input.fromFile("src/test/resources/trainjourneypreloader/sprequest.xml"))
             .ignoreWhitespace()
             .withNodeMatcher(SP_ID_NODE_MATCHER)
             .withAttributeFilter(MESSAGE_HEADER_ATTR_FILTER)

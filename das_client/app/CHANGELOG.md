@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.48.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.47.0...das_client-v0.48.0) (2026-07-13)
+
+
+### Features
+
+* add link to stationportal to modal view ([#1485](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1485)) ([#2372](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2372)) ([a11f2f8](https://github.com/SchweizerischeBundesbahnen/DAS/commit/a11f2f83e182b51e521df2159af11ba4652a350b))
+* add ru specific indications ([#700](https://github.com/SchweizerischeBundesbahnen/DAS/issues/700)) ([#2367](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2367)) ([38f8bd8](https://github.com/SchweizerischeBundesbahnen/DAS/commit/38f8bd87009cc48583b2d1ac881406df617329c9))
+* implemened timed advancement for specific routes ([#1419](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1419)) ([#2374](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2374)) ([8ebbc79](https://github.com/SchweizerischeBundesbahnen/DAS/commit/8ebbc79d5feae1856ff4a441f6f43f1e0c28bbcd))
+
+
+### Bug Fixes
+
+* adjust supported operating mode for driver and fix DI error ([#2389](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2389)) ([#2390](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2390)) ([55cd0c8](https://github.com/SchweizerischeBundesbahnen/DAS/commit/55cd0c885e7a2f431242d44cba369edffac10f17))
+* adjusted short term changes priority ([#2144](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2144)) ([#2393](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2393)) ([894c4c1](https://github.com/SchweizerischeBundesbahnen/DAS/commit/894c4c1b16dcc2cfc37c7362bb5695cc4c79d163))
+* available start dates refresh when app resumed ([#1955](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1955)) ([#2391](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2391)) ([f31def8](https://github.com/SchweizerischeBundesbahnen/DAS/commit/f31def8653b9f896a548c0bc5c57f50624476780))
+* departure process no longer shows while loading new journey ([#2262](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2262)) ([#2375](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2375)) ([64fa410](https://github.com/SchweizerischeBundesbahnen/DAS/commit/64fa41012c9a314c91ee635031a05cc2bbf8b313))
+* endless loop on timed Service Point reached ([#2397](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2397)) ([89083d1](https://github.com/SchweizerischeBundesbahnen/DAS/commit/89083d18338168ef1604e26d2944904c44414f24))
+* planned release time should not be bold ([#1339](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1339)) ([#2388](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2388)) ([255e109](https://github.com/SchweizerischeBundesbahnen/DAS/commit/255e109a342d00e40ddc891a9c9c59d13a83298a))
+
 ## [0.47.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.46.0...das_client-v0.47.0) (2026-07-03)
 
 

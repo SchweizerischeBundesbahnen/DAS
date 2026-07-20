@@ -49,7 +49,7 @@ class SferaServiceTest {
     private XmlHelper xmlHelper;
 
     private static String sferaReply(String filename, String correlationId) throws IOException {
-        return Files.readString(Path.of("src/test/resources/sfera/" + filename)).replace("${correlationId}", correlationId);
+        return Files.readString(Path.of("src/test/resources/trainjourneypreloader/" + filename)).replace("${correlationId}", correlationId);
     }
 
     @Test
