@@ -2,7 +2,6 @@ package ch.sbb.das.backend.trainjourneyplan.infrastructure;
 
 import ch.sbb.das.backend.trainjourneyplan.infrastructure.model.entities.TrainIdentificationEntity;
 import jakarta.transaction.Transactional;
-import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Set;
@@ -28,9 +27,11 @@ public interface TrainIdentificationRepository extends JpaRepository<TrainIdenti
     @Query(nativeQuery = true, value = """
         SELECT t.* FROM train_identification t
         WHERE t.operational_train_number = :operationalTrainNumber
-          AND CAST(t.start_date_time AT TIME ZONE 'Europe/Zurich' AS DATE) IN (:startDates)
+          AND t.start_date_time >= :from
+          AND t.start_date_time < :to
         """)
-    List<TrainIdentificationEntity> findAllByStartDatesAndOperationalTrainNumber(@Param("startDates") List<LocalDate> startDates, @Param("operationalTrainNumber") String operationalTrainNumber);
+    List<TrainIdentificationEntity> findAllByStartDateTimeRangeAndOperationalTrainNumber(
+        @Param("from") OffsetDateTime from, @Param("to") OffsetDateTime to, @Param("operationalTrainNumber") String operationalTrainNumber);
 
     @Modifying
     @Transactional

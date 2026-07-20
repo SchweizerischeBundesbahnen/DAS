@@ -52,7 +52,7 @@ class TrainIdentificationServiceTest {
             .companies("MOCK_A,MOCK_B")
             .build();
 
-        when(trainIdentificationRepository.findAllByStartDatesAndOperationalTrainNumber(startDates, trainNumber))
+        when(trainIdentificationRepository.findAllByStartDateTimeRangeAndOperationalTrainNumber(any(), any(), eq(trainNumber)))
             .thenReturn(List.of(entity));
 
         when(companyService.findCompanyCodeByShortName(new CompanyShortName("MOCK_A")))
@@ -95,7 +95,7 @@ class TrainIdentificationServiceTest {
             .companies("MOCK_B")
             .build();
 
-        when(trainIdentificationRepository.findAllByStartDatesAndOperationalTrainNumber(startDates, trainNumber))
+        when(trainIdentificationRepository.findAllByStartDateTimeRangeAndOperationalTrainNumber(any(), any(), eq(trainNumber)))
             .thenReturn(List.of(entity1, entity2));
 
         when(companyService.findCompanyCodeByShortName(new CompanyShortName("MOCK_A")))
@@ -132,7 +132,7 @@ class TrainIdentificationServiceTest {
             .companies("MOCK_A,UNKNOWN")
             .build();
 
-        when(trainIdentificationRepository.findAllByStartDatesAndOperationalTrainNumber(startDates, trainNumber))
+        when(trainIdentificationRepository.findAllByStartDateTimeRangeAndOperationalTrainNumber(any(), any(), eq(trainNumber)))
             .thenReturn(List.of(entity));
 
         when(companyService.findCompanyCodeByShortName(new CompanyShortName("MOCK_A")))
@@ -166,7 +166,7 @@ class TrainIdentificationServiceTest {
             .companies("FOREIGN_RU,OTHER_UNKNOWN")
             .build();
 
-        when(trainIdentificationRepository.findAllByStartDatesAndOperationalTrainNumber(startDates, trainNumber))
+        when(trainIdentificationRepository.findAllByStartDateTimeRangeAndOperationalTrainNumber(any(), any(), eq(trainNumber)))
             .thenReturn(List.of(entity));
 
         when(companyService.findCompanyCodeByShortName(new CompanyShortName("FOREIGN_RU")))
@@ -289,7 +289,7 @@ class TrainIdentificationServiceTest {
             .companies("MOCK_A")
             .build();
 
-        when(trainIdentificationRepository.findAllByStartDatesAndOperationalTrainNumber(startDates, trainNumber))
+        when(trainIdentificationRepository.findAllByStartDateTimeRangeAndOperationalTrainNumber(any(), any(), eq(trainNumber)))
             .thenReturn(List.of(entity));
 
         when(companyService.findCompanyCodeByShortName(new CompanyShortName("MOCK_A")))
