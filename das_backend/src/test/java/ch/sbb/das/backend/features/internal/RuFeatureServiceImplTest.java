@@ -1,22 +1,29 @@
 package ch.sbb.das.backend.features.internal;
 
-import ch.sbb.das.backend.common.ConflictException;
-import ch.sbb.das.backend.companies.*;
-import ch.sbb.das.backend.features.RuFeature;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import ch.sbb.das.backend.common.ConflictException;
+import ch.sbb.das.backend.companies.Company;
+import ch.sbb.das.backend.companies.CompanyAuthorizer;
+import ch.sbb.das.backend.companies.CompanyCode;
+import ch.sbb.das.backend.companies.CompanyService;
+import ch.sbb.das.backend.companies.CompanyShortName;
+import ch.sbb.das.backend.features.RuFeature;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.web.server.ResponseStatusException;
 
 class RuFeatureServiceImplTest {
 
@@ -54,7 +61,7 @@ class RuFeatureServiceImplTest {
     @Test
     void shouldGetAllRuFeatures() {
         RuFeatureEntity ruFeatureEntity = entity(1, COMPANY_1111, "CUSTOMER_ORIENTED_DEPARTURE_PROCESS", true);
-        RuFeature expectedRuFeature = new RuFeature(COMPANY_1111, "CUSTOMER_ORIENTED_DEPARTURE_PROCESS", true);
+        RuFeature expectedRuFeature = new RuFeature(COMPANY_1111, COMPANY_1111, "CUSTOMER_ORIENTED_DEPARTURE_PROCESS", true);
 
         when(ruFeatureRepository.findAll()).thenReturn(List.of(ruFeatureEntity));
         when(ruFeatureMapper.toRuFeature(ruFeatureEntity)).thenReturn(expectedRuFeature);

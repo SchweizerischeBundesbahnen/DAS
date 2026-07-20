@@ -31,6 +31,7 @@ class SettingsControllerTest {
             .andExpect(jsonPath("$.data[0].companies[*].code", containsInAnyOrder("1111", "2222", "3333", "9999")))
             .andExpect(jsonPath("$.data[0].ruFeatures", hasSize(1)))
             .andExpect(jsonPath("$.data[0].ruFeatures.[0].key").value(RuFeatureKey.CHECKLIST_DEPARTURE_PROCESS.name()))
+            .andExpect(jsonPath("$.data[0].ruFeatures.[0].companyCodeRics").value("1111"))
             .andExpect(jsonPath("$.data[0].ruFeatures.[0].companyCode").value("1111"))
             .andExpect(jsonPath("$.data[0].ruFeatures.[0].enabled").value(true))
             .andExpect(jsonPath("$.data[0].logging.url").value("url"))

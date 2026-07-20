@@ -13,6 +13,7 @@
           "vehiclesCount": 0,
           "additionalTractions": [
           ],
+          "vehiclesWithBrakeDesignLlAndKCount": 0,
           "vehiclesWithBrakeDesignLAndLlAndKCount": 0,
           "vehiclesWithBrakeDesignDCount": 0,
           "vehiclesWithDisabledBrakesCount": 0
