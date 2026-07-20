@@ -38,8 +38,26 @@ public class TrainIdentificationService {
     }
 
     public List<CompanyMatch> findCompaniesByStartDatesAndTrainNumber(List<LocalDate> startDates, String operationalTrainNumber) {
+        Set<LocalDate> requestedDates = Set.copyOf(startDates);
+        OffsetDateTime from = startDates.stream().min(Comparator.naturalOrder())
+            .orElseThrow()
+            .atStartOfDay(DateTimeUtil.SWISS_ZONE)
+            .toOffsetDateTime();
+        OffsetDateTime to = startDates.stream().max(Comparator.naturalOrder())
+            .orElseThrow()
+            .plusDays(1)
+            .atStartOfDay(DateTimeUtil.SWISS_ZONE)
+            .toOffsetDateTime();
+
+        // Query by a plain start_date_time range instead of wrapping the column in a
+        // date-cast/IN clause: a raw range comparison is sargable, so database can use the
+        // index for a single index range scan instead of a full table scan.
         List<TrainIdentificationEntity> entities = trainIdentificationRepository
-            .findAllByStartDatesAndOperationalTrainNumber(startDates, operationalTrainNumber);
+            .findAllByStartDateTimeRangeAndOperationalTrainNumber(from, to, operationalTrainNumber).stream()
+            // the range query above may cover dates outside the requested set if the requested dates have gaps;
+            // narrow the (already small) result set down to the exact requested dates
+            .filter(entity -> requestedDates.contains(entity.getStartDateTime().atZoneSameInstant(DateTimeUtil.SWISS_ZONE).toLocalDate()))
+            .toList();
 
         Map<CompanyCode, Company> companiesByCode = companyService.getAllCompanies().stream()
             .collect(Collectors.toMap(Company::code, company -> company));
