@@ -11,8 +11,6 @@ spring:
       enabled: false
       kv:
         enabled: false
-  config:
-    import: "optional:vault://"
   kafka:
     consumer:
       group-id: test
