@@ -9,6 +9,8 @@ spring:
   cloud:
     vault:
       enabled: false
+      kv:
+        enabled: false
   config:
     import: "optional:vault://"
   kafka:
