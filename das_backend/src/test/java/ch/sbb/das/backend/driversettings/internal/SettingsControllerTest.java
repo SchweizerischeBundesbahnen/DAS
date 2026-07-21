@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.sbb.das.backend.IntegrationTest;
 import ch.sbb.das.backend.features.internal.RuFeatureKey;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -21,6 +22,7 @@ class SettingsControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @DisplayName("Driver settings when requested then the configured settings are returned including companies, RU features, logging, preload configuration and app version validity|tests:2121,712,713,723,1006,915,1406")
     @Test
     @WithMockUser(authorities = "ROLE_observer")
     @Sql("classpath:createSettings.sql")

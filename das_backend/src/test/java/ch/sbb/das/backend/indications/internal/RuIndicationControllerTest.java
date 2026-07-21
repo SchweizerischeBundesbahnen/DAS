@@ -14,6 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.das.backend.IntegrationTest;
 import ch.sbb.das.backend.WithMockRole;
 import ch.sbb.das.backend.common.security.UserRole;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -30,6 +31,7 @@ class RuIndicationControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @DisplayName("RU indications when none exist then the list is empty|tests:144,1657")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void getAll_RuIndications_empty() throws Exception {
@@ -38,6 +40,7 @@ class RuIndicationControllerTest {
             .andExpect(jsonPath("$.data", hasSize(0)));
     }
 
+    @DisplayName("RU indications when data exists then all indications with detauks are returned|tests:144,1657")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createRuIndications.sql")
@@ -60,6 +63,7 @@ class RuIndicationControllerTest {
             .andExpect(jsonPath("$.data[1].status").exists());
     }
 
+    @DisplayName("RU indications when the caller lacks the RU admin role then access is forbidden|tests:144,1657")
     @Test
     @WithMockRole(roles = UserRole.OBSERVER)
     void getAll_RuIndications_forbidden_role() throws Exception {
@@ -67,6 +71,7 @@ class RuIndicationControllerTest {
             .andExpect(status().isForbidden());
     }
 
+    @DisplayName("RU indication when the id exists then the indication with details is returned|tests:144,1657")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createRuIndications.sql")
@@ -79,6 +84,7 @@ class RuIndicationControllerTest {
             .andExpect(jsonPath("$.data[0].status").exists());
     }
 
+    @DisplayName("RU indication when the id does not exist then the API returns not found|tests:144,1657")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void getRuIndicationById_notFound() throws Exception {
@@ -86,6 +92,7 @@ class RuIndicationControllerTest {
             .andExpect(status().isNotFound());
     }
 
+    @DisplayName("RU indication when the request is valid then the indication is created|tests:144,1657")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void create_RuIndication_ok() throws Exception {
@@ -119,6 +126,7 @@ class RuIndicationControllerTest {
             .andExpect(jsonPath("$.data[0].status").value("ACTIVE"));
     }
 
+    @DisplayName("RU indication when the content section is missing then the request is rejected|tests:144,1657")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void create_RuIndication_ok_withOperationalTrainNumberFilters() throws Exception {
@@ -151,6 +159,7 @@ class RuIndicationControllerTest {
             .andExpect(jsonPath("$.data[0].scope.operationalTrainNumberFilters[1].parity").value("ANY"));
     }
 
+    @DisplayName("RU indication when the operational train number filter expression non numeric then the request is rejected|tests:144,1657")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void create_RuIndication_invalid_operationalTrainNumberFilter_badExpression() throws Exception {
@@ -176,6 +185,7 @@ class RuIndicationControllerTest {
             .andExpect(status().isBadRequest());
     }
 
+    @DisplayName("RU indication when the operational train number filter expression invalid range then the request is rejected|tests:144,1657")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void create_RuIndication_invalid_operationalTrainNumberFilter_invalidRange() throws Exception {
@@ -201,6 +211,7 @@ class RuIndicationControllerTest {
             .andExpect(status().isBadRequest());
     }
 
+    @DisplayName("RU indication when the operational train number filter missing then the request is rejected|tests:144,1657")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void create_RuIndication_invalid_missingContent() throws Exception {
@@ -220,6 +231,7 @@ class RuIndicationControllerTest {
             .andExpect(status().isBadRequest());
     }
 
+    @DisplayName("RU indication when the title is missing then the request is rejected|tests:144,1657")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void create_RuIndication_invalid_missingTitle() throws Exception {
@@ -243,6 +255,7 @@ class RuIndicationControllerTest {
             .andExpect(jsonPath("$.detail").value("Invalid request content. -> content.de.title=must not be blank"));
     }
 
+    @DisplayName("RU indication when the text is missing then the request is rejected|tests:144,1657")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void create_RuIndication_invalid_missingText() throws Exception {
@@ -266,6 +279,7 @@ class RuIndicationControllerTest {
             .andExpect(jsonPath("$.detail").value("Invalid request content. -> content.de.text=must not be blank"));
     }
 
+    @DisplayName("RU indication when valid update request then the indication is updated with new details|tests:144,1657")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createRuIndications.sql")
@@ -298,6 +312,7 @@ class RuIndicationControllerTest {
             .andExpect(jsonPath("$.data[0].status").exists());
     }
 
+    @DisplayName("RU indication when the id does not exist then the API returns not found|tests:144,1657")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void update_RuIndication_notFound() throws Exception {
@@ -320,6 +335,7 @@ class RuIndicationControllerTest {
             .andExpect(status().isNotFound());
     }
 
+    @DisplayName("RU indications when deleted by ids then the selected indications are permanently removed|tests:144,1657")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createRuIndications.sql")
@@ -336,6 +352,7 @@ class RuIndicationControllerTest {
             .andExpect(jsonPath("$.data", hasSize(0)));
     }
 
+    @DisplayName("RU indications when no id is provided then the request is rejected|tests:144,1657")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void deleteByIds_invalid_emptyList() throws Exception {
@@ -347,6 +364,7 @@ class RuIndicationControllerTest {
             .andExpect(status().isBadRequest());
     }
 
+    @DisplayName("RU indications matches when train, location and date are provided then matching indications are returned|tests:144,1657")
     @Test
     @WithMockRole(roles = UserRole.OBSERVER)
     @Sql("classpath:createRuIndications.sql")
@@ -369,6 +387,7 @@ class RuIndicationControllerTest {
             .andExpect(jsonPath("$.data[1].ruIndicationContents[0].title").value("Hinweis 1"));
     }
 
+    @DisplayName("RU indications matches when a language is requested then the indications are returned in that language|tests:144,1657")
     @Test
     @WithMockRole(roles = UserRole.OBSERVER)
     @Sql("classpath:createRuIndications.sql")
@@ -389,6 +408,7 @@ class RuIndicationControllerTest {
             .andExpect(jsonPath("$.data[0].ruIndicationContents[0].title").value("Avis 1"));
     }
 
+    @DisplayName("RU indications matches when no indications match the criteria then the list is empty|tests:144,1657")
     @Test
     @WithMockRole(roles = UserRole.OBSERVER)
     @Sql("classpath:createRuIndications.sql")
@@ -408,6 +428,7 @@ class RuIndicationControllerTest {
             .andExpect(jsonPath("$.data", hasSize(0)));
     }
 
+    @DisplayName("RU indication matches when the operational train number filter boundary then it is returned|tests:144,1657")
     @Test
     @WithMockRole(roles = UserRole.OBSERVER)
     @Sql("classpath:createRuIndications.sql")
@@ -427,6 +448,7 @@ class RuIndicationControllerTest {
             .andExpect(jsonPath("$.data[0].tafTapLocationReference").value("CH00001"));
     }
 
+    @DisplayName("RU indication matches when no match returns empty|tests:144,1657")
     @Test
     @WithMockRole(roles = UserRole.OBSERVER)
     @Sql("classpath:createRuIndications.sql")
@@ -445,6 +467,7 @@ class RuIndicationControllerTest {
             .andExpect(jsonPath("$.data", hasSize(0)));
     }
 
+    @DisplayName("RU indication matches when mandatory fields are missing then the request is rejected|tests:144,1657")
     @Test
     @WithMockRole(roles = UserRole.OBSERVER)
     void findRuIndicationMatches_invalid_missingFields() throws Exception {
@@ -458,4 +481,3 @@ class RuIndicationControllerTest {
             .andExpect(status().isBadRequest());
     }
 }
-

@@ -14,6 +14,7 @@ import ch.sbb.das.backend.locations.internal.ServicePointApiClient;
 import ch.sbb.das.backend.locations.internal.TafTapLocationsImportService;
 import java.time.LocalDate;
 import java.util.List;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -30,6 +31,7 @@ class TafTapLocationImportIntegrationTest {
     @MockitoBean
     private ServicePointApiClient servicePointApiClient;
 
+    @DisplayName("TafTap location import when the cronjob runs then locations are imported and updated|tests:538,155")
     @Test
     @WithMockUser(authorities = "ROLE_admin")
     void cronjob_importsAndUpdate() throws Exception {

@@ -2,6 +2,7 @@ package ch.sbb.das.backend.indications.internal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.das.backend.IntegrationTest;
@@ -19,7 +20,6 @@ import net.javacrumbs.shedlock.core.SimpleLock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -74,11 +74,11 @@ class CleanUpSchedulerIntegrationTest {
         ruIndicationRepository.deleteAll();
         specialHolidayRepository.deleteAll();
         this.currentCutoff = LocalDate.now().minusDays(cleanUpOlderThanDays);
-        SimpleLock dummyLock = Mockito.mock(SimpleLock.class);
+        SimpleLock dummyLock = mock(SimpleLock.class);
         when(lockProvider.lock(any())).thenReturn(Optional.of(dummyLock));
     }
 
-    @DisplayName("Clean up - deletes old RU indications and special holidays|tests:1657(9),1656")
+    @DisplayName("Scheduled cleanup when the retention period expires then expired indications and past holidays are removed|tests:1657(9),1656")
     @Test
     @Transactional
     @WithMockUser(authorities = "ROLE_admin")
@@ -133,7 +133,7 @@ class CleanUpSchedulerIntegrationTest {
             .allMatch(entity -> entity.getId() != null);
     }
 
-    @DisplayName("Clean up - preserves indications with multiple periods if latest period is active|tests:1657(9)")
+    @DisplayName("Scheduled cleanup when indications still have at least one active validity period then they are kept|tests:1657(9)")
     @Test
     @Transactional
     @WithMockUser(authorities = "ROLE_admin")
@@ -159,7 +159,7 @@ class CleanUpSchedulerIntegrationTest {
         assertThat(ruIndicationRepository.findAll()).hasSize(1);
     }
 
-    @DisplayName("Clean up - deletes indications with all periods older than cutoff|tests:1657(9)")
+    @DisplayName("Cleanup when all periods are older than the cutoff then the indications are deleted|tests:1657(9)")
     @Test
     @Transactional
     @WithMockUser(authorities = "ROLE_admin")
