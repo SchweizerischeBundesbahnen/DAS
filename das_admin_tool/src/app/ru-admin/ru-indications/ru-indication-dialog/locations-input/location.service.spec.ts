@@ -31,7 +31,7 @@ describe('LocationService', () => {
     ).locationsResource = {
       hasValue: () => true,
       value: () => ({ data: locations }),
-      error: () => undefined,
+      error: vi.fn(),
     };
   });
 

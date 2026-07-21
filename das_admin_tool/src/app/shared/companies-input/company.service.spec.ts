@@ -14,7 +14,7 @@ function mockCompanies(service: CompanyService, companies: Company[]) {
   ).companiesResource = {
     hasValue: () => true,
     value: () => ({ data: companies }),
-    error: () => undefined,
+    error: vi.fn(),
   };
 }
 
@@ -118,7 +118,7 @@ describe('CompanyService', () => {
     ).companiesResource = {
       hasValue: () => false,
       value: () => ({ data: [] }),
-      error: () => undefined,
+      error: vi.fn(),
     };
     expect(service.loaded()).toBe(false);
   });

@@ -105,6 +105,7 @@ describe('RuIndicationContentForm', () => {
       } as unknown as HTMLTextAreaElement;
       // should not throw
       component['insertLink']('de', textarea);
+      expect(component.form().get(`de.text`)).toBeNull();
     });
   });
 

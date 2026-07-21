@@ -1,4 +1,4 @@
-import { ElementHandle, Page } from '@playwright/test';
+import { Disposable, ElementHandle, Page } from '@playwright/test';
 
 /**
  * Utility class providing functions to navigate in a browser window
@@ -80,7 +80,7 @@ export class BrowserWindow {
    * @param statusCode The status code to return
    * @see https://playwright.dev/docs/api/class-page#page-route
    */
-  mockJsonResponse(routePath: string, jsonData: string, statusCode = 200): Promise<void> {
+  mockJsonResponse(routePath: string, jsonData: string, statusCode = 200): Promise<Disposable> {
     return this.page.route(routePath, (route) =>
       route.fulfill({
         status: statusCode,

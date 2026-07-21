@@ -6,6 +6,7 @@ import json from '@eslint/json';
 import * as angular from 'angular-eslint';
 import { defineConfig } from 'eslint/config';
 import * as importX from 'eslint-plugin-import-x';
+import * as sonarjs from 'eslint-plugin-sonarjs';
 import prettierRecommended from 'eslint-plugin-prettier/recommended';
 import * as ts from 'typescript-eslint';
 
@@ -19,6 +20,7 @@ export default defineConfig(
       ...angular.configs.tsAll,
       importX.flatConfigs.recommended,
       importX.flatConfigs.typescript,
+      sonarjs.configs.recommended,
       prettierRecommended,
     ],
     processor: angular.processInlineTemplates,
@@ -109,6 +111,10 @@ export default defineConfig(
           named: true,
         },
       ],
+      // Disabled because this is opinionated
+      'sonarjs/function-return-type': 'off',
+      // Disabled because handled by sonarjs/cognitive-complexity
+      'sonarjs/no-nested-conditional': 'off',
     },
   },
   {

@@ -41,7 +41,7 @@ describe('CompaniesInputComponent', () => {
     ).companiesResource = {
       hasValue: () => true,
       value: () => ({ data: companies }),
-      error: () => undefined,
+      error: vi.fn(),
     };
 
     fixture = TestBed.createComponent(CompaniesInputComponent);
@@ -133,7 +133,7 @@ describe('CompaniesInputComponent (single-select)', () => {
     ).companiesResource = {
       hasValue: () => true,
       value: () => ({ data: companies }),
-      error: () => undefined,
+      error: vi.fn(),
     };
 
     fixture = TestBed.createComponent(CompaniesInputComponent);
