@@ -1,10 +1,10 @@
-import 'package:train_identification/src/model/company.dart';
+import 'package:train_identification/src/model/company_match.dart';
 
 abstract class TrainIdentificationRepository {
   const TrainIdentificationRepository._();
 
-  /// Fetches the companies for the given operational train number using today's date.
-  Future<List<Company>> findTrainIdentifications({
+  /// Fetches matching companies (including startDate) for yesterday, today, and tomorrow.
+  Future<List<CompanyMatch>> findTrainIdentifications({
     required String operationalTrainNumber,
   });
 }

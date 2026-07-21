@@ -15,13 +15,15 @@ class CompaniesRequest {
 
   Future<CompaniesResponse> call({
     required String operationalTrainNumber,
-    required DateTime startDate,
+    required List<DateTime> startDates,
   }) async {
-    final formattedDate = DateFormat('yyyy-MM-dd').format(startDate);
-    final url = Uri.https(baseUrl, 'driver/v1/trainidentifications/companies', {
-      'operationalTrainNumber': operationalTrainNumber,
-      'startDate': formattedDate,
-    });
+    final formattedStartDates = startDates.map((date) => DateFormat('yyyy-MM-dd').format(date)).toList();
+    final queryParts = [
+      for (final startDate in formattedStartDates) 'startDate=${Uri.encodeQueryComponent(startDate)}',
+      'operationalTrainNumber=${Uri.encodeQueryComponent(operationalTrainNumber)}',
+    ];
+    final endpointUri = Uri.https(baseUrl, 'driver/v1/train-identifications/companies');
+    final url = Uri.parse('$endpointUri?${queryParts.join('&')}');
 
     final response = await httpClient.get(url);
 

@@ -5,16 +5,27 @@ class MockTrainIdentificationRepository implements TrainIdentificationRepository
   bool shouldReturnMockData = false;
 
   @override
-  Future<List<Company>> findTrainIdentifications({
+  Future<List<CompanyMatch>> findTrainIdentifications({
     required String operationalTrainNumber,
   }) async {
     if (!shouldReturnMockData) {
-      return [Company(code: RailwayUndertaking.sbbP.companyCode, shortName: RailwayUndertaking.sbbP.toString())];
+      return [
+        CompanyMatch(
+          company: Company(code: RailwayUndertaking.sbbP.companyCode, shortName: RailwayUndertaking.sbbP.toString()),
+          startDate: DateTime.now(),
+        ),
+      ];
     }
 
     return [
-      Company(code: '1085', shortName: 'SBB'),
-      Company(code: '0421', shortName: 'BLS'),
+      CompanyMatch(
+        company: Company(code: '1085', shortName: 'SBB'),
+        startDate: DateTime.now(),
+      ),
+      CompanyMatch(
+        company: Company(code: '0421', shortName: 'BLS'),
+        startDate: DateTime.now(),
+      ),
     ];
   }
 }

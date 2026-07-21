@@ -4,6 +4,7 @@ import 'package:train_identification/src/repository/train_identification_reposit
 import 'package:train_identification/src/repository/train_identification_repository_impl.dart';
 
 export 'package:train_identification/src/model/company.dart';
+export 'package:train_identification/src/model/company_match.dart';
 export 'package:train_identification/src/repository/train_identification_repository.dart';
 
 class TrainIdentificationComponent {
