@@ -18,7 +18,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -38,6 +40,7 @@ public class TrainIdentificationService {
     }
 
     public List<CompanyMatch> findCompaniesByStartDatesAndTrainNumber(List<LocalDate> startDates, String operationalTrainNumber) {
+        validateStartDates(startDates);
         Set<LocalDate> requestedDates = Set.copyOf(startDates);
         OffsetDateTime from = startDates.stream().min(Comparator.naturalOrder())
             .orElseThrow()
@@ -70,6 +73,21 @@ public class TrainIdentificationService {
             .sorted(Comparator.comparing(CompanyMatch::startDate)
                 .thenComparing(item -> item.company().shortName()))
             .toList();
+    }
+
+    private void validateStartDates(List<LocalDate> startDates) {
+        LocalDate today = DateTimeUtil.today();
+        LocalDate earliest = today.minusDays(1);
+        LocalDate latest = today.plusDays(1);
+
+        List<LocalDate> outOfRange = startDates.stream()
+            .filter(startDate -> startDate.isBefore(earliest) || startDate.isAfter(latest))
+            .toList();
+
+        if (!outOfRange.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                "startDate must be within " + earliest + " and " + latest + ", but got: " + outOfRange);
+        }
     }
 
     private TrainIdentification readEntity(TrainIdentificationEntity trainRunEntity) {

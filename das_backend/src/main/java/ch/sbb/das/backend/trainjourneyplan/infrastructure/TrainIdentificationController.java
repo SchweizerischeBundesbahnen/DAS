@@ -43,7 +43,7 @@ public class TrainIdentificationController {
     @ApiErrorResponses
     public ResponseEntity<? extends Response> matchCompanies(
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
-        @Parameter(description = "The start date of the train journey. Can be specified multiple times.", required = true, example = "2026-07-10") @RequestParam @NotEmpty List<LocalDate> startDate,
+        @Parameter(description = "The start date of the train journey. Can be specified multiple times. Must be within today +/- 1 day.", required = true, example = "2026-07-10") @RequestParam @NotEmpty List<LocalDate> startDate,
         @Parameter(description = "The operational train number.", required = true) @RequestParam @NotBlank String operationalTrainNumber) {
 
         List<CompanyMatch> companies = trainIdentificationService.findCompaniesByStartDatesAndTrainNumber(startDate, operationalTrainNumber);

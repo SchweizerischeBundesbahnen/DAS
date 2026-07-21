@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.waitAtMost;
 
 import ch.sbb.das.backend.IntegrationTest;
-import ch.sbb.das.backend.common.DateTimeUtil;
 import ch.sbb.das.backend.companies.CompanyCode;
 import ch.sbb.das.backend.trainjourneyplan.application.TimetableService;
 import ch.sbb.das.backend.trainjourneyplan.application.model.trainidentification.OperatingPeriod;
@@ -120,12 +119,13 @@ class TrainIdentificationIntegrationTest {
         sendRecord(fpsKey, fpsTrain);
 
         LocalDate startDate = LocalDate.of(testYear, 1, 3);
+        OffsetDateTime after = OffsetDateTime.of(startDate.minusDays(1), LocalTime.MIN, ZoneOffset.UTC);
+        OffsetDateTime before = OffsetDateTime.of(startDate.plusDays(1), LocalTime.MAX, ZoneOffset.UTC);
 
         // Then
         waitAtMost(10, TimeUnit.SECONDS)
             .untilAsserted(() -> {
-                List<TrainIdentification> trainIds = trainIdentificationService.getNewTrainIdentificationsBetween(DateTimeUtil.now(),
-                    OffsetDateTime.of(startDate.plusDays(1), LocalTime.now(), ZoneOffset.UTC));
+                List<TrainIdentification> trainIds = trainIdentificationService.getNewTrainIdentificationsBetween(after, before);
                 assertThat(trainIds).hasSize(1);
                 TrainIdentification trainId = trainIds.getFirst();
                 assertThat(trainId.startDateTime().atZoneSameInstant(SWISS_ZONE).toLocalDate()).isEqualTo(startDate);
@@ -139,8 +139,7 @@ class TrainIdentificationIntegrationTest {
         // Then
         waitAtMost(10, TimeUnit.SECONDS)
             .untilAsserted(() -> {
-                List<TrainIdentification> trainIds = trainIdentificationService.getNewTrainIdentificationsBetween(DateTimeUtil.now(),
-                    OffsetDateTime.of(startDate.plusDays(1), LocalTime.now(), ZoneOffset.UTC));
+                List<TrainIdentification> trainIds = trainIdentificationService.getNewTrainIdentificationsBetween(after, before);
                 assertThat(trainIds).isEmpty();
             });
     }
