@@ -37,7 +37,7 @@ trainjourneyplan:
 
 trainjourneypreloader:
   # adapt corresponding lockAtLeastFor time in @SchedulerLock
-  fetch-cron: "0 */5 * * * *"
+  fetch-cron: "-"
   storage-clean-up:
     hours: 24
 
