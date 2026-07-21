@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.14.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.14.0...backend-v0.14.1) (2026-07-21)
+
+
+### Bug Fixes
+
+* improve train identification db query performance ([#2451](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2451)) ([9914981](https://github.com/SchweizerischeBundesbahnen/DAS/commit/99149817cac2750fb5efd9b03edb1672f5286b0c))
+* ru indication property name ([#2454](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2454)) ([#2455](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2455)) ([25adb90](https://github.com/SchweizerischeBundesbahnen/DAS/commit/25adb9044607b9cfa12c8208c39c2429f594fb45))
+
 ## [0.14.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.13.0...backend-v0.14.0) (2026-07-20)
 
 
