@@ -42,7 +42,7 @@ describe('RuIndicationTemplateDialog', () => {
     it('should be invalid when a title contains only whitespace', () => {
       const dialog = createDialog();
       const deGroup = dialog['ruIndicationTemplateForm'].get('content.de')!;
-      dialog['ruIndicationTemplateForm'].get('content.de.title')!.setValue('   ');
+      dialog['ruIndicationTemplateForm'].get('content.de.title')!.setValue('  ');
       dialog['ruIndicationTemplateForm'].get('content.de.text')!.setValue('Text');
       expect(dialog['ruIndicationTemplateForm'].get('content')!.errors).toBeNull();
       expect(deGroup.get('title')!.errors).toEqual({ titleRequired: true });

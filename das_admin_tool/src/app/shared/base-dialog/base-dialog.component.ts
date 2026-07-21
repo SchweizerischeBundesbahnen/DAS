@@ -42,11 +42,7 @@ export class BaseDialog {
   });
   protected readonly isStepDisabled = computed(() => {
     const step = this.stepchange()?.selectedIndex;
-    if (step === 0) {
-      return this.saveDisabled();
-    } else {
-      return false;
-    }
+    return step === 0 ? this.saveDisabled() : false;
   });
   private readonly stepper = viewChild.required(SbbStepper);
 

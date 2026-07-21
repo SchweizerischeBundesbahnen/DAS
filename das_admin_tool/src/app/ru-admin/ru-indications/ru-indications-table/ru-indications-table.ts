@@ -187,32 +187,33 @@ export class RuIndicationsTable {
 
   private getSortValue(row: RuIndication, column: string): string {
     switch (column) {
-      case 'title':
+      case 'title': {
         return this.titleValue(row);
-
-      case 'text':
+      }
+      case 'text': {
         return this.textValue(row);
-
-      case 'category':
+      }
+      case 'category': {
         return row.content.category ?? '';
-
-      case 'status':
+      }
+      case 'status': {
         return this.statusValue(row);
-
-      case 'companies':
+      }
+      case 'companies': {
         return this.companiesValue(row.scope.companies);
-
-      case 'trainNumbers':
+      }
+      case 'trainNumbers': {
         return this.trainNumbersValue(row);
-
-      case 'locations':
+      }
+      case 'locations': {
         return this.locationsValue(row);
-
-      case 'periods':
+      }
+      case 'periods': {
         return this.periodsValue(row);
-
-      default:
+      }
+      default: {
         return row[column as keyof RuIndication] as string;
+      }
     }
   }
 

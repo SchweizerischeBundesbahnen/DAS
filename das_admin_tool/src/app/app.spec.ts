@@ -3,7 +3,8 @@ import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { App } from './app';
 
 // Mock ineum function
-globalThis.ineum = () => undefined;
+// eslint-disable-next-line unicorn/no-global-object-property-assignment
+globalThis.ineum = vi.fn();
 
 const authServiceMock: Partial<OidcSecurityService> = {};
 

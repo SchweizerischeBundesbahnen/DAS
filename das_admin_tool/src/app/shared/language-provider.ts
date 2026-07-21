@@ -22,11 +22,13 @@ export class LanguageProvider {
 
   public switch(language: Language) {
     const languagePath = language.path;
-    const segments = window.location.pathname.split('/').filter(Boolean);
+    const segments = globalThis.location.pathname.split('/').filter(Boolean);
     if (languagePath === segments[0]) {
       return;
     }
     segments[0] = languagePath;
-    window.location.href = `/${segments.join('/')}${window.location.search}${window.location.hash}`;
+    globalThis.location.assign(
+      `/${segments.join('/')}${globalThis.location.search}${globalThis.location.hash}`,
+    );
   }
 }

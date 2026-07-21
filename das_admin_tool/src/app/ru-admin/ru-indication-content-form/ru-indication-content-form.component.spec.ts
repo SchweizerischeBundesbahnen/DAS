@@ -33,7 +33,7 @@ describe('RuIndicationContentForm', () => {
     it('should return true when title is only whitespace', () => {
       fixture.componentRef.setInput(
         'form',
-        new FormGroup({ de: new FormGroup({ title: new FormControl('   ') }) }),
+        new FormGroup({ de: new FormGroup({ title: new FormControl('  ') }) }),
       );
       expect(component['isLanguageEmpty']('de')).toBe(true);
     });
@@ -200,8 +200,8 @@ describe('contentFormValue', () => {
 
   it('should return undefined when both title and text are only whitespace', () => {
     const form = createContentFormGroup();
-    form.get('de.title')!.setValue('   ');
-    form.get('de.text')!.setValue('   ');
+    form.get('de.title')!.setValue('  ');
+    form.get('de.text')!.setValue('  ');
     const result = contentFormValue(form);
     expect(result.de).toBeUndefined();
   });

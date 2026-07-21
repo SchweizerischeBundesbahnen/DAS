@@ -64,7 +64,7 @@ export class CompanyService {
   }
 
   private sortByRelevance(candidates: Company[], query: string): Company[] {
-    return [...candidates].sort((a, b) => {
+    return candidates.sort((a, b) => {
       const aCode = a.code.toLowerCase();
       const bCode = b.code.toLowerCase();
       const aName = a.shortName.toLowerCase();

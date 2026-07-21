@@ -64,7 +64,7 @@ async function navigateToRow(page: Page, row: Locator): Promise<boolean> {
   return await walkPages(nextButton, true);
 }
 
-async function expectRowPresent(page: Page, row: Locator, timeout = 10000) {
+async function expectRowPresent(page: Page, row: Locator, timeout = 10_000) {
   await expect
     .poll(async () => await navigateToRow(page, row), {
       timeout,
@@ -74,7 +74,7 @@ async function expectRowPresent(page: Page, row: Locator, timeout = 10000) {
   await expect(row).toBeVisible();
 }
 
-async function expectRowAbsent(page: Page, row: Locator, timeout = 10000) {
+async function expectRowAbsent(page: Page, row: Locator, timeout = 10_000) {
   await expect
     .poll(async () => await navigateToRow(page, row), {
       timeout,

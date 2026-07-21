@@ -7,6 +7,7 @@ import * as angular from 'angular-eslint';
 import { defineConfig } from 'eslint/config';
 import * as importX from 'eslint-plugin-import-x';
 import * as sonarjs from 'eslint-plugin-sonarjs';
+import unicorn from 'eslint-plugin-unicorn';
 import prettierRecommended from 'eslint-plugin-prettier/recommended';
 import * as ts from 'typescript-eslint';
 
@@ -21,11 +22,13 @@ export default defineConfig(
       importX.flatConfigs.recommended,
       importX.flatConfigs.typescript,
       sonarjs.configs.recommended,
+      unicorn.configs.recommended,
       prettierRecommended,
     ],
     processor: angular.processInlineTemplates,
     languageOptions: { parserOptions: { projectService: true } },
     rules: {
+      // eslint
       eqeqeq: 'error',
       'max-depth': 'error',
       'no-restricted-imports': [
@@ -51,6 +54,7 @@ export default defineConfig(
         },
       ],
       'prefer-template': 'error',
+      // @typescript-eslint
       '@typescript-eslint/dot-notation': [
         'error',
         // Allowed for tests and environment variables
@@ -79,6 +83,7 @@ export default defineConfig(
           ignoreStatic: true,
         },
       ],
+      // @angular-eslint
       // Disabled because of new style guide
       '@angular-eslint/component-class-suffix': 'off',
       '@angular-eslint/component-selector': [
@@ -111,10 +116,35 @@ export default defineConfig(
           named: true,
         },
       ],
+      // sonarjs
       // Disabled because this is opinionated
       'sonarjs/function-return-type': 'off',
       // Disabled because handled by sonarjs/cognitive-complexity
       'sonarjs/no-nested-conditional': 'off',
+      // unicorn
+      // Disabled because these rules are opinionated
+      'unicorn/catch-error-name': 'off',
+      'unicorn/consistent-boolean-name': 'off',
+      'unicorn/consistent-class-member-order': 'off',
+      'unicorn/import-style': 'off',
+      'unicorn/name-replacements': 'off',
+      'unicorn/no-array-callback-reference': 'off',
+      'unicorn/no-array-sort': 'off',
+      'unicorn/no-await-expression-member': 'off',
+      'unicorn/no-for-each': 'off',
+      'unicorn/no-negated-condition': 'off',
+      'unicorn/no-non-function-verb-prefix': 'off',
+      'unicorn/no-null': 'off',
+      'unicorn/no-useless-else': 'off',
+      'unicorn/prefer-early-return': 'off',
+      'unicorn/prefer-export-from': 'off',
+      'unicorn/prefer-node-protocol': 'off',
+      'unicorn/prefer-set-has': 'off',
+      // Disabled because used in angular
+      'unicorn/prefer-top-level-await': 'off',
+      'unicorn/prefer-await': 'off',
+      // Disabled because handled by sonarjs/cognitive-complexity
+      'unicorn/max-nested-calls': 'off',
     },
   },
   {
