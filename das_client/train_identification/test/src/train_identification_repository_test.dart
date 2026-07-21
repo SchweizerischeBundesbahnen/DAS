@@ -1,13 +1,14 @@
+import 'package:core_data/src/company.dart';
+import 'package:core_data/src/company_match.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:sfera/src/data/repository/sfera_local_repo.dart';
 import 'package:train_identification/src/api/companies/companies_request.dart';
 import 'package:train_identification/src/api/dto/company_dto.dart';
 import 'package:train_identification/src/api/dto/company_match_dto.dart';
 import 'package:train_identification/src/api/dto/train_identification_response_dto.dart';
 import 'package:train_identification/src/api/train_identification_api_service.dart';
-import 'package:train_identification/src/model/company.dart';
-import 'package:train_identification/src/model/company_match.dart';
 import 'package:train_identification/src/repository/train_identification_repository_impl.dart';
 
 import 'train_identification_repository_test.mocks.dart';
@@ -16,15 +17,28 @@ import 'train_identification_repository_test.mocks.dart';
   MockSpec<TrainIdentificationApiService>(),
   MockSpec<CompaniesRequest>(),
   MockSpec<CompaniesResponse>(),
+  MockSpec<SferaLocalRepo>(),
 ])
 void main() {
   group('TrainIdentificationRepositoryImpl', () {
-    test('sends yesterday, today and tomorrow as start dates', () async {
-      final apiService = MockTrainIdentificationApiService();
-      final request = MockCompaniesRequest();
-      final response = MockCompaniesResponse();
-      final repository = TrainIdentificationRepositoryImpl(apiService: apiService);
+    late MockTrainIdentificationApiService apiService;
+    late MockCompaniesRequest request;
+    late MockCompaniesResponse response;
+    late MockSferaLocalRepo sferaLocalRepo;
+    late TrainIdentificationRepositoryImpl repository;
 
+    setUp(() {
+      apiService = MockTrainIdentificationApiService();
+      request = MockCompaniesRequest();
+      response = MockCompaniesResponse();
+      sferaLocalRepo = MockSferaLocalRepo();
+      repository = TrainIdentificationRepositoryImpl(
+        apiService: apiService,
+        sferaLocalRepo: sferaLocalRepo,
+      );
+    });
+
+    test('sends yesterday, today and tomorrow as start dates', () async {
       when(apiService.companies).thenReturn(request);
       when(response.body).thenReturn(TrainIdentificationResponseDto(data: const <CompanyMatchDto>[]));
       when(
@@ -53,11 +67,6 @@ void main() {
     });
 
     test('maps company matches from the api response', () async {
-      final apiService = MockTrainIdentificationApiService();
-      final request = MockCompaniesRequest();
-      final response = MockCompaniesResponse();
-      final repository = TrainIdentificationRepositoryImpl(apiService: apiService);
-
       when(apiService.companies).thenReturn(request);
       when(response.body).thenReturn(
         TrainIdentificationResponseDto(
@@ -101,6 +110,65 @@ void main() {
           startDates: anyNamed('startDates'),
         ),
       ).called(1);
+    });
+
+    test('falls back to local database when API call fails', () async {
+      when(apiService.companies).thenReturn(request);
+      when(
+        request.call(
+          operationalTrainNumber: anyNamed('operationalTrainNumber'),
+          startDates: anyNamed('startDates'),
+        ),
+      ).thenThrow(Exception('network error'));
+
+      when(
+        sferaLocalRepo.findCompanyMatchesByTrainNumber(
+          '12345',
+          startDates: anyNamed('startDates'),
+        ),
+      ).thenAnswer(
+        (_) async => [
+          CompanyMatch(
+            company: Company(code: '1285', shortName: 'sbbP'),
+            startDate: DateTime(2026, 7, 21),
+          ),
+        ],
+      );
+
+      final result = await repository.findTrainIdentifications(operationalTrainNumber: '12345');
+
+      expect(result, hasLength(1));
+      expect(result.first.company.code, '1285');
+      // shortName is resolved via RailwayUndertaking enum name
+      expect(result.first.company.shortName, 'sbbP');
+      expect(result.first.startDate, DateTime(2026, 7, 21));
+      verify(
+        sferaLocalRepo.findCompanyMatchesByTrainNumber(
+          '12345',
+          startDates: anyNamed('startDates'),
+        ),
+      ).called(1);
+    });
+
+    test('returns empty list when API fails and no local data exists', () async {
+      when(apiService.companies).thenReturn(request);
+      when(
+        request.call(
+          operationalTrainNumber: anyNamed('operationalTrainNumber'),
+          startDates: anyNamed('startDates'),
+        ),
+      ).thenThrow(Exception('network error'));
+
+      when(
+        sferaLocalRepo.findCompanyMatchesByTrainNumber(
+          any,
+          startDates: anyNamed('startDates'),
+        ),
+      ).thenAnswer((_) async => []);
+
+      final result = await repository.findTrainIdentifications(operationalTrainNumber: '99999');
+
+      expect(result, isEmpty);
     });
   });
 }

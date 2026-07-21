@@ -1,5 +1,5 @@
+import 'package:core_data/component.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:train_identification/src/model/company.dart';
 
 part 'company_dto.g.dart';
 

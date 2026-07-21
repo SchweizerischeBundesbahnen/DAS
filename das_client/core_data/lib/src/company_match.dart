@@ -1,4 +1,4 @@
-import 'package:train_identification/src/model/company.dart';
+import 'package:core_data/src/company.dart';
 
 class CompanyMatch {
   const CompanyMatch({

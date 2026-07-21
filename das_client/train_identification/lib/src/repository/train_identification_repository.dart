@@ -1,4 +1,4 @@
-import 'package:train_identification/src/model/company_match.dart';
+import 'package:core_data/component.dart';
 
 abstract class TrainIdentificationRepository {
   const TrainIdentificationRepository._();

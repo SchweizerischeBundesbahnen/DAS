@@ -25,6 +25,8 @@ abstract class SferaLocalDatabaseService {
     DateTime startDate,
   );
 
+  Future<List<JourneyProfileTableData>> findJourneyProfilesByTrainNumber(String operationalTrainNumber);
+
   Future<SegmentProfileTableData?> findSegmentProfile(String spId, String majorVersion, String minorVersion);
 
   Future<TrainCharacteristicsTableData?> findTrainCharacteristics(

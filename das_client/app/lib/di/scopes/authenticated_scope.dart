@@ -211,7 +211,11 @@ extension AuthenticatedScopeExtension on GetIt {
   void registerTrainIdentificationRepository() {
     final flavor = DI.get<Flavor>();
     registerSingleton<TrainIdentificationRepository>(
-      TrainIdentificationComponent.createRepository(baseUrl: flavor.backendUrl, client: DI.get()),
+      TrainIdentificationComponent.createRepository(
+        baseUrl: flavor.backendUrl,
+        client: DI.get(),
+        sferaLocalRepo: DI.get(),
+      ),
     );
   }
 

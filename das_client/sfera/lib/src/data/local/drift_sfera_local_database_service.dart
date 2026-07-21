@@ -87,6 +87,25 @@ class DriftSferaLocalDatabaseService extends _$DriftSferaLocalDatabaseService im
   }
 
   @override
+  Future<List<JourneyProfileTableData>> findJourneyProfilesByTrainNumber(String operationalTrainNumber) async {
+    final all = await _jpManager
+        .filter((f) => f.operationalTrainNumber(operationalTrainNumber))
+        .orderBy((o) => o.version.desc())
+        .get();
+
+    // Deduplicate: keep only the latest version per (company, startDate) combination.
+    final seen = <(String, DateTime)>{};
+    final result = <JourneyProfileTableData>[];
+    for (final entry in all) {
+      final key = (entry.company, entry.startDate);
+      if (seen.add(key)) {
+        result.add(entry);
+      }
+    }
+    return result;
+  }
+
+  @override
   Future<SegmentProfileTableData?> findSegmentProfile(String spId, String majorVersion, String minorVersion) async =>
       _spManager
           .filter((f) => f.spId(spId) & f.majorVersion(majorVersion) & f.minorVersion(minorVersion))

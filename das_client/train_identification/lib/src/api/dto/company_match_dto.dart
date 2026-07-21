@@ -1,6 +1,6 @@
+import 'package:core_data/component.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:train_identification/src/api/dto/company_dto.dart';
-import 'package:train_identification/src/model/company_match.dart';
 
 part 'company_match_dto.g.dart';
 
