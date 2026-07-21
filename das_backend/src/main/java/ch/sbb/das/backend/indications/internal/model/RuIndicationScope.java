@@ -14,7 +14,7 @@ public record RuIndicationScope(
     @NotEmpty
     Set<CompanyCode> companies,
     @Schema(description = "Optional list of operational train number filters.")
-    List<@Valid OperationalTrainNumberFilter> operationalOperationalTrainNumberFilters,
+    List<@Valid OperationalTrainNumberFilter> operationalTrainNumberFilters,
     @Schema(description = "List of TAF/TAP location references where this RU indication applies.", requiredMode = Schema.RequiredMode.REQUIRED, example = "[\"CH07000\"]")
     Set<TafTapLocationReference> tafTapLocationReferences
 ) {
