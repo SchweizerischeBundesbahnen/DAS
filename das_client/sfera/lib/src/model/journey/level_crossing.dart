@@ -39,4 +39,15 @@ class LevelCrossing extends JourneyPoint {
       identifier: identifier,
     );
   }
+
+  @override
+  int compareTo(other) {
+    if (other is LevelCrossing) {
+      final orderCompare = order.compareTo(other.order);
+      if (orderCompare == 0) {
+        return _originalOrder.compareTo(other._originalOrder);
+      }
+    }
+    return super.compareTo(other);
+  }
 }
