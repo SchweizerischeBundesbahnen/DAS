@@ -114,8 +114,91 @@ class RuIndicationControllerTest {
             .andExpect(jsonPath("$.data[0].content.de.title").value("Hinweis"))
             .andExpect(jsonPath("$.data[0].content.fr.title").value("Avis"))
             .andExpect(jsonPath("$.data[0].scope.companies[0]").value("1111"))
+            .andExpect(jsonPath("$.data[0].scope.operationalTrainNumberFilters", hasSize(0)))
             .andExpect(jsonPath("$.data[0].scope.tafTapLocationReferences[0]").value("CH00001"))
             .andExpect(jsonPath("$.data[0].status").value("ACTIVE"));
+    }
+
+    @Test
+    @WithMockRole(roles = UserRole.RU_ADMIN)
+    void create_RuIndication_ok_withOperationalTrainNumberFilters() throws Exception {
+        mockMvc.perform(post(API_RU_INDICATIONS)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                    {
+                        "content": {
+                            "category": "OPERATIONS",
+                            "de": { "title": "Hinweis", "text": "Text DE" }
+                        },
+                        "scope": {
+                            "companies": ["1111"],
+                            "operationalTrainNumberFilters": [
+                                { "expression": "300-310", "parity": "EVEN" },
+                                { "expression": "500", "parity": "ANY" }
+                            ],
+                            "tafTapLocationReferences": ["CH00001"]
+                        },
+                        "periods": [
+                            { "validFrom": "2026-01-01", "validTo": "2026-12-31", "weekdays": [] }
+                        ]
+                    }
+                    """))
+            .andExpect(status().isCreated())
+            .andExpect(jsonPath("$.data[0].scope.operationalTrainNumberFilters", hasSize(2)))
+            .andExpect(jsonPath("$.data[0].scope.operationalTrainNumberFilters[0].expression").value("300-310"))
+            .andExpect(jsonPath("$.data[0].scope.operationalTrainNumberFilters[0].parity").value("EVEN"))
+            .andExpect(jsonPath("$.data[0].scope.operationalTrainNumberFilters[1].expression").value("500"))
+            .andExpect(jsonPath("$.data[0].scope.operationalTrainNumberFilters[1].parity").value("ANY"));
+    }
+
+    @Test
+    @WithMockRole(roles = UserRole.RU_ADMIN)
+    void create_RuIndication_invalid_operationalTrainNumberFilter_badExpression() throws Exception {
+        mockMvc.perform(post(API_RU_INDICATIONS)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                    {
+                        "content": {
+                            "de": { "title": "Hinweis", "text": "Text DE" }
+                        },
+                        "scope": {
+                            "companies": ["1111"],
+                            "operationalTrainNumberFilters": [
+                                { "expression": "abc", "parity": "ANY" }
+                            ],
+                            "tafTapLocationReferences": ["CH00001"]
+                        },
+                        "periods": [
+                            { "validFrom": "2026-01-01", "validTo": "2026-12-31", "weekdays": [] }
+                        ]
+                    }
+                    """))
+            .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @WithMockRole(roles = UserRole.RU_ADMIN)
+    void create_RuIndication_invalid_operationalTrainNumberFilter_invalidRange() throws Exception {
+        mockMvc.perform(post(API_RU_INDICATIONS)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                    {
+                        "content": {
+                            "de": { "title": "Hinweis", "text": "Text DE" }
+                        },
+                        "scope": {
+                            "companies": ["1111"],
+                            "operationalTrainNumberFilters": [
+                                { "expression": "400-300", "parity": "ANY" }
+                            ],
+                            "tafTapLocationReferences": ["CH00001"]
+                        },
+                        "periods": [
+                            { "validFrom": "2026-01-01", "validTo": "2026-12-31", "weekdays": [] }
+                        ]
+                    }
+                    """))
+            .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -304,6 +387,44 @@ class RuIndicationControllerTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data", hasSize(1)))
             .andExpect(jsonPath("$.data[0].ruIndicationContents[0].title").value("Avis 1"));
+    }
+
+    @Test
+    @WithMockRole(roles = UserRole.OBSERVER)
+    @Sql("classpath:createRuIndications.sql")
+    void findRuIndicationMatches_ok_trainNumberOutsideOperationalTrainNumberFilterRange() throws Exception {
+        // Indication 1 restricts to trainNumbers 100-200 at CH00001; Indication 2 has no filter but doesn't cover CH00001.
+        mockMvc.perform(post(API_DRIVER_RU_INDICATION_MATCHES)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                    {
+                        "company": "1111",
+                        "operationalTrainNumber": 250,
+                        "startDate": "2026-01-01",
+                        "tafTapLocationReferences": ["CH00001"]
+                    }
+                    """))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data", hasSize(0)));
+    }
+
+    @Test
+    @WithMockRole(roles = UserRole.OBSERVER)
+    @Sql("classpath:createRuIndications.sql")
+    void findRuIndicationMatches_ok_trainNumberOnOperationalTrainNumberFilterBoundary() throws Exception {
+        mockMvc.perform(post(API_DRIVER_RU_INDICATION_MATCHES)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                    {
+                        "company": "1111",
+                        "operationalTrainNumber": 200,
+                        "startDate": "2026-01-01",
+                        "tafTapLocationReferences": ["CH00001"]
+                    }
+                    """))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data", hasSize(1)))
+            .andExpect(jsonPath("$.data[0].tafTapLocationReference").value("CH00001"));
     }
 
     @Test
