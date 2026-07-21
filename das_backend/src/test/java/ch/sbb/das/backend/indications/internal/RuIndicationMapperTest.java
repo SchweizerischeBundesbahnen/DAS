@@ -43,7 +43,7 @@ class RuIndicationMapperTest {
         assertThat(response.content().fr()).isNull();
         assertThat(response.content().it()).isNull();
         assertThat(response.scope().companies()).containsExactly(company("1111"));
-        assertThat(response.scope().operationalOperationalTrainNumberFilters()).isEmpty();
+        assertThat(response.scope().operationalTrainNumberFilters()).isEmpty();
         assertThat(response.scope().tafTapLocationReferences()).isEmpty();
         assertThat(response.periods()).isEmpty();
     }
