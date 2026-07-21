@@ -69,6 +69,17 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
+  cloud:
+    vault:
+      uri: ${VAULT_URI}
+      kv:
+        backend: kv/DSO-BPS/driver-advisory-system
+        default-context:
+      authentication: KUBERNETES
+      kubernetes:
+        role: ${VAULT_SA_ROLE_ID}
+        kubernetes-path: ${VAULT_CLUSTERNAME}
+        service-account-token-file: /var/run/secrets/openbao/token
 management:
   endpoint:
     health:
@@ -101,8 +112,8 @@ logging:
   url: ${SPLUNK_HEC_URL}
   token: ${SPLUNK_HEC_TOKEN}
 aws:
-  accessKey: ${AWS_ACCESS_KEY}
-  secretKey: ${AWS_SECRET_KEY}
+  accessKey: ${PRELOAD_BUCKET_R_ACCESS_KEY}
+  secretKey: ${PRELOAD_BUCKET_R_SECRET_KEY}
   bucketName: ${AWS_BUCKET_NAME}
 
 sfera:
@@ -117,8 +128,8 @@ sfera:
 preload:
   bucket:
     bucketUrl: ${PRELOAD_BUCKET_URL}
-    accessKey: ${PRELOAD_BUCKET_KEY}
-    accessSecret: ${PRELOAD_BUCKET_SECRET}
+    accessKey: ${PRELOAD_BUCKET_RW_ACCESS_KEY}
+    accessSecret: ${PRELOAD_BUCKET_RW_ACCESS_SECRET}
 
 trainjourneyplan:
   kafka:

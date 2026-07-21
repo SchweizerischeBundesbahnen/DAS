@@ -1,8 +1,12 @@
 spring:
   config:
     import:
-      - optional:file:./.env[.properties]
-      - optional:file:./das_backend/.env[.properties]
+      - vault://
+  cloud:
+    vault:
+      authentication: token
+      uri: https://vault-nonprod.sbb.ch
+
   datasource:
     url: jdbc:postgresql://localhost:5432/driver_advisory_system
     username: myuser
@@ -15,10 +19,14 @@ formation:
   clean-up:
     cron: '-'
   kafka:
+    # for local development only
+    group-id: ${FORMATION_KAFKA_GROUP_ID_PREFIX}.${USER}
     # disable kafka per default
     enabled: false
 trainjourneyplan:
   kafka:
+    # for local development only
+    group-id: ${PRELOAD_KAFKA_GROUP_ID_PREFIX}.${USER}
     # disable kafka per default
     enabled: false
     timetable-period-topic: nets-p.timetable
@@ -28,5 +36,18 @@ trainjourneyplan:
     days: 2
 
 trainjourneypreloader:
+  # adapt corresponding lockAtLeastFor time in @SchedulerLock
+  fetch-cron: "-"
   storage-clean-up:
     hours: 24
+
+preload:
+  bucket:
+    accessKey:
+    accessSecret:
+
+proxy:
+  basic-auth: username:password
+
+sfera:
+  topic-prefix:
