@@ -9,8 +9,6 @@ spring:
   cloud:
     vault:
       enabled: false
-      kv:
-        enabled: false
   kafka:
     consumer:
       group-id: test
