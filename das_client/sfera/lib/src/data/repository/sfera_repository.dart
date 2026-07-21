@@ -28,7 +28,7 @@ abstract class SferaRepository {
   Future<void> connect(TrainIdentification otnId);
 
   /// Disconnects from SFERA broker
-  Future<void> disconnect();
+  Future<void> disconnect({bool resetError = true});
 
   void dispose();
 

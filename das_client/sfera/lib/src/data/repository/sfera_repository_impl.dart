@@ -183,7 +183,7 @@ class SferaRepoImpl implements SferaRepository {
       _mqttService.disconnect();
       _rxState.add(.offlineData);
     } else {
-      disconnect();
+      disconnect(resetError: false);
     }
   }
 
@@ -191,7 +191,7 @@ class SferaRepoImpl implements SferaRepository {
   ///
   /// Disconnect is either called by the user or when one of the [SferaTask] fails and no journey was loaded yet - i.e. the service is not in the [SferaRemoteRepositoryInternalState.connected].
   @override
-  Future<void> disconnect() async {
+  Future<void> disconnect({bool resetError = true}) async {
     final otnId = _otnId;
     if (_rxState.value == .connected && otnId != null) {
       _log.info('Sending session termination request for $otnId...');
@@ -199,6 +199,10 @@ class SferaRepoImpl implements SferaRepository {
       final sessionTerminationMessage = SferaB2gEventMessageDto.createSessionTermination(messageHeader: header);
       final sferaTrain = Format.sferaTrain(otnId.operationalTrainNumber, otnId.startDate);
       _mqttService.publishMessage(otnId.company, sferaTrain, sessionTerminationMessage.buildDocument().toString());
+    }
+
+    if (resetError) {
+      lastError = null;
     }
 
     _mqttService.disconnect();
