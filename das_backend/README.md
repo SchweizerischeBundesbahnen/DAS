@@ -49,6 +49,8 @@ you need to:
 3. Make the displayed secrets available to maven via environment variables
    * IntelliJ: `Maven-Settings -> Runner` -> `Environment variables`
 
+Alternatively, you can run maven with `-DskipSchemaDownload` to skip this step.
+
 #### Local Database
 
 A local database is required to run the backend. We recommend running it as a containerized
