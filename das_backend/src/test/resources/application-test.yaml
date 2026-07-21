@@ -6,6 +6,11 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
+  cloud:
+    vault:
+      enabled: false
+  config:
+    import: "optional:vault://"
   kafka:
     consumer:
       group-id: test
