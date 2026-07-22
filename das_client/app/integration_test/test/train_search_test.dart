@@ -14,9 +14,6 @@ void main() {
     testWidgets('test default values', (tester) async {
       await prepareAndStartApp(tester);
 
-      // Verify we have ru SBB.
-      expect(find.text(l10n.c_ru_sbb_p), findsOneWidget);
-
       // Verify that today is preselected
       expect(find.text(Format.date(DateTime.now())), findsOneWidget);
     });
@@ -24,10 +21,7 @@ void main() {
     testWidgets('test selecting ru values', (tester) async {
       await prepareAndStartApp(tester);
 
-      // Verify we have ru SBB.
-      expect(find.text(l10n.c_ru_sbb_p), findsOneWidget);
-
-      await tapElement(tester, find.text(l10n.c_ru_sbb_p), warnIfMissed: false);
+      await tapElement(tester, find.text(l10n.p_train_selection_ru_description), warnIfMissed: false);
 
       // Verify modal is opened
       final modal = find.byKey(SelectRailwayUndertakingModal.modalKey);
@@ -46,10 +40,7 @@ void main() {
     testWidgets('test filter ru values', (tester) async {
       await prepareAndStartApp(tester);
 
-      // Verify we have ru SBB.
-      expect(find.text(l10n.c_ru_sbb_p), findsOneWidget);
-
-      await tapElement(tester, find.text(l10n.c_ru_sbb_p), warnIfMissed: false);
+      await tapElement(tester, find.text(l10n.p_train_selection_ru_description), warnIfMissed: false);
 
       // Verify modal is opened
       final modal = find.byKey(SelectRailwayUndertakingModal.modalKey);
@@ -69,9 +60,6 @@ void main() {
 
     testWidgets('test load button disabled when validation fails', (tester) async {
       await prepareAndStartApp(tester);
-
-      // Verify we have ru SBB.
-      expect(find.text(l10n.c_ru_sbb_p), findsOneWidget);
 
       // Verify that today is preselected
       expect(find.text(Format.date(DateTime.now())), findsOneWidget);
@@ -162,9 +150,6 @@ void main() {
 
     testWidgets('test error if JP unavailable', (tester) async {
       await prepareAndStartApp(tester);
-
-      // Verify we have ru SBB.
-      expect(find.text(l10n.c_ru_sbb_p), findsOneWidget);
 
       // Verify that today is preselected
       expect(find.text(Format.date(DateTime.now())), findsOneWidget);

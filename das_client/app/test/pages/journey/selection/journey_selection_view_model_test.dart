@@ -1,15 +1,22 @@
+import 'dart:async';
+
 import 'package:app/pages/journey/selection/journey_selection_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
 import 'package:app/provider/user_settings.dart';
 import 'package:clock/clock.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
 import 'package:sfera/component.dart';
 import 'package:train_identification/component.dart';
 
 import 'journey_selection_view_model_test.mocks.dart';
 
-@GenerateNiceMocks([MockSpec<SferaRepository>(), MockSpec<TrainIdentificationRepository>(), MockSpec<UserSettings>()])
+@GenerateNiceMocks([
+  MockSpec<SferaRepository>(),
+  MockSpec<TrainIdentificationRepository>(),
+  MockSpec<UserSettings>(),
+])
 void main() {
   late SferaRepository mockSferaRepo;
   late MockTrainIdentificationRepository mockTrainIdentificationRepository;
@@ -194,5 +201,141 @@ void main() {
     // EXPECT
     expect(callRegister, hasLength(1));
     expect(callRegister.first, equals(aTrainId));
+  });
+
+  test('loadJourney_whenNoRu_thenEmitsLoadingCompanyMatches', () async {
+    // ARRANGE
+    testee.updateTrainNumber('123');
+    final searchCompleter = Completer<Set<CompanyMatch>>();
+    when(
+      mockTrainIdentificationRepository.findTrainIdentifications(
+        operationalTrainNumber: anyNamed('operationalTrainNumber'),
+      ),
+    ).thenAnswer((_) => searchCompleter.future);
+
+    // ACT
+    final loadFuture = testee.loadJourney();
+
+    // EXPECT
+    expect(testee.modelValue, isA<LoadingCompanyMatches>());
+    final state = testee.modelValue as LoadingCompanyMatches;
+    expect(state.trainNumber, '123');
+    expect(state.startDate, newYears2025);
+
+    searchCompleter.complete(<CompanyMatch>{});
+    await loadFuture;
+  });
+
+  test('loadJourney_whenMultipleMatchesForDay_thenEmitsSelectingCompanyMatch', () async {
+    // ARRANGE
+    testee.updateTrainNumber('123');
+    when(mockUserSettings.lastUsedRailwayUndertaking).thenReturn(.unknown);
+    when(mockTrainIdentificationRepository.findTrainIdentifications(operationalTrainNumber: '123')).thenAnswer(
+      (_) async => {
+        CompanyMatch(ru: .sbbP, startDate: newYears2025),
+        CompanyMatch(ru: .blsP, startDate: newYears2025),
+      },
+    );
+
+    // ACT
+    final result = await testee.loadJourney();
+
+    // EXPECT
+    expect(result, isFalse);
+    expect(testee.modelValue, isA<SelectingCompanyMatch>());
+    final state = testee.modelValue as SelectingCompanyMatch;
+    expect(state.trainNumber, '123');
+    expect(state.startDate, newYears2025);
+    expect(state.companyMatches, {
+      CompanyMatch(ru: .sbbP, startDate: newYears2025),
+      CompanyMatch(ru: .blsP, startDate: newYears2025),
+    });
+    expect(state.selectedCompanyMatch, isNull);
+    expect(state.isInputComplete, isFalse);
+    expect(callRegister, isEmpty);
+  });
+
+  test('loadJourney_whenMultipleMatchesForDayAndLastUsedFound_thenLoadsJourneyDirectly', () async {
+    // ARRANGE
+    testee.updateTrainNumber('123');
+    when(mockUserSettings.lastUsedRailwayUndertaking).thenReturn(.blsP);
+    when(mockTrainIdentificationRepository.findTrainIdentifications(operationalTrainNumber: '123')).thenAnswer(
+      (_) async => {
+        CompanyMatch(ru: .sbbP, startDate: newYears2025),
+        CompanyMatch(ru: .blsP, startDate: newYears2025),
+      },
+    );
+
+    // ACT
+    // ACT
+    final result = await testee.loadJourney();
+
+    // EXPECT
+    expect(result, isTrue);
+    expect(callRegister, hasLength(1));
+    expect(
+      callRegister.first,
+      TrainIdentification(
+        ru: .blsP,
+        trainNumber: '123',
+        date: newYears2025,
+      ),
+    );
+  });
+
+  test('loadJourney_whenExactlyOneMatchForDay_thenLoadsJourneyDirectly', () async {
+    // ARRANGE
+    testee.updateTrainNumber('456');
+    when(mockTrainIdentificationRepository.findTrainIdentifications(operationalTrainNumber: '456')).thenAnswer(
+      (_) async => {
+        CompanyMatch(ru: .sbbP, startDate: newYears2025),
+      },
+    );
+
+    // ACT
+    final result = await testee.loadJourney();
+
+    // EXPECT
+    expect(result, isTrue);
+    expect(callRegister, hasLength(1));
+    expect(
+      callRegister.first,
+      TrainIdentification(
+        ru: .sbbP,
+        trainNumber: '456',
+        date: newYears2025,
+      ),
+    );
+  });
+
+  test('loadJourney_whenSelectingCompanyMatchAndSelectionSet_thenLoadsSelectedTrain', () async {
+    // ARRANGE
+    testee.updateTrainNumber('789');
+    when(mockUserSettings.lastUsedRailwayUndertaking).thenReturn(.unknown);
+    when(mockTrainIdentificationRepository.findTrainIdentifications(operationalTrainNumber: '789')).thenAnswer(
+      (_) async => {
+        CompanyMatch(ru: .sbbP, startDate: newYears2025),
+        CompanyMatch(ru: .blsP, startDate: newYears2025),
+      },
+    );
+    await testee.loadJourney();
+
+    final selected = CompanyMatch(ru: .blsP, startDate: newYears2025);
+    testee.updateSelectedCompanyMatch(selected);
+
+    // ACT
+    final result = await testee.loadJourney();
+
+    // EXPECT
+    expect(result, isTrue);
+    expect(callRegister, hasLength(1));
+    expect(
+      callRegister.first,
+      TrainIdentification(
+        ru: .blsP,
+        trainNumber: '789',
+        date: newYears2025,
+      ),
+    );
   });
 }

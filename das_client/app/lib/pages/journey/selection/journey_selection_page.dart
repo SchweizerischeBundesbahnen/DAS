@@ -194,14 +194,12 @@ class _ContentState extends State<_Content> with WidgetsBindingObserver {
   Widget _companyMatchesSelectionBody(BuildContext context, SelectingCompanyMatch model) {
     return Padding(
       padding: EdgeInsetsGeometry.symmetric(horizontal: SBBSpacing.xSmall, vertical: SBBSpacing.medium),
-      child: SingleChildScrollView(
-        child: Column(
-          spacing: SBBSpacing.xSmall,
-          children: [
-            _companyMatchesTitle(context),
-            if (model.companyMatches.isNotEmpty) _companyMatchesList(context, model),
-          ],
-        ),
+      child: Column(
+        spacing: SBBSpacing.xSmall,
+        children: [
+          _companyMatchesTitle(context),
+          if (model.companyMatches.isNotEmpty) _companyMatchesList(context, model),
+        ],
       ),
     );
   }
