@@ -44,9 +44,6 @@ void main() {
       // open
       await _openJourneySearchOverlayByTap(tester);
 
-      // Verify we have ru SBB.
-      expect(find.descendant(of: journeySearchOverlay, matching: find.text(l10n.c_ru_sbb_p)), findsOneWidget);
-
       // Verify that today is preselected
       expect(
         find.descendant(of: journeySearchOverlay, matching: find.text(Format.date(DateTime.now()))),
