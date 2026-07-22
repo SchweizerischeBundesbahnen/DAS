@@ -29,7 +29,7 @@ class AppVersionControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @DisplayName("Get all app versions - empty|tests:1406")
+    @DisplayName("App versions when none exist then the list is empty|tests:1406")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     void getAll_AppVersions_empty() throws Exception {
@@ -38,7 +38,7 @@ class AppVersionControllerTest {
             .andExpect(jsonPath("$.data", hasSize(0)));
     }
 
-    @DisplayName("Get app version by id - not found|tests:1406")
+    @DisplayName("App version when the id does not exist then the API returns not found|tests:1406")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     void getAppVersionById_not_found() throws Exception {
@@ -47,7 +47,7 @@ class AppVersionControllerTest {
             .andExpect(status().isNotFound());
     }
 
-    @DisplayName("Get by id - app version by id|tests:1406")
+    @DisplayName("App version when the id exists then the details are returned|tests:1406")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     @Sql("classpath:createAppVersions.sql")
@@ -63,7 +63,7 @@ class AppVersionControllerTest {
             .andExpect(jsonPath("$.data[0].lastModifiedBy").value("unit_test"));
     }
 
-    @DisplayName("Create app version - ok|tests:1406")
+    @DisplayName("App version when the request is valid then a new version is created and retrievable|tests:1406")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     void create_AppVersion_ok() throws Exception {
@@ -99,7 +99,7 @@ class AppVersionControllerTest {
             .andExpect(jsonPath("$.data[0].lastModifiedBy").value("test-user"));
     }
 
-    @DisplayName("Create app version - invalid body|tests:1406")
+    @DisplayName("App version when a required field is missing then the API returns a validation error|tests:1406")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     void create_AppVersion_invalid_body() throws Exception {
@@ -115,7 +115,7 @@ class AppVersionControllerTest {
             .andExpect(jsonPath("$.detail").value("Invalid request content. -> minimalVersion=must not be null"));
     }
 
-    @DisplayName("Create app version - invalid version pattern|tests:1406")
+    @DisplayName("App version when the version format is invalid then the API rejects the request|tests:1406")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     void create_AppVersion_invalid_version_pattern() throws Exception {
@@ -132,7 +132,7 @@ class AppVersionControllerTest {
             .andExpect(jsonPath("$.detail").value("Invalid request content. -> version=must match \"(\\d+)\\.(\\d+)\\.(\\d+)\""));
     }
 
-    @DisplayName("Create app version - conflict version|tests:1406")
+    @DisplayName("App version when the version already exists then the API returns conflict|tests:1406")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     @Sql("classpath:createAppVersions.sql")
@@ -150,7 +150,7 @@ class AppVersionControllerTest {
             .andExpect(jsonPath("$.detail").value("Version already exists"));
     }
 
-    @DisplayName("Update app version - ok|tests:1406")
+    @DisplayName("App version when valid update data is provided then the version is updated|tests:1406")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     @Sql("classpath:createAppVersions.sql")
@@ -184,7 +184,7 @@ class AppVersionControllerTest {
             .andExpect(jsonPath("$.data[0].lastModifiedBy").value("test-user"));
     }
 
-    @DisplayName("Delete app version by id - ok|tests:1406")
+    @DisplayName("App version when deleted by id then it is no longer retrievable|tests:1406")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     @Sql("classpath:createAppVersions.sql")
@@ -196,7 +196,7 @@ class AppVersionControllerTest {
             .andExpect(status().isNotFound());
     }
 
-    @DisplayName("Create app version - forbidden")
+    @DisplayName("App version when the caller is not an admin tenant then creation is forbidden|tests:1406")
     @Test
     @WithMockRole(roles = UserRole.ADMIN, adminTenant = false)
     void create_AppVersion_forbidden() throws Exception {

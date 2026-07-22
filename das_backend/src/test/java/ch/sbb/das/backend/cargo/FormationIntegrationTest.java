@@ -17,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,6 +42,7 @@ class FormationIntegrationTest {
     @Value("${formation.kafka.topic}")
     private String topic;
 
+    @DisplayName("Inspected formation when received then it is available for the driver|tests:539,541,715,1176")
     @Test
     void whenNewInspectedFormationMessage_shouldBeAvailabe() throws IOException {
         DailyFormationTrainKey key = this.jsonMapper.readValue(new File("src/test/resources/cargo/71237/kafka_key.json"), DailyFormationTrainKey.class);
@@ -61,6 +63,7 @@ class FormationIntegrationTest {
             });
     }
 
+    @DisplayName("Inspected formation when an updated version is received then the latest data replaces the previous version for the driver|tests:539,541,715,1176")
     @Test
     void whenUpdatedFormationMessage_shouldBeAvailabe() throws Exception {
         DailyFormationTrainKey key = this.jsonMapper.readValue(new File("src/test/resources/cargo/71237/kafka_key.json"), DailyFormationTrainKey.class);
@@ -85,6 +88,7 @@ class FormationIntegrationTest {
             });
     }
 
+    @DisplayName("Formation when a non-inspected update is received then the cached formation remains unchanged|tests:539,541,715,1176")
     @Test
     void whenUpdatedNonInpsectedFormationMessage_shouldNotHaveUpdateByEtag() throws Exception {
         DailyFormationTrainKey key = this.jsonMapper.readValue(new File("src/test/resources/cargo/71237/kafka_key.json"), DailyFormationTrainKey.class);
@@ -131,6 +135,7 @@ class FormationIntegrationTest {
 
     }
 
+    @DisplayName("Formation when it is not inspected then it is not served to drivers|tests:539,541,715,1176")
     @Test
     void whenNonInspectedFormationMessage_shouldNotBeAvailabe() {
         DailyFormationTrainKey key = this.jsonMapper.readValue(new File("src/test/resources/cargo/11/kafka_key.json"), DailyFormationTrainKey.class);
@@ -148,6 +153,7 @@ class FormationIntegrationTest {
             });
     }
 
+    @DisplayName("Formation when train runs change then the updated train run details are available for the driver|tests:539,541,715,1176")
     @Test
     void whenUpdatedFormationRunsMessage_shouldBeAvailabe() throws Exception {
         DailyFormationTrainKey key = this.jsonMapper.readValue(new File("src/test/resources/cargo/87389/kafka_key.json"), DailyFormationTrainKey.class);
@@ -182,6 +188,7 @@ class FormationIntegrationTest {
             });
     }
 
+    @DisplayName("Formation when a minimal message is received then it is processed without errors|tests:539,541,715,1176")
     @Test
     void whenNewMinimalFormationMessage_shouldNotFail() throws IOException {
         DailyFormationTrainKey key = this.jsonMapper.readValue(new File("src/test/resources/cargo/43/kafka_key.json"), DailyFormationTrainKey.class);

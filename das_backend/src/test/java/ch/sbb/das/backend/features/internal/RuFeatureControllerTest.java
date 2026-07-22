@@ -1,21 +1,27 @@
 package ch.sbb.das.backend.features.internal;
 
+import static ch.sbb.das.backend.features.internal.RuFeatureController.API_RU_FEATURES;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.context.jdbc.SqlMergeMode.MergeMode.MERGE;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import ch.sbb.das.backend.IntegrationTest;
 import ch.sbb.das.backend.WithMockRole;
 import ch.sbb.das.backend.common.security.UserRole;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlMergeMode;
 import org.springframework.test.web.servlet.MockMvc;
-
-import static ch.sbb.das.backend.features.internal.RuFeatureController.API_RU_FEATURES;
-import static org.hamcrest.Matchers.*;
-import static org.springframework.test.context.jdbc.SqlMergeMode.MergeMode.MERGE;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @IntegrationTest
 @Sql("classpath:createCompaniesAndTenants.sql")
@@ -31,6 +37,7 @@ class RuFeatureControllerTest {
     private MockMvc mockMvc;
 
     @Test
+    @DisplayName("RU features when the user is not authenticated then access is unauthorized|tests:712,713,723")
     void getAllRuFeatures_unauthorized() throws Exception {
         mockMvc.perform(get(API_RU_FEATURES))
             .andExpect(status().isUnauthorized());
@@ -38,6 +45,7 @@ class RuFeatureControllerTest {
 
     @Test
     @WithMockRole(roles = UserRole.OBSERVER)
+    @DisplayName("RU features when the caller has the observer role then access is forbidden|tests:712,713,723")
     void getAllRuFeatures_forbidden_observer() throws Exception {
         mockMvc.perform(get(API_RU_FEATURES))
             .andExpect(status().isForbidden());
@@ -46,6 +54,7 @@ class RuFeatureControllerTest {
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createRuFeatures.sql")
+    @DisplayName("RU features when the caller is an admin tenant then only own tenant features are returned|tests:712,713,723")
     void getAllRuFeatures_ok_filteredByOwnTenant() throws Exception {
         mockMvc.perform(get(API_RU_FEATURES))
             .andExpect(status().isOk())
@@ -56,6 +65,7 @@ class RuFeatureControllerTest {
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createRuFeatures.sql")
+    @DisplayName("RU feature when the id exists then the details are returned|tests:712,713,723")
     void getRuFeatureById_ok() throws Exception {
         mockMvc.perform(get(API_RU_FEATURES + "/" + FEATURE_ID_OWN_1))
             .andExpect(status().isOk())
@@ -69,6 +79,7 @@ class RuFeatureControllerTest {
 
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
+    @DisplayName("RU feature when the id does not exist then the API returns not found|tests:712,713,723")
     void getRuFeatureById_notFound() throws Exception {
         mockMvc.perform(get(API_RU_FEATURES + "/999"))
             .andExpect(status().isNotFound());
@@ -77,6 +88,7 @@ class RuFeatureControllerTest {
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createRuFeatures.sql")
+    @DisplayName("RU feature when it belongs to another tenant then access is forbidden|tests:712,713,723")
     void getRuFeatureById_forbidden_otherTenant() throws Exception {
         mockMvc.perform(get(API_RU_FEATURES + "/" + FEATURE_ID_OTHER_TENANT))
             .andExpect(status().isForbidden());
@@ -84,6 +96,7 @@ class RuFeatureControllerTest {
 
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
+    @DisplayName("RU feature when the create request is valid then a new feature flag is created|tests:712,713,723")
     void createRuFeature_ok() throws Exception {
         mockMvc.perform(post(API_RU_FEATURES)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -101,6 +114,7 @@ class RuFeatureControllerTest {
 
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
+    @DisplayName("RU feature when the company does not exist then the API returns bad request|tests:712,713,723")
     void createRuFeature_badRequest_companyNotFound() throws Exception {
         mockMvc.perform(post(API_RU_FEATURES)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -113,6 +127,7 @@ class RuFeatureControllerTest {
 
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
+    @DisplayName("RU feature when the company belongs to another tenant then access is forbidden|tests:712,713,723")
     void createRuFeature_forbidden_otherTenantCompany() throws Exception {
         mockMvc.perform(post(API_RU_FEATURES)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -124,6 +139,7 @@ class RuFeatureControllerTest {
 
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
+    @DisplayName("RU feature when the feature key is invalid then the API returns bad request|tests:712,713,723")
     void createRuFeature_badRequest_invalidKey() throws Exception {
         mockMvc.perform(post(API_RU_FEATURES)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -136,6 +152,7 @@ class RuFeatureControllerTest {
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createRuFeatures.sql")
+    @DisplayName("RU feature when the same feature key already exists for the company then the API returns conflict|tests:712,713,723")
     void createRuFeature_conflict_duplicate() throws Exception {
         mockMvc.perform(post(API_RU_FEATURES)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -149,6 +166,7 @@ class RuFeatureControllerTest {
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createRuFeatures.sql")
+    @DisplayName("RU feature when valid update data is provided then the enabled status can be changed by the tenant admin|tests:712,713,723")
     void updateRuFeature_ok() throws Exception {
         mockMvc.perform(put(API_RU_FEATURES + "/" + FEATURE_ID_OWN_1)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -164,6 +182,7 @@ class RuFeatureControllerTest {
 
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
+    @DisplayName("RU feature when the id does not exist then the API returns not found|tests:712,713,723")
     void updateRuFeature_notFound() throws Exception {
         mockMvc.perform(put(API_RU_FEATURES + "/999")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -176,6 +195,7 @@ class RuFeatureControllerTest {
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createRuFeatures.sql")
+    @DisplayName("RU feature when it is owned by another tenant then access is forbidden|tests:712,713,723")
     void updateRuFeature_forbidden_existingOtherTenant() throws Exception {
         mockMvc.perform(put(API_RU_FEATURES + "/" + FEATURE_ID_OTHER_TENANT)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -188,6 +208,7 @@ class RuFeatureControllerTest {
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createRuFeatures.sql")
+    @DisplayName("RU feature when the target company belongs to another tenant then access is forbidden|tests:712,713,723")
     void updateRuFeature_forbidden_movingToOtherTenantCompany() throws Exception {
         mockMvc.perform(put(API_RU_FEATURES + "/" + FEATURE_ID_OWN_1)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -200,6 +221,7 @@ class RuFeatureControllerTest {
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createRuFeatures.sql")
+    @DisplayName("RU feature when the target key already exists for the same company then the API returns conflict|tests:712,713,723")
     void updateRuFeature_conflict_duplicate() throws Exception {
         mockMvc.perform(put(API_RU_FEATURES + "/" + FEATURE_ID_OWN_2)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -212,6 +234,7 @@ class RuFeatureControllerTest {
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createRuFeatures.sql")
+    @DisplayName("RU features multiple own-tenant features can be removed at once|tests:712,713,723")
     void deleteRuFeaturesByIds_ok() throws Exception {
         mockMvc.perform(delete(API_RU_FEATURES)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -228,6 +251,7 @@ class RuFeatureControllerTest {
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createRuFeatures.sql")
+    @DisplayName("RU features when the selection of delete includes another tenant's features then access is forbidden|tests:712,713,723")
     void deleteRuFeaturesByIds_forbidden_mixedTenants() throws Exception {
         mockMvc.perform(delete(API_RU_FEATURES)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -242,7 +266,8 @@ class RuFeatureControllerTest {
 
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
-    void deleteRuFeaturesByIds_invalid_emptyList() throws Exception {
+    @DisplayName("RU features when no id is provided then the API returns bad request|tests:712,713,723")
+    void deleteRuFeaturesByIds_badRequest_emptyBody() throws Exception {
         mockMvc.perform(delete(API_RU_FEATURES)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""

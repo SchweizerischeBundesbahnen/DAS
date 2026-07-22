@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.time.OffsetDateTime;
 
 @AnalyzeClasses(packages = "ch.sbb.das.backend", importOptions = ImportOption.DoNotIncludeTests.class)
-final class ArchUnitTest {
+final class ArchUnitDateTimeUtilTest {
 
     @ArchTest
     static final ArchRule USE_DATE_TIME_UTIL = noClasses()
