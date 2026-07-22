@@ -159,6 +159,7 @@ class _ContentState extends State<_Content> with WidgetsBindingObserver {
               SelectRailwayUndertakingInput(
                 selectedRailwayUndertakings: [?model.railwayUndertaking],
                 updateRailwayUndertaking: viewModel.updateRailwayUndertaking,
+                addClearButton: true,
               ),
             ],
           ),

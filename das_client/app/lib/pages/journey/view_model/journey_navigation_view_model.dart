@@ -35,10 +35,11 @@ class JourneyNavigationViewModel {
   /// replaces the current navigation stack with [trainIds] where a connection will be established for the first train.
   Future<void> replaceWith(Iterable<ExtendedTrainIdentification> trainIds) async {
     if (_trainIds.isNotEmpty) _sferaRepo.disconnect();
+
     _trainIds.clear();
     _trainIds.addAll(trainIds);
 
-    await _establishConnection(trainIds.first);
+    await _establishConnection(trainIds.firstOrNull);
   }
 
   Future<void> push(ExtendedTrainIdentification trainId) async {
@@ -85,13 +86,17 @@ class JourneyNavigationViewModel {
     _trainIds.clear();
   }
 
-  Future<void> _establishConnection(ExtendedTrainIdentification trainId) async {
-    _log.fine('Establish connection to $trainId');
-    _userSettings.set(UserSettingKeys.lastUsedRailwayUndertaking, trainId.trainIdentification.ru.companyCode);
+  Future<void> _establishConnection(ExtendedTrainIdentification? trainId) async {
     DASTableRowBuilder.clearRowKeys();
     await DI.get<ScopeHandler>().pop<JourneyScope>();
-    await DI.get<ScopeHandler>().push<JourneyScope>();
-    await _sferaRepo.connect(trainId.trainIdentification);
+
+    if (trainId != null) {
+      _log.fine('Establish connection to $trainId');
+      _userSettings.set(UserSettingKeys.lastUsedRailwayUndertaking, trainId.trainIdentification.ru.companyCode);
+      await DI.get<ScopeHandler>().push<JourneyScope>();
+      await _sferaRepo.connect(trainId.trainIdentification);
+    }
+
     _addToStream(trainId);
   }
 

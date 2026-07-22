@@ -37,12 +37,8 @@ class TrainIdentificationRepositoryImpl implements TrainIdentificationRepository
       final companyMatches = response.body.data.map((dto) => dto.toCompanyMatch()).toSet();
       _log.info('Successfully fetched ${companyMatches.length} company matches for train $operationalTrainNumber.');
       return companyMatches;
-    } catch (e, s) {
-      _log.warning(
-        'API call failed for train $operationalTrainNumber, falling back to local database.',
-        e,
-        s,
-      );
+    } catch (e) {
+      _log.info('API call failed for train $operationalTrainNumber, falling back to local database.');
       return _findInLocalDatabase(operationalTrainNumber, startDates);
     }
   }

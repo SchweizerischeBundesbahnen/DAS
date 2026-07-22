@@ -234,7 +234,7 @@ extension AuthenticatedScopeExtension on GetIt {
         trainIdentificationRepository: DI.get(),
         userSettings: DI.get(),
         onJourneySelected: (trainId) => DI.get<JourneyNavigationViewModel>().replaceWith([
-          ExtendedTrainIdentification(trainIdentification: trainId),
+          if (trainId != null) ExtendedTrainIdentification(trainIdentification: trainId),
         ]),
       );
     }

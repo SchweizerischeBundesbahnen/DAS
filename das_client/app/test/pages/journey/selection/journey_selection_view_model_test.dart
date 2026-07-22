@@ -15,7 +15,7 @@ void main() {
   late MockTrainIdentificationRepository mockTrainIdentificationRepository;
   late MockUserSettings mockUserSettings;
   late JourneySelectionViewModel testee;
-  final List<TrainIdentification> callRegister = [];
+  final List<TrainIdentification?> callRegister = [];
   final newYears2025 = DateTime.utc(2025, 1, 1);
   final fixedClock = Clock.fixed(newYears2025);
 

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app/nav/app_expiration_guard.dart';
 import 'package:app/pages/journey/selection/journey_selection_model.dart';
 import 'package:app/provider/user_settings.dart';
 import 'package:clock/clock.dart';
@@ -27,7 +28,7 @@ class JourneySelectionViewModel {
   final TrainIdentificationRepository _trainIdentificationRepository;
   final UserSettings _userSettings;
 
-  final Future<void> Function(TrainIdentification) _onJourneySelected;
+  final Future<void> Function(TrainIdentification?) _onJourneySelected;
 
   StreamSubscription? _sferaRepoSubscription;
 
@@ -38,33 +39,35 @@ class JourneySelectionViewModel {
 
   JourneySelectionModel get modelValue => _currentState;
 
-  Future<void> loadJourney() async {
+  Future<bool> loadJourney() async {
     final currentState = _currentState;
     switch (currentState) {
       case Loading() || LoadingCompanyMatches() || Loaded() || Error():
         break;
       case final Selecting state:
-        if (!state.isInputComplete) return;
+        if (!state.isInputComplete) return false;
 
         if (state.railwayUndertaking != null) {
           final trainIdToLoad = _trainIdFrom(state);
-          _loadTrain(trainIdToLoad);
+          return _loadTrain(trainIdToLoad);
         } else {
-          _findCompanyMatches(state);
+          return _findCompanyMatches(state);
         }
       case final SelectingCompanyMatch state:
-        if (!state.isInputComplete) return;
+        if (!state.isInputComplete) return false;
 
         final trainIdToLoad = TrainIdentification(
           ru: state.selectedCompanyMatch!.ru,
           trainNumber: state.operationalTrainNumber,
           date: state.selectedCompanyMatch!.startDate,
         );
-        _loadTrain(trainIdToLoad);
+        return _loadTrain(trainIdToLoad);
     }
+
+    return true;
   }
 
-  void _findCompanyMatches(Selecting state) async {
+  Future<bool> _findCompanyMatches(Selecting state) async {
     _emit(
       JourneySelectionModel.loadingCompanyMatches(
         startDate: state.startDate,
@@ -112,11 +115,19 @@ class JourneySelectionViewModel {
         isInputComplete: false,
       ),
     );
+
+    if (_sferaRepo.connectedTrain != null) {
+      // Disconnect with a delay (to give time for navigation) from the current train
+      Future.delayed(AppExpirationGuard.timeout).then((v) => _onJourneySelected(null));
+    }
+
+    return false;
   }
 
-  void _loadTrain(TrainIdentification trainId) {
+  bool _loadTrain(TrainIdentification trainId) {
     _log.fine('Start loading train journey: $trainId');
     _onJourneySelected(trainId);
+    return true;
   }
 
   void updateDate(DateTime date) {
@@ -131,7 +142,14 @@ class JourneySelectionViewModel {
   }
 
   void updateRailwayUndertaking(List<RailwayUndertaking> ru) {
-    _ifInSelectingErrorOrLoadedEmitSelectingWith((model) => model.copyWith(railwayUndertaking: ru.firstOrNull));
+    _ifInSelectingErrorOrLoadedEmitSelectingWith(
+      (model) => Selecting(
+        startDate: model.startDate,
+        availableStartDates: model.availableStartDates,
+        railwayUndertaking: ru.firstOrNull,
+        trainNumber: model.trainNumber,
+      ),
+    );
   }
 
   void updateSelectedCompanyMatch(CompanyMatch? selectedCompanyMatch) {
