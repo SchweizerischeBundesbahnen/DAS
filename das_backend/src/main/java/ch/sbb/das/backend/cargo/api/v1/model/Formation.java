@@ -21,9 +21,10 @@ public record Formation(
     LocalDate operationalDay,
 
     @Schema(description = CompanyCode.DESCRIPTION, requiredMode = Schema.RequiredMode.REQUIRED)
-    String company,
+    CompanyCode company,
 
     @ArraySchema(arraySchema = @Schema(requiredMode = Schema.RequiredMode.REQUIRED, description = "The order of items match the actual run order."), minItems = 1)
     List<FormationRun> formationRuns
 ) {
+
 }

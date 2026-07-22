@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.das.backend.cargo.api.v1.model.FormationRun;
 import ch.sbb.das.backend.cargo.infrastructure.model.TrainFormationRunEntity;
+import ch.sbb.das.backend.companies.CompanyCode;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -22,7 +23,7 @@ class FormationRunMapperTest {
             .operationalTrainNumber("54233")
             .trainPathId("54233-001")
             .operationalDay(LocalDate.of(2026, 7, 22))
-            .company("2185")
+            .company(new CompanyCode("2185"))
             .tafTapLocationReferenceStart("CH52344")
             .tafTapLocationReferenceEnd("CH04212")
             .trainCategoryCode("CAT")

@@ -1,6 +1,6 @@
 package ch.sbb.das.backend.cargo.domain.model;
 
-import ch.sbb.das.backend.common.UnexpectedProviderData;
+import ch.sbb.das.backend.companies.CompanyCode;
 import ch.sbb.das.backend.locations.TafTapLocationReference;
 import java.time.OffsetDateTime;
 import java.util.Collections;
@@ -18,15 +18,11 @@ import lombok.ToString;
 @ToString
 public class FormationRun {
 
-    /**
-     * Given in case data provider has no known Company yet.
-     */
-    public static final String INVALID_COMPANY_CODE = "0000";
     public static final int COMPANY_CODE_LENGTH = 4;
 
     private Boolean inspected;
     @Getter private OffsetDateTime inspectionDateTime;
-    @Getter private String company;
+    @Getter private CompanyCode company;
     @Getter private TafTapLocationReference tafTapLocationReferenceStart;
     @Getter private TafTapLocationReference tafTapLocationReferenceEnd;
     @Getter private String trainCategoryCode;
@@ -67,21 +63,12 @@ public class FormationRun {
             return Collections.emptyList();
         }
         return formationRuns.stream()
-            .filter(formationRun -> formationRun.isInspected() && formationRun.inspectionDateTime != null && formationRun.isValidCompany())
+            .filter(formationRun -> formationRun.isInspected() && formationRun.inspectionDateTime != null)
             .toList();
     }
 
     private boolean isInspected() {
         return Boolean.TRUE.equals(inspected);
-    }
-
-    private boolean isValidCompany() {
-        if (company != null && company.length() == COMPANY_CODE_LENGTH && !INVALID_COMPANY_CODE.equals(company)) {
-            return true;
-        } else {
-            throw new UnexpectedProviderData(
-                "Invalid company code: " + company + " for formation run " + tafTapLocationReferenceStart.toLocationCode() + " - " + tafTapLocationReferenceEnd.toLocationCode());
-        }
     }
 
     public Integer getFormationGrossWeightInT() {

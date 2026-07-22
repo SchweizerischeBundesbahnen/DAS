@@ -25,7 +25,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.http.HttpHeaders;
@@ -78,21 +77,18 @@ public class FormationController {
         @SFERA(nsp = true) @RequestParam @NotNull LocalDate operationalDay,
 
         @Parameter(description = CompanyCode.DESCRIPTION, example = "1033")
-        @SFERA @TelTsi @RequestParam @Pattern(regexp = "\\d{4}") String company) {
+        @SFERA @TelTsi @RequestParam CompanyCode company) {
 
         final List<TrainFormationRunEntity> entities = formationService.findByTrainIdentifier(operationalTrainNumber, operationalDay, company);
         if (CollectionUtils.isEmpty(entities)) {
-            // TODO hardoded: replace by generic RequestContext
-            final String instance = API_FORMATIONS + "/" + operationalTrainNumber + "/" + operationalDay + "/" + company;
 
             final LocalDate today = DateTimeUtil.today();
             if (operationalDay.isBefore(today) || operationalDay.isAfter(today)) {
                 return ResponseEntityFactory.createNotFoundResponse(
                     ResponseEntityFactory.TITLE_NOT_FOUND, "operationalDay='" + operationalDay + "' -> data may not be available at all if not TODAY.",
-                    null, requestId, instance);
+                    null, requestId, null);
             } else {
-                // TODO check whether company exists as CompanyEntity -> otherwise provide specific Problem::title="NOT FOUND: company", detail="company="+company+" is unknown yet"
-                return ResponseEntityFactory.createNotFoundResponse(requestId, instance);
+                return ResponseEntityFactory.createNotFoundResponse(requestId, null);
             }
         }
 

@@ -1,6 +1,7 @@
 package ch.sbb.das.backend.cargo.infrastructure;
 
 import ch.sbb.das.backend.cargo.infrastructure.model.TrainFormationRunEntity;
+import ch.sbb.das.backend.companies.CompanyCode;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TrainFormationRunRepository extends ListCrudRepository<TrainFormationRunEntity, Integer> {
 
-    List<TrainFormationRunEntity> findByOperationalTrainNumberAndOperationalDayAndCompanyOrderByPositionAsc(String operationalTrainNumber, LocalDate operationalDay, String company);
+    List<TrainFormationRunEntity> findByOperationalTrainNumberAndOperationalDayAndCompanyOrderByPositionAsc(String operationalTrainNumber, LocalDate operationalDay, CompanyCode company);
 
     void deleteByTrainPathIdAndOperationalDay(String trainPathId, LocalDate operationalDay);
 
