@@ -110,7 +110,7 @@ class JourneySelectionViewModel {
         startDate: state.startDate,
         trainNumber: state.operationalTrainNumber,
         availableStartDates: state.availableStartDates,
-        companyMatches: companyMatches.toSet(),
+        companyMatches: exactDayMatches.isNotEmpty ? exactDayMatches.toSet() : companyMatches.toSet(),
         selectedCompanyMatch: null,
         isInputComplete: false,
       ),

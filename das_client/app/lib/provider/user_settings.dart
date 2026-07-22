@@ -59,7 +59,7 @@ class UserSettings {
 
   RailwayUndertaking? get lastUsedRailwayUndertaking {
     final railwayUndertakingName = get<String?>(.lastUsedRailwayUndertaking, null);
-    return RailwayUndertaking.values.firstWhereOrNull((it) => it.name == railwayUndertakingName);
+    return RailwayUndertaking.values.firstWhereOrNull((it) => it.companyCode == railwayUndertakingName);
   }
 }
 

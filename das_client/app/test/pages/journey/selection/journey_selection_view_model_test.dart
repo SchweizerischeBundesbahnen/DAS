@@ -23,8 +23,9 @@ void main() {
   late MockUserSettings mockUserSettings;
   late JourneySelectionViewModel testee;
   final List<TrainIdentification?> callRegister = [];
-  final newYears2025 = DateTime.utc(2025, 1, 1);
-  final fixedClock = Clock.fixed(newYears2025);
+  final today = DateTime.utc(2025, 1, 1);
+  final tomorrow = DateTime.utc(2025, 1, 2);
+  final fixedClock = Clock.fixed(today);
 
   setUp(() {
     mockSferaRepo = MockSferaRepository();
@@ -124,7 +125,7 @@ void main() {
     final state = testee.modelValue;
     expect(state, isA<Selecting>());
     final selecting = state as Selecting;
-    expect(selecting.startDate, newYears2025);
+    expect(selecting.startDate, today);
   });
 
   test('updateRailwayUndertaking_whenCalled_thenUpdatesRailwayUndertaking', () {
@@ -220,7 +221,7 @@ void main() {
     expect(testee.modelValue, isA<LoadingCompanyMatches>());
     final state = testee.modelValue as LoadingCompanyMatches;
     expect(state.trainNumber, '123');
-    expect(state.startDate, newYears2025);
+    expect(state.startDate, today);
 
     searchCompleter.complete(<CompanyMatch>{});
     await loadFuture;
@@ -232,8 +233,8 @@ void main() {
     when(mockUserSettings.lastUsedRailwayUndertaking).thenReturn(.unknown);
     when(mockTrainIdentificationRepository.findTrainIdentifications(operationalTrainNumber: '123')).thenAnswer(
       (_) async => {
-        CompanyMatch(ru: .sbbP, startDate: newYears2025),
-        CompanyMatch(ru: .blsP, startDate: newYears2025),
+        CompanyMatch(ru: .sbbP, startDate: today),
+        CompanyMatch(ru: .blsP, startDate: today),
       },
     );
 
@@ -245,10 +246,67 @@ void main() {
     expect(testee.modelValue, isA<SelectingCompanyMatch>());
     final state = testee.modelValue as SelectingCompanyMatch;
     expect(state.trainNumber, '123');
-    expect(state.startDate, newYears2025);
+    expect(state.startDate, today);
     expect(state.companyMatches, {
-      CompanyMatch(ru: .sbbP, startDate: newYears2025),
-      CompanyMatch(ru: .blsP, startDate: newYears2025),
+      CompanyMatch(ru: .sbbP, startDate: today),
+      CompanyMatch(ru: .blsP, startDate: today),
+    });
+    expect(state.selectedCompanyMatch, isNull);
+    expect(state.isInputComplete, isFalse);
+    expect(callRegister, isEmpty);
+  });
+
+  test('loadJourney_whenMatchesForSelectedDay_thenOnlyShowExactDayMatches', () async {
+    // ARRANGE
+    testee.updateTrainNumber('123');
+    when(mockUserSettings.lastUsedRailwayUndertaking).thenReturn(.unknown);
+    when(mockTrainIdentificationRepository.findTrainIdentifications(operationalTrainNumber: '123')).thenAnswer(
+      (_) async => {
+        CompanyMatch(ru: .sbbP, startDate: today),
+        CompanyMatch(ru: .sbbP, startDate: tomorrow),
+        CompanyMatch(ru: .blsP, startDate: today),
+      },
+    );
+
+    // ACT
+    final result = await testee.loadJourney();
+
+    // EXPECT
+    expect(result, isFalse);
+    expect(testee.modelValue, isA<SelectingCompanyMatch>());
+    final state = testee.modelValue as SelectingCompanyMatch;
+    expect(state.trainNumber, '123');
+    expect(state.startDate, today);
+    expect(state.companyMatches, {
+      CompanyMatch(ru: .sbbP, startDate: today),
+      CompanyMatch(ru: .blsP, startDate: today),
+    });
+    expect(state.selectedCompanyMatch, isNull);
+    expect(state.isInputComplete, isFalse);
+    expect(callRegister, isEmpty);
+  });
+
+  test('loadJourney_whenNoMatchesForSelectedDay_thenShowOtherDayMatches', () async {
+    // ARRANGE
+    testee.updateTrainNumber('123');
+    when(mockUserSettings.lastUsedRailwayUndertaking).thenReturn(.unknown);
+    when(mockTrainIdentificationRepository.findTrainIdentifications(operationalTrainNumber: '123')).thenAnswer(
+      (_) async => {
+        CompanyMatch(ru: .sbbP, startDate: tomorrow),
+      },
+    );
+
+    // ACT
+    final result = await testee.loadJourney();
+
+    // EXPECT
+    expect(result, isFalse);
+    expect(testee.modelValue, isA<SelectingCompanyMatch>());
+    final state = testee.modelValue as SelectingCompanyMatch;
+    expect(state.trainNumber, '123');
+    expect(state.startDate, today);
+    expect(state.companyMatches, {
+      CompanyMatch(ru: .sbbP, startDate: tomorrow),
     });
     expect(state.selectedCompanyMatch, isNull);
     expect(state.isInputComplete, isFalse);
@@ -261,8 +319,8 @@ void main() {
     when(mockUserSettings.lastUsedRailwayUndertaking).thenReturn(.blsP);
     when(mockTrainIdentificationRepository.findTrainIdentifications(operationalTrainNumber: '123')).thenAnswer(
       (_) async => {
-        CompanyMatch(ru: .sbbP, startDate: newYears2025),
-        CompanyMatch(ru: .blsP, startDate: newYears2025),
+        CompanyMatch(ru: .sbbP, startDate: today),
+        CompanyMatch(ru: .blsP, startDate: today),
       },
     );
 
@@ -278,7 +336,7 @@ void main() {
       TrainIdentification(
         ru: .blsP,
         trainNumber: '123',
-        date: newYears2025,
+        date: today,
       ),
     );
   });
@@ -288,7 +346,7 @@ void main() {
     testee.updateTrainNumber('456');
     when(mockTrainIdentificationRepository.findTrainIdentifications(operationalTrainNumber: '456')).thenAnswer(
       (_) async => {
-        CompanyMatch(ru: .sbbP, startDate: newYears2025),
+        CompanyMatch(ru: .sbbP, startDate: today),
       },
     );
 
@@ -303,7 +361,7 @@ void main() {
       TrainIdentification(
         ru: .sbbP,
         trainNumber: '456',
-        date: newYears2025,
+        date: today,
       ),
     );
   });
@@ -314,13 +372,13 @@ void main() {
     when(mockUserSettings.lastUsedRailwayUndertaking).thenReturn(.unknown);
     when(mockTrainIdentificationRepository.findTrainIdentifications(operationalTrainNumber: '789')).thenAnswer(
       (_) async => {
-        CompanyMatch(ru: .sbbP, startDate: newYears2025),
-        CompanyMatch(ru: .blsP, startDate: newYears2025),
+        CompanyMatch(ru: .sbbP, startDate: today),
+        CompanyMatch(ru: .blsP, startDate: today),
       },
     );
     await testee.loadJourney();
 
-    final selected = CompanyMatch(ru: .blsP, startDate: newYears2025);
+    final selected = CompanyMatch(ru: .blsP, startDate: today);
     testee.updateSelectedCompanyMatch(selected);
 
     // ACT
@@ -334,7 +392,7 @@ void main() {
       TrainIdentification(
         ru: .blsP,
         trainNumber: '789',
-        date: newYears2025,
+        date: today,
       ),
     );
   });
