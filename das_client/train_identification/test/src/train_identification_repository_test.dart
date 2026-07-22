@@ -70,11 +70,11 @@ void main() {
       TrainIdentificationResponseDto(
         data: [
           CompanyMatchDto(
-            company: CompanyDto(code: '1085', shortName: 'SBB'),
+            company: CompanyDto(code: '1285', shortName: 'SBB'),
             startDate: DateTime(2026, 7, 20),
           ),
           CompanyMatchDto(
-            company: CompanyDto(code: '0421', shortName: 'BLS'),
+            company: CompanyDto(code: '1163', shortName: 'BLS'),
             startDate: DateTime(2026, 7, 21),
           ),
         ],

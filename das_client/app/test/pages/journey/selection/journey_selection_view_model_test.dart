@@ -61,7 +61,7 @@ void main() {
     final selecting = state as Selecting;
     expect(selecting.trainNumber, isNull);
     expect(selecting.startDate, equals(newYears1970));
-    expect(selecting.railwayUndertaking, RailwayUndertaking.sbbP);
+    expect(selecting.railwayUndertaking, null);
     expect(selecting.isInputComplete, isFalse);
     expect(selecting.availableStartDates, hasLength(3));
     expect(selecting.availableStartDates.first, equals(DateTime.utc(1969, 12, 31)));
@@ -145,6 +145,7 @@ void main() {
   test('loadJourney_whenComplete_thenAddsTrainIdentificationToRegister', () {
     // ARRANGE
     testee.updateTrainNumber('123');
+    testee.updateRailwayUndertaking([.sbbP]);
     final aTrainId = TrainIdentification(
       ru: .sbbP,
       trainNumber: '123',
@@ -162,6 +163,7 @@ void main() {
   test('loadJourney_whenCompleteAndWhitespace_thenAddsCleanedTrainIdentificationToRegister', () {
     // ARRANGE
     testee.updateTrainNumber('  123  ');
+    testee.updateRailwayUndertaking([.sbbP]);
     final aTrainId = TrainIdentification(
       ru: .sbbP,
       trainNumber: '123',
@@ -179,6 +181,7 @@ void main() {
   test('loadJourney_whenLowercase_thenAddsTrainIdentificationWithUppercase', () {
     // ARRANGE
     testee.updateTrainNumber('lowercase123a');
+    testee.updateRailwayUndertaking([.sbbP]);
     final aTrainId = TrainIdentification(
       ru: .sbbP,
       trainNumber: 'LOWERCASE123A',
