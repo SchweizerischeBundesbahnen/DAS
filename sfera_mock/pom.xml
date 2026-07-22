@@ -176,10 +176,10 @@
                     <systemPropertyVariables>
                         <!-- Without this, Spring Boot's own spring.profiles.active/default fallback
                              (${STAGE:local}) resolves to "local" during the very first config-data
-                             pass, before @ActiveProfiles("test") is applied - causing
+                             pass, before @ActiveProfiles("integration-test") is applied - causing
                              application-local.yaml (and its Vault import) to be merged in alongside
-                             the test profile. -->
-                        <STAGE>test</STAGE>
+                             the integration-test profile. -->
+                        <STAGE>integration-test</STAGE>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
