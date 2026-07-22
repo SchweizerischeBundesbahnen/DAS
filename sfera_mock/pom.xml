@@ -170,6 +170,21 @@
             </plugin>
 
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <systemPropertyVariables>
+                        <!-- Without this, Spring Boot's own spring.profiles.active/default fallback
+                             (${STAGE:local}) resolves to "local" during the very first config-data
+                             pass, before @ActiveProfiles("test") is applied - causing
+                             application-local.yaml (and its Vault import) to be merged in alongside
+                             the test profile. -->
+                        <STAGE>test</STAGE>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
+
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>jaxb2-maven-plugin</artifactId>
                 <version>4.1.0</version>
