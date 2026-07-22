@@ -10,8 +10,8 @@ services:
   sfera-mock:
     build: .
     environment:
-      - 'USER=${USER}'
+      - 'USER=${USER:-${USERNAME}}'
     ports:
       - '8081:8081'
     volumes:
-      - '${HOME}/.vault-token:/home/sfera-mock/.vault-token:ro'
+      - '${HOME:-${USERPROFILE}}/.vault-token:/home/sfera-mock/.vault-token:ro'
