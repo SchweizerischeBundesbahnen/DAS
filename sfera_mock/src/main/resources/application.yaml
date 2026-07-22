@@ -23,6 +23,8 @@ management:
 spring:
   profiles:
     active: ${STAGE:local}
+  application:
+    name: sfera_mock
   cloud:
     function:
       definition: processB2GMessage
@@ -54,6 +56,16 @@ spring:
       default:
         consumer:
           maxAttempts: 1
+    vault:
+      uri: ${VAULT_URI}
+      kv:
+        backend: kv/DSO-BPS/driver-advisory-system
+        default-context:
+      authentication: KUBERNETES
+      kubernetes:
+        role: ${VAULT_SA_ROLE_ID}
+        kubernetes-path: ${VAULT_CLUSTERNAME}
+        service-account-token-file: /var/run/secrets/openbao/token
 
 sfera:
   company-code: '0085'
@@ -68,3 +80,11 @@ db:
   url: ${DB_URL}
   user: ${DB_USER}
   password: ${DB_PW}
+
+---
+# only in cluster environment
+spring:
+  config:
+    activate:
+      on-profile: '!local & !test'
+    import: vault://
