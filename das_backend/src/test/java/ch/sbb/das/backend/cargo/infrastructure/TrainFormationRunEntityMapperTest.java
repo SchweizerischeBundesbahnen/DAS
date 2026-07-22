@@ -1,4 +1,4 @@
-package ch.sbb.das.backend.cargo.infrastructure.model;
+package ch.sbb.das.backend.cargo.infrastructure;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -13,6 +13,7 @@ import ch.sbb.das.backend.cargo.domain.model.Load;
 import ch.sbb.das.backend.cargo.domain.model.TractionMode;
 import ch.sbb.das.backend.cargo.domain.model.Vehicle;
 import ch.sbb.das.backend.cargo.domain.model.VehicleUnit;
+import ch.sbb.das.backend.cargo.infrastructure.model.TrainFormationRunEntity;
 import ch.sbb.das.backend.locations.TafTapLocationReference;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
@@ -20,14 +21,16 @@ import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-class TrainFormationRunEntityTest {
+class TrainFormationRunEntityMapperTest {
+
+    private final TrainFormationRunEntityMapper underTest = new TrainFormationRunEntityMapper();
 
     @Test
     void from_null() {
 
         Formation formation = new Formation(null, null, null, null);
 
-        List<TrainFormationRunEntity> entities = TrainFormationRunEntity.from(formation);
+        List<TrainFormationRunEntity> entities = underTest.toEntities(formation);
 
         assertThat(entities).isEmpty();
     }
@@ -40,7 +43,7 @@ class TrainFormationRunEntityTest {
 
         Formation formation = new Formation(operationalTrainNumber, trainPathId, operationalDay, Collections.emptyList());
 
-        List<TrainFormationRunEntity> entities = TrainFormationRunEntity.from(formation);
+        List<TrainFormationRunEntity> entities = underTest.toEntities(formation);
 
         assertThat(entities).isEmpty();
     }
@@ -93,7 +96,7 @@ class TrainFormationRunEntityTest {
 
         Formation formation = new Formation(operationalTrainNumber, trainPathId, operationalDay, List.of(formationRun));
 
-        List<TrainFormationRunEntity> entities = TrainFormationRunEntity.from(formation);
+        List<TrainFormationRunEntity> entities = underTest.toEntities(formation);
 
         assertThat(entities).first().isNotNull();
         TrainFormationRunEntity result = entities.getFirst();

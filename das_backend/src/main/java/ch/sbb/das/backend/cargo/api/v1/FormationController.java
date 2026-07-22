@@ -1,6 +1,6 @@
 package ch.sbb.das.backend.cargo.api.v1;
 
-import ch.sbb.das.backend.cargo.api.v1.model.Formation;
+import ch.sbb.das.backend.cargo.api.v1.internal.FormationMapper;
 import ch.sbb.das.backend.cargo.api.v1.model.FormationResponse;
 import ch.sbb.das.backend.cargo.application.FormationService;
 import ch.sbb.das.backend.cargo.infrastructure.model.TrainFormationRunEntity;
@@ -47,9 +47,11 @@ public class FormationController {
     public static final String API_FORMATIONS = ApiDocumentation.DRIVER_URI + ApiDocumentation.DRIVER_VERSION_URI_V1 + PATH_SEGMENT_FORMATIONS;
 
     private final FormationService formationService;
+    private final FormationMapper formationMapper;
 
-    public FormationController(FormationService formationService) {
+    public FormationController(FormationService formationService, FormationMapper formationMapper) {
         this.formationService = formationService;
+        this.formationMapper = formationMapper;
     }
 
     @Operation(summary = "Get formation by train identification.")
@@ -98,7 +100,7 @@ public class FormationController {
         headers.add(HttpHeaders.CACHE_CONTROL, "private");
         return ResponseEntityFactory.createOkResponse(
             headers,
-            new FormationResponse(List.of(Formation.from(entities)))
+            new FormationResponse(List.of(formationMapper.toFormation(entities)))
         );
     }
 }
