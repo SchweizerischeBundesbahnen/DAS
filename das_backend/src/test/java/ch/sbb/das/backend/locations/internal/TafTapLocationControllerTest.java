@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.das.backend.IntegrationTest;
 import ch.sbb.das.backend.WithMockRole;
 import ch.sbb.das.backend.common.security.UserRole;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -24,6 +25,7 @@ class TafTapLocationControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @DisplayName("All locations when the caller is admin then all locations and cache headders are returned|tests:144,538")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     void getAllLocations_ok_admin_returnsAllLocationsAndHeaders() throws Exception {
@@ -38,6 +40,7 @@ class TafTapLocationControllerTest {
             .andExpect(jsonPath("$.data[*].validFrom", containsInAnyOrder(null, "2099-01-01", null)));
     }
 
+    @DisplayName("All locations when the caller is ru admin then all locations are returned|tests:144,538")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void getAllLocations_ok_ruAdmin_returnsAllLocations() throws Exception {
@@ -46,6 +49,7 @@ class TafTapLocationControllerTest {
             .andExpect(jsonPath("$.data", hasSize(3)));
     }
 
+    @DisplayName("All locations when the caller is observer then access is forbidden|tests:144,538")
     @Test
     @WithMockRole(roles = UserRole.OBSERVER)
     void getAllLocations_forbidden_observer() throws Exception {
@@ -53,6 +57,7 @@ class TafTapLocationControllerTest {
             .andExpect(status().isForbidden());
     }
 
+    @DisplayName("All locations when the caller is not authenticated then access is unauthorized|tests:144,538")
     @Test
     void getAllLocations_unauthorized() throws Exception {
         mockMvc.perform(get(API_LOCATIONS))

@@ -26,6 +26,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import org.eclipse.paho.mqttv5.client.IMqttMessageListener;
 import org.eclipse.paho.mqttv5.common.MqttMessage;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,7 +35,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @SpringBootTest(classes = {SferaService.class, SferaMessageCreator.class, XmlHelper.class, SferaMessagingConfig.class})
 @ActiveProfiles("test")
-class SferaServiceTest {
+class PreloadIntegrationTest {
 
     @Autowired
     private SferaService underTest;
@@ -52,18 +53,21 @@ class SferaServiceTest {
         return Files.readString(Path.of("src/test/resources/trainjourneypreloader/" + filename)).replace("${correlationId}", correlationId);
     }
 
+    @DisplayName("Connect delegates to mqtt client|tests:914")
     @Test
     void connect_delegatesToMqttClient() {
         underTest.connect();
         verify(mqttClient, times(1)).connect(anyString());
     }
 
+    @DisplayName("Disconnect delegates to mqtt client|tests:914")
     @Test
     void disconnect_delegatesToMqttClient() {
         underTest.disconnect();
         verify(mqttClient, times(1)).disconnect();
     }
 
+    @DisplayName("Preload when train identification and sfera data received results jps, sps and tcs|tests:914,1653,2271")
     @Test
     void preload_ok() throws Exception {
         AtomicReference<IMqttMessageListener> listenerRef = new AtomicReference<>();
@@ -116,6 +120,7 @@ class SferaServiceTest {
         verify(mqttClient, times(4)).publish(anyString(), anyString());
     }
 
+    @DisplayName("Preload when sfera returns hs error then nothing stored|tests:914,1653,2271")
     @Test
     void preload_throwsWhenHsError() throws Exception {
         AtomicReference<IMqttMessageListener> listenerRef = new AtomicReference<>();

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.18.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.18.0...sfera_mock-v0.18.1) (2026-07-20)
+
+
+### Bug Fixes
+
+* sfera-mock formation insert.sql column rename ([#2443](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2443)) ([22e4a3f](https://github.com/SchweizerischeBundesbahnen/DAS/commit/22e4a3ffb4fa98a10cc15e6f970ac837d6e038e4))
+
 ## [0.18.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.17.0...sfera_mock-v0.18.0) (2026-07-09)
 
 

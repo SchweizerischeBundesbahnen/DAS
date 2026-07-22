@@ -18,7 +18,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -38,8 +40,27 @@ public class TrainIdentificationService {
     }
 
     public List<CompanyMatch> findCompaniesByStartDatesAndTrainNumber(List<LocalDate> startDates, String operationalTrainNumber) {
+        validateStartDates(startDates);
+        Set<LocalDate> requestedDates = Set.copyOf(startDates);
+        OffsetDateTime from = startDates.stream().min(Comparator.naturalOrder())
+            .orElseThrow()
+            .atStartOfDay(DateTimeUtil.SWISS_ZONE)
+            .toOffsetDateTime();
+        OffsetDateTime to = startDates.stream().max(Comparator.naturalOrder())
+            .orElseThrow()
+            .plusDays(1)
+            .atStartOfDay(DateTimeUtil.SWISS_ZONE)
+            .toOffsetDateTime();
+
+        // Query by a plain start_date_time range instead of wrapping the column in a
+        // date-cast/IN clause: a raw range comparison is sargable, so database can use the
+        // index for a single index range scan instead of a full table scan.
         List<TrainIdentificationEntity> entities = trainIdentificationRepository
-            .findAllByStartDatesAndOperationalTrainNumber(startDates, operationalTrainNumber);
+            .findAllByStartDateTimeRangeAndOperationalTrainNumber(from, to, operationalTrainNumber).stream()
+            // the range query above may cover dates outside the requested set if the requested dates have gaps;
+            // narrow the (already small) result set down to the exact requested dates
+            .filter(entity -> requestedDates.contains(entity.getStartDateTime().atZoneSameInstant(DateTimeUtil.SWISS_ZONE).toLocalDate()))
+            .toList();
 
         Map<CompanyCode, Company> companiesByCode = companyService.getAllCompanies().stream()
             .collect(Collectors.toMap(Company::code, company -> company));
@@ -52,6 +73,21 @@ public class TrainIdentificationService {
             .sorted(Comparator.comparing(CompanyMatch::startDate)
                 .thenComparing(item -> item.company().shortName()))
             .toList();
+    }
+
+    private void validateStartDates(List<LocalDate> startDates) {
+        LocalDate today = DateTimeUtil.today();
+        LocalDate earliest = today.minusDays(1);
+        LocalDate latest = today.plusDays(1);
+
+        List<LocalDate> outOfRange = startDates.stream()
+            .filter(startDate -> startDate.isBefore(earliest) || startDate.isAfter(latest))
+            .toList();
+
+        if (!outOfRange.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                "startDate must be within " + earliest + " and " + latest + ", but got: " + outOfRange);
+        }
     }
 
     private TrainIdentification readEntity(TrainIdentificationEntity trainRunEntity) {

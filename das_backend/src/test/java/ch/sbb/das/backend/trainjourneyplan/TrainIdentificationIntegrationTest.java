@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.waitAtMost;
 
 import ch.sbb.das.backend.IntegrationTest;
-import ch.sbb.das.backend.common.DateTimeUtil;
 import ch.sbb.das.backend.companies.CompanyCode;
 import ch.sbb.das.backend.trainjourneyplan.application.TimetableService;
 import ch.sbb.das.backend.trainjourneyplan.application.model.trainidentification.OperatingPeriod;
@@ -25,6 +24,7 @@ import java.time.ZoneOffset;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -61,6 +61,7 @@ class TrainIdentificationIntegrationTest {
     @Value("${trainjourneyplan.kafka.timetable-train-topic}")
     private String timetableTrainTopic;
 
+    @DisplayName("Timetable period when received via message broker then it is persisted with the correct start and end dates|tests:535,2136")
     @Test
     void publishNetsPeriod__timetablePeriodSaved() {
         TimetablePeriodKey key = jsonMapper.readValue(new File("src/test/resources/trainjourneyplan/period_key.json"), TimetablePeriodKey.class);
@@ -84,6 +85,7 @@ class TrainIdentificationIntegrationTest {
                 ));
     }
 
+    @DisplayName("Train data when received via message broker then it is persisted with correct details|tests:535,2136")
     @Test
     void saveAndDeleteTrainData() {
 
@@ -120,12 +122,13 @@ class TrainIdentificationIntegrationTest {
         sendRecord(fpsKey, fpsTrain);
 
         LocalDate startDate = LocalDate.of(testYear, 1, 3);
+        OffsetDateTime after = OffsetDateTime.of(startDate.minusDays(1), LocalTime.MIN, ZoneOffset.UTC);
+        OffsetDateTime before = OffsetDateTime.of(startDate.plusDays(1), LocalTime.MAX, ZoneOffset.UTC);
 
         // Then
         waitAtMost(10, TimeUnit.SECONDS)
             .untilAsserted(() -> {
-                List<TrainIdentification> trainIds = trainIdentificationService.getNewTrainIdentificationsBetween(DateTimeUtil.now(),
-                    OffsetDateTime.of(startDate.plusDays(1), LocalTime.now(), ZoneOffset.UTC));
+                List<TrainIdentification> trainIds = trainIdentificationService.getNewTrainIdentificationsBetween(after, before);
                 assertThat(trainIds).hasSize(1);
                 TrainIdentification trainId = trainIds.getFirst();
                 assertThat(trainId.startDateTime().atZoneSameInstant(SWISS_ZONE).toLocalDate()).isEqualTo(startDate);
@@ -139,8 +142,7 @@ class TrainIdentificationIntegrationTest {
         // Then
         waitAtMost(10, TimeUnit.SECONDS)
             .untilAsserted(() -> {
-                List<TrainIdentification> trainIds = trainIdentificationService.getNewTrainIdentificationsBetween(DateTimeUtil.now(),
-                    OffsetDateTime.of(startDate.plusDays(1), LocalTime.now(), ZoneOffset.UTC));
+                List<TrainIdentification> trainIds = trainIdentificationService.getNewTrainIdentificationsBetween(after, before);
                 assertThat(trainIds).isEmpty();
             });
     }

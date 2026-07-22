@@ -8,7 +8,7 @@ import org.testcontainers.postgresql.PostgreSQLContainer;
 @TestConfiguration
 public class PostgresTestContainerConfiguration {
 
-    private static final PostgreSQLContainer POSTGRES = new PostgreSQLContainer("postgres:18.3");
+    private static final PostgreSQLContainer POSTGRES = new PostgreSQLContainer("postgres:18.4");
 
     static {
         POSTGRES.start();

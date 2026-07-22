@@ -66,7 +66,7 @@ public class RuIndicationMapper {
         }
         entity.setCompanies(request.scope().companies());
         entity.setOperationalTrainNumberFilters(
-            request.scope().operationalOperationalTrainNumberFilters() == null ? List.of() : request.scope().operationalOperationalTrainNumberFilters());
+            request.scope().operationalTrainNumberFilters() == null ? List.of() : request.scope().operationalTrainNumberFilters());
         entity.setTafTapLocationReferences(request.scope().tafTapLocationReferences() == null ? List.of() : request.scope().tafTapLocationReferences().stream().distinct().toList());
         entity.setPeriods(request.periods());
         return entity;

@@ -1,7 +1,6 @@
 package ch.sbb.das.backend.indications.internal;
 
 import static ch.sbb.das.backend.indications.internal.RuIndicationTemplateController.API_RU_INDICATION_TEMPLATES;
-import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.context.jdbc.SqlMergeMode.MergeMode.MERGE;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -14,6 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.das.backend.IntegrationTest;
 import ch.sbb.das.backend.WithMockRole;
 import ch.sbb.das.backend.common.security.UserRole;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
@@ -28,6 +28,7 @@ class RuIndicationTemplateControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @DisplayName("RU indication templates when requested then all templates are returned|tests:1626")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createRuIndicationTemplates.sql")
@@ -48,6 +49,7 @@ class RuIndicationTemplateControllerTest {
             .andExpect(jsonPath("$.data[0].lastModifiedBy").value("unit_test"));
     }
 
+    @DisplayName("RU indication templates when the caller has no permission then access is forbidden|tests:1626")
     @Test
     @WithMockRole(roles = UserRole.OBSERVER)
     void getAll_RuIndicationTemplates_forbidden_role() throws Exception {
@@ -55,6 +57,7 @@ class RuIndicationTemplateControllerTest {
             .andExpect(status().isForbidden());
     }
 
+    @DisplayName("RU indication templates when none exist then the list is empty|tests:1626")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void getAll_RuIndicationTemplates_empty() throws Exception {
@@ -63,6 +66,7 @@ class RuIndicationTemplateControllerTest {
             .andExpect(jsonPath("$.data", hasSize(0)));
     }
 
+    @DisplayName("RU indication templates only the tenants own templates are returned|tests:1626")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN, adminTenant = false)
     @Sql("classpath:createRuIndicationTemplates.sql")
@@ -75,6 +79,7 @@ class RuIndicationTemplateControllerTest {
             .andExpect(jsonPath("$.data[0].tenant").doesNotExist());
     }
 
+    @DisplayName("RU indication template when the id exists then the template is returned|tests:1626")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createRuIndicationTemplates.sql")
@@ -94,6 +99,7 @@ class RuIndicationTemplateControllerTest {
             .andExpect(jsonPath("$.data[0].lastModifiedBy").value("unit_test"));
     }
 
+    @DisplayName("RU indication template when the id does not exist then the API returns not found|tests:1626")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createRuIndicationTemplates.sql")
@@ -102,6 +108,7 @@ class RuIndicationTemplateControllerTest {
             .andExpect(status().isNotFound());
     }
 
+    @DisplayName("RU indication template when the tenant is not allowed then access is forbidden|tests:1626")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createRuIndicationTemplates.sql")
@@ -111,6 +118,7 @@ class RuIndicationTemplateControllerTest {
             .andExpect(jsonPath("$.detail").value("Not allowed!"));
     }
 
+    @DisplayName("RU indication template when all languages are provided then it is created|tests:1626")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void create_RuIndicationTemplate_ok_allLanguages() throws Exception {
@@ -139,6 +147,7 @@ class RuIndicationTemplateControllerTest {
 
     }
 
+    @DisplayName("RU indication template when a single language is provided then it is created|tests:1626")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN, adminTenant = false)
     void create_RuIndicationTemplate_ok_singleLanguage_assignsCurrentTenant() throws Exception {
@@ -164,6 +173,7 @@ class RuIndicationTemplateControllerTest {
             .andExpect(jsonPath("$.data[0].category").value("INFO"));
     }
 
+    @DisplayName("RU indication template when empty language placeholders are provided then they are ignored|tests:1626")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void create_RuIndicationTemplate_ok_ignores_empty_language_placeholders() throws Exception {
@@ -188,6 +198,7 @@ class RuIndicationTemplateControllerTest {
 
     }
 
+    @DisplayName("RU indication template when the category is missing then the API rejects the request|tests:1626")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void create_RuIndicationTemplate_invalid_noCategory() throws Exception {
@@ -202,6 +213,7 @@ class RuIndicationTemplateControllerTest {
             .andExpect(jsonPath("$.detail").value("Invalid request content. -> category=must not be blank"));
     }
 
+    @DisplayName("RU indication template when language content is missing then the API rejects the request|tests:1626")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void create_RuIndicationTemplate_invalid_noLanguageContent() throws Exception {
@@ -216,6 +228,7 @@ class RuIndicationTemplateControllerTest {
             .andExpect(jsonPath("$.detail").value("Invalid request content. -> ruIndicationTemplateRequest=At least one language content (de, fr or it) must be provided."));
     }
 
+    @DisplayName("RU indication template when the title is blank then the API rejects the request|tests:1626")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void create_RuIndicationTemplate_invalid_blankTitle() throws Exception {
@@ -231,6 +244,7 @@ class RuIndicationTemplateControllerTest {
             .andExpect(jsonPath("$.detail").value("Invalid request content. -> de.title=must not be blank"));
     }
 
+    @DisplayName("RU indication template when only the title is provided then it is created|tests:1626")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void create_RuIndicationTemplate_ok_onlyTitleProvided() throws Exception {
@@ -248,6 +262,7 @@ class RuIndicationTemplateControllerTest {
             .andExpect(jsonPath("$.data[0].de.text").isEmpty());
     }
 
+    @DisplayName("RU indication template when valid update request is provided then it is updated|tests:1626")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createRuIndicationTemplates.sql")
@@ -275,6 +290,7 @@ class RuIndicationTemplateControllerTest {
             .andExpect(jsonPath("$.data[0].lastModifiedBy").value("test-user"));
     }
 
+    @DisplayName("RU indication template when the id does not exist then the API returns not found|tests:1626")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void update_RuIndicationTemplate_notFound() throws Exception {
@@ -289,6 +305,7 @@ class RuIndicationTemplateControllerTest {
             .andExpect(status().isNotFound());
     }
 
+    @DisplayName("RU indication template when language content is missing then the API rejects the request|tests:1626")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void update_RuIndicationTemplate_invalid_noLanguageContent() throws Exception {
@@ -303,6 +320,7 @@ class RuIndicationTemplateControllerTest {
             .andExpect(jsonPath("$.detail").value("Invalid request content. -> ruIndicationTemplateRequest=At least one language content (de, fr or it) must be provided."));
     }
 
+    @DisplayName("RU indication template when the title is blank then the API rejects the request|tests:1626")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void update_RuIndicationTemplate_invalid_blankTitle() throws Exception {
@@ -318,6 +336,7 @@ class RuIndicationTemplateControllerTest {
             .andExpect(jsonPath("$.detail").value("Invalid request content. -> fr.title=must not be blank"));
     }
 
+    @DisplayName("RU indication template when updating an existing with other tenant does not match then access is forbidden|tests:1626")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createRuIndicationTemplates.sql")
@@ -334,6 +353,7 @@ class RuIndicationTemplateControllerTest {
             .andExpect(jsonPath("$.detail").value("Not allowed!"));
     }
 
+    @DisplayName("RU indication template when deleted by ids then the selected templates are removed|tests:1626")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createRuIndicationTemplates.sql")
@@ -360,6 +380,7 @@ class RuIndicationTemplateControllerTest {
             .andExpect(status().isNotFound());
     }
 
+    @DisplayName("RU indication template when the request body is invalid then the API rejects it|tests:1626")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void deleteRuIndicationTemplateByIds_invalid_body() throws Exception {
@@ -374,6 +395,7 @@ class RuIndicationTemplateControllerTest {
             .andExpect(jsonPath("$.detail").value("Invalid request content. -> ids=must not be empty"));
     }
 
+    @DisplayName("RU indication template when at least one template belongs to another tenant then access is forbidden|tests:1626")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createRuIndicationTemplates.sql")
