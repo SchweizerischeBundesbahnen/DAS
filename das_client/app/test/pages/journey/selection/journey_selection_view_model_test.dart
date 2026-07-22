@@ -1,15 +1,19 @@
 import 'package:app/pages/journey/selection/journey_selection_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
+import 'package:app/provider/user_settings.dart';
 import 'package:clock/clock.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:sfera/component.dart';
+import 'package:train_identification/component.dart';
 
-@GenerateNiceMocks([MockSpec<SferaRepository>()])
 import 'journey_selection_view_model_test.mocks.dart';
 
+@GenerateNiceMocks([MockSpec<SferaRepository>(), MockSpec<TrainIdentificationRepository>(), MockSpec<UserSettings>()])
 void main() {
   late SferaRepository mockSferaRepo;
+  late MockTrainIdentificationRepository mockTrainIdentificationRepository;
+  late MockUserSettings mockUserSettings;
   late JourneySelectionViewModel testee;
   final List<TrainIdentification> callRegister = [];
   final newYears2025 = DateTime.utc(2025, 1, 1);
@@ -17,9 +21,13 @@ void main() {
 
   setUp(() {
     mockSferaRepo = MockSferaRepository();
+    mockTrainIdentificationRepository = MockTrainIdentificationRepository();
+    mockUserSettings = MockUserSettings();
     withClock(fixedClock, () {
       testee = JourneySelectionViewModel(
         sferaRepo: mockSferaRepo,
+        trainIdentificationRepository: mockTrainIdentificationRepository,
+        userSettings: mockUserSettings,
         onJourneySelected: (trainIdentification) async {
           callRegister.add(trainIdentification);
         },
@@ -38,7 +46,12 @@ void main() {
     final clock = Clock.fixed(newYears1970);
     withClock(clock, () {
       // seventies testee
-      testee = JourneySelectionViewModel(sferaRepo: mockSferaRepo, onJourneySelected: (_) async {});
+      testee = JourneySelectionViewModel(
+        sferaRepo: mockSferaRepo,
+        trainIdentificationRepository: mockTrainIdentificationRepository,
+        userSettings: mockUserSettings,
+        onJourneySelected: (_) async {},
+      );
     });
     // ACT
     final state = testee.modelValue;
@@ -50,30 +63,9 @@ void main() {
     expect(selecting.startDate, equals(newYears1970));
     expect(selecting.railwayUndertaking, RailwayUndertaking.sbbP);
     expect(selecting.isInputComplete, isFalse);
-    expect(selecting.availableStartDates, hasLength(2));
-    expect(selecting.availableStartDates.first, equals(DateTime.utc(1969, 12, 31)));
-    expect(selecting.availableStartDates[1], equals(newYears1970));
-  });
-
-  test('modelValue_whenThreeHoursBeforeNextDay_thenIsSelectingWithMoreAvailableDates', () {
-    // ARRANGE
-    final closeToBerchtoldstag1970 = DateTime.utc(1970, 1, 1, 22);
-    final newYears1970 = DateTime.utc(1970);
-    final clock = Clock.fixed(closeToBerchtoldstag1970);
-    withClock(clock, () {
-      testee = JourneySelectionViewModel(sferaRepo: mockSferaRepo, onJourneySelected: (_) async {});
-    });
-    // ACT
-    final state = testee.modelValue;
-
-    // EXPECT
-    expect(state, isA<Selecting>());
-    final selecting = state as Selecting;
-    expect(selecting.startDate, equals(newYears1970));
     expect(selecting.availableStartDates, hasLength(3));
     expect(selecting.availableStartDates.first, equals(DateTime.utc(1969, 12, 31)));
     expect(selecting.availableStartDates[1], equals(newYears1970));
-    expect(selecting.availableStartDates[2], equals(DateTime.utc(1970, 01, 02)));
   });
 
   test('updateTrainNumber_whenEmpty_thenFormIsNotCompleted', () {

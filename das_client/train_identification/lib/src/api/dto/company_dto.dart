@@ -1,4 +1,3 @@
-import 'package:core_data/component.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'company_dto.g.dart';
@@ -16,8 +15,4 @@ class CompanyDto {
   final String shortName;
 
   Map<String, dynamic> toJson() => _$CompanyDtoToJson(this);
-}
-
-extension CompanyDtoX on CompanyDto {
-  Company toCompany() => Company(code: code, shortName: shortName);
 }

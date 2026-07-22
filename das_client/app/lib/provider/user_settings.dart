@@ -56,6 +56,11 @@ class UserSettings {
     final tourSystemName = get<String?>(.tourSystem, null);
     return TourSystem.values.firstWhereOrNull((it) => it.name == tourSystemName);
   }
+
+  RailwayUndertaking? get lastUsedRailwayUndertaking {
+    final railwayUndertakingName = get<String?>(.lastUsedRailwayUndertaking, null);
+    return RailwayUndertaking.values.firstWhereOrNull((it) => it.name == railwayUndertakingName);
+  }
 }
 
 enum UserSettingKeys {
@@ -65,4 +70,5 @@ enum UserSettingKeys {
   showStationSignals,
   showEctsConventionalSpeedSignals,
   showEctsExtendedSpeedSignals,
+  lastUsedRailwayUndertaking,
 }

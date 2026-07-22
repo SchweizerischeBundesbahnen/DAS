@@ -16,7 +16,7 @@ class TrainIdentificationRepositoryImpl implements TrainIdentificationRepository
   final SferaLocalRepo sferaLocalRepo;
 
   @override
-  Future<List<CompanyMatch>> findTrainIdentifications({
+  Future<Set<CompanyMatch>> findTrainIdentifications({
     required String operationalTrainNumber,
   }) async {
     final now = DateTime.now();
@@ -34,7 +34,7 @@ class TrainIdentificationRepositoryImpl implements TrainIdentificationRepository
         startDates: startDates,
       );
 
-      final companyMatches = response.body.data.map((dto) => dto.toCompanyMatch()).toList();
+      final companyMatches = response.body.data.map((dto) => dto.toCompanyMatch()).toSet();
       _log.info('Successfully fetched ${companyMatches.length} company matches for train $operationalTrainNumber.');
       return companyMatches;
     } catch (e, s) {
@@ -47,7 +47,7 @@ class TrainIdentificationRepositoryImpl implements TrainIdentificationRepository
     }
   }
 
-  Future<List<CompanyMatch>> _findInLocalDatabase(
+  Future<Set<CompanyMatch>> _findInLocalDatabase(
     String operationalTrainNumber,
     List<DateTime> startDates,
   ) async {

@@ -4,7 +4,7 @@ abstract class TrainIdentificationRepository {
   const TrainIdentificationRepository._();
 
   /// Fetches matching companies (including startDate) for yesterday, today, and tomorrow.
-  Future<List<CompanyMatch>> findTrainIdentifications({
+  Future<Set<CompanyMatch>> findTrainIdentifications({
     required String operationalTrainNumber,
   });
 }

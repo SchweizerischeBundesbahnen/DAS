@@ -30,9 +30,9 @@ import 'package:logging/logging.dart';
 import 'package:mqtt/component.dart';
 import 'package:preload/component.dart';
 import 'package:ru_indications/component.dart';
-import 'package:train_identification/component.dart';
 import 'package:settings/component.dart';
 import 'package:sfera/component.dart';
+import 'package:train_identification/component.dart';
 
 final _log = Logger('AuthenticatedScope');
 
@@ -221,7 +221,7 @@ extension AuthenticatedScopeExtension on GetIt {
 
   void registerJourneyNavigationViewModel() {
     registerSingletonAsync<JourneyNavigationViewModel>(
-      () async => JourneyNavigationViewModel(sferaRepo: DI.get()),
+      () async => JourneyNavigationViewModel(sferaRepo: DI.get(), userSettings: DI.get()),
       dependsOn: [SferaRepository],
       dispose: (vm) => vm.dispose(),
     );
@@ -231,6 +231,8 @@ extension AuthenticatedScopeExtension on GetIt {
     factoryFunc() async {
       return JourneySelectionViewModel(
         sferaRepo: DI.get(),
+        trainIdentificationRepository: DI.get(),
+        userSettings: DI.get(),
         onJourneySelected: (trainId) => DI.get<JourneyNavigationViewModel>().replaceWith([
           ExtendedTrainIdentification(trainIdentification: trainId),
         ]),

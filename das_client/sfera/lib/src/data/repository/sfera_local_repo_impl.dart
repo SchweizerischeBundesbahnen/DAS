@@ -86,7 +86,7 @@ class SferaLocalRepoImpl implements SferaLocalRepo {
   }
 
   @override
-  Future<List<CompanyMatch>> findCompanyMatchesByTrainNumber(
+  Future<Set<CompanyMatch>> findCompanyMatchesByTrainNumber(
     String operationalTrainNumber, {
     required List<DateTime> startDates,
   }) async {
@@ -96,14 +96,11 @@ class SferaLocalRepoImpl implements SferaLocalRepo {
         .where((e) => normalizedDates.contains(e.startDate))
         .map(
           (e) => CompanyMatch(
-            company: Company(
-              code: e.company,
-              shortName: RailwayUndertaking.fromCompanyCode(e.company).name,
-            ),
+            ru: RailwayUndertaking.fromCompanyCode(e.company),
             startDate: e.startDate,
           ),
         )
-        .toList();
+        .toSet();
   }
 
   @override

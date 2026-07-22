@@ -9,7 +9,7 @@ abstract class SferaLocalRepo {
 
   Future<Journey?> getJourney({required String company, required String trainNumber, required DateTime startDate});
 
-  Future<List<CompanyMatch>> findCompanyMatchesByTrainNumber(
+  Future<Set<CompanyMatch>> findCompanyMatchesByTrainNumber(
     String operationalTrainNumber, {
     required List<DateTime> startDates,
   });

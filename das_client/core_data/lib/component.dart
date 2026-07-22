@@ -1,5 +1,4 @@
 export 'package:core_data/src/base_data.dart';
-export 'package:core_data/src/company.dart';
 export 'package:core_data/src/company_match.dart';
 export 'package:core_data/src/datatype.dart';
 export 'package:core_data/src/journey_annotation.dart';

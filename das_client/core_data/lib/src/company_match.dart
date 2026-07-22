@@ -1,27 +1,24 @@
-import 'package:core_data/src/company.dart';
+import 'package:core_data/component.dart';
 
 class CompanyMatch {
   const CompanyMatch({
-    required this.company,
+    required this.ru,
     required this.startDate,
   });
 
-  final Company company;
+  final RailwayUndertaking ru;
   final DateTime startDate;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is CompanyMatch &&
-          runtimeType == other.runtimeType &&
-          company == other.company &&
-          startDate == other.startDate;
+      other is CompanyMatch && runtimeType == other.runtimeType && ru == other.ru && startDate == other.startDate;
 
   @override
-  int get hashCode => Object.hash(company, startDate);
+  int get hashCode => Object.hash(ru, startDate);
 
   @override
   String toString() {
-    return 'CompanyMatch{company: $company, startDate: $startDate}';
+    return 'CompanyMatch{ru: $ru, startDate: $startDate}';
   }
 }

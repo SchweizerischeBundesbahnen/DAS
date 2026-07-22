@@ -60,6 +60,7 @@ class JourneySearchOverlay extends StatelessWidget {
         crossAxisAlignment: .start,
         children: [
           JourneyDateInput(isModalVersion: true),
+          JourneyTrainNumberInput(isModalVersion: true),
           StreamBuilder(
             stream: vm.model,
             initialData: vm.modelValue,
@@ -67,13 +68,11 @@ class JourneySearchOverlay extends StatelessWidget {
               final model = snapshot.requireData;
               return SelectRailwayUndertakingInput(
                 isModalVersion: true,
-                selectedRailwayUndertakings: [model.railwayUndertaking],
+                selectedRailwayUndertakings: [?model.railwayUndertaking],
                 updateRailwayUndertaking: vm.updateRailwayUndertaking,
-                borderType: .standalone,
               );
             },
           ),
-          JourneyTrainNumberInput(isModalVersion: true),
         ],
       ),
     );

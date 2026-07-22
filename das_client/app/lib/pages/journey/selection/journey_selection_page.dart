@@ -13,8 +13,12 @@ import 'package:app/pages/journey/selection/widgets/logout_button.dart';
 import 'package:app/pages/journey/view_model/app_expiration_view_model.dart';
 import 'package:app/pages/journey/view_model/model/app_expiration_model.dart';
 import 'package:app/pages/journey/widgets/das_journey_scaffold.dart';
+import 'package:app/theme/theme_util.dart';
+import 'package:app/util/format.dart';
 import 'package:app/widgets/railway_undertaking/widgets/select_railway_undertaking_input.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:collection/collection.dart';
+import 'package:core_data/component.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -151,12 +155,11 @@ class _ContentState extends State<_Content> with WidgetsBindingObserver {
           body: Column(
             children: [
               JourneyDateInput(),
-              SelectRailwayUndertakingInput(
-                selectedRailwayUndertakings: [model.railwayUndertaking],
-                updateRailwayUndertaking: viewModel.updateRailwayUndertaking,
-                borderType: .standalone,
-              ),
               JourneyTrainNumberInput(),
+              SelectRailwayUndertakingInput(
+                selectedRailwayUndertakings: [?model.railwayUndertaking],
+                updateRailwayUndertaking: viewModel.updateRailwayUndertaking,
+              ),
             ],
           ),
         );
@@ -174,7 +177,8 @@ class _ContentState extends State<_Content> with WidgetsBindingObserver {
 
         return switch (model) {
           final Selecting _ || final Loaded _ => SizedBox.shrink(),
-          final Loading _ => Center(child: CircularProgressIndicator()),
+          final Loading _ || final LoadingCompanyMatches _ => Center(child: CircularProgressIndicator()),
+          final SelectingCompanyMatch s => _companyMatchesSelectionBody(context, s),
           final Error e => SBBMessage(
             illustration: SBBIllustration.display(),
             titleText: context.l10n.c_something_went_wrong,
@@ -183,6 +187,88 @@ class _ContentState extends State<_Content> with WidgetsBindingObserver {
           ),
         };
       },
+    );
+  }
+
+  Widget _companyMatchesSelectionBody(BuildContext context, SelectingCompanyMatch model) {
+    return Padding(
+      padding: EdgeInsetsGeometry.symmetric(horizontal: SBBSpacing.xSmall, vertical: SBBSpacing.medium),
+      child: SingleChildScrollView(
+        child: Column(
+          spacing: SBBSpacing.xSmall,
+          children: [
+            _companyMatchesTitle(context),
+            if (model.companyMatches.isNotEmpty) _companyMatchesList(context, model),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _companyMatchesTitle(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: SBBSpacing.medium),
+      child: Column(
+        spacing: SBBSpacing.medium,
+        children: [
+          Text(context.l10n.p_train_selection_no_match_title, style: SBBTextStyles.mediumLight),
+          Text(context.l10n.p_train_selection_no_match_subtitle, style: SBBTextStyles.smallLight),
+        ],
+      ),
+    );
+  }
+
+  Widget _companyMatchesList(BuildContext context, SelectingCompanyMatch model) {
+    final companyMatches = model.companyMatches.sorted((a, b) => a.startDate.compareTo(b.startDate));
+
+    return Column(
+      crossAxisAlignment: .start,
+      spacing: SBBSpacing.xSmall,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: SBBSpacing.medium),
+          child: Text(context.l10n.p_train_selection_company_matches_title, style: SBBTextStyles.smallLight),
+        ),
+        SBBRadioGroup(
+          groupValue: model.selectedCompanyMatch,
+          onChanged: (value) {
+            final viewModel = context.read<JourneySelectionViewModel>();
+            viewModel.updateSelectedCompanyMatch(value);
+          },
+          child: SBBContentBox(
+            child: Column(
+              children: List.generate(
+                companyMatches.length,
+                (index) => _companyMatchesListItem(context, model, companyMatches[index]),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _companyMatchesListItem(BuildContext context, SelectingCompanyMatch model, CompanyMatch companyMatch) {
+    final isDateBold = DateUtils.isSameDay(model.startDate, companyMatch.startDate);
+    final subtitleColor = ThemeUtil.getColor(context, SBBColors.granite, SBBColors.graphite);
+
+    return SBBRadioListItem(
+      value: companyMatch,
+      title: Column(
+        crossAxisAlignment: .start,
+        children: [
+          Text(
+            '${companyMatch.ru.companyCode}, ${companyMatch.ru.name.toUpperCase()}',
+            style: SBBTextStyles.mediumLight,
+          ),
+          Text(
+            Format.date(companyMatch.startDate),
+            style: isDateBold
+                ? SBBTextStyles.smallBold.copyWith(color: subtitleColor)
+                : SBBTextStyles.smallLight.copyWith(color: subtitleColor),
+          ),
+        ],
+      ),
     );
   }
 
@@ -201,14 +287,14 @@ class _ContentState extends State<_Content> with WidgetsBindingObserver {
 
         final buttonLabel = context.l10n.c_button_confirm;
         return switch (model) {
-          final Loading _ => wrapWithPadding(
+          final Loading _ || final LoadingCompanyMatches _ => wrapWithPadding(
             SBBPrimaryButton(labelText: buttonLabel, onPressed: null, isLoading: true),
           ),
-          final Selecting s => Padding(
+          final Selecting _ || final SelectingCompanyMatch _ => Padding(
             padding: const .symmetric(vertical: SBBSpacing.medium, horizontal: SBBSpacing.xSmall),
             child: SBBPrimaryButton(
               labelText: buttonLabel,
-              onPressed: s.isInputComplete ? () => viewModel.loadJourney() : null,
+              onPressed: model!.isInputComplete ? () => viewModel.loadJourney() : null,
             ),
           ),
           _ => wrapWithPadding(SBBPrimaryButton(labelText: buttonLabel, onPressed: null)),
