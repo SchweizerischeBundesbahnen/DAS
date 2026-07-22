@@ -48,11 +48,11 @@ public record FormationRun(
     Integer hauledLoadBrakedWeightInT,
     @Schema(requiredMode = RequiredMode.REQUIRED)
     Integer formationBrakedWeightInT,
-    @Schema(requiredMode = RequiredMode.REQUIRED)
+    @Schema(requiredMode = RequiredMode.NOT_REQUIRED)
     Integer tractionHoldingForceInHectoNewton,
-    @Schema(requiredMode = RequiredMode.REQUIRED)
+    @Schema(requiredMode = RequiredMode.NOT_REQUIRED)
     Integer hauledLoadHoldingForceInHectoNewton,
-    @Schema(requiredMode = RequiredMode.REQUIRED)
+    @Schema(requiredMode = RequiredMode.NOT_REQUIRED)
     Integer formationHoldingForceInHectoNewton,
     @Schema(requiredMode = RequiredMode.NOT_REQUIRED)
     Boolean brakePositionGForLeadingTraction,

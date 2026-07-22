@@ -239,7 +239,7 @@ class VehicleTest {
     @Test
     void getAdditionalTractions_withMultipleVehicles() {
         Vehicle vehicle1 = new Vehicle(TractionMode.ZUGLOK, VehicleCategory.LOKOMOTIVE.name(), null, null);
-        Vehicle vehicle2 = new Vehicle(TractionMode.ZWISCHENLOK, VehicleCategory.TRIEBWAGEN.name(), List.of(new VehicleUnit(null, null, null, null, null, null, "Rm84")), null);
+        Vehicle vehicle2 = new Vehicle(TractionMode.ZWISCHENLOK, VehicleCategory.TRIEBWAGEN.name(), List.of(new VehicleUnit(null, null, null, null, null, "Rm84")), null);
         Vehicle vehicle3 = new Vehicle(null, VehicleCategory.GUETERWAGEN.name(), null, null);
 
         List<String> result = Vehicle.getAdditionalTractions(List.of(vehicle1, vehicle2, vehicle3));
@@ -250,8 +250,8 @@ class VehicleTest {
     @Test
     void getAdditionalTractions_withMultipleAdditionalVehicles() {
 
-        Vehicle vehicle1 = new Vehicle(TractionMode.SCHIEBELOK, VehicleCategory.LOKOMOTIVE.name(), List.of(new VehicleUnit(null, null, null, null, null, null, "B85")), null);
-        Vehicle vehicle2 = new Vehicle(TractionMode.UEBERFUEHRUNG, VehicleCategory.LOKOMOTIVE.name(), List.of(new VehicleUnit(null, null, null, null, null, null, "Rt19")), null);
+        Vehicle vehicle1 = new Vehicle(TractionMode.SCHIEBELOK, VehicleCategory.LOKOMOTIVE.name(), List.of(new VehicleUnit(null, null, null, null, null, "B85")), null);
+        Vehicle vehicle2 = new Vehicle(TractionMode.UEBERFUEHRUNG, VehicleCategory.LOKOMOTIVE.name(), List.of(new VehicleUnit(null, null, null, null, null, "Rt19")), null);
 
         List<String> result = Vehicle.getAdditionalTractions(List.of(vehicle1, vehicle2));
 
@@ -262,7 +262,7 @@ class VehicleTest {
     void getAdditionalTractions_withMoreThanOneVehicleUnit() {
         Vehicle vehicle1 = new Vehicle(TractionMode.ZUGLOK, VehicleCategory.LOKOMOTIVE.name(), null, null);
         Vehicle vehicle2 = new Vehicle(TractionMode.ZWISCHENLOK, VehicleCategory.TRIEBWAGEN.name(),
-            List.of(new VehicleUnit(null, null, null, null, null, null, "Rm84"), new VehicleUnit(null, null, null, null, null, null, "Rm84")), null);
+            List.of(new VehicleUnit(null, null, null, null, null, "Rm84"), new VehicleUnit(null, null, null, null, null, "Rm84")), null);
 
         assertThatExceptionOfType(UnexpectedProviderData.class).isThrownBy(() -> Vehicle.getAdditionalTractions(List.of(vehicle1, vehicle2)));
     }

@@ -86,7 +86,6 @@ class TrainFormationRunEntityTest {
                     .brakeStatus(new BrakeStatus(3))
                     .technicalHoldingForceInHectoNewton(302)
                     .effectiveOperationalHoldingForceInHectoNewton(893)
-                    .handBrakeWeightInT(90)
                     .load(new Load(List.of(new Goods(false)), List.of(new IntermodalLoadingUnit(false, List.of(new Goods(false))))))
                     .build()
             ), new EuropeanVehicleNumber("56", "23", "78931", "3"))))
