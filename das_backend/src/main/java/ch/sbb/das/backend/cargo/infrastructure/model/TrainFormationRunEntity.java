@@ -3,13 +3,14 @@ package ch.sbb.das.backend.cargo.infrastructure.model;
 import ch.sbb.das.backend.common.SFERA;
 import ch.sbb.das.backend.common.StringListConverter;
 import ch.sbb.das.backend.common.TelTsi;
+import ch.sbb.das.backend.companies.CompanyCode;
+import ch.sbb.das.backend.companies.CompanyCodeConverter;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.SequenceGenerator;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
@@ -49,8 +50,8 @@ public class TrainFormationRunEntity {
     private LocalDate operationalDay;
 
     @SFERA @TelTsi
-    @JoinColumn(name = "company", referencedColumnName = "codeRics")
-    private String company;
+    @Convert(converter = CompanyCodeConverter.class)
+    private CompanyCode company;
 
     private String tafTapLocationReferenceStart;
 

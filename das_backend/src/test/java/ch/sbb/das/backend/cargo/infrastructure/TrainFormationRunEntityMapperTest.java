@@ -14,6 +14,7 @@ import ch.sbb.das.backend.cargo.domain.model.TractionMode;
 import ch.sbb.das.backend.cargo.domain.model.Vehicle;
 import ch.sbb.das.backend.cargo.domain.model.VehicleUnit;
 import ch.sbb.das.backend.cargo.infrastructure.model.TrainFormationRunEntity;
+import ch.sbb.das.backend.companies.CompanyCode;
 import ch.sbb.das.backend.locations.TafTapLocationReference;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
@@ -26,7 +27,7 @@ class TrainFormationRunEntityMapperTest {
     private final TrainFormationRunEntityMapper underTest = new TrainFormationRunEntityMapper();
 
     @Test
-    void from_null() {
+    void toEntities_null() {
 
         Formation formation = new Formation(null, null, null, null);
 
@@ -36,7 +37,7 @@ class TrainFormationRunEntityMapperTest {
     }
 
     @Test
-    void from_empty() {
+    void toEntities_empty() {
         String operationalTrainNumber = "7889";
         String trainPathId = "7889-023";
         LocalDate operationalDay = LocalDate.of(2023, 10, 1);
@@ -49,7 +50,7 @@ class TrainFormationRunEntityMapperTest {
     }
 
     @Test
-    void from_correct() {
+    void toEntities_correct() {
         OffsetDateTime inspectionDateTime = OffsetDateTime.now();
         String operationalTrainNumber = "6599";
         String trainPathId = "6599-002";
@@ -58,7 +59,7 @@ class TrainFormationRunEntityMapperTest {
         FormationRun formationRun = FormationRun.builder()
             .inspected(true)
             .inspectionDateTime(inspectionDateTime)
-            .company("4532")
+            .company(new CompanyCode("4532"))
             .tafTapLocationReferenceStart(new TafTapLocationReference("CH", 52344))
             .tafTapLocationReferenceEnd(new TafTapLocationReference("CH", 4212))
             .trainCategoryCode("CAT")
@@ -105,7 +106,7 @@ class TrainFormationRunEntityMapperTest {
         assertThat(result.getOperationalTrainNumber()).isEqualTo(operationalTrainNumber);
         assertThat(result.getTrainPathId()).isEqualTo(trainPathId);
         assertThat(result.getOperationalDay()).isEqualTo(operationalDay);
-        assertThat(result.getCompany()).isEqualTo("4532");
+        assertThat(result.getCompany()).isEqualTo(new CompanyCode("4532"));
         assertThat(result.getTafTapLocationReferenceStart()).isEqualTo("CH52344");
         assertThat(result.getTafTapLocationReferenceEnd()).isEqualTo("CH04212");
         assertThat(result.getTrainCategoryCode()).isEqualTo("CAT");

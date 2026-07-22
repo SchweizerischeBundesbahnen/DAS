@@ -1,13 +1,12 @@
 package ch.sbb.das.backend.cargo.domain.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
 
-import ch.sbb.das.backend.common.UnexpectedProviderData;
+import ch.sbb.das.backend.companies.CompanyCode;
 import ch.sbb.das.backend.locations.TafTapLocationReference;
 import java.time.OffsetDateTime;
 import java.util.Collections;
@@ -23,7 +22,7 @@ class FormationRunTest {
         TafTapLocationReference end = new TafTapLocationReference("CH", 2);
 
         FormationRun result = FormationRun.builder()
-            .company("1134")
+            .company(new CompanyCode("1134"))
             .tafTapLocationReferenceStart(start)
             .tafTapLocationReferenceEnd(end)
             .trainCategoryCode("TC")
@@ -50,7 +49,7 @@ class FormationRunTest {
             .slopeMaxForHoldingForceMinInPermille("5.6")
             .build();
 
-        assertThat(result.getCompany()).isEqualTo("1134");
+        assertThat(result.getCompany()).isEqualTo(new CompanyCode("1134"));
         assertThat(result.getTafTapLocationReferenceStart()).isEqualTo(start);
         assertThat(result.getTafTapLocationReferenceEnd()).isEqualTo(end);
         assertThat(result.getTrainCategoryCode()).isEqualTo("TC");
@@ -100,13 +99,6 @@ class FormationRunTest {
         assertThat(result).hasSize(2)
             .contains(inspected1)
             .contains(inspected2);
-    }
-
-    @Test
-    void isInspected_withUnknownCompany() {
-        List<FormationRun> formationRuns = List.of(createFormationRun(true, "0000"), createFormationRun(true, null));
-
-        assertThatExceptionOfType(UnexpectedProviderData.class).isThrownBy(() -> FormationRun.filterValid(formationRuns));
     }
 
     @Test
@@ -321,7 +313,7 @@ class FormationRunTest {
         return FormationRun.builder()
             .inspected(inspected)
             .inspectionDateTime(OffsetDateTime.now())
-            .company(company)
+            .company(new CompanyCode(company))
             .tafTapLocationReferenceStart(new TafTapLocationReference("CH", 1))
             .tafTapLocationReferenceEnd(new TafTapLocationReference("CH", 2))
             .build();
