@@ -3,6 +3,10 @@ name: Client Browserstack E2E
 on:
   schedule:
     - cron: '34 3 * * *'
+  pull_request:
+    paths:
+      - 'das_client/app/integration_test/**/*e2e_test.dart'
+    branches: [ "main" ]
   workflow_dispatch:
 
 jobs:
