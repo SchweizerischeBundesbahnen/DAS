@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:app/nav/app_expiration_guard.dart';
 import 'package:app/pages/journey/selection/journey_selection_model.dart';
+import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
 import 'package:app/provider/user_settings.dart';
+import 'package:app_links_x/component.dart';
 import 'package:clock/clock.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -28,9 +30,10 @@ class JourneySelectionViewModel {
   final TrainIdentificationRepository _trainIdentificationRepository;
   final UserSettings _userSettings;
 
-  final Future<void> Function(TrainIdentification?) _onJourneySelected;
+  final Future<void> Function(ExtendedTrainIdentification?) _onJourneySelected;
 
   StreamSubscription? _sferaRepoSubscription;
+  TrainJourneyLinkData? _pendingDeepLinkData;
 
   late JourneySelectionModel _currentState;
   final _rxModel = BehaviorSubject<JourneySelectionModel>();
@@ -38,6 +41,18 @@ class JourneySelectionViewModel {
   Stream<JourneySelectionModel> get model => _rxModel.stream;
 
   JourneySelectionModel get modelValue => _currentState;
+
+  void handleDeepLink(TrainJourneyLinkData linkData) {
+    _pendingDeepLinkData = linkData;
+    final model = Selecting(
+      startDate: linkData.startDate ?? DateTime.now(),
+      availableStartDates: _availableStartDates(),
+      trainNumber: linkData.operationalTrainNumber,
+      isInputComplete: true,
+    );
+    _emit(model.copyWith(isInputComplete: _validateInput(model)));
+    loadJourney();
+  }
 
   Future<bool> loadJourney() async {
     final currentState = _currentState;
@@ -79,7 +94,6 @@ class JourneySelectionViewModel {
       operationalTrainNumber: state.operationalTrainNumber,
     );
 
-    final lastUsedRu = _userSettings.lastUsedRailwayUndertaking;
     final exactDayMatches = companyMatches.where((it) => DateUtils.isSameDay(it.startDate, state.startDate)).toList();
     if (exactDayMatches.length == 1) {
       final match = exactDayMatches.first;
@@ -93,6 +107,7 @@ class JourneySelectionViewModel {
       );
     }
 
+    final lastUsedRu = _userSettings.lastUsedRailwayUndertaking;
     final lastUsedRuMatch = exactDayMatches.firstWhereOrNull((it) => it.ru == lastUsedRu);
     if (lastUsedRuMatch != null) {
       _log.info('Found company match with last used railway undertaking: $lastUsedRuMatch');
@@ -126,7 +141,15 @@ class JourneySelectionViewModel {
 
   bool _loadTrain(TrainIdentification trainId) {
     _log.fine('Start loading train journey: $trainId');
-    _onJourneySelected(trainId);
+    _onJourneySelected(
+      ExtendedTrainIdentification(
+        trainIdentification: trainId,
+        tafTapLocationReferenceStart: _pendingDeepLinkData?.tafTapLocationReferenceStart,
+        tafTapLocationReferenceEnd: _pendingDeepLinkData?.tafTapLocationReferenceEnd,
+        returnUrl: _pendingDeepLinkData?.returnUrl,
+      ),
+    );
+    _pendingDeepLinkData = null;
     return true;
   }
 
@@ -307,9 +330,9 @@ class JourneySelectionViewModel {
   List<DateTime> _availableStartDates() {
     final today = _midnightToday();
     return [
-      today.subtract(Duration(days: 1)),
+      today.subtract(const Duration(days: 1)),
       today,
-      today.add(Duration(days: 1)),
+      today.add(const Duration(days: 1)),
     ];
   }
 

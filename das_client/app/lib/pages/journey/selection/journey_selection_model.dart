@@ -110,7 +110,7 @@ class Selecting extends JourneySelectionModel {
           runtimeType == other.runtimeType &&
           trainNumber == other.trainNumber &&
           startDate == other.startDate &&
-          ListEquality().equals(availableStartDates, other.availableStartDates) &&
+          const ListEquality().equals(availableStartDates, other.availableStartDates) &&
           railwayUndertaking == other.railwayUndertaking &&
           isInputComplete == other.isInputComplete;
 
@@ -172,7 +172,7 @@ class SelectingCompanyMatch extends JourneySelectionModel {
           runtimeType == other.runtimeType &&
           trainNumber == other.trainNumber &&
           startDate == other.startDate &&
-          ListEquality().equals(availableStartDates, other.availableStartDates) &&
+          const ListEquality().equals(availableStartDates, other.availableStartDates) &&
           selectedCompanyMatch == other.selectedCompanyMatch &&
           isInputComplete == other.isInputComplete;
 
@@ -299,7 +299,7 @@ class Error extends JourneySelectionModel {
       other is Error &&
           runtimeType == other.runtimeType &&
           trainIdentification == other.trainIdentification &&
-          ListEquality().equals(availableStartDates, other.availableStartDates) &&
+          const ListEquality().equals(availableStartDates, other.availableStartDates) &&
           errorCode == other.errorCode;
 
   @override

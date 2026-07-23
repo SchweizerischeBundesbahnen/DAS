@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:app/pages/journey/selection/journey_selection_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
+import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
 import 'package:app/provider/user_settings.dart';
+import 'package:app_links_x/component.dart';
 import 'package:clock/clock.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -22,7 +24,7 @@ void main() {
   late MockTrainIdentificationRepository mockTrainIdentificationRepository;
   late MockUserSettings mockUserSettings;
   late JourneySelectionViewModel testee;
-  final List<TrainIdentification?> callRegister = [];
+  final List<ExtendedTrainIdentification?> callRegister = [];
   final today = DateTime.utc(2025, 1, 1);
   final tomorrow = DateTime.utc(2025, 1, 2);
   final fixedClock = Clock.fixed(today);
@@ -74,6 +76,7 @@ void main() {
     expect(selecting.availableStartDates, hasLength(3));
     expect(selecting.availableStartDates.first, equals(DateTime.utc(1969, 12, 31)));
     expect(selecting.availableStartDates[1], equals(newYears1970));
+    expect(selecting.availableStartDates[2], equals(DateTime.utc(1970, 01, 02)));
   });
 
   test('updateTrainNumber_whenEmpty_thenFormIsNotCompleted', () {
@@ -165,7 +168,7 @@ void main() {
 
     // EXPECT
     expect(callRegister, hasLength(1));
-    expect(callRegister.first, equals(aTrainId));
+    expect(callRegister.first!.trainIdentification, equals(aTrainId));
   });
 
   test('loadJourney_whenCompleteAndWhitespace_thenAddsCleanedTrainIdentificationToRegister', () {
@@ -183,7 +186,7 @@ void main() {
 
     // EXPECT
     expect(callRegister, hasLength(1));
-    expect(callRegister.first, equals(aTrainId));
+    expect(callRegister.first!.trainIdentification, equals(aTrainId));
   });
 
   test('loadJourney_whenLowercase_thenAddsTrainIdentificationWithUppercase', () {
@@ -201,7 +204,7 @@ void main() {
 
     // EXPECT
     expect(callRegister, hasLength(1));
-    expect(callRegister.first, equals(aTrainId));
+    expect(callRegister.first!.trainIdentification, equals(aTrainId));
   });
 
   test('loadJourney_whenNoRu_thenEmitsLoadingCompanyMatches', () async {
@@ -332,7 +335,7 @@ void main() {
     expect(result, isTrue);
     expect(callRegister, hasLength(1));
     expect(
-      callRegister.first,
+      callRegister.first!.trainIdentification,
       TrainIdentification(
         ru: .blsP,
         trainNumber: '123',
@@ -357,7 +360,7 @@ void main() {
     expect(result, isTrue);
     expect(callRegister, hasLength(1));
     expect(
-      callRegister.first,
+      callRegister.first!.trainIdentification,
       TrainIdentification(
         ru: .sbbP,
         trainNumber: '456',
@@ -388,12 +391,70 @@ void main() {
     expect(result, isTrue);
     expect(callRegister, hasLength(1));
     expect(
-      callRegister.first,
+      callRegister.first!.trainIdentification,
       TrainIdentification(
         ru: .blsP,
         trainNumber: '789',
         date: today,
       ),
     );
+  });
+
+  test('handleDeepLink_whenMatchFound_thenForwardsLinkDataAndClearsPendingData', () async {
+    // ARRANGE
+    when(mockTrainIdentificationRepository.findTrainIdentifications(operationalTrainNumber: '321')).thenAnswer(
+      (_) async => {
+        CompanyMatch(ru: .sbbP, startDate: today),
+      },
+    );
+    final linkData = TrainJourneyLinkData(
+      operationalTrainNumber: '321',
+      company: '1285',
+      startDate: today,
+      tafTapLocationReferenceStart: 'startRef',
+      tafTapLocationReferenceEnd: 'endRef',
+      returnUrl: 'https://return.example',
+    );
+
+    // ACT
+    testee.handleDeepLink(linkData);
+    await Future.delayed(Duration.zero);
+
+    // EXPECT
+    expect(callRegister, hasLength(1));
+    final deepLinkSelection = callRegister.first!;
+    expect(
+      deepLinkSelection.trainIdentification,
+      TrainIdentification(
+        ru: .sbbP,
+        trainNumber: '321',
+        date: today,
+      ),
+    );
+    expect(deepLinkSelection.tafTapLocationReferenceStart, 'startRef');
+    expect(deepLinkSelection.tafTapLocationReferenceEnd, 'endRef');
+    expect(deepLinkSelection.returnUrl, 'https://return.example');
+
+    // Trigger a normal selection afterwards. If _pendingDeepLinkData is cleared,
+    // no deeplink metadata should be forwarded anymore.
+    testee.dismissSelection();
+    testee.updateTrainNumber('777');
+    testee.updateRailwayUndertaking([.blsP]);
+    final expectedFollowUpDate = testee.modelValue.startDate;
+    await testee.loadJourney();
+
+    expect(callRegister, hasLength(2));
+    final normalSelection = callRegister.last!;
+    expect(
+      normalSelection.trainIdentification,
+      TrainIdentification(
+        ru: .blsP,
+        trainNumber: '777',
+        date: expectedFollowUpDate,
+      ),
+    );
+    expect(normalSelection.tafTapLocationReferenceStart, isNull);
+    expect(normalSelection.tafTapLocationReferenceEnd, isNull);
+    expect(normalSelection.returnUrl, isNull);
   });
 }

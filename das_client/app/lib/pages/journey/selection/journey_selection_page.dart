@@ -178,7 +178,7 @@ class _ContentState extends State<_Content> with WidgetsBindingObserver {
 
         return switch (model) {
           final Selecting _ || final Loaded _ => SizedBox.shrink(),
-          final Loading _ || final LoadingCompanyMatches _ => Center(child: CircularProgressIndicator()),
+          final Loading _ || final LoadingCompanyMatches _ => const Center(child: CircularProgressIndicator()),
           final SelectingCompanyMatch s => _companyMatchesSelectionBody(context, s),
           final Error e => SBBMessage(
             illustration: SBBIllustration.display(),
@@ -193,7 +193,7 @@ class _ContentState extends State<_Content> with WidgetsBindingObserver {
 
   Widget _companyMatchesSelectionBody(BuildContext context, SelectingCompanyMatch model) {
     return Padding(
-      padding: EdgeInsetsGeometry.symmetric(horizontal: SBBSpacing.xSmall, vertical: SBBSpacing.medium),
+      padding: const EdgeInsetsGeometry.symmetric(horizontal: SBBSpacing.xSmall, vertical: SBBSpacing.medium),
       child: Column(
         spacing: SBBSpacing.xSmall,
         children: [
@@ -249,6 +249,7 @@ class _ContentState extends State<_Content> with WidgetsBindingObserver {
 
   Widget _companyMatchesListItem(BuildContext context, SelectingCompanyMatch model, CompanyMatch companyMatch) {
     final isDateBold = DateUtils.isSameDay(model.startDate, companyMatch.startDate);
+    final dateTextStyle = isDateBold ? SBBTextStyles.smallBold : SBBTextStyles.smallLight;
     final subtitleColor = ThemeUtil.getColor(context, SBBColors.granite, SBBColors.graphite);
 
     return SBBRadioListItem(
@@ -262,9 +263,7 @@ class _ContentState extends State<_Content> with WidgetsBindingObserver {
           ),
           Text(
             Format.date(companyMatch.startDate),
-            style: isDateBold
-                ? SBBTextStyles.smallBold.copyWith(color: subtitleColor)
-                : SBBTextStyles.smallLight.copyWith(color: subtitleColor),
+            style: dateTextStyle.copyWith(color: subtitleColor),
           ),
         ],
       ),

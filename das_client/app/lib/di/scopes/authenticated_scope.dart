@@ -8,7 +8,6 @@ import 'package:app/pages/journey/view_model/app_expiration_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
-import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
 import 'package:app/pages/journey/view_model/sfera_journey_view_model.dart';
 import 'package:app/pages/journey/view_model/view_mode_view_model.dart';
 import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
@@ -233,9 +232,7 @@ extension AuthenticatedScopeExtension on GetIt {
         sferaRepo: DI.get(),
         trainIdentificationRepository: DI.get(),
         userSettings: DI.get(),
-        onJourneySelected: (trainId) => DI.get<JourneyNavigationViewModel>().replaceWith([
-          if (trainId != null) ExtendedTrainIdentification(trainIdentification: trainId),
-        ]),
+        onJourneySelected: (trainId) => DI.get<JourneyNavigationViewModel>().replaceWith([?trainId]),
       );
     }
 

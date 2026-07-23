@@ -85,7 +85,7 @@ class _RailwayUndertakingTextFieldState extends State<SelectRailwayUndertakingIn
               child: InkWell(
                 borderRadius: BorderRadius.circular(SBBSpacing.small),
                 onTap: () => widget.updateRailwayUndertaking([]),
-                child: Icon(SBBIcons.cross_tiny_small),
+                child: const Icon(SBBIcons.cross_tiny_small),
               ),
             ),
         ],
