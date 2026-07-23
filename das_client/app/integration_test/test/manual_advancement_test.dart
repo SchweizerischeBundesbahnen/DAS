@@ -67,7 +67,9 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('manualAdvancement_whenManualPositionSet_thenManualModeActivatedUntilJourneyPositionSignaled', (tester) async {
+    testWidgets('manualAdvancement_whenManualPositionSet_thenManualModeActivatedUntilJourneyPositionSignaled', (
+      tester,
+    ) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T30');
 
