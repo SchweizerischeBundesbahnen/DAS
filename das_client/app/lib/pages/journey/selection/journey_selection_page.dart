@@ -127,6 +127,7 @@ class _ContentState extends State<_Content> with WidgetsBindingObserver {
     super.dispose();
   }
 
+  // TODO: use the AppLifecycleViewModel instead
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
