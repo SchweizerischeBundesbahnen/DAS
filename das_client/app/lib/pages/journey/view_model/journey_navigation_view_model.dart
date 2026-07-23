@@ -5,6 +5,7 @@ import 'package:app/di/scope_handler.dart';
 import 'package:app/di/scopes/journey_scope.dart';
 import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
 import 'package:app/pages/journey/view_model/model/journey_navigation_model.dart';
+import 'package:app/provider/user_settings.dart';
 import 'package:app/widgets/table/row/das_table_row_builder.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -13,11 +14,12 @@ import 'package:sfera/component.dart';
 final _log = Logger('JourneyNavigationViewModel');
 
 class JourneyNavigationViewModel {
-  JourneyNavigationViewModel({required this._sferaRepo}) {
+  JourneyNavigationViewModel({required this._sferaRepo, required this._userSettings}) {
     _initSferaRemoteStateSubscription();
   }
 
   final SferaRepository _sferaRepo;
+  final UserSettings _userSettings;
   StreamSubscription<SferaRemoteRepositoryState>? _sferaRemoteStateSubscription;
   final List<ExtendedTrainIdentification> _trainIds = [];
   final _rxModel = BehaviorSubject<JourneyNavigationModel?>.seeded(null);
@@ -33,10 +35,11 @@ class JourneyNavigationViewModel {
   /// replaces the current navigation stack with [trainIds] where a connection will be established for the first train.
   Future<void> replaceWith(Iterable<ExtendedTrainIdentification> trainIds) async {
     if (_trainIds.isNotEmpty) _sferaRepo.disconnect();
+
     _trainIds.clear();
     _trainIds.addAll(trainIds);
 
-    await _establishConnection(trainIds.first);
+    await _establishConnection(trainIds.firstOrNull);
   }
 
   Future<void> push(ExtendedTrainIdentification trainId) async {
@@ -83,12 +86,17 @@ class JourneyNavigationViewModel {
     _trainIds.clear();
   }
 
-  Future<void> _establishConnection(ExtendedTrainIdentification trainId) async {
-    _log.fine('Establish connection to $trainId');
+  Future<void> _establishConnection(ExtendedTrainIdentification? trainId) async {
     DASTableRowBuilder.clearRowKeys();
     await DI.get<ScopeHandler>().pop<JourneyScope>();
-    await DI.get<ScopeHandler>().push<JourneyScope>();
-    await _sferaRepo.connect(trainId.trainIdentification);
+
+    if (trainId != null) {
+      _log.fine('Establish connection to $trainId');
+      _userSettings.set(UserSettingKeys.lastUsedRailwayUndertaking, trainId.trainIdentification.ru.companyCode);
+      await DI.get<ScopeHandler>().push<JourneyScope>();
+      await _sferaRepo.connect(trainId.trainIdentification);
+    }
+
     _addToStream(trainId);
   }
 

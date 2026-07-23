@@ -11,6 +11,7 @@ import 'package:external_links/component.dart';
 import 'package:formation/component.dart';
 import 'package:logging/logging.dart';
 import 'package:ru_indications/component.dart';
+import 'package:train_identification/component.dart';
 import 'package:sfera/component.dart';
 
 import 'mock_customer_oriented_departure_repository.dart';
@@ -18,6 +19,7 @@ import 'mock_external_links_repository.dart';
 import 'mock_formation_repository.dart';
 import 'mock_ru_feature_provider.dart';
 import 'mock_ru_indications_repository.dart';
+import 'mock_train_identification_repository.dart';
 import 'mock_sim_train_view_model.dart';
 import 'mock_warn_app_view_model.dart';
 
@@ -48,10 +50,12 @@ class MockAuthenticatedScope extends AuthenticatedScope {
       getIt.registerRuFeatureProvider();
       getIt.registerFormationRepository();
       getIt.registerRuIndicationsRepository();
+      getIt.registerTrainIdentificationRepository();
     } else {
       _registerMockRuFeaturesProvider();
       _registerMockFormationRepository();
       _registerMockRuIndicationsRepository();
+      _registerMockTrainIdentificationRepository();
     }
     _registerMockCustomerOrientedDepartureRepository();
     getIt.registerTimedRouteProvider();
@@ -82,6 +86,10 @@ class MockAuthenticatedScope extends AuthenticatedScope {
 
   void _registerMockRuIndicationsRepository() {
     getIt.registerSingleton<RuIndicationsRepository>(MockRuIndicationsRepository());
+  }
+
+  void _registerMockTrainIdentificationRepository() {
+    getIt.registerSingleton<TrainIdentificationRepository>(MockTrainIdentificationRepository());
   }
 
   void _registerMockExternalLinksRepository() {

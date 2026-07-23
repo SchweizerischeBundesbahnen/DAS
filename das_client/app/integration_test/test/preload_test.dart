@@ -136,7 +136,7 @@ void main() {
     expect(tester.widget<SBBTertiaryButtonSmall>(startButton).onPressed, isNull);
   });
 
-  testWidgets('test preload status is displayed correctly', (tester) async {
+  testWidgets('test reconnection after using preload data', (tester) async {
     await prepareAndStartApp(tester);
 
     // Load T9999 so we have it available offline

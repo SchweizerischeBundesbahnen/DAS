@@ -9,6 +9,11 @@ abstract class SferaLocalRepo {
 
   Future<Journey?> getJourney({required String company, required String trainNumber, required DateTime startDate});
 
+  Future<Set<CompanyMatch>> findCompanyMatchesByTrainNumber(
+    String operationalTrainNumber, {
+    required List<DateTime> startDates,
+  });
+
   Future<int> cleanup();
 
   Future<bool> saveData(Iterable<SferaXmlElementDto> elements);
