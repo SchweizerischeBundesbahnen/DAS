@@ -92,7 +92,7 @@ jobs:
           -d "scope=api://8f16d52b-c6df-4a94-a132-da4956579a48/.default" \
           "https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/oauth2/v2.0/token" | \
           jq -er .access_token) || ACCESS_TOKEN=""
-          echo ${ACCESS_TOKEN:0:10}
+          echo "::add-mask::$ACCESS_TOKEN"
           echo "access_token=$ACCESS_TOKEN" >> $GITHUB_OUTPUT
 
       - name: Prepare Android Secrets 🤫
@@ -184,7 +184,7 @@ jobs:
           -d "scope=api://8f16d52b-c6df-4a94-a132-da4956579a48/.default" \
           "https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/oauth2/v2.0/token" | \
           jq -er .access_token) || ACCESS_TOKEN=""
-          echo ${ACCESS_TOKEN:0:10}
+          echo "::add-mask::$ACCESS_TOKEN"
           echo "access_token=$ACCESS_TOKEN" >> $GITHUB_OUTPUT
 
       - name: Build ipa for integration tests
