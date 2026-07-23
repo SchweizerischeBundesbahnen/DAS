@@ -19,12 +19,7 @@ class TrainIdentificationRepositoryImpl implements TrainIdentificationRepository
   Future<Set<CompanyMatch>> findTrainIdentifications({
     required String operationalTrainNumber,
   }) async {
-    final now = DateTime.now();
-    final startDates = [
-      now.subtract(const Duration(days: 1)),
-      now,
-      now.add(const Duration(days: 1)),
-    ];
+    final startDates = _generateStartDates();
 
     _log.fine('Fetching train identifications for $operationalTrainNumber on $startDates');
 
@@ -38,9 +33,18 @@ class TrainIdentificationRepositoryImpl implements TrainIdentificationRepository
       _log.info('Successfully fetched ${companyMatches.length} company matches for train $operationalTrainNumber.');
       return companyMatches;
     } catch (e) {
-      _log.info('API call failed for train $operationalTrainNumber, falling back to local database.');
+      _log.info('API call failed for train $operationalTrainNumber, falling back to local database.', e);
       return _findInLocalDatabase(operationalTrainNumber, startDates);
     }
+  }
+
+  List<DateTime> _generateStartDates() {
+    final now = DateTime.now();
+    return [
+      now.subtract(const Duration(days: 1)),
+      now,
+      now.add(const Duration(days: 1)),
+    ];
   }
 
   Future<Set<CompanyMatch>> _findInLocalDatabase(

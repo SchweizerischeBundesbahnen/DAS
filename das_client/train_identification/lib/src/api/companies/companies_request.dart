@@ -18,12 +18,11 @@ class CompaniesRequest {
     required List<DateTime> startDates,
   }) async {
     final formattedStartDates = startDates.map((date) => DateFormat('yyyy-MM-dd').format(date)).toList();
-    final queryParts = [
-      for (final startDate in formattedStartDates) 'startDate=${Uri.encodeQueryComponent(startDate)}',
-      'operationalTrainNumber=${Uri.encodeQueryComponent(operationalTrainNumber)}',
-    ];
-    final endpointUri = Uri.https(baseUrl, 'driver/v1/train-identifications/companies');
-    final url = Uri.parse('$endpointUri?${queryParts.join('&')}');
+
+    final url = Uri.https(baseUrl, 'driver/v1/train-identifications/companies', {
+      'startDate': formattedStartDates,
+      'operationalTrainNumber': operationalTrainNumber,
+    });
 
     final response = await httpClient.get(url);
 

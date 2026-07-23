@@ -34,6 +34,7 @@ class JourneySelectionViewModel {
 
   StreamSubscription? _sferaRepoSubscription;
   TrainJourneyLinkData? _pendingDeepLinkData;
+  Timer? _delayTimer;
 
   late JourneySelectionModel _currentState;
   final _rxModel = BehaviorSubject<JourneySelectionModel>();
@@ -133,7 +134,8 @@ class JourneySelectionViewModel {
 
     if (_sferaRepo.connectedTrain != null) {
       // Disconnect with a delay (to give time for navigation) from the current train
-      Future.delayed(AppExpirationGuard.timeout).then((v) => _onJourneySelected(null));
+      _delayTimer?.cancel();
+      _delayTimer = Timer(AppExpirationGuard.timeout, () => _onJourneySelected(null));
     }
 
     return false;
@@ -225,6 +227,8 @@ class JourneySelectionViewModel {
   void dispose() {
     _sferaRepoSubscription?.cancel();
     _rxModel.close();
+    _delayTimer?.cancel();
+    _delayTimer = null;
   }
 
   void _initSferaRepoSubscription() {

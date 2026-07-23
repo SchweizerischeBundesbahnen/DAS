@@ -36,7 +36,7 @@ void main() {
     );
   });
 
-  test('sends yesterday, today and tomorrow as start dates', () async {
+  test('findTrainIdentifications_whenCalled_thenSendsYesterdayTodayTomorrowAsStartDates', () async {
     when(apiService.companies).thenReturn(request);
     when(response.body).thenReturn(TrainIdentificationResponseDto(data: const <CompanyMatchDto>[]));
     when(
@@ -64,7 +64,7 @@ void main() {
     expect(_dateOnly(startDates[2]), _dateOnly(now.add(const Duration(days: 1))));
   });
 
-  test('maps company matches from the api response', () async {
+  test('findTrainIdentifications_whenApiReturnsCompanyMatches_thenMapsToDomainModel', () async {
     when(apiService.companies).thenReturn(request);
     when(response.body).thenReturn(
       TrainIdentificationResponseDto(
@@ -110,7 +110,7 @@ void main() {
     ).called(1);
   });
 
-  test('falls back to local database when API call fails', () async {
+  test('findTrainIdentifications_whenApiCallFails_thenFallsBackToLocalDatabase', () async {
     when(apiService.companies).thenReturn(request);
     when(
       request.call(
@@ -146,7 +146,7 @@ void main() {
     ).called(1);
   });
 
-  test('returns empty list when API fails and no local data exists', () async {
+  test('findTrainIdentifications_whenApiFailsAndNoLocalDataExists_thenReturnsEmptyResult', () async {
     when(apiService.companies).thenReturn(request);
     when(
       request.call(

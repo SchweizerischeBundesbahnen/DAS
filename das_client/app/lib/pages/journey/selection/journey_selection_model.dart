@@ -173,6 +173,7 @@ class SelectingCompanyMatch extends JourneySelectionModel {
           trainNumber == other.trainNumber &&
           startDate == other.startDate &&
           const ListEquality().equals(availableStartDates, other.availableStartDates) &&
+          const SetEquality().equals(companyMatches, other.companyMatches) &&
           selectedCompanyMatch == other.selectedCompanyMatch &&
           isInputComplete == other.isInputComplete;
 
@@ -182,7 +183,8 @@ class SelectingCompanyMatch extends JourneySelectionModel {
     trainNumber,
     startDate,
     availableStartDates,
-    railwayUndertaking,
+    companyMatches,
+    selectedCompanyMatch,
     isInputComplete,
   );
 

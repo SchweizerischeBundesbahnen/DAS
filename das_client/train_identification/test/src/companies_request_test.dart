@@ -10,7 +10,7 @@ import 'companies_request_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<Client>()])
 void main() {
-  test('sends yesterday/today/tomorrow as repeated startDate query params and parses company matches', () async {
+  test('call_whenStartDatesProvided_thenSendsRepeatedStartDateQueryParamsAndParsesCompanyMatches', () async {
     late Uri capturedUri;
     final client = MockClient();
 
