@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:app/flavor.dart';
+import 'package:customer_oriented_departure/component.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
@@ -15,6 +17,7 @@ void main() {
   Logger.root.onRecord.listen(LogPrinter(appName: 'DAS E2ETests').call);
 
   setUpAll(() async {
+    await _initMessaging();
     await _useFullyLivePolicyOnAndroidEmulator(binding);
   });
 
@@ -44,4 +47,9 @@ Future<bool> _isAndroidEmulator() async {
     return !androidInfo.isPhysicalDevice;
   }
   return false;
+}
+
+Future<void> _initMessaging() async {
+  final environment = Flavor.dev().customerOrientedDepartureEnvironment;
+  await CustomerOrientedDepartureComponent.initializeMessaging(connectTo: environment);
 }

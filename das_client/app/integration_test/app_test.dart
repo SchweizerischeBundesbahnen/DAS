@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:app/di/scope_handler.dart';
 import 'package:app/di/scopes/das_base_scope.dart';
 import 'package:app/di/scopes/sfera_mock_scope.dart';
-import 'package:app/flavor.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/main.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -114,7 +113,7 @@ class IntegrationTestApp {
     // (https://github.com/leancodepl/patrol/issues/1868#issuecomment-1814241939)
     tester.testTextInput.register();
 
-    await IntegrationTestDI.init(Flavor.dev()); // registers flavor, mockScopes and scope handler
+    await IntegrationTestDI.init(); // registers flavor, mockScopes and scope handler
 
     final scopeHandler = IntegrationTestDI.get<ScopeHandler>();
     await scopeHandler.push<DASBaseScope>();
