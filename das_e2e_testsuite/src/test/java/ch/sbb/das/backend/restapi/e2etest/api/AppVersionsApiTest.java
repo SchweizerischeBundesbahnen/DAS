@@ -77,7 +77,7 @@ class AppVersionsApiTest extends RestAssuredCommand {
         // TODO AssertionsApiClientModel.assertAppVersionResponse(appVersionResponse, endpointConfiguration.endpoint());
     }
 
-    @DisplayName("/app-versions illegal access|tests: 1406(2)")
+    @DisplayName("/app-versions illegal access|tests: 1406")
     @Test
     void getById_ForbiddenNonAdminTenant() {
         final Response response = createRequestWithHeader(null, ServiceDoc.REQUEST_ID_VALUE_E2E_TEST)
