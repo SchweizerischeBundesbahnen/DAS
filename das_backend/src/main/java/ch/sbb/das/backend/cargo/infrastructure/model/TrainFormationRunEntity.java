@@ -25,7 +25,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-// todo: a default value must be defined for all non-primitive Boolean and Integer fields (by business or source systems)
 public class TrainFormationRunEntity {
 
     @Id
