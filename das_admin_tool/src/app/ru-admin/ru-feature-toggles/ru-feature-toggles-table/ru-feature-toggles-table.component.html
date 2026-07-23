@@ -1,27 +1,48 @@
-<app-table-search-header [searchControl]="searchControl"/>
+<app-table-search-header [searchControl]="searchControl" />
 <sbb-table-wrapper>
-  <table [dataSource]="dataSource" class="table-truncated" fixedLayout sbb-table sbbSort
-         sbbSortActive="companyCode" sbbSortDirection="asc">
+  <table
+    class="table-truncated"
+    fixedLayout
+    sbb-table
+    sbbSort
+    sbbSortActive="companyCode"
+    sbbSortDirection="asc"
+    [dataSource]="dataSource"
+  >
     <ng-container sbbColumnDef="companyCode">
-      <th *sbbHeaderCellDef i18n="@@ru_feature_toggles_table_column_company" sbb-header-cell
-          sbb-sort-header="companyCode">EVU
-      </th>
-      <td *sbbCellDef="let row" sbb-cell><span>{{ companyName(row.companyCode) }}</span></td>
+      <th
+        *sbbHeaderCellDef
+        i18n="@@ru_feature_toggles_table_column_company"
+        sbb-header-cell
+        sbb-sort-header="companyCode"
+        >EVU</th
+      >
+      <td *sbbCellDef="let row" sbb-cell
+        ><span>{{ companyName(row.companyCode) }}</span></td
+      >
     </ng-container>
 
     <ng-container sbbColumnDef="key">
-      <th *sbbHeaderCellDef i18n="@@ru_feature_toggles_table_column_key" sbb-header-cell
-          sbb-sort-header="key">Feature
-      </th>
+      <th
+        *sbbHeaderCellDef
+        i18n="@@ru_feature_toggles_table_column_key"
+        sbb-header-cell
+        sbb-sort-header="key"
+        >Feature</th
+      >
       <td *sbbCellDef="let row" sbb-cell>{{ featureKeyLabel(row.key) }}</td>
     </ng-container>
 
     <ng-container sbbColumnDef="enabled">
-      <th *sbbHeaderCellDef i18n="@@ru_feature_toggles_table_column_enabled" sbb-header-cell
-          sbb-sort-header="enabled">Aktiviert
-      </th>
+      <th
+        *sbbHeaderCellDef
+        i18n="@@ru_feature_toggles_table_column_enabled"
+        sbb-header-cell
+        sbb-sort-header="enabled"
+        >Aktiviert</th
+      >
       <td *sbbCellDef="let row" sbb-cell>
-        <sbb-toggle-check [checked]="row.enabled" disabled labelPosition="after">
+        <sbb-toggle-check disabled labelPosition="after" [checked]="row.enabled">
           @if (row.enabled) {
             <span i18n="@@ru_feature_toggles_table_value_true">Ja</span>
           } @else {
@@ -32,27 +53,31 @@
     </ng-container>
 
     <ng-container sbbColumnDef="lastModifiedAt">
-      <th *sbbHeaderCellDef i18n="@@ru_feature_toggles_table_column_last_modified_at"
-          sbb-header-cell
-          sbb-sort-header="lastModifiedAt">
-        Bearbeitet am
-      </th>
-      <td *sbbCellDef="let row" sbb-cell>{{ row.lastModifiedAt | date: 'short' }}
-      </td>
+      <th
+        *sbbHeaderCellDef
+        i18n="@@ru_feature_toggles_table_column_last_modified_at"
+        sbb-header-cell
+        sbb-sort-header="lastModifiedAt"
+        >Bearbeitet am</th
+      >
+      <td *sbbCellDef="let row" sbb-cell>{{ row.lastModifiedAt | date: 'short' }} </td>
     </ng-container>
 
     <ng-container sbbColumnDef="lastModifiedBy">
-      <th *sbbHeaderCellDef i18n="@@ru_feature_toggles_table_column_last_modified_by"
-          sbb-header-cell
-          sbb-sort-header="lastModifiedBy">Bearbeitet von
-      </th>
+      <th
+        *sbbHeaderCellDef
+        i18n="@@ru_feature_toggles_table_column_last_modified_by"
+        sbb-header-cell
+        sbb-sort-header="lastModifiedBy"
+        >Bearbeitet von</th
+      >
       <td *sbbCellDef="let row" sbb-cell>{{ row.lastModifiedBy }}</td>
     </ng-container>
 
     <ng-container sbbColumnDef="action">
       <th *sbbHeaderCellDef sbb-header-cell></th>
       <td *sbbCellDef="let ruFeature" sbb-cell>
-        <sbb-mini-button (click)="edit(ruFeature)" iconName="pen-small"></sbb-mini-button>
+        <sbb-mini-button iconName="pen-small" (click)="edit(ruFeature)" />
       </td>
     </ng-container>
 
@@ -61,7 +86,4 @@
   </table>
 </sbb-table-wrapper>
 
-<app-table-bottom-bar
-  (addClicked)="add()"
-  [showDelete]="false"
-/>
+<app-table-bottom-bar [showDelete]="false" (addClicked)="add()" />

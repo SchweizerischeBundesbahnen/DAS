@@ -1,9 +1,9 @@
-import {inject, Injectable} from '@angular/core';
-import {HttpClient, httpResource} from '@angular/common/http';
-import {environment} from '../../environments/environment';
-import {Observable} from 'rxjs';
-import {ApiResponse} from '../shared/api-response';
-import {Auditable} from '../shared/audit/auditable';
+import { HttpClient, httpResource } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { ApiResponse } from '~shared/api-response';
+import { Auditable } from '~shared/audit/auditable';
+import { environment } from '~src/environments/environment';
 
 export interface RuIndicationLanguageContent {
   title: string;
@@ -26,13 +26,7 @@ export interface RuIndicationTrainNumberFilter {
 }
 
 export type DayOfWeek =
-  | 'MONDAY'
-  | 'TUESDAY'
-  | 'WEDNESDAY'
-  | 'THURSDAY'
-  | 'FRIDAY'
-  | 'SATURDAY'
-  | 'SUNDAY';
+  'MONDAY' | 'TUESDAY' | 'WEDNESDAY' | 'THURSDAY' | 'FRIDAY' | 'SATURDAY' | 'SUNDAY';
 
 export interface RuIndicationPeriod {
   validFrom: Date | string;
@@ -63,28 +57,30 @@ export interface RuIndication extends Auditable {
 
 export type RuIndicationStatus = 'INACTIVE' | 'ACTIVE' | 'EXPIRED';
 
-export const RU_INDICATION_STATUS_LABELS: { value: RuIndicationStatus, label: string }[] = [
-  {value: 'ACTIVE', label: $localize`:@@ru_indication_status_label_active:Aktiv`},
-  {value: 'INACTIVE', label: $localize`:@@ru_indication_status_label_inactive:Inaktiv`},
-  {value: 'EXPIRED', label: $localize`:@@ru_indication_status_label_expired:Abgelaufen`},
-
-]
+export const RU_INDICATION_STATUS_LABELS = (): { value: RuIndicationStatus; label: string }[] => [
+  {
+    value: 'ACTIVE',
+    label: $localize`:@@ru_indication_status_label_active:Aktiv`,
+  },
+  {
+    value: 'INACTIVE',
+    label: $localize`:@@ru_indication_status_label_inactive:Inaktiv`,
+  },
+  {
+    value: 'EXPIRED',
+    label: $localize`:@@ru_indication_status_label_expired:Abgelaufen`,
+  },
+];
 export type RuIndicationApiResponse = ApiResponse<RuIndication>;
 
 export type RuIndicationTemplateApiResponse = ApiResponse<RuIndicationTemplate>;
 
 export type ScheduleType = 'SUNDAY_SCHEDULE' | 'MONDAY_SCHEDULE';
 
-export const SCHEDULE_TYPE_LABELS: { value: ScheduleType, label: string } [] = [
-  {
-    value: 'SUNDAY_SCHEDULE',
-    label: $localize`:@@special_holidays_schedule_type_sunday:Sonntag`
-  },
-  {
-    value: 'MONDAY_SCHEDULE',
-    label: $localize`:@@special_holidays_schedule_type_monday:Montag`
-  }];
-
+export const SCHEDULE_TYPE_LABELS = (): { value: ScheduleType; label: string }[] => [
+  { value: 'SUNDAY_SCHEDULE', label: $localize`:@@special_holidays_schedule_type_sunday:Sonntag` },
+  { value: 'MONDAY_SCHEDULE', label: $localize`:@@special_holidays_schedule_type_monday:Montag` },
+];
 
 export interface SpecialHoliday extends Auditable {
   id?: number;
@@ -117,19 +113,19 @@ export type RuFeatureKey =
   | 'CHECKLIST_DEPARTURE_PROCESS'
   | 'DISPLAY_PLANNED_TIME_DEVIATION';
 
-export const RU_FEATURE_KEY_LABELS: { value: RuFeatureKey, label: string }[] = [
-  {value: 'WARNAPP', label: $localize`:@@ru_feature_toggles_key_label_warnapp:WarnApp`},
+export const RU_FEATURE_KEY_LABELS = (): { value: RuFeatureKey; label: string }[] => [
+  { value: 'WARNAPP', label: $localize`:@@ru_feature_toggles_key_label_warnapp:WarnApp` },
   {
     value: 'CUSTOMER_ORIENTED_DEPARTURE_PROCESS',
-    label: $localize`:@@ru_feature_toggles_key_label_customer_oriented_departure_process:Kundenorientierter Abfahrprozess (KoA)`
+    label: $localize`:@@ru_feature_toggles_key_label_customer_oriented_departure_process:Kundenorientierter Abfahrprozess (KoA)`,
   },
   {
     value: 'CHECKLIST_DEPARTURE_PROCESS',
-    label: $localize`:@@ru_feature_toggles_key_label_checklist_departure_process:Checkliste Abfahrprozess`
+    label: $localize`:@@ru_feature_toggles_key_label_checklist_departure_process:Checkliste Abfahrprozess`,
   },
   {
     value: 'DISPLAY_PLANNED_TIME_DEVIATION',
-    label: $localize`:@@ru_feature_toggles_key_label_display_planned_time_deviation:Planzeitabweichung`
+    label: $localize`:@@ru_feature_toggles_key_label_display_planned_time_deviation:Planzeitabweichung`,
   },
 ];
 
@@ -142,15 +138,15 @@ export interface RuFeature extends Auditable {
 
 export type RuFeatureApiResponse = ApiResponse<RuFeature>;
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class RuAdminApi {
   private readonly httpClient = inject(HttpClient);
   private readonly ruIndicationsUrl = `${environment.backendUrl}/ruindications`;
   readonly ruIndications = httpResource<RuIndicationApiResponse>(() => this.ruIndicationsUrl);
   private readonly ruIndicationTemplatesUrl = `${environment.backendUrl}/ruindication-templates`;
-  readonly ruIndicationTemplates = httpResource<RuIndicationTemplateApiResponse>(() => this.ruIndicationTemplatesUrl);
+  readonly ruIndicationTemplates = httpResource<RuIndicationTemplateApiResponse>(
+    () => this.ruIndicationTemplatesUrl,
+  );
   private readonly specialHolidaysUrl = `${environment.backendUrl}/special-holidays`;
   readonly specialHolidays = httpResource<SpecialHolidayApiResponse>(() => this.specialHolidaysUrl);
   private readonly externalLinksUrl = `${environment.backendUrl}/external-links`;
@@ -158,28 +154,45 @@ export class RuAdminApi {
   private readonly ruFeaturesUrl = `${environment.backendUrl}/rufeatures`;
   readonly ruFeatures = httpResource<RuFeatureApiResponse>(() => this.ruFeaturesUrl);
 
-  postRuIndicationTemplate(ruIndicationTemplate: RuIndicationTemplate): Observable<RuIndicationTemplateApiResponse> {
-    return this.httpClient.post<RuIndicationTemplateApiResponse>(this.ruIndicationTemplatesUrl, ruIndicationTemplate);
+  postRuIndicationTemplate(
+    ruIndicationTemplate: RuIndicationTemplate,
+  ): Observable<RuIndicationTemplateApiResponse> {
+    return this.httpClient.post<RuIndicationTemplateApiResponse>(
+      this.ruIndicationTemplatesUrl,
+      ruIndicationTemplate,
+    );
   }
 
-  putRuIndicationTemplate(id: number, ruIndicationTemplate: RuIndicationTemplate): Observable<RuIndicationTemplateApiResponse> {
-    return this.httpClient.put<RuIndicationTemplateApiResponse>(`${this.ruIndicationTemplatesUrl}/${id}`, ruIndicationTemplate);
+  putRuIndicationTemplate(
+    id: number,
+    ruIndicationTemplate: RuIndicationTemplate,
+  ): Observable<RuIndicationTemplateApiResponse> {
+    return this.httpClient.put<RuIndicationTemplateApiResponse>(
+      `${this.ruIndicationTemplatesUrl}/${id}`,
+      ruIndicationTemplate,
+    );
   }
 
   deleteAllRuIndicationTemplate(ids: number[]): Observable<void> {
-    return this.httpClient.delete<void>(this.ruIndicationTemplatesUrl, {body: {ids}});
+    return this.httpClient.delete<void>(this.ruIndicationTemplatesUrl, { body: { ids } });
   }
 
   postSpecialHoliday(specialHoliday: SpecialHoliday): Observable<SpecialHolidayApiResponse> {
     return this.httpClient.post<SpecialHolidayApiResponse>(this.specialHolidaysUrl, specialHoliday);
   }
 
-  putSpecialHoliday(id: number, specialHoliday: SpecialHoliday): Observable<SpecialHolidayApiResponse> {
-    return this.httpClient.put<SpecialHolidayApiResponse>(`${this.specialHolidaysUrl}/${id}`, specialHoliday);
+  putSpecialHoliday(
+    id: number,
+    specialHoliday: SpecialHoliday,
+  ): Observable<SpecialHolidayApiResponse> {
+    return this.httpClient.put<SpecialHolidayApiResponse>(
+      `${this.specialHolidaysUrl}/${id}`,
+      specialHoliday,
+    );
   }
 
   deleteAllSpecialHolidays(ids: number[]): Observable<void> {
-    return this.httpClient.delete<void>(this.specialHolidaysUrl, {body: {ids}});
+    return this.httpClient.delete<void>(this.specialHolidaysUrl, { body: { ids } });
   }
 
   postRuIndication(ruIndication: RuIndication): Observable<RuIndicationApiResponse> {
@@ -187,11 +200,14 @@ export class RuAdminApi {
   }
 
   putRuIndication(id: number, ruIndication: RuIndication): Observable<RuIndicationApiResponse> {
-    return this.httpClient.put<RuIndicationApiResponse>(`${this.ruIndicationsUrl}/${id}`, ruIndication);
+    return this.httpClient.put<RuIndicationApiResponse>(
+      `${this.ruIndicationsUrl}/${id}`,
+      ruIndication,
+    );
   }
 
   deleteAllRuIndications(ids: number[]) {
-    return this.httpClient.delete<void>(this.ruIndicationsUrl, {body: {ids}});
+    return this.httpClient.delete<void>(this.ruIndicationsUrl, { body: { ids } });
   }
 
   postExternalLink(externalLink: ExternalLink): Observable<ExternalLinkApiResponse> {
@@ -199,11 +215,14 @@ export class RuAdminApi {
   }
 
   putExternalLink(id: number, externalLink: ExternalLink): Observable<ExternalLinkApiResponse> {
-    return this.httpClient.put<ExternalLinkApiResponse>(`${this.externalLinksUrl}/${id}`, externalLink);
+    return this.httpClient.put<ExternalLinkApiResponse>(
+      `${this.externalLinksUrl}/${id}`,
+      externalLink,
+    );
   }
 
   deleteExternalLinksByIds(ids: number[]): Observable<void> {
-    return this.httpClient.delete<void>(this.externalLinksUrl, {body: {ids}});
+    return this.httpClient.delete<void>(this.externalLinksUrl, { body: { ids } });
   }
 
   postRuFeature(ruFeature: RuFeature): Observable<RuFeatureApiResponse> {
@@ -215,6 +234,6 @@ export class RuAdminApi {
   }
 
   deleteRuFeaturesByIds(ids: number[]): Observable<void> {
-    return this.httpClient.delete<void>(this.ruFeaturesUrl, {body: {ids}});
+    return this.httpClient.delete<void>(this.ruFeaturesUrl, { body: { ids } });
   }
 }

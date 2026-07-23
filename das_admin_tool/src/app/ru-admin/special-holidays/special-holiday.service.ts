@@ -1,21 +1,24 @@
-import {inject, Injectable} from '@angular/core';
-import {firstValueFrom} from 'rxjs';
-import {RuAdminApi, SpecialHoliday} from '../ru-admin-api';
+import { inject, Injectable } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
+import { BaseDialogService } from '../base-dialog.service';
+import { RuAdminApi, SpecialHoliday } from '../ru-admin-api';
 import {
   SpecialHolidayDialog,
-  SpecialHolidayDialogEditResult
+  SpecialHolidayDialogEditResult,
 } from './special-holiday-dialog/special-holiday-dialog.component';
-import {BaseDialogService} from '../base-dialog.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class SpecialHolidayService extends BaseDialogService {
   private readonly ruAdminApi = inject(RuAdminApi);
   readonly specialHolidaysResource = this.ruAdminApi.specialHolidays;
 
   async edit(specialHoliday: SpecialHoliday): Promise<void> {
-    const event = await firstValueFrom(this.dialogService.open<SpecialHolidayDialog, SpecialHolidayDialogEditResult>(SpecialHolidayDialog, {data: specialHoliday}).afterClosed);
+    const event = await firstValueFrom(
+      this.dialogService.open<SpecialHolidayDialog, SpecialHolidayDialogEditResult>(
+        SpecialHolidayDialog,
+        { data: specialHoliday },
+      ).afterClosed,
+    );
     if (event.result === 'delete') {
       await this.runMutation(
         this.ruAdminApi.deleteAllSpecialHolidays([specialHoliday.id!]),
@@ -31,7 +34,10 @@ export class SpecialHolidayService extends BaseDialogService {
   }
 
   async add(): Promise<void> {
-    const event = await firstValueFrom(this.dialogService.open<SpecialHolidayDialog, SpecialHoliday>(SpecialHolidayDialog).afterClosed);
+    const event = await firstValueFrom(
+      this.dialogService.open<SpecialHolidayDialog, SpecialHoliday>(SpecialHolidayDialog)
+        .afterClosed,
+    );
     if (event.result) {
       await this.runMutation(
         this.ruAdminApi.postSpecialHoliday(event.result),

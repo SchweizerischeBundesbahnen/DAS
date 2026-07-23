@@ -4,16 +4,16 @@
   @if (externalLinksResource.value().data.length === 0) {
     <p i18n="@@external_links_empty_state">Noch keine externen Absprünge erfasst.</p>
     <sbb-secondary-button
-      (click)="externalLinksService.add()"
       i18n="@@button_create_entry"
       iconName="plus-small"
-      >Neuen Eintrag erfassen
-    </sbb-secondary-button>
+      (click)="externalLinksService.add()"
+      >Neuen Eintrag erfassen</sbb-secondary-button
+    >
   } @else {
-    <app-external-links-table></app-external-links-table>
+    <app-external-links-table />
   }
 } @else if (externalLinksResource.error()) {
   <p i18n="@@external_links_error_loading">Fehler beim Laden der externen Absprünge</p>
 } @else if (externalLinksResource.isLoading()) {
-  <sbb-loading-indicator-circle></sbb-loading-indicator-circle>
+  <sbb-loading-indicator-circle />
 }

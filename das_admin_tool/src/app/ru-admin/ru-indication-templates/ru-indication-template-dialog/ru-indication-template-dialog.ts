@@ -1,15 +1,15 @@
-import {Component, inject} from '@angular/core';
-import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {RuIndicationTemplate} from '../../ru-admin-api';
-import {SBB_OVERLAY_DATA} from '@sbb-esta/lyne-angular/core/overlay';
-import {SbbTitleModule} from '@sbb-esta/lyne-angular/title';
-import {SbbFormFieldModule} from '@sbb-esta/lyne-angular/form-field';
+import { Component, inject } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core/overlay';
+import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
+import { SbbTitleModule } from '@sbb-esta/lyne-angular/title';
+import { RuIndicationTemplate } from '~ru-admin/ru-admin-api';
 import {
   contentFormValue,
   createContentFormGroup,
-  RuIndicationContentForm
-} from '../../ru-indication-content-form/ru-indication-content-form.component';
-import {BaseDialog} from '../../../shared/base-dialog/base-dialog.component';
+  RuIndicationContentForm,
+} from '~ru-admin/ru-indication-content-form/ru-indication-content-form.component';
+import { BaseDialog } from '~shared/base-dialog/base-dialog.component';
 
 export type RuIndicationTemplateDialogEditResult = RuIndicationTemplate | 'delete';
 
@@ -28,13 +28,14 @@ export type RuIndicationTemplateDialogEditResult = RuIndicationTemplate | 'delet
 export class RuIndicationTemplateDialog {
   protected readonly title: string;
   protected ruIndicationTemplateForm = new FormGroup({
-    category: new FormControl('', {nonNullable: true, validators: [Validators.required]}),
-    content: createContentFormGroup({textRequired: false}),
+    category: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    content: createContentFormGroup({ textRequired: false }),
   });
-  protected readonly dialogData = inject<RuIndicationTemplate>(SBB_OVERLAY_DATA, {optional: true}) ?? undefined;
+  protected readonly dialogData =
+    inject<RuIndicationTemplate>(SBB_OVERLAY_DATA, { optional: true }) ?? undefined;
 
   constructor() {
-    const isEdit = this.dialogData?.id != null;
+    const isEdit = this.dialogData?.id !== undefined;
     this.title = isEdit
       ? $localize`:@@ru_indication_templates_dialog_title_edit:Titel und Text bearbeiten`
       : $localize`:@@ru_indication_templates_dialog_title_create:Titel und Text erfassen`;
@@ -54,8 +55,8 @@ export class RuIndicationTemplateDialog {
           it: {
             title: this.dialogData.it?.title ?? '',
             text: this.dialogData.it?.text ?? '',
-          }
-        }
+          },
+        },
       });
     }
   }

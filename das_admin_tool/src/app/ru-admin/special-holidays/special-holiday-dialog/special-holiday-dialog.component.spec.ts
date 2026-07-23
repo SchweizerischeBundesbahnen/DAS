@@ -1,16 +1,16 @@
 import { TestBed } from '@angular/core/testing';
-import { SpecialHolidayDialog } from './special-holiday-dialog.component';
 import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core/overlay';
-import { SpecialHoliday } from '../../ru-admin-api';
-import { RecentCompaniesStore } from '../../../shared/recent-companies.store';
+import { SpecialHoliday } from '~ru-admin/ru-admin-api';
+import { RecentCompaniesStore } from '~shared/recent-companies.store';
+import { SpecialHolidayDialog } from './special-holiday-dialog.component';
 
 function createDialog(data?: SpecialHoliday, recentCompanies: string[] = []): SpecialHolidayDialog {
-  const recentCompaniesStoreMock = {get: vi.fn(() => recentCompanies)};
+  const recentCompaniesStoreMock = { get: vi.fn(() => recentCompanies) };
   TestBed.configureTestingModule({
     providers: [
       SpecialHolidayDialog,
-      {provide: SBB_OVERLAY_DATA, useValue: data ?? null},
-      {provide: RecentCompaniesStore, useValue: recentCompaniesStoreMock},
+      { provide: SBB_OVERLAY_DATA, useValue: data ?? null },
+      { provide: RecentCompaniesStore, useValue: recentCompaniesStoreMock },
     ],
   });
   return TestBed.inject(SpecialHolidayDialog);
@@ -52,7 +52,6 @@ describe('SpecialHolidayDialog', () => {
 
     dialog['specialHolidayForm'].get('companies')!.setValue([]);
 
-    expect(dialog['specialHolidayForm'].get('companies')!.errors).toEqual({required: true});
+    expect(dialog['specialHolidayForm'].get('companies')!.errors).toEqual({ required: true });
   });
 });
-

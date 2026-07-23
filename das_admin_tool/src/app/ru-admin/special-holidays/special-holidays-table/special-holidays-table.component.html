@@ -1,77 +1,105 @@
-<app-table-search-header [searchControl]="searchControl"/>
+<app-table-search-header [searchControl]="searchControl" />
 <sbb-table-wrapper>
-  <table [dataSource]="dataSource" class="table-truncated" fixedLayout sbb-table sbbSort
-         sbbSortActive="date" sbbSortDirection="asc">
+  <table
+    class="table-truncated"
+    fixedLayout
+    sbb-table
+    sbbSort
+    sbbSortActive="date"
+    sbbSortDirection="asc"
+    [dataSource]="dataSource"
+  >
     <ng-container sbbColumnDef="select">
       <th *sbbHeaderCellDef sbb-header-cell>
         <sbb-checkbox
-          (change)="$event ? parentToggle() : null"
           [checked]="selection.hasValue() && isAllSelected()"
           [indeterminate]="selection.hasValue() && !isAllSelected()"
-        >
-        </sbb-checkbox>
+          (change)="$event ? parentToggle() : null"
+        />
       </th>
       <td *sbbCellDef="let row" sbb-cell>
         <sbb-checkbox
+          [checked]="selection.isSelected(row)"
           (change)="$event ? selection.toggle(row) : null"
           (click)="$event.stopPropagation()"
-          [checked]="selection.isSelected(row)"
-        >
-        </sbb-checkbox>
+        />
       </td>
     </ng-container>
 
     <ng-container sbbColumnDef="name">
-      <th *sbbHeaderCellDef i18n="@@special_holidays_table_column_name" sbb-header-cell
-          sbb-sort-header="name">Name des Feiertags
-      </th>
-      <td *sbbCellDef="let row" sbb-cell><span>{{ row.name }}</span></td>
+      <th
+        *sbbHeaderCellDef
+        i18n="@@special_holidays_table_column_name"
+        sbb-header-cell
+        sbb-sort-header="name"
+        >Name des Feiertags</th
+      >
+      <td *sbbCellDef="let row" sbb-cell>
+        <span>{{ row.name }}</span>
+      </td>
     </ng-container>
 
     <ng-container sbbColumnDef="date">
-      <th *sbbHeaderCellDef i18n="@@special_holidays_table_column_date" sbb-header-cell
-          sbb-sort-header="date">Gültig am
-      </th>
-      <td *sbbCellDef="let row" sbb-cell>{{ row.date | date:'shortDate' }}</td>
+      <th
+        *sbbHeaderCellDef
+        i18n="@@special_holidays_table_column_date"
+        sbb-header-cell
+        sbb-sort-header="date"
+        >Gültig am</th
+      >
+      <td *sbbCellDef="let row" sbb-cell>{{ row.date | date: 'shortDate' }}</td>
     </ng-container>
 
     <ng-container sbbColumnDef="scheduleType">
-      <th *sbbHeaderCellDef i18n="@@special_holidays_table_column_schedule_type" sbb-header-cell
-          sbb-sort-header="scheduleType">Gilt als
-      </th>
-      <td *sbbCellDef="let row" sbb-cell>{{ scheduleTypeLabel(row.scheduleType) }}
-      </td>
+      <th
+        *sbbHeaderCellDef
+        i18n="@@special_holidays_table_column_schedule_type"
+        sbb-header-cell
+        sbb-sort-header="scheduleType"
+        >Gilt als</th
+      >
+      <td *sbbCellDef="let row" sbb-cell>{{ scheduleTypeLabel(row.scheduleType) }}</td>
     </ng-container>
 
     <ng-container sbbColumnDef="companies">
-      <th *sbbHeaderCellDef i18n="@@special_holidays_table_column_companies" sbb-header-cell
-          sbb-sort-header="companies">Gültig für
-      </th>
-      <td *sbbCellDef="let row" sbb-cell><span>{{ companiesValue(row.companies) }}</span></td>
-    </ng-container>
-
-    <ng-container sbbColumnDef="lastModifiedAt">
-      <th *sbbHeaderCellDef i18n="@@special_holidays_table_column_last_modified_at"
-          sbb-header-cell
-          sbb-sort-header="lastModifiedAt">
-        Bearbeitet am
-      </th>
-      <td *sbbCellDef="let row" sbb-cell>{{ row.lastModifiedAt | date: 'short' }}
+      <th
+        *sbbHeaderCellDef
+        i18n="@@special_holidays_table_column_companies"
+        sbb-header-cell
+        sbb-sort-header="companies"
+        >Gültig für</th
+      >
+      <td *sbbCellDef="let row" sbb-cell>
+        <span>{{ companiesValue(row.companies) }}</span>
       </td>
     </ng-container>
 
+    <ng-container sbbColumnDef="lastModifiedAt">
+      <th
+        *sbbHeaderCellDef
+        i18n="@@special_holidays_table_column_last_modified_at"
+        sbb-header-cell
+        sbb-sort-header="lastModifiedAt"
+        >Bearbeitet am</th
+      >
+      <td *sbbCellDef="let row" sbb-cell>{{ row.lastModifiedAt | date: 'short' }}</td>
+    </ng-container>
+
     <ng-container sbbColumnDef="lastModifiedBy">
-      <th *sbbHeaderCellDef i18n="@@special_holidays_table_column_last_modified_by"
-          sbb-header-cell
-          sbb-sort-header="lastModifiedBy">Bearbeitet von
-      </th>
+      <th
+        *sbbHeaderCellDef
+        i18n="@@special_holidays_table_column_last_modified_by"
+        sbb-header-cell
+        sbb-sort-header="lastModifiedBy"
+        >Bearbeitet von</th
+      >
       <td *sbbCellDef="let row" sbb-cell>{{ row.lastModifiedBy }}</td>
     </ng-container>
 
     <ng-container sbbColumnDef="action">
       <th *sbbHeaderCellDef sbb-header-cell></th>
       <td *sbbCellDef="let holiday" sbb-cell>
-        <sbb-mini-button (click)="edit(holiday)" iconName="pen-small"></sbb-mini-button>
+        <sbb-mini-button iconName="pen-small" (click)="edit(holiday)" />
       </td>
     </ng-container>
 
@@ -81,9 +109,9 @@
 </sbb-table-wrapper>
 
 <app-table-bottom-bar
-  (addClicked)="add()"
-  (deleteClicked)="deleteSelected()"
   [deleteDisabled]="selection.isEmpty()"
   [deleting]="isDeleting"
   [selectedCount]="selection.selected.length"
+  (addClicked)="add()"
+  (deleteClicked)="deleteSelected()"
 />

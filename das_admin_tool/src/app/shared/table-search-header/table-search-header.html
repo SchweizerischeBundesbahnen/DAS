@@ -1,13 +1,14 @@
 <div class="search-language-header">
   <sbb-form-field>
-    <input [formControl]="searchControl()" [placeholder]="searchPlaceholder()" type="text"/>
-    <sbb-icon name="magnifying-glass-small" slot="suffix"></sbb-icon>
+    <input type="text" [formControl]="searchControl()" [placeholder]="searchPlaceholder()" />
+    <sbb-icon name="magnifying-glass-small" slot="suffix" />
   </sbb-form-field>
-  @if (languageControl()) {
+  @let language = languageControl();
+  @if (language) {
     <sbb-form-field>
-      <sbb-icon name="globe-small" slot="prefix"></sbb-icon>
-      <label i18n="@@form_field_language_label">Sprache</label>
-      <sbb-select [formControl]="languageControl()!">
+      <sbb-icon name="globe-small" slot="prefix" />
+      <label for="language" i18n="@@form_field_language_label">Sprache</label>
+      <sbb-select [formControl]="language">
         @for (language of languageProvider.allLanguages; track language.localeId) {
           <sbb-option [value]="language.path">{{ language.label }}</sbb-option>
         }

@@ -1,22 +1,22 @@
-import {Component, effect, inject, viewChild} from '@angular/core';
+import { SelectionModel } from '@angular/cdk/collections';
+import { DatePipe } from '@angular/common';
+import { Component, effect, inject, viewChild } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormControl, FormGroup } from '@angular/forms';
+import { SbbMiniButton } from '@sbb-esta/lyne-angular/button/mini-button';
+import { SbbCheckbox } from '@sbb-esta/lyne-angular/checkbox';
 import {
   SbbSort,
   SbbTableDataSource,
   SbbTableFilter,
-  SbbTableModule
+  SbbTableModule,
 } from '@sbb-esta/lyne-angular/table';
-import {SbbCheckbox} from '@sbb-esta/lyne-angular/checkbox';
-import {ExternalLinksService} from '../external-links.service';
-import {SelectionModel} from '@angular/cdk/collections';
-import {LanguageCode, LanguageProvider} from '../../../shared/language-provider';
-import {DatePipe} from '@angular/common';
-import {ExternalLink} from '../../ru-admin-api';
-import {FormControl, FormGroup} from '@angular/forms';
-import {SbbMiniButton} from '@sbb-esta/lyne-angular/button/mini-button';
-import {TableBottomBar} from '../../../shared/table-bottom-bar/table-bottom-bar';
-import {TableSearchHeader} from '../../../shared/table-search-header/table-search-header';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {startWith} from 'rxjs';
+import { startWith } from 'rxjs';
+import { ExternalLink } from '~ru-admin/ru-admin-api';
+import { LanguageCode, LanguageProvider } from '~shared/language-provider';
+import { TableBottomBar } from '~shared/table-bottom-bar/table-bottom-bar';
+import { TableSearchHeader } from '~shared/table-search-header/table-search-header';
+import { ExternalLinksService } from '../external-links.service';
 
 interface ExternalLinkFilter extends SbbTableFilter {
   search: string;
@@ -44,8 +44,8 @@ export class ExternalLinksTable {
   private readonly externalLinksService = inject(ExternalLinksService);
   private readonly languageProvider = inject(LanguageProvider);
   protected form = new FormGroup({
-    search: new FormControl('', {nonNullable: true}),
-    language: new FormControl(this.languageProvider.currentLanguage.path, {nonNullable: true}),
+    search: new FormControl('', { nonNullable: true }),
+    language: new FormControl(this.languageProvider.currentLanguage.path, { nonNullable: true }),
   });
   private readonly externalLinksResource = this.externalLinksService.externalLinksResource;
   private readonly sort = viewChild.required<SbbSort>(SbbSort);
@@ -60,7 +60,8 @@ export class ExternalLinksTable {
       this.dataSource.paginator = this.bottomBar().paginator();
       this.dataSource.sort = this.sort();
     });
-    this.dataSource.filterPredicate = (data: ExternalLink, filter: ExternalLinkFilter) => this.searchFilter(filter, data);
+    this.dataSource.filterPredicate = (data: ExternalLink, filter: ExternalLinkFilter) =>
+      this.searchFilter(filter, data);
     this.dataSource.sortingDataAccessor = (data: ExternalLink, column: string) => {
       if (column === 'title' || column === 'link') {
         return this.currentLanguage(data)?.[column] ?? '';
@@ -78,12 +79,12 @@ export class ExternalLinksTable {
     return externalLink[this.form.controls.language.value];
   }
 
-  protected edit(externalLink: ExternalLink): void {
-    this.externalLinksService.edit(externalLink);
+  protected async edit(externalLink: ExternalLink): Promise<void> {
+    await this.externalLinksService.edit(externalLink);
   }
 
-  protected add(): void {
-    this.externalLinksService.add();
+  protected async add(): Promise<void> {
+    await this.externalLinksService.add();
   }
 
   protected isAllSelected() {
@@ -102,7 +103,9 @@ export class ExternalLinksTable {
     if (this.isDeleting) return;
     this.isDeleting = true;
     try {
-      this.externalLinksService.deleteAllByIds(this.selection.selected.map((el) => el.id!));
+      await this.externalLinksService.deleteAllByIds(
+        this.selection.selected.map((externalLink) => externalLink.id!),
+      );
       this.selection.clear();
     } finally {
       this.isDeleting = false;
@@ -117,10 +120,11 @@ export class ExternalLinksTable {
     const search = filter.search.toLowerCase();
     if (!search) return true;
     return (
-      this.currentLanguage(data)?.title?.toLowerCase().includes(search) ||
-      this.currentLanguage(data)?.link?.toLowerCase().includes(search) ||
-      data.lastModifiedBy?.toLowerCase().includes(search) ||
-      data.lastModifiedAt?.toString().toLowerCase().includes(search)
-    ) ?? false;
+      ((this.currentLanguage(data)?.title ?? '').toLowerCase().includes(search)
+        || (this.currentLanguage(data)?.link ?? '').toLowerCase().includes(search)
+        || (data.lastModifiedBy ?? '').toLowerCase().includes(search)
+        || (data.lastModifiedAt ?? '').toString().toLowerCase().includes(search))
+      ?? false
+    );
   }
 }

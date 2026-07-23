@@ -1,8 +1,8 @@
-import {TestBed} from '@angular/core/testing';
-import {SpecialHolidaysTable} from './special-holidays-table.component';
-import {SpecialHolidayService} from '../special-holiday.service';
-import {SpecialHoliday} from '../../ru-admin-api';
-import {CompanyService} from '../../../shared/companies-input/company.service';
+import { TestBed } from '@angular/core/testing';
+import { SpecialHoliday } from '~ru-admin/ru-admin-api';
+import { CompanyService } from '~shared/companies-input/company.service';
+import { SpecialHolidayService } from '../special-holiday.service';
+import { SpecialHolidaysTable } from './special-holidays-table.component';
 
 const holidays: SpecialHoliday[] = [
   {
@@ -29,7 +29,7 @@ const mockHolidayService = {
   edit: vi.fn(),
   add: vi.fn(),
   deleteAll: vi.fn(() => Promise.resolve()),
-  specialHolidaysResource: new Proxy({}, {get: () => vi.fn()}),
+  specialHolidaysResource: new Proxy({}, { get: () => vi.fn() }),
 };
 
 const mockCompanyService: Partial<CompanyService> = {
@@ -40,8 +40,8 @@ function createComponent(): SpecialHolidaysTable {
   TestBed.configureTestingModule({
     providers: [
       SpecialHolidaysTable,
-      {provide: SpecialHolidayService, useValue: mockHolidayService},
-      {provide: CompanyService, useValue: mockCompanyService},
+      { provide: SpecialHolidayService, useValue: mockHolidayService },
+      { provide: CompanyService, useValue: mockCompanyService },
     ],
   });
   return TestBed.inject(SpecialHolidaysTable);
@@ -90,17 +90,17 @@ describe('SpecialHolidaysTable', () => {
 
   describe('searchFilter', () => {
     it.each([
-      {search: '', expected: true, description: 'empty search returns all'},
-      {search: 'auffahrt', expected: true, description: 'matches on name'},
-      {search: '2026', expected: true, description: 'matches on date'},
-      {search: 'sonntag', expected: true, description: 'matches on schedule type label'},
-      {search: '1085', expected: true, description: 'matches on companies value'},
-      {search: 'admin', expected: true, description: 'matches on lastModifiedBy'},
-      {search: 'AUFFAHRT', expected: true, description: 'is case-insensitive'},
-      {search: 'xyz-nomatch', expected: false, description: 'returns false when no match'},
-    ])('$description (search="$search")', ({search, expected}) => {
+      { search: '', expected: true, description: 'empty search returns all' },
+      { search: 'auffahrt', expected: true, description: 'matches on name' },
+      { search: '2026', expected: true, description: 'matches on date' },
+      { search: 'sonntag', expected: true, description: 'matches on schedule type label' },
+      { search: '1085', expected: true, description: 'matches on companies value' },
+      { search: 'admin', expected: true, description: 'matches on lastModifiedBy' },
+      { search: 'AUFFAHRT', expected: true, description: 'is case-insensitive' },
+      { search: 'xyz-nomatch', expected: false, description: 'returns false when no match' },
+    ])('$description (search="$search")', ({ search, expected }) => {
       const comp = createComponent();
-      expect(comp['searchFilter']({search}, holidays[0])).toBe(expected);
+      expect(comp['searchFilter']({ search }, holidays[0])).toBe(expected);
     });
   });
 
@@ -132,7 +132,7 @@ describe('SpecialHolidaysTable', () => {
 
     it('should set isDeleting flag during deletion', async () => {
       let resolveFn: () => void;
-      mockHolidayService.deleteAll.mockReturnValue(new Promise<void>(r => resolveFn = r));
+      mockHolidayService.deleteAll.mockReturnValue(new Promise<void>((r) => (resolveFn = r)));
       const comp = createComponent();
       comp['dataSource'].data = holidays;
       comp['selection'].select(holidays[0]);
@@ -159,7 +159,8 @@ describe('SpecialHolidaysTable', () => {
       comp['dataSource'].data = holidays;
       comp['selection'].select(holidays[0]);
 
-      await comp['deleteSelected']().catch(() => { /* expected */
+      await comp['deleteSelected']().catch(() => {
+        /* expected */
       });
       expect(comp['isDeleting']).toBe(false);
     });

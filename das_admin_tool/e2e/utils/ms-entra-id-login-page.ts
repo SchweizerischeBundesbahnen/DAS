@@ -1,12 +1,12 @@
-import {BrowserWindow} from './browser-window';
+import { BrowserWindow } from './browser-window';
 
 const INPUT_MAIL = '[type=email]';
 const INPUT_PASSWORD = '[type=password]';
 const BUTTON_SIGN_IN = 'input:has-text("Sign in")';
 const BUTTON_NEXT = 'text=Next';
-const MAX_LOGIN_TIME = 120000;
-const LOGIN_USERNAME = process.env['E2E_LOGIN_USERNAME'] || '';
-const LOGIN_PASSWORD = process.env['E2E_LOGIN_PASSWORD'] || '';
+const MAX_LOGIN_TIME = 120_000;
+const LOGIN_USERNAME = process.env['E2E_LOGIN_USERNAME'] ?? '';
+const LOGIN_PASSWORD = process.env['E2E_LOGIN_PASSWORD'] ?? '';
 
 /**
  * Page Object Model for an Entra ID login page
@@ -16,8 +16,7 @@ export class MsEntraIdLoginPage {
   constructor(
     private browser: BrowserWindow,
     private baseURL: string,
-  ) {
-  }
+  ) {}
 
   async login(interactive = false): Promise<void> {
     console.debug('Trying to login with:', LOGIN_USERNAME);
@@ -27,9 +26,8 @@ export class MsEntraIdLoginPage {
     await this.browser.click(BUTTON_SIGN_IN);
     try {
       // Check if automatically redirected
-      await this.browser.getPage().waitForURL(this.baseURL, {timeout: 2000});
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (err: unknown) {
+      await this.browser.getPage().waitForURL(this.baseURL, { timeout: 2000 });
+    } catch {
       await this.checkPasswordError(interactive);
       await this.check2ndFactorAuth();
       await this.browser.getPage().waitForURL(this.baseURL);
@@ -39,8 +37,8 @@ export class MsEntraIdLoginPage {
 
   async checkPasswordError(interactive: boolean): Promise<void> {
     if (
-      (await this.browser.getElement('#passwordError')) ||
-      (await this.browser.getElement('#userNameError'))
+      (await this.browser.getElement('#passwordError'))
+      || (await this.browser.getElement('#userNameError'))
     ) {
       if (interactive) {
         this.browser.getPage().setDefaultTimeout(MAX_LOGIN_TIME);

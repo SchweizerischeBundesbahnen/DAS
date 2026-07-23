@@ -1,13 +1,13 @@
-import {devices, PlaywrightTestConfig} from '@playwright/test';
+import { defineConfig, devices } from '@playwright/test';
 
-const config: PlaywrightTestConfig = {
+export default defineConfig({
   testDir: 'tests',
   forbidOnly: !!process.env['CI'],
   retries: process.env['CI'] ? 2 : 0,
-  globalSetup: require.resolve('./global-setup'),
+  globalSetup: './global-setup',
   use: {
     baseURL: 'http://localhost:4200',
-    viewport: {width: 1280, height: 1580},
+    viewport: { width: 1280, height: 1580 },
     ignoreHTTPSErrors: true,
     trace: 'on-first-retry',
     storageState: 'e2e/auth-state.json',
@@ -20,8 +20,7 @@ const config: PlaywrightTestConfig = {
   projects: [
     {
       name: 'chromium',
-      use: {...devices['Desktop Chrome']},
+      use: { ...devices['Desktop Chrome'] },
     },
   ],
-};
-export default config;
+});

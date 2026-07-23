@@ -3,7 +3,7 @@ import { ExternalLinks } from './external-links';
 import { ExternalLinksService } from './external-links.service';
 
 const mockExternalLinksService = {
-  externalLinksResource: new Proxy({}, {get: () => vi.fn()}),
+  externalLinksResource: new Proxy({}, { get: () => vi.fn() }),
 };
 
 describe('ExternalLinks', () => {

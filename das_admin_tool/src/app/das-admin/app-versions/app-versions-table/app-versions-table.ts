@@ -1,21 +1,15 @@
-import {Component, effect, inject, viewChild} from '@angular/core';
-import {SbbSort, SbbTableDataSource, SbbTableModule} from '@sbb-esta/lyne-angular/table';
-import {AppVersion} from '../../das-admin-api';
-import {DatePipe} from '@angular/common';
-import {SbbToggleCheckModule} from '@sbb-esta/lyne-angular/toggle-check';
-import {AppVersionsService} from '../app-versions.service';
-import {SbbMiniButton} from '@sbb-esta/lyne-angular/button/mini-button';
-import {TableBottomBar} from '../../../shared/table-bottom-bar/table-bottom-bar';
+import { DatePipe } from '@angular/common';
+import { Component, effect, inject, viewChild } from '@angular/core';
+import { SbbMiniButton } from '@sbb-esta/lyne-angular/button/mini-button';
+import { SbbSort, SbbTableDataSource, SbbTableModule } from '@sbb-esta/lyne-angular/table';
+import { SbbToggleCheckModule } from '@sbb-esta/lyne-angular/toggle-check';
+import { AppVersion } from '~app/das-admin/das-admin-api';
+import { TableBottomBar } from '~shared/table-bottom-bar/table-bottom-bar';
+import { AppVersionsService } from '../app-versions.service';
 
 @Component({
   selector: 'app-app-versions-table',
-  imports: [
-    SbbTableModule,
-    DatePipe,
-    SbbToggleCheckModule,
-    SbbMiniButton,
-    TableBottomBar,
-  ],
+  imports: [SbbTableModule, DatePipe, SbbToggleCheckModule, SbbMiniButton, TableBottomBar],
   templateUrl: './app-versions-table.html',
   styleUrl: './app-versions-table.css',
 })
@@ -23,7 +17,14 @@ export class AppVersionsTable {
   protected readonly addLabel = $localize`:@@app_versions_button_create:App Version blockieren`;
 
   protected dataSource = new SbbTableDataSource<AppVersion>();
-  protected columns = ['version', 'minimalVersion', 'expiryDate', 'lastModifiedAt', 'lastModifiedBy', 'action'];
+  protected columns = [
+    'version',
+    'minimalVersion',
+    'expiryDate',
+    'lastModifiedAt',
+    'lastModifiedBy',
+    'action',
+  ];
   private readonly appVersionsService = inject(AppVersionsService);
 
   private readonly bottomBar = viewChild.required(TableBottomBar);

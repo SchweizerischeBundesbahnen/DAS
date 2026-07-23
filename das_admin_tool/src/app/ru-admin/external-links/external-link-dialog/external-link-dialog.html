@@ -1,45 +1,45 @@
-<app-base-dialog [data]="dialogData" [dialogClose]="externalLinkForm.value"
-                 [dialogTitle]="dialogTitle"
-                 [saveDisabled]="externalLinkForm.invalid"
-                 i18n-stepLabel="@@external_links_dialog_step_label" stepLabel="Externer Absprung">
+<app-base-dialog
+  i18n-stepLabel="@@external_links_dialog_step_label"
+  stepLabel="Externer Absprung"
+  [data]="dialogData"
+  [dialogClose]="externalLinkForm.value"
+  [dialogTitle]="dialogTitle"
+  [saveDisabled]="externalLinkForm.invalid"
+>
   <form [formGroup]="externalLinkForm">
     <app-companies-input
-      [control]="externalLinkForm.controls.companies"
       i18n-label="@@external_links_form_companies_label"
       label="Betroffene EVU"
-    ></app-companies-input>
+      [control]="externalLinkForm.controls.companies"
+    />
     <sbb-tab-group>
       @for (language of languageProvider.allLanguages; track language.localeId) {
         <sbb-tab-label [iconName]="isLanguageEmpty(language.path) ? 'circle-dotted-small' : ''">{{
-            language.path | uppercase
-          }}
-        </sbb-tab-label>
+          language.path | uppercase
+        }}</sbb-tab-label>
         <sbb-tab [formGroupName]="language.path">
           <sbb-form-field errorSpace="reserve" class="full-width">
-            <label i18n="@@external_links_form_title_label">Titel</label>
-            <input formControlName="title"/>
+            <label for="title" i18n="@@external_links_form_title_label">Titel</label>
+            <input formControlName="title" />
             @let titleField = externalLinkForm.get(`${language.path}.title`);
             @if (externalLinkForm.touched && titleField?.hasError('languageRequired')) {
               <sbb-error i18n="@@external_links_form_field_error_required"
-              >Feld darf nicht leer sein
-              </sbb-error
+                >Feld darf nicht leer sein</sbb-error
               >
             }
           </sbb-form-field>
           <sbb-form-field errorSpace="reserve" class="full-width">
-            <label i18n="@@external_links_form_link_label">Webadresse (URL)</label>
-            <input formControlName="link"/>
+            <label for="link" i18n="@@external_links_form_link_label">Webadresse (URL)</label>
+            <input formControlName="link" />
             @let linkField = externalLinkForm.get(`${language.path}.link`);
             @if (externalLinkForm.touched && linkField?.hasError('languageRequired')) {
               <sbb-error i18n="@@external_links_form_field_error_required"
-              >Feld darf nicht leer sein
-              </sbb-error
+                >Feld darf nicht leer sein</sbb-error
               >
             }
             @if (externalLinkForm.touched && linkField?.hasError('url')) {
               <sbb-error i18n="@@external_links_form_field_error_url"
-              >Webadresse muss eine gültige URL sein
-              </sbb-error
+                >Webadresse muss eine gültige URL sein</sbb-error
               >
             }
           </sbb-form-field>
@@ -49,8 +49,7 @@
   </form>
   @if (externalLinkForm.touched && externalLinkForm.hasError('oneLanguageRequired')) {
     <sbb-error i18n="@@external_links_form_error_one_language_required"
-    >Eine Sprache muss ausgefüllt sein
-    </sbb-error
+      >Eine Sprache muss ausgefüllt sein</sbb-error
     >
   }
 </app-base-dialog>

@@ -1,16 +1,16 @@
 import { Component, inject } from '@angular/core';
-import { InternalCompany } from '../../das-admin-api';
 import {
   FormControl,
   NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
-import { BaseDialog } from '../../../shared/base-dialog/base-dialog.component';
 import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core/overlay';
-import { TenantService } from './tenant.service';
+import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
 import { SbbSelectModule } from '@sbb-esta/lyne-angular/select';
+import { InternalCompany } from '~app/das-admin/das-admin-api';
+import { BaseDialog } from '~shared/base-dialog/base-dialog.component';
+import { TenantService } from './tenant.service';
 
 export interface FormGroupCompany {
   code: FormControl<string>;
@@ -29,7 +29,7 @@ export type CompanyDialogEditResult = InternalCompany | 'delete';
 export class CompanyDialog {
   protected readonly dialogTitle: string;
   protected readonly dialogData =
-    inject<InternalCompany>(SBB_OVERLAY_DATA, { optional: true }) || undefined;
+    inject<InternalCompany>(SBB_OVERLAY_DATA, { optional: true }) ?? undefined;
 
   private readonly formBuilder = inject(NonNullableFormBuilder);
   protected companyForm = this.formBuilder.group<FormGroupCompany>({

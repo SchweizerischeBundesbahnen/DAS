@@ -1,11 +1,12 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {TableBottomBar} from './table-bottom-bar';
-import {ComponentRef} from '@angular/core';
+import { ComponentRef } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TableBottomBar } from './table-bottom-bar';
 
 describe('TableBottomBar', () => {
   let component: TableBottomBar;
   let componentRef: ComponentRef<TableBottomBar>;
   let fixture: ComponentFixture<TableBottomBar>;
+  let element: HTMLElement;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -14,6 +15,7 @@ describe('TableBottomBar', () => {
 
     fixture = TestBed.createComponent(TableBottomBar);
     component = fixture.componentInstance;
+    element = fixture.nativeElement as HTMLElement;
     componentRef = fixture.componentRef;
     await fixture.whenStable();
   });
@@ -30,14 +32,14 @@ describe('TableBottomBar', () => {
     const spy = vi.fn();
     component.addClicked.subscribe(spy);
 
-    const addButton = fixture.nativeElement.querySelector('sbb-secondary-button');
+    const addButton = element.querySelector('sbb-secondary-button');
     addButton?.click();
 
     expect(spy).toHaveBeenCalled();
   });
 
   it('should show delete button by default', () => {
-    const deleteButton = fixture.nativeElement.querySelector('sbb-transparent-button');
+    const deleteButton = element.querySelector('sbb-transparent-button');
     expect(deleteButton).toBeTruthy();
   });
 
@@ -45,7 +47,7 @@ describe('TableBottomBar', () => {
     componentRef.setInput('showDelete', false);
     fixture.detectChanges();
 
-    const deleteButton = fixture.nativeElement.querySelector('sbb-transparent-button');
+    const deleteButton = element.querySelector('sbb-transparent-button');
     expect(deleteButton).toBeFalsy();
   });
 
@@ -56,7 +58,7 @@ describe('TableBottomBar', () => {
     const spy = vi.fn();
     component.deleteClicked.subscribe(spy);
 
-    const deleteButton = fixture.nativeElement.querySelector('sbb-transparent-button');
+    const deleteButton = element.querySelector('sbb-transparent-button');
     deleteButton?.click();
 
     expect(spy).toHaveBeenCalled();
@@ -66,7 +68,7 @@ describe('TableBottomBar', () => {
     componentRef.setInput('addLabel', 'Custom Label');
     fixture.detectChanges();
 
-    const addButton = fixture.nativeElement.querySelector('sbb-secondary-button');
+    const addButton = element.querySelector('sbb-secondary-button');
     expect(addButton?.textContent).toContain('Custom Label');
   });
 });

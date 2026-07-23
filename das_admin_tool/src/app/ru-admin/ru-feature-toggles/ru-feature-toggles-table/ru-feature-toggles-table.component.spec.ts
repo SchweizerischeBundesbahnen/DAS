@@ -1,8 +1,8 @@
-import {TestBed} from '@angular/core/testing';
-import {RuFeatureTogglesTable} from './ru-feature-toggles-table.component';
-import {RuFeatureService} from '../ru-feature.service';
-import {RuFeature} from '../../ru-admin-api';
-import {CompanyService} from '../../../shared/companies-input/company.service';
+import { TestBed } from '@angular/core/testing';
+import { RuFeature } from '~ru-admin/ru-admin-api';
+import { CompanyService } from '~shared/companies-input/company.service';
+import { RuFeatureService } from '../ru-feature.service';
+import { RuFeatureTogglesTable } from './ru-feature-toggles-table.component';
 
 const ruFeatures: RuFeature[] = [
   {
@@ -26,7 +26,7 @@ const ruFeatures: RuFeature[] = [
 const mockRuFeatureService = {
   edit: vi.fn(),
   add: vi.fn(),
-  ruFeaturesResource: new Proxy({}, {get: () => vi.fn()}),
+  ruFeaturesResource: new Proxy({}, { get: () => vi.fn() }),
 };
 
 const mockCompanyService: Partial<CompanyService> = {
@@ -37,8 +37,8 @@ function createComponent(): RuFeatureTogglesTable {
   TestBed.configureTestingModule({
     providers: [
       RuFeatureTogglesTable,
-      {provide: RuFeatureService, useValue: mockRuFeatureService},
-      {provide: CompanyService, useValue: mockCompanyService},
+      { provide: RuFeatureService, useValue: mockRuFeatureService },
+      { provide: CompanyService, useValue: mockCompanyService },
     ],
   });
   return TestBed.inject(RuFeatureTogglesTable);
@@ -68,16 +68,16 @@ describe('RuFeatureTogglesTable', () => {
 
   describe('searchFilter', () => {
     it.each([
-      {search: '', expected: true, description: 'empty search returns all'},
-      {search: 'sbb', expected: true, description: 'matches on company name'},
-      {search: '1085', expected: true, description: 'matches on company code'},
-      {search: 'warnapp', expected: true, description: 'matches on key label'},
-      {search: 'admin', expected: true, description: 'matches on lastModifiedBy'},
-      {search: 'SBB', expected: true, description: 'is case-insensitive'},
-      {search: 'xyz-nomatch', expected: false, description: 'returns false when no match'},
-    ])('$description (search="$search")', ({search, expected}) => {
+      { search: '', expected: true, description: 'empty search returns all' },
+      { search: 'sbb', expected: true, description: 'matches on company name' },
+      { search: '1085', expected: true, description: 'matches on company code' },
+      { search: 'warnapp', expected: true, description: 'matches on key label' },
+      { search: 'admin', expected: true, description: 'matches on lastModifiedBy' },
+      { search: 'SBB', expected: true, description: 'is case-insensitive' },
+      { search: 'xyz-nomatch', expected: false, description: 'returns false when no match' },
+    ])('$description (search="$search")', ({ search, expected }) => {
       const comp = createComponent();
-      expect(comp['searchFilter']({search}, ruFeatures[0])).toBe(expected);
+      expect(comp['searchFilter']({ search }, ruFeatures[0])).toBe(expected);
     });
   });
 

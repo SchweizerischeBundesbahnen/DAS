@@ -1,29 +1,27 @@
-import {Component, effect, inject, viewChild} from '@angular/core';
+import { SelectionModel } from '@angular/cdk/collections';
+import { DatePipe } from '@angular/common';
+import { Component, effect, inject, viewChild } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { SbbMiniButton } from '@sbb-esta/lyne-angular/button/mini-button';
+import { SbbCheckbox } from '@sbb-esta/lyne-angular/checkbox';
+import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
 import {
   SbbSort,
   SbbTableDataSource,
   SbbTableFilter,
-  SbbTableModule
+  SbbTableModule,
 } from '@sbb-esta/lyne-angular/table';
-import {SbbMiniButton} from '@sbb-esta/lyne-angular/button/mini-button';
-import {SbbFormFieldModule} from '@sbb-esta/lyne-angular/form-field';
-import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {RuIndicationService} from '../ru-indication.service';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {startWith} from 'rxjs';
-import {LanguageCode, LanguageProvider} from '../../../shared/language-provider';
-import {CompanyService} from '../../../shared/companies-input/company.service';
-import {LocationService} from '../ru-indication-dialog/locations-input/location.service';
-import {
-  displayTrainNumberFilter
-} from '../ru-indication-dialog/train-number-input/train-number-input';
-import {DatePipe} from '@angular/common';
-import {displayPeriod} from '../ru-indication-dialog/periods-input/periods-input';
-import {RU_INDICATION_STATUS_LABELS, RuIndication} from '../../ru-admin-api';
-import {SbbCheckbox} from '@sbb-esta/lyne-angular/checkbox';
-import {SelectionModel} from '@angular/cdk/collections';
-import {TableBottomBar} from '../../../shared/table-bottom-bar/table-bottom-bar';
-import {TableSearchHeader} from '../../../shared/table-search-header/table-search-header';
+import { startWith } from 'rxjs';
+import { RU_INDICATION_STATUS_LABELS, RuIndication } from '~ru-admin/ru-admin-api';
+import { CompanyService } from '~shared/companies-input/company.service';
+import { LanguageCode, LanguageProvider } from '~shared/language-provider';
+import { TableBottomBar } from '~shared/table-bottom-bar/table-bottom-bar';
+import { TableSearchHeader } from '~shared/table-search-header/table-search-header';
+import { LocationService } from '../ru-indication-dialog/locations-input/location.service';
+import { displayPeriod } from '../ru-indication-dialog/periods-input/periods-input';
+import { displayTrainNumberFilter } from '../ru-indication-dialog/train-number-input/train-number-input';
+import { RuIndicationService } from '../ru-indication.service';
 
 export interface RuIndicationFilter extends SbbTableFilter {
   search: string;
@@ -54,19 +52,45 @@ export class RuIndicationsTable {
   protected readonly companyService = inject(CompanyService);
   protected readonly locationService = inject(LocationService);
   protected dataSource = new SbbTableDataSource<RuIndication, RuIndicationFilter>();
-  protected columns = ['select', 'title', 'text', 'category', 'status', 'companies', 'trainNumbers', 'locations', 'periods', 'lastModifiedAt', 'lastModifiedBy', 'action'];
-  protected filterColumns = ['empty', 'empty', 'empty', 'filter-category', 'empty', 'filter-companies', 'filter-train-numbers', 'filter-locations', 'filter-periods', 'empty', 'empty', 'empty'];
+  protected columns = [
+    'select',
+    'title',
+    'text',
+    'category',
+    'status',
+    'companies',
+    'trainNumbers',
+    'locations',
+    'periods',
+    'lastModifiedAt',
+    'lastModifiedBy',
+    'action',
+  ];
+  protected filterColumns = [
+    'empty',
+    'empty',
+    'empty',
+    'filter-category',
+    'empty',
+    'filter-companies',
+    'filter-train-numbers',
+    'filter-locations',
+    'filter-periods',
+    'empty',
+    'empty',
+    'empty',
+  ];
   protected readonly selection = new SelectionModel<RuIndication>(true, []);
   protected isDeleting = false;
   private readonly languageProvider = inject(LanguageProvider);
   protected form = new FormGroup({
-    search: new FormControl('', {nonNullable: true}),
-    language: new FormControl(this.languageProvider.currentLanguage.path, {nonNullable: true}),
-    category: new FormControl('', {nonNullable: true}),
-    companies: new FormControl('', {nonNullable: true}),
-    trainNumbers: new FormControl('', {nonNullable: true}),
-    locations: new FormControl('', {nonNullable: true}),
-    periods: new FormControl('', {nonNullable: true})
+    search: new FormControl('', { nonNullable: true }),
+    language: new FormControl(this.languageProvider.currentLanguage.path, { nonNullable: true }),
+    category: new FormControl('', { nonNullable: true }),
+    companies: new FormControl('', { nonNullable: true }),
+    trainNumbers: new FormControl('', { nonNullable: true }),
+    locations: new FormControl('', { nonNullable: true }),
+    periods: new FormControl('', { nonNullable: true }),
   });
   private readonly ruIndicationService = inject(RuIndicationService);
   private readonly bottomBar = viewChild.required(TableBottomBar);
@@ -80,7 +104,8 @@ export class RuIndicationsTable {
       this.dataSource.paginator = this.bottomBar().paginator();
       this.dataSource.sort = this.sort();
     });
-    this.dataSource.filterPredicate = (data: RuIndication, filter: RuIndicationFilter) => this.searchFilter(filter, data);
+    this.dataSource.filterPredicate = (data: RuIndication, filter: RuIndicationFilter) =>
+      this.searchFilter(filter, data);
     this.dataSource.sortingDataAccessor = (data, col) => this.getSortValue(data, col);
     this.form.valueChanges
       .pipe(startWith(this.form.value), takeUntilDestroyed())
@@ -100,7 +125,7 @@ export class RuIndicationsTable {
   }
 
   protected statusValue(row: RuIndication): string {
-    return RU_INDICATION_STATUS_LABELS.find((label) => label.value === row.status)?.label ?? '';
+    return RU_INDICATION_STATUS_LABELS().find((label) => label.value === row.status)?.label ?? '';
   }
 
   protected companiesValue(companyCodes: string[]) {
@@ -108,10 +133,15 @@ export class RuIndicationsTable {
   }
 
   protected locationsValue(row: RuIndication): string {
-    return row.scope.tafTapLocationReferences
-      ?.map(locationCode => this.locationService.getLocation(locationCode)?.locationAbbreviation ?? locationCode)
-      .sort((a, b) => a.localeCompare(b))
-      .join(', ') ?? '';
+    return (
+      row.scope.tafTapLocationReferences
+        ?.map(
+          (locationCode) =>
+            this.locationService.getLocation(locationCode)?.locationAbbreviation ?? locationCode,
+        )
+        .sort((a, b) => a.localeCompare(b))
+        .join(', ') ?? ''
+    );
   }
 
   protected trainNumbersValue(row: RuIndication): string {
@@ -120,7 +150,7 @@ export class RuIndicationsTable {
 
   protected periodsValue(row: RuIndication): string {
     return row.periods
-      .map(period => displayPeriod(period, this.languageProvider.currentLanguage.localeId))
+      .map((period) => displayPeriod(period, this.languageProvider.currentLanguage.localeId))
       .join(', ');
   }
 
@@ -156,32 +186,35 @@ export class RuIndicationsTable {
   }
 
   private getSortValue(row: RuIndication, column: string): string {
-    if (column === 'title') {
-      return this.titleValue(row);
+    switch (column) {
+      case 'title': {
+        return this.titleValue(row);
+      }
+      case 'text': {
+        return this.textValue(row);
+      }
+      case 'category': {
+        return row.content.category ?? '';
+      }
+      case 'status': {
+        return this.statusValue(row);
+      }
+      case 'companies': {
+        return this.companiesValue(row.scope.companies);
+      }
+      case 'trainNumbers': {
+        return this.trainNumbersValue(row);
+      }
+      case 'locations': {
+        return this.locationsValue(row);
+      }
+      case 'periods': {
+        return this.periodsValue(row);
+      }
+      default: {
+        return row[column as keyof RuIndication] as string;
+      }
     }
-    if (column === 'text') {
-      return this.textValue(row);
-    }
-    if (column === 'category') {
-      return row.content.category ?? '';
-    }
-    if (column === 'status') {
-      return this.statusValue(row);
-    }
-    if (column === 'companies') {
-      return this.companiesValue(row.scope.companies);
-    }
-    if (column === 'trainNumbers') {
-      return this.trainNumbersValue(row);
-    }
-    if (column === 'locations') {
-      return this.locationsValue(row);
-    }
-    if (column === 'periods') {
-      return this.periodsValue(row);
-    }
-    // @ts-expect-error - for dynamic access to other plain properties
-    return row[column] ?? '';
   }
 
   private searchFilter(filter: RuIndicationFilter, data: RuIndication) {
@@ -195,16 +228,18 @@ export class RuIndicationsTable {
   private filterGlobally(filter: RuIndicationFilter, data: RuIndication) {
     const search = filter.search.toLowerCase();
 
-    return this.titleValue(data).toLowerCase().includes(search) ||
-      this.textValue(data).toLowerCase().includes(search) ||
-      data.content.category?.toLowerCase().includes(search) ||
-      this.statusValue(data).toLowerCase().includes(search) ||
-      this.companiesValue(data.scope.companies).toLowerCase().includes(search) ||
-      this.trainNumbersValue(data).toLowerCase().includes(search) ||
-      this.locationsValue(data).toLowerCase().includes(search) ||
-      this.periodsValue(data).toLowerCase().includes(search) ||
-      data.lastModifiedAt?.toString().toLowerCase().includes(search) ||
-      data.lastModifiedBy?.toLowerCase().includes(search);
+    return (
+      this.titleValue(data).toLowerCase().includes(search)
+      || this.textValue(data).toLowerCase().includes(search)
+      || (data.content.category ?? '').toLowerCase().includes(search)
+      || this.statusValue(data).toLowerCase().includes(search)
+      || this.companiesValue(data.scope.companies).toLowerCase().includes(search)
+      || this.trainNumbersValue(data).toLowerCase().includes(search)
+      || this.locationsValue(data).toLowerCase().includes(search)
+      || this.periodsValue(data).toLowerCase().includes(search)
+      || (data.lastModifiedAt ?? '').toString().toLowerCase().includes(search)
+      || (data.lastModifiedBy ?? '').toLowerCase().includes(search)
+    );
   }
 
   private filterProperties(filter: RuIndicationFilter, data: RuIndication) {
@@ -214,10 +249,12 @@ export class RuIndicationsTable {
     const locations = filter.locations.toLowerCase();
     const periods = filter.periods.toLowerCase();
 
-    return (data.content.category ?? '').toLowerCase().includes(category)
+    return (
+      (data.content.category ?? '').toLowerCase().includes(category)
       && this.companiesValue(data.scope.companies).toLowerCase().includes(companies)
       && this.trainNumbersValue(data).toLowerCase().includes(trainNumbers)
       && this.locationsValue(data).toLowerCase().includes(locations)
-      && this.periodsValue(data).toLowerCase().includes(periods);
+      && this.periodsValue(data).toLowerCase().includes(periods)
+    );
   }
 }

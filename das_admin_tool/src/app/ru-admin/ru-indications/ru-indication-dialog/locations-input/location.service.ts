@@ -1,8 +1,8 @@
-import {computed, effect, inject, Injectable} from '@angular/core';
-import {httpResource} from '@angular/common/http';
-import {ApiResponse} from '../../../../shared/api-response';
-import {environment} from '../../../../../environments/environment';
-import {ToastService} from '../../../../shared/toast-service';
+import { httpResource } from '@angular/common/http';
+import { computed, effect, inject, Injectable } from '@angular/core';
+import { ApiResponse } from '~shared/api-response';
+import { ToastService } from '~shared/toast-service';
+import { environment } from '~src/environments/environment';
 
 export type LocationApiResponse = ApiResponse<Location>;
 
@@ -13,37 +13,42 @@ export interface Location {
   validFrom?: Date;
 }
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class LocationService {
   private readonly url = `${environment.backendUrl}/locations`;
   private readonly locationsResource = httpResource<LocationApiResponse>(() => this.url);
-  readonly loaded = computed(() => this.locationsResource.hasValue() || !!this.locationsResource.error());
+  readonly loaded = computed(
+    () => this.locationsResource.hasValue() || !!this.locationsResource.error(),
+  );
   private readonly toastService = inject(ToastService);
-  private readonly locations = computed(() => this.locationsResource.hasValue() ? this.locationsResource.value()!.data : []);
+  private readonly locations = computed(() =>
+    this.locationsResource.hasValue() ? this.locationsResource.value().data : [],
+  );
 
   constructor() {
     effect(() => {
       if (this.locationsResource.error()) {
-        this.toastService.error($localize`:@@location_service_error_loading:Fehler beim Laden der Betriebspunkte`);
+        this.toastService.error(
+          $localize`:@@location_service_error_loading:Fehler beim Laden der Betriebspunkte`,
+        );
       }
     });
   }
 
   public getLocation(reference: string) {
-    return this.locations().find(location => location.locationReference === reference);
+    return this.locations().find((location) => location.locationReference === reference);
   }
 
   public filterLocations(query: string, excludedReferences: string[] = []) {
     const q = query.trim().toLowerCase();
     if (q.length < 2) {
-      return []
+      return [];
     }
-    const includesQuery = this.locations().filter(loc =>
-      ((loc.primaryLocationName?.toLowerCase().includes(q)) ||
-        (loc.locationAbbreviation?.toLowerCase().includes(q))) &&
-      !excludedReferences.includes(loc.locationReference)
+    const includesQuery = this.locations().filter(
+      (loc) =>
+        (loc.primaryLocationName?.toLowerCase().includes(q)
+          || loc.locationAbbreviation?.toLowerCase().includes(q))
+        && !excludedReferences.includes(loc.locationReference),
     );
     return this.sortByRelevance(includesQuery, q);
   }

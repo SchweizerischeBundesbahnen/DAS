@@ -1,7 +1,7 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {FormControl, FormGroup} from '@angular/forms';
-import {TrainNumberInput} from './train-number-input';
-import {RuIndicationTrainNumberFilter} from '../../../ru-admin-api';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormControl, FormGroup } from '@angular/forms';
+import { RuIndicationTrainNumberFilter } from '~ru-admin/ru-admin-api';
+import { TrainNumberInput } from './train-number-input';
 
 describe('TrainNumberInput', () => {
   let component: TrainNumberInput;
@@ -16,10 +16,10 @@ describe('TrainNumberInput', () => {
 
     fixture = TestBed.createComponent(TrainNumberInput);
     component = fixture.componentInstance;
-    control = new FormControl<RuIndicationTrainNumberFilter[]>([], {nonNullable: true});
+    control = new FormControl<RuIndicationTrainNumberFilter[]>([], { nonNullable: true });
     parentForm = new FormGroup({
       operationalTrainNumberFilters: control,
-      companies: new FormControl<string[]>([], {nonNullable: true}),
+      companies: new FormControl<string[]>([], { nonNullable: true }),
     });
     fixture.componentRef.setInput('control', control);
     fixture.detectChanges();
@@ -77,8 +77,8 @@ describe('TrainNumberInput', () => {
   it('should initialize in filtered mode when control already has committed filters', async () => {
     const prefilledFixture = TestBed.createComponent(TrainNumberInput);
     const prefilled = new FormControl<RuIndicationTrainNumberFilter[]>(
-      [{expression: '100', parity: 'ANY'}],
-      {nonNullable: true},
+      [{ expression: '100', parity: 'ANY' }],
+      { nonNullable: true },
     );
     prefilledFixture.componentRef.setInput('control', prefilled);
     prefilledFixture.detectChanges();
@@ -90,10 +90,10 @@ describe('TrainNumberInput', () => {
   it('train number validator: should mark invalid formats and ranges', () => {
     const tnForm = component['trainNumberFilterForm'];
     tnForm.controls.trainNumber.setValue('abc');
-    expect(tnForm.controls.trainNumber.errors).toEqual({invalidFormat: true});
+    expect(tnForm.controls.trainNumber.errors).toEqual({ invalidFormat: true });
 
     tnForm.controls.trainNumber.setValue('10-5');
-    expect(tnForm.controls.trainNumber.errors).toEqual({rangeInvalid: true});
+    expect(tnForm.controls.trainNumber.errors).toEqual({ rangeInvalid: true });
 
     tnForm.controls.trainNumber.setValue('100');
     expect(tnForm.controls.trainNumber.errors).toBeNull();
@@ -104,8 +104,8 @@ describe('TrainNumberInput', () => {
 
   it('displayTrainNumberFilter should include parity label when set', async () => {
     const { displayTrainNumberFilter } = await import('./train-number-input');
-    const even = displayTrainNumberFilter({expression: '100', parity: 'EVEN'} as RuIndicationTrainNumberFilter);
-    const odd = displayTrainNumberFilter({expression: '100', parity: 'ODD'} as RuIndicationTrainNumberFilter);
+    const even = displayTrainNumberFilter({ expression: '100', parity: 'EVEN' });
+    const odd = displayTrainNumberFilter({ expression: '100', parity: 'ODD' });
 
     expect(even).toContain('100');
     expect(even).toContain('Gerade');

@@ -1,8 +1,8 @@
-import {httpResource} from '@angular/common/http';
-import {computed, effect, inject, Injectable} from '@angular/core';
-import {environment} from '../../../environments/environment';
-import {ApiResponse} from '../api-response';
-import {ToastService} from '../toast-service';
+import { httpResource } from '@angular/common/http';
+import { computed, effect, inject, Injectable } from '@angular/core';
+import { environment } from '~src/environments/environment';
+import { ApiResponse } from '../api-response';
+import { ToastService } from '../toast-service';
 
 type CompanyApiResponse = ApiResponse<Company>;
 
@@ -11,20 +11,24 @@ export interface Company {
   shortName: string;
 }
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class CompanyService {
   private readonly url = `${environment.backendUrl}/companies/authorized`;
   private readonly companiesResource = httpResource<CompanyApiResponse>(() => this.url);
-  readonly loaded = computed(() => this.companiesResource.hasValue() || !!this.companiesResource.error());
+  readonly loaded = computed(
+    () => this.companiesResource.hasValue() || !!this.companiesResource.error(),
+  );
   private readonly toastService = inject(ToastService);
-  private readonly companies = computed(() => this.companiesResource.hasValue() ? this.companiesResource.value()!.data : []);
+  private readonly companies = computed(() =>
+    this.companiesResource.hasValue() ? this.companiesResource.value().data : [],
+  );
 
   constructor() {
     effect(() => {
       if (this.companiesResource.error()) {
-        this.toastService.error($localize`:@@company_service_error_loading:Fehler beim Laden der EVUs`);
+        this.toastService.error(
+          $localize`:@@company_service_error_loading:Fehler beim Laden der EVUs`,
+        );
       }
     });
   }
@@ -41,7 +45,9 @@ export class CompanyService {
   }
 
   public filterCompanies(query: string, excludedCodes: string[] = []): Company[] {
-    const allCompanies = this.companies().filter((company) => !excludedCodes.includes(company.code));
+    const allCompanies = this.companies().filter(
+      (company) => !excludedCodes.includes(company.code),
+    );
 
     const caseInsensitiveQuery = query.trim().toLowerCase();
     if (!caseInsensitiveQuery) {
@@ -49,17 +55,16 @@ export class CompanyService {
     }
 
     const matching = allCompanies.filter(
-      ({
-         code,
-         shortName
-       }) => code.toLowerCase().includes(caseInsensitiveQuery) || shortName.toLowerCase().includes(caseInsensitiveQuery),
+      ({ code, shortName }) =>
+        code.toLowerCase().includes(caseInsensitiveQuery)
+        || shortName.toLowerCase().includes(caseInsensitiveQuery),
     );
 
     return this.sortByRelevance(matching, caseInsensitiveQuery);
   }
 
   private sortByRelevance(candidates: Company[], query: string): Company[] {
-    return [...candidates].sort((a, b) => {
+    return candidates.sort((a, b) => {
       const aCode = a.code.toLowerCase();
       const bCode = b.code.toLowerCase();
       const aName = a.shortName.toLowerCase();

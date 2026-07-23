@@ -1,14 +1,13 @@
-import { TestBed } from '@angular/core/testing';
-
-import { ExternalLink, ExternalLinkApiResponse, RuAdminApi } from '../ru-admin-api';
-import { SbbDialogService } from '@sbb-esta/lyne-angular/dialog';
-import { ToastService } from '../../shared/toast-service';
 import { HttpResourceRef } from '@angular/common/http';
-import { of, throwError } from 'rxjs';
+import { TestBed } from '@angular/core/testing';
+import { SbbDialogService } from '@sbb-esta/lyne-angular/dialog';
 import { SbbOverlayCloseEvent } from '@sbb-esta/lyne-elements/overlay.js';
-import { ExternalLinksService } from './external-links.service';
+import { of, throwError } from 'rxjs';
+import { RecentCompaniesStore } from '~shared/recent-companies.store';
+import { ToastService } from '~shared/toast-service';
+import { ExternalLink, ExternalLinkApiResponse, RuAdminApi } from '../ru-admin-api';
 import { ExternalLinkDialogEditResult } from './external-link-dialog/external-link-dialog';
-import { RecentCompaniesStore } from '../../shared/recent-companies.store';
+import { ExternalLinksService } from './external-links.service';
 
 const externalLink: ExternalLink = {
   id: 1,
@@ -23,7 +22,10 @@ const mockRuAdminApi: Partial<RuAdminApi> = {
   externalLinks: { reload: () => true } as HttpResourceRef<ExternalLinkApiResponse | undefined>,
 };
 
-const mockToastService: Partial<ToastService> = { success: vi.fn(), error: vi.fn() };
+const mockToastService: Partial<ToastService> = {
+  success: vi.fn(),
+  error: vi.fn(),
+};
 
 const openSpy = vi.fn();
 
@@ -32,7 +34,9 @@ const mockSbbDialogService: Partial<SbbDialogService> = { open: openSpy };
 const mockRecentCompaniesStore: Partial<RecentCompaniesStore> = { save: vi.fn() };
 
 function mockDialogResult(result: ExternalLinkDialogEditResult | null): void {
-  openSpy.mockReturnValue({ afterClosed: of({ result } as SbbOverlayCloseEvent) });
+  openSpy.mockReturnValue({
+    afterClosed: of({ result } as SbbOverlayCloseEvent),
+  });
 }
 
 describe('ExternalLinksService', () => {

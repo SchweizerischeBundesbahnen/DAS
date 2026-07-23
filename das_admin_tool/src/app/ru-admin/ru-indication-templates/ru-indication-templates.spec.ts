@@ -1,10 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { RuIndicationTemplates } from './ru-indication-templates';
 import { RuIndicationTemplateService } from './ru-indication-template.service';
+import { RuIndicationTemplates } from './ru-indication-templates';
 
 const mockRuIndicationTemplateService = {
-  ruIndicationTemplatesResource: new Proxy({}, {get: () => vi.fn()})
+  ruIndicationTemplatesResource: new Proxy({}, { get: () => vi.fn() }),
 };
 
 describe('RuIndicationTemplates', () => {
@@ -15,10 +14,9 @@ describe('RuIndicationTemplates', () => {
     await TestBed.configureTestingModule({
       imports: [RuIndicationTemplates],
       providers: [
-        {provide: RuIndicationTemplateService, useValue: mockRuIndicationTemplateService}
-      ]
-    })
-      .compileComponents();
+        { provide: RuIndicationTemplateService, useValue: mockRuIndicationTemplateService },
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(RuIndicationTemplates);
     component = fixture.componentInstance;

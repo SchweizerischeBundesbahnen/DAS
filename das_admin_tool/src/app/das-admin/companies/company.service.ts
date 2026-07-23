@@ -1,9 +1,9 @@
-import { inject, Injectable } from '@angular/core';
-import { InternalCompany, DasAdminApi } from '../das-admin-api';
-import { BaseDialogService } from '../../ru-admin/base-dialog.service';
-import { firstValueFrom } from 'rxjs';
-import { CompanyDialog, CompanyDialogEditResult } from './company-dialog/company-dialog';
 import { HttpErrorResponse } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
+import { BaseDialogService } from '~ru-admin/base-dialog.service';
+import { DasAdminApi, InternalCompany } from '../das-admin-api';
+import { CompanyDialog, CompanyDialogEditResult } from './company-dialog/company-dialog';
 
 @Injectable({ providedIn: 'root' })
 export class CompanyService extends BaseDialogService {
@@ -18,7 +18,7 @@ export class CompanyService extends BaseDialogService {
     );
     if (result === 'delete') {
       await this.runMutation(
-        this.dasAdminApi.deleteCompanyById(company.id!),
+        this.dasAdminApi.deleteCompanyById(company.id),
         $localize`:@@companies_toast_delete_success:Die EVU wurde erfolgreich gelöscht.`,
       );
     } else if (result && company.id) {
@@ -46,10 +46,12 @@ export class CompanyService extends BaseDialogService {
   }
 
   protected override handleApiError(e: unknown) {
-    if (e instanceof HttpErrorResponse && e.error.status === 409) {
-      this.toastService.error($localize`:@@companies_toast_conflict_error:Diese EVU existiert bereits.`);
+    if (e instanceof HttpErrorResponse && e.status === 409) {
+      this.toastService.error(
+        $localize`:@@companies_toast_conflict_error:Diese EVU existiert bereits.`,
+      );
     } else {
-      super.handleApiError(e)
+      super.handleApiError(e);
     }
   }
 }

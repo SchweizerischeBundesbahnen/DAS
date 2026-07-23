@@ -1,4 +1,4 @@
-import {Routes} from '@angular/router';
+import { Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
@@ -16,11 +16,15 @@ export const routes: Routes = [
       },
       {
         path: 'ruindication-templates',
-        loadComponent: () => import('./ru-indication-templates/ru-indication-templates').then((m) => m.RuIndicationTemplates),
+        loadComponent: () =>
+          import('./ru-indication-templates/ru-indication-templates').then(
+            (m) => m.RuIndicationTemplates,
+          ),
       },
       {
         path: 'special-holidays',
-        loadComponent: () => import('./special-holidays/special-holidays.component').then((m) => m.SpecialHolidays),
+        loadComponent: () =>
+          import('./special-holidays/special-holidays.component').then((m) => m.SpecialHolidays),
       },
       {
         path: 'external-links',
@@ -28,9 +32,11 @@ export const routes: Routes = [
       },
       {
         path: 'rufeatures',
-        loadComponent: () => import('./ru-feature-toggles/ru-feature-toggles.component').then((m) => m.RuFeatureToggles),
+        loadComponent: () =>
+          import('./ru-feature-toggles/ru-feature-toggles.component').then(
+            (m) => m.RuFeatureToggles,
+          ),
       },
     ],
   },
 ];
-

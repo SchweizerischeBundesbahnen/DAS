@@ -1,11 +1,16 @@
-<app-base-dialog [data]="dialogData" [dialogClose]="formValue" [dialogTitle]="title"
-                 [saveDisabled]="ruFeatureForm.invalid" i18n-stepLabel="@@ru_feature_toggles_dialog_step_label"
-                 stepLabel="Feature">
+<app-base-dialog
+  i18n-stepLabel="@@ru_feature_toggles_dialog_step_label"
+  stepLabel="Feature"
+  [data]="dialogData"
+  [dialogClose]="formValue"
+  [dialogTitle]="title"
+  [saveDisabled]="ruFeatureForm.invalid"
+>
   <form [formGroup]="ruFeatureForm">
-    <app-companies-input [control]="ruFeatureForm.controls.companyCode" [multiselect]="false"></app-companies-input>
+    <app-companies-input [control]="ruFeatureForm.controls.companyCode" [multiselect]="false" />
 
     <div class="radio-button-group">
-      <label i18n="@@ru_feature_toggles_form_key_label">Feature</label>
+      <label for="key" i18n="@@ru_feature_toggles_form_key_label">Feature</label>
       <sbb-radio-button-group formControlName="key">
         @for (featureKey of featureKeys; track featureKey.value) {
           <sbb-radio-button [value]="featureKey.value">{{ featureKey.label }}</sbb-radio-button>
@@ -13,8 +18,8 @@
       </sbb-radio-button-group>
     </div>
 
-    <sbb-toggle-check formControlName="enabled" i18n="@@ru_feature_toggles_form_enabled_label">
-      Aktiviert
-    </sbb-toggle-check>
+    <sbb-toggle-check formControlName="enabled" i18n="@@ru_feature_toggles_form_enabled_label"
+      >Aktiviert</sbb-toggle-check
+    >
   </form>
 </app-base-dialog>

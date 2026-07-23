@@ -1,7 +1,7 @@
-import { computed, Injectable } from '@angular/core';
-import { environment } from '../../../../environments/environment';
-import { ApiResponse } from '../../../shared/api-response';
 import { httpResource } from '@angular/common/http';
+import { computed, Injectable } from '@angular/core';
+import { ApiResponse } from '~shared/api-response';
+import { environment } from '~src/environments/environment';
 
 export interface Tenant {
   name: string;

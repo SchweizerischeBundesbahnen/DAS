@@ -1,4 +1,4 @@
-import {toUtcDateOnly} from './date-util';
+import { toUtcDateOnly } from './date-util';
 
 describe('toUtcDateOnly', () => {
   it('should convert a date with to date', () => {
@@ -6,9 +6,6 @@ describe('toUtcDateOnly', () => {
 
     const result = toUtcDateOnly(input);
 
-    expect(result.getTime()).toBe(
-      Date.UTC(2026, 2, 21)
-    );
+    expect(result.getTime()).toBe(Date.UTC(2026, 2, 21));
   });
-
 });

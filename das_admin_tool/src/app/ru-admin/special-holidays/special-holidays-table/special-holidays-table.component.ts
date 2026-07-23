@@ -1,22 +1,22 @@
-import {Component, effect, inject, viewChild} from '@angular/core';
+import { SelectionModel } from '@angular/cdk/collections';
+import { DatePipe } from '@angular/common';
+import { Component, effect, inject, viewChild } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormControl } from '@angular/forms';
+import { SbbMiniButton } from '@sbb-esta/lyne-angular/button/mini-button';
+import { SbbCheckboxModule } from '@sbb-esta/lyne-angular/checkbox';
 import {
   SbbSort,
   SbbTableDataSource,
   SbbTableFilter,
-  SbbTableModule
+  SbbTableModule,
 } from '@sbb-esta/lyne-angular/table';
-import {SbbMiniButton} from '@sbb-esta/lyne-angular/button/mini-button';
-import {SbbCheckboxModule} from '@sbb-esta/lyne-angular/checkbox';
-import {SelectionModel} from '@angular/cdk/collections';
-import {SCHEDULE_TYPE_LABELS, ScheduleType, SpecialHoliday} from '../../ru-admin-api';
-import {SpecialHolidayService} from '../special-holiday.service';
-import {DatePipe} from '@angular/common';
-import {CompanyService} from '../../../shared/companies-input/company.service';
-import {TableBottomBar} from '../../../shared/table-bottom-bar/table-bottom-bar';
-import {TableSearchHeader} from '../../../shared/table-search-header/table-search-header';
-import {FormControl} from '@angular/forms';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {startWith} from 'rxjs';
+import { startWith } from 'rxjs';
+import { SCHEDULE_TYPE_LABELS, ScheduleType, SpecialHoliday } from '~ru-admin/ru-admin-api';
+import { CompanyService } from '~shared/companies-input/company.service';
+import { TableBottomBar } from '~shared/table-bottom-bar/table-bottom-bar';
+import { TableSearchHeader } from '~shared/table-search-header/table-search-header';
+import { SpecialHolidayService } from '../special-holiday.service';
 
 interface SpecialHolidayFilter extends SbbTableFilter {
   search: string;
@@ -37,10 +37,19 @@ interface SpecialHolidayFilter extends SbbTableFilter {
 })
 export class SpecialHolidaysTable {
   protected dataSource = new SbbTableDataSource<SpecialHoliday, SpecialHolidayFilter>();
-  protected columns = ['select', 'name', 'date', 'scheduleType', 'companies', 'lastModifiedAt', 'lastModifiedBy', 'action'];
+  protected columns = [
+    'select',
+    'name',
+    'date',
+    'scheduleType',
+    'companies',
+    'lastModifiedAt',
+    'lastModifiedBy',
+    'action',
+  ];
   protected selection = new SelectionModel<SpecialHoliday>(true, []);
   protected isDeleting = false;
-  protected readonly searchControl = new FormControl('', {nonNullable: true});
+  protected readonly searchControl = new FormControl('', { nonNullable: true });
 
   private readonly specialHolidayService = inject(SpecialHolidayService);
   private readonly companyService = inject(CompanyService);
@@ -56,11 +65,12 @@ export class SpecialHolidaysTable {
       this.dataSource.paginator = this.bottomBar().paginator();
       this.dataSource.sort = this.sort();
     });
-    this.dataSource.filterPredicate = (data: SpecialHoliday, filter: SpecialHolidayFilter) => this.searchFilter(filter, data);
+    this.dataSource.filterPredicate = (data: SpecialHoliday, filter: SpecialHolidayFilter) =>
+      this.searchFilter(filter, data);
     this.searchControl.valueChanges
       .pipe(startWith(this.searchControl.value), takeUntilDestroyed())
       .subscribe((search) => {
-        this.dataSource.filter = {search} as SpecialHolidayFilter;
+        this.dataSource.filter = { search };
       });
   }
 
@@ -96,7 +106,7 @@ export class SpecialHolidaysTable {
   }
 
   protected scheduleTypeLabel(type: ScheduleType) {
-    return SCHEDULE_TYPE_LABELS.find((label) => label.value === type)?.label ?? '';
+    return SCHEDULE_TYPE_LABELS().find((label) => label.value === type)?.label ?? '';
   }
 
   protected companiesValue(companyCodes: string[]) {
@@ -107,12 +117,13 @@ export class SpecialHolidaysTable {
     const search = filter.search.toLowerCase();
     if (!search) return true;
     return (
-      data.name?.toLowerCase().includes(search) ||
-      data.date?.toString().toLowerCase().includes(search) ||
-      this.scheduleTypeLabel(data.scheduleType).toLowerCase().includes(search) ||
-      this.companiesValue(data.companies).toLowerCase().includes(search) ||
-      data.lastModifiedBy?.toLowerCase().includes(search) ||
-      data.lastModifiedAt?.toString().toLowerCase().includes(search)
-    ) ?? false;
+      (data.name?.toLowerCase().includes(search)
+        || data.date?.toString().toLowerCase().includes(search)
+        || this.scheduleTypeLabel(data.scheduleType).toLowerCase().includes(search)
+        || this.companiesValue(data.companies).toLowerCase().includes(search)
+        || (data.lastModifiedBy ?? '').toLowerCase().includes(search)
+        || (data.lastModifiedAt ?? '').toString().toLowerCase().includes(search))
+      ?? false
+    );
   }
 }

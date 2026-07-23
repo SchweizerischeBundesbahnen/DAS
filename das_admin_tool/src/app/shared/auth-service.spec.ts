@@ -1,37 +1,34 @@
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
-
+import { environment } from '~src/environments/environment';
 import { AuthService } from './auth-service';
-import { environment } from '../../environments/environment';
 
 describe('AuthService', () => {
   let service: AuthService;
 
-  const setup = ({isAuthenticated = false, userData = {}}: {
-    isAuthenticated?: boolean;
-    userData?: unknown
-  } = {}) => {
+  const setup = ({
+    isAuthenticated = false,
+    userData = {},
+  }: { isAuthenticated?: boolean; userData?: unknown } = {}) => {
     const oidcSecurityServiceMock = {
-      authenticated: vi.fn(() => ({isAuthenticated})),
-      userData: vi.fn(() => ({userData})),
+      authenticated: vi.fn(() => ({ isAuthenticated })),
+      userData: vi.fn(() => ({ userData })),
       authorize: vi.fn(),
       logoffLocalMultiple: vi.fn(),
     };
 
-    const routerMock = {
-      navigate: vi.fn().mockResolvedValue(true),
-    };
+    const routerMock = { navigate: vi.fn().mockResolvedValue(true) };
 
     TestBed.configureTestingModule({
       providers: [
-        {provide: OidcSecurityService, useValue: oidcSecurityServiceMock},
-        {provide: Router, useValue: routerMock},
+        { provide: OidcSecurityService, useValue: oidcSecurityServiceMock },
+        { provide: Router, useValue: routerMock },
       ],
     });
 
     service = TestBed.inject(AuthService);
-    return {oidcSecurityServiceMock, routerMock};
+    return { oidcSecurityServiceMock, routerMock };
   };
 
   it('should be created', () => {
@@ -112,7 +109,7 @@ describe('AuthService', () => {
   });
 
   it('logout logs off locally and navigates to unauthorized', async () => {
-    const {oidcSecurityServiceMock, routerMock} = setup();
+    const { oidcSecurityServiceMock, routerMock } = setup();
 
     await service.logout();
 

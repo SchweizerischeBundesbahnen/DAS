@@ -3,14 +3,17 @@
 @if (ruFeatures.hasValue()) {
   @if (ruFeatures.value().data.length === 0) {
     <p i18n="@@ru_feature_toggles_empty_state">Noch keine Features für DAS Mobile erfasst.</p>
-    <sbb-secondary-button (click)="ruFeatureService.add()" i18n="@@button_create_entry" iconName="plus-small">Neuen
-      Eintrag erfassen
-    </sbb-secondary-button>
+    <sbb-secondary-button
+      i18n="@@button_create_entry"
+      iconName="plus-small"
+      (click)="ruFeatureService.add()"
+      >Neuen Eintrag erfassen</sbb-secondary-button
+    >
   } @else {
-    <app-ru-feature-toggles-table/>
+    <app-ru-feature-toggles-table />
   }
 } @else if (ruFeatures.error()) {
   <p i18n="@@ru_feature_toggles_error_loading">Fehler beim Laden der DAS Mobile Features</p>
 } @else if (ruFeatures.isLoading()) {
-  <sbb-loading-indicator-circle></sbb-loading-indicator-circle>
+  <sbb-loading-indicator-circle />
 }

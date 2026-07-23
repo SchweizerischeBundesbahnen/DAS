@@ -1,12 +1,12 @@
 <sbb-table-wrapper>
   <table
-    [dataSource]="dataSource"
     class="table-truncated"
     fixedLayout
     sbb-table
     sbbSort
     sbbSortActive="shortName"
     sbbSortDirection="asc"
+    [dataSource]="dataSource"
   >
     <ng-container sbbColumnDef="code">
       <th
@@ -76,7 +76,7 @@
     <ng-container sbbColumnDef="action">
       <th *sbbHeaderCellDef sbb-header-cell></th>
       <td *sbbCellDef="let company" sbb-cell>
-        <sbb-mini-button (click)="edit(company)" iconName="pen-small"></sbb-mini-button>
+        <sbb-mini-button iconName="pen-small" (click)="edit(company)" />
       </td>
     </ng-container>
 
@@ -85,4 +85,4 @@
   </table>
 </sbb-table-wrapper>
 
-<app-table-bottom-bar (addClicked)="add()" [showDelete]="false" [deleting]="isDeleting" />
+<app-table-bottom-bar [showDelete]="false" [deleting]="isDeleting" (addClicked)="add()" />

@@ -1,18 +1,18 @@
-import {Component, input, OnInit} from '@angular/core';
+import { Component, input, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
   ValidationErrors,
-  Validators
+  Validators,
 } from '@angular/forms';
-import {SbbFormFieldModule} from '@sbb-esta/lyne-angular/form-field';
-import {SbbRadioButtonModule} from '@sbb-esta/lyne-angular/radio-button';
-import {SbbButtonModule} from '@sbb-esta/lyne-angular/button';
-import {SbbChipModule} from '@sbb-esta/lyne-angular/chip';
-import {RuIndicationTrainNumberFilter, TrainNumberParity} from '../../../ru-admin-api';
+import { SbbButtonModule } from '@sbb-esta/lyne-angular/button';
+import { SbbChipModule } from '@sbb-esta/lyne-angular/chip';
+import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
+import { SbbRadioButtonModule } from '@sbb-esta/lyne-angular/radio-button';
 import { SbbTooltipModule } from '@sbb-esta/lyne-angular/tooltip';
+import { RuIndicationTrainNumberFilter, TrainNumberParity } from '~ru-admin/ru-admin-api';
 
 type TrainFilterMode = 'all' | 'filtered';
 
@@ -20,27 +20,27 @@ export function displayTrainNumberFilter(value: RuIndicationTrainNumberFilter): 
   let parity;
   if (value.parity === 'EVEN') {
     parity = $localize`:@@ru_indication_form_parity_even_value:Gerade`;
-  }
-  if (value.parity === 'ODD') {
+  } else if (value.parity === 'ODD') {
     parity = $localize`:@@ru_indication_form_parity_odd_value:Ungerade`;
   }
   return value.expression + (parity ? ` (${parity})` : '');
 }
 
 function numberRangeValidator(control: AbstractControl): ValidationErrors | null {
-  if (!control.value) {
+  const value = (control as FormControl<string>).value;
+  if (!value) {
     return null;
   }
 
   const regex = /^\d+(-\d+)?$/;
-  if (!regex.test(control.value)) {
-    return {invalidFormat: true};
+  if (!regex.test(value)) {
+    return { invalidFormat: true };
   }
 
-  const [first, second] = control.value.split('-').map(Number);
+  const [first, second] = value.split('-').map(Number);
 
   if (first >= second) {
-    return {rangeInvalid: true};
+    return { rangeInvalid: true };
   }
 
   return null;
@@ -54,22 +54,22 @@ function numberRangeValidator(control: AbstractControl): ValidationErrors | null
     SbbRadioButtonModule,
     SbbButtonModule,
     SbbChipModule,
-    SbbTooltipModule
+    SbbTooltipModule,
   ],
   templateUrl: './train-number-input.html',
   styleUrl: './train-number-input.css',
 })
 export class TrainNumberInput implements OnInit {
-  control = input.required<FormControl<RuIndicationTrainNumberFilter[]>>();
+  readonly control = input.required<FormControl<RuIndicationTrainNumberFilter[]>>();
 
-  protected trainFilterModeControl = new FormControl<TrainFilterMode>('all', {nonNullable: true});
+  protected trainFilterModeControl = new FormControl<TrainFilterMode>('all', { nonNullable: true });
   protected trainNumberFilterForm = new FormGroup({
     trainNumber: new FormControl('', {
       nonNullable: true,
-      validators: [Validators.required, numberRangeValidator]
+      validators: [Validators.required, numberRangeValidator],
     }),
-    parity: new FormControl<TrainNumberParity>('ANY', {nonNullable: true})
-  })
+    parity: new FormControl<TrainNumberParity>('ANY', { nonNullable: true }),
+  });
   protected readonly displayTrainNumberFilter = displayTrainNumberFilter;
 
   ngOnInit(): void {
@@ -88,14 +88,17 @@ export class TrainNumberInput implements OnInit {
     // make sure value changes from outside are also considered for validation
     this.control().parent?.valueChanges.subscribe(() => {
       this.updateValidationState();
-    })
+    });
 
     this.trainNumberFilterForm.valueChanges.subscribe(() => this.updateValidationState());
     this.updateValidationState();
   }
 
   protected isTrainNumberRange(): boolean {
-    return this.trainNumberFilterForm.valid && this.trainNumberFilterForm.controls.trainNumber.value.includes('-');
+    return (
+      this.trainNumberFilterForm.valid
+      && this.trainNumberFilterForm.controls.trainNumber.value.includes('-')
+    );
   }
 
   protected addTrainNumberFilter(): void {
@@ -121,9 +124,9 @@ export class TrainNumberInput implements OnInit {
 
   private initializeTrainFilterMode(): void {
     if ((this.control().value ?? []).length > 0) {
-      this.trainFilterModeControl.setValue('filtered', {emitEvent: false});
+      this.trainFilterModeControl.setValue('filtered', { emitEvent: false });
     } else {
-      this.trainFilterModeControl.setValue('all', {emitEvent: false});
+      this.trainFilterModeControl.setValue('all', { emitEvent: false });
     }
   }
 

@@ -1,14 +1,13 @@
-import {TestBed} from '@angular/core/testing';
-
-import {RuFeatureService} from './ru-feature.service';
-import {RuAdminApi, RuFeature, RuFeatureApiResponse} from '../ru-admin-api';
-import {SbbDialogService} from '@sbb-esta/lyne-angular/dialog';
-import {ToastService} from '../../shared/toast-service';
-import {HttpResourceRef} from '@angular/common/http';
-import {of, throwError} from 'rxjs';
-import {RuFeatureDialogEditResult} from './ru-feature-toggle-dialog/ru-feature-toggle-dialog.component';
-import {SbbOverlayCloseEvent} from '@sbb-esta/lyne-elements/overlay.js';
-import {RecentCompaniesStore} from '../../shared/recent-companies.store';
+import { HttpResourceRef } from '@angular/common/http';
+import { TestBed } from '@angular/core/testing';
+import { SbbDialogService } from '@sbb-esta/lyne-angular/dialog';
+import { SbbOverlayCloseEvent } from '@sbb-esta/lyne-elements/overlay.js';
+import { of, throwError } from 'rxjs';
+import { RecentCompaniesStore } from '~shared/recent-companies.store';
+import { ToastService } from '~shared/toast-service';
+import { RuAdminApi, RuFeature, RuFeatureApiResponse } from '../ru-admin-api';
+import { RuFeatureDialogEditResult } from './ru-feature-toggle-dialog/ru-feature-toggle-dialog.component';
+import { RuFeatureService } from './ru-feature.service';
 
 const ruFeature: RuFeature = {
   id: 1,
@@ -21,17 +20,17 @@ const mockRuAdminApi: Partial<RuAdminApi> = {
   putRuFeature: () => of({} as RuFeatureApiResponse),
   postRuFeature: () => of({} as RuFeatureApiResponse),
   deleteRuFeaturesByIds: () => of(undefined),
-  ruFeatures: {reload: () => true} as HttpResourceRef<RuFeatureApiResponse | undefined>,
+  ruFeatures: { reload: () => true } as HttpResourceRef<RuFeatureApiResponse | undefined>,
 };
 
 const mockToastService: Partial<ToastService> = {
   success: vi.fn(),
-  error: vi.fn()
+  error: vi.fn(),
 };
 
 const openSpy = vi.fn();
 
-const mockSbbDialogService: Partial<SbbDialogService> = {open: openSpy};
+const mockSbbDialogService: Partial<SbbDialogService> = { open: openSpy };
 
 const mockRecentCompaniesStore: Partial<RecentCompaniesStore> = {
   save: vi.fn(),
@@ -39,7 +38,7 @@ const mockRecentCompaniesStore: Partial<RecentCompaniesStore> = {
 
 function mockDialogResult(result: RuFeatureDialogEditResult | null): void {
   openSpy.mockReturnValue({
-    afterClosed: of({result} as SbbOverlayCloseEvent)
+    afterClosed: of({ result } as SbbOverlayCloseEvent),
   });
 }
 
@@ -52,10 +51,10 @@ describe('RuFeatureService', () => {
     TestBed.configureTestingModule({
       providers: [
         RuFeatureService,
-        {provide: RuAdminApi, useValue: mockRuAdminApi},
-        {provide: SbbDialogService, useValue: mockSbbDialogService},
-        {provide: ToastService, useValue: mockToastService},
-        {provide: RecentCompaniesStore, useValue: mockRecentCompaniesStore},
+        { provide: RuAdminApi, useValue: mockRuAdminApi },
+        { provide: SbbDialogService, useValue: mockSbbDialogService },
+        { provide: ToastService, useValue: mockToastService },
+        { provide: RecentCompaniesStore, useValue: mockRecentCompaniesStore },
       ],
     });
 
@@ -70,7 +69,7 @@ describe('RuFeatureService', () => {
     const apiSpy = vi.spyOn(mockRuAdminApi, 'putRuFeature');
     const toastSpy = vi.spyOn(mockToastService, 'success');
     const recentCompaniesSaveSpy = vi.spyOn(mockRecentCompaniesStore, 'save');
-    mockDialogResult({...ruFeature, enabled: false});
+    mockDialogResult({ ...ruFeature, enabled: false });
 
     await service.edit(ruFeature);
 
@@ -109,9 +108,11 @@ describe('RuFeatureService', () => {
   });
 
   it('edit failed should show error toast', async () => {
-    vi.spyOn(mockRuAdminApi, 'putRuFeature').mockReturnValueOnce(throwError(() => new Error('API error')));
+    vi.spyOn(mockRuAdminApi, 'putRuFeature').mockReturnValueOnce(
+      throwError(() => new Error('API error')),
+    );
     const errorToastSpy = vi.spyOn(mockToastService, 'error');
-    mockDialogResult({...ruFeature, enabled: false});
+    mockDialogResult({ ...ruFeature, enabled: false });
 
     await service.edit(ruFeature);
 

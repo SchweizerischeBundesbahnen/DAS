@@ -1,4 +1,4 @@
-import { ElementHandle, Page } from '@playwright/test';
+import { Disposable, ElementHandle, Page } from '@playwright/test';
 
 /**
  * Utility class providing functions to navigate in a browser window
@@ -34,12 +34,9 @@ export class BrowserWindow {
    * @param timeout
    * @see https://playwright.dev/docs/api/class-page#page-wait-for-selector
    */
-  async waitUntilVisible(selector: string, timeout = 10000): Promise<void> {
+  async waitUntilVisible(selector: string, timeout = 10_000): Promise<void> {
     //console.debug('Waiting for element to be visible ' + selector);
-    const elem = await this.page.waitForSelector(selector, {
-      state: 'visible',
-      timeout: timeout,
-    });
+    const elem = await this.page.waitForSelector(selector, { state: 'visible', timeout: timeout });
     console.debug("Element: '%s' is visible", (await elem.innerText()).trim());
   }
 
@@ -83,7 +80,7 @@ export class BrowserWindow {
    * @param statusCode The status code to return
    * @see https://playwright.dev/docs/api/class-page#page-route
    */
-  mockJsonResponse(routePath: string, jsonData: string, statusCode = 200): Promise<void> {
+  mockJsonResponse(routePath: string, jsonData: string, statusCode = 200): Promise<Disposable> {
     return this.page.route(routePath, (route) =>
       route.fulfill({
         status: statusCode,

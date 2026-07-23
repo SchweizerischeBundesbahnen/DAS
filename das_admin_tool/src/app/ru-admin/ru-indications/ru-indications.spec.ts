@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RuIndications } from './ru-indications';
 import { RuIndicationService } from './ru-indication.service';
+import { RuIndications } from './ru-indications';
 
 const mockRuIndicationService = {
-  ruIndicationsResource: new Proxy({}, {get: () => vi.fn()})
+  ruIndicationsResource: new Proxy({}, { get: () => vi.fn() }),
 };
 
 describe('RuIndications', () => {
@@ -13,11 +13,8 @@ describe('RuIndications', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RuIndications],
-      providers: [
-        {provide: RuIndicationService, useValue: mockRuIndicationService}
-      ]
-    })
-      .compileComponents();
+      providers: [{ provide: RuIndicationService, useValue: mockRuIndicationService }],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(RuIndications);
     component = fixture.componentInstance;
