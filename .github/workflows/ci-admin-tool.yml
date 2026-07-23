@@ -27,30 +27,49 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+
       - uses: actions/setup-node@v7
         with:
           node-version-file: 'das_admin_tool/.nvmrc'
           cache: 'npm'
           cache-dependency-path: 'das_admin_tool/package-lock.json'
+
       - run: npm clean-install
+
       - run: npm run lint
+
 
   test:
     runs-on: ubuntu-latest
     needs: lint
     steps:
       - uses: actions/checkout@v7
+
       - uses: actions/setup-node@v7
         with:
           node-version-file: 'das_admin_tool/.nvmrc'
           cache: 'npm'
           cache-dependency-path: 'das_admin_tool/package-lock.json'
+
+      - name: Vault Secrets 🤫
+        id: vault-secrets
+        uses: hashicorp/vault-action@v4
+        with:
+          url: https://vault-nonprod.sbb.ch:443
+          method: approle
+          roleId: ${{ secrets.VAULT_ROLE_ID }}
+          secretId: ${{ secrets.VAULT_SECRET_ID }}
+          secrets: |
+            kv/data/DSO-BPS/driver-advisory-system/ci/common SONAR_TOKEN ;
+
       - run: npm clean-install
+
       - run: npm test
+
       - name: Sonar scan
         uses: SonarSource/sonarqube-scan-action@v8
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_TOKEN: ${{ steps.vault-secrets.outputs.SONAR_TOKEN }}
         with:
           projectBaseDir: das_admin_tool
           args: >
@@ -75,31 +94,50 @@ jobs:
             -Dsonar.issue.ignore.multicriteria.e4.ruleKey=Web:S6853
             -Dsonar.issue.ignore.multicriteria.e4.resourceKey=**
 
+
   e2e:
     runs-on: ubuntu-latest
     needs: test
     continue-on-error: true
     steps:
       - uses: actions/checkout@v7
+
       - uses: actions/setup-node@v7
         with:
           node-version-file: 'das_admin_tool/.nvmrc'
           cache: 'npm'
           cache-dependency-path: 'das_admin_tool/package-lock.json'
+      - name: Vault Secrets 🤫
+        id: vault-secrets
+        uses: hashicorp/vault-action@v4
+        with:
+          url: https://vault-nonprod.sbb.ch:443
+          method: approle
+          roleId: ${{ secrets.VAULT_ROLE_ID }}
+          secretId: ${{ secrets.VAULT_SECRET_ID }}
+          secrets: |
+            kv/data/DSO-BPS/driver-advisory-system/ci/admin E2E_LOGIN_USERNAME ;
+            kv/data/DSO-BPS/driver-advisory-system/ci/admin E2E_LOGIN_PASSWORD ;
+
       - run: npm clean-install
+
       - run: npx playwright install --with-deps
         working-directory: das_admin_tool
+
       - run: npm run e2e
         working-directory: das_admin_tool
         env:
           CI: true
-          E2E_LOGIN_USERNAME: ${{ secrets.E2E_LOGIN_USERNAME }}
-          E2E_LOGIN_PASSWORD: ${{ secrets.E2E_LOGIN_PASSWORD }}
+          E2E_LOGIN_USERNAME: ${{ steps.vault-secrets.outputs.E2E_LOGIN_USERNAME }}
+          E2E_LOGIN_PASSWORD: ${{ steps.vault-secrets.outputs.E2E_LOGIN_PASSWORD }}
+
       - uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: playwright-test-results
           path: das_admin_tool/test-results/
+
+
   build:
     runs-on: ubuntu-latest
     needs: lint
@@ -108,17 +146,23 @@ jobs:
       VERSION: main
     steps:
       - uses: actions/checkout@v7
+
       - uses: actions/setup-node@v7
         with:
           node-version-file: 'das_admin_tool/.nvmrc'
           cache: 'npm'
           cache-dependency-path: 'das_admin_tool/package-lock.json'
+
       - run: npm clean-install
+
       - run: npm run build:ngssc
+
       - run: npm run gzip
+
       - name: Login to GitHub Container Registry
         if: github.ref == 'refs/heads/main'
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
+
       - name: Create container image
         if: github.ref == 'refs/heads/main'
         run: |

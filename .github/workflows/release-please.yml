@@ -94,6 +94,18 @@ jobs:
           java-version: '25'
           distribution: 'temurin'
           cache: 'maven'
+      - name: Vault Secrets 🤫
+        id: vault-secrets
+        uses: hashicorp/vault-action@v4
+        with:
+          url: https://vault-nonprod.sbb.ch:443
+          method: approle
+          roleId: ${{ secrets.VAULT_ROLE_ID }}
+          secretId: ${{ secrets.VAULT_SECRET_ID }}
+          secrets: |
+            kv/data/DSO-BPS/driver-advisory-system/backend/maven KAFKA_SR_URL ;
+            kv/data/DSO-BPS/driver-advisory-system/backend/maven KAFKA_SR_API_KEY ;
+            kv/data/DSO-BPS/driver-advisory-system/backend/maven KAFKA_SR_API_SECRET ;
 
       - name: Login to GitHub Container Registry
         run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io --username ${{ github.actor }} --password-stdin
@@ -101,9 +113,9 @@ jobs:
         env:
           IMAGE_ID: ghcr.io/${{ github.repository }}/backend
           VERSION: ${{ needs.release-please.outputs.das_backend--version }}
-          KAFKA_SR_URL: ${{ secrets.ZIS_SR_URL }}
-          KAFKA_SR_API_KEY: ${{ secrets.ZIS_SR_API_KEY }}
-          KAFKA_SR_API_SECRET: ${{ secrets.ZIS_SR_API_SECRET }}
+          KAFKA_SR_URL: ${{ steps.vault-secrets.outputs.KAFKA_SR_URL }}
+          KAFKA_SR_API_KEY: ${{ steps.vault-secrets.outputs.KAFKA_SR_API_KEY }}
+          KAFKA_SR_API_SECRET: ${{ steps.vault-secrets.outputs.KAFKA_SR_API_SECRET }}
         run: |
           # Convert to lowercase
           IMAGE_ID=$(echo $IMAGE_ID | tr '[:upper:]' '[:lower:]')
