@@ -49,4 +49,5 @@ export const environment: Environment = {
   adminTenantId: process.env['ADMIN_TENANT_ID']!,
   allowedTenantIds: process.env['ALLOWED_TENANT_IDS']!.split(','),
   authConfig,
+  instanaKey: process.env['INSTANA_KEY']!,
 };
