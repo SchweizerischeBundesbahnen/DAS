@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  browserstack:
+  run:
     uses: ./.github/workflows/client_browserstack_base.yml
     with:
       entrypoint: integration_test/app_test.dart
