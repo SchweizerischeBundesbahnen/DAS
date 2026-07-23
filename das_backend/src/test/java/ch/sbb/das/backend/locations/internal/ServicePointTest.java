@@ -30,7 +30,7 @@ class ServicePointTest {
     }
 
     @Test
-    void content_shouldDifferWhenDesignationDiffers() {
+    void contentShouldDifferWhenDesignationDiffers() {
         Content bern = servicePoint("Bern", "BN", NUMBER, DateTimeUtil.today(), DateTimeUtil.today()).content();
         Content basel = servicePoint("Basel", "BN", NUMBER, DateTimeUtil.today(), DateTimeUtil.today()).content();
 
@@ -38,7 +38,7 @@ class ServicePointTest {
     }
 
     @Test
-    void content_shouldDifferWhenAbbreviationDiffers() {
+    void contentShouldDifferWhenAbbreviationDiffers() {
         Content bn = servicePoint("Bern", "BN", NUMBER, DateTimeUtil.today(), DateTimeUtil.today()).content();
         Content be = servicePoint("Bern", "BE", NUMBER, DateTimeUtil.today(), DateTimeUtil.today()).content();
 
@@ -46,7 +46,7 @@ class ServicePointTest {
     }
 
     @Test
-    void content_shouldDifferWhenServicePointNumberDiffers() {
+    void contentShouldDifferWhenServicePointNumberDiffers() {
         Content a = servicePoint("Bern", "BN", NUMBER, DateTimeUtil.today(), DateTimeUtil.today()).content();
         Content b = servicePoint("Bern", "BN", OTHER_NUMBER, DateTimeUtil.today(), DateTimeUtil.today()).content();
 
@@ -74,7 +74,7 @@ class ServicePointTest {
     }
 
     @Test
-    void withValidTo_shouldNotBeDirectlyFollowedByWhenValidityPeriodsOverlap() {
+    void shouldNotBeDirectlyFollowedByWhenValidityPeriodsOverlap() {
         ServicePoint a = servicePoint("Bern", "BN", NUMBER,
             LocalDate.of(2025, 1, 1), LocalDate.of(2025, 6, 30));
         ServicePoint b = servicePoint("Bern", "BN", NUMBER,
@@ -84,7 +84,7 @@ class ServicePointTest {
     }
 
     @Test
-    void withValidTo_shouldReturnCopyWithOnlyValidToChanged() {
+    void withValidToShouldReturnCopyWithOnlyValidToChanged() {
         ServicePoint original = servicePoint("Bern", "BN", NUMBER,
             LocalDate.of(2025, 1, 1), LocalDate.of(2025, 6, 30));
 
@@ -98,7 +98,7 @@ class ServicePointTest {
     }
 
     @Test
-    void withValidTo_shouldNotMutateOriginal() {
+    void withValidToShouldNotMutateOriginal() {
         ServicePoint original = servicePoint("Bern", "BN", NUMBER,
             LocalDate.of(2025, 1, 1), LocalDate.of(2025, 6, 30));
 
