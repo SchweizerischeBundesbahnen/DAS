@@ -8,7 +8,6 @@ import java.util.List;
 import lombok.Builder;
 
 // todo: property descriptions
-// todo: check required/non-required resp. default values with source
 @Builder
 @Schema(description = "Consolidated braking information of a formation run between two location references (implied by involved train wagons).")
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -19,15 +18,15 @@ public record FormationRun(
     String tafTapLocationReferenceStart,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     String tafTapLocationReferenceEnd,
-    @Schema(requiredMode = RequiredMode.NOT_REQUIRED)
+    @Schema(requiredMode = RequiredMode.REQUIRED)
     String trainCategoryCode,
-    @Schema(requiredMode = RequiredMode.NOT_REQUIRED)
+    @Schema(requiredMode = RequiredMode.REQUIRED)
     Integer brakedWeightPercentage,
-    @Schema(requiredMode = RequiredMode.NOT_REQUIRED)
+    @Schema(requiredMode = RequiredMode.REQUIRED)
     Integer tractionMaxSpeedInKmh,
     @Schema(requiredMode = RequiredMode.NOT_REQUIRED)
     Integer hauledLoadMaxSpeedInKmh,
-    @Schema(requiredMode = RequiredMode.NOT_REQUIRED)
+    @Schema(requiredMode = RequiredMode.REQUIRED)
     Integer formationMaxSpeedInKmh,
     @Schema(requiredMode = RequiredMode.REQUIRED)
     Integer tractionLengthInCm,
@@ -47,21 +46,21 @@ public record FormationRun(
     Integer hauledLoadBrakedWeightInT,
     @Schema(requiredMode = RequiredMode.REQUIRED)
     Integer formationBrakedWeightInT,
-    @Schema(requiredMode = RequiredMode.NOT_REQUIRED)
+    @Schema(requiredMode = RequiredMode.REQUIRED)
     Integer tractionHoldingForceInHectoNewton,
     @Schema(requiredMode = RequiredMode.NOT_REQUIRED)
     Integer hauledLoadHoldingForceInHectoNewton,
-    @Schema(requiredMode = RequiredMode.NOT_REQUIRED)
+    @Schema(requiredMode = RequiredMode.REQUIRED)
     Integer formationHoldingForceInHectoNewton,
-    @Schema(requiredMode = RequiredMode.NOT_REQUIRED)
+    @Schema(requiredMode = RequiredMode.REQUIRED)
     Boolean brakePositionGForLeadingTraction,
-    @Schema(requiredMode = RequiredMode.NOT_REQUIRED)
+    @Schema(requiredMode = RequiredMode.REQUIRED)
     Boolean brakePositionGForBrakeUnit1to5,
-    @Schema(requiredMode = RequiredMode.NOT_REQUIRED)
+    @Schema(requiredMode = RequiredMode.REQUIRED)
     Boolean brakePositionGForLoadHauled,
     @Schema(requiredMode = RequiredMode.REQUIRED)
     Boolean simTrain,
-    @Schema(requiredMode = RequiredMode.NOT_REQUIRED)
+    @Schema(requiredMode = RequiredMode.REQUIRED)
     List<String> additionalTractions,
     @Schema(requiredMode = RequiredMode.REQUIRED)
     Boolean carCarrierVehicle,
@@ -85,7 +84,7 @@ public record FormationRun(
     String europeanVehicleNumberLast,
     @Schema(requiredMode = RequiredMode.REQUIRED)
     Integer axleLoadMaxInKg,
-    @Schema(requiredMode = RequiredMode.NOT_REQUIRED)
+    @Schema(requiredMode = RequiredMode.REQUIRED)
     String routeClass,
     @Schema(requiredMode = RequiredMode.REQUIRED)
     Integer gradientUphillMaxInPermille,
@@ -94,4 +93,5 @@ public record FormationRun(
     @Schema(requiredMode = RequiredMode.NOT_REQUIRED)
     String slopeMaxForHoldingForceMinInPermille
 ) {
+
 }
