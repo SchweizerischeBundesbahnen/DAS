@@ -1,13 +1,38 @@
 server:
   port: 8081
 
+application:
+  topic:
+    sfera-custom-prefix: ${USER}/
+
 spring:
   config:
-    import: optional:file:./sfera_mock/.env[.properties]
+    import: vault://
+  cloud:
+    vault:
+      authentication: token
+      uri: https://vault-nonprod.sbb.ch
+    stream:
+      binders:
+        solace:
+          environment:
+            solace:
+              java:
+                host: ${SOLACE_HOST}
+                msgVpn: ${SOLACE_VPN}
+                api-properties:
+                  SSL_KEY_STORE: classpath:user_certificate.p12
+                  SSL_KEY_STORE_PASSWORD: ${SOLACE_KEY_STORE_PASSWORD}
 
-localregulations.path: sfera_mock/src/main/resources/localregulations.json
+localregulations.path: classpath:localregulations.json
+
+management:
+  endpoints:
+    web:
+      cors:
+        allowed-origins: http://localhost:4200
 
 db:
-  url: ''
-  user: ''
-  password: ''
+  url: jdbc:postgresql://localhost:5432/driver_advisory_system
+  user: myuser
+  password: secret
