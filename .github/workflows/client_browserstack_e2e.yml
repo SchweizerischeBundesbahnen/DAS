@@ -1,100 +1,14 @@
-name: Client Browserstack E2E (Android)
-
-defaults:
-  run:
-    working-directory: das_client
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
-  cancel-in-progress: true
+name: Client Browserstack E2E
 
 on:
+  schedule:
+    - cron: '34 3 * * *'
   workflow_dispatch:
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-
-    - uses: actions/checkout@v7
-
-    - name: Generate jwt
-      id: jwt
-      env: 
-        CLIENT_SECRET: ${{ secrets.CLIENT_SECRET_OBSERVER_DEV }}
-      run: |
-        ACCESS_TOKEN=$(curl -s -d "grant_type=client_credentials" \
-        -d "client_id=64baca3f-be6d-4c90-ace3-db86f298525d" \
-        -d "client_secret=$CLIENT_SECRET" \
-        -d "scope=api://8f16d52b-c6df-4a94-a132-da4956579a48/.default" \
-        "https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/oauth2/v2.0/token" | \
-        jq -r .access_token)
-        echo ${ACCESS_TOKEN:0:10}
-        echo "access_token=$ACCESS_TOKEN" >> $GITHUB_OUTPUT
-
-    - uses: actions/setup-java@v5
-      with:
-        distribution: 'temurin'
-        java-version: '17'
-        cache: 'gradle'
-
-    - uses: subosito/flutter-action@v2
-      with:
-        flutter-version: '3.44.x'
-        cache: true
-        
-    - name: Extract branch name
-      shell: bash
-      run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
-      id: extract_branch
-
-    - name: Setup melos
-      uses: bluefireteam/melos-action@v3
-      with:
-        melos-version: '^7.4.0'
-        run-bootstrap: 'false'
-
-    - name: Get dependencies
-      run: flutter pub get
-
-    - name: Generate sources
-      run: melos generate
-
-    - name: Prepare Android Secrets 🤫
-      env:
-        ANDROID_KEYSTORE_STRING: ${{ secrets.ANDROID_KEYSTORE }}
-        ANDROID_KEYSTORE: ${{ github.workspace }}/das_client/app/android/das.keystore
-        ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-        ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
-        ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
-      run: |
-        echo $ANDROID_KEYSTORE_STRING | base64 -d > $ANDROID_KEYSTORE
-        echo "ANDROID_KEYSTORE=$ANDROID_KEYSTORE" >> "$GITHUB_ENV"
-        echo "ANDROID_KEYSTORE_PASSWORD=$ANDROID_KEYSTORE_PASSWORD" >> "$GITHUB_ENV"
-        echo "ANDROID_KEY_ALIAS=$ANDROID_KEY_ALIAS" >> "$GITHUB_ENV"
-        echo "ANDROID_KEY_PASSWORD=$ANDROID_KEY_PASSWORD" >> "$GITHUB_ENV"
-
-    - name: Build apk for testing
-      shell: bash
-      env:
-        MQTT_USERNAME: ${{ secrets.MQTT_USERNAME }}
-        MQTT_PASSWORD: ${{ secrets.MQTT_PASSWORD }}
-      run: |
-        flutter build apk --flavor dev -t integration_test/app_e2e_test.dart --no-tree-shake-icons --debug --dart-define=MQTT_USERNAME=$MQTT_USERNAME --dart-define=MQTT_PASSWORD=$MQTT_PASSWORD --dart-define=ACCESS_TOKEN=${{ steps.jwt.outputs.access_token }}
-      working-directory: das_client/app
-
-    - name: Build Test Package
-      run: ./gradlew app:assembleAndroidTest
-      working-directory: das_client/app/android
-
-    - name: Upload and Run on Browserstack
-      uses: Grodien/browserstack-flutter-action@v1.6
-      with:
-        browserstackUsername: ${{ secrets.BROWSERSTACK_USERNAME }}
-        browserstackAccessKey: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
-        project: das_client
-        customId: das_client_android
-        buildTag: ${{ steps.extract_branch.outputs.branch }}
-        appFilePath: ${{ github.workspace }}/das_client/app/build/app/outputs/flutter-apk/app-dev-debug.apk
-        testFilePath: ${{ github.workspace }}/das_client/app/build/app/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk
-        devices: Samsung Galaxy Tab S11-16.0
+  browserstack:
+    uses: ./.github/workflows/client_browserstack_base.yml
+    with:
+      entrypoint: integration_test/app_e2e_test.dart
+      enable_e2e: true
+    secrets: inherit
