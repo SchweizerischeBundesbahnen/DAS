@@ -5,7 +5,7 @@ import '../app_test.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('test brake series defaults to ??', (tester) async {
+  testWidgets('brakeSeries_whenDefaultMissing_thenShowsQuestionMarks', (tester) async {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T6');
 
@@ -16,7 +16,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test default brake series is taken from train characteristics (R115)', (tester) async {
+  testWidgets('brakeSeries_whenDefaultFromTrainCharacteristics_thenShowsR115', (tester) async {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T5');
 
@@ -27,7 +27,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test all brake series options are displayed', (tester) async {
+  testWidgets('brakeSeries_whenOpened_thenShowsAllOptions', (tester) async {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T5');
 
@@ -66,7 +66,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test message when no brake series are defined', (tester) async {
+  testWidgets('brakeSeries_whenNoBrakeSeriesDefined_thenShowsMessage', (tester) async {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T4');
 

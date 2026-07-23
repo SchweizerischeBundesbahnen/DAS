@@ -10,7 +10,7 @@ import '../util/test_utils.dart';
 
 void main() {
   group('app expiration test', () {
-    testWidgets('When app expires soon, displays dismissible dialog once', (tester) async {
+    testWidgets('appExpiration_whenExpiresSoon_thenShowsDismissibleDialogOnce', (tester) async {
       await prepareAndStartApp(
         tester,
         onBeforeRun: () {
@@ -37,7 +37,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('When app is expired, displays non dismissible dialog', (
+    testWidgets('appExpiration_whenExpired_thenShowsNonDismissibleDialog', (
       tester,
     ) async {
       await prepareAndStartApp(

@@ -8,7 +8,7 @@ import '../app_test.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('test displayed columns on open ASR modal', (tester) async {
+  testWidgets('asrModal_whenModalOpened_thenHidesTimeColumn', (tester) async {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T2');
 
@@ -27,7 +27,7 @@ void main() {
 
     await disconnect(tester);
   });
-  testWidgets('test details for ASR in T2 with missing from, until and reason', (tester) async {
+  testWidgets('asrModal_whenMissingOptionalFields_thenShowsDashes', (tester) async {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T2');
 
@@ -47,7 +47,7 @@ void main() {
 
     await disconnect(tester);
   });
-  testWidgets('test details for ASR in T3 with all details', (tester) async {
+  testWidgets('asrModal_whenAllDetailsPresent_thenShowsAllDetails', (tester) async {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T3');
 
@@ -73,7 +73,7 @@ void main() {
 
     await disconnect(tester);
   });
-  testWidgets('test details for complex ASR in T18', (tester) async {
+  testWidgets('asrModal_whenComplexAsrWithMultipleEntries_thenShowsAllEntries', (tester) async {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T18');
 

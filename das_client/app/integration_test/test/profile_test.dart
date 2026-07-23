@@ -7,7 +7,7 @@ import '../app_test.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('test profile page header', (tester) async {
+  testWidgets('profile_whenOpened_thenShowsHeaderInformation', (tester) async {
     await prepareAndStartApp(tester);
     await openDrawer(tester);
     await tapElement(tester, find.text(l10n.w_navigation_drawer_profile_title));
@@ -16,7 +16,7 @@ void main() {
     expect(find.text('tester@testeee.com'), findsAny);
   });
 
-  testWidgets('test user ru profile selection', (tester) async {
+  testWidgets('profile_whenRuSelected_thenDisplaysSelection', (tester) async {
     await prepareAndStartApp(tester);
     await openDrawer(tester);
     await tapElement(tester, find.text(l10n.w_navigation_drawer_profile_title));
@@ -61,7 +61,7 @@ void main() {
     expect(find.text(evuText2), findsOneWidget);
   });
 
-  testWidgets('test user tour system profile selection', (tester) async {
+  testWidgets('profile_whenTourSystemSelected_thenDisplaysSelection', (tester) async {
     await prepareAndStartApp(tester);
     await openDrawer(tester);
     await tapElement(tester, find.text(l10n.w_navigation_drawer_profile_title));

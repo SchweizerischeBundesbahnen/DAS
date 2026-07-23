@@ -5,7 +5,7 @@ import '../app_test.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('test replacement series is suggested, selected and returned to original', (tester) async {
+  testWidgets('replacementSeries_whenSuggested_thenSelectsAndReturnsToOriginal', (tester) async {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T30');
 
@@ -37,7 +37,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test does not suggest replacement when there is none', (tester) async {
+  testWidgets('replacementSeries_whenNoReplacementAvailable_thenDoesNotSuggest', (tester) async {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T30');
 
@@ -62,7 +62,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test message disappears when end of segment is reached even if user does nothing', (tester) async {
+  testWidgets('replacementSeries_whenEndOfSegmentReached_thenMessageDisappears', (tester) async {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T30');
 
@@ -82,7 +82,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test shows no replacement available notification', (
+  testWidgets('replacementSeries_whenNoReplacementForBrakeSeries_thenShowsNotification', (
     tester,
   ) async {
     await prepareAndStartApp(tester);

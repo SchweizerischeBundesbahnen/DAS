@@ -9,7 +9,7 @@ import '../app_test.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('test additional speed restriction row is displayed correctly', (tester) async {
+  testWidgets('additionalSpeedRestriction_whenRowDisplayed_thenShowsCorrectly', (tester) async {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T2');
 
@@ -35,7 +35,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test other non-ASR rows between are colored correctly', (tester) async {
+  testWidgets('additionalSpeedRestriction_whenNonAsrRowsBetween_thenColorsCorrectly', (tester) async {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T2');
 
@@ -63,7 +63,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test complex additional speed restriction row is displayed correctly', (tester) async {
+  testWidgets('additionalSpeedRestriction_whenComplexAsr_thenDisplaysCorrectly', (tester) async {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T18');
 
@@ -98,7 +98,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test additional speed restriction row are displayed correctly on ETCS level 2 section', (
+  testWidgets('additionalSpeedRestriction_whenOnEtcsLevel2Section_thenDisplaysCorrectly', (
     tester,
   ) async {
     await prepareAndStartApp(tester);
@@ -140,7 +140,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test sequential additional speed restriction row is displayed correctly', (tester) async {
+  testWidgets('additionalSpeedRestriction_whenSequentialAsr_thenDisplaysCorrectly', (tester) async {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T43');
 

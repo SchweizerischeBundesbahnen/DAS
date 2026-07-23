@@ -8,7 +8,7 @@ import '../app_test.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('test balise multiple level crossings', (tester) async {
+  testWidgets('baliseLevelCrossing_whenMultipleLevelCrossings_thenDisplaysCorrectly', (tester) async {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T7');
 
@@ -24,7 +24,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test balise and level crossing groups expand / collapse', (tester) async {
+  testWidgets('baliseLevelCrossing_whenGroupTapped_thenExpandsAndCollapses', (tester) async {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T7M');
 
@@ -87,7 +87,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test level crossing in ETCS level 2 section', (tester) async {
+  testWidgets('baliseLevelCrossing_whenInEtcsLevel2Section_thenDisplaysCorrectly', (tester) async {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T7');
 

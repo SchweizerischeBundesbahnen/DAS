@@ -7,7 +7,7 @@ import '../app_test.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('test station signs are displayed', (tester) async {
+  testWidgets('stationProperty_whenStationSignsPresent_thenDisplaysCorrectly', (tester) async {
     await prepareAndStartApp(tester);
 
     await loadJourney(tester, trainNumber: 'T21M');
@@ -29,7 +29,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test station properties are displayed', (tester) async {
+  testWidgets('stationProperty_whenPropertiesPresent_thenDisplaysCorrectly', (tester) async {
     await prepareAndStartApp(tester);
 
     await loadJourney(tester, trainNumber: 'T21M');
@@ -67,7 +67,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test station properties are displayed depending on TrainSeries', (tester) async {
+  testWidgets('stationProperty_whenTrainSeriesChanges_thenUpdatesDisplay', (tester) async {
     await prepareAndStartApp(tester);
 
     await loadJourney(tester, trainNumber: 'T21M');

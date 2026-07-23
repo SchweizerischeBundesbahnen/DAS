@@ -16,7 +16,7 @@ import '../mocks/mock_sim_train_view_model.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('test operational indication collapsible', (tester) async {
+  testWidgets('collapsibleRows_whenOperationalIndicationDisplayed_thenCollapses', (tester) async {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T22M');
 
@@ -26,7 +26,7 @@ void main() {
 
     await disconnect(tester);
   });
-  testWidgets('test RADN foot note collapsible', (tester) async {
+  testWidgets('collapsibleRows_whenRadnFootNoteDisplayed_thenCollapses', (tester) async {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T15M');
 
@@ -41,7 +41,7 @@ void main() {
 
     await disconnect(tester);
   });
-  testWidgets('test show more on long texts of operational indications', (tester) async {
+  testWidgets('collapsibleRows_whenLongTextPresent_thenShowsMoreButton', (tester) async {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T22M');
 
@@ -83,7 +83,7 @@ void main() {
 
     await disconnect(tester);
   });
-  testWidgets('test combined operational indications and replaced new lines with " ;"', (tester) async {
+  testWidgets('collapsibleRows_whenCombinedIndications_thenReplacesNewLinesWithDelimiter', (tester) async {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T22M');
 
@@ -123,7 +123,7 @@ void main() {
 
     await disconnect(tester);
   });
-  testWidgets('test row combined for operational indication and foot note on same service point', (tester) async {
+  testWidgets('collapsibleRows_whenSameServicePoint_thenCombinesIndicationAndFootNote', (tester) async {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T22M');
 
@@ -151,7 +151,7 @@ void main() {
 
     await disconnect(tester);
   });
-  testWidgets('test operational indication collapsed when passed', (tester) async {
+  testWidgets('collapsibleRows_whenOperationalIndicationPassed_thenCollapses', (tester) async {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T22');
 
@@ -161,7 +161,7 @@ void main() {
 
     await disconnect(tester);
   });
-  testWidgets('test RADN foot notes collapsed when passed', (tester) async {
+  testWidgets('collapsibleRows_whenRadnFootNotePassed_thenCollapses', (tester) async {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T15');
 
@@ -178,7 +178,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test RADN foot notes title contain type', (tester) async {
+  testWidgets('collapsibleRows_whenRadnFootNoteDisplayed_thenTitleContainsType', (tester) async {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T15M');
 

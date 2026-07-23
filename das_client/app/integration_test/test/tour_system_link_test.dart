@@ -12,7 +12,7 @@ import '../util/test_utils.dart';
 
 void main() {
   group('tour system link test', () {
-    testWidgets('test tour system button buttons are not displayed when tour system is not configured', (tester) async {
+    testWidgets('tourSystem_whenNotConfigured_thenHidesButtons', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T39M');
 
@@ -33,7 +33,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test tour system button buttons are displayed when tour system is configured', (tester) async {
+    testWidgets('tourSystem_whenConfigured_thenShowsButtons', (tester) async {
       await prepareAndStartApp(tester);
 
       final userSettings = DI.get<UserSettings>() as MockUserSettings;
@@ -66,7 +66,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test tour system button displayed according to current position', (tester) async {
+    testWidgets('tourSystem_whenPositionChanges_thenUpdatesButtonVisibility', (tester) async {
       await prepareAndStartApp(tester);
 
       final userSettings = DI.get<UserSettings>() as MockUserSettings;

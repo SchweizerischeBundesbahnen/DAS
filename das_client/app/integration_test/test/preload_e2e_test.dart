@@ -4,7 +4,7 @@ import '../app_test.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('test preload is starting after login and retrieving settings', (tester) async {
+  testWidgets('preload_whenStartedAfterLogin_thenRetrievesSettings', (tester) async {
     await prepareAndStartApp(tester, e2e: true);
 
     // Navigate to preload page
