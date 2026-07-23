@@ -18,7 +18,7 @@ import '../util/test_utils.dart';
 
 void main() {
   testWidgets('brakeSlip_whenNoDataAvailable_thenDoesNotShowButton', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T9999');
 
     final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
@@ -34,7 +34,7 @@ void main() {
   });
 
   testWidgets('brakeSlip_whenFormationDataLoaded_thenShowsInformationAndNavigation', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
 
     final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
     formationRepository.emitT9999Formation();
@@ -69,7 +69,7 @@ void main() {
   });
 
   testWidgets('brakeSlip_whenSpecialIndicatorsArePresent_thenShowsBanners', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
 
     final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
     formationRepository.emitT9999Formation();
@@ -113,7 +113,7 @@ void main() {
   });
 
   testWidgets('brakeSlip_whenDifferentBrakeSeriesInFormation_thenShowsNotification', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T9999M');
 
     final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
@@ -137,7 +137,7 @@ void main() {
   });
 
   testWidgets('brakeSlipModal_whenOpened_thenDisplaysCorrectInformation', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
 
     final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
     formationRepository.emitT9999Formation();
@@ -159,7 +159,7 @@ void main() {
   });
 
   testWidgets('brakeSlipModal_whenFullscreenButtonTapped_thenOpensFullscreen', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
 
     final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
     formationRepository.emitT9999Formation();
@@ -181,7 +181,7 @@ void main() {
   });
 
   testWidgets('brakeSlip_whenFormationUpdated_thenShowsNotification', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
 
     final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
     formationRepository.emitT9999Formation();
@@ -209,7 +209,7 @@ void main() {
   });
 
   testWidgets('brakeSlip_whenFormationRunChanged_thenUpdatesRunChangeDisplay', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
 
     final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
     formationRepository.emitT9999Formation();

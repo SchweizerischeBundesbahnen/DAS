@@ -9,7 +9,7 @@ import '../util/test_utils.dart';
 
 void main() {
   testWidgets('calculatedSpeed_whenJourneyLoaded_thenDisplaysCorrectly', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
 
     await loadJourney(tester, trainNumber: 'T23M');
 
@@ -100,7 +100,7 @@ void main() {
   });
 
   testWidgets('calculatedSpeed_whenDisplayedInStickyHeader_thenShowsCorrectly', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
 
     await loadJourney(tester, trainNumber: 'T23M');
 
@@ -147,7 +147,7 @@ void main() {
   });
 
   testWidgets('calculatedSpeed_whenNoVproSpeedAtPosition_thenHidesPunctuality', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
 
     await loadJourney(tester, trainNumber: 'T23');
 
@@ -170,7 +170,7 @@ void main() {
   });
 
   testWidgets('calculatedSpeed_whenReducedToLineSpeed_thenDisplaysInDifferentColor', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
 
     await loadJourney(tester, trainNumber: 'T23M');
 

@@ -8,7 +8,7 @@ import '../util/test_utils.dart';
 void main() {
   group('suspicious segment tests', () {
     testWidgets('suspiciousSegment_whenLoaded_thenShowsRowsAndNotificationAndDismisses', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T40M');
 
       expect(find.byKey(const ValueKey('T40_2')), findsOneWidget);
@@ -25,7 +25,7 @@ void main() {
     testWidgets('suspiciousSegment_whenAllPassed_thenDisappearsAndReappearsOnUpdate', (
       tester,
     ) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T40');
 
       // Suspicious segment notification is initially visible
@@ -47,7 +47,7 @@ void main() {
     });
 
     testWidgets('suspiciousSegment_whenJourneyUpdated_thenShowsNotification', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T42');
 
       expect(find.byKey(SuspiciousSegmentNotification.suspiciousSegmentNotificationKey), findsNothing);

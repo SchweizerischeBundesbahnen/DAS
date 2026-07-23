@@ -8,7 +8,7 @@ import '../util/test_utils.dart';
 
 void main() {
   testWidgets('journeyUpdates_whenChangesReceived_thenDisplaysCorrectly', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T35');
 
     // check normal rows
@@ -56,7 +56,7 @@ void main() {
   });
 
   testWidgets('journeyUpdates_whenTrainCharacteristicsUpdated_thenIgnoresUpdate', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T37');
 
     final oltenRow = findDASTableRowByText('Olten');

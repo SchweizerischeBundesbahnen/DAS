@@ -9,7 +9,7 @@ import '../util/test_utils.dart';
 
 void main() {
   testWidgets('asrModal_whenModalOpened_thenHidesTimeColumn', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T2');
 
     final kilometreLabel = l10n.p_journey_table_kilometre_label;
@@ -28,7 +28,7 @@ void main() {
     await disconnect(tester);
   });
   testWidgets('asrModal_whenMissingOptionalFields_thenShowsDashes', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T2');
 
     expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsOneWidget);
@@ -48,7 +48,7 @@ void main() {
     await disconnect(tester);
   });
   testWidgets('asrModal_whenAllDetailsPresent_thenShowsAllDetails', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T3');
 
     expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsOneWidget);
@@ -74,7 +74,7 @@ void main() {
     await disconnect(tester);
   });
   testWidgets('asrModal_whenComplexAsrWithMultipleEntries_thenShowsAllEntries', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T18');
 
     expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsOneWidget);

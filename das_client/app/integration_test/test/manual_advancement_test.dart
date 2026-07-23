@@ -11,7 +11,7 @@ import '../util/test_utils.dart';
 void main() {
   group('manual advancement tests', () {
     testWidgets('manualAdvancement_whenServicePointDragged_thenJourneyPositionMoved', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999M');
 
       // Check chevron at start A
@@ -70,7 +70,7 @@ void main() {
     testWidgets('manualAdvancement_whenManualPositionSet_thenManualModeActivatedUntilJourneyPositionSignaled', (
       tester,
     ) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T30');
 
       final coppet = 'Coppet';

@@ -15,7 +15,7 @@ import '../util/test_utils.dart';
 void main() {
   group('train journey notification test', () {
     testWidgets('notification_whenDepartureProcessDialogOpened_thenDisplaysCorrectly', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;
       featureProvider.enableFeature(.departureProcess);
 
@@ -42,7 +42,7 @@ void main() {
     });
 
     testWidgets('notification_whenDisturbanceOccurs_thenShowsAndHidesNotification', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T33');
 
       await waitUntilExists(tester, find.byKey(DisturbanceNotification.disturbanceNotificationKey));
@@ -52,7 +52,7 @@ void main() {
     });
 
     testWidgets('notification_whenDepartureDispatchReceived_thenDisplaysCorrectly', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T32');
 
       await waitUntilExists(tester, find.text(l10n.w_departure_dispatch_notification_long));
@@ -66,7 +66,7 @@ void main() {
     });
 
     testWidgets('notification_whenMultipleNotifications_thenPrioritizesCorrectly', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
 
       final mockRepository = DI.get<CustomerOrientedDepartureRepository>() as MockCustomerOrientedDepartureRepository;
       mockRepository.reset();
@@ -87,7 +87,7 @@ void main() {
     });
 
     testWidgets('notification_whenReauthenticationRequired_thenShowsNotification', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
       expect(find.text(l10n.w_reauthentication_required_notification_text), findsNothing);

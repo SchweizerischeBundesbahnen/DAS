@@ -62,7 +62,7 @@ void main() {
   );
 
   testWidgets('preload_whenStatusChanges_thenDisplaysCorrectly', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
 
     final preloadRepository = DI.get<PreloadRepository>() as MockPreloadRepository;
 
@@ -137,7 +137,7 @@ void main() {
   });
 
   testWidgets('preload_whenUsingPreloadData_thenReconnectsSuccessfully', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
 
     // Load T9999 so we have it available offline
     await loadJourney(tester, trainNumber: 'T9999', ru: RailwayUndertaking.sbbP);

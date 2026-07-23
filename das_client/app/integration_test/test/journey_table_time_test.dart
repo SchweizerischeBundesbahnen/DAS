@@ -10,7 +10,7 @@ import '../util/test_utils.dart';
 
 void main() {
   testWidgets('timeCell_whenFarFutureJourney_thenShowsPlannedTimesOnly', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T4');
 
     // test if planned time header label is in table (no operational times)
@@ -62,7 +62,7 @@ void main() {
   });
 
   testWidgets('timeCell_whenNearFutureJourney_thenShowsOperationalAndPlannedTimes', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T16');
 
     // test if operational time header label is in table
@@ -163,7 +163,7 @@ void main() {
   testWidgets(
     'timeCell_whenManuallySetToPlanned_thenAutoSwitchesBackToOperational',
     (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
       // test if operational time header label is in table
@@ -191,7 +191,7 @@ void main() {
   );
 
   testWidgets('timeCell_whenDepartureTimeReached_thenUnderlinesTime', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T9999M');
 
     // wait one second for underline to happen if opened last second of previous minute

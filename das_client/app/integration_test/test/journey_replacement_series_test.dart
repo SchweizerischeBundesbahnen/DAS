@@ -6,7 +6,7 @@ import '../util/test_utils.dart';
 
 void main() {
   testWidgets('replacementSeries_whenSuggested_thenSelectsAndReturnsToOriginal', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T30');
 
     final expectedReplacementSeries = 'R150';
@@ -38,7 +38,7 @@ void main() {
   });
 
   testWidgets('replacementSeries_whenNoReplacementAvailable_thenDoesNotSuggest', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T30');
 
     final expectedReplacementSeries = 'R150';
@@ -63,7 +63,7 @@ void main() {
   });
 
   testWidgets('replacementSeries_whenEndOfSegmentReached_thenMessageDisappears', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T30');
 
     await selectBrakeSeries(tester, brakeSeries: 'N160');
@@ -85,7 +85,7 @@ void main() {
   testWidgets('replacementSeries_whenNoReplacementForBrakeSeries_thenShowsNotification', (
     tester,
   ) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T30M');
 
     final replacementSeriesFinder = find.byKey(ReplacementSeriesNotification.noReplacementSeriesAvailableKey);
