@@ -4,17 +4,12 @@ import 'package:auth/component.dart';
 import 'package:logging/logging.dart';
 import 'package:mqtt/component.dart';
 
-import '../auth/e2e_authenticator.dart';
 import '../auth/integrationtest_authenticator.dart';
 import '../auth/mqtt_client_user_connector.dart';
 
 final _log = Logger('MockTmsScope');
 
 class MockTmsScope extends TmsScope {
-  MockTmsScope(this.e2e);
-
-  final bool e2e;
-
   @override
   String get scopeName => 'MockTmsScope';
 
@@ -26,18 +21,10 @@ class MockTmsScope extends TmsScope {
     final tmsFlavor = DI.get<Flavor>().withTmsValues();
 
     getIt.registerFlavor(tmsFlavor);
-    if (e2e) {
-      _registerE2EAuthenticator();
-    } else {
-      _registerIntegrationTestAuthenticator();
-    }
+    _registerIntegrationTestAuthenticator();
     _registerIntegrationTestMqttClientConnector();
 
     return getIt.allReady();
-  }
-
-  void _registerE2EAuthenticator() {
-    getIt.registerSingletonAsync<Authenticator>(() async => E2EAuthenticator());
   }
 
   void _registerIntegrationTestAuthenticator() {

@@ -26,10 +26,6 @@ import 'mock_warn_app_view_model.dart';
 final _log = Logger('MockAuthenticatedScope');
 
 class MockAuthenticatedScope extends AuthenticatedScope {
-  MockAuthenticatedScope(this.e2e);
-
-  final bool e2e;
-
   @override
   String get scopeName => 'MockAuthenticatedScope';
 
@@ -45,18 +41,10 @@ class MockAuthenticatedScope extends AuthenticatedScope {
     getIt.registerMqttService();
     getIt.registerSferaRemoteRepository();
     getIt.registerAppExpirationViewModel();
-    if (e2e) {
-      getIt.registerSettingsRepository();
-      getIt.registerRuFeatureProvider();
-      getIt.registerFormationRepository();
-      getIt.registerRuIndicationsRepository();
-      getIt.registerTrainIdentificationRepository();
-    } else {
-      _registerMockRuFeaturesProvider();
-      _registerMockFormationRepository();
-      _registerMockRuIndicationsRepository();
-      _registerMockTrainIdentificationRepository();
-    }
+    _registerMockRuFeaturesProvider();
+    _registerMockFormationRepository();
+    _registerMockRuIndicationsRepository();
+    _registerMockTrainIdentificationRepository();
     _registerMockCustomerOrientedDepartureRepository();
     getIt.registerTimedRouteProvider();
 

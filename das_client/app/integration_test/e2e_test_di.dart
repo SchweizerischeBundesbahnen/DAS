@@ -16,7 +16,6 @@ class E2ETestDI {
     await GetIt.I.reset();
 
     GetIt.I.registerFlavor(Flavor.dev());
-    GetIt.I.registerScopes();
     _registerE2ETestScopes();
     GetIt.I.registerScopeHandler();
 

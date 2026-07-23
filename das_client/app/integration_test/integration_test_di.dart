@@ -38,11 +38,11 @@ class IntegrationTestDI {
     );
   }
 
-  static void _registerMockScopes({bool e2e = false}) {
-    GetIt.I.registerSingleton<DASBaseScope>(MockDASBaseScope(e2e));
-    GetIt.I.registerSingleton<SferaMockScope>(MockSferaMockScope(e2e));
-    GetIt.I.registerSingleton<TmsScope>(MockTmsScope(e2e));
-    GetIt.I.registerSingleton<AuthenticatedScope>(MockAuthenticatedScope(e2e));
+  static void _registerMockScopes() {
+    GetIt.I.registerSingleton<DASBaseScope>(MockDASBaseScope());
+    GetIt.I.registerSingleton<SferaMockScope>(MockSferaMockScope());
+    GetIt.I.registerSingleton<TmsScope>(MockTmsScope());
+    GetIt.I.registerSingleton<AuthenticatedScope>(MockAuthenticatedScope());
     GetIt.I.registerSingleton<JourneyScope>(MockJourneyScope());
   }
 }
