@@ -1,0 +1,17 @@
+name: Client Browserstack Integration
+
+on:
+  schedule:
+    - cron: '21 2 * * *'
+  pull_request:
+    paths:
+      - 'das_client/**'
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  browserstack:
+    uses: ./.github/workflows/client_browserstack_base.yml
+    with:
+      entrypoint: integration_test/app_test.dart
+    secrets: inherit
