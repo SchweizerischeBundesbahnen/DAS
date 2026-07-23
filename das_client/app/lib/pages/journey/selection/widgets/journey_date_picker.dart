@@ -30,7 +30,7 @@ class JourneyDatePicker extends StatelessWidget {
       onSelectedItemChanged: (idx) => onChanged.call(availableStartDates[idx]),
       items: availableStartDates.map((d) => _formattedDate(d, context)).toList(growable: false),
       looping: false,
-      visibleItemCount: max(availableStartDates.length, 3),
+      visibleItemCount: min(availableStartDates.length, 3),
     ),
   );
 
