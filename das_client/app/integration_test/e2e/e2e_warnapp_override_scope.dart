@@ -13,7 +13,7 @@ class E2EWarnappOverrideScope extends DIScope {
   Future<void> push() async {
     getIt.pushNewScope(
       scopeName: scopeName,
-      init: (getIt) => getIt.registerSingleton(
+      init: (getIt) => getIt.registerSingleton<WarnappRepository>(
         WarnappComponent.createWarnappRepository(
           motionDataService: WarnappComponent.createMockMotionDataService(
             samplingPeriod: const Duration(milliseconds: 2),
