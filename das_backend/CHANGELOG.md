@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.15.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.14.1...backend-v0.15.0) (2026-07-23)
+
+
+### Features
+
+* add train identification companies api startDate boundary validation ([#2136](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2136)) ([#2456](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2456)) ([104f095](https://github.com/SchweizerischeBundesbahnen/DAS/commit/104f095fb280749ddd08b3ce5453f7e315c28732))
+
+
+### Bug Fixes
+
+* backend uses OpenBao vault secrets ([#1547](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1547)) ([#2448](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2448)) ([2e12fda](https://github.com/SchweizerischeBundesbahnen/DAS/commit/2e12fdac8563762f53e6f5beee002f296a40a1c0))
+
+
+### Documentation
+
+* story references and test display names for traceability ([#2214](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2214)) ([#2462](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2462)) ([983cea7](https://github.com/SchweizerischeBundesbahnen/DAS/commit/983cea7a64e27c6ed367621888ccd60a56e50345))
+
 ## [0.14.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.14.0...backend-v0.14.1) (2026-07-21)
 
 
