@@ -24,12 +24,7 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-    env:
-      KAFKA_SR_URL: ${{ secrets.ZIS_SR_URL }}
-      KAFKA_SR_API_KEY: ${{ secrets.ZIS_SR_API_KEY }}
-      KAFKA_SR_API_SECRET: ${{ secrets.ZIS_SR_API_SECRET }}
 
     steps:
       - uses: actions/checkout@v7
@@ -39,9 +34,25 @@ jobs:
           java-version: '25'
           distribution: 'temurin'
           cache: maven
+      - name: Vault Secrets 🤫
+        id: vault-secrets
+        uses: hashicorp/vault-action@v4
+        with:
+          url: https://vault-nonprod.sbb.ch:443
+          method: approle
+          roleId: ${{ secrets.VAULT_ROLE_ID }}
+          secretId: ${{ secrets.VAULT_SECRET_ID }}
+          secrets: |
+            kv/data/DSO-BPS/driver-advisory-system/backend/maven KAFKA_SR_URL ;
+            kv/data/DSO-BPS/driver-advisory-system/backend/maven KAFKA_SR_API_KEY ;
+            kv/data/DSO-BPS/driver-advisory-system/backend/maven KAFKA_SR_API_SECRET ;
+            kv/data/DSO-BPS/driver-advisory-system/ci/common SONAR_TOKEN ;
       - name: Maven verify + Sonar
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_TOKEN: ${{ steps.vault-secrets.outputs.SONAR_TOKEN }}
+          KAFKA_SR_URL: ${{ steps.vault-secrets.outputs.KAFKA_SR_URL }}
+          KAFKA_SR_API_KEY: ${{ steps.vault-secrets.outputs.KAFKA_SR_API_KEY }}
+          KAFKA_SR_API_SECRET: ${{ steps.vault-secrets.outputs.KAFKA_SR_API_SECRET }}
         run: |
           mvn --batch-mode --update-snapshots verify \
             org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
