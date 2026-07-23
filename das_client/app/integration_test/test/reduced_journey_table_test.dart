@@ -9,7 +9,7 @@ import '../util/test_utils.dart';
 
 void main() {
   group('train reduced journey test', () {
-    testWidgets('test network change with km is displayed', (tester) async {
+    testWidgets('reducedJourney_whenNetworkChangePresent_thenDisplaysWithKm', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T9999');
       await openReducedJourneyMenu(tester);
@@ -31,7 +31,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test train information is displayed', (tester) async {
+    testWidgets('reducedJourney_whenLoaded_thenDisplaysTrainInformation', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T14');
       await openReducedJourneyMenu(tester);
@@ -44,7 +44,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test train information of shunting movement journey is displayed', (tester) async {
+    testWidgets('reducedJourney_whenShuntingMovementJourney_thenDisplaysTrainInformation', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T29');
       await openReducedJourneyMenu(tester);
@@ -54,7 +54,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test passing and stopping points are displayed correctly', (tester) async {
+    testWidgets('reducedJourney_whenStoppingAndPassingPoints_thenDisplaysCorrectly', (tester) async {
       await prepareAndStartApp(tester);
 
       await loadJourney(tester, trainNumber: 'T14');
@@ -71,7 +71,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test duplicated asr is only displayed once', (tester) async {
+    testWidgets('reducedJourney_whenDuplicatedAsr_thenDisplaysOnlyOnce', (tester) async {
       await prepareAndStartApp(tester);
 
       await loadJourney(tester, trainNumber: 'T14');
@@ -85,7 +85,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test planned times are displayed', (tester) async {
+    testWidgets('reducedJourney_whenLoaded_thenDisplaysPlannedTimes', (tester) async {
       await prepareAndStartApp(tester);
 
       await loadJourney(tester, trainNumber: 'T16');

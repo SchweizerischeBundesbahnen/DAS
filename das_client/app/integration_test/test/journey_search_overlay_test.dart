@@ -18,7 +18,7 @@ import '../util/test_utils.dart';
 
 void main() {
   group('Journey search overlay tests', () {
-    testWidgets('overlay can be opened and dismissed', (tester) async {
+    testWidgets('journeySearchOverlay_whenOpenedAndDismissed_thenTogglesCorrectly', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T1');
 
@@ -42,7 +42,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('input fields have defaults and validation works', (tester) async {
+    testWidgets('journeySearchOverlay_whenOpened_thenShowsDefaultsAndValidation', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T1');
       final journeySearchOverlay = find.byType(JourneySearchOverlay);
@@ -74,7 +74,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('loading another train journey work and should not display navigation buttons', (tester) async {
+    testWidgets('journeySearchOverlay_whenTrainLoaded_thenOpensJourneyWithoutNavigationButtons', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T1');
       final journeySearchOverlay = find.byType(JourneySearchOverlay);
@@ -114,7 +114,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('multiple companyMatches should redirect to SelectionScreen and disconnect current Journey', (
+    testWidgets('journeySearchOverlay_whenMultipleCompanyMatches_thenRedirectsToSelectionScreen', (
       tester,
     ) async {
       await prepareAndStartApp(tester);

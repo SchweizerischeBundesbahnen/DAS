@@ -8,7 +8,7 @@ import '../app_test.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('test show decisive gradient setting', (tester) async {
+  testWidgets('settings_whenDecisiveGradientDisabled_thenHidesGradients', (tester) async {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T9999M');
 
@@ -44,7 +44,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test km header click when decisive gradient is not shown', (tester) async {
+  testWidgets('settings_whenKmHeaderClickedWithGradientHidden_thenTogglesDisplay', (tester) async {
     await prepareAndStartApp(tester);
 
     // Navigate to settings page
@@ -106,7 +106,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test hide station signal settings hides correct signals', (tester) async {
+  testWidgets('settings_whenStationSignalHidden_thenHidesCorrectSignals', (tester) async {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T9999M');
 
@@ -139,7 +139,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test chevron position with hidden station signals', (tester) async {
+  testWidgets('settings_whenStationSignalHidden_thenChevronPositionsCorrectly', (tester) async {
     await prepareAndStartApp(tester);
 
     // Navigate to settings page
@@ -177,7 +177,7 @@ void main() {
   });
 
   group('T45 nsp signals', () {
-    testWidgets('hides station signals on T45 but keeps ETCS stop signs', (tester) async {
+    testWidgets('settings_whenStationSignalsToggled_thenHidesButKeepsEtcsStopSigns', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T45');
       await stopAutomaticAdvancement(tester);
@@ -208,7 +208,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('hides ETCS stop sign only in conventional speed segment when toggled off', (tester) async {
+    testWidgets('settings_whenEtcsConventionalToggled_thenHidesOnlyConventionalStopSign', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T45');
       await stopAutomaticAdvancement(tester);
@@ -240,7 +240,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('hides ETCS stop signs only in extended speed segments when toggled off', (tester) async {
+    testWidgets('settings_whenEtcsExtendedToggled_thenHidesOnlyExtendedStopSigns', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T45');
       await stopAutomaticAdvancement(tester);
@@ -272,7 +272,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('hides every ETCS stop sign when both conventional and extended toggles are off', (tester) async {
+    testWidgets('settings_whenBothEtcsToggledOff_thenHidesAllEtcsStopSigns', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T45');
       await stopAutomaticAdvancement(tester);

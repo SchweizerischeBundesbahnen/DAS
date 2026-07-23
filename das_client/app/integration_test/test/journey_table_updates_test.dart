@@ -7,7 +7,7 @@ import '../app_test.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('test journey changes are displayed correctly', (tester) async {
+  testWidgets('journeyUpdates_whenChangesReceived_thenDisplaysCorrectly', (tester) async {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T35');
 
@@ -55,7 +55,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test ignore train characteristics update', (tester) async {
+  testWidgets('journeyUpdates_whenTrainCharacteristicsUpdated_thenIgnoresUpdate', (tester) async {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T37');
 

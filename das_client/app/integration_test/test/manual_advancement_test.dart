@@ -10,7 +10,7 @@ import '../util/test_utils.dart';
 
 void main() {
   group('manual advancement tests', () {
-    testWidgets('whenServicePointDragged_thenJourneyPositionMoved', (tester) async {
+    testWidgets('manualAdvancement_whenServicePointDragged_thenJourneyPositionMoved', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T9999M');
 
@@ -67,7 +67,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('whenManualPositionSet_thenManualModeActivatedUntilJourneyPositionSignaled', (tester) async {
+    testWidgets('manualAdvancement_whenManualPositionSet_thenManualModeActivatedUntilJourneyPositionSignaled', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T30');
 

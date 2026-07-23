@@ -17,14 +17,14 @@ import '../util/test_utils.dart';
 
 void main() {
   group('train search screen tests', () {
-    testWidgets('test default values', (tester) async {
+    testWidgets('trainSearch_whenPageLoaded_thenShowsDefaultValues', (tester) async {
       await prepareAndStartApp(tester);
 
       // Verify that today is preselected
       expect(find.text(Format.date(DateTime.now())), findsOneWidget);
     });
 
-    testWidgets('test selecting ru values', (tester) async {
+    testWidgets('trainSearch_whenRuSelectionOpened_thenShowsOptions', (tester) async {
       await prepareAndStartApp(tester);
 
       await tapElement(tester, find.text(l10n.p_train_selection_ru_description), warnIfMissed: false);
@@ -43,7 +43,7 @@ void main() {
       expect(sobI, findsOneWidget);
     });
 
-    testWidgets('test filter ru values', (tester) async {
+    testWidgets('trainSearch_whenRuFilterEntered_thenFiltersResults', (tester) async {
       await prepareAndStartApp(tester);
 
       await tapElement(tester, find.text(l10n.p_train_selection_ru_description), warnIfMissed: false);
@@ -64,7 +64,7 @@ void main() {
       expect(find.text(l10n.c_ru_sob), findsOneWidget);
     });
 
-    testWidgets('test load button disabled when validation fails', (tester) async {
+    testWidgets('trainSearch_whenNoTrainNumberEntered_thenDisablesButton', (tester) async {
       await prepareAndStartApp(tester);
 
       // Verify that today is preselected
@@ -81,7 +81,7 @@ void main() {
       expect(tester.widget<SBBPrimaryButton>(primaryButton).onPressed, isNull);
     });
 
-    testWidgets('test can select yesterday', (tester) async {
+    testWidgets('trainSearch_whenYesterdaySelected_thenShowsWarning', (tester) async {
       await prepareAndStartApp(tester);
 
       final today = DateTime.now();
@@ -123,7 +123,7 @@ void main() {
       expect(warningMessage, findsOneWidget);
     });
 
-    testWidgets('test can not select day before yesterday', (tester) async {
+    testWidgets('trainSearch_whenDayBeforeYesterday_thenCannotSelect', (tester) async {
       await prepareAndStartApp(tester);
 
       final today = DateTime.now();
@@ -154,7 +154,7 @@ void main() {
       expect(dayBeforeYesterdayDateTextFinder, findsNothing);
     });
 
-    testWidgets('test error if JP unavailable', (tester) async {
+    testWidgets('trainSearch_whenJpUnavailable_thenShowsError', (tester) async {
       await prepareAndStartApp(tester);
 
       // Verify that today is preselected
@@ -175,7 +175,7 @@ void main() {
       expect(find.text(l10n.c_error_sfera_jp_unavailable), findsOneWidget);
     });
 
-    testWidgets('test error is displayed if SFERA returns error', (tester) async {
+    testWidgets('trainSearch_whenErrorFromSfera_thenDisplaysErrorCode', (tester) async {
       await prepareAndStartApp(tester);
 
       final trainNumberText = findTextInputByLabel(l10n.p_train_selection_trainnumber_description);
@@ -193,7 +193,7 @@ void main() {
       expect(find.text('${l10n.c_error_code} 50: ${l10n.c_error_sfera_no_additional_info}'), findsOneWidget);
     });
 
-    testWidgets('test company match selection multiple results', (tester) async {
+    testWidgets('trainSearch_whenMultipleCompanyMatches_thenShowsSelection', (tester) async {
       await prepareAndStartApp(tester);
 
       final trainIdentificationRepository =
@@ -248,7 +248,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test should remember last ru and auto select when found', (tester) async {
+    testWidgets('trainSearch_whenLastRuRemembered_thenAutoSelects', (tester) async {
       await prepareAndStartApp(tester);
 
       final trainIdentificationRepository =
@@ -292,7 +292,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test company match selection no result', (tester) async {
+    testWidgets('trainSearch_whenNoCompanyMatch_thenShowsNoResultMessage', (tester) async {
       await prepareAndStartApp(tester);
 
       final trainIdentificationRepository =

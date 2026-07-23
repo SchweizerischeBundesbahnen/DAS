@@ -8,7 +8,7 @@ import '../app_test.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('test calculated speeds are displayed correctly', (tester) async {
+  testWidgets('calculatedSpeed_whenJourneyLoaded_thenDisplaysCorrectly', (tester) async {
     await prepareAndStartApp(tester);
 
     await loadJourney(tester, trainNumber: 'T23M');
@@ -99,7 +99,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test calculated speeds are displayed correctly in sticky header', (tester) async {
+  testWidgets('calculatedSpeed_whenDisplayedInStickyHeader_thenShowsCorrectly', (tester) async {
     await prepareAndStartApp(tester);
 
     await loadJourney(tester, trainNumber: 'T23M');
@@ -146,7 +146,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test do not display chronograph punctuality if no vpro speed in current position', (tester) async {
+  testWidgets('calculatedSpeed_whenNoVproSpeedAtPosition_thenHidesPunctuality', (tester) async {
     await prepareAndStartApp(tester);
 
     await loadJourney(tester, trainNumber: 'T23');
@@ -169,7 +169,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test calculated speed is reduced to line speed and displayed in different color', (tester) async {
+  testWidgets('calculatedSpeed_whenReducedToLineSpeed_thenDisplaysInDifferentColor', (tester) async {
     await prepareAndStartApp(tester);
 
     await loadJourney(tester, trainNumber: 'T23M');

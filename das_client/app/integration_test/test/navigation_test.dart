@@ -10,7 +10,7 @@ import '../util/test_utils.dart';
 
 void main() {
   group('navigation drawer tests', () {
-    testWidgets('should show navigation drawer', (tester) async {
+    testWidgets('navigation_whenDrawerOpened_thenShowsNavigationItems', (tester) async {
       await prepareAndStartApp(tester);
 
       // check that there is a drawer
@@ -32,7 +32,7 @@ void main() {
       expect(find.text(l10n.w_navigation_drawer_profile_title), findsOneWidget);
     });
 
-    testWidgets('test navigate to links', (tester) async {
+    testWidgets('navigation_whenLinksSelected_thenShowsLinksPage', (tester) async {
       await prepareAndStartApp(tester);
 
       await openDrawer(tester);
@@ -50,7 +50,7 @@ void main() {
       expect(find.byType(LinksPage), findsOneWidget);
     });
 
-    testWidgets('test navigate to settings', (tester) async {
+    testWidgets('navigation_whenSettingsSelected_thenShowsSettingsPage', (tester) async {
       await prepareAndStartApp(tester);
 
       await openDrawer(tester);
@@ -68,7 +68,7 @@ void main() {
       expect(find.byType(SettingsPage), findsOneWidget);
     });
 
-    testWidgets('test navigate to profile', (tester) async {
+    testWidgets('navigation_whenProfileSelected_thenShowsProfilePage', (tester) async {
       await prepareAndStartApp(tester);
 
       await openDrawer(tester);
@@ -89,7 +89,7 @@ void main() {
       expect(find.byType(ProfilePage), findsOneWidget);
     });
 
-    testWidgets('test navigate to train journey', (tester) async {
+    testWidgets('navigation_whenTrainJourneySelected_thenShowsFahrtPage', (tester) async {
       await prepareAndStartApp(tester);
 
       await openDrawer(tester);
@@ -117,7 +117,7 @@ void main() {
       expect(find.byType(JourneySelectionPage), findsOneWidget);
     });
 
-    testWidgets('test if train journey stays loaded after navigation', (tester) async {
+    testWidgets('navigation_whenNavigatingBackToJourney_thenJourneyStaysLoaded', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T6');
 
@@ -139,7 +139,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test journey settings are not reset when navigating ', (tester) async {
+    testWidgets('navigation_whenNavigatingBack_thenJourneySettingsNotReset', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T5M');
 

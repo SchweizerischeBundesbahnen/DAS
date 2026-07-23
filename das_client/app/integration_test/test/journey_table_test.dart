@@ -23,7 +23,7 @@ import '../util/test_utils.dart';
 
 void main() {
   group('train journey table test', () {
-    testWidgets('test journey displays end of curves correctly', (tester) async {
+    testWidgets('journeyTable_whenCurvesPresent_thenDisplaysEndOfCurvesCorrectly', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T5');
 
@@ -38,7 +38,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test journey displays summarized curve as one', (tester) async {
+    testWidgets('journeyTable_whenSummarizedCurve_thenDisplaysAsOne', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T5');
 
@@ -67,7 +67,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test displays kilometer and communication network changes correctly', (tester) async {
+    testWidgets('journeyTable_whenKilometerAndNetworkChanges_thenDisplaysCorrectly', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
@@ -91,7 +91,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test up- and downhill gradient is displayed correctly', (tester) async {
+    testWidgets('journeyTable_whenGradientPresent_thenDisplaysUpAndDownhill', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T15M');
 
@@ -123,7 +123,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test find two curves found when brakeSeries A50 is chosen', (tester) async {
+    testWidgets('journeyTable_whenBrakeSeriesA50Chosen_thenFindstwoCurves', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T5');
 
@@ -144,7 +144,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test find three curves when brakeSeries R115 is chosen', (tester) async {
+    testWidgets('journeyTable_whenBrakeSeriesR115Chosen_thenFindsThreeCurves', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T5');
 
@@ -162,7 +162,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test whistle and tram area', (tester) async {
+    testWidgets('journeyTable_whenWhistleAndTramArea_thenDisplaysCorrectly', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T7M');
 
@@ -184,7 +184,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test chevron position positioned correctly inside grouped items', (tester) async {
+    testWidgets('journeyTable_whenChevronInGroupedItems_thenPositionsCorrectly', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T7');
 
@@ -206,7 +206,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test speed values of default brakeSeries (R115)', (tester) async {
+    testWidgets('journeyTable_whenDefaultBrakeSeries_thenShowsCorrectSpeedValues', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T5');
 
@@ -232,7 +232,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test speed values of missing brake series', (tester) async {
+    testWidgets('journeyTable_whenMissingBrakeSeries_thenShowsCorrectSpeedValues', (tester) async {
       await prepareAndStartApp(tester);
 
       await loadJourney(tester, trainNumber: 'T5');
@@ -277,7 +277,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test connection track is displayed correctly', (tester) async {
+    testWidgets('journeyTable_whenConnectionTrackPresent_thenDisplaysCorrectly', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
@@ -313,7 +313,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('check if all table columns with header are present', (tester) async {
+    testWidgets('journeyTable_whenLoaded_thenShowsAllColumnsWithHeaders', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T6');
 
@@ -334,7 +334,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test route is displayed correctly', (tester) async {
+    testWidgets('journeyTable_whenRoutePresent_thenDisplaysCorrectly', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
@@ -374,7 +374,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test protection sections are displayed correctly', (tester) async {
+    testWidgets('journeyTable_whenProtectionSectionsPresent_thenDisplaysCorrectly', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T3');
 
@@ -441,7 +441,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test both kilometres are displayed', (tester) async {
+    testWidgets('journeyTable_whenBothKilometresPresent_thenDisplaysBoth', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T6');
 
@@ -453,7 +453,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test bracket stations is displayed correctly', (tester) async {
+    testWidgets('journeyTable_whenBracketStations_thenDisplaysCorrectly', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
@@ -502,7 +502,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test halt on request is displayed correctly', (tester) async {
+    testWidgets('journeyTable_whenHaltOnRequest_thenDisplaysCorrectly', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
@@ -531,7 +531,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test halt is displayed italic', (tester) async {
+    testWidgets('journeyTable_whenHaltPresent_thenDisplaysItalic', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T6');
 
@@ -556,7 +556,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('whenServicePointHasTrackGroup_isDisplayedCorrectlyDependingOnDetailModal', (tester) async {
+    testWidgets('journeyTable_whenServicePointHasTrackGroup_thenDisplaysCorrectlyWithDetailModal', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T6M');
 
@@ -572,7 +572,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test curves are displayed correctly', (tester) async {
+    testWidgets('journeyTable_whenCurvesPresent_thenDisplaysCurvesCorrectly', (tester) async {
       await prepareAndStartApp(tester);
 
       await loadJourney(tester, trainNumber: 'T9999M');
@@ -598,7 +598,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test signals are displayed correctly', (tester) async {
+    testWidgets('journeyTable_whenSignalsPresent_thenDisplaysCorrectly', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
@@ -649,7 +649,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test if station speeds are displayed correctly', (tester) async {
+    testWidgets('journeyTable_whenStationSpeeds_thenDisplaysCorrectly', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T8');
 
@@ -755,7 +755,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test line speed always displayed in sticky header', (tester) async {
+    testWidgets('journeyTable_whenLineSpeed_thenAlwaysDisplaysInStickyHeader', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T8');
 
@@ -792,7 +792,7 @@ void main() {
       expect(wankdorfIncomingSpeedsEmpty2, findsNothing);
     });
 
-    testWidgets('test line speed is hidden on ETCS level 2 section', (tester) async {
+    testWidgets('journeyTable_whenEtcsLevel2Section_thenHidesLineSpeed', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T11');
 
@@ -810,7 +810,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test additional service points displayed correctly', (tester) async {
+    testWidgets('journeyTable_whenAdditionalServicePoints_thenDisplaysCorrectly', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T27');
 
@@ -828,7 +828,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test shunting movement markers are displayed correctly', (tester) async {
+    testWidgets('journeyTable_whenShuntingMovement_thenDisplaysMarkersCorrectly', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T29');
 
@@ -857,7 +857,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test correct color priority', (tester) async {
+    testWidgets('journeyTable_whenMultipleColors_thenDisplaysCorrectPriority', (tester) async {
       // https://github.com/SchweizerischeBundesbahnen/DAS/issues/1125
       // ADL > NextStop > ASR > Protection Section
 

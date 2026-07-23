@@ -25,7 +25,7 @@ import '../util/test_utils.dart';
 
 void main() {
   group('general service point modal sheet tests', () {
-    testWidgets('test bahnhofportal link opens expected URL for T9999M service point', (tester) async {
+    testWidgets('servicePointModal_whenBahnhofportalLinkTapped_thenOpensExpectedUrl', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T9999M');
 
@@ -45,7 +45,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test displayed columns on open service point modal', (tester) async {
+    testWidgets('servicePointModal_whenOpened_thenHidesKilometreColumn', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T8');
 
@@ -65,7 +65,7 @@ void main() {
 
       await disconnect(tester);
     });
-    testWidgets('test interaction points for modal sheet', (tester) async {
+    testWidgets('servicePointModal_whenInteracted_thenOpensAndClosesCorrectly', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T8');
 
@@ -93,7 +93,7 @@ void main() {
 
       await disconnect(tester);
     });
-    testWidgets('test header button collapsed if detail model sheet open', (tester) async {
+    testWidgets('servicePointModal_whenOpened_thenCollapsesHeaderButtons', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
@@ -110,7 +110,7 @@ void main() {
 
       await disconnect(tester);
     });
-    testWidgets('test only tabs are displayed with data', (tester) async {
+    testWidgets('servicePointModal_whenDataAvailable_thenShowsOnlyRelevantTabs', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T8');
 
@@ -127,7 +127,7 @@ void main() {
 
       await disconnect(tester);
     });
-    testWidgets('test change of service point modal page with segmented button', (tester) async {
+    testWidgets('servicePointModal_whenTabChanged_thenDisplaysCorrectContent', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T8');
 
@@ -145,7 +145,7 @@ void main() {
 
       await disconnect(tester);
     });
-    testWidgets('test modal closes after timeout without touch on screen', (tester) async {
+    testWidgets('servicePointModal_whenTimeout_thenClosesAutomatically', (tester) async {
       await prepareAndStartApp(tester);
 
       await loadJourney(tester, trainNumber: 'T8');
@@ -165,7 +165,7 @@ void main() {
 
       await disconnect(tester);
     });
-    testWidgets('test modal sheet does close after timeout with automatic advancement paused', (tester) async {
+    testWidgets('servicePointModal_whenAdvancementPaused_thenClosesAfterTimeout', (tester) async {
       await prepareAndStartApp(tester);
 
       await loadJourney(tester, trainNumber: 'T8');
@@ -193,7 +193,7 @@ void main() {
   });
 
   group('graduated speed tab tests', () {
-    testWidgets('test graduated speed info details', (tester) async {
+    testWidgets('graduatedSpeed_whenPresent_thenDisplaysInfoDetails', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T8');
 
@@ -221,7 +221,7 @@ void main() {
   });
 
   group('communication tab tests', () {
-    testWidgets('test communication network and radio channels displayed correctly', (tester) async {
+    testWidgets('communicationTab_whenOpened_thenDisplaysNetworkAndRadioChannels', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T12M');
 
@@ -279,7 +279,7 @@ void main() {
 
       await disconnect(tester);
     });
-    testWidgets('test communication information present when opening from other tab', (tester) async {
+    testWidgets('communicationTab_whenOpenedFromOtherTab_thenShowsInformation', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: '1513M');
 
@@ -308,7 +308,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test departure authorization are displayed in modal', (tester) async {
+    testWidgets('communicationTab_whenDepartureAuthorizationPresent_thenDisplaysInModal', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T31M');
 
@@ -327,7 +327,7 @@ void main() {
   });
 
   group('local regulation tab tests', () {
-    testWidgets('test local regulation tab is shown', (tester) async {
+    testWidgets('localRegulationTab_whenPresent_thenShowsTab', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T25');
       final scrollableFinder = find.byType(AnimatedList);
@@ -347,7 +347,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test tab change from local regulation', (tester) async {
+    testWidgets('localRegulationTab_whenTabChanged_thenUpdatesDisplay', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T25');
 
@@ -369,7 +369,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test local regulation webview is shown', (tester) async {
+    testWidgets('localRegulationTab_whenOpened_thenShowsWebview', (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T25');
 
@@ -384,7 +384,7 @@ void main() {
     });
   });
 
-  testWidgets('test short signal names are displayed when modal is open', (tester) async {
+  testWidgets('servicePointModal_whenModalOpen_thenShowsShortSignalNames', (tester) async {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T9999M');
 
@@ -419,7 +419,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test modal sheet still displayed after navigation', (tester) async {
+  testWidgets('servicePointModal_whenNavigatedAndReturned_thenStaysDisplayed', (tester) async {
     await prepareAndStartApp(tester);
     final timeConstants = DI.get<TimeConstants>() as TestTimeConstants;
     timeConstants.modalSheetAutomaticCloseAfterSecondsValue = 5;

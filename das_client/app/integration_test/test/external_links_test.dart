@@ -10,7 +10,7 @@ import '../util/test_utils.dart';
 
 void main() {
   group('links page tests', () {
-    testWidgets('should show empty state when no RU is selected', (tester) async {
+    testWidgets('externalLinks_whenNoRuSelected_thenShowsEmptyState', (tester) async {
       await prepareAndStartApp(tester);
 
       await openDrawer(tester);
@@ -28,7 +28,7 @@ void main() {
       expect(find.text('ESQ'), findsNothing);
     });
 
-    testWidgets('should show links after RU selection in profile', (tester) async {
+    testWidgets('externalLinks_whenRuSelectedInProfile_thenShowsLinks', (tester) async {
       await prepareAndStartApp(tester);
 
       // Navigate to Profile and select SBB CH
@@ -62,7 +62,7 @@ void main() {
       expect(find.text('ESQ'), findsOneWidget);
     });
 
-    testWidgets('should update links when RU selection changes', (tester) async {
+    testWidgets('externalLinks_whenRuSelectionChanges_thenUpdatesLinks', (tester) async {
       await prepareAndStartApp(tester);
 
       // Navigate to Profile and select DB

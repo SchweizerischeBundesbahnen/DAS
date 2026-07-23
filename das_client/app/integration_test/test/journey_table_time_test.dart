@@ -9,7 +9,7 @@ import '../app_test.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('test time cells for journey in far future (T4) with planned times only', (tester) async {
+  testWidgets('timeCell_whenFarFutureJourney_thenShowsPlannedTimesOnly', (tester) async {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T4');
 
@@ -61,7 +61,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test time cells for journey in near future (T16) with operational and planned times', (tester) async {
+  testWidgets('timeCell_whenNearFutureJourney_thenShowsOperationalAndPlannedTimes', (tester) async {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T16');
 
@@ -161,7 +161,7 @@ void main() {
   });
 
   testWidgets(
-    'test auto switch behavior for time cells journey in near future (T9999) with operational and planned times',
+    'timeCell_whenManuallySetToPlanned_thenAutoSwitchesBackToOperational',
     (tester) async {
       await prepareAndStartApp(tester);
       await loadJourney(tester, trainNumber: 'T9999');
@@ -190,7 +190,7 @@ void main() {
     },
   );
 
-  testWidgets('test departure time is underlined when time reached', (tester) async {
+  testWidgets('timeCell_whenDepartureTimeReached_thenUnderlinesTime', (tester) async {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T9999M');
 

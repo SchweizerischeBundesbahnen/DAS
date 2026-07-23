@@ -7,7 +7,7 @@ import '../app_test.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('test if CAB signaling is displayed correctly', (tester) async {
+  testWidgets('trackEquipment_whenCabSignaling_thenDisplaysCorrectly', (tester) async {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T1');
 
@@ -67,7 +67,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test if track equipment is displayed correctly', (tester) async {
+  testWidgets('trackEquipment_whenLoaded_thenDisplaysCorrectly', (tester) async {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T1');
 
@@ -152,7 +152,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test if single track without block track equipment is displayed correctly', (tester) async {
+  testWidgets('trackEquipment_whenSingleTrackNoBlock_thenDisplaysCorrectly', (tester) async {
     await prepareAndStartApp(tester);
     await loadJourney(tester, trainNumber: 'T10');
 

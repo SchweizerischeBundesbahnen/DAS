@@ -15,7 +15,7 @@ void main() {
   if (Platform.isAndroid) return;
 
   group('warnapp test', () {
-    testWidgets('test warnapp gets triggered when signal is red', (tester) async {
+    testWidgets('warnapp_whenSignalIsRed_thenTriggersWarning', (tester) async {
       await prepareAndStartApp(tester);
 
       final motionDataService = DI.get<MotionDataService>() as MockMotionDataService;
@@ -33,7 +33,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test warnapp notification not appearing multiple times when UI is rebuilt', (tester) async {
+    testWidgets('warnapp_whenUiRebuilt_thenNotificationNotReappearing', (tester) async {
       await prepareAndStartApp(tester);
 
       final motionDataService = DI.get<MotionDataService>() as MockMotionDataService;
@@ -56,7 +56,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test warnapp maneuver button activates maneuver mode', (tester) async {
+    testWidgets('warnapp_whenManeuverButtonTapped_thenActivatesManeuverMode', (tester) async {
       await prepareAndStartApp(tester);
 
       final motionDataService = DI.get<MotionDataService>() as MockMotionDataService;
@@ -73,7 +73,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test warnapp does not get triggered while in maneuver mode', (tester) async {
+    testWidgets('warnapp_whenInManeuverMode_thenDoesNotTrigger', (tester) async {
       await prepareAndStartApp(tester);
 
       final motionDataService = DI.get<MotionDataService>() as MockMotionDataService;
@@ -104,7 +104,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test warnapp does not get triggered when signal is green', (tester) async {
+    testWidgets('warnapp_whenSignalIsGreen_thenDoesNotTrigger', (tester) async {
       await prepareAndStartApp(tester);
 
       final motionDataService = DI.get<MotionDataService>() as MockMotionDataService;

@@ -9,7 +9,7 @@ import '../app_test.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('test advised speed notification displayed correctly', (tester) async {
+  testWidgets('advisedSpeed_whenNotificationReceived_thenDisplaysCorrectly', (tester) async {
     await prepareAndStartApp(tester);
 
     await loadJourney(tester, trainNumber: 'T24');
@@ -69,7 +69,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test advised speeds displayed correctly', (tester) async {
+  testWidgets('advisedSpeed_whenJourneyLoaded_thenDisplaysCorrectly', (tester) async {
     await prepareAndStartApp(tester);
 
     await loadJourney(tester, trainNumber: 'T24');
