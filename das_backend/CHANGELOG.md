@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.15.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.15.0...backend-v0.15.1) (2026-07-24)
+
+
+### Documentation
+
+* remove acceptance criteria from test name ([#2479](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2479)) ([5ffb5cc](https://github.com/SchweizerischeBundesbahnen/DAS/commit/5ffb5ccc10f171c9e661d1a1d5bcb4623f072b2f))
+
 ## [0.15.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.14.1...backend-v0.15.0) (2026-07-23)
 
 
