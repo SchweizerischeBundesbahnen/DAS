@@ -83,8 +83,8 @@ async function expectRowAbsent(page: Page, row: Locator, timeout = 10_000) {
     .toBeFalsy();
 }
 
-export async function clickAddButton(page: Page) {
-  const addButton = page.getByText('Neuen Eintrag erfassen', { exact: true });
+export async function clickAddButton(page: Page, text = 'Neuen Eintrag erfassen') {
+  const addButton = page.getByText(text, { exact: true });
   await expect(addButton).toBeVisible();
   await addButton.click();
 }
@@ -109,7 +109,7 @@ export async function saveEntryDialog(
   await saveResponse;
   await reloadResponse;
   await expect(page.getByText(options.successToast, { exact: true })).toBeVisible();
-  await expect(page.getByText(options.dialogTitle, { exact: true })).not.toBeVisible();
+  await expect(page.getByRole('heading', { name: options.dialogTitle })).not.toBeVisible();
 
   await expectRowPresent(page, row);
 }
