@@ -8,6 +8,7 @@ import 'package:get_it/get_it.dart';
 import '../app_test.dart';
 import '../e2e/e2e_authenticator_override_scope.dart';
 import '../e2e/e2e_test_app.dart';
+import '../util/e2e_test_utils.dart';
 import '../util/test_utils.dart';
 
 void main() {
@@ -32,6 +33,7 @@ void main() {
     await E2ETestApp.start(tester);
 
     await loadJourney(tester, trainNumber: 'T9999', ru: .sbbP);
+    await optionallyDismissBrightnessModalOnAndroid(tester);
 
     await disconnect(tester);
   });
@@ -42,6 +44,7 @@ void main() {
     await E2ETestApp.start(tester);
 
     await loadJourney(tester, trainNumber: 'T12', ru: .sbbCH);
+    await optionallyDismissBrightnessModalOnAndroid(tester);
 
     await openBrakeSlipPage(tester);
     expect(find.byType(BrakeLoadSlipPage), findsOneWidget);
