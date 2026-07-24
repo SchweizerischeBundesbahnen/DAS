@@ -14,6 +14,9 @@ import { CompanyService } from './company.service';
   styleUrl: './companies-input.component.css',
 })
 export class CompaniesInputComponent {
+  private readonly companyService = inject(CompanyService);
+  private readonly recentCompaniesStore = inject(RecentCompaniesStore);
+
   readonly label = input<string>($localize`:@@companies_form_label:EVU`);
   readonly control = input.required<FormControl<string[]> | FormControl<string>>();
   readonly multiselect = input<boolean>(true);
@@ -21,9 +24,6 @@ export class CompaniesInputComponent {
   protected inputControl = new FormControl('', { nonNullable: true });
   private readonly inputValue = toSignal(this.inputControl.valueChanges, { initialValue: '' });
   private readonly searchTerm = signal<string>('');
-
-  private readonly companyService = inject(CompanyService);
-  private readonly recentCompaniesStore = inject(RecentCompaniesStore);
 
   protected readonly multiControl = computed(() => this.control() as FormControl<string[]>);
   protected readonly singleControl = computed(() => this.control() as FormControl<string>);

@@ -3,7 +3,7 @@ import { DatePipe } from '@angular/common';
 import { Component, effect, inject, viewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { SbbMiniButton } from '@sbb-esta/lyne-angular/button/mini-button';
+import { SbbMiniButton } from '@sbb-esta/lyne-angular/button';
 import { SbbCheckbox } from '@sbb-esta/lyne-angular/checkbox';
 import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
 import {
@@ -51,6 +51,9 @@ export interface RuIndicationFilter extends SbbTableFilter {
 export class RuIndicationsTable {
   protected readonly companyService = inject(CompanyService);
   protected readonly locationService = inject(LocationService);
+  private readonly languageProvider = inject(LanguageProvider);
+  private readonly ruIndicationService = inject(RuIndicationService);
+
   protected dataSource = new SbbTableDataSource<RuIndication, RuIndicationFilter>();
   protected columns = [
     'select',
@@ -82,7 +85,6 @@ export class RuIndicationsTable {
   ];
   protected readonly selection = new SelectionModel<RuIndication>(true, []);
   protected isDeleting = false;
-  private readonly languageProvider = inject(LanguageProvider);
   protected form = new FormGroup({
     search: new FormControl('', { nonNullable: true }),
     language: new FormControl(this.languageProvider.currentLanguage.path, { nonNullable: true }),
@@ -92,7 +94,6 @@ export class RuIndicationsTable {
     locations: new FormControl('', { nonNullable: true }),
     periods: new FormControl('', { nonNullable: true }),
   });
-  private readonly ruIndicationService = inject(RuIndicationService);
   private readonly bottomBar = viewChild.required(TableBottomBar);
   private readonly sort = viewChild.required<SbbSort>(SbbSort);
 

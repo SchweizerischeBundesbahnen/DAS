@@ -39,7 +39,7 @@
             ],
             "styles": [
               "src/styles.scss",
-              "node_modules/@sbb-esta/lyne-elements/off-brand-theme.css"
+              "node_modules/@sbb-esta/lyne-elements/lean-off-brand-theme.css"
             ],
             "polyfills": ["@angular/localize/init"],
             "localize": ["de-CH"]

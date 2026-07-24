@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { BaseDialogService } from '../base-dialog.service';
 import { RuAdminApi, RuFeature } from '../ru-admin-api';
@@ -8,9 +8,7 @@ import {
   RuFeatureToggleDialog,
 } from './ru-feature-toggle-dialog/ru-feature-toggle-dialog.component';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class RuFeatureService extends BaseDialogService {
   private readonly ruAdminApi = inject(RuAdminApi);
   readonly ruFeaturesResource = this.ruAdminApi.ruFeatures;

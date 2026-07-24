@@ -7,7 +7,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core/overlay';
+import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core';
 import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
 import { SbbTabsModule } from '@sbb-esta/lyne-angular/tabs';
 import { ExternalLink } from '~ru-admin/ru-admin-api';
@@ -45,10 +45,11 @@ export type ExternalLinkDialogEditResult = ExternalLink | 'delete';
 })
 export class ExternalLinkDialog {
   protected readonly languageProvider = inject(LanguageProvider);
-  protected readonly dialogTitle: string;
   protected readonly dialogData =
     inject<ExternalLink>(SBB_OVERLAY_DATA, { optional: true }) ?? undefined;
   private readonly formBuilder = inject(NonNullableFormBuilder);
+
+  protected readonly dialogTitle: string;
   protected externalLinkForm = this.formBuilder.group<FormGroupExternalLink>(
     {
       companies: this.formBuilder.control<string[]>([], Validators.required),

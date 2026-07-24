@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
-import { SbbLink } from '@sbb-esta/lyne-angular/link/link';
+import { SbbLink } from '@sbb-esta/lyne-angular/link';
 import { SbbNotificationModule } from '@sbb-esta/lyne-angular/notification';
 import { SbbTitleModule } from '@sbb-esta/lyne-angular/title';
 import packageJson from '~package.json';
@@ -15,9 +15,10 @@ import { IconSidebar } from './icon-sidebar/icon-sidebar';
   styleUrl: './app.css',
 })
 export class App implements OnInit {
-  protected readonly isAdBlockerDetected = signal(this.isInstanaBlockedByAdBlocker);
   private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
+
+  protected readonly isAdBlockerDetected = signal(this.isInstanaBlockedByAdBlocker);
 
   private get isInstanaBlockedByAdBlocker(): boolean {
     const pageLoadId = ineum('getPageLoadId');

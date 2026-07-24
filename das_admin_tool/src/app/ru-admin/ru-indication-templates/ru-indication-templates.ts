@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { SbbSecondaryButton } from '@sbb-esta/lyne-angular/button/secondary-button';
+import { SbbSecondaryButton } from '@sbb-esta/lyne-angular/button';
 import { SbbLoadingIndicatorCircle } from '@sbb-esta/lyne-angular/loading-indicator-circle';
 import { SbbTitle } from '@sbb-esta/lyne-angular/title';
 import { RuIndicationTemplateService } from './ru-indication-template.service';

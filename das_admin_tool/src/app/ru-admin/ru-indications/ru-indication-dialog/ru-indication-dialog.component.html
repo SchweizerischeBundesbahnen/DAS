@@ -50,11 +50,15 @@
     </sbb-stepper>
   </form>
 </sbb-dialog-content>
-<sbb-dialog-actions alignGroup="stretch" orientation="vertical">
+<sbb-dialog-actions
+  class="sbb-align-group-stretch sbb-orientation-vertical sbb-orientation-horizontal-from-large"
+>
   <sbb-secondary-button i18n="@@dialog_action_cancel" sbb-dialog-close
     >Abbrechen</sbb-secondary-button
   >
-  <sbb-action-group alignGroup="stretch" orientation="vertical">
+  <sbb-action-group
+    class="sbb-align-group-stretch sbb-orientation-vertical sbb-orientation-horizontal-from-large"
+  >
     @if (isEdit) {
       <sbb-transparent-button
         i18n="@@dialog_action_delete"
