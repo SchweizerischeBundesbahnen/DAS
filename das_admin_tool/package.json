@@ -58,7 +58,7 @@
     "gzipper": "^8.2.1",
     "prettier": "3.9.4",
     "typescript": "5.9.3",
-    "typescript-eslint": "8.62.1",
+    "typescript-eslint": "8.65.0",
     "vitest": "^4.1.6",
     "vitest-sonar-reporter": "^3.0.0"
   }
