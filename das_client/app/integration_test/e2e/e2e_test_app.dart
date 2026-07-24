@@ -8,7 +8,6 @@ import 'package:flutter_test/flutter_test.dart';
 
 import '../app_test.dart';
 import '../e2e_test_di.dart';
-import '../util/e2e_test_utils.dart';
 import '../util/test_utils.dart';
 import 'e2e_authenticator_override_scope.dart';
 import 'e2e_warnapp_override_scope.dart';
@@ -35,7 +34,6 @@ class E2ETestApp {
     await _initMessaging();
     runDasApp();
     await tester.pumpAndSettle(const Duration(milliseconds: 500));
-    await optionallyDismissBrightnessModalOnAndroid(tester);
   }
 }
 

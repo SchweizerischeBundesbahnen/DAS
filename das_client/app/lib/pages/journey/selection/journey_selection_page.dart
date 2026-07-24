@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:app/brightness/brightness_modal_sheet.dart';
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/app_router.dart';
@@ -91,10 +90,6 @@ class _ContentState extends State<_Content> with WidgetsBindingObserver {
           });
         }
       }
-    });
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      BrightnessModalSheet.openIfNeeded(context);
     });
   }
 
