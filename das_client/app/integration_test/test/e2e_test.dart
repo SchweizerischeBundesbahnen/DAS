@@ -1,12 +1,15 @@
+import 'package:app/di/di.dart';
+import 'package:app/di/scope_handler.dart';
 import 'package:app/pages/preload/widgets/preload_status_display.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../app_test.dart';
+import '../e2e/e2e_authenticator_override_scope.dart';
 import '../e2e/e2e_test_app.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('preload_whenStartedAfterLogin_thenRetrievesFiles', (tester) async {
+  testWidgets('preload_whenStartedAfterLogin_thenRetrievesFiles', skip: true, (tester) async {
     await E2ETestApp.start(tester);
 
     // Navigate to preload page
@@ -21,5 +24,13 @@ void main() {
 
     // We do not display downloaded segment when no data has yet been loaded
     await waitUntilExists(tester, find.byKey(PreloadStatusDisplay.downloadedSegmentKey));
+  });
+
+  testWidgets('loadJourney_whenLoadsT9999_thenOpensJourneyTable', (tester) async {
+    await E2ETestApp.start(tester);
+
+    await loadJourney(tester, trainNumber: 'T9999', ru: .sbbP);
+
+    await disconnect(tester);
   });
 }

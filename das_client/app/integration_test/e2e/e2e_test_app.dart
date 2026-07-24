@@ -1,6 +1,8 @@
 import 'package:app/di/di.dart';
 import 'package:app/di/scope_handler.dart';
+import 'package:app/flavor.dart';
 import 'package:app/main.dart';
+import 'package:customer_oriented_departure/component.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -14,7 +16,7 @@ import 'e2e_warnapp_override_scope.dart';
 class E2ETestApp {
   const E2ETestApp._();
 
-  static Future<void> start(WidgetTester tester, {VoidCallback? onBeforeRun}) async {
+  static Future<void> start(WidgetTester tester, {AsyncCallback? onBeforeRun}) async {
     // iOS workaround for enterText not working on some devices, if its the first element
     // (https://github.com/leancodepl/patrol/issues/1868#issuecomment-1814241939)
     tester.testTextInput.register();
@@ -28,10 +30,16 @@ class E2ETestApp {
     await scopeHandler.push<E2EAuthenticatorOverrideScope>();
 
     l10n = await deviceLocalizations();
-    onBeforeRun?.call();
+    await onBeforeRun?.call();
 
+    await _initMessaging();
     runDasApp();
     await tester.pumpAndSettle(const Duration(milliseconds: 500));
     await optionallyDismissBrightnessModalOnAndroid(tester);
   }
+}
+
+Future<void> _initMessaging() async {
+  final environment = Flavor.dev().customerOrientedDepartureEnvironment;
+  await CustomerOrientedDepartureComponent.initializeMessaging(connectTo: environment);
 }
