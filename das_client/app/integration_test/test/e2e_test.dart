@@ -27,6 +27,10 @@ void main() {
 
     // We do not display downloaded segment when no data has yet been loaded
     await waitUntilExists(tester, find.byKey(PreloadStatusDisplay.downloadedSegmentKey));
+
+    // Wait until all files preloaded so test fails not afterwards from Isolates and file operations ON EMULATOR
+    // TODO: maybe add possibility to interrupt preload gracefully - difficult with isolates though
+    // await waitUntilNotExists(tester, find.byKey(PreloadStatusDisplay.initialSegmentKey), maxWaitSeconds: 480);
   });
 
   testWidgets('loadJourney_whenLoadsT9999_thenOpensJourneyTable', (tester) async {

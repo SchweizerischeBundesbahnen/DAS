@@ -10,6 +10,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class PreloadStatusDisplay extends StatelessWidget {
   static const downloadedSegmentKey = ValueKey('PreloadStatusDisplayDownloadSegmentKey');
+  static const initialSegmentKey = ValueKey('PreloadStatusDisplayInitialSegmentKey');
 
   const PreloadStatusDisplay({super.key});
 
@@ -52,7 +53,12 @@ class PreloadStatusDisplay extends StatelessWidget {
               key: PreloadStatusDisplay.downloadedSegmentKey,
             ),
           if (preloadDetails.initialFilesCount > 0)
-            _progressSegment(preloadDetails.initialFilesCount, initialColor, minWidth: minWidth),
+            _progressSegment(
+              preloadDetails.initialFilesCount,
+              initialColor,
+              minWidth: minWidth,
+              key: PreloadStatusDisplay.initialSegmentKey,
+            ),
           if (preloadDetails.errorFilesCount > 0)
             _progressSegment(preloadDetails.errorFilesCount, errorColor, minWidth: minWidth),
         ],
