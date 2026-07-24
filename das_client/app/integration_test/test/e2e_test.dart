@@ -3,7 +3,6 @@ import 'package:app/di/scope_handler.dart';
 import 'package:app/pages/journey/brake_load_slip/brake_load_slip_page.dart';
 import 'package:app/pages/preload/widgets/preload_status_display.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 
 import '../app_test.dart';
 import '../e2e/e2e_authenticator_override_scope.dart';
@@ -56,25 +55,23 @@ void main() {
     await disconnect(tester);
   });
 
-  /// TODO: connection to TMS VAD fails very unreliably - something to do with the scopes ?
-  testWidgets('loadJourney_whenLoadsJourneyFromTmsVAD_thenOpensJourneyTable', skip: true, (tester) async {
-    await E2ETestApp.start(
-      tester,
-      onBeforeRun: () async {
-        final scopeHandler = DI.get<ScopeHandler>();
-        await scopeHandler.pop<E2EAuthenticatorOverrideScope>();
-        await scopeHandler.pop<SferaMockScope>();
-        await scopeHandler.push<TmsScope>();
-        await scopeHandler.push<E2EAuthenticatorOverrideScope>();
-        await GetIt.I.allReady();
-      },
-    );
+  testWidgets('loadJourney_whenLoadsJourneyFromTmsVAD_thenOpensJourneyTable', (tester) async {
+    await E2ETestApp.start(tester);
 
     await openDrawer(tester);
     await tapElement(tester, find.text(l10n.w_navigation_drawer_preload_title));
+    await tester.pumpAndSettle(Duration(milliseconds: 300));
+
+    final scopeHandler = DI.get<ScopeHandler>();
+    await scopeHandler.pop<SferaMockScope>();
+    await scopeHandler.push<TmsScope>();
+    await scopeHandler.push<E2EAuthenticatorOverrideScope>();
+    await scopeHandler.push<AuthenticatedScope>();
+
     await openDrawer(tester);
-    await tester.pumpAndSettle(Duration(milliseconds: 500));
     await tapElement(tester, find.text(l10n.w_navigation_drawer_fahrtinfo_title));
+    await tester.pumpAndSettle(Duration(milliseconds: 300));
+    await optionallyDismissBrightnessModalOnAndroid(tester);
     await loadJourney(tester, trainNumber: '18222', ru: .sbbP);
 
     await disconnect(tester);
