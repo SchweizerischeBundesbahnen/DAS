@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.6.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das-admin-tool-v0.5.1...das-admin-tool-v0.6.0) (2026-07-24)
+
+
+### Features
+
+* add prettier and extend eslint ([#2433](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2433)) ([#2312](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2312)) ([b620fd1](https://github.com/SchweizerischeBundesbahnen/DAS/commit/b620fd1ea0ccd0ae1bd4478caa0f877f2636ebd6))
+* add ru feature tab to admin client ([#724](https://github.com/SchweizerischeBundesbahnen/DAS/issues/724)) ([#2416](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2416)) ([3e949e1](https://github.com/SchweizerischeBundesbahnen/DAS/commit/3e949e19d4ad68b7d8c6c3096316d9baf66b2473))
+* manage companies ([#2224](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2224)) ([#2437](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2437)) ([27a7c0d](https://github.com/SchweizerischeBundesbahnen/DAS/commit/27a7c0d1595081a4cc07822c95d5b4f799f6a3a8))
+
+
+### Bug Fixes
+
+* check tenant id when login to admin tool ([#2423](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2423)) ([8ecfd21](https://github.com/SchweizerischeBundesbahnen/DAS/commit/8ecfd21373b2764b2a366a4dd4d70b603940c6b4))
+* companies and locations not always resolved ([#2422](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2422)) ([#2432](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2432)) ([53abba0](https://github.com/SchweizerischeBundesbahnen/DAS/commit/53abba046c2b05d05aa8b81b11692115226dfa24))
+* do not require category to create ru indication ([#2492](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2492)) ([c781dac](https://github.com/SchweizerischeBundesbahnen/DAS/commit/c781dacf414680fc4b3071229fd38f8abd2018cb))
+* **instana:** moved to app-initializer ([#2488](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2488)) ([876b891](https://github.com/SchweizerischeBundesbahnen/DAS/commit/876b89189dfffd45671db40f35156bb5d0f3fdd5))
+
 ## [0.5.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das-admin-tool-v0.5.0...das-admin-tool-v0.5.1) (2026-07-14)
 
 
