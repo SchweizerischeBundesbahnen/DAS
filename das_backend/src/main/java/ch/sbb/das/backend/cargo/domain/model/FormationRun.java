@@ -73,7 +73,6 @@ public class FormationRun {
 
     public Integer getFormationGrossWeightInT() {
         if (tractionGrossWeightInT == null || hauledLoadGrossWeightInT == null) {
-            // todo: default value
             return null;
         }
         return tractionGrossWeightInT + hauledLoadGrossWeightInT;
@@ -81,7 +80,6 @@ public class FormationRun {
 
     public Integer getFormationBrakedWeightInT() {
         if (tractionBrakedWeightInT == null || hauledLoadBrakedWeightInT == null) {
-            // todo: default value
             return null;
         }
         return tractionBrakedWeightInT + hauledLoadBrakedWeightInT;
