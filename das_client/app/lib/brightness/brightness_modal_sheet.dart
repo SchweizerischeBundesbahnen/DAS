@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class BrightnessModalSheet extends StatelessWidget {
-  static const dismissButtonKey = ValueKey('BrightnessModalSheetDismissButtonKey');
-
   const BrightnessModalSheet({super.key});
 
   static Future<void> openIfNeeded(BuildContext context) async {
@@ -33,7 +31,6 @@ class BrightnessModalSheet extends StatelessWidget {
           style: sbbTextStyle.romanStyle.medium,
         ),
         SBBPrimaryButton(
-          key: dismissButtonKey,
           labelText: context.l10n.w_modal_sheet_button_grant_permission,
           onPressed: () async {
             final brightnessManager = DI.get<BrightnessManager>();
