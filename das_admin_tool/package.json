@@ -41,12 +41,12 @@
     "@eslint/css": "1.4.0",
     "@eslint/js": "10.0.1",
     "@eslint/json": "2.0.1",
-    "@playwright/test": "^1.60.0",
+    "@playwright/test": "1.60.0",
     "@types/ineum": "216.0.4",
     "@types/node": "22.20.0",
-    "@vitest/browser-playwright": "^4.1.6",
-    "@vitest/coverage-v8": "^4.1.6",
-    "@vitest/ui": "^4.1.6",
+    "@vitest/browser-playwright": "4.1.6",
+    "@vitest/coverage-v8": "4.1.6",
+    "@vitest/ui": "4.1.6",
     "angular-eslint": "21.4.0",
     "eslint": "10.6.0",
     "eslint-config-prettier": "10.1.8",
@@ -55,11 +55,11 @@
     "eslint-plugin-prettier": "5.5.6",
     "eslint-plugin-sonarjs": "4.1.0",
     "eslint-plugin-unicorn": "71.0.0",
-    "gzipper": "^8.2.1",
+    "gzipper": "8.2.1",
     "prettier": "3.9.4",
     "typescript": "5.9.3",
     "typescript-eslint": "8.62.1",
-    "vitest": "^4.1.6",
-    "vitest-sonar-reporter": "^3.0.0"
+    "vitest": "4.1.6",
+    "vitest-sonar-reporter": "3.0.0"
   }
 }
