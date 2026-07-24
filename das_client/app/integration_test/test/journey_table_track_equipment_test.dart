@@ -8,7 +8,7 @@ import '../util/test_utils.dart';
 
 void main() {
   testWidgets('trackEquipment_whenCabSignaling_thenDisplaysCorrectly', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T1');
 
     final scrollableFinder = find.byType(AnimatedList);
@@ -68,7 +68,7 @@ void main() {
   });
 
   testWidgets('trackEquipment_whenLoaded_thenDisplaysCorrectly', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T1');
 
     final scrollableFinder = find.byType(AnimatedList);
@@ -153,7 +153,7 @@ void main() {
   });
 
   testWidgets('trackEquipment_whenSingleTrackNoBlock_thenDisplaysCorrectly', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T10');
 
     // check ExtendedSpeedReversingPossible from Genève-Aéroport to Gland

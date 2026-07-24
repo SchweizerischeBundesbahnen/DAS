@@ -19,7 +19,7 @@ import '../util/test_utils.dart';
 void main() {
   group('Journey search overlay tests', () {
     testWidgets('journeySearchOverlay_whenOpenedAndDismissed_thenTogglesCorrectly', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T1');
 
       // closed by default - should show journeySearch icon with key
@@ -43,7 +43,7 @@ void main() {
     });
 
     testWidgets('journeySearchOverlay_whenOpened_thenShowsDefaultsAndValidation', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T1');
       final journeySearchOverlay = find.byType(JourneySearchOverlay);
 
@@ -75,7 +75,7 @@ void main() {
     });
 
     testWidgets('journeySearchOverlay_whenTrainLoaded_thenOpensJourneyWithoutNavigationButtons', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T1');
       final journeySearchOverlay = find.byType(JourneySearchOverlay);
 
@@ -117,7 +117,7 @@ void main() {
     testWidgets('journeySearchOverlay_whenMultipleCompanyMatches_thenRedirectsToSelectionScreen', (
       tester,
     ) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
 
       final trainIdentificationRepository =
           DI.get<TrainIdentificationRepository>() as MockTrainIdentificationRepository;

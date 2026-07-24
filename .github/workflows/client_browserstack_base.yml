@@ -1,0 +1,239 @@
+# Runs Browserstack tests for both
+
+name: Client Browserstack Base
+
+on:
+  workflow_call:
+    inputs:
+      entrypoint:
+        description: 'Path to the integration test entrypoint to build and run on Browserstack (e.g. integration_test/app_test.dart)'
+        required: true
+        type: string
+      enable_e2e:
+        description: 'Whether to mint an ACCESS_TOKEN dart-define for e2e runs'
+        required: false
+        type: boolean
+        default: false
+    secrets:
+      CLIENT_SECRET_OBSERVER_DEV:
+        description: 'OAuth client secret used to mint an ACCESS_TOKEN dart-define for e2e runs. Only needed when enable_e2e is true.'
+        required: false
+      ANDROID_KEYSTORE:
+        required: true
+      ANDROID_KEYSTORE_PASSWORD:
+        required: true
+      ANDROID_KEY_ALIAS:
+        required: true
+      ANDROID_KEY_PASSWORD:
+        required: true
+      MQTT_USERNAME:
+        required: true
+      MQTT_PASSWORD:
+        required: true
+      BROWSERSTACK_USERNAME:
+        required: true
+      BROWSERSTACK_ACCESS_KEY:
+        required: true
+      NIGHTLY_FAILURE_CHANNEL_WEBHOOK:
+        required: true
+
+defaults:
+  run:
+    working-directory: das_client
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.44.x'
+          cache: true
+
+      - name: Extract branch name
+        id: extract_branch
+        shell: bash
+        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+
+      - name: Setup melos
+        uses: bluefireteam/melos-action@v3
+        with:
+          melos-version: '^7.4.0'
+          run-bootstrap: 'false'
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Generate sources
+        run: melos generate
+
+      - name: Generate access token
+        if: inputs.enable_e2e
+        id: jwt
+        env:
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET_OBSERVER_DEV }}
+        run: |
+          ACCESS_TOKEN=$(curl -sf -d "grant_type=client_credentials" \
+          -d "client_id=64baca3f-be6d-4c90-ace3-db86f298525d" \
+          -d "client_secret=$CLIENT_SECRET" \
+          -d "scope=api://8f16d52b-c6df-4a94-a132-da4956579a48/.default" \
+          "https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/oauth2/v2.0/token" | \
+          jq -er .access_token) || ACCESS_TOKEN=""
+          echo "::add-mask::$ACCESS_TOKEN"
+          echo "access_token=$ACCESS_TOKEN" >> $GITHUB_OUTPUT
+
+      - name: Prepare Android Secrets 🤫
+        env:
+          ANDROID_KEYSTORE_STRING: ${{ secrets.ANDROID_KEYSTORE }}
+          ANDROID_KEYSTORE: ${{ github.workspace }}/das_client/app/android/das.keystore
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          echo $ANDROID_KEYSTORE_STRING | base64 -d > $ANDROID_KEYSTORE
+          echo "ANDROID_KEYSTORE=$ANDROID_KEYSTORE" >> "$GITHUB_ENV"
+          echo "ANDROID_KEYSTORE_PASSWORD=$ANDROID_KEYSTORE_PASSWORD" >> "$GITHUB_ENV"
+          echo "ANDROID_KEY_ALIAS=$ANDROID_KEY_ALIAS" >> "$GITHUB_ENV"
+          echo "ANDROID_KEY_PASSWORD=$ANDROID_KEY_PASSWORD" >> "$GITHUB_ENV"
+
+      - name: Build apk for testing
+        shell: bash
+        env:
+          MQTT_USERNAME: ${{ secrets.MQTT_USERNAME }}
+          MQTT_PASSWORD: ${{ secrets.MQTT_PASSWORD }}
+          ACCESS_TOKEN: ${{ steps.jwt.outputs.access_token }}
+          APP_APK_DIR: ${{ github.workspace }}/das_client/app/build/app/outputs/flutter-apk
+          APP_APK_NAME: android-${{ inputs.enable_e2e && 'e2e' || 'integration' }}-test.apk
+        run: |
+          flutter build apk --flavor dev -t ${{ inputs.entrypoint }} --no-tree-shake-icons --debug \
+            --dart-define=MQTT_USERNAME=$MQTT_USERNAME --dart-define=MQTT_PASSWORD=$MQTT_PASSWORD \
+            --dart-define=ACCESS_TOKEN=$ACCESS_TOKEN
+          cp "$APP_APK_DIR/app-dev-debug.apk" "$APP_APK_DIR/$APP_APK_NAME"
+        working-directory: das_client/app
+
+      - name: Build Test Package
+        env:
+          TEST_APK_DIR: ${{ github.workspace }}/das_client/app/build/app/outputs/apk/androidTest/dev/debug
+          TEST_APK_NAME: ${{ inputs.enable_e2e && 'e2e' || 'integration' }}-test.apk
+        run: |
+          ./gradlew app:assembleAndroidTest
+          cp "$TEST_APK_DIR/app-dev-debug-androidTest.apk" "$TEST_APK_DIR/$TEST_APK_NAME"
+        working-directory: das_client/app/android
+
+      - name: Upload and Run on Browserstack
+        uses: Grodien/browserstack-flutter-action@v1.6
+        with:
+          browserstackUsername: ${{ secrets.BROWSERSTACK_USERNAME }}
+          browserstackAccessKey: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+          project: das_client
+          customId: das_client_android
+          buildTag: ${{ steps.extract_branch.outputs.branch }}
+          appFilePath: ${{ github.workspace }}/das_client/app/build/app/outputs/flutter-apk/android-${{ inputs.enable_e2e && 'e2e' || 'integration' }}-test.apk
+          testFilePath: ${{ github.workspace }}/das_client/app/build/app/outputs/apk/androidTest/dev/debug/${{ inputs.enable_e2e && 'e2e' || 'integration' }}-test.apk
+          devices: Samsung Galaxy Tab S11-16.0
+
+      - name: Notify Microsoft Teams on failure
+        if: failure() && github.event_name == 'schedule'
+        uses: skitionek/notify-microsoft-teams@v1.1.0
+        with:
+          webhook_url: ${{ secrets.NIGHTLY_FAILURE_CHANNEL_WEBHOOK }}
+          job: ${{ toJson(job) }}
+          steps: ${{ toJson(steps) }}
+
+  ios:
+    runs-on: macos-26
+    steps:
+
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: ~26.6
+
+      - uses: actions/checkout@v7
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.44.x'
+          cache: true
+
+      - name: Setup melos
+        uses: bluefireteam/melos-action@v3
+        with:
+          melos-version: '^7.4.0'
+          run-bootstrap: 'false'
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Generate sources
+        run: melos generate
+
+      - name: Generate access token
+        if: inputs.enable_e2e
+        id: jwt
+        env:
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET_OBSERVER_DEV }}
+        run: |
+          ACCESS_TOKEN=$(curl -sf -d "grant_type=client_credentials" \
+          -d "client_id=64baca3f-be6d-4c90-ace3-db86f298525d" \
+          -d "client_secret=$CLIENT_SECRET" \
+          -d "scope=api://8f16d52b-c6df-4a94-a132-da4956579a48/.default" \
+          "https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/oauth2/v2.0/token" | \
+          jq -er .access_token) || ACCESS_TOKEN=""
+          echo "::add-mask::$ACCESS_TOKEN"
+          echo "access_token=$ACCESS_TOKEN" >> $GITHUB_OUTPUT
+
+      - name: Build ipa and zip
+        shell: bash
+        env:
+          MQTT_USERNAME: ${{ secrets.MQTT_USERNAME }}
+          MQTT_PASSWORD: ${{ secrets.MQTT_PASSWORD }}
+          ACCESS_TOKEN: ${{ steps.jwt.outputs.access_token }}
+          PACKAGE_NAME: ios-${{ inputs.enable_e2e && 'e2e' || 'integration' }}-test.zip
+        run: |
+          flutter build ios --flavor dev --release --no-codesign -t ${{ inputs.entrypoint }} --no-tree-shake-icons \
+            --dart-define=MQTT_USERNAME=$MQTT_USERNAME --dart-define=MQTT_PASSWORD=$MQTT_PASSWORD \
+            --dart-define=ACCESS_TOKEN=$ACCESS_TOKEN
+          pushd ios
+          xcodebuild -workspace Runner.xcworkspace -scheme dev -config Flutter/Release.xcconfig -derivedDataPath ../build/ios_integration -sdk iphoneos build-for-testing CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
+          popd
+          pushd build/ios_integration/Build/Products
+          zip -r "$PACKAGE_NAME" Release-iphoneos dev_dev_iphoneos*-arm64.xctestrun
+          popd
+        working-directory: das_client/app
+
+      - name: Extract branch name
+        id: extract_branch
+        shell: bash
+        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+
+      - name: Upload and Run on Browserstack
+        uses: Grodien/browserstack-flutter-action@v1.6
+        with:
+          browserstackUsername: ${{ secrets.BROWSERSTACK_USERNAME }}
+          browserstackAccessKey: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+          project: das_client
+          customId: das_client_ios
+          buildTag: ${{ steps.extract_branch.outputs.branch }}
+          testPackagePath: ${{ github.workspace }}/das_client/app/build/ios_integration/Build/Products/ios-${{ inputs.enable_e2e && 'e2e' || 'integration' }}-test.zip
+          devices: iPad 9th-18
+
+      - name: Notify Microsoft Teams on failure
+        if: failure() && github.event_name == 'schedule'
+        uses: skitionek/notify-microsoft-teams@v1.1.0
+        with:
+          webhook_url: ${{ secrets.NIGHTLY_FAILURE_CHANNEL_WEBHOOK }}
+          job: ${{ toJson(job) }}
+          steps: ${{ toJson(steps) }}

@@ -9,6 +9,9 @@ import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class PreloadStatusDisplay extends StatelessWidget {
+  static const downloadedSegmentKey = ValueKey('PreloadStatusDisplayDownloadSegmentKey');
+  static const initialSegmentKey = ValueKey('PreloadStatusDisplayInitialSegmentKey');
+
   const PreloadStatusDisplay({super.key});
 
   static final _progressBarHeight = 20.0;
@@ -43,9 +46,19 @@ class PreloadStatusDisplay extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           if (preloadDetails.downloadedFilesCount > 0)
-            _progressSegment(preloadDetails.downloadedFilesCount, downloadedColor, minWidth: minWidth),
+            _progressSegment(
+              preloadDetails.downloadedFilesCount,
+              downloadedColor,
+              minWidth: minWidth,
+              key: PreloadStatusDisplay.downloadedSegmentKey,
+            ),
           if (preloadDetails.initialFilesCount > 0)
-            _progressSegment(preloadDetails.initialFilesCount, initialColor, minWidth: minWidth),
+            _progressSegment(
+              preloadDetails.initialFilesCount,
+              initialColor,
+              minWidth: minWidth,
+              key: PreloadStatusDisplay.initialSegmentKey,
+            ),
           if (preloadDetails.errorFilesCount > 0)
             _progressSegment(preloadDetails.errorFilesCount, errorColor, minWidth: minWidth),
         ],
@@ -64,8 +77,9 @@ class PreloadStatusDisplay extends StatelessWidget {
     );
   }
 
-  Widget _progressSegment(int count, Color color, {required int minWidth}) {
+  Widget _progressSegment(int count, Color color, {required int minWidth, Key? key}) {
     return Expanded(
+      key: key,
       flex: max(minWidth, count),
       child: Container(
         color: color,

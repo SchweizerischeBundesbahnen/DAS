@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:app/di/scope_handler.dart';
 import 'package:app/di/scopes/das_base_scope.dart';
 import 'package:app/di/scopes/sfera_mock_scope.dart';
-import 'package:app/flavor.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/main.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -106,22 +105,26 @@ void main() {
   external_links_tests.main();
 }
 
-Future<void> prepareAndStartApp(WidgetTester tester, {VoidCallback? onBeforeRun, bool e2e = false}) async {
-  // iOS workaround for enterText not working on some devices, if its the first element
-  // (https://github.com/leancodepl/patrol/issues/1868#issuecomment-1814241939)
-  tester.testTextInput.register();
+class IntegrationTestApp {
+  const IntegrationTestApp._();
 
-  await IntegrationTestDI.init(Flavor.dev(), e2e: e2e); // registers flavor, mockScopes and scope handler
+  static Future<void> start(WidgetTester tester, {VoidCallback? onBeforeRun}) async {
+    // iOS workaround for enterText not working on some devices, if its the first element
+    // (https://github.com/leancodepl/patrol/issues/1868#issuecomment-1814241939)
+    tester.testTextInput.register();
 
-  final scopeHandler = IntegrationTestDI.get<ScopeHandler>();
-  await scopeHandler.push<DASBaseScope>();
-  await scopeHandler.push<SferaMockScope>();
+    await IntegrationTestDI.init(); // registers flavor, mockScopes and scope handler
 
-  l10n = await deviceLocalizations();
-  onBeforeRun?.call();
+    final scopeHandler = IntegrationTestDI.get<ScopeHandler>();
+    await scopeHandler.push<DASBaseScope>();
+    await scopeHandler.push<SferaMockScope>();
 
-  runDasApp();
-  await tester.pumpAndSettle(const Duration(milliseconds: 500));
+    l10n = await deviceLocalizations();
+    onBeforeRun?.call();
+
+    runDasApp();
+    await tester.pumpAndSettle(const Duration(milliseconds: 500));
+  }
 }
 
 /// delay can improve stability on Android emulator

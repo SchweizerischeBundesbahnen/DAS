@@ -10,7 +10,7 @@ import '../util/test_utils.dart';
 
 void main() {
   testWidgets('additionalSpeedRestriction_whenRowDisplayed_thenShowsCorrectly', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T2');
 
     final asrRow = findDASTableRowByText('km 64.200 - km 47.200');
@@ -36,7 +36,7 @@ void main() {
   });
 
   testWidgets('additionalSpeedRestriction_whenNonAsrRowsBetween_thenColorsCorrectly', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T2');
 
     final tableFinder = find.byType(DASTable);
@@ -64,7 +64,7 @@ void main() {
   });
 
   testWidgets('additionalSpeedRestriction_whenComplexAsr_thenDisplaysCorrectly', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T18');
 
     final scrollableFinder = find.byType(AnimatedList);
@@ -101,7 +101,7 @@ void main() {
   testWidgets('additionalSpeedRestriction_whenOnEtcsLevel2Section_thenDisplaysCorrectly', (
     tester,
   ) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T11');
 
     final scrollableFinder = find.byType(AnimatedList);
@@ -141,7 +141,7 @@ void main() {
   });
 
   testWidgets('additionalSpeedRestriction_whenSequentialAsr_thenDisplaysCorrectly', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T43');
 
     final scrollableFinder = find.byType(AnimatedList);

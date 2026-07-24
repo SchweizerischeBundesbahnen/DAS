@@ -12,7 +12,7 @@ import '../util/test_utils.dart';
 void main() {
   group('automatic advancement tests', () {
     testWidgets('automaticAdvancement_whenJourneyLoaded_thenScrollsAutomatically', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9');
 
       // Check chevron at start
@@ -34,7 +34,7 @@ void main() {
     });
 
     testWidgets('automaticAdvancement_whenIdleTimeReached_thenScrollsBackToPosition', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9');
 
       // Wait until all events are done
@@ -61,7 +61,7 @@ void main() {
     });
 
     testWidgets('automaticAdvancement_whenReEnabled_thenScrollsToCurrentPosition', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9');
 
       await stopAutomaticAdvancement(tester);
@@ -80,7 +80,7 @@ void main() {
     });
 
     testWidgets('automaticAdvancement_whenDisabled_thenDoesNotScroll', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9');
 
       await stopAutomaticAdvancement(tester);
@@ -102,7 +102,7 @@ void main() {
     });
 
     testWidgets('automaticAdvancement_whenJourneyLoaded_thenIsEnabledByDefault', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9');
 
       // Find the header and check if it is existent
@@ -121,7 +121,7 @@ void main() {
     });
 
     testWidgets('automaticAdvancement_whenDisabled_thenShowsStickyFooter', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9');
 
       await stopAutomaticAdvancement(tester);
@@ -136,7 +136,7 @@ void main() {
 
   group('timed advancement tests', () {
     testWidgets('timedAdvancement_whenJourneyLoaded_thenAdvancesCorrectly', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T46M');
 
       // Check chevron at start

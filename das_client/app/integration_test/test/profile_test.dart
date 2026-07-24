@@ -8,7 +8,7 @@ import '../util/test_utils.dart';
 
 void main() {
   testWidgets('profile_whenOpened_thenShowsHeaderInformation', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
     await openDrawer(tester);
     await tapElement(tester, find.text(l10n.w_navigation_drawer_profile_title));
 
@@ -17,7 +17,7 @@ void main() {
   });
 
   testWidgets('profile_whenRuSelected_thenDisplaysSelection', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
     await openDrawer(tester);
     await tapElement(tester, find.text(l10n.w_navigation_drawer_profile_title));
 
@@ -62,7 +62,7 @@ void main() {
   });
 
   testWidgets('profile_whenTourSystemSelected_thenDisplaysSelection', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
     await openDrawer(tester);
     await tapElement(tester, find.text(l10n.w_navigation_drawer_profile_title));
 

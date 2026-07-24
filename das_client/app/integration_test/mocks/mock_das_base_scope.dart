@@ -25,10 +25,6 @@ import 'mock_user_settings.dart';
 final _log = Logger('MockDASBaseScope');
 
 class MockDASBaseScope extends DASBaseScope {
-  MockDASBaseScope(this.e2e);
-
-  final bool e2e;
-
   @override
   String get scopeName => 'DASBaseScopeMock';
 
@@ -53,11 +49,7 @@ class MockDASBaseScope extends DASBaseScope {
     getIt.registerSferaLocalRepo();
     getIt.registerAppLifecycleViewModel();
 
-    if (e2e) {
-      getIt.registerPreloadRepository();
-    } else {
-      _registerMockPreloadRepository();
-    }
+    _registerMockPreloadRepository();
 
     await getIt.allReady();
   }

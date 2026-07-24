@@ -26,7 +26,7 @@ import '../util/test_utils.dart';
 void main() {
   group('general service point modal sheet tests', () {
     testWidgets('servicePointModal_whenBahnhofportalLinkTapped_thenOpensExpectedUrl', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999M');
 
       final scrollableFinder = find.byType(AnimatedList);
@@ -46,7 +46,7 @@ void main() {
     });
 
     testWidgets('servicePointModal_whenOpened_thenHidesKilometreColumn', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T8');
 
       final kilometreLabel = l10n.p_journey_table_kilometre_label;
@@ -66,7 +66,7 @@ void main() {
       await disconnect(tester);
     });
     testWidgets('servicePointModal_whenInteracted_thenOpensAndClosesCorrectly', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T8');
 
       expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsOneWidget);
@@ -94,7 +94,7 @@ void main() {
       await disconnect(tester);
     });
     testWidgets('servicePointModal_whenOpened_thenCollapsesHeaderButtons', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
       expect(find.byKey(HeaderIconButton.headerIconWithLabelButtonKey), findsExactly(2));
@@ -111,7 +111,7 @@ void main() {
       await disconnect(tester);
     });
     testWidgets('servicePointModal_whenDataAvailable_thenShowsOnlyRelevantTabs', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T8');
 
       await _openByTapOnCellWithText(tester, 'Bern');
@@ -128,7 +128,7 @@ void main() {
       await disconnect(tester);
     });
     testWidgets('servicePointModal_whenTabChanged_thenDisplaysCorrectContent', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T8');
 
       // open modal with tap on service point name
@@ -146,7 +146,7 @@ void main() {
       await disconnect(tester);
     });
     testWidgets('servicePointModal_whenTimeout_thenClosesAutomatically', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
 
       await loadJourney(tester, trainNumber: 'T8');
 
@@ -166,7 +166,7 @@ void main() {
       await disconnect(tester);
     });
     testWidgets('servicePointModal_whenAdvancementPaused_thenClosesAfterTimeout', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
 
       await loadJourney(tester, trainNumber: 'T8');
 
@@ -194,7 +194,7 @@ void main() {
 
   group('graduated speed tab tests', () {
     testWidgets('graduatedSpeed_whenPresent_thenDisplaysInfoDetails', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T8');
 
       final tableRowBern = findDASTableRowByText('75-70-60');
@@ -222,7 +222,7 @@ void main() {
 
   group('communication tab tests', () {
     testWidgets('communicationTab_whenOpened_thenDisplaysNetworkAndRadioChannels', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T12M');
 
       // check communication information for Bern
@@ -280,7 +280,7 @@ void main() {
       await disconnect(tester);
     });
     testWidgets('communicationTab_whenOpenedFromOtherTab_thenShowsInformation', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: '1513M');
 
       final scrollableFinder = find.byType(AnimatedList);
@@ -309,7 +309,7 @@ void main() {
     });
 
     testWidgets('communicationTab_whenDepartureAuthorizationPresent_thenDisplaysInModal', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T31M');
 
       await _openAndCheckDepartureAuth(tester, 'Dietikon', '*');
@@ -328,7 +328,7 @@ void main() {
 
   group('local regulation tab tests', () {
     testWidgets('localRegulationTab_whenPresent_thenShowsTab', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T25');
       final scrollableFinder = find.byType(AnimatedList);
 
@@ -348,7 +348,7 @@ void main() {
     });
 
     testWidgets('localRegulationTab_whenTabChanged_thenUpdatesDisplay', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T25');
 
       await _openByTapOnCellWithText(tester, 'Olten');
@@ -370,7 +370,7 @@ void main() {
     });
 
     testWidgets('localRegulationTab_whenOpened_thenShowsWebview', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T25');
 
       await _openByTapOnCellWithText(tester, 'Olten');
@@ -385,7 +385,7 @@ void main() {
   });
 
   testWidgets('servicePointModal_whenModalOpen_thenShowsShortSignalNames', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T9999M');
 
     expect(find.text(l10n.c_main_signal_function_entry), findsAny);
@@ -420,7 +420,7 @@ void main() {
   });
 
   testWidgets('servicePointModal_whenNavigatedAndReturned_thenStaysDisplayed', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
     final timeConstants = DI.get<TimeConstants>() as TestTimeConstants;
     timeConstants.modalSheetAutomaticCloseAfterSecondsValue = 5;
 
