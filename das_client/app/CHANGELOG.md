@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.49.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.48.0...das_client-v0.49.0) (2026-07-24)
+
+
+### Features
+
+* adapt vehiclesWithBrakeDesign field in client formation run api ([#2302](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2302)) ([#2417](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2417)) ([8dadfeb](https://github.com/SchweizerischeBundesbahnen/DAS/commit/8dadfeb053a29f9823422d587df80382e1217986))
+* add search without evu ([#2286](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2286)) ([#2470](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2470)) ([a6c4414](https://github.com/SchweizerischeBundesbahnen/DAS/commit/a6c4414a9314556ca62772555d637d343365d709))
+
+
+### Bug Fixes
+
+* level crossing sorting & journey loading fatal error ([#2170](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2170)) ([#2460](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2460)) ([daa698d](https://github.com/SchweizerischeBundesbahnen/DAS/commit/daa698d93000ccd41e10c15e3bb66eae4ea46fe7))
+
 ## [0.48.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.47.0...das_client-v0.48.0) (2026-07-13)
 
 
