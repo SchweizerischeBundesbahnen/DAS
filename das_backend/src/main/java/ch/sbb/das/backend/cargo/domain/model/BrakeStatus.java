@@ -16,7 +16,6 @@ public class BrakeStatus {
 
     boolean isDisabled() {
         if (brakeStatus == null) {
-            log.error("Should not happen: BrakeStatus is null");
             return false;
         }
         return brakeStatus == DISABLED_BRAKE_STATUS;
