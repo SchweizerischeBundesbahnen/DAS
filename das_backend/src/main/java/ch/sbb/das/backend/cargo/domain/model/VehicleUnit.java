@@ -11,14 +11,11 @@ import lombok.ToString;
 @EqualsAndHashCode
 @ToString
 public class VehicleUnit {
-
-    private static final int TON_IN_HECTO_NEWTON = 10;
-
+    
     private BrakeDesign brakeDesign;
     private BrakeStatus brakeStatus;
     private Integer technicalHoldingForceInHectoNewton;
     private Integer effectiveOperationalHoldingForceInHectoNewton;
-    private Integer handBrakeWeightInT;
     private Load load;
     @Getter private String vehicleSeries;
 
@@ -55,10 +52,6 @@ public class VehicleUnit {
                 return effectiveOperationalHoldingForceInHectoNewton;
             }
         }
-        if (handBrakeWeightInT != null) {
-            return handBrakeWeightInT * TON_IN_HECTO_NEWTON;
-        }
-        // todo: default value
         return null;
     }
 

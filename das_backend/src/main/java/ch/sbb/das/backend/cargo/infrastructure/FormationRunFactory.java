@@ -2,6 +2,7 @@ package ch.sbb.das.backend.cargo.infrastructure;
 
 import ch.sbb.das.backend.cargo.domain.model.FormationRun;
 import ch.sbb.das.backend.cargo.domain.model.FormationRun.FormationRunBuilder;
+import ch.sbb.das.backend.companies.CompanyCode;
 import ch.sbb.das.backend.locations.TafTapLocationReference;
 import ch.sbb.zis.trainformation.api.model.BrakeCalculationResult;
 import ch.sbb.zis.trainformation.api.model.ConsolidatedBrakingInformation;
@@ -9,6 +10,7 @@ import ch.sbb.zis.trainformation.api.model.FormationRunInspection;
 import ch.sbb.zis.trainformation.api.model.LocationUic;
 import ch.sbb.zis.trainformation.api.model.MaxUphillDownhillGradients;
 import java.util.List;
+import java.util.Optional;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -19,12 +21,23 @@ public final class FormationRunFactory {
 
     public static List<FormationRun> create(List<ch.sbb.zis.trainformation.api.model.FormationRun> formationRuns) {
         return formationRuns.stream()
-            .map(FormationRunFactory::create).toList();
+            .flatMap(formationRun -> toCompanyCode(formationRun.getSmsEvu())
+                .map(companyCode -> create(formationRun, companyCode))
+                .stream())
+            .toList();
     }
 
-    private static FormationRun create(ch.sbb.zis.trainformation.api.model.FormationRun formationRun) {
+    private static Optional<CompanyCode> toCompanyCode(String smsEvu) {
+        try {
+            return Optional.of(new CompanyCode(smsEvu));
+        } catch (Exception _) {
+            return Optional.empty();
+        }
+    }
+
+    private static FormationRun create(ch.sbb.zis.trainformation.api.model.FormationRun formationRun, CompanyCode companyCode) {
         FormationRunBuilder builder = FormationRun.builder()
-            .company(formationRun.getSmsEvu())
+            .company(companyCode)
             .tafTapLocationReferenceStart(toTafTapLocationReference(formationRun.getStartLocationUic()))
             .tafTapLocationReferenceEnd(toTafTapLocationReference(formationRun.getEndLocationUic()))
             .trainCategoryCode(formationRun.getTrainSequence())

@@ -3,6 +3,7 @@ package ch.sbb.das.backend.cargo.application;
 import ch.sbb.das.backend.cargo.infrastructure.TrainFormationRunRepository;
 import ch.sbb.das.backend.cargo.infrastructure.model.TrainFormationRunEntity;
 import ch.sbb.das.backend.common.DateTimeUtil;
+import ch.sbb.das.backend.companies.CompanyCode;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -34,7 +35,7 @@ public class FormationService {
 
     public List<TrainFormationRunEntity> findByTrainIdentifier(String operationalTrainNumber,
         LocalDate operationalDay,
-        String company) {
+        CompanyCode company) {
         return trainFormationRunRepository.findByOperationalTrainNumberAndOperationalDayAndCompanyOrderByPositionAsc(
             operationalTrainNumber,
             operationalDay,

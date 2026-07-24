@@ -22,9 +22,11 @@ import org.springframework.stereotype.Service;
 public class TrainFormationKafkaConsumer {
 
     private final FormationService formationService;
+    private final TrainFormationRunEntityMapper trainFormationRunEntityMapper;
 
-    public TrainFormationKafkaConsumer(FormationService formationService) {
+    public TrainFormationKafkaConsumer(FormationService formationService, TrainFormationRunEntityMapper trainFormationRunEntityMapper) {
         this.formationService = formationService;
+        this.trainFormationRunEntityMapper = trainFormationRunEntityMapper;
     }
 
     @KafkaListener(topics = "${formation.kafka.topic}", groupId = "${formation.kafka.group-id}", autoStartup = "${formation.kafka.enabled:true}", containerFactory = "trainFormationListenerContainerFactory")
@@ -33,7 +35,7 @@ public class TrainFormationKafkaConsumer {
         log.trace("lagInS={} partition={} offset={}", lagInS, message.partition(), message.offset());
         try {
             Formation formation = FormationFactory.create(message);
-            List<TrainFormationRunEntity> trainFormationRunEntities = TrainFormationRunEntity.from(formation);
+            List<TrainFormationRunEntity> trainFormationRunEntities = trainFormationRunEntityMapper.toEntities(formation);
 
             formationService.deleteByTrainPathIdAndOperationalDay(formation.getTrainPathId(), formation.getOperationalDay());
             formationService.save(trainFormationRunEntities);

@@ -91,6 +91,7 @@
                   "unitTechnicalData": {
                     "brakeDesign": 9,
                     "handBrakeWeightInTonne": 50,
+                    "holdingForceInHectonewton": 500,
                     "maxSpeedInKilometerPerHour": 140,
                     "tareWeightInKilogramm": 84000
                   },

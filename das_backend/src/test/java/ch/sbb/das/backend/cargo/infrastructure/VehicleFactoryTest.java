@@ -45,7 +45,6 @@ class VehicleFactoryTest {
                     .brakeStatus(new BrakeStatus(3))
                     .technicalHoldingForceInHectoNewton(92)
                     .effectiveOperationalHoldingForceInHectoNewton(342)
-                    .handBrakeWeightInT(12)
                     .load(new Load(List.of(new Goods(true)), List.of(new IntermodalLoadingUnit(false, List.of(new Goods(false))))))
                     .vehicleSeries("Dt43564")
                     .build()),

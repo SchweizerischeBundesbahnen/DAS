@@ -2,6 +2,7 @@ package ch.sbb.das.backend.cargo.domain.model;
 
 import ch.sbb.das.backend.common.UnexpectedProviderData;
 import java.util.List;
+import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -57,7 +58,7 @@ public class Vehicle {
         List<Integer> holdingForces = vehicles.stream()
             .map(Vehicle::calculateHoldingForce)
             .toList();
-        if (holdingForces.isEmpty() || holdingForces.stream().anyMatch(java.util.Objects::isNull)) {
+        if (holdingForces.isEmpty() || holdingForces.stream().anyMatch(Objects::isNull)) {
             return null;
         }
         return holdingForces.stream().mapToInt(Integer::intValue).sum();
@@ -117,7 +118,7 @@ public class Vehicle {
             .map(vehicleUnit -> vehicleUnit.calculateHoldingForce(isTraction()))
             .toList();
 
-        if (holdingForces.stream().anyMatch(java.util.Objects::isNull)) {
+        if (holdingForces.stream().anyMatch(Objects::isNull)) {
             return null;
         }
         return holdingForces.stream().mapToInt(Integer::intValue).sum();

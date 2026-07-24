@@ -1,23 +1,20 @@
 package ch.sbb.das.backend.cargo.infrastructure.model;
 
-import ch.sbb.das.backend.cargo.domain.model.BrakeDesign;
-import ch.sbb.das.backend.cargo.domain.model.Formation;
-import ch.sbb.das.backend.cargo.domain.model.FormationRun;
 import ch.sbb.das.backend.common.SFERA;
 import ch.sbb.das.backend.common.StringListConverter;
 import ch.sbb.das.backend.common.TelTsi;
+import ch.sbb.das.backend.companies.CompanyCode;
+import ch.sbb.das.backend.companies.CompanyCodeConverter;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.SequenceGenerator;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,7 +25,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-// todo: a default value must be defined for all non-primitive Boolean and Integer fields (by business or source systems)
 public class TrainFormationRunEntity {
 
     @Id
@@ -53,8 +49,8 @@ public class TrainFormationRunEntity {
     private LocalDate operationalDay;
 
     @SFERA @TelTsi
-    @JoinColumn(name = "company", referencedColumnName = "codeRics")
-    private String company;
+    @Convert(converter = CompanyCodeConverter.class)
+    private CompanyCode company;
 
     private String tafTapLocationReferenceStart;
 
@@ -141,66 +137,4 @@ public class TrainFormationRunEntity {
     private Integer gradientDownhillMaxInPermille;
 
     private String slopeMaxForHoldingForceMinInPermille;
-
-    public static List<TrainFormationRunEntity> from(Formation formation) {
-        AtomicInteger position = new AtomicInteger(0);
-        return formation.validFormationRuns().stream()
-            .map(formationRun -> {
-                TrainFormationRunEntityBuilder builder = TrainFormationRunEntity.builder();
-                applyFormationRun(builder, formationRun, position);
-                builder
-                    .operationalTrainNumber(formation.getOperationalTrainNumber())
-                    .trainPathId(formation.getTrainPathId())
-                    .operationalDay(formation.getOperationalDay());
-                return builder.build();
-            })
-            .toList();
-    }
-
-    private static void applyFormationRun(TrainFormationRunEntityBuilder builder, FormationRun formationRun, AtomicInteger position) {
-        builder
-            .position(position.getAndIncrement())
-            .inspectionDateTime(formationRun.getInspectionDateTime())
-            .company(formationRun.getCompany())
-            .tafTapLocationReferenceStart(formationRun.getTafTapLocationReferenceStart().toLocationCode())
-            .tafTapLocationReferenceEnd(formationRun.getTafTapLocationReferenceEnd().toLocationCode())
-            .trainCategoryCode(formationRun.getTrainCategoryCode())
-            .brakedWeightPercentage(formationRun.getBrakedWeightPercentage())
-            .tractionMaxSpeedInKmh(formationRun.getTractionMaxSpeedInKmh())
-            .hauledLoadMaxSpeedInKmh(formationRun.getHauledLoadMaxSpeedInKmh())
-            .formationMaxSpeedInKmh(formationRun.getFormationMaxSpeedInKmh())
-            .tractionLengthInCm(formationRun.getTractionLengthInCm())
-            .hauledLoadLengthInCm(formationRun.getHauledLoadLengthInCm())
-            .formationLengthInCm(formationRun.getFormationLengthInCm())
-            .tractionWeightInT(formationRun.getTractionGrossWeightInT())
-            .hauledLoadWeightInT(formationRun.getHauledLoadGrossWeightInT())
-            .formationWeightInT(formationRun.getFormationGrossWeightInT())
-            .tractionBrakedWeightInT(formationRun.getTractionBrakedWeightInT())
-            .hauledLoadBrakedWeightInT(formationRun.getHauledLoadBrakedWeightInT())
-            .formationBrakedWeightInT(formationRun.getFormationBrakedWeightInT())
-            .tractionHoldingForceInHectoNewton(formationRun.getTractionHoldingForceInHectoNewton())
-            .hauledLoadHoldingForceInHectoNewton(formationRun.getHauledLoadHoldingForceInHectoNewton())
-            .formationHoldingForceInHectoNewton(formationRun.getFormationHoldingForceInHectoNewton())
-            .brakePositionGForLeadingTraction(formationRun.getBrakePositionGForLeadingTraction())
-            .brakePositionGForBrakeUnit1to5(formationRun.getBrakePositionGForBrakeUnit1to5())
-            .brakePositionGForLoadHauled(formationRun.getBrakePositionGForLoadHauled())
-            .simTrain(formationRun.getSimTrain())
-            .additionalTractions(formationRun.getAdditionalTractions())
-            .carCarrierVehicle(formationRun.getCarCarrierVehicle())
-            .dangerousGoods(formationRun.hasDangerousGoods())
-            .vehiclesCount(formationRun.hauledLoadVehiclesCount())
-            .vehiclesWithBrakeDesignLAndLlAndKCount(
-                formationRun.vehiclesWithBrakeDesignCount(BrakeDesign.L_KUNSTSTOFF_LEISE, BrakeDesign.LL_KUNSTSTOFF_LEISE_LEISE, BrakeDesign.KUNSTSTOFF_BREMSKLOETZE,
-                    BrakeDesign.EINLOESIGE_BREMSE_MIT_KUNSTSTOFF_BREMSKLOETZEN))
-            .vehiclesWithBrakeDesignDCount(formationRun.vehiclesWithBrakeDesignCount(BrakeDesign.SCHEIBENBREMSEN))
-            .vehiclesWithDisabledBrakesCount(formationRun.vehiclesWithDisabledBrakeCount())
-            .europeanVehicleNumberFirst(formationRun.getEuropeanVehicleNumberFirst())
-            .europeanVehicleNumberLast(formationRun.getEuropeanVehicleNumberLast())
-            .axleLoadMaxInKg(formationRun.getAxleLoadMaxInKg())
-            .routeClass(formationRun.getRouteClass())
-            .gradientUphillMaxInPermille(formationRun.getGradientUphillMaxInPermille())
-            .gradientDownhillMaxInPermille(formationRun.getGradientDownhillMaxInPermille())
-            .slopeMaxForHoldingForceMinInPermille(formationRun.getSlopeMaxForHoldingForceMinInPermille());
-
-    }
 }
