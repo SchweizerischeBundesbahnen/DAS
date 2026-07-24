@@ -27,7 +27,7 @@
     "@angular/platform-browser": "21.2.14",
     "@angular/router": "21.2.14",
     "@sbb-esta/lyne-angular": "21.7.0",
-    "@sbb-esta/lyne-elements": "4.13.0",
+    "@sbb-esta/lyne-elements": "4.14.2",
     "angular-auth-oidc-client": "21.0.2",
     "angular-server-side-configuration": "21.0.4",
     "rxjs": "7.8.2",
