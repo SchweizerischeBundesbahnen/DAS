@@ -32,6 +32,14 @@ class _HeaderState extends State<Header> {
   double? _dragBrightness;
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      BrightnessModalSheet.openIfNeeded(context);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final shortTermChangeViewModel = context.read<ShortTermChangeViewModel>();
     return ExtendedAppBarWrapper(
@@ -77,20 +85,12 @@ class _HeaderState extends State<Header> {
   }
 
   void _doubleTap() async {
-    if (!(await _brightnessManager.hasWriteSettingsPermission())) {
-      if (mounted) BrightnessModalSheet.openIfNeeded(context);
-      return;
-    }
     final current = await _brightnessManager.getCurrentBrightness();
     final newBrightness = current < halfBrightness ? maxBrightness : minBrightness;
     await _brightnessManager.setBrightness(newBrightness);
   }
 
   void _onHorizontalDragStart(DragStartDetails _) async {
-    if (!(await _brightnessManager.hasWriteSettingsPermission())) {
-      if (mounted) BrightnessModalSheet.openIfNeeded(context);
-      return;
-    }
     _dragBrightness = await _brightnessManager.getCurrentBrightness();
   }
 
@@ -104,7 +104,6 @@ class _HeaderState extends State<Header> {
     _dragBrightness = _dragBrightness! + (details.delta.dx * dragStep);
     _dragBrightness = _dragBrightness!.clamp(minBrightness, maxBrightness);
 
-    if (!(await _brightnessManager.hasWriteSettingsPermission())) return;
     await _brightnessManager.setBrightness(_dragBrightness!);
   }
 }
