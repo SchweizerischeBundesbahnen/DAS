@@ -4,7 +4,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { SbbActionGroupModule } from '@sbb-esta/lyne-angular/action-group';
 import { SbbAutocompleteModule } from '@sbb-esta/lyne-angular/autocomplete';
 import { SbbButtonModule } from '@sbb-esta/lyne-angular/button';
-import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core/overlay';
+import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core';
 import { SbbDialogModule } from '@sbb-esta/lyne-angular/dialog';
 import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
 import { SbbStep, SbbStepper, SbbStepperModule } from '@sbb-esta/lyne-angular/stepper';
@@ -48,6 +48,8 @@ import { TrainNumberInput } from './train-number-input/train-number-input';
   styleUrl: './ru-indication-dialog.component.css',
 })
 export class RuIndicationDialog {
+  protected readonly dialogData = inject<RuIndicationDialogData>(SBB_OVERLAY_DATA);
+
   protected readonly title: string;
   protected readonly isEdit: boolean;
   protected ruIndicationForm = new FormGroup({
@@ -71,7 +73,6 @@ export class RuIndicationDialog {
     periods: new FormControl<RuIndicationPeriod[]>([], { nonNullable: true }),
   });
   protected readonly stepchange = signal<SbbStepChangeEvent | undefined>(undefined);
-  protected readonly dialogData = inject<RuIndicationDialogData>(SBB_OVERLAY_DATA);
   private readonly stepper = viewChild.required(SbbStepper);
   private readonly contentComponent = viewChild.required(CategoryContentForm);
   private readonly steps = viewChildren(SbbStep);

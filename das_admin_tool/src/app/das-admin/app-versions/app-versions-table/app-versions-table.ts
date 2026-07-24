@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, effect, inject, viewChild } from '@angular/core';
-import { SbbMiniButton } from '@sbb-esta/lyne-angular/button/mini-button';
+import { SbbMiniButton } from '@sbb-esta/lyne-angular/button';
 import { SbbSort, SbbTableDataSource, SbbTableModule } from '@sbb-esta/lyne-angular/table';
 import { SbbToggleCheckModule } from '@sbb-esta/lyne-angular/toggle-check';
 import { AppVersion } from '~app/das-admin/das-admin-api';
@@ -14,6 +14,8 @@ import { AppVersionsService } from '../app-versions.service';
   styleUrl: './app-versions-table.css',
 })
 export class AppVersionsTable {
+  private readonly appVersionsService = inject(AppVersionsService);
+
   protected readonly addLabel = $localize`:@@app_versions_button_create:App Version blockieren`;
 
   protected dataSource = new SbbTableDataSource<AppVersion>();
@@ -25,7 +27,6 @@ export class AppVersionsTable {
     'lastModifiedBy',
     'action',
   ];
-  private readonly appVersionsService = inject(AppVersionsService);
 
   private readonly bottomBar = viewChild.required(TableBottomBar);
   private readonly sort = viewChild.required<SbbSort>(SbbSort);

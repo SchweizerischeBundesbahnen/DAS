@@ -3,7 +3,7 @@ import { DatePipe } from '@angular/common';
 import { Component, effect, inject, viewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup } from '@angular/forms';
-import { SbbMiniButton } from '@sbb-esta/lyne-angular/button/mini-button';
+import { SbbMiniButton } from '@sbb-esta/lyne-angular/button';
 import { SbbCheckboxModule } from '@sbb-esta/lyne-angular/checkbox';
 import {
   SbbSort,
@@ -37,6 +37,9 @@ interface RuIndicationTemplateFilter extends SbbTableFilter {
   styleUrl: './ru-indication-templates-table.css',
 })
 export class RuIndicationTemplatesTable {
+  private readonly languageProvider = inject(LanguageProvider);
+  private readonly ruIndicationTemplateService = inject(RuIndicationTemplateService);
+
   protected dataSource = new SbbTableDataSource<RuIndicationTemplate, RuIndicationTemplateFilter>();
   protected columns = [
     'select',
@@ -49,12 +52,10 @@ export class RuIndicationTemplatesTable {
   ];
   protected selection = new SelectionModel<RuIndicationTemplate>(true, []);
   protected isDeleting = false;
-  private readonly languageProvider = inject(LanguageProvider);
   protected form = new FormGroup({
     search: new FormControl('', { nonNullable: true }),
     language: new FormControl(this.languageProvider.currentLanguage.path, { nonNullable: true }),
   });
-  private readonly ruIndicationTemplateService = inject(RuIndicationTemplateService);
   private readonly bottomBar = viewChild.required(TableBottomBar);
   private readonly sort = viewChild.required<SbbSort>(SbbSort);
 

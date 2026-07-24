@@ -1,5 +1,5 @@
 import { httpResource } from '@angular/common/http';
-import { computed, Injectable } from '@angular/core';
+import { computed, Service } from '@angular/core';
 import { ApiResponse } from '~shared/api-response';
 import { environment } from '~src/environments/environment';
 
@@ -10,7 +10,7 @@ export interface Tenant {
 
 type TenantApiResponse = ApiResponse<Tenant>;
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class TenantService {
   private readonly url = `${environment.backendUrl}/tenants`;
   private readonly tenantsResource = httpResource<TenantApiResponse>(() => this.url);

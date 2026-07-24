@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core/overlay';
+import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core';
 import { SbbDatepickerModule } from '@sbb-esta/lyne-angular/datepicker';
 import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
 import { SbbRadioButtonModule } from '@sbb-esta/lyne-angular/radio-button';
@@ -27,6 +27,9 @@ export type SpecialHolidayDialogEditResult = SpecialHoliday | 'delete';
   styleUrl: './special-holiday-dialog.component.css',
 })
 export class SpecialHolidayDialog {
+  protected readonly dialogData =
+    inject<SpecialHoliday>(SBB_OVERLAY_DATA, { optional: true }) ?? undefined;
+
   protected readonly title: string;
   protected readonly minDate = new Date();
 
@@ -43,8 +46,6 @@ export class SpecialHolidayDialog {
     }),
   });
   protected readonly scheduleTypes = SCHEDULE_TYPE_LABELS();
-  protected readonly dialogData =
-    inject<SpecialHoliday>(SBB_OVERLAY_DATA, { optional: true }) ?? undefined;
 
   constructor() {
     const isEdit = this.dialogData?.id !== undefined;

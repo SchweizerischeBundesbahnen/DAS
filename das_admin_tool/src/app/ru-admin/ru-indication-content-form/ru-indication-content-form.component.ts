@@ -84,8 +84,9 @@ function createLanguageGroup(textRequired: boolean): FormGroup<ContentForm> {
   styleUrl: './ru-indication-content-form.component.css',
 })
 export class RuIndicationContentForm {
-  readonly form = input.required<FormGroup<LanguageContentForm>>();
   protected readonly languageProvider = inject(LanguageProvider);
+
+  readonly form = input.required<FormGroup<LanguageContentForm>>();
 
   protected isLanguageEmpty(language: LanguageCode): boolean {
     const titleValue = this.form().get(`${language}.title`)!.value ?? '';

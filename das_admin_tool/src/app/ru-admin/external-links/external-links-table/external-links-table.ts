@@ -3,7 +3,7 @@ import { DatePipe } from '@angular/common';
 import { Component, effect, inject, viewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup } from '@angular/forms';
-import { SbbMiniButton } from '@sbb-esta/lyne-angular/button/mini-button';
+import { SbbMiniButton } from '@sbb-esta/lyne-angular/button';
 import { SbbCheckbox } from '@sbb-esta/lyne-angular/checkbox';
 import {
   SbbSort,
@@ -37,12 +37,13 @@ interface ExternalLinkFilter extends SbbTableFilter {
   styleUrl: './external-links-table.css',
 })
 export class ExternalLinksTable {
+  private readonly externalLinksService = inject(ExternalLinksService);
+  private readonly languageProvider = inject(LanguageProvider);
+
   protected dataSource = new SbbTableDataSource<ExternalLink, ExternalLinkFilter>();
   protected columns = ['select', 'title', 'link', 'lastModifiedAt', 'lastModifiedBy', 'action'];
   protected selection = new SelectionModel<ExternalLink>(true, []);
   protected isDeleting = false;
-  private readonly externalLinksService = inject(ExternalLinksService);
-  private readonly languageProvider = inject(LanguageProvider);
   protected form = new FormGroup({
     search: new FormControl('', { nonNullable: true }),
     language: new FormControl(this.languageProvider.currentLanguage.path, { nonNullable: true }),

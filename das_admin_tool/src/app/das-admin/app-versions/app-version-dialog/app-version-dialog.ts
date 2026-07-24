@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { SbbMiniButton } from '@sbb-esta/lyne-angular/button/mini-button';
-import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core/overlay';
+import { SbbMiniButton } from '@sbb-esta/lyne-angular/button';
+import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core';
 import { SbbDateInputModule } from '@sbb-esta/lyne-angular/date-input';
 import { SbbDatepickerModule } from '@sbb-esta/lyne-angular/datepicker';
 import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
@@ -31,6 +31,9 @@ export type VersionDialogEditResult = AppVersion | 'delete';
   styleUrl: './app-version-dialog.css',
 })
 export class AppVersionDialog {
+  protected readonly dialogData =
+    inject<AppVersion>(SBB_OVERLAY_DATA, { optional: true }) ?? undefined;
+
   private static readonly VERSION_REGEX = /^\d+\.\d+\.\d+$/;
 
   protected readonly title: string;
@@ -45,8 +48,6 @@ export class AppVersionDialog {
     expiryDate: new FormControl<Date | null>(null),
   });
   protected minDate = new Date();
-  protected readonly dialogData =
-    inject<AppVersion>(SBB_OVERLAY_DATA, { optional: true }) ?? undefined;
 
   constructor() {
     this.isEdit = this.dialogData?.id !== undefined;

@@ -1,5 +1,5 @@
 import { httpResource } from '@angular/common/http';
-import { computed, effect, inject, Injectable } from '@angular/core';
+import { computed, effect, inject, Service } from '@angular/core';
 import { ApiResponse } from '~shared/api-response';
 import { ToastService } from '~shared/toast-service';
 import { environment } from '~src/environments/environment';
@@ -13,14 +13,15 @@ export interface Location {
   validFrom?: Date;
 }
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class LocationService {
+  private readonly toastService = inject(ToastService);
+
   private readonly url = `${environment.backendUrl}/locations`;
   private readonly locationsResource = httpResource<LocationApiResponse>(() => this.url);
   readonly loaded = computed(
     () => this.locationsResource.hasValue() || !!this.locationsResource.error(),
   );
-  private readonly toastService = inject(ToastService);
   private readonly locations = computed(() =>
     this.locationsResource.hasValue() ? this.locationsResource.value().data : [],
   );

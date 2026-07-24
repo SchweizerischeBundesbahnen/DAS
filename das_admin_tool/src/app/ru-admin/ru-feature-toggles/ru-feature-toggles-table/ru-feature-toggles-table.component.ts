@@ -35,6 +35,9 @@ interface RuFeatureFilter extends SbbTableFilter {
   styleUrl: './ru-feature-toggles-table.component.css',
 })
 export class RuFeatureTogglesTable {
+  private readonly ruFeatureService = inject(RuFeatureService);
+  private readonly companyService = inject(CompanyService);
+
   protected dataSource = new SbbTableDataSource<RuFeature, RuFeatureFilter>();
   protected columns = [
     'companyCode',
@@ -45,9 +48,6 @@ export class RuFeatureTogglesTable {
     'action',
   ];
   protected readonly searchControl = new FormControl('', { nonNullable: true });
-
-  private readonly ruFeatureService = inject(RuFeatureService);
-  private readonly companyService = inject(CompanyService);
 
   private readonly bottomBar = viewChild.required(TableBottomBar);
   private readonly sort = viewChild.required<SbbSort>(SbbSort);
