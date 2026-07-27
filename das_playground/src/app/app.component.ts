@@ -1,14 +1,14 @@
-import { Component, inject } from '@angular/core';
-import { SbbHeaderLeanModule, } from "@sbb-esta/angular/header-lean";
-import { SbbIconModule } from "@sbb-esta/angular/icon";
-import { SbbUsermenuModule } from "@sbb-esta/angular/usermenu";
-import { SbbSidebarModule } from "@sbb-esta/angular/sidebar";
-import { SbbMenuModule } from "@sbb-esta/angular/menu";
-import { SbbButtonModule } from "@sbb-esta/angular/button";
-import { Router, RouterModule } from "@angular/router";
-import { environment } from "../environments/environment";
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { SbbHeaderLeanModule } from '@sbb-esta/angular/header-lean';
+import { SbbIconModule } from '@sbb-esta/angular/icon';
+import { SbbUsermenuModule } from '@sbb-esta/angular/usermenu';
+import { SbbSidebarModule } from '@sbb-esta/angular/sidebar';
+import { SbbMenuModule } from '@sbb-esta/angular/menu';
+import { SbbButtonModule } from '@sbb-esta/angular/button';
+import { Router, RouterModule } from '@angular/router';
+import { environment } from '../environments/environment';
 import packageJson from '../../package.json';
-import { OidcSecurityService } from "angular-auth-oidc-client";
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 @Component({
   selector: 'app-root',
@@ -22,7 +22,8 @@ import { OidcSecurityService } from "angular-auth-oidc-client";
     SbbUsermenuModule,
   ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './app.component.scss',
 })
 export class AppComponent {
   private oidcSecurityService = inject(OidcSecurityService);
