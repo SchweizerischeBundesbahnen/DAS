@@ -1,5 +1,5 @@
 import eslint from '@eslint/js';
-import {defineConfig} from 'eslint/config';
+import { defineConfig } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 import angular from 'angular-eslint';
 import eslintConfigPrettier from 'eslint-config-prettier/flat';

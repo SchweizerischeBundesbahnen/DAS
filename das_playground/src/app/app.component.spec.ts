@@ -1,31 +1,31 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { MqService } from "./mq.service";
-import { OidcSecurityService, UserDataResult } from "angular-auth-oidc-client";
-import { signal } from "@angular/core";
-import { SbbIconTestingModule } from "@sbb-esta/angular/icon/testing";
-import { NoopAnimationsModule } from "@angular/platform-browser/animations";
-import { By } from "@angular/platform-browser";
-import { SbbMenuItem } from "@sbb-esta/angular/menu";
-import { RouterTestingModule } from "@angular/router/testing";
+import { MqService } from './mq.service';
+import { OidcSecurityService, UserDataResult } from 'angular-auth-oidc-client';
+import { signal } from '@angular/core';
+import { SbbIconTestingModule } from '@sbb-esta/angular/icon/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { By } from '@angular/platform-browser';
+import { SbbMenuItem } from '@sbb-esta/angular/menu';
+import { RouterTestingModule } from '@angular/router/testing';
 
 const mockOidc: Partial<OidcSecurityService> = {
-  userData: signal({userData: {name: 'User'}} as UserDataResult),
+  userData: signal({ userData: { name: 'User' } } as UserDataResult),
   logoffLocalMultiple: () => Promise.resolve(true),
 };
 const mockMq: Partial<MqService> = {};
 
 describe('AppComponent', () => {
   let component: AppComponent;
-  let fixture: ComponentFixture<AppComponent>
+  let fixture: ComponentFixture<AppComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule, RouterTestingModule, SbbIconTestingModule, AppComponent,],
+      imports: [NoopAnimationsModule, RouterTestingModule, SbbIconTestingModule, AppComponent],
       providers: [
-        {provide: OidcSecurityService, useValue: mockOidc},
-        {provide: MqService, useValue: mockMq},
-      ]
+        { provide: OidcSecurityService, useValue: mockOidc },
+        { provide: MqService, useValue: mockMq },
+      ],
     }).compileComponents();
   });
 
@@ -33,7 +33,7 @@ describe('AppComponent', () => {
     fixture = TestBed.createComponent(AppComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  })
+  });
 
   it('should create the app', () => {
     expect(component).toBeTruthy();

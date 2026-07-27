@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { autoLoginPartialRoutesGuard } from "angular-auth-oidc-client";
+import { autoLoginPartialRoutesGuard } from 'angular-auth-oidc-client';
 
 export const routes: Routes = [
   {
@@ -9,20 +9,24 @@ export const routes: Routes = [
       {
         path: '',
         pathMatch: 'prefix',
-        redirectTo: 'sfera'
+        redirectTo: 'sfera',
       },
       {
         path: 'sfera',
-        loadComponent: () => import('./sfera-observer/sfera-observer.component').then((m) => m.SferaObserverComponent),
+        loadComponent: () =>
+          import('./sfera-observer/sfera-observer.component').then((m) => m.SferaObserverComponent),
       },
       {
         path: 'sfera-discover',
-        loadComponent: () => import('./sfera-discover/sfera-discover.component').then((m) => m.SferaDiscoverComponent),
+        loadComponent: () =>
+          import('./sfera-discover/sfera-discover.component').then((m) => m.SferaDiscoverComponent),
       },
       {
         path: 'mqtt',
         loadComponent: () =>
-          import('./mqtt-playground/mqtt-playground.component').then((m) => m.MqttPlaygroundComponent),
+          import('./mqtt-playground/mqtt-playground.component').then(
+            (m) => m.MqttPlaygroundComponent,
+          ),
       },
       {
         path: 'auth-insights',
@@ -33,6 +37,7 @@ export const routes: Routes = [
   },
   {
     path: 'unauthorized',
-    loadComponent: () => import('./unauthorized/unauthorized.component').then((m) => m.UnauthorizedComponent)
-  }
+    loadComponent: () =>
+      import('./unauthorized/unauthorized.component').then((m) => m.UnauthorizedComponent),
+  },
 ];
