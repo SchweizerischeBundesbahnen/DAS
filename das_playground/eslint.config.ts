@@ -33,6 +33,7 @@ export default defineConfig([
       ],
       '@typescript-eslint/no-explicit-any': 'off',
       'preserve-caught-error': 'off',
+      '@angular-eslint/prefer-on-push-component-change-detection': 'off',
     },
   },
   {
