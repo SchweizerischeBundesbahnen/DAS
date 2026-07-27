@@ -1,7 +1,7 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { AuthService } from './auth-service';
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class RecentCompaniesStore {
   private readonly authService = inject(AuthService);
   private readonly storageKey = `recent_companies_${this.authService.oid()}`;

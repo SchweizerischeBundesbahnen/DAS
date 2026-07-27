@@ -1,5 +1,5 @@
 import { HttpClient, httpResource } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiResponse } from '~shared/api-response';
 import { Auditable } from '~shared/audit/auditable';
@@ -23,7 +23,7 @@ export interface InternalCompany extends Auditable {
 
 export type InternalCompanyApiResponse = ApiResponse<InternalCompany>;
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class DasAdminApi {
   private readonly httpClient = inject(HttpClient);
 

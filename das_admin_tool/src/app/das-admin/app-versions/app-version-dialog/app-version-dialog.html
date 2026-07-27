@@ -30,7 +30,7 @@
         >Minimale Version</sbb-toggle-check
       >
       <sbb-mini-button iconName="circle-information-small" id="popover-trigger" />
-      <sbb-popover hideCloseButton="true" hoverTrigger="true" trigger="popover-trigger">
+      <sbb-popover hoverTrigger="true" trigger="popover-trigger">
         <sbb-title i18n="@@app_versions_form_minimal_version_title" level="2" visualLevel="6"
           >Minimale Version</sbb-title
         >
@@ -39,8 +39,10 @@
         >
       </sbb-popover>
     </div>
-    <sbb-form-field optional>
-      <label for="expiryDate" i18n="@@app_versions_form_expiry_date_label">Gültig ab</label>
+    <sbb-form-field>
+      <label for="expiryDate" i18n="@@app_versions_form_expiry_date_label"
+        >Gültig ab (optional)</label
+      >
       <sbb-datepicker-previous-day />
       <sbb-date-input formControlName="expiryDate" [min]="minDate" />
       <sbb-datepicker />

@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { BaseDialogService } from '../base-dialog.service';
 import { RuAdminApi, RuIndication, RuIndicationTemplate } from '../ru-admin-api';
@@ -11,7 +11,7 @@ export interface RuIndicationDialogData {
   templates: RuIndicationTemplate[];
 }
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class RuIndicationService extends BaseDialogService {
   private readonly ruAdminApi = inject(RuAdminApi);
   readonly ruIndicationsResource = this.ruAdminApi.ruIndications;

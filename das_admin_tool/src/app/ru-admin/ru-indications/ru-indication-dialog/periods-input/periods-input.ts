@@ -81,6 +81,8 @@ function periodFormValidator(control: AbstractControl): ValidationErrors | null 
   styleUrl: './periods-input.css',
 })
 export class PeriodsInput {
+  private readonly languageProvider = inject(LanguageProvider);
+
   readonly control = input.required<FormControl<RuIndicationPeriod[]>>();
   protected periodForm = new FormGroup(
     {
@@ -92,7 +94,7 @@ export class PeriodsInput {
     { validators: periodFormValidator },
   );
   protected readonly weekdays = weekdays();
-  private readonly localeId = inject(LanguageProvider).currentLanguage.localeId;
+  private readonly localeId = this.languageProvider.currentLanguage.localeId;
 
   constructor() {
     this.applyRangeState(this.periodForm.controls.isRange.value);

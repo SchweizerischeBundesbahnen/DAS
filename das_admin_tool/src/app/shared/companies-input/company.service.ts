@@ -1,5 +1,5 @@
 import { httpResource } from '@angular/common/http';
-import { computed, effect, inject, Injectable } from '@angular/core';
+import { computed, effect, inject, Service } from '@angular/core';
 import { environment } from '~src/environments/environment';
 import { ApiResponse } from '../api-response';
 import { ToastService } from '../toast-service';
@@ -11,14 +11,15 @@ export interface Company {
   shortName: string;
 }
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class CompanyService {
+  private readonly toastService = inject(ToastService);
+
   private readonly url = `${environment.backendUrl}/companies/authorized`;
   private readonly companiesResource = httpResource<CompanyApiResponse>(() => this.url);
   readonly loaded = computed(
     () => this.companiesResource.hasValue() || !!this.companiesResource.error(),
   );
-  private readonly toastService = inject(ToastService);
   private readonly companies = computed(() =>
     this.companiesResource.hasValue() ? this.companiesResource.value().data : [],
   );

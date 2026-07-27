@@ -3,7 +3,7 @@ import { DatePipe } from '@angular/common';
 import { Component, effect, inject, viewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl } from '@angular/forms';
-import { SbbMiniButton } from '@sbb-esta/lyne-angular/button/mini-button';
+import { SbbMiniButton } from '@sbb-esta/lyne-angular/button';
 import { SbbCheckboxModule } from '@sbb-esta/lyne-angular/checkbox';
 import {
   SbbSort,
@@ -36,6 +36,9 @@ interface SpecialHolidayFilter extends SbbTableFilter {
   styleUrl: './special-holidays-table.component.css',
 })
 export class SpecialHolidaysTable {
+  private readonly specialHolidayService = inject(SpecialHolidayService);
+  private readonly companyService = inject(CompanyService);
+
   protected dataSource = new SbbTableDataSource<SpecialHoliday, SpecialHolidayFilter>();
   protected columns = [
     'select',
@@ -50,9 +53,6 @@ export class SpecialHolidaysTable {
   protected selection = new SelectionModel<SpecialHoliday>(true, []);
   protected isDeleting = false;
   protected readonly searchControl = new FormControl('', { nonNullable: true });
-
-  private readonly specialHolidayService = inject(SpecialHolidayService);
-  private readonly companyService = inject(CompanyService);
 
   private readonly bottomBar = viewChild.required(TableBottomBar);
   private readonly sort = viewChild.required<SbbSort>(SbbSort);

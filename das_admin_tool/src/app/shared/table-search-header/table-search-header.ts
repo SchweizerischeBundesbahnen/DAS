@@ -12,8 +12,9 @@ import { LanguageProvider } from '../language-provider';
   styleUrl: './table-search-header.css',
 })
 export class TableSearchHeader {
+  protected readonly languageProvider = inject(LanguageProvider);
+
   readonly searchControl = input.required<FormControl<string>>();
   readonly languageControl = input<FormControl<string>>();
   readonly searchPlaceholder = input($localize`:@@table_search_placeholder:Suchen`);
-  protected readonly languageProvider = inject(LanguageProvider);
 }

@@ -94,10 +94,6 @@ export default defineConfig(
         'error',
         { type: 'attribute', prefix: 'app', style: 'camelCase' },
       ],
-      // Disabled because http-resource is used
-      '@angular-eslint/no-experimental': 'off',
-      // Disabled because not ready yet
-      '@angular-eslint/prefer-on-push-component-change-detection': 'off',
       'import-x/order': [
         'error',
         {
