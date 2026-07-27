@@ -41,8 +41,6 @@ spring:
       accept-case-insensitive-enums: true
     time-zone: CET
   datasource:
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
     url: ${DB_URL}
   flyway:
     baseline-on-migrate: true
@@ -75,6 +73,10 @@ spring:
       kv:
         backend: kv/DSO-BPS/driver-advisory-system
         default-context:
+      database:
+        enabled: true
+        role: dso-bps_driver-advisory-system_driver_advisory_system
+        backend: db
       authentication: KUBERNETES
       kubernetes:
         role: ${VAULT_SA_ROLE_ID}
