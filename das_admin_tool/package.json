@@ -57,7 +57,7 @@
     "eslint-plugin-unicorn": "71.0.0",
     "gzipper": "^8.2.1",
     "prettier": "3.9.4",
-    "typescript": "6.0.3",
+    "typescript": "7.0.2",
     "typescript-eslint": "8.62.1",
     "vitest": "^4.1.6",
     "vitest-sonar-reporter": "^3.0.0"
