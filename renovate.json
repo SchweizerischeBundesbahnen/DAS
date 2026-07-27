@@ -9,7 +9,6 @@
   "packageRules": [
     {
       "matchFileNames": [
-        "das_playground/**",
         "das_client/**"
       ],
       "enabled": false
