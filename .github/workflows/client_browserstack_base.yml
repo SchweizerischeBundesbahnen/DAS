@@ -139,7 +139,7 @@ jobs:
           browserstackUsername: ${{ secrets.BROWSERSTACK_USERNAME }}
           browserstackAccessKey: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
           project: das_client
-          customId: das_client_android
+          customId: das_client_android_${{ inputs.enable_e2e && 'e2e' || 'integration' }}
           buildTag: ${{ steps.extract_branch.outputs.branch }}
           appFilePath: ${{ github.workspace }}/das_client/app/build/app/outputs/flutter-apk/android-${{ inputs.enable_e2e && 'e2e' || 'integration' }}-test.apk
           testFilePath: ${{ github.workspace }}/das_client/app/build/app/outputs/apk/androidTest/dev/debug/${{ inputs.enable_e2e && 'e2e' || 'integration' }}-test.apk
@@ -225,7 +225,7 @@ jobs:
           browserstackUsername: ${{ secrets.BROWSERSTACK_USERNAME }}
           browserstackAccessKey: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
           project: das_client
-          customId: das_client_ios
+          customId: das_client_ios_${{ inputs.enable_e2e && 'e2e' || 'integration' }}
           buildTag: ${{ steps.extract_branch.outputs.branch }}
           testPackagePath: ${{ github.workspace }}/das_client/app/build/ios_integration/Build/Products/ios-${{ inputs.enable_e2e && 'e2e' || 'integration' }}-test.zip
           devices: iPad 9th-18
