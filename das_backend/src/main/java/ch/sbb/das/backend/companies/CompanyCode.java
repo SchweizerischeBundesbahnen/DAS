@@ -22,4 +22,8 @@ public record CompanyCode(@JsonValue @NonNull String value) {
             throw new IllegalArgumentException("CompanyCode must match [0-9A-Z]{4}");
         }
     }
+
+    public static boolean isValid(String value) {
+        return value != null && COMPANY_CODE_PATTERN.matcher(value).matches();
+    }
 }

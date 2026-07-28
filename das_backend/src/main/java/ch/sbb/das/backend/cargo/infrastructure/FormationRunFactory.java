@@ -10,7 +10,6 @@ import ch.sbb.zis.trainformation.api.model.FormationRunInspection;
 import ch.sbb.zis.trainformation.api.model.LocationUic;
 import ch.sbb.zis.trainformation.api.model.MaxUphillDownhillGradients;
 import java.util.List;
-import java.util.Optional;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -21,23 +20,14 @@ public final class FormationRunFactory {
 
     public static List<FormationRun> create(List<ch.sbb.zis.trainformation.api.model.FormationRun> formationRuns) {
         return formationRuns.stream()
-            .flatMap(formationRun -> toCompanyCode(formationRun.getSmsEvu())
-                .map(companyCode -> create(formationRun, companyCode))
-                .stream())
+            .filter(formationRun -> CompanyCode.isValid(formationRun.getSmsEvu()))
+            .map(FormationRunFactory::create)
             .toList();
     }
 
-    private static Optional<CompanyCode> toCompanyCode(String smsEvu) {
-        try {
-            return Optional.of(new CompanyCode(smsEvu));
-        } catch (Exception _) {
-            return Optional.empty();
-        }
-    }
-
-    private static FormationRun create(ch.sbb.zis.trainformation.api.model.FormationRun formationRun, CompanyCode companyCode) {
+    private static FormationRun create(ch.sbb.zis.trainformation.api.model.FormationRun formationRun) {
         FormationRunBuilder builder = FormationRun.builder()
-            .company(companyCode)
+            .company(new CompanyCode(formationRun.getSmsEvu()))
             .tafTapLocationReferenceStart(toTafTapLocationReference(formationRun.getStartLocationUic()))
             .tafTapLocationReferenceEnd(toTafTapLocationReference(formationRun.getEndLocationUic()))
             .trainCategoryCode(formationRun.getTrainSequence())
