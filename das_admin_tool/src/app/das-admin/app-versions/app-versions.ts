@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { SbbSecondaryButton } from '@sbb-esta/lyne-angular/button/secondary-button';
+import { SbbSecondaryButton } from '@sbb-esta/lyne-angular/button';
 import { SbbLoadingIndicatorCircleModule } from '@sbb-esta/lyne-angular/loading-indicator-circle';
 import { SbbTitleModule } from '@sbb-esta/lyne-angular/title';
 import { AppVersionsTable } from './app-versions-table/app-versions-table';

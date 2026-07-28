@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core/overlay';
+import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core';
 import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
 import { SbbTitleModule } from '@sbb-esta/lyne-angular/title';
 import { RuIndicationTemplate } from '~ru-admin/ru-admin-api';
@@ -26,13 +26,14 @@ export type RuIndicationTemplateDialogEditResult = RuIndicationTemplate | 'delet
   styleUrl: './ru-indication-template-dialog.css',
 })
 export class RuIndicationTemplateDialog {
+  protected readonly dialogData =
+    inject<RuIndicationTemplate>(SBB_OVERLAY_DATA, { optional: true }) ?? undefined;
+
   protected readonly title: string;
   protected ruIndicationTemplateForm = new FormGroup({
     category: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     content: createContentFormGroup({ textRequired: false }),
   });
-  protected readonly dialogData =
-    inject<RuIndicationTemplate>(SBB_OVERLAY_DATA, { optional: true }) ?? undefined;
 
   constructor() {
     const isEdit = this.dialogData?.id !== undefined;

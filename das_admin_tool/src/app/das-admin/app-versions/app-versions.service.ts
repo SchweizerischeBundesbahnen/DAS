@@ -1,11 +1,11 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { BaseDialogService } from '~ru-admin/base-dialog.service';
 import { AppVersion, DasAdminApi } from '../das-admin-api';
 import { AppVersionDialog, VersionDialogEditResult } from './app-version-dialog/app-version-dialog';
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class AppVersionsService extends BaseDialogService {
   private readonly dasAdminApi = inject(DasAdminApi);
   readonly appVersionsResource = this.dasAdminApi.appVersions;

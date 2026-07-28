@@ -1,11 +1,11 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { BaseDialogService } from '~ru-admin/base-dialog.service';
 import { DasAdminApi, InternalCompany } from '../das-admin-api';
 import { CompanyDialog, CompanyDialogEditResult } from './company-dialog/company-dialog';
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class CompanyService extends BaseDialogService {
   private readonly dasAdminApi = inject(DasAdminApi);
   public readonly companiesResource = this.dasAdminApi.companiesResource;

@@ -1,4 +1,4 @@
-import { computed, inject, Injectable } from '@angular/core';
+import { computed, inject, Service } from '@angular/core';
 import { Router } from '@angular/router';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { environment } from '~src/environments/environment';
@@ -16,13 +16,14 @@ interface UserData {
   roles: string[];
 }
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class AuthService {
   private readonly oidcSecurityService = inject(OidcSecurityService);
+  private readonly router = inject(Router);
+
   public readonly isAuthenticated = computed(
     () => this.oidcSecurityService.authenticated().isAuthenticated,
   );
-  private readonly router = inject(Router);
   private readonly userData = computed(
     () => this.oidcSecurityService.userData().userData as UserData,
   );

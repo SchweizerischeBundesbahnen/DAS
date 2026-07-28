@@ -5,9 +5,13 @@
   </span>
   <div class="sbb-header-spacer"></div>
   @if (authService.isAuthenticated()) {
-    <sbb-header-button iconName="user-small" class="sbb-header-shrinkable" id="user-menu-trigger">{{
-      authService.name()
-    }}</sbb-header-button>
+    <sbb-header-button
+      hideLabelBelow="large"
+      iconName="user-small"
+      class="sbb-header-shrinkable"
+      id="user-menu-trigger"
+      >{{ authService.name() }}</sbb-header-button
+    >
     <sbb-menu trigger="user-menu-trigger">
       <div class="email">{{ authService.email() }}</div>
       @if (authService.isAdmin()) {
@@ -33,6 +37,7 @@
     </sbb-menu>
   } @else {
     <sbb-header-button
+      hideLabelBelow="large"
       iconName="user-small"
       class="sbb-header-shrinkable"
       i18n="@@header_nav_login_button"
@@ -41,9 +46,13 @@
     >
   }
 
-  <sbb-header-button iconName="globe-small" id="language-menu-trigger" class="last-element">{{
-    languageProvider.currentLanguage.label
-  }}</sbb-header-button>
+  <sbb-header-button
+    hideLabelBelow="large"
+    iconName="globe-small"
+    id="language-menu-trigger"
+    class="last-element"
+    >{{ languageProvider.currentLanguage.label }}</sbb-header-button
+  >
   <sbb-menu trigger="language-menu-trigger">
     @for (language of languageProvider.allLanguages; track language.localeId) {
       <sbb-menu-link
