@@ -4,7 +4,7 @@ import 'package:app/widgets/table/das_table.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ru_indications/component.dart';
 
-import '../app_test.dart';
+import '../integration/integration_test_app.dart';
 import '../mocks/mock_ru_indications_repository.dart';
 import '../util/test_utils.dart';
 

@@ -12,6 +12,7 @@ import 'package:sfera/component.dart';
 import 'package:train_identification/component.dart';
 
 import '../app_test.dart';
+import '../integration/integration_test_app.dart';
 import '../mocks/mock_train_identification_repository.dart';
 import '../util/test_utils.dart';
 

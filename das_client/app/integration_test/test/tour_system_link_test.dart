@@ -6,6 +6,7 @@ import 'package:app/provider/user_settings.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../app_test.dart';
+import '../integration/integration_test_app.dart';
 import '../mocks/mock_launcher.dart';
 import '../mocks/mock_user_settings.dart';
 import '../util/test_utils.dart';

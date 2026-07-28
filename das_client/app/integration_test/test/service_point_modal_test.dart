@@ -19,6 +19,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 import '../app_test.dart';
+import '../integration/integration_test_app.dart';
 import '../mocks/mock_launcher.dart';
 import '../util/test_time_constants.dart';
 import '../util/test_utils.dart';

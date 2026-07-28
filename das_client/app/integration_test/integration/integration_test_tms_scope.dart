@@ -3,32 +3,28 @@ import 'package:app/flavor.dart';
 import 'package:auth/component.dart';
 import 'package:logging/logging.dart';
 import 'package:mqtt/component.dart';
-import 'package:settings/component.dart';
 
 import '../auth/integrationtest_authenticator.dart';
 import '../auth/mqtt_client_user_connector.dart';
-import 'mock_settings_repository.dart';
 
-final _log = Logger('MockSferaMockScope');
+final _log = Logger('MockTmsScope');
 
-class MockSferaMockScope extends SferaMockScope {
+class IntegrationTestTmsScope extends TmsScope {
   @override
-  String get scopeName => 'MockSferaMockScope';
+  String get scopeName => 'IntegrationTestTmsScope';
 
   @override
   Future<void> push() async {
-    _log.fine('Pushing mock scope $scopeName');
+    _log.fine('Pushing integration test scope $scopeName');
     getIt.pushNewScope(scopeName: scopeName);
-    final sferaFlavor = DI.get<Flavor>().withSferaMockValues();
 
-    getIt.registerFlavor(sferaFlavor);
+    final tmsFlavor = DI.get<Flavor>().withTmsValues();
+
+    getIt.registerFlavor(tmsFlavor);
     _registerIntegrationTestAuthenticator();
     _registerIntegrationTestMqttClientConnector();
-    _registerMockSettingsRepository(); // registered here so can be interacted with before app is started after DI init
-  }
 
-  void _registerMockSettingsRepository() {
-    getIt.registerSingletonAsync<SettingsRepository>(() => Future.value(MockSettingsRepository()));
+    return getIt.allReady();
   }
 
   void _registerIntegrationTestAuthenticator() {

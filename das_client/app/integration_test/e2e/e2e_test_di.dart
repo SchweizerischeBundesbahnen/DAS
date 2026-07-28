@@ -3,8 +3,8 @@ import 'package:app/flavor.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logging/logging.dart';
 
-import 'e2e/e2e_authenticator_override_scope.dart';
-import 'e2e/e2e_warnapp_override_scope.dart';
+import 'e2e_authenticator_override_scope.dart';
+import 'e2e_warnapp_override_scope.dart';
 
 final _log = Logger('E2ETestDI');
 

@@ -27,6 +27,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
 import '../app_test.dart';
+import '../integration/integration_test_app.dart';
 import '../mocks/mock_battery.dart';
 import '../mocks/mock_brightness_manager.dart';
 import '../mocks/mock_connectivity_manager.dart';

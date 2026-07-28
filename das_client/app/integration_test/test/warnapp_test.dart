@@ -8,6 +8,7 @@ import 'package:warnapp/component.dart';
 
 import '../app_test.dart';
 import '../data/warnapp_data.dart';
+import '../integration/integration_test_app.dart';
 import '../util/test_utils.dart';
 
 void main() {

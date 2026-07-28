@@ -13,6 +13,7 @@ import 'package:sfera/component.dart';
 
 import '../app_test.dart';
 import '../auth/mqtt_client_user_connector.dart';
+import '../integration/integration_test_app.dart';
 import '../mocks/mock_connectivity_manager.dart';
 import '../mocks/mock_preload_repository.dart';
 import '../util/test_utils.dart';

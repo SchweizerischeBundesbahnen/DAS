@@ -10,6 +10,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 import '../app_test.dart';
+import '../integration/integration_test_app.dart';
 import '../mocks/mock_customer_oriented_departure_repository.dart';
 import '../mocks/mock_ru_feature_provider.dart';
 import '../util/test_utils.dart';

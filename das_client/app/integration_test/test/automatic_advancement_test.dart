@@ -6,7 +6,7 @@ import 'package:app/util/time_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../app_test.dart';
+import '../integration/integration_test_app.dart';
 import '../util/test_utils.dart';
 
 void main() {

@@ -6,6 +6,7 @@ import 'package:app/provider/ru_feature_provider.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../app_test.dart';
+import '../integration/integration_test_app.dart';
 import '../mocks/mock_ru_feature_provider.dart';
 import '../util/test_utils.dart';
 

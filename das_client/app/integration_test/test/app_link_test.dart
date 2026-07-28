@@ -18,6 +18,7 @@ import 'package:train_identification/component.dart';
 
 import '../app_test.dart';
 import '../auth/integrationtest_authenticator.dart';
+import '../integration/integration_test_app.dart';
 import '../mocks/mock_app_links_manager.dart';
 import '../mocks/mock_launcher.dart';
 import '../mocks/mock_train_identification_repository.dart';

@@ -4,11 +4,11 @@ import 'package:app/flavor.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logging/logging.dart';
 
-import 'mocks/mock_authenticated_scope.dart';
-import 'mocks/mock_das_base_scope.dart';
-import 'mocks/mock_journey_scope.dart';
-import 'mocks/mock_sfera_mock_scope.dart';
-import 'mocks/mock_tms_scope.dart';
+import 'integration_test_authenticated_scope.dart';
+import 'integration_test_das_base_scope.dart';
+import 'integration_test_journey_scope.dart';
+import 'integration_test_sfera_mock_scope.dart';
+import 'integration_test_tms_scope.dart';
 
 final _log = Logger('IntegrationTestDI');
 
@@ -20,7 +20,7 @@ class IntegrationTestDI {
     await GetIt.I.reset();
 
     GetIt.I.registerFlavor(Flavor.dev());
-    _registerMockScopes();
+    _registerIntegrationTestScopes();
     GetIt.I.registerScopeHandler();
 
     await GetIt.I.allReady();
@@ -38,11 +38,11 @@ class IntegrationTestDI {
     );
   }
 
-  static void _registerMockScopes() {
-    GetIt.I.registerSingleton<DASBaseScope>(MockDASBaseScope());
-    GetIt.I.registerSingleton<SferaMockScope>(MockSferaMockScope());
-    GetIt.I.registerSingleton<TmsScope>(MockTmsScope());
-    GetIt.I.registerSingleton<AuthenticatedScope>(MockAuthenticatedScope());
-    GetIt.I.registerSingleton<JourneyScope>(MockJourneyScope());
+  static void _registerIntegrationTestScopes() {
+    GetIt.I.registerSingleton<DASBaseScope>(IntegrationTestDASBaseScope());
+    GetIt.I.registerSingleton<SferaMockScope>(IntegrationTestSferaMockScope());
+    GetIt.I.registerSingleton<TmsScope>(IntegrationTestTmsScope());
+    GetIt.I.registerSingleton<AuthenticatedScope>(IntegrationTestAuthenticatedScope());
+    GetIt.I.registerSingleton<JourneyScope>(IntegrationTestJourneyScope());
   }
 }

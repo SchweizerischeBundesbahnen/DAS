@@ -13,6 +13,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:formation/component.dart';
 
 import '../app_test.dart';
+import '../integration/integration_test_app.dart';
 import '../mocks/mock_formation_repository.dart';
 import '../util/test_utils.dart';
 
