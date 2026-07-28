@@ -1,10 +1,14 @@
 import 'package:app/di/di.dart';
+import 'package:app/di/scopes/journey_scope.dart';
 import 'package:app/flavor.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logging/logging.dart';
 
-import 'e2e_authenticator_override_scope.dart';
-import 'e2e_warnapp_override_scope.dart';
+import 'e2e_test_authenticated_scope.dart';
+import 'e2e_test_das_base_scope.dart';
+import 'e2e_test_journey_scope.dart';
+import 'e2e_test_sfera_mock_scope.dart';
+import 'e2e_test_tms_scope.dart';
 
 final _log = Logger('E2ETestDI');
 
@@ -35,8 +39,10 @@ class E2ETestDI {
   }
 
   static void _registerE2ETestScopes() {
-    GetIt.I.registerScopes();
-    GetIt.I.registerSingleton<E2EWarnappOverrideScope>(E2EWarnappOverrideScope());
-    GetIt.I.registerSingleton<E2EAuthenticatorOverrideScope>(E2EAuthenticatorOverrideScope());
+    GetIt.I.registerSingleton<DASBaseScope>(E2ETestDASBaseScope());
+    GetIt.I.registerSingleton<SferaMockScope>(E2ETestSferaMockScope());
+    GetIt.I.registerSingleton<TmsScope>(E2ETestTmsScope());
+    GetIt.I.registerSingleton<AuthenticatedScope>(E2ETestAuthenticatedScope());
+    GetIt.I.registerSingleton<JourneyScope>(E2ETestJourneyScope());
   }
 }

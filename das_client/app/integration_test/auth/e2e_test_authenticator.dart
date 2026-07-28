@@ -1,6 +1,6 @@
 import 'package:auth/component.dart';
 
-class E2EAuthenticator implements Authenticator {
+class E2ETestAuthenticator implements Authenticator {
   static const accessToken = 'ACCESS_TOKEN';
 
   @override

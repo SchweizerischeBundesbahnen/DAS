@@ -4,7 +4,7 @@ import 'package:auth/component.dart';
 import 'package:logging/logging.dart';
 import 'package:mqtt/component.dart';
 
-import '../auth/integrationtest_authenticator.dart';
+import '../auth/integration_test_authenticator.dart';
 import '../auth/mqtt_client_user_connector.dart';
 
 final _log = Logger('MockTmsScope');
@@ -15,7 +15,7 @@ class IntegrationTestTmsScope extends TmsScope {
 
   @override
   Future<void> push() async {
-    _log.fine('Pushing integration test scope $scopeName');
+    _log.fine('Pushing scope $scopeName');
     getIt.pushNewScope(scopeName: scopeName);
 
     final tmsFlavor = DI.get<Flavor>().withTmsValues();

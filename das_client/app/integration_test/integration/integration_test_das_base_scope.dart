@@ -30,7 +30,7 @@ class IntegrationTestDASBaseScope extends DASBaseScope {
 
   @override
   Future<void> push() async {
-    _log.fine('Pushing integration test scope $scopeName');
+    _log.fine('Pushing scope $scopeName');
     getIt.pushNewScope(scopeName: scopeName);
 
     getIt.registerAppInfoAsync();

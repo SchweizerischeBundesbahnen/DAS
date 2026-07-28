@@ -5,7 +5,7 @@ import 'package:logging/logging.dart';
 import 'package:mqtt/component.dart';
 import 'package:settings/component.dart';
 
-import '../auth/integrationtest_authenticator.dart';
+import '../auth/integration_test_authenticator.dart';
 import '../auth/mqtt_client_user_connector.dart';
 import '../mocks/mock_settings_repository.dart';
 
@@ -17,7 +17,7 @@ class IntegrationTestSferaMockScope extends SferaMockScope {
 
   @override
   Future<void> push() async {
-    _log.fine('Pushing integration test scope $scopeName');
+    _log.fine('Pushing scope $scopeName');
     getIt.pushNewScope(scopeName: scopeName);
     final sferaFlavor = DI.get<Flavor>().withSferaMockValues();
 
