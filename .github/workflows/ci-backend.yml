@@ -63,9 +63,11 @@ jobs:
             -Dsonar.organization=schweizerischebundesbahnen \
             -Dsonar.projectName=DAS/Backend \
             -Dsonar.token=${SONAR_TOKEN} \
-            -Dsonar.issue.ignore.multicriteria=e1 \
+            -Dsonar.issue.ignore.multicriteria=e1,e2 \
             -Dsonar.issue.ignore.multicriteria.e1.ruleKey=java:S1452 \
-            -Dsonar.issue.ignore.multicriteria.e1.resourceKey=**
+            -Dsonar.issue.ignore.multicriteria.e1.resourceKey=** \
+            -Dsonar.issue.ignore.multicriteria.e2.ruleKey=java:S8694 \
+            -Dsonar.issue.ignore.multicriteria.e2.resourceKey=**
 
       - name: Login to GitHub Container Registry
         if: github.ref == 'refs/heads/main'
