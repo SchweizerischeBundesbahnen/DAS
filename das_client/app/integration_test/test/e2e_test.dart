@@ -1,13 +1,9 @@
-import 'package:app/di/di.dart';
-import 'package:app/di/scope_handler.dart';
 import 'package:app/pages/journey/brake_load_slip/brake_load_slip_page.dart';
 import 'package:app/pages/preload/widgets/preload_status_display.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../app_test.dart';
-import '../e2e/e2e_authenticator_override_scope.dart';
 import '../e2e/e2e_test_app.dart';
-import '../util/e2e_test_utils.dart';
 import '../util/test_utils.dart';
 
 void main() {
@@ -32,11 +28,10 @@ void main() {
     // await waitUntilNotExists(tester, find.byKey(PreloadStatusDisplay.initialSegmentKey), maxWaitSeconds: 480);
   });
 
-  testWidgets('loadJourney_whenLoadsT9999_thenOpensJourneyTable', (tester) async {
+  testWidgets('loadJourney_whenLoadsJourneyFromSferaMock_thenOpensJourneyTable', (tester) async {
     await E2ETestApp.start(tester);
 
     await loadJourney(tester, trainNumber: 'T9999', ru: .sbbP);
-    await optionallyDismissBrightnessModalOnAndroid(tester);
 
     await disconnect(tester);
   });
@@ -47,7 +42,6 @@ void main() {
     await E2ETestApp.start(tester);
 
     await loadJourney(tester, trainNumber: 'T12', ru: .sbbCH);
-    await optionallyDismissBrightnessModalOnAndroid(tester);
 
     await openBrakeSlipPage(tester);
     expect(find.byType(BrakeLoadSlipPage), findsOneWidget);
@@ -56,22 +50,8 @@ void main() {
   });
 
   testWidgets('loadJourney_whenLoadsJourneyFromTmsVAD_thenOpensJourneyTable', (tester) async {
-    await E2ETestApp.start(tester);
+    await E2ETestApp.start(tester, useTms: true);
 
-    await openDrawer(tester);
-    await tapElement(tester, find.text(l10n.w_navigation_drawer_preload_title));
-    await tester.pumpAndSettle(Duration(milliseconds: 300));
-
-    final scopeHandler = DI.get<ScopeHandler>();
-    await scopeHandler.pop<SferaMockScope>();
-    await scopeHandler.push<TmsScope>();
-    await scopeHandler.push<E2EAuthenticatorOverrideScope>();
-    await scopeHandler.push<AuthenticatedScope>();
-
-    await openDrawer(tester);
-    await tapElement(tester, find.text(l10n.w_navigation_drawer_fahrtinfo_title));
-    await tester.pumpAndSettle(Duration(milliseconds: 300));
-    await optionallyDismissBrightnessModalOnAndroid(tester);
     await loadJourney(tester, trainNumber: '18222', ru: .sbbP);
 
     await disconnect(tester);

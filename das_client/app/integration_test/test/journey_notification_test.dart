@@ -7,7 +7,7 @@ import 'package:customer_oriented_departure/component.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../app_test.dart';
-import '../auth/integrationtest_authenticator.dart';
+import '../auth/integration_test_authenticator.dart';
 import '../integration/integration_test_app.dart';
 import '../mocks/mock_customer_oriented_departure_repository.dart';
 import '../mocks/mock_ru_feature_provider.dart';
