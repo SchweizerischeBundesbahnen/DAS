@@ -35,7 +35,7 @@ export class CompanyDialog {
   protected readonly dialogTitle: string;
 
   protected companyForm = this.formBuilder.group<FormGroupCompany>({
-    code: this.formBuilder.control('', [Validators.required, Validators.pattern(/^\d{4}$/)]),
+    code: this.formBuilder.control('', [Validators.required, Validators.pattern(/^(?!0000)\d{4}$/)]),
     shortName: this.formBuilder.control('', Validators.required),
     tenantId: this.formBuilder.control('', Validators.required),
   });

@@ -27,7 +27,7 @@ class FormationMapperTest {
         TrainFormationRunEntity second = TrainFormationRunEntity.builder()
             .operationalTrainNumber("99999")
             .operationalDay(LocalDate.of(2026, 1, 1))
-            .company(new CompanyCode("0000"))
+            .company(new CompanyCode("0001"))
             .tafTapLocationReferenceStart("CH00003")
             .tafTapLocationReferenceEnd("CH00004")
             .vehiclesWithBrakeDesignLAndLlAndKCount(2)
