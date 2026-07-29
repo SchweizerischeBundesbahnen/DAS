@@ -1,7 +1,7 @@
-name: Report Finding
+name: Report DAS-Client Finding
 description: Findings aus dem Fachtesting oder produktiven Gebrauch ans DAS Team melden.
-labels: ["finding"]
-projects: ["SchweizerischeBundesbahnen/10"]
+labels: [ "finding" ]
+projects: [ "SchweizerischeBundesbahnen/10" ]
 assignees:
   - marcdettwiler
   - StephanieFrancke
@@ -44,6 +44,16 @@ body:
         - Android Version 16
         - Android Version 15
         - Android Version 14
+      default: 0
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Umgebung
+      description: Welche Umgebung wurde genutzt? Die Umgebung ist oben links im Banner ersichtlich.
+      options:
+        - INT
+        - DEV
       default: 0
     validations:
       required: true
