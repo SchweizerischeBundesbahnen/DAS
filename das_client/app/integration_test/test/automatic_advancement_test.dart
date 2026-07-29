@@ -6,13 +6,13 @@ import 'package:app/util/time_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../app_test.dart';
+import '../integration/integration_test_app.dart';
 import '../util/test_utils.dart';
 
 void main() {
   group('automatic advancement tests', () {
-    testWidgets('check if automatic advancement is scrolling automatically', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('automaticAdvancement_whenJourneyLoaded_thenScrollsAutomatically', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9');
 
       // Check chevron at start
@@ -33,8 +33,8 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('check scrolling after idle time', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('automaticAdvancement_whenIdleTimeReached_thenScrollsBackToPosition', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9');
 
       // Wait until all events are done
@@ -60,8 +60,8 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('check scrolling to position if automatic scrolling gets enabled', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('automaticAdvancement_whenReEnabled_thenScrollsToCurrentPosition', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9');
 
       await stopAutomaticAdvancement(tester);
@@ -79,8 +79,8 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('check not scrolling if automatic advancement is off', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('automaticAdvancement_whenDisabled_thenDoesNotScroll', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9');
 
       await stopAutomaticAdvancement(tester);
@@ -101,8 +101,8 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('check if automatic advancement is enabled by default', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('automaticAdvancement_whenJourneyLoaded_thenIsEnabledByDefault', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9');
 
       // Find the header and check if it is existent
@@ -120,8 +120,8 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('check sticky footer is displayed', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('automaticAdvancement_whenDisabled_thenShowsStickyFooter', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9');
 
       await stopAutomaticAdvancement(tester);
@@ -135,8 +135,8 @@ void main() {
   });
 
   group('timed advancement tests', () {
-    testWidgets('check if timed Advancement is advancing correctly', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('timedAdvancement_whenJourneyLoaded_thenAdvancesCorrectly', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T46M');
 
       // Check chevron at start

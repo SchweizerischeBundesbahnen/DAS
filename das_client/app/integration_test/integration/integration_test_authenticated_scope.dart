@@ -12,28 +12,26 @@ import 'package:formation/component.dart';
 import 'package:logging/logging.dart';
 import 'package:ru_indications/component.dart';
 import 'package:sfera/component.dart';
+import 'package:train_identification/component.dart';
 
-import 'mock_customer_oriented_departure_repository.dart';
-import 'mock_external_links_repository.dart';
-import 'mock_formation_repository.dart';
-import 'mock_ru_feature_provider.dart';
-import 'mock_ru_indications_repository.dart';
-import 'mock_sim_train_view_model.dart';
-import 'mock_warn_app_view_model.dart';
+import '../mocks/mock_customer_oriented_departure_repository.dart';
+import '../mocks/mock_external_links_repository.dart';
+import '../mocks/mock_formation_repository.dart';
+import '../mocks/mock_ru_feature_provider.dart';
+import '../mocks/mock_ru_indications_repository.dart';
+import '../mocks/mock_sim_train_view_model.dart';
+import '../mocks/mock_train_identification_repository.dart';
+import '../mocks/mock_warn_app_view_model.dart';
 
-final _log = Logger('MockAuthenticatedScope');
+final _log = Logger('IntegrationTestAuthenticatedScope');
 
-class MockAuthenticatedScope extends AuthenticatedScope {
-  MockAuthenticatedScope(this.e2e);
-
-  final bool e2e;
-
+class IntegrationTestAuthenticatedScope extends AuthenticatedScope {
   @override
-  String get scopeName => 'MockAuthenticatedScope';
+  String get scopeName => 'IntegrationTestAuthenticatedScope';
 
   @override
   Future<void> push() async {
-    _log.fine('Pushing mock scope $scopeName');
+    _log.fine('Pushing scope $scopeName');
     getIt.pushNewScope(scopeName: scopeName);
 
     getIt.registerAuthProvider();
@@ -43,16 +41,10 @@ class MockAuthenticatedScope extends AuthenticatedScope {
     getIt.registerMqttService();
     getIt.registerSferaRemoteRepository();
     getIt.registerAppExpirationViewModel();
-    if (e2e) {
-      getIt.registerSettingsRepository();
-      getIt.registerRuFeatureProvider();
-      getIt.registerFormationRepository();
-      getIt.registerRuIndicationsRepository();
-    } else {
-      _registerMockRuFeaturesProvider();
-      _registerMockFormationRepository();
-      _registerMockRuIndicationsRepository();
-    }
+    _registerMockRuFeaturesProvider();
+    _registerMockFormationRepository();
+    _registerMockRuIndicationsRepository();
+    _registerMockTrainIdentificationRepository();
     _registerMockCustomerOrientedDepartureRepository();
     getIt.registerTimedRouteProvider();
 
@@ -82,6 +74,10 @@ class MockAuthenticatedScope extends AuthenticatedScope {
 
   void _registerMockRuIndicationsRepository() {
     getIt.registerSingleton<RuIndicationsRepository>(MockRuIndicationsRepository());
+  }
+
+  void _registerMockTrainIdentificationRepository() {
+    getIt.registerSingleton<TrainIdentificationRepository>(MockTrainIdentificationRepository());
   }
 
   void _registerMockExternalLinksRepository() {

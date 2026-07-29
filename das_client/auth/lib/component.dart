@@ -20,6 +20,6 @@ class AuthenticationComponent {
 
   static List<String> resolveRoles(String token) {
     final decodedToken = JsonWebToken.decode(token);
-    return decodedToken.payload['roles'] as List<String>? ?? [];
+    return (decodedToken.payload['roles'] as List?)?.cast<String>() ?? [];
   }
 }

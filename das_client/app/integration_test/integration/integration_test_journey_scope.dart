@@ -1,15 +1,15 @@
 import 'package:app/di/scopes/journey_scope.dart';
 import 'package:logging/logging.dart';
 
-final _log = Logger('MockJourneyScope');
+final _log = Logger('IntegrationTestJourneyScope');
 
-class MockJourneyScope extends JourneyScope {
+class IntegrationTestJourneyScope extends JourneyScope {
   @override
-  String get scopeName => 'MockJourneyScope';
+  String get scopeName => 'IntegrationTestJourneyScope';
 
   @override
   Future<void> push() async {
-    _log.fine('Pushing mock scope $scopeName');
+    _log.fine('Pushing scope $scopeName');
     getIt.pushNewScope(scopeName: scopeName);
 
     getIt.registerCustomerOrientedDepartureViewModel();
@@ -31,11 +31,13 @@ class MockJourneyScope extends JourneyScope {
     getIt.registerChronographViewModel();
     getIt.registerDetailModalViewModel();
     getIt.registerBrakeLoadSlipViewModel();
+    // gets registered inside authenticated scope in tests to access before loading journey
+    // getIt.registerSimTrainViewModel();
     getIt.registerCollapsibleRowsViewModel();
     getIt.registerJourneyTableViewModel();
     getIt.registerJourneyTableAdvancementViewModel();
     getIt.registerServicePointModalViewModel();
 
-    return getIt.allReady();
+    await getIt.allReady();
   }
 }

@@ -12,29 +12,25 @@ import 'package:preload/component.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 import 'package:warnapp/component.dart';
 
+import '../mocks/integration_test_audio_player.dart';
+import '../mocks/mock_app_links_manager.dart';
+import '../mocks/mock_battery.dart';
+import '../mocks/mock_brightness_manager.dart';
+import '../mocks/mock_connectivity_manager.dart';
+import '../mocks/mock_launcher.dart';
+import '../mocks/mock_preload_repository.dart';
+import '../mocks/mock_user_settings.dart';
 import '../util/test_time_constants.dart';
-import 'integration_test_audio_player.dart';
-import 'mock_app_links_manager.dart';
-import 'mock_battery.dart';
-import 'mock_brightness_manager.dart';
-import 'mock_connectivity_manager.dart';
-import 'mock_launcher.dart';
-import 'mock_preload_repository.dart';
-import 'mock_user_settings.dart';
 
-final _log = Logger('MockDASBaseScope');
+final _log = Logger('IntegrationTestDASBaseScope');
 
-class MockDASBaseScope extends DASBaseScope {
-  MockDASBaseScope(this.e2e);
-
-  final bool e2e;
-
+class IntegrationTestDASBaseScope extends DASBaseScope {
   @override
-  String get scopeName => 'DASBaseScopeMock';
+  String get scopeName => 'IntegrationTestDASBaseScope';
 
   @override
   Future<void> push() async {
-    _log.fine('Pushing mock scope $scopeName');
+    _log.fine('Pushing scope $scopeName');
     getIt.pushNewScope(scopeName: scopeName);
 
     getIt.registerAppInfoAsync();
@@ -53,11 +49,7 @@ class MockDASBaseScope extends DASBaseScope {
     getIt.registerSferaLocalRepo();
     getIt.registerAppLifecycleViewModel();
 
-    if (e2e) {
-      getIt.registerPreloadRepository();
-    } else {
-      _registerMockPreloadRepository();
-    }
+    _registerMockPreloadRepository();
 
     await getIt.allReady();
   }

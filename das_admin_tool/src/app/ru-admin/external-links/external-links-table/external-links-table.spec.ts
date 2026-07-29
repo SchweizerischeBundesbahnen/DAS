@@ -1,9 +1,9 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { LOCALE_ID } from '@angular/core';
 import { HttpResourceRef } from '@angular/common/http';
+import { LOCALE_ID } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ExternalLink, ExternalLinkApiResponse } from '~ru-admin/ru-admin-api';
 import { ExternalLinksService } from '../external-links.service';
 import { ExternalLinksTable } from './external-links-table';
-import { ExternalLink, ExternalLinkApiResponse } from '../../ru-admin-api';
 
 const externalLinks: ExternalLink[] = [
   {
@@ -77,7 +77,7 @@ describe('ExternalLinksTable', () => {
       component['dataSource'].data = externalLinks;
       component['selection'].select(externalLinks[0]);
       component['parentToggle']();
-      expect(component['selection'].selected.length).toBe(externalLinks.length);
+      expect(component['selection'].selected).toHaveLength(externalLinks.length);
     });
 
     it('should clear selection when all rows are already selected', () => {

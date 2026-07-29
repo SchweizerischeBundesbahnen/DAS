@@ -19,6 +19,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 
 @IntegrationTest
+@Sql("classpath:emptyTafTapLocations.sql")
 @Sql("classpath:createTafTapLocations.sql")
 class TafTapLocationControllerTest {
 

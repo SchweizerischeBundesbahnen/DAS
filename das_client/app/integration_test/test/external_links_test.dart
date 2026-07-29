@@ -6,12 +6,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 import '../app_test.dart';
+import '../integration/integration_test_app.dart';
 import '../util/test_utils.dart';
 
 void main() {
   group('links page tests', () {
-    testWidgets('should show empty state when no RU is selected', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('externalLinks_whenNoRuSelected_thenShowsEmptyState', (tester) async {
+      await IntegrationTestApp.start(tester);
 
       await openDrawer(tester);
       await tapElement(tester, find.text(l10n.w_navigation_drawer_links_title));
@@ -28,8 +29,8 @@ void main() {
       expect(find.text('ESQ'), findsNothing);
     });
 
-    testWidgets('should show links after RU selection in profile', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('externalLinks_whenRuSelectedInProfile_thenShowsLinks', (tester) async {
+      await IntegrationTestApp.start(tester);
 
       // Navigate to Profile and select SBB CH
       await openDrawer(tester);
@@ -62,8 +63,8 @@ void main() {
       expect(find.text('ESQ'), findsOneWidget);
     });
 
-    testWidgets('should update links when RU selection changes', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('externalLinks_whenRuSelectionChanges_thenUpdatesLinks', (tester) async {
+      await IntegrationTestApp.start(tester);
 
       // Navigate to Profile and select DB
       await openDrawer(tester);

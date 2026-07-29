@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
-import '../app_test.dart';
+import '../integration/integration_test_app.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('test calculated speeds are displayed correctly', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('calculatedSpeed_whenJourneyLoaded_thenDisplaysCorrectly', (tester) async {
+    await IntegrationTestApp.start(tester);
 
     await loadJourney(tester, trainNumber: 'T23M');
 
@@ -99,8 +99,8 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test calculated speeds are displayed correctly in sticky header', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('calculatedSpeed_whenDisplayedInStickyHeader_thenShowsCorrectly', (tester) async {
+    await IntegrationTestApp.start(tester);
 
     await loadJourney(tester, trainNumber: 'T23M');
 
@@ -146,8 +146,8 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test do not display chronograph punctuality if no vpro speed in current position', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('calculatedSpeed_whenNoVproSpeedAtPosition_thenHidesPunctuality', (tester) async {
+    await IntegrationTestApp.start(tester);
 
     await loadJourney(tester, trainNumber: 'T23');
 
@@ -169,8 +169,8 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test calculated speed is reduced to line speed and displayed in different color', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('calculatedSpeed_whenReducedToLineSpeed_thenDisplaysInDifferentColor', (tester) async {
+    await IntegrationTestApp.start(tester);
 
     await loadJourney(tester, trainNumber: 'T23M');
 

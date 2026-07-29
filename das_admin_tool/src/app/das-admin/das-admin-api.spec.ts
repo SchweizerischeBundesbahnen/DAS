@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-
 import { DasAdminApi } from './das-admin-api';
 
 describe('DasAdminApi', () => {

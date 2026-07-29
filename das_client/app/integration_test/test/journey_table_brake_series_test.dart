@@ -2,11 +2,12 @@ import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../app_test.dart';
+import '../integration/integration_test_app.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('test brake series defaults to ??', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('brakeSeries_whenDefaultMissing_thenShowsQuestionMarks', (tester) async {
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T6');
 
     final brakeSeriesHeaderCell = find.byKey(JourneyTable.brakeSeriesHeaderKey);
@@ -16,8 +17,8 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test default brake series is taken from train characteristics (R115)', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('brakeSeries_whenDefaultFromTrainCharacteristics_thenShowsR115', (tester) async {
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T5');
 
     final brakeSeriesHeaderCell = find.byKey(JourneyTable.brakeSeriesHeaderKey);
@@ -27,8 +28,8 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test all brake series options are displayed', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('brakeSeries_whenOpened_thenShowsAllOptions', (tester) async {
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T5');
 
     // Open brake series bottom sheet
@@ -66,8 +67,8 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test message when no brake series are defined', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('brakeSeries_whenNoBrakeSeriesDefined_thenShowsMessage', (tester) async {
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T4');
 
     // Open brake series bottom sheet

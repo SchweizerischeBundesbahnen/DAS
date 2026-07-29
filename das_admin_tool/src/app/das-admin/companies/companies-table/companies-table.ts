@@ -1,11 +1,11 @@
+import { DatePipe } from '@angular/common';
 import { Component, effect, inject, viewChild } from '@angular/core';
 import { SbbMiniButton } from '@sbb-esta/lyne-angular/button';
 import { SbbSort, SbbTableDataSource, SbbTableModule } from '@sbb-esta/lyne-angular/table';
-import { TableBottomBar } from '../../../shared/table-bottom-bar/table-bottom-bar';
-import { InternalCompany } from '../../das-admin-api';
-import { CompanyService } from '../company.service';
-import { DatePipe } from '@angular/common';
+import { InternalCompany } from '~app/das-admin/das-admin-api';
+import { TableBottomBar } from '~shared/table-bottom-bar/table-bottom-bar';
 import { TenantService } from '../company-dialog/tenant.service';
+import { CompanyService } from '../company.service';
 
 @Component({
   selector: 'app-companies-table',
@@ -48,11 +48,11 @@ export class CompaniesTable {
     return tenant ? `${tenant.tenantId} - ${tenant.name}` : tenantId;
   }
 
-  protected edit(company: InternalCompany): void {
-    this.companyService.edit(company);
+  protected async edit(company: InternalCompany): Promise<void> {
+    await this.companyService.edit(company);
   }
 
-  protected add(): void {
-    this.companyService.add();
+  protected async add(): Promise<void> {
+    await this.companyService.add();
   }
 }

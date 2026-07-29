@@ -3,12 +3,12 @@ import 'package:app/pages/journey/journey_screen/widgets/table/cells/track_equip
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../app_test.dart';
+import '../integration/integration_test_app.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('test if CAB signaling is displayed correctly', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('trackEquipment_whenCabSignaling_thenDisplaysCorrectly', (tester) async {
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T1');
 
     final scrollableFinder = find.byType(AnimatedList);
@@ -67,8 +67,8 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test if track equipment is displayed correctly', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('trackEquipment_whenLoaded_thenDisplaysCorrectly', (tester) async {
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T1');
 
     final scrollableFinder = find.byType(AnimatedList);
@@ -152,8 +152,8 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test if single track without block track equipment is displayed correctly', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('trackEquipment_whenSingleTrackNoBlock_thenDisplaysCorrectly', (tester) async {
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T10');
 
     // check ExtendedSpeedReversingPossible from Genève-Aéroport to Gland

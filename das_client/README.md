@@ -35,7 +35,7 @@ Use the following Melos command to generate the necessary code for all the compo
 fvm dart run melos generate
 ```
 
-### Run Application
+### Run application
 
 DAS Client has 3 distinct flavors: `dev`, `inte` and `prod`. Run them as follows:
 
@@ -191,7 +191,7 @@ Localization terms/keys conform to the following format:
 <PREFIX>_<CONTEXT?>_<LABEL>
 ```
 
-The prefix is mandatory and indicates the scope of the term. Valid prefixes are:
+The prefix is mandatory and indicates the scope of the term. Valid prefixes are: 
 
 | Prefix | Scope  | Description                                    |
 |--------|--------|------------------------------------------------|

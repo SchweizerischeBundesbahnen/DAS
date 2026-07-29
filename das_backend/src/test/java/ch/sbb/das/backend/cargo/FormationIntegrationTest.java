@@ -6,6 +6,7 @@ import static org.awaitility.Awaitility.await;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.das.backend.IntegrationTest;
@@ -15,6 +16,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import org.junit.jupiter.api.DisplayName;
@@ -206,6 +209,106 @@ class FormationIntegrationTest {
                         .with(user("any").roles("observer")))
                     .andExpect(status().isOk())
                     .andExpect(content().json(expectedJson, JsonCompareMode.STRICT));
+            });
+    }
+
+    @DisplayName("Formation when smsEvu is not 4 chars then the kafka message is ignored|tests:539,541,715,1176")
+    @Test
+    void whenFormationMessageHasInvalidCompanyLength_shouldNotBeAvailable() throws Exception {
+        DailyFormationTrainKey key = this.jsonMapper.readValue(new File("src/test/resources/cargo/43/kafka_key.json"), DailyFormationTrainKey.class);
+        DailyFormationTrain value = this.jsonMapper.readValue(new File("src/test/resources/cargo/43/kafka_value.json"), DailyFormationTrain.class);
+
+        key.setZugnummer(99431);
+        key.setBetriebstag(java.time.LocalDate.of(2025, 11, 19));
+        key.setTrassenId("99431-001");
+
+        value.getFormationRuns().getFirst().setSmsEvu("123");
+        if (value.getKey() != null) {
+            value.getKey().setZugnummer(99431);
+            value.getKey().setBetriebstag(java.time.LocalDate.of(2025, 11, 19));
+            value.getKey().setTrassenId("99431-001");
+        }
+
+        kafkaTemplate.send(topic, key, value).get(10, TimeUnit.SECONDS);
+
+        await()
+            .atMost(10, TimeUnit.SECONDS)
+            .during(3, TimeUnit.SECONDS)
+            .untilAsserted(() -> {
+                mockMvc.perform(get(API_FORMATIONS)
+                        .param("operationalTrainNumber", "99431").param("operationalDay", "2025-11-19").param("company", "1234")
+                        .with(user("any").roles("observer")))
+                    .andExpect(status().isNotFound());
+            });
+    }
+
+    @DisplayName("Formation when smsEvu is null then the kafka message is ignored|tests:539,541,715,1176")
+    @Test
+    void whenFormationMessageHasNullCompany_shouldNotBeAvailable() throws Exception {
+        DailyFormationTrainKey key = this.jsonMapper.readValue(new File("src/test/resources/cargo/43/kafka_key.json"), DailyFormationTrainKey.class);
+        DailyFormationTrain value = this.jsonMapper.readValue(new File("src/test/resources/cargo/43/kafka_value.json"), DailyFormationTrain.class);
+
+        key.setZugnummer(99432);
+        key.setBetriebstag(LocalDate.of(2025, 11, 20));
+        key.setTrassenId("99432-001");
+
+        value.getFormationRuns().getFirst().setSmsEvu(null);
+        if (value.getKey() != null) {
+            value.getKey().setZugnummer(99432);
+            value.getKey().setBetriebstag(LocalDate.of(2025, 11, 20));
+            value.getKey().setTrassenId("99432-001");
+        }
+
+        kafkaTemplate.send(topic, key, value).get(10, TimeUnit.SECONDS);
+
+        await()
+            .atMost(10, TimeUnit.SECONDS)
+            .during(3, TimeUnit.SECONDS)
+            .untilAsserted(() -> {
+                mockMvc.perform(get(API_FORMATIONS)
+                        .param("operationalTrainNumber", "99432").param("operationalDay", "2025-11-20").param("company", "1234")
+                        .with(user("any").roles("observer")))
+                    .andExpect(status().isNotFound());
+            });
+    }
+
+    @DisplayName("Formation when one run has invalid smsEvu then only that run is skipped|tests:539,541,715,1176")
+    @Test
+    void whenMessageContainsMixedValidAndInvalidCompanies_shouldKeepOnlyValidRuns() throws Exception {
+        DailyFormationTrainKey key = this.jsonMapper.readValue(new File("src/test/resources/cargo/43/kafka_key.json"), DailyFormationTrainKey.class);
+        DailyFormationTrain value = this.jsonMapper.readValue(new File("src/test/resources/cargo/43/kafka_value.json"), DailyFormationTrain.class);
+
+        key.setZugnummer(99433);
+        key.setBetriebstag(java.time.LocalDate.of(2025, 11, 21));
+        key.setTrassenId("99433-001");
+
+        ch.sbb.zis.trainformation.api.model.FormationRun validRun = value.getFormationRuns().getFirst();
+        ch.sbb.zis.trainformation.api.model.FormationRun invalidRun = this.jsonMapper.readValue(
+            this.jsonMapper.writeValueAsBytes(validRun),
+            ch.sbb.zis.trainformation.api.model.FormationRun.class
+        );
+        invalidRun.setSmsEvu("123");
+        value.setFormationRuns(List.of(invalidRun, validRun));
+
+        if (value.getKey() != null) {
+            value.getKey().setZugnummer(99433);
+            value.getKey().setBetriebstag(java.time.LocalDate.of(2025, 11, 21));
+            value.getKey().setTrassenId("99433-001");
+        }
+
+        kafkaTemplate.send(topic, key, value).get(10, TimeUnit.SECONDS);
+
+        await()
+            .atMost(10, TimeUnit.SECONDS)
+            .untilAsserted(() -> {
+                mockMvc.perform(get(API_FORMATIONS)
+                        .param("operationalTrainNumber", "99433").param("operationalDay", "2025-11-21").param("company", "3412")
+                        .with(user("any").roles("observer")))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.data[0].company").value("3412"))
+                    .andExpect(jsonPath("$.data[0].formationRuns.length()").value(1))
+                    .andExpect(jsonPath("$.data[0].formationRuns[0].tafTapLocationReferenceStart").value("CH05699"))
+                    .andExpect(jsonPath("$.data[0].formationRuns[0].tafTapLocationReferenceEnd").value("CH05683"));
             });
     }
 }

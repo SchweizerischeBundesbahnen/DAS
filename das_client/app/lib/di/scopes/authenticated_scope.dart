@@ -8,7 +8,6 @@ import 'package:app/pages/journey/view_model/app_expiration_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
-import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
 import 'package:app/pages/journey/view_model/sfera_journey_view_model.dart';
 import 'package:app/pages/journey/view_model/view_mode_view_model.dart';
 import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
@@ -32,6 +31,7 @@ import 'package:preload/component.dart';
 import 'package:ru_indications/component.dart';
 import 'package:settings/component.dart';
 import 'package:sfera/component.dart';
+import 'package:train_identification/component.dart';
 
 final _log = Logger('AuthenticatedScope');
 
@@ -60,6 +60,7 @@ class AuthenticatedScope extends DIScope {
     getIt.registerCustomerOrientedDepartureRepository(inTmsScope: inTmsScope);
     getIt.registerExternalLinksRepository();
     getIt.registerRuIndicationsRepository();
+    getIt.registerTrainIdentificationRepository();
     getIt.registerTimedRouteProvider();
 
     getIt.registerSferaJourneyViewModel();
@@ -206,9 +207,20 @@ extension AuthenticatedScopeExtension on GetIt {
     );
   }
 
+  void registerTrainIdentificationRepository() {
+    final flavor = DI.get<Flavor>();
+    registerSingleton<TrainIdentificationRepository>(
+      TrainIdentificationComponent.createRepository(
+        baseUrl: flavor.backendUrl,
+        client: DI.get(),
+        sferaLocalRepo: DI.get(),
+      ),
+    );
+  }
+
   void registerJourneyNavigationViewModel() {
     registerSingletonAsync<JourneyNavigationViewModel>(
-      () async => JourneyNavigationViewModel(sferaRepo: DI.get()),
+      () async => JourneyNavigationViewModel(sferaRepo: DI.get(), userSettings: DI.get()),
       dependsOn: [SferaRepository],
       dispose: (vm) => vm.dispose(),
     );
@@ -218,9 +230,9 @@ extension AuthenticatedScopeExtension on GetIt {
     factoryFunc() async {
       return JourneySelectionViewModel(
         sferaRepo: DI.get(),
-        onJourneySelected: (trainId) => DI.get<JourneyNavigationViewModel>().replaceWith([
-          ExtendedTrainIdentification(trainIdentification: trainId),
-        ]),
+        trainIdentificationRepository: DI.get(),
+        userSettings: DI.get(),
+        onJourneySelected: (trainId) => DI.get<JourneyNavigationViewModel>().replaceWith([?trainId]),
       );
     }
 

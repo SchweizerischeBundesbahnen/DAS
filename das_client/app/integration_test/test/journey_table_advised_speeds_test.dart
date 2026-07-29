@@ -6,11 +6,12 @@ import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../app_test.dart';
+import '../integration/integration_test_app.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('test advised speed notification displayed correctly', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('advisedSpeed_whenNotificationReceived_thenDisplaysCorrectly', (tester) async {
+    await IntegrationTestApp.start(tester);
 
     await loadJourney(tester, trainNumber: 'T24');
 
@@ -69,8 +70,8 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test advised speeds displayed correctly', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('advisedSpeed_whenJourneyLoaded_thenDisplaysCorrectly', (tester) async {
+    await IntegrationTestApp.start(tester);
 
     await loadJourney(tester, trainNumber: 'T24');
 

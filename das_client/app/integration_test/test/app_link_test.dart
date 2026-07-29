@@ -14,18 +14,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
+import 'package:train_identification/component.dart';
 
 import '../app_test.dart';
-import '../auth/integrationtest_authenticator.dart';
+import '../auth/integration_test_authenticator.dart';
+import '../integration/integration_test_app.dart';
 import '../mocks/mock_app_links_manager.dart';
 import '../mocks/mock_launcher.dart';
+import '../mocks/mock_train_identification_repository.dart';
 import '../mocks/mock_user_settings.dart';
 import '../util/test_utils.dart';
 
 void main() {
   group('train-journey app link', () {
     testWidgets('appLink_whenLinkWithSingleTrain_opensJourney', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
 
       expect(find.byType(JourneySelectionPage), findsOne);
 
@@ -50,7 +53,7 @@ void main() {
     });
 
     testWidgets('appLink_whenLinkWithMultipleTrains_opensFirstJourneyAndRestInNavigation', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
 
       expect(find.byType(JourneySelectionPage), findsOne);
 
@@ -88,7 +91,7 @@ void main() {
     });
 
     testWidgets('appLink_whenLinkWithValidAndUnknownTrain_opensFirstJourneyAndShowsErrorPageForSecond', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
 
       expect(find.byType(JourneySelectionPage), findsOne);
 
@@ -126,7 +129,7 @@ void main() {
     });
 
     testWidgets('appLink_whenLinkWhileUnauthenticated_opensJourneyAfterLoginFlow', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
 
       expect(find.byType(JourneySelectionPage), findsOne);
 
@@ -156,7 +159,7 @@ void main() {
     });
 
     testWidgets('appLink_whenLinkWithUnknownTrain_showsErrorPage', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
 
       expect(find.byType(JourneySelectionPage), findsOne);
 
@@ -175,7 +178,7 @@ void main() {
     });
 
     testWidgets('appLink_whenLinkWithTafTapStartAndEnd_showsTrainDriverTurnoverRows', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
 
       expect(find.byType(JourneySelectionPage), findsOne);
 
@@ -203,7 +206,7 @@ void main() {
     });
 
     testWidgets('appLink_whenLinkWithReturnUrl_shouldUseReturnUrlOverDefaultTourSystemUrl', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
 
       expect(find.byType(JourneySelectionPage), findsOne);
 
@@ -240,7 +243,7 @@ void main() {
     });
 
     testWidgets('appLink_whenAlreadyOnJourneyPageReceivingDeeplink_opensNewJourney', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
       // check that train is loaded
@@ -266,6 +269,112 @@ void main() {
 
       await disconnect(tester);
     });
+
+    testWidgets('appLink_whenLinkWithSingleTrain_showsCompanyMatchSelection', (tester) async {
+      await IntegrationTestApp.start(tester);
+
+      expect(find.byType(JourneySelectionPage), findsOne);
+
+      final trainIdentificationRepository =
+          DI.get<TrainIdentificationRepository>() as MockTrainIdentificationRepository;
+      trainIdentificationRepository.companyMatchData = {
+        CompanyMatch(
+          ru: RailwayUndertaking.sbbI,
+          startDate: DateTime.now(),
+        ),
+        CompanyMatch(
+          ru: RailwayUndertaking.blsI,
+          startDate: DateTime.now(),
+        ),
+      };
+
+      final journeys = [_trainJourneyLinkData('T9999')];
+      _pushTrainJourneyAppLink(journeys);
+
+      await waitUntilExists(tester, find.text('5184, SBBI'));
+      expect(find.text('2263, BLSI'), findsOneWidget);
+
+      await disconnect(tester);
+    });
+
+    testWidgets('appLink_whenAlreadyOnJourneyPageReceivingDeeplink_opensSelectionWithCompanyMatch', (tester) async {
+      await IntegrationTestApp.start(tester);
+      await loadJourney(tester, trainNumber: 'T9999');
+
+      // check that train is loaded
+      await waitUntilExists(tester, find.byKey(JourneyTable.loadedJourneyTableKey));
+      await tester.pumpAndSettle();
+      final trainIdentification = find.descendant(
+        of: find.byKey(JourneyIdentifier.journeyIdentifierKey),
+        matching: find.textContaining('T9999'),
+      );
+      expect(trainIdentification, findsOne);
+
+      final trainIdentificationRepository =
+          DI.get<TrainIdentificationRepository>() as MockTrainIdentificationRepository;
+      trainIdentificationRepository.companyMatchData = {
+        CompanyMatch(
+          ru: RailwayUndertaking.sbbI,
+          startDate: DateTime.now(),
+        ),
+        CompanyMatch(
+          ru: RailwayUndertaking.blsI,
+          startDate: DateTime.now(),
+        ),
+      };
+
+      final journeys = [_trainJourneyLinkData('T1')];
+      _pushTrainJourneyAppLink(journeys);
+
+      // wait until SelectionPage is opened
+      await waitUntilExists(tester, find.byType(JourneySelectionPage));
+
+      expect(find.text('5184, SBBI'), findsOneWidget);
+      expect(find.text('2263, BLSI'), findsOneWidget);
+
+      await disconnect(tester);
+    });
+
+    testWidgets('appLink_whenAlreadyOnJourneyPageReceivingDeeplink_opensNewJourneyWithMatchingRu', (tester) async {
+      await IntegrationTestApp.start(tester);
+      await loadJourney(tester, trainNumber: 'T9999');
+
+      // check that train is loaded
+      await waitUntilExists(tester, find.byKey(JourneyTable.loadedJourneyTableKey));
+      await tester.pumpAndSettle();
+      final trainIdentification = find.descendant(
+        of: find.byKey(JourneyIdentifier.journeyIdentifierKey),
+        matching: find.textContaining('T9999'),
+      );
+      expect(trainIdentification, findsOne);
+
+      final trainIdentificationRepository =
+          DI.get<TrainIdentificationRepository>() as MockTrainIdentificationRepository;
+      trainIdentificationRepository.companyMatchData = {
+        CompanyMatch(
+          ru: RailwayUndertaking.sbbP,
+          startDate: DateTime.now(),
+        ),
+        CompanyMatch(
+          ru: RailwayUndertaking.blsI,
+          startDate: DateTime.now(),
+        ),
+      };
+
+      final journeys = [_trainJourneyLinkData('T1')];
+      _pushTrainJourneyAppLink(journeys);
+
+      // wait until T1 opened
+      await waitUntilExists(
+        tester,
+        find.descendant(
+          of: find.byKey(JourneyIdentifier.journeyIdentifierKey),
+          matching: find.textContaining('T1'),
+        ),
+      );
+
+      await disconnect(tester);
+    });
   });
 }
 
@@ -274,10 +383,11 @@ TrainJourneyLinkData _trainJourneyLinkData(
   String? tafTapLocationReferenceStart,
   String? tafTapLocationReferenceEnd,
   String? returnUrl,
+  String? company,
 ]) {
   return TrainJourneyLinkData(
     operationalTrainNumber: trainNumber,
-    company: RailwayUndertaking.sbbP.companyCode,
+    company: company,
     startDate: DateTime.now(),
     tafTapLocationReferenceStart: tafTapLocationReferenceStart,
     tafTapLocationReferenceEnd: tafTapLocationReferenceEnd,
@@ -286,7 +396,7 @@ TrainJourneyLinkData _trainJourneyLinkData(
 }
 
 void _pushTrainJourneyAppLink(List<TrainJourneyLinkData> journeys) {
-  final formationRepository = DI.get<AppLinksManager>() as MockAppLinksManager;
+  final appLinksManager = DI.get<AppLinksManager>() as MockAppLinksManager;
   final intent = TrainJourneyIntent(appLink: Uri.parse('https://example.com'), journeys: journeys);
-  formationRepository.pushAppLinkIntent(intent);
+  appLinksManager.pushAppLinkIntent(intent);
 }

@@ -51,7 +51,7 @@ class FormtionsApiTest extends RestAssuredCommand {
         testContextManager.prepareTestInstance(this);
     }
 
-    @DisplayName("/formations&operationaDay=<PAST> non-existing|tests: 541(1)")
+    @DisplayName("/formations&operationaDay=<PAST> non-existing|tests: 541")
     @Test
     void getFormations_operationalDayNonExisting() {
         final Response response = createRequestWithHeader("en", ServiceDoc.REQUEST_ID_VALUE_E2E_TEST)
@@ -75,7 +75,7 @@ class FormtionsApiTest extends RestAssuredCommand {
         assertThat(body).as("Problem::type").doesNotContain("\type\"");
     }
 
-    @DisplayName("/formations&operationaDay=<FUTURE> non-existing|tests: 541(1)")
+    @DisplayName("/formations&operationaDay=<FUTURE> non-existing|tests: 541")
     @Test
     void getFormations_operationalDayNotNow() {
         final String operationalDay = LocalDate.now().plusDays(10).toString();
@@ -101,7 +101,7 @@ class FormtionsApiTest extends RestAssuredCommand {
         assertThat(response.getHeaders().get(MonitoringConstants.HEADER_REQUEST_ID).getValue()).isEqualTo(requestId);
     }
 
-    @DisplayName("/formations&company=<BAD FORMAT> non-existing|tests: 541(1)")
+    @DisplayName("/formations&company=<BAD FORMAT> non-existing|tests: 541")
     @Test
     void getFormations_companyBadFormat() {
         final LocalDate today = LocalDate.now();
@@ -127,7 +127,7 @@ class FormtionsApiTest extends RestAssuredCommand {
         }
     }
 
-    @DisplayName("/formations&operationalTrainNumber=<BAD> non-existing|tests: 541(1)")
+    @DisplayName("/formations&operationalTrainNumber=<BAD> non-existing|tests: 541")
     @Test
     void getFormations_operationTrainNumberBad() {
         final LocalDate today = LocalDate.now();

@@ -16,6 +16,7 @@ class SelectRailwayUndertakingInput extends StatefulWidget {
     super.key,
     this.isModalVersion = false,
     this.allowMultiSelect = false,
+    this.addClearButton = false,
     this.borderType = .boxedOrListed,
   });
 
@@ -23,6 +24,7 @@ class SelectRailwayUndertakingInput extends StatefulWidget {
   final void Function(List<RailwayUndertaking>) updateRailwayUndertaking;
   final bool isModalVersion;
   final bool allowMultiSelect;
+  final bool addClearButton;
   final SBBInputBorderType borderType;
 
   @override
@@ -50,28 +52,43 @@ class _RailwayUndertakingTextFieldState extends State<SelectRailwayUndertakingIn
   Widget build(BuildContext context) {
     return Padding(
       padding: widget.isModalVersion ? .zero : _inputPadding,
-      child: SBBDecoratedText(
-        onTap: () {
-          showModalBottomSheet(
-            context: context,
-            isScrollControlled: true,
-            clipBehavior: .hardEdge,
-            backgroundColor: _modalBackgroundColor(context),
-            shape: SelectRailwayUndertakingModal.shapeBorder,
-            constraints: _modalConstraints,
-            builder: (_) => SelectRailwayUndertakingModal(
-              selectedRailwayUndertaking: widget.selectedRailwayUndertakings,
-              allowMultiSelect: widget.allowMultiSelect,
-              updateRailwayUndertaking: widget.updateRailwayUndertaking,
+      child: Row(
+        children: [
+          Expanded(
+            child: SBBDecoratedText(
+              onTap: () {
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  clipBehavior: .hardEdge,
+                  backgroundColor: _modalBackgroundColor(context),
+                  shape: SelectRailwayUndertakingModal.shapeBorder,
+                  constraints: _modalConstraints,
+                  builder: (_) => SelectRailwayUndertakingModal(
+                    selectedRailwayUndertaking: widget.selectedRailwayUndertakings,
+                    allowMultiSelect: widget.allowMultiSelect,
+                    updateRailwayUndertaking: widget.updateRailwayUndertaking,
+                  ),
+                );
+              },
+              decoration: SBBInputDecoration(
+                borderType: widget.borderType,
+                labelText: widget.isModalVersion ? null : context.l10n.p_train_selection_ru_description,
+                placeholderText: widget.isModalVersion ? context.l10n.p_train_selection_ru_description : null,
+              ),
+              value: selectedValues ?? '',
             ),
-          );
-        },
-        decoration: SBBInputDecoration(
-          borderType: widget.borderType,
-          labelText: widget.isModalVersion ? null : context.l10n.p_train_selection_ru_description,
-          placeholderText: widget.isModalVersion ? context.l10n.p_train_selection_ru_description : null,
-        ),
-        value: selectedValues ?? '',
+          ),
+          if (selectedValues != null && selectedValues!.isNotEmpty && widget.addClearButton)
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: widget.isModalVersion ? SBBSpacing.xSmall : SBBSpacing.medium),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(SBBSpacing.small),
+                onTap: () => widget.updateRailwayUndertaking([]),
+                child: const Icon(SBBIcons.cross_tiny_small),
+              ),
+            ),
+        ],
       ),
     );
   }

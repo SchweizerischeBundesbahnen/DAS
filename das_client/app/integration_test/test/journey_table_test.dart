@@ -19,12 +19,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 import '../app_test.dart';
+import '../integration/integration_test_app.dart';
 import '../util/test_utils.dart';
 
 void main() {
   group('train journey table test', () {
-    testWidgets('test journey displays end of curves correctly', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyTable_whenCurvesPresent_thenDisplaysEndOfCurvesCorrectly', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T5');
 
       //find first curve
@@ -38,8 +39,8 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test journey displays summarized curve as one', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyTable_whenSummarizedCurve_thenDisplaysAsOne', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T5');
 
       //find pause button and press it
@@ -67,8 +68,8 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test displays kilometer and communication network changes correctly', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyTable_whenKilometerAndNetworkChanges_thenDisplaysCorrectly', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
       // find pause button and press it
@@ -91,8 +92,8 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test up- and downhill gradient is displayed correctly', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyTable_whenGradientPresent_thenDisplaysUpAndDownhill', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T15M');
 
       final renensRow = findDASTableRowByText('Renens VD');
@@ -123,8 +124,8 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test find two curves found when brakeSeries A50 is chosen', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyTable_whenBrakeSeriesA50Chosen_thenFindstwoCurves', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T5');
 
       // change brakeSeries to A50
@@ -144,8 +145,8 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test find three curves when brakeSeries R115 is chosen', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyTable_whenBrakeSeriesR115Chosen_thenFindsThreeCurves', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T5');
 
       // find and check if the default brake series is chosen
@@ -162,8 +163,8 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test whistle and tram area', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyTable_whenWhistleAndTramArea_thenDisplaysCorrectly', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T7M');
 
       final whistleRow = findDASTableRowByText('39.6');
@@ -184,8 +185,8 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test chevron position positioned correctly inside grouped items', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyTable_whenChevronInGroupedItems_thenPositionsCorrectly', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T7');
 
       // Chevron displayed at grouped row
@@ -206,8 +207,8 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test speed values of default brakeSeries (R115)', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyTable_whenDefaultBrakeSeries_thenShowsCorrectSpeedValues', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T5');
 
       final expectedSpeeds = {
@@ -232,8 +233,8 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test speed values of missing brake series', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyTable_whenMissingBrakeSeries_thenShowsCorrectSpeedValues', (tester) async {
+      await IntegrationTestApp.start(tester);
 
       await loadJourney(tester, trainNumber: 'T5');
       await selectBrakeSeries(tester, brakeSeries: 'A85');
@@ -277,8 +278,8 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test connection track is displayed correctly', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyTable_whenConnectionTrackPresent_thenDisplaysCorrectly', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
       final scrollableFinder = find.byType(AnimatedList);
@@ -313,8 +314,8 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('check if all table columns with header are present', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyTable_whenLoaded_thenShowsAllColumnsWithHeaders', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T6');
 
       // List of expected column headers
@@ -334,8 +335,8 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test route is displayed correctly', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyTable_whenRoutePresent_thenDisplaysCorrectly', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
       final scrollableFinder = find.byType(AnimatedList);
@@ -374,8 +375,8 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test protection sections are displayed correctly', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyTable_whenProtectionSectionsPresent_thenDisplaysCorrectly', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T3');
 
       final scrollableFinder = find.byType(AnimatedList);
@@ -441,8 +442,8 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test both kilometres are displayed', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyTable_whenBothKilometresPresent_thenDisplaysBoth', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T6');
 
       final hardbruckeRow = findDASTableRowByText('Hardbrücke');
@@ -453,8 +454,8 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test bracket stations is displayed correctly', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyTable_whenBracketStations_thenDisplaysCorrectly', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
       final scrollableFinder = find.byType(AnimatedList);
@@ -502,8 +503,8 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test halt on request is displayed correctly', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyTable_whenHaltOnRequest_thenDisplaysCorrectly', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
       final scrollableFinder = find.byType(AnimatedList);
@@ -531,8 +532,8 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test halt is displayed italic', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyTable_whenHaltPresent_thenDisplaysItalic', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T6');
 
       final glanzenbergRow = findDASTableRowByText('Glanzenberg');
@@ -556,8 +557,8 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('whenServicePointHasTrackGroup_isDisplayedCorrectlyDependingOnDetailModal', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyTable_whenServicePointHasTrackGroup_thenDisplaysCorrectlyWithDetailModal', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T6M');
 
       final hardbrueckeRow = findDASTableRowByText('Hardbrücke');
@@ -572,8 +573,8 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test curves are displayed correctly', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyTable_whenCurvesPresent_thenDisplaysCurvesCorrectly', (tester) async {
+      await IntegrationTestApp.start(tester);
 
       await loadJourney(tester, trainNumber: 'T9999M');
 
@@ -598,8 +599,8 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test signals are displayed correctly', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyTable_whenSignalsPresent_thenDisplaysCorrectly', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
       final scrollableFinder = find.byType(AnimatedList);
@@ -649,8 +650,8 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test if station speeds are displayed correctly', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyTable_whenStationSpeeds_thenDisplaysCorrectly', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T8');
 
       // check station speeds for Bern
@@ -755,8 +756,8 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test line speed always displayed in sticky header', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyTable_whenLineSpeed_thenAlwaysDisplaysInStickyHeader', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T8');
 
       // now empty
@@ -792,8 +793,8 @@ void main() {
       expect(wankdorfIncomingSpeedsEmpty2, findsNothing);
     });
 
-    testWidgets('test line speed is hidden on ETCS level 2 section', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyTable_whenEtcsLevel2Section_thenHidesLineSpeed', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T11');
 
       final scrollableFinder = find.byType(AnimatedList);
@@ -810,8 +811,8 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test additional service points displayed correctly', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyTable_whenAdditionalServicePoints_thenDisplaysCorrectly', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T27');
 
       final scrollableFinder = find.byType(AnimatedList);
@@ -828,8 +829,8 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test shunting movement markers are displayed correctly', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyTable_whenShuntingMovement_thenDisplaysMarkersCorrectly', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T29');
 
       final scrollableFinder = find.byType(AnimatedList);
@@ -857,11 +858,11 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test correct color priority', (tester) async {
+    testWidgets('journeyTable_whenMultipleColors_thenDisplaysCorrectPriority', (tester) async {
       // https://github.com/SchweizerischeBundesbahnen/DAS/issues/1125
       // ADL > NextStop > ASR > Protection Section
 
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T44');
 
       await _checkRowColors(tester, 'Bahnhof A', {DASColors.advisedSpeedBackgroundBright: 1});

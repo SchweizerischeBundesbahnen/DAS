@@ -2,6 +2,7 @@ package ch.sbb.das.backend.cargo.infrastructure;
 
 import ch.sbb.das.backend.cargo.domain.model.FormationRun;
 import ch.sbb.das.backend.cargo.domain.model.FormationRun.FormationRunBuilder;
+import ch.sbb.das.backend.companies.CompanyCode;
 import ch.sbb.das.backend.locations.TafTapLocationReference;
 import ch.sbb.zis.trainformation.api.model.BrakeCalculationResult;
 import ch.sbb.zis.trainformation.api.model.ConsolidatedBrakingInformation;
@@ -19,12 +20,14 @@ public final class FormationRunFactory {
 
     public static List<FormationRun> create(List<ch.sbb.zis.trainformation.api.model.FormationRun> formationRuns) {
         return formationRuns.stream()
-            .map(FormationRunFactory::create).toList();
+            .filter(formationRun -> CompanyCode.isValid(formationRun.getSmsEvu()))
+            .map(FormationRunFactory::create)
+            .toList();
     }
 
     private static FormationRun create(ch.sbb.zis.trainformation.api.model.FormationRun formationRun) {
         FormationRunBuilder builder = FormationRun.builder()
-            .company(formationRun.getSmsEvu())
+            .company(new CompanyCode(formationRun.getSmsEvu()))
             .tafTapLocationReferenceStart(toTafTapLocationReference(formationRun.getStartLocationUic()))
             .tafTapLocationReferenceEnd(toTafTapLocationReference(formationRun.getEndLocationUic()))
             .trainCategoryCode(formationRun.getTrainSequence())

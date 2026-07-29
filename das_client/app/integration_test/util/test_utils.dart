@@ -7,6 +7,7 @@ import 'package:app/pages/journey/journey_screen/header/widgets/extended_menu.da
 import 'package:app/pages/journey/journey_screen/header/widgets/journey_advancement_button.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/next_stop.dart';
 import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
+import 'package:app/widgets/railway_undertaking/widgets/select_railway_undertaking_modal.dart';
 import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:app/widgets/table/scrollable_align.dart';
@@ -90,10 +91,12 @@ Finder findColoredRowCells({required FinderBase<Element> of, required Color colo
 Future<void> loadJourney(WidgetTester tester, {required String trainNumber, RailwayUndertaking? ru}) async {
   if (ru != null) {
     await tapElement(tester, find.text(l10n.p_train_selection_ru_description), warnIfMissed: false);
+
+    final filterField = find.byKey(SelectRailwayUndertakingModal.filterFieldKey);
+    expect(filterField, findsOneWidget);
+    await enterText(tester, filterField, ru.name);
+
     await tapElement(tester, find.byWidgetPredicate((widget) => widget is SBBRadioListItem && widget.value == ru));
-  } else {
-    // verify we have ru SBB selected.
-    expect(find.text(l10n.c_ru_sbb_p), findsOneWidget);
   }
 
   final trainNumberText = findTextInputByLabel(l10n.p_train_selection_trainnumber_description);

@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sfera/component.dart';
 
-import '../app_test.dart';
+import '../integration/integration_test_app.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('test station signs are displayed', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('stationProperty_whenStationSignsPresent_thenDisplaysCorrectly', (tester) async {
+    await IntegrationTestApp.start(tester);
 
     await loadJourney(tester, trainNumber: 'T21M');
 
@@ -29,8 +29,8 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test station properties are displayed', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('stationProperty_whenPropertiesPresent_thenDisplaysCorrectly', (tester) async {
+    await IntegrationTestApp.start(tester);
 
     await loadJourney(tester, trainNumber: 'T21M');
 
@@ -67,8 +67,8 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test station properties are displayed depending on TrainSeries', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('stationProperty_whenTrainSeriesChanges_thenUpdatesDisplay', (tester) async {
+    await IntegrationTestApp.start(tester);
 
     await loadJourney(tester, trainNumber: 'T21M');
 

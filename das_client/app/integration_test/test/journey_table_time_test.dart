@@ -6,11 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../app_test.dart';
+import '../integration/integration_test_app.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('test time cells for journey in far future (T4) with planned times only', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('timeCell_whenFarFutureJourney_thenShowsPlannedTimesOnly', (tester) async {
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T4');
 
     // test if planned time header label is in table (no operational times)
@@ -61,8 +62,8 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test time cells for journey in near future (T16) with operational and planned times', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('timeCell_whenNearFutureJourney_thenShowsOperationalAndPlannedTimes', (tester) async {
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T16');
 
     // test if operational time header label is in table
@@ -161,9 +162,9 @@ void main() {
   });
 
   testWidgets(
-    'test auto switch behavior for time cells journey in near future (T9999) with operational and planned times',
+    'timeCell_whenManuallySetToPlanned_thenAutoSwitchesBackToOperational',
     (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
       // test if operational time header label is in table
@@ -190,8 +191,8 @@ void main() {
     },
   );
 
-  testWidgets('test departure time is underlined when time reached', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('timeCell_whenDepartureTimeReached_thenUnderlinesTime', (tester) async {
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T9999M');
 
     // wait one second for underline to happen if opened last second of previous minute

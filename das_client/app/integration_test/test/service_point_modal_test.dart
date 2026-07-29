@@ -19,14 +19,15 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 import '../app_test.dart';
+import '../integration/integration_test_app.dart';
 import '../mocks/mock_launcher.dart';
 import '../util/test_time_constants.dart';
 import '../util/test_utils.dart';
 
 void main() {
   group('general service point modal sheet tests', () {
-    testWidgets('test bahnhofportal link opens expected URL for T9999M service point', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('servicePointModal_whenBahnhofportalLinkTapped_thenOpensExpectedUrl', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999M');
 
       final scrollableFinder = find.byType(AnimatedList);
@@ -45,8 +46,8 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test displayed columns on open service point modal', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('servicePointModal_whenOpened_thenHidesKilometreColumn', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T8');
 
       final kilometreLabel = l10n.p_journey_table_kilometre_label;
@@ -65,8 +66,8 @@ void main() {
 
       await disconnect(tester);
     });
-    testWidgets('test interaction points for modal sheet', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('servicePointModal_whenInteracted_thenOpensAndClosesCorrectly', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T8');
 
       expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsOneWidget);
@@ -93,8 +94,8 @@ void main() {
 
       await disconnect(tester);
     });
-    testWidgets('test header button collapsed if detail model sheet open', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('servicePointModal_whenOpened_thenCollapsesHeaderButtons', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
       expect(find.byKey(HeaderIconButton.headerIconWithLabelButtonKey), findsExactly(2));
@@ -110,8 +111,8 @@ void main() {
 
       await disconnect(tester);
     });
-    testWidgets('test only tabs are displayed with data', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('servicePointModal_whenDataAvailable_thenShowsOnlyRelevantTabs', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T8');
 
       await _openByTapOnCellWithText(tester, 'Bern');
@@ -127,8 +128,8 @@ void main() {
 
       await disconnect(tester);
     });
-    testWidgets('test change of service point modal page with segmented button', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('servicePointModal_whenTabChanged_thenDisplaysCorrectContent', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T8');
 
       // open modal with tap on service point name
@@ -145,8 +146,8 @@ void main() {
 
       await disconnect(tester);
     });
-    testWidgets('test modal closes after timeout without touch on screen', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('servicePointModal_whenTimeout_thenClosesAutomatically', (tester) async {
+      await IntegrationTestApp.start(tester);
 
       await loadJourney(tester, trainNumber: 'T8');
 
@@ -165,8 +166,8 @@ void main() {
 
       await disconnect(tester);
     });
-    testWidgets('test modal sheet does close after timeout with automatic advancement paused', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('servicePointModal_whenAdvancementPaused_thenClosesAfterTimeout', (tester) async {
+      await IntegrationTestApp.start(tester);
 
       await loadJourney(tester, trainNumber: 'T8');
 
@@ -193,8 +194,8 @@ void main() {
   });
 
   group('graduated speed tab tests', () {
-    testWidgets('test graduated speed info details', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('graduatedSpeed_whenPresent_thenDisplaysInfoDetails', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T8');
 
       final tableRowBern = findDASTableRowByText('75-70-60');
@@ -221,8 +222,8 @@ void main() {
   });
 
   group('communication tab tests', () {
-    testWidgets('test communication network and radio channels displayed correctly', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('communicationTab_whenOpened_thenDisplaysNetworkAndRadioChannels', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T12M');
 
       // check communication information for Bern
@@ -279,8 +280,8 @@ void main() {
 
       await disconnect(tester);
     });
-    testWidgets('test communication information present when opening from other tab', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('communicationTab_whenOpenedFromOtherTab_thenShowsInformation', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: '1513M');
 
       final scrollableFinder = find.byType(AnimatedList);
@@ -308,8 +309,8 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test departure authorization are displayed in modal', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('communicationTab_whenDepartureAuthorizationPresent_thenDisplaysInModal', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T31M');
 
       await _openAndCheckDepartureAuth(tester, 'Dietikon', '*');
@@ -327,8 +328,8 @@ void main() {
   });
 
   group('local regulation tab tests', () {
-    testWidgets('test local regulation tab is shown', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('localRegulationTab_whenPresent_thenShowsTab', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T25');
       final scrollableFinder = find.byType(AnimatedList);
 
@@ -347,8 +348,8 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test tab change from local regulation', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('localRegulationTab_whenTabChanged_thenUpdatesDisplay', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T25');
 
       await _openByTapOnCellWithText(tester, 'Olten');
@@ -369,8 +370,8 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test local regulation webview is shown', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('localRegulationTab_whenOpened_thenShowsWebview', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T25');
 
       await _openByTapOnCellWithText(tester, 'Olten');
@@ -384,8 +385,8 @@ void main() {
     });
   });
 
-  testWidgets('test short signal names are displayed when modal is open', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('servicePointModal_whenModalOpen_thenShowsShortSignalNames', (tester) async {
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T9999M');
 
     expect(find.text(l10n.c_main_signal_function_entry), findsAny);
@@ -419,8 +420,8 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test modal sheet still displayed after navigation', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('servicePointModal_whenNavigatedAndReturned_thenStaysDisplayed', (tester) async {
+    await IntegrationTestApp.start(tester);
     final timeConstants = DI.get<TimeConstants>() as TestTimeConstants;
     timeConstants.modalSheetAutomaticCloseAfterSecondsValue = 5;
 

@@ -5,13 +5,13 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
-import '../app_test.dart';
+import '../integration/integration_test_app.dart';
 import '../util/test_utils.dart';
 
 void main() {
   group('manual advancement tests', () {
-    testWidgets('whenServicePointDragged_thenJourneyPositionMoved', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('manualAdvancement_whenServicePointDragged_thenJourneyPositionMoved', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999M');
 
       // Check chevron at start A
@@ -67,8 +67,10 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('whenManualPositionSet_thenManualModeActivatedUntilJourneyPositionSignaled', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('manualAdvancement_whenManualPositionSet_thenManualModeActivatedUntilJourneyPositionSignaled', (
+      tester,
+    ) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T30');
 
       final coppet = 'Coppet';

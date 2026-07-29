@@ -1,13 +1,13 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
+import { BaseDialogService } from '../base-dialog.service';
 import { ExternalLink, RuAdminApi } from '../ru-admin-api';
 import {
   ExternalLinkDialog,
   ExternalLinkDialogEditResult,
 } from './external-link-dialog/external-link-dialog';
-import { BaseDialogService } from '../base-dialog.service';
-import { firstValueFrom } from 'rxjs';
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class ExternalLinksService extends BaseDialogService {
   private readonly ruAdminApi = inject(RuAdminApi);
   public readonly externalLinksResource = this.ruAdminApi.externalLinks;

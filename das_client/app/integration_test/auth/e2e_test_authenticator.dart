@@ -1,6 +1,6 @@
 import 'package:auth/component.dart';
 
-class E2EAuthenticator implements Authenticator {
+class E2ETestAuthenticator implements Authenticator {
   static const accessToken = 'ACCESS_TOKEN';
 
   @override
@@ -30,6 +30,7 @@ class E2EAuthenticator implements Authenticator {
       userId: 'e2e@sbb.com',
       roles: roles.map((it) => Role.fromName(it)).nonNulls.toList(),
       displayName: 'E2E Tester',
+      tid: '2cda5d11-f0ac-46b3-967d-af1b2e1bd01a',
     );
   }
 

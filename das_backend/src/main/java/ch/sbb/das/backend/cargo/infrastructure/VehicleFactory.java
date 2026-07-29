@@ -91,8 +91,7 @@ public final class VehicleFactory {
         }
         builder
             .brakeDesign(toBrakeDesign(unitTechnicalData.getBrakeDesign()))
-            .technicalHoldingForceInHectoNewton(unitTechnicalData.getHoldingForceInHectonewton())
-            .handBrakeWeightInT(unitTechnicalData.getHandBrakeWeightInTonne());
+            .technicalHoldingForceInHectoNewton(unitTechnicalData.getHoldingForceInHectonewton());
     }
 
     private static List<IntermodalLoadingUnit> toIntermodalLoadingUnits(List<ch.sbb.zis.trainformation.api.model.IntermodalLoadingUnit> intermodalLoadingUnits) {

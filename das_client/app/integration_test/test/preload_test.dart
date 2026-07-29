@@ -13,6 +13,7 @@ import 'package:sfera/component.dart';
 
 import '../app_test.dart';
 import '../auth/mqtt_client_user_connector.dart';
+import '../integration/integration_test_app.dart';
 import '../mocks/mock_connectivity_manager.dart';
 import '../mocks/mock_preload_repository.dart';
 import '../util/test_utils.dart';
@@ -61,8 +62,8 @@ void main() {
     metrics: SferaDbMetrics(jpCount: 43, spCount: 201, tcCount: 33),
   );
 
-  testWidgets('test preload status is displayed correctly', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('preload_whenStatusChanges_thenDisplaysCorrectly', (tester) async {
+    await IntegrationTestApp.start(tester);
 
     final preloadRepository = DI.get<PreloadRepository>() as MockPreloadRepository;
 
@@ -136,8 +137,8 @@ void main() {
     expect(tester.widget<SBBTertiaryButtonSmall>(startButton).onPressed, isNull);
   });
 
-  testWidgets('test preload status is displayed correctly', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('preload_whenUsingPreloadData_thenReconnectsSuccessfully', (tester) async {
+    await IntegrationTestApp.start(tester);
 
     // Load T9999 so we have it available offline
     await loadJourney(tester, trainNumber: 'T9999', ru: RailwayUndertaking.sbbP);

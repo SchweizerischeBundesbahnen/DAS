@@ -30,7 +30,7 @@ jobs:
       das_admin_tool--version: ${{ steps.release.outputs.das_admin_tool--version }}
       das_admin_tool--tag_name: ${{ steps.release.outputs.das_admin_tool--tag_name }}
     steps:
-      - uses: googleapis/release-please-action@v5
+      - uses: googleapis/release-please-action@v5.0.0
         id: release
         with:
           config-file: ci/release-please-config.json
@@ -56,8 +56,8 @@ jobs:
       run:
         working-directory: sfera_mock
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-java@v5
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-java@v5.6.0
         with:
           java-version: '25'
           distribution: 'temurin'
@@ -88,12 +88,24 @@ jobs:
       run:
         working-directory: das_backend
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-java@v5
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-java@v5.6.0
         with:
           java-version: '25'
           distribution: 'temurin'
           cache: 'maven'
+      - name: Vault Secrets 🤫
+        id: vault-secrets
+        uses: hashicorp/vault-action@v4.0.0
+        with:
+          url: https://vault-nonprod.sbb.ch:443
+          method: approle
+          roleId: ${{ secrets.VAULT_ROLE_ID }}
+          secretId: ${{ secrets.VAULT_SECRET_ID }}
+          secrets: |
+            kv/data/DSO-BPS/driver-advisory-system/backend/maven KAFKA_SR_URL ;
+            kv/data/DSO-BPS/driver-advisory-system/backend/maven KAFKA_SR_API_KEY ;
+            kv/data/DSO-BPS/driver-advisory-system/backend/maven KAFKA_SR_API_SECRET ;
 
       - name: Login to GitHub Container Registry
         run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io --username ${{ github.actor }} --password-stdin
@@ -101,9 +113,9 @@ jobs:
         env:
           IMAGE_ID: ghcr.io/${{ github.repository }}/backend
           VERSION: ${{ needs.release-please.outputs.das_backend--version }}
-          KAFKA_SR_URL: ${{ secrets.ZIS_SR_URL }}
-          KAFKA_SR_API_KEY: ${{ secrets.ZIS_SR_API_KEY }}
-          KAFKA_SR_API_SECRET: ${{ secrets.ZIS_SR_API_SECRET }}
+          KAFKA_SR_URL: ${{ steps.vault-secrets.outputs.KAFKA_SR_URL }}
+          KAFKA_SR_API_KEY: ${{ steps.vault-secrets.outputs.KAFKA_SR_API_KEY }}
+          KAFKA_SR_API_SECRET: ${{ steps.vault-secrets.outputs.KAFKA_SR_API_SECRET }}
         run: |
           # Convert to lowercase
           IMAGE_ID=$(echo $IMAGE_ID | tr '[:upper:]' '[:lower:]')
@@ -127,8 +139,8 @@ jobs:
       run:
         working-directory: das_playground
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-node@v7.0.0
         with:
           node-version-file: 'das_playground/.nvmrc'
           cache: 'npm'
@@ -158,8 +170,8 @@ jobs:
       run:
         working-directory: das_admin_tool
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-node@v7.0.0
         with:
           node-version-file: 'das_admin_tool/.nvmrc'
           cache: 'npm'

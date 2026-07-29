@@ -1,22 +1,25 @@
-import {inject, Injectable} from '@angular/core';
-import {firstValueFrom} from 'rxjs';
-import {RuAdminApi, RuFeature} from '../ru-admin-api';
+import { HttpErrorResponse } from '@angular/common/http';
+import { inject, Service } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
+import { BaseDialogService } from '../base-dialog.service';
+import { RuAdminApi, RuFeature } from '../ru-admin-api';
 import {
   RuFeatureDialogEditResult,
-  RuFeatureToggleDialog
+  RuFeatureToggleDialog,
 } from './ru-feature-toggle-dialog/ru-feature-toggle-dialog.component';
-import {BaseDialogService} from '../base-dialog.service';
-import {HttpErrorResponse} from '@angular/common/http';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class RuFeatureService extends BaseDialogService {
   private readonly ruAdminApi = inject(RuAdminApi);
   readonly ruFeaturesResource = this.ruAdminApi.ruFeatures;
 
   async edit(ruFeature: RuFeature): Promise<void> {
-    const event = await firstValueFrom(this.dialogService.open<RuFeatureToggleDialog, RuFeatureDialogEditResult>(RuFeatureToggleDialog, {data: ruFeature}).afterClosed);
+    const event = await firstValueFrom(
+      this.dialogService.open<RuFeatureToggleDialog, RuFeatureDialogEditResult>(
+        RuFeatureToggleDialog,
+        { data: ruFeature },
+      ).afterClosed,
+    );
     if (event.result === 'delete') {
       await this.runMutation(
         this.ruAdminApi.deleteRuFeaturesByIds([ruFeature.id!]),
@@ -32,7 +35,9 @@ export class RuFeatureService extends BaseDialogService {
   }
 
   async add(): Promise<void> {
-    const event = await firstValueFrom(this.dialogService.open<RuFeatureToggleDialog, RuFeature>(RuFeatureToggleDialog).afterClosed);
+    const event = await firstValueFrom(
+      this.dialogService.open<RuFeatureToggleDialog, RuFeature>(RuFeatureToggleDialog).afterClosed,
+    );
     if (event.result) {
       await this.runMutation(
         this.ruAdminApi.postRuFeature(event.result),
@@ -47,10 +52,12 @@ export class RuFeatureService extends BaseDialogService {
   }
 
   protected override handleApiError(e: unknown) {
-    if (e instanceof HttpErrorResponse && e.error.status === 409) {
-      this.toastService.error($localize`:@@ru_feature_toggles_toast_conflict_error:Dieses Feature für diese EVU existiert bereits.`);
+    if (e instanceof HttpErrorResponse && e.status === 409) {
+      this.toastService.error(
+        $localize`:@@ru_feature_toggles_toast_conflict_error:Dieses Feature für diese EVU existiert bereits.`,
+      );
     } else {
-      super.handleApiError(e)
+      super.handleApiError(e);
     }
   }
 }

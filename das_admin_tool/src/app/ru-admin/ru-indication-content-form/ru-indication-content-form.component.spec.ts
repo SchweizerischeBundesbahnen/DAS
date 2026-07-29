@@ -1,11 +1,10 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormControl, FormGroup } from '@angular/forms';
 import {
   contentFormValue,
   createContentFormGroup,
-  RuIndicationContentForm
+  RuIndicationContentForm,
 } from './ru-indication-content-form.component';
-import {FormControl, FormGroup} from '@angular/forms';
 
 describe('RuIndicationContentForm', () => {
   let component: RuIndicationContentForm;
@@ -13,9 +12,8 @@ describe('RuIndicationContentForm', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RuIndicationContentForm]
-    })
-      .compileComponents();
+      imports: [RuIndicationContentForm],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(RuIndicationContentForm);
     component = fixture.componentInstance;
@@ -33,7 +31,10 @@ describe('RuIndicationContentForm', () => {
     });
 
     it('should return true when title is only whitespace', () => {
-      fixture.componentRef.setInput('form', new FormGroup({de: new FormGroup({title: new FormControl('   ')})}))
+      fixture.componentRef.setInput(
+        'form',
+        new FormGroup({ de: new FormGroup({ title: new FormControl('  ') }) }),
+      );
       expect(component['isLanguageEmpty']('de')).toBe(true);
     });
 
@@ -55,7 +56,7 @@ describe('RuIndicationContentForm', () => {
         selectionStart: 5,
         selectionEnd: 5,
         focus: vi.fn(),
-        setSelectionRange: vi.fn()
+        setSelectionRange: vi.fn(),
       } as unknown as HTMLTextAreaElement;
       component['insertLink']('de', textarea);
 
@@ -71,7 +72,7 @@ describe('RuIndicationContentForm', () => {
         selectionStart: 0,
         selectionEnd: 5,
         focus: vi.fn(),
-        setSelectionRange: vi.fn()
+        setSelectionRange: vi.fn(),
       } as unknown as HTMLTextAreaElement;
       component['insertLink']('de', textarea);
 
@@ -86,7 +87,7 @@ describe('RuIndicationContentForm', () => {
         selectionStart: 0,
         selectionEnd: 0,
         focus: vi.fn(),
-        setSelectionRange: vi.fn()
+        setSelectionRange: vi.fn(),
       } as unknown as HTMLTextAreaElement;
       component['insertLink']('de', textarea);
 
@@ -100,10 +101,11 @@ describe('RuIndicationContentForm', () => {
         selectionStart: 0,
         selectionEnd: 0,
         focus: vi.fn(),
-        setSelectionRange: vi.fn()
+        setSelectionRange: vi.fn(),
       } as unknown as HTMLTextAreaElement;
       // should not throw
       component['insertLink']('de', textarea);
+      expect(component.form().get(`de.text`)).toBeNull();
     });
   });
 
@@ -115,7 +117,7 @@ describe('RuIndicationContentForm', () => {
       deGroup.get('text')!.setValue('');
       deGroup.updateValueAndValidity();
 
-      expect(deGroup.get('text')!.errors).toEqual({languageRequired: true});
+      expect(deGroup.get('text')!.errors).toEqual({ languageRequired: true });
     });
   });
 });
@@ -138,20 +140,20 @@ describe('createContentFormGroup', () => {
     const form = createContentFormGroup();
     form.get('de.title')!.setValue('A title');
     form.get('de')!.updateValueAndValidity();
-    expect(form.get('de.text')!.errors).toEqual({languageRequired: true});
+    expect(form.get('de.text')!.errors).toEqual({ languageRequired: true });
   });
 
   it('should apply titleRequired validator when textRequired is false', () => {
-    const form = createContentFormGroup({textRequired: false});
+    const form = createContentFormGroup({ textRequired: false });
     form.get('de.text')!.setValue('Some text');
     form.get('de')!.updateValueAndValidity();
-    expect(form.get('de.title')!.errors).toEqual({titleRequired: true});
+    expect(form.get('de.title')!.errors).toEqual({ titleRequired: true });
   });
 
   it('should have oneLanguageRequired group validator', () => {
     const form = createContentFormGroup();
     form.updateValueAndValidity();
-    expect(form.errors).toEqual({oneLanguageRequired: true});
+    expect(form.errors).toEqual({ oneLanguageRequired: true });
   });
 
   it('should be valid when at least one language has content', () => {
@@ -177,7 +179,7 @@ describe('contentFormValue', () => {
     form.get('de.title')!.setValue('Titel DE');
     form.get('de.text')!.setValue('Text DE');
     const result = contentFormValue(form);
-    expect(result.de).toEqual({title: 'Titel DE', text: 'Text DE'});
+    expect(result.de).toEqual({ title: 'Titel DE', text: 'Text DE' });
   });
 
   it('should trim whitespace from title and text', () => {
@@ -185,7 +187,7 @@ describe('contentFormValue', () => {
     form.get('fr.title')!.setValue('  Titre FR  ');
     form.get('fr.text')!.setValue('  Texte FR  ');
     const result = contentFormValue(form);
-    expect(result.fr).toEqual({title: 'Titre FR', text: 'Texte FR'});
+    expect(result.fr).toEqual({ title: 'Titre FR', text: 'Texte FR' });
   });
 
   it('should return text as undefined when text is empty but title is set', () => {
@@ -193,13 +195,13 @@ describe('contentFormValue', () => {
     form.get('it.title')!.setValue('Titolo');
     form.get('it.text')!.setValue('');
     const result = contentFormValue(form);
-    expect(result.it).toEqual({title: 'Titolo', text: undefined});
+    expect(result.it).toEqual({ title: 'Titolo', text: undefined });
   });
 
   it('should return undefined when both title and text are only whitespace', () => {
     const form = createContentFormGroup();
-    form.get('de.title')!.setValue('   ');
-    form.get('de.text')!.setValue('   ');
+    form.get('de.title')!.setValue('  ');
+    form.get('de.text')!.setValue('  ');
     const result = contentFormValue(form);
     expect(result.de).toBeUndefined();
   });

@@ -1,6 +1,6 @@
 package ch.sbb.das.backend.cargo.api.v1;
 
-import ch.sbb.das.backend.cargo.api.v1.model.Formation;
+import ch.sbb.das.backend.cargo.api.v1.internal.FormationMapper;
 import ch.sbb.das.backend.cargo.api.v1.model.FormationResponse;
 import ch.sbb.das.backend.cargo.application.FormationService;
 import ch.sbb.das.backend.cargo.infrastructure.model.TrainFormationRunEntity;
@@ -25,7 +25,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.http.HttpHeaders;
@@ -47,9 +46,11 @@ public class FormationController {
     public static final String API_FORMATIONS = ApiDocumentation.DRIVER_URI + ApiDocumentation.DRIVER_VERSION_URI_V1 + PATH_SEGMENT_FORMATIONS;
 
     private final FormationService formationService;
+    private final FormationMapper formationMapper;
 
-    public FormationController(FormationService formationService) {
+    public FormationController(FormationService formationService, FormationMapper formationMapper) {
         this.formationService = formationService;
+        this.formationMapper = formationMapper;
     }
 
     @Operation(summary = "Get formation by train identification.")
@@ -76,21 +77,18 @@ public class FormationController {
         @SFERA(nsp = true) @RequestParam @NotNull LocalDate operationalDay,
 
         @Parameter(description = CompanyCode.DESCRIPTION, example = "1033")
-        @SFERA @TelTsi @RequestParam @Pattern(regexp = "\\d{4}") String company) {
+        @SFERA @TelTsi @RequestParam CompanyCode company) {
 
         final List<TrainFormationRunEntity> entities = formationService.findByTrainIdentifier(operationalTrainNumber, operationalDay, company);
         if (CollectionUtils.isEmpty(entities)) {
-            // TODO hardoded: replace by generic RequestContext
-            final String instance = API_FORMATIONS + "/" + operationalTrainNumber + "/" + operationalDay + "/" + company;
 
             final LocalDate today = DateTimeUtil.today();
             if (operationalDay.isBefore(today) || operationalDay.isAfter(today)) {
                 return ResponseEntityFactory.createNotFoundResponse(
                     ResponseEntityFactory.TITLE_NOT_FOUND, "operationalDay='" + operationalDay + "' -> data may not be available at all if not TODAY.",
-                    null, requestId, instance);
+                    null, requestId, null);
             } else {
-                // TODO check whether company exists as CompanyEntity -> otherwise provide specific Problem::title="NOT FOUND: company", detail="company="+company+" is unknown yet"
-                return ResponseEntityFactory.createNotFoundResponse(requestId, instance);
+                return ResponseEntityFactory.createNotFoundResponse(requestId, null);
             }
         }
 
@@ -98,7 +96,7 @@ public class FormationController {
         headers.add(HttpHeaders.CACHE_CONTROL, "private");
         return ResponseEntityFactory.createOkResponse(
             headers,
-            new FormationResponse(List.of(Formation.from(entities)))
+            new FormationResponse(List.of(formationMapper.toFormation(entities)))
         );
     }
 }

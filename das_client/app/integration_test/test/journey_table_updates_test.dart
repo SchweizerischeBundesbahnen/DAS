@@ -3,12 +3,12 @@ import 'package:app/widgets/table/das_table.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../app_test.dart';
+import '../integration/integration_test_app.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('test journey changes are displayed correctly', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('journeyUpdates_whenChangesReceived_thenDisplaysCorrectly', (tester) async {
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T35');
 
     // check normal rows
@@ -55,8 +55,8 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test ignore train characteristics update', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('journeyUpdates_whenTrainCharacteristicsUpdated_thenIgnoresUpdate', (tester) async {
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T37');
 
     final oltenRow = findDASTableRowByText('Olten');

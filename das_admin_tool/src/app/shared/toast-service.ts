@@ -1,5 +1,5 @@
-import {inject, Injectable} from '@angular/core';
-import {SbbToast, SbbToastService} from '@sbb-esta/lyne-angular/toast';
+import { inject, Service } from '@angular/core';
+import { SbbToast, SbbToastService } from '@sbb-esta/lyne-angular/toast';
 
 const TOAST_CONFIG_SUCCESS = {
   setupContainer: (toast: SbbToast) => {
@@ -15,9 +15,7 @@ const TOAST_CONFIG_ERROR = {
   },
 };
 
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class ToastService {
   private readonly toastService = inject(SbbToastService);
 

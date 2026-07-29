@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.18.2](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.18.1...sfera_mock-v0.18.2) (2026-07-23)
+
+
+### Bug Fixes
+
+* sfera mock uses openbao vault ([#1547](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1547)) ([c6b77d8](https://github.com/SchweizerischeBundesbahnen/DAS/commit/c6b77d8fcb75a94aed9bd61bd4d8d0d1c51e41c6))
+
 ## [0.18.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.18.0...sfera_mock-v0.18.1) (2026-07-20)
 
 

@@ -23,7 +23,7 @@ class JourneyDateInput extends StatelessWidget {
         final model = snapshot.requireData;
 
         final onSelect = switch (model) {
-          final Selecting _ || final Error _ => viewModel.updateDate,
+          final Selecting _ || final SelectingCompanyMatch _ || final Error _ => viewModel.updateDate,
           _ => null,
         };
 

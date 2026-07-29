@@ -5,12 +5,13 @@ import 'package:app/widgets/table/das_table.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../app_test.dart';
+import '../integration/integration_test_app.dart';
 import '../util/test_utils.dart';
 
 void main() {
   group('train reduced journey test', () {
-    testWidgets('test network change with km is displayed', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('reducedJourney_whenNetworkChangePresent_thenDisplaysWithKm', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
       await openReducedJourneyMenu(tester);
 
@@ -31,8 +32,8 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test train information is displayed', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('reducedJourney_whenLoaded_thenDisplaysTrainInformation', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T14');
       await openReducedJourneyMenu(tester);
 
@@ -44,8 +45,8 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test train information of shunting movement journey is displayed', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('reducedJourney_whenShuntingMovementJourney_thenDisplaysTrainInformation', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T29');
       await openReducedJourneyMenu(tester);
 
@@ -54,8 +55,8 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test passing and stopping points are displayed correctly', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('reducedJourney_whenStoppingAndPassingPoints_thenDisplaysCorrectly', (tester) async {
+      await IntegrationTestApp.start(tester);
 
       await loadJourney(tester, trainNumber: 'T14');
 
@@ -71,8 +72,8 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test duplicated asr is only displayed once', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('reducedJourney_whenDuplicatedAsr_thenDisplaysOnlyOnce', (tester) async {
+      await IntegrationTestApp.start(tester);
 
       await loadJourney(tester, trainNumber: 'T14');
 
@@ -85,8 +86,8 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test planned times are displayed', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('reducedJourney_whenLoaded_thenDisplaysPlannedTimes', (tester) async {
+      await IntegrationTestApp.start(tester);
 
       await loadJourney(tester, trainNumber: 'T16');
 

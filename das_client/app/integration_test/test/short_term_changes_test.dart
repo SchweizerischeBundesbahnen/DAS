@@ -6,13 +6,13 @@ import 'package:app/widgets/general_short_term_change_indicator.dart';
 import 'package:app/widgets/u_turn_indicator.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../app_test.dart';
+import '../integration/integration_test_app.dart';
 import '../util/test_utils.dart';
 
 void main() {
   group('short term changes tests', () {
-    testWidgets('test short term changes are displayed in JourneyTable', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('shortTermChanges_whenPresent_thenDisplaysInJourneyTable', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T36M');
 
       // check station 4 has short term change indicator
@@ -68,8 +68,8 @@ void main() {
     });
   });
 
-  testWidgets('test short term changes are displayed in flap', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('shortTermChanges_whenPresent_thenDisplaysInFlap', (tester) async {
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T36');
 
     final animatedHeaderbox = find.byType(AnimatedMainHeaderBox);
