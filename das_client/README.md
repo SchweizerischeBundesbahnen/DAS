@@ -191,7 +191,7 @@ Localization terms/keys conform to the following format:
 <PREFIX>_<CONTEXT?>_<LABEL>
 ```
 
-The prefix is mandatory and indicates the scope of the term. Valid prefixes are:
+The prefix is mandatory and indicates the scope of the term. Valid prefixes are: 
 
 | Prefix | Scope  | Description                                    |
 |--------|--------|------------------------------------------------|
