@@ -49,7 +49,7 @@ void main() {
     await disconnect(tester);
   });
 
-  // TODO: skip test for now since receiving Sfera Error 51 for any journey request after handshake succeeds
+  // TODO: skip test for now since receiving Sfera Error 51 for any journey request after handshake succeeds (some validation going on)
   testWidgets('loadJourney_whenLoadsJourneyFromTmsVAD_thenOpensJourneyTable', skip: true, (tester) async {
     await E2ETestApp.start(tester, useTms: true);
 
