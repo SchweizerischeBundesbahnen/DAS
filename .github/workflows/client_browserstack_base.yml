@@ -15,26 +15,9 @@ on:
         type: boolean
         default: false
     secrets:
-      CLIENT_SECRET_OBSERVER_DEV:
-        description: 'OAuth client secret used to mint an ACCESS_TOKEN dart-define for e2e runs. Only needed when enable_e2e is true.'
-        required: false
-      ANDROID_KEYSTORE:
+      VAULT_ROLE_ID:
         required: true
-      ANDROID_KEYSTORE_PASSWORD:
-        required: true
-      ANDROID_KEY_ALIAS:
-        required: true
-      ANDROID_KEY_PASSWORD:
-        required: true
-      MQTT_USERNAME:
-        required: true
-      MQTT_PASSWORD:
-        required: true
-      BROWSERSTACK_USERNAME:
-        required: true
-      BROWSERSTACK_ACCESS_KEY:
-        required: true
-      NIGHTLY_FAILURE_CHANNEL_WEBHOOK:
+      VAULT_SECRET_ID:
         required: true
 
 defaults:
@@ -80,11 +63,30 @@ jobs:
       - name: Generate sources
         run: melos generate
 
+      - name: Vault Secrets 🤫
+        id: vault-secrets
+        uses: hashicorp/vault-action@v4.0.0
+        with:
+          url: https://vault-nonprod.sbb.ch:443
+          method: approle
+          roleId: ${{ secrets.VAULT_ROLE_ID }}
+          secretId: ${{ secrets.VAULT_SECRET_ID }}
+          secrets: |
+            kv/data/DSO-BPS/driver-advisory-system/ci/mobile ANDROID_KEYSTORE ;
+            kv/data/DSO-BPS/driver-advisory-system/ci/mobile ANDROID_KEYSTORE_PASSWORD ;
+            kv/data/DSO-BPS/driver-advisory-system/ci/mobile ANDROID_KEY_ALIAS ;
+            kv/data/DSO-BPS/driver-advisory-system/ci/mobile ANDROID_KEY_PASSWORD ;
+            kv/data/DSO-BPS/driver-advisory-system/ci/mobile CLIENT_SECRET_OBSERVER_DEV ;
+            kv/data/DSO-BPS/driver-advisory-system/ci/mobile MOCK_BROKER_MQTT_USERNAME ;
+            kv/data/DSO-BPS/driver-advisory-system/ci/mobile MOCK_BROKER_MQTT_PASSWORD ;
+            kv/data/DSO-BPS/driver-advisory-system/ci/mobile BROWSERSTACK_USERNAME ;
+            kv/data/DSO-BPS/driver-advisory-system/ci/mobile BROWSERSTACK_ACCESS_KEY ;
+
       - name: Generate access token
         if: inputs.enable_e2e
         id: jwt
         env:
-          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET_OBSERVER_DEV }}
+          CLIENT_SECRET: ${{ steps.vault-secrets.outputs.CLIENT_SECRET_OBSERVER_DEV }}
         run: |
           ACCESS_TOKEN=$(curl -sf -d "grant_type=client_credentials" \
           -d "client_id=64baca3f-be6d-4c90-ace3-db86f298525d" \
@@ -95,13 +97,13 @@ jobs:
           echo "::add-mask::$ACCESS_TOKEN"
           echo "access_token=$ACCESS_TOKEN" >> $GITHUB_OUTPUT
 
-      - name: Prepare Android Secrets 🤫
+      - name: Prepare Android Secrets
         env:
-          ANDROID_KEYSTORE_STRING: ${{ secrets.ANDROID_KEYSTORE }}
+          ANDROID_KEYSTORE_STRING: ${{ steps.vault-secrets.outputs.ANDROID_KEYSTORE }}
           ANDROID_KEYSTORE: ${{ github.workspace }}/das_client/app/android/das.keystore
-          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
-          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ steps.vault-secrets.outputs.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ steps.vault-secrets.outputs.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ steps.vault-secrets.outputs.ANDROID_KEY_PASSWORD }}
         run: |
           echo $ANDROID_KEYSTORE_STRING | base64 -d > $ANDROID_KEYSTORE
           echo "ANDROID_KEYSTORE=$ANDROID_KEYSTORE" >> "$GITHUB_ENV"
@@ -112,8 +114,8 @@ jobs:
       - name: Build apk for testing
         shell: bash
         env:
-          MQTT_USERNAME: ${{ secrets.MQTT_USERNAME }}
-          MQTT_PASSWORD: ${{ secrets.MQTT_PASSWORD }}
+          MQTT_USERNAME: ${{ steps.vault-secrets.outputs.MOCK_BROKER_MQTT_USERNAME }}
+          MQTT_PASSWORD: ${{ steps.vault-secrets.outputs.MOCK_BROKER_MQTT_PASSWORD }}
           ACCESS_TOKEN: ${{ steps.jwt.outputs.access_token }}
           APP_APK_DIR: ${{ github.workspace }}/das_client/app/build/app/outputs/flutter-apk
           APP_APK_NAME: android-${{ inputs.enable_e2e && 'e2e' || 'integration' }}-test.apk
@@ -136,8 +138,8 @@ jobs:
       - name: Upload and Run on Browserstack
         uses: Grodien/browserstack-flutter-action@v1.6
         with:
-          browserstackUsername: ${{ secrets.BROWSERSTACK_USERNAME }}
-          browserstackAccessKey: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+          browserstackUsername: ${{ steps.vault-secrets.outputs.BROWSERSTACK_USERNAME }}
+          browserstackAccessKey: ${{ steps.vault-secrets.outputs.BROWSERSTACK_ACCESS_KEY }}
           project: das_client
           customId: das_client_android_${{ inputs.enable_e2e && 'e2e' || 'integration' }}
           buildTag: ${{ steps.extract_branch.outputs.branch }}
@@ -145,13 +147,6 @@ jobs:
           testFilePath: ${{ github.workspace }}/das_client/app/build/app/outputs/apk/androidTest/dev/debug/${{ inputs.enable_e2e && 'e2e' || 'integration' }}-test.apk
           devices: Samsung Galaxy Tab S11-16.0
 
-      - name: Notify Microsoft Teams on failure
-        if: failure() && github.event_name == 'schedule'
-        uses: skitionek/notify-microsoft-teams@v1.1.0
-        with:
-          webhook_url: ${{ secrets.NIGHTLY_FAILURE_CHANNEL_WEBHOOK }}
-          job: ${{ toJson(job) }}
-          steps: ${{ toJson(steps) }}
 
   ios:
     runs-on: macos-26
@@ -180,11 +175,26 @@ jobs:
       - name: Generate sources
         run: melos generate
 
+      - name: Vault Secrets 🤫
+        id: vault-secrets
+        uses: hashicorp/vault-action@v4.0.0
+        with:
+          url: https://vault-nonprod.sbb.ch:443
+          method: approle
+          roleId: ${{ secrets.VAULT_ROLE_ID }}
+          secretId: ${{ secrets.VAULT_SECRET_ID }}
+          secrets: |
+            kv/data/DSO-BPS/driver-advisory-system/ci/mobile CLIENT_SECRET_OBSERVER_DEV ;
+            kv/data/DSO-BPS/driver-advisory-system/ci/mobile MOCK_BROKER_MQTT_USERNAME ;
+            kv/data/DSO-BPS/driver-advisory-system/ci/mobile MOCK_BROKER_MQTT_PASSWORD ;
+            kv/data/DSO-BPS/driver-advisory-system/ci/mobile BROWSERSTACK_USERNAME ;
+            kv/data/DSO-BPS/driver-advisory-system/ci/mobile BROWSERSTACK_ACCESS_KEY ;
+
       - name: Generate access token
         if: inputs.enable_e2e
         id: jwt
         env:
-          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET_OBSERVER_DEV }}
+          CLIENT_SECRET: ${{ steps.vault-secrets.outputs.CLIENT_SECRET_OBSERVER_DEV }}
         run: |
           ACCESS_TOKEN=$(curl -sf -d "grant_type=client_credentials" \
           -d "client_id=64baca3f-be6d-4c90-ace3-db86f298525d" \
@@ -198,8 +208,8 @@ jobs:
       - name: Build ipa and zip
         shell: bash
         env:
-          MQTT_USERNAME: ${{ secrets.MQTT_USERNAME }}
-          MQTT_PASSWORD: ${{ secrets.MQTT_PASSWORD }}
+          MQTT_USERNAME: ${{ steps.vault-secrets.outputs.MOCK_BROKER_MQTT_USERNAME }}
+          MQTT_PASSWORD: ${{ steps.vault-secrets.outputs.MOCK_BROKER_MQTT_PASSWORD }}
           ACCESS_TOKEN: ${{ steps.jwt.outputs.access_token }}
           PACKAGE_NAME: ios-${{ inputs.enable_e2e && 'e2e' || 'integration' }}-test.zip
         run: |
@@ -222,18 +232,35 @@ jobs:
       - name: Upload and Run on Browserstack
         uses: Grodien/browserstack-flutter-action@v1.6
         with:
-          browserstackUsername: ${{ secrets.BROWSERSTACK_USERNAME }}
-          browserstackAccessKey: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+          browserstackUsername: ${{ steps.vault-secrets.outputs.BROWSERSTACK_USERNAME }}
+          browserstackAccessKey: ${{ steps.vault-secrets.outputs.BROWSERSTACK_ACCESS_KEY }}
           project: das_client
           customId: das_client_ios_${{ inputs.enable_e2e && 'e2e' || 'integration' }}
           buildTag: ${{ steps.extract_branch.outputs.branch }}
           testPackagePath: ${{ github.workspace }}/das_client/app/build/ios_integration/Build/Products/ios-${{ inputs.enable_e2e && 'e2e' || 'integration' }}-test.zip
           devices: iPad 9th-18
 
-      - name: Notify Microsoft Teams on failure
-        if: failure() && github.event_name == 'schedule'
+
+  notify:
+    runs-on: ubuntu-latest
+    needs: [android, ios]
+    if: ${{ failure() && github.event_name == 'schedule' }}
+    steps:
+
+      - name: Vault Secrets 🤫
+        id: vault-secrets
+        uses: hashicorp/vault-action@v4.0.0
+        with:
+          url: https://vault-nonprod.sbb.ch:443
+          method: approle
+          roleId: ${{ secrets.VAULT_ROLE_ID }}
+          secretId: ${{ secrets.VAULT_SECRET_ID }}
+          secrets: |
+            kv/data/DSO-BPS/driver-advisory-system/ci/common NIGHTLY_FAILURE_CHANNEL_WEBHOOK ;
+
+      - name: Notify Microsoft Teams
         uses: skitionek/notify-microsoft-teams@v1.1.0
         with:
-          webhook_url: ${{ secrets.NIGHTLY_FAILURE_CHANNEL_WEBHOOK }}
+          webhook_url: ${{ steps.vault-secrets.outputs.NIGHTLY_FAILURE_CHANNEL_WEBHOOK }}
           job: ${{ toJson(job) }}
           steps: ${{ toJson(steps) }}
