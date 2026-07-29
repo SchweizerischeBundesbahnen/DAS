@@ -1026,6 +1026,286 @@ void main() {
       expect(testee.modelValue.lastPosition, equals(aServicePoint));
     });
 
+    group('setManualPosition timer advancement', () {
+      test(
+        'setManualPosition_whenSPHasArrivalTimeAndNextSPHasArrivalTime_thenAutoAdvancesToNextSPAfterTimer',
+        () {
+          // ARRANGE
+          // clock is at DateTime(1970) == T=0
+          // arrivalTime of A = T - 10s, so timeSinceArrival = 10s
+          // nextArrivalTime of B = T + 30s
+          // => nextServicePointDuration = (T+30s + 10s) - T = 40s
+          final aServicePoint = ServicePoint(
+            name: 'a',
+            abbreviation: '',
+            locationCode: '',
+            order: 20,
+            kilometre: [],
+            isStop: true,
+            arrivalDepartureTime: ArrivalDepartureTime(
+              plannedArrivalTime: now.now().subtract(Duration(seconds: 10)),
+            ),
+          );
+          final bServicePoint = ServicePoint(
+            name: 'b',
+            abbreviation: '',
+            locationCode: '',
+            order: 25,
+            kilometre: [],
+            isStop: true,
+            arrivalDepartureTime: ArrivalDepartureTime(
+              plannedArrivalTime: now.now().add(Duration(seconds: 30)),
+            ),
+          );
+
+          testAsync.run((_) {
+            rxMockJourney.add(
+              Journey(
+                metadata: Metadata(),
+                data: [zeroSignal, tenSignal, aServicePoint, bServicePoint],
+              ),
+            );
+            _processStreamInFakeAsync(testAsync);
+            journeySettingsViewModel.updateJourneyAdvancement(Manual());
+            testee.setManualPosition(aServicePoint);
+            _processStreamInFakeAsync(testAsync);
+          });
+          expect(testee.modelValue.currentPosition, equals(aServicePoint));
+          emitRegister.clear();
+
+          // ACT – elapse past the 40 s timer
+          testAsync.elapse(Duration(seconds: 41));
+          _processStreamInFakeAsync(testAsync);
+
+          // EXPECT
+          expect(testee.modelValue.currentPosition, equals(bServicePoint));
+          expect(emitRegister, hasLength(1));
+        },
+      );
+
+      test(
+        'setManualPosition_whenSPHasNoArrivalTime_thenDoesNotAutoAdvance',
+        () {
+          // ARRANGE – A has no arrival time → no timer is set
+          final aServicePoint = ServicePoint(
+            name: 'a',
+            abbreviation: '',
+            locationCode: '',
+            order: 20,
+            kilometre: [],
+            isStop: true,
+          );
+          final bServicePoint = ServicePoint(
+            name: 'b',
+            abbreviation: '',
+            locationCode: '',
+            order: 25,
+            kilometre: [],
+            isStop: true,
+            arrivalDepartureTime: ArrivalDepartureTime(
+              plannedArrivalTime: now.now().add(Duration(seconds: 30)),
+            ),
+          );
+
+          testAsync.run((_) {
+            rxMockJourney.add(
+              Journey(
+                metadata: Metadata(),
+                data: [zeroSignal, tenSignal, aServicePoint, bServicePoint],
+              ),
+            );
+            _processStreamInFakeAsync(testAsync);
+            journeySettingsViewModel.updateJourneyAdvancement(Manual());
+            testee.setManualPosition(aServicePoint);
+            _processStreamInFakeAsync(testAsync);
+          });
+          emitRegister.clear();
+
+          // ACT
+          testAsync.elapse(Duration(seconds: 100));
+          _processStreamInFakeAsync(testAsync);
+
+          // EXPECT – still on A
+          expect(testee.modelValue.currentPosition, equals(aServicePoint));
+          expect(emitRegister, hasLength(0));
+        },
+      );
+
+      test(
+        'setManualPosition_whenNextSPHasNoArrivalTime_thenDoesNotAutoAdvance',
+        () {
+          // ARRANGE – A has arrival time but B does not → no timer is set
+          final aServicePoint = ServicePoint(
+            name: 'a',
+            abbreviation: '',
+            locationCode: '',
+            order: 20,
+            kilometre: [],
+            isStop: true,
+            arrivalDepartureTime: ArrivalDepartureTime(
+              plannedArrivalTime: now.now().subtract(Duration(seconds: 10)),
+            ),
+          );
+          final bServicePoint = ServicePoint(
+            name: 'b',
+            abbreviation: '',
+            locationCode: '',
+            order: 25,
+            kilometre: [],
+            isStop: true,
+          );
+
+          testAsync.run((_) {
+            rxMockJourney.add(
+              Journey(
+                metadata: Metadata(),
+                data: [zeroSignal, tenSignal, aServicePoint, bServicePoint],
+              ),
+            );
+            _processStreamInFakeAsync(testAsync);
+            journeySettingsViewModel.updateJourneyAdvancement(Manual());
+            testee.setManualPosition(aServicePoint);
+            _processStreamInFakeAsync(testAsync);
+          });
+          emitRegister.clear();
+
+          // ACT
+          testAsync.elapse(Duration(seconds: 100));
+          _processStreamInFakeAsync(testAsync);
+
+          // EXPECT – still on A
+          expect(testee.modelValue.currentPosition, equals(aServicePoint));
+          expect(emitRegister, hasLength(0));
+        },
+      );
+
+      test(
+        'setManualPosition_whenCalledAgainBeforeTimerExpires_thenOldTimerIsCancelledAndPositionDoesNotChange',
+        () {
+          // ARRANGE
+          // A → B timer would fire after 40 s
+          // After setting B as position, A→B timer is cancelled; B has no C arrival time so no new timer
+          final aServicePoint = ServicePoint(
+            name: 'a',
+            abbreviation: '',
+            locationCode: '',
+            order: 20,
+            kilometre: [],
+            isStop: true,
+            arrivalDepartureTime: ArrivalDepartureTime(
+              plannedArrivalTime: now.now().subtract(Duration(seconds: 10)),
+            ),
+          );
+          final bServicePoint = ServicePoint(
+            name: 'b',
+            abbreviation: '',
+            locationCode: '',
+            order: 25,
+            kilometre: [],
+            isStop: true,
+            arrivalDepartureTime: ArrivalDepartureTime(
+              plannedArrivalTime: now.now().add(Duration(seconds: 30)),
+            ),
+          );
+          final cServicePoint = ServicePoint(
+            name: 'c',
+            abbreviation: '',
+            locationCode: '',
+            order: 30,
+            kilometre: [],
+            isStop: true,
+          );
+
+          testAsync.run((_) {
+            rxMockJourney.add(
+              Journey(
+                metadata: Metadata(),
+                data: [zeroSignal, aServicePoint, bServicePoint, cServicePoint],
+              ),
+            );
+            _processStreamInFakeAsync(testAsync);
+            journeySettingsViewModel.updateJourneyAdvancement(Manual());
+            testee.setManualPosition(aServicePoint); // starts A→B timer (40 s)
+            _processStreamInFakeAsync(testAsync);
+          });
+
+          // Override with B before the timer fires → cancels A→B timer
+          testAsync.run((_) {
+            testee.setManualPosition(bServicePoint);
+            _processStreamInFakeAsync(testAsync);
+          });
+          expect(testee.modelValue.currentPosition, equals(bServicePoint));
+          emitRegister.clear();
+
+          // ACT – advance past where A→B timer would have fired
+          testAsync.elapse(Duration(seconds: 50));
+          _processStreamInFakeAsync(testAsync);
+
+          // EXPECT – position remains B (old timer did not fire)
+          expect(testee.modelValue.currentPosition, equals(bServicePoint));
+          expect(emitRegister, hasLength(0));
+        },
+      );
+
+      test(
+        'setManualPosition_whenTimerFiresButModeIsNoLongerManual_thenDoesNotAutoAdvance',
+        () {
+          // ARRANGE
+          final aServicePoint = ServicePoint(
+            name: 'a',
+            abbreviation: '',
+            locationCode: '',
+            order: 20,
+            kilometre: [],
+            isStop: true,
+            arrivalDepartureTime: ArrivalDepartureTime(
+              plannedArrivalTime: now.now().subtract(Duration(seconds: 10)),
+            ),
+          );
+          final bServicePoint = ServicePoint(
+            name: 'b',
+            abbreviation: '',
+            locationCode: '',
+            order: 25,
+            kilometre: [],
+            isStop: true,
+            arrivalDepartureTime: ArrivalDepartureTime(
+              plannedArrivalTime: now.now().add(Duration(seconds: 30)),
+            ),
+          );
+
+          testAsync.run((_) {
+            rxMockJourney.add(
+              Journey(
+                metadata: Metadata(signaledPosition: SignaledPosition(order: 0)),
+                data: [zeroSignal, tenSignal, aServicePoint, bServicePoint],
+              ),
+            );
+            _processStreamInFakeAsync(testAsync);
+            journeySettingsViewModel.updateJourneyAdvancement(Manual());
+            testee.setManualPosition(aServicePoint); // starts A→B timer (40 s)
+            _processStreamInFakeAsync(testAsync);
+          });
+          expect(testee.modelValue.currentPosition, equals(aServicePoint));
+
+          // Switch back to Automatic before timer fires
+          testAsync.run((_) {
+            journeySettingsViewModel.updateJourneyAdvancement(Automatic());
+            _processStreamInFakeAsync(testAsync);
+          });
+          emitRegister.clear();
+
+          // ACT – let the timer fire
+          testAsync.elapse(Duration(seconds: 41));
+          _processStreamInFakeAsync(testAsync);
+
+          // EXPECT – guard `isInManualCycle` prevented the advancement
+          expect(testee.modelValue.currentPosition, isNot(equals(bServicePoint)));
+          expect(emitRegister, hasLength(0));
+        },
+      );
+    });
+
     group('timed route advancement (Iselle -> Domodossola)', () {
       test('handleTimedRoute_whenInTimedRouteWithPlannedArrivalTime_thenAdvancesToNextServicePointAfterTimer', () {
         // ARRANGE - Set up timed route: Iselle (CH01952) -> Varzo (CH01951)
