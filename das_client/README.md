@@ -90,7 +90,7 @@ The app is separated into the following components:
 | **ru_indications**              | Provides RU specific indications                                                       | 
 
 
-### Component Naming
+### Component naming
 
 Keep the component names as short as possible (e.g. mqtt, auth).
 In case of a naming conflict:
