@@ -108,7 +108,7 @@ void main() {
       await stopAutomaticAdvancement(tester);
 
       // Wait for 10 seconds so timed advancement is finished
-      await Future.delayed(const Duration(seconds: 10));
+      await tester.pumpAndSettle(Duration(seconds: 10));
 
       final varzo = 'Varzo';
       await tester.drag(findDASTableRowByText(varzo), const Offset(600, 0));
@@ -134,14 +134,13 @@ void main() {
 
       final domodossola = 'Domodossola (bif)';
       await tester.drag(findDASTableRowByText(domodossola), const Offset(600, 0));
-      await tester.pumpAndSettle();
 
-      await Future.delayed(const Duration(seconds: 6));
+      await tester.pumpAndSettle(Duration(seconds: 6));
 
       await tester.drag(findDASTableRowByText(domodossola), const Offset(600, 0));
       await tester.pumpAndSettle();
 
-      await Future.delayed(const Duration(seconds: 6));
+      await tester.pumpAndSettle(Duration(seconds: 6));
 
       // Chevron should still be at Domodossola (bif) because the timer was restarted
       expect(
