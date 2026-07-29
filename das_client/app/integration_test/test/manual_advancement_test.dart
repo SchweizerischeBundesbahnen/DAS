@@ -125,5 +125,34 @@ void main() {
 
       await disconnect(tester);
     });
+
+    testWidgets('manualAdvancement_whenManualPositionSet_thenRestartsPositionTimers', (tester) async {
+      await IntegrationTestApp.start(tester);
+      await loadJourney(tester, trainNumber: 'T46M');
+
+      await stopAutomaticAdvancement(tester);
+
+      final domodossola = 'Domodossola (bif)';
+      await tester.drag(findDASTableRowByText(domodossola), const Offset(600, 0));
+
+      await Future.delayed(const Duration(seconds: 6));
+
+      await tester.drag(findDASTableRowByText(domodossola), const Offset(600, 0));
+
+      await Future.delayed(const Duration(seconds: 6));
+
+      // Chevron should still be at Domodossola (bif) because the timer was restarted
+      expect(
+        find.descendant(of: findDASTableRowByText(domodossola), matching: find.byKey(RouteChevron.chevronKey)),
+        findsOne,
+      );
+
+      await waitUntilExists(
+        tester,
+        find.descendant(of: findDASTableRowByText('Domodossola (I)'), matching: find.byKey(RouteChevron.chevronKey)),
+      );
+
+      await disconnect(tester);
+    });
   });
 }
