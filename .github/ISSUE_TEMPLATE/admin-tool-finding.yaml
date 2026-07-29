@@ -37,6 +37,7 @@ body:
       label: Browser
       description: Welcher Browser wurde genutzt?
       options:
+        - ''
         - Microsoft Edge
         - Mozilla Firefox
         - Google Chrome
