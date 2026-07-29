@@ -1,0 +1,67 @@
+name: Report DAS-Admin-Tool Finding
+description: Findings aus dem Fachtesting oder produktiven Gebrauch ans DAS Team melden.
+labels: [ "finding" ]
+projects: [ "SchweizerischeBundesbahnen/10" ]
+assignees:
+  - marcdettwiler
+  - StephanieFrancke
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Weitere Informationen zum Ausfüllen eines Findings findest du unter [Guideline für die Erfassung von Findings](https://confluence.sbb.ch/x/a4l4sw).
+  - type: textarea
+    attributes:
+      label: Beschreibung
+      description: Beschreibung vom Finding
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Schritte zum Finding
+      description: Was wurde gemacht, um das Finding zu verursachen? Falls vorhanden, bitte Printscreens einfügen.
+      placeholder: |
+        1. ...
+        2. ...
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Erwartetes Verhalten
+      description: Was wäre das korrekte/erwartete Verhalten gewesen?
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Browser
+      description: Welcher Browser wurde genutzt?
+      options:
+        - Microsoft Edge
+        - Mozilla Firefox
+        - Google Chrome
+        - Anderer (Bitte in den Anmerkungen angeben)
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Version
+      description: Welche Version wurde genutzt? Die Version ist oben links ersichtlich.
+      options:
+        - 0.5.1
+      default: 0
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Umgebung
+      description: Welche Umgebung wurde genutzt? Die Umgebunbg ist oben rechts im Banner ersichtlich.
+      options:
+        - INT
+        - DEV
+      default: 0
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Weitere Anmerkungen
