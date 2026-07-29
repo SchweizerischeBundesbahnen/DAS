@@ -134,10 +134,12 @@ void main() {
 
       final domodossola = 'Domodossola (bif)';
       await tester.drag(findDASTableRowByText(domodossola), const Offset(600, 0));
+      await tester.pumpAndSettle();
 
       await Future.delayed(const Duration(seconds: 6));
 
       await tester.drag(findDASTableRowByText(domodossola), const Offset(600, 0));
+      await tester.pumpAndSettle();
 
       await Future.delayed(const Duration(seconds: 6));
 
