@@ -100,5 +100,30 @@ void main() {
 
       await disconnect(tester);
     });
+
+    testWidgets('manualAdvancement_whenManualPositionSet_thenStartTimedAdvancement', (tester) async {
+      await IntegrationTestApp.start(tester);
+      await loadJourney(tester, trainNumber: 'T46M');
+
+      await stopAutomaticAdvancement(tester);
+
+      // Wait for 10 seconds so timed advancement is finished
+      await Future.delayed(const Duration(seconds: 10));
+
+      final varzo = 'Varzo';
+      await tester.drag(findDASTableRowByText(varzo), const Offset(600, 0));
+
+      // Preglia is skipped, because Domodossola (bif) time is before Preglia
+      final locations = ['Varzo', 'Domodossola (bif)', 'Domodossola (I)'];
+
+      for (final location in locations) {
+        await waitUntilExists(
+          tester,
+          find.descendant(of: findDASTableRowByText(location), matching: find.byKey(RouteChevron.chevronKey)),
+        );
+      }
+
+      await disconnect(tester);
+    });
   });
 }
