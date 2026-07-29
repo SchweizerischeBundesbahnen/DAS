@@ -160,4 +160,5 @@ export default defineConfig(
     plugins: { json },
     extends: [prettierRecommended],
   },
+  { ignores: ['e2e/auth-state.json'] },
 );
