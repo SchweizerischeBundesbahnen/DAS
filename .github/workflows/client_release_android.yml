@@ -96,13 +96,28 @@ jobs:
         with:
           name: gen_srcs_android
 
-      - name: Prepare Android Secrets 🤫
+      - name: Vault Secrets 🤫
+        id: vault-secrets
+        uses: hashicorp/vault-action@v4.0.0
+        with:
+          url: https://vault-nonprod.sbb.ch:443
+          method: approle
+          roleId: ${{ secrets.VAULT_ROLE_ID }}
+          secretId: ${{ secrets.VAULT_SECRET_ID }}
+          secrets: |
+            kv/data/DSO-BPS/driver-advisory-system/ci/mobile ANDROID_KEYSTORE ;
+            kv/data/DSO-BPS/driver-advisory-system/ci/mobile ANDROID_KEYSTORE_PASSWORD ;
+            kv/data/DSO-BPS/driver-advisory-system/ci/mobile ANDROID_KEY_ALIAS ;
+            kv/data/DSO-BPS/driver-advisory-system/ci/mobile ANDROID_KEY_PASSWORD ;
+            kv/data/DSO-BPS/driver-advisory-system/ci/mobile ANDROID_SERVICE_ACCOUNT_JSON ;
+
+      - name: Prepare Android Secrets
         env:
-          ANDROID_KEYSTORE_STRING: ${{ secrets.ANDROID_KEYSTORE }}
+          ANDROID_KEYSTORE_STRING: ${{ steps.vault-secrets.outputs.ANDROID_KEYSTORE }}
           ANDROID_KEYSTORE: ${{ github.workspace }}/das_client/app/android/das.keystore
-          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
-          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ steps.vault-secrets.outputs.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ steps.vault-secrets.outputs.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ steps.vault-secrets.outputs.ANDROID_KEY_PASSWORD }}
         run: |
           echo $ANDROID_KEYSTORE_STRING | base64 -d > $ANDROID_KEYSTORE
           echo "ANDROID_KEYSTORE=$ANDROID_KEYSTORE" >> "$GITHUB_ENV"
@@ -117,7 +132,7 @@ jobs:
       - name: Upload App to Google Play Store
         uses: r0adkll/upload-google-play@v1.1.5
         with:
-          serviceAccountJsonPlainText: ${{ secrets.ANDROID_SERVICE_ACCOUNT_JSON }}
+          serviceAccountJsonPlainText: ${{ steps.vault-secrets.outputs.ANDROID_SERVICE_ACCOUNT_JSON }}
           packageName: ${{ matrix.packageName }}
           releaseFiles: das_client/app/build/app/outputs/bundle/${{ matrix.release-dir }}
           track: internal
