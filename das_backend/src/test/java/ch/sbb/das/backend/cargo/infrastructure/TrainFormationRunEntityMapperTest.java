@@ -1,4 +1,4 @@
-package ch.sbb.das.backend.cargo.infrastructure.model;
+package ch.sbb.das.backend.cargo.infrastructure;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -13,6 +13,8 @@ import ch.sbb.das.backend.cargo.domain.model.Load;
 import ch.sbb.das.backend.cargo.domain.model.TractionMode;
 import ch.sbb.das.backend.cargo.domain.model.Vehicle;
 import ch.sbb.das.backend.cargo.domain.model.VehicleUnit;
+import ch.sbb.das.backend.cargo.infrastructure.model.TrainFormationRunEntity;
+import ch.sbb.das.backend.companies.CompanyCode;
 import ch.sbb.das.backend.locations.TafTapLocationReference;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
@@ -20,33 +22,35 @@ import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-class TrainFormationRunEntityTest {
+class TrainFormationRunEntityMapperTest {
+
+    private final TrainFormationRunEntityMapper underTest = new TrainFormationRunEntityMapper();
 
     @Test
-    void from_null() {
+    void toEntities_null() {
 
         Formation formation = new Formation(null, null, null, null);
 
-        List<TrainFormationRunEntity> entities = TrainFormationRunEntity.from(formation);
+        List<TrainFormationRunEntity> entities = underTest.toEntities(formation);
 
         assertThat(entities).isEmpty();
     }
 
     @Test
-    void from_empty() {
+    void toEntities_empty() {
         String operationalTrainNumber = "7889";
         String trainPathId = "7889-023";
         LocalDate operationalDay = LocalDate.of(2023, 10, 1);
 
         Formation formation = new Formation(operationalTrainNumber, trainPathId, operationalDay, Collections.emptyList());
 
-        List<TrainFormationRunEntity> entities = TrainFormationRunEntity.from(formation);
+        List<TrainFormationRunEntity> entities = underTest.toEntities(formation);
 
         assertThat(entities).isEmpty();
     }
 
     @Test
-    void from_correct() {
+    void toEntities_correct() {
         OffsetDateTime inspectionDateTime = OffsetDateTime.now();
         String operationalTrainNumber = "6599";
         String trainPathId = "6599-002";
@@ -55,7 +59,7 @@ class TrainFormationRunEntityTest {
         FormationRun formationRun = FormationRun.builder()
             .inspected(true)
             .inspectionDateTime(inspectionDateTime)
-            .company("4532")
+            .company(new CompanyCode("4532"))
             .tafTapLocationReferenceStart(new TafTapLocationReference("CH", 52344))
             .tafTapLocationReferenceEnd(new TafTapLocationReference("CH", 4212))
             .trainCategoryCode("CAT")
@@ -86,7 +90,6 @@ class TrainFormationRunEntityTest {
                     .brakeStatus(new BrakeStatus(3))
                     .technicalHoldingForceInHectoNewton(302)
                     .effectiveOperationalHoldingForceInHectoNewton(893)
-                    .handBrakeWeightInT(90)
                     .load(new Load(List.of(new Goods(false)), List.of(new IntermodalLoadingUnit(false, List.of(new Goods(false))))))
                     .build()
             ), new EuropeanVehicleNumber("56", "23", "78931", "3"))))
@@ -94,7 +97,7 @@ class TrainFormationRunEntityTest {
 
         Formation formation = new Formation(operationalTrainNumber, trainPathId, operationalDay, List.of(formationRun));
 
-        List<TrainFormationRunEntity> entities = TrainFormationRunEntity.from(formation);
+        List<TrainFormationRunEntity> entities = underTest.toEntities(formation);
 
         assertThat(entities).first().isNotNull();
         TrainFormationRunEntity result = entities.getFirst();
@@ -103,7 +106,7 @@ class TrainFormationRunEntityTest {
         assertThat(result.getOperationalTrainNumber()).isEqualTo(operationalTrainNumber);
         assertThat(result.getTrainPathId()).isEqualTo(trainPathId);
         assertThat(result.getOperationalDay()).isEqualTo(operationalDay);
-        assertThat(result.getCompany()).isEqualTo("4532");
+        assertThat(result.getCompany()).isEqualTo(new CompanyCode("4532"));
         assertThat(result.getTafTapLocationReferenceStart()).isEqualTo("CH52344");
         assertThat(result.getTafTapLocationReferenceEnd()).isEqualTo("CH04212");
         assertThat(result.getTrainCategoryCode()).isEqualTo("CAT");

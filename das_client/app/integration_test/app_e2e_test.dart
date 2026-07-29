@@ -6,7 +6,7 @@ import 'package:integration_test/integration_test.dart';
 import 'package:logger/component.dart';
 import 'package:logging/logging.dart';
 
-import 'test/preload_e2e_test.dart' as preload_e2e_tests;
+import 'test/e2e_test.dart' as e2e_tests;
 
 void main() {
   final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +22,7 @@ void main() {
     await _delayOnAndroidEmulator();
   });
 
-  preload_e2e_tests.main();
+  e2e_tests.main();
 }
 
 /// delay can improve stability on Android emulator

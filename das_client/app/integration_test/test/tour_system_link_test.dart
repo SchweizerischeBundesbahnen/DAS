@@ -6,6 +6,7 @@ import 'package:app/provider/user_settings.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../app_test.dart';
+import '../integration/integration_test_app.dart';
 import '../mocks/mock_launcher.dart';
 import '../mocks/mock_user_settings.dart';
 import '../util/test_utils.dart';
@@ -13,7 +14,7 @@ import '../util/test_utils.dart';
 void main() {
   group('tour system link test', () {
     testWidgets('tourSystem_whenNotConfigured_thenHidesButtons', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T39M');
 
       // find pause button and press it
@@ -34,7 +35,7 @@ void main() {
     });
 
     testWidgets('tourSystem_whenConfigured_thenShowsButtons', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
 
       final userSettings = DI.get<UserSettings>() as MockUserSettings;
       userSettings.set(.tourSystem, TourSystem.tip.name);
@@ -67,7 +68,7 @@ void main() {
     });
 
     testWidgets('tourSystem_whenPositionChanges_thenUpdatesButtonVisibility', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
 
       final userSettings = DI.get<UserSettings>() as MockUserSettings;
       userSettings.set(.tourSystem, TourSystem.tip.name);

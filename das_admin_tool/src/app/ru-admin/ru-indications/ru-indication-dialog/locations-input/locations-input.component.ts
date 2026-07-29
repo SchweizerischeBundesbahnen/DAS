@@ -22,13 +22,14 @@ import { LocationService } from './location.service';
   styleUrl: './locations-input.component.css',
 })
 export class LocationsInput {
+  private readonly locationService = inject(LocationService);
+
   readonly label = input<string>($localize`:@@locations_form_label:Betriebspunkt`);
   readonly control = input<FormControl<string[]>>(
     new FormControl<string[]>([], { nonNullable: true }),
   );
 
   inputControl = new FormControl('', { nonNullable: true });
-  private readonly locationService = inject(LocationService);
   private readonly inputValue = toSignal(this.inputControl.valueChanges, { initialValue: '' });
   readonly filteredLocations = computed(() => {
     return this.locationService.filterLocations(this.inputValue(), this.control().value);

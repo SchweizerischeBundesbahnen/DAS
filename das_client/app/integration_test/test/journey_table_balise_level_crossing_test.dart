@@ -5,11 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../app_test.dart';
+import '../integration/integration_test_app.dart';
 import '../util/test_utils.dart';
 
 void main() {
   testWidgets('baliseLevelCrossing_whenMultipleLevelCrossings_thenDisplaysCorrectly', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T7');
 
     final baliseMultiLevelCrossing = findDASTableRowByText('(2 ${l10n.p_journey_table_level_crossing})');
@@ -25,7 +26,7 @@ void main() {
   });
 
   testWidgets('baliseLevelCrossing_whenGroupTapped_thenExpandsAndCollapses', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T7M');
 
     final groupOf5BaliseRow = findDASTableRowByText('41.6');
@@ -88,7 +89,7 @@ void main() {
   });
 
   testWidgets('baliseLevelCrossing_whenInEtcsLevel2Section_thenDisplaysCorrectly', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T7');
 
     final scrollableFinder = find.byType(AnimatedList);

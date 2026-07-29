@@ -7,4 +7,5 @@ export interface Environment {
   adminTenantId: string;
   allowedTenantIds: string[];
   authConfig: PassedInitialConfig;
+  instanaKey?: string;
 }

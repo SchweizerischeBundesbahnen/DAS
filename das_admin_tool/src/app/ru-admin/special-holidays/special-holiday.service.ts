@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { BaseDialogService } from '../base-dialog.service';
 import { RuAdminApi, SpecialHoliday } from '../ru-admin-api';
@@ -7,7 +7,7 @@ import {
   SpecialHolidayDialogEditResult,
 } from './special-holiday-dialog/special-holiday-dialog.component';
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class SpecialHolidayService extends BaseDialogService {
   private readonly ruAdminApi = inject(RuAdminApi);
   readonly specialHolidaysResource = this.ruAdminApi.specialHolidays;

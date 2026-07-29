@@ -6,12 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../app_test.dart';
+import '../integration/integration_test_app.dart';
 import '../util/test_utils.dart';
 
 void main() {
   group('navigation drawer tests', () {
     testWidgets('navigation_whenDrawerOpened_thenShowsNavigationItems', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
 
       // check that there is a drawer
       final scaffold = find.byWidgetPredicate((widget) => widget is Scaffold).first;
@@ -33,7 +34,7 @@ void main() {
     });
 
     testWidgets('navigation_whenLinksSelected_thenShowsLinksPage', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
 
       await openDrawer(tester);
 
@@ -51,7 +52,7 @@ void main() {
     });
 
     testWidgets('navigation_whenSettingsSelected_thenShowsSettingsPage', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
 
       await openDrawer(tester);
 
@@ -69,7 +70,7 @@ void main() {
     });
 
     testWidgets('navigation_whenProfileSelected_thenShowsProfilePage', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
 
       await openDrawer(tester);
 
@@ -90,7 +91,7 @@ void main() {
     });
 
     testWidgets('navigation_whenTrainJourneySelected_thenShowsFahrtPage', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
 
       await openDrawer(tester);
 
@@ -118,7 +119,7 @@ void main() {
     });
 
     testWidgets('navigation_whenNavigatingBackToJourney_thenJourneyStaysLoaded', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T6');
 
       // check first train station
@@ -140,7 +141,7 @@ void main() {
     });
 
     testWidgets('navigation_whenNavigatingBack_thenJourneySettingsNotReset', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T5M');
 
       final selectedBrakeSeries = 'D30';

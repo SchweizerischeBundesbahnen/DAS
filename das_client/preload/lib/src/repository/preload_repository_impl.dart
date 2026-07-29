@@ -203,6 +203,7 @@ class PreloadRepositoryImpl implements PreloadRepository {
   }
 
   Future<void> _emit([List<S3File>? files]) async {
+    if (_rxDetails.isClosed) return;
     final details = await _gatherDetails(files);
     _rxDetails.add(details);
   }
