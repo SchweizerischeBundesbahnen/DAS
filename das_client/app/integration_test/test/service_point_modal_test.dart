@@ -66,6 +66,7 @@ void main() {
 
       await disconnect(tester);
     });
+
     testWidgets('servicePointModal_whenInteracted_thenOpensAndClosesCorrectly', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T8');
@@ -94,6 +95,51 @@ void main() {
 
       await disconnect(tester);
     });
+
+    testWidgets('servicePointModal_whenSameCellTappedTwice_thenClosesModal', (tester) async {
+      await IntegrationTestApp.start(tester);
+      await loadJourney(tester, trainNumber: 'T8');
+
+      await _openByTapOnCellWithText(tester, 'Bern');
+      await _checkOpenModalSheet(tester, DetailTabCommunication.communicationTabKey, 'Bern');
+
+      // tapping the element that opened the modal a second time closes it
+      await _openByTapOnCellWithText(tester, 'Bern');
+      expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsOneWidget);
+
+      await disconnect(tester);
+    });
+
+    testWidgets('servicePointModal_whenRadioChannelTappedTwice_thenClosesModal', (tester) async {
+      await IntegrationTestApp.start(tester);
+      await loadJourney(tester, trainNumber: 'T8');
+
+      await _openRadioChannelByHeaderTap(tester);
+      await _checkOpenModalSheet(tester, DetailTabCommunication.communicationTabKey, 'Bern');
+
+      // tapping the element that opened the modal a second time closes it
+      await _openRadioChannelByHeaderTap(tester);
+      expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsOneWidget);
+
+      await disconnect(tester);
+    });
+
+    testWidgets('servicePointModal_whenDifferentServicePointTapped_thenSwitchesWithoutClosing', (tester) async {
+      await IntegrationTestApp.start(tester);
+      await loadJourney(tester, trainNumber: 'T8');
+
+      await _openByTapOnCellWithText(tester, 'Bern');
+      await _checkOpenModalSheet(tester, DetailTabCommunication.communicationTabKey, 'Bern');
+
+      await _openByTapOnCellWithText(tester, 'Olten');
+
+      // switches directly to the new content, the modal never closes in between
+      expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsNothing);
+      await _checkOpenModalSheet(tester, DetailTabCommunication.communicationTabKey, 'Olten');
+
+      await disconnect(tester);
+    });
+
     testWidgets('servicePointModal_whenOpened_thenCollapsesHeaderButtons', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
@@ -111,6 +157,7 @@ void main() {
 
       await disconnect(tester);
     });
+
     testWidgets('servicePointModal_whenDataAvailable_thenShowsOnlyRelevantTabs', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T8');
@@ -128,6 +175,7 @@ void main() {
 
       await disconnect(tester);
     });
+
     testWidgets('servicePointModal_whenTabChanged_thenDisplaysCorrectContent', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T8');
@@ -146,6 +194,7 @@ void main() {
 
       await disconnect(tester);
     });
+
     testWidgets('servicePointModal_whenTimeout_thenClosesAutomatically', (tester) async {
       await IntegrationTestApp.start(tester);
 
@@ -166,6 +215,7 @@ void main() {
 
       await disconnect(tester);
     });
+
     testWidgets('servicePointModal_whenAdvancementPaused_thenClosesAfterTimeout', (tester) async {
       await IntegrationTestApp.start(tester);
 
