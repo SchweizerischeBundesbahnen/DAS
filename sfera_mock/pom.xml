@@ -19,7 +19,7 @@
         <image.version>${project.version}</image.version>
 
         <spring-cloud.version>2025.1.2</spring-cloud.version>
-        <solace-spring-cloud-bom.version>6.0.0</solace-spring-cloud-bom.version>
+        <solace-spring-cloud-bom.version>6.1.0</solace-spring-cloud-bom.version>
         <vault.version>5.0.2</vault.version>
     </properties>
 
