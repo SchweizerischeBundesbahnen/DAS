@@ -186,6 +186,30 @@ void main() {
     await disconnect(tester);
   });
 
+  testWidgets('brakeSlipModal_whenNonInteractiveAreaTapped_thenClosesModal', (tester) async {
+    await IntegrationTestApp.start(tester);
+
+    final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
+    formationRepository.emitT9999Formation();
+
+    await loadJourney(tester, trainNumber: 'T9999M');
+
+    // Open fullscreen
+    await openBrakeSlipPage(tester);
+    await closeBrakeSlipPage(tester);
+
+    // Open modal
+    await openBrakeSlipPage(tester);
+    expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsNothing);
+
+    // tapping a non-interactive area inside the modal (its title) closes it, without needing the "x"
+    await tapElement(tester, find.byKey(BrakeLoadSlipModalBuilder.headerKey), warnIfMissed: false);
+
+    expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsOneWidget);
+
+    await disconnect(tester);
+  });
+
   testWidgets('brakeSlipModal_whenFullscreenButtonTapped_thenOpensFullscreen', (tester) async {
     await IntegrationTestApp.start(tester);
 

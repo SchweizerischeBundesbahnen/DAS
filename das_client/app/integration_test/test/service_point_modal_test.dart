@@ -140,6 +140,21 @@ void main() {
       await disconnect(tester);
     });
 
+    testWidgets('servicePointModal_whenActiveTabReselected_thenDoesNothing', (tester) async {
+      await IntegrationTestApp.start(tester);
+      await loadJourney(tester, trainNumber: 'T8');
+
+      await _openByTapOnCellWithText(tester, 'Bern');
+      await _checkOpenModalSheet(tester, DetailTabCommunication.communicationTabKey, 'Bern');
+
+      // re-selecting the already active tab is a no-op: it neither closes the modal nor changes content
+      await _selectTab(tester, .communication);
+      expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsNothing);
+      await _checkOpenModalSheet(tester, DetailTabCommunication.communicationTabKey, 'Bern');
+
+      await disconnect(tester);
+    });
+
     testWidgets('servicePointModal_whenOpened_thenCollapsesHeaderButtons', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');

@@ -109,6 +109,25 @@ void main() {
 
     await disconnect(tester);
   });
+  testWidgets('asrModal_whenNonInteractiveAreaTapped_thenClosesModal', (tester) async {
+    await IntegrationTestApp.start(tester);
+    await loadJourney(tester, trainNumber: 'T2');
+
+    await _openASRModalByTapOnRow(tester, 'km 64.200 - km 47.200');
+    expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsNothing);
+
+    // tapping a non-interactive area inside the modal (its title) closes it
+    final modalSheet = find.byKey(DasModalSheet.modalSheetKey);
+    final title = find.descendant(
+      of: modalSheet,
+      matching: find.text(l10n.w_additional_speed_restriction_modal_title),
+    );
+    await tapElement(tester, title, warnIfMissed: false);
+
+    expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsOneWidget);
+
+    await disconnect(tester);
+  });
   testWidgets('asrModal_whenComplexAsrWithMultipleEntries_thenShowsAllEntries', (tester) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T18');
