@@ -259,7 +259,7 @@ jobs:
             kv/data/DSO-BPS/driver-advisory-system/ci/common NIGHTLY_FAILURE_CHANNEL_WEBHOOK ;
 
       - name: Notify Microsoft Teams
-        uses: skitionek/notify-microsoft-teams@v1.1.0
+        uses: skitionek/notify-microsoft-teams@v1.3.0
         with:
           webhook_url: ${{ steps.vault-secrets.outputs.NIGHTLY_FAILURE_CHANNEL_WEBHOOK }}
           job: ${{ toJson(job) }}
