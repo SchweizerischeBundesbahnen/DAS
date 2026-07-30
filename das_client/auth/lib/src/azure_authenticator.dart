@@ -207,8 +207,14 @@ class AzureAuthenticator implements Authenticator {
   }
 
   void _validateToken(OidcToken token) {
-    if (!token.isIssuedByTenant(_config.trustedTenantIds)) {
-      throw Exception('Token issued by untrusted tenant');
+    final tenantId = token.tenantId;
+    if (tenantId == null || !_config.trustedTenantIds.any((id) => id.toLowerCase() == tenantId.toLowerCase())) {
+      throw InvalidTokenException.untrustedTenant(tenantId);
+    }
+
+    final roles = token.roles;
+    if (!roles.map((it) => Role.fromName(it)).nonNulls.any(_config.allowedRoles.contains)) {
+      throw InvalidTokenException.disallowedRoles(roles);
     }
   }
 
@@ -217,9 +223,7 @@ class AzureAuthenticator implements Authenticator {
 }
 
 extension _OidcTokenExtension on OidcToken {
-  bool isIssuedByTenant(List<String> trustedIds) {
-    final token = JsonWebToken.decode(idToken);
-    final tenantId = token.payload['tid'] as String?;
-    return tenantId != null && trustedIds.any((id) => id.toLowerCase() == tenantId.toLowerCase());
-  }
+  String? get tenantId => JsonWebToken.decode(idToken).payload['tid'] as String?;
+
+  List<String> get roles => (JsonWebToken.decode(idToken).payload['roles'] as List<dynamic>? ?? []).cast<String>();
 }
