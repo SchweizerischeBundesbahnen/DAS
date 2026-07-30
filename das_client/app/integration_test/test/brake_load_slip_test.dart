@@ -8,9 +8,11 @@ import 'package:app/pages/journey/journey_screen/detail_modal/brake_load_slip_mo
 import 'package:app/pages/journey/journey_screen/notification/widgets/brake_load_slip_notification.dart';
 import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
 import 'package:app/widgets/dot_indicator.dart';
+import 'package:app/widgets/modal_sheet/das_modal_sheet.dart';
 import 'package:app/widgets/navigation_buttons.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:formation/component.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 import '../app_test.dart';
 import '../integration/integration_test_app.dart';
@@ -155,6 +157,31 @@ void main() {
     expect(find.byKey(BrakeLoadSlipModalBuilder.headerKey), findsOneWidget);
     expect(find.text(l10n.p_brake_load_slip_special_restrictions_title), findsOneWidget);
     expect(find.byKey(BrakeLoadSlipModalBuilder.buttonKey), findsOneWidget);
+
+    await disconnect(tester);
+  });
+
+  testWidgets('brakeSlipModal_whenButtonTappedWhileOpen_thenClosesModal', (tester) async {
+    await IntegrationTestApp.start(tester);
+
+    final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
+    formationRepository.emitT9999Formation();
+
+    await loadJourney(tester, trainNumber: 'T9999M');
+
+    // Open fullscreen
+    await openBrakeSlipPage(tester);
+    await closeBrakeSlipPage(tester);
+
+    // Open modal
+    await openBrakeSlipPage(tester);
+    expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsNothing);
+
+    // tapping the button that opened the modal a second time closes it
+    await tapElement(tester, find.byIcon(SBBIcons.freight_wagon_container_medium));
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsOneWidget);
 
     await disconnect(tester);
   });
