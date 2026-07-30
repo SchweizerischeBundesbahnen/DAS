@@ -66,12 +66,10 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
          decoration: DASTableRowDecoration(color: rowColor ?? _resolveRowColor(context, journeyPosition, data)),
          stickyLevel: .first,
          height: calculateHeight(data, config.settings.currentBrakeSeries),
-         onStartToEndDragReached: journeyPosition.currentPosition != data
-             ? () {
-                 context.read<JourneyPositionViewModel>().setManualPosition(data);
-                 context.read<JourneyTableAdvancementViewModel>().setAdvancementModeToManual();
-               }
-             : null,
+         onStartToEndDragReached: () {
+           context.read<JourneyPositionViewModel>().setManualPosition(data);
+           context.read<JourneyTableAdvancementViewModel>().setAdvancementModeToManual();
+         },
          draggableBackgroundBuilder: (context, dragReached) {
            return DecoratedBox(
              decoration: BoxDecoration(color: SBBColors.granite),
