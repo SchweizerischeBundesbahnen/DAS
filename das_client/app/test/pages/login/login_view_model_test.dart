@@ -79,9 +79,9 @@ void main() {
     );
   });
 
-  test('setConnectToTmsVad_whenIsFalseAndUpdatedWithFalse_thenDoesNothing', () async {
+  test('setConnectToTmsVad_whenIsTrueAndUpdatedWithTrue_thenDoesNothing', () async {
     // ACT
-    testee.setConnectToTmsVad(false);
+    testee.setConnectToTmsVad(true);
     await processStreams();
 
     // EXPECT
@@ -89,13 +89,13 @@ void main() {
     expect(emitRegister.first, equals(LoggedOut()));
   });
 
-  test('setConnectToTmsVad_whenIsFalseAndUpdatedWithTrue_thenEmitsWithTrue', () async {
+  test('setConnectToTmsVad_whenIsTrueAndUpdatedWithFalse_thenEmitsWithFalse', () async {
     // ACT
-    testee.setConnectToTmsVad(true);
+    testee.setConnectToTmsVad(false);
     await processStreams();
 
     // EXPECT
     expect(emitRegister, hasLength(2));
-    expect(emitRegister, orderedEquals([LoggedOut(), LoggedOut(connectToTmsVad: true)]));
+    expect(emitRegister, orderedEquals([LoggedOut(), LoggedOut(connectToTmsVad: false)]));
   });
 }
