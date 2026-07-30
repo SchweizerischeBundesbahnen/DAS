@@ -2,39 +2,40 @@
 @if ((mqService.state | async) !== MqttConnectionState.CONNECTED) {
   <sbb-form-field class="sbb-form-field-long">
     <sbb-label>Company Code</sbb-label>
-    <input type="text" sbbInput [formControl]="companyControl"/>
+    <input type="text" sbbInput [formControl]="companyControl" />
   </sbb-form-field>
   <sbb-form-field class="sbb-form-field-long">
     <sbb-label>Train Identification</sbb-label>
-    <input type="text" sbbInput [formControl]="trainControl"/>
+    <input type="text" sbbInput [formControl]="trainControl" />
   </sbb-form-field>
   <sbb-form-field class="sbb-form-field-long">
     <sbb-label>Operation date</sbb-label>
-    <input type="text" sbbInput [formControl]="dateControl"/>
+    <input type="text" sbbInput [formControl]="dateControl" />
   </sbb-form-field>
   <sbb-form-field class="sbb-form-field-long">
     <sbb-label>Client ID</sbb-label>
-    <input type="text" sbbInput [formControl]="clientIdControl"/>
+    <input type="text" sbbInput [formControl]="clientIdControl" />
   </sbb-form-field>
-  <sbb-checkbox class="checkbox" [formControl]="environmentControl">Use a custom topic prefix
+  <sbb-checkbox class="checkbox" [formControl]="environmentControl"
+    >Use a custom topic prefix
   </sbb-checkbox>
   @if (environmentControl.value) {
     <sbb-form-field class="sbb-form-field-long">
       <sbb-label>Custom topic prefix</sbb-label>
-      <input type="text" sbbInput [formControl]="customPrefixControl"/>
+      <input type="text" sbbInput [formControl]="customPrefixControl" />
     </sbb-form-field>
   }
   <button type="button" sbb-button (click)="observe()">Observe</button>
 } @else {
   <button type="button" class="disconnect" sbb-button (click)="disconnect()">Disconnect</button>
-  <button type="button" class="ml-3" sbb-button (click)="sendHandshakeRequest()">Send handshake
-    request
+  <button type="button" class="ml-3" sbb-button (click)="sendHandshakeRequest()">
+    Send handshake request
   </button>
   <button type="button" class="ml-3" sbb-button (click)="sendJPRequest()">Send JP request</button>
   <button type="button" class="ml-3" sbb-button (click)="sendSPRequest()">Send SP request</button>
   <button type="button" class="ml-3" sbb-button (click)="sendTCRequest()">Send TC request</button>
-  <button type="button" class="ml-3" sbb-button (click)="sendSessionTermination()">Send Session
-    termination
+  <button type="button" class="ml-3" sbb-button (click)="sendSessionTermination()">
+    Send Session termination
   </button>
 
   <div class="info">
@@ -53,22 +54,38 @@
         <button class="glow-on-hover" (click)="nextLocation()">Nächste Fortschaltung</button>
       </div>
       <div>
-        <button class="glow-on-hover" (click)="sendG2BEvent({warn: true})">Warnfunktion ⚠️</button>
+        <button class="glow-on-hover" (click)="sendG2BEvent({ warn: true })">
+          Warnfunktion ⚠️
+        </button>
       </div>
       <div>
-        <button class="glow-on-hover" (click)="sendG2BEvent({koa: 'wait'})">KOA Warten︎ 🛑</button>
-        <button class="glow-on-hover ml-3" (click)="sendG2BEvent({koa: 'waitCancelled'})">KOA Warten aufgehoben ✅</button>
-        <button (click)="sendG2BEvent({koa: 'waitHide'})" class="glow-on-hover ml-3">KOA Warten︎ ausblenden ❌</button>
-        <button (click)="sendG2BEvent({koa: 'call'})" class="glow-on-hover ml-3">KOA Anruf einblenden 📞</button>
+        <button class="glow-on-hover" (click)="sendG2BEvent({ koa: 'wait' })">KOA Warten︎ 🛑</button>
+        <button class="glow-on-hover ml-3" (click)="sendG2BEvent({ koa: 'waitCancelled' })">
+          KOA Warten aufgehoben ✅
+        </button>
+        <button (click)="sendG2BEvent({ koa: 'waitHide' })" class="glow-on-hover ml-3">
+          KOA Warten︎ ausblenden ❌
+        </button>
+        <button (click)="sendG2BEvent({ koa: 'call' })" class="glow-on-hover ml-3">
+          KOA Anruf einblenden 📞
+        </button>
       </div>
       <div>
-        <button class="glow-on-hover" (click)="sendG2BEvent({connectivity: 'wifi'})">Verbindung WLAN 🛜</button>
-        <button class="glow-on-hover ml-3" (click)="sendG2BEvent({connectivity: 'disconnected'})">Verbindung unterbrochen 📵</button>
-        <button class="glow-on-hover ml-3" (click)="sendG2BEvent({connectivity: 'connected'})">Verbindung ok 📶</button>
+        <button class="glow-on-hover" (click)="sendG2BEvent({ connectivity: 'wifi' })">
+          Verbindung WLAN 🛜
+        </button>
+        <button class="glow-on-hover ml-3" (click)="sendG2BEvent({ connectivity: 'disconnected' })">
+          Verbindung unterbrochen 📵
+        </button>
+        <button class="glow-on-hover ml-3" (click)="sendG2BEvent({ connectivity: 'connected' })">
+          Verbindung ok 📶
+        </button>
       </div>
       <div>
         <button class="glow-on-hover" (click)="initialFormation()">Bremszettel 🧾</button>
-        <button class="glow-on-hover ml-3" (click)="updatedFormation()">Update Bremszettel 🔄</button>
+        <button class="glow-on-hover ml-3" (click)="updatedFormation()">
+          Update Bremszettel 🔄
+        </button>
       </div>
     </div>
   }
@@ -83,32 +100,35 @@
   </sbb-expansion-panel>
 
   <sbb-expansion-panel>
-    <sbb-expansion-panel-header> Send predefined (wrong) XML messages to B2G-Topic
+    <sbb-expansion-panel-header>
+      Send predefined (wrong) XML messages to B2G-Topic
     </sbb-expansion-panel-header>
-    <button type="button" sbb-button (click)="sendHSRWrongSferaVersion()">HS-Req wrong version
+    <button type="button" sbb-button (click)="sendHSRWrongSferaVersion()">
+      HS-Req wrong version
     </button>
-    <button type="button" sbb-button class="ml-3" (click)="sendHSRWrongConnectivity()">HS-Req wrong
-      connectivity
+    <button type="button" sbb-button class="ml-3" (click)="sendHSRWrongConnectivity()">
+      HS-Req wrong connectivity
     </button>
-    <button type="button" sbb-button class="ml-3" (click)="sendHSRWrongArchitecture()">HS-Req wrong
-      architecture
+    <button type="button" sbb-button class="ml-3" (click)="sendHSRWrongArchitecture()">
+      HS-Req wrong architecture
     </button>
-    <button type="button" sbb-button class="ml-3" (click)="sendHSRDriverWithoutReadonly()">HS-Req
-      driver without readonly
+    <button type="button" sbb-button class="ml-3" (click)="sendHSRDriverWithoutReadonly()">
+      HS-Req driver without readonly
     </button>
   </sbb-expansion-panel>
 
   <sbb-expansion-panel>
-    <sbb-expansion-panel-header> Send predefined (special) XML messages to B2G-Topic
+    <sbb-expansion-panel-header>
+      Send predefined (special) XML messages to B2G-Topic
     </sbb-expansion-panel-header>
-    <button type="button" sbb-button (click)="sendHSRDriverAndReadOnly()">HS-Req driver and
-      readonly
+    <button type="button" sbb-button (click)="sendHSRDriverAndReadOnly()">
+      HS-Req driver and readonly
     </button>
     <button type="button" sbb-button class="ml-3" (click)="sendJPRequestWithWrongTrainnumber()">
       JP-Req with wrong trainnumber
     </button>
-    <button type="button" sbb-button class="ml-3" (click)="sendJPRequestWithWrongCompany()">JP-Req
-      with wrong company
+    <button type="button" sbb-button class="ml-3" (click)="sendJPRequestWithWrongCompany()">
+      JP-Req with wrong company
     </button>
   </sbb-expansion-panel>
 

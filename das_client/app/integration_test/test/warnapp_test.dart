@@ -8,6 +8,7 @@ import 'package:warnapp/component.dart';
 
 import '../app_test.dart';
 import '../data/warnapp_data.dart';
+import '../integration/integration_test_app.dart';
 import '../util/test_utils.dart';
 
 void main() {
@@ -16,7 +17,7 @@ void main() {
 
   group('warnapp test', () {
     testWidgets('warnapp_whenSignalIsRed_thenTriggersWarning', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
 
       final motionDataService = DI.get<MotionDataService>() as MockMotionDataService;
       motionDataService.updateMotionData(motionDataAbfahrt1);
@@ -34,7 +35,7 @@ void main() {
     });
 
     testWidgets('warnapp_whenUiRebuilt_thenNotificationNotReappearing', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
 
       final motionDataService = DI.get<MotionDataService>() as MockMotionDataService;
       motionDataService.updateMotionData(motionDataAbfahrt1);
@@ -57,7 +58,7 @@ void main() {
     });
 
     testWidgets('warnapp_whenManeuverButtonTapped_thenActivatesManeuverMode', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
 
       final motionDataService = DI.get<MotionDataService>() as MockMotionDataService;
       motionDataService.updateMotionData(motionDataAbfahrt1);
@@ -74,7 +75,7 @@ void main() {
     });
 
     testWidgets('warnapp_whenInManeuverMode_thenDoesNotTrigger', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
 
       final motionDataService = DI.get<MotionDataService>() as MockMotionDataService;
       motionDataService.updateMotionData(motionDataAbfahrt1);
@@ -105,7 +106,7 @@ void main() {
     });
 
     testWidgets('warnapp_whenSignalIsGreen_thenDoesNotTrigger', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
 
       final motionDataService = DI.get<MotionDataService>() as MockMotionDataService;
       motionDataService.updateMotionData(motionDataAbfahrt1);

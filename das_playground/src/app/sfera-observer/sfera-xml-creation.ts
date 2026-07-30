@@ -1,23 +1,28 @@
 export interface SferaHeaderOptions {
-  sferaVersion?: string,
-  messageId?: string,
-  timestamp?: string,
-  sourceDevice?: string,
-  sender?: string,
-  recipient?: string,
+  sferaVersion?: string;
+  messageId?: string;
+  timestamp?: string;
+  sourceDevice?: string;
+  sender?: string;
+  recipient?: string;
 }
 
 export interface HandshakeRequestOptions {
-  header?: SferaHeaderOptions,
-  statusReportsEnabled?: boolean,
-  relatedTrainRequest?: 'None' | 'OwnTrain' | 'RelatedTrains' | 'OwnTrainAndRelatedTrains' | 'OwnTrainAndOrRelatedTrains',
-  supportedModes?: SupportedOperationModes[]
+  header?: SferaHeaderOptions;
+  statusReportsEnabled?: boolean;
+  relatedTrainRequest?:
+    | 'None'
+    | 'OwnTrain'
+    | 'RelatedTrains'
+    | 'OwnTrainAndRelatedTrains'
+    | 'OwnTrainAndOrRelatedTrains';
+  supportedModes?: SupportedOperationModes[];
 }
 
 export interface TrainIdentification {
   startDate: string;
   operationalTrainNumber: string;
-  company: string
+  company: string;
 }
 
 export interface SPZone {
@@ -32,8 +37,8 @@ export interface SegmentProfileIdentification {
 
 export interface JpRequestOptions {
   trainIdentification: TrainIdentification;
-  requestFromSegmentProfile?: SegmentProfileIdentification
-  jpInUse?: string
+  requestFromSegmentProfile?: SegmentProfileIdentification;
+  jpInUse?: string;
 }
 
 export interface SpRequestOptions {
@@ -51,48 +56,60 @@ export interface TcRequestOptions {
 }
 
 export interface RequestOptions {
-  header?: SferaHeaderOptions,
-  jpRequests?: JpRequestOptions[],
-  spRequests?: SpRequestOptions[],
-  tcRequests?: TcRequestOptions[]
+  header?: SferaHeaderOptions;
+  jpRequests?: JpRequestOptions[];
+  spRequests?: SpRequestOptions[];
+  tcRequests?: TcRequestOptions[];
 }
 
 export interface EventOptions {
-  header?: SferaHeaderOptions,
-  sessionTermination?: boolean,
+  header?: SferaHeaderOptions;
+  sessionTermination?: boolean;
 }
 
 export interface SupportedOperationModes {
-  drivingMode: 'Read-Only' | 'Inactive' | 'DAS not connected to ATP',
-  architecture: 'BoardAdviceCalculation' | 'GroundAdviceCalculation',
-  connectivity: 'Standalone' | 'Connected',
+  drivingMode: 'Read-Only' | 'Inactive' | 'DAS not connected to ATP';
+  architecture: 'BoardAdviceCalculation' | 'GroundAdviceCalculation';
+  connectivity: 'Standalone' | 'Connected';
 }
 
-export const INACTIVE_MODE: SupportedOperationModes[] = [{
-  drivingMode: 'Inactive', connectivity: 'Standalone', architecture: 'BoardAdviceCalculation'
-}];
+export const INACTIVE_MODE: SupportedOperationModes[] = [
+  {
+    drivingMode: 'Inactive',
+    connectivity: 'Standalone',
+    architecture: 'BoardAdviceCalculation',
+  },
+];
 
-export const READONLY_MODE: SupportedOperationModes[] = [{
-  drivingMode: 'Read-Only', connectivity: 'Connected', architecture: 'BoardAdviceCalculation'
-}];
+export const READONLY_MODE: SupportedOperationModes[] = [
+  {
+    drivingMode: 'Read-Only',
+    connectivity: 'Connected',
+    architecture: 'BoardAdviceCalculation',
+  },
+];
 
-export const ACTIVE_MODE: SupportedOperationModes[] = [{
-  drivingMode: 'DAS not connected to ATP',
-  connectivity: 'Connected',
-  architecture: 'BoardAdviceCalculation'
-}, {
-  drivingMode: 'Read-Only', connectivity: 'Connected', architecture: 'BoardAdviceCalculation'
-}];
+export const ACTIVE_MODE: SupportedOperationModes[] = [
+  {
+    drivingMode: 'DAS not connected to ATP',
+    connectivity: 'Connected',
+    architecture: 'BoardAdviceCalculation',
+  },
+  {
+    drivingMode: 'Read-Only',
+    connectivity: 'Connected',
+    architecture: 'BoardAdviceCalculation',
+  },
+];
 
 export interface G2BEventNSPOptions {
-  warn?: boolean,
-  koa?: 'wait' | 'waitCancelled' | 'waitHide' | 'call',
-  connectivity?: 'connected' | 'disconnected' | 'wifi'
-  formation?: boolean
+  warn?: boolean;
+  koa?: 'wait' | 'waitCancelled' | 'waitHide' | 'call';
+  connectivity?: 'connected' | 'disconnected' | 'wifi';
+  formation?: boolean;
 }
 
 export class SferaXmlCreation {
-
   static createHandshakeRequest(options?: HandshakeRequestOptions) {
     let headerOptions = options?.header || this.defaultHeader();
     headerOptions = this.fillUndefinedHeaderFields(headerOptions);
@@ -105,9 +122,11 @@ export class SferaXmlCreation {
       ? `statusReportsEnabled="${options!.statusReportsEnabled}"`
       : '';
 
-    const supportedOperationModes = options?.supportedModes?.map(mode => {
-      return `<DAS_OperatingModesSupported DAS_drivingMode="${mode.drivingMode}" DAS_architecture="${mode.architecture}" DAS_connectivity="${mode.connectivity}"/>`;
-    })?.join("");
+    const supportedOperationModes = options?.supportedModes
+      ?.map((mode) => {
+        return `<DAS_OperatingModesSupported DAS_drivingMode="${mode.drivingMode}" DAS_architecture="${mode.architecture}" DAS_connectivity="${mode.connectivity}"/>`;
+      })
+      ?.join('');
 
     return `<?xml version="1.0"?>
                   <SFERA_B2G_RequestMessage>
@@ -166,7 +185,7 @@ export class SferaXmlCreation {
   }
 
   static createJpRequest(jpRequests: JpRequestOptions[] | undefined): string {
-    const strings = jpRequests?.map(jpRequest => {
+    const strings = jpRequests?.map((jpRequest) => {
       const jpInUseElement = jpRequest?.jpInUse
         ? `<JP_InUse JP_Version="${jpRequest.jpInUse}"/>`
         : '';
@@ -192,13 +211,12 @@ export class SferaXmlCreation {
                             ${jpInUseElement}
                         </JP_Request>
       `;
-
     });
     return (strings || []).join('');
   }
 
   static createSpRequest(spRequests: SpRequestOptions[] | undefined): string {
-    const strings = spRequests?.map(spRequest => {
+    const strings = spRequests?.map((spRequest) => {
       return `<SP_Request SP_VersionMajor="${spRequest.majorVersion}"
                           SP_VersionMinor="${spRequest.minorVersion}"
                           SP_ID="${spRequest.spId}">
@@ -212,12 +230,12 @@ export class SferaXmlCreation {
   }
 
   static createTcRequest(tcRequests: TcRequestOptions[] | undefined): string {
-    const strings = tcRequests?.map(tcRequest => {
+    const strings = tcRequests?.map((tcRequest) => {
       return `<TC_Request TC_ID="${tcRequest.tcId}">
                 <TC_RU_ID>${tcRequest.ruId}</TC_RU_ID>
       </TC_Request>
       `;
-    })
+    });
     return (strings || []).join('');
   }
 
@@ -235,9 +253,10 @@ export class SferaXmlCreation {
 
     const warnNsp = options.warn ? this.createNsp('warn') : '';
     const koaNsp = options.koa ? this.createNsp('koa', options.koa) : '';
-    const connectivityNsp = options.connectivity ? this.createNsp('connectivity', options.connectivity) : '';
+    const connectivityNsp = options.connectivity
+      ? this.createNsp('connectivity', options.connectivity)
+      : '';
     const formationNsp = options.formation ? this.createNsp('formation') : '';
-
 
     return `<?xml version="1.0"?>
                 <SFERA_G2B_EventMessage>
@@ -261,7 +280,7 @@ export class SferaXmlCreation {
   }
 
   private static createNsp(name: string, value?: string) {
-    return `<NetworkSpecificParameter name="${name}" value="${value ?? ''}"/>`
+    return `<NetworkSpecificParameter name="${name}" value="${value ?? ''}"/>`;
   }
 
   private static defaultHeader(): SferaHeaderOptions {
@@ -272,7 +291,7 @@ export class SferaXmlCreation {
       sourceDevice: 'DAS',
       sender: '1085',
       recipient: '0085',
-    }
+    };
   }
 
   private static defaultG2BHeader(): SferaHeaderOptions {
@@ -283,12 +302,12 @@ export class SferaXmlCreation {
       sourceDevice: 'TMS',
       sender: '0085',
       recipient: '1085',
-    }
+    };
   }
 
   private static fillUndefinedHeaderFields(headerOptions: SferaHeaderOptions) {
     headerOptions.sferaVersion = headerOptions.sferaVersion || '4.00';
-    headerOptions.timestamp = headerOptions.timestamp || this.currentTimestampSferaFormat()
+    headerOptions.timestamp = headerOptions.timestamp || this.currentTimestampSferaFormat();
     headerOptions.sender = headerOptions.sender || '1085';
     headerOptions.recipient = headerOptions.recipient || '0085';
     headerOptions.messageId = headerOptions.messageId || crypto.randomUUID();
@@ -296,4 +315,3 @@ export class SferaXmlCreation {
     return headerOptions;
   }
 }
-

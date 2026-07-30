@@ -1,19 +1,17 @@
-import { Component, inject } from '@angular/core';
-import { CommonModule } from "@angular/common";
-import { map } from "rxjs";
-import { OidcSecurityService } from "angular-auth-oidc-client";
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { map } from 'rxjs';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 @Component({
   selector: 'app-auth-insights',
-  imports: [
-    CommonModule,
-  ],
+  imports: [CommonModule],
   templateUrl: './auth-insights.component.html',
-  styleUrl: './auth-insights.component.scss'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './auth-insights.component.scss',
 })
 export class AuthInsightsComponent {
   private oidcSecurityService = inject(OidcSecurityService);
-
 
   get claims() {
     return this.oidcSecurityService.getUserData();

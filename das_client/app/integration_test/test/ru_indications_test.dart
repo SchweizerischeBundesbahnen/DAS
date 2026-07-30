@@ -4,14 +4,14 @@ import 'package:app/widgets/table/das_table.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ru_indications/component.dart';
 
-import '../app_test.dart';
+import '../integration/integration_test_app.dart';
 import '../mocks/mock_ru_indications_repository.dart';
 import '../util/test_utils.dart';
 
 void main() {
   testWidgets('ruIndications_whenShouldReturnMockData_thenIndicationsAreShown', (tester) async {
     // ARRANGE
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
     (DI.get<RuIndicationsRepository>() as MockRuIndicationsRepository).shouldReturnMockData = true;
 
     // ACT
@@ -37,7 +37,7 @@ void main() {
 
   testWidgets('ruIndications_whenLongTextWithLink_thenShowMoreIsVisible', (tester) async {
     // ARRANGE
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
     (DI.get<RuIndicationsRepository>() as MockRuIndicationsRepository).shouldReturnMockData = true;
 
     // ACT
@@ -67,7 +67,7 @@ void main() {
 
   testWidgets('ruIndications_whenLongTextWithMarkdownLink_thenLinkLabelIsRendered', (tester) async {
     // ARRANGE
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
     (DI.get<RuIndicationsRepository>() as MockRuIndicationsRepository).shouldReturnMockData = true;
 
     // ACT
@@ -93,7 +93,7 @@ void main() {
 
   testWidgets('ruIndications_whenLongTextExpanded_thenFullContentIsVisible', (tester) async {
     // ARRANGE
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
 
     (DI.get<RuIndicationsRepository>() as MockRuIndicationsRepository).shouldReturnMockData = true;
     // ACT

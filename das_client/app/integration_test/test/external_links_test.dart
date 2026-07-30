@@ -6,12 +6,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 import '../app_test.dart';
+import '../integration/integration_test_app.dart';
 import '../util/test_utils.dart';
 
 void main() {
   group('links page tests', () {
     testWidgets('externalLinks_whenNoRuSelected_thenShowsEmptyState', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
 
       await openDrawer(tester);
       await tapElement(tester, find.text(l10n.w_navigation_drawer_links_title));
@@ -29,7 +30,7 @@ void main() {
     });
 
     testWidgets('externalLinks_whenRuSelectedInProfile_thenShowsLinks', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
 
       // Navigate to Profile and select SBB CH
       await openDrawer(tester);
@@ -63,7 +64,7 @@ void main() {
     });
 
     testWidgets('externalLinks_whenRuSelectionChanges_thenUpdatesLinks', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
 
       // Navigate to Profile and select DB
       await openDrawer(tester);

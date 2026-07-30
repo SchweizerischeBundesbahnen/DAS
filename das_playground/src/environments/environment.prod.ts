@@ -1,7 +1,7 @@
 import 'angular-server-side-configuration/process';
-import { Environment } from "./environment.model";
-import { PassedInitialConfig } from "angular-auth-oidc-client";
-import { IMqttServiceOptions } from "ngx-mqtt";
+import { Environment } from './environment.model';
+import { PassedInitialConfig } from 'angular-auth-oidc-client';
+import { IMqttServiceOptions } from 'ngx-mqtt';
 
 const authConfig: PassedInitialConfig = {
   config: {
@@ -18,9 +18,9 @@ const authConfig: PassedInitialConfig = {
     customParamsAuthRequest: {
       prompt: 'select_account',
     },
-    strictIssuerValidationOnWellKnownRetrievalOff: true
-  }
-}
+    strictIssuerValidationOnWellKnownRetrievalOff: true,
+  },
+};
 
 const mqttServiceOptions: IMqttServiceOptions = {
   hostname: 'das-poc.messaging.solace.cloud',
@@ -30,8 +30,8 @@ const mqttServiceOptions: IMqttServiceOptions = {
   reconnectPeriod: 4000, // Reconnect period
   clientId: crypto.randomUUID(),
   protocol: 'wss',
-  connectOnCreate: false
-}
+  connectOnCreate: false,
+};
 
 export const environment: Environment = {
   production: process.env.PRODUCTION !== 'false',
