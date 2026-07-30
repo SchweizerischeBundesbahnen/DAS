@@ -31,7 +31,7 @@ class DetailTabGraduatedSpeeds extends StatelessWidget {
           mainAxisAlignment: .start,
           children: [
             Text(
-              '${context.l10n.w_service_point_modal_graduated_speed_brake_series_title}: ${brakeSeries.name}',
+              '${context.l10n.w_service_point_modal_graduated_speed_brake_series_title}: ${brakeSeries.trainSeries.name}',
               style: sbbTextStyle.boldStyle.small,
             ),
             Expanded(child: _buildSpeedInfoList(context, relevantSpeeds)),
