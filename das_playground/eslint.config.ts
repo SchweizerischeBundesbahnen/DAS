@@ -1,5 +1,5 @@
 import eslint from '@eslint/js';
-import {defineConfig} from 'eslint/config';
+import { defineConfig } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 import angular from 'angular-eslint';
 import eslintConfigPrettier from 'eslint-config-prettier/flat';
@@ -33,6 +33,7 @@ export default defineConfig([
       ],
       '@typescript-eslint/no-explicit-any': 'off',
       'preserve-caught-error': 'off',
+      '@angular-eslint/prefer-on-push-component-change-detection': 'off',
     },
   },
   {

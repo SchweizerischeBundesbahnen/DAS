@@ -1,5 +1,5 @@
-import { PassedInitialConfig } from "angular-auth-oidc-client";
-import { IMqttServiceOptions } from "ngx-mqtt";
+import { PassedInitialConfig } from 'angular-auth-oidc-client';
+import { IMqttServiceOptions } from 'ngx-mqtt';
 
 export interface Environment {
   production: boolean;

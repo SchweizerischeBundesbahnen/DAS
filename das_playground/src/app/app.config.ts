@@ -3,16 +3,21 @@ import {
   ApplicationConfig,
   importProvidersFrom,
   inject,
-  provideAppInitializer
+  provideAppInitializer,
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
-import { MqttModule } from "ngx-mqtt";
-import { provideHttpClient, withInterceptors, withInterceptorsFromDi } from "@angular/common/http";
+import { MqttModule } from 'ngx-mqtt';
+import {
+  provideHttpClient,
+  withInterceptors,
+  withInterceptorsFromDi,
+  withXhr,
+} from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { authInterceptor, OidcSecurityService, provideAuth } from 'angular-auth-oidc-client';
-import { environment } from "../environments/environment";
-import { SbbNotificationToastModule } from "@sbb-esta/angular/notification-toast";
+import { environment } from '../environments/environment';
+import { SbbNotificationToastModule } from '@sbb-esta/angular/notification-toast';
 
 function appInitializerAuthCheck() {
   return provideAppInitializer(() => {
@@ -42,9 +47,8 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     provideAuth(environment.authConfig),
     appInitializerAuthCheck(),
-    provideHttpClient(withInterceptorsFromDi(), withInterceptors([authInterceptor()])),
+    provideHttpClient(withXhr(), withInterceptorsFromDi(), withInterceptors([authInterceptor()])),
     importProvidersFrom(MqttModule.forRoot(environment.mqttServiceOptions)),
-    importProvidersFrom(SbbNotificationToastModule)
+    importProvidersFrom(SbbNotificationToastModule),
   ],
-
 };
