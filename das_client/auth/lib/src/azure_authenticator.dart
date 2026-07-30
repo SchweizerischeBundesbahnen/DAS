@@ -207,11 +207,18 @@ class AzureAuthenticator implements Authenticator {
   }
 
   void _validateToken(OidcToken token) {
+    _issuedByTrustedTenantElseThrow(token);
+    _hasAnyAllowedRoleElseThrow(token);
+  }
+
+  void _issuedByTrustedTenantElseThrow(OidcToken token) {
     final tenantId = token.tenantId;
     if (tenantId == null || !_config.trustedTenantIds.any((id) => id.toLowerCase() == tenantId.toLowerCase())) {
       throw InvalidTokenException.untrustedTenant(tenantId);
     }
+  }
 
+  void _hasAnyAllowedRoleElseThrow(OidcToken token) {
     final roles = token.roles;
     if (!roles.map((it) => Role.fromName(it)).nonNulls.any(_config.allowedRoles.contains)) {
       throw InvalidTokenException.disallowedRoles(roles);
