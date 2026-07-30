@@ -31,7 +31,7 @@ export class App implements OnInit {
       ineum('user', this.authService.oid());
     }
     this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd && typeof ineum !== 'undefined') {
+      if (typeof ineum !== 'undefined' && event instanceof NavigationEnd) {
         ineum('page', event.url);
       }
     });
