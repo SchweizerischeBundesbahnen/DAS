@@ -232,7 +232,7 @@ class _DASModalSheetState extends State<DasModalSheet> with TickerProviderStateM
 
   Widget _body() {
     return GestureDetector(
-      behavior: HitTestBehavior.opaque, // interactive descendants will win gesture arena
+      behavior: .opaque, // interactive descendants will win gesture arena
       onTap: () => widget.controller.close(),
       child: Column(
         key: DasModalSheet.modalSheetKey,
