@@ -65,7 +65,7 @@ class BrakeLoadSlipSpecialRestrictions extends StatelessWidget {
       context.l10n.p_brake_load_slip_special_restrictions_title,
       maxLines: 3,
       overflow: TextOverflow.ellipsis,
-      style: sbbTextStyle.boldStyle.small,
+      style: sbbTextStyle.boldStyle,
     );
 
     return showChangeIndicator && _hasChange()

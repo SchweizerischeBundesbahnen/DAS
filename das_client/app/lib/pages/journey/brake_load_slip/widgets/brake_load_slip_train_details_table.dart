@@ -119,7 +119,7 @@ class BrakeLoadSlipTrainDetailsTable extends StatelessWidget {
     return DataRow(
       cells: [
         DataCell(
-          Text(label, style: sbbTextStyle.romanStyle.small),
+          Text(label, style: sbbTextStyle.romanStyle.medium),
         ),
         DataCell(
           Align(
@@ -144,7 +144,7 @@ class BrakeLoadSlipTrainDetailsTable extends StatelessWidget {
   }
 
   Widget _wrappedText(String? text, bool hasChange, bool padRight, BuildContext context) {
-    final finalStyle = hasChange ? sbbTextStyle.boldStyle.small : sbbTextStyle.romanStyle.small;
+    final finalStyle = hasChange ? sbbTextStyle.boldStyle : sbbTextStyle.romanStyle;
     const rightPadding = EdgeInsets.only(right: SBBSpacing.small);
     Widget child = Text(text ?? '', style: finalStyle);
 

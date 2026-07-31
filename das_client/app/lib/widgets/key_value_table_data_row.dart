@@ -15,7 +15,7 @@ class KeyValueTableDataRow extends StatelessWidget {
   });
 
   KeyValueTableDataRow.title(String label, {Key? key, bool hasChange = false})
-    : this(label, null, key: key, labelStyle: sbbTextStyle.boldStyle.small, hasChange: hasChange);
+    : this(label, null, key: key, labelStyle: sbbTextStyle.boldStyle, hasChange: hasChange);
 
   const KeyValueTableDataRow.empty({Key? key}) : this('', null, key: key);
 
@@ -53,7 +53,7 @@ class KeyValueTableDataRow extends StatelessWidget {
       label,
       maxLines: 2,
       overflow: TextOverflow.ellipsis,
-      style: labelStyle ?? sbbTextStyle.romanStyle.small,
+      style: labelStyle ?? sbbTextStyle.romanStyle,
     );
 
     return hasChange && showChangeIndicator && value == null
@@ -70,9 +70,7 @@ class KeyValueTableDataRow extends StatelessWidget {
       maxLines: 2,
       value ?? '',
       overflow: TextOverflow.ellipsis,
-      style:
-          valueStyle ??
-          (hasChange && showChangeIndicator ? sbbTextStyle.boldStyle.small : sbbTextStyle.romanStyle.small),
+      style: valueStyle ?? (hasChange && showChangeIndicator ? sbbTextStyle.boldStyle : sbbTextStyle.romanStyle),
     );
 
     return hasChange && showChangeIndicator && value != null
