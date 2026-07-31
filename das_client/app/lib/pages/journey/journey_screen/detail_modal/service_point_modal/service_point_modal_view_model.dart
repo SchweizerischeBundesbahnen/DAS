@@ -30,7 +30,7 @@ class ServicePointModalViewModel extends JourneyAwareViewModel {
   final _rxDepartureAuth = BehaviorSubject<DepartureAuthorization?>();
   final _rxMetadata = BehaviorSubject<Metadata>();
   final _rxServicePoint = BehaviorSubject<ServicePoint>();
-  late final _rxSelectedTab = BehaviorSubject<ServicePointModalTab?>();
+  final _rxSelectedTab = BehaviorSubject<ServicePointModalTab?>();
   final _rxSettings = BehaviorSubject<JourneySettings>();
   final _rxRelevantSpeedInfo = BehaviorSubject.seeded(<TrainSeriesSpeed>[]);
   final _rxLocalRegulationSections = BehaviorSubject.seeded(<LocalRegulationSection>[]);
