@@ -1,17 +1,17 @@
 import 'dart:async';
 
 import 'package:app/di/di.dart';
-import 'package:app/pages/journey/journey_screen/view_model/model/punctuality_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/delay_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
-final _log = Logger('SferaDelayViewModel');
+final _log = Logger('DelayViewModel');
 
-class SferaDelayViewModel {
-  SferaDelayViewModel({required JourneyViewModel journeyViewModel}) {
+class DelayViewModel {
+  DelayViewModel({required JourneyViewModel journeyViewModel}) {
     _initTimers();
     _journeySubscription = journeyViewModel.journey.listen(_journeyUpdated);
   }
@@ -28,11 +28,11 @@ class SferaDelayViewModel {
   bool _isStale = false;
   bool _isHiddenDueToNoUpdates = false;
 
-  final _rxModel = BehaviorSubject<PunctualityModel>.seeded(PunctualityModel.hidden());
+  final _rxModel = BehaviorSubject<DelayModel>.seeded(DelayModel.hidden());
 
-  Stream<PunctualityModel> get model => _rxModel.distinct();
+  Stream<DelayModel> get model => _rxModel.distinct();
 
-  PunctualityModel get modelValue => _rxModel.value;
+  DelayModel get modelValue => _rxModel.value;
 
   void _initTimers() {
     _staleTimer = Timer(Duration(seconds: _timeConstants.punctualityStaleSeconds), () {
@@ -52,11 +52,11 @@ class SferaDelayViewModel {
 
   void _emitState() {
     if (_isHiddenDueToNoUpdates || _delay == null) {
-      _rxModel.add(PunctualityModel.hidden());
+      _rxModel.add(DelayModel.hidden());
     } else if (_isStale) {
-      _rxModel.add(PunctualityModel.stale(delay: _delay!));
+      _rxModel.add(DelayModel.stale(delay: _delay!));
     } else {
-      _rxModel.add(PunctualityModel.visible(delay: _delay!));
+      _rxModel.add(DelayModel.visible(delay: _delay!));
     }
     _log.fine('Punctuality state changed to: ${_rxModel.value}');
   }

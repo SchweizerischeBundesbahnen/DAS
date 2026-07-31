@@ -19,6 +19,7 @@ import 'package:app/pages/journey/journey_screen/view_model/calculated_speed_vie
 import 'package:app/pages/journey/journey_screen/view_model/checklist_departure_process_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/customer_oriented_departure_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/delay_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/departure_dispatch_notification_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/departure_process_warning_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
@@ -26,7 +27,6 @@ import 'package:app/pages/journey/journey_screen/view_model/journey_table_advanc
 import 'package:app/pages/journey/journey_screen/view_model/journey_table_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/line_speed_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
-import 'package:app/pages/journey/journey_screen/view_model/sfera_delay_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/replacement_series_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/sim_train_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/tour_system_link_visibility_view_model.dart';
@@ -121,8 +121,8 @@ class _ProviderScope extends StatelessWidget {
     return MultiProvider(
       providers: [
         // Stateful VMs
-        Provider<SferaDelayViewModel>(
-          create: (_) => DI.get<SferaDelayViewModel>(),
+        Provider<DelayViewModel>(
+          create: (_) => DI.get<DelayViewModel>(),
         ),
         Provider<JourneyPositionViewModel>(
           create: (_) => DI.get<JourneyPositionViewModel>(),

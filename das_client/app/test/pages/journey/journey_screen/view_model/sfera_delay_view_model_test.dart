@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:app/pages/journey/journey_screen/view_model/model/punctuality_model.dart';
-import 'package:app/pages/journey/journey_screen/view_model/sfera_delay_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/delay_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/delay_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:clock/clock.dart';
@@ -19,16 +19,16 @@ import 'sfera_delay_view_model_test.mocks.dart';
 void main() {
   const timeConstants = TimeConstants();
   const testDelay = Delay(value: Duration(seconds: 10), location: 'Bern');
-  final testHiddenModel = PunctualityModel.hidden();
-  final testStaleModel = PunctualityModel.stale(delay: testDelay);
-  final testVisibleModel = PunctualityModel.visible(delay: testDelay);
+  final testHiddenModel = DelayModel.hidden();
+  final testStaleModel = DelayModel.stale(delay: testDelay);
+  final testVisibleModel = DelayModel.visible(delay: testDelay);
 
   late Clock testClock;
-  late SferaDelayViewModel testee;
+  late DelayViewModel testee;
   late MockJourneyViewModel mockJourneyViewModel;
   late BehaviorSubject<Journey?> rxMockJourney;
   late StreamSubscription modelSubscription;
-  late List<PunctualityModel> emitRegister;
+  late List<DelayModel> emitRegister;
   late FakeAsync testAsync;
 
   final journeyWithDelay = Journey(
@@ -50,9 +50,9 @@ void main() {
       when(mockJourneyViewModel.journey).thenAnswer((_) => rxMockJourney.stream);
       testAsync = fakeAsync;
       withClock(testClock, () {
-        testee = SferaDelayViewModel(journeyViewModel: mockJourneyViewModel);
+        testee = DelayViewModel(journeyViewModel: mockJourneyViewModel);
       });
-      emitRegister = <PunctualityModel>[];
+      emitRegister = <DelayModel>[];
       modelSubscription = testee.model.listen(emitRegister.add);
       _processStreamInFakeAsync(fakeAsync);
     });

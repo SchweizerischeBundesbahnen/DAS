@@ -4,8 +4,8 @@ import 'dart:collection';
 import 'package:app/pages/journey/journey_screen/header/view_model/chronograph_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/calculated_speed_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/advised_speed_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/delay_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
-import 'package:app/pages/journey/journey_screen/view_model/model/punctuality_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/pages/journey/view_model/model/calculated_speed.dart';
 import 'package:clock/clock.dart';
@@ -28,19 +28,20 @@ void main() {
   const testDelay = Delay(value: Duration(seconds: 10), location: 'Bern');
   const aServicePoint = ServicePoint(name: 'A', abbreviation: '', locationCode: '', order: 0, kilometre: []);
   const bServicePoint = ServicePoint(name: 'B', abbreviation: '', locationCode: '', order: 10, kilometre: []);
-  final testHiddenModel = PunctualityModel.hidden();
-  final testStaleModel = PunctualityModel.stale(delay: testDelay);
-  final testVisibleModel = PunctualityModel.visible(delay: testDelay);
+  final testHiddenModel = DelayModel.hidden();
+  final testStaleModel = DelayModel.stale(delay: testDelay);
+  final testVisibleModel = DelayModel.visible(delay: testDelay);
 
   late Clock testClock;
   late ChronographViewModel testee;
   late BehaviorSubject<Journey?> rxMockJourney;
   late BehaviorSubject<AdvisedSpeedModel> rxMockAdvisedSpeedModel;
   late BehaviorSubject<JourneyPositionModel> rxMockJourneyPosition;
-  late BehaviorSubject<PunctualityModel> rxMockPunctuality;
+  late BehaviorSubject<DelayModel> rxMockPunctuality;
+  late BehaviorSubject<Duration?> rxMockPlannedTimeDelay;
   late StreamSubscription punctualitySubscription;
   late StreamSubscription formattedWallclockTimeSubscription;
-  late List<PunctualityModel> punctualityEmitRegister;
+  late List<DelayModel> punctualityEmitRegister;
   late List<String> formattedWallclockTimeRegister;
   late FakeAsync testAsync;
   late CalculatedSpeedViewModel mockCalculatedSpeedViewModel;
@@ -82,20 +83,22 @@ void main() {
       when(mockJourneyViewModel.journey).thenAnswer((_) => rxMockJourney.stream);
       rxMockAdvisedSpeedModel = BehaviorSubject<AdvisedSpeedModel>.seeded(AdvisedSpeedModel.inactive());
       rxMockJourneyPosition = BehaviorSubject<JourneyPositionModel>.seeded(JourneyPositionModel());
-      rxMockPunctuality = BehaviorSubject<PunctualityModel>.seeded(PunctualityModel.hidden());
+      rxMockPunctuality = BehaviorSubject<DelayModel>.seeded(DelayModel.hidden());
+      rxMockPlannedTimeDelay = BehaviorSubject<Duration?>.seeded(null);
       testAsync = fakeAsync;
       formattedWallclockTimeRegister = <String>[];
       withClock(testClock, () {
         testee = ChronographViewModel(
           journeyPositionStream: rxMockJourneyPosition.stream,
-          punctualityStream: rxMockPunctuality.stream,
+          delayStream: rxMockPunctuality.stream,
+          plannedTimeDelayStream: rxMockPlannedTimeDelay.stream,
           journeyViewModel: mockJourneyViewModel,
           advisedSpeedModelStream: rxMockAdvisedSpeedModel.stream,
           calculatedSpeedViewModel: mockCalculatedSpeedViewModel,
         );
         formattedWallclockTimeSubscription = testee.formattedWallclockTime.listen(formattedWallclockTimeRegister.add);
       });
-      punctualityEmitRegister = <PunctualityModel>[];
+      punctualityEmitRegister = <DelayModel>[];
       punctualitySubscription = testee.punctualityModel.listen(punctualityEmitRegister.add);
       _processStreamInFakeAsync(fakeAsync);
     });
@@ -109,6 +112,7 @@ void main() {
     rxMockJourney.close();
     rxMockAdvisedSpeedModel.close();
     rxMockPunctuality.close();
+    rxMockPlannedTimeDelay.close();
     rxMockJourneyPosition.close();
     GetIt.I.reset();
   });
@@ -311,6 +315,101 @@ void main() {
         // EXPECT
         expect(punctualityEmitRegister, hasLength(3));
         expect(punctualityEmitRegister, orderedEquals([testVisibleModel, testStaleModel, testHiddenModel]));
+        expect(testee.punctualityModelValue, equals(testHiddenModel));
+      },
+    );
+  });
+
+  group('Journey_Delay_Speeds_PlannedTimeDelay_', () {
+    const testPlannedTimeDelayVisible = Duration(minutes: 30);
+    final testPunctualityPlannedTimeDeviation = DelayModel.plannedTimeDeviation(
+      deviation: const Duration(minutes: 30),
+    );
+
+    setUp(() {
+      testAsync.run((_) {
+        punctualityEmitRegister.clear();
+        rxMockJourney.add(journeyWithSpeed);
+        rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: bServicePoint));
+      });
+      _processStreamInFakeAsync(testAsync);
+    });
+
+    test('punctualityModel_whenOnlyPlannedTimeDelayIsVisible_thenEmitsPlannedTimeDeviation', () {
+      // ACT
+      testAsync.run((_) => rxMockPlannedTimeDelay.add(testPlannedTimeDelayVisible));
+      _processStreamInFakeAsync(testAsync);
+
+      // EXPECT
+      expect(punctualityEmitRegister, hasLength(1));
+      expect(punctualityEmitRegister.first, equals(testPunctualityPlannedTimeDeviation));
+      expect(testee.punctualityModelValue, equals(testPunctualityPlannedTimeDeviation));
+    });
+
+    test('punctualityModel_whenSferaPunctualityAndPlannedTimeDelayAreBothVisible_thenSferaPunctualityWins', () {
+      // ACT
+      testAsync.run((_) {
+        rxMockPlannedTimeDelay.add(testPlannedTimeDelayVisible);
+        rxMockPunctuality.add(testVisibleModel);
+      });
+      _processStreamInFakeAsync(testAsync);
+
+      // EXPECT
+      expect(punctualityEmitRegister, orderedEquals([testPunctualityPlannedTimeDeviation, testVisibleModel]));
+      expect(testee.punctualityModelValue, equals(testVisibleModel));
+    });
+
+    test(
+      'punctualityModel_whenSferaPunctualityGoesHiddenWhilePlannedTimeDelayIsVisible_thenFallsBackToPlannedTime',
+      () {
+        // ACT
+        testAsync.run((_) {
+          rxMockPunctuality.add(testVisibleModel);
+          rxMockPlannedTimeDelay.add(testPlannedTimeDelayVisible);
+          rxMockPunctuality.add(testHiddenModel);
+        });
+        _processStreamInFakeAsync(testAsync);
+
+        // EXPECT
+        expect(
+          punctualityEmitRegister,
+          orderedEquals([testVisibleModel, testPunctualityPlannedTimeDeviation]),
+        );
+        expect(testee.punctualityModelValue, equals(testPunctualityPlannedTimeDeviation));
+      },
+    );
+
+    test('punctualityModel_whenBothSferaAndPlannedTimeDelayAreHidden_thenStaysHiddenAndDoesNotEmit', () {
+      // EXPECT
+      expect(punctualityEmitRegister, hasLength(0));
+      expect(testee.punctualityModelValue, equals(testHiddenModel));
+    });
+
+    test('punctualityModel_whenPlannedTimeDelayVisibleButAdlActive_thenStaysHiddenAndDoesNotEmit', () {
+      // ACT
+      testAsync.run((_) {
+        rxMockAdvisedSpeedModel.add(activeAdvisedSpeedModel);
+        rxMockPlannedTimeDelay.add(testPlannedTimeDelayVisible);
+      });
+      _processStreamInFakeAsync(testAsync);
+
+      // EXPECT
+      expect(punctualityEmitRegister, hasLength(0));
+      expect(testee.punctualityModelValue, equals(testHiddenModel));
+    });
+
+    test(
+      'punctualityModel_whenPlannedTimeDelayVisibleButNoCalculatedSpeedAtCurrentPosition_thenStaysHiddenAndDoesNotEmit',
+      () {
+        // ACT
+        testAsync.run((_) {
+          rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: aServicePoint));
+          rxMockPlannedTimeDelay.add(testPlannedTimeDelayVisible);
+        });
+        _processStreamInFakeAsync(testAsync);
+
+        // EXPECT
+        expect(punctualityEmitRegister, hasLength(0));
         expect(testee.punctualityModelValue, equals(testHiddenModel));
       },
     );

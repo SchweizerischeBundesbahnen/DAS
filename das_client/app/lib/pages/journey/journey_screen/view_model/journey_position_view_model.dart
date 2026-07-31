@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:app/extension/datetime_extension.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/delay_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_advancement_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
-import 'package:app/pages/journey/journey_screen/view_model/model/punctuality_model.dart';
 import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/provider/timed_route_provider.dart';
@@ -17,7 +17,7 @@ final _log = Logger('JourneyPositionViewModel');
 
 class JourneyPositionViewModel extends JourneyAwareViewModel {
   JourneyPositionViewModel({
-    required Stream<PunctualityModel> punctualityStream,
+    required Stream<DelayModel> punctualityStream,
     required super.journeyViewModel,
     required this._journeySettingsViewModel,
     required this._timedRouteProvider,
@@ -28,8 +28,8 @@ class JourneyPositionViewModel extends JourneyAwareViewModel {
   final JourneySettingsViewModel _journeySettingsViewModel;
   final TimedRouteProvider _timedRouteProvider;
 
-  StreamSubscription<PunctualityModel>? _punctualitySubscription;
-  StreamSubscription<(Journey?, PunctualityModel, ServicePoint?, JourneyPoint?)>? _journeySubscription;
+  StreamSubscription<DelayModel>? _punctualitySubscription;
+  StreamSubscription<(Journey?, DelayModel, ServicePoint?, JourneyPoint?)>? _journeySubscription;
   final _rxModel = BehaviorSubject.seeded(JourneyPositionModel());
 
   final _rxTimedServicePointReached = BehaviorSubject<ServicePoint?>.seeded(null);
@@ -78,7 +78,7 @@ class JourneyPositionViewModel extends JourneyAwareViewModel {
 
   JourneyAdvancementModel get _currentAdvancementMode => _journeySettingsViewModel.modelValue.journeyAdvancementModel;
 
-  void _initSubscription(Stream<Journey?> journeyStream, Stream<PunctualityModel> punctualityStream) {
+  void _initSubscription(Stream<Journey?> journeyStream, Stream<DelayModel> punctualityStream) {
     _journeySubscription =
         CombineLatestStream.combine4(
           journeyStream,
@@ -215,7 +215,7 @@ class JourneyPositionViewModel extends JourneyAwareViewModel {
   void _calculateAndSetTimedServicePoint(
     JourneyPoint? updatedPosition,
     List<JourneyPoint> journeyPoints,
-    PunctualityModel punctuality,
+    DelayModel punctuality,
   ) {
     if (_timedRouteProvider.isInTimedAdvancementRoute(updatedPosition, journeyPoints)) {
       _log.info('Journey is in timed advancement route');
@@ -228,7 +228,7 @@ class JourneyPositionViewModel extends JourneyAwareViewModel {
   void _handleSignaledRoute(
     JourneyPoint? updatedPosition,
     List<JourneyPoint> journeyPoints,
-    PunctualityModel punctuality,
+    DelayModel punctuality,
   ) {
     if (punctuality is Stale || punctuality is Hidden) return;
     if (updatedPosition is ServicePoint) return;

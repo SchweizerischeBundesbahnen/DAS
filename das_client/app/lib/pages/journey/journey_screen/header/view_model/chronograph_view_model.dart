@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:app/pages/journey/journey_screen/view_model/calculated_speed_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/advised_speed_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/delay_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
-import 'package:app/pages/journey/journey_screen/view_model/model/punctuality_model.dart';
 import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
 import 'package:clock/clock.dart';
 import 'package:intl/intl.dart';
@@ -13,13 +13,15 @@ import 'package:sfera/component.dart';
 class ChronographViewModel extends JourneyAwareViewModel {
   ChronographViewModel({
     required Stream<JourneyPositionModel> journeyPositionStream,
-    required Stream<PunctualityModel> punctualityStream,
+    required Stream<DelayModel> delayStream,
+    required Stream<Duration?> plannedTimeDelayStream,
     required Stream<AdvisedSpeedModel> advisedSpeedModelStream,
     required this._calculatedSpeedViewModel,
     super.journeyViewModel,
   }) {
     _initJourneyPositionSubscription(journeyPositionStream);
-    _initPunctualitySubscription(punctualityStream);
+    _initDelaySubscription(delayStream);
+    _initPlannedTimeDelaySubscription(plannedTimeDelayStream);
     _initAdvisedSpeedSubscription(advisedSpeedModelStream);
   }
 
@@ -28,15 +30,16 @@ class ChronographViewModel extends JourneyAwareViewModel {
   bool _isAdvisedSpeedActive = false;
   int? _currentPositionOrder;
 
-  PunctualityModel _punctualityModel = PunctualityModel.hidden();
+  DelayModel _lastDelayModel = DelayModel.hidden();
+  Duration? _lastPlannedTimeDelay;
 
   final List<StreamSubscription<dynamic>> _subscriptions = [];
 
-  final _rxModel = BehaviorSubject<PunctualityModel>.seeded(PunctualityModel.hidden());
+  final _rxModel = BehaviorSubject<DelayModel>.seeded(DelayModel.hidden());
 
-  Stream<PunctualityModel> get punctualityModel => _rxModel.distinct();
+  Stream<DelayModel> get punctualityModel => _rxModel.distinct();
 
-  PunctualityModel get punctualityModelValue => _rxModel.value;
+  DelayModel get punctualityModelValue => _rxModel.value;
 
   Stream<String> get formattedWallclockTime => Stream.periodic(
     const Duration(milliseconds: 200),
@@ -61,10 +64,20 @@ class ChronographViewModel extends JourneyAwareViewModel {
     );
   }
 
-  void _initPunctualitySubscription(Stream<PunctualityModel> punctualityStream) {
+  void _initDelaySubscription(Stream<DelayModel> punctualityStream) {
     _subscriptions.add(
       punctualityStream.listen((punctualityModel) {
-        _punctualityModel = punctualityModel;
+        _lastDelayModel = punctualityModel;
+
+        _emitState();
+      }),
+    );
+  }
+
+  void _initPlannedTimeDelaySubscription(Stream<Duration?> plannedTimeDelayStream) {
+    _subscriptions.add(
+      plannedTimeDelayStream.listen((plannedTimeDelay) {
+        _lastPlannedTimeDelay = plannedTimeDelay;
 
         _emitState();
       }),
@@ -82,8 +95,16 @@ class ChronographViewModel extends JourneyAwareViewModel {
   }
 
   void _emitState() {
-    if (!_hasLastServicePointCalculatedSpeed || _isAdvisedSpeedActive) return _rxModel.add(PunctualityModel.hidden());
-    _rxModel.add(_punctualityModel);
+    if (!_hasLastServicePointCalculatedSpeed || _isAdvisedSpeedActive) return _rxModel.add(DelayModel.hidden());
+
+    if (_lastDelayModel is! Hidden) return _rxModel.add(_lastDelayModel);
+
+    final plannedTimeDelay = _lastPlannedTimeDelay;
+    if (plannedTimeDelay != null) {
+      return _rxModel.add(DelayModel.plannedTimeDeviation(deviation: plannedTimeDelay));
+    }
+
+    _rxModel.add(DelayModel.hidden());
   }
 
   bool get _hasLastServicePointCalculatedSpeed {
@@ -97,8 +118,9 @@ class ChronographViewModel extends JourneyAwareViewModel {
 
   @override
   void onJourneyChanged(_) {
-    _punctualityModel = PunctualityModel.hidden();
-    _rxModel.add(_punctualityModel);
+    _lastDelayModel = DelayModel.hidden();
+    _lastPlannedTimeDelay = null;
+    _rxModel.add(_lastDelayModel);
     _isAdvisedSpeedActive = false;
     _currentPositionOrder = null;
     _emitState();

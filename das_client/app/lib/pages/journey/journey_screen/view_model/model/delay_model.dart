@@ -1,20 +1,20 @@
 import 'package:intl/intl.dart';
 import 'package:sfera/component.dart';
 
-sealed class PunctualityModel {
-  const PunctualityModel._();
+sealed class DelayModel {
+  const DelayModel._();
 
-  factory PunctualityModel.visible({
+  factory DelayModel.visible({
     required Delay delay,
   }) = Visible;
 
-  factory PunctualityModel.stale({
+  factory DelayModel.stale({
     required Delay delay,
   }) = Stale;
 
-  factory PunctualityModel.hidden() = Hidden;
+  factory DelayModel.hidden() = Hidden;
 
-  factory PunctualityModel.plannedTimeDeviation({
+  factory DelayModel.plannedTimeDeviation({
     required Duration deviation,
   }) = PlannedTimeDeviation;
 
@@ -32,7 +32,7 @@ sealed class PunctualityModel {
   int get hashCode => runtimeType.hashCode;
 }
 
-class Visible extends PunctualityModel {
+class Visible extends DelayModel {
   const Visible({required this.delay}) : super._();
   final Delay delay;
 
@@ -49,7 +49,7 @@ class Visible extends PunctualityModel {
   }
 }
 
-class Stale extends PunctualityModel {
+class Stale extends DelayModel {
   const Stale({required this.delay}) : super._();
   final Delay delay;
 
@@ -66,7 +66,7 @@ class Stale extends PunctualityModel {
   }
 }
 
-class Hidden extends PunctualityModel {
+class Hidden extends DelayModel {
   const Hidden() : super._();
 
   @override
@@ -81,7 +81,7 @@ class Hidden extends PunctualityModel {
   }
 }
 
-class PlannedTimeDeviation extends PunctualityModel {
+class PlannedTimeDeviation extends DelayModel {
   const PlannedTimeDeviation({required this.deviation}) : super._();
 
   final Duration deviation;

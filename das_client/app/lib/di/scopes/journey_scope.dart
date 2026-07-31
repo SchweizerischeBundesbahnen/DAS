@@ -11,6 +11,7 @@ import 'package:app/pages/journey/journey_screen/view_model/calculated_speed_vie
 import 'package:app/pages/journey/journey_screen/view_model/checklist_departure_process_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/customer_oriented_departure_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/delay_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/departure_dispatch_notification_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/departure_process_warning_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
@@ -23,7 +24,6 @@ import 'package:app/pages/journey/journey_screen/view_model/model/replacement_se
 import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/planned_time_delay_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/replacement_series_view_model.dart';
-import 'package:app/pages/journey/journey_screen/view_model/sfera_delay_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/sim_train_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/ux_testing_view_model.dart';
 import 'package:app/pages/journey/view_model/decisive_gradient_view_model.dart';
@@ -74,8 +74,8 @@ class JourneyScope extends DIScope {
 
 extension JourneyScopeExtension on GetIt {
   void registerSferaDelayViewModel() {
-    registerSingleton<SferaDelayViewModel>(
-      SferaDelayViewModel(journeyViewModel: DI.get()),
+    registerSingleton<DelayViewModel>(
+      DelayViewModel(journeyViewModel: DI.get()),
       dispose: (vm) => vm.dispose(),
     );
   }
@@ -83,7 +83,7 @@ extension JourneyScopeExtension on GetIt {
   void registerJourneyPositionViewModel() {
     registerSingleton<JourneyPositionViewModel>(
       JourneyPositionViewModel(
-        punctualityStream: get<SferaDelayViewModel>().model,
+        punctualityStream: get<DelayViewModel>().model,
         journeySettingsViewModel: DI.get(),
         journeyViewModel: DI.get(),
         timedRouteProvider: DI.get(),
@@ -224,7 +224,7 @@ extension JourneyScopeExtension on GetIt {
       ChronographViewModel(
         journeyViewModel: DI.get(),
         journeyPositionStream: DI.get<JourneyPositionViewModel>().model,
-        delayStream: DI.get<SferaDelayViewModel>().model,
+        delayStream: DI.get<DelayViewModel>().model,
         plannedTimeDelayStream: DI.get<PlannedTimeDelayViewModel>().model,
         advisedSpeedModelStream: DI.get<AdvisedSpeedViewModel>().model,
         calculatedSpeedViewModel: DI.get(),

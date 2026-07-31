@@ -1,7 +1,7 @@
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/header/view_model/chronograph_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/departure_process_warning_view_model.dart';
-import 'package:app/pages/journey/journey_screen/view_model/model/punctuality_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/delay_model.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -47,7 +47,7 @@ class ChronographHeaderBox extends StatelessWidget {
 
   Widget _delay(BuildContext context) {
     final viewModel = context.read<ChronographViewModel>();
-    return StreamBuilder<PunctualityModel>(
+    return StreamBuilder<DelayModel>(
       stream: viewModel.punctualityModel,
       initialData: viewModel.punctualityModelValue,
       builder: (context, snapshot) {
@@ -71,7 +71,7 @@ class ChronographHeaderBox extends StatelessWidget {
     );
   }
 
-  TextStyle _resolvedDelayStyle(PunctualityModel? model, BuildContext context) => switch (model) {
+  TextStyle _resolvedDelayStyle(DelayModel? model, BuildContext context) => switch (model) {
     final Stale _ => sbbTextStyle.romanStyle.xLarge.copyWith(
       color: ThemeUtil.getColor(
         context,
