@@ -94,25 +94,7 @@ static BOOL RunnerIntegrationTestsDidRun = NO;
 }
 
 // BEGIN GENERATED XCTESTS
-// integration_test/test/manual_advancement_test.dart
-- (void)testManualadvancementWhenservicepointdraggedThenjourneypositionmoved {
-  [self assertRecordedSuccessWithPrefix:@"testManualadvancementWhenservicepointdraggedThenjourneypositionmoved"];
-}
 
-// integration_test/test/manual_advancement_test.dart
-- (void)testManualadvancementWhenmanualpositionsetThenmanualmodeactivateduntiljourneypositionsignaled {
-  [self assertRecordedSuccessWithPrefix:@"testManualadvancementWhenmanualpositionsetThenmanualmodeactivateduntiljourneypositionsignaled"];
-}
-
-// integration_test/test/manual_advancement_test.dart
-- (void)testManualadvancementWhenmanualpositionsetThenstarttimedadvancement {
-  [self assertRecordedSuccessWithPrefix:@"testManualadvancementWhenmanualpositionsetThenstarttimedadvancement"];
-}
-
-// integration_test/test/manual_advancement_test.dart
-- (void)testManualadvancementWhenmanualpositionsetThenrestartspositiontimers {
-  [self assertRecordedSuccessWithPrefix:@"testManualadvancementWhenmanualpositionsetThenrestartspositiontimers"];
-}
 // END GENERATED XCTESTS
 
 @end
