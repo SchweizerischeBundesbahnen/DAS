@@ -171,17 +171,30 @@ class ServicePointModalViewModel extends JourneyAwareViewModel {
     _subscriptions.add(subscription);
   }
 
+  /// Opens the modal on [tab] for [servicePoint]. When [servicePoint] is omitted (e.g. switching tabs
+  /// via the segmented control of an already open modal), this only updates the displayed tab and never
+  /// closes the modal - re-selecting the already active tab is a no-op, since the tab content reacts to
+  /// [selectedTab] directly and the underlying stream dedupes via `distinct()`.
   void open(BuildContext context, {ServicePointModalTab? tab, ServicePoint? servicePoint}) {
-    if (tab != null) {
-      _rxSelectedTab.add(tab);
-    }
-    if (servicePoint != null) {
-      _rxServicePoint.add(servicePoint);
+    final viewModel = context.read<DetailModalViewModel>();
+
+    if (servicePoint == null) {
+      if (tab != null) _rxSelectedTab.add(tab);
+
+      viewModel.setMaximized(tab == .localRegulations);
+      return;
     }
 
-    final viewModel = context.read<DetailModalViewModel>();
+    if (tab != null) _rxSelectedTab.add(tab);
+
+    _rxServicePoint.add(servicePoint);
+
     final openAsMaximized = tab == .localRegulations;
-    viewModel.open(ServicePointModalBuilder(), maximize: openAsMaximized);
+    viewModel.open(
+      ServicePointModalBuilder(),
+      maximize: openAsMaximized,
+      contentKey: (tab: _rxSelectedTab.valueOrNull, servicePoint: servicePoint),
+    );
   }
 
   void close(BuildContext context) => context.read<DetailModalViewModel>().close();

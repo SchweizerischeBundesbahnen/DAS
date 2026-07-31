@@ -553,7 +553,7 @@ class JourneyTable extends StatelessWidget {
 
   void _onAdditionalSpeedRestrictionTap(BuildContext context, AdditionalSpeedRestrictionData data) {
     final viewModel = context.read<AdditionalSpeedRestrictionModalViewModel>();
-    viewModel.open(context, data.restrictions);
+    viewModel.open(context, data);
   }
 
   double _platformDependentBottomMarginAdjustment(List<DASTableRowBuilder<dynamic>> rowBuilders) {
