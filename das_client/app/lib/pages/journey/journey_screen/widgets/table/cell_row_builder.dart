@@ -337,7 +337,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     final isShortTermChangeEnd = shortTermChange.endOrder == data.order;
 
     final borderSide = BorderSide(
-      color: ThemeUtil.getColor(context, SBBColors.turquoise, SBBColors.turquoiseDark),
+      color: ThemeUtil.getDASOperationalChangeColor(context),
       width: 4.0,
     );
     final border = Border(

@@ -12,6 +12,7 @@ class DotIndicator extends StatelessWidget {
     this.offset = const Offset(0, 0),
     this.size = 8.0,
     this.isNextStop = false,
+    this.color,
     super.key,
   });
 
@@ -19,6 +20,7 @@ class DotIndicator extends StatelessWidget {
   final double size;
   final bool show;
   final Widget child;
+  final Color? color;
   final bool isNextStop;
 
   @override
@@ -39,15 +41,20 @@ class DotIndicator extends StatelessWidget {
   }
 
   Widget indicator(BuildContext context) {
+    return CustomPaint(
+      key: indicatorKey,
+      painter: _DotPainter(color: _resolvedDotColor(context)),
+      size: Size(size, size),
+    );
+  }
+
+  Color _resolvedDotColor(BuildContext context) {
+    if (color != null) return color!;
+
     final resolvedDotColor = isNextStop
         ? SBBColors.sky
         : ThemeUtil.getColor(context, Theme.of(context).colorScheme.primary, SBBColors.sky);
-
-    return CustomPaint(
-      key: indicatorKey,
-      painter: _DotPainter(color: resolvedDotColor),
-      size: Size(size, size),
-    );
+    return resolvedDotColor;
   }
 }
 

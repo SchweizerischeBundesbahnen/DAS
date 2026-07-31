@@ -1,3 +1,4 @@
+import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/dot_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -14,7 +15,7 @@ class KeyValueTableDataRow extends StatelessWidget {
   });
 
   KeyValueTableDataRow.title(String label, {Key? key, bool hasChange = false})
-    : this(label, null, key: key, labelStyle: sbbTextStyle.boldStyle.small, hasChange: hasChange);
+    : this(label, null, key: key, labelStyle: sbbTextStyle.boldStyle, hasChange: hasChange);
 
   const KeyValueTableDataRow.empty({Key? key}) : this('', null, key: key);
 
@@ -30,7 +31,7 @@ class KeyValueTableDataRow extends StatelessWidget {
     return ClipRect(
       child: Row(
         children: [
-          _wrappedLabel(),
+          _wrappedLabel(context),
           SizedBox(width: SBBSpacing.xSmall),
           Container(
             constraints: BoxConstraints(minWidth: 40),
@@ -38,7 +39,7 @@ class KeyValueTableDataRow extends StatelessWidget {
               padding: showChangeIndicator ? const EdgeInsets.only(right: SBBSpacing.small) : EdgeInsets.zero,
               child: Align(
                 alignment: Alignment.centerRight,
-                child: _valueText(),
+                child: _valueText(context),
               ),
             ),
           ),
@@ -47,35 +48,35 @@ class KeyValueTableDataRow extends StatelessWidget {
     );
   }
 
-  Widget _wrappedLabel() {
+  Widget _wrappedLabel(BuildContext context) {
     final labelText = Text(
       label,
       maxLines: 2,
       overflow: TextOverflow.ellipsis,
-      style: labelStyle ?? sbbTextStyle.romanStyle.small,
+      style: labelStyle ?? sbbTextStyle.romanStyle,
     );
 
     return hasChange && showChangeIndicator && value == null
         ? DotIndicator(
             offset: Offset(0, -SBBSpacing.small),
+            color: ThemeUtil.getDASOperationalChangeColor(context),
             child: labelText,
           )
         : Expanded(child: labelText);
   }
 
-  Widget _valueText() {
+  Widget _valueText(BuildContext context) {
     final text = Text(
       maxLines: 2,
       value ?? '',
       overflow: TextOverflow.ellipsis,
-      style:
-          valueStyle ??
-          (hasChange && showChangeIndicator ? sbbTextStyle.boldStyle.small : sbbTextStyle.romanStyle.small),
+      style: valueStyle ?? (hasChange && showChangeIndicator ? sbbTextStyle.boldStyle : sbbTextStyle.romanStyle),
     );
 
     return hasChange && showChangeIndicator && value != null
         ? DotIndicator(
             offset: Offset(0, -SBBSpacing.small),
+            color: ThemeUtil.getDASOperationalChangeColor(context),
             child: text,
           )
         : text;

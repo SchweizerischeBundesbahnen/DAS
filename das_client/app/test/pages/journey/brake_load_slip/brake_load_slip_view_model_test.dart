@@ -121,6 +121,21 @@ void main() {
     ],
   );
 
+  BrakeLoadSlipViewModel createTestee({
+    bool checkForUpdates = true,
+    bool updateOnPositionUpdate = true,
+  }) => BrakeLoadSlipViewModel(
+    journeyViewModel: mockJourneyViewModel,
+    formationRepository: mockFormationRepository,
+    journeyPositionViewModel: mockJourneyPositionViewModel,
+    journeySettingsViewModel: mockJourneySettingsViewModel,
+    notificationViewModel: mockNotificationViewModel,
+    detailModalViewModel: mockDetailModalViewModel,
+    connectivityManager: mockConnectivityManager,
+    checkForUpdates: checkForUpdates,
+    updateOnPositionUpdate: updateOnPositionUpdate,
+  );
+
   setUp(() {
     mockJourneyViewModel = MockJourneyViewModel();
     mockFormationRepository = MockFormationRepository();
@@ -166,16 +181,7 @@ void main() {
     when(mockBuildContext.findAncestorWidgetOfExactType()).thenReturn(mockStackRouterScope);
     when(mockStackRouterScope.controller).thenReturn(mockStackRouter);
 
-    testee = BrakeLoadSlipViewModel(
-      journeyViewModel: mockJourneyViewModel,
-      formationRepository: mockFormationRepository,
-      journeyPositionViewModel: mockJourneyPositionViewModel,
-      journeySettingsViewModel: mockJourneySettingsViewModel,
-      notificationViewModel: mockNotificationViewModel,
-      detailModalViewModel: mockDetailModalViewModel,
-      connectivityManager: mockConnectivityManager,
-      checkForUpdates: true,
-    );
+    testee = createTestee();
   });
 
   tearDown(() {
@@ -264,6 +270,99 @@ void main() {
 
     await processStreams();
 
+    testee.dispose();
+  });
+
+  test('model_whenUpdateOnPositionUpdateIsFalse_onlyFirstRelevantPositionUpdateEmitsFormationRun', () async {
+    testee.dispose();
+    testee = createTestee(updateOnPositionUpdate: false);
+
+    final emittedFormationRuns = <FormationRunChange?>[];
+    final formationRunSubscription = testee.formationRun.listen(emittedFormationRuns.add);
+
+    journeySubject.add(journey);
+    formationSubject.add(formation);
+
+    await processStreams();
+
+    final firstPositionUpdate = JourneyPositionModel(
+      currentPosition: journey.data.whereType<ServicePoint>().elementAt(1),
+    );
+    positionSubject.add(firstPositionUpdate);
+
+    await processStreams();
+
+    final secondPositionUpdate = JourneyPositionModel(
+      currentPosition: journey.data.whereType<ServicePoint>().elementAt(2),
+    );
+    positionSubject.add(secondPositionUpdate);
+
+    await processStreams();
+
+    expect(
+      emittedFormationRuns,
+      [
+        null,
+        FormationRunChange(formationRun: formationRun1, previousFormationRun: null),
+        FormationRunChange(formationRun: formationRun2, previousFormationRun: formationRun1),
+      ],
+    );
+    expect(
+      testee.formationRunValue,
+      FormationRunChange(formationRun: formationRun2, previousFormationRun: formationRun1),
+    );
+
+    await formationRunSubscription.cancel();
+    testee.dispose();
+  });
+
+  test('model_whenUpdateOnPositionUpdateIsFalse_resetsFirstRelevantPositionUpdateOnJourneyChange', () async {
+    testee.dispose();
+    testee = createTestee(updateOnPositionUpdate: false);
+
+    final emittedFormationRuns = <FormationRunChange?>[];
+    final formationRunSubscription = testee.formationRun.listen(emittedFormationRuns.add);
+
+    journeySubject.add(journey);
+    formationSubject.add(formation);
+
+    await processStreams();
+
+    positionSubject.add(JourneyPositionModel(currentPosition: journey.data.whereType<ServicePoint>().elementAt(1)));
+
+    await processStreams();
+
+    journeySubject.add(null);
+    formationSubject.add(null);
+
+    await processStreams();
+
+    journeySubject.add(journey);
+    formationSubject.add(formation);
+
+    await processStreams();
+
+    positionSubject.add(JourneyPositionModel(currentPosition: journey.data.whereType<ServicePoint>().elementAt(2)));
+
+    await processStreams();
+
+    expect(
+      emittedFormationRuns,
+      [
+        null,
+        FormationRunChange(formationRun: formationRun1, previousFormationRun: null),
+        FormationRunChange(formationRun: formationRun2, previousFormationRun: formationRun1),
+        null,
+        FormationRunChange(formationRun: formationRun1, previousFormationRun: null),
+        FormationRunChange(formationRun: formationRun3, previousFormationRun: formationRun2),
+      ],
+    );
+    expect(
+      testee.formationRunValue,
+      FormationRunChange(formationRun: formationRun3, previousFormationRun: formationRun2),
+    );
+
+    await formationRunSubscription.cancel();
     testee.dispose();
   });
 
@@ -510,16 +609,7 @@ void main() {
   test('model_whenFormationUpdateIntervalElapsed_checksForFormationUpdate', () async {
     fakeAsync((fakeAsync) {
       testee.dispose();
-      testee = BrakeLoadSlipViewModel(
-        journeyViewModel: mockJourneyViewModel,
-        formationRepository: mockFormationRepository,
-        journeyPositionViewModel: mockJourneyPositionViewModel,
-        journeySettingsViewModel: mockJourneySettingsViewModel,
-        detailModalViewModel: mockDetailModalViewModel,
-        connectivityManager: mockConnectivityManager,
-        notificationViewModel: mockNotificationViewModel,
-        checkForUpdates: true,
-      );
+      testee = createTestee();
 
       journeySubject.add(journey);
       formationSubject.add(formation);
