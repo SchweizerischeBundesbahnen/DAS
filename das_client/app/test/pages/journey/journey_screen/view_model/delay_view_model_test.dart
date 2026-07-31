@@ -13,6 +13,7 @@ import 'package:mockito/mockito.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
+import '../../../../test_util.dart';
 import 'delay_view_model_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<JourneyViewModel>()])
@@ -54,7 +55,7 @@ void main() {
       });
       emitRegister = <DelayModel>[];
       modelSubscription = testee.model.listen(emitRegister.add);
-      _processStreamInFakeAsync(fakeAsync);
+      processStreams(fakeAsync: testAsync);
     });
   });
 
@@ -77,7 +78,7 @@ void main() {
 
     // ACT
     testAsync.run((_) => rxMockJourney.add(null));
-    _processStreamInFakeAsync(testAsync);
+    processStreams(fakeAsync: testAsync);
 
     // EXPECT
     expect(emitRegister, hasLength(0));
@@ -91,7 +92,7 @@ void main() {
 
     // ACT
     testAsync.run((_) => rxMockJourney.add(journeyWithoutDelay));
-    _processStreamInFakeAsync(testAsync);
+    processStreams(fakeAsync: testAsync);
 
     // EXPECT
     expect(emitRegister, hasLength(0));
@@ -103,7 +104,7 @@ void main() {
       testAsync.run((_) {
         emitRegister.clear();
         rxMockJourney.add(journeyWithDelay);
-        _processStreamInFakeAsync(testAsync);
+        processStreams(fakeAsync: testAsync);
       });
     });
     test(
@@ -118,7 +119,7 @@ void main() {
 
       // ACT
       testAsync.run((_) => rxMockJourney.add(journeyWithoutDelay));
-      _processStreamInFakeAsync(testAsync);
+      processStreams(fakeAsync: testAsync);
 
       // EXPECT
       expect(emitRegister, hasLength(1));
@@ -152,5 +153,3 @@ void main() {
     });
   });
 }
-
-void _processStreamInFakeAsync(FakeAsync testAsync) => testAsync.elapse(Duration.zero);
