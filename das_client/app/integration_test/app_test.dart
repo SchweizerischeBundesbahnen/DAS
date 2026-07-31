@@ -60,6 +60,7 @@ void main() {
     await _delayOnAndroidEmulator();
   });
 
+  manual_advancement_tests.main();
   additional_speed_restriction_modal_tests.main();
   automatic_advancement_tests.main();
   app_expiration_tests.main();
@@ -82,7 +83,7 @@ void main() {
   journey_table_tests.main();
   journey_table_time_tests.main();
   journey_table_track_equipment_tests.main();
-  manual_advancement_tests.main();
+
   navigation_tests.main();
   reduced_journey_table_tests.main();
   ru_indications_tests.main();
