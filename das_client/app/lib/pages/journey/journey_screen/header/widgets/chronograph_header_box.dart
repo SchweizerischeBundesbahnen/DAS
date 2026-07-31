@@ -79,7 +79,7 @@ class ChronographHeaderBox extends StatelessWidget {
         SBBColors.white,
       ),
     ),
-    final Visible _ || final Hidden _ || null => sbbTextStyle.lightStyle.xLarge,
+    final Visible _ || final Hidden _ || final PlannedTimeDeviation _ || null => sbbTextStyle.lightStyle.xLarge,
   };
 
   Widget _currentTime(BuildContext context) {

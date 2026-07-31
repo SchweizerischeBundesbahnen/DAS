@@ -21,8 +21,9 @@ import 'package:app/pages/journey/journey_screen/view_model/model/chevron_positi
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_table_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/replacement_series_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
-import 'package:app/pages/journey/journey_screen/view_model/punctuality_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/planned_time_delay_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/replacement_series_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/sfera_delay_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/sim_train_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/ux_testing_view_model.dart';
 import 'package:app/pages/journey/view_model/decisive_gradient_view_model.dart';
@@ -43,8 +44,9 @@ class JourneyScope extends DIScope {
 
     getIt.registerCustomerOrientedDepartureViewModel();
     getIt.registerUxTestingViewModel();
-    getIt.registerPunctualityViewModel();
+    getIt.registerSferaDelayViewModel();
     getIt.registerJourneyPositionViewModel();
+    getIt.registerPlannedTimeDelayViewModel();
     getIt.registerDepartureProcessWarningViewModel();
     getIt.registerDecisiveGradientViewModel();
     getIt.registerJourneyTableScrollController();
@@ -71,9 +73,9 @@ class JourneyScope extends DIScope {
 }
 
 extension JourneyScopeExtension on GetIt {
-  void registerPunctualityViewModel() {
-    registerSingleton<PunctualityViewModel>(
-      PunctualityViewModel(journeyViewModel: DI.get()),
+  void registerSferaDelayViewModel() {
+    registerSingleton<SferaDelayViewModel>(
+      SferaDelayViewModel(journeyViewModel: DI.get()),
       dispose: (vm) => vm.dispose(),
     );
   }
@@ -81,10 +83,21 @@ extension JourneyScopeExtension on GetIt {
   void registerJourneyPositionViewModel() {
     registerSingleton<JourneyPositionViewModel>(
       JourneyPositionViewModel(
-        punctualityStream: get<PunctualityViewModel>().model,
+        punctualityStream: get<SferaDelayViewModel>().model,
         journeySettingsViewModel: DI.get(),
         journeyViewModel: DI.get(),
         timedRouteProvider: DI.get(),
+      ),
+      dispose: (vm) => vm.dispose(),
+    );
+  }
+
+  void registerPlannedTimeDelayViewModel() {
+    registerSingleton<PlannedTimeDelayViewModel>(
+      PlannedTimeDelayViewModel(
+        journeyPositionStream: get<JourneyPositionViewModel>().model,
+        ruFeatureProvider: DI.get(),
+        journeyViewModel: DI.get(),
       ),
       dispose: (vm) => vm.dispose(),
     );
@@ -211,7 +224,8 @@ extension JourneyScopeExtension on GetIt {
       ChronographViewModel(
         journeyViewModel: DI.get(),
         journeyPositionStream: DI.get<JourneyPositionViewModel>().model,
-        punctualityStream: DI.get<PunctualityViewModel>().model,
+        delayStream: DI.get<SferaDelayViewModel>().model,
+        plannedTimeDelayStream: DI.get<PlannedTimeDelayViewModel>().model,
         advisedSpeedModelStream: DI.get<AdvisedSpeedViewModel>().model,
         calculatedSpeedViewModel: DI.get(),
       ),

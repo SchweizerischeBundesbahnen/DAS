@@ -26,7 +26,7 @@ import 'package:app/pages/journey/journey_screen/view_model/journey_table_advanc
 import 'package:app/pages/journey/journey_screen/view_model/journey_table_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/line_speed_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
-import 'package:app/pages/journey/journey_screen/view_model/punctuality_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/sfera_delay_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/replacement_series_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/sim_train_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/tour_system_link_visibility_view_model.dart';
@@ -121,8 +121,8 @@ class _ProviderScope extends StatelessWidget {
     return MultiProvider(
       providers: [
         // Stateful VMs
-        Provider<PunctualityViewModel>(
-          create: (_) => DI.get<PunctualityViewModel>(),
+        Provider<SferaDelayViewModel>(
+          create: (_) => DI.get<SferaDelayViewModel>(),
         ),
         Provider<JourneyPositionViewModel>(
           create: (_) => DI.get<JourneyPositionViewModel>(),
