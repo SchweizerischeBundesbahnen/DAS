@@ -142,6 +142,16 @@ void main() {
       // expect link to land on login page as not authenticated
       await waitUntilExists(tester, find.byType(LoginPage));
 
+      // enable connection to mock broker
+      // drag bottom sheet
+      final title = find.text(l10n.p_login_bottom_sheet_title);
+      await tester.drag(title, Offset(0, -150));
+      await tester.pumpAndSettle();
+
+      // hit tms toggle to activate mock broker connection
+      final tmsToggle = find.text(l10n.p_login_connect_to_tms);
+      await tester.tap(tmsToggle);
+
       // proceed to login
       testAuthenticator.isAuthenticated = true;
       await tapElement(tester, find.byType(LoginButton));

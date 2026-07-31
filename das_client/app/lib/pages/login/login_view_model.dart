@@ -8,14 +8,14 @@ import 'package:rxdart/rxdart.dart';
 final _log = Logger('LoginViewModel');
 
 class LoginViewModel {
-  final _rxModel = BehaviorSubject<LoginModel>.seeded(LoggedOut(connectToTmsVad: false));
+  final _rxModel = BehaviorSubject<LoginModel>.seeded(LoggedOut(connectToTmsVad: true));
 
   LoginModel get modelValue => _rxModel.value;
 
   Stream<LoginModel> get model => _rxModel.distinct();
 
   void dispose() {
-    _rxModel.add(LoggedOut(connectToTmsVad: false));
+    _rxModel.add(LoggedOut(connectToTmsVad: true));
     _rxModel.close();
   }
 
