@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core/overlay';
+import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core';
 import { SbbRadioButtonModule } from '@sbb-esta/lyne-angular/radio-button';
 import { SbbTitleModule } from '@sbb-esta/lyne-angular/title';
 import { SbbToggleCheckModule } from '@sbb-esta/lyne-angular/toggle-check';
@@ -24,6 +24,9 @@ export type RuFeatureDialogEditResult = RuFeature | 'delete';
   styleUrl: './ru-feature-toggle-dialog.component.css',
 })
 export class RuFeatureToggleDialog {
+  protected readonly dialogData =
+    inject<RuFeature>(SBB_OVERLAY_DATA, { optional: true }) ?? undefined;
+
   protected readonly title: string;
 
   protected ruFeatureForm = new FormGroup({
@@ -35,8 +38,6 @@ export class RuFeatureToggleDialog {
     enabled: new FormControl(false, { nonNullable: true }),
   });
   protected readonly featureKeys = RU_FEATURE_KEY_LABELS();
-  protected readonly dialogData =
-    inject<RuFeature>(SBB_OVERLAY_DATA, { optional: true }) ?? undefined;
 
   constructor() {
     const isEdit = this.dialogData?.id !== undefined;

@@ -1,5 +1,5 @@
 import { HttpClient, httpResource } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiResponse } from '~shared/api-response';
 import { Auditable } from '~shared/audit/auditable';
@@ -138,7 +138,7 @@ export interface RuFeature extends Auditable {
 
 export type RuFeatureApiResponse = ApiResponse<RuFeature>;
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class RuAdminApi {
   private readonly httpClient = inject(HttpClient);
   private readonly ruIndicationsUrl = `${environment.backendUrl}/ruindications`;

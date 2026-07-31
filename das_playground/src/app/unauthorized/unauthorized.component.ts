@@ -1,13 +1,11 @@
-import { Component } from '@angular/core';
-import { SbbNotificationModule } from "@sbb-esta/angular/notification";
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { SbbNotificationModule } from '@sbb-esta/angular/notification';
 
 @Component({
   selector: 'app-unauthorized',
-  imports: [
-    SbbNotificationModule
-  ],
+  imports: [SbbNotificationModule],
   templateUrl: './unauthorized.component.html',
-  styleUrl: './unauthorized.component.scss'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './unauthorized.component.scss',
 })
-export class UnauthorizedComponent {
-}
+export class UnauthorizedComponent {}

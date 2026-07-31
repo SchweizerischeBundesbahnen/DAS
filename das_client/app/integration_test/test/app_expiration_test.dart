@@ -5,13 +5,14 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:settings/component.dart';
 
 import '../app_test.dart';
+import '../integration/integration_test_app.dart';
 import '../mocks/mock_settings_repository.dart';
 import '../util/test_utils.dart';
 
 void main() {
   group('app expiration test', () {
     testWidgets('appExpiration_whenExpiresSoon_thenShowsDismissibleDialogOnce', (tester) async {
-      await prepareAndStartApp(
+      await IntegrationTestApp.start(
         tester,
         onBeforeRun: () {
           final expiresVerySoon = AppVersionExpiration(expired: false, expiryDate: DateTime(2500));
@@ -40,7 +41,7 @@ void main() {
     testWidgets('appExpiration_whenExpired_thenShowsNonDismissibleDialog', (
       tester,
     ) async {
-      await prepareAndStartApp(
+      await IntegrationTestApp.start(
         tester,
         onBeforeRun: () {
           final expired = AppVersionExpiration(expired: true);

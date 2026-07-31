@@ -1,23 +1,19 @@
-import { Component, inject, OnDestroy } from '@angular/core';
-import { MqSubscriberComponent } from "./mq-subscriber/mq-subscriber.component";
-import { MqPublisherComponent } from "./mq-publisher/mq-publisher.component";
-import { MqService } from "../mq.service";
-import { SbbIcon } from "@sbb-esta/angular/icon";
-import { AsyncPipe } from "@angular/common";
-import { MqttConnectionState } from "ngx-mqtt";
-import { firstValueFrom, map } from "rxjs";
-import { OidcSecurityService } from "angular-auth-oidc-client";
+import { Component, inject, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { MqSubscriberComponent } from './mq-subscriber/mq-subscriber.component';
+import { MqPublisherComponent } from './mq-publisher/mq-publisher.component';
+import { MqService } from '../mq.service';
+import { SbbIcon } from '@sbb-esta/angular/icon';
+import { AsyncPipe } from '@angular/common';
+import { MqttConnectionState } from 'ngx-mqtt';
+import { firstValueFrom, map } from 'rxjs';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 @Component({
   selector: 'app-mqtt-playground',
-  imports: [
-    MqSubscriberComponent,
-    MqPublisherComponent,
-    SbbIcon,
-    AsyncPipe,
-  ],
+  imports: [MqSubscriberComponent, MqPublisherComponent, SbbIcon, AsyncPipe],
   templateUrl: './mqtt-playground.component.html',
-  styleUrl: './mqtt-playground.component.scss'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './mqtt-playground.component.scss',
 })
 export class MqttPlaygroundComponent implements OnDestroy {
   protected readonly MqttConnectionState = MqttConnectionState;
@@ -26,13 +22,15 @@ export class MqttPlaygroundComponent implements OnDestroy {
   private oidcSecurityService = inject(OidcSecurityService);
 
   constructor() {
-    this.oidcSecurityService.getAccessToken().subscribe(async token => {
-      const userName = await firstValueFrom(this.oidcSecurityService.getUserData().pipe(map((data) => data?.preferred_username)));
-      this.mqService.connect(userName, token)
+    this.oidcSecurityService.getAccessToken().subscribe(async (token) => {
+      const userName = await firstValueFrom(
+        this.oidcSecurityService.getUserData().pipe(map((data) => data?.preferred_username)),
+      );
+      this.mqService.connect(userName, token);
     });
   }
 
   ngOnDestroy(): void {
-    this.mqService.disconnect()
+    this.mqService.disconnect();
   }
 }

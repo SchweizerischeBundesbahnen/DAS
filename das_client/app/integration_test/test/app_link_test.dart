@@ -17,7 +17,8 @@ import 'package:sfera/component.dart';
 import 'package:train_identification/component.dart';
 
 import '../app_test.dart';
-import '../auth/integrationtest_authenticator.dart';
+import '../auth/integration_test_authenticator.dart';
+import '../integration/integration_test_app.dart';
 import '../mocks/mock_app_links_manager.dart';
 import '../mocks/mock_launcher.dart';
 import '../mocks/mock_train_identification_repository.dart';
@@ -27,7 +28,7 @@ import '../util/test_utils.dart';
 void main() {
   group('train-journey app link', () {
     testWidgets('appLink_whenLinkWithSingleTrain_opensJourney', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
 
       expect(find.byType(JourneySelectionPage), findsOne);
 
@@ -52,7 +53,7 @@ void main() {
     });
 
     testWidgets('appLink_whenLinkWithMultipleTrains_opensFirstJourneyAndRestInNavigation', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
 
       expect(find.byType(JourneySelectionPage), findsOne);
 
@@ -90,7 +91,7 @@ void main() {
     });
 
     testWidgets('appLink_whenLinkWithValidAndUnknownTrain_opensFirstJourneyAndShowsErrorPageForSecond', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
 
       expect(find.byType(JourneySelectionPage), findsOne);
 
@@ -128,7 +129,7 @@ void main() {
     });
 
     testWidgets('appLink_whenLinkWhileUnauthenticated_opensJourneyAfterLoginFlow', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
 
       expect(find.byType(JourneySelectionPage), findsOne);
 
@@ -158,7 +159,7 @@ void main() {
     });
 
     testWidgets('appLink_whenLinkWithUnknownTrain_showsErrorPage', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
 
       expect(find.byType(JourneySelectionPage), findsOne);
 
@@ -177,7 +178,7 @@ void main() {
     });
 
     testWidgets('appLink_whenLinkWithTafTapStartAndEnd_showsTrainDriverTurnoverRows', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
 
       expect(find.byType(JourneySelectionPage), findsOne);
 
@@ -205,7 +206,7 @@ void main() {
     });
 
     testWidgets('appLink_whenLinkWithReturnUrl_shouldUseReturnUrlOverDefaultTourSystemUrl', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
 
       expect(find.byType(JourneySelectionPage), findsOne);
 
@@ -242,7 +243,7 @@ void main() {
     });
 
     testWidgets('appLink_whenAlreadyOnJourneyPageReceivingDeeplink_opensNewJourney', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
       // check that train is loaded
@@ -270,7 +271,7 @@ void main() {
     });
 
     testWidgets('appLink_whenLinkWithSingleTrain_showsCompanyMatchSelection', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
 
       expect(find.byType(JourneySelectionPage), findsOne);
 
@@ -297,7 +298,7 @@ void main() {
     });
 
     testWidgets('appLink_whenAlreadyOnJourneyPageReceivingDeeplink_opensSelectionWithCompanyMatch', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
       // check that train is loaded
@@ -335,7 +336,7 @@ void main() {
     });
 
     testWidgets('appLink_whenAlreadyOnJourneyPageReceivingDeeplink_opensNewJourneyWithMatchingRu', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
       // check that train is loaded

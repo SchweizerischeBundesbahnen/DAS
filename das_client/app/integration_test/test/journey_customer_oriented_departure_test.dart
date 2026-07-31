@@ -10,13 +10,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 import '../app_test.dart';
+import '../integration/integration_test_app.dart';
 import '../mocks/mock_customer_oriented_departure_repository.dart';
 import '../mocks/mock_ru_feature_provider.dart';
 import '../util/test_utils.dart';
 
 void main() {
   testWidgets('customerOrientedDeparture_whenStatusChanges_thenDisplaysNotificationsCorrectly', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
     final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;
     featureProvider.enableFeature(.departureProcess);
     final mockRepository = DI.get<CustomerOrientedDepartureRepository>() as MockCustomerOrientedDepartureRepository;
@@ -54,7 +55,7 @@ void main() {
   });
 
   testWidgets('customerOrientedDeparture_whenJourneyChanges_thenSubscriptionUpdates', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
     final mockRepository = DI.get<CustomerOrientedDepartureRepository>() as MockCustomerOrientedDepartureRepository;
     mockRepository.reset();
 

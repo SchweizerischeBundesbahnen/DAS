@@ -1,7 +1,7 @@
-name: Report Finding
+name: Report DAS-Admin-Tool Finding
 description: Findings aus dem Fachtesting oder produktiven Gebrauch ans DAS Team melden.
-labels: ["finding"]
-projects: ["SchweizerischeBundesbahnen/10"]
+labels: [ "finding" ]
+projects: [ "SchweizerischeBundesbahnen/10" ]
 assignees:
   - marcdettwiler
   - StephanieFrancke
@@ -34,27 +34,32 @@ body:
       required: true
   - type: dropdown
     attributes:
-      label: Betriebssystem
-      description: Welches Betriebsystem wurde genutzt? Die Version kann über die Systemeinstellungen unter "Info" geprüft werden.
+      label: Browser
+      description: Welcher Browser wurde genutzt?
       options:
-        - iOS Version 26
-        - iOS Version 18
-        - iOS Version 17
-        - Android Version 17
-        - Android Version 16
-        - Android Version 15
-        - Android Version 14
+        - ''
+        - Microsoft Edge
+        - Mozilla Firefox
+        - Google Chrome
+        - Anderer (Bitte in den Anmerkungen angeben)
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Version
+      description: Welche Version wurde genutzt? Die Version ist oben links ersichtlich.
+      options:
+        - 0.5.1
       default: 0
     validations:
       required: true
   - type: dropdown
     attributes:
-      label: DAS Version
-      description: Welche Version von DAS wurde genutzt?
+      label: Umgebung
+      description: Welche Umgebung wurde genutzt? Die Umgebunbg ist oben rechts im Banner ersichtlich.
       options:
-        - 0.48.0
-        - 0.45.0
-        - 0.43.0
+        - INT
+        - DEV
       default: 0
     validations:
       required: true

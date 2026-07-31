@@ -5,11 +5,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 import '../app_test.dart';
+import '../integration/integration_test_app.dart';
 import '../util/test_utils.dart';
 
 void main() {
   testWidgets('settings_whenDecisiveGradientDisabled_thenHidesGradients', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T9999M');
 
     // check km, up and down gradients are shown
@@ -45,7 +46,7 @@ void main() {
   });
 
   testWidgets('settings_whenKmHeaderClickedWithGradientHidden_thenTogglesDisplay', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
 
     // Navigate to settings page
     await openDrawer(tester);
@@ -107,7 +108,7 @@ void main() {
   });
 
   testWidgets('settings_whenStationSignalHidden_thenHidesCorrectSignals', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T9999M');
 
     await stopAutomaticAdvancement(tester);
@@ -140,7 +141,7 @@ void main() {
   });
 
   testWidgets('settings_whenStationSignalHidden_thenChevronPositionsCorrectly', (tester) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
 
     // Navigate to settings page
     await openDrawer(tester);
@@ -178,7 +179,7 @@ void main() {
 
   group('T45 nsp signals', () {
     testWidgets('settings_whenStationSignalsToggled_thenHidesButKeepsEtcsStopSigns', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T45');
       await stopAutomaticAdvancement(tester);
 
@@ -209,7 +210,7 @@ void main() {
     });
 
     testWidgets('settings_whenEtcsConventionalToggled_thenHidesOnlyConventionalStopSign', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T45');
       await stopAutomaticAdvancement(tester);
 
@@ -241,7 +242,7 @@ void main() {
     });
 
     testWidgets('settings_whenEtcsExtendedToggled_thenHidesOnlyExtendedStopSigns', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T45');
       await stopAutomaticAdvancement(tester);
 
@@ -273,7 +274,7 @@ void main() {
     });
 
     testWidgets('settings_whenBothEtcsToggledOff_thenHidesAllEtcsStopSigns', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T45');
       await stopAutomaticAdvancement(tester);
 
