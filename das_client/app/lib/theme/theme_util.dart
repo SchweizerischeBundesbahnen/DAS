@@ -14,6 +14,9 @@ class ThemeUtil {
 
   static Color getDASTableBorderColor(BuildContext context) => getColor(context, SBBColors.cloud, SBBColors.iron);
 
+  static Color getDASOperationalChangeColor(BuildContext context) =>
+      getColor(context, SBBColors.turquoise, SBBColors.turquoiseDark);
+
   static Color getBackgroundColor(BuildContext context) => Theme.of(context).scaffoldBackgroundColor;
 
   static bool isDarkMode(BuildContext context) => Theme.of(context).brightness == .dark;

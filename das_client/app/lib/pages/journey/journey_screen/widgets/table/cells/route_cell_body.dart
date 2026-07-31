@@ -133,7 +133,7 @@ class RouteCellBody extends StatelessWidget {
     if (shortTermChangeData == null) return SizedBox.expand();
     final horizontalBorderWidth =
         DASTableTheme.of(context)?.data.tableBorder?.horizontalInside.width ?? SBBSpacing.medium;
-    final color = ThemeUtil.getColor(context, SBBColors.turquoise, SBBColors.turquoiseDark);
+    final color = ThemeUtil.getDASOperationalChangeColor(context);
     if (shortTermChangeData!.drawMiddle) {
       return Positioned(
         key: shortTermChangeMiddleKey,
