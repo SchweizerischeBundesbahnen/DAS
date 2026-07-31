@@ -151,10 +151,12 @@ function walkRange(source, start, end, groupStack, tests) {
     if (isIdentifierAt(source, index, 'testWidgets')) {
       const parsedTest = parseNamedCall(source, index, 'testWidgets');
       if (parsedTest) {
-        tests.push({
-          name: parsedTest.name,
-          fullName: [...groupStack, parsedTest.name].join(' '),
-        });
+        if (!parsedTest.skipped) {
+          tests.push({
+            name: parsedTest.name,
+            fullName: [...groupStack, parsedTest.name].join(' '),
+          });
+        }
         index = parsedTest.end;
         continue;
       }
@@ -163,10 +165,12 @@ function walkRange(source, start, end, groupStack, tests) {
     if (isIdentifierAt(source, index, 'test')) {
       const parsedTest = parseNamedCall(source, index, 'test');
       if (parsedTest) {
-        tests.push({
-          name: parsedTest.name,
-          fullName: [...groupStack, parsedTest.name].join(' '),
-        });
+        if (!parsedTest.skipped) {
+          tests.push({
+            name: parsedTest.name,
+            fullName: [...groupStack, parsedTest.name].join(' '),
+          });
+        }
         index = parsedTest.end;
         continue;
       }
@@ -193,6 +197,7 @@ function parseNamedCall(source, start, calleeName) {
   const result = {
     name: nameString.value,
     end: callEnd + 1,
+    skipped: hasSkipTrue(source, nameString.end, callEnd),
   };
 
   if (calleeName === 'group') {
@@ -207,6 +212,53 @@ function parseNamedCall(source, start, calleeName) {
   }
 
   return result;
+}
+
+function hasSkipTrue(source, start, end) {
+  let index = start;
+
+  while (index < end) {
+    index = skipSpaceAndComments(source, index, end);
+    if (index >= end) {
+      break;
+    }
+
+    if (isIdentifierAt(source, index, 'skip')) {
+      let cursor = skipSpaceAndComments(source, index + 4, end);
+      if (source[cursor] === ':') {
+        cursor = skipSpaceAndComments(source, cursor + 1, end);
+        if (isIdentifierAt(source, cursor, 'true')) {
+          return true;
+        }
+      }
+    }
+
+    // Skip over strings so we don't match 'skip' inside string content
+    if (source[index] === '\'' || source[index] === '"') {
+      index = readStringLiteral(source, index).end;
+      continue;
+    }
+
+    // Skip over nested parens/brackets so we don't match inside closures
+    if (source[index] === '(') {
+      index = findMatchingDelimiter(source, index, '(', ')') + 1;
+      continue;
+    }
+
+    if (source[index] === '[') {
+      index = findMatchingDelimiter(source, index, '[', ']') + 1;
+      continue;
+    }
+
+    if (source[index] === '{') {
+      index = findMatchingDelimiter(source, index, '{', '}') + 1;
+      continue;
+    }
+
+    index += 1;
+  }
+
+  return false;
 }
 
 function findClosureBodyStart(source, start, end) {
