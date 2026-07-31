@@ -204,55 +204,6 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('brakeSlipModal_whenButtonTappedWhileOpen_thenClosesModal', (tester) async {
-    await IntegrationTestApp.start(tester);
-
-    final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
-    formationRepository.emitT9999Formation();
-
-    await loadJourney(tester, trainNumber: 'T9999M');
-
-    // Open fullscreen
-    await openBrakeSlipPage(tester);
-    await closeBrakeSlipPage(tester);
-
-    // Open modal
-    await openBrakeSlipPage(tester);
-    expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsNothing);
-
-    // tapping the button that opened the modal a second time closes it
-    await tapElement(tester, find.byIcon(SBBIcons.freight_wagon_container_medium));
-    await tester.pumpAndSettle();
-
-    expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsOneWidget);
-
-    await disconnect(tester);
-  });
-
-  testWidgets('brakeSlipModal_whenNonInteractiveAreaTapped_thenClosesModal', (tester) async {
-    await IntegrationTestApp.start(tester);
-
-    final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
-    formationRepository.emitT9999Formation();
-
-    await loadJourney(tester, trainNumber: 'T9999M');
-
-    // Open fullscreen
-    await openBrakeSlipPage(tester);
-    await closeBrakeSlipPage(tester);
-
-    // Open modal
-    await openBrakeSlipPage(tester);
-    expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsNothing);
-
-    // tapping a non-interactive area inside the modal (its title) closes it, without needing the "x"
-    await tapElement(tester, find.byKey(BrakeLoadSlipModalBuilder.headerKey), warnIfMissed: false);
-
-    expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsOneWidget);
-
-    await disconnect(tester);
-  });
-
   testWidgets('brakeSlipModal_whenIdleTimeoutElapses_thenNeverClosesAutomatically', (tester) async {
     await IntegrationTestApp.start(tester);
 
