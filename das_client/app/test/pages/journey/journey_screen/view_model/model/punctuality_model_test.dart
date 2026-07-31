@@ -25,6 +25,34 @@ void main() {
       test('hidden_whenGettingDelayString_thenReturnsEmptyString', () {
         expect(PunctualityModel.hidden().formattedDelay, '');
       });
+
+      test('plannedTimeDeviation_whenPositiveUnderAnHour_thenReturnsCorrectValue', () {
+        expect(
+          PunctualityModel.plannedTimeDeviation(deviation: const Duration(minutes: 30)).formattedDelay,
+          '+00h30',
+        );
+      });
+
+      test('plannedTimeDeviation_whenNegative_thenReturnsCorrectValue', () {
+        expect(
+          PunctualityModel.plannedTimeDeviation(deviation: const Duration(minutes: -10)).formattedDelay,
+          '-00h10',
+        );
+      });
+
+      test('plannedTimeDeviation_whenOverAnHour_thenReturnsCorrectValue', () {
+        expect(
+          PunctualityModel.plannedTimeDeviation(deviation: const Duration(hours: 1, minutes: 30)).formattedDelay,
+          '+01h30',
+        );
+      });
+
+      test('plannedTimeDeviation_whenZero_thenReturnsCorrectValue', () {
+        expect(
+          PunctualityModel.plannedTimeDeviation(deviation: Duration.zero).formattedDelay,
+          '+00h00',
+        );
+      });
     });
 
     group('equality', () {
@@ -83,11 +111,34 @@ void main() {
         final visible = PunctualityModel.visible(delay: tenSecondLate);
         final stale = PunctualityModel.stale(delay: tenSecondLate);
         final hidden = PunctualityModel.hidden();
+        final plannedTimeDeviation = PunctualityModel.plannedTimeDeviation(deviation: const Duration(minutes: 10));
 
         // EXPECT
         expect(visible == stale, isFalse);
         expect(visible == hidden, isFalse);
         expect(stale == hidden, isFalse);
+        expect(plannedTimeDeviation == hidden, isFalse);
+        expect(plannedTimeDeviation == visible, isFalse);
+      });
+
+      test('plannedTimeDeviation_whenComparedToIdentical_thenIsEqual', () {
+        // ARRANGE
+        final model1 = PunctualityModel.plannedTimeDeviation(deviation: const Duration(minutes: 10));
+        final model2 = PunctualityModel.plannedTimeDeviation(deviation: const Duration(minutes: 10));
+
+        // EXPECT
+        expect(model1 == model2, isTrue);
+        expect(model1.hashCode == model2.hashCode, isTrue);
+      });
+
+      test('plannedTimeDeviation_whenComparedToDifferent_thenIsNotEqual', () {
+        // ARRANGE
+        final model1 = PunctualityModel.plannedTimeDeviation(deviation: const Duration(minutes: 10));
+        final model2 = PunctualityModel.plannedTimeDeviation(deviation: const Duration(minutes: -10));
+
+        // EXPECT
+        expect(model1 == model2, isFalse);
+        expect(model1.hashCode == model2.hashCode, isFalse);
       });
     });
   });
