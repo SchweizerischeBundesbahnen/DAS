@@ -409,6 +409,47 @@ Future<void> main() async {
       await disconnect(tester);
     });
 
+    testWidgets('journeyHeader_whenNoSferaDelayAvailable_thenShowsPlannedTimeDeviation', (tester) async {
+      await IntegrationTestApp.start(tester);
+      await loadJourney(tester, trainNumber: 'T16');
+
+      final chronograph = find.byType(ChronographHeaderBox);
+      expect(chronograph, findsOneWidget);
+
+      final punctualityText = find.descendant(
+        of: chronograph,
+        matching: find.byKey(ChronographHeaderBox.punctualityTextKey),
+      );
+      await waitUntilExists(tester, punctualityText);
+
+      final displayedText = tester.widget<Text>(punctualityText).data;
+      expect(displayedText, matches(RegExp(r'^[+-]\d{2}h\d{2}$')));
+
+      await disconnect(tester);
+    });
+
+    testWidgets('journeyHeader_whenPlannedTimeDeviationFeatureDisabled_thenNeverShowsDeviation', (tester) async {
+      await IntegrationTestApp.start(tester);
+
+      final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;
+      featureProvider.disableFeature(.plannedTimeDeviation);
+
+      await loadJourney(tester, trainNumber: 'T16');
+
+      final chronograph = find.byType(ChronographHeaderBox);
+      expect(chronograph, findsOneWidget);
+
+      // give the chevron time to advance past the first service point, where a deviation would otherwise show
+      await tester.pumpAndSettle(const Duration(seconds: 10));
+
+      expect(
+        find.descendant(of: chronograph, matching: find.byKey(ChronographHeaderBox.punctualityTextKey)),
+        findsNothing,
+      );
+
+      await disconnect(tester);
+    });
+
     testWidgets('journeyHeader_whenJourneyLoaded_thenShowsCorrectCurrentTime', (tester) async {
       await IntegrationTestApp.start(tester);
 
