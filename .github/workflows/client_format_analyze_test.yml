@@ -31,17 +31,6 @@ jobs:
           java-version: '17'
           cache: 'gradle'
 
-      - name: Vault Secrets 🤫
-        id: vault-secrets
-        uses: hashicorp/vault-action@v4.0.0
-        with:
-          url: https://vault-nonprod.sbb.ch:443
-          method: approle
-          roleId: ${{ secrets.VAULT_ROLE_ID }}
-          secretId: ${{ secrets.VAULT_SECRET_ID }}
-          secrets: |
-            kv/data/DSO-BPS/driver-advisory-system/ci/common SONAR_TOKEN ;
-
       - uses: subosito/flutter-action@v2.23.0
         with:
           flutter-version: '3.44.x'
@@ -64,23 +53,3 @@ jobs:
 
       - name: Flutter tests with coverage
         run: melos coverage
-
-      - name: Sonar scan
-        uses: SonarSource/sonarqube-scan-action@v8.2.1
-        env:
-          SONAR_TOKEN: ${{ steps.vault-secrets.outputs.SONAR_TOKEN }}
-        with:
-          projectBaseDir: das_client
-          args: >
-            -Dsonar.organization=schweizerischebundesbahnen
-            -Dsonar.projectKey=schweizerischebundesbahnen_DAS-Client
-            -Dsonar.projectName=DAS/Client
-            -Dsonar.sources=app/lib,app_links_x/lib,auth/lib,formation/lib,local_regulations/lib,logger/lib,preload/lib,sfera/lib,warnapp/lib
-            -Dsonar.tests=app/test,app_links_x/test,auth/test,formation/test,local_regulations/test,logger/test,preload/test,sfera/test,warnapp/test
-            -Dsonar.inclusions=**/lib/**
-            -Dsonar.test.inclusions=**/test/**
-            -Dsonar.exclusions=**/*.g.dart,**/.dart_tool/**,**/android/**,**/ios/**
-            -Dsonar.flutter.enabled=true
-            -Dsonar.language=dart
-            -Dsonar.dart.lcov.reportPaths=**/coverage/lcov.info
-
