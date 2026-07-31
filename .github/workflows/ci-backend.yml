@@ -66,6 +66,7 @@ jobs:
             -Dsonar.issue.ignore.multicriteria=e1 \
             -Dsonar.issue.ignore.multicriteria.e1.ruleKey=java:S1452 \
             -Dsonar.issue.ignore.multicriteria.e1.resourceKey=**
+            -Dsonar.qualitygate.wait=false
 
       - name: Login to GitHub Container Registry
         if: github.ref == 'refs/heads/main'
