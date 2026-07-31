@@ -13,7 +13,7 @@ import 'package:mockito/mockito.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
-import 'sfera_delay_view_model_test.mocks.dart';
+import 'delay_view_model_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<JourneyViewModel>()])
 void main() {
