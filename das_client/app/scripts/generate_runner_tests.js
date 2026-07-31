@@ -426,7 +426,6 @@ function isIdentifierChar(char) {
 function toObjCTestSelector(testName) {
   const words = testName
     .normalize('NFKD')
-    .toLocaleLowerCase()
     .replace(/[^\p{L}\p{N}]+/gu, ' ')
     .trim()
     .split(/\s+/)
@@ -521,9 +520,9 @@ static BOOL RunnerIntegrationTestsDidRun = NO;
 - (NSString *)recordedFailureWithPrefix:(NSString *)testNamePrefix {
   [self ensureIntegrationTestsExecuted];
 
-  NSString *expectedPrefix = [NSString stringWithFormat:@"%@:", testNamePrefix];
+  NSString *expectedPrefix = [NSString stringWithFormat:@"%@:", testNamePrefix.lowercaseString];
   for (NSString *failure in RunnerTestFailures ?: @[]) {
-    if ([failure hasPrefix:expectedPrefix]) {
+    if ([failure.lowercaseString hasPrefix:expectedPrefix]) {
       return failure;
     }
   }
@@ -535,7 +534,7 @@ static BOOL RunnerIntegrationTestsDidRun = NO;
   [self ensureIntegrationTestsExecuted];
 
   for (NSString *successfulTestName in RunnerSuccessfulTests ?: [NSSet set]) {
-    if ([successfulTestName hasPrefix:testNamePrefix]) {
+    if ([successfulTestName.lowercaseString hasPrefix:testNamePrefix.lowercaseString]) {
       return YES;
     }
   }
