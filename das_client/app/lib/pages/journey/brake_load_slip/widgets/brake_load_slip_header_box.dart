@@ -71,19 +71,19 @@ class BrakeLoadSlipHeaderBox extends StatelessWidget {
           children: [
             Text(
               context.l10n.p_brake_load_slip_header_subtitle,
-              style: sbbTextStyle.lightStyle.small.copyWith(color: subtitleColor),
+              style: sbbTextStyle.lightStyle.copyWith(color: subtitleColor),
             ),
             Text(
               DateFormat('dd.MM.yyyy').format(formationRunChange.formationRun.inspectionDateTime),
               style: dateChanged
-                  ? sbbTextStyle.boldStyle.small.copyWith(color: subtitleColor)
-                  : sbbTextStyle.lightStyle.small.copyWith(color: subtitleColor),
+                  ? sbbTextStyle.boldStyle.copyWith(color: subtitleColor)
+                  : sbbTextStyle.lightStyle.copyWith(color: subtitleColor),
             ),
             Text(
               DateFormat(' HH:mm').format(formationRunChange.formationRun.inspectionDateTime),
               style: timeChanged
-                  ? sbbTextStyle.boldStyle.small.copyWith(color: subtitleColor)
-                  : sbbTextStyle.lightStyle.small.copyWith(color: subtitleColor),
+                  ? sbbTextStyle.boldStyle.copyWith(color: subtitleColor)
+                  : sbbTextStyle.lightStyle.copyWith(color: subtitleColor),
             ),
           ],
         ),

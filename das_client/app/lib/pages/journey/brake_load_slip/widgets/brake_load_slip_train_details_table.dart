@@ -1,4 +1,5 @@
 import 'package:app/i18n/i18n.dart';
+import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/dot_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:formation/component.dart';
@@ -59,6 +60,7 @@ class BrakeLoadSlipTrainDetailsTable extends StatelessWidget {
           formationRunChange.hasChanged(.hauledLoadMaxSpeedInKmh),
           formationRunChange.formationRun.formationMaxSpeedInKmh?.toString(),
           formationRunChange.hasChanged(.formationMaxSpeedInKmh),
+          context,
         ),
         _buildDataRow(
           context.l10n.p_brake_load_slip_train_data_table_length,
@@ -68,6 +70,7 @@ class BrakeLoadSlipTrainDetailsTable extends StatelessWidget {
           formationRunChange.hasChanged(.hauledLoadLengthInCm),
           (formationRunChange.formationRun.formationLengthInCm / 100).toString(),
           formationRunChange.hasChanged(.formationLengthInCm),
+          context,
         ),
         _buildDataRow(
           context.l10n.p_brake_load_slip_train_data_table_weight,
@@ -77,6 +80,7 @@ class BrakeLoadSlipTrainDetailsTable extends StatelessWidget {
           formationRunChange.hasChanged(.hauledLoadWeightInT),
           formationRunChange.formationRun.formationWeightInT.toString(),
           formationRunChange.hasChanged(.formationWeightInT),
+          context,
         ),
         _buildDataRow(
           context.l10n.p_brake_load_slip_train_data_table_braked_weight,
@@ -86,6 +90,7 @@ class BrakeLoadSlipTrainDetailsTable extends StatelessWidget {
           formationRunChange.hasChanged(.hauledLoadBrakedWeightInT),
           formationRunChange.formationRun.formationBrakedWeightInT.toString(),
           formationRunChange.hasChanged(.formationBrakedWeightInT),
+          context,
         ),
         _buildDataRow(
           context.l10n.p_brake_load_slip_brake_details_holding_force,
@@ -95,6 +100,7 @@ class BrakeLoadSlipTrainDetailsTable extends StatelessWidget {
           formationRunChange.hasChanged(.hauledLoadHoldingForceInHectoNewton),
           (formationRunChange.formationRun.formationHoldingForceInHectoNewton / 10).toString(),
           formationRunChange.hasChanged(.formationHoldingForceInHectoNewton),
+          context,
         ),
       ],
     );
@@ -108,40 +114,47 @@ class BrakeLoadSlipTrainDetailsTable extends StatelessWidget {
     bool hasChangeC2,
     String? c3,
     bool hasChangeC3,
+    BuildContext context,
   ) {
     return DataRow(
       cells: [
         DataCell(
-          Text(label, style: sbbTextStyle.romanStyle.small),
+          Text(label, style: sbbTextStyle.romanStyle.medium),
         ),
         DataCell(
           Align(
             alignment: Alignment.centerRight,
-            child: _wrappedText(c1, hasChangeC1, _hasAnyChangesColumnOne),
+            child: _wrappedText(c1, hasChangeC1, _hasAnyChangesColumnOne, context),
           ),
         ),
         DataCell(
           Align(
             alignment: Alignment.centerRight,
-            child: _wrappedText(c2, hasChangeC2, _hasAnyChangesColumnTwo),
+            child: _wrappedText(c2, hasChangeC2, _hasAnyChangesColumnTwo, context),
           ),
         ),
         DataCell(
           Align(
             alignment: Alignment.centerRight,
-            child: _wrappedText(c3, hasChangeC3, _hasAnyChangesColumnThree),
+            child: _wrappedText(c3, hasChangeC3, _hasAnyChangesColumnThree, context),
           ),
         ),
       ],
     );
   }
 
-  Widget _wrappedText(String? text, bool hasChange, bool padRight) {
-    final finalStyle = hasChange ? sbbTextStyle.boldStyle.small : sbbTextStyle.romanStyle.small;
+  Widget _wrappedText(String? text, bool hasChange, bool padRight, BuildContext context) {
+    final finalStyle = hasChange ? sbbTextStyle.boldStyle : sbbTextStyle.romanStyle;
     const rightPadding = EdgeInsets.only(right: SBBSpacing.small);
     Widget child = Text(text ?? '', style: finalStyle);
 
-    if (hasChange) child = DotIndicator(offset: Offset(0, -SBBSpacing.small), child: child);
+    if (hasChange) {
+      child = DotIndicator(
+        offset: Offset(0, -SBBSpacing.small),
+        color: ThemeUtil.getDASOperationalChangeColor(context),
+        child: child,
+      );
+    }
     if (padRight) child = Padding(padding: rightPadding, child: child);
 
     return child;

@@ -22,7 +22,7 @@ class ShortTermChangeHeaderBoxFlap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final backgroundColor = ThemeUtil.getColor(context, SBBColors.turquoise, SBBColors.turquoiseDark);
+    final backgroundColor = ThemeUtil.getDASOperationalChangeColor(context);
     return SizedBox(
       height: MainHeaderBox.height + height,
       width: double.infinity,
