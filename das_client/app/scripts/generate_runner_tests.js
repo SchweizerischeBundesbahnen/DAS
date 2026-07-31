@@ -4,10 +4,17 @@ const fs = require('fs');
 const path = require('path');
 
 const appDir = path.resolve(__dirname, '..');
-const integrationTestsDir = path.join(appDir, 'integration_test', 'test');
+const integrationRootDir = path.join(appDir, 'integration_test');
 const runnerTestsPath = path.join(appDir, 'ios', 'RunnerTests', 'RunnerTests.m');
 
 function main() {
+  const selectedFolder = parseSuiteFolderFromArgs(process.argv.slice(2));
+  const integrationTestsDir = path.join(integrationRootDir, selectedFolder);
+
+  if (!fs.existsSync(integrationTestsDir)) {
+    throw new Error(`Integration test folder does not exist: ${integrationTestsDir}`);
+  }
+
   const dartFiles = listDartFiles(integrationTestsDir).sort((left, right) => left.localeCompare(right));
   const collectedTests = dartFiles.flatMap((filePath) => {
     const source = fs.readFileSync(filePath, 'utf8');
@@ -15,7 +22,7 @@ function main() {
       ...test,
       filePath,
       relativeFilePath: path.relative(appDir, filePath).replaceAll(path.sep, '/'),
-      selector: toObjCTestSelector(test.fullName),
+      selector: toObjCTestSelector(test.name),
     }));
   });
 
@@ -29,8 +36,73 @@ function main() {
   fs.writeFileSync(runnerTestsPath, output);
 
   process.stdout.write(
-    `Generated ${path.relative(appDir, runnerTestsPath)} with ${collectedTests.length} XCTest methods from ${dartFiles.length} Dart files.\n`,
+    `Generated ${path.relative(appDir, runnerTestsPath)} with ${collectedTests.length} XCTest methods from ${dartFiles.length} Dart files in integration_test/${selectedFolder}.\n`,
   );
+}
+
+function parseSuiteFolderFromArgs(args) {
+  const defaultFolder = 'test';
+  if (args.length === 0) {
+    return defaultFolder;
+  }
+
+  if (args.includes('--help') || args.includes('-h')) {
+    printHelpAndExit();
+  }
+
+  const value = readArgValue(args, '--suite') ?? readArgValue(args, '--folder') ?? args[0];
+  const normalized = normalizeSuiteFolder(value);
+  if (normalized == null) {
+    throw new Error(
+      `Unknown suite folder "${value}". Use "test" or "e2e_test" (alias for "e2e_tests").`,
+    );
+  }
+
+  return normalized;
+}
+
+function readArgValue(args, optionName) {
+  const withEqualsPrefix = `${optionName}=`;
+  const withEquals = args.find((arg) => arg.startsWith(withEqualsPrefix));
+  if (withEquals) {
+    return withEquals.slice(withEqualsPrefix.length);
+  }
+
+  const optionIndex = args.indexOf(optionName);
+  if (optionIndex >= 0 && optionIndex + 1 < args.length) {
+    return args[optionIndex + 1];
+  }
+
+  return null;
+}
+
+function normalizeSuiteFolder(value) {
+  const rawValue = (value ?? 'test').trim();
+  if (rawValue === 'test') {
+    return 'test';
+  }
+
+  if (rawValue === 'e2e_test' || rawValue === 'e2e_tests') {
+    return 'e2e_tests';
+  }
+
+  return null;
+}
+
+function printHelpAndExit() {
+  process.stdout.write(
+    [
+      'Usage:',
+      '  node app/scripts/generate_runner_tests.js [--suite <test|e2e_test>]',
+      '  node app/scripts/generate_runner_tests.js [test|e2e_test]',
+      '',
+      'Notes:',
+      '  - e2e_test is an alias and maps to integration_test/e2e_tests',
+      '  - default suite is test',
+      '',
+    ].join('\n'),
+  );
+  process.exit(0);
 }
 
 function listDartFiles(directoryPath) {
@@ -302,6 +374,7 @@ function isIdentifierChar(char) {
 function toObjCTestSelector(testName) {
   const words = testName
     .normalize('NFKD')
+    .toLocaleLowerCase()
     .replace(/[^\p{L}\p{N}]+/gu, ' ')
     .trim()
     .split(/\s+/)
@@ -354,9 +427,7 @@ function buildRunnerTestsFile(collectedTests) {
   return `${buildFileHeader()}
 static NSMutableArray<NSString *> *RunnerTestFailures;
 static NSMutableSet<NSString *> *RunnerSuccessfulTests;
-static NSDictionary<NSString *, UIImage *> *RunnerCapturedScreenshotsByName;
 static BOOL RunnerIntegrationTestsDidRun = NO;
-static BOOL RunnerScreenshotsAttached = NO;
 
 @interface RunnerTests : XCTestCase
 + (NSArray<NSString *> *)recordedFailures;
@@ -376,7 +447,6 @@ static BOOL RunnerScreenshotsAttached = NO;
 - (void)ensureIntegrationTestsExecuted {
   @synchronized([RunnerTests class]) {
     if (RunnerIntegrationTestsDidRun) {
-      [self attachCapturedScreenshotsIfNeeded];
       return;
     }
 
@@ -392,28 +462,6 @@ static BOOL RunnerScreenshotsAttached = NO;
       } else {
         [RunnerTestFailures addObject:[NSString stringWithFormat:@"%@: %@", name, failureMessage ?: @"(no message)"]];
       }
-    }];
-
-    RunnerCapturedScreenshotsByName = integrationTestRunner.capturedScreenshotsByName ?: @{};
-  }
-
-  [self attachCapturedScreenshotsIfNeeded];
-}
-
-- (void)attachCapturedScreenshotsIfNeeded {
-  @synchronized([RunnerTests class]) {
-    if (RunnerScreenshotsAttached) {
-      return;
-    }
-
-    RunnerScreenshotsAttached = YES;
-    [RunnerCapturedScreenshotsByName enumerateKeysAndObjectsUsingBlock:^(NSString *name, UIImage *screenshot, BOOL *stop) {
-      XCTAttachment *attachment = [XCTAttachment attachmentWithImage:screenshot];
-      attachment.lifetime = XCTAttachmentLifetimeKeepAlways;
-      if (name != nil) {
-        attachment.name = name;
-      }
-      [self addAttachment:attachment];
     }];
   }
 }
@@ -471,8 +519,6 @@ ${generatedMethods}
 function buildFileHeader() {
   return `@import XCTest;
 @import integration_test;
-@import ObjectiveC.runtime;
-@import UIKit;
 
 // Generated by app/scripts/generate_runner_tests.js.
 //
