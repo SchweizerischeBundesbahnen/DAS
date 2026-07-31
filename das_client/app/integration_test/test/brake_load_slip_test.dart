@@ -5,6 +5,7 @@ import 'package:app/pages/journey/brake_load_slip/widgets/brake_load_slip_header
 import 'package:app/pages/journey/brake_load_slip/widgets/brake_load_slip_special_restrictions.dart';
 import 'package:app/pages/journey/journey_page.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/brake_load_slip_modal/brake_load_slip_modal_builder.dart';
+import 'package:app/pages/journey/journey_screen/detail_modal/brake_load_slip_modal/brake_load_slip_modal_overview.dart';
 import 'package:app/pages/journey/journey_screen/notification/widgets/brake_load_slip_notification.dart';
 import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
 import 'package:app/util/time_constants.dart';
@@ -158,6 +159,12 @@ void main() {
     expect(find.byKey(BrakeLoadSlipModalBuilder.headerKey), findsOneWidget);
     expect(find.text(l10n.p_brake_load_slip_special_restrictions_title), findsOneWidget);
     expect(find.byKey(BrakeLoadSlipModalBuilder.buttonKey), findsOneWidget);
+
+    final overview = find.byType(BrakeLoadSlipModalOverview);
+    expect(find.descendant(of: overview, matching: find.text(l10n.p_brake_load_slip_train_data_from)), findsOneWidget);
+    expect(find.descendant(of: overview, matching: find.text('Bahnhof A')), findsOneWidget);
+    expect(find.descendant(of: overview, matching: find.text(l10n.p_brake_load_slip_train_data_to)), findsOneWidget);
+    expect(find.descendant(of: overview, matching: find.text('Haltestelle B')), findsOneWidget);
 
     await disconnect(tester);
   });
