@@ -1,16 +1,13 @@
-import {TestBed} from '@angular/core/testing';
-
-import {SpecialHolidayService} from './special-holiday.service';
-import {RuAdminApi, SpecialHoliday, SpecialHolidayApiResponse} from '../ru-admin-api';
-import {SbbDialogService} from '@sbb-esta/lyne-angular/dialog';
-import {ToastService} from '../../shared/toast-service';
-import {HttpResourceRef} from '@angular/common/http';
-import {of, throwError} from 'rxjs';
-import {
-  SpecialHolidayDialogEditResult
-} from './special-holiday-dialog/special-holiday-dialog.component';
-import {SbbOverlayCloseEvent} from '@sbb-esta/lyne-elements/overlay.js';
-import {RecentCompaniesStore} from '../../shared/recent-companies.store';
+import { HttpResourceRef } from '@angular/common/http';
+import { TestBed } from '@angular/core/testing';
+import { SbbDialogService } from '@sbb-esta/lyne-angular/dialog';
+import { SbbOverlayCloseEvent } from '@sbb-esta/lyne-elements/overlay.js';
+import { of, throwError } from 'rxjs';
+import { RecentCompaniesStore } from '~shared/recent-companies.store';
+import { ToastService } from '~shared/toast-service';
+import { RuAdminApi, SpecialHoliday, SpecialHolidayApiResponse } from '../ru-admin-api';
+import { SpecialHolidayDialogEditResult } from './special-holiday-dialog/special-holiday-dialog.component';
+import { SpecialHolidayService } from './special-holiday.service';
 
 const specialHoliday: SpecialHoliday = {
   id: 1,
@@ -24,25 +21,23 @@ const mockRuAdminApi: Partial<RuAdminApi> = {
   putSpecialHoliday: () => of({} as SpecialHolidayApiResponse),
   postSpecialHoliday: () => of({} as SpecialHolidayApiResponse),
   deleteAllSpecialHolidays: () => of(undefined),
-  specialHolidays: {reload: () => true} as HttpResourceRef<SpecialHolidayApiResponse | undefined>,
+  specialHolidays: { reload: () => true } as HttpResourceRef<SpecialHolidayApiResponse | undefined>,
 };
 
 const mockToastService: Partial<ToastService> = {
   success: vi.fn(),
-  error: vi.fn()
+  error: vi.fn(),
 };
 
 const openSpy = vi.fn();
 
-const mockSbbDialogService: Partial<SbbDialogService> = {open: openSpy};
+const mockSbbDialogService: Partial<SbbDialogService> = { open: openSpy };
 
-const mockRecentCompaniesStore: Partial<RecentCompaniesStore> = {
-  save: vi.fn(),
-};
+const mockRecentCompaniesStore: Partial<RecentCompaniesStore> = { save: vi.fn() };
 
 function mockDialogResult(result: SpecialHolidayDialogEditResult | null): void {
   openSpy.mockReturnValue({
-    afterClosed: of({result} as SbbOverlayCloseEvent)
+    afterClosed: of({ result } as SbbOverlayCloseEvent),
   });
 }
 
@@ -55,10 +50,10 @@ describe('SpecialHolidayService', () => {
     TestBed.configureTestingModule({
       providers: [
         SpecialHolidayService,
-        {provide: RuAdminApi, useValue: mockRuAdminApi},
-        {provide: SbbDialogService, useValue: mockSbbDialogService},
-        {provide: ToastService, useValue: mockToastService},
-        {provide: RecentCompaniesStore, useValue: mockRecentCompaniesStore},
+        { provide: RuAdminApi, useValue: mockRuAdminApi },
+        { provide: SbbDialogService, useValue: mockSbbDialogService },
+        { provide: ToastService, useValue: mockToastService },
+        { provide: RecentCompaniesStore, useValue: mockRecentCompaniesStore },
       ],
     });
 
@@ -73,7 +68,7 @@ describe('SpecialHolidayService', () => {
     const apiSpy = vi.spyOn(mockRuAdminApi, 'putSpecialHoliday');
     const toastSpy = vi.spyOn(mockToastService, 'success');
     const recentCompaniesSaveSpy = vi.spyOn(mockRecentCompaniesStore, 'save');
-    mockDialogResult({...specialHoliday, name: 'Updated', companies: ['1085', '1087', '1090']});
+    mockDialogResult({ ...specialHoliday, name: 'Updated', companies: ['1085', '1087', '1090'] });
 
     await service.edit(specialHoliday);
 
@@ -115,9 +110,11 @@ describe('SpecialHolidayService', () => {
   });
 
   it('edit failed should show error toast', async () => {
-    vi.spyOn(mockRuAdminApi, 'putSpecialHoliday').mockReturnValueOnce(throwError(() => new Error('API error')));
+    vi.spyOn(mockRuAdminApi, 'putSpecialHoliday').mockReturnValueOnce(
+      throwError(() => new Error('API error')),
+    );
     const errorToastSpy = vi.spyOn(mockToastService, 'error');
-    mockDialogResult({...specialHoliday, name: 'Updated'});
+    mockDialogResult({ ...specialHoliday, name: 'Updated' });
 
     await service.edit(specialHoliday);
 
@@ -165,7 +162,7 @@ describe('SpecialHolidayService', () => {
         name: 'Berchtoldstag',
         date: new Date('2026-01-02'),
         scheduleType: 'MONDAY_SCHEDULE',
-        companies: ['1087']
+        companies: ['1087'],
       },
     ]);
 
@@ -174,7 +171,9 @@ describe('SpecialHolidayService', () => {
   });
 
   it('deleteAll failed should show error toast', async () => {
-    vi.spyOn(mockRuAdminApi, 'deleteAllSpecialHolidays').mockReturnValueOnce(throwError(() => new Error('API error')));
+    vi.spyOn(mockRuAdminApi, 'deleteAllSpecialHolidays').mockReturnValueOnce(
+      throwError(() => new Error('API error')),
+    );
     const errorToastSpy = vi.spyOn(mockToastService, 'error');
 
     await service.deleteAll([specialHoliday]);
@@ -182,4 +181,3 @@ describe('SpecialHolidayService', () => {
     expect(errorToastSpy).toHaveBeenCalled();
   });
 });
-

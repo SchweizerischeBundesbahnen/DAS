@@ -16,6 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.das.backend.IntegrationTest;
 import ch.sbb.das.backend.WithMockRole;
 import ch.sbb.das.backend.common.security.UserRole;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -35,6 +36,7 @@ class CompanyControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @DisplayName("Authorized companies when the caller is an RU admin then allowed companies are returned|tests:428,2121")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void getAuthorizedCompanies_ok_adminTenant_returnsAllowedCompanies() throws Exception {
@@ -44,6 +46,7 @@ class CompanyControllerTest {
             .andExpect(jsonPath("$.data[*].code", containsInAnyOrder("1111", "2222", "3333", "8881", "8882", "8883", "7777")));
     }
 
+    @DisplayName("All companies when the caller is admin then all companies are returned|tests:428,2121")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     void getAllCompanies_ok_returnsAllCompanies() throws Exception {
@@ -53,6 +56,7 @@ class CompanyControllerTest {
             .andExpect(jsonPath("$.data[*].code", containsInAnyOrder("1111", "2222", "3333", "9999", "8881", "8882", "8883", "7777")));
     }
 
+    @DisplayName("All companies when the caller is an RU admin then access is forbidden|tests:428,2121")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void getAllCompanies_forbidden_ruAdmin() throws Exception {
@@ -60,6 +64,7 @@ class CompanyControllerTest {
             .andExpect(status().isForbidden());
     }
 
+    @DisplayName("All companies when the caller is an observer then access is forbidden|tests:428,2121")
     @Test
     @WithMockRole(roles = UserRole.OBSERVER)
     void getAllCompanies_forbidden_observer() throws Exception {
@@ -67,12 +72,14 @@ class CompanyControllerTest {
             .andExpect(status().isForbidden());
     }
 
+    @DisplayName("All companies when the caller is not authenticated then access is unauthorized|tests:428,2121")
     @Test
     void getAllCompanies_unauthorized() throws Exception {
         mockMvc.perform(get(API_COMPANIES))
             .andExpect(status().isUnauthorized());
     }
 
+    @DisplayName("Company when the create request is valid then it is created|tests:428,2121")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     void createCompany_ok() throws Exception {
@@ -92,6 +99,7 @@ class CompanyControllerTest {
             .andExpect(jsonPath("$.data[0].shortName").value("NEW1"));
     }
 
+    @DisplayName("Company when the tenant does not exist then the API returns bad request|tests:428,2121")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     void createCompany_badRequest_tenantNotFound() throws Exception {
@@ -108,6 +116,7 @@ class CompanyControllerTest {
             .andExpect(jsonPath("$.detail", containsString("Tenant not found")));
     }
 
+    @DisplayName("Company when the code already exists then the API returns conflict|tests:428,2121")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     void createCompany_conflict_duplicateCode() throws Exception {
@@ -124,6 +133,7 @@ class CompanyControllerTest {
             .andExpect(jsonPath("$.detail", containsString("Company code already exists")));
     }
 
+    @DisplayName("Company when the short name already exists then the API returns conflict|tests:428,2121")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     void createCompany_conflict_duplicateShortName() throws Exception {
@@ -140,6 +150,7 @@ class CompanyControllerTest {
             .andExpect(jsonPath("$.detail", containsString("Company short name already exists")));
     }
 
+    @DisplayName("Company when valid update data is provided then it is updated|tests:428,2121")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     void updateCompany_ok() throws Exception {
@@ -156,6 +167,7 @@ class CompanyControllerTest {
             .andExpect(jsonPath("$.data[0].shortName").value("UPDATED"));
     }
 
+    @DisplayName("Company when the id does not exist then the API returns not found|tests:428,2121")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     void updateCompany_notFound() throws Exception {
@@ -171,6 +183,7 @@ class CompanyControllerTest {
             .andExpect(status().isNotFound());
     }
 
+    @DisplayName("Company when the tenant does not exist then the API returns bad request|tests:428,2121")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     void updateCompany_badRequest_tenantNotFound() throws Exception {
@@ -187,6 +200,7 @@ class CompanyControllerTest {
             .andExpect(jsonPath("$.detail", containsString("Tenant not found")));
     }
 
+    @DisplayName("Company when the code already exists then the API returns conflict|tests:428,2121")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     void updateCompany_conflict_duplicateCode() throws Exception {
@@ -203,6 +217,7 @@ class CompanyControllerTest {
             .andExpect(jsonPath("$.detail", containsString("Company code already exists")));
     }
 
+    @DisplayName("Company when the id exists then the company is returned|tests:428,2121")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     void getCompanyById_ok() throws Exception {
@@ -212,6 +227,7 @@ class CompanyControllerTest {
             .andExpect(jsonPath("$.data[0].shortName").value("UPD1"));
     }
 
+    @DisplayName("Company when the id does not exist then the API returns not found|tests:428,2121")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     void getCompanyById_notFound() throws Exception {
@@ -219,6 +235,7 @@ class CompanyControllerTest {
             .andExpect(status().isNotFound());
     }
 
+    @DisplayName("Company when the id exists then it is deleted|tests:428,2121")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     void deleteCompany_ok() throws Exception {
@@ -229,6 +246,7 @@ class CompanyControllerTest {
             .andExpect(status().isNotFound());
     }
 
+    @DisplayName("Tenants when requested then all tenants are returned|tests:428,2121")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     void getAllTenants_ok() throws Exception {

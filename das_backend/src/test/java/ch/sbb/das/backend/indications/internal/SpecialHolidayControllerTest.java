@@ -15,6 +15,7 @@ import ch.sbb.das.backend.IntegrationTest;
 import ch.sbb.das.backend.WithMockRole;
 import ch.sbb.das.backend.common.security.UserRole;
 import java.time.LocalDate;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
@@ -33,6 +34,7 @@ class SpecialHolidayControllerTest {
         return LocalDate.now().plusDays(daysInFuture).toString();
     }
 
+    @DisplayName("Special holidays when requested then all future holidays with details are returned|tests:1656")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createSpecialHolidays.sql")
@@ -49,6 +51,7 @@ class SpecialHolidayControllerTest {
             .andExpect(jsonPath("$.data[0].lastModifiedBy").value("unit_test"));
     }
 
+    @DisplayName("Special holidays when the caller lacks the RU admin role then access is forbidden|tests:1656")
     @Test
     @WithMockRole(roles = UserRole.OBSERVER)
     void getAllUpcomingSpecialHolidays_forbidden_role() throws Exception {
@@ -56,6 +59,7 @@ class SpecialHolidayControllerTest {
             .andExpect(status().isForbidden());
     }
 
+    @DisplayName("Special holidays when none are configured then the list is empty|tests:1656")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void getAllUpcomingSpecialHolidays_empty() throws Exception {
@@ -64,6 +68,7 @@ class SpecialHolidayControllerTest {
             .andExpect(jsonPath("$.data", hasSize(0)));
     }
 
+    @DisplayName("Special holidays when some are scheduled for today then they are included in the results|tests:1656")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void getAllUpcomingSpecialHolidays_includesTodayBoundary() throws Exception {
@@ -92,6 +97,7 @@ class SpecialHolidayControllerTest {
             .andExpect(jsonPath("$.data[0].lastModifiedBy").value("test-user"));
     }
 
+    @DisplayName("Special holiday when the id exists then the holiday details are returned|tests:1656")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createSpecialHolidays.sql")
@@ -107,6 +113,7 @@ class SpecialHolidayControllerTest {
             .andExpect(jsonPath("$.data[0].lastModifiedBy").value("unit_test"));
     }
 
+    @DisplayName("Special holiday when the id does not exist then the API returns not found|tests:1656")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void getSpecialHolidayById_notFound() throws Exception {
@@ -114,6 +121,7 @@ class SpecialHolidayControllerTest {
             .andExpect(status().isNotFound());
     }
 
+    @DisplayName("Special holiday when it belongs to an unauthorized company then access is forbidden|tests:1656")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createSpecialHolidays.sql")
@@ -123,6 +131,7 @@ class SpecialHolidayControllerTest {
             .andExpect(jsonPath("$.detail").value("Not allowed!"));
     }
 
+    @DisplayName("Special holiday when the request is valid then it is created with details|tests:1656")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void create_SpecialHoliday_ok() throws Exception {
@@ -148,6 +157,7 @@ class SpecialHolidayControllerTest {
             .andExpect(jsonPath("$.data[0].lastModifiedBy").value("test-user"));
     }
 
+    @DisplayName("Special holiday when the company is not authorized then access is forbidden|tests:1656")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void create_SpecialHoliday_invalid_unknownCompany() throws Exception {
@@ -167,6 +177,7 @@ class SpecialHolidayControllerTest {
             .andExpect(jsonPath("$.detail").value("Not allowed!"));
     }
 
+    @DisplayName("Special holiday when no company is assigned then the request is rejected|tests:1656")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void create_SpecialHoliday_invalid_emptyCompanies() throws Exception {
@@ -186,6 +197,7 @@ class SpecialHolidayControllerTest {
             .andExpect(jsonPath("$.detail").value("Invalid request content. -> companies=must not be empty"));
     }
 
+    @DisplayName("Special holiday when the update request is valid then the details are updated|tests:1656")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createSpecialHolidays.sql")
@@ -212,6 +224,7 @@ class SpecialHolidayControllerTest {
             .andExpect(jsonPath("$.data[0].lastModifiedBy").value("test-user"));
     }
 
+    @DisplayName("Special holiday update when the special holiday does not exist then the API returns not found|tests:1656")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void update_SpecialHoliday_notFound() throws Exception {
@@ -230,6 +243,7 @@ class SpecialHolidayControllerTest {
             .andExpect(status().isNotFound());
     }
 
+    @DisplayName("Special holiday when it belongs to an unauthorized company then access is forbidden|tests:1656")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createSpecialHolidays.sql")
@@ -250,6 +264,7 @@ class SpecialHolidayControllerTest {
             .andExpect(jsonPath("$.detail").value("Not allowed!"));
     }
 
+    @DisplayName("Special holidays when delete multiple holidays then are removed|tests:1656")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createSpecialHolidays.sql")
@@ -268,6 +283,7 @@ class SpecialHolidayControllerTest {
             .andExpect(jsonPath("$.data", hasSize(0)));
     }
 
+    @DisplayName("Special holidays when delete selection includes an unauthorized company then access is forbidden|tests:1656")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createSpecialHolidays.sql")
@@ -283,4 +299,3 @@ class SpecialHolidayControllerTest {
             .andExpect(jsonPath("$.detail").value("Not allowed!"));
     }
 }
-

@@ -1,5 +1,5 @@
-import { Environment } from './environment.model';
 import { PassedInitialConfig } from 'angular-auth-oidc-client';
+import { Environment } from './environment.model';
 
 const backendUrl = 'http://localhost:8080/admin';
 const adminTenantId = '2cda5d11-f0ac-46b3-967d-af1b2e1bd01a';
@@ -8,9 +8,10 @@ const allowedTenantIds = [adminTenantId];
 const authConfig: PassedInitialConfig = {
   config: {
     authority: 'https://login.microsoftonline.com/common/v2.0',
-    redirectUrl: window.location.origin,
+    redirectUrl: globalThis.location.origin,
     clientId: 'ded405bf-22e0-478e-9963-2467ea1fd539',
-    scope: 'openid profile email offline_access api://8f16d52b-c6df-4a94-a132-da4956579a48/.default',
+    scope:
+      'openid profile email offline_access api://8f16d52b-c6df-4a94-a132-da4956579a48/.default',
     strictIssuerValidationOnWellKnownRetrievalOff: true,
     responseType: 'code',
     silentRenew: true,
@@ -20,8 +21,8 @@ const authConfig: PassedInitialConfig = {
     secureRoutes: [backendUrl],
     issValidationOff: true,
     autoUserInfo: false,
-  }
-}
+  },
+};
 
 export const environment: Environment = {
   production: false,
@@ -29,6 +30,5 @@ export const environment: Environment = {
   backendUrl,
   adminTenantId,
   allowedTenantIds,
-  authConfig
+  authConfig,
 };
-

@@ -4,8 +4,8 @@ import 'package:app/extension/datetime_extension.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_advancement_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/punctuality_model.dart';
+import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
-import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/provider/timed_route_provider.dart';
 import 'package:clock/clock.dart';
 import 'package:collection/collection.dart';
@@ -15,10 +15,10 @@ import 'package:sfera/component.dart';
 
 final _log = Logger('JourneyPositionViewModel');
 
-class JourneyPositionViewModel {
+class JourneyPositionViewModel extends JourneyAwareViewModel {
   JourneyPositionViewModel({
     required Stream<PunctualityModel> punctualityStream,
-    required JourneyViewModel journeyViewModel,
+    required super.journeyViewModel,
     required this._journeySettingsViewModel,
     required this._timedRouteProvider,
   }) {
@@ -36,6 +36,8 @@ class JourneyPositionViewModel {
   Timer? _servicePointReachedTimer;
 
   final _rxManualPosition = BehaviorSubject<JourneyPoint?>.seeded(null);
+  DateTime? _manualPositionTime;
+  Timer? _manuelPositionAdvancementTimer;
 
   Stream<JourneyPositionModel> get model => _rxModel.distinct();
 
@@ -44,6 +46,34 @@ class JourneyPositionViewModel {
   void setManualPosition(JourneyPoint? manualPosition) {
     _log.info('Setting manual position to: $manualPosition');
     _rxManualPosition.add(manualPosition);
+    _manualPositionTime = clock.now();
+    if (manualPosition != null && manualPosition is ServicePoint) {
+      _startManualPositionTimer(manualPosition);
+    }
+  }
+
+  void _startManualPositionTimer(ServicePoint manualPosition) {
+    _manuelPositionAdvancementTimer?.cancel();
+
+    final arrivalTime = manualPosition.arrivalDepartureTime?.plannedArrivalTime;
+    final manualPositionTime = _manualPositionTime;
+    final nextServicePoint = lastJourney?.journeyPoints.whereType<ServicePoint>().firstWhereOrNull(
+      (it) => it.order > manualPosition.order,
+    );
+    final nextArrivalTime = nextServicePoint?.arrivalDepartureTime?.plannedArrivalTime;
+    if (arrivalTime != null && manualPositionTime != null && nextArrivalTime != null) {
+      final timeSinceArrival = manualPositionTime.difference(arrivalTime);
+      final nextServicePointDuration = nextArrivalTime.add(timeSinceArrival).difference(clock.now());
+      _log.info(
+        'Time since arrival $timeSinceArrival. Scheduling manual advancement in $nextServicePointDuration to ${nextServicePoint?.name}',
+      );
+      _manuelPositionAdvancementTimer = Timer(nextServicePointDuration, () {
+        if (_journeySettingsViewModel.modelValue.journeyAdvancementModel.isInManualCycle) {
+          _log.info('Manual position timer expired, advancing to next service point');
+          setManualPosition(nextServicePoint);
+        }
+      });
+    }
   }
 
   JourneyAdvancementModel get _currentAdvancementMode => _journeySettingsViewModel.modelValue.journeyAdvancementModel;
@@ -257,7 +287,9 @@ class JourneyPositionViewModel {
     }
   }
 
+  @override
   void dispose() {
+    super.dispose();
     _journeySubscription?.cancel();
     _rxModel.close();
     _rxTimedServicePointReached.close();

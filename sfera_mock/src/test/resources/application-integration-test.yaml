@@ -1,5 +1,10 @@
 localregulations.path: sfera_mock/src/main/resources/localregulations.json
 
+spring:
+  cloud:
+    vault:
+      enabled: false
+
 db:
   url:
   user:

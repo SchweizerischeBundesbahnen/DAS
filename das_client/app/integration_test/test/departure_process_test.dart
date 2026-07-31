@@ -6,13 +6,14 @@ import 'package:app/provider/ru_feature_provider.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../app_test.dart';
+import '../integration/integration_test_app.dart';
 import '../mocks/mock_ru_feature_provider.dart';
 import '../util/test_utils.dart';
 
 void main() {
   group('departure process test', () {
-    testWidgets('test floating departure checklist button displayed correctly', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('departureProcess_whenFeatureEnabled_thenChecklistButtonDisplayedCorrectly', (tester) async {
+      await IntegrationTestApp.start(tester);
       final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;
       featureProvider.enableFeature(.departureProcess);
 
@@ -48,8 +49,10 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test no customer oriented departure button opens dialog', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('departureProcess_whenNoCustomerOrientedDeparture_thenChecklistButtonOpensDepartureDialog', (
+      tester,
+    ) async {
+      await IntegrationTestApp.start(tester);
       final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;
       featureProvider.enableFeature(.departureProcess);
 
@@ -67,8 +70,8 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test departure chronograph warning is shown', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('departureProcess_whenFeatureEnabled_thenShowsChronographWarning', (tester) async {
+      await IntegrationTestApp.start(tester);
       final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;
       featureProvider.enableFeature(.departureProcess);
 

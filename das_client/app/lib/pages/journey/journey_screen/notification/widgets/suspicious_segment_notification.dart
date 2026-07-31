@@ -34,8 +34,8 @@ class SuspiciousSegmentNotification extends StatelessWidget {
             onTap: viewModel.dismiss,
             radius: SBBSpacing.large,
             borderRadius: BorderRadius.circular(SBBSpacing.large),
-            child: Padding(
-              padding: const .all(SBBSpacing.xxSmall),
+            child: const Padding(
+              padding: .all(SBBSpacing.xxSmall),
               child: Icon(SBBIcons.cross_tiny_small),
             ),
           ),

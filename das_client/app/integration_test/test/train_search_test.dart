@@ -1,33 +1,34 @@
+import 'package:app/di/di.dart';
+import 'package:app/pages/journey/journey_page.dart';
+import 'package:app/pages/journey/selection/journey_selection_page.dart';
 import 'package:app/pages/journey/selection/widgets/journey_date_picker.dart';
+import 'package:app/provider/user_settings.dart';
 import 'package:app/util/format.dart';
 import 'package:app/widgets/railway_undertaking/widgets/select_railway_undertaking_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
+import 'package:train_identification/component.dart';
 
 import '../app_test.dart';
+import '../integration/integration_test_app.dart';
+import '../mocks/mock_train_identification_repository.dart';
 import '../util/test_utils.dart';
 
 void main() {
   group('train search screen tests', () {
-    testWidgets('test default values', (tester) async {
-      await prepareAndStartApp(tester);
-
-      // Verify we have ru SBB.
-      expect(find.text(l10n.c_ru_sbb_p), findsOneWidget);
+    testWidgets('trainSearch_whenPageLoaded_thenShowsDefaultValues', (tester) async {
+      await IntegrationTestApp.start(tester);
 
       // Verify that today is preselected
       expect(find.text(Format.date(DateTime.now())), findsOneWidget);
     });
 
-    testWidgets('test selecting ru values', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('trainSearch_whenRuSelectionOpened_thenShowsOptions', (tester) async {
+      await IntegrationTestApp.start(tester);
 
-      // Verify we have ru SBB.
-      expect(find.text(l10n.c_ru_sbb_p), findsOneWidget);
-
-      await tapElement(tester, find.text(l10n.c_ru_sbb_p), warnIfMissed: false);
+      await tapElement(tester, find.text(l10n.p_train_selection_ru_description), warnIfMissed: false);
 
       // Verify modal is opened
       final modal = find.byKey(SelectRailwayUndertakingModal.modalKey);
@@ -43,13 +44,10 @@ void main() {
       expect(sobI, findsOneWidget);
     });
 
-    testWidgets('test filter ru values', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('trainSearch_whenRuFilterEntered_thenFiltersResults', (tester) async {
+      await IntegrationTestApp.start(tester);
 
-      // Verify we have ru SBB.
-      expect(find.text(l10n.c_ru_sbb_p), findsOneWidget);
-
-      await tapElement(tester, find.text(l10n.c_ru_sbb_p), warnIfMissed: false);
+      await tapElement(tester, find.text(l10n.p_train_selection_ru_description), warnIfMissed: false);
 
       // Verify modal is opened
       final modal = find.byKey(SelectRailwayUndertakingModal.modalKey);
@@ -67,11 +65,8 @@ void main() {
       expect(find.text(l10n.c_ru_sob), findsOneWidget);
     });
 
-    testWidgets('test load button disabled when validation fails', (tester) async {
-      await prepareAndStartApp(tester);
-
-      // Verify we have ru SBB.
-      expect(find.text(l10n.c_ru_sbb_p), findsOneWidget);
+    testWidgets('trainSearch_whenNoTrainNumberEntered_thenDisablesButton', (tester) async {
+      await IntegrationTestApp.start(tester);
 
       // Verify that today is preselected
       expect(find.text(Format.date(DateTime.now())), findsOneWidget);
@@ -87,8 +82,8 @@ void main() {
       expect(tester.widget<SBBPrimaryButton>(primaryButton).onPressed, isNull);
     });
 
-    testWidgets('test can select yesterday', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('trainSearch_whenYesterdaySelected_thenShowsWarning', (tester) async {
+      await IntegrationTestApp.start(tester);
 
       final today = DateTime.now();
       final yesterday = today.add(Duration(days: -1));
@@ -129,8 +124,8 @@ void main() {
       expect(warningMessage, findsOneWidget);
     });
 
-    testWidgets('test can not select day before yesterday', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('trainSearch_whenDayBeforeYesterday_thenCannotSelect', (tester) async {
+      await IntegrationTestApp.start(tester);
 
       final today = DateTime.now();
       final dayBeforeYesterday = today.add(Duration(days: -2));
@@ -160,11 +155,8 @@ void main() {
       expect(dayBeforeYesterdayDateTextFinder, findsNothing);
     });
 
-    testWidgets('test error if JP unavailable', (tester) async {
-      await prepareAndStartApp(tester);
-
-      // Verify we have ru SBB.
-      expect(find.text(l10n.c_ru_sbb_p), findsOneWidget);
+    testWidgets('trainSearch_whenJpUnavailable_thenShowsError', (tester) async {
+      await IntegrationTestApp.start(tester);
 
       // Verify that today is preselected
       expect(find.text(Format.date(DateTime.now())), findsOneWidget);
@@ -184,8 +176,8 @@ void main() {
       expect(find.text(l10n.c_error_sfera_jp_unavailable), findsOneWidget);
     });
 
-    testWidgets('test error is displayed if SFERA returns error', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('trainSearch_whenErrorFromSfera_thenDisplaysErrorCode', (tester) async {
+      await IntegrationTestApp.start(tester);
 
       final trainNumberText = findTextInputByLabel(l10n.p_train_selection_trainnumber_description);
       expect(trainNumberText, findsOneWidget);
@@ -200,6 +192,134 @@ void main() {
 
       // specific error code expected from SFERA response without additional info
       expect(find.text('${l10n.c_error_code} 50: ${l10n.c_error_sfera_no_additional_info}'), findsOneWidget);
+    });
+
+    testWidgets('trainSearch_whenMultipleCompanyMatches_thenShowsSelection', (tester) async {
+      await IntegrationTestApp.start(tester);
+
+      final trainIdentificationRepository =
+          DI.get<TrainIdentificationRepository>() as MockTrainIdentificationRepository;
+
+      trainIdentificationRepository.companyMatchData = {
+        CompanyMatch(
+          ru: RailwayUndertaking.sbbP,
+          startDate: DateTime.now(),
+        ),
+        CompanyMatch(
+          ru: RailwayUndertaking.blsI,
+          startDate: DateTime.now(),
+        ),
+        CompanyMatch(
+          ru: RailwayUndertaking.thurbo,
+          startDate: DateTime.now().add(Duration(days: 1)),
+        ),
+      };
+
+      // Verify that today is preselected
+      expect(find.text(Format.date(DateTime.now())), findsOneWidget);
+
+      final trainNumberText = findTextInputByLabel(l10n.p_train_selection_trainnumber_description);
+      expect(trainNumberText, findsOneWidget);
+
+      await enterText(tester, trainNumberText, 'T10');
+
+      // check that the primary button is disabled
+      var primaryButton = find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first;
+      expect(tester.widget<SBBPrimaryButton>(primaryButton).onPressed, isNotNull);
+
+      await tapElement(tester, primaryButton);
+
+      expect(find.text('1285, SBBP'), findsOneWidget);
+      expect(find.text('2263, BLSI'), findsOneWidget);
+      expect(find.text('3917, THURBO'), findsNothing);
+
+      primaryButton = find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first;
+      expect(tester.widget<SBBPrimaryButton>(primaryButton).onPressed, isNull);
+
+      await tapElement(tester, find.text('1285, SBBP'));
+
+      primaryButton = find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first;
+      expect(tester.widget<SBBPrimaryButton>(primaryButton).onPressed, isNotNull);
+
+      await tapElement(tester, primaryButton);
+
+      expect(find.byType(JourneySelectionPage), findsNothing);
+      expect(find.byType(JourneyPage), findsAny);
+
+      await disconnect(tester);
+    });
+
+    testWidgets('trainSearch_whenLastRuRemembered_thenAutoSelects', (tester) async {
+      await IntegrationTestApp.start(tester);
+
+      final trainIdentificationRepository =
+          DI.get<TrainIdentificationRepository>() as MockTrainIdentificationRepository;
+
+      final userSettings = DI.get<UserSettings>();
+      userSettings.set(UserSettingKeys.lastUsedRailwayUndertaking, RailwayUndertaking.sbbP.companyCode);
+
+      trainIdentificationRepository.companyMatchData = {
+        CompanyMatch(
+          ru: RailwayUndertaking.sbbP,
+          startDate: DateTime.now(),
+        ),
+        CompanyMatch(
+          ru: RailwayUndertaking.blsI,
+          startDate: DateTime.now(),
+        ),
+        CompanyMatch(
+          ru: RailwayUndertaking.thurbo,
+          startDate: DateTime.now().add(Duration(days: 1)),
+        ),
+      };
+
+      // Verify that today is preselected
+      expect(find.text(Format.date(DateTime.now())), findsOneWidget);
+
+      final trainNumberText = findTextInputByLabel(l10n.p_train_selection_trainnumber_description);
+      expect(trainNumberText, findsOneWidget);
+
+      await enterText(tester, trainNumberText, 'T10');
+
+      // check that the primary button is disabled
+      final primaryButton = find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first;
+      expect(tester.widget<SBBPrimaryButton>(primaryButton).onPressed, isNotNull);
+
+      await tapElement(tester, primaryButton);
+
+      expect(find.byType(JourneySelectionPage), findsNothing);
+      expect(find.byType(JourneyPage), findsAny);
+
+      await disconnect(tester);
+    });
+
+    testWidgets('trainSearch_whenNoCompanyMatch_thenShowsNoResultMessage', (tester) async {
+      await IntegrationTestApp.start(tester);
+
+      final trainIdentificationRepository =
+          DI.get<TrainIdentificationRepository>() as MockTrainIdentificationRepository;
+
+      trainIdentificationRepository.companyMatchData = {};
+
+      // Verify that today is preselected
+      expect(find.text(Format.date(DateTime.now())), findsOneWidget);
+
+      final trainNumberText = findTextInputByLabel(l10n.p_train_selection_trainnumber_description);
+      expect(trainNumberText, findsOneWidget);
+
+      await enterText(tester, trainNumberText, 'T10');
+
+      var primaryButton = find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first;
+      expect(tester.widget<SBBPrimaryButton>(primaryButton).onPressed, isNotNull);
+
+      await tapElement(tester, primaryButton);
+
+      expect(find.text(l10n.p_train_selection_no_match_title), findsOneWidget);
+      expect(find.byType(SBBRadioGroup), findsNothing);
+
+      // check that the primary button is disabled
+      primaryButton = find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first;
+      expect(tester.widget<SBBPrimaryButton>(primaryButton).onPressed, isNull);
     });
   });
 }

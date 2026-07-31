@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { DasAdmin } from './das-admin';
 import { provideRouter } from '@angular/router';
+import { DasAdmin } from './das-admin';
 
 describe('DasAdmin', () => {
   let component: DasAdmin;

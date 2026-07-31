@@ -19,19 +19,19 @@ jobs:
     runs-on: macos-26
     steps:
 
-    - uses: maxim-lobanov/setup-xcode@v1
+    - uses: maxim-lobanov/setup-xcode@v1.7.0
       with:
         xcode-version: ~26.6
 
-    - uses: actions/checkout@v7
+    - uses: actions/checkout@v7.0.1
 
-    - uses: subosito/flutter-action@v2
+    - uses: subosito/flutter-action@v2.23.0
       with:
         flutter-version: '3.44.x'
         cache: true
 
     - name: Setup melos
-      uses: bluefireteam/melos-action@v3
+      uses: bluefireteam/melos-action@v3.8.0
       with:
         melos-version: '^7.4.0'
         run-bootstrap: 'false'
@@ -42,14 +42,81 @@ jobs:
     - name: Generate sources
       run: melos generate
 
+    - name: Vault Secrets 🤫
+      id: vault-secrets
+      uses: hashicorp/vault-action@v4.0.0
+      with:
+        url: https://vault-nonprod.sbb.ch:443
+        method: approle
+        roleId: ${{ secrets.VAULT_ROLE_ID }}
+        secretId: ${{ secrets.VAULT_SECRET_ID }}
+        secrets: |
+          kv/data/DSO-BPS/driver-advisory-system/ci/mobile SBB_APPSTORE_BASE64 ;
+          kv/data/DSO-BPS/driver-advisory-system/ci/mobile SBB_APPSTORE_P12_PASSWORD ;
+          kv/data/DSO-BPS/driver-advisory-system/ci/mobile KEYCHAIN_PASSWORD ;
+          kv/data/DSO-BPS/driver-advisory-system/ci/mobile APPSTORE_CONNECT_PRIVATE_KEY_BASE64 ;
+          kv/data/DSO-BPS/driver-advisory-system/ci/mobile APPSTORE_CONNECT_ISSUER_ID ;
+          kv/data/DSO-BPS/driver-advisory-system/ci/mobile APPSTORE_CONNECT_KEY_ID ;
+          kv/data/DSO-BPS/driver-advisory-system/ci/mobile APPSTORE_CONNECT_PRIVATE_KEY ;
+
+    - name: Install Apple signing certificate and appstore connect key
+      env:
+        SBB_APPSTORE_BASE64: ${{ steps.vault-secrets.outputs.SBB_APPSTORE_BASE64 }}
+        SBB_APPSTORE_P12_PASSWORD: ${{ steps.vault-secrets.outputs.SBB_APPSTORE_P12_PASSWORD }}
+        KEYCHAIN_PASSWORD: ${{ steps.vault-secrets.outputs.KEYCHAIN_PASSWORD }}
+        APPSTORE_CONNECT_PRIVATE_KEY_BASE64: ${{ steps.vault-secrets.outputs.APPSTORE_CONNECT_PRIVATE_KEY_BASE64 }}
+      run: |
+        # create variables
+        SBB_CERTIFICATE_PATH=$RUNNER_TEMP/sbb_appstore.p12
+        KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+        APPSTORE_CONNECT_PRIVATE_KEY_PATH=~/AuthKey.p8
+
+        # import certificate and private key from secrets
+        echo -n "$SBB_APPSTORE_BASE64" | base64 --decode -o $SBB_CERTIFICATE_PATH
+        echo -n "$APPSTORE_CONNECT_PRIVATE_KEY_BASE64" | base64 --decode -o $APPSTORE_CONNECT_PRIVATE_KEY_PATH
+
+        # create temporary keychain
+        security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+        security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+        security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+
+        # import certificate to keychain
+        security import $SBB_CERTIFICATE_PATH -P "$SBB_APPSTORE_P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+        security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+        security list-keychain -d user -s $KEYCHAIN_PATH
+
+    - name: Download Provisioning Profiles
+      uses: apple-actions/download-provisioning-profiles@v6.1.0
+      with:
+        bundle-id: 'ch.sbb.das.dev'
+        issuer-id: ${{ steps.vault-secrets.outputs.APPSTORE_CONNECT_ISSUER_ID }}
+        api-key-id: ${{ steps.vault-secrets.outputs.APPSTORE_CONNECT_KEY_ID }}
+        api-private-key: ${{ steps.vault-secrets.outputs.APPSTORE_CONNECT_PRIVATE_KEY }}
+
     - name: Build iOS App DEV
-      run: flutter build ipa --flavor dev -t lib/main_dev.dart --release --no-codesign
+      run: flutter build ipa --flavor dev -t lib/main_dev.dart --release
       working-directory: das_client/app
+
+    - name: Download Provisioning Profiles
+      uses: apple-actions/download-provisioning-profiles@v6.1.0
+      with:
+        bundle-id: 'ch.sbb.das.inte'
+        issuer-id: ${{ steps.vault-secrets.outputs.APPSTORE_CONNECT_ISSUER_ID }}
+        api-key-id: ${{ steps.vault-secrets.outputs.APPSTORE_CONNECT_KEY_ID }}
+        api-private-key: ${{ steps.vault-secrets.outputs.APPSTORE_CONNECT_PRIVATE_KEY }}
 
     - name: Build iOS App INTE
-      run: flutter build ipa --flavor inte -t lib/main_inte.dart --release --no-codesign
+      run: flutter build ipa --flavor inte -t lib/main_inte.dart --release
       working-directory: das_client/app
 
+    - name: Download Provisioning Profiles
+      uses: apple-actions/download-provisioning-profiles@v6.1.0
+      with:
+        bundle-id: 'ch.sbb.das'
+        issuer-id: ${{ steps.vault-secrets.outputs.APPSTORE_CONNECT_ISSUER_ID }}
+        api-key-id: ${{ steps.vault-secrets.outputs.APPSTORE_CONNECT_KEY_ID }}
+        api-private-key: ${{ steps.vault-secrets.outputs.APPSTORE_CONNECT_PRIVATE_KEY }}
+
     - name: Build iOS App PROD
-      run: flutter build ipa --flavor prod -t lib/main_prod.dart --release --no-codesign
+      run: flutter build ipa --flavor prod -t lib/main_prod.dart --release
       working-directory: das_client/app

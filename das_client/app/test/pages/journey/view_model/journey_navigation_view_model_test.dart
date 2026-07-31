@@ -4,6 +4,7 @@ import 'package:app/di/scope_handler.dart';
 import 'package:app/di/scopes/journey_scope.dart';
 import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
+import 'package:app/provider/user_settings.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
@@ -14,7 +15,7 @@ import 'package:sfera/component.dart';
 import '../../../test_util.dart';
 import 'journey_navigation_view_model_test.mocks.dart';
 
-@GenerateNiceMocks([MockSpec<SferaRepository>(), MockSpec<ScopeHandler>()])
+@GenerateNiceMocks([MockSpec<SferaRepository>(), MockSpec<ScopeHandler>(), MockSpec<UserSettings>()])
 void main() {
   group('JourneyNavigationViewModel', () {
     late JourneyNavigationViewModel testee;
@@ -23,6 +24,7 @@ void main() {
     late MockSferaRepository mockSferaRepo;
     late BehaviorSubject<SferaRemoteRepositoryState> mockStream;
     late MockScopeHandler mockScopeHandler;
+    late MockUserSettings mockUserSettings;
 
     final now = DateTime(1970, 1, 1);
     final tomorrow = now.add(Duration(days: 1));
@@ -42,8 +44,9 @@ void main() {
       GetIt.I.registerSingleton<ScopeHandler>(mockScopeHandler);
       mockSferaRepo = MockSferaRepository();
       mockStream = BehaviorSubject<SferaRemoteRepositoryState>.seeded(.disconnected);
+      mockUserSettings = MockUserSettings();
       when(mockSferaRepo.stateStream).thenAnswer((_) => mockStream.stream);
-      testee = JourneyNavigationViewModel(sferaRepo: mockSferaRepo);
+      testee = JourneyNavigationViewModel(sferaRepo: mockSferaRepo, userSettings: mockUserSettings);
       emitRegister = <dynamic>[];
       sub = testee.model.listen(emitRegister.add);
     });
@@ -336,6 +339,16 @@ void main() {
       // EXPECT
       verify(mockScopeHandler.push<JourneyScope>()).called(1);
       verify(mockScopeHandler.pop<JourneyScope>()).called(1);
+    });
+
+    test('replaceWith_whenTrainChanges_updatesLastUsedRailwayUndertaking', () async {
+      await testee.replaceWith([trainId1]);
+      await processStreams();
+
+      // EXPECT
+      verify(
+        mockUserSettings.set(UserSettingKeys.lastUsedRailwayUndertaking, trainId1.trainIdentification.ru.companyCode),
+      ).called(1);
     });
   });
 }

@@ -3,6 +3,7 @@ package ch.sbb.das.backend.cargo.infrastructure;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.das.backend.cargo.domain.model.FormationRun;
+import ch.sbb.das.backend.companies.CompanyCode;
 import ch.sbb.das.backend.locations.TafTapLocationReference;
 import ch.sbb.zis.trainformation.api.model.BrakeCalculationResult;
 import ch.sbb.zis.trainformation.api.model.ConsolidatedBrakingInformation;
@@ -44,7 +45,7 @@ class FormationRunFactoryTest {
 
         FormationRun expectedFormationRun = FormationRun.builder()
             .inspected(true)
-            .company("2357")
+            .company(new CompanyCode("2357"))
             .tafTapLocationReferenceStart(new TafTapLocationReference("CH", 11))
             .tafTapLocationReferenceEnd(new TafTapLocationReference("DE", 7826))
             .trainCategoryCode("TC")
@@ -79,5 +80,31 @@ class FormationRunFactoryTest {
         assertThat(result).hasSize(1);
         FormationRun formationRunResult = result.getFirst();
         assertThat(formationRunResult).isEqualTo(expectedFormationRun);
+    }
+
+    @Test
+    void create_skips_runs_with_invalid_company_code() {
+        FormationRunInspection inspection = new FormationRunInspection();
+        inspection.setInspected(true);
+        inspection.setInspectionTime(java.time.OffsetDateTime.parse("2025-11-18T17:10:08.028Z"));
+
+        ch.sbb.zis.trainformation.api.model.FormationRun validRun = new ch.sbb.zis.trainformation.api.model.FormationRun();
+        validRun.setFormationRunInspection(inspection);
+        validRun.setStartLocationUic(new LocationUic(null, 85, 56992));
+        validRun.setEndLocationUic(new LocationUic(null, 85, 56831));
+        validRun.setSmsEvu("3412");
+        validRun.setVehicleGroups(Collections.emptyList());
+
+        ch.sbb.zis.trainformation.api.model.FormationRun invalidRun = new ch.sbb.zis.trainformation.api.model.FormationRun();
+        invalidRun.setFormationRunInspection(inspection);
+        invalidRun.setStartLocationUic(new LocationUic(null, 85, 56992));
+        invalidRun.setEndLocationUic(new LocationUic(null, 85, 56831));
+        invalidRun.setSmsEvu("123");
+        invalidRun.setVehicleGroups(Collections.emptyList());
+
+        List<FormationRun> result = FormationRunFactory.create(List.of(invalidRun, validRun));
+
+        assertThat(result).hasSize(1);
+        assertThat(result.getFirst().getCompany()).isEqualTo(new CompanyCode("3412"));
     }
 }

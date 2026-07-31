@@ -11,6 +11,6 @@ enum Role {
   const Role(this.name);
 
   static Role? fromName(String name) {
-    return Role.values.where((element) => element.name == name).firstOrNull;
+    return Role.values.where((element) => element.name == name.trim().toLowerCase()).firstOrNull;
   }
 }

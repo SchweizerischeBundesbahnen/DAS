@@ -1,3 +1,4 @@
+import 'package:core_data/component.dart';
 import 'package:logging/logging.dart';
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
@@ -82,6 +83,24 @@ class SferaLocalRepoImpl implements SferaLocalRepo {
       }
     }
     return segmentProfiles;
+  }
+
+  @override
+  Future<Set<CompanyMatch>> findCompanyMatchesByTrainNumber(
+    String operationalTrainNumber, {
+    required List<DateTime> startDates,
+  }) async {
+    final entities = await _databaseService.findJourneyProfilesByTrainNumber(operationalTrainNumber);
+    final normalizedDates = startDates.map((d) => d.floorToDay()).toSet();
+    return entities
+        .where((e) => normalizedDates.contains(e.startDate))
+        .map(
+          (e) => CompanyMatch(
+            ru: RailwayUndertaking.fromCompanyCode(e.company),
+            startDate: e.startDate,
+          ),
+        )
+        .toSet();
   }
 
   @override

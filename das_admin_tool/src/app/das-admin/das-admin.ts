@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { SbbTitle } from '@sbb-esta/lyne-angular/title';
-import { SbbTabNavBar } from '@sbb-esta/lyne-angular/tabs';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { SbbTabNavBar } from '@sbb-esta/lyne-angular/tabs';
+import { SbbTitle } from '@sbb-esta/lyne-angular/title';
 
 @Component({
   selector: 'app-das-admin',

@@ -5,12 +5,12 @@ import 'package:app/widgets/table/das_table.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../app_test.dart';
+import '../integration/integration_test_app.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('test additional speed restriction row is displayed correctly', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('additionalSpeedRestriction_whenRowDisplayed_thenShowsCorrectly', (tester) async {
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T2');
 
     final asrRow = findDASTableRowByText('km 64.200 - km 47.200');
@@ -35,8 +35,8 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test other non-ASR rows between are colored correctly', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('additionalSpeedRestriction_whenNonAsrRowsBetween_thenColorsCorrectly', (tester) async {
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T2');
 
     final tableFinder = find.byType(DASTable);
@@ -63,8 +63,8 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test complex additional speed restriction row is displayed correctly', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('additionalSpeedRestriction_whenComplexAsr_thenDisplaysCorrectly', (tester) async {
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T18');
 
     final scrollableFinder = find.byType(AnimatedList);
@@ -98,10 +98,10 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test additional speed restriction row are displayed correctly on ETCS level 2 section', (
+  testWidgets('additionalSpeedRestriction_whenOnEtcsLevel2Section_thenDisplaysCorrectly', (
     tester,
   ) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T11');
 
     final scrollableFinder = find.byType(AnimatedList);
@@ -140,8 +140,8 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test sequential additional speed restriction row is displayed correctly', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('additionalSpeedRestriction_whenSequentialAsr_thenDisplaysCorrectly', (tester) async {
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T43');
 
     final scrollableFinder = find.byType(AnimatedList);

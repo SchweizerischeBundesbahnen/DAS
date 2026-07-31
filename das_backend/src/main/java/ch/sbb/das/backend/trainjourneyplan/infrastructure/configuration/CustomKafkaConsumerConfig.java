@@ -22,6 +22,9 @@ public class CustomKafkaConsumerConfig {
 
     public static final String AUTO_OFFSET_RESET_EARLIEST = "earliest";
     public static final String AUTO_OFFSET_RESET_LATEST = "latest";
+    private static final int MAX_PARTITION_FETCH_BYTES = 524_288;  // 512KB
+    private static final int FETCH_MAX_BYTES = 4_194_304;          // 4MB total per fetch
+    private static final int MAX_POLL_RECORDS = 100;
     private final KafkaProperties kafkaProperties;
 
     public CustomKafkaConsumerConfig(KafkaProperties kafkaProperties) {
@@ -45,6 +48,9 @@ public class CustomKafkaConsumerConfig {
         properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, org.apache.kafka.common.serialization.BytesDeserializer.class);
         properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, org.apache.kafka.common.serialization.BytesDeserializer.class);
         properties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, AUTO_OFFSET_RESET_EARLIEST);
+        properties.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, MAX_POLL_RECORDS);
+        properties.put(ConsumerConfig.MAX_PARTITION_FETCH_BYTES_CONFIG, MAX_PARTITION_FETCH_BYTES);
+        properties.put(ConsumerConfig.FETCH_MAX_BYTES_CONFIG, FETCH_MAX_BYTES);
         properties.put(SaslConfigs.SASL_JAAS_CONFIG, jaasConfig(user, password));
 
         ConsumerFactory<Object, Object> consumerFactory = new DefaultKafkaConsumerFactory<>(properties);
@@ -68,6 +74,8 @@ public class CustomKafkaConsumerConfig {
         properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, io.confluent.kafka.serializers.json.KafkaJsonSchemaDeserializer.class);
         properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, io.confluent.kafka.serializers.json.KafkaJsonSchemaDeserializer.class);
         properties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, AUTO_OFFSET_RESET_LATEST);
+        properties.put(ConsumerConfig.MAX_PARTITION_FETCH_BYTES_CONFIG, MAX_PARTITION_FETCH_BYTES);
+        properties.put(ConsumerConfig.FETCH_MAX_BYTES_CONFIG, FETCH_MAX_BYTES);
         properties.put(SaslConfigs.SASL_JAAS_CONFIG, jaasConfig(user, password));
 
         ConsumerFactory<Object, Object> consumerFactory = new DefaultKafkaConsumerFactory<>(properties);

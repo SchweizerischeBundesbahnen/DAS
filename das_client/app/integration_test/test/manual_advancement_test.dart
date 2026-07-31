@@ -5,13 +5,13 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
-import '../app_test.dart';
+import '../integration/integration_test_app.dart';
 import '../util/test_utils.dart';
 
 void main() {
   group('manual advancement tests', () {
-    testWidgets('whenServicePointDragged_thenJourneyPositionMoved', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('manualAdvancement_whenServicePointDragged_thenJourneyPositionMoved', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999M');
 
       // Check chevron at start A
@@ -67,8 +67,10 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('whenManualPositionSet_thenManualModeActivatedUntilJourneyPositionSignaled', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('manualAdvancement_whenManualPositionSet_thenManualModeActivatedUntilJourneyPositionSignaled', (
+      tester,
+    ) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T30');
 
       final coppet = 'Coppet';
@@ -94,6 +96,61 @@ void main() {
       await waitUntilExists(
         tester,
         find.descendant(of: find.byKey(JourneyAdvancementButton.pauseKey), matching: find.byIcon(SBBIcons.pause_small)),
+      );
+
+      await disconnect(tester);
+    });
+
+    testWidgets('manualAdvancement_whenManualPositionSet_thenStartTimedAdvancement', (tester) async {
+      await IntegrationTestApp.start(tester);
+      await loadJourney(tester, trainNumber: 'T46M');
+
+      await stopAutomaticAdvancement(tester);
+
+      // Wait for 10 seconds so timed advancement is finished
+      await tester.pumpAndSettle(Duration(seconds: 10));
+
+      final varzo = 'Varzo';
+      await tester.drag(findDASTableRowByText(varzo), const Offset(600, 0));
+
+      // Preglia is skipped, because Domodossola (bif) time is before Preglia
+      final locations = ['Varzo', 'Domodossola (bif)', 'Domodossola (I)'];
+
+      for (final location in locations) {
+        await waitUntilExists(
+          tester,
+          find.descendant(of: findDASTableRowByText(location), matching: find.byKey(RouteChevron.chevronKey)),
+        );
+      }
+
+      await disconnect(tester);
+    });
+
+    testWidgets('manualAdvancement_whenManualPositionSet_thenRestartsPositionTimers', (tester) async {
+      await IntegrationTestApp.start(tester);
+      await loadJourney(tester, trainNumber: 'T46M');
+
+      await stopAutomaticAdvancement(tester);
+
+      final domodossola = 'Domodossola (bif)';
+      await tester.drag(findDASTableRowByText(domodossola), const Offset(600, 0));
+
+      await tester.pumpAndSettle(Duration(seconds: 6));
+
+      await tester.drag(findDASTableRowByText(domodossola), const Offset(600, 0));
+      await tester.pumpAndSettle();
+
+      await tester.pumpAndSettle(Duration(seconds: 6));
+
+      // Chevron should still be at Domodossola (bif) because the timer was restarted
+      expect(
+        find.descendant(of: findDASTableRowByText(domodossola), matching: find.byKey(RouteChevron.chevronKey)),
+        findsOne,
+      );
+
+      await waitUntilExists(
+        tester,
+        find.descendant(of: findDASTableRowByText('Domodossola (I)'), matching: find.byKey(RouteChevron.chevronKey)),
       );
 
       await disconnect(tester);

@@ -1,19 +1,12 @@
 import 'dart:io';
 
-import 'package:app/di/scope_handler.dart';
-import 'package:app/di/scopes/das_base_scope.dart';
-import 'package:app/di/scopes/sfera_mock_scope.dart';
-import 'package:app/flavor.dart';
 import 'package:app/i18n/i18n.dart';
-import 'package:app/main.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:logger/component.dart';
 import 'package:logging/logging.dart';
 
-import 'integration_test_di.dart';
 import 'test/additional_speed_restriction_modal_test.dart' as additional_speed_restriction_modal_tests;
 import 'test/app_expiration_test.dart' as app_expiration_tests;
 import 'test/app_link_test.dart' as app_link_tests;
@@ -37,6 +30,7 @@ import 'test/journey_table_test.dart' as journey_table_tests;
 import 'test/journey_table_time_test.dart' as journey_table_time_tests;
 import 'test/journey_table_track_equipment_test.dart' as journey_table_track_equipment_tests;
 import 'test/journey_table_updates_test.dart' as journey_table_updates_tests;
+import 'test/login_test.dart' as login_tests;
 import 'test/manual_advancement_test.dart' as manual_advancement_tests;
 import 'test/navigation_test.dart' as navigation_tests;
 import 'test/preload_test.dart' as preload_tests;
@@ -50,7 +44,6 @@ import 'test/suspicious_segment_test.dart' as suspicious_segment_tests;
 import 'test/tour_system_link_test.dart' as tour_system_link_test;
 import 'test/train_search_test.dart' as train_search_tests;
 import 'test/warnapp_test.dart' as warnapp_tests;
-import 'util/test_utils.dart';
 
 late AppLocalizations l10n;
 
@@ -90,6 +83,7 @@ void main() {
   journey_table_tests.main();
   journey_table_time_tests.main();
   journey_table_track_equipment_tests.main();
+  login_tests.main();
   manual_advancement_tests.main();
   navigation_tests.main();
   reduced_journey_table_tests.main();
@@ -104,24 +98,6 @@ void main() {
   preload_tests.main();
   tour_system_link_test.main();
   external_links_tests.main();
-}
-
-Future<void> prepareAndStartApp(WidgetTester tester, {VoidCallback? onBeforeRun, bool e2e = false}) async {
-  // iOS workaround for enterText not working on some devices, if its the first element
-  // (https://github.com/leancodepl/patrol/issues/1868#issuecomment-1814241939)
-  tester.testTextInput.register();
-
-  await IntegrationTestDI.init(Flavor.dev(), e2e: e2e); // registers flavor, mockScopes and scope handler
-
-  final scopeHandler = IntegrationTestDI.get<ScopeHandler>();
-  await scopeHandler.push<DASBaseScope>();
-  await scopeHandler.push<SferaMockScope>();
-
-  l10n = await deviceLocalizations();
-  onBeforeRun?.call();
-
-  runDasApp();
-  await tester.pumpAndSettle(const Duration(milliseconds: 500));
 }
 
 /// delay can improve stability on Android emulator

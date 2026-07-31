@@ -24,6 +24,7 @@ import java.time.ZoneOffset;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -60,6 +61,7 @@ class TrainIdentificationIntegrationTest {
     @Value("${trainjourneyplan.kafka.timetable-train-topic}")
     private String timetableTrainTopic;
 
+    @DisplayName("Timetable period when received via message broker then it is persisted with the correct start and end dates|tests:535,2136")
     @Test
     void publishNetsPeriod__timetablePeriodSaved() {
         TimetablePeriodKey key = jsonMapper.readValue(new File("src/test/resources/trainjourneyplan/period_key.json"), TimetablePeriodKey.class);
@@ -83,6 +85,7 @@ class TrainIdentificationIntegrationTest {
                 ));
     }
 
+    @DisplayName("Train data when received via message broker then it is persisted with correct details|tests:535,2136")
     @Test
     void saveAndDeleteTrainData() {
 

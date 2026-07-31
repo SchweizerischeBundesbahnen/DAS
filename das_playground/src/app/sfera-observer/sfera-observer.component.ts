@@ -1,29 +1,29 @@
-import {Component, inject, OnDestroy, OnInit} from '@angular/core';
-import {FormControl, ReactiveFormsModule} from "@angular/forms";
-import {SbbFormFieldModule} from "@sbb-esta/angular/form-field";
-import {SbbInputModule} from "@sbb-esta/angular/input";
-import {MqService} from "../mq.service";
-import {SbbButtonModule} from "@sbb-esta/angular/button";
-import {firstValueFrom, map, Subscription} from "rxjs";
-import {CommonModule} from "@angular/common";
-import {MqttConnectionState} from "ngx-mqtt";
-import {OidcSecurityService} from "angular-auth-oidc-client";
-import {SbbCheckboxModule} from "@sbb-esta/angular/checkbox";
-import {environment} from "../../environments/environment";
-import {MessageTableComponent, TableData} from "./message-table/message-table.component";
-import {SbbTableDataSource} from "@sbb-esta/angular/table";
+import { ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { SbbFormFieldModule } from '@sbb-esta/angular/form-field';
+import { SbbInputModule } from '@sbb-esta/angular/input';
+import { MqService } from '../mq.service';
+import { SbbButtonModule } from '@sbb-esta/angular/button';
+import { firstValueFrom, map, Subscription } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { MqttConnectionState } from 'ngx-mqtt';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
+import { SbbCheckboxModule } from '@sbb-esta/angular/checkbox';
+import { environment } from '../../environments/environment';
+import { MessageTableComponent, TableData } from './message-table/message-table.component';
+import { SbbTableDataSource } from '@sbb-esta/angular/table';
 import {
   G2BEventNSPOptions,
   READONLY_MODE,
   SferaXmlCreation,
   SpRequestOptions,
-  TcRequestOptions
-} from "./sfera-xml-creation";
-import {SbbAccordionModule} from "@sbb-esta/angular/accordion";
-import {SessionsService} from "../sfera-discover/sessions.service";
-import {ActivatedRoute} from "@angular/router";
-import {FormationsService} from "./formations.service";
-import {SbbNotificationToast} from "@sbb-esta/angular/notification-toast";
+  TcRequestOptions,
+} from './sfera-xml-creation';
+import { SbbAccordionModule } from '@sbb-esta/angular/accordion';
+import { SessionsService } from '../sfera-discover/sessions.service';
+import { ActivatedRoute } from '@angular/router';
+import { FormationsService } from './formations.service';
+import { SbbNotificationToast } from '@sbb-esta/angular/notification-toast';
 
 @Component({
   selector: 'app-sfera-observer',
@@ -38,16 +38,19 @@ import {SbbNotificationToast} from "@sbb-esta/angular/notification-toast";
     SbbAccordionModule,
   ],
   templateUrl: './sfera-observer.component.html',
-  styleUrl: './sfera-observer.component.scss'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './sfera-observer.component.scss',
 })
 export class SferaObserverComponent implements OnInit, OnDestroy {
-  companyControl = new FormControl('1085', {nonNullable: true});
-  trainControl = new FormControl('1513', {nonNullable: true});
-  dateControl = new FormControl(new Date().toISOString().split('T')[0], {nonNullable: true});
-  clientIdControl = new FormControl(environment.mqttServiceOptions.clientId, {nonNullable: true});
-  environmentControl = new FormControl(environment.customTopicPrefix.length > 0, {nonNullable: true});
-  customPrefixControl = new FormControl(environment.customTopicPrefix, {nonNullable: true});
-  xmlStringControl = new FormControl('', {nonNullable: true});
+  companyControl = new FormControl('1085', { nonNullable: true });
+  trainControl = new FormControl('1513', { nonNullable: true });
+  dateControl = new FormControl(new Date().toISOString().split('T')[0], { nonNullable: true });
+  clientIdControl = new FormControl(environment.mqttServiceOptions.clientId, { nonNullable: true });
+  environmentControl = new FormControl(environment.customTopicPrefix.length > 0, {
+    nonNullable: true,
+  });
+  customPrefixControl = new FormControl(environment.customTopicPrefix, { nonNullable: true });
+  xmlStringControl = new FormControl('', { nonNullable: true });
   g2bTopic?: string;
   b2gTopic?: string;
   eventTopic?: string;
@@ -67,6 +70,17 @@ export class SferaObserverComponent implements OnInit, OnDestroy {
   private toastService = inject(SbbNotificationToast);
 
   private readonly MOCK_OPATIONAL_DAY = '2025-12-01';
+  private readonly formationObserver = {
+    next: () => {
+      this.sendG2BEvent({ formation: true });
+      this.toastService.open('Bremszettel erstellt', { type: 'success', duration: 5000 });
+    },
+    error: () =>
+      this.toastService.open('Bremszettel konnte nicht erstellt werden', {
+        type: 'error',
+        duration: 5000,
+      }),
+  };
 
   ngOnInit() {
     const params = this.route.snapshot.paramMap;
@@ -79,31 +93,52 @@ export class SferaObserverComponent implements OnInit, OnDestroy {
     const date = params.get('date');
     if (date) this.dateControl.setValue(date);
     if (params.keys.length > 0) {
-      this.observe()
+      this.observe();
     }
   }
 
   async observe() {
     const customTopicPrefix = this.environmentControl.value ? this.customPrefixControl.value : '';
     const trainOperation = this.trainControl.value + '_' + this.dateControl.value;
-    this.g2bTopic = customTopicPrefix + '90940/4/G2B/' + this.companyControl.value + '/' + trainOperation + '/' + this.clientIdControl.value;
-    this.b2gTopic = customTopicPrefix + '90940/4/B2G/' + this.companyControl.value + '/' + trainOperation + '/' + this.clientIdControl.value;
-    this.eventTopic = customTopicPrefix + '90940/4/event/' + this.companyControl.value + '/' + trainOperation + '/' + this.clientIdControl.value;
+    this.g2bTopic =
+      customTopicPrefix +
+      '90940/4/G2B/' +
+      this.companyControl.value +
+      '/' +
+      trainOperation +
+      '/' +
+      this.clientIdControl.value;
+    this.b2gTopic =
+      customTopicPrefix +
+      '90940/4/B2G/' +
+      this.companyControl.value +
+      '/' +
+      trainOperation +
+      '/' +
+      this.clientIdControl.value;
+    this.eventTopic =
+      customTopicPrefix +
+      '90940/4/event/' +
+      this.companyControl.value +
+      '/' +
+      trainOperation +
+      '/' +
+      this.clientIdControl.value;
     const token = await firstValueFrom(this.oidcSecurityService.getAccessToken());
-    const username = await firstValueFrom(this.oidcSecurityService.getUserData().pipe(map((data) => data?.preferred_username)));
+    const username = await firstValueFrom(
+      this.oidcSecurityService.getUserData().pipe(map((data) => data?.preferred_username)),
+    );
     await this.mqService.connect(username, token);
 
-    this.g2bSubscription = this.mqService.observe(this.g2bTopic)
-      .subscribe(value => {
-        this.addData(value.payload.toString(), 'g2b', value.length);
-      })
-    this.b2gSubscription = this.mqService.observe(this.b2gTopic)
-      .subscribe(value => {
-        this.addData(value.payload.toString(), 'b2g', value.length);
-      })
-    this.eventSubscription = this.mqService.observe(this.eventTopic).subscribe(value => {
+    this.g2bSubscription = this.mqService.observe(this.g2bTopic).subscribe((value) => {
+      this.addData(value.payload.toString(), 'g2b', value.length);
+    });
+    this.b2gSubscription = this.mqService.observe(this.b2gTopic).subscribe((value) => {
+      this.addData(value.payload.toString(), 'b2g', value.length);
+    });
+    this.eventSubscription = this.mqService.observe(this.eventTopic).subscribe((value) => {
       this.addData(value.payload.toString(), 'event', value.length);
-    })
+    });
   }
 
   disconnect() {
@@ -122,14 +157,14 @@ export class SferaObserverComponent implements OnInit, OnDestroy {
   addData(xml: string, topic: string, length?: number) {
     const document = this.toDom(xml);
     const row = {
-      direction: topic == "b2g" ? "↑" : "↓",
+      direction: topic == 'b2g' ? '↑' : '↓',
       topic: topic,
       type: this.getType(document) || '',
       info: this.getInfo(document) || '',
       message: xml,
       size: length,
-      timestamp: new Date()
-    }
+      timestamp: new Date(),
+    };
 
     this.data.push(row);
     this.dataSource = new SbbTableDataSource<TableData>(this.data);
@@ -148,9 +183,9 @@ export class SferaObserverComponent implements OnInit, OnDestroy {
   sendHandshakeRequest() {
     const handshakeRequest = SferaXmlCreation.createHandshakeRequest({
       header: {
-        sourceDevice: this.clientIdControl.value
+        sourceDevice: this.clientIdControl.value,
       },
-      supportedModes: READONLY_MODE
+      supportedModes: READONLY_MODE,
     });
     this.mqService.publish(this.b2gTopic!, handshakeRequest);
   }
@@ -158,30 +193,34 @@ export class SferaObserverComponent implements OnInit, OnDestroy {
   sendJPRequest() {
     const jpRequest = SferaXmlCreation.createRequest({
       header: {
-        sourceDevice: this.clientIdControl.value
+        sourceDevice: this.clientIdControl.value,
       },
-      jpRequests: [{
-        trainIdentification: {
-          company: this.companyControl.value,
-          operationalTrainNumber: this.trainControl.value,
-          startDate: this.dateControl.value
-        }
-      }]
+      jpRequests: [
+        {
+          trainIdentification: {
+            company: this.companyControl.value,
+            operationalTrainNumber: this.trainControl.value,
+            startDate: this.dateControl.value,
+          },
+        },
+      ],
     });
     this.mqService.publish(this.b2gTopic!, jpRequest);
   }
 
   sendSPRequest() {
-    const jpReplies = this.data.filter(row => row.type === 'SFERA_G2B_ReplyMessage' && row.info.includes('JP: Valid'))
+    const jpReplies = this.data.filter(
+      (row) => row.type === 'SFERA_G2B_ReplyMessage' && row.info.includes('JP: Valid'),
+    );
     if (jpReplies.length === 0) {
-      alert('No JP request sent')
+      alert('No JP request sent');
       return;
     }
 
-    const dom = this.toDom(jpReplies[jpReplies.length - 1].message)
+    const dom = this.toDom(jpReplies[jpReplies.length - 1].message);
 
     const segmentProfileReference = Array.from(dom.getElementsByTagName('SegmentProfileReference'));
-    const segmentProfiles = segmentProfileReference.map(element => {
+    const segmentProfiles = segmentProfileReference.map((element) => {
       const spId = element.getAttribute('SP_ID');
       const imId = element.getElementsByTagName('IM_ID')[0].textContent;
       const minorVersion = element.getAttribute('SP_VersionMinor');
@@ -189,35 +228,39 @@ export class SferaObserverComponent implements OnInit, OnDestroy {
 
       return {
         spZone: {
-          imId: imId
+          imId: imId,
         },
         spId: spId,
         majorVersion: majorVersion,
-        minorVersion: minorVersion
+        minorVersion: minorVersion,
       } as SpRequestOptions;
     });
 
     const spRequest = SferaXmlCreation.createRequest({
       header: {
-        sourceDevice: this.clientIdControl.value
+        sourceDevice: this.clientIdControl.value,
       },
-      spRequests: segmentProfiles
+      spRequests: segmentProfiles,
     });
     this.mqService.publish(this.b2gTopic!, spRequest);
   }
 
   sendTCRequest() {
-    const jpReplies = this.data.filter(row => row.type === 'SFERA_G2B_ReplyMessage' && row.info.includes('JP: Valid'))
+    const jpReplies = this.data.filter(
+      (row) => row.type === 'SFERA_G2B_ReplyMessage' && row.info.includes('JP: Valid'),
+    );
     if (jpReplies.length === 0) {
-      alert('No JP request sent')
+      alert('No JP request sent');
       return;
     }
 
-    const dom = this.toDom(jpReplies[jpReplies.length - 1].message)
+    const dom = this.toDom(jpReplies[jpReplies.length - 1].message);
 
-    const trainCharacteristicsRefs = Array.from(dom.getElementsByTagName('TrainCharacteristicsRef'));
+    const trainCharacteristicsRefs = Array.from(
+      dom.getElementsByTagName('TrainCharacteristicsRef'),
+    );
 
-    const trainCharacteristics = trainCharacteristicsRefs.map(element => {
+    const trainCharacteristics = trainCharacteristicsRefs.map((element) => {
       const tcId = element.getAttribute('TC_ID');
       const ruId = element.getElementsByTagName('TC_RU_ID')[0].textContent;
       const minorVersion = element.getAttribute('TC_VersionMajor');
@@ -227,15 +270,15 @@ export class SferaObserverComponent implements OnInit, OnDestroy {
         ruId: ruId,
         tcId: tcId,
         majorVersion: majorVersion,
-        minorVersion: minorVersion
+        minorVersion: minorVersion,
       } as TcRequestOptions;
     });
 
     const tcRequest = SferaXmlCreation.createRequest({
       header: {
-        sourceDevice: this.clientIdControl.value
+        sourceDevice: this.clientIdControl.value,
       },
-      tcRequests: trainCharacteristics
+      tcRequests: trainCharacteristics,
     });
     this.mqService.publish(this.b2gTopic!, tcRequest);
   }
@@ -243,9 +286,9 @@ export class SferaObserverComponent implements OnInit, OnDestroy {
   sendSessionTermination() {
     const sessionTerminationEvent = SferaXmlCreation.createEvent({
       header: {
-        sourceDevice: this.clientIdControl.value
+        sourceDevice: this.clientIdControl.value,
       },
-      sessionTermination: true
+      sessionTermination: true,
     });
     this.mqService.publish(this.b2gTopic!, sessionTerminationEvent);
   }
@@ -254,9 +297,9 @@ export class SferaObserverComponent implements OnInit, OnDestroy {
     const handshakeRequest = SferaXmlCreation.createHandshakeRequest({
       header: {
         sferaVersion: '3.00',
-        sourceDevice: this.clientIdControl.value
+        sourceDevice: this.clientIdControl.value,
       },
-      supportedModes: READONLY_MODE
+      supportedModes: READONLY_MODE,
     });
     this.mqService.publish(this.b2gTopic!, handshakeRequest);
   }
@@ -264,11 +307,15 @@ export class SferaObserverComponent implements OnInit, OnDestroy {
   sendHSRWrongConnectivity() {
     const handshakeRequest = SferaXmlCreation.createHandshakeRequest({
       header: {
-        sourceDevice: this.clientIdControl.value
+        sourceDevice: this.clientIdControl.value,
       },
-      supportedModes: [{
-        drivingMode: 'Read-Only', connectivity: 'Standalone', architecture: 'BoardAdviceCalculation'
-      }]
+      supportedModes: [
+        {
+          drivingMode: 'Read-Only',
+          connectivity: 'Standalone',
+          architecture: 'BoardAdviceCalculation',
+        },
+      ],
     });
     this.mqService.publish(this.b2gTopic!, handshakeRequest);
   }
@@ -276,11 +323,15 @@ export class SferaObserverComponent implements OnInit, OnDestroy {
   sendHSRWrongArchitecture() {
     const handshakeRequest = SferaXmlCreation.createHandshakeRequest({
       header: {
-        sourceDevice: this.clientIdControl.value
+        sourceDevice: this.clientIdControl.value,
       },
-      supportedModes: [{
-        drivingMode: 'Read-Only', connectivity: 'Connected', architecture: 'GroundAdviceCalculation'
-      }]
+      supportedModes: [
+        {
+          drivingMode: 'Read-Only',
+          connectivity: 'Connected',
+          architecture: 'GroundAdviceCalculation',
+        },
+      ],
     });
     this.mqService.publish(this.b2gTopic!, handshakeRequest);
   }
@@ -288,13 +339,15 @@ export class SferaObserverComponent implements OnInit, OnDestroy {
   sendHSRDriverWithoutReadonly() {
     const handshakeRequest = SferaXmlCreation.createHandshakeRequest({
       header: {
-        sourceDevice: this.clientIdControl.value
+        sourceDevice: this.clientIdControl.value,
       },
-      supportedModes: [{
-        drivingMode: 'DAS not connected to ATP',
-        connectivity: 'Connected',
-        architecture: 'BoardAdviceCalculation'
-      }]
+      supportedModes: [
+        {
+          drivingMode: 'DAS not connected to ATP',
+          connectivity: 'Connected',
+          architecture: 'BoardAdviceCalculation',
+        },
+      ],
     });
     this.mqService.publish(this.b2gTopic!, handshakeRequest);
   }
@@ -302,16 +355,21 @@ export class SferaObserverComponent implements OnInit, OnDestroy {
   sendHSRDriverAndReadOnly() {
     const handshakeRequest = SferaXmlCreation.createHandshakeRequest({
       header: {
-        sourceDevice: this.clientIdControl.value
+        sourceDevice: this.clientIdControl.value,
       },
       statusReportsEnabled: true,
-      supportedModes: [{
-        drivingMode: 'DAS not connected to ATP',
-        connectivity: 'Connected',
-        architecture: 'BoardAdviceCalculation'
-      }, {
-        drivingMode: 'Read-Only', connectivity: 'Connected', architecture: 'BoardAdviceCalculation'
-      }]
+      supportedModes: [
+        {
+          drivingMode: 'DAS not connected to ATP',
+          connectivity: 'Connected',
+          architecture: 'BoardAdviceCalculation',
+        },
+        {
+          drivingMode: 'Read-Only',
+          connectivity: 'Connected',
+          architecture: 'BoardAdviceCalculation',
+        },
+      ],
     });
     this.mqService.publish(this.b2gTopic!, handshakeRequest);
   }
@@ -319,15 +377,17 @@ export class SferaObserverComponent implements OnInit, OnDestroy {
   sendJPRequestWithWrongTrainnumber() {
     const jpRequest = SferaXmlCreation.createRequest({
       header: {
-        sourceDevice: this.clientIdControl.value
+        sourceDevice: this.clientIdControl.value,
       },
-      jpRequests: [{
-        trainIdentification: {
-          company: this.companyControl.value,
-          operationalTrainNumber: '' + (parseInt(this.trainControl.value) * 2),
-          startDate: this.dateControl.value
-        }
-      }]
+      jpRequests: [
+        {
+          trainIdentification: {
+            company: this.companyControl.value,
+            operationalTrainNumber: '' + parseInt(this.trainControl.value) * 2,
+            startDate: this.dateControl.value,
+          },
+        },
+      ],
     });
     this.mqService.publish(this.b2gTopic!, jpRequest);
   }
@@ -335,26 +395,30 @@ export class SferaObserverComponent implements OnInit, OnDestroy {
   sendJPRequestWithWrongCompany() {
     const jpRequest = SferaXmlCreation.createRequest({
       header: {
-        sourceDevice: this.clientIdControl.value
+        sourceDevice: this.clientIdControl.value,
       },
-      jpRequests: [{
-        trainIdentification: {
-          company: '' + (parseInt(this.companyControl.value) * 2),
-          operationalTrainNumber: this.trainControl.value,
-          startDate: this.dateControl.value
-        }
-      }]
+      jpRequests: [
+        {
+          trainIdentification: {
+            company: '' + parseInt(this.companyControl.value) * 2,
+            operationalTrainNumber: this.trainControl.value,
+            startDate: this.dateControl.value,
+          },
+        },
+      ],
     });
     this.mqService.publish(this.b2gTopic!, jpRequest);
   }
 
   nextLocation() {
-    this.sessionsService.nextLocation({
-      operationalNumber: this.trainControl.value,
-      clientId: this.clientIdControl.value!,
-      companyCode: this.companyControl.value,
-      date: this.dateControl.value,
-    }).subscribe()
+    this.sessionsService
+      .nextLocation({
+        operationalNumber: this.trainControl.value,
+        clientId: this.clientIdControl.value!,
+        companyCode: this.companyControl.value,
+        date: this.dateControl.value,
+      })
+      .subscribe();
   }
 
   sendG2BEvent(options: G2BEventNSPOptions) {
@@ -362,15 +426,34 @@ export class SferaObserverComponent implements OnInit, OnDestroy {
     this.mqService.publish(this.eventTopic!, event);
   }
 
+  protected initialFormation() {
+    this.formationsService
+      .initialFormation({
+        operationalTrainNumber: this.trainControl.value.replace('M', ''),
+        companyCode: this.companyControl.value,
+        operationalDay: this.MOCK_OPATIONAL_DAY,
+      })
+      .subscribe(this.formationObserver);
+  }
+
+  protected updatedFormation() {
+    this.formationsService
+      .updateFormation({
+        operationalTrainNumber: this.trainControl.value.replace('M', ''),
+        companyCode: this.companyControl.value,
+        operationalDay: this.MOCK_OPATIONAL_DAY,
+      })
+      .subscribe(this.formationObserver);
+  }
+
   private getType(document: Document) {
     return document.firstChild?.nodeName || '';
   }
 
   private getInfo(document: Document) {
-
     const type = this.getType(document);
 
-    if (type == "SFERA_G2B_ReplyMessage") {
+    if (type == 'SFERA_G2B_ReplyMessage') {
       if (this.isHandshakeAcknowledgement(document)) {
         return `HS-ACK: ${this.getSelectedArchitecture(document)}, ${this.getSelectedConnectivity(document)}`;
       } else if (this.isHandshakeReject(document)) {
@@ -391,68 +474,87 @@ export class SferaObserverComponent implements OnInit, OnDestroy {
       } else if (this.containsElement(document, 'RelatedTrainInformation')) {
         return 'RelatedTrainInformation';
       }
-    } else if (type == "SFERA_B2G_RequestMessage") {
+    } else if (type == 'SFERA_B2G_RequestMessage') {
       if (this.isHandshakeRequest(document)) {
         return `HS-REQUEST`;
       }
 
-      const requestTypes = ['JP_Request', 'SP_Request', 'TC_Request', 'RelatedTrainInformationRequest']
+      const requestTypes = [
+        'JP_Request',
+        'SP_Request',
+        'TC_Request',
+        'RelatedTrainInformationRequest',
+      ];
       const requestedTypes: string[] = [];
 
       for (const requestType of requestTypes) {
         if (this.containsElement(document, requestType)) {
-          requestedTypes.push(requestType)
+          requestedTypes.push(requestType);
         }
       }
 
-      return requestedTypes.join(", ");
-    } else if (type == "SFERA_G2B_EventMessage") {
+      return requestedTypes.join(', ');
+    } else if (type == 'SFERA_G2B_EventMessage') {
       if (this.containsElement(document, 'RelatedTrainInformation'))
         return 'RelatedTrainInformation';
       if (this.containsElement(document, 'JourneyProfile')) {
         return `JP Update: ${this.getJourneyProfileStatus(document)}, #SP: ${this.getJourneyProfileNumberOfSPs(document)}`;
       }
-    } else if (type == "SFERA_B2G_EventMessage") {
-      if (this.containsElement(document, 'SessionTermination'))
-        return 'SessionTermination';
+    } else if (type == 'SFERA_B2G_EventMessage') {
+      if (this.containsElement(document, 'SessionTermination')) return 'SessionTermination';
     }
-    return "unknown";
+    return 'unknown';
   }
 
   private isMessageResponse(document: Document) {
-    return document.getElementsByTagName("G2B_MessageResponse")?.length > 0;
+    return document.getElementsByTagName('G2B_MessageResponse')?.length > 0;
   }
 
   private getMessageResponseResult(document: Document) {
-    return document.getElementsByTagName("G2B_MessageResponse").item(0)?.getAttribute("result") || undefined;
+    return (
+      document.getElementsByTagName('G2B_MessageResponse').item(0)?.getAttribute('result') ||
+      undefined
+    );
   }
 
   private getErrorCode(document: Document) {
-    return document.getElementsByTagName("G2B_Error").item(0)?.getAttribute("errorCode") || undefined;
+    return (
+      document.getElementsByTagName('G2B_Error').item(0)?.getAttribute('errorCode') || undefined
+    );
   }
 
   private isHandshakeReject(document: Document): boolean {
-    return document.getElementsByTagName("DAS_HandshakeReject")?.length > 0;
+    return document.getElementsByTagName('DAS_HandshakeReject')?.length > 0;
   }
 
   private isHandshakeAcknowledgement(document: Document): boolean {
-    return document.getElementsByTagName("DAS_HandshakeAcknowledgement")?.length > 0;
+    return document.getElementsByTagName('DAS_HandshakeAcknowledgement')?.length > 0;
   }
 
   private isHandshakeRequest(document: Document) {
-    return document.getElementsByTagName("DAS_HandshakeRequest")?.length > 0;
+    return document.getElementsByTagName('DAS_HandshakeRequest')?.length > 0;
   }
 
   private getSelectedArchitecture(document: Document) {
-    return document.getElementsByTagName("DAS_OperatingModeSelected").item(0)?.getAttribute("DAS_architecture") || undefined;
+    return (
+      document
+        .getElementsByTagName('DAS_OperatingModeSelected')
+        .item(0)
+        ?.getAttribute('DAS_architecture') || undefined
+    );
   }
 
   private getSelectedConnectivity(document: Document) {
-    return document.getElementsByTagName("DAS_OperatingModeSelected").item(0)?.getAttribute("DAS_connectivity") || undefined;
+    return (
+      document
+        .getElementsByTagName('DAS_OperatingModeSelected')
+        .item(0)
+        ?.getAttribute('DAS_connectivity') || undefined
+    );
   }
 
   private getRejectReason(document: Document) {
-    return document.getElementsByTagName("DAS_HandshakeReject").item(0)?.textContent || undefined;
+    return document.getElementsByTagName('DAS_HandshakeReject').item(0)?.textContent || undefined;
   }
 
   private containsElement(document: Document, elementName: string) {
@@ -460,63 +562,46 @@ export class SferaObserverComponent implements OnInit, OnDestroy {
   }
 
   private getJourneyProfileStatus(document: Document) {
-    return document.getElementsByTagName("JourneyProfile").item(0)?.getAttribute("JP_Status") || undefined;
+    return (
+      document.getElementsByTagName('JourneyProfile').item(0)?.getAttribute('JP_Status') ||
+      undefined
+    );
   }
 
   private getJourneyProfileNumberOfSPs(document: Document) {
-    return document.getElementsByTagName("SegmentProfileReference")?.length || undefined;
+    return document.getElementsByTagName('SegmentProfileReference')?.length || undefined;
   }
 
   private getSegmentProfiles(document: Document) {
-    const segmentProfiles = Array.from(document.getElementsByTagName("SegmentProfile"));
-    return segmentProfiles.map(segmentProfile => `SP ${this.getSegmentProfileId(segmentProfile)}: ${this.getSegmentProfileStatus(segmentProfile)}, Length: ${this.getSegmentProfileLength(segmentProfile)}`).join(', ')
+    const segmentProfiles = Array.from(document.getElementsByTagName('SegmentProfile'));
+    return segmentProfiles
+      .map(
+        (segmentProfile) =>
+          `SP ${this.getSegmentProfileId(segmentProfile)}: ${this.getSegmentProfileStatus(segmentProfile)}, Length: ${this.getSegmentProfileLength(segmentProfile)}`,
+      )
+      .join(', ');
   }
 
   private getTrainCharacteristics(document: Document) {
-    const trainCharacteristics = Array.from(document.getElementsByTagName("TrainCharacteristics"));
-    return trainCharacteristics.map(trainCharacteristic => `TC ${this.getTrainCharacteristicsId(trainCharacteristic)}`).join(', ');
+    const trainCharacteristics = Array.from(document.getElementsByTagName('TrainCharacteristics'));
+    return trainCharacteristics
+      .map((trainCharacteristic) => `TC ${this.getTrainCharacteristicsId(trainCharacteristic)}`)
+      .join(', ');
   }
 
   private getSegmentProfileStatus(element: Element) {
-    return element.getAttribute("SP_Status") || undefined;
+    return element.getAttribute('SP_Status') || undefined;
   }
 
   private getSegmentProfileLength(element: Element) {
-    return element.getAttribute("SP_Length") || undefined;
+    return element.getAttribute('SP_Length') || undefined;
   }
 
   private getSegmentProfileId(element: Element) {
-    return element.getAttribute("SP_ID");
+    return element.getAttribute('SP_ID');
   }
 
   private getTrainCharacteristicsId(element: Element) {
-    return element.getAttribute("TC_ID");
-  }
-
-  private readonly formationObserver = {
-    next: () => {
-      this.sendG2BEvent({formation: true})
-      this.toastService.open('Bremszettel erstellt', {type: 'success', duration: 5000})
-    },
-    error: () => this.toastService.open('Bremszettel konnte nicht erstellt werden', {
-      type: 'error',
-      duration: 5000
-    })
-  };
-
-  protected initialFormation() {
-    this.formationsService.initialFormation({
-      operationalTrainNumber: this.trainControl.value.replace('M', ''),
-      companyCode: this.companyControl.value,
-      operationalDay: this.MOCK_OPATIONAL_DAY,
-    }).subscribe(this.formationObserver)
-  }
-
-  protected updatedFormation() {
-    this.formationsService.updateFormation({
-      operationalTrainNumber: this.trainControl.value.replace('M', ''),
-      companyCode: this.companyControl.value,
-      operationalDay: this.MOCK_OPATIONAL_DAY,
-    }).subscribe(this.formationObserver)
+    return element.getAttribute('TC_ID');
   }
 }

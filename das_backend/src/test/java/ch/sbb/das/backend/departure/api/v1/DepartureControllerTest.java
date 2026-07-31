@@ -30,7 +30,7 @@ class DepartureControllerTest {
     @MockitoBean
     GemsRestClient gemsRestClient;
 
-    @DisplayName("subscribe - delegates to client|tests:1538")
+    @DisplayName("Departure notifications when the request is valid then the device is registered for push notifications|tests:1538")
     @Test
     void subscribe_delegatesToClient() throws Exception {
         when(gemsRestClient.subscribe(any())).thenReturn(ResponseEntity.noContent().build());
@@ -54,7 +54,7 @@ class DepartureControllerTest {
         verify(gemsRestClient).subscribe(any());
     }
 
-    @DisplayName("confirm - delegates to client|tests:1538")
+    @DisplayName("Departure message receipt when the request is valid then the acknowledgement is forwarded to the downstream service|tests:1538")
     @Test
     void confirm_delegatesToClient() throws Exception {
         when(gemsRestClient.confirm("m1", "d1")).thenReturn(ResponseEntity.noContent().build());
@@ -65,7 +65,7 @@ class DepartureControllerTest {
         verify(gemsRestClient).confirm("m1", "d1");
     }
 
-    @DisplayName("confirm - error 502|tests:1538")
+    @DisplayName("Departure message receipt when the downstream service fails then the API returns bad gateway|tests:1538")
     @Test
     void confirm_error502() throws Exception {
         when(gemsRestClient.confirm("m1", "d1")).thenThrow(new RestClientResponseException("Message", 400, "Bad request", null, "Validation error".getBytes(), null));

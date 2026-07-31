@@ -8,6 +8,7 @@ import 'package:sfera/src/data/repository/sfera_repository.dart';
 import 'package:sfera/src/data/repository/sfera_repository_impl.dart';
 import 'package:sfera/src/provider/sfera_auth_provider.dart';
 
+export 'package:core_data/src/company_match.dart';
 export 'package:core_data/src/ru.dart';
 export 'package:core_data/src/train_identification.dart';
 export 'package:sfera/src/data/api/sfera_error.dart';

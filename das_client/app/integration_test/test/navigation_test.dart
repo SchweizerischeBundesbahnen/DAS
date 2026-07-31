@@ -6,12 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../app_test.dart';
+import '../integration/integration_test_app.dart';
 import '../util/test_utils.dart';
 
 void main() {
   group('navigation drawer tests', () {
-    testWidgets('should show navigation drawer', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('navigation_whenDrawerOpened_thenShowsNavigationItems', (tester) async {
+      await IntegrationTestApp.start(tester);
 
       // check that there is a drawer
       final scaffold = find.byWidgetPredicate((widget) => widget is Scaffold).first;
@@ -32,8 +33,8 @@ void main() {
       expect(find.text(l10n.w_navigation_drawer_profile_title), findsOneWidget);
     });
 
-    testWidgets('test navigate to links', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('navigation_whenLinksSelected_thenShowsLinksPage', (tester) async {
+      await IntegrationTestApp.start(tester);
 
       await openDrawer(tester);
 
@@ -50,8 +51,8 @@ void main() {
       expect(find.byType(LinksPage), findsOneWidget);
     });
 
-    testWidgets('test navigate to settings', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('navigation_whenSettingsSelected_thenShowsSettingsPage', (tester) async {
+      await IntegrationTestApp.start(tester);
 
       await openDrawer(tester);
 
@@ -68,8 +69,8 @@ void main() {
       expect(find.byType(SettingsPage), findsOneWidget);
     });
 
-    testWidgets('test navigate to profile', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('navigation_whenProfileSelected_thenShowsProfilePage', (tester) async {
+      await IntegrationTestApp.start(tester);
 
       await openDrawer(tester);
 
@@ -89,8 +90,8 @@ void main() {
       expect(find.byType(ProfilePage), findsOneWidget);
     });
 
-    testWidgets('test navigate to train journey', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('navigation_whenTrainJourneySelected_thenShowsFahrtPage', (tester) async {
+      await IntegrationTestApp.start(tester);
 
       await openDrawer(tester);
 
@@ -117,8 +118,8 @@ void main() {
       expect(find.byType(JourneySelectionPage), findsOneWidget);
     });
 
-    testWidgets('test if train journey stays loaded after navigation', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('navigation_whenNavigatingBackToJourney_thenJourneyStaysLoaded', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T6');
 
       // check first train station
@@ -139,8 +140,8 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test journey settings are not reset when navigating ', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('navigation_whenNavigatingBack_thenJourneySettingsNotReset', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T5M');
 
       final selectedBrakeSeries = 'D30';

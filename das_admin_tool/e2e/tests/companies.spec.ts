@@ -45,7 +45,9 @@ test.describe('companies test', () => {
 
     await expect(row.getByRole('cell', { name: TEST_CODE, exact: true })).toBeVisible();
     await expect(row.getByRole('cell', { name: TEST_SHORT_NAME, exact: true })).toBeVisible();
-    await expect(row.getByRole('cell', { name: `${TEST_TENANT_ID} - sbb`, exact: true })).toBeVisible();
+    await expect(
+      row.getByRole('cell', { name: `${TEST_TENANT_ID} - sbb`, exact: true }),
+    ).toBeVisible();
 
     // edit
     const editDialog = await openEditEntryDialog(page, row);

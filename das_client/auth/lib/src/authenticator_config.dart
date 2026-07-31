@@ -1,4 +1,4 @@
-import 'package:auth/src/token_spec_provider.dart';
+import 'package:auth/component.dart';
 import 'package:meta/meta.dart';
 
 const sbbTenantId = '2cda5d11-f0ac-46b3-967d-af1b2e1bd01a';
@@ -15,6 +15,7 @@ class AuthenticatorConfig {
     required this.tokenSpecs,
     this.postLogoutRedirectUrl,
     this.trustedTenantIds = const [sbbTenantId, blsTenantId, sobTenantId],
+    this.allowedRoles = const [Role.driver, Role.observer],
   });
 
   const AuthenticatorConfig.empty()
@@ -23,7 +24,8 @@ class AuthenticatorConfig {
       redirectUrl = '',
       postLogoutRedirectUrl = null,
       tokenSpecs = const TokenSpecProvider.empty(),
-      trustedTenantIds = const [];
+      trustedTenantIds = const [],
+      allowedRoles = const [];
 
   final String discoveryUrl;
   final String clientId;
@@ -33,6 +35,9 @@ class AuthenticatorConfig {
 
   /// list of trusted tenants that are validated in token claim
   final List<String> trustedTenantIds;
+
+  /// list of roles, at least one of which must be present in the token claim
+  final List<Role> allowedRoles;
 
   @override
   bool operator ==(Object other) {

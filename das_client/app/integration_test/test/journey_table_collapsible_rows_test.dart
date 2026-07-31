@@ -12,12 +12,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sfera/component.dart';
 
 import '../app_test.dart';
+import '../integration/integration_test_app.dart';
 import '../mocks/mock_sim_train_view_model.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('test operational indication collapsible', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('collapsibleRows_whenOperationalIndicationDisplayed_thenCollapses', (tester) async {
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T22M');
 
     final dataToTest = OperationalIndication(order: 0, texts: ['Renens VD: Halt an Halteort 3']);
@@ -26,8 +27,8 @@ void main() {
 
     await disconnect(tester);
   });
-  testWidgets('test RADN foot note collapsible', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('collapsibleRows_whenRadnFootNoteDisplayed_thenCollapses', (tester) async {
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T15M');
 
     final footnote = FootNote(
@@ -41,8 +42,8 @@ void main() {
 
     await disconnect(tester);
   });
-  testWidgets('test show more on long texts of operational indications', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('collapsibleRows_whenLongTextPresent_thenShowsMoreButton', (tester) async {
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T22M');
 
     final textToSearch = 'Pully: Vorziehen bis Ende Perron.';
@@ -83,8 +84,8 @@ void main() {
 
     await disconnect(tester);
   });
-  testWidgets('test combined operational indications and replaced new lines with " ;"', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('collapsibleRows_whenCombinedIndications_thenReplacesNewLinesWithDelimiter', (tester) async {
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T22M');
 
     // scroll to testable row
@@ -123,8 +124,8 @@ void main() {
 
     await disconnect(tester);
   });
-  testWidgets('test row combined for operational indication and foot note on same service point', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('collapsibleRows_whenSameServicePoint_thenCombinesIndicationAndFootNote', (tester) async {
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T22M');
 
     final scrollableFinder = find.byType(AnimatedList);
@@ -151,8 +152,8 @@ void main() {
 
     await disconnect(tester);
   });
-  testWidgets('test operational indication collapsed when passed', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('collapsibleRows_whenOperationalIndicationPassed_thenCollapses', (tester) async {
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T22');
 
     final dataToTest = OperationalIndication(order: 0, texts: ['Renens VD: Halt an Halteort 3']);
@@ -161,8 +162,8 @@ void main() {
 
     await disconnect(tester);
   });
-  testWidgets('test RADN foot notes collapsed when passed', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('collapsibleRows_whenRadnFootNotePassed_thenCollapses', (tester) async {
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T15');
 
     final footnote = FootNote(
@@ -178,8 +179,8 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test RADN foot notes title contain type', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('collapsibleRows_whenRadnFootNoteDisplayed_thenTitleContainsType', (tester) async {
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T15M');
 
     expect(find.textContaining(l10n.c_radn_type_decisive_gradient_down), findsOneWidget);
@@ -190,7 +191,7 @@ void main() {
 
   testWidgets('simFootNote_whenNonSimTrain_thenSimFootNoteIsCollapsed', (tester) async {
     // ARRANGE - mock non-SIM train
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
 
     final simTrainVM = DI.get<SimTrainViewModel>() as MockSimTrainViewModel;
     simTrainVM.setIsSimTrain(false);
@@ -209,7 +210,7 @@ void main() {
 
   testWidgets('simFootNote_whenSimTrain_thenSimFootNoteIsExpandedAndNotCollapsedWhenPassed', (tester) async {
     // ARRANGE - mock SIM train
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
 
     final simTrainVM = DI.get<SimTrainViewModel>() as MockSimTrainViewModel;
     simTrainVM.setIsSimTrain(true);

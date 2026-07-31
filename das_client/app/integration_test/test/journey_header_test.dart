@@ -27,6 +27,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
 import '../app_test.dart';
+import '../integration/integration_test_app.dart';
 import '../mocks/mock_battery.dart';
 import '../mocks/mock_brightness_manager.dart';
 import '../mocks/mock_connectivity_manager.dart';
@@ -36,8 +37,8 @@ import '../util/test_utils.dart';
 
 Future<void> main() async {
   group('train journey header test', () {
-    testWidgets('test connectivity state shown correctly', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyHeader_whenConnectivityChanges_thenShowsCorrectState', (tester) async {
+      await IntegrationTestApp.start(tester);
 
       // simulate connectivity
       final connectivityManager = DI.get<ConnectivityManager>() as MockConnectivityManager;
@@ -103,8 +104,8 @@ Future<void> main() async {
       await disconnect(tester);
     });
 
-    testWidgets('test chronograph punctuality display hides when no updates come', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyHeader_whenNoUpdates_thenHidesPunctualityDisplay', (tester) async {
+      await IntegrationTestApp.start(tester);
 
       await loadJourney(tester, trainNumber: 'T4');
 
@@ -129,8 +130,8 @@ Future<void> main() async {
       );
     });
 
-    testWidgets('test chronograph punctuality display becomes stale when no updates come', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyHeader_whenNoUpdates_thenPunctualityBecomesStale', (tester) async {
+      await IntegrationTestApp.start(tester);
 
       await loadJourney(tester, trainNumber: 'T4');
 
@@ -152,8 +153,8 @@ Future<void> main() async {
       expect(delayTextWidget.style?.color, ThemeUtil.getColor(context, SBBColors.graphite, SBBColors.granite));
     });
 
-    testWidgets('test always-on display is turned on when journey is loaded', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyHeader_whenJourneyLoaded_thenTurnsOnAlwaysOnDisplay', (tester) async {
+      await IntegrationTestApp.start(tester);
 
       // Get that the always-on display is turned off, because journey is not started yet
       bool currentDisplayTurnedOn = await WakelockPlus.enabled;
@@ -166,8 +167,8 @@ Future<void> main() async {
       expect(currentDisplayTurnedOn, true);
     });
 
-    testWidgets('test always-on display is turned off when journey is closed', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyHeader_whenJourneyClosed_thenTurnsOffAlwaysOnDisplay', (tester) async {
+      await IntegrationTestApp.start(tester);
 
       await loadJourney(tester, trainNumber: 'T4');
 
@@ -192,8 +193,8 @@ Future<void> main() async {
       expect(currentDisplayTurnedOff, false);
     });
 
-    testWidgets('test app bar is hiding while train is active', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyHeader_whenTrainActive_thenHidesAppBar', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
       final date = Format.dateWithAbbreviatedDay(DateTime.now(), appLocale());
@@ -211,8 +212,8 @@ Future<void> main() async {
       await disconnect(tester);
     });
 
-    testWidgets('test check if switch theme is possible', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyHeader_whenThemeSwitchTapped_thenSwitchesTheme', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
       final header = find.byType(Header);
@@ -238,8 +239,8 @@ Future<void> main() async {
       expect(Theme.of(context).brightness != brightness, true);
     });
 
-    testWidgets('test extended menu opening', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyHeader_whenExtendedMenuOpened_thenShowsCloseButton', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
       await openExtendedMenu(tester);
@@ -253,8 +254,8 @@ Future<void> main() async {
       await disconnect(tester);
     });
 
-    testWidgets('test extended maneuver mode', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyHeader_whenManeuverModeToggled_thenShowsNotification', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
       await _toggleExtendedMenuManeuverMode(tester);
@@ -266,8 +267,8 @@ Future<void> main() async {
       await disconnect(tester);
     });
 
-    testWidgets('test maneuver mode notification switch button', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyHeader_whenManeuverNotificationSwitchTapped_thenHidesNotification', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
       await _toggleExtendedMenuManeuverMode(tester);
@@ -278,8 +279,8 @@ Future<void> main() async {
       await disconnect(tester);
     });
 
-    testWidgets('test maneuver mode notification link to Wara app', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyHeader_whenWaraAppInstalledAndManeuverMode_thenShowsWaraAppLink', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
       final mockWarnAppVM = DI.get<WarnAppViewModel>() as MockWarnAppViewModel;
@@ -297,8 +298,8 @@ Future<void> main() async {
       await disconnect(tester);
     });
 
-    testWidgets('test extended menu maneuver mode not present when warnapp is disabled', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyHeader_whenWarnappDisabled_thenHidesManeuverMode', (tester) async {
+      await IntegrationTestApp.start(tester);
 
       final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;
       featureProvider.disableFeature(.warnapp);
@@ -316,8 +317,8 @@ Future<void> main() async {
       await disconnect(tester);
     });
 
-    testWidgets('test extended menu item to open Wara app is shown if installed', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyHeader_whenWaraAppInstalled_thenShowsOpenMenuItem', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
       final mockWarnAppVM = DI.get<WarnAppViewModel>() as MockWarnAppViewModel;
@@ -337,8 +338,8 @@ Future<void> main() async {
       await disconnect(tester);
     });
 
-    testWidgets('test battery over 15% and not show icon', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyHeader_whenBatteryAbove15Percent_thenHidesIcon', (tester) async {
+      await IntegrationTestApp.start(tester);
       final battery = DI.get<Battery>() as MockBattery;
       battery.currentBatteryLevel = 80;
 
@@ -353,8 +354,8 @@ Future<void> main() async {
       await disconnect(tester);
     });
 
-    testWidgets('test battery under 15% icon and modal are showing or opening', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyHeader_whenBatteryBelow15Percent_thenShowsIconAndModal', (tester) async {
+      await IntegrationTestApp.start(tester);
       final battery = DI.get<Battery>() as MockBattery;
       battery.currentBatteryLevel = 10;
 
@@ -374,8 +375,8 @@ Future<void> main() async {
       await disconnect(tester);
     });
 
-    testWidgets('check if punctuality update sent is correct', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyHeader_whenPunctualityUpdateReceived_thenDisplaysCorrectly', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
       // Find the header and check if it is existent
@@ -392,8 +393,8 @@ Future<void> main() async {
       await disconnect(tester);
     });
 
-    testWidgets('chronograph punctuality display is hidden when no calculated speed', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyHeader_whenNoCalculatedSpeed_thenHidesPunctuality', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T6');
 
       // find the header and check if it is existent
@@ -408,8 +409,8 @@ Future<void> main() async {
       await disconnect(tester);
     });
 
-    testWidgets('check if the displayed current time is correct', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyHeader_whenJourneyLoaded_thenShowsCorrectCurrentTime', (tester) async {
+      await IntegrationTestApp.start(tester);
 
       await loadJourney(tester, trainNumber: 'T6');
 
@@ -439,8 +440,8 @@ Future<void> main() async {
       await disconnect(tester);
     });
 
-    testWidgets('test display of communication network in header', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyHeader_whenCommunicationNetworkChanges_thenDisplaysCorrectly', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T12');
 
       // find the header and check if it is existent
@@ -467,8 +468,8 @@ Future<void> main() async {
       await disconnect(tester);
     });
 
-    testWidgets('test display of radio contactList channels in header', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyHeader_whenRadioContactsChange_thenDisplaysCorrectly', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T12');
 
       // find the header and check if it is existent
@@ -522,8 +523,8 @@ Future<void> main() async {
     });
 
     // can be removed based on what option to change the brightness will be chosen
-    testWidgets('double tap sets brightness to 0.0 if current is 1.0', (tester) async {
-      await prepareAndStartApp(
+    testWidgets('journeyHeader_whenDoubleTapped_thenSetsBrightnessToZero', (tester) async {
+      await IntegrationTestApp.start(
         tester,
         onBeforeRun: () => (DI.get<BrightnessManager>() as MockBrightnessManager).writeSettingsPermission = false,
       );
@@ -554,8 +555,8 @@ Future<void> main() async {
     });
 
     // can be removed based on what option to change the brightness will be chosen
-    testWidgets('horizontal drag right increases brightness', (tester) async {
-      await prepareAndStartApp(
+    testWidgets('journeyHeader_whenDraggedRight_thenIncreasesBrightness', (tester) async {
+      await IntegrationTestApp.start(
         tester,
         onBeforeRun: () => (DI.get<BrightnessManager>() as MockBrightnessManager).writeSettingsPermission = false,
       );
@@ -584,8 +585,8 @@ Future<void> main() async {
       await disconnect(tester);
     });
 
-    testWidgets('horizontal drag left decreases brightness', (tester) async {
-      await prepareAndStartApp(
+    testWidgets('journeyHeader_whenDraggedLeft_thenDecreasesBrightness', (tester) async {
+      await IntegrationTestApp.start(
         tester,
         onBeforeRun: () => (DI.get<BrightnessManager>() as MockBrightnessManager).writeSettingsPermission = false,
       );
@@ -614,8 +615,8 @@ Future<void> main() async {
       await disconnect(tester);
     });
 
-    testWidgets('test departure authorization display in header ', (tester) async {
-      await prepareAndStartApp(tester);
+    testWidgets('journeyHeader_whenDepartureAuthorizationPresent_thenDisplaysCorrectly', (tester) async {
+      await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T31');
 
       // check existing departure authorization section in header

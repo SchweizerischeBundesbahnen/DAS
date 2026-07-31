@@ -31,8 +31,8 @@ Although not shown in the blueprint, Playwright has a nice feature to mock API r
 For development or security testing with OWASP ZAP add [proxy settings](https://playwright.dev/docs/network#http-proxy) to your Playwright configuration like this:
 
 ```ts
-const proxyHost = process.env.LOCAL_PROXY_HOST || 'localhost';
-const proxyPort = process.env.LOCAL_PROXY_PORT || '8080';
+const proxyHost = process.env['LOCAL_PROXY_HOST'] || 'localhost';
+const proxyPort = process.env['LOCAL_PROXY_PORT'] || '8080';
 const config: PlaywrightTestConfig = {
   use: {
     proxy: {

@@ -1,5 +1,5 @@
 sealed class LoginModel {
-  const LoginModel._({this.connectToTmsVad = false});
+  const LoginModel._({this.connectToTmsVad = true});
 
   factory LoginModel.loggedOut({bool connectToTmsVad}) = LoggedOut;
 

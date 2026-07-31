@@ -6,5 +6,6 @@ export interface Environment {
   backendUrl: string;
   adminTenantId: string;
   allowedTenantIds: string[];
-  authConfig: PassedInitialConfig
+  authConfig: PassedInitialConfig;
+  instanaKey?: string;
 }

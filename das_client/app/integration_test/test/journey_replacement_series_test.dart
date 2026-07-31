@@ -1,12 +1,12 @@
 import 'package:app/pages/journey/journey_screen/notification/widgets/replacement_series_notification.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../app_test.dart';
+import '../integration/integration_test_app.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('test replacement series is suggested, selected and returned to original', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('replacementSeries_whenSuggested_thenSelectsAndReturnsToOriginal', (tester) async {
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T30');
 
     final expectedReplacementSeries = 'R150';
@@ -37,8 +37,8 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test does not suggest replacement when there is none', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('replacementSeries_whenNoReplacementAvailable_thenDoesNotSuggest', (tester) async {
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T30');
 
     final expectedReplacementSeries = 'R150';
@@ -62,8 +62,8 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test message disappears when end of segment is reached even if user does nothing', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('replacementSeries_whenEndOfSegmentReached_thenMessageDisappears', (tester) async {
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T30');
 
     await selectBrakeSeries(tester, brakeSeries: 'N160');
@@ -82,10 +82,10 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test shows no replacement available notification', (
+  testWidgets('replacementSeries_whenNoReplacementForBrakeSeries_thenShowsNotification', (
     tester,
   ) async {
-    await prepareAndStartApp(tester);
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T30M');
 
     final replacementSeriesFinder = find.byKey(ReplacementSeriesNotification.noReplacementSeriesAvailableKey);

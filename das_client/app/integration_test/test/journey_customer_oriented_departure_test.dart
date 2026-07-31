@@ -10,13 +10,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 import '../app_test.dart';
+import '../integration/integration_test_app.dart';
 import '../mocks/mock_customer_oriented_departure_repository.dart';
 import '../mocks/mock_ru_feature_provider.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('test customer oriented departure notifications are displayed properly', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('customerOrientedDeparture_whenStatusChanges_thenDisplaysNotificationsCorrectly', (tester) async {
+    await IntegrationTestApp.start(tester);
     final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;
     featureProvider.enableFeature(.departureProcess);
     final mockRepository = DI.get<CustomerOrientedDepartureRepository>() as MockCustomerOrientedDepartureRepository;
@@ -53,8 +54,8 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test customer oriented departure subscription changes when changing journey', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('customerOrientedDeparture_whenJourneyChanges_thenSubscriptionUpdates', (tester) async {
+    await IntegrationTestApp.start(tester);
     final mockRepository = DI.get<CustomerOrientedDepartureRepository>() as MockCustomerOrientedDepartureRepository;
     mockRepository.reset();
 

@@ -46,7 +46,7 @@ class CustomerOrientedDepartureApiTest extends RestAssuredCommand {
         testContextManager.prepareTestInstance(this);
     }
 
-    @DisplayName("DAS-Backend proxy->GEMS::subscribe|tests: 1538(2)")
+    @DisplayName("DAS-Backend proxy->GEMS::subscribe|tests: 1538")
     @Test
     void postSubscribe_ok() {
         SubscribeRequest request = new SubscribeRequest();
@@ -72,7 +72,7 @@ class CustomerOrientedDepartureApiTest extends RestAssuredCommand {
         assertThat(response.getStatusCode()).as(toBodyString(response)).isEqualTo(HttpStatus.SC_OK);
     }
 
-    @DisplayName("DAS-Backend proxy->GEMS::confirm|tests: 1538(2)")
+    @DisplayName("DAS-Backend proxy->GEMS::confirm|tests: 1538")
     @Test
     void postConfirm_ok() {
         final String requestId = getRequestId();

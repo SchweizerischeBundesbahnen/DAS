@@ -1,16 +1,16 @@
 import { Component, inject } from '@angular/core';
-import { InternalCompany } from '../../das-admin-api';
 import {
   FormControl,
   NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core';
 import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
-import { BaseDialog } from '../../../shared/base-dialog/base-dialog.component';
-import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core/overlay';
-import { TenantService } from './tenant.service';
 import { SbbSelectModule } from '@sbb-esta/lyne-angular/select';
+import { InternalCompany } from '~app/das-admin/das-admin-api';
+import { BaseDialog } from '~shared/base-dialog/base-dialog.component';
+import { TenantService } from './tenant.service';
 
 export interface FormGroupCompany {
   code: FormControl<string>;
@@ -27,18 +27,22 @@ export type CompanyDialogEditResult = InternalCompany | 'delete';
   styleUrl: './company-dialog.css',
 })
 export class CompanyDialog {
-  protected readonly dialogTitle: string;
   protected readonly dialogData =
-    inject<InternalCompany>(SBB_OVERLAY_DATA, { optional: true }) || undefined;
-
+    inject<InternalCompany>(SBB_OVERLAY_DATA, { optional: true }) ?? undefined;
   private readonly formBuilder = inject(NonNullableFormBuilder);
+  private readonly tenantService = inject(TenantService);
+
+  protected readonly dialogTitle: string;
+
   protected companyForm = this.formBuilder.group<FormGroupCompany>({
-    code: this.formBuilder.control('', [Validators.required, Validators.pattern(/^\d{4}$/)]),
+    code: this.formBuilder.control('', [
+      Validators.required,
+      Validators.pattern(/^(?!0000)\d{4}$/),
+    ]),
     shortName: this.formBuilder.control('', Validators.required),
     tenantId: this.formBuilder.control('', Validators.required),
   });
 
-  private readonly tenantService = inject(TenantService);
   protected readonly tenants = this.tenantService.tenants;
 
   constructor() {

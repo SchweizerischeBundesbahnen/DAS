@@ -34,7 +34,7 @@ public class ProblemHandlingTest extends RestAssuredCommand {
         testContextManager.prepareTestInstance(this);
     }
 
-    @DisplayName("APIM access by BAD JWT|tests: 361(4,5)")
+    @DisplayName("APIM access by BAD JWT|tests: 361")
     @Test
     void checkAuthorization_badNonJWT() {
         final Response response = createRequestWithHeader("de", getRequestId(), SSO_BEARER_TOKEN_PREFIX + (MonitoringConstants.TESTMARKER_BAD + "JWT").toLowerCase())
@@ -51,7 +51,7 @@ public class ProblemHandlingTest extends RestAssuredCommand {
         }
     }
 
-    @DisplayName("APIM endpoint FORBIDDEN|tests: 361(4,5)")
+    @DisplayName("APIM endpoint FORBIDDEN|tests: 361")
     @Test
     void endpoint_nonExisting() {
         final String endpointBad = "/v1/" + (MonitoringConstants.TESTMARKER_BAD + "API").toLowerCase();

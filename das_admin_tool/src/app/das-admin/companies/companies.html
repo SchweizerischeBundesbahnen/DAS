@@ -4,16 +4,16 @@
   @if (companiesResource.value().data.length === 0) {
     <p i18n="@@companies_empty_state">Noch keine EVUs erfasst.</p>
     <sbb-secondary-button
-      (click)="companyService.add()"
       i18n="@@button_create_entry"
       iconName="plus-small"
+      (click)="companyService.add()"
       >Neuen Eintrag erfassen
     </sbb-secondary-button>
   } @else {
-    <app-companies-table></app-companies-table>
+    <app-companies-table />
   }
 } @else if (companiesResource.error()) {
   <p i18n="@@companies_error_loading">Fehler beim Laden der EVUs</p>
 } @else if (companiesResource.isLoading()) {
-  <sbb-loading-indicator-circle></sbb-loading-indicator-circle>
+  <sbb-loading-indicator-circle />
 }

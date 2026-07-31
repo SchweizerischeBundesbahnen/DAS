@@ -5,11 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../app_test.dart';
+import '../integration/integration_test_app.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('test displayed columns on open ASR modal', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('asrModal_whenModalOpened_thenHidesTimeColumn', (tester) async {
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T2');
 
     final kilometreLabel = l10n.p_journey_table_kilometre_label;
@@ -27,8 +28,8 @@ void main() {
 
     await disconnect(tester);
   });
-  testWidgets('test details for ASR in T2 with missing from, until and reason', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('asrModal_whenMissingOptionalFields_thenShowsDashes', (tester) async {
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T2');
 
     expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsOneWidget);
@@ -47,8 +48,8 @@ void main() {
 
     await disconnect(tester);
   });
-  testWidgets('test details for ASR in T3 with all details', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('asrModal_whenAllDetailsPresent_thenShowsAllDetails', (tester) async {
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T3');
 
     expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsOneWidget);
@@ -73,8 +74,8 @@ void main() {
 
     await disconnect(tester);
   });
-  testWidgets('test details for complex ASR in T18', (tester) async {
-    await prepareAndStartApp(tester);
+  testWidgets('asrModal_whenComplexAsrWithMultipleEntries_thenShowsAllEntries', (tester) async {
+    await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T18');
 
     expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsOneWidget);
