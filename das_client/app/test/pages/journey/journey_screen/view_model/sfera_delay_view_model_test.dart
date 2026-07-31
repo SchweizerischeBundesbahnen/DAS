@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:app/pages/journey/journey_screen/view_model/model/punctuality_model.dart';
-import 'package:app/pages/journey/journey_screen/view_model/punctuality_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/sfera_delay_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:clock/clock.dart';
@@ -13,7 +13,7 @@ import 'package:mockito/mockito.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
-import 'punctuality_view_model_test.mocks.dart';
+import 'sfera_delay_view_model_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<JourneyViewModel>()])
 void main() {
@@ -24,7 +24,7 @@ void main() {
   final testVisibleModel = PunctualityModel.visible(delay: testDelay);
 
   late Clock testClock;
-  late PunctualityViewModel testee;
+  late SferaDelayViewModel testee;
   late MockJourneyViewModel mockJourneyViewModel;
   late BehaviorSubject<Journey?> rxMockJourney;
   late StreamSubscription modelSubscription;
@@ -50,7 +50,7 @@ void main() {
       when(mockJourneyViewModel.journey).thenAnswer((_) => rxMockJourney.stream);
       testAsync = fakeAsync;
       withClock(testClock, () {
-        testee = PunctualityViewModel(journeyViewModel: mockJourneyViewModel);
+        testee = SferaDelayViewModel(journeyViewModel: mockJourneyViewModel);
       });
       emitRegister = <PunctualityModel>[];
       modelSubscription = testee.model.listen(emitRegister.add);

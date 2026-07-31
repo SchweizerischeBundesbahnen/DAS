@@ -8,10 +8,10 @@ import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
-final _log = Logger('PunctualityViewModel');
+final _log = Logger('SferaDelayViewModel');
 
-class PunctualityViewModel {
-  PunctualityViewModel({required JourneyViewModel journeyViewModel}) {
+class SferaDelayViewModel {
+  SferaDelayViewModel({required JourneyViewModel journeyViewModel}) {
     _initTimers();
     _journeySubscription = journeyViewModel.journey.listen(_journeyUpdated);
   }

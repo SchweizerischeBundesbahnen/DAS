@@ -9,7 +9,7 @@ import 'package:app/pages/journey/brake_load_slip/widgets/brake_load_slip_specia
 import 'package:app/pages/journey/brake_load_slip/widgets/brake_load_slip_train_details.dart';
 import 'package:app/pages/journey/brake_load_slip/widgets/formation_run_navigation_buttons.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
-import 'package:app/pages/journey/journey_screen/view_model/punctuality_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/sfera_delay_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:auto_route/auto_route.dart';
@@ -30,7 +30,7 @@ class BrakeLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
     providers: [
       Provider<JourneyViewModel>(create: (_) => DI.get<JourneyViewModel>()),
       Provider<JourneySettingsViewModel>(create: (_) => DI.get<JourneySettingsViewModel>()),
-      Provider<PunctualityViewModel>(create: (_) => DI.get<PunctualityViewModel>()),
+      Provider<SferaDelayViewModel>(create: (_) => DI.get<SferaDelayViewModel>()),
       Provider<JourneyPositionViewModel>(create: (_) => DI.get<JourneyPositionViewModel>()),
       ProxyProvider3<JourneyViewModel, JourneyPositionViewModel, JourneySettingsViewModel, BrakeLoadSlipViewModel>(
         update: (_, journeyVM, positionVM, settingsVM, prev) {
