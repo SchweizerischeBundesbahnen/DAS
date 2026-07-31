@@ -196,6 +196,34 @@ void main() {
     expect(testee.openModalTypeValue, DetailModalType.servicePointModal);
   });
 
+  test('open_whenBrakeSlipOpened_thenDisablesAutomaticCloseOnController', () {
+    testee.open(BrakeLoadSlipModalBuilder());
+
+    // brake/load slip modal must never close on its own, see issue #1867
+    expect(testee.controller.automaticCloseEnabled, isFalse);
+  });
+
+  test('open_whenServicePointOpenedAfterBrakeSlip_thenReenablesAutomaticCloseOnController', () {
+    testee.open(BrakeLoadSlipModalBuilder());
+    expect(testee.controller.automaticCloseEnabled, isFalse);
+
+    testee.open(
+      ServicePointModalBuilder(),
+      contentKey: (tab: ServicePointModalTab.communication, servicePoint: servicePointBern),
+    );
+
+    expect(testee.controller.automaticCloseEnabled, isTrue);
+  });
+
+  test('open_whenServicePointOpened_thenAutomaticCloseOnControllerStaysEnabled', () {
+    testee.open(
+      ServicePointModalBuilder(),
+      contentKey: (tab: ServicePointModalTab.communication, servicePoint: servicePointBern),
+    );
+
+    expect(testee.controller.automaticCloseEnabled, isTrue);
+  });
+
   test('close_whenCalled_thenClearsContentBuilder', () async {
     expectLater(
       testee.contentBuilder,

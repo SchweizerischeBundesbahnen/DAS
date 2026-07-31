@@ -53,6 +53,7 @@ class DetailModalViewModel {
       return;
     }
 
+    controller.automaticCloseEnabled = builder.automaticCloseEnabled;
     _openContentKey = contentKey;
     _rxOpenModalType.add(type);
     _rxContentBuilder.add(builder);
