@@ -206,6 +206,10 @@ void main() {
       await _openByTapOnCellWithText(tester, '75-70-60');
       await _checkOpenModalSheet(tester, DetailTabGraduatedSpeeds.graduatedSpeedsTabKey, 'Bern');
 
+      // should display train series in header
+      final expectedTrainSeriesText = '${l10n.w_service_point_modal_graduated_speed_brake_series_title}: R';
+      expect(find.text(expectedTrainSeriesText), findsOne);
+
       expect(find.text('75-70-60'), findsExactly(3));
 
       expect(find.text('Zusatzinformation A'), findsOneWidget);
