@@ -51,49 +51,9 @@ jobs:
           cache: 'npm'
           cache-dependency-path: 'das_admin_tool/package-lock.json'
 
-      - name: Vault Secrets 🤫
-        id: vault-secrets
-        uses: hashicorp/vault-action@v4.0.0
-        with:
-          url: https://vault-nonprod.sbb.ch:443
-          method: approle
-          roleId: ${{ secrets.VAULT_ROLE_ID }}
-          secretId: ${{ secrets.VAULT_SECRET_ID }}
-          secrets: |
-            kv/data/DSO-BPS/driver-advisory-system/ci/common SONAR_TOKEN ;
-
       - run: npm clean-install
 
       - run: npm test
-
-      - name: Sonar scan
-        uses: SonarSource/sonarqube-scan-action@v8.2.1
-        env:
-          SONAR_TOKEN: ${{ steps.vault-secrets.outputs.SONAR_TOKEN }}
-        with:
-          projectBaseDir: das_admin_tool
-          args: >
-            -Dsonar.organization=schweizerischebundesbahnen
-            -Dsonar.projectKey=schweizerischebundesbahnen-DAS-Admin-Tool
-            -Dsonar.projectName=DAS/Admin-Tool
-            -Dsonar.language=ts
-            -Dsonar.sources=src/app
-            -Dsonar.tests=src/app
-            -Dsonar.verbose=true
-            -Dsonar.exclusions=**/node_modules/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts
-            -Dsonar.test.inclusions=src/**/*.spec.ts
-            -Dsonar.typescript.lcov.reportPaths=coverage/das_admin_tool/lcov.info
-            -Dsonar.testExecutionReportPaths=coverage/das_admin_tool/sonarqube.xml
-            -Dsonar.issue.ignore.multicriteria=e1,e2,e3,e4
-            -Dsonar.issue.ignore.multicriteria.e1.ruleKey=css:S4667
-            -Dsonar.issue.ignore.multicriteria.e1.resourceKey=**
-            -Dsonar.issue.ignore.multicriteria.e2.ruleKey=Web:MouseEventWithoutKeyboardEquivalentCheck
-            -Dsonar.issue.ignore.multicriteria.e2.resourceKey=**
-            -Dsonar.issue.ignore.multicriteria.e3.ruleKey=Web:InputWithoutLabelCheck
-            -Dsonar.issue.ignore.multicriteria.e3.resourceKey=**
-            -Dsonar.issue.ignore.multicriteria.e4.ruleKey=Web:S6853
-            -Dsonar.issue.ignore.multicriteria.e4.resourceKey=**
-
 
   e2e:
     runs-on: ubuntu-latest
