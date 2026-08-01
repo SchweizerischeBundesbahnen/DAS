@@ -399,7 +399,7 @@ void main() {
     });
 
     test(
-      'punctualityModel_whenPlannedTimeDelayVisibleButNoCalculatedSpeedAtCurrentPosition_thenStaysHiddenAndDoesNotEmit',
+      'punctualityModel_whenPlannedTimeDelayVisibleButNoCalculatedSpeedAtCurrentPosition_thenEmits',
       () {
         // ACT
         testAsync.run((_) {
@@ -409,7 +409,7 @@ void main() {
         _processStreamInFakeAsync(testAsync);
 
         // EXPECT
-        expect(punctualityEmitRegister, hasLength(0));
+        expect(punctualityEmitRegister, hasLength(1));
         expect(testee.punctualityModelValue, equals(testHiddenModel));
       },
     );

@@ -24,7 +24,6 @@ class PlannedTimeDelayViewModel extends JourneyAwareViewModel {
   final RuFeatureProvider _ruFeatureProvider;
   StreamSubscription<JourneyPositionModel>? _positionSubscription;
 
-  int? _lastProcessedServicePointOrder;
   bool _hasPassedFirstServicePoint = false;
   bool _isFeatureEnabled = false;
 
@@ -35,33 +34,31 @@ class PlannedTimeDelayViewModel extends JourneyAwareViewModel {
   Duration? get modelValue => _rxModel.value;
 
   void _positionUpdated(JourneyPositionModel positionModel) {
+    if (!_isFeatureEnabled) {
+      _log.finer('Feature disabled, emitting null');
+      _rxModel.add(null);
+      return;
+    }
+
     final currentPosition = positionModel.currentPosition;
+    if (currentPosition == positionModel.lastPosition) return;
     if (currentPosition is! ServicePoint) return;
-    if (currentPosition.order == _lastProcessedServicePointOrder) return;
-    _lastProcessedServicePointOrder = currentPosition.order;
 
     if (!_hasPassedFirstServicePoint) {
-      _log.fine('Position on first service point, not showing a planned time deviation.');
+      _log.fine('Position on first service point, emitting null');
       _hasPassedFirstServicePoint = true;
       _rxModel.add(null);
       return;
     }
 
-    if (!_isFeatureEnabled) {
-      _rxModel.add(null);
-      return;
-    }
-
-    final plannedTime =
-        currentPosition.arrivalDepartureTime?.plannedArrivalTime ??
-        currentPosition.arrivalDepartureTime?.plannedDepartureTime;
+    final plannedTime = currentPosition.arrivalDepartureTime?.plannedArrivalTime;
     if (plannedTime == null) {
-      _rxModel.add(null);
+      _log.fine('Service point has no plannedArrivalTime, no emit');
       return;
     }
 
     final deviation = clock.now().difference(plannedTime);
-    _log.fine('Planned time deviation at ${currentPosition.name}: $deviation');
+    _log.fine('Emitting planned time deviation at ${currentPosition.name}: $deviation');
     _rxModel.add(deviation);
   }
 
@@ -70,13 +67,7 @@ class PlannedTimeDelayViewModel extends JourneyAwareViewModel {
   }
 
   @override
-  void onJourneyUpdated(Journey? journey) {
-    _updateFeatureEnabled();
-  }
-
-  @override
   void onJourneyChanged(Journey? journey) {
-    _lastProcessedServicePointOrder = null;
     _hasPassedFirstServicePoint = false;
     _rxModel.add(null);
     _updateFeatureEnabled();

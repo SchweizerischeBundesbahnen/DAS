@@ -13,6 +13,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:settings/component.dart';
 import 'package:sfera/component.dart';
 
+import '../../../../test_util.dart';
 import 'planned_time_delay_view_model_test.mocks.dart';
 
 @GenerateNiceMocks([
@@ -20,8 +21,12 @@ import 'planned_time_delay_view_model_test.mocks.dart';
   MockSpec<RuFeatureProvider>(),
 ])
 void main() {
-  // A departs 20:00, B arrives 20:40 (through-travel),
-  // C arrives 21:30 / departs 21:40, D arrives 22:00.
+  // TEST JOURNEY overview
+  // A departs 20:00
+  // B arrives 20:40 (through-travel),
+  // C arrives 21:30
+  // D arrives 22:00.
+  // E no times
   final servicePointA = ServicePoint(
     name: 'A',
     abbreviation: 'A',
@@ -44,10 +49,7 @@ void main() {
     locationCode: 'C',
     order: 2,
     kilometre: const [],
-    arrivalDepartureTime: ArrivalDepartureTime(
-      plannedArrivalTime: DateTime(2024, 1, 1, 21, 30),
-      plannedDepartureTime: DateTime(2024, 1, 1, 21, 40),
-    ),
+    arrivalDepartureTime: ArrivalDepartureTime(plannedArrivalTime: DateTime(2024, 1, 1, 21, 30)),
   );
   final servicePointD = ServicePoint(
     name: 'D',
@@ -94,7 +96,7 @@ void main() {
         emitRegister = <Duration?>[];
         modelSubscription = testee.model.listen(emitRegister.add);
         rxMockJourney.add(Journey(metadata: Metadata(), data: []));
-        _processStreamInFakeAsync(fakeAsync);
+        processStreams(fakeAsync: fakeAsync);
       });
     });
   });
@@ -118,7 +120,7 @@ void main() {
 
     // ACT
     testAsync.run((_) => rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: aSignal)));
-    _processStreamInFakeAsync(testAsync);
+    processStreams(fakeAsync: testAsync);
 
     // EXPECT
     expect(emitRegister, hasLength(0));
@@ -132,7 +134,7 @@ void main() {
 
     // ACT
     testAsync.run((_) => rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: servicePointA)));
-    _processStreamInFakeAsync(testAsync);
+    processStreams(fakeAsync: testAsync);
 
     // EXPECT
     expect(emitRegister, hasLength(0));
@@ -142,46 +144,57 @@ void main() {
   group('after first service point', () {
     setUp(() {
       testAsync.run((_) => rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: servicePointA)));
-      _processStreamInFakeAsync(testAsync);
+      processStreams(fakeAsync: testAsync);
       emitRegister.clear();
     });
 
-    test('model_whenPositionSecondServicePointEarly_thenEmitsNegativeDeviation', () {
+    test('model_whenRuFeatureIsDisabled_thenEmitsNothing', () {
+      // ARRANGE
+      when(
+        mockRuFeatureProvider.isRuFeatureEnabled(RuFeatureKeys.plannedTimeDeviation),
+      ).thenAnswer((_) async => false);
+      testAsync.run((_) => rxMockJourney.add(Journey(metadata: Metadata(), data: [])));
+      processStreams(fakeAsync: testAsync);
+
       // ACT
       testAsync.elapse(const Duration(minutes: 30)); // now: 20:30
-      testAsync.run((_) => rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: servicePointB)));
-      _processStreamInFakeAsync(testAsync);
+      testAsync.run(
+        (_) => rxMockJourneyPosition.add(
+          JourneyPositionModel(currentPosition: servicePointB, lastPosition: servicePointA),
+        ),
+      );
+      processStreams(fakeAsync: testAsync);
 
       // EXPECT
-      expect(emitRegister, hasLength(1));
-      expect(emitRegister.first, equals(const Duration(minutes: -10)));
-      expect(testee.modelValue, equals(const Duration(minutes: -10)));
-    });
-
-    test('model_whenPositionReachesThirdServicePointLate_thenUsesPlannedArrivalNotDeparture', () {
-      // ACT
-      testAsync.elapse(const Duration(hours: 2)); // now: 22:00
-      testAsync.run((_) => rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: servicePointC)));
-      _processStreamInFakeAsync(testAsync);
-
-      // EXPECT
-      expect(emitRegister, hasLength(1));
-      expect(emitRegister.first, equals(const Duration(minutes: 30)));
+      expect(emitRegister, hasLength(0));
+      expect(testee.modelValue, isNull);
     });
 
     test('model_whenPositionAdvancesThroughMultipleServicePoints_thenRecalculatesEachTime', () {
       // ACT
       testAsync.elapse(const Duration(minutes: 30)); // now: 20:30
-      testAsync.run((_) => rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: servicePointB)));
-      _processStreamInFakeAsync(testAsync);
+      testAsync.run(
+        (_) => rxMockJourneyPosition.add(
+          JourneyPositionModel(currentPosition: servicePointB, lastPosition: servicePointA),
+        ),
+      );
+      processStreams(fakeAsync: testAsync);
 
       testAsync.elapse(const Duration(hours: 1, minutes: 30)); // now: 22:00
-      testAsync.run((_) => rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: servicePointC)));
-      _processStreamInFakeAsync(testAsync);
+      testAsync.run(
+        (_) => rxMockJourneyPosition.add(
+          JourneyPositionModel(currentPosition: servicePointC, lastPosition: servicePointB),
+        ),
+      );
+      processStreams(fakeAsync: testAsync);
 
       testAsync.elapse(const Duration(hours: 1, minutes: 30)); // now: 23:30
-      testAsync.run((_) => rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: servicePointD)));
-      _processStreamInFakeAsync(testAsync);
+      testAsync.run(
+        (_) => rxMockJourneyPosition.add(
+          JourneyPositionModel(currentPosition: servicePointD, lastPosition: servicePointC),
+        ),
+      );
+      processStreams(fakeAsync: testAsync);
 
       // EXPECT
       expect(
@@ -194,51 +207,35 @@ void main() {
       );
     });
 
-    test('model_whenSameServicePointOrderIsEmittedAgain_thenDoesNotRecalculate', () {
+    test('model_whenCurrentPositionAndLastPositionAreEqual_thenDoesNotRecalculate', () {
       // ARRANGE
       testAsync.elapse(const Duration(minutes: 30)); // now: 20:30
       testAsync.run((_) => rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: servicePointB)));
-      _processStreamInFakeAsync(testAsync);
+      processStreams(fakeAsync: testAsync);
       emitRegister.clear();
 
       // ACT
       testAsync.elapse(const Duration(minutes: 5)); // now: 20:35
       testAsync.run(
-        (_) => rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: servicePointB, lastPosition: null)),
+        (_) => rxMockJourneyPosition.add(
+          JourneyPositionModel(currentPosition: servicePointB, lastPosition: servicePointB),
+        ),
       );
-      _processStreamInFakeAsync(testAsync);
+      processStreams(fakeAsync: testAsync);
 
       // EXPECT
       expect(emitRegister, hasLength(0));
-    });
-
-    test('model_whenRuFeatureIsDisabled_thenStaysHiddenAndDoesNotEmit', () {
-      // ARRANGE
-      when(
-        mockRuFeatureProvider.isRuFeatureEnabled(RuFeatureKeys.plannedTimeDeviation),
-      ).thenAnswer((_) async => false);
-      testAsync.run((_) => rxMockJourney.add(Journey(metadata: Metadata(), data: [])));
-      _processStreamInFakeAsync(testAsync);
-
-      // ACT
-      testAsync.elapse(const Duration(minutes: 30)); // now: 20:30
-      testAsync.run((_) => rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: servicePointB)));
-      _processStreamInFakeAsync(testAsync);
-
-      // EXPECT
-      expect(emitRegister, hasLength(0));
-      expect(testee.modelValue, isNull);
     });
 
     test('model_whenMultipleServicePointsProcessedForSameJourney_thenChecksFeatureOnlyOncePerJourneyUpdate', () {
       // ACT
       testAsync.elapse(const Duration(minutes: 30)); // now: 20:30
       testAsync.run((_) => rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: servicePointB)));
-      _processStreamInFakeAsync(testAsync);
+      processStreams(fakeAsync: testAsync);
 
       testAsync.elapse(const Duration(hours: 1, minutes: 30)); // now: 22:00
       testAsync.run((_) => rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: servicePointC)));
-      _processStreamInFakeAsync(testAsync);
+      processStreams(fakeAsync: testAsync);
 
       // EXPECT: only the single call made during setUp's journey update, not once per service point above.
       verify(mockRuFeatureProvider.isRuFeatureEnabled(RuFeatureKeys.plannedTimeDeviation)).called(1);
@@ -255,7 +252,7 @@ void main() {
         // ACT: no journey update happens here, so the cached (enabled) value should still be used.
         testAsync.elapse(const Duration(minutes: 30)); // now: 20:30
         testAsync.run((_) => rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: servicePointB)));
-        _processStreamInFakeAsync(testAsync);
+        processStreams(fakeAsync: testAsync);
 
         // EXPECT
         expect(emitRegister, hasLength(1));
@@ -263,19 +260,34 @@ void main() {
       },
     );
 
-    test('model_whenServicePointHasNoPlannedTime_thenStaysHiddenAndDoesNotEmit', () {
+    test('model_whenServicePointHasNoPlannedTime_thenDoesNotEmit', () {
       // ACT
-      testAsync.elapse(const Duration(minutes: 30));
+      testAsync.elapse(const Duration(minutes: 30)); // now: 20:30
       testAsync.run(
         (_) => rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: servicePointWithoutTimes)),
       );
-      _processStreamInFakeAsync(testAsync);
+      processStreams(fakeAsync: testAsync);
+
+      testAsync.elapse(const Duration(minutes: 30)); // now: 21:00
+      testAsync.run((_) => rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: servicePointWithoutTimes)));
+      processStreams(fakeAsync: testAsync);
 
       // EXPECT
       expect(emitRegister, hasLength(0));
       expect(testee.modelValue, isNull);
     });
+
+    test('model_whenServicePointHasNoPlannedTimeAfterFullServicePoint_thenDoesNotEmitAnyMore', () {
+      // ACT
+      testAsync.elapse(const Duration(minutes: 30));
+      testAsync.run(
+        (_) => rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: servicePointB)),
+      );
+      processStreams(fakeAsync: testAsync);
+
+      // EXPECT
+      expect(emitRegister, hasLength(1));
+      expect(testee.modelValue, const Duration(minutes: -10));
+    });
   });
 }
-
-void _processStreamInFakeAsync(FakeAsync testAsync) => testAsync.elapse(Duration.zero);
