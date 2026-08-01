@@ -95,7 +95,14 @@ void main() {
         );
         emitRegister = <Duration?>[];
         modelSubscription = testee.model.listen(emitRegister.add);
-        rxMockJourney.add(Journey(metadata: Metadata(), data: []));
+        rxMockJourney.add(
+          Journey(
+            metadata: Metadata(
+              trainIdentification: TrainIdentification(ru: .blsC, trainNumber: 'T9999', date: DateTime(2024, 1, 1)),
+            ),
+            data: [],
+          ),
+        );
         processStreams(fakeAsync: fakeAsync);
       });
     });
@@ -112,6 +119,10 @@ void main() {
     'modelValue_whenNoStateAdded_IsHiddenByDefault',
     () => expect(testee.modelValue, isNull),
   );
+
+  test('modelValue_whenJourneyAdded_thenChecksFeatureEnabled', () {
+    verify(mockRuFeatureProvider.isRuFeatureEnabled(.plannedTimeDeviation)).called(1);
+  });
 
   test('model_whenCurrentPositionIsNotAServicePoint_thenStaysHiddenAndDoesNotEmit', () {
     // ARRANGE
@@ -143,7 +154,9 @@ void main() {
 
   group('after first service point', () {
     setUp(() {
-      testAsync.run((_) => rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: servicePointA)));
+      testAsync.run(
+        (_) => rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: servicePointA, lastPosition: aSignal)),
+      );
       processStreams(fakeAsync: testAsync);
       emitRegister.clear();
     });
@@ -178,7 +191,7 @@ void main() {
           JourneyPositionModel(currentPosition: servicePointB, lastPosition: servicePointA),
         ),
       );
-      processStreams(fakeAsync: testAsync);
+      testAsync.flushMicrotasks();
 
       testAsync.elapse(const Duration(hours: 1, minutes: 30)); // now: 22:00
       testAsync.run(
@@ -186,7 +199,7 @@ void main() {
           JourneyPositionModel(currentPosition: servicePointC, lastPosition: servicePointB),
         ),
       );
-      processStreams(fakeAsync: testAsync);
+      testAsync.flushMicrotasks();
 
       testAsync.elapse(const Duration(hours: 1, minutes: 30)); // now: 23:30
       testAsync.run(
@@ -194,7 +207,7 @@ void main() {
           JourneyPositionModel(currentPosition: servicePointD, lastPosition: servicePointC),
         ),
       );
-      processStreams(fakeAsync: testAsync);
+      testAsync.flushMicrotasks();
 
       // EXPECT
       expect(
