@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/delay_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_advancement_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
-import 'package:app/pages/journey/journey_screen/view_model/model/punctuality_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/provider/timed_route_provider_impl.dart';
@@ -30,7 +30,7 @@ void main() {
     late JourneySettingsViewModel journeySettingsViewModel;
     late MockJourneyViewModel mockJourneyViewModel;
     late BehaviorSubject<Journey?> rxMockJourney;
-    late BehaviorSubject<PunctualityModel> rxMockPunctuality;
+    late BehaviorSubject<DelayModel> rxMockPunctuality;
     late List<dynamic> emitRegister;
     late StreamSubscription currentPositionSub;
     late FakeAsync testAsync;
@@ -43,7 +43,7 @@ void main() {
           mockJourneyViewModel = MockJourneyViewModel();
           when(mockJourneyViewModel.journey).thenAnswer((_) => rxMockJourney.stream);
           rxMockJourney = BehaviorSubject<Journey?>.seeded(null);
-          rxMockPunctuality = BehaviorSubject<PunctualityModel>.seeded(PunctualityModel.hidden());
+          rxMockPunctuality = BehaviorSubject<DelayModel>.seeded(DelayModel.hidden());
           journeySettingsViewModel = JourneySettingsViewModel(journeyViewModel: mockJourneyViewModel);
           testAsync = fakeAsync;
           testee = JourneyPositionViewModel(
@@ -300,7 +300,7 @@ void main() {
         final aServicePoint = ServicePoint(name: 'a', abbreviation: '', locationCode: '', order: 16, kilometre: []);
         testAsync.run((_) {
           rxMockPunctuality.add(
-            PunctualityModel.visible(
+            DelayModel.visible(
               delay: Delay(value: Duration.zero, location: ''),
             ),
           );
@@ -337,7 +337,7 @@ void main() {
 
         testAsync.run((_) {
           rxMockPunctuality.add(
-            PunctualityModel.visible(
+            DelayModel.visible(
               delay: Delay(value: Duration.zero, location: ''),
             ),
           );
@@ -388,7 +388,7 @@ void main() {
         testAsync.run((_) {
           withClock(clock, () {
             rxMockPunctuality.add(
-              PunctualityModel.visible(
+              DelayModel.visible(
                 delay: Delay(value: Duration(minutes: 1), location: ''),
               ),
             );
@@ -439,7 +439,7 @@ void main() {
         withClock(clock, () {
           testAsync.run((_) {
             rxMockPunctuality.add(
-              PunctualityModel.visible(
+              DelayModel.visible(
                 delay: Delay(value: Duration(minutes: -1), location: ''),
               ),
             );

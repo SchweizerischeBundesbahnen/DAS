@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:app/pages/journey/journey_screen/view_model/model/punctuality_model.dart';
-import 'package:app/pages/journey/journey_screen/view_model/punctuality_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/delay_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/delay_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:clock/clock.dart';
@@ -13,22 +13,23 @@ import 'package:mockito/mockito.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
-import 'punctuality_view_model_test.mocks.dart';
+import '../../../../test_util.dart';
+import 'delay_view_model_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<JourneyViewModel>()])
 void main() {
   const timeConstants = TimeConstants();
   const testDelay = Delay(value: Duration(seconds: 10), location: 'Bern');
-  final testHiddenModel = PunctualityModel.hidden();
-  final testStaleModel = PunctualityModel.stale(delay: testDelay);
-  final testVisibleModel = PunctualityModel.visible(delay: testDelay);
+  final testHiddenModel = DelayModel.hidden();
+  final testStaleModel = DelayModel.stale(delay: testDelay);
+  final testVisibleModel = DelayModel.visible(delay: testDelay);
 
   late Clock testClock;
-  late PunctualityViewModel testee;
+  late DelayViewModel testee;
   late MockJourneyViewModel mockJourneyViewModel;
   late BehaviorSubject<Journey?> rxMockJourney;
   late StreamSubscription modelSubscription;
-  late List<PunctualityModel> emitRegister;
+  late List<DelayModel> emitRegister;
   late FakeAsync testAsync;
 
   final journeyWithDelay = Journey(
@@ -50,11 +51,11 @@ void main() {
       when(mockJourneyViewModel.journey).thenAnswer((_) => rxMockJourney.stream);
       testAsync = fakeAsync;
       withClock(testClock, () {
-        testee = PunctualityViewModel(journeyViewModel: mockJourneyViewModel);
+        testee = DelayViewModel(journeyViewModel: mockJourneyViewModel);
       });
-      emitRegister = <PunctualityModel>[];
+      emitRegister = <DelayModel>[];
       modelSubscription = testee.model.listen(emitRegister.add);
-      _processStreamInFakeAsync(fakeAsync);
+      processStreams(fakeAsync: testAsync);
     });
   });
 
@@ -77,7 +78,7 @@ void main() {
 
     // ACT
     testAsync.run((_) => rxMockJourney.add(null));
-    _processStreamInFakeAsync(testAsync);
+    processStreams(fakeAsync: testAsync);
 
     // EXPECT
     expect(emitRegister, hasLength(0));
@@ -91,7 +92,7 @@ void main() {
 
     // ACT
     testAsync.run((_) => rxMockJourney.add(journeyWithoutDelay));
-    _processStreamInFakeAsync(testAsync);
+    processStreams(fakeAsync: testAsync);
 
     // EXPECT
     expect(emitRegister, hasLength(0));
@@ -103,7 +104,7 @@ void main() {
       testAsync.run((_) {
         emitRegister.clear();
         rxMockJourney.add(journeyWithDelay);
-        _processStreamInFakeAsync(testAsync);
+        processStreams(fakeAsync: testAsync);
       });
     });
     test(
@@ -118,7 +119,7 @@ void main() {
 
       // ACT
       testAsync.run((_) => rxMockJourney.add(journeyWithoutDelay));
-      _processStreamInFakeAsync(testAsync);
+      processStreams(fakeAsync: testAsync);
 
       // EXPECT
       expect(emitRegister, hasLength(1));
@@ -152,5 +153,3 @@ void main() {
     });
   });
 }
-
-void _processStreamInFakeAsync(FakeAsync testAsync) => testAsync.elapse(Duration.zero);

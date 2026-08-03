@@ -14,8 +14,9 @@ class IntegrationTestJourneyScope extends JourneyScope {
 
     getIt.registerCustomerOrientedDepartureViewModel();
     getIt.registerUxTestingViewModel();
-    getIt.registerPunctualityViewModel();
+    getIt.registerSferaDelayViewModel();
     getIt.registerJourneyPositionViewModel();
+    getIt.registerPlannedTimeDelayViewModel();
     getIt.registerDepartureProcessWarningViewModel();
     getIt.registerDecisiveGradientViewModel();
     getIt.registerJourneyTableScrollController();

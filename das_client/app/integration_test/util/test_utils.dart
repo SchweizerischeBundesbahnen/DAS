@@ -7,6 +7,7 @@ import 'package:app/pages/journey/journey_screen/header/widgets/extended_menu.da
 import 'package:app/pages/journey/journey_screen/header/widgets/journey_advancement_button.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/next_stop.dart';
 import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_chevron.dart';
 import 'package:app/widgets/railway_undertaking/widgets/select_railway_undertaking_modal.dart';
 import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:app/widgets/table/das_table.dart';
@@ -220,4 +221,8 @@ Future<void> dragUntilTextInStickyHeader(WidgetTester tester, String textToSearc
     maxIteration: 100,
   );
   await tester.pumpAndSettle(ScrollableAlign.alignScrollDuration);
+}
+
+Finder findChevronPositionAtRowWithText(String text) {
+  return find.descendant(of: findDASTableRowByText(text), matching: find.byKey(RouteChevron.chevronKey));
 }

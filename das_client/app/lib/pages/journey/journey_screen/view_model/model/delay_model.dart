@@ -1,22 +1,27 @@
 import 'package:intl/intl.dart';
 import 'package:sfera/component.dart';
 
-sealed class PunctualityModel {
-  const PunctualityModel._();
+sealed class DelayModel {
+  const DelayModel._();
 
-  factory PunctualityModel.visible({
+  factory DelayModel.visible({
     required Delay delay,
   }) = Visible;
 
-  factory PunctualityModel.stale({
+  factory DelayModel.stale({
     required Delay delay,
   }) = Stale;
 
-  factory PunctualityModel.hidden() = Hidden;
+  factory DelayModel.hidden() = Hidden;
+
+  factory DelayModel.plannedTimeDeviation({
+    required Duration deviation,
+  }) = PlannedTimeDeviation;
 
   String get formattedDelay => switch (this) {
     final Visible v => v.delay.formatted,
     final Stale s => s.delay.formatted,
+    final PlannedTimeDeviation p => p.deviation.formattedPlannedTimeDeviation,
     final Hidden _ => '',
   };
 
@@ -27,7 +32,7 @@ sealed class PunctualityModel {
   int get hashCode => runtimeType.hashCode;
 }
 
-class Visible extends PunctualityModel {
+class Visible extends DelayModel {
   const Visible({required this.delay}) : super._();
   final Delay delay;
 
@@ -44,7 +49,7 @@ class Visible extends PunctualityModel {
   }
 }
 
-class Stale extends PunctualityModel {
+class Stale extends DelayModel {
   const Stale({required this.delay}) : super._();
   final Delay delay;
 
@@ -61,7 +66,7 @@ class Stale extends PunctualityModel {
   }
 }
 
-class Hidden extends PunctualityModel {
+class Hidden extends DelayModel {
   const Hidden() : super._();
 
   @override
@@ -76,6 +81,25 @@ class Hidden extends PunctualityModel {
   }
 }
 
+class PlannedTimeDeviation extends DelayModel {
+  const PlannedTimeDeviation({required this.deviation}) : super._();
+
+  final Duration deviation;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PlannedTimeDeviation && runtimeType == other.runtimeType && deviation == other.deviation;
+
+  @override
+  int get hashCode => Object.hash(runtimeType, deviation);
+
+  @override
+  String toString() {
+    return 'PlannedTimeDeviation{deviation: $deviation}';
+  }
+}
+
 extension _DelayExtension on Delay? {
   String get formatted {
     if (this == null) return '';
@@ -85,5 +109,13 @@ extension _DelayExtension on Delay? {
     final minutes = NumberFormat('00').format(value.inMinutes.abs());
     final seconds = NumberFormat('00').format(value.inSeconds.abs() % 60);
     return '${value.isNegative ? '-' : '+'}$minutes:$seconds';
+  }
+}
+
+extension _PlannedTimeDeviationExtension on Duration {
+  String get formattedPlannedTimeDeviation {
+    final hours = NumberFormat('00').format(inHours.abs());
+    final minutes = NumberFormat('00').format(inMinutes.abs() % 60);
+    return '${isNegative ? '-' : '+'}${hours}h$minutes';
   }
 }

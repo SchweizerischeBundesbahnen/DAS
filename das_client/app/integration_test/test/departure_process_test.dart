@@ -1,7 +1,6 @@
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/chronograph_header_box.dart';
 import 'package:app/pages/journey/journey_screen/widgets/floating_departure_checklist_button.dart';
-import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_chevron.dart';
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -23,27 +22,18 @@ void main() {
       await waitUntilExists(tester, find.byKey(FloatingDepartureChecklistButton.buttonKey));
 
       // journey started (exit signal of LZ)
-      await waitUntilExists(
-        tester,
-        find.descendant(of: findDASTableRowByText('A1'), matching: find.byKey(RouteChevron.chevronKey)),
-      );
+      await waitUntilExists(tester, findChevronPositionAtRowWithText('A1'));
       await waitUntilNotExists(tester, find.byKey(FloatingDepartureChecklistButton.buttonKey));
 
       // next stop reached
       await waitUntilNotExists(tester, find.byKey(FloatingDepartureChecklistButton.buttonKey));
 
       // intermediate signal reached
-      await waitUntilExists(
-        tester,
-        find.descendant(of: findDASTableRowByText('I1'), matching: find.byKey(RouteChevron.chevronKey)),
-      );
+      await waitUntilExists(tester, findChevronPositionAtRowWithText('I1'));
       await waitUntilExists(tester, find.byKey(FloatingDepartureChecklistButton.buttonKey));
 
       // next signal reached
-      await waitUntilNotExists(
-        tester,
-        find.descendant(of: findDASTableRowByText('I1'), matching: find.byKey(RouteChevron.chevronKey)),
-      );
+      await waitUntilNotExists(tester, findChevronPositionAtRowWithText('I1'));
       await waitUntilNotExists(tester, find.byKey(FloatingDepartureChecklistButton.buttonKey));
 
       await disconnect(tester);
