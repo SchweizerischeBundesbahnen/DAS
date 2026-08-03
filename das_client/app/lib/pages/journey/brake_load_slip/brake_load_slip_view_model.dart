@@ -107,7 +107,11 @@ class BrakeLoadSlipViewModel extends JourneyAwareViewModel {
   }
 
   @override
-  void onJourneyUpdated(Journey? _) => _emitFormationRun();
+  void onJourneyUpdated(Journey? _) {
+    if (_updateOnPositionUpdate || _rxFormationRun.value == null) {
+      _emitFormationRun();
+    }
+  }
 
   void _checkForFormationUpdates() {
     if (_skipFirstUpdate) {

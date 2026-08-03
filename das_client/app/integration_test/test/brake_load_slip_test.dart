@@ -54,6 +54,9 @@ void main() {
     await openBrakeSlipPage(tester);
 
     expect(find.byType(BrakeLoadSlipPage), findsOne);
+
+    await tester.pumpAndSettle();
+
     expect(find.text('Bahnhof A'), findsNothing);
     expect(find.text('Halt auf Verlangen C'), findsOneWidget);
 
