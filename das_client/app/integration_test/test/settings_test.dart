@@ -1,4 +1,3 @@
-import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_chevron.dart';
 import 'package:app/pages/settings/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -161,18 +160,9 @@ void main() {
     expect(find.text(l10n.c_main_signal_function_exit), findsNothing);
 
     // Check chevron is positioning correctly
-    await waitUntilExists(
-      tester,
-      find.descendant(of: findDASTableRowByText('0.5'), matching: find.byKey(RouteChevron.chevronKey)),
-    );
-    await waitUntilExists(
-      tester,
-      find.descendant(of: findDASTableRowByText('1.2'), matching: find.byKey(RouteChevron.chevronKey)),
-    );
-    await waitUntilExists(
-      tester,
-      find.descendant(of: findDASTableRowByText('2.4'), matching: find.byKey(RouteChevron.chevronKey)),
-    );
+    await waitUntilExists(tester, findChevronPositionAtRowWithText('0.5'));
+    await waitUntilExists(tester, findChevronPositionAtRowWithText('1.2'));
+    await waitUntilExists(tester, findChevronPositionAtRowWithText('2.4'));
 
     await disconnect(tester);
   });

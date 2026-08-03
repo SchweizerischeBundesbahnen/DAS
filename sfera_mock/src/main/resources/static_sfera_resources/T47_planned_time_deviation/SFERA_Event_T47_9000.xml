@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<G2B_EventPayload xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA.xsd">
+    <!-- Journey profile update that introduces an active ADL (advised speed) segment covering the current
+         position (Nyon). An active ADL hides the punctuality area entirely, so neither the SFERA delay nor the
+         planned time deviation is shown anymore. The ADL carries no delay of its own. -->
+    <JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="2" xsi:noNamespaceSchemaLocation="../../SFERA.xsd">
+        <TrainIdentification>
+            <OTN_ID>
+                <teltsi_Company>1285</teltsi_Company>
+                <teltsi_OperationalTrainNumber>T47</teltsi_OperationalTrainNumber>
+                <teltsi_StartDate>2026-01-04</teltsi_StartDate>
+            </OTN_ID>
+        </TrainIdentification>
+        <SegmentProfileReference SP_ID="T47_1" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+            <SP_Zone>
+                <IM_ID>0085</IM_ID>
+            </SP_Zone>
+            <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:00:10Z">
+                <TimingPointReference>
+                    <TP_ID_Reference TP_ID="Genève-Aéroport"/>
+                </TimingPointReference>
+                <StoppingPointDepartureDetails departureTime="9999-01-01T00:01:00Z"/>
+            </TimingPointConstraints>
+            <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:02:00Z">
+                <TimingPointReference>
+                    <TP_ID_Reference TP_ID="Genève"/>
+                </TimingPointReference>
+                <StoppingPointDepartureDetails departureTime="9999-01-01T00:03:00Z"/>
+            </TimingPointConstraints>
+            <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+                <TimingPointReference>
+                    <TP_ID_Reference TP_ID="Nyon"/>
+                </TimingPointReference>
+                <StoppingPointInformation>
+                    <StopType mandatoryStop="false">
+                        <teltsi_TrainActivityType>0001</teltsi_TrainActivityType>
+                    </StopType>
+                </StoppingPointInformation>
+                <StoppingPointDepartureDetails departureTime="9999-01-01T00:04:00Z"/>
+            </TimingPointConstraints>
+            <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None">
+                <TimingPointReference>
+                    <TP_ID_Reference TP_ID="Morges"/>
+                </TimingPointReference>
+            </TimingPointConstraints>
+            <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+                <TimingPointReference>
+                    <TP_ID_Reference TP_ID="Lausanne"/>
+                </TimingPointReference>
+            </TimingPointConstraints>
+            <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None">
+                <TimingPointReference>
+                    <TP_ID_Reference TP_ID="Vevey"/>
+                </TimingPointReference>
+            </TimingPointConstraints>
+            <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+                <TimingPointReference>
+                    <TP_ID_Reference TP_ID="Montreux"/>
+                </TimingPointReference>
+            </TimingPointConstraints>
+            <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+                <TimingPointReference>
+                    <TP_ID_Reference TP_ID="Aigle"/>
+                </TimingPointReference>
+            </TimingPointConstraints>
+
+            <!-- Active ADL covering Genève-Aéroport (500) through Lausanne (2500); the train is at Nyon (1500),
+                 i.e. inside the segment, so the advised speed is active. -->
+            <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="AdvisedSpeed" startLocation="500" endLocation="2500">
+                <AdvisedSpeed optimalSpeed="80" reasonCode="followTrain" adviceType="ConstantspeedAdvice">
+                    <ReasonText language="DE" text="ADL"/>
+                </AdvisedSpeed>
+            </TemporaryConstraints>
+
+            <TrainCharacteristicsRef TC_ID="T47_1" TC_VersionMajor="1" TC_VersionMinor="1" location="0">
+                <TC_RU_ID>1185</TC_RU_ID>
+            </TrainCharacteristicsRef>
+
+            <JP_ContextInformation>
+                <JP_ContextInformation_NSPs>
+                    <teltsi_Company>0085</teltsi_Company>
+                    <NSP_GroupName>VProSpeed</NSP_GroupName>
+                    <NetworkSpecificParameter name="newSpeed" value="100"/>
+                    <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="1500" endLocation="1500"/>
+                </JP_ContextInformation_NSPs>
+            </JP_ContextInformation>
+        </SegmentProfileReference>
+    </JourneyProfile>
+</G2B_EventPayload>
