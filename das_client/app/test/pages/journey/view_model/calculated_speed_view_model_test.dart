@@ -27,10 +27,10 @@ void main() {
   final journey = Journey(
     metadata: Metadata(
       availableBrakeSeries: {
-        BrakeSeries(trainSeries: .R, brakeSeries: 120),
-        BrakeSeries(trainSeries: .A, brakeSeries: 100),
+        BrakeSeries(trainSeries: .R, brakedWeightPercentage: 120),
+        BrakeSeries(trainSeries: .A, brakedWeightPercentage: 100),
       },
-      brakeSeries: BrakeSeries(trainSeries: .R, brakeSeries: 120),
+      brakeSeries: BrakeSeries(trainSeries: .R, brakedWeightPercentage: 120),
       calculatedSpeeds: SplayTreeMap.from({
         5: SingleSpeed(value: '100'),
         10: null,
@@ -122,7 +122,7 @@ void main() {
       speed: TrainSeriesSpeed(
         trainSeries: .R,
         speed: SingleSpeed(value: '50'),
-        brakeSeries: 120,
+        brakedWeightPercentage: 120,
       ),
       isPrevious: false,
     );
@@ -159,7 +159,7 @@ void main() {
         speed: TrainSeriesSpeed(
           trainSeries: .R,
           speed: SingleSpeed(value: '50'),
-          brakeSeries: 120,
+          brakedWeightPercentage: 120,
         ),
         isPrevious: false,
       ),
@@ -169,7 +169,7 @@ void main() {
         speed: TrainSeriesSpeed(
           trainSeries: .R,
           speed: SingleSpeed(value: '60'),
-          brakeSeries: 120,
+          brakedWeightPercentage: 120,
         ),
         isPrevious: false,
       ),
@@ -179,7 +179,7 @@ void main() {
         speed: TrainSeriesSpeed(
           trainSeries: .R,
           speed: SingleSpeed(value: '60'),
-          brakeSeries: 120,
+          brakedWeightPercentage: 120,
         ),
         isPrevious: false,
       ),

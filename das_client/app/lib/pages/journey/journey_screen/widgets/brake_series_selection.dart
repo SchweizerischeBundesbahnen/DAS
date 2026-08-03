@@ -63,7 +63,7 @@ class _BrakeSeriesSelectionState extends State<BrakeSeriesSelection> {
 
   List<Widget> _trainSeriesRows(BuildContext context, TrainSeries trainSeries) {
     final brakeSeries = widget.availableBrakeSeries.where((it) => it.trainSeries == trainSeries).toList();
-    brakeSeries.sort((a, b) => b.brakeSeries.compareTo(a.brakeSeries));
+    brakeSeries.sort((a, b) => b.brakedWeightPercentage.compareTo(a.brakedWeightPercentage));
 
     return [
       Padding(

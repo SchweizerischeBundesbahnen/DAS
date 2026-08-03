@@ -198,7 +198,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     final selectedBrakeSeries = config.settings.currentBrakeSeries;
     final trainSeriesSpeed = speedData.speedFor(
       selectedBrakeSeries?.trainSeries,
-      brakeSeries: selectedBrakeSeries?.brakeSeries,
+      brakedWeightPercentage: selectedBrakeSeries?.brakedWeightPercentage,
     );
 
     return DASTableCell(

@@ -48,7 +48,7 @@ void main() {
 
   test('updateBrakeSeries_whenCalled_emitsCorrectBrakeSeries', () {
     // ARRANGE
-    final aBrakeSeries = BrakeSeries(trainSeries: TrainSeries.A, brakeSeries: 100);
+    final aBrakeSeries = BrakeSeries(trainSeries: TrainSeries.A, brakedWeightPercentage: 100);
     // ACT
     testee.updateBrakeSeries(aBrakeSeries);
     processStreams();

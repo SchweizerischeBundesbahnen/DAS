@@ -59,7 +59,11 @@ class ServicePoint extends JourneyPoint {
     return properties.where(
       (property) =>
           property.speeds == null ||
-          property.speeds?.speedFor(brakeSeries?.trainSeries, brakeSeries: brakeSeries?.brakeSeries) != null,
+          property.speeds?.speedFor(
+                brakeSeries?.trainSeries,
+                brakedWeightPercentage: brakeSeries?.brakedWeightPercentage,
+              ) !=
+              null,
     );
   }
 

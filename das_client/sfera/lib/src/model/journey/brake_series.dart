@@ -6,14 +6,14 @@ import 'package:sfera/src/model/journey/train_series.dart';
 class BrakeSeries {
   const BrakeSeries({
     required this.trainSeries,
-    required this.brakeSeries,
+    required this.brakedWeightPercentage,
   });
 
   final TrainSeries trainSeries;
-  final int brakeSeries;
+  final int brakedWeightPercentage;
 
-  /// returns train series name + brake series number (ie. R150)
-  String get name => '${trainSeries.name}$brakeSeries';
+  /// returns train series name + braked weight percentage (ie. R150)
+  String get name => '${trainSeries.name}$brakedWeightPercentage';
 
   @override
   bool operator ==(Object other) =>
@@ -21,13 +21,13 @@ class BrakeSeries {
       other is BrakeSeries &&
           runtimeType == other.runtimeType &&
           trainSeries == other.trainSeries &&
-          brakeSeries == other.brakeSeries;
+          brakedWeightPercentage == other.brakedWeightPercentage;
 
   @override
-  int get hashCode => trainSeries.hashCode ^ brakeSeries.hashCode;
+  int get hashCode => trainSeries.hashCode ^ brakedWeightPercentage.hashCode;
 
   @override
   String toString() {
-    return 'BrakeSeries{trainSeries: $trainSeries, brakeSeries: $brakeSeries}';
+    return 'BrakeSeries{trainSeries: $trainSeries, brakedWeightPercentage: $brakedWeightPercentage}';
   }
 }

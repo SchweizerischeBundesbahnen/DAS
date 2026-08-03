@@ -129,7 +129,7 @@ class SferaModelMapper {
                 trainCharacteristic?.tcFeatures.brakedWeightPercentage != null
             ? BrakeSeries(
                 trainSeries: trainCharacteristic!.tcFeatures.trainCategoryCode!,
-                brakeSeries: trainCharacteristic.tcFeatures.brakedWeightPercentage!,
+                brakedWeightPercentage: trainCharacteristic.tcFeatures.brakedWeightPercentage!,
               )
             : null,
         lineFootNoteLocations: _generateLineFootNoteLocationMap(journeyData.whereType<LineFootNote>()),
@@ -461,8 +461,8 @@ class SferaModelMapper {
     speeds.addAll(lineSpeeds.values.flattened);
 
     return speeds
-        .where((it) => it.brakeSeries != null)
-        .map((it) => BrakeSeries(trainSeries: it.trainSeries, brakeSeries: it.brakeSeries!))
+        .where((it) => it.brakedWeightPercentage != null)
+        .map((it) => BrakeSeries(trainSeries: it.trainSeries, brakedWeightPercentage: it.brakedWeightPercentage!))
         .toSet();
   }
 

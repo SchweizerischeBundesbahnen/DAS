@@ -10,20 +10,26 @@ class TrainSeriesSpeed {
   const TrainSeriesSpeed({
     required this.trainSeries,
     required this.speed,
-    this.brakeSeries,
+    this.brakedWeightPercentage,
     this.text,
     this.reduced = false,
   });
 
   final TrainSeries trainSeries;
   final Speed speed;
-  final int? brakeSeries;
+  final int? brakedWeightPercentage;
   final String? text;
   final bool reduced;
 
   @override
   String toString() {
-    return 'TrainSeriesSpeed{trainSeries: $trainSeries, speed: $speed, brakeSeries: $brakeSeries, text: $text, reduced: $reduced}';
+    return 'TrainSeriesSpeed{'
+        'trainSeries: $trainSeries'
+        ', speed: $speed'
+        ', brakedWeightPercentage: $brakedWeightPercentage'
+        ', text: $text'
+        ', reduced: $reduced'
+        '}';
   }
 
   @override
@@ -32,22 +38,24 @@ class TrainSeriesSpeed {
         (other is TrainSeriesSpeed &&
             trainSeries == other.trainSeries &&
             speed == other.speed &&
-            brakeSeries == other.brakeSeries &&
+            brakedWeightPercentage == other.brakedWeightPercentage &&
             text == other.text &&
             reduced == other.reduced);
   }
 
   @override
-  int get hashCode => Object.hash(trainSeries, speed, brakeSeries, text, reduced);
+  int get hashCode => Object.hash(trainSeries, speed, brakedWeightPercentage, text, reduced);
 }
 
 extension TrainSeriesSpeedExtension on Iterable<TrainSeriesSpeed>? {
-  TrainSeriesSpeed? speedFor(TrainSeries? trainSeries, {int? brakeSeries}) {
+  TrainSeriesSpeed? speedFor(TrainSeries? trainSeries, {int? brakedWeightPercentage}) {
     if (trainSeries == null) return null;
     if (this == null) return null;
 
     final trainSeriesSpeeds = this!.where((it) => it.trainSeries == trainSeries);
-    final exactMatchingVelocity = trainSeriesSpeeds.firstWhereOrNull((it) => it.brakeSeries == brakeSeries);
-    return exactMatchingVelocity ?? trainSeriesSpeeds.firstWhereOrNull((it) => it.brakeSeries == null);
+    final exactMatchingVelocity = trainSeriesSpeeds.firstWhereOrNull(
+      (it) => it.brakedWeightPercentage == brakedWeightPercentage,
+    );
+    return exactMatchingVelocity ?? trainSeriesSpeeds.firstWhereOrNull((it) => it.brakedWeightPercentage == null);
   }
 }
