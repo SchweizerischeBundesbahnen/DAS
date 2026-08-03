@@ -11,7 +11,6 @@ import 'package:app/pages/journey/journey_screen/header/widgets/radio_channel.da
 import 'package:app/pages/journey/journey_screen/header/widgets/radio_contact.dart';
 import 'package:app/pages/journey/journey_screen/notification/widgets/maneuver_notification.dart';
 import 'package:app/pages/journey/journey_screen/widgets/communication_network_icon.dart';
-import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_chevron.dart';
 import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:app/util/format.dart';
@@ -339,12 +338,8 @@ Future<void> main() async {
       final wankdorfGsmPIcon = find.descendant(of: header, matching: find.byKey(CommunicationNetworkIcon.gsmPKey));
       expect(wankdorfGsmPIcon, findsNothing);
 
-      // check network type for Olten
-      final locationOnEntryBeforeOlten = find.descendant(
-        of: findDASTableRowByText('A3'),
-        matching: find.byKey(RouteChevron.chevronKey),
-      );
-      await waitUntilExists(tester, locationOnEntryBeforeOlten);
+      // check network type for Olten - signal A3 is before olten
+      await waitUntilExists(tester, findChevronPositionAtRowWithText('A3'));
       final oltenGsmRIcon = find.descendant(of: header, matching: find.byKey(CommunicationNetworkIcon.gsmRKey));
       expect(oltenGsmRIcon, findsOneWidget);
 
@@ -380,23 +375,15 @@ Future<void> main() async {
       final wankdorfIndicator = find.descendant(of: radioChannel, matching: find.byKey(DotIndicator.indicatorKey));
       expect(wankdorfIndicator, findsNothing);
 
-      // check mainContacts for Burgdorf
-      final locationOnEntryBeforeBurgdorf = find.descendant(
-        of: findDASTableRowByText('A2'),
-        matching: find.byKey(RouteChevron.chevronKey),
-      );
-      await waitUntilExists(tester, locationOnEntryBeforeBurgdorf);
+      // check mainContacts for Burgdorf (A2 is entry signal)
+      await waitUntilExists(tester, findChevronPositionAtRowWithText('A2'));
       final mainContactsBurgdorf = find.descendant(of: radioChannel, matching: find.text('1608 (1609)'));
       await waitUntilExists(tester, mainContactsBurgdorf, maxWaitSeconds: 2);
       final burgdorfIndicator = find.descendant(of: radioChannel, matching: find.byKey(DotIndicator.indicatorKey));
       expect(burgdorfIndicator, findsOneWidget);
 
-      // check mainContacts for Olten
-      final locationOnEntryBeforeOlten = find.descendant(
-        of: findDASTableRowByText('A3'),
-        matching: find.byKey(RouteChevron.chevronKey),
-      );
-      await waitUntilExists(tester, locationOnEntryBeforeOlten);
+      // check mainContacts for Olten (A3 is entry signal)
+      await waitUntilExists(tester, findChevronPositionAtRowWithText('A3'));
       final mainContactsOlten = find.descendant(of: radioChannel, matching: find.text('1102'));
       await waitUntilExists(tester, mainContactsOlten, maxWaitSeconds: 2);
       final oltenIndicator = find.descendant(of: radioChannel, matching: find.byKey(DotIndicator.indicatorKey));

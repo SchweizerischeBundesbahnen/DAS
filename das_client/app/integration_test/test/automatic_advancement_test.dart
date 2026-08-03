@@ -15,19 +15,13 @@ void main() {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9');
 
-      // Check chevron at start
-      expect(
-        find.descendant(of: findDASTableRowByText('Bern'), matching: find.byKey(RouteChevron.chevronKey)),
-        findsAny,
-      );
+      // Check journey position at journey start
+      expect(findChevronPositionAtRowWithText('Bern'), findsAny);
 
       final locations = ['B2', 'B3', 'Burgdorf', 'B101', 'A104'];
 
       for (final location in locations) {
-        await waitUntilExists(
-          tester,
-          find.descendant(of: findDASTableRowByText(location), matching: find.byKey(RouteChevron.chevronKey)),
-        );
+        await waitUntilExists(tester, findChevronPositionAtRowWithText(location));
       }
 
       await disconnect(tester);
@@ -85,11 +79,8 @@ void main() {
 
       await stopAutomaticAdvancement(tester);
 
-      // Check chevron at start
-      expect(
-        find.descendant(of: findDASTableRowByText('Bern'), matching: find.byKey(RouteChevron.chevronKey)),
-        findsAny,
-      );
+      // Check journey position at journey start
+      expect(findChevronPositionAtRowWithText('Bern'), findsAny);
 
       // Wait until the chevron is no longer visible
       await waitUntilNotExists(tester, find.byKey(RouteChevron.chevronKey), maxWaitSeconds: 40);
@@ -139,20 +130,14 @@ void main() {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T46M');
 
-      // Check chevron at start
-      expect(
-        find.descendant(of: findDASTableRowByText('Iselle'), matching: find.byKey(RouteChevron.chevronKey)),
-        findsAny,
-      );
+      // Check journey position at journey start
+      expect(findChevronPositionAtRowWithText('Iselle'), findsAny);
 
       // Preglia is skipped, because Domodossola (bif) time is before Preglia
       final locations = ['Varzo', 'Domodossola (bif)', 'Domodossola (I)'];
 
       for (final location in locations) {
-        await waitUntilExists(
-          tester,
-          find.descendant(of: findDASTableRowByText(location), matching: find.byKey(RouteChevron.chevronKey)),
-        );
+        await waitUntilExists(tester, findChevronPositionAtRowWithText(location));
       }
 
       await disconnect(tester);

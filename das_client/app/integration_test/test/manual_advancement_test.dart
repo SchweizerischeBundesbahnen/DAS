@@ -16,7 +16,7 @@ void main() {
 
       // Check chevron at start A
       final a = '(Bahnhof A)';
-      expect(find.descendant(of: findDASTableRowByText(a), matching: find.byKey(RouteChevron.chevronKey)), findsAny);
+      expect(findChevronPositionAtRowWithText(a), findsAny);
 
       // set position to B manually
       final b = 'Haltestelle B';
@@ -24,10 +24,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Check chevron at B
-      expect(
-        find.descendant(of: findDASTableRowByText(b), matching: find.byKey(RouteChevron.chevronKey)),
-        findsAny,
-      );
+      expect(findChevronPositionAtRowWithText(b), findsAny);
 
       final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
@@ -143,15 +140,9 @@ void main() {
       await tester.pumpAndSettle(Duration(seconds: 6));
 
       // Chevron should still be at Domodossola (bif) because the timer was restarted
-      expect(
-        find.descendant(of: findDASTableRowByText(domodossola), matching: find.byKey(RouteChevron.chevronKey)),
-        findsOne,
-      );
+      expect(findChevronPositionAtRowWithText(domodossola), findsOne);
 
-      await waitUntilExists(
-        tester,
-        find.descendant(of: findDASTableRowByText('Domodossola (I)'), matching: find.byKey(RouteChevron.chevronKey)),
-      );
+      await waitUntilExists(tester, findChevronPositionAtRowWithText('Domodossola (I)'));
 
       await disconnect(tester);
     });

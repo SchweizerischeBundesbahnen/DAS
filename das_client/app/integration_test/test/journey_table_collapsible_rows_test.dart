@@ -1,6 +1,5 @@
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_screen/view_model/sim_train_view_model.dart';
-import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_chevron.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/combined_foot_note_and_indications_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/foot_note_accordion.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/indication_accordion.dart';
@@ -226,10 +225,7 @@ void main() {
     _checkCollapsibleRow(isCollapsed: false, collapsibleRow: simFootNoteAccordion);
 
     // ACT - wait for automatic position advancement to reach Kandergrund
-    await waitUntilExists(
-      tester,
-      find.descendant(of: findDASTableRowByText('Kandergrund'), matching: find.byKey(RouteChevron.chevronKey)),
-    );
+    await waitUntilExists(tester, findChevronPositionAtRowWithText('Kandergrund'));
     await stopAutomaticAdvancement(tester);
     final scrollableFinder = find.byType(AnimatedList);
     await tester.dragUntilVisible(findDASTableRowByText('P111'), scrollableFinder, const Offset(0, 100));
