@@ -11,11 +11,11 @@
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
-        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:00:10Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Genève-Aéroport"/>
             </TimingPointReference>
-            <StoppingPointDepartureDetails departureTime="9999-01-01T00:00:05Z"/>
+            <StoppingPointDepartureDetails departureTime="9999-01-01T00:01:00Z"/>
         </TimingPointConstraints>
         <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:02:00Z">
             <TimingPointReference>
