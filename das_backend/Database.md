@@ -81,6 +81,41 @@ Follow the [principle of least privilege](https://en.wikipedia.org/wiki/Principl
 * Don't develop against an Admin or Write-enabled user.
 * Use dedicated READ-ONLY users for DAS-Client requests.
 
+### OpenBao (Vault) dynamic credentials
+
+In deployed environments, database credentials are managed by [OpenBao](https://openbao.org/).
+OpenBao creates short-lived temporary users and revokes them automatically after expiration.
+This has implications for schema management and grant handling.
+
+#### How it works
+
+1. A **persistent vault-db-user** (`vault-user-*`) exists in the database with `CREATEROLE`,
+   `CREATEDB`, and full privileges. This user is created once during initial setup.
+2. OpenBao creates **temporary users** (with a TTL) for the application to connect. These
+   temp users receive `GRANT ALL ON ALL TABLES/SEQUENCES` at creation time.
+3. When a temp user expires, OpenBao revokes all its privileges and drops the role.
+
+#### When new tables are created (after Flyway migrations)
+
+`GRANT ALL ON ALL TABLES` only applies to tables that **exist at the time the grant is executed**.
+When Flyway creates new tables, subsequent temp users will **not** have access to them.
+
+To fix this, re-grant permissions to the vault-db-user:
+
+```sql
+GRANT CONNECT ON DATABASE driver_advisory_system TO "<vault-db-user>" WITH GRANT OPTION;
+GRANT ALL ON DATABASE driver_advisory_system TO "<vault-db-user>" WITH GRANT OPTION;
+GRANT ALL ON SCHEMA driver_advisory_system TO "<vault-db-user>" WITH GRANT OPTION;
+GRANT ALL ON ALL TABLES IN SCHEMA driver_advisory_system TO "<vault-db-user>" WITH GRANT OPTION;
+GRANT ALL ON ALL SEQUENCES IN SCHEMA driver_advisory_system TO "<vault-db-user>" WITH GRANT OPTION;
+```
+
+And reassign ownership of any objects created by the temp user:
+
+```sql
+REASSIGN OWNED BY CURRENT_USER TO "<vault-db-user>";
+```
+
 ## DB tools
 
 * **IntelliJ Ultimate** — the "Database" panel gives you a SQL console, table browser, and a
