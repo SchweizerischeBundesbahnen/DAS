@@ -13,7 +13,6 @@ import 'package:rxdart/rxdart.dart';
 import 'package:settings/component.dart';
 import 'package:sfera/component.dart';
 
-import '../../../../test_util.dart';
 import 'planned_time_delay_view_model_test.mocks.dart';
 
 @GenerateNiceMocks([
@@ -103,7 +102,7 @@ void main() {
             data: [],
           ),
         );
-        processStreams(fakeAsync: fakeAsync);
+        fakeAsync.flushMicrotasks();
       });
     });
   });
@@ -131,7 +130,7 @@ void main() {
 
     // ACT
     testAsync.run((_) => rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: aSignal)));
-    processStreams(fakeAsync: testAsync);
+    testAsync.flushMicrotasks();
 
     // EXPECT
     expect(emitRegister, hasLength(0));
@@ -145,7 +144,7 @@ void main() {
 
     // ACT
     testAsync.run((_) => rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: servicePointA)));
-    processStreams(fakeAsync: testAsync);
+    testAsync.flushMicrotasks();
 
     // EXPECT
     expect(emitRegister, hasLength(0));
@@ -157,7 +156,7 @@ void main() {
       testAsync.run(
         (_) => rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: servicePointA, lastPosition: aSignal)),
       );
-      processStreams(fakeAsync: testAsync);
+      testAsync.flushMicrotasks();
       emitRegister.clear();
     });
 
@@ -167,7 +166,7 @@ void main() {
         mockRuFeatureProvider.isRuFeatureEnabled(RuFeatureKeys.plannedTimeDeviation),
       ).thenAnswer((_) async => false);
       testAsync.run((_) => rxMockJourney.add(Journey(metadata: Metadata(), data: [])));
-      processStreams(fakeAsync: testAsync);
+      testAsync.flushMicrotasks();
 
       // ACT
       testAsync.elapse(const Duration(minutes: 30)); // now: 20:30
@@ -176,7 +175,7 @@ void main() {
           JourneyPositionModel(currentPosition: servicePointB, lastPosition: servicePointA),
         ),
       );
-      processStreams(fakeAsync: testAsync);
+      testAsync.flushMicrotasks();
 
       // EXPECT
       expect(emitRegister, hasLength(0));
@@ -224,7 +223,7 @@ void main() {
       // ARRANGE
       testAsync.elapse(const Duration(minutes: 30)); // now: 20:30
       testAsync.run((_) => rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: servicePointB)));
-      processStreams(fakeAsync: testAsync);
+      testAsync.flushMicrotasks();
       emitRegister.clear();
 
       // ACT
@@ -234,7 +233,7 @@ void main() {
           JourneyPositionModel(currentPosition: servicePointB, lastPosition: servicePointB),
         ),
       );
-      processStreams(fakeAsync: testAsync);
+      testAsync.flushMicrotasks();
 
       // EXPECT
       expect(emitRegister, hasLength(0));
@@ -244,11 +243,11 @@ void main() {
       // ACT
       testAsync.elapse(const Duration(minutes: 30)); // now: 20:30
       testAsync.run((_) => rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: servicePointB)));
-      processStreams(fakeAsync: testAsync);
+      testAsync.flushMicrotasks();
 
       testAsync.elapse(const Duration(hours: 1, minutes: 30)); // now: 22:00
       testAsync.run((_) => rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: servicePointC)));
-      processStreams(fakeAsync: testAsync);
+      testAsync.flushMicrotasks();
 
       // EXPECT: only the single call made during setUp's journey update, not once per service point above.
       verify(mockRuFeatureProvider.isRuFeatureEnabled(RuFeatureKeys.plannedTimeDeviation)).called(1);
@@ -265,7 +264,7 @@ void main() {
         // ACT: no journey update happens here, so the cached (enabled) value should still be used.
         testAsync.elapse(const Duration(minutes: 30)); // now: 20:30
         testAsync.run((_) => rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: servicePointB)));
-        processStreams(fakeAsync: testAsync);
+        testAsync.flushMicrotasks();
 
         // EXPECT
         expect(emitRegister, hasLength(1));
@@ -279,11 +278,11 @@ void main() {
       testAsync.run(
         (_) => rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: servicePointWithoutTimes)),
       );
-      processStreams(fakeAsync: testAsync);
+      testAsync.flushMicrotasks();
 
       testAsync.elapse(const Duration(minutes: 30)); // now: 21:00
       testAsync.run((_) => rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: servicePointWithoutTimes)));
-      processStreams(fakeAsync: testAsync);
+      testAsync.flushMicrotasks();
 
       // EXPECT
       expect(emitRegister, hasLength(0));
@@ -296,7 +295,7 @@ void main() {
       testAsync.run(
         (_) => rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: servicePointB)),
       );
-      processStreams(fakeAsync: testAsync);
+      testAsync.flushMicrotasks();
 
       // EXPECT
       expect(emitRegister, hasLength(1));
