@@ -15,6 +15,7 @@ class RuFeatureStatusDisplay extends StatefulWidget {
 }
 
 class _RuFeatureStatusDisplayState extends State<RuFeatureStatusDisplay> {
+  static const _iconSize = 20.0;
   late final SettingsRepository _settingsRepository;
   late final LocalKeyValueStore _localStore;
 
@@ -76,7 +77,7 @@ class _RuFeatureStatusDisplayState extends State<RuFeatureStatusDisplay> {
                 : Icon(
                     isEnabled ? Icons.check_circle : Icons.cancel,
                     color: isEnabled ? SBBColors.green : SBBColors.red,
-                    size: 20,
+                    size: _iconSize,
                   ),
           ],
         );

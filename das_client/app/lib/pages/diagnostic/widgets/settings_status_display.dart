@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class SettingsStatusDisplay extends StatelessWidget {
+  static const _iconSize = 20.0;
+
   const SettingsStatusDisplay({super.key});
 
   @override
@@ -28,7 +30,9 @@ class SettingsStatusDisplay extends StatelessWidget {
               Text(context.l10n.w_settings_status_title, style: SBBTextStyles.mediumBold),
               _labelValueItem(
                 context.l10n.w_settings_status_last_request_successful,
-                isRequestSuccessful ? _buildSuccessIcon() : _buildFailureIcon(),
+                isRequestSuccessful
+                    ? const Icon(Icons.check_circle, color: SBBColors.green, size: _iconSize)
+                    : const Icon(Icons.cancel, color: SBBColors.red, size: _iconSize),
               ),
               _labelValueItem(
                 context.l10n.w_settings_status_last_successful_timestamp,
@@ -51,13 +55,5 @@ class SettingsStatusDisplay extends StatelessWidget {
         valueWidget,
       ],
     );
-  }
-
-  Widget _buildSuccessIcon() {
-    return const Icon(Icons.check_circle, color: SBBColors.green, size: 20);
-  }
-
-  Widget _buildFailureIcon() {
-    return const Icon(Icons.cancel, color: SBBColors.red, size: 20);
   }
 }
