@@ -30,7 +30,7 @@ void main() {
     final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
     formationRepository.emitT9999Formation();
 
-    await loadJourney(tester, trainNumber: 'T9999'); // INCORRECT
+    await loadJourney(tester, trainNumber: 'T9999');
 
     await openBrakeSlipPage(tester);
 
