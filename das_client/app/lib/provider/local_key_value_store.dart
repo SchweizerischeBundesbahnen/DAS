@@ -4,25 +4,25 @@ import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class UserSettings {
-  UserSettings() {
+class LocalKeyValueStore {
+  LocalKeyValueStore() {
     _init();
   }
 
   late SharedPreferences _prefs;
-  final _rxModel = BehaviorSubject<UserSettingKeys?>.seeded(null);
+  final _rxModel = BehaviorSubject<LocalKeyValueStoreKeys?>.seeded(null);
 
-  Stream<UserSettingKeys?> get model => _rxModel.stream;
+  Stream<LocalKeyValueStoreKeys?> get model => _rxModel.stream;
 
   void _init() async {
     _prefs = await SharedPreferences.getInstance();
   }
 
-  T get<T>(UserSettingKeys key, T defaultValue) {
+  T get<T>(LocalKeyValueStoreKeys key, T defaultValue) {
     return _prefs.get(key.name) as T? ?? defaultValue;
   }
 
-  Future<void> set<T>(UserSettingKeys key, T value) async {
+  Future<void> set<T>(LocalKeyValueStoreKeys key, T value) async {
     if (value == null) {
       await _prefs.remove(key.name);
     } else if (value is bool) {
@@ -61,9 +61,16 @@ class UserSettings {
     final railwayUndertakingName = get<String?>(.lastUsedRailwayUndertaking, null);
     return RailwayUndertaking.values.firstWhereOrNull((it) => it.companyCode == railwayUndertakingName);
   }
+
+  bool get lastSettingsRequestSuccessful => get<bool>(.lastSettingsRequestSuccessful, false);
+
+  DateTime? get lastSuccessfulSettingsTimestamp {
+    final dateString = get<String?>(.lastSuccessfulSettingsTimestamp, null);
+    return dateString != null ? DateTime.tryParse(dateString) : null;
+  }
 }
 
-enum UserSettingKeys {
+enum LocalKeyValueStoreKeys {
   showDecisiveGradient,
   railwayUndertakings,
   tourSystem,
@@ -71,4 +78,6 @@ enum UserSettingKeys {
   showEctsConventionalSpeedSignals,
   showEctsExtendedSpeedSignals,
   lastUsedRailwayUndertaking,
+  lastSettingsRequestSuccessful,
+  lastSuccessfulSettingsTimestamp,
 }

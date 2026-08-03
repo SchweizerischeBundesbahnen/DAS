@@ -6,7 +6,7 @@ import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
 import 'package:app/pages/journey/view_model/sfera_journey_view_model.dart';
-import 'package:app/provider/user_settings.dart';
+import 'package:app/provider/local_key_value_store.dart';
 import 'package:app_links_x/component.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -21,7 +21,7 @@ import 'app_link_navigator_test.mocks.dart';
 @GenerateNiceMocks([
   MockSpec<AppLinksManager>(),
   MockSpec<TrainIdentificationRepository>(),
-  MockSpec<UserSettings>(),
+  MockSpec<LocalKeyValueStore>(),
   MockSpec<JourneySelectionViewModel>(),
   MockSpec<JourneyNavigationViewModel>(),
   MockSpec<SferaJourneyViewModel>(),
@@ -47,7 +47,7 @@ void main() {
   late MockAppLinksManager appLinksManager;
   late MockAppRouter router;
   late MockTrainIdentificationRepository trainIdentificationRepository;
-  late MockUserSettings userSettings;
+  late MockLocalKeyValueStore mockLocalKeyValueStore;
   late MockJourneySelectionViewModel journeySelectionViewModel;
   late MockJourneyNavigationViewModel journeyNavigationViewModel;
   late StreamController<AppLinkIntent> intentController;
@@ -57,7 +57,7 @@ void main() {
     appLinksManager = MockAppLinksManager();
     router = MockAppRouter();
     trainIdentificationRepository = MockTrainIdentificationRepository();
-    userSettings = MockUserSettings();
+    mockLocalKeyValueStore = MockLocalKeyValueStore();
     journeySelectionViewModel = MockJourneySelectionViewModel();
     journeyNavigationViewModel = MockJourneyNavigationViewModel();
     intentController = StreamController<AppLinkIntent>();
@@ -66,7 +66,7 @@ void main() {
 
     GetIt.I.reset();
     GetIt.I.registerSingleton<TrainIdentificationRepository>(trainIdentificationRepository);
-    GetIt.I.registerSingleton<UserSettings>(userSettings);
+    GetIt.I.registerSingleton<LocalKeyValueStore>(mockLocalKeyValueStore);
     GetIt.I.registerSingleton<JourneySelectionViewModel>(journeySelectionViewModel);
     GetIt.I.registerSingleton<JourneyNavigationViewModel>(journeyNavigationViewModel);
     // Prevent the 500ms startup delay branch in navigator.
@@ -155,7 +155,7 @@ void main() {
   test('observe_whenCompanyCannotBeResolved_thenNavigatesToSelectionAndForwardsDeepLink', () async {
     // ARRANGE
     router.activeRoutes[JourneySelectionRoute.name] = false;
-    when(userSettings.lastUsedRailwayUndertaking).thenReturn(null);
+    when(mockLocalKeyValueStore.lastUsedRailwayUndertaking).thenReturn(null);
     when(trainIdentificationRepository.findTrainIdentifications(operationalTrainNumber: '777')).thenAnswer(
       (_) async => <CompanyMatch>{},
     );

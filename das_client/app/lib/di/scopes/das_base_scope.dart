@@ -6,7 +6,7 @@ import 'package:app/flavor.dart';
 import 'package:app/launcher/launcher.dart';
 import 'package:app/launcher/launcher_impl.dart';
 import 'package:app/pages/login/login_view_model.dart';
-import 'package:app/provider/user_settings.dart';
+import 'package:app/provider/local_key_value_store.dart';
 import 'package:app/sound/das_sounds.dart';
 import 'package:app/util/app_lifecycle_view_model.dart';
 import 'package:app/util/time_constants.dart';
@@ -118,7 +118,7 @@ extension BaseScopeExtension on GetIt {
 
   void registerUserSettings() {
     _log.fine('Register UserSettings');
-    registerSingleton<UserSettings>(UserSettings());
+    registerSingleton<LocalKeyValueStore>(LocalKeyValueStore());
   }
 
   void registerConnectivityManager() {

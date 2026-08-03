@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:app/nav/app_expiration_guard.dart';
 import 'package:app/pages/journey/selection/journey_selection_model.dart';
 import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
-import 'package:app/provider/user_settings.dart';
+import 'package:app/provider/local_key_value_store.dart';
 import 'package:app_links_x/component.dart';
 import 'package:clock/clock.dart';
 import 'package:collection/collection.dart';
@@ -28,7 +28,7 @@ class JourneySelectionViewModel {
 
   final SferaRepository _sferaRepo;
   final TrainIdentificationRepository _trainIdentificationRepository;
-  final UserSettings _userSettings;
+  final LocalKeyValueStore _userSettings;
 
   final Future<void> Function(ExtendedTrainIdentification?) _onJourneySelected;
 

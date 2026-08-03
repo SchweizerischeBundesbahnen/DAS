@@ -521,6 +521,7 @@ void main() {
 
 Future<void> _openAndCheckDepartureAuth(WidgetTester tester, String servicePoint, String departureAuthText) async {
   await _openByTapOnCellWithText(tester, servicePoint);
+  await tester.pumpAndSettle();
   final departureAuth = find.byKey(DetailTabCommunication.departureAuthorizationKey);
   expect(departureAuth, findsOne);
   expect(find.descendant(of: departureAuth, matching: find.text(departureAuthText)), findsOne);

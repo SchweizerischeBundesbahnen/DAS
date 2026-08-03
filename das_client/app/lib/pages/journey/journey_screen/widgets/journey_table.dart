@@ -47,7 +47,7 @@ import 'package:app/pages/journey/journey_screen/widgets/table/whistle_row.dart'
 import 'package:app/pages/journey/view_model/decisive_gradient_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/model/journey_settings.dart';
-import 'package:app/provider/user_settings.dart';
+import 'package:app/provider/local_key_value_store.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/accordion/accordion.dart';
 import 'package:app/widgets/assets.dart';
@@ -378,7 +378,7 @@ class JourneyTable extends StatelessWidget {
 
     final decisiveGradientVM = context.read<DecisiveGradientViewModel>();
     final timeViewModel = context.read<ArrivalDepartureTimeViewModel>();
-    final userSettings = DI.get<UserSettings>();
+    final userSettings = DI.get<LocalKeyValueStore>();
 
     return [
       if (openModalType == null || openModalType == .additionalSpeedRestriction) ...[

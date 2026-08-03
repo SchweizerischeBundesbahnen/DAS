@@ -11,11 +11,11 @@ import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/pages/journey/view_model/sfera_journey_view_model.dart';
 import 'package:app/pages/journey/view_model/view_mode_view_model.dart';
 import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
+import 'package:app/provider/local_key_value_store.dart';
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:app/provider/ru_feature_provider_impl.dart';
 import 'package:app/provider/timed_route_provider.dart';
 import 'package:app/provider/timed_route_provider_impl.dart';
-import 'package:app/provider/user_settings.dart';
 import 'package:app/util/device_id_info.dart';
 import 'package:auth/component.dart';
 import 'package:customer_oriented_departure/component.dart';
@@ -154,6 +154,13 @@ extension AuthenticatedScopeExtension on GetIt {
       onAwsCredentialsChanged: (credentials) {
         DI.get<PreloadRepository>().updateConfiguration(credentials);
       },
+      onSettingsLoaded: (success) {
+        final localStore = DI.get<LocalKeyValueStore>();
+        localStore.set(.lastSettingsRequestSuccessful, success);
+        if (success) {
+          localStore.set(.lastSuccessfulSettingsTimestamp, DateTime.now().toIso8601String());
+        }
+      },
       appVersion: appVersion,
     );
 
@@ -193,7 +200,7 @@ extension AuthenticatedScopeExtension on GetIt {
     registerSingleton<ExternalLinksRepository>(repo);
 
     final companyCodes = DI
-        .get<UserSettings>()
+        .get<LocalKeyValueStore>()
         .railwayUndertakings
         .map((undertaking) => undertaking.companyCode)
         .toList();

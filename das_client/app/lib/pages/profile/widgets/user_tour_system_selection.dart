@@ -1,7 +1,7 @@
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/model/tour_system.dart';
-import 'package:app/provider/user_settings.dart';
+import 'package:app/provider/local_key_value_store.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -13,7 +13,7 @@ class UserTourSystemSelection extends StatefulWidget {
 }
 
 class _UserTourSystemSelectionState extends State<UserTourSystemSelection> {
-  final _userSettings = DI.get<UserSettings>();
+  final _userSettings = DI.get<LocalKeyValueStore>();
 
   @override
   Widget build(BuildContext context) {

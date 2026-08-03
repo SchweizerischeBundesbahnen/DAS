@@ -5,7 +5,7 @@ import 'package:app/di/scope_handler.dart';
 import 'package:app/di/scopes/journey_scope.dart';
 import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
 import 'package:app/pages/journey/view_model/model/journey_navigation_model.dart';
-import 'package:app/provider/user_settings.dart';
+import 'package:app/provider/local_key_value_store.dart';
 import 'package:app/widgets/table/row/das_table_row_builder.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -19,7 +19,7 @@ class JourneyNavigationViewModel {
   }
 
   final SferaRepository _sferaRepo;
-  final UserSettings _userSettings;
+  final LocalKeyValueStore _userSettings;
   StreamSubscription<SferaRemoteRepositoryState>? _sferaRemoteStateSubscription;
   final List<ExtendedTrainIdentification> _trainIds = [];
   final _rxModel = BehaviorSubject<JourneyNavigationModel?>.seeded(null);
@@ -92,7 +92,7 @@ class JourneyNavigationViewModel {
 
     if (trainId != null) {
       _log.fine('Establish connection to $trainId');
-      _userSettings.set(UserSettingKeys.lastUsedRailwayUndertaking, trainId.trainIdentification.ru.companyCode);
+      _userSettings.set(.lastUsedRailwayUndertaking, trainId.trainIdentification.ru.companyCode);
       await DI.get<ScopeHandler>().push<JourneyScope>();
       await _sferaRepo.connect(trainId.trainIdentification);
     }

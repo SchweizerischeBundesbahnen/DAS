@@ -8,6 +8,7 @@ import 'package:app/pages/journey/journey_screen/detail_modal/brake_load_slip_mo
 import 'package:app/pages/journey/journey_screen/detail_modal/brake_load_slip_modal/brake_load_slip_modal_overview.dart';
 import 'package:app/pages/journey/journey_screen/notification/widgets/brake_load_slip_notification.dart';
 import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_chevron.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:app/widgets/dot_indicator.dart';
 import 'package:app/widgets/modal_sheet/das_modal_sheet.dart';
@@ -22,11 +23,7 @@ import '../mocks/mock_formation_repository.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  // TODO: fix this test in follow up - this never tested correctly, called T9999M but waits for a position update...
-  // this now does not run any more, because the modal contains now the from / to fields (second last expect)
-  // if T9999 is used, the brakeLoadSlip WILL actually change to new position
-  // suspect: never actually worked in #2532
-  testWidgets('brakeSlip_whenPositionUpdateWhileBrakeSlipPageOpen_thenDoesNotUpdateToNewPosition', skip: true, (
+  testWidgets('brakeSlip_whenPositionUpdateWhileBrakeSlipPageOpen_thenDoesNotUpdateToNewPosition', (
     tester,
   ) async {
     await IntegrationTestApp.start(tester);
@@ -34,7 +31,7 @@ void main() {
     final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
     formationRepository.emitT9999Formation();
 
-    await loadJourney(tester, trainNumber: 'T9999M'); // INCORRECT
+    await loadJourney(tester, trainNumber: 'T9999');
 
     await openBrakeSlipPage(tester);
 
@@ -45,8 +42,9 @@ void main() {
     expect(find.text('Bahnhof A'), findsOneWidget);
     expect(find.text('Haltestelle B'), findsOneWidget);
 
-    // Wait 10 seconds for position updates
-    await tester.pumpAndSettle(Duration(seconds: 10));
+    // Wait 20 seconds for position updates
+    await tester.pumpAndSettle();
+    await Future.delayed(Duration(seconds: 20));
     await tester.pumpAndSettle();
 
     // Check still showing first page
@@ -55,9 +53,19 @@ void main() {
 
     await closeBrakeSlipPage(tester);
     await tester.pumpAndSettle();
-    await openBrakeSlipPage(tester); // opens modal
 
-    expect(find.text('Bahnhof A'), findsNothing); // WILL DISPLAY NOW IN MODAL
+    await waitUntilExists(
+      tester,
+      find.descendant(of: findDASTableRowByText('Haltestelle B'), matching: find.byType(RouteChevron)),
+    );
+
+    await openBrakeSlipPage(tester);
+
+    expect(find.byType(BrakeLoadSlipPage), findsOne);
+
+    await tester.pumpAndSettle();
+
+    expect(find.text('Bahnhof A'), findsNothing);
     expect(find.text('Halt auf Verlangen C'), findsOneWidget);
 
     await disconnect(tester);
