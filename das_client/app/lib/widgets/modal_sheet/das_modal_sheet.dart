@@ -231,15 +231,19 @@ class _DASModalSheetState extends State<DasModalSheet> with TickerProviderStateM
   }
 
   Widget _body() {
-    return Column(
-      key: DasModalSheet.modalSheetKey,
-      mainAxisSize: .max,
-      children: [
-        _integrationTestKey(),
-        _header(),
-        SizedBox(height: SBBSpacing.xSmall),
-        Expanded(child: widget.builder.body(context)),
-      ],
+    return GestureDetector(
+      behavior: .opaque, // interactive descendants will win gesture arena
+      onTap: () => widget.controller.close(),
+      child: Column(
+        key: DasModalSheet.modalSheetKey,
+        mainAxisSize: .max,
+        children: [
+          _integrationTestKey(),
+          _header(),
+          SizedBox(height: SBBSpacing.xSmall),
+          Expanded(child: widget.builder.body(context)),
+        ],
+      ),
     );
   }
 
