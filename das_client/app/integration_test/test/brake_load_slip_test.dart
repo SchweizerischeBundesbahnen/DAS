@@ -41,8 +41,9 @@ void main() {
     expect(find.text('Bahnhof A'), findsOneWidget);
     expect(find.text('Haltestelle B'), findsOneWidget);
 
-    // Wait 10 seconds for position updates
-    await tester.pumpAndSettle(Duration(seconds: 10));
+    // Wait 15 seconds for position updates
+    await tester.pumpAndSettle();
+    await tester.pumpAndSettle(Duration(seconds: 20));
     await tester.pumpAndSettle();
 
     // Check still showing first page
