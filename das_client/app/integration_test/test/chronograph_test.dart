@@ -82,7 +82,7 @@ Future<void> main() async {
       await disconnect(tester);
     });
 
-    testWidgets('chronograph_whenNoCalculatedSpeed_thenHidesPunctuality', (tester) async {
+    testWidgets('chronograph_whenNoCalculatedSpeedAndNoPlannedTimes_thenHidesPunctuality', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T6');
 
@@ -100,19 +100,36 @@ Future<void> main() async {
 
     testWidgets('chronograph_whenNoSferaDelayAvailable_thenShowsPlannedTimeDeviation', (tester) async {
       await IntegrationTestApp.start(tester);
-      await loadJourney(tester, trainNumber: 'T16');
+      // T47 runs without PüA/VPro (no calculated speed) around Genève, so the deviation to the planned time is
+      // shown in place of the SFERA punctuality. From Nyon onwards a calculated speed exists again, which lets a
+      // SFERA delay override the deviation. An ADL event finally hides the punctuality area entirely.
+      await loadJourney(tester, trainNumber: 'T47');
 
       final chronograph = find.byType(ChronographHeaderBox);
       expect(chronograph, findsOneWidget);
-
       final punctualityText = find.descendant(
         of: chronograph,
         matching: find.byKey(ChronographHeaderBox.punctualityTextKey),
       );
-      await waitUntilExists(tester, punctualityText);
 
-      final displayedText = tester.widget<Text>(punctualityText).data;
-      expect(displayedText, matches(RegExp(r'^[+-]\d{2}h\d{2}$')));
+      // Do not show planned time deviation for first service point
+      await waitUntilExists(tester, findChevronPositionAtRowWithText('Genève-Aéroport'));
+      expect(punctualityText, findsNothing);
+
+      // Advancing to Genève shows the deviation to the planned time, formatted as ±HHhMM.
+      await waitUntilExists(tester, findChevronPositionAtRowWithText('Genève'));
+      await waitUntilExists(tester, punctualityText);
+      expect(tester.widget<Text>(punctualityText).data, matches(RegExp(r'^[+-]\d{2}h\d{2}$')));
+
+      // A position update advancing to Nyon (where PüA/VPro is available again) arrives together with a SFERA
+      // delay of two minutes. The SFERA delay overrides the planned time deviation and is formatted as ±MM:SS.
+      await waitUntilExists(tester, findChevronPositionAtRowWithText('Nyon'));
+      await waitUntilExists(tester, punctualityText);
+      expect(tester.widget<Text>(punctualityText).data, matches(RegExp(r'^[+-]\d{2}:\d{2}$')));
+
+      // An ADL (advised speed) event without a delay finally hides the punctuality area entirely.
+      await waitUntilNotExists(tester, punctualityText, maxWaitSeconds: 20);
+      expect(punctualityText, findsNothing);
 
       await disconnect(tester);
     });
@@ -123,13 +140,12 @@ Future<void> main() async {
       final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;
       featureProvider.disableFeature(.plannedTimeDeviation);
 
-      await loadJourney(tester, trainNumber: 'T16');
+      await loadJourney(tester, trainNumber: 'T47');
 
       final chronograph = find.byType(ChronographHeaderBox);
       expect(chronograph, findsOneWidget);
 
-      // give the chevron time to advance past the first service point, where a deviation would otherwise show
-      await tester.pumpAndSettle(const Duration(seconds: 10));
+      await waitUntilExists(tester, findChevronPositionAtRowWithText('Genève'));
 
       expect(
         find.descendant(of: chronograph, matching: find.byKey(ChronographHeaderBox.punctualityTextKey)),
