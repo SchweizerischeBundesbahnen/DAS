@@ -18,6 +18,7 @@ class PlannedTimeDelayViewModel extends JourneyAwareViewModel {
     required this._ruFeatureProvider,
     super.journeyViewModel,
   }) {
+    _updateFeatureEnabled();
     _positionSubscription = journeyPositionStream.listen(_positionUpdated);
   }
 
@@ -34,8 +35,9 @@ class PlannedTimeDelayViewModel extends JourneyAwareViewModel {
   Duration? get modelValue => _rxModel.value;
 
   void _positionUpdated(JourneyPositionModel positionModel) {
+    _log.fine('Position updated - positionModel: $positionModel');
     if (!_isFeatureEnabled) {
-      _log.finer('Feature disabled, emitting null');
+      _log.fine('Feature disabled, emitting null');
       _rxModel.add(null);
       return;
     }

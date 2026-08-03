@@ -103,6 +103,7 @@ void main() {
           ),
         );
         fakeAsync.flushMicrotasks();
+        reset(mockRuFeatureProvider);
       });
     });
   });
@@ -119,7 +120,20 @@ void main() {
     () => expect(testee.modelValue, isNull),
   );
 
-  test('modelValue_whenJourneyAdded_thenChecksFeatureEnabled', () {
+  test('modelValue_whenJourneyUpdated_thenChecksFeatureEnabled', () {
+    // The journey add must run inside testAsync.run so the stream delivery microtask is enqueued in the
+    // fake-async zone (where the view model subscribed), otherwise flushMicrotasks below never delivers it.
+    testAsync.run(
+      (_) => rxMockJourney.add(
+        Journey(
+          metadata: Metadata(
+            trainIdentification: TrainIdentification(ru: .blsI, trainNumber: 'T9999', date: DateTime(2024, 1, 1)),
+          ),
+          data: [],
+        ),
+      ),
+    );
+    testAsync.flushMicrotasks();
     verify(mockRuFeatureProvider.isRuFeatureEnabled(.plannedTimeDeviation)).called(1);
   });
 
@@ -239,7 +253,7 @@ void main() {
       expect(emitRegister, hasLength(0));
     });
 
-    test('model_whenMultipleServicePointsProcessedForSameJourney_thenChecksFeatureOnlyOncePerJourneyUpdate', () {
+    test('model_whenMultipleServicePointsProcessedForSameJourney_thenNeverChecksFeature', () {
       // ACT
       testAsync.elapse(const Duration(minutes: 30)); // now: 20:30
       testAsync.run((_) => rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: servicePointB)));
@@ -249,8 +263,7 @@ void main() {
       testAsync.run((_) => rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: servicePointC)));
       testAsync.flushMicrotasks();
 
-      // EXPECT: only the single call made during setUp's journey update, not once per service point above.
-      verify(mockRuFeatureProvider.isRuFeatureEnabled(RuFeatureKeys.plannedTimeDeviation)).called(1);
+      verifyNever(mockRuFeatureProvider.isRuFeatureEnabled(RuFeatureKeys.plannedTimeDeviation));
     });
 
     test(
