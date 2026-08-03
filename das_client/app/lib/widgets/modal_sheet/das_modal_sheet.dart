@@ -18,6 +18,8 @@ class DASModalSheetBuilder {
   Widget? header(BuildContext context) => null;
 
   Widget body(BuildContext context) => SizedBox.shrink();
+
+  bool get automaticCloseEnabled => true;
 }
 
 final _log = Logger('DASModalSheetController');
@@ -42,6 +44,8 @@ class DASModalSheetController {
 
   final VoidCallback? onClose;
   final VoidCallback? onOpen;
+
+  bool automaticCloseEnabled = true;
 
   _ControllerState _state;
   bool _initialized = false;
@@ -129,7 +133,7 @@ class DASModalSheetController {
   /// resets timer for automatic close when activated and modal sheet is open
   void resetAutomaticClose() {
     _idleTimer?.cancel();
-    if (isOpen) {
+    if (isOpen && automaticCloseEnabled) {
       _idleTimer = Timer(Duration(seconds: _automaticCloseAfterSeconds), () {
         if (isOpen) {
           _log.fine(

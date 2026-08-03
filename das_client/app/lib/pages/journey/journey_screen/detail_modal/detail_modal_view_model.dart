@@ -38,7 +38,9 @@ class DetailModalViewModel {
 
   void _initController() {
     controller = DASModalSheetController(
-      onClose: () => _rxOpenModalType.add(null),
+      onClose: () {
+        if (!_rxOpenModalType.isClosed) _rxOpenModalType.add(null);
+      },
     );
   }
 
@@ -53,6 +55,7 @@ class DetailModalViewModel {
       return;
     }
 
+    controller.automaticCloseEnabled = builder.automaticCloseEnabled;
     _openContentKey = contentKey;
     _rxOpenModalType.add(type);
     _rxContentBuilder.add(builder);
@@ -82,7 +85,7 @@ class DetailModalViewModel {
 
   void close() {
     controller.close();
-    _rxContentBuilder.add(null);
+    if (!_rxContentBuilder.isClosed) _rxContentBuilder.add(null);
     _openContentKey = null;
   }
 
