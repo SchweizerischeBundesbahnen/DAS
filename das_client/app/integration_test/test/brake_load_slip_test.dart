@@ -22,7 +22,7 @@ import '../mocks/mock_formation_repository.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('brakeSlip_whenPositionUpdateWhileBrakeSlipPageOpen_thenDoesNotUpdateToNewPosition', skip: true, (
+  testWidgets('brakeSlip_whenPositionUpdateWhileBrakeSlipPageOpen_thenDoesNotUpdateToNewPosition', (
     tester,
   ) async {
     await IntegrationTestApp.start(tester);
