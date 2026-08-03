@@ -6,7 +6,7 @@ import 'package:integration_test/integration_test.dart';
 import 'package:logger/component.dart';
 import 'package:logging/logging.dart';
 
-import 'test/e2e_test.dart' as e2e_tests;
+import 'e2e_tests/e2e_test.dart' as e2e_tests;
 
 void main() {
   final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized();
