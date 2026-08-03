@@ -8,6 +8,7 @@ import 'package:app/pages/journey/journey_screen/detail_modal/brake_load_slip_mo
 import 'package:app/pages/journey/journey_screen/detail_modal/brake_load_slip_modal/brake_load_slip_modal_overview.dart';
 import 'package:app/pages/journey/journey_screen/notification/widgets/brake_load_slip_notification.dart';
 import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_chevron.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:app/widgets/dot_indicator.dart';
 import 'package:app/widgets/modal_sheet/das_modal_sheet.dart';
@@ -41,9 +42,9 @@ void main() {
     expect(find.text('Bahnhof A'), findsOneWidget);
     expect(find.text('Haltestelle B'), findsOneWidget);
 
-    // Wait 15 seconds for position updates
+    // Wait 20 seconds for position updates
     await tester.pumpAndSettle();
-    await tester.pumpAndSettle(Duration(seconds: 20));
+    await Future.delayed(Duration(seconds: 20));
     await tester.pumpAndSettle();
 
     // Check still showing first page
@@ -52,6 +53,12 @@ void main() {
 
     await closeBrakeSlipPage(tester);
     await tester.pumpAndSettle();
+
+    await waitUntilExists(
+      tester,
+      find.descendant(of: findDASTableRowByText('Halt auf Verlangen C'), matching: find.byType(RouteChevron)),
+    );
+
     await openBrakeSlipPage(tester);
 
     expect(find.byType(BrakeLoadSlipPage), findsOne);
