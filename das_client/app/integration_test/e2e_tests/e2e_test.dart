@@ -10,7 +10,7 @@ void main() {
   testWidgets('preload_whenStartedAfterLogin_thenRetrievesFiles', (tester) async {
     await E2ETestApp.start(tester);
 
-    // Navigate to preload page
+    // Navigate to niagnostic page
     await openDrawer(tester);
     await tapElement(tester, find.text(l10n.w_navigation_drawer_diagnostic_title));
 

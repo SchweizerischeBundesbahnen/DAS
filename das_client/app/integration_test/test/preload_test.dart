@@ -67,7 +67,7 @@ void main() {
 
     final preloadRepository = DI.get<PreloadRepository>() as MockPreloadRepository;
 
-    // Navigate to preload page
+    // Navigate to diagnostic page
     await openDrawer(tester);
     await tapElement(tester, find.text(l10n.w_navigation_drawer_diagnostic_title));
 

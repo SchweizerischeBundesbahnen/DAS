@@ -18,8 +18,8 @@ import '../mocks/mock_battery.dart';
 import '../mocks/mock_brightness_manager.dart';
 import '../mocks/mock_connectivity_manager.dart';
 import '../mocks/mock_launcher.dart';
+import '../mocks/mock_local_key_value_store.dart';
 import '../mocks/mock_preload_repository.dart';
-import '../mocks/mock_user_settings.dart';
 import '../util/test_time_constants.dart';
 
 final _log = Logger('IntegrationTestDASBaseScope');
@@ -91,7 +91,7 @@ class IntegrationTestDASBaseScope extends DASBaseScope {
   }
 
   void _registerUserSettings() {
-    getIt.registerSingleton<LocalKeyValueStore>(MockUserSettings());
+    getIt.registerSingleton<LocalKeyValueStore>(MockLocalKeyValueStore());
   }
 
   void _registerMockConnectivityManager() {

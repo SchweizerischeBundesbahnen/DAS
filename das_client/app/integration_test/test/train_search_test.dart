@@ -256,7 +256,7 @@ void main() {
           DI.get<TrainIdentificationRepository>() as MockTrainIdentificationRepository;
 
       final userSettings = DI.get<LocalKeyValueStore>();
-      userSettings.set(LocalKeyValueStoreKeys.lastUsedRailwayUndertaking, RailwayUndertaking.sbbP.companyCode);
+      userSettings.set(.lastUsedRailwayUndertaking, RailwayUndertaking.sbbP.companyCode);
 
       trainIdentificationRepository.companyMatchData = {
         CompanyMatch(

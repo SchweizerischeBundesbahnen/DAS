@@ -36,7 +36,7 @@ class SettingsStatusDisplay extends StatelessWidget {
               ),
               _labelValueItem(
                 context.l10n.w_settings_status_last_successful_timestamp,
-                Format.datetime(lastSuccessTimestamp, '-'),
+                Text(Format.datetime(lastSuccessTimestamp, '-'), style: SBBTextStyles.smallLight),
               ),
             ],
           ),
@@ -45,9 +45,7 @@ class SettingsStatusDisplay extends StatelessWidget {
     );
   }
 
-  Widget _labelValueItem(String label, dynamic value) {
-    final valueWidget = value is String ? Text(value, style: SBBTextStyles.smallLight) : value as Widget;
-
+  Widget _labelValueItem(String label, Widget valueWidget) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

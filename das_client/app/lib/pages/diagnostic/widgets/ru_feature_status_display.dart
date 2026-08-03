@@ -88,8 +88,8 @@ class _RuFeatureStatusDisplayState extends State<RuFeatureStatusDisplay> {
 
 extension _RuFeatureKeysExtension on RuFeatureKeys {
   String displayText(BuildContext context) => switch (this) {
-    RuFeatureKeys.warnapp => context.l10n.w_ru_feature_status_warnapp,
-    RuFeatureKeys.customerOrientedDeparture => context.l10n.w_ru_feature_status_customer_oriented_departure,
-    RuFeatureKeys.departureProcess => context.l10n.w_ru_feature_status_departure_process,
+    .warnapp => context.l10n.w_ru_feature_status_warnapp,
+    .customerOrientedDeparture => context.l10n.w_ru_feature_status_customer_oriented_departure,
+    .departureProcess => context.l10n.w_ru_feature_status_departure_process,
   };
 }
