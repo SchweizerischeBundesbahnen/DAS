@@ -22,10 +22,6 @@ import '../mocks/mock_formation_repository.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  // TODO: fix this test in follow up - this never tested correctly, called T9999M but waits for a position update...
-  // this now does not run any more, because the modal contains now the from / to fields (second last expect)
-  // if T9999 is used, the brakeLoadSlip WILL actually change to new position
-  // suspect: never actually worked in #2532
   testWidgets('brakeSlip_whenPositionUpdateWhileBrakeSlipPageOpen_thenDoesNotUpdateToNewPosition', skip: true, (
     tester,
   ) async {
@@ -34,7 +30,7 @@ void main() {
     final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
     formationRepository.emitT9999Formation();
 
-    await loadJourney(tester, trainNumber: 'T9999M'); // INCORRECT
+    await loadJourney(tester, trainNumber: 'T9999'); // INCORRECT
 
     await openBrakeSlipPage(tester);
 
@@ -55,9 +51,10 @@ void main() {
 
     await closeBrakeSlipPage(tester);
     await tester.pumpAndSettle();
-    await openBrakeSlipPage(tester); // opens modal
+    await openBrakeSlipPage(tester);
 
-    expect(find.text('Bahnhof A'), findsNothing); // WILL DISPLAY NOW IN MODAL
+    expect(find.byType(BrakeLoadSlipPage), findsOne);
+    expect(find.text('Bahnhof A'), findsNothing);
     expect(find.text('Halt auf Verlangen C'), findsOneWidget);
 
     await disconnect(tester);
