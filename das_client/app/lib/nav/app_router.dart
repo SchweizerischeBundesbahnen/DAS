@@ -1,12 +1,12 @@
 import 'package:app/nav/app_expiration_guard.dart';
 import 'package:app/nav/auth_guard.dart';
+import 'package:app/pages/diagnostic/diagnostic_page.dart';
 import 'package:app/pages/journey/brake_load_slip/brake_load_slip_page.dart';
 import 'package:app/pages/journey/journey_page.dart';
 import 'package:app/pages/journey/selection/journey_selection_page.dart';
 import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
 import 'package:app/pages/links/links_page.dart';
 import 'package:app/pages/login/login_page.dart';
-import 'package:app/pages/preload/preload_page.dart';
 import 'package:app/pages/profile/profile_page.dart';
 import 'package:app/pages/settings/settings_page.dart';
 import 'package:app/pages/splash/splash_page.dart';
@@ -33,7 +33,7 @@ class AppRouter extends RootStackRouter {
     _settings,
     _profile,
     _brakeLoadSlip,
-    _preload,
+    _diagnostic,
   ];
 
   AutoRoute get _splash => AutoRoute(
@@ -83,9 +83,9 @@ class AppRouter extends RootStackRouter {
     guards: [authGuard],
   );
 
-  AutoRoute get _preload => AutoRoute(
-    path: '/preload',
-    page: PreloadRoute.page,
+  AutoRoute get _diagnostic => AutoRoute(
+    path: '/diagnostic',
+    page: DiagnosticRoute.page,
     guards: [authGuard],
   );
 

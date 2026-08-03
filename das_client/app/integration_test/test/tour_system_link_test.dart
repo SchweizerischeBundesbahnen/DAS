@@ -2,7 +2,7 @@ import 'package:app/di/di.dart';
 import 'package:app/flavor.dart';
 import 'package:app/launcher/launcher.dart';
 import 'package:app/model/tour_system.dart';
-import 'package:app/provider/user_settings.dart';
+import 'package:app/provider/local_key_value_store.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../app_test.dart';
@@ -37,7 +37,7 @@ void main() {
     testWidgets('tourSystem_whenConfigured_thenShowsButtons', (tester) async {
       await IntegrationTestApp.start(tester);
 
-      final userSettings = DI.get<UserSettings>() as MockUserSettings;
+      final userSettings = DI.get<LocalKeyValueStore>() as MockUserSettings;
       userSettings.set(.tourSystem, TourSystem.tip.name);
 
       await loadJourney(tester, trainNumber: 'T39M');
@@ -70,7 +70,7 @@ void main() {
     testWidgets('tourSystem_whenPositionChanges_thenUpdatesButtonVisibility', (tester) async {
       await IntegrationTestApp.start(tester);
 
-      final userSettings = DI.get<UserSettings>() as MockUserSettings;
+      final userSettings = DI.get<LocalKeyValueStore>() as MockUserSettings;
       userSettings.set(.tourSystem, TourSystem.tip.name);
 
       await loadJourney(tester, trainNumber: 'T39');

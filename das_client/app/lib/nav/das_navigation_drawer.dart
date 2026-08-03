@@ -52,9 +52,9 @@ class DASNavigationDrawer extends StatelessWidget {
                 ),
                 _navigationTile(
                   context,
-                  icon: SBBIcons.download_small,
-                  title: context.l10n.w_navigation_drawer_preload_title,
-                  route: const PreloadRoute(),
+                  icon: SBBIcons.computer_chip_small,
+                  title: context.l10n.w_navigation_drawer_diagnostic_title,
+                  route: const DiagnosticRoute(),
                 ),
                 if (launcher.hasTourSystemConfigured())
                   ListTile(

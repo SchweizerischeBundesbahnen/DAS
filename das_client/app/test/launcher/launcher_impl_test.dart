@@ -4,7 +4,7 @@ import 'package:app/model/tour_system.dart';
 import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
 import 'package:app/pages/journey/view_model/model/journey_navigation_model.dart';
-import 'package:app/provider/user_settings.dart';
+import 'package:app/provider/local_key_value_store.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
@@ -17,24 +17,24 @@ import 'launcher_impl_test.mocks.dart';
 const _urlLauncherChannel = MethodChannel('plugins.flutter.io/url_launcher');
 
 @GenerateNiceMocks([
-  MockSpec<UserSettings>(),
+  MockSpec<LocalKeyValueStore>(),
   MockSpec<JourneyNavigationViewModel>(),
 ])
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   late LauncherImpl testee;
-  late MockUserSettings mockUserSettings;
+  late MockLocalKeyValueStore mockLocalKeyValueStore;
   late List<MethodCall> methodCalls;
   late bool launchResult;
 
   setUp(() {
-    mockUserSettings = MockUserSettings();
+    mockLocalKeyValueStore = MockLocalKeyValueStore();
     methodCalls = <MethodCall>[];
     launchResult = true;
 
-    when(mockUserSettings.railwayUndertakings).thenReturn([RailwayUndertaking.sbbP]);
-    when(mockUserSettings.tourSystem).thenReturn(TourSystem.tip);
+    when(mockLocalKeyValueStore.railwayUndertakings).thenReturn([RailwayUndertaking.sbbP]);
+    when(mockLocalKeyValueStore.tourSystem).thenReturn(TourSystem.tip);
 
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(
       _urlLauncherChannel,
@@ -47,7 +47,7 @@ void main() {
       },
     );
 
-    testee = LauncherImpl(userSettings: mockUserSettings, flavor: Flavor.dev());
+    testee = LauncherImpl(userSettings: mockLocalKeyValueStore, flavor: Flavor.dev());
   });
 
   tearDown(() async {
@@ -125,7 +125,7 @@ void main() {
   });
 
   test('launchServicePointPortal_whenAllRusAreBls_thenUsesBlsPortal', () async {
-    when(mockUserSettings.railwayUndertakings).thenReturn([RailwayUndertaking.blsC, RailwayUndertaking.blsP]);
+    when(mockLocalKeyValueStore.railwayUndertakings).thenReturn([RailwayUndertaking.blsC, RailwayUndertaking.blsP]);
 
     final result = await testee.launchServicePointPortal(
       const ServicePoint(name: 'Bern', abbreviation: 'BERN', locationCode: '8507000', order: 1000, kilometre: []),
@@ -137,7 +137,7 @@ void main() {
   });
 
   test('launchServicePointPortal_whenNoRuSelected_thenUsesSbbPortal', () async {
-    when(mockUserSettings.railwayUndertakings).thenReturn([]);
+    when(mockLocalKeyValueStore.railwayUndertakings).thenReturn([]);
 
     final result = await testee.launchServicePointPortal(
       const ServicePoint(name: 'Bern', abbreviation: 'BERN', locationCode: '8507000', order: 1000, kilometre: []),
@@ -149,7 +149,7 @@ void main() {
   });
 
   test('launchServicePointPortal_whenRuSelectionIsMixedBlsAndSbb_thenUsesSbbPortal', () async {
-    when(mockUserSettings.railwayUndertakings).thenReturn([RailwayUndertaking.blsP, RailwayUndertaking.sbbP]);
+    when(mockLocalKeyValueStore.railwayUndertakings).thenReturn([RailwayUndertaking.blsP, RailwayUndertaking.sbbP]);
 
     final result = await testee.launchServicePointPortal(
       const ServicePoint(name: 'Bern', abbreviation: 'BERN', locationCode: '8507000', order: 1000, kilometre: []),

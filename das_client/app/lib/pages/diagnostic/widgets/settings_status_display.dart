@@ -1,0 +1,63 @@
+import 'package:app/di/di.dart';
+import 'package:app/i18n/i18n.dart';
+import 'package:app/provider/local_key_value_store.dart';
+import 'package:app/util/format.dart';
+import 'package:flutter/material.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+
+class SettingsStatusDisplay extends StatelessWidget {
+  const SettingsStatusDisplay({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final localStore = DI.get<LocalKeyValueStore>();
+
+    return StreamBuilder(
+      stream: localStore.model,
+      builder: (context, snapshot) {
+        final isRequestSuccessful = localStore.lastSettingsRequestSuccessful;
+        final lastSuccessTimestamp = localStore.lastSuccessfulSettingsTimestamp;
+
+        return SBBContentBox(
+          padding: const EdgeInsets.all(SBBSpacing.small),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: SBBSpacing.xSmall,
+            children: [
+              Text(context.l10n.w_settings_status_title, style: SBBTextStyles.mediumBold),
+              _labelValueItem(
+                context.l10n.w_settings_status_last_request_successful,
+                isRequestSuccessful ? _buildSuccessIcon() : _buildFailureIcon(),
+              ),
+              _labelValueItem(
+                context.l10n.w_settings_status_last_successful_timestamp,
+                Format.datetime(lastSuccessTimestamp, '-'),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _labelValueItem(String label, dynamic value) {
+    final valueWidget = value is String ? Text(value, style: SBBTextStyles.smallLight) : value as Widget;
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(label, style: SBBTextStyles.smallLight),
+        valueWidget,
+      ],
+    );
+  }
+
+  Widget _buildSuccessIcon() {
+    return const Icon(Icons.check_circle, color: SBBColors.green, size: 20);
+  }
+
+  Widget _buildFailureIcon() {
+    return const Icon(Icons.cancel, color: SBBColors.red, size: 20);
+  }
+}

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:app/launcher/launcher.dart';
 import 'package:app/pages/links/links_view_model.dart';
-import 'package:app/provider/user_settings.dart';
+import 'package:app/provider/local_key_value_store.dart';
 import 'package:core_data/component.dart';
 import 'package:external_links/component.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -12,11 +12,11 @@ import 'package:mockito/mockito.dart';
 import '../../test_util.dart';
 import 'links_view_model_test.mocks.dart';
 
-@GenerateNiceMocks([MockSpec<ExternalLinksRepository>(), MockSpec<UserSettings>(), MockSpec<Launcher>()])
+@GenerateNiceMocks([MockSpec<ExternalLinksRepository>(), MockSpec<LocalKeyValueStore>(), MockSpec<Launcher>()])
 void main() {
   late LinksViewModel testee;
   late MockExternalLinksRepository mockExternalLinksRepository;
-  late MockUserSettings mockUserSettings;
+  late MockLocalKeyValueStore mockLocalKeyValueStore;
   late MockLauncher mockLauncher;
   late StreamController<List<ExternalLink>> linksController;
 
@@ -26,18 +26,18 @@ void main() {
   LinksViewModel createViewModel() {
     return LinksViewModel(
       externalLinksRepository: mockExternalLinksRepository,
-      userSettings: mockUserSettings,
+      userSettings: mockLocalKeyValueStore,
       launcher: mockLauncher,
     );
   }
 
   setUp(() async {
     mockExternalLinksRepository = MockExternalLinksRepository();
-    mockUserSettings = MockUserSettings();
+    mockLocalKeyValueStore = MockLocalKeyValueStore();
     mockLauncher = MockLauncher();
     linksController = StreamController<List<ExternalLink>>.broadcast();
 
-    when(mockUserSettings.railwayUndertakings).thenReturn(const []);
+    when(mockLocalKeyValueStore.railwayUndertakings).thenReturn(const []);
     when(mockExternalLinksRepository.watchExternalLinksByCompanies(any)).thenAnswer((_) => linksController.stream);
   });
 
@@ -57,7 +57,7 @@ void main() {
   });
 
   test('state_whenCompanyAndLinksAvailable_thenLoaded', () async {
-    when(mockUserSettings.railwayUndertakings).thenReturn([RailwayUndertaking.sbbCH]);
+    when(mockLocalKeyValueStore.railwayUndertakings).thenReturn([RailwayUndertaking.sbbCH]);
 
     testee = createViewModel();
     subscription = testee.links.listen(states.add);
@@ -81,7 +81,7 @@ void main() {
   });
 
   test('state_whenRailwayUndertakingsConfigured_thenEmitsMatchingCompanyLinks', () async {
-    when(mockUserSettings.railwayUndertakings).thenReturn([RailwayUndertaking.db]);
+    when(mockLocalKeyValueStore.railwayUndertakings).thenReturn([RailwayUndertaking.db]);
 
     testee = createViewModel();
     subscription = testee.links.listen(states.add);
@@ -116,7 +116,7 @@ void main() {
   });
 
   test('state_whenDuplicateLinksWithSameTitleAndLink_thenDeduplicates', () async {
-    when(mockUserSettings.railwayUndertakings).thenReturn([RailwayUndertaking.sbbCH]);
+    when(mockLocalKeyValueStore.railwayUndertakings).thenReturn([RailwayUndertaking.sbbCH]);
 
     testee = createViewModel();
     subscription = testee.links.listen(states.add);
@@ -147,7 +147,7 @@ void main() {
   });
 
   test('state_whenLinksWithSameTitleButDifferentLink_thenKeepsBoth', () async {
-    when(mockUserSettings.railwayUndertakings).thenReturn([RailwayUndertaking.sbbCH]);
+    when(mockLocalKeyValueStore.railwayUndertakings).thenReturn([RailwayUndertaking.sbbCH]);
 
     testee = createViewModel();
     subscription = testee.links.listen(states.add);
@@ -177,7 +177,7 @@ void main() {
   });
 
   test('state_whenLinksWithSameLinkButDifferentTitle_thenKeepsBoth', () async {
-    when(mockUserSettings.railwayUndertakings).thenReturn([RailwayUndertaking.sbbCH]);
+    when(mockLocalKeyValueStore.railwayUndertakings).thenReturn([RailwayUndertaking.sbbCH]);
 
     testee = createViewModel();
     subscription = testee.links.listen(states.add);
@@ -207,7 +207,7 @@ void main() {
   });
 
   test('state_whenMultipleDuplicates_thenKeepsFirstOccurrence', () async {
-    when(mockUserSettings.railwayUndertakings).thenReturn([RailwayUndertaking.sbbCH]);
+    when(mockLocalKeyValueStore.railwayUndertakings).thenReturn([RailwayUndertaking.sbbCH]);
 
     testee = createViewModel();
     subscription = testee.links.listen(states.add);

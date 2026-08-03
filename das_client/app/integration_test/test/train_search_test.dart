@@ -2,7 +2,7 @@ import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_page.dart';
 import 'package:app/pages/journey/selection/journey_selection_page.dart';
 import 'package:app/pages/journey/selection/widgets/journey_date_picker.dart';
-import 'package:app/provider/user_settings.dart';
+import 'package:app/provider/local_key_value_store.dart';
 import 'package:app/util/format.dart';
 import 'package:app/widgets/railway_undertaking/widgets/select_railway_undertaking_modal.dart';
 import 'package:flutter/material.dart';
@@ -255,8 +255,8 @@ void main() {
       final trainIdentificationRepository =
           DI.get<TrainIdentificationRepository>() as MockTrainIdentificationRepository;
 
-      final userSettings = DI.get<UserSettings>();
-      userSettings.set(UserSettingKeys.lastUsedRailwayUndertaking, RailwayUndertaking.sbbP.companyCode);
+      final userSettings = DI.get<LocalKeyValueStore>();
+      userSettings.set(LocalKeyValueStoreKeys.lastUsedRailwayUndertaking, RailwayUndertaking.sbbP.companyCode);
 
       trainIdentificationRepository.companyMatchData = {
         CompanyMatch(

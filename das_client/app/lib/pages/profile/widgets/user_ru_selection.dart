@@ -1,6 +1,6 @@
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
-import 'package:app/provider/user_settings.dart';
+import 'package:app/provider/local_key_value_store.dart';
 import 'package:app/widgets/railway_undertaking/widgets/select_railway_undertaking_input.dart';
 import 'package:external_links/component.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +14,7 @@ class UserRuSelection extends StatefulWidget {
 }
 
 class _UserRuSelectionState extends State<UserRuSelection> {
-  final _userSettings = DI.get<UserSettings>();
+  final _userSettings = DI.get<LocalKeyValueStore>();
   final _externalLinksRepo = DI.get<ExternalLinksRepository>();
 
   @override

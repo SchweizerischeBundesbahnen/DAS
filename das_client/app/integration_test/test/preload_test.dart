@@ -1,7 +1,7 @@
 import 'package:app/di/di.dart';
+import 'package:app/pages/diagnostic/widgets/preload_status_display.dart';
 import 'package:app/pages/journey/journey_page.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_chevron.dart';
-import 'package:app/pages/preload/widgets/preload_status_display.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:connectivity_x/component.dart';
 import 'package:flutter/cupertino.dart';
@@ -69,7 +69,7 @@ void main() {
 
     // Navigate to preload page
     await openDrawer(tester);
-    await tapElement(tester, find.text(l10n.w_navigation_drawer_preload_title));
+    await tapElement(tester, find.text(l10n.w_navigation_drawer_diagnostic_title));
 
     final preloadStatusTitleFinder = find.text(l10n.w_preload_status_title);
     expect(preloadStatusTitleFinder, findsOneWidget);

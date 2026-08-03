@@ -1,16 +1,16 @@
-import 'package:app/provider/user_settings.dart';
+import 'package:app/provider/local_key_value_store.dart';
 import 'package:rxdart/rxdart.dart';
 
-class MockUserSettings extends UserSettings {
+class MockUserSettings extends LocalKeyValueStore {
   final Map<String, Object> _settingsMap = {};
 
-  final _rxModel = BehaviorSubject<UserSettingKeys?>.seeded(null);
+  final _rxModel = BehaviorSubject<LocalKeyValueStoreKeys?>.seeded(null);
 
   @override
-  Stream<UserSettingKeys?> get model => _rxModel.stream;
+  Stream<LocalKeyValueStoreKeys?> get model => _rxModel.stream;
 
   @override
-  T get<T>(UserSettingKeys key, T defaultValue) {
+  T get<T>(LocalKeyValueStoreKeys key, T defaultValue) {
     if (_settingsMap.containsKey(key.name)) {
       return _settingsMap[key.name] as T;
     } else {
@@ -19,7 +19,7 @@ class MockUserSettings extends UserSettings {
   }
 
   @override
-  Future<void> set<T>(UserSettingKeys key, T value) async {
+  Future<void> set<T>(LocalKeyValueStoreKeys key, T value) async {
     _settingsMap[key.name] = value as Object;
     _rxModel.add(key);
   }

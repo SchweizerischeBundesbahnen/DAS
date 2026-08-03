@@ -1,5 +1,5 @@
+import 'package:app/pages/diagnostic/widgets/preload_status_display.dart';
 import 'package:app/pages/journey/brake_load_slip/brake_load_slip_page.dart';
-import 'package:app/pages/preload/widgets/preload_status_display.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../app_test.dart';
@@ -12,7 +12,7 @@ void main() {
 
     // Navigate to preload page
     await openDrawer(tester);
-    await tapElement(tester, find.text(l10n.w_navigation_drawer_preload_title));
+    await tapElement(tester, find.text(l10n.w_navigation_drawer_diagnostic_title));
 
     final preloadStatusTitleFinder = find.text(l10n.w_preload_status_title);
     expect(preloadStatusTitleFinder, findsOneWidget);

@@ -6,7 +6,7 @@ import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
 import 'package:app/pages/journey/selection/journey_selection_page.dart';
 import 'package:app/pages/login/login_page.dart';
 import 'package:app/pages/login/widgets/login_button.dart';
-import 'package:app/provider/user_settings.dart';
+import 'package:app/provider/local_key_value_store.dart';
 import 'package:app/widgets/navigation_buttons.dart';
 import 'package:app_links_x/component.dart';
 import 'package:auth/component.dart';
@@ -239,7 +239,7 @@ void main() {
 
       await tapElement(tester, find.text(l10n.p_journey_overview_tour_button_text));
 
-      final userSettings = DI.get<UserSettings>() as MockUserSettings;
+      final userSettings = DI.get<LocalKeyValueStore>() as MockUserSettings;
       userSettings.set(.tourSystem, TourSystem.tip.name);
 
       await tapElement(tester, find.text(l10n.p_journey_overview_tour_button_text));
