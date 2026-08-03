@@ -31,6 +31,7 @@ public class TafTapLocationsImportService {
         List<TafTapLocationEntity> locations = getLocations();
         tafTapLocationRepository.deleteAllInBatch();
         tafTapLocationRepository.saveAll(locations);
+        tafTapLocationRepository.flush();
         log.info("Finished location import with {} locations", locations.size());
     }
 
