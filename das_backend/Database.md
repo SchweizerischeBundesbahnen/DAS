@@ -84,37 +84,25 @@ Follow the [principle of least privilege](https://en.wikipedia.org/wiki/Principl
 ### OpenBao (Vault) dynamic credentials
 
 In deployed environments, database credentials are managed by [OpenBao](https://openbao.org/).
-OpenBao creates short-lived temporary users and revokes them automatically after expiration.
-This has implications for schema management and grant handling.
+OpenBao creates short-lived temporary database users and revokes them automatically after their
+lease expires. The application's `VaultConfig` handles credential rotation by updating HikariCP
+and soft-evicting idle connections.
 
-#### How it works
+#### Role hierarchy
 
-1. A **persistent vault-db-user** (`vault-user-*`) exists in the database with `CREATEROLE`,
-   `CREATEDB`, and full privileges. This user is created once during initial setup.
-2. OpenBao creates **temporary users** (with a TTL) for the application to connect. These
-   temp users receive `GRANT ALL ON ALL TABLES/SEQUENCES` at creation time.
-3. When a temp user expires, OpenBao revokes all its privileges and drops the role.
+* **`vault-user-*`** (persistent) — the OpenBao vault-db-user. Must own all database objects.
+* **Temporary users** — short-lived users created by OpenBao for the application to connect.
+  They receive `GRANT ALL ON ALL TABLES/SEQUENCES` at creation time.
 
-#### When new tables are created (after Flyway migrations)
+#### Table ownership
 
-`GRANT ALL ON ALL TABLES` only applies to tables that **exist at the time the grant is executed**.
-When Flyway creates new tables, subsequent temp users will **not** have access to them.
+All tables **must** be owned by the persistent vault-db-user. This ensures:
 
-To fix this, re-grant permissions to the vault-db-user:
-
-```sql
-GRANT CONNECT ON DATABASE driver_advisory_system TO "<vault-db-user>" WITH GRANT OPTION;
-GRANT ALL ON DATABASE driver_advisory_system TO "<vault-db-user>" WITH GRANT OPTION;
-GRANT ALL ON SCHEMA driver_advisory_system TO "<vault-db-user>" WITH GRANT OPTION;
-GRANT ALL ON ALL TABLES IN SCHEMA driver_advisory_system TO "<vault-db-user>" WITH GRANT OPTION;
-GRANT ALL ON ALL SEQUENCES IN SCHEMA driver_advisory_system TO "<vault-db-user>" WITH GRANT OPTION;
-```
-
-And reassign ownership of any objects created by the temp user:
-
-```sql
-REASSIGN OWNED BY CURRENT_USER TO "<vault-db-user>";
-```
+* New temp users automatically get grants on all tables (since `GRANT ALL ON ALL TABLES` only
+  covers tables that exist at that moment — and the vault-db-user owns them all).
+* When a temp user expires, OpenBao runs `REASSIGN OWNED BY "<temp-user>" TO CURRENT_USER`
+  (where `CURRENT_USER` = vault-db-user). Any tables created by the temp user (e.g. during
+  Flyway migrations) are automatically transferred back. **No manual intervention is needed.**
 
 ## DB tools
 
