@@ -53,6 +53,10 @@
   }
 }
 
+sbb-dialog-content {
+  width: min(800px, 90vw);
+}
+
 sbb-dialog {
   --sbb-dialog-inset: 0;
 }
