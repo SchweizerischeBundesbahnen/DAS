@@ -62,5 +62,17 @@
         <TrainCharacteristicsRef TC_ID="T47_1" TC_VersionMajor="1" TC_VersionMinor="1" location="0">
             <TC_RU_ID>1185</TC_RU_ID>
         </TrainCharacteristicsRef>
+
+        <!-- PüA/VPro is only available from Nyon (location 1500) onwards. Genève-Aéroport (500) and Genève (1000)
+             run without a calculated speed, so the planned time deviation is shown there instead of the SFERA
+             punctuality. From Nyon onwards a calculated speed exists again and the SFERA delay is shown. -->
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="100"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="1500" endLocation="1500"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>
 </JourneyProfile>
