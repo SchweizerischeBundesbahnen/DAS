@@ -26,8 +26,14 @@ import 'chronograph_view_model_test.mocks.dart';
 ])
 void main() {
   const testDelay = Delay(value: Duration(seconds: 10), location: 'Bern');
-  const aServicePoint = ServicePoint(name: 'A', abbreviation: '', locationCode: '', order: 0, kilometre: []);
-  const bServicePoint = ServicePoint(name: 'B', abbreviation: '', locationCode: '', order: 10, kilometre: []);
+  const speedlessServicePoint = ServicePoint(name: 'A', abbreviation: '', locationCode: '', order: 0, kilometre: []);
+  const calculatedSpeedServicePoint = ServicePoint(
+    name: 'B',
+    abbreviation: '',
+    locationCode: '',
+    order: 10,
+    kilometre: [],
+  );
   final testHiddenModel = DelayModel.hidden();
   final testStaleModel = DelayModel.stale(delay: testDelay);
   final testVisibleModel = DelayModel.visible(delay: testDelay);
@@ -72,10 +78,10 @@ void main() {
     mockCalculatedSpeedViewModel = MockCalculatedSpeedViewModel();
     mockJourneyViewModel = MockJourneyViewModel();
     when(
-      mockCalculatedSpeedViewModel.getCalculatedSpeedForOrder(bServicePoint.order),
+      mockCalculatedSpeedViewModel.getCalculatedSpeedForOrder(calculatedSpeedServicePoint.order),
     ).thenReturn(CalculatedSpeed(speed: SingleSpeed(value: '100')));
     when(
-      mockCalculatedSpeedViewModel.getCalculatedSpeedForOrder(aServicePoint.order),
+      mockCalculatedSpeedViewModel.getCalculatedSpeedForOrder(speedlessServicePoint.order),
     ).thenReturn(CalculatedSpeed.none());
 
     fakeAsync((fakeAsync) {
@@ -202,7 +208,7 @@ void main() {
     test('punctualityModel_HasLastServicePoint_staysHiddenAndDoesNotEmit', () {
       // ACT
       testAsync.run((_) {
-        rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: aServicePoint));
+        rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: speedlessServicePoint));
       });
 
       // EXPECT
@@ -230,7 +236,7 @@ void main() {
     test('punctualityModel_ServicePointWithoutCalculatedSpeed_staysHiddenAndDoesNotEmit', () {
       // ACT
       testAsync.run((_) {
-        rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: aServicePoint));
+        rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: speedlessServicePoint));
       });
       _processStreamInFakeAsync(testAsync);
 
@@ -242,7 +248,7 @@ void main() {
     test('punctualityModel_ServicePointWithCalculatedSpeed_emitsVisible', () {
       // ACT
       testAsync.run((_) {
-        rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: bServicePoint));
+        rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: calculatedSpeedServicePoint));
       });
       _processStreamInFakeAsync(testAsync);
 
@@ -257,7 +263,7 @@ void main() {
         // ACT
         testAsync.run((_) {
           rxMockAdvisedSpeedModel.add(activeAdvisedSpeedModel);
-          rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: bServicePoint));
+          rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: calculatedSpeedServicePoint));
         });
         _processStreamInFakeAsync(testAsync);
 
@@ -272,7 +278,7 @@ void main() {
       () {
         // ACT
         testAsync.run((_) {
-          rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: bServicePoint));
+          rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: calculatedSpeedServicePoint));
           rxMockAdvisedSpeedModel.add(activeAdvisedSpeedModel);
         });
         _processStreamInFakeAsync(testAsync);
@@ -289,7 +295,7 @@ void main() {
       () {
         // ACT
         testAsync.run((_) {
-          rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: bServicePoint));
+          rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: calculatedSpeedServicePoint));
           rxMockPunctuality.add(testStaleModel);
         });
         _processStreamInFakeAsync(testAsync);
@@ -306,7 +312,7 @@ void main() {
       () {
         // ACT
         testAsync.run((_) {
-          rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: bServicePoint));
+          rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: calculatedSpeedServicePoint));
           rxMockPunctuality.add(testStaleModel);
           rxMockPunctuality.add(testHiddenModel);
         });
@@ -320,99 +326,110 @@ void main() {
     );
   });
 
-  group('Journey_Delay_Speeds_PlannedTimeDelay_', () {
+  group('Journey_PlannedTimeDelay_', () {
     const testPlannedTimeDelayVisible = Duration(minutes: 30);
-    final testPunctualityPlannedTimeDeviation = DelayModel.plannedTimeDeviation(
-      deviation: const Duration(minutes: 30),
-    );
+    final testPlannedTimeDeviation = DelayModel.plannedTimeDeviation(deviation: const Duration(minutes: 30));
 
-    setUp(() {
-      testAsync.run((_) {
-        punctualityEmitRegister.clear();
-        rxMockJourney.add(journeyWithSpeed);
-        rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: bServicePoint));
-      });
-      _processStreamInFakeAsync(testAsync);
-    });
-
-    test('punctualityModel_whenOnlyPlannedTimeDelayIsVisible_thenEmitsPlannedTimeDeviation', () {
-      // ACT
-      testAsync.run((_) => rxMockPlannedTimeDelay.add(testPlannedTimeDelayVisible));
-      _processStreamInFakeAsync(testAsync);
-
-      // EXPECT
-      expect(punctualityEmitRegister, hasLength(1));
-      expect(punctualityEmitRegister.first, equals(testPunctualityPlannedTimeDeviation));
-      expect(testee.punctualityModelValue, equals(testPunctualityPlannedTimeDeviation));
-    });
-
-    test('punctualityModel_whenSferaPunctualityAndPlannedTimeDelayAreBothVisible_thenSferaPunctualityWins', () {
-      // ACT
-      testAsync.run((_) {
-        rxMockPlannedTimeDelay.add(testPlannedTimeDelayVisible);
-        rxMockPunctuality.add(testVisibleModel);
-      });
-      _processStreamInFakeAsync(testAsync);
-
-      // EXPECT
-      expect(punctualityEmitRegister, orderedEquals([testPunctualityPlannedTimeDeviation, testVisibleModel]));
-      expect(testee.punctualityModelValue, equals(testVisibleModel));
-    });
-
-    test(
-      'punctualityModel_whenSferaPunctualityGoesHiddenWhilePlannedTimeDelayIsVisible_thenFallsBackToPlannedTime',
-      () {
-        // ACT
+    group('withoutCalculatedSpeed', () {
+      setUp(() {
         testAsync.run((_) {
-          rxMockPunctuality.add(testVisibleModel);
-          rxMockPlannedTimeDelay.add(testPlannedTimeDelayVisible);
-          rxMockPunctuality.add(testHiddenModel);
+          punctualityEmitRegister.clear();
+          rxMockJourney.add(journeyWithSpeed);
+          rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: speedlessServicePoint));
         });
         _processStreamInFakeAsync(testAsync);
-
-        // EXPECT
-        expect(
-          punctualityEmitRegister,
-          orderedEquals([testVisibleModel, testPunctualityPlannedTimeDeviation]),
-        );
-        expect(testee.punctualityModelValue, equals(testPunctualityPlannedTimeDeviation));
-      },
-    );
-
-    test('punctualityModel_whenBothSferaAndPlannedTimeDelayAreHidden_thenStaysHiddenAndDoesNotEmit', () {
-      // EXPECT
-      expect(punctualityEmitRegister, hasLength(0));
-      expect(testee.punctualityModelValue, equals(testHiddenModel));
-    });
-
-    test('punctualityModel_whenPlannedTimeDelayVisibleButAdlActive_thenStaysHiddenAndDoesNotEmit', () {
-      // ACT
-      testAsync.run((_) {
-        rxMockAdvisedSpeedModel.add(activeAdvisedSpeedModel);
-        rxMockPlannedTimeDelay.add(testPlannedTimeDelayVisible);
       });
-      _processStreamInFakeAsync(testAsync);
 
-      // EXPECT
-      expect(punctualityEmitRegister, hasLength(0));
-      expect(testee.punctualityModelValue, equals(testHiddenModel));
-    });
-
-    test(
-      'punctualityModel_whenPlannedTimeDelayVisibleButNoCalculatedSpeedAtCurrentPosition_thenEmits',
-      () {
+      test('punctualityModel_whenPlannedTimeDelayIsVisible_thenEmitsPlannedTimeDeviation', () {
         // ACT
-        testAsync.run((_) {
-          rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: aServicePoint));
-          rxMockPlannedTimeDelay.add(testPlannedTimeDelayVisible);
-        });
+        testAsync.run((_) => rxMockPlannedTimeDelay.add(testPlannedTimeDelayVisible));
         _processStreamInFakeAsync(testAsync);
 
         // EXPECT
         expect(punctualityEmitRegister, hasLength(1));
+        expect(punctualityEmitRegister.first, equals(testPlannedTimeDeviation));
+        expect(testee.punctualityModelValue, equals(testPlannedTimeDeviation));
+      });
+
+      test('punctualityModel_whenNoPlannedTimeDelay_thenStaysHiddenAndDoesNotEmit', () {
+        // EXPECT
+        expect(punctualityEmitRegister, hasLength(0));
         expect(testee.punctualityModelValue, equals(testHiddenModel));
-      },
-    );
+      });
+
+      test('punctualityModel_whenSferaPunctualityVisible_thenIgnoresSferaAndShowsPlannedDeviation', () {
+        // ACT
+        testAsync.run((_) {
+          rxMockPunctuality.add(testVisibleModel);
+          rxMockPlannedTimeDelay.add(testPlannedTimeDelayVisible);
+        });
+        _processStreamInFakeAsync(testAsync);
+
+        // EXPECT: without calculated speed the SFERA punctuality is ignored, the planned deviation is shown.
+        expect(punctualityEmitRegister, orderedEquals([testPlannedTimeDeviation]));
+        expect(testee.punctualityModelValue, equals(testPlannedTimeDeviation));
+      });
+
+      test('punctualityModel_whenPlannedTimeDelayVisibleButAdlActive_thenStaysHiddenAndDoesNotEmit', () {
+        // ACT
+        testAsync.run((_) {
+          rxMockAdvisedSpeedModel.add(activeAdvisedSpeedModel);
+          rxMockPlannedTimeDelay.add(testPlannedTimeDelayVisible);
+        });
+        _processStreamInFakeAsync(testAsync);
+
+        // EXPECT
+        expect(punctualityEmitRegister, hasLength(0));
+        expect(testee.punctualityModelValue, equals(testHiddenModel));
+      });
+
+      test('punctualityModel_whenPlannedTimeDelayGoesFromVisibleToNull_thenFallsBackToHidden', () {
+        // ACT
+        testAsync.run((_) {
+          rxMockPlannedTimeDelay.add(testPlannedTimeDelayVisible);
+          rxMockPlannedTimeDelay.add(null);
+        });
+        _processStreamInFakeAsync(testAsync);
+
+        // EXPECT
+        expect(punctualityEmitRegister, orderedEquals([testPlannedTimeDeviation, testHiddenModel]));
+        expect(testee.punctualityModelValue, equals(testHiddenModel));
+      });
+    });
+
+    group('withCalculatedSpeed', () {
+      setUp(() {
+        testAsync.run((_) {
+          punctualityEmitRegister.clear();
+          rxMockJourney.add(journeyWithSpeed);
+          rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: calculatedSpeedServicePoint));
+        });
+        _processStreamInFakeAsync(testAsync);
+      });
+
+      test('punctualityModel_whenSferaPunctualityAndPlannedTimeDelayAreBothVisible_thenSferaPunctualityWins', () {
+        // ACT
+        testAsync.run((_) {
+          rxMockPlannedTimeDelay.add(testPlannedTimeDelayVisible);
+          rxMockPunctuality.add(testVisibleModel);
+        });
+        _processStreamInFakeAsync(testAsync);
+
+        // EXPECT: with calculated speed the SFERA punctuality is shown, the planned deviation is ignored.
+        expect(punctualityEmitRegister, orderedEquals([testVisibleModel]));
+        expect(testee.punctualityModelValue, equals(testVisibleModel));
+      });
+
+      test('punctualityModel_whenSferaPunctualityHiddenAndPlannedTimeDelayVisible_thenStaysHiddenAndDoesNotEmit', () {
+        // ACT
+        testAsync.run((_) => rxMockPlannedTimeDelay.add(testPlannedTimeDelayVisible));
+        _processStreamInFakeAsync(testAsync);
+
+        // EXPECT: a train running with PüA/VPro never shows the planned deviation, even if the punctuality is hidden.
+        expect(punctualityEmitRegister, hasLength(0));
+        expect(testee.punctualityModelValue, equals(testHiddenModel));
+      });
+    });
   });
 }
 

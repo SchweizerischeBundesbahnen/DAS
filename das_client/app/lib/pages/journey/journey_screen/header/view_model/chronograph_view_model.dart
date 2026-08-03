@@ -95,16 +95,16 @@ class ChronographViewModel extends JourneyAwareViewModel {
   }
 
   void _emitState() {
-    if (!_hasLastServicePointCalculatedSpeed || _isAdvisedSpeedActive) return _rxModel.add(DelayModel.hidden());
+    if (_isAdvisedSpeedActive) return _rxModel.add(.hidden());
 
-    if (_lastDelayModel is! Hidden) return _rxModel.add(_lastDelayModel);
+    if (_hasLastServicePointCalculatedSpeed) return _rxModel.add(_lastDelayModel);
 
     final plannedTimeDelay = _lastPlannedTimeDelay;
     if (plannedTimeDelay != null) {
-      return _rxModel.add(DelayModel.plannedTimeDeviation(deviation: plannedTimeDelay));
+      return _rxModel.add(.plannedTimeDeviation(deviation: plannedTimeDelay));
     }
 
-    _rxModel.add(DelayModel.hidden());
+    _rxModel.add(.hidden());
   }
 
   bool get _hasLastServicePointCalculatedSpeed {
