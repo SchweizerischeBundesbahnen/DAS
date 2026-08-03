@@ -56,7 +56,7 @@ void main() {
 
     await waitUntilExists(
       tester,
-      find.descendant(of: findDASTableRowByText('Halt auf Verlangen C'), matching: find.byType(RouteChevron)),
+      find.descendant(of: findDASTableRowByText('Haltestelle B'), matching: find.byType(RouteChevron)),
     );
 
     await openBrakeSlipPage(tester);

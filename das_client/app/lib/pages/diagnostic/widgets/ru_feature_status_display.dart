@@ -91,5 +91,6 @@ extension _RuFeatureKeysExtension on RuFeatureKeys {
     .warnapp => context.l10n.w_ru_feature_status_warnapp,
     .customerOrientedDeparture => context.l10n.w_ru_feature_status_customer_oriented_departure,
     .departureProcess => context.l10n.w_ru_feature_status_departure_process,
+    .plannedTimeDeviation => context.l10n.w_ru_feature_status_planned_time_deviation,
   };
 }
