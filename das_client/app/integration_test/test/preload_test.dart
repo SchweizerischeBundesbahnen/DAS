@@ -81,7 +81,7 @@ void main() {
         )
         .first;
 
-    expect(find.text('-'), findsNWidgets(5));
+    expect(find.descendant(of: find.byType(PreloadStatusDisplay), matching: find.text('-')), findsNWidgets(5));
     expect(tester.widget<SBBTertiaryButtonSmall>(startButton).onPressed, isNull);
 
     // Check display with idle preload details
