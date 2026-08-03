@@ -29,7 +29,7 @@ public class TafTapLocationsImportService {
     public void importLocations() {
         log.info("Starting scheduled location import");
         List<TafTapLocationEntity> locations = getLocations();
-        tafTapLocationRepository.deleteAll();
+        tafTapLocationRepository.deleteAllInBatch();
         tafTapLocationRepository.saveAll(locations);
         log.info("Finished location import with {} locations", locations.size());
     }
