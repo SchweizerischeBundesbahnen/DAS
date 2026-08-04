@@ -9,7 +9,7 @@ import 'package:app/pages/journey/journey_screen/widgets/table/signal_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/tram_area_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/whistle_row.dart';
 import 'package:app/theme/das_colors.dart';
-import 'package:app/widgets/small_circle.dart';
+import 'package:app/widgets/das_circle_badge.dart';
 import 'package:app/widgets/speed_display.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:app/widgets/table/das_table_cell.dart';

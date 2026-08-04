@@ -1,7 +1,7 @@
 import 'package:app/i18n/i18n.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/das_badge_overlay.dart';
-import 'package:app/widgets/small_circle.dart';
+import 'package:app/widgets/das_circle_badge.dart';
 import 'package:flutter/material.dart';
 import 'package:formation/component.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';

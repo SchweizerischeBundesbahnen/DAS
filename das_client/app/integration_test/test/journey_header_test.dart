@@ -14,7 +14,7 @@ import 'package:app/pages/journey/journey_screen/widgets/communication_network_i
 import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:app/util/format.dart';
-import 'package:app/widgets/small_circle.dart';
+import 'package:app/widgets/das_circle_badge.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:connectivity_x/component.dart';
 import 'package:flutter/material.dart';
