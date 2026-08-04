@@ -66,9 +66,7 @@ void main() {
 
     testWidgets(
       'manualAdvancement_whenManualPositionSet_thenManualModeActivatedUntilJourneyPositionSignaled|tests:741',
-      (
-        tester,
-      ) async {
+      (tester) async {
         await IntegrationTestApp.start(tester);
         await loadJourney(tester, trainNumber: 'T30');
 
@@ -86,10 +84,7 @@ void main() {
         );
 
         // Check chevron at B
-        await waitUntilExists(
-          tester,
-          find.descendant(of: findDASTableRowByText(coppet), matching: find.byKey(RouteChevron.chevronKey)),
-        );
+        await waitUntilExists(tester, findChevronPositionAtRowWithText(coppet));
 
         // wait until signal received and back to non manual mode
         await waitUntilExists(
@@ -120,10 +115,7 @@ void main() {
       final locations = ['Varzo', 'Domodossola (bif)', 'Domodossola (I)'];
 
       for (final location in locations) {
-        await waitUntilExists(
-          tester,
-          find.descendant(of: findDASTableRowByText(location), matching: find.byKey(RouteChevron.chevronKey)),
-        );
+        await waitUntilExists(tester, findChevronPositionAtRowWithText(location));
       }
 
       await disconnect(tester);

@@ -43,9 +43,7 @@ void main() {
 
     testWidgets(
       'departureProcess_whenNoCustomerOrientedDeparture_thenChecklistButtonOpensDepartureDialog|tests:624,627,148',
-      (
-        tester,
-      ) async {
+      (tester) async {
         await IntegrationTestApp.start(tester);
         final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;
         featureProvider.enableFeature(.departureProcess);

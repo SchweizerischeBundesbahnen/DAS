@@ -24,9 +24,7 @@ import '../util/test_utils.dart';
 void main() {
   testWidgets(
     'brakeSlip_whenPositionUpdateWhileBrakeSlipPageOpen_thenDoesNotUpdateToNewPosition|tests:1605,1867,2483',
-    (
-      tester,
-    ) async {
+    (tester) async {
       await IntegrationTestApp.start(tester);
 
       final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
