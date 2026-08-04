@@ -28,7 +28,7 @@ class TrainIdentificationControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @DisplayName("Train companies when the train number and date are valid then the companies are returned|tests:2136")
+    @DisplayName("getCompanies_returnsCompaniesForTrainOnDate|tests:2136")
     @Test
     @WithMockRole(roles = UserRole.DRIVER)
     void getCompanies_returnsCompaniesForTrainOnDate() throws Exception {
@@ -42,7 +42,7 @@ class TrainIdentificationControllerTest {
             .andExpect(jsonPath("$.data[*].startDate", containsInAnyOrder(TODAY.toString(), TODAY.toString())));
     }
 
-    @DisplayName("Train companies when a different date is queried then different companies are returned|tests:2136")
+    @DisplayName("getCompanies_differentDate_returnsDifferentCompanies|tests:2136")
     @Test
     @WithMockRole(roles = UserRole.DRIVER)
     void getCompanies_differentDate_returnsDifferentCompanies() throws Exception {
@@ -56,7 +56,7 @@ class TrainIdentificationControllerTest {
             .andExpect(jsonPath("$.data[0].startDate").value(TOMORROW.toString()));
     }
 
-    @DisplayName("Train companies when multiple dates are provided then all matching companies are returned|tests:2136")
+    @DisplayName("getCompanies_multipleDates_returnsCompaniesWithMatchingStartDate|tests:2136")
     @Test
     @WithMockRole(roles = UserRole.DRIVER)
     void getCompanies_multipleDates_returnsCompaniesWithMatchingStartDate() throws Exception {
@@ -70,7 +70,7 @@ class TrainIdentificationControllerTest {
             .andExpect(jsonPath("$.data[*].startDate", containsInAnyOrder(TODAY.toString(), TODAY.toString(), TOMORROW.toString())));
     }
 
-    @DisplayName("Train companies when no companies exist for the train number then the API returns not found|tests:2136")
+    @DisplayName("getCompanies_noMatch_returns404|tests:2136")
     @Test
     @WithMockRole(roles = UserRole.DRIVER)
     void getCompanies_noMatch_returns404() throws Exception {
@@ -80,7 +80,7 @@ class TrainIdentificationControllerTest {
             .andExpect(status().isNotFound());
     }
 
-    @DisplayName("Train companies when no companies exist for the date then the API returns not found|tests:2136")
+    @DisplayName("getCompanies_noMatchOnDate_returns404|tests:2136")
     @Test
     @WithMockRole(roles = UserRole.DRIVER)
     void getCompanies_noMatchOnDate_returns404() throws Exception {
@@ -90,7 +90,7 @@ class TrainIdentificationControllerTest {
             .andExpect(status().isNotFound());
     }
 
-    @DisplayName("Train companies when the caller has the observer role then search is allowed|tests:2136")
+    @DisplayName("getCompanies_observerRole_isAllowed|tests:2136")
     @Test
     @WithMockRole(roles = UserRole.OBSERVER)
     void getCompanies_observerRole_isAllowed() throws Exception {
@@ -100,7 +100,7 @@ class TrainIdentificationControllerTest {
             .andExpect(status().isOk());
     }
 
-    @DisplayName("Train companies when the user is not authenticated then access is rejected|tests:2136")
+    @DisplayName("getCompanies_unauthenticated_returns401|tests:2136")
     @Test
     void getCompanies_unauthenticated_returns401() throws Exception {
         mockMvc.perform(get(API_DRIVER_TRAIN_IDENTIFICATION_COMPANIES)
@@ -109,7 +109,7 @@ class TrainIdentificationControllerTest {
             .andExpect(status().isUnauthorized());
     }
 
-    @DisplayName("Train companies when the start date is missing then the request is invalid|tests:2136")
+    @DisplayName("getCompanies_missingstartDate_returns400|tests:2136")
     @Test
     @WithMockRole(roles = UserRole.DRIVER)
     void getCompanies_missingstartDate_returns400() throws Exception {
@@ -118,7 +118,7 @@ class TrainIdentificationControllerTest {
             .andExpect(status().isBadRequest());
     }
 
-    @DisplayName("Train companies when start date is out of range then the request is invalid|tests:2136")
+    @DisplayName("getCompanies_startDateOutOfRange_returns400|tests:2136")
     @Test
     @WithMockRole(roles = UserRole.DRIVER)
     void getCompanies_startDateOutOfRange_returns400() throws Exception {
@@ -128,7 +128,7 @@ class TrainIdentificationControllerTest {
             .andExpect(status().isBadRequest());
     }
 
-    @DisplayName("Train companies when the train number is missing then the request is invalid|tests:2136")
+    @DisplayName("getCompanies_missingTrainNumber_returns400|tests:2136")
     @Test
     @WithMockRole(roles = UserRole.DRIVER)
     void getCompanies_missingTrainNumber_returns400() throws Exception {
@@ -137,7 +137,7 @@ class TrainIdentificationControllerTest {
             .andExpect(status().isBadRequest());
     }
 
-    @DisplayName("Train companies when a train is operated by multiple companies then all associated companies are returned|tests:2136,2271")
+    @DisplayName("getCompanies_singleEntityWithMultipleCompanies_returnsAllCompaniesFromEntity|tests:2136,2271")
     @Test
     @WithMockRole(roles = UserRole.DRIVER)
     void getCompanies_singleEntityWithMultipleCompanies_returnsAllCompaniesFromEntity() throws Exception {
@@ -149,7 +149,7 @@ class TrainIdentificationControllerTest {
             .andExpect(jsonPath("$.data[*].company.code", containsInAnyOrder("1111", "2222")));
     }
 
-    @DisplayName("Train companies when only registered companies match then only registered companies are returned|tests:2136,2271")
+    @DisplayName("getCompanies_onlyReturnsCompaniesStoredInCompaniesTable|tests:2136,2271")
     @Test
     @WithMockRole(roles = UserRole.DRIVER)
     void getCompanies_onlyReturnsCompaniesStoredInCompaniesTable() throws Exception {

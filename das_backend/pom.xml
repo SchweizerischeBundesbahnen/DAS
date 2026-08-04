@@ -306,6 +306,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
+                    <statelessTestsetReporter implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5Xml30StatelessReporter">
+                        <usePhrasedTestCaseMethodName>true</usePhrasedTestCaseMethodName>
+                    </statelessTestsetReporter>
                     <systemPropertyVariables>
                         <!-- Without this, Spring Boot's own spring.profiles.active/default fallback
                              (${STAGE:local}) resolves to "local" during the very first config-data

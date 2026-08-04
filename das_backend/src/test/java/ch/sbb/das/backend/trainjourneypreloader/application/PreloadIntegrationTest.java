@@ -53,21 +53,21 @@ class PreloadIntegrationTest {
         return Files.readString(Path.of("src/test/resources/trainjourneypreloader/" + filename)).replace("${correlationId}", correlationId);
     }
 
-    @DisplayName("Connect delegates to mqtt client|tests:914")
+    @DisplayName("connect_delegatesToMqttClient|tests:914")
     @Test
     void connect_delegatesToMqttClient() {
         underTest.connect();
         verify(mqttClient, times(1)).connect(anyString());
     }
 
-    @DisplayName("Disconnect delegates to mqtt client|tests:914")
+    @DisplayName("disconnect_delegatesToMqttClient|tests:914")
     @Test
     void disconnect_delegatesToMqttClient() {
         underTest.disconnect();
         verify(mqttClient, times(1)).disconnect();
     }
 
-    @DisplayName("Preload when train identification and sfera data received results jps, sps and tcs|tests:914,1653,2271")
+    @DisplayName("preload_ok|tests:914,1653,2271")
     @Test
     void preload_ok() throws Exception {
         AtomicReference<IMqttMessageListener> listenerRef = new AtomicReference<>();
@@ -120,7 +120,7 @@ class PreloadIntegrationTest {
         verify(mqttClient, times(4)).publish(anyString(), anyString());
     }
 
-    @DisplayName("Preload when sfera returns hs error then nothing stored|tests:914,1653,2271")
+    @DisplayName("preload_throwsWhenHsError|tests:914,1653,2271")
     @Test
     void preload_throwsWhenHsError() throws Exception {
         AtomicReference<IMqttMessageListener> listenerRef = new AtomicReference<>();
