@@ -140,7 +140,7 @@ Future<void> main() async {
       expect(currentDisplayTurnedOff, false);
     });
 
-    testWidgets('journeyHeader_whenTrainActive_thenHidesAppBar|tests:670', (tester) async {
+    testWidgets('journeyHeader_whenTrainActive_thenHidesAppBar|tests:79,670', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
@@ -201,7 +201,7 @@ Future<void> main() async {
       await disconnect(tester);
     });
 
-    testWidgets('journeyHeader_whenManeuverModeToggled_thenShowsNotification|tests:242', (tester) async {
+    testWidgets('journeyHeader_whenManeuverModeToggled_thenShowsNotification|tests:242,231', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
@@ -214,7 +214,7 @@ Future<void> main() async {
       await disconnect(tester);
     });
 
-    testWidgets('journeyHeader_whenManeuverNotificationSwitchTapped_thenHidesNotification|tests:148', (tester) async {
+    testWidgets('journeyHeader_whenManeuverNotificationSwitchTapped_thenHidesNotification|tests:242', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
@@ -245,7 +245,7 @@ Future<void> main() async {
       await disconnect(tester);
     });
 
-    testWidgets('journeyHeader_whenWarnappDisabled_thenHidesManeuverMode|tests:445', (tester) async {
+    testWidgets('journeyHeader_whenWarnappDisabled_thenHidesManeuverMode|tests:242,445', (tester) async {
       await IntegrationTestApp.start(tester);
 
       final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;
@@ -301,7 +301,7 @@ Future<void> main() async {
       await disconnect(tester);
     });
 
-    testWidgets('journeyHeader_whenBatteryBelow15Percent_thenShowsIconAndModal|tests:123', (tester) async {
+    testWidgets('journeyHeader_whenBatteryBelow15Percent_thenShowsIconAndModal|tests:123,590', (tester) async {
       await IntegrationTestApp.start(tester);
       final battery = DI.get<Battery>() as MockBattery;
       battery.currentBatteryLevel = 10;
@@ -322,7 +322,7 @@ Future<void> main() async {
       await disconnect(tester);
     });
 
-    testWidgets('journeyHeader_whenCommunicationNetworkChanges_thenDisplaysCorrectly|tests:122', (tester) async {
+    testWidgets('journeyHeader_whenCommunicationNetworkChanges_thenDisplaysCorrectly|tests:125,229', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T12');
 
@@ -393,7 +393,7 @@ Future<void> main() async {
     });
 
     // can be removed based on what option to change the brightness will be chosen
-    testWidgets('journeyHeader_whenDoubleTapped_thenSetsBrightnessToZero|tests:564', (tester) async {
+    testWidgets('journeyHeader_whenDoubleTapped_thenSetsBrightnessToZero|tests:101', (tester) async {
       await IntegrationTestApp.start(
         tester,
         onBeforeRun: () => (DI.get<BrightnessManager>() as MockBrightnessManager).writeSettingsPermission = false,
@@ -425,7 +425,7 @@ Future<void> main() async {
     });
 
     // can be removed based on what option to change the brightness will be chosen
-    testWidgets('journeyHeader_whenDraggedRight_thenIncreasesBrightness|tests:564', (tester) async {
+    testWidgets('journeyHeader_whenDraggedRight_thenIncreasesBrightness|tests:101', (tester) async {
       await IntegrationTestApp.start(
         tester,
         onBeforeRun: () => (DI.get<BrightnessManager>() as MockBrightnessManager).writeSettingsPermission = false,
@@ -455,7 +455,7 @@ Future<void> main() async {
       await disconnect(tester);
     });
 
-    testWidgets('journeyHeader_whenDraggedLeft_thenDecreasesBrightness|tests:564', (tester) async {
+    testWidgets('journeyHeader_whenDraggedLeft_thenDecreasesBrightness|tests:101', (tester) async {
       await IntegrationTestApp.start(
         tester,
         onBeforeRun: () => (DI.get<BrightnessManager>() as MockBrightnessManager).writeSettingsPermission = false,

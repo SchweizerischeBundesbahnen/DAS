@@ -67,7 +67,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('servicePointModal_whenInteracted_thenOpensAndClosesCorrectly|tests:242', (tester) async {
+    testWidgets('servicePointModal_whenInteracted_thenOpensAndClosesCorrectly|tests:497', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T8');
 
@@ -157,7 +157,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('servicePointModal_whenOpened_thenCollapsesHeaderButtons|tests:242', (tester) async {
+    testWidgets('servicePointModal_whenOpened_thenCollapsesHeaderButtons|tests:497', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
@@ -175,7 +175,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('servicePointModal_whenDataAvailable_thenShowsOnlyRelevantTabs|tests:1040', (tester) async {
+    testWidgets('servicePointModal_whenDataAvailable_thenShowsOnlyRelevantTabs|tests:1040,497', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T8');
 
@@ -193,7 +193,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('servicePointModal_whenTabChanged_thenDisplaysCorrectContent|tests:242', (tester) async {
+    testWidgets('servicePointModal_whenTabChanged_thenDisplaysCorrectContent|tests:497', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T8');
 
@@ -212,7 +212,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('servicePointModal_whenTimeout_thenClosesAutomatically|tests:242', (tester) async {
+    testWidgets('servicePointModal_whenTimeout_thenClosesAutomatically|tests:497', (tester) async {
       await IntegrationTestApp.start(tester);
 
       await loadJourney(tester, trainNumber: 'T8');
@@ -233,7 +233,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('servicePointModal_whenAdvancementPaused_thenClosesAfterTimeout|tests:242', (tester) async {
+    testWidgets('servicePointModal_whenAdvancementPaused_thenClosesAfterTimeout|tests:497', (tester) async {
       await IntegrationTestApp.start(tester);
 
       await loadJourney(tester, trainNumber: 'T8');
@@ -491,7 +491,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('servicePointModal_whenNavigatedAndReturned_thenStaysDisplayed', (tester) async {
+  testWidgets('servicePointModal_whenNavigatedAndReturned_thenStaysDisplayed|tests:497', (tester) async {
     await IntegrationTestApp.start(tester);
     final timeConstants = DI.get<TimeConstants>() as TestTimeConstants;
     timeConstants.modalSheetAutomaticCloseAfterSecondsValue = 5;

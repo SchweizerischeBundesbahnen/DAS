@@ -55,7 +55,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('journeyUpdates_whenTrainCharacteristicsUpdated_thenIgnoresUpdate|tests:87', (tester) async {
+  testWidgets('journeyUpdates_whenTrainCharacteristicsUpdated_thenIgnoresUpdate|tests:1416', (tester) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T37');
 

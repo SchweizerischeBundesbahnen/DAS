@@ -75,7 +75,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('journeySearchOverlay_whenTrainLoaded_thenOpensJourneyWithoutNavigationButtons|tests:456', (
+    testWidgets('journeySearchOverlay_whenTrainLoaded_thenOpensJourneyWithoutNavigationButtons|tests:456,96', (
       tester,
     ) async {
       await IntegrationTestApp.start(tester);
@@ -117,7 +117,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('journeySearchOverlay_whenMultipleCompanyMatches_thenRedirectsToSelectionScreen|tests:90', (
+    testWidgets('journeySearchOverlay_whenMultipleCompanyMatches_thenRedirectsToSelectionScreen|tests:702', (
       tester,
     ) async {
       await IntegrationTestApp.start(tester);

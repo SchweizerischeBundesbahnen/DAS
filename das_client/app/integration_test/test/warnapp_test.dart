@@ -34,7 +34,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('warnapp_whenUiRebuilt_thenNotificationNotReappearing', (tester) async {
+    testWidgets('warnapp_whenUiRebuilt_thenNotificationNotReappearing|tests:98', (tester) async {
       await IntegrationTestApp.start(tester);
 
       final motionDataService = DI.get<MotionDataService>() as MockMotionDataService;

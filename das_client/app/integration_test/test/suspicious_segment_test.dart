@@ -46,7 +46,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('suspiciousSegment_whenJourneyUpdated_thenShowsNotification|tests:1967', (tester) async {
+    testWidgets('suspiciousSegment_whenJourneyUpdated_thenShowsNotification|tests:409', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T42');
 

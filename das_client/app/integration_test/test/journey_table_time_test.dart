@@ -162,7 +162,7 @@ void main() {
   });
 
   testWidgets(
-    'timeCell_whenManuallySetToPlanned_thenAutoSwitchesBackToOperational',
+    'timeCell_whenManuallySetToPlanned_thenAutoSwitchesBackToOperational|tests:84',
     (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');

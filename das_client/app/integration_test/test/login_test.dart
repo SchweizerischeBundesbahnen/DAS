@@ -14,7 +14,7 @@ import '../util/test_utils.dart';
 
 void main() {
   group('login tests', () {
-    testWidgets('login_whenLogoutDialogIsDismissed_thenIsStillLoggedIn|tests:2399', (tester) async {
+    testWidgets('login_whenLogoutDialogIsDismissed_thenIsStillLoggedIn|tests:1870', (tester) async {
       await IntegrationTestApp.start(tester);
       expect(find.byType(JourneySelectionPage), findsOne);
 

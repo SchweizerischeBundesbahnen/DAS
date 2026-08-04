@@ -23,7 +23,7 @@ import '../util/test_utils.dart';
 
 void main() {
   group('train journey table test', () {
-    testWidgets('journeyTable_whenCurvesPresent_thenDisplaysEndOfCurvesCorrectly|tests:584', (tester) async {
+    testWidgets('journeyTable_whenCurvesPresent_thenDisplaysEndOfCurvesCorrectly|tests:478,584', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T5');
 
@@ -67,7 +67,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('journeyTable_whenKilometerAndNetworkChanges_thenDisplaysCorrectly|tests:626', (tester) async {
+    testWidgets('journeyTable_whenKilometerAndNetworkChanges_thenDisplaysCorrectly|tests:125,1237,356', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
@@ -123,7 +123,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('journeyTable_whenBrakeSeriesA50Chosen_thenFindstwoCurves|tests:478', (tester) async {
+    testWidgets('journeyTable_whenBrakeSeriesA50Chosen_thenFindstwoCurves|tests:478,584', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T5');
 
@@ -144,7 +144,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('journeyTable_whenBrakeSeriesR115Chosen_thenFindsThreeCurves|tests:478', (tester) async {
+    testWidgets('journeyTable_whenBrakeSeriesR115Chosen_thenFindsThreeCurves|tests:478,584', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T5');
 
@@ -328,7 +328,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('journeyTable_whenRoutePresent_thenDisplaysCorrectly', (tester) async {
+    testWidgets('journeyTable_whenRoutePresent_thenDisplaysCorrectly|tests:80,1557', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
@@ -368,7 +368,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('journeyTable_whenProtectionSectionsPresent_thenDisplaysCorrectly|tests:223', (tester) async {
+    testWidgets('journeyTable_whenProtectionSectionsPresent_thenDisplaysCorrectly|tests:223,82', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T3');
 
@@ -435,7 +435,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('journeyTable_whenBothKilometresPresent_thenDisplaysBoth', (tester) async {
+    testWidgets('journeyTable_whenBothKilometresPresent_thenDisplaysBoth|tests:80', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T6');
 
@@ -447,7 +447,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('journeyTable_whenBracketStations_thenDisplaysCorrectly', (tester) async {
+    testWidgets('journeyTable_whenBracketStations_thenDisplaysCorrectly|tests:81', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
@@ -496,7 +496,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('journeyTable_whenHaltOnRequest_thenDisplaysCorrectly', (tester) async {
+    testWidgets('journeyTable_whenHaltOnRequest_thenDisplaysCorrectly|tests:81', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
@@ -525,7 +525,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('journeyTable_whenHaltPresent_thenDisplaysItalic', (tester) async {
+    testWidgets('journeyTable_whenHaltPresent_thenDisplaysItalic|tests:81', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T6');
 
@@ -568,7 +568,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('journeyTable_whenCurvesPresent_thenDisplaysCurvesCorrectly|tests:223', (tester) async {
+    testWidgets('journeyTable_whenCurvesPresent_thenDisplaysCurvesCorrectly|tests:82', (tester) async {
       await IntegrationTestApp.start(tester);
 
       await loadJourney(tester, trainNumber: 'T9999M');
@@ -594,7 +594,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('journeyTable_whenSignalsPresent_thenDisplaysCorrectly|tests:223', (tester) async {
+    testWidgets('journeyTable_whenSignalsPresent_thenDisplaysCorrectly|tests:82', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 

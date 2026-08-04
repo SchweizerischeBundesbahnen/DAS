@@ -217,7 +217,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('appLink_whenLinkWithReturnUrl_shouldUseReturnUrlOverDefaultTourSystemUrl|tests:97', (tester) async {
+    testWidgets('appLink_whenLinkWithReturnUrl_shouldUseReturnUrlOverDefaultTourSystemUrl|tests:97,96', (tester) async {
       await IntegrationTestApp.start(tester);
 
       expect(find.byType(JourneySelectionPage), findsOne);
@@ -282,7 +282,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('appLink_whenLinkWithSingleTrain_showsCompanyMatchSelection|tests:90', (tester) async {
+    testWidgets('appLink_whenLinkWithSingleTrain_showsCompanyMatchSelection|tests:702', (tester) async {
       await IntegrationTestApp.start(tester);
 
       expect(find.byType(JourneySelectionPage), findsOne);
@@ -309,7 +309,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('appLink_whenAlreadyOnJourneyPageReceivingDeeplink_opensSelectionWithCompanyMatch|tests:90', (
+    testWidgets('appLink_whenAlreadyOnJourneyPageReceivingDeeplink_opensSelectionWithCompanyMatch|tests:702', (
       tester,
     ) async {
       await IntegrationTestApp.start(tester);
@@ -349,7 +349,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('appLink_whenAlreadyOnJourneyPageReceivingDeeplink_opensNewJourneyWithMatchingRu|tests:90', (
+    testWidgets('appLink_whenAlreadyOnJourneyPageReceivingDeeplink_opensNewJourneyWithMatchingRu|tests:702', (
       tester,
     ) async {
       await IntegrationTestApp.start(tester);

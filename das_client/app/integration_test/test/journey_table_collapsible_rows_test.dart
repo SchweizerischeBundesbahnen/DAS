@@ -178,7 +178,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('collapsibleRows_whenRadnFootNoteDisplayed_thenTitleContainsType', (tester) async {
+  testWidgets('collapsibleRows_whenRadnFootNoteDisplayed_thenTitleContainsType|tests:625', (tester) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T15M');
 
@@ -207,7 +207,9 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('simFootNote_whenSimTrain_thenSimFootNoteIsExpandedAndNotCollapsedWhenPassed|tests:940', (tester) async {
+  testWidgets('simFootNote_whenSimTrain_thenSimFootNoteIsExpandedAndNotCollapsedWhenPassed|tests:940,1126', (
+    tester,
+  ) async {
     // ARRANGE - mock SIM train
     await IntegrationTestApp.start(tester);
 

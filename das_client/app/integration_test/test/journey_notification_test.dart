@@ -15,7 +15,7 @@ import '../util/test_utils.dart';
 
 void main() {
   group('train journey notification test', () {
-    testWidgets('notification_whenDepartureProcessDialogOpened_thenDisplaysCorrectly|tests:148', (tester) async {
+    testWidgets('notification_whenDepartureProcessDialogOpened_thenDisplaysCorrectly|tests:624,627', (tester) async {
       await IntegrationTestApp.start(tester);
       final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;
       featureProvider.enableFeature(.departureProcess);
@@ -42,7 +42,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('notification_whenDisturbanceOccurs_thenShowsAndHidesNotification|tests:244', (tester) async {
+    testWidgets('notification_whenDisturbanceOccurs_thenShowsAndHidesNotification|tests:244,1557', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T33');
 

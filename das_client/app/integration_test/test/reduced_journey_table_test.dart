@@ -10,7 +10,7 @@ import '../util/test_utils.dart';
 
 void main() {
   group('train reduced journey test', () {
-    testWidgets('reducedJourney_whenNetworkChangePresent_thenDisplaysWithKm|tests:626', (tester) async {
+    testWidgets('reducedJourney_whenNetworkChangePresent_thenDisplaysWithKm|tests:356', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
       await openReducedJourneyMenu(tester);
@@ -86,7 +86,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('reducedJourney_whenLoaded_thenDisplaysPlannedTimes', (tester) async {
+    testWidgets('reducedJourney_whenLoaded_thenDisplaysPlannedTimes|tests:84', (tester) async {
       await IntegrationTestApp.start(tester);
 
       await loadJourney(tester, trainNumber: 'T16');
