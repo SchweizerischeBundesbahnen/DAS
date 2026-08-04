@@ -354,20 +354,20 @@ void main() {
 
     await openBrakeSlipPage(tester);
 
-    expect(find.byType(SmallCircle), findsNothing);
+    expect(find.byType(DASCircleBadge), findsNothing);
 
     await tapElement(tester, find.byKey(NavigationButtons.navigationButtonNextKey));
 
-    expect(find.byType(SmallCircle), findsNWidgets(4));
+    expect(find.byType(DASCircleBadge), findsNWidgets(4));
 
     formationRepository.emitFormationWithAllChanges();
     await tester.pumpAndSettle();
 
-    expect(find.byType(SmallCircle), findsNothing);
+    expect(find.byType(DASCircleBadge), findsNothing);
 
     await tapElement(tester, find.byKey(NavigationButtons.navigationButtonNextKey));
 
-    expect(find.byType(SmallCircle), findsNWidgets(38));
+    expect(find.byType(DASCircleBadge), findsNWidgets(38));
 
     await disconnect(tester);
   });

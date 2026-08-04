@@ -742,7 +742,7 @@ void main() {
 
       final aarauDotIndicator = find.descendant(
         of: aarauStationRow,
-        matching: find.byKey(SmallCircle.smallCircleKey),
+        matching: find.byKey(DASCircleBadge.circleBadgeKey),
       );
       expect(aarauDotIndicator, findsOneWidget);
 

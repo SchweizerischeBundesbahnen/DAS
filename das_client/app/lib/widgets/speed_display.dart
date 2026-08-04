@@ -33,7 +33,7 @@ class SpeedDisplay extends StatelessWidget {
     return DASBadgeOverlay(
       badgeVisible: hasAdditionalInformation,
       badgeOffset: _badgeOffset(speed!),
-      badge: SmallCircle(color: isNextStop ? SBBColors.sky : null),
+      badge: DASCircleBadge(color: isNextStop ? SBBColors.sky : null),
       child: switch (speed!) {
         final SummarizedCurvesSpeed _ => _visualizedSpeeds(speeds: speed!),
         final IncomingOutgoingSpeed s => singleLine ? _rowSpeed(context, s) : _columnSpeed(context, s),

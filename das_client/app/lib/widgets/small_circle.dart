@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
-/// A simple filled circle, intended to be used as a badge via [DASBadge].
-class SmallCircle extends StatelessWidget {
-  static const Key smallCircleKey = Key('dotBadge');
+/// A simple filled circle, intended to be used as a badge via [DASBadgeOverlay].
+class DASCircleBadge extends StatelessWidget {
+  static const Key circleBadgeKey = Key('circleBadgeKey');
 
-  const SmallCircle({
+  const DASCircleBadge({
     this.color,
     super.key,
   });
@@ -16,9 +16,9 @@ class SmallCircle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      key: smallCircleKey,
-      painter: _DotPainter(color: color ?? _defaultColor(context)),
-      size: Size(SBBSpacing.xSmall, SBBSpacing.xSmall),
+      key: circleBadgeKey,
+      painter: _CirclePainter(color: color ?? _defaultColor(context)),
+      size: Size.square(SBBSpacing.xSmall),
     );
   }
 
@@ -27,8 +27,8 @@ class SmallCircle extends StatelessWidget {
   }
 }
 
-class _DotPainter extends CustomPainter {
-  _DotPainter({required this.color});
+class _CirclePainter extends CustomPainter {
+  _CirclePainter({required this.color});
 
   final Color color;
 
@@ -43,5 +43,5 @@ class _DotPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(_DotPainter oldDelegate) => oldDelegate.color != color;
+  bool shouldRepaint(_CirclePainter oldDelegate) => oldDelegate.color != color;
 }

@@ -74,7 +74,7 @@ class BrakeLoadSlipSpecialRestrictions extends StatelessWidget {
             children: [
               DASBadgeOverlay(
                 badgeOffset: Offset(0, -SBBSpacing.small),
-                badge: SmallCircle(color: ThemeUtil.getDASOperationalChangeColor(context)),
+                badge: DASCircleBadge(color: ThemeUtil.getDASOperationalChangeColor(context)),
                 child: titleText,
               ),
             ],

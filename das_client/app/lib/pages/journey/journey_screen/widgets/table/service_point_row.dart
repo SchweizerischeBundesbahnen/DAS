@@ -237,7 +237,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     Widget child = Padding(
       padding: .only(top: SBBSpacing.xSmall, right: SBBSpacing.xxSmall),
       child: DASBadgeOverlay(
-        badge: const SmallCircle(),
+        badge: const DASCircleBadge(),
         child: SizedBox.expand(),
       ),
     );

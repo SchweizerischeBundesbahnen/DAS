@@ -60,7 +60,7 @@ class KeyValueTableDataRow extends StatelessWidget {
     return hasChange && showChangeIndicator && value == null
         ? DASBadgeOverlay(
             badgeOffset: Offset(0, -SBBSpacing.small),
-            badge: SmallCircle(color: ThemeUtil.getDASOperationalChangeColor(context)),
+            badge: DASCircleBadge(color: ThemeUtil.getDASOperationalChangeColor(context)),
             child: labelText,
           )
         : Expanded(child: labelText);
@@ -77,7 +77,7 @@ class KeyValueTableDataRow extends StatelessWidget {
     return DASBadgeOverlay(
       badgeVisible: hasChange && showChangeIndicator && value != null,
       badgeOffset: Offset(0, -SBBSpacing.small),
-      badge: SmallCircle(color: ThemeUtil.getDASOperationalChangeColor(context)),
+      badge: DASCircleBadge(color: ThemeUtil.getDASOperationalChangeColor(context)),
       child: text,
     );
   }

@@ -152,7 +152,7 @@ class BrakeLoadSlipTrainDetailsTable extends StatelessWidget {
     if (hasChange) {
       child = DASBadgeOverlay(
         badgeOffset: Offset(0, -SBBSpacing.small),
-        badge: SmallCircle(color: ThemeUtil.getDASOperationalChangeColor(context)),
+        badge: DASCircleBadge(color: ThemeUtil.getDASOperationalChangeColor(context)),
         child: child,
       );
     }

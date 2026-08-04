@@ -264,7 +264,7 @@ void main() {
       await loadJourney(tester, trainNumber: 'T8');
 
       final tableRowBern = findDASTableRowByText('75-70-60');
-      final indicator = find.descendant(of: tableRowBern, matching: find.byKey(SmallCircle.smallCircleKey));
+      final indicator = find.descendant(of: tableRowBern, matching: find.byKey(DASCircleBadge.circleBadgeKey));
       expect(indicator, findsOneWidget);
 
       // open and check modal sheet with tap on graduated speeds

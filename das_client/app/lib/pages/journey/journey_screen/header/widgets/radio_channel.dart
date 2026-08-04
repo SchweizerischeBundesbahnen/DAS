@@ -31,7 +31,7 @@ class RadioChannel extends StatelessWidget {
             child: DASBadgeOverlay(
               badgeVisible: model.showDotIndicator,
               badgeOffset: Offset(-6.0, -8.0),
-              badge: const SmallCircle(),
+              badge: const DASCircleBadge(),
               child: Row(
                 spacing: SBBSpacing.xSmall,
                 crossAxisAlignment: .center,
