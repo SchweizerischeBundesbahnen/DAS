@@ -4,8 +4,9 @@ ALTER SEQUENCE train_formation_run_id_seq RESTART WITH 1;
 
 INSERT INTO public.train_formation_run(id, position, inspection_date_time, operational_train_number,
                                        train_path_id, operational_day, company,
-                                       taf_tap_location_reference_start,
-                                       taf_tap_location_reference_end, train_category_code,
+                                       taf_tap_location_uic_start_code,
+                                       taf_tap_location_uic_end_code,
+                                       taf_tap_location_uic_start_pass_index, train_category_code,
                                        braked_weight_percentage, traction_max_speed_in_kmh,
                                        hauled_load_max_speed_in_kmh, formation_max_speed_in_kmh,
                                        traction_length_in_cm, hauled_load_length_in_cm,
@@ -32,19 +33,19 @@ INSERT INTO public.train_formation_run(id, position, inspection_date_time, opera
 VALUES
     -- 54233 - 2025-07-25 - 2185
     (nextval('train_formation_run_id_seq'), 0, '2025-07-25 11:30:43.895000', 54233, '54233-001',
-     '2025-07-25', 2185, 'CH00001', 'CH00002', 'A', 105, 120, 120, 140, 3080, 43142, 46222, 168,
+     '2025-07-25', 2185, 85000010, 85000020, 0, 'A', 105, 120, 120, 140, 3080, 43142, 46222, 168,
      543, 711, 210, 543, 753, 1000, 5980, 6980, false, false, false, false, 'Z (Ts532)', false,
      false, 28, 26, 0, 0, 918544202495, 218524710439, 20290, 'C2', 40, 40, 60),
     (nextval('train_formation_run_id_seq'), 1, '2025-07-25 05:41:04.841000', 54233, '54233-001',
-     '2025-07-25', 2185, 'CH00002', 'CH00003', 'A', 95, 120, 120, 140, 1540, 43142, 44682, 84, 543,
+     '2025-07-25', 2185, 85000020, 85000030, 0, 'A', 95, 120, 120, 140, 1540, 43142, 44682, 84, 543,
      627, 105, 543, 648, 500, 5980, 6480, null, null, null, false, 'Z (Ts532)', false, false, 27,
      26, 0, 0, 845392107836, 731285649012, 20290, null, 0, 0, 70),
 -- 739 - 2025-07-20 - 3211
     (nextval('train_formation_run_id_seq'), 0, '2025-07-20 15:18:15.782000', 739, '739-012',
-     '2025-07-20', 3211, 'CH00010', 'CH00011', 'R', 115, 100, null, 140, 1890, 0, 1890, 86, 0, 86,
+     '2025-07-20', 3211, 85000100, 85000110, 0, 'R', 115, 100, null, 140, 1890, 0, 1890, 86, 0, 86,
      126, 0, 126, 530, 0, 530, null, null, null, false, null, false, false, 1, 0, 0, 0,
      918544840153, 918544840153, 0, null, 0, 0, 38),
     (nextval('train_formation_run_id_seq'), 1, '2025-07-20 14:07:09.498000', 739, '739-012',
-     '2025-07-20', 3211, 'CH00011', 'CH00014', 'R', 115, 140, null, 140, 1890, 0, 1890, 86, 0, 86,
+     '2025-07-20', 3211, 85000110, 85000140, 0, 'R', 115, 140, null, 140, 1890, 0, 1890, 86, 0, 86,
      126, 0, 126, 530, 0, 530, null, null, null, false, null, false, false, 1, 0, 0, 0,
      918544840153, 918544840153, 0, null, 0, 0, 38)

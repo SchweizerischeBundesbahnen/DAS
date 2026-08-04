@@ -4,4 +4,4 @@ WHERE operational_train_number = ?
   AND operational_day = ?
   AND company = ?
   AND train_path_id = 'ux_test'
-  AND taf_tap_location_reference_start = 'CH00006';
+  AND taf_tap_location_reference_start = 85000060;

@@ -52,9 +52,11 @@ public class TrainFormationRunEntity {
     @Convert(converter = CompanyCodeConverter.class)
     private CompanyCode company;
 
-    private String tafTapLocationReferenceStart;
+    private Integer tafTapLocationUicStartCode;
 
-    private String tafTapLocationReferenceEnd;
+    private Integer tafTapLocationUicStartPassIndex;
+
+    private Integer tafTapLocationUicEndCode;
 
     private String trainCategoryCode;
 

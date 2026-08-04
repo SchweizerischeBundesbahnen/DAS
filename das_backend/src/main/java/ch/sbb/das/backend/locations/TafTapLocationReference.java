@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 public class TafTapLocationReference {
 
     private static final int MAX_UIC_CODE = 99999;
+    private static final int COUNTRY_CODE_FACTOR = 1000000;
+    private static final int UIC_CHECKDIGIT_DIVISOR = 10;
+
     /**
      * @see <a href="https://uic.org/support-activities/it/article/country-codes">UIC Country Codes</a>
      */
@@ -127,5 +130,32 @@ public class TafTapLocationReference {
             throw new UnexpectedProviderData("uicCode is larger than expected 5 digits");
         }
         return countryCodeIso + String.format("%05d", uicCode);
+    }
+
+    /**
+     * Converts a UIC code (e.g. 85221370) to a TAF/TAP location reference (e.g. "CH22137").
+     *
+     * @param uicCode the UIC code (with checkdigit)
+     * @return the location reference code, or null if uicCode is null
+     */
+    public static String toLocationCode(Integer uicCode) {
+        if (uicCode == null) {
+            return null;
+        }
+        int countryCodeUic = uicCode / COUNTRY_CODE_FACTOR;
+        int locationWithoutCheckdigit = (uicCode % COUNTRY_CODE_FACTOR) / UIC_CHECKDIGIT_DIVISOR;
+        return new TafTapLocationReference(toCountryCodeIso(countryCodeUic), locationWithoutCheckdigit).toLocationCode();
+    }
+
+    /**
+     * Merges a country code and location code into a UIC code.
+     *
+     * @return the merged code (country + locationCode), or null if either is null
+     */
+    public static Integer toUicCode(Integer countryCodeUic, Integer locationCode) {
+        if (countryCodeUic == null || locationCode == null) {
+            return null;
+        }
+        return countryCodeUic * COUNTRY_CODE_FACTOR + locationCode;
     }
 }
