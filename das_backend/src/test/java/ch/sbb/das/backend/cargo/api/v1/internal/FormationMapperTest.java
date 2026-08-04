@@ -2,7 +2,6 @@ package ch.sbb.das.backend.cargo.api.v1.internal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.mock;
 
 import ch.sbb.das.backend.cargo.api.v1.model.Formation;
 import ch.sbb.das.backend.cargo.infrastructure.model.TrainFormationRunEntity;
