@@ -2,7 +2,8 @@ import 'package:app/pages/journey/journey_screen/detail_modal/service_point_moda
 import 'package:app/pages/journey/journey_screen/header/view_model/radio_channel_view_model.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/radio_contact.dart';
 import 'package:app/pages/journey/journey_screen/widgets/communication_network_icon.dart';
-import 'package:app/widgets/dot_indicator.dart';
+import 'package:app/widgets/das_badge_overlay.dart';
+import 'package:app/widgets/small_circle.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -27,9 +28,10 @@ class RadioChannel extends StatelessWidget {
           },
           child: Align(
             alignment: .centerRight,
-            child: DotIndicator(
-              show: model.showDotIndicator,
-              offset: Offset(-6.0, -8.0),
+            child: DASBadgeOverlay(
+              badgeVisible: model.showDotIndicator,
+              badgeOffset: Offset(-6.0, -8.0),
+              badge: const SmallCircle(),
               child: Row(
                 spacing: SBBSpacing.xSmall,
                 crossAxisAlignment: .center,

@@ -19,7 +19,8 @@ import 'package:app/theme/theme_util.dart';
 import 'package:app/util/animation.dart';
 import 'package:app/util/text_util.dart';
 import 'package:app/widgets/assets.dart';
-import 'package:app/widgets/dot_indicator.dart';
+import 'package:app/widgets/das_badge_overlay.dart';
+import 'package:app/widgets/small_circle.dart';
 import 'package:app/widgets/speed_display.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:app/widgets/table/das_table_theme.dart';
@@ -235,7 +236,8 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
 
     Widget child = Padding(
       padding: .only(top: SBBSpacing.xSmall, right: SBBSpacing.xxSmall),
-      child: DotIndicator(
+      child: DASBadgeOverlay(
+        badge: const SmallCircle(),
         child: SizedBox.expand(),
       ),
     );

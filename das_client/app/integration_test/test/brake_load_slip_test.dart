@@ -10,9 +10,9 @@ import 'package:app/pages/journey/journey_screen/notification/widgets/brake_load
 import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_chevron.dart';
 import 'package:app/util/time_constants.dart';
-import 'package:app/widgets/dot_indicator.dart';
 import 'package:app/widgets/modal_sheet/das_modal_sheet.dart';
 import 'package:app/widgets/navigation_buttons.dart';
+import 'package:app/widgets/small_circle.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:formation/component.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -354,20 +354,20 @@ void main() {
 
     await openBrakeSlipPage(tester);
 
-    expect(find.byType(DotIndicator), findsNothing);
+    expect(find.byType(SmallCircle), findsNothing);
 
     await tapElement(tester, find.byKey(NavigationButtons.navigationButtonNextKey));
 
-    expect(find.byType(DotIndicator), findsNWidgets(4));
+    expect(find.byType(SmallCircle), findsNWidgets(4));
 
     formationRepository.emitFormationWithAllChanges();
     await tester.pumpAndSettle();
 
-    expect(find.byType(DotIndicator), findsNothing);
+    expect(find.byType(SmallCircle), findsNothing);
 
     await tapElement(tester, find.byKey(NavigationButtons.navigationButtonNextKey));
 
-    expect(find.byType(DotIndicator), findsNWidgets(38));
+    expect(find.byType(SmallCircle), findsNWidgets(38));
 
     await disconnect(tester);
   });

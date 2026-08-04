@@ -1,4 +1,5 @@
-import 'package:app/widgets/dot_indicator.dart';
+import 'package:app/widgets/das_badge_overlay.dart';
+import 'package:app/widgets/small_circle.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -29,10 +30,10 @@ class SpeedDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     if (speed == null) return DASTableCell.emptyBuilder;
 
-    return DotIndicator(
-      show: hasAdditionalInformation,
-      offset: _dotIndicatorOffset(speed!),
-      isNextStop: isNextStop,
+    return DASBadgeOverlay(
+      badgeVisible: hasAdditionalInformation,
+      badgeOffset: _badgeOffset(speed!),
+      badge: SmallCircle(color: isNextStop ? SBBColors.sky : null),
       child: switch (speed!) {
         final SummarizedCurvesSpeed _ => _visualizedSpeeds(speeds: speed!),
         final IncomingOutgoingSpeed s => singleLine ? _rowSpeed(context, s) : _columnSpeed(context, s),
@@ -118,7 +119,7 @@ class SpeedDisplay extends StatelessWidget {
     );
   }
 
-  Offset _dotIndicatorOffset(Speed resolvedSpeed) => switch (resolvedSpeed) {
+  Offset _badgeOffset(Speed resolvedSpeed) => switch (resolvedSpeed) {
     final SummarizedCurvesSpeed _ => const Offset(0, 0),
     final IncomingOutgoingSpeed _ => const Offset(0, 0),
     final GraduatedSpeed _ || final SingleSpeed _ => const Offset(0, -SBBSpacing.xSmall),
