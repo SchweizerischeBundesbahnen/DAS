@@ -37,9 +37,6 @@ class AnimatedNotification<T> extends StatelessWidget {
 }
 
 /// Animates between a visible notification [child] and an empty box with a fade and size transition.
-///
-/// While hiding, the previously visible child keeps being rendered and animates out instead of
-/// being replaced by an empty box immediately.
 class AnimatedNotificationVisibility extends StatelessWidget {
   const AnimatedNotificationVisibility({
     required this.visible,
@@ -49,7 +46,6 @@ class AnimatedNotificationVisibility extends StatelessWidget {
 
   final bool visible;
 
-  /// The notification content, only rendered while [visible] or animating out.
   final Widget child;
 
   @override
