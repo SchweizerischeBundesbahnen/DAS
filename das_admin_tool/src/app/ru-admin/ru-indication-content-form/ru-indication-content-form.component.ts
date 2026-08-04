@@ -28,7 +28,7 @@ export function createContentFormGroup(
   options: ContentFormOptions = {},
 ): FormGroup<LanguageContentForm> {
   const { textRequired = true } = options;
-  return new FormGroup(
+  return new FormGroup<LanguageContentForm>(
     {
       de: createLanguageGroup(textRequired),
       fr: createLanguageGroup(textRequired),

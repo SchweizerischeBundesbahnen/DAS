@@ -12,14 +12,6 @@ import {
 } from '~ru-admin/ru-indication-content-form/ru-indication-content-form.component';
 import { RuIndicationDialogData } from '~ru-admin/ru-indications/ru-indication.service';
 
-export interface CategoryContentFormGroup extends LanguageContentForm {
-  category: FormControl<string>;
-}
-
-interface CategoryContent {
-  category: string;
-}
-
 @Component({
   selector: 'app-category-content-form',
   imports: [
@@ -33,10 +25,10 @@ interface CategoryContent {
   styleUrl: './category-content-form.css',
 })
 export class CategoryContentForm {
-  readonly form = input.required<FormGroup<CategoryContentFormGroup>>();
+  readonly form = input.required<FormGroup<LanguageContentForm>>();
   readonly dialogData = input.required<RuIndicationDialogData>();
 
-  protected templateControl = new FormControl<CategoryContent | null>(null);
+  protected templateControl = new FormControl<RuIndicationContent | null>(null);
   protected readonly searchTerm = signal<string>('');
   private readonly templateValue = toSignal(this.templateControl.valueChanges, {
     initialValue: null,
@@ -67,19 +59,11 @@ export class CategoryContentForm {
   get formValue(): RuIndicationContent {
     return {
       category: this.templateControl.value?.category,
-      ...contentFormValue(this.languageContentForm),
+      ...contentFormValue(this.form()),
     };
   }
 
-  protected get languageContentForm(): FormGroup<LanguageContentForm> {
-    return new FormGroup({
-      de: this.form().controls.de,
-      fr: this.form().controls.fr,
-      it: this.form().controls.it,
-    });
-  }
-
-  protected displayWith: (value: CategoryContent | undefined) => string = (value) =>
+  protected displayWith: (value: RuIndicationContent | undefined) => string = (value) =>
     value?.category ?? '';
 
   protected onType(event: Event) {
