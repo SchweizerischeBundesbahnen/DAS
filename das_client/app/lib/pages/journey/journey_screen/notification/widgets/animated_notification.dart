@@ -27,19 +27,48 @@ class AnimatedNotification<T> extends StatelessWidget {
       builder: (context, snapshot) {
         final data = snapshot.data;
         final visible = isVisible(data);
-        return AnimatedSwitcher(
-          duration: DASAnimation.mediumDuration,
-          switchInCurve: Curves.easeInOutCubicEmphasized,
-          switchOutCurve: Curves.easeInOutCubicEmphasized,
-          transitionBuilder: (child, animation) => FadeTransition(
-            opacity: animation,
-            child: SizeTransition(sizeFactor: animation, alignment: Alignment.topCenter, child: child),
-          ),
-          child: visible
-              ? KeyedSubtree(key: const ValueKey('animatedNotificationVisible'), child: builder(context, data))
-              : const SizedBox(key: ValueKey('animatedNotificationHidden'), width: double.infinity),
+        return AnimatedNotificationVisibility(
+          visible: visible,
+          child: visible ? builder(context, data) : const SizedBox.shrink(),
         );
       },
+    );
+  }
+}
+
+/// Animates between a visible notification [child] and an empty box with a fade and size transition.
+///
+/// While hiding, the previously visible child keeps being rendered and animates out instead of
+/// being replaced by an empty box immediately.
+class AnimatedNotificationVisibility extends StatelessWidget {
+  const AnimatedNotificationVisibility({
+    required this.visible,
+    required this.child,
+    super.key,
+  });
+
+  final bool visible;
+
+  /// The notification content, only rendered while [visible] or animating out.
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedSwitcher(
+      duration: DASAnimation.mediumDuration,
+      switchInCurve: Curves.easeInOutCubicEmphasized,
+      switchOutCurve: Curves.easeInOutCubicEmphasized,
+      transitionBuilder: (child, animation) => FadeTransition(
+        opacity: animation,
+        child: SizeTransition(sizeFactor: animation, alignment: Alignment.topCenter, child: child),
+      ),
+      layoutBuilder: (currentChild, previousChildren) => Stack(
+        alignment: Alignment.topCenter,
+        children: [...previousChildren, ?currentChild],
+      ),
+      child: visible
+          ? KeyedSubtree(key: const ValueKey('animatedNotificationVisible'), child: child)
+          : const SizedBox(key: ValueKey('animatedNotificationHidden'), width: double.infinity),
     );
   }
 }
