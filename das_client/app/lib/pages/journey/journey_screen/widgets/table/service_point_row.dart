@@ -229,7 +229,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
 
     final trainSeriesSpeed = data.localSpeeds?.speedFor(
       currentBrakeSeries?.trainSeries,
-      brakeSeries: currentBrakeSeries?.brakeSeries,
+      brakedWeightPercentage: currentBrakeSeries?.brakedWeightPercentage,
     );
     if (trainSeriesSpeed == null && relevantGraduatedSpeedInfo.isEmpty) return DASTableCell.empty();
 
@@ -316,7 +316,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     return properties.map((property) {
       final speed = property.speeds?.speedFor(
         currentBrakeSeries?.trainSeries,
-        brakeSeries: currentBrakeSeries?.brakeSeries,
+        brakedWeightPercentage: currentBrakeSeries?.brakedWeightPercentage,
       );
 
       return Padding(

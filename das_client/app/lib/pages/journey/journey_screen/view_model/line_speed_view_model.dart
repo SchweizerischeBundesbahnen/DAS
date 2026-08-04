@@ -30,7 +30,10 @@ class LineSpeedViewModel extends JourneyAwareViewModel {
       }
     }
 
-    final speed = trainSeriesSpeeds?.speedFor(brakeSeries?.trainSeries, brakeSeries: brakeSeries?.brakeSeries);
+    final speed = trainSeriesSpeeds?.speedFor(
+      brakeSeries?.trainSeries,
+      brakedWeightPercentage: brakeSeries?.brakedWeightPercentage,
+    );
 
     return ResolvedTrainSeriesSpeed(
       speed: speed,
@@ -41,7 +44,7 @@ class LineSpeedViewModel extends JourneyAwareViewModel {
   bool _hasSpeed(Iterable<TrainSeriesSpeed>? speeds, BrakeSeries? selectedBrakeSeries) {
     return speeds?.speedFor(
           selectedBrakeSeries?.trainSeries,
-          brakeSeries: selectedBrakeSeries?.brakeSeries,
+          brakedWeightPercentage: selectedBrakeSeries?.brakedWeightPercentage,
         ) !=
         null;
   }

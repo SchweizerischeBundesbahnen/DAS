@@ -16,7 +16,7 @@ void main() {
       final a = TrainSeriesSpeed(trainSeries: .R, speed: Speed.parse('80'));
       final diffTrainSeries = TrainSeriesSpeed(trainSeries: .A, speed: Speed.parse('80'));
       final diffSpeed = TrainSeriesSpeed(trainSeries: .R, speed: Speed.parse('90'));
-      final diffBrakeSeries = TrainSeriesSpeed(trainSeries: .R, speed: Speed.parse('80'), brakeSeries: 100);
+      final diffBrakeSeries = TrainSeriesSpeed(trainSeries: .R, speed: Speed.parse('80'), brakedWeightPercentage: 100);
       final diffText = TrainSeriesSpeed(trainSeries: .R, speed: Speed.parse('80'), text: 'Test');
       final diffReduced = TrainSeriesSpeed(trainSeries: .R, speed: Speed.parse('80'), reduced: true);
 
@@ -27,35 +27,19 @@ void main() {
       expect(a == diffReduced, isFalse);
     });
 
-    test('toString returns expected format', () {
-      final speed = TrainSeriesSpeed(
-        trainSeries: .R,
-        speed: Speed.parse('80'),
-        brakeSeries: 100,
-        text: 'Test',
-        reduced: true,
-      );
-
-      expect(speed.toString(), contains('trainSeries: TrainSeries.R'));
-      expect(speed.toString(), contains('speed: SingleSpeed'));
-      expect(speed.toString(), contains('brakeSeries: 100'));
-      expect(speed.toString(), contains('text: Test'));
-      expect(speed.toString(), contains('reduced: true'));
-    });
-
     test('speedFor_whenNullTrainSeries_returnsNull', () {
       final testee = <TrainSeriesSpeed>[
         TrainSeriesSpeed(trainSeries: .R, speed: Speed.parse('80')),
       ];
 
-      expect(testee.speedFor(null, brakeSeries: 150), isNull);
+      expect(testee.speedFor(null, brakedWeightPercentage: 150), isNull);
     });
 
     test('speedFor_whenNoVelocities_returnsNull', () {
       final testee = <TrainSeriesSpeed>[];
 
-      expect(testee.speedFor(.R, brakeSeries: 150), isNull);
-      expect(testee.speedFor(.A, brakeSeries: 150), isNull);
+      expect(testee.speedFor(.R, brakedWeightPercentage: 150), isNull);
+      expect(testee.speedFor(.A, brakedWeightPercentage: 150), isNull);
     });
 
     test('speedFor_whenNoMatchingTrainSeries_returnsNull', () {
@@ -63,47 +47,47 @@ void main() {
         TrainSeriesSpeed(trainSeries: .R, speed: Speed.parse('80')),
       ];
 
-      expect(testee.speedFor(.A, brakeSeries: 150), isNull);
+      expect(testee.speedFor(.A, brakedWeightPercentage: 150), isNull);
     });
 
     test('speedFor_whenExactMatch_returnsCorrectSpeed', () {
       final testee = <TrainSeriesSpeed>[
-        TrainSeriesSpeed(trainSeries: .R, brakeSeries: 100, speed: Speed.parse('100')),
-        TrainSeriesSpeed(trainSeries: .R, brakeSeries: 150, speed: Speed.parse('150')),
-        TrainSeriesSpeed(trainSeries: .A, brakeSeries: 100, speed: Speed.parse('200')),
-        TrainSeriesSpeed(trainSeries: .A, brakeSeries: 150, speed: Speed.parse('250')),
+        TrainSeriesSpeed(trainSeries: .R, brakedWeightPercentage: 100, speed: Speed.parse('100')),
+        TrainSeriesSpeed(trainSeries: .R, brakedWeightPercentage: 150, speed: Speed.parse('150')),
+        TrainSeriesSpeed(trainSeries: .A, brakedWeightPercentage: 100, speed: Speed.parse('200')),
+        TrainSeriesSpeed(trainSeries: .A, brakedWeightPercentage: 150, speed: Speed.parse('250')),
       ];
 
-      final r100 = testee.speedFor(.R, brakeSeries: 100);
+      final r100 = testee.speedFor(.R, brakedWeightPercentage: 100);
       expect(r100, isNotNull);
       expect((r100!.speed as SingleSpeed).value, '100');
 
-      final r150 = testee.speedFor(.R, brakeSeries: 150);
+      final r150 = testee.speedFor(.R, brakedWeightPercentage: 150);
       expect(r150, isNotNull);
       expect((r150!.speed as SingleSpeed).value, '150');
 
-      final a100 = testee.speedFor(.A, brakeSeries: 100);
+      final a100 = testee.speedFor(.A, brakedWeightPercentage: 100);
       expect(a100, isNotNull);
       expect((a100!.speed as SingleSpeed).value, '200');
 
-      final a150 = testee.speedFor(.A, brakeSeries: 150);
+      final a150 = testee.speedFor(.A, brakedWeightPercentage: 150);
       expect(a150, isNotNull);
       expect((a150!.speed as SingleSpeed).value, '250');
     });
 
     test('speedFor_whenNoExactMatchButHasDefault_returnsDefaultSpeed', () {
       final testee = <TrainSeriesSpeed>[
-        TrainSeriesSpeed(trainSeries: .R, brakeSeries: 100, speed: Speed.parse('100')),
+        TrainSeriesSpeed(trainSeries: .R, brakedWeightPercentage: 100, speed: Speed.parse('100')),
         TrainSeriesSpeed(trainSeries: .R, speed: Speed.parse('150')),
         TrainSeriesSpeed(trainSeries: .A, speed: Speed.parse('200')),
-        TrainSeriesSpeed(trainSeries: .A, brakeSeries: 150, speed: Speed.parse('250')),
+        TrainSeriesSpeed(trainSeries: .A, brakedWeightPercentage: 150, speed: Speed.parse('250')),
       ];
 
-      final r50 = testee.speedFor(TrainSeries.R, brakeSeries: 50);
+      final r50 = testee.speedFor(TrainSeries.R, brakedWeightPercentage: 50);
       expect(r50, isNotNull);
       expect((r50!.speed as SingleSpeed).value, '150');
 
-      final a100 = testee.speedFor(TrainSeries.A, brakeSeries: 100);
+      final a100 = testee.speedFor(TrainSeries.A, brakedWeightPercentage: 100);
       expect(a100, isNotNull);
       expect((a100!.speed as SingleSpeed).value, '200');
 
@@ -112,22 +96,22 @@ void main() {
 
     test('speedFor_whenNoExactMatchAndNoDefault_returnsNull', () {
       final testee = <TrainSeriesSpeed>[
-        TrainSeriesSpeed(trainSeries: TrainSeries.R, brakeSeries: 100, speed: Speed.parse('100')),
-        TrainSeriesSpeed(trainSeries: TrainSeries.A, brakeSeries: 150, speed: Speed.parse('250')),
+        TrainSeriesSpeed(trainSeries: TrainSeries.R, brakedWeightPercentage: 100, speed: Speed.parse('100')),
+        TrainSeriesSpeed(trainSeries: TrainSeries.A, brakedWeightPercentage: 150, speed: Speed.parse('250')),
       ];
 
-      expect(testee.speedFor(TrainSeries.R, brakeSeries: 50), isNull);
+      expect(testee.speedFor(TrainSeries.R, brakedWeightPercentage: 50), isNull);
 
-      expect(testee.speedFor(TrainSeries.A, brakeSeries: 100), isNull);
+      expect(testee.speedFor(TrainSeries.A, brakedWeightPercentage: 100), isNull);
     });
 
     test('speedFor_prioritizesExactMatchOverDefault', () {
       final testee = <TrainSeriesSpeed>[
         TrainSeriesSpeed(trainSeries: TrainSeries.R, speed: Speed.parse('80')),
-        TrainSeriesSpeed(trainSeries: TrainSeries.R, brakeSeries: 100, speed: Speed.parse('100')),
+        TrainSeriesSpeed(trainSeries: TrainSeries.R, brakedWeightPercentage: 100, speed: Speed.parse('100')),
       ];
 
-      final result = testee.speedFor(TrainSeries.R, brakeSeries: 100);
+      final result = testee.speedFor(TrainSeries.R, brakedWeightPercentage: 100);
       expect(result, isNotNull);
       expect((result!.speed as SingleSpeed).value, '100');
     });

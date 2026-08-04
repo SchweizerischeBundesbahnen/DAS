@@ -189,7 +189,11 @@ class ReplacementSeriesViewModel {
   );
 
   bool _hasIllegalSpeedFor(Iterable<TrainSeriesSpeed> speeds, BrakeSeries brakeSeries) =>
-      speeds.speedFor(brakeSeries.trainSeries, brakeSeries: brakeSeries.brakeSeries)?.speed.isIllegal == true;
+      speeds
+          .speedFor(brakeSeries.trainSeries, brakedWeightPercentage: brakeSeries.brakedWeightPercentage)
+          ?.speed
+          .isIllegal ==
+      true;
 
   BrakeSeries? _replacementSeriesFor(
     List<Iterable<TrainSeriesSpeed>> speeds,
@@ -212,12 +216,13 @@ class ReplacementSeriesViewModel {
 extension _BrakeSeriesSetX on Iterable<BrakeSeries> {
   Iterable<BrakeSeries> validReplacementSeries(BrakeSeries current) =>
       where((it) {
-        return it.trainSeries.canReplace(current.trainSeries) && it.brakeSeries <= current.brakeSeries;
+        return it.trainSeries.canReplace(current.trainSeries) &&
+            it.brakedWeightPercentage <= current.brakedWeightPercentage;
       }).sorted(
         (a, b) {
           final trainSeriesComparison = a.trainSeries.index.compareTo(b.trainSeries.index);
           if (trainSeriesComparison != 0) return trainSeriesComparison;
-          return a.brakeSeries.compareTo(b.brakeSeries);
+          return a.brakedWeightPercentage.compareTo(b.brakedWeightPercentage);
         },
       ).reversed;
 }

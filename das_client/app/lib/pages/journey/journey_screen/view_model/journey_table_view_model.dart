@@ -192,7 +192,11 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
     final brakeSeries = settings.currentBrakeSeries;
 
     return data is CurvePoint &&
-        data.localSpeeds?.speedFor(brakeSeries?.trainSeries, brakeSeries: brakeSeries?.brakeSeries) == null;
+        data.localSpeeds?.speedFor(
+              brakeSeries?.trainSeries,
+              brakedWeightPercentage: brakeSeries?.brakedWeightPercentage,
+            ) ==
+            null;
   }
 
   void _emitLoading() {

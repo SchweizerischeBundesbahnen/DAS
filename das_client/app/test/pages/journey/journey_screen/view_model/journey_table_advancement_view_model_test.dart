@@ -323,7 +323,7 @@ void main() {
 
     // ACT
     testAsync.run((_) {
-      journeySettingsViewModel.updateBrakeSeries(BrakeSeries(trainSeries: TrainSeries.R, brakeSeries: 150));
+      journeySettingsViewModel.updateBrakeSeries(BrakeSeries(trainSeries: TrainSeries.R, brakedWeightPercentage: 150));
     });
     processStreams(fakeAsync: testAsync);
 
@@ -341,7 +341,7 @@ void main() {
 
     // ACT
     testAsync.run((_) {
-      journeySettingsViewModel.updateBrakeSeries(BrakeSeries(trainSeries: TrainSeries.R, brakeSeries: 150));
+      journeySettingsViewModel.updateBrakeSeries(BrakeSeries(trainSeries: TrainSeries.R, brakedWeightPercentage: 150));
     });
     processStreams(fakeAsync: testAsync);
 
