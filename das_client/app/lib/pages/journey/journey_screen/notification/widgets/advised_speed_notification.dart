@@ -1,6 +1,7 @@
 import 'package:app/extension/single_speed_extension.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/notification/widgets/advised_speed_notification_hints.dart';
+import 'package:app/pages/journey/journey_screen/notification/widgets/animated_notification.dart';
 import 'package:app/pages/journey/journey_screen/view_model/advised_speed_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/advised_speed_model.dart';
 import 'package:app/theme/das_colors.dart';
@@ -23,18 +24,14 @@ class AdvisedSpeedNotification extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel = context.read<AdvisedSpeedViewModel>();
 
-    return StreamBuilder<AdvisedSpeedModel>(
+    return AnimatedNotification<AdvisedSpeedModel>(
       stream: viewModel.model,
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) return SizedBox.shrink();
-
-        final model = snapshot.requireData;
-        return switch (model) {
-          Active() => _activeSegmentNotification(context, model),
-          End() => _notificationBar(context, context.l10n.w_advised_speed_end),
-          Cancel() => _notificationBar(context, context.l10n.w_advised_speed_cancel),
-          Inactive() => SizedBox.shrink(),
-        };
+      isVisible: (model) => model != null && model is! Inactive,
+      builder: (context, model) => switch (model) {
+        Active() => _activeSegmentNotification(context, model),
+        End() => _notificationBar(context, context.l10n.w_advised_speed_end),
+        Cancel() => _notificationBar(context, context.l10n.w_advised_speed_cancel),
+        Inactive() || null => SizedBox.shrink(),
       },
     );
   }

@@ -1,4 +1,5 @@
 import 'package:app/i18n/i18n.dart';
+import 'package:app/pages/journey/journey_screen/notification/widgets/animated_notification.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/replacement_series_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/replacement_series_view_model.dart';
 import 'package:app/widgets/notificationbox/notification_box.dart';
@@ -16,26 +17,18 @@ class ReplacementSeriesNotification extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel = context.read<ReplacementSeriesViewModel>();
 
-    return StreamBuilder<ReplacementSeriesModel?>(
+    return AnimatedNotification<ReplacementSeriesModel?>(
       stream: viewModel.model,
       initialData: viewModel.modelValue,
-      builder: (context, snapshot) {
-        return switch (snapshot.data) {
-          ReplacementSeriesAvailable() => _replacementSeriesAvailableNotification(
-            context,
-            snapshot.data as ReplacementSeriesAvailable,
-          ),
-          OriginalSeriesAvailable() => _replacementSeriesOriginalNotification(
-            context,
-            snapshot.data as OriginalSeriesAvailable,
-          ),
-          NoReplacementSeries() => _noReplacementSeriesAvailableNotification(
-            context,
-            snapshot.data as NoReplacementSeries,
-          ),
-          ReplacementSeriesSelected() => SizedBox.shrink(),
-          null => SizedBox.shrink(),
-        };
+      isVisible: (model) => switch (model) {
+        ReplacementSeriesAvailable() || OriginalSeriesAvailable() || NoReplacementSeries() => true,
+        ReplacementSeriesSelected() || null => false,
+      },
+      builder: (context, model) => switch (model) {
+        ReplacementSeriesAvailable() => _replacementSeriesAvailableNotification(context, model),
+        OriginalSeriesAvailable() => _replacementSeriesOriginalNotification(context, model),
+        NoReplacementSeries() => _noReplacementSeriesAvailableNotification(context, model),
+        ReplacementSeriesSelected() || null => SizedBox.shrink(),
       },
     );
   }

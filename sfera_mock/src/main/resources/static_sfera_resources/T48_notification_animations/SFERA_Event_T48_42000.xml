@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<G2B_EventPayload xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:noNamespaceSchemaLocation="../../SFERA.xsd">
+    <NetworkSpecificEvent>
+        <teltsi_Company>1285</teltsi_Company>
+        <NSP_GroupName>ddMsg</NSP_GroupName>
+        <NetworkSpecificParameter name="message" value="PREPARE_FOR_DEPARTURE_LONG"/>
+    </NetworkSpecificEvent>
+</G2B_EventPayload>
