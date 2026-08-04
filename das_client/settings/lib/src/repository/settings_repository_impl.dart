@@ -12,6 +12,7 @@ class SettingsRepositoryImpl implements SettingsRepository {
     required this.apiService,
     required this.databaseService,
     this._onAwsCredentialsChanged,
+    this._onSettingsLoaded,
   }) {
     _init();
   }
@@ -21,6 +22,7 @@ class SettingsRepositoryImpl implements SettingsRepository {
   final SettingsApiService apiService;
   final RuFeatureDatabaseService databaseService;
   final AwsCredentialsChanged? _onAwsCredentialsChanged;
+  final SettingsLoaded? _onSettingsLoaded;
 
   SettingsDto? _lastSettings;
 
@@ -53,12 +55,12 @@ class SettingsRepositoryImpl implements SettingsRepository {
       remoteSettings = await _tryFetchSettings();
       if (remoteSettings == null) {
         _log.warning('Received empty settings.');
-        return false;
+        return _reportResult(false);
       }
       _log.info('Settings fetched successfully.');
     } catch (e) {
       _log.warning('Connection error while loading settings.', e);
-      return false;
+      return _reportResult(false);
     }
 
     await _saveRuFeatureSettings(remoteSettings);
@@ -77,7 +79,12 @@ class SettingsRepositoryImpl implements SettingsRepository {
     }
 
     _lastSettings = remoteSettings;
-    return true;
+    return _reportResult(true);
+  }
+
+  bool _reportResult(bool success) {
+    _onSettingsLoaded?.call(success);
+    return success;
   }
 
   Future<SettingsDto?> _tryFetchSettings() async {

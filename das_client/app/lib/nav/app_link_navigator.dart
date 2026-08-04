@@ -6,7 +6,7 @@ import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
 import 'package:app/pages/journey/view_model/sfera_journey_view_model.dart';
-import 'package:app/provider/user_settings.dart';
+import 'package:app/provider/local_key_value_store.dart';
 import 'package:app_links_x/component.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -82,7 +82,7 @@ class AppLinkNavigator {
   /// The resolvedTrainIdentifications contains the successfully resolved train identifications.
   Future<(bool, List<ExtendedTrainIdentification>)> _resolveCompanies(List<TrainJourneyLinkData> journeys) async {
     final trainIdentificationRepository = DI.get<TrainIdentificationRepository>();
-    final userSettings = DI.get<UserSettings>();
+    final userSettings = DI.get<LocalKeyValueStore>();
     final result = <ExtendedTrainIdentification>[];
 
     for (final journey in journeys) {

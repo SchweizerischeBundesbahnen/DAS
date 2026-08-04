@@ -11,6 +11,7 @@ export 'package:settings/src/model/ru_feature_keys.dart';
 export 'package:settings/src/repository/settings_repository.dart';
 
 typedef AwsCredentialsChanged = void Function(AwsConfiguration? credentials);
+typedef SettingsLoaded = void Function(bool success);
 
 class SettingsComponent {
   const SettingsComponent._();
@@ -20,11 +21,13 @@ class SettingsComponent {
     required Client client,
     required String appVersion,
     AwsCredentialsChanged? onAwsCredentialsChanged,
+    SettingsLoaded? onSettingsLoaded,
   }) {
     return SettingsRepositoryImpl(
       apiService: SettingsApiServiceImpl(baseUrl: baseUrl, httpClient: client, appVersion: appVersion),
       databaseService: SettingsDatabaseService.instance,
       onAwsCredentialsChanged: onAwsCredentialsChanged,
+      onSettingsLoaded: onSettingsLoaded,
     );
   }
 }

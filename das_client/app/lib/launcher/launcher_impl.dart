@@ -3,7 +3,7 @@ import 'package:app/flavor.dart';
 import 'package:app/launcher/launcher.dart';
 import 'package:app/launcher/service_point_portal.dart';
 import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
-import 'package:app/provider/user_settings.dart';
+import 'package:app/provider/local_key_value_store.dart';
 import 'package:logging/logging.dart';
 import 'package:sfera/component.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -14,7 +14,7 @@ class LauncherImpl implements Launcher {
   LauncherImpl({required this._userSettings, required this.flavor});
 
   final Flavor flavor;
-  final UserSettings _userSettings;
+  final LocalKeyValueStore _userSettings;
 
   @override
   Future<bool> launch(String url) async {
