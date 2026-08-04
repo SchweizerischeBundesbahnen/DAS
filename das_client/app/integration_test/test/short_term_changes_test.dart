@@ -2,8 +2,8 @@ import 'package:app/pages/journey/journey_screen/header/header.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/animated_main_headerbox.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/short_term_change_headerbox_flap.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_cell_body.dart';
-import 'package:app/widgets/general_short_term_change_indicator.dart';
-import 'package:app/widgets/u_turn_indicator.dart';
+import 'package:app/widgets/short_term_change_exclamation_icon.dart';
+import 'package:app/widgets/u_turn_icon.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../integration/integration_test_app.dart';
@@ -19,7 +19,7 @@ void main() {
       await dragUntilTextInStickyHeader(tester, 'Station 3');
       final stop4Indicator = find.descendant(
         of: findDASTableRowByText('ExceptionalStopStation 4'),
-        matching: find.byKey(GeneralShortTermChangeIndicator.indicatorKey),
+        matching: find.byKey(ShortTermChangeExclamationIcon.iconKey),
       );
       expect(stop4Indicator, findsOneWidget);
 
@@ -27,7 +27,7 @@ void main() {
       await dragUntilTextInStickyHeader(tester, 'Station 6');
       final stop7Indicator = find.descendant(
         of: findDASTableRowByText('SkippedStoppingStation 7'),
-        matching: find.byKey(GeneralShortTermChangeIndicator.indicatorKey),
+        matching: find.byKey(ShortTermChangeExclamationIcon.iconKey),
       );
       expect(stop7Indicator, findsOneWidget);
 
@@ -35,7 +35,7 @@ void main() {
       await dragUntilTextInStickyHeader(tester, 'Station 9');
       final stop10Indicator = find.descendant(
         of: findDASTableRowByText('BeginOfReroutingStation 10'),
-        matching: find.byKey(GeneralShortTermChangeIndicator.indicatorKey),
+        matching: find.byKey(ShortTermChangeExclamationIcon.iconKey),
       );
       expect(stop10Indicator, findsOneWidget);
 
@@ -60,7 +60,7 @@ void main() {
       await dragUntilTextInStickyHeader(tester, 'Station 14');
       final stop15Indicator = find.descendant(
         of: findDASTableRowByText('EndDestinationChangeStation 15'),
-        matching: find.byKey(UTurnIndicator.indicatorKey),
+        matching: find.byKey(UTurnIcon.indicatorKey),
       );
       expect(stop15Indicator, findsOneWidget);
 

@@ -14,7 +14,7 @@ import 'package:app/pages/journey/journey_screen/widgets/communication_network_i
 import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:app/util/format.dart';
-import 'package:app/widgets/dot_indicator.dart';
+import 'package:app/widgets/das_circle_badge.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:connectivity_x/component.dart';
 import 'package:flutter/material.dart';
@@ -365,28 +365,28 @@ Future<void> main() async {
         matching: find.byKey(RadioContactChannels.radioContactChannelsKey),
       );
       expect(mainContactBern, findsNothing);
-      final bernIndicator = find.descendant(of: radioChannel, matching: find.byKey(DotIndicator.indicatorKey));
+      final bernIndicator = find.descendant(of: radioChannel, matching: find.byKey(DASCircleBadge.circleBadgeKey));
       expect(bernIndicator, findsNothing);
 
       // check mainContacts for Wankdorf (nextStop: Burgdorf)
       await waitUntilExists(tester, find.descendant(of: header, matching: find.text('Burgdorf')));
       final mainContactWankdorf = find.descendant(of: radioChannel, matching: find.text('1407'));
       await waitUntilExists(tester, mainContactWankdorf, maxWaitSeconds: 2);
-      final wankdorfIndicator = find.descendant(of: radioChannel, matching: find.byKey(DotIndicator.indicatorKey));
+      final wankdorfIndicator = find.descendant(of: radioChannel, matching: find.byKey(DASCircleBadge.circleBadgeKey));
       expect(wankdorfIndicator, findsNothing);
 
       // check mainContacts for Burgdorf (A2 is entry signal)
       await waitUntilExists(tester, findChevronPositionAtRowWithText('A2'));
       final mainContactsBurgdorf = find.descendant(of: radioChannel, matching: find.text('1608 (1609)'));
       await waitUntilExists(tester, mainContactsBurgdorf, maxWaitSeconds: 2);
-      final burgdorfIndicator = find.descendant(of: radioChannel, matching: find.byKey(DotIndicator.indicatorKey));
+      final burgdorfIndicator = find.descendant(of: radioChannel, matching: find.byKey(DASCircleBadge.circleBadgeKey));
       expect(burgdorfIndicator, findsOneWidget);
 
       // check mainContacts for Olten (A3 is entry signal)
       await waitUntilExists(tester, findChevronPositionAtRowWithText('A3'));
       final mainContactsOlten = find.descendant(of: radioChannel, matching: find.text('1102'));
       await waitUntilExists(tester, mainContactsOlten, maxWaitSeconds: 2);
-      final oltenIndicator = find.descendant(of: radioChannel, matching: find.byKey(DotIndicator.indicatorKey));
+      final oltenIndicator = find.descendant(of: radioChannel, matching: find.byKey(DASCircleBadge.circleBadgeKey));
       expect(oltenIndicator, findsOneWidget);
 
       await disconnect(tester);
