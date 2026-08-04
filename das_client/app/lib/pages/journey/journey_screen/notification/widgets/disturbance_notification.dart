@@ -1,4 +1,5 @@
 import 'package:app/i18n/i18n.dart';
+import 'package:app/pages/journey/journey_screen/notification/widgets/animated_notification.dart';
 import 'package:app/pages/journey/view_model/disturbance_view_model.dart';
 import 'package:app/widgets/notificationbox/notification_box.dart';
 import 'package:flutter/material.dart';
@@ -15,19 +16,15 @@ class DisturbanceNotification extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel = context.read<DisturbanceViewModel>();
 
-    return StreamBuilder(
+    return AnimatedNotification<DisturbanceEventType?>(
       stream: viewModel.disturbanceStream,
-      builder: (context, snapshot) {
-        final disturbanceType = snapshot.data ?? false;
-        if (disturbanceType != DisturbanceEventType.start) return SizedBox.shrink();
-
-        return NotificationBox(
-          style: .warning,
-          title: context.l10n.w_disturbance_notification_text,
-          customIcon: SBBIcons.arrow_circle_lightning_small,
-          key: disturbanceNotificationKey,
-        );
-      },
+      isVisible: (disturbanceType) => disturbanceType == DisturbanceEventType.start,
+      builder: (context, _) => NotificationBox(
+        style: .warning,
+        title: context.l10n.w_disturbance_notification_text,
+        customIcon: SBBIcons.arrow_circle_lightning_small,
+        key: disturbanceNotificationKey,
+      ),
     );
   }
 }

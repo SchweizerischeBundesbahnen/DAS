@@ -1,4 +1,5 @@
 import 'package:app/i18n/i18n.dart';
+import 'package:app/pages/journey/journey_screen/notification/widgets/animated_notification.dart';
 import 'package:app/pages/journey/journey_screen/view_model/customer_oriented_departure_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/ux_testing_view_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/departure_process_dialog.dart';
@@ -20,17 +21,14 @@ class CustomerOrientedDepartureNotification extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel = context.read<CustomerOrientedDepartureViewModel>();
 
-    return StreamBuilder<CustomerOrientedDepartureStatus>(
+    return AnimatedNotification<CustomerOrientedDepartureStatus>(
       stream: viewModel.status,
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) return SizedBox.shrink();
-
-        return switch (snapshot.data!) {
-          .wait => _WaitNotification(displayDepartureProcessButton: displayDepartureProcessButton),
-          .ready => _ReadyNotification(displayDepartureProcessButton: displayDepartureProcessButton),
-          .call => _CallNotification(displayDepartureProcessButton: displayDepartureProcessButton),
-          .departure => SizedBox.shrink(),
-        };
+      isVisible: (status) => status != null && status != .departure,
+      builder: (context, status) => switch (status) {
+        .wait => _WaitNotification(displayDepartureProcessButton: displayDepartureProcessButton),
+        .ready => _ReadyNotification(displayDepartureProcessButton: displayDepartureProcessButton),
+        .call => _CallNotification(displayDepartureProcessButton: displayDepartureProcessButton),
+        .departure || null => SizedBox.shrink(),
       },
     );
   }
