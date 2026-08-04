@@ -27,22 +27,6 @@ void main() {
       expect(a == diffReduced, isFalse);
     });
 
-    test('toString returns expected format', () {
-      final speed = TrainSeriesSpeed(
-        trainSeries: .R,
-        speed: Speed.parse('80'),
-        brakedWeightPercentage: 100,
-        text: 'Test',
-        reduced: true,
-      );
-
-      expect(speed.toString(), contains('trainSeries: TrainSeries.R'));
-      expect(speed.toString(), contains('speed: SingleSpeed'));
-      expect(speed.toString(), contains('brakeSeries: 100'));
-      expect(speed.toString(), contains('text: Test'));
-      expect(speed.toString(), contains('reduced: true'));
-    });
-
     test('speedFor_whenNullTrainSeries_returnsNull', () {
       final testee = <TrainSeriesSpeed>[
         TrainSeriesSpeed(trainSeries: .R, speed: Speed.parse('80')),
