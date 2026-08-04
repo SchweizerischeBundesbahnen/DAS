@@ -15,7 +15,9 @@ import 'package:app/pages/journey/journey_screen/view_model/ux_testing_view_mode
 import 'package:app/pages/journey/journey_screen/widgets/warn_function_modal_sheet.dart';
 import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
 import 'package:app/sound/das_sounds.dart';
+import 'package:app/util/animation.dart';
 import 'package:app/widgets/stream_listener.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -44,14 +46,16 @@ class NotificationSpace extends StatelessWidget {
           initialData: notificationPriorityVM.modelValue,
           builder: (context, asyncSnapshot) {
             final data = asyncSnapshot.requireData;
-            if (data.isEmpty) return SizedBox(height: SBBSpacing.xSmall);
 
             return Padding(
-              padding: EdgeInsets.symmetric(horizontal: JourneyOverview.horizontalPadding, vertical: SBBSpacing.xSmall),
+              padding: EdgeInsets.symmetric(horizontal: JourneyOverview.horizontalPadding),
               child: Column(
                 mainAxisSize: .min,
-                spacing: SBBSpacing.xSmall,
-                children: data.map((notification) => notification.toWidget()).toList(growable: false),
+                children: [
+                  const SizedBox(height: SBBSpacing.xSmall),
+                  _AnimatedNotificationSlot(type: data.elementAtOrNull(0)),
+                  _AnimatedNotificationSlot(type: data.elementAtOrNull(1)),
+                ],
               ),
             );
           },
@@ -68,6 +72,42 @@ class NotificationSpace extends StatelessWidget {
         onManeuverButtonPressed: () => context.read<WarnAppViewModel>().setManeuverMode(true),
       );
     });
+  }
+}
+
+/// Animates the notification of a single slot in [NotificationSpace].
+///
+/// Appearing ([type] set) fades and grows the notification in, disappearing ([type] null) fades and
+/// collapses it. Replacing one notification with another cross-fades while the size transitions
+/// directly between the two heights, keeping the occupied space instead of collapsing it.
+class _AnimatedNotificationSlot extends StatelessWidget {
+  const _AnimatedNotificationSlot({required this.type});
+
+  final NotificationType? type;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedSize(
+      duration: DASAnimation.mediumDuration,
+      curve: Curves.easeInOutCubicEmphasized,
+      alignment: Alignment.topCenter,
+      child: AnimatedSwitcher(
+        duration: DASAnimation.mediumDuration,
+        switchInCurve: Curves.easeInOutCubicEmphasized,
+        switchOutCurve: Curves.easeInOutCubicEmphasized,
+        layoutBuilder: (currentChild, previousChildren) => Stack(
+          alignment: Alignment.topCenter,
+          children: [...previousChildren, ?currentChild],
+        ),
+        child: type == null
+            ? const SizedBox(key: ValueKey('emptyNotificationSlot'), width: double.infinity)
+            : Padding(
+                key: ValueKey(type),
+                padding: const EdgeInsets.only(bottom: SBBSpacing.xSmall),
+                child: type!.toWidget(),
+              ),
+      ),
+    );
   }
 }
 
