@@ -10,7 +10,7 @@ import '../util/test_utils.dart';
 
 void main() {
   group('manual advancement tests', () {
-    testWidgets('manualAdvancement_whenServicePointDragged_thenJourneyPositionMoved', (tester) async {
+    testWidgets('manualAdvancement_whenServicePointDragged_thenJourneyPositionMoved|tests:741', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999M');
 
@@ -64,41 +64,47 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('manualAdvancement_whenManualPositionSet_thenManualModeActivatedUntilJourneyPositionSignaled', (
-      tester,
-    ) async {
-      await IntegrationTestApp.start(tester);
-      await loadJourney(tester, trainNumber: 'T30');
-
-      final coppet = 'Coppet';
-      // set position to Coppet manually
-      await tester.drag(findDASTableRowByText(coppet), const Offset(600, 0));
-
-      // check manual mode
-      await waitUntilExists(
+    testWidgets(
+      'manualAdvancement_whenManualPositionSet_thenManualModeActivatedUntilJourneyPositionSignaled|tests:741',
+      (
         tester,
-        find.descendant(
-          of: find.byKey(JourneyAdvancementButton.pauseKey),
-          matching: find.byIcon(SBBIcons.hand_cursor_small),
-        ),
-      );
+      ) async {
+        await IntegrationTestApp.start(tester);
+        await loadJourney(tester, trainNumber: 'T30');
 
-      // Check chevron at B
-      await waitUntilExists(
-        tester,
-        find.descendant(of: findDASTableRowByText(coppet), matching: find.byKey(RouteChevron.chevronKey)),
-      );
+        final coppet = 'Coppet';
+        // set position to Coppet manually
+        await tester.drag(findDASTableRowByText(coppet), const Offset(600, 0));
 
-      // wait until signal received and back to non manual mode
-      await waitUntilExists(
-        tester,
-        find.descendant(of: find.byKey(JourneyAdvancementButton.pauseKey), matching: find.byIcon(SBBIcons.pause_small)),
-      );
+        // check manual mode
+        await waitUntilExists(
+          tester,
+          find.descendant(
+            of: find.byKey(JourneyAdvancementButton.pauseKey),
+            matching: find.byIcon(SBBIcons.hand_cursor_small),
+          ),
+        );
 
-      await disconnect(tester);
-    });
+        // Check chevron at B
+        await waitUntilExists(
+          tester,
+          find.descendant(of: findDASTableRowByText(coppet), matching: find.byKey(RouteChevron.chevronKey)),
+        );
 
-    testWidgets('manualAdvancement_whenManualPositionSet_thenStartTimedAdvancement', (tester) async {
+        // wait until signal received and back to non manual mode
+        await waitUntilExists(
+          tester,
+          find.descendant(
+            of: find.byKey(JourneyAdvancementButton.pauseKey),
+            matching: find.byIcon(SBBIcons.pause_small),
+          ),
+        );
+
+        await disconnect(tester);
+      },
+    );
+
+    testWidgets('manualAdvancement_whenManualPositionSet_thenStartTimedAdvancement|tests:1314', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T46M');
 
@@ -123,7 +129,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('manualAdvancement_whenManualPositionSet_thenRestartsPositionTimers', (tester) async {
+    testWidgets('manualAdvancement_whenManualPositionSet_thenRestartsPositionTimers|tests:1314', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T46M');
 

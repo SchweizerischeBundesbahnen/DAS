@@ -15,7 +15,7 @@ import '../util/test_utils.dart';
 
 Future<void> main() async {
   group('chronograph test', () {
-    testWidgets('chronograph_whenNoUpdates_thenHidesPunctualityDisplay', (tester) async {
+    testWidgets('chronograph_whenNoUpdates_thenHidesPunctualityDisplay|tests:1851', (tester) async {
       await IntegrationTestApp.start(tester);
 
       await loadJourney(tester, trainNumber: 'T4');
@@ -41,7 +41,7 @@ Future<void> main() async {
       );
     });
 
-    testWidgets('chronograph_whenNoUpdates_thenPunctualityBecomesStale', (tester) async {
+    testWidgets('chronograph_whenNoUpdates_thenPunctualityBecomesStale|tests:1851', (tester) async {
       await IntegrationTestApp.start(tester);
 
       await loadJourney(tester, trainNumber: 'T4');
@@ -64,7 +64,7 @@ Future<void> main() async {
       expect(delayTextWidget.style?.color, ThemeUtil.getColor(context, SBBColors.graphite, SBBColors.granite));
     });
 
-    testWidgets('chronograph_whenPunctualityUpdateReceived_thenDisplaysCorrectly', (tester) async {
+    testWidgets('chronograph_whenPunctualityUpdateReceived_thenDisplaysCorrectly|tests:1851', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
@@ -82,7 +82,7 @@ Future<void> main() async {
       await disconnect(tester);
     });
 
-    testWidgets('chronograph_whenNoCalculatedSpeedAndNoPlannedTimes_thenHidesPunctuality', (tester) async {
+    testWidgets('chronograph_whenNoCalculatedSpeedAndNoPlannedTimes_thenHidesPunctuality|tests:1851', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T6');
 
@@ -98,7 +98,7 @@ Future<void> main() async {
       await disconnect(tester);
     });
 
-    testWidgets('chronograph_whenNoSferaDelayAvailable_thenShowsPlannedTimeDeviation', (tester) async {
+    testWidgets('chronograph_whenNoSferaDelayAvailable_thenShowsPlannedTimeDeviation|tests:1851', (tester) async {
       await IntegrationTestApp.start(tester);
       // T47 runs without PüA/VPro (no calculated speed) around Genève, so the deviation to the planned time is
       // shown in place of the SFERA punctuality. From Nyon onwards a calculated speed exists again, which lets a
@@ -134,7 +134,9 @@ Future<void> main() async {
       await disconnect(tester);
     });
 
-    testWidgets('chronograph_whenPlannedTimeDeviationFeatureDisabled_thenNeverShowsDeviation', (tester) async {
+    testWidgets('chronograph_whenPlannedTimeDeviationFeatureDisabled_thenNeverShowsDeviation|tests:1851', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
 
       final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;
@@ -155,7 +157,7 @@ Future<void> main() async {
       await disconnect(tester);
     });
 
-    testWidgets('chronograph_whenJourneyLoaded_thenShowsCorrectCurrentTime', (tester) async {
+    testWidgets('chronograph_whenJourneyLoaded_thenShowsCorrectCurrentTime|tests:1851', (tester) async {
       await IntegrationTestApp.start(tester);
 
       await loadJourney(tester, trainNumber: 'T6');

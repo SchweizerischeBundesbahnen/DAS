@@ -10,7 +10,7 @@ import '../util/test_utils.dart';
 
 void main() {
   group('train reduced journey test', () {
-    testWidgets('reducedJourney_whenNetworkChangePresent_thenDisplaysWithKm', (tester) async {
+    testWidgets('reducedJourney_whenNetworkChangePresent_thenDisplaysWithKm|tests:626', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
       await openReducedJourneyMenu(tester);
@@ -32,7 +32,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('reducedJourney_whenLoaded_thenDisplaysTrainInformation', (tester) async {
+    testWidgets('reducedJourney_whenLoaded_thenDisplaysTrainInformation|tests:626', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T14');
       await openReducedJourneyMenu(tester);
@@ -45,7 +45,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('reducedJourney_whenShuntingMovementJourney_thenDisplaysTrainInformation', (tester) async {
+    testWidgets('reducedJourney_whenShuntingMovementJourney_thenDisplaysTrainInformation|tests:264', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T29');
       await openReducedJourneyMenu(tester);
@@ -55,7 +55,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('reducedJourney_whenStoppingAndPassingPoints_thenDisplaysCorrectly', (tester) async {
+    testWidgets('reducedJourney_whenStoppingAndPassingPoints_thenDisplaysCorrectly|tests:626', (tester) async {
       await IntegrationTestApp.start(tester);
 
       await loadJourney(tester, trainNumber: 'T14');
@@ -72,7 +72,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('reducedJourney_whenDuplicatedAsr_thenDisplaysOnlyOnce', (tester) async {
+    testWidgets('reducedJourney_whenDuplicatedAsr_thenDisplaysOnlyOnce|tests:626', (tester) async {
       await IntegrationTestApp.start(tester);
 
       await loadJourney(tester, trainNumber: 'T14');

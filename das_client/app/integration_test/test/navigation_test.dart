@@ -140,7 +140,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('navigation_whenNavigatingBack_thenJourneySettingsNotReset', (tester) async {
+    testWidgets('navigation_whenNavigatingBack_thenJourneySettingsNotReset|tests:583', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T5M');
 

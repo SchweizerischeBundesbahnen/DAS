@@ -22,7 +22,7 @@ import '../mocks/mock_formation_repository.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('brakeSlip_whenPositionUpdateWhileBrakeSlipPageOpen_thenDoesNotUpdateToNewPosition', (
+  testWidgets('brakeSlip_whenPositionUpdateWhileBrakeSlipPageOpen_thenDoesNotUpdateToNewPosition|tests:1605', (
     tester,
   ) async {
     await IntegrationTestApp.start(tester);
@@ -71,7 +71,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('brakeSlip_whenNoDataAvailable_thenDoesNotShowButton', (tester) async {
+  testWidgets('brakeSlip_whenNoDataAvailable_thenDoesNotShowButton|tests:692', (tester) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T49');
 
@@ -87,7 +87,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('brakeSlip_whenFormationDataLoaded_thenShowsInformationAndNavigation', (tester) async {
+  testWidgets('brakeSlip_whenFormationDataLoaded_thenShowsInformationAndNavigation|tests:692', (tester) async {
     await IntegrationTestApp.start(tester);
 
     final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
@@ -122,7 +122,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('brakeSlip_whenSpecialIndicatorsArePresent_thenShowsBanners', (tester) async {
+  testWidgets('brakeSlip_whenSpecialIndicatorsArePresent_thenShowsBanners|tests:692', (tester) async {
     await IntegrationTestApp.start(tester);
 
     final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
@@ -166,7 +166,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('brakeSlip_whenDifferentBrakeSeriesInFormation_thenShowsNotification', (tester) async {
+  testWidgets('brakeSlip_whenDifferentBrakeSeriesInFormation_thenShowsNotification|tests:692', (tester) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T49M');
 
@@ -190,7 +190,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('brakeSlipModal_whenOpened_thenDisplaysCorrectInformation', (tester) async {
+  testWidgets('brakeSlipModal_whenOpened_thenDisplaysCorrectInformation|tests:692', (tester) async {
     await IntegrationTestApp.start(tester);
 
     final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
@@ -218,7 +218,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('brakeSlipModal_whenIdleTimeoutElapses_thenNeverClosesAutomatically', (tester) async {
+  testWidgets('brakeSlipModal_whenIdleTimeoutElapses_thenNeverClosesAutomatically|tests:1867', (tester) async {
     await IntegrationTestApp.start(tester);
 
     final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
@@ -245,7 +245,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('brakeSlipModal_whenButtonTappedWhileOpen_thenClosesModal', (tester) async {
+  testWidgets('brakeSlipModal_whenButtonTappedWhileOpen_thenClosesModal|tests:1875', (tester) async {
     await IntegrationTestApp.start(tester);
 
     final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
@@ -270,7 +270,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('brakeSlipModal_whenNonInteractiveAreaTapped_thenClosesModal', (tester) async {
+  testWidgets('brakeSlipModal_whenNonInteractiveAreaTapped_thenClosesModal|tests:1875', (tester) async {
     await IntegrationTestApp.start(tester);
 
     final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
@@ -294,7 +294,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('brakeSlipModal_whenFullscreenButtonTapped_thenOpensFullscreen', (tester) async {
+  testWidgets('brakeSlipModal_whenFullscreenButtonTapped_thenOpensFullscreen|tests:692', (tester) async {
     await IntegrationTestApp.start(tester);
 
     final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
@@ -316,7 +316,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('brakeSlip_whenFormationUpdated_thenShowsNotification', (tester) async {
+  testWidgets('brakeSlip_whenFormationUpdated_thenShowsNotification|tests:695', (tester) async {
     await IntegrationTestApp.start(tester);
 
     final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
@@ -344,7 +344,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('brakeSlip_whenFormationRunChanged_thenUpdatesRunChangeDisplay', (tester) async {
+  testWidgets('brakeSlip_whenFormationRunChanged_thenUpdatesRunChangeDisplay|tests:694', (tester) async {
     await IntegrationTestApp.start(tester);
 
     final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;

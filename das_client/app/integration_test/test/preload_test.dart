@@ -62,7 +62,7 @@ void main() {
     metrics: SferaDbMetrics(jpCount: 43, spCount: 201, tcCount: 33),
   );
 
-  testWidgets('preload_whenStatusChanges_thenDisplaysCorrectly', (tester) async {
+  testWidgets('preload_whenStatusChanges_thenDisplaysCorrectly|tests:90', (tester) async {
     await IntegrationTestApp.start(tester);
 
     final preloadRepository = DI.get<PreloadRepository>() as MockPreloadRepository;
@@ -137,7 +137,7 @@ void main() {
     expect(tester.widget<SBBTertiaryButtonSmall>(startButton).onPressed, isNull);
   });
 
-  testWidgets('preload_whenUsingPreloadData_thenReconnectsSuccessfully', (tester) async {
+  testWidgets('preload_whenUsingPreloadData_thenReconnectsSuccessfully|tests:90', (tester) async {
     await IntegrationTestApp.start(tester);
 
     // Load T9999 so we have it available offline

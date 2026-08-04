@@ -11,7 +11,7 @@ import '../util/test_utils.dart';
 
 void main() {
   group('departure process test', () {
-    testWidgets('departureProcess_whenFeatureEnabled_thenChecklistButtonDisplayedCorrectly', (tester) async {
+    testWidgets('departureProcess_whenFeatureEnabled_thenChecklistButtonDisplayedCorrectly|tests:148', (tester) async {
       await IntegrationTestApp.start(tester);
       final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;
       featureProvider.enableFeature(.departureProcess);
@@ -39,7 +39,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('departureProcess_whenNoCustomerOrientedDeparture_thenChecklistButtonOpensDepartureDialog', (
+    testWidgets('departureProcess_whenNoCustomerOrientedDeparture_thenChecklistButtonOpensDepartureDialog|tests:148', (
       tester,
     ) async {
       await IntegrationTestApp.start(tester);
@@ -60,7 +60,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('departureProcess_whenFeatureEnabled_thenShowsChronographWarning', (tester) async {
+    testWidgets('departureProcess_whenFeatureEnabled_thenShowsChronographWarning|tests:148', (tester) async {
       await IntegrationTestApp.start(tester);
       final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;
       featureProvider.enableFeature(.departureProcess);
