@@ -22,7 +22,6 @@ sealed class Flavor {
     required this.customerOrientedDepartureEnvironment,
     this.color = SBBColors.transparent,
     this.showBanner = false,
-    this.isTmsEnabledForFlavor = false,
     this.logLevel = Level.INFO,
     this.mqttOpenIdProfileMap = const {},
   });
@@ -37,7 +36,6 @@ sealed class Flavor {
   final String backendUrl;
   final bool showBanner;
   final Color color;
-  final bool isTmsEnabledForFlavor;
   final Level logLevel;
   final String waraAndroidPackageName;
   final String waraIOSUrlScheme;
@@ -115,7 +113,6 @@ class _DevFlavor extends Flavor {
          backendUrl: 'das-dev-int.api.sbb.ch',
          color: SBBColors.peach,
          showBanner: true,
-         isTmsEnabledForFlavor: true,
          mqttOauthProfile: 'azureAdDev',
          logLevel: Level.FINE,
          waraAndroidPackageName: 'ch.sbb.tms.iad.shas_mobile',
