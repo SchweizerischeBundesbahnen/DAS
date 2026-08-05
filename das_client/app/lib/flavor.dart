@@ -105,9 +105,9 @@ sealed class Flavor {
 class _DevFlavor extends Flavor {
   _DevFlavor({
     super.mqttUrl = '',
-    super.mqttTopicPrefix = 'dev/',
+    super.mqttTopicPrefix = const String.fromEnvironment('MQTT_TOPIC_PREFIX', defaultValue: 'dev/'),
     super.authenticatorConfig = _emptyAuthenticatorConfig,
-    super.disablePreload = false,
+    super.disablePreload = const bool.fromEnvironment('DISABLE_PRELOAD', defaultValue: false),
     super.sferaVersion = '4.00',
     super.mqttOpenIdProfileMap,
   }) : super(
