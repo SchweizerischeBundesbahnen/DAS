@@ -69,6 +69,22 @@ jobs:
             -Dsonar.issue.ignore.multicriteria.e2.ruleKey=java:S8694 \
             -Dsonar.issue.ignore.multicriteria.e2.resourceKey=**
 
+      - name: Setup Node.js
+        if: always()
+        uses: actions/setup-node@v7.0.0
+        with:
+          node-version: '26'
+
+      - name: Extract test report
+        if: always()
+        run: node ../scripts/extract-backend-test-report.mjs target/surefire-reports target/test-report.json
+
+      - uses: actions/upload-artifact@v7.0.1
+        if: always()
+        with:
+          name: backend-test-report
+          path: backend-test-report.json
+
       - name: Login to GitHub Container Registry
         if: github.ref == 'refs/heads/main'
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
