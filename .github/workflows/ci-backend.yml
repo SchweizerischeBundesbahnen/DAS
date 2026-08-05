@@ -83,7 +83,7 @@ jobs:
         if: always()
         with:
           name: backend-test-report
-          path: backend-test-report.json
+          path: das_backend/target/test-report.json
 
       - name: Login to GitHub Container Registry
         if: github.ref == 'refs/heads/main'
