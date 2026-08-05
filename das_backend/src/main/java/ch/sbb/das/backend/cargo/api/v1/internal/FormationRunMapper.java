@@ -12,8 +12,8 @@ public class FormationRunMapper {
     public FormationRun toFormationRun(TrainFormationRunEntity entity) {
         return FormationRun.builder()
             .inspectionDateTime(entity.getInspectionDateTime())
-            .tafTapLocationReferenceStart(TafTapLocationReference.toLocationCode(entity.getTafTapLocationUicStartCode()))
-            .tafTapLocationReferenceEnd(TafTapLocationReference.toLocationCode(entity.getTafTapLocationUicEndCode()))
+            .tafTapLocationReferenceStart(TafTapLocationReference.of(entity.getTafTapLocationUicStartCode()).locationCode())
+            .tafTapLocationReferenceEnd(TafTapLocationReference.of(entity.getTafTapLocationUicEndCode()).locationCode())
             .trainCategoryCode(entity.getTrainCategoryCode())
             .brakedWeightPercentage(entity.getBrakedWeightPercentage())
             .tractionMaxSpeedInKmh(entity.getTractionMaxSpeedInKmh())

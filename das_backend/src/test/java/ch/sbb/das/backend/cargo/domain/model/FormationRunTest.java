@@ -20,9 +20,9 @@ class FormationRunTest {
     void constructor_getters() {
         FormationRun result = FormationRun.builder()
             .company(new CompanyCode("1134"))
-            .tafTapLocationUicStartCode(TafTapLocationReference.toUicCode(85, 10))
+            .tafTapLocationUicStartCode(TafTapLocationReference.of(85, 10).uicCode())
             .tafTapLocationUicStartPassIndex(0)
-            .tafTapLocationUicEndCode(TafTapLocationReference.toUicCode(85, 20))
+            .tafTapLocationUicEndCode(TafTapLocationReference.of(85, 20).uicCode())
             .trainCategoryCode("TC")
             .brakedWeightPercentage(23)
             .tractionMaxSpeedInKmh(120)
@@ -48,8 +48,8 @@ class FormationRunTest {
             .build();
 
         assertThat(result.getCompany()).isEqualTo(new CompanyCode("1134"));
-        assertThat(result.getTafTapLocationUicStartCode()).isEqualTo(TafTapLocationReference.toUicCode(85, 10));
-        assertThat(result.getTafTapLocationUicEndCode()).isEqualTo(TafTapLocationReference.toUicCode(85, 20));
+        assertThat(result.getTafTapLocationUicStartCode()).isEqualTo(TafTapLocationReference.of(85, 10).uicCode());
+        assertThat(result.getTafTapLocationUicEndCode()).isEqualTo(TafTapLocationReference.of(85, 20).uicCode());
         assertThat(result.getTrainCategoryCode()).isEqualTo("TC");
         assertThat(result.getBrakedWeightPercentage()).isEqualTo(23);
         assertThat(result.getTractionMaxSpeedInKmh()).isEqualTo(120);
@@ -312,9 +312,9 @@ class FormationRunTest {
             .inspected(inspected)
             .inspectionDateTime(OffsetDateTime.now())
             .company(new CompanyCode(company))
-            .tafTapLocationUicStartCode(TafTapLocationReference.toUicCode(85, 10))
+            .tafTapLocationUicStartCode(TafTapLocationReference.of(85, 10).uicCode())
             .tafTapLocationUicStartPassIndex(0)
-            .tafTapLocationUicEndCode(TafTapLocationReference.toUicCode(85, 20))
+            .tafTapLocationUicEndCode(TafTapLocationReference.of(85, 20).uicCode())
             .build();
     }
 

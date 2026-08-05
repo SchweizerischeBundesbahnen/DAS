@@ -1,161 +1,231 @@
 package ch.sbb.das.backend.locations;
 
-import ch.sbb.das.backend.common.UnexpectedProviderData;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 import com.fasterxml.jackson.annotation.JsonValue;
-import java.util.HashMap;
 import java.util.Map;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
- * also called StopPoint
+ * TAF/TAP location reference (also called StopPoint).
+ * <p>
+ * Composed of a UIC country code and a location primary code (5 digits). Optionally carries a check digit (6th digit) when constructed from a full UIC code.
+ * <p>
+ * Equality is based on {@code countryCodeUic} and {@code primaryCode} only, so instances with and without check digit are considered equal for the same location.
+ *
+ * @see <a href="https://uic.org/support-activities/it/article/country-codes">UIC Country Codes</a>
  */
-@AllArgsConstructor
-@EqualsAndHashCode
-public class TafTapLocationReference {
+public final class TafTapLocationReference {
 
-    private static final int MAX_UIC_CODE = 99999;
-    private static final int COUNTRY_CODE_FACTOR = 1000000;
-    private static final int UIC_CHECKDIGIT_DIVISOR = 10;
+    private static final int MAX_PRIMARY_CODE = 99999;
+    private static final int CHECK_DIGIT_DIVISOR = 10;
+    private static final int FULL_UIC_CODE_FACTOR = 1_000_000;
 
     /**
-     * @see <a href="https://uic.org/support-activities/it/article/country-codes">UIC Country Codes</a>
+     * UIC country code to ISO 3166-1 alpha-2 mapping.
      */
-    private static final Map<Integer, String> uicToIsoCountryCodeMap = new HashMap<>();
+    private static final Map<Integer, String> UIC_TO_ISO = Map.<Integer, String>ofEntries(
+        Map.entry(10, "FI"),
+        Map.entry(20, "RU"),
+        Map.entry(21, "BY"),
+        Map.entry(22, "UA"),
+        Map.entry(23, "MD"),
+        Map.entry(24, "LT"),
+        Map.entry(25, "LV"),
+        Map.entry(26, "EE"),
+        Map.entry(27, "KZ"),
+        Map.entry(28, "GE"),
+        Map.entry(29, "UZ"),
+        Map.entry(30, "KP"),
+        Map.entry(31, "MN"),
+        Map.entry(32, "VN"),
+        Map.entry(33, "CN"),
+        Map.entry(34, "LA"),
+        Map.entry(40, "CU"),
+        Map.entry(41, "AL"),
+        Map.entry(42, "JP"),
+        Map.entry(44, "BA"),
+        Map.entry(49, "BA"),
+        Map.entry(50, "BA"),
+        Map.entry(51, "PL"),
+        Map.entry(52, "BG"),
+        Map.entry(53, "RO"),
+        Map.entry(54, "CZ"),
+        Map.entry(55, "HU"),
+        Map.entry(56, "SK"),
+        Map.entry(57, "AZ"),
+        Map.entry(58, "AM"),
+        Map.entry(59, "KG"),
+        Map.entry(60, "IE"),
+        Map.entry(61, "KR"),
+        Map.entry(62, "ME"),
+        Map.entry(65, "MK"),
+        Map.entry(66, "TJ"),
+        Map.entry(67, "TM"),
+        Map.entry(68, "AF"),
+        Map.entry(70, "GB"),
+        Map.entry(71, "ES"),
+        Map.entry(72, "RS"),
+        Map.entry(73, "GR"),
+        Map.entry(74, "SE"),
+        Map.entry(75, "TR"),
+        Map.entry(76, "NO"),
+        Map.entry(78, "HR"),
+        Map.entry(79, "SI"),
+        Map.entry(80, "DE"),
+        Map.entry(81, "AT"),
+        Map.entry(82, "LU"),
+        Map.entry(83, "IT"),
+        Map.entry(84, "NL"),
+        Map.entry(85, "CH"),
+        Map.entry(86, "DK"),
+        Map.entry(87, "FR"),
+        Map.entry(88, "BE"),
+        Map.entry(89, "TZ"),
+        Map.entry(90, "EG"),
+        Map.entry(91, "TN"),
+        Map.entry(92, "DZ"),
+        Map.entry(93, "MA"),
+        Map.entry(94, "PT"),
+        Map.entry(95, "IL"),
+        Map.entry(96, "IR"),
+        Map.entry(97, "SY"),
+        Map.entry(98, "LB"),
+        Map.entry(99, "IQ")
+    );
 
-    static {
-        uicToIsoCountryCodeMap.put(10, "FI");
-        uicToIsoCountryCodeMap.put(20, "RU");
-        uicToIsoCountryCodeMap.put(21, "BY");
-        uicToIsoCountryCodeMap.put(22, "UA");
-        uicToIsoCountryCodeMap.put(23, "MD");
-        uicToIsoCountryCodeMap.put(24, "LT");
-        uicToIsoCountryCodeMap.put(25, "LV");
-        uicToIsoCountryCodeMap.put(26, "EE");
-        uicToIsoCountryCodeMap.put(27, "KZ");
-        uicToIsoCountryCodeMap.put(28, "GE");
-        uicToIsoCountryCodeMap.put(29, "UZ");
-        uicToIsoCountryCodeMap.put(30, "KP");
-        uicToIsoCountryCodeMap.put(31, "MN");
-        uicToIsoCountryCodeMap.put(32, "VN");
-        uicToIsoCountryCodeMap.put(33, "CN");
-        uicToIsoCountryCodeMap.put(34, "LA");
-        uicToIsoCountryCodeMap.put(40, "CU");
-        uicToIsoCountryCodeMap.put(41, "AL");
-        uicToIsoCountryCodeMap.put(42, "JP");
-        uicToIsoCountryCodeMap.put(44, "BA");
-        uicToIsoCountryCodeMap.put(49, "BA");
-        uicToIsoCountryCodeMap.put(50, "BA");
-        uicToIsoCountryCodeMap.put(51, "PL");
-        uicToIsoCountryCodeMap.put(52, "BG");
-        uicToIsoCountryCodeMap.put(53, "RO");
-        uicToIsoCountryCodeMap.put(54, "CZ");
-        uicToIsoCountryCodeMap.put(55, "HU");
-        uicToIsoCountryCodeMap.put(56, "SK");
-        uicToIsoCountryCodeMap.put(57, "AZ");
-        uicToIsoCountryCodeMap.put(58, "AM");
-        uicToIsoCountryCodeMap.put(59, "KG");
-        uicToIsoCountryCodeMap.put(60, "IE");
-        uicToIsoCountryCodeMap.put(61, "KR");
-        uicToIsoCountryCodeMap.put(62, "ME");
-        uicToIsoCountryCodeMap.put(65, "MK");
-        uicToIsoCountryCodeMap.put(66, "TJ");
-        uicToIsoCountryCodeMap.put(67, "TM");
-        uicToIsoCountryCodeMap.put(68, "AF");
-        uicToIsoCountryCodeMap.put(70, "GB");
-        uicToIsoCountryCodeMap.put(71, "ES");
-        uicToIsoCountryCodeMap.put(72, "RS");
-        uicToIsoCountryCodeMap.put(73, "GR");
-        uicToIsoCountryCodeMap.put(74, "SE");
-        uicToIsoCountryCodeMap.put(75, "TR");
-        uicToIsoCountryCodeMap.put(76, "NO");
-        uicToIsoCountryCodeMap.put(78, "HR");
-        uicToIsoCountryCodeMap.put(79, "SI");
-        uicToIsoCountryCodeMap.put(80, "DE");
-        uicToIsoCountryCodeMap.put(81, "AT");
-        uicToIsoCountryCodeMap.put(82, "LU");
-        uicToIsoCountryCodeMap.put(83, "IT");
-        uicToIsoCountryCodeMap.put(84, "NL");
-        uicToIsoCountryCodeMap.put(85, "CH");
-        uicToIsoCountryCodeMap.put(86, "DK");
-        uicToIsoCountryCodeMap.put(87, "FR");
-        uicToIsoCountryCodeMap.put(88, "BE");
-        uicToIsoCountryCodeMap.put(89, "TZ");
-        uicToIsoCountryCodeMap.put(90, "EG");
-        uicToIsoCountryCodeMap.put(91, "TN");
-        uicToIsoCountryCodeMap.put(92, "DZ");
-        uicToIsoCountryCodeMap.put(93, "MA");
-        uicToIsoCountryCodeMap.put(94, "PT");
-        uicToIsoCountryCodeMap.put(95, "IL");
-        uicToIsoCountryCodeMap.put(96, "IR");
-        uicToIsoCountryCodeMap.put(97, "SY");
-        uicToIsoCountryCodeMap.put(98, "LB");
-        uicToIsoCountryCodeMap.put(99, "IQ");
+    /** Reverse lookup derived from UIC_TO_ISO. For ISO codes with multiple UIC codes (BA), uses the highest. */
+    private static final Map<String, Integer> ISO_TO_UIC = UIC_TO_ISO.entrySet().stream()
+        .collect(Collectors.toUnmodifiableMap(Map.Entry::getValue, Map.Entry::getKey, Math::max));
+
+    private final int countryCodeUic;
+    private final int primaryCode;
+    private final Integer checkDigit;
+
+    public TafTapLocationReference(int countryCodeUic, int primaryCode, Integer checkDigit) {
+        if (UIC_TO_ISO.get(countryCodeUic) == null) {
+            throw new IllegalArgumentException("Unknown UIC country code: " + countryCodeUic);
+        }
+        if (primaryCode < 0 || primaryCode > MAX_PRIMARY_CODE) {
+            throw new IllegalArgumentException("primaryCode must be 0-99999, got: " + primaryCode);
+        }
+        this.countryCodeUic = countryCodeUic;
+        this.primaryCode = primaryCode;
+        this.checkDigit = checkDigit;
     }
-
-    private String countryCodeIso;
-
-    private Integer uicCode;
 
     /**
-     * @return ISO 3166-1 value
+     * Parse from the short format "CH52344" (ISO country code + 5-digit primary code). Check digit is not available in this format.
      */
-    public static String toCountryCodeIso(Integer countryCodeUic) {
-        if (countryCodeUic == null) {
-            return null;
-        }
-        String countryCode = uicToIsoCountryCodeMap.get(countryCodeUic);
-        if (countryCode == null) {
-            throw new UnexpectedProviderData("ISO country code " + countryCodeUic + " not found");
-        }
-        return countryCode;
-    }
-
     @JsonCreator(mode = Mode.DELEGATING)
-    public static TafTapLocationReference of(String value) {
-        return new TafTapLocationReference(value.substring(0, 2), Integer.parseInt(value.substring(2)));
+    public static TafTapLocationReference of(String locationCode) {
+        if (locationCode == null || locationCode.length() < 3) {
+            throw new IllegalArgumentException("Invalid location code: " + locationCode);
+        }
+        String countryCodeIso = locationCode.substring(0, 2);
+        Integer countryCodeUic = ISO_TO_UIC.get(countryCodeIso);
+        if (countryCodeUic == null) {
+            throw new IllegalArgumentException("Unknown ISO country code: " + countryCodeIso);
+        }
+        int primaryCode = Integer.parseInt(locationCode.substring(2));
+        return new TafTapLocationReference(countryCodeUic, primaryCode, null);
     }
 
     /**
-     * @return proprietary short, speaking format within this project. Related to SLOID.
+     * Create from a UIC code with checkDigit (e.g. 85523440).
+     */
+    public static TafTapLocationReference of(Integer uicCode) {
+        if (uicCode == null) {
+            throw new IllegalArgumentException("uicCode must not be null");
+        }
+        int countryCodeUic = uicCode / FULL_UIC_CODE_FACTOR;
+        int primaryCodeWithCheckDigit = uicCode % FULL_UIC_CODE_FACTOR;
+        int primaryCode = primaryCodeWithCheckDigit / CHECK_DIGIT_DIVISOR;
+        int checkDigit = primaryCodeWithCheckDigit % CHECK_DIGIT_DIVISOR;
+        return new TafTapLocationReference(countryCodeUic, primaryCode, checkDigit);
+    }
+
+    /**
+     * Create from UIC country code and location code with check digit.
+     */
+    public static TafTapLocationReference of(Integer countryCodeUic, Integer primaryCodeWithCheckDigit) {
+        return TafTapLocationReference.of(countryCodeUic * FULL_UIC_CODE_FACTOR + primaryCodeWithCheckDigit);
+    }
+
+    // uicCode: 85123456 (with checkdigit)
+    // locationCode: "CH12345"
+    // countryCodeUic : 85
+    // countryCodeIso : "CH"
+    // primaryCode: 12345
+    // primaryCodeWithCheckDigit: 123456
+    // checkDigit: 6
+
+    /** UIC country code (numeric, e.g. 85 for Switzerland). */
+    public int countryCodeUic() {
+        return countryCodeUic;
+    }
+
+    /** ISO 3166-1 alpha-2 country code (e.g. "CH"). */
+    public String countryCodeIso() {
+        String countryCodeIso = UIC_TO_ISO.get(countryCodeUic);
+        if (countryCodeIso == null) {
+            throw new IllegalStateException("No ISO mapping for UIC country code: " + countryCodeUic);
+        }
+        return countryCodeIso;
+    }
+
+    /** 5-digit location primary code without check digit. */
+    public int primaryCode() {
+        return primaryCode;
+    }
+
+    /**
+     * 6-digit location code WITH check digit (primaryCode * 10 + checkDigit). Only available when constructed from a full UIC code.
+     *
+     * @throws IllegalStateException if check digit is not available
+     */
+    public int primaryCodeWithCheckDigit() {
+        if (checkDigit == null) {
+            throw new IllegalStateException("Check digit not available");
+        }
+        return primaryCode * CHECK_DIGIT_DIVISOR + checkDigit;
+    }
+
+    /**
+     * Short format derived from SFERA: ISO country code + zero-padded 5-digit code without check digit (e.g. "CH52344").
      */
     @JsonValue
-    public String toLocationCode() {
-        if (countryCodeIso == null || uicCode == null) {
-            throw new UnexpectedProviderData("countryCodeUic or uicCode is null");
-        }
-        if (uicCode > MAX_UIC_CODE) {
-            throw new UnexpectedProviderData("uicCode is larger than expected 5 digits");
-        }
-        return countryCodeIso + String.format("%05d", uicCode);
+    public String locationCode() {
+        return countryCodeIso() + String.format("%05d", primaryCode);
     }
 
     /**
-     * Converts a UIC code (e.g. 85221370) to a TAF/TAP location reference (e.g. "CH22137").
-     *
-     * @param uicCode the UIC code (with checkdigit)
-     * @return the location reference code, or null if uicCode is null
+     * Full UIC code (e.g. 85523440). Requires check digit to be present.
      */
-    public static String toLocationCode(Integer uicCode) {
-        if (uicCode == null) {
-            return null;
-        }
-        int countryCodeUic = uicCode / COUNTRY_CODE_FACTOR;
-        int locationWithoutCheckdigit = (uicCode % COUNTRY_CODE_FACTOR) / UIC_CHECKDIGIT_DIVISOR;
-        return new TafTapLocationReference(toCountryCodeIso(countryCodeUic), locationWithoutCheckdigit).toLocationCode();
+    public int uicCode() {
+        return countryCodeUic * FULL_UIC_CODE_FACTOR + primaryCodeWithCheckDigit();
     }
 
-    /**
-     * Merges a country code and location code into a UIC code.
-     *
-     * @return the merged code (country + locationCode), or null if either is null
-     */
-    public static Integer toUicCode(Integer countryCodeUic, Integer locationCode) {
-        if (countryCodeUic == null || locationCode == null) {
-            return null;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
         }
-        return countryCodeUic * COUNTRY_CODE_FACTOR + locationCode;
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        TafTapLocationReference that = (TafTapLocationReference) o;
+        return countryCodeUic == that.countryCodeUic && primaryCode == that.primaryCode;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(countryCodeUic, primaryCode);
+    }
+
+    @Override
+    public String toString() {
+        return locationCode();
     }
 }

@@ -41,7 +41,7 @@ public final class FormationRunFactory {
         if (locationUic == null) {
             return null;
         }
-        return TafTapLocationReference.toUicCode(locationUic.getCountryCodeUic(), locationUic.getUicCode());
+        return TafTapLocationReference.of(locationUic.getCountryCodeUic(), locationUic.getUicCode()).uicCode();
     }
 
     private static void applyFormationRunInspection(FormationRunBuilder builder, FormationRunInspection formationRunInspection) {
