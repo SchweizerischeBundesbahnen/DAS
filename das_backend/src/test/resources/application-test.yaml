@@ -38,6 +38,9 @@ aws:
   bucketName: bucketName
 
 formation:
+  transport-paper:
+    sbbi-base-url: https://sbbi.example.com
+    blsc-app-link: https://blsc.example.com
   kafka:
     bootstrap-server: ''
     group-id: ''

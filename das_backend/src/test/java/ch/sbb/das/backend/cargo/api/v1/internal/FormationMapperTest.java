@@ -2,8 +2,10 @@ package ch.sbb.das.backend.cargo.api.v1.internal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.mock;
 
 import ch.sbb.das.backend.cargo.api.v1.model.Formation;
+import ch.sbb.das.backend.cargo.application.TransportPaperUrlResolver;
 import ch.sbb.das.backend.cargo.infrastructure.model.TrainFormationRunEntity;
 import ch.sbb.das.backend.companies.CompanyCode;
 import java.time.LocalDate;
@@ -12,7 +14,7 @@ import org.junit.jupiter.api.Test;
 
 class FormationMapperTest {
 
-    private final FormationMapper mapper = new FormationMapper(new FormationRunMapper());
+    private final FormationMapper mapper = new FormationMapper(new FormationRunMapper(mock(TransportPaperUrlResolver.class)));
 
     @Test
     void toFormation_maps_header_from_first_entity_and_runs() {

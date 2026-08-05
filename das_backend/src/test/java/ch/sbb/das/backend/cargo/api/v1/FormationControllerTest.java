@@ -3,6 +3,7 @@ package ch.sbb.das.backend.cargo.api.v1;
 import static ch.sbb.das.backend.cargo.api.v1.FormationController.API_FORMATIONS;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.das.backend.IntegrationTest;
@@ -91,5 +92,27 @@ class FormationControllerTest {
     void should_respond_bad_request() throws Exception {
         mockMvc.perform(get(API_FORMATIONS).param("operationalTrainNumber", "30303").param("operationalDay", "2025-07-01").param("company", "wrongCompany"))
             .andExpect(status().isBadRequest());
+    }
+
+    @DisplayName("Formation when the company is SBBI then transport paper link points to link|tests:541")
+    @Test
+    @WithMockUser(authorities = "ROLE_observer")
+    void should_respond_formation_with_sbbi_transport_paper_link() throws Exception {
+        mockMvc.perform(get(API_FORMATIONS).param("operationalTrainNumber", "61078").param("operationalDay", "2025-08-01").param("company", "5184"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data[0].formationRuns[0].transportPaperLink.type").value("URL"))
+            .andExpect(jsonPath("$.data[0].formationRuns[0].transportPaperLink.url").value(
+                "https://sbbi.example.com/#/zugliste/61078-001/2025-08-01/85/14035/0/RID_BEFOERDERUNGSDOKUMENT"));
+    }
+
+    @DisplayName("Formation when the company is BLSC then transport paper link points to the app link|tests:541")
+    @Test
+    @WithMockUser(authorities = "ROLE_observer")
+    void should_respond_formation_with_blsc_transport_paper_link() throws Exception {
+        mockMvc.perform(get(API_FORMATIONS).param("operationalTrainNumber", "88001").param("operationalDay", "2025-08-01").param("company", "3356"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data[0].formationRuns[0].transportPaperLink.type").value("URL"))
+            .andExpect(jsonPath("$.data[0].formationRuns[0].transportPaperLink.url").value(
+                "https://blsc.example.com"));
     }
 }

@@ -16,6 +16,9 @@ endpoints:
     cors:
       allowed-origins: http://localhost:4200
 formation:
+  transport-paper:
+    sbbi-base-url: https://sbbi.example.com
+    blsc-app-link: https://blsc.example.com
   clean-up:
     cron: '-'
   kafka:
