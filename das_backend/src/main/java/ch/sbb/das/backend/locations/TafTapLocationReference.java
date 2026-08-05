@@ -153,14 +153,6 @@ public final class TafTapLocationReference {
         return TafTapLocationReference.of(countryCodeUic * FULL_UIC_CODE_FACTOR + primaryCodeWithCheckDigit);
     }
 
-    // uicCode: 85123456 (with checkdigit)
-    // locationCode: "CH12345"
-    // countryCodeUic : 85
-    // countryCodeIso : "CH"
-    // primaryCode: 12345
-    // primaryCodeWithCheckDigit: 123456
-    // checkDigit: 6
-
     /** UIC country code (numeric, e.g. 85 for Switzerland). */
     public int countryCodeUic() {
         return countryCodeUic;
