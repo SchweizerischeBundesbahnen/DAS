@@ -128,9 +128,9 @@ class _DevFlavor extends Flavor {
 class _InteFlavor extends Flavor {
   _InteFlavor({
     super.mqttUrl = '',
-    super.mqttTopicPrefix = '',
+    super.mqttTopicPrefix = const String.fromEnvironment('MQTT_TOPIC_PREFIX', defaultValue: ''),
     super.authenticatorConfig = _emptyAuthenticatorConfig,
-    super.disablePreload = false,
+    super.disablePreload = const bool.fromEnvironment('DISABLE_PRELOAD', defaultValue: false),
     super.sferaVersion = '4.00',
     super.mqttOpenIdProfileMap,
   }) : super(
@@ -143,6 +143,7 @@ class _InteFlavor extends Flavor {
          waraIOSUrlScheme: 'ch.sbb.tms.iad.shasmobile',
          tourSystemUrls: Map.from(_prodTourSystemUrls)..update(.tip, (_) => 'tip3test://tours'),
          customerOrientedDepartureEnvironment: .int,
+         connectToTmsVad: const bool.fromEnvironment('CONNECT_TO_TMS_VAD', defaultValue: true),
        );
 }
 
