@@ -1,6 +1,7 @@
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/journey_advancement_button.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_chevron.dart';
+import 'package:app/provider/local_key_value_store.dart';
 import 'package:app/theme/das_colors.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:app/widgets/stickyheader/sticky_header.dart';
@@ -9,11 +10,43 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 import '../integration/integration_test_app.dart';
+import '../mocks/mock_local_key_value_store.dart';
 import '../util/test_time_constants.dart';
 import '../util/test_utils.dart';
 
 void main() {
   group('manual advancement tests', () {
+    testWidgets('manualAdvancement_whenManualPositionSet_thenShowsChevronAnimationColor|tests:1617', (tester) async {
+      await IntegrationTestApp.start(tester);
+
+      final timeConstants = DI.get<TimeConstants>() as TestTimeConstants;
+      timeConstants.chevronAnimationDurationValue = Duration(seconds: 3);
+
+      final localStore = DI.get<LocalKeyValueStore>() as MockLocalKeyValueStore;
+      localStore.set(.showStationSignals, false);
+
+      await loadJourney(tester, trainNumber: 'T9999M');
+
+      final draggedServicePoint = 'Haltestelle B';
+      await tester.drag(findDASTableRowByText(draggedServicePoint), const Offset(600, 0));
+
+      final manualPositionRowColorFinder = find.descendant(
+        of: findDASTableRowByText(draggedServicePoint),
+        matching: find.byWidgetPredicate(
+          (it) =>
+              it is Container &&
+              ((it.decoration is BoxDecoration &&
+                      (it.decoration as BoxDecoration).color == DASColors.manualPositionSetBackgroundBright) ||
+                  it.color == DASColors.manualPositionSetBackgroundBright),
+        ),
+      );
+
+      await waitUntilExists(tester, manualPositionRowColorFinder);
+      await waitUntilNotExists(tester, manualPositionRowColorFinder);
+
+      await disconnect(tester);
+    });
+
     testWidgets('manualAdvancement_whenServicePointDragged_thenJourneyPositionMoved', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999M');
@@ -147,36 +180,6 @@ void main() {
       expect(findChevronPositionAtRowWithText(domodossola), findsOne);
 
       await waitUntilExists(tester, findChevronPositionAtRowWithText('Domodossola (I)'));
-
-      await disconnect(tester);
-    });
-
-    testWidgets('manualAdvancement_whenManualPositionSet_thenShowsChevronAnimationColor|tests:1617', (tester) async {
-      await IntegrationTestApp.start(tester);
-
-      final timeConstants = DI.get<TimeConstants>() as TestTimeConstants;
-      timeConstants.chevronAnimationDurationValue = Duration(seconds: 3);
-
-      await loadJourney(tester, trainNumber: 'T9999M');
-
-      await stopAutomaticAdvancement(tester);
-
-      final draggedServicePoint = 'Haltestelle B';
-      await tester.drag(findDASTableRowByText(draggedServicePoint), const Offset(600, 0));
-
-      final manualPositionRowColorFinder = find.descendant(
-        of: findDASTableRowByText(draggedServicePoint),
-        matching: find.byWidgetPredicate(
-          (it) =>
-              it is Container &&
-              ((it.decoration is BoxDecoration &&
-                      (it.decoration as BoxDecoration).color == DASColors.manualPositionSetBackgroundBright) ||
-                  it.color == DASColors.manualPositionSetBackgroundBright),
-        ),
-      );
-
-      await waitUntilExists(tester, manualPositionRowColorFinder);
-      await waitUntilNotExists(tester, manualPositionRowColorFinder);
 
       await disconnect(tester);
     });
