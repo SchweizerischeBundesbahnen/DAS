@@ -57,7 +57,7 @@ test.describe('ru indication templates test', () => {
     await deleteEntryIfExists(page, updatedRow);
   });
 
-  test('create, edit and delete ru indication template | tests: 1626', async ({ page }) => {
+  test('create, edit and delete ru indication template|tests:1626', async ({ page }) => {
     // create
     await createRuIndicationTemplate(page, TEST_CATEGORY, TEST_TITLE_DE, TEST_TEXT_DE);
 
@@ -82,7 +82,7 @@ test.describe('ru indication templates test', () => {
     await deleteEntryViaDialog(page, updatedRow);
   });
 
-  test('delete selected ru indication templates | tests: 1626', async ({ page }) => {
+  test('delete selected ru indication templates|tests:1626', async ({ page }) => {
     // create one entry to select and bulk-delete
     await createRuIndicationTemplate(page, TEST_CATEGORY, TEST_TITLE_DE, TEST_TEXT_DE);
 

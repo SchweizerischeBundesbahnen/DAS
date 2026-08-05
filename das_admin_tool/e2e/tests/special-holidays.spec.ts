@@ -56,7 +56,7 @@ test.describe('special holidays test', () => {
     await deleteEntryIfExists(page, updatedRow);
   });
 
-  test('create, edit and delete special holiday | tests: 1656', async ({ page }) => {
+  test('create, edit and delete special holiday|tests:1656', async ({ page }) => {
     // create
     await createSpecialHoliday(page, TEST_HOLIDAY_NAME, TEST_VALID_DATE);
 
@@ -78,7 +78,7 @@ test.describe('special holidays test', () => {
     await deleteEntryViaDialog(page, row);
   });
 
-  test('delete selected special holidays via checkbox | tests: 1656', async ({ page }) => {
+  test('delete selected special holidays via checkbox|tests:1656', async ({ page }) => {
     // create one entry to select and bulk-delete
     await createSpecialHoliday(page, TEST_HOLIDAY_NAME, TEST_VALID_DATE);
 
