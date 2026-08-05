@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:app/pages/journey/journey_screen/widgets/chevron_animation_wrapper.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/animation.dart';
 import 'package:app/widgets/stickyheader/sticky_header.dart';
@@ -403,6 +404,23 @@ class _CellRowState extends State<_CellRow> {
   bool dragEndedAboveThreshold = false;
   bool thresholdReachedOnce = false;
   bool isDragging = false;
+  AnimationController? _chevronAnimationController;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final newAnimationController = ChevronAnimationWrapper.of(context)?.animationController;
+    if (_chevronAnimationController == newAnimationController) return;
+
+    _chevronAnimationController?.removeStatusListener(_chevronAnimationStatusListener);
+    _chevronAnimationController = newAnimationController;
+    _chevronAnimationController?.addStatusListener(_chevronAnimationStatusListener);
+  }
+
+  void _chevronAnimationStatusListener(AnimationStatus _) {
+    if (!mounted) return;
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -486,7 +504,10 @@ class _CellRowState extends State<_CellRow> {
           if (cellBorder != null) effectiveBorder = cellBorder.override(effectiveBorder);
         }
         final effectiveBackgroundColor =
-            cell.decoration?.color ?? row.decoration?.color ?? column.decoration?.color ?? tableThemeData?.dataRowColor;
+            cell.decoration?.color ??
+            _effectiveRowBackgroundColor(row.decoration) ??
+            column.decoration?.color ??
+            tableThemeData?.dataRowColor;
 
         return _TableCellWrapper(
           expanded: column.expanded,
@@ -514,6 +535,13 @@ class _CellRowState extends State<_CellRow> {
         );
       },
     );
+  }
+
+  Color? _effectiveRowBackgroundColor(DASTableRowDecoration? decoration) {
+    if (_chevronAnimationController?.isAnimating == true && decoration?.chevronAnimationColor != null) {
+      return decoration!.chevronAnimationColor;
+    }
+    return decoration?.color;
   }
 
   EdgeInsets? _adjustPaddingToBorder(EdgeInsets? padding, BoxBorder? border) {
@@ -561,6 +589,12 @@ class _CellRowState extends State<_CellRow> {
     if (mounted) {
       setState(() => isDragging = value);
     }
+  }
+
+  @override
+  void dispose() {
+    _chevronAnimationController?.removeStatusListener(_chevronAnimationStatusListener);
+    super.dispose();
   }
 }
 
