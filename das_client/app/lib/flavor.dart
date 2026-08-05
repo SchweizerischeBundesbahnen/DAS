@@ -24,6 +24,7 @@ sealed class Flavor {
     this.showBanner = false,
     this.logLevel = Level.INFO,
     this.mqttOpenIdProfileMap = const {},
+    this.connectToTmsVad = true,
   });
 
   final String displayName;
@@ -42,6 +43,7 @@ sealed class Flavor {
   final bool disablePreload;
   final Map<TourSystem, String> tourSystemUrls;
   final CustomerOrientedDepartureEnvironment customerOrientedDepartureEnvironment;
+  final bool connectToTmsVad;
 
   factory Flavor.dev() = _DevFlavor;
 
@@ -119,6 +121,7 @@ class _DevFlavor extends Flavor {
          waraIOSUrlScheme: 'ch.sbb.tms.iad.shasmobile',
          tourSystemUrls: Map.from(_prodTourSystemUrls)..update(.tip, (_) => 'tip3test://tours'),
          customerOrientedDepartureEnvironment: .dev,
+         connectToTmsVad: const bool.fromEnvironment('CONNECT_TO_TMS_VAD', defaultValue: true),
        );
 }
 
