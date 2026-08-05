@@ -46,7 +46,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('servicePointModal_whenOpened_thenHidesKilometreColumn|tests:1219', (tester) async {
+    testWidgets('servicePointModal_whenOpened_thenHidesKilometreColumn|tests:497', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T8');
 

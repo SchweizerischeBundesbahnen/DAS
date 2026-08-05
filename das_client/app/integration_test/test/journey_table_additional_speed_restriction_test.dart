@@ -9,7 +9,7 @@ import '../integration/integration_test_app.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('additionalSpeedRestriction_whenRowDisplayed_thenShowsCorrectly|tests:87,1416', (tester) async {
+  testWidgets('additionalSpeedRestriction_whenRowDisplayed_thenShowsCorrectly|tests:87', (tester) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T2');
 
@@ -35,7 +35,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('additionalSpeedRestriction_whenNonAsrRowsBetween_thenColorsCorrectly|tests:87,1416', (tester) async {
+  testWidgets('additionalSpeedRestriction_whenNonAsrRowsBetween_thenColorsCorrectly|tests:87', (tester) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T2');
 
@@ -63,7 +63,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('additionalSpeedRestriction_whenComplexAsr_thenDisplaysCorrectly|tests:227,1416', (tester) async {
+  testWidgets('additionalSpeedRestriction_whenComplexAsr_thenDisplaysCorrectly|tests:227', (tester) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T18');
 
@@ -98,7 +98,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('additionalSpeedRestriction_whenOnEtcsLevel2Section_thenDisplaysCorrectly|tests:120,1416', (
+  testWidgets('additionalSpeedRestriction_whenOnEtcsLevel2Section_thenDisplaysCorrectly|tests:120', (
     tester,
   ) async {
     await IntegrationTestApp.start(tester);

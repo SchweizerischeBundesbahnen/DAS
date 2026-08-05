@@ -15,7 +15,7 @@ import '../util/test_utils.dart';
 
 Future<void> main() async {
   group('chronograph test', () {
-    testWidgets('chronograph_whenNoUpdates_thenHidesPunctualityDisplay|tests:1969', (tester) async {
+    testWidgets('chronograph_whenNoUpdates_thenHidesPunctualityDisplay|tests:300', (tester) async {
       await IntegrationTestApp.start(tester);
 
       await loadJourney(tester, trainNumber: 'T4');
@@ -41,7 +41,7 @@ Future<void> main() async {
       );
     });
 
-    testWidgets('chronograph_whenNoUpdates_thenPunctualityBecomesStale|tests:1969', (tester) async {
+    testWidgets('chronograph_whenNoUpdates_thenPunctualityBecomesStale|tests:300', (tester) async {
       await IntegrationTestApp.start(tester);
 
       await loadJourney(tester, trainNumber: 'T4');
@@ -64,7 +64,7 @@ Future<void> main() async {
       expect(delayTextWidget.style?.color, ThemeUtil.getColor(context, SBBColors.graphite, SBBColors.granite));
     });
 
-    testWidgets('chronograph_whenPunctualityUpdateReceived_thenDisplaysCorrectly|tests:1969', (tester) async {
+    testWidgets('chronograph_whenPunctualityUpdateReceived_thenDisplaysCorrectly|tests:300', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 

@@ -194,7 +194,7 @@ void main() {
       expect(find.text('${l10n.c_error_code} 50: ${l10n.c_error_sfera_no_additional_info}'), findsOneWidget);
     });
 
-    testWidgets('trainSearch_whenMultipleCompanyMatches_thenShowsSelection|tests:90,702', (tester) async {
+    testWidgets('trainSearch_whenMultipleCompanyMatches_thenShowsSelection|tests:702,703', (tester) async {
       await IntegrationTestApp.start(tester);
 
       final trainIdentificationRepository =
@@ -249,7 +249,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('trainSearch_whenLastRuRemembered_thenAutoSelects|tests:90,702', (tester) async {
+    testWidgets('trainSearch_whenLastRuRemembered_thenAutoSelects|tests:702', (tester) async {
       await IntegrationTestApp.start(tester);
 
       final trainIdentificationRepository =
@@ -293,7 +293,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('trainSearch_whenNoCompanyMatch_thenShowsNoResultMessage|tests:90,702', (tester) async {
+    testWidgets('trainSearch_whenNoCompanyMatch_thenShowsNoResultMessage|tests:702', (tester) async {
       await IntegrationTestApp.start(tester);
 
       final trainIdentificationRepository =
