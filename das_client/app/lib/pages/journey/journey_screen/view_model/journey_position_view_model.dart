@@ -129,8 +129,7 @@ class JourneyPositionViewModel extends JourneyAwareViewModel {
   JourneyPoint? _calculateLastPosition(Journey? journey, JourneyPoint? updatedPosition) {
     final previousModel = _rxModel.valueOrNull;
     final previousPosition = previousModel?.currentPosition;
-    final journeyStart = journey?.data.whereType<JourneyPoint>().firstOrNull;
-    if (journey == null || previousPosition == null || journeyStart == updatedPosition) return null;
+    if (journey == null || previousPosition == null) return null;
 
     final previousJourneyPointIndex = journey.journeyPoints.indexOf(previousPosition);
     if (previousJourneyPointIndex != -1) {
