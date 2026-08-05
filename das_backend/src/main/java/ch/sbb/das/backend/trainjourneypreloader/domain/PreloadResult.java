@@ -21,4 +21,8 @@ public sealed interface PreloadResult {
             this(message, null);
         }
     }
+
+    record Timeout(String message, Throwable ex) implements PreloadResult {
+
+    }
 }
