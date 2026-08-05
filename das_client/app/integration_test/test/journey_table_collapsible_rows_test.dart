@@ -26,7 +26,7 @@ void main() {
 
     await disconnect(tester);
   });
-  testWidgets('collapsibleRows_whenRadnFootNoteDisplayed_thenCollapses|tests:126', (tester) async {
+  testWidgets('collapsibleRows_whenRadnFootNoteDisplayed_thenCollapses|tests:625', (tester) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T15M');
 
@@ -83,7 +83,9 @@ void main() {
 
     await disconnect(tester);
   });
-  testWidgets('collapsibleRows_whenCombinedIndications_thenReplacesNewLinesWithDelimiter|tests:126', (tester) async {
+  testWidgets('collapsibleRows_whenCombinedIndications_thenReplacesNewLinesWithDelimiter|tests:126,625', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T22M');
 
@@ -123,7 +125,7 @@ void main() {
 
     await disconnect(tester);
   });
-  testWidgets('collapsibleRows_whenSameServicePoint_thenCombinesIndicationAndFootNote|tests:126', (tester) async {
+  testWidgets('collapsibleRows_whenSameServicePoint_thenCombinesIndicationAndFootNote|tests:126,625', (tester) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T22M');
 
@@ -161,7 +163,7 @@ void main() {
 
     await disconnect(tester);
   });
-  testWidgets('collapsibleRows_whenRadnFootNotePassed_thenCollapses|tests:126', (tester) async {
+  testWidgets('collapsibleRows_whenRadnFootNotePassed_thenCollapses|tests:625', (tester) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T15');
 
@@ -207,7 +209,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('simFootNote_whenSimTrain_thenSimFootNoteIsExpandedAndNotCollapsedWhenPassed|tests:940,1126', (
+  testWidgets('simFootNote_whenSimTrain_thenSimFootNoteIsExpandedAndNotCollapsedWhenPassed|tests:1126', (
     tester,
   ) async {
     // ARRANGE - mock SIM train

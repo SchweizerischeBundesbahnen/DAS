@@ -186,7 +186,7 @@ Future<void> main() async {
       expect(Theme.of(context).brightness != brightness, true);
     });
 
-    testWidgets('journeyHeader_whenExtendedMenuOpened_thenShowsCloseButton|tests:242', (tester) async {
+    testWidgets('journeyHeader_whenExtendedMenuOpened_thenShowsCloseButton|tests:497', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
@@ -201,7 +201,7 @@ Future<void> main() async {
       await disconnect(tester);
     });
 
-    testWidgets('journeyHeader_whenManeuverModeToggled_thenShowsNotification|tests:242,231', (tester) async {
+    testWidgets('journeyHeader_whenManeuverModeToggled_thenShowsNotification|tests:242', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
@@ -322,7 +322,7 @@ Future<void> main() async {
       await disconnect(tester);
     });
 
-    testWidgets('journeyHeader_whenCommunicationNetworkChanges_thenDisplaysCorrectly|tests:125,229', (tester) async {
+    testWidgets('journeyHeader_whenCommunicationNetworkChanges_thenDisplaysCorrectly|tests:125', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T12');
 

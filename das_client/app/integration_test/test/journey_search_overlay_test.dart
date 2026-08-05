@@ -75,7 +75,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('journeySearchOverlay_whenTrainLoaded_thenOpensJourneyWithoutNavigationButtons|tests:456,96', (
+    testWidgets('journeySearchOverlay_whenTrainLoaded_thenOpensJourneyWithoutNavigationButtons|tests:456', (
       tester,
     ) async {
       await IntegrationTestApp.start(tester);
@@ -129,18 +129,9 @@ void main() {
       final journeySearchOverlay = find.byType(JourneySearchOverlay);
 
       trainIdentificationRepository.companyMatchData = {
-        CompanyMatch(
-          ru: RailwayUndertaking.sbbI,
-          startDate: DateTime.now(),
-        ),
-        CompanyMatch(
-          ru: RailwayUndertaking.blsI,
-          startDate: DateTime.now(),
-        ),
-        CompanyMatch(
-          ru: RailwayUndertaking.thurbo,
-          startDate: DateTime.now().add(Duration(days: 1)),
-        ),
+        CompanyMatch(ru: .sbbI, startDate: DateTime.now()),
+        CompanyMatch(ru: .blsI, startDate: DateTime.now()),
+        CompanyMatch(ru: .thurbo, startDate: DateTime.now().add(Duration(days: 1))),
       };
 
       // open

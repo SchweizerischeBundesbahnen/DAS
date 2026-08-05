@@ -42,7 +42,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('notification_whenDisturbanceOccurs_thenShowsAndHidesNotification|tests:244,1557', (tester) async {
+    testWidgets('notification_whenDisturbanceOccurs_thenShowsAndHidesNotification|tests:244', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T33');
 

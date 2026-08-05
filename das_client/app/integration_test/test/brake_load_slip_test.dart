@@ -23,7 +23,7 @@ import '../util/test_utils.dart';
 
 void main() {
   testWidgets(
-    'brakeSlip_whenPositionUpdateWhileBrakeSlipPageOpen_thenDoesNotUpdateToNewPosition|tests:1605,1867,2483',
+    'brakeSlip_whenPositionUpdateWhileBrakeSlipPageOpen_thenDoesNotUpdateToNewPosition|tests:1605',
     (tester) async {
       await IntegrationTestApp.start(tester);
 
@@ -295,7 +295,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('brakeSlipModal_whenFullscreenButtonTapped_thenOpensFullscreen|tests:692,568', (tester) async {
+  testWidgets('brakeSlipModal_whenFullscreenButtonTapped_thenOpensFullscreen|tests:692', (tester) async {
     await IntegrationTestApp.start(tester);
 
     final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
@@ -345,7 +345,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('brakeSlip_whenFormationRunChanged_thenUpdatesRunChangeDisplay|tests:694,99,241', (tester) async {
+  testWidgets('brakeSlip_whenFormationRunChanged_thenUpdatesRunChangeDisplay|tests:694', (tester) async {
     await IntegrationTestApp.start(tester);
 
     final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
