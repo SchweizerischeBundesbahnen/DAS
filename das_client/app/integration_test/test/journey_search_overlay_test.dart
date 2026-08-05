@@ -19,7 +19,7 @@ import '../util/test_utils.dart';
 
 void main() {
   group('Journey search overlay tests', () {
-    testWidgets('journeySearchOverlay_whenOpenedAndDismissed_thenTogglesCorrectly', (tester) async {
+    testWidgets('journeySearchOverlay_whenOpenedAndDismissed_thenTogglesCorrectly|tests:456', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T1');
 
@@ -43,7 +43,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('journeySearchOverlay_whenOpened_thenShowsDefaultsAndValidation', (tester) async {
+    testWidgets('journeySearchOverlay_whenOpened_thenShowsDefaultsAndValidation|tests:456', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T1');
       final journeySearchOverlay = find.byType(JourneySearchOverlay);
@@ -75,7 +75,9 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('journeySearchOverlay_whenTrainLoaded_thenOpensJourneyWithoutNavigationButtons', (tester) async {
+    testWidgets('journeySearchOverlay_whenTrainLoaded_thenOpensJourneyWithoutNavigationButtons|tests:456', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T1');
       final journeySearchOverlay = find.byType(JourneySearchOverlay);
@@ -115,7 +117,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('journeySearchOverlay_whenMultipleCompanyMatches_thenRedirectsToSelectionScreen', (
+    testWidgets('journeySearchOverlay_whenMultipleCompanyMatches_thenRedirectsToSelectionScreen|tests:702', (
       tester,
     ) async {
       await IntegrationTestApp.start(tester);
@@ -127,18 +129,9 @@ void main() {
       final journeySearchOverlay = find.byType(JourneySearchOverlay);
 
       trainIdentificationRepository.companyMatchData = {
-        CompanyMatch(
-          ru: RailwayUndertaking.sbbI,
-          startDate: DateTime.now(),
-        ),
-        CompanyMatch(
-          ru: RailwayUndertaking.blsI,
-          startDate: DateTime.now(),
-        ),
-        CompanyMatch(
-          ru: RailwayUndertaking.thurbo,
-          startDate: DateTime.now().add(Duration(days: 1)),
-        ),
+        CompanyMatch(ru: .sbbI, startDate: DateTime.now()),
+        CompanyMatch(ru: .blsI, startDate: DateTime.now()),
+        CompanyMatch(ru: .thurbo, startDate: DateTime.now().add(Duration(days: 1))),
       };
 
       // open

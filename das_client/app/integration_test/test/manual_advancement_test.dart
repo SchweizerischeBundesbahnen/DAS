@@ -16,38 +16,7 @@ import '../util/test_utils.dart';
 
 void main() {
   group('manual advancement tests', () {
-    testWidgets('manualAdvancement_whenManualPositionSet_thenShowsChevronAnimationColor|tests:1617', (tester) async {
-      await IntegrationTestApp.start(tester);
-
-      final timeConstants = DI.get<TimeConstants>() as TestTimeConstants;
-      timeConstants.chevronAnimationDurationValue = Duration(seconds: 3);
-
-      final localStore = DI.get<LocalKeyValueStore>() as MockLocalKeyValueStore;
-      localStore.set(.showStationSignals, false);
-
-      await loadJourney(tester, trainNumber: 'T9999M');
-
-      final draggedServicePoint = 'Haltestelle B';
-      await tester.drag(findDASTableRowByText(draggedServicePoint), const Offset(600, 0));
-
-      final manualPositionRowColorFinder = find.descendant(
-        of: findDASTableRowByText(draggedServicePoint),
-        matching: find.byWidgetPredicate(
-          (it) =>
-              it is Container &&
-              ((it.decoration is BoxDecoration &&
-                      (it.decoration as BoxDecoration).color == DASColors.manualPositionSetBackgroundBright) ||
-                  it.color == DASColors.manualPositionSetBackgroundBright),
-        ),
-      );
-
-      await waitUntilExists(tester, manualPositionRowColorFinder);
-      await waitUntilNotExists(tester, manualPositionRowColorFinder);
-
-      await disconnect(tester);
-    });
-
-    testWidgets('manualAdvancement_whenServicePointDragged_thenJourneyPositionMoved', (tester) async {
+    testWidgets('manualAdvancement_whenServicePointDragged_thenJourneyPositionMoved|tests:741', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999M');
 
@@ -101,41 +70,42 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('manualAdvancement_whenManualPositionSet_thenManualModeActivatedUntilJourneyPositionSignaled', (
-      tester,
-    ) async {
-      await IntegrationTestApp.start(tester);
-      await loadJourney(tester, trainNumber: 'T30');
+    testWidgets(
+      'manualAdvancement_whenManualPositionSet_thenManualModeActivatedUntilJourneyPositionSignaled|tests:741',
+      (tester) async {
+        await IntegrationTestApp.start(tester);
+        await loadJourney(tester, trainNumber: 'T30');
 
-      final coppet = 'Coppet';
-      // set position to Coppet manually
-      await tester.drag(findDASTableRowByText(coppet), const Offset(600, 0));
+        final coppet = 'Coppet';
+        // set position to Coppet manually
+        await tester.drag(findDASTableRowByText(coppet), const Offset(600, 0));
 
-      // check manual mode
-      await waitUntilExists(
-        tester,
-        find.descendant(
-          of: find.byKey(JourneyAdvancementButton.pauseKey),
-          matching: find.byIcon(SBBIcons.hand_cursor_small),
-        ),
-      );
+        // check manual mode
+        await waitUntilExists(
+          tester,
+          find.descendant(
+            of: find.byKey(JourneyAdvancementButton.pauseKey),
+            matching: find.byIcon(SBBIcons.hand_cursor_small),
+          ),
+        );
 
-      // Check chevron at B
-      await waitUntilExists(
-        tester,
-        find.descendant(of: findDASTableRowByText(coppet), matching: find.byKey(RouteChevron.chevronKey)),
-      );
+        // Check chevron at B
+        await waitUntilExists(tester, findChevronPositionAtRowWithText(coppet));
 
-      // wait until signal received and back to non manual mode
-      await waitUntilExists(
-        tester,
-        find.descendant(of: find.byKey(JourneyAdvancementButton.pauseKey), matching: find.byIcon(SBBIcons.pause_small)),
-      );
+        // wait until signal received and back to non manual mode
+        await waitUntilExists(
+          tester,
+          find.descendant(
+            of: find.byKey(JourneyAdvancementButton.pauseKey),
+            matching: find.byIcon(SBBIcons.pause_small),
+          ),
+        );
 
-      await disconnect(tester);
-    });
+        await disconnect(tester);
+      },
+    );
 
-    testWidgets('manualAdvancement_whenManualPositionSet_thenStartTimedAdvancement', (tester) async {
+    testWidgets('manualAdvancement_whenManualPositionSet_thenStartTimedAdvancement|tests:1314', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T46M');
 
@@ -151,16 +121,13 @@ void main() {
       final locations = ['Varzo', 'Domodossola (bif)', 'Domodossola (I)'];
 
       for (final location in locations) {
-        await waitUntilExists(
-          tester,
-          find.descendant(of: findDASTableRowByText(location), matching: find.byKey(RouteChevron.chevronKey)),
-        );
+        await waitUntilExists(tester, findChevronPositionAtRowWithText(location));
       }
 
       await disconnect(tester);
     });
 
-    testWidgets('manualAdvancement_whenManualPositionSet_thenRestartsPositionTimers', (tester) async {
+    testWidgets('manualAdvancement_whenManualPositionSet_thenRestartsPositionTimers|tests:1314', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T46M');
 
@@ -180,6 +147,37 @@ void main() {
       expect(findChevronPositionAtRowWithText(domodossola), findsOne);
 
       await waitUntilExists(tester, findChevronPositionAtRowWithText('Domodossola (I)'));
+
+      await disconnect(tester);
+    });
+
+    testWidgets('manualAdvancement_whenManualPositionSet_thenShowsChevronAnimationColor|tests:1617', (tester) async {
+      await IntegrationTestApp.start(tester);
+
+      final timeConstants = DI.get<TimeConstants>() as TestTimeConstants;
+      timeConstants.chevronAnimationDurationValue = Duration(seconds: 3);
+
+      final localStore = DI.get<LocalKeyValueStore>() as MockLocalKeyValueStore;
+      localStore.set(.showStationSignals, false);
+
+      await loadJourney(tester, trainNumber: 'T9999M');
+
+      final draggedServicePoint = 'Haltestelle B';
+      await tester.drag(findDASTableRowByText(draggedServicePoint), const Offset(600, 0));
+
+      final manualPositionRowColorFinder = find.descendant(
+        of: findDASTableRowByText(draggedServicePoint),
+        matching: find.byWidgetPredicate(
+          (it) =>
+              it is Container &&
+              ((it.decoration is BoxDecoration &&
+                      (it.decoration as BoxDecoration).color == DASColors.manualPositionSetBackgroundBright) ||
+                  it.color == DASColors.manualPositionSetBackgroundBright),
+        ),
+      );
+
+      await waitUntilExists(tester, manualPositionRowColorFinder);
+      await waitUntilNotExists(tester, manualPositionRowColorFinder);
 
       await disconnect(tester);
     });

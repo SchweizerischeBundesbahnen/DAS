@@ -15,7 +15,7 @@ import '../util/test_utils.dart';
 
 void main() {
   group('train journey notification test', () {
-    testWidgets('notification_whenDepartureProcessDialogOpened_thenDisplaysCorrectly', (tester) async {
+    testWidgets('notification_whenDepartureProcessDialogOpened_thenDisplaysCorrectly|tests:624,627', (tester) async {
       await IntegrationTestApp.start(tester);
       final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;
       featureProvider.enableFeature(.departureProcess);
@@ -42,7 +42,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('notification_whenDisturbanceOccurs_thenShowsAndHidesNotification', (tester) async {
+    testWidgets('notification_whenDisturbanceOccurs_thenShowsAndHidesNotification|tests:244', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T33');
 
@@ -52,7 +52,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('notification_whenDepartureDispatchReceived_thenDisplaysCorrectly', (tester) async {
+    testWidgets('notification_whenDepartureDispatchReceived_thenDisplaysCorrectly|tests:124', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T32');
 
@@ -66,7 +66,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('notification_whenMultipleNotifications_thenPrioritizesCorrectly', (tester) async {
+    testWidgets('notification_whenMultipleNotifications_thenPrioritizesCorrectly|tests:1402', (tester) async {
       await IntegrationTestApp.start(tester);
 
       final mockRepository = DI.get<CustomerOrientedDepartureRepository>() as MockCustomerOrientedDepartureRepository;
@@ -87,7 +87,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('notification_whenReauthenticationRequired_thenShowsNotification', (tester) async {
+    testWidgets('notification_whenReauthenticationRequired_thenShowsNotification|tests:1320', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 

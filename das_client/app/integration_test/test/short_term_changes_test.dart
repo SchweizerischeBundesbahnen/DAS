@@ -11,7 +11,7 @@ import '../util/test_utils.dart';
 
 void main() {
   group('short term changes tests', () {
-    testWidgets('shortTermChanges_whenPresent_thenDisplaysInJourneyTable', (tester) async {
+    testWidgets('shortTermChanges_whenPresent_thenDisplaysAllCorrectlyInJourneyTable|tests:99', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T36M');
 
@@ -68,7 +68,7 @@ void main() {
     });
   });
 
-  testWidgets('shortTermChanges_whenPresent_thenDisplaysInFlap', (tester) async {
+  testWidgets('shortTermChanges_whenPresent_thenDisplaysAllCorrectlyInFlap|tests:99', (tester) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T36');
 

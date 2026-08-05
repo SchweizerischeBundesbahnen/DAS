@@ -26,7 +26,7 @@ import '../util/test_utils.dart';
 
 void main() {
   group('general service point modal sheet tests', () {
-    testWidgets('servicePointModal_whenBahnhofportalLinkTapped_thenOpensExpectedUrl', (tester) async {
+    testWidgets('servicePointModal_whenBahnhofportalLinkTapped_thenOpensExpectedUrl|tests:1485', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999M');
 
@@ -46,7 +46,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('servicePointModal_whenOpened_thenHidesKilometreColumn', (tester) async {
+    testWidgets('servicePointModal_whenOpened_thenHidesKilometreColumn|tests:497', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T8');
 
@@ -67,7 +67,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('servicePointModal_whenInteracted_thenOpensAndClosesCorrectly', (tester) async {
+    testWidgets('servicePointModal_whenInteracted_thenOpensAndClosesCorrectly|tests:497', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T8');
 
@@ -96,7 +96,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('servicePointModal_whenSameCellTappedTwice_thenClosesModal', (tester) async {
+    testWidgets('servicePointModal_whenSameCellTappedTwice_thenClosesModal|tests:1875', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T8');
 
@@ -110,7 +110,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('servicePointModal_whenRadioChannelTappedTwice_thenClosesModal', (tester) async {
+    testWidgets('servicePointModal_whenRadioChannelTappedTwice_thenClosesModal|tests:1875', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T8');
 
@@ -124,7 +124,9 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('servicePointModal_whenDifferentServicePointTapped_thenSwitchesWithoutClosing', (tester) async {
+    testWidgets('servicePointModal_whenDifferentServicePointTapped_thenSwitchesWithoutClosing|tests:1875', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T8');
 
@@ -140,7 +142,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('servicePointModal_whenActiveTabReselected_thenDoesNothing', (tester) async {
+    testWidgets('servicePointModal_whenActiveTabReselected_thenDoesNothing|tests:1875', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T8');
 
@@ -155,7 +157,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('servicePointModal_whenOpened_thenCollapsesHeaderButtons', (tester) async {
+    testWidgets('servicePointModal_whenOpened_thenCollapsesHeaderButtons|tests:497', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
@@ -173,7 +175,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('servicePointModal_whenDataAvailable_thenShowsOnlyRelevantTabs', (tester) async {
+    testWidgets('servicePointModal_whenDataAvailable_thenShowsOnlyRelevantTabs|tests:1040,497', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T8');
 
@@ -191,7 +193,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('servicePointModal_whenTabChanged_thenDisplaysCorrectContent', (tester) async {
+    testWidgets('servicePointModal_whenTabChanged_thenDisplaysCorrectContent|tests:497', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T8');
 
@@ -210,7 +212,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('servicePointModal_whenTimeout_thenClosesAutomatically', (tester) async {
+    testWidgets('servicePointModal_whenTimeout_thenClosesAutomatically|tests:497', (tester) async {
       await IntegrationTestApp.start(tester);
 
       await loadJourney(tester, trainNumber: 'T8');
@@ -231,7 +233,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('servicePointModal_whenAdvancementPaused_thenClosesAfterTimeout', (tester) async {
+    testWidgets('servicePointModal_whenAdvancementPaused_thenClosesAfterTimeout|tests:497', (tester) async {
       await IntegrationTestApp.start(tester);
 
       await loadJourney(tester, trainNumber: 'T8');
@@ -259,7 +261,7 @@ void main() {
   });
 
   group('graduated speed tab tests', () {
-    testWidgets('graduatedSpeed_whenPresent_thenDisplaysInfoDetails', (tester) async {
+    testWidgets('graduatedSpeed_whenPresent_thenDisplaysInfoDetails|tests:231', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T8');
 
@@ -291,7 +293,7 @@ void main() {
   });
 
   group('communication tab tests', () {
-    testWidgets('communicationTab_whenOpened_thenDisplaysNetworkAndRadioChannels', (tester) async {
+    testWidgets('communicationTab_whenOpened_thenDisplaysNetworkAndRadioChannels|tests:229', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T12M');
 
@@ -349,7 +351,7 @@ void main() {
 
       await disconnect(tester);
     });
-    testWidgets('communicationTab_whenOpenedFromOtherTab_thenShowsInformation', (tester) async {
+    testWidgets('communicationTab_whenOpenedFromOtherTab_thenShowsInformation|tests:229', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: '1513M');
 
@@ -378,7 +380,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('communicationTab_whenDepartureAuthorizationPresent_thenDisplaysInModal', (tester) async {
+    testWidgets('communicationTab_whenDepartureAuthorizationPresent_thenDisplaysInModal|tests:226', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T31M');
 
@@ -397,7 +399,7 @@ void main() {
   });
 
   group('local regulation tab tests', () {
-    testWidgets('localRegulationTab_whenPresent_thenShowsTab', (tester) async {
+    testWidgets('localRegulationTab_whenPresent_thenShowsTab|tests:95', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T25');
       final scrollableFinder = find.byType(AnimatedList);
@@ -417,7 +419,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('localRegulationTab_whenTabChanged_thenUpdatesDisplay', (tester) async {
+    testWidgets('localRegulationTab_whenTabChanged_thenUpdatesDisplay|tests:95', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T25');
 
@@ -439,7 +441,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('localRegulationTab_whenOpened_thenShowsWebview', (tester) async {
+    testWidgets('localRegulationTab_whenOpened_thenShowsWebview|tests:95', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T25');
 
@@ -454,7 +456,7 @@ void main() {
     });
   });
 
-  testWidgets('servicePointModal_whenModalOpen_thenShowsShortSignalNames', (tester) async {
+  testWidgets('servicePointModal_whenModalOpen_thenShowsShortSignalNames|tests:980', (tester) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T9999M');
 
@@ -489,7 +491,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('servicePointModal_whenNavigatedAndReturned_thenStaysDisplayed', (tester) async {
+  testWidgets('servicePointModal_whenNavigatedAndReturned_thenStaysDisplayed|tests:497', (tester) async {
     await IntegrationTestApp.start(tester);
     final timeConstants = DI.get<TimeConstants>() as TestTimeConstants;
     timeConstants.modalSheetAutomaticCloseAfterSecondsValue = 5;

@@ -11,7 +11,7 @@ import '../util/test_utils.dart';
 
 void main() {
   group('departure process test', () {
-    testWidgets('departureProcess_whenFeatureEnabled_thenChecklistButtonDisplayedCorrectly', (tester) async {
+    testWidgets('departureProcess_whenFeatureEnabled_thenChecklistButtonDisplayedCorrectly|tests:627', (tester) async {
       await IntegrationTestApp.start(tester);
       final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;
       featureProvider.enableFeature(.departureProcess);
@@ -39,28 +39,29 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('departureProcess_whenNoCustomerOrientedDeparture_thenChecklistButtonOpensDepartureDialog', (
-      tester,
-    ) async {
-      await IntegrationTestApp.start(tester);
-      final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;
-      featureProvider.enableFeature(.departureProcess);
+    testWidgets(
+      'departureProcess_whenNoCustomerOrientedDeparture_thenChecklistButtonOpensDepartureDialog|tests:627',
+      (tester) async {
+        await IntegrationTestApp.start(tester);
+        final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;
+        featureProvider.enableFeature(.departureProcess);
 
-      await loadJourney(tester, trainNumber: 'T41M');
+        await loadJourney(tester, trainNumber: 'T41M');
 
-      // start of journey
-      await waitUntilExists(tester, find.byKey(FloatingDepartureChecklistButton.buttonKey));
+        // start of journey
+        await waitUntilExists(tester, find.byKey(FloatingDepartureChecklistButton.buttonKey));
 
-      await tapElement(tester, find.byKey(FloatingDepartureChecklistButton.buttonKey));
+        await tapElement(tester, find.byKey(FloatingDepartureChecklistButton.buttonKey));
 
-      expect(find.text(l10n.w_departure_process_dialog_title), findsOneWidget);
-      expect(find.text(l10n.w_departure_process_checklist_item_1), findsOneWidget);
-      expect(find.text(l10n.w_departure_process_checklist_item_3), findsOneWidget);
+        expect(find.text(l10n.w_departure_process_dialog_title), findsOneWidget);
+        expect(find.text(l10n.w_departure_process_checklist_item_1), findsOneWidget);
+        expect(find.text(l10n.w_departure_process_checklist_item_3), findsOneWidget);
 
-      await disconnect(tester);
-    });
+        await disconnect(tester);
+      },
+    );
 
-    testWidgets('departureProcess_whenFeatureEnabled_thenShowsChronographWarning', (tester) async {
+    testWidgets('departureProcess_whenFeatureEnabled_thenShowsChronographWarning|tests:627', (tester) async {
       await IntegrationTestApp.start(tester);
       final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;
       featureProvider.enableFeature(.departureProcess);

@@ -16,7 +16,9 @@ import '../mocks/mock_ru_feature_provider.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('customerOrientedDeparture_whenStatusChanges_thenDisplaysNotificationsCorrectly', (tester) async {
+  testWidgets('customerOrientedDeparture_whenStatusChanges_thenDisplaysNotificationsCorrectly|tests:148', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
     final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;
     featureProvider.enableFeature(.departureProcess);
@@ -54,7 +56,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('customerOrientedDeparture_whenJourneyChanges_thenSubscriptionUpdates', (tester) async {
+  testWidgets('customerOrientedDeparture_whenJourneyChanges_thenSubscriptionUpdates|tests:148', (tester) async {
     await IntegrationTestApp.start(tester);
     final mockRepository = DI.get<CustomerOrientedDepartureRepository>() as MockCustomerOrientedDepartureRepository;
     mockRepository.reset();

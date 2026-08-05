@@ -16,7 +16,7 @@ void main() {
   if (Platform.isAndroid) return;
 
   group('warnapp test', () {
-    testWidgets('warnapp_whenSignalIsRed_thenTriggersWarning', (tester) async {
+    testWidgets('warnapp_whenSignalIsRed_thenTriggersWarning|tests:98', (tester) async {
       await IntegrationTestApp.start(tester);
 
       final motionDataService = DI.get<MotionDataService>() as MockMotionDataService;
@@ -34,7 +34,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('warnapp_whenUiRebuilt_thenNotificationNotReappearing', (tester) async {
+    testWidgets('warnapp_whenUiRebuilt_thenNotificationNotReappearing|tests:98', (tester) async {
       await IntegrationTestApp.start(tester);
 
       final motionDataService = DI.get<MotionDataService>() as MockMotionDataService;
@@ -57,7 +57,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('warnapp_whenManeuverButtonTapped_thenActivatesManeuverMode', (tester) async {
+    testWidgets('warnapp_whenManeuverButtonTapped_thenActivatesManeuverMode|tests:98', (tester) async {
       await IntegrationTestApp.start(tester);
 
       final motionDataService = DI.get<MotionDataService>() as MockMotionDataService;
@@ -74,7 +74,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('warnapp_whenInManeuverMode_thenDoesNotTrigger', (tester) async {
+    testWidgets('warnapp_whenInManeuverMode_thenDoesNotTrigger|tests:98', (tester) async {
       await IntegrationTestApp.start(tester);
 
       final motionDataService = DI.get<MotionDataService>() as MockMotionDataService;
@@ -105,7 +105,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('warnapp_whenSignalIsGreen_thenDoesNotTrigger', (tester) async {
+    testWidgets('warnapp_whenSignalIsGreen_thenDoesNotTrigger|tests:98', (tester) async {
       await IntegrationTestApp.start(tester);
 
       final motionDataService = DI.get<MotionDataService>() as MockMotionDataService;

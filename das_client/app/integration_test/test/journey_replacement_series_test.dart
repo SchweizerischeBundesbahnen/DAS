@@ -5,7 +5,7 @@ import '../integration/integration_test_app.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('replacementSeries_whenSuggested_thenSelectsAndReturnsToOriginal', (tester) async {
+  testWidgets('replacementSeries_whenSuggested_thenSelectsAndReturnsToOriginal|tests:507', (tester) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T30');
 
@@ -37,7 +37,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('replacementSeries_whenNoReplacementAvailable_thenDoesNotSuggest', (tester) async {
+  testWidgets('replacementSeries_whenNoReplacementAvailable_thenDoesNotSuggest|tests:507', (tester) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T30');
 
@@ -62,7 +62,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('replacementSeries_whenEndOfSegmentReached_thenMessageDisappears', (tester) async {
+  testWidgets('replacementSeries_whenEndOfSegmentReached_thenMessageDisappears|tests:507', (tester) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T30');
 
@@ -82,7 +82,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('replacementSeries_whenNoReplacementForBrakeSeries_thenShowsNotification', (
+  testWidgets('replacementSeries_whenNoReplacementForBrakeSeries_thenShowsNotification|tests:938', (
     tester,
   ) async {
     await IntegrationTestApp.start(tester);

@@ -9,7 +9,9 @@ import '../integration/integration_test_app.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('baliseLevelCrossing_whenMultipleLevelCrossings_thenDisplaysCorrectly', (tester) async {
+  testWidgets('baliseLevelCrossing_whenMultipleLevelCrossings_thenDisplaysCorrectly|tests:224,1416', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T7');
 
@@ -25,7 +27,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('baliseLevelCrossing_whenGroupTapped_thenExpandsAndCollapses', (tester) async {
+  testWidgets('baliseLevelCrossing_whenGroupTapped_thenExpandsAndCollapses|tests:224,1416,454', (tester) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T7M');
 
@@ -88,7 +90,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('baliseLevelCrossing_whenInEtcsLevel2Section_thenDisplaysCorrectly', (tester) async {
+  testWidgets('baliseLevelCrossing_whenInEtcsLevel2Section_thenDisplaysCorrectly|tests:1429,1416,224', (tester) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T7');
 

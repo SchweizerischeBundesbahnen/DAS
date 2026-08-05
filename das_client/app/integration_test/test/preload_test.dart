@@ -1,7 +1,6 @@
 import 'package:app/di/di.dart';
 import 'package:app/pages/diagnostic/widgets/preload_status_display.dart';
 import 'package:app/pages/journey/journey_page.dart';
-import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_chevron.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:connectivity_x/component.dart';
 import 'package:flutter/cupertino.dart';
@@ -62,7 +61,7 @@ void main() {
     metrics: SferaDbMetrics(jpCount: 43, spCount: 201, tcCount: 33),
   );
 
-  testWidgets('preload_whenStatusChanges_thenDisplaysCorrectly', (tester) async {
+  testWidgets('preload_whenStatusChanges_thenDisplaysCorrectly|tests:90', (tester) async {
     await IntegrationTestApp.start(tester);
 
     final preloadRepository = DI.get<PreloadRepository>() as MockPreloadRepository;
@@ -137,7 +136,7 @@ void main() {
     expect(tester.widget<SBBTertiaryButtonSmall>(startButton).onPressed, isNull);
   });
 
-  testWidgets('preload_whenUsingPreloadData_thenReconnectsSuccessfully', (tester) async {
+  testWidgets('preload_whenUsingPreloadData_thenReconnectsSuccessfully|tests:90', (tester) async {
     await IntegrationTestApp.start(tester);
 
     // Load T9999 so we have it available offline
@@ -165,10 +164,7 @@ void main() {
     connectivityManager.connectivitySubject.add(true);
 
     // Wait until chevron is on Halt auf Verlangen C
-    await waitUntilExists(
-      tester,
-      find.descendant(of: findDASTableRowByText('Halt auf Verlangen C'), matching: find.byType(RouteChevron)),
-    );
+    await waitUntilExists(tester, findChevronPositionAtRowWithText('Halt auf Verlangen C'));
 
     await disconnect(tester);
   });

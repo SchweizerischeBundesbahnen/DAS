@@ -7,7 +7,7 @@ import '../integration/integration_test_app.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('trackEquipment_whenCabSignaling_thenDisplaysCorrectly', (tester) async {
+  testWidgets('trackEquipment_whenCabSignaling_thenDisplaysCorrectly|tests:82', (tester) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T1');
 
@@ -67,7 +67,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('trackEquipment_whenLoaded_thenDisplaysCorrectly', (tester) async {
+  testWidgets('trackEquipment_whenLoaded_thenDisplaysCorrectly|tests:82', (tester) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T1');
 
@@ -152,7 +152,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('trackEquipment_whenSingleTrackNoBlock_thenDisplaysCorrectly', (tester) async {
+  testWidgets('trackEquipment_whenSingleTrackNoBlock_thenDisplaysCorrectly|tests:230', (tester) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T10');
 
