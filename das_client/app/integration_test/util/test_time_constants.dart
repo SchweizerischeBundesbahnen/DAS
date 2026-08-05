@@ -1,7 +1,9 @@
+import 'package:app/util/animation.dart';
 import 'package:app/util/time_constants.dart';
 
 class TestTimeConstants extends TimeConstants {
   int modalSheetAutomaticCloseAfterSecondsValue = 2;
+  Duration chevronAnimationDurationValue = DASAnimation.longDuration;
 
   @override
   int get punctualityStaleSeconds => 2;
@@ -29,4 +31,7 @@ class TestTimeConstants extends TimeConstants {
 
   @override
   int get newShortTermChangesDisplaySeconds => 2;
+
+  @override
+  Duration get chevronAnimationDuration => chevronAnimationDurationValue;
 }

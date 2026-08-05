@@ -1,12 +1,15 @@
+import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/journey_advancement_button.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_chevron.dart';
 import 'package:app/theme/das_colors.dart';
+import 'package:app/util/time_constants.dart';
 import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 import '../integration/integration_test_app.dart';
+import '../util/test_time_constants.dart';
 import '../util/test_utils.dart';
 
 void main() {
@@ -150,6 +153,10 @@ void main() {
 
     testWidgets('manualAdvancement_whenManualPositionSet_thenShowsChevronAnimationColor|tests:1617', (tester) async {
       await IntegrationTestApp.start(tester);
+
+      final timeConstants = DI.get<TimeConstants>() as TestTimeConstants;
+      timeConstants.chevronAnimationDurationValue = Duration(seconds: 3);
+
       await loadJourney(tester, trainNumber: 'T9999M');
 
       await stopAutomaticAdvancement(tester);
