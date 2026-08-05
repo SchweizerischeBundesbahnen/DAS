@@ -26,7 +26,5 @@ extension RuFeaturesMapperX on RuFeatureDto {
 }
 
 extension RuFeaturesTableDataX on RuFeaturesTableData {
-  RuFeatureDto toDomain() {
-    return RuFeatureDto(companyCode: companyCodeRics, key: key, enabled: enabled);
-  }
+  RuFeatureDto toDto() => RuFeatureDto(companyCode: companyCodeRics, key: key, enabled: enabled);
 }

@@ -8,5 +8,7 @@ abstract class SettingsRepository implements LogEndpoint {
 
   Future<bool> isRuFeatureEnabled(RuFeatureKeys featureKey, String companyCode);
 
+  Future<List<Company>> loadCompanies();
+
   AppVersionExpiration? get appVersionExpiration;
 }
