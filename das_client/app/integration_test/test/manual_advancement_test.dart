@@ -1,5 +1,6 @@
 import 'package:app/pages/journey/journey_screen/header/widgets/journey_advancement_button.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_chevron.dart';
+import 'package:app/theme/das_colors.dart';
 import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -10,6 +11,32 @@ import '../util/test_utils.dart';
 
 void main() {
   group('manual advancement tests', () {
+    testWidgets('manualAdvancement_whenManualPositionSet_thenShowsChevronAnimationColor', (tester) async {
+      await IntegrationTestApp.start(tester);
+      await loadJourney(tester, trainNumber: 'T9999M');
+
+      await stopAutomaticAdvancement(tester);
+
+      final draggedServicePoint = 'Haltestelle B';
+      await tester.drag(findDASTableRowByText(draggedServicePoint), const Offset(600, 0));
+
+      final manualPositionRowColorFinder = find.descendant(
+        of: findDASTableRowByText(draggedServicePoint),
+        matching: find.byWidgetPredicate(
+          (it) =>
+              it is Container &&
+              ((it.decoration is BoxDecoration &&
+                      (it.decoration as BoxDecoration).color == DASColors.manualPositionSetBackgroundBright) ||
+                  it.color == DASColors.manualPositionSetBackgroundBright),
+        ),
+      );
+
+      await waitUntilExists(tester, manualPositionRowColorFinder);
+      await waitUntilNotExists(tester, manualPositionRowColorFinder);
+
+      await disconnect(tester);
+    });
+
     testWidgets('manualAdvancement_whenServicePointDragged_thenJourneyPositionMoved', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999M');
