@@ -52,6 +52,7 @@ jobs:
 
       - name: Maven verify + Sonar
         env:
+          TESTCONTAINERS_RYUK_DISABLED: "true"
           SONAR_TOKEN: ${{ steps.vault-secrets.outputs.SONAR_TOKEN }}
           KAFKA_SR_URL: ${{ steps.vault-secrets.outputs.KAFKA_SR_URL }}
           KAFKA_SR_API_KEY: ${{ steps.vault-secrets.outputs.KAFKA_SR_API_KEY }}
