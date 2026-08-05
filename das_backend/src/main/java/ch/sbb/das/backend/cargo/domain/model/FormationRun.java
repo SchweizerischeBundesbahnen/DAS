@@ -1,6 +1,7 @@
 package ch.sbb.das.backend.cargo.domain.model;
 
 import ch.sbb.das.backend.companies.CompanyCode;
+import ch.sbb.das.backend.locations.TafTapLocationReference;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -22,9 +23,9 @@ public class FormationRun {
     private Boolean inspected;
     @Getter private OffsetDateTime inspectionDateTime;
     @Getter private CompanyCode company;
-    @Getter private Integer tafTapLocationUicStartCode;
+    @Getter private TafTapLocationReference tafTapLocationUicStartCode;
     @Getter private Integer tafTapLocationUicStartPassIndex;
-    @Getter private Integer tafTapLocationUicEndCode;
+    @Getter private TafTapLocationReference tafTapLocationUicEndCode;
     @Getter private String trainCategoryCode;
     @Getter private Integer brakedWeightPercentage;
     @Getter private Integer tractionMaxSpeedInKmh;

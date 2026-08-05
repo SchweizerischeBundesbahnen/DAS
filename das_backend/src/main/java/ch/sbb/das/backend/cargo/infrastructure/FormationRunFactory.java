@@ -26,9 +26,9 @@ public final class FormationRunFactory {
     private static FormationRun create(ch.sbb.zis.trainformation.api.model.FormationRun formationRun) {
         FormationRunBuilder builder = FormationRun.builder()
             .company(new CompanyCode(formationRun.getSmsEvu()))
-            .tafTapLocationUicStartCode(toUicCode(formationRun.getStartLocationUic()))
+            .tafTapLocationUicStartCode(toTafTapLocationReference(formationRun.getStartLocationUic()))
             .tafTapLocationUicStartPassIndex(formationRun.getStartLocationUic() != null ? formationRun.getStartLocationUic().getBpZusatzId() : null)
-            .tafTapLocationUicEndCode(toUicCode(formationRun.getEndLocationUic()))
+            .tafTapLocationUicEndCode(toTafTapLocationReference(formationRun.getEndLocationUic()))
             .trainCategoryCode(formationRun.getTrainSequence())
             .brakedWeightPercentage(formationRun.getBrakeSequence())
             .vehicles(VehicleFactory.create(formationRun.getVehicleGroups()));
@@ -37,11 +37,11 @@ public final class FormationRunFactory {
         return builder.build();
     }
 
-    private static Integer toUicCode(LocationUic locationUic) {
+    private static TafTapLocationReference toTafTapLocationReference(LocationUic locationUic) {
         if (locationUic == null) {
             return null;
         }
-        return TafTapLocationReference.of(locationUic.getCountryCodeUic(), locationUic.getUicCode()).uicCode();
+        return TafTapLocationReference.of(locationUic.getCountryCodeUic(), locationUic.getUicCode());
     }
 
     private static void applyFormationRunInspection(FormationRunBuilder builder, FormationRunInspection formationRunInspection) {
