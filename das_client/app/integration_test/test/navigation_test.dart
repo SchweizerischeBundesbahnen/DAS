@@ -118,7 +118,7 @@ void main() {
       expect(find.byType(JourneySelectionPage), findsOneWidget);
     });
 
-    testWidgets('navigation_whenNavigatingBackToJourney_thenJourneyStaysLoaded|tests:80', (tester) async {
+    testWidgets('navigation_whenNavigatingBackToJourney_thenJourneyStaysLoaded|tests:80,1557', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T6');
 
@@ -140,7 +140,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('navigation_whenNavigatingBack_thenJourneySettingsNotReset|tests:583', (tester) async {
+    testWidgets('navigation_whenNavigatingBack_thenJourneySettingsNotReset|tests:80,583,811', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T5M');
 

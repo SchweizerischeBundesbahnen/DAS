@@ -34,7 +34,7 @@ void main() {
       expect(find.byType(JourneySelectionPage), findsOne);
     });
 
-    testWidgets('login_whenStartedDefault_thenIsConnectedToMockBroker|tests:2399', (tester) async {
+    testWidgets('login_whenStartedDefaultForIntegrationTest_thenIsConnectedToMockBroker', (tester) async {
       await IntegrationTestApp.start(tester);
       expect(find.byType(JourneySelectionPage), findsOne);
 
