@@ -256,7 +256,9 @@ void main() {
     },
   );
 
-  testWidgets('collapsibleRows_whenMovingBackwards_thenResetRowsToDefaultSate|60quLbjUFK7kIPulz6Lb|tests:1617', (tester) async {
+  testWidgets('collapsibleRows_whenMovingBackwards_thenResetRowsToDefaultSate|60quLbjUFK7kIPulz6Lb|tests:1617', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T22M');
 
