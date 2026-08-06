@@ -23,7 +23,7 @@ final class ArchUnitDisplayNameTest {
         .should(checkDisplayNameConvention());
 
     private static ArchCondition<JavaMethod> checkDisplayNameConvention() {
-        return new ArchCondition<>("have a @DisplayName containing '|tests:<value>'") {
+        return new ArchCondition<>("have a @DisplayName containing '<methodName>|<ID>|tests:<value>'") {
             @Override
             public void check(JavaMethod method, ConditionEvents events) {
                 if (!method.isAnnotatedWith(DisplayName.class)) {
@@ -33,11 +33,20 @@ final class ArchUnitDisplayNameTest {
 
                 String value = method.getAnnotationOfType(DisplayName.class).value();
 
-                int index = value.indexOf("|tests:");
-                boolean isValid = index != -1 && (index + "|tests:".length() < value.length());
+                // Expected format: methodName|<20-char-alphanumeric-ID>|tests:<ids>
+                if (!value.matches("^[^|]+\\|[A-Za-z0-9]{20}\\|tests:.+$")) {
+                    events.add(SimpleConditionEvent.violated(method, String.format(
+                        "Method %s has invalid @DisplayName format: '%s'. Expected: '<methodName>|<20-char-ID>|tests:<ids>'",
+                        method.getFullName(), value)));
+                    return;
+                }
 
-                if (!isValid) {
-                    events.add(SimpleConditionEvent.violated(method, String.format("Method %s is missing issue reference(s) in @DisplayName: '%s'", method.getFullName(), value)));
+                // Method name must match the first segment of @DisplayName
+                String displayNamePrefix = value.substring(0, value.indexOf('|'));
+                if (!displayNamePrefix.equals(method.getName())) {
+                    events.add(SimpleConditionEvent.violated(method, String.format(
+                        "Method %s has mismatched @DisplayName prefix: '%s' (expected '%s'). Run: node scripts/java_test_display_names.mjs",
+                        method.getFullName(), displayNamePrefix, method.getName())));
                 }
             }
         };
