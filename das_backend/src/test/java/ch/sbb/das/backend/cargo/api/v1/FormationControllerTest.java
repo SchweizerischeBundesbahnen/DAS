@@ -94,7 +94,7 @@ class FormationControllerTest {
             .andExpect(status().isBadRequest());
     }
 
-    @DisplayName("Formation when the company is SBBI then transport paper link points to link|tests:541")
+    @DisplayName("Formation when the company is SBBI then transport paper link points to link|Hj6RnHN2tGxxdtnsKM62|tests:541")
     @Test
     @WithMockUser(authorities = "ROLE_observer")
     void should_respond_formation_with_sbbi_transport_paper_link() throws Exception {
@@ -105,7 +105,7 @@ class FormationControllerTest {
                 "https://sbbi.example.com/#/zugliste/61078-001/2025-08-01/85/14035/0/RID_BEFOERDERUNGSDOKUMENT"));
     }
 
-    @DisplayName("Formation when the company is BLSC then transport paper link points to the app link|tests:541")
+    @DisplayName("Formation when the company is BLSC then transport paper link points to the app link|Xd09iobeIP8rDqqP4Ty1|tests:541")
     @Test
     @WithMockUser(authorities = "ROLE_observer")
     void should_respond_formation_with_blsc_transport_paper_link() throws Exception {
