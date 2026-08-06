@@ -6,7 +6,7 @@ import '../integration/integration_test_app.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('brakeSeries_whenDefaultMissing_thenShowsQuestionMarks|tests:89', (tester) async {
+  testWidgets('brakeSeries_whenDefaultMissing_thenShowsQuestionMarks|e3YDk2VuPDFkNZxENqh1|tests:89', (tester) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T6');
 
@@ -17,7 +17,9 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('brakeSeries_whenDefaultFromTrainCharacteristics_thenShowsR115|tests:89', (tester) async {
+  testWidgets('brakeSeries_whenDefaultFromTrainCharacteristics_thenShowsR115|8coWWI2zvgkHncg31Pgp|tests:89', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T5');
 
@@ -28,7 +30,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('brakeSeries_whenOpened_thenShowsAllOptions|tests:89', (tester) async {
+  testWidgets('brakeSeries_whenOpened_thenShowsAllOptions|8iPNeVrZhcbzOth6Ao2K|tests:89', (tester) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T5');
 
@@ -67,7 +69,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('brakeSeries_whenNoBrakeSeriesDefined_thenShowsMessage|tests:89', (tester) async {
+  testWidgets('brakeSeries_whenNoBrakeSeriesDefined_thenShowsMessage|nzj1s9oCEioBI3FtabVR|tests:89', (tester) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T4');
 

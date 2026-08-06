@@ -15,34 +15,39 @@ import '../util/test_utils.dart';
 
 void main() {
   group('train journey notification test', () {
-    testWidgets('notification_whenDepartureProcessDialogOpened_thenDisplaysCorrectly|tests:624,627', (tester) async {
-      await IntegrationTestApp.start(tester);
-      final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;
-      featureProvider.enableFeature(.departureProcess);
+    testWidgets(
+      'notification_whenDepartureProcessDialogOpened_thenDisplaysCorrectly|T2Ga4z72ZhW01N8DYa7M|tests:624,627',
+      (tester) async {
+        await IntegrationTestApp.start(tester);
+        final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;
+        featureProvider.enableFeature(.departureProcess);
 
-      final mockRepository = DI.get<CustomerOrientedDepartureRepository>() as MockCustomerOrientedDepartureRepository;
-      mockRepository.reset();
+        final mockRepository = DI.get<CustomerOrientedDepartureRepository>() as MockCustomerOrientedDepartureRepository;
+        mockRepository.reset();
 
-      final trainNumber = 'T9999M';
-      await loadJourney(tester, trainNumber: trainNumber);
+        final trainNumber = 'T9999M';
+        await loadJourney(tester, trainNumber: trainNumber);
 
-      mockRepository.emitStatus(CustomerOrientedDeparture(trainNumber: trainNumber, status: .wait));
+        mockRepository.emitStatus(CustomerOrientedDeparture(trainNumber: trainNumber, status: .wait));
 
-      await waitUntilExists(tester, find.text(l10n.w_customer_oriented_departure_notification_wait));
+        await waitUntilExists(tester, find.text(l10n.w_customer_oriented_departure_notification_wait));
 
-      await tapElement(tester, find.text(l10n.w_customer_oriented_departure_notification_departure_process));
+        await tapElement(tester, find.text(l10n.w_customer_oriented_departure_notification_departure_process));
 
-      expect(find.text(l10n.w_departure_process_dialog_title), findsOneWidget);
-      expect(find.text(l10n.w_departure_process_checklist_item_1), findsOneWidget);
-      expect(find.text(l10n.w_departure_process_checklist_item_3_customer_oriented_departure), findsOneWidget);
+        expect(find.text(l10n.w_departure_process_dialog_title), findsOneWidget);
+        expect(find.text(l10n.w_departure_process_checklist_item_1), findsOneWidget);
+        expect(find.text(l10n.w_departure_process_checklist_item_3_customer_oriented_departure), findsOneWidget);
 
-      // find customer oriented departure notification also within departure process dialog
-      await waitUntilExists(tester, find.text(l10n.w_customer_oriented_departure_notification_wait));
+        // find customer oriented departure notification also within departure process dialog
+        await waitUntilExists(tester, find.text(l10n.w_customer_oriented_departure_notification_wait));
 
-      await disconnect(tester);
-    });
+        await disconnect(tester);
+      },
+    );
 
-    testWidgets('notification_whenDisturbanceOccurs_thenShowsAndHidesNotification|tests:244', (tester) async {
+    testWidgets('notification_whenDisturbanceOccurs_thenShowsAndHidesNotification|M1OE34O4n52uYYiRVMU2|tests:244', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T33');
 
@@ -52,7 +57,9 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('notification_whenDepartureDispatchReceived_thenDisplaysCorrectly|tests:124', (tester) async {
+    testWidgets('notification_whenDepartureDispatchReceived_thenDisplaysCorrectly|XgZckSB39KkesylhsvYw|tests:124', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T32');
 
@@ -66,7 +73,9 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('notification_whenMultipleNotifications_thenPrioritizesCorrectly|tests:1402', (tester) async {
+    testWidgets('notification_whenMultipleNotifications_thenPrioritizesCorrectly|J6oFf00OSzO3qQY0XdQm|tests:1402', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
 
       final mockRepository = DI.get<CustomerOrientedDepartureRepository>() as MockCustomerOrientedDepartureRepository;
@@ -87,7 +96,9 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('notification_whenReauthenticationRequired_thenShowsNotification|tests:1320', (tester) async {
+    testWidgets('notification_whenReauthenticationRequired_thenShowsNotification|jvUwuJ6r5MeLK0dpaaUW|tests:1320', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 

@@ -23,6 +23,23 @@ permissions:
   packages: write
 
 jobs:
+  test-title-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+
+      - uses: actions/setup-node@v7.0.0
+        with:
+          node-version: 'lts/krypton'
+
+      - name: Assign integration test traceability IDs and format whitespace
+        working-directory: ${{ github.workspace }}
+        run: node scripts/test_title_has_id_no_whitespace.mjs admin
+
+      - name: Fail if any integration test is missing a traceability ID
+        working-directory: ${{ github.workspace }}
+        run: git diff --exit-code -- das_admin_tool/e2e/tests
+
   lint:
     runs-on: ubuntu-latest
     steps:
@@ -128,7 +145,7 @@ jobs:
         run: |
           # Convert to lowercase
           IMAGE_ID=$(echo $IMAGE_ID | tr '[:upper:]' '[:lower:]')
-          
+
           docker build -t $IMAGE_ID:$VERSION .
           docker push $IMAGE_ID:$VERSION
         env:
