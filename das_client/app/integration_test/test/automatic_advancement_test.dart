@@ -11,7 +11,7 @@ import '../util/test_utils.dart';
 
 void main() {
   group('automatic advancement tests', () {
-    testWidgets('automaticAdvancement_whenJourneyLoaded_thenScrollsAutomatically|tests:94', (tester) async {
+    testWidgets('automaticAdvancement_whenJourneyLoaded_thenScrollsAutomatically|ZGzAbCSbv7PPJgvNDu2M|tests:94', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9');
 
@@ -27,7 +27,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('automaticAdvancement_whenIdleTimeReached_thenScrollsBackToPosition|tests:94', (tester) async {
+    testWidgets('automaticAdvancement_whenIdleTimeReached_thenScrollsBackToPosition|78V0rplxI8A6LGzwHf3R|tests:94', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9');
 
@@ -54,7 +54,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('automaticAdvancement_whenReEnabled_thenScrollsToCurrentPosition|tests:94', (tester) async {
+    testWidgets('automaticAdvancement_whenReEnabled_thenScrollsToCurrentPosition|4Ia2ip74kN6FpYMEnx80|tests:94', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9');
 
@@ -73,7 +73,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('automaticAdvancement_whenDisabled_thenDoesNotScroll|tests:94', (tester) async {
+    testWidgets('automaticAdvancement_whenDisabled_thenDoesNotScroll|4JEbtNRJ2FHdV4Ab1fx9|tests:94', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9');
 
@@ -92,7 +92,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('automaticAdvancement_whenJourneyLoaded_thenIsEnabledByDefault|tests:94', (tester) async {
+    testWidgets('automaticAdvancement_whenJourneyLoaded_thenIsEnabledByDefault|qOLT57vft3usf96YbYjA|tests:94', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9');
 
@@ -111,7 +111,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('automaticAdvancement_whenDisabled_thenShowsStickyFooter|tests:94', (tester) async {
+    testWidgets('automaticAdvancement_whenDisabled_thenShowsStickyFooter|2UNRYR5awQHQMmyn9Qae|tests:94', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9');
 
@@ -126,7 +126,7 @@ void main() {
   });
 
   group('timed advancement tests', () {
-    testWidgets('timedAdvancement_whenJourneyLoaded_thenAdvancesCorrectly|tests:1419', (tester) async {
+    testWidgets('timedAdvancement_whenJourneyLoaded_thenAdvancesCorrectly|6VsC8w1YfGUW4CkTbX7Q|tests:1419', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T46M');
 

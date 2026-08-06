@@ -14,7 +14,7 @@ import '../util/test_utils.dart';
 
 void main() {
   group('login tests', () {
-    testWidgets('login_whenLogoutDialogIsDismissed_thenIsStillLoggedIn|tests:1870', (tester) async {
+    testWidgets('login_whenLogoutDialogIsDismissed_thenIsStillLoggedIn|qRCD5Jy91TVe7KucfsQ7|tests:1870', (tester) async {
       await IntegrationTestApp.start(tester);
       expect(find.byType(JourneySelectionPage), findsOne);
 
@@ -34,7 +34,7 @@ void main() {
       expect(find.byType(JourneySelectionPage), findsOne);
     });
 
-    testWidgets('login_whenStartedDefaultForIntegrationTest_thenIsConnectedToMockBroker', (tester) async {
+    testWidgets('login_whenStartedDefaultForIntegrationTest_thenIsConnectedToMockBroker|o1tTzfXvce93K82ZFcob', (tester) async {
       await IntegrationTestApp.start(tester);
       expect(find.byType(JourneySelectionPage), findsOne);
 
@@ -42,7 +42,7 @@ void main() {
       expect(find.text(MqttBrokerText.mockText), findsOne);
     });
 
-    testWidgets('login_whenLogout_thenDefaultSelectionIsTmsVadOnLoginPage|tests:2399', (tester) async {
+    testWidgets('login_whenLogout_thenDefaultSelectionIsTmsVadOnLoginPage|MgPV1riT2X8BFRJXjhSD|tests:2399', (tester) async {
       await IntegrationTestApp.start(tester);
       expect(find.byType(JourneySelectionPage), findsOne);
 
@@ -74,7 +74,7 @@ void main() {
       expect((tmsToggleListItem.evaluate().first.widget as SBBSwitchListItemBoxed).value, isTrue);
     });
 
-    testWidgets('login_whenLogoutThenLogin_thenWillConnectToTmsVad|tests:2399', (tester) async {
+    testWidgets('login_whenLogoutThenLogin_thenWillConnectToTmsVad|VeZt1c1nxqKljOKbjk7Q|tests:2399', (tester) async {
       await IntegrationTestApp.start(tester);
       expect(find.byType(JourneySelectionPage), findsOne);
 
@@ -101,7 +101,7 @@ void main() {
       expect(find.text(MqttBrokerText.tmsVadText), findsOne);
     });
 
-    testWidgets('login_whenLogoutThenLoginWithSferaMockToggled_thenWillConnectToSferaMock|tests:2399', (tester) async {
+    testWidgets('login_whenLogoutThenLoginWithSferaMockToggled_thenWillConnectToSferaMock|ucMtHMlV4XgL5Dw8BDeO|tests:2399', (tester) async {
       await IntegrationTestApp.start(tester);
       expect(find.byType(JourneySelectionPage), findsOne);
 

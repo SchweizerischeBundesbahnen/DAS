@@ -61,7 +61,7 @@ class TrainIdentificationIntegrationTest {
     @Value("${trainjourneyplan.kafka.timetable-train-topic}")
     private String timetableTrainTopic;
 
-    @DisplayName("Timetable period when received via message broker then it is persisted with the correct start and end dates|tests:535,2136")
+    @DisplayName("Timetable period when received via message broker then it is persisted with the correct start and end dates|36AiViEEp0vplqIvIyuD|tests:535,2136")
     @Test
     void publishNetsPeriod__timetablePeriodSaved() {
         TimetablePeriodKey key = jsonMapper.readValue(new File("src/test/resources/trainjourneyplan/period_key.json"), TimetablePeriodKey.class);
@@ -85,7 +85,7 @@ class TrainIdentificationIntegrationTest {
                 ));
     }
 
-    @DisplayName("Train data when received via message broker then it is persisted with correct details|tests:535,2136")
+    @DisplayName("Train data when received via message broker then it is persisted with correct details|a7atRxhJqwd746gXgc3P|tests:535,2136")
     @Test
     void saveAndDeleteTrainData() {
 

@@ -7,7 +7,7 @@ import '../util/test_utils.dart';
 
 void main() {
   group('suspicious segment tests', () {
-    testWidgets('suspiciousSegment_whenLoaded_thenShowsRowsAndNotificationAndDismisses|tests:409', (tester) async {
+    testWidgets('suspiciousSegment_whenLoaded_thenShowsRowsAndNotificationAndDismisses|EHJMbX24ewGWgg10BEZq|tests:409', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T40M');
 
@@ -22,7 +22,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('suspiciousSegment_whenAllPassed_thenDisappearsAndReappearsOnUpdate|tests:409', (
+    testWidgets('suspiciousSegment_whenAllPassed_thenDisappearsAndReappearsOnUpdate|OBl4K6VmunFHbxfUZby8|tests:409', (
       tester,
     ) async {
       await IntegrationTestApp.start(tester);
@@ -46,7 +46,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('suspiciousSegment_whenJourneyUpdated_thenShowsNotification|tests:409', (tester) async {
+    testWidgets('suspiciousSegment_whenJourneyUpdated_thenShowsNotification|CqASKmxsyq2yekUchh6y|tests:409', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T42');
 

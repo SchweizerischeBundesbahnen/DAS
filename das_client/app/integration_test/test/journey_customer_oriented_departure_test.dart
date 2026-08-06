@@ -16,7 +16,7 @@ import '../mocks/mock_ru_feature_provider.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('customerOrientedDeparture_whenStatusChanges_thenDisplaysNotificationsCorrectly|tests:148', (
+  testWidgets('customerOrientedDeparture_whenStatusChanges_thenDisplaysNotificationsCorrectly|dIW8ooYfMKINdzpGCp4S|tests:148', (
     tester,
   ) async {
     await IntegrationTestApp.start(tester);
@@ -56,7 +56,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('customerOrientedDeparture_whenJourneyChanges_thenSubscriptionUpdates|tests:148', (tester) async {
+  testWidgets('customerOrientedDeparture_whenJourneyChanges_thenSubscriptionUpdates|7cmV7s3vxPmsKqjVUcXD|tests:148', (tester) async {
     await IntegrationTestApp.start(tester);
     final mockRepository = DI.get<CustomerOrientedDepartureRepository>() as MockCustomerOrientedDepartureRepository;
     mockRepository.reset();

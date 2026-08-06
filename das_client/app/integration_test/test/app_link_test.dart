@@ -27,7 +27,7 @@ import '../util/test_utils.dart';
 
 void main() {
   group('train-journey app link', () {
-    testWidgets('appLink_whenLinkWithSingleTrain_opensJourney|tests:97', (tester) async {
+    testWidgets('appLink_whenLinkWithSingleTrain_opensJourney|n2DspgYQ3KU5M4zWXh7Q|tests:97', (tester) async {
       await IntegrationTestApp.start(tester);
 
       expect(find.byType(JourneySelectionPage), findsOne);
@@ -52,7 +52,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('appLink_whenLinkWithMultipleTrains_opensFirstJourneyAndRestInNavigation|tests:97', (tester) async {
+    testWidgets('appLink_whenLinkWithMultipleTrains_opensFirstJourneyAndRestInNavigation|fvyLq39APcu9HXYDxORe|tests:97', (tester) async {
       await IntegrationTestApp.start(tester);
 
       expect(find.byType(JourneySelectionPage), findsOne);
@@ -90,7 +90,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('appLink_whenLinkWithValidAndUnknownTrain_opensFirstJourneyAndShowsErrorPageForSecond|tests:97', (
+    testWidgets('appLink_whenLinkWithValidAndUnknownTrain_opensFirstJourneyAndShowsErrorPageForSecond|pekbdz3nHeeVcICqD6wY|tests:97', (
       tester,
     ) async {
       await IntegrationTestApp.start(tester);
@@ -130,7 +130,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('appLink_whenLinkWhileUnauthenticated_opensJourneyAfterLoginFlow|tests:97', (tester) async {
+    testWidgets('appLink_whenLinkWhileUnauthenticated_opensJourneyAfterLoginFlow|AZdIaGI51vKrPz2ShZnR|tests:97', (tester) async {
       await IntegrationTestApp.start(tester);
 
       expect(find.byType(JourneySelectionPage), findsOne);
@@ -170,7 +170,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('appLink_whenLinkWithUnknownTrain_showsErrorPage|tests:97', (tester) async {
+    testWidgets('appLink_whenLinkWithUnknownTrain_showsErrorPage|15g1jT1sZm8j2GSw3mbs|tests:97', (tester) async {
       await IntegrationTestApp.start(tester);
 
       expect(find.byType(JourneySelectionPage), findsOne);
@@ -189,7 +189,7 @@ void main() {
       expect(errorMessageText, findsOne);
     });
 
-    testWidgets('appLink_whenLinkWithTafTapStartAndEnd_showsTrainDriverTurnoverRows|tests:296', (tester) async {
+    testWidgets('appLink_whenLinkWithTafTapStartAndEnd_showsTrainDriverTurnoverRows|TLIAIKurErFTRsyXwV1S|tests:296', (tester) async {
       await IntegrationTestApp.start(tester);
 
       expect(find.byType(JourneySelectionPage), findsOne);
@@ -217,7 +217,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('appLink_whenLinkWithReturnUrl_shouldUseReturnUrlOverDefaultTourSystemUrl|tests:97,96', (tester) async {
+    testWidgets('appLink_whenLinkWithReturnUrl_shouldUseReturnUrlOverDefaultTourSystemUrl|B6vkX9lfHGRkIzsZ1us6|tests:97,96', (tester) async {
       await IntegrationTestApp.start(tester);
 
       expect(find.byType(JourneySelectionPage), findsOne);
@@ -254,7 +254,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('appLink_whenAlreadyOnJourneyPageReceivingDeeplink_opensNewJourney|tests:1852', (tester) async {
+    testWidgets('appLink_whenAlreadyOnJourneyPageReceivingDeeplink_opensNewJourney|RWOQbfY4K3XnuDZ0sdXO|tests:1852', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
@@ -282,7 +282,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('appLink_whenLinkWithSingleTrain_showsCompanyMatchSelection|tests:702', (tester) async {
+    testWidgets('appLink_whenLinkWithSingleTrain_showsCompanyMatchSelection|WRCsXpxpYvtJofkQoFYN|tests:702', (tester) async {
       await IntegrationTestApp.start(tester);
 
       expect(find.byType(JourneySelectionPage), findsOne);
@@ -309,7 +309,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('appLink_whenAlreadyOnJourneyPageReceivingDeeplink_opensSelectionWithCompanyMatch|tests:702', (
+    testWidgets('appLink_whenAlreadyOnJourneyPageReceivingDeeplink_opensSelectionWithCompanyMatch|MSFNFsBOiBB94sxZptbD|tests:702', (
       tester,
     ) async {
       await IntegrationTestApp.start(tester);
@@ -349,7 +349,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('appLink_whenAlreadyOnJourneyPageReceivingDeeplink_opensNewJourneyWithMatchingRu|tests:702', (
+    testWidgets('appLink_whenAlreadyOnJourneyPageReceivingDeeplink_opensNewJourneyWithMatchingRu|3rMlQu5RKMLbWnkW3HAt|tests:702', (
       tester,
     ) async {
       await IntegrationTestApp.start(tester);

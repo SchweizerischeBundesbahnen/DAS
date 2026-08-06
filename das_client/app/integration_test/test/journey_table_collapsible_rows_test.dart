@@ -16,7 +16,7 @@ import '../mocks/mock_sim_train_view_model.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('collapsibleRows_whenOperationalIndicationDisplayed_thenCollapses|tests:126', (tester) async {
+  testWidgets('collapsibleRows_whenOperationalIndicationDisplayed_thenCollapses|iaCfo6CRqrax4porwjuB|tests:126', (tester) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T22M');
 
@@ -26,7 +26,7 @@ void main() {
 
     await disconnect(tester);
   });
-  testWidgets('collapsibleRows_whenRadnFootNoteDisplayed_thenCollapses|tests:625', (tester) async {
+  testWidgets('collapsibleRows_whenRadnFootNoteDisplayed_thenCollapses|ClmYSuxH6dOypT2xgln8|tests:625', (tester) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T15M');
 
@@ -41,7 +41,7 @@ void main() {
 
     await disconnect(tester);
   });
-  testWidgets('collapsibleRows_whenLongTextPresent_thenShowsMoreButton|tests:126', (tester) async {
+  testWidgets('collapsibleRows_whenLongTextPresent_thenShowsMoreButton|lEGwTOYFxWLauMjiWDDM|tests:126', (tester) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T22M');
 
@@ -83,7 +83,7 @@ void main() {
 
     await disconnect(tester);
   });
-  testWidgets('collapsibleRows_whenCombinedIndications_thenReplacesNewLinesWithDelimiter|tests:126,625', (
+  testWidgets('collapsibleRows_whenCombinedIndications_thenReplacesNewLinesWithDelimiter|Wn0E9HeXjfz8Lk3XEgva|tests:126,625', (
     tester,
   ) async {
     await IntegrationTestApp.start(tester);
@@ -125,7 +125,7 @@ void main() {
 
     await disconnect(tester);
   });
-  testWidgets('collapsibleRows_whenSameServicePoint_thenCombinesIndicationAndFootNote|tests:126,625', (tester) async {
+  testWidgets('collapsibleRows_whenSameServicePoint_thenCombinesIndicationAndFootNote|pkZjtPxXkInflC3IIs74|tests:126,625', (tester) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T22M');
 
@@ -153,7 +153,7 @@ void main() {
 
     await disconnect(tester);
   });
-  testWidgets('collapsibleRows_whenOperationalIndicationPassed_thenCollapses|tests:126', (tester) async {
+  testWidgets('collapsibleRows_whenOperationalIndicationPassed_thenCollapses|H9JLGRVgfPYcsgEwWMyX|tests:126', (tester) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T22');
 
@@ -163,7 +163,7 @@ void main() {
 
     await disconnect(tester);
   });
-  testWidgets('collapsibleRows_whenRadnFootNotePassed_thenCollapses|tests:625', (tester) async {
+  testWidgets('collapsibleRows_whenRadnFootNotePassed_thenCollapses|sLbIwzyEcCfKwY77CQRz|tests:625', (tester) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T15');
 
@@ -180,7 +180,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('collapsibleRows_whenRadnFootNoteDisplayed_thenTitleContainsType|tests:625', (tester) async {
+  testWidgets('collapsibleRows_whenRadnFootNoteDisplayed_thenTitleContainsType|8XcuHwPmJI1ijGizGFsD|tests:625', (tester) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T15M');
 
@@ -190,7 +190,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('simFootNote_whenNonSimTrain_thenSimFootNoteIsCollapsed|tests:1126', (tester) async {
+  testWidgets('simFootNote_whenNonSimTrain_thenSimFootNoteIsCollapsed|GnYPge8jjpnKHq6CbSm1|tests:1126', (tester) async {
     // ARRANGE - mock non-SIM train
     await IntegrationTestApp.start(tester);
 
@@ -209,7 +209,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('simFootNote_whenSimTrain_thenSimFootNoteIsExpandedAndNotCollapsedWhenPassed|tests:1126', (
+  testWidgets('simFootNote_whenSimTrain_thenSimFootNoteIsExpandedAndNotCollapsedWhenPassed|wGzkdPjTfFUKkJKNw92k|tests:1126', (
     tester,
   ) async {
     // ARRANGE - mock SIM train

@@ -9,7 +9,7 @@ import '../mocks/mock_ru_indications_repository.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('ruIndications_whenShouldReturnMockData_thenIndicationsAreShown|tests:700', (tester) async {
+  testWidgets('ruIndications_whenShouldReturnMockData_thenIndicationsAreShown|yeJd2tuqjOWvKQcf7RYC|tests:700', (tester) async {
     // ARRANGE
     await IntegrationTestApp.start(tester);
     (DI.get<RuIndicationsRepository>() as MockRuIndicationsRepository).shouldReturnMockData = true;
@@ -35,7 +35,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('ruIndications_whenLongTextWithLink_thenShowMoreIsVisible|tests:700', (tester) async {
+  testWidgets('ruIndications_whenLongTextWithLink_thenShowMoreIsVisible|giYge5R7YPQAhT07DGhw|tests:700', (tester) async {
     // ARRANGE
     await IntegrationTestApp.start(tester);
     (DI.get<RuIndicationsRepository>() as MockRuIndicationsRepository).shouldReturnMockData = true;
@@ -65,7 +65,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('ruIndications_whenLongTextWithMarkdownLink_thenLinkLabelIsRendered|tests:700', (tester) async {
+  testWidgets('ruIndications_whenLongTextWithMarkdownLink_thenLinkLabelIsRendered|guPrxy8BQyidLcGugxU0|tests:700', (tester) async {
     // ARRANGE
     await IntegrationTestApp.start(tester);
     (DI.get<RuIndicationsRepository>() as MockRuIndicationsRepository).shouldReturnMockData = true;
@@ -91,7 +91,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('ruIndications_whenLongTextExpanded_thenFullContentIsVisible|tests:700', (tester) async {
+  testWidgets('ruIndications_whenLongTextExpanded_thenFullContentIsVisible|R66dkeS5LMwlWiwhEvsv|tests:700', (tester) async {
     // ARRANGE
     await IntegrationTestApp.start(tester);
 

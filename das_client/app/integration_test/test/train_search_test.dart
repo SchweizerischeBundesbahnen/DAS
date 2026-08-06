@@ -18,14 +18,14 @@ import '../util/test_utils.dart';
 
 void main() {
   group('train search screen tests', () {
-    testWidgets('trainSearch_whenPageLoaded_thenShowsDefaultValues|tests:92', (tester) async {
+    testWidgets('trainSearch_whenPageLoaded_thenShowsDefaultValues|yJsLvmX6PrhDbt3GNctg|tests:92', (tester) async {
       await IntegrationTestApp.start(tester);
 
       // Verify that today is preselected
       expect(find.text(Format.date(DateTime.now())), findsOneWidget);
     });
 
-    testWidgets('trainSearch_whenRuSelectionOpened_thenShowsOptions|tests:92', (tester) async {
+    testWidgets('trainSearch_whenRuSelectionOpened_thenShowsOptions|4V8lVLIAXkStk9lkHcFv|tests:92', (tester) async {
       await IntegrationTestApp.start(tester);
 
       await tapElement(tester, find.text(l10n.p_train_selection_ru_description), warnIfMissed: false);
@@ -44,7 +44,7 @@ void main() {
       expect(sobI, findsOneWidget);
     });
 
-    testWidgets('trainSearch_whenRuFilterEntered_thenFiltersResults|tests:596', (tester) async {
+    testWidgets('trainSearch_whenRuFilterEntered_thenFiltersResults|K9LxJibBfWA0sakjBxjU|tests:596', (tester) async {
       await IntegrationTestApp.start(tester);
 
       await tapElement(tester, find.text(l10n.p_train_selection_ru_description), warnIfMissed: false);
@@ -65,7 +65,7 @@ void main() {
       expect(find.text(l10n.c_ru_sob), findsOneWidget);
     });
 
-    testWidgets('trainSearch_whenNoTrainNumberEntered_thenDisablesButton|tests:92', (tester) async {
+    testWidgets('trainSearch_whenNoTrainNumberEntered_thenDisablesButton|3JEyvxxjnxVGfeAOufjK|tests:92', (tester) async {
       await IntegrationTestApp.start(tester);
 
       // Verify that today is preselected
@@ -82,7 +82,7 @@ void main() {
       expect(tester.widget<SBBPrimaryButton>(primaryButton).onPressed, isNull);
     });
 
-    testWidgets('trainSearch_whenYesterdaySelected_thenShowsWarning|tests:92', (tester) async {
+    testWidgets('trainSearch_whenYesterdaySelected_thenShowsWarning|Rh6SvdbhmUIBNyDfPXfO|tests:92', (tester) async {
       await IntegrationTestApp.start(tester);
 
       final today = DateTime.now();
@@ -124,7 +124,7 @@ void main() {
       expect(warningMessage, findsOneWidget);
     });
 
-    testWidgets('trainSearch_whenDayBeforeYesterday_thenCannotSelect|tests:92', (tester) async {
+    testWidgets('trainSearch_whenDayBeforeYesterday_thenCannotSelect|t4mNyzwoakPFwz6CYPka|tests:92', (tester) async {
       await IntegrationTestApp.start(tester);
 
       final today = DateTime.now();
@@ -155,7 +155,7 @@ void main() {
       expect(dayBeforeYesterdayDateTextFinder, findsNothing);
     });
 
-    testWidgets('trainSearch_whenJpUnavailable_thenShowsError|tests:92', (tester) async {
+    testWidgets('trainSearch_whenJpUnavailable_thenShowsError|IPmnmRoSSpBBs6aHadTk|tests:92', (tester) async {
       await IntegrationTestApp.start(tester);
 
       // Verify that today is preselected
@@ -176,7 +176,7 @@ void main() {
       expect(find.text(l10n.c_error_sfera_jp_unavailable), findsOneWidget);
     });
 
-    testWidgets('trainSearch_whenErrorFromSfera_thenDisplaysErrorCode|tests:652', (tester) async {
+    testWidgets('trainSearch_whenErrorFromSfera_thenDisplaysErrorCode|9UIII436R7pMUXwLx6zR|tests:652', (tester) async {
       await IntegrationTestApp.start(tester);
 
       final trainNumberText = findTextInputByLabel(l10n.p_train_selection_trainnumber_description);
@@ -194,7 +194,7 @@ void main() {
       expect(find.text('${l10n.c_error_code} 50: ${l10n.c_error_sfera_no_additional_info}'), findsOneWidget);
     });
 
-    testWidgets('trainSearch_whenMultipleCompanyMatches_thenShowsSelection|tests:702,703', (tester) async {
+    testWidgets('trainSearch_whenMultipleCompanyMatches_thenShowsSelection|edyQLmRIb617kcxR5XXN|tests:702,703', (tester) async {
       await IntegrationTestApp.start(tester);
 
       final trainIdentificationRepository =
@@ -249,7 +249,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('trainSearch_whenLastRuRemembered_thenAutoSelects|tests:702', (tester) async {
+    testWidgets('trainSearch_whenLastRuRemembered_thenAutoSelects|G6t83P9j45q6KfT4Y70f|tests:702', (tester) async {
       await IntegrationTestApp.start(tester);
 
       final trainIdentificationRepository =
@@ -293,7 +293,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('trainSearch_whenNoCompanyMatch_thenShowsNoResultMessage|tests:702', (tester) async {
+    testWidgets('trainSearch_whenNoCompanyMatch_thenShowsNoResultMessage|WQ4rTB8lZNGl5HW7Dbq0|tests:702', (tester) async {
       await IntegrationTestApp.start(tester);
 
       final trainIdentificationRepository =
