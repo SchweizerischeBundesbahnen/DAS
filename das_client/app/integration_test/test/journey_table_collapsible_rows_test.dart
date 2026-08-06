@@ -255,6 +255,32 @@ void main() {
       await disconnect(tester);
     },
   );
+
+  testWidgets('collapsibleRows_whenMovingBackwards_thenResetRowsToDefaultSate|60quLbjUFK7kIPulz6Lb|tests:1617', (
+    tester,
+  ) async {
+    await IntegrationTestApp.start(tester);
+    await loadJourney(tester, trainNumber: 'T22M');
+
+    await stopAutomaticAdvancement(tester);
+
+    final dataToTest = OperationalIndication(order: 0, texts: ['Renens VD: Halt an Halteort 3']);
+    final identifier = dataToTest.hashCode;
+
+    _checkCollapsibleRow(identifier: identifier, isCollapsed: false);
+
+    await tester.drag(findDASTableRowByText('Lausanne'), const Offset(600, 0));
+    await tester.pumpAndSettle();
+
+    _checkCollapsibleRow(identifier: identifier, isCollapsed: true);
+
+    await tester.drag(findDASTableRowByText('Renens VD'), const Offset(600, 0));
+    await tester.pumpAndSettle();
+
+    _checkCollapsibleRow(identifier: identifier, isCollapsed: false);
+
+    await disconnect(tester);
+  });
 }
 
 Future<void> _checkCollapsible(int identifier, WidgetTester tester) async {

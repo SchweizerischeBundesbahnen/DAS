@@ -52,6 +52,17 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     return data.isAdditional ? ThemeUtil.getBackgroundColor(context) : ThemeUtil.getDASTableColor(context);
   }
 
+  static Color? _resolveChevronAnimationColor(BuildContext context, JourneyPositionModel position, ServicePoint data) {
+    if (position.currentPosition == data && position.isManualPosition) {
+      return ThemeUtil.getColor(
+        context,
+        DASColors.manualPositionSetBackgroundBright,
+        DASColors.manualPositionSetBackgroundDark,
+      );
+    }
+    return null;
+  }
+
   ServicePointRow({
     required super.metadata,
     required super.data,
@@ -64,7 +75,10 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     super.key,
     Color? rowColor,
   }) : super(
-         decoration: DASTableRowDecoration(color: rowColor ?? _resolveRowColor(context, journeyPosition, data)),
+         decoration: DASTableRowDecoration(
+           color: rowColor ?? _resolveRowColor(context, journeyPosition, data),
+           chevronAnimationColor: _resolveChevronAnimationColor(context, journeyPosition, data),
+         ),
          stickyLevel: .first,
          height: calculateHeight(data, config.settings.currentBrakeSeries),
          onStartToEndDragReached: () {

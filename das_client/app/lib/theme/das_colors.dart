@@ -13,5 +13,7 @@ class DASColors {
   static const Color additionalSpeedRestriction = SBBColors.orange;
   static const Color nextStopBackgroundBright = SBBColors.night;
   static const Color nextStopBackgroundDark = SBBColors.nightDark;
+  static const Color manualPositionSetBackgroundBright = SBBColors.milk;
+  static const Color manualPositionSetBackgroundDark = SBBColors.midnight;
   static const Color protectionSectionBackground = SBBColors.peach;
 }

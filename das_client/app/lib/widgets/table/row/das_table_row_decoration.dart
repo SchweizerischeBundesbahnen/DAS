@@ -7,11 +7,15 @@ import 'package:flutter/painting.dart';
 class DASTableRowDecoration {
   const DASTableRowDecoration({
     this.color,
+    this.chevronAnimationColor,
     this.border,
   });
 
   /// The background color of this row. This is overridden by specific cell background colors.
   final Color? color;
+
+  /// Optional background color that is used while the Chevron animation is running.
+  final Color? chevronAnimationColor;
 
   /// The sides of the border of this column.
   ///
@@ -23,10 +27,12 @@ class DASTableRowDecoration {
   DASTableRowDecoration copyWith({
     Border? border,
     Color? color,
+    Color? chevronAnimationColor,
   }) {
     return DASTableRowDecoration(
       border: border ?? this.border,
       color: color ?? this.color,
+      chevronAnimationColor: chevronAnimationColor ?? this.chevronAnimationColor,
     );
   }
 }
