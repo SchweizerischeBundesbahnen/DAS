@@ -1,13 +1,18 @@
 package ch.sbb.das.backend.cargo.api.v1.internal;
 
 import ch.sbb.das.backend.cargo.api.v1.model.FormationRun;
+import ch.sbb.das.backend.cargo.application.TransportPaperUrlResolver;
 import ch.sbb.das.backend.cargo.infrastructure.model.TrainFormationRunEntity;
 import ch.sbb.das.backend.locations.TafTapLocationReference;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class FormationRunMapper {
+
+    private final TransportPaperUrlResolver transportPaperUrlResolver;
 
     public FormationRun toFormationRun(TrainFormationRunEntity entity) {
         return FormationRun.builder()
@@ -50,6 +55,7 @@ public class FormationRunMapper {
             .gradientUphillMaxInPermille(entity.getGradientUphillMaxInPermille())
             .gradientDownhillMaxInPermille(entity.getGradientDownhillMaxInPermille())
             .slopeMaxForHoldingForceMinInPermille(entity.getSlopeMaxForHoldingForceMinInPermille())
+            .transportPaperLink(transportPaperUrlResolver.resolve(entity))
             .build();
     }
 
