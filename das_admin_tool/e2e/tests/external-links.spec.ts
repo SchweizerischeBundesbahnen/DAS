@@ -76,7 +76,9 @@ test.describe('external links test', () => {
     await deleteEntryViaDialog(page, updatedRow);
   });
 
-  test('delete selected external links via checkbox|0NB8SUUOtib4On4Hdi7x|tests:246', async ({ page }) => {
+  test('delete selected external links via checkbox|0NB8SUUOtib4On4Hdi7x|tests:246', async ({
+    page,
+  }) => {
     // create one entry to select and bulk-delete
     await createExternalLink(page, TEST_TITLE_DE, TEST_LINK_DE);
 
