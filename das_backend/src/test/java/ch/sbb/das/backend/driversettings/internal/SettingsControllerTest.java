@@ -22,7 +22,7 @@ class SettingsControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @DisplayName("Driver settings when requested then the configured settings are returned including companies, RU features, logging, preload configuration and app version validity|cUrOUuQw4EfVbPsL9D8I|tests:2121,712,713,723,1006,915,1406")
+    @DisplayName("should_respond_with_settings|cUrOUuQw4EfVbPsL9D8I|tests:2121,712,713,723,1006,915,1406")
     @Test
     @WithMockUser(authorities = "ROLE_observer")
     @Sql("classpath:createSettings.sql")

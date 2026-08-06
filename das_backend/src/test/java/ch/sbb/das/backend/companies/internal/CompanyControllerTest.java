@@ -36,7 +36,7 @@ class CompanyControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @DisplayName("Authorized companies when the caller is an RU admin then allowed companies are returned|V9MzQAeRsvHKPLH0RKsE|tests:428,2121")
+    @DisplayName("getAuthorizedCompanies_ok_adminTenant_returnsAllowedCompanies|V9MzQAeRsvHKPLH0RKsE|tests:428,2121")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void getAuthorizedCompanies_ok_adminTenant_returnsAllowedCompanies() throws Exception {
@@ -46,7 +46,7 @@ class CompanyControllerTest {
             .andExpect(jsonPath("$.data[*].code", containsInAnyOrder("1111", "2222", "3333", "8881", "8882", "8883", "7777")));
     }
 
-    @DisplayName("All companies when the caller is admin then all companies are returned|KdcEy0F0VvLkdkvJYoQ2|tests:428,2121")
+    @DisplayName("getAllCompanies_ok_returnsAllCompanies|KdcEy0F0VvLkdkvJYoQ2|tests:428,2121")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     void getAllCompanies_ok_returnsAllCompanies() throws Exception {
@@ -56,7 +56,7 @@ class CompanyControllerTest {
             .andExpect(jsonPath("$.data[*].code", containsInAnyOrder("1111", "2222", "3333", "9999", "8881", "8882", "8883", "7777")));
     }
 
-    @DisplayName("All companies when the caller is an RU admin then access is forbidden|67Usnz2cipDIhEJ7gcdP|tests:428,2121")
+    @DisplayName("getAllCompanies_forbidden_ruAdmin|67Usnz2cipDIhEJ7gcdP|tests:428,2121")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void getAllCompanies_forbidden_ruAdmin() throws Exception {
@@ -64,7 +64,7 @@ class CompanyControllerTest {
             .andExpect(status().isForbidden());
     }
 
-    @DisplayName("All companies when the caller is an observer then access is forbidden|znsdiNpNc0N1FExKHKFS|tests:428,2121")
+    @DisplayName("getAllCompanies_forbidden_observer|znsdiNpNc0N1FExKHKFS|tests:428,2121")
     @Test
     @WithMockRole(roles = UserRole.OBSERVER)
     void getAllCompanies_forbidden_observer() throws Exception {
@@ -72,14 +72,14 @@ class CompanyControllerTest {
             .andExpect(status().isForbidden());
     }
 
-    @DisplayName("All companies when the caller is not authenticated then access is unauthorized|kzLsHNGHSqGZw6NHcwSi|tests:428,2121")
+    @DisplayName("getAllCompanies_unauthorized|kzLsHNGHSqGZw6NHcwSi|tests:428,2121")
     @Test
     void getAllCompanies_unauthorized() throws Exception {
         mockMvc.perform(get(API_COMPANIES))
             .andExpect(status().isUnauthorized());
     }
 
-    @DisplayName("Company when the create request is valid then it is created|dPkZUcXkNadOSpdZPzQi|tests:428,2121")
+    @DisplayName("createCompany_ok|dPkZUcXkNadOSpdZPzQi|tests:428,2121")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     void createCompany_ok() throws Exception {
@@ -99,7 +99,7 @@ class CompanyControllerTest {
             .andExpect(jsonPath("$.data[0].shortName").value("NEW1"));
     }
 
-    @DisplayName("Company when the tenant does not exist then the API returns bad request|U3X8dk4Ig4z06p6L7aNG|tests:428,2121")
+    @DisplayName("createCompany_badRequest_tenantNotFound|U3X8dk4Ig4z06p6L7aNG|tests:428,2121")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     void createCompany_badRequest_tenantNotFound() throws Exception {
@@ -116,7 +116,7 @@ class CompanyControllerTest {
             .andExpect(jsonPath("$.detail", containsString("Tenant not found")));
     }
 
-    @DisplayName("Company when the code already exists then the API returns conflict|46UmgWGzkEmS5Tsx87N1|tests:428,2121")
+    @DisplayName("createCompany_conflict_duplicateCode|46UmgWGzkEmS5Tsx87N1|tests:428,2121")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     void createCompany_conflict_duplicateCode() throws Exception {
@@ -133,7 +133,7 @@ class CompanyControllerTest {
             .andExpect(jsonPath("$.detail", containsString("Company code already exists")));
     }
 
-    @DisplayName("Company when the short name already exists then the API returns conflict|wHl9nHk2rnx7QYyB2G9Q|tests:428,2121")
+    @DisplayName("createCompany_conflict_duplicateShortName|wHl9nHk2rnx7QYyB2G9Q|tests:428,2121")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     void createCompany_conflict_duplicateShortName() throws Exception {
@@ -150,7 +150,7 @@ class CompanyControllerTest {
             .andExpect(jsonPath("$.detail", containsString("Company short name already exists")));
     }
 
-    @DisplayName("Company when valid update data is provided then it is updated|vEhlpVaGjASzNubh3Dmk|tests:428,2121")
+    @DisplayName("updateCompany_ok|vEhlpVaGjASzNubh3Dmk|tests:428,2121")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     void updateCompany_ok() throws Exception {
@@ -167,7 +167,7 @@ class CompanyControllerTest {
             .andExpect(jsonPath("$.data[0].shortName").value("UPDATED"));
     }
 
-    @DisplayName("Company when the id does not exist then the API returns not found|r9OifVmq60IWfs6GIwvT|tests:428,2121")
+    @DisplayName("updateCompany_notFound|r9OifVmq60IWfs6GIwvT|tests:428,2121")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     void updateCompany_notFound() throws Exception {
@@ -183,7 +183,7 @@ class CompanyControllerTest {
             .andExpect(status().isNotFound());
     }
 
-    @DisplayName("Company when the tenant does not exist then the API returns bad request|6LOPrO8yJszGwKfckyBo|tests:428,2121")
+    @DisplayName("updateCompany_badRequest_tenantNotFound|6LOPrO8yJszGwKfckyBo|tests:428,2121")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     void updateCompany_badRequest_tenantNotFound() throws Exception {
@@ -200,7 +200,7 @@ class CompanyControllerTest {
             .andExpect(jsonPath("$.detail", containsString("Tenant not found")));
     }
 
-    @DisplayName("Company when the code already exists then the API returns conflict|qCjz1Nzml58EZK82MZpH|tests:428,2121")
+    @DisplayName("updateCompany_conflict_duplicateCode|qCjz1Nzml58EZK82MZpH|tests:428,2121")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     void updateCompany_conflict_duplicateCode() throws Exception {
@@ -217,7 +217,7 @@ class CompanyControllerTest {
             .andExpect(jsonPath("$.detail", containsString("Company code already exists")));
     }
 
-    @DisplayName("Company when the id exists then the company is returned|5vgJDDTA48rQA5mriWRp|tests:428,2121")
+    @DisplayName("getCompanyById_ok|5vgJDDTA48rQA5mriWRp|tests:428,2121")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     void getCompanyById_ok() throws Exception {
@@ -227,7 +227,7 @@ class CompanyControllerTest {
             .andExpect(jsonPath("$.data[0].shortName").value("UPD1"));
     }
 
-    @DisplayName("Company when the id does not exist then the API returns not found|mrzxD346sVrVkMIJW7e2|tests:428,2121")
+    @DisplayName("getCompanyById_notFound|mrzxD346sVrVkMIJW7e2|tests:428,2121")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     void getCompanyById_notFound() throws Exception {
@@ -235,7 +235,7 @@ class CompanyControllerTest {
             .andExpect(status().isNotFound());
     }
 
-    @DisplayName("Company when the id exists then it is deleted|wXbjADY7k1GBgDAr1tYu|tests:428,2121")
+    @DisplayName("deleteCompany_ok|wXbjADY7k1GBgDAr1tYu|tests:428,2121")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     void deleteCompany_ok() throws Exception {
@@ -246,7 +246,7 @@ class CompanyControllerTest {
             .andExpect(status().isNotFound());
     }
 
-    @DisplayName("Tenants when requested then all tenants are returned|LrTWK0WbltPsf6kbCp6o|tests:428,2121")
+    @DisplayName("getAllTenants_ok|LrTWK0WbltPsf6kbCp6o|tests:428,2121")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     void getAllTenants_ok() throws Exception {

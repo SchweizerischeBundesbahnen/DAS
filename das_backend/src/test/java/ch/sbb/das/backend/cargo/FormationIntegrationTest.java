@@ -45,7 +45,7 @@ class FormationIntegrationTest {
     @Value("${formation.kafka.topic}")
     private String topic;
 
-    @DisplayName("Inspected formation when received then it is available for the driver|dpE87KAGJtW2wkr9E2PL|tests:539,541,715,1176")
+    @DisplayName("whenNewInspectedFormationMessage_shouldBeAvailabe|dpE87KAGJtW2wkr9E2PL|tests:539,541,715,1176")
     @Test
     void whenNewInspectedFormationMessage_shouldBeAvailabe() throws IOException {
         DailyFormationTrainKey key = this.jsonMapper.readValue(new File("src/test/resources/cargo/71237/kafka_key.json"), DailyFormationTrainKey.class);
@@ -66,7 +66,7 @@ class FormationIntegrationTest {
             });
     }
 
-    @DisplayName("Inspected formation when an updated version is received then the latest data replaces the previous version for the driver|eHp9IUvxu35eScjbRXa1|tests:539,541,715,1176")
+    @DisplayName("whenUpdatedFormationMessage_shouldBeAvailabe|eHp9IUvxu35eScjbRXa1|tests:539,541,715,1176")
     @Test
     void whenUpdatedFormationMessage_shouldBeAvailabe() throws Exception {
         DailyFormationTrainKey key = this.jsonMapper.readValue(new File("src/test/resources/cargo/71237/kafka_key.json"), DailyFormationTrainKey.class);
@@ -91,7 +91,7 @@ class FormationIntegrationTest {
             });
     }
 
-    @DisplayName("Formation when a non-inspected update is received then the cached formation remains unchanged|rhqSnacBhDtfhPwTjQFp|tests:539,541,715,1176")
+    @DisplayName("whenUpdatedNonInpsectedFormationMessage_shouldNotHaveUpdateByEtag|rhqSnacBhDtfhPwTjQFp|tests:539,541,715,1176")
     @Test
     void whenUpdatedNonInpsectedFormationMessage_shouldNotHaveUpdateByEtag() throws Exception {
         DailyFormationTrainKey key = this.jsonMapper.readValue(new File("src/test/resources/cargo/71237/kafka_key.json"), DailyFormationTrainKey.class);
@@ -138,7 +138,7 @@ class FormationIntegrationTest {
 
     }
 
-    @DisplayName("Formation when it is not inspected then it is not served to drivers|eKHJudedCach8KvWMVXw|tests:539,541,715,1176")
+    @DisplayName("whenNonInspectedFormationMessage_shouldNotBeAvailabe|eKHJudedCach8KvWMVXw|tests:539,541,715,1176")
     @Test
     void whenNonInspectedFormationMessage_shouldNotBeAvailabe() {
         DailyFormationTrainKey key = this.jsonMapper.readValue(new File("src/test/resources/cargo/11/kafka_key.json"), DailyFormationTrainKey.class);
@@ -156,7 +156,7 @@ class FormationIntegrationTest {
             });
     }
 
-    @DisplayName("Formation when train runs change then the updated train run details are available for the driver|GsyzpK8I4RWjnnqNjgQX|tests:539,541,715,1176")
+    @DisplayName("whenUpdatedFormationRunsMessage_shouldBeAvailabe|GsyzpK8I4RWjnnqNjgQX|tests:539,541,715,1176")
     @Test
     void whenUpdatedFormationRunsMessage_shouldBeAvailabe() throws Exception {
         DailyFormationTrainKey key = this.jsonMapper.readValue(new File("src/test/resources/cargo/87389/kafka_key.json"), DailyFormationTrainKey.class);
@@ -191,7 +191,7 @@ class FormationIntegrationTest {
             });
     }
 
-    @DisplayName("Formation when a minimal message is received then it is processed without errors|EBl4JXd80AIjRTIarADC|tests:539,541,715,1176")
+    @DisplayName("whenNewMinimalFormationMessage_shouldNotFail|EBl4JXd80AIjRTIarADC|tests:539,541,715,1176")
     @Test
     void whenNewMinimalFormationMessage_shouldNotFail() throws IOException {
         DailyFormationTrainKey key = this.jsonMapper.readValue(new File("src/test/resources/cargo/43/kafka_key.json"), DailyFormationTrainKey.class);
@@ -212,7 +212,7 @@ class FormationIntegrationTest {
             });
     }
 
-    @DisplayName("Formation when smsEvu is not 4 chars then the kafka message is ignored|0bPNPPzrIk0q08nEqhcz|tests:539,541,715,1176")
+    @DisplayName("whenFormationMessageHasInvalidCompanyLength_shouldNotBeAvailable|0bPNPPzrIk0q08nEqhcz|tests:539,541,715,1176")
     @Test
     void whenFormationMessageHasInvalidCompanyLength_shouldNotBeAvailable() throws Exception {
         DailyFormationTrainKey key = this.jsonMapper.readValue(new File("src/test/resources/cargo/43/kafka_key.json"), DailyFormationTrainKey.class);
@@ -242,7 +242,7 @@ class FormationIntegrationTest {
             });
     }
 
-    @DisplayName("Formation when smsEvu is null then the kafka message is ignored|Ff4ls4JkKA7B0xlMlrQ1|tests:539,541,715,1176")
+    @DisplayName("whenFormationMessageHasNullCompany_shouldNotBeAvailable|Ff4ls4JkKA7B0xlMlrQ1|tests:539,541,715,1176")
     @Test
     void whenFormationMessageHasNullCompany_shouldNotBeAvailable() throws Exception {
         DailyFormationTrainKey key = this.jsonMapper.readValue(new File("src/test/resources/cargo/43/kafka_key.json"), DailyFormationTrainKey.class);
@@ -272,7 +272,7 @@ class FormationIntegrationTest {
             });
     }
 
-    @DisplayName("Formation when one run has invalid smsEvu then only that run is skipped|pogpNvoEdhT4dXqOED8w|tests:539,541,715,1176")
+    @DisplayName("whenMessageContainsMixedValidAndInvalidCompanies_shouldKeepOnlyValidRuns|pogpNvoEdhT4dXqOED8w|tests:539,541,715,1176")
     @Test
     void whenMessageContainsMixedValidAndInvalidCompanies_shouldKeepOnlyValidRuns() throws Exception {
         DailyFormationTrainKey key = this.jsonMapper.readValue(new File("src/test/resources/cargo/43/kafka_key.json"), DailyFormationTrainKey.class);

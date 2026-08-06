@@ -35,10 +35,10 @@ class TafTapLocationImportIntegrationTest {
     @MockitoBean
     private ServicePointApiClient servicePointApiClient;
 
-    @DisplayName("TafTap location import when the cronjob runs then locations are imported and updated|9Hee33XRtDSb5Fjmjkcd|tests:538,155")
+    @DisplayName("importLocations_whenExecuted_importsAndUpdates|9Hee33XRtDSb5Fjmjkcd|tests:538,155")
     @Test
     @WithMockUser(authorities = "ROLE_admin")
-    void cronjob_importsAndUpdate() throws Exception {
+    void importLocations_whenExecuted_importsAndUpdates() throws Exception {
         LocalDate validTo = LocalDate.parse("9999-12-31");
         LocalDate sp3ValidFrom = DateTimeUtil.today().plusMonths(10);
         ServicePoint sp1 = new ServicePoint("Service Point 1", "SP1", DateTimeUtil.today(), validTo, new ServicePoint.ServicePointNumber(98, 12345, 0));
@@ -70,10 +70,10 @@ class TafTapLocationImportIntegrationTest {
             .andExpect(jsonPath("$.data[*].validFrom", containsInAnyOrder(null, null, sp2v2ValidFrom.toString(), sp3ValidFrom.toString())));
     }
 
-    @DisplayName("TafTap location import when the cronjob runs then locations without diff are merge imported|DjVUG7a4b0L38f6BfOeh|tests:538,155")
+    @DisplayName("importLocations_whenDuplicateVersions_importsLatestOnly|DjVUG7a4b0L38f6BfOeh|tests:538,155")
     @Test
     @WithMockUser(authorities = "ROLE_admin")
-    void cronjob_importsNoDuplicate() throws Exception {
+    void importLocations_whenDuplicateVersions_importsLatestOnly() throws Exception {
         LocalDate dateOfChange = DateTimeUtil.today().plusDays(100);
         ServicePoint sp1 = new ServicePoint("Service Point 1", "SP1", DateTimeUtil.today(), dateOfChange, new ServicePoint.ServicePointNumber(98, 12345, 0));
         ServicePoint sp2 = new ServicePoint("Service Point 1", "SP1", dateOfChange.plusDays(1), LocalDate.parse("9999-12-31"), new ServicePoint.ServicePointNumber(98, 12345, 0));
