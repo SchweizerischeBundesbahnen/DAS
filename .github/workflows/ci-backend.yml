@@ -23,6 +23,23 @@ on:
     branches: [ "main" ]
 
 jobs:
+  test-title-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+
+      - uses: actions/setup-node@v7.0.0
+        with:
+          node-version: 'lts/krypton'
+
+      - name: Assign integration test traceability IDs and format whitespace
+        working-directory: ${{ github.workspace }}
+        run: node scripts/test_title_has_id_no_whitespace.mjs backend
+
+      - name: Fail if any integration test is missing a traceability ID
+        working-directory: ${{ github.workspace }}
+        run: git diff --exit-code -- das_backend/src/test
+
   build:
     runs-on: ubuntu-latest
 
@@ -84,10 +101,9 @@ jobs:
           IMAGE_ID=$(echo $IMAGE_ID | tr '[:upper:]' '[:lower:]')
           SOURCE_DATE_EPOCH=$(date +%s)
           export SOURCE_DATE_EPOCH
-          
+
           mvn spring-boot:build-image \
             -Dmaven.test.skip=true \
             -Dspring-boot.build-image.imageName=$IMAGE_ID:$VERSION
-          
-          docker push $IMAGE_ID:$VERSION
 
+          docker push $IMAGE_ID:$VERSION

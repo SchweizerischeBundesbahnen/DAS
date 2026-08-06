@@ -10,7 +10,7 @@ import '../integration/integration_test_app.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('timeCell_whenFarFutureJourney_thenShowsPlannedTimesOnly|tests:84', (tester) async {
+  testWidgets('timeCell_whenFarFutureJourney_thenShowsPlannedTimesOnly|8vwuVlLyxynaCMpOv6jx|tests:84', (tester) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T4');
 
@@ -62,7 +62,9 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('timeCell_whenNearFutureJourney_thenShowsOperationalAndPlannedTimes|tests:84', (tester) async {
+  testWidgets('timeCell_whenNearFutureJourney_thenShowsOperationalAndPlannedTimes|nx7aWInXVPGmH5bqoxmG|tests:84', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T16');
 
@@ -162,7 +164,7 @@ void main() {
   });
 
   testWidgets(
-    'timeCell_whenManuallySetToPlanned_thenAutoSwitchesBackToOperational|tests:84',
+    'timeCell_whenManuallySetToPlanned_thenAutoSwitchesBackToOperational|zJeVf25WtmGJFcMNAGNF|tests:84',
     (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
@@ -191,7 +193,7 @@ void main() {
     },
   );
 
-  testWidgets('timeCell_whenDepartureTimeReached_thenUnderlinesTime|tests:259', (tester) async {
+  testWidgets('timeCell_whenDepartureTimeReached_thenUnderlinesTime|9EQAkYvdXrJ4e7fZH6Ae|tests:259', (tester) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T9999M');
 
