@@ -23,9 +23,9 @@ public class FormationRun {
     private Boolean inspected;
     @Getter private OffsetDateTime inspectionDateTime;
     @Getter private CompanyCode company;
-    @Getter private TafTapLocationReference tafTapLocationUicStartCode;
+    @Getter private TafTapLocationReference tafTapLocationReferenceStart;
     @Getter private Integer tafTapLocationUicStartPassIndex;
-    @Getter private TafTapLocationReference tafTapLocationUicEndCode;
+    @Getter private TafTapLocationReference tafTapLocationReferenceEnd;
     @Getter private String trainCategoryCode;
     @Getter private Integer brakedWeightPercentage;
     @Getter private Integer tractionMaxSpeedInKmh;

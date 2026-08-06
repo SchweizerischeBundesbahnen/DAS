@@ -32,8 +32,8 @@ trainjourneyplan:
     group-id: ${PRELOAD_KAFKA_GROUP_ID_PREFIX}.${USER}
     # disable kafka per default
     enabled: false
-    timetable-period-topic: nets-p.timetable
-    timetable-train-topic: fps.prod.infra.zug
+    timetable-period-topic: nets.stammdaten.prod.timetable
+    timetable-train-topic: nets.fps.prod.infra.zug
   train-clean-up:
     cron-expression: "0 0 0 * * *"
     days: 2

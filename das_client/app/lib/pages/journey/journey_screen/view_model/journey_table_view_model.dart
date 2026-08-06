@@ -14,7 +14,7 @@ import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart'
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/model/journey_navigation_model.dart';
 import 'package:app/pages/journey/view_model/model/journey_settings.dart';
-import 'package:app/provider/user_settings.dart';
+import 'package:app/provider/local_key_value_store.dart';
 import 'package:collection/collection.dart';
 import 'package:core_data/component.dart';
 import 'package:logging/logging.dart';
@@ -43,7 +43,7 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
   final DetailModalViewModel _detailModalVM;
   final DecisiveGradientViewModel _decisiveGradientVM;
   final JourneyNavigationViewModel _navigationVM;
-  final UserSettings _userSettings;
+  final LocalKeyValueStore _userSettings;
 
   StreamSubscription? _streamSubscription;
 
@@ -192,7 +192,11 @@ class JourneyTableViewModel extends JourneyAwareViewModel {
     final brakeSeries = settings.currentBrakeSeries;
 
     return data is CurvePoint &&
-        data.localSpeeds?.speedFor(brakeSeries?.trainSeries, brakeSeries: brakeSeries?.brakeSeries) == null;
+        data.localSpeeds?.speedFor(
+              brakeSeries?.trainSeries,
+              brakedWeightPercentage: brakeSeries?.brakedWeightPercentage,
+            ) ==
+            null;
   }
 
   void _emitLoading() {

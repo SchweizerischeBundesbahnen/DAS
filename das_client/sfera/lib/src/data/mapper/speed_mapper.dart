@@ -29,7 +29,7 @@ class SpeedMapper {
         final speeds = TrainSeriesSpeed(
           trainSeries: trainSeries,
           speed: Speed.parse(speedString),
-          brakeSeries: brakeSeries,
+          brakedWeightPercentage: brakeSeries,
           reduced: reduced,
         );
         result.add(speeds);

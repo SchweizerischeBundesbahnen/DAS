@@ -1,10 +1,8 @@
 import 'dart:convert';
 
-import 'package:auth/src/authenticator_config.dart';
+import 'package:auth/component.dart';
 import 'package:auth/src/azure_authenticator.dart';
 import 'package:auth/src/oidc_client_provider.dart';
-import 'package:auth/src/token_spec.dart';
-import 'package:auth/src/token_spec_provider.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -37,12 +35,15 @@ void main() {
     scopes: ['scope1'],
   );
 
-  final config = AuthenticatorConfig(
+  const allowedRoles = [Role.observer, Role.driver];
+
+  final testAuthConfig = AuthenticatorConfig(
     discoveryUrl: 'https://discovery.url',
     clientId: 'client-id',
     redirectUrl: 'https://redirect.url',
     tokenSpecs: TokenSpecProvider([tokenSpec]),
     trustedTenantIds: trustedTenants.values.toList(),
+    allowedRoles: allowedRoles,
   );
 
   setUp(() {
@@ -60,7 +61,7 @@ void main() {
     ).thenAnswer((_) async => mockOidcClient);
 
     authenticator = AzureAuthenticator(
-      config: config,
+      config: testAuthConfig,
       oidcClientFactory: mockOidcClientFactory,
       storage: mockFlutterSecureStorage,
     );
@@ -133,7 +134,7 @@ void main() {
     ).thenAnswer((_) async => mockToken);
 
     // WHEN / THEN
-    expect(() => authenticator.login(), throwsException);
+    expect(() => authenticator.login(), throwsA(isA<InvalidTokenException>()));
   });
 
   test('token_whenWithUnknownTenantId_thenShouldThrowException', () async {
@@ -150,7 +151,93 @@ void main() {
     ).thenAnswer((_) async => mockToken);
 
     // WHEN / THEN
-    expect(() => authenticator.token(), throwsException);
+    expect(() => authenticator.token(), throwsA(isA<InvalidTokenException>()));
+  });
+
+  for (final role in allowedRoles) {
+    test('login_whenWith${role.name}Role_thenShouldReturnToken', () async {
+      // GIVEN
+      final idToken = _createIdToken(sbbTenantId, roles: [role]);
+      final mockToken = MockOidcToken();
+      when(mockToken.idToken).thenReturn(idToken);
+      when(
+        mockOidcClient.login(
+          scopes: anyNamed('scopes'),
+          prompt: anyNamed('prompt'),
+        ),
+      ).thenAnswer((_) async => mockToken);
+
+      // WHEN / THEN
+      final result = await authenticator.login();
+      expect(result, mockToken);
+    });
+  }
+
+  test('login_whenWithoutAllowedRole_thenShouldThrowInvalidTokenException', () async {
+    // GIVEN
+    final idToken = _createIdToken(sbbTenantId, roles: [Role.admin]);
+    final mockToken = MockOidcToken();
+    when(mockToken.idToken).thenReturn(idToken);
+    when(
+      mockOidcClient.login(
+        scopes: anyNamed('scopes'),
+        prompt: anyNamed('prompt'),
+      ),
+    ).thenAnswer((_) async => mockToken);
+
+    // WHEN / THEN
+    expect(() => authenticator.login(), throwsA(isA<InvalidTokenException>()));
+  });
+
+  test('login_whenWithNoRoles_thenShouldThrowInvalidTokenException', () async {
+    // GIVEN
+    final idToken = _createIdToken(sbbTenantId, roles: []);
+    final mockToken = MockOidcToken();
+    when(mockToken.idToken).thenReturn(idToken);
+    when(
+      mockOidcClient.login(
+        scopes: anyNamed('scopes'),
+        prompt: anyNamed('prompt'),
+      ),
+    ).thenAnswer((_) async => mockToken);
+
+    // WHEN / THEN
+    expect(() => authenticator.login(), throwsA(isA<InvalidTokenException>()));
+  });
+
+  test('token_whenWithoutAllowedRole_thenShouldThrowInvalidTokenException', () async {
+    // GIVEN
+    final idToken = _createIdToken(sbbTenantId, roles: [Role.admin]);
+    final mockToken = MockOidcToken();
+    when(mockToken.idToken).thenReturn(idToken);
+    when(
+      mockOidcClient.getToken(
+        scopes: anyNamed('scopes'),
+        forceRefresh: anyNamed('forceRefresh'),
+      ),
+    ).thenAnswer((_) async => mockToken);
+
+    // WHEN / THEN
+    expect(() => authenticator.token(), throwsA(isA<InvalidTokenException>()));
+  });
+
+  test('isAuthenticated_whenWithoutAllowedRole_thenShouldReturnFalse', () async {
+    // GIVEN
+    final idToken = _createIdToken(sbbTenantId, roles: [Role.admin]);
+    final mockToken = MockOidcToken();
+    when(mockToken.idToken).thenReturn(idToken);
+    when(
+      mockOidcClient.getToken(
+        scopes: anyNamed('scopes'),
+        forceRefresh: anyNamed('forceRefresh'),
+      ),
+    ).thenAnswer((_) async => mockToken);
+    when(mockOidcClient.logout()).thenAnswer((_) async {});
+
+    // WHEN / THEN
+    final result = await authenticator.isAuthenticated;
+    expect(result, isFalse);
+    verify(mockOidcClient.logout()).called(1);
   });
 
   test('login_whenWithUnknownTenantId_thenShouldReturnFalse', () async {
@@ -377,11 +464,15 @@ void main() {
   });
 }
 
-String _createIdToken(String tenantId) {
+String _createIdToken(String tenantId, {List<Role> roles = const [Role.observer]}) {
   String removePadding(String base64) => base64.replaceAll('=', '');
 
   final header = removePadding(base64Url.encode(utf8.encode(json.encode({'typ': 'JWT', 'alg': 'HS256'}))));
-  final payload = removePadding(base64Url.encode(utf8.encode(json.encode({'tid': tenantId}))));
+  final payload = removePadding(
+    base64Url.encode(
+      utf8.encode(json.encode({'tid': tenantId, 'roles': roles.map((it) => it.name).toList(growable: false)})),
+    ),
+  );
   final signature = removePadding(base64Url.encode(utf8.encode('signature')));
   return '$header.$payload.$signature';
 }

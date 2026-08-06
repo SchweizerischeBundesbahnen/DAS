@@ -29,7 +29,7 @@ class FormationControllerTest {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    @DisplayName("Formation when the train and operational day are valid then formation data is returned|tests:541")
+    @DisplayName("Formation when the train and operational day are valid then formation data is returned|JM7TiuHzEID9CClr2xup|tests:541")
     @Test
     @WithMockUser(authorities = "ROLE_observer")
     void should_respond_formation() throws Exception {
@@ -40,7 +40,7 @@ class FormationControllerTest {
             .andExpect(content().json(expectedJson, JsonCompareMode.STRICT));
     }
 
-    @DisplayName("Formation when the data has not changed since the last request then not modified is returned|tests:541")
+    @DisplayName("Formation when the data has not changed since the last request then not modified is returned|TRMVB5can12yMwzZ6U0Z|tests:541")
     @Test
     @WithMockUser(authorities = "ROLE_observer")
     void should_respond_not_modified_when_nothing_changed_since_etag() throws Exception {
@@ -51,7 +51,7 @@ class FormationControllerTest {
             .andExpect(status().isNotModified());
     }
 
-    @DisplayName("Formation when the data has changed since the last request then the updated formation data is returned|tests:541")
+    @DisplayName("Formation when the data has changed since the last request then the updated formation data is returned|xy5U8nxyp6vdM39Vcpyl|tests:541")
     @Test
     @WithMockUser(authorities = "ROLE_observer")
     void should_respond_formation_when_changed_since_etag() throws Exception {
@@ -68,7 +68,7 @@ class FormationControllerTest {
             .andExpect(content().json(expectedJson, JsonCompareMode.STRICT));
     }
 
-    @DisplayName("Formation when multiple versions exist then the most recent formation is returned|tests:541")
+    @DisplayName("Formation when multiple versions exist then the most recent formation is returned|Zjg5LRCGlvyAUfacMciu|tests:541")
     @Test
     @WithMockUser(authorities = "ROLE_observer")
     void should_respond_latest_formation() throws Exception {
@@ -78,7 +78,7 @@ class FormationControllerTest {
             .andExpect(content().json(expectedJson, JsonCompareMode.STRICT));
     }
 
-    @DisplayName("Formation when no formation exists for the given train then the API returns not found|tests:541")
+    @DisplayName("Formation when no formation exists for the given train then the API returns not found|IAZd8tVR87Grm9QyOQRC|tests:541")
     @Test
     @WithMockUser(authorities = "ROLE_observer")
     void should_respond_not_found() throws Exception {
@@ -86,7 +86,7 @@ class FormationControllerTest {
             .andExpect(status().isNotFound());
     }
 
-    @DisplayName("Formation when the company parameter is invalid then the API returns bad request|tests:541")
+    @DisplayName("Formation when the company parameter is invalid then the API returns bad request|KrjflkScNI01jtG1nryh|tests:541")
     @Test
     @WithMockUser(authorities = "ROLE_observer")
     void should_respond_bad_request() throws Exception {

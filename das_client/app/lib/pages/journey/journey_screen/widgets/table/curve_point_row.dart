@@ -1,7 +1,8 @@
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cell_row_builder.dart';
 import 'package:app/widgets/assets.dart';
-import 'package:app/widgets/modification_indicator.dart';
+import 'package:app/widgets/das_badge_overlay.dart';
+import 'package:app/widgets/modification_icon.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -34,12 +35,11 @@ class CurvePointRow extends CellRowBuilder<CurvePoint> {
         padding: const EdgeInsets.all(8.0),
         alignment: Alignment.centerLeft,
         clipBehavior: Clip.none,
-        child: ModificationIndicator(
-          show: data.hasModificationUpdated,
-          offset: Offset(0, -SBBSpacing.small),
-          child: Text(
-            data.kilometre[0].toStringAsFixed(1),
-          ),
+        child: DASBadgeOverlay(
+          badgeVisible: data.hasModificationUpdated,
+          badgeOffset: Offset(0, -SBBSpacing.small),
+          badge: const ModificationIcon(),
+          child: Text(data.kilometre[0].toStringAsFixed(1)),
         ),
       );
     }

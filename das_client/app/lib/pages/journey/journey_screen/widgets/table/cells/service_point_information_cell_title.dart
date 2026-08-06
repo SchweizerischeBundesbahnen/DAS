@@ -1,6 +1,7 @@
 import 'package:app/util/animation.dart';
-import 'package:app/widgets/general_short_term_change_indicator.dart';
-import 'package:app/widgets/u_turn_indicator.dart';
+import 'package:app/widgets/das_badge_overlay.dart';
+import 'package:app/widgets/short_term_change_exclamation_icon.dart';
+import 'package:app/widgets/u_turn_icon.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
@@ -71,11 +72,15 @@ class ServicePointInformationCellTitle extends StatelessWidget {
 
   Widget wrapWithIndicator(Widget textTitle) {
     return shortTermChange is EndDestinationChange
-        ? UTurnIndicator(
-            offset: Offset(4, -28),
-            foregroundColor: foregroundColor,
+        ? DASBadgeOverlay(
+            badgeOffset: Offset(4, -28),
+            badge: UTurnIcon(foregroundColor: foregroundColor),
             child: textTitle,
           )
-        : GeneralShortTermChangeIndicator(offset: Offset(-8, -22), child: textTitle);
+        : DASBadgeOverlay(
+            badgeOffset: Offset(-8, -22),
+            badge: const ShortTermChangeExclamationIcon(),
+            child: textTitle,
+          );
   }
 }

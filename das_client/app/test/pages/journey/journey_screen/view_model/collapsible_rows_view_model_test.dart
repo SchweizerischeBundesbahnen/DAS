@@ -205,8 +205,8 @@ void main() {
     });
   });
 
-  group('collapsePassedAccordionRows', () {
-    test('collapsePassedAccordionRows_whenPositionAdvancesPastFootNote_thenFootNoteIsCollapsed', () async {
+  group('updatePassedAccordionRowsState', () {
+    test('updatePassedAccordionRowsState_whenPositionAdvancesPastFootNote_thenFootNoteIsCollapsed', () async {
       // ARRANGE - journey: signal1(5), footNoteData(10), indicator(15), footNoteData2(20), indicator2(25), signal2(30)
 
       // ACT
@@ -223,7 +223,7 @@ void main() {
     });
 
     test(
-      'collapsePassedAccordionRows_whenPositionAdvancesPastOperationalIndication_thenIndicatorIsCollapsed',
+      'updatePassedAccordionRowsState_whenPositionAdvancesPastOperationalIndication_thenIndicatorIsCollapsed',
       () async {
         // ARRANGE
 
@@ -242,7 +242,7 @@ void main() {
     );
 
     test(
-      'collapsePassedAccordionRows_whenPositionAdvancesOverMultipleCollapsibles_thenAllPassedAreCollapsed',
+      'updatePassedAccordionRowsState_whenPositionAdvancesOverMultipleCollapsibles_thenAllPassedAreCollapsed',
       () async {
         // ARRANGE
 
@@ -263,7 +263,51 @@ void main() {
       },
     );
 
-    test('collapsePassedAccordionRows_whenCurrentSameAsLast_thenNothingChanges', () async {
+    test('updatePassedAccordionRowsState_whenPositionMovesBackwards_thenPassedRowsAreExpandedAgain', () async {
+      // ARRANGE - collapse rows while moving forward first
+      journeyPositionSubject.add(
+        JourneyPositionModel(
+          lastPosition: signal1,
+          currentPosition: signalBetween2And3,
+        ),
+      );
+      await processStreams();
+      expect(testee.collapsedRowsValue.stateOf(footNoteData), CollapsedState.collapsed);
+      expect(testee.collapsedRowsValue.stateOf(indicator), CollapsedState.collapsed);
+
+      // ACT - move backwards over the same rows
+      journeyPositionSubject.add(
+        JourneyPositionModel(
+          lastPosition: signalBetween2And3,
+          currentPosition: signal1,
+        ),
+      );
+      await processStreams();
+
+      // EXPECT - collapsed rows are re-opened to their default state
+      expect(testee.collapsedRowsValue.stateOf(footNoteData), CollapsedState.expanded);
+      expect(testee.collapsedRowsValue.stateOf(indicator), CollapsedState.expandedWithCollapsedContent);
+    });
+
+    test('updatePassedAccordionRowsState_whenMovingBackwardsOnNonSimTrain_thenSimFootNoteStaysCollapsed', () async {
+      // ARRANGE - non-SIM state keeps SIM foot note collapsed
+      await processStreams();
+      expect(testee.collapsedRowsValue.stateOf(simFootNoteData), CollapsedState.collapsed);
+
+      // ACT - move backwards over the SIM foot note row
+      journeyPositionSubject.add(
+        JourneyPositionModel(
+          lastPosition: signalBetween1And2,
+          currentPosition: signal1,
+        ),
+      );
+      await processStreams();
+
+      // EXPECT
+      expect(testee.collapsedRowsValue.stateOf(simFootNoteData), CollapsedState.collapsed);
+    });
+
+    test('updatePassedAccordionRowsState_whenCurrentSameAsLast_thenNothingChanges', () async {
       // ARRANGE
       final initialState = Map<int, CollapsedState>.from(testee.collapsedRowsValue);
 
@@ -280,7 +324,7 @@ void main() {
       expect(testee.collapsedRowsValue, initialState);
     });
 
-    test('collapsePassedAccordionRows_whenLastPositionIsNull_thenNothingChanges', () async {
+    test('updatePassedAccordionRowsState_whenLastPositionIsNull_thenNothingChanges', () async {
       // ARRANGE
       final initialState = Map<int, CollapsedState>.from(testee.collapsedRowsValue);
 
@@ -297,7 +341,7 @@ void main() {
       expect(testee.collapsedRowsValue, initialState);
     });
 
-    test('collapsePassedAccordionRows_whenCurrentPositionIsNull_thenNothingChanges', () async {
+    test('updatePassedAccordionRowsState_whenCurrentPositionIsNull_thenNothingChanges', () async {
       // ARRANGE
       final initialState = Map<int, CollapsedState>.from(testee.collapsedRowsValue);
 
@@ -314,7 +358,7 @@ void main() {
       expect(testee.collapsedRowsValue, initialState);
     });
 
-    test('collapsePassedAccordionRows_whenRowAlreadyCollapsed_thenRemainsCollapsed', () async {
+    test('updatePassedAccordionRowsState_whenRowAlreadyCollapsed_thenRemainsCollapsed', () async {
       // ARRANGE
       testee.toggleRow(footNoteData);
       await processStreams();
@@ -333,7 +377,7 @@ void main() {
       expect(testee.collapsedRowsValue.stateOf(footNoteData), CollapsedState.collapsed);
     });
 
-    test('collapsePassedAccordionRows_whenFutureCollapsiblesNotYetPassed_thenTheyAreNotCollapsed', () async {
+    test('updatePassedAccordionRowsState_whenFutureCollapsiblesNotYetPassed_thenTheyAreNotCollapsed', () async {
       // ARRANGE
 
       // ACT

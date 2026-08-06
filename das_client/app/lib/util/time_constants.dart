@@ -1,3 +1,5 @@
+import 'package:app/util/animation.dart';
+
 class TimeConstants {
   const TimeConstants();
 
@@ -18,4 +20,6 @@ class TimeConstants {
   int get connectivityLostNotificationDelay => 60;
 
   int get newShortTermChangesDisplaySeconds => 15;
+
+  Duration get chevronAnimationDuration => DASAnimation.longDuration;
 }

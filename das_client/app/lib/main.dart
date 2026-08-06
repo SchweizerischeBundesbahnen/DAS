@@ -53,10 +53,14 @@ Future<void> _initDependencyInjection(Flavor flavor, DASLogger? dasLogger) async
   if (dasLogger != null) {
     GetIt.I.registerLogger(logger: dasLogger);
   }
-  // TODO: The problem here is that someone who still has a session with TMS authenticator
-  // will not seem to be logged in anymore since we assume SferaMock as the default in app start.
+  // TODO: The problem here is that someone who still has a session with Sfera mock authenticator
+  // will not seem to be logged in anymore since we assume Tms as the default in app start.
   // This is necessary to ensure that an authenticator is available for the SplashPage
-  await scopeHandler.push<SferaMockScope>();
+  if (flavor.connectToTmsVad) {
+    await scopeHandler.push<TmsScope>();
+  } else {
+    await scopeHandler.push<SferaMockScope>();
+  }
 }
 
 Future<void> _initMessaging(Flavor flavor) async {

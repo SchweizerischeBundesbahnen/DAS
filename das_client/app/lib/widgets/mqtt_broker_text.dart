@@ -4,6 +4,9 @@ import 'package:flutter/widgets.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class MqttBrokerText extends StatelessWidget {
+  static const mockText = 'Mock';
+  static const tmsVadText = 'TMS VAD';
+
   const MqttBrokerText({required this.color, super.key});
 
   final Color color;
@@ -17,7 +20,7 @@ class MqttBrokerText extends StatelessWidget {
       crossAxisAlignment: .start,
       children: [
         Text('MQTT Broker', style: sbbTextStyle.lightStyle.xSmall.copyWith(color: color)),
-        Text(connectedToMock ? 'Mock' : 'TMS VAD', style: sbbTextStyle.boldStyle.small.copyWith(color: color)),
+        Text(connectedToMock ? mockText : tmsVadText, style: sbbTextStyle.boldStyle.small.copyWith(color: color)),
       ],
     );
   }

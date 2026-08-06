@@ -35,7 +35,7 @@ class TafTapLocationImportIntegrationTest {
     @MockitoBean
     private ServicePointApiClient servicePointApiClient;
 
-    @DisplayName("TafTap location import when the cronjob runs then locations are imported and updated|tests:538,155")
+    @DisplayName("TafTap location import when the cronjob runs then locations are imported and updated|9Hee33XRtDSb5Fjmjkcd|tests:538,155")
     @Test
     @WithMockUser(authorities = "ROLE_admin")
     void cronjob_importsAndUpdate() throws Exception {
@@ -70,7 +70,7 @@ class TafTapLocationImportIntegrationTest {
             .andExpect(jsonPath("$.data[*].validFrom", containsInAnyOrder(null, null, sp2v2ValidFrom.toString(), sp3ValidFrom.toString())));
     }
 
-    @DisplayName("TafTap location import when the cronjob runs then locations without diff are merge imported|tests:538,155")
+    @DisplayName("TafTap location import when the cronjob runs then locations without diff are merge imported|DjVUG7a4b0L38f6BfOeh|tests:538,155")
     @Test
     @WithMockUser(authorities = "ROLE_admin")
     void cronjob_importsNoDuplicate() throws Exception {

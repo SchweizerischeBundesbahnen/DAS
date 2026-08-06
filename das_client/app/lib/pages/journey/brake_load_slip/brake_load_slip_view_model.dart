@@ -35,6 +35,7 @@ class BrakeLoadSlipViewModel extends JourneyAwareViewModel {
     this._detailModalViewModel,
     this._connectivityManager,
     this._checkForUpdates = false,
+    this._updateOnPositionUpdate = true,
     super.journeyViewModel,
   }) {
     _init();
@@ -47,6 +48,7 @@ class BrakeLoadSlipViewModel extends JourneyAwareViewModel {
   final NotificationPriorityQueueViewModel _notificationViewModel;
   final ConnectivityManager? _connectivityManager;
   final bool _checkForUpdates;
+  final bool _updateOnPositionUpdate;
   bool _notifyOnUpdate = false;
 
   final Sound _brakeSlipUpdatedSound = DI.get<DASSounds>().brakeSlipUpdated;
@@ -54,6 +56,7 @@ class BrakeLoadSlipViewModel extends JourneyAwareViewModel {
   JourneyPositionModel? _latestPosition;
   bool _openFullscreen = true;
   bool _skipFirstUpdate = true;
+  bool _isFirstPositionUpdate = true;
 
   StreamSubscription? _journeyPositionSubscription;
   StreamSubscription? _formationSubscription;
@@ -81,7 +84,17 @@ class BrakeLoadSlipViewModel extends JourneyAwareViewModel {
   void _init() {
     _journeyPositionSubscription = _journeyPositionViewModel.model.listen((position) {
       _latestPosition = position;
-      _emitFormationRun();
+
+      if (_updateOnPositionUpdate) {
+        _emitFormationRun();
+        _isFirstPositionUpdate = false;
+        return;
+      }
+
+      if (_isFirstPositionUpdate && position.currentPosition != null) {
+        _emitFormationRun();
+        _isFirstPositionUpdate = false;
+      }
     });
     if (_checkForUpdates) {
       _formationUpdateTimer = Timer.periodic(_formationUpdateInterval, (_) => _checkForFormationUpdates());
@@ -94,7 +107,11 @@ class BrakeLoadSlipViewModel extends JourneyAwareViewModel {
   }
 
   @override
-  void onJourneyUpdated(Journey? _) => _emitFormationRun();
+  void onJourneyUpdated(Journey? _) {
+    if (_updateOnPositionUpdate || _rxFormationRun.value == null) {
+      _emitFormationRun();
+    }
+  }
 
   void _checkForFormationUpdates() {
     if (_skipFirstUpdate) {
@@ -224,10 +241,10 @@ class BrakeLoadSlipViewModel extends JourneyAwareViewModel {
 
   BrakeSeries? _resolveBrakeSeries(FormationRun? formationRun) {
     final trainSeries = TrainSeries.fromOptional(formationRun?.trainCategoryCode);
-    final brakeSeries = formationRun?.brakedWeightPercentage;
+    final brakedWeightPercentage = formationRun?.brakedWeightPercentage;
 
-    return trainSeries != null && brakeSeries != null
-        ? BrakeSeries(trainSeries: trainSeries, brakeSeries: brakeSeries)
+    return trainSeries != null && brakedWeightPercentage != null
+        ? BrakeSeries(trainSeries: trainSeries, brakedWeightPercentage: brakedWeightPercentage)
         : null;
   }
 
@@ -297,6 +314,7 @@ class BrakeLoadSlipViewModel extends JourneyAwareViewModel {
   void onJourneyChanged(Journey? journey) {
     _latestPosition = null;
     _openFullscreen = true;
+    _isFirstPositionUpdate = true;
     _rxFormation.add(null);
     _rxFormationRun.add(null);
     _rxFormationChanged.add(false);

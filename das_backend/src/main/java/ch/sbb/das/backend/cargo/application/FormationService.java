@@ -29,6 +29,12 @@ public class FormationService {
     }
 
     @Transactional
+    public void deleteAndSave(String trainPathId, LocalDate operationalDay, List<TrainFormationRunEntity> entities) {
+        trainFormationRunRepository.deleteByTrainPathIdAndOperationalDay(trainPathId, operationalDay);
+        trainFormationRunRepository.saveAll(entities);
+    }
+
+    @Transactional
     public void save(List<TrainFormationRunEntity> trainFormationRunEntities) {
         trainFormationRunRepository.saveAll(trainFormationRunEntities);
     }
@@ -41,11 +47,6 @@ public class FormationService {
             operationalDay,
             company
         );
-    }
-
-    @Transactional
-    public void deleteByTrainPathIdAndOperationalDay(String trainPathId, LocalDate operationalDay) {
-        trainFormationRunRepository.deleteByTrainPathIdAndOperationalDay(trainPathId, operationalDay);
     }
 
     @Transactional

@@ -1,5 +1,6 @@
 import 'package:app/di/di.dart';
 import 'package:app/di/scope_handler.dart';
+import 'package:app/flavor.dart';
 import 'package:app/pages/login/login_model.dart';
 import 'package:auth/component.dart';
 import 'package:logging/logging.dart';
@@ -8,14 +9,17 @@ import 'package:rxdart/rxdart.dart';
 final _log = Logger('LoginViewModel');
 
 class LoginViewModel {
-  final _rxModel = BehaviorSubject<LoginModel>.seeded(LoggedOut(connectToTmsVad: false));
+  LoginViewModel({required Flavor flavor})
+    : _rxModel = BehaviorSubject<LoginModel>.seeded(LoggedOut(connectToTmsVad: flavor.connectToTmsVad));
+
+  final BehaviorSubject<LoginModel> _rxModel;
 
   LoginModel get modelValue => _rxModel.value;
 
   Stream<LoginModel> get model => _rxModel.distinct();
 
   void dispose() {
-    _rxModel.add(LoggedOut(connectToTmsVad: false));
+    _rxModel.add(LoggedOut(connectToTmsVad: _rxModel.value.connectToTmsVad));
     _rxModel.close();
   }
 

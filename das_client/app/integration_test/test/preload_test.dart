@@ -1,7 +1,6 @@
 import 'package:app/di/di.dart';
+import 'package:app/pages/diagnostic/widgets/preload_status_display.dart';
 import 'package:app/pages/journey/journey_page.dart';
-import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_chevron.dart';
-import 'package:app/pages/preload/widgets/preload_status_display.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:connectivity_x/component.dart';
 import 'package:flutter/cupertino.dart';
@@ -62,14 +61,14 @@ void main() {
     metrics: SferaDbMetrics(jpCount: 43, spCount: 201, tcCount: 33),
   );
 
-  testWidgets('preload_whenStatusChanges_thenDisplaysCorrectly', (tester) async {
+  testWidgets('preload_whenStatusChanges_thenDisplaysCorrectly|VzryoGxMwq20YJrAmwSN|tests:90', (tester) async {
     await IntegrationTestApp.start(tester);
 
     final preloadRepository = DI.get<PreloadRepository>() as MockPreloadRepository;
 
-    // Navigate to preload page
+    // Navigate to diagnostic page
     await openDrawer(tester);
-    await tapElement(tester, find.text(l10n.w_navigation_drawer_preload_title));
+    await tapElement(tester, find.text(l10n.w_navigation_drawer_diagnostic_title));
 
     final preloadStatusTitleFinder = find.text(l10n.w_preload_status_title);
     expect(preloadStatusTitleFinder, findsOneWidget);
@@ -81,7 +80,7 @@ void main() {
         )
         .first;
 
-    expect(find.text('-'), findsNWidgets(5));
+    expect(find.descendant(of: find.byType(PreloadStatusDisplay), matching: find.text('-')), findsNWidgets(5));
     expect(tester.widget<SBBTertiaryButtonSmall>(startButton).onPressed, isNull);
 
     // Check display with idle preload details
@@ -137,7 +136,7 @@ void main() {
     expect(tester.widget<SBBTertiaryButtonSmall>(startButton).onPressed, isNull);
   });
 
-  testWidgets('preload_whenUsingPreloadData_thenReconnectsSuccessfully', (tester) async {
+  testWidgets('preload_whenUsingPreloadData_thenReconnectsSuccessfully|nW5bzK5BHRo3TbUA6KWO|tests:90', (tester) async {
     await IntegrationTestApp.start(tester);
 
     // Load T9999 so we have it available offline
@@ -165,10 +164,7 @@ void main() {
     connectivityManager.connectivitySubject.add(true);
 
     // Wait until chevron is on Halt auf Verlangen C
-    await waitUntilExists(
-      tester,
-      find.descendant(of: findDASTableRowByText('Halt auf Verlangen C'), matching: find.byType(RouteChevron)),
-    );
+    await waitUntilExists(tester, findChevronPositionAtRowWithText('Halt auf Verlangen C'));
 
     await disconnect(tester);
   });

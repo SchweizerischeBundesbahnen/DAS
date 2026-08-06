@@ -18,6 +18,10 @@ class DetailModalViewModel {
   final _rxContentBuilder = BehaviorSubject<DASModalSheetBuilder?>();
   final _rxOpenModalType = BehaviorSubject<DetailModalType?>.seeded(null);
 
+  /// Identifies which concrete content of [openModalTypeValue] is currently displayed (e.g. the tapped
+  /// service point + tab, or the tapped ASR row). Re-opening with the same type and key closes the modal.
+  Object? _openContentKey;
+
   bool get isModalOpenValue => _rxOpenModalType.value != null;
 
   Stream<DetailModalType?> get openModalType => _rxOpenModalType.distinct();
@@ -34,20 +38,26 @@ class DetailModalViewModel {
 
   void _initController() {
     controller = DASModalSheetController(
-      onClose: () => _rxOpenModalType.add(null),
+      onClose: () {
+        if (!_rxOpenModalType.isClosed) _rxOpenModalType.add(null);
+      },
     );
   }
 
-  void open(DASModalSheetBuilder builder, {bool maximize = false}) {
-    switch (builder) {
-      case AdditionalSpeedRestrictionModalBuilder():
-        _rxOpenModalType.add(.additionalSpeedRestriction);
-      case ServicePointModalBuilder():
-        _rxOpenModalType.add(.servicePointModal);
-      case BrakeLoadSlipModalBuilder():
-        _rxOpenModalType.add(.brakeSlip);
+  /// Opens [builder] in the modal sheet. If the same content (same type and [contentKey]) is already
+  /// displayed, the modal is closed instead, so that tapping the element that opened it again toggles it
+  /// closed. [contentKey] should identify the concrete content shown.
+  void open(DASModalSheetBuilder builder, {bool maximize = false, Object? contentKey}) {
+    final type = _typeOf(builder);
+
+    if (isModalOpenValue && openModalTypeValue == type && _openContentKey == contentKey) {
+      close();
+      return;
     }
 
+    controller.automaticCloseEnabled = builder.automaticCloseEnabled;
+    _openContentKey = contentKey;
+    _rxOpenModalType.add(type);
     _rxContentBuilder.add(builder);
     if (maximize) {
       controller.maximize();
@@ -56,9 +66,27 @@ class DetailModalViewModel {
     }
   }
 
+  void setMaximized(bool maximized) {
+    if (maximized) {
+      controller.maximize();
+    } else {
+      controller.expand();
+    }
+  }
+
+  DetailModalType _typeOf(DASModalSheetBuilder builder) {
+    return switch (builder) {
+      AdditionalSpeedRestrictionModalBuilder() => .additionalSpeedRestriction,
+      ServicePointModalBuilder() => .servicePointModal,
+      BrakeLoadSlipModalBuilder() => .brakeSlip,
+      _ => throw ArgumentError('Unknown DASModalSheetBuilder: ${builder.runtimeType}'),
+    };
+  }
+
   void close() {
     controller.close();
-    _rxContentBuilder.add(null);
+    if (!_rxContentBuilder.isClosed) _rxContentBuilder.add(null);
+    _openContentKey = null;
   }
 
   void dispose() {

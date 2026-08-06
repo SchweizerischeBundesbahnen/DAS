@@ -15,6 +15,9 @@ class BrakeLoadSlipModalBuilder extends DASModalSheetBuilder {
   static const buttonKey = Key('BrakeLoadSlipModalBuilderButtonKey');
 
   @override
+  bool get automaticCloseEnabled => false;
+
+  @override
   Widget header(BuildContext context) {
     return Text(
       key: headerKey,

@@ -731,37 +731,37 @@ void main() {
     expect(journey.valid, true);
     expect(journey.metadata.availableBrakeSeries, hasLength(3));
     expect(journey.metadata.availableBrakeSeries.elementAt(0).trainSeries, TrainSeries.R);
-    expect(journey.metadata.availableBrakeSeries.elementAt(0).brakeSeries, 150);
+    expect(journey.metadata.availableBrakeSeries.elementAt(0).brakedWeightPercentage, 150);
     expect(journey.metadata.availableBrakeSeries.elementAt(1).trainSeries, TrainSeries.R);
-    expect(journey.metadata.availableBrakeSeries.elementAt(1).brakeSeries, 100);
+    expect(journey.metadata.availableBrakeSeries.elementAt(1).brakedWeightPercentage, 100);
     expect(journey.metadata.availableBrakeSeries.elementAt(2).trainSeries, TrainSeries.A);
-    expect(journey.metadata.availableBrakeSeries.elementAt(2).brakeSeries, 30);
+    expect(journey.metadata.availableBrakeSeries.elementAt(2).brakedWeightPercentage, 30);
 
     journey = getJourney('T5');
     expect(journey.valid, true);
     expect(journey.metadata.availableBrakeSeries, hasLength(17));
     expect(journey.metadata.availableBrakeSeries.elementAt(0).trainSeries, TrainSeries.R);
-    expect(journey.metadata.availableBrakeSeries.elementAt(0).brakeSeries, 105);
+    expect(journey.metadata.availableBrakeSeries.elementAt(0).brakedWeightPercentage, 105);
     expect(journey.metadata.availableBrakeSeries.elementAt(5).trainSeries, TrainSeries.A);
-    expect(journey.metadata.availableBrakeSeries.elementAt(5).brakeSeries, 50);
+    expect(journey.metadata.availableBrakeSeries.elementAt(5).brakedWeightPercentage, 50);
     expect(journey.metadata.availableBrakeSeries.elementAt(15).trainSeries, TrainSeries.D);
-    expect(journey.metadata.availableBrakeSeries.elementAt(15).brakeSeries, 30);
+    expect(journey.metadata.availableBrakeSeries.elementAt(15).brakedWeightPercentage, 30);
     expect(journey.metadata.availableBrakeSeries.elementAt(16).trainSeries, TrainSeries.N);
-    expect(journey.metadata.availableBrakeSeries.elementAt(16).brakeSeries, 30);
+    expect(journey.metadata.availableBrakeSeries.elementAt(16).brakedWeightPercentage, 30);
 
     journey = getJourney('T8');
     expect(journey.valid, true);
     expect(journey.metadata.availableBrakeSeries, hasLength(5));
     expect(journey.metadata.availableBrakeSeries.elementAt(0).trainSeries, TrainSeries.R);
-    expect(journey.metadata.availableBrakeSeries.elementAt(0).brakeSeries, 115);
+    expect(journey.metadata.availableBrakeSeries.elementAt(0).brakedWeightPercentage, 115);
     expect(journey.metadata.availableBrakeSeries.elementAt(1).trainSeries, TrainSeries.R);
-    expect(journey.metadata.availableBrakeSeries.elementAt(1).brakeSeries, 150);
+    expect(journey.metadata.availableBrakeSeries.elementAt(1).brakedWeightPercentage, 150);
     expect(journey.metadata.availableBrakeSeries.elementAt(2).trainSeries, TrainSeries.N);
-    expect(journey.metadata.availableBrakeSeries.elementAt(2).brakeSeries, 50);
+    expect(journey.metadata.availableBrakeSeries.elementAt(2).brakedWeightPercentage, 50);
     expect(journey.metadata.availableBrakeSeries.elementAt(3).trainSeries, TrainSeries.R);
-    expect(journey.metadata.availableBrakeSeries.elementAt(3).brakeSeries, 60);
+    expect(journey.metadata.availableBrakeSeries.elementAt(3).brakedWeightPercentage, 60);
     expect(journey.metadata.availableBrakeSeries.elementAt(4).trainSeries, TrainSeries.A);
-    expect(journey.metadata.availableBrakeSeries.elementAt(4).brakeSeries, 70);
+    expect(journey.metadata.availableBrakeSeries.elementAt(4).brakedWeightPercentage, 70);
   });
 
   test('Test station/curve speeds are parsed correctly', () async {
@@ -792,7 +792,7 @@ void main() {
     expect(journey.valid, true);
     expect(journey.metadata.brakeSeries, isNotNull);
     expect(journey.metadata.brakeSeries!.trainSeries, TrainSeries.R);
-    expect(journey.metadata.brakeSeries!.brakeSeries, 115);
+    expect(journey.metadata.brakeSeries!.brakedWeightPercentage, 115);
   });
 
   test('Test tram area parsed correctly', () async {
@@ -1058,7 +1058,7 @@ void main() {
     );
 
     final relevantSpeedInfo = servicePoints[0].relevantGraduatedSpeedInfo(
-      BrakeSeries(trainSeries: TrainSeries.N, brakeSeries: 50),
+      BrakeSeries(trainSeries: TrainSeries.N, brakedWeightPercentage: 50),
     );
     expect(relevantSpeedInfo, hasLength(1));
     expect(relevantSpeedInfo[0].text, 'Zusatzinformation B');
@@ -1653,7 +1653,7 @@ void main() {
     expect(servicePoints[2].properties[0].sign, isNull);
     expect(servicePoints[2].properties[0].text, isNull);
     expect(servicePoints[2].properties[0].speeds, hasLength(17));
-    final speed = servicePoints[2].properties[0].speeds.speedFor(TrainSeries.A, brakeSeries: 50)!.speed;
+    final speed = servicePoints[2].properties[0].speeds.speedFor(TrainSeries.A, brakedWeightPercentage: 50)!.speed;
     expect(speed, isA<IncomingOutgoingSpeed>());
     final incomingOutgoingSpeed = speed as IncomingOutgoingSpeed;
     expect((incomingOutgoingSpeed.incoming as SingleSpeed).value, '60');
@@ -1694,18 +1694,30 @@ void main() {
     final servicePoints = journey.data.whereType<ServicePoint>().toList();
 
     // Geneve-Aeroport
-    expect(servicePoints[0].propertiesFor(BrakeSeries(trainSeries: TrainSeries.A, brakeSeries: 50)), hasLength(1));
-    expect(servicePoints[0].propertiesFor(BrakeSeries(trainSeries: TrainSeries.A, brakeSeries: 60)), hasLength(0));
     expect(
-      servicePoints[0].propertiesFor(BrakeSeries(trainSeries: TrainSeries.R, brakeSeries: 115)),
+      servicePoints[0].propertiesFor(BrakeSeries(trainSeries: TrainSeries.A, brakedWeightPercentage: 50)),
+      hasLength(1),
+    );
+    expect(
+      servicePoints[0].propertiesFor(BrakeSeries(trainSeries: TrainSeries.A, brakedWeightPercentage: 60)),
+      hasLength(0),
+    );
+    expect(
+      servicePoints[0].propertiesFor(BrakeSeries(trainSeries: TrainSeries.R, brakedWeightPercentage: 115)),
       hasLength(0),
     );
 
     // Vevey
-    expect(servicePoints[5].propertiesFor(BrakeSeries(trainSeries: TrainSeries.A, brakeSeries: 50)), hasLength(3));
-    expect(servicePoints[5].propertiesFor(BrakeSeries(trainSeries: TrainSeries.A, brakeSeries: 60)), hasLength(3));
     expect(
-      servicePoints[5].propertiesFor(BrakeSeries(trainSeries: TrainSeries.R, brakeSeries: 115)),
+      servicePoints[5].propertiesFor(BrakeSeries(trainSeries: TrainSeries.A, brakedWeightPercentage: 50)),
+      hasLength(3),
+    );
+    expect(
+      servicePoints[5].propertiesFor(BrakeSeries(trainSeries: TrainSeries.A, brakedWeightPercentage: 60)),
+      hasLength(3),
+    );
+    expect(
+      servicePoints[5].propertiesFor(BrakeSeries(trainSeries: TrainSeries.R, brakedWeightPercentage: 115)),
       hasLength(2),
     );
   });
@@ -2161,7 +2173,7 @@ void _checkTrainSeriesSpeed<T extends Speed>(
   expect(actual.speed, equals(Speed.parse(expected)));
 
   expect(trainSeries, equals(actual.trainSeries));
-  expect(actual.brakeSeries, equals(brakeSeries));
+  expect(actual.brakedWeightPercentage, equals(brakeSeries));
   expect(actual.text, equals(text));
   if (reduced != null) expect(actual.reduced, equals(reduced));
 }

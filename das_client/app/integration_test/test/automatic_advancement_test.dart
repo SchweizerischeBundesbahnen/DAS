@@ -11,29 +11,27 @@ import '../util/test_utils.dart';
 
 void main() {
   group('automatic advancement tests', () {
-    testWidgets('automaticAdvancement_whenJourneyLoaded_thenScrollsAutomatically', (tester) async {
+    testWidgets('automaticAdvancement_whenJourneyLoaded_thenScrollsAutomatically|ZGzAbCSbv7PPJgvNDu2M|tests:94', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9');
 
-      // Check chevron at start
-      expect(
-        find.descendant(of: findDASTableRowByText('Bern'), matching: find.byKey(RouteChevron.chevronKey)),
-        findsAny,
-      );
+      // Check journey position at journey start
+      expect(findChevronPositionAtRowWithText('Bern'), findsAny);
 
       final locations = ['B2', 'B3', 'Burgdorf', 'B101', 'A104'];
 
       for (final location in locations) {
-        await waitUntilExists(
-          tester,
-          find.descendant(of: findDASTableRowByText(location), matching: find.byKey(RouteChevron.chevronKey)),
-        );
+        await waitUntilExists(tester, findChevronPositionAtRowWithText(location));
       }
 
       await disconnect(tester);
     });
 
-    testWidgets('automaticAdvancement_whenIdleTimeReached_thenScrollsBackToPosition', (tester) async {
+    testWidgets('automaticAdvancement_whenIdleTimeReached_thenScrollsBackToPosition|78V0rplxI8A6LGzwHf3R|tests:94', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9');
 
@@ -60,7 +58,9 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('automaticAdvancement_whenReEnabled_thenScrollsToCurrentPosition', (tester) async {
+    testWidgets('automaticAdvancement_whenReEnabled_thenScrollsToCurrentPosition|4Ia2ip74kN6FpYMEnx80|tests:94', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9');
 
@@ -79,17 +79,14 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('automaticAdvancement_whenDisabled_thenDoesNotScroll', (tester) async {
+    testWidgets('automaticAdvancement_whenDisabled_thenDoesNotScroll|4JEbtNRJ2FHdV4Ab1fx9|tests:94', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9');
 
       await stopAutomaticAdvancement(tester);
 
-      // Check chevron at start
-      expect(
-        find.descendant(of: findDASTableRowByText('Bern'), matching: find.byKey(RouteChevron.chevronKey)),
-        findsAny,
-      );
+      // Check journey position at journey start
+      expect(findChevronPositionAtRowWithText('Bern'), findsAny);
 
       // Wait until the chevron is no longer visible
       await waitUntilNotExists(tester, find.byKey(RouteChevron.chevronKey), maxWaitSeconds: 40);
@@ -101,7 +98,9 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('automaticAdvancement_whenJourneyLoaded_thenIsEnabledByDefault', (tester) async {
+    testWidgets('automaticAdvancement_whenJourneyLoaded_thenIsEnabledByDefault|qOLT57vft3usf96YbYjA|tests:94', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9');
 
@@ -120,7 +119,9 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('automaticAdvancement_whenDisabled_thenShowsStickyFooter', (tester) async {
+    testWidgets('automaticAdvancement_whenDisabled_thenShowsStickyFooter|2UNRYR5awQHQMmyn9Qae|tests:94', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9');
 
@@ -135,24 +136,20 @@ void main() {
   });
 
   group('timed advancement tests', () {
-    testWidgets('timedAdvancement_whenJourneyLoaded_thenAdvancesCorrectly', (tester) async {
+    testWidgets('timedAdvancement_whenJourneyLoaded_thenAdvancesCorrectly|6VsC8w1YfGUW4CkTbX7Q|tests:1419', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T46M');
 
-      // Check chevron at start
-      expect(
-        find.descendant(of: findDASTableRowByText('Iselle'), matching: find.byKey(RouteChevron.chevronKey)),
-        findsAny,
-      );
+      // Check journey position at journey start
+      expect(findChevronPositionAtRowWithText('Iselle'), findsAny);
 
       // Preglia is skipped, because Domodossola (bif) time is before Preglia
       final locations = ['Varzo', 'Domodossola (bif)', 'Domodossola (I)'];
 
       for (final location in locations) {
-        await waitUntilExists(
-          tester,
-          find.descendant(of: findDASTableRowByText(location), matching: find.byKey(RouteChevron.chevronKey)),
-        );
+        await waitUntilExists(tester, findChevronPositionAtRowWithText(location));
       }
 
       await disconnect(tester);

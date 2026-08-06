@@ -1,4 +1,5 @@
 import 'package:app/i18n/i18n.dart';
+import 'package:app/pages/journey/journey_screen/notification/widgets/animated_notification.dart';
 import 'package:app/pages/journey/journey_screen/view_model/departure_dispatch_notification_view_model.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:flutter/material.dart';
@@ -15,13 +16,10 @@ class DepartureDispatchNotification extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel = context.read<DepartureDispatchNotificationViewModel>();
 
-    return StreamBuilder(
+    return AnimatedNotification<DepartureDispatchNotificationType?>(
       stream: viewModel.type,
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) return SizedBox.shrink();
-
-        return _notification(context, type: snapshot.data!);
-      },
+      isVisible: (type) => type != null,
+      builder: (context, type) => _notification(context, type: type!),
     );
   }
 

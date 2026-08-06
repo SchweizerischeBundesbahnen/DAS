@@ -10,7 +10,9 @@ import '../util/test_utils.dart';
 
 void main() {
   group('train reduced journey test', () {
-    testWidgets('reducedJourney_whenNetworkChangePresent_thenDisplaysWithKm', (tester) async {
+    testWidgets('reducedJourney_whenNetworkChangePresent_thenDisplaysWithKm|BG8f0zcWS1hA8UmHb6XJ|tests:356', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
       await openReducedJourneyMenu(tester);
@@ -32,7 +34,9 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('reducedJourney_whenLoaded_thenDisplaysTrainInformation', (tester) async {
+    testWidgets('reducedJourney_whenLoaded_thenDisplaysTrainInformation|VAiBsV3JAXE2ISLmbuph|tests:626', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T14');
       await openReducedJourneyMenu(tester);
@@ -45,17 +49,22 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('reducedJourney_whenShuntingMovementJourney_thenDisplaysTrainInformation', (tester) async {
-      await IntegrationTestApp.start(tester);
-      await loadJourney(tester, trainNumber: 'T29');
-      await openReducedJourneyMenu(tester);
+    testWidgets(
+      'reducedJourney_whenShuntingMovementJourney_thenDisplaysTrainInformation|hrT2S4iEd0EwnEdVvS14|tests:264',
+      (tester) async {
+        await IntegrationTestApp.start(tester);
+        await loadJourney(tester, trainNumber: 'T29');
+        await openReducedJourneyMenu(tester);
 
-      expect(find.text('T29R / T29 ${l10n.c_ru_sbb_p}'), findsAny);
+        expect(find.text('T29R / T29 ${l10n.c_ru_sbb_p}'), findsAny);
 
-      await disconnect(tester);
-    });
+        await disconnect(tester);
+      },
+    );
 
-    testWidgets('reducedJourney_whenStoppingAndPassingPoints_thenDisplaysCorrectly', (tester) async {
+    testWidgets('reducedJourney_whenStoppingAndPassingPoints_thenDisplaysCorrectly|49ntMponGaH3d2TeFrAD|tests:626', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
 
       await loadJourney(tester, trainNumber: 'T14');
@@ -72,7 +81,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('reducedJourney_whenDuplicatedAsr_thenDisplaysOnlyOnce', (tester) async {
+    testWidgets('reducedJourney_whenDuplicatedAsr_thenDisplaysOnlyOnce|PcZSkX79OGMg0q3pQn5D|tests:626', (tester) async {
       await IntegrationTestApp.start(tester);
 
       await loadJourney(tester, trainNumber: 'T14');
@@ -86,7 +95,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('reducedJourney_whenLoaded_thenDisplaysPlannedTimes', (tester) async {
+    testWidgets('reducedJourney_whenLoaded_thenDisplaysPlannedTimes|tk4DmRU7XmIasiG1Znwd|tests:84', (tester) async {
       await IntegrationTestApp.start(tester);
 
       await loadJourney(tester, trainNumber: 'T16');

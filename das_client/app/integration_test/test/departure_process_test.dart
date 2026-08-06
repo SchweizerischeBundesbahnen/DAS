@@ -1,7 +1,6 @@
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/chronograph_header_box.dart';
 import 'package:app/pages/journey/journey_screen/widgets/floating_departure_checklist_button.dart';
-import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_chevron.dart';
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -12,65 +11,62 @@ import '../util/test_utils.dart';
 
 void main() {
   group('departure process test', () {
-    testWidgets('departureProcess_whenFeatureEnabled_thenChecklistButtonDisplayedCorrectly', (tester) async {
-      await IntegrationTestApp.start(tester);
-      final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;
-      featureProvider.enableFeature(.departureProcess);
+    testWidgets(
+      'departureProcess_whenFeatureEnabled_thenChecklistButtonDisplayedCorrectly|NW7qkKijklYmLt0yngJ6|tests:627',
+      (tester) async {
+        await IntegrationTestApp.start(tester);
+        final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;
+        featureProvider.enableFeature(.departureProcess);
 
-      await loadJourney(tester, trainNumber: 'T41');
+        await loadJourney(tester, trainNumber: 'T41');
 
-      // start of journey
-      await waitUntilExists(tester, find.byKey(FloatingDepartureChecklistButton.buttonKey));
+        // start of journey
+        await waitUntilExists(tester, find.byKey(FloatingDepartureChecklistButton.buttonKey));
 
-      // journey started (exit signal of LZ)
-      await waitUntilExists(
-        tester,
-        find.descendant(of: findDASTableRowByText('A1'), matching: find.byKey(RouteChevron.chevronKey)),
-      );
-      await waitUntilNotExists(tester, find.byKey(FloatingDepartureChecklistButton.buttonKey));
+        // journey started (exit signal of LZ)
+        await waitUntilExists(tester, findChevronPositionAtRowWithText('A1'));
+        await waitUntilNotExists(tester, find.byKey(FloatingDepartureChecklistButton.buttonKey));
 
-      // next stop reached
-      await waitUntilNotExists(tester, find.byKey(FloatingDepartureChecklistButton.buttonKey));
+        // next stop reached
+        await waitUntilNotExists(tester, find.byKey(FloatingDepartureChecklistButton.buttonKey));
 
-      // intermediate signal reached
-      await waitUntilExists(
-        tester,
-        find.descendant(of: findDASTableRowByText('I1'), matching: find.byKey(RouteChevron.chevronKey)),
-      );
-      await waitUntilExists(tester, find.byKey(FloatingDepartureChecklistButton.buttonKey));
+        // intermediate signal reached
+        await waitUntilExists(tester, findChevronPositionAtRowWithText('I1'));
+        await waitUntilExists(tester, find.byKey(FloatingDepartureChecklistButton.buttonKey));
 
-      // next signal reached
-      await waitUntilNotExists(
-        tester,
-        find.descendant(of: findDASTableRowByText('I1'), matching: find.byKey(RouteChevron.chevronKey)),
-      );
-      await waitUntilNotExists(tester, find.byKey(FloatingDepartureChecklistButton.buttonKey));
+        // next signal reached
+        await waitUntilNotExists(tester, findChevronPositionAtRowWithText('I1'));
+        await waitUntilNotExists(tester, find.byKey(FloatingDepartureChecklistButton.buttonKey));
 
-      await disconnect(tester);
-    });
+        await disconnect(tester);
+      },
+    );
 
-    testWidgets('departureProcess_whenNoCustomerOrientedDeparture_thenChecklistButtonOpensDepartureDialog', (
+    testWidgets(
+      'departureProcess_whenNoCustomerOrientedDeparture_thenChecklistButtonOpensDepartureDialog|Lwlj8frlqY7pBq76LGKu|tests:627',
+      (tester) async {
+        await IntegrationTestApp.start(tester);
+        final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;
+        featureProvider.enableFeature(.departureProcess);
+
+        await loadJourney(tester, trainNumber: 'T41M');
+
+        // start of journey
+        await waitUntilExists(tester, find.byKey(FloatingDepartureChecklistButton.buttonKey));
+
+        await tapElement(tester, find.byKey(FloatingDepartureChecklistButton.buttonKey));
+
+        expect(find.text(l10n.w_departure_process_dialog_title), findsOneWidget);
+        expect(find.text(l10n.w_departure_process_checklist_item_1), findsOneWidget);
+        expect(find.text(l10n.w_departure_process_checklist_item_3), findsOneWidget);
+
+        await disconnect(tester);
+      },
+    );
+
+    testWidgets('departureProcess_whenFeatureEnabled_thenShowsChronographWarning|nqR5G6rO4Aw4aeZLyZL4|tests:627', (
       tester,
     ) async {
-      await IntegrationTestApp.start(tester);
-      final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;
-      featureProvider.enableFeature(.departureProcess);
-
-      await loadJourney(tester, trainNumber: 'T41M');
-
-      // start of journey
-      await waitUntilExists(tester, find.byKey(FloatingDepartureChecklistButton.buttonKey));
-
-      await tapElement(tester, find.byKey(FloatingDepartureChecklistButton.buttonKey));
-
-      expect(find.text(l10n.w_departure_process_dialog_title), findsOneWidget);
-      expect(find.text(l10n.w_departure_process_checklist_item_1), findsOneWidget);
-      expect(find.text(l10n.w_departure_process_checklist_item_3), findsOneWidget);
-
-      await disconnect(tester);
-    });
-
-    testWidgets('departureProcess_whenFeatureEnabled_thenShowsChronographWarning', (tester) async {
       await IntegrationTestApp.start(tester);
       final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;
       featureProvider.enableFeature(.departureProcess);

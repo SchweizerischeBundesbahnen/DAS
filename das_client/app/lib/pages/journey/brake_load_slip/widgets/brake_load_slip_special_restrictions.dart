@@ -1,7 +1,9 @@
 import 'package:app/i18n/i18n.dart';
 import 'package:app/theme/das_colors.dart';
+import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/assets.dart';
-import 'package:app/widgets/dot_indicator.dart';
+import 'package:app/widgets/das_badge_overlay.dart';
+import 'package:app/widgets/das_circle_badge.dart';
 import 'package:app/widgets/key_value_table.dart';
 import 'package:app/widgets/key_value_table_data_row.dart';
 import 'package:flutter/material.dart';
@@ -64,14 +66,15 @@ class BrakeLoadSlipSpecialRestrictions extends StatelessWidget {
       context.l10n.p_brake_load_slip_special_restrictions_title,
       maxLines: 3,
       overflow: TextOverflow.ellipsis,
-      style: sbbTextStyle.boldStyle.small,
+      style: sbbTextStyle.boldStyle,
     );
 
     return showChangeIndicator && _hasChange()
         ? Row(
             children: [
-              DotIndicator(
-                offset: Offset(0, -SBBSpacing.small),
+              DASBadgeOverlay(
+                badgeOffset: Offset(0, -SBBSpacing.small),
+                badge: DASCircleBadge(color: ThemeUtil.getDASOperationalChangeColor(context)),
                 child: titleText,
               ),
             ],

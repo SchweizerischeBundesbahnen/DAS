@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:app/i18n/i18n.dart';
-import 'package:app/pages/preload/view_model/preload_view_model.dart';
+import 'package:app/pages/diagnostic/view_model/preload_view_model.dart';
 import 'package:app/util/format.dart';
 import 'package:flutter/material.dart';
 import 'package:preload/component.dart';
@@ -26,16 +26,25 @@ class PreloadStatusDisplay extends StatelessWidget {
     return StreamBuilder(
       stream: vm.preloadDetails,
       builder: (context, snapshot) {
-        return Column(
-          mainAxisSize: .min,
-          spacing: SBBSpacing.xSmall,
-          children: [
-            _progressBarRow(snapshot.data),
-            _description(context, snapshot.data),
-          ],
+        return SBBContentBox(
+          padding: EdgeInsets.all(SBBSpacing.small),
+          child: Column(
+            crossAxisAlignment: .start,
+            mainAxisSize: .min,
+            spacing: SBBSpacing.xSmall,
+            children: [
+              _title(context),
+              _progressBarRow(snapshot.data),
+              _description(context, snapshot.data),
+            ],
+          ),
         );
       },
     );
+  }
+
+  Widget _title(BuildContext context) {
+    return Text(context.l10n.w_preload_status_title, style: SBBTextStyles.mediumBold);
   }
 
   Widget _progressBarRow(PreloadDetails? preloadDetails) {

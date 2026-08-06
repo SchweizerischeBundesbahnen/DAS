@@ -29,6 +29,7 @@ public class PreloadScheduler {
      * Due to infrastructure realtime handling of operating trains, real train runs get clear just a few hours earlier.
      */
     private static final int PRELOAD_HOURS_BEFORE_DEPARTURE = 4;
+    private static final int CONSECUTIVE_TIMEOUT_THRESHOLD = 3;
     private final SferaService sferaService;
     private final TrainIdentificationService trainIdentificationsService;
     private final StorageService storageService;
@@ -59,17 +60,37 @@ public class PreloadScheduler {
         List<TrainIdentification> trainIdentifications = trainIdentificationsService.getNewTrainIdentificationsBetween(DateTimeUtil.now().minusHours(PRELOAD_HOURS_BEFORE_DEPARTURE),
             DateTimeUtil.now().plusHours(PRELOAD_HOURS_BEFORE_DEPARTURE));
         sferaService.connect();
+        int consecutiveTimeouts = 0;
+        int processedCount = 0;
         for (TrainIdentification trainId : trainIdentifications) {
+            if (consecutiveTimeouts >= CONSECUTIVE_TIMEOUT_THRESHOLD) {
+                int skippedCount = trainIdentifications.size() - processedCount;
+                log.warn("Aborting preload: MQTT/IM DAS-TS unavailable after {} consecutive timeouts. {} trains skipped, will retry on next schedule.",
+                    consecutiveTimeouts, skippedCount);
+                break;
+            }
+            processedCount++;
             PreloadResult preloadResult = sferaService.preload(trainId, mapSegmentProfiles);
             switch (preloadResult) {
                 case PreloadResult.Success(var successJp, var successSps, var successTcs) -> {
+                    consecutiveTimeouts = 0;
                     mapJourneyProfiles.put(trainId, successJp);
                     mapSegmentProfiles.putAll(successSps.stream().collect(Collectors.toMap(SegmentProfileIdentification::from, sp -> sp)));
                     mapTrainCharacteristics.putAll(successTcs.stream().collect(Collectors.toMap(TrainCharacteristicsIdentification::from, tc -> tc)));
                     log.info("Preload for train {} succeeded with {} sps and {} tcs", trainId, successSps.size(), successTcs.size());
                 }
-                case PreloadResult.Unavailable() -> log.info("Preload for train {} unavailable for now", trainId);
-                case PreloadResult.Error(var message, Throwable ex) -> log.error("Preload for train {} failed with message: {}", trainId, message, ex);
+                case PreloadResult.Unavailable() -> {
+                    consecutiveTimeouts = 0;
+                    log.info("Preload for train {} unavailable for now", trainId);
+                }
+                case PreloadResult.Timeout(var message, Throwable ex) -> {
+                    consecutiveTimeouts++;
+                    log.error("Preload for train {} timed out: {}", trainId, message, ex);
+                }
+                case PreloadResult.Error(var message, Throwable ex) -> {
+                    consecutiveTimeouts = 0;
+                    log.error("Preload for train {} failed with message: {}", trainId, message, ex);
+                }
             }
         }
         sferaService.disconnect();

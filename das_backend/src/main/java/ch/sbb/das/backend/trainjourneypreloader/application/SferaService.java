@@ -80,8 +80,12 @@ public class SferaService {
 
     @Recover
     private PreloadResult recoverPreload(Exception ex, TrainIdentification trainId) {
+        boolean isTimeout = ex instanceof ExecutionException && ex.getCause() instanceof TimeoutException;
         try {
-            return terminateSessionWithResult(trainId, new PreloadResult.Error("Preload failed after " + MAX_RETRIES + " attempts", ex));
+            PreloadResult result = isTimeout
+                ? new PreloadResult.Timeout("Preload timed out after " + MAX_RETRIES + " attempts", ex)
+                : new PreloadResult.Error("Preload failed after " + MAX_RETRIES + " attempts", ex);
+            return terminateSessionWithResult(trainId, result);
         } catch (InterruptedException | ExecutionException | MqttException e) {
             return new PreloadResult.Error("Preload failed after " + MAX_RETRIES + " attempts and failed to terminate session", e);
         }

@@ -16,7 +16,8 @@ import 'package:app/pages/journey/journey_screen/widgets/table/config/journey_co
 import 'package:app/pages/journey/journey_screen/widgets/table/service_point_row.dart';
 import 'package:app/theme/das_colors.dart';
 import 'package:app/theme/theme_util.dart';
-import 'package:app/widgets/modification_indicator.dart';
+import 'package:app/widgets/das_badge_overlay.dart';
+import 'package:app/widgets/modification_icon.dart';
 import 'package:app/widgets/speed_display.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:app/widgets/table/das_table_theme.dart';
@@ -109,9 +110,10 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     return DASTableCell(
       decoration: DASTableCellDecoration(color: specialCellColor),
       padding: hasShortTermChange ? EdgeInsets.all(SBBSpacing.xSmall).copyWith(left: SBBSpacing.small) : null,
-      child: ModificationIndicator(
-        show: data.hasModificationUpdated,
-        offset: Offset(0, -SBBSpacing.small),
+      child: DASBadgeOverlay(
+        badgeVisible: data.hasModificationUpdated,
+        badgeOffset: Offset(0, -SBBSpacing.small),
+        badge: const ModificationIcon(),
         child: Column(
           mainAxisAlignment: .end,
           crossAxisAlignment: .start,
@@ -198,7 +200,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     final selectedBrakeSeries = config.settings.currentBrakeSeries;
     final trainSeriesSpeed = speedData.speedFor(
       selectedBrakeSeries?.trainSeries,
-      brakeSeries: selectedBrakeSeries?.brakeSeries,
+      brakedWeightPercentage: selectedBrakeSeries?.brakedWeightPercentage,
     );
 
     return DASTableCell(
@@ -337,7 +339,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     final isShortTermChangeEnd = shortTermChange.endOrder == data.order;
 
     final borderSide = BorderSide(
-      color: ThemeUtil.getColor(context, SBBColors.turquoise, SBBColors.turquoiseDark),
+      color: ThemeUtil.getDASOperationalChangeColor(context),
       width: 4.0,
     );
     final border = Border(

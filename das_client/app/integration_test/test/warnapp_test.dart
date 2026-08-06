@@ -16,7 +16,7 @@ void main() {
   if (Platform.isAndroid) return;
 
   group('warnapp test', () {
-    testWidgets('warnapp_whenSignalIsRed_thenTriggersWarning', (tester) async {
+    testWidgets('warnapp_whenSignalIsRed_thenTriggersWarning|FyC1jKH9cdcBV12PSb7q|tests:98', (tester) async {
       await IntegrationTestApp.start(tester);
 
       final motionDataService = DI.get<MotionDataService>() as MockMotionDataService;
@@ -34,7 +34,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('warnapp_whenUiRebuilt_thenNotificationNotReappearing', (tester) async {
+    testWidgets('warnapp_whenUiRebuilt_thenNotificationNotReappearing|uoTbX3SWk0ErQ5UKnyPQ|tests:98', (tester) async {
       await IntegrationTestApp.start(tester);
 
       final motionDataService = DI.get<MotionDataService>() as MockMotionDataService;
@@ -57,7 +57,9 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('warnapp_whenManeuverButtonTapped_thenActivatesManeuverMode', (tester) async {
+    testWidgets('warnapp_whenManeuverButtonTapped_thenActivatesManeuverMode|fzvOU1FQOyjnN2eS2nO0|tests:98', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
 
       final motionDataService = DI.get<MotionDataService>() as MockMotionDataService;
@@ -74,7 +76,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('warnapp_whenInManeuverMode_thenDoesNotTrigger', (tester) async {
+    testWidgets('warnapp_whenInManeuverMode_thenDoesNotTrigger|L1acZ9QnjvNYwfLsKH9Y|tests:98', (tester) async {
       await IntegrationTestApp.start(tester);
 
       final motionDataService = DI.get<MotionDataService>() as MockMotionDataService;
@@ -105,7 +107,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('warnapp_whenSignalIsGreen_thenDoesNotTrigger', (tester) async {
+    testWidgets('warnapp_whenSignalIsGreen_thenDoesNotTrigger|8eVsobX4adhhZeX7htwv|tests:98', (tester) async {
       await IntegrationTestApp.start(tester);
 
       final motionDataService = DI.get<MotionDataService>() as MockMotionDataService;

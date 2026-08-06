@@ -8,7 +8,9 @@ import '../integration/integration_test_app.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('calculatedSpeed_whenJourneyLoaded_thenDisplaysCorrectly', (tester) async {
+  testWidgets('calculatedSpeed_whenJourneyLoaded_thenDisplaysCorrectly|mfGgJRQKClLfSpfi6maO|tests:88,367', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
 
     await loadJourney(tester, trainNumber: 'T23M');
@@ -99,7 +101,9 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('calculatedSpeed_whenDisplayedInStickyHeader_thenShowsCorrectly', (tester) async {
+  testWidgets('calculatedSpeed_whenDisplayedInStickyHeader_thenShowsCorrectly|yx1uKcECluWqDNFyQ6zR|tests:88,367', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
 
     await loadJourney(tester, trainNumber: 'T23M');
@@ -146,7 +150,9 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('calculatedSpeed_whenNoVproSpeedAtPosition_thenHidesPunctuality', (tester) async {
+  testWidgets('calculatedSpeed_whenNoVproSpeedAtPosition_thenHidesPunctuality|dlsoheuAER1XBsYUmjNT|tests:88,122', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
 
     await loadJourney(tester, trainNumber: 'T23');
@@ -169,7 +175,9 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('calculatedSpeed_whenReducedToLineSpeed_thenDisplaysInDifferentColor', (tester) async {
+  testWidgets('calculatedSpeed_whenReducedToLineSpeed_thenDisplaysInDifferentColor|Mk8PekT17HLJlrLqXMz9|tests:88,367', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
 
     await loadJourney(tester, trainNumber: 'T23M');

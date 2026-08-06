@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:app/launcher/launcher.dart';
-import 'package:app/provider/user_settings.dart';
+import 'package:app/provider/local_key_value_store.dart';
 import 'package:external_links/component.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -18,7 +18,7 @@ class LinksViewModel {
   }
 
   final ExternalLinksRepository _externalLinksRepository;
-  final UserSettings _userSettings;
+  final LocalKeyValueStore _userSettings;
   final Launcher _launcher;
 
   final BehaviorSubject<List<ExternalLink>> _rxExternalLinks = BehaviorSubject<List<ExternalLink>>.seeded(const []);

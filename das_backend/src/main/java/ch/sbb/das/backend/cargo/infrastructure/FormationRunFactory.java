@@ -26,9 +26,9 @@ public final class FormationRunFactory {
     private static FormationRun create(ch.sbb.zis.trainformation.api.model.FormationRun formationRun) {
         FormationRunBuilder builder = FormationRun.builder()
             .company(new CompanyCode(formationRun.getSmsEvu()))
-            .tafTapLocationUicStartCode(toTafTapLocationReference(formationRun.getStartLocationUic()))
+            .tafTapLocationReferenceStart(toTafTapLocationReference(formationRun.getStartLocationUic()))
             .tafTapLocationUicStartPassIndex(formationRun.getStartLocationUic() != null ? formationRun.getStartLocationUic().getBpZusatzId() : null)
-            .tafTapLocationUicEndCode(toTafTapLocationReference(formationRun.getEndLocationUic()))
+            .tafTapLocationReferenceEnd(toTafTapLocationReference(formationRun.getEndLocationUic()))
             .trainCategoryCode(formationRun.getTrainSequence())
             .brakedWeightPercentage(formationRun.getBrakeSequence())
             .vehicles(VehicleFactory.create(formationRun.getVehicleGroups()));
