@@ -20,9 +20,9 @@
 //
 // target is one of: client, backend, admin. With no target, all are processed.
 
-import { readFileSync, writeFileSync, readdirSync, statSync, existsSync } from 'node:fs';
-import { join, resolve, relative } from 'node:path';
-import { randomInt } from 'node:crypto';
+import {existsSync, readdirSync, readFileSync, statSync, writeFileSync} from 'node:fs';
+import {join, relative, resolve} from 'node:path';
+import {randomInt} from 'node:crypto';
 
 const REPO_ROOT = resolve(import.meta.dirname, '..');
 
@@ -37,113 +37,111 @@ const TESTS_TAG_RE = /(\s*\|\s*)tests:/;
 const SEP = '|';
 
 const TARGETS = {
-  client: {
-    label: 'das_client',
-    dir: join(REPO_ROOT, 'das_client', 'app', 'integration_test', 'test'),
-    nameFilter: (name) => name.endsWith('.dart'),
-    // testWidgets('desc') / testWidgets("desc"), possibly wrapped onto the next line.
-    titleRe: /(testWidgets\(\s*)(['"])((?:(?!\2).)*)\2/gs,
-  },
-  backend: {
-    label: 'das_backend',
-    dir: join(REPO_ROOT, 'das_backend', 'src', 'test'),
-    nameFilter: (name) => name.endsWith('.java'),
-    // Only classes annotated with @IntegrationTest are in scope.
-    contentGate: (content) => /@IntegrationTest\b/.test(content),
-    // @DisplayName("desc")
-    titleRe: /(@DisplayName\(\s*)(")((?:(?!\2).)*)\2/g,
-  },
-  admin: {
-    label: 'das_admin_tool',
-    dir: join(REPO_ROOT, 'das_admin_tool', 'e2e', 'tests'),
-    nameFilter: (name) => name.endsWith('.spec.ts'),
-    // test('desc'), including test.only/skip/fixme variants; skips test.describe blocks.
-    titleRe: /(\btest(?:\.(?:only|skip|fixme))?\(\s*)(['"`])((?:(?!\2).)*)\2/gs,
-  },
+    client: {
+        label: 'das_client',
+        dir: join(REPO_ROOT, 'das_client', 'app', 'integration_test', 'test'),
+        nameFilter: (name) => name.endsWith('.dart'),
+        // testWidgets('desc') / testWidgets("desc"), possibly wrapped onto the next line.
+        titleRe: /(testWidgets\(\s*)(['"])((?:(?!\2).)*)\2/gs,
+    },
+    backend: {
+        label: 'das_backend',
+        dir: join(REPO_ROOT, 'das_backend', 'src', 'test'),
+        nameFilter: (name) => name.endsWith('IntegrationTest.java') || name.endsWith('ControllerTest.java'),
+        // @DisplayName("desc")
+        titleRe: /(@DisplayName\(\s*)(")((?:(?!\2).)*)\2/g,
+    },
+    admin: {
+        label: 'das_admin_tool',
+        dir: join(REPO_ROOT, 'das_admin_tool', 'e2e', 'tests'),
+        nameFilter: (name) => name.endsWith('.spec.ts'),
+        // test('desc'), including test.only/skip/fixme variants; skips test.describe blocks.
+        titleRe: /(\btest(?:\.(?:only|skip|fixme))?\(\s*)(['"`])((?:(?!\2).)*)\2/gs,
+    },
 };
 
 function collectFiles(dir, nameFilter) {
-  if (!existsSync(dir)) return [];
-  const files = [];
-  for (const name of readdirSync(dir)) {
-    const full = join(dir, name);
-    if (statSync(full).isDirectory()) {
-      files.push(...collectFiles(full, nameFilter));
-    } else if (nameFilter(name)) {
-      files.push(full);
+    if (!existsSync(dir)) return [];
+    const files = [];
+    for (const name of readdirSync(dir)) {
+        const full = join(dir, name);
+        if (statSync(full).isDirectory()) {
+            files.push(...collectFiles(full, nameFilter));
+        } else if (nameFilter(name)) {
+            files.push(full);
+        }
     }
-  }
-  return files.sort();
+    return files.sort();
 }
 
 function hasId(title) {
-  return title.split('|').some((part) => ID_SEGMENT_RE.test(part.trim()));
+    return title.split('|').some((part) => ID_SEGMENT_RE.test(part.trim()));
 }
 
 function normalizeTitle(title) {
-  return title
-    .split('|')
-    .map((part) => {
-      const trimmed = part.trim();
-      return /^tests:/.test(trimmed) ? trimmed.replace(/\s+/g, '') : trimmed;
-    })
-    .join(SEP);
+    return title
+        .split('|')
+        .map((part) => {
+            const trimmed = part.trim();
+            return /^tests:/.test(trimmed) ? trimmed.replace(/\s+/g, '') : trimmed;
+        })
+        .join(SEP);
 }
 
 function generateId() {
-  return Array.from({ length: ID_LENGTH }, () => ID_ALPHABET[randomInt(ID_ALPHABET.length)]).join('');
+    return Array.from({length: ID_LENGTH}, () => ID_ALPHABET[randomInt(ID_ALPHABET.length)]).join('');
 }
 
 function insertId(title, id) {
-  const match = TESTS_TAG_RE.exec(title);
-  if (match) {
-    // Insert "<sep><id>" right before the existing "<sep>tests:" tag, reusing
-    // the surrounding project's delimiter style (e.g. "|" or " | ").
-    const sep = match[1];
-    return title.slice(0, match.index) + sep + id + title.slice(match.index);
-  }
-  return null;
+    const match = TESTS_TAG_RE.exec(title);
+    if (match) {
+        // Insert "<sep><id>" right before the existing "<sep>tests:" tag, reusing
+        // the surrounding project's delimiter style (e.g. "|" or " | ").
+        const sep = match[1];
+        return title.slice(0, match.index) + sep + id + title.slice(match.index);
+    }
+    return null;
 }
 
 function processTarget(target) {
-  let changedFiles = 0;
-  let changedTests = 0;
+    let changedFiles = 0;
+    let changedTests = 0;
 
-  for (const file of collectFiles(target.dir, target.nameFilter)) {
-    const content = readFileSync(file, 'utf8');
-    if (target.contentGate && !target.contentGate(content)) continue;
+    for (const file of collectFiles(target.dir, target.nameFilter)) {
+        const content = readFileSync(file, 'utf8');
+        if (target.contentGate && !target.contentGate(content)) continue;
 
-    const newContent = content.replace(target.titleRe, (match, prefix, quote, title) => {
-      let newTitle = normalizeTitle(title);
-      if (!hasId(newTitle)) {
-        const id = generateId();
-        newTitle = insertId(newTitle, id) ?? `${newTitle}${SEP}${id}`;
-      }
-      if (newTitle === title) return match;
-      changedTests++;
-      return `${prefix}${quote}${newTitle}${quote}`;
-    });
+        const newContent = content.replace(target.titleRe, (match, prefix, quote, title) => {
+            let newTitle = normalizeTitle(title);
+            if (!hasId(newTitle)) {
+                const id = generateId();
+                newTitle = insertId(newTitle, id) ?? `${newTitle}${SEP}${id}`;
+            }
+            if (newTitle === title) return match;
+            changedTests++;
+            return `${prefix}${quote}${newTitle}${quote}`;
+        });
 
-    if (newContent !== content) {
-      writeFileSync(file, newContent);
-      changedFiles++;
-      console.log(`  updated ${relative(REPO_ROOT, file)}`);
+        if (newContent !== content) {
+            writeFileSync(file, newContent);
+            changedFiles++;
+            console.log(`  updated ${relative(REPO_ROOT, file)}`);
+        }
     }
-  }
 
-  console.log(`${target.label}: ${changedTests} test(s) updated across ${changedFiles} file(s).`);
+    console.log(`${target.label}: ${changedTests} test(s) updated across ${changedFiles} file(s).`);
 }
 
 function main() {
-  const requested = process.argv.slice(2);
-  const unknown = requested.filter((name) => !TARGETS[name]);
-  if (unknown.length > 0) {
-    console.error(`Unknown target(s): ${unknown.join(', ')}. Valid targets: ${Object.keys(TARGETS).join(', ')}.`);
-    process.exit(1);
-  }
-  const names = requested.length > 0 ? requested : Object.keys(TARGETS);
+    const requested = process.argv.slice(2);
+    const unknown = requested.filter((name) => !TARGETS[name]);
+    if (unknown.length > 0) {
+        console.error(`Unknown target(s): ${unknown.join(', ')}. Valid targets: ${Object.keys(TARGETS).join(', ')}.`);
+        process.exit(1);
+    }
+    const names = requested.length > 0 ? requested : Object.keys(TARGETS);
 
-  for (const name of names) processTarget(TARGETS[name]);
+    for (const name of names) processTarget(TARGETS[name]);
 }
 
 main();
