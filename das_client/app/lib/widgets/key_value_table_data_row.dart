@@ -1,5 +1,6 @@
 import 'package:app/theme/theme_util.dart';
-import 'package:app/widgets/dot_indicator.dart';
+import 'package:app/widgets/das_badge_overlay.dart';
+import 'package:app/widgets/das_circle_badge.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -57,9 +58,9 @@ class KeyValueTableDataRow extends StatelessWidget {
     );
 
     return hasChange && showChangeIndicator && value == null
-        ? DotIndicator(
-            offset: Offset(0, -SBBSpacing.small),
-            color: ThemeUtil.getDASOperationalChangeColor(context),
+        ? DASBadgeOverlay(
+            badgeOffset: Offset(0, -SBBSpacing.small),
+            badge: DASCircleBadge(color: ThemeUtil.getDASOperationalChangeColor(context)),
             child: labelText,
           )
         : Expanded(child: labelText);
@@ -73,12 +74,11 @@ class KeyValueTableDataRow extends StatelessWidget {
       style: valueStyle ?? (hasChange && showChangeIndicator ? sbbTextStyle.boldStyle : sbbTextStyle.romanStyle),
     );
 
-    return hasChange && showChangeIndicator && value != null
-        ? DotIndicator(
-            offset: Offset(0, -SBBSpacing.small),
-            color: ThemeUtil.getDASOperationalChangeColor(context),
-            child: text,
-          )
-        : text;
+    return DASBadgeOverlay(
+      badgeVisible: hasChange && showChangeIndicator && value != null,
+      badgeOffset: Offset(0, -SBBSpacing.small),
+      badge: DASCircleBadge(color: ThemeUtil.getDASOperationalChangeColor(context)),
+      child: text,
+    );
   }
 }

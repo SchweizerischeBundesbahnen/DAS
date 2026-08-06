@@ -1,4 +1,4 @@
-import 'package:app/widgets/modification_indicator.dart';
+import 'package:app/widgets/modification_icon.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -7,28 +7,30 @@ import '../integration/integration_test_app.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('journeyUpdates_whenChangesReceived_thenDisplaysCorrectly', (tester) async {
+  testWidgets('journeyUpdates_whenChangesReceived_thenDisplaysCorrectly|rCW5QKoQdUwtfxVEEIHR|tests:241', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T35');
 
     // check normal rows
-    _checkRowModification(tester, ModificationIndicator.indicatorKey, '1.5', false);
-    _checkRowModification(tester, ModificationIndicator.indicatorKey, '1.6', false);
-    _checkRowModification(tester, ModificationIndicator.indicatorKey, '1.7', false);
-    _checkRowModification(tester, ModificationIndicator.indicatorKey, '2.0', false);
+    _checkRowModification(tester, ModificationIcon.iconKey, '1.5', false);
+    _checkRowModification(tester, ModificationIcon.iconKey, '1.6', false);
+    _checkRowModification(tester, ModificationIcon.iconKey, '1.7', false);
+    _checkRowModification(tester, ModificationIcon.iconKey, '2.0', false);
 
     await dragUntilTextInStickyHeader(tester, 'Property Updated');
 
     // updated rows
-    _checkRowModification(tester, ModificationIndicator.indicatorKey, '3.0', true);
-    _checkRowModification(tester, ModificationIndicator.indicatorKey, '3.5', true);
-    _checkRowModification(tester, ModificationIndicator.indicatorKey, '3.6', true);
-    _checkRowModification(tester, ModificationIndicator.indicatorKey, '3.7', true);
-    _checkRowModification(tester, ModificationIndicator.indicatorKey, '4.0', true);
+    _checkRowModification(tester, ModificationIcon.iconKey, '3.0', true);
+    _checkRowModification(tester, ModificationIcon.iconKey, '3.5', true);
+    _checkRowModification(tester, ModificationIcon.iconKey, '3.6', true);
+    _checkRowModification(tester, ModificationIcon.iconKey, '3.7', true);
+    _checkRowModification(tester, ModificationIcon.iconKey, '4.0', true);
 
     await dragUntilTextInStickyHeader(tester, 'Line Speed Updated');
 
-    _checkRowModification(tester, ModificationIndicator.indicatorKey, '5.0', true);
+    _checkRowModification(tester, ModificationIcon.iconKey, '5.0', true);
 
     // deleted rows
     _checkRowModification(tester, DASTable.strikethroughRowKey, '105.5', true);
@@ -38,13 +40,13 @@ void main() {
 
     await dragUntilTextInStickyHeader(tester, 'Station Speed Updated');
 
-    _checkRowModification(tester, ModificationIndicator.indicatorKey, '103.0', true);
+    _checkRowModification(tester, ModificationIcon.iconKey, '103.0', true);
     // updated but more then 30 days ago rows
-    _checkRowModification(tester, ModificationIndicator.indicatorKey, '102.5', false);
-    _checkRowModification(tester, ModificationIndicator.indicatorKey, '102.4', false);
-    _checkRowModification(tester, ModificationIndicator.indicatorKey, '102.3', false);
-    _checkRowModification(tester, ModificationIndicator.indicatorKey, '101.0', false);
-    _checkRowModification(tester, ModificationIndicator.indicatorKey, '100.0', false);
+    _checkRowModification(tester, ModificationIcon.iconKey, '102.5', false);
+    _checkRowModification(tester, ModificationIcon.iconKey, '102.4', false);
+    _checkRowModification(tester, ModificationIcon.iconKey, '102.3', false);
+    _checkRowModification(tester, ModificationIcon.iconKey, '101.0', false);
+    _checkRowModification(tester, ModificationIcon.iconKey, '100.0', false);
 
     // delete but more then 30 days ago
     expect(findDASTableRowByText('99.6'), findsNothing);
@@ -55,7 +57,9 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('journeyUpdates_whenTrainCharacteristicsUpdated_thenIgnoresUpdate', (tester) async {
+  testWidgets('journeyUpdates_whenTrainCharacteristicsUpdated_thenIgnoresUpdate|ld7g7OsSEKkPbbGjJ5aM|tests:1416', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T37');
 

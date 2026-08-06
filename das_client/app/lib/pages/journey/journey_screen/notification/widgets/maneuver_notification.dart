@@ -1,4 +1,5 @@
 import 'package:app/i18n/i18n.dart';
+import 'package:app/pages/journey/journey_screen/notification/widgets/animated_notification.dart';
 import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
 import 'package:app/widgets/das_icons.dart';
 import 'package:app/widgets/notificationbox/notification_box.dart';
@@ -16,29 +17,25 @@ class ManeuverNotification extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel = context.read<WarnAppViewModel>();
 
-    return StreamBuilder(
+    return AnimatedNotification<bool>(
       stream: viewModel.isManeuverModeEnabled,
-      builder: (context, snapshot) {
-        final isManeuverModeEnabled = snapshot.data ?? false;
-        if (!isManeuverModeEnabled) return SizedBox.shrink();
-
-        return NotificationBox(
-          style: .warning,
-          title: context.l10n.w_maneuver_notification_text,
-          action: Row(
-            children: [
-              _openWaraButton(viewModel),
-              Text(context.l10n.w_maneuver_notification_maneuver, style: sbbTextStyle.lightStyle.medium),
-              const SizedBox(width: SBBSpacing.xSmall),
-              SBBSwitch(
-                key: maneuverNotificationSwitchKey,
-                value: isManeuverModeEnabled,
-                onChanged: (value) => viewModel.setManeuverMode(value),
-              ),
-            ],
-          ),
-        );
-      },
+      isVisible: (isManeuverModeEnabled) => isManeuverModeEnabled ?? false,
+      builder: (context, isManeuverModeEnabled) => NotificationBox(
+        style: .warning,
+        title: context.l10n.w_maneuver_notification_text,
+        action: Row(
+          children: [
+            _openWaraButton(viewModel),
+            Text(context.l10n.w_maneuver_notification_maneuver, style: sbbTextStyle.lightStyle.medium),
+            const SizedBox(width: SBBSpacing.xSmall),
+            SBBSwitch(
+              key: maneuverNotificationSwitchKey,
+              value: isManeuverModeEnabled ?? false,
+              onChanged: (value) => viewModel.setManeuverMode(value),
+            ),
+          ],
+        ),
+      ),
     );
   }
 

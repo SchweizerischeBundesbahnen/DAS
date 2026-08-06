@@ -9,12 +9,11 @@ import org.springframework.stereotype.Component;
 public class TafTapLocationMapper {
 
     private static TafTapLocationReference toLocationReference(ServicePoint.ServicePointNumber servicePointNumber) {
-        String countryCodeIso = TafTapLocationReference.toCountryCodeIso(servicePointNumber.uicCountryCode());
-        return new TafTapLocationReference(countryCodeIso, servicePointNumber.numberShort());
+        return new TafTapLocationReference(servicePointNumber.uicCountryCode(), servicePointNumber.numberShort(), servicePointNumber.checkDigit());
     }
 
     public TafTapLocationEntity toEntityFromServicePoint(ServicePoint sp) {
-        return new TafTapLocationEntity(null, toLocationReference(sp.number()).toLocationCode(), sp.designationOfficial(), sp.abbreviation(), sp.validFrom(), sp.validTo());
+        return new TafTapLocationEntity(null, toLocationReference(sp.number()).locationCode(), sp.designationOfficial(), sp.abbreviation(), sp.validFrom(), sp.validTo());
     }
 
     public TafTapLocation toResponse(TafTapLocationEntity entity) {

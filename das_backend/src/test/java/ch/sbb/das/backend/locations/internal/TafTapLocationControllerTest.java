@@ -26,7 +26,7 @@ class TafTapLocationControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @DisplayName("getAllLocations_ok_admin_returnsAllLocationsAndHeaders|tests:144,538")
+    @DisplayName("All locations when the caller is admin then all locations and cache headders are returned|GTcycGyTcsr4JnEP7q98|tests:144,538")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     void getAllLocations_ok_admin_returnsAllLocationsAndHeaders() throws Exception {
@@ -41,7 +41,7 @@ class TafTapLocationControllerTest {
             .andExpect(jsonPath("$.data[*].validFrom", containsInAnyOrder(null, "2099-01-01", null)));
     }
 
-    @DisplayName("getAllLocations_ok_ruAdmin_returnsAllLocations|tests:144,538")
+    @DisplayName("All locations when the caller is ru admin then all locations are returned|92c7wyVPNDcCNWM1Q7Wf|tests:144,538")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void getAllLocations_ok_ruAdmin_returnsAllLocations() throws Exception {
@@ -50,7 +50,7 @@ class TafTapLocationControllerTest {
             .andExpect(jsonPath("$.data", hasSize(3)));
     }
 
-    @DisplayName("getAllLocations_forbidden_observer|tests:144,538")
+    @DisplayName("All locations when the caller is observer then access is forbidden|z46IJ0cO4g7sXhkd73mz|tests:144,538")
     @Test
     @WithMockRole(roles = UserRole.OBSERVER)
     void getAllLocations_forbidden_observer() throws Exception {
@@ -58,7 +58,7 @@ class TafTapLocationControllerTest {
             .andExpect(status().isForbidden());
     }
 
-    @DisplayName("getAllLocations_unauthorized|tests:144,538")
+    @DisplayName("All locations when the caller is not authenticated then access is unauthorized|e0OF8XMpJmQdMnjgdF8B|tests:144,538")
     @Test
     void getAllLocations_unauthorized() throws Exception {
         mockMvc.perform(get(API_LOCATIONS))

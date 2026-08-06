@@ -13,15 +13,15 @@ dependencies:
 
 dev_dependencies:
   # https://pub.dev/packages/melos
-  melos: ^7.7.0
+  melos: ^8.2.2
 
 # Melos Configuration
 melos:
   scripts:
     clean:das:
       description: Run cleanup of das client files
-      run: flutter clean
       exec:
+        command: flutter clean
         concurrency: 4
       packageFilters:
         flutter: true
@@ -32,41 +32,41 @@ melos:
         - melos run generate:intl
 
     generate:build_runner:
-      run: dart run build_runner build --delete-conflicting-outputs
       description: Run build_runner in all components
       exec:
+        command: dart run build_runner build --delete-conflicting-outputs
         orderDependents: true
       packageFilters:
         dependsOn: "build_runner"
 
     generate:intl:
-      run: flutter gen-l10n
       description: Run generation of internationalization files
       exec:
+        command: flutter gen-l10n
         concurrency: 1
       packageFilters:
         dirExists: l10n
 
     test:
-      run: flutter test --no-pub
       description: Run tests in components with test dir
       exec:
+        command: flutter test --no-pub
         failFast: false
       packageFilters:
         dirExists: test
 
     coverage:
-      run: flutter test --coverage --no-pub
       description: Run tests with coverage in components with test dir
       exec:
+        command: flutter test --coverage --no-pub
         failFast: false
       packageFilters:
         dirExists: test
 
     unused_code:
-      run: dart run flutter_prunekit unused_code
       description: Run build_runner in all components
       exec:
+        command: dart run flutter_prunekit unused_code
         failFast: false
       packageFilters:
         dependsOn: "flutter_prunekit"

@@ -17,9 +17,9 @@ class MockFormationRepository implements FormationRepository {
     _rxFormation.add(null);
   }
 
-  void emitT9999Formation() {
+  void emitT49Formation() {
     final formation = Formation(
-      operationalTrainNumber: 'T9999',
+      operationalTrainNumber: 'T49',
       company: '2185',
       operationalDay: DateTime.now(),
       formationRuns: [
@@ -67,7 +67,7 @@ class MockFormationRepository implements FormationRepository {
     final now = DateTime.now();
 
     final formation = Formation(
-      operationalTrainNumber: 'T9999',
+      operationalTrainNumber: 'T49',
       company: '2185',
       operationalDay: now,
       formationRuns: [
@@ -149,9 +149,9 @@ class MockFormationRepository implements FormationRepository {
     _rxFormation.add(formation);
   }
 
-  void emitT9999FormationUpdate() {
+  void emitT49FormationUpdate() {
     final formation = Formation(
-      operationalTrainNumber: 'T9999',
+      operationalTrainNumber: 'T49',
       company: '2185',
       operationalDay: DateTime.now(),
       formationRuns: [

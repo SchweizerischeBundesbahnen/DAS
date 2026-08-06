@@ -14,7 +14,7 @@ import 'package:app/pages/journey/journey_screen/widgets/communication_network_i
 import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:app/util/format.dart';
-import 'package:app/widgets/dot_indicator.dart';
+import 'package:app/widgets/das_circle_badge.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:connectivity_x/component.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +33,9 @@ import '../util/test_utils.dart';
 
 Future<void> main() async {
   group('train journey header test', () {
-    testWidgets('journeyHeader_whenConnectivityChanges_thenShowsCorrectState', (tester) async {
+    testWidgets('journeyHeader_whenConnectivityChanges_thenShowsCorrectState|INnxRgqXwEq3DKjj5xko|tests:119', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
 
       // simulate connectivity
@@ -100,7 +102,9 @@ Future<void> main() async {
       await disconnect(tester);
     });
 
-    testWidgets('journeyHeader_whenJourneyLoaded_thenTurnsOnAlwaysOnDisplay', (tester) async {
+    testWidgets('journeyHeader_whenJourneyLoaded_thenTurnsOnAlwaysOnDisplay|Wxr40hIhESiOEWYDJTeD|tests:591', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
 
       // Get that the always-on display is turned off, because journey is not started yet
@@ -114,7 +118,9 @@ Future<void> main() async {
       expect(currentDisplayTurnedOn, true);
     });
 
-    testWidgets('journeyHeader_whenJourneyClosed_thenTurnsOffAlwaysOnDisplay', (tester) async {
+    testWidgets('journeyHeader_whenJourneyClosed_thenTurnsOffAlwaysOnDisplay|85sJ2C4mLMJHgOJ8qZCX|tests:591', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
 
       await loadJourney(tester, trainNumber: 'T4');
@@ -140,7 +146,7 @@ Future<void> main() async {
       expect(currentDisplayTurnedOff, false);
     });
 
-    testWidgets('journeyHeader_whenTrainActive_thenHidesAppBar', (tester) async {
+    testWidgets('journeyHeader_whenTrainActive_thenHidesAppBar|Y8vN9CR9fYwhIrxBzq68|tests:79,670', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
@@ -159,7 +165,7 @@ Future<void> main() async {
       await disconnect(tester);
     });
 
-    testWidgets('journeyHeader_whenThemeSwitchTapped_thenSwitchesTheme', (tester) async {
+    testWidgets('journeyHeader_whenThemeSwitchTapped_thenSwitchesTheme|ZhLtX4wiqLsmQxd537ps|tests:102', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
@@ -186,7 +192,9 @@ Future<void> main() async {
       expect(Theme.of(context).brightness != brightness, true);
     });
 
-    testWidgets('journeyHeader_whenExtendedMenuOpened_thenShowsCloseButton', (tester) async {
+    testWidgets('journeyHeader_whenExtendedMenuOpened_thenShowsCloseButton|3ND51AAMNM7zIQ6jQuJs|tests:497', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
@@ -201,7 +209,9 @@ Future<void> main() async {
       await disconnect(tester);
     });
 
-    testWidgets('journeyHeader_whenManeuverModeToggled_thenShowsNotification', (tester) async {
+    testWidgets('journeyHeader_whenManeuverModeToggled_thenShowsNotification|CnrguVzWD6cZ1wJtRpnm|tests:242', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
@@ -214,38 +224,46 @@ Future<void> main() async {
       await disconnect(tester);
     });
 
-    testWidgets('journeyHeader_whenManeuverNotificationSwitchTapped_thenHidesNotification', (tester) async {
-      await IntegrationTestApp.start(tester);
-      await loadJourney(tester, trainNumber: 'T9999');
+    testWidgets(
+      'journeyHeader_whenManeuverNotificationSwitchTapped_thenHidesNotification|xqiXbNFDNL2YEEEGdMMT|tests:242',
+      (tester) async {
+        await IntegrationTestApp.start(tester);
+        await loadJourney(tester, trainNumber: 'T9999');
 
-      await _toggleExtendedMenuManeuverMode(tester);
+        await _toggleExtendedMenuManeuverMode(tester);
 
-      await tapElement(tester, find.byKey(ManeuverNotification.maneuverNotificationSwitchKey));
-      expect(find.text(l10n.w_maneuver_notification_text), findsNothing);
+        await tapElement(tester, find.byKey(ManeuverNotification.maneuverNotificationSwitchKey));
+        expect(find.text(l10n.w_maneuver_notification_text), findsNothing);
 
-      await disconnect(tester);
-    });
+        await disconnect(tester);
+      },
+    );
 
-    testWidgets('journeyHeader_whenWaraAppInstalledAndManeuverMode_thenShowsWaraAppLink', (tester) async {
-      await IntegrationTestApp.start(tester);
-      await loadJourney(tester, trainNumber: 'T9999');
+    testWidgets(
+      'journeyHeader_whenWaraAppInstalledAndManeuverMode_thenShowsWaraAppLink|MFGC6WM2ZhGAvZOru19z|tests:242',
+      (tester) async {
+        await IntegrationTestApp.start(tester);
+        await loadJourney(tester, trainNumber: 'T9999');
 
-      final mockWarnAppVM = DI.get<WarnAppViewModel>() as MockWarnAppViewModel;
+        final mockWarnAppVM = DI.get<WarnAppViewModel>() as MockWarnAppViewModel;
 
-      mockWarnAppVM.setWaraAppInstalled(false);
-      await _toggleExtendedMenuManeuverMode(tester);
-      expect(find.byKey(ManeuverNotification.openWaraAppButtonKey), findsNothing);
+        mockWarnAppVM.setWaraAppInstalled(false);
+        await _toggleExtendedMenuManeuverMode(tester);
+        expect(find.byKey(ManeuverNotification.openWaraAppButtonKey), findsNothing);
 
-      await tapElement(tester, find.byKey(ManeuverNotification.maneuverNotificationSwitchKey));
+        await tapElement(tester, find.byKey(ManeuverNotification.maneuverNotificationSwitchKey));
 
-      mockWarnAppVM.setWaraAppInstalled(true);
-      await _toggleExtendedMenuManeuverMode(tester);
-      expect(find.byKey(ManeuverNotification.openWaraAppButtonKey), findsOne);
+        mockWarnAppVM.setWaraAppInstalled(true);
+        await _toggleExtendedMenuManeuverMode(tester);
+        expect(find.byKey(ManeuverNotification.openWaraAppButtonKey), findsOne);
 
-      await disconnect(tester);
-    });
+        await disconnect(tester);
+      },
+    );
 
-    testWidgets('journeyHeader_whenWarnappDisabled_thenHidesManeuverMode', (tester) async {
+    testWidgets('journeyHeader_whenWarnappDisabled_thenHidesManeuverMode|tWnozeOhBpZvpfl5l5tt|tests:242,445', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
 
       final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;
@@ -264,7 +282,9 @@ Future<void> main() async {
       await disconnect(tester);
     });
 
-    testWidgets('journeyHeader_whenWaraAppInstalled_thenShowsOpenMenuItem', (tester) async {
+    testWidgets('journeyHeader_whenWaraAppInstalled_thenShowsOpenMenuItem|BC5tOxJbc31r6u4oe66L|tests:242', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
@@ -285,7 +305,7 @@ Future<void> main() async {
       await disconnect(tester);
     });
 
-    testWidgets('journeyHeader_whenBatteryAbove15Percent_thenHidesIcon', (tester) async {
+    testWidgets('journeyHeader_whenBatteryAbove15Percent_thenHidesIcon|5Ehxse0aAny05PMaCF9G|tests:123', (tester) async {
       await IntegrationTestApp.start(tester);
       final battery = DI.get<Battery>() as MockBattery;
       battery.currentBatteryLevel = 80;
@@ -301,7 +321,9 @@ Future<void> main() async {
       await disconnect(tester);
     });
 
-    testWidgets('journeyHeader_whenBatteryBelow15Percent_thenShowsIconAndModal', (tester) async {
+    testWidgets('journeyHeader_whenBatteryBelow15Percent_thenShowsIconAndModal|Em5ecUdyqo96tv29cg28|tests:123,590', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       final battery = DI.get<Battery>() as MockBattery;
       battery.currentBatteryLevel = 10;
@@ -322,7 +344,9 @@ Future<void> main() async {
       await disconnect(tester);
     });
 
-    testWidgets('journeyHeader_whenCommunicationNetworkChanges_thenDisplaysCorrectly', (tester) async {
+    testWidgets('journeyHeader_whenCommunicationNetworkChanges_thenDisplaysCorrectly|C3iKkuijMLoz0xz3gSPt|tests:125', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T12');
 
@@ -346,7 +370,9 @@ Future<void> main() async {
       await disconnect(tester);
     });
 
-    testWidgets('journeyHeader_whenRadioContactsChange_thenDisplaysCorrectly', (tester) async {
+    testWidgets('journeyHeader_whenRadioContactsChange_thenDisplaysCorrectly|tr4Sky5hk17bxb622pST|tests:125', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T12');
 
@@ -365,35 +391,37 @@ Future<void> main() async {
         matching: find.byKey(RadioContactChannels.radioContactChannelsKey),
       );
       expect(mainContactBern, findsNothing);
-      final bernIndicator = find.descendant(of: radioChannel, matching: find.byKey(DotIndicator.indicatorKey));
+      final bernIndicator = find.descendant(of: radioChannel, matching: find.byKey(DASCircleBadge.circleBadgeKey));
       expect(bernIndicator, findsNothing);
 
       // check mainContacts for Wankdorf (nextStop: Burgdorf)
       await waitUntilExists(tester, find.descendant(of: header, matching: find.text('Burgdorf')));
       final mainContactWankdorf = find.descendant(of: radioChannel, matching: find.text('1407'));
       await waitUntilExists(tester, mainContactWankdorf, maxWaitSeconds: 2);
-      final wankdorfIndicator = find.descendant(of: radioChannel, matching: find.byKey(DotIndicator.indicatorKey));
+      final wankdorfIndicator = find.descendant(of: radioChannel, matching: find.byKey(DASCircleBadge.circleBadgeKey));
       expect(wankdorfIndicator, findsNothing);
 
       // check mainContacts for Burgdorf (A2 is entry signal)
       await waitUntilExists(tester, findChevronPositionAtRowWithText('A2'));
       final mainContactsBurgdorf = find.descendant(of: radioChannel, matching: find.text('1608 (1609)'));
       await waitUntilExists(tester, mainContactsBurgdorf, maxWaitSeconds: 2);
-      final burgdorfIndicator = find.descendant(of: radioChannel, matching: find.byKey(DotIndicator.indicatorKey));
+      final burgdorfIndicator = find.descendant(of: radioChannel, matching: find.byKey(DASCircleBadge.circleBadgeKey));
       expect(burgdorfIndicator, findsOneWidget);
 
       // check mainContacts for Olten (A3 is entry signal)
       await waitUntilExists(tester, findChevronPositionAtRowWithText('A3'));
       final mainContactsOlten = find.descendant(of: radioChannel, matching: find.text('1102'));
       await waitUntilExists(tester, mainContactsOlten, maxWaitSeconds: 2);
-      final oltenIndicator = find.descendant(of: radioChannel, matching: find.byKey(DotIndicator.indicatorKey));
+      final oltenIndicator = find.descendant(of: radioChannel, matching: find.byKey(DASCircleBadge.circleBadgeKey));
       expect(oltenIndicator, findsOneWidget);
 
       await disconnect(tester);
     });
 
     // can be removed based on what option to change the brightness will be chosen
-    testWidgets('journeyHeader_whenDoubleTapped_thenSetsBrightnessToZero', (tester) async {
+    testWidgets('journeyHeader_whenDoubleTapped_thenSetsBrightnessToZero|O8gneDOXV3qSXnyNiMPK|tests:101', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(
         tester,
         onBeforeRun: () => (DI.get<BrightnessManager>() as MockBrightnessManager).writeSettingsPermission = false,
@@ -425,7 +453,9 @@ Future<void> main() async {
     });
 
     // can be removed based on what option to change the brightness will be chosen
-    testWidgets('journeyHeader_whenDraggedRight_thenIncreasesBrightness', (tester) async {
+    testWidgets('journeyHeader_whenDraggedRight_thenIncreasesBrightness|DsETQyDLocUSGSQfMnmt|tests:101', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(
         tester,
         onBeforeRun: () => (DI.get<BrightnessManager>() as MockBrightnessManager).writeSettingsPermission = false,
@@ -455,7 +485,7 @@ Future<void> main() async {
       await disconnect(tester);
     });
 
-    testWidgets('journeyHeader_whenDraggedLeft_thenDecreasesBrightness', (tester) async {
+    testWidgets('journeyHeader_whenDraggedLeft_thenDecreasesBrightness|VENb2YZWboKuRpbZfdSW|tests:101', (tester) async {
       await IntegrationTestApp.start(
         tester,
         onBeforeRun: () => (DI.get<BrightnessManager>() as MockBrightnessManager).writeSettingsPermission = false,
@@ -485,53 +515,59 @@ Future<void> main() async {
       await disconnect(tester);
     });
 
-    testWidgets('journeyHeader_whenDepartureAuthorizationPresent_thenDisplaysCorrectly', (tester) async {
-      await IntegrationTestApp.start(tester);
-      await loadJourney(tester, trainNumber: 'T31');
+    testWidgets(
+      'journeyHeader_whenDepartureAuthorizationPresent_thenDisplaysCorrectly|1kg0KDpUjd6nDMn4q7C6|tests:226',
+      (tester) async {
+        await IntegrationTestApp.start(tester);
+        await loadJourney(tester, trainNumber: 'T31');
 
-      // check existing departure authorization section in header
-      final header = find.byType(Header);
-      expect(header, findsOneWidget);
+        // check existing departure authorization section in header
+        final header = find.byType(Header);
+        expect(header, findsOneWidget);
 
-      // check departure authorization for Dietikon on start (nextStop: Schlieren)
-      await _checkDepartureAuth(header, nextStopName: 'Schlieren', text: '(DT) *');
+        // check departure authorization for Dietikon on start (nextStop: Schlieren)
+        await _checkDepartureAuth(header, nextStopName: 'Schlieren', text: '(DT) *');
 
-      // check departure authorization after first signal (nextStop: Schlieren)
-      final departureAuthTextSchlieren = '(SCHL) sms 3-6';
-      await waitUntilExists(tester, find.descendant(of: header, matching: find.text(departureAuthTextSchlieren)));
-      await _checkDepartureAuth(header, nextStopName: 'Schlieren', text: departureAuthTextSchlieren);
+        // check departure authorization after first signal (nextStop: Schlieren)
+        final departureAuthTextSchlieren = '(SCHL) sms 3-6';
+        await waitUntilExists(tester, find.descendant(of: header, matching: find.text(departureAuthTextSchlieren)));
+        await _checkDepartureAuth(header, nextStopName: 'Schlieren', text: departureAuthTextSchlieren);
 
-      // check departure authorization on Schlieren (nextStop: Zürich Altstetten)
-      await waitUntilExists(tester, find.descendant(of: header, matching: find.text('Zürich Altstetten')));
-      await _checkDepartureAuth(header, nextStopName: 'Zürich Altstetten', text: departureAuthTextSchlieren);
+        // check departure authorization on Schlieren (nextStop: Zürich Altstetten)
+        await waitUntilExists(tester, find.descendant(of: header, matching: find.text('Zürich Altstetten')));
+        await _checkDepartureAuth(header, nextStopName: 'Zürich Altstetten', text: departureAuthTextSchlieren);
 
-      // check departure authorization on signal after Schlieren (nextStop: Zürich Altstetten)
-      final departureAuthTextAltstetten = '(ZAS) sms 2-4 6,7';
-      await waitUntilExists(tester, find.descendant(of: header, matching: find.text(departureAuthTextAltstetten)));
-      await _checkDepartureAuth(header, nextStopName: 'Zürich Altstetten', text: departureAuthTextAltstetten);
+        // check departure authorization on signal after Schlieren (nextStop: Zürich Altstetten)
+        final departureAuthTextAltstetten = '(ZAS) sms 2-4 6,7';
+        await waitUntilExists(tester, find.descendant(of: header, matching: find.text(departureAuthTextAltstetten)));
+        await _checkDepartureAuth(header, nextStopName: 'Zürich Altstetten', text: departureAuthTextAltstetten);
 
-      // check departure authorization on Zürich Altstetten (nextStop: Zürich Hardbrücke)
-      await waitUntilExists(tester, find.descendant(of: header, matching: find.text('Zürich Hardbrücke')));
-      await _checkDepartureAuth(header, nextStopName: 'Zürich Hardbrücke', text: departureAuthTextAltstetten);
+        // check departure authorization on Zürich Altstetten (nextStop: Zürich Hardbrücke)
+        await waitUntilExists(tester, find.descendant(of: header, matching: find.text('Zürich Hardbrücke')));
+        await _checkDepartureAuth(header, nextStopName: 'Zürich Hardbrücke', text: departureAuthTextAltstetten);
 
-      // check departure authorization on signal after Zürich Altstetten (nextStop: Zürich Hardbrücke)
-      await waitUntilNotExists(
-        tester,
-        find.descendant(of: header, matching: find.byKey(DepartureAuthorizationDisplay.departureAuthorizationTextKey)),
-      );
-      await _checkDepartureAuth(header, nextStopName: 'Zürich Hardbrücke', text: null);
+        // check departure authorization on signal after Zürich Altstetten (nextStop: Zürich Hardbrücke)
+        await waitUntilNotExists(
+          tester,
+          find.descendant(
+            of: header,
+            matching: find.byKey(DepartureAuthorizationDisplay.departureAuthorizationTextKey),
+          ),
+        );
+        await _checkDepartureAuth(header, nextStopName: 'Zürich Hardbrücke', text: null);
 
-      // check departure authorization on Zürich Hardbrücke (nextStop: Zürich HB)
-      await waitUntilExists(tester, find.descendant(of: header, matching: find.text('Zürich HB')));
-      await _checkDepartureAuth(header, nextStopName: 'Zürich HB', text: null);
+        // check departure authorization on Zürich Hardbrücke (nextStop: Zürich HB)
+        await waitUntilExists(tester, find.descendant(of: header, matching: find.text('Zürich HB')));
+        await _checkDepartureAuth(header, nextStopName: 'Zürich HB', text: null);
 
-      // check departure authorization on signal after Zürich Hardbrücke (nextStop: Zürich HB)
-      final departureAuthTextZuerich = '(ZUE) sms *962 -967';
-      await waitUntilExists(tester, find.descendant(of: header, matching: find.text(departureAuthTextZuerich)));
-      await _checkDepartureAuth(header, nextStopName: 'Zürich HB', text: departureAuthTextZuerich);
+        // check departure authorization on signal after Zürich Hardbrücke (nextStop: Zürich HB)
+        final departureAuthTextZuerich = '(ZUE) sms *962 -967';
+        await waitUntilExists(tester, find.descendant(of: header, matching: find.text(departureAuthTextZuerich)));
+        await _checkDepartureAuth(header, nextStopName: 'Zürich HB', text: departureAuthTextZuerich);
 
-      await disconnect(tester);
-    });
+        await disconnect(tester);
+      },
+    );
   });
 }
 

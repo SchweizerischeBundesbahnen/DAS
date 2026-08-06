@@ -8,9 +8,8 @@ import 'package:app/pages/journey/journey_screen/detail_modal/brake_load_slip_mo
 import 'package:app/pages/journey/journey_screen/detail_modal/brake_load_slip_modal/brake_load_slip_modal_overview.dart';
 import 'package:app/pages/journey/journey_screen/notification/widgets/brake_load_slip_notification.dart';
 import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
-import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_chevron.dart';
 import 'package:app/util/time_constants.dart';
-import 'package:app/widgets/dot_indicator.dart';
+import 'package:app/widgets/das_circle_badge.dart';
 import 'package:app/widgets/modal_sheet/das_modal_sheet.dart';
 import 'package:app/widgets/navigation_buttons.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -23,63 +22,65 @@ import '../mocks/mock_formation_repository.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('brakeSlip_whenPositionUpdateWhileBrakeSlipPageOpen_thenDoesNotUpdateToNewPosition', (
-    tester,
-  ) async {
+  testWidgets(
+    'brakeSlip_whenPositionUpdateWhileBrakeSlipPageOpen_thenDoesNotUpdateToNewPosition|lqq9jBQeZXKwYjM3vWYF|tests:1605',
+    (tester) async {
+      await IntegrationTestApp.start(tester);
+
+      final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
+      formationRepository.emitT49Formation();
+
+      await loadJourney(tester, trainNumber: 'T49');
+
+      await openBrakeSlipPage(tester);
+
+      expect(find.byType(BrakeLoadSlipPage), findsOneWidget);
+      expect(find.text('T49'), findsOneWidget);
+
+      // Check resolved stations
+      expect(find.text('Bahnhof A'), findsOneWidget);
+      expect(find.text('Haltestelle B'), findsOneWidget);
+
+      await tester.pumpAndSettle();
+
+      // Wait 5 seconds for position updates
+      for (int i = 0; i < 5; i++) {
+        await tester.pumpAndSettle(Duration(seconds: 1));
+      }
+
+      await tester.pumpAndSettle();
+
+      // Check still showing first page
+      expect(find.text('Bahnhof A'), findsOneWidget);
+      expect(find.text('Haltestelle B'), findsOneWidget);
+
+      await closeBrakeSlipPage(tester);
+      await tester.pumpAndSettle();
+
+      await waitUntilExists(tester, findChevronPositionAtRowWithText('Haltestelle B'));
+
+      await openBrakeSlipPage(tester);
+
+      expect(find.byType(BrakeLoadSlipPage), findsOne);
+
+      await tester.pumpAndSettle();
+
+      expect(find.text('Bahnhof A'), findsNothing);
+      expect(find.text('Halt auf Verlangen C'), findsOneWidget);
+
+      await disconnect(tester);
+    },
+  );
+
+  testWidgets('brakeSlip_whenNoDataAvailable_thenDoesNotShowButton|4z9DtXCNPqahGoefcXqO|tests:692,568', (tester) async {
     await IntegrationTestApp.start(tester);
-
-    final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
-    formationRepository.emitT9999Formation();
-
-    await loadJourney(tester, trainNumber: 'T9999');
-
-    await openBrakeSlipPage(tester);
-
-    expect(find.byType(BrakeLoadSlipPage), findsOneWidget);
-    expect(find.text('T9999'), findsOneWidget);
-
-    // Check resolved stations
-    expect(find.text('Bahnhof A'), findsOneWidget);
-    expect(find.text('Haltestelle B'), findsOneWidget);
-
-    // Wait 20 seconds for position updates
-    await tester.pumpAndSettle();
-    await Future.delayed(Duration(seconds: 20));
-    await tester.pumpAndSettle();
-
-    // Check still showing first page
-    expect(find.text('Bahnhof A'), findsOneWidget);
-    expect(find.text('Haltestelle B'), findsOneWidget);
-
-    await closeBrakeSlipPage(tester);
-    await tester.pumpAndSettle();
-
-    await waitUntilExists(
-      tester,
-      find.descendant(of: findDASTableRowByText('Haltestelle B'), matching: find.byType(RouteChevron)),
-    );
-
-    await openBrakeSlipPage(tester);
-
-    expect(find.byType(BrakeLoadSlipPage), findsOne);
-
-    await tester.pumpAndSettle();
-
-    expect(find.text('Bahnhof A'), findsNothing);
-    expect(find.text('Halt auf Verlangen C'), findsOneWidget);
-
-    await disconnect(tester);
-  });
-
-  testWidgets('brakeSlip_whenNoDataAvailable_thenDoesNotShowButton', (tester) async {
-    await IntegrationTestApp.start(tester);
-    await loadJourney(tester, trainNumber: 'T9999');
+    await loadJourney(tester, trainNumber: 'T49');
 
     final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
 
     expect(find.text(l10n.p_journey_header_button_brake_slip), findsNothing);
 
-    formationRepository.emitT9999Formation();
+    formationRepository.emitT49Formation();
     await tester.pumpAndSettle();
 
     expect(find.text(l10n.p_journey_header_button_brake_slip), findsOneWidget);
@@ -87,18 +88,20 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('brakeSlip_whenFormationDataLoaded_thenShowsInformationAndNavigation', (tester) async {
+  testWidgets('brakeSlip_whenFormationDataLoaded_thenShowsInformationAndNavigation|lTuJGUbeVyBkXBp0mWCS|tests:692', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
 
     final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
-    formationRepository.emitT9999Formation();
+    formationRepository.emitT49Formation();
 
-    await loadJourney(tester, trainNumber: 'T9999M');
+    await loadJourney(tester, trainNumber: 'T49M');
 
     await openBrakeSlipPage(tester);
 
     expect(find.byType(BrakeLoadSlipPage), findsOneWidget);
-    expect(find.text('T9999'), findsOneWidget);
+    expect(find.text('T49'), findsOneWidget);
 
     // Check resolved stations
     expect(find.text('Bahnhof A'), findsOneWidget);
@@ -122,13 +125,15 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('brakeSlip_whenSpecialIndicatorsArePresent_thenShowsBanners', (tester) async {
+  testWidgets('brakeSlip_whenSpecialIndicatorsArePresent_thenShowsBanners|YgF4hHe8Cl7C98NaC5xj|tests:692', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
 
     final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
-    formationRepository.emitT9999Formation();
+    formationRepository.emitT49Formation();
 
-    await loadJourney(tester, trainNumber: 'T9999M');
+    await loadJourney(tester, trainNumber: 'T49M');
 
     await openBrakeSlipPage(tester);
 
@@ -166,15 +171,17 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('brakeSlip_whenDifferentBrakeSeriesInFormation_thenShowsNotification', (tester) async {
+  testWidgets('brakeSlip_whenDifferentBrakeSeriesInFormation_thenShowsNotification|NFIIta4nBxJ20VkGCgH0|tests:692', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
-    await loadJourney(tester, trainNumber: 'T9999M');
+    await loadJourney(tester, trainNumber: 'T49M');
 
     final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
 
     expect(find.byKey(JourneyTable.differentBrakeSeriesWarningKey), findsNothing);
 
-    formationRepository.emitT9999Formation();
+    formationRepository.emitT49Formation();
     await tester.pumpAndSettle();
 
     expect(find.byKey(JourneyTable.differentBrakeSeriesWarningKey), findsOneWidget);
@@ -190,13 +197,15 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('brakeSlipModal_whenOpened_thenDisplaysCorrectInformation', (tester) async {
+  testWidgets('brakeSlipModal_whenOpened_thenDisplaysCorrectInformation|LxpggIMjzbU9W3aoNNeW|tests:692,568', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
 
     final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
-    formationRepository.emitT9999Formation();
+    formationRepository.emitT49Formation();
 
-    await loadJourney(tester, trainNumber: 'T9999M');
+    await loadJourney(tester, trainNumber: 'T49M');
 
     // Open fullscreen
     await openBrakeSlipPage(tester);
@@ -218,13 +227,15 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('brakeSlipModal_whenIdleTimeoutElapses_thenNeverClosesAutomatically', (tester) async {
+  testWidgets('brakeSlipModal_whenIdleTimeoutElapses_thenNeverClosesAutomatically|1g0A50LfMqOsfFqkWrkJ|tests:1867', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
 
     final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
-    formationRepository.emitT9999Formation();
+    formationRepository.emitT49Formation();
 
-    await loadJourney(tester, trainNumber: 'T9999M');
+    await loadJourney(tester, trainNumber: 'T49M');
 
     // Open fullscreen
     await openBrakeSlipPage(tester);
@@ -245,13 +256,15 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('brakeSlipModal_whenButtonTappedWhileOpen_thenClosesModal', (tester) async {
+  testWidgets('brakeSlipModal_whenButtonTappedWhileOpen_thenClosesModal|7VngjKboIfqc2qmsEuws|tests:1875', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
 
     final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
-    formationRepository.emitT9999Formation();
+    formationRepository.emitT49Formation();
 
-    await loadJourney(tester, trainNumber: 'T9999M');
+    await loadJourney(tester, trainNumber: 'T49M');
 
     // Open fullscreen
     await openBrakeSlipPage(tester);
@@ -270,13 +283,15 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('brakeSlipModal_whenNonInteractiveAreaTapped_thenClosesModal', (tester) async {
+  testWidgets('brakeSlipModal_whenNonInteractiveAreaTapped_thenClosesModal|4u1bk9VV17S4h9RpUQxm|tests:1875', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
 
     final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
-    formationRepository.emitT9999Formation();
+    formationRepository.emitT49Formation();
 
-    await loadJourney(tester, trainNumber: 'T9999M');
+    await loadJourney(tester, trainNumber: 'T49M');
 
     // Open fullscreen
     await openBrakeSlipPage(tester);
@@ -294,13 +309,15 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('brakeSlipModal_whenFullscreenButtonTapped_thenOpensFullscreen', (tester) async {
+  testWidgets('brakeSlipModal_whenFullscreenButtonTapped_thenOpensFullscreen|sLTLSnINc1xWV6Sv6gVK|tests:692', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
 
     final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
-    formationRepository.emitT9999Formation();
+    formationRepository.emitT49Formation();
 
-    await loadJourney(tester, trainNumber: 'T9999M');
+    await loadJourney(tester, trainNumber: 'T49M');
 
     // Open fullscreen
     await openBrakeSlipPage(tester);
@@ -316,18 +333,18 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('brakeSlip_whenFormationUpdated_thenShowsNotification', (tester) async {
+  testWidgets('brakeSlip_whenFormationUpdated_thenShowsNotification|Ht9hpOZmHcaTZUyQb4Rf|tests:695', (tester) async {
     await IntegrationTestApp.start(tester);
 
     final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
-    formationRepository.emitT9999Formation();
+    formationRepository.emitT49Formation();
 
-    await loadJourney(tester, trainNumber: 'T9999M');
+    await loadJourney(tester, trainNumber: 'T49M');
     await Future.delayed(BrakeLoadSlipViewModel.initialNotificationDelay);
 
     expect(find.byKey(BrakeLoadSlipNotification.brakeLoadSlipNotificationKey), findsNothing);
 
-    formationRepository.emitT9999FormationUpdate();
+    formationRepository.emitT49FormationUpdate();
     await tester.pumpAndSettle();
 
     expect(find.byKey(BrakeLoadSlipNotification.brakeLoadSlipNotificationKey), findsOneWidget);
@@ -344,30 +361,32 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('brakeSlip_whenFormationRunChanged_thenUpdatesRunChangeDisplay', (tester) async {
+  testWidgets('brakeSlip_whenFormationRunChanged_thenUpdatesRunChangeDisplay|iG1dyvhq8hUk2uhyOMOJ|tests:694', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
 
     final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
-    formationRepository.emitT9999Formation();
+    formationRepository.emitT49Formation();
 
-    await loadJourney(tester, trainNumber: 'T9999M');
+    await loadJourney(tester, trainNumber: 'T49M');
 
     await openBrakeSlipPage(tester);
 
-    expect(find.byType(DotIndicator), findsNothing);
+    expect(find.byType(DASCircleBadge), findsNothing);
 
     await tapElement(tester, find.byKey(NavigationButtons.navigationButtonNextKey));
 
-    expect(find.byType(DotIndicator), findsNWidgets(4));
+    expect(find.byType(DASCircleBadge), findsNWidgets(4));
 
     formationRepository.emitFormationWithAllChanges();
     await tester.pumpAndSettle();
 
-    expect(find.byType(DotIndicator), findsNothing);
+    expect(find.byType(DASCircleBadge), findsNothing);
 
     await tapElement(tester, find.byKey(NavigationButtons.navigationButtonNextKey));
 
-    expect(find.byType(DotIndicator), findsNWidgets(38));
+    expect(find.byType(DASCircleBadge), findsNWidgets(38));
 
     await disconnect(tester);
   });

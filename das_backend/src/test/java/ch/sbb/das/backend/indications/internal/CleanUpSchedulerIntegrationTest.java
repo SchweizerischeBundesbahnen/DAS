@@ -78,7 +78,7 @@ class CleanUpSchedulerIntegrationTest {
         when(lockProvider.lock(any())).thenReturn(Optional.of(dummyLock));
     }
 
-    @DisplayName("cleanUp_deletesOldRuIndicationsAndSpecialHolidays|tests:1657,1656")
+    @DisplayName("Scheduled cleanup when the retention period expires then expired indications and past holidays are removed|WDedovwvdCP8ntVkDkpI|tests:1657,1656")
     @Test
     @Transactional
     @WithMockUser(authorities = "ROLE_admin")
@@ -133,7 +133,7 @@ class CleanUpSchedulerIntegrationTest {
             .allMatch(entity -> entity.getId() != null);
     }
 
-    @DisplayName("cleanUp_preservesIndicationsWithMultiplePeriodsIfLatestPeriodIsActive|tests:1657")
+    @DisplayName("Scheduled cleanup when indications still have at least one active validity period then they are kept|Vb0lnGcalKxMAVyfPMi1|tests:1657")
     @Test
     @Transactional
     @WithMockUser(authorities = "ROLE_admin")
@@ -159,7 +159,7 @@ class CleanUpSchedulerIntegrationTest {
         assertThat(ruIndicationRepository.findAll()).hasSize(1);
     }
 
-    @DisplayName("cleanUp_deletesIndicationsWithAllPeriodsOlderThanCutoff|tests:1657")
+    @DisplayName("Cleanup when all periods are older than the cutoff then the indications are deleted|ZGNJfRjaojgcUMAGKdvx|tests:1657")
     @Test
     @Transactional
     @WithMockUser(authorities = "ROLE_admin")

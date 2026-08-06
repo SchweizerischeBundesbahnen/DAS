@@ -2,6 +2,7 @@ import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_screen/journey_overview.dart';
 import 'package:app/pages/journey/journey_screen/notification/notification_type.dart';
 import 'package:app/pages/journey/journey_screen/notification/widgets/advised_speed_notification.dart';
+import 'package:app/pages/journey/journey_screen/notification/widgets/animated_notification.dart';
 import 'package:app/pages/journey/journey_screen/notification/widgets/brake_load_slip_notification.dart';
 import 'package:app/pages/journey/journey_screen/notification/widgets/customer_oriented_departure_notification.dart';
 import 'package:app/pages/journey/journey_screen/notification/widgets/departure_dispatch_notification.dart';
@@ -44,14 +45,26 @@ class NotificationSpace extends StatelessWidget {
           initialData: notificationPriorityVM.modelValue,
           builder: (context, asyncSnapshot) {
             final data = asyncSnapshot.requireData;
-            if (data.isEmpty) return SizedBox(height: SBBSpacing.xSmall);
 
             return Padding(
-              padding: EdgeInsets.symmetric(horizontal: JourneyOverview.horizontalPadding, vertical: SBBSpacing.xSmall),
+              padding: EdgeInsets.symmetric(horizontal: JourneyOverview.horizontalPadding),
               child: Column(
                 mainAxisSize: .min,
-                spacing: SBBSpacing.xSmall,
-                children: data.map((notification) => notification.toWidget()).toList(growable: false),
+                children: [
+                  const SizedBox(height: SBBSpacing.xSmall),
+                  // one slot per type in priority order: showing or hiding a notification resizes its
+                  // slot, so the other notifications slide to their new position
+                  for (final type in NotificationType.values)
+                    AnimatedNotificationVisibility(
+                      visible: data.contains(type),
+                      child: data.contains(type)
+                          ? Padding(
+                              padding: const EdgeInsets.only(bottom: SBBSpacing.xSmall),
+                              child: type.toWidget(),
+                            )
+                          : const SizedBox.shrink(),
+                    ),
+                ],
               ),
             );
           },

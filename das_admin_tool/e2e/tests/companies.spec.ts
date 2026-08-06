@@ -16,7 +16,7 @@ test.describe('companies test', () => {
   const TEST_TENANT_ID = '2cda5d11-f0ac-46b3-967d-af1b2e1bd01a';
   const TEST_SHORT_NAME_UPDATED = 'TEST_UPDATED';
 
-  test('create, edit and delete company|tests:1878', async ({ page }) => {
+  test('create, edit and delete company|X3AAEqNVkEJsfnioDCRd|tests:1878', async ({ page }) => {
     await page.goto('das-admin/companies');
     await expect(page.locator('sbb-title[level="2"]')).toHaveText('EVUs');
 

@@ -23,39 +23,39 @@ void main() {
   late MockJourneySettingsViewModel mockJourneySettingsViewModel;
   late BehaviorSubject<Journey?> journeySubject;
 
-  final initialBrakeSeries = BrakeSeries(trainSeries: .R, brakeSeries: 120);
+  final initialBrakeSeries = BrakeSeries(trainSeries: .R, brakedWeightPercentage: 120);
   var journeySettings = JourneySettings(initialBrakeSeries: initialBrakeSeries);
   final journey = Journey(
     metadata: Metadata(
       availableBrakeSeries: {
-        BrakeSeries(trainSeries: .R, brakeSeries: 120),
-        BrakeSeries(trainSeries: .A, brakeSeries: 100),
+        BrakeSeries(trainSeries: .R, brakedWeightPercentage: 120),
+        BrakeSeries(trainSeries: .A, brakedWeightPercentage: 100),
       },
       brakeSeries: initialBrakeSeries,
       lineSpeeds: SplayTreeMap.from({
         0: [
           TrainSeriesSpeed(
             trainSeries: .R,
-            brakeSeries: 120,
+            brakedWeightPercentage: 120,
             speed: SingleSpeed(value: '105'),
           ),
           TrainSeriesSpeed(
             trainSeries: .A,
-            brakeSeries: 100,
+            brakedWeightPercentage: 100,
             speed: SingleSpeed(value: '100'),
           ),
         ],
         5: [
           TrainSeriesSpeed(
             trainSeries: .R,
-            brakeSeries: 120,
+            brakedWeightPercentage: 120,
             speed: SingleSpeed(value: '100'),
           ),
         ],
         10: [
           TrainSeriesSpeed(
             trainSeries: .R,
-            brakeSeries: 120,
+            brakedWeightPercentage: 120,
             speed: SingleSpeed(value: '95'),
           ),
         ],
@@ -106,7 +106,7 @@ void main() {
         speed: TrainSeriesSpeed(
           trainSeries: .R,
           speed: SingleSpeed(value: '105'),
-          brakeSeries: 120,
+          brakedWeightPercentage: 120,
         ),
         isPrevious: false,
       ),
@@ -117,7 +117,7 @@ void main() {
         speed: TrainSeriesSpeed(
           trainSeries: .R,
           speed: SingleSpeed(value: '100'),
-          brakeSeries: 120,
+          brakedWeightPercentage: 120,
         ),
         isPrevious: false,
       ),
@@ -126,7 +126,7 @@ void main() {
 
   test('test uses brakeSeries from settings', () async {
     journeySettings = JourneySettings(
-      selectedBrakeSeries: BrakeSeries(trainSeries: .A, brakeSeries: 100),
+      selectedBrakeSeries: BrakeSeries(trainSeries: .A, brakedWeightPercentage: 100),
     );
 
     expect(
@@ -135,7 +135,7 @@ void main() {
         speed: TrainSeriesSpeed(
           trainSeries: .A,
           speed: SingleSpeed(value: '100'),
-          brakeSeries: 100,
+          brakedWeightPercentage: 100,
         ),
         isPrevious: false,
       ),
@@ -149,7 +149,7 @@ void main() {
         speed: TrainSeriesSpeed(
           trainSeries: .R,
           speed: SingleSpeed(value: '95'),
-          brakeSeries: 120,
+          brakedWeightPercentage: 120,
         ),
         isPrevious: true,
       ),
@@ -158,7 +158,7 @@ void main() {
 
   test('test return previous over multiple last entries', () async {
     journeySettings = JourneySettings(
-      selectedBrakeSeries: BrakeSeries(trainSeries: .A, brakeSeries: 100),
+      selectedBrakeSeries: BrakeSeries(trainSeries: .A, brakedWeightPercentage: 100),
     );
 
     expect(
@@ -167,7 +167,7 @@ void main() {
         speed: TrainSeriesSpeed(
           trainSeries: .A,
           speed: SingleSpeed(value: '100'),
-          brakeSeries: 100,
+          brakedWeightPercentage: 100,
         ),
         isPrevious: true,
       ),
@@ -176,7 +176,7 @@ void main() {
 
   test('test return none if not found', () async {
     journeySettings = JourneySettings(
-      selectedBrakeSeries: BrakeSeries(trainSeries: .N, brakeSeries: 100),
+      selectedBrakeSeries: BrakeSeries(trainSeries: .N, brakedWeightPercentage: 100),
     );
 
     expect(

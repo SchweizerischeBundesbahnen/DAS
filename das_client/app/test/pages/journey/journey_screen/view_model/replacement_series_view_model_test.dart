@@ -30,123 +30,123 @@ void main() {
   late BehaviorSubject<JourneyPositionModel> journeyPositionSubject;
   late BehaviorSubject<JourneySettings> journeySettingsSubject;
 
-  final initialBrakeSeries = BrakeSeries(trainSeries: .N, brakeSeries: 180);
+  final initialBrakeSeries = BrakeSeries(trainSeries: .N, brakedWeightPercentage: 180);
   final journey = Journey(
     metadata: Metadata(
       availableBrakeSeries: {
         initialBrakeSeries,
-        BrakeSeries(trainSeries: .N, brakeSeries: 160),
-        BrakeSeries(trainSeries: .R, brakeSeries: 120),
-        BrakeSeries(trainSeries: .A, brakeSeries: 100),
-        BrakeSeries(trainSeries: .D, brakeSeries: 100),
+        BrakeSeries(trainSeries: .N, brakedWeightPercentage: 160),
+        BrakeSeries(trainSeries: .R, brakedWeightPercentage: 120),
+        BrakeSeries(trainSeries: .A, brakedWeightPercentage: 100),
+        BrakeSeries(trainSeries: .D, brakedWeightPercentage: 100),
       },
       brakeSeries: initialBrakeSeries,
       lineSpeeds: SplayTreeMap.from({
         0: [
           TrainSeriesSpeed(
             trainSeries: .N,
-            brakeSeries: 180,
+            brakedWeightPercentage: 180,
             speed: SingleSpeed(value: '120'),
           ),
           TrainSeriesSpeed(
             trainSeries: .N,
-            brakeSeries: 160,
+            brakedWeightPercentage: 160,
             speed: SingleSpeed(value: '110'),
           ),
           TrainSeriesSpeed(
             trainSeries: .R,
-            brakeSeries: 120,
+            brakedWeightPercentage: 120,
             speed: SingleSpeed(value: '105'),
           ),
           TrainSeriesSpeed(
             trainSeries: TrainSeries.A,
-            brakeSeries: 100,
+            brakedWeightPercentage: 100,
             speed: SingleSpeed(value: '100'),
           ),
           TrainSeriesSpeed(
             trainSeries: TrainSeries.D,
-            brakeSeries: 100,
+            brakedWeightPercentage: 100,
             speed: SingleSpeed(value: '100'),
           ),
         ],
         1: [
           TrainSeriesSpeed(
             trainSeries: TrainSeries.N,
-            brakeSeries: 180,
+            brakedWeightPercentage: 180,
             speed: SingleSpeed(value: 'XX'),
           ),
           TrainSeriesSpeed(
             trainSeries: TrainSeries.N,
-            brakeSeries: 160,
+            brakedWeightPercentage: 160,
             speed: SingleSpeed(value: 'XX'),
           ),
           TrainSeriesSpeed(
             trainSeries: TrainSeries.R,
-            brakeSeries: 120,
+            brakedWeightPercentage: 120,
             speed: SingleSpeed(value: '105'),
           ),
           TrainSeriesSpeed(
             trainSeries: TrainSeries.A,
-            brakeSeries: 100,
+            brakedWeightPercentage: 100,
             speed: SingleSpeed(value: '100'),
           ),
           TrainSeriesSpeed(
             trainSeries: TrainSeries.D,
-            brakeSeries: 100,
+            brakedWeightPercentage: 100,
             speed: SingleSpeed(value: '100'),
           ),
         ],
         2: [
           TrainSeriesSpeed(
             trainSeries: TrainSeries.N,
-            brakeSeries: 180,
+            brakedWeightPercentage: 180,
             speed: SingleSpeed(value: 'XX'),
           ),
           TrainSeriesSpeed(
             trainSeries: TrainSeries.N,
-            brakeSeries: 160,
+            brakedWeightPercentage: 160,
             speed: SingleSpeed(value: '110'),
           ),
           TrainSeriesSpeed(
             trainSeries: TrainSeries.R,
-            brakeSeries: 120,
+            brakedWeightPercentage: 120,
             speed: SingleSpeed(value: '105'),
           ),
           TrainSeriesSpeed(
             trainSeries: TrainSeries.A,
-            brakeSeries: 100,
+            brakedWeightPercentage: 100,
             speed: SingleSpeed(value: '100'),
           ),
           TrainSeriesSpeed(
             trainSeries: TrainSeries.D,
-            brakeSeries: 100,
+            brakedWeightPercentage: 100,
             speed: SingleSpeed(value: '100'),
           ),
         ],
         3: [
           TrainSeriesSpeed(
             trainSeries: TrainSeries.N,
-            brakeSeries: 180,
+            brakedWeightPercentage: 180,
             speed: SingleSpeed(value: '120'),
           ),
           TrainSeriesSpeed(
             trainSeries: TrainSeries.N,
-            brakeSeries: 160,
+            brakedWeightPercentage: 160,
             speed: SingleSpeed(value: '110'),
           ),
           TrainSeriesSpeed(
             trainSeries: TrainSeries.R,
-            brakeSeries: 120,
+            brakedWeightPercentage: 120,
             speed: SingleSpeed(value: '105'),
           ),
           TrainSeriesSpeed(
             trainSeries: TrainSeries.A,
-            brakeSeries: 100,
+            brakedWeightPercentage: 100,
             speed: SingleSpeed(value: '100'),
           ),
           TrainSeriesSpeed(
             trainSeries: TrainSeries.D,
-            brakeSeries: 100,
+            brakedWeightPercentage: 100,
             speed: SingleSpeed(value: '100'),
           ),
         ],
@@ -209,8 +209,8 @@ void main() {
           segment: IllegalSpeedSegment(
             start: journey.data[1] as ServicePoint,
             end: journey.data[3] as ServicePoint,
-            original: BrakeSeries(trainSeries: TrainSeries.N, brakeSeries: 180),
-            replacement: BrakeSeries(trainSeries: TrainSeries.R, brakeSeries: 120),
+            original: BrakeSeries(trainSeries: TrainSeries.N, brakedWeightPercentage: 180),
+            replacement: BrakeSeries(trainSeries: TrainSeries.R, brakedWeightPercentage: 120),
           ),
         ),
       ]),
@@ -235,24 +235,24 @@ void main() {
           segment: IllegalSpeedSegment(
             start: journey.data[1] as ServicePoint,
             end: journey.data[3] as ServicePoint,
-            original: BrakeSeries(trainSeries: TrainSeries.N, brakeSeries: 180),
-            replacement: BrakeSeries(trainSeries: TrainSeries.R, brakeSeries: 120),
+            original: BrakeSeries(trainSeries: TrainSeries.N, brakedWeightPercentage: 180),
+            replacement: BrakeSeries(trainSeries: TrainSeries.R, brakedWeightPercentage: 120),
           ),
         ),
         ReplacementSeriesSelected(
           segment: IllegalSpeedSegment(
             start: journey.data[1] as ServicePoint,
             end: journey.data[3] as ServicePoint,
-            original: BrakeSeries(trainSeries: TrainSeries.N, brakeSeries: 180),
-            replacement: BrakeSeries(trainSeries: TrainSeries.R, brakeSeries: 120),
+            original: BrakeSeries(trainSeries: TrainSeries.N, brakedWeightPercentage: 180),
+            replacement: BrakeSeries(trainSeries: TrainSeries.R, brakedWeightPercentage: 120),
           ),
         ),
         OriginalSeriesAvailable(
           segment: IllegalSpeedSegment(
             start: journey.data[1] as ServicePoint,
             end: journey.data[3] as ServicePoint,
-            original: BrakeSeries(trainSeries: TrainSeries.N, brakeSeries: 180),
-            replacement: BrakeSeries(trainSeries: TrainSeries.R, brakeSeries: 120),
+            original: BrakeSeries(trainSeries: TrainSeries.N, brakedWeightPercentage: 180),
+            replacement: BrakeSeries(trainSeries: TrainSeries.R, brakedWeightPercentage: 120),
           ),
         ),
         null,
@@ -269,7 +269,7 @@ void main() {
     await emitObjectToStream(
       journeySettingsSubject,
       JourneySettings(
-        selectedBrakeSeries: BrakeSeries(trainSeries: TrainSeries.R, brakeSeries: 120),
+        selectedBrakeSeries: BrakeSeries(trainSeries: TrainSeries.R, brakedWeightPercentage: 120),
       ),
     );
 
@@ -285,7 +285,7 @@ void main() {
     await emitObjectToStream(
       journeySettingsSubject,
       JourneySettings(
-        selectedBrakeSeries: BrakeSeries(trainSeries: TrainSeries.N, brakeSeries: 180),
+        selectedBrakeSeries: BrakeSeries(trainSeries: TrainSeries.N, brakedWeightPercentage: 180),
       ),
     );
 
@@ -302,7 +302,7 @@ void main() {
     await emitObjectToStream(
       journeySettingsSubject,
       JourneySettings(
-        selectedBrakeSeries: BrakeSeries(trainSeries: TrainSeries.D, brakeSeries: 100),
+        selectedBrakeSeries: BrakeSeries(trainSeries: TrainSeries.D, brakedWeightPercentage: 100),
       ),
     );
 
@@ -323,8 +323,8 @@ void main() {
           segment: IllegalSpeedSegment(
             start: journey.data[1] as ServicePoint,
             end: journey.data[3] as ServicePoint,
-            original: BrakeSeries(trainSeries: TrainSeries.N, brakeSeries: 180),
-            replacement: BrakeSeries(trainSeries: TrainSeries.R, brakeSeries: 120),
+            original: BrakeSeries(trainSeries: TrainSeries.N, brakedWeightPercentage: 180),
+            replacement: BrakeSeries(trainSeries: TrainSeries.R, brakedWeightPercentage: 120),
           ),
         ),
         null,
@@ -332,8 +332,8 @@ void main() {
           segment: IllegalSpeedSegment(
             start: journey.data[1] as ServicePoint,
             end: journey.data[2] as ServicePoint,
-            original: BrakeSeries(trainSeries: TrainSeries.N, brakeSeries: 160),
-            replacement: BrakeSeries(trainSeries: TrainSeries.R, brakeSeries: 120),
+            original: BrakeSeries(trainSeries: TrainSeries.N, brakedWeightPercentage: 160),
+            replacement: BrakeSeries(trainSeries: TrainSeries.R, brakedWeightPercentage: 120),
           ),
         ),
       ]),
@@ -347,7 +347,7 @@ void main() {
     await emitObjectToStream(
       journeySettingsSubject,
       JourneySettings(
-        selectedBrakeSeries: BrakeSeries(trainSeries: TrainSeries.N, brakeSeries: 160),
+        selectedBrakeSeries: BrakeSeries(trainSeries: TrainSeries.N, brakedWeightPercentage: 160),
       ),
     );
 
@@ -363,8 +363,8 @@ void main() {
           segment: IllegalSpeedSegment(
             start: journey.data[1] as ServicePoint,
             end: journey.data[3] as ServicePoint,
-            original: BrakeSeries(trainSeries: TrainSeries.N, brakeSeries: 180),
-            replacement: BrakeSeries(trainSeries: TrainSeries.R, brakeSeries: 120),
+            original: BrakeSeries(trainSeries: TrainSeries.N, brakedWeightPercentage: 180),
+            replacement: BrakeSeries(trainSeries: TrainSeries.R, brakedWeightPercentage: 120),
           ),
         ),
         null,
@@ -397,8 +397,8 @@ void main() {
           segment: IllegalSpeedSegment(
             start: journey.data[4] as ServicePoint,
             end: journey.data[6] as ServicePoint,
-            original: BrakeSeries(trainSeries: TrainSeries.N, brakeSeries: 180),
-            replacement: BrakeSeries(trainSeries: TrainSeries.R, brakeSeries: 120),
+            original: BrakeSeries(trainSeries: TrainSeries.N, brakedWeightPercentage: 180),
+            replacement: BrakeSeries(trainSeries: TrainSeries.R, brakedWeightPercentage: 120),
           ),
         ),
       ]),
@@ -423,7 +423,7 @@ void main() {
           segment: IllegalSpeedSegment(
             start: journey.data[4] as ServicePoint,
             end: journey.data[6] as ServicePoint,
-            original: BrakeSeries(trainSeries: TrainSeries.D, brakeSeries: 100),
+            original: BrakeSeries(trainSeries: TrainSeries.D, brakedWeightPercentage: 100),
             replacement: null,
           ),
         ),
@@ -436,14 +436,14 @@ void main() {
     await emitObjectToStream(
       journeySettingsSubject,
       JourneySettings(
-        selectedBrakeSeries: BrakeSeries(trainSeries: TrainSeries.D, brakeSeries: 100),
+        selectedBrakeSeries: BrakeSeries(trainSeries: TrainSeries.D, brakedWeightPercentage: 100),
       ),
     );
 
     await emitObjectToStream(
       journeySettingsSubject,
       JourneySettings(
-        selectedBrakeSeries: BrakeSeries(trainSeries: TrainSeries.R, brakeSeries: 120),
+        selectedBrakeSeries: BrakeSeries(trainSeries: TrainSeries.R, brakedWeightPercentage: 120),
       ),
     );
 

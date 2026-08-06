@@ -13,6 +13,40 @@ function createDialog(data?: RuIndicationTemplate): RuIndicationTemplateDialog {
 describe('RuIndicationTemplateDialog', () => {
   beforeEach(() => vi.clearAllMocks());
 
+  describe('required field validation', () => {
+    it('should be invalid when form is empty', () => {
+      const dialog = createDialog();
+      expect(dialog['ruIndicationTemplateForm'].invalid).toBe(true);
+    });
+
+    it('should require category field', () => {
+      const dialog = createDialog();
+      expect(dialog['ruIndicationTemplateForm'].get('category')!.hasError('required')).toBe(true);
+    });
+
+    it('should still be invalid when only category is filled but no language content', () => {
+      const dialog = createDialog();
+      dialog['ruIndicationTemplateForm'].get('category')!.setValue('Test Category');
+      dialog['ruIndicationTemplateForm'].updateValueAndValidity();
+      expect(dialog['ruIndicationTemplateForm'].invalid).toBe(true);
+    });
+
+    it('should still be invalid when only title is filled but category is empty', () => {
+      const dialog = createDialog();
+      dialog['ruIndicationTemplateForm'].get('content.de.title')!.setValue('Titel');
+      dialog['ruIndicationTemplateForm'].updateValueAndValidity();
+      expect(dialog['ruIndicationTemplateForm'].invalid).toBe(true);
+    });
+
+    it('should be valid when category and at least one title are filled', () => {
+      const dialog = createDialog();
+      dialog['ruIndicationTemplateForm'].get('category')!.setValue('Test Category');
+      dialog['ruIndicationTemplateForm'].get('content.de.title')!.setValue('Titel');
+      dialog['ruIndicationTemplateForm'].updateValueAndValidity();
+      expect(dialog['ruIndicationTemplateForm'].invalid).toBe(false);
+    });
+  });
+
   describe('oneLanguageRequired validator', () => {
     it('should be invalid when all language titles and texts are empty', () => {
       const dialog = createDialog();
@@ -49,7 +83,7 @@ describe('RuIndicationTemplateDialog', () => {
     });
   });
 
-  describe('languageRequired validator', () => {
+  describe('titleRequired validator', () => {
     it('should be invalid for a language group when text is set but title is empty', () => {
       const dialog = createDialog();
       const deGroup = dialog['ruIndicationTemplateForm'].get('content.de')!;

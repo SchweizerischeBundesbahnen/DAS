@@ -20,16 +20,16 @@ class FormationMapperTest {
             .operationalTrainNumber("54233")
             .operationalDay(LocalDate.of(2026, 7, 22))
             .company(new CompanyCode("2185"))
-            .tafTapLocationReferenceStart("CH00001")
-            .tafTapLocationReferenceEnd("CH00002")
+            .tafTapLocationUicStartCode(85000010)
+            .tafTapLocationUicEndCode(85000020)
             .vehiclesWithBrakeDesignLAndLlAndKCount(1)
             .build();
         TrainFormationRunEntity second = TrainFormationRunEntity.builder()
             .operationalTrainNumber("99999")
             .operationalDay(LocalDate.of(2026, 1, 1))
             .company(new CompanyCode("0001"))
-            .tafTapLocationReferenceStart("CH00003")
-            .tafTapLocationReferenceEnd("CH00004")
+            .tafTapLocationUicStartCode(85000030)
+            .tafTapLocationUicEndCode(85000040)
             .vehiclesWithBrakeDesignLAndLlAndKCount(2)
             .build();
 

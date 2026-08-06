@@ -8,6 +8,7 @@ class JourneyPositionModel {
     this.nextServicePoint,
     this.previousStop,
     this.nextStop,
+    this.isManualPosition = false,
   });
 
   /// The position of the vehicle in the journey indicating the last point **that has been passed**.
@@ -33,6 +34,9 @@ class JourneyPositionModel {
   /// The service point closest to [currentPosition] that is still ahead and is a stop.
   final ServicePoint? nextStop;
 
+  /// Whether the [currentPosition] was set manually by the train driver.
+  final bool isManualPosition;
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -42,7 +46,8 @@ class JourneyPositionModel {
           previousServicePoint == other.previousServicePoint &&
           nextServicePoint == other.nextServicePoint &&
           previousStop == other.previousStop &&
-          nextStop == other.nextStop);
+          nextStop == other.nextStop &&
+          isManualPosition == other.isManualPosition);
 
   @override
   int get hashCode => Object.hash(
@@ -52,6 +57,7 @@ class JourneyPositionModel {
     nextServicePoint,
     previousStop,
     nextStop,
+    isManualPosition,
   );
 
   @override
@@ -63,6 +69,7 @@ class JourneyPositionModel {
         'nextServicePoint: $nextServicePoint, '
         'previousStop: $previousStop, '
         'nextStop: $nextStop'
+        'isManualPosition: $isManualPosition'
         '}';
   }
 }

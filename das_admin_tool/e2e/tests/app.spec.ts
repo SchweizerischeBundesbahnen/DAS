@@ -8,14 +8,14 @@ test.describe('app main test', () => {
     browser = BrowserWindow.init(page);
   });
 
-  test('home view', async ({ page }) => {
+  test('home view|6nrPRNnCzXxkp7KUvjwc', async ({ page }) => {
     await page.goto('');
 
     const titleBox = page.locator('sbb-title').first();
     await expect(titleBox).toHaveText('EVU Admin DAS');
   });
 
-  test('user menu', async ({ page }) => {
+  test('user menu|WTwI7JyEGh6PjBQJe9pD', async ({ page }) => {
     await page.goto('');
 
     const usermenuSelector = 'sbb-menu[trigger="user-menu-trigger"]';

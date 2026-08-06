@@ -63,13 +63,13 @@ void main() {
     operatingDay: DateTime.now().add(Duration(days: -1)),
   );
 
-  final brakeSeries = BrakeSeries(trainSeries: TrainSeries.R, brakeSeries: 150);
+  final brakeSeries = BrakeSeries(trainSeries: TrainSeries.R, brakedWeightPercentage: 150);
 
   final formationRun1 = _generateFormationRun(
     'CH00001',
     'CH00002',
     trainCategoryCode: brakeSeries.trainSeries.name,
-    brakedWeightPercentage: brakeSeries.brakeSeries,
+    brakedWeightPercentage: brakeSeries.brakedWeightPercentage,
   );
   final formationRun2 = _generateFormationRun(
     'CH00002',
@@ -83,7 +83,7 @@ void main() {
     metadata: Metadata(
       trainIdentification: trainIdentification,
       brakeSeries: brakeSeries,
-      availableBrakeSeries: {BrakeSeries(trainSeries: TrainSeries.N, brakeSeries: 50)},
+      availableBrakeSeries: {BrakeSeries(trainSeries: TrainSeries.N, brakedWeightPercentage: 50)},
     ),
     data: [
       ServicePoint(
@@ -520,7 +520,9 @@ void main() {
     testee.updateJourneyBrakeSeriesFromActiveFormationRun();
 
     verify(
-      mockJourneySettingsViewModel.updateBrakeSeries(BrakeSeries(trainSeries: TrainSeries.A, brakeSeries: 75)),
+      mockJourneySettingsViewModel.updateBrakeSeries(
+        BrakeSeries(trainSeries: TrainSeries.A, brakedWeightPercentage: 75),
+      ),
     ).called(1);
   });
 

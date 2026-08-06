@@ -154,8 +154,15 @@ void main() {
       });
 
       // EXPECT
-      expect(testee.modelValue, equals(JourneyPositionModel(currentPosition: zeroSignal, lastPosition: null)));
-      expect(emitRegister, hasLength(0));
+      final expectedModel = JourneyPositionModel(
+        currentPosition: zeroSignal,
+        lastPosition: null,
+        isManualPosition: true,
+      );
+      expect(testee.modelValue, equals(expectedModel));
+      expect(testee.modelValue.isManualPosition, isTrue);
+      expect(emitRegister, hasLength(1));
+      expect(emitRegister.first, equals(expectedModel));
     });
 
     test('currentPosition_whenSignaledPositionOnPoint_thenReturnsPoint', () {
@@ -250,6 +257,7 @@ void main() {
       });
       _processStreamInFakeAsync(testAsync);
       expect(testee.modelValue.currentPosition, equals(aServicePoint));
+      expect(testee.modelValue.isManualPosition, isTrue);
 
       // ACT
       testAsync.run((_) {
@@ -265,6 +273,7 @@ void main() {
 
       // EXPECT
       expect(testee.modelValue.currentPosition, equals(bServicePoint));
+      expect(testee.modelValue.isManualPosition, isFalse);
     });
 
     /// TMS VAD cannot send updates for arriving at an actual service point, but only sends an event for the previous
@@ -924,6 +933,7 @@ void main() {
       });
       _processStreamInFakeAsync(testAsync);
       expect(testee.modelValue.currentPosition, equals(zeroSignal));
+      expect(testee.modelValue.isManualPosition, isFalse);
 
       // ACT
       testAsync.run((async) {
@@ -935,6 +945,7 @@ void main() {
       // EXPECT
       expect(testee.modelValue.currentPosition, equals(aServicePoint));
       expect(testee.modelValue.lastPosition, equals(zeroSignal));
+      expect(testee.modelValue.isManualPosition, isTrue);
     });
 
     test('setManualPosition_whenHasSignaledPosition_thenMovesToNewPosition', () {
@@ -965,6 +976,7 @@ void main() {
       });
       _processStreamInFakeAsync(testAsync);
       expect(testee.modelValue.currentPosition, equals(bServicePoint));
+      expect(testee.modelValue.isManualPosition, isFalse);
 
       // ACT
       testAsync.run((async) {
@@ -976,6 +988,7 @@ void main() {
       // EXPECT
       expect(testee.modelValue.currentPosition, equals(aServicePoint));
       expect(testee.modelValue.lastPosition, equals(bServicePoint));
+      expect(testee.modelValue.isManualPosition, isTrue);
     });
 
     test('setManualPosition_whenIsGivenNullPosition_thenMovesToSignaledPosition', () {
@@ -1006,6 +1019,7 @@ void main() {
       });
       _processStreamInFakeAsync(testAsync);
       expect(testee.modelValue.currentPosition, equals(bServicePoint));
+      expect(testee.modelValue.isManualPosition, isFalse);
 
       testAsync.run((async) {
         journeySettingsViewModel.updateJourneyAdvancement(Manual());
@@ -1015,6 +1029,7 @@ void main() {
 
       expect(testee.modelValue.currentPosition, equals(aServicePoint));
       expect(testee.modelValue.lastPosition, equals(bServicePoint));
+      expect(testee.modelValue.isManualPosition, isTrue);
 
       // ACT
       testAsync.run((_) {
@@ -1024,6 +1039,7 @@ void main() {
 
       expect(testee.modelValue.currentPosition, equals(bServicePoint));
       expect(testee.modelValue.lastPosition, equals(aServicePoint));
+      expect(testee.modelValue.isManualPosition, isFalse);
     });
 
     group('setManualPosition timer advancement', () {
@@ -1071,6 +1087,7 @@ void main() {
             _processStreamInFakeAsync(testAsync);
           });
           expect(testee.modelValue.currentPosition, equals(aServicePoint));
+          expect(testee.modelValue.isManualPosition, isTrue);
           emitRegister.clear();
 
           // ACT – elapse past the 40 s timer
@@ -1079,7 +1096,9 @@ void main() {
 
           // EXPECT
           expect(testee.modelValue.currentPosition, equals(bServicePoint));
+          expect(testee.modelValue.isManualPosition, isTrue);
           expect(emitRegister, hasLength(1));
+          expect((emitRegister.single as JourneyPositionModel).isManualPosition, isTrue);
         },
       );
 
@@ -1127,6 +1146,7 @@ void main() {
 
           // EXPECT – still on A
           expect(testee.modelValue.currentPosition, equals(aServicePoint));
+          expect(testee.modelValue.isManualPosition, isTrue);
           expect(emitRegister, hasLength(0));
         },
       );
@@ -1175,6 +1195,7 @@ void main() {
 
           // EXPECT – still on A
           expect(testee.modelValue.currentPosition, equals(aServicePoint));
+          expect(testee.modelValue.isManualPosition, isTrue);
           expect(emitRegister, hasLength(0));
         },
       );
@@ -1235,6 +1256,7 @@ void main() {
             _processStreamInFakeAsync(testAsync);
           });
           expect(testee.modelValue.currentPosition, equals(bServicePoint));
+          expect(testee.modelValue.isManualPosition, isTrue);
           emitRegister.clear();
 
           // ACT – advance past where A→B timer would have fired
@@ -1243,6 +1265,7 @@ void main() {
 
           // EXPECT – position remains B (old timer did not fire)
           expect(testee.modelValue.currentPosition, equals(bServicePoint));
+          expect(testee.modelValue.isManualPosition, isTrue);
           expect(emitRegister, hasLength(0));
         },
       );
@@ -1287,6 +1310,7 @@ void main() {
             _processStreamInFakeAsync(testAsync);
           });
           expect(testee.modelValue.currentPosition, equals(aServicePoint));
+          expect(testee.modelValue.isManualPosition, isTrue);
 
           // Switch back to Automatic before timer fires
           testAsync.run((_) {
@@ -1301,6 +1325,7 @@ void main() {
 
           // EXPECT – guard `isInManualCycle` prevented the advancement
           expect(testee.modelValue.currentPosition, isNot(equals(bServicePoint)));
+          expect(testee.modelValue.isManualPosition, isTrue);
           expect(emitRegister, hasLength(0));
         },
       );
@@ -1345,6 +1370,7 @@ void main() {
         _processStreamInFakeAsync(testAsync);
 
         expect(testee.modelValue.currentPosition, equals(point1));
+        expect(testee.modelValue.isManualPosition, isFalse);
         expect(emitRegister, hasLength(1));
         emitRegister.clear();
 
@@ -1357,6 +1383,7 @@ void main() {
           testee.modelValue.currentPosition,
           equals(point2),
         );
+        expect(testee.modelValue.isManualPosition, isFalse);
         expect(
           emitRegister,
           orderedEquals([
@@ -1401,6 +1428,7 @@ void main() {
         _processStreamInFakeAsync(testAsync);
 
         expect(testee.modelValue.currentPosition, equals(point1));
+        expect(testee.modelValue.isManualPosition, isFalse);
         emitRegister.clear();
 
         // ACT - Elapse time until service point should be reached
@@ -1412,6 +1440,7 @@ void main() {
           testee.modelValue.currentPosition,
           equals(point2),
         );
+        expect(testee.modelValue.isManualPosition, isFalse);
       });
 
       test('handleTimedRoute_whenTimedPointReachedWithNegativeTime_thenAdvancesImmediately', () {
@@ -1449,6 +1478,7 @@ void main() {
           testee.modelValue.currentPosition,
           equals(point2),
         );
+        expect(testee.modelValue.isManualPosition, isFalse);
         expect(emitRegister, hasLength(2));
       });
     });

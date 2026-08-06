@@ -14,7 +14,9 @@ import '../util/test_utils.dart';
 
 void main() {
   group('login tests', () {
-    testWidgets('login_whenLogoutDialogIsDismissed_thenIsStillLoggedIn', (tester) async {
+    testWidgets('login_whenLogoutDialogIsDismissed_thenIsStillLoggedIn|qRCD5Jy91TVe7KucfsQ7|tests:1870', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       expect(find.byType(JourneySelectionPage), findsOne);
 
@@ -34,7 +36,9 @@ void main() {
       expect(find.byType(JourneySelectionPage), findsOne);
     });
 
-    testWidgets('login_whenStartedDefault_thenIsConnectedToMockBroker', (tester) async {
+    testWidgets('login_whenStartedDefaultForIntegrationTest_thenIsConnectedToMockBroker|o1tTzfXvce93K82ZFcob', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       expect(find.byType(JourneySelectionPage), findsOne);
 
@@ -42,7 +46,9 @@ void main() {
       expect(find.text(MqttBrokerText.mockText), findsOne);
     });
 
-    testWidgets('login_whenLogout_thenDefaultSelectionIsTmsVadOnLoginPage', (tester) async {
+    testWidgets('login_whenLogout_thenDefaultSelectionIsTmsVadOnLoginPage|MgPV1riT2X8BFRJXjhSD|tests:2399', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       expect(find.byType(JourneySelectionPage), findsOne);
 
@@ -74,7 +80,7 @@ void main() {
       expect((tmsToggleListItem.evaluate().first.widget as SBBSwitchListItemBoxed).value, isTrue);
     });
 
-    testWidgets('login_whenLogoutThenLogin_thenWillConnectToTmsVad', (tester) async {
+    testWidgets('login_whenLogoutThenLogin_thenWillConnectToTmsVad|VeZt1c1nxqKljOKbjk7Q|tests:2399', (tester) async {
       await IntegrationTestApp.start(tester);
       expect(find.byType(JourneySelectionPage), findsOne);
 
@@ -101,30 +107,33 @@ void main() {
       expect(find.text(MqttBrokerText.tmsVadText), findsOne);
     });
 
-    testWidgets('login_whenLogoutThenLoginWithSferaMockToggled_thenWillConnectToSferaMock', (tester) async {
-      await IntegrationTestApp.start(tester);
-      expect(find.byType(JourneySelectionPage), findsOne);
+    testWidgets(
+      'login_whenLogoutThenLoginWithSferaMockToggled_thenWillConnectToSferaMock|ucMtHMlV4XgL5Dw8BDeO|tests:2399',
+      (tester) async {
+        await IntegrationTestApp.start(tester);
+        expect(find.byType(JourneySelectionPage), findsOne);
 
-      // perform logout
-      final logoutButton = find.byIcon(SBBIcons.exit_small);
-      await tester.tap(logoutButton);
-      await tester.pumpAndSettle();
-      final logoutDialogTitle = find.text(l10n.w_logout_dialog_title);
-      expect(logoutDialogTitle, findsOne);
-      final testAuthenticator = DI.get<Authenticator>() as IntegrationTestAuthenticator;
-      testAuthenticator.isAuthenticated = false;
+        // perform logout
+        final logoutButton = find.byIcon(SBBIcons.exit_small);
+        await tester.tap(logoutButton);
+        await tester.pumpAndSettle();
+        final logoutDialogTitle = find.text(l10n.w_logout_dialog_title);
+        expect(logoutDialogTitle, findsOne);
+        final testAuthenticator = DI.get<Authenticator>() as IntegrationTestAuthenticator;
+        testAuthenticator.isAuthenticated = false;
 
-      final logoutDialogConfirmButtonLabel = find.text(l10n.w_logout_dialog_confirm_button_labelText);
-      await tester.tap(logoutDialogConfirmButtonLabel);
+        final logoutDialogConfirmButtonLabel = find.text(l10n.w_logout_dialog_confirm_button_labelText);
+        await tester.tap(logoutDialogConfirmButtonLabel);
 
-      await waitUntilExists(tester, find.byType(LoginPage));
+        await waitUntilExists(tester, find.byType(LoginPage));
 
-      testAuthenticator.isAuthenticated = true;
-      await tapElement(tester, find.byType(LoginButton));
+        testAuthenticator.isAuthenticated = true;
+        await tapElement(tester, find.byType(LoginButton));
 
-      await waitUntilExists(tester, find.byType(JourneySelectionPage));
-      await openDrawer(tester);
-      expect(find.text(MqttBrokerText.tmsVadText), findsOne);
-    });
+        await waitUntilExists(tester, find.byType(JourneySelectionPage));
+        await openDrawer(tester);
+        expect(find.text(MqttBrokerText.tmsVadText), findsOne);
+      },
+    );
   });
 }

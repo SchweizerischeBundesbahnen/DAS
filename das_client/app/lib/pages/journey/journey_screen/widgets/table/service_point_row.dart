@@ -19,7 +19,8 @@ import 'package:app/theme/theme_util.dart';
 import 'package:app/util/animation.dart';
 import 'package:app/util/text_util.dart';
 import 'package:app/widgets/assets.dart';
-import 'package:app/widgets/dot_indicator.dart';
+import 'package:app/widgets/das_badge_overlay.dart';
+import 'package:app/widgets/das_circle_badge.dart';
 import 'package:app/widgets/speed_display.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:app/widgets/table/das_table_theme.dart';
@@ -51,6 +52,17 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     return data.isAdditional ? ThemeUtil.getBackgroundColor(context) : ThemeUtil.getDASTableColor(context);
   }
 
+  static Color? _resolveChevronAnimationColor(BuildContext context, JourneyPositionModel position, ServicePoint data) {
+    if (position.currentPosition == data && position.isManualPosition) {
+      return ThemeUtil.getColor(
+        context,
+        DASColors.manualPositionSetBackgroundBright,
+        DASColors.manualPositionSetBackgroundDark,
+      );
+    }
+    return null;
+  }
+
   ServicePointRow({
     required super.metadata,
     required super.data,
@@ -63,7 +75,10 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     super.key,
     Color? rowColor,
   }) : super(
-         decoration: DASTableRowDecoration(color: rowColor ?? _resolveRowColor(context, journeyPosition, data)),
+         decoration: DASTableRowDecoration(
+           color: rowColor ?? _resolveRowColor(context, journeyPosition, data),
+           chevronAnimationColor: _resolveChevronAnimationColor(context, journeyPosition, data),
+         ),
          stickyLevel: .first,
          height: calculateHeight(data, config.settings.currentBrakeSeries),
          onStartToEndDragReached: () {
@@ -229,13 +244,14 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
 
     final trainSeriesSpeed = data.localSpeeds?.speedFor(
       currentBrakeSeries?.trainSeries,
-      brakeSeries: currentBrakeSeries?.brakeSeries,
+      brakedWeightPercentage: currentBrakeSeries?.brakedWeightPercentage,
     );
     if (trainSeriesSpeed == null && relevantGraduatedSpeedInfo.isEmpty) return DASTableCell.empty();
 
     Widget child = Padding(
       padding: .only(top: SBBSpacing.xSmall, right: SBBSpacing.xxSmall),
-      child: DotIndicator(
+      child: DASBadgeOverlay(
+        badge: const DASCircleBadge(),
         child: SizedBox.expand(),
       ),
     );
@@ -316,7 +332,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     return properties.map((property) {
       final speed = property.speeds?.speedFor(
         currentBrakeSeries?.trainSeries,
-        brakeSeries: currentBrakeSeries?.brakeSeries,
+        brakedWeightPercentage: currentBrakeSeries?.brakedWeightPercentage,
       );
 
       return Padding(

@@ -241,10 +241,10 @@ class BrakeLoadSlipViewModel extends JourneyAwareViewModel {
 
   BrakeSeries? _resolveBrakeSeries(FormationRun? formationRun) {
     final trainSeries = TrainSeries.fromOptional(formationRun?.trainCategoryCode);
-    final brakeSeries = formationRun?.brakedWeightPercentage;
+    final brakedWeightPercentage = formationRun?.brakedWeightPercentage;
 
-    return trainSeries != null && brakeSeries != null
-        ? BrakeSeries(trainSeries: trainSeries, brakeSeries: brakeSeries)
+    return trainSeries != null && brakedWeightPercentage != null
+        ? BrakeSeries(trainSeries: trainSeries, brakedWeightPercentage: brakedWeightPercentage)
         : null;
   }
 

@@ -130,7 +130,7 @@ public class RuIndicationMatchServiceImpl {
 
         return requestedLocations.stream()
             .filter(configuredLocations::contains)
-            .sorted(Comparator.comparing(TafTapLocationReference::toLocationCode))
+            .sorted(Comparator.comparing(TafTapLocationReference::locationCode))
             .toList();
     }
 
@@ -215,7 +215,7 @@ public class RuIndicationMatchServiceImpl {
             });
 
         return contentsByLocation.entrySet().stream()
-            .sorted(Map.Entry.comparingByKey(Comparator.comparing(TafTapLocationReference::toLocationCode)))
+            .sorted(Map.Entry.comparingByKey(Comparator.comparing(TafTapLocationReference::locationCode)))
             .map(entry -> new RuIndicationMatch(entry.getKey(), List.copyOf(entry.getValue())))
             .toList();
     }

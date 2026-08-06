@@ -29,7 +29,7 @@ class AppVersionControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @DisplayName("getAll_AppVersions_empty|tests:1406")
+    @DisplayName("getAll_AppVersions_empty|xG2bVNt0GZxQYXIHrnyz|tests:1406")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     void getAll_AppVersions_empty() throws Exception {
@@ -38,7 +38,7 @@ class AppVersionControllerTest {
             .andExpect(jsonPath("$.data", hasSize(0)));
     }
 
-    @DisplayName("getAppVersionById_not_found|tests:1406")
+    @DisplayName("getAppVersionById_not_found|VCGPshM6DaS949DRTOd1|tests:1406")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     void getAppVersionById_not_found() throws Exception {
@@ -47,7 +47,7 @@ class AppVersionControllerTest {
             .andExpect(status().isNotFound());
     }
 
-    @DisplayName("getById_AppVersion_by_id|tests:1406")
+    @DisplayName("getById_AppVersion_by_id|4uKIx7BmDPkJnaGrkLUV|tests:1406")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     @Sql("classpath:createAppVersions.sql")
@@ -63,7 +63,7 @@ class AppVersionControllerTest {
             .andExpect(jsonPath("$.data[0].lastModifiedBy").value("unit_test"));
     }
 
-    @DisplayName("create_AppVersion_ok|tests:1406")
+    @DisplayName("create_AppVersion_ok|dnAz9lqr69vHloJHrBUW|tests:1406")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     void create_AppVersion_ok() throws Exception {
@@ -99,7 +99,7 @@ class AppVersionControllerTest {
             .andExpect(jsonPath("$.data[0].lastModifiedBy").value("test-user"));
     }
 
-    @DisplayName("create_AppVersion_invalid_body|tests:1406")
+    @DisplayName("create_AppVersion_invalid_body|S2nQl87ymrIdMrk98IHl|tests:1406")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     void create_AppVersion_invalid_body() throws Exception {
@@ -115,7 +115,7 @@ class AppVersionControllerTest {
             .andExpect(jsonPath("$.detail").value("Invalid request content. -> minimalVersion=must not be null"));
     }
 
-    @DisplayName("create_AppVersion_invalid_version_pattern|tests:1406")
+    @DisplayName("create_AppVersion_invalid_version_pattern|Ke5RmTbFnC9WZgcEcQIe|tests:1406")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     void create_AppVersion_invalid_version_pattern() throws Exception {
@@ -132,7 +132,7 @@ class AppVersionControllerTest {
             .andExpect(jsonPath("$.detail").value("Invalid request content. -> version=must match \"(\\d+)\\.(\\d+)\\.(\\d+)\""));
     }
 
-    @DisplayName("create_AppVersion_conflict_version|tests:1406")
+    @DisplayName("create_AppVersion_conflict_version|pnQ7A4qKs1NYjPWJV7sI|tests:1406")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     @Sql("classpath:createAppVersions.sql")
@@ -150,7 +150,7 @@ class AppVersionControllerTest {
             .andExpect(jsonPath("$.detail").value("Version already exists"));
     }
 
-    @DisplayName("update_AppVersion_ok|tests:1406")
+    @DisplayName("update_AppVersion_ok|UCmvF6J9SNOYYQe2Ve6T|tests:1406")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     @Sql("classpath:createAppVersions.sql")
@@ -184,7 +184,7 @@ class AppVersionControllerTest {
             .andExpect(jsonPath("$.data[0].lastModifiedBy").value("test-user"));
     }
 
-    @DisplayName("delete_AppVersionById_ok|tests:1406")
+    @DisplayName("delete_AppVersionById_ok|FzYcq8V3AfBBq1fwbNUk|tests:1406")
     @Test
     @WithMockRole(roles = UserRole.ADMIN)
     @Sql("classpath:createAppVersions.sql")
@@ -196,7 +196,7 @@ class AppVersionControllerTest {
             .andExpect(status().isNotFound());
     }
 
-    @DisplayName("create_AppVersion_forbidden|tests:1406")
+    @DisplayName("create_AppVersion_forbidden|iITpOpb9gRiCRefD2bmT|tests:1406")
     @Test
     @WithMockRole(roles = UserRole.ADMIN, adminTenant = false)
     void create_AppVersion_forbidden() throws Exception {

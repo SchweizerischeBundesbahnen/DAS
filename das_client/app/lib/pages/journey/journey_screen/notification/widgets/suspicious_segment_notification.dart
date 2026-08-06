@@ -1,5 +1,6 @@
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/header/view_model/model/suspicious_segment_model.dart';
+import 'package:app/pages/journey/journey_screen/notification/widgets/animated_notification.dart';
 import 'package:app/pages/journey/journey_screen/header/view_model/suspicious_segment_view_model.dart';
 import 'package:app/widgets/notificationbox/notification_box.dart';
 import 'package:flutter/material.dart';
@@ -16,13 +17,11 @@ class SuspiciousSegmentNotification extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel = context.read<SuspiciousSegmentViewModel>();
 
-    return StreamBuilder<SuspiciousSegmentModel>(
+    return AnimatedNotification<SuspiciousSegmentModel>(
       stream: viewModel.model,
       initialData: viewModel.modelValue,
-      builder: (context, snapshot) {
-        final model = snapshot.data;
-        if (model is! SuspiciousSegmentVisible) return SizedBox.shrink();
-
+      isVisible: (model) => model is SuspiciousSegmentVisible,
+      builder: (context, model) {
         return NotificationBox(
           key: suspiciousSegmentNotificationKey,
           style: .warning,

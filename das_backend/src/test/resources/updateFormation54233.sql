@@ -4,5 +4,5 @@ SET inspection_date_time         = '2025-07-25 13:43:23.120000',
 WHERE operational_train_number = '54233'
   AND operational_day = '2025-07-25'
   AND company = '2185'
-  AND taf_tap_location_reference_start = 'CH00001'
-  AND taf_tap_location_reference_end = 'CH00002';
+  AND taf_tap_location_uic_start_code = 85000010
+  AND taf_tap_location_uic_end_code = 85000020;
