@@ -99,6 +99,9 @@ endpoints:
     cors:
       allowed-origins: ${ALLOWED_ORIGINS}
 formation:
+  transport-paper:
+    sbbi-base-url: ${TRANSPORT_PAPER_SBBI_BASE_URL}
+    blsc-app-link: ${TRANSPORT_PAPER_BLSC_APP_LINK}
   kafka:
     bootstrap-server: ${FORMATION_KAFKA_BOOTSTRAP_SERVER}
     group-id: ${FORMATION_KAFKA_GROUP_ID}

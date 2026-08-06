@@ -46,7 +46,11 @@
           "routeClass": "C2",
           "gradientUphillMaxInPermille": 40,
           "gradientDownhillMaxInPermille": 40,
-          "slopeMaxForHoldingForceMinInPermille": "60"
+          "slopeMaxForHoldingForceMinInPermille": "60",
+          "transportPaperLink": {
+            "url": "/driver/v1/transport-papers/54233-001/2025-07-25?countryCodeIso=CH&locationPrimaryCode=1&bpZusatzId=0",
+            "type": "PDF_REDIRECT"
+          }
         },
         {
           "inspectionDateTime": "2025-07-25T07:41:04.841+02:00",
@@ -85,7 +89,11 @@
           "axleLoadMaxInKg": 20290,
           "gradientUphillMaxInPermille": 0,
           "gradientDownhillMaxInPermille": 0,
-          "slopeMaxForHoldingForceMinInPermille": "70"
+          "slopeMaxForHoldingForceMinInPermille": "70",
+          "transportPaperLink": {
+            "url": "/driver/v1/transport-papers/54233-001/2025-07-25?countryCodeIso=CH&locationPrimaryCode=2&bpZusatzId=0",
+            "type": "PDF_REDIRECT"
+          }
         }
       ]
     }
