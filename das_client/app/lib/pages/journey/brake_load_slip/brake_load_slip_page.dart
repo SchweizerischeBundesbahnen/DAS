@@ -28,10 +28,10 @@ class BrakeLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
   @override
   Widget wrappedRoute(BuildContext context) => MultiProvider(
     providers: [
-      Provider<JourneyViewModel>(create: (_) => DI.get<JourneyViewModel>()),
-      Provider<JourneySettingsViewModel>(create: (_) => DI.get<JourneySettingsViewModel>()),
-      Provider<DelayViewModel>(create: (_) => DI.get<DelayViewModel>()),
-      Provider<JourneyPositionViewModel>(create: (_) => DI.get<JourneyPositionViewModel>()),
+      Provider<JourneyViewModel>.value(value: DI.get<JourneyViewModel>()),
+      Provider<JourneySettingsViewModel>.value(value: DI.get<JourneySettingsViewModel>()),
+      Provider<DelayViewModel>.value(value: DI.get<DelayViewModel>()),
+      Provider<JourneyPositionViewModel>.value(value: DI.get<JourneyPositionViewModel>()),
       ProxyProvider3<JourneyViewModel, JourneyPositionViewModel, JourneySettingsViewModel, BrakeLoadSlipViewModel>(
         update: (_, journeyVM, positionVM, settingsVM, prev) {
           if (prev != null) return prev;

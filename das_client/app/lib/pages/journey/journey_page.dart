@@ -36,10 +36,10 @@ class JourneyPage extends StatefulWidget implements AutoRouteWrapper {
   @override
   Widget wrappedRoute(BuildContext context) => MultiProvider(
     providers: [
-      Provider<JourneyViewModel>(create: (_) => DI.get<JourneyViewModel>()),
-      Provider<ViewModeViewModel>(create: (_) => DI.get<ViewModeViewModel>()),
-      Provider<WarnAppViewModel>(create: (_) => DI.get<WarnAppViewModel>()),
-      Provider<JourneySettingsViewModel>(create: (_) => DI.get<JourneySettingsViewModel>()),
+      Provider<JourneyViewModel>.value(value: DI.get<JourneyViewModel>()),
+      Provider<ViewModeViewModel>.value(value: DI.get<ViewModeViewModel>()),
+      Provider<WarnAppViewModel>.value(value: DI.get<WarnAppViewModel>()),
+      Provider<JourneySettingsViewModel>.value(value: DI.get<JourneySettingsViewModel>()),
     ],
     child: this,
   );

@@ -15,10 +15,8 @@ class DiagnosticPage extends StatelessWidget implements AutoRouteWrapper {
   const DiagnosticPage({super.key});
 
   @override
-  Widget wrappedRoute(BuildContext context) => MultiProvider(
-    providers: [
-      Provider<PreloadViewModel>(create: (_) => PreloadViewModel(preloadRepository: DI.get())),
-    ],
+  Widget wrappedRoute(BuildContext context) => Provider<PreloadViewModel>(
+    create: (_) => PreloadViewModel(preloadRepository: DI.get()),
     child: this,
   );
 
