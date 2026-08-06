@@ -18,13 +18,11 @@ class FormationRunTest {
 
     @Test
     void constructor_getters() {
-        TafTapLocationReference start = new TafTapLocationReference("CH", 1);
-        TafTapLocationReference end = new TafTapLocationReference("CH", 2);
-
         FormationRun result = FormationRun.builder()
             .company(new CompanyCode("1134"))
-            .tafTapLocationReferenceStart(start)
-            .tafTapLocationReferenceEnd(end)
+            .tafTapLocationReferenceStart(TafTapLocationReference.of(85, 10))
+            .tafTapLocationUicStartPassIndex(0)
+            .tafTapLocationReferenceEnd(TafTapLocationReference.of(85, 20))
             .trainCategoryCode("TC")
             .brakedWeightPercentage(23)
             .tractionMaxSpeedInKmh(120)
@@ -50,8 +48,8 @@ class FormationRunTest {
             .build();
 
         assertThat(result.getCompany()).isEqualTo(new CompanyCode("1134"));
-        assertThat(result.getTafTapLocationReferenceStart()).isEqualTo(start);
-        assertThat(result.getTafTapLocationReferenceEnd()).isEqualTo(end);
+        assertThat(result.getTafTapLocationReferenceStart()).isEqualTo(TafTapLocationReference.of(85, 10));
+        assertThat(result.getTafTapLocationReferenceEnd()).isEqualTo(TafTapLocationReference.of(85, 20));
         assertThat(result.getTrainCategoryCode()).isEqualTo("TC");
         assertThat(result.getBrakedWeightPercentage()).isEqualTo(23);
         assertThat(result.getTractionMaxSpeedInKmh()).isEqualTo(120);
@@ -314,8 +312,9 @@ class FormationRunTest {
             .inspected(inspected)
             .inspectionDateTime(OffsetDateTime.now())
             .company(new CompanyCode(company))
-            .tafTapLocationReferenceStart(new TafTapLocationReference("CH", 1))
-            .tafTapLocationReferenceEnd(new TafTapLocationReference("CH", 2))
+            .tafTapLocationReferenceStart(TafTapLocationReference.of(85, 10))
+            .tafTapLocationUicStartPassIndex(0)
+            .tafTapLocationReferenceEnd(TafTapLocationReference.of(85, 20))
             .build();
     }
 

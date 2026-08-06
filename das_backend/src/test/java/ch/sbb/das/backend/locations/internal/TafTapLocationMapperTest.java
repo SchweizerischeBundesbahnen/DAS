@@ -17,7 +17,7 @@ class TafTapLocationMapperTest {
             "BN",
             LocalDate.of(2026, 1, 1),
             LocalDate.of(2027, 1, 1),
-            new ServicePoint.ServicePointNumber(7000, 85)
+            new ServicePoint.ServicePointNumber(85, 7000, 0)
         );
 
         TafTapLocationEntity entity = mapper.toEntityFromServicePoint(sp);

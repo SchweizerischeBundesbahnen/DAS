@@ -18,7 +18,7 @@ public class TafTapLocationReferenceListConverter implements AttributeConverter<
         if (CollectionUtils.isEmpty(references)) {
             return null;
         }
-        return references.stream().map(TafTapLocationReference::toLocationCode).distinct().sorted().reduce((a, b) -> a + DELIMITER + b).orElse(null);
+        return references.stream().map(TafTapLocationReference::locationCode).distinct().sorted().reduce((a, b) -> a + DELIMITER + b).orElse(null);
     }
 
     @Override
