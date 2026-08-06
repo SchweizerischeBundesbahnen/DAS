@@ -16,7 +16,7 @@
 // safe to re-run (a re-run produces no git diff, which is what the CI jobs assert).
 //
 // Usage:
-//   node scripts/add-test-traceability-ids.mjs [target ...]
+//   node scripts/test_title_has_id_no_whitespace.mjs [target ...]
 //
 // target is one of: client, backend, admin. With no target, all are processed.
 

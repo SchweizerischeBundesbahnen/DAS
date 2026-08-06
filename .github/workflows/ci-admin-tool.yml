@@ -34,7 +34,7 @@ jobs:
 
       - name: Assign integration test traceability IDs and format whitespace
         working-directory: ${{ github.workspace }}
-        run: node scripts/add-test-traceability-ids.mjs admin
+        run: node scripts/test_title_has_id_no_whitespace.mjs admin
 
       - name: Fail if any integration test is missing a traceability ID
         working-directory: ${{ github.workspace }}

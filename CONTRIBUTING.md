@@ -113,7 +113,7 @@ To ensure consistency throughout the source code, keep these rules in mind as yo
 * All features or bug fixes **must be tested** by one or more specs (unit-tests).
 * All public API methods **must be documented**.
 * Every integration/e2e test **must carry a traceability ID** in its title. Generate the IDs by
-  running `node scripts/add-test-traceability-ids.mjs` from the repository root (optionally scoped
+  running `node scripts/test_title_has_id_no_whitespace.mjs` from the repository root (optionally scoped
   with a `client`, `backend` or `admin` argument) and commit the result; CI fails if any test is
   missing an ID.
 * Also see [CODING_STANDARDS](./CODING_STANDARDS.md)
