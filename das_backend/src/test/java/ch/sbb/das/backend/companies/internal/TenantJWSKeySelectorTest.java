@@ -2,6 +2,10 @@ package ch.sbb.das.backend.companies.internal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.das.backend.companies.CompanyCode;
@@ -10,10 +14,13 @@ import ch.sbb.das.backend.companies.Tenant;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jose.KeySourceException;
+import com.nimbusds.jose.proc.JWSKeySelector;
+import com.nimbusds.jose.proc.SecurityContext;
 import com.nimbusds.jwt.JWTClaimsSet;
 import java.security.Key;
 import java.util.List;
 import java.util.Set;
+import javax.crypto.spec.SecretKeySpec;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -48,13 +55,20 @@ class TenantJWSKeySelectorTest {
 
     @BeforeEach
     void setUp() {
-        underTest = new TenantJWSKeySelector(companyService);
+        underTest = spy(new TenantJWSKeySelector(companyService));
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     void selectKeys_tenantSBB() throws KeySourceException {
         Tenant sbbTenant = new Tenant("sbb", SBB_TENANT_ID, true, Set.of(new CompanyCode("2185")));
         when(companyService.getTenantByIssuerUri(SBB_ISSUER)).thenReturn(sbbTenant);
+
+        // Mock fromUri to avoid remote network call to Microsoft Entra ID
+        Key mockKey = new SecretKeySpec(new byte[32], "AES");
+        JWSKeySelector<SecurityContext> mockKeySelector = mock(JWSKeySelector.class);
+        doReturn(List.of(mockKey)).when(mockKeySelector).selectJWSKeys(any(), any());
+        doReturn(mockKeySelector).when(underTest).fromUri(sbbTenant.jwkSetUri());
 
         final List<? extends Key> keys = underTest.selectKeys(JWS_HEADER, createDummyClaimsSet(SBB_ISSUER), null);
         assertThat(keys).as("Issuer-Uri and JWT-set checked for found Tenant").hasSizeGreaterThan(0);
