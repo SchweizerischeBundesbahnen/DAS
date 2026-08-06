@@ -110,7 +110,7 @@ jobs:
 
       - name: Extract test report
         if: always()
-        run: node ../scripts/extract-admin-tool-test-report.mjs e2e/test-results.json test-report.json
+        run: node ../scripts/extract_admin_tool_test_report.mjs e2e/test-results.json test-report.json
 
       - uses: actions/upload-artifact@v7.0.1
         if: always()

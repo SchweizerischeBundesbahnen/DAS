@@ -95,7 +95,7 @@ jobs:
 
       - name: Extract test report
         if: always()
-        run: node ../scripts/extract-backend-test-report.mjs target/surefire-reports target/test-report.json
+        run: node ../scripts/extract_backend_test_report.mjs target/surefire-reports target/test-report.json
 
       - uses: actions/upload-artifact@v7.0.1
         if: always()
