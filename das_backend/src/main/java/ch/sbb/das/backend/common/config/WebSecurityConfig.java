@@ -2,6 +2,7 @@ package ch.sbb.das.backend.common.config;
 
 import static ch.sbb.das.backend.appversions.internal.AppVersionController.API_APP_VERSIONS;
 import static ch.sbb.das.backend.cargo.api.v1.FormationController.API_FORMATIONS;
+import static ch.sbb.das.backend.cargo.api.v1.TransportPaperController.API_TRANSPORT_PAPERS;
 import static ch.sbb.das.backend.companies.internal.CompanyController.API_COMPANIES;
 import static ch.sbb.das.backend.companies.internal.CompanyController.API_TENANTS;
 import static ch.sbb.das.backend.departures.internal.DepartureController.API_DEPARTURES;
@@ -46,6 +47,8 @@ public class WebSecurityConfig {
                 .requestMatchers("/actuator/health/**").permitAll()
                 .requestMatchers(API_SETTINGS, API_FORMATIONS, API_DEPARTURES + "/**", API_DRIVER_RU_INDICATION_MATCHES, API_DRIVER_EXTERNAL_LINKS, API_DRIVER_TRAIN_IDENTIFICATION_COMPANIES)
                 .hasAnyRole(UserRole.OBSERVER, UserRole.DRIVER)
+                .requestMatchers(API_TRANSPORT_PAPERS + "/**")
+                .hasRole(UserRole.SBB_CARGO)
                 .requestMatchers(API_RU_INDICATION_TEMPLATES + "/**", API_SPECIAL_HOLIDAYS + "/**", API_RU_INDICATIONS + "/**", API_ADMIN_EXTERNAL_LINKS + "/**", API_COMPANIES + "/authorized",
                     API_RU_FEATURES + "/**", API_LOCATIONS)
                 .hasAnyRole(UserRole.ADMIN, UserRole.RU_ADMIN)

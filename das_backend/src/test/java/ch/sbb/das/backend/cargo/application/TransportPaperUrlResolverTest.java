@@ -30,7 +30,7 @@ class TransportPaperUrlResolverTest {
 
         assertThat(result).isNotNull();
         assertThat(result.url())
-            .isEqualTo("/driver/v1/transport-papers/33014-021/2026-01-30?countryCodeIso=CH&locationPrimaryCode=22137&bpZusatzId=3");
+            .isEqualTo("/driver/v1/transport-papers/33014-021/2026-01-30?countryCodeIso=CH&locationPrimaryCode=22137&passIndex=3");
         assertThat(result.type()).isEqualTo(TransportPaperLinkType.PDF_REDIRECT);
     }
 
