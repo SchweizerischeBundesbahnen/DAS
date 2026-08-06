@@ -6,8 +6,6 @@ spring:
     vault:
       authentication: token
       uri: https://vault-nonprod.sbb.ch
-      database:
-        enabled: false
 
   datasource:
     url: jdbc:postgresql://localhost:5432/driver_advisory_system

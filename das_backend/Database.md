@@ -81,29 +81,6 @@ Follow the [principle of least privilege](https://en.wikipedia.org/wiki/Principl
 * Don't develop against an Admin or Write-enabled user.
 * Use dedicated READ-ONLY users for DAS-Client requests.
 
-### OpenBao (Vault) dynamic credentials
-
-In deployed environments, database credentials are managed by [OpenBao](https://openbao.org/).
-OpenBao creates short-lived temporary database users and revokes them automatically after their
-lease expires. The application's `VaultConfig` handles credential rotation by updating HikariCP
-and soft-evicting idle connections.
-
-#### Role hierarchy
-
-* **`vault-user-*`** (persistent) — the OpenBao vault-db-user. Must own all database objects.
-* **Temporary users** — short-lived users created by OpenBao for the application to connect.
-  They receive `GRANT ALL ON ALL TABLES/SEQUENCES` at creation time.
-
-#### Table ownership
-
-All tables **must** be owned by the persistent vault-db-user. This ensures:
-
-* New temp users automatically get grants on all tables (since `GRANT ALL ON ALL TABLES` only
-  covers tables that exist at that moment — and the vault-db-user owns them all).
-* When a temp user expires, OpenBao runs `REASSIGN OWNED BY "<temp-user>" TO CURRENT_USER`
-  (where `CURRENT_USER` = vault-db-user). Any tables created by the temp user (e.g. during
-  Flyway migrations) are automatically transferred back. **No manual intervention is needed.**
-
 ## DB tools
 
 * **IntelliJ Ultimate** — the "Database" panel gives you a SQL console, table browser, and a
