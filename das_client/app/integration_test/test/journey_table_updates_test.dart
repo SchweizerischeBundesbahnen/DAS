@@ -7,7 +7,9 @@ import '../integration/integration_test_app.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('journeyUpdates_whenChangesReceived_thenDisplaysCorrectly|rCW5QKoQdUwtfxVEEIHR|tests:241', (tester) async {
+  testWidgets('journeyUpdates_whenChangesReceived_thenDisplaysCorrectly|rCW5QKoQdUwtfxVEEIHR|tests:241', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T35');
 
@@ -55,7 +57,9 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('journeyUpdates_whenTrainCharacteristicsUpdated_thenIgnoresUpdate|ld7g7OsSEKkPbbGjJ5aM|tests:1416', (tester) async {
+  testWidgets('journeyUpdates_whenTrainCharacteristicsUpdated_thenIgnoresUpdate|ld7g7OsSEKkPbbGjJ5aM|tests:1416', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T37');
 

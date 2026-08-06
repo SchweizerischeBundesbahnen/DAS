@@ -152,7 +152,9 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('trackEquipment_whenSingleTrackNoBlock_thenDisplaysCorrectly|UvRMEube4z8gQXU9Zw3b|tests:230', (tester) async {
+  testWidgets('trackEquipment_whenSingleTrackNoBlock_thenDisplaysCorrectly|UvRMEube4z8gQXU9Zw3b|tests:230', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T10');
 

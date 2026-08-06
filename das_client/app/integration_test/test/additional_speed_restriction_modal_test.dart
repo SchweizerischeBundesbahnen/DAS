@@ -90,7 +90,9 @@ void main() {
 
     await disconnect(tester);
   });
-  testWidgets('asrModal_whenRadioChannelTappedWhileOpen_thenSwitchesWithoutClosing|FYCL15anxOtsmYgvuzl3|tests:1875', (tester) async {
+  testWidgets('asrModal_whenRadioChannelTappedWhileOpen_thenSwitchesWithoutClosing|FYCL15anxOtsmYgvuzl3|tests:1875', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T2');
 
@@ -128,7 +130,9 @@ void main() {
 
     await disconnect(tester);
   });
-  testWidgets('asrModal_whenComplexAsrWithMultipleEntries_thenShowsAllEntries|4dhyrq0I6dm7WCcmpMDR|tests:227', (tester) async {
+  testWidgets('asrModal_whenComplexAsrWithMultipleEntries_thenShowsAllEntries|4dhyrq0I6dm7WCcmpMDR|tests:227', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T18');
 

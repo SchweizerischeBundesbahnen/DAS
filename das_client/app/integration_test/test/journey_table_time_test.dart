@@ -62,7 +62,9 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('timeCell_whenNearFutureJourney_thenShowsOperationalAndPlannedTimes|nx7aWInXVPGmH5bqoxmG|tests:84', (tester) async {
+  testWidgets('timeCell_whenNearFutureJourney_thenShowsOperationalAndPlannedTimes|nx7aWInXVPGmH5bqoxmG|tests:84', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T16');
 

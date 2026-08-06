@@ -5,7 +5,9 @@ import '../integration/integration_test_app.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('replacementSeries_whenSuggested_thenSelectsAndReturnsToOriginal|mM0ytFua6PYMSusJG4Tr|tests:507', (tester) async {
+  testWidgets('replacementSeries_whenSuggested_thenSelectsAndReturnsToOriginal|mM0ytFua6PYMSusJG4Tr|tests:507', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T30');
 
@@ -37,7 +39,9 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('replacementSeries_whenNoReplacementAvailable_thenDoesNotSuggest|ulgXunAeOxDqNsbksvyi|tests:507', (tester) async {
+  testWidgets('replacementSeries_whenNoReplacementAvailable_thenDoesNotSuggest|ulgXunAeOxDqNsbksvyi|tests:507', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T30');
 
@@ -62,7 +66,9 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('replacementSeries_whenEndOfSegmentReached_thenMessageDisappears|LIzLPYFFXgBTt95ZmBIR|tests:507', (tester) async {
+  testWidgets('replacementSeries_whenEndOfSegmentReached_thenMessageDisappears|LIzLPYFFXgBTt95ZmBIR|tests:507', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T30');
 
@@ -82,25 +88,28 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('replacementSeries_whenNoReplacementForBrakeSeries_thenShowsNotification|NVOhVZ4DmLz4SAnArtpl|tests:938', (
-    tester,
-  ) async {
-    await IntegrationTestApp.start(tester);
-    await loadJourney(tester, trainNumber: 'T30M');
+  testWidgets(
+    'replacementSeries_whenNoReplacementForBrakeSeries_thenShowsNotification|NVOhVZ4DmLz4SAnArtpl|tests:938',
+    (
+      tester,
+    ) async {
+      await IntegrationTestApp.start(tester);
+      await loadJourney(tester, trainNumber: 'T30M');
 
-    final replacementSeriesFinder = find.byKey(ReplacementSeriesNotification.noReplacementSeriesAvailableKey);
-    expect(replacementSeriesFinder, findsNothing);
+      final replacementSeriesFinder = find.byKey(ReplacementSeriesNotification.noReplacementSeriesAvailableKey);
+      expect(replacementSeriesFinder, findsNothing);
 
-    await selectBrakeSeries(tester, brakeSeries: 'D150');
+      await selectBrakeSeries(tester, brakeSeries: 'D150');
 
-    replacementSeriesFinder.reset();
-    expect(replacementSeriesFinder, findsOneWidget);
+      replacementSeriesFinder.reset();
+      expect(replacementSeriesFinder, findsOneWidget);
 
-    await selectBrakeSeries(tester, brakeSeries: 'R150');
+      await selectBrakeSeries(tester, brakeSeries: 'R150');
 
-    replacementSeriesFinder.reset();
-    expect(replacementSeriesFinder, findsNothing);
+      replacementSeriesFinder.reset();
+      expect(replacementSeriesFinder, findsNothing);
 
-    await disconnect(tester);
-  });
+      await disconnect(tester);
+    },
+  );
 }

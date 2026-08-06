@@ -16,7 +16,9 @@ import '../mocks/mock_sim_train_view_model.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('collapsibleRows_whenOperationalIndicationDisplayed_thenCollapses|iaCfo6CRqrax4porwjuB|tests:126', (tester) async {
+  testWidgets('collapsibleRows_whenOperationalIndicationDisplayed_thenCollapses|iaCfo6CRqrax4porwjuB|tests:126', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T22M');
 
@@ -83,77 +85,85 @@ void main() {
 
     await disconnect(tester);
   });
-  testWidgets('collapsibleRows_whenCombinedIndications_thenReplacesNewLinesWithDelimiter|Wn0E9HeXjfz8Lk3XEgva|tests:126,625', (
+  testWidgets(
+    'collapsibleRows_whenCombinedIndications_thenReplacesNewLinesWithDelimiter|Wn0E9HeXjfz8Lk3XEgva|tests:126,625',
+    (
+      tester,
+    ) async {
+      await IntegrationTestApp.start(tester);
+      await loadJourney(tester, trainNumber: 'T22M');
+
+      // scroll to testable row
+      await dragUntilTextInStickyHeader(tester, 'Lausanne');
+
+      // should have show more button and collapsed content with " ;" delimiter
+      final accordion = _findDASTableAccordionByContainsText(
+        'Strecke INN - MR: Bahnübergangsanlagen ohne Balisenüberwachung; Straba. = Strassenbahnbereich;',
+        IndicationAccordion,
+      );
+      final collapsedContent = find.descendant(
+        of: accordion,
+        matching: find.byKey(IndicationAccordion.collapsedContentKey),
+      );
+      expect(collapsedContent, findsOneWidget);
+      final showMoreButton = find.descendant(
+        of: accordion,
+        matching: find.byKey(IndicationAccordion.showMoreTextKey),
+      );
+      expect(showMoreButton, findsOneWidget);
+
+      // should show full content without " ;" after tap on show more
+      await tapElement(tester, accordion);
+      final expandedRow = _findDASTableAccordionByContainsText(
+        'Strecke INN - MR: Bahnübergangsanlagen ohne Balisenüberwachung\nStraba. = Strassenbahnbereich',
+        IndicationAccordion,
+      );
+      expect(expandedRow, findsOneWidget);
+
+      // should show text of combined operational indication
+      final combinedText = find.descendant(
+        of: expandedRow,
+        matching: find.textContaining('Lausanne: Halt an Halteort 2'),
+      );
+      expect(combinedText, findsOneWidget);
+
+      await disconnect(tester);
+    },
+  );
+  testWidgets(
+    'collapsibleRows_whenSameServicePoint_thenCombinesIndicationAndFootNote|pkZjtPxXkInflC3IIs74|tests:126,625',
+    (tester) async {
+      await IntegrationTestApp.start(tester);
+      await loadJourney(tester, trainNumber: 'T22M');
+
+      final scrollableFinder = find.byType(AnimatedList);
+      await tester.dragUntilVisible(
+        find.byKey(CombinedFootNoteAndIndicationsRow.rowKey),
+        scrollableFinder,
+        const Offset(0, -100),
+      );
+
+      final combinedRow = find.byKey(CombinedFootNoteAndIndicationsRow.rowKey);
+      expect(combinedRow, findsOneWidget);
+
+      final operationalIndicationRow = find.descendant(
+        of: combinedRow,
+        matching: find.textContaining(l10n.c_indication),
+      );
+      expect(operationalIndicationRow, findsOneWidget);
+
+      final footNoteRow = find.descendant(
+        of: combinedRow,
+        matching: find.textContaining(l10n.c_radn),
+      );
+      expect(footNoteRow, findsOneWidget);
+
+      await disconnect(tester);
+    },
+  );
+  testWidgets('collapsibleRows_whenOperationalIndicationPassed_thenCollapses|H9JLGRVgfPYcsgEwWMyX|tests:126', (
     tester,
   ) async {
-    await IntegrationTestApp.start(tester);
-    await loadJourney(tester, trainNumber: 'T22M');
-
-    // scroll to testable row
-    await dragUntilTextInStickyHeader(tester, 'Lausanne');
-
-    // should have show more button and collapsed content with " ;" delimiter
-    final accordion = _findDASTableAccordionByContainsText(
-      'Strecke INN - MR: Bahnübergangsanlagen ohne Balisenüberwachung; Straba. = Strassenbahnbereich;',
-      IndicationAccordion,
-    );
-    final collapsedContent = find.descendant(
-      of: accordion,
-      matching: find.byKey(IndicationAccordion.collapsedContentKey),
-    );
-    expect(collapsedContent, findsOneWidget);
-    final showMoreButton = find.descendant(
-      of: accordion,
-      matching: find.byKey(IndicationAccordion.showMoreTextKey),
-    );
-    expect(showMoreButton, findsOneWidget);
-
-    // should show full content without " ;" after tap on show more
-    await tapElement(tester, accordion);
-    final expandedRow = _findDASTableAccordionByContainsText(
-      'Strecke INN - MR: Bahnübergangsanlagen ohne Balisenüberwachung\nStraba. = Strassenbahnbereich',
-      IndicationAccordion,
-    );
-    expect(expandedRow, findsOneWidget);
-
-    // should show text of combined operational indication
-    final combinedText = find.descendant(
-      of: expandedRow,
-      matching: find.textContaining('Lausanne: Halt an Halteort 2'),
-    );
-    expect(combinedText, findsOneWidget);
-
-    await disconnect(tester);
-  });
-  testWidgets('collapsibleRows_whenSameServicePoint_thenCombinesIndicationAndFootNote|pkZjtPxXkInflC3IIs74|tests:126,625', (tester) async {
-    await IntegrationTestApp.start(tester);
-    await loadJourney(tester, trainNumber: 'T22M');
-
-    final scrollableFinder = find.byType(AnimatedList);
-    await tester.dragUntilVisible(
-      find.byKey(CombinedFootNoteAndIndicationsRow.rowKey),
-      scrollableFinder,
-      const Offset(0, -100),
-    );
-
-    final combinedRow = find.byKey(CombinedFootNoteAndIndicationsRow.rowKey);
-    expect(combinedRow, findsOneWidget);
-
-    final operationalIndicationRow = find.descendant(
-      of: combinedRow,
-      matching: find.textContaining(l10n.c_indication),
-    );
-    expect(operationalIndicationRow, findsOneWidget);
-
-    final footNoteRow = find.descendant(
-      of: combinedRow,
-      matching: find.textContaining(l10n.c_radn),
-    );
-    expect(footNoteRow, findsOneWidget);
-
-    await disconnect(tester);
-  });
-  testWidgets('collapsibleRows_whenOperationalIndicationPassed_thenCollapses|H9JLGRVgfPYcsgEwWMyX|tests:126', (tester) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T22');
 
@@ -180,7 +190,9 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('collapsibleRows_whenRadnFootNoteDisplayed_thenTitleContainsType|8XcuHwPmJI1ijGizGFsD|tests:625', (tester) async {
+  testWidgets('collapsibleRows_whenRadnFootNoteDisplayed_thenTitleContainsType|8XcuHwPmJI1ijGizGFsD|tests:625', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T15M');
 
@@ -209,37 +221,40 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('simFootNote_whenSimTrain_thenSimFootNoteIsExpandedAndNotCollapsedWhenPassed|wGzkdPjTfFUKkJKNw92k|tests:1126', (
-    tester,
-  ) async {
-    // ARRANGE - mock SIM train
-    await IntegrationTestApp.start(tester);
+  testWidgets(
+    'simFootNote_whenSimTrain_thenSimFootNoteIsExpandedAndNotCollapsedWhenPassed|wGzkdPjTfFUKkJKNw92k|tests:1126',
+    (
+      tester,
+    ) async {
+      // ARRANGE - mock SIM train
+      await IntegrationTestApp.start(tester);
 
-    final simTrainVM = DI.get<SimTrainViewModel>() as MockSimTrainViewModel;
-    simTrainVM.setIsSimTrain(true);
+      final simTrainVM = DI.get<SimTrainViewModel>() as MockSimTrainViewModel;
+      simTrainVM.setIsSimTrain(true);
 
-    await loadJourney(tester, trainNumber: 'T20');
-    await tester.pumpAndSettle();
+      await loadJourney(tester, trainNumber: 'T20');
+      await tester.pumpAndSettle();
 
-    // scroll to the SIM foot note
-    await dragUntilTextInStickyHeader(tester, 'Reichenbach im Kandertal');
+      // scroll to the SIM foot note
+      await dragUntilTextInStickyHeader(tester, 'Reichenbach im Kandertal');
 
-    // EXPECT - SIM foot note is expanded
-    final simFootNoteAccordion = _findDASTableAccordionByContainsText(l10n.c_radn_sim, FootNoteAccordion);
-    _checkCollapsibleRow(isCollapsed: false, collapsibleRow: simFootNoteAccordion);
+      // EXPECT - SIM foot note is expanded
+      final simFootNoteAccordion = _findDASTableAccordionByContainsText(l10n.c_radn_sim, FootNoteAccordion);
+      _checkCollapsibleRow(isCollapsed: false, collapsibleRow: simFootNoteAccordion);
 
-    // ACT - wait for automatic position advancement to reach Kandergrund
-    await waitUntilExists(tester, findChevronPositionAtRowWithText('Kandergrund'));
-    await stopAutomaticAdvancement(tester);
-    final scrollableFinder = find.byType(AnimatedList);
-    await tester.dragUntilVisible(findDASTableRowByText('P111'), scrollableFinder, const Offset(0, 100));
+      // ACT - wait for automatic position advancement to reach Kandergrund
+      await waitUntilExists(tester, findChevronPositionAtRowWithText('Kandergrund'));
+      await stopAutomaticAdvancement(tester);
+      final scrollableFinder = find.byType(AnimatedList);
+      await tester.dragUntilVisible(findDASTableRowByText('P111'), scrollableFinder, const Offset(0, 100));
 
-    // EXPECT - SIM foot note must still be expanded (not auto-collapsed)
-    final simFootNoteAccordionAfterPass = _findDASTableAccordionByContainsText(l10n.c_radn_sim, FootNoteAccordion);
-    _checkCollapsibleRow(isCollapsed: false, collapsibleRow: simFootNoteAccordionAfterPass);
+      // EXPECT - SIM foot note must still be expanded (not auto-collapsed)
+      final simFootNoteAccordionAfterPass = _findDASTableAccordionByContainsText(l10n.c_radn_sim, FootNoteAccordion);
+      _checkCollapsibleRow(isCollapsed: false, collapsibleRow: simFootNoteAccordionAfterPass);
 
-    await disconnect(tester);
-  });
+      await disconnect(tester);
+    },
+  );
 }
 
 Future<void> _checkCollapsible(int identifier, WidgetTester tester) async {

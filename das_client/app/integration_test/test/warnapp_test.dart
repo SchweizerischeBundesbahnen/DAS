@@ -57,7 +57,9 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('warnapp_whenManeuverButtonTapped_thenActivatesManeuverMode|fzvOU1FQOyjnN2eS2nO0|tests:98', (tester) async {
+    testWidgets('warnapp_whenManeuverButtonTapped_thenActivatesManeuverMode|fzvOU1FQOyjnN2eS2nO0|tests:98', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
 
       final motionDataService = DI.get<MotionDataService>() as MockMotionDataService;

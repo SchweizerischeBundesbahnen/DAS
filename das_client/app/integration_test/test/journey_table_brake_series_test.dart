@@ -17,7 +17,9 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('brakeSeries_whenDefaultFromTrainCharacteristics_thenShowsR115|8coWWI2zvgkHncg31Pgp|tests:89', (tester) async {
+  testWidgets('brakeSeries_whenDefaultFromTrainCharacteristics_thenShowsR115|8coWWI2zvgkHncg31Pgp|tests:89', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T5');
 

@@ -7,7 +7,9 @@ import '../integration/integration_test_app.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('stationProperty_whenStationSignsPresent_thenDisplaysCorrectly|33p6hQftZIHPSWXIQyMF|tests:127', (tester) async {
+  testWidgets('stationProperty_whenStationSignsPresent_thenDisplaysCorrectly|33p6hQftZIHPSWXIQyMF|tests:127', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
 
     await loadJourney(tester, trainNumber: 'T21M');
@@ -29,7 +31,9 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('stationProperty_whenPropertiesPresent_thenDisplaysCorrectly|2048M4EI2XWF3xp9fNzr|tests:127', (tester) async {
+  testWidgets('stationProperty_whenPropertiesPresent_thenDisplaysCorrectly|2048M4EI2XWF3xp9fNzr|tests:127', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
 
     await loadJourney(tester, trainNumber: 'T21M');
@@ -67,7 +71,9 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('stationProperty_whenTrainSeriesChanges_thenUpdatesDisplay|6yG8VYvMt02JOmuS9rDc|tests:127', (tester) async {
+  testWidgets('stationProperty_whenTrainSeriesChanges_thenUpdatesDisplay|6yG8VYvMt02JOmuS9rDc|tests:127', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
 
     await loadJourney(tester, trainNumber: 'T21M');

@@ -65,7 +65,9 @@ void main() {
       expect(find.text(l10n.c_ru_sob), findsOneWidget);
     });
 
-    testWidgets('trainSearch_whenNoTrainNumberEntered_thenDisablesButton|3JEyvxxjnxVGfeAOufjK|tests:92', (tester) async {
+    testWidgets('trainSearch_whenNoTrainNumberEntered_thenDisablesButton|3JEyvxxjnxVGfeAOufjK|tests:92', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
 
       // Verify that today is preselected
@@ -194,7 +196,9 @@ void main() {
       expect(find.text('${l10n.c_error_code} 50: ${l10n.c_error_sfera_no_additional_info}'), findsOneWidget);
     });
 
-    testWidgets('trainSearch_whenMultipleCompanyMatches_thenShowsSelection|edyQLmRIb617kcxR5XXN|tests:702,703', (tester) async {
+    testWidgets('trainSearch_whenMultipleCompanyMatches_thenShowsSelection|edyQLmRIb617kcxR5XXN|tests:702,703', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
 
       final trainIdentificationRepository =
@@ -293,7 +297,9 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('trainSearch_whenNoCompanyMatch_thenShowsNoResultMessage|WQ4rTB8lZNGl5HW7Dbq0|tests:702', (tester) async {
+    testWidgets('trainSearch_whenNoCompanyMatch_thenShowsNoResultMessage|WQ4rTB8lZNGl5HW7Dbq0|tests:702', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
 
       final trainIdentificationRepository =

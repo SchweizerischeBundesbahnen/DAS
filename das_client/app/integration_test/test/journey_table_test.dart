@@ -23,7 +23,9 @@ import '../util/test_utils.dart';
 
 void main() {
   group('train journey table test', () {
-    testWidgets('journeyTable_whenCurvesPresent_thenDisplaysEndOfCurvesCorrectly|GfSq5x3EgvhqDIZFmdAm|tests:478', (tester) async {
+    testWidgets('journeyTable_whenCurvesPresent_thenDisplaysEndOfCurvesCorrectly|GfSq5x3EgvhqDIZFmdAm|tests:478', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T5');
 
@@ -67,31 +69,36 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('journeyTable_whenKilometerAndNetworkChanges_thenDisplaysCorrectly|4r5G55qZyLCbrPp8bWyc|tests:125,1237,356', (tester) async {
-      await IntegrationTestApp.start(tester);
-      await loadJourney(tester, trainNumber: 'T9999');
+    testWidgets(
+      'journeyTable_whenKilometerAndNetworkChanges_thenDisplaysCorrectly|4r5G55qZyLCbrPp8bWyc|tests:125,1237,356',
+      (tester) async {
+        await IntegrationTestApp.start(tester);
+        await loadJourney(tester, trainNumber: 'T9999');
 
-      // find pause button and press it
-      final pauseButton = find.text(l10n.p_journey_header_button_pause);
-      expect(pauseButton, findsOneWidget);
+        // find pause button and press it
+        final pauseButton = find.text(l10n.p_journey_header_button_pause);
+        expect(pauseButton, findsOneWidget);
 
-      await tapElement(tester, pauseButton);
+        await tapElement(tester, pauseButton);
 
-      final dasTable = find.byType(DASTable);
-      expect(dasTable, findsOneWidget);
+        final dasTable = find.byType(DASTable);
+        expect(dasTable, findsOneWidget);
 
-      // find gsmP-Icon (only 1 should be found, 2nd should be hidden)
-      final gsmPKey = find.descendant(of: dasTable, matching: find.byKey(CommunicationNetworkIcon.gsmPKey));
-      expect(gsmPKey, findsOneWidget);
+        // find gsmP-Icon (only 1 should be found, 2nd should be hidden)
+        final gsmPKey = find.descendant(of: dasTable, matching: find.byKey(CommunicationNetworkIcon.gsmPKey));
+        expect(gsmPKey, findsOneWidget);
 
-      // find gsmR-Icon
-      final gsmRIcon = find.descendant(of: dasTable, matching: find.byKey(CommunicationNetworkIcon.gsmRKey));
-      expect(gsmRIcon, findsOneWidget);
+        // find gsmR-Icon
+        final gsmRIcon = find.descendant(of: dasTable, matching: find.byKey(CommunicationNetworkIcon.gsmRKey));
+        expect(gsmRIcon, findsOneWidget);
 
-      await disconnect(tester);
-    });
+        await disconnect(tester);
+      },
+    );
 
-    testWidgets('journeyTable_whenGradientPresent_thenDisplaysUpAndDownhill|WIvYo0q3NNOWuWNkvM28|tests:225', (tester) async {
+    testWidgets('journeyTable_whenGradientPresent_thenDisplaysUpAndDownhill|WIvYo0q3NNOWuWNkvM28|tests:225', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T15M');
 
@@ -123,7 +130,9 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('journeyTable_whenBrakeSeriesA50Chosen_thenFindsTwoCurves|6dftwLIxISwNWPYqIBJj|tests:478,584', (tester) async {
+    testWidgets('journeyTable_whenBrakeSeriesA50Chosen_thenFindsTwoCurves|6dftwLIxISwNWPYqIBJj|tests:478,584', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T5');
 
@@ -144,7 +153,9 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('journeyTable_whenBrakeSeriesR115Chosen_thenFindsThreeCurves|ga09YBxY1Saxs4sdpFKq|tests:478,584', (tester) async {
+    testWidgets('journeyTable_whenBrakeSeriesR115Chosen_thenFindsThreeCurves|ga09YBxY1Saxs4sdpFKq|tests:478,584', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T5');
 
@@ -162,7 +173,9 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('journeyTable_whenWhistleAndTramArea_thenDisplaysCorrectly|UsmLmc9mBo7nGo9cREC8|tests:224', (tester) async {
+    testWidgets('journeyTable_whenWhistleAndTramArea_thenDisplaysCorrectly|UsmLmc9mBo7nGo9cREC8|tests:224', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T7M');
 
@@ -184,7 +197,9 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('journeyTable_whenChevronInGroupedItems_thenPositionsCorrectly|Joe81l2AczCXfgNHasnY|tests:94', (tester) async {
+    testWidgets('journeyTable_whenChevronInGroupedItems_thenPositionsCorrectly|Joe81l2AczCXfgNHasnY|tests:94', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T7');
 
@@ -200,7 +215,9 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('journeyTable_whenDefaultBrakeSeries_thenShowsCorrectSpeedValues|8X1ka8Bgi8yzoh4UjFZa|tests:89', (tester) async {
+    testWidgets('journeyTable_whenDefaultBrakeSeries_thenShowsCorrectSpeedValues|8X1ka8Bgi8yzoh4UjFZa|tests:89', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T5');
 
@@ -226,7 +243,9 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('journeyTable_whenMissingBrakeSeries_thenShowsCorrectSpeedValues|LLhbvIweHYZFneDKofee|tests:89', (tester) async {
+    testWidgets('journeyTable_whenMissingBrakeSeries_thenShowsCorrectSpeedValues|LLhbvIweHYZFneDKofee|tests:89', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
 
       await loadJourney(tester, trainNumber: 'T5');
@@ -271,41 +290,44 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('journeyTable_whenConnectionTrackAndZahnstangePresent_thenDisplaysCorrectly|uk1rmjXg0jCGsI5AReTh|tests:136', (tester) async {
-      await IntegrationTestApp.start(tester);
-      await loadJourney(tester, trainNumber: 'T9999');
+    testWidgets(
+      'journeyTable_whenConnectionTrackAndZahnstangePresent_thenDisplaysCorrectly|uk1rmjXg0jCGsI5AReTh|tests:136',
+      (tester) async {
+        await IntegrationTestApp.start(tester);
+        await loadJourney(tester, trainNumber: 'T9999');
 
-      final scrollableFinder = find.byType(AnimatedList);
-      expect(scrollableFinder, findsOneWidget);
+        final scrollableFinder = find.byType(AnimatedList);
+        expect(scrollableFinder, findsOneWidget);
 
-      final weicheRow = findDASTableRowByText(l10n.c_connection_track_weiche);
-      expect(weicheRow, findsOneWidget);
+        final weicheRow = findDASTableRowByText(l10n.c_connection_track_weiche);
+        expect(weicheRow, findsOneWidget);
 
-      final weicheKilometre = find.descendant(of: weicheRow, matching: find.text('0.8'));
-      expect(weicheKilometre, findsOneWidget);
+        final weicheKilometre = find.descendant(of: weicheRow, matching: find.text('0.8'));
+        expect(weicheKilometre, findsOneWidget);
 
-      await tester.dragUntilVisible(find.text('AnG. WITZ'), scrollableFinder, const Offset(0, -50));
+        await tester.dragUntilVisible(find.text('AnG. WITZ'), scrollableFinder, const Offset(0, -50));
 
-      final connectionTrackRow = findDASTableRowByText('AnG. WITZ');
-      expect(connectionTrackRow, findsOneWidget);
+        final connectionTrackRow = findDASTableRowByText('AnG. WITZ');
+        expect(connectionTrackRow, findsOneWidget);
 
-      await tester.dragUntilVisible(find.text('22-6 Uhr'), scrollableFinder, const Offset(0, -50));
+        await tester.dragUntilVisible(find.text('22-6 Uhr'), scrollableFinder, const Offset(0, -50));
 
-      final connectionTrackWithSpeedRow = findDASTableRowByText('22-6 Uhr');
-      expect(connectionTrackWithSpeedRow, findsOneWidget);
+        final connectionTrackWithSpeedRow = findDASTableRowByText('22-6 Uhr');
+        expect(connectionTrackWithSpeedRow, findsOneWidget);
 
-      await tester.dragUntilVisible(find.text('Zahnstangen Anfang'), scrollableFinder, const Offset(0, -50));
+        await tester.dragUntilVisible(find.text('Zahnstangen Anfang'), scrollableFinder, const Offset(0, -50));
 
-      final zahnstangeAnfangRow = findDASTableRowByText('Zahnstangen Anfang');
-      expect(zahnstangeAnfangRow, findsOneWidget);
+        final zahnstangeAnfangRow = findDASTableRowByText('Zahnstangen Anfang');
+        expect(zahnstangeAnfangRow, findsOneWidget);
 
-      await tester.dragUntilVisible(find.text('Zahnstangen Ende'), scrollableFinder, const Offset(0, -50));
+        await tester.dragUntilVisible(find.text('Zahnstangen Ende'), scrollableFinder, const Offset(0, -50));
 
-      final zahnstangeEndeRow = findDASTableRowByText('Zahnstangen Ende');
-      expect(zahnstangeEndeRow, findsOneWidget);
+        final zahnstangeEndeRow = findDASTableRowByText('Zahnstangen Ende');
+        expect(zahnstangeEndeRow, findsOneWidget);
 
-      await disconnect(tester);
-    });
+        await disconnect(tester);
+      },
+    );
 
     testWidgets('journeyTable_whenLoaded_thenShowsAllColumnsWithHeaders|2xKQZqkInzVQYxlvy6h4|tests:79', (tester) async {
       await IntegrationTestApp.start(tester);
@@ -328,7 +350,9 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('journeyTable_whenRoutePresent_thenDisplaysCorrectly|ryZ21eZspmXAa5nGYdJJ|tests:80,1557', (tester) async {
+    testWidgets('journeyTable_whenRoutePresent_thenDisplaysCorrectly|ryZ21eZspmXAa5nGYdJJ|tests:80,1557', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
@@ -368,7 +392,9 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('journeyTable_whenProtectionSectionsPresent_thenDisplaysCorrectly|HW5ShUks9dJRe4ik706z|tests:223', (tester) async {
+    testWidgets('journeyTable_whenProtectionSectionsPresent_thenDisplaysCorrectly|HW5ShUks9dJRe4ik706z|tests:223', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T3');
 
@@ -435,7 +461,9 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('journeyTable_whenBothKilometresPresent_thenDisplaysBoth|GXhdMHah4bTjsxlsQHcc|tests:1863', (tester) async {
+    testWidgets('journeyTable_whenBothKilometresPresent_thenDisplaysBoth|GXhdMHah4bTjsxlsQHcc|tests:1863', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T6');
 
@@ -550,25 +578,30 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('journeyTable_whenServicePointHasTrackGroup_thenDisplaysCorrectlyWithDetailModal|GObFVFt2aAyPWMXp9cEN|tests:1072', (
+    testWidgets(
+      'journeyTable_whenServicePointHasTrackGroup_thenDisplaysCorrectlyWithDetailModal|GObFVFt2aAyPWMXp9cEN|tests:1072',
+      (
+        tester,
+      ) async {
+        await IntegrationTestApp.start(tester);
+        await loadJourney(tester, trainNumber: 'T6M');
+
+        final hardbrueckeRow = findDASTableRowByText('Hardbrücke');
+        final trackGroupWidget = find.descendant(of: hardbrueckeRow, matching: find.text('3'));
+        expect(trackGroupWidget, findsOneWidget);
+
+        // open modal sheet and test track group still displayed
+        await tapElement(tester, hardbrueckeRow);
+        await tester.pumpAndSettle();
+        expect(trackGroupWidget, findsOneWidget);
+
+        await disconnect(tester);
+      },
+    );
+
+    testWidgets('journeyTable_whenCurvesPresent_thenDisplaysCurvesCorrectly|pNcLWjDBIMF8IuMwaXue|tests:82', (
       tester,
     ) async {
-      await IntegrationTestApp.start(tester);
-      await loadJourney(tester, trainNumber: 'T6M');
-
-      final hardbrueckeRow = findDASTableRowByText('Hardbrücke');
-      final trackGroupWidget = find.descendant(of: hardbrueckeRow, matching: find.text('3'));
-      expect(trackGroupWidget, findsOneWidget);
-
-      // open modal sheet and test track group still displayed
-      await tapElement(tester, hardbrueckeRow);
-      await tester.pumpAndSettle();
-      expect(trackGroupWidget, findsOneWidget);
-
-      await disconnect(tester);
-    });
-
-    testWidgets('journeyTable_whenCurvesPresent_thenDisplaysCurvesCorrectly|pNcLWjDBIMF8IuMwaXue|tests:82', (tester) async {
       await IntegrationTestApp.start(tester);
 
       await loadJourney(tester, trainNumber: 'T9999M');
@@ -751,7 +784,9 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('journeyTable_whenLineSpeed_thenAlwaysDisplaysInStickyHeader|JD3NqcaIve8Ivy8cnAWm|tests:932', (tester) async {
+    testWidgets('journeyTable_whenLineSpeed_thenAlwaysDisplaysInStickyHeader|JD3NqcaIve8Ivy8cnAWm|tests:932', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T8');
 
@@ -806,7 +841,9 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('journeyTable_whenAdditionalServicePoints_thenDisplaysCorrectly|ifROK0ce5yyXlNxw2CzB|tests:258', (tester) async {
+    testWidgets('journeyTable_whenAdditionalServicePoints_thenDisplaysCorrectly|ifROK0ce5yyXlNxw2CzB|tests:258', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T27');
 
@@ -824,7 +861,9 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('journeyTable_whenShuntingMovement_thenDisplaysMarkersCorrectly|1hJ3sN82MojHdBszhwuD|tests:264', (tester) async {
+    testWidgets('journeyTable_whenShuntingMovement_thenDisplaysMarkersCorrectly|1hJ3sN82MojHdBszhwuD|tests:264', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T29');
 
@@ -853,7 +892,9 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('journeyTable_whenMultipleColors_thenDisplaysCorrectPriority|bedMotS6Ncw5XayVseo6|tests:1125', (tester) async {
+    testWidgets('journeyTable_whenMultipleColors_thenDisplaysCorrectPriority|bedMotS6Ncw5XayVseo6|tests:1125', (
+      tester,
+    ) async {
       // https://github.com/SchweizerischeBundesbahnen/DAS/issues/1125
       // ADL > NextStop > ASR > Protection Section
 

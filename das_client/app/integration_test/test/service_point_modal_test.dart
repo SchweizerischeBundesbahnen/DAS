@@ -26,7 +26,9 @@ import '../util/test_utils.dart';
 
 void main() {
   group('general service point modal sheet tests', () {
-    testWidgets('servicePointModal_whenBahnhofportalLinkTapped_thenOpensExpectedUrl|HjOshoAnnns1uiZv1piZ|tests:1485', (tester) async {
+    testWidgets('servicePointModal_whenBahnhofportalLinkTapped_thenOpensExpectedUrl|HjOshoAnnns1uiZv1piZ|tests:1485', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999M');
 
@@ -67,7 +69,9 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('servicePointModal_whenInteracted_thenOpensAndClosesCorrectly|BULPrI837zbDHbf9ozo1|tests:497', (tester) async {
+    testWidgets('servicePointModal_whenInteracted_thenOpensAndClosesCorrectly|BULPrI837zbDHbf9ozo1|tests:497', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T8');
 
@@ -96,35 +100,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('servicePointModal_whenSameCellTappedTwice_thenClosesModal|BlZZhmecRMoz03Ghc4Ko|tests:1875', (tester) async {
-      await IntegrationTestApp.start(tester);
-      await loadJourney(tester, trainNumber: 'T8');
-
-      await _openByTapOnCellWithText(tester, 'Bern');
-      await _checkOpenModalSheet(tester, DetailTabCommunication.communicationTabKey, 'Bern');
-
-      // tapping the element that opened the modal a second time closes it
-      await _openByTapOnCellWithText(tester, 'Bern');
-      expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsOneWidget);
-
-      await disconnect(tester);
-    });
-
-    testWidgets('servicePointModal_whenRadioChannelTappedTwice_thenClosesModal|47UPdaX6hsiYclucw05K|tests:1875', (tester) async {
-      await IntegrationTestApp.start(tester);
-      await loadJourney(tester, trainNumber: 'T8');
-
-      await _openRadioChannelByHeaderTap(tester);
-      await _checkOpenModalSheet(tester, DetailTabCommunication.communicationTabKey, 'Bern');
-
-      // tapping the element that opened the modal a second time closes it
-      await _openRadioChannelByHeaderTap(tester);
-      expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsOneWidget);
-
-      await disconnect(tester);
-    });
-
-    testWidgets('servicePointModal_whenDifferentServicePointTapped_thenSwitchesWithoutClosing|YNAh8x76zB856tYRX9Mj|tests:1875', (
+    testWidgets('servicePointModal_whenSameCellTappedTwice_thenClosesModal|BlZZhmecRMoz03Ghc4Ko|tests:1875', (
       tester,
     ) async {
       await IntegrationTestApp.start(tester);
@@ -133,16 +109,53 @@ void main() {
       await _openByTapOnCellWithText(tester, 'Bern');
       await _checkOpenModalSheet(tester, DetailTabCommunication.communicationTabKey, 'Bern');
 
-      await _openByTapOnCellWithText(tester, 'Olten');
-
-      // switches directly to the new content, the modal never closes in between
-      expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsNothing);
-      await _checkOpenModalSheet(tester, DetailTabCommunication.communicationTabKey, 'Olten');
+      // tapping the element that opened the modal a second time closes it
+      await _openByTapOnCellWithText(tester, 'Bern');
+      expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsOneWidget);
 
       await disconnect(tester);
     });
 
-    testWidgets('servicePointModal_whenActiveTabReselected_thenDoesNothing|qD8ziN2IZxVS5DgO9zJd|tests:1875', (tester) async {
+    testWidgets('servicePointModal_whenRadioChannelTappedTwice_thenClosesModal|47UPdaX6hsiYclucw05K|tests:1875', (
+      tester,
+    ) async {
+      await IntegrationTestApp.start(tester);
+      await loadJourney(tester, trainNumber: 'T8');
+
+      await _openRadioChannelByHeaderTap(tester);
+      await _checkOpenModalSheet(tester, DetailTabCommunication.communicationTabKey, 'Bern');
+
+      // tapping the element that opened the modal a second time closes it
+      await _openRadioChannelByHeaderTap(tester);
+      expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsOneWidget);
+
+      await disconnect(tester);
+    });
+
+    testWidgets(
+      'servicePointModal_whenDifferentServicePointTapped_thenSwitchesWithoutClosing|YNAh8x76zB856tYRX9Mj|tests:1875',
+      (
+        tester,
+      ) async {
+        await IntegrationTestApp.start(tester);
+        await loadJourney(tester, trainNumber: 'T8');
+
+        await _openByTapOnCellWithText(tester, 'Bern');
+        await _checkOpenModalSheet(tester, DetailTabCommunication.communicationTabKey, 'Bern');
+
+        await _openByTapOnCellWithText(tester, 'Olten');
+
+        // switches directly to the new content, the modal never closes in between
+        expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsNothing);
+        await _checkOpenModalSheet(tester, DetailTabCommunication.communicationTabKey, 'Olten');
+
+        await disconnect(tester);
+      },
+    );
+
+    testWidgets('servicePointModal_whenActiveTabReselected_thenDoesNothing|qD8ziN2IZxVS5DgO9zJd|tests:1875', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T8');
 
@@ -157,7 +170,9 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('servicePointModal_whenOpened_thenCollapsesHeaderButtons|Q7V14S34B9g0J5ovsSVY|tests:497', (tester) async {
+    testWidgets('servicePointModal_whenOpened_thenCollapsesHeaderButtons|Q7V14S34B9g0J5ovsSVY|tests:497', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999');
 
@@ -175,7 +190,9 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('servicePointModal_whenDataAvailable_thenShowsOnlyRelevantTabs|hCUmXSQ54oN6aACIAwKy|tests:1040,497', (tester) async {
+    testWidgets('servicePointModal_whenDataAvailable_thenShowsOnlyRelevantTabs|hCUmXSQ54oN6aACIAwKy|tests:1040,497', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T8');
 
@@ -193,7 +210,9 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('servicePointModal_whenTabChanged_thenDisplaysCorrectContent|7UMIWRPg9Zo3wq1YOhzF|tests:497', (tester) async {
+    testWidgets('servicePointModal_whenTabChanged_thenDisplaysCorrectContent|7UMIWRPg9Zo3wq1YOhzF|tests:497', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T8');
 
@@ -233,7 +252,9 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('servicePointModal_whenAdvancementPaused_thenClosesAfterTimeout|PzMRSkgLsqo1cXXDrSsf|tests:497', (tester) async {
+    testWidgets('servicePointModal_whenAdvancementPaused_thenClosesAfterTimeout|PzMRSkgLsqo1cXXDrSsf|tests:497', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
 
       await loadJourney(tester, trainNumber: 'T8');
@@ -293,7 +314,9 @@ void main() {
   });
 
   group('communication tab tests', () {
-    testWidgets('communicationTab_whenOpened_thenDisplaysNetworkAndRadioChannels|02dNNCKAdwRRIPFdP8rG|tests:229', (tester) async {
+    testWidgets('communicationTab_whenOpened_thenDisplaysNetworkAndRadioChannels|02dNNCKAdwRRIPFdP8rG|tests:229', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T12M');
 
@@ -351,7 +374,9 @@ void main() {
 
       await disconnect(tester);
     });
-    testWidgets('communicationTab_whenOpenedFromOtherTab_thenShowsInformation|pNuI8yhc85razhMIsaEz|tests:229', (tester) async {
+    testWidgets('communicationTab_whenOpenedFromOtherTab_thenShowsInformation|pNuI8yhc85razhMIsaEz|tests:229', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: '1513M');
 
@@ -380,22 +405,25 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('communicationTab_whenDepartureAuthorizationPresent_thenDisplaysInModal|02darOPX5OqoT03mCvB8|tests:226', (tester) async {
-      await IntegrationTestApp.start(tester);
-      await loadJourney(tester, trainNumber: 'T31M');
+    testWidgets(
+      'communicationTab_whenDepartureAuthorizationPresent_thenDisplaysInModal|02darOPX5OqoT03mCvB8|tests:226',
+      (tester) async {
+        await IntegrationTestApp.start(tester);
+        await loadJourney(tester, trainNumber: 'T31M');
 
-      await _openAndCheckDepartureAuth(tester, 'Dietikon', '*');
-      await _openAndCheckDepartureAuth(tester, 'Glanzenberg', '* sms 2-4');
-      await _openAndCheckDepartureAuth(tester, 'Schlieren', 'sms 3-6');
+        await _openAndCheckDepartureAuth(tester, 'Dietikon', '*');
+        await _openAndCheckDepartureAuth(tester, 'Glanzenberg', '* sms 2-4');
+        await _openAndCheckDepartureAuth(tester, 'Schlieren', 'sms 3-6');
 
-      await dragUntilTextInStickyHeader(tester, 'Zürich Altstetten');
-      await _openAndCheckDepartureAuth(tester, 'Zürich Altstetten', 'sms 2-4 6,7');
+        await dragUntilTextInStickyHeader(tester, 'Zürich Altstetten');
+        await _openAndCheckDepartureAuth(tester, 'Zürich Altstetten', 'sms 2-4 6,7');
 
-      await _openByTapOnCellWithText(tester, 'Zürich Hardbrücke');
-      expect(find.byKey(DetailTabCommunication.departureAuthorizationKey), findsNothing);
+        await _openByTapOnCellWithText(tester, 'Zürich Hardbrücke');
+        expect(find.byKey(DetailTabCommunication.departureAuthorizationKey), findsNothing);
 
-      await disconnect(tester);
-    });
+        await disconnect(tester);
+      },
+    );
   });
 
   group('local regulation tab tests', () {
@@ -456,7 +484,9 @@ void main() {
     });
   });
 
-  testWidgets('servicePointModal_whenModalOpen_thenShowsShortSignalNames|D56hz2flGTW6tj4oME9V|tests:980', (tester) async {
+  testWidgets('servicePointModal_whenModalOpen_thenShowsShortSignalNames|D56hz2flGTW6tj4oME9V|tests:980', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T9999M');
 
@@ -491,7 +521,9 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('servicePointModal_whenNavigatedAndReturned_thenStaysDisplayed|1qSvqp8jis2qsg4DKLiO|tests:497', (tester) async {
+  testWidgets('servicePointModal_whenNavigatedAndReturned_thenStaysDisplayed|1qSvqp8jis2qsg4DKLiO|tests:497', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
     final timeConstants = DI.get<TimeConstants>() as TestTimeConstants;
     timeConstants.modalSheetAutomaticCloseAfterSecondsValue = 5;

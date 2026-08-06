@@ -118,7 +118,9 @@ void main() {
       expect(find.byType(JourneySelectionPage), findsOneWidget);
     });
 
-    testWidgets('navigation_whenNavigatingBackToJourney_thenJourneyStaysLoaded|TVSAOe6GbJ5bWoqPD2v1|tests:80,1557', (tester) async {
+    testWidgets('navigation_whenNavigatingBackToJourney_thenJourneyStaysLoaded|TVSAOe6GbJ5bWoqPD2v1|tests:80,1557', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T6');
 
@@ -140,7 +142,9 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('navigation_whenNavigatingBack_thenJourneySettingsNotReset|RijOj3T18mvGVZNMrmTq|tests:80,583,811', (tester) async {
+    testWidgets('navigation_whenNavigatingBack_thenJourneySettingsNotReset|RijOj3T18mvGVZNMrmTq|tests:80,583,811', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T5M');
 

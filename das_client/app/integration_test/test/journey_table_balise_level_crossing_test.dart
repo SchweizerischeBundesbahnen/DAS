@@ -9,25 +9,30 @@ import '../integration/integration_test_app.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('baliseLevelCrossing_whenMultipleLevelCrossings_thenDisplaysCorrectly|B4vSeswDglqaMsxgpZPE|tests:224,1416', (
+  testWidgets(
+    'baliseLevelCrossing_whenMultipleLevelCrossings_thenDisplaysCorrectly|B4vSeswDglqaMsxgpZPE|tests:224,1416',
+    (
+      tester,
+    ) async {
+      await IntegrationTestApp.start(tester);
+      await loadJourney(tester, trainNumber: 'T7');
+
+      final baliseMultiLevelCrossing = findDASTableRowByText('(2 ${l10n.p_journey_table_level_crossing})');
+      expect(baliseMultiLevelCrossing, findsOneWidget);
+
+      final baliseIcon = find.descendant(
+        of: baliseMultiLevelCrossing,
+        matching: find.byKey(BaliseLevelCrossingGroupRow.iconBaliseKey),
+      );
+      expect(baliseIcon, findsOneWidget);
+
+      await disconnect(tester);
+    },
+  );
+
+  testWidgets('baliseLevelCrossing_whenGroupTapped_thenExpandsAndCollapses|awz0LEkHyRCsE2VMTXpr|tests:224,1416,454', (
     tester,
   ) async {
-    await IntegrationTestApp.start(tester);
-    await loadJourney(tester, trainNumber: 'T7');
-
-    final baliseMultiLevelCrossing = findDASTableRowByText('(2 ${l10n.p_journey_table_level_crossing})');
-    expect(baliseMultiLevelCrossing, findsOneWidget);
-
-    final baliseIcon = find.descendant(
-      of: baliseMultiLevelCrossing,
-      matching: find.byKey(BaliseLevelCrossingGroupRow.iconBaliseKey),
-    );
-    expect(baliseIcon, findsOneWidget);
-
-    await disconnect(tester);
-  });
-
-  testWidgets('baliseLevelCrossing_whenGroupTapped_thenExpandsAndCollapses|awz0LEkHyRCsE2VMTXpr|tests:224,1416,454', (tester) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T7M');
 
@@ -90,50 +95,53 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('baliseLevelCrossing_whenInEtcsLevel2Section_thenDisplaysCorrectly|X6KeDRPFfrKsZlGfYgTM|tests:1429,1416,224', (tester) async {
-    await IntegrationTestApp.start(tester);
-    await loadJourney(tester, trainNumber: 'T7');
+  testWidgets(
+    'baliseLevelCrossing_whenInEtcsLevel2Section_thenDisplaysCorrectly|X6KeDRPFfrKsZlGfYgTM|tests:1429,1416,224',
+    (tester) async {
+      await IntegrationTestApp.start(tester);
+      await loadJourney(tester, trainNumber: 'T7');
 
-    final scrollableFinder = find.byType(AnimatedList);
-    expect(scrollableFinder, findsOneWidget);
+      final scrollableFinder = find.byType(AnimatedList);
+      expect(scrollableFinder, findsOneWidget);
 
-    await tester.dragUntilVisible(find.text('Rothrist'), scrollableFinder, const Offset(0, -50));
+      await tester.dragUntilVisible(find.text('Rothrist'), scrollableFinder, const Offset(0, -50));
 
-    final levelCrossingGroup = findDASTableRowByText('74.7');
+      final levelCrossingGroup = findDASTableRowByText('74.7');
 
-    final levelCrossingGroupIcon = find.descendant(
-      of: levelCrossingGroup,
-      matching: find.byKey(BaliseLevelCrossingGroupRow.iconLevelCrossingKey),
-    );
-    expect(levelCrossingGroupIcon, findsOneWidget);
+      final levelCrossingGroupIcon = find.descendant(
+        of: levelCrossingGroup,
+        matching: find.byKey(BaliseLevelCrossingGroupRow.iconLevelCrossingKey),
+      );
+      expect(levelCrossingGroupIcon, findsOneWidget);
 
-    // only in non-ETCS level 2 sections
-    final levelCrossingGroupText = find.descendant(
-      of: levelCrossingGroup,
-      matching: find.text(l10n.p_journey_table_level_crossing),
-    );
-    expect(levelCrossingGroupText, findsNothing);
+      // only in non-ETCS level 2 sections
+      final levelCrossingGroupText = find.descendant(
+        of: levelCrossingGroup,
+        matching: find.text(l10n.p_journey_table_level_crossing),
+      );
+      expect(levelCrossingGroupText, findsNothing);
 
-    // expand group
-    await tapElement(tester, levelCrossingGroup);
-    await tester.dragUntilVisible(find.text('Rothrist'), scrollableFinder, const Offset(0, -50));
+      // expand group
+      await tapElement(tester, levelCrossingGroup);
+      await tester.dragUntilVisible(find.text('Rothrist'), scrollableFinder, const Offset(0, -50));
 
-    final detailRowLevelCrossing = findDASTableRowByText('74.700');
-    expect(detailRowLevelCrossing, findsOneWidget);
+      final detailRowLevelCrossing = findDASTableRowByText('74.700');
+      expect(detailRowLevelCrossing, findsOneWidget);
 
-    final levelCrossingIcon = find.descendant(
-      of: detailRowLevelCrossing,
-      matching: find.byKey(LevelCrossingRow.iconLevelCrossingKey),
-    );
-    expect(levelCrossingIcon, findsOneWidget);
+      final levelCrossingIcon = find.descendant(
+        of: detailRowLevelCrossing,
+        matching: find.byKey(LevelCrossingRow.iconLevelCrossingKey),
+      );
+      expect(levelCrossingIcon, findsOneWidget);
 
-    // only in non-ETCS level 2 sections
-    final levelCrossingText = find.descendant(
-      of: detailRowLevelCrossing,
-      matching: find.text(l10n.p_journey_table_level_crossing),
-    );
-    expect(levelCrossingText, findsNothing);
+      // only in non-ETCS level 2 sections
+      final levelCrossingText = find.descendant(
+        of: detailRowLevelCrossing,
+        matching: find.text(l10n.p_journey_table_level_crossing),
+      );
+      expect(levelCrossingText, findsNothing);
 
-    await disconnect(tester);
-  });
+      await disconnect(tester);
+    },
+  );
 }

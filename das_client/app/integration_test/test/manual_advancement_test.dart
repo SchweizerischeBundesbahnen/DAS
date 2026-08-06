@@ -10,7 +10,9 @@ import '../util/test_utils.dart';
 
 void main() {
   group('manual advancement tests', () {
-    testWidgets('manualAdvancement_whenServicePointDragged_thenJourneyPositionMoved|IU0xYWTQ0mGPaNeRDOU9|tests:741', (tester) async {
+    testWidgets('manualAdvancement_whenServicePointDragged_thenJourneyPositionMoved|IU0xYWTQ0mGPaNeRDOU9|tests:741', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T9999M');
 
@@ -99,7 +101,9 @@ void main() {
       },
     );
 
-    testWidgets('manualAdvancement_whenManualPositionSet_thenStartTimedAdvancement|qidAQQpf9ZctfYvUrotn|tests:1314', (tester) async {
+    testWidgets('manualAdvancement_whenManualPositionSet_thenStartTimedAdvancement|qidAQQpf9ZctfYvUrotn|tests:1314', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T46M');
 
@@ -121,7 +125,9 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('manualAdvancement_whenManualPositionSet_thenRestartsPositionTimers|tvZbKb7A7zMsILORpP0O|tests:1314', (tester) async {
+    testWidgets('manualAdvancement_whenManualPositionSet_thenRestartsPositionTimers|tvZbKb7A7zMsILORpP0O|tests:1314', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T46M');
 

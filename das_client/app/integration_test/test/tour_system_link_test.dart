@@ -67,7 +67,9 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('tourSystem_whenPositionChanges_thenUpdatesButtonVisibility|LSHbN4Urksjx7NapW9GO|tests:96', (tester) async {
+    testWidgets('tourSystem_whenPositionChanges_thenUpdatesButtonVisibility|LSHbN4Urksjx7NapW9GO|tests:96', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
 
       final userSettings = DI.get<LocalKeyValueStore>() as MockLocalKeyValueStore;
