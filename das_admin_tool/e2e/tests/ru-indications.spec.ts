@@ -70,7 +70,9 @@ test.describe('ru indications test', () => {
     await deleteEntryIfExists(page, updatedRow);
   });
 
-  test('create, edit and delete ru indication|mAxDTAXFUf6YgD74EcqA|tests:144', async ({ page }) => {
+  test('ruIndication_whenCreatedEditedAndDeleted_thenSucceeds|mAxDTAXFUf6YgD74EcqA|tests:144', async ({
+    page,
+  }) => {
     // create
     await createRUIndication(page, TEST_TITLE_DE, TEST_TEXT_DE, TEST_VALID_DATE);
 
@@ -98,7 +100,7 @@ test.describe('ru indications test', () => {
     await deleteEntryViaDialog(page, updatedRow);
   });
 
-  test('delete selected ru indications via checkbox|qESZIrb6RHmFucd3r3B8|tests:144', async ({
+  test('ruIndication_whenBulkDeleteViaCheckbox_thenDeletes|qESZIrb6RHmFucd3r3B8|tests:144', async ({
     page,
   }) => {
     // create one entry to select and bulk-delete

@@ -108,6 +108,16 @@ jobs:
           E2E_LOGIN_USERNAME: ${{ steps.vault-secrets.outputs.E2E_LOGIN_USERNAME }}
           E2E_LOGIN_PASSWORD: ${{ steps.vault-secrets.outputs.E2E_LOGIN_PASSWORD }}
 
+      - name: Extract test report
+        if: always()
+        run: node ../scripts/extract_admin_tool_test_report.mjs e2e/test-results.json test-report.json
+
+      - uses: actions/upload-artifact@v7.0.1
+        if: always()
+        with:
+          name: admin-tool-test-report
+          path: das_admin_tool/test-report.json
+
       - uses: actions/upload-artifact@v7.0.1
         if: failure()
         with:
