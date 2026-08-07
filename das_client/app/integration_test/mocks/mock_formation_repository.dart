@@ -4,6 +4,10 @@ import 'package:rxdart/rxdart.dart';
 class MockFormationRepository implements FormationRepository {
   final _rxFormation = BehaviorSubject<Formation?>.seeded(null);
 
+  static const _directTransportPaperUrl = 'https://example.com/transport-paper-direct.pdf';
+  static const _redirectTransportPaperUrl = '/transport-paper/redirect';
+  static const _resolvedRedirectTransportPaperUrl = 'https://example.com/transport-paper.pdf';
+
   @override
   Stream<Formation?> watchFormation({
     required String operationalTrainNumber,
@@ -18,49 +22,7 @@ class MockFormationRepository implements FormationRepository {
   }
 
   void emitT49Formation() {
-    final formation = Formation(
-      operationalTrainNumber: 'T49',
-      company: '2185',
-      operationalDay: DateTime.now(),
-      formationRuns: [
-        _generateFormationRun(
-          'CH09991',
-          'CH09992',
-          trainCategoryCode: 'A',
-          brakedWeightPercentage: 30,
-        ),
-        _generateFormationRun(
-          'CH09992',
-          'CH09993',
-          trainCategoryCode: 'A',
-          brakedWeightPercentage: 95,
-          simTrain: true,
-        ),
-        _generateFormationRun(
-          'CH09993',
-          'CH09994',
-          trainCategoryCode: 'A',
-          brakedWeightPercentage: 95,
-          dangerousGoods: true,
-        ),
-        _generateFormationRun(
-          'CH09994',
-          'CH09995',
-          trainCategoryCode: 'A',
-          brakedWeightPercentage: 95,
-          dangerousGoods: true,
-          simTrain: true,
-        ),
-        _generateFormationRun(
-          'CH09995',
-          'CH09996',
-          trainCategoryCode: 'A',
-          brakedWeightPercentage: 95,
-          carCarrier: true,
-        ),
-      ],
-    );
-    _rxFormation.add(formation);
+    _rxFormation.add(_createT49Formation());
   }
 
   void emitFormationWithAllChanges() {
@@ -196,6 +158,7 @@ class MockFormationRepository implements FormationRepository {
     bool simTrain = false,
     bool dangerousGoods = false,
     bool carCarrier = false,
+    TransportPaperLink? transportPaperLink,
   }) {
     return FormationRun(
       inspectionDateTime: DateTime.now(),
@@ -225,10 +188,68 @@ class MockFormationRepository implements FormationRepository {
       gradientDownhillMaxInPermille: 25,
       trainCategoryCode: trainCategoryCode,
       brakedWeightPercentage: brakedWeightPercentage,
+      transportPaperLink: transportPaperLink,
       tractionMaxSpeedInKmh: 160,
       hauledLoadMaxSpeedInKmh: 100,
       formationMaxSpeedInKmh: 100,
       additionalTractions: ['Q (420)'],
+    );
+  }
+
+  Formation _createT49Formation() {
+    return Formation(
+      operationalTrainNumber: 'T49',
+      company: '2185',
+      operationalDay: DateTime.now(),
+      formationRuns: [
+        _generateFormationRun(
+          'CH09991',
+          'CH09992',
+          trainCategoryCode: 'A',
+          brakedWeightPercentage: 30,
+        ),
+        _generateFormationRun(
+          'CH09992',
+          'CH09993',
+          trainCategoryCode: 'A',
+          brakedWeightPercentage: 95,
+          simTrain: true,
+          transportPaperLink: TransportPaperLink(
+            url: _directTransportPaperUrl,
+            type: TransportPaperLinkType.url,
+          ),
+        ),
+        _generateFormationRun(
+          'CH09993',
+          'CH09994',
+          trainCategoryCode: 'A',
+          brakedWeightPercentage: 95,
+          dangerousGoods: true,
+          transportPaperLink: TransportPaperLink(
+            url: _redirectTransportPaperUrl,
+            type: TransportPaperLinkType.pdfRedirect,
+          ),
+        ),
+        _generateFormationRun(
+          'CH09994',
+          'CH09995',
+          trainCategoryCode: 'A',
+          brakedWeightPercentage: 95,
+          dangerousGoods: true,
+          simTrain: true,
+          transportPaperLink: TransportPaperLink(
+            url: '/transport-paper/broken',
+            type: TransportPaperLinkType.unknown,
+          ),
+        ),
+        _generateFormationRun(
+          'CH09995',
+          'CH09996',
+          trainCategoryCode: 'A',
+          brakedWeightPercentage: 95,
+          carCarrier: true,
+        ),
+      ],
     );
   }
 
@@ -269,6 +290,12 @@ class MockFormationRepository implements FormationRepository {
 
   @override
   Future<String?> resolveTransportPaperLink(TransportPaperLink transportPaperLink) async {
-    return null;
+    return switch (transportPaperLink.type) {
+      TransportPaperLinkType.url => transportPaperLink.url,
+      TransportPaperLinkType.pdfRedirect when transportPaperLink.url == _redirectTransportPaperUrl =>
+        _resolvedRedirectTransportPaperUrl,
+      TransportPaperLinkType.pdfRedirect => null,
+      TransportPaperLinkType.unknown => null,
+    };
   }
 }
