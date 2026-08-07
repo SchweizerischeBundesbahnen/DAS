@@ -77,11 +77,7 @@ class _ReducedOverviewModalSheet extends StatelessWidget {
               Text(
                 journey.formattedTrainIdentifier(context),
                 style: sbbTextStyle.romanStyle.medium.copyWith(
-                  color: ThemeUtil.getColor(
-                    context,
-                    SBBColors.granite,
-                    SBBColors.white,
-                  ),
+                  color: ThemeUtil.getColor(context, SBBColors.granite, SBBColors.white),
                 ),
               ),
             ],

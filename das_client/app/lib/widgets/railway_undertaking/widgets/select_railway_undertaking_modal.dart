@@ -1,29 +1,28 @@
-import 'package:app/extension/ru_extension.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/railway_undertaking/select_railway_undertaking_modal_controller.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:collection/collection.dart';
+import 'package:core_data/component.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
-import 'package:sfera/component.dart';
 
 class SelectRailwayUndertakingModal extends StatefulWidget {
   static const modalKey = Key('SelectRailwayUndertakingModal');
   static const filterFieldKey = Key('SelectRailwayUndertakingModalFilterField');
-
-  static ShapeBorder get shapeBorder =>
-      RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(SBBSpacing.medium)));
+  static const shapeBorder = RoundedRectangleBorder(borderRadius: .vertical(top: .circular(SBBSpacing.medium)));
 
   const SelectRailwayUndertakingModal({
-    required this.selectedRailwayUndertaking,
-    required this.updateRailwayUndertaking,
+    required this.availableCompanies,
+    required this.selectedCompanyCodes,
+    required this.updateCompanies,
     super.key,
     this.allowMultiSelect = false,
   });
 
-  final List<RailwayUndertaking> selectedRailwayUndertaking;
-  final void Function(List<RailwayUndertaking>) updateRailwayUndertaking;
+  final List<Company> availableCompanies;
+  final List<String> selectedCompanyCodes;
+  final void Function(List<Company>) updateCompanies;
   final bool allowMultiSelect;
 
   @override
@@ -32,30 +31,24 @@ class SelectRailwayUndertakingModal extends StatefulWidget {
 
 class _SelectRailwayUndertakingModalState extends State<SelectRailwayUndertakingModal> {
   SelectRailwayUndertakingModalController? controller;
-  late AppLocalizations _appLocalizations;
   final ScrollController scrollController = ScrollController();
 
   @override
   void didUpdateWidget(covariant SelectRailwayUndertakingModal oldWidget) {
-    if (widget.selectedRailwayUndertaking != oldWidget.selectedRailwayUndertaking) {
-      controller?.selectedRailwayUndertaking = widget.selectedRailwayUndertaking;
+    if (widget.selectedCompanyCodes != oldWidget.selectedCompanyCodes) {
+      controller?.selectedCompanyCodes = widget.selectedCompanyCodes;
     }
     super.didUpdateWidget(oldWidget);
   }
 
   @override
   void didChangeDependencies() {
-    final appLocalizations = AppLocalizations.of(context)!;
-    if (controller == null || _appLocalizations != appLocalizations) {
-      _appLocalizations = appLocalizations;
-
-      controller = SelectRailwayUndertakingModalController(
-        localizations: _appLocalizations,
-        updateRailwayUndertaking: widget.updateRailwayUndertaking,
-        initialRailwayUndertaking: widget.selectedRailwayUndertaking,
-        allowMultiSelect: widget.allowMultiSelect,
-      );
-    }
+    controller ??= SelectRailwayUndertakingModalController(
+      availableCompanies: widget.availableCompanies,
+      updateCompanies: widget.updateCompanies,
+      initialCompanyCodes: widget.selectedCompanyCodes,
+      allowMultiSelect: widget.allowMultiSelect,
+    );
     super.didChangeDependencies();
   }
 
@@ -68,22 +61,21 @@ class _SelectRailwayUndertakingModalState extends State<SelectRailwayUndertaking
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
-    final bottom = mediaQuery.viewInsets.bottom;
+    final bottomInsets = MediaQuery.of(context).viewInsets.bottom;
     return StreamBuilder(
-      stream: controller?.availableRailwayUndertakings,
+      stream: controller?.filteredCompanies,
       builder: (context, snap) {
-        final localizedFilteredRus = snap.data ?? [];
+        final filteredCompanies = snap.data ?? [];
         final backgroundColor = ThemeUtil.getColor(context, SBBColors.milk, SBBColors.midnight);
         return Padding(
-          padding: .only(bottom: bottom),
+          padding: .only(bottom: bottomInsets),
           // TODO: SBBRadioGroup currently doesn't support Slivers so it needs to be wrapped around whole list.
           // Also see: https://github.com/flutter/flutter/issues/174753
-          child: SBBRadioGroup<RailwayUndertaking>(
-            groupValue: widget.selectedRailwayUndertaking.firstOrNull,
-            onChanged: (selectedRu) {
-              if (selectedRu != null) controller?.selectedRailwayUndertaking = [selectedRu];
-              context.router.pop(selectedRu);
+          child: SBBRadioGroup<String>(
+            groupValue: widget.selectedCompanyCodes.firstOrNull,
+            onChanged: (selectedCompany) {
+              if (selectedCompany != null) controller?.selectedCompanyCodes = [selectedCompany];
+              context.router.pop(selectedCompany);
             },
             child: CustomScrollView(
               key: SelectRailwayUndertakingModal.modalKey,
@@ -96,11 +88,11 @@ class _SelectRailwayUndertakingModalState extends State<SelectRailwayUndertaking
                   sliver: SliverList.list(
                     children: SBBDivider.divideItems(
                       context: context,
-                      items: localizedFilteredRus
+                      items: filteredCompanies
                           .map(
-                            (ru) => widget.allowMultiSelect
-                                ? _checkboxListItem(ru, backgroundColor)
-                                : _radioListItem(ru, backgroundColor),
+                            (company) => widget.allowMultiSelect
+                                ? _checkboxListItem(company, backgroundColor)
+                                : _radioListItem(company, backgroundColor),
                           )
                           .toList(),
                     ),
@@ -144,27 +136,27 @@ class _SelectRailwayUndertakingModalState extends State<SelectRailwayUndertaking
     );
   }
 
-  SBBRadioListItem<RailwayUndertaking> _radioListItem(RailwayUndertaking element, Color backgroundColor) {
-    return SBBRadioListItem<RailwayUndertaking>(
+  Widget _radioListItem(Company element, Color backgroundColor) {
+    return SBBRadioListItem<Company>(
       key: ValueKey(element),
       value: element,
-      titleText: element.displayText(context),
+      titleText: element.shortName,
       listItemStyle: SBBListItemStyle(backgroundColor: WidgetStatePropertyAll(backgroundColor)),
     );
   }
 
-  SBBCheckboxListItem _checkboxListItem(RailwayUndertaking element, Color backgroundColor) {
+  Widget _checkboxListItem(Company element, Color backgroundColor) {
     return SBBCheckboxListItem(
       key: ValueKey(element),
-      value: widget.selectedRailwayUndertaking.contains(element),
-      titleText: element.displayText(context),
+      value: widget.selectedCompanyCodes.contains(element.code),
+      titleText: element.shortName,
       onChanged: (isSelected) {
         if (isSelected != null && isSelected) {
-          widget.selectedRailwayUndertaking.add(element);
+          widget.selectedCompanyCodes.add(element.code);
         } else {
-          widget.selectedRailwayUndertaking.remove(element);
+          widget.selectedCompanyCodes.remove(element.code);
         }
-        controller?.selectedRailwayUndertaking = widget.selectedRailwayUndertaking;
+        controller?.selectedCompanyCodes = widget.selectedCompanyCodes;
         setState(() {});
       },
       listItemStyle: SBBListItemStyle(backgroundColor: WidgetStatePropertyAll(backgroundColor)),

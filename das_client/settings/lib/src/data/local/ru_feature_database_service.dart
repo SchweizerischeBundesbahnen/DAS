@@ -12,4 +12,6 @@ abstract class RuFeatureDatabaseService {
   Future<RuFeatureDto?> findRuFeature(String companyCodeRics, RuFeatureKeys featureKey);
 
   Future<List<CompanyDto>> findAllCompanies();
+
+  Future<CompanyDto?> findCompany(String companyCode);
 }

@@ -30,13 +30,25 @@ void main() {
     final tomorrow = now.add(Duration(days: 1));
     final yesterday = now.subtract(Duration(days: 1));
     final trainId1 = ExtendedTrainIdentification(
-      trainIdentification: TrainIdentification(ru: .sbbP, trainNumber: '1234', date: now),
+      trainIdentification: TrainIdentification(
+        companyCode: '1285',
+        trainNumber: '1234',
+        date: now,
+      ),
     );
     final trainId2 = ExtendedTrainIdentification(
-      trainIdentification: TrainIdentification(ru: .sbbCH, trainNumber: '5678', date: tomorrow),
+      trainIdentification: TrainIdentification(
+        companyCode: '2185',
+        trainNumber: '5678',
+        date: tomorrow,
+      ),
     );
     final trainId3 = ExtendedTrainIdentification(
-      trainIdentification: TrainIdentification(ru: .blsP, trainNumber: '9999', date: yesterday),
+      trainIdentification: TrainIdentification(
+        companyCode: '1163',
+        trainNumber: '9999',
+        date: yesterday,
+      ),
     );
 
     setUp(() {
@@ -348,8 +360,8 @@ void main() {
       // EXPECT
       verify(
         mockLocalKeyValueStore.set(
-          LocalKeyValueStoreKeys.lastUsedRailwayUndertaking,
-          trainId1.trainIdentification.ru.companyCode,
+          LocalKeyValueStoreKeys.lastUsedCompanyCode,
+          trainId1.trainIdentification.companyCode,
         ),
       ).called(1);
     });

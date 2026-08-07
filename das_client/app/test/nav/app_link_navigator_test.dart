@@ -9,11 +9,11 @@ import 'package:app/pages/journey/view_model/sfera_journey_view_model.dart';
 import 'package:app/provider/local_key_value_store.dart';
 import 'package:app_links_x/component.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:core_data/component.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:sfera/component.dart';
 import 'package:train_identification/component.dart';
 
 import 'app_link_navigator_test.mocks.dart';
@@ -114,7 +114,7 @@ void main() {
       ExtendedTrainIdentification(
         trainIdentification: TrainIdentification(
           trainNumber: '12345',
-          ru: RailwayUndertaking.sbbP,
+          companyCode: '1285',
           date: DateTime.utc(2026, 7, 23),
         ),
         tafTapLocationReferenceStart: 'A',
@@ -147,7 +147,7 @@ void main() {
             as Iterable<ExtendedTrainIdentification>;
     final values = captured.toList();
     expect(values, hasLength(1));
-    expect(values.first.trainIdentification.ru, RailwayUndertaking.blsP);
+    expect(values.first.trainIdentification.companyCode, RailwayUndertaking.blsP);
     expect(values.first.trainIdentification.trainNumber, '333');
     expect(router.replacedRoutes, isEmpty);
   });
@@ -155,7 +155,7 @@ void main() {
   test('observe_whenCompanyCannotBeResolved_thenNavigatesToSelectionAndForwardsDeepLink', () async {
     // ARRANGE
     router.activeRoutes[JourneySelectionRoute.name] = false;
-    when(mockLocalKeyValueStore.lastUsedRailwayUndertaking).thenReturn(null);
+    when(mockLocalKeyValueStore.lastUsedCompanyCode).thenReturn(null);
     when(trainIdentificationRepository.findTrainIdentifications(operationalTrainNumber: '777')).thenAnswer(
       (_) async => <CompanyMatch>{},
     );

@@ -34,7 +34,7 @@ class ReducedOverviewViewModel {
   }
 
   Future<void> _initRxJourney() async {
-    final company = trainIdentification.ru.companyCode;
+    final company = trainIdentification.companyCode;
     final trainNumber = trainIdentification.trainNumber;
     final date = trainIdentification.date;
     final subscription = _sferaLocalService

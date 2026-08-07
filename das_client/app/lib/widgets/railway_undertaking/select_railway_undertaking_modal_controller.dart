@@ -1,10 +1,8 @@
-import 'package:app/extension/ru_extension.dart';
-import 'package:app/i18n/i18n.dart';
 import 'package:collection/collection.dart';
+import 'package:core_data/component.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:sfera/component.dart';
 
 final _log = Logger('JourneyRailwayUndertakingFilterController');
 
@@ -21,24 +19,23 @@ final _log = Logger('JourneyRailwayUndertakingFilterController');
 /// are ordered such that the currently selected one is always on top.
 class SelectRailwayUndertakingModalController {
   SelectRailwayUndertakingModalController({
-    required this.localizations,
-    required this.updateRailwayUndertaking,
-    required List<RailwayUndertaking> initialRailwayUndertaking,
+    required this.availableCompanies,
+    required this.updateCompanies,
+    required List<String> initialCompanyCodes,
     required this.allowMultiSelect,
   }) {
-    _selectedRailwayUndertaking = initialRailwayUndertaking;
+    _selectedCompanyCodes = initialCompanyCodes;
     _init();
   }
 
-  final AppLocalizations localizations;
+  final List<Company> availableCompanies;
   final bool allowMultiSelect;
-  final void Function(List<RailwayUndertaking>) updateRailwayUndertaking;
+  final void Function(List<Company>) updateCompanies;
 
   late TextEditingController _textController;
   String? _filter;
-  late List<RailwayUndertaking> _selectedRailwayUndertaking;
-  late List<(String, RailwayUndertaking)> _localizedToRailwayUndertaking;
-  late BehaviorSubject<List<RailwayUndertaking>> _rxAvailableRailwayUndertakings;
+  late List<String> _selectedCompanyCodes;
+  late BehaviorSubject<List<Company>> _rxFilteredCompanies;
 
   TextEditingController get textEditingController => _textController;
 
@@ -46,44 +43,36 @@ class SelectRailwayUndertakingModalController {
   @visibleForTesting
   String? get filterValue => _filter;
 
-  Stream<List<RailwayUndertaking>> get availableRailwayUndertakings =>
-      _rxAvailableRailwayUndertakings.stream.distinct();
+  Stream<List<Company>> get filteredCompanies => _rxFilteredCompanies.stream.distinct();
 
-  set selectedRailwayUndertaking(List<RailwayUndertaking> selectedRailwayUndertaking) {
-    _selectedRailwayUndertaking = selectedRailwayUndertaking;
+  set selectedCompanyCodes(List<String> selectedCompanyCodes) {
+    _selectedCompanyCodes = selectedCompanyCodes;
     if (!allowMultiSelect) {
-      _resetToSelectedRailwayUndertaking();
+      _resetToSelectedCompany();
     }
-    updateRailwayUndertaking.call(_selectedRailwayUndertaking);
+    updateCompanies.call(_selectedCompanies());
   }
 
   void dispose() {
-    _rxAvailableRailwayUndertakings.close();
+    _rxFilteredCompanies.close();
     _textController.removeListener(_onTextControllerChanged);
     _textController.dispose();
   }
 
   void _init() {
-    _initRuToLocalizedMap();
-    _initRxAvailableRailwayUndertakings();
+    _initRxFilteredCompanies();
     _initFilter();
     _initTextEditingController();
   }
 
-  void _initRuToLocalizedMap() {
-    _localizedToRailwayUndertaking = RailwayUndertaking.knownRUs
-        .map((ru) => (ru.localizedText(localizations).toLowerCase().trim(), ru))
-        .sorted((a, b) => a.$1.compareTo(b.$1));
-  }
-
-  void _initRxAvailableRailwayUndertakings() {
-    final railwayUndertakings = _localizedToRailwayUndertaking.sortedWithSelectedFirst(_selectedRailwayUndertaking);
-    _rxAvailableRailwayUndertakings = BehaviorSubject<List<RailwayUndertaking>>.seeded(railwayUndertakings);
+  void _initRxFilteredCompanies() {
+    final companies = availableCompanies.sortedAlphabeticallyWithSelectedFirst(_selectedCompanyCodes);
+    _rxFilteredCompanies = BehaviorSubject<List<Company>>.seeded(companies);
   }
 
   void _initFilter() {
     if (!allowMultiSelect) {
-      _filter = _selectedRailwayUndertaking.firstOrNull?.localizedText(localizations);
+      _filter = _selectedCompanies().firstOrNull?.shortName;
     }
   }
 
@@ -92,8 +81,8 @@ class SelectRailwayUndertakingModalController {
     _textController.addListener(_onTextControllerChanged);
   }
 
-  void _resetToSelectedRailwayUndertaking() {
-    _filter = _selectedRailwayUndertaking.firstOrNull?.localizedText(localizations);
+  void _resetToSelectedCompany() {
+    _filter = _selectedCompanies().firstOrNull?.shortName;
     _textController.text = _filter!;
   }
 
@@ -103,17 +92,24 @@ class SelectRailwayUndertakingModalController {
     _filter = _textController.text;
 
     final search = _filter!.toLowerCase().trim();
-    final filteredResult = _localizedToRailwayUndertaking
-        .where((ruPair) => ruPair.$1.startsWith(search))
-        .toList()
-        .sortedWithSelectedFirst(_selectedRailwayUndertaking);
+    final filteredResult = _rxFilteredCompanies.value
+        .where((company) => company.shortName.startsWith(search))
+        .sortedAlphabeticallyWithSelectedFirst(_selectedCompanyCodes);
 
-    _log.finer('Filtered RailwayUndertakings with $search to $filteredResult.');
-    _rxAvailableRailwayUndertakings.add(filteredResult);
+    _log.finer('Filtered companies with $search to $filteredResult.');
+    _rxFilteredCompanies.add(filteredResult);
+  }
+
+  List<Company> _selectedCompanies() {
+    if (!_rxFilteredCompanies.hasValue) return [];
+    return _rxFilteredCompanies.value.where((company) => _selectedCompanyCodes.contains(company.code)).toList();
   }
 }
 
-extension on List<(String, RailwayUndertaking)> {
-  List<RailwayUndertaking> sortedWithSelectedFirst(List<RailwayUndertaking> selectedRailwayUndertaking) =>
-      sortedBy((pair) => selectedRailwayUndertaking.contains(pair.$2) ? '' : pair.$1).map((e) => e.$2).toList();
+extension _CompaniesSortX on Iterable<Company> {
+  List<Company> sortedAlphabeticallyWithSelectedFirst(List<String> selectedCompanyCodes) => sorted(
+    (a, b) => selectedCompanyCodes.contains(a.code) != selectedCompanyCodes.contains(b.code)
+        ? (selectedCompanyCodes.contains(a.code) ? -1 : 1)
+        : a.shortName.toLowerCase().compareTo(b.shortName.toLowerCase()),
+  );
 }

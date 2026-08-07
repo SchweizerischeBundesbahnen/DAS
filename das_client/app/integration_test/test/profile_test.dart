@@ -5,6 +5,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 import '../app_test.dart';
 import '../integration/integration_test_app.dart';
+import '../mocks/mock_settings_repository.dart';
 import '../util/test_utils.dart';
 
 void main() {
@@ -28,9 +29,9 @@ void main() {
     await tapElement(tester, find.byWidgetPredicate((it) => it is SelectRailwayUndertakingInput));
 
     // select 3 RU
-    await tapElement(tester, find.text(l10n.c_ru_bls_i).first);
-    await tapElement(tester, find.text(l10n.c_ru_bls_c).first);
-    await tapElement(tester, find.text(l10n.c_ru_db).first);
+    await tapElement(tester, find.text(companyBLSI.shortName).first);
+    await tapElement(tester, find.text(companyBLSC.shortName).first);
+    await tapElement(tester, find.text(companyDB.shortName).first);
 
     await tapElement(
       tester,
@@ -41,7 +42,7 @@ void main() {
     await tester.pumpAndSettle(Duration(seconds: 1));
 
     // check that selected RU are shown in profile
-    final evuText = '${l10n.c_ru_bls_i}, ${l10n.c_ru_bls_c}, ${l10n.c_ru_db}';
+    final evuText = '${companyBLSI.shortName}, ${companyBLSC.shortName}, ${companyDB.shortName}';
     expect(find.text(evuText), findsOneWidget);
 
     await tapElement(
@@ -49,7 +50,7 @@ void main() {
       find.text(evuText),
     );
 
-    await tapElement(tester, find.text(l10n.c_ru_bls_c).first);
+    await tapElement(tester, find.text(companyBLSC.shortName).first);
 
     await tapElement(
       tester,
@@ -58,7 +59,7 @@ void main() {
       ),
     );
 
-    final evuText2 = '${l10n.c_ru_bls_i}, ${l10n.c_ru_db}';
+    final evuText2 = '${companyBLSI.shortName}, ${companyDB.shortName}';
     expect(find.text(evuText2), findsOneWidget);
   });
 

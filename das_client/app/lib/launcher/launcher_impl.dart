@@ -16,6 +16,12 @@ class LauncherImpl implements Launcher {
   final Flavor flavor;
   final LocalKeyValueStore _userSettings;
 
+  static const _blsCompanyCodes = [
+    '3356', // BLSC
+    '2263', // BLSI
+    '1163', // BLSP
+  ];
+
   @override
   Future<bool> launch(String url) async {
     _log.info('Launching url: $url');
@@ -44,9 +50,8 @@ class LauncherImpl implements Launcher {
 
   @override
   Future<bool> launchServicePointPortal(ServicePoint servicePoint) {
-    final rus = _userSettings.railwayUndertakings;
-    if (rus.isNotEmpty &&
-        rus.every((it) => [RailwayUndertaking.blsC, RailwayUndertaking.blsI, RailwayUndertaking.blsP].contains(it))) {
+    final companyCodes = _userSettings.companyCodes;
+    if (companyCodes.isNotEmpty && companyCodes.every((it) => _blsCompanyCodes.contains(it))) {
       return launch(ServicePointPortal.bls.urlFor(servicePoint));
     } else {
       return launch(ServicePointPortal.sbb.urlFor(servicePoint));

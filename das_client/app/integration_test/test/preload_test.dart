@@ -4,6 +4,7 @@ import 'package:app/pages/journey/journey_page.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_chevron.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:connectivity_x/component.dart';
+import 'package:core_data/component.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mqtt/component.dart';
@@ -141,7 +142,11 @@ void main() {
     await IntegrationTestApp.start(tester);
 
     // Load T9999 so we have it available offline
-    await loadJourney(tester, trainNumber: 'T9999', ru: RailwayUndertaking.sbbP);
+    await loadJourney(
+      tester,
+      trainNumber: 'T9999',
+      company: Company(code: '1285', shortName: 'SBBP'),
+    );
     await stopAutomaticAdvancement(tester);
     await tapElement(tester, find.byKey(JourneyPage.disconnectButtonKey));
 
@@ -153,7 +158,11 @@ void main() {
     connectivityManager.lastConnectedTime = DateTime.now().subtract(Duration(minutes: 2));
     connectivityManager.connectivitySubject.add(false);
 
-    await loadJourney(tester, trainNumber: 'T9999', ru: RailwayUndertaking.sbbP);
+    await loadJourney(
+      tester,
+      trainNumber: 'T9999',
+      company: Company(code: '1285', shortName: 'SBBP'),
+    );
 
     // Check if Fahrbild loaded
     expect(find.byType(DASTable), findsOneWidget);

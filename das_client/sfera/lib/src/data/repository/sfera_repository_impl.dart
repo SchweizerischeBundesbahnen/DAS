@@ -171,7 +171,7 @@ class SferaRepoImpl implements SferaRepository {
 
   OtnId _toOtnId(TrainIdentification trainId) {
     final otnId = OtnId(
-      company: trainId.ru.companyCode,
+      company: trainId.companyCode,
       operationalTrainNumber: trainId.trainNumber,
       startDate: trainId.date,
     );
@@ -575,7 +575,7 @@ class SferaRepoImpl implements SferaRepository {
   @override
   TrainIdentification? get connectedTrain => _otnId != null
       ? TrainIdentification(
-          ru: .fromCompanyCode(_otnId!.company),
+          companyCode: _otnId!.company,
           trainNumber: _otnId!.operationalTrainNumber,
           date: _otnId!.startDate,
           operatingDay: _rxJourney.value?.metadata.trainIdentification?.operatingDay,

@@ -1,17 +1,16 @@
-import 'package:core_data/src/ru.dart';
 import 'package:meta/meta.dart';
 
 @sealed
 @immutable
 class TrainIdentification {
   TrainIdentification({
-    required this.ru,
+    required this.companyCode,
     required this.trainNumber,
     required DateTime date,
     this.operatingDay,
   }) : date = DateTime(date.year, date.month, date.day);
 
-  final RailwayUndertaking ru;
+  final String companyCode;
   final String trainNumber;
   final DateTime date;
   final DateTime? operatingDay;
@@ -24,7 +23,7 @@ class TrainIdentification {
 
   @override
   String toString() {
-    return 'TrainIdentification{ru: $ru, trainNumber: $trainNumber, date: $date, operatingDay: $operatingDay}';
+    return 'TrainIdentification{companyCode: $companyCode, trainNumber: $trainNumber, date: $date, operatingDay: $operatingDay}';
   }
 
   @override
@@ -32,11 +31,11 @@ class TrainIdentification {
       identical(this, other) ||
       other is TrainIdentification &&
           runtimeType == other.runtimeType &&
-          ru == other.ru &&
+          companyCode == other.companyCode &&
           trainNumber == other.trainNumber &&
           date == other.date &&
           operatingDay == other.operatingDay;
 
   @override
-  int get hashCode => Object.hash(ru, trainNumber, date, operatingDay);
+  int get hashCode => Object.hash(companyCode, trainNumber, date, operatingDay);
 }

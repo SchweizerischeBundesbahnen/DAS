@@ -1,7 +1,7 @@
 import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
 import 'package:app/pages/journey/view_model/model/journey_navigation_model.dart';
+import 'package:core_data/component.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sfera/component.dart';
 
 void main() {
   group('JourneyNavigationModel', () {
@@ -17,14 +17,14 @@ void main() {
     setUp(() {
       trainId = ExtendedTrainIdentification(
         trainIdentification: TrainIdentification(
-          ru: .sbbP,
+          companyCode: '1285',
           trainNumber: '1234',
           date: DateTime.now(),
         ),
       );
       trainId2 = ExtendedTrainIdentification(
         trainIdentification: TrainIdentification(
-          ru: .sbbCH,
+          companyCode: '2185',
           trainNumber: '5678',
           date: DateTime.now().add(Duration(days: 1)),
         ),

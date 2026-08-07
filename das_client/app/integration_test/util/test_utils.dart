@@ -12,6 +12,7 @@ import 'package:app/widgets/railway_undertaking/widgets/select_railway_undertaki
 import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:app/widgets/table/scrollable_align.dart';
+import 'package:core_data/component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -89,15 +90,15 @@ Finder findColoredRowCells({required FinderBase<Element> of, required Color colo
 }
 
 /// Verifies, that SBB or the given RU is selected and loads train journey with [trainNumber]
-Future<void> loadJourney(WidgetTester tester, {required String trainNumber, RailwayUndertaking? ru}) async {
-  if (ru != null) {
+Future<void> loadJourney(WidgetTester tester, {required String trainNumber, Company? company}) async {
+  if (company != null) {
     await tapElement(tester, find.text(l10n.p_train_selection_ru_description), warnIfMissed: false);
 
     final filterField = find.byKey(SelectRailwayUndertakingModal.filterFieldKey);
     expect(filterField, findsOneWidget);
-    await enterText(tester, filterField, ru.name);
+    await enterText(tester, filterField, company.shortName);
 
-    await tapElement(tester, find.byWidgetPredicate((widget) => widget is SBBRadioListItem && widget.value == ru));
+    await tapElement(tester, find.byWidgetPredicate((widget) => widget is SBBRadioListItem && widget.value == company));
   }
 
   final trainNumberText = findTextInputByLabel(l10n.p_train_selection_trainnumber_description);

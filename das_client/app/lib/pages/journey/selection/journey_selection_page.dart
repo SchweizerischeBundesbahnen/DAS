@@ -158,8 +158,8 @@ class _ContentState extends State<_Content> with WidgetsBindingObserver {
               JourneyDateInput(),
               JourneyTrainNumberInput(),
               SelectRailwayUndertakingInput(
-                selectedRailwayUndertakings: [?model.railwayUndertaking],
-                updateRailwayUndertaking: viewModel.updateRailwayUndertaking,
+                selectedCompanyCodes: [?model.companyCode],
+                updateCompanies: viewModel.updateCompanies,
                 addClearButton: true,
               ),
             ],
@@ -258,8 +258,10 @@ class _ContentState extends State<_Content> with WidgetsBindingObserver {
       title: Column(
         crossAxisAlignment: .start,
         children: [
+          // TODO: Is toUpperCase still wanted? companyMatch.companyCode.shortName.toUpperCase()
+          // TODO: Get company shortName
           Text(
-            '${companyMatch.ru.companyCode}, ${companyMatch.ru.name.toUpperCase()}',
+            '${companyMatch.companyCode}, ${'ShortName'}',
             style: SBBTextStyles.mediumLight,
           ),
           Text(

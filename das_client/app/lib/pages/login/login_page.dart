@@ -38,14 +38,12 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     final viewModel = context.read<LoginViewModel>();
     _subscription = viewModel.model.listen((model) async {
-      if (model is LoggedIn) {
-        if (mounted) {
-          if (widget.onSuccess != null) {
-            // navigation is handled outside
-            widget.onSuccess!();
-          } else {
-            context.router.replace(JourneySelectionRoute());
-          }
+      if (model is LoggedIn && mounted) {
+        if (widget.onSuccess != null) {
+          // navigation is handled outside
+          widget.onSuccess!();
+        } else {
+          context.router.replace(JourneySelectionRoute());
         }
       }
     });

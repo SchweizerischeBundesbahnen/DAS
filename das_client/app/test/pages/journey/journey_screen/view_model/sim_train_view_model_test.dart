@@ -19,7 +19,7 @@ void main() {
     final metadata = trainNumber != null
         ? Metadata(
             trainIdentification: TrainIdentification(
-              ru: RailwayUndertaking.sbbCH,
+              companyCode: '2185',
               trainNumber: trainNumber,
               date: DateTime(2026, 7, 1),
             ),

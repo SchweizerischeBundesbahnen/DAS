@@ -62,7 +62,7 @@ class UxTestingViewModel {
     if (connectedTrain != null) {
       _formationRepository.reloadFormation(
         connectedTrain.trainNumber,
-        connectedTrain.ru.companyCode,
+        connectedTrain.companyCode,
         connectedTrain.operatingDay ?? connectedTrain.date,
       );
     }

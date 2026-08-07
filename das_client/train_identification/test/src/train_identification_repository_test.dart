@@ -93,11 +93,11 @@ void main() {
       result,
       [
         CompanyMatch(
-          ru: RailwayUndertaking.sbbP,
+          companyCode: '1285',
           startDate: DateTime(2026, 7, 20),
         ),
         CompanyMatch(
-          ru: RailwayUndertaking.blsP,
+          companyCode: '1163',
           startDate: DateTime(2026, 7, 21),
         ),
       ],
@@ -127,7 +127,7 @@ void main() {
     ).thenAnswer(
       (_) async => {
         CompanyMatch(
-          ru: RailwayUndertaking.sbbP,
+          companyCode: '1285',
           startDate: DateTime(2026, 7, 21),
         ),
       },
@@ -136,7 +136,7 @@ void main() {
     final result = await repository.findTrainIdentifications(operationalTrainNumber: '12345');
 
     expect(result, hasLength(1));
-    expect(result.first.ru, RailwayUndertaking.sbbP);
+    expect(result.first.companyCode, RailwayUndertaking.sbbP);
     expect(result.first.startDate, DateTime(2026, 7, 21));
     verify(
       sferaLocalRepo.findCompanyMatchesByTrainNumber(

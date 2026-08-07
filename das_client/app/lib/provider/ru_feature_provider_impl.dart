@@ -16,6 +16,6 @@ class RuFeatureProviderImpl implements RuFeatureProvider {
     final activeTrain = _sferaRepo.connectedTrain;
     if (activeTrain == null) return false;
 
-    return await _settingsRepository.isRuFeatureEnabled(featureKey, activeTrain.ru.companyCode);
+    return await _settingsRepository.isRuFeatureEnabled(featureKey, activeTrain.companyCode);
   }
 }

@@ -1,6 +1,5 @@
 import 'package:app/flavor.dart';
 import 'package:app/launcher/launcher_impl.dart';
-import 'package:app/model/tour_system.dart';
 import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
 import 'package:app/pages/journey/view_model/model/journey_navigation_model.dart';
@@ -33,8 +32,8 @@ void main() {
     methodCalls = <MethodCall>[];
     launchResult = true;
 
-    when(mockLocalKeyValueStore.railwayUndertakings).thenReturn([RailwayUndertaking.sbbP]);
-    when(mockLocalKeyValueStore.tourSystem).thenReturn(TourSystem.tip);
+    when(mockLocalKeyValueStore.companyCodes).thenReturn(['1285']);
+    when(mockLocalKeyValueStore.tourSystem).thenReturn(.tip);
 
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(
       _urlLauncherChannel,
@@ -81,7 +80,7 @@ void main() {
       JourneyNavigationModel(
         trainIdentification: ExtendedTrainIdentification(
           trainIdentification: TrainIdentification(
-            ru: RailwayUndertaking.sbbP,
+            companyCode: '1285',
             trainNumber: '1234',
             date: DateTime(2026, 1, 1),
           ),
@@ -105,7 +104,7 @@ void main() {
       JourneyNavigationModel(
         trainIdentification: ExtendedTrainIdentification(
           trainIdentification: TrainIdentification(
-            ru: RailwayUndertaking.sbbP,
+            companyCode: '1285',
             trainNumber: '1234',
             date: DateTime(2026, 1, 1),
           ),
@@ -125,7 +124,7 @@ void main() {
   });
 
   test('launchServicePointPortal_whenAllRusAreBls_thenUsesBlsPortal', () async {
-    when(mockLocalKeyValueStore.railwayUndertakings).thenReturn([RailwayUndertaking.blsC, RailwayUndertaking.blsP]);
+    when(mockLocalKeyValueStore.companyCodes).thenReturn(['3356', '1163']);
 
     final result = await testee.launchServicePointPortal(
       const ServicePoint(name: 'Bern', abbreviation: 'BERN', locationCode: '8507000', order: 1000, kilometre: []),
@@ -137,7 +136,7 @@ void main() {
   });
 
   test('launchServicePointPortal_whenNoRuSelected_thenUsesSbbPortal', () async {
-    when(mockLocalKeyValueStore.railwayUndertakings).thenReturn([]);
+    when(mockLocalKeyValueStore.companyCodes).thenReturn([]);
 
     final result = await testee.launchServicePointPortal(
       const ServicePoint(name: 'Bern', abbreviation: 'BERN', locationCode: '8507000', order: 1000, kilometre: []),
@@ -149,7 +148,7 @@ void main() {
   });
 
   test('launchServicePointPortal_whenRuSelectionIsMixedBlsAndSbb_thenUsesSbbPortal', () async {
-    when(mockLocalKeyValueStore.railwayUndertakings).thenReturn([RailwayUndertaking.blsP, RailwayUndertaking.sbbP]);
+    when(mockLocalKeyValueStore.companyCodes).thenReturn(['1163', '1285']);
 
     final result = await testee.launchServicePointPortal(
       const ServicePoint(name: 'Bern', abbreviation: 'BERN', locationCode: '8507000', order: 1000, kilometre: []),

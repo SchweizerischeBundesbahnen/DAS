@@ -10,6 +10,7 @@ import 'package:auth/component.dart';
 import 'package:customer_oriented_departure/component.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:settings/component.dart';
 import 'package:sfera/component.dart';
 
 final _log = Logger('CustomerOrientedDepartureViewModel');
@@ -21,6 +22,7 @@ class CustomerOrientedDepartureViewModel extends JourneyAwareViewModel {
     required this._notificationViewModel,
     required this._authenticator,
     required this._appLifecycleViewModel,
+    required this._settingsRepository,
     super.journeyViewModel,
   }) {
     _init();
@@ -31,6 +33,7 @@ class CustomerOrientedDepartureViewModel extends JourneyAwareViewModel {
   final NotificationPriorityQueueViewModel _notificationViewModel;
   final AppLifecycleViewModel _appLifecycleViewModel;
   final Authenticator _authenticator;
+  final SettingsRepository _settingsRepository;
 
   final _rxStatus = BehaviorSubject<CustomerOrientedDepartureStatus>.seeded(.departure);
   final _subscriptions = <StreamSubscription>[];
@@ -66,12 +69,19 @@ class CustomerOrientedDepartureViewModel extends JourneyAwareViewModel {
       _log.warning('Subscribe canceled as journey without train identification was provided');
       return;
     }
+
+    final company = await _settingsRepository.getCompanyForCode(trainIdentification.companyCode);
+    if (company == null) {
+      _log.warning('Subscribe canceled as unknown company was provided');
+      return;
+    }
+
     _log.fine('Subscribing to $trainIdentification');
 
     final endServicePoint = journey.journeyPoints.whereType<ServicePoint>().last;
     final arrivalDepartureTime = endServicePoint.arrivalDepartureTime;
     _repository.subscribe(
-      evu: trainIdentification.ru.name.toUpperCase(),
+      evu: company.shortName.toUpperCase(),
       trainNumber: trainIdentification.trainNumber,
       journeyEndTime: arrivalDepartureTime?.operationalArrivalTime ?? arrivalDepartureTime?.plannedArrivalTime,
       isDriver: await _isDriver,

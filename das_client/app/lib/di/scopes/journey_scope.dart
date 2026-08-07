@@ -347,6 +347,7 @@ extension JourneyScopeExtension on GetIt {
         authenticator: DI.get(),
         notificationViewModel: DI.get(),
         appLifecycleViewModel: DI.get(),
+        settingsRepository: DI.get(),
       ),
       dispose: (vm) => vm.dispose(),
     );

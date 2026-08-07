@@ -199,11 +199,7 @@ extension AuthenticatedScopeExtension on GetIt {
     final repo = ExternalLinksComponent.createRepository(baseUrl: flavor.backendUrl, client: DI.get());
     registerSingleton<ExternalLinksRepository>(repo);
 
-    final companyCodes = DI
-        .get<LocalKeyValueStore>()
-        .railwayUndertakings
-        .map((undertaking) => undertaking.companyCode)
-        .toList();
+    final companyCodes = DI.get<LocalKeyValueStore>().companyCodes;
     repo.reloadExternalLinksByCompanies(companyCodes);
   }
 

@@ -6,6 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import '../app_test.dart';
 import '../integration/integration_test_app.dart';
+import '../mocks/mock_settings_repository.dart';
 import '../util/test_utils.dart';
 
 void main() {
@@ -37,7 +38,7 @@ void main() {
       await loadJourney(tester, trainNumber: 'T14');
       await openReducedJourneyMenu(tester);
 
-      expect(find.text('T14 ${l10n.c_ru_sbb_p}'), findsAny);
+      expect(find.text('T14 ${companySBBP.shortName}'), findsAny);
 
       final formattedDate = Format.dateWithAbbreviatedDay(DateTime.now(), appLocale());
       expect(find.text(formattedDate), findsOneWidget);
@@ -50,7 +51,7 @@ void main() {
       await loadJourney(tester, trainNumber: 'T29');
       await openReducedJourneyMenu(tester);
 
-      expect(find.text('T29R / T29 ${l10n.c_ru_sbb_p}'), findsAny);
+      expect(find.text('T29R / T29 ${companySBBP.shortName}'), findsAny);
 
       await disconnect(tester);
     });

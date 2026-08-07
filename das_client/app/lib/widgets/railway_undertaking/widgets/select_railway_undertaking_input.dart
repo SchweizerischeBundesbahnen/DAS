@@ -1,18 +1,20 @@
-import 'package:app/extension/ru_extension.dart';
+import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/device_screen.dart';
+import 'package:app/widgets/railway_undertaking/select_railway_undertaking_input_view_model.dart';
 import 'package:app/widgets/railway_undertaking/widgets/select_railway_undertaking_modal.dart';
+import 'package:core_data/component.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
-import 'package:sfera/component.dart';
 
 const _inputPadding = EdgeInsets.fromLTRB(SBBSpacing.medium, 0, 0, SBBSpacing.xSmall);
 
-class SelectRailwayUndertakingInput extends StatefulWidget {
+class SelectRailwayUndertakingInput extends StatelessWidget {
   const SelectRailwayUndertakingInput({
-    required this.selectedRailwayUndertakings,
-    required this.updateRailwayUndertaking,
+    required this.selectedCompanyCodes,
+    required this.updateCompanies,
     super.key,
     this.isModalVersion = false,
     this.allowMultiSelect = false,
@@ -20,80 +22,83 @@ class SelectRailwayUndertakingInput extends StatefulWidget {
     this.borderType = .boxedOrListed,
   });
 
-  final List<RailwayUndertaking> selectedRailwayUndertakings;
-  final void Function(List<RailwayUndertaking>) updateRailwayUndertaking;
+  final List<String> selectedCompanyCodes;
+  final void Function(List<Company>) updateCompanies;
   final bool isModalVersion;
   final bool allowMultiSelect;
   final bool addClearButton;
   final SBBInputBorderType borderType;
 
   @override
-  State<SelectRailwayUndertakingInput> createState() => _RailwayUndertakingTextFieldState();
-}
-
-class _RailwayUndertakingTextFieldState extends State<SelectRailwayUndertakingInput> {
-  String? selectedValues;
-
-  @override
-  void didUpdateWidget(covariant SelectRailwayUndertakingInput oldWidget) {
-    if (widget.selectedRailwayUndertakings != oldWidget.selectedRailwayUndertakings) {
-      selectedValues = widget.selectedRailwayUndertakings.map((it) => it.displayText(context)).join(', ');
-    }
-    super.didUpdateWidget(oldWidget);
-  }
-
-  @override
-  void didChangeDependencies() {
-    selectedValues ??= widget.selectedRailwayUndertakings.map((it) => it.displayText(context)).join(', ');
-    super.didChangeDependencies();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: widget.isModalVersion ? .zero : _inputPadding,
-      child: Row(
-        children: [
-          Expanded(
-            child: SBBDecoratedText(
-              onTap: () {
-                showModalBottomSheet(
-                  context: context,
-                  isScrollControlled: true,
-                  clipBehavior: .hardEdge,
-                  backgroundColor: _modalBackgroundColor(context),
-                  shape: SelectRailwayUndertakingModal.shapeBorder,
-                  constraints: _modalConstraints,
-                  builder: (_) => SelectRailwayUndertakingModal(
-                    selectedRailwayUndertaking: widget.selectedRailwayUndertakings,
-                    allowMultiSelect: widget.allowMultiSelect,
-                    updateRailwayUndertaking: widget.updateRailwayUndertaking,
+    return Provider<SelectRailwayUndertakingInputViewModel>(
+      create: (_) => SelectRailwayUndertakingInputViewModel(settingsRepository: DI.get()),
+      dispose: (_, vm) => vm.dispose(),
+      builder: (context, _) => _body(context),
+    );
+  }
+
+  Widget _body(BuildContext context) {
+    final viewModel = context.read<SelectRailwayUndertakingInputViewModel>();
+    return StreamBuilder<List<Company>>(
+      stream: viewModel.companies,
+      builder: (context, snapshot) {
+        final companies = snapshot.data ?? [];
+        final selectedValues = _selectedCompanies(companies).map((it) => it.shortName).join(', ');
+
+        return Padding(
+          padding: isModalVersion ? .zero : _inputPadding,
+          child: Row(
+            children: [
+              Expanded(
+                child: SBBDecoratedText(
+                  onTap: () => _onTap(context, companies),
+                  decoration: SBBInputDecoration(
+                    borderType: borderType,
+                    labelText: isModalVersion ? null : context.l10n.p_train_selection_ru_description,
+                    placeholderText: isModalVersion ? context.l10n.p_train_selection_ru_description : null,
                   ),
-                );
-              },
-              decoration: SBBInputDecoration(
-                borderType: widget.borderType,
-                labelText: widget.isModalVersion ? null : context.l10n.p_train_selection_ru_description,
-                placeholderText: widget.isModalVersion ? context.l10n.p_train_selection_ru_description : null,
+                  value: selectedValues,
+                ),
               ),
-              value: selectedValues ?? '',
-            ),
+              if (selectedValues.isNotEmpty && addClearButton)
+                Padding(
+                  padding: .symmetric(horizontal: isModalVersion ? SBBSpacing.xSmall : SBBSpacing.medium),
+                  child: InkWell(
+                    borderRadius: .circular(SBBSpacing.small),
+                    onTap: () => updateCompanies([]),
+                    child: const Icon(SBBIcons.cross_tiny_small),
+                  ),
+                ),
+            ],
           ),
-          if (selectedValues != null && selectedValues!.isNotEmpty && widget.addClearButton)
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: widget.isModalVersion ? SBBSpacing.xSmall : SBBSpacing.medium),
-              child: InkWell(
-                borderRadius: BorderRadius.circular(SBBSpacing.small),
-                onTap: () => widget.updateRailwayUndertaking([]),
-                child: const Icon(SBBIcons.cross_tiny_small),
-              ),
-            ),
-        ],
+        );
+      },
+    );
+  }
+
+  void _onTap(
+    BuildContext context,
+    List<Company> availableCompanies,
+  ) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      clipBehavior: .hardEdge,
+      backgroundColor: ThemeUtil.getColor(context, SBBColors.cloud, SBBColors.charcoal),
+      shape: SelectRailwayUndertakingModal.shapeBorder,
+      constraints: _modalConstraints,
+      builder: (_) => SelectRailwayUndertakingModal(
+        availableCompanies: availableCompanies,
+        selectedCompanyCodes: selectedCompanyCodes,
+        allowMultiSelect: allowMultiSelect,
+        updateCompanies: updateCompanies,
       ),
     );
   }
 
-  Color _modalBackgroundColor(BuildContext context) => ThemeUtil.getColor(context, SBBColors.cloud, SBBColors.charcoal);
+  List<Company> _selectedCompanies(List<Company> availableCompanies) =>
+      availableCompanies.where((company) => selectedCompanyCodes.contains(company.code)).toList();
 
   BoxConstraints get _modalConstraints => BoxConstraints(
     maxWidth: DeviceScreen.width - SBBSpacing.medium,
@@ -101,7 +106,7 @@ class _RailwayUndertakingTextFieldState extends State<SelectRailwayUndertakingIn
   );
 
   double get _maxModalHeight {
-    final topModalMargin = widget.isModalVersion
+    final topModalMargin = isModalVersion
         ? DeviceScreen.systemStatusBarHeight
         : kToolbarHeight + DeviceScreen.systemStatusBarHeight;
     return DeviceScreen.size.height - topModalMargin;

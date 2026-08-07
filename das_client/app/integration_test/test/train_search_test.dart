@@ -13,6 +13,7 @@ import 'package:train_identification/component.dart';
 
 import '../app_test.dart';
 import '../integration/integration_test_app.dart';
+import '../mocks/mock_settings_repository.dart';
 import '../mocks/mock_train_identification_repository.dart';
 import '../util/test_utils.dart';
 
@@ -34,10 +35,10 @@ void main() {
       final modal = find.byKey(SelectRailwayUndertakingModal.modalKey);
       expect(modal, findsOneWidget);
 
-      expect(find.text(l10n.c_ru_db), findsOneWidget);
-      expect(find.descendant(of: modal, matching: find.text(l10n.c_ru_bls_p)), findsOneWidget);
-      expect(find.text(l10n.c_ru_bls_c), findsOneWidget);
-      final sobI = find.text(l10n.c_ru_sob);
+      expect(find.text(companyDB.shortName), findsOneWidget);
+      expect(find.descendant(of: modal, matching: find.text(companyBLSP.shortName)), findsOneWidget);
+      expect(find.text(companyBLSC.shortName), findsOneWidget);
+      final sobI = find.text(companySOB.shortName);
       await tester.dragUntilVisible(sobI, modal, const Offset(0, -50));
       expect(sobI, findsOneWidget);
       await tapElement(tester, sobI, warnIfMissed: false);
@@ -60,9 +61,9 @@ void main() {
       await tester.pumpAndSettle();
 
       // Verify results are filtered
-      expect(find.descendant(of: modal, matching: find.text(l10n.c_ru_sbb_p)), findsNothing);
-      expect(find.descendant(of: modal, matching: find.text(l10n.c_ru_bls_p)), findsNothing);
-      expect(find.text(l10n.c_ru_sob), findsOneWidget);
+      expect(find.descendant(of: modal, matching: find.text(companySBBP.shortName)), findsNothing);
+      expect(find.descendant(of: modal, matching: find.text(companyBLSP.shortName)), findsNothing);
+      expect(find.text(companySOB.shortName), findsOneWidget);
     });
 
     testWidgets('trainSearch_whenNoTrainNumberEntered_thenDisablesButton', (tester) async {
@@ -201,16 +202,10 @@ void main() {
           DI.get<TrainIdentificationRepository>() as MockTrainIdentificationRepository;
 
       trainIdentificationRepository.companyMatchData = {
+        CompanyMatch(companyCode: '1285', startDate: DateTime.now()),
+        CompanyMatch(companyCode: '2263', startDate: DateTime.now()),
         CompanyMatch(
-          ru: RailwayUndertaking.sbbP,
-          startDate: DateTime.now(),
-        ),
-        CompanyMatch(
-          ru: RailwayUndertaking.blsI,
-          startDate: DateTime.now(),
-        ),
-        CompanyMatch(
-          ru: RailwayUndertaking.thurbo,
+          companyCode: '3917',
           startDate: DateTime.now().add(Duration(days: 1)),
         ),
       };
@@ -256,19 +251,13 @@ void main() {
           DI.get<TrainIdentificationRepository>() as MockTrainIdentificationRepository;
 
       final userSettings = DI.get<LocalKeyValueStore>();
-      userSettings.set(.lastUsedRailwayUndertaking, RailwayUndertaking.sbbP.companyCode);
+      userSettings.set(.lastUsedCompanyCode, RailwayUndertaking.sbbP.companyCode);
 
       trainIdentificationRepository.companyMatchData = {
+        CompanyMatch(companyCode: '1285', startDate: DateTime.now()),
+        CompanyMatch(companyCode: '2263', startDate: DateTime.now()),
         CompanyMatch(
-          ru: RailwayUndertaking.sbbP,
-          startDate: DateTime.now(),
-        ),
-        CompanyMatch(
-          ru: RailwayUndertaking.blsI,
-          startDate: DateTime.now(),
-        ),
-        CompanyMatch(
-          ru: RailwayUndertaking.thurbo,
+          companyCode: '3917',
           startDate: DateTime.now().add(Duration(days: 1)),
         ),
       };

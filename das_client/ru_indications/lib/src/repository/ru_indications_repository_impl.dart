@@ -47,7 +47,7 @@ class RuIndicationsRepositoryImpl implements RuIndicationsRepository {
     required TrainIdentification trainIdentification,
     required Map<String, int> locationReferences,
   }) async {
-    final company = trainIdentification.ru.companyCode;
+    final company = trainIdentification.companyCode;
     final trainNumber = trainIdentification.sanitizedTrainNumber;
     final startDate = trainIdentification.operatingDay ?? trainIdentification.date;
 

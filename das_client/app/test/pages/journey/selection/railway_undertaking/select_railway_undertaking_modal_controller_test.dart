@@ -1,55 +1,54 @@
-import 'package:app/extension/ru_extension.dart';
-import 'package:app/i18n/gen/app_localizations.dart';
 import 'package:app/widgets/railway_undertaking/select_railway_undertaking_modal_controller.dart';
 import 'package:collection/collection.dart';
-import 'package:flutter/widgets.dart';
+import 'package:core_data/component.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:sfera/component.dart';
 
 import '../../../../test_util.dart';
 
+const _blsC = Company(code: '3356', shortName: 'BLSC');
+const _sbbP = Company(code: '1285', shortName: 'SBBP');
+const _sbbCH = Company(code: '2185', shortName: 'SBBCH');
+const _sob = Company(code: '9058', shortName: 'SOB');
+const _availableCompanies = [_blsC, _sbbP, _sbbCH, _sob];
+
 void main() {
   late SelectRailwayUndertakingModalController testee;
-  late AppLocalizations localizations;
-  final mockUpdateAvailableRuFunction = MockUpdateRailwayUndertaking();
-  final List<RailwayUndertaking> emitRegister = [];
+  final mockUpdateCompanies = MockUpdateCompanies();
+  final List<Company> emitRegister = [];
 
   setUp(() async {
-    localizations = lookupAppLocalizations(const Locale('de', 'CH'));
     testee = SelectRailwayUndertakingModalController(
-      localizations: localizations,
-      initialRailwayUndertaking: [.sbbP],
-      updateRailwayUndertaking: mockUpdateAvailableRuFunction.call,
+      availableCompanies: _availableCompanies,
+      initialCompanyCodes: [_sbbP.code],
+      updateCompanies: mockUpdateCompanies.call,
       allowMultiSelect: false,
     );
-    testee.availableRailwayUndertakings.listen(emitRegister.addAll);
+    testee.filteredCompanies.listen(emitRegister.addAll);
     await processStreams();
     emitRegister.clear();
   });
 
   tearDown(() {
-    reset(mockUpdateAvailableRuFunction);
+    reset(mockUpdateCompanies);
     emitRegister.clear();
     testee.dispose();
   });
 
-  String englishLocalized(RailwayUndertaking ru) => ru.localizedText(localizations);
-
   group('SelectRailwayUndertakingModalController Unit Test', () {
     test('filterValue_whenInstantiatedWithDefault_isLocalizedString', () {
-      expect(testee.filterValue, equals(englishLocalized(.sbbP)));
+      expect(testee.filterValue, equals(_sbbP.shortName));
     });
 
     test('filterValue_whenSelectedRailwayUndertakingChanged_thenUpdatesTextController', () {
       // ARRANGE
-      final newRu = RailwayUndertaking.blsC;
+      final newCompanyCode = '3356';
 
       // ACT
-      testee.selectedRailwayUndertaking = [newRu];
+      testee.selectedCompanyCodes = [newCompanyCode];
 
       // EXPECT
-      expect(testee.filterValue, equals(englishLocalized(.blsC)));
+      expect(testee.filterValue, equals(_blsC.shortName));
     });
 
     test('filterValue_whenFilterChanged_thenIsNewFilter', () {
@@ -63,22 +62,22 @@ void main() {
     test('availableRailwayUndertakings_whenInitialized_thenIsEmittedWithAllUndertakingsSortedCorrectly', () async {
       // ACT
       testee = SelectRailwayUndertakingModalController(
-        localizations: localizations,
-        initialRailwayUndertaking: [.sbbP],
-        updateRailwayUndertaking: mockUpdateAvailableRuFunction.call,
+        availableCompanies: _availableCompanies,
+        initialCompanyCodes: [_sbbP.code],
+        updateCompanies: mockUpdateCompanies.call,
         allowMultiSelect: false,
       );
-      testee.availableRailwayUndertakings.listen(emitRegister.addAll);
+      testee.filteredCompanies.listen(emitRegister.addAll);
       await processStreams();
 
       // EXPECT
-      expect(emitRegister, orderedEquals(_sortedRailwayValues(localizations)));
+      expect(emitRegister, orderedEquals(_sortedCompanyValues()));
     });
 
     test('availableRailwayUndertakings_whenFilterChanged_thenIsEmittedWithUndertakingsFilteredCorrectly', () async {
       // ARRANGE
       // should be ordered 0th even though not lexicographically the 0th element
-      testee.selectedRailwayUndertaking = [.sbbCH];
+      testee.selectedCompanyCodes = [_sbbCH.code];
       await processStreams();
       emitRegister.clear();
 
@@ -102,8 +101,7 @@ void main() {
     test('availableRailwayUndertakings_whenFilterIsEmpty_thenIsEmittedWithAllUndertakingsSortedCorrectly', () async {
       // ARRANGE
       // should be ordered 0th even though not lexicographically the 0th element
-      final newRu = RailwayUndertaking.sbbCH;
-      testee.selectedRailwayUndertaking = [newRu];
+      testee.selectedCompanyCodes = [_sbbCH.code];
       await processStreams();
       emitRegister.clear();
 
@@ -114,15 +112,14 @@ void main() {
       // EXPECT
       expect(
         emitRegister,
-        orderedEquals(_sortedRailwayValues(localizations, selectedRailwayUndertaking: newRu)),
+        orderedEquals(_sortedCompanyValues(selectedCompanyCode: _sbbCH.code)),
       );
     });
 
     test('availableRailwayUndertakings_whenFilterIsWeird_thenIsEmittedEmpty', () async {
       // ARRANGE
       // should be ordered 0th even though not lexicographically the 0th element
-      final newRu = RailwayUndertaking.sbbCH;
-      testee.selectedRailwayUndertaking = [newRu];
+      testee.selectedCompanyCodes = [_sbbCH.code];
       await processStreams();
       emitRegister.clear();
 
@@ -136,40 +133,38 @@ void main() {
 
     test('updateIsSelectingRailwayUndertaking_whenFilterChanged_thenIsNotCalled', () {
       // ARRANGE
-      reset(mockUpdateAvailableRuFunction);
+      reset(mockUpdateCompanies);
 
       // ACT
       testee.textEditingController.text = 'sob';
 
       // EXPECT
-      verifyNever(mockUpdateAvailableRuFunction(any));
+      verifyNever(mockUpdateCompanies(any));
     });
 
     test('updateIsSelectingRailwayUndertaking_whenSetSelectedRuCalled_thenIsCalled', () {
       // ARRANGE
-      final newRu = RailwayUndertaking.sob;
-      reset(mockUpdateAvailableRuFunction);
+      reset(mockUpdateCompanies);
 
       // ACT
-      testee.selectedRailwayUndertaking = [newRu];
+      testee.selectedCompanyCodes = [_sob.code];
 
       // EXPECT
-      verify(mockUpdateAvailableRuFunction([newRu])).called(1);
+      verify(mockUpdateCompanies([_sob])).called(1);
     });
   });
 }
 
-List<RailwayUndertaking> _sortedRailwayValues(
-  AppLocalizations localizations, {
-  selectedRailwayUndertaking = RailwayUndertaking.sbbP,
-}) {
-  return RailwayUndertaking.knownRUs
-      .map((ru) => (ru.localizedText(localizations).toLowerCase().trim(), ru))
-      .sortedBy((pair) => pair.$2 == selectedRailwayUndertaking ? '' : pair.$1)
-      .map((ruPair) => ruPair.$2)
+List<Company> _sortedCompanyValues({String selectedCompanyCode = '1285'}) {
+  return _availableCompanies
+      .sorted(
+        (a, b) => (selectedCompanyCode == a.code) != (selectedCompanyCode == b.code)
+            ? (selectedCompanyCode == a.code ? -1 : 1)
+            : a.shortName.toLowerCase().compareTo(b.shortName.toLowerCase()),
+      )
       .toList();
 }
 
-class MockUpdateRailwayUndertaking extends Mock {
-  void call(List<RailwayUndertaking>? update);
+class MockUpdateCompanies extends Mock {
+  void call(List<Company>? update);
 }

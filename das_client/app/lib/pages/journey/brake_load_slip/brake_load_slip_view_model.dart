@@ -123,7 +123,7 @@ class BrakeLoadSlipViewModel extends JourneyAwareViewModel {
     if (trainIdentification != null) {
       _formationRepository.reloadFormation(
         trainIdentification.trainNumber,
-        trainIdentification.ru.companyCode,
+        trainIdentification.companyCode,
         trainIdentification.operatingDay ?? trainIdentification.date,
       );
     }
@@ -138,7 +138,7 @@ class BrakeLoadSlipViewModel extends JourneyAwareViewModel {
       _formationSubscription = _formationRepository
           .watchFormation(
             operationalTrainNumber: trainIdentification.trainNumber,
-            company: trainIdentification.ru.companyCode,
+            company: trainIdentification.companyCode,
             operationalDay: trainIdentification.operatingDay ?? trainIdentification.date,
           )
           .listen((formation) {

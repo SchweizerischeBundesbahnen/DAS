@@ -97,7 +97,11 @@ void main() {
         rxMockJourney.add(
           Journey(
             metadata: Metadata(
-              trainIdentification: TrainIdentification(ru: .blsC, trainNumber: 'T9999', date: DateTime(2024, 1, 1)),
+              trainIdentification: TrainIdentification(
+                companyCode: '3356',
+                trainNumber: 'T9999',
+                date: DateTime(2024, 1, 1),
+              ),
             ),
             data: [],
           ),
@@ -127,7 +131,11 @@ void main() {
       (_) => rxMockJourney.add(
         Journey(
           metadata: Metadata(
-            trainIdentification: TrainIdentification(ru: .blsI, trainNumber: 'T9999', date: DateTime(2024, 1, 1)),
+            trainIdentification: TrainIdentification(
+              companyCode: '1163',
+              trainNumber: 'T9999',
+              date: DateTime(2024, 1, 1),
+            ),
           ),
           data: [],
         ),

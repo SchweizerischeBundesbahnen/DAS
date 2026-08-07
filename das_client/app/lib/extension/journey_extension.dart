@@ -1,4 +1,3 @@
-import 'package:app/extension/ru_extension.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:flutter/material.dart';
 import 'package:sfera/component.dart';
@@ -11,7 +10,7 @@ extension JourneyExtension on Journey {
 
     final trainNumber = trainIdentification.trainNumber;
     final displayedTrainNumber = _hasShuntingMovement() ? '${trainNumber}R / $trainNumber' : trainNumber;
-    return '$displayedTrainNumber ${trainIdentification.ru.displayText(context)}';
+    return '$displayedTrainNumber ${trainIdentification.companyCode}'; // TODO: Add short name
   }
 
   bool _hasShuntingMovement() => data.any((data) => data is ShuntingMovement);

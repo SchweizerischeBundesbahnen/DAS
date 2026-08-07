@@ -4,7 +4,7 @@ import 'package:train_identification/component.dart';
 class MockTrainIdentificationRepository implements TrainIdentificationRepository {
   Set<CompanyMatch> companyMatchData = {
     CompanyMatch(
-      ru: RailwayUndertaking.sbbP,
+      companyCode: '1285',
       startDate: DateTime.now(),
     ),
   };

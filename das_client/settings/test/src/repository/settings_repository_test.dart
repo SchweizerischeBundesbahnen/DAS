@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:core_data/component.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';

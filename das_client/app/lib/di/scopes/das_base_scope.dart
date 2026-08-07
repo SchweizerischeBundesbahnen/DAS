@@ -118,7 +118,10 @@ extension BaseScopeExtension on GetIt {
 
   void registerUserSettings() {
     _log.fine('Register UserSettings');
-    registerSingleton<LocalKeyValueStore>(LocalKeyValueStore());
+    registerSingleton<LocalKeyValueStore>(
+      LocalKeyValueStore(),
+      dispose: (store) => store.dispose(),
+    );
   }
 
   void registerConnectivityManager() {

@@ -288,14 +288,8 @@ void main() {
       final trainIdentificationRepository =
           DI.get<TrainIdentificationRepository>() as MockTrainIdentificationRepository;
       trainIdentificationRepository.companyMatchData = {
-        CompanyMatch(
-          ru: RailwayUndertaking.sbbI,
-          startDate: DateTime.now(),
-        ),
-        CompanyMatch(
-          ru: RailwayUndertaking.blsI,
-          startDate: DateTime.now(),
-        ),
+        CompanyMatch(companyCode: '5184', startDate: DateTime.now()),
+        CompanyMatch(companyCode: '2263', startDate: DateTime.now()),
       };
 
       final journeys = [_trainJourneyLinkData('T9999')];
@@ -323,14 +317,8 @@ void main() {
       final trainIdentificationRepository =
           DI.get<TrainIdentificationRepository>() as MockTrainIdentificationRepository;
       trainIdentificationRepository.companyMatchData = {
-        CompanyMatch(
-          ru: RailwayUndertaking.sbbI,
-          startDate: DateTime.now(),
-        ),
-        CompanyMatch(
-          ru: RailwayUndertaking.blsI,
-          startDate: DateTime.now(),
-        ),
+        CompanyMatch(companyCode: '5184', startDate: DateTime.now()),
+        CompanyMatch(companyCode: '2263', startDate: DateTime.now()),
       };
 
       final journeys = [_trainJourneyLinkData('T1')];
@@ -362,11 +350,11 @@ void main() {
           DI.get<TrainIdentificationRepository>() as MockTrainIdentificationRepository;
       trainIdentificationRepository.companyMatchData = {
         CompanyMatch(
-          ru: RailwayUndertaking.sbbP,
+          companyCode: '1285',
           startDate: DateTime.now(),
         ),
         CompanyMatch(
-          ru: RailwayUndertaking.blsI,
+          companyCode: '2263',
           startDate: DateTime.now(),
         ),
       };

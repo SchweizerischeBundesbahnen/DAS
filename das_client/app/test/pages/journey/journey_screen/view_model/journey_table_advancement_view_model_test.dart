@@ -39,7 +39,11 @@ void main() {
   final firstServicePoint = ServicePoint(name: 'B', abbreviation: '', locationCode: '', order: 11, kilometre: []);
   final baseJourney = Journey(
     metadata: Metadata(
-      trainIdentification: TrainIdentification(ru: RailwayUndertaking.sbbP, trainNumber: '123', date: DateTime.now()),
+      trainIdentification: TrainIdentification(
+        companyCode: '1285',
+        trainNumber: '123',
+        date: DateTime.now(),
+      ),
     ),
     data: [
       journeyStart,

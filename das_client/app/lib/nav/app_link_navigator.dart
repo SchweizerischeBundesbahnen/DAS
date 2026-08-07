@@ -9,10 +9,10 @@ import 'package:app/pages/journey/view_model/sfera_journey_view_model.dart';
 import 'package:app/provider/local_key_value_store.dart';
 import 'package:app_links_x/component.dart';
 import 'package:collection/collection.dart';
+import 'package:core_data/component.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logging/logging.dart';
-import 'package:sfera/component.dart';
 import 'package:train_identification/component.dart';
 
 final _log = Logger('AppLinkNavigator');
@@ -87,11 +87,7 @@ class AppLinkNavigator {
 
     for (final journey in journeys) {
       if (journey.company != null) {
-        final ru = RailwayUndertaking.fromCompanyCode(journey.company!);
-        if (ru != RailwayUndertaking.unknown) {
-          result.add(journey.toTrainIdentification(ru));
-          continue;
-        }
+        result.add(journey.toTrainIdentification(journey.company!));
       } else {
         final companyMatches = await trainIdentificationRepository.findTrainIdentifications(
           operationalTrainNumber: journey.operationalTrainNumber,
@@ -100,14 +96,14 @@ class AppLinkNavigator {
           (it) => DateUtils.isSameDay(it.startDate, journey.startDate ?? DateTime.now()),
         );
         if (sameDayMatches.length == 1) {
-          result.add(journey.toTrainIdentification(sameDayMatches.first.ru));
+          result.add(journey.toTrainIdentification(sameDayMatches.first.companyCode));
           continue;
         } else {
-          final selectedRu = userSettings.lastUsedRailwayUndertaking;
+          final selectedRu = userSettings.lastUsedCompanyCode;
           if (selectedRu != null) {
-            final ruMatch = sameDayMatches.firstWhereOrNull((it) => it.ru == selectedRu);
+            final ruMatch = sameDayMatches.firstWhereOrNull((it) => it.companyCode == selectedRu);
             if (ruMatch != null) {
-              result.add(journey.toTrainIdentification(ruMatch.ru));
+              result.add(journey.toTrainIdentification(ruMatch.companyCode));
               continue;
             }
           }
@@ -125,11 +121,11 @@ class AppLinkNavigator {
 }
 
 extension _TrainJourneyLinkDataMapper on TrainJourneyLinkData {
-  ExtendedTrainIdentification toTrainIdentification(RailwayUndertaking ru) {
+  ExtendedTrainIdentification toTrainIdentification(String companyCode) {
     return ExtendedTrainIdentification(
       trainIdentification: TrainIdentification(
         trainNumber: operationalTrainNumber,
-        ru: ru,
+        companyCode: companyCode,
         date: startDate ?? DateTime.now(),
       ),
       tafTapLocationReferenceStart: tafTapLocationReferenceStart,

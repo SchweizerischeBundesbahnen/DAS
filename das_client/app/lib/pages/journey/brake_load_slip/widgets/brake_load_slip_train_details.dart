@@ -1,15 +1,14 @@
-import 'package:app/extension/ru_extension.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/brake_load_slip/brake_load_slip_view_model.dart';
 import 'package:app/pages/journey/brake_load_slip/widgets/brake_load_slip_train_details_table.dart';
 import 'package:app/widgets/key_value_table.dart';
 import 'package:app/widgets/key_value_table_data_row.dart';
+import 'package:core_data/component.dart';
 import 'package:flutter/material.dart';
 import 'package:formation/component.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
-import 'package:sfera/component.dart';
 
 class BrakeLoadSlipTrainDetails extends StatelessWidget {
   const BrakeLoadSlipTrainDetails({required this.formation, required this.formationRunChange, super.key});
@@ -76,8 +75,9 @@ class BrakeLoadSlipTrainDetails extends StatelessWidget {
   }
 
   String _resolveCompanyCode(BuildContext context, String companyCode) {
-    final ru = RailwayUndertaking.fromCompanyCode(companyCode);
-    return ru != RailwayUndertaking.unknown ? ru.displayText(context) : companyCode;
+    // TODO: load correct company
+    final company = Company(code: companyCode, shortName: 'Test');
+    return company.shortName;
   }
 
   Widget _trainDataRow2(BuildContext context) {

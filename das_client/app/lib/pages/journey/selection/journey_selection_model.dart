@@ -1,8 +1,8 @@
 import 'package:app/util/error_code.dart';
 import 'package:clock/clock.dart';
 import 'package:collection/collection.dart';
+import 'package:core_data/component.dart';
 import 'package:flutter/material.dart';
-import 'package:sfera/component.dart';
 
 /// Represents the state of the journey selection process.
 sealed class JourneySelectionModel {
@@ -11,7 +11,7 @@ sealed class JourneySelectionModel {
   factory JourneySelectionModel.selecting({
     required DateTime startDate,
     required List<DateTime> availableStartDates,
-    RailwayUndertaking? railwayUndertaking,
+    String? companyCode,
     String? trainNumber,
   }) = Selecting;
 
@@ -66,13 +66,13 @@ sealed class JourneySelectionModel {
     final Error e => e.availableStartDates,
   };
 
-  RailwayUndertaking? get railwayUndertaking => switch (this) {
-    final Selecting s => s.railwayUndertaking,
+  String? get companyCode => switch (this) {
+    final Selecting s => s.companyCode,
     final LoadingCompanyMatches _ => null,
     final SelectingCompanyMatch _ => null,
-    final Loading l => l.trainIdentification.ru,
-    final Loaded l => l.trainIdentification.ru,
-    final Error e => e.trainIdentification.ru,
+    final Loading l => l.trainIdentification.companyCode,
+    final Loaded l => l.trainIdentification.companyCode,
+    final Error e => e.trainIdentification.companyCode,
   };
 
   bool get isInputComplete => switch (this) {
@@ -89,7 +89,7 @@ class Selecting extends JourneySelectionModel {
   const Selecting({
     required this.startDate,
     required this.availableStartDates,
-    this.railwayUndertaking,
+    this.companyCode,
     this.trainNumber,
     this.isInputComplete = false,
   }) : super._();
@@ -98,7 +98,7 @@ class Selecting extends JourneySelectionModel {
   @override
   final List<DateTime> availableStartDates;
   @override
-  final RailwayUndertaking? railwayUndertaking;
+  final String? companyCode;
   final String? trainNumber;
   @override
   final bool isInputComplete;
@@ -111,7 +111,7 @@ class Selecting extends JourneySelectionModel {
           trainNumber == other.trainNumber &&
           startDate == other.startDate &&
           const ListEquality().equals(availableStartDates, other.availableStartDates) &&
-          railwayUndertaking == other.railwayUndertaking &&
+          companyCode == other.companyCode &&
           isInputComplete == other.isInputComplete;
 
   @override
@@ -120,7 +120,7 @@ class Selecting extends JourneySelectionModel {
     trainNumber,
     startDate,
     availableStartDates,
-    railwayUndertaking,
+    companyCode,
     isInputComplete,
   );
 
@@ -128,21 +128,21 @@ class Selecting extends JourneySelectionModel {
     String? operationalTrainNumber,
     DateTime? startDate,
     List<DateTime>? availableStartDates,
-    RailwayUndertaking? railwayUndertaking,
+    String? companyCode,
     bool? isInputComplete,
   }) {
     return Selecting(
       trainNumber: operationalTrainNumber ?? trainNumber,
       startDate: startDate ?? this.startDate,
       availableStartDates: availableStartDates ?? this.availableStartDates,
-      railwayUndertaking: railwayUndertaking ?? this.railwayUndertaking,
+      companyCode: companyCode ?? this.companyCode,
       isInputComplete: isInputComplete ?? this.isInputComplete,
     );
   }
 
   @override
   String toString() {
-    return 'Selecting{startDate: $startDate, availableStartDates: $availableStartDates, railwayUndertaking: $railwayUndertaking, trainNumber: $trainNumber, isInputComplete: $isInputComplete}';
+    return 'Selecting{startDate: $startDate, availableStartDates: $availableStartDates, companyCode: $companyCode, trainNumber: $trainNumber, isInputComplete: $isInputComplete}';
   }
 }
 

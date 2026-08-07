@@ -372,7 +372,7 @@ void main() {
 
     test('whenJourneyUpdatedWithSameId_modelStatePreserved', () {
       final trainId = TrainIdentification(
-        ru: RailwayUndertaking.sbbP,
+        companyCode: '1285',
         trainNumber: '777',
         date: DateTime(2026, 3, 24),
       );

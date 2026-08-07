@@ -27,7 +27,7 @@ class TrainIdentificationDto extends SferaXmlElementDto {
 extension TrainIdentificationMapperExtension on TrainIdentificationDto {
   TrainIdentification toModel({DateTime? operatingDay}) {
     return TrainIdentification(
-      ru: .fromCompanyCode(otnId.company),
+      companyCode: otnId.company,
       trainNumber: otnId.operationalTrainNumber,
       date: otnId.startDate,
       operatingDay: operatingDay,

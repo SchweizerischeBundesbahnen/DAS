@@ -142,7 +142,7 @@ Journey _journey({required String trainNumber, required List<ServicePoint> servi
   return Journey(
     metadata: Metadata(
       trainIdentification: TrainIdentification(
-        ru: RailwayUndertaking.sbbP,
+        companyCode: '1285',
         trainNumber: trainNumber,
         date: DateTime(2026, 1, 1),
         operatingDay: DateTime(2026, 1, 2),

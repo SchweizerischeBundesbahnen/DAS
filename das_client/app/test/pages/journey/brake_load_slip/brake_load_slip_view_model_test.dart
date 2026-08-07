@@ -11,7 +11,7 @@ import 'package:app/sound/sound.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:connectivity_x/component.dart';
 import 'package:fake_async/fake_async.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:formation/component.dart';
 import 'package:get_it/get_it.dart';
@@ -57,7 +57,7 @@ void main() {
   late Sound mockSound;
 
   final trainIdentification = TrainIdentification(
-    ru: RailwayUndertaking.fromCompanyCode('2185'),
+    companyCode: '2185',
     trainNumber: 'T1234',
     date: DateTime.now(),
     operatingDay: DateTime.now().add(Duration(days: -1)),
@@ -112,7 +112,7 @@ void main() {
 
   final formation = Formation(
     operationalTrainNumber: trainIdentification.trainNumber,
-    company: trainIdentification.ru.companyCode,
+    company: trainIdentification.companyCode,
     operationalDay: trainIdentification.operatingDay!,
     formationRuns: [
       formationRun1,
@@ -163,7 +163,7 @@ void main() {
     when(
       mockFormationRepository.watchFormation(
         operationalTrainNumber: trainIdentification.trainNumber,
-        company: trainIdentification.ru.companyCode,
+        company: trainIdentification.companyCode,
         operationalDay: trainIdentification.operatingDay!,
       ),
     ).thenAnswer((_) => formationSubject.stream);
@@ -198,7 +198,7 @@ void main() {
     verify(
       mockFormationRepository.watchFormation(
         operationalTrainNumber: trainIdentification.trainNumber,
-        company: trainIdentification.ru.companyCode,
+        company: trainIdentification.companyCode,
         operationalDay: trainIdentification.operatingDay,
       ),
     ).called(1);

@@ -7,6 +7,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 import '../app_test.dart';
 import '../integration/integration_test_app.dart';
+import '../mocks/mock_settings_repository.dart';
 import '../util/test_utils.dart';
 
 void main() {
@@ -39,8 +40,8 @@ void main() {
       await tapElement(tester, find.byWidgetPredicate((it) => it is SelectRailwayUndertakingInput));
 
       // Search for SBB CH in the filter field and select it
-      await enterText(tester, find.byKey(SelectRailwayUndertakingModal.filterFieldKey), l10n.c_ru_sbb_ch);
-      await tapElement(tester, find.text(l10n.c_ru_sbb_ch).last);
+      await enterText(tester, find.byKey(SelectRailwayUndertakingModal.filterFieldKey), companySBBCH.shortName);
+      await tapElement(tester, find.text(companySBBCH.shortName).last);
 
       // Close the modal
       await tapElement(
@@ -73,8 +74,8 @@ void main() {
       await tapElement(tester, find.byWidgetPredicate((it) => it is SelectRailwayUndertakingInput));
 
       // Search for DB in the filter field and select it
-      await enterText(tester, find.byKey(SelectRailwayUndertakingModal.filterFieldKey), l10n.c_ru_db);
-      await tapElement(tester, find.text(l10n.c_ru_db).last);
+      await enterText(tester, find.byKey(SelectRailwayUndertakingModal.filterFieldKey), companyDB.shortName);
+      await tapElement(tester, find.text(companyDB.shortName).last);
 
       // Close the modal
       await tapElement(

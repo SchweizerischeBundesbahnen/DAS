@@ -1,5 +1,5 @@
 class Company {
-  Company({required this.code, required this.shortName});
+  const Company({required this.code, required this.shortName});
 
   final String code;
   final String shortName;

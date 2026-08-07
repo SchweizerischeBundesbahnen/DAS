@@ -2,7 +2,6 @@ import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/provider/local_key_value_store.dart';
 import 'package:app/widgets/railway_undertaking/widgets/select_railway_undertaking_input.dart';
-import 'package:core_data/component.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:settings/component.dart';
@@ -19,53 +18,52 @@ class _RuFeatureStatusDisplayState extends State<RuFeatureStatusDisplay> {
   late final SettingsRepository _settingsRepository;
   late final LocalKeyValueStore _localStore;
 
-  RailwayUndertaking? _selectedRu;
+  String? _selectedCompanyCode;
 
   @override
   void initState() {
     super.initState();
     _settingsRepository = DI.get<SettingsRepository>();
     _localStore = DI.get<LocalKeyValueStore>();
-    _selectedRu = _localStore.lastUsedRailwayUndertaking;
+    _selectedCompanyCode = _localStore.lastUsedCompanyCode;
   }
 
   @override
   Widget build(BuildContext context) {
     return SBBContentBox(
-      padding: const EdgeInsets.all(SBBSpacing.small),
+      padding: const .all(SBBSpacing.small),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         spacing: SBBSpacing.xSmall,
         children: [
           Text(context.l10n.w_ru_feature_status_title, style: SBBTextStyles.mediumBold),
-          _ruDropdown(context),
+          _companiesDropdown(context),
           ...RuFeatureKeys.values.map((key) => _featureRow(context, key)),
         ],
       ),
     );
   }
 
-  Widget _ruDropdown(BuildContext context) {
+  Widget _companiesDropdown(BuildContext context) {
     return SelectRailwayUndertakingInput(
-      selectedRailwayUndertakings: _selectedRu != null ? [_selectedRu!] : [],
+      selectedCompanyCodes: _selectedCompanyCode != null ? [_selectedCompanyCode!] : [],
       isModalVersion: true,
       borderType: .standalone,
-      updateRailwayUndertaking: (selected) {
-        final ru = selected.firstOrNull;
-        if (ru != null) {
-          setState(() => _selectedRu = ru);
+      updateCompanies: (selected) {
+        final company = selected.firstOrNull;
+        if (company != null) {
+          setState(() => _selectedCompanyCode = company.code);
         }
       },
     );
   }
 
   Widget _featureRow(BuildContext context, RuFeatureKeys key) {
-    final companyCode = _selectedRu?.companyCode;
-    if (companyCode == null) return const SizedBox.shrink();
+    if (_selectedCompanyCode == null) return const SizedBox.shrink();
 
     return FutureBuilder(
-      future: _settingsRepository.isRuFeatureEnabled(key, companyCode),
+      future: _settingsRepository.isRuFeatureEnabled(key, _selectedCompanyCode!),
       builder: (context, asyncSnapshot) {
         final isEnabled = asyncSnapshot.data;
         return Row(

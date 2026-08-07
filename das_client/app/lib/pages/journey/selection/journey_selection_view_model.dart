@@ -7,6 +7,7 @@ import 'package:app/provider/local_key_value_store.dart';
 import 'package:app_links_x/component.dart';
 import 'package:clock/clock.dart';
 import 'package:collection/collection.dart';
+import 'package:core_data/component.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -63,7 +64,7 @@ class JourneySelectionViewModel {
       case final Selecting state:
         if (!state.isInputComplete) return false;
 
-        if (state.railwayUndertaking != null) {
+        if (state.companyCode != null) {
           final trainIdToLoad = _trainIdFrom(state);
           return _loadTrain(trainIdToLoad);
         } else {
@@ -73,7 +74,7 @@ class JourneySelectionViewModel {
         if (!state.isInputComplete) return false;
 
         final trainIdToLoad = TrainIdentification(
-          ru: state.selectedCompanyMatch!.ru,
+          companyCode: state.selectedCompanyMatch!.companyCode,
           trainNumber: state.operationalTrainNumber,
           date: state.selectedCompanyMatch!.startDate,
         );
@@ -101,20 +102,20 @@ class JourneySelectionViewModel {
       _log.info('Found exactly one company match: $match');
       return _loadTrain(
         TrainIdentification(
-          ru: match.ru,
+          companyCode: match.companyCode,
           trainNumber: state.operationalTrainNumber,
           date: state.startDate,
         ),
       );
     }
 
-    final lastUsedRu = _userSettings.lastUsedRailwayUndertaking;
-    final lastUsedRuMatch = exactDayMatches.firstWhereOrNull((it) => it.ru == lastUsedRu);
+    final lastUsedRu = _userSettings.lastUsedCompanyCode;
+    final lastUsedRuMatch = exactDayMatches.firstWhereOrNull((it) => it.companyCode == lastUsedRu);
     if (lastUsedRuMatch != null) {
       _log.info('Found company match with last used railway undertaking: $lastUsedRuMatch');
       return _loadTrain(
         TrainIdentification(
-          ru: lastUsedRuMatch.ru,
+          companyCode: lastUsedRuMatch.companyCode,
           trainNumber: state.operationalTrainNumber,
           date: state.startDate,
         ),
@@ -166,12 +167,12 @@ class JourneySelectionViewModel {
     _ifInSelectingErrorOrLoadedEmitSelectingWith((model) => model.copyWith(operationalTrainNumber: trainNumber));
   }
 
-  void updateRailwayUndertaking(List<RailwayUndertaking> ru) {
+  void updateCompanies(List<Company> companies) {
     _ifInSelectingErrorOrLoadedEmitSelectingWith(
       (model) => Selecting(
         startDate: model.startDate,
         availableStartDates: model.availableStartDates,
-        railwayUndertaking: ru.firstOrNull,
+        companyCode: companies.firstOrNull?.code,
         trainNumber: model.trainNumber,
       ),
     );
@@ -207,7 +208,7 @@ class JourneySelectionViewModel {
         _emit(
           JourneySelectionModel.selecting(
             startDate: updatedSelectedDate,
-            railwayUndertaking: e.railwayUndertaking,
+            companyCode: e.companyCode,
             trainNumber: e.operationalTrainNumber,
             availableStartDates: newAvailableDates,
           ),
@@ -271,7 +272,7 @@ class JourneySelectionViewModel {
     _emit(
       JourneySelectionModel.selecting(
         startDate: _midnightToday(),
-        railwayUndertaking: null,
+        companyCode: null,
         availableStartDates: _availableStartDates(),
       ),
     );
@@ -292,7 +293,7 @@ class JourneySelectionViewModel {
         final updatedModel = updateFunc(
           Selecting(
             startDate: s.startDate,
-            railwayUndertaking: null,
+            companyCode: null,
             trainNumber: s.operationalTrainNumber,
             availableStartDates: _availableStartDates(),
           ),
@@ -302,7 +303,7 @@ class JourneySelectionViewModel {
         final updatedModel = updateFunc(
           Selecting(
             startDate: e.startDate,
-            railwayUndertaking: e.railwayUndertaking,
+            companyCode: e.companyCode,
             trainNumber: e.operationalTrainNumber,
             availableStartDates: _availableStartDates(),
           ),
@@ -312,7 +313,7 @@ class JourneySelectionViewModel {
         final updatedModel = updateFunc(
           Selecting(
             startDate: l.startDate,
-            railwayUndertaking: l.railwayUndertaking,
+            companyCode: l.companyCode,
             trainNumber: l.operationalTrainNumber,
             availableStartDates: _availableStartDates(),
           ),
@@ -326,7 +327,7 @@ class JourneySelectionViewModel {
   bool _validateInput(Selecting updatedModel) => updatedModel.trainNumber?.isNotEmpty == true;
 
   TrainIdentification _trainIdFrom(JourneySelectionModel selectingState) => TrainIdentification(
-    ru: selectingState.railwayUndertaking!,
+    companyCode: selectingState.companyCode!,
     trainNumber: selectingState.operationalTrainNumber.trim().toUpperCase(),
     date: selectingState.startDate,
   );

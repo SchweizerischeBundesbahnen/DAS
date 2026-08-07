@@ -94,12 +94,7 @@ class SferaLocalRepoImpl implements SferaLocalRepo {
     final normalizedDates = startDates.map((d) => d.floorToDay()).toSet();
     return entities
         .where((e) => normalizedDates.contains(e.startDate))
-        .map(
-          (e) => CompanyMatch(
-            ru: RailwayUndertaking.fromCompanyCode(e.company),
-            startDate: e.startDate,
-          ),
-        )
+        .map((e) => CompanyMatch(companyCode: e.company, startDate: e.startDate))
         .toSet();
   }
 

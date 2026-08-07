@@ -1,5 +1,6 @@
 import 'package:app/pages/diagnostic/widgets/preload_status_display.dart';
 import 'package:app/pages/journey/brake_load_slip/brake_load_slip_page.dart';
+import 'package:core_data/component.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../app_test.dart';
@@ -31,7 +32,11 @@ void main() {
   testWidgets('loadJourney_whenLoadsJourneyFromSferaMock_thenOpensJourneyTable', (tester) async {
     await E2ETestApp.start(tester);
 
-    await loadJourney(tester, trainNumber: 'T9999', ru: .sbbP);
+    await loadJourney(
+      tester,
+      trainNumber: 'T9999',
+      company: Company(code: '1285', shortName: 'SBBP'),
+    );
 
     await disconnect(tester);
   });
@@ -41,7 +46,11 @@ void main() {
   testWidgets('loadJourney_whenLoadsT12_thenShouldOpenBrakeLoadSlip', (tester) async {
     await E2ETestApp.start(tester);
 
-    await loadJourney(tester, trainNumber: 'T12', ru: .sbbCH);
+    await loadJourney(
+      tester,
+      trainNumber: 'T12',
+      company: Company(code: '2185', shortName: 'SBBCH'),
+    );
 
     await openBrakeSlipPage(tester);
     expect(find.byType(BrakeLoadSlipPage), findsOneWidget);
@@ -53,7 +62,11 @@ void main() {
   testWidgets('loadJourney_whenLoadsJourneyFromTmsVAD_thenOpensJourneyTable', skip: true, (tester) async {
     await E2ETestApp.start(tester, useTms: true);
 
-    await loadJourney(tester, trainNumber: '18222', ru: .sbbP);
+    await loadJourney(
+      tester,
+      trainNumber: '18222',
+      company: Company(code: '1285', shortName: 'SBBP'),
+    );
 
     await disconnect(tester);
   });

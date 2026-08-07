@@ -27,7 +27,7 @@ import 'sfera_repository_impl_test.mocks.dart';
 ])
 void main() {
   final TrainIdentification trainId = TrainIdentification(
-    ru: .sbbP,
+    companyCode: '1285',
     trainNumber: '12345',
     date: DateTime.now(),
   );

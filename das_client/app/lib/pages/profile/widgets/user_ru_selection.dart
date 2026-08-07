@@ -20,7 +20,7 @@ class _UserRuSelectionState extends State<UserRuSelection> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: SBBSpacing.xSmall),
+      padding: const .symmetric(horizontal: SBBSpacing.xSmall),
       child: Column(
         spacing: SBBSpacing.xSmall,
         crossAxisAlignment: .start,
@@ -31,10 +31,10 @@ class _UserRuSelectionState extends State<UserRuSelection> {
           ),
           SBBContentBox(
             child: SelectRailwayUndertakingInput(
-              selectedRailwayUndertakings: _userSettings.railwayUndertakings,
-              updateRailwayUndertaking: (selected) async {
-                await _userSettings.set(.railwayUndertakings, selected.map((it) => it.name).toList());
-                _externalLinksRepo.reloadExternalLinksByCompanies(selected.map((it) => it.companyCode).toList());
+              selectedCompanyCodes: _userSettings.companyCodes,
+              updateCompanies: (selected) async {
+                await _userSettings.set(.companyCodes, selected.map((it) => it.shortName).toList());
+                _externalLinksRepo.reloadExternalLinksByCompanies(selected.map((it) => it.code).toList());
                 setState(() {});
               },
               isModalVersion: true,

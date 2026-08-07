@@ -1,3 +1,4 @@
+import 'package:core_data/component.dart';
 import 'package:logging/logging.dart';
 import 'package:settings/component.dart';
 import 'package:settings/src/api/dto/app_version_expiration_dto.dart';
@@ -53,6 +54,12 @@ class SettingsRepositoryImpl implements SettingsRepository {
   Future<List<Company>> loadCompanies() async {
     final companies = await databaseService.findAllCompanies();
     return companies.map((company) => company.toDomain()).toList();
+  }
+
+  @override
+  Future<Company?> getCompanyForCode(String companyCode) async {
+    final company = await databaseService.findCompany(companyCode);
+    return company?.toDomain();
   }
 
   @override

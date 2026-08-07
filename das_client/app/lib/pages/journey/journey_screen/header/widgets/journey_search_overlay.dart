@@ -70,8 +70,8 @@ class JourneySearchOverlay extends StatelessWidget {
               final model = snapshot.requireData;
               return SelectRailwayUndertakingInput(
                 isModalVersion: true,
-                selectedRailwayUndertakings: [?model.railwayUndertaking],
-                updateRailwayUndertaking: vm.updateRailwayUndertaking,
+                selectedCompanyCodes: [?model.companyCode],
+                updateCompanies: vm.updateCompanies,
                 addClearButton: true,
               );
             },
