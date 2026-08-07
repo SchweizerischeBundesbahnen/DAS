@@ -394,7 +394,7 @@ void main() {
   });
 
   testWidgets(
-    'brakeSlip_whenTransportDocumentsAreConfigured_thenButtonVisibilityAndLaunchBehaviorMatchFormationData|k2dX0Vd8r1sZ9fQm7uJm|tests:1605',
+    'brakeSlip_whenTransportDocumentsAreConfigured_thenButtonVisibilityAndLaunchBehaviorMatchFormationData|k2dX0Vd8r1sZ9fQm7uJm|tests:1620',
     (tester) async {
       await IntegrationTestApp.start(tester);
 
