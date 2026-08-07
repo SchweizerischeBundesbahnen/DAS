@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.16.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.15.0...backend-v0.16.0) (2026-08-07)
+
+
+### Features
+
+* cargo formation update calculations and docs ([#1187](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1187)) ([#2489](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2489)) ([487d8b7](https://github.com/SchweizerischeBundesbahnen/DAS/commit/487d8b7f0295be744b3ba1c83ad75359333f3848))
+* save full uic code and pass index from zis formations ([#1619](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1619)) ([#2557](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2557)) ([e3fa3b4](https://github.com/SchweizerischeBundesbahnen/DAS/commit/e3fa3b4720dcc3ffac1875415e10dc741530bc38))
+* transport paper url on formations api ([#1619](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1619)) ([#2565](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2565)) ([30e0ef0](https://github.com/SchweizerischeBundesbahnen/DAS/commit/30e0ef07f4852ce2dfd57de4e34204ae707dd9d5))
+
+
+### Bug Fixes
+
+* circuit break on tms timeouts ([#1393](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1393)) ([#2564](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2564)) ([313eced](https://github.com/SchweizerischeBundesbahnen/DAS/commit/313eced249878085f265264e7c5f6b18dfccc556))
+* db credentials rotation ([#2541](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2541)) ([1dc6c8d](https://github.com/SchweizerischeBundesbahnen/DAS/commit/1dc6c8d356746f3b931826edd98e52119f626146))
+* merge duplicate locations ([#2434](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2434)) ([#2471](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2471)) ([992c62a](https://github.com/SchweizerischeBundesbahnen/DAS/commit/992c62adeaa592fee4bbed03aafe341c93f67d43))
+
+
+### Documentation
+
+* add integration test traceability ([#2502](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2502)) ([6b3e622](https://github.com/SchweizerischeBundesbahnen/DAS/commit/6b3e6229e411bd287b3af4414f0853fd0b5e08c7))
+* remove acceptance criteria from test name ([#2479](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2479)) ([5ffb5cc](https://github.com/SchweizerischeBundesbahnen/DAS/commit/5ffb5ccc10f171c9e661d1a1d5bcb4623f072b2f))
+
 ## [0.15.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.14.1...backend-v0.15.0) (2026-07-23)
 
 
