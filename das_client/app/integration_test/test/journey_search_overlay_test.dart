@@ -20,7 +20,9 @@ import '../util/test_utils.dart';
 
 void main() {
   group('Journey search overlay tests', () {
-    testWidgets('journeySearchOverlay_whenOpenedAndDismissed_thenTogglesCorrectly', (tester) async {
+    testWidgets('journeySearchOverlay_whenOpenedAndDismissed_thenTogglesCorrectly|hjtzMqmAjVVBOfkjFxJi|tests:456', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T1');
 
@@ -44,7 +46,9 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('journeySearchOverlay_whenOpened_thenShowsDefaultsAndValidation', (tester) async {
+    testWidgets('journeySearchOverlay_whenOpened_thenShowsDefaultsAndValidation|7pJRXknm1Dj2sOExzEto|tests:456', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T1');
       final journeySearchOverlay = find.byType(JourneySearchOverlay);
@@ -76,25 +80,29 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('journeySearchOverlay_whenTrainLoaded_thenOpensJourneyWithoutNavigationButtons', (tester) async {
-      await IntegrationTestApp.start(tester);
-      await loadJourney(tester, trainNumber: 'T1');
-      final journeySearchOverlay = find.byType(JourneySearchOverlay);
+    testWidgets(
+      'journeySearchOverlay_whenTrainLoaded_thenOpensJourneyWithoutNavigationButtons|PfFjIKgB8Rju5BAkp7S1|tests:456',
+      (
+        tester,
+      ) async {
+        await IntegrationTestApp.start(tester);
+        await loadJourney(tester, trainNumber: 'T1');
+        final journeySearchOverlay = find.byType(JourneySearchOverlay);
 
-      // open
-      await _openJourneySearchOverlayByTap(tester);
+        // open
+        await _openJourneySearchOverlayByTap(tester);
 
-      // set input
-      final trainNumberText = findTextInputByPlaceholder(l10n.p_train_selection_trainnumber_description);
-      expect(trainNumberText, findsOneWidget);
-      await enterText(tester, trainNumberText, 'T2');
+        // set input
+        final trainNumberText = findTextInputByPlaceholder(l10n.p_train_selection_trainnumber_description);
+        expect(trainNumberText, findsOneWidget);
+        await enterText(tester, trainNumberText, 'T2');
 
-      // load T2 Journey
-      final primaryButton = find.descendant(
-        of: journeySearchOverlay,
-        matching: find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first,
-      );
-      await tapElement(tester, primaryButton);
+        // load T2 Journey
+        final primaryButton = find.descendant(
+          of: journeySearchOverlay,
+          matching: find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first,
+        );
+        await tapElement(tester, primaryButton);
 
       // wait until T2 opened
       await waitUntilExists(
@@ -103,29 +111,32 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.byType(NavigationButtons), findsNothing);
+        expect(find.byType(NavigationButtons), findsNothing);
 
-      // pause auto advancement
-      final pauseButton = find.byKey(JourneyAdvancementButton.pauseKey);
-      await tapElement(tester, pauseButton);
-      await tester.pumpAndSettle(Duration(milliseconds: 300));
+        // pause auto advancement
+        final pauseButton = find.byKey(JourneyAdvancementButton.pauseKey);
+        await tapElement(tester, pauseButton);
+        await tester.pumpAndSettle(Duration(milliseconds: 300));
 
-      // navigation buttons still not displayed
-      expect(find.byType(NavigationButtons), findsNothing);
+        // navigation buttons still not displayed
+        expect(find.byType(NavigationButtons), findsNothing);
 
-      await disconnect(tester);
-    });
+        await disconnect(tester);
+      },
+    );
 
-    testWidgets('journeySearchOverlay_whenMultipleCompanyMatches_thenRedirectsToSelectionScreen', (
-      tester,
-    ) async {
-      await IntegrationTestApp.start(tester);
+    testWidgets(
+      'journeySearchOverlay_whenMultipleCompanyMatches_thenRedirectsToSelectionScreen|78G6WgAFp4dv86tsGl14|tests:702',
+      (
+        tester,
+      ) async {
+        await IntegrationTestApp.start(tester);
 
-      final trainIdentificationRepository =
-          DI.get<TrainIdentificationRepository>() as MockTrainIdentificationRepository;
+        final trainIdentificationRepository =
+            DI.get<TrainIdentificationRepository>() as MockTrainIdentificationRepository;
 
-      await loadJourney(tester, trainNumber: 'T1');
-      final journeySearchOverlay = find.byType(JourneySearchOverlay);
+        await loadJourney(tester, trainNumber: 'T1');
+        final journeySearchOverlay = find.byType(JourneySearchOverlay);
 
       trainIdentificationRepository.companyMatchData = {
         CompanyMatch(companyCode: '5184', startDate: DateTime.now()),
@@ -136,42 +147,43 @@ void main() {
         ),
       };
 
-      // open
-      await _openJourneySearchOverlayByTap(tester);
+        // open
+        await _openJourneySearchOverlayByTap(tester);
 
-      // set input
-      final trainNumberText = findTextInputByPlaceholder(l10n.p_train_selection_trainnumber_description);
-      expect(trainNumberText, findsOneWidget);
-      await enterText(tester, trainNumberText, 'T2');
+        // set input
+        final trainNumberText = findTextInputByPlaceholder(l10n.p_train_selection_trainnumber_description);
+        expect(trainNumberText, findsOneWidget);
+        await enterText(tester, trainNumberText, 'T2');
 
-      // load T2 Journey
-      final primaryButton = find.descendant(
-        of: journeySearchOverlay,
-        matching: find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first,
-      );
-      await tapElement(tester, primaryButton);
+        // load T2 Journey
+        final primaryButton = find.descendant(
+          of: journeySearchOverlay,
+          matching: find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first,
+        );
+        await tapElement(tester, primaryButton);
 
-      // wait until on JourneySelectionPage
-      await waitUntilExists(tester, find.byType(JourneySelectionPage));
-      await tester.pumpAndSettle(Duration(milliseconds: 300));
+        // wait until on JourneySelectionPage
+        await waitUntilExists(tester, find.byType(JourneySelectionPage));
+        await tester.pumpAndSettle(Duration(milliseconds: 300));
 
-      expect(find.text('T2'), findsOneWidget);
-      expect(find.text('5184, SBBI'), findsOneWidget);
-      expect(find.text('2263, BLSI'), findsOneWidget);
-      expect(find.text('3917, THURBO'), findsNothing);
+        expect(find.text('T2'), findsOneWidget);
+        expect(find.text('5184, SBBI'), findsOneWidget);
+        expect(find.text('2263, BLSI'), findsOneWidget);
+        expect(find.text('3917, THURBO'), findsNothing);
 
-      await tester.pumpAndSettle(Duration(milliseconds: 300));
+        await tester.pumpAndSettle(Duration(milliseconds: 300));
 
-      await openDrawer(tester);
-      await tapElement(tester, find.text(l10n.w_navigation_drawer_profile_title));
-      expect(find.byType(ProfilePage), findsOneWidget);
+        await openDrawer(tester);
+        await tapElement(tester, find.text(l10n.w_navigation_drawer_profile_title));
+        expect(find.byType(ProfilePage), findsOneWidget);
 
-      await openDrawer(tester);
-      await tapElement(tester, find.text(l10n.w_navigation_drawer_fahrtinfo_title));
-      expect(find.byType(JourneySelectionPage), findsOneWidget);
+        await openDrawer(tester);
+        await tapElement(tester, find.text(l10n.w_navigation_drawer_fahrtinfo_title));
+        expect(find.byType(JourneySelectionPage), findsOneWidget);
 
-      await disconnect(tester);
-    });
+        await disconnect(tester);
+      },
+    );
   });
 }
 

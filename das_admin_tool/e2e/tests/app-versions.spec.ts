@@ -15,7 +15,9 @@ test.describe('app versions test', () => {
   const TEST_IS_MINIMAL = 'Nein';
   const TEST_IS_MINIMAL_UPDATED = 'Ja';
 
-  test('create, edit and delete app version | tests: 1406', async ({ page }) => {
+  test('appVersion_whenCreatedEditedAndDeleted_thenSucceeds|2HUIAIb0FIAD3nvFwBbT|tests:1406', async ({
+    page,
+  }) => {
     await page.goto('das-admin/app-versions');
     await expect(page.locator('sbb-title[level="2"]')).toHaveText('Blockierte App Versionen');
 

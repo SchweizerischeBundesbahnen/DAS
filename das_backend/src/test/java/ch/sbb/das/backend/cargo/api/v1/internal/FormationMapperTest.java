@@ -2,8 +2,10 @@ package ch.sbb.das.backend.cargo.api.v1.internal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.mock;
 
 import ch.sbb.das.backend.cargo.api.v1.model.Formation;
+import ch.sbb.das.backend.cargo.application.TransportPaperUrlResolver;
 import ch.sbb.das.backend.cargo.infrastructure.model.TrainFormationRunEntity;
 import ch.sbb.das.backend.companies.CompanyCode;
 import java.time.LocalDate;
@@ -12,7 +14,7 @@ import org.junit.jupiter.api.Test;
 
 class FormationMapperTest {
 
-    private final FormationMapper mapper = new FormationMapper(new FormationRunMapper());
+    private final FormationMapper mapper = new FormationMapper(new FormationRunMapper(mock(TransportPaperUrlResolver.class)));
 
     @Test
     void toFormation_maps_header_from_first_entity_and_runs() {
@@ -20,16 +22,16 @@ class FormationMapperTest {
             .operationalTrainNumber("54233")
             .operationalDay(LocalDate.of(2026, 7, 22))
             .company(new CompanyCode("2185"))
-            .tafTapLocationReferenceStart("CH00001")
-            .tafTapLocationReferenceEnd("CH00002")
+            .tafTapLocationUicStartCode(85000010)
+            .tafTapLocationUicEndCode(85000020)
             .vehiclesWithBrakeDesignLAndLlAndKCount(1)
             .build();
         TrainFormationRunEntity second = TrainFormationRunEntity.builder()
             .operationalTrainNumber("99999")
             .operationalDay(LocalDate.of(2026, 1, 1))
             .company(new CompanyCode("0001"))
-            .tafTapLocationReferenceStart("CH00003")
-            .tafTapLocationReferenceEnd("CH00004")
+            .tafTapLocationUicStartCode(85000030)
+            .tafTapLocationUicEndCode(85000040)
             .vehiclesWithBrakeDesignLAndLlAndKCount(2)
             .build();
 

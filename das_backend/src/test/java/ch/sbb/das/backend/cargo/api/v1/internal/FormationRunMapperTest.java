@@ -1,8 +1,14 @@
 package ch.sbb.das.backend.cargo.api.v1.internal;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import ch.sbb.das.backend.cargo.api.v1.model.FormationRun;
+import ch.sbb.das.backend.cargo.api.v1.model.TransportPaperLink;
+import ch.sbb.das.backend.cargo.api.v1.model.TransportPaperLink.TransportPaperLinkType;
+import ch.sbb.das.backend.cargo.application.TransportPaperUrlResolver;
 import ch.sbb.das.backend.cargo.infrastructure.model.TrainFormationRunEntity;
 import ch.sbb.das.backend.companies.CompanyCode;
 import java.time.LocalDate;
@@ -12,7 +18,8 @@ import org.junit.jupiter.api.Test;
 
 class FormationRunMapperTest {
 
-    private final FormationRunMapper mapper = new FormationRunMapper();
+    private final TransportPaperUrlResolver transportPaperUrlResolver = mock(TransportPaperUrlResolver.class);
+    private final FormationRunMapper mapper = new FormationRunMapper(transportPaperUrlResolver);
 
     @Test
     void toFormationRun_maps_all_fields() {
@@ -24,8 +31,8 @@ class FormationRunMapperTest {
             .trainPathId("54233-001")
             .operationalDay(LocalDate.of(2026, 7, 22))
             .company(new CompanyCode("2185"))
-            .tafTapLocationReferenceStart("CH52344")
-            .tafTapLocationReferenceEnd("CH04212")
+            .tafTapLocationUicStartCode(85523440)
+            .tafTapLocationUicEndCode(85042120)
             .trainCategoryCode("CAT")
             .brakedWeightPercentage(435)
             .tractionMaxSpeedInKmh(80)
@@ -104,18 +111,19 @@ class FormationRunMapperTest {
         assertThat(result.gradientUphillMaxInPermille()).isEqualTo(79);
         assertThat(result.gradientDownhillMaxInPermille()).isEqualTo(45);
         assertThat(result.slopeMaxForHoldingForceMinInPermille()).isEqualTo("40.2");
+        assertThat(result.transportPaperLink()).isNull();
     }
 
     @Test
     void toFormationRuns_maps_list() {
         TrainFormationRunEntity first = TrainFormationRunEntity.builder()
-            .tafTapLocationReferenceStart("CH00001")
-            .tafTapLocationReferenceEnd("CH00002")
+            .tafTapLocationUicStartCode(85000010)
+            .tafTapLocationUicEndCode(85000020)
             .vehiclesWithBrakeDesignLAndLlAndKCount(1)
             .build();
         TrainFormationRunEntity second = TrainFormationRunEntity.builder()
-            .tafTapLocationReferenceStart("CH00003")
-            .tafTapLocationReferenceEnd("CH00004")
+            .tafTapLocationUicStartCode(85000030)
+            .tafTapLocationUicEndCode(85000040)
             .vehiclesWithBrakeDesignLAndLlAndKCount(2)
             .build();
 
@@ -126,5 +134,21 @@ class FormationRunMapperTest {
         assertThat(result.getLast().tafTapLocationReferenceStart()).isEqualTo("CH00003");
         assertThat(result.getFirst().vehiclesWithBrakeDesignLlAndKCount()).isEqualTo(1);
         assertThat(result.getLast().vehiclesWithBrakeDesignLlAndKCount()).isEqualTo(2);
+    }
+
+    @Test
+    void toFormationRun_resolves_transport_paper_link() {
+        TransportPaperLink expectedLink = new TransportPaperLink("https://example.com/paper", TransportPaperLinkType.URL);
+        TrainFormationRunEntity entity = TrainFormationRunEntity.builder()
+            .tafTapLocationUicStartCode(85000010)
+            .tafTapLocationUicEndCode(85000020)
+            .vehiclesWithBrakeDesignLAndLlAndKCount(1)
+            .build();
+        when(transportPaperUrlResolver.resolve(entity)).thenReturn(expectedLink);
+
+        FormationRun result = mapper.toFormationRun(entity);
+
+        assertThat(result.transportPaperLink()).isEqualTo(expectedLink);
+        verify(transportPaperUrlResolver).resolve(entity);
     }
 }

@@ -24,7 +24,7 @@ public record ServicePoint(
         return new ServicePoint(designationOfficial, abbreviation, validFrom, newValidTo, number);
     }
 
-    public record ServicePointNumber(Integer numberShort, Integer uicCountryCode) {
+    public record ServicePointNumber(Integer uicCountryCode, Integer numberShort, Integer checkDigit) {
 
     }
 

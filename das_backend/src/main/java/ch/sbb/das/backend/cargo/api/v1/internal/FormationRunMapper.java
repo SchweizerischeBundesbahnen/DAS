@@ -1,54 +1,61 @@
 package ch.sbb.das.backend.cargo.api.v1.internal;
 
 import ch.sbb.das.backend.cargo.api.v1.model.FormationRun;
+import ch.sbb.das.backend.cargo.application.TransportPaperUrlResolver;
 import ch.sbb.das.backend.cargo.infrastructure.model.TrainFormationRunEntity;
+import ch.sbb.das.backend.locations.TafTapLocationReference;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class FormationRunMapper {
 
-    public FormationRun toFormationRun(TrainFormationRunEntity trainFormationRunEntity) {
+    private final TransportPaperUrlResolver transportPaperUrlResolver;
+
+    public FormationRun toFormationRun(TrainFormationRunEntity entity) {
         return FormationRun.builder()
-            .inspectionDateTime(trainFormationRunEntity.getInspectionDateTime())
-            .tafTapLocationReferenceStart(trainFormationRunEntity.getTafTapLocationReferenceStart())
-            .tafTapLocationReferenceEnd(trainFormationRunEntity.getTafTapLocationReferenceEnd())
-            .trainCategoryCode(trainFormationRunEntity.getTrainCategoryCode())
-            .brakedWeightPercentage(trainFormationRunEntity.getBrakedWeightPercentage())
-            .tractionMaxSpeedInKmh(trainFormationRunEntity.getTractionMaxSpeedInKmh())
-            .hauledLoadMaxSpeedInKmh(trainFormationRunEntity.getHauledLoadMaxSpeedInKmh())
-            .formationMaxSpeedInKmh(trainFormationRunEntity.getFormationMaxSpeedInKmh())
-            .tractionLengthInCm(trainFormationRunEntity.getTractionLengthInCm())
-            .hauledLoadLengthInCm(trainFormationRunEntity.getHauledLoadLengthInCm())
-            .formationLengthInCm(trainFormationRunEntity.getFormationLengthInCm())
-            .tractionWeightInT(trainFormationRunEntity.getTractionWeightInT())
-            .hauledLoadWeightInT(trainFormationRunEntity.getHauledLoadWeightInT())
-            .formationWeightInT(trainFormationRunEntity.getFormationWeightInT())
-            .tractionBrakedWeightInT(trainFormationRunEntity.getTractionBrakedWeightInT())
-            .hauledLoadBrakedWeightInT(trainFormationRunEntity.getHauledLoadBrakedWeightInT())
-            .formationBrakedWeightInT(trainFormationRunEntity.getFormationBrakedWeightInT())
-            .tractionHoldingForceInHectoNewton(trainFormationRunEntity.getTractionHoldingForceInHectoNewton())
-            .hauledLoadHoldingForceInHectoNewton(trainFormationRunEntity.getHauledLoadHoldingForceInHectoNewton())
-            .formationHoldingForceInHectoNewton(trainFormationRunEntity.getFormationHoldingForceInHectoNewton())
-            .brakePositionGForLeadingTraction(trainFormationRunEntity.getBrakePositionGForLeadingTraction())
-            .brakePositionGForBrakeUnit1to5(trainFormationRunEntity.getBrakePositionGForBrakeUnit1to5())
-            .brakePositionGForLoadHauled(trainFormationRunEntity.getBrakePositionGForLoadHauled())
-            .simTrain(trainFormationRunEntity.getSimTrain())
-            .additionalTractions(trainFormationRunEntity.getAdditionalTractions())
-            .carCarrierVehicle(trainFormationRunEntity.getCarCarrierVehicle())
-            .dangerousGoods(trainFormationRunEntity.getDangerousGoods())
-            .vehiclesCount(trainFormationRunEntity.getVehiclesCount())
-            .vehiclesWithBrakeDesignLlAndKCount(trainFormationRunEntity.getVehiclesWithBrakeDesignLAndLlAndKCount()) // todo: delete as soon as das_client v 0.49.0 released
-            .vehiclesWithBrakeDesignLAndLlAndKCount(trainFormationRunEntity.getVehiclesWithBrakeDesignLAndLlAndKCount())
-            .vehiclesWithBrakeDesignDCount(trainFormationRunEntity.getVehiclesWithBrakeDesignDCount())
-            .vehiclesWithDisabledBrakesCount(trainFormationRunEntity.getVehiclesWithDisabledBrakesCount())
-            .europeanVehicleNumberFirst(trainFormationRunEntity.getEuropeanVehicleNumberFirst())
-            .europeanVehicleNumberLast(trainFormationRunEntity.getEuropeanVehicleNumberLast())
-            .axleLoadMaxInKg(trainFormationRunEntity.getAxleLoadMaxInKg())
-            .routeClass(trainFormationRunEntity.getRouteClass())
-            .gradientUphillMaxInPermille(trainFormationRunEntity.getGradientUphillMaxInPermille())
-            .gradientDownhillMaxInPermille(trainFormationRunEntity.getGradientDownhillMaxInPermille())
-            .slopeMaxForHoldingForceMinInPermille(trainFormationRunEntity.getSlopeMaxForHoldingForceMinInPermille())
+            .inspectionDateTime(entity.getInspectionDateTime())
+            .tafTapLocationReferenceStart(TafTapLocationReference.of(entity.getTafTapLocationUicStartCode()).locationCode())
+            .tafTapLocationReferenceEnd(TafTapLocationReference.of(entity.getTafTapLocationUicEndCode()).locationCode())
+            .trainCategoryCode(entity.getTrainCategoryCode())
+            .brakedWeightPercentage(entity.getBrakedWeightPercentage())
+            .tractionMaxSpeedInKmh(entity.getTractionMaxSpeedInKmh())
+            .hauledLoadMaxSpeedInKmh(entity.getHauledLoadMaxSpeedInKmh())
+            .formationMaxSpeedInKmh(entity.getFormationMaxSpeedInKmh())
+            .tractionLengthInCm(entity.getTractionLengthInCm())
+            .hauledLoadLengthInCm(entity.getHauledLoadLengthInCm())
+            .formationLengthInCm(entity.getFormationLengthInCm())
+            .tractionWeightInT(entity.getTractionWeightInT())
+            .hauledLoadWeightInT(entity.getHauledLoadWeightInT())
+            .formationWeightInT(entity.getFormationWeightInT())
+            .tractionBrakedWeightInT(entity.getTractionBrakedWeightInT())
+            .hauledLoadBrakedWeightInT(entity.getHauledLoadBrakedWeightInT())
+            .formationBrakedWeightInT(entity.getFormationBrakedWeightInT())
+            .tractionHoldingForceInHectoNewton(entity.getTractionHoldingForceInHectoNewton())
+            .hauledLoadHoldingForceInHectoNewton(entity.getHauledLoadHoldingForceInHectoNewton())
+            .formationHoldingForceInHectoNewton(entity.getFormationHoldingForceInHectoNewton())
+            .brakePositionGForLeadingTraction(entity.getBrakePositionGForLeadingTraction())
+            .brakePositionGForBrakeUnit1to5(entity.getBrakePositionGForBrakeUnit1to5())
+            .brakePositionGForLoadHauled(entity.getBrakePositionGForLoadHauled())
+            .simTrain(entity.getSimTrain())
+            .additionalTractions(entity.getAdditionalTractions())
+            .carCarrierVehicle(entity.getCarCarrierVehicle())
+            .dangerousGoods(entity.getDangerousGoods())
+            .vehiclesCount(entity.getVehiclesCount())
+            .vehiclesWithBrakeDesignLlAndKCount(entity.getVehiclesWithBrakeDesignLAndLlAndKCount()) // todo: delete as soon as das_client v 0.49.0 released
+            .vehiclesWithBrakeDesignLAndLlAndKCount(entity.getVehiclesWithBrakeDesignLAndLlAndKCount())
+            .vehiclesWithBrakeDesignDCount(entity.getVehiclesWithBrakeDesignDCount())
+            .vehiclesWithDisabledBrakesCount(entity.getVehiclesWithDisabledBrakesCount())
+            .europeanVehicleNumberFirst(entity.getEuropeanVehicleNumberFirst())
+            .europeanVehicleNumberLast(entity.getEuropeanVehicleNumberLast())
+            .axleLoadMaxInKg(entity.getAxleLoadMaxInKg())
+            .routeClass(entity.getRouteClass())
+            .gradientUphillMaxInPermille(entity.getGradientUphillMaxInPermille())
+            .gradientDownhillMaxInPermille(entity.getGradientDownhillMaxInPermille())
+            .slopeMaxForHoldingForceMinInPermille(entity.getSlopeMaxForHoldingForceMinInPermille())
+            .transportPaperLink(transportPaperUrlResolver.resolve(entity))
             .build();
     }
 

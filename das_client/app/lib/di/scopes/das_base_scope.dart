@@ -131,7 +131,7 @@ extension BaseScopeExtension on GetIt {
 
   void registerLoginViewModel() {
     _log.fine('Register LoginViewModel');
-    registerSingleton<LoginViewModel>(LoginViewModel(), dispose: (vm) => vm.dispose());
+    registerSingleton<LoginViewModel>(LoginViewModel(flavor: DI.get()), dispose: (vm) => vm.dispose());
   }
 
   void registerAppLinksManager() {

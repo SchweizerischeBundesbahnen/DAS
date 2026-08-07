@@ -25,11 +25,22 @@ jobs:
 
       - uses: actions/checkout@v7.0.1
 
-      - uses: actions/setup-java@v5.6.0
+      - uses: actions/setup-java@v5.7.0
         with:
           distribution: 'temurin'
           java-version: '17'
           cache: 'gradle'
+
+      - name: Vault Secrets 🤫
+        id: vault-secrets
+        uses: hashicorp/vault-action@v4.0.0
+        with:
+          url: https://vault-nonprod.sbb.ch:443
+          method: approle
+          roleId: ${{ secrets.VAULT_ROLE_ID }}
+          secretId: ${{ secrets.VAULT_SECRET_ID }}
+          secrets: |
+            kv/data/DSO-BPS/driver-advisory-system/ci/common SONAR_TOKEN ;
 
       - uses: subosito/flutter-action@v2.23.0
         with:
@@ -53,3 +64,39 @@ jobs:
 
       - name: Flutter tests with coverage
         run: melos coverage
+
+      - name: Sonar scan
+        uses: SonarSource/sonarqube-scan-action@v8.2.1
+        env:
+          SONAR_TOKEN: ${{ steps.vault-secrets.outputs.SONAR_TOKEN }}
+        with:
+          projectBaseDir: das_client
+          args: >
+            -Dsonar.organization=schweizerischebundesbahnen
+            -Dsonar.projectKey=schweizerischebundesbahnen_DAS-Client
+            -Dsonar.projectName=DAS/Client
+            -Dsonar.sources=app/lib,app_links_x/lib,auth/lib,formation/lib,local_regulations/lib,logger/lib,preload/lib,sfera/lib,warnapp/lib
+            -Dsonar.tests=app/test,app_links_x/test,auth/test,formation/test,local_regulations/test,logger/test,preload/test,sfera/test,warnapp/test
+            -Dsonar.inclusions=**/lib/**
+            -Dsonar.test.inclusions=**/test/**
+            -Dsonar.exclusions=**/*.g.dart,**/.dart_tool/**,**/android/**,**/ios/**
+            -Dsonar.flutter.enabled=true
+            -Dsonar.language=dart
+            -Dsonar.dart.lcov.reportPaths=**/coverage/lcov.info
+
+  test-title-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+
+      - uses: actions/setup-node@v7.0.0
+        with:
+          node-version: 'lts/krypton'
+
+      - name: Assign integration test traceability IDs and format whitespace
+        working-directory: ${{ github.workspace }}
+        run: node scripts/test_title_has_id_no_whitespace.mjs client
+
+      - name: Fail if any integration test is missing a traceability ID
+        working-directory: ${{ github.workspace }}
+        run: git diff --exit-code -- das_client/app/integration_test/test

@@ -13,7 +13,9 @@ import {
 test.describe('ru feature toggles test', () => {
   const TEST_FEATURE_LABEL = 'Checkliste Abfahrprozess';
 
-  test('create, edit and delete ru feature toggle | tests: 716', async ({ page }) => {
+  test('ruFeatureToggle_whenCreatedEditedAndDeleted_thenSucceeds|0LYbHQZx5C25TAiKRQeL|tests:716', async ({
+    page,
+  }) => {
     await page.goto('ru-admin/rufeatures');
     await expect(page.locator('sbb-title[level="2"]')).toHaveText('DAS Mobile Features');
 

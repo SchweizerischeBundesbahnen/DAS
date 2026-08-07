@@ -35,37 +35,42 @@ class SettingsDatabaseService extends _$SettingsDatabaseService implements RuFea
 
   @override
   Future<RuFeatureDto?> findRuFeature(String companyCodeRics, RuFeatureKeys featureKey) async {
-    final featureData = await _ruFeaturesManager
+    final featureData = await _ruFeatureTableManager
         .filter((f) => f.companyCodeRics(companyCodeRics) & f.key(featureKey.key))
         .getSingleOrNull();
     return featureData?.toDto();
   }
 
   @override
+  Future<void> replaceAllRuFeatures(List<RuFeatureDto> ruFeatures) async {
+    return _ruFeatureTableManager.delete().then(
+      (_) => _ruFeatureTableManager.bulkCreate(
+        (_) => ruFeatures.map((element) => element.toCompanion()),
+        mode: InsertMode.insertOrFail,
+      ),
+    );
+  }
+
+  @override
   Future<List<CompanyDto>> findAllCompanies() async {
-    final companies = await _companiesManager.get();
+    final companies = await _companiesTableManager.get();
     return companies.map((company) => company.toDto()).toList(growable: false);
   }
 
   @override
   Future<CompanyDto?> findCompany(String companyCode) async {
-    final featureData = await _companiesManager.filter((company) => company.code(companyCode)).getSingleOrNull();
+    final featureData = await _companiesTableManager.filter((company) => company.code(companyCode)).getSingleOrNull();
     return featureData?.toDto();
   }
 
+  // TODO: Replace all
   @override
-  Future<void> saveRuFeatures(List<RuFeatureDto> ruFeatures) async => _ruFeaturesManager.bulkCreate(
-    (_) => ruFeatures.map((element) => element.toCompanion()),
-    mode: InsertMode.insertOrReplace,
-  );
-
-  @override
-  Future<void> saveCompanies(List<CompanyDto> companies) async => _companiesManager.bulkCreate(
+  Future<void> saveCompanies(List<CompanyDto> companies) async => _companiesTableManager.bulkCreate(
     (_) => companies.map((element) => element.toCompanion()),
     mode: InsertMode.insertOrReplace,
   );
 
-  $$RuFeaturesTableTableTableManager get _ruFeaturesManager => managers.ruFeaturesTable;
+  $$RuFeaturesTableTableTableManager get _ruFeatureTableManager => managers.ruFeaturesTable;
 
-  $$CompaniesTableTableTableManager get _companiesManager => managers.companiesTable;
+  $$CompaniesTableTableTableManager get _companiesTableManager => managers.companiesTable;
 }

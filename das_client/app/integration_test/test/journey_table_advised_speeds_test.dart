@@ -10,7 +10,9 @@ import '../integration/integration_test_app.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('advisedSpeed_whenNotificationReceived_thenDisplaysCorrectly', (tester) async {
+  testWidgets('advisedSpeed_whenNotificationReceived_thenDisplaysCorrectly|difsm3d1efVsKjn1IJjj|tests:228,1285,1306', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
 
     await loadJourney(tester, trainNumber: 'T24');
@@ -70,7 +72,9 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('advisedSpeed_whenJourneyLoaded_thenDisplaysCorrectly', (tester) async {
+  testWidgets('advisedSpeed_whenJourneyLoaded_thenDisplaysCorrectly|85DIebkYiATNR4kWtS5c|tests:228,1285,1306', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
 
     await loadJourney(tester, trainNumber: 'T24');

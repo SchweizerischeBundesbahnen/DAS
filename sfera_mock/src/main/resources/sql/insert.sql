@@ -1,7 +1,7 @@
 insert into driver_advisory_system.train_formation_run (id, position, inspection_date_time,
                                                         operational_train_number, operational_day,
-                                                        company, taf_tap_location_reference_start,
-                                                        taf_tap_location_reference_end,
+                                                        company, taf_tap_location_uic_start_code,
+                                                        taf_tap_location_uic_end_code,
                                                         train_category_code,
                                                         braked_weight_percentage,
                                                         traction_max_speed_in_kmh,
@@ -42,8 +42,8 @@ values
      ?,
      ?,
      ?,
-     'CH00001', --Graftal
-     'CH00003', --Twinn
+     85000010, --Graftal
+     85000030, --Twinn
      'A', -- train_category_code
      95, -- braked_weight_percentage
      140, -- traction_max_speed_in_kmh
@@ -88,8 +88,8 @@ values
      ?,
      ?,
      ?,
-     'CH00003', --Twinn
-     'CH00006', --Baumen
+     85000030, --Twinn
+     85000060, --Baumen
      'A', -- train_category_code
      105, -- braked_weight_percentage
      140, -- traction_max_speed_in_kmh
@@ -134,8 +134,8 @@ values
      ?,
      ?,
      ?,
-     'CH00006', --Baumen
-     'CH00008', --Lüthisberg
+     85000060, --Baumen
+     85000080, --Lüthisberg
      'A', -- train_category_code
      95, -- braked_weight_percentage
      120, -- traction_max_speed_in_kmh
@@ -180,8 +180,8 @@ values
      ?,
      ?,
      ?,
-     'CH00008', --Lüthisberg
-     'CH00009', --Helmaiche
+     85000080, --Lüthisberg
+     85000090, --Helmaiche
      'A', -- train_category_code
      95, -- braked_weight_percentage
      120, -- traction_max_speed_in_kmh
@@ -227,8 +227,8 @@ values
      ?,
      ?,
      ?,
-     'CH00009', --Helmaiche
-     'CH00011', --Schmidigen
+     85000090, --Helmaiche
+     85000110, --Schmidigen
      'A', -- train_category_code
      95, -- braked_weight_percentage
      120, -- traction_max_speed_in_kmh

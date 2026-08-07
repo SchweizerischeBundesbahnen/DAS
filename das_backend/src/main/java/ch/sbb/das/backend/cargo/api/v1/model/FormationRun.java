@@ -128,7 +128,10 @@ public record FormationRun(
     Integer gradientDownhillMaxInPermille,
 
     @Schema(description = "Maximum slope in per mille (‰) on which the formation's minimum available holding force is still sufficient to secure it against rolling away (Mindestfesthaltekraft).", requiredMode = RequiredMode.NOT_REQUIRED)
-    String slopeMaxForHoldingForceMinInPermille
+    String slopeMaxForHoldingForceMinInPermille,
+
+    @Schema(description = "Link to the transport paper (Beförderungspapier), if available.", requiredMode = RequiredMode.NOT_REQUIRED)
+    TransportPaperLink transportPaperLink
 ) {
 
 }

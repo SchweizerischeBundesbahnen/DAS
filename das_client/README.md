@@ -168,7 +168,7 @@ The resulting file structure for a test scenario looks as follows:
     * SFERA_SP_T1_2.xml
     * SFERA_TC_T1_1.xml
 
-## Custom Icons
+## Custom icons
 
 To add custom icons, you can upload [font_config.json](app/font_config.json)
 to [fluttericon](https://www.fluttericon.com/) and add your icon.

@@ -172,7 +172,7 @@ void main() {
     await initTestee();
 
     // EXPECT
-    verify(settingsDatabaseService.saveRuFeatures(ruFeatures)).called(1);
+    verify(settingsDatabaseService.replaceAllRuFeatures(ruFeatures)).called(1);
   });
 
   test('whenSettingsLoadedSuccessfully_callsAwsCredentialsChanged', () async {

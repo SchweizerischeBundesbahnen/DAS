@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.50.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.49.0...das_client-v0.50.0) (2026-08-07)
+
+
+### Features
+
+* add animation to notifications ([#1880](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1880)) ([#2552](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2552)) ([8b77645](https://github.com/SchweizerischeBundesbahnen/DAS/commit/8b7764500ec2150493aca1dd816995b3630cb8e0))
+* add planned time deviation display ([#2257](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2257)) ([#2539](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2539)) ([b16c0fc](https://github.com/SchweizerischeBundesbahnen/DAS/commit/b16c0fceffd65d03769512400019bbd3355ed54d))
+* adjust text size and indicator color in brake load slip ([#1868](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1868)) ([#2530](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2530)) ([b7f426a](https://github.com/SchweizerischeBundesbahnen/DAS/commit/b7f426abdb8c8fed5dc33475c0c2f7af52790bf8))
+* app starts per default into connecting with tms vad ([#2399](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2399)) ([#2524](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2524)) ([7a72014](https://github.com/SchweizerischeBundesbahnen/DAS/commit/7a72014b2c8edeb7a53fc4c54885cd6a6d09632a))
+* brake load slip modal enhancements ([#1867](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1867)) ([#2529](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2529)) ([ac7cb7f](https://github.com/SchweizerischeBundesbahnen/DAS/commit/ac7cb7f9fea06faf23149d098caa0a28daf90f6c))
+* brake slip page does not update to position while open ([#1605](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1605)) ([#2532](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2532)) ([ae9fd6e](https://github.com/SchweizerischeBundesbahnen/DAS/commit/ae9fd6ef0c4bd734a6628bdd9b241279451eeda4))
+* change preload to diagnostic page ([#2483](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2483)) ([#2538](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2538)) ([c3d0781](https://github.com/SchweizerischeBundesbahnen/DAS/commit/c3d078182cd54872a6d53e2eea7dbee4d6cc60cf))
+* highlight manual position & expand collapsed elements when moving backwards ([#1617](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1617)) ([#2563](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2563)) ([201f2dc](https://github.com/SchweizerischeBundesbahnen/DAS/commit/201f2dc171523f74d8af7658bb774ec336c53c72))
+* side modal close behavior on tap enhancements ([#1875](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1875)) ([#2527](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2527)) ([5015d39](https://github.com/SchweizerischeBundesbahnen/DAS/commit/5015d39a473463496242a68f362827de2c6a8881))
+* timed advancement after manual position ([#1314](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1314)) ([#2513](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2513)) ([47ad1c4](https://github.com/SchweizerischeBundesbahnen/DAS/commit/47ad1c49132c34805c5a4edab7a1cee65854498b))
+
+
+### Bug Fixes
+
+* brake weight is not displayed in graduated speed tab ([#2264](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2264)) ([#2528](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2528)) ([07dcce0](https://github.com/SchweizerischeBundesbahnen/DAS/commit/07dcce031c5a842726de006621a1e217ddd9c2e3))
+
 ## [0.49.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.48.0...das_client-v0.49.0) (2026-07-29)
 
 

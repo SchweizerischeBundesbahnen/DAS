@@ -12,7 +12,7 @@ import '../util/test_utils.dart';
 
 void main() {
   group('links page tests', () {
-    testWidgets('externalLinks_whenNoRuSelected_thenShowsEmptyState', (tester) async {
+    testWidgets('externalLinks_whenNoRuSelected_thenShowsEmptyState|yWizuavbVmWzQn5OoqIE|tests:147', (tester) async {
       await IntegrationTestApp.start(tester);
 
       await openDrawer(tester);
@@ -30,7 +30,7 @@ void main() {
       expect(find.text('ESQ'), findsNothing);
     });
 
-    testWidgets('externalLinks_whenRuSelectedInProfile_thenShowsLinks', (tester) async {
+    testWidgets('externalLinks_whenRuSelectedInProfile_thenShowsLinks|vNfgpqG3Ma8VUpXenmkY|tests:147', (tester) async {
       await IntegrationTestApp.start(tester);
 
       // Navigate to Profile and select SBB CH
@@ -64,7 +64,7 @@ void main() {
       expect(find.text('ESQ'), findsOneWidget);
     });
 
-    testWidgets('externalLinks_whenRuSelectionChanges_thenUpdatesLinks', (tester) async {
+    testWidgets('externalLinks_whenRuSelectionChanges_thenUpdatesLinks|MzF1gipYtU39GeQHCZcA|tests:147', (tester) async {
       await IntegrationTestApp.start(tester);
 
       // Navigate to Profile and select DB

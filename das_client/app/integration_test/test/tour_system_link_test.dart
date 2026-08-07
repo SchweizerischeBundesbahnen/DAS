@@ -13,7 +13,7 @@ import '../util/test_utils.dart';
 
 void main() {
   group('tour system link test', () {
-    testWidgets('tourSystem_whenNotConfigured_thenHidesButtons', (tester) async {
+    testWidgets('tourSystem_whenNotConfigured_thenHidesButtons|JpXgUIrH7wxQNvb04ZMJ|tests:96', (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T39M');
 
@@ -34,7 +34,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('tourSystem_whenConfigured_thenShowsButtons', (tester) async {
+    testWidgets('tourSystem_whenConfigured_thenShowsButtons|dNnl6Kr0CR51GHFbwop5|tests:96', (tester) async {
       await IntegrationTestApp.start(tester);
 
       final userSettings = DI.get<LocalKeyValueStore>() as MockLocalKeyValueStore;
@@ -67,7 +67,9 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('tourSystem_whenPositionChanges_thenUpdatesButtonVisibility', (tester) async {
+    testWidgets('tourSystem_whenPositionChanges_thenUpdatesButtonVisibility|LSHbN4Urksjx7NapW9GO|tests:96', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
 
       final userSettings = DI.get<LocalKeyValueStore>() as MockLocalKeyValueStore;

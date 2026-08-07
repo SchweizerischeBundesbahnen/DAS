@@ -10,8 +10,8 @@ import org.junit.jupiter.api.Test;
 
 class TafTapLocationsImportServiceTest {
 
-    private static final ServicePointNumber NUMBER = new ServicePointNumber(12345, 98);
-    private static final ServicePointNumber OTHER_NUMBER = new ServicePointNumber(56789, 76);
+    private static final ServicePointNumber NUMBER = new ServicePointNumber(98, 12345, 0);
+    private static final ServicePointNumber OTHER_NUMBER = new ServicePointNumber(76, 56789, 0);
 
     private final TafTapLocationsImportService service =
         new TafTapLocationsImportService(null, null, null);

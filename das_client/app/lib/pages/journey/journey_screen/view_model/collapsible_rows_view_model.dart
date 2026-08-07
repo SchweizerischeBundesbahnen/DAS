@@ -62,7 +62,7 @@ class CollapsibleRowsViewModel extends JourneyAwareViewModel {
           (a, b) => (a, b),
         ).listen((data) {
           if (data.$1 != null) {
-            _collapsePassedAccordionRows(data.$1!, data.$2);
+            _updatePassedAccordionRowsState(data.$1!, data.$2);
           }
         });
 
@@ -86,7 +86,7 @@ class CollapsibleRowsViewModel extends JourneyAwareViewModel {
     _rxCollapsedRows.add(newMap);
   }
 
-  void _collapsePassedAccordionRows(Journey journey, JourneyPositionModel journeyPosition) {
+  void _updatePassedAccordionRowsState(Journey journey, JourneyPositionModel journeyPosition) {
     final currentPosition = journeyPosition.currentPosition;
     final lastPosition = journeyPosition.lastPosition;
     if (currentPosition == lastPosition || lastPosition == null || currentPosition == null) {
@@ -95,26 +95,40 @@ class CollapsibleRowsViewModel extends JourneyAwareViewModel {
 
     final fromIndex = journey.data.indexOf(lastPosition);
     final toIndex = journey.data.indexOf(currentPosition);
-    if (fromIndex > toIndex || fromIndex == -1 || toIndex == -1) return;
+    if (fromIndex == -1 || toIndex == -1) return;
 
-    final passedCollapsibleData = journey.data.sublist(fromIndex, toIndex).where((data) => data.isCollapsible);
+    final isMovingForward = fromIndex < toIndex;
+    final rangeStart = isMovingForward ? fromIndex : toIndex;
+    final rangeEnd = isMovingForward ? toIndex : fromIndex;
+    final passedCollapsibleData = journey.data.sublist(rangeStart, rangeEnd).where((data) => data.isCollapsible);
 
     final isSimTrain = _simTrainViewModel.isSimTrainValue;
     final collapsedRows = _rxCollapsedRows.value;
     final newMap = Map.of(collapsedRows);
     for (final data in passedCollapsibleData) {
       final current = collapsedRows[data.hashCode];
-      if (current != null && current == .collapsed) continue;
+      if (isMovingForward) {
+        if (current != null && current == .collapsed) continue;
 
-      // Do not auto-collapse SIM foot notes when this is a SIM train
-      if (isSimTrain && data is BaseFootNote && data.footNote.isSIM) continue;
+        // Do not auto-collapse SIM foot notes when this is a SIM train
+        if (isSimTrain && data is BaseFootNote && data.footNote.isSIM) continue;
 
-      if (journey.data.lastIndexWhere((it) => it.isCollapsible && it.hashCode == data.hashCode) <= toIndex) {
-        newMap[data.hashCode] = .collapsed;
+        if (journey.data.lastIndexWhere((it) => it.isCollapsible && it.hashCode == data.hashCode) <= toIndex) {
+          newMap[data.hashCode] = .collapsed;
+        }
+      } else {
+        if (current != .collapsed) continue;
+
+        // Non-SIM trains always keep SIM foot notes collapsed.
+        if (data is BaseFootNote && data.footNote.isSIM && !isSimTrain) {
+          continue;
+        }
+
+        newMap[data.hashCode] = .defaultOf(data);
       }
     }
 
-    if (newMap.length != collapsedRows.length) {
+    if (!newMap.isSameStateAs(collapsedRows)) {
       _rxCollapsedRows.add(newMap);
     }
   }
@@ -140,6 +154,14 @@ extension BaseDataX on BaseData {
 
 extension CollapsedStateMapX on Map<int, CollapsedState> {
   CollapsedState stateOf(BaseData? data) => this[data.hashCode] ?? .defaultOf(data);
+
+  bool isSameStateAs(Map<int, CollapsedState> other) {
+    if (length != other.length) return false;
+    for (final entry in entries) {
+      if (other[entry.key] != entry.value) return false;
+    }
+    return true;
+  }
 
   Map<int, CollapsedState> whereContains(Iterable<BaseData> data) {
     final hashCodes = data.map((d) => d.hashCode).toSet();

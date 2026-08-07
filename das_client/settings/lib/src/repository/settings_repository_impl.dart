@@ -77,7 +77,7 @@ class SettingsRepositoryImpl implements SettingsRepository {
       return _reportResult(false);
     }
 
-    await _saveRuFeatureSettings(remoteSettings);
+    await _replaceAllRuFeatureSettings(remoteSettings);
     await _saveCompanies(remoteSettings);
 
     if (_shouldCallAwsCredentialsChanged(remoteSettings)) {
@@ -107,9 +107,9 @@ class SettingsRepositoryImpl implements SettingsRepository {
     return settingsResponse.body.data.firstOrNull;
   }
 
-  Future<void> _saveRuFeatureSettings(SettingsDto remoteSettings) async {
-    await databaseService.saveRuFeatures(remoteSettings.ruFeatures);
-    _log.info('RU feature settings saved successfully.');
+  Future<void> _replaceAllRuFeatureSettings(SettingsDto remoteSettings) async {
+    await databaseService.replaceAllRuFeatures(remoteSettings.ruFeatures);
+    _log.info('RU settings saved successfully saved by replacing all.');
   }
 
   Future<void> _saveCompanies(SettingsDto remoteSettings) async {

@@ -5,6 +5,9 @@ export default defineConfig({
   forbidOnly: !!process.env['CI'],
   retries: process.env['CI'] ? 2 : 0,
   globalSetup: './global-setup',
+  reporter: process.env['CI']
+    ? [['list'], ['json', { outputFile: 'test-results.json' }]]
+    : [['list']],
   use: {
     baseURL: 'http://localhost:4200',
     viewport: { width: 1280, height: 1580 },

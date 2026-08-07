@@ -17,45 +17,52 @@ import '../mocks/mock_settings_repository.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('customerOrientedDeparture_whenStatusChanges_thenDisplaysNotificationsCorrectly', (tester) async {
-    await IntegrationTestApp.start(tester);
-    final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;
-    featureProvider.enableFeature(.departureProcess);
-    final mockRepository = DI.get<CustomerOrientedDepartureRepository>() as MockCustomerOrientedDepartureRepository;
-    mockRepository.reset();
+  testWidgets(
+    'customerOrientedDeparture_whenStatusChanges_thenDisplaysNotificationsCorrectly|dIW8ooYfMKINdzpGCp4S|tests:148',
+    (
+      tester,
+    ) async {
+      await IntegrationTestApp.start(tester);
+      final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;
+      featureProvider.enableFeature(.departureProcess);
+      final mockRepository = DI.get<CustomerOrientedDepartureRepository>() as MockCustomerOrientedDepartureRepository;
+      mockRepository.reset();
 
-    final trainNumber = 'T9999M';
-    await loadJourney(tester, trainNumber: trainNumber);
+      final trainNumber = 'T9999M';
+      await loadJourney(tester, trainNumber: trainNumber);
 
-    await waitUntilExists(tester, find.byKey(FloatingDepartureChecklistButton.buttonKey));
+      await waitUntilExists(tester, find.byKey(FloatingDepartureChecklistButton.buttonKey));
 
-    expect(mockRepository.subscribedTrainNumbers, hasLength(1));
-    expect(mockRepository.subscribedTrainNumbers.elementAt(0), trainNumber);
-    expect(mockRepository.unsubscribeCallCount, 0);
+      expect(mockRepository.subscribedTrainNumbers, hasLength(1));
+      expect(mockRepository.subscribedTrainNumbers.elementAt(0), trainNumber);
+      expect(mockRepository.unsubscribeCallCount, 0);
 
-    mockRepository.emitStatus(CustomerOrientedDeparture(trainNumber: trainNumber, status: .wait));
-    await waitUntilExists(tester, find.text(l10n.w_customer_oriented_departure_notification_wait));
-    await waitUntilNotExists(tester, find.byKey(FloatingDepartureChecklistButton.buttonKey));
+      mockRepository.emitStatus(CustomerOrientedDeparture(trainNumber: trainNumber, status: .wait));
+      await waitUntilExists(tester, find.text(l10n.w_customer_oriented_departure_notification_wait));
+      await waitUntilNotExists(tester, find.byKey(FloatingDepartureChecklistButton.buttonKey));
 
-    mockRepository.emitStatus(CustomerOrientedDeparture(trainNumber: trainNumber, status: .call));
-    await waitUntilExists(tester, find.text(l10n.w_customer_oriented_departure_notification_call));
+      mockRepository.emitStatus(CustomerOrientedDeparture(trainNumber: trainNumber, status: .call));
+      await waitUntilExists(tester, find.text(l10n.w_customer_oriented_departure_notification_call));
 
-    // events for other train numbers should be ignored
-    mockRepository.emitStatus(CustomerOrientedDeparture(trainNumber: '1234', status: .ready));
-    await tester.pump(const Duration(milliseconds: 500));
-    expect(find.text(l10n.w_customer_oriented_departure_notification_ready), findsNothing);
+      // events for other train numbers should be ignored
+      mockRepository.emitStatus(CustomerOrientedDeparture(trainNumber: '1234', status: .ready));
+      await tester.pump(const Duration(milliseconds: 500));
+      expect(find.text(l10n.w_customer_oriented_departure_notification_ready), findsNothing);
 
-    mockRepository.emitStatus(CustomerOrientedDeparture(trainNumber: trainNumber, status: .ready));
-    await waitUntilExists(tester, find.text(l10n.w_customer_oriented_departure_notification_ready));
+      mockRepository.emitStatus(CustomerOrientedDeparture(trainNumber: trainNumber, status: .ready));
+      await waitUntilExists(tester, find.text(l10n.w_customer_oriented_departure_notification_ready));
 
-    mockRepository.emitStatus(CustomerOrientedDeparture(trainNumber: trainNumber, status: .departure));
-    await waitUntilNotExists(tester, find.text(l10n.w_customer_oriented_departure_notification_ready));
-    await waitUntilExists(tester, find.byKey(FloatingDepartureChecklistButton.buttonKey));
+      mockRepository.emitStatus(CustomerOrientedDeparture(trainNumber: trainNumber, status: .departure));
+      await waitUntilNotExists(tester, find.text(l10n.w_customer_oriented_departure_notification_ready));
+      await waitUntilExists(tester, find.byKey(FloatingDepartureChecklistButton.buttonKey));
 
-    await disconnect(tester);
-  });
+      await disconnect(tester);
+    },
+  );
 
-  testWidgets('customerOrientedDeparture_whenJourneyChanges_thenSubscriptionUpdates', (tester) async {
+  testWidgets('customerOrientedDeparture_whenJourneyChanges_thenSubscriptionUpdates|7cmV7s3vxPmsKqjVUcXD|tests:148', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
     final mockRepository = DI.get<CustomerOrientedDepartureRepository>() as MockCustomerOrientedDepartureRepository;
     mockRepository.reset();

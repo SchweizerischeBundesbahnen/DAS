@@ -52,7 +52,7 @@ class ServicePointApiClientTest {
                 "Name" + i,
                 LocalDate.now(),
                 LocalDate.now().plusDays(1),
-                new ServicePoint.ServicePointNumber(i, i)
+                new ServicePoint.ServicePointNumber(85, i, 0)
             ));
         }
         ServicePointResponse response = new ServicePointResponse(servicePoints, total);

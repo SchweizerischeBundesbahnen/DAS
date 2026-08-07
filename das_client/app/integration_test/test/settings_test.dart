@@ -8,7 +8,9 @@ import '../integration/integration_test_app.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('settings_whenDecisiveGradientDisabled_thenHidesGradients', (tester) async {
+  testWidgets('settings_whenDecisiveGradientDisabled_thenHidesGradients|dnFjNfPHHPUOOjuVfnrE|tests:583', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T9999M');
 
@@ -44,7 +46,9 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('settings_whenKmHeaderClickedWithGradientHidden_thenTogglesDisplay', (tester) async {
+  testWidgets('settings_whenKmHeaderClickedWithGradientHidden_thenTogglesDisplay|ldW7fZGpdN3zYtjjtDUA|tests:583', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
 
     // Navigate to settings page
@@ -106,7 +110,9 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('settings_whenStationSignalHidden_thenHidesCorrectSignals', (tester) async {
+  testWidgets('settings_whenStationSignalHidden_thenHidesCorrectSignals|wfJtznpIEKWtPVmb9Rw0|tests:811', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T9999M');
 
@@ -139,7 +145,9 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('settings_whenStationSignalHidden_thenChevronPositionsCorrectly', (tester) async {
+  testWidgets('settings_whenStationSignalHidden_thenChevronPositionsCorrectly|3XKYDX4SwTJLxyNqgMoi|tests:811', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
 
     // Navigate to settings page
@@ -168,102 +176,115 @@ void main() {
   });
 
   group('T45 nsp signals', () {
-    testWidgets('settings_whenStationSignalsToggled_thenHidesButKeepsEtcsStopSigns', (tester) async {
-      await IntegrationTestApp.start(tester);
-      await loadJourney(tester, trainNumber: 'T45');
-      await stopAutomaticAdvancement(tester);
+    testWidgets(
+      'settings_whenStationSignalsToggled_thenHidesButKeepsEtcsStopSigns|VxFGyvH5oEItemAd3evQ|tests:1628,1484',
+      (tester) async {
+        await IntegrationTestApp.start(tester);
+        await loadJourney(tester, trainNumber: 'T45');
+        await stopAutomaticAdvancement(tester);
 
-      final scrollableFinder = find.byType(AnimatedList);
-      expect(scrollableFinder, findsOneWidget);
+        final scrollableFinder = find.byType(AnimatedList);
+        expect(scrollableFinder, findsOneWidget);
 
-      // Station signals (entry/intermediate/track end) and ETCS stop signs are visible.
-      await tester.dragUntilVisible(find.text('E1'), scrollableFinder, const Offset(0, -50));
-      await tester.dragUntilVisible(find.text('AB1'), scrollableFinder, const Offset(0, -50));
-      await tester.dragUntilVisible(find.text('ESS1'), scrollableFinder, const Offset(0, -50));
-      await tester.dragUntilVisible(find.text('ESS2'), scrollableFinder, const Offset(0, -50));
-      await tester.dragUntilVisible(find.text('ESS3'), scrollableFinder, const Offset(0, -50));
-      await tester.dragUntilVisible(find.text('ESS3'), scrollableFinder, const Offset(0, -50));
-      await tester.dragUntilVisible(find.text('TE1'), scrollableFinder, const Offset(0, -50));
+        // Station signals (entry/intermediate/track end) and ETCS stop signs are visible.
+        await tester.dragUntilVisible(find.text('E1'), scrollableFinder, const Offset(0, -50));
+        await tester.dragUntilVisible(find.text('AB1'), scrollableFinder, const Offset(0, -50));
+        await tester.dragUntilVisible(find.text('ESS1'), scrollableFinder, const Offset(0, -50));
+        await tester.dragUntilVisible(find.text('ESS2'), scrollableFinder, const Offset(0, -50));
+        await tester.dragUntilVisible(find.text('ESS3'), scrollableFinder, const Offset(0, -50));
+        await tester.dragUntilVisible(find.text('ESS3'), scrollableFinder, const Offset(0, -50));
+        await tester.dragUntilVisible(find.text('TE1'), scrollableFinder, const Offset(0, -50));
 
-      await _toggleSignalSwitch(tester, SettingsPage.stationSignalSwitchKey);
+        await _toggleSignalSwitch(tester, SettingsPage.stationSignalSwitchKey);
 
-      // Station signals are gone, ETCS stop signs remain.
-      expect(find.text('E1'), findsNothing);
-      expect(find.text('AB1'), findsNothing);
-      expect(find.text('AB2'), findsNothing);
-      expect(find.text('TE1'), findsNothing);
-      expect(find.text('ESS1'), findsAny);
-      expect(find.text('ESS2'), findsAny);
-      expect(find.text('ESS3'), findsAny);
+        // Station signals are gone, ETCS stop signs remain.
+        expect(find.text('E1'), findsNothing);
+        expect(find.text('AB1'), findsNothing);
+        expect(find.text('AB2'), findsNothing);
+        expect(find.text('TE1'), findsNothing);
+        expect(find.text('ESS1'), findsAny);
+        expect(find.text('ESS2'), findsAny);
+        expect(find.text('ESS3'), findsAny);
 
-      await disconnect(tester);
-    });
+        await disconnect(tester);
+      },
+    );
 
-    testWidgets('settings_whenEtcsConventionalToggled_thenHidesOnlyConventionalStopSign', (tester) async {
-      await IntegrationTestApp.start(tester);
-      await loadJourney(tester, trainNumber: 'T45');
-      await stopAutomaticAdvancement(tester);
+    testWidgets(
+      'settings_whenEtcsConventionalToggled_thenHidesOnlyConventionalStopSign|D70x81OKbP7Mf1fPtJeJ|tests:1628,1484',
+      (
+        tester,
+      ) async {
+        await IntegrationTestApp.start(tester);
+        await loadJourney(tester, trainNumber: 'T45');
+        await stopAutomaticAdvancement(tester);
 
-      final scrollableFinder = find.byType(AnimatedList);
-      expect(scrollableFinder, findsOneWidget);
+        final scrollableFinder = find.byType(AnimatedList);
+        expect(scrollableFinder, findsOneWidget);
 
-      // All three ETCS stop signs are visible by default.
-      await tester.dragUntilVisible(find.text('ESS1'), scrollableFinder, const Offset(0, -50));
-      expect(find.text('ESS1'), findsAny);
-      await tester.dragUntilVisible(find.text('ESS2'), scrollableFinder, const Offset(0, -50));
-      expect(find.text('ESS2'), findsAny);
-      await tester.dragUntilVisible(find.text('ESS3'), scrollableFinder, const Offset(0, -50));
-      expect(find.text('ESS3'), findsAny);
+        // All three ETCS stop signs are visible by default.
+        await tester.dragUntilVisible(find.text('ESS1'), scrollableFinder, const Offset(0, -50));
+        expect(find.text('ESS1'), findsAny);
+        await tester.dragUntilVisible(find.text('ESS2'), scrollableFinder, const Offset(0, -50));
+        expect(find.text('ESS2'), findsAny);
+        await tester.dragUntilVisible(find.text('ESS3'), scrollableFinder, const Offset(0, -50));
+        expect(find.text('ESS3'), findsAny);
 
-      await _toggleSignalSwitch(tester, SettingsPage.ectsConventionalSpeedSignalSwitchKey);
+        await _toggleSignalSwitch(tester, SettingsPage.ectsConventionalSpeedSignalSwitchKey);
 
-      // ESS1 lives inside the conventional speed segment (1500m-2500m) → hidden.
-      expect(find.text('ESS1'), findsNothing);
-      await tester.dragUntilVisible(find.text('ESS2'), scrollableFinder, const Offset(0, -50));
-      expect(find.text('ESS2'), findsAny);
-      await tester.dragUntilVisible(find.text('ESS3'), scrollableFinder, const Offset(0, -50));
-      expect(find.text('ESS3'), findsAny);
+        // ESS1 lives inside the conventional speed segment (1500m-2500m) → hidden.
+        expect(find.text('ESS1'), findsNothing);
+        await tester.dragUntilVisible(find.text('ESS2'), scrollableFinder, const Offset(0, -50));
+        expect(find.text('ESS2'), findsAny);
+        await tester.dragUntilVisible(find.text('ESS3'), scrollableFinder, const Offset(0, -50));
+        expect(find.text('ESS3'), findsAny);
 
-      // Station signals are unaffected.
-      await tester.dragUntilVisible(find.text('E1'), scrollableFinder, const Offset(0, 50));
-      expect(find.text('E1'), findsAny);
+        // Station signals are unaffected.
+        await tester.dragUntilVisible(find.text('E1'), scrollableFinder, const Offset(0, 50));
+        expect(find.text('E1'), findsAny);
 
-      await disconnect(tester);
-    });
+        await disconnect(tester);
+      },
+    );
 
-    testWidgets('settings_whenEtcsExtendedToggled_thenHidesOnlyExtendedStopSigns', (tester) async {
-      await IntegrationTestApp.start(tester);
-      await loadJourney(tester, trainNumber: 'T45');
-      await stopAutomaticAdvancement(tester);
+    testWidgets(
+      'settings_whenEtcsExtendedToggled_thenHidesOnlyExtendedStopSigns|WyFGcqFBAgRTeltqj00Q|tests:1628,1484',
+      (tester) async {
+        await IntegrationTestApp.start(tester);
+        await loadJourney(tester, trainNumber: 'T45');
+        await stopAutomaticAdvancement(tester);
 
-      final scrollableFinder = find.byType(AnimatedList);
-      expect(scrollableFinder, findsOneWidget);
+        final scrollableFinder = find.byType(AnimatedList);
+        expect(scrollableFinder, findsOneWidget);
 
-      // All three ETCS stop signs are visible by default.
-      await tester.dragUntilVisible(find.text('ESS1'), scrollableFinder, const Offset(0, -50));
-      expect(find.text('ESS1'), findsAny);
-      await tester.dragUntilVisible(find.text('ESS2'), scrollableFinder, const Offset(0, -50));
-      expect(find.text('ESS2'), findsAny);
-      await tester.dragUntilVisible(find.text('ESS3'), scrollableFinder, const Offset(0, -50));
-      expect(find.text('ESS3'), findsAny);
+        // All three ETCS stop signs are visible by default.
+        await tester.dragUntilVisible(find.text('ESS1'), scrollableFinder, const Offset(0, -50));
+        expect(find.text('ESS1'), findsAny);
+        await tester.dragUntilVisible(find.text('ESS2'), scrollableFinder, const Offset(0, -50));
+        expect(find.text('ESS2'), findsAny);
+        await tester.dragUntilVisible(find.text('ESS3'), scrollableFinder, const Offset(0, -50));
+        expect(find.text('ESS3'), findsAny);
 
-      await _toggleSignalSwitch(tester, SettingsPage.ectsExtendedSpeedSignalSwitchKey);
+        await _toggleSignalSwitch(tester, SettingsPage.ectsExtendedSpeedSignalSwitchKey);
 
-      // ESS2 (extSpeedReversingImpossible 2500-3000m) and ESS3 (extSpeedReversingPossible 3000-3499m) are hidden.
-      expect(find.text('ESS2'), findsNothing);
-      expect(find.text('ESS3'), findsNothing);
+        // ESS2 (extSpeedReversingImpossible 2500-3000m) and ESS3 (extSpeedReversingPossible 3000-3499m) are hidden.
+        expect(find.text('ESS2'), findsNothing);
+        expect(find.text('ESS3'), findsNothing);
 
-      // ESS1 (conventional) remains.
-      expect(find.text('ESS1'), findsAny);
+        // ESS1 (conventional) remains.
+        expect(find.text('ESS1'), findsAny);
 
-      // Station signals stay untouched.
-      expect(find.text('E1'), findsAny);
-      expect(find.text('AB2'), findsAny);
+        // Station signals stay untouched.
+        expect(find.text('E1'), findsAny);
+        expect(find.text('AB2'), findsAny);
 
-      await disconnect(tester);
-    });
+        await disconnect(tester);
+      },
+    );
 
-    testWidgets('settings_whenBothEtcsToggledOff_thenHidesAllEtcsStopSigns', (tester) async {
+    testWidgets('settings_whenBothEtcsToggledOff_thenHidesAllEtcsStopSigns|X7guyj0RrgJ3kyCghZap|tests:1628,1484', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T45');
       await stopAutomaticAdvancement(tester);

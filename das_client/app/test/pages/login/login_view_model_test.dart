@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/di/scope_handler.dart';
+import 'package:app/flavor.dart';
 import 'package:app/pages/login/login_model.dart';
 import 'package:app/pages/login/login_view_model.dart';
 import 'package:auth/component.dart';
@@ -28,7 +29,7 @@ void main() {
     when(mockScopeHandler.isInStack()).thenReturn(false);
     when(mockScopeHandler.isTop()).thenReturn(false);
 
-    testee = LoginViewModel();
+    testee = LoginViewModel(flavor: Flavor.dev());
     subscription = testee.model.listen(emitRegister.add);
     await processStreams();
   });
@@ -43,7 +44,7 @@ void main() {
 
   test('model_whenInitialized_thenIsInitialModel', () {
     expect(emitRegister, hasLength(1));
-    expect(emitRegister.first, equals(LoggedOut()));
+    expect(emitRegister.first, equals(LoggedOut(connectToTmsVad: true)));
   });
 
   test('login_whenAuthenticationSuccessful_thenEmitsLoadingAndLoggedIn', () async {
@@ -58,7 +59,11 @@ void main() {
     expect(emitRegister, hasLength(3));
     expect(
       emitRegister,
-      orderedEquals([LoggedOut(), Loading(), LoggedIn()]),
+      orderedEquals([
+        LoggedOut(connectToTmsVad: true),
+        Loading(connectToTmsVad: true),
+        LoggedIn(connectToTmsVad: true),
+      ]),
     );
   });
 
@@ -75,7 +80,11 @@ void main() {
     expect(emitRegister, hasLength(3));
     expect(
       emitRegister,
-      orderedEquals([LoggedOut(), Loading(), Error(errorMessage: argumentError.toString())]),
+      orderedEquals([
+        LoggedOut(connectToTmsVad: true),
+        Loading(connectToTmsVad: true),
+        Error(errorMessage: argumentError.toString(), connectToTmsVad: true),
+      ]),
     );
   });
 
@@ -86,7 +95,7 @@ void main() {
 
     // EXPECT
     expect(emitRegister, hasLength(1));
-    expect(emitRegister.first, equals(LoggedOut()));
+    expect(emitRegister.first, equals(LoggedOut(connectToTmsVad: true)));
   });
 
   test('setConnectToTmsVad_whenIsTrueAndUpdatedWithFalse_thenEmitsWithFalse', () async {
@@ -96,6 +105,6 @@ void main() {
 
     // EXPECT
     expect(emitRegister, hasLength(2));
-    expect(emitRegister, orderedEquals([LoggedOut(), LoggedOut(connectToTmsVad: false)]));
+    expect(emitRegister, orderedEquals([LoggedOut(connectToTmsVad: true), LoggedOut(connectToTmsVad: false)]));
   });
 }

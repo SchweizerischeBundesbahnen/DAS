@@ -5,7 +5,7 @@ import 'package:settings/src/model/ru_feature_keys.dart';
 abstract class RuFeatureDatabaseService {
   const RuFeatureDatabaseService._();
 
-  Future<void> saveRuFeatures(List<RuFeatureDto> ruFeatures);
+  Future<void> replaceAllRuFeatures(List<RuFeatureDto> ruFeatures);
 
   Future<void> saveCompanies(List<CompanyDto> companies);
 

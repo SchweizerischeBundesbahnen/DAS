@@ -48,7 +48,7 @@ public class TenantJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<Sec
         return fromUri(tenant.jwkSetUri());
     }
 
-    private JWSKeySelector<SecurityContext> fromUri(String uri) {
+    JWSKeySelector<SecurityContext> fromUri(String uri) {
         try {
             return JWSAlgorithmFamilyJWSKeySelector.fromJWKSetURL(URI.create(uri).toURL());
         } catch (Exception ex) {

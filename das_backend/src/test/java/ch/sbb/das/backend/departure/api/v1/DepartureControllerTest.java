@@ -30,9 +30,9 @@ class DepartureControllerTest {
     @MockitoBean
     GemsRestClient gemsRestClient;
 
-    @DisplayName("Departure notifications when the request is valid then the device is registered for push notifications|tests:1538")
+    @DisplayName("subscribe_whenValidPayload_delegatesToClient|hfK1rVNiAMTVNiz2SWAY|tests:1538")
     @Test
-    void subscribe_delegatesToClient() throws Exception {
+    void subscribe_whenValidPayload_delegatesToClient() throws Exception {
         when(gemsRestClient.subscribe(any())).thenReturn(ResponseEntity.noContent().build());
 
         mvc.perform(post(API_DEPARTURES + "/subscribe")
@@ -54,9 +54,9 @@ class DepartureControllerTest {
         verify(gemsRestClient).subscribe(any());
     }
 
-    @DisplayName("Departure message receipt when the request is valid then the acknowledgement is forwarded to the downstream service|tests:1538")
+    @DisplayName("confirm_whenValidIds_delegatesToClient|iVlnb4VH2sPvNlaSr3JP|tests:1538")
     @Test
-    void confirm_delegatesToClient() throws Exception {
+    void confirm_whenValidIds_delegatesToClient() throws Exception {
         when(gemsRestClient.confirm("m1", "d1")).thenReturn(ResponseEntity.noContent().build());
 
         mvc.perform(post(API_DEPARTURES + "/confirm/m1/d1"))
@@ -65,9 +65,9 @@ class DepartureControllerTest {
         verify(gemsRestClient).confirm("m1", "d1");
     }
 
-    @DisplayName("Departure message receipt when the downstream service fails then the API returns bad gateway|tests:1538")
+    @DisplayName("confirm_whenDownstreamFails_returnsBadGateway|uUXGly648Qxl9gyPxs7W|tests:1538")
     @Test
-    void confirm_error502() throws Exception {
+    void confirm_whenDownstreamFails_returnsBadGateway() throws Exception {
         when(gemsRestClient.confirm("m1", "d1")).thenThrow(new RestClientResponseException("Message", 400, "Bad request", null, "Validation error".getBytes(), null));
 
         mvc.perform(post(API_DEPARTURES + "/confirm/m1/d1"))

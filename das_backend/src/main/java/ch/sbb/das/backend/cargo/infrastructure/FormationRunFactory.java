@@ -16,8 +16,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class FormationRunFactory {
 
-    private static final int UIC_CHECKDIGIT_DIVISOR = 10;
-
     public static List<FormationRun> create(List<ch.sbb.zis.trainformation.api.model.FormationRun> formationRuns) {
         return formationRuns.stream()
             .filter(formationRun -> CompanyCode.isValid(formationRun.getSmsEvu()))
@@ -29,6 +27,7 @@ public final class FormationRunFactory {
         FormationRunBuilder builder = FormationRun.builder()
             .company(new CompanyCode(formationRun.getSmsEvu()))
             .tafTapLocationReferenceStart(toTafTapLocationReference(formationRun.getStartLocationUic()))
+            .tafTapLocationUicStartPassIndex(formationRun.getStartLocationUic() != null ? formationRun.getStartLocationUic().getBpZusatzId() : null)
             .tafTapLocationReferenceEnd(toTafTapLocationReference(formationRun.getEndLocationUic()))
             .trainCategoryCode(formationRun.getTrainSequence())
             .brakedWeightPercentage(formationRun.getBrakeSequence())
@@ -39,9 +38,10 @@ public final class FormationRunFactory {
     }
 
     private static TafTapLocationReference toTafTapLocationReference(LocationUic locationUic) {
-        int uicCodeWithoutCheckdigit = locationUic.getUicCode() / UIC_CHECKDIGIT_DIVISOR;
-        String countryCodeIso = TafTapLocationReference.toCountryCodeIso(locationUic.getCountryCodeUic());
-        return new TafTapLocationReference(countryCodeIso, uicCodeWithoutCheckdigit);
+        if (locationUic == null) {
+            return null;
+        }
+        return TafTapLocationReference.of(locationUic.getCountryCodeUic(), locationUic.getUicCode());
     }
 
     private static void applyFormationRunInspection(FormationRunBuilder builder, FormationRunInspection formationRunInspection) {

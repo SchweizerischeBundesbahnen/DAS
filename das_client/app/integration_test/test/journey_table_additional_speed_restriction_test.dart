@@ -9,7 +9,9 @@ import '../integration/integration_test_app.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('additionalSpeedRestriction_whenRowDisplayed_thenShowsCorrectly', (tester) async {
+  testWidgets('additionalSpeedRestriction_whenRowDisplayed_thenShowsCorrectly|H60HiYVcM6InpQTWSsDi|tests:87', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T2');
 
@@ -35,7 +37,9 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('additionalSpeedRestriction_whenNonAsrRowsBetween_thenColorsCorrectly', (tester) async {
+  testWidgets('additionalSpeedRestriction_whenNonAsrRowsBetween_thenColorsCorrectly|YA4sSmXtTNzic4SCKmRC|tests:87', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T2');
 
@@ -63,7 +67,9 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('additionalSpeedRestriction_whenComplexAsr_thenDisplaysCorrectly', (tester) async {
+  testWidgets('additionalSpeedRestriction_whenComplexAsr_thenDisplaysCorrectly|pe2ToyhUi8oW7PKpElj7|tests:227', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T18');
 
@@ -98,49 +104,54 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('additionalSpeedRestriction_whenOnEtcsLevel2Section_thenDisplaysCorrectly', (
+  testWidgets(
+    'additionalSpeedRestriction_whenOnEtcsLevel2Section_thenDisplaysCorrectly|X08STS2QuB7Tn1u8HHnY|tests:120',
+    (
+      tester,
+    ) async {
+      await IntegrationTestApp.start(tester);
+      await loadJourney(tester, trainNumber: 'T11');
+
+      final scrollableFinder = find.byType(AnimatedList);
+      expect(scrollableFinder, findsOneWidget);
+
+      // ASR from 40km/h should be displayed if not completely inside ETCS L2
+      final asrRow1 = findDASTableRowByText('km 9.000 - km 26.000');
+      expect(asrRow1, findsExactly(2));
+
+      final asrSpeed1 = find.descendant(of: asrRow1.first, matching: find.text('50'));
+      expect(asrSpeed1, findsOneWidget);
+
+      await tester.dragUntilVisible(find.text('Neuchâtel'), scrollableFinder, const Offset(0, -50));
+
+      final asrRow2 = findDASTableRowByText('km 29.000 - km 39.000');
+      expect(asrRow2, findsExactly(2));
+
+      final asrSpeed2 = find.descendant(of: asrRow2.first, matching: find.text('30'));
+      expect(asrSpeed2, findsOneWidget);
+
+      await tester.dragUntilVisible(find.text('Lengnau'), scrollableFinder, const Offset(0, -50));
+
+      // ASR from 40km/h should not be displayed inside ETCS L2
+      final asrRow3 = findDASTableRowByText('km 41.000 - km 46.000');
+      expect(asrRow3, findsNothing);
+
+      await tester.dragUntilVisible(find.text('Solothurn'), scrollableFinder, const Offset(0, -50));
+
+      // ASR from 40km/h should be displayed if not completely inside ETCS L2
+      final asrRow4 = findDASTableRowByText('km 51.000 - km 59.000');
+      expect(asrRow4, findsExactly(2));
+
+      final asrSpeed4 = find.descendant(of: asrRow4.first, matching: find.text('40'));
+      expect(asrSpeed4, findsOneWidget);
+
+      await disconnect(tester);
+    },
+  );
+
+  testWidgets('additionalSpeedRestriction_whenSequentialAsr_thenDisplaysCorrectly|JsCo6tECyuHPKcZMZRxE|tests:566', (
     tester,
   ) async {
-    await IntegrationTestApp.start(tester);
-    await loadJourney(tester, trainNumber: 'T11');
-
-    final scrollableFinder = find.byType(AnimatedList);
-    expect(scrollableFinder, findsOneWidget);
-
-    // ASR from 40km/h should be displayed if not completely inside ETCS L2
-    final asrRow1 = findDASTableRowByText('km 9.000 - km 26.000');
-    expect(asrRow1, findsExactly(2));
-
-    final asrSpeed1 = find.descendant(of: asrRow1.first, matching: find.text('50'));
-    expect(asrSpeed1, findsOneWidget);
-
-    await tester.dragUntilVisible(find.text('Neuchâtel'), scrollableFinder, const Offset(0, -50));
-
-    final asrRow2 = findDASTableRowByText('km 29.000 - km 39.000');
-    expect(asrRow2, findsExactly(2));
-
-    final asrSpeed2 = find.descendant(of: asrRow2.first, matching: find.text('30'));
-    expect(asrSpeed2, findsOneWidget);
-
-    await tester.dragUntilVisible(find.text('Lengnau'), scrollableFinder, const Offset(0, -50));
-
-    // ASR from 40km/h should not be displayed inside ETCS L2
-    final asrRow3 = findDASTableRowByText('km 41.000 - km 46.000');
-    expect(asrRow3, findsNothing);
-
-    await tester.dragUntilVisible(find.text('Solothurn'), scrollableFinder, const Offset(0, -50));
-
-    // ASR from 40km/h should be displayed if not completely inside ETCS L2
-    final asrRow4 = findDASTableRowByText('km 51.000 - km 59.000');
-    expect(asrRow4, findsExactly(2));
-
-    final asrSpeed4 = find.descendant(of: asrRow4.first, matching: find.text('40'));
-    expect(asrSpeed4, findsOneWidget);
-
-    await disconnect(tester);
-  });
-
-  testWidgets('additionalSpeedRestriction_whenSequentialAsr_thenDisplaysCorrectly', (tester) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T43');
 
