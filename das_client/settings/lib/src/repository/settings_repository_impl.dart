@@ -94,7 +94,7 @@ class SettingsRepositoryImpl implements SettingsRepository {
 
   Future<void> _replaceAllRuFeatureSettings(SettingsDto remoteSettings) async {
     await databaseService.replaceAllRuFeatures(remoteSettings.ruFeatures);
-    _log.info('RU settings saved successfully by replacing all.');
+    _log.info('RU settings saved successfully saved by replacing all.');
   }
 
   bool _shouldCallAwsCredentialsChanged(SettingsDto remoteSettings) =>
