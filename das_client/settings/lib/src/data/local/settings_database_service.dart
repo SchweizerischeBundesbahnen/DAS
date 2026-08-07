@@ -39,8 +39,14 @@ class SettingsDatabaseService extends _$SettingsDatabaseService implements RuFea
   }
 
   @override
-  Future<void> saveRuFeatures(List<RuFeatureDto> ruFeatures) async =>
-      _manager.bulkCreate((_) => ruFeatures.map((element) => element.toCompanion()), mode: InsertMode.insertOrReplace);
+  Future<void> replaceAllRuFeatures(List<RuFeatureDto> ruFeatures) async {
+    return _manager.delete().then(
+      (_) => _manager.bulkCreate(
+        (_) => ruFeatures.map((element) => element.toCompanion()),
+        mode: InsertMode.insertOrFail,
+      ),
+    );
+  }
 
   $$RuFeaturesTableTableTableManager get _manager => managers.ruFeaturesTable;
 }
