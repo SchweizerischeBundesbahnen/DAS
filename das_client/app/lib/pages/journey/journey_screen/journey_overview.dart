@@ -121,77 +121,77 @@ class _ProviderScope extends StatelessWidget {
     return MultiProvider(
       providers: [
         // Stateful VMs
-        Provider<DelayViewModel>(
-          create: (_) => DI.get<DelayViewModel>(),
+        Provider<DelayViewModel>.value(
+          value: DI.get<DelayViewModel>(),
         ),
-        Provider<JourneyPositionViewModel>(
-          create: (_) => DI.get<JourneyPositionViewModel>(),
+        Provider<JourneyPositionViewModel>.value(
+          value: DI.get<JourneyPositionViewModel>(),
         ),
-        Provider<DepartureProcessWarningViewModel>(
-          create: (_) => DI.get<DepartureProcessWarningViewModel>(),
+        Provider<DepartureProcessWarningViewModel>.value(
+          value: DI.get<DepartureProcessWarningViewModel>(),
         ),
-        Provider<NotificationPriorityQueueViewModel>(
-          create: (_) => DI.get<NotificationPriorityQueueViewModel>(),
+        Provider<NotificationPriorityQueueViewModel>.value(
+          value: DI.get<NotificationPriorityQueueViewModel>(),
         ),
-        Provider<CustomerOrientedDepartureViewModel>(
-          create: (_) => DI.get<CustomerOrientedDepartureViewModel>(),
+        Provider<CustomerOrientedDepartureViewModel>.value(
+          value: DI.get<CustomerOrientedDepartureViewModel>(),
         ),
-        Provider<UxTestingViewModel>(
-          create: (_) => DI.get(),
+        Provider<UxTestingViewModel>.value(
+          value: DI.get(),
         ),
-        Provider<DecisiveGradientViewModel>(
-          create: (_) => DI.get(),
+        Provider<DecisiveGradientViewModel>.value(
+          value: DI.get(),
         ),
-        Provider<DetailModalViewModel>(
-          create: (_) => DI.get<DetailModalViewModel>(),
+        Provider<DetailModalViewModel>.value(
+          value: DI.get<DetailModalViewModel>(),
         ),
-        Provider<DisturbanceViewModel>(
-          create: (_) => DI.get<DisturbanceViewModel>(),
+        Provider<DisturbanceViewModel>.value(
+          value: DI.get<DisturbanceViewModel>(),
         ),
-        Provider<ChecklistDepartureProcessViewModel>(
-          create: (_) => DI.get<ChecklistDepartureProcessViewModel>(),
+        Provider<ChecklistDepartureProcessViewModel>.value(
+          value: DI.get<ChecklistDepartureProcessViewModel>(),
         ),
-        Provider<CollapsibleRowsViewModel>(
-          create: (_) => DI.get<CollapsibleRowsViewModel>(),
+        Provider<CollapsibleRowsViewModel>.value(
+          value: DI.get<CollapsibleRowsViewModel>(),
         ),
-        Provider<ReplacementSeriesViewModel>(
-          create: (_) => DI.get<ReplacementSeriesViewModel>(),
+        Provider<ReplacementSeriesViewModel>.value(
+          value: DI.get<ReplacementSeriesViewModel>(),
         ),
-        Provider<DepartureDispatchNotificationViewModel>(
-          create: (_) => DI.get<DepartureDispatchNotificationViewModel>(),
+        Provider<DepartureDispatchNotificationViewModel>.value(
+          value: DI.get<DepartureDispatchNotificationViewModel>(),
         ),
-        Provider<ShortTermChangeViewModel>(
-          create: (_) => DI.get<ShortTermChangeViewModel>(),
+        Provider<ShortTermChangeViewModel>.value(
+          value: DI.get<ShortTermChangeViewModel>(),
         ),
-        Provider<SuspiciousSegmentViewModel>(
-          create: (_) => DI.get<SuspiciousSegmentViewModel>(),
+        Provider<SuspiciousSegmentViewModel>.value(
+          value: DI.get<SuspiciousSegmentViewModel>(),
         ),
-        Provider<LineSpeedViewModel>(
-          create: (_) => DI.get<LineSpeedViewModel>(),
+        Provider<LineSpeedViewModel>.value(
+          value: DI.get<LineSpeedViewModel>(),
         ),
-        Provider<CalculatedSpeedViewModel>(
-          create: (_) => DI.get<CalculatedSpeedViewModel>(),
+        Provider<CalculatedSpeedViewModel>.value(
+          value: DI.get<CalculatedSpeedViewModel>(),
         ),
-        Provider<AdvisedSpeedViewModel>(
-          create: (_) => DI.get<AdvisedSpeedViewModel>(),
+        Provider<AdvisedSpeedViewModel>.value(
+          value: DI.get<AdvisedSpeedViewModel>(),
         ),
-        Provider<ChronographViewModel>(
-          create: (_) => DI.get<ChronographViewModel>(),
+        Provider<ChronographViewModel>.value(
+          value: DI.get<ChronographViewModel>(),
         ),
-        Provider<BrakeLoadSlipViewModel>(
-          create: (_) => DI.get<BrakeLoadSlipViewModel>(),
+        Provider<BrakeLoadSlipViewModel>.value(
+          value: DI.get<BrakeLoadSlipViewModel>(),
         ),
-        Provider<JourneyTableViewModel>(
-          create: (_) => DI.get(),
+        Provider<JourneyTableViewModel>.value(
+          value: DI.get(),
         ),
-        Provider<JourneyTableAdvancementViewModel>(
-          create: (_) => DI.get(),
+        Provider<JourneyTableAdvancementViewModel>.value(
+          value: DI.get(),
         ),
-        Provider<ServicePointModalViewModel>(
-          create: (_) => DI.get(),
+        Provider<ServicePointModalViewModel>.value(
+          value: DI.get(),
         ),
-        Provider<SimTrainViewModel>(
-          create: (_) => DI.get(),
+        Provider<SimTrainViewModel>.value(
+          value: DI.get(),
         ),
 
         // Stateless VMs
