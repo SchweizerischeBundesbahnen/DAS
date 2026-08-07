@@ -15,6 +15,7 @@ public final class UserRole {
     public static final String DRIVER = "driver";
     public static final String RU_ADMIN = "ru_admin";
     public static final String ADMIN = "admin";
+    public static final String SBB_CARGO = "sbb_cargo";
 
     public static boolean hasRole(String... roles) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
