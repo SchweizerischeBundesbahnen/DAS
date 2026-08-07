@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.19.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.18.2...sfera_mock-v0.19.0) (2026-08-07)
+
+
+### Features
+
+* add animation to notifications ([#1880](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1880)) ([#2552](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2552)) ([8b77645](https://github.com/SchweizerischeBundesbahnen/DAS/commit/8b7764500ec2150493aca1dd816995b3630cb8e0))
+* add planned time deviation display ([#2257](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2257)) ([#2539](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2539)) ([b16c0fc](https://github.com/SchweizerischeBundesbahnen/DAS/commit/b16c0fceffd65d03769512400019bbd3355ed54d))
+* save full uic code and pass index from zis formations ([#1619](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1619)) ([#2557](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2557)) ([e3fa3b4](https://github.com/SchweizerischeBundesbahnen/DAS/commit/e3fa3b4720dcc3ffac1875415e10dc741530bc38))
+
 ## [0.18.2](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.18.1...sfera_mock-v0.18.2) (2026-07-23)
 
 
