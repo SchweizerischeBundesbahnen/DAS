@@ -125,7 +125,7 @@ class _JourneyPageState extends State<JourneyPage> {
   Future<void> _loadInitialTrains() async {
     if (widget.initialTrainIds != null && widget.initialTrainIds!.isNotEmpty) {
       final journeyNavigationVM = DI.get<JourneyNavigationViewModel>();
-      journeyNavigationVM.replaceWith(widget.initialTrainIds!);
+      await journeyNavigationVM.replaceWith(widget.initialTrainIds!);
     }
   }
 }

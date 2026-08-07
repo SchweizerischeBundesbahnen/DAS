@@ -266,4 +266,9 @@ class MockFormationRepository implements FormationRepository {
   Future<Formation?> reloadFormation(String operationalTrainNumber, String company, DateTime operationalDay) async {
     return _rxFormation.value;
   }
+
+  @override
+  Future<String?> resolveTransportPaperLink(TransportPaperLink transportPaperLink) async {
+    return null;
+  }
 }

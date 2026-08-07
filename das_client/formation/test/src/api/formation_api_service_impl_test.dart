@@ -116,4 +116,50 @@ void main() {
     final headers = captured[1] as Map<String, String>;
     expect(headers['If-None-Match'], etag);
   });
+
+  test('transportPaper_whenRedirect_thenReturnsHeaders', () async {
+    // GIVEN
+    const relativeUrl = '/transport-paper/redirect';
+    const location = 'https://example.com/transport-paper.pdf';
+
+    when(mockHttpClient.get(any)).thenAnswer(
+      (_) => Future.value(
+        Response(
+          '',
+          HttpStatus.movedTemporarily,
+          headers: {'Location': location},
+          request: Request('get', Uri.parse(baseUrl)),
+        ),
+      ),
+    );
+
+    // ACT
+    final result = await testee.transportPaper(relativeUrl).call();
+
+    // VERIFY
+    expect(result.headers['Location'], location);
+    final captured = verify(mockHttpClient.get(captureAny)).captured.single as Uri;
+    expect(captured, Uri.https(baseUrl, relativeUrl));
+  });
+
+  test('transportPaper_whenStatusIsNotRedirect_thenThrowHttpException', () async {
+    // GIVEN
+    const relativeUrl = '/transport-paper/invalid';
+
+    when(mockHttpClient.get(any)).thenAnswer(
+      (_) => Future.value(
+        Response(
+          '',
+          HttpStatus.ok,
+          request: Request('get', Uri.parse(baseUrl)),
+        ),
+      ),
+    );
+
+    // ACT & VERIFY
+    expect(
+      () async => await testee.transportPaper(relativeUrl).call(),
+      throwsA(isA<HttpException>()),
+    );
+  });
 }
