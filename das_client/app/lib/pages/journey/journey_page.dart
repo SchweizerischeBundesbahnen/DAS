@@ -113,13 +113,18 @@ class _JourneyPageState extends State<JourneyPage> {
     final viewModeVM = DI.get<ViewModeViewModel>();
     _errorCodeSubscription = journeyVM.errorCode.listen((error) async {
       if (error != null) {
-        await DI.get<ScopeHandler>().pop<JourneyScope>();
         if (mounted) {
           context.router.replace(JourneySelectionRoute());
         }
+        await Future.delayed(AppExpirationGuard.timeout);
+        await DI.get<ScopeHandler>().pop<JourneyScope>();
       }
     });
-    _streamCombo = CombineLatestStream.combine2(viewModeVM.isZenViewMode, journeyVM.journey, (a, b) => (a, b));
+    _streamCombo = CombineLatestStream.combine2(
+      viewModeVM.isZenViewMode,
+      journeyVM.journey,
+      (a, b) => (a, b),
+    ).distinct((a, b) => a.$1 == b.$1 && a.$2 == b.$2);
   }
 
   Future<void> _loadInitialTrains() async {
