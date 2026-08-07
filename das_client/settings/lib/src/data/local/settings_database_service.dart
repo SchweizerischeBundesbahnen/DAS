@@ -32,15 +32,21 @@ class SettingsDatabaseService extends _$SettingsDatabaseService implements RuFea
 
   @override
   Future<RuFeatureDto?> findRuFeature(String companyCodeRics, RuFeatureKeys featureKey) async {
-    final featureData = await _manager
+    final featureData = await _ruFeatureTableManager
         .filter((f) => f.companyCodeRics(companyCodeRics) & f.key(featureKey.key))
         .getSingleOrNull();
     return featureData?.toDomain();
   }
 
   @override
-  Future<void> saveRuFeatures(List<RuFeatureDto> ruFeatures) async =>
-      _manager.bulkCreate((_) => ruFeatures.map((element) => element.toCompanion()), mode: InsertMode.insertOrReplace);
+  Future<void> replaceAllRuFeatures(List<RuFeatureDto> ruFeatures) async {
+    return _ruFeatureTableManager.delete().then(
+      (_) => _ruFeatureTableManager.bulkCreate(
+        (_) => ruFeatures.map((element) => element.toCompanion()),
+        mode: InsertMode.insertOrFail,
+      ),
+    );
+  }
 
-  $$RuFeaturesTableTableTableManager get _manager => managers.ruFeaturesTable;
+  $$RuFeaturesTableTableTableManager get _ruFeatureTableManager => managers.ruFeaturesTable;
 }
