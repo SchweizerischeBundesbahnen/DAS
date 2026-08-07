@@ -1,4 +1,5 @@
 import 'package:formation/src/api/endpoint/formation.dart';
+import 'package:formation/src/api/endpoint/transport_paper.dart';
 import 'package:formation/src/api/formation_api_service.dart';
 import 'package:http_x/component.dart';
 
@@ -18,4 +19,8 @@ class FormationApiServiceImpl implements FormationApiService {
         operationalDay: operationalDay,
         etag: etag,
       );
+
+  @override
+  TransportPaperRequest transportPaper(String relativeUrl) =>
+      TransportPaperRequest(httpClient: httpClient, baseUrl: baseUrl, relativeUrl: relativeUrl);
 }
