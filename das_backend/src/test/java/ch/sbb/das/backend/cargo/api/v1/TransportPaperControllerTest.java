@@ -70,7 +70,7 @@ class TransportPaperControllerTest {
 
     @Test
     @WithMockRole(roles = UserRole.SBB_CARGO)
-    @DisplayName("resolveTransportPaperUrl_nullResponseBody_returnsBadGateway")
+    @DisplayName("resolveTransportPaperUrl_nullResponseBody_returnsBadGateway|FADx0v3EvwBeUX9SsBdK|tests:1619")
     void resolveTransportPaperUrl_nullResponseBody_returnsBadGateway() throws Exception {
         when(transportPaperClient.getDownloadUrl("33014-021", LocalDate.of(2026, 1, 30), "CH", 22137, 0))
             .thenThrow(new ProxyClientException(HttpStatus.BAD_GATEWAY, "No response body returned from transport paper API"));
