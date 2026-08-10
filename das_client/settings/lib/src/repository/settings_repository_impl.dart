@@ -25,6 +25,7 @@ class SettingsRepositoryImpl implements SettingsRepository {
   final SettingsLoaded? _onSettingsLoaded;
 
   SettingsDto? _lastSettings;
+  Future<bool>? _pendingLoadSettings;
 
   void _init() async {
     final success = await loadSettings();
@@ -49,7 +50,11 @@ class SettingsRepositoryImpl implements SettingsRepository {
   }
 
   @override
-  Future<bool> loadSettings() async {
+  Future<bool> loadSettings() {
+    return _pendingLoadSettings ??= _loadSettings().whenComplete(() => _pendingLoadSettings = null);
+  }
+
+  Future<bool> _loadSettings() async {
     SettingsDto? remoteSettings;
     try {
       remoteSettings = await _tryFetchSettings();
