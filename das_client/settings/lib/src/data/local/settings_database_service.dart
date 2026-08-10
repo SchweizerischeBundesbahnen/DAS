@@ -31,7 +31,14 @@ class SettingsDatabaseService extends _$SettingsDatabaseService implements RuFea
   int get schemaVersion => 2;
 
   @override
-  MigrationStrategy get migration => MigrationStrategy(onCreate: (m) => m.createAll());
+  MigrationStrategy get migration => MigrationStrategy(
+    onCreate: (m) => m.createAll(),
+    onUpgrade: (m, from, to) async {
+      if (from < 2) {
+        await m.create(companiesTable);
+      }
+    },
+  );
 
   @override
   Future<RuFeatureDto?> findRuFeature(String companyCodeRics, RuFeatureKeys featureKey) async {
@@ -43,11 +50,10 @@ class SettingsDatabaseService extends _$SettingsDatabaseService implements RuFea
 
   @override
   Future<void> replaceAllRuFeatures(List<RuFeatureDto> ruFeatures) async {
-    return _ruFeatureTableManager.delete().then(
-      (_) => _ruFeatureTableManager.bulkCreate(
-        (_) => ruFeatures.map((element) => element.toCompanion()),
-        mode: InsertMode.insertOrFail,
-      ),
+    await _ruFeatureTableManager.delete();
+    await _ruFeatureTableManager.bulkCreate(
+      (_) => ruFeatures.map((element) => element.toCompanion()),
+      mode: .insertOrFail,
     );
   }
 
@@ -63,12 +69,14 @@ class SettingsDatabaseService extends _$SettingsDatabaseService implements RuFea
     return featureData?.toDto();
   }
 
-  // TODO: Replace all
   @override
-  Future<void> saveCompanies(List<CompanyDto> companies) async => _companiesTableManager.bulkCreate(
-    (_) => companies.map((element) => element.toCompanion()),
-    mode: InsertMode.insertOrReplace,
-  );
+  Future<void> replaceAllCompanies(List<CompanyDto> companies) async {
+    await _companiesTableManager.delete();
+    await _companiesTableManager.bulkCreate(
+      (_) => companies.map((element) => element.toCompanion()),
+      mode: .insertOrFail,
+    );
+  }
 
   $$RuFeaturesTableTableTableManager get _ruFeatureTableManager => managers.ruFeaturesTable;
 

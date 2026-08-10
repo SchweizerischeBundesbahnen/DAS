@@ -7,7 +7,7 @@ abstract class RuFeatureDatabaseService {
 
   Future<void> replaceAllRuFeatures(List<RuFeatureDto> ruFeatures);
 
-  Future<void> saveCompanies(List<CompanyDto> companies);
+  Future<void> replaceAllCompanies(List<CompanyDto> companies);
 
   Future<RuFeatureDto?> findRuFeature(String companyCodeRics, RuFeatureKeys featureKey);
 

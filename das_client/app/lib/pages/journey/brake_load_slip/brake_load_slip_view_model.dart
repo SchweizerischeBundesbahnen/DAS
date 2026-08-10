@@ -19,6 +19,7 @@ import 'package:flutter/material.dart';
 import 'package:formation/component.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:settings/component.dart';
 import 'package:sfera/component.dart';
 
 final _log = Logger('BrakeLoadSlipViewModel');
@@ -29,6 +30,7 @@ class BrakeLoadSlipViewModel extends JourneyAwareViewModel {
 
   BrakeLoadSlipViewModel({
     required this._formationRepository,
+    required this._settingsRepository,
     required this._journeyPositionViewModel,
     required this._journeySettingsViewModel,
     required this._notificationViewModel,
@@ -42,6 +44,7 @@ class BrakeLoadSlipViewModel extends JourneyAwareViewModel {
   }
 
   final FormationRepository _formationRepository;
+  final SettingsRepository _settingsRepository;
   final JourneyPositionViewModel _journeyPositionViewModel;
   final DetailModalViewModel? _detailModalViewModel;
   final JourneySettingsViewModel _journeySettingsViewModel;
@@ -110,6 +113,100 @@ class BrakeLoadSlipViewModel extends JourneyAwareViewModel {
   void onJourneyUpdated(Journey? _) {
     if (_updateOnPositionUpdate || _rxFormationRun.value == null) {
       _emitFormationRun();
+    }
+  }
+
+  @override
+  void onJourneyChanged(Journey? journey) {
+    _latestPosition = null;
+    _openFullscreen = true;
+    _isFirstPositionUpdate = true;
+    _rxFormation.add(null);
+    _rxFormationRun.add(null);
+    _rxFormationChanged.add(false);
+    _subscribeToFormation(journey?.metadata.trainIdentification);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _formationSubscription?.cancel();
+    _formationSubscription = null;
+    _journeyPositionSubscription?.cancel();
+    _journeyPositionSubscription = null;
+    _rxFormation.close();
+    _rxFormationRun.close();
+    _formationUpdateTimer?.cancel();
+    _formationUpdateTimer = null;
+    _connectivitySubscription?.cancel();
+    _connectivitySubscription = null;
+  }
+
+  void open(BuildContext context) {
+    if (_openFullscreen || formationChangedValue) {
+      context.router.push(BrakeLoadSlipRoute());
+      _changeOpenFullscreenFlag(false);
+      _notificationViewModel.remove(type: .newBrakeLoadSlip);
+      _rxFormationChanged.add(false);
+    } else {
+      _detailModalViewModel?.open(BrakeLoadSlipModalBuilder(), maximize: false);
+    }
+  }
+
+  void previous() {
+    final formation = formationValue;
+    final activeFormationRun = formationRunValue;
+    if (formation == null || activeFormationRun == null) return;
+
+    final currentIndex = formation.formationRuns.indexOf(activeFormationRun.formationRun);
+    if (currentIndex != -1 && currentIndex > 0) {
+      _rxFormationRun.add(_generateFormationRunChange(formation.formationRuns[currentIndex - 1]));
+    }
+  }
+
+  void next() {
+    final formation = formationValue;
+    final activeFormationRun = formationRunValue;
+    if (formation == null || activeFormationRun == null) return;
+
+    final currentIndex = formation.formationRuns.indexOf(activeFormationRun.formationRun);
+    if (currentIndex != -1 && currentIndex < formation.formationRuns.length - 1) {
+      _rxFormationRun.add(_generateFormationRunChange(formation.formationRuns[currentIndex + 1]));
+    }
+  }
+
+  String resolveStationName(String tafTapLocationCode) {
+    if (lastJourney == null) return tafTapLocationCode;
+
+    final matchedServicePoint = lastJourney!.journeyPoints.whereType<ServicePoint>().firstWhereOrNull(
+      (it) => it.locationCode == tafTapLocationCode,
+    );
+    return matchedServicePoint?.name ?? tafTapLocationCode;
+  }
+
+  Future<String?> resolveCompanyName(String companyCode) async {
+    final company = await _settingsRepository.getCompanyForCode(companyCode);
+    return company?.shortName;
+  }
+
+  bool get isActiveFormationRun => _calculateActiveFormationRun() == formationRunValue?.formationRun;
+
+  bool isJourneyAndActiveFormationRunBrakeSeriesDifferent() {
+    final selectedBrakeSeries = _journeySettingsViewModel.modelValue.currentBrakeSeries;
+    final formationRunBrakeSeries = _resolveBrakeSeries(formationRunValue?.formationRun);
+    return formationRunBrakeSeries != null && formationRunBrakeSeries != selectedBrakeSeries;
+  }
+
+  bool canApplyActiveFormationRunBrakeSeriesToJourney() {
+    final formationRunBrakeSeries = _resolveBrakeSeries(formationRunValue?.formationRun);
+    return isJourneyAndActiveFormationRunBrakeSeriesDifferent() &&
+        lastJourney?.metadata.availableBrakeSeries.contains(formationRunBrakeSeries) == true;
+  }
+
+  void updateJourneyBrakeSeriesFromActiveFormationRun() {
+    final formationRunBrakeSeries = _resolveBrakeSeries(formationRunValue?.formationRun);
+    if (formationRunBrakeSeries != null) {
+      _journeySettingsViewModel.updateBrakeSeries(formationRunBrakeSeries);
     }
   }
 
@@ -218,27 +315,6 @@ class BrakeLoadSlipViewModel extends JourneyAwareViewModel {
     return servicePoints.firstOrNull;
   }
 
-  bool get isActiveFormationRun => _calculateActiveFormationRun() == formationRunValue?.formationRun;
-
-  bool isJourneyAndActiveFormationRunBrakeSeriesDifferent() {
-    final selectedBrakeSeries = _journeySettingsViewModel.modelValue.currentBrakeSeries;
-    final formationRunBrakeSeries = _resolveBrakeSeries(formationRunValue?.formationRun);
-    return formationRunBrakeSeries != null && formationRunBrakeSeries != selectedBrakeSeries;
-  }
-
-  bool canApplyActiveFormationRunBrakeSeriesToJourney() {
-    final formationRunBrakeSeries = _resolveBrakeSeries(formationRunValue?.formationRun);
-    return isJourneyAndActiveFormationRunBrakeSeriesDifferent() &&
-        lastJourney?.metadata.availableBrakeSeries.contains(formationRunBrakeSeries) == true;
-  }
-
-  void updateJourneyBrakeSeriesFromActiveFormationRun() {
-    final formationRunBrakeSeries = _resolveBrakeSeries(formationRunValue?.formationRun);
-    if (formationRunBrakeSeries != null) {
-      _journeySettingsViewModel.updateBrakeSeries(formationRunBrakeSeries);
-    }
-  }
-
   BrakeSeries? _resolveBrakeSeries(FormationRun? formationRun) {
     final trainSeries = TrainSeries.fromOptional(formationRun?.trainCategoryCode);
     final brakedWeightPercentage = formationRun?.brakedWeightPercentage;
@@ -248,76 +324,8 @@ class BrakeLoadSlipViewModel extends JourneyAwareViewModel {
         : null;
   }
 
-  String resolveStationName(String tafTapLocationCode) {
-    if (lastJourney == null) return tafTapLocationCode;
-
-    final matchedServicePoint = lastJourney!.journeyPoints.whereType<ServicePoint>().firstWhereOrNull(
-      (it) => it.locationCode == tafTapLocationCode,
-    );
-    return matchedServicePoint?.name ?? tafTapLocationCode;
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _formationSubscription?.cancel();
-    _formationSubscription = null;
-    _journeyPositionSubscription?.cancel();
-    _journeyPositionSubscription = null;
-    _rxFormation.close();
-    _rxFormationRun.close();
-    _formationUpdateTimer?.cancel();
-    _formationUpdateTimer = null;
-    _connectivitySubscription?.cancel();
-    _connectivitySubscription = null;
-  }
-
-  void previous() {
-    final formation = formationValue;
-    final activeFormationRun = formationRunValue;
-    if (formation == null || activeFormationRun == null) return;
-
-    final currentIndex = formation.formationRuns.indexOf(activeFormationRun.formationRun);
-    if (currentIndex != -1 && currentIndex > 0) {
-      _rxFormationRun.add(_generateFormationRunChange(formation.formationRuns[currentIndex - 1]));
-    }
-  }
-
-  void next() {
-    final formation = formationValue;
-    final activeFormationRun = formationRunValue;
-    if (formation == null || activeFormationRun == null) return;
-
-    final currentIndex = formation.formationRuns.indexOf(activeFormationRun.formationRun);
-    if (currentIndex != -1 && currentIndex < formation.formationRuns.length - 1) {
-      _rxFormationRun.add(_generateFormationRunChange(formation.formationRuns[currentIndex + 1]));
-    }
-  }
-
   void _changeOpenFullscreenFlag(bool state) {
     _log.fine('$hashCode Changing _openFullscreen to $state');
     _openFullscreen = state;
-  }
-
-  void open(BuildContext context) {
-    if (_openFullscreen || formationChangedValue) {
-      context.router.push(BrakeLoadSlipRoute());
-      _changeOpenFullscreenFlag(false);
-      _notificationViewModel.remove(type: .newBrakeLoadSlip);
-      _rxFormationChanged.add(false);
-    } else {
-      _detailModalViewModel?.open(BrakeLoadSlipModalBuilder(), maximize: false);
-    }
-  }
-
-  @override
-  void onJourneyChanged(Journey? journey) {
-    _latestPosition = null;
-    _openFullscreen = true;
-    _isFirstPositionUpdate = true;
-    _rxFormation.add(null);
-    _rxFormationRun.add(null);
-    _rxFormationChanged.add(false);
-    _subscribeToFormation(journey?.metadata.trainIdentification);
   }
 }

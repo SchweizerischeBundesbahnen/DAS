@@ -255,6 +255,7 @@ extension JourneyScopeExtension on GetIt {
       BrakeLoadSlipViewModel(
         journeyViewModel: DI.get(),
         formationRepository: DI.get(),
+        settingsRepository: DI.get(),
         journeyPositionViewModel: DI.get(),
         journeySettingsViewModel: DI.get(),
         notificationViewModel: DI.get(),

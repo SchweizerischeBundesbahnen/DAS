@@ -10,6 +10,7 @@ import 'package:core_data/component.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:settings/component.dart';
 import 'package:sfera/component.dart';
 import 'package:train_identification/component.dart';
 
@@ -17,11 +18,13 @@ import 'journey_selection_view_model_test.mocks.dart';
 
 @GenerateNiceMocks([
   MockSpec<SferaRepository>(),
+  MockSpec<SettingsRepository>(),
   MockSpec<TrainIdentificationRepository>(),
   MockSpec<LocalKeyValueStore>(),
 ])
 void main() {
   late SferaRepository mockSferaRepo;
+  late MockSettingsRepository mockSettingsRepository;
   late MockTrainIdentificationRepository mockTrainIdentificationRepository;
   late MockLocalKeyValueStore mockLocalKeyValueStore;
   late JourneySelectionViewModel testee;
@@ -32,11 +35,13 @@ void main() {
 
   setUp(() {
     mockSferaRepo = MockSferaRepository();
+    mockSettingsRepository = MockSettingsRepository();
     mockTrainIdentificationRepository = MockTrainIdentificationRepository();
     mockLocalKeyValueStore = MockLocalKeyValueStore();
     withClock(fixedClock, () {
       testee = JourneySelectionViewModel(
         sferaRepo: mockSferaRepo,
+        settingsRepository: mockSettingsRepository,
         trainIdentificationRepository: mockTrainIdentificationRepository,
         userSettings: mockLocalKeyValueStore,
         onJourneySelected: (trainIdentification) async {
@@ -59,6 +64,7 @@ void main() {
       // seventies testee
       testee = JourneySelectionViewModel(
         sferaRepo: mockSferaRepo,
+        settingsRepository: mockSettingsRepository,
         trainIdentificationRepository: mockTrainIdentificationRepository,
         userSettings: mockLocalKeyValueStore,
         onJourneySelected: (_) async {},

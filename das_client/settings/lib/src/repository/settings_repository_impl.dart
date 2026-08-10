@@ -51,7 +51,7 @@ class SettingsRepositoryImpl implements SettingsRepository {
   }
 
   @override
-  Future<List<Company>> loadCompanies() async {
+  Future<List<Company>> getCompanies() async {
     final companies = await databaseService.findAllCompanies();
     return companies.map((company) => company.toDomain()).toList();
   }
@@ -78,7 +78,7 @@ class SettingsRepositoryImpl implements SettingsRepository {
     }
 
     await _replaceAllRuFeatureSettings(remoteSettings);
-    await _saveCompanies(remoteSettings);
+    await _replaceAllCompanies(remoteSettings);
 
     if (_shouldCallAwsCredentialsChanged(remoteSettings)) {
       final preload = remoteSettings.preload;
@@ -112,9 +112,9 @@ class SettingsRepositoryImpl implements SettingsRepository {
     _log.info('RU settings saved successfully saved by replacing all.');
   }
 
-  Future<void> _saveCompanies(SettingsDto remoteSettings) async {
-    await databaseService.saveCompanies(remoteSettings.companies);
-    _log.info('Companies saved successfully.');
+  Future<void> _replaceAllCompanies(SettingsDto remoteSettings) async {
+    await databaseService.replaceAllCompanies(remoteSettings.companies);
+    _log.info('Companies saved successfully saved by replacing all.');
   }
 
   bool _shouldCallAwsCredentialsChanged(SettingsDto remoteSettings) =>

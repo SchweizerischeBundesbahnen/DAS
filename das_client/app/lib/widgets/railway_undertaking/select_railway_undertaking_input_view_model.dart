@@ -5,7 +5,6 @@ import 'package:settings/component.dart';
 
 final _log = Logger('SelectRailwayUndertakingInputViewModel');
 
-// TODO: Add tests?
 class SelectRailwayUndertakingInputViewModel {
   SelectRailwayUndertakingInputViewModel({required this._settingsRepository}) {
     _init();
@@ -18,7 +17,7 @@ class SelectRailwayUndertakingInputViewModel {
 
   Future<void> _init() async {
     try {
-      final companies = await _settingsRepository.loadCompanies();
+      final companies = await _settingsRepository.getCompanies();
       _rxCompanies.add(companies);
     } catch (e, stackTrace) {
       _log.severe('Failed to load companies.', e, stackTrace);

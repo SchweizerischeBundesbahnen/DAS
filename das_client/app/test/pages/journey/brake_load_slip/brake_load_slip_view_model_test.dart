@@ -18,6 +18,7 @@ import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:settings/component.dart';
 import 'package:sfera/component.dart';
 
 import 'brake_load_slip_view_model_test.mocks.dart';
@@ -25,6 +26,7 @@ import 'brake_load_slip_view_model_test.mocks.dart';
 @GenerateNiceMocks([
   MockSpec<JourneyViewModel>(),
   MockSpec<FormationRepository>(),
+  MockSpec<SettingsRepository>(),
   MockSpec<JourneyPositionViewModel>(),
   MockSpec<JourneySettingsViewModel>(),
   MockSpec<NotificationPriorityQueueViewModel>(),
@@ -40,6 +42,7 @@ void main() {
   late BrakeLoadSlipViewModel testee;
   late MockJourneyViewModel mockJourneyViewModel;
   late MockFormationRepository mockFormationRepository;
+  late MockSettingsRepository mockSettingsRepository;
   late MockJourneyPositionViewModel mockJourneyPositionViewModel;
   late MockJourneySettingsViewModel mockJourneySettingsViewModel;
   late MockNotificationPriorityQueueViewModel mockNotificationViewModel;
@@ -127,6 +130,7 @@ void main() {
   }) => BrakeLoadSlipViewModel(
     journeyViewModel: mockJourneyViewModel,
     formationRepository: mockFormationRepository,
+    settingsRepository: mockSettingsRepository,
     journeyPositionViewModel: mockJourneyPositionViewModel,
     journeySettingsViewModel: mockJourneySettingsViewModel,
     notificationViewModel: mockNotificationViewModel,
@@ -139,6 +143,7 @@ void main() {
   setUp(() {
     mockJourneyViewModel = MockJourneyViewModel();
     mockFormationRepository = MockFormationRepository();
+    mockSettingsRepository = MockSettingsRepository();
     mockJourneyPositionViewModel = MockJourneyPositionViewModel();
     mockDetailModalViewModel = MockDetailModalViewModel();
     mockNotificationViewModel = MockNotificationPriorityQueueViewModel();

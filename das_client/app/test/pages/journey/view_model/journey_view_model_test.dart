@@ -7,12 +7,14 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:ru_indications/component.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:settings/component.dart';
 import 'package:sfera/component.dart';
 
 import '../../../test_util.dart';
 import 'journey_view_model_test.mocks.dart';
 
 @GenerateNiceMocks([
+  MockSpec<SettingsRepository>(),
   MockSpec<SferaJourneyViewModel>(),
   MockSpec<RuIndicationsRepository>(),
 ])
@@ -21,12 +23,14 @@ void main() {
     late JourneyViewModel testee;
     late MockSferaJourneyViewModel mockSferaJourneyViewModel;
     late MockRuIndicationsRepository mockRuIndicationsRepository;
+    late MockSettingsRepository mockSettingsRepository;
     late BehaviorSubject<Journey?> sferaJourneySubject;
     Journey? currentJourney;
 
     setUp(() {
       mockSferaJourneyViewModel = MockSferaJourneyViewModel();
       mockRuIndicationsRepository = MockRuIndicationsRepository();
+      mockSettingsRepository = MockSettingsRepository();
       sferaJourneySubject = BehaviorSubject<Journey?>.seeded(null);
       currentJourney = null;
 
@@ -36,6 +40,7 @@ void main() {
       testee = JourneyViewModel(
         sferaJourneyViewModel: mockSferaJourneyViewModel,
         ruIndicationsRepository: mockRuIndicationsRepository,
+        settingsRepository: mockSettingsRepository,
       );
     });
 

@@ -77,10 +77,7 @@ class SelectRailwayUndertakingInput extends StatelessWidget {
     );
   }
 
-  void _onTap(
-    BuildContext context,
-    List<Company> availableCompanies,
-  ) {
+  void _onTap(BuildContext context, List<Company> availableCompanies) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,

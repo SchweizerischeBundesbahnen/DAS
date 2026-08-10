@@ -253,23 +253,28 @@ class _ContentState extends State<_Content> with WidgetsBindingObserver {
     final dateTextStyle = isDateBold ? SBBTextStyles.smallBold : SBBTextStyles.smallLight;
     final subtitleColor = ThemeUtil.getColor(context, SBBColors.granite, SBBColors.graphite);
 
-    return SBBRadioListItem(
-      value: companyMatch,
-      title: Column(
-        crossAxisAlignment: .start,
-        children: [
-          // TODO: Is toUpperCase still wanted? companyMatch.companyCode.shortName.toUpperCase()
-          // TODO: Get company shortName
-          Text(
-            '${companyMatch.companyCode}, ${'ShortName'}',
-            style: SBBTextStyles.mediumLight,
+    final viewModel = context.read<JourneySelectionViewModel>();
+    return FutureBuilder(
+      future: viewModel.resolveCompanyName(companyMatch.companyCode),
+      builder: (context, snapshot) {
+        final companyName = snapshot.data ?? context.l10n.c_unknown;
+        return SBBRadioListItem(
+          value: companyMatch,
+          title: Column(
+            crossAxisAlignment: .start,
+            children: [
+              Text(
+                '${companyMatch.companyCode}, $companyName',
+                style: SBBTextStyles.mediumLight,
+              ),
+              Text(
+                Format.date(companyMatch.startDate),
+                style: dateTextStyle.copyWith(color: subtitleColor),
+              ),
+            ],
           ),
-          Text(
-            Format.date(companyMatch.startDate),
-            style: dateTextStyle.copyWith(color: subtitleColor),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 

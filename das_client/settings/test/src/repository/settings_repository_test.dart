@@ -202,7 +202,7 @@ void main() {
     await initTestee();
 
     // EXPECT
-    verify(settingsDatabaseService.saveCompanies(companies)).called(1);
+    verify(settingsDatabaseService.replaceAllCompanies(companies)).called(1);
   });
 
   test('whenSettingsLoadedSuccessfully_awsCredentialsChangedCalledWithCorrectValues', () async {
@@ -426,7 +426,7 @@ void main() {
     );
 
     // ACT
-    final result = await testee.loadCompanies();
+    final result = await testee.getCompanies();
 
     // EXPECT
     expect(result, [

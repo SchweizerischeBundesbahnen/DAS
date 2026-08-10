@@ -11,6 +11,7 @@ import 'package:core_data/component.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:settings/component.dart';
 import 'package:sfera/component.dart';
 import 'package:train_identification/component.dart';
 
@@ -19,6 +20,7 @@ final _log = Logger('JourneySelectionViewModel');
 class JourneySelectionViewModel {
   JourneySelectionViewModel({
     required this._sferaRepo,
+    required this._settingsRepository,
     required this._onJourneySelected,
     required this._trainIdentificationRepository,
     required this._userSettings,
@@ -28,6 +30,7 @@ class JourneySelectionViewModel {
   }
 
   final SferaRepository _sferaRepo;
+  final SettingsRepository _settingsRepository;
   final TrainIdentificationRepository _trainIdentificationRepository;
   final LocalKeyValueStore _userSettings;
 
@@ -223,6 +226,11 @@ class JourneySelectionViewModel {
     if (currentState is Loading) return;
 
     _emitSelectingWithDefaults();
+  }
+
+  Future<String?> resolveCompanyName(String companyCode) async {
+    final company = await _settingsRepository.getCompanyForCode(companyCode);
+    return company?.shortName;
   }
 
   void dispose() {

@@ -38,6 +38,7 @@ class BrakeLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
           return BrakeLoadSlipViewModel(
             journeyViewModel: journeyVM,
             journeyPositionViewModel: positionVM,
+            settingsRepository: DI.get(),
             notificationViewModel: DI.get(),
             formationRepository: DI.get(),
             journeySettingsViewModel: settingsVM,

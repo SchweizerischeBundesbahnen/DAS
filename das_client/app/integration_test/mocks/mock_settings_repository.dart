@@ -34,7 +34,7 @@ class MockSettingsRepository implements SettingsRepository {
   String? get loggingToken => '';
 
   @override
-  Future<List<Company>> loadCompanies() async => availableCompanies;
+  Future<List<Company>> getCompanies() async => availableCompanies;
 
   @override
   Future<Company?> getCompanyForCode(String companyCode) async {
