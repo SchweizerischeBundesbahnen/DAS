@@ -31,6 +31,13 @@ void main() {
     fields: {},
   );
 
+  final largerThanMaxFileSizeLog = SplunkLogEntryDto(
+    time: 0,
+    event: 'A' * (41 * 1024),
+    level: LogLevel.info.name,
+    fields: {},
+  );
+
   setUp(() async {
     tempDir = await Directory.systemTemp.createTemp('logger_cache_test');
     logDir = Directory(p.join(tempDir.path, fakeApplicationSupportPath, 'splunk-logs'));
@@ -174,6 +181,56 @@ void main() {
 
     // expect
     expect(logDir.listSync().length, equals(1));
+  });
+
+  test('completeCurrentFile_whenNoLogsWritten_shouldNotCreateCompletedFile', () async {
+    // act
+    await testee.completeCurrentFile();
+
+    // expect
+    expect(await testee.hasCompletedLogFiles, false);
+    expect((await testee.completedLogFiles).isEmpty, true);
+  });
+
+  test('completeCurrentFile_whenCalledTwice_shouldOnlyCompleteOnce', () async {
+    // arrange
+    await testee.writeLog(simpleLogFile);
+
+    // act
+    await testee.completeCurrentFile();
+    await testee.completeCurrentFile();
+
+    // expect
+    expect((await testee.completedLogFiles).length, 1);
+    expect((await testee.completedLogFiles).first.readAsStringSync(), simpleLogFile.toJsonString());
+  });
+
+  test('writeLog_whenFirstLogExceedsMaxFileSize_shouldNotCompleteEmptyFile', () async {
+    // act
+    await testee.writeLog(largerThanMaxFileSizeLog);
+
+    // expect
+    expect(await testee.hasCompletedLogFiles, false);
+    expect(logDir.listSync().length, equals(1));
+
+    final content = _currentCacheFile(logDir).readAsStringSync();
+    expect(content, equals(largerThanMaxFileSizeLog.toJsonString()));
+  });
+
+  test('writeLog_whenLogWrittenAfterOversizedLog_shouldCompleteFileContainingOversizedLog', () async {
+    // arrange
+    await testee.writeLog(largerThanMaxFileSizeLog);
+
+    // act
+    await testee.writeLog(simpleLogFile);
+
+    // expect
+    final completedFiles = await testee.completedLogFiles;
+    expect(completedFiles.length, 1);
+    expect(completedFiles.first.readAsStringSync(), largerThanMaxFileSizeLog.toJsonString());
+
+    final content = _currentCacheFile(logDir).readAsStringSync();
+    expect(content, equals(simpleLogFile.toJsonString()));
   });
 
   test('completeCurrentFile_whenHasWrite_shouldRenameFile', () async {
