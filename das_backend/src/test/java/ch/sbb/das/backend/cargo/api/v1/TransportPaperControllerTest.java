@@ -11,11 +11,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.das.backend.IntegrationTest;
 import ch.sbb.das.backend.WithMockRole;
 import ch.sbb.das.backend.cargo.infrastructure.TransportPaperClient;
+import ch.sbb.das.backend.common.ProxyClientException;
 import ch.sbb.das.backend.common.security.UserRole;
 import java.time.LocalDate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.client.RestClientResponseException;
@@ -62,6 +64,24 @@ class TransportPaperControllerTest {
             .andExpect(status().isBadGateway())
             .andExpect(jsonPath("$.title").value("Downstream Service Error"))
             .andExpect(jsonPath("$.detail").value("404: no paper"));
+
+        verify(transportPaperClient).getDownloadUrl("33014-021", LocalDate.of(2026, 1, 30), "CH", 22137, 0);
+    }
+
+    @Test
+    @WithMockRole(roles = UserRole.SBB_CARGO)
+    @DisplayName("resolveTransportPaperUrl_nullResponseBody_returnsBadGateway")
+    void resolveTransportPaperUrl_nullResponseBody_returnsBadGateway() throws Exception {
+        when(transportPaperClient.getDownloadUrl("33014-021", LocalDate.of(2026, 1, 30), "CH", 22137, 0))
+            .thenThrow(new ProxyClientException(HttpStatus.BAD_GATEWAY, "No response body returned from transport paper API"));
+
+        mvc.perform(get(SAMPLE_PATH)
+                .param("countryCodeIso", "CH")
+                .param("locationPrimaryCode", "22137")
+                .param("passIndex", "0"))
+            .andExpect(status().isBadGateway())
+            .andExpect(jsonPath("$.title").value("Downstream Service Error"))
+            .andExpect(jsonPath("$.detail").value("502: No response body returned from transport paper API"));
 
         verify(transportPaperClient).getDownloadUrl("33014-021", LocalDate.of(2026, 1, 30), "CH", 22137, 0);
     }

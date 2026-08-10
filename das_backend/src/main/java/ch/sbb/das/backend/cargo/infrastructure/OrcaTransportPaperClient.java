@@ -3,8 +3,10 @@ package ch.sbb.das.backend.cargo.infrastructure;
 import static org.springframework.security.oauth2.client.web.ClientAttributes.clientRegistrationId;
 
 import ch.sbb.das.backend.cargo.infrastructure.model.TransportPaperLinkResponse;
+import ch.sbb.das.backend.common.ProxyClientException;
 import java.time.LocalDate;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.web.client.OAuth2ClientHttpRequestInterceptor;
@@ -14,12 +16,12 @@ import org.springframework.web.client.RestClient;
 
 @Component
 @ConditionalOnProperty(name = "formation.transport-paper.mock.enabled", havingValue = "false", matchIfMissing = true)
-public class SbbchTransportPaperClient implements TransportPaperClient {
+public class OrcaTransportPaperClient implements TransportPaperClient {
 
     private static final String OAUTH2_CLIENT_REGISTRATION_ID = "orca";
     private final RestClient restClient;
 
-    public SbbchTransportPaperClient(
+    public OrcaTransportPaperClient(
         OAuth2AuthorizedClientManager authorizedClientManager,
         @Value("${formation.transport-paper.orca.base-url:}") String baseUrl
     ) {
@@ -55,7 +57,7 @@ public class SbbchTransportPaperClient implements TransportPaperClient {
             .body(TransportPaperLinkResponse.class);
 
         if (response == null) {
-            throw new IllegalStateException("No response body returned from transport paper API");
+            throw new ProxyClientException(HttpStatus.BAD_GATEWAY, "No response body returned from transport paper API");
         }
         return response.downloadUrl();
     }

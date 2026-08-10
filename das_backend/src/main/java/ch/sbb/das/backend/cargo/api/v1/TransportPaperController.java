@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.net.URI;
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,7 +63,7 @@ public class TransportPaperController {
         companyAuthorizer.requireCanAccessTenant(SBB_TENANT);
         try {
             String downloadUrl = transportPaperClient.getDownloadUrl(trainPathId, operatingDay, countryCodeIso, locationPrimaryCode, passIndex);
-            return ResponseEntity.status(302).location(URI.create(downloadUrl)).build();
+            return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(downloadUrl)).build();
         } catch (RestClientResponseException ex) {
             throw new ProxyClientException(ex.getStatusCode(), ex.getResponseBodyAsString());
         }
