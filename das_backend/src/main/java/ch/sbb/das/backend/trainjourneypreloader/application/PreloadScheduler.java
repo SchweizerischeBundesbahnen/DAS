@@ -9,6 +9,7 @@ import ch.sbb.das.backend.trainjourneypreloader.domain.TrainCharacteristicsIdent
 import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.JourneyProfile;
 import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.SegmentProfile;
 import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.TrainCharacteristics;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +30,13 @@ public class PreloadScheduler {
      * Due to infrastructure realtime handling of operating trains, real train runs get clear just a few hours earlier.
      */
     private static final int PRELOAD_HOURS_BEFORE_DEPARTURE = 4;
-    private static final int CONSECUTIVE_TIMEOUT_THRESHOLD = 3;
+
+    /**
+     * Maximum time budget for a single preload run. Also used as the ShedLock lockAtLeastFor duration. Must be shorter than the fetch-cron interval to prevent overlapping runs.
+     */
+    @Value("${trainjourneypreloader.max-preload-duration}")
+    private Duration maxPreloadDuration;
+
     private final SferaService sferaService;
     private final TrainIdentificationService trainIdentificationsService;
     private final StorageService storageService;
@@ -50,8 +57,8 @@ public class PreloadScheduler {
     }
 
     @Scheduled(cron = "${trainjourneypreloader.fetch-cron}")
-    @SchedulerLock(name = "preload", lockAtLeastFor = "4m" /* must be shorter than cron-job */)
-    public void scheduledPreload() throws MqttException, ExecutionException, InterruptedException {
+    @SchedulerLock(name = "preload", lockAtLeastFor = "${trainjourneypreloader.max-preload-duration}")
+    public void scheduledPreload() {
         log.info("Preload started");
         long startTime = System.currentTimeMillis();
         Map<TrainIdentification, JourneyProfile> mapJourneyProfiles = new HashMap<>();
