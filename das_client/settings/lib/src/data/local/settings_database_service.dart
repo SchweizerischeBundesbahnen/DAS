@@ -53,7 +53,7 @@ class SettingsDatabaseService extends _$SettingsDatabaseService implements RuFea
     return transaction(() async {
       await _ruFeatureTableManager.delete();
       await _ruFeatureTableManager.bulkCreate(
-            (_) => ruFeatures.map((element) => element.toCompanion()),
+        (_) => ruFeatures.map((element) => element.toCompanion()),
         mode: .insertOrReplace,
       );
     });
@@ -73,11 +73,13 @@ class SettingsDatabaseService extends _$SettingsDatabaseService implements RuFea
 
   @override
   Future<void> replaceAllCompanies(List<CompanyDto> companies) async {
-    await _companiesTableManager.delete();
-    await _companiesTableManager.bulkCreate(
-      (_) => companies.map((element) => element.toCompanion()),
-      mode: .insertOrFail,
-    );
+    return transaction(() async {
+      await _companiesTableManager.delete();
+      await _companiesTableManager.bulkCreate(
+        (_) => companies.map((element) => element.toCompanion()),
+        mode: .insertOrFail,
+      );
+    });
   }
 
   $$RuFeaturesTableTableTableManager get _ruFeatureTableManager => managers.ruFeaturesTable;
