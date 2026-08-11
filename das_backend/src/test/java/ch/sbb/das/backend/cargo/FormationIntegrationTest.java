@@ -3,6 +3,7 @@ package ch.sbb.das.backend.cargo;
 import static ch.sbb.das.backend.cargo.api.v1.FormationController.API_FORMATIONS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -10,6 +11,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.das.backend.IntegrationTest;
+import ch.sbb.das.backend.cargo.application.FormationService;
+import ch.sbb.das.backend.cargo.infrastructure.TrainFormationRunRepository;
+import ch.sbb.das.backend.cargo.infrastructure.model.TrainFormationRunEntity;
+import ch.sbb.das.backend.companies.CompanyCode;
 import ch.sbb.zis.trainformation.api.model.DailyFormationTrain;
 import ch.sbb.zis.trainformation.api.model.DailyFormationTrainKey;
 import java.io.File;
@@ -17,6 +22,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
@@ -28,6 +34,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.test.json.JsonCompareMode;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.support.TransactionTemplate;
 import tools.jackson.databind.json.JsonMapper;
 
 @IntegrationTest
@@ -41,6 +48,15 @@ class FormationIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private FormationService formationService;
+
+    @Autowired
+    private TrainFormationRunRepository trainFormationRunRepository;
+
+    @Autowired
+    private TransactionTemplate transactionTemplate;
 
     @Value("${formation.kafka.topic}")
     private String topic;
@@ -310,5 +326,52 @@ class FormationIntegrationTest {
                     .andExpect(jsonPath("$.data[0].formationRuns[0].tafTapLocationReferenceStart").value("CH05699"))
                     .andExpect(jsonPath("$.data[0].formationRuns[0].tafTapLocationReferenceEnd").value("CH05683"));
             });
+    }
+
+    @DisplayName("deleteAndSave_whenReprocessingSameMessage_shouldNotThrowConstraintViolation|ShrBUL9v8Zv2R1DEKZv7|tests:539,541,715,1176")
+    @Test
+    void deleteAndSave_whenReprocessingSameMessage_shouldNotThrowConstraintViolation() {
+        // Given: an existing formation run in the DB (simulates a previously processed Kafka message)
+        LocalDate operationalDay = LocalDate.of(2026, 8, 11);
+        String trainPathId = "40371-001";
+        OffsetDateTime inspectionDateTime = OffsetDateTime.parse("2026-08-11T07:28:44.048Z");
+
+        TrainFormationRunEntity existing = TrainFormationRunEntity.builder()
+            .position(0)
+            .trainPathId(trainPathId)
+            .operationalTrainNumber("40371")
+            .operationalDay(operationalDay)
+            .company(new CompanyCode("2187"))
+            .inspectionDateTime(inspectionDateTime)
+            .tafTapLocationUicStartCode(88915124)
+            .tafTapLocationUicEndCode(87182006)
+            .build();
+
+        // Insert in a separate transaction (simulates a previously committed Kafka message)
+        transactionTemplate.executeWithoutResult(status ->
+            trainFormationRunRepository.saveAndFlush(existing)
+        );
+
+        // When: the same message is reprocessed (deleteAndSave with identical unique key)
+        TrainFormationRunEntity replacement = TrainFormationRunEntity.builder()
+            .position(0)
+            .trainPathId(trainPathId)
+            .operationalTrainNumber("40371")
+            .operationalDay(operationalDay)
+            .company(new CompanyCode("2187"))
+            .inspectionDateTime(inspectionDateTime)
+            .tafTapLocationUicStartCode(88915124)
+            .tafTapLocationUicEndCode(87182006)
+            .build();
+
+        // Then: should not throw DataIntegrityViolationException
+        assertDoesNotThrow(() ->
+            formationService.deleteAndSave(trainPathId, operationalDay, List.of(replacement))
+        );
+
+        // Cleanup
+        transactionTemplate.executeWithoutResult(status ->
+            trainFormationRunRepository.deleteByTrainPathIdAndOperationalDay(trainPathId, operationalDay)
+        );
     }
 }
