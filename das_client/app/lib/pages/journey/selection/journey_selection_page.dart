@@ -134,7 +134,6 @@ class _ContentState extends State<_Content> {
     super.dispose();
   }
 
-
   Widget _header(BuildContext context) {
     final viewModel = context.read<JourneySelectionViewModel>();
     return StreamBuilder(
