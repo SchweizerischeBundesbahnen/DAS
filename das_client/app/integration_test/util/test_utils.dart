@@ -98,7 +98,10 @@ Future<void> loadJourney(WidgetTester tester, {required String trainNumber, Comp
     expect(filterField, findsOneWidget);
     await enterText(tester, filterField, company.shortName);
 
-    await tapElement(tester, find.byWidgetPredicate((widget) => widget is SBBRadioListItem && widget.value == company));
+    await tapElement(
+      tester,
+      find.byWidgetPredicate((widget) => widget is SBBRadioListItem && widget.value == company.code),
+    );
   }
 
   final trainNumberText = findTextInputByLabel(l10n.p_train_selection_trainnumber_description);
