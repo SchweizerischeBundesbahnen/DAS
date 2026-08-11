@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:clock/clock.dart';
 import 'package:logger/src/data/api/log_api_service.dart';
+import 'package:logger/src/data/api/send_logs_exception.dart';
 import 'package:logger/src/data/local/log_file_service.dart';
 import 'package:logger/src/data/logger_repo.dart';
 import 'package:logger/src/data/mappers.dart';
@@ -54,8 +55,12 @@ class LoggerRepoImpl implements LoggerRepo {
     for (final file in completedLogFiles) {
       try {
         await _sendLogsSync(file);
-      } catch (ex) {
-        _log.severe('Connection error while sending logs to remote.', ex);
+      } on PermanentSendLogsException catch (ex) {
+        _log.severe('Remote rejected logs from ${file.path}, discarding file.', ex);
+        await _tryDelete(file);
+        continue;
+      } on TransientSendLogsException catch (ex) {
+        _log.severe('Temporary error while sending logs to remote, will retry later.', ex);
         _stopSendingUntil = clock.now().add(Duration(minutes: _retryDelayAfterFailedSendMinutes));
         break;
       }

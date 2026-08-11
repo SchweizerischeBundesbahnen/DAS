@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/component.dart';
 import 'package:logger/src/data/api/endpoint/send_logs.dart';
 import 'package:logger/src/data/api/log_api_service.dart';
+import 'package:logger/src/data/api/send_logs_exception.dart';
 import 'package:logger/src/data/dto/log_file_dto.dart';
 import 'package:logger/src/data/local/log_file_service.dart';
 import 'package:logger/src/data/logger_repo.dart';
@@ -99,14 +100,14 @@ void main() {
     verify(fileService.deleteLogFile(logFile.file)).called(3);
   });
 
-  test('saveLog_whenSendFails_shouldNotDeleteLogFile', () async {
+  test('saveLog_whenSendFailsTemporarily_shouldNotDeleteLogFile', () async {
     // arrange
     final logFile = LogFileDto(logEntries: [simpleLogFile.toDto()], file: File('fakeFile.json'));
     when(fileService.writeLog(any)).thenAnswer((_) async {});
     when(fileService.hasCompletedLogFiles).thenAnswer((_) async => true);
     when(fileService.completedLogFiles).thenAnswer((_) async => [logFile.file]);
     when(fileService.deleteLogFile(logFile.file)).thenAnswer((_) async {});
-    when(mockSendLogsRequest.call(any)).thenThrow(HttpException('fakeException'));
+    when(mockSendLogsRequest.call(any)).thenThrow(const TransientSendLogsException('fakeException'));
     when(apiService.sendLogs).thenReturn(mockSendLogsRequest);
 
     // act
@@ -139,14 +140,71 @@ void main() {
     verify(fileService.deleteLogFile(logFile.file)).called(1);
   });
 
-  test('saveLog_whenSendFails_shouldNotResendUntilAfterDelay', () async {
+  test('saveLog_whenSendFailsPermanently_shouldDeleteLogFile', () async {
     // arrange
     final logFile = LogFileDto(logEntries: [simpleLogFile.toDto()], file: File('fakeFile.json'));
     when(fileService.writeLog(any)).thenAnswer((_) async {});
     when(fileService.hasCompletedLogFiles).thenAnswer((_) async => true);
     when(fileService.completedLogFiles).thenAnswer((_) async => [logFile.file]);
     when(fileService.deleteLogFile(logFile.file)).thenAnswer((_) async {});
-    when(mockSendLogsRequest.call(any)).thenThrow(HttpException('fakeException'));
+    when(mockSendLogsRequest.call(any)).thenThrow(const PermanentSendLogsException('rejected by remote'));
+    when(apiService.sendLogs).thenReturn(mockSendLogsRequest);
+
+    // act
+    await testee.saveLog(simpleLogFile);
+
+    // expect
+    verify(apiService.sendLogs).called(1);
+    verify(fileService.deleteLogFile(logFile.file)).called(1);
+  });
+
+  test('saveLog_whenSendFailsPermanently_shouldContinueWithRemainingFiles', () async {
+    // arrange
+    final poisonFile = File('poisonFile.json');
+    final goodFile = File('goodFile.json');
+    when(fileService.writeLog(any)).thenAnswer((_) async {});
+    when(fileService.hasCompletedLogFiles).thenAnswer((_) async => true);
+    when(fileService.completedLogFiles).thenAnswer((_) async => [poisonFile, goodFile]);
+    when(fileService.deleteLogFile(any)).thenAnswer((_) async {});
+    when(mockSendLogsRequest.call(poisonFile)).thenThrow(const PermanentSendLogsException('rejected by remote'));
+    when(mockSendLogsRequest.call(goodFile)).thenAnswer((_) async => mockSendLogsResponse);
+    when(apiService.sendLogs).thenReturn(mockSendLogsRequest);
+
+    // act
+    await testee.saveLog(simpleLogFile);
+
+    // expect
+    verify(apiService.sendLogs).called(2);
+    verify(fileService.deleteLogFile(poisonFile)).called(1);
+    verify(fileService.deleteLogFile(goodFile)).called(1);
+  });
+
+  test('saveLog_whenSendFailsPermanently_shouldNotDelayNextSend', () async {
+    // arrange
+    final logFile = LogFileDto(logEntries: [simpleLogFile.toDto()], file: File('fakeFile.json'));
+    when(fileService.writeLog(any)).thenAnswer((_) async {});
+    when(fileService.hasCompletedLogFiles).thenAnswer((_) async => true);
+    when(fileService.completedLogFiles).thenAnswer((_) async => [logFile.file]);
+    when(fileService.deleteLogFile(logFile.file)).thenAnswer((_) async {});
+    when(mockSendLogsRequest.call(any)).thenThrow(const PermanentSendLogsException('rejected by remote'));
+    when(apiService.sendLogs).thenReturn(mockSendLogsRequest);
+
+    // act
+    await testee.saveLog(simpleLogFile);
+    await testee.saveLog(simpleLogFile);
+
+    // expect
+    verify(apiService.sendLogs).called(2);
+  });
+
+  test('saveLog_whenSendFailsTemporarily_shouldNotResendUntilAfterDelay', () async {
+    // arrange
+    final logFile = LogFileDto(logEntries: [simpleLogFile.toDto()], file: File('fakeFile.json'));
+    when(fileService.writeLog(any)).thenAnswer((_) async {});
+    when(fileService.hasCompletedLogFiles).thenAnswer((_) async => true);
+    when(fileService.completedLogFiles).thenAnswer((_) async => [logFile.file]);
+    when(fileService.deleteLogFile(logFile.file)).thenAnswer((_) async {});
+    when(mockSendLogsRequest.call(any)).thenThrow(const TransientSendLogsException('fakeException'));
     when(apiService.sendLogs).thenReturn(mockSendLogsRequest);
     final fiveMinutesFromNow = DateTime.now().add(const Duration(minutes: 5));
 

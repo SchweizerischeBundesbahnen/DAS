@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:http_x/component.dart';
+import 'package:logger/src/data/api/send_logs_exception.dart';
 
 class SendLogsRequest {
   const SendLogsRequest({required this.httpClient, this.url, this.token});
@@ -9,19 +10,27 @@ class SendLogsRequest {
   final String? url;
   final String? token;
 
+  /// Sends the given log file to the remote endpoint.
+  ///
+  /// Throws a [TransientSendLogsException] or [PermanentSendLogsException] on failure.
   Future<SendLogsResponse> call(File logFile) async {
     if (this.url == null || token == null) {
-      return Future.error('logging url or token not configured');
+      throw const TransientSendLogsException('logging url or token not configured');
     }
 
     final logFileContent = logFile.readAsStringSync();
 
     final url = Uri.parse(this.url!);
-    final response = await httpClient.post(
-      url,
-      headers: {'Content-Type': 'application/json', 'Authorization': 'Splunk $token'},
-      body: '[$logFileContent]',
-    );
+    final Response response;
+    try {
+      response = await httpClient.post(
+        url,
+        headers: {'Content-Type': 'application/json', 'Authorization': 'Splunk $token'},
+        body: '[$logFileContent]',
+      );
+    } catch (ex) {
+      throw TransientSendLogsException(ex);
+    }
     return SendLogsResponse.fromHttpResponse(response);
   }
 }
@@ -36,8 +45,19 @@ class SendLogsResponse {
       return SendLogsResponse(headers: response.headers);
     }
     // Failure
-    throw HttpException.fromResponse(response);
+    final exception = HttpException.fromResponse(response);
+    if (_isTransient(status)) throw TransientSendLogsException(exception);
+    throw PermanentSendLogsException(exception);
   }
+
+  /// Server errors may resolve themselves, as may these client errors:
+  /// 401/403 (misconfigured token, logs can be sent once fixed), 408 (request timeout) and 429 (throttling).
+  static bool _isTransient(int statusCode) =>
+      statusCode >= 500 ||
+      statusCode == HttpStatus.unauthorized ||
+      statusCode == HttpStatus.forbidden ||
+      statusCode == HttpStatus.requestTimeout ||
+      statusCode == HttpStatus.tooManyRequests;
 
   final Map<String, String> headers;
 }
