@@ -71,7 +71,7 @@ describe('RuFeatureTogglesTable', () => {
       { search: '', expected: true, description: 'empty search returns all' },
       { search: 'sbb', expected: true, description: 'matches on company name' },
       { search: '1085', expected: true, description: 'matches on company code' },
-      { search: 'warnapp', expected: true, description: 'matches on key label' },
+      { search: 'warnfunktion', expected: true, description: 'matches on key label' },
       { search: 'admin', expected: true, description: 'matches on lastModifiedBy' },
       { search: 'SBB', expected: true, description: 'is case-insensitive' },
       { search: 'xyz-nomatch', expected: false, description: 'returns false when no match' },
