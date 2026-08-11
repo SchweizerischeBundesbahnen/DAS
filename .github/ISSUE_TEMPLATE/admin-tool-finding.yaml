@@ -49,7 +49,7 @@ body:
       label: Version
       description: Welche Version wurde genutzt? Die Version ist oben links ersichtlich.
       options:
-        - 0.5.1
+        - 0.6.0
       default: 0
     validations:
       required: true
