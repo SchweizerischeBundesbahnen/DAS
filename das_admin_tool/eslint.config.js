@@ -4,7 +4,7 @@ import css from '@eslint/css';
 import js from '@eslint/js';
 import json from '@eslint/json';
 import * as angular from 'angular-eslint';
-import { defineConfig } from 'eslint/config';
+import {defineConfig} from 'eslint/config';
 import * as importX from 'eslint-plugin-import-x';
 import * as sonarjs from 'eslint-plugin-sonarjs';
 import unicorn from 'eslint-plugin-unicorn';
@@ -26,7 +26,7 @@ export default defineConfig(
       prettierRecommended,
     ],
     processor: angular.processInlineTemplates,
-    languageOptions: { parserOptions: { projectService: true } },
+    languageOptions: {parserOptions: {projectService: true}},
     rules: {
       // eslint
       eqeqeq: 'error',
@@ -43,8 +43,8 @@ export default defineConfig(
               group: ['~src/app/shared/*', '~app/shared/*', '../shared/*', './shared/*'],
               message: "Please use '~shared/*'",
             },
-            { group: ['~src/app/*', '../app/*', './app/*'], message: "Please use '~app/*'" },
-            { group: ['../../*'], message: 'Please use an absolute path' },
+            {group: ['~src/app/*', '../app/*', './app/*'], message: "Please use '~app/*'"},
+            {group: ['../../*'], message: 'Please use an absolute path'},
             {
               group: ['@angular/common'],
               importNames: ['CommonModule'],
@@ -88,11 +88,11 @@ export default defineConfig(
       '@angular-eslint/component-class-suffix': 'off',
       '@angular-eslint/component-selector': [
         'error',
-        { type: 'element', prefix: 'app', style: 'kebab-case' },
+        {type: 'element', prefix: 'app', style: 'kebab-case'},
       ],
       '@angular-eslint/directive-selector': [
         'error',
-        { type: 'attribute', prefix: 'app', style: 'camelCase' },
+        {type: 'attribute', prefix: 'app', style: 'camelCase'},
       ],
       'import-x/order': [
         'error',
@@ -108,7 +108,7 @@ export default defineConfig(
             'type',
           ],
           'newlines-between': 'never',
-          alphabetize: { order: 'asc', caseInsensitive: true },
+          alphabetize: {order: 'asc', caseInsensitive: true},
           named: true,
         },
       ],
@@ -153,12 +153,12 @@ export default defineConfig(
       '@angular-eslint/template/no-call-expression': 'off',
     },
   },
-  { files: ['**/*.css'], language: 'css/css', plugins: { css }, extends: [prettierRecommended] },
+  {files: ['**/*.css'], language: 'css/css', plugins: {css}, extends: [prettierRecommended]},
   {
     files: ['**/*.json'],
     language: 'json/jsonc',
-    plugins: { json },
+    plugins: {json},
     extends: [prettierRecommended],
   },
-  { ignores: ['e2e/auth-state.json'] },
+  {ignores: ['e2e/auth-state.json', 'src/i18n/*.json', 'test-results/**']},
 );

@@ -18,24 +18,20 @@
           language.path | uppercase
         }}</sbb-tab-label>
         <sbb-tab [formGroupName]="language.path">
-          <sbb-form-field errorSpace="reserve" class="full-width">
+          <sbb-form-field class="full-width" errorSpace="reserve">
             <label for="title" i18n="@@external_links_form_title_label">Titel</label>
             <input formControlName="title" />
             @let titleField = externalLinkForm.get(`${language.path}.title`);
             @if (externalLinkForm.touched && titleField?.hasError('languageRequired')) {
-              <sbb-error i18n="@@external_links_form_field_error_required"
-                >Feld darf nicht leer sein</sbb-error
-              >
+              <sbb-error i18n="@@form_field_error_required">Feld darf nicht leer sein</sbb-error>
             }
           </sbb-form-field>
-          <sbb-form-field errorSpace="reserve" class="full-width">
+          <sbb-form-field class="full-width" errorSpace="reserve">
             <label for="link" i18n="@@external_links_form_link_label">Webadresse (URL)</label>
             <input formControlName="link" />
             @let linkField = externalLinkForm.get(`${language.path}.link`);
             @if (externalLinkForm.touched && linkField?.hasError('languageRequired')) {
-              <sbb-error i18n="@@external_links_form_field_error_required"
-                >Feld darf nicht leer sein</sbb-error
-              >
+              <sbb-error i18n="@@form_field_error_required">Feld darf nicht leer sein</sbb-error>
             }
             @if (externalLinkForm.touched && linkField?.hasError('url')) {
               <sbb-error i18n="@@external_links_form_field_error_url"
