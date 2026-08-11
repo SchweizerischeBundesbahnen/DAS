@@ -4,6 +4,7 @@ import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart'
 import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
 import 'package:app/pages/journey/view_model/model/journey_navigation_model.dart';
 import 'package:app/provider/local_key_value_store.dart';
+import 'package:core_data/component.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';

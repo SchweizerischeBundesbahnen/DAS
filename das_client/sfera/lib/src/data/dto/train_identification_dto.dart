@@ -1,3 +1,4 @@
+import 'package:core_data/component.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/dto/otn_id_dto.dart';
 

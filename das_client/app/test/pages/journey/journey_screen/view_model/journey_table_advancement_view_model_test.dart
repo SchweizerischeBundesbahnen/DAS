@@ -6,6 +6,7 @@ import 'package:app/pages/journey/journey_screen/view_model/model/journey_advanc
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/util/time_constants.dart';
+import 'package:core_data/component.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';

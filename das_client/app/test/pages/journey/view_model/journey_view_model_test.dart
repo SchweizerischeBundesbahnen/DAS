@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/pages/journey/view_model/sfera_journey_view_model.dart';
+import 'package:core_data/component.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';

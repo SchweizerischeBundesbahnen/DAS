@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:auth/component.dart';
 import 'package:connectivity_x/component.dart';
+import 'package:core_data/component.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';

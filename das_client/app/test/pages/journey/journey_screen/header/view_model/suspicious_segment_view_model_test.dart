@@ -6,6 +6,7 @@ import 'package:app/pages/journey/journey_screen/view_model/journey_position_vie
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
+import 'package:core_data/component.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';

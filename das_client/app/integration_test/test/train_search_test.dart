@@ -5,6 +5,7 @@ import 'package:app/pages/journey/selection/widgets/journey_date_picker.dart';
 import 'package:app/provider/local_key_value_store.dart';
 import 'package:app/util/format.dart';
 import 'package:app/widgets/railway_undertaking/widgets/select_railway_undertaking_modal.dart';
+import 'package:core_data/component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';

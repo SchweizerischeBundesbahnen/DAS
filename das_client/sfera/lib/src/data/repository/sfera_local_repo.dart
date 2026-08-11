@@ -1,5 +1,6 @@
 import 'dart:core';
 
+import 'package:core_data/component.dart';
 import 'package:sfera/component.dart';
 
 abstract class SferaLocalRepo {

@@ -1,5 +1,6 @@
 import 'package:app/pages/journey/journey_screen/view_model/sim_train_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
+import 'package:core_data/component.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';

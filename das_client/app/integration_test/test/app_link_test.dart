@@ -10,6 +10,7 @@ import 'package:app/provider/local_key_value_store.dart';
 import 'package:app/widgets/navigation_buttons.dart';
 import 'package:app_links_x/component.dart';
 import 'package:auth/component.dart';
+import 'package:core_data/component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -337,12 +338,12 @@ void main() {
         );
         expect(trainIdentification, findsOne);
 
-      final trainIdentificationRepository =
-          DI.get<TrainIdentificationRepository>() as MockTrainIdentificationRepository;
-      trainIdentificationRepository.companyMatchData = {
-        CompanyMatch(companyCode: '5184', startDate: DateTime.now()),
-        CompanyMatch(companyCode: '2263', startDate: DateTime.now()),
-      };
+        final trainIdentificationRepository =
+            DI.get<TrainIdentificationRepository>() as MockTrainIdentificationRepository;
+        trainIdentificationRepository.companyMatchData = {
+          CompanyMatch(companyCode: '5184', startDate: DateTime.now()),
+          CompanyMatch(companyCode: '2263', startDate: DateTime.now()),
+        };
 
         final journeys = [_trainJourneyLinkData('T1')];
         _pushTrainJourneyAppLink(journeys);
@@ -374,18 +375,18 @@ void main() {
         );
         expect(trainIdentification, findsOne);
 
-      final trainIdentificationRepository =
-          DI.get<TrainIdentificationRepository>() as MockTrainIdentificationRepository;
-      trainIdentificationRepository.companyMatchData = {
-        CompanyMatch(
-          companyCode: '1285',
-          startDate: DateTime.now(),
-        ),
-        CompanyMatch(
-          companyCode: '2263',
-          startDate: DateTime.now(),
-        ),
-      };
+        final trainIdentificationRepository =
+            DI.get<TrainIdentificationRepository>() as MockTrainIdentificationRepository;
+        trainIdentificationRepository.companyMatchData = {
+          CompanyMatch(
+            companyCode: '1285',
+            startDate: DateTime.now(),
+          ),
+          CompanyMatch(
+            companyCode: '2263',
+            startDate: DateTime.now(),
+          ),
+        };
 
         final journeys = [_trainJourneyLinkData('T1')];
         _pushTrainJourneyAppLink(journeys);
