@@ -137,9 +137,9 @@ class _SelectRailwayUndertakingModalState extends State<SelectRailwayUndertaking
   }
 
   Widget _radioListItem(Company element, Color backgroundColor) {
-    return SBBRadioListItem<Company>(
+    return SBBRadioListItem<String>(
       key: ValueKey(element),
-      value: element,
+      value: element.code,
       titleText: element.shortName,
       listItemStyle: SBBListItemStyle(backgroundColor: WidgetStatePropertyAll(backgroundColor)),
     );

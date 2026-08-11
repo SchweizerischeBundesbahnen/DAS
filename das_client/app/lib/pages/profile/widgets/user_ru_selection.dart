@@ -33,7 +33,7 @@ class _UserRuSelectionState extends State<UserRuSelection> {
             child: SelectRailwayUndertakingInput(
               selectedCompanyCodes: _userSettings.companyCodes,
               updateCompanies: (selected) async {
-                await _userSettings.set(.companyCodes, selected.map((it) => it.shortName).toList());
+                await _userSettings.set(.companyCodes, selected.map((it) => it.code).toList());
                 _externalLinksRepo.reloadExternalLinksByCompanies(selected.map((it) => it.code).toList());
                 setState(() {});
               },
