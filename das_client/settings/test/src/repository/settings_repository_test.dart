@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:core_data/component.dart';
@@ -273,6 +274,70 @@ void main() {
 
     // EXPECT
     expect(result, isTrue);
+  });
+
+  test('whenLoadSettingsCalledWhileLoadInProgress_sharesRequest', () async {
+    // ARRANGE
+    final results = <bool>[];
+    fakeAsync((fakeAsync) {
+      final completer = Completer<SettingsResponse>();
+      when(mockSettingsRequest.call()).thenAnswer((_) => completer.future);
+      testee = SettingsRepositoryImpl(
+        apiService: apiService,
+        databaseService: settingsDatabaseService,
+        onAwsCredentialsChanged: mockCallbacks.awsCredentialsChanged,
+      );
+      fakeAsync.flushMicrotasks();
+
+      // ACT
+      testee.loadSettings().then(results.add);
+      testee.loadSettings().then(results.add);
+      completer.complete(buildSettingsResponse());
+      fakeAsync.flushMicrotasks();
+    });
+
+    // EXPECT
+    expect(results, [true, true]);
+    verify(apiService.settings).called(1);
+    verify(mockSettingsRequest.call()).called(1);
+  });
+
+  test('whenLoadSettingsCalledWhileLoadInProgressAndFails_allCallersReceiveFalse', () async {
+    // ARRANGE
+    final results = <bool>[];
+    fakeAsync((fakeAsync) {
+      final completer = Completer<SettingsResponse>();
+      when(mockSettingsRequest.call()).thenAnswer((_) => completer.future);
+      testee = SettingsRepositoryImpl(
+        apiService: apiService,
+        databaseService: settingsDatabaseService,
+        onAwsCredentialsChanged: mockCallbacks.awsCredentialsChanged,
+      );
+      fakeAsync.flushMicrotasks();
+
+      // ACT
+      testee.loadSettings().then(results.add);
+      testee.loadSettings().then(results.add);
+      completer.completeError(HttpException('Exception'));
+      fakeAsync.flushMicrotasks();
+    });
+
+    // EXPECT
+    expect(results, [false, false]);
+    verify(apiService.settings).called(1);
+  });
+
+  test('whenLoadSettingsCalledAfterPreviousLoadCompleted_triggersNewRequest', () async {
+    // ARRANGE
+    when(mockSettingsRequest.call()).thenAnswer((_) => Future.value(buildSettingsResponse()));
+
+    // ACT
+    await initTestee();
+    await testee.loadSettings();
+
+    // EXPECT
+    verify(apiService.settings).called(2);
+    verify(mockSettingsRequest.call()).called(2);
   });
 
   test('whenSettingsFetchFails_loadSettingsReturnsFalse', () async {

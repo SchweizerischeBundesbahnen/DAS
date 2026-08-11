@@ -62,9 +62,9 @@ body:
       label: DAS Version
       description: Welche Version von DAS wurde genutzt?
       options:
+        - 0.50.0
         - 0.48.0
         - 0.45.0
-        - 0.43.0
       default: 0
     validations:
       required: true

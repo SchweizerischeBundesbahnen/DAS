@@ -81,6 +81,7 @@ jobs:
             kv/data/DSO-BPS/driver-advisory-system/ci/mobile MOCK_BROKER_MQTT_PASSWORD ;
             kv/data/DSO-BPS/driver-advisory-system/ci/mobile BROWSERSTACK_USERNAME ;
             kv/data/DSO-BPS/driver-advisory-system/ci/mobile BROWSERSTACK_ACCESS_KEY ;
+            kv/data/DSO-BPS/driver-advisory-system/ci/common NIGHTLY_FAILURE_CHANNEL_WEBHOOK ;
 
       - name: Generate access token
         if: inputs.enable_e2e
@@ -147,6 +148,14 @@ jobs:
           testFilePath: ${{ github.workspace }}/das_client/app/build/app/outputs/apk/androidTest/dev/debug/${{ inputs.enable_e2e && 'e2e' || 'integration' }}-test.apk
           devices: Samsung Galaxy Tab S11-16.0
 
+      - name: Notify Microsoft Teams
+        if: ${{ failure() && github.event_name == 'schedule' }}
+        uses: skitionek/notify-microsoft-teams@v1.3.0
+        with:
+          webhook_url: ${{ steps.vault-secrets.outputs.NIGHTLY_FAILURE_CHANNEL_WEBHOOK }}
+          job: ${{ toJson(job) }}
+          steps: ${{ toJson(steps) }}
+
 
   ios:
     runs-on: macos-26
@@ -196,6 +205,7 @@ jobs:
             kv/data/DSO-BPS/driver-advisory-system/ci/mobile MOCK_BROKER_MQTT_PASSWORD ;
             kv/data/DSO-BPS/driver-advisory-system/ci/mobile BROWSERSTACK_USERNAME ;
             kv/data/DSO-BPS/driver-advisory-system/ci/mobile BROWSERSTACK_ACCESS_KEY ;
+            kv/data/DSO-BPS/driver-advisory-system/ci/common NIGHTLY_FAILURE_CHANNEL_WEBHOOK ;
 
       - name: Generate access token
         if: inputs.enable_e2e
@@ -247,25 +257,8 @@ jobs:
           testPackagePath: ${{ github.workspace }}/das_client/app/build/ios_integration/Build/Products/ios-${{ inputs.enable_e2e && 'e2e' || 'integration' }}-test.zip
           devices: iPad 9th-18
 
-
-  notify:
-    runs-on: ubuntu-latest
-    needs: [android, ios]
-    if: ${{ failure() && github.event_name == 'schedule' }}
-    steps:
-
-      - name: Vault Secrets 🤫
-        id: vault-secrets
-        uses: hashicorp/vault-action@v4.0.0
-        with:
-          url: https://vault-nonprod.sbb.ch:443
-          method: approle
-          roleId: ${{ secrets.VAULT_ROLE_ID }}
-          secretId: ${{ secrets.VAULT_SECRET_ID }}
-          secrets: |
-            kv/data/DSO-BPS/driver-advisory-system/ci/common NIGHTLY_FAILURE_CHANNEL_WEBHOOK ;
-
       - name: Notify Microsoft Teams
+        if: ${{ failure() && github.event_name == 'schedule' }}
         uses: skitionek/notify-microsoft-teams@v1.3.0
         with:
           webhook_url: ${{ steps.vault-secrets.outputs.NIGHTLY_FAILURE_CHANNEL_WEBHOOK }}
