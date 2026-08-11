@@ -25,9 +25,8 @@ Future<void> showReducedOverviewModalSheet(BuildContext context) async {
     ),
     body: MultiProvider(
       providers: [
-        Provider<JourneyTableViewModel>(
-          create: (_) => DI.get(),
-        ),
+        Provider<JourneyTableViewModel>(create: (_) => DI.get()),
+        Provider<JourneyViewModel>(create: (_) => DI.get()),
         Provider(
           create: (_) => ReducedOverviewViewModel(
             sferaLocalService: DI.get(),

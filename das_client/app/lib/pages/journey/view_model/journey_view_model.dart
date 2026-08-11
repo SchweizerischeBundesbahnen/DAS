@@ -33,16 +33,14 @@ class JourneyViewModel {
   StreamSubscription? _journeySubscription;
   StreamSubscription<List<RuIndication>>? _ruIndicationsSubscription;
 
-  bool _hasShuntingMovement() => journeyValue?.data.any((data) => data is ShuntingMovement) ?? false;
-
   void dispose() {
     _rxJourney.close();
+    _rxFormattedTrainIdentifier.close();
     _journeySubscription?.cancel();
     _ruIndicationsSubscription?.cancel();
   }
 
   void _init() {
-    _initJourneySubscription();
     _initJourneySubscription();
   }
 
@@ -66,15 +64,16 @@ class JourneyViewModel {
     }
   }
 
-  void _handleFormattedTrainIdentification(Journey? journey) async {
+  Future<void> _handleFormattedTrainIdentification(Journey? journey) async {
     final trainIdentification = journey?.metadata.trainIdentification;
     if (trainIdentification == null) {
       _rxFormattedTrainIdentifier.add(null);
     } else {
       final trainNumber = trainIdentification.trainNumber;
       final companyName = await _settingsRepository.getCompanyForCode(trainIdentification.companyCode);
-      final displayedTrainNumber = _hasShuntingMovement() ? '${trainNumber}R / $trainNumber' : trainNumber;
-      _rxFormattedTrainIdentifier.add('$displayedTrainNumber ${companyName ?? ''}'.trim());
+      final hasShuntingMovement = journeyValue?.data.any((data) => data is ShuntingMovement) ?? false;
+      final displayedTrainNumber = hasShuntingMovement ? '${trainNumber}R / $trainNumber' : trainNumber;
+      _rxFormattedTrainIdentifier.add('$displayedTrainNumber ${companyName?.shortName ?? ''}'.trim());
     }
   }
 

@@ -6,10 +6,22 @@ const companyBLSC = Company(code: '3356', shortName: 'BLSC');
 const companyBLSI = Company(code: '2263', shortName: 'BLSI');
 const companyBLSP = Company(code: '1163', shortName: 'BLSP');
 const companySBBP = Company(code: '1285', shortName: 'SBBP');
+const companySBBI = Company(code: '5184', shortName: 'SBBI');
 const companySBBCH = Company(code: '2185', shortName: 'SBBCH');
 const companySOB = Company(code: '9058', shortName: 'SOB');
+const companyTHURBO = Company(code: '3917', shortName: 'THURBO');
 const companyDB = Company(code: '1080', shortName: 'DB');
-const availableCompanies = [companyBLSC, companyBLSI, companySBBP, companySBBCH, companySOB, companyDB];
+
+const availableCompanies = [
+  companyBLSC,
+  companyBLSI,
+  companySBBP,
+  companySBBCH,
+  companySBBI,
+  companySOB,
+  companyDB,
+  companyTHURBO,
+];
 
 class MockSettingsRepository implements SettingsRepository {
   MockSettingsRepository() : _appVersionExpiration = AppVersionExpiration(expired: false);

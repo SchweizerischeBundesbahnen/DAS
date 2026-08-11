@@ -104,12 +104,12 @@ void main() {
         );
         await tapElement(tester, primaryButton);
 
-      // wait until T2 opened
-      await waitUntilExists(
-        tester,
-        find.descendant(of: find.byType(Header), matching: find.text('T2 ${companySBBP.shortName}')),
-      );
-      await tester.pumpAndSettle();
+        // wait until T2 opened
+        await waitUntilExists(
+          tester,
+          find.descendant(of: find.byType(Header), matching: find.text('T2 ${companySBBP.shortName}')),
+        );
+        await tester.pumpAndSettle();
 
         expect(find.byType(NavigationButtons), findsNothing);
 
@@ -127,9 +127,7 @@ void main() {
 
     testWidgets(
       'journeySearchOverlay_whenMultipleCompanyMatches_thenRedirectsToSelectionScreen|78G6WgAFp4dv86tsGl14|tests:702',
-      (
-        tester,
-      ) async {
+      (tester) async {
         await IntegrationTestApp.start(tester);
 
         final trainIdentificationRepository =
@@ -138,14 +136,14 @@ void main() {
         await loadJourney(tester, trainNumber: 'T1');
         final journeySearchOverlay = find.byType(JourneySearchOverlay);
 
-      trainIdentificationRepository.companyMatchData = {
-        CompanyMatch(companyCode: '5184', startDate: DateTime.now()),
-        CompanyMatch(companyCode: '2263', startDate: DateTime.now()),
-        CompanyMatch(
-          companyCode: '3917',
-          startDate: DateTime.now().add(Duration(days: 1)),
-        ),
-      };
+        trainIdentificationRepository.companyMatchData = {
+          CompanyMatch(companyCode: '5184', startDate: DateTime.now()),
+          CompanyMatch(companyCode: '2263', startDate: DateTime.now()),
+          CompanyMatch(
+            companyCode: '3917',
+            startDate: DateTime.now().add(Duration(days: 1)),
+          ),
+        };
 
         // open
         await _openJourneySearchOverlayByTap(tester);
