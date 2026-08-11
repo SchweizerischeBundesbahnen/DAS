@@ -57,7 +57,7 @@ void main() {
         await loadJourney(tester, trainNumber: 'T29');
         await openReducedJourneyMenu(tester);
 
-      expect(find.text('T29R / T29 ${companySBBP.shortName}'), findsAny);
+        expect(find.text('T29R / T29 ${companySBBP.shortName}'), findsAny);
 
         await disconnect(tester);
       },
