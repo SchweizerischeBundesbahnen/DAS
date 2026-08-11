@@ -112,13 +112,13 @@ class JourneySelectionViewModel {
       );
     }
 
-    final lastUsedRu = _userSettings.lastUsedCompanyCode;
-    final lastUsedRuMatch = exactDayMatches.firstWhereOrNull((it) => it.companyCode == lastUsedRu);
-    if (lastUsedRuMatch != null) {
-      _log.info('Found company match with last used railway undertaking: $lastUsedRuMatch');
+    final lastUsedCompanyCode = _userSettings.lastUsedCompanyCode;
+    final lastUsedCompanyMatch = exactDayMatches.firstWhereOrNull((it) => it.companyCode == lastUsedCompanyCode);
+    if (lastUsedCompanyMatch != null) {
+      _log.info('Found company match with last used company code: $lastUsedCompanyMatch');
       return _loadTrain(
         TrainIdentification(
-          companyCode: lastUsedRuMatch.companyCode,
+          companyCode: lastUsedCompanyMatch.companyCode,
           trainNumber: state.operationalTrainNumber,
           date: state.startDate,
         ),

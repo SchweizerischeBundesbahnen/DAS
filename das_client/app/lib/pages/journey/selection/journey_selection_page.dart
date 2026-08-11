@@ -15,7 +15,7 @@ import 'package:app/pages/journey/view_model/model/app_expiration_model.dart';
 import 'package:app/pages/journey/widgets/das_journey_scaffold.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/format.dart';
-import 'package:app/widgets/railway_undertaking/widgets/select_railway_undertaking_input.dart';
+import 'package:app/widgets/company_selection/widgets/select_company_input.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:collection/collection.dart';
 import 'package:core_data/component.dart';
@@ -157,7 +157,7 @@ class _ContentState extends State<_Content> with WidgetsBindingObserver {
             children: [
               JourneyDateInput(),
               JourneyTrainNumberInput(),
-              SelectRailwayUndertakingInput(
+              SelectCompanyInput(
                 selectedCompanyCodes: [?model.companyCode],
                 updateCompanies: viewModel.updateCompanies,
                 addClearButton: true,

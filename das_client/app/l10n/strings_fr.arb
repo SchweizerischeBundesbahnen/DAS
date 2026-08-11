@@ -1,7 +1,7 @@
 {
   "c_app_name": "Client DAS",
   "p_train_selection_trainnumber_description": "Numéro de train",
-  "p_train_selection_ru_description": "ETF",
+  "p_train_selection_company_description": "ETF",
   "p_train_selection_date_description": "Date",
   "p_train_selection_choose_date": "Sélectionner la date.",
   "p_train_selection_date_not_today_warning": "La date sélectionnée ne correspond pas à la date actuelle.",

@@ -138,7 +138,7 @@ void main() {
     expect(selecting.startDate, today);
   });
 
-  test('updateRailwayUndertaking_whenCalled_thenUpdatesRailwayUndertaking', () {
+  test('updateCompanies_whenCalled_thenUpdatesCompanies', () {
     // ARRANGE
     final newCompany = Company(code: '1163', shortName: 'BLSP');
 

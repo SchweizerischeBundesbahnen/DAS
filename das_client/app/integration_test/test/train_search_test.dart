@@ -4,7 +4,7 @@ import 'package:app/pages/journey/selection/journey_selection_page.dart';
 import 'package:app/pages/journey/selection/widgets/journey_date_picker.dart';
 import 'package:app/provider/local_key_value_store.dart';
 import 'package:app/util/format.dart';
-import 'package:app/widgets/railway_undertaking/widgets/select_railway_undertaking_modal.dart';
+import 'package:app/widgets/company_selection/widgets/select_company_modal.dart';
 import 'package:core_data/component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -30,10 +30,10 @@ void main() {
     testWidgets('trainSearch_whenRuSelectionOpened_thenShowsOptions|4V8lVLIAXkStk9lkHcFv|tests:92', (tester) async {
       await IntegrationTestApp.start(tester);
 
-      await tapElement(tester, find.text(l10n.p_train_selection_ru_description), warnIfMissed: false);
+      await tapElement(tester, find.text(l10n.p_train_selection_company_description), warnIfMissed: false);
 
       // Verify modal is opened
-      final modal = find.byKey(SelectRailwayUndertakingModal.modalKey);
+      final modal = find.byKey(SelectCompanyModal.modalKey);
       expect(modal, findsOneWidget);
 
       expect(find.text(companyDB.shortName), findsOneWidget);
@@ -49,14 +49,14 @@ void main() {
     testWidgets('trainSearch_whenRuFilterEntered_thenFiltersResults|K9LxJibBfWA0sakjBxjU|tests:596', (tester) async {
       await IntegrationTestApp.start(tester);
 
-      await tapElement(tester, find.text(l10n.p_train_selection_ru_description), warnIfMissed: false);
+      await tapElement(tester, find.text(l10n.p_train_selection_company_description), warnIfMissed: false);
 
       // Verify modal is opened
-      final modal = find.byKey(SelectRailwayUndertakingModal.modalKey);
+      final modal = find.byKey(SelectCompanyModal.modalKey);
       expect(modal, findsOneWidget);
 
       // Enter filter 'SO'
-      final filterField = find.byKey(SelectRailwayUndertakingModal.filterFieldKey);
+      final filterField = find.byKey(SelectCompanyModal.filterFieldKey);
       expect(filterField, findsOneWidget);
       await enterText(tester, filterField, 'SO');
       await tester.pumpAndSettle();

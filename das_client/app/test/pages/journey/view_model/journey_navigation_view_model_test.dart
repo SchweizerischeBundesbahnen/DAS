@@ -354,7 +354,7 @@ void main() {
       verify(mockScopeHandler.pop<JourneyScope>()).called(1);
     });
 
-    test('replaceWith_whenTrainChanges_updatesLastUsedRailwayUndertaking', () async {
+    test('replaceWith_whenTrainChanges_updatesLastUsedCompanyCode', () async {
       await testee.replaceWith([trainId1]);
       await processStreams();
 

@@ -4,22 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
-final _log = Logger('JourneyRailwayUndertakingFilterController');
+final _log = Logger('SelectCompanyModalController');
 
-/// TODO: Update documentation
-/// This Controller is responsible for filtering **localized** names of railway undertakings.
-/// Thus it must access the AppLocalizations.
+/// This Controller is responsible for filtering names of companies.
 ///
-/// To simplify, it exposes and listens to a TextController for the corresponding (filter) SBBTextInput.
-/// It has a setter for the currently selected RailwayUndertaking.
-/// It exposes a stream of available RailwayUndertakings
-/// based on the TextController text value (the filtering function).
-///
-/// The filtering is special as all available railway undertakings are emitted before the first key stroke.
-/// This allows the user to see other possibilities and intuitively understand the filter. The results
-/// are ordered such that the currently selected one is always on top.
-class SelectRailwayUndertakingModalController {
-  SelectRailwayUndertakingModalController({
+/// The results are ordered alphabetically with the currently selected one always on top.
+class SelectCompanyModalController {
+  SelectCompanyModalController({
     required this.availableCompanies,
     required this.updateCompanies,
     required List<String> initialCompanyCodes,

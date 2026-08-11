@@ -1,4 +1,4 @@
-import 'package:app/widgets/railway_undertaking/select_railway_undertaking_modal_controller.dart';
+import 'package:app/widgets/company_selection/select_company_modal_controller.dart';
 import 'package:collection/collection.dart';
 import 'package:core_data/component.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -16,12 +16,12 @@ const _sob = Company(code: '9058', shortName: 'SOB');
 const _availableCompanies = [_blsC, _sbbP, _sbbCH, _sob, _sbbI, _sbbD, _sbbCInt];
 
 void main() {
-  late SelectRailwayUndertakingModalController testee;
+  late SelectCompanyModalController testee;
   final mockUpdateCompanies = MockUpdateCompanies();
   final List<Company> emitRegister = [];
 
   setUp(() async {
-    testee = SelectRailwayUndertakingModalController(
+    testee = SelectCompanyModalController(
       availableCompanies: _availableCompanies,
       initialCompanyCodes: [_sbbP.code],
       updateCompanies: mockUpdateCompanies.call,
@@ -38,12 +38,12 @@ void main() {
     testee.dispose();
   });
 
-  group('SelectRailwayUndertakingModalController Unit Test', () {
+  group('SelectCompanyModalController Unit Test', () {
     test('filterValue_whenInstantiatedWithDefault_isLocalizedString', () {
       expect(testee.filterValue, equals(_sbbP.shortName));
     });
 
-    test('filterValue_whenSelectedRailwayUndertakingChanged_thenUpdatesTextController', () {
+    test('filterValue_whenSelectedCompanyChanged_thenUpdatesTextController', () {
       // ARRANGE
       final newCompanyCode = '3356';
 
@@ -62,9 +62,9 @@ void main() {
       expect(testee.filterValue, equals('sob'));
     });
 
-    test('availableRailwayUndertakings_whenInitialized_thenIsEmittedWithAllUndertakingsSortedCorrectly', () async {
+    test('availableCompanies_whenInitialized_thenIsEmittedWithAllCompaniesSortedCorrectly', () async {
       // ACT
-      testee = SelectRailwayUndertakingModalController(
+      testee = SelectCompanyModalController(
         availableCompanies: _availableCompanies,
         initialCompanyCodes: [_sbbP.code],
         updateCompanies: mockUpdateCompanies.call,
@@ -77,7 +77,7 @@ void main() {
       expect(emitRegister, orderedEquals(_sortedCompanyValues()));
     });
 
-    test('availableRailwayUndertakings_whenFilterChanged_thenIsEmittedWithUndertakingsFilteredCorrectly', () async {
+    test('availableCompanies_whenFilterChanged_thenIsEmittedWithCompaniesFilteredCorrectly', () async {
       // ARRANGE
       // should be ordered 0th even though not lexicographically the 0th element
       testee.selectedCompanyCodes = [_sbbCH.code];
@@ -101,7 +101,7 @@ void main() {
       );
     });
 
-    test('availableRailwayUndertakings_whenFilterIsEmpty_thenIsEmittedWithAllUndertakingsSortedCorrectly', () async {
+    test('availableCompanies_whenFilterIsEmpty_thenIsEmittedWithAllCompaniesSortedCorrectly', () async {
       // ARRANGE
       // should be ordered 0th even though not lexicographically the 0th element
       testee.selectedCompanyCodes = [_sbbCH.code];
@@ -119,7 +119,7 @@ void main() {
       );
     });
 
-    test('availableRailwayUndertakings_whenFilterIsWeird_thenIsEmittedEmpty', () async {
+    test('availableCompanies_whenFilterIsWeird_thenIsEmittedEmpty', () async {
       // ARRANGE
       // should be ordered 0th even though not lexicographically the 0th element
       testee.selectedCompanyCodes = [_sbbCH.code];
@@ -134,7 +134,7 @@ void main() {
       expect(emitRegister, isEmpty);
     });
 
-    test('updateIsSelectingRailwayUndertaking_whenFilterChanged_thenIsNotCalled', () {
+    test('updateIsSelectingCompany_whenFilterChanged_thenIsNotCalled', () {
       // ARRANGE
       reset(mockUpdateCompanies);
 
@@ -145,7 +145,7 @@ void main() {
       verifyNever(mockUpdateCompanies(any));
     });
 
-    test('updateIsSelectingRailwayUndertaking_whenSetSelectedRuCalled_thenIsCalled', () {
+    test('updateIsSelectingCompany_whenSetSelectedCompanyCodesCalled_thenIsCalled', () {
       // ARRANGE
       reset(mockUpdateCompanies);
 

@@ -1,4 +1,4 @@
-import 'package:app/widgets/railway_undertaking/widgets/select_railway_undertaking_input.dart';
+import 'package:app/widgets/company_selection/widgets/select_company_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -23,12 +23,12 @@ void main() {
     await openDrawer(tester);
     await tapElement(tester, find.text(l10n.w_navigation_drawer_profile_title));
 
-    // check initial RU is empty
-    expect(find.text(l10n.p_train_selection_ru_description), findsNWidgets(2));
+    // check initial company is empty
+    expect(find.text(l10n.p_train_selection_company_description), findsNWidgets(2));
 
-    await tapElement(tester, find.byWidgetPredicate((it) => it is SelectRailwayUndertakingInput));
+    await tapElement(tester, find.byWidgetPredicate((it) => it is SelectCompanyInput));
 
-    // select 3 RU
+    // select 3 companies
     await tapElement(tester, find.text(companyBLSI.shortName).first);
     await tapElement(tester, find.text(companyBLSC.shortName).first);
     await tapElement(tester, find.text(companyDB.shortName).first);
@@ -41,7 +41,7 @@ void main() {
     );
     await tester.pumpAndSettle(Duration(seconds: 1));
 
-    // check that selected RU are shown in profile
+    // check that selected companies are shown in profile
     final evuText = '${companyBLSI.shortName}, ${companyBLSC.shortName}, ${companyDB.shortName}';
     expect(find.text(evuText), findsOneWidget);
 
@@ -68,7 +68,7 @@ void main() {
     await openDrawer(tester);
     await tapElement(tester, find.text(l10n.w_navigation_drawer_profile_title));
 
-    // check initial RU is empty
+    // check initial company is empty
     expect(find.text(l10n.w_user_tour_system_selection_label), findsNWidgets(2));
 
     await tapElement(tester, find.byWidgetPredicate((it) => it is SBBDropdown));

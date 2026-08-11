@@ -6,7 +6,7 @@ import 'package:app/pages/journey/selection/journey_selection_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
 import 'package:app/pages/journey/selection/widgets/journey_date_input.dart';
 import 'package:app/pages/journey/selection/widgets/journey_train_number_input.dart';
-import 'package:app/widgets/railway_undertaking/widgets/select_railway_undertaking_input.dart';
+import 'package:app/widgets/company_selection/widgets/select_company_input.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -68,7 +68,7 @@ class JourneySearchOverlay extends StatelessWidget {
             initialData: vm.modelValue,
             builder: (context, snapshot) {
               final model = snapshot.requireData;
-              return SelectRailwayUndertakingInput(
+              return SelectCompanyInput(
                 isModalVersion: true,
                 selectedCompanyCodes: [?model.companyCode],
                 updateCompanies: vm.updateCompanies,

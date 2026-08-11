@@ -99,11 +99,11 @@ class AppLinkNavigator {
           result.add(journey.toTrainIdentification(sameDayMatches.first.companyCode));
           continue;
         } else {
-          final selectedRu = userSettings.lastUsedCompanyCode;
-          if (selectedRu != null) {
-            final ruMatch = sameDayMatches.firstWhereOrNull((it) => it.companyCode == selectedRu);
-            if (ruMatch != null) {
-              result.add(journey.toTrainIdentification(ruMatch.companyCode));
+          final selectedCompanyCode = userSettings.lastUsedCompanyCode;
+          if (selectedCompanyCode != null) {
+            final companyMatch = sameDayMatches.firstWhereOrNull((it) => it.companyCode == selectedCompanyCode);
+            if (companyMatch != null) {
+              result.add(journey.toTrainIdentification(companyMatch.companyCode));
               continue;
             }
           }

@@ -1,7 +1,7 @@
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/provider/local_key_value_store.dart';
-import 'package:app/widgets/railway_undertaking/widgets/select_railway_undertaking_input.dart';
+import 'package:app/widgets/company_selection/widgets/select_company_input.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:settings/component.dart';
@@ -46,7 +46,7 @@ class _RuFeatureStatusDisplayState extends State<RuFeatureStatusDisplay> {
   }
 
   Widget _companiesDropdown(BuildContext context) {
-    return SelectRailwayUndertakingInput(
+    return SelectCompanyInput(
       selectedCompanyCodes: _selectedCompanyCode != null ? [_selectedCompanyCode!] : [],
       isModalVersion: true,
       borderType: .standalone,

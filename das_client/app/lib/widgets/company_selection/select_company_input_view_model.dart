@@ -3,10 +3,10 @@ import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:settings/component.dart';
 
-final _log = Logger('SelectRailwayUndertakingInputViewModel');
+final _log = Logger('SelectCompanyInputViewModel');
 
-class SelectRailwayUndertakingInputViewModel {
-  SelectRailwayUndertakingInputViewModel({required this._settingsRepository}) {
+class SelectCompanyInputViewModel {
+  SelectCompanyInputViewModel({required this._settingsRepository}) {
     _init();
   }
 

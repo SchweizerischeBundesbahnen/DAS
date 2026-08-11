@@ -1,6 +1,6 @@
 import 'package:app/pages/links/links_page.dart';
-import 'package:app/widgets/railway_undertaking/widgets/select_railway_undertaking_input.dart';
-import 'package:app/widgets/railway_undertaking/widgets/select_railway_undertaking_modal.dart';
+import 'package:app/widgets/company_selection/widgets/select_company_input.dart';
+import 'package:app/widgets/company_selection/widgets/select_company_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -37,10 +37,10 @@ void main() {
       await openDrawer(tester);
       await tapElement(tester, find.text(l10n.w_navigation_drawer_profile_title));
 
-      await tapElement(tester, find.byWidgetPredicate((it) => it is SelectRailwayUndertakingInput));
+      await tapElement(tester, find.byWidgetPredicate((it) => it is SelectCompanyInput));
 
       // Search for SBB CH in the filter field and select it
-      await enterText(tester, find.byKey(SelectRailwayUndertakingModal.filterFieldKey), companySBBCH.shortName);
+      await enterText(tester, find.byKey(SelectCompanyModal.filterFieldKey), companySBBCH.shortName);
       await tapElement(tester, find.text(companySBBCH.shortName).last);
 
       // Close the modal
@@ -71,10 +71,10 @@ void main() {
       await openDrawer(tester);
       await tapElement(tester, find.text(l10n.w_navigation_drawer_profile_title));
 
-      await tapElement(tester, find.byWidgetPredicate((it) => it is SelectRailwayUndertakingInput));
+      await tapElement(tester, find.byWidgetPredicate((it) => it is SelectCompanyInput));
 
       // Search for DB in the filter field and select it
-      await enterText(tester, find.byKey(SelectRailwayUndertakingModal.filterFieldKey), companyDB.shortName);
+      await enterText(tester, find.byKey(SelectCompanyModal.filterFieldKey), companyDB.shortName);
       await tapElement(tester, find.text(companyDB.shortName).last);
 
       // Close the modal

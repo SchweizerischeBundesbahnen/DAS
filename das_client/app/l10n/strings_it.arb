@@ -1,7 +1,7 @@
 {
   "c_app_name": "DAS Client",
   "p_train_selection_trainnumber_description": "Numero del treno",
-  "p_train_selection_ru_description": "ITF",
+  "p_train_selection_company_description": "ITF",
   "p_train_selection_date_description": "Data",
   "p_train_selection_choose_date": "Seleziona data",
   "p_train_selection_date_not_today_warning": "La data selezionata non corrisponde alla data attuale.",

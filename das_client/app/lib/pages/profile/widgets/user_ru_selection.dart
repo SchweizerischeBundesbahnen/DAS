@@ -1,7 +1,7 @@
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/provider/local_key_value_store.dart';
-import 'package:app/widgets/railway_undertaking/widgets/select_railway_undertaking_input.dart';
+import 'package:app/widgets/company_selection/widgets/select_company_input.dart';
 import 'package:external_links/component.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -26,11 +26,11 @@ class _UserRuSelectionState extends State<UserRuSelection> {
         crossAxisAlignment: .start,
         children: [
           SBBListHeader(
-            context.l10n.p_train_selection_ru_description,
+            context.l10n.p_train_selection_company_description,
             style: SBBListHeaderStyle(padding: .symmetric(horizontal: SBBSpacing.medium)),
           ),
           SBBContentBox(
-            child: SelectRailwayUndertakingInput(
+            child: SelectCompanyInput(
               selectedCompanyCodes: _userSettings.companyCodes,
               updateCompanies: (selected) async {
                 await _userSettings.set(.companyCodes, selected.map((it) => it.code).toList());

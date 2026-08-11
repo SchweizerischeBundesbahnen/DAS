@@ -1,18 +1,18 @@
 import 'package:app/i18n/i18n.dart';
 import 'package:app/theme/theme_util.dart';
-import 'package:app/widgets/railway_undertaking/select_railway_undertaking_modal_controller.dart';
+import 'package:app/widgets/company_selection/select_company_modal_controller.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:collection/collection.dart';
 import 'package:core_data/component.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
-class SelectRailwayUndertakingModal extends StatefulWidget {
-  static const modalKey = Key('SelectRailwayUndertakingModal');
-  static const filterFieldKey = Key('SelectRailwayUndertakingModalFilterField');
+class SelectCompanyModal extends StatefulWidget {
+  static const modalKey = Key('SelectCompanyModal');
+  static const filterFieldKey = Key('SelectCompanyModalFilterField');
   static const shapeBorder = RoundedRectangleBorder(borderRadius: .vertical(top: .circular(SBBSpacing.medium)));
 
-  const SelectRailwayUndertakingModal({
+  const SelectCompanyModal({
     required this.availableCompanies,
     required this.selectedCompanyCodes,
     required this.updateCompanies,
@@ -26,15 +26,15 @@ class SelectRailwayUndertakingModal extends StatefulWidget {
   final bool allowMultiSelect;
 
   @override
-  State<SelectRailwayUndertakingModal> createState() => _SelectRailwayUndertakingModalState();
+  State<SelectCompanyModal> createState() => _SelectCompanyModalState();
 }
 
-class _SelectRailwayUndertakingModalState extends State<SelectRailwayUndertakingModal> {
-  SelectRailwayUndertakingModalController? controller;
+class _SelectCompanyModalState extends State<SelectCompanyModal> {
+  SelectCompanyModalController? controller;
   final ScrollController scrollController = ScrollController();
 
   @override
-  void didUpdateWidget(covariant SelectRailwayUndertakingModal oldWidget) {
+  void didUpdateWidget(covariant SelectCompanyModal oldWidget) {
     if (widget.selectedCompanyCodes != oldWidget.selectedCompanyCodes) {
       controller?.selectedCompanyCodes = widget.selectedCompanyCodes;
     }
@@ -43,7 +43,7 @@ class _SelectRailwayUndertakingModalState extends State<SelectRailwayUndertaking
 
   @override
   void didChangeDependencies() {
-    controller ??= SelectRailwayUndertakingModalController(
+    controller ??= SelectCompanyModalController(
       availableCompanies: widget.availableCompanies,
       updateCompanies: widget.updateCompanies,
       initialCompanyCodes: widget.selectedCompanyCodes,
@@ -78,7 +78,7 @@ class _SelectRailwayUndertakingModalState extends State<SelectRailwayUndertaking
               context.router.pop(selectedCompany);
             },
             child: CustomScrollView(
-              key: SelectRailwayUndertakingModal.modalKey,
+              key: SelectCompanyModal.modalKey,
               controller: scrollController,
               physics: ClampingScrollPhysics(),
               slivers: [
@@ -109,7 +109,7 @@ class _SelectRailwayUndertakingModalState extends State<SelectRailwayUndertaking
   PinnedHeaderSliver _sliverHeader(Color backgroundColor) {
     return PinnedHeaderSliver(
       child: Material(
-        shape: SelectRailwayUndertakingModal.shapeBorder,
+        shape: SelectCompanyModal.shapeBorder,
         color: backgroundColor,
         child: Padding(
           padding: const EdgeInsets.all(SBBSpacing.medium).copyWith(left: 0),
@@ -118,8 +118,8 @@ class _SelectRailwayUndertakingModalState extends State<SelectRailwayUndertaking
             children: [
               Expanded(
                 child: SBBTextInput(
-                  decoration: SBBInputDecoration(labelText: context.l10n.p_train_selection_ru_description),
-                  key: SelectRailwayUndertakingModal.filterFieldKey,
+                  decoration: SBBInputDecoration(labelText: context.l10n.p_train_selection_company_description),
+                  key: SelectCompanyModal.filterFieldKey,
                   controller: controller?.textEditingController,
                   keyboardType: .text,
                   autofocus: true,

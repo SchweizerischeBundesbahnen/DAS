@@ -48,7 +48,7 @@ void main() {
     states.clear();
   });
 
-  test('state_whenNoRailwayUndertakings_thenEmpty', () async {
+  test('state_whenNoCompanies_thenEmpty', () async {
     testee = createViewModel();
     subscription = testee.links.listen(states.add);
     await processStreams();
@@ -80,7 +80,7 @@ void main() {
     expect(states.last.single.link.localized, 'https://www.sbb.ch');
   });
 
-  test('state_whenRailwayUndertakingsConfigured_thenEmitsMatchingCompanyLinks', () async {
+  test('state_whenCompaniesConfigured_thenEmitsMatchingCompanyLinks', () async {
     when(mockLocalKeyValueStore.companyCodes).thenReturn(['1080']);
 
     testee = createViewModel();
