@@ -61,7 +61,7 @@ class RuFeatureServiceImplTest {
     @Test
     void shouldGetAllRuFeatures() {
         RuFeatureEntity ruFeatureEntity = entity(1, COMPANY_1111, "CUSTOMER_ORIENTED_DEPARTURE_PROCESS", true);
-        RuFeature expectedRuFeature = new RuFeature(COMPANY_1111, COMPANY_1111, "CUSTOMER_ORIENTED_DEPARTURE_PROCESS", true);
+        RuFeature expectedRuFeature = new RuFeature(COMPANY_1111, "CUSTOMER_ORIENTED_DEPARTURE_PROCESS", true);
 
         when(ruFeatureRepository.findAll()).thenReturn(List.of(ruFeatureEntity));
         when(ruFeatureMapper.toRuFeature(ruFeatureEntity)).thenReturn(expectedRuFeature);

@@ -44,7 +44,6 @@ public class FormationRunMapper {
             .carCarrierVehicle(entity.getCarCarrierVehicle())
             .dangerousGoods(entity.getDangerousGoods())
             .vehiclesCount(entity.getVehiclesCount())
-            .vehiclesWithBrakeDesignLlAndKCount(entity.getVehiclesWithBrakeDesignLAndLlAndKCount()) // todo: delete as soon as das_client v 0.49.0 released
             .vehiclesWithBrakeDesignLAndLlAndKCount(entity.getVehiclesWithBrakeDesignLAndLlAndKCount())
             .vehiclesWithBrakeDesignDCount(entity.getVehiclesWithBrakeDesignDCount())
             .vehiclesWithDisabledBrakesCount(entity.getVehiclesWithDisabledBrakesCount())

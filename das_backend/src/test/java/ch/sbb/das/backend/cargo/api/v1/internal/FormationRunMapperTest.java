@@ -100,7 +100,6 @@ class FormationRunMapperTest {
         assertThat(result.carCarrierVehicle()).isFalse();
         assertThat(result.dangerousGoods()).isTrue();
         assertThat(result.vehiclesCount()).isEqualTo(12);
-        assertThat(result.vehiclesWithBrakeDesignLlAndKCount()).isEqualTo(5);
         assertThat(result.vehiclesWithBrakeDesignLAndLlAndKCount()).isEqualTo(5);
         assertThat(result.vehiclesWithBrakeDesignDCount()).isEqualTo(3);
         assertThat(result.vehiclesWithDisabledBrakesCount()).isEqualTo(1);
@@ -132,8 +131,8 @@ class FormationRunMapperTest {
         assertThat(result).hasSize(2);
         assertThat(result.getFirst().tafTapLocationReferenceStart()).isEqualTo("CH00001");
         assertThat(result.getLast().tafTapLocationReferenceStart()).isEqualTo("CH00003");
-        assertThat(result.getFirst().vehiclesWithBrakeDesignLlAndKCount()).isEqualTo(1);
-        assertThat(result.getLast().vehiclesWithBrakeDesignLlAndKCount()).isEqualTo(2);
+        assertThat(result.getFirst().vehiclesWithBrakeDesignLAndLlAndKCount()).isEqualTo(1);
+        assertThat(result.getLast().vehiclesWithBrakeDesignLAndLlAndKCount()).isEqualTo(2);
     }
 
     @Test
