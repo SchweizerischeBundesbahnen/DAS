@@ -1,5 +1,3 @@
-import 'package:collection/collection.dart';
-
 enum RailwayUndertaking {
   blsC(companyCode: '3356'),
   blsI(companyCode: '2263'),
@@ -51,10 +49,4 @@ enum RailwayUndertaking {
   });
 
   final String companyCode;
-
-  static Iterable<RailwayUndertaking> get knownRUs => values.whereNot((ru) => ru == unknown);
-
-  static RailwayUndertaking fromCompanyCode(String companyCode) {
-    return .values.firstWhereOrNull((e) => e.companyCode == companyCode) ?? unknown;
-  }
 }

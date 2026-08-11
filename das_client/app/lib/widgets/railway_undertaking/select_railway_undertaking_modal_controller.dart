@@ -6,6 +6,7 @@ import 'package:rxdart/rxdart.dart';
 
 final _log = Logger('JourneyRailwayUndertakingFilterController');
 
+/// TODO: Update documentation
 /// This Controller is responsible for filtering **localized** names of railway undertakings.
 /// Thus it must access the AppLocalizations.
 ///
@@ -93,7 +94,7 @@ class SelectRailwayUndertakingModalController {
 
     final search = _filter!.toLowerCase().trim();
     final filteredResult = _rxFilteredCompanies.value
-        .where((company) => company.shortName.startsWith(search))
+        .where((company) => company.shortName.toLowerCase().startsWith(search))
         .sortedAlphabeticallyWithSelectedFirst(_selectedCompanyCodes);
 
     _log.finer('Filtered companies with $search to $filteredResult.');

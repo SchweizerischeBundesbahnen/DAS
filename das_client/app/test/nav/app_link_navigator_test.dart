@@ -90,7 +90,7 @@ void main() {
 
     final linkData = TrainJourneyLinkData(
       operationalTrainNumber: '12345',
-      company: RailwayUndertaking.sbbP.companyCode,
+      company: '1285',
       startDate: DateTime.utc(2026, 7, 23),
       tafTapLocationReferenceStart: 'A',
       tafTapLocationReferenceEnd: 'B',
@@ -132,7 +132,7 @@ void main() {
 
     final linkData = TrainJourneyLinkData(
       operationalTrainNumber: '333',
-      company: RailwayUndertaking.blsP.companyCode,
+      company: '1163',
       startDate: DateTime.utc(2026, 7, 20),
     );
 
@@ -147,7 +147,7 @@ void main() {
             as Iterable<ExtendedTrainIdentification>;
     final values = captured.toList();
     expect(values, hasLength(1));
-    expect(values.first.trainIdentification.companyCode, RailwayUndertaking.blsP);
+    expect(values.first.trainIdentification.companyCode, '1163');
     expect(values.first.trainIdentification.trainNumber, '333');
     expect(router.replacedRoutes, isEmpty);
   });

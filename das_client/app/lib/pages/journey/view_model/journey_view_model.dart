@@ -71,7 +71,7 @@ class JourneyViewModel {
     if (trainIdentification == null) {
       _rxFormattedTrainIdentifier.add(null);
     } else {
-      final trainNumber = trainIdentification!.trainNumber;
+      final trainNumber = trainIdentification.trainNumber;
       final companyName = await _settingsRepository.getCompanyForCode(trainIdentification.companyCode);
       final displayedTrainNumber = _hasShuntingMovement() ? '${trainNumber}R / $trainNumber' : trainNumber;
       _rxFormattedTrainIdentifier.add('$displayedTrainNumber ${companyName ?? ''}'.trim());

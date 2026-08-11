@@ -9,8 +9,11 @@ import '../../../../test_util.dart';
 const _blsC = Company(code: '3356', shortName: 'BLSC');
 const _sbbP = Company(code: '1285', shortName: 'SBBP');
 const _sbbCH = Company(code: '2185', shortName: 'SBBCH');
+const _sbbI = Company(code: '5184', shortName: 'SBBI');
+const _sbbD = Company(code: '2385', shortName: 'SBBD');
+const _sbbCInt = Company(code: '2585', shortName: 'SBBCInt');
 const _sob = Company(code: '9058', shortName: 'SOB');
-const _availableCompanies = [_blsC, _sbbP, _sbbCH, _sob];
+const _availableCompanies = [_blsC, _sbbP, _sbbCH, _sob, _sbbI, _sbbD, _sbbCInt];
 
 void main() {
   late SelectRailwayUndertakingModalController testee;
@@ -88,12 +91,12 @@ void main() {
       // EXPECT
       expect(
         emitRegister,
-        orderedEquals(<RailwayUndertaking>[
-          .sbbCH,
-          .sbbCInt,
-          .sbbD,
-          .sbbI,
-          .sbbP,
+        orderedEquals(<Company>[
+          _sbbCH,
+          _sbbCInt,
+          _sbbD,
+          _sbbI,
+          _sbbP,
         ]),
       );
     });

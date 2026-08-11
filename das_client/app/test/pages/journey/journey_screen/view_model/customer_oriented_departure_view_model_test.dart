@@ -6,6 +6,7 @@ import 'package:app/sound/das_sounds.dart';
 import 'package:app/sound/sound.dart';
 import 'package:app/util/app_lifecycle_view_model.dart';
 import 'package:auth/component.dart';
+import 'package:core_data/component.dart';
 import 'package:customer_oriented_departure/component.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -99,6 +100,9 @@ void main() {
       );
       when(mockDasSounds.customerOrientedDeparture).thenReturn(mockSound);
       when(mockAuthenticator.user()).thenAnswer((_) => Future.value(User(userId: 'userId', roles: [Role.driver])));
+      when(
+        mockSettingsRepository.getCompanyForCode('1285'),
+      ).thenAnswer((_) => Future.value(Company(code: '1285', shortName: 'SBBP')));
 
       GetIt.I.registerSingleton<DASSounds>(mockDasSounds);
 
@@ -220,7 +224,7 @@ void main() {
       // VERIFY
       verify(
         mockRepository.subscribe(
-          evu: RailwayUndertaking.sbbP.name.toUpperCase(),
+          evu: 'SBBP',
           trainNumber: '9999',
           journeyEndTime: journeyEndTime,
           isDriver: true,
