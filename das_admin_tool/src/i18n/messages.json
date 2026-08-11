@@ -82,7 +82,7 @@
     "ru_indication_status_label_expired": "Abgelaufen",
     "special_holidays_schedule_type_sunday": "Sonntag",
     "special_holidays_schedule_type_monday": "Montag",
-    "ru_feature_toggles_key_label_warnapp": "WarnApp",
+    "ru_feature_toggles_key_label_warnapp": "Warnfunktion geschlossenes Signal",
     "ru_feature_toggles_key_label_customer_oriented_departure_process": "Kundenorientierter Abfahrprozess (KoA)",
     "ru_feature_toggles_key_label_checklist_departure_process": "Checkliste Abfahrprozess",
     "ru_feature_toggles_key_label_display_planned_time_deviation": "Planzeitabweichung",
