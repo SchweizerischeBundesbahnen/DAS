@@ -147,8 +147,9 @@ trainjourneyplan:
     cron-expression: ${PRELOAD_CLEANUP_CRON}
 
 trainjourneypreloader:
-  # adapt corresponding lockAtLeastFor time in @SchedulerLock
   fetch-cron: ${PRELOAD_FETCH_CRON}
+  # must be shorter than fetch-cron interval to prevent overlapping runs
+  max-preload-duration: ${PRELOAD_MAX_DURATION:PT4M}
   storage-clean-up:
     hours: ${PRELOAD_CLEANUP_HOURS}
 

@@ -39,8 +39,8 @@ trainjourneyplan:
     days: 2
 
 trainjourneypreloader:
-  # adapt corresponding lockAtLeastFor time in @SchedulerLock
   fetch-cron: "-"
+  max-preload-duration: PT4M
   storage-clean-up:
     hours: 24
 
