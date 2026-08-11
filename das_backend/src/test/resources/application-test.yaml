@@ -41,6 +41,9 @@ formation:
   transport-paper:
     sbbi-base-url: https://sbbi.example.com
     blsc-app-link: https://blsc.example.com
+    mock:
+      enabled: true
+      download-url: https://mock.example.com/transport-paper.pdf
   kafka:
     bootstrap-server: ''
     group-id: ''

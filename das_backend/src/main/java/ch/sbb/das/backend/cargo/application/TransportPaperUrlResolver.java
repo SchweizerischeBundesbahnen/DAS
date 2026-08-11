@@ -1,9 +1,13 @@
 package ch.sbb.das.backend.cargo.application;
 
+import static ch.sbb.das.backend.cargo.api.v1.TransportPaperController.API_TRANSPORT_PAPERS;
+import static ch.sbb.das.backend.cargo.api.v1.TransportPaperController.PARAM_COUNTRY_CODE_ISO;
+import static ch.sbb.das.backend.cargo.api.v1.TransportPaperController.PARAM_LOCATION_PRIMARY_CODE;
+import static ch.sbb.das.backend.cargo.api.v1.TransportPaperController.PARAM_PASS_INDEX;
+
 import ch.sbb.das.backend.cargo.api.v1.model.TransportPaperLink;
 import ch.sbb.das.backend.cargo.api.v1.model.TransportPaperLink.TransportPaperLinkType;
 import ch.sbb.das.backend.cargo.infrastructure.model.TrainFormationRunEntity;
-import ch.sbb.das.backend.common.ApiDocumentation;
 import ch.sbb.das.backend.locations.TafTapLocationReference;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -16,9 +20,10 @@ public class TransportPaperUrlResolver {
     private static final String COMPANY_SBBI = "5184";
     private static final String COMPANY_BLSC = "3356";
     private static final int DEFAULT_PASS_INDEX = 0;
-    // todo: replace when controller is implemented
-    private static final String SBBCH_URL_TEMPLATE =
-        ApiDocumentation.DRIVER_URI + ApiDocumentation.DRIVER_VERSION_URI_V1 + "/transport-papers/%s/%s?countryCodeIso=%s&locationPrimaryCode=%s&bpZusatzId=%d";
+    private static final String SBBCH_URL_TEMPLATE = API_TRANSPORT_PAPERS + "/%s/%s?"
+        + PARAM_COUNTRY_CODE_ISO + "=%s&"
+        + PARAM_LOCATION_PRIMARY_CODE + "=%s&"
+        + PARAM_PASS_INDEX + "=%d";
     private static final String SBBI_URL_TEMPLATE = "%s/#/zugliste/%s/%s/%d/%d/%d/RID_BEFOERDERUNGSDOKUMENT";
 
     private final String sbbiBaseUrl;

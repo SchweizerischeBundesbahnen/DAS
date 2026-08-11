@@ -25,16 +25,26 @@ spring:
             client-id: ${SFERA_OAUTH_CLIENTID}
             client-secret: ${SFERA_OAUTH_SECRET}
             authorization-grant-type: client_credentials
-            scope: ${SFERA_OAUTH_SCOPE}
+            scope:
+              - ${SFERA_OAUTH_SCOPE}
           atlas:
             client-id: ${SFERA_OAUTH_CLIENTID}
             client-secret: ${SFERA_OAUTH_SECRET}
             authorization-grant-type: client_credentials
-            scope: ${ATLAS_OAUTH_SCOPE}
+            scope:
+              - ${ATLAS_OAUTH_SCOPE}
+          orca:
+            client-id: ${SFERA_OAUTH_CLIENTID}
+            client-secret: ${SFERA_OAUTH_SECRET}
+            authorization-grant-type: client_credentials
+            scope:
+              - ${ORCA_OAUTH_SCOPE}
         provider:
           azure:
             token-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/oauth2/v2.0/token
           atlas:
+            token-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/oauth2/v2.0/token
+          orca:
             token-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/oauth2/v2.0/token
   jackson:
     mapper:
@@ -102,6 +112,12 @@ formation:
   transport-paper:
     sbbi-base-url: ${TRANSPORT_PAPER_SBBI_BASE_URL}
     blsc-app-link: ${TRANSPORT_PAPER_BLSC_APP_LINK}
+    orca:
+      base-url: ${TRANSPORT_PAPER_ORCA_BASE_URL}
+    # todo: delete as soon as orca is ready
+    mock:
+      enabled: ${TRANSPORT_PAPER_MOCK_ENABLED:true}
+      download-url: ${TRANSPORT_PAPER_MOCK_DOWNLOAD_URL:}
   kafka:
     bootstrap-server: ${FORMATION_KAFKA_BOOTSTRAP_SERVER}
     group-id: ${FORMATION_KAFKA_GROUP_ID}
