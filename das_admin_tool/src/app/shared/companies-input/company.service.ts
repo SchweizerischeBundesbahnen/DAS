@@ -27,9 +27,7 @@ export class CompanyService {
   constructor() {
     effect(() => {
       if (this.companiesResource.error()) {
-        this.toastService.error(
-          $localize`:@@company_service_error_loading:Fehler beim Laden der EVUs`,
-        );
+        this.toastService.error($localize`:@@companies_error_loading:Fehler beim Laden der EVUs`);
       }
     });
   }

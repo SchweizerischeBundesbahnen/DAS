@@ -7,13 +7,13 @@
   [saveDisabled]="companyForm.invalid"
 >
   <form [formGroup]="companyForm">
-    <sbb-form-field errorSpace="reserve" class="full-width">
+    <sbb-form-field class="full-width" errorSpace="reserve">
       <label for="code" i18n="@@company_form_code_label">Code</label>
       <input formControlName="code" />
       <!-- eslint-disable-next-line @angular-eslint/template/no-non-null-assertion -->
       @let codeField = companyForm.get('code')!;
       @if (codeField.touched && codeField.hasError('required')) {
-        <sbb-error i18n="@@company_form_field_error_required">Feld darf nicht leer sein</sbb-error>
+        <sbb-error i18n="@@form_field_error_required">Feld darf nicht leer sein</sbb-error>
       }
       @if (codeField.touched && codeField.hasError('pattern')) {
         <sbb-error i18n="@@company_form_field_error_pattern"
@@ -21,16 +21,16 @@
         >
       }
     </sbb-form-field>
-    <sbb-form-field errorSpace="reserve" class="full-width">
+    <sbb-form-field class="full-width" errorSpace="reserve">
       <label for="shortName" i18n="@@company_form_short_name_label">Kurzname (NeTS)</label>
       <input formControlName="shortName" />
       <!-- eslint-disable-next-line @angular-eslint/template/no-non-null-assertion -->
       @let shortNameField = companyForm.get('shortName')!;
       @if (shortNameField.touched && shortNameField.hasError('required')) {
-        <sbb-error i18n="@@company_form_field_error_required">Feld darf nicht leer sein</sbb-error>
+        <sbb-error i18n="@@form_field_error_required">Feld darf nicht leer sein</sbb-error>
       }
     </sbb-form-field>
-    <sbb-form-field errorSpace="reserve" class="full-width">
+    <sbb-form-field class="full-width" errorSpace="reserve">
       <label for="tenantId" i18n="@@company_form_tenant_id_label">Tenant Id</label>
       <sbb-select formControlName="tenantId">
         @for (tenant of tenants(); track tenant.tenantId) {
@@ -42,7 +42,7 @@
       <!-- eslint-disable-next-line @angular-eslint/template/no-non-null-assertion -->
       @let tenantIdField = companyForm.get('tenantId')!;
       @if (tenantIdField.touched && tenantIdField.hasError('required')) {
-        <sbb-error i18n="@@company_form_field_error_required">Feld darf nicht leer sein</sbb-error>
+        <sbb-error i18n="@@form_field_error_required">Feld darf nicht leer sein</sbb-error>
       }
     </sbb-form-field>
   </form>

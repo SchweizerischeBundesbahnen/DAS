@@ -14,9 +14,8 @@
         i18n="@@companies_table_column_code"
         sbb-header-cell
         sbb-sort-header="code"
+        >Code</th
       >
-        Code
-      </th>
       <td *sbbCellDef="let row" sbb-cell>
         <span>{{ row.code }}</span>
       </td>
@@ -28,9 +27,8 @@
         i18n="@@companies_table_column_short_name"
         sbb-header-cell
         sbb-sort-header="shortName"
+        >Kurzname (NeTS)</th
       >
-        Kurzname (NeTS)
-      </th>
       <td *sbbCellDef="let row" sbb-cell>
         <span>{{ row.shortName }}</span>
       </td>
@@ -42,9 +40,8 @@
         i18n="@@companies_table_column_tenant_id"
         sbb-header-cell
         sbb-sort-header="tenantId"
+        >Tenant Id</th
       >
-        Tenant Id
-      </th>
       <td *sbbCellDef="let row" sbb-cell>
         <span>{{ tenant(row.tenantId) }}</span>
       </td>
@@ -53,23 +50,22 @@
     <ng-container sbbColumnDef="lastModifiedAt">
       <th
         *sbbHeaderCellDef
-        i18n="@@companies_table_column_last_modified_at"
+        i18n="@@table_column_last_modified_at"
         sbb-header-cell
         sbb-sort-header="lastModifiedAt"
+        >Bearbeitet am</th
       >
-        Bearbeitet am
-      </th>
       <td *sbbCellDef="let row" sbb-cell>{{ row.lastModifiedAt | date: 'short' }} </td>
     </ng-container>
 
     <ng-container sbbColumnDef="lastModifiedBy">
       <th
         *sbbHeaderCellDef
-        i18n="@@companies_table_column_last_modified_by"
+        i18n="@@table_column_last_modified_by"
         sbb-header-cell
         sbb-sort-header="lastModifiedBy"
-        >Bearbeitet von
-      </th>
+        >Bearbeitet von</th
+      >
       <td *sbbCellDef="let row" sbb-cell>{{ row.lastModifiedBy }}</td>
     </ng-container>
 
@@ -85,4 +81,4 @@
   </table>
 </sbb-table-wrapper>
 
-<app-table-bottom-bar [showDelete]="false" [deleting]="isDeleting" (addClicked)="add()" />
+<app-table-bottom-bar [deleting]="isDeleting" [showDelete]="false" (addClicked)="add()" />
