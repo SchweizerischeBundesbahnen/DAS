@@ -102,6 +102,68 @@ void main() {
     expect(time.plannedArrivalTime, DateTime(2025, 5, 13, 16, 0));
   });
 
+  test('bestKnownDepartureTime_whenBothAmbiguousAndPlannedDepartureTimesAreProvided_thenReturnsOperationalTime', () {
+    final time = ArrivalDepartureTime(
+      ambiguousDepartureTime: DateTime(2025, 5, 13, 12, 0),
+      plannedDepartureTime: DateTime(2025, 5, 13, 11, 0),
+    );
+
+    expect(time.bestKnownDepartureTime, DateTime(2025, 5, 13, 12, 0));
+  });
+
+  test('bestKnownDepartureTime_whenOnlyPlannedDepartureTimeIsProvided_thenReturnsPlannedTime', () {
+    final time = ArrivalDepartureTime(
+      plannedDepartureTime: DateTime(2025, 5, 13, 11, 0),
+    );
+
+    expect(time.bestKnownDepartureTime, DateTime(2025, 5, 13, 11, 0));
+  });
+
+  test('bestKnownDepartureTime_whenOnlyAmbiguousDepartureTimeIsProvided_thenReturnsAmbiguousTime', () {
+    final time = ArrivalDepartureTime(
+      ambiguousDepartureTime: DateTime(2025, 5, 13, 12, 0),
+    );
+
+    expect(time.bestKnownDepartureTime, DateTime(2025, 5, 13, 12, 0));
+  });
+
+  test('bestKnownDepartureTime_whenNoDepartureTimeIsProvided_thenReturnsNull', () {
+    final time = ArrivalDepartureTime();
+
+    expect(time.bestKnownDepartureTime, isNull);
+  });
+
+  test('bestKnownArrivalTime_whenBothAmbiguousAndPlannedArrivalTimesAreProvided_thenReturnsOperationalTime', () {
+    final time = ArrivalDepartureTime(
+      ambiguousArrivalTime: DateTime(2025, 5, 13, 15, 0),
+      plannedArrivalTime: DateTime(2025, 5, 13, 16, 0),
+    );
+
+    expect(time.bestKnownArrivalTime, DateTime(2025, 5, 13, 15, 0));
+  });
+
+  test('bestKnownArrivalTime_whenOnlyPlannedArrivalTimeIsProvided_thenReturnsPlannedTime', () {
+    final time = ArrivalDepartureTime(
+      plannedArrivalTime: DateTime(2025, 5, 13, 16, 0),
+    );
+
+    expect(time.bestKnownArrivalTime, DateTime(2025, 5, 13, 16, 0));
+  });
+
+  test('bestKnownArrivalTime_whenOnlyAmbiguousArrivalTimeIsProvided_thenReturnsAmbiguousTime', () {
+    final time = ArrivalDepartureTime(
+      ambiguousArrivalTime: DateTime(2025, 5, 13, 15, 0),
+    );
+
+    expect(time.bestKnownArrivalTime, DateTime(2025, 5, 13, 15, 0));
+  });
+
+  test('bestKnownArrivalTime_whenNoArrivalTimeIsProvided_thenReturnsNull', () {
+    final time = ArrivalDepartureTime();
+
+    expect(time.bestKnownArrivalTime, isNull);
+  });
+
   test('hasAnyTime_whenNoTime_thenReturnsFalse', () {
     final time = ArrivalDepartureTime();
 
