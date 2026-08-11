@@ -1,12 +1,6 @@
 extension DateTimeExtension on DateTime {
   DateTime get roundDownToTenthOfSecond => copyWith(
-    year: year,
-    month: month,
-    day: day,
-    hour: hour,
-    minute: minute,
-    second: (second ~/ 10) * 10,
-    millisecond: 0,
+    millisecond: (millisecond ~/ 100) * 100,
     microsecond: 0,
   );
 

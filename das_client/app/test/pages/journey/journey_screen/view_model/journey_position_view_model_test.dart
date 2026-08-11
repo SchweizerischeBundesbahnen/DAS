@@ -317,6 +317,48 @@ void main() {
         expect(emitRegister, hasLength(2));
       });
 
+      test('currentPosition_whenArrivalTimeOffTenSecondBoundary_thenDoesNotAdvanceEarly', () {
+        // ARRANGE - guards against flooring the arrival time to whole ten seconds of the wall clock
+        final aServicePoint = ServicePoint(
+          name: 'a',
+          abbreviation: '',
+          locationCode: '',
+          order: 16,
+          kilometre: [],
+          arrivalDepartureTime: ArrivalDepartureTime(
+            plannedArrivalTime: now.now().add(Duration(seconds: 47)),
+            ambiguousArrivalTime: now.now().add(Duration(seconds: 33)),
+          ),
+        );
+
+        testAsync.run((_) {
+          rxMockPunctuality.add(
+            DelayModel.visible(
+              delay: Delay(value: Duration.zero, location: ''),
+            ),
+          );
+          testAsync.flushMicrotasks();
+          rxMockJourney.add(
+            Journey(
+              metadata: Metadata(
+                signaledPosition: SignaledPosition(order: 10),
+                calculatedSpeeds: SplayTreeMap.of({16: const SingleSpeed(value: '80')}),
+              ),
+              data: [zeroSignal, tenSignal, aServicePoint, twentySignal],
+            ),
+          );
+        });
+        testAsync.flushMicrotasks();
+
+        testAsync.elapse(Duration(seconds: 31));
+        testAsync.flushMicrotasks();
+        expect(testee.modelValue.currentPosition, equals(tenSignal));
+
+        testAsync.elapse(Duration(seconds: 3));
+        testAsync.flushMicrotasks();
+        expect(testee.modelValue.currentPosition, equals(aServicePoint));
+      });
+
       test(
         'currentPosition_whenSPWithOperationalArrivalTimeAndPositiveDelay_thenReturnsSPAfterOperationalTimeMinusDelay',
         () {
