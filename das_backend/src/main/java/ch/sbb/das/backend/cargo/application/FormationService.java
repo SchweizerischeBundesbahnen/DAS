@@ -31,6 +31,7 @@ public class FormationService {
     @Transactional
     public void deleteAndSave(String trainPathId, LocalDate operationalDay, List<TrainFormationRunEntity> entities) {
         trainFormationRunRepository.deleteByTrainPathIdAndOperationalDay(trainPathId, operationalDay);
+        trainFormationRunRepository.flush();
         trainFormationRunRepository.saveAll(entities);
     }
 
