@@ -74,7 +74,7 @@ class FormationRepositoryImpl implements FormationRepository {
 
     try {
       final response = await _apiService.transportPaper(transportPaperLink.url).call();
-      _log.info('Resolved $transportPaperLink with ${response.headers}');
+      _log.info('Resolved $transportPaperLink with location ${response.headers['Location']}');
       return response.headers['Location'];
     } catch (e) {
       _log.severe('Connection error while resolving $transportPaperLink', e);

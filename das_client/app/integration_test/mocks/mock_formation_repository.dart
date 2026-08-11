@@ -291,11 +291,10 @@ class MockFormationRepository implements FormationRepository {
   @override
   Future<String?> resolveTransportPaperLink(TransportPaperLink transportPaperLink) async {
     return switch (transportPaperLink.type) {
-      TransportPaperLinkType.url => transportPaperLink.url,
-      TransportPaperLinkType.pdfRedirect when transportPaperLink.url == _redirectTransportPaperUrl =>
-        _resolvedRedirectTransportPaperUrl,
-      TransportPaperLinkType.pdfRedirect => null,
-      TransportPaperLinkType.unknown => null,
+      .url => transportPaperLink.url,
+      .pdfRedirect when transportPaperLink.url == _redirectTransportPaperUrl => _resolvedRedirectTransportPaperUrl,
+      .pdfRedirect => null,
+      .unknown => null,
     };
   }
 }

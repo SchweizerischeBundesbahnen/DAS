@@ -126,7 +126,7 @@ void main() {
 
   final transportPaperLink = TransportPaperLink(
     url: '/transport-paper/redirect',
-    type: TransportPaperLinkType.pdfRedirect,
+    type: .pdfRedirect,
   );
 
   final formationRunWithTransportPaper = _generateFormationRun(
