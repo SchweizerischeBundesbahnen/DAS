@@ -28,7 +28,6 @@ class JourneyPositionViewModel extends JourneyAwareViewModel {
   final JourneySettingsViewModel _journeySettingsViewModel;
   final TimedRouteProvider _timedRouteProvider;
 
-  StreamSubscription<DelayModel>? _punctualitySubscription;
   StreamSubscription<(Journey?, DelayModel, ServicePoint?, JourneyPoint?)>? _journeySubscription;
   final _rxModel = BehaviorSubject.seeded(JourneyPositionModel());
 
@@ -38,6 +37,7 @@ class JourneyPositionViewModel extends JourneyAwareViewModel {
   final _rxManualPosition = BehaviorSubject<JourneyPoint?>.seeded(null);
   DateTime? _manualPositionTime;
   Timer? _manuelPositionAdvancementTimer;
+  SignaledPosition? _lastSignaledPosition;
 
   Stream<JourneyPositionModel> get model => _rxModel.distinct();
 
@@ -47,20 +47,19 @@ class JourneyPositionViewModel extends JourneyAwareViewModel {
     _log.info('Setting manual position to: $manualPosition');
     _rxManualPosition.add(manualPosition);
     _manualPositionTime = clock.now();
-    if (manualPosition != null && manualPosition is ServicePoint) {
+    _manuelPositionAdvancementTimer?.cancel();
+    if (manualPosition is ServicePoint) {
       _startManualPositionTimer(manualPosition);
     }
   }
 
   void _startManualPositionTimer(ServicePoint manualPosition) {
-    _manuelPositionAdvancementTimer?.cancel();
-
-    final arrivalTime = manualPosition.arrivalDepartureTime?.plannedArrivalTime;
+    final arrivalTime = manualPosition.arrivalDepartureTime?.bestKnownArrivalTime;
     final manualPositionTime = _manualPositionTime;
     final nextServicePoint = lastJourney?.journeyPoints.whereType<ServicePoint>().firstWhereOrNull(
       (it) => it.order > manualPosition.order,
     );
-    final nextArrivalTime = nextServicePoint?.arrivalDepartureTime?.plannedArrivalTime;
+    final nextArrivalTime = nextServicePoint?.arrivalDepartureTime?.bestKnownArrivalTime;
     if (arrivalTime != null && manualPositionTime != null && nextArrivalTime != null) {
       final timeSinceArrival = manualPositionTime.difference(arrivalTime);
       final nextServicePointDuration = nextArrivalTime.add(timeSinceArrival).difference(clock.now());
@@ -98,12 +97,14 @@ class JourneyPositionViewModel extends JourneyAwareViewModel {
             return;
           }
 
+          _resetAdvancementOnNewSignaledPosition(journey.metadata.signaledPosition);
+
           final (updatedPosition, isManualPosition) = _calculateCurrentPosition(
             journey.metadata.signaledPosition,
             journey.journeyPoints,
           );
 
-          _calculateAndSetTimedServicePoint(updatedPosition, journey.journeyPoints, punctuality);
+          _calculateAndSetTimedServicePoint(updatedPosition, journey, punctuality);
 
           final calculatedLastPosition = _calculateLastPosition(journey, updatedPosition);
           final lastPosition = calculatedLastPosition == updatedPosition
@@ -124,6 +125,19 @@ class JourneyPositionViewModel extends JourneyAwareViewModel {
             _rxModel.add(model);
           }
         });
+  }
+
+  /// A signal advancement has priority over any timed or manual advancement, even if those
+  /// have already advanced further along the route.
+  void _resetAdvancementOnNewSignaledPosition(SignaledPosition? signaledPosition) {
+    final isNewSignaledPosition = signaledPosition != null && signaledPosition != _lastSignaledPosition;
+    _lastSignaledPosition = signaledPosition;
+    if (!isNewSignaledPosition) return;
+
+    _manuelPositionAdvancementTimer?.cancel();
+    _manualPositionTime = null;
+    if (_rxManualPosition.value != null) _rxManualPosition.add(null);
+    if (_rxTimedServicePointReached.value != null) _rxTimedServicePointReached.add(null);
   }
 
   JourneyPoint? _calculateLastPosition(Journey? journey, JourneyPoint? updatedPosition) {
@@ -222,24 +236,26 @@ class JourneyPositionViewModel extends JourneyAwareViewModel {
 
   void _calculateAndSetTimedServicePoint(
     JourneyPoint? updatedPosition,
-    List<JourneyPoint> journeyPoints,
+    Journey journey,
     DelayModel punctuality,
   ) {
-    if (_timedRouteProvider.isInTimedAdvancementRoute(updatedPosition, journeyPoints)) {
+    if (_timedRouteProvider.isInTimedAdvancementRoute(updatedPosition, journey.journeyPoints)) {
       _log.info('Journey is in timed advancement route');
-      _handleTimedRoute(updatedPosition!, journeyPoints);
+      _handleTimedRoute(updatedPosition!, journey.journeyPoints);
     } else {
-      _handleSignaledRoute(updatedPosition, journeyPoints, punctuality);
+      _handleSignaledRoute(updatedPosition, journey, punctuality);
     }
   }
 
   void _handleSignaledRoute(
     JourneyPoint? updatedPosition,
-    List<JourneyPoint> journeyPoints,
+    Journey journey,
     DelayModel punctuality,
   ) {
-    if (punctuality is Stale || punctuality is Hidden) return;
     if (updatedPosition is ServicePoint) return;
+
+    final journeyPoints = journey.journeyPoints;
+    if (journeyPoints.isEmpty) return;
 
     final nextPointIndex = journeyPoints.indexOf(updatedPosition ?? journeyPoints.first) + 1;
 
@@ -258,14 +274,21 @@ class JourneyPositionViewModel extends JourneyAwareViewModel {
 
     final nextServicePoint = nextPoint;
 
-    final operationalArrivalTime =
-        nextServicePoint.arrivalDepartureTime?.operationalArrivalTime?.roundDownToTenthOfSecond;
-    if (operationalArrivalTime == null) return;
+    final bestKnownArrivalTime = nextServicePoint.arrivalDepartureTime?.bestKnownArrivalTime?.roundDownToTenthOfSecond;
+    if (bestKnownArrivalTime == null) return;
 
-    final arrivalTimeWithDelay = operationalArrivalTime.add((punctuality as Visible).delay.value);
+    final DateTime arrivalTime;
+    if (journey.metadata.calculatedSpeeds[nextServicePoint.order] != null) {
+      // with VPro speeds the PüA drives the advancement, wait for the next signal on stale or missing PüA
+      if (punctuality is! Visible) return;
+      arrivalTime = bestKnownArrivalTime.add(punctuality.delay.value);
+    } else {
+      // without VPro speeds there is no PüA to consider
+      arrivalTime = bestKnownArrivalTime;
+    }
 
     final now = clock.now();
-    final untilNextServicePoint = arrivalTimeWithDelay.add(Duration(milliseconds: 100)).difference(now);
+    final untilNextServicePoint = arrivalTime.add(Duration(milliseconds: 100)).difference(now);
     _setTimedServicePoint(untilNextServicePoint, nextServicePoint);
   }
 
@@ -304,7 +327,7 @@ class JourneyPositionViewModel extends JourneyAwareViewModel {
     _rxManualPosition.close();
     _servicePointReachedTimer?.cancel();
     _servicePointReachedTimer = null;
-    _punctualitySubscription?.cancel();
-    _punctualitySubscription = null;
+    _manuelPositionAdvancementTimer?.cancel();
+    _manuelPositionAdvancementTimer = null;
   }
 }
