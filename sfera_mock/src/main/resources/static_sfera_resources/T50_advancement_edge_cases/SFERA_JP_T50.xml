@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<!-- Timed advancement edge cases. Timeline relative to registration (see SFERA_Event_T50_* offsets),
+     tuned to the TestTimeConstants of the client integration tests (punctuality stale after 2s, hidden after 5s):
+     - Bravo (no VPro speed): advances at the operational arrival time (13s), ignoring the delay reported
+       at 8s and preferring the operational over the planned time (50s).
+     - Charlie (VPro speed): the fresh delay reported with signal B2 at 16s added to the operational arrival
+       time (14s) is already reached, so the advancement follows immediately.
+     - Echo (no VPro speed, planned time only): after signal B4 at 22s, advances at the planned arrival
+       time (26s) regardless of the PüA state.
+     - Signal B3 at 32s lies behind the already advanced position Echo and takes priority. It is the last
+       event and carries no delay, so the punctuality is hidden and the long past operational arrival time
+       of Delta (VPro speed) never triggers a timed advancement - the chevron stays on B3 for good. -->
+<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="1" xsi:noNamespaceSchemaLocation="../../SFERA.xsd">
+    <TrainIdentification>
+        <OTN_ID>
+            <teltsi_Company>1285</teltsi_Company>
+            <teltsi_OperationalTrainNumber>T50</teltsi_OperationalTrainNumber>
+            <teltsi_StartDate>2026-08-11</teltsi_StartDate>
+        </OTN_ID>
+    </TrainIdentification>
+    <SegmentProfileReference SP_ID="T50_1" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>0085</IM_ID>
+        </SP_Zone>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Alpha"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:00:13Z"
+                                TP_PlannedLatestArrivalTime="9999-01-01T00:00:50Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Bravo"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:00:14Z"
+                                TP_PlannedLatestArrivalTime="9999-01-01T00:00:55Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Charlie"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:00:20Z"
+                                TP_PlannedLatestArrivalTime="9999-01-01T00:01:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Delta"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <!-- Echo has no operational arrival time -->
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:00:26Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Echo"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Foxtrot"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+
+        <TrainCharacteristicsRef TC_ID="T50_1" TC_VersionMajor="1" TC_VersionMinor="0" location="0">
+            <TC_RU_ID>1185</TC_RU_ID>
+        </TrainCharacteristicsRef>
+
+        <!-- VPro speeds (and with them PüA punctuality reports) only exist on Charlie and Delta -->
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="90"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="4000" endLocation="4000"/>
+            </JP_ContextInformation_NSPs>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="80"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="6000" endLocation="6000"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
+    </SegmentProfileReference>
+</JourneyProfile>
