@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.50.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.50.0...das_client-v0.50.1) (2026-08-11)
+
+
+### Bug Fixes
+
+* add transaction to saving ru features locally ([#2257](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2257)) ([5963533](https://github.com/SchweizerischeBundesbahnen/DAS/commit/5963533f8a000a1977de60c38ae5ee4692740b3f))
+* adjust brake load slip titles ([#2140](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2140)) ([5963533](https://github.com/SchweizerischeBundesbahnen/DAS/commit/5963533f8a000a1977de60c38ae5ee4692740b3f))
+* avoid poison pill log file for splunk after 4xx ([#2578](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2578)) ([5963533](https://github.com/SchweizerischeBundesbahnen/DAS/commit/5963533f8a000a1977de60c38ae5ee4692740b3f))
+* close modal after brightness permission is given ([#2469](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2469)) ([#2611](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2611)) ([35e9808](https://github.com/SchweizerischeBundesbahnen/DAS/commit/35e980874bf3773e1d5550165e52e9627cd00d7a))
+
 ## [0.50.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.49.0...das_client-v0.50.0) (2026-08-07)
 
 
