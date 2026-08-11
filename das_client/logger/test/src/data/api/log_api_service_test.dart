@@ -5,6 +5,7 @@ import 'package:get_it/get_it.dart';
 import 'package:http_x/component.dart';
 import 'package:logger/component.dart';
 import 'package:logger/src/data/api/log_api_service.dart';
+import 'package:logger/src/data/api/send_logs_exception.dart';
 import 'package:logger/src/data/dto/splunk_log_entry_dto.dart';
 import 'package:logger/src/data/mappers.dart';
 import 'package:logger/src/log_level.dart';
@@ -74,35 +75,90 @@ void main() {
     ).called(1);
   });
 
-  test('sendLogs_whenResponseIsInvalid_shouldThrowHttpException', () async {
+  test('sendLogs_whenResponseIsBadRequest_shouldThrowPermanentWithHttpExceptionCause', () async {
     // ARRANGE
-    final logEntries = _createDummyLogEntries();
-    final mockFile = MockFile();
-    when(mockFile.readAsStringSync()).thenAnswer((_) => logEntries.toJsonString());
+    final mockFile = _mockLogFile();
+    _stubPostWithStatus(mockClient, 400);
 
-    badRequestResponse(Request request) => FakeResponse(
-      statusCode: 400,
-      headers: const {},
-      body: '{"error": "Bad Request"}',
-      request: request,
-    );
+    // ACT & EXPECT
+    try {
+      await testee.sendLogs(mockFile);
+      fail('Expected a PermanentSendLogsException to be thrown.');
+    } catch (e) {
+      expect(e, isA<PermanentSendLogsException>());
+      expect((e as PermanentSendLogsException).cause, isA<BadRequestException>());
+    }
+  });
 
+  for (final statusCode in [400, 404, 413]) {
+    test('sendLogs_whenResponseIs${statusCode}_shouldThrowPermanentSendLogsException', () async {
+      // ARRANGE
+      final mockFile = _mockLogFile();
+      _stubPostWithStatus(mockClient, statusCode);
+
+      // ACT & EXPECT
+      expect(() => testee.sendLogs(mockFile), throwsA(isA<PermanentSendLogsException>()));
+    });
+  }
+
+  for (final statusCode in [401, 403, 408, 429, 500, 503]) {
+    test('sendLogs_whenResponseIs${statusCode}_shouldThrowTransientSendLogsException', () async {
+      // ARRANGE
+      final mockFile = _mockLogFile();
+      _stubPostWithStatus(mockClient, statusCode);
+
+      // ACT & EXPECT
+      expect(() => testee.sendLogs(mockFile), throwsA(isA<TransientSendLogsException>()));
+    });
+  }
+
+  test('sendLogs_whenPostThrows_shouldThrowTransientSendLogsException', () async {
+    // ARRANGE
+    final mockFile = _mockLogFile();
     when(
       mockClient.post(
         any,
         headers: anyNamed('headers'),
         body: anyNamed('body'),
       ),
-    ).thenAnswer((inv) async => badRequestResponse(Request('post', inv.positionalArguments[0])));
+    ).thenThrow(const SocketException('no connection'));
 
     // ACT & EXPECT
-    try {
-      await testee.sendLogs(mockFile);
-      fail('Expected a BadRequestException to be thrown.');
-    } catch (e) {
-      expect(e, isA<BadRequestException>());
-    }
+    expect(() => testee.sendLogs(mockFile), throwsA(isA<TransientSendLogsException>()));
   });
+
+  test('sendLogs_whenEndpointNotConfigured_shouldThrowTransientSendLogsException', () async {
+    // ARRANGE
+    final mockFile = _mockLogFile();
+    GetIt.I.unregister<LogEndpoint>();
+
+    // ACT & EXPECT
+    expect(() => testee.sendLogs(mockFile), throwsA(isA<TransientSendLogsException>()));
+    verifyNever(mockClient.post(any, headers: anyNamed('headers'), body: anyNamed('body')));
+  });
+}
+
+MockFile _mockLogFile() {
+  final mockFile = MockFile();
+  when(mockFile.readAsStringSync()).thenAnswer((_) => _createDummyLogEntries().toJsonString());
+  return mockFile;
+}
+
+void _stubPostWithStatus(MockClient mockClient, int statusCode) {
+  when(
+    mockClient.post(
+      any,
+      headers: anyNamed('headers'),
+      body: anyNamed('body'),
+    ),
+  ).thenAnswer(
+    (inv) async => FakeResponse(
+      statusCode: statusCode,
+      headers: const {},
+      body: '{"text":"No data","code":5}',
+      request: Request('post', inv.positionalArguments[0]),
+    ),
+  );
 }
 
 List<SplunkLogEntryDto> _createDummyLogEntries() {

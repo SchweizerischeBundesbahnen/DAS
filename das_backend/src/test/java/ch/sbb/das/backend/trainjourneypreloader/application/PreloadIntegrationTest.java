@@ -1,7 +1,6 @@
 package ch.sbb.das.backend.trainjourneypreloader.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doAnswer;
@@ -156,6 +155,10 @@ class PreloadIntegrationTest {
                 OffsetDateTime.now(),
                 Set.of(new CompanyCode("1285")));
 
-        assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() -> underTest.preload(trainId, new HashMap<>())).withMessage("Handshake request G2B error: 51, 54");
+        PreloadResult result = underTest.preload(trainId, new HashMap<>());
+        assertThat(result).isInstanceOf(PreloadResult.Error.class);
+        PreloadResult.Error error = (PreloadResult.Error) result;
+        assertThat(error.message()).isEqualTo("Handshake request G2B error: 51, 54");
+        assertThat(error.ex()).isNull();
     }
 }

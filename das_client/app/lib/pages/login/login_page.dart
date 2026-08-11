@@ -21,8 +21,8 @@ class LoginPage extends StatefulWidget implements AutoRouteWrapper {
 
   @override
   Widget wrappedRoute(BuildContext context) {
-    return Provider<LoginViewModel>(
-      create: (_) => DI.get<LoginViewModel>(),
+    return Provider<LoginViewModel>.value(
+      value: DI.get<LoginViewModel>(),
       child: this,
     );
   }

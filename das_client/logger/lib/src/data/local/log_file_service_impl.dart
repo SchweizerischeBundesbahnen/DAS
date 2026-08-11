@@ -36,6 +36,8 @@ class LogFileServiceImpl implements LogFileService {
   @override
   Future<void> completeCurrentFile() async {
     final currentCacheFile = await _currentCacheFile;
+    if (currentCacheFile.lengthSync() == 0) return;
+
     currentCacheFile.renameSync(await _logFilePathWithTimestamp());
   }
 

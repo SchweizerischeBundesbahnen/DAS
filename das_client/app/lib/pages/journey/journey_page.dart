@@ -37,10 +37,10 @@ class JourneyPage extends StatefulWidget implements AutoRouteWrapper {
   @override
   Widget wrappedRoute(BuildContext context) => MultiProvider(
     providers: [
-      Provider<JourneyViewModel>(create: (_) => DI.get<JourneyViewModel>()),
-      Provider<ViewModeViewModel>(create: (_) => DI.get<ViewModeViewModel>()),
-      Provider<WarnAppViewModel>(create: (_) => DI.get<WarnAppViewModel>()),
-      Provider<JourneySettingsViewModel>(create: (_) => DI.get<JourneySettingsViewModel>()),
+      Provider<JourneyViewModel>.value(value: DI.get<JourneyViewModel>()),
+      Provider<ViewModeViewModel>.value(value: DI.get<ViewModeViewModel>()),
+      Provider<WarnAppViewModel>.value(value: DI.get<WarnAppViewModel>()),
+      Provider<JourneySettingsViewModel>.value(value: DI.get<JourneySettingsViewModel>()),
     ],
     child: this,
   );
@@ -114,19 +114,24 @@ class _JourneyPageState extends State<JourneyPage> {
     final viewModeVM = DI.get<ViewModeViewModel>();
     _errorCodeSubscription = journeyVM.errorCode.listen((error) async {
       if (error != null) {
-        await DI.get<ScopeHandler>().pop<JourneyScope>();
         if (mounted) {
           context.router.replace(JourneySelectionRoute());
         }
+        await Future.delayed(AppExpirationGuard.timeout);
+        await DI.get<ScopeHandler>().pop<JourneyScope>();
       }
     });
-    _streamCombo = CombineLatestStream.combine2(viewModeVM.isZenViewMode, journeyVM.journey, (a, b) => (a, b));
+    _streamCombo = CombineLatestStream.combine2(
+      viewModeVM.isZenViewMode,
+      journeyVM.journey,
+      (a, b) => (a, b),
+    ).distinct((a, b) => a.$1 == b.$1 && a.$2 == b.$2);
   }
 
   Future<void> _loadInitialTrains() async {
     if (widget.initialTrainIds != null && widget.initialTrainIds!.isNotEmpty) {
       final journeyNavigationVM = DI.get<JourneyNavigationViewModel>();
-      journeyNavigationVM.replaceWith(widget.initialTrainIds!);
+      await journeyNavigationVM.replaceWith(widget.initialTrainIds!);
     }
   }
 }

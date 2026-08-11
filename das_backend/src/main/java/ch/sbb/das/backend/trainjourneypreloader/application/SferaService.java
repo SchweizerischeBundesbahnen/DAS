@@ -43,8 +43,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.eclipse.paho.mqttv5.common.MqttException;
 import org.eclipse.paho.mqttv5.common.MqttMessage;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.retry.annotation.Recover;
-import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -78,74 +76,74 @@ public class SferaService {
         this.preloadedSegmentProfileRepository = preloadedSegmentProfileRepository;
     }
 
-    @Recover
-    private PreloadResult recoverPreload(Exception ex, TrainIdentification trainId) {
-        boolean isTimeout = ex instanceof ExecutionException && ex.getCause() instanceof TimeoutException;
+    PreloadResult preload(TrainIdentification trainId, Map<SegmentProfileIdentification, SegmentProfile> segmentProfilesMap) {
         try {
-            PreloadResult result = isTimeout
-                ? new PreloadResult.Timeout("Preload timed out after " + MAX_RETRIES + " attempts", ex)
-                : new PreloadResult.Error("Preload failed after " + MAX_RETRIES + " attempts", ex);
+            mqttClient.subscribe(createTopic(G2B, trainId), (topic, message) -> receive(message));
+
+            SFERAG2BReplyMessage handshakeReply = sendRequest(trainId, sferaMessageCreator.createHandshakeRequestMessage(trainId)).get();
+            if (handshakeReply.getDASHandshakeAcknowledgement() == null) {
+                if (isG2bError(handshakeReply.getG2BReplyPayload())) {
+                    String errors = extractG2bError(handshakeReply.getG2BReplyPayload());
+                    return terminateSessionWithResult(trainId, new PreloadResult.Error("Handshake request G2B error: " + errors));
+                }
+                return terminateSessionWithResult(trainId, new PreloadResult.Error("Handshake not acknowledged!"));
+            }
+            SFERAG2BReplyMessage jpResponse = sendRequest(trainId, sferaMessageCreator.createJpRequestMessage(trainId)).get();
+            if (jpResponse.getG2BReplyPayload() == null || jpResponse.getG2BReplyPayload().getJourneyProfiles() == null || jpResponse.getG2BReplyPayload().getJourneyProfiles().size() != 1) {
+                if (isG2bError(jpResponse.getG2BReplyPayload())) {
+                    String errors = extractG2bError(jpResponse.getG2BReplyPayload());
+                    return terminateSessionWithResult(trainId, new PreloadResult.Error("JP request G2B error: " + errors));
+                }
+                return terminateSessionWithResult(trainId, new PreloadResult.Error("Expected exactly one Journey Profile but was none or multiple"));
+            }
+            JourneyProfile jp = jpResponse.getG2BReplyPayload().getJourneyProfiles().getFirst();
+
+            if (JPStatus.UNAVAILABLE.equals(jp.getJPStatus())) {
+                return terminateSessionWithResult(trainId, new Unavailable());
+            }
+
+            if (!JPStatus.VALID.equals(jp.getJPStatus())) {
+                return terminateSessionWithResult(trainId, new PreloadResult.Error("Unexpected JPStatus: " + jp.getJPStatus()));
+            }
+
+            Set<SegmentProfileIdentification> spIds = jp.getSegmentProfileReferences().stream().map(SegmentProfileIdentification::from).collect(Collectors.toSet());
+            spIds.removeIf(segmentProfilesMap::containsKey);
+
+            List<SegmentProfile> segmentProfiles;
+            try {
+                segmentProfiles = requestSpsUntilComplete(trainId, spIds);
+            } catch (SegmentProfileMissingException e) {
+                return terminateSessionWithResult(trainId, new PreloadResult.Error(e.getMessage()));
+            }
+
+            Set<TrainCharacteristicsIdentification> tcIds = jp.getSegmentProfileReferences().stream()
+                .flatMap(spRef -> spRef.getTrainCharacteristicsReves().stream())
+                .map(TrainCharacteristicsIdentification::from)
+                .collect(Collectors.toSet());
+
+            List<TrainCharacteristics> trainCharacteristics = requestTcs(trainId, tcIds).get();
+            if (trainCharacteristics.size() != tcIds.size()) {
+                return terminateSessionWithResult(trainId, new PreloadResult.Error("Not all Train Characteristics could be fetched"));
+            }
+            return terminateSessionWithResult(trainId, new PreloadResult.Success(jp, segmentProfiles, trainCharacteristics));
+        } catch (Exception e) {
+            if (e instanceof InterruptedException) {
+                Thread.currentThread().interrupt();
+            }
+            PreloadResult result = (e instanceof ExecutionException && e.getCause() instanceof TimeoutException)
+                ? new PreloadResult.Timeout("Preload timed out", e)
+                : new PreloadResult.Error("Preload failed", e);
             return terminateSessionWithResult(trainId, result);
-        } catch (InterruptedException | ExecutionException | MqttException e) {
-            return new PreloadResult.Error("Preload failed after " + MAX_RETRIES + " attempts and failed to terminate session", e);
         }
     }
 
-    @Retryable(maxAttempts = MAX_RETRIES, retryFor = {ExecutionException.class, InterruptedException.class, MqttException.class}, listeners = "customRetryListener")
-    PreloadResult preload(TrainIdentification trainId, Map<SegmentProfileIdentification, SegmentProfile> segmentProfilesMap) throws ExecutionException, InterruptedException, MqttException {
-        mqttClient.subscribe(createTopic(G2B, trainId), (topic, message) -> receive(message));
-
-        SFERAG2BReplyMessage handshakeReply = sendRequest(trainId, sferaMessageCreator.createHandshakeRequestMessage(trainId)).get();
-        if (handshakeReply.getDASHandshakeAcknowledgement() == null) {
-            if (isG2bError(handshakeReply.getG2BReplyPayload())) {
-                String errors = extractG2bError(handshakeReply.getG2BReplyPayload());
-                throw new IllegalStateException("Handshake request G2B error: " + errors);
-            }
-            throw new IllegalStateException("Handshake not acknowledged!");
-        }
-        SFERAG2BReplyMessage jpResponse = sendRequest(trainId, sferaMessageCreator.createJpRequestMessage(trainId)).get();
-        if (jpResponse.getG2BReplyPayload() == null || jpResponse.getG2BReplyPayload().getJourneyProfiles() == null || jpResponse.getG2BReplyPayload().getJourneyProfiles().size() != 1) {
-            if (isG2bError(jpResponse.getG2BReplyPayload())) {
-                String errors = extractG2bError(jpResponse.getG2BReplyPayload());
-                return terminateSessionWithResult(trainId, new PreloadResult.Error("JP request G2B error: " + errors));
-            }
-            return terminateSessionWithResult(trainId, new PreloadResult.Error("Expected exactly one Journey Profile but was none or multiple"));
-        }
-        JourneyProfile jp = jpResponse.getG2BReplyPayload().getJourneyProfiles().getFirst();
-
-        if (JPStatus.UNAVAILABLE.equals(jp.getJPStatus())) {
-            return terminateSessionWithResult(trainId, new Unavailable());
-        }
-
-        if (!JPStatus.VALID.equals(jp.getJPStatus())) {
-            return terminateSessionWithResult(trainId, new PreloadResult.Error("Unexpected JPStatus: " + jp.getJPStatus()));
-        }
-
-        Set<SegmentProfileIdentification> spIds = jp.getSegmentProfileReferences().stream().map(SegmentProfileIdentification::from).collect(Collectors.toSet());
-        spIds.removeIf(segmentProfilesMap::containsKey);
-
-        List<SegmentProfile> segmentProfiles;
+    private PreloadResult terminateSessionWithResult(TrainIdentification trainId, PreloadResult result) {
         try {
-            segmentProfiles = requestSpsUntilComplete(trainId, spIds);
-        } catch (SegmentProfileMissingException e) {
-            return terminateSessionWithResult(trainId, new PreloadResult.Error(e.getMessage()));
+            // todo send when vad has implemented
+            // sendRequest(trainId, sferaMessageCreator.createSessionTermination(trainId)).get();
+        } catch (Exception e) {
+            log.warn("Failed to terminate session for train {}: {}", trainId, e.getMessage());
         }
-
-        Set<TrainCharacteristicsIdentification> tcIds = jp.getSegmentProfileReferences().stream()
-            .flatMap(spRef -> spRef.getTrainCharacteristicsReves().stream())
-            .map(TrainCharacteristicsIdentification::from)
-            .collect(Collectors.toSet());
-
-        List<TrainCharacteristics> trainCharacteristics = requestTcs(trainId, tcIds).get();
-        if (trainCharacteristics.size() != tcIds.size()) {
-            return terminateSessionWithResult(trainId, new PreloadResult.Error("Not all Train Characteristics could be fetched"));
-        }
-        return terminateSessionWithResult(trainId, new PreloadResult.Success(jp, segmentProfiles, trainCharacteristics));
-    }
-
-    private PreloadResult terminateSessionWithResult(TrainIdentification trainId, PreloadResult result) throws InterruptedException, ExecutionException, MqttException {
-        // todo send when vad has implemented
-        // sendRequest(trainId, sferaMessageCreator.createSessionTermination(trainId)).get();
         mqttClient.unsubscribe(createTopic(G2B, trainId));
         return result;
     }
