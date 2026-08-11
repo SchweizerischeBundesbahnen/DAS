@@ -224,8 +224,8 @@ class TrainIdentificationServiceTest {
 
         // Then
         assertThat(result).hasSize(2);
-        assertThat(result.get(0).operationalTrainNumber()).isEqualTo("728");
-        assertThat(result.get(1).operationalTrainNumber()).isEqualTo("100");
+        assertThat(result.get(0).operationalTrainNumber()).isEqualTo("100");
+        assertThat(result.get(1).operationalTrainNumber()).isEqualTo("728");
     }
 
     @Test

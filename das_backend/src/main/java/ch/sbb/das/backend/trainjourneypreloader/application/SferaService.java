@@ -127,9 +127,12 @@ public class SferaService {
             }
             return terminateSessionWithResult(trainId, new PreloadResult.Success(jp, segmentProfiles, trainCharacteristics));
         } catch (Exception e) {
+            if (e instanceof InterruptedException) {
+                Thread.currentThread().interrupt();
+            }
             PreloadResult result = (e instanceof ExecutionException && e.getCause() instanceof TimeoutException)
                 ? new PreloadResult.Timeout("Preload timed out", e)
-                : new PreloadResult.Error("Preload failed: " + e.getMessage(), e);
+                : new PreloadResult.Error("Preload failed", e);
             return terminateSessionWithResult(trainId, result);
         }
     }

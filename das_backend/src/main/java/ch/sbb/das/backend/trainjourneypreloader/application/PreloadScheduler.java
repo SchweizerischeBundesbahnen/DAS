@@ -68,6 +68,10 @@ public class PreloadScheduler {
         int processedCount = 0;
         int timeoutCount = 0;
         for (TrainIdentification trainId : trainIdentifications) {
+            if (Thread.currentThread().isInterrupted()) {
+                log.warn("Preload interrupted, stopping early");
+                break;
+            }
             if (System.currentTimeMillis() - startTime > maxPreloadDuration.toMillis()) {
                 int skippedCount = trainIdentifications.size() - processedCount;
                 log.warn("Preload time budget of {} exceeded after processing {} trains. {} trains skipped, will continue on next schedule.",

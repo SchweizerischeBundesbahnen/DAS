@@ -32,9 +32,7 @@ public class TrainIdentificationService {
     public List<TrainIdentification> getNewTrainIdentificationsBetween(OffsetDateTime after, OffsetDateTime before) {
         List<TrainIdentificationEntity> trainRunEntities = trainIdentificationRepository.findAllByStartDateTimeAfterAndStartDateTimeBeforeAndPreloadedAtNull(after, before);
         return trainRunEntities.stream()
-            // Sort by departure time descending: trains furthest in the future are preloaded first,
-            // as they are most likely to need the fallback when the client connects later
-            .sorted(Comparator.comparing(TrainIdentificationEntity::getStartDateTime).reversed())
+            .sorted(Comparator.comparing(TrainIdentificationEntity::getStartDateTime))
             .map(this::readEntity)
             // exclude entries where none of the companies are supported
             .filter(tid -> !tid.companies().isEmpty())
